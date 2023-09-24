@@ -1,5 +1,6 @@
 ﻿using System.Runtime.CompilerServices;
 using DataStructuresLib.Basic;
+using GeometricAlgebraFulcrumLib.Lite.ScalarAlgebra;
 using NumpyDotNet;
 
 namespace GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra

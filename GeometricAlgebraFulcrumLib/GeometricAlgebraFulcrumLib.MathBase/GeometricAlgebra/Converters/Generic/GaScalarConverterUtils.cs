@@ -13,7 +13,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Converters.Generi
         {
             return new RGaScalar<T>(
                 metric,
-                mv.ScalarValue
+                mv.ScalarValue()
             );
         }
 
@@ -22,7 +22,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Converters.Generi
         {
             return new XGaScalar<T>(
                 metric,
-                mv.ScalarValue
+                mv.ScalarValue()
             );
         }
 
@@ -32,7 +32,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Converters.Generi
         {
             return new RGaScalar<T>(
                 metric,
-                scalarMapping(mv.ScalarValue)
+                scalarMapping(mv.ScalarValue())
             );
         }
 
@@ -41,7 +41,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Converters.Generi
         {
             return new XGaScalar<T>(
                 metric,
-                scalarMapping(mv.ScalarValue)
+                scalarMapping(mv.ScalarValue())
             );
         }
 
@@ -51,7 +51,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Converters.Generi
         {
             return new RGaScalar<T2>(
                 metric,
-                scalarMapping(mv.ScalarValue)
+                scalarMapping(mv.ScalarValue())
             );
         }
 
@@ -60,7 +60,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Converters.Generi
         {
             return new XGaScalar<T2>(
                 metric,
-                scalarMapping(mv.ScalarValue)
+                scalarMapping(mv.ScalarValue())
             );
         }
 
@@ -70,7 +70,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Converters.Generi
         {
             return new RGaScalar<T2>(
                 metric,
-                scalarMapping(mv.ScalarValue)
+                scalarMapping(mv.ScalarValue())
             );
         }
 
@@ -79,7 +79,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Converters.Generi
         {
             return new XGaScalar<T2>(
                 metric,
-                scalarMapping(mv.ScalarValue)
+                scalarMapping(mv.ScalarValue())
             );
         }
     }

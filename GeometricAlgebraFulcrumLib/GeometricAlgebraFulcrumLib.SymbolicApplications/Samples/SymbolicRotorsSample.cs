@@ -1,10 +1,10 @@
-﻿using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.LinearMaps.Outermorphisms;
+﻿using GeometricAlgebraFulcrumLib.Lite.LinearAlgebra.Basis;
+using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.LinearMaps.Outermorphisms;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.LinearMaps.Rotors;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Multivectors;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Multivectors.Composers;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Processors;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Subspaces;
-using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Basis;
 using GeometricAlgebraFulcrumLib.Mathematica;
 using GeometricAlgebraFulcrumLib.Mathematica.GeometricAlgebra;
 using GeometricAlgebraFulcrumLib.Mathematica.Mathematica;
@@ -50,10 +50,10 @@ namespace GeometricAlgebraFulcrumLib.SymbolicApplications.Samples
         private static RGaVector<Expr> CreateVector(string name, string subscript, int termsCount)
         {
             var vector =
-                $"Subscript[{name},{subscript}1]".ToExpr() * GeometricProcessor.CreateVector(0);
+                $"Subscript[{name},{subscript}1]".ToExpr() * GeometricProcessor.CreateTermVector(0);
 
             for (var i = 2; i <= termsCount; i++)
-                vector += $"Subscript[{name},{subscript}{i}]".ToExpr() * GeometricProcessor.CreateVector(i - 1);
+                vector += $"Subscript[{name},{subscript}{i}]".ToExpr() * GeometricProcessor.CreateTermVector(i - 1);
 
             return vector;
         }
@@ -61,10 +61,10 @@ namespace GeometricAlgebraFulcrumLib.SymbolicApplications.Samples
         private static RGaVector<Expr> CreateVector(string name, int termsCount)
         {
             var vector =
-                $"Subscript[{name},1]".ToExpr() * GeometricProcessor.CreateVector(0);
+                $"Subscript[{name},1]".ToExpr() * GeometricProcessor.CreateTermVector(0);
 
             for (var i = 2; i <= termsCount; i++)
-                vector += $"Subscript[{name},{i}]".ToExpr() * GeometricProcessor.CreateVector(i - 1);
+                vector += $"Subscript[{name},{i}]".ToExpr() * GeometricProcessor.CreateTermVector(i - 1);
 
             return vector;
         }
@@ -76,9 +76,9 @@ namespace GeometricAlgebraFulcrumLib.SymbolicApplications.Samples
         /// </summary>
         public static void Example1()
         {
-            var e1 = GeometricProcessor.CreateVector(0);
-            var e2 = GeometricProcessor.CreateVector(1);
-            var e3 = GeometricProcessor.CreateVector(2);
+            var e1 = GeometricProcessor.CreateTermVector(0);
+            var e2 = GeometricProcessor.CreateTermVector(1);
+            var e3 = GeometricProcessor.CreateTermVector(2);
             var pseudoScalar = e1.Gp(e2).Gp(e3).GetKVectorPart(3);
             var pseudoScalarInverse = pseudoScalar.Inverse();
 
@@ -114,7 +114,7 @@ namespace GeometricAlgebraFulcrumLib.SymbolicApplications.Samples
             // Compute angle between projected vectors, the result must equal
             // the original angle of rotation of the rotor
             var diff3 = 
-                ((pa.ESp(pb) / (pa.ENorm() * pb.ENorm())).ArcCos() - angle).ScalarValue.FullSimplify();
+                ((pa.ESp(pb) / (pa.ENorm() * pb.ENorm())).ArcCos() - angle).ScalarValue().FullSimplify();
             
             // Make sure the projection of a on the rotation 2-blade is rotated
             // correctly into the projection of b on the rotation 2-blade
@@ -139,9 +139,9 @@ namespace GeometricAlgebraFulcrumLib.SymbolicApplications.Samples
         /// </summary>
         public static void Example2()
         {
-            var e1 = GeometricProcessor.CreateVector(0);
-            var e2 = GeometricProcessor.CreateVector(1);
-            var e3 = GeometricProcessor.CreateVector(2);
+            var e1 = GeometricProcessor.CreateTermVector(0);
+            var e2 = GeometricProcessor.CreateTermVector(1);
+            var e3 = GeometricProcessor.CreateTermVector(2);
             var pseudoScalar = e1.Gp(e2).Gp(e3).GetKVectorPart(3);
             var pseudoScalarInverse = pseudoScalar.Inverse();
 
@@ -171,7 +171,7 @@ namespace GeometricAlgebraFulcrumLib.SymbolicApplications.Samples
             // Compute angle between projected vectors, the result must equal
             // the original angle of rotation of the rotor
             var diff3 = 
-                ((pa.ESp(pb) / (pa.ENorm() * pb.ENorm())).ArcCos() - angle).ScalarValue.FullSimplify();
+                ((pa.ESp(pb) / (pa.ENorm() * pb.ENorm())).ArcCos() - angle).ScalarValue().FullSimplify();
             
             // Make sure the projection of a on the rotation 2-blade is rotated
             // correctly into the projection of b on the rotation 2-blade
@@ -196,9 +196,9 @@ namespace GeometricAlgebraFulcrumLib.SymbolicApplications.Samples
         /// </summary>
         public static void Example3()
         {
-            var e1 = GeometricProcessor.CreateVector(0);
-            var e2 = GeometricProcessor.CreateVector(1);
-            var e3 = GeometricProcessor.CreateVector(2);
+            var e1 = GeometricProcessor.CreateTermVector(0);
+            var e2 = GeometricProcessor.CreateTermVector(1);
+            var e3 = GeometricProcessor.CreateTermVector(2);
             var pseudoScalar = e1.Gp(e2).Gp(e3).GetKVectorPart(3);
             var pseudoScalarInverse = pseudoScalar.Inverse();
 
@@ -249,7 +249,7 @@ namespace GeometricAlgebraFulcrumLib.SymbolicApplications.Samples
             // Compute angle between projected vectors, the result must equal
             // the original angle of rotation of the rotor
             var diff4 = 
-                ((pa.ESp(pb) / (pa.ENorm() * pb.ENorm())).ArcCos() - angle).ScalarValue.FullSimplify();
+                ((pa.ESp(pb) / (pa.ENorm() * pb.ENorm())).ArcCos() - angle).ScalarValue().FullSimplify();
             
             // Make sure the projection of a on the rotation 2-blade is rotated
             // correctly into the projection of b on the rotation 2-blade
@@ -278,9 +278,9 @@ namespace GeometricAlgebraFulcrumLib.SymbolicApplications.Samples
         /// </summary>
         public static void Example4()
         {
-            var e1 = GeometricProcessor.CreateVector(0);
-            var e2 = GeometricProcessor.CreateVector(1);
-            var e3 = GeometricProcessor.CreateVector(2);
+            var e1 = GeometricProcessor.CreateTermVector(0);
+            var e2 = GeometricProcessor.CreateTermVector(1);
+            var e3 = GeometricProcessor.CreateTermVector(2);
             var pseudoScalar = e1.Gp(e2).Gp(e3).GetKVectorPart(3);
             var pseudoScalarInverse = pseudoScalar.Inverse();
 
@@ -356,9 +356,9 @@ namespace GeometricAlgebraFulcrumLib.SymbolicApplications.Samples
         /// </summary>
         public static void Example5()
         {
-            var e1 = GeometricProcessor.CreateVector(0);
-            var e2 = GeometricProcessor.CreateVector(1);
-            var e3 = GeometricProcessor.CreateVector(2);
+            var e1 = GeometricProcessor.CreateTermVector(0);
+            var e2 = GeometricProcessor.CreateTermVector(1);
+            var e3 = GeometricProcessor.CreateTermVector(2);
             var pseudoScalar = e1.Op(e2).Op(e3);
             var pseudoScalarInverse = pseudoScalar.Inverse();
 
@@ -385,7 +385,7 @@ namespace GeometricAlgebraFulcrumLib.SymbolicApplications.Samples
             
             // Define parametric angle of rotation
             var rotorAngle = 
-                (1 + 2 * (v1v2Dot - 1) / (2 - Mfs.Power[Mfs.Sin[angleTheta], 2] * (v1v2Dot + 1))).ArcCos().ScalarValue;
+                (1 + 2 * (v1v2Dot - 1) / (2 - Mfs.Power[Mfs.Sin[angleTheta], 2] * (v1v2Dot + 1))).ArcCos().ScalarValue();
 
             // The actual plane of rotation is made by rotating the plane of v1,v2
             // by angle theta in the plane orthogonal to v2 - v1
@@ -441,9 +441,9 @@ namespace GeometricAlgebraFulcrumLib.SymbolicApplications.Samples
         /// </summary>
         public static void Example6()
         {
-            var e1 = GeometricProcessor.CreateVector(0);
-            var e2 = GeometricProcessor.CreateVector(1);
-            var e3 = GeometricProcessor.CreateVector(2);
+            var e1 = GeometricProcessor.CreateTermVector(0);
+            var e2 = GeometricProcessor.CreateTermVector(1);
+            var e3 = GeometricProcessor.CreateTermVector(2);
 
             var a = CreateVector3D("a");
             var b = CreateVector3D("b");
@@ -577,7 +577,7 @@ namespace GeometricAlgebraFulcrumLib.SymbolicApplications.Samples
 
         public static void Example10()
         {
-            var e3 = GeometricProcessor.CreateVector(2);
+            var e3 = GeometricProcessor.CreateTermVector(2);
 
             var v = 
                 GeometricProcessor.CreateVector(
@@ -616,9 +616,9 @@ namespace GeometricAlgebraFulcrumLib.SymbolicApplications.Samples
 
             var vSpaceDimensions = 3;
 
-            var e1 = GeometricProcessor.CreateVector(0);
-            var e2 = GeometricProcessor.CreateVector(1);
-            var e3 = GeometricProcessor.CreateVector(2);
+            var e1 = GeometricProcessor.CreateTermVector(0);
+            var e2 = GeometricProcessor.CreateTermVector(1);
+            var e3 = GeometricProcessor.CreateTermVector(2);
             var pseudoScalar = e1.Gp(e2).Gp(e3).GetKVectorPart(3);
             var pseudoScalarInverse = pseudoScalar.Inverse();
 

@@ -2,13 +2,13 @@
 using System.Drawing;
 using System.Linq;
 using GeometricAlgebraFulcrumLib.Geometry.Graphics.Space2D;
-using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Float64.Frames;
-using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Float64.Multivectors;
-using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Float64.Multivectors.Composers;
-using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Float64.Processors;
-using GeometricAlgebraFulcrumLib.MathBase.Geometry.Borders;
-using GeometricAlgebraFulcrumLib.MathBase.Geometry.Borders.Space2D.Immutable;
-using GraphicsComposerLib.Rendering.Svg.DrawingBoard;
+using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Restricted.Float64.Frames;
+using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Restricted.Float64.Multivectors;
+using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Restricted.Float64.Multivectors.Composers;
+using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Restricted.Float64.Processors;
+using GeometricAlgebraFulcrumLib.Lite.Geometry.Borders;
+using GeometricAlgebraFulcrumLib.Lite.Geometry.Borders.Space2D.Immutable;
+using GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.Svg.DrawingBoard;
 
 namespace GeometricAlgebraFulcrumLib.Samples.VoronoiDiagrams
 {
@@ -68,7 +68,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.VoronoiDiagrams
             Console.WriteLine();
 
             var simplexPoints = 
-                simplexFrame.Select(p => p.GetTuple2D()).ToArray();
+                simplexFrame.Select(p => p.ToVector2D()).ToArray();
             
 
             var boundingBox = simplexPoints.GetBoundingBox(1.15);

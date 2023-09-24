@@ -5,7 +5,7 @@ using System.Linq;
 using DataStructuresLib.BitManipulation;
 using DataStructuresLib.IndexSets;
 using GeometricAlgebraFulcrumLib.Geometry.Euclidean.Space3D.Objects;
-using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Basis;
+using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Basis;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.Multivectors;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.Multivectors.Composers;
 using GeometricAlgebraFulcrumLib.MetaProgramming.Context;
@@ -84,7 +84,7 @@ namespace GeometricAlgebraFulcrumLib.MetaProgramming.Expressions
 
             return Context
                 .XGaProcessor
-                .CreateVector(index, namedScalar);
+                .CreateTermVector(index, namedScalar);
         }
 
         public XGaVector<IMetaExpressionAtomic> CreateDenseVector(int vSpaceDimensions, Func<int, string> namingFunction)

@@ -45,7 +45,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.
         public override XGaVector<T> OmMapBasisVector(int index)
         {
             return OmMap(
-                Processor.CreateVector(index)
+                Processor.CreateTermVector(index)
             );
         }
         
@@ -56,7 +56,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.
                 throw new InvalidOperationException();
 
             return OmMap(
-                Processor.CreateBivector(
+                Processor.CreateTermBivector(
                     index1, 
                     index2, 
                     ScalarProcessor.ScalarOne
@@ -68,7 +68,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.
         public override XGaKVector<T> OmMapBasisBlade(IIndexSet id)
         {
             return OmMap(
-                Processor.CreateKVector(
+                Processor.CreateTermKVector(
                     id, 
                     ScalarProcessor.ScalarOne
                 )

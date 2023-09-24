@@ -1,4 +1,4 @@
-﻿using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Basis;
+﻿using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Basis;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.LinearMaps.Outermorphisms;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Multivectors;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Multivectors.Composers;
@@ -39,27 +39,27 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generi
                 foreach (var basisVectorIndex in basisVectorIndicesList)
                 {
                     var basisVectorImage = mappedBasisVectors[basisVectorIndex];
-                    var basisVectorImageNorm = basisVectorImage.ENorm().ScalarValue;
+                    var basisVectorImageNorm = basisVectorImage.ENorm().ScalarValue();
 
                     var differenceLengthSquared =
                         (
                             basisVectorImage -
-                            metric.CreateVector(basisVectorIndex, basisVectorImageNorm)
+                            metric.CreateTermVector(basisVectorIndex, basisVectorImageNorm)
                         ).ESpSquared();
 
-                    if (differenceLengthSquared.ScalarValue < bestDifferenceLengthSquared)
+                    if (differenceLengthSquared.ScalarValue() < bestDifferenceLengthSquared)
                         continue;
 
                     bestBasisVectorIndex = basisVectorIndex;
-                    bestDifferenceLengthSquared = differenceLengthSquared.ScalarValue;
+                    bestDifferenceLengthSquared = differenceLengthSquared.ScalarValue();
                 }
 
                 var bestBasisVectorImage = mappedBasisVectors[bestBasisVectorIndex];
-                var bestBasisVectorImageNorm = bestBasisVectorImage.ENorm().ScalarValue;
+                var bestBasisVectorImageNorm = bestBasisVectorImage.ENorm().ScalarValue();
 
                 var unitVector =
                     bestBasisVectorImage -
-                    metric.CreateVector(bestBasisVectorIndex, bestBasisVectorImageNorm);
+                    metric.CreateTermVector(bestBasisVectorIndex, bestBasisVectorImageNorm);
 
                 var reflectionVectorFound = !unitVector.IsZero;
                 if (reflectionVectorFound)
@@ -78,7 +78,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generi
                         : mappedBasisVectors[basisVectorIndex];
 
                     var bestBasisVectorId = bestBasisVectorIndex.BasisVectorIndexToId();
-                    if (reflectedVector.TryGetTermScalar(bestBasisVectorId, out var scalar))
+                    if (reflectedVector.TryGetBasisBladeScalarValue(bestBasisVectorId, out var scalar))
                         vectorComposersArray[basisVectorIndex].SetTerm(bestBasisVectorIndex, scalar);
 
                     if (basisVectorIndex == bestBasisVectorIndex)
@@ -147,9 +147,9 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generi
             for (var i = 0; i < count; i++)
             {
                 var x = mappedBasisVectors[i];
-                var xNorm = x.ENorm().ScalarValue;
+                var xNorm = x.ENorm().ScalarValue();
 
-                var unitVector = x - metric.CreateVector(i, xNorm);
+                var unitVector = x - metric.CreateTermVector(i, xNorm);
 
                 var reflectionVectorFound = !unitVector.IsZero;
                 if (reflectionVectorFound)
@@ -170,7 +170,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generi
                     var basisVectorIndex = i;
                     var basisVectorId = basisVectorIndex.BasisVectorIndexToId();
 
-                    if (reflectedVector.TryGetTermScalar(basisVectorId, out var scalar))
+                    if (reflectedVector.TryGetBasisBladeScalarValue(basisVectorId, out var scalar))
                         vectorComposersArray[j].SetTerm(basisVectorIndex, scalar);
 
                     if (j > i)

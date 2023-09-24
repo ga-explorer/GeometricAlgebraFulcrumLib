@@ -61,7 +61,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.ConformalGeometry
                 space.CreateIpnsHyperPlane(normalM, "d_2");
             
             Console.WriteLine($"IPNS point = {textComposer.GetMultivectorText(ipnsA.Vector)}");
-            Console.WriteLine($"point square = {textComposer.GetScalarText(ipnsA.Square().Scalar)}");
+            Console.WriteLine($"point square = {textComposer.GetScalarText(ipnsA.Square().Scalar())}");
             Console.WriteLine($"point weight = {textComposer.GetScalarText(ipnsA.Weight())}");
             Console.WriteLine($"point distance = {textComposer.GetScalarText(ipnsA.GetDistance(pointB))}");
             Console.WriteLine();

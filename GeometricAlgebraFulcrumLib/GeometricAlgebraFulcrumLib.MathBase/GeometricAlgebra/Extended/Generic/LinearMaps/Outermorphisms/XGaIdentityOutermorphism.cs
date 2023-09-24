@@ -1,10 +1,11 @@
 ﻿using System.Runtime.CompilerServices;
 using DataStructuresLib.IndexSets;
+using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Extended;
+using GeometricAlgebraFulcrumLib.Lite.ScalarAlgebra;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.Multivectors;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.Multivectors.Composers;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.Processors;
 using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Generic.LinearMaps;
-using GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra;
 
 namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.LinearMaps.Outermorphisms
 {
@@ -36,13 +37,13 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public XGaVector<T> OmMapBasisVector(int index)
         {
-            return Processor.CreateVector(index);
+            return Processor.CreateTermVector(index);
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public XGaBivector<T> OmMapBasisBivector(int index1, int index2)
         {
-            return Processor.CreateBivector(
+            return Processor.CreateTermBivector(
                 index1, 
                 index2,
                 ScalarProcessor.ScalarOne
@@ -52,7 +53,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public XGaKVector<T> OmMapBasisBlade(IIndexSet id)
         {
-            return Processor.CreateKVector(
+            return Processor.CreateTermKVector(
                 id, 
                 ScalarProcessor.ScalarOne
             );
@@ -123,7 +124,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.
                 .Select(id => 
                     new KeyValuePair<IIndexSet, XGaMultivector<T>>(
                         id, 
-                        Processor.CreateKVector(id, ScalarProcessor.ScalarOne)
+                        Processor.CreateTermKVector(id, ScalarProcessor.ScalarOne)
                     )
                 );
         }
@@ -136,7 +137,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.
                 .Select(id => 
                     new KeyValuePair<IIndexSet, XGaVector<T>>(
                         id, 
-                        Processor.CreateVector(id.FirstIndex)
+                        Processor.CreateTermVector(id.FirstIndex)
                     )
                 );
         }

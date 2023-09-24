@@ -1,5 +1,6 @@
 ﻿using System;
-using GeometricAlgebraFulcrumLib.MathBase.PolynomialAlgebra.BSplineCurveBasis;
+using GeometricAlgebraFulcrumLib.Lite.PolynomialAlgebra.BSplineCurveBasis;
+using GeometricAlgebraFulcrumLib.MathBase.Geometry.Differential;
 using TextComposerLib.Text;
 
 namespace GeometricAlgebraFulcrumLib.Samples.Numeric

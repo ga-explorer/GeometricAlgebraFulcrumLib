@@ -5,19 +5,19 @@ using System.IO;
 using System.Linq;
 using DataStructuresLib.Extensions;
 using GeometricAlgebraFulcrumLib.Applications.Graphics;
-using GeometricAlgebraFulcrumLib.MathBase.Geometry.Parametric.Space3D.Curves;
-using GeometricAlgebraFulcrumLib.MathBase.Geometry.Parametric.Space3D.Curves.Circles;
-using GeometricAlgebraFulcrumLib.MathBase.Geometry.Parametric.Space3D.Curves.Lines;
-using GeometricAlgebraFulcrumLib.MathBase.Geometry.Parametric.Space3D.Curves.Roulettes;
-using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64;
-using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Space3D;
-using GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra;
-using GraphicsComposerLib.Rendering.BabylonJs;
-using GraphicsComposerLib.Rendering.BabylonJs.Cameras;
-using GraphicsComposerLib.Rendering.BabylonJs.Constants;
-using GraphicsComposerLib.Rendering.Visuals.Space3D.Basic;
-using GraphicsComposerLib.Rendering.Visuals.Space3D.Grids;
-using GraphicsComposerLib.Rendering.Visuals.Space3D.Styles;
+using GeometricAlgebraFulcrumLib.Lite.Geometry.Parametric.Space3D.Curves;
+using GeometricAlgebraFulcrumLib.Lite.Geometry.Parametric.Space3D.Curves.Circles;
+using GeometricAlgebraFulcrumLib.Lite.Geometry.Parametric.Space3D.Curves.Lines;
+using GeometricAlgebraFulcrumLib.Lite.Geometry.Parametric.Space3D.Curves.Roulettes;
+using GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.BabylonJs;
+using GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.BabylonJs.Cameras;
+using GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.BabylonJs.Constants;
+using GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.Visuals.Space3D.Basic;
+using GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.Visuals.Space3D.Grids;
+using GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.Visuals.Space3D.Styles;
+using GeometricAlgebraFulcrumLib.Lite.LinearAlgebra;
+using GeometricAlgebraFulcrumLib.Lite.LinearAlgebra.Vectors.Space3D;
+using GeometricAlgebraFulcrumLib.Lite.ScalarAlgebra;
 using Color = SixLabors.ImageSharp.Color;
 
 namespace GeometricAlgebraFulcrumLib.Samples.Graphics.BabylonJs
@@ -70,13 +70,13 @@ namespace GeometricAlgebraFulcrumLib.Samples.Graphics.BabylonJs
             sceneComposer.GridMaterialKind =
                 GrBabylonJsGridMaterialKind.TexturedMaterial;
 
-            sceneComposer.AddXzSquareGrid(
-                new GrVisualXzSquareGrid3D("grid")
+            sceneComposer.AddSquareGrid(
+                new GrVisualSquareGrid3D("grid", GrVisualSquareGridPlane3D.ZxPlane)
                 {
-                    UnitCountX = gridUnitCount,
-                    UnitCountZ = gridUnitCount,
+                    UnitCount1 = gridUnitCount,
+                    UnitCount2 = gridUnitCount,
                     UnitSize = 1,
-                    Origin = Float64Vector3D.Create(-0.5d * gridUnitCount, 0, -0.5d * gridUnitCount),
+                    DistanceToOrigin = 0,
                     Opacity = 0.25,
                     BaseSquareColor = Color.LightYellow,
                     BaseLineColor = Color.BurlyWood,

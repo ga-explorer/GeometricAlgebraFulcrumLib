@@ -1,15 +1,14 @@
 ﻿using System.Runtime.CompilerServices;
 using DataStructuresLib.Combinations;
-using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Basis;
-using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Basis;
-using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Float64.Multivectors;
-using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Float64.Processors;
+using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Basis;
+using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Restricted.Float64.Multivectors;
+using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Restricted.Float64.Processors;
+using GeometricAlgebraFulcrumLib.Lite.LinearAlgebra.Vectors.Space2D;
+using GeometricAlgebraFulcrumLib.Lite.LinearAlgebra.Vectors.Space3D;
+using GeometricAlgebraFulcrumLib.Lite.LinearAlgebra.Vectors.Space4D;
+using GeometricAlgebraFulcrumLib.Lite.ScalarAlgebra;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Multivectors.Composers;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Processors;
-using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Space2D;
-using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Space3D;
-using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Space4D;
-using GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra;
 
 namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Multivectors
 {
@@ -66,60 +65,6 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generi
             return array;
         }
 
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Scalar<T> GetVectorTermScalar<T>(this RGaMultivector<T> mv, int index)
-        {
-            var id = index.BasisVectorIndexToId();
-
-            return mv.GetTermScalar(id);
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Scalar<T> GetTermScalar<T>(this RGaMultivector<T> mv, int index1, int index2)
-        {
-            var basisBlade = mv.Processor.Gp(
-                index1.BasisVectorIndexToId(), 
-                index2.BasisVectorIndexToId()
-            );
-
-            if (basisBlade.IsZero)
-                return Scalar<T>.CreateZero(mv.ScalarProcessor);
-
-            var scalar = mv.GetTermScalar(basisBlade.Id);
-
-            return basisBlade.IsNegative
-                ? -scalar : scalar;
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Scalar<T> GetTermScalar<T>(this RGaMultivector<T> mv, params int[] indexList)
-        {
-            var basisBlade = mv.Processor.Gp(indexList);
-
-            if (basisBlade.IsZero)
-                return Scalar<T>.CreateZero(mv.ScalarProcessor);
-
-            var scalar = mv.GetTermScalar(basisBlade.Id);
-
-            return basisBlade.IsNegative
-                ? -scalar : scalar;
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Scalar<T> GetTermScalar<T>(this RGaMultivector<T> mv, IReadOnlyList<int> indexList)
-        {
-            var basisBlade = mv.Processor.Gp(indexList);
-
-            if (basisBlade.IsZero)
-                return Scalar<T>.CreateZero(mv.ScalarProcessor);
-
-            var scalar = mv.GetTermScalar(basisBlade.Id);
-
-            return basisBlade.IsNegative
-                ? -scalar : scalar;
-        }
-        
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static RGaMultivector<T> GetPart<T>(this RGaMultivector<T> mv, Func<ulong, bool> filterFunc)
@@ -682,25 +627,25 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generi
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Float64Vector2D GetVectorPartAsTuple2D(this RGaMultivector<double> mv)
         {
-            return Float64Vector2D.Create((Float64Scalar)mv.GetTermScalar(1).ScalarValue,
-                (Float64Scalar)mv.GetTermScalar(2).ScalarValue);
+            return Float64Vector2D.Create((Float64Scalar)mv.GetBasisBladeScalar(1).ScalarValue,
+                (Float64Scalar)mv.GetBasisBladeScalar(2).ScalarValue);
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Float64Vector3D GetVectorPartAsTuple3D(this RGaMultivector<double> mv)
         {
-            return Float64Vector3D.Create(mv.GetTermScalar(1).ScalarValue,
-                mv.GetTermScalar(2).ScalarValue,
-                mv.GetTermScalar(4).ScalarValue);
+            return Float64Vector3D.Create(mv.GetBasisBladeScalar(1).ScalarValue,
+                mv.GetBasisBladeScalar(2).ScalarValue,
+                mv.GetBasisBladeScalar(4).ScalarValue);
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Float64Vector4D GetVectorPartAsTuple4D(this RGaMultivector<double> mv)
         {
-            return Float64Vector4D.Create(mv.GetTermScalar(1).ScalarValue,
-                mv.GetTermScalar(2).ScalarValue,
-                mv.GetTermScalar(4).ScalarValue,
-                mv.GetTermScalar(8).ScalarValue);
+            return Float64Vector4D.Create(mv.GetBasisBladeScalar(1).ScalarValue,
+                mv.GetBasisBladeScalar(2).ScalarValue,
+                mv.GetBasisBladeScalar(4).ScalarValue,
+                mv.GetBasisBladeScalar(8).ScalarValue);
         }
 
         
@@ -731,7 +676,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generi
         public static T[,] ScalarPlusBivectorToArray2D<T>(this RGaMultivector<T> mv)
         {
             var array = mv.GetBivectorPart().BivectorToArray2D();
-            var scalar = mv.GetScalarTermScalar().ScalarValue;
+            var scalar = mv.Scalar().ScalarValue;
             var metric = mv.Metric;
             var scalarProcessor = mv.ScalarProcessor;
 
@@ -753,7 +698,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generi
         public static T[,] ScalarPlusBivectorToArray2D<T>(this RGaMultivector<T> mv, int arraySize)
         {
             var array = mv.GetBivectorPart().BivectorToArray2D(arraySize);
-            var scalar = mv.GetScalarTermScalar().ScalarValue;
+            var scalar = mv.Scalar().ScalarValue;
             var metric = mv.Metric;
             var scalarProcessor = mv.ScalarProcessor;
 

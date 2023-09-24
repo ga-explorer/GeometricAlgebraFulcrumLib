@@ -1,4 +1,4 @@
-﻿using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Records;
+﻿using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Records;
 using GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices;
 
 namespace GeometricAlgebraFulcrumLib.Utilities.Structures.Records;

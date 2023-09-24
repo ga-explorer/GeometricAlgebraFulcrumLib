@@ -2,9 +2,9 @@
 using System.Diagnostics;
 using System.Numerics;
 using System.Runtime.CompilerServices;
-using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Basis;
-using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Records.Restricted;
-using GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra;
+using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Basis;
+using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Restricted.Records;
+using GeometricAlgebraFulcrumLib.Lite.ScalarAlgebra;
 
 namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Structures
 {

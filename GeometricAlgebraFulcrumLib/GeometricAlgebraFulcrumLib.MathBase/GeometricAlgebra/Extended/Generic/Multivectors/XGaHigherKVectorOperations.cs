@@ -1,13 +1,13 @@
 ﻿using System.Runtime.CompilerServices;
 using DataStructuresLib.Basic;
 using DataStructuresLib.IndexSets;
-using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Basis;
-using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Float64.Multivectors;
-using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Float64.Multivectors.Composers;
-using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Float64.Processors;
+using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Basis;
+using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Extended.Float64.Multivectors;
+using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Extended.Float64.Multivectors.Composers;
+using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Extended.Float64.Processors;
+using GeometricAlgebraFulcrumLib.Lite.ScalarAlgebra;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.Multivectors.Composers;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.Processors;
-using GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra;
 
 namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.Multivectors
 {
@@ -161,13 +161,13 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static XGaHigherKVector<T> operator *(XGaHigherKVector<T> mv1, XGaScalar<T> mv2)
         {
-            return mv1.Times(mv2.ScalarValue);
+            return mv1.Times(mv2.ScalarValue());
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static XGaHigherKVector<T> operator *(XGaScalar<T> mv1, XGaHigherKVector<T> mv2)
         {
-            return mv2.Times(mv1.ScalarValue);
+            return mv2.Times(mv1.ScalarValue());
         }
 
 
@@ -243,7 +243,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static XGaHigherKVector<T> operator /(XGaHigherKVector<T> mv1, XGaScalar<T> mv2)
         {
-            return mv1.Divide(mv2.ScalarValue);
+            return mv1.Divide(mv2.ScalarValue());
         }
 
 
@@ -432,25 +432,25 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public XGaHigherKVector<T> DivideByENorm()
         {
-            return Divide(ENorm().ScalarValue);
+            return Divide(ENorm().ScalarValue());
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public XGaHigherKVector<T> DivideByENormSquared()
         {
-            return Divide(ENormSquared().ScalarValue);
+            return Divide(ENormSquared().ScalarValue());
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public XGaHigherKVector<T> DivideByNorm()
         {
-            return Divide(Norm().ScalarValue);
+            return Divide(Norm().ScalarValue());
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public XGaHigherKVector<T> DivideByNormSquared()
         {
-            return Divide(NormSquared().ScalarValue);
+            return Divide(NormSquared().ScalarValue());
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -494,7 +494,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.
         public XGaHigherKVector<T> EInverse()
         {
             return Divide(
-                ESpSquared().ScalarValue
+                ESpSquared().ScalarValue()
             );
         }
 
@@ -502,7 +502,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.
         public XGaHigherKVector<T> Inverse()
         {
             return Divide(
-                SpSquared().ScalarValue
+                SpSquared().ScalarValue()
             );
         }
 
@@ -512,7 +512,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.
             var kVectorConjugate = Conjugate();
 
             return kVectorConjugate.Divide(
-                kVectorConjugate.Sp(this).ScalarValue
+                kVectorConjugate.Sp(this).ScalarValue()
             );
         }
 
@@ -553,14 +553,14 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public XGaHigherKVector<T> Op(XGaScalar<T> mv2)
         {
-            return Times(mv2.ScalarValue);
+            return Times(mv2.ScalarValue());
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public override XGaKVector<T> Op(XGaKVector<T> mv2)
         {
             if (mv2 is XGaScalar<T> scalar)
-                return Times(scalar.ScalarValue);
+                return Times(scalar.ScalarValue());
 
             if (IsZero || mv2.IsZero)
                 return Processor.CreateZeroScalar();
@@ -575,7 +575,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.
         public override XGaMultivector<T> Op(XGaMultivector<T> mv2)
         {
             if (mv2 is XGaScalar<T> scalar)
-                return Times(scalar.ScalarValue);
+                return Times(scalar.ScalarValue());
 
             if (IsZero || mv2.IsZero)
                 return Processor.CreateZeroScalar();
@@ -596,7 +596,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public XGaHigherKVector<T> EGp(XGaScalar<T> mv2)
         {
-            return Times(mv2.ScalarValue);
+            return Times(mv2.ScalarValue());
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -618,7 +618,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public XGaHigherKVector<T> Gp(XGaScalar<T> mv2)
         {
-            return Times(mv2.ScalarValue);
+            return Times(mv2.ScalarValue());
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -816,7 +816,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public XGaHigherKVector<T> ERcp(XGaScalar<T> mv2)
         {
-            return Times(mv2.ScalarValue);
+            return Times(mv2.ScalarValue());
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -916,7 +916,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public XGaHigherKVector<T> Rcp(XGaScalar<T> mv2)
         {
-            return Times(mv2.ScalarValue);
+            return Times(mv2.ScalarValue());
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

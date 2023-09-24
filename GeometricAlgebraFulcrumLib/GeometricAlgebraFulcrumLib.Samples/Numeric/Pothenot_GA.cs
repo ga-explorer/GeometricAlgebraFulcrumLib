@@ -1,8 +1,8 @@
 ﻿using System;
-using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Float64.Multivectors;
-using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Float64.Multivectors.Composers;
-using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Float64.Processors;
-using GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra;
+using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Restricted.Float64.Multivectors;
+using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Restricted.Float64.Multivectors.Composers;
+using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Restricted.Float64.Processors;
+using GeometricAlgebraFulcrumLib.Lite.ScalarAlgebra;
 using GeometricAlgebraFulcrumLib.MathBase.Text;
 
 namespace GeometricAlgebraFulcrumLib.Samples.Numeric;
@@ -62,8 +62,8 @@ public static class Pothenot_GA
         //var textComposer = TextComposerFloat64.DefaultComposer;
 
 
-        var e1 = GeometricProcessor.CreateVector(0);
-        var e2 = GeometricProcessor.CreateVector(1);
+        var e1 = GeometricProcessor.CreateTermVector(0);
+        var e2 = GeometricProcessor.CreateTermVector(1);
 
         //select the central beacon depending on the origin
         float[] center = new float[2];
@@ -105,7 +105,7 @@ public static class Pothenot_GA
 
 
         var p = (d1.Op(d)).Gp(d.Inverse());
-        float[] global_pos = new float[2]{ center[0] + (float)p.GetVectorTermScalar(0), center[1] + (float)p.GetVectorTermScalar(1) };
+        float[] global_pos = new float[2]{ center[0] + (float)p.Scalar(0), center[1] + (float)p.Scalar(1) };
 
         return global_pos;
         //Console.WriteLine();

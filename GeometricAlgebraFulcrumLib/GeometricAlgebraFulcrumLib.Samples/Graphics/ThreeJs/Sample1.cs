@@ -1,6 +1,6 @@
 ﻿using System;
-using GraphicsComposerLib.Rendering.ThreeJs;
-using GraphicsComposerLib.Rendering.ThreeJs.Objects;
+using GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.ThreeJs;
+using GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.ThreeJs.Objects;
 using TextComposerLib.Code.JavaScript;
 
 namespace GeometricAlgebraFulcrumLib.Samples.Graphics.ThreeJs

@@ -1358,7 +1358,13 @@ namespace DataStructuresLib.BitManipulation
             //    bitPattern >>= 1;
             //}
         }
-        
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static IEnumerable<T> PatternToMappedPositions<T>(this ulong bitPattern, Func<int, T> indexMapping)
+        {
+            return bitPattern.PatternToPositions().Select(indexMapping);
+        }
+
         /// <summary>
         /// Returns a list of bit positions where ones are present in the given bit pattern
         /// </summary>
@@ -2103,19 +2109,24 @@ namespace DataStructuresLib.BitManipulation
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static IEnumerable<ulong> GetRange(this ulong count)
         {
-            return Enumerable
-                .Range(0, (int) count)
-                .Select(i => (ulong) i);
+            for (var i = 0UL; i < count; i++)
+                yield return i;
         }
  
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static IEnumerable<ulong> GetRange(this ulong count, ulong offset)
         {
-            return Enumerable
-                .Range(0, (int) count)
-                .Select(i => offset + (ulong) i);
+            for (var i = 0UL; i < count; i++)
+                yield return offset + i;
         }
         
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static IEnumerable<T> GetRange<T>(this ulong count, Func<ulong, T> mappingFunc)
+        {
+            for (var i = 0UL; i < count; i++)
+                yield return mappingFunc(i);
+        }
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static T[] RangeToArray<T>(this ulong count, Func<ulong, T> keyValueFunc)
         {
@@ -2195,6 +2206,35 @@ namespace DataStructuresLib.BitManipulation
             return a >= b 
                 ? (a >= c ? a : c)
                 : (b >= c ? b : c);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Pair<ulong> Sort(ulong a, ulong b)
+        {
+            return a <= b
+                ? new Pair<ulong>(a, b)
+                : new Pair<ulong>(b, a);
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Triplet<ulong> Sort(ulong a, ulong b, ulong c)
+        {
+            if (a <= b)
+            {
+                if (b <= c)
+                    return new Triplet<ulong>(a, b, c);
+
+                return a <= c
+                    ? new Triplet<ulong>(a, c, b)
+                    : new Triplet<ulong>(c, a, b);
+            }
+
+            if (a <= c)
+                return new Triplet<ulong>(b, a, c);
+
+            return b <= c
+                ? new Triplet<ulong>(b, c, a)
+                : new Triplet<ulong>(c, b, a);
         }
     }
 }

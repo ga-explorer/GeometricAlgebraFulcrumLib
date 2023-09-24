@@ -1,11 +1,11 @@
 ﻿using System.Diagnostics;
 using System.Runtime.CompilerServices;
-using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Basis;
+using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Basis;
+using GeometricAlgebraFulcrumLib.Lite.ScalarAlgebra;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.Frames;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.Multivectors;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.Multivectors.Composers;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.Processors;
-using GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra;
 
 namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.LinearMaps.Rotors
 {
@@ -47,7 +47,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.
             var sinHalfAngle = ((1 - cosAngle) / 2).Sqrt();
             
             var rotorStorage = 
-                cosHalfAngle.ScalarValue + sinHalfAngle * unitRotationBlade;
+                cosHalfAngle.ScalarValue() + sinHalfAngle * unitRotationBlade;
             
             //rotor.IsSimpleRotor();
 
@@ -204,7 +204,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.
             if (!gp.IsScalar())
                 return false;
 
-            var diff = gp[0] - 1;
+            var diff = gp.Scalar() - 1;
 
             return diff.IsNearZero();
         }
@@ -236,13 +236,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.
         {
             return Multivector.Gp(mv).Gp(MultivectorReverse).GetHigherKVectorPart(mv.Grade);
         }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override XGaKVector<T> OmMap(XGaKVector<T> mv)
-        {
-            return Multivector.Gp(mv).Gp(MultivectorReverse).GetKVectorPart(mv.Grade);
-        }
-
+        
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public override XGaMultivector<T> OmMap(XGaMultivector<T> mv)
         {

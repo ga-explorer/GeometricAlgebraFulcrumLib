@@ -1,11 +1,11 @@
 ﻿using System.Runtime.CompilerServices;
 using DataStructuresLib.BitManipulation;
-using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Basis;
-using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Records.Restricted;
+using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Basis;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.LinearMaps.Outermorphisms;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Multivectors;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Multivectors.Composers;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Processors;
+using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Records;
 
 namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.LinearMaps.Versors
 {
@@ -44,7 +44,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generi
         public override RGaVector<T> OmMapBasisVector(int index)
         {
             return OmMap(
-                Processor.CreateVector(index)
+                Processor.CreateTermVector(index)
             );
         }
         
@@ -55,7 +55,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generi
                 throw new InvalidOperationException();
 
             return OmMap(
-                Processor.CreateBivector(
+                Processor.CreateTermBivector(
                     index1, 
                     index2, 
                     ScalarProcessor.ScalarOne
@@ -67,7 +67,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generi
         public override RGaKVector<T> OmMapBasisBlade(ulong id)
         {
             return OmMap(
-                Processor.CreateKVector(
+                Processor.CreateTermKVector(
                     id, 
                     ScalarProcessor.ScalarOne
                 )

@@ -1,13 +1,13 @@
-﻿using System.Collections;
-using System.Runtime.CompilerServices;
+﻿using System.Runtime.CompilerServices;
 using DataStructuresLib.IndexSets;
-using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Basis;
+using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Basis;
+using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Extended;
+using GeometricAlgebraFulcrumLib.Lite.ScalarAlgebra;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.Multivectors;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.Multivectors.Composers;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.Processors;
 using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Generic;
 using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Generic.LinearMaps;
-using GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra;
 
 namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.LinearMaps.Outermorphisms
 {
@@ -18,8 +18,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.
     /// </summary>
     /// <typeparam name="T"></typeparam>
     public sealed class XGaDiagonalOutermorphism<T> : 
-        IXGaAutomorphism<T>,
-        IReadOnlyDictionary<IIndexSet, T>
+        IXGaAutomorphism<T>
     {
         public XGaProcessor<T> Processor 
             => DiagonalVector.Processor;
@@ -32,18 +31,6 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.
 
         public XGaVector<T> DiagonalVector { get; }
         
-        public int Count 
-            => DiagonalVector.Count;
-        
-        public T this[IIndexSet key] 
-            => DiagonalVector[key];
-
-        public IEnumerable<IIndexSet> Keys 
-            => DiagonalVector.Keys;
-
-        public IEnumerable<T> Values 
-            => DiagonalVector.Values;
-
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal XGaDiagonalOutermorphism(XGaVector<T> diagonalVector)
@@ -52,18 +39,6 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.
         }
 
         
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public bool ContainsKey(IIndexSet key)
-        {
-            return DiagonalVector.ContainsKey(key);
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public bool TryGetValue(IIndexSet key, out T value)
-        {
-            return DiagonalVector.TryGetValue(key, out value);
-        }
-
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public IXGaOutermorphism<T> GetOmAdjoint()
         {
@@ -75,8 +50,8 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.
         {
             var id = index.IndexToIndexSet();
 
-            return DiagonalVector.TryGetTermScalar(id, out var scalar)
-                ? Processor.CreateVector(index, scalar)
+            return DiagonalVector.TryGetBasisBladeScalarValue(id, out var scalar)
+                ? Processor.CreateTermVector(index, scalar)
                 : Processor.CreateZeroVector();
         }
         
@@ -88,14 +63,14 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.
 
             var id1 = index1.IndexToIndexSet();
 
-            if (!DiagonalVector.TryGetTermScalar(id1, out var scalar1))
+            if (!DiagonalVector.TryGetBasisBladeScalarValue(id1, out var scalar1))
                 return Processor.CreateZeroBivector();
 
             var id2 = index2.IndexToIndexSet();
 
-            return !DiagonalVector.TryGetTermScalar(id2, out var scalar2)
+            return !DiagonalVector.TryGetBasisBladeScalarValue(id2, out var scalar2)
                 ? Processor.CreateZeroBivector()
-                : Processor.CreateBivector(
+                : Processor.CreateTermBivector(
                     IndexSetUtils.IndexPairToIndexSet(index1, index2), 
                     ScalarProcessor.Times(scalar1, scalar2)
                 );
@@ -120,13 +95,13 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.
 
             foreach (var index in id)
             {
-                if (!DiagonalVector.TryGetTermScalar(index.IndexToIndexSet(), out var s))
+                if (!DiagonalVector.TryGetBasisBladeScalarValue(index.IndexToIndexSet(), out var s))
                     return Processor.CreateZeroScalar();
 
                 scalar = ScalarProcessor.Times(scalar, s);
             }
             
-            return Processor.CreateKVector(id, scalar);
+            return Processor.CreateTermKVector(id, scalar);
         }
         
 
@@ -134,11 +109,11 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.
         {
             var composer = Processor.CreateComposer();
 
-            if (Count <= vector.Count)
+            if (DiagonalVector.Count <= vector.Count)
             {
                 foreach (var (id, mv) in DiagonalVector)
                 {
-                    if (!vector.TryGetTermScalar(id, out var scalar))
+                    if (!vector.TryGetBasisBladeScalarValue(id, out var scalar))
                         continue;
 
                     composer.AddTerm(id, mv, scalar);
@@ -194,22 +169,18 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.
 
             return composer.GetHigherKVector(kVector.Grade);
         }
-
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public XGaKVector<T> OmMap(XGaKVector<T> kVector)
         {
-            var composer = Processor.CreateComposer();
-
-            foreach (var (id, scalar) in kVector)
+            return kVector switch
             {
-                var mv = OmMapBasisBlade(id);
-
-                if (mv.IsZero)
-                    continue;
-
-                composer.AddMultivector(mv, scalar);
-            }
-
-            return composer.GetKVector(kVector.Grade);
+                XGaScalar<T> s => s,
+                XGaVector<T> v => OmMap(v),
+                XGaBivector<T> bv => OmMap(bv),
+                XGaHigherKVector<T> kv => OmMap(kv),
+                _ => throw new InvalidOperationException()
+            };
         }
 
         public XGaMultivector<T> OmMap(XGaMultivector<T> multivector)
@@ -295,16 +266,6 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.
                     );
 
             return ScalarProcessor.CreateLinUnilinearMap(indexVectorDictionary);
-        }
-
-        public IEnumerator<KeyValuePair<IIndexSet, T>> GetEnumerator()
-        {
-            return DiagonalVector.GetEnumerator();
-        }
-
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
         }
     }
 }

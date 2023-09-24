@@ -1,9 +1,9 @@
 ﻿using System.Runtime.CompilerServices;
 using GeometricAlgebraFulcrumLib.Geometry.Euclidean.Space3D.Objects;
+using GeometricAlgebraFulcrumLib.Lite.ScalarAlgebra;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Multivectors;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Multivectors.Composers;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Processors;
-using GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra;
 
 namespace GeometricAlgebraFulcrumLib.Geometry.Homogeneous
 {
@@ -30,9 +30,9 @@ namespace GeometricAlgebraFulcrumLib.Geometry.Homogeneous
         {
             return new E3DPoint<T>(
                 ScalarProcessor, 
-                vector[0], 
-                vector[1], 
-                vector[2]
+                vector.Scalar(0), 
+                vector.Scalar(1), 
+                vector.Scalar(2)
             );
         }
         

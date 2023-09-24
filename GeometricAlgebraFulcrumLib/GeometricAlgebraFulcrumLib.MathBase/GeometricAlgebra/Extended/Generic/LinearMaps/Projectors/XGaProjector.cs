@@ -22,10 +22,10 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal XGaProjector(XGaKVector<T> blade)
+        internal XGaProjector(XGaKVector<T> blade, bool useBladeInverse)
         {
             Blade = blade;
-            BladePseudoInverse = blade.PseudoInverse();
+            BladePseudoInverse = useBladeInverse ? blade.PseudoInverse() : blade;
         }
 
 
@@ -62,7 +62,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.
         public override XGaKVector<T> OmMapBasisBlade(IIndexSet id)
         {
             return OmMap(
-                Processor.CreateKVector(
+                Processor.CreateTermKVector(
                     id, 
                     ScalarProcessor.ScalarOne
                 )
@@ -72,31 +72,25 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public override XGaVector<T> OmMap(XGaVector<T> vector)
         {
-            return vector.Lcp(BladePseudoInverse).Lcp(Blade).GetVectorPart();
+            return vector.Fdp(BladePseudoInverse).Gp(Blade).GetVectorPart();
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public override XGaBivector<T> OmMap(XGaBivector<T> bivector)
         {
-            return bivector.Lcp(BladePseudoInverse).Lcp(Blade).GetBivectorPart();
+            return bivector.Fdp(BladePseudoInverse).Gp(Blade).GetBivectorPart();
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public override XGaHigherKVector<T> OmMap(XGaHigherKVector<T> kVector)
         {
-            return kVector.Lcp(BladePseudoInverse).Lcp(Blade).GetHigherKVectorPart(kVector.Grade);
+            return kVector.Fdp(BladePseudoInverse).Gp(Blade).GetHigherKVectorPart(kVector.Grade);
         }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override XGaKVector<T> OmMap(XGaKVector<T> kVector)
-        {
-            return kVector.Lcp(BladePseudoInverse).Lcp(Blade);
-        }
-
+        
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public override XGaMultivector<T> OmMap(XGaMultivector<T> multivector)
         {
-            return multivector.Lcp(BladePseudoInverse).Lcp(Blade);
+            return multivector.Fdp(BladePseudoInverse).Gp(Blade);
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -108,7 +102,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.
                     new KeyValuePair<IIndexSet, XGaVector<T>>(
                         id,
                         OmMap(
-                            Processor.CreateVector(id, ScalarProcessor.ScalarOne)
+                            Processor.CreateTermVector(id, ScalarProcessor.ScalarOne)
                         )
                     )
                 ).Where(r => !r.Value.IsZero);

@@ -4,9 +4,14 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using DataStructuresLib.Basic;
+using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Extended.Float64.LinearMaps.Rotors;
+using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Extended.Float64.Multivectors.Composers;
+using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Extended.Float64.Processors;
+using GeometricAlgebraFulcrumLib.Lite.ScalarAlgebra;
+using GeometricAlgebraFulcrumLib.Lite.SignalAlgebra;
+using GeometricAlgebraFulcrumLib.Lite.SignalAlgebra.Composers;
 using GeometricAlgebraFulcrumLib.MathBase;
 using GeometricAlgebraFulcrumLib.MathBase.SignalAlgebra;
-using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Float64.LinearMaps.Rotors;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.Frames;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.Multivectors;
 using GeometricAlgebraFulcrumLib.Processors;
@@ -15,11 +20,7 @@ using OfficeOpenXml;
 using OxyPlot;
 using OxyPlot.Series;
 using GeometricAlgebraFulcrumLib.MathBase.Text;
-using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Float64.Processors;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.Processors;
-using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Float64.Multivectors.Composers;
-using GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra;
-using GeometricAlgebraFulcrumLib.MathBase.SignalAlgebra.Composers;
 using GeometricAlgebraFulcrumLib.MathBase.SignalAlgebra.Interpolators;
 
 // ReSharper disable InconsistentNaming
@@ -118,7 +119,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GeometricFrequency
 
             //Instead of interpolating each vector component, you should interpolate the
             //vector norm only to keep the direction of the signal vectors intact
-            var normSignal1 = vData.Norm().ScalarValue;
+            var normSignal1 = vData.Norm().ScalarValue();
 
             //var freqIndexSet = Enumerable.Range(0, 33).Select(i => i * 10).ToArray();
             var freqIndexSet = normSignal1.GetDominantFrequencyIndexSet(0.99999d).ToArray();
@@ -202,7 +203,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GeometricFrequency
 
             //Instead of interpolating each vector component, you should interpolate the
             //vector norm only to keep the direction of the signal vectors intact
-            var normSignal1 = vData.Norm().ScalarValue;
+            var normSignal1 = vData.Norm().ScalarValue();
 
             //var freqIndexSet = Enumerable.Range(0, 33).Select(i => i * 10).ToArray();
             var freqIndexSet = normSignal1.GetDominantFrequencyIndexSet(0.998d).ToArray();
@@ -399,7 +400,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GeometricFrequency
 
             for (var i = 0; i < VSpaceDimensions; i++)
             {
-                var scalarList = curve[i].ScalarValue;
+                var scalarList = curve.Scalar(i).ScalarValue;
 
                 var s1 = new FunctionSeries(
                     scalarList.LinearInterpolation,
@@ -461,8 +462,8 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GeometricFrequency
             var (v, vDt1, vDt2, vDt3, vDt4) =
                 DefineCurve2();
 
-            var sigma1 = GeometricProcessor.CreateVector(0);
-            var sigma2 = GeometricProcessor.CreateVector(1);
+            var sigma1 = GeometricProcessor.CreateTermVector(0);
+            var sigma2 = GeometricProcessor.CreateTermVector(1);
             var (pc1, pc2) = v.Pca2();
 
             var rotor = pc1.CreatePureRotorSequence(
@@ -542,9 +543,9 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GeometricFrequency
             var e4s = u4s / u4sNorm;
 
             // Curvatures
-            var kappa1 = (u2sNorm / u1sNorm).ScalarValue.Select(s => s.NaNToZero()).ToArray().CreateScalar(ScalarSignalProcessor);
-            var kappa2 = (u3sNorm / u2sNorm).ScalarValue.Select(s => s.NaNToZero()).ToArray().CreateScalar(ScalarSignalProcessor);
-            var kappa3 = (u4sNorm / u3sNorm).ScalarValue.Select(s => s.NaNToZero()).ToArray().CreateScalar(ScalarSignalProcessor);
+            var kappa1 = (u2sNorm / u1sNorm).ScalarValue().Select(s => s.NaNToZero()).ToArray().CreateScalar(ScalarSignalProcessor);
+            var kappa2 = (u3sNorm / u2sNorm).ScalarValue().Select(s => s.NaNToZero()).ToArray().CreateScalar(ScalarSignalProcessor);
+            var kappa3 = (u4sNorm / u3sNorm).ScalarValue().Select(s => s.NaNToZero()).ToArray().CreateScalar(ScalarSignalProcessor);
 
             // Angular velocity blade
             var omegaBar =
@@ -554,7 +555,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GeometricFrequency
             var omegaBarNormScaled = omegaBarNorm * sDt1;
 
             // Display fundamental frequency and average value of omegaBarNormScaled
-            var omegaBarNormScaledSignal = omegaBarNormScaled.ScalarValue;
+            var omegaBarNormScaledSignal = omegaBarNormScaled.ScalarValue();
             var omegaBarNormScaledFrequencies = omegaBarNormScaledSignal.GetDominantFrequencyDataRecords().ToArray();
             var omegaBarNormScaledMean = omegaBarNormScaledSignal.Average();
 
@@ -617,8 +618,8 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GeometricFrequency
             vDs3.PlotCurveComponents("3rd s-derivative", "vDs3");
             vDs4.PlotCurveComponents("4th s-derivative", "vDs4");
 
-            sDt1.Scalar.PlotCurve("1st t-derivative norm", "sDt1");
-            sDt1.Scalar.Log10().PlotCurve("1st t-derivative norm Log10", "sDt1Log10");
+            sDt1.Scalar().PlotCurve("1st t-derivative norm", "sDt1");
+            sDt1.Scalar().Log10().PlotCurve("1st t-derivative norm Log10", "sDt1Log10");
 
             kappa1.PlotCurve("1st curvature coefficient", "kappa1");
             kappa1.Log10().PlotCurve("1st curvature coefficient Log10", "kappa1Log10");
@@ -629,17 +630,17 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GeometricFrequency
             kappa3.PlotCurve("3rd curvature coefficient", "kappa3");
             kappa3.Log10().PlotCurve("3rd curvature coefficient Log10", "kappa3Log10");
 
-            omegaBarNormScaled.Scalar.PlotCurve("Norm of scaled angular velocity blade", "omegaBarNormScaled");
-            omegaBarNormScaled.Scalar.Log10().PlotCurve("Log10 Norm of scaled angular velocity blade", "omegaBarNormScaledLog10");
+            omegaBarNormScaled.Scalar().PlotCurve("Norm of scaled angular velocity blade", "omegaBarNormScaled");
+            omegaBarNormScaled.Scalar().Log10().PlotCurve("Log10 Norm of scaled angular velocity blade", "omegaBarNormScaledLog10");
 
-            omegaBarNorm.Scalar.PlotCurve("Norm of angular velocity blade", "omegaBarNorm");
-            omegaBarNorm.Scalar.Log10().PlotCurve("Log10 Norm of angular velocity blade", "omegaBarNormLog10");
+            omegaBarNorm.Scalar().PlotCurve("Norm of angular velocity blade", "omegaBarNorm");
+            omegaBarNorm.Scalar().Log10().PlotCurve("Log10 Norm of angular velocity blade", "omegaBarNormLog10");
 
-            omegaNorm.Scalar.PlotCurve("Norm of Darboux bivector", "omegaNorm");
-            omegaNorm.Scalar.Log10().PlotCurve("Log10 Norm of Darboux bivector", "omegaNormLog10");
+            omegaNorm.Scalar().PlotCurve("Norm of Darboux bivector", "omegaNorm");
+            omegaNorm.Scalar().Log10().PlotCurve("Log10 Norm of Darboux bivector", "omegaNormLog10");
 
-            bBivectorNorm.Scalar.PlotCurve("Norm of B bivector", "bBivectorNorm");
-            bBivectorNorm.Scalar.Log10().PlotCurve("Log10 Norm of B bivector", "bBivectorNormLog10");
+            bBivectorNorm.Scalar().PlotCurve("Norm of B bivector", "bBivectorNorm");
+            bBivectorNorm.Scalar().Log10().PlotCurve("Log10 Norm of B bivector", "bBivectorNormLog10");
 
             using var package = new ExcelPackage();
 

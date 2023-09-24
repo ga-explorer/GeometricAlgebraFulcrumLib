@@ -1,11 +1,12 @@
 ﻿using System.Runtime.CompilerServices;
-using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Float64.Multivectors;
-using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Float64.Multivectors.Composers;
-using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Float64.Processors;
+using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Extended.Float64.Multivectors;
+using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Extended.Float64.Multivectors.Composers;
+using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Extended.Float64.Processors;
+using GeometricAlgebraFulcrumLib.Lite.Geometry.Differential.Functions.Interpolators;
+using GeometricAlgebraFulcrumLib.Lite.SignalAlgebra;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.Multivectors;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.Multivectors.Composers;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.Processors;
-using GeometricAlgebraFulcrumLib.MathBase.Geometry.Differential.Functions.Interpolators;
 
 namespace GeometricAlgebraFulcrumLib.MathBase.SignalAlgebra.Interpolators
 {
@@ -19,7 +20,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.SignalAlgebra.Interpolators
 
             for (var i = 0; i < n; i++)
             {
-                var signal = vectorSignal[i].ScalarValue;
+                var signal = vectorSignal.Scalar(i).ScalarValue;
             
                 interpolatorArray[i] = DfChebyshevSignalInterpolator.Create(signal, options);
             }
@@ -148,7 +149,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.SignalAlgebra.Interpolators
                 var columnVector = Float64Signal.Create(SamplingRate, SampleCount);
 
                 for (var i = 0; i < SampleCount; i++)
-                    columnVector[i] = vectorList[i][j];
+                    columnVector[i] = vectorList[i].Scalar(j);
 
                 columnVectorArray[j] = columnVector;
             }
@@ -172,7 +173,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.SignalAlgebra.Interpolators
                 var columnVector = Float64Signal.Create(SamplingRate, SampleCount);
 
                 for (var i = 0; i < SampleCount; i++)
-                    columnVector[i] = vectorList[i][j];
+                    columnVector[i] = vectorList[i].Scalar(j);
 
                 columnVectorArray[j] = columnVector;
             }
@@ -196,7 +197,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.SignalAlgebra.Interpolators
                 var columnVector = Float64Signal.Create(SamplingRate, SampleCount);
 
                 for (var i = 0; i < SampleCount; i++)
-                    columnVector[i] = vectorList[i][j];
+                    columnVector[i] = vectorList[i].Scalar(j);
 
                 columnVectorArray[j] = columnVector;
             }
@@ -220,7 +221,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.SignalAlgebra.Interpolators
                 var columnVector = Float64Signal.Create(SamplingRate, SampleCount);
 
                 for (var i = 0; i < SampleCount; i++)
-                    columnVector[i] = vectorList[i][j];
+                    columnVector[i] = vectorList[i].Scalar(j);
 
                 columnVectorArray[j] = columnVector;
             }

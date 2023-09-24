@@ -1,9 +1,10 @@
 ﻿using System.Runtime.CompilerServices;
 using DataStructuresLib.IndexSets;
+using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Extended;
+using GeometricAlgebraFulcrumLib.Lite.ScalarAlgebra;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.Multivectors;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.Processors;
 using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Generic.LinearMaps;
-using GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra;
 
 namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.LinearMaps.Outermorphisms
 {
@@ -56,8 +57,19 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.
         
         public abstract XGaHigherKVector<T> OmMap(XGaHigherKVector<T> kVector);
         
-        public abstract XGaKVector<T> OmMap(XGaKVector<T> kVector);
-        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public XGaKVector<T> OmMap(XGaKVector<T> kVector)
+        {
+            return kVector switch
+            {
+                XGaScalar<T> s => s,
+                XGaVector<T> v => OmMap(v),
+                XGaBivector<T> bv => OmMap(bv),
+                XGaHigherKVector<T> kv => OmMap(kv),
+                _ => throw new InvalidOperationException()
+            };
+        }
+
         public abstract XGaMultivector<T> OmMap(XGaMultivector<T> multivector);
         
         public abstract IEnumerable<KeyValuePair<IIndexSet, XGaVector<T>>> GetOmMappedBasisVectors(int vSpaceDimensions);

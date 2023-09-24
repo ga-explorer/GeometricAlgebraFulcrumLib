@@ -1,19 +1,20 @@
 ﻿using DataStructuresLib.Basic;
-using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Basis;
-using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Float64.Multivectors;
-using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Float64.Multivectors.Composers;
-using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Float64.Processors;
+using DataStructuresLib.IndexSets;
+using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Basis;
+using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Extended.Float64.Multivectors;
+using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Extended.Float64.Multivectors.Composers;
+using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Extended.Float64.Processors;
+using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Restricted.Float64.Multivectors;
+using GeometricAlgebraFulcrumLib.Lite.Geometry.Differential.Functions.Interpolators;
+using GeometricAlgebraFulcrumLib.Lite.ScalarAlgebra;
+using GeometricAlgebraFulcrumLib.Lite.SignalAlgebra;
+using GeometricAlgebraFulcrumLib.Lite.SignalAlgebra.Composers;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.Multivectors;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.Multivectors.Composers;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.Processors;
-using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Float64.Multivectors;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Multivectors;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Multivectors.Composers;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Processors;
-using GeometricAlgebraFulcrumLib.MathBase.Geometry.Differential.Functions.Interpolators;
-using GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra;
-using GeometricAlgebraFulcrumLib.MathBase.SignalAlgebra;
-using GeometricAlgebraFulcrumLib.MathBase.SignalAlgebra.Composers;
 using OfficeOpenXml;
 
 namespace GeometricAlgebraFulcrumLib.MathBase
@@ -439,7 +440,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase
             foreach (var value in vectorData)
             {
                 for (var i = 0; i < columnCount; i++)
-                    worksheet.Cells[rowIndex, columnIndex + i].Value = value[i].ScalarValue;
+                    worksheet.Cells[rowIndex, columnIndex + i].Value = value.Scalar(i).ScalarValue;
 
                 rowIndex++;
             }
@@ -463,7 +464,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase
             foreach (var value in bivectorData)
             {
                 for (var i = 0; i < columnNames.Length; i++)
-                    worksheet.Cells[rowIndex, columnIndex + i].Value = value[i];
+                    worksheet.Cells[rowIndex, columnIndex + i].Value = value.Scalar(i);
 
                 rowIndex++;
             }
@@ -494,7 +495,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase
             
             for (var i = 0; i < columnCount; i++)
             {
-                var v = vectorSignal[i].ScalarValue;
+                var v = vectorSignal.Scalar(i).ScalarValue;
 
                 for (var r = 0; r < v.Count; r++) 
                     worksheet.Cells[rowIndex + r, columnIndex + i].Value = v[r];
@@ -516,7 +517,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase
             
             for (var i = 0; i < columnCount; i++)
             {
-                var v = vectorSignal[i].ScalarValue;
+                var v = vectorSignal.Scalar(i).ScalarValue;
 
                 for (var r = 0; r < v.Count; r++) 
                     worksheet.Cells[rowIndex + r, columnIndex + i].Value = v[r];
@@ -538,7 +539,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase
             
             for (var i = 0; i < columnNames.Length; i++)
             {
-                var v = bivectorSignal[i].ScalarValue;
+                var v = bivectorSignal.Scalar(i).ScalarValue;
 
                 for (var r = 0; r < v.Count; r++) 
                     worksheet.Cells[rowIndex + r, columnIndex + i].Value = v[r];
@@ -560,9 +561,9 @@ namespace GeometricAlgebraFulcrumLib.MathBase
             
             for (var i = 0; i < columnNames.Length; i++)
             {
-                var id = i.BasisBivectorIndexToId();
+                var id = i.BasisBivectorIndexToId().BitPatternToIndexSet();
 
-                var v = bivectorSignal[id].ScalarValue;
+                var v = bivectorSignal.GetBasisBladeScalar(id).ScalarValue;
 
                 for (var r = 0; r < v.Count; r++) 
                     worksheet.Cells[rowIndex + r, columnIndex + i].Value = v[r];

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using DataStructuresLib.BitManipulation;
-using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Basis;
+using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Basis;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.Multivectors;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.Processors;
 using GeometricAlgebraFulcrumLib.MetaProgramming.Applications.CSharp.DenseKVectorsLib.FactoredBlade;
@@ -100,7 +100,7 @@ namespace GeometricAlgebraFulcrumLib.MetaProgramming.Applications.CSharp.DenseKV
 
         private void GenerateKVectorClassFile()
         {
-            CodeFilesComposer.InitalizeFile(CurrentNamespace + "kVector.cs");
+            CodeFilesComposer.InitializeFile(CurrentNamespace + "kVector.cs");
 
             var fileGen = new OutermorphismClassFileComposer(this);
 
@@ -116,7 +116,7 @@ namespace GeometricAlgebraFulcrumLib.MetaProgramming.Applications.CSharp.DenseKV
 
         private void GenerateKVectorStaticFile()
         {
-            CodeFilesComposer.InitalizeFile(CurrentNamespace + "kVectorStatic.cs");
+            CodeFilesComposer.InitializeFile(CurrentNamespace + "kVectorStatic.cs");
 
             var fileGen = new StaticCodeFileComposer(this);
 
@@ -127,7 +127,7 @@ namespace GeometricAlgebraFulcrumLib.MetaProgramming.Applications.CSharp.DenseKV
 
         private void GenerateKVectorIsZeroMethodsFile()
         {
-            CodeFilesComposer.InitalizeFile("IsZero.cs");
+            CodeFilesComposer.InitializeFile("IsZero.cs");
 
             var fileGen = new IsZeroMethodsFileComposer(this);
 
@@ -138,7 +138,7 @@ namespace GeometricAlgebraFulcrumLib.MetaProgramming.Applications.CSharp.DenseKV
 
         private void GenerateKVectorEqualsMethodsFile()
         {
-            CodeFilesComposer.InitalizeFile("Equals.cs");
+            CodeFilesComposer.InitializeFile("Equals.cs");
 
             var fileGen = new EqualsMethodsFileComposer(this);
 
@@ -149,7 +149,7 @@ namespace GeometricAlgebraFulcrumLib.MetaProgramming.Applications.CSharp.DenseKV
 
         private void GenerateKVectorInvolutionMethodsFile()
         {
-            CodeFilesComposer.InitalizeFile("Involutions.cs");
+            CodeFilesComposer.InitializeFile("Involutions.cs");
 
             var fileGen = new InvolutionMethodsFileComposer(this);
 
@@ -160,7 +160,7 @@ namespace GeometricAlgebraFulcrumLib.MetaProgramming.Applications.CSharp.DenseKV
 
         private void GenerateKVectorNormMethodsFile()
         {
-            CodeFilesComposer.InitalizeFile("Norms.cs");
+            CodeFilesComposer.InitializeFile("Norms.cs");
 
             var fileGen = new NormMethodsFileComposer(this);
 
@@ -217,7 +217,7 @@ namespace GeometricAlgebraFulcrumLib.MetaProgramming.Applications.CSharp.DenseKV
 
         private void GenerateKVectorMiscMethodsFile()
         {
-            CodeFilesComposer.InitalizeFile("Misc.cs");
+            CodeFilesComposer.InitializeFile("Misc.cs");
 
             var fileGen = new MiscMethodsFileComposer(this);
 
@@ -244,7 +244,7 @@ namespace GeometricAlgebraFulcrumLib.MetaProgramming.Applications.CSharp.DenseKV
                 inGrade1, inGrade2, outGrade
             );
 
-            CodeFilesComposer.InitalizeFile(methodName + ".cs");
+            CodeFilesComposer.InitializeFile(methodName + ".cs");
 
             var fileGen =
                 new BilinearProductMethodFileComposer(
@@ -270,7 +270,7 @@ namespace GeometricAlgebraFulcrumLib.MetaProgramming.Applications.CSharp.DenseKV
                 inGrade1, inGrade2, outGrade
             );
 
-            CodeFilesComposer.InitalizeFile(methodName + ".cs");
+            CodeFilesComposer.InitializeFile(methodName + ".cs");
 
             var fileGen =
                 new BilinearProductMethodFileComposer(
@@ -296,7 +296,7 @@ namespace GeometricAlgebraFulcrumLib.MetaProgramming.Applications.CSharp.DenseKV
                 inGrade, inGrade
             );
 
-            CodeFilesComposer.InitalizeFile(methodName + ".cs");
+            CodeFilesComposer.InitializeFile(methodName + ".cs");
 
             var fileGen =
                 new ScalarProductMethodFileComposer(
@@ -314,7 +314,7 @@ namespace GeometricAlgebraFulcrumLib.MetaProgramming.Applications.CSharp.DenseKV
 
         private void GenerateBilinearProductMainMethodFile(GaFuLLanguageOperationSpecs opSpecs, string zeroCondition, Func<int, int, int> getFinalGrade, Func<int, int, bool> isLegalGrade)
         {
-            CodeFilesComposer.InitalizeFile(opSpecs.GetName() + ".cs");
+            CodeFilesComposer.InitializeFile(opSpecs.GetName() + ".cs");
 
             var fileGen =
                 new BilinearProductMainMethodFileComposer(
@@ -332,7 +332,7 @@ namespace GeometricAlgebraFulcrumLib.MetaProgramming.Applications.CSharp.DenseKV
 
         private void GenerateVectorsOuterProductFile()
         {
-            CodeFilesComposer.InitalizeFile("VectorsOP.cs");
+            CodeFilesComposer.InitializeFile("VectorsOP.cs");
 
             var fileGen = new VectorsOpMethodsFileComposer(this);
 
@@ -515,7 +515,7 @@ namespace GeometricAlgebraFulcrumLib.MetaProgramming.Applications.CSharp.DenseKV
                     .BinaryDeltaProduct
                     .CreateMetricOperationSpecs();
 
-            CodeFilesComposer.InitalizeFile(opSpecs + ".cs");
+            CodeFilesComposer.InitializeFile(opSpecs + ".cs");
 
             var codeGen = new DpMethodsFileComposer(this, opSpecs);
 
@@ -531,7 +531,7 @@ namespace GeometricAlgebraFulcrumLib.MetaProgramming.Applications.CSharp.DenseKV
                     .BinaryDeltaProductDual
                     .CreateMetricOperationSpecs();
 
-            CodeFilesComposer.InitalizeFile(opSpecs + ".cs");
+            CodeFilesComposer.InitializeFile(opSpecs + ".cs");
 
             var codeGen = new DpDualMethodsFileComposer(this, opSpecs);
 
@@ -552,7 +552,7 @@ namespace GeometricAlgebraFulcrumLib.MetaProgramming.Applications.CSharp.DenseKV
                 
             foreach (var opSpecs in opSpecsArray)
             {
-                CodeFilesComposer.InitalizeFile(opSpecs + ".cs");
+                CodeFilesComposer.InitializeFile(opSpecs + ".cs");
 
                 var codeGen = new UnaryGpMethodsFileComposer(this, opSpecs);
 
@@ -564,7 +564,7 @@ namespace GeometricAlgebraFulcrumLib.MetaProgramming.Applications.CSharp.DenseKV
 
         private void GenerateApplyVersorMainMethod(GaFuLLanguageOperationSpecs opSpecs)
         {
-            CodeFilesComposer.InitalizeFile(opSpecs.GetName() + ".cs");
+            CodeFilesComposer.InitializeFile(opSpecs.GetName() + ".cs");
 
             var fileGen = new ApplyVersorMainMethodFileComposer(this, opSpecs);
 
@@ -601,7 +601,7 @@ namespace GeometricAlgebraFulcrumLib.MetaProgramming.Applications.CSharp.DenseKV
 
                         CodeFilesComposer.DownFolder(opSpecs.GetName());
 
-                        CodeFilesComposer.InitalizeFile(methodName + ".cs");
+                        CodeFilesComposer.InitializeFile(methodName + ".cs");
 
                         var fileGen = new ApplyVersorMethodFileComposer(
                             this,
@@ -626,7 +626,7 @@ namespace GeometricAlgebraFulcrumLib.MetaProgramming.Applications.CSharp.DenseKV
         {
             CodeFilesComposer.DownFolder("Factor");
 
-            CodeFilesComposer.InitalizeFile("Factor" + inId + ".cs");
+            CodeFilesComposer.InitializeFile("Factor" + inId + ".cs");
 
             var fileGen = new FactorMethodFileComposer(this, inGrade, inId);
 
@@ -639,7 +639,7 @@ namespace GeometricAlgebraFulcrumLib.MetaProgramming.Applications.CSharp.DenseKV
 
         private void GenerateFactorFiles()
         {
-            CodeFilesComposer.InitalizeFile("Factor.cs");
+            CodeFilesComposer.InitializeFile("Factor.cs");
 
             var fileGen = new FactorMainMethodsFileComposer(this);
 
@@ -751,7 +751,7 @@ namespace GeometricAlgebraFulcrumLib.MetaProgramming.Applications.CSharp.DenseKV
 
         private void GenerateFrameUtilsClassFile()
         {
-            CodeFilesComposer.InitalizeFile(CurrentNamespace + "Utils.cs");
+            CodeFilesComposer.InitializeFile(CurrentNamespace + "Utils.cs");
 
             var fileGen = new FrameUtilsClassFileComposer(this);
 
@@ -784,7 +784,7 @@ namespace GeometricAlgebraFulcrumLib.MetaProgramming.Applications.CSharp.DenseKV
 
         private void GenerateMultivectorClassFile()
         {
-            CodeFilesComposer.InitalizeFile(CurrentNamespace + "Multivector.cs");
+            CodeFilesComposer.InitializeFile(CurrentNamespace + "Multivector.cs");
 
             var fileGen = new MultivectorClassFileComposer(this);
 
@@ -817,7 +817,7 @@ namespace GeometricAlgebraFulcrumLib.MetaProgramming.Applications.CSharp.DenseKV
 
         private void GenerateVectorClassFile()
         {
-            CodeFilesComposer.InitalizeFile(CurrentNamespace + "Vector.cs");
+            CodeFilesComposer.InitializeFile(CurrentNamespace + "Vector.cs");
 
             var fileGen = new VectorClass.VectorClassFileComposer(this);
 
@@ -844,7 +844,7 @@ namespace GeometricAlgebraFulcrumLib.MetaProgramming.Applications.CSharp.DenseKV
 
         private void GenerateFactoredBladeClassFile()
         {
-            CodeFilesComposer.InitalizeFile(CurrentNamespace + "FactoredBlade.cs");
+            CodeFilesComposer.InitializeFile(CurrentNamespace + "FactoredBlade.cs");
 
             var fileGen = new FactoredBladeClassFileComposer(this);
 
@@ -871,7 +871,7 @@ namespace GeometricAlgebraFulcrumLib.MetaProgramming.Applications.CSharp.DenseKV
 
         private void GenerateOutermorphismClassFile()
         {
-            CodeFilesComposer.InitalizeFile(CurrentNamespace + "Outermorphism.cs");
+            CodeFilesComposer.InitializeFile(CurrentNamespace + "Outermorphism.cs");
 
             var fileGen = new OutermorphismClassFileComposer(this);
 
@@ -882,7 +882,7 @@ namespace GeometricAlgebraFulcrumLib.MetaProgramming.Applications.CSharp.DenseKV
 
         private void GenerateOutermorphismApplyMethodFile(int inGrade)
         {
-            CodeFilesComposer.InitalizeFile("Map_" + inGrade + ".cs");
+            CodeFilesComposer.InitializeFile("Map_" + inGrade + ".cs");
 
             var fileGen = new MapMethodFileComposer(this, inGrade);
 

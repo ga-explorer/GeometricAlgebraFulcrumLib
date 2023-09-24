@@ -1,13 +1,13 @@
 ﻿using System.Runtime.CompilerServices;
 using DataStructuresLib.Basic;
 using DataStructuresLib.BitManipulation;
-using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Basis;
-using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Float64.Multivectors;
-using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Float64.Multivectors.Composers;
-using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Float64.Processors;
+using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Basis;
+using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Restricted.Float64.Multivectors;
+using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Restricted.Float64.Multivectors.Composers;
+using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Restricted.Float64.Processors;
+using GeometricAlgebraFulcrumLib.Lite.ScalarAlgebra;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Multivectors.Composers;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Processors;
-using GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra;
 
 namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Multivectors
 {
@@ -174,13 +174,13 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generi
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static RGaVector<T> operator *(RGaVector<T> mv1, RGaScalar<T> mv2)
         {
-            return mv1.Times(mv2.ScalarValue);
+            return mv1.Times(mv2.ScalarValue());
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static RGaVector<T> operator *(RGaScalar<T> mv1, RGaVector<T> mv2)
         {
-            return mv2.Times(mv1.ScalarValue);
+            return mv2.Times(mv1.ScalarValue());
         }
 
 
@@ -256,7 +256,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generi
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static RGaVector<T> operator /(RGaVector<T> mv1, RGaScalar<T> mv2)
         {
-            return mv1.Divide(mv2.ScalarValue);
+            return mv1.Divide(mv2.ScalarValue());
         }
         
 
@@ -528,25 +528,25 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generi
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public RGaVector<T> DivideByENorm()
         {
-            return Divide(ENorm().ScalarValue);
+            return Divide(ENorm().ScalarValue());
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public RGaVector<T> DivideByENormSquared()
         {
-            return Divide(ENormSquared().ScalarValue);
+            return Divide(ENormSquared().ScalarValue());
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public RGaVector<T> DivideByNorm()
         {
-            return Divide(Norm().ScalarValue);
+            return Divide(Norm().ScalarValue());
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public RGaVector<T> DivideByNormSquared()
         {
-            return Divide(NormSquared().ScalarValue);
+            return Divide(NormSquared().ScalarValue());
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -584,7 +584,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generi
         public RGaVector<T> EInverse()
         {
             return Divide(
-                ESpSquared().ScalarValue
+                ESpSquared().ScalarValue()
             );
         }
 
@@ -592,7 +592,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generi
         public RGaVector<T> Inverse()
         {
             return Divide(
-                SpSquared().ScalarValue
+                SpSquared().ScalarValue()
             );
         }
 
@@ -602,7 +602,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generi
             var kVectorConjugate = Conjugate();
 
             return kVectorConjugate.Divide(
-                kVectorConjugate.Sp(this).ScalarValue
+                kVectorConjugate.Sp(this).ScalarValue()
             );
         }
 
@@ -682,7 +682,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generi
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public RGaVector<T> Op(RGaScalar<T> mv2)
         {
-            return Times(mv2.ScalarValue);
+            return Times(mv2.ScalarValue());
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -740,7 +740,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generi
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public RGaVector<T> EGp(RGaScalar<T> mv2)
         {
-            return Times(mv2.ScalarValue);
+            return Times(mv2.ScalarValue());
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -762,7 +762,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generi
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public RGaVector<T> Gp(RGaScalar<T> mv2)
         {
-            return Times(mv2.ScalarValue);
+            return Times(mv2.ScalarValue());
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -920,7 +920,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generi
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public RGaVector<T> ERcp(RGaScalar<T> mv2)
         {
-            return Times(mv2.ScalarValue);
+            return Times(mv2.ScalarValue());
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -976,7 +976,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generi
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public RGaVector<T> Rcp(RGaScalar<T> mv2)
         {
-            return Times(mv2.ScalarValue);
+            return Times(mv2.ScalarValue());
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

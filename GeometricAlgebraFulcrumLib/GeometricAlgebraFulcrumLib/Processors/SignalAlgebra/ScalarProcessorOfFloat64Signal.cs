@@ -2,8 +2,8 @@
 using System.Linq;
 using System.Runtime.CompilerServices;
 using DataStructuresLib.Basic;
-using GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra;
-using GeometricAlgebraFulcrumLib.MathBase.SignalAlgebra;
+using GeometricAlgebraFulcrumLib.Lite.ScalarAlgebra;
+using GeometricAlgebraFulcrumLib.Lite.SignalAlgebra;
 using TextComposerLib.Text;
 
 namespace GeometricAlgebraFulcrumLib.Processors.SignalAlgebra

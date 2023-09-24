@@ -4,14 +4,14 @@ using DataStructuresLib;
 using DataStructuresLib.BitManipulation;
 using DataStructuresLib.Combinations;
 using DataStructuresLib.IndexSets;
-using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Basis;
+using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Extended.Basis;
+using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Restricted;
+using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Restricted.Basis;
+using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Restricted.Records;
+using GeometricAlgebraFulcrumLib.Lite.ScalarAlgebra;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.Multivectors;
-using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Records.Restricted;
-using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted;
-using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Basis;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Multivectors;
 using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Generic;
-using GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra;
 using TextComposerLib.Text;
 
 namespace GeometricAlgebraFulcrumLib.MathBase.Text

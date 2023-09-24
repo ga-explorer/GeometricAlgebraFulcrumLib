@@ -1,11 +1,11 @@
 ﻿using System.Runtime.CompilerServices;
+using GeometricAlgebraFulcrumLib.Lite.LinearAlgebra.Vectors.Space3D;
+using GeometricAlgebraFulcrumLib.Lite.LinearAlgebra.Vectors.SpaceND;
+using GeometricAlgebraFulcrumLib.Lite.ScalarAlgebra;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.LinearMaps.Outermorphisms;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.LinearMaps.Rotors;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.Multivectors.Composers;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.Subspaces;
-using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Space3D;
-using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.SpaceND;
-using GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra;
 
 namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.Multivectors
 {
@@ -76,9 +76,11 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Float64Vector3D GetTuple3D(this XGaVector<double> vector)
         {
-            return Float64Vector3D.Create(vector[0].ScalarValue,
-                vector[1].ScalarValue,
-                vector[2].ScalarValue);
+            return Float64Vector3D.Create(
+                vector.Scalar(0).ScalarValue,
+                vector.Scalar(1).ScalarValue,
+                vector.Scalar(2).ScalarValue
+            );
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -93,10 +95,10 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Scalar<T> GetEuclideanAngle<T>(this XGaVector<T> vector1, XGaVector<T> vector2, bool assumeUnitVectors = false)
         {
-            var angle = vector1.ESp(vector2).Scalar;
+            var angle = vector1.ESp(vector2).Scalar();
 
             if (!assumeUnitVectors)
-                angle /= (vector1.ENorm() * vector2.ENorm()).Scalar;
+                angle /= (vector1.ENorm() * vector2.ENorm()).Scalar();
 
             return angle.ArcCos();
         }
@@ -234,7 +236,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.
             var processor = vector2.Processor;
 
             return processor
-                .CreateVector(index)
+                .CreateTermVector(index)
                 .CreatePureRotor(vector2);
         }
 
@@ -260,7 +262,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.
             var processor = vector1.Processor;
 
             return vector1.CreatePureRotor(
-                processor.CreateVector(index)
+                processor.CreateTermVector(index)
             );
         }
 

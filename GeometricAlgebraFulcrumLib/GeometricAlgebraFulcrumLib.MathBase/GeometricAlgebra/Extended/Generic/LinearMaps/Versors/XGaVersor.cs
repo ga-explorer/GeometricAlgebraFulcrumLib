@@ -64,7 +64,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.
             if (!gp.IsScalar())
                 return false;
 
-            var diff = gp[0] - 1;
+            var diff = gp.Scalar() - 1;
 
             return diff.IsNearZero();
         }
@@ -87,15 +87,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.
         {
             throw new NotImplementedException();
         }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override XGaKVector<T> OmMap(XGaKVector<T> mv)
-        {
-            return mv.Grade.IsEven() || IsEven
-                ? Multivector.Gp(mv).Gp(MultivectorInverse).GetKVectorPart(mv.Grade) 
-                : Multivector.Gp(-mv).Gp(MultivectorInverse).GetKVectorPart(mv.Grade);
-        }
-
+        
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public override XGaMultivector<T> OmMap(XGaMultivector<T> mv)
         {

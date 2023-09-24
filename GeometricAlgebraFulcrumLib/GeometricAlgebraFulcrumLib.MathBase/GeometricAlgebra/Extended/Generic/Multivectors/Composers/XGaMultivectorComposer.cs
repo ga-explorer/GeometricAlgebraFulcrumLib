@@ -2,10 +2,11 @@
 using System.Runtime.CompilerServices;
 using DataStructuresLib.Basic;
 using DataStructuresLib.IndexSets;
-using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Basis;
-using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Basis;
+using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Basis;
+using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Extended;
+using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Extended.Basis;
+using GeometricAlgebraFulcrumLib.Lite.ScalarAlgebra;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.Processors;
-using GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra;
 using Open.Collections;
 
 namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.Multivectors.Composers
@@ -240,6 +241,17 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.
 
             return this;
         }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public XGaMultivectorComposer<T> SetBivectorTerm(int index1, int index2, double scalar)
+        {
+            SetTerm(
+                IndexSetUtils.IndexPairToIndexSet(index1, index2),
+                ScalarProcessor.GetScalarFromNumber(scalar)
+            );
+
+            return this;
+        }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public XGaMultivectorComposer<T> SetBivectorTerm(int index1, int index2, T scalar)
@@ -343,7 +355,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.
         public XGaMultivectorComposer<T> SetScalar(XGaScalar<T> scalar)
         {
             SetScalarTerm(
-                scalar.ScalarValue
+                scalar.ScalarValue()
             );
 
             return this;
@@ -353,7 +365,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.
         public XGaMultivectorComposer<T> SetScalarNegative(XGaScalar<T> scalar)
         {
             SetScalarTerm(
-                ScalarProcessor.Negative(scalar.ScalarValue)
+                ScalarProcessor.Negative(scalar.ScalarValue())
             );
 
             return this;
@@ -363,7 +375,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.
         public XGaMultivectorComposer<T> SetScalar(XGaScalar<T> scalar, T scalingFactor)
         {
             SetScalarTerm(
-                ScalarProcessor.Times(scalar.ScalarValue, scalingFactor)
+                ScalarProcessor.Times(scalar.ScalarValue(), scalingFactor)
             );
 
             return this;
@@ -501,7 +513,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.
 
             AddTerm(
                 EmptyIndexSet.Instance,
-                scalar.ScalarValue
+                scalar.ScalarValue()
             );
 
             return this;
@@ -512,7 +524,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.
         {
             AddTerm(
                 EmptyIndexSet.Instance,
-                ScalarProcessor.Times(scalar.ScalarValue, scalingFactor)
+                ScalarProcessor.Times(scalar.ScalarValue(), scalingFactor)
             );
 
             return this;
@@ -647,7 +659,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.
 
             SubtractTerm(
                 EmptyIndexSet.Instance,
-                scalar.ScalarValue
+                scalar.ScalarValue()
             );
 
             return this;
@@ -658,7 +670,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.
         {
             SubtractTerm(
                 EmptyIndexSet.Instance,
-                ScalarProcessor.Times(scalar.ScalarValue, scalingFactor)
+                ScalarProcessor.Times(scalar.ScalarValue(), scalingFactor)
             );
 
             return this;
@@ -1357,7 +1369,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.
                 return Processor.CreateZeroScalar();
 
             if (_idScalarDictionary.Count == 1)
-                return Processor.CreateKVector(
+                return Processor.CreateTermKVector(
                     _idScalarDictionary.First()
                 );
 

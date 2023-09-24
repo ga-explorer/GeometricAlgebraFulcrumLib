@@ -9,6 +9,36 @@ namespace DataStructuresLib.Extensions
     public static class ListExtensions
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static List<T2> SelectToList<T1, T2>(this IEnumerable<T1> list, Func<T1, T2> itemMapping)
+        {
+            return list.Select(itemMapping).ToList();
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static ImmutableList<T2> SelectToImmutableList<T1, T2>(this IEnumerable<T1> list, Func<T1, T2> itemMapping)
+        {
+            return list.Select(itemMapping).ToImmutableList();
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static T2[] SelectToArray<T1, T2>(this IEnumerable<T1> list, Func<T1, T2> itemMapping)
+        {
+            return list.Select(itemMapping).ToArray();
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static ImmutableArray<T2> SelectToImmutableArray<T1, T2>(this IEnumerable<T1> list, Func<T1, T2> itemMapping)
+        {
+            return list.Select(itemMapping).ToImmutableArray();
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static ImmutableSortedSet<T2> SelectToImmutableSortedSet<T1, T2>(this IEnumerable<T1> list, Func<T1, T2> itemMapping)
+        {
+            return list.Select(itemMapping).ToImmutableSortedSet();
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static IReadOnlyList<T> SubList<T>(this IReadOnlyList<T> list, int index)
         {
             if (index >= list.Count) return Array.Empty<T>();

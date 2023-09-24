@@ -1,9 +1,10 @@
 ﻿using System.Runtime.CompilerServices;
 using DataStructuresLib.BitManipulation;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath;
+using GeometricAlgebraFulcrumLib.Lite;
+using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Extended;
+using GeometricAlgebraFulcrumLib.Lite.ScalarAlgebra;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.Multivectors;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.Processors;
-using GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra;
 
 namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.Subspaces
 {
@@ -45,7 +46,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.
         internal XGaSubspace(XGaKVector<T> blade)
         {
             _blade = blade;
-            BladeSignature = blade.SpSquared().Scalar;
+            BladeSignature = blade.SpSquared().Scalar();
             _bladeInverse = blade / BladeSignature;
             _bladePseudoInverse = blade.PseudoInverse();
         }

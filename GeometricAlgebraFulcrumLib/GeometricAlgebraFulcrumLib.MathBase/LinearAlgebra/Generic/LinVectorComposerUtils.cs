@@ -1,9 +1,9 @@
 ﻿using System.Runtime.CompilerServices;
 using DataStructuresLib.BitManipulation;
 using DataStructuresLib.Dictionary;
+using GeometricAlgebraFulcrumLib.Lite.ScalarAlgebra;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.Multivectors;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Multivectors;
-using GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra;
 using MathNet.Numerics.LinearAlgebra.Double;
 
 namespace GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Generic
@@ -240,12 +240,12 @@ namespace GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Generic
             var columnCount = matrix.GetLength(1);
             var composer = scalarProcessor.CreateLinVectorComposer();
 
-            for (var i = 0; i < columnCount; i++)
+            for (var j = 0; j < columnCount; j++)
             {
-                var scalar = matrix[i, row];
+                var scalar = matrix[row, j];
 
                 if (scalar is not null)
-                    composer.SetTerm(i, scalar);
+                    composer.SetTerm(j, scalar);
             }
 
             return composer.GetVector();
@@ -258,7 +258,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Generic
 
             for (var i = 0; i < rowCount; i++)
             {
-                var scalar = matrix[column, i];
+                var scalar = matrix[i, column];
 
                 if (scalar is not null)
                     composer.SetTerm(i, scalar);
@@ -303,10 +303,10 @@ namespace GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Generic
         {
             var composer = scalarProcessor.CreateLinVectorComposer();
 
-            for (var i = 0; i < matrix.ColumnCount; i++)
+            for (var j = 0; j < matrix.ColumnCount; j++)
                 composer.SetTerm(
-                    i, 
-                    scalarProcessor.GetScalarFromNumber(matrix[row, i])
+                    j, 
+                    scalarProcessor.GetScalarFromNumber(matrix[row, j])
                 );
 
             return composer.GetVector();

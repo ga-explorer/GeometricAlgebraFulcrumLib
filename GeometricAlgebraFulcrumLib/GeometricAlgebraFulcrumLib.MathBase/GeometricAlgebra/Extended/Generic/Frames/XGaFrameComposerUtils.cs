@@ -1,11 +1,11 @@
 ﻿using System.Runtime.CompilerServices;
 using DataStructuresLib.BitManipulation;
+using GeometricAlgebraFulcrumLib.Lite.LinearAlgebra.Matrices;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.LinearMaps.Rotors;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.Multivectors;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.Multivectors.Composers;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.Processors;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.Subspaces;
-using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Generic.Matrices;
 
 namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.Frames
 {
@@ -15,7 +15,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.
         public static XGaBasisVectorFrame<T> CreateBasisVectorFrame<T>(this XGaProcessor<T> processor, int vSpaceDimensions)
         {
             return XGaBasisVectorFrame<T>.Create(
-                vSpaceDimensions.GetRange(processor.CreateVector)
+                vSpaceDimensions.GetRange(processor.CreateTermVector)
             );
         }
         
@@ -73,7 +73,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.
             var vectorsList =
                 vSpaceDimensions
                     .GetRange()
-                    .Select(processor.CreateVector);
+                    .Select(processor.CreateTermVector);
 
             return XGaVectorFrame<T>.Create(
                 XGaVectorFrameSpecs.CreateUnitBasisSpecs(),
@@ -87,7 +87,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.
             var vectorsList =
                 vSpaceDimensions
                     .GetRange()
-                    .Select(index => metric.CreateVector(index, scalingFactor));
+                    .Select(index => metric.CreateTermVector(index, scalingFactor));
 
             return XGaVectorFrame<T>.Create(
                 XGaVectorFrameSpecs.CreateScaledBasisSpecs(),
@@ -102,7 +102,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.
 
             // Create ones-vector
             var onesVector = metric.CreateSymmetricUnitVector(vSpaceDimensions1);
-            var basisVector = metric.CreateVector(vSpaceDimensions);
+            var basisVector = metric.CreateTermVector(vSpaceDimensions);
 
             // Find a rotor that rotates the ones vector into the last basis vector
             var rotor = onesVector.CreatePureRotor(
@@ -122,7 +122,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.
                     .Select(index =>
                         rotor.OmMap(
                             hyperSubspace.Project(
-                                metric.CreateVector(index, scalingFactor)
+                                metric.CreateTermVector(index, scalingFactor)
                             )
                         ).GetVectorPart(i => i < vSpaceDimensions)
                     );

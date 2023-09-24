@@ -1,9 +1,9 @@
 ﻿using System.Runtime.CompilerServices;
+using GeometricAlgebraFulcrumLib.Lite.ScalarAlgebra;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Multivectors;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Multivectors.Composers;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Processors;
 using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Generic.LinearMaps;
-using GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra;
 
 namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.LinearMaps.Rotors
 {
@@ -104,8 +104,8 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generi
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public override RGaVector<T> OmMap(RGaVector<T> mv)
         {
-            var u1 = mv[0];
-            var u2 = mv[1];
+            var u1 = mv.Scalar(0);
+            var u2 = mv.Scalar(1);
 
             return OmMap(u1, u2);
         }
@@ -121,25 +121,14 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generi
         {
             throw new InvalidOperationException();
         }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override RGaKVector<T> OmMap(RGaKVector<T> mv)
-        {
-            return mv.Grade switch
-            {
-                0 or 2 => GetScalingFactor() * mv,
-                1 => OmMap(mv[0], mv[1]).AsKVector(),
-                _ => throw new InvalidOperationException()
-            };
-        }
-
+        
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public override RGaMultivector<T> OmMap(RGaMultivector<T> mv)
         {
-            var mv0 = mv[0];
-            var mv1 = mv[1];
-            var mv2 = mv[2];
-            var mv12 = mv[3];
+            var mv0 = mv.Scalar();
+            var mv1 = mv.Scalar(0);
+            var mv2 = mv.Scalar(1);
+            var mv12 = mv[0, 1];
             
             var scalingFactor = GetScalingFactor();
 

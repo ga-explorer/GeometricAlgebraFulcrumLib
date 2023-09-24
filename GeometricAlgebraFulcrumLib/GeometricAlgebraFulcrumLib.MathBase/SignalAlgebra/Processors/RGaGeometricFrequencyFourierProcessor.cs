@@ -1,6 +1,7 @@
-﻿using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Multivectors;
+﻿using GeometricAlgebraFulcrumLib.Lite.Geometry.Differential.Functions.Interpolators;
+using GeometricAlgebraFulcrumLib.Lite.SignalAlgebra;
+using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Multivectors;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Multivectors.Composers;
-using GeometricAlgebraFulcrumLib.MathBase.Geometry.Differential.Functions.Interpolators;
 
 namespace GeometricAlgebraFulcrumLib.MathBase.SignalAlgebra.Processors;
 

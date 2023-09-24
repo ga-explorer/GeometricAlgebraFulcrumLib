@@ -3,22 +3,21 @@ using System.Collections.Immutable;
 using System.IO;
 using System.Linq;
 using DataStructuresLib.Files;
-using GeometricAlgebraFulcrumLib.MathBase.Geometry.Borders;
-using GeometricAlgebraFulcrumLib.MathBase.Geometry.Differential.Functions.Phasors;
-using GeometricAlgebraFulcrumLib.MathBase.Geometry.Parametric.Space1D.Curves;
-using GeometricAlgebraFulcrumLib.MathBase.Geometry.Parametric.Space3D.Curves;
-using GeometricAlgebraFulcrumLib.MathBase.Geometry.Parametric.Space3D.Curves.Circles;
-using GeometricAlgebraFulcrumLib.MathBase.Geometry.Parametric.Space3D.Curves.Lines;
-using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64;
-using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.LinearMaps.Space3D.Rotation;
-using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Space3D;
-using GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra;
-using GraphicsComposerLib.Rendering.BabylonJs;
-using GraphicsComposerLib.Rendering.Visuals.Space3D.Animations;
-using GraphicsComposerLib.Rendering.Visuals.Space3D.Basic;
-using GraphicsComposerLib.Rendering.Visuals.Space3D.Curves;
-using GraphicsComposerLib.Rendering.Visuals.Space3D.Styles;
-using GraphicsComposerLib.Rendering.Visuals.Space3D.Surfaces;
+using GeometricAlgebraFulcrumLib.Lite.Geometry.Differential.Functions.Phasors;
+using GeometricAlgebraFulcrumLib.Lite.Geometry.Parametric.Space1D.Scalars;
+using GeometricAlgebraFulcrumLib.Lite.Geometry.Parametric.Space3D.Curves;
+using GeometricAlgebraFulcrumLib.Lite.Geometry.Parametric.Space3D.Curves.Circles;
+using GeometricAlgebraFulcrumLib.Lite.Geometry.Parametric.Space3D.Curves.Lines;
+using GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.BabylonJs;
+using GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.Visuals.Space3D.Animations;
+using GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.Visuals.Space3D.Basic;
+using GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.Visuals.Space3D.Curves;
+using GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.Visuals.Space3D.Styles;
+using GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.Visuals.Space3D.Surfaces;
+using GeometricAlgebraFulcrumLib.Lite.LinearAlgebra;
+using GeometricAlgebraFulcrumLib.Lite.LinearAlgebra.LinearMaps.Space3D.Rotation;
+using GeometricAlgebraFulcrumLib.Lite.LinearAlgebra.Vectors.Space3D;
+using GeometricAlgebraFulcrumLib.Lite.ScalarAlgebra;
 using SixLabors.ImageSharp;
 using WebComposerLib.Html.Media;
 
@@ -296,7 +295,7 @@ public static class AnimationSamples
         InitializeSceneComposers(0);
 
         MainSceneComposer
-            .AddDefaultGrid(GridUnitCount)
+            .AddDefaultGridZx(GridUnitCount)
             .AddDefaultAxes(AxesOrigin)
             .AddDefaultEnvironment(GridUnitCount)
             .AddDefaultPerspectiveCamera(
@@ -349,33 +348,36 @@ public static class AnimationSamples
         );
 
 
-        var path0 = curve0.CreateAnimatedVector(
-            Float64Range1D.ZeroToOne,
-            maxTime
-        );
+        var path0 = 
+            animationSpecs.CreateAnimatedVector3D(
+                Float64ScalarRange.ZeroToOne,
+                curve0
+            );
 
-        var path1 = curve1.CreateAnimatedVector(
-            Float64Range1D.ZeroToOne,
-            maxTime
-        );
+        var path1 = 
+            animationSpecs.CreateAnimatedVector3D(
+                Float64ScalarRange.ZeroToOne,
+                curve1
+            );
 
-        var path2 = curve2.CreateAnimatedVector(
-            Float64Range1D.ZeroToOne,
-            maxTime
-        );
+        var path2 = 
+            animationSpecs.CreateAnimatedVector3D(
+                Float64ScalarRange.ZeroToOne,
+                curve2
+            );
 
-        var path3 = curve3.CreateAnimatedVector(
-            Float64Range1D.ZeroToOne,
-            maxTime
-        );
+        var path3 = 
+            animationSpecs.CreateAnimatedVector3D(
+                Float64ScalarRange.ZeroToOne,
+                curve3
+            );
 
         MainSceneComposer.AddLineSegment(
             GrVisualLineSegment3D.CreateAnimated(
                 "line1",
                 redMaterial.CreateTubeCurveStyle(0.03),
                 path0,
-                path1,
-                animationSpecs
+                path1
             )
         );
 
@@ -384,8 +386,7 @@ public static class AnimationSamples
                 "line2",
                 Color.Green.CreateSolidLineCurveStyle(),
                 path0,
-                path2,
-                animationSpecs
+                path2
             )
         );
 
@@ -394,8 +395,7 @@ public static class AnimationSamples
                 "line3",
                 Color.Blue.CreateDashedLineCurveStyle(3, 2, 16),
                 path0,
-                path3,
-                animationSpecs
+                path3
             )
         );
 
@@ -404,8 +404,7 @@ public static class AnimationSamples
             GrVisualPoint3D.CreateAnimated(
                 "point0",
                 material2.CreateThickSurfaceStyle(0.1),
-                path0,
-                animationSpecs
+                path0
             )
         );
 
@@ -413,8 +412,7 @@ public static class AnimationSamples
             GrVisualPoint3D.CreateAnimated(
                 "point1",
                 redMaterial.CreateThickSurfaceStyle(0.1),
-                path1,
-                animationSpecs
+                path1
             )
         );
 
@@ -422,8 +420,7 @@ public static class AnimationSamples
             GrVisualPoint3D.CreateAnimated(
                 "point2",
                 greenMaterial.CreateThickSurfaceStyle(0.1),
-                path2,
-                animationSpecs
+                path2
             )
         );
 
@@ -431,8 +428,7 @@ public static class AnimationSamples
             GrVisualPoint3D.CreateAnimated(
                 "point3",
                 blueMaterial.CreateThickSurfaceStyle(0.1),
-                path3,
-                animationSpecs
+                path3
             )
         );
 
@@ -519,7 +515,7 @@ public static class AnimationSamples
         InitializeSceneComposers(0);
 
         MainSceneComposer
-            .AddDefaultGrid(GridUnitCount)
+            .AddDefaultGridZx(GridUnitCount)
             .AddDefaultAxes(AxesOrigin)
             .AddDefaultEnvironment(GridUnitCount)
             .AddDefaultPerspectiveCamera(
@@ -586,17 +582,16 @@ public static class AnimationSamples
 
         var curve3 = ComputedParametricCurve3D.Create(t => curve2.GetPoint(t) - curve1.GetPoint(t));
 
-        var path1 = curve1.CreateAnimatedVector(Float64Range1D.ZeroToOne, maxTime);
-        var path2 = curve2.CreateAnimatedVector(Float64Range1D.ZeroToOne, maxTime);
-        var path3 = curve3.CreateAnimatedVector(Float64Range1D.ZeroToOne, maxTime);
+        var path1 = animationSpecs.CreateAnimatedVector3D(Float64ScalarRange.ZeroToOne, curve1);
+        var path2 = animationSpecs.CreateAnimatedVector3D(Float64ScalarRange.ZeroToOne, curve2);
+        var path3 = animationSpecs.CreateAnimatedVector3D(Float64ScalarRange.ZeroToOne, curve3);
 
 
         MainSceneComposer.AddPoint(
             GrVisualPoint3D.CreateAnimated(
                 "point1",
                 material1.CreateThickSurfaceStyle(0.06),
-                path1,
-                animationSpecs
+                path1
             )
         );
 
@@ -604,8 +599,7 @@ public static class AnimationSamples
             GrVisualPoint3D.CreateAnimated(
                 "point2",
                 material2.CreateThickSurfaceStyle(0.06),
-                path2,
-                animationSpecs
+                path2
             )
         );
 
@@ -614,8 +608,7 @@ public static class AnimationSamples
                 "line1",
                 redMaterial.CreateTubeCurveStyle(0.03),
                 path1,
-                path2,
-                animationSpecs
+                path2
             )
         );
 
@@ -637,7 +630,7 @@ public static class AnimationSamples
         const double frequency = 2d * Math.PI * frequencyHz;
         const double thickness = 0.05;
 
-        var timeRange = Float64Range1D.Create(1d / frequencyHz);
+        var timeRange = Float64ScalarRange.Create(1d / frequencyHz);
         var frameCount = (int)(1 + frameRate * timeRange.Length / 2);
         var animationSpecs = GrVisualAnimationSpecs.Create(frameRate, timeRange);
 
@@ -692,35 +685,35 @@ public static class AnimationSamples
             Float64Vector3D.UnitSymmetric
         );
 
-        var uDiscRadiusCurve = ConstantParametricCurve1D.Create(
+        var uDiscRadiusCurve = ConstantParametricScalar.Create(
             magnitude * Math.Sqrt(3d / 2d) / 4,
             1d
         );
 
         var uDiscRadiusPath = 
-            uDiscRadiusCurve.CreateAnimatedVector(timeRange);
+            animationSpecs.CreateAnimatedScalar(uDiscRadiusCurve);
 
         var originPath = 
-            originCurve.CreateAnimatedVector(timeRange);
+            animationSpecs.CreateAnimatedVector3D(originCurve);
 
         var xPhasorPath = 
-            xPhasorCurve.CreateAnimatedVector(timeRange);
+            animationSpecs.CreateAnimatedVector3D(xPhasorCurve);
 
         var yPhasorPath = 
-            yPhasorCurve.CreateAnimatedVector(timeRange);
+            animationSpecs.CreateAnimatedVector3D(yPhasorCurve);
 
         var zPhasorPath = 
-            zPhasorCurve.CreateAnimatedVector(timeRange);
+            animationSpecs.CreateAnimatedVector3D(zPhasorCurve);
 
         var uPhasorPath = 
-            uPhasorCurve.CreateAnimatedVector(timeRange);
+            animationSpecs.CreateAnimatedVector3D(uPhasorCurve);
 
         InitializeSceneComposers(0);
 
         InitializeImageCache();
 
         MainSceneComposer
-            .AddDefaultGrid(GridUnitCount)
+            .AddDefaultGridZx(GridUnitCount)
             .AddDefaultAxes(AxesOrigin)
             .AddDefaultEnvironment(GridUnitCount)
             .AddDefaultPerspectiveCamera(
@@ -752,29 +745,25 @@ public static class AnimationSamples
         var xVector = GrVisualVector3D.CreateAnimated(
             "xVector",
             redMaterial.CreateTubeCurveStyle(thickness),
-            xPhasorPath,
-            animationSpecs
+            xPhasorPath
         );
 
         var yVector = GrVisualVector3D.CreateAnimated(
             "yVector",
             greenMaterial.CreateTubeCurveStyle(thickness),
-            yPhasorPath,
-            animationSpecs
+            yPhasorPath
         );
 
         var zVector = GrVisualVector3D.CreateAnimated(
             "zVector",
             blueMaterial.CreateTubeCurveStyle(thickness),
-            zPhasorPath,
-            animationSpecs
+            zPhasorPath
         );
 
         var uVector = GrVisualVector3D.CreateAnimated(
             "uVector",
             orangeMaterial.CreateTubeCurveStyle(thickness),
-            uPhasorPath,
-            animationSpecs
+            uPhasorPath
         );
 
         var kVector = GrVisualVector3D.CreateStatic(
@@ -796,32 +785,28 @@ public static class AnimationSamples
             "v1VectorText",
             ImageCache,
             xVector.AnimatedDirection.AddLength(0.25),
-            HtmlComposer.LaTeXScalingFactor,
-            animationSpecs
+            HtmlComposer.LaTeXScalingFactor
         );
         
         MainSceneComposer.AddLaTeXText(
             "v2VectorText",
             ImageCache,
             yVector.AnimatedDirection.AddLength(0.25),
-            HtmlComposer.LaTeXScalingFactor,
-            animationSpecs
+            HtmlComposer.LaTeXScalingFactor
         );
         
         MainSceneComposer.AddLaTeXText(
             "v3VectorText",
             ImageCache,
             zVector.AnimatedDirection.AddLength(0.25),
-            HtmlComposer.LaTeXScalingFactor,
-            animationSpecs
+            HtmlComposer.LaTeXScalingFactor
         );
         
         MainSceneComposer.AddLaTeXText(
             "vVectorText",
             ImageCache,
             uVector.AnimatedDirection.AddLength(0.25),
-            HtmlComposer.LaTeXScalingFactor,
-            animationSpecs
+            HtmlComposer.LaTeXScalingFactor
         );
         
         MainSceneComposer.AddLaTeXText(
@@ -869,8 +854,7 @@ public static class AnimationSamples
             redMaterial.CreateThinSurfaceStyle(),
             originPath,
             xPhasorPath,
-            uPhasorPath,
-            animationSpecs
+            uPhasorPath
         );
 
         uxTriangle.Visibility = 0.5d;
@@ -880,8 +864,7 @@ public static class AnimationSamples
             greenMaterial.CreateThinSurfaceStyle(),
             originPath,
             yPhasorPath,
-            uPhasorPath,
-            animationSpecs
+            uPhasorPath
         );
 
         uyTriangle.Visibility = 0.5d;
@@ -891,8 +874,7 @@ public static class AnimationSamples
             blueMaterial.CreateThinSurfaceStyle(),
             originPath,
             zPhasorPath,
-            uPhasorPath,
-            animationSpecs
+            uPhasorPath
         );
 
         uzTriangle.Visibility = 0.5d;
@@ -910,7 +892,7 @@ public static class AnimationSamples
                 orangeMaterial.CreateThinSurfaceStyle(),
                 originPath.GetPoint(0),
                 uPhasorPath.GetPoint(0),
-                uDiscRadiusPath.GetPoint(0),
+                uDiscRadiusPath.GetValue(0),
                 false,
                 animationSpecs
             ).SetAnimatedCenterNormalRadius(
@@ -986,7 +968,7 @@ public static class AnimationSamples
         InitializeSceneComposers(0);
 
         MainSceneComposer
-            .AddDefaultGrid(GridUnitCount)
+            .AddDefaultGridZx(GridUnitCount)
             .AddDefaultAxes(AxesOrigin)
             .AddDefaultEnvironment(GridUnitCount)
             .AddDefaultPerspectiveCamera(
@@ -1028,53 +1010,49 @@ public static class AnimationSamples
         //    ).ToImmutableArray();
 
 
-        var tValueCurve = ComputedParametricCurve1D.Create(t =>
+        var tValueCurve = ComputedParametricScalar.Create(t =>
             t.CosWave(0d, 1d, 1)
         );
 
-        var vector1Curve = ComputedParametricCurve3D.Create(t => 
-            vectorLength * planarRotation1
-                .InterpolateTo(planarRotation2, tValueCurve.GetPoint(t))
-                .BasisVector1
-        ).CreateAnimatedVector(
-            Float64Range1D.ZeroToOne,
-            animationSpecs.TimeRange
+        var vector1Curve = 
+            animationSpecs.CreateAnimatedVector3D(
+                Float64ScalarRange.ZeroToOne,
+                t => 
+                    vectorLength * planarRotation1
+                        .InterpolateTo(planarRotation2, tValueCurve.GetValue(t))
+                        .BasisVector1
+            );
+        
+        var vector2Curve = animationSpecs.CreateAnimatedVector3D(
+            Float64ScalarRange.ZeroToOne,
+            t => 
+                vectorLength * planarRotation1
+                    .InterpolateTo(planarRotation2, tValueCurve.GetValue(t))
+                    .BasisVector2
         );
         
-        var vector2Curve = ComputedParametricCurve3D.Create(t => 
-            vectorLength * planarRotation1
-                .InterpolateTo(planarRotation2, tValueCurve.GetPoint(t))
-                .BasisVector2
-        ).CreateAnimatedVector(
-            Float64Range1D.ZeroToOne,
-            animationSpecs.TimeRange
+        var vector3Curve = animationSpecs.CreateAnimatedVector3D(
+            Float64ScalarRange.ZeroToOne,
+            t => 
+                vectorLength * planarRotation1
+                    .InterpolateTo(planarRotation2, tValueCurve.GetValue(t))
+                    .MapBasisVector1()
         );
         
-        var vector3Curve = ComputedParametricCurve3D.Create(t => 
-            vectorLength * planarRotation1
-                .InterpolateTo(planarRotation2, tValueCurve.GetPoint(t))
-                .MapBasisVector1()
-        ).CreateAnimatedVector(
-            Float64Range1D.ZeroToOne,
-            animationSpecs.TimeRange
-        );
-        
-        var angleCurve = ComputedParametricCurve1D.Create(t => 
-            planarRotation1
-                .InterpolateTo(planarRotation2, tValueCurve.GetPoint(t))
-                .RotationAngle.Radians
-        ).CreateAnimatedVector(
-            Float64Range1D.ZeroToOne,
-            animationSpecs.TimeRange
-        );
+        var angleCurve = 
+            animationSpecs.CreateAnimatedScalar(
+                Float64ScalarRange.ZeroToOne,
+                t => 
+                planarRotation1
+                    .InterpolateTo(planarRotation2, tValueCurve.GetValue(t))
+                    .RotationAngle.Radians
+            );
         
         var radiusCurve = 
-            ConstantParametricCurve1D
-                .Create(vectorLength)
-                .CreateAnimatedVector(
-                    Float64Range1D.ZeroToOne,
-                    animationSpecs.TimeRange
-                );
+            animationSpecs.CreateAnimatedScalar(
+                Float64ScalarRange.ZeroToOne, 
+                vectorLength
+            );
 
 
         var vector1Style =
@@ -1097,8 +1075,7 @@ public static class AnimationSamples
             GrVisualVector3D.CreateAnimated(
                 "basisVector1",
                 vector1Style,
-                vector1Curve,
-                animationSpecs
+                vector1Curve
             ),
 
             //GrVisualVector3D.CreateAnimated(
@@ -1111,8 +1088,7 @@ public static class AnimationSamples
             GrVisualVector3D.CreateAnimated(
                 "basisVector3",
                 vector3Style,
-                vector3Curve,
-                animationSpecs
+                vector3Curve
             )
         );
 
@@ -1123,8 +1099,7 @@ public static class AnimationSamples
                 vector1Curve,
                 vector2Curve,
                 angleCurve,
-                radiusCurve,
-                animationSpecs
+                radiusCurve
             )
         );
 
@@ -1134,9 +1109,10 @@ public static class AnimationSamples
                 "basisVector1Path",
                 vector1Style,
                 vector1Curve
-                    .TimeRange
+                    .FrameTimeRange
                     .GetLinearSamples(150, false)
-                    .Select(vector1Curve.GetPoint).ToImmutableArray()
+                    .Select(t => vector1Curve.GetPoint(t))
+                    .ToImmutableArray()
             )
         );
         
@@ -1156,9 +1132,10 @@ public static class AnimationSamples
                 "basisVector3Path",
                 vector3Style,
                 vector3Curve
-                    .TimeRange
+                    .FrameTimeRange
                     .GetLinearSamples(150, false)
-                    .Select(vector3Curve.GetPoint).ToImmutableArray()
+                    .Select(t => vector3Curve.GetPoint(t))
+                    .ToImmutableArray()
             )
         );
 

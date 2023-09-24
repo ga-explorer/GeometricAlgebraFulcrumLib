@@ -1,4 +1,4 @@
-﻿using GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra;
+﻿using GeometricAlgebraFulcrumLib.Lite.ScalarAlgebra;
 
 namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Multivectors.GuidedBinaryTraversal.Multivectors
 {
@@ -81,7 +81,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generi
             }
             else
             {
-                TosScalar = Multivector.GetTermScalar(TosId).ScalarValue;
+                TosScalar = Multivector.GetBasisBladeScalar(TosId).ScalarValue;
             }
 
             TosIndex--;

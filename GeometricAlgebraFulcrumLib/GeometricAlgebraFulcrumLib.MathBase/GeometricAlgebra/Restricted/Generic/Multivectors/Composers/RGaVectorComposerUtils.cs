@@ -2,12 +2,12 @@
 using System.Runtime.CompilerServices;
 using DataStructuresLib.BitManipulation;
 using DataStructuresLib.Dictionary;
+using GeometricAlgebraFulcrumLib.Lite.LinearAlgebra.Vectors.Space2D;
+using GeometricAlgebraFulcrumLib.Lite.LinearAlgebra.Vectors.Space3D;
+using GeometricAlgebraFulcrumLib.Lite.LinearAlgebra.Vectors.Space4D;
+using GeometricAlgebraFulcrumLib.Lite.ScalarAlgebra;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Processors;
-using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Space2D;
-using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Space3D;
-using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Space4D;
 using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Generic;
-using GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra;
 using MathNet.Numerics.LinearAlgebra.Double;
 
 namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Multivectors.Composers
@@ -59,7 +59,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generi
                 return processor.CreateZeroVector();
 
             if (basisScalarDictionary.Count == 1 && basisScalarDictionary is not SingleItemDictionary<ulong, T>)
-                return processor.CreateVector(basisScalarDictionary.First());
+                return processor.CreateTermVector(basisScalarDictionary.First());
 
             return new RGaVector<T>(processor, basisScalarDictionary);
         }
@@ -135,54 +135,6 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generi
                 processor.CreateValidVectorDictionary(scalarList)
             );
         }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static RGaVector<T> CreateVector<T>(this RGaProcessor<T> processor, int index)
-        {
-            var basisScalarDictionary =
-                new SingleItemDictionary<ulong, T>(
-                    1UL << index,
-                    processor.ScalarProcessor.ScalarOne
-                );
-
-            return new RGaVector<T>(processor, basisScalarDictionary);
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static RGaVector<T> CreateVector<T>(this RGaProcessor<T> processor, int index, T scalar)
-        {
-            if (processor.ScalarProcessor.IsZero(scalar))
-                return new RGaVector<T>(processor);
-
-            var basisScalarDictionary =
-                new SingleItemDictionary<ulong, T>(
-                    1UL << index,
-                    scalar
-                );
-
-            return new RGaVector<T>(processor, basisScalarDictionary);
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static RGaVector<T> CreateVector<T>(this RGaProcessor<T> processor, KeyValuePair<int, T> indexScalarPair)
-        {
-            return processor.CreateVector(indexScalarPair.Key, indexScalarPair.Value);
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static RGaVector<T> CreateVector<T>(this RGaProcessor<T> processor, int index, Scalar<T> scalar)
-        {
-            if (scalar.IsZero())
-                return new RGaVector<T>(processor);
-
-            var basisScalarDictionary =
-                new SingleItemDictionary<ulong, T>(
-                    1UL << index,
-                    scalar.ScalarValue
-                );
-
-            return new RGaVector<T>(processor, basisScalarDictionary);
-        }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static RGaVector<T> CreateRGaVector<T>(this IEnumerable<T> scalarList, RGaProcessor<T> processor)
@@ -191,51 +143,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generi
 
             return new RGaVector<T>(processor, scalarDictionary);
         }
-
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static RGaVector<T> CreateVector<T>(this RGaProcessor<T> processor, KeyValuePair<ulong, T> indexScalarPair)
-        {
-            return processor.CreateVector(indexScalarPair.Key, indexScalarPair.Value);
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static RGaVector<T> CreateVector<T>(this RGaProcessor<T> processor, ulong basisVector)
-        {
-            var basisScalarDictionary =
-                new SingleItemDictionary<ulong, T>(basisVector, processor.ScalarProcessor.ScalarOne);
-
-            return new RGaVector<T>(processor, basisScalarDictionary);
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static RGaVector<T> CreateVector<T>(this RGaProcessor<T> processor, ulong basisVector, T scalar)
-        {
-            if (processor.ScalarProcessor.IsZero(scalar))
-                return new RGaVector<T>(processor);
-
-            var basisScalarDictionary =
-                new SingleItemDictionary<ulong, T>(basisVector, scalar);
-
-            return new RGaVector<T>(processor, basisScalarDictionary);
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static RGaVector<T> CreateVector<T>(this RGaProcessor<T> processor, ulong basisVector, Scalar<T> scalar)
-        {
-            if (scalar.IsZero())
-                return new RGaVector<T>(processor);
-
-            var basisScalarDictionary =
-                new SingleItemDictionary<ulong, T>(
-                    basisVector,
-                    scalar.ScalarValue
-                );
-
-            return new RGaVector<T>(processor, basisScalarDictionary);
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        
         public static RGaVector<T> CreateVector<T>(this RGaProcessor<T> processor, int termsCount, Func<int, double> indexToScalarFunc)
         {
             var scalarProcessor = processor.ScalarProcessor;
@@ -251,7 +159,6 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generi
             return composer.GetVector();
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static RGaVector<T> CreateVector<T>(this RGaProcessor<T> processor, int termsCount, Func<int, string> indexToScalarFunc)
         {
             var scalarProcessor = processor.ScalarProcessor;
@@ -267,7 +174,6 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generi
             return composer.GetVector();
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static RGaVector<T> CreateVector<T>(this RGaProcessor<T> processor, int termsCount, Func<int, T> indexToScalarFunc)
         {
             var composer = processor.CreateComposer();
@@ -280,6 +186,97 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generi
             }
 
             return composer.GetVector();
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static RGaVector<T> CreateTermVector<T>(this RGaProcessor<T> processor, int index)
+        {
+            var basisScalarDictionary =
+                new SingleItemDictionary<ulong, T>(
+                    1UL << index,
+                    processor.ScalarProcessor.ScalarOne
+                );
+
+            return new RGaVector<T>(processor, basisScalarDictionary);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static RGaVector<T> CreateTermVector<T>(this RGaProcessor<T> processor, int index, T scalar)
+        {
+            if (processor.ScalarProcessor.IsZero(scalar))
+                return new RGaVector<T>(processor);
+
+            var basisScalarDictionary =
+                new SingleItemDictionary<ulong, T>(
+                    1UL << index,
+                    scalar
+                );
+
+            return new RGaVector<T>(processor, basisScalarDictionary);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static RGaVector<T> CreateTermVector<T>(this RGaProcessor<T> processor, KeyValuePair<int, T> indexScalarPair)
+        {
+            return processor.CreateTermVector(indexScalarPair.Key, indexScalarPair.Value);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static RGaVector<T> CreateTermVector<T>(this RGaProcessor<T> processor, int index, Scalar<T> scalar)
+        {
+            if (scalar.IsZero())
+                return new RGaVector<T>(processor);
+
+            var basisScalarDictionary =
+                new SingleItemDictionary<ulong, T>(
+                    1UL << index,
+                    scalar.ScalarValue
+                );
+
+            return new RGaVector<T>(processor, basisScalarDictionary);
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static RGaVector<T> CreateTermVector<T>(this RGaProcessor<T> processor, ulong basisVector)
+        {
+            var basisScalarDictionary =
+                new SingleItemDictionary<ulong, T>(basisVector, processor.ScalarProcessor.ScalarOne);
+
+            return new RGaVector<T>(processor, basisScalarDictionary);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static RGaVector<T> CreateTermVector<T>(this RGaProcessor<T> processor, ulong basisVector, T scalar)
+        {
+            if (processor.ScalarProcessor.IsZero(scalar))
+                return new RGaVector<T>(processor);
+
+            var basisScalarDictionary =
+                new SingleItemDictionary<ulong, T>(basisVector, scalar);
+
+            return new RGaVector<T>(processor, basisScalarDictionary);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static RGaVector<T> CreateTermVector<T>(this RGaProcessor<T> processor, ulong basisVector, Scalar<T> scalar)
+        {
+            if (scalar.IsZero())
+                return new RGaVector<T>(processor);
+
+            var basisScalarDictionary =
+                new SingleItemDictionary<ulong, T>(
+                    basisVector,
+                    scalar.ScalarValue
+                );
+
+            return new RGaVector<T>(processor, basisScalarDictionary);
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static RGaVector<T> CreateTermVector<T>(this RGaProcessor<T> processor, KeyValuePair<ulong, T> indexScalarPair)
+        {
+            return processor.CreateTermVector(indexScalarPair.Key, indexScalarPair.Value);
         }
 
 

@@ -1,4 +1,4 @@
-﻿using GeometricAlgebraFulcrumLib.MathBase.Geometry.Differential.Functions;
+﻿using GeometricAlgebraFulcrumLib.Lite.Geometry.Differential.Functions;
 using GeometricAlgebraFulcrumLib.Mathematica;
 using GeometricAlgebraFulcrumLib.Mathematica.Mathematica.ExprFactory;
 

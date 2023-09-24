@@ -69,7 +69,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.
             
             return new XGaConformalIpnsPoint<T>(
                 Space, 
-                Vector.Divide(Weight().ScalarValue), 
+                Vector.Divide(Weight().ScalarValue()), 
                 true
             );
         }

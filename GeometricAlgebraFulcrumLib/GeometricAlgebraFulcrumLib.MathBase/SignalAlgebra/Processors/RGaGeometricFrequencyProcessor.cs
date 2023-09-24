@@ -1,7 +1,8 @@
 ﻿using System.Diagnostics;
+using GeometricAlgebraFulcrumLib.Lite.ScalarAlgebra;
+using GeometricAlgebraFulcrumLib.Lite.SignalAlgebra;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Multivectors;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Processors;
-using GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra;
 
 namespace GeometricAlgebraFulcrumLib.MathBase.SignalAlgebra.Processors;
 
@@ -171,8 +172,7 @@ public abstract class RGaGeometricFrequencyProcessor
         {
             curvatureArray[i - 1] =
                 ArcLengthTimeDerivatives[0] *
-                (frameNormSquares[i] / frameNormSquares[i - 1]).Sqrt()
-                .ScalarValue
+                (frameNormSquares[i] / frameNormSquares[i - 1]).Sqrt().ScalarValue()
                 .MapSamples(s => s.NaNToZero())
                 .CreateScalar(ScalarSignalProcessor.ScalarProcessor);
         }

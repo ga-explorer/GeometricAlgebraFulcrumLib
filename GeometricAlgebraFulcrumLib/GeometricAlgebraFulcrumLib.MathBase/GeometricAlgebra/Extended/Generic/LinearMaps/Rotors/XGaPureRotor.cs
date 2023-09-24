@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
+using GeometricAlgebraFulcrumLib.Lite.ScalarAlgebra;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.Multivectors;
-using GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra;
 
 namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.LinearMaps.Rotors
 {
@@ -80,7 +80,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.
             if (!gp.IsScalar())
                 return false;
 
-            var diff = gp[0] - 1;
+            var diff = gp.Scalar() - 1;
 
             return diff.IsNearZero();
         }
@@ -118,13 +118,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.
         {
             return Multivector.Gp(mv).Gp(MultivectorReverse).GetHigherKVectorPart(mv.Grade);
         }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override XGaKVector<T> OmMap(XGaKVector<T> mv)
-        {
-            return Multivector.Gp(mv).Gp(MultivectorReverse).GetKVectorPart(mv.Grade);
-        }
-
+        
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public override XGaMultivector<T> OmMap(XGaMultivector<T> mv)
         {
@@ -169,7 +163,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.
                 Multivector.GetBivectorPart() / halfAngle.Sin();
 
             return new Tuple<Scalar<T>, XGaBivector<T>>(
-                angle.Scalar,
+                angle.Scalar(),
                 bivector
             );
         }

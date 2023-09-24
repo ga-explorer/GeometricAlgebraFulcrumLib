@@ -2,11 +2,12 @@
 using System.Runtime.CompilerServices;
 using DataStructuresLib.BitManipulation;
 using DataStructuresLib.Dictionary;
-using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Basis;
-using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Basis;
+using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Basis;
+using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Restricted;
+using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Restricted.Basis;
+using GeometricAlgebraFulcrumLib.Lite.ScalarAlgebra;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Multivectors.Composers;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Processors;
-using GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra;
 using Open.Collections;
 using TextComposerLib.Text;
 
@@ -214,9 +215,15 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generi
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override IReadOnlyDictionary<ulong, T> GetIdScalarDictionary()
+        public IReadOnlyDictionary<ulong, T> GetIdScalarDictionary()
         {
             return _idScalarDictionary;
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public override int GetMinGrade()
+        {
+            return IsZero ? 0 : _idScalarDictionary.Keys.Max(id => id.Grade());
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -256,7 +263,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generi
 
             if (_idScalarDictionary.Count == 1)
             {
-                yield return Processor.CreateKVector(
+                yield return Processor.CreateTermKVector(
                     _idScalarDictionary.First()
                 );
 
@@ -293,7 +300,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generi
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override Scalar<T> GetScalarTermScalar()
+        public override Scalar<T> Scalar()
         {
             return _idScalarDictionary.TryGetValue(0UL, out var scalar)
                 ? ScalarProcessor.CreateScalar(scalar)
@@ -301,7 +308,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generi
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override Scalar<T> GetTermScalar(ulong basisBladeId)
+        public override Scalar<T> GetBasisBladeScalar(ulong basisBladeId)
         {
             return _idScalarDictionary.TryGetValue(basisBladeId, out var scalar)
                 ? ScalarProcessor.CreateScalar(scalar)
@@ -310,7 +317,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generi
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override bool TryGetScalarTermScalar(out T scalar)
+        public override bool TryGetScalarValue(out T scalar)
         {
             if (_idScalarDictionary.TryGetValue(0UL, out scalar))
                 return true;
@@ -320,7 +327,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generi
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override bool TryGetTermScalar(ulong basisBlade, out T scalar)
+        public override bool TryGetBasisBladeScalarValue(ulong basisBlade, out T scalar)
         {
             if (_idScalarDictionary.TryGetValue(basisBlade, out scalar))
                 return true;
@@ -385,7 +392,13 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generi
                     .GetKVector(grade)
             };
         }
-        
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public override RGaKVector<T> GetFirstKVectorPart()
+        {
+            return GetKVectorPart(GetMinGrade());
+        }
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public RGaUniformMultivector<T> GetPart(Func<ulong, bool> filterFunc)
         {

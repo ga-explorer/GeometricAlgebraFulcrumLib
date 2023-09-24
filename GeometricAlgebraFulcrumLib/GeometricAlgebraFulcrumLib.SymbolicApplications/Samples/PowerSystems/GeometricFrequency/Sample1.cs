@@ -1,9 +1,9 @@
-﻿using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.LinearMaps.Rotors;
+﻿using GeometricAlgebraFulcrumLib.Lite.ScalarAlgebra;
+using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.LinearMaps.Rotors;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Multivectors;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Multivectors.Composers;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Processors;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Subspaces;
-using GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra;
 using GeometricAlgebraFulcrumLib.Mathematica;
 using GeometricAlgebraFulcrumLib.Mathematica.GeometricAlgebra;
 using GeometricAlgebraFulcrumLib.Mathematica.Mathematica;
@@ -97,9 +97,9 @@ namespace GeometricAlgebraFulcrumLib.SymbolicApplications.Samples.PowerSystems.G
 
             MathematicaInterface.DefaultCas.SetGlobalAssumptions(assumeExpr);
 
-            var sigma1 = GeometricProcessor.CreateVector(0);
-            var sigma2 = GeometricProcessor.CreateVector(1);
-            var sigma3 = GeometricProcessor.CreateVector(2);
+            var sigma1 = GeometricProcessor.CreateTermVector(0);
+            var sigma2 = GeometricProcessor.CreateTermVector(1);
+            var sigma3 = GeometricProcessor.CreateTermVector(2);
 
             var t = "t".CreateScalar(ScalarProcessor);
 
@@ -327,9 +327,9 @@ namespace GeometricAlgebraFulcrumLib.SymbolicApplications.Samples.PowerSystems.G
 
             MathematicaInterface.DefaultCas.SetGlobalAssumptions(assumeExpr);
 
-            var sigma1 = GeometricProcessor.CreateVector(0);
-            var sigma2 = GeometricProcessor.CreateVector(1);
-            var sigma3 = GeometricProcessor.CreateVector(2);
+            var sigma1 = GeometricProcessor.CreateTermVector(0);
+            var sigma2 = GeometricProcessor.CreateTermVector(1);
+            var sigma3 = GeometricProcessor.CreateTermVector(2);
 
             var t = "t".CreateScalar(ScalarProcessor);
 
@@ -550,9 +550,9 @@ namespace GeometricAlgebraFulcrumLib.SymbolicApplications.Samples.PowerSystems.G
 
             MathematicaInterface.DefaultCas.SetGlobalAssumptions(assumeExpr);
 
-            var sigma1 = GeometricProcessor.CreateVector(0);
-            var sigma2 = GeometricProcessor.CreateVector(1);
-            var sigma3 = GeometricProcessor.CreateVector(2);
+            var sigma1 = GeometricProcessor.CreateTermVector(0);
+            var sigma2 = GeometricProcessor.CreateTermVector(1);
+            var sigma3 = GeometricProcessor.CreateTermVector(2);
 
             var t = "t".CreateScalar(ScalarProcessor);
 
@@ -616,7 +616,7 @@ namespace GeometricAlgebraFulcrumLib.SymbolicApplications.Samples.PowerSystems.G
             Console.WriteLine($@"$\boldsymbol{{v}}\left(t\right) = {LaTeXComposer.GetMultivectorText(v)}$");
             Console.WriteLine();
 
-            var vNormSquared = Mfs.TrigReduce[v.NormSquared().ScalarValue].Evaluate();
+            var vNormSquared = Mfs.TrigReduce[v.NormSquared().ScalarValue()].Evaluate();
 
             Console.WriteLine($@"$\left\Vert \boldsymbol{{v}}\left(t\right)\right\Vert ^{{2}} = {LaTeXComposer.GetScalarText(vNormSquared)}$");
             Console.WriteLine();
@@ -649,7 +649,7 @@ namespace GeometricAlgebraFulcrumLib.SymbolicApplications.Samples.PowerSystems.G
             //    @"2 \[Omega] (2 a^2 - b^2 - c^2) Sin[2 \[Omega] t] + 2 Sqrt[3] \[Omega] (b^2 - c^2) Cos[2 \[Omega] t]"
             //);
 
-            var vDt1NormSquared = Mfs.TrigReduce[Mfs.TrigExpand[vDt1.NormSquared().ScalarValue]].FullSimplify();
+            var vDt1NormSquared = Mfs.TrigReduce[Mfs.TrigExpand[vDt1.NormSquared().ScalarValue()]].FullSimplify();
 
             Console.WriteLine($@"$\left\Vert \boldsymbol{{v}}^{{\prime}}\left(t\right)\right\Vert ^{{2}} = {LaTeXComposer.GetScalarText(vDt1NormSquared)}$");
             Console.WriteLine();

@@ -1,24 +1,21 @@
 ﻿using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
-using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Basis;
+using DataStructuresLib.Dictionary;
+using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Restricted.Basis;
+using GeometricAlgebraFulcrumLib.Lite.ScalarAlgebra;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Multivectors.Composers;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Processors;
-using GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra;
 
 namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Multivectors
 {
     public sealed partial class RGaScalar<T> :
         RGaKVector<T>
     {
+        private readonly Scalar<T> _scalar;
+
         public override string MultivectorClassName
             => "Generic Scalar";
-
-        [NotNull]
-        public T ScalarValue
-            => Scalar.ScalarValue;
-
-        public Scalar<T> Scalar { get; }
 
         public override int Count
             => IsZero ? 0 : 1;
@@ -37,10 +34,10 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generi
         public override bool IsZero { get; }
 
         public bool IsOne
-            => ScalarProcessor.IsOne(ScalarValue);
+            => ScalarProcessor.IsOne(ScalarValue());
     
         public bool IsMinusOne
-            => ScalarProcessor.IsMinusOne(ScalarValue);
+            => ScalarProcessor.IsMinusOne(ScalarValue());
 
         public override IEnumerable<RGaBasisBlade> BasisBlades
         {
@@ -63,7 +60,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generi
         {
             get
             {
-                if (!IsZero) yield return ScalarValue;
+                if (!IsZero) yield return ScalarValue();
             }
         }
 
@@ -75,7 +72,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generi
                 if (!IsZero)
                     yield return new KeyValuePair<RGaBasisBlade, T>(
                         Processor.BasisScalar,
-                        ScalarValue
+                        ScalarValue()
                     );
             }
         }
@@ -87,7 +84,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generi
                 if (!IsZero)
                     yield return new KeyValuePair<ulong, T>(
                         0UL,
-                        ScalarValue
+                        ScalarValue()
                     );
             }
         }
@@ -101,7 +98,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generi
                 scalar.IsValid()
             );
 
-            Scalar = scalar;
+            _scalar = scalar;
             IsZero = scalar.IsZero();
         }
         
@@ -109,7 +106,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generi
         internal RGaScalar(RGaProcessor<T> processor)
             : base(processor)
         {
-            Scalar = processor.ScalarProcessor.CreateScalarZero();
+            _scalar = processor.ScalarProcessor.CreateScalarZero();
             IsZero = true;
         }
 
@@ -121,39 +118,54 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generi
                 processor.ScalarProcessor.IsValid(scalarValue)
             );
 
-            Scalar = processor.ScalarProcessor.CreateScalar(scalarValue);
-            IsZero = processor.ScalarProcessor.IsZero(ScalarValue);
+            _scalar = processor.ScalarProcessor.CreateScalar(scalarValue);
+            IsZero = processor.ScalarProcessor.IsZero(ScalarValue());
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal RGaScalar(RGaProcessor<T> processor, IReadOnlyDictionary<ulong, T> idScalarDictionary)
             : base(processor)
         {
-            Scalar = processor.ScalarProcessor.CreateScalar(
+            _scalar = processor.ScalarProcessor.CreateScalar(
                 idScalarDictionary.TryGetValue(0UL, out var scalar)
                     ? scalar
                     : processor.ScalarProcessor.ScalarZero
             );
 
             Debug.Assert(
-                Scalar.IsValid()
+                _scalar.IsValid()
             );
 
-            IsZero = Scalar.IsZero();
+            IsZero = _scalar.IsZero();
         }
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public override bool IsValid()
         {
-            return ScalarProcessor.IsValid(ScalarValue);
+            return ScalarProcessor.IsValid(ScalarValue());
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [return: NotNull]
+        public T ScalarValue()
+        {
+            return _scalar.ScalarValue;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public override Scalar<T> Scalar()
+        {
+            return _scalar;
         }
 
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public override IReadOnlyDictionary<ulong, T> GetIdScalarDictionary()
         {
-            return this;
+            return IsZero
+                ? new EmptyDictionary<ulong, T>()
+                : new SingleItemDictionary<ulong, T>(0, _scalar);
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -198,7 +210,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generi
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public RGaScalar<T> GetPart(Func<T, bool> filterFunc)
         {
-            return IsZero || filterFunc(ScalarValue) 
+            return IsZero || filterFunc(ScalarValue()) 
                 ? this 
                 : Processor.CreateZeroScalar();
         }
@@ -206,32 +218,26 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generi
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public RGaScalar<T> GetPart(Func<ulong, T, bool> filterFunc)
         {
-            return IsZero || filterFunc(0, ScalarValue) 
+            return IsZero || filterFunc(0, ScalarValue()) 
                 ? this 
                 : Processor.CreateZeroScalar();
         }
         
-
+        
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override Scalar<T> GetScalarTermScalar()
-        {
-            return Scalar;
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override Scalar<T> GetTermScalar(ulong basisBladeId)
+        public override Scalar<T> GetBasisBladeScalar(ulong basisBladeId)
         {
             return basisBladeId == 0UL
-                ? Scalar
+                ? _scalar
                 : ScalarProcessor.CreateScalarZero();
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override bool TryGetScalarTermScalar(out T scalar)
+        public override bool TryGetScalarValue(out T scalar)
         {
             if (!IsZero)
             {
-                scalar = ScalarValue;
+                scalar = ScalarValue();
                 return true;
             }
 
@@ -240,11 +246,11 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generi
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override bool TryGetTermScalar(ulong basisBlade, out T scalar)
+        public override bool TryGetBasisBladeScalarValue(ulong basisBlade, out T scalar)
         {
             if (basisBlade == 0UL)
             {
-                scalar = ScalarValue;
+                scalar = ScalarValue();
                 return true;
             }
 
@@ -263,7 +269,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generi
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private bool Equals(RGaScalar<T> other)
         {
-            return Equals(Scalar, other.Scalar);
+            return Equals(_scalar, other._scalar);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -275,13 +281,13 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generi
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public override int GetHashCode()
         {
-            return Scalar.GetHashCode();
+            return _scalar.GetHashCode();
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public override string ToString()
         {
-            return IsZero ? string.Empty : $"'{ScalarValue:G}'<>";
+            return IsZero ? string.Empty : $"'{ScalarValue():G}'<>";
         }
     }
 }

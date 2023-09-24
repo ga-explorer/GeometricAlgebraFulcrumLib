@@ -1,7 +1,6 @@
 ﻿using System;
-using System.Diagnostics;
-using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64;
-using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Space2D;
+using GeometricAlgebraFulcrumLib.Lite.LinearAlgebra;
+using GeometricAlgebraFulcrumLib.Lite.LinearAlgebra.Vectors.Space2D;
 
 namespace GeometricAlgebraFulcrumLib.Samples.Numeric
 {

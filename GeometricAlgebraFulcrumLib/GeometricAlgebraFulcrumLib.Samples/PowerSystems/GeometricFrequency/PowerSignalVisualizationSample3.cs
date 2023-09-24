@@ -2,10 +2,10 @@
 using System.Linq;
 using DataStructuresLib.Basic;
 using GeometricAlgebraFulcrumLib.Applications.PowerSystems;
-using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64;
-using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Space2D;
-using GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra;
-using GeometricAlgebraFulcrumLib.MathBase.SignalAlgebra.Composers;
+using GeometricAlgebraFulcrumLib.Lite.LinearAlgebra;
+using GeometricAlgebraFulcrumLib.Lite.LinearAlgebra.Vectors.Space2D;
+using GeometricAlgebraFulcrumLib.Lite.ScalarAlgebra;
+using GeometricAlgebraFulcrumLib.Lite.SignalAlgebra.Composers;
 using WebComposerLib.LaTeX.CodeComposer;
 
 namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GeometricFrequency

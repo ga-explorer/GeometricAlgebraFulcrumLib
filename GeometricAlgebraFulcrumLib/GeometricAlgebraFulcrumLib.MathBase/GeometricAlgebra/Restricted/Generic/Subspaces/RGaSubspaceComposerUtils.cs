@@ -1,6 +1,6 @@
 ﻿using System.Runtime.CompilerServices;
 using DataStructuresLib.IndexSets;
-using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Basis;
+using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Basis;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Multivectors;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Multivectors.Composers;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Processors;
@@ -21,7 +21,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generi
         public static RGaSubspace<T> CreateVectorSubspace<T>(this RGaProcessor<T> processor, int index)
         {
             return new RGaSubspace<T>(
-                processor.CreateVector(
+                processor.CreateTermVector(
                     index, 
                     processor.ScalarProcessor.ScalarOne
                 )
@@ -35,7 +35,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generi
                 index.BasisBivectorIndexToId();
 
             return new RGaSubspace<T>(
-                processor.CreateKVector(
+                processor.CreateTermKVector(
                     id,
                     processor.ScalarProcessor.ScalarOne
                 )
@@ -49,7 +49,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generi
                 IndexSetUtils.IndexPairToUInt64IndexSetBitPattern(index1, index2);
 
             return new RGaSubspace<T>(
-                processor.CreateKVector(
+                processor.CreateTermKVector(
                     id,
                     processor.ScalarProcessor.ScalarOne
                 )
@@ -60,7 +60,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generi
         public static RGaSubspace<T> CreateSubspace<T>(this RGaProcessor<T> processor, ulong id)
         {
             return new RGaSubspace<T>(
-                processor.CreateKVector(
+                processor.CreateTermKVector(
                     id,
                     processor.ScalarProcessor.ScalarOne
                 )
@@ -74,7 +74,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generi
                 BasisBladeUtils.BasisBladeGradeIndexToId((uint) grade, index);
 
             return new RGaSubspace<T>(
-                processor.CreateKVector(
+                processor.CreateTermKVector(
                     id,
                     processor.ScalarProcessor.ScalarOne
                 )

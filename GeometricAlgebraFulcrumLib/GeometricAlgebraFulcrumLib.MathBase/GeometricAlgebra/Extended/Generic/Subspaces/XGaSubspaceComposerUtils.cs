@@ -1,6 +1,6 @@
 ﻿using DataStructuresLib.IndexSets;
-using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Basis;
 using System.Runtime.CompilerServices;
+using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Basis;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.Multivectors;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.Processors;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.Multivectors.Composers;
@@ -21,7 +21,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.
         public static XGaSubspace<T> CreateVectorSubspace<T>(this XGaProcessor<T> processor, int index)
         {
             return new XGaSubspace<T>(
-                processor.CreateVector(index)
+                processor.CreateTermVector(index)
             );
         }
 
@@ -32,7 +32,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.
                 index.BasisBivectorIndexToId().BitPatternToUInt64IndexSet();
 
             return new XGaSubspace<T>(
-                processor.CreateKVector(
+                processor.CreateTermKVector(
                     id,
                     processor.ScalarProcessor.ScalarOne
                 )
@@ -46,7 +46,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.
                 IndexSetUtils.IndexPairToIndexSet(index1, index2);
 
             return new XGaSubspace<T>(
-                processor.CreateKVector(
+                processor.CreateTermKVector(
                     id,
                     processor.ScalarProcessor.ScalarOne
                 )
@@ -57,7 +57,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.
         public static XGaSubspace<T> CreateSubspace<T>(this XGaProcessor<T> processor, ulong id)
         {
             return new XGaSubspace<T>(
-                processor.CreateKVector(
+                processor.CreateTermKVector(
                     id.BitPatternToUInt64IndexSet(),
                     processor.ScalarProcessor.ScalarOne
                 )
@@ -71,7 +71,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.
                 BasisBladeUtils.BasisBladeGradeIndexToId((uint) grade, index).BitPatternToUInt64IndexSet();
 
             return new XGaSubspace<T>(
-                processor.CreateKVector(
+                processor.CreateTermKVector(
                     id,
                     processor.ScalarProcessor.ScalarOne
                 )
@@ -82,7 +82,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.
         public static XGaSubspace<T> CreateSubspace<T>(this XGaProcessor<T> processor, IIndexSet id)
         {
             return new XGaSubspace<T>(
-                processor.CreateKVector(
+                processor.CreateTermKVector(
                     id,
                     processor.ScalarProcessor.ScalarOne
                 )

@@ -44,7 +44,7 @@ namespace GeometricAlgebraFulcrumLib.MetaProgramming.Expressions
 
         public XGaVector<IMetaExpressionAtomic> CreateBasisVector(int index)
         {
-            return Context.XGaProcessor.CreateVector(
+            return Context.XGaProcessor.CreateTermVector(
                 index,
                 Context.GetOrDefineLiteralNumber(1)
             );
@@ -52,7 +52,7 @@ namespace GeometricAlgebraFulcrumLib.MetaProgramming.Expressions
 
         public XGaKVector<IMetaExpressionAtomic> CreateBasisBlade(ulong id)
         {
-            return Context.XGaProcessor.CreateKVector(
+            return Context.XGaProcessor.CreateTermKVector(
                 id.BitPatternToUInt64IndexSet(),
                 Context.GetOrDefineLiteralNumber(1)
             );

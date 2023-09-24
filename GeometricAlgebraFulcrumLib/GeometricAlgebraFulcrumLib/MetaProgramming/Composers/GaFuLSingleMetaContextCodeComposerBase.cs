@@ -114,7 +114,7 @@ namespace GeometricAlgebraFulcrumLib.MetaProgramming.Composers
 
         protected override void ComposeTextFiles()
         {
-            CodeFilesComposer.InitalizeFile(Context.ContextOptions.ContextName + "." + Language.DefaultFileExtension);
+            CodeFilesComposer.InitializeFile(Context.ContextOptions.ContextName + "." + Language.DefaultFileExtension);
 
             GenerateMetaContextCode();
 

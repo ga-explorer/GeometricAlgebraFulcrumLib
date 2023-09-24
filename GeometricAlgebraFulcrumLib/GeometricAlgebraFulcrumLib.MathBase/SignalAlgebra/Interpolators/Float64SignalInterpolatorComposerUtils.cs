@@ -1,11 +1,11 @@
 ﻿using System.Runtime.CompilerServices;
-using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Float64.Multivectors;
-using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.Multivectors;
+using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Extended.Float64.Multivectors;
 
 namespace GeometricAlgebraFulcrumLib.MathBase.SignalAlgebra.Interpolators
 {
     public static class Float64SignalInterpolatorComposerUtils
     {
+        
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static RGaVectorNevilleInterpolator CreateRGaNevillePolynomialInterpolator(this double samplingRate)
         {
@@ -25,18 +25,6 @@ namespace GeometricAlgebraFulcrumLib.MathBase.SignalAlgebra.Interpolators
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static ScalarPolynomialInterpolator CreateScalarPolynomialInterpolator(this Float64Signal scalarSignal)
-        {
-            return ScalarPolynomialInterpolator.Create(scalarSignal, scalarSignal.SamplingRate);
-        }
-        
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static XGaVectorPolynomialInterpolator CreatePolynomialInterpolator(this XGaVector<Float64Signal> vectorSamples, double samplingRate)
-        {
-            return XGaVectorPolynomialInterpolator.Create(vectorSamples);
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static VectorFourierInterpolator CreateFourierInterpolator(this IReadOnlyList<XGaFloat64Vector> signalSamples, double samplingRate, double energyThreshold = 0.998d)
         {
             return VectorFourierInterpolator.Create(
@@ -53,24 +41,6 @@ namespace GeometricAlgebraFulcrumLib.MathBase.SignalAlgebra.Interpolators
                 signalSamples,
                 samplingRate,
                 frequencyIndexSet
-            );
-        }
-        
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static VectorFourierInterpolator CreateFourierInterpolator(this XGaVector<Float64Signal> signalSamples, IEnumerable<int> frequencyIndexSet)
-        {
-            return VectorFourierInterpolator.Create(
-                signalSamples,
-                frequencyIndexSet
-            );
-        }
-        
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static VectorFourierInterpolator CreateFourierInterpolator(this XGaVector<Float64Signal> scalarSignal, double energyThreshold = 0.998d)
-        {
-            return VectorFourierInterpolator.Create(
-                scalarSignal,
-                energyThreshold
             );
         }
     }

@@ -488,7 +488,7 @@ namespace TextComposerLib.Files
         /// </summary>
         /// <param name="fileName"></param>
         /// <returns></returns>
-        public TextFilesComposer InitalizeFile(string fileName)
+        public TextFilesComposer InitializeFile(string fileName)
         {
             SelectFile(fileName);
 
@@ -506,7 +506,7 @@ namespace TextComposerLib.Files
         /// <param name="fileName"></param>
         /// <param name="initAction"></param>
         /// <returns></returns>
-        public TextFilesComposer InitalizeFile(string fileName, Action<TextFileComposer> initAction)
+        public TextFilesComposer InitializeFile(string fileName, Action<TextFileComposer> initAction)
         {
             SelectFile(fileName);
 

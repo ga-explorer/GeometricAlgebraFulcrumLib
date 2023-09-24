@@ -3,11 +3,11 @@ using System.IO;
 using System.Linq;
 using DataStructuresLib.Basic;
 using GeometricAlgebraFulcrumLib.Applications.PowerSystems;
+using GeometricAlgebraFulcrumLib.Lite.Geometry.Differential.Functions.Interpolators;
+using GeometricAlgebraFulcrumLib.Lite.Geometry.Parametric;
+using GeometricAlgebraFulcrumLib.Lite.ScalarAlgebra;
+using GeometricAlgebraFulcrumLib.Lite.SignalAlgebra.Composers;
 using GeometricAlgebraFulcrumLib.MathBase;
-using GeometricAlgebraFulcrumLib.MathBase.Geometry.Differential.Functions.Interpolators;
-using GeometricAlgebraFulcrumLib.MathBase.Geometry.Parametric;
-using GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra;
-using GeometricAlgebraFulcrumLib.MathBase.SignalAlgebra.Composers;
 using OfficeOpenXml;
 
 namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GeometricFrequency

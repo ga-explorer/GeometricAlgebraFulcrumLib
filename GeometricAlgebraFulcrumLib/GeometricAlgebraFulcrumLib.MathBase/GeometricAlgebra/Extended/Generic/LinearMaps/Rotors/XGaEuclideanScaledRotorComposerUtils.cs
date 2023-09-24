@@ -1,8 +1,8 @@
 ﻿using System.Diagnostics;
 using System.Runtime.CompilerServices;
+using GeometricAlgebraFulcrumLib.Lite.ScalarAlgebra;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.Multivectors;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.Processors;
-using GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra;
 
 namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.LinearMaps.Rotors
 {
@@ -43,11 +43,11 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.
 
             var processor = sourceVector.Processor;
 
-            var u1 = sourceVector[0];
-            var u2 = sourceVector[1];
+            var u1 = sourceVector.Scalar(0);
+            var u2 = sourceVector.Scalar(1);
 
-            var v1 = targetVector[0];
-            var v2 = targetVector[1];
+            var v1 = targetVector.Scalar(0);
+            var v2 = targetVector.Scalar(1);
 
             var vuDot = v1 * u1 + v2 * u2;
             var uNormSquared = u1 * u1 + u2 * u2;
@@ -88,11 +88,11 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.
         {
             var processor = sourceVector.Processor;
 
-            var u1 = sourceVector[0];
-            var u2 = sourceVector[1];
+            var u1 = sourceVector.Scalar(0);
+            var u2 = sourceVector.Scalar(1);
 
-            var v1 = targetVector[0];
-            var v2 = targetVector[1];
+            var v1 = targetVector.Scalar(0);
+            var v2 = targetVector.Scalar(1);
 
             var uNormSquared = u1 * u1 + u2 * u2;
 

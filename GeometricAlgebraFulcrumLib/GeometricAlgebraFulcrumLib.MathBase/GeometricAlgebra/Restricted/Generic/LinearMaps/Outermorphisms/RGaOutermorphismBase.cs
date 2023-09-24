@@ -1,9 +1,10 @@
 ﻿using System.Runtime.CompilerServices;
-using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Records.Restricted;
+using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Restricted;
+using GeometricAlgebraFulcrumLib.Lite.ScalarAlgebra;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Multivectors;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Processors;
+using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Records;
 using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Generic.LinearMaps;
-using GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra;
 
 namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.LinearMaps.Outermorphisms
 {
@@ -55,8 +56,19 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generi
         
         public abstract RGaHigherKVector<T> OmMap(RGaHigherKVector<T> kVector);
         
-        public abstract RGaKVector<T> OmMap(RGaKVector<T> kVector);
-        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public RGaKVector<T> OmMap(RGaKVector<T> kVector)
+        {
+            return kVector switch
+            {
+                RGaScalar<T> s => s,
+                RGaVector<T> v => OmMap(v),
+                RGaBivector<T> bv => OmMap(bv),
+                RGaHigherKVector<T> kv => OmMap(kv),
+                _ => throw new InvalidOperationException()
+            };
+        }
+
         public abstract RGaMultivector<T> OmMap(RGaMultivector<T> multivector);
         
         public abstract IEnumerable<RGaIdVectorRecord<T>> GetOmMappedBasisVectors(int vSpaceDimensions);

@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Restricted.Float64.Multivectors;
+using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Restricted.Float64.Multivectors.Composers;
+using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Restricted.Float64.Processors;
+using GeometricAlgebraFulcrumLib.Lite.ScalarAlgebra;
 using GeometricAlgebraFulcrumLib.Utilities.Extensions;
 using NUnit.Framework;
-using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Float64.Multivectors;
-using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Float64.Processors;
-using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Float64.Multivectors.Composers;
-using GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra;
 
 namespace GeometricAlgebraFulcrumLib.UnitTests.Processing
 {
@@ -166,9 +166,9 @@ namespace GeometricAlgebraFulcrumLib.UnitTests.Processing
                 Assert.IsTrue(TestDiffIsZero(i, mv => mv / _scalar));
                 Assert.IsTrue(TestDiffIsZero(i, mv => mv.Gp(mv)));
                 Assert.IsTrue(TestDiffIsZero(i, mv => mv.Gp(mv.Reverse())));
-                Assert.IsTrue(TestDiffIsZero(i, mv => mv.SpSquared().ScalarValue));
-                Assert.IsTrue(TestDiffIsZero(i, mv => mv.Norm().ScalarValue));
-                Assert.IsTrue(TestDiffIsZero(i, mv => mv.NormSquared().ScalarValue));
+                Assert.IsTrue(TestDiffIsZero(i, mv => mv.SpSquared().ScalarValue()));
+                Assert.IsTrue(TestDiffIsZero(i, mv => mv.Norm().ScalarValue()));
+                Assert.IsTrue(TestDiffIsZero(i, mv => mv.NormSquared().ScalarValue()));
 
                 for (var j = 0; j < _mvListTested.Count; j++)
                 {
@@ -178,7 +178,7 @@ namespace GeometricAlgebraFulcrumLib.UnitTests.Processing
                     Assert.IsTrue(TestDiffIsZero(i, j, (mv1, mv2) => mv1.Op(mv2)));
                     Assert.IsTrue(TestDiffIsZero(i, j, (mv1, mv2) => mv1.Gp(mv2)));
                     Assert.IsTrue(TestDiffIsZero(i, j, (mv1, mv2) => mv1.Gp(mv2.Reverse())));
-                    Assert.IsTrue(TestDiffIsZero(i, j, (mv1, mv2) => mv1.Sp(mv2).ScalarValue));
+                    Assert.IsTrue(TestDiffIsZero(i, j, (mv1, mv2) => mv1.Sp(mv2).ScalarValue()));
                     Assert.IsTrue(TestDiffIsZero(i, j, (mv1, mv2) => mv1.Lcp(mv2)));
                     Assert.IsTrue(TestDiffIsZero(i, j, (mv1, mv2) => mv1.Rcp(mv2)));
                     Assert.IsTrue(TestDiffIsZero(i, j, (mv1, mv2) => mv1.Fdp(mv2)));

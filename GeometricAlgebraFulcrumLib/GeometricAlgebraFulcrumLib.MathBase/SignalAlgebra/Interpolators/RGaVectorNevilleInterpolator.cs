@@ -1,7 +1,8 @@
 ﻿using System.Runtime.CompilerServices;
-using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Float64.Multivectors;
-using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Float64.Multivectors.Composers;
-using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Float64.Processors;
+using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Restricted.Float64.Multivectors;
+using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Restricted.Float64.Multivectors.Composers;
+using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Restricted.Float64.Processors;
+using GeometricAlgebraFulcrumLib.Lite.SignalAlgebra;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Multivectors;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Multivectors.Composers;
 using MathNet.Numerics.Interpolation;
@@ -62,7 +63,7 @@ public class RGaVectorNevilleInterpolator
         for (var j = 0; j < vSpaceDimensions; j++)
         {
             var yValues =
-                indexList.Select(i => samples[i][j]).ToArray();
+                indexList.Select(i => samples[i].Scalar(j)).ToArray();
 
             yield return NevillePolynomialInterpolation.InterpolateSorted(xValues, yValues);
         }
@@ -79,7 +80,7 @@ public class RGaVectorNevilleInterpolator
 
         for (var j = 0; j < vSpaceDimensions; j++)
         {
-            var samplesArray = samples[j].ScalarValue;
+            var samplesArray = samples.Scalar(j).ScalarValue;
 
             var yValues =
                 indexList.Select(i => samplesArray[i]).ToArray();
@@ -201,7 +202,7 @@ public class RGaVectorNevilleInterpolator
             var columnVector = Float64Signal.Create(SamplingRate, sampleCount);
 
             for (var i = 0; i < sampleCount; i++)
-                columnVector[i] = vectorList[i][j];
+                columnVector[i] = vectorList[i].Scalar(j);
 
             columnVectorArray[j] = columnVector;
         }
@@ -236,7 +237,7 @@ public class RGaVectorNevilleInterpolator
             var columnVector = Float64Signal.Create(SamplingRate, sampleCount);
 
             for (var i = 0; i < sampleCount; i++)
-                columnVector[i] = vectorList[i][j];
+                columnVector[i] = vectorList[i].Scalar(j);
 
             columnVectorArray[j] = columnVector;
         }

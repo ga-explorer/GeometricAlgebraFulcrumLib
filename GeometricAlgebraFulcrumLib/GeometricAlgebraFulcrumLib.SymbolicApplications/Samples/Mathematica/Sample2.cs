@@ -1,12 +1,12 @@
 ﻿using DataStructuresLib.Extensions;
+using GeometricAlgebraFulcrumLib.Lite.LinearAlgebra.Matrices;
+using GeometricAlgebraFulcrumLib.Lite.ScalarAlgebra;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.LinearMaps.Rotors;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Multivectors;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Multivectors.Composers;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Processors;
 using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Generic;
 using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Generic.LinearMaps;
-using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Generic.Matrices;
-using GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra;
 using GeometricAlgebraFulcrumLib.Mathematica;
 using GeometricAlgebraFulcrumLib.Mathematica.GeometricAlgebra;
 using GeometricAlgebraFulcrumLib.Mathematica.Mathematica.ExprFactory;
@@ -124,13 +124,13 @@ namespace GeometricAlgebraFulcrumLib.SymbolicApplications.Samples.Mathematica
             var unitLengthAssumption1 =
                 Mfs.And[
                     Mfs.Element[Mfs.List[u.Scalars.Cast<object>().ToArray()], Mfs.Ball[Array.Empty<object>()]],
-                    Mfs.Equal[u.ENormSquared().ScalarValue, Expr.INT_ONE]
+                    Mfs.Equal[u.ENormSquared().ScalarValue(), Expr.INT_ONE]
                 ].Evaluate();
 
             var unitLengthAssumption2 = 
                 Mfs.And[
                     Mfs.Element[Mfs.List[v.Scalars.Cast<object>().ToArray()], Mfs.Ball[Array.Empty<object>()]],
-                    Mfs.Equal[v.ENormSquared().ScalarValue, Expr.INT_ONE]
+                    Mfs.Equal[v.ENormSquared().ScalarValue(), Expr.INT_ONE]
                 ].Evaluate();
 
             var unitLengthAssumption = 
@@ -173,20 +173,20 @@ namespace GeometricAlgebraFulcrumLib.SymbolicApplications.Samples.Mathematica
 
         public static void Execute3()
         {
-            var e1 = GeometricProcessor.CreateVector(0, Expr.INT_MINUSONE);
+            var e1 = GeometricProcessor.CreateTermVector(0, Expr.INT_MINUSONE);
             var u = GeometricProcessor.CreateVector(VSpaceDimensions, i => $"Subscript[u,{i + 1}]");
             var v = GeometricProcessor.CreateVector(VSpaceDimensions, i => $"Subscript[v,{i + 1}]");
 
             var unitLengthAssumption1 =
                 Mfs.And[
                     Mfs.Element[Mfs.List[u.Scalars.Cast<object>().ToArray()], Mfs.Ball[Array.Empty<object>()]],
-                    Mfs.Equal[u.ENormSquared().ScalarValue, Expr.INT_ONE]
+                    Mfs.Equal[u.ENormSquared().ScalarValue(), Expr.INT_ONE]
                 ].Evaluate();
 
             var unitLengthAssumption2 = 
                 Mfs.And[
                     Mfs.Element[Mfs.List[v.Scalars.Cast<object>().ToArray()], Mfs.Ball[Array.Empty<object>()]],
-                    Mfs.Equal[v.ENormSquared().ScalarValue, Expr.INT_ONE]
+                    Mfs.Equal[v.ENormSquared().ScalarValue(), Expr.INT_ONE]
                 ].Evaluate();
 
             var unitLengthAssumption = 
@@ -220,7 +220,7 @@ namespace GeometricAlgebraFulcrumLib.SymbolicApplications.Samples.Mathematica
                 ScalarProcessor
                     .CreateLinUnilinearMap(
                         VSpaceDimensions,
-                        i => rotorMv.EGp(GeometricProcessor.CreateKVector((ulong) i)).MultivectorToLinVector()
+                        i => rotorMv.EGp(GeometricProcessor.CreateTermKVector((ulong) i)).MultivectorToLinVector()
                     )
                     .ToArray((int)GaSpaceDimensions)
                     .GetShallowCopy(indicesArray1, indicesArray1)
@@ -230,7 +230,7 @@ namespace GeometricAlgebraFulcrumLib.SymbolicApplications.Samples.Mathematica
                 ScalarProcessor
                     .CreateLinUnilinearMap(
                         VSpaceDimensions,
-                        i => GeometricProcessor.CreateKVector((ulong)i).EGp(rotorMvReverse).MultivectorToLinVector()
+                        i => GeometricProcessor.CreateTermKVector((ulong)i).EGp(rotorMvReverse).MultivectorToLinVector()
                     )
                     .ToArray((int)GaSpaceDimensions)
                     .GetShallowCopy(indicesArray1, indicesArray1)

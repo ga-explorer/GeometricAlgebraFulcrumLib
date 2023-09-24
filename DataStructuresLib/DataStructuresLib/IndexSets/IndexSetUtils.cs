@@ -491,5 +491,35 @@ namespace DataStructuresLib.IndexSets
                     new IndexItemRecord<T>(i, itemList[i])
                 );
         }
+
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Pair<IIndexSet> Sort(IIndexSet a, IIndexSet b)
+        {
+            return a.CompareTo(b) <= 0
+                ? new Pair<IIndexSet>(a, b)
+                : new Pair<IIndexSet>(b, a);
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Triplet<IIndexSet> Sort(IIndexSet a, IIndexSet b, IIndexSet c)
+        {
+            if (a.CompareTo(b) <= 0)
+            {
+                if (b.CompareTo(c) <= 0)
+                    return new Triplet<IIndexSet>(a, b, c);
+
+                return a.CompareTo(c) <= 0
+                    ? new Triplet<IIndexSet>(a, c, b)
+                    : new Triplet<IIndexSet>(c, a, b);
+            }
+
+            if (a.CompareTo(c) <= 0)
+                return new Triplet<IIndexSet>(b, a, c);
+
+            return b.CompareTo(c) <= 0
+                ? new Triplet<IIndexSet>(b, c, a)
+                : new Triplet<IIndexSet>(c, b, a);
+        }
     }
 }

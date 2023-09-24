@@ -1,7 +1,7 @@
 ﻿using System.Runtime.CompilerServices;
-using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Float64.Multivectors;
-using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Float64.Multivectors.Composers;
-using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Float64.Processors;
+using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Extended.Float64.Multivectors;
+using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Extended.Float64.Multivectors.Composers;
+using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Extended.Float64.Processors;
 using MathNet.Numerics.Interpolation;
 
 namespace GeometricAlgebraFulcrumLib.MathBase.SignalAlgebra.Interpolators
@@ -63,7 +63,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.SignalAlgebra.Interpolators
             for (var j = 0; j < vSpaceDimensions; j++)
             {
                 var yValues =
-                    indexList.Select(i => samples[i][j]).ToArray();
+                    indexList.Select(i => samples[i].Scalar(j)).ToArray();
 
                 //yield return Fit.Polynomial(xValues, yValues, 3, DirectRegressionMethod.QR);
                 yield return NevillePolynomialInterpolation.InterpolateSorted(xValues, yValues);

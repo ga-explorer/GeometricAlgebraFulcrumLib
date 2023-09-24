@@ -3,10 +3,10 @@ using System.Runtime.CompilerServices;
 using DataStructuresLib.Dictionary;
 using DataStructuresLib.Extensions;
 using DataStructuresLib.IndexSets;
-using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Basis;
+using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Extended.Basis;
+using GeometricAlgebraFulcrumLib.Lite.ScalarAlgebra;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.Multivectors.Composers;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.Processors;
-using GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra;
 using TextComposerLib.Text;
 
 namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.Multivectors
@@ -101,6 +101,14 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public Scalar<T> GetTermScalarByIndex(int index)
+        {
+            var id = index.IndexToIndexSet();
+
+            return GetBasisBladeScalar(id);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public override XGaScalar<T> GetScalarPart()
         {
             return Processor.CreateZeroScalar();
@@ -181,30 +189,29 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.
             => _idScalarDictionary.Keys.Select(Processor.CreateBasisBlade);
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override Scalar<T> GetScalarTermScalar()
+        public override Scalar<T> Scalar()
         {
             return ScalarProcessor.CreateScalarZero();
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override Scalar<T> GetTermScalar(IIndexSet basisBladeId)
+        public override Scalar<T> GetBasisBladeScalar(IIndexSet basisBladeId)
         {
-            return basisBladeId.IsSingleIndexSet &&
-                   _idScalarDictionary.TryGetValue(basisBladeId, out var scalar)
+            return _idScalarDictionary.TryGetValue(basisBladeId, out var scalar)
                 ? ScalarProcessor.CreateScalar(scalar)
                 : ScalarProcessor.CreateScalarZero();
         }
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override bool TryGetScalarTermScalar(out T scalar)
+        public override bool TryGetScalarValue(out T scalar)
         {
             scalar = ScalarProcessor.ScalarZero;
             return false;
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override bool TryGetTermScalar(IIndexSet basisBladeId, out T scalar)
+        public override bool TryGetBasisBladeScalarValue(IIndexSet basisBladeId, out T scalar)
         {
             if (basisBladeId.IsSingleIndexSet && _idScalarDictionary.TryGetValue(basisBladeId, out scalar))
                 return true;

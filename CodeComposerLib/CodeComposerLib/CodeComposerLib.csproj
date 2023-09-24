@@ -6,11 +6,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="AngleSharp" Version="1.0.3" />
-    <PackageReference Include="CS-Script" Version="4.6.5" />
+    <PackageReference Include="AngleSharp" Version="1.0.4" />
+    <PackageReference Include="CS-Script" Version="4.8.1" />
     <PackageReference Include="Irony.Interpreter.NetCore" Version="1.1.11" />
     <PackageReference Include="Irony.NetCore" Version="1.1.11" />
-    <PackageReference Include="Magick.NET-Q16-x64" Version="13.1.3" />
+    <PackageReference Include="Magick.NET-Q16-x64" Version="13.3.0" />
     <PackageReference Include="System.Drawing.Common" Version="7.0.0" />
     <PackageReference Include="System.Drawing.Primitives" Version="4.3.0" />
   </ItemGroup>

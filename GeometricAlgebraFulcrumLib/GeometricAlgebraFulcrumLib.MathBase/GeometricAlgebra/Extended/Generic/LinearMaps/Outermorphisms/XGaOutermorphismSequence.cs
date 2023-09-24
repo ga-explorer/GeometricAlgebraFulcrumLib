@@ -176,13 +176,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.
         {
             return _outermorphismList.OmMap(kVector).GetHigherKVectorPart(kVector.Grade);
         }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override XGaKVector<T> OmMap(XGaKVector<T> kVector)
-        {
-            return _outermorphismList.OmMap(kVector);
-        }
-
+        
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public override XGaMultivector<T> OmMap(XGaMultivector<T> multivector)
         {

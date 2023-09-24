@@ -1,6 +1,6 @@
-﻿using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Basis;
+﻿using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Basis;
+using GeometricAlgebraFulcrumLib.Lite.ScalarAlgebra;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Processors;
-using GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra;
 
 namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Multivectors.ProductIterators
 {
@@ -103,7 +103,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generi
         {
             foreach (var (id, scalar1) in Multivector1.IdScalarPairs)
             {
-                if (!Multivector2.TryGetTermScalar(id, out var scalar2))
+                if (!Multivector2.TryGetBasisBladeScalarValue(id, out var scalar2))
                     continue;
 
                 var scalar = id.EGpSquaredIsNegative()
@@ -118,7 +118,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generi
         {
             foreach (var (id, scalar1) in Multivector1.IdScalarPairs)
             {
-                if (!Multivector2.TryGetTermScalar(id, out var scalar2))
+                if (!Multivector2.TryGetBasisBladeScalarValue(id, out var scalar2))
                     continue;
 
                 var scalar = id.EGpSquaredIsNegative()
@@ -258,7 +258,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generi
                 if (basisSignature.IsZero)
                     continue;
 
-                if (!Multivector2.TryGetTermScalar(id, out var scalar2))
+                if (!Multivector2.TryGetBasisBladeScalarValue(id, out var scalar2))
                     continue;
 
                 var scalar = basisSignature.IsNegative
@@ -279,7 +279,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generi
                 if (basisSignature.IsZero)
                     continue;
 
-                if (!Multivector2.TryGetTermScalar(id, out var scalar2))
+                if (!Multivector2.TryGetBasisBladeScalarValue(id, out var scalar2))
                     continue;
 
                 var scalar = basisSignature.IsNegative

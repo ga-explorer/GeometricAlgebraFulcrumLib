@@ -1,13 +1,14 @@
-﻿using System.Collections;
-using System.Runtime.CompilerServices;
+﻿using System.Runtime.CompilerServices;
 using DataStructuresLib.BitManipulation;
-using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Basis;
-using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Records.Restricted;
+using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Basis;
+using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Restricted;
+using GeometricAlgebraFulcrumLib.Lite.ScalarAlgebra;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Multivectors;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Multivectors.Composers;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Processors;
+using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Records;
+using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Generic;
 using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Generic.LinearMaps;
-using GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra;
 
 namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.LinearMaps.Outermorphisms
 {
@@ -18,8 +19,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generi
     /// </summary>
     /// <typeparam name="T"></typeparam>
     public sealed class RGaDiagonalOutermorphism<T> : 
-        IRGaAutomorphism<T>,
-        IReadOnlyDictionary<ulong, T>
+        IRGaAutomorphism<T>
     {
         public RGaProcessor<T> Processor 
             => DiagonalVector.Processor;
@@ -32,18 +32,6 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generi
 
         public RGaVector<T> DiagonalVector { get; }
         
-        public int Count 
-            => DiagonalVector.Count;
-        
-        public T this[ulong key] 
-            => DiagonalVector[key];
-
-        public IEnumerable<ulong> Keys 
-            => DiagonalVector.Keys;
-
-        public IEnumerable<T> Values 
-            => DiagonalVector.Values;
-
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal RGaDiagonalOutermorphism(RGaVector<T> diagonalVector)
@@ -52,18 +40,6 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generi
         }
 
         
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public bool ContainsKey(ulong key)
-        {
-            return DiagonalVector.ContainsKey(key);
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public bool TryGetValue(ulong key, out T value)
-        {
-            return DiagonalVector.TryGetValue(key, out value);
-        }
-
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public IRGaOutermorphism<T> GetOmAdjoint()
         {
@@ -75,8 +51,8 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generi
         {
             var id = index.BasisVectorIndexToId();
 
-            return DiagonalVector.TryGetTermScalar(id, out var scalar)
-                ? Processor.CreateVector(index, scalar)
+            return DiagonalVector.TryGetBasisBladeScalarValue(id, out var scalar)
+                ? Processor.CreateTermVector(index, scalar)
                 : Processor.CreateZeroVector();
         }
         
@@ -88,14 +64,14 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generi
 
             var id1 = index1.BasisVectorIndexToId();
 
-            if (!DiagonalVector.TryGetTermScalar(id1, out var scalar1))
+            if (!DiagonalVector.TryGetBasisBladeScalarValue(id1, out var scalar1))
                 return Processor.CreateZeroBivector();
 
             var id2 = index2.BasisVectorIndexToId();
 
-            return !DiagonalVector.TryGetTermScalar(id2, out var scalar2)
+            return !DiagonalVector.TryGetBasisBladeScalarValue(id2, out var scalar2)
                 ? Processor.CreateZeroBivector()
-                : Processor.CreateBivector(
+                : Processor.CreateTermBivector(
                     BasisBivectorUtils.IndexPairToBivectorId(index1, index2), 
                     ScalarProcessor.Times(scalar1, scalar2)
                 );
@@ -120,13 +96,13 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generi
 
             foreach (var index in id.PatternToPositions())
             {
-                if (!DiagonalVector.TryGetTermScalar(index.BasisVectorIndexToId(), out var s))
+                if (!DiagonalVector.TryGetBasisBladeScalarValue(index.BasisVectorIndexToId(), out var s))
                     return Processor.CreateZeroScalar();
 
                 scalar = ScalarProcessor.Times(scalar, s);
             }
             
-            return Processor.CreateKVector(id, scalar);
+            return Processor.CreateTermKVector(id, scalar);
         }
         
 
@@ -134,11 +110,11 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generi
         {
             var composer = Processor.CreateComposer();
 
-            if (Count <= vector.Count)
+            if (DiagonalVector.Count <= vector.Count)
             {
                 foreach (var (id, mv) in DiagonalVector)
                 {
-                    if (!vector.TryGetTermScalar(id, out var scalar))
+                    if (!vector.TryGetBasisBladeScalarValue(id, out var scalar))
                         continue;
 
                     composer.AddTerm(id, mv, scalar);
@@ -194,22 +170,18 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generi
 
             return composer.GetHigherKVector(kVector.Grade);
         }
-
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public RGaKVector<T> OmMap(RGaKVector<T> kVector)
         {
-            var composer = Processor.CreateComposer();
-
-            foreach (var (id, scalar) in kVector)
+            return kVector switch
             {
-                var mv = OmMapBasisBlade(id);
-
-                if (mv.IsZero)
-                    continue;
-
-                composer.AddMultivector(mv, scalar);
-            }
-
-            return composer.GetKVector(kVector.Grade);
+                RGaScalar<T> s => s,
+                RGaVector<T> v => OmMap(v),
+                RGaBivector<T> bv => OmMap(bv),
+                RGaHigherKVector<T> kv => OmMap(kv),
+                _ => throw new InvalidOperationException()
+            };
         }
 
         public RGaMultivector<T> OmMap(RGaMultivector<T> multivector)
@@ -285,17 +257,15 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generi
 
         public LinUnilinearMap<T> GetVectorMapPart(int vSpaceDimensions)
         {
-            throw new NotImplementedException();
-        }
+            var indexVectorDictionary =
+                DiagonalVector
+                    .Where(p => p.Key.FirstOneBitPosition() < vSpaceDimensions)
+                    .ToDictionary(
+                        p => p.Key.FirstOneBitPosition(),
+                        p => ScalarProcessor.CreateLinVector(p.Key.FirstOneBitPosition(), p.Value)
+                    );
 
-        public IEnumerator<KeyValuePair<ulong, T>> GetEnumerator()
-        {
-            return DiagonalVector.GetEnumerator();
-        }
-
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
+            return ScalarProcessor.CreateLinUnilinearMap(indexVectorDictionary);
         }
     }
 }

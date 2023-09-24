@@ -1,11 +1,11 @@
 ﻿using System.Runtime.CompilerServices;
-using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Basis;
-using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Float64.Multivectors;
-using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Float64.Multivectors.Composers;
-using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Float64.Processors;
+using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Basis;
+using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Restricted.Float64.Multivectors;
+using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Restricted.Float64.Multivectors.Composers;
+using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Restricted.Float64.Processors;
+using GeometricAlgebraFulcrumLib.Lite.ScalarAlgebra;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Multivectors.Composers;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Processors;
-using GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra;
 
 namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Multivectors
 {
@@ -68,13 +68,13 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generi
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static RGaUniformMultivector<T> operator *(RGaUniformMultivector<T> v1, RGaScalar<T> v2)
         {
-            return v1.Times(v2.ScalarValue);
+            return v1.Times(v2.ScalarValue());
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static RGaUniformMultivector<T> operator *(RGaScalar<T> v1, RGaUniformMultivector<T> v2)
         {
-            return v2.Times(v1.ScalarValue);
+            return v2.Times(v1.ScalarValue());
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -294,25 +294,25 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generi
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public RGaUniformMultivector<T> DivideByENorm()
         {
-            return Divide(ENorm().ScalarValue);
+            return Divide(ENorm().ScalarValue());
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public RGaUniformMultivector<T> DivideByENormSquared()
         {
-            return Divide(ENormSquared().ScalarValue);
+            return Divide(ENormSquared().ScalarValue());
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public RGaUniformMultivector<T> DivideByNorm()
         {
-            return Divide(Norm().ScalarValue);
+            return Divide(Norm().ScalarValue());
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public RGaUniformMultivector<T> DivideByNormSquared()
         {
-            return Divide(NormSquared().ScalarValue);
+            return Divide(NormSquared().ScalarValue());
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -357,7 +357,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generi
         public RGaUniformMultivector<T> EInverse()
         {
             return Reverse().Divide(
-                ENormSquared().ScalarValue
+                ENormSquared().ScalarValue()
             );
         }
 
@@ -365,7 +365,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generi
         public RGaUniformMultivector<T> Inverse()
         {
             return Reverse().Divide(
-                NormSquared().ScalarValue
+                NormSquared().ScalarValue()
             );
         }
         
@@ -375,7 +375,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generi
             var kVectorConjugate = Conjugate();
 
             return kVectorConjugate.Divide(
-                kVectorConjugate.Sp(this).ScalarValue
+                kVectorConjugate.Sp(this).ScalarValue()
             );
         }
         

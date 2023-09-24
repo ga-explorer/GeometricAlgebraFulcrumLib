@@ -1,8 +1,8 @@
 ﻿using System.Runtime.CompilerServices;
 using DataStructuresLib.IndexSets;
-using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Basis;
-using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Float64.Multivectors;
-using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Float64.Processors;
+using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Basis;
+using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Extended.Float64.Multivectors;
+using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Extended.Float64.Processors;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.Multivectors.Composers;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.Processors;
 
@@ -10,6 +10,18 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.
 {
     public static class XGaKVectorUtils
     {
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static bool IsNearBlade<T>(this XGaKVector<T> kv)
+        {
+            return kv
+                .Gp(kv.Reverse())
+                .GetKVectorParts()
+                .All(kv1 => 
+                    kv1.Grade == 0 || kv1.IsNearZero()
+                );
+        }
+
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static XGaKVector<T> GetPart<T>(this XGaKVector<T> mv, Func<IIndexSet, bool> filterFunc)
         {
@@ -380,6 +392,23 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.
                 (XGaKVector<T>)mvList.First(),
                 (current, mv) => current.Op(mv)
             );
+        }
+        
+        public static XGaKVector<T> SpanToBlade<T>(this XGaProcessor<T> processor, IEnumerable<XGaVector<T>> mvList)
+        {
+            var blade = (XGaKVector<T>) processor.CreateOneScalar();
+
+            foreach (var vector in mvList)
+            {
+                var newBlade = blade.Op(vector);
+
+                if (newBlade.IsNearZero())
+                    continue;
+
+                blade = newBlade;
+            }
+
+            return blade;
         }
 
     }

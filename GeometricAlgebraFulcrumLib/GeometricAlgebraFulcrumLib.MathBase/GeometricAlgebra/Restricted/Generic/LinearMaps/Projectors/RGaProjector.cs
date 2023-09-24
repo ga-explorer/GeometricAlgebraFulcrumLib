@@ -1,10 +1,10 @@
 ﻿using System.Runtime.CompilerServices;
-using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Basis;
-using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Records.Restricted;
+using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Basis;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.LinearMaps.Outermorphisms;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Multivectors;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Multivectors.Composers;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Processors;
+using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Records;
 using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Generic.LinearMaps;
 
 namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.LinearMaps.Projectors
@@ -22,10 +22,10 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generi
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal RGaProjector(RGaKVector<T> blade)
+        internal RGaProjector(RGaKVector<T> blade, bool useBladeInverse)
         {
             Blade = blade;
-            BladePseudoInverse = blade.PseudoInverse();
+            BladePseudoInverse = useBladeInverse ? blade.PseudoInverse() : blade;
         }
 
 
@@ -62,7 +62,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generi
         public override RGaKVector<T> OmMapBasisBlade(ulong id)
         {
             return OmMap(
-                Processor.CreateKVector(
+                Processor.CreateTermKVector(
                     id, 
                     ScalarProcessor.ScalarOne
                 )
@@ -72,31 +72,25 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generi
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public override RGaVector<T> OmMap(RGaVector<T> vector)
         {
-            return vector.Lcp(BladePseudoInverse).Lcp(Blade).GetVectorPart();
+            return vector.Fdp(BladePseudoInverse).Gp(Blade).GetVectorPart();
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public override RGaBivector<T> OmMap(RGaBivector<T> bivector)
         {
-            return bivector.Lcp(BladePseudoInverse).Lcp(Blade).GetBivectorPart();
+            return bivector.Fdp(BladePseudoInverse).Gp(Blade).GetBivectorPart();
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public override RGaHigherKVector<T> OmMap(RGaHigherKVector<T> kVector)
         {
-            return kVector.Lcp(BladePseudoInverse).Lcp(Blade).GetHigherKVectorPart(kVector.Grade);
+            return kVector.Fdp(BladePseudoInverse).Gp(Blade).GetHigherKVectorPart(kVector.Grade);
         }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override RGaKVector<T> OmMap(RGaKVector<T> kVector)
-        {
-            return kVector.Lcp(BladePseudoInverse).Lcp(Blade);
-        }
-
+        
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public override RGaMultivector<T> OmMap(RGaMultivector<T> multivector)
         {
-            return multivector.Lcp(BladePseudoInverse).Lcp(Blade);
+            return multivector.Fdp(BladePseudoInverse).Gp(Blade);
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -108,7 +102,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generi
                     new RGaIdVectorRecord<T>(
                         id,
                         OmMap(
-                            Processor.CreateVector(id, ScalarProcessor.ScalarOne)
+                            Processor.CreateTermVector(id, ScalarProcessor.ScalarOne)
                         )
                     )
                 ).Where(r => !r.Vector.IsZero);

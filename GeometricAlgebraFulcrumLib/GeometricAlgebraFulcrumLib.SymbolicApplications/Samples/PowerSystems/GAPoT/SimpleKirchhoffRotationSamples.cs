@@ -1,13 +1,13 @@
 ﻿using System.Diagnostics;
 using DataStructuresLib.BitManipulation;
 using GAPoTNumLib.Text.Linear;
+using GeometricAlgebraFulcrumLib.Lite.LinearAlgebra;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.LinearMaps.Outermorphisms;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.Processors;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.LinearMaps.Rotors;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Multivectors;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Multivectors.Composers;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Processors;
-using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64;
 using GeometricAlgebraFulcrumLib.Mathematica;
 using GeometricAlgebraFulcrumLib.Mathematica.GeometricAlgebra;
 using GeometricAlgebraFulcrumLib.Mathematica.Mathematica;
@@ -215,7 +215,7 @@ namespace GeometricAlgebraFulcrumLib.Applications.PowerSystems
                     scalarProcessor.CreateEuclideanRGaProcessor();
 
                 var u =
-                    geometricProcessor.CreateVector(n - 1);
+                    geometricProcessor.CreateTermVector(n - 1);
 
                 var k =
                     geometricProcessor.CreateSymmetricVector(n);
@@ -227,7 +227,7 @@ namespace GeometricAlgebraFulcrumLib.Applications.PowerSystems
                     v.Sp(u);
 
                 var angle =
-                    Mfs.Minus[dot1.ArcCos().ScalarValue].EvaluateToDouble().RadiansToAngle();
+                    Mfs.Minus[dot1.ArcCos().ScalarValue()].EvaluateToDouble().RadiansToAngle();
 
                 var rotor =
                     u.CreatePureRotor(v);
@@ -288,7 +288,7 @@ namespace GeometricAlgebraFulcrumLib.Applications.PowerSystems
                     scalarProcessor.CreateEuclideanRGaProcessor();
 
                 var u =
-                    geometricProcessor.CreateVector(n - 1);
+                    geometricProcessor.CreateTermVector(n - 1);
 
                 //var v = 
                 //    geometricProcessor.CreateVector(
@@ -382,7 +382,7 @@ namespace GeometricAlgebraFulcrumLib.Applications.PowerSystems
 
             for (var i = 0; i < n; i++)
             {
-                var u = geometricProcessor.CreateVector(i);
+                var u = geometricProcessor.CreateTermVector(i);
                 var v = k;
 
                 var rotor =
@@ -397,9 +397,9 @@ namespace GeometricAlgebraFulcrumLib.Applications.PowerSystems
                     rotor.OmMap(x);
 
                 var psInv = x.Op(u).Op(v).Inverse();
-                var a = u.Op(v).Lcp(psInv).Sp(y1).Scalar.FullSimplifyScalar();
-                var b = v.Op(x).Lcp(psInv).Sp(y1).Scalar.FullSimplifyScalar();
-                var c = x.Op(u).Lcp(psInv).Sp(y1).Scalar.FullSimplifyScalar();
+                var a = u.Op(v).Lcp(psInv).Sp(y1).Scalar().FullSimplifyScalar();
+                var b = v.Op(x).Lcp(psInv).Sp(y1).Scalar().FullSimplifyScalar();
+                var c = x.Op(u).Lcp(psInv).Sp(y1).Scalar().FullSimplifyScalar();
 
                 //var r = ((b - c) / 2).FullSimplify();
                 //var s = (-(b + c) / 2).FullSimplify();
@@ -514,7 +514,7 @@ namespace GeometricAlgebraFulcrumLib.Applications.PowerSystems
                     geometricProcessor.CreateScalar($"Subscript[x, {i + 1}]".ToExpr());
 
                 var ei =
-                    geometricProcessor.CreateVector(i);
+                    geometricProcessor.CreateTermVector(i);
 
                 var yi =
                     rotor.OmMap(ei);

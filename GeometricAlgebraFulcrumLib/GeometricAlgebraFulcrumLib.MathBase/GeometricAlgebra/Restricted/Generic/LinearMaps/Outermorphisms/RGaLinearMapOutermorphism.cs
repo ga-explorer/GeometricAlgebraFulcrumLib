@@ -1,10 +1,10 @@
 ﻿using System.Runtime.CompilerServices;
 using DataStructuresLib.BitManipulation;
-using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Basis;
-using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Records.Restricted;
+using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Basis;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Multivectors;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Multivectors.Composers;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Processors;
+using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Records;
 using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Generic.LinearMaps;
 
 namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.LinearMaps.Outermorphisms
@@ -59,7 +59,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generi
         public override RGaKVector<T> OmMapBasisBlade(ulong id)
         {
             if (id == 0UL)
-                return Processor.CreateZeroScalar();
+                return Processor.CreateOneScalar();
 
             return id.IsBasisVector() 
                 ? OmMapBasisVector(id.FirstOneBitPosition())
@@ -105,19 +105,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generi
             
             return composer.GetHigherKVector(kVector.Grade);
         }
-
-        public override RGaKVector<T> OmMap(RGaKVector<T> kVector)
-        {
-            return kVector switch
-            {
-                RGaScalar<T> => Processor.CreateOneScalar(),
-                RGaVector<T> v => OmMap(v),
-                RGaBivector<T> bv => OmMap(bv),
-                RGaHigherKVector<T> kv => OmMap(kv),
-                _ => throw new InvalidOperationException()
-            };
-        }
-
+        
         public override RGaMultivector<T> OmMap(RGaMultivector<T> multivector)
         {
             var composer = Processor.CreateComposer();

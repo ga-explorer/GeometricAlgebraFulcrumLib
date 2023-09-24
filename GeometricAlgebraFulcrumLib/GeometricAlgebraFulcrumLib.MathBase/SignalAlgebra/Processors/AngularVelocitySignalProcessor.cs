@@ -1,10 +1,11 @@
 ﻿using System.Diagnostics;
 using DataStructuresLib.Basic;
-using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended;
+using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Extended;
+using GeometricAlgebraFulcrumLib.Lite.ScalarAlgebra;
+using GeometricAlgebraFulcrumLib.Lite.SignalAlgebra;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.Frames;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.Multivectors;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.Processors;
-using GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra;
 
 namespace GeometricAlgebraFulcrumLib.MathBase.SignalAlgebra.Processors
 {
@@ -123,7 +124,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.SignalAlgebra.Processors
                 ArcLengthFramesOrthogonal;
 
             var u2Norm = 
-                u2.Norm().ScalarValue;
+                u2.Norm().ScalarValue();
         
             Curvatures = 
                 (sDt1 * u2Norm).MapSamples(s => s.NaNToZero());

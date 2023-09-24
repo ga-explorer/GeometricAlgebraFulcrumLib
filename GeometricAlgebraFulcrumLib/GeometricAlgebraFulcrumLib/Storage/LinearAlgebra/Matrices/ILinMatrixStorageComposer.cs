@@ -1,4 +1,4 @@
-﻿using GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra;
+﻿using GeometricAlgebraFulcrumLib.Lite.ScalarAlgebra;
 
 namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices
 {

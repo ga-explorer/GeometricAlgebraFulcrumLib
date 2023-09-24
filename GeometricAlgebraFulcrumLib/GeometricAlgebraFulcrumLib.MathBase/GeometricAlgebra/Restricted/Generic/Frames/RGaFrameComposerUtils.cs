@@ -14,7 +14,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generi
         public static RGaBasisVectorFrame<T> CreateBasisVectorFrame<T>(this RGaProcessor<T> processor, int vSpaceDimensions)
         {
             return RGaBasisVectorFrame<T>.Create(
-                vSpaceDimensions.GetRange(processor.CreateVector)
+                vSpaceDimensions.GetRange(processor.CreateTermVector)
             );
         }
         
@@ -72,7 +72,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generi
             var vectorsList =
                 vSpaceDimensions
                     .GetRange()
-                    .Select(processor.CreateVector);
+                    .Select(processor.CreateTermVector);
 
             return RGaVectorFrame<T>.Create(
                 RGaVectorFrameSpecs.CreateUnitBasisSpecs(),
@@ -86,7 +86,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generi
             var vectorsList =
                 vSpaceDimensions
                     .GetRange()
-                    .Select(index => processor.CreateVector(index, scalingFactor));
+                    .Select(index => processor.CreateTermVector(index, scalingFactor));
 
             return RGaVectorFrame<T>.Create(
                 RGaVectorFrameSpecs.CreateScaledBasisSpecs(),
@@ -101,7 +101,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generi
 
             // Create ones-vector
             var onesVector = processor.CreateSymmetricUnitVector(vSpaceDimensions1);
-            var basisVector = processor.CreateVector(vSpaceDimensions);
+            var basisVector = processor.CreateTermVector(vSpaceDimensions);
 
             // Find a rotor that rotates the ones vector into the last basis vector
             var rotor = onesVector.CreatePureRotor(
@@ -121,7 +121,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generi
                     .Select(index =>
                         rotor.OmMap(
                             hyperSubspace.Project(
-                                processor.CreateVector(index, scalingFactor)
+                                processor.CreateTermVector(index, scalingFactor)
                             )
                         ).GetVectorPart(i => i < vSpaceDimensions)
                     );

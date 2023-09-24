@@ -1,7 +1,7 @@
 ﻿using System.Runtime.CompilerServices;
 using DataStructuresLib.Basic;
+using GeometricAlgebraFulcrumLib.Lite.ScalarAlgebra;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Multivectors.Composers;
-using GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra;
 
 namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Multivectors
 {
@@ -155,13 +155,13 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generi
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static RGaKVector<T> operator *(RGaKVector<T> mv1, RGaScalar<T> mv2)
         {
-            return mv1.Times(mv2.ScalarValue);
+            return mv1.Times(mv2.ScalarValue());
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static RGaKVector<T> operator *(RGaScalar<T> mv1, RGaKVector<T> mv2)
         {
-            return mv2.Times(mv1.ScalarValue);
+            return mv2.Times(mv1.ScalarValue());
         }
 
 
@@ -237,7 +237,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generi
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static RGaKVector<T> operator /(RGaKVector<T> mv1, RGaScalar<T> mv2)
         {
-            return mv1.Divide(mv2.ScalarValue);
+            return mv1.Divide(mv2.ScalarValue());
         }
         
         

@@ -1,9 +1,9 @@
 ﻿using System.Runtime.CompilerServices;
 using DataStructuresLib.Dictionary;
-using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Basis;
-using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Basis;
+using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Basis;
+using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Restricted.Basis;
+using GeometricAlgebraFulcrumLib.Lite.ScalarAlgebra;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Processors;
-using GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra;
 
 namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Multivectors.Composers
 {
@@ -15,8 +15,9 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generi
             return new RGaHigherKVector<T>(processor, grade);
         }
 
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static RGaHigherKVector<T> CreateHigherKVector<T>(this RGaProcessor<T> processor, ulong id)
+        public static RGaHigherKVector<T> CreateTermHigherKVector<T>(this RGaProcessor<T> processor, ulong id)
         {
             var grade = id.Grade();
 
@@ -29,7 +30,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generi
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static RGaHigherKVector<T> CreateHigherKVector<T>(this RGaProcessor<T> processor, ulong id, T scalar)
+        public static RGaHigherKVector<T> CreateTermHigherKVector<T>(this RGaProcessor<T> processor, ulong id, T scalar)
         {
             var grade = id.Grade();
 
@@ -39,7 +40,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generi
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static RGaHigherKVector<T> CreateHigherKVector<T>(this RGaProcessor<T> processor, KeyValuePair<ulong, T> term)
+        public static RGaHigherKVector<T> CreateTermHigherKVector<T>(this RGaProcessor<T> processor, KeyValuePair<ulong, T> term)
         {
             var (id, scalar) = term;
 
@@ -50,6 +51,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generi
                 : new RGaHigherKVector<T>(processor, grade, new SingleItemDictionary<ulong, T>(id, scalar));
         }
 
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static RGaHigherKVector<T> CreateHigherKVector<T>(this RGaProcessor<T> processor, int grade, IReadOnlyDictionary<ulong, T> basisScalarDictionary)
         {
@@ -57,7 +59,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generi
                 return processor.CreateZeroHigherKVector(grade);
 
             if (basisScalarDictionary.Count == 1 && basisScalarDictionary is not SingleItemDictionary<ulong, T>)
-                return processor.CreateHigherKVector(basisScalarDictionary.First());
+                return processor.CreateTermHigherKVector(basisScalarDictionary.First());
 
             return new RGaHigherKVector<T>(
                 processor,
@@ -82,8 +84,9 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generi
             };
         }
 
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static RGaKVector<T> CreateKVector<T>(this RGaProcessor<T> processor, KeyValuePair<ulong, T> term)
+        public static RGaKVector<T> CreateTermKVector<T>(this RGaProcessor<T> processor, KeyValuePair<ulong, T> term)
         {
             var grade = term.Key.Grade();
 
@@ -97,51 +100,34 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generi
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static RGaKVector<T> CreateKVector<T>(this RGaProcessor<T> processor, int grade, IReadOnlyDictionary<ulong, T> basisScalarDictionary)
+        public static RGaKVector<T> CreateTermKVector<T>(this RGaProcessor<T> processor, ulong basisBlade)
         {
-            if (basisScalarDictionary.Count == 0 && basisScalarDictionary is not EmptyDictionary<ulong, T>)
-                return processor.CreateZeroKVector(grade);
-
-            if (basisScalarDictionary.Count == 1 && basisScalarDictionary is not SingleItemDictionary<ulong, T>)
-                return processor.CreateKVector(basisScalarDictionary.First());
-
-            return grade switch
-            {
-                0 => new RGaScalar<T>(processor, basisScalarDictionary),
-                1 => new RGaVector<T>(processor, basisScalarDictionary),
-                2 => new RGaBivector<T>(processor, basisScalarDictionary),
-                _ => new RGaHigherKVector<T>(processor, grade, basisScalarDictionary)
-            };
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static RGaKVector<T> CreateKVector<T>(this RGaProcessor<T> processor, ulong basisBlade)
-        {
-            return processor.CreateKVector(
+            return processor.CreateTermKVector(
                 new KeyValuePair<ulong, T>(basisBlade, processor.ScalarProcessor.ScalarOne)
             );
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static RGaKVector<T> CreateKVector<T>(this RGaProcessor<T> processor, ulong basisBlade, T scalar)
+        public static RGaKVector<T> CreateTermKVector<T>(this RGaProcessor<T> processor, ulong basisBlade, T scalar)
         {
             var grade = basisBlade.Grade();
 
             if (processor.ScalarProcessor.IsZero(scalar))
                 return processor.CreateZeroKVector(grade);
 
-            return processor.CreateKVector(
+            return processor.CreateTermKVector(
 
                 new KeyValuePair<ulong, T>(basisBlade, scalar)
             );
         }
+
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static RGaKVector<T> CreatePseudoScalar<T>(this RGaProcessor<T> processor, int vSpaceDimensions)
         {
             var id = processor.GetBasisPseudoScalarId(vSpaceDimensions);
 
-            return processor.CreateKVector(
+            return processor.CreateTermKVector(
 
                 new KeyValuePair<ulong, T>(id, processor.ScalarProcessor.ScalarOne)
             );
@@ -152,7 +138,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generi
         {
             var id = processor.GetBasisPseudoScalarId(vSpaceDimensions);
 
-            return processor.CreateKVector(
+            return processor.CreateTermKVector(
 
                 new KeyValuePair<ulong, T>(id, scalarValue)
             );
@@ -168,7 +154,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generi
                     ? processor.ScalarProcessor.ScalarMinusOne
                     : processor.ScalarProcessor.ScalarOne;
 
-            return processor.CreateKVector(
+            return processor.CreateTermKVector(
 
                 new KeyValuePair<ulong, T>(id, scalar)
             );
@@ -187,7 +173,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generi
 
             var scalar = sign.ToScalarValue(processor.ScalarProcessor);
 
-            return processor.CreateKVector(
+            return processor.CreateTermKVector(
 
                 new KeyValuePair<ulong, T>(id, scalar)
             );
@@ -203,7 +189,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generi
 
             var scalar = sign.ToScalarValue(processor.ScalarProcessor);
 
-            return processor.CreateKVector(
+            return processor.CreateTermKVector(
 
                 new KeyValuePair<ulong, T>(id, scalar)
             );
@@ -222,10 +208,29 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generi
 
             var scalar = sign.ToScalarValue(processor.ScalarProcessor);
 
-            return processor.CreateKVector(
+            return processor.CreateTermKVector(
 
                 new KeyValuePair<ulong, T>(id, scalar)
             );
+        }
+
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static RGaKVector<T> CreateKVector<T>(this RGaProcessor<T> processor, int grade, IReadOnlyDictionary<ulong, T> basisScalarDictionary)
+        {
+            if (basisScalarDictionary.Count == 0 && basisScalarDictionary is not EmptyDictionary<ulong, T>)
+                return processor.CreateZeroKVector(grade);
+
+            if (basisScalarDictionary.Count == 1 && basisScalarDictionary is not SingleItemDictionary<ulong, T>)
+                return processor.CreateTermKVector(basisScalarDictionary.First());
+
+            return grade switch
+            {
+                0 => new RGaScalar<T>(processor, basisScalarDictionary),
+                1 => new RGaVector<T>(processor, basisScalarDictionary),
+                2 => new RGaBivector<T>(processor, basisScalarDictionary),
+                _ => new RGaHigherKVector<T>(processor, grade, basisScalarDictionary)
+            };
         }
 
 
@@ -234,7 +239,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generi
         {
             var processor = (RGaProcessor<T>)basisBlade.Metric;
 
-            return processor.CreateKVector(
+            return processor.CreateTermKVector(
                 basisBlade.Id,
                 processor.ScalarProcessor.ScalarOne
             );
@@ -245,7 +250,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generi
         {
             var processor = (RGaProcessor<T>)basisBlade.Metric;
 
-            return processor.CreateKVector(
+            return processor.CreateTermKVector(
                 basisBlade.Id,
                 basisBlade.Sign.ToScalarValue(processor.ScalarProcessor)
             );

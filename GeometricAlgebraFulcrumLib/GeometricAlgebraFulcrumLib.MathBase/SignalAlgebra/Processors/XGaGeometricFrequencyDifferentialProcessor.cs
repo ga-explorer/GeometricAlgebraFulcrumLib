@@ -1,4 +1,5 @@
-﻿using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.Multivectors;
+﻿using GeometricAlgebraFulcrumLib.Lite.SignalAlgebra;
+using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.Multivectors;
 using GeometricAlgebraFulcrumLib.MathBase.SignalAlgebra.Interpolators;
 
 namespace GeometricAlgebraFulcrumLib.MathBase.SignalAlgebra.Processors

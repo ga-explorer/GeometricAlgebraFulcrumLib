@@ -1,11 +1,11 @@
 ﻿using System.Diagnostics;
+using GeometricAlgebraFulcrumLib.Lite.LinearAlgebra.Matrices;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.LinearMaps.Outermorphisms;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.LinearMaps.Rotors;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.Multivectors;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.Multivectors.Composers;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.Processors;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.Subspaces;
-using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Generic.Matrices;
 using GeometricAlgebraFulcrumLib.Mathematica;
 using GeometricAlgebraFulcrumLib.Mathematica.GeometricAlgebra;
 using GeometricAlgebraFulcrumLib.Mathematica.Mathematica.ExprFactory;
@@ -71,7 +71,7 @@ namespace GeometricAlgebraFulcrumLib.SymbolicApplications.Samples.PowerSystems.G
             Debug.Assert(n >= 2 && i >= 0 && i < n);
 
             var mu =
-                GeometricProcessor.CreateVector(i);
+                GeometricProcessor.CreateTermVector(i);
 
             var muSubspace =
                 mu.ToSubspace();
@@ -176,10 +176,10 @@ namespace GeometricAlgebraFulcrumLib.SymbolicApplications.Samples.PowerSystems.G
                 var (_, inputPhasor) = GetPhasorsTuple(1, n);
 
                 var e1 =
-                    GeometricProcessor.CreateVector(0);
+                    GeometricProcessor.CreateTermVector(0);
 
                 var e2 =
-                    GeometricProcessor.CreateVector(1);
+                    GeometricProcessor.CreateTermVector(1);
 
                 var mv1 =
                     inputPhasor.MapScalars(scalar =>
@@ -363,10 +363,10 @@ namespace GeometricAlgebraFulcrumLib.SymbolicApplications.Samples.PowerSystems.G
                             .SimplifyScalars();
 
                     var phasorLength =
-                        phasor2.ENorm().ScalarValue.FullSimplify();
+                        phasor2.ENorm().ScalarValue().FullSimplify();
 
                     var phasorScalarsSum =
-                        phasor2.ESp(unitKirchhoffVector).ScalarValue.FullSimplify();
+                        phasor2.ESp(unitKirchhoffVector).ScalarValue().FullSimplify();
 
                     Console.WriteLine("Length of phasor:");
                     Console.WriteLine(

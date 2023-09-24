@@ -1,10 +1,11 @@
 ﻿using System.Collections;
 using System.Runtime.CompilerServices;
-using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Basis;
+using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Basis;
+using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Restricted;
+using GeometricAlgebraFulcrumLib.Lite.ScalarAlgebra;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Multivectors;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Multivectors.Composers;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Processors;
-using GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra;
 
 namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.LinearMaps
 {
@@ -27,13 +28,13 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generi
             => DiagonalMultivector.Count;
 
         public IEnumerable<ulong> Keys 
-            => DiagonalMultivector.Keys;
+            => DiagonalMultivector.Ids;
 
         public IEnumerable<T> Values 
-            => DiagonalMultivector.Values;
+            => DiagonalMultivector.Scalars;
 
         public T this[ulong key] 
-            => DiagonalMultivector[key];
+            => DiagonalMultivector.GetBasisBladeScalar(key);
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -71,7 +72,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generi
         public RGaMultivector<T> MapBasisBlade(ulong id)
         {
             return DiagonalMultivector.TryGetValue(id, out var scalar)
-                ? Processor.CreateKVector(id, scalar)
+                ? Processor.CreateTermKVector(id, scalar)
                 : Processor.CreateZeroScalar();
         }
 
@@ -83,7 +84,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generi
             {
                 foreach (var (id, mv) in DiagonalMultivector)
                 {
-                    if (!multivector.TryGetTermScalar(id, out var scalar))
+                    if (!multivector.TryGetBasisBladeScalarValue(id, out var scalar))
                         continue;
 
                     composer.AddTerm(id, mv, scalar);
@@ -111,7 +112,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generi
                 .Select(p => 
                     new KeyValuePair<ulong, RGaMultivector<T>>(
                         p.Key, 
-                        Processor.CreateKVector(p.Key, p.Value)
+                        Processor.CreateTermKVector(p.Key, p.Value)
                     )
                 );
         }

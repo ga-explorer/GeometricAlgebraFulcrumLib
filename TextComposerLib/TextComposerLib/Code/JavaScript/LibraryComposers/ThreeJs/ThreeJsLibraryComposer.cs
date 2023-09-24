@@ -480,7 +480,7 @@ namespace #name_space#
         private static ParserOptions JsParserOptions { get; }
             = new ParserOptions()
             {
-                Comment = true,
+                Comments = true,
                 Tokens = true,
                 Tolerant = true,
                 ErrorHandler = new CollectingErrorHandler()
@@ -490,8 +490,8 @@ namespace #name_space#
         private static JObject ParseCodeToJsonTree(string filePath)
         {
             var code = File.ReadAllText(filePath);
-            var parser = new JavaScriptParser(code, JsParserOptions);
-            var program = parser.ParseScript();
+            var parser = new JavaScriptParser(JsParserOptions);
+            var program = parser.ParseScript(code);
             var jsonString = program.ToJsonString("    ");
 
             File.WriteAllText(
@@ -868,7 +868,7 @@ private readonly {propertyTypeName} {propertyFieldName};
             var classNameData = classData.ClassNameData;
             var superClassNameData = classData.SuperClassNameData;
 
-            FilesComposer.InitalizeFile($"{classNameData.ClassCsName}.cs");
+            FilesComposer.InitializeFile($"{classNameData.ClassCsName}.cs");
 
             var fileCode =
                 Templates.MainClassTemplate
@@ -1021,7 +1021,7 @@ public static {className} As{className}(this JsType value)
 
         private static void GenerateConstantsClassFile()
         {
-            FilesComposer.InitalizeFile("ThreeJsConstants.cs");
+            FilesComposer.InitializeFile("ThreeJsConstants.cs");
 
             var composer = new LinearTextComposer();
             foreach (var variableData in LibraryData.Constants)
@@ -1047,7 +1047,7 @@ public static {className} As{className}(this JsType value)
 
         private static void GenerateFactoryClassFile()
         {
-            FilesComposer.InitalizeFile("ThreeJsObjectFactory.cs");
+            FilesComposer.InitializeFile("ThreeJsObjectFactory.cs");
 
             var composer = new LinearTextComposer();
             foreach (var classData in LibraryData.Classes)

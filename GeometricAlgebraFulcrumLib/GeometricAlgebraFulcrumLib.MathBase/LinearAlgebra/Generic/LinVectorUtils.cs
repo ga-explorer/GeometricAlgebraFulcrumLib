@@ -1,6 +1,6 @@
 ﻿using System.Runtime.CompilerServices;
 using DataStructuresLib.Dictionary;
-using GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra;
+using GeometricAlgebraFulcrumLib.Lite.ScalarAlgebra;
 
 namespace GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Generic
 {

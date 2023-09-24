@@ -1,13 +1,13 @@
 ﻿using System.Collections.Immutable;
 using DataStructuresLib.Files;
-using GeometricAlgebraFulcrumLib.MathBase.Geometry.Parametric.Space3D.Curves;
-using GeometricAlgebraFulcrumLib.MathBase.Geometry.Parametric.Space3D.Curves.Adaptive;
-using GeometricAlgebraFulcrumLib.MathBase.Geometry.Parametric.Space3D.Curves.Roulettes;
-using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64;
-using GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra;
-using GraphicsComposerLib.Rendering.BabylonJs;
-using GraphicsComposerLib.Rendering.BabylonJs.Constants;
-using GraphicsComposerLib.Rendering.BabylonJs.GUI;
+using GeometricAlgebraFulcrumLib.Lite.Geometry.Parametric.Space3D.Curves;
+using GeometricAlgebraFulcrumLib.Lite.Geometry.Parametric.Space3D.Curves.Adaptive;
+using GeometricAlgebraFulcrumLib.Lite.Geometry.Parametric.Space3D.Curves.Roulettes;
+using GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.BabylonJs;
+using GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.BabylonJs.Constants;
+using GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.BabylonJs.GUI;
+using GeometricAlgebraFulcrumLib.Lite.LinearAlgebra;
+using GeometricAlgebraFulcrumLib.Lite.ScalarAlgebra;
 using SixLabors.ImageSharp;
 
 namespace GeometricAlgebraFulcrumLib.Applications.Graphics
@@ -139,10 +139,10 @@ namespace GeometricAlgebraFulcrumLib.Applications.Graphics
                 _activeCurve.FixedCurve.ParameterRange;
             
             var tValues =
-                tMin.GetLinearRange(tMax, 501, false).ToImmutableArray();
+                tMin.Value.GetLinearRange(tMax, 501, false).ToImmutableArray();
 
             var tValuesFrames = 
-                tMin.GetLinearRange(tMax, FixedCurveFrameCount, false).ToImmutableArray();
+                tMin.Value.GetLinearRange(tMax, FixedCurveFrameCount, false).ToImmutableArray();
         
             MainSceneComposer.AddParametricCurve(
                 "fixedCurve", 
@@ -163,10 +163,10 @@ namespace GeometricAlgebraFulcrumLib.Applications.Graphics
                 _activeCurve.MovingCurve.ParameterRange;
             
             var tValues =
-                tMin.GetLinearRange(tMax, 501, false).ToImmutableArray();
+                tMin.Value.GetLinearRange(tMax, 501, false).ToImmutableArray();
             
             var tValuesFrames = 
-                tMin.GetLinearRange(tMax, MovingCurveFrameCount, false).ToImmutableArray();
+                tMin.Value.GetLinearRange(tMax, MovingCurveFrameCount, false).ToImmutableArray();
             
             MainSceneComposer.AddParametricCurve(
                 "movingCurve",

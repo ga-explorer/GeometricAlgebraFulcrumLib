@@ -1,6 +1,6 @@
 ﻿using System;
-using GeometricAlgebraFulcrumLib.MathBase.Geometry.Differential.Curves;
-using GeometricAlgebraFulcrumLib.MathBase.Geometry.Differential.Functions;
+using GeometricAlgebraFulcrumLib.Lite.Geometry.Differential.Curves;
+using GeometricAlgebraFulcrumLib.Lite.Geometry.Differential.Functions;
 
 namespace GeometricAlgebraFulcrumLib.Samples.DifferentialGeometry
 {

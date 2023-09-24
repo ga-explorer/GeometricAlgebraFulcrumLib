@@ -1,8 +1,8 @@
-﻿using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.LinearMaps.Rotors;
+﻿using GeometricAlgebraFulcrumLib.Lite.ScalarAlgebra;
+using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.LinearMaps.Rotors;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Multivectors;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Multivectors.Composers;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Processors;
-using GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.PolynomialAlgebra.PhCurves
 {
@@ -46,9 +46,9 @@ namespace GeometricAlgebraFulcrumLib.Algebra.PolynomialAlgebra.PhCurves
             Point1 = point1;
             Tangent0 = tangent0;
             Tangent1 = tangent1;
-            TangentLength0 = Tangent0.ENorm().Scalar;
+            TangentLength0 = Tangent0.ENorm().Scalar();
 
-            ScaledRotor = processor.CreateVector(0).CreateScaledPureRotor(tangent0);
+            ScaledRotor = processor.CreateTermVector(0).CreateScaledPureRotor(tangent0);
 
             var scaledRotorInv = ScaledRotor.GetPureScaledRotorInverse();
 

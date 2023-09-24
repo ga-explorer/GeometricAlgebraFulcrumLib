@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Extended.Float64.Multivectors;
+using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Extended.Float64.Multivectors.Composers;
+using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Extended.Float64.Processors;
+using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Restricted.Float64.Multivectors;
+using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Restricted.Float64.Multivectors.Composers;
+using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Restricted.Float64.Processors;
 using GeometricAlgebraFulcrumLib.Utilities.Extensions;
 using NUnit.Framework;
-using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Float64.Multivectors;
-using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Float64.Multivectors;
-using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Float64.Processors;
-using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Float64.Processors;
-using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Float64.Multivectors.Composers;
-using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Float64.Multivectors.Composers;
 
 namespace GeometricAlgebraFulcrumLib.UnitTests.Processing
 {
@@ -119,7 +119,7 @@ namespace GeometricAlgebraFulcrumLib.UnitTests.Processing
         {
             return funcName switch
             {
-                "sp" => (mv1, mv2) => mv1.Sp(mv2).ScalarValue,
+                "sp" => (mv1, mv2) => mv1.Sp(mv2).ScalarValue(),
                 _ => null
             };
         }
@@ -128,7 +128,7 @@ namespace GeometricAlgebraFulcrumLib.UnitTests.Processing
         {
             return funcName switch
             {
-                "sp" => (mv1, mv2) => mv1.Sp(mv2).ScalarValue,
+                "sp" => (mv1, mv2) => mv1.Sp(mv2).ScalarValue(),
                 _ => null
             };
         }
@@ -193,8 +193,8 @@ namespace GeometricAlgebraFulcrumLib.UnitTests.Processing
         {
             return funcName switch
             {
-                "spSquared" => mv => mv.SpSquared().ScalarValue,
-                "spReverse" => mv => mv.NormSquared().ScalarValue,
+                "spSquared" => mv => mv.SpSquared().ScalarValue(),
+                "spReverse" => mv => mv.NormSquared().ScalarValue(),
                 _ => null
             };
         }
@@ -203,8 +203,8 @@ namespace GeometricAlgebraFulcrumLib.UnitTests.Processing
         {
             return funcName switch
             {
-                "spSquared" => mv => mv.Sp(mv).ScalarValue,
-                "spReverse" => mv => mv.Sp(mv.Reverse()).ScalarValue,
+                "spSquared" => mv => mv.Sp(mv).ScalarValue(),
+                "spReverse" => mv => mv.Sp(mv.Reverse()).ScalarValue(),
                 _ => null
             };
         }
@@ -428,7 +428,7 @@ namespace GeometricAlgebraFulcrumLib.UnitTests.Processing
                 var scalar1 = storage1.SpSquared();
                 var scalar2 = termsStorage1.Sp(termsStorage1);
 
-                var scalarDiff = scalar1 - scalar2.ScalarValue;
+                var scalarDiff = scalar1 - scalar2.ScalarValue();
 
                 Assert.IsTrue(scalarDiff.IsNearZero());
                 
@@ -436,7 +436,7 @@ namespace GeometricAlgebraFulcrumLib.UnitTests.Processing
                 scalar1 = storage1.NormSquared();
                 scalar2 = termsStorage1.NormSquared();
 
-                scalarDiff = scalar1 - scalar2.ScalarValue;
+                scalarDiff = scalar1 - scalar2.ScalarValue();
 
                 Assert.IsTrue(scalarDiff.IsNearZero());
             }

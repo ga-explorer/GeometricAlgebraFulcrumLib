@@ -1,10 +1,10 @@
 ﻿using System.Diagnostics;
 using DataStructuresLib.BitManipulation;
+using GeometricAlgebraFulcrumLib.Lite.ScalarAlgebra;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.LinearMaps.Reflectors;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.Multivectors;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.Multivectors.Composers;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.Processors;
-using GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra;
 using GeometricAlgebraFulcrumLib.MathBase.Text;
 using GeometricAlgebraFulcrumLib.Mathematica;
 using GeometricAlgebraFulcrumLib.Mathematica.GeometricAlgebra;
@@ -250,7 +250,7 @@ namespace GeometricAlgebraFulcrumLib.SymbolicApplications.Samples.EuclideanGeome
             for (var m = 0; m < n; m++)
             {
                 var u = 
-                    geometricProcessor.CreateVector(m);
+                    geometricProcessor.CreateTermVector(m);
 
                 var v = geometricProcessor.CreateVector(
                     n,
@@ -262,10 +262,10 @@ namespace GeometricAlgebraFulcrumLib.SymbolicApplications.Samples.EuclideanGeome
 
                 var uvDot = $"Subscript[v, {m + 1}]".CreateScalar(scalarProcessor);
                 var xuDot = $"Subscript[x, {m + 1}]".CreateScalar(scalarProcessor);
-                var xvDot = x.Sp(v).Scalar;
+                var xvDot = x.Sp(v).Scalar();
 
                 Debug.Assert(
-                    (uvDot - u.Sp(v).Scalar).FullSimplifyScalar().IsZero()
+                    (uvDot - u.Sp(v).Scalar()).FullSimplifyScalar().IsZero()
                 );
             
                 Debug.Assert(

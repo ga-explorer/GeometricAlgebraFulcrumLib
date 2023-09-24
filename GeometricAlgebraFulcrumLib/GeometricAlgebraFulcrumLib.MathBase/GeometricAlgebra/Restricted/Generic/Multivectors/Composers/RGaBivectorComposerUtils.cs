@@ -2,9 +2,9 @@
 using DataStructuresLib.Basic;
 using DataStructuresLib.Dictionary;
 using DataStructuresLib.IndexSets;
+using GeometricAlgebraFulcrumLib.Lite.LinearAlgebra.Vectors.Space3D;
+using GeometricAlgebraFulcrumLib.Lite.ScalarAlgebra;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Processors;
-using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Space3D;
-using GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra;
 
 namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Multivectors.Composers
 {
@@ -70,7 +70,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generi
                 return processor.CreateZeroBivector();
 
             if (basisScalarDictionary.Count == 1 && basisScalarDictionary is not SingleItemDictionary<ulong, T>)
-                return processor.CreateBivector(basisScalarDictionary.First());
+                return processor.CreateTermBivector(basisScalarDictionary.First());
 
             return new RGaBivector<T>(
                 processor,
@@ -78,9 +78,10 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generi
                 basisScalarDictionary
             );
         }
+        
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static RGaBivector<T> CreateBivector<T>(this RGaProcessor<T> processor, int index1, int index2)
+        public static RGaBivector<T> CreateTermBivector<T>(this RGaProcessor<T> processor, int index1, int index2)
         {
             if (index1 < 0 || index1 >= index2 || index2 >= 64)
                 throw new InvalidOperationException();
@@ -96,7 +97,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generi
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static RGaBivector<T> CreateBivector<T>(this RGaProcessor<T> processor, int index1, int index2, T scalar)
+        public static RGaBivector<T> CreateTermBivector<T>(this RGaProcessor<T> processor, int index1, int index2, T scalar)
         {
             if (index1 < 0 || index1 >= index2 || index2 >= 64)
                 throw new InvalidOperationException();
@@ -115,7 +116,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generi
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static RGaBivector<T> CreateBivector<T>(this RGaProcessor<T> processor, IPair<int> indexPair)
+        public static RGaBivector<T> CreateTermBivector<T>(this RGaProcessor<T> processor, IPair<int> indexPair)
         {
             var index1 = indexPair.Item1;
             var index2 = indexPair.Item2;
@@ -134,7 +135,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generi
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static RGaBivector<T> CreateBivector<T>(this RGaProcessor<T> processor, IPair<int> indexPair, T scalar)
+        public static RGaBivector<T> CreateTermBivector<T>(this RGaProcessor<T> processor, IPair<int> indexPair, T scalar)
         {
             var index1 = indexPair.Item1;
             var index2 = indexPair.Item2;
@@ -156,9 +157,9 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generi
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static RGaBivector<T> CreateBivector<T>(this RGaProcessor<T> processor, KeyValuePair<Int32Pair, T> indexScalarPair)
+        public static RGaBivector<T> CreateTermBivector<T>(this RGaProcessor<T> processor, KeyValuePair<Int32Pair, T> indexScalarPair)
         {
-            return processor.CreateBivector(
+            return processor.CreateTermBivector(
 
                 indexScalarPair.Key,
                 indexScalarPair.Value
@@ -166,13 +167,13 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generi
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static RGaBivector<T> CreateBivector<T>(this RGaProcessor<T> processor, KeyValuePair<ulong, T> indexScalarPair)
+        public static RGaBivector<T> CreateTermBivector<T>(this RGaProcessor<T> processor, KeyValuePair<ulong, T> indexScalarPair)
         {
-            return processor.CreateBivector(indexScalarPair.Key, indexScalarPair.Value);
+            return processor.CreateTermBivector(indexScalarPair.Key, indexScalarPair.Value);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static RGaBivector<T> CreateBivector<T>(this RGaProcessor<T> processor, ulong basisBlade)
+        public static RGaBivector<T> CreateTermBivector<T>(this RGaProcessor<T> processor, ulong basisBlade)
         {
             return new RGaBivector<T>(
                 processor,
@@ -182,7 +183,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generi
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static RGaBivector<T> CreateBivector<T>(this RGaProcessor<T> processor, ulong basisBlade, T scalar)
+        public static RGaBivector<T> CreateTermBivector<T>(this RGaProcessor<T> processor, ulong basisBlade, T scalar)
         {
             if (processor.ScalarProcessor.IsZero(scalar))
                 return new RGaBivector<T>(processor);
@@ -195,7 +196,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generi
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static RGaBivector<T> CreateBivector<T>(this RGaProcessor<T> processor, ulong basisBlade, Scalar<T> scalar)
+        public static RGaBivector<T> CreateTermBivector<T>(this RGaProcessor<T> processor, ulong basisBlade, Scalar<T> scalar)
         {
             if (scalar.IsZero())
                 return new RGaBivector<T>(processor);
@@ -280,14 +281,15 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generi
                 .GetBivector();
         }
 
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static RGaBivector<T> ToBivector<T>(this Float64Bivector3D bivector, RGaProcessor<T> processor)
         {
             return processor
                 .CreateComposer()
-                .SetTerm(3, bivector.Xy)
-                .SetTerm(5, bivector.Xz)
-                .SetTerm(6, bivector.Yz)
+                .SetBivectorTerm(0, 1, bivector.Xy)
+                .SetBivectorTerm(0, 2, bivector.Xz)
+                .SetBivectorTerm(1, 2, bivector.Yz)
                 .GetBivector();
         }
 

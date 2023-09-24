@@ -35,13 +35,13 @@ namespace GeometricAlgebraFulcrumLib.SymbolicApplications.Samples
 
         public static void Example1()
         {
-            var e1p = GeometricProcessor.CreateVector(0);
+            var e1p = GeometricProcessor.CreateTermVector(0);
             var e1n = -e1p;
 
-            var e2p = GeometricProcessor.CreateVector(1);
+            var e2p = GeometricProcessor.CreateTermVector(1);
             var e2n = -e2p;
 
-            var e3p = GeometricProcessor.CreateVector(2);
+            var e3p = GeometricProcessor.CreateTermVector(2);
             var e3n = -e3p;
 
             var a =
@@ -69,13 +69,13 @@ namespace GeometricAlgebraFulcrumLib.SymbolicApplications.Samples
 
         public static void Example2()
         {
-            var e1p = GeometricProcessor.CreateVector(0);
+            var e1p = GeometricProcessor.CreateTermVector(0);
             var e1n = -e1p;
 
-            var e2p = GeometricProcessor.CreateVector(1);
+            var e2p = GeometricProcessor.CreateTermVector(1);
             var e2n = -e2p;
 
-            var e3p = GeometricProcessor.CreateVector(2);
+            var e3p = GeometricProcessor.CreateTermVector(2);
             var e3n = -e3p;
 
             var u = GeometricProcessor.CreateVector(
@@ -109,9 +109,9 @@ namespace GeometricAlgebraFulcrumLib.SymbolicApplications.Samples
 
         public static void Example3()
         {
-            var e1 = GeometricProcessor.CreateVector(0);
-            var e2 = GeometricProcessor.CreateVector(1);
-            var e3 = GeometricProcessor.CreateVector(2);
+            var e1 = GeometricProcessor.CreateTermVector(0);
+            var e2 = GeometricProcessor.CreateTermVector(1);
+            var e3 = GeometricProcessor.CreateTermVector(2);
 
             var a = GeometricProcessor.CreateScaledPureRotor3D(
                 "Subscript[a, 0]".ToExpr(),

@@ -1,9 +1,9 @@
 ﻿using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using DataStructuresLib.Dictionary;
-using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Basis;
+using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Basis;
+using GeometricAlgebraFulcrumLib.Lite.ScalarAlgebra;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Processors;
-using GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra;
 
 namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Multivectors.Composers
 {
@@ -103,7 +103,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generi
             {
                 foreach (var (id, scalar1) in mv1.IdScalarPairs)
                 {
-                    if (!mv2.TryGetTermScalar(id, out var scalar2))
+                    if (!mv2.TryGetBasisBladeScalarValue(id, out var scalar2))
                         continue;
 
                     composer.AddEGpTerm(processor, id, scalar1, scalar2);
@@ -113,7 +113,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generi
             {
                 foreach (var (id, scalar2) in mv2.IdScalarPairs)
                 {
-                    if (!mv1.TryGetTermScalar(id, out var scalar1))
+                    if (!mv1.TryGetBasisBladeScalarValue(id, out var scalar1))
                         continue;
 
                     composer.AddEGpTerm(processor, id, scalar1, scalar2);
@@ -189,7 +189,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generi
             {
                 foreach (var (id, scalar1) in mv1.IdScalarPairs)
                 {
-                    if (!mv2.TryGetTermScalar(id, out var scalar2))
+                    if (!mv2.TryGetBasisBladeScalarValue(id, out var scalar2))
                         continue;
 
                     composer.AddEGpTerm(processor, id, scalar1, scalar2);
@@ -199,7 +199,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generi
             {
                 foreach (var (id, scalar2) in mv2.IdScalarPairs)
                 {
-                    if (!mv1.TryGetTermScalar(id, out var scalar1))
+                    if (!mv1.TryGetBasisBladeScalarValue(id, out var scalar1))
                         continue;
 
                     composer.AddEGpTerm(processor, id, scalar1, scalar2);
@@ -236,7 +236,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generi
             {
                 foreach (var (id, scalar1) in mv1.IdScalarPairs)
                 {
-                    if (!mv2.TryGetTermScalar(id, out var scalar2))
+                    if (!mv2.TryGetBasisBladeScalarValue(id, out var scalar2))
                         continue;
 
                     composer.AddGpTerm(processor, id, scalar1, scalar2);
@@ -246,7 +246,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generi
             {
                 foreach (var (id, scalar2) in mv2.IdScalarPairs)
                 {
-                    if (!mv1.TryGetTermScalar(id, out var scalar1))
+                    if (!mv1.TryGetBasisBladeScalarValue(id, out var scalar1))
                         continue;
 
                     composer.AddGpTerm(processor, id, scalar1, scalar2);
@@ -322,7 +322,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generi
             {
                 foreach (var (id, scalar1) in mv1.IdScalarPairs)
                 {
-                    if (!mv2.TryGetTermScalar(id, out var scalar2))
+                    if (!mv2.TryGetBasisBladeScalarValue(id, out var scalar2))
                         continue;
 
                     composer.AddGpTerm(processor, id, scalar1, scalar2);
@@ -332,7 +332,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generi
             {
                 foreach (var (id, scalar2) in mv2.IdScalarPairs)
                 {
-                    if (!mv1.TryGetTermScalar(id, out var scalar1))
+                    if (!mv1.TryGetBasisBladeScalarValue(id, out var scalar1))
                         continue;
 
                     composer.AddGpTerm(processor, id, scalar1, scalar2);
@@ -352,25 +352,25 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generi
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static RGaVector<T> GetRGaVector<T>(this ScalarComposer<T> composer, RGaProcessor<T> processor, int index)
         {
-            return processor.CreateVector(index, composer.ScalarValue);
+            return processor.CreateTermVector(index, composer.ScalarValue);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static RGaBivector<T> GetRGaBivector<T>(this ScalarComposer<T> composer, RGaProcessor<T> processor, int index1, int index2)
         {
-            return processor.CreateBivector(index1, index2, composer.ScalarValue);
+            return processor.CreateTermBivector(index1, index2, composer.ScalarValue);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static RGaHigherKVector<T> GetRGaHigherKVector<T>(this ScalarComposer<T> composer, RGaProcessor<T> processor, ulong id)
         {
-            return processor.CreateHigherKVector(id, composer.ScalarValue);
+            return processor.CreateTermHigherKVector(id, composer.ScalarValue);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static RGaKVector<T> GetRGaKVector<T>(this ScalarComposer<T> composer, RGaProcessor<T> processor, ulong id)
         {
-            return processor.CreateKVector(id, composer.ScalarValue);
+            return processor.CreateTermKVector(id, composer.ScalarValue);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -421,7 +421,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generi
             {
                 foreach (var (id, scalar1) in mv1.IdScalarPairs)
                 {
-                    if (!mv2.TryGetTermScalar(id, out var scalar2))
+                    if (!mv2.TryGetBasisBladeScalarValue(id, out var scalar2))
                         continue;
 
                     composer.AddEGpTerm(id, scalar1, scalar2);
@@ -431,7 +431,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generi
             {
                 foreach (var (id, scalar2) in mv2.IdScalarPairs)
                 {
-                    if (!mv1.TryGetTermScalar(id, out var scalar1))
+                    if (!mv1.TryGetBasisBladeScalarValue(id, out var scalar1))
                         continue;
 
                     composer.AddEGpTerm(id, scalar1, scalar2);
@@ -508,7 +508,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generi
             {
                 foreach (var (id, scalar1) in mv1.IdScalarPairs)
                 {
-                    if (!mv2.TryGetTermScalar(id, out var scalar2))
+                    if (!mv2.TryGetBasisBladeScalarValue(id, out var scalar2))
                         continue;
 
                     composer.AddGpTerm(id, scalar1, scalar2);
@@ -518,7 +518,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generi
             {
                 foreach (var (id, scalar2) in mv2.IdScalarPairs)
                 {
-                    if (!mv1.TryGetTermScalar(id, out var scalar1))
+                    if (!mv1.TryGetBasisBladeScalarValue(id, out var scalar1))
                         continue;
 
                     composer.AddGpTerm(id, scalar1, scalar2);
@@ -1009,7 +1009,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generi
             {
                 foreach (var (id, scalar1) in mv1.IdScalarPairs)
                 {
-                    if (!mv2.TryGetTermScalar(id, out var scalar2))
+                    if (!mv2.TryGetBasisBladeScalarValue(id, out var scalar2))
                         continue;
 
                     composer.AddEGpTerm(id, scalar1, scalar2);
@@ -1019,7 +1019,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generi
             {
                 foreach (var (id, scalar2) in mv2.IdScalarPairs)
                 {
-                    if (!mv1.TryGetTermScalar(id, out var scalar1))
+                    if (!mv1.TryGetBasisBladeScalarValue(id, out var scalar1))
                         continue;
 
                     composer.AddEGpTerm(id, scalar1, scalar2);
@@ -1121,7 +1121,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generi
             {
                 foreach (var (id, scalar1) in mv1.IdScalarPairs)
                 {
-                    if (!mv2.TryGetTermScalar(id, out var scalar2))
+                    if (!mv2.TryGetBasisBladeScalarValue(id, out var scalar2))
                         continue;
 
                     composer.AddGpTerm(id, scalar1, scalar2);
@@ -1131,7 +1131,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generi
             {
                 foreach (var (id, scalar2) in mv2.IdScalarPairs)
                 {
-                    if (!mv1.TryGetTermScalar(id, out var scalar1))
+                    if (!mv1.TryGetBasisBladeScalarValue(id, out var scalar1))
                         continue;
 
                     composer.AddGpTerm(id, scalar1, scalar2);
@@ -1246,7 +1246,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generi
 
             var gradeKVectorDictionary = new SingleItemDictionary<int, RGaKVector<T>>(
                 grade,
-                processor.CreateKVector(id, processor.ScalarProcessor.ScalarOne)
+                processor.CreateTermKVector(id, processor.ScalarProcessor.ScalarOne)
             );
 
             return new RGaGradedMultivector<T>(
@@ -1265,7 +1265,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generi
 
             var gradeKVectorDictionary = new SingleItemDictionary<int, RGaKVector<T>>(
                 grade,
-                processor.CreateKVector(id, scalar)
+                processor.CreateTermKVector(id, scalar)
             );
 
             return new RGaGradedMultivector<T>(
@@ -1285,7 +1285,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generi
 
             var gradeKVectorDictionary = new SingleItemDictionary<int, RGaKVector<T>>(
                 grade,
-                processor.CreateKVector(basisScalarPair)
+                processor.CreateTermKVector(basisScalarPair)
             );
 
             return new RGaGradedMultivector<T>(

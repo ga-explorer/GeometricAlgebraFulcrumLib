@@ -2,14 +2,14 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Float64.LinearMaps.Outermorphisms;
-using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Float64.LinearMaps.Rotors;
-using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Float64.Multivectors;
-using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Float64.Multivectors.Composers;
-using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Float64.Processors;
-using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Float64.Subspaces;
-using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Matrices;
-using GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra;
+using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Extended.Float64.LinearMaps.Outermorphisms;
+using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Extended.Float64.LinearMaps.Rotors;
+using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Extended.Float64.Multivectors;
+using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Extended.Float64.Multivectors.Composers;
+using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Extended.Float64.Processors;
+using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Extended.Float64.Subspaces;
+using GeometricAlgebraFulcrumLib.Lite.LinearAlgebra.Matrices;
+using GeometricAlgebraFulcrumLib.Lite.ScalarAlgebra;
 using GeometricAlgebraFulcrumLib.MathBase.Text;
 using GeometricAlgebraFulcrumLib.Processors.MatrixAlgebra;
 
@@ -72,7 +72,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GAPoT
             Debug.Assert(n >= 2 && i >= 0 && i < n);
 
             var muStorage =
-                GeometricProcessor.CreateVector(i, 1);
+                GeometricProcessor.CreateTermVector(i, 1d);
 
             var muSubspace = muStorage.ToSubspace();
 
@@ -170,10 +170,10 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GAPoT
                 var (_, inputPhasor) = GetPhasorsTuple(1, n, theta);
 
                 var e1 =
-                    GeometricProcessor.CreateVector(0);
+                    GeometricProcessor.CreateTermVector(0);
 
                 var e2 =
-                    GeometricProcessor.CreateVector(1);
+                    GeometricProcessor.CreateTermVector(1);
 
                 var (_, mv1) = GetPhasorsTuple(1, n, 0);
 

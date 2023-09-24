@@ -2,7 +2,7 @@
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using DataStructuresLib.IndexSets;
-using GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra;
+using GeometricAlgebraFulcrumLib.Lite.ScalarAlgebra;
 
 namespace GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Generic.LinearMaps
 {
@@ -171,8 +171,8 @@ namespace GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Generic.LinearMaps
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public bool IsValid()
         {
-            return _indexVectorDictionary.Values.All(
-                d => d.IsValidLinVectorDictionary(ScalarProcessor)
+            return _indexVectorDictionary.All(
+                p => p.Key >= 0 && p.Value.IsValid()
             );
         }
         

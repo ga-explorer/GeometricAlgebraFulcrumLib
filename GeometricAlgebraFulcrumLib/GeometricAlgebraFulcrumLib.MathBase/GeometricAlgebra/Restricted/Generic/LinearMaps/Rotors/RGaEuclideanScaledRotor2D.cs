@@ -1,9 +1,9 @@
 ﻿using System.Runtime.CompilerServices;
+using GeometricAlgebraFulcrumLib.Lite.ScalarAlgebra;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Multivectors;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Multivectors.Composers;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Processors;
 using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Generic.LinearMaps;
-using GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra;
 
 namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.LinearMaps.Rotors
 {
@@ -102,7 +102,10 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generi
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public override RGaVector<T> OmMap(RGaVector<T> mv)
         {
-            return OmMap(mv[0], mv[1]);
+            return OmMap(
+                mv.Scalar(0), 
+                mv.Scalar(1)
+            );
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -116,25 +119,14 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generi
         {
             throw new InvalidOperationException();
         }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override RGaKVector<T> OmMap(RGaKVector<T> mv)
-        {
-            return mv.Grade switch
-            {
-                0 or 2 => GetScalingFactor() * mv,
-                1 => OmMap(mv[0].ScalarValue, mv[1].ScalarValue),
-                _ => throw new InvalidOperationException()
-            };
-        }
-
+        
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public override RGaMultivector<T> OmMap(RGaMultivector<T> mv)
         {
-            var mv0 = mv[0];
-            var mv1 = mv[1];
-            var mv2 = mv[2];
-            var mv12 = mv[3];
+            var mv0 = mv.Scalar();
+            var mv1 = mv.Scalar(0);
+            var mv2 = mv.Scalar(1);
+            var mv12 = mv[0, 1];
 
             var s0 = Scalar0 * Scalar0 - Scalar12 * Scalar12;
             var s12 = 2 * Scalar0 * Scalar12;

@@ -4,7 +4,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using DataStructuresLib.Basic;
 using DataStructuresLib.BitManipulation;
-using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Records.Restricted;
+using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Restricted.Records;
 
 namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Structures
 {

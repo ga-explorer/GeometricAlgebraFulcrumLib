@@ -1,10 +1,10 @@
 ﻿using System.Runtime.CompilerServices;
 using DataStructuresLib.Dictionary;
 using DataStructuresLib.IndexSets;
-using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Basis;
-using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Basis;
+using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Basis;
+using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Extended.Basis;
+using GeometricAlgebraFulcrumLib.Lite.ScalarAlgebra;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.Processors;
-using GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra;
 
 namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.Multivectors.Composers
 {
@@ -16,8 +16,9 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.
             return new XGaHigherKVector<T>(processor, grade);
         }
 
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static XGaHigherKVector<T> CreateHigherKVector<T>(this XGaProcessor<T> processor, IIndexSet id)
+        public static XGaHigherKVector<T> CreateTermHigherKVector<T>(this XGaProcessor<T> processor, IIndexSet id)
         {
             var grade = id.Count;
 
@@ -29,7 +30,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static XGaHigherKVector<T> CreateHigherKVector<T>(this XGaProcessor<T> processor, IIndexSet id, T scalar)
+        public static XGaHigherKVector<T> CreateTermHigherKVector<T>(this XGaProcessor<T> processor, IIndexSet id, T scalar)
         {
             var grade = id.Count;
 
@@ -39,7 +40,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static XGaHigherKVector<T> CreateHigherKVector<T>(this XGaProcessor<T> processor, KeyValuePair<IIndexSet, T> term)
+        public static XGaHigherKVector<T> CreateTermHigherKVector<T>(this XGaProcessor<T> processor, KeyValuePair<IIndexSet, T> term)
         {
             var (id, scalar) = term;
 
@@ -50,6 +51,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.
                 : new XGaHigherKVector<T>(processor, grade, new SingleItemDictionary<IIndexSet, T>(id, scalar));
         }
 
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static XGaHigherKVector<T> CreateHigherKVector<T>(this XGaProcessor<T> processor, int grade, IReadOnlyDictionary<IIndexSet, T> basisScalarDictionary)
         {
@@ -57,7 +59,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.
                 return processor.CreateZeroHigherKVector(grade);
 
             if (basisScalarDictionary.Count == 1 && basisScalarDictionary is not SingleItemDictionary<IIndexSet, T>)
-                return processor.CreateHigherKVector(basisScalarDictionary.First());
+                return processor.CreateTermHigherKVector(basisScalarDictionary.First());
 
             return new XGaHigherKVector<T>(
                 processor,
@@ -83,8 +85,9 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.
             };
         }
 
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static XGaKVector<T> CreateKVector<T>(this XGaProcessor<T> processor, KeyValuePair<IIndexSet, T> term)
+        public static XGaKVector<T> CreateTermKVector<T>(this XGaProcessor<T> processor, KeyValuePair<IIndexSet, T> term)
         {
             var grade = term.Key.Count;
 
@@ -98,13 +101,37 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static XGaKVector<T> CreateTermKVector<T>(this XGaProcessor<T> processor, IIndexSet basisBlade)
+        {
+            return processor.CreateTermKVector(
+
+                new KeyValuePair<IIndexSet, T>(basisBlade, processor.ScalarProcessor.ScalarOne)
+            );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static XGaKVector<T> CreateTermKVector<T>(this XGaProcessor<T> processor, IIndexSet basisBlade, T scalar)
+        {
+            var grade = basisBlade.Count;
+
+            if (processor.ScalarProcessor.IsZero(scalar))
+                return processor.CreateZeroKVector(grade);
+
+            return processor.CreateTermKVector(
+
+                new KeyValuePair<IIndexSet, T>(basisBlade, scalar)
+            );
+        }
+
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static XGaKVector<T> CreateKVector<T>(this XGaProcessor<T> processor, int grade, IReadOnlyDictionary<IIndexSet, T> basisScalarDictionary)
         {
             if (basisScalarDictionary.Count == 0 && basisScalarDictionary is not EmptyDictionary<IIndexSet, T>)
                 return processor.CreateZeroKVector(grade);
 
             if (basisScalarDictionary.Count == 1 && basisScalarDictionary is not SingleItemDictionary<IIndexSet, T>)
-                return processor.CreateKVector(basisScalarDictionary.First());
+                return processor.CreateTermKVector(basisScalarDictionary.First());
 
             return grade switch
             {
@@ -115,35 +142,13 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.
             };
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static XGaKVector<T> CreateKVector<T>(this XGaProcessor<T> processor, IIndexSet basisBlade)
-        {
-            return processor.CreateKVector(
-
-                new KeyValuePair<IIndexSet, T>(basisBlade, processor.ScalarProcessor.ScalarOne)
-            );
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static XGaKVector<T> CreateKVector<T>(this XGaProcessor<T> processor, IIndexSet basisBlade, T scalar)
-        {
-            var grade = basisBlade.Count;
-
-            if (processor.ScalarProcessor.IsZero(scalar))
-                return processor.CreateZeroKVector(grade);
-
-            return processor.CreateKVector(
-
-                new KeyValuePair<IIndexSet, T>(basisBlade, scalar)
-            );
-        }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static XGaKVector<T> CreatePseudoScalar<T>(this XGaProcessor<T> processor, int vSpaceDimensions)
         {
             var id = processor.GetBasisPseudoScalarId(vSpaceDimensions);
 
-            return processor.CreateKVector(
+            return processor.CreateTermKVector(
 
                 new KeyValuePair<IIndexSet, T>(id, processor.ScalarProcessor.ScalarOne)
             );
@@ -154,7 +159,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.
         {
             var id = processor.GetBasisPseudoScalarId(vSpaceDimensions);
 
-            return processor.CreateKVector(
+            return processor.CreateTermKVector(
 
                 new KeyValuePair<IIndexSet, T>(id, scalarValue)
             );
@@ -170,7 +175,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.
                     ? processor.ScalarProcessor.ScalarMinusOne
                     : processor.ScalarProcessor.ScalarOne;
 
-            return processor.CreateKVector(
+            return processor.CreateTermKVector(
 
                 new KeyValuePair<IIndexSet, T>(id, scalar)
             );
@@ -189,7 +194,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.
 
             var scalar = sign.ToScalarValue(processor.ScalarProcessor);
 
-            return processor.CreateKVector(
+            return processor.CreateTermKVector(
 
                 new KeyValuePair<IIndexSet, T>(id, scalar)
             );
@@ -205,7 +210,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.
 
             var scalar = sign.ToScalarValue(processor.ScalarProcessor);
 
-            return processor.CreateKVector(
+            return processor.CreateTermKVector(
 
                 new KeyValuePair<IIndexSet, T>(id, scalar)
             );
@@ -224,7 +229,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.
 
             var scalar = sign.ToScalarValue(processor.ScalarProcessor);
 
-            return processor.CreateKVector(
+            return processor.CreateTermKVector(
 
                 new KeyValuePair<IIndexSet, T>(id, scalar)
             );
@@ -234,7 +239,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static XGaKVector<T> ToKVector<T>(this XGaBasisBlade basisBlade, XGaProcessor<T> processor)
         {
-            return processor.CreateKVector(
+            return processor.CreateTermKVector(
                 basisBlade.Id,
                 processor.ScalarProcessor.ScalarOne
             );
@@ -243,7 +248,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static XGaKVector<T> ToKVector<T>(this XGaSignedBasisBlade basisBlade, XGaProcessor<T> processor)
         {
-            return processor.CreateKVector(
+            return processor.CreateTermKVector(
                 basisBlade.Id,
                 basisBlade.Sign.ToScalarValue(processor.ScalarProcessor)
             );

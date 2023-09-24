@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Linq;
-using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Basis;
+using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Basis;
 using GeometricAlgebraFulcrumLib.MetaProgramming.Languages;
 using TextComposerLib.Text.Structured;
 
@@ -63,7 +63,7 @@ namespace GeometricAlgebraFulcrumLib.MetaProgramming.Applications.CSharp.DenseKV
 
         internal void Generate()
         {
-            DenseKVectorsLibraryComposer.CodeFilesComposer.InitalizeFile(
+            DenseKVectorsLibraryComposer.CodeFilesComposer.InitializeFile(
                 _operationSpecs.GetName() + ".cs"
             );
 

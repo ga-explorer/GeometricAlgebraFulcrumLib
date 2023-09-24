@@ -1,7 +1,7 @@
 ﻿using DataStructuresLib.BitManipulation;
+using GeometricAlgebraFulcrumLib.Lite.ScalarAlgebra;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Multivectors;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Multivectors.Composers;
-using GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra;
 
 namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Spaces.Conformal
 {
@@ -50,7 +50,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generi
 
         public static RGaConformalIpnsPoint<T> CreateIpnsPoint<T>(this RGaConformalSpace<T> space, RGaVector<T> positionVector)
         {
-            if (positionVector.Keys.Max(k => k.LastOneBitPosition()) > space.VSpaceDimensions - 2)
+            if (positionVector.Ids.Max(k => k.LastOneBitPosition()) > space.VSpaceDimensions - 2)
                 throw new InvalidOperationException();
             
             var processor = space.Processor;
@@ -107,7 +107,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generi
 
         public static RGaConformalIpnsHyperSphere<T> CreateIpnsHyperSphere<T>(this RGaConformalSpace<T> space, RGaVector<T> centerPoint, T radiusSquared)
         {
-            if (centerPoint.Keys.Max(k => k.LastOneBitPosition()) > space.VSpaceDimensions - 2)
+            if (centerPoint.Ids.Max(k => k.LastOneBitPosition()) > space.VSpaceDimensions - 2)
                 throw new InvalidOperationException();
             
             var processor = space.Processor;
@@ -115,7 +115,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generi
             var composer = processor.CreateComposer();
 
             var x2 = scalarProcessor.Subtract(
-                scalarProcessor.AddSquares(centerPoint.Values),
+                scalarProcessor.AddSquares(centerPoint.Scalars),
                 radiusSquared
             );
             
@@ -167,7 +167,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generi
 
         public static RGaConformalIpnsHyperPlane<T> CreateIpnsHyperPlane<T>(this RGaConformalSpace<T> space, RGaVector<T> normal, T delta)
         {
-            if (normal.Keys.Max(k => k.LastOneBitPosition()) > space.VSpaceDimensions - 2)
+            if (normal.Ids.Max(k => k.LastOneBitPosition()) > space.VSpaceDimensions - 2)
                 throw new InvalidOperationException();
             
             var processor = space.Processor;

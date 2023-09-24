@@ -30,7 +30,7 @@ namespace GeometricAlgebraFulcrumLib.SymbolicApplications.Samples.Mathematica
             // Create two vectors each having 3 components (a 3-dimensional GA)
             //var u = geometricProcessor.CreateVector(3, i => $"Subscript[u,{i + 1}]");
             var u = 
-                geometricProcessor.CreateVector(0);
+                geometricProcessor.CreateTermVector(0);
 
             var v = 
                 geometricProcessor.CreateVector("x", "y", "Sqrt[1 - x * x - y * y]");
@@ -48,9 +48,9 @@ namespace GeometricAlgebraFulcrumLib.SymbolicApplications.Samples.Mathematica
             // The rotor is defined to align u to v
             var rotor = u.CreatePureRotor(v, true);
 
-            var e1 = geometricProcessor.CreateVector(0);
-            var e2 = geometricProcessor.CreateVector(1);
-            var e3 = geometricProcessor.CreateVector(2);
+            var e1 = geometricProcessor.CreateTermVector(0);
+            var e2 = geometricProcessor.CreateTermVector(1);
+            var e3 = geometricProcessor.CreateTermVector(2);
             var y1 = rotor.OmMap(e1).FullSimplifyScalars(realAssumption);
             var y2 = rotor.OmMap(e2).FullSimplifyScalars(realAssumption);
             var y3 = rotor.OmMap(e3).FullSimplifyScalars(realAssumption);

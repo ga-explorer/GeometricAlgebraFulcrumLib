@@ -1,9 +1,9 @@
 ﻿using GeometricAlgebraFulcrumLib.Algebra.PolynomialAlgebra.Basis;
+using GeometricAlgebraFulcrumLib.Lite.ScalarAlgebra;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.LinearMaps.Rotors;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Multivectors;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Multivectors.Composers;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Processors;
-using GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.PolynomialAlgebra.PhCurves
 {
@@ -78,7 +78,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.PolynomialAlgebra.PhCurves
             _basisPairProductSet = BernsteinBasisPairProductSet<T>.Create(BasisSet);
             _basisPairProductIntegralSet = BernsteinBasisPairProductIntegralSet<T>.Create(_basisPairProductSet);
 
-            var e1 = processor.CreateVector(0);
+            var e1 = processor.CreateTermVector(0);
 
             ScaledRotor0 = processor.CreateScaledIdentityRotor();
 
@@ -105,11 +105,17 @@ namespace GeometricAlgebraFulcrumLib.Algebra.PolynomialAlgebra.PhCurves
             
             var v = e1.CreateScaledPureRotor(VectorU).Multivector;
 
-            ScaledRotorV = processor.CreateScaledPureRotor2D(v[0], v[3]);
+            ScaledRotorV = processor.CreateScaledPureRotor2D(
+                v.Scalar(), 
+                v[0, 1]
+            );
 
             var a1 = (v - v0 - v2 * ScaledRotor2.Multivector) / v1;
 
-            ScaledRotor1 = processor.CreateScaledPureRotor2D(a1[0], a1[3]);
+            ScaledRotor1 = processor.CreateScaledPureRotor2D(
+                a1.Scalar(), 
+                a1[0, 1]
+            );
 
             Vector01 = (e1.Gp(ScaledRotor1.MultivectorReverse) + ScaledRotor1.Multivector.Gp(e1)).GetVectorPart();
             Vector12 = (ScaledRotor1.Multivector.Gp(e1).Gp(ScaledRotor2.MultivectorReverse) + ScaledRotor2.Multivector.Gp(e1).Gp(ScaledRotor1.MultivectorReverse)).GetVectorPart();

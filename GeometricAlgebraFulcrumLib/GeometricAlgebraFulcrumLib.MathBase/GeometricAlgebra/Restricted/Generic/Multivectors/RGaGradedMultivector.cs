@@ -3,11 +3,11 @@ using System.Runtime.CompilerServices;
 using DataStructuresLib.BitManipulation;
 using DataStructuresLib.Dictionary;
 using DataStructuresLib.Extensions;
-using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Basis;
-using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Basis;
+using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Basis;
+using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Restricted.Basis;
+using GeometricAlgebraFulcrumLib.Lite.ScalarAlgebra;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Multivectors.Composers;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Processors;
-using GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra;
 using TextComposerLib.Text;
 
 namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Multivectors
@@ -128,11 +128,11 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generi
             return !IsZero && _gradeKVectorDictionary.Keys.All(k => k.IsEven(maxGrade));
         }
 
-
+        
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override IReadOnlyDictionary<ulong, T> GetIdScalarDictionary()
+        public override int GetMinGrade()
         {
-            return this;
+            return IsZero ? 0 : _gradeKVectorDictionary.Keys.Min();
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -229,42 +229,42 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generi
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override Scalar<T> GetScalarTermScalar()
+        public override Scalar<T> Scalar()
         {
             if (_gradeKVectorDictionary.TryGetValue(0, out var kVector))
-                return ((RGaScalar<T>)kVector).ScalarValue.CreateScalar(ScalarProcessor);
+                return ((RGaScalar<T>)kVector).ScalarValue().CreateScalar(ScalarProcessor);
 
             return ScalarProcessor.CreateScalarZero();
         }
 
-        public override Scalar<T> GetTermScalar(ulong basisBladeId)
+        public override Scalar<T> GetBasisBladeScalar(ulong basisBladeId)
         {
             var grade = basisBladeId.Grade();
 
             if (grade == 0)
-                return GetScalarTermScalar();
+                return Scalar();
 
             return _gradeKVectorDictionary.TryGetValue(grade, out var kVector)
-                ? kVector.GetTermScalar(basisBladeId)
+                ? kVector.GetBasisBladeScalar(basisBladeId)
                 : ScalarProcessor.CreateScalarZero();
         }
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override bool TryGetScalarTermScalar(out T scalar)
+        public override bool TryGetScalarValue(out T scalar)
         {
             if (_gradeKVectorDictionary.TryGetValue(0, out var kVector))
-                return kVector.TryGetScalarTermScalar(out scalar);
+                return kVector.TryGetScalarValue(out scalar);
 
             scalar = ScalarProcessor.ScalarZero;
             return false;
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override bool TryGetTermScalar(ulong basisBlade, out T scalar)
+        public override bool TryGetBasisBladeScalarValue(ulong basisBlade, out T scalar)
         {
             if (_gradeKVectorDictionary.TryGetValue(basisBlade.Grade(), out var kVector))
-                return kVector.TryGetTermScalar(basisBlade, out scalar);
+                return kVector.TryGetBasisBladeScalarValue(basisBlade, out scalar);
 
             scalar = ScalarProcessor.ScalarZero;
             return false;
@@ -345,6 +345,14 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generi
                 : Processor.CreateZeroKVector(grade);
         }
         
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public override RGaKVector<T> GetFirstKVectorPart()
+        {
+            return _gradeKVectorDictionary.Count > 0
+                ? _gradeKVectorDictionary.Values.First()
+                : Processor.CreateZeroScalar();
+        }
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public RGaGradedMultivector<T> GetPart(Func<ulong, bool> filterFunc)
         {

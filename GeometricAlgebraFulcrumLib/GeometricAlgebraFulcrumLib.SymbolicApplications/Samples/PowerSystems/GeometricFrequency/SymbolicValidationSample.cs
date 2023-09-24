@@ -1,11 +1,11 @@
 ﻿using System.Diagnostics;
 using DataStructuresLib.Basic;
 using GeometricAlgebraFulcrumLib.Algebra.PolynomialAlgebra.Basis;
+using GeometricAlgebraFulcrumLib.Lite.ScalarAlgebra;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Frames;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Multivectors;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Multivectors.Composers;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Processors;
-using GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra;
 using GeometricAlgebraFulcrumLib.Mathematica;
 using GeometricAlgebraFulcrumLib.Mathematica.GeometricAlgebra;
 using GeometricAlgebraFulcrumLib.Mathematica.Mathematica;
@@ -281,7 +281,7 @@ namespace GeometricAlgebraFulcrumLib.SymbolicApplications.Samples.PowerSystems.G
             return v;
         }
 
-        private static Quad<MathBase.ScalarAlgebra.Scalar<Expr>> GetArcLengthParameterTimeDerivatives4D(this MathBase.ScalarAlgebra.Scalar<Expr> sDt1)
+        private static Quad<Scalar<Expr>> GetArcLengthParameterTimeDerivatives4D(this Scalar<Expr> sDt1)
         {
             var t = "t".ToSymbolExpr();
 
@@ -302,10 +302,10 @@ namespace GeometricAlgebraFulcrumLib.SymbolicApplications.Samples.PowerSystems.G
             Plot(sDt3, Path.Combine(WorkingPath, "sDt3"));
             Plot(sDt4, Path.Combine(WorkingPath, "sDt4"));
 
-            return new Quad<MathBase.ScalarAlgebra.Scalar<Expr>>(sDt1, sDt2, sDt3, sDt4);
+            return new Quad<Scalar<Expr>>(sDt1, sDt2, sDt3, sDt4);
         }
 
-        private static Hexad<MathBase.ScalarAlgebra.Scalar<Expr>> GetArcLengthParameterTimeDerivatives6D(this MathBase.ScalarAlgebra.Scalar<Expr> sDt1)
+        private static Hexad<Scalar<Expr>> GetArcLengthParameterTimeDerivatives6D(this Scalar<Expr> sDt1)
         {
             var t = "t".ToSymbolExpr();
 
@@ -332,7 +332,7 @@ namespace GeometricAlgebraFulcrumLib.SymbolicApplications.Samples.PowerSystems.G
             Plot(sDt5, Path.Combine(WorkingPath, "sDt5"));
             Plot(sDt6, Path.Combine(WorkingPath, "sDt6"));
 
-            return new Hexad<MathBase.ScalarAlgebra.Scalar<Expr>>(sDt1, sDt2, sDt3, sDt4, sDt5, sDt6);
+            return new Hexad<Scalar<Expr>>(sDt1, sDt2, sDt3, sDt4, sDt5, sDt6);
         }
 
         private static Triplet<RGaVector<Expr>> GetTimeDerivatives3D(this RGaVector<Expr> v)
@@ -942,7 +942,7 @@ namespace GeometricAlgebraFulcrumLib.SymbolicApplications.Samples.PowerSystems.G
             var t = "t".ToSymbolExpr();
             var x = "x".ToSymbolExpr();
 
-            var sDt = curve.Norm().ScalarValue.ReplaceAll(t, x);
+            var sDt = curve.Norm().ScalarValue().ReplaceAll(t, x);
 
             var pm = new PlotModel
             {
@@ -992,7 +992,7 @@ namespace GeometricAlgebraFulcrumLib.SymbolicApplications.Samples.PowerSystems.G
         {
             var t = "t".ToSymbolExpr();
 
-            var curveNorm = curve.Norm().ScalarValue;
+            var curveNorm = curve.Norm().ScalarValue();
 
             var pm = new PlotModel
             {
@@ -1028,7 +1028,7 @@ namespace GeometricAlgebraFulcrumLib.SymbolicApplications.Samples.PowerSystems.G
                 var index = i;
 
                 var s1 = new FunctionSeries(
-                    v => curve[index].ScalarValue.ReplaceAll(t, v.ToExpr()).Evaluate().AsDouble(),
+                    v => curve.Scalar(index).ScalarValue.ReplaceAll(t, v.ToExpr()).Evaluate().AsDouble(),
                     0.001,
                     1,
                     512
@@ -1185,7 +1185,7 @@ namespace GeometricAlgebraFulcrumLib.SymbolicApplications.Samples.PowerSystems.G
 
             // Time derivatives of arc-length parameter
             var (sDt1, sDt2, sDt3, sDt4, sDt5, sDt6) =
-                vDt1Norm.Scalar.GetArcLengthParameterTimeDerivatives6D();
+                vDt1Norm.Scalar().GetArcLengthParameterTimeDerivatives6D();
 
             // Validate the general expressions for sDt1, sDt2, sDt3, sDt4
             var sDt1_1 = vDt1.Sp(vDt1).Sqrt();
@@ -1297,8 +1297,8 @@ namespace GeometricAlgebraFulcrumLib.SymbolicApplications.Samples.PowerSystems.G
                 .ConsoleWriteLine();
 
             // Curvature parameters based on parametrization of curve
-            var kappa1 = Mfs.ExpandAll[e1sDs.Sp(e2s).ScalarValue].FullSimplify();
-            var kappa2 = Mfs.ExpandAll[e2sDs.Sp(e3s).ScalarValue].FullSimplify();
+            var kappa1 = Mfs.ExpandAll[e1sDs.Sp(e2s).ScalarValue()].FullSimplify();
+            var kappa2 = Mfs.ExpandAll[e2sDs.Sp(e3s).ScalarValue()].FullSimplify();
 
             LaTeXComposer
                 .ConsoleWriteLine("Curvature coefficients:")
@@ -1393,7 +1393,7 @@ namespace GeometricAlgebraFulcrumLib.SymbolicApplications.Samples.PowerSystems.G
 
             // Time derivatives of arc-length parameter
             var (sDt1, sDt2, sDt3, sDt4) =
-                vDt1Norm.Scalar.GetArcLengthParameterTimeDerivatives4D();
+                vDt1Norm.Scalar().GetArcLengthParameterTimeDerivatives4D();
 
             // Validate the general expressions for sDt1, sDt2, sDt3, sDt4
             var sDt1_1 = vDt1.Sp(vDt1).Sqrt();
@@ -1515,9 +1515,9 @@ namespace GeometricAlgebraFulcrumLib.SymbolicApplications.Samples.PowerSystems.G
                 .ConsoleWriteLine();
 
             // Curvature parameters based on parametrization of curve
-            var kappa1 = Mfs.ExpandAll[e1sDs.Sp(e2s).ScalarValue].FullSimplify();
-            var kappa2 = Mfs.ExpandAll[e2sDs.Sp(e3s).ScalarValue].FullSimplify();
-            var kappa3 = Mfs.ExpandAll[e3sDs.Sp(e4s).ScalarValue].FullSimplify();
+            var kappa1 = Mfs.ExpandAll[e1sDs.Sp(e2s).ScalarValue()].FullSimplify();
+            var kappa2 = Mfs.ExpandAll[e2sDs.Sp(e3s).ScalarValue()].FullSimplify();
+            var kappa3 = Mfs.ExpandAll[e3sDs.Sp(e4s).ScalarValue()].FullSimplify();
 
             LaTeXComposer
                 .ConsoleWriteLine("Curvature coefficients:")
@@ -1621,7 +1621,7 @@ namespace GeometricAlgebraFulcrumLib.SymbolicApplications.Samples.PowerSystems.G
 
             // Time derivatives of arc-length parameter
             var (sDt1, sDt2, sDt3, sDt4, sDt5, sDt6) =
-                vDt1Norm.Scalar.GetArcLengthParameterTimeDerivatives6D();
+                vDt1Norm.Scalar().GetArcLengthParameterTimeDerivatives6D();
 
             // Validate the general expressions for sDt1, sDt2, sDt3, sDt4
             var sDt1_1 = vDt1.Sp(vDt1).Sqrt();
@@ -1754,11 +1754,11 @@ namespace GeometricAlgebraFulcrumLib.SymbolicApplications.Samples.PowerSystems.G
                 .ConsoleWriteLine();
 
             // Curvature parameters based on parametrization of curve
-            var kappa1 = Mfs.ExpandAll[e1sDs.Sp(e2s).ScalarValue].FullSimplify();
-            var kappa2 = Mfs.ExpandAll[e2sDs.Sp(e3s).ScalarValue].FullSimplify();
-            var kappa3 = Mfs.ExpandAll[e3sDs.Sp(e4s).ScalarValue].FullSimplify();
-            var kappa4 = Mfs.ExpandAll[e4sDs.Sp(e5s).ScalarValue].FullSimplify();
-            var kappa5 = Mfs.ExpandAll[e5sDs.Sp(e6s).ScalarValue].FullSimplify();
+            var kappa1 = Mfs.ExpandAll[e1sDs.Sp(e2s).ScalarValue()].FullSimplify();
+            var kappa2 = Mfs.ExpandAll[e2sDs.Sp(e3s).ScalarValue()].FullSimplify();
+            var kappa3 = Mfs.ExpandAll[e3sDs.Sp(e4s).ScalarValue()].FullSimplify();
+            var kappa4 = Mfs.ExpandAll[e4sDs.Sp(e5s).ScalarValue()].FullSimplify();
+            var kappa5 = Mfs.ExpandAll[e5sDs.Sp(e6s).ScalarValue()].FullSimplify();
 
             LaTeXComposer
                 .ConsoleWriteLine("Curvature coefficients:")

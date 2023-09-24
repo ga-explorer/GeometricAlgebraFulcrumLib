@@ -1,11 +1,11 @@
 ﻿using System;
 using GeometricAlgebraFulcrumLib.Algebra.PolynomialAlgebra.Basis;
-using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Maps;
-using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Float64.LinearMaps.Rotors;
-using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Float64.Multivectors;
-using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Float64.Multivectors.Composers;
-using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Float64.Processors;
-using GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra;
+using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Maps;
+using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Restricted.Float64.LinearMaps.Rotors;
+using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Restricted.Float64.Multivectors;
+using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Restricted.Float64.Multivectors.Composers;
+using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Restricted.Float64.Processors;
+using GeometricAlgebraFulcrumLib.Lite.ScalarAlgebra;
 using GeometricAlgebraFulcrumLib.MathBase.Text;
 
 namespace GeometricAlgebraFulcrumLib.Samples.Numeric
@@ -125,7 +125,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.Numeric
             var basisSet = BernsteinBasisSet<double>.Create(ScalarProcessor, degree);
 
             var e1 = 
-                GeometricProcessor.CreateVector(0);
+                GeometricProcessor.CreateTermVector(0);
 
             var p1 =
                 GeometricProcessor.CreateVector(1, 1, 1);
@@ -148,7 +148,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.Numeric
                 e1.CreateScaledParametricPureRotor3D(
                     d1Unit,
                     0,
-                    d1Norm.Sqrt().ScalarValue
+                    d1Norm.Sqrt().ScalarValue()
                 );
 
             var a1 = 

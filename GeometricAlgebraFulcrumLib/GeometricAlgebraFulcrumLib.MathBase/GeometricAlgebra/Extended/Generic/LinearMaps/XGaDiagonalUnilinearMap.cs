@@ -1,11 +1,12 @@
 ﻿using System.Collections;
 using System.Runtime.CompilerServices;
 using DataStructuresLib.IndexSets;
-using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Basis;
+using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Basis;
+using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Extended;
+using GeometricAlgebraFulcrumLib.Lite.ScalarAlgebra;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.Multivectors;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.Multivectors.Composers;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.Processors;
-using GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra;
 
 namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.LinearMaps
 {
@@ -28,10 +29,10 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.
             => DiagonalMultivector.Count;
 
         public IEnumerable<IIndexSet> Keys 
-            => DiagonalMultivector.Keys;
+            => DiagonalMultivector.Ids;
 
         public IEnumerable<T> Values 
-            => DiagonalMultivector.Values;
+            => DiagonalMultivector.Scalars;
 
         public T this[IIndexSet key] 
             => DiagonalMultivector[key];
@@ -72,7 +73,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.
         public XGaMultivector<T> MapBasisBlade(IIndexSet id)
         {
             return DiagonalMultivector.TryGetValue(id, out var scalar)
-                ? Processor.CreateKVector(id, scalar)
+                ? Processor.CreateTermKVector(id, scalar)
                 : Processor.CreateZeroScalar();
         }
 
@@ -84,7 +85,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.
             {
                 foreach (var (id, mv) in DiagonalMultivector)
                 {
-                    if (!multivector.TryGetTermScalar(id, out var scalar))
+                    if (!multivector.TryGetBasisBladeScalarValue(id, out var scalar))
                         continue;
 
                     composer.AddTerm(id, mv, scalar);
@@ -112,7 +113,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.
                 .Select(p => 
                     new KeyValuePair<IIndexSet, XGaMultivector<T>>(
                         p.Key, 
-                        Processor.CreateKVector(p.Key, p.Value)
+                        Processor.CreateTermKVector(p.Key, p.Value)
                     )
                 );
         }

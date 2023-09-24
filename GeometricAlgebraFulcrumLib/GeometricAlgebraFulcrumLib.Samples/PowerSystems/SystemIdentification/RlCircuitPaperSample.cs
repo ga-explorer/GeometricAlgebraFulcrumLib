@@ -4,15 +4,16 @@ using System.IO;
 using System.Linq;
 using DataStructuresLib.Basic;
 using GeometricAlgebraFulcrumLib.Algebra.PolynomialAlgebra.Polynomials;
+using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Restricted.Float64.Processors;
+using GeometricAlgebraFulcrumLib.Lite.Geometry.Differential.Functions.Interpolators;
+using GeometricAlgebraFulcrumLib.Lite.ScalarAlgebra;
+using GeometricAlgebraFulcrumLib.Lite.SignalAlgebra;
+using GeometricAlgebraFulcrumLib.Lite.SignalAlgebra.Composers;
 using GeometricAlgebraFulcrumLib.MathBase;
-using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Float64.Processors;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Multivectors;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Multivectors.Composers;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Processors;
-using GeometricAlgebraFulcrumLib.MathBase.Geometry.Differential.Functions.Interpolators;
-using GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra;
 using GeometricAlgebraFulcrumLib.MathBase.SignalAlgebra;
-using GeometricAlgebraFulcrumLib.MathBase.SignalAlgebra.Composers;
 using GeometricAlgebraFulcrumLib.MathBase.SignalAlgebra.Interpolators;
 using GeometricAlgebraFulcrumLib.MathBase.SignalAlgebra.Processors;
 using GeometricAlgebraFulcrumLib.MathBase.Text;
@@ -186,11 +187,11 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.SystemIdentification
             var uDt4 =
                 interpolator.GetVectorsDt1(uDt3, SignalSamplesCount);
 
-            var s = u[0];
-            var sDt1 = uDt1[0];
-            var sDt2 = uDt2[0];
-            var sDt3 = uDt3[0];
-            var sDt4 = uDt4[0];
+            var s = u.Scalar(0);
+            var sDt1 = uDt1.Scalar(0);
+            var sDt2 = uDt2.Scalar(0);
+            var sDt3 = uDt3.Scalar(0);
+            var sDt4 = uDt4.Scalar(0);
 
             //var s = u.WienerFilter1D(SignalSamplesCount, 5)[0];
             //var sDt1 = uDt1.WienerFilter1D(SignalSamplesCount, 5)[0];
@@ -557,15 +558,15 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.SystemIdentification
             //);
 
             vectorSignalProcessor.ProcessVectorSignal(uData);
-            var u = vectorSignalProcessor.VectorSignalInterpolated[0];
-            var uDt1 = vectorSignalProcessor.VectorSignalTimeDerivatives[0][0];
-            var uDt2 = vectorSignalProcessor.VectorSignalTimeDerivatives[1][0];
+            var u = vectorSignalProcessor.VectorSignalInterpolated.Scalar(0);
+            var uDt1 = vectorSignalProcessor.VectorSignalTimeDerivatives[0].Scalar(0);
+            var uDt2 = vectorSignalProcessor.VectorSignalTimeDerivatives[1].Scalar(0);
 
             vectorSignalProcessor.ProcessVectorSignal(iData);
-            var i = vectorSignalProcessor.VectorSignalInterpolated[0];
-            var iDt1 = vectorSignalProcessor.VectorSignalTimeDerivatives[0][0];
-            var iDt2 = vectorSignalProcessor.VectorSignalTimeDerivatives[1][0];
-            var iDt3 = vectorSignalProcessor.VectorSignalTimeDerivatives[2][0];
+            var i = vectorSignalProcessor.VectorSignalInterpolated.Scalar(0);
+            var iDt1 = vectorSignalProcessor.VectorSignalTimeDerivatives[0].Scalar(0);
+            var iDt2 = vectorSignalProcessor.VectorSignalTimeDerivatives[1].Scalar(0);
+            var iDt3 = vectorSignalProcessor.VectorSignalTimeDerivatives[2].Scalar(0);
 
             var tValues = u.ScalarValue.GetSampledTimeSignal();
             var tMin = tValues[0];
@@ -590,7 +591,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.SystemIdentification
 
             var columnIndex = 6;
 
-            workSheet.WriteScalarSignal(firstRowIndex, columnIndex, uData[0], "uData");
+            workSheet.WriteScalarSignal(firstRowIndex, columnIndex, uData.Scalar(0), "uData");
             columnIndex += 1;
 
             workSheet.WriteScalarSignal(firstRowIndex, columnIndex, u, "u");
@@ -602,7 +603,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.SystemIdentification
             workSheet.WriteScalarSignal(firstRowIndex, columnIndex, uDt2, "u''");
             columnIndex += 1;
 
-            workSheet.WriteScalarSignal(firstRowIndex, columnIndex, iData[0], "iData");
+            workSheet.WriteScalarSignal(firstRowIndex, columnIndex, iData.Scalar(0), "iData");
             columnIndex += 1;
 
             workSheet.WriteScalarSignal(firstRowIndex, columnIndex, i, "i");
@@ -631,8 +632,8 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.SystemIdentification
 
             package.SaveAs(outputFilePath);
 
-            uData[0].PlotSignal(u, tMin, tMax, "u".CombineWorkingPath());
-            iData[0].PlotSignal(i, tMin, tMax, "i".CombineWorkingPath());
+            uData.Scalar(0).PlotSignal(u, tMin, tMax, "u".CombineWorkingPath());
+            iData.Scalar(0).PlotSignal(i, tMin, tMax, "i".CombineWorkingPath());
 
             //uData[0].PlotCurve("u", "uData");
             //iData[0].PlotCurve("i", "iData");
@@ -644,8 +645,8 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.SystemIdentification
             iDt2.PlotCurve("i''", "iDt2");
             iDt3.PlotCurve("i'''", "iDt3");
 
-            rData[0].PlotCurve("R", "R");
-            lData[0].PlotCurve("L", "L");
+            rData.Scalar(0).PlotCurve("R", "R");
+            lData.Scalar(0).PlotCurve("L", "L");
 
             r1.PlotCurve("R", "R1");
             l1.PlotCurve("L", "L1");
@@ -707,17 +708,17 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.SystemIdentification
 
             var uPolynomial = PolynomialFunction<double>.Create(
                 ScalarProcessor,
-                Fit.Polynomial(tData, uData[0].ScalarValue.ToArray(), 19)
+                Fit.Polynomial(tData, uData.Scalar(0).ScalarValue.ToArray(), 19)
             );
 
             var iPolynomial = PolynomialFunction<double>.Create(
                 ScalarProcessor,
-                Fit.Polynomial(tData, iData[0].ScalarValue.ToArray(), 19)
+                Fit.Polynomial(tData, iData.Scalar(0).ScalarValue.ToArray(), 19)
             );
 
             var wPolynomial = PolynomialFunction<double>.Create(
                 ScalarProcessor,
-                Fit.Polynomial(tData, wData[0].ScalarValue.ToArray(), 19)
+                Fit.Polynomial(tData, wData.Scalar(0).ScalarValue.ToArray(), 19)
             );
 
             var (u, uDt1, uDt2, uDt3, uDt4) =
@@ -767,7 +768,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.SystemIdentification
 
             var columnIndex = 11;
 
-            workSheet.WriteScalarSignal(firstRowIndex + 1, columnIndex, uData[0], "uData");
+            workSheet.WriteScalarSignal(firstRowIndex + 1, columnIndex, uData.Scalar(0), "uData");
             columnIndex += 1;
 
             workSheet.WriteScalarSignal(firstRowIndex + 1, columnIndex, u, "u");
@@ -785,7 +786,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.SystemIdentification
             workSheet.WriteScalarSignal(firstRowIndex + 1, columnIndex, uDt4, "u''''");
             columnIndex += 1;
 
-            workSheet.WriteScalarSignal(firstRowIndex + 1, columnIndex, iData[0], "iData");
+            workSheet.WriteScalarSignal(firstRowIndex + 1, columnIndex, iData.Scalar(0), "iData");
             columnIndex += 1;
 
             workSheet.WriteScalarSignal(firstRowIndex + 1, columnIndex, i, "i");
@@ -803,7 +804,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.SystemIdentification
             workSheet.WriteScalarSignal(firstRowIndex + 1, columnIndex, iDt4, "i''''");
             columnIndex += 1;
 
-            workSheet.WriteScalarSignal(firstRowIndex + 1, columnIndex, wData[0], "wData");
+            workSheet.WriteScalarSignal(firstRowIndex + 1, columnIndex, wData.Scalar(0), "wData");
             columnIndex += 1;
 
             workSheet.WriteScalarSignal(firstRowIndex + 1, columnIndex, w, "w");
@@ -841,9 +842,9 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.SystemIdentification
 
             package.SaveAs(outputFilePath);
 
-            uData[0].ScalarValue.PlotCurve("u", "uData");
-            iData[0].ScalarValue.PlotCurve("i", "iData");
-            wData[0].ScalarValue.PlotCurve("w", "wData");
+            uData.Scalar(0).ScalarValue.PlotCurve("u", "uData");
+            iData.Scalar(0).ScalarValue.PlotCurve("i", "iData");
+            wData.Scalar(0).ScalarValue.PlotCurve("w", "wData");
 
             u.ScalarValue.PlotCurve("u", "u");
             uDt1.ScalarValue.PlotCurve("u'", "uDt1");
@@ -955,11 +956,11 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.SystemIdentification
             );
 
             vectorSignalProcessor.ProcessVectorSignal(uData);
-            var u = vectorSignalProcessor.VectorSignalInterpolated[0];
-            var uDt1 = vectorSignalProcessor.VectorSignalTimeDerivatives[0][0];
-            var uDt2 = vectorSignalProcessor.VectorSignalTimeDerivatives[1][0];
-            var uDt3 = vectorSignalProcessor.VectorSignalTimeDerivatives[2][0];
-            var uDt4 = vectorSignalProcessor.VectorSignalTimeDerivatives[3][0];
+            var u = vectorSignalProcessor.VectorSignalInterpolated.Scalar(0);
+            var uDt1 = vectorSignalProcessor.VectorSignalTimeDerivatives[0].Scalar(0);
+            var uDt2 = vectorSignalProcessor.VectorSignalTimeDerivatives[1].Scalar(0);
+            var uDt3 = vectorSignalProcessor.VectorSignalTimeDerivatives[2].Scalar(0);
+            var uDt4 = vectorSignalProcessor.VectorSignalTimeDerivatives[3].Scalar(0);
 
             //Console.WriteLine("u Data");
             //Console.WriteLine(
@@ -979,11 +980,11 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.SystemIdentification
             );
 
             vectorSignalProcessor.ProcessVectorSignal(iData);
-            var i = vectorSignalProcessor.VectorSignalInterpolated[0];
-            var iDt1 = vectorSignalProcessor.VectorSignalTimeDerivatives[0][0];
-            var iDt2 = vectorSignalProcessor.VectorSignalTimeDerivatives[1][0];
-            var iDt3 = vectorSignalProcessor.VectorSignalTimeDerivatives[2][0];
-            var iDt4 = vectorSignalProcessor.VectorSignalTimeDerivatives[3][0];
+            var i = vectorSignalProcessor.VectorSignalInterpolated.Scalar(0);
+            var iDt1 = vectorSignalProcessor.VectorSignalTimeDerivatives[0].Scalar(0);
+            var iDt2 = vectorSignalProcessor.VectorSignalTimeDerivatives[1].Scalar(0);
+            var iDt3 = vectorSignalProcessor.VectorSignalTimeDerivatives[2].Scalar(0);
+            var iDt4 = vectorSignalProcessor.VectorSignalTimeDerivatives[3].Scalar(0);
 
             //Console.WriteLine("i Data");
             //Console.WriteLine(
@@ -1003,11 +1004,11 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.SystemIdentification
             );
 
             vectorSignalProcessor.ProcessVectorSignal(wData);
-            var w = vectorSignalProcessor.VectorSignalInterpolated[0];
-            var wDt1 = vectorSignalProcessor.VectorSignalTimeDerivatives[0][0];
-            var wDt2 = vectorSignalProcessor.VectorSignalTimeDerivatives[1][0];
-            var wDt3 = vectorSignalProcessor.VectorSignalTimeDerivatives[2][0];
-            var wDt4 = vectorSignalProcessor.VectorSignalTimeDerivatives[3][0];
+            var w = vectorSignalProcessor.VectorSignalInterpolated.Scalar(0);
+            var wDt1 = vectorSignalProcessor.VectorSignalTimeDerivatives[0].Scalar(0);
+            var wDt2 = vectorSignalProcessor.VectorSignalTimeDerivatives[1].Scalar(0);
+            var wDt3 = vectorSignalProcessor.VectorSignalTimeDerivatives[2].Scalar(0);
+            var wDt4 = vectorSignalProcessor.VectorSignalTimeDerivatives[3].Scalar(0);
 
             //Console.WriteLine("w Data");
             //Console.WriteLine(
@@ -1052,7 +1053,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.SystemIdentification
 
             var columnIndex = 11;
 
-            workSheet.WriteScalarSignal(firstRowIndex + 1, columnIndex, uData[0], "uData");
+            workSheet.WriteScalarSignal(firstRowIndex + 1, columnIndex, uData.Scalar(0), "uData");
             columnIndex += 1;
 
             workSheet.WriteScalarSignal(firstRowIndex + 1, columnIndex, u, "u");
@@ -1070,7 +1071,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.SystemIdentification
             workSheet.WriteScalarSignal(firstRowIndex + 1, columnIndex, uDt4, "u''''");
             columnIndex += 1;
 
-            workSheet.WriteScalarSignal(firstRowIndex + 1, columnIndex, iData[0], "iData");
+            workSheet.WriteScalarSignal(firstRowIndex + 1, columnIndex, iData.Scalar(0), "iData");
             columnIndex += 1;
 
             workSheet.WriteScalarSignal(firstRowIndex + 1, columnIndex, i, "i");
@@ -1088,7 +1089,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.SystemIdentification
             workSheet.WriteScalarSignal(firstRowIndex + 1, columnIndex, iDt4, "i''''");
             columnIndex += 1;
 
-            workSheet.WriteScalarSignal(firstRowIndex + 1, columnIndex, wData[0], "wData");
+            workSheet.WriteScalarSignal(firstRowIndex + 1, columnIndex, wData.Scalar(0), "wData");
             columnIndex += 1;
 
             workSheet.WriteScalarSignal(firstRowIndex + 1, columnIndex, w, "w");
@@ -1126,9 +1127,9 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.SystemIdentification
 
             package.SaveAs(outputFilePath);
 
-            uData[0].ScalarValue.PlotCurve("u", "uData");
-            iData[0].ScalarValue.PlotCurve("i", "iData");
-            wData[0].ScalarValue.PlotCurve("w", "wData");
+            uData.Scalar(0).ScalarValue.PlotCurve("u", "uData");
+            iData.Scalar(0).ScalarValue.PlotCurve("i", "iData");
+            wData.Scalar(0).ScalarValue.PlotCurve("w", "wData");
 
             u.ScalarValue.PlotCurve("u", "u");
             uDt1.ScalarValue.PlotCurve("u'", "uDt1");
@@ -1233,15 +1234,15 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.SystemIdentification
             //);
 
             vectorSignalProcessor.ProcessVectorSignal(uSignal);
-            var u = vectorSignalProcessor.VectorSignalInterpolated[0];
-            var uDt1 = vectorSignalProcessor.VectorSignalTimeDerivatives[0][0];
-            var uDt2 = vectorSignalProcessor.VectorSignalTimeDerivatives[1][0];
+            var u = vectorSignalProcessor.VectorSignalInterpolated.Scalar(0);
+            var uDt1 = vectorSignalProcessor.VectorSignalTimeDerivatives[0].Scalar(0);
+            var uDt2 = vectorSignalProcessor.VectorSignalTimeDerivatives[1].Scalar(0);
 
             vectorSignalProcessor.ProcessVectorSignal(iSignal);
-            var i = vectorSignalProcessor.VectorSignalInterpolated[0];
-            var iDt1 = vectorSignalProcessor.VectorSignalTimeDerivatives[0][0];
-            var iDt2 = vectorSignalProcessor.VectorSignalTimeDerivatives[1][0];
-            var iDt3 = vectorSignalProcessor.VectorSignalTimeDerivatives[2][0];
+            var i = vectorSignalProcessor.VectorSignalInterpolated.Scalar(0);
+            var iDt1 = vectorSignalProcessor.VectorSignalTimeDerivatives[0].Scalar(0);
+            var iDt2 = vectorSignalProcessor.VectorSignalTimeDerivatives[1].Scalar(0);
+            var iDt3 = vectorSignalProcessor.VectorSignalTimeDerivatives[2].Scalar(0);
 
             var tValues = u.ScalarValue.GetSampledTimeSignal();
             var tMin = tValues[0];
@@ -1266,7 +1267,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.SystemIdentification
 
             var columnIndex = 1;
 
-            workSheet.WriteScalarSignal(firstRowIndex, columnIndex, uSignal[0], "uData");
+            workSheet.WriteScalarSignal(firstRowIndex, columnIndex, uSignal.Scalar(0), "uData");
             columnIndex += 1;
 
             workSheet.WriteScalarSignal(firstRowIndex, columnIndex, u, "u");
@@ -1278,7 +1279,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.SystemIdentification
             workSheet.WriteScalarSignal(firstRowIndex, columnIndex, uDt2, "u''");
             columnIndex += 1;
 
-            workSheet.WriteScalarSignal(firstRowIndex, columnIndex, iSignal[0], "iData");
+            workSheet.WriteScalarSignal(firstRowIndex, columnIndex, iSignal.Scalar(0), "iData");
             columnIndex += 1;
 
             workSheet.WriteScalarSignal(firstRowIndex, columnIndex, i, "i");
@@ -1307,8 +1308,8 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.SystemIdentification
 
             package.SaveAs(outputFilePath);
 
-            uSignal[0].PlotSignal(u, tMin, tMax, "u".CombineWorkingPath());
-            iSignal[0].PlotSignal(i, tMin, tMax, "i".CombineWorkingPath());
+            uSignal.Scalar(0).PlotSignal(u, tMin, tMax, "u".CombineWorkingPath());
+            iSignal.Scalar(0).PlotSignal(i, tMin, tMax, "i".CombineWorkingPath());
 
             //uData[0].PlotCurve("u", "uData");
             //iData[0].PlotCurve("i", "iData");

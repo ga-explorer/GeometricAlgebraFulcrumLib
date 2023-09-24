@@ -1,12 +1,12 @@
 ﻿using System.Runtime.CompilerServices;
 using System.Diagnostics;
-using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Float64.Multivectors;
 using DataStructuresLib.Dictionary;
-using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Float64.Processors;
+using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Restricted.Float64.Multivectors;
+using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Restricted.Float64.Multivectors.Composers;
+using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Restricted.Float64.Processors;
+using GeometricAlgebraFulcrumLib.Lite.ScalarAlgebra;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Processors;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Multivectors.Composers;
-using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Float64.Multivectors.Composers;
-using GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra;
 
 namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Multivectors
 {
@@ -132,7 +132,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generi
             if (v1.IsZero || v2.IsZero)
                 return processor.CreateZeroMultivector();
 
-            var s2 = v2.ScalarValue;
+            var s2 = v2.ScalarValue();
 
             return (RGaGradedMultivector<T>)v1.MapKVectors(kv => kv.Times(s2), false);
         }
@@ -151,7 +151,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generi
             if (v1.IsZero || v2.IsZero)
                 return processor.CreateZeroMultivector();
 
-            var s1 = v1.ScalarValue;
+            var s1 = v1.ScalarValue();
 
             return (RGaGradedMultivector<T>)v2.MapKVectors(kv => kv.Times(s1), false);
         }
@@ -509,25 +509,25 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generi
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public RGaMultivector<T> DivideByENorm()
         {
-            return Divide(ENorm().ScalarValue);
+            return Divide(ENorm().ScalarValue());
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public RGaMultivector<T> DivideByENormSquared()
         {
-            return Divide(ENormSquared().ScalarValue);
+            return Divide(ENormSquared().ScalarValue());
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public RGaMultivector<T> DivideByNorm()
         {
-            return Divide(Norm().ScalarValue);
+            return Divide(Norm().ScalarValue());
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public RGaMultivector<T> DivideByNormSquared()
         {
-            return Divide(NormSquared().ScalarValue);
+            return Divide(NormSquared().ScalarValue());
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -578,7 +578,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generi
         public RGaMultivector<T> EInverse()
         {
             return Reverse().Divide(
-                ENormSquared().ScalarValue
+                ENormSquared().ScalarValue()
             );
         }
 
@@ -586,7 +586,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generi
         public RGaMultivector<T> Inverse()
         {
             return Reverse().Divide(
-                NormSquared().ScalarValue
+                NormSquared().ScalarValue()
             );
         }
         
@@ -596,7 +596,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generi
             var kVectorConjugate = Conjugate();
 
             return kVectorConjugate.Divide(
-                kVectorConjugate.Sp(this).ScalarValue
+                kVectorConjugate.Sp(this).ScalarValue()
             );
         }
 
@@ -699,14 +699,14 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generi
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public RGaMultivector<T> Op(RGaScalar<T> mv2)
         {
-            return Times(mv2.ScalarValue);
+            return Times(mv2.ScalarValue());
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public override RGaMultivector<T> Op(RGaMultivector<T> mv2)
         {
             if (mv2 is RGaScalar<T> scalar)
-                return Times(scalar.ScalarValue);
+                return Times(scalar.ScalarValue());
 
             if (IsZero || mv2.IsZero)
                 return Processor.CreateZeroScalar();
@@ -721,14 +721,14 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generi
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public RGaMultivector<T> EGp(RGaScalar<T> mv2)
         {
-            return Times(mv2.ScalarValue);
+            return Times(mv2.ScalarValue());
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public override RGaMultivector<T> EGp(RGaMultivector<T> mv2)
         {
             if (mv2 is RGaScalar<T> scalar)
-                return Times(scalar.ScalarValue);
+                return Times(scalar.ScalarValue());
 
             if (IsZero || mv2.IsZero)
                 return Processor.CreateZeroScalar();
@@ -742,14 +742,14 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generi
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public RGaMultivector<T> Gp(RGaScalar<T> mv2)
         {
-            return Times(mv2.ScalarValue);
+            return Times(mv2.ScalarValue());
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public override RGaMultivector<T> Gp(RGaMultivector<T> mv2)
         {
             if (mv2 is RGaScalar<T> scalar)
-                return Times(scalar.ScalarValue);
+                return Times(scalar.ScalarValue());
 
             if (IsZero || mv2.IsZero)
                 return Processor.CreateZeroScalar();
@@ -768,7 +768,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generi
                 return Processor.CreateZeroScalar();
 
             return Processor.CreateScalar(
-                GetScalarTermScalar() * mv2.ScalarValue
+                Scalar() * mv2.ScalarValue()
             );
         }
 
@@ -795,7 +795,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generi
                 return Processor.CreateZeroScalar();
 
             return Processor.CreateScalar(
-                GetScalarTermScalar() * mv2.ScalarValue
+                Scalar() * mv2.ScalarValue()
             );
         }
 
@@ -821,14 +821,14 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generi
             if (IsZero || mv2.IsZero)
                 return Processor.CreateZeroScalar();
 
-            return Times(mv2.ScalarValue);
+            return Times(mv2.ScalarValue());
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public override RGaMultivector<T> ERcp(RGaMultivector<T> mv2)
         {
             if (mv2 is RGaScalar<T> scalar)
-                return Times(scalar.ScalarValue);
+                return Times(scalar.ScalarValue());
 
             if (IsZero || mv2.IsZero)
                 return Processor.CreateZeroScalar();
@@ -846,14 +846,14 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generi
             if (IsZero || mv2.IsZero)
                 return Processor.CreateZeroScalar();
 
-            return Times(mv2.ScalarValue);
+            return Times(mv2.ScalarValue());
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public override RGaMultivector<T> Rcp(RGaMultivector<T> mv2)
         {
             if (mv2 is RGaScalar<T> scalar)
-                return Times(scalar.ScalarValue);
+                return Times(scalar.ScalarValue());
 
             if (IsZero || mv2.IsZero)
                 return Processor.CreateZeroScalar();

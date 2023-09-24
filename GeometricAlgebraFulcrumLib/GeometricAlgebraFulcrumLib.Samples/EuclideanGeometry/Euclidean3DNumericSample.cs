@@ -1,12 +1,12 @@
 ﻿using System;
-using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Float64.LinearMaps;
-using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Float64.LinearMaps.Rotors;
-using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Float64.Multivectors;
-using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Float64.Multivectors.Composers;
-using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Float64.Processors;
-using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.LinearMaps.SpaceND;
-using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Matrices;
-using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.SpaceND;
+using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Extended.Float64.LinearMaps;
+using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Extended.Float64.LinearMaps.Rotors;
+using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Extended.Float64.Multivectors;
+using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Extended.Float64.Multivectors.Composers;
+using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Extended.Float64.Processors;
+using GeometricAlgebraFulcrumLib.Lite.LinearAlgebra.LinearMaps.SpaceND;
+using GeometricAlgebraFulcrumLib.Lite.LinearAlgebra.Matrices;
+using GeometricAlgebraFulcrumLib.Lite.LinearAlgebra.Vectors.SpaceND;
 
 namespace GeometricAlgebraFulcrumLib.Samples.EuclideanGeometry
 {
@@ -51,13 +51,13 @@ namespace GeometricAlgebraFulcrumLib.Samples.EuclideanGeometry
             var rotorMatrix1 =
                 n.CreateLinUnilinearMap(
                     (int index) =>
-                        rotorMv.EGp(processor.CreateVector(index)).GetVectorPart().VectorToLinVector()
+                        rotorMv.EGp(processor.CreateTermVector(index)).GetVectorPart().ToLinVector()
                     ).ToArray(n, n);
 
             var rotorMatrix2 =
                 n.CreateLinUnilinearMap(
                         (int index) =>
-                            processor.CreateVector(index).EGp(rotorMvReverse).GetVectorPart().VectorToLinVector()
+                            processor.CreateTermVector(index).EGp(rotorMvReverse).GetVectorPart().ToLinVector()
                     ).ToArray(n, n);
 
             var rotorMatrix21 = 

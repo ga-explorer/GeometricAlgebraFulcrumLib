@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Immutable;
 using DataStructuresLib.BitManipulation;
-using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Space2D;
-using GraphicsComposerLib.Rendering.KonvaJs.Containers;
+using GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.KonvaJs.Containers;
+using GeometricAlgebraFulcrumLib.Lite.LinearAlgebra.Vectors.Space2D;
 using SixLabors.ImageSharp;
 
 namespace GeometricAlgebraFulcrumLib.Samples.Graphics.KonvaJs

@@ -1,9 +1,10 @@
 ﻿using System.Runtime.CompilerServices;
 using DataStructuresLib.IndexSets;
+using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Extended;
+using GeometricAlgebraFulcrumLib.Lite.ScalarAlgebra;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.Multivectors;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.Multivectors.Composers;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.Processors;
-using GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra;
 
 namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.LinearMaps
 {
@@ -41,7 +42,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public XGaMultivector<T> MapBasisBlade(IIndexSet id)
         {
-            return Processor.CreateKVector(id, ScalarProcessor.ScalarOne);
+            return Processor.CreateTermKVector(id, ScalarProcessor.ScalarOne);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -58,7 +59,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.
                 .Select(id => 
                     new KeyValuePair<IIndexSet, XGaMultivector<T>>(
                         id, 
-                        Processor.CreateKVector(id, ScalarProcessor.ScalarOne)
+                        Processor.CreateTermKVector(id, ScalarProcessor.ScalarOne)
                     )
                 );
         }

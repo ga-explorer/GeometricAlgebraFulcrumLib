@@ -1,11 +1,12 @@
 ﻿using System.Runtime.CompilerServices;
 using DataStructuresLib.BitManipulation;
-using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Records.Restricted;
+using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Restricted;
+using GeometricAlgebraFulcrumLib.Lite.ScalarAlgebra;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Multivectors;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Multivectors.Composers;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Processors;
+using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Records;
 using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Generic.LinearMaps;
-using GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra;
 
 namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.LinearMaps.Outermorphisms
 {
@@ -37,13 +38,13 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generi
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public RGaVector<T> OmMapBasisVector(int index)
         {
-            return Processor.CreateVector(index);
+            return Processor.CreateTermVector(index);
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public RGaBivector<T> OmMapBasisBivector(int index1, int index2)
         {
-            return Processor.CreateBivector(
+            return Processor.CreateTermBivector(
                 index1, 
                 index2,
                 ScalarProcessor.ScalarOne
@@ -53,7 +54,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generi
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public RGaKVector<T> OmMapBasisBlade(ulong id)
         {
-            return Processor.CreateKVector(
+            return Processor.CreateTermKVector(
                 id, 
                 ScalarProcessor.ScalarOne
             );
@@ -124,7 +125,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generi
                 .Select(id => 
                     new KeyValuePair<ulong, RGaMultivector<T>>(
                         id, 
-                        Processor.CreateKVector(id, ScalarProcessor.ScalarOne)
+                        Processor.CreateTermKVector(id, ScalarProcessor.ScalarOne)
                     )
                 );
         }
@@ -137,7 +138,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generi
                 .Select(id => 
                     new RGaIdVectorRecord<T>(
                         id, 
-                        Processor.CreateVector(id.FirstOneBitPosition())
+                        Processor.CreateTermVector(id.FirstOneBitPosition())
                     )
                 );
         }

@@ -1,11 +1,13 @@
 ﻿using System.Collections;
 using System.Diagnostics;
+using System.Runtime.CompilerServices;
 using DataStructuresLib.Permutations;
+using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Extended;
+using GeometricAlgebraFulcrumLib.Lite.ScalarAlgebra;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.LinearMaps.Rotors;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.Multivectors;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.Processors;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.Subspaces;
-using GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra;
 using TextComposerLib.Text.Linear;
 
 namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.Frames
@@ -118,7 +120,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.
             var orthogonalVector = _vectorList[0];
             var vectorStoragesList = new List<XGaVector<T>>
             {
-                orthogonalVector.Divide(orthogonalVector.Norm().ScalarValue)
+                orthogonalVector.Divide(orthogonalVector.Norm().ScalarValue())
             };
 
             XGaKVector<T> mv1 = orthogonalVector;
@@ -131,7 +133,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.
                     mv1.Reverse().Gp(mv2).GetVectorPart();
 
                 vectorStoragesList.Add(
-                    orthogonalVector.Divide(orthogonalVector.Norm().ScalarValue)
+                    orthogonalVector.Divide(orthogonalVector.Norm().ScalarValue())
                 );
 
                 mv1 = mv2;
@@ -222,12 +224,17 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.
                 frame
             );
         }
-
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public XGaSubspace<T> GetSubspace()
         {
-            return new XGaSubspace<T>(
-                _vectorList.Op()
-            );
+            var blade = 
+                FrameSpecs.LinearlyIndependent.HasValue && 
+                FrameSpecs.LinearlyIndependent.Value
+                    ? _vectorList.Op() 
+                    : Processor.SpanToBlade(_vectorList);
+
+            return new XGaSubspace<T>(blade);
         }
 
         public bool IsOrthonormal()
@@ -333,7 +340,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.
                 var v1 = this[i];
                 var v2 = targetFrame[i];
 
-                yield return (v1.ESp(v2) / (v1.ESpSquared() * v2.ESpSquared()).Sqrt()).ArcCos().ScalarValue;
+                yield return (v1.ESp(v2) / (v1.ESpSquared() * v2.ESpSquared()).Sqrt()).ArcCos().ScalarValue();
             }
         }
 
@@ -380,7 +387,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.
             return new XGaVectorFrame<T>(
                 frameSpecs,
                 _vectorList.Select(v => 
-                    v.Divide(v.ENorm().ScalarValue)
+                    v.Divide(v.ENorm().ScalarValue())
                 ).ToArray()
             );
         }
@@ -418,11 +425,11 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.
             {
                 var v1 = _vectorList[i];
 
-                ipm[i, i] = v1.SpSquared().ScalarValue;
+                ipm[i, i] = v1.SpSquared().ScalarValue();
 
                 for (var j = i + 1; j < Count; j++)
                 {
-                    var ip = v1.Sp(_vectorList[j]).ScalarValue;
+                    var ip = v1.Sp(_vectorList[j]).ScalarValue();
 
                     ipm[i, j] = ip;
                     ipm[j, i] = ip;

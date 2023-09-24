@@ -5,17 +5,16 @@ using System.Linq;
 using DataStructuresLib.BitManipulation;
 using DataStructuresLib.Extensions;
 using GAPoTNumLib.GAPoT;
-using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Float64.Multivectors.Composers;
-using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Float64.Processors;
+using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Extended.Float64.Multivectors.Composers;
+using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Extended.Float64.Processors;
+using GeometricAlgebraFulcrumLib.Lite.LinearAlgebra.Matrices;
+using GeometricAlgebraFulcrumLib.Lite.ScalarAlgebra;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.LinearMaps.Outermorphisms;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.LinearMaps.Rotors;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.Multivectors.Composers;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.Processors;
-using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Matrices;
 using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Generic;
 using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Generic.LinearMaps;
-using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Generic.Matrices;
-using GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra;
 using MathNet.Numerics.LinearAlgebra;
 
 namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GAPoT
@@ -64,10 +63,10 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GAPoT
         {
             var scalarProcessor = processor.ScalarProcessor;
 
-            var ea = processor.CreateVector(a);
-            var eb = processor.CreateVector(b);
-            var ec = processor.CreateVector(c);
-            var ed = processor.CreateVector(d);
+            var ea = processor.CreateTermVector(a);
+            var eb = processor.CreateTermVector(b);
+            var ec = processor.CreateTermVector(c);
+            var ed = processor.CreateTermVector(d);
 
             var pArray = ea.CreatePureRotorSequence(
                 eb,
@@ -92,10 +91,10 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GAPoT
         {
             var scalarProcessor = processor.ScalarProcessor;
 
-            var ea = processor.CreateVector(a);
-            var eb = processor.CreateVector(b);
-            var ec = processor.CreateVector(c);
-            var ed = processor.CreateVector(d);
+            var ea = processor.CreateTermVector(a);
+            var eb = processor.CreateTermVector(b);
+            var ec = processor.CreateTermVector(c);
+            var ed = processor.CreateTermVector(d);
 
             var nArray = ea.CreatePureRotorSequence(
                 eb,
@@ -222,7 +221,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GAPoT
                     metric.CreateVector(vector.Real().ToArray().MapItems(d => d.Round(6)))
                 );
 
-                blade = blade.Divide(blade.ENorm().ScalarValue);
+                blade = blade.Divide(blade.ENorm().ScalarValue());
 
                 //Console.WriteLine($" Eigen Value {i}: {value}");
                 //Console.WriteLine($"Eigen Vector {i}: {vector}");

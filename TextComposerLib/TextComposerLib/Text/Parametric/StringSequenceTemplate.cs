@@ -1,10 +1,11 @@
 ﻿namespace TextComposerLib.Text.Parametric
 {
-    public sealed class StringSequenceTemplate : ParametricTextComposer
+    public sealed class StringSequenceTemplate : 
+        ParametricTextComposer
     {
-        public static readonly string IndexParamName = "index";
+        public const string IndexParamName = "index";
 
-        public static readonly string NameParamName = "name";
+        public const string NameParamName = "name";
 
 
         public string IndexFormatString { get; set; }
@@ -14,8 +15,8 @@
 
         public string NameParamValue
         {
-            get { return this[NameParamName]; }
-            set { this[NameParamName] = value; }
+            get => this[NameParamName];
+            set => this[NameParamName] = value;
         }
 
 

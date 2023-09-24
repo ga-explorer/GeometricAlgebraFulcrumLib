@@ -1,7 +1,7 @@
 ﻿using System.Runtime.CompilerServices;
-using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Float64.Multivectors;
-using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Float64.Multivectors.Composers;
-using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Float64.Processors;
+using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Extended.Float64.Multivectors;
+using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Extended.Float64.Multivectors.Composers;
+using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Extended.Float64.Processors;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.Multivectors;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.Multivectors.Composers;
 using MathNet.Numerics.Interpolation;
@@ -69,7 +69,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.SignalAlgebra.Interpolators
             for (var j = 0; j < VSpaceDimensions; j++)
             {
                 var yValues =
-                    indexList.Select(i => samples[i][j]).ToArray();
+                    indexList.Select(i => samples[i].Scalar(j)).ToArray();
 
                 yield return Barycentric.InterpolatePolynomialEquidistantSorted(xValues, yValues);
             }
@@ -84,7 +84,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.SignalAlgebra.Interpolators
             
             for (var j = 0; j < VSpaceDimensions; j++)
             {
-                var samplesArray = samples[j].ScalarValue;
+                var samplesArray = samples.Scalar(j).ScalarValue;
 
                 var yValues =
                     indexList.Select(i => samplesArray[i]).ToArray();
@@ -176,7 +176,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.SignalAlgebra.Interpolators
                 var columnVector = new double[sampleCount];
 
                 for (var i = 0; i < sampleCount; i++)
-                    columnVector[i] = vectorList[i][j];
+                    columnVector[i] = vectorList[i].Scalar(j);
 
                 columnVectorArray[j] = columnVector;
             }

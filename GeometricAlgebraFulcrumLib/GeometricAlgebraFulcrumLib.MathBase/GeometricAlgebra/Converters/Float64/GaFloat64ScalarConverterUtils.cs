@@ -1,10 +1,12 @@
 ﻿using System.Runtime.CompilerServices;
-using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Float64.Multivectors;
-using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Float64.Processors;
+using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Extended.Float64.Multivectors;
+using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Extended.Float64.Multivectors.Composers;
+using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Extended.Float64.Processors;
+using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Restricted.Float64.Multivectors;
+using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Restricted.Float64.Multivectors.Composers;
+using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Restricted.Float64.Processors;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.Multivectors;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.Processors;
-using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Float64.Multivectors;
-using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Float64.Processors;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Multivectors;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Processors;
 
@@ -15,37 +17,29 @@ public static class GaFloat64ScalarConverterUtils
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static RGaFloat64Scalar Convert(this RGaFloat64Processor metric, XGaFloat64Scalar mv)
     {
-        return new RGaFloat64Scalar(
-            metric,
-            mv.ScalarValue
-        );
+        return metric.CreateScalar(mv.ScalarValue());
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static XGaFloat64Scalar Convert(this XGaFloat64Processor metric, RGaFloat64Scalar mv)
     {
-        return new XGaFloat64Scalar(
-            metric,
-            mv.ScalarValue
-        );
+        return metric.CreateScalar(mv.ScalarValue());
     }
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static RGaFloat64Scalar Convert(this RGaFloat64Processor metric, Func<double, double> scalarMapping, XGaFloat64Scalar mv)
     {
-        return new RGaFloat64Scalar(
-            metric,
-            scalarMapping(mv.ScalarValue)
+        return metric.CreateScalar(
+            scalarMapping(mv.ScalarValue())
         );
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static XGaFloat64Scalar Convert(this XGaFloat64Processor metric, Func<double, double> scalarMapping, RGaFloat64Scalar mv)
     {
-        return new XGaFloat64Scalar(
-            metric,
-            scalarMapping(mv.ScalarValue)
+        return metric.CreateScalar(
+            scalarMapping(mv.ScalarValue())
         );
     }
 
@@ -55,7 +49,7 @@ public static class GaFloat64ScalarConverterUtils
     {
         return new RGaScalar<T>(
             metric,
-            scalarMapping(mv.ScalarValue)
+            scalarMapping(mv.ScalarValue())
         );
     }
 
@@ -64,7 +58,7 @@ public static class GaFloat64ScalarConverterUtils
     {
         return new XGaScalar<T>(
             metric,
-            scalarMapping(mv.ScalarValue)
+            scalarMapping(mv.ScalarValue())
         );
     }
 
@@ -74,7 +68,7 @@ public static class GaFloat64ScalarConverterUtils
     {
         return new RGaScalar<T>(
             metric,
-            scalarMapping(mv.ScalarValue)
+            scalarMapping(mv.ScalarValue())
         );
     }
 
@@ -83,7 +77,7 @@ public static class GaFloat64ScalarConverterUtils
     {
         return new XGaScalar<T>(
             metric,
-            scalarMapping(mv.ScalarValue)
+            scalarMapping(mv.ScalarValue())
         );
     }
 }

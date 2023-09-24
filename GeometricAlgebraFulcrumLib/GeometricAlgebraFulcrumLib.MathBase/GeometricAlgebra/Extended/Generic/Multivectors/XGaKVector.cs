@@ -1,8 +1,9 @@
-﻿using System.Runtime.CompilerServices;
+﻿using System.Collections.Immutable;
+using System.Runtime.CompilerServices;
 using DataStructuresLib.BitManipulation;
 using DataStructuresLib.Combinations;
 using DataStructuresLib.IndexSets;
-using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Basis;
+using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Basis;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.Multivectors.Composers;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.Processors;
 
@@ -121,6 +122,12 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public override int GetMinGrade()
+        {
+            return IsZero ? 0 : Grade;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public override int GetMaxGrade()
         {
             return IsZero ? 0 : Grade;
@@ -138,6 +145,14 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.
             return grade == Grade
                 ? this
                 : Processor.CreateZeroScalar();
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public override XGaKVector<T> GetFirstKVectorPart()
+        {
+            return IsZero
+                ? Processor.CreateZeroScalar()
+                : this;
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -178,6 +193,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.
             if (!IsZero) yield return this;
         }
 
+        public abstract IReadOnlyDictionary<IIndexSet, T> GetIdScalarDictionary();
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public IEnumerable<KeyValuePair<ulong, T>> GetKVectorArrayItems()
@@ -189,6 +205,116 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.
                         term.Value
                     )
             );
+        }
+        
+        
+        /// <summary>
+        /// Analyze this k-vector, assumed to be a blade, into a set of orthonormal
+        /// vectors, where their outer product is equal to the original blade, up to
+        /// a scalar factor
+        /// </summary>
+        /// <returns></returns>
+        public IReadOnlyList<XGaVector<T>> BladeToVectors()
+        {
+            // Find basis blade with largest scalar magnitude in the current blade
+            IIndexSet maxId = EmptyIndexSet.Instance;
+            var maxScalar = ScalarProcessor.ScalarZero;
+
+            foreach (var (id, scalar) in IdScalarPairs)
+            {
+                var scalar1 = ScalarProcessor.Abs(scalar);
+
+                if (!ScalarProcessor.IsPositive(ScalarProcessor.Subtract(scalar1, maxScalar))) 
+                    continue;
+
+                maxId = id;
+                maxScalar = scalar1;
+            }
+
+            var probeVectors = 
+                maxId
+                    .Select(index => Processor.CreateTermVector(index))
+                    .ToImmutableArray();
+
+            return BladeToVectors(probeVectors);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public IReadOnlyList<XGaVector<T>> BladeToVectors(params int[] probeBasisVectorIndices)
+        {
+            var probeVectors = 
+                probeBasisVectorIndices
+                    .Select(index => Processor.CreateTermVector(index))
+                    .ToImmutableArray();
+
+            return BladeToVectors(probeVectors);
+        }
+
+        /// <summary>
+        /// Analyze this k-vector, assumed to be a blade, into a set of orthonormal
+        /// vectors, where their outer product is equal to the original blade, up to
+        /// a scalar factor
+        /// </summary>
+        /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public IReadOnlyList<XGaVector<T>> BladeToVectors(IEnumerable<int> probeBasisVectorIndices)
+        {
+            var probeVectors = 
+                probeBasisVectorIndices
+                    .Select(index => Processor.CreateTermVector(index))
+                    .ToImmutableArray();
+
+            return BladeToVectors(probeVectors);
+        }
+
+        public IReadOnlyList<XGaVector<T>> BladeToVectors(IReadOnlyList<XGaVector<T>> probeVectors)
+        {
+            if (IsZero || Grade == 0)
+                return Array.Empty<XGaVector<T>>();
+
+            if (this is XGaVector<T> vectorBlade)
+                return new[] { vectorBlade };
+
+            var vectorList = new List<XGaVector<T>>(Grade);
+
+            // All computations are done assuming Euclidean space,
+            // independent from the actual metric
+            
+            // Normalize the current blade
+            var oldBlade = this.DivideByENorm();
+
+            // Repeat until the current blade is a single vector
+            var basisVectorIndex = 0;
+            while (oldBlade.Grade > 1)
+            {
+                // Get the next significant basis vector in the original blade
+                var basisVector = probeVectors[basisVectorIndex];
+
+                // Get orthogonal complement of basis vector inside the current blade
+                // This is the new smaller blade for the next iteration
+                var newBlade = 
+                    basisVector.ELcp(oldBlade).DivideByENorm();
+
+                if (newBlade.Grade == oldBlade.Grade)
+                    continue;
+
+                // Get the Un-Dual of the new blade inside the current blade
+                // This is one vector of the required vectors
+                var vector = newBlade.ELcp(oldBlade.EInverse()).GetVectorPart().DivideByENorm();
+
+                vectorList.Add(vector);
+
+                oldBlade = newBlade;
+                basisVectorIndex++;
+            }
+            
+            // Add the current blade, which is a single vector
+            if (vectorList.Count < Grade)
+                vectorList.Add(
+                    oldBlade.GetVectorPart().DivideByENorm()
+                );
+
+            return vectorList;
         }
     }
 }

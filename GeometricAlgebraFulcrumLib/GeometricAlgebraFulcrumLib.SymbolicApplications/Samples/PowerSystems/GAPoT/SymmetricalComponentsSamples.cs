@@ -4,19 +4,18 @@ using DataStructuresLib.BitManipulation;
 using DataStructuresLib.Extensions;
 using GAPoTNumLib.GAPoT;
 using GAPoTNumLib.Text;
-using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Float64.Multivectors.Composers;
-using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Float64.Processors;
+using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Extended.Float64.Multivectors.Composers;
+using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Extended.Float64.Processors;
+using GeometricAlgebraFulcrumLib.Lite.LinearAlgebra.Basis;
+using GeometricAlgebraFulcrumLib.Lite.LinearAlgebra.Matrices;
+using GeometricAlgebraFulcrumLib.Lite.ScalarAlgebra;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.LinearMaps.Outermorphisms;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.LinearMaps.Rotors;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.Multivectors;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.Multivectors.Composers;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.Processors;
-using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Basis;
-using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Matrices;
 using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Generic;
 using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Generic.LinearMaps;
-using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Generic.Matrices;
-using GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra;
 using GeometricAlgebraFulcrumLib.Mathematica;
 using GeometricAlgebraFulcrumLib.Mathematica.GeometricAlgebra;
 using GeometricAlgebraFulcrumLib.Mathematica.Mathematica;
@@ -122,9 +121,9 @@ namespace GeometricAlgebraFulcrumLib.SymbolicApplications.Samples.PowerSystems.G
 
             MathematicaInterface.DefaultCas.SetGlobalAssumptions(assumeExpr);
 
-            var e1 = processor.CreateVector(0);
-            var e2 = processor.CreateVector(1);
-            var e3 = processor.CreateVector(2);
+            var e1 = processor.CreateTermVector(0);
+            var e2 = processor.CreateTermVector(1);
+            var e3 = processor.CreateTermVector(2);
 
             var u = processor.CreateVector(
                 aMagnitude * aAngle.Cos(),
@@ -500,10 +499,10 @@ namespace GeometricAlgebraFulcrumLib.SymbolicApplications.Samples.PowerSystems.G
         {
             var scalarProcessor = processor.ScalarProcessor;
 
-            var ea = processor.CreateVector(a);
-            var eb = processor.CreateVector(b);
-            var ec = processor.CreateVector(c);
-            var ed = processor.CreateVector(d);
+            var ea = processor.CreateTermVector(a);
+            var eb = processor.CreateTermVector(b);
+            var ec = processor.CreateTermVector(c);
+            var ed = processor.CreateTermVector(d);
 
             var pArray = ea.CreatePureRotorSequence(
                 eb,
@@ -528,10 +527,10 @@ namespace GeometricAlgebraFulcrumLib.SymbolicApplications.Samples.PowerSystems.G
         {
             var scalarProcessor = processor.ScalarProcessor;
 
-            var ea = processor.CreateVector(a);
-            var eb = processor.CreateVector(b);
-            var ec = processor.CreateVector(c);
-            var ed = processor.CreateVector(d);
+            var ea = processor.CreateTermVector(a);
+            var eb = processor.CreateTermVector(b);
+            var ec = processor.CreateTermVector(c);
+            var ed = processor.CreateTermVector(d);
 
             var nArray = ea.CreatePureRotorSequence(
                 eb,
@@ -861,7 +860,7 @@ namespace GeometricAlgebraFulcrumLib.SymbolicApplications.Samples.PowerSystems.G
                     metric.CreateVector(vector.Real().ToArray().MapItems(d => d.Round(6)))
                 );
 
-                blade = blade.Divide(blade.ENorm().ScalarValue);
+                blade = blade.Divide(blade.ENorm().ScalarValue());
 
                 //Console.WriteLine($" Eigen Value {i}: {value}");
                 //Console.WriteLine($"Eigen Vector {i}: {vector}");

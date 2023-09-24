@@ -3,11 +3,12 @@ using System.Runtime.CompilerServices;
 using DataStructuresLib.BitManipulation;
 using DataStructuresLib.Dictionary;
 using DataStructuresLib.Extensions;
-using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Basis;
-using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Basis;
+using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Basis;
+using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Restricted;
+using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Restricted.Basis;
+using GeometricAlgebraFulcrumLib.Lite.ScalarAlgebra;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Multivectors.Composers;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Processors;
-using GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra;
 using TextComposerLib.Text;
 
 namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Multivectors
@@ -102,6 +103,14 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generi
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public Scalar<T> GetTermScalarByIndex(int index)
+        {
+            var id = index.BasisVectorIndexToId();
+
+            return GetBasisBladeScalar(id);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public override RGaScalar<T> GetScalarPart()
         {
             return Processor.CreateZeroScalar();
@@ -182,30 +191,29 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generi
             => _idScalarDictionary.Keys.Select(Processor.CreateBasisBlade);
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override Scalar<T> GetScalarTermScalar()
+        public override Scalar<T> Scalar()
         {
             return ScalarProcessor.CreateScalarZero();
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override Scalar<T> GetTermScalar(ulong basisBladeId)
+        public override Scalar<T> GetBasisBladeScalar(ulong basisBladeId)
         {
-            return basisBladeId.IsBasisVector() &&
-                   _idScalarDictionary.TryGetValue(basisBladeId, out var scalar)
+            return _idScalarDictionary.TryGetValue(basisBladeId, out var scalar)
                 ? ScalarProcessor.CreateScalar(scalar)
                 : ScalarProcessor.CreateScalarZero();
         }
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override bool TryGetScalarTermScalar(out T scalar)
+        public override bool TryGetScalarValue(out T scalar)
         {
             scalar = ScalarProcessor.ScalarZero;
             return false;
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override bool TryGetTermScalar(ulong basisBladeId, out T scalar)
+        public override bool TryGetBasisBladeScalarValue(ulong basisBladeId, out T scalar)
         {
             if (basisBladeId.IsBasisVector() && _idScalarDictionary.TryGetValue(basisBladeId, out scalar))
                 return true;

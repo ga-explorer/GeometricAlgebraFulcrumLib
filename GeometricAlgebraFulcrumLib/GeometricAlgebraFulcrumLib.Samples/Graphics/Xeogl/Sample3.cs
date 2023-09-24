@@ -1,11 +1,11 @@
-﻿using GeometricAlgebraFulcrumLib.MathBase.Graphics.Meshes.PathsMesh;
-using GeometricAlgebraFulcrumLib.MathBase.Graphics.Meshes.PathsMesh.Space3D;
-using GeometricAlgebraFulcrumLib.MathBase.Graphics.Meshes.PointsPath.Space3D;
-using GeometricAlgebraFulcrumLib.MathBase.Graphics.Primitives;
-using GeometricAlgebraFulcrumLib.MathBase.Graphics.Primitives.Lines;
-using GeometricAlgebraFulcrumLib.MathBase.Graphics.Primitives.Triangles;
-using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Space3D;
-using GraphicsComposerLib.Rendering.Xeogl;
+﻿using GeometricAlgebraFulcrumLib.Lite.Graphics.Meshes.PathsMesh;
+using GeometricAlgebraFulcrumLib.Lite.Graphics.Meshes.PathsMesh.Space3D;
+using GeometricAlgebraFulcrumLib.Lite.Graphics.Meshes.PointsPath.Space3D;
+using GeometricAlgebraFulcrumLib.Lite.Graphics.Primitives;
+using GeometricAlgebraFulcrumLib.Lite.Graphics.Primitives.Lines;
+using GeometricAlgebraFulcrumLib.Lite.Graphics.Primitives.Triangles;
+using GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.Xeogl;
+using GeometricAlgebraFulcrumLib.Lite.LinearAlgebra.Vectors.Space3D;
 
 namespace GeometricAlgebraFulcrumLib.Samples.Graphics.Xeogl
 {

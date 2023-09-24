@@ -1,7 +1,7 @@
 ﻿using DataStructuresLib.IndexSets;
+using GeometricAlgebraFulcrumLib.Lite.ScalarAlgebra;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.Multivectors;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.Multivectors.Composers;
-using GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra;
 
 namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.Spaces.Conformal
 {
@@ -50,7 +50,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.
 
         public static XGaConformalIpnsPoint<T> CreateIpnsPoint<T>(this XGaConformalSpace<T> space, XGaVector<T> positionVector)
         {
-            if (positionVector.Keys.Max(k => k.LastIndex) > space.VSpaceDimensions - 2)
+            if (positionVector.Ids.Max(k => k.LastIndex) > space.VSpaceDimensions - 2)
                 throw new InvalidOperationException();
             
             var processor = space.Processor;
@@ -107,7 +107,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.
 
         public static XGaConformalIpnsHyperSphere<T> CreateIpnsHyperSphere<T>(this XGaConformalSpace<T> space, XGaVector<T> centerPoint, T radiusSquared)
         {
-            if (centerPoint.Keys.Max(k => k.LastIndex) > space.VSpaceDimensions - 2)
+            if (centerPoint.Ids.Max(k => k.LastIndex) > space.VSpaceDimensions - 2)
                 throw new InvalidOperationException();
             
             var processor = space.Processor;
@@ -115,7 +115,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.
             var composer = processor.CreateComposer();
 
             var x2 = scalarProcessor.Subtract(
-                scalarProcessor.AddSquares(centerPoint.Values),
+                scalarProcessor.AddSquares(centerPoint.Scalars),
                 radiusSquared
             );
             
@@ -167,7 +167,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.
 
         public static XGaConformalIpnsHyperPlane<T> CreateIpnsHyperPlane<T>(this XGaConformalSpace<T> space, XGaVector<T> normal, T delta)
         {
-            if (normal.Keys.Max(k => k.LastIndex) > space.VSpaceDimensions - 2)
+            if (normal.Ids.Max(k => k.LastIndex) > space.VSpaceDimensions - 2)
                 throw new InvalidOperationException();
             
             var processor = space.Processor;

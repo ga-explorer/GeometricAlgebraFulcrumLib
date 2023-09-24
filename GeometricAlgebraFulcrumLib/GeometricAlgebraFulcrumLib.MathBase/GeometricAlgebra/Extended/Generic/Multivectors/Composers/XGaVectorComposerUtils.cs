@@ -3,12 +3,12 @@ using System.Runtime.CompilerServices;
 using DataStructuresLib.BitManipulation;
 using DataStructuresLib.Dictionary;
 using DataStructuresLib.IndexSets;
+using GeometricAlgebraFulcrumLib.Lite.LinearAlgebra.Vectors.Space2D;
+using GeometricAlgebraFulcrumLib.Lite.LinearAlgebra.Vectors.Space3D;
+using GeometricAlgebraFulcrumLib.Lite.LinearAlgebra.Vectors.Space4D;
+using GeometricAlgebraFulcrumLib.Lite.ScalarAlgebra;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.Processors;
-using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Space2D;
-using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Space3D;
-using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Space4D;
 using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Generic;
-using GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra;
 using MathNet.Numerics.LinearAlgebra.Double;
 
 namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.Multivectors.Composers
@@ -60,7 +60,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.
                 return processor.CreateZeroVector();
 
             if (basisScalarDictionary.Count == 1 && basisScalarDictionary is not SingleItemDictionary<IIndexSet, T>)
-                return processor.CreateVector(basisScalarDictionary.First());
+                return processor.CreateTermVector(basisScalarDictionary.First());
 
             return new XGaVector<T>(processor, basisScalarDictionary);
         }
@@ -115,9 +115,24 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.
                 scalarDictionary
             );
         }
+        
+        public static XGaVector<T> CreateVector<T>(this XGaProcessor<T> processor, int termsCount, Func<int, T> indexToScalarFunc)
+        {
+            var composer = processor.CreateComposer();
+
+            for (var index = 0; index < termsCount; index++)
+            {
+                var scalar = indexToScalarFunc(index);
+
+                composer.SetVectorTerm(index, scalar);
+            }
+
+            return composer.GetVector();
+        }
+
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static XGaVector<T> CreateVector<T>(this XGaProcessor<T> processor, int index)
+        public static XGaVector<T> CreateTermVector<T>(this XGaProcessor<T> processor, int index)
         {
             var basisScalarDictionary =
                 new SingleItemDictionary<IIndexSet, T>(
@@ -129,7 +144,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static XGaVector<T> CreateVector<T>(this XGaProcessor<T> processor, int index, T scalar)
+        public static XGaVector<T> CreateTermVector<T>(this XGaProcessor<T> processor, int index, T scalar)
         {
             if (processor.ScalarProcessor.IsZero(scalar))
                 return new XGaVector<T>(processor);
@@ -144,13 +159,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static XGaVector<T> CreateVector<T>(this XGaProcessor<T> processor, KeyValuePair<int, T> indexScalarPair)
-        {
-            return processor.CreateVector(indexScalarPair.Key, indexScalarPair.Value);
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static XGaVector<T> CreateVector<T>(this XGaProcessor<T> processor, int index, Scalar<T> scalar)
+        public static XGaVector<T> CreateTermVector<T>(this XGaProcessor<T> processor, int index, Scalar<T> scalar)
         {
             if (scalar.IsZero())
                 return new XGaVector<T>(processor);
@@ -164,63 +173,96 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.
             return new XGaVector<T>(processor, basisScalarDictionary);
         }
 
-
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static XGaVector<T> CreateVector<T>(this XGaProcessor<T> processor, KeyValuePair<IIndexSet, T> indexScalarPair)
+        public static XGaVector<T> CreateTermVector<T>(this XGaProcessor<T> processor, KeyValuePair<int, T> indexScalarPair)
         {
-            return processor.CreateVector(indexScalarPair.Key, indexScalarPair.Value);
+            return processor.CreateTermVector(indexScalarPair.Key, indexScalarPair.Value);
         }
-
+        
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static XGaVector<T> CreateVector<T>(this XGaProcessor<T> processor, IIndexSet basisVector)
+        public static XGaVector<T> CreateTermVector<T>(this XGaProcessor<T> processor, ulong basisVectorId)
         {
             var basisScalarDictionary =
-                new SingleItemDictionary<IIndexSet, T>(basisVector, processor.ScalarProcessor.ScalarOne);
+                new SingleItemDictionary<IIndexSet, T>(basisVectorId.BitPatternToIndexSet(), processor.ScalarProcessor.ScalarOne);
 
             return new XGaVector<T>(processor, basisScalarDictionary);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static XGaVector<T> CreateVector<T>(this XGaProcessor<T> processor, IIndexSet basisVector, T scalar)
+        public static XGaVector<T> CreateTermVector<T>(this XGaProcessor<T> processor, ulong basisVectorId, T scalar)
         {
             if (processor.ScalarProcessor.IsZero(scalar))
                 return new XGaVector<T>(processor);
 
             var basisScalarDictionary =
-                new SingleItemDictionary<IIndexSet, T>(basisVector, scalar);
+                new SingleItemDictionary<IIndexSet, T>(basisVectorId.BitPatternToIndexSet(), scalar);
 
             return new XGaVector<T>(processor, basisScalarDictionary);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static XGaVector<T> CreateVector<T>(this XGaProcessor<T> processor, IIndexSet basisVector, Scalar<T> scalar)
+        public static XGaVector<T> CreateTermVector<T>(this XGaProcessor<T> processor, ulong basisVectorId, Scalar<T> scalar)
         {
             if (scalar.IsZero())
                 return new XGaVector<T>(processor);
 
             var basisScalarDictionary =
                 new SingleItemDictionary<IIndexSet, T>(
-                    basisVector,
+                    basisVectorId.BitPatternToIndexSet(),
                     scalar.ScalarValue
                 );
 
             return new XGaVector<T>(processor, basisScalarDictionary);
         }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static XGaVector<T> CreateTermVector<T>(this XGaProcessor<T> processor, KeyValuePair<ulong, T> idScalarPair)
+        {
+            return processor.CreateTermVector(idScalarPair.Key.BitPatternToIndexSet(), idScalarPair.Value);
+        }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static XGaVector<T> CreateVector<T>(this XGaProcessor<T> processor, int termsCount, Func<int, T> indexToScalarFunc)
+        public static XGaVector<T> CreateTermVector<T>(this XGaProcessor<T> processor, IIndexSet basisVectorId)
         {
-            var composer = processor.CreateComposer();
+            var basisScalarDictionary =
+                new SingleItemDictionary<IIndexSet, T>(basisVectorId, processor.ScalarProcessor.ScalarOne);
 
-            for (var index = 0; index < termsCount; index++)
-            {
-                var scalar = indexToScalarFunc(index);
-
-                composer.SetVectorTerm(index, scalar);
-            }
-
-            return composer.GetVector();
+            return new XGaVector<T>(processor, basisScalarDictionary);
         }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static XGaVector<T> CreateTermVector<T>(this XGaProcessor<T> processor, IIndexSet basisVectorId, T scalar)
+        {
+            if (processor.ScalarProcessor.IsZero(scalar))
+                return new XGaVector<T>(processor);
+
+            var basisScalarDictionary =
+                new SingleItemDictionary<IIndexSet, T>(basisVectorId, scalar);
+
+            return new XGaVector<T>(processor, basisScalarDictionary);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static XGaVector<T> CreateTermVector<T>(this XGaProcessor<T> processor, IIndexSet basisVectorId, Scalar<T> scalar)
+        {
+            if (scalar.IsZero())
+                return new XGaVector<T>(processor);
+
+            var basisScalarDictionary =
+                new SingleItemDictionary<IIndexSet, T>(
+                    basisVectorId,
+                    scalar.ScalarValue
+                );
+
+            return new XGaVector<T>(processor, basisScalarDictionary);
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static XGaVector<T> CreateTermVector<T>(this XGaProcessor<T> processor, KeyValuePair<IIndexSet, T> idScalarPair)
+        {
+            return processor.CreateTermVector(idScalarPair.Key, idScalarPair.Value);
+        }
+
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static XGaVector<T> CreateSymmetricVector<T>(this XGaProcessor<T> processor, int count)

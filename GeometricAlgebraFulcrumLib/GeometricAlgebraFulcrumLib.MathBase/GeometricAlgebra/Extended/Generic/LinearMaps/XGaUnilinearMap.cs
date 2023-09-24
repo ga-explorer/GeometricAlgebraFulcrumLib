@@ -2,11 +2,12 @@
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using DataStructuresLib.IndexSets;
-using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Basis;
+using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Basis;
+using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Extended;
+using GeometricAlgebraFulcrumLib.Lite.ScalarAlgebra;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.Multivectors;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.Multivectors.Composers;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.Processors;
-using GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra;
 
 namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.LinearMaps
 {
@@ -54,7 +55,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.
         public bool IsValid()
         {
             return _idMultivectorDictionary.Values.All(
-                d => d.IsValidMultivectorDictionary(Processor)
+                d => d.IsValid()
             );
         }
     
@@ -91,7 +92,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.
             {
                 foreach (var (id, mv) in _idMultivectorDictionary)
                 {
-                    if (!multivector.TryGetTermScalar(id, out var scalar))
+                    if (!multivector.TryGetBasisBladeScalarValue(id, out var scalar))
                         continue;
 
                     composer.AddMultivector(mv, scalar);

@@ -109,6 +109,23 @@ namespace TextComposerLib.Files
 
             return this;
         }
+        
+        /// <summary>
+        /// Set final text to the text generated from the linear composer and clear the linear composer
+        /// </summary>
+        /// <returns></returns>
+        public TextFileComposer FinalizeText(Func<string, string> textMapping)
+        {
+            if (IsFinalized) return this;
+
+            FinalText = textMapping(_textComposer.ToString());
+
+            _textComposer = null;
+
+            IsFinalized = true;
+
+            return this;
+        }
 
         /// <summary>
         /// Set final text to the text generated from the linear composer and clear the linear composer and 

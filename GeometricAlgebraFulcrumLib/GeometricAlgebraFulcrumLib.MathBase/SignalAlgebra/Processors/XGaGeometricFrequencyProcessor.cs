@@ -1,9 +1,10 @@
 ﻿using System.Diagnostics;
+using GeometricAlgebraFulcrumLib.Lite.ScalarAlgebra;
+using GeometricAlgebraFulcrumLib.Lite.SignalAlgebra;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.Frames;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.Multivectors;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.Multivectors.Composers;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.Processors;
-using GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra;
 
 namespace GeometricAlgebraFulcrumLib.MathBase.SignalAlgebra.Processors
 {
@@ -181,8 +182,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.SignalAlgebra.Processors
             {
                 curvatureArray[i - 1] =
                     ArcLengthTimeDerivatives[0] *
-                    (frameNormSquares[i] / frameNormSquares[i - 1]).Sqrt()
-                    .ScalarValue
+                    (frameNormSquares[i] / frameNormSquares[i - 1]).Sqrt().ScalarValue()
                     .MapSamples(s => s.NaNToZero())
                     .CreateScalar(ScalarSignalProcessor.ScalarProcessor);
             }

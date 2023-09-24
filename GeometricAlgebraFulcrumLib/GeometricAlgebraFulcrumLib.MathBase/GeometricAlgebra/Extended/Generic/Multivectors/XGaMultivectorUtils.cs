@@ -1,16 +1,15 @@
 ﻿using System.Runtime.CompilerServices;
 using DataStructuresLib.Combinations;
 using DataStructuresLib.IndexSets;
-using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Basis;
-using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Basis;
-using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Float64.Multivectors;
-using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Float64.Processors;
+using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Basis;
+using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Extended.Float64.Multivectors;
+using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Extended.Float64.Processors;
+using GeometricAlgebraFulcrumLib.Lite.LinearAlgebra.Vectors.Space2D;
+using GeometricAlgebraFulcrumLib.Lite.LinearAlgebra.Vectors.Space3D;
+using GeometricAlgebraFulcrumLib.Lite.LinearAlgebra.Vectors.Space4D;
+using GeometricAlgebraFulcrumLib.Lite.ScalarAlgebra;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.Multivectors.Composers;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.Processors;
-using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Space2D;
-using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Space3D;
-using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Space4D;
-using GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra;
 
 namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.Multivectors
 {
@@ -65,57 +64,6 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.
                 array[index] = scalar;
 
             return array;
-        }
-
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Scalar<T> GetVectorTermScalar<T>(this XGaMultivector<T> mv, int index)
-        {
-            var id = index.IndexToIndexSet();
-
-            return mv.GetTermScalar(id);
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Scalar<T> GetTermScalar<T>(this XGaMultivector<T> mv, int index1, int index2)
-        {
-            var basisBlade = mv.Processor.Gp(index1, index2);
-
-            if (basisBlade.IsZero)
-                return Scalar<T>.CreateZero(mv.ScalarProcessor);
-
-            var scalar = mv.GetTermScalar(basisBlade.Id);
-
-            return basisBlade.IsNegative
-                ? -scalar : scalar;
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Scalar<T> GetTermScalar<T>(this XGaMultivector<T> mv, params int[] indexList)
-        {
-            var basisBlade = mv.Processor.Gp(indexList);
-
-            if (basisBlade.IsZero)
-                return Scalar<T>.CreateZero(mv.ScalarProcessor);
-
-            var scalar = mv.GetTermScalar(basisBlade.Id);
-
-            return basisBlade.IsNegative
-                ? -scalar : scalar;
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Scalar<T> GetTermScalar<T>(this XGaMultivector<T> mv, IReadOnlyList<int> indexList)
-        {
-            var basisBlade = mv.Processor.Gp(indexList);
-
-            if (basisBlade.IsZero)
-                return Scalar<T>.CreateZero(mv.ScalarProcessor);
-
-            var scalar = mv.GetTermScalar(basisBlade.Id);
-
-            return basisBlade.IsNegative
-                ? -scalar : scalar;
         }
 
         
@@ -680,25 +628,30 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Float64Vector2D GetVectorPartAsTuple2D(this XGaMultivector<double> mv)
         {
-            return Float64Vector2D.Create((Float64Scalar)mv.GetTermScalar(1).ScalarValue,
-                (Float64Scalar)mv.GetTermScalar(2).ScalarValue);
+            return Float64Vector2D.Create(
+                (Float64Scalar)mv.Scalar(0).ScalarValue,
+                (Float64Scalar)mv.Scalar(1).ScalarValue
+            );
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Float64Vector3D GetVectorPartAsTuple3D(this XGaMultivector<double> mv)
         {
-            return Float64Vector3D.Create(mv.GetTermScalar(1).ScalarValue,
-                mv.GetTermScalar(2).ScalarValue,
-                mv.GetTermScalar(4).ScalarValue);
+            return Float64Vector3D.Create(
+                mv.Scalar(0).ScalarValue,
+                mv.Scalar(1).ScalarValue,
+                mv.Scalar(2).ScalarValue);
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Float64Vector4D GetVectorPartAsTuple4D(this XGaMultivector<double> mv)
         {
-            return Float64Vector4D.Create(mv.GetTermScalar(1).ScalarValue,
-                mv.GetTermScalar(2).ScalarValue,
-                mv.GetTermScalar(4).ScalarValue,
-                mv.GetTermScalar(8).ScalarValue);
+            return Float64Vector4D.Create(
+                mv.Scalar(0).ScalarValue,
+                mv.Scalar(1).ScalarValue,
+                mv.Scalar(2).ScalarValue,
+                mv.Scalar(3).ScalarValue
+            );
         }
 
         
@@ -728,7 +681,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.
         public static T[,] ScalarPlusBivectorToArray2D<T>(this XGaMultivector<T> mv)
         {
             var array = mv.GetBivectorPart().BivectorToArray2D();
-            var scalar = mv.GetScalarTermScalar().ScalarValue;
+            var scalar = mv.Scalar().ScalarValue;
             var metric = mv.Metric;
             var scalarProcessor = mv.ScalarProcessor;
 
@@ -750,7 +703,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.
         public static T[,] ScalarPlusBivectorToArray2D<T>(this XGaMultivector<T> mv, int arraySize)
         {
             var array = mv.GetBivectorPart().BivectorToArray2D(arraySize);
-            var scalar = mv.GetScalarTermScalar().ScalarValue;
+            var scalar = mv.Scalar().ScalarValue;
             var metric = mv.Metric;
             var scalarProcessor = mv.ScalarProcessor;
 

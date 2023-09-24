@@ -1,25 +1,22 @@
 ﻿using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
+using DataStructuresLib.Dictionary;
 using DataStructuresLib.IndexSets;
-using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Basis;
+using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Extended.Basis;
+using GeometricAlgebraFulcrumLib.Lite.ScalarAlgebra;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.Multivectors.Composers;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.Processors;
-using GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra;
 
 namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.Multivectors
 {
     public sealed partial class XGaScalar<T> :
         XGaKVector<T>
     {
+        private readonly Scalar<T> _scalar;
+
         public override string MultivectorClassName
             => "Generic Scalar";
-
-        [NotNull]
-        public T ScalarValue
-            => Scalar.ScalarValue;
-
-        public Scalar<T> Scalar { get; }
 
         public override int Count
             => IsZero ? 0 : 1;
@@ -38,10 +35,10 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.
         public override bool IsZero { get; }
 
         public bool IsOne
-            => ScalarProcessor.IsOne(ScalarValue);
+            => ScalarProcessor.IsOne(ScalarValue());
     
         public bool IsMinusOne
-            => ScalarProcessor.IsMinusOne(ScalarValue);
+            => ScalarProcessor.IsMinusOne(ScalarValue());
 
         public override IEnumerable<XGaBasisBlade> BasisBlades
         {
@@ -64,7 +61,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.
         {
             get
             {
-                if (!IsZero) yield return ScalarValue;
+                if (!IsZero) yield return ScalarValue();
             }
         }
 
@@ -76,7 +73,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.
                 if (!IsZero)
                     yield return new KeyValuePair<XGaBasisBlade, T>(
                         Processor.BasisScalar,
-                        ScalarValue
+                        ScalarValue()
                     );
             }
         }
@@ -88,7 +85,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.
                 if (!IsZero)
                     yield return new KeyValuePair<IIndexSet, T>(
                         EmptyIndexSet.Instance,
-                        ScalarValue
+                        ScalarValue()
                     );
             }
         }
@@ -98,7 +95,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.
         internal XGaScalar(XGaProcessor<T> processor)
             : base(processor)
         {
-            Scalar = processor.ScalarProcessor.CreateScalarZero();
+            _scalar = processor.ScalarProcessor.CreateScalarZero();
             IsZero = true;
         }
 
@@ -110,39 +107,41 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.
                 processor.ScalarProcessor.IsValid(scalarValue)
             );
 
-            Scalar = processor.ScalarProcessor.CreateScalar(scalarValue);
-            IsZero = processor.ScalarProcessor.IsZero(ScalarValue);
+            _scalar = processor.ScalarProcessor.CreateScalar(scalarValue);
+            IsZero = processor.ScalarProcessor.IsZero(ScalarValue());
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal XGaScalar(XGaProcessor<T> processor, IReadOnlyDictionary<IIndexSet, T> idScalarDictionary)
             : base(processor)
         {
-            Scalar = processor.ScalarProcessor.CreateScalar(
+            _scalar = processor.ScalarProcessor.CreateScalar(
                 idScalarDictionary.TryGetValue(EmptyIndexSet.Instance, out var scalar)
                     ? scalar
                     : processor.ScalarProcessor.ScalarZero
             );
 
             Debug.Assert(
-                Scalar.IsValid()
+                _scalar.IsValid()
             );
 
-            IsZero = Scalar.IsZero();
+            IsZero = _scalar.IsZero();
         }
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public override bool IsValid()
         {
-            return ScalarProcessor.IsValid(ScalarValue);
+            return ScalarProcessor.IsValid(ScalarValue());
         }
 
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public override IReadOnlyDictionary<IIndexSet, T> GetIdScalarDictionary()
         {
-            return this;
+            return IsZero
+                ? new EmptyDictionary<IIndexSet, T>()
+                : new SingleItemDictionary<IIndexSet, T>(EmptyIndexSet.Instance, _scalar);
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -187,7 +186,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public XGaScalar<T> GetPart(Func<T, bool> filterFunc)
         {
-            return IsZero || filterFunc(ScalarValue) 
+            return IsZero || filterFunc(ScalarValue()) 
                 ? this 
                 : Processor.CreateZeroScalar();
         }
@@ -195,32 +194,38 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public XGaScalar<T> GetPart(Func<IIndexSet, T, bool> filterFunc)
         {
-            return IsZero || filterFunc(EmptyIndexSet.Instance, ScalarValue) 
+            return IsZero || filterFunc(EmptyIndexSet.Instance, ScalarValue()) 
                 ? this 
                 : Processor.CreateZeroScalar();
         }
 
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override Scalar<T> GetScalarTermScalar()
+        
+        [return: NotNull]
+        public T ScalarValue()
         {
-            return Scalar;
+            return _scalar.ScalarValue;
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override Scalar<T> GetTermScalar(IIndexSet basisBladeId)
+        public override Scalar<T> Scalar()
+        {
+            return _scalar;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public override Scalar<T> GetBasisBladeScalar(IIndexSet basisBladeId)
         {
             return basisBladeId.IsEmptySet
-                ? Scalar
+                ? _scalar
                 : Processor.ScalarProcessor.CreateScalarZero();
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override bool TryGetScalarTermScalar(out T scalar)
+        public override bool TryGetScalarValue(out T scalar)
         {
             if (!IsZero)
             {
-                scalar = ScalarValue;
+                scalar = ScalarValue();
                 return true;
             }
 
@@ -229,11 +234,11 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override bool TryGetTermScalar(IIndexSet basisBlade, out T scalar)
+        public override bool TryGetBasisBladeScalarValue(IIndexSet basisBlade, out T scalar)
         {
             if (basisBlade.IsEmptySet)
             {
-                scalar = ScalarValue;
+                scalar = ScalarValue();
                 return true;
             }
 
@@ -252,7 +257,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private bool Equals(XGaScalar<T> other)
         {
-            return Equals(Scalar, other.Scalar);
+            return Equals(_scalar, other._scalar);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -264,13 +269,13 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public override int GetHashCode()
         {
-            return Scalar.GetHashCode();
+            return _scalar.GetHashCode();
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public override string ToString()
         {
-            return IsZero ? string.Empty : $"'{ScalarValue:G}'<>";
+            return IsZero ? string.Empty : $"'{ScalarValue():G}'<>";
         }
     }
 }

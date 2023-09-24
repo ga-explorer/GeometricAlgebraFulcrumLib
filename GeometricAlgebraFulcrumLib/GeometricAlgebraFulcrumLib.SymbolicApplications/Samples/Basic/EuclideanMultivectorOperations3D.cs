@@ -1,7 +1,7 @@
 ﻿using DataStructuresLib.Basic;
 using DataStructuresLib.BitManipulation;
 using GAPoTNumLib.Text.Markdown.Tables;
-using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Basis;
+using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Restricted.Basis;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Multivectors;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Multivectors.Composers;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Processors;
@@ -74,7 +74,7 @@ namespace GeometricAlgebraFulcrumLib.SymbolicApplications.Samples.Basic
         {
             name = name.ToLower();
 
-            return GeometricProcessor.CreateKVector(
+            return GeometricProcessor.CreateTermKVector(
                 3, 
                 $"Subscript[{name},123]".ToExpr()
             );

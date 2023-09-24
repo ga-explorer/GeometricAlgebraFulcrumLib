@@ -1,13 +1,13 @@
 ﻿using System.Runtime.CompilerServices;
 using DataStructuresLib.IndexSets;
 using System.Diagnostics;
-using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Float64.Multivectors;
 using DataStructuresLib.Dictionary;
-using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Float64.Processors;
+using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Extended.Float64.Multivectors;
+using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Extended.Float64.Multivectors.Composers;
+using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Extended.Float64.Processors;
+using GeometricAlgebraFulcrumLib.Lite.ScalarAlgebra;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.Processors;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.Multivectors.Composers;
-using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Float64.Multivectors.Composers;
-using GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra;
 
 namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.Multivectors
 {
@@ -133,7 +133,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.
             if (v1.IsZero || v2.IsZero)
                 return processor.CreateZeroMultivector();
 
-            var s2 = v2.ScalarValue;
+            var s2 = v2.ScalarValue();
 
             return (XGaGradedMultivector<T>)v1.MapKVectors(kv => kv.Times(s2), false);
         }
@@ -152,7 +152,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.
             if (v1.IsZero || v2.IsZero)
                 return processor.CreateZeroMultivector();
 
-            var s1 = v1.ScalarValue;
+            var s1 = v1.ScalarValue();
 
             return (XGaGradedMultivector<T>)v2.MapKVectors(kv => kv.Times(s1), false);
         }
@@ -509,25 +509,25 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public XGaMultivector<T> DivideByENorm()
         {
-            return Divide(ENorm().ScalarValue);
+            return Divide(ENorm().ScalarValue());
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public XGaMultivector<T> DivideByENormSquared()
         {
-            return Divide(ENormSquared().ScalarValue);
+            return Divide(ENormSquared().ScalarValue());
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public XGaMultivector<T> DivideByNorm()
         {
-            return Divide(Norm().ScalarValue);
+            return Divide(Norm().ScalarValue());
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public XGaMultivector<T> DivideByNormSquared()
         {
-            return Divide(NormSquared().ScalarValue);
+            return Divide(NormSquared().ScalarValue());
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -578,7 +578,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.
         public XGaMultivector<T> EInverse()
         {
             return Reverse().Divide(
-                ENormSquared().ScalarValue
+                ENormSquared().ScalarValue()
             );
         }
 
@@ -586,7 +586,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.
         public XGaMultivector<T> Inverse()
         {
             return Reverse().Divide(
-                NormSquared().ScalarValue
+                NormSquared().ScalarValue()
             );
         }
         
@@ -596,7 +596,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.
             var kVectorConjugate = Conjugate();
 
             return kVectorConjugate.Divide(
-                kVectorConjugate.Sp(this).ScalarValue
+                kVectorConjugate.Sp(this).ScalarValue()
             );
         }
 
@@ -699,14 +699,14 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public XGaMultivector<T> Op(XGaScalar<T> mv2)
         {
-            return Times(mv2.ScalarValue);
+            return Times(mv2.ScalarValue());
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public override XGaMultivector<T> Op(XGaMultivector<T> mv2)
         {
             if (mv2 is XGaScalar<T> scalar)
-                return Times(scalar.ScalarValue);
+                return Times(scalar.ScalarValue());
 
             if (IsZero || mv2.IsZero)
                 return Processor.CreateZeroScalar();
@@ -721,14 +721,14 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public XGaMultivector<T> EGp(XGaScalar<T> mv2)
         {
-            return Times(mv2.ScalarValue);
+            return Times(mv2.ScalarValue());
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public override XGaMultivector<T> EGp(XGaMultivector<T> mv2)
         {
             if (mv2 is XGaScalar<T> scalar)
-                return Times(scalar.ScalarValue);
+                return Times(scalar.ScalarValue());
 
             if (IsZero || mv2.IsZero)
                 return Processor.CreateZeroScalar();
@@ -742,14 +742,14 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public XGaMultivector<T> Gp(XGaScalar<T> mv2)
         {
-            return Times(mv2.ScalarValue);
+            return Times(mv2.ScalarValue());
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public override XGaMultivector<T> Gp(XGaMultivector<T> mv2)
         {
             if (mv2 is XGaScalar<T> scalar)
-                return Times(scalar.ScalarValue);
+                return Times(scalar.ScalarValue());
 
             if (IsZero || mv2.IsZero)
                 return Processor.CreateZeroScalar();
@@ -768,7 +768,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.
                 return Processor.CreateZeroScalar();
 
             return Processor.CreateScalar(
-                GetScalarTermScalar() * mv2.ScalarValue
+                Scalar() * mv2.ScalarValue()
             );
         }
 
@@ -795,7 +795,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.
                 return Processor.CreateZeroScalar();
 
             return Processor.CreateScalar(
-                GetScalarTermScalar() * mv2.ScalarValue
+                Scalar() * mv2.ScalarValue()
             );
         }
 
@@ -821,14 +821,14 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.
             if (IsZero || mv2.IsZero)
                 return Processor.CreateZeroScalar();
 
-            return Times(mv2.ScalarValue);
+            return Times(mv2.ScalarValue());
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public override XGaMultivector<T> ERcp(XGaMultivector<T> mv2)
         {
             if (mv2 is XGaScalar<T> scalar)
-                return Times(scalar.ScalarValue);
+                return Times(scalar.ScalarValue());
 
             if (IsZero || mv2.IsZero)
                 return Processor.CreateZeroScalar();
@@ -846,14 +846,14 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.
             if (IsZero || mv2.IsZero)
                 return Processor.CreateZeroScalar();
 
-            return Times(mv2.ScalarValue);
+            return Times(mv2.ScalarValue());
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public override XGaMultivector<T> Rcp(XGaMultivector<T> mv2)
         {
             if (mv2 is XGaScalar<T> scalar)
-                return Times(scalar.ScalarValue);
+                return Times(scalar.ScalarValue());
 
             if (IsZero || mv2.IsZero)
                 return Processor.CreateZeroScalar();

@@ -3,11 +3,11 @@ using System.Runtime.CompilerServices;
 using DataStructuresLib.BitManipulation;
 using DataStructuresLib.Dictionary;
 using DataStructuresLib.IndexSets;
-using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Basis;
-using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Basis;
+using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Basis;
+using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Extended.Basis;
+using GeometricAlgebraFulcrumLib.Lite.ScalarAlgebra;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.Multivectors.Composers;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.Processors;
-using GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra;
 using Open.Collections;
 using TextComposerLib.Text;
 
@@ -215,9 +215,15 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override IReadOnlyDictionary<IIndexSet, T> GetIdScalarDictionary()
+        public IReadOnlyDictionary<IIndexSet, T> GetIdScalarDictionary()
         {
             return _idScalarDictionary;
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public override int GetMinGrade()
+        {
+            return IsZero ? 0 : _idScalarDictionary.Keys.Min(id => id.Count);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -257,7 +263,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.
 
             if (_idScalarDictionary.Count == 1)
             {
-                yield return Processor.CreateKVector(
+                yield return Processor.CreateTermKVector(
                     _idScalarDictionary.First()
                 );
 
@@ -294,7 +300,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override Scalar<T> GetScalarTermScalar()
+        public override Scalar<T> Scalar()
         {
             return _idScalarDictionary.TryGetValue(EmptyIndexSet.Instance, out var scalar)
                 ? ScalarProcessor.CreateScalar(scalar)
@@ -302,7 +308,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override Scalar<T> GetTermScalar(IIndexSet basisBladeId)
+        public override Scalar<T> GetBasisBladeScalar(IIndexSet basisBladeId)
         {
             return _idScalarDictionary.TryGetValue(basisBladeId, out var scalar)
                 ? ScalarProcessor.CreateScalar(scalar)
@@ -311,7 +317,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override bool TryGetScalarTermScalar(out T scalar)
+        public override bool TryGetScalarValue(out T scalar)
         {
             if (_idScalarDictionary.TryGetValue(EmptyIndexSet.Instance, out scalar))
                 return true;
@@ -321,7 +327,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override bool TryGetTermScalar(IIndexSet basisBlade, out T scalar)
+        public override bool TryGetBasisBladeScalarValue(IIndexSet basisBlade, out T scalar)
         {
             if (_idScalarDictionary.TryGetValue(basisBlade, out scalar))
                 return true;
@@ -433,6 +439,12 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.
                     .SetTerms(_idScalarDictionary.Where(p => p.Key.Count == grade))
                     .GetKVector(grade)
             };
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public override XGaKVector<T> GetFirstKVectorPart()
+        {
+            return GetKVectorPart(GetMinGrade());
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

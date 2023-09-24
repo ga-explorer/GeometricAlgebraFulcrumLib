@@ -1,21 +1,21 @@
 ﻿using System.Collections.Immutable;
 using DataStructuresLib.Basic;
 using DataStructuresLib.Files;
-using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Space3D;
-using GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra;
-using GraphicsComposerLib.Rendering.BabylonJs;
-using GraphicsComposerLib.Rendering.BabylonJs.Cameras;
-using GraphicsComposerLib.Rendering.BabylonJs.Constants;
-using GraphicsComposerLib.Rendering.BabylonJs.GUI;
-using GraphicsComposerLib.Rendering.BabylonJs.Materials;
-using GraphicsComposerLib.Rendering.BabylonJs.Meshes;
-using GraphicsComposerLib.Rendering.BabylonJs.Textures;
-using GraphicsComposerLib.Rendering.Visuals.Space3D.Animations;
-using GraphicsComposerLib.Rendering.Visuals.Space3D.Basic;
-using GraphicsComposerLib.Rendering.Visuals.Space3D.Grids;
-using GraphicsComposerLib.Rendering.Visuals.Space3D.Images;
-using GraphicsComposerLib.Rendering.Visuals.Space3D.Styles;
-using GraphicsComposerLib.Rendering.Visuals.Space3D.Surfaces;
+using GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.BabylonJs;
+using GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.BabylonJs.Cameras;
+using GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.BabylonJs.Constants;
+using GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.BabylonJs.GUI;
+using GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.BabylonJs.Materials;
+using GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.BabylonJs.Meshes;
+using GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.BabylonJs.Textures;
+using GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.Visuals.Space3D.Animations;
+using GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.Visuals.Space3D.Basic;
+using GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.Visuals.Space3D.Grids;
+using GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.Visuals.Space3D.Images;
+using GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.Visuals.Space3D.Styles;
+using GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.Visuals.Space3D.Surfaces;
+using GeometricAlgebraFulcrumLib.Lite.LinearAlgebra.Vectors.Space3D;
+using GeometricAlgebraFulcrumLib.Lite.ScalarAlgebra;
 using SixLabors.ImageSharp;
 using WebComposerLib.Colors;
 using WebComposerLib.Html.Media;
@@ -341,13 +341,15 @@ namespace GeometricAlgebraFulcrumLib.Applications.PowerSystems
             OmegaSceneComposer.GridMaterialKind =
                 GrBabylonJsGridMaterialKind.TexturedMaterial;
 
-            OmegaSceneComposer.AddXzSquareGrid(
-                new GrVisualXzSquareGrid3D("grid")
+            OmegaSceneComposer.AddSquareGrid(
+                new GrVisualSquareGrid3D("grid", GrVisualSquareGridPlane3D.ZxPlane)
                 {
-                    UnitCountX = 4,
-                    UnitCountZ = 4,
+                    UnitCount1 = 4,
+                    UnitCount2 = 4,
                     UnitSize = 1,
-                    Origin = OmegaFrameOrigin + Float64Vector3D.Create(-0.5d * 4, 0, -0.5d * 4),
+                    DistanceToOrigin = OmegaFrameOrigin.Y,
+                    Offset1 = OmegaFrameOrigin.Z,
+                    Offset2 = OmegaFrameOrigin.X,
                     Opacity = 0.2,
                     BaseSquareColor = System.Drawing.Color.LightYellow.ToImageSharpColor(),
                     BaseLineColor = System.Drawing.Color.BurlyWood.ToImageSharpColor(),
@@ -588,8 +590,7 @@ namespace GeometricAlgebraFulcrumLib.Applications.PowerSystems
                 Float64Vector3D.Create(Signal.VectorBounds.MinX, 0, 0),
                 Float64Vector3D.Create(Signal.VectorBounds.MaxX, 0, 0),
                 Color.Red.SetAlpha(0.25f),
-                0.045,
-                GrVisualAnimationSpecs.Static
+                0.045
             );
         }
 
@@ -613,8 +614,7 @@ namespace GeometricAlgebraFulcrumLib.Applications.PowerSystems
                 Float64Vector3D.Create(0, Signal.VectorBounds.MinY, 0),
                 Float64Vector3D.Create(0, Signal.VectorBounds.MaxY, 0),
                 Color.Green.SetAlpha(0.25f),
-                0.045,
-                GrVisualAnimationSpecs.Static
+                0.045
             );
         }
 
@@ -659,22 +659,19 @@ namespace GeometricAlgebraFulcrumLib.Applications.PowerSystems
                 x + y,
                 x,
                 Color.Gray,
-                dashSpecs,
-                GrVisualAnimationSpecs.Static
+                dashSpecs
             ).AddLineSegment(
                 "xySegment2",
                 x + y,
                 y,
                 Color.Gray,
-                dashSpecs,
-                GrVisualAnimationSpecs.Static
+                dashSpecs
             ).AddLineSegment(
                 "xySegment3",
                 x + y,
                 v,
                 Color.Gray,
-                dashSpecs,
-                GrVisualAnimationSpecs.Static
+                dashSpecs
             );
         
             MainSceneComposer.AddLineSegment(
@@ -682,22 +679,19 @@ namespace GeometricAlgebraFulcrumLib.Applications.PowerSystems
                 y + z,
                 y,
                 Color.Gray,
-                dashSpecs,
-                GrVisualAnimationSpecs.Static
+                dashSpecs
             ).AddLineSegment(
                 "yzSegment2",
                 y + z,
                 z,
                 Color.Gray,
-                dashSpecs,
-                GrVisualAnimationSpecs.Static
+                dashSpecs
             ).AddLineSegment(
                 "yzSegment3",
                 y + z,
                 v,
                 Color.Gray,
-                dashSpecs,
-                GrVisualAnimationSpecs.Static
+                dashSpecs
             );
 
             MainSceneComposer.AddLineSegment(
@@ -705,22 +699,19 @@ namespace GeometricAlgebraFulcrumLib.Applications.PowerSystems
                 z + x,
                 z,
                 Color.Gray,
-                dashSpecs,
-                GrVisualAnimationSpecs.Static
+                dashSpecs
             ).AddLineSegment(
                 "zxSegment2",
                 z + x,
                 x,
                 Color.Gray,
-                dashSpecs,
-                GrVisualAnimationSpecs.Static
+                dashSpecs
             ).AddLineSegment(
                 "zxSegment3",
                 z + x,
                 v,
                 Color.Gray,
-                dashSpecs,
-                GrVisualAnimationSpecs.Static
+                dashSpecs
             );
         }
 

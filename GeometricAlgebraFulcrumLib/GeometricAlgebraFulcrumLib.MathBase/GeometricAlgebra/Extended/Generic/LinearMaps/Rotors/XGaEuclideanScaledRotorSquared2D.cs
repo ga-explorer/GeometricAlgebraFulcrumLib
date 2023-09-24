@@ -1,8 +1,9 @@
 ﻿using System.Runtime.CompilerServices;
+using DataStructuresLib.IndexSets;
+using GeometricAlgebraFulcrumLib.Lite.ScalarAlgebra;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.Multivectors;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.Multivectors.Composers;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.Processors;
-using GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra;
 
 namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.LinearMaps.Rotors
 {
@@ -103,8 +104,8 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public override XGaVector<T> OmMap(XGaVector<T> mv)
         {
-            var u1 = mv[0];
-            var u2 = mv[1];
+            var u1 = mv.Scalar(0);
+            var u2 = mv.Scalar(1);
 
             return OmMap(u1, u2);
         }
@@ -120,25 +121,14 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.
         {
             throw new InvalidOperationException();
         }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override XGaKVector<T> OmMap(XGaKVector<T> mv)
-        {
-            return mv.Grade switch
-            {
-                0 or 2 => GetScalingFactor() * mv,
-                1 => OmMap(mv[0], mv[1]).AsKVector(),
-                _ => throw new InvalidOperationException()
-            };
-        }
-
+        
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public override XGaMultivector<T> OmMap(XGaMultivector<T> mv)
         {
-            var mv0 = mv[0];
-            var mv1 = mv[1];
-            var mv2 = mv[2];
-            var mv12 = mv[3];
+            var mv0 = mv.Scalar();
+            var mv1 = mv.Scalar(0);
+            var mv2 = mv.Scalar(1);
+            var mv12 = mv.GetBasisBladeScalar(3UL.BitPatternToIndexSet());
             
             var scalingFactor = GetScalingFactor();
 

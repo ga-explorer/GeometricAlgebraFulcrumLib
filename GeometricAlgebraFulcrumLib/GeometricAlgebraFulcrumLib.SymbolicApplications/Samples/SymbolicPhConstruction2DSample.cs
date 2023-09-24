@@ -1,9 +1,9 @@
 ﻿using GeometricAlgebraFulcrumLib.Algebra.PolynomialAlgebra.Basis;
 using GeometricAlgebraFulcrumLib.Algebra.PolynomialAlgebra.PhCurves;
+using GeometricAlgebraFulcrumLib.Lite.ScalarAlgebra;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.LinearMaps.Rotors;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Multivectors.Composers;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Processors;
-using GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra;
 using GeometricAlgebraFulcrumLib.Mathematica;
 using GeometricAlgebraFulcrumLib.Mathematica.GeometricAlgebra;
 using GeometricAlgebraFulcrumLib.Mathematica.Processors;
@@ -43,8 +43,8 @@ namespace GeometricAlgebraFulcrumLib.SymbolicApplications.Samples
             var sqrt2 = "Sqrt[2]".ToExpr().CreateScalar(ScalarProcessor);
 
             //var e1 = GeometricProcessor.CreateVector(0);
-            var e2 = GeometricProcessor.CreateVector(1);
-            var e12 = GeometricProcessor.CreateBivector(0);
+            var e2 = GeometricProcessor.CreateTermVector(1);
+            var e12 = GeometricProcessor.CreateTermBivector(0);
 
             var p =
                 GeometricProcessor.CreateVector(1, 1);
@@ -58,7 +58,7 @@ namespace GeometricAlgebraFulcrumLib.SymbolicApplications.Samples
             var _basisPairProductSet = BernsteinBasisPairProductSet<Expr>.Create(BasisSet);
             var _basisPairProductIntegralSet = BernsteinBasisPairProductIntegralSet<Expr>.Create(_basisPairProductSet);
 
-            var e1 = processor.CreateVector(0);
+            var e1 = processor.CreateTermVector(0);
 
             var ScaledRotor0 = processor.CreateScaledIdentityRotor();
 
@@ -96,10 +96,10 @@ namespace GeometricAlgebraFulcrumLib.SymbolicApplications.Samples
             var a1 = (v - v0 - v2 * ScaledRotor2.Multivector) / v1;
 
             var ScaledRotor1 = processor.CreateScaledPureRotor3D(
-                a1[0],
-                a1[3],
-                a1[5],
-                a1[6]
+                a1.Scalar(),
+                a1[0, 1],
+                a1[0, 2],
+                a1[2, 3]
             );
 
             var Vector01 = (e1.Gp(ScaledRotor1.MultivectorReverse) + ScaledRotor1.Multivector.Gp(e1)).GetVectorPart().FullSimplifyScalars();
@@ -169,8 +169,8 @@ namespace GeometricAlgebraFulcrumLib.SymbolicApplications.Samples
             var sqrt2 = "Sqrt[2]".ToExpr().CreateScalar(ScalarProcessor);
 
             //var e1 = GeometricProcessor.CreateVector(0);
-            var e2 = processor.CreateVector(1);
-            var e12 = processor.CreateBivector(0);
+            var e2 = processor.CreateTermVector(1);
+            var e12 = processor.CreateTermBivector(0);
 
             var p =
                 GeometricProcessor.CreateVector(1d, 1d);
@@ -229,9 +229,9 @@ namespace GeometricAlgebraFulcrumLib.SymbolicApplications.Samples
 
             var sqrt2 = "Sqrt[2]".ToExpr().CreateScalar(ScalarProcessor);
 
-            var e1 = GeometricProcessor.CreateVector(0);
-            var e2 = GeometricProcessor.CreateVector(1);
-            var e12 = GeometricProcessor.CreateBivector(0);
+            var e1 = GeometricProcessor.CreateTermVector(0);
+            var e2 = GeometricProcessor.CreateTermVector(1);
+            var e12 = GeometricProcessor.CreateTermBivector(0);
 
             var p =
                 GeometricProcessor.CreateVector(1, 1);
@@ -241,17 +241,17 @@ namespace GeometricAlgebraFulcrumLib.SymbolicApplications.Samples
                 GeometricProcessor.CreateVector(1, 1).DivideByENorm();
                 //GeometricProcessor.CreateVector("Subscript[d, 1]", "Subscript[d, 2]");
 
-            var d1 = d[0];
-            var d2 = d[1];
-            var dNorm1 = (d.Norm() + d1).Scalar;
+            var d1 = d.Scalar(0);
+            var d2 = d.Scalar(1);
+            var dNorm1 = (d.Norm() + d1).Scalar();
             var dNorm1Sqrt = dNorm1.Sqrt();
 
             var u = 
                 p - (e1 + d) / 8 + (dNorm1Sqrt * e1 + d2 / dNorm1Sqrt * e2) / 12 / sqrt2;
 
-            var u1 = u[0];
-            var u2 = u[1];
-            var uNorm1 = (u.Norm() + u1).Scalar;
+            var u1 = u.Scalar(0);
+            var u2 = u.Scalar(1);
+            var uNorm1 = (u.Norm() + u1).Scalar();
             var uNorm1Sqrt = uNorm1.Sqrt();
 
             var v = (uNorm1Sqrt - u2 / uNorm1Sqrt * e12) / sqrt2;

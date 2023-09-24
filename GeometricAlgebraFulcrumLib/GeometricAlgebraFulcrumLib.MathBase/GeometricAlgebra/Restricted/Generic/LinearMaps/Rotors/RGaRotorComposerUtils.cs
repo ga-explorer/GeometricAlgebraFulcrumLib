@@ -1,12 +1,12 @@
 ﻿using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using DataStructuresLib.Basic;
+using GeometricAlgebraFulcrumLib.Lite.LinearAlgebra.Basis;
+using GeometricAlgebraFulcrumLib.Lite.ScalarAlgebra;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Frames;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Multivectors;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Multivectors.Composers;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Processors;
-using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Basis;
-using GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra;
 
 namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.LinearMaps.Rotors
 {
@@ -81,10 +81,10 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generi
                     blade
                 );
 
-            if (bladeSignature.Scalar.IsNegative())
+            if (bladeSignature.Scalar().IsNegative())
             {
                 var alpha = (-bladeSignature).Sqrt();
-                var scalar = alpha.Cos().ScalarValue;
+                var scalar = alpha.Cos().ScalarValue();
                 var bivector = alpha.Sin() / alpha * blade;
 
                 return RGaPureRotor<T>.Create(
@@ -95,7 +95,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generi
             else
             {
                 var alpha = bladeSignature.Sqrt();
-                var scalar = alpha.Cosh().ScalarValue;
+                var scalar = alpha.Cosh().ScalarValue();
                 var bivector = alpha.Sinh() / alpha * blade;
 
                 return RGaPureRotor<T>.Create(
@@ -128,7 +128,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generi
             if (bladeSignatureSign.IsNegative)
             {
                 var alpha = (-bladeSignature).Sqrt();
-                var scalar = alpha.Cos().ScalarValue;
+                var scalar = alpha.Cos().ScalarValue();
                 var bivector = alpha.Sin() / alpha * blade;
 
                 return RGaPureRotor<T>.Create(
@@ -139,7 +139,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generi
             else
             {
                 var alpha = bladeSignature.Sqrt();
-                var scalar = alpha.Cosh().ScalarValue;
+                var scalar = alpha.Cosh().ScalarValue();
                 var bivector = alpha.Sinh() / alpha * blade;
 
                 return RGaPureRotor<T>.Create(
@@ -159,7 +159,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generi
         public static RGaPureRotor<T> CreatePureRotor<T>(this RGaMultivector<T> rotorMv)
         {
             return RGaPureRotor<T>.Create(
-                rotorMv.GetScalarPart().ScalarValue,
+                rotorMv.GetScalarPart().ScalarValue(),
                 rotorMv.GetBivectorPart()
             );
         }
@@ -195,7 +195,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generi
             var cosHalfAngle = ((1 + cosAngle) / 2).Sqrt();
             var sinHalfAngle = ((1 - cosAngle) / 2).Sqrt();
             
-            var scalarPart = cosHalfAngle.ScalarValue;
+            var scalarPart = cosHalfAngle.ScalarValue();
             var bivectorPart = sinHalfAngle * unitRotationBlade;
 
             return RGaPureRotor<T>.Create(
@@ -218,7 +218,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generi
 
             var uNorm = sourceVector.ENorm();
             var vNorm = targetVector.ENorm();
-            var scalingFactor = (vNorm / uNorm).Sqrt().ScalarValue;
+            var scalingFactor = (vNorm / uNorm).Sqrt().ScalarValue();
             var cosAngle = targetVector.ESp(sourceVector) / (uNorm * vNorm);
 
             if (cosAngle.IsOne)
@@ -242,7 +242,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generi
                 scalingFactor * sinHalfAngle * unitRotationBlade;
 
             return RGaScaledPureRotor<T>.Create(
-                scalarPart.ScalarValue,
+                scalarPart.ScalarValue(),
                 bivectorPart
             );
         }
@@ -288,7 +288,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generi
 
             // Define parametric angle of rotation
             var rotorAngle =
-                (1 + 2 * (cosAngle0 - 1) / (2 - sinAngleThetaSquare * (cosAngle0 + 1))).ArcCos().ScalarValue;
+                (1 + 2 * (cosAngle0 - 1) / (2 - sinAngleThetaSquare * (cosAngle0 + 1))).ArcCos().ScalarValue();
 
             // Math.Acos(1 + 2 * (cosAngle0 - 1) / (2 - Math.Pow(Math.Sin(angleTheta), 2) * (cosAngle0 + 1)));
 
@@ -322,11 +322,11 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generi
             var k = sourceAxis.Index;
             var vNorm = assumeUnitVector
                 ? scalarProcessor.ScalarOne
-                : targetVector.ENorm().ScalarValue;
+                : targetVector.ENorm().ScalarValue();
 
-            var ek = processor.CreateVector(k);
+            var ek = processor.CreateTermVector(k);
 
-            var vk1 = vNorm + (sourceAxis.IsPositive ? targetVector[k] : -targetVector[k]);
+            var vk1 = vNorm + (sourceAxis.IsPositive ? targetVector.Scalar(k) : -targetVector.Scalar(k));
             var vOpAxis = sourceAxis.IsPositive ? targetVector.Op(ek) : ek.Op(targetVector);
 
             return RGaScaledPureRotor<T>.Create(
@@ -353,16 +353,16 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generi
             var vNorm =
                 assumeUnitVector
                     ? scalarProcessor.ScalarOne
-                    : sourceVector.ENorm().ScalarValue;
+                    : sourceVector.ENorm().ScalarValue();
 
             var vNorm2 =
                 assumeUnitVector
                     ? scalarProcessor.ScalarTwo
-                    : scalarProcessor.Times(2, sourceVector.ENormSquared().ScalarValue);
+                    : scalarProcessor.Times(2, sourceVector.ENormSquared().ScalarValue());
 
-            var ek = processor.CreateVector(k);
+            var ek = processor.CreateTermVector(k);
 
-            var vk1 = vNorm + (targetAxis.IsPositive ? sourceVector[k] : -sourceVector[k]);
+            var vk1 = vNorm + (targetAxis.IsPositive ? sourceVector.Scalar(k) : -sourceVector.Scalar(k));
             var vOpAxis = targetAxis.IsPositive ? ek.Op(sourceVector) : sourceVector.Op(ek);
 
             return RGaScaledPureRotor<T>.Create(
@@ -391,9 +391,9 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generi
                     ? targetVector
                     : targetVector.DivideByENorm();
 
-            var ek = processor.CreateVector(k);
+            var ek = processor.CreateTermVector(k);
 
-            var vk1 = 1 + (sourceAxis.IsPositive ? v[k] : -v[k]);
+            var vk1 = 1 + (sourceAxis.IsPositive ? v.Scalar(k) : -v.Scalar(k));
             var vOpAxis = sourceAxis.IsPositive ? v.Op(ek) : ek.Op(v);
 
             return RGaPureRotor<T>.Create(
@@ -423,9 +423,9 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generi
                     ? sourceVector
                     : sourceVector.DivideByENorm();
 
-            var ek = processor.CreateVector(k);
+            var ek = processor.CreateTermVector(k);
 
-            var vk1 = 1 + (targetAxis.IsPositive ? v[k] : -v[k]);
+            var vk1 = 1 + (targetAxis.IsPositive ? v.Scalar(k) : -v.Scalar(k));
             var vOpAxis = targetAxis.IsPositive ? ek.Op(v) : v.Op(ek);
 
             return RGaPureRotor<T>.Create(
@@ -454,9 +454,9 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generi
                     ? targetVector
                     : targetVector.DivideByENorm();
 
-            var ek = processor.CreateVector(k);
+            var ek = processor.CreateTermVector(k);
 
-            var vk1 = 1 + (sourceAxis.IsPositive ? v[k] : -v[k]);
+            var vk1 = 1 + (sourceAxis.IsPositive ? v.Scalar(k) : -v.Scalar(k));
             var vOpAxis = sourceAxis.IsPositive ? v.Op(ek) : ek.Op(v);
 
             return RGaPureRotor<T>.Create(
@@ -486,9 +486,9 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generi
                     ? sourceVector
                     : sourceVector.DivideByENorm();
 
-            var ek = processor.CreateVector(k);
+            var ek = processor.CreateTermVector(k);
 
-            var vk1 = 1 + (targetAxis.IsPositive ? v[k] : -v[k]);
+            var vk1 = 1 + (targetAxis.IsPositive ? v.Scalar(k) : -v.Scalar(k));
             var vOpAxis = targetAxis.IsPositive ? ek.Op(v) : v.Op(ek);
 
             return RGaPureRotor<T>.Create(
@@ -566,7 +566,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generi
 
             var (scalar, bivector) = rotor.Multivector.GetScalarBivectorParts();
 
-            return RGaPureRotor<T>.Create(scalar.ScalarValue, bivector);
+            return RGaPureRotor<T>.Create(scalar.ScalarValue(), bivector);
         }
 
         /// <summary>
@@ -591,7 +591,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generi
 
             return RGaPureRotor<T>.Create(
                 cosHalfAngle,
-                processor.CreateBivector(i, j, sinHalfAngle)
+                processor.CreateTermBivector(i, j, sinHalfAngle)
             );
         }
 
@@ -617,7 +617,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generi
             var sinHalfAngle = scalarProcessor.Sin(halfRotationAngle);
             var s = scalarProcessor.Sqrt(scalingFactor);
             var scalarPart = scalarProcessor.Times(s, cosHalfAngle);
-            var bivectorPart = s * processor.CreateBivector(i, j, sinHalfAngle);
+            var bivectorPart = s * processor.CreateTermBivector(i, j, sinHalfAngle);
 
             return RGaScaledPureRotor<T>.Create(scalarPart, bivectorPart);
         }
@@ -628,7 +628,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generi
             var processor = rotor.ScalarProcessor;
 
             var s = processor.Sqrt(scalingFactor);
-            var scalarPart = s * rotor.Multivector[0];
+            var scalarPart = s * rotor.Multivector.Scalar();
             var bivectorPart = s * rotor.Multivector.GetBivectorPart();
 
             return RGaScaledPureRotor<T>.Create(
@@ -838,7 +838,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generi
                         (mv1, mv2) => mv1.Add(mv2)
                     );
 
-            rotorMultivector /= rotorMultivector.Sp(rotorMultivector.Reverse()).Sqrt().ScalarValue;
+            rotorMultivector /= rotorMultivector.Sp(rotorMultivector.Reverse()).Sqrt().ScalarValue();
 
             return RGaRotor<T>.Create(rotorMultivector);
         }

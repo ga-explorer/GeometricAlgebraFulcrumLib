@@ -1,8 +1,9 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 using DataStructuresLib.IndexSets;
-using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Basis;
-using GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra;
+using GeometricAlgebraFulcrumLib.Lite.LinearAlgebra;
+using GeometricAlgebraFulcrumLib.Lite.LinearAlgebra.Basis;
+using GeometricAlgebraFulcrumLib.Lite.ScalarAlgebra;
 
 namespace GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Generic
 {
@@ -312,7 +313,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Generic
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public LinVectorTerm<T> EInverse()
         {
-            return Times(1d / (Scalar * Scalar));
+            return Times((1d / (Scalar * Scalar)));
         }
 
 

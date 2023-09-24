@@ -68,7 +68,8 @@ namespace GeometricAlgebraFulcrumLib.Samples
             //Graphics.BabylonJsSnapshotsSample.TakeSnapshots();
             //Graphics.Animations.Sample1.Example2();
             
-            Numeric.SnelliusPothenotProblem.Execute();
+            //Numeric.SnelliusPothenotProblem.Execute();
+            //Numeric.ComplexSnelliusPothenotProblem.BenchmarkComplexTriangulation();
 
             //Numeric.InterpolationSample.Example9();
             //EuclideanGeometry.RotationSamples.Example1();
@@ -130,6 +131,9 @@ namespace GeometricAlgebraFulcrumLib.Samples
             //SymbolicScaledRotors3DSample.Example3();
             //SymbolicScaledRotors2DSample.Example3();
             //NumericPhSplineCurveSamples.Example1();
+
+            MetaProgramming.GradedMultivectorLibSample.GenerateCode();
+            //MetaProgramming.GradedMultivectorLibSample.GenerateCGa5D();
 
             Console.WriteLine();
             Console.WriteLine("Press any key to exit..");

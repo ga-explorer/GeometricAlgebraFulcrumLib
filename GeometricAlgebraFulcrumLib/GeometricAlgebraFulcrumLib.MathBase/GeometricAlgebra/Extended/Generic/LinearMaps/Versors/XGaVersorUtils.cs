@@ -39,27 +39,27 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.
                 foreach (var basisVectorIndex in basisVectorIndicesList)
                 {
                     var basisVectorImage = mappedBasisVectors[basisVectorIndex];
-                    var basisVectorImageNorm = basisVectorImage.ENorm().ScalarValue;
+                    var basisVectorImageNorm = basisVectorImage.ENorm().ScalarValue();
 
                     var differenceLengthSquared =
                         (
                             basisVectorImage -
-                            processor.CreateVector(basisVectorIndex, basisVectorImageNorm)
+                            processor.CreateTermVector(basisVectorIndex, basisVectorImageNorm)
                         ).ESpSquared();
 
-                    if (differenceLengthSquared.ScalarValue < bestDifferenceLengthSquared)
+                    if (differenceLengthSquared.ScalarValue() < bestDifferenceLengthSquared)
                         continue;
 
                     bestBasisVectorIndex = basisVectorIndex;
-                    bestDifferenceLengthSquared = differenceLengthSquared.ScalarValue;
+                    bestDifferenceLengthSquared = differenceLengthSquared.ScalarValue();
                 }
 
                 var bestBasisVectorImage = mappedBasisVectors[bestBasisVectorIndex];
-                var bestBasisVectorImageNorm = bestBasisVectorImage.ENorm().ScalarValue;
+                var bestBasisVectorImageNorm = bestBasisVectorImage.ENorm().ScalarValue();
 
                 var unitVector =
                     bestBasisVectorImage -
-                    processor.CreateVector(bestBasisVectorIndex, bestBasisVectorImageNorm);
+                    processor.CreateTermVector(bestBasisVectorIndex, bestBasisVectorImageNorm);
 
                 var reflectionVectorFound = !unitVector.IsZero;
                 if (reflectionVectorFound)
@@ -78,7 +78,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.
                         : mappedBasisVectors[basisVectorIndex];
 
                     var bestBasisVectorId = bestBasisVectorIndex.IndexToIndexSet();
-                    if (reflectedVector.TryGetTermScalar(bestBasisVectorId, out var scalar))
+                    if (reflectedVector.TryGetBasisBladeScalarValue(bestBasisVectorId, out var scalar))
                         vectorComposersArray[basisVectorIndex].SetTerm(bestBasisVectorIndex, scalar);
 
                     if (basisVectorIndex == bestBasisVectorIndex)
@@ -147,9 +147,9 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.
             for (var i = 0; i < count; i++)
             {
                 var x = mappedBasisVectors[i];
-                var xNorm = x.ENorm().ScalarValue;
+                var xNorm = x.ENorm().ScalarValue();
 
-                var unitVector = x - processor.CreateVector(i, xNorm);
+                var unitVector = x - processor.CreateTermVector(i, xNorm);
 
                 var reflectionVectorFound = !unitVector.IsZero;
                 if (reflectionVectorFound)
@@ -170,7 +170,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.
                     var basisVectorIndex = i;
                     var basisVectorId = basisVectorIndex.IndexToIndexSet();
 
-                    if (reflectedVector.TryGetTermScalar(basisVectorId, out var scalar))
+                    if (reflectedVector.TryGetBasisBladeScalarValue(basisVectorId, out var scalar))
                         vectorComposersArray[j].SetTerm(basisVectorIndex, scalar);
 
                     if (j > i)

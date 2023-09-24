@@ -1,8 +1,9 @@
 ﻿using System.Runtime.CompilerServices;
+using DataStructuresLib.IndexSets;
+using GeometricAlgebraFulcrumLib.Lite.ScalarAlgebra;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.Multivectors;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.Multivectors.Composers;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.Processors;
-using GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra;
 
 namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.LinearMaps.Rotors
 {
@@ -101,7 +102,10 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public override XGaVector<T> OmMap(XGaVector<T> mv)
         {
-            return OmMap(mv[0], mv[1]);
+            return OmMap(
+                mv.Scalar(0), 
+                mv.Scalar(1)
+            );
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -115,25 +119,14 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.
         {
             throw new InvalidOperationException();
         }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override XGaKVector<T> OmMap(XGaKVector<T> mv)
-        {
-            return mv.Grade switch
-            {
-                0 or 2 => GetScalingFactor() * mv,
-                1 => OmMap(mv[0].ScalarValue, mv[1].ScalarValue),
-                _ => throw new InvalidOperationException()
-            };
-        }
-
+        
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public override XGaMultivector<T> OmMap(XGaMultivector<T> mv)
         {
-            var mv0 = mv[0];
-            var mv1 = mv[1];
-            var mv2 = mv[2];
-            var mv12 = mv[3];
+            var mv0 = mv.Scalar();
+            var mv1 = mv.Scalar(0);
+            var mv2 = mv.Scalar(1);
+            var mv12 = mv.GetBasisBladeScalar(3UL.BitPatternToIndexSet());
 
             var s0 = Scalar0 * Scalar0 - Scalar12 * Scalar12;
             var s12 = 2 * Scalar0 * Scalar12;

@@ -3,7 +3,7 @@ using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using GeometricAlgebraFulcrumLib.MathBase.Geometry.Differential.AutoDiff;
+using GeometricAlgebraFulcrumLib.Lite.Geometry.Differential.AutoDiff;
 
 namespace GeometricAlgebraFulcrumLib.Benchmarks.AutoDiff
 {

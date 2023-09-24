@@ -34,10 +34,10 @@ namespace GeometricAlgebraFulcrumLib.SymbolicApplications.Samples
 
         public static void Example1()
         {
-            var e1p = GeometricProcessor.CreateVector(0);
+            var e1p = GeometricProcessor.CreateTermVector(0);
             var e1n = -e1p;
 
-            var e2p = GeometricProcessor.CreateVector(1);
+            var e2p = GeometricProcessor.CreateTermVector(1);
             var e2n = -e2p;
 
             var a =
@@ -86,8 +86,8 @@ namespace GeometricAlgebraFulcrumLib.SymbolicApplications.Samples
         
         public static void Example3()
         {
-            var e1 = GeometricProcessor.CreateVector(0);
-            var e2 = GeometricProcessor.CreateVector(1);
+            var e1 = GeometricProcessor.CreateTermVector(0);
+            var e2 = GeometricProcessor.CreateTermVector(1);
 
             var uVector = 
                 GeometricProcessor.CreateVector("Subscript[u,1]", "Subscript[u,2]");

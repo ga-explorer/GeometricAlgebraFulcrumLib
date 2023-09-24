@@ -1,13 +1,13 @@
 ﻿using System.Runtime.CompilerServices;
 using DataStructuresLib.IndexSets;
+using GeometricAlgebraFulcrumLib.Lite.LinearAlgebra.Basis;
+using GeometricAlgebraFulcrumLib.Lite.ScalarAlgebra;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.Frames;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.Multivectors;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.Multivectors.Composers;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.Processors;
-using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Basis;
 using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Generic;
 using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Generic.LinearMaps;
-using GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra;
 
 namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.LinearMaps.Outermorphisms
 {
@@ -362,14 +362,14 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.
 
             return mappedPseudoScalar.ESp(
                 om.Processor.CreatePseudoScalarEInverse(vSpaceDimensions)
-            ).ScalarValue;
+            ).ScalarValue();
         }
 
         public static Scalar<T> GetDeterminant<T>(this IXGaOutermorphism<T> om, int vSpaceDimensions)
         {
             return om
                 .OmMapBasisBlade(om.Metric.GetBasisPseudoScalarId(vSpaceDimensions))
-                .Sp(om.Processor.CreatePseudoScalarInverse(vSpaceDimensions)).Scalar;
+                .Sp(om.Processor.CreatePseudoScalarInverse(vSpaceDimensions)).Scalar();
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

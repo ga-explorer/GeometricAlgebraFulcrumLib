@@ -1,14 +1,13 @@
 ﻿using System.Collections.Immutable;
 using DataStructuresLib.Basic;
 using DataStructuresLib.Files;
-using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64;
-using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Space3D;
-using GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra;
-using GraphicsComposerLib.Rendering.BabylonJs;
-using GraphicsComposerLib.Rendering.BabylonJs.Constants;
-using GraphicsComposerLib.Rendering.BabylonJs.GUI;
-using GraphicsComposerLib.Rendering.Visuals.Space3D.Animations;
-using GraphicsComposerLib.Rendering.Visuals.Space3D.Styles;
+using GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.BabylonJs;
+using GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.BabylonJs.Constants;
+using GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.BabylonJs.GUI;
+using GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.Visuals.Space3D.Styles;
+using GeometricAlgebraFulcrumLib.Lite.LinearAlgebra;
+using GeometricAlgebraFulcrumLib.Lite.LinearAlgebra.Vectors.Space3D;
+using GeometricAlgebraFulcrumLib.Lite.ScalarAlgebra;
 using OxyPlot;
 using OxyPlot.Axes;
 using OxyPlot.Series;
@@ -598,22 +597,19 @@ namespace GeometricAlgebraFulcrumLib.Applications.Graphics
                 u,
                 u1,
                 Color.Red,
-                dashSpecs,
-                GrVisualAnimationSpecs.Static
+                dashSpecs
             ).AddLineSegment(
                 "originSegment",
                 u - u1,
                 Float64Vector3D.Zero,
                 Color.DarkGreen,
-                dashSpecs,
-                GrVisualAnimationSpecs.Static
+                dashSpecs
             ).AddLineSegment(
                 "targetSegment",
                 v,
                 v1,
                 Color.Blue, 
-                dashSpecs,
-                GrVisualAnimationSpecs.Static
+                dashSpecs
             );
 
             MainSceneComposer
@@ -853,8 +849,7 @@ namespace GeometricAlgebraFulcrumLib.Applications.Graphics
                 vuSum1.SetLength(5d), 
                 vuSum1.SetLength(-5d),
                 intersectionLineColor, 
-                0.035,
-                GrVisualAnimationSpecs.Static
+                0.035
             );
 
             if ((u - u1).ENorm() > 1)

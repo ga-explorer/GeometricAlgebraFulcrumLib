@@ -173,7 +173,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generi
                 var scalar = v1.Sp(v2);
                 var bivector = v1.Op(v2);
 
-                simpleRotorsArray[i] = RGaPureRotor<T>.Create(scalar.ScalarValue, bivector);
+                simpleRotorsArray[i] = RGaPureRotor<T>.Create(scalar.ScalarValue(), bivector);
             }
 
             return RGaPureRotorsSequence<T>.Create(
@@ -217,17 +217,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generi
                     (kv, rotor) => rotor.OmMap(kv)
                 );
         }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override RGaKVector<T> OmMap(RGaKVector<T> mv)
-        {
-            return _versorsList
-                .Aggregate(
-                    mv, 
-                    (kv, rotor) => rotor.OmMap(kv)
-                );
-        }
-
+        
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public override RGaMultivector<T> OmMap(RGaMultivector<T> mv)
         {

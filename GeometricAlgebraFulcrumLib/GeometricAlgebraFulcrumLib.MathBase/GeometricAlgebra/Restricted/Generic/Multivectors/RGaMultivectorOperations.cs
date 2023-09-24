@@ -1,7 +1,7 @@
 ﻿using System.Runtime.CompilerServices;
 using DataStructuresLib.Basic;
+using GeometricAlgebraFulcrumLib.Lite.ScalarAlgebra;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Multivectors.Composers;
-using GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra;
 
 namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Multivectors
 {
@@ -544,13 +544,13 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generi
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static RGaMultivector<T> operator *(RGaMultivector<T> mv1, RGaScalar<T> mv2)
         {
-            return mv1.Times(mv2.ScalarValue);
+            return mv1.Times(mv2.ScalarValue());
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static RGaMultivector<T> operator *(RGaScalar<T> mv1, RGaMultivector<T> mv2)
         {
-            return mv2.Times(mv1.ScalarValue);
+            return mv2.Times(mv1.ScalarValue());
         }
 
 
@@ -626,7 +626,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generi
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static RGaMultivector<T> operator /(RGaMultivector<T> mv1, RGaScalar<T> mv2)
         {
-            return mv1.Divide(mv2.ScalarValue);
+            return mv1.Divide(mv2.ScalarValue());
         }
 
         
@@ -876,6 +876,21 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generi
 
             return (Gp(mv2) - mv2.Gp(this)).Divide(ScalarProcessor.ScalarTwo);
         }
+        /// <summary>
+        /// The Delta Product (See chapter 21 in Geometric Algebra for Computer Science)
+        /// </summary>
+        /// <param name="mv2"></param>
+        /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public RGaKVector<T> Dp(RGaMultivector<T> mv2)
+        {
+            var gp = Gp(mv2);
 
+            return gp.IsNearZero() 
+                ? Processor.CreateZeroScalar() 
+                : gp.GetKVectorParts()
+                    .OrderByDescending(kv => kv.Grade)
+                    .First(kv => !kv.IsNearZero());
+        }
     }
 }

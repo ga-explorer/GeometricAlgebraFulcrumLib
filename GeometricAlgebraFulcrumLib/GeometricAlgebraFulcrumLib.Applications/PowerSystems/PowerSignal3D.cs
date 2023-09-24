@@ -3,19 +3,18 @@ using System.Runtime.CompilerServices;
 using DataStructuresLib.Basic;
 using DataStructuresLib.Collections;
 using DataStructuresLib.Extensions;
-using GeometricAlgebraFulcrumLib.MathBase.Geometry.Borders;
-using GeometricAlgebraFulcrumLib.MathBase.Geometry.Borders.Space3D.Immutable;
-using GeometricAlgebraFulcrumLib.MathBase.Geometry.Differential.Curves;
-using GeometricAlgebraFulcrumLib.MathBase.Geometry.Differential.Functions;
-using GeometricAlgebraFulcrumLib.MathBase.Geometry.Parametric;
-using GeometricAlgebraFulcrumLib.MathBase.Geometry.Parametric.Space3D.Curves;
-using GeometricAlgebraFulcrumLib.MathBase.Geometry.Parametric.Space3D.Curves.Adaptive;
-using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64;
-using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Frames.Space3D;
-using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Space3D;
-using GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra;
-using GeometricAlgebraFulcrumLib.MathBase.SignalAlgebra;
-using GeometricAlgebraFulcrumLib.MathBase.SignalAlgebra.Composers;
+using GeometricAlgebraFulcrumLib.Lite.Geometry.Borders.Space3D.Immutable;
+using GeometricAlgebraFulcrumLib.Lite.Geometry.Differential.Curves;
+using GeometricAlgebraFulcrumLib.Lite.Geometry.Differential.Functions;
+using GeometricAlgebraFulcrumLib.Lite.Geometry.Parametric;
+using GeometricAlgebraFulcrumLib.Lite.Geometry.Parametric.Space3D.Curves;
+using GeometricAlgebraFulcrumLib.Lite.Geometry.Parametric.Space3D.Curves.Adaptive;
+using GeometricAlgebraFulcrumLib.Lite.LinearAlgebra;
+using GeometricAlgebraFulcrumLib.Lite.LinearAlgebra.Frames.Space3D;
+using GeometricAlgebraFulcrumLib.Lite.LinearAlgebra.Vectors.Space3D;
+using GeometricAlgebraFulcrumLib.Lite.ScalarAlgebra;
+using GeometricAlgebraFulcrumLib.Lite.SignalAlgebra;
+using GeometricAlgebraFulcrumLib.Lite.SignalAlgebra.Composers;
 using OxyPlot;
 using OxyPlot.Axes;
 using OxyPlot.Series;
@@ -68,9 +67,9 @@ namespace GeometricAlgebraFulcrumLib.Applications.PowerSystems
 
         public BoundingBox3D? VectorBounds { get; private set; }
 
-        public Float64Range1D ScalarBounds { get; private set; }
+        public Float64ScalarRange ScalarBounds { get; private set; }
 
-        public Float64Range1D CurvatureBounds { get; private set; }
+        public Float64ScalarRange CurvatureBounds { get; private set; }
 
         public AdaptiveCurve3D? SampledCurve { get; private set; }
 
@@ -123,7 +122,7 @@ namespace GeometricAlgebraFulcrumLib.Applications.PowerSystems
 
         public AdaptiveCurve3D? GetSampledCurve()
         {
-            var parameterValueRange = Float64Range1D.Create(0, TimeMaxValue);
+            var parameterValueRange = Float64ScalarRange.Create(0, TimeMaxValue);
 
             var curve = ComputedParametricCurve3D.Create(
                 XFunction,
@@ -155,7 +154,7 @@ namespace GeometricAlgebraFulcrumLib.Applications.PowerSystems
                 );
 
             ScalarBounds =
-                Float64Range1D.Create(
+                Float64ScalarRange.Create(
                     Math.Min(
                         Math.Min(
                             VectorBounds.MinX, 
@@ -183,10 +182,10 @@ namespace GeometricAlgebraFulcrumLib.Applications.PowerSystems
             );
 
             CurvatureBounds =
-                Float64Range1D.Create(kappaMin, kappaMax);
+                Float64ScalarRange.Create(kappaMin, kappaMax);
         }
     
-        public Float64Range1D GetCurvatureBounds(int index1, int index2)
+        public Float64ScalarRange GetCurvatureBounds(int index1, int index2)
         {
             if (CurvatureList is null)
                 throw new InvalidOperationException();
@@ -203,10 +202,10 @@ namespace GeometricAlgebraFulcrumLib.Applications.PowerSystems
                 (accumulator, item) => Math.Max(accumulator, item.Max())
             );
 
-            return Float64Range1D.Create(kappaMin, kappaMax);
+            return Float64ScalarRange.Create(kappaMin, kappaMax);
         }
 
-        public Float64Range1D GetFrequencyHzBounds(int index1, int index2)
+        public Float64ScalarRange GetFrequencyHzBounds(int index1, int index2)
         {
             if (FrequencyHzList is null)
                 throw new InvalidOperationException();
@@ -223,7 +222,7 @@ namespace GeometricAlgebraFulcrumLib.Applications.PowerSystems
                 Math.Max
             );
 
-            return Float64Range1D.Create(freqMin, freqMax);
+            return Float64ScalarRange.Create(freqMin, freqMax);
         }
     
         public Image GetSignalPlotImage(int index, int plotSampleCount)

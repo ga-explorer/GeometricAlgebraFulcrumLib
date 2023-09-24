@@ -1,12 +1,13 @@
 ﻿using System.Collections;
 using System.Runtime.CompilerServices;
-using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Basis;
-using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Basis;
+using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Basis;
+using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Restricted;
+using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Restricted.Basis;
+using GeometricAlgebraFulcrumLib.Lite.ScalarAlgebra;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Multivectors.GuidedBinaryTraversal;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Multivectors.GuidedBinaryTraversal.Multivectors;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Processors;
 using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Generic;
-using GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra;
 
 namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Multivectors
 {
@@ -15,7 +16,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generi
     /// precision scalars
     /// </summary>
     public abstract partial class RGaMultivector<T> :
-        IReadOnlyDictionary<ulong, T>,
+        IReadOnlyCollection<KeyValuePair<ulong, T>>,
         IRGaElement<T>
     {
         public abstract string MultivectorClassName { get; }
@@ -84,35 +85,24 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generi
         /// </summary>
         /// <value></value>
         public abstract IEnumerable<KeyValuePair<RGaBasisBlade, T>> BasisScalarPairs { get; }
-
-        public IEnumerable<ulong> Keys
-            => Ids;
-
-        public IEnumerable<T> Values
-            => Scalars;
-
+        
         public Scalar<T> this[int index]
-            => GetTermScalar(
-                index.BasisVectorIndexToId()
-            );
+            => Scalar(index);
 
         public Scalar<T> this[int index1, int index2]
-            => GetTermScalar(
-                BasisBivectorUtils.IndexPairToBivectorId(index1, index2)
-            );
+            => Scalar(index1, index2);
+        
+        public Scalar<T> this[int index1, int index2, int index3]
+            => Scalar(index1, index2, index3);
 
-        public T this[ulong basisBladeId]
-            => GetTermScalar(basisBladeId).ScalarValue;
+        public Scalar<T> this[params int[] indexList]
+            => Scalar(indexList);
+        
+        public Scalar<T> this[IReadOnlyList<int> indexList]
+            => Scalar(indexList);
 
-        public Scalar<T> this[RGaBasisBlade basisBlade]
-            => GetTermScalar(basisBlade.Id);
-
-        public Scalar<T> this[RGaSignedBasisBlade basisBlade]
-            => basisBlade.IsZero
-                ? ScalarProcessor.CreateScalarZero()
-                : basisBlade.IsPositive
-                    ? GetTermScalar(basisBlade.Id)
-                    : -GetTermScalar(basisBlade.Id);
+        public Scalar<T> this[IRGaSignedBasisBlade basisBlade]
+            => Scalar(basisBlade);
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -232,8 +222,8 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generi
 
             return ScalarProcessor.CreateLinVector(indexScalarDictionary);
         }
-
-        public abstract IReadOnlyDictionary<ulong, T> GetIdScalarDictionary();
+        
+        public abstract int GetMinGrade();
 
         public abstract int GetMaxGrade();
 
@@ -242,7 +232,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generi
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public bool TryGetValue(ulong key, out T value)
         {
-            return TryGetTermScalar(key, out value);
+            return TryGetBasisBladeScalarValue(key, out value);
         }
 
         /// <summary>
@@ -259,6 +249,8 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generi
         public abstract RGaHigherKVector<T> GetHigherKVectorPart(int grade);
         
         public abstract RGaKVector<T> GetKVectorPart(int grade);
+        
+        public abstract RGaKVector<T> GetFirstKVectorPart();
 
         public abstract RGaMultivector<T> GetEvenPart();
 
@@ -270,38 +262,135 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generi
 
         public abstract IEnumerable<RGaKVector<T>> GetKVectorParts();
 
-        /// <summary>
-        /// Get the scalar coefficient associated with the basis scalar term
-        /// </summary>
-        /// <returns></returns>
-        public abstract Scalar<T> GetScalarTermScalar();
 
         /// <summary>
         /// Get the scalar coefficient associated with a basis blade term
         /// </summary>
         /// <param name="basisBladeId"></param>
         /// <returns></returns>
-        public abstract Scalar<T> GetTermScalar(ulong basisBladeId);
-
+        public abstract Scalar<T> GetBasisBladeScalar(ulong basisBladeId);
+        
+        /// <summary>
+        /// Get the scalar coefficient associated with the basis scalar term
+        /// </summary>
+        /// <returns></returns>
+        public abstract Scalar<T> Scalar();
+        
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Scalar<T> GetTermScalar(RGaBasisBlade basisBlade)
+        public Scalar<T> Scalar(int index)
         {
-            return GetTermScalar(basisBlade.Id);
+            return Scalar(
+                Metric.CreateBasisVector(index)
+            );
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Scalar<T> GetTermScalar(RGaSignedBasisBlade basisBlade)
+        public Scalar<T> Scalar(int index1, int index2)
+        {
+            return Scalar(
+                Metric.Op(index1, index2)
+            );
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public Scalar<T> Scalar(int index1, int index2, int index3)
+        {
+            return Scalar(
+                Metric.Op(index1, index2, index3)
+            );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public Scalar<T> Scalar(params int[] indexList)
+        {
+            return Scalar(
+                Metric.Op(indexList)
+            );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public Scalar<T> Scalar(IReadOnlyList<int> indexList)
+        {
+            return Scalar(
+                Metric.Op(indexList)
+            );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public Scalar<T> Scalar(IRGaSignedBasisBlade basisBlade)
         {
             return basisBlade.IsZero
                 ? ScalarProcessor.CreateScalarZero()
                 : basisBlade.IsPositive
-                    ? GetTermScalar(basisBlade.Id)
-                    : -GetTermScalar(basisBlade.Id);
+                    ? GetBasisBladeScalar(basisBlade.Id)
+                    : -GetBasisBladeScalar(basisBlade.Id);
         }
 
-        public abstract bool TryGetScalarTermScalar(out T scalar);
 
-        public abstract bool TryGetTermScalar(ulong basisBlade, out T scalar);
+        public abstract bool TryGetBasisBladeScalarValue(ulong basisBlade, out T scalar);
+        
+        public abstract bool TryGetScalarValue(out T scalar);
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public bool TryGetScalarValue(out T scalar, int index)
+        {
+            return TryGetScalarValue(
+                out scalar, 
+                Metric.CreateBasisVector(index)
+            );
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public bool TryGetScalarValue(out T scalar, int index1, int index2)
+        {
+            return TryGetScalarValue(
+                out scalar, 
+                Metric.Op(index1, index2)
+            );
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public bool TryGetScalarValue(out T scalar, int index1, int index2, int index3)
+        {
+            return TryGetScalarValue(
+                out scalar, 
+                Metric.Op(index1, index2, index3)
+            );
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public bool TryGetScalarValue(out T scalar, params int[] indexList)
+        {
+            return TryGetScalarValue(
+                out scalar, 
+                Metric.Op(indexList)
+            );
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public bool TryGetScalarValue(out T scalar, IReadOnlyList<int> indexList)
+        {
+            return TryGetScalarValue(
+                out scalar, 
+                Metric.Op(indexList)
+            );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public bool TryGetScalarValue(out T scalar, IRGaSignedBasisBlade basisBlade)
+        {
+            if (!basisBlade.IsZero && TryGetBasisBladeScalarValue(basisBlade.Id, out scalar))
+            {
+                if (basisBlade.IsNegative)
+                    scalar = ScalarProcessor.Negative(scalar);
+
+                return true;
+            }
+
+            scalar = ScalarProcessor.ScalarZero;
+            return false;
+        }
+
 
         /// <summary>
         /// Get all stored terms as (Id, Scalar) records for constructing a column

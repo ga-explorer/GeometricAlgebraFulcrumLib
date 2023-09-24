@@ -271,7 +271,7 @@ namespace EGA#vSpaceDimensions#D
         protected override void ComposeTextFiles()
         {
             // All code is generated inside a single file
-            CodeFilesComposer.InitalizeFile("Multivector.cs");
+            CodeFilesComposer.InitializeFile("Multivector.cs");
 
             //Fill code parts of parametric template
             MultivectorClassTemplate["vSpaceDimensions"] = VSpaceDimensions.ToString();

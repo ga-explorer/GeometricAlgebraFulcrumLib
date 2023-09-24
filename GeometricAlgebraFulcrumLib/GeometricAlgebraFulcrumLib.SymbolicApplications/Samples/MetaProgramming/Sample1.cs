@@ -145,9 +145,9 @@ namespace GeometricAlgebraFulcrumLib.SymbolicApplications.Samples.MetaProgrammin
             // and used for later processing to compute some outputs
             
             // Define basis vectors to compute rotation matrix
-            var e1 = processor.CreateVector(0);
-            var e2 = processor.CreateVector(1);
-            var e3 = processor.CreateVector(2);
+            var e1 = processor.CreateTermVector(0);
+            var e2 = processor.CreateTermVector(1);
+            var e3 = processor.CreateTermVector(2);
 
             // Define the first vector for constructing the rotor with a given
             // set of scalar components u1, u2, ...

@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using GeometricAlgebraFulcrumLib.Lite.ScalarAlgebra;
+using GeometricAlgebraFulcrumLib.Lite.SignalAlgebra;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.LinearMaps.Outermorphisms;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.LinearMaps.Rotors;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Multivectors;
@@ -8,8 +10,6 @@ using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Mu
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Processors;
 using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Generic;
 using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Generic.LinearMaps;
-using GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra;
-using GeometricAlgebraFulcrumLib.MathBase.SignalAlgebra;
 using GeometricAlgebraFulcrumLib.Mathematica.Mathematica.ExprFactory;
 using GeometricAlgebraFulcrumLib.Mathematica.Processors;
 using Wolfram.NETLink;
@@ -57,7 +57,7 @@ public static class RGaMathematicaUtils
     public static RGaScalar<Expr> SimplifyScalar(this RGaScalar<Expr> mv)
     {
         return mv.Processor.CreateScalar(
-            mv.ScalarValue.Simplify()
+            mv.ScalarValue().Simplify()
         );
     }
     
@@ -65,7 +65,7 @@ public static class RGaMathematicaUtils
     public static RGaScalar<Expr> SimplifyScalar(this RGaScalar<Expr> mv, Expr assumeExpr)
     {
         return mv.Processor.CreateScalar(
-            mv.ScalarValue.Simplify()
+            mv.ScalarValue().Simplify()
         );
     }
 
@@ -156,7 +156,7 @@ public static class RGaMathematicaUtils
     public static RGaScalar<Expr> TrigExpandScalar(this RGaScalar<Expr> v)
     {
         return v.Processor.CreateScalar(
-            v.ScalarValue.TrigExpand()
+            v.ScalarValue().TrigExpand()
         );
     }
 
@@ -189,7 +189,7 @@ public static class RGaMathematicaUtils
     public static RGaScalar<Expr> TrigReduceScalar(this RGaScalar<Expr> v)
     {
         return v.Processor.CreateScalar(
-            v.ScalarValue.TrigReduce()
+            v.ScalarValue().TrigReduce()
         );
     }
 
@@ -364,7 +364,7 @@ public static class RGaMathematicaUtils
         var listExprArgs = new object[n];
 
         for (var i = 0; i < n; i++)
-            listExprArgs[i] = vector[i].ScalarValue;
+            listExprArgs[i] = vector.Scalar(i).ScalarValue;
 
         return Mfs.List[listExprArgs];
     }
@@ -496,7 +496,7 @@ public static class RGaMathematicaUtils
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static RGaMultivector<Expr> CreateBasisVector(int index)
     {
-        return EuclideanProcessor.CreateVector(index);
+        return EuclideanProcessor.CreateTermVector(index);
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]

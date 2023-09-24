@@ -2,12 +2,13 @@
 using System.Runtime.CompilerServices;
 using DataStructuresLib.Basic;
 using DataStructuresLib.BitManipulation;
-using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Float64.Multivectors;
-using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Float64.Multivectors.Composers;
-using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Float64.Processors;
-using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Float64.Subspaces;
+using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Extended.Float64.Multivectors;
+using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Extended.Float64.Multivectors.Composers;
+using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Extended.Float64.Processors;
+using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Extended.Float64.Subspaces;
+using GeometricAlgebraFulcrumLib.Lite.ScalarAlgebra;
+using GeometricAlgebraFulcrumLib.Lite.SignalAlgebra;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.Multivectors;
-using GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra;
 using MathNet.Numerics.IntegralTransforms;
 
 namespace GeometricAlgebraFulcrumLib.MathBase.SignalAlgebra.Interpolators
@@ -83,7 +84,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.SignalAlgebra.Interpolators
                 var index = i;
 
                 var complexSamplesArray = signalSamples.Select(
-                    v => (Complex) v[index]
+                    v => (Complex) v.Scalar(index)
                 ).ToArray();
 
                 Fourier.Forward(complexSamplesArray, FourierOptions.Default);
@@ -107,7 +108,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.SignalAlgebra.Interpolators
             for (var i = 0; i < vSpaceDimensions; i++)
             {
                 var complexSamplesArray = 
-                    signalSamples[i]
+                    signalSamples.Scalar(i)
                         .ScalarValue
                         .Select(v => (Complex) v)
                         .ToArray();
@@ -291,7 +292,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.SignalAlgebra.Interpolators
         internal static VectorFourierInterpolator Create(IReadOnlyList<XGaFloat64Vector> signalSamples, double samplingRate, double energyThreshold = 0.998d)
         {
             var frequencyIndexSet = GetDominantFrequencyIndexSet(
-                signalSamples.Select(v => v.Norm().ScalarValue),
+                signalSamples.Select(v => v.Norm().ScalarValue()),
                 energyThreshold
             );
 
@@ -305,7 +306,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.SignalAlgebra.Interpolators
         internal static VectorFourierInterpolator Create(XGaVector<Float64Signal> signalSamples, double energyThreshold = 0.998d)
         {
             var frequencyIndexSet = GetDominantFrequencyIndexSet(
-                signalSamples.Norm().ScalarValue,
+                signalSamples.Norm().ScalarValue(),
                 energyThreshold
             );
             

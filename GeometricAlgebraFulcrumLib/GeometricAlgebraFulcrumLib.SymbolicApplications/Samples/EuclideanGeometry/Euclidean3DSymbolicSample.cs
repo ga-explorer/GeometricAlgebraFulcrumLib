@@ -1,11 +1,11 @@
-﻿using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.LinearMaps;
+﻿using GeometricAlgebraFulcrumLib.Lite.LinearAlgebra.Matrices;
+using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.LinearMaps;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.LinearMaps.Rotors;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.Multivectors;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.Multivectors.Composers;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.Processors;
 using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Generic;
 using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Generic.LinearMaps;
-using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Generic.Matrices;
 using GeometricAlgebraFulcrumLib.Mathematica;
 using GeometricAlgebraFulcrumLib.Mathematica.GeometricAlgebra;
 using GeometricAlgebraFulcrumLib.Mathematica.Mathematica.ExprFactory;
@@ -43,8 +43,8 @@ namespace GeometricAlgebraFulcrumLib.SymbolicApplications.Samples.EuclideanGeome
 
             var unitLengthAssumptionExpr =
                 Mfs.And[
-                    Mfs.Equal[v.ENormSquared().ScalarValue, Expr.INT_ONE],
-                    Mfs.Equal[u.ENormSquared().ScalarValue, Expr.INT_ONE]
+                    Mfs.Equal[v.ENormSquared().ScalarValue(), Expr.INT_ONE],
+                    Mfs.Equal[u.ENormSquared().ScalarValue(), Expr.INT_ONE]
                 ];
 
             var rotorMatrix =
@@ -56,7 +56,7 @@ namespace GeometricAlgebraFulcrumLib.SymbolicApplications.Samples.EuclideanGeome
                 scalarProcessor.CreateLinUnilinearMap(
                         n,
                         (int index) =>
-                            rotorMv.EGp(processor.CreateVector(index)).GetVectorPart().ToLinVector()
+                            rotorMv.EGp(processor.CreateTermVector(index)).GetVectorPart().ToLinVector()
                     )
                     .ToArray(n, n)
                     .SimplifyScalars(unitLengthAssumptionExpr);
@@ -65,7 +65,7 @@ namespace GeometricAlgebraFulcrumLib.SymbolicApplications.Samples.EuclideanGeome
                 scalarProcessor.CreateLinUnilinearMap(
                         n,
                         (int index) =>
-                            processor.CreateVector(index).EGp(rotorMvReverse).GetVectorPart().ToLinVector()
+                            processor.CreateTermVector(index).EGp(rotorMvReverse).GetVectorPart().ToLinVector()
                     )
                     .ToArray(n, n)
                     .SimplifyScalars(unitLengthAssumptionExpr);

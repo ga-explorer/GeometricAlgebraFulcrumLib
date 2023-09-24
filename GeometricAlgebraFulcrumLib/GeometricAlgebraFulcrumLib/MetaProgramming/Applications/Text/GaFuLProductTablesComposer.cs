@@ -7,12 +7,12 @@ using CodeComposerLib.MathML.Elements.Layout.Elementary;
 using CodeComposerLib.MathML.Elements.Layout.Tabular;
 using CodeComposerLib.MathML.Elements.Tokens;
 using DataStructuresLib.BitManipulation;
-using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Basis;
-using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Float64.Multivectors;
-using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Float64.Multivectors.Composers;
-using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Float64.Processors;
-using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Float64.Spaces;
-using GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra;
+using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Basis;
+using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Restricted.Float64.Multivectors;
+using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Restricted.Float64.Multivectors.Composers;
+using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Restricted.Float64.Processors;
+using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Restricted.Float64.Spaces;
+using GeometricAlgebraFulcrumLib.Lite.ScalarAlgebra;
 using GeometricAlgebraFulcrumLib.Utilities.Extensions;
 using TextComposerLib.Text.Linear;
 
@@ -149,8 +149,8 @@ namespace GeometricAlgebraFulcrumLib.MetaProgramming.Applications.Text
                     var id2 = idsList[j];
 
                     var mv = 
-                        space.Processor.CreateKVector(id1).Gp(
-                            space.Processor.CreateKVector(id2)
+                        space.Processor.CreateTermKVector(id1).Gp(
+                            space.Processor.CreateTermKVector(id2)
                         );
 
                     table[i + 2, j + 2].Append(
@@ -192,8 +192,8 @@ namespace GeometricAlgebraFulcrumLib.MetaProgramming.Applications.Text
                     var id2 = idsList[j];
 
                     var mv =
-                        space.Processor.CreateKVector(id1).Gp(
-                            space.Processor.CreateKVector(id2)
+                        space.Processor.CreateTermKVector(id1).Gp(
+                            space.Processor.CreateTermKVector(id2)
                         );
 
                     var mvName = 

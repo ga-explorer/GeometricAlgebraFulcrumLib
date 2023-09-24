@@ -57,7 +57,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.
         public override XGaKVector<T> OmMapBasisBlade(IIndexSet id)
         {
             if (id.IsEmptySet)
-                return Processor.CreateZeroScalar();
+                return Processor.CreateOneScalar();
 
             return id.IsSingleIndexSet 
                 ? OmMapBasisVector(id.FirstIndex)
@@ -103,20 +103,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.
             
             return composer.GetHigherKVector(kVector.Grade);
         }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override XGaKVector<T> OmMap(XGaKVector<T> kVector)
-        {
-            return kVector switch
-            {
-                XGaScalar<T> => Processor.CreateOneScalar(),
-                XGaVector<T> v => OmMap(v),
-                XGaBivector<T> bv => OmMap(bv),
-                XGaHigherKVector<T> kv => OmMap(kv),
-                _ => throw new InvalidOperationException()
-            };
-        }
-
+        
         public override XGaMultivector<T> OmMap(XGaMultivector<T> multivector)
         {
             var composer = Processor.CreateComposer();

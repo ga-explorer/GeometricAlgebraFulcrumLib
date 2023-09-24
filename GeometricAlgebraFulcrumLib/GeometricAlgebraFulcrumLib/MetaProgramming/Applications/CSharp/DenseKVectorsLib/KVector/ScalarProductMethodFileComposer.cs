@@ -55,7 +55,7 @@ namespace GeometricAlgebraFulcrumLib.MetaProgramming.Applications.CSharp.DenseKV
                 _ => throw new InvalidOperationException()
             };
 
-            _outputScalar = (MetaExpressionVariableComputed) outputScalar.ScalarValue;
+            _outputScalar = (MetaExpressionVariableComputed) outputScalar.ScalarValue();
 
             _outputScalar.IsOutputVariable = true;
         }

@@ -3,10 +3,10 @@ using System.Globalization;
 using System.Linq;
 using DataStructuresLib.BitManipulation;
 using GeometricAlgebraFulcrumLib.Applications.PowerSystems;
-using GeometricAlgebraFulcrumLib.MathBase.Geometry.Differential.Functions;
-using GeometricAlgebraFulcrumLib.MathBase.Geometry.Differential.Functions.Phasors;
-using GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra;
-using GeometricAlgebraFulcrumLib.MathBase.SignalAlgebra.Composers;
+using GeometricAlgebraFulcrumLib.Lite.Geometry.Differential.Functions;
+using GeometricAlgebraFulcrumLib.Lite.Geometry.Differential.Functions.Phasors;
+using GeometricAlgebraFulcrumLib.Lite.ScalarAlgebra;
+using GeometricAlgebraFulcrumLib.Lite.SignalAlgebra.Composers;
 using WebComposerLib.LaTeX.CodeComposer;
 
 // ReSharper disable CompareOfFloatsByEqualityOperator

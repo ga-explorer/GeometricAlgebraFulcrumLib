@@ -1,11 +1,11 @@
 ﻿using AngouriMath;
 using DataStructuresLib.Extensions;
+using GeometricAlgebraFulcrumLib.Lite.ScalarAlgebra;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.LinearMaps.Rotors;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Multivectors.Composers;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Processors;
 using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Generic;
 using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Generic.LinearMaps;
-using GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra;
 using GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra;
 using GeometricAlgebraFulcrumLib.Text;
 using GeometricAlgebraFulcrumLib.Utilities.Extensions;
@@ -142,7 +142,7 @@ namespace GeometricAlgebraFulcrumLib.SymbolicApplications.Samples.AngouriMath
 
         public static void Execute3()
         {
-            var e1 = GeometricProcessor.CreateVector(0);
+            var e1 = GeometricProcessor.CreateTermVector(0);
             var u = GeometricProcessor.CreateVector(VSpaceDimensions, i => $"u_{i + 1}");
             var v = GeometricProcessor.CreateVector(VSpaceDimensions, i => $"v_{i + 1}");
 
@@ -179,7 +179,7 @@ namespace GeometricAlgebraFulcrumLib.SymbolicApplications.Samples.AngouriMath
                     VSpaceDimensions,
                     i => 
                         rotorMv.EGp(
-                            GeometricProcessor.CreateKVector((ulong)i)
+                            GeometricProcessor.CreateTermKVector((ulong)i)
                         ).MultivectorToLinVector()
                 )
                 .ToArray((int)GaSpaceDimensions)
@@ -188,7 +188,7 @@ namespace GeometricAlgebraFulcrumLib.SymbolicApplications.Samples.AngouriMath
             var matrix2 =
                 ScalarProcessor.CreateLinUnilinearMap(
                     VSpaceDimensions,
-                    i => GeometricProcessor.CreateKVector((ulong)i).EGp(rotorMvReverse).MultivectorToLinVector()
+                    i => GeometricProcessor.CreateTermKVector((ulong)i).EGp(rotorMvReverse).MultivectorToLinVector()
                 )
                 .ToArray((int)GaSpaceDimensions)
                 .GetShallowCopy(indicesArray1, indicesArray1);
