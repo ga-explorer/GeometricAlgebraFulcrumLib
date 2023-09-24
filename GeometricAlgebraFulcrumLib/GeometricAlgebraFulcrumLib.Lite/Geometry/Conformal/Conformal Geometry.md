@@ -9,17 +9,17 @@ The first thing to do is to create a conformal space object of desired dimension
 var cga = RGaConformalSpace.Create(5);
 ```
 
-Internally, this code defines 5 orthonormal basis blades $\boldsymbol{e}_{-},\boldsymbol{e}_{+},\boldsymbol{e}_{1},\boldsymbol{e}_{2},\boldsymbol{e}_{3}$ with $\boldsymbol{e}_{-}^2=-1$, $\boldsymbol{e}_{+}^2=\boldsymbol{e}_{i}^2=1$ for $i \in \{ 1,2,3 \}$, and $\boldsymbol{e}_{r}\cdot\boldsymbol{e}_{s}=0$ for $r,s \in \{-,+,1,2,3\}$ and $r \neq s$. All computations on multivectors are made using this basis set, while the final results are displayed using the more common basis $\boldsymbol{e}_{o},\boldsymbol{e}_{1},\boldsymbol{e}_{2},\boldsymbol{e}_{3},\boldsymbol{e}_{\infty}$ with $\boldsymbol{e}_{o} = \frac{1}{2}\boldsymbol{e}_{-}+\frac{1}{2}\boldsymbol{e}_{+}$, $\boldsymbol{e}_{\infty}=\boldsymbol{e}_{-}-\boldsymbol{e}_{+}$.
+Internally, this code defines 5 orthonormal basis blades $e_{-},e_{+},e_{1},e_{2},e_{3}$ with $e_{-}^2=-1$, $e_{+}^2=e_{i}^2=1$ for $i \in \{ 1,2,3 \}$, and $e_{r} \cdot e_{s}=0$ for $r,s \in \{-,+,1,2,3\}$ and $r \neq s$. All computations on multivectors are made using this basis set, while the final results are displayed using the more common basis $e_{o},e_{1},e_{2},e_{3},e_{\infty}$ with $e_{o} = \frac{1}{2}e_{-}+\frac{1}{2}e_{+}$, $e_{\infty}=e_{-}-e_{+}$.
 
 ## Elements
 
-Using the CGA space object, you can now define CGA geometry elements. A CGA element is not initially encoded as a blade, but rather is a simple structure holding Euclidean information about the components of the element. Any CGA element contains a weight $w$, a direction $\boldsymbol{D}$, and a position component $P$. The element weight is a positive number, its direction is a unit blade encoding a Euclidean subspace, and its position is a point in Euclidean space. Additionally, the round CGA elements have a squared radius component, which can be any finite real number.
+Using the CGA space object, you can now define CGA geometry elements. A CGA element is not initially encoded as a blade, but rather is a simple structure holding Euclidean information about the components of the element. Any CGA element contains a weight $w$, a direction $D$, and a position component $P$. The element weight is a positive number, its direction is a unit blade encoding a Euclidean subspace, and its position is a point in Euclidean space. Additionally, the round CGA elements have a squared radius component, which can be any finite real number.
 
 The Euclidean components of a CGA element can be accessed using the properties `Weight`, `Direction`, `Position`, and `RadiusSquared`. Additional properties exists for an element to get more information on the element such as `NormalDirection`, and `RealRadius`.
 
 ### Directions
 
-A direction $\{w,\boldsymbol{D}\}$ is the simplest CGA element with position at the Euclidean origin. You can define directions in 5-dimensional CGA space as shown in this code snippet:
+A direction $\{w,D\}$ is the simplest CGA element with position at the Euclidean origin. You can define directions in 5-dimensional CGA space as shown in this code snippet:
 
 ```c#
 // Create a 5-dimensional CGA space
@@ -58,7 +58,7 @@ var d3 = cga.DefineDirectionVolume(
 
 ### Tangents and Flats
 
-A tangent element $\{w,\boldsymbol{D}, P\}$ is like a direction, but can have any Euclidean position $P$. We can use similiar code to define tangent elements:
+A tangent element $\{w,D, P\}$ is like a direction, but can have any Euclidean position $P$. We can use similiar code to define tangent elements:
 
 ```c#
 // Define a weighted 2D tangent plane based on a 3D 
@@ -100,7 +100,7 @@ var surfacePoints = f2.GetSurfacePointVectors3D();
 
 ### Rounds
 
-CGA rounds include point pairs, circles, sphere, and hyper-spheres of higher dimensions. A round element $\{w,\boldsymbol{D}, P, \rho \}$ is essentially a real ($\rho>0$) or imaginary ($\rho<0$) hyper-sphere with given radius $r=\sqrt{\left|\rho\right|}$ intersected with some Euclidean direction subspace $\boldsymbol{D}$, and translated to an arbitrary center $P$. We can, for example, define a weighted imaginary circle with radius 3 using this code:
+CGA rounds include point pairs, circles, sphere, and hyper-spheres of higher dimensions. A round element $\{w,D, P, \rho \}$ is essentially a real ($\rho>0$) or imaginary ($\rho<0$) hyper-sphere with given radius $r=\sqrt{\left|\rho\right|}$ intersected with some Euclidean direction subspace $D$, and translated to an arbitrary center $P$. We can, for example, define a weighted imaginary circle with radius 3 using this code:
 
 ```c#
 // Define an imaginary weighted circle based on a 3D 
@@ -121,9 +121,9 @@ Rounds have surfaces, so they have additional helping methods, like `SurfaceNear
 
 The power of GA comes from the unified encoding of geometric objects, as blades, and orthogonal maps, as versors. In the current implementation, there are several classes of blades that can encode geometric CGA elements:
 
-* EGA blades are defined using only the $n$ Euclidean basis vectors $\{ \boldsymbol{e}_{1}, \boldsymbol{e}_{2}, \ldots, \boldsymbol{e}_{n} \}$. These can only encode Euclidean subspaces and, by some geometric misuse, Euclidean points. The direction and position components of elements are actually stored as EGA blades.
-* PGA blades are defined using $n+1$ projective basis vectors $\{ \boldsymbol{e}_{o}, \boldsymbol{e}_{1}, \boldsymbol{e}_{2}, \ldots, \boldsymbol{e}_{n} \}$. These blades can be used to represent flats using PGA.
-* OPNS\IPNS blades are the standard direct\dual representations of CGA elements, which may use the full set of $n+2$ CGA basis vectors $\{ \boldsymbol{e}_{o}, \boldsymbol{e}_{1}, \boldsymbol{e}_{2}, \ldots, \boldsymbol{e}_{n}, \boldsymbol{e}_{\infty} \}$.
+* EGA blades are defined using only the $n$ Euclidean basis vectors $\{ e_{1}, e_{2}, \ldots, e_{n} \}$. These can only encode Euclidean subspaces and, by some geometric misuse, Euclidean points. The direction and position components of elements are actually stored as EGA blades.
+* PGA blades are defined using $n+1$ projective basis vectors $\{ e_{o}, e_{1}, e_{2}, \ldots, e_{n} \}$. These blades can be used to represent flats using PGA.
+* OPNS\IPNS blades are the standard direct\dual representations of CGA elements, which may use the full set of $n+2$ CGA basis vectors $\{ e_{o}, e_{1}, e_{2}, \ldots, e_{n}, e_{\infty} \}$.
 
 While directions can be encoded as EGA, PGA, OPNS, or IPNS blades, flats can be encoded only using PGA, OPNS, or IPNS blades. Furthermore, tangents and rounds can only be encoded as OPNS\IPNS blades.
 
