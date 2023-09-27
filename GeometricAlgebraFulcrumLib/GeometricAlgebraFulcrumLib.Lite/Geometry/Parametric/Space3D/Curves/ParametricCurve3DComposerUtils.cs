@@ -106,22 +106,22 @@ namespace GeometricAlgebraFulcrumLib.Lite.Geometry.Parametric.Space3D.Curves
             );
         }
 
-        
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static ComputedParametricCurve3D XyDual3D(this IParametricBivector2D curve)
+        public static ComputedParametricCurve3D XyDirectionToNormal3D(this IParametricBivector2D curve, Float64Vector3D? zeroNormal = null)
         {
             return ComputedParametricCurve3D.Create(
                 curve.ParameterRange,
-                t => curve.GetBivector(t).ToXyBivector3D().Dual3D()
+                t => curve.GetBivector(t).ToXyBivector3D().DirectionToNormal3D(zeroNormal)
             );
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static ComputedParametricCurve3D XyUnDual3D(this IParametricBivector2D curve)
+        public static ComputedParametricCurve3D XyNormalToDirection3D(this IParametricBivector2D curve, Float64Vector3D? zeroNormal = null)
         {
             return ComputedParametricCurve3D.Create(
                 curve.ParameterRange,
-                t => curve.GetBivector(t).ToXyBivector3D().UnDual3D()
+                t => curve.GetBivector(t).ToXyBivector3D().NormalToDirection3D(zeroNormal)
             );
         }
 

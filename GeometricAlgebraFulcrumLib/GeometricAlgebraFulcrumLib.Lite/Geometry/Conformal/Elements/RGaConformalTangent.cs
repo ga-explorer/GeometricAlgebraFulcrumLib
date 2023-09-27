@@ -3,8 +3,12 @@ using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Text;
 using DataStructuresLib.BitManipulation;
+using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Restricted.Float64.Multivectors;
 using GeometricAlgebraFulcrumLib.Lite.Geometry.Conformal.Blades;
 using GeometricAlgebraFulcrumLib.Lite.Geometry.Conformal.Decoding;
+using GeometricAlgebraFulcrumLib.Lite.LinearAlgebra.Vectors.Space2D;
+using GeometricAlgebraFulcrumLib.Lite.LinearAlgebra.Vectors.Space3D;
+using GeometricAlgebraFulcrumLib.Lite.LinearAlgebra.Vectors.SpaceND;
 using GeometricAlgebraFulcrumLib.Lite.ScalarAlgebra;
 
 namespace GeometricAlgebraFulcrumLib.Lite.Geometry.Conformal.Elements;
@@ -81,6 +85,64 @@ public class RGaConformalTangent :
         );
     }
     
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public RGaConformalTangent TranslateBy(Float64Vector2D egaVector)
+    {
+        return new RGaConformalTangent(
+            ConformalSpace,
+            Weight,
+            Position + egaVector.EncodeEGaVectorBlade(ConformalSpace),
+            Direction
+        );
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public RGaConformalTangent TranslateBy(Float64Vector3D egaVector)
+    {
+        return new RGaConformalTangent(
+            ConformalSpace,
+            Weight,
+            Position + egaVector.EncodeEGaVectorBlade(ConformalSpace),
+            Direction
+        );
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public RGaConformalTangent TranslateBy(Float64Vector egaVector)
+    {
+        return new RGaConformalTangent(
+            ConformalSpace,
+            Weight,
+            Position + egaVector.EncodeEGaVectorBlade(ConformalSpace),
+            Direction
+        );
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public RGaConformalTangent TranslateBy(RGaFloat64Vector egaVector)
+    {
+        return new RGaConformalTangent(
+            ConformalSpace,
+            Weight,
+            Position + egaVector.EncodeEGaVectorBlade(ConformalSpace),
+            Direction
+        );
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public RGaConformalTangent TranslateBy(RGaConformalBlade egaVector)
+    {
+        Debug.Assert(egaVector.IsEGaVector());
+
+        return new RGaConformalTangent(
+            ConformalSpace,
+            Weight,
+            Position + egaVector,
+            Direction
+        );
+    }
+
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public override string ToString()

@@ -93,6 +93,46 @@ namespace GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.Visuals.Space3D.Sur
                 normal
             );
         }
+        
+        public static GrVisualCircleSurface3D CreateAnimated(string name, GrVisualSurfaceStyle3D style, Float64Vector3D center, Float64Vector3D normal, GrVisualAnimatedScalar radius, bool drawEdge)
+        {
+            return new GrVisualCircleSurface3D(
+                    name,
+                    style, 
+                    center, 
+                    normal, 
+                    1d,
+                    drawEdge,
+                    radius.AnimationSpecs
+                ).SetAnimatedRadius(radius);
+        }
+        
+        public static GrVisualCircleSurface3D CreateAnimated(string name, GrVisualSurfaceStyle3D style, Float64Vector3D center, GrVisualAnimatedVector3D normal, double radius, bool drawEdge)
+        {
+            return new GrVisualCircleSurface3D(
+                    name,
+                    style, 
+                    center, 
+                    Float64Vector3D.E1, 
+                    radius,
+                    drawEdge,
+                    normal.AnimationSpecs
+                ).SetAnimatedNormal(normal);
+        }
+
+        public static GrVisualCircleSurface3D CreateAnimated(string name, GrVisualSurfaceStyle3D style, Float64Vector3D center, GrVisualAnimatedVector3D normal, GrVisualAnimatedScalar radius, bool drawEdge)
+        {
+            return new GrVisualCircleSurface3D(
+                name,
+                style, 
+                center, 
+                Float64Vector3D.E1, 
+                1d,
+                drawEdge,
+                normal.AnimationSpecs
+            ).SetAnimatedNormal(normal)
+            .SetAnimatedRadius(radius);
+        }
 
         public static GrVisualCircleSurface3D CreateAnimated(string name, GrVisualSurfaceStyle3D style, GrVisualAnimatedVector3D center, GrVisualAnimatedVector3D normal, GrVisualAnimatedScalar radius, bool drawEdge)
         {

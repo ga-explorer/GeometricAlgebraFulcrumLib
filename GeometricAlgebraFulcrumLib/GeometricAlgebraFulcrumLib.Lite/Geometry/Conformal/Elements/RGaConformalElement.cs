@@ -1,10 +1,14 @@
 ﻿using System.Diagnostics;
 using System.Runtime.CompilerServices;
+using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Restricted.Float64.LinearMaps.Outermorphisms;
 using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Restricted.Float64.Multivectors;
 using GeometricAlgebraFulcrumLib.Lite.Geometry.Conformal.Blades;
 using GeometricAlgebraFulcrumLib.Lite.Geometry.Conformal.Decoding;
 using GeometricAlgebraFulcrumLib.Lite.Geometry.Conformal.Encoding;
+using GeometricAlgebraFulcrumLib.Lite.Geometry.Conformal.Versors;
 using GeometricAlgebraFulcrumLib.Lite.Geometry.Conformal.Visualizer;
+using GeometricAlgebraFulcrumLib.Lite.Geometry.Parametric.Space1D.Scalars;
+using GeometricAlgebraFulcrumLib.Lite.Geometry.Parametric.Space3D.Curves;
 using GeometricAlgebraFulcrumLib.Lite.LinearAlgebra.Vectors.Space2D;
 using GeometricAlgebraFulcrumLib.Lite.LinearAlgebra.Vectors.Space3D;
 using GeometricAlgebraFulcrumLib.Lite.LinearAlgebra.Vectors.SpaceND;
@@ -644,35 +648,41 @@ public abstract class RGaConformalElement :
     
     public Float64Vector2D SurfacePointToVector2D(Float64Vector2D egaProbeDirection, double distanceFromPosition, double distanceFromSurface)
     {
-        if (this is RGaConformalRound round)
-            return round.RoundSurfacePointToVector2D(egaProbeDirection, distanceFromSurface);
-
-        if (IsPoint)
+        if (IsDirection0D())
             return PositionToVector2D() + 
                    egaProbeDirection.SetLength(distanceFromPosition);
 
-        if (IsLine)
+        if (IsDirection1D())
             return PositionToVector2D() + 
                    egaProbeDirection.ProjectOnVector(DirectionToVector2D()).SetLength(distanceFromPosition) +
                    NormalDirectionToVector2D(distanceFromSurface);
         
+        if (this is RGaConformalRound round)
+            return round.RoundSurfacePointToVector2D(
+                egaProbeDirection, 
+                distanceFromSurface
+            );
+
         return PositionToVector2D() + 
                egaProbeDirection.SetLength(distanceFromPosition);
     }
     
     public Float64Vector3D SurfacePointToVector3D(Float64Vector3D egaProbeDirection, double distanceFromPosition, double distanceFromSurface)
     {
-        if (this is RGaConformalRound round)
-            return round.RoundSurfacePointToVector3D(egaProbeDirection, distanceFromSurface);
-        
-        if (IsPoint)
+        if (IsDirection0D())
             return PositionToVector3D() + 
                    egaProbeDirection.SetLength(distanceFromPosition);
 
-        if (IsLine)
+        if (IsDirection1D())
             return PositionToVector3D() + 
                    egaProbeDirection.ProjectOnVector(DirectionToVector3D()).SetLength(distanceFromPosition) +
-                   NormalDirectionToBivector3D().Dual3D().SetLength(distanceFromSurface);
+                   DirectionToVector3D().GetNormal(distanceFromSurface);
+
+        if (this is RGaConformalRound round)
+            return round.RoundSurfacePointToVector3D(
+                egaProbeDirection, 
+                distanceFromSurface
+            );
         
         if (IsPlane)
             return PositionToVector3D() + 
@@ -996,6 +1006,112 @@ public abstract class RGaConformalElement :
             ConformalSpace,
             element2.ParameterRange,
             t => ReflectOn(element2.GetElement(t))
+        );
+    }
+    
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public RGaConformalElement MapUsing(IRGaFloat64Outermorphism outerMorphism)
+    {
+        return EncodeOpnsBlade().MapUsing(outerMorphism).DecodeOpnsElement();
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public RGaConformalElement MapUsing(RGaConformalVersor versor)
+    {
+        return EncodeOpnsBlade().MapUsing(versor).DecodeOpnsElement();
+    }
+    
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public RGaConformalElement ScaleBy(double scalingFactor)
+    {
+        return EncodeOpnsBlade().ScaleBy(scalingFactor).DecodeOpnsElement();
+    }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public RGaConformalParametricElement ScaleBy(IParametricScalar scalingFactor)
+    {
+        return RGaConformalParametricElement.Create(
+            ConformalSpace,
+            scalingFactor.ParameterRange,
+            t => ScaleBy(scalingFactor.GetValue(t))
+        );
+    }
+
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public RGaConformalElement TranslateElementBy(Float64Vector2D egaVector)
+    {
+        return this switch
+        {
+            RGaConformalDirection element => element,
+            RGaConformalTangent element => element.TranslateBy(egaVector),
+            RGaConformalFlat element => element.TranslateBy(egaVector),
+            RGaConformalRound element => element.TranslateBy(egaVector),
+            _ => EncodeOpnsBlade().TranslateBy(egaVector).DecodeOpnsElement()
+        };
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public RGaConformalElement TranslateElementBy(Float64Vector3D egaVector)
+    {
+        return this switch
+        {
+            RGaConformalDirection element => element,
+            RGaConformalTangent element => element.TranslateBy(egaVector),
+            RGaConformalFlat element => element.TranslateBy(egaVector),
+            RGaConformalRound element => element.TranslateBy(egaVector),
+            _ => EncodeOpnsBlade().TranslateBy(egaVector).DecodeOpnsElement()
+        };
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public RGaConformalElement TranslateElementBy(Float64Vector egaVector)
+    {
+        return this switch
+        {
+            RGaConformalDirection element => element,
+            RGaConformalTangent element => element.TranslateBy(egaVector),
+            RGaConformalFlat element => element.TranslateBy(egaVector),
+            RGaConformalRound element => element.TranslateBy(egaVector),
+            _ => EncodeOpnsBlade().TranslateBy(egaVector).DecodeOpnsElement()
+        };
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public RGaConformalElement TranslateElementBy(RGaFloat64Vector egaVector)
+    {
+        return this switch
+        {
+            RGaConformalDirection element => element,
+            RGaConformalTangent element => element.TranslateBy(egaVector),
+            RGaConformalFlat element => element.TranslateBy(egaVector),
+            RGaConformalRound element => element.TranslateBy(egaVector),
+            _ => EncodeOpnsBlade().TranslateBy(egaVector).DecodeOpnsElement()
+        };
+    }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public RGaConformalElement TranslateElementBy(RGaConformalBlade egaVector)
+    {
+        return this switch
+        {
+            RGaConformalDirection element => element,
+            RGaConformalTangent element => element.TranslateBy(egaVector),
+            RGaConformalFlat element => element.TranslateBy(egaVector),
+            RGaConformalRound element => element.TranslateBy(egaVector),
+            _ => EncodeOpnsBlade().TranslateBy(egaVector).DecodeOpnsElement()
+        };
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public RGaConformalParametricElement TranslateElementBy(IParametricCurve3D egaVector)
+    {
+        return RGaConformalParametricElement.Create(
+            ConformalSpace,
+            egaVector.ParameterRange,
+            t => TranslateElementBy(egaVector.GetPoint(t))
         );
     }
 }

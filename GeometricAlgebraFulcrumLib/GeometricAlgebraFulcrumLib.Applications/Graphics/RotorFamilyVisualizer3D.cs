@@ -781,7 +781,7 @@ namespace GeometricAlgebraFulcrumLib.Applications.Graphics
                 var u1 = u.RejectOnVector(uvNormal1);
                 var v1 = v.RejectOnVector(uvNormal1);
 
-                MainSceneComposer.AddCircle(
+                MainSceneComposer.AddCircleCurve(
                     $"phiRotorTrace{i}",
                     u - u1,
                     u1.VectorUnitCross(v1),

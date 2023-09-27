@@ -273,6 +273,14 @@ namespace GeometricAlgebraFulcrumLib.Lite.ScalarAlgebra
 
             return x == -1d;
         }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static bool IsNegativeOne(this double x)
+        {
+            Debug.Assert(!double.IsNaN(x));
+
+            return x == -1d;
+        }
 
         /// <summary>
         /// True if the given value is near zero relative to the default accuracy

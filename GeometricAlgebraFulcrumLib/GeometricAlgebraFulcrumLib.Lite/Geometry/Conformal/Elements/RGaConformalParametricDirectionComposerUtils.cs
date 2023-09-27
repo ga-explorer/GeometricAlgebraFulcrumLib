@@ -65,7 +65,7 @@ public static class RGaConformalParametricDirectionComposerUtils
             conformalSpace,
             normalCurve.ParameterRange,
             t => conformalSpace.DefineDirectionPlane(
-                normalCurve.GetPoint(t).UnDual3D()
+                normalCurve.GetPoint(t).NormalToUnitDirection3D()
             )
         );
     }
@@ -77,7 +77,7 @@ public static class RGaConformalParametricDirectionComposerUtils
             conformalSpace,
             parameterRange,
             t => conformalSpace.DefineDirectionPlane(
-                normalCurve.GetPoint(t).UnDual3D()
+                normalCurve.GetPoint(t).NormalToUnitDirection3D()
             )
         );
     }

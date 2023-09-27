@@ -299,7 +299,7 @@ public static class RGaConformalEncodeIpnsFlatUtils
     public static RGaConformalBlade EncodeIpnsFlatPlane(this RGaConformalSpace conformalSpace, Float64Vector3D egaPoint, Float64Vector3D egaNormalVector)
     {
         var egaDirectionBivector = 
-            egaNormalVector.UnDual3D();
+            egaNormalVector.NormalToUnitDirection3D();
 
         return conformalSpace.EncodeIpnsFlatPlane(
             egaPoint,

@@ -346,20 +346,103 @@ namespace GeometricAlgebraFulcrumLib.Lite.LinearAlgebra.Vectors.Space2D
                 : this / normSquared.Value;
         }
         
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Float64Vector2D Normal2D()
-        {
-            return Float64Vector2D.Create(-Scalar2, Scalar1);
-        }
         
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Float64Vector2D Normal2D(Float64Scalar scalingFactor)
+        public Float64Vector2D DirectionToUnitNormal2D(Float64Vector2D? zeroNormal = null)
         {
+            var norm = Norm();
+
+            if (norm.IsZero())
+                return zeroNormal 
+                       ?? throw new DivideByZeroException();
+
+            var s = 1d / norm.Value;
+
             return Float64Vector2D.Create(
-                -Scalar2 * scalingFactor,
-                Scalar1 * scalingFactor
+                Scalar2 * -s, 
+                Scalar1 * s
             );
         }
+
+        public Float64Vector2D DirectionToNormal2D(Float64Vector2D? zeroNormal = null)
+        {
+            var normSquared = NormSquared();
+
+            if (normSquared.IsZero())
+                return zeroNormal 
+                       ?? throw new DivideByZeroException();
+
+            var s = 1d / normSquared.Value;
+
+            return Float64Vector2D.Create(
+                Scalar2 * -s, 
+                Scalar1 * s
+            );
+        }
+        
+        public Float64Vector2D DirectionToNormal2D(double scalingFactor, Float64Vector2D? zeroNormal = null)
+        {
+            var normSquared = NormSquared();
+
+            if (normSquared.IsZero())
+                return zeroNormal 
+                       ?? throw new DivideByZeroException();
+
+            var s = scalingFactor / normSquared.Value;
+
+            return Float64Vector2D.Create(
+                Scalar2 * -s, 
+                Scalar1 * s
+            );
+        }
+        
+        public Float64Vector2D NormalToUnitDirection2D(Float64Vector2D? zeroNormal = null)
+        {
+            var norm = NormSquared();
+
+            if (norm.IsZero())
+                return zeroNormal 
+                       ?? throw new DivideByZeroException();
+
+            var s = 1d / norm.Value;
+
+            return Float64Vector2D.Create(
+                Scalar2 * s, 
+                Scalar1 * -s
+            );
+        }
+
+        public Float64Vector2D NormalToDirection2D(Float64Vector2D? zeroNormal = null)
+        {
+            var normSquared = NormSquared();
+
+            if (normSquared.IsZero())
+                return zeroNormal 
+                       ?? throw new DivideByZeroException();
+
+            var s = 1d / normSquared.Value;
+
+            return Float64Vector2D.Create(
+                Scalar2 * s, 
+                Scalar1 * -s
+            );
+        }
+        
+        public Float64Vector2D NormalToDirection2D(double scalingFactor, Float64Vector2D? zeroNormal = null)
+        {
+            var normSquared = NormSquared();
+
+            if (normSquared.IsZero())
+                return zeroNormal 
+                       ?? throw new DivideByZeroException();
+
+            var s = scalingFactor / normSquared.Value;
+
+            return Float64Vector2D.Create(
+                Scalar2 * s, 
+                Scalar1 * -s
+            );
+        }
+
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Float64Vector2D Dual2D()
@@ -368,7 +451,7 @@ namespace GeometricAlgebraFulcrumLib.Lite.LinearAlgebra.Vectors.Space2D
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Float64Vector2D Dual2D(Float64Scalar scalingFactor)
+        public Float64Vector2D Dual2D(double scalingFactor)
         {
             return Float64Vector2D.Create(
                 Scalar2 * scalingFactor,
@@ -383,13 +466,14 @@ namespace GeometricAlgebraFulcrumLib.Lite.LinearAlgebra.Vectors.Space2D
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Float64Vector2D UnDual2D(Float64Scalar scalingFactor)
+        public Float64Vector2D UnDual2D(double scalingFactor)
         {
             return Float64Vector2D.Create(
                 -Scalar2 * scalingFactor,
                 Scalar1 * scalingFactor
             );
         }
+
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public IEnumerator<Float64Scalar> GetEnumerator()

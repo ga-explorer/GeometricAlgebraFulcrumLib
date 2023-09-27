@@ -327,7 +327,7 @@ namespace GeometricAlgebraFulcrumLib.Lite.Geometry.Parametric.Space2D.Curves
         {
             return ComputedParametricCurve2D.Create(
                 curve.ParameterRange,
-                t => curve.GetPoint(t).Normal2D()
+                t => curve.GetPoint(t).DirectionToNormal2D()
             );
         }
     }

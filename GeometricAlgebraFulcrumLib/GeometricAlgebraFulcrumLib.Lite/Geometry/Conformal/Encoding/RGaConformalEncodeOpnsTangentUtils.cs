@@ -298,7 +298,7 @@ public static class RGaConformalEncodeOpnsTangentUtils
     public static RGaConformalBlade EncodeOpnsTangentPlane(this RGaConformalSpace conformalSpace, Float64Vector3D egaPoint, Float64Vector3D egaNormalVector)
     {
         var egaDirectionBivector = 
-            egaNormalVector.UnDual3D();
+            egaNormalVector.NormalToUnitDirection3D();
 
         return conformalSpace.EncodeOpnsTangentPlane(
             egaPoint,

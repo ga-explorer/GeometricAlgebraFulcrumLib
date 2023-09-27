@@ -122,7 +122,7 @@ public static class RGaConformalParametricTangentComposerUtils
             positionNormalCurve.ParameterRange,
             t => conformalSpace.DefineTangentPlane(
                 positionNormalCurve.GetPoint(t),
-                positionNormalCurve.GetDerivative1Point(t).UnDual3D()
+                positionNormalCurve.GetDerivative1Point(t).NormalToUnitDirection3D()
             )
         );
     }
@@ -135,7 +135,7 @@ public static class RGaConformalParametricTangentComposerUtils
             parameterRange,
             t => conformalSpace.DefineTangentPlane(
                 positionNormalCurve.GetPoint(t),
-                positionNormalCurve.GetDerivative1Point(t).UnDual3D()
+                positionNormalCurve.GetDerivative1Point(t).NormalToUnitDirection3D()
             )
         );
     }
@@ -148,7 +148,7 @@ public static class RGaConformalParametricTangentComposerUtils
             centerCurve.ParameterRange,
             t => conformalSpace.DefineTangentPlane(
                 centerCurve.GetPoint(t),
-                normalCurve.GetPoint(t).UnDual3D()
+                normalCurve.GetPoint(t).NormalToUnitDirection3D()
             )
         );
     }
@@ -161,7 +161,7 @@ public static class RGaConformalParametricTangentComposerUtils
             parameterRange,
             t => conformalSpace.DefineTangentPlane(
                 centerCurve.GetPoint(t),
-                normalCurve.GetPoint(t).UnDual3D()
+                normalCurve.GetPoint(t).NormalToUnitDirection3D()
             )
         );
     }

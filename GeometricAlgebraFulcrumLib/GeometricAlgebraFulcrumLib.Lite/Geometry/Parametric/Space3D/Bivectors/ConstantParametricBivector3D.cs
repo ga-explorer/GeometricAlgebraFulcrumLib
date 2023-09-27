@@ -12,35 +12,20 @@ public class ConstantParametricBivector3D :
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static ConstantParametricBivector3D Create(Float64Bivector3D point)
     {
-        return new ConstantParametricBivector3D(
-            point, 
-            Float64Bivector3D.Zero
-        );
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static ConstantParametricBivector3D Create(Float64Bivector3D point, Float64Bivector3D tangent)
-    {
-        return new ConstantParametricBivector3D(
-            point, 
-            tangent
-        );
+        return new ConstantParametricBivector3D(point);
     }
 
 
-    public Float64Bivector3D Point { get; }
+    public Float64Bivector3D Bivector { get; }
     
-    public Float64Bivector3D Tangent { get; }
-
     public Float64ScalarRange ParameterRange 
         => Float64ScalarRange.Infinite;
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    private ConstantParametricBivector3D(Float64Bivector3D point, Float64Bivector3D tangent)
+    private ConstantParametricBivector3D(Float64Bivector3D point)
     {
-        Point = point;
-        Tangent = tangent;
+        Bivector = point;
 
         Debug.Assert(IsValid());
     }
@@ -49,28 +34,20 @@ public class ConstantParametricBivector3D :
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public bool IsValid()
     {
-        return Point.IsValid() && 
-               Tangent.IsValid();
+        return Bivector.IsValid();
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public Float64Bivector3D GetBivector(double parameterValue)
     {
-        return Point;
+        return Bivector;
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public Float64Bivector3D GetDerivative1Bivector(double parameterValue)
-    {
-        return Tangent;
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public IParametricCurve3D GetDualVectorCurve()
+    public IParametricCurve3D GetNormalVectorCurve(Float64Vector3D? zeroNormal = null)
     {
         return ConstantParametricCurve3D.Create(
-            Point.Dual3D(),
-            Tangent.Dual3D()
+            Bivector.NormalToDirection3D(zeroNormal)
         );
     }
 }

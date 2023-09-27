@@ -149,7 +149,7 @@ public static class RGaConformalParametricFlatComposerUtils
             positionCurve.ParameterRange,
             t => conformalSpace.DefineFlatPlane(
                 positionCurve.GetPoint(t),
-                positionCurve.GetDerivative1Point(t).UnDual3D()
+                positionCurve.GetDerivative1Point(t).NormalToUnitDirection3D()
             )
         );
     }
@@ -162,7 +162,7 @@ public static class RGaConformalParametricFlatComposerUtils
             parameterRange,
             t => conformalSpace.DefineFlatPlane(
                 positionCurve.GetPoint(t),
-                positionCurve.GetDerivative1Point(t).UnDual3D()
+                positionCurve.GetDerivative1Point(t).NormalToUnitDirection3D()
             )
         );
     }
@@ -175,7 +175,7 @@ public static class RGaConformalParametricFlatComposerUtils
             positionCurve.ParameterRange,
             t => conformalSpace.DefineFlatPlane(
                 positionCurve.GetPoint(t),
-                normalCurve.GetPoint(t).UnDual3D()
+                normalCurve.GetPoint(t).NormalToUnitDirection3D()
             )
         );
     }
@@ -188,7 +188,7 @@ public static class RGaConformalParametricFlatComposerUtils
             parameterRange,
             t => conformalSpace.DefineFlatPlane(
                 positionCurve.GetPoint(t),
-                normalCurve.GetPoint(t).UnDual3D()
+                normalCurve.GetPoint(t).NormalToUnitDirection3D()
             )
         );
     }

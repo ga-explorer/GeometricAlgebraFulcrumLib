@@ -125,7 +125,7 @@ public static class RGaConformalEncodeIpnsRoundUtils
         return conformalSpace.EncodeIpnsRoundCircle(
             radiusSquared, 
             egaCenter.ToRGaFloat64Vector(),
-            egaNormalVector.UnDual3D().ToRGaFloat64Bivector()
+            egaNormalVector.NormalToUnitDirection3D().ToRGaFloat64Bivector()
         );
     }
     
@@ -135,7 +135,7 @@ public static class RGaConformalEncodeIpnsRoundUtils
         return conformalSpace.EncodeIpnsRealRoundCircle(
             radius, 
             egaCenter.ToRGaFloat64Vector(),
-            egaNormalVector.UnDual3D().ToRGaFloat64Bivector()
+            egaNormalVector.NormalToUnitDirection3D().ToRGaFloat64Bivector()
         );
     }
     
@@ -145,7 +145,7 @@ public static class RGaConformalEncodeIpnsRoundUtils
         return conformalSpace.EncodeIpnsImaginaryRoundCircle(
             radius, 
             egaCenter.ToRGaFloat64Vector(),
-            egaNormalVector.UnDual3D().ToRGaFloat64Bivector()
+            egaNormalVector.NormalToUnitDirection3D().ToRGaFloat64Bivector()
         );
     }
 

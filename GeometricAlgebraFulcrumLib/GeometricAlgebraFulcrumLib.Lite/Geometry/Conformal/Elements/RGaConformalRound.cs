@@ -324,6 +324,69 @@ public class RGaConformalRound :
         return IsDirectionNearParallelTo(v, epsilon) &&
                (v.Norm() - RealRadius).IsNearZero(epsilon);
     }
+    
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public RGaConformalRound TranslateBy(Float64Vector2D egaVector)
+    {
+        return new RGaConformalRound(
+            ConformalSpace,
+            Weight,
+            RadiusSquared,
+            Position + egaVector.EncodeEGaVectorBlade(ConformalSpace),
+            Direction
+        );
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public RGaConformalRound TranslateBy(Float64Vector3D egaVector)
+    {
+        return new RGaConformalRound(
+            ConformalSpace,
+            Weight,
+            RadiusSquared,
+            Position + egaVector.EncodeEGaVectorBlade(ConformalSpace),
+            Direction
+        );
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public RGaConformalRound TranslateBy(Float64Vector egaVector)
+    {
+        return new RGaConformalRound(
+            ConformalSpace,
+            Weight,
+            RadiusSquared,
+            Position + egaVector.EncodeEGaVectorBlade(ConformalSpace),
+            Direction
+        );
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public RGaConformalRound TranslateBy(RGaFloat64Vector egaVector)
+    {
+        return new RGaConformalRound(
+            ConformalSpace,
+            Weight,
+            RadiusSquared,
+            Position + egaVector.EncodeEGaVectorBlade(ConformalSpace),
+            Direction
+        );
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public RGaConformalRound TranslateBy(RGaConformalBlade egaVector)
+    {
+        Debug.Assert(egaVector.IsEGaVector());
+
+        return new RGaConformalRound(
+            ConformalSpace,
+            Weight,
+            RadiusSquared,
+            Position + egaVector,
+            Direction
+        );
+    }
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]

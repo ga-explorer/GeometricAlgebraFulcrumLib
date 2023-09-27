@@ -259,6 +259,64 @@ public class RGaConformalFlat :
         );
     }
 
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public RGaConformalFlat TranslateBy(Float64Vector2D egaVector)
+    {
+        return new RGaConformalFlat(
+            ConformalSpace,
+            Weight,
+            Position + egaVector.EncodeEGaVectorBlade(ConformalSpace),
+            Direction
+        );
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public RGaConformalFlat TranslateBy(Float64Vector3D egaVector)
+    {
+        return new RGaConformalFlat(
+            ConformalSpace,
+            Weight,
+            Position + egaVector.EncodeEGaVectorBlade(ConformalSpace),
+            Direction
+        );
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public RGaConformalFlat TranslateBy(Float64Vector egaVector)
+    {
+        return new RGaConformalFlat(
+            ConformalSpace,
+            Weight,
+            Position + egaVector.EncodeEGaVectorBlade(ConformalSpace),
+            Direction
+        );
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public RGaConformalFlat TranslateBy(RGaFloat64Vector egaVector)
+    {
+        return new RGaConformalFlat(
+            ConformalSpace,
+            Weight,
+            Position + egaVector.EncodeEGaVectorBlade(ConformalSpace),
+            Direction
+        );
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public RGaConformalFlat TranslateBy(RGaConformalBlade egaVector)
+    {
+        Debug.Assert(egaVector.IsEGaVector());
+
+        return new RGaConformalFlat(
+            ConformalSpace,
+            Weight,
+            Position + egaVector,
+            Direction
+        );
+    }
+
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public override string ToString()

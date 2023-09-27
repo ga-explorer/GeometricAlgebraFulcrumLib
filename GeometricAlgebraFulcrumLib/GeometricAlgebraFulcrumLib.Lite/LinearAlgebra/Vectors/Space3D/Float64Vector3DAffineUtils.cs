@@ -292,29 +292,12 @@ public static class Float64Vector3DAffineUtils
             .PositiveX
             .CreateAxisToVectorRotationQuaternion(vector.ToUnitVector())
             .RotateVector(LinUnitBasisVector3D.PositiveY);
+    }
 
-        //var x = vector.X;
-        //var y = vector.Y;
-        //var z = vector.Z;
-
-        //if (x == 0)
-        //    return new Float64Tuple3D(0, -z, y);
-
-        //if (y == 0)
-        //    return new Float64Tuple3D(-z, 0, x);
-
-        //if (z == 0)
-        //    return new Float64Tuple3D(-y, x, 0);
-
-        //var minComponentIndex =
-        //    vector.GetMinAbsComponentIndex();
-
-        //return minComponentIndex switch
-        //{
-        //    0 => new Float64Tuple3D(-(y + z), x, x),
-        //    1 => new Float64Tuple3D(y, -(x + z), y),
-        //    _ => new Float64Tuple3D(z, z, -(x + y))
-        //};
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static Float64Vector3D GetNormal(this IFloat64Vector3D vector, double length)
+    {
+        return vector.GetNormal().SetLength(length);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]

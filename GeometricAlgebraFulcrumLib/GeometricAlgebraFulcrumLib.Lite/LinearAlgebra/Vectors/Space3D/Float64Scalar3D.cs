@@ -239,6 +239,66 @@ public sealed record Float64Scalar3D :
             : new Float64Scalar3D(Scalar.Inverse());
     }
     
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public Float64Trivector3D DirectionToUnitNormal3D()
+    {
+        if (Scalar.IsZero())
+            return Float64Trivector3D.E123;
+
+        return Scalar.IsPositive()
+            ? Float64Trivector3D.E123
+            : Float64Trivector3D.NegativeE123;
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public Float64Trivector3D DirectionToNormal3D()
+    {
+        if (Scalar.IsZero())
+            return Float64Trivector3D.E123;
+
+        return Float64Trivector3D.Create(1d / Scalar.Value);
+    }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public Float64Trivector3D DirectionToNormal3D(double scalingFactor)
+    {
+        if (Scalar.IsZero())
+            return Float64Trivector3D.E123;
+
+        return Float64Trivector3D.Create(scalingFactor / Scalar.Value);
+    }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public Float64Trivector3D NormalToUnitDirection3D()
+    {
+        if (Scalar.IsZero())
+            return Float64Trivector3D.E123;
+
+        return Scalar.IsPositive()
+            ? Float64Trivector3D.E123
+            : Float64Trivector3D.NegativeE123;
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public Float64Trivector3D NormalToDirection3D()
+    {
+        if (Scalar.IsZero())
+            return Float64Trivector3D.E123;
+
+        return Float64Trivector3D.Create(1d / Scalar.Value);
+    }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public Float64Trivector3D NormalToDirection3D(double scalingFactor)
+    {
+        if (Scalar.IsZero())
+            return Float64Trivector3D.E123;
+
+        return Float64Trivector3D.Create(scalingFactor / Scalar.Value);
+    }
+
+
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public Float64Trivector3D Dual()
     {
@@ -251,6 +311,7 @@ public sealed record Float64Scalar3D :
         return Float64Trivector3D.Create(Scalar);
     }
     
+
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public IEnumerator<Float64Scalar> GetEnumerator()
     {

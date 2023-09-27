@@ -214,8 +214,8 @@ namespace GeometricAlgebraFulcrumLib.Applications.PowerSystems
                 var e2Ds = kappa2 * e3 - kappa1 * e1;
                 var e3Ds = -kappa2 * e2;
 
-                var kVector = omega.UnDual3D().ToUnitVector();
-                var kVectorMean = omegaMean.UnDual3D().ToUnitVector();
+                var kVector = omega.NormalToUnitDirection3D();
+                var kVectorMean = omegaMean.NormalToUnitDirection3D();
 
                 ImageCache.AddLaTeXAlignedEquations(
                     $"signalText-{i:D6}",
@@ -1039,7 +1039,7 @@ namespace GeometricAlgebraFulcrumLib.Applications.PowerSystems
                 Color.Yellow
             );
 
-            MainSceneComposer.AddCircle(
+            MainSceneComposer.AddCircleCurve(
                 "curveFrameCircleCurve",
                 center,
                 normal,

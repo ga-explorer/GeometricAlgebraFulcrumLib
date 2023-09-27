@@ -241,7 +241,7 @@ public static class RGaConformalRoundComposerUtils
             weight,
             radiusSquared,
             conformalSpace.EncodeEGaVector(center),
-            conformalSpace.EncodeEGaBivector(normalDirection.UnDual3D())
+            conformalSpace.EncodeEGaBivector(normalDirection.NormalToUnitDirection3D())
         );
     }
 
@@ -278,7 +278,7 @@ public static class RGaConformalRoundComposerUtils
             1,
             radiusSquared,
             conformalSpace.EncodeEGaVector(center),
-            conformalSpace.EncodeEGaBivector(normalDirection.UnDual3D())
+            conformalSpace.EncodeEGaBivector(normalDirection.NormalToUnitDirection3D())
         );
     }
 

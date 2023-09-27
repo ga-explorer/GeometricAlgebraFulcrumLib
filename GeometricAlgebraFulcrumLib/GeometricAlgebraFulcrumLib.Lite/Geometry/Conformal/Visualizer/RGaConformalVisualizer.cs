@@ -753,7 +753,7 @@ public class RGaConformalVisualizer :
         }
 
         var normal = 
-            direction.ToXyBivector3D().Dual3D();
+            direction.ToXyBivector3D().DirectionToUnitNormal3D(Float64Vector3D.UnitSymmetric);
 
         if (DirectionStyle.DrawDirection)
         {
@@ -812,7 +812,7 @@ public class RGaConformalVisualizer :
             AnimationSpecs.CreateAnimatedVector3D(
                 direction
                     .ToParametricCurve3D(b => 
-                        b.ToXyBivector3D().Dual3D()
+                        b.ToXyBivector3D().DirectionToUnitNormal3D(Float64Vector3D.UnitSymmetric)
                     )
             );
 
@@ -861,7 +861,7 @@ public class RGaConformalVisualizer :
             AnimationSpecs.CreateAnimatedVector3D(
                 element
                     .DirectionToParametricBivector2D()
-                    .XyDual3D()
+                    .XyDirectionToNormal3D(Float64Vector3D.UnitSymmetric)
             );
         
         if (DirectionStyle.DrawPosition)
@@ -915,7 +915,8 @@ public class RGaConformalVisualizer :
 
     public RGaConformalVisualizer DrawDirectionPlane3D(Color color, Float64Vector3D position, Float64Bivector3D direction)
     {
-        var normal = direction.Dual3D();
+        var normal = 
+            direction.DirectionToUnitNormal3D(Float64Vector3D.UnitSymmetric);
         
         if (DirectionStyle.DrawPosition)
         {
@@ -972,7 +973,7 @@ public class RGaConformalVisualizer :
         
         var animatedNormal = 
             AnimationSpecs.CreateAnimatedVector3D(
-                direction.GetDualVectorCurve()
+                direction.GetNormalVectorCurve()
             );
         
         if (DirectionStyle.DrawPosition)
@@ -1133,9 +1134,6 @@ public class RGaConformalVisualizer :
     
     public RGaConformalVisualizer DrawTangentPoint2D(Color color, RGaConformalParametricElement element)
     {
-        var invalidFrameIndices = 
-            GetTangentPointInvalidFrameIndices(element);
-        
         var animatedPosition =
             AnimationSpecs.CreateXyAnimatedVector3D(
                 element.PositionToParametricCurve2D()
@@ -1181,9 +1179,6 @@ public class RGaConformalVisualizer :
     
     public RGaConformalVisualizer DrawTangentPoint3D(Color color, RGaConformalParametricElement element)
     {
-        var invalidFrameIndices = 
-            GetTangentPointInvalidFrameIndices(element);
-        
         var animatedPosition =
             AnimationSpecs.CreateAnimatedVector3D(
                 element.PositionToParametricCurve3D()
@@ -1314,9 +1309,6 @@ public class RGaConformalVisualizer :
     
     public RGaConformalVisualizer DrawTangentLine2D(Color color, RGaConformalParametricElement element)
     {
-        var invalidFrameIndices = 
-            GetTangentLineInvalidFrameIndices(element);
-        
         var animatedPosition =
             AnimationSpecs.CreateXyAnimatedVector3D(
                 element.PositionToParametricCurve2D()
@@ -1569,7 +1561,7 @@ public class RGaConformalVisualizer :
         }
 
         var normal = 
-            direction.ToXyBivector3D().Dual3D();
+            direction.ToXyBivector3D().DirectionToUnitNormal3D(Float64Vector3D.UnitSymmetric);
 
         if (TangentStyle.DrawDirection)
         {
@@ -1614,7 +1606,7 @@ public class RGaConformalVisualizer :
             AnimationSpecs.CreateAnimatedVector3D(
                 direction
                     .ToParametricCurve3D(b => 
-                        b.ToXyBivector3D().Dual3D()
+                        b.ToXyBivector3D().DirectionToUnitNormal3D(Float64Vector3D.UnitSymmetric)
                     )
             );
 
@@ -1677,7 +1669,7 @@ public class RGaConformalVisualizer :
             AnimationSpecs.CreateAnimatedVector3D(
                 element
                     .DirectionToParametricBivector2D()
-                    .XyDual3D()
+                    .XyDirectionToNormal3D(Float64Vector3D.UnitSymmetric)
             );
 
         if (TangentStyle.DrawPosition)
@@ -1731,7 +1723,8 @@ public class RGaConformalVisualizer :
 
     public RGaConformalVisualizer DrawTangentPlane3D(Color color, Float64Vector3D position, Float64Bivector3D direction)
     {
-        var normal = direction.Dual3D();
+        var normal = 
+            direction.DirectionToUnitNormal3D(Float64Vector3D.UnitSymmetric);
 
         if (TangentStyle.DrawPosition)
         {
@@ -1802,7 +1795,7 @@ public class RGaConformalVisualizer :
         
         var animatedNormal = 
             AnimationSpecs.CreateAnimatedVector3D(
-                direction.GetDualVectorCurve()
+                direction.GetNormalVectorCurve()
             );
 
         if (TangentStyle.DrawDirection)
@@ -2481,7 +2474,7 @@ public class RGaConformalVisualizer :
     public RGaConformalVisualizer DrawFlatPlane2D(Color color, Float64Vector2D position, Float64Bivector2D direction)
     {
         var normal = 
-            direction.ToXyBivector3D().Dual3D();
+            direction.ToXyBivector3D().DirectionToUnitNormal3D(Float64Vector3D.UnitSymmetric);
         
         if (FlatStyle.DrawPosition)
         {
@@ -2540,7 +2533,7 @@ public class RGaConformalVisualizer :
             AnimationSpecs.CreateAnimatedVector3D(
                 direction
                     .ToParametricCurve3D(b => 
-                        b.ToXyBivector3D().Dual3D()
+                        b.ToXyBivector3D().DirectionToUnitNormal3D(Float64Vector3D.UnitSymmetric)
                     )
             );
         
@@ -2603,7 +2596,7 @@ public class RGaConformalVisualizer :
             AnimationSpecs.CreateAnimatedVector3D(
                 element
                     .DirectionToParametricBivector2D()
-                    .XyDual3D()
+                    .XyDirectionToNormal3D(Float64Vector3D.UnitSymmetric)
             );
         
         if (FlatStyle.DrawPosition)
@@ -2657,7 +2650,8 @@ public class RGaConformalVisualizer :
 
     public RGaConformalVisualizer DrawFlatPlane3D(Color color, Float64Vector3D position, Float64Bivector3D direction)
     {
-        var normal = direction.Dual3D();
+        var normal = 
+            direction.DirectionToUnitNormal3D(Float64Vector3D.UnitSymmetric);
 
         MainSceneComposer.AddCircleSurface(
             GrVisualCircleSurface3D.CreateStatic(
@@ -2725,7 +2719,7 @@ public class RGaConformalVisualizer :
         
         var animatedNormal = 
             AnimationSpecs.CreateAnimatedVector3D(
-                direction.GetDualVectorCurve()
+                direction.GetNormalVectorCurve()
             );
         
         MainSceneComposer.AddCircleSurface(
@@ -3635,9 +3629,9 @@ public class RGaConformalVisualizer :
     public RGaConformalVisualizer DrawRoundCircle2D(Color color, Float64Vector2D center, Float64Bivector2D direction, double radius)
     {
         var normal = 
-            Float64Bivector3D.Create(direction.Xy, 0 , 0).Dual3D();
+            direction.ToXyBivector3D().DirectionToUnitNormal3D(Float64Vector3D.UnitSymmetric);
 
-        MainSceneComposer.AddCircle(
+        MainSceneComposer.AddCircleCurve(
             GrVisualCircleCurve3D.CreateStatic(
                 GetNewSceneObjectName("circle"),
                 RoundStyle.GetCircleVisualStyle(color),
@@ -3731,14 +3725,14 @@ public class RGaConformalVisualizer :
             AnimationSpecs.CreateAnimatedVector3D(
                 direction
                 .ToParametricCurve3D(b => 
-                    Float64Bivector3D.Create(b.Xy, 0, 0).Dual3D()
+                    b.ToXyBivector3D().DirectionToUnitNormal3D(Float64Vector3D.UnitSymmetric)
                 )
             );
         
         var animatedRadius = 
             AnimationSpecs.CreateAnimatedScalar(radius);
 
-        MainSceneComposer.AddCircle(
+        MainSceneComposer.AddCircleCurve(
             GrVisualCircleCurve3D.CreateAnimated(
                 GetNewSceneObjectName("circle"),
                 RoundStyle.GetCircleVisualStyle(color),
@@ -3834,7 +3828,7 @@ public class RGaConformalVisualizer :
             AnimationSpecs.CreateAnimatedVector3D(
                 element
                     .DirectionToParametricBivector2D()
-                    .XyDual3D()
+                    .XyDirectionToNormal3D(Float64Vector3D.UnitSymmetric)
             );
         
         var animatedRadius = 
@@ -3842,7 +3836,7 @@ public class RGaConformalVisualizer :
                 element.RealRadiusToParametricScalar()
             );
 
-        MainSceneComposer.AddCircle(
+        MainSceneComposer.AddCircleCurve(
             GrVisualCircleCurve3D.CreateAnimated(
                 GetNewSceneObjectName("circle"),
                 RoundStyle.GetCircleVisualStyle(color),
@@ -3930,9 +3924,10 @@ public class RGaConformalVisualizer :
 
     public RGaConformalVisualizer DrawRoundCircle3D(Color color, Float64Vector3D center, Float64Bivector3D direction, double radius)
     {
-        var normal = direction.Dual3D();
+        var normal = 
+            direction.DirectionToUnitNormal3D(Float64Vector3D.UnitSymmetric);
 
-        MainSceneComposer.AddCircle(
+        MainSceneComposer.AddCircleCurve(
             GrVisualCircleCurve3D.CreateStatic(
                 GetNewSceneObjectName("circle"),
                 RoundStyle.GetCircleVisualStyle(color),
@@ -4023,12 +4018,12 @@ public class RGaConformalVisualizer :
             AnimationSpecs.CreateAnimatedVector3D(center);
 
         var animatedNormal = 
-            AnimationSpecs.CreateAnimatedVector3D(direction.GetDualVectorCurve());
+            AnimationSpecs.CreateAnimatedVector3D(direction.GetNormalVectorCurve());
         
         var animatedRadius = 
             AnimationSpecs.CreateAnimatedScalar(radius);
 
-        MainSceneComposer.AddCircle(
+        MainSceneComposer.AddCircleCurve(
             GrVisualCircleCurve3D.CreateAnimated(
                 GetNewSceneObjectName("circle"),
                 RoundStyle.GetCircleVisualStyle(color),
@@ -4130,7 +4125,7 @@ public class RGaConformalVisualizer :
                 element.RealRadiusToParametricScalar()
             );
 
-        MainSceneComposer.AddCircle(
+        MainSceneComposer.AddCircleCurve(
             GrVisualCircleCurve3D.CreateAnimated(
                 GetNewSceneObjectName("circle"),
                 RoundStyle.GetCircleVisualStyle(color),

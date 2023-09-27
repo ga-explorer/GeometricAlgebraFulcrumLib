@@ -14,8 +14,6 @@ namespace GeometricAlgebraFulcrumLib.Lite.Geometry.Parametric.Space3D.Bivectors
         
         Float64Bivector3D GetBivector(double parameterValue);
 
-        Float64Bivector3D GetDerivative1Bivector(double parameterValue);
-
-        IParametricCurve3D GetDualVectorCurve();
+        IParametricCurve3D GetNormalVectorCurve(Float64Vector3D? zeroNormal = null);
     }
 }

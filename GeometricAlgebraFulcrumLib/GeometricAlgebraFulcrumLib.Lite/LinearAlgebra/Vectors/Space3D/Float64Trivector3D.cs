@@ -209,6 +209,66 @@ namespace GeometricAlgebraFulcrumLib.Lite.LinearAlgebra.Vectors.Space3D
             return this;
         }
         
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public Float64Scalar3D DirectionToUnitNormal3D()
+        {
+            if (Scalar12.IsZero())
+                return Float64Scalar3D.E0;
+
+            return Scalar12.IsPositive() 
+                ? Float64Scalar3D.E0 
+                : Float64Scalar3D.NegativeE0;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public Float64Scalar3D DirectionToNormal3D()
+        {
+            if (Scalar12.IsZero())
+                return Float64Scalar3D.E0;
+
+            return Float64Scalar3D.Create(1d / Scalar12.Value);
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public Float64Scalar3D DirectionToNormal3D(double scalingFactor)
+        {
+            if (Scalar12.IsZero())
+                return Float64Scalar3D.E0;
+
+            return Float64Scalar3D.Create(scalingFactor / Scalar12.Value);
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public Float64Scalar3D NormalToUnitDirection3D()
+        {
+            if (Scalar12.IsZero())
+                return Float64Scalar3D.E0;
+
+            return Scalar12.IsPositive() 
+                ? Float64Scalar3D.E0 
+                : Float64Scalar3D.NegativeE0;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public Float64Scalar3D NormalToDirection3D()
+        {
+            if (Scalar12.IsZero())
+                return Float64Scalar3D.E0;
+
+            return Float64Scalar3D.Create(1d / Scalar12.Value);
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public Float64Scalar3D NormalToDirection3D(double scalingFactor)
+        {
+            if (Scalar12.IsZero())
+                return Float64Scalar3D.E0;
+
+            return Float64Scalar3D.Create(scalingFactor / Scalar12.Value);
+        }
+
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Float64Scalar3D Dual3D()
         {
@@ -232,6 +292,7 @@ namespace GeometricAlgebraFulcrumLib.Lite.LinearAlgebra.Vectors.Space3D
         {
             return Float64Scalar3D.Create(Scalar123 * scalingFactor);
         }
+
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public IEnumerator<Float64Scalar> GetEnumerator()

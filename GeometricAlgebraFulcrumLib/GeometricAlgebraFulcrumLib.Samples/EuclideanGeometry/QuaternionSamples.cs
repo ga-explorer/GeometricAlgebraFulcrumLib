@@ -165,13 +165,13 @@ namespace GeometricAlgebraFulcrumLib.Samples.EuclideanGeometry
             {
                 var axisVector = axis.ToVector3D();
 
-                var bivector1 = axis.UnDual3D();
-                var bivector2 = axisVector.UnDual3D();
+                var bivector1 = axis.NormalToUnitDirection3D();
+                var bivector2 = axisVector.NormalToUnitDirection3D();
 
                 "Axis UnDual".ValidateNearEqual(bivector1, bivector2);
 
-                bivector1 = axis.Dual3D();
-                bivector2 = axisVector.Dual3D();
+                bivector1 = axis.DirectionToUnitNormal3D();
+                bivector2 = axisVector.DirectionToUnitNormal3D();
 
                 "Axis Dual".ValidateNearEqual(bivector1, bivector2);
             }
@@ -183,9 +183,9 @@ namespace GeometricAlgebraFulcrumLib.Samples.EuclideanGeometry
                 var b1 = b1v1.Op(b1v2);
 
                 var n1 = b1v1.VectorCross(b1v2);
-                var n2 = b1.Dual3D();
-
-                var b2 = n2.UnDual3D();
+                var n2 = b1.DirectionToUnitNormal3D();
+                
+                var b2 = n2.NormalToUnitDirection3D();
 
                 // Validate bivector normal using duality
                 "Bivector Normal using Duality".ValidateNearEqual(n1, n2);

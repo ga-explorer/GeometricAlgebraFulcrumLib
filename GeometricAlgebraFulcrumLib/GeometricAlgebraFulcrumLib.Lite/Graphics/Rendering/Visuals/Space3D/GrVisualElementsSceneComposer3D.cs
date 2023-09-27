@@ -288,7 +288,7 @@ namespace GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.Visuals.Space3D
     
         public GrVisualElementsSceneComposer3D<T> AddCircleOriginYz(string name, double radius, IGrVisualElementMaterial3D material, double thickness)
         {
-            return AddCircle(
+            return AddCircleCurve(
                 name,
                 Float64Vector3D.Zero,
                 Float64Vector3D.E1,
@@ -300,7 +300,7 @@ namespace GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.Visuals.Space3D
 
         public GrVisualElementsSceneComposer3D<T> AddCircleOriginZx(string name, double radius, IGrVisualElementMaterial3D material, double thickness)
         {
-            return AddCircle(
+            return AddCircleCurve(
                 name,
                 Float64Vector3D.Zero,
                 Float64Vector3D.E2,
@@ -312,7 +312,7 @@ namespace GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.Visuals.Space3D
 
         public GrVisualElementsSceneComposer3D<T> AddCircleOriginXy(string name, double radius, IGrVisualElementMaterial3D material, double thickness)
         {
-            return AddCircle(
+            return AddCircleCurve(
                 name,
                 Float64Vector3D.Zero,
                 Float64Vector3D.E3,
@@ -322,9 +322,9 @@ namespace GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.Visuals.Space3D
             );
         }
 
-        public GrVisualElementsSceneComposer3D<T> AddCircle(string name, IFloat64Vector3D center, IFloat64Vector3D normal, double radius, IGrVisualElementMaterial3D material, double thickness)
+        public GrVisualElementsSceneComposer3D<T> AddCircleCurve(string name, IFloat64Vector3D center, IFloat64Vector3D normal, double radius, IGrVisualElementMaterial3D material, double thickness)
         {
-            AddCircle(
+            AddCircleCurve(
                 GrVisualCircleCurve3D.CreateStatic(
                     name,
                     material.CreateTubeCurveStyle(thickness),
@@ -337,9 +337,9 @@ namespace GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.Visuals.Space3D
             return this;
         }
     
-        public GrVisualElementsSceneComposer3D<T> AddCircle(string name, IFloat64Vector3D center, IFloat64Vector3D normal, double radius, Color color, double thickness)
+        public GrVisualElementsSceneComposer3D<T> AddCircleCurve(string name, IFloat64Vector3D center, IFloat64Vector3D normal, double radius, Color color, double thickness)
         {
-            AddCircle(
+            AddCircleCurve(
                 GrVisualCircleCurve3D.CreateStatic(
                     name,
                     AddOrGetColorMaterial(color).CreateTubeCurveStyle(thickness),
@@ -352,9 +352,9 @@ namespace GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.Visuals.Space3D
             return this;
         }
 
-        public GrVisualElementsSceneComposer3D<T> AddCircle(string name, IFloat64Vector3D center, IFloat64Vector3D normal, double radius, Color color)
+        public GrVisualElementsSceneComposer3D<T> AddCircleCurve(string name, IFloat64Vector3D center, IFloat64Vector3D normal, double radius, Color color)
         {
-            AddCircle(
+            AddCircleCurve(
                 GrVisualCircleCurve3D.CreateStatic(
                     name,
                     color.CreateSolidLineCurveStyle(),
@@ -367,9 +367,9 @@ namespace GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.Visuals.Space3D
             return this;
         }
     
-        public GrVisualElementsSceneComposer3D<T> AddCircle(string name, IFloat64Vector3D center, IFloat64Vector3D normal, double radius, Color color, GrVisualDashedLineSpecs dashSpecs)
+        public GrVisualElementsSceneComposer3D<T> AddCircleCurve(string name, IFloat64Vector3D center, IFloat64Vector3D normal, double radius, Color color, GrVisualDashedLineSpecs dashSpecs)
         {
-            AddCircle(
+            AddCircleCurve(
                 GrVisualCircleCurve3D.CreateStatic(
                     name,
                     new GrVisualCurveDashedLineStyle3D(color, dashSpecs),
@@ -1365,7 +1365,7 @@ namespace GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.Visuals.Space3D
                     break;
 
                 case GrVisualCircleCurve3D circleCurve:
-                    AddCircle(circleCurve);
+                    AddCircleCurve(circleCurve);
                     break;
 
                 case GrVisualCircleArcCurve3D circleCurveArc:
@@ -1454,6 +1454,7 @@ namespace GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.Visuals.Space3D
 
         public abstract GrVisualArrowHead3D AddArrowHead(GrVisualArrowHead3D visualElement);
 
+        public abstract GrVisualCircleCurve3D AddCircleCurve(GrVisualCircleCurve3D visualElement);
 
         public abstract GrVisualParametricCurve3D AddParametricCurve(GrVisualParametricCurve3D visualElement);
         
@@ -1473,12 +1474,12 @@ namespace GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.Visuals.Space3D
             return visualElement;
         }
 
-        public GrVisualCircleCurve3D AddCircle(GrVisualCircleCurve3D visualElement)
-        {
-            AddCurve(visualElement);
+        //public GrVisualCircleCurve3D AddCircleCurve(GrVisualCircleCurve3D visualElement)
+        //{
+        //    AddCurve(visualElement);
 
-            return visualElement;
-        }
+        //    return visualElement;
+        //}
 
         public GrVisualCircleArcCurve3D AddCircleArc(GrVisualCircleArcCurve3D visualElement)
         {

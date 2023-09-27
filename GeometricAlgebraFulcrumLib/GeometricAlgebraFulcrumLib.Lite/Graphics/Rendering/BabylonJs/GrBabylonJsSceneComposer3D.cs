@@ -1,6 +1,7 @@
 ﻿using DataStructuresLib.Basic;
 using DataStructuresLib.BitManipulation;
 using GeometricAlgebraFulcrumLib.Lite.Geometry.Borders.Space2D.Immutable;
+using GeometricAlgebraFulcrumLib.Lite.Geometry.Euclidean;
 using GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.BabylonJs.Animations;
 using GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.BabylonJs.Cameras;
 using GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.BabylonJs.Constants;
@@ -90,6 +91,33 @@ namespace GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.BabylonJs
 
         private void AddInitialObjects()
         {
+            SceneObject.AddFreeCode(
+                @"
+function createXyCirclePathPoints() {
+	const path = new Array(361);
+	const n = path.length;
+
+	for (let i = 0; i < n; i++) {
+		const a = 2 * Math.PI * i / (n - 1);
+		
+		path[i] = new BABYLON.Vector3(Math.cos(a), Math.sin(a), 0);
+	}
+
+	return path;
+}
+
+function updateXyCirclePathPoints(path, radius) {
+	const n = path.length;
+
+	for (let i = 0; i < n; i++) {
+		const a = 2 * Math.PI * i / (n - 1);
+		
+		path[i].x = radius * Math.cos(a);
+		path[i].y = radius * Math.sin(a);
+	}
+}".Trim()
+            );
+
             PrototypeDisc = SceneObject.AddDisc(
                 $"prototypeDisc",
 
@@ -868,6 +896,432 @@ namespace GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.BabylonJs
             }
 
             throw new ArgumentOutOfRangeException();
+        }
+
+        
+        public override GrVisualCircleCurve3D AddCircleCurve(GrVisualCircleCurve3D visualElement)
+        {
+            //AddCurve(visualElement);
+
+            //return visualElement;
+
+            return visualElement.Style switch
+            {
+                GrVisualCurveTubeStyle3D tubeStyle =>
+                    AddCircleCurve(visualElement, tubeStyle),
+
+                GrVisualCurveSolidLineStyle3D solidLineStyle =>
+                    AddCircleCurve(visualElement, solidLineStyle),
+
+                GrVisualCurveDashedLineStyle3D dashedLineStyle =>
+                    AddCircleCurve(visualElement, dashedLineStyle),
+
+                _ => throw new InvalidOperationException()
+            };
+        }
+
+        private GrVisualCircleCurve3D AddCircleCurve(GrVisualCircleCurve3D visualElement, GrVisualCurveTubeStyle3D tubeStyle)
+        {
+            var normal = visualElement.Normal.ToUnitVector();
+
+            var quaternion = LinUnitBasisVector3D.PositiveY.CreateAxisToVectorRotationQuaternion(normal);
+            
+            if (visualElement.IsAnimated)
+            {
+                SceneObject.AddFreeCode(
+                    $"const {visualElement.Name}Points = createXyCirclePathPoints();"
+                );
+
+                SceneObject.AddTube(
+                    $"{visualElement.Name}Tube",
+
+                    new GrBabylonJsTube.TubeOptions
+                    {
+                        Radius = tubeStyle.Thickness / 2d,
+                        Path = $"{visualElement.Name}Points",
+                        Tessellation = 32,
+                        Cap = GrBabylonJsMeshCap.None,
+                        Updatable = visualElement.IsAnimated
+                    },
+
+                    new GrBabylonJsMesh.MeshProperties
+                    {
+                        Material = tubeStyle.Material.MaterialName,
+                        Visibility = visualElement.Visibility,
+                    }
+                );
+                
+                SceneObject.AddFreeCode($"{visualElement.Name}Tube.circleRadius = 1;");
+
+                AddCircleCurveAnimation(visualElement, tubeStyle);
+            }
+            else
+            {
+                SceneObject.AddTorus(
+                    $"{visualElement.Name}Torus",
+
+                    new GrBabylonJsTorus.TorusOptions
+                    {
+                        Diameter = visualElement.Radius * 2,
+                        Thickness = tubeStyle.Thickness,
+                        Tessellation = 360
+                    },
+
+                    new GrBabylonJsMesh.MeshProperties
+                    {
+                        IsVisible = true,
+                        Material = tubeStyle.Material.MaterialName,
+                        Visibility = visualElement.Visibility,
+                        Position = visualElement.Center.ToBabylonJsVector3Value(),
+                        RotationQuaternion = quaternion
+                    }
+                );
+            }
+
+            return visualElement;
+        }
+
+        private GrVisualCircleCurve3D AddCircleCurve(GrVisualCircleCurve3D visualElement, GrVisualCurveSolidLineStyle3D solidLineStyle)
+        {
+            var (point1, point2, point3) =
+                visualElement.IsAnimated
+                    ? EuclideanGeometryUtils.GetUnitXyCirclePointsTriplet3D()
+                    : visualElement.Center.GetCirclePointsTriplet3D(
+                        visualElement.Normal, 
+                        visualElement.Radius
+                    );
+
+            var pathName = $"{visualElement.Name}Path";
+
+            SceneObject.AddArcThru3Points(
+                pathName,
+                point1,
+                point2,
+                point3,
+                visualElement.PathPointCount,
+                false,
+                true
+            );
+
+            SceneObject.AddLines(
+                $"{visualElement.Name}Line",
+
+                new GrBabylonJsLines.LinesOptions
+                {
+                    Points = $"{pathName}.getPoints()"
+                },
+
+                new GrBabylonJsLinesMesh.LinesMeshProperties
+                {
+                    Color = solidLineStyle.Color,
+                    Visibility = visualElement.Visibility
+                }
+            );
+
+            if (visualElement.IsAnimated)
+                AddCircleCurveAnimation(visualElement, solidLineStyle);
+
+            return visualElement;
+        }
+        
+        private GrVisualCircleCurve3D AddCircleCurve(GrVisualCircleCurve3D visualElement, GrVisualCurveDashedLineStyle3D dashedLineStyle)
+        {
+            var (point1, point2, point3) =
+                visualElement.IsAnimated
+                    ? EuclideanGeometryUtils.GetUnitXyCirclePointsTriplet3D()
+                    : visualElement.Center.GetCirclePointsTriplet3D(
+                        visualElement.Normal, 
+                        visualElement.Radius
+                    );
+
+            var pathName = $"{visualElement.Name}Path";
+
+            SceneObject.AddArcThru3Points(
+                pathName,
+                point1,
+                point2,
+                point3,
+                visualElement.PathPointCount,
+                false,
+                true
+            );
+
+            SceneObject.AddDashedLines(
+                $"{visualElement.Name}DashedLines",
+
+                new GrBabylonJsDashedLines.DashedLinesOptions
+                {
+                    Points = $"{pathName}.getPoints()",
+                    DashNumber = 10 * dashedLineStyle.DashPerLine,
+                    DashSize = dashedLineStyle.DashOn,
+                    GapSize = dashedLineStyle.DashOff,
+                    Updatable = visualElement.IsAnimated
+                },
+
+                new GrBabylonJsLinesMesh.LinesMeshProperties
+                {
+                    Color = dashedLineStyle.Color,
+                    Visibility = visualElement.Visibility,
+                }
+            );
+
+            if (visualElement.IsAnimated)
+                AddCircleCurveAnimation(visualElement, dashedLineStyle);
+
+            return visualElement;
+        }
+
+        private void AddCircleCurveAnimation(GrVisualCircleCurve3D visualElement, GrVisualCurveTubeStyle3D tubeStyle)
+        {
+            var animationSpecs = new GrBabylonJsAnimationSpecs(visualElement)
+            {
+                LoopMode = GrBabylonJsAnimationLoopMode.Cycle,
+                EnableBlending = false,
+                Loop = true
+            };
+            
+            var keyVisibility = new GrBabylonJsKeyFrameDictionary<double>();
+            var keyRadius = new GrBabylonJsKeyFrameDictionary<double>();
+            var keyPositions = new GrBabylonJsKeyFrameDictionary<Float64Vector3D>();
+            var keyQuaternions = new GrBabylonJsKeyFrameDictionary<Float64Quaternion>();
+
+            foreach (var (frameIndex, _, visibility, center, normal, radius) in visualElement.GetKeyFrameRecords())
+            {
+                var quaternion = LinUnitBasisVector3D.PositiveZ.CreateAxisToVectorRotationQuaternion(normal.ToUnitVector());
+
+                keyVisibility.SetKeyFrameValue(frameIndex, visibility);
+                keyRadius.SetKeyFrameValue(frameIndex, radius);
+                keyPositions.SetKeyFrameValue(frameIndex, center);
+                keyQuaternions.SetKeyFrameValue(frameIndex, quaternion);
+            }
+            
+            var visibilityAnimation =
+                SceneObject.AddFloat32Animation(
+                    visualElement.Name + "Visibility",
+                    "visibility",
+                    animationSpecs,
+                    keyVisibility
+                );
+            
+            var radiusAnimation =
+                SceneObject.AddFloat32Animation(
+                    visualElement.Name + "CircleRadius",
+                    "circleRadius",
+                    animationSpecs,
+                    keyRadius
+                );
+
+            var positionAnimations = 
+                SceneObject.AddVector3ComponentAnimations(
+                    visualElement.Name + "Position",
+                    animationSpecs,
+                    keyPositions
+                );
+            
+            var quaternionAnimation = 
+                SceneObject.AddQuaternionAnimation(
+                    visualElement.Name + "Quaternion",
+                    "rotationQuaternion",
+                    animationSpecs,
+                    keyQuaternions.OptimizeQuaternionKeyFrames()
+                );
+            
+            SceneObject
+                .AddAnimationGroup(
+                    visualElement.Name + "Animations",
+                    new GrBabylonJsAnimationGroup.AnimationGroupProperties()
+                    {
+                        LoopAnimation = true,
+                        IsAdditive = false,
+                        SpeedRatio = 1d
+                    }
+                ).AddAnimation(
+                    $"{visualElement.Name}Tube",
+                    visibilityAnimation
+                ).AddAnimation(
+                    $"{visualElement.Name}Tube",
+                    radiusAnimation
+                ).AddAnimations(
+                    $"{visualElement.Name}Tube.position", 
+                    positionAnimations
+                ).AddAnimation(
+                    $"{visualElement.Name}Tube", 
+                    quaternionAnimation
+                );
+
+            SceneObject.BeforeSceneRenderCode.Add(
+                $@"
+updateXyCirclePathPoints({visualElement.Name}Points, {visualElement.Name}Tube.circleRadius);
+
+{visualElement.Name}Tube = BABYLON.MeshBuilder.CreateTube(null, {{path: {visualElement.Name}Points, instance: {visualElement.Name}Tube}});
+".Trim()
+            );
+        }
+        
+        private void AddCircleCurveAnimation(GrVisualCircleCurve3D visualElement, GrVisualCurveSolidLineStyle3D solidLineStyle)
+        {
+            var animationSpecs = new GrBabylonJsAnimationSpecs(visualElement)
+            {
+                LoopMode = GrBabylonJsAnimationLoopMode.Cycle,
+                EnableBlending = false,
+                Loop = true
+            };
+            
+            var keyVisibility = new GrBabylonJsKeyFrameDictionary<double>();
+            var keyPositions = new GrBabylonJsKeyFrameDictionary<Float64Vector3D>();
+            var keyScalings = new GrBabylonJsKeyFrameDictionary<Float64Vector3D>();
+            var keyQuaternions = new GrBabylonJsKeyFrameDictionary<Float64Quaternion>();
+
+            foreach (var (frameIndex, _, visibility, center, normal, radius) in visualElement.GetKeyFrameRecords())
+            {
+                var quaternion = LinUnitBasisVector3D.PositiveZ.CreateAxisToVectorRotationQuaternion(normal.ToUnitVector());
+                var scaling = Float64Vector3D.Create(
+                    radius,
+                    radius,
+                    1
+                );
+
+                keyVisibility.SetKeyFrameValue(frameIndex, visibility);
+                keyPositions.SetKeyFrameValue(frameIndex, center);
+                keyScalings.SetKeyFrameValue(frameIndex, scaling);
+                keyQuaternions.SetKeyFrameValue(frameIndex, quaternion);
+            }
+            
+            var visibilityAnimation =
+                SceneObject.AddFloat32Animation(
+                    visualElement.Name + "Visibility",
+                    "visibility",
+                    animationSpecs,
+                    keyVisibility
+                );
+
+            var positionAnimations = 
+                SceneObject.AddVector3ComponentAnimations(
+                    visualElement.Name + "Position",
+                    animationSpecs,
+                    keyPositions
+                );
+            
+            var scalingAnimations = 
+                SceneObject.AddVector3ComponentAnimations(
+                    visualElement.Name + "Scaling",
+                    animationSpecs,
+                    keyScalings
+                );
+            
+            var quaternionAnimation = 
+                SceneObject.AddQuaternionAnimation(
+                    visualElement.Name + "Quaternion",
+                    "rotationQuaternion",
+                    animationSpecs,
+                    keyQuaternions.OptimizeQuaternionKeyFrames()
+                );
+            
+            SceneObject
+                .AddAnimationGroup(
+                    visualElement.Name + "Animations",
+                    new GrBabylonJsAnimationGroup.AnimationGroupProperties()
+                    {
+                        LoopAnimation = true,
+                        IsAdditive = false,
+                        SpeedRatio = 1d
+                    }
+                ).AddAnimation(
+                    $"{visualElement.Name}Line", 
+                    visibilityAnimation
+                ).AddAnimations(
+                    $"{visualElement.Name}Line.position", 
+                    positionAnimations
+                ).AddAnimations(
+                    $"{visualElement.Name}Line.scaling", 
+                    scalingAnimations
+                ).AddAnimation(
+                    $"{visualElement.Name}Line", 
+                    quaternionAnimation
+                );
+        }
+        
+        private void AddCircleCurveAnimation(GrVisualCircleCurve3D visualElement, GrVisualCurveDashedLineStyle3D dashedLineStyle)
+        {
+            var animationSpecs = new GrBabylonJsAnimationSpecs(visualElement)
+            {
+                LoopMode = GrBabylonJsAnimationLoopMode.Cycle,
+                EnableBlending = false,
+                Loop = true
+            };
+            
+            var keyVisibility = new GrBabylonJsKeyFrameDictionary<double>();
+            var keyPositions = new GrBabylonJsKeyFrameDictionary<Float64Vector3D>();
+            var keyScalings = new GrBabylonJsKeyFrameDictionary<Float64Vector3D>();
+            var keyQuaternions = new GrBabylonJsKeyFrameDictionary<Float64Quaternion>();
+
+            foreach (var (frameIndex, _, visibility, center, normal, radius) in visualElement.GetKeyFrameRecords())
+            {
+                var quaternion = LinUnitBasisVector3D.PositiveZ.CreateAxisToVectorRotationQuaternion(normal.ToUnitVector());
+                var scaling = Float64Vector3D.Create(
+                    radius,
+                    radius,
+                    1
+                );
+
+                keyVisibility.SetKeyFrameValue(frameIndex, visibility);
+                keyPositions.SetKeyFrameValue(frameIndex, center);
+                keyScalings.SetKeyFrameValue(frameIndex, scaling);
+                keyQuaternions.SetKeyFrameValue(frameIndex, quaternion);
+            }
+            
+            var visibilityAnimation =
+                SceneObject.AddFloat32Animation(
+                    visualElement.Name + "Visibility",
+                    "visibility",
+                    animationSpecs,
+                    keyVisibility
+                );
+
+            var positionAnimations = 
+                SceneObject.AddVector3ComponentAnimations(
+                    visualElement.Name + "Position",
+                    animationSpecs,
+                    keyPositions
+                );
+            
+            var scalingAnimations = 
+                SceneObject.AddVector3ComponentAnimations(
+                    visualElement.Name + "Scaling",
+                    animationSpecs,
+                    keyScalings
+                );
+            
+            var quaternionAnimation = 
+                SceneObject.AddQuaternionAnimation(
+                    visualElement.Name + "Quaternion",
+                    "rotationQuaternion",
+                    animationSpecs,
+                    keyQuaternions.OptimizeQuaternionKeyFrames()
+                );
+            
+            SceneObject
+                .AddAnimationGroup(
+                    visualElement.Name + "Animations",
+                    new GrBabylonJsAnimationGroup.AnimationGroupProperties()
+                    {
+                        LoopAnimation = true,
+                        IsAdditive = false,
+                        SpeedRatio = 1d
+                    }
+                ).AddAnimation(
+                    $"{visualElement.Name}DashedLines", 
+                    visibilityAnimation
+                ).AddAnimations(
+                    $"{visualElement.Name}DashedLines.position", 
+                    positionAnimations
+                ).AddAnimations(
+                    $"{visualElement.Name}DashedLines.scaling", 
+                    scalingAnimations
+                ).AddAnimation(
+                    $"{visualElement.Name}DashedLines", 
+                    quaternionAnimation
+                );
         }
 
 
@@ -2390,16 +2844,16 @@ namespace GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.BabylonJs
             return visualElement.Style switch
             {
                 GrVisualSurfaceThickStyle3D thickStyle => 
-                    AddDisc(visualElement, thickStyle),
+                    AddCircleSurface(visualElement, thickStyle),
 
                 GrVisualSurfaceThinStyle3D thinStyle => 
-                    AddDisc(visualElement, thinStyle),
+                    AddCircleSurface(visualElement, thinStyle),
 
                 _ => throw new InvalidOperationException()
             };
         }
 
-        private GrVisualCircleSurface3D AddDisc(GrVisualCircleSurface3D visualElement, GrVisualSurfaceThickStyle3D thickStyle)
+        private GrVisualCircleSurface3D AddCircleSurface(GrVisualCircleSurface3D visualElement, GrVisualSurfaceThickStyle3D thickStyle)
         {
             var normal = visualElement.Normal.ToUnitVector();
 
@@ -2444,12 +2898,12 @@ namespace GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.BabylonJs
             }
 
             if (visualElement.IsAnimated)
-                AddDiscAnimation(visualElement, thickStyle);
+                AddCircleSurfaceAnimation(visualElement, thickStyle);
 
             return visualElement;
         }
 
-        private GrVisualCircleSurface3D AddDisc(GrVisualCircleSurface3D visualElement, GrVisualSurfaceThinStyle3D thinStyle)
+        private GrVisualCircleSurface3D AddCircleSurface(GrVisualCircleSurface3D visualElement, GrVisualSurfaceThinStyle3D thinStyle)
         {
             var normal = visualElement.Normal.ToUnitVector();
 
@@ -2505,12 +2959,12 @@ namespace GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.BabylonJs
             }
             
             if (visualElement.IsAnimated)
-                AddDiscAnimation(visualElement, thinStyle);
+                AddCircleSurfaceAnimation(visualElement, thinStyle);
 
             return visualElement;
         }
 
-        private void AddDiscAnimation(GrVisualCircleSurface3D visualElement, GrVisualSurfaceThickStyle3D thickStyle)
+        private void AddCircleSurfaceAnimation(GrVisualCircleSurface3D visualElement, GrVisualSurfaceThickStyle3D thickStyle)
         {
             var animationSpecs = new GrBabylonJsAnimationSpecs(visualElement)
             {
@@ -2591,7 +3045,7 @@ namespace GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.BabylonJs
                 );
         }
         
-        private void AddDiscAnimation(GrVisualCircleSurface3D visualElement, GrVisualSurfaceThinStyle3D thinStyle)
+        private void AddCircleSurfaceAnimation(GrVisualCircleSurface3D visualElement, GrVisualSurfaceThinStyle3D thinStyle)
         {
             var animationSpecs = new GrBabylonJsAnimationSpecs(visualElement)
             {

@@ -2,6 +2,7 @@
 using DataStructuresLib.Files;
 using DataStructuresLib.Sequences;
 using GeometricAlgebraFulcrumLib.Lite.Geometry.Borders.Space2D.Immutable;
+using GeometricAlgebraFulcrumLib.Lite.Geometry.Parametric.Space1D.Scalars;
 using GeometricAlgebraFulcrumLib.Lite.Geometry.Parametric.Space2D.Curves;
 using GeometricAlgebraFulcrumLib.Lite.Geometry.Parametric.Space3D.Curves;
 using GeometricAlgebraFulcrumLib.Lite.Geometry.Parametric.Space3D.Curves.Adaptive;
@@ -10,6 +11,7 @@ using GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.Visuals.Space3D.Animati
 using GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.Visuals.Space3D.Basic;
 using GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.Visuals.Space3D.Curves;
 using GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.Visuals.Space3D.Images;
+using GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.Visuals.Space3D.Surfaces;
 using GeometricAlgebraFulcrumLib.Lite.LinearAlgebra;
 using GeometricAlgebraFulcrumLib.Lite.LinearAlgebra.Vectors.Space2D;
 using GeometricAlgebraFulcrumLib.Lite.LinearAlgebra.Vectors.Space3D;
@@ -84,6 +86,8 @@ public class GeometryVisualizer
     public GeometryVisualizerVectorStyle VectorStyle { get; }
 
     public GeometryVisualizerCurveStyle CurveStyle { get; }
+    
+    public GeometryVisualizerSurfaceStyle SurfaceStyle { get; }
 
 
     public GeometryVisualizer()
@@ -96,6 +100,7 @@ public class GeometryVisualizer
         PointStyle = new GeometryVisualizerPointStyle(this, 0.08);
         VectorStyle = new GeometryVisualizerVectorStyle(this, 0.08);
         CurveStyle = new GeometryVisualizerCurveStyle(this);
+        SurfaceStyle = new GeometryVisualizerSurfaceStyle(this);
     }
 
 
@@ -317,6 +322,20 @@ public class GeometryVisualizer
             dashOff,
             dashPerLine
         );
+
+        return this;
+    }
+    
+    public GeometryVisualizer SetSurfaceStyleThick(double thickness)
+    {
+        SurfaceStyle.SetThickStyle(thickness);
+
+        return this;
+    }
+
+    public GeometryVisualizer SetSurfaceStyleThin()
+    {
+        SurfaceStyle.SetThinStyle();
 
         return this;
     }
@@ -780,6 +799,98 @@ public class GeometryVisualizer
         return this;
     }
     
+    
+    public GeometryVisualizer DrawCircleCurve(Color color, Float64Vector3D center, Float64Vector3D normal, double radius)
+    {
+        MainSceneComposer.AddCircleCurve(
+            GrVisualCircleCurve3D.CreateStatic(
+                GetNewSceneObjectName("circle"),
+                CurveStyle.GetVisualStyle(color),
+                center,
+                normal,
+                radius
+            )
+        );
+
+        return this;
+    }
+
+    public GeometryVisualizer DrawCircleCurve(Color color, Float64Vector3D center, IParametricCurve3D normal, double radius)
+    {
+        MainSceneComposer.AddCircleCurve(
+            GrVisualCircleCurve3D.CreateAnimated(
+                GetNewSceneObjectName("circle"),
+                CurveStyle.GetVisualStyle(color),
+                center,
+                AnimationSpecs.CreateAnimatedVector3D(normal),
+                radius
+            )
+        );
+
+        return this;
+    }
+    
+    public GeometryVisualizer DrawCircleCurve(Color color, Float64Vector3D center, Float64Vector3D normal, IParametricScalar radius)
+    {
+        MainSceneComposer.AddCircleCurve(
+            GrVisualCircleCurve3D.CreateAnimated(
+                GetNewSceneObjectName("circle"),
+                CurveStyle.GetVisualStyle(color),
+                center,
+                normal,
+                AnimationSpecs.CreateAnimatedScalar(radius)
+            )
+        );
+
+        return this;
+    }
+
+    public GeometryVisualizer DrawCircleCurve(Color color, Float64Vector3D center, IParametricCurve3D normal, IParametricScalar radius)
+    {
+        MainSceneComposer.AddCircleCurve(
+            GrVisualCircleCurve3D.CreateAnimated(
+                GetNewSceneObjectName("circle"),
+                CurveStyle.GetVisualStyle(color),
+                center,
+                AnimationSpecs.CreateAnimatedVector3D(normal),
+                AnimationSpecs.CreateAnimatedScalar(radius)
+            )
+        );
+
+        return this;
+    }
+
+    public GeometryVisualizer DrawCircleCurve(Color color, IParametricCurve3D center, IParametricCurve3D normal, double radius)
+    {
+        MainSceneComposer.AddCircleCurve(
+            GrVisualCircleCurve3D.CreateAnimated(
+                GetNewSceneObjectName("circle"),
+                CurveStyle.GetVisualStyle(color),
+                AnimationSpecs.CreateAnimatedVector3D(center),
+                AnimationSpecs.CreateAnimatedVector3D(normal),
+                radius
+            )
+        );
+
+        return this;
+    }
+
+    public GeometryVisualizer DrawCircleCurve(Color color, IParametricCurve3D center, IParametricCurve3D normal, IParametricScalar radius)
+    {
+        MainSceneComposer.AddCircleCurve(
+            GrVisualCircleCurve3D.CreateAnimated(
+                GetNewSceneObjectName("circle"),
+                CurveStyle.GetVisualStyle(color),
+                AnimationSpecs.CreateAnimatedVector3D(center),
+                AnimationSpecs.CreateAnimatedVector3D(normal),
+                AnimationSpecs.CreateAnimatedScalar(radius)
+            )
+        );
+
+        return this;
+    }
+
+
     public GeometryVisualizer DrawCurve(Color color, IParametricCurve2D curve, Float64ScalarRange parameterRange)
     {
         return DrawCurve(
@@ -821,6 +932,103 @@ public class GeometryVisualizer
                     parameterRange,
                     samplingSpecs
                 )
+            )
+        );
+
+        return this;
+    }
+    
+    
+    public GeometryVisualizer DrawCircleSurface(Color color, Float64Vector3D center, Float64Vector3D normal, double radius)
+    {
+        MainSceneComposer.AddCircleSurface(
+            GrVisualCircleSurface3D.CreateStatic(
+                GetNewSceneObjectName("circle"),
+                SurfaceStyle.GetVisualStyle(color),
+                center,
+                normal,
+                radius,
+                false
+            )
+        );
+
+        return this;
+    }
+
+    public GeometryVisualizer DrawCircleSurface(Color color, Float64Vector3D center, IParametricCurve3D normal, double radius)
+    {
+        MainSceneComposer.AddCircleSurface(
+            GrVisualCircleSurface3D.CreateAnimated(
+                GetNewSceneObjectName("circle"),
+                SurfaceStyle.GetVisualStyle(color),
+                center,
+                AnimationSpecs.CreateAnimatedVector3D(normal),
+                radius,
+                false
+            )
+        );
+
+        return this;
+    }
+    
+    public GeometryVisualizer DrawCircleSurface(Color color, Float64Vector3D center, Float64Vector3D normal, IParametricScalar radius)
+    {
+        MainSceneComposer.AddCircleSurface(
+            GrVisualCircleSurface3D.CreateAnimated(
+                GetNewSceneObjectName("circle"),
+                SurfaceStyle.GetVisualStyle(color),
+                center,
+                normal,
+                AnimationSpecs.CreateAnimatedScalar(radius),
+                false
+            )
+        );
+
+        return this;
+    }
+
+    public GeometryVisualizer DrawCircleSurface(Color color, Float64Vector3D center, IParametricCurve3D normal, IParametricScalar radius)
+    {
+        MainSceneComposer.AddCircleSurface(
+            GrVisualCircleSurface3D.CreateAnimated(
+                GetNewSceneObjectName("circle"),
+                SurfaceStyle.GetVisualStyle(color),
+                center,
+                AnimationSpecs.CreateAnimatedVector3D(normal),
+                AnimationSpecs.CreateAnimatedScalar(radius),
+                false
+            )
+        );
+
+        return this;
+    }
+
+    public GeometryVisualizer DrawCircleSurface(Color color, IParametricCurve3D center, IParametricCurve3D normal, double radius)
+    {
+        MainSceneComposer.AddCircleSurface(
+            GrVisualCircleSurface3D.CreateAnimated(
+                GetNewSceneObjectName("circle"),
+                SurfaceStyle.GetVisualStyle(color),
+                AnimationSpecs.CreateAnimatedVector3D(center),
+                AnimationSpecs.CreateAnimatedVector3D(normal),
+                radius,
+                false
+            )
+        );
+
+        return this;
+    }
+
+    public GeometryVisualizer DrawCircleSurface(Color color, IParametricCurve3D center, IParametricCurve3D normal, IParametricScalar radius)
+    {
+        MainSceneComposer.AddCircleSurface(
+            GrVisualCircleSurface3D.CreateAnimated(
+                GetNewSceneObjectName("circle"),
+                SurfaceStyle.GetVisualStyle(color),
+                AnimationSpecs.CreateAnimatedVector3D(center),
+                AnimationSpecs.CreateAnimatedVector3D(normal),
+                AnimationSpecs.CreateAnimatedScalar(radius),
+                false
             )
         );
 

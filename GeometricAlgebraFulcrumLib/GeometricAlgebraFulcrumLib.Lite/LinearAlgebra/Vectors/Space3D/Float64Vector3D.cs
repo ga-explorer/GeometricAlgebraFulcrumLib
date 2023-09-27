@@ -482,25 +482,109 @@ namespace GeometricAlgebraFulcrumLib.Lite.LinearAlgebra.Vectors.Space3D
                 : this / normSquared.Value;
         }
         
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Float64Bivector3D Normal3D()
+        
+        public Float64Bivector3D DirectionToUnitNormal3D(Float64Bivector3D? zeroNormal = null)
         {
+            var norm = Norm();
+
+            if (norm.IsZero())
+                return zeroNormal ?? 
+                       throw new DivideByZeroException();
+
+            var s = 1d / norm.Value;
+
             return Float64Bivector3D.Create(
-                Scalar3,
-                -Scalar2,
-                Scalar1
+                Scalar3 * s,
+                Scalar2 * -s,
+                Scalar1 * s
+            );
+        }
+
+        public Float64Bivector3D DirectionToNormal3D(Float64Bivector3D? zeroNormal = null)
+        {
+            var normSquared = NormSquared();
+
+            if (normSquared.IsZero())
+                return zeroNormal ?? 
+                       throw new DivideByZeroException();
+
+            var s = 1d / normSquared.Value;
+
+            return Float64Bivector3D.Create(
+                Scalar3 * s,
+                Scalar2 * -s,
+                Scalar1 * s
             );
         }
         
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Float64Bivector3D Normal3D(Float64Scalar scalingFactor)
+        public Float64Bivector3D DirectionToNormal3D(Float64Scalar scalingFactor, Float64Bivector3D? zeroNormal = null)
         {
+            var normSquared = NormSquared();
+
+            if (normSquared.IsZero())
+                return zeroNormal ?? 
+                       throw new DivideByZeroException();
+
+            var s = scalingFactor / normSquared.Value;
+
             return Float64Bivector3D.Create(
-                Scalar3 * scalingFactor,
-                -Scalar2 * scalingFactor,
-                Scalar1 * scalingFactor
+                Scalar3 * s,
+                Scalar2 * -s,
+                Scalar1 * s
             );
         }
+        
+        public Float64Bivector3D NormalToUnitDirection3D(Float64Bivector3D? zeroNormal = null)
+        {
+            var norm = Norm();
+
+            if (norm.IsZero())
+                return zeroNormal ?? 
+                       throw new DivideByZeroException();
+
+            var s = 1d / norm.Value;
+
+            return Float64Bivector3D.Create(
+                Scalar3 * s,
+                Scalar2 * -s,
+                Scalar1 * s
+            );
+        }
+
+        public Float64Bivector3D NormalToDirection3D(Float64Bivector3D? zeroNormal = null)
+        {
+            var normSquared = NormSquared();
+
+            if (normSquared.IsZero())
+                return zeroNormal ?? 
+                       throw new DivideByZeroException();
+
+            var s = 1d / normSquared.Value;
+
+            return Float64Bivector3D.Create(
+                Scalar3 * s,
+                Scalar2 * -s,
+                Scalar1 * s
+            );
+        }
+        
+        public Float64Bivector3D NormalToDirection3D(Float64Scalar scalingFactor, Float64Bivector3D? zeroNormal = null)
+        {
+            var normSquared = NormSquared();
+
+            if (normSquared.IsZero())
+                return zeroNormal ?? 
+                       throw new DivideByZeroException();
+
+            var s = scalingFactor / normSquared.Value;
+
+            return Float64Bivector3D.Create(
+                Scalar3 * s,
+                Scalar2 * -s,
+                Scalar1 * s
+            );
+        }
+
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Float64Bivector3D Dual3D()
@@ -541,6 +625,7 @@ namespace GeometricAlgebraFulcrumLib.Lite.LinearAlgebra.Vectors.Space3D
                 Scalar1 * scalingFactor
             );
         }
+
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public IEnumerator<Float64Scalar> GetEnumerator()

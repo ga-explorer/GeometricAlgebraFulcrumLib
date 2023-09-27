@@ -524,7 +524,7 @@ public static class AnimationSamples
                 "2 * Math.PI / 5"
             );
 
-        MainSceneComposer.AddCircle(
+        MainSceneComposer.AddCircleCurve(
             GrVisualCircleCurve3D.CreateStatic(
                 "c1",
                 Color.DarkTurquoise.CreateSolidLineCurveStyle(),
@@ -534,7 +534,7 @@ public static class AnimationSamples
             )
         );
 
-        MainSceneComposer.AddCircle(
+        MainSceneComposer.AddCircleCurve(
             GrVisualCircleCurve3D.CreateStatic(
                 "c2",
                 Color.LightBlue.CreateSolidLineCurveStyle(),
@@ -902,7 +902,7 @@ public static class AnimationSamples
             )
         );
 
-        MainSceneComposer.AddCircle(
+        MainSceneComposer.AddCircleCurve(
             GrVisualCircleCurve3D.CreateStatic(
                 "uRing",
                 orangeMaterial.CreateTubeCurveStyle(thickness),

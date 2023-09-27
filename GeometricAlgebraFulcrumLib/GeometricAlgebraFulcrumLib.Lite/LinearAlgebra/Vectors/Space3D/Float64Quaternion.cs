@@ -846,7 +846,7 @@ namespace GeometricAlgebraFulcrumLib.Lite.LinearAlgebra.Vectors.Space3D
                 (2 * halfAngle).GetAngleInPositiveRange();
 
             var normal = 
-                bivector.Dual3D().ToUnitVector();
+                bivector.DirectionToUnitNormal3D(Float64Vector3D.UnitSymmetric);
 
             return new Tuple<Float64PlanarAngle, Float64Vector3D>(angle, normal);
         }

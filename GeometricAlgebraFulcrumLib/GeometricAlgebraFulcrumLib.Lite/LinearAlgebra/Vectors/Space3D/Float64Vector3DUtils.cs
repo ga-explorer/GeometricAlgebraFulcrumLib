@@ -105,7 +105,7 @@ public static class Float64Vector3DUtils
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Float64Bivector3D Dual3D(this LinUnitBasisVector3D axis)
+    public static Float64Bivector3D DirectionToUnitNormal3D(this LinUnitBasisVector3D axis)
     {
         return axis switch
         {
@@ -120,7 +120,7 @@ public static class Float64Vector3DUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Float64Bivector3D Dual3D(this LinUnitBasisVector3D axis, Float64Scalar scalingFactor)
+    public static Float64Bivector3D DirectionToUnitNormal3D(this LinUnitBasisVector3D axis, Float64Scalar scalingFactor)
     {
         return axis switch
         {
@@ -135,7 +135,7 @@ public static class Float64Vector3DUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Float64Bivector3D UnDual3D(this LinUnitBasisVector3D axis)
+    public static Float64Bivector3D NormalToUnitDirection3D(this LinUnitBasisVector3D axis)
     {
         return axis switch
         {
@@ -150,7 +150,7 @@ public static class Float64Vector3DUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Float64Bivector3D UnDual3D(this LinUnitBasisVector3D axis, Float64Scalar scalingFactor)
+    public static Float64Bivector3D NormalToUnitDirection3D(this LinUnitBasisVector3D axis, Float64Scalar scalingFactor)
     {
         return axis switch
         {
@@ -884,6 +884,28 @@ public static class Float64Vector3DUtils
                 : Float64Vector3D.Zero;
 
         s = 1.0d / s;
+
+        return Float64Vector3D.Create(vector.X * s, vector.Y * s, vector.Z * s);
+    }
+    
+    /// <summary>
+    /// Returns a unit vector from the given one. If the length of the given vector is near zero
+    /// it's returned as-is
+    /// </summary>
+    /// <param name="vector"></param>
+    /// <param name="zeroUnitVector"></param>
+    /// <returns></returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static Float64Vector3D ToUnitVector(this IFloat64Vector3D vector, Float64Vector3D? zeroUnitVector)
+    {
+        var s = vector.ENorm();
+
+        if (s.IsZero())
+            return zeroUnitVector 
+                   ?? throw new DivideByZeroException();
+
+        s = 1.0d / s;
+
         return Float64Vector3D.Create(vector.X * s, vector.Y * s, vector.Z * s);
     }
 
@@ -909,10 +931,12 @@ public static class Float64Vector3DUtils
     public static Float64Vector3D NegativeUnitVector(this IFloat64Vector3D vector)
     {
         var s = vector.ENorm();
-        if (s.IsAlmostZero())
+
+        if (s.IsZero())
             return vector.ToVector3D();
 
-        s = 1.0d / s;
+        s = -1.0d / s;
+
         return Float64Vector3D.Create(vector.X * s, vector.Y * s, vector.Z * s);
     }
 

@@ -213,11 +213,65 @@ namespace GeometricAlgebraFulcrumLib.Lite.LinearAlgebra.Vectors.Space2D
             return Negative(1d / NormSquared().Value);
         }
         
+        
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Float64Scalar2D Normal2D()
+        public Float64Scalar2D DirectionToUnitNormal2D()
         {
-            return Float64Scalar2D.Create(Scalar12);
+            if (Scalar12.IsZero())
+                return Float64Scalar2D.E0;
+
+            return Scalar12.IsPositive() 
+                ? Float64Scalar2D.E0 
+                : Float64Scalar2D.NegativeE0;
         }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public Float64Scalar2D DirectionToNormal2D()
+        {
+            if (Scalar12.IsZero())
+                return Float64Scalar2D.E0;
+
+            return Float64Scalar2D.Create(1d / Scalar12.Value);
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public Float64Scalar2D DirectionToNormal2D(double scalingFactor)
+        {
+            if (Scalar12.IsZero())
+                return Float64Scalar2D.E0;
+
+            return Float64Scalar2D.Create(scalingFactor / Scalar12.Value);
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public Float64Scalar2D NormalToUnitDirection2D()
+        {
+            if (Scalar12.IsZero())
+                return Float64Scalar2D.E0;
+
+            return Scalar12.IsPositive() 
+                ? Float64Scalar2D.E0 
+                : Float64Scalar2D.NegativeE0;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public Float64Scalar2D NormalToDirection2D()
+        {
+            if (Scalar12.IsZero())
+                return Float64Scalar2D.E0;
+
+            return Float64Scalar2D.Create(1d / Scalar12.Value);
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public Float64Scalar2D NormalToDirection2D(double scalingFactor)
+        {
+            if (Scalar12.IsZero())
+                return Float64Scalar2D.E0;
+
+            return Float64Scalar2D.Create(scalingFactor / Scalar12.Value);
+        }
+
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Float64Scalar2D Dual2D()
@@ -246,6 +300,7 @@ namespace GeometricAlgebraFulcrumLib.Lite.LinearAlgebra.Vectors.Space2D
                 -Scalar12 * scalingFactor
             );
         }
+
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public IEnumerator<Float64Scalar> GetEnumerator()

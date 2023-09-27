@@ -306,6 +306,18 @@ public static class RGaConformalFlatComposerUtils
         );
     }
 
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static RGaConformalFlat DefineFlatPlane(this RGaConformalSpace conformalSpace, Float64Vector3D position, Float64Vector3D normal)
+    {
+        return new RGaConformalFlat(
+            conformalSpace,
+            1,
+            conformalSpace.EncodeEGaVector(position),
+            conformalSpace.EncodeEGaBivector(normal.NormalToUnitDirection3D())
+        );
+    }
+
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static RGaConformalFlat DefineFlatPlane(this RGaConformalSpace conformalSpace, Float64Vector2D position, Float64Bivector2D direction)
@@ -345,7 +357,7 @@ public static class RGaConformalFlatComposerUtils
     public static RGaConformalFlat DefineFlatPlane(this RGaConformalSpace conformalSpace, double distance, Float64Vector3D normal)
     {
         var position = normal.SetLength(distance);
-        var direction = normal.UnDual3D();
+        var direction = normal.NormalToUnitDirection3D();
 
         return new RGaConformalFlat(
             conformalSpace,
@@ -360,7 +372,7 @@ public static class RGaConformalFlatComposerUtils
     public static RGaConformalFlat DefineFlatPlane(this RGaConformalSpace conformalSpace, double weight, double distance, Float64Vector3D normal)
     {
         var position = normal.SetLength(distance);
-        var direction = normal.UnDual3D();
+        var direction = normal.NormalToUnitDirection3D();
 
         return new RGaConformalFlat(
             conformalSpace,

@@ -183,7 +183,7 @@ public static class RGaConformalLerpRoundUtils
         var angle = normal1.GetAngleWithUnit(normal2) * t;
 
         var directionBivector =
-            normal1.RotateToUnitVector(normal2, angle).UnDual3D();
+            normal1.RotateToUnitVector(normal2, angle).NormalToUnitDirection3D();
 
         return RGaConformalSpace5D.Instance.DefineRoundCircle(
             weight,

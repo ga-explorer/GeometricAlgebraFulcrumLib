@@ -18,7 +18,7 @@ public sealed record Float64Scalar2D :
 
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Float64Scalar2D Create(Float64Scalar scalar)
+    public static Float64Scalar2D Create(double scalar)
     {
         if (scalar.IsZero())
             return Zero;
@@ -26,7 +26,7 @@ public sealed record Float64Scalar2D :
         if (scalar.IsOne())
             return E0;
 
-        if (scalar.IsNegativeOne())
+        if (scalar.IsMinusOne())
             return NegativeE0;
 
         return new Float64Scalar2D(scalar);
@@ -224,11 +224,65 @@ public sealed record Float64Scalar2D :
             : new Float64Scalar2D(Scalar.Inverse());
     }
     
+    
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public Float64Bivector2D Normal2D()
+    public Float64Bivector2D DirectionToUnitNormal2D()
     {
-        return Float64Bivector2D.Create(Scalar);
+        if (Scalar.IsZero())
+            return Float64Bivector2D.E12;
+
+        return Scalar.IsPositive()
+            ? Float64Bivector2D.E12
+            : Float64Bivector2D.E21;
     }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public Float64Bivector2D DirectionToNormal2D()
+    {
+        if (Scalar.IsZero())
+            return Float64Bivector2D.E12;
+
+        return Float64Bivector2D.Create(1d / Scalar.Value);
+    }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public Float64Bivector2D DirectionToNormal2D(double scalingFactor)
+    {
+        if (Scalar.IsZero())
+            return Float64Bivector2D.E12;
+
+        return Float64Bivector2D.Create(scalingFactor / Scalar.Value);
+    }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public Float64Bivector2D NormalToUnitDirection2D()
+    {
+        if (Scalar.IsZero())
+            return Float64Bivector2D.E12;
+
+        return Scalar.IsPositive()
+            ? Float64Bivector2D.E12
+            : Float64Bivector2D.E21;
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public Float64Bivector2D NormalToDirection2D()
+    {
+        if (Scalar.IsZero())
+            return Float64Bivector2D.E12;
+
+        return Float64Bivector2D.Create(1d / Scalar.Value);
+    }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public Float64Bivector2D NormalToDirection2D(double scalingFactor)
+    {
+        if (Scalar.IsZero())
+            return Float64Bivector2D.E12;
+
+        return Float64Bivector2D.Create(scalingFactor / Scalar.Value);
+    }
+
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public Float64Bivector2D Dual2D()
@@ -242,6 +296,7 @@ public sealed record Float64Scalar2D :
         return Float64Bivector2D.Create(Scalar);
     }
     
+
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public IEnumerator<Float64Scalar> GetEnumerator()
     {

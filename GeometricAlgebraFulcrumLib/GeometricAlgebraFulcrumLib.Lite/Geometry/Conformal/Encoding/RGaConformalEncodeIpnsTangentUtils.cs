@@ -301,7 +301,7 @@ public static class RGaConformalEncodeIpnsTangentUtils
     public static RGaConformalBlade EncodeIpnsTangentPlane(this RGaConformalSpace conformalSpace, Float64Vector3D egaPoint, Float64Vector3D egaNormalVector)
     {
         var egaDirectionBivector = 
-            egaNormalVector.UnDual3D();
+            egaNormalVector.NormalToUnitDirection3D();
 
         return conformalSpace.EncodeIpnsTangentPlane(
             egaPoint,

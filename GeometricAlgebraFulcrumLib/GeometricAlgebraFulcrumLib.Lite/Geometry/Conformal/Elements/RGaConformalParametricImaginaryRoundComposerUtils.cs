@@ -102,7 +102,7 @@ public static class RGaConformalParametricImaginaryRoundComposerUtils
             t => conformalSpace.DefineImaginaryRoundCircle(
                 radius,
                 centerCurve.GetPoint(t),
-                centerCurve.GetDerivative1Point(t).UnDual3D()
+                centerCurve.GetDerivative1Point(t).NormalToUnitDirection3D()
             )
         );
     }
@@ -116,7 +116,7 @@ public static class RGaConformalParametricImaginaryRoundComposerUtils
             t => conformalSpace.DefineImaginaryRoundCircle(
                 radius,
                 centerCurve.GetPoint(t),
-                centerCurve.GetDerivative1Point(t).UnDual3D()
+                centerCurve.GetDerivative1Point(t).NormalToUnitDirection3D()
             )
         );
     }
@@ -130,7 +130,7 @@ public static class RGaConformalParametricImaginaryRoundComposerUtils
             t => conformalSpace.DefineImaginaryRoundCircle(
                 radius.GetValue(t),
                 centerCurve.GetPoint(t),
-                centerCurve.GetDerivative1Point(t).UnDual3D()
+                centerCurve.GetDerivative1Point(t).NormalToUnitDirection3D()
             )
         );
     }
@@ -144,7 +144,7 @@ public static class RGaConformalParametricImaginaryRoundComposerUtils
             t => conformalSpace.DefineImaginaryRoundCircle(
                 radius.GetValue(t),
                 centerCurve.GetPoint(t),
-                centerCurve.GetDerivative1Point(t).UnDual3D()
+                centerCurve.GetDerivative1Point(t).NormalToUnitDirection3D()
             )
         );
     }
@@ -158,7 +158,7 @@ public static class RGaConformalParametricImaginaryRoundComposerUtils
             t => conformalSpace.DefineImaginaryRoundCircle(
                 radius,
                 centerCurve.GetPoint(t),
-                normalCurve.GetPoint(t).UnDual3D()
+                normalCurve.GetPoint(t).NormalToUnitDirection3D()
             )
         );
     }
@@ -172,7 +172,7 @@ public static class RGaConformalParametricImaginaryRoundComposerUtils
             t => conformalSpace.DefineImaginaryRoundCircle(
                 radius,
                 centerCurve.GetPoint(t),
-                normalCurve.GetPoint(t).UnDual3D()
+                normalCurve.GetPoint(t).NormalToUnitDirection3D()
             )
         );
     }
@@ -186,7 +186,7 @@ public static class RGaConformalParametricImaginaryRoundComposerUtils
             t => conformalSpace.DefineImaginaryRoundCircle(
                 radius.GetValue(t),
                 centerCurve.GetPoint(t),
-                normalCurve.GetPoint(t).UnDual3D()
+                normalCurve.GetPoint(t).NormalToUnitDirection3D()
             )
         );
     }
@@ -200,7 +200,7 @@ public static class RGaConformalParametricImaginaryRoundComposerUtils
             t => conformalSpace.DefineImaginaryRoundCircle(
                 radius.GetValue(t),
                 centerCurve.GetPoint(t),
-                normalCurve.GetPoint(t).UnDual3D()
+                normalCurve.GetPoint(t).NormalToUnitDirection3D()
             )
         );
     }
