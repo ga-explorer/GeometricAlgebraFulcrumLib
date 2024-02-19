@@ -1,9 +1,8 @@
-﻿namespace CodeComposerLib.SyntaxTree
-{
-    public class SteSetNamespace : SteSyntaxElement
-    {
-        public string NamespaceName { get; set; }
+﻿namespace CodeComposerLib.SyntaxTree;
 
-        public ISyntaxTreeElement SubCode { get; set; }
-    }
+public class SteSetNamespace : SteSyntaxElement
+{
+    public string NamespaceName { get; set; }
+
+    public ISyntaxTreeElement SubCode { get; set; }
 }

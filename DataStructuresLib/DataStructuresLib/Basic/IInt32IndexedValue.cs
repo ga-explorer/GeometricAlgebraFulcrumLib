@@ -1,9 +1,8 @@
-﻿namespace DataStructuresLib.Basic
-{
-    public interface IInt32IndexedValue<out T>
-    {
-        public int Index { get; }
+﻿namespace DataStructuresLib.Basic;
 
-        public T Value { get; }
-    }
+public interface IInt32IndexedValue<out T>
+{
+    public int Index { get; }
+
+    public T Value { get; }
 }

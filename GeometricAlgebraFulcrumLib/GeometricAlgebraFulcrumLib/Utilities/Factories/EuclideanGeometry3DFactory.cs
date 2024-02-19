@@ -1,7 +1,6 @@
-﻿namespace GeometricAlgebraFulcrumLib.Utilities.Factories
+﻿namespace GeometricAlgebraFulcrumLib.Utilities.Factories;
+
+public static class EuclideanGeometry3DFactory
 {
-    public static class EuclideanGeometry3DFactory
-    {
-        //public Vector<T> CreateUnitXVector<T>()
-    }
+    //public Vector<T> CreateUnitXVector<T>()
 }

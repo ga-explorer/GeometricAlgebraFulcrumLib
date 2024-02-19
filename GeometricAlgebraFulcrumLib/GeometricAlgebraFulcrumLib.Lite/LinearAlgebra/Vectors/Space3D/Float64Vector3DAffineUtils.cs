@@ -379,9 +379,11 @@ public static class Float64Vector3DAffineUtils
     {
         var s = v.X * u.X + v.Y * u.Y + v.Z * u.Z;
 
-        return Float64Vector3D.Create(v.X - u.X * s,
+        return Float64Vector3D.Create(
+            v.X - u.X * s,
             v.Y - u.Y * s,
-            v.Z - u.Z * s);
+            v.Z - u.Z * s
+        );
     }
     
     /// <summary>

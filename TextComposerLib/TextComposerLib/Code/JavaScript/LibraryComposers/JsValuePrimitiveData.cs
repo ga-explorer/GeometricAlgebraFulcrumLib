@@ -1,39 +1,38 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 
-namespace TextComposerLib.Code.JavaScript.LibraryComposers
+namespace TextComposerLib.Code.JavaScript.LibraryComposers;
+
+public class JsValuePrimitiveData :
+    JsValueData
 {
-    public class JsValuePrimitiveData :
-        JsValueData
+    public JsPrimitiveType PrimitiveExpression { get; }
+
+
+    internal JsValuePrimitiveData([NotNull] JsPrimitiveType primitiveExpression, JsClassNameData valueType)
+        : base(valueType)
     {
-        public JsPrimitiveType PrimitiveExpression { get; }
+        PrimitiveExpression = primitiveExpression;
+    }
 
 
-        internal JsValuePrimitiveData([NotNull] JsPrimitiveType primitiveExpression, JsClassNameData valueType)
-            : base(valueType)
+    public override string GetJsCode()
+    {
+        return PrimitiveExpression.GetJsCode();
+    }
+
+    public override string GetCsCode()
+    {
+        if (PrimitiveExpression is null)
+            return "new JsObject()";
+
+        var codeText = PrimitiveExpression.GetCsCode();
+
+        return PrimitiveExpression switch
         {
-            PrimitiveExpression = primitiveExpression;
-        }
-
-
-        public override string GetJsCode()
-        {
-            return PrimitiveExpression.GetJsCode();
-        }
-
-        public override string GetCsCode()
-        {
-            if (PrimitiveExpression is null)
-                return "new JsObject()";
-
-            var codeText = PrimitiveExpression.GetCsCode();
-
-            return PrimitiveExpression switch
-            {
-                JsNumber => $"({codeText}).AsJsNumber()",
-                JsBoolean => $"({codeText}).AsJsBoolean()",
-                JsString => $"({codeText}).AsJsString()",
-                _ => codeText
-            };
-        }
+            JsNumber => $"({codeText}).AsJsNumber()",
+            JsBoolean => $"({codeText}).AsJsBoolean()",
+            JsString => $"({codeText}).AsJsString()",
+            _ => codeText
+        };
     }
 }

@@ -1,23 +1,22 @@
 ﻿using GeometricAlgebraFulcrumLib.Lite.ScalarAlgebra;
 
-namespace GeometricAlgebraFulcrumLib.Geometry.Euclidean.Space2D.Objects
+namespace GeometricAlgebraFulcrumLib.Geometry.Euclidean.Space2D.Objects;
+
+public sealed record E2DBivector<T>
 {
-    public sealed record E2DBivector<T>
+    public IScalarProcessor<T> ScalarProcessor { get; }
+
+    public T Xy { get; }
+    
+    
+
+    public bool AssumeUnit { get; }
+
+
+    internal E2DBivector(IScalarProcessor<T> scalarProcessor, T xy, bool assumeUnit = false)
     {
-        public IScalarProcessor<T> ScalarProcessor { get; }
-
-        public T Xy { get; }
-    
-    
-
-        public bool AssumeUnit { get; }
-
-
-        internal E2DBivector(IScalarProcessor<T> scalarProcessor, T xy, bool assumeUnit = false)
-        {
-            ScalarProcessor = scalarProcessor;
-            Xy = xy;
-            AssumeUnit = assumeUnit;
-        }
+        ScalarProcessor = scalarProcessor;
+        Xy = xy;
+        AssumeUnit = assumeUnit;
     }
 }

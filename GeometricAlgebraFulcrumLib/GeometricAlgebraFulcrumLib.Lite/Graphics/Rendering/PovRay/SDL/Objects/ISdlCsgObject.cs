@@ -1,7 +1,6 @@
-﻿namespace GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.PovRay.SDL.Objects
+﻿namespace GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.PovRay.SDL.Objects;
+
+public interface ISdlCsgObject : ISdlSolidObject
 {
-    public interface ISdlCsgObject : ISdlSolidObject
-    {
          
-    }
 }

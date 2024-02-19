@@ -2,85 +2,84 @@
 using WebComposerLib.Svg.Elements;
 using WebComposerLib.Svg.Values;
 
-namespace WebComposerLib.Svg.Attributes
+namespace WebComposerLib.Svg.Attributes;
+
+/// <summary>
+/// http://docs.w3cub.com/svg/content_type/#Angle
+/// </summary>
+/// <typeparam name="TParentElement"></typeparam>
+public sealed class SvgEavAngle<TParentElement>
+    : SvgElementAttributeValue<TParentElement> where TParentElement : SvgElement
 {
-    /// <summary>
-    /// http://docs.w3cub.com/svg/content_type/#Angle
-    /// </summary>
-    /// <typeparam name="TParentElement"></typeparam>
-    public sealed class SvgEavAngle<TParentElement>
-        : SvgElementAttributeValue<TParentElement> where TParentElement : SvgElement
+    private double _angle;
+    public double Angle
     {
-        private double _angle;
-        public double Angle
+        get => _angle;
+        set
         {
-            get => _angle;
-            set
-            {
-                _angle = value;
-                IsValueComputed = true;
-            }
+            _angle = value;
+            IsValueComputed = true;
         }
+    }
 
-        private SvgValueAngleUnit _unit = SvgValueAngleUnit.None;
-        public SvgValueAngleUnit Unit
+    private SvgValueAngleUnit _unit = SvgValueAngleUnit.None;
+    public SvgValueAngleUnit Unit
+    {
+        get => _unit;
+        set
         {
-            get => _unit;
-            set
-            {
-                _unit = value ?? SvgValueAngleUnit.None;
-                IsValueComputed = true;
-            }
+            _unit = value ?? SvgValueAngleUnit.None;
+            IsValueComputed = true;
         }
+    }
 
-        protected override string ValueComputedText
-            => _angle.ToSvgAngleText(_unit);
-
-
-        internal SvgEavAngle(TParentElement parentElement, SvgAttributeInfo attributeInfo)
-            : base(parentElement, attributeInfo)
-        {
-        }
+    protected override string ValueComputedText
+        => _angle.ToSvgAngleText(_unit);
 
 
-        public override ISvgAttributeValue CreateCopy()
-        {
-            throw new NotImplementedException();
-        }
+    internal SvgEavAngle(TParentElement parentElement, SvgAttributeInfo attributeInfo)
+        : base(parentElement, attributeInfo)
+    {
+    }
 
-        public override ISvgAttributeValue UpdateFrom(ISvgAttributeValue sourceAttributeValue)
-        {
-            throw new NotImplementedException();
-        }
 
-        public TParentElement SetTo(double angle)
-        {
-            Angle = angle;
-            Unit = SvgValueAngleUnit.None;
+    public override ISvgAttributeValue CreateCopy()
+    {
+        throw new NotImplementedException();
+    }
 
-            return ParentElement;
-        }
+    public override ISvgAttributeValue UpdateFrom(ISvgAttributeValue sourceAttributeValue)
+    {
+        throw new NotImplementedException();
+    }
 
-        public TParentElement SetTo(double angle, SvgValueAngleUnit unit)
-        {
-            Angle = angle;
-            Unit = unit;
+    public TParentElement SetTo(double angle)
+    {
+        Angle = angle;
+        Unit = SvgValueAngleUnit.None;
 
-            return ParentElement;
-        }
+        return ParentElement;
+    }
 
-        public TParentElement SetToAuto()
-        {
-            ValueStoredText = "auto";
+    public TParentElement SetTo(double angle, SvgValueAngleUnit unit)
+    {
+        Angle = angle;
+        Unit = unit;
 
-            return ParentElement;
-        }
+        return ParentElement;
+    }
 
-        public TParentElement SetToAutoStartReverse()
-        {
-            ValueStoredText = "auto-start-reverse";
+    public TParentElement SetToAuto()
+    {
+        ValueStoredText = "auto";
 
-            return ParentElement;
-        }
+        return ParentElement;
+    }
+
+    public TParentElement SetToAutoStartReverse()
+    {
+        ValueStoredText = "auto-start-reverse";
+
+        return ParentElement;
     }
 }

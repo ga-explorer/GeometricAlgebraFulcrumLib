@@ -1,7 +1,6 @@
-﻿namespace GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.PovRay.SDL.Directives
+﻿namespace GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.PovRay.SDL.Directives;
+
+public interface ISdlDirective : ISdlStatement
 {
-    public interface ISdlDirective : ISdlStatement
-    {
          
-    }
 }

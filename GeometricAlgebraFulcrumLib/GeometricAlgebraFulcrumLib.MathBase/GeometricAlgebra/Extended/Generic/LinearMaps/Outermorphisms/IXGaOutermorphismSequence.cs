@@ -1,7 +1,6 @@
-﻿namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.LinearMaps.Outermorphisms
+﻿namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.LinearMaps.Outermorphisms;
+
+public interface IXGaOutermorphismSequence<T>
 {
-    public interface IXGaOutermorphismSequence<T>
-    {
-        IEnumerable<IXGaOutermorphism<T>> GetLeafOutermorphisms();
-    }
+    IEnumerable<IXGaOutermorphism<T>> GetLeafOutermorphisms();
 }

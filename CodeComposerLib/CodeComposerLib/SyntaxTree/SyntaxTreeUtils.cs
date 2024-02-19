@@ -1,6 +1,5 @@
-﻿namespace CodeComposerLib.SyntaxTree
+﻿namespace CodeComposerLib.SyntaxTree;
+
+public static class SyntaxTreeUtils
 {
-    public static class SyntaxTreeUtils
-    {
-    }
 }

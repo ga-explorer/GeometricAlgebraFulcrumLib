@@ -7,10 +7,10 @@ using GeometricAlgebraFulcrumLib.Lite.Geometry.Borders.Space3D;
 using GeometricAlgebraFulcrumLib.Lite.LinearAlgebra.Vectors.Space2D;
 using GeometricAlgebraFulcrumLib.Lite.LinearAlgebra.Vectors.Space3D;
 
-namespace GeometricAlgebraFulcrumLib.Lite.Geometry
+namespace GeometricAlgebraFulcrumLib.Lite.Geometry;
+
+public static class GeometryRandomUtils
 {
-    public static class GeometryRandomUtils
-    {
         
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Float64Vector2D GetPointInside(this System.Random randomGenerator, IBoundingBox2D limitsBoundingBox)
@@ -59,5 +59,4 @@ namespace GeometricAlgebraFulcrumLib.Lite.Geometry
         return pointsArray;
     }
 
-    }
 }

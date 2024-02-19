@@ -1,9 +1,8 @@
-﻿namespace GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.Xeogl.Constants
+﻿namespace GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.Xeogl.Constants;
+
+public enum XeoglAlphaMode
 {
-    public enum XeoglAlphaMode
-    {
-        Opaque = 0,
-        Blend = 1,
-        Mask = 2
-    }
+    Opaque = 0,
+    Blend = 1,
+    Mask = 2
 }

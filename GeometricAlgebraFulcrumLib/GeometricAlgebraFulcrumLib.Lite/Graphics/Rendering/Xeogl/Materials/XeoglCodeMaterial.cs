@@ -1,35 +1,34 @@
 ﻿using GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.Xeogl.Constants;
 
-namespace GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.Xeogl.Materials
+namespace GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.Xeogl.Materials;
+
+public class XeoglCodeMaterial : XeoglMaterial
 {
-    public class XeoglCodeMaterial : XeoglMaterial
+    public static XeoglCodeMaterial Create(string code) 
+        => new XeoglCodeMaterial(code);
+
+
+    public override string JavaScriptClassName => string.Empty;
+
+    public override XeoglMaterialType MaterialType
+        => XeoglMaterialType.Code;
+
+    public string Code { get; set; }
+
+
+    public XeoglCodeMaterial()
     {
-        public static XeoglCodeMaterial Create(string code) 
-            => new XeoglCodeMaterial(code);
+    }
 
 
-        public override string JavaScriptClassName => string.Empty;
-
-        public override XeoglMaterialType MaterialType
-            => XeoglMaterialType.Code;
-
-        public string Code { get; set; }
+    public XeoglCodeMaterial(string code)
+    {
+        Code = code ?? string.Empty;
+    }
 
 
-        public XeoglCodeMaterial()
-        {
-        }
-
-
-        public XeoglCodeMaterial(string code)
-        {
-            Code = code ?? string.Empty;
-        }
-
-
-        public override string ToString()
-        {
-            return Code;
-        }
+    public override string ToString()
+    {
+        return Code;
     }
 }

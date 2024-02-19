@@ -1,12 +1,11 @@
 ﻿using Size = SixLabors.ImageSharp.Size;
 
-namespace GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.ImageSharp.Processing.AutoCrop.Extensions
+namespace GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.ImageSharp.Processing.AutoCrop.Extensions;
+
+internal static class SizeExtensions
 {
-    internal static class SizeExtensions
+    public static SixLabors.ImageSharp.Point ToPoint(this Size size)
     {
-        public static SixLabors.ImageSharp.Point ToPoint(this Size size)
-        {
-            return new SixLabors.ImageSharp.Point(size.Width, size.Height);
-        }
+        return new SixLabors.ImageSharp.Point(size.Width, size.Height);
     }
 }

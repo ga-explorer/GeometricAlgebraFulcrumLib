@@ -1,10 +1,9 @@
-﻿namespace WebComposerLib.LaTeX.CodeComposer.Documents
+﻿namespace WebComposerLib.LaTeX.CodeComposer.Documents;
+
+public enum LaTeXDocumentMatterKind
 {
-    public enum LaTeXDocumentMatterKind
-    {
-        FromtMatter,
-        MainMatter,
-        Appendix,
-        BackMatter
-    }
+    FromtMatter,
+    MainMatter,
+    Appendix,
+    BackMatter
 }

@@ -1,7 +1,6 @@
-﻿namespace GeometricAlgebraFulcrumLib.Lite.Geometry.Differential.Functions.Interpolators
+﻿namespace GeometricAlgebraFulcrumLib.Lite.Geometry.Differential.Functions.Interpolators;
+
+public sealed class DfLinearSplineSignalInterpolatorOptions :
+    DfSignalInterpolatorOptions
 {
-    public sealed class DfLinearSplineSignalInterpolatorOptions :
-        DfSignalInterpolatorOptions
-    {
-    }
 }

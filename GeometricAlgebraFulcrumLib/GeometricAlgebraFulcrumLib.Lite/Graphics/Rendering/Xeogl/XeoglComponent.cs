@@ -1,23 +1,22 @@
 ﻿using TextComposerLib.Code.JavaScript;
 using TextComposerLib.Code.JavaScript.Obsolete;
 
-namespace GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.Xeogl
+namespace GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.Xeogl;
+
+/// <summary>
+/// This class represents a xeogl component like a geometry, camera, light, etc.
+/// </summary>
+public abstract class XeoglComponent : 
+    JsCodeComponentWithAttributes
 {
-    /// <summary>
-    /// This class represents a xeogl component like a geometry, camera, light, etc.
-    /// </summary>
-    public abstract class XeoglComponent : 
-        JsCodeComponentWithAttributes
+    protected XeoglComponent()
     {
-        protected XeoglComponent()
-        {
-            DefaultParentName = "xeogl";
-        }
+        DefaultParentName = "xeogl";
+    }
 
 
-        protected override JavaScriptAttributesDictionary CreateAttributesDictionary()
-        {
-            return new XeoglComponentAttributesDictionary();
-        }
+    protected override JavaScriptAttributesDictionary CreateAttributesDictionary()
+    {
+        return new XeoglComponentAttributesDictionary();
     }
 }

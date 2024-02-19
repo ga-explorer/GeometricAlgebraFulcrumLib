@@ -1,7 +1,6 @@
-﻿namespace GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.PovRay.SDL.Lights
+﻿namespace GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.PovRay.SDL.Lights;
+
+public interface ISdlLight : ISdlStatement, ISdlTransformable, ISdlNameable
 {
-    public interface ISdlLight : ISdlStatement, ISdlTransformable, ISdlNameable
-    {
          
-    }
 }

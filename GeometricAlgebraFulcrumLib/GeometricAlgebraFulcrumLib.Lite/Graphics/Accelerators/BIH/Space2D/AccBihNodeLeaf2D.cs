@@ -3,120 +3,119 @@ using GeometricAlgebraFulcrumLib.Lite.Geometry.BasicShapes;
 using GeometricAlgebraFulcrumLib.Lite.Geometry.Borders.Space2D.Immutable;
 using GeometricAlgebraFulcrumLib.Lite.Geometry.Borders.Space2D.Mutable;
 
-namespace GeometricAlgebraFulcrumLib.Lite.Graphics.Accelerators.BIH.Space2D
+namespace GeometricAlgebraFulcrumLib.Lite.Graphics.Accelerators.BIH.Space2D;
+
+public sealed class AccBihNodeLeaf2D<T> 
+    : IAccBihNode2D<T> where T : IFiniteGeometricShape2D
 {
-    public sealed class AccBihNodeLeaf2D<T> 
-        : IAccBihNode2D<T> where T : IFiniteGeometricShape2D
+    private readonly T[] _geometricObjectsArray;
+
+
+    public bool IntersectionTestsEnabled { get; set; } = true;
+
+    public bool IsValid()
     {
-        private readonly T[] _geometricObjectsArray;
+        return true;
+    }
 
+    public int Count => LastObjectIndex - FirstObjectIndex + 1;
 
-        public bool IntersectionTestsEnabled { get; set; } = true;
+    public T this[int index] => _geometricObjectsArray[FirstObjectIndex + index];
 
-        public bool IsValid()
-        {
-            return true;
-        }
+    public string NodeId { get; set; }
 
-        public int Count => LastObjectIndex - FirstObjectIndex + 1;
+    public bool IsRoot => NodeDepth == 0;
 
-        public T this[int index] => _geometricObjectsArray[FirstObjectIndex + index];
+    public bool IsLeaf => true;
 
-        public string NodeId { get; set; }
+    public bool IsInternal => false;
 
-        public bool IsRoot => NodeDepth == 0;
+    public bool IsSingleInternal => false;
 
-        public bool IsLeaf => true;
+    public int NodeDepth { get; }
 
-        public bool IsInternal => false;
+    public int BihDepth => NodeId.Length;
 
-        public bool IsSingleInternal => false;
+    public int FirstObjectIndex { get; }
 
-        public int NodeDepth { get; }
+    public int LastObjectIndex { get; }
 
-        public int BihDepth => NodeId.Length;
+    public IAccBihNode2D LeftChild => null;
 
-        public int FirstObjectIndex { get; }
+    public IAccBihNode2D RightChild => null;
 
-        public int LastObjectIndex { get; }
+    public IAccBihNode2D<T> LeftChildNode => null;
 
-        public IAccBihNode2D LeftChild => null;
+    public IAccBihNode2D<T> RightChildNode => null;
 
-        public IAccBihNode2D RightChild => null;
+    public bool HasLeftChild => false;
 
-        public IAccBihNode2D<T> LeftChildNode => null;
+    public bool HasRightChild => false;
 
-        public IAccBihNode2D<T> RightChildNode => null;
+    public bool HasNoChildren => true;
 
-        public bool HasLeftChild => false;
+    public int SplitAxisIndex => -1;
 
-        public bool HasRightChild => false;
+    public string SplitAxisName => "none";
 
-        public bool HasNoChildren => true;
+    public double ClipValue0 => double.PositiveInfinity;
 
-        public int SplitAxisIndex => -1;
+    public double ClipValue1 => double.PositiveInfinity;
 
-        public string SplitAxisName => "none";
-
-        public double ClipValue0 => double.PositiveInfinity;
-
-        public double ClipValue1 => double.PositiveInfinity;
-
-        public IEnumerable<IFiniteGeometricShape2D> Contents
-        {
-            get
-            {
-                for (var i = FirstObjectIndex; i <= LastObjectIndex; i++)
-                    yield return _geometricObjectsArray[i];
-            }
-        }
-
-
-        internal AccBihNodeLeaf2D(string nodeId, int nodeDepth, T[] geometricObjectsArray, int firstArrayIndex, int lastArrayIndex)
-        {
-            NodeId = nodeId;
-            NodeDepth = nodeDepth;
-
-            _geometricObjectsArray = geometricObjectsArray;
-            FirstObjectIndex = firstArrayIndex;
-            LastObjectIndex = lastArrayIndex;
-        }
-
-
-        public IAccBihNode2D<T> GetChild(int index)
-        {
-            return null;
-        }
-
-        public bool Contains(IFiniteGeometricShape2D shape)
-        {
-            for (var i = FirstObjectIndex; i <= LastObjectIndex; i++)
-                if (ReferenceEquals(_geometricObjectsArray[i], shape))
-                    return true;
-
-            return false;
-        }
-
-        public BoundingBox2D GetBoundingBox()
-        {
-            return BoundingBox2D.Create((IEnumerable<T>)this);
-        }
-
-        public MutableBoundingBox2D GetMutableBoundingBox()
-        {
-            return MutableBoundingBox2D.Create((IEnumerable<T>)this);
-        }
-
-        public IEnumerator<T> GetEnumerator()
+    public IEnumerable<IFiniteGeometricShape2D> Contents
+    {
+        get
         {
             for (var i = FirstObjectIndex; i <= LastObjectIndex; i++)
                 yield return _geometricObjectsArray[i];
         }
+    }
 
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            for (var i = FirstObjectIndex; i <= LastObjectIndex; i++)
-                yield return _geometricObjectsArray[i];
-        }
+
+    internal AccBihNodeLeaf2D(string nodeId, int nodeDepth, T[] geometricObjectsArray, int firstArrayIndex, int lastArrayIndex)
+    {
+        NodeId = nodeId;
+        NodeDepth = nodeDepth;
+
+        _geometricObjectsArray = geometricObjectsArray;
+        FirstObjectIndex = firstArrayIndex;
+        LastObjectIndex = lastArrayIndex;
+    }
+
+
+    public IAccBihNode2D<T> GetChild(int index)
+    {
+        return null;
+    }
+
+    public bool Contains(IFiniteGeometricShape2D shape)
+    {
+        for (var i = FirstObjectIndex; i <= LastObjectIndex; i++)
+            if (ReferenceEquals(_geometricObjectsArray[i], shape))
+                return true;
+
+        return false;
+    }
+
+    public BoundingBox2D GetBoundingBox()
+    {
+        return BoundingBox2D.Create((IEnumerable<T>)this);
+    }
+
+    public MutableBoundingBox2D GetMutableBoundingBox()
+    {
+        return MutableBoundingBox2D.Create((IEnumerable<T>)this);
+    }
+
+    public IEnumerator<T> GetEnumerator()
+    {
+        for (var i = FirstObjectIndex; i <= LastObjectIndex; i++)
+            yield return _geometricObjectsArray[i];
+    }
+
+    IEnumerator IEnumerable.GetEnumerator()
+    {
+        for (var i = FirstObjectIndex; i <= LastObjectIndex; i++)
+            yield return _geometricObjectsArray[i];
     }
 }

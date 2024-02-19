@@ -1,49 +1,48 @@
 ﻿using CodeComposerLib.HTMLold.Elements;
 using CodeComposerLib.HTMLold.Values;
 
-namespace CodeComposerLib.HTMLold.Attributes
+namespace CodeComposerLib.HTMLold.Attributes;
+
+public sealed class HtmlEav<TValueType, TParentElement>
+    : HtmlElementAttributeValue<TParentElement>
+    where TParentElement : HtmlElement
+    where TValueType : IHtmlValue
 {
-    public sealed class HtmlEav<TValueType, TParentElement>
-        : HtmlElementAttributeValue<TParentElement>
-        where TParentElement : HtmlElement
-        where TValueType : IHtmlValue
+    //TODO: Implement default value computation based on parent element type
+    private TValueType _value;
+    public TValueType Value
     {
-        //TODO: Implement default value computation based on parent element type
-        private TValueType _value;
-        public TValueType Value
+        get { return _value; }
+        set
         {
-            get { return _value; }
-            set
-            {
-                _value = value;
-                IsValueComputed = true;
-            }
+            _value = value;
+            IsValueComputed = true;
         }
+    }
 
-        protected override string ValueComputedText => Value?.ValueText ?? string.Empty;
-
-
-        internal HtmlEav(TParentElement parentElement, HtmlAttributeInfo attributeInfo)
-            : base(parentElement, attributeInfo)
-        {
-        }
+    protected override string ValueComputedText => Value?.ValueText ?? string.Empty;
 
 
-        public override IHtmlAttributeValue CreateCopy()
-        {
-            throw new System.NotImplementedException();
-        }
+    internal HtmlEav(TParentElement parentElement, HtmlAttributeInfo attributeInfo)
+        : base(parentElement, attributeInfo)
+    {
+    }
 
-        public override IHtmlAttributeValue UpdateFrom(IHtmlAttributeValue sourceAttributeValue)
-        {
-            throw new System.NotImplementedException();
-        }
 
-        public TParentElement SetTo(TValueType value)
-        {
-            Value = value;
+    public override IHtmlAttributeValue CreateCopy()
+    {
+        throw new System.NotImplementedException();
+    }
 
-            return ParentElement;
-        }
+    public override IHtmlAttributeValue UpdateFrom(IHtmlAttributeValue sourceAttributeValue)
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public TParentElement SetTo(TValueType value)
+    {
+        Value = value;
+
+        return ParentElement;
     }
 }

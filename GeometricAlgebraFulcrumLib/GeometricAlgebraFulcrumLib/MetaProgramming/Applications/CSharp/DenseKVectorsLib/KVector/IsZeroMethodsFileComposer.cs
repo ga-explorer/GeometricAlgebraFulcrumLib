@@ -5,89 +5,88 @@ using GeometricAlgebraFulcrumLib.Utilities.Extensions;
 using TextComposerLib.Text.Linear;
 using TextComposerLib.Text.Structured;
 
-namespace GeometricAlgebraFulcrumLib.MetaProgramming.Applications.CSharp.DenseKVectorsLib.KVector
+namespace GeometricAlgebraFulcrumLib.MetaProgramming.Applications.CSharp.DenseKVectorsLib.KVector;
+
+internal sealed class IsZeroMethodsFileComposer : 
+    GaFuLLibraryFileComposerBase
 {
-    internal sealed class IsZeroMethodsFileComposer : 
-        GaFuLLibraryFileComposerBase
+    internal IsZeroMethodsFileComposer(GaFuLLibraryComposer libGen)
+        : base(libGen)
     {
-        internal IsZeroMethodsFileComposer(GaFuLLibraryComposer libGen)
-            : base(libGen)
+    }
+
+
+    private void GenerateIsZeroFunction(ulong kvSpaceDim)
+    {
+        var t1 = Templates["iszero"];
+        var t2 = Templates["iszero_case"];
+        var t3 = Templates["trimscalars_case"];
+
+        var iszeroCasesText = new ListTextComposer(" ||" + Environment.NewLine);
+        var trimCoefsCasesText = new ListTextComposer("," + Environment.NewLine);
+
+        for (var i = 0UL; i < kvSpaceDim; i++)
         {
+            iszeroCasesText.Add(t2, "num", i);
+            trimCoefsCasesText.Add(t3, "num", i);
         }
 
+        TextComposer.AppendAtNewLine(
+            t1,
+            "num", kvSpaceDim,
+            "double", GeoLanguage.ScalarTypeName,
+            "iszero_case", iszeroCasesText,
+            "trimscalars_case", trimCoefsCasesText
+        );
+    }
 
-        private void GenerateIsZeroFunction(ulong kvSpaceDim)
+    private void GenerateMainIsZeroFunction()
+    {
+        var t1 = Templates["main_iszero"];
+        var t2 = Templates["main_iszero_case"];
+        var t3 = Templates["main_trimscalars_case"];
+
+        var iszeroCasesText = new ListTextComposer(Environment.NewLine);
+        var trimcoefsCasesText = new ListTextComposer(Environment.NewLine);
+
+        foreach (var grade in Grades)
         {
-            var t1 = Templates["iszero"];
-            var t2 = Templates["iszero_case"];
-            var t3 = Templates["trimscalars_case"];
+            iszeroCasesText.Add(t2,
+                "grade", grade,
+                "num", VSpaceDimensions.KVectorSpaceDimension(grade)
+            );
 
-            var iszeroCasesText = new ListTextComposer(" ||" + Environment.NewLine);
-            var trimCoefsCasesText = new ListTextComposer("," + Environment.NewLine);
-
-            for (var i = 0UL; i < kvSpaceDim; i++)
-            {
-                iszeroCasesText.Add(t2, "num", i);
-                trimCoefsCasesText.Add(t3, "num", i);
-            }
-
-            TextComposer.AppendAtNewLine(
-                t1,
-                "num", kvSpaceDim,
-                "double", GeoLanguage.ScalarTypeName,
-                "iszero_case", iszeroCasesText,
-                "trimscalars_case", trimCoefsCasesText
+            trimcoefsCasesText.Add(t3,
+                "signature", CurrentNamespace,
+                "grade", grade,
+                "num", VSpaceDimensions.KVectorSpaceDimension(grade)
             );
         }
 
-        private void GenerateMainIsZeroFunction()
-        {
-            var t1 = Templates["main_iszero"];
-            var t2 = Templates["main_iszero_case"];
-            var t3 = Templates["main_trimscalars_case"];
+        TextComposer.AppendAtNewLine(t1,
+            "signature", CurrentNamespace,
+            "main_iszero_case", iszeroCasesText,
+            "main_trimscalars_case", trimcoefsCasesText
+        );
+    }
 
-            var iszeroCasesText = new ListTextComposer(Environment.NewLine);
-            var trimcoefsCasesText = new ListTextComposer(Environment.NewLine);
+    public override void Generate()
+    {
+        GenerateKVectorFileStartCode();
 
-            foreach (var grade in Grades)
-            {
-                iszeroCasesText.Add(t2,
-                    "grade", grade,
-                    "num", VSpaceDimensions.KVectorSpaceDimension(grade)
-                    );
+        var kvSpaceDimList =
+            VSpaceDimensions
+                .GetRange()
+                .Select(grade => VSpaceDimensions.KVectorSpaceDimension(grade))
+                .Distinct();
 
-                trimcoefsCasesText.Add(t3,
-                    "signature", CurrentNamespace,
-                    "grade", grade,
-                    "num", VSpaceDimensions.KVectorSpaceDimension(grade)
-                    );
-            }
+        foreach (var kvSpaceDim in kvSpaceDimList)
+            GenerateIsZeroFunction(kvSpaceDim);
 
-            TextComposer.AppendAtNewLine(t1,
-                "signature", CurrentNamespace,
-                "main_iszero_case", iszeroCasesText,
-                "main_trimscalars_case", trimcoefsCasesText
-                );
-        }
+        GenerateMainIsZeroFunction();
 
-        public override void Generate()
-        {
-            GenerateKVectorFileStartCode();
+        GenerateKVectorFileFinishCode();
 
-            var kvSpaceDimList =
-                VSpaceDimensions
-                    .GetRange()
-                    .Select(grade => VSpaceDimensions.KVectorSpaceDimension(grade))
-                    .Distinct();
-
-            foreach (var kvSpaceDim in kvSpaceDimList)
-                GenerateIsZeroFunction(kvSpaceDim);
-
-            GenerateMainIsZeroFunction();
-
-            GenerateKVectorFileFinishCode();
-
-            FileComposer.FinalizeText();
-        }
+        FileComposer.FinalizeText();
     }
 }

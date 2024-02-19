@@ -1,11 +1,10 @@
-﻿namespace GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.PovRay.SDL.Values
+﻿namespace GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.PovRay.SDL.Values;
+
+public sealed class SdlColorExpression : SdlStoredValue, ISdlColorValue
 {
-    public sealed class SdlColorExpression : SdlStoredValue, ISdlColorValue
+    internal SdlColorExpression(string value)
+        : base(value)
     {
-        internal SdlColorExpression(string value)
-            : base(value)
-        {
             
-        }
     }
 }

@@ -3,220 +3,221 @@ using GeometricAlgebraFulcrumLib.Lite.ScalarAlgebra;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Multivectors.Composers;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Multivectors.GuidedBinaryTraversal.Multivectors;
 
-namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Multivectors.GuidedBinaryTraversal.Outermorphisms
+namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Multivectors.GuidedBinaryTraversal.Outermorphisms;
+
+
+
+public sealed class RGaGbtKVectorOutermorphismStack<T>
+    : RGaGbtStack1
 {
-    public sealed class RGaGbtKVectorOutermorphismStack<T>
-        : RGaGbtStack1
+    public static RGaGbtKVectorOutermorphismStack<T> Create(IReadOnlyList<RGaVector<T>> basisVectorsMappingsList, RGaMultivector<T> mv)
     {
-        public static RGaGbtKVectorOutermorphismStack<T> Create(IReadOnlyList<RGaVector<T>> basisVectorsMappingsList, RGaMultivector<T> mv)
-        {
-            var treeDepth = Math.Max(1, mv.VSpaceDimensions);
-            var capacity = treeDepth + 1;
+        var treeDepth = Math.Max(1, mv.VSpaceDimensions);
+        var capacity = treeDepth + 1;
 
-            return new RGaGbtKVectorOutermorphismStack<T>(
-                basisVectorsMappingsList,
-                mv.CreateGbtStack(treeDepth, capacity)
-            );
-        }
+        return new RGaGbtKVectorOutermorphismStack<T>(
+            basisVectorsMappingsList,
+            mv.CreateGbtStack(treeDepth, capacity)
+        );
+    }
 
 
-        private RGaKVector<T>[] KVectorArray { get; }
+    private RGaKVector<T>[] KVectorArray { get; }
 
-        private IRGaGbtMultivectorStorageStack1<T> MultivectorStack { get; }
+    private IRGaGbtMultivectorStorageStack1<T> MultivectorStack { get; }
 
-        public IScalarProcessor<T> ScalarProcessor 
-            => MultivectorStack.ScalarProcessor;
+    public IScalarProcessor<T> ScalarProcessor 
+        => MultivectorStack.ScalarProcessor;
 
-        public IReadOnlyList<RGaVector<T>> BasisVectorsMappingsList { get; }
+    public IReadOnlyList<RGaVector<T>> BasisVectorsMappingsList { get; }
 
-        public RGaMultivector<T> Storage 
-            => MultivectorStack.Multivector;
+    public RGaMultivector<T> Storage 
+        => MultivectorStack.Multivector;
 
-        public RGaKVector<T> TosKVector { get; private set; }
+    public RGaKVector<T> TosKVector { get; private set; }
 
-        public T TosValue 
-            => MultivectorStack.TosScalar;
+    public T TosValue 
+        => MultivectorStack.TosScalar;
 
-        public RGaKVector<T> RootKVector { get; }
-
-
-        private RGaGbtKVectorOutermorphismStack(IReadOnlyList<RGaVector<T>> basisVectorsMappingsList, IRGaGbtMultivectorStorageStack1<T> multivectorStack)
-            : base(multivectorStack.Capacity, multivectorStack.RootTreeDepth, multivectorStack.RootId)
-        {
-            KVectorArray = new RGaKVector<T>[Capacity];
-
-            BasisVectorsMappingsList = basisVectorsMappingsList;
-            MultivectorStack = multivectorStack;
-
-            RootKVector = basisVectorsMappingsList[0].Processor.CreateOneScalar();
-        }
+    public RGaKVector<T> RootKVector { get; }
 
 
-        public RGaKVector<T> GetTosChildKVector0()
-        {
-            return TosKVector;
-        }
+    private RGaGbtKVectorOutermorphismStack(IReadOnlyList<RGaVector<T>> basisVectorsMappingsList, IRGaGbtMultivectorStorageStack1<T> multivectorStack)
+        : base(multivectorStack.Capacity, multivectorStack.RootTreeDepth, multivectorStack.RootId)
+    {
+        KVectorArray = new RGaKVector<T>[Capacity];
 
-        public RGaKVector<T> GetTosChildKVector1()
-        {
-            var basisVector = BasisVectorsMappingsList[TosTreeDepth - 1];
+        BasisVectorsMappingsList = basisVectorsMappingsList;
+        MultivectorStack = multivectorStack;
 
-            var storage = TosKVector.Grade == 0
-                ? basisVector
-                : basisVector.Op(TosKVector);
+        RootKVector = basisVectorsMappingsList[0].Processor.CreateOneScalar();
+    }
 
-            return storage;
-        }
+
+    public RGaKVector<T> GetTosChildKVector0()
+    {
+        return TosKVector;
+    }
+
+    public RGaKVector<T> GetTosChildKVector1()
+    {
+        var basisVector = BasisVectorsMappingsList[TosTreeDepth - 1];
+
+        var storage = TosKVector.Grade == 0
+            ? basisVector
+            : basisVector.Op(TosKVector);
+
+        return storage;
+    }
 
 
 
-        //public override bool TosHasChild0()
-        //{
-        //    return MultivectorStack.TosHasChild0();
-        //}
+    //public override bool TosHasChild0()
+    //{
+    //    return MultivectorStack.TosHasChild0();
+    //}
 
-        //public override bool TosHasChild1()
-        //{
-        //    return MultivectorStack.TosHasChild1();
-        //}
+    //public override bool TosHasChild1()
+    //{
+    //    return MultivectorStack.TosHasChild1();
+    //}
 
 
-        public override void PushRootData()
-        {
-            TosIndex = 0;
+    public override void PushRootData()
+    {
+        TosIndex = 0;
 
-            TreeDepthArray[TosIndex] = RootTreeDepth;
-            IdArray[TosIndex] = RootId;
-            KVectorArray[TosIndex] = RootKVector;
+        TreeDepthArray[TosIndex] = RootTreeDepth;
+        IdArray[TosIndex] = RootId;
+        KVectorArray[TosIndex] = RootKVector;
             
-            MultivectorStack.PushRootData();
-        }
+        MultivectorStack.PushRootData();
+    }
 
-        public override void PopNodeData()
+    public override void PopNodeData()
+    {
+        MultivectorStack.PopNodeData();
+
+        TosTreeDepth = TreeDepthArray[TosIndex];
+        TosId = IdArray[TosIndex];
+        TosKVector = KVectorArray[TosIndex];
+
+        TosIndex--;
+    }
+
+    public override bool TosHasChild(int childIndex)
+    {
+        return MultivectorStack.TosHasChild(childIndex);
+    }
+
+    public override void PushDataOfChild(int childIndex)
+    {
+        if ((childIndex & 1) == 0)
         {
-            MultivectorStack.PopNodeData();
+            MultivectorStack.PushDataOfChild(childIndex);
+            TosIndex++;
+            TreeDepthArray[TosIndex] = TosTreeDepth - 1;
 
-            TosTreeDepth = TreeDepthArray[TosIndex];
-            TosId = IdArray[TosIndex];
-            TosKVector = KVectorArray[TosIndex];
-
-            TosIndex--;
+            IdArray[TosIndex] = TosChildId0;
+            KVectorArray[TosIndex] = GetTosChildKVector0();
         }
-
-        public override bool TosHasChild(int childIndex)
+        else
         {
-            return MultivectorStack.TosHasChild(childIndex);
+            var storage = GetTosChildKVector1();
+
+            //Avoid pushing a child when the mapped basis blade is zero
+            if (storage.IsZero)
+                return;
+
+            MultivectorStack.PushDataOfChild(childIndex);
+            TosIndex++;
+            TreeDepthArray[TosIndex] = TosTreeDepth - 1;
+
+            IdArray[TosIndex] = TosChildId1;
+            KVectorArray[TosIndex] = storage;
         }
+    }
 
-        public override void PushDataOfChild(int childIndex)
+    //public override void PushDataOfChild0()
+    //{
+    //    MultivectorStack.PushDataOfChild0();
+
+    //    TosIndex++;
+
+    //    TreeDepthArray[TosIndex] = TosTreeDepth - 1;
+    //    IdArray[TosIndex] = TosChildId0;
+    //    KVectorArray[TosIndex] = GetTosChildKVector0();
+    //}
+
+    //public override void PushDataOfChild1()
+    //{
+    //    MultivectorStack.PushDataOfChild1();
+
+    //    TosIndex++;
+
+    //    TreeDepthArray[TosIndex] = TosTreeDepth - 1;
+    //    IdArray[TosIndex] = TosChildId1;
+    //    KVectorArray[TosIndex] = GetTosChildKVector1();
+    //}
+
+    public IEnumerable<Tuple<T, RGaKVector<T>>> TraverseForScaledKVectors()
+    {
+        //GeoNumVectorKVectorOpUtils.SetActiveVSpaceDimension(Multivector.VSpaceDimensions);
+
+        PushRootData();
+
+        //var maxStackSizeCounter = 0;
+
+        while (!IsEmpty)
         {
-            if ((childIndex & 1) == 0)
+            //maxStackSizeCounter = Math.Max(maxStackSizeCounter, nodesStack.Count);
+
+            PopNodeData();
+
+            if (TosIsLeaf)
             {
-                MultivectorStack.PushDataOfChild(childIndex);
-                TosIndex++;
-                TreeDepthArray[TosIndex] = TosTreeDepth - 1;
+                if (!ScalarProcessor.IsZero(TosValue))
+                    yield return new Tuple<T, RGaKVector<T>>(TosValue, TosKVector);
 
-                IdArray[TosIndex] = TosChildId0;
-                KVectorArray[TosIndex] = GetTosChildKVector0();
-            }
-            else
-            {
-                var storage = GetTosChildKVector1();
-
-                //Avoid pushing a child when the mapped basis blade is zero
-                if (storage.IsZero)
-                    return;
-
-                MultivectorStack.PushDataOfChild(childIndex);
-                TosIndex++;
-                TreeDepthArray[TosIndex] = TosTreeDepth - 1;
-
-                IdArray[TosIndex] = TosChildId1;
-                KVectorArray[TosIndex] = storage;
-            }
-        }
-
-        //public override void PushDataOfChild0()
-        //{
-        //    MultivectorStack.PushDataOfChild0();
-
-        //    TosIndex++;
-
-        //    TreeDepthArray[TosIndex] = TosTreeDepth - 1;
-        //    IdArray[TosIndex] = TosChildId0;
-        //    KVectorArray[TosIndex] = GetTosChildKVector0();
-        //}
-
-        //public override void PushDataOfChild1()
-        //{
-        //    MultivectorStack.PushDataOfChild1();
-
-        //    TosIndex++;
-
-        //    TreeDepthArray[TosIndex] = TosTreeDepth - 1;
-        //    IdArray[TosIndex] = TosChildId1;
-        //    KVectorArray[TosIndex] = GetTosChildKVector1();
-        //}
-
-        public IEnumerable<Tuple<T, RGaKVector<T>>> TraverseForScaledKVectors()
-        {
-            //GeoNumVectorKVectorOpUtils.SetActiveVSpaceDimension(Multivector.VSpaceDimensions);
-
-            PushRootData();
-
-            //var maxStackSizeCounter = 0;
-
-            while (!IsEmpty)
-            {
-                //maxStackSizeCounter = Math.Max(maxStackSizeCounter, nodesStack.Count);
-
-                PopNodeData();
-
-                if (TosIsLeaf)
-                {
-                    if (!ScalarProcessor.IsZero(TosValue))
-                        yield return new Tuple<T, RGaKVector<T>>(TosValue, TosKVector);
-
-                    continue;
-                }
-
-                if (TosHasChild(1))
-                    PushDataOfChild(1);
-
-                if (TosHasChild(0))
-                    PushDataOfChild(0);
-
-                //var stackSize = opStack.SizeInBytes();
-                //if (sizeCounter < stackSize) sizeCounter = stackSize;
+                continue;
             }
 
-            //Console.WriteLine("Max Stack Size: " + sizeCounter.ToString("###,###,###,###,###,##0"));
-            //Console.WriteLine(@"Max Stack Size: " + maxStackSizeCounter.ToString("###,###,###,###,###,##0"));        }
+            if (TosHasChild(1))
+                PushDataOfChild(1);
+
+            if (TosHasChild(0))
+                PushDataOfChild(0);
+
+            //var stackSize = opStack.SizeInBytes();
+            //if (sizeCounter < stackSize) sizeCounter = stackSize;
         }
 
-        public IEnumerable<RGaKvIndexScalarRecord<RGaKVector<T>>> TraverseForIdKVectors()
+        //Console.WriteLine("Max Stack Size: " + sizeCounter.ToString("###,###,###,###,###,##0"));
+        //Console.WriteLine(@"Max Stack Size: " + maxStackSizeCounter.ToString("###,###,###,###,###,##0"));        }
+    }
+
+    public IEnumerable<RGaKvIndexScalarRecord<RGaKVector<T>>> TraverseForIdKVectors()
+    {
+        //GeoNumVectorKVectorOpUtils.SetActiveVSpaceDimension(Multivector.VSpaceDimensions);
+
+        PushRootData();
+
+        while (!IsEmpty)
         {
-            //GeoNumVectorKVectorOpUtils.SetActiveVSpaceDimension(Multivector.VSpaceDimensions);
+            PopNodeData();
 
-            PushRootData();
-
-            while (!IsEmpty)
+            if (TosIsLeaf)
             {
-                PopNodeData();
+                yield return new RGaKvIndexScalarRecord<RGaKVector<T>>(TosId, TosKVector);
 
-                if (TosIsLeaf)
-                {
-                    yield return new RGaKvIndexScalarRecord<RGaKVector<T>>(TosId, TosKVector);
-
-                    continue;
-                }
-
-                if (TosHasChild(1))
-                    PushDataOfChild(1);
-
-                if (TosHasChild(0))
-                    PushDataOfChild(0);
+                continue;
             }
+
+            if (TosHasChild(1))
+                PushDataOfChild(1);
+
+            if (TosHasChild(0))
+                PushDataOfChild(0);
         }
     }
 }

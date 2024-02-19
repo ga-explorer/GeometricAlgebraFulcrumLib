@@ -1,9 +1,8 @@
-﻿namespace GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.BabylonJs.Constants
+﻿namespace GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.BabylonJs.Constants;
+
+public enum GrBabylonJsHorizontalAlignment
 {
-    public enum GrBabylonJsHorizontalAlignment
-    {
-        Left,
-        Center,
-        Right
-    }
+    Left,
+    Center,
+    Right
 }

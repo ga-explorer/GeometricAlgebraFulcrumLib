@@ -1,11 +1,10 @@
 ﻿using GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.PovRay.SDL.Values;
 
-namespace GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.PovRay.SDL.Objects.FSP
-{
-    public class SdlBox : SdlObject, ISdlFspObject
-    {
-        public ISdlVectorValue Corner1 { get; set; }
+namespace GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.PovRay.SDL.Objects.FSP;
 
-        public ISdlVectorValue Corner2 { get; set; }
-    }
+public class SdlBox : SdlObject, ISdlFspObject
+{
+    public ISdlVectorValue Corner1 { get; set; }
+
+    public ISdlVectorValue Corner2 { get; set; }
 }

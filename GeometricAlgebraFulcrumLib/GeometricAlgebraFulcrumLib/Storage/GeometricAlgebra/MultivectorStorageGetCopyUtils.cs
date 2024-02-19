@@ -1,61 +1,60 @@
 ﻿using System;
 
-namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
+namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra;
+
+public static class MultivectorStorageGetCopyUtils
 {
-    public static class MultivectorStorageGetCopyUtils
+    public static MultivectorStorage<T> GetStorageCopy<T>(this MultivectorStorage<T> mv)
     {
-        public static MultivectorStorage<T> GetStorageCopy<T>(this MultivectorStorage<T> mv)
+        return mv switch
         {
-            return mv switch
-            {
-                MultivectorStorage<T> mv1 =>
-                    mv1.GetMultivectorCopy(),
+            MultivectorStorage<T> mv1 =>
+                mv1.GetMultivectorCopy(),
 
-                _ => throw new InvalidOperationException()
-            };
-        }
+            _ => throw new InvalidOperationException()
+        };
+    }
 
-        public static IMultivectorGradedStorage<T> GetStorageCopy<T>(this IMultivectorGradedStorage<T> mv)
+    public static IMultivectorGradedStorage<T> GetStorageCopy<T>(this IMultivectorGradedStorage<T> mv)
+    {
+        return mv switch
         {
-            return mv switch
-            {
-                VectorStorage<T> mv1 =>
-                    mv1.GetVectorCopy(),
+            VectorStorage<T> mv1 =>
+                mv1.GetVectorCopy(),
 
-                BivectorStorage<T> mv1 =>
-                    mv1.GetBivectorCopy(),
+            BivectorStorage<T> mv1 =>
+                mv1.GetBivectorCopy(),
 
-                KVectorStorage<T> mv1 =>
-                    mv1.GetKVectorCopy(),
+            KVectorStorage<T> mv1 =>
+                mv1.GetKVectorCopy(),
 
-                MultivectorGradedStorage<T> mv1 =>
-                    mv1.GetGradedMultivectorCopy(),
+            MultivectorGradedStorage<T> mv1 =>
+                mv1.GetGradedMultivectorCopy(),
 
-                _ => throw new InvalidOperationException()
-            };
-        }
+            _ => throw new InvalidOperationException()
+        };
+    }
 
-        public static IMultivectorStorage<T> GetStorageCopy<T>(this IMultivectorStorage<T> mv)
+    public static IMultivectorStorage<T> GetStorageCopy<T>(this IMultivectorStorage<T> mv)
+    {
+        return mv switch
         {
-            return mv switch
-            {
-                VectorStorage<T> mv1 =>
-                    mv1.GetVectorCopy(),
+            VectorStorage<T> mv1 =>
+                mv1.GetVectorCopy(),
 
-                BivectorStorage<T> mv1 =>
-                    mv1.GetBivectorCopy(),
+            BivectorStorage<T> mv1 =>
+                mv1.GetBivectorCopy(),
 
-                KVectorStorage<T> mv1 =>
-                    mv1.GetKVectorCopy(),
+            KVectorStorage<T> mv1 =>
+                mv1.GetKVectorCopy(),
 
-                MultivectorGradedStorage<T> mv1 =>
-                    mv1.GetGradedMultivectorCopy(),
+            MultivectorGradedStorage<T> mv1 =>
+                mv1.GetGradedMultivectorCopy(),
 
-                MultivectorStorage<T> mv1 =>
-                    mv1.GetMultivectorCopy(),
+            MultivectorStorage<T> mv1 =>
+                mv1.GetMultivectorCopy(),
 
-                _ => throw new InvalidOperationException()
-            };
-        }
+            _ => throw new InvalidOperationException()
+        };
     }
 }

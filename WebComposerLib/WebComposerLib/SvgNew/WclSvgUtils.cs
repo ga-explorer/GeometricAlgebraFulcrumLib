@@ -1,7 +1,6 @@
-﻿namespace WebComposerLib.SvgNew
-{
-    public static class WclSvgUtils
-    {
+﻿namespace WebComposerLib.SvgNew;
 
-    }
+public static class WclSvgUtils
+{
+
 }

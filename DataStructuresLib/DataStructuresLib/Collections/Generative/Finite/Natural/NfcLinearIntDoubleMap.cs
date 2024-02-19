@@ -1,103 +1,102 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-namespace DataStructuresLib.Collections.Generative.Finite.Natural
+namespace DataStructuresLib.Collections.Generative.Finite.Natural;
+
+public class NfcLinearIntDoubleMap : NaturalFiniteCollection<double>
 {
-    public class NfcLinearIntDoubleMap : NaturalFiniteCollection<double>
+    public static NfcLinearIntDoubleMap Create(int itemsCount, double firstValue, double lastValue)
     {
-        public static NfcLinearIntDoubleMap Create(int itemsCount, double firstValue, double lastValue)
+        return new NfcLinearIntDoubleMap()
         {
-            return new NfcLinearIntDoubleMap()
-            {
-                ValuesCount = itemsCount,
-                FirstValue = firstValue,
-                LastValue = lastValue,
-                Step = (lastValue - firstValue) / (itemsCount - 1)
-            };
+            ValuesCount = itemsCount,
+            FirstValue = firstValue,
+            LastValue = lastValue,
+            Step = (lastValue - firstValue) / (itemsCount - 1)
+        };
+    }
+
+    public static NfcLinearIntDoubleMap Create(int itemsCount, double firstValue, double lastValue, bool excludeFirstValue, bool excludeLastValue)
+    {
+        var step = lastValue - firstValue;
+
+        if (excludeFirstValue && excludeLastValue)
+        {
+            step = step / (itemsCount + 1);
+            firstValue += step;
+            lastValue -= step;
+        }
+        else if (!excludeFirstValue && excludeLastValue)
+        {
+            step = step / itemsCount;
+            lastValue -= step;
+        }
+        else if (excludeFirstValue)
+        {
+            step = step / itemsCount;
+            firstValue += step;
         }
 
-        public static NfcLinearIntDoubleMap Create(int itemsCount, double firstValue, double lastValue, bool excludeFirstValue, bool excludeLastValue)
+        return new NfcLinearIntDoubleMap()
         {
-            var step = lastValue - firstValue;
+            ValuesCount = itemsCount,
+            FirstValue = firstValue,
+            LastValue = lastValue,
+            Step = (lastValue - firstValue) / (itemsCount - 1)
+        };
+    }
 
-            if (excludeFirstValue && excludeLastValue)
-            {
-                step = step / (itemsCount + 1);
-                firstValue += step;
-                lastValue -= step;
-            }
-            else if (!excludeFirstValue && excludeLastValue)
-            {
-                step = step / itemsCount;
-                lastValue -= step;
-            }
-            else if (excludeFirstValue)
-            {
-                step = step / itemsCount;
-                firstValue += step;
-            }
 
-            return new NfcLinearIntDoubleMap()
-            {
-                ValuesCount = itemsCount,
-                FirstValue = firstValue,
-                LastValue = lastValue,
-                Step = (lastValue - firstValue) / (itemsCount - 1)
-            };
+    public double FirstValue { get; private set; }
+
+    public double LastValue { get; private set; }
+
+    public double Step { get; private set; }
+
+    public int ValuesCount { get; private set; }
+
+    public override int Count => ValuesCount;
+
+    public double this[int index]
+    {
+        get
+        {
+            if (index == 0) return FirstValue;
+
+            var t = index / (double)MaxIndex;
+            var s = (MaxIndex - index) / (double)MaxIndex;
+
+            return t * LastValue + s * FirstValue;
         }
+    }
 
-
-        public double FirstValue { get; private set; }
-
-        public double LastValue { get; private set; }
-
-        public double Step { get; private set; }
-
-        public int ValuesCount { get; private set; }
-
-        public override int Count => ValuesCount;
-
-        public double this[int index]
+    public double[] this[params int[] indexList]
+    {
+        get
         {
-            get
-            {
-                if (index == 0) return FirstValue;
+            var items = new double[indexList.Length];
 
-                var t = index / (double)MaxIndex;
-                var s = (MaxIndex - index) / (double)MaxIndex;
+            for (var i = 0; i < indexList.Length; i++)
+                items[i] = this[indexList[i]];
 
-                return t * LastValue + s * FirstValue;
-            }
+            return items;
         }
+    }
 
-        public double[] this[params int[] indexList]
-        {
-            get
-            {
-                var items = new double[indexList.Length];
-
-                for (var i = 0; i < indexList.Length; i++)
-                    items[i] = this[indexList[i]];
-
-                return items;
-            }
-        }
-
-        public IEnumerable<double> this[IEnumerable<int> indexList]
-        {
-            get { return indexList.Select(index => this[index]); }
-        }
+    public IEnumerable<double> this[IEnumerable<int> indexList]
+    {
+        get { return indexList.Select(index => this[index]); }
+    }
 
 
-        private NfcLinearIntDoubleMap()
-        {
+    private NfcLinearIntDoubleMap()
+    {
             
-        }
+    }
 
 
-        public override double GetItem(int index)
-        {
-            return this[index];
-        }
+    public override double GetItem(int index)
+    {
+        return this[index];
     }
 }

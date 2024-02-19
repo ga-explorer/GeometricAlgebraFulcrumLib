@@ -1,10 +1,9 @@
 ﻿using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.LinearMaps.Versors;
 
-namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.LinearMaps.Reflectors
+namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.LinearMaps.Reflectors;
+
+public interface IRGaReflector<T> : 
+    IRGaVersor<T>
 {
-    public interface IRGaReflector<T> : 
-        IRGaVersor<T>
-    {
-        IRGaReflector<T> GetReflectorInverse();
-    }
+    IRGaReflector<T> GetReflectorInverse();
 }

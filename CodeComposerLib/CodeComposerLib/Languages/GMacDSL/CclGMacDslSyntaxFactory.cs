@@ -1,10 +1,9 @@
-﻿namespace CodeComposerLib.Languages.GMacDSL
+﻿namespace CodeComposerLib.Languages.GMacDSL;
+
+public class CclGMacDslSyntaxFactory : CclLanguageSyntaxFactory
 {
-    public class CclGMacDslSyntaxFactory : CclLanguageSyntaxFactory
+    internal CclGMacDslSyntaxFactory()
     {
-        internal CclGMacDslSyntaxFactory()
-        {
             
-        }
     }
 }

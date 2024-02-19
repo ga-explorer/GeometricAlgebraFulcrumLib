@@ -3,32 +3,31 @@ using DataStructuresLib.Sequences.Periodic1D;
 using GeometricAlgebraFulcrumLib.Lite.Graphics.Meshes.PointsMesh;
 using GeometricAlgebraFulcrumLib.Lite.LinearAlgebra.Vectors.Space3D;
 
-namespace GeometricAlgebraFulcrumLib.Lite.Graphics.Meshes.PointsPath.Space3D
+namespace GeometricAlgebraFulcrumLib.Lite.Graphics.Meshes.PointsPath.Space3D;
+
+public sealed class PointsMeshSubsetPointsPath3D : 
+    PSeq2DSubset1D<IFloat64Vector3D>, 
+    IPointsPath3D
 {
-    public sealed class PointsMeshSubsetPointsPath3D : 
-        PSeq2DSubset1D<IFloat64Vector3D>, 
-        IPointsPath3D
+    public IPointsMesh3D BaseMesh { get; }
+
+
+    internal PointsMeshSubsetPointsPath3D(IPointsMesh3D baseMesh, IIndexMap1DTo2D indexMapping)
+        : base(baseMesh, indexMapping)
     {
-        public IPointsMesh3D BaseMesh { get; }
-
-
-        internal PointsMeshSubsetPointsPath3D(IPointsMesh3D baseMesh, IIndexMap1DTo2D indexMapping)
-            : base(baseMesh, indexMapping)
-        {
-            BaseMesh = baseMesh;
-        }
+        BaseMesh = baseMesh;
+    }
 
         
-        public bool IsValid()
-        {
-            return this.All(p => p.IsValid());
-        }
+    public bool IsValid()
+    {
+        return this.All(p => p.IsValid());
+    }
 
-        public IPointsPath3D MapPoints(Func<IFloat64Vector3D, IFloat64Vector3D> pointMapping)
-        {
-            return new ArrayPointsPath3D(
-                this.Select(pointMapping).ToArray()
-            );
-        }
+    public IPointsPath3D MapPoints(Func<IFloat64Vector3D, IFloat64Vector3D> pointMapping)
+    {
+        return new ArrayPointsPath3D(
+            this.Select(pointMapping).ToArray()
+        );
     }
 }

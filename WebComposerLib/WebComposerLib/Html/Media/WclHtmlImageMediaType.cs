@@ -1,14 +1,13 @@
-﻿namespace WebComposerLib.Html.Media
+﻿namespace WebComposerLib.Html.Media;
+
+public enum WclHtmlImageMediaType
 {
-    public enum WclHtmlImageMediaType
-    {
-        Bmp,
-        Gif,
-        Ico,
-        Jpeg,
-        Png,
-        Svg,
-        Tiff,
-        Webp
-    }
+    Bmp,
+    Gif,
+    Ico,
+    Jpeg,
+    Png,
+    Svg,
+    Tiff,
+    Webp
 }

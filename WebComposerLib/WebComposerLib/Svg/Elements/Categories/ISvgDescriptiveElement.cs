@@ -1,7 +1,6 @@
-﻿namespace WebComposerLib.Svg.Elements.Categories
+﻿namespace WebComposerLib.Svg.Elements.Categories;
+
+public interface ISvgDescriptiveElement : ISvgElement
 {
-    public interface ISvgDescriptiveElement : ISvgElement
-    {
-        //<desc>, <metadata>, <title>
-    }
+    //<desc>, <metadata>, <title>
 }

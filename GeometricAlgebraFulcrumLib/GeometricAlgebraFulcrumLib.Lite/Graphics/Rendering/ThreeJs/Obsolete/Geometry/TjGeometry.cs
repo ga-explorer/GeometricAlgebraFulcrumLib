@@ -1,8 +1,7 @@
-﻿namespace GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.ThreeJs.Obsolete.Geometry
+﻿namespace GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.ThreeJs.Obsolete.Geometry;
+
+public abstract class TjGeometry :
+    TjComponentWithAttributes
 {
-    public abstract class TjGeometry :
-        TjComponentWithAttributes
-    {
         
-    }
 }

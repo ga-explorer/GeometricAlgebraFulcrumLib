@@ -1,9 +1,8 @@
 ﻿using GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.ImageSharp.Processing.AutoCrop.Models;
 
-namespace GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.ImageSharp.Processing.AutoCrop.Analyzers
+namespace GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.ImageSharp.Processing.AutoCrop.Analyzers;
+
+public interface IWeightAnalyzer<TPixel> where TPixel : unmanaged, IPixel<TPixel>
 {
-    public interface IWeightAnalyzer<TPixel> where TPixel : unmanaged, IPixel<TPixel>
-    {
-        IWeightAnalysis GetAnalysis(Image<TPixel> image, Color backgroundColor, int sampleResolution = 5);
-    }
+    IWeightAnalysis GetAnalysis(Image<TPixel> image, Color backgroundColor, int sampleResolution = 5);
 }

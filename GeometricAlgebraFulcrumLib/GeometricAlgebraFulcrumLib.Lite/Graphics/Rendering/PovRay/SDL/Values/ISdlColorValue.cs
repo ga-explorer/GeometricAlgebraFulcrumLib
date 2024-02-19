@@ -1,7 +1,6 @@
-﻿namespace GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.PovRay.SDL.Values
+﻿namespace GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.PovRay.SDL.Values;
+
+public interface ISdlColorValue : ISdlValue
 {
-    public interface ISdlColorValue : ISdlValue
-    {
          
-    }
 }

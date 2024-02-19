@@ -1,189 +1,188 @@
 ﻿using TextComposerLib.Text;
 
-namespace WebComposerLib.Svg.Transforms
+namespace WebComposerLib.Svg.Transforms;
+
+public sealed class SvgTransformComposer : SvgTransform
 {
-    public sealed class SvgTransformComposer : SvgTransform
+    public static SvgTransformComposer Create()
     {
-        public static SvgTransformComposer Create()
-        {
-            return new SvgTransformComposer();
-        }
+        return new SvgTransformComposer();
+    }
 
-        public static SvgTransformComposer Create(IEnumerable<SvgTransform> transformsList)
-        {
-            return new SvgTransformComposer(transformsList);
-        }
+    public static SvgTransformComposer Create(IEnumerable<SvgTransform> transformsList)
+    {
+        return new SvgTransformComposer(transformsList);
+    }
 
-        public static SvgTransformComposer Create(params SvgTransform[] transformsList)
-        {
-            return new SvgTransformComposer(transformsList);
-        }
+    public static SvgTransformComposer Create(params SvgTransform[] transformsList)
+    {
+        return new SvgTransformComposer(transformsList);
+    }
 
 
 
-        private readonly List<SvgTransform> _transformsList
-            = new List<SvgTransform>();
+    private readonly List<SvgTransform> _transformsList
+        = new List<SvgTransform>();
 
-        public override string ValueText
-            => _transformsList.Select(t => t.ValueText).Concatenate(" ");
-
-
-        public SvgTransform this[int index]
-        {
-            get => _transformsList[index];
-            set => _transformsList[index] = value;
-        }
-
-        public IEnumerable<SvgTransform> Transforms 
-            => _transformsList;
+    public override string ValueText
+        => _transformsList.Select(t => t.ValueText).Concatenate(" ");
 
 
-        public SvgTransformComposer()
-        {
-        }
+    public SvgTransform this[int index]
+    {
+        get => _transformsList[index];
+        set => _transformsList[index] = value;
+    }
 
-        public SvgTransformComposer(IEnumerable<SvgTransform> transformsList)
-        {
-            _transformsList.AddRange(transformsList);
-        }
-
-        public SvgTransformComposer(params SvgTransform[] transformsList)
-        {
-            _transformsList.AddRange(transformsList);
-        }
+    public IEnumerable<SvgTransform> Transforms 
+        => _transformsList;
 
 
-        public SvgTransformComposer Clear()
-        {
-            _transformsList.Clear();
+    public SvgTransformComposer()
+    {
+    }
 
-            return this;
-        }
+    public SvgTransformComposer(IEnumerable<SvgTransform> transformsList)
+    {
+        _transformsList.AddRange(transformsList);
+    }
 
-        public SvgTransformComposer Append(SvgTransform transform)
-        {
-            _transformsList.Add(transform);
+    public SvgTransformComposer(params SvgTransform[] transformsList)
+    {
+        _transformsList.AddRange(transformsList);
+    }
 
-            return this;
-        }
 
-        public SvgTransformComposer AppendRange(IEnumerable<SvgTransform> transformsList)
-        {
-            _transformsList.AddRange(transformsList);
+    public SvgTransformComposer Clear()
+    {
+        _transformsList.Clear();
 
-            return this;
-        }
+        return this;
+    }
 
-        public SvgTransformComposer AppendRange(params SvgTransform[] transformsList)
-        {
-            _transformsList.AddRange(transformsList);
+    public SvgTransformComposer Append(SvgTransform transform)
+    {
+        _transformsList.Add(transform);
 
-            return this;
-        }
+        return this;
+    }
 
-        public SvgTransformComposer AppendMatrix(double[,] matrix)
-        {
-            _transformsList.Add(SvgTransformMatrix.Create(matrix));
+    public SvgTransformComposer AppendRange(IEnumerable<SvgTransform> transformsList)
+    {
+        _transformsList.AddRange(transformsList);
 
-            return this;
-        }
+        return this;
+    }
 
-        public SvgTransformComposer AppendTranslate(double tx, double ty = 0.0d)
-        {
-            _transformsList.Add(SvgTransformTranslate.Create(tx, ty));
+    public SvgTransformComposer AppendRange(params SvgTransform[] transformsList)
+    {
+        _transformsList.AddRange(transformsList);
 
-            return this;
-        }
+        return this;
+    }
 
-        public SvgTransformComposer AppendScale(double sx, double sy = 1.0d)
-        {
-            _transformsList.Add(SvgTransformScale.Create(sx, sy));
+    public SvgTransformComposer AppendMatrix(double[,] matrix)
+    {
+        _transformsList.Add(SvgTransformMatrix.Create(matrix));
 
-            return this;
-        }
+        return this;
+    }
 
-        public SvgTransformComposer AppendRotate(double angle, double cx = 0.0d, double cy = 0.0d)
-        {
-            _transformsList.Add(SvgTransformRotate.Create(angle, cx, cy));
+    public SvgTransformComposer AppendTranslate(double tx, double ty = 0.0d)
+    {
+        _transformsList.Add(SvgTransformTranslate.Create(tx, ty));
 
-            return this;
-        }
+        return this;
+    }
 
-        public SvgTransformComposer AppendSkewX(double angle)
-        {
-            _transformsList.Add(SvgTransformSkewX.Create(angle));
+    public SvgTransformComposer AppendScale(double sx, double sy = 1.0d)
+    {
+        _transformsList.Add(SvgTransformScale.Create(sx, sy));
 
-            return this;
-        }
+        return this;
+    }
 
-        public SvgTransformComposer AppendSkewY(double angle)
-        {
-            _transformsList.Add(SvgTransformSkewY.Create(angle));
+    public SvgTransformComposer AppendRotate(double angle, double cx = 0.0d, double cy = 0.0d)
+    {
+        _transformsList.Add(SvgTransformRotate.Create(angle, cx, cy));
 
-            return this;
-        }
+        return this;
+    }
 
-        public SvgTransformComposer Prepend(SvgTransform transform)
-        {
-            _transformsList.Insert(0, transform);
+    public SvgTransformComposer AppendSkewX(double angle)
+    {
+        _transformsList.Add(SvgTransformSkewX.Create(angle));
 
-            return this;
-        }
+        return this;
+    }
 
-        public SvgTransformComposer PrependRange(IEnumerable<SvgTransform> transformsList)
-        {
-            _transformsList.InsertRange(0, transformsList);
+    public SvgTransformComposer AppendSkewY(double angle)
+    {
+        _transformsList.Add(SvgTransformSkewY.Create(angle));
 
-            return this;
-        }
+        return this;
+    }
 
-        public SvgTransformComposer PrependRange(params SvgTransform[] transformsList)
-        {
-            _transformsList.InsertRange(0, transformsList);
+    public SvgTransformComposer Prepend(SvgTransform transform)
+    {
+        _transformsList.Insert(0, transform);
 
-            return this;
-        }
+        return this;
+    }
 
-        public SvgTransformComposer PrependMatrix(double[,] matrix)
-        {
-            _transformsList.Insert(0, SvgTransformMatrix.Create(matrix));
+    public SvgTransformComposer PrependRange(IEnumerable<SvgTransform> transformsList)
+    {
+        _transformsList.InsertRange(0, transformsList);
 
-            return this;
-        }
+        return this;
+    }
 
-        public SvgTransformComposer PrependTranslate(double tx, double ty = 0.0d)
-        {
-            _transformsList.Insert(0, SvgTransformTranslate.Create(tx, ty));
+    public SvgTransformComposer PrependRange(params SvgTransform[] transformsList)
+    {
+        _transformsList.InsertRange(0, transformsList);
 
-            return this;
-        }
+        return this;
+    }
 
-        public SvgTransformComposer PrependScale(double sx, double sy = 1.0d)
-        {
-            _transformsList.Insert(0, SvgTransformScale.Create(sx, sy));
+    public SvgTransformComposer PrependMatrix(double[,] matrix)
+    {
+        _transformsList.Insert(0, SvgTransformMatrix.Create(matrix));
 
-            return this;
-        }
+        return this;
+    }
 
-        public SvgTransformComposer PrependRotate(double angle, double cx = 0.0d, double cy = 0.0d)
-        {
-            _transformsList.Insert(0, SvgTransformRotate.Create(angle, cx, cy));
+    public SvgTransformComposer PrependTranslate(double tx, double ty = 0.0d)
+    {
+        _transformsList.Insert(0, SvgTransformTranslate.Create(tx, ty));
 
-            return this;
-        }
+        return this;
+    }
 
-        public SvgTransformComposer PrependSkewX(double angle)
-        {
-            _transformsList.Insert(0, SvgTransformSkewX.Create(angle));
+    public SvgTransformComposer PrependScale(double sx, double sy = 1.0d)
+    {
+        _transformsList.Insert(0, SvgTransformScale.Create(sx, sy));
 
-            return this;
-        }
+        return this;
+    }
 
-        public SvgTransformComposer PrependSkewY(double angle)
-        {
-            _transformsList.Insert(0, SvgTransformSkewY.Create(angle));
+    public SvgTransformComposer PrependRotate(double angle, double cx = 0.0d, double cy = 0.0d)
+    {
+        _transformsList.Insert(0, SvgTransformRotate.Create(angle, cx, cy));
 
-            return this;
-        }
+        return this;
+    }
+
+    public SvgTransformComposer PrependSkewX(double angle)
+    {
+        _transformsList.Insert(0, SvgTransformSkewX.Create(angle));
+
+        return this;
+    }
+
+    public SvgTransformComposer PrependSkewY(double angle)
+    {
+        _transformsList.Insert(0, SvgTransformSkewY.Create(angle));
+
+        return this;
     }
 }

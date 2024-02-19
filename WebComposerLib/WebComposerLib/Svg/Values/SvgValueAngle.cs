@@ -1,87 +1,86 @@
 ﻿using System.Text;
 
-namespace WebComposerLib.Svg.Values
+namespace WebComposerLib.Svg.Values;
+
+public sealed class SvgValueAngle : SvgComputedValue
 {
-    public sealed class SvgValueAngle : SvgComputedValue
+    public static SvgValueAngle Inherit { get; }
+        = new SvgValueAngle();
+
+    public static SvgValueAngle Create(double angleValue)
     {
-        public static SvgValueAngle Inherit { get; }
-            = new SvgValueAngle();
+        return new SvgValueAngle(angleValue);
+    }
 
-        public static SvgValueAngle Create(double angleValue)
-        {
-            return new SvgValueAngle(angleValue);
-        }
-
-        public static SvgValueAngle Create(double angleValue, SvgValueAngleUnit unit)
-        {
-            return new SvgValueAngle(angleValue, unit);
-        }
+    public static SvgValueAngle Create(double angleValue, SvgValueAngleUnit unit)
+    {
+        return new SvgValueAngle(angleValue, unit);
+    }
 
 
-        public bool IsInherit { get; }
+    public bool IsInherit { get; }
 
-        public double AngleValue { get; set; }
-
-
-        private SvgValueAngleUnit _unit = SvgValueAngleUnit.None;
-        public SvgValueAngleUnit Unit
-        {
-            get => _unit;
-            set => _unit = value ?? SvgValueAngleUnit.None;
-        }
-
-        public override string ValueText
-            => IsInherit
-                ? "inherit"
-                : new StringBuilder(32)
-                    .Append(AngleValue.ToString("G"))
-                    .Append(_unit.ValueText)
-                    .ToString();
+    public double AngleValue { get; set; }
 
 
-        private SvgValueAngle()
-        {
-            IsInherit = true;
-        }
+    private SvgValueAngleUnit _unit = SvgValueAngleUnit.None;
+    public SvgValueAngleUnit Unit
+    {
+        get => _unit;
+        set => _unit = value ?? SvgValueAngleUnit.None;
+    }
 
-        private SvgValueAngle(double angleValue)
-        {
-            IsInherit = false;
-            AngleValue = angleValue;
-        }
-
-        private SvgValueAngle(double angleValue, SvgValueAngleUnit unit)
-        {
-            IsInherit = false;
-            AngleValue = angleValue;
-            _unit = unit ?? SvgValueAngleUnit.None;
-        }
+    public override string ValueText
+        => IsInherit
+            ? "inherit"
+            : new StringBuilder(32)
+                .Append(AngleValue.ToString("G"))
+                .Append(_unit.ValueText)
+                .ToString();
 
 
-        public bool IsEqualToZero()
-        {
-            return IsInherit == false &&
-                   AngleValue == 0 &&
-                   _unit.UnitId == SvgValueAngleUnit.None.UnitId;
-        }
+    private SvgValueAngle()
+    {
+        IsInherit = true;
+    }
 
-        public bool IsEqualTo(double angleValue)
-        {
-            return IsInherit == false &&
-                   AngleValue == angleValue &&
-                   _unit.UnitId == SvgValueAngleUnit.None.UnitId;
-        }
+    private SvgValueAngle(double angleValue)
+    {
+        IsInherit = false;
+        AngleValue = angleValue;
+    }
 
-        public bool IsEqualTo(double angleValue, SvgValueAngleUnit unit)
-        {
-            return IsInherit == false &&
-                   AngleValue == angleValue &&
-                   _unit.UnitId == unit.UnitId;
-        }
+    private SvgValueAngle(double angleValue, SvgValueAngleUnit unit)
+    {
+        IsInherit = false;
+        AngleValue = angleValue;
+        _unit = unit ?? SvgValueAngleUnit.None;
+    }
 
-        public bool IsEqualToInherit()
-        {
-            return IsInherit;
-        }
+
+    public bool IsEqualToZero()
+    {
+        return IsInherit == false &&
+               AngleValue == 0 &&
+               _unit.UnitId == SvgValueAngleUnit.None.UnitId;
+    }
+
+    public bool IsEqualTo(double angleValue)
+    {
+        return IsInherit == false &&
+               AngleValue == angleValue &&
+               _unit.UnitId == SvgValueAngleUnit.None.UnitId;
+    }
+
+    public bool IsEqualTo(double angleValue, SvgValueAngleUnit unit)
+    {
+        return IsInherit == false &&
+               AngleValue == angleValue &&
+               _unit.UnitId == unit.UnitId;
+    }
+
+    public bool IsEqualToInherit()
+    {
+        return IsInherit;
     }
 }

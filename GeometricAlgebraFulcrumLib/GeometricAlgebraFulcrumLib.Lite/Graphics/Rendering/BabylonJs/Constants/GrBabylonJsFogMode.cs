@@ -1,10 +1,9 @@
-﻿namespace GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.BabylonJs.Constants
+﻿namespace GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.BabylonJs.Constants;
+
+public enum GrBabylonJsFogMode
 {
-    public enum GrBabylonJsFogMode
-    {
-        None,
-        Exp,
-        Exp2,
-        Linear
-    }
+    None,
+    Exp,
+    Exp2,
+    Linear
 }

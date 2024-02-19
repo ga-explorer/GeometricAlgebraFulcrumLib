@@ -1,11 +1,10 @@
 ﻿using GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.BabylonJs.Values;
 
-namespace GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.BabylonJs.GUI
-{
-    public interface IGrBabylonJsGuiControlContainer
-    {
-        GrBabylonJsGuiFullScreenUiValue ParentUi { get; }
+namespace GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.BabylonJs.GUI;
 
-        GrBabylonJsGuiControlList ControlList { get; }
-    }
+public interface IGrBabylonJsGuiControlContainer
+{
+    GrBabylonJsGuiFullScreenUiValue ParentUi { get; }
+
+    GrBabylonJsGuiControlList ControlList { get; }
 }

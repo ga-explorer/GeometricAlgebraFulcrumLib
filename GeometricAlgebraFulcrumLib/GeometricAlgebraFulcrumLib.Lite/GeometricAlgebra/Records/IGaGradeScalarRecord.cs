@@ -1,8 +1,7 @@
-﻿namespace GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Records
+﻿namespace GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Records;
+
+public interface IGaGradeScalarRecord<out T> :
+    IGaGradeRecord,
+    IGaScalarRecord<T>
 {
-    public interface IGaGradeScalarRecord<out T> :
-        IGaGradeRecord,
-        IGaScalarRecord<T>
-    {
-    }
 }

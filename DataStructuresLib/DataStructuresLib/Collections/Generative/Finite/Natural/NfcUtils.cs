@@ -1,8 +1,7 @@
-﻿namespace DataStructuresLib.Collections.Generative.Finite.Natural
+﻿namespace DataStructuresLib.Collections.Generative.Finite.Natural;
+
+public static class NfcUtils
 {
-    public static class NfcUtils
-    {
 
 
-    }
 }

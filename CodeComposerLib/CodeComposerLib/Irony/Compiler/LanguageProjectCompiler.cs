@@ -2,186 +2,185 @@
 using CodeComposerLib.Irony.SourceCode;
 using Irony.Parsing;
 
-namespace CodeComposerLib.Irony.Compiler
+namespace CodeComposerLib.Irony.Compiler;
+
+/// <summary>
+/// This class performs compilation of a full DSL project possibly including multiple source
+/// code files and possibly text code generated during compilation
+/// </summary>
+public abstract class LanguageProjectCompiler : LanguageCompiler
 {
     /// <summary>
-    /// This class performs compilation of a full DSL project possibly including multiple source
-    /// code files and possibly text code generated during compilation
+    /// The DSL Project holding all information about DSL source code and source code files
     /// </summary>
-    public abstract class LanguageProjectCompiler : LanguageCompiler
+    public LanguageCodeProject Project { get; protected set; }
+
+    public List<LanguageProjectCodeUnitCompiler> CodeUnitCompilers { get; private set; }
+
+    /// <summary>
+    /// The parse trees of the main code units (not including the generated code units)
+    /// </summary>
+    protected List<ParseTreeNode> CodeUnitParseTrees { get; private set; }
+
+
+    /// <summary>
+    /// Initialize the compilation log of this compiler
+    /// </summary>
+    protected virtual void InitializeCompilationLog()
     {
-        /// <summary>
-        /// The DSL Project holding all information about DSL source code and source code files
-        /// </summary>
-        public LanguageCodeProject Project { get; protected set; }
+        if (CompilationLog == null)
+            CompilationLog = new LanguageCompilationLog(Project, Progress);
+        else
+            CompilationLog.Initialize(Project);
+    }
 
-        public List<LanguageProjectCodeUnitCompiler> CodeUnitCompilers { get; private set; }
+    /// <summary>
+    /// Initialize the root AST of this compiler
+    /// </summary>
+    protected abstract void InitializeRootAst();
 
-        /// <summary>
-        /// The parse trees of the main code units (not including the generated code units)
-        /// </summary>
-        protected List<ParseTreeNode> CodeUnitParseTrees { get; private set; }
+    /// <summary>
+    /// Initialize the translator context
+    /// </summary>
+    protected abstract void InitializeTranslatorContext();
 
+    /// <summary>
+    /// Create a child code unit compiler
+    /// </summary>
+    /// <param name="codeUnit"></param>
+    /// <param name="rootParseNode"></param>
+    /// <returns></returns>
+    protected abstract LanguageProjectCodeUnitCompiler InitializeCodeUnitCompiler(ISourceCodeUnit codeUnit, ParseTreeNode rootParseNode);
 
-        /// <summary>
-        /// Initialize the compilation log of this compiler
-        /// </summary>
-        protected virtual void InitializeCompilationLog()
-        {
-            if (CompilationLog == null)
-                CompilationLog = new LanguageCompilationLog(Project, Progress);
-            else
-                CompilationLog.Initialize(Project);
-        }
+    /// <summary>
+    /// Create a child code unit compiler
+    /// </summary>
+    /// <param name="codeUnit"></param>
+    /// <returns></returns>
+    protected LanguageProjectCodeUnitCompiler InitializeCodeUnitCompiler(ISourceCodeUnit codeUnit)
+    {
+        return InitializeCodeUnitCompiler(codeUnit, null);
+    }
 
-        /// <summary>
-        /// Initialize the root AST of this compiler
-        /// </summary>
-        protected abstract void InitializeRootAst();
+    /// <summary>
+    /// Parse the source code to generate the parse tree for the given code unit
+    /// </summary>
+    public abstract ParseTreeNode ParseCodeUnit(ISourceCodeUnit codeUnit);
 
-        /// <summary>
-        /// Initialize the translator context
-        /// </summary>
-        protected abstract void InitializeTranslatorContext();
+    /// <summary>
+    /// Finalize the root AST of this compiler
+    /// </summary>
+    protected abstract void FinalizeRootAst();
 
-        /// <summary>
-        /// Create a child code unit compiler
-        /// </summary>
-        /// <param name="codeUnit"></param>
-        /// <param name="rootParseNode"></param>
-        /// <returns></returns>
-        protected abstract LanguageProjectCodeUnitCompiler InitializeCodeUnitCompiler(ISourceCodeUnit codeUnit, ParseTreeNode rootParseNode);
+    /// <summary>
+    /// Tests if the code of the given project has changed since last compilation, if any
+    /// </summary>
+    /// <param name="dslProject"></param>
+    /// <returns></returns>
+    protected virtual bool CodeChanged(LanguageCodeProject dslProject)
+    {
+        return true;
 
-        /// <summary>
-        /// Create a child code unit compiler
-        /// </summary>
-        /// <param name="codeUnit"></param>
-        /// <returns></returns>
-        protected LanguageProjectCodeUnitCompiler InitializeCodeUnitCompiler(ISourceCodeUnit codeUnit)
-        {
-            return InitializeCodeUnitCompiler(codeUnit, null);
-        }
+        //if (CodeUnitParseTrees == null || CodeUnitParseTrees.Count != Project.SourceFiles.Count())
+        //    return true;
 
-        /// <summary>
-        /// Parse the source code to generate the parse tree for the given code unit
-        /// </summary>
-        public abstract ParseTreeNode ParseCodeUnit(ISourceCodeUnit codeUnit);
+        //var i = 0;
+        //foreach (var codeFile in Project.SourceFiles)
+        //{
+        //    var oldRootParseNode = CodeUnitParseTrees[i++];
+        //    var newRootParseNode = ParseCodeUnit(codeFile);
 
-        /// <summary>
-        /// Finalize the root AST of this compiler
-        /// </summary>
-        protected abstract void FinalizeRootAst();
+        //    if (
+        //        ReferenceEquals(oldRootParseNode, null) ||
+        //        ReferenceEquals(newRootParseNode, null) ||
+        //        oldRootParseNode.IsSameParseTreeNode(newRootParseNode) == false
+        //        )
+        //        return true;
+        //}
 
-        /// <summary>
-        /// Tests if the code of the given project has changed since last compilation, if any
-        /// </summary>
-        /// <param name="dslProject"></param>
-        /// <returns></returns>
-        protected virtual bool CodeChanged(LanguageCodeProject dslProject)
-        {
-            return true;
+        //return false;
+    }
 
-            //if (CodeUnitParseTrees == null || CodeUnitParseTrees.Count != Project.SourceFiles.Count())
-            //    return true;
+    /// <summary>
+    /// Initialize the compiler after clearing all previous compilation data; if any
+    /// </summary>
+    /// <param name="dslProject">The input DSL project</param>
+    private void InitializeCompiler(LanguageCodeProject dslProject)
+    {
+        CodeUnitCompilers = new List<LanguageProjectCodeUnitCompiler>();
 
-            //var i = 0;
-            //foreach (var codeFile in Project.SourceFiles)
-            //{
-            //    var oldRootParseNode = CodeUnitParseTrees[i++];
-            //    var newRootParseNode = ParseCodeUnit(codeFile);
+        CodeUnitParseTrees = new List<ParseTreeNode>();
 
-            //    if (
-            //        ReferenceEquals(oldRootParseNode, null) ||
-            //        ReferenceEquals(newRootParseNode, null) ||
-            //        oldRootParseNode.IsSameParseTreeNode(newRootParseNode) == false
-            //        )
-            //        return true;
-            //}
+        Project = dslProject;
 
-            //return false;
-        }
+        InitializeCompilationLog();
 
-        /// <summary>
-        /// Initialize the compiler after clearing all previous compilation data; if any
-        /// </summary>
-        /// <param name="dslProject">The input DSL project</param>
-        private void InitializeCompiler(LanguageCodeProject dslProject)
-        {
-            CodeUnitCompilers = new List<LanguageProjectCodeUnitCompiler>();
+        InitializeRootAst();
 
-            CodeUnitParseTrees = new List<ParseTreeNode>();
+        InitializeTranslatorContext();
 
-            Project = dslProject;
+        Project.UpdateSourceCodeUnitsText();
+    }
 
-            InitializeCompilationLog();
+    /// <summary>
+    /// Initialize the compiler after compilation is done
+    /// </summary>
+    private void FinalizeCompiler()
+    {
+        FinalizeRootAst();
 
-            InitializeRootAst();
+        Project.ActiveCodeUnit = null;
 
-            InitializeTranslatorContext();
+        TranslatorContext = null;
+    }
 
-            Project.UpdateSourceCodeUnitsText();
-        }
+    public void CompileGeneratedCode(string codeTitle, string codeText)
+    {
+        var codeUnit = Project.AddGeneratedCode(codeTitle, codeText);
 
-        /// <summary>
-        /// Initialize the compiler after compilation is done
-        /// </summary>
-        private void FinalizeCompiler()
-        {
-            FinalizeRootAst();
+        var oldActiveCodeUnit = Project.ActiveCodeUnit;
 
-            Project.ActiveCodeUnit = null;
+        Project.ActiveCodeUnit = codeUnit;
 
-            TranslatorContext = null;
-        }
+        var codeUnitCompiler = InitializeCodeUnitCompiler(codeUnit);
 
-        public void CompileGeneratedCode(string codeTitle, string codeText)
-        {
-            var codeUnit = Project.AddGeneratedCode(codeTitle, codeText);
+        CodeUnitCompilers.Add(codeUnitCompiler);
 
-            var oldActiveCodeUnit = Project.ActiveCodeUnit;
+        codeUnitCompiler.Compile();
 
-            Project.ActiveCodeUnit = codeUnit;
+        Project.ActiveCodeUnit = oldActiveCodeUnit;
+    }
 
-            var codeUnitCompiler = InitializeCodeUnitCompiler(codeUnit);
+    private void CompileCodeFile(LanguageCodeFile codeFile)
+    {
+        Project.ActiveCodeUnit = codeFile;
 
-            CodeUnitCompilers.Add(codeUnitCompiler);
+        var rootParseNode = ParseCodeUnit(codeFile);
 
-            codeUnitCompiler.Compile();
+        var codeUnitCompiler = InitializeCodeUnitCompiler(codeFile, rootParseNode);
 
-            Project.ActiveCodeUnit = oldActiveCodeUnit;
-        }
+        CodeUnitCompilers.Add(codeUnitCompiler);
 
-        private void CompileCodeFile(LanguageCodeFile codeFile)
-        {
-            Project.ActiveCodeUnit = codeFile;
+        CodeUnitParseTrees.Add(codeUnitCompiler.RootParseNode);
 
-            var rootParseNode = ParseCodeUnit(codeFile);
+        codeUnitCompiler.Compile();
+    }
 
-            var codeUnitCompiler = InitializeCodeUnitCompiler(codeFile, rootParseNode);
+    /// <summary>
+    /// Compile the given code units
+    /// </summary>
+    /// <param name="dslProject">The input DSL project</param>
+    /// <param name="forceCompilation"></param>
+    public void Compile(LanguageCodeProject dslProject, bool forceCompilation = false)
+    {
+        if (forceCompilation == false && CodeChanged(dslProject) == false)
+            return;
 
-            CodeUnitCompilers.Add(codeUnitCompiler);
+        InitializeCompiler(dslProject);
 
-            CodeUnitParseTrees.Add(codeUnitCompiler.RootParseNode);
+        foreach (var codeFile in Project.SourceFiles)
+            CompileCodeFile(codeFile);
 
-            codeUnitCompiler.Compile();
-        }
-
-        /// <summary>
-        /// Compile the given code units
-        /// </summary>
-        /// <param name="dslProject">The input DSL project</param>
-        /// <param name="forceCompilation"></param>
-        public void Compile(LanguageCodeProject dslProject, bool forceCompilation = false)
-        {
-            if (forceCompilation == false && CodeChanged(dslProject) == false)
-                return;
-
-            InitializeCompiler(dslProject);
-
-            foreach (var codeFile in Project.SourceFiles)
-                CompileCodeFile(codeFile);
-
-            FinalizeCompiler();
-        }
+        FinalizeCompiler();
     }
 }

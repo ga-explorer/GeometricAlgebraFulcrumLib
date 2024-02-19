@@ -2,29 +2,28 @@
 using GeometricAlgebraFulcrumLib.Processors.MatrixAlgebra;
 using GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors.Dense;
 
-namespace GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Matrices
+namespace GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Matrices;
+
+public abstract class LinMatrixColumnBase<TMatrix, TScalar> :
+    LinVectorDenseStorageBase<TScalar>
 {
-    public abstract class LinMatrixColumnBase<TMatrix, TScalar> :
-        LinVectorDenseStorageBase<TScalar>
+    public IMatrixProcessor<TMatrix, TScalar> MatrixProcessor { get; }
+
+    public TMatrix MatrixStorage { get; }
+
+    public int ColumnIndex { get; }
+
+    public override int Count
+        => MatrixProcessor.GetDenseRowsCount(MatrixStorage);
+
+
+    protected LinMatrixColumnBase(IMatrixProcessor<TMatrix, TScalar> matrixProcessor, TMatrix matrix, int columnIndex)
     {
-        public IMatrixProcessor<TMatrix, TScalar> MatrixProcessor { get; }
+        if (columnIndex < 0 || columnIndex >= matrixProcessor.GetDenseColumnsCount(matrix))
+            throw new ArgumentOutOfRangeException(nameof(columnIndex));
 
-        public TMatrix MatrixStorage { get; }
-
-        public int ColumnIndex { get; }
-
-        public override int Count
-            => MatrixProcessor.GetDenseRowsCount(MatrixStorage);
-
-
-        protected LinMatrixColumnBase(IMatrixProcessor<TMatrix, TScalar> matrixProcessor, TMatrix matrix, int columnIndex)
-        {
-            if (columnIndex < 0 || columnIndex >= matrixProcessor.GetDenseColumnsCount(matrix))
-                throw new ArgumentOutOfRangeException(nameof(columnIndex));
-
-            MatrixProcessor = matrixProcessor;
-            MatrixStorage = matrix;
-            ColumnIndex = columnIndex;
-        }
+        MatrixProcessor = matrixProcessor;
+        MatrixStorage = matrix;
+        ColumnIndex = columnIndex;
     }
 }

@@ -4,92 +4,91 @@ using GeometricAlgebraFulcrumLib.Lite.LinearAlgebra.Matrices;
 using GeometricAlgebraFulcrumLib.Lite.LinearAlgebra.Vectors.SpaceND;
 using GeometricAlgebraFulcrumLib.Lite.ScalarAlgebra;
 
-namespace GeometricAlgebraFulcrumLib.Lite.LinearAlgebra.LinearMaps.SpaceND.Scaling
+namespace GeometricAlgebraFulcrumLib.Lite.LinearAlgebra.LinearMaps.SpaceND.Scaling;
+
+public sealed class LinFloat64VectorDirectionalScaling :
+    LinFloat64DirectionalScalingLinearMap
 {
-    public sealed class LinFloat64VectorDirectionalScaling :
-        LinFloat64DirectionalScalingLinearMap
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static LinFloat64VectorDirectionalScaling Create(double scalingFactor, Float64Vector scalingVector)
     {
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static LinFloat64VectorDirectionalScaling Create(double scalingFactor, Float64Vector scalingVector)
-        {
-            return new LinFloat64VectorDirectionalScaling(scalingFactor, scalingVector);
-        }
+        return new LinFloat64VectorDirectionalScaling(scalingFactor, scalingVector);
+    }
 
 
-        public override int VSpaceDimensions
-            => ScalingVector.VSpaceDimensions;
+    public override int VSpaceDimensions
+        => ScalingVector.VSpaceDimensions;
 
-        public override double ScalingFactor { get; }
+    public override double ScalingFactor { get; }
 
-        public override Float64Vector ScalingVector { get; }
-
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private LinFloat64VectorDirectionalScaling(double factor, Float64Vector vector)
-        {
-            Debug.Assert(
-                vector.IsNearUnit() &&
-                factor.IsValid() &&
-                factor.IsNotZero()
-            );
-
-            ScalingFactor = factor;
-            ScalingVector = vector;
-        }
+    public override Float64Vector ScalingVector { get; }
 
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override bool IsValid()
-        {
-            return
-                ScalingVector.IsNearUnit() &&
-                ScalingFactor.IsNotNaN() &&
-                ScalingFactor.IsNotZero();
-        }
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    private LinFloat64VectorDirectionalScaling(double factor, Float64Vector vector)
+    {
+        Debug.Assert(
+            vector.IsNearUnit() &&
+            factor.IsValid() &&
+            factor.IsNotZero()
+        );
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override Float64Vector MapBasisVector(int basisIndex)
-        {
-            var s = (ScalingFactor - 1d) * ScalingVector[basisIndex];
+        ScalingFactor = factor;
+        ScalingVector = vector;
+    }
 
-            return Float64VectorComposer
-                .Create()
-                .SetVector(ScalingVector, s)
-                .AddTerm(basisIndex, 1d)
-                .GetVector();
-        }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override Float64Vector MapVector(Float64Vector vector)
-        {
-            var s = (ScalingFactor - 1d) * Float64ArrayUtils.VectorDot(vector, ScalingVector);
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public override bool IsValid()
+    {
+        return
+            ScalingVector.IsNearUnit() &&
+            ScalingFactor.IsNotNaN() &&
+            ScalingFactor.IsNotZero();
+    }
 
-            return Float64VectorComposer
-                .Create()
-                .SetVector(vector)
-                .AddVector(ScalingVector, s)
-                .GetVector();
-        }
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public override Float64Vector MapBasisVector(int basisIndex)
+    {
+        var s = (ScalingFactor - 1d) * ScalingVector[basisIndex];
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override ILinFloat64DirectionalScalingLinearMap GetDirectionalScalingInverse()
-        {
-            return GetVectorDirectionalScalingInverse();
-        }
+        return Float64VectorComposer
+            .Create()
+            .SetVector(ScalingVector, s)
+            .AddTerm(basisIndex, 1d)
+            .GetVector();
+    }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public LinFloat64VectorDirectionalScaling GetVectorDirectionalScalingInverse()
-        {
-            return new LinFloat64VectorDirectionalScaling(
-                1d / ScalingFactor,
-                ScalingVector
-            );
-        }
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public override Float64Vector MapVector(Float64Vector vector)
+    {
+        var s = (ScalingFactor - 1d) * Float64ArrayUtils.VectorDot(vector, ScalingVector);
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override LinFloat64VectorDirectionalScaling ToVectorDirectionalScaling()
-        {
-            return this;
-        }
+        return Float64VectorComposer
+            .Create()
+            .SetVector(vector)
+            .AddVector(ScalingVector, s)
+            .GetVector();
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public override ILinFloat64DirectionalScalingLinearMap GetDirectionalScalingInverse()
+    {
+        return GetVectorDirectionalScalingInverse();
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public LinFloat64VectorDirectionalScaling GetVectorDirectionalScalingInverse()
+    {
+        return new LinFloat64VectorDirectionalScaling(
+            1d / ScalingFactor,
+            ScalingVector
+        );
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public override LinFloat64VectorDirectionalScaling ToVectorDirectionalScaling()
+    {
+        return this;
     }
 }

@@ -1,10 +1,9 @@
-﻿namespace WebComposerLib.ImageSharp.Processing.AutoCrop.Extensions
+﻿namespace WebComposerLib.ImageSharp.Processing.AutoCrop.Extensions;
+
+internal static class PointExtensions
 {
-    internal static class PointExtensions
+    public static Point Invert(this Point point)
     {
-        public static Point Invert(this Point point)
-        {
-            return new Point(-point.X, -point.Y);
-        }
+        return new Point(-point.X, -point.Y);
     }
 }

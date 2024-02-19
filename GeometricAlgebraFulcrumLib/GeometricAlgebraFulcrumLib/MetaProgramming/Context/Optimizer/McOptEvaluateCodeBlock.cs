@@ -2,99 +2,98 @@
 using GeometricAlgebraFulcrumLib.MetaProgramming.Context.Evaluation;
 using GeometricAlgebraFulcrumLib.MetaProgramming.Expressions;
 
-namespace GeometricAlgebraFulcrumLib.MetaProgramming.Context.Optimizer
+namespace GeometricAlgebraFulcrumLib.MetaProgramming.Context.Optimizer;
+
+internal sealed class McOptEvaluateCodeBlock : 
+    MetaContextProcessorBase
 {
-    internal sealed class McOptEvaluateCodeBlock : 
-        MetaContextProcessorBase
+    internal static void Process(MetaContext context, MetaContextEvaluationData evaluationData)
     {
-        internal static void Process(MetaContext context, MetaContextEvaluationData evaluationData)
+        var processor = new McOptEvaluateCodeBlock(context, evaluationData);
+
+        processor.BeginProcessing();
+    }
+
+
+    private readonly MetaContextEvaluationData _evaluationData;
+
+
+    private McOptEvaluateCodeBlock(MetaContext context, MetaContextEvaluationData evaluationData)
+        : base(context)
+    {
+        _evaluationData = evaluationData;
+    }
+
+
+    private string ExpressionToString(IMetaExpression expr)
+    {
+        if (expr.IsAtomic)
+            return expr.IsVariable
+                ? _evaluationData[expr.HeadText].ToString("G")
+                : expr.HeadText;
+
+        var compositeExpr = (IMetaExpressionComposite) expr;
+
+        var s = new StringBuilder();
+
+        s.Append(compositeExpr.HeadText)
+            .Append("[");
+
+        var i = 0;
+        foreach (var argExpr in compositeExpr.Arguments)
         {
-            var processor = new McOptEvaluateCodeBlock(context, evaluationData);
-
-            processor.BeginProcessing();
-        }
-
-
-        private readonly MetaContextEvaluationData _evaluationData;
-
-
-        private McOptEvaluateCodeBlock(MetaContext context, MetaContextEvaluationData evaluationData)
-            : base(context)
-        {
-            _evaluationData = evaluationData;
-        }
-
-
-        private string ExpressionToString(IMetaExpression expr)
-        {
-            if (expr.IsAtomic)
-                return expr.IsVariable
-                    ? _evaluationData[expr.HeadText].ToString("G")
-                    : expr.HeadText;
-
-            var compositeExpr = (IMetaExpressionComposite) expr;
-
-            var s = new StringBuilder();
-
-            s.Append(compositeExpr.HeadText)
-                .Append("[");
-
-            var i = 0;
-            foreach (var argExpr in compositeExpr.Arguments)
-            {
-                if (i > 0)
-                    s.Append(", ");
+            if (i > 0)
+                s.Append(", ");
                 
-                s.Append(ExpressionToString(argExpr));
+            s.Append(ExpressionToString(argExpr));
 
-                i++;
-            }
-
-            s.Append("]");
-
-            return s.ToString();
+            i++;
         }
 
-        //private double ExpressionToFloat64(ISymbolicExpression expr)
-        //{
-        //    if (expr is ISymbolicNumber numberExpr)
-        //        return numberExpr.RhsExpressionValue;
+        s.Append("]");
 
-        //    if (expr is ISymbolicVariable)
-        //        return _evaluationData[expr.HeadText];
+        return s.ToString();
+    }
 
-        //    var compositeExpr = (ISymbolicExpressionComposite) expr;
+    //private double ExpressionToFloat64(ISymbolicExpression expr)
+    //{
+    //    if (expr is ISymbolicNumber numberExpr)
+    //        return numberExpr.RhsExpressionValue;
 
-        //    var s = new StringBuilder();
+    //    if (expr is ISymbolicVariable)
+    //        return _evaluationData[expr.HeadText];
 
-        //    s.Append(compositeExpr.HeadText)
-        //        .Append("[");
+    //    var compositeExpr = (ISymbolicExpressionComposite) expr;
 
-        //    var i = 0;
-        //    foreach (var argExpr in compositeExpr.Arguments)
-        //    {
-        //        if (i > 0)
-        //            s.Append(", ");
+    //    var s = new StringBuilder();
+
+    //    s.Append(compositeExpr.HeadText)
+    //        .Append("[");
+
+    //    var i = 0;
+    //    foreach (var argExpr in compositeExpr.Arguments)
+    //    {
+    //        if (i > 0)
+    //            s.Append(", ");
                 
-        //        s.Append(ExpressionToString(argExpr));
+    //        s.Append(ExpressionToString(argExpr));
 
-        //        i++;
-        //    }
+    //        i++;
+    //    }
 
-        //    s.Append("]");
+    //    s.Append("]");
 
-        //    return s.ToString();
-        //}
+    //    return s.ToString();
+    //}
 
-        protected override void BeginProcessing()
+    protected override void BeginProcessing()
+    {
+        foreach (var computedVar in Context.GetComputedVariables())
         {
-            foreach (var computedVar in Context.GetComputedVariables())
-            {
-                _evaluationData[computedVar.InternalName] = 
-                    Context.SymbolicEvaluator.EvaluateToFloat64(
-                        ExpressionToString(computedVar.RhsExpression)
-                    );
-            }
+            _evaluationData[computedVar.InternalName] = 
+                Context.SymbolicEvaluator.EvaluateToFloat64(
+                    ExpressionToString(computedVar.RhsExpression)
+                );
         }
     }
 }

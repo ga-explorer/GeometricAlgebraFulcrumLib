@@ -98,7 +98,7 @@ public static class RGaConformalDecodeIpnsFlatUtils
         );
 
         Debug.Assert(
-            flat.IpnsFlatPosition.Lcp(ipnsFlat).IsNearZero()
+            flat.PositionToIpnsPoint().Lcp(ipnsFlat).IsNearZero()
         );
 
         return flat;
@@ -169,7 +169,7 @@ public static class RGaConformalDecodeIpnsFlatUtils
 
         Debug.Assert(
             weight.IsZero() ||
-            flat.IpnsFlatPosition.Lcp(ipnsFlat).IsNearZero()
+            flat.PositionToIpnsPoint().Lcp(ipnsFlat).IsNearZero()
         );
 
         return flat;

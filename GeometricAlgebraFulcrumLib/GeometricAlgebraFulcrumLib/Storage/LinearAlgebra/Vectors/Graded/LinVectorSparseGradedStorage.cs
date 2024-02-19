@@ -7,403 +7,402 @@ using DataStructuresLib.Extensions;
 using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Restricted.Records;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Records;
 
-namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors.Graded
+namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors.Graded;
+
+public sealed record LinVectorSparseGradedStorage<T> :
+    ILinVectorGradedStorage<T>
 {
-    public sealed record LinVectorSparseGradedStorage<T> :
-        ILinVectorGradedStorage<T>
+    private readonly Dictionary<uint, ILinVectorStorage<T>> _gradeIndexScalarDictionary;
+
+
+    public int GradesCount 
+        => _gradeIndexScalarDictionary.Count;
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public IEnumerable<uint> GetGrades()
     {
-        private readonly Dictionary<uint, ILinVectorStorage<T>> _gradeIndexScalarDictionary;
+        return _gradeIndexScalarDictionary.Keys;
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public IEnumerable<uint> GetEmptyGrades(uint vSpaceDimensions)
+    {
+        return (1U + vSpaceDimensions).GetRange().Except(_gradeIndexScalarDictionary.Keys);
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public IEnumerable<ILinVectorStorage<T>> GetVectorStorages()
+    {
+        return _gradeIndexScalarDictionary.Values;
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public int GetSparseCount()
+    {
+        return _gradeIndexScalarDictionary.Values.Sum(storage => storage.GetSparseCount());
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public IEnumerable<T> GetScalars()
+    {
+        return _gradeIndexScalarDictionary.Values.SelectMany(storage => storage.GetScalars());
+    }
 
 
-        public int GradesCount 
-            => _gradeIndexScalarDictionary.Count;
+    internal LinVectorSparseGradedStorage()
+    {
+        _gradeIndexScalarDictionary = new Dictionary<uint, ILinVectorStorage<T>>();
+    }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public IEnumerable<uint> GetGrades()
-        {
-            return _gradeIndexScalarDictionary.Keys;
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public IEnumerable<uint> GetEmptyGrades(uint vSpaceDimensions)
-        {
-            return (1U + vSpaceDimensions).GetRange().Except(_gradeIndexScalarDictionary.Keys);
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public IEnumerable<ILinVectorStorage<T>> GetVectorStorages()
-        {
-            return _gradeIndexScalarDictionary.Values;
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public int GetSparseCount()
-        {
-            return _gradeIndexScalarDictionary.Values.Sum(storage => storage.GetSparseCount());
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public IEnumerable<T> GetScalars()
-        {
-            return _gradeIndexScalarDictionary.Values.SelectMany(storage => storage.GetScalars());
-        }
+    internal LinVectorSparseGradedStorage(Dictionary<uint, ILinVectorStorage<T>> gradeIndexScalarDictionary)
+    {
+        _gradeIndexScalarDictionary = gradeIndexScalarDictionary;
+    }
 
 
-        internal LinVectorSparseGradedStorage()
-        {
-            _gradeIndexScalarDictionary = new Dictionary<uint, ILinVectorStorage<T>>();
-        }
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public LinVectorSparseGradedStorage<T> Clear()
+    {
+        _gradeIndexScalarDictionary.Clear();
 
-        internal LinVectorSparseGradedStorage(Dictionary<uint, ILinVectorStorage<T>> gradeIndexScalarDictionary)
-        {
-            _gradeIndexScalarDictionary = gradeIndexScalarDictionary;
-        }
+        return this;
+    }
 
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public LinVectorSparseGradedStorage<T> Remove(uint grade)
+    {
+        _gradeIndexScalarDictionary.Remove(grade);
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public LinVectorSparseGradedStorage<T> Clear()
-        {
-            _gradeIndexScalarDictionary.Clear();
-
-            return this;
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public LinVectorSparseGradedStorage<T> Remove(uint grade)
-        {
-            _gradeIndexScalarDictionary.Remove(grade);
-
-            return this;
-        }
+        return this;
+    }
         
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public LinVectorSparseGradedStorage<T> SetList(uint grade, ILinVectorStorage<T> storage)
-        {
-            if (_gradeIndexScalarDictionary.ContainsKey(grade))
-                _gradeIndexScalarDictionary[grade] = storage;
-            else
-                _gradeIndexScalarDictionary.Add(grade, storage);
-
-            return this;
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public LinVectorSparseGradedStorage<T> AddList(uint grade, ILinVectorStorage<T> storage)
-        {
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public LinVectorSparseGradedStorage<T> SetList(uint grade, ILinVectorStorage<T> storage)
+    {
+        if (_gradeIndexScalarDictionary.ContainsKey(grade))
+            _gradeIndexScalarDictionary[grade] = storage;
+        else
             _gradeIndexScalarDictionary.Add(grade, storage);
 
-            return this;
-        }
+        return this;
+    }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public bool IsEmpty()
-        {
-            return _gradeIndexScalarDictionary
-                .Values
-                .All(dict => dict.IsEmpty());
-        }
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public LinVectorSparseGradedStorage<T> AddList(uint grade, ILinVectorStorage<T> storage)
+    {
+        _gradeIndexScalarDictionary.Add(grade, storage);
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public uint GetMinGrade()
-        {
-            return _gradeIndexScalarDictionary.Keys.TryGetMinValue(out var grade)
-                ? grade
-                : throw new InvalidOperationException();
-        }
+        return this;
+    }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public uint GetMaxGrade()
-        {
-            return _gradeIndexScalarDictionary.Keys.TryGetMaxValue(out var grade)
-                ? grade
-                : throw new InvalidOperationException();
-        }
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public bool IsEmpty()
+    {
+        return _gradeIndexScalarDictionary
+            .Values
+            .All(dict => dict.IsEmpty());
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public uint GetMinGrade()
+    {
+        return _gradeIndexScalarDictionary.Keys.TryGetMinValue(out var grade)
+            ? grade
+            : throw new InvalidOperationException();
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public uint GetMaxGrade()
+    {
+        return _gradeIndexScalarDictionary.Keys.TryGetMaxValue(out var grade)
+            ? grade
+            : throw new InvalidOperationException();
+    }
         
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ILinVectorStorage<T> GetVectorStorage(uint grade)
-        {
-            return _gradeIndexScalarDictionary.TryGetValue(grade, out var list)
-                ? list
-                : LinVectorEmptyStorage<T>.EmptyStorage;
-        }
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public ILinVectorStorage<T> GetVectorStorage(uint grade)
+    {
+        return _gradeIndexScalarDictionary.TryGetValue(grade, out var list)
+            ? list
+            : LinVectorEmptyStorage<T>.EmptyStorage;
+    }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public T GetScalar(uint grade, ulong index)
-        {
-            return _gradeIndexScalarDictionary.TryGetValue(grade, out var matrixStorage) &&
-                   matrixStorage.TryGetScalar(index, out var scalar)
-                ? scalar
-                : throw new KeyNotFoundException();
-        }
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public T GetScalar(uint grade, ulong index)
+    {
+        return _gradeIndexScalarDictionary.TryGetValue(grade, out var matrixStorage) &&
+               matrixStorage.TryGetScalar(index, out var scalar)
+            ? scalar
+            : throw new KeyNotFoundException();
+    }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public T GetScalar(RGaGradeKvIndexRecord gradeIndex)
-        {
-            var (grade, index) = gradeIndex;
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public T GetScalar(RGaGradeKvIndexRecord gradeIndex)
+    {
+        var (grade, index) = gradeIndex;
 
-            return _gradeIndexScalarDictionary.TryGetValue(grade, out var matrixStorage) &&
-                   matrixStorage.TryGetScalar(index, out var scalar)
-                ? scalar
-                : throw new KeyNotFoundException();
-        }
+        return _gradeIndexScalarDictionary.TryGetValue(grade, out var matrixStorage) &&
+               matrixStorage.TryGetScalar(index, out var scalar)
+            ? scalar
+            : throw new KeyNotFoundException();
+    }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public bool ContainsGrade(uint grade)
-        {
-            return _gradeIndexScalarDictionary.ContainsKey(grade);
-        }
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public bool ContainsGrade(uint grade)
+    {
+        return _gradeIndexScalarDictionary.ContainsKey(grade);
+    }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public bool ContainsIndex(uint grade, ulong index)
-        {
-            return _gradeIndexScalarDictionary.TryGetValue(grade, out var matrixStorage) &&
-                   matrixStorage.ContainsIndex(index);
-        }
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public bool ContainsIndex(uint grade, ulong index)
+    {
+        return _gradeIndexScalarDictionary.TryGetValue(grade, out var matrixStorage) &&
+               matrixStorage.ContainsIndex(index);
+    }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public bool TryGetVectorStorage(uint grade, out ILinVectorStorage<T> storage)
-        {
-            return _gradeIndexScalarDictionary.TryGetValue(grade, out storage);
-        }
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public bool TryGetVectorStorage(uint grade, out ILinVectorStorage<T> storage)
+    {
+        return _gradeIndexScalarDictionary.TryGetValue(grade, out storage);
+    }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public bool TryGetScalar(uint grade, ulong index, out T scalar)
-        {
-            if (_gradeIndexScalarDictionary.TryGetValue(grade, out var matrixStorage))
-                return matrixStorage.TryGetScalar(index, out scalar);
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public bool TryGetScalar(uint grade, ulong index, out T scalar)
+    {
+        if (_gradeIndexScalarDictionary.TryGetValue(grade, out var matrixStorage))
+            return matrixStorage.TryGetScalar(index, out scalar);
             
-            scalar = default;
-            return false;
-        }
+        scalar = default;
+        return false;
+    }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public IEnumerable<RGaGradeKvIndexRecord> GetGradeIndexRecords()
-        {
-            return _gradeIndexScalarDictionary.SelectMany(pair => 
-                pair.Value.GetIndices().Select(index => 
-                    new RGaGradeKvIndexRecord(pair.Key, index)
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public IEnumerable<RGaGradeKvIndexRecord> GetGradeIndexRecords()
+    {
+        return _gradeIndexScalarDictionary.SelectMany(pair => 
+            pair.Value.GetIndices().Select(index => 
+                new RGaGradeKvIndexRecord(pair.Key, index)
+            )
+        );
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public IEnumerable<GaGradeLinVectorStorageRecord<T>> GetGradeStorageRecords()
+    {
+        return _gradeIndexScalarDictionary.Select(pair => 
+            new GaGradeLinVectorStorageRecord<T>(pair.Key, pair.Value)
+        );
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public IEnumerable<RGaGradeKvIndexScalarRecord<T>> GetGradeIndexScalarRecords()
+    {
+        return _gradeIndexScalarDictionary.SelectMany(
+            pair => pair.Value.GetIndexScalarRecords().Select(indexValuePair => 
+                new RGaGradeKvIndexScalarRecord<T>(
+                    pair.Key,
+                    indexValuePair.KvIndex,
+                    indexValuePair.Scalar
                 )
-            );
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public IEnumerable<GaGradeLinVectorStorageRecord<T>> GetGradeStorageRecords()
-        {
-            return _gradeIndexScalarDictionary.Select(pair => 
-                new GaGradeLinVectorStorageRecord<T>(pair.Key, pair.Value)
-            );
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public IEnumerable<RGaGradeKvIndexScalarRecord<T>> GetGradeIndexScalarRecords()
-        {
-            return _gradeIndexScalarDictionary.SelectMany(
-                pair => pair.Value.GetIndexScalarRecords().Select(indexValuePair => 
-                    new RGaGradeKvIndexScalarRecord<T>(
-                        pair.Key,
-                        indexValuePair.KvIndex,
-                        indexValuePair.Scalar
-                    )
-                )
-            );
-        }
+            )
+        );
+    }
         
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ILinVectorGradedStorage<T> GetCopy()
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public ILinVectorGradedStorage<T> GetCopy()
+    {
+        return _gradeIndexScalarDictionary
+            .ToDictionary(list => list.GetCopy())
+            .CreateLinVectorGradedStorage();
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public ILinVectorGradedStorage<T2> MapScalars<T2>(Func<T, T2> scalarMapping)
+    {
+        return _gradeIndexScalarDictionary
+            .ToDictionary(list => list.MapScalars(scalarMapping))
+            .CreateLinVectorGradedStorage();
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public ILinVectorGradedStorage<T2> MapScalars<T2>(Func<ulong, T, T2> indexScalarMapping)
+    {
+        return _gradeIndexScalarDictionary
+            .ToDictionary(list => list.MapScalars(indexScalarMapping))
+            .CreateLinVectorGradedStorage();
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public ILinVectorGradedStorage<T2> MapScalars<T2>(Func<uint, ulong, T, T2> gradeIndexScalarMapping)
+    {
+        return _gradeIndexScalarDictionary
+            .ToDictionary(
+                pair => pair.Key,
+                pair => pair.Value.MapScalars(
+                    (index, scalar) => gradeIndexScalarMapping(pair.Key, index, scalar))
+            )
+            .CreateLinVectorGradedStorage();
+    }
+
+    public ILinVectorGradedStorage<T> FilterByGrade(Func<uint, bool> gradeFilter)
+    {
+        var gradeIndexScalarDictionary = new Dictionary<uint, ILinVectorStorage<T>>();
+
+        foreach (var (grade, evenDictionary) in _gradeIndexScalarDictionary)
         {
-            return _gradeIndexScalarDictionary
-                .ToDictionary(list => list.GetCopy())
-                .CreateLinVectorGradedStorage();
+            if (!gradeFilter(grade) || evenDictionary.IsEmpty()) 
+                continue;
+
+            gradeIndexScalarDictionary.Add(grade, evenDictionary);
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ILinVectorGradedStorage<T2> MapScalars<T2>(Func<T, T2> scalarMapping)
+        return gradeIndexScalarDictionary.CreateLinVectorGradedStorage();
+    }
+
+    public ILinVectorGradedStorage<T> FilterByIndex(Func<ulong, bool> indexFilter)
+    {
+        var gradeIndexScalarDictionary = new Dictionary<uint, ILinVectorStorage<T>>();
+
+        foreach (var (grade, matrixStorage) in _gradeIndexScalarDictionary)
         {
-            return _gradeIndexScalarDictionary
-                .ToDictionary(list => list.MapScalars(scalarMapping))
-                .CreateLinVectorGradedStorage();
+            var filteredMatrixStorage = 
+                matrixStorage.FilterByIndex(indexFilter);
+
+            if (filteredMatrixStorage.IsEmpty()) 
+                continue;
+
+            gradeIndexScalarDictionary.Add(grade, filteredMatrixStorage);
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ILinVectorGradedStorage<T2> MapScalars<T2>(Func<ulong, T, T2> indexScalarMapping)
+        return gradeIndexScalarDictionary.CreateLinVectorGradedStorage();
+    }
+
+    public ILinVectorGradedStorage<T> FilterByGradeIndex(Func<uint, ulong, bool> gradeIndexFilter)
+    {
+        var gradeIndexScalarDictionary = new Dictionary<uint, ILinVectorStorage<T>>();
+
+        foreach (var (grade, matrixStorage) in _gradeIndexScalarDictionary)
         {
-            return _gradeIndexScalarDictionary
-                .ToDictionary(list => list.MapScalars(indexScalarMapping))
-                .CreateLinVectorGradedStorage();
+            var filteredMatrixStorage = 
+                matrixStorage.FilterByIndex(index => gradeIndexFilter(grade, index));
+
+            if (filteredMatrixStorage.IsEmpty()) 
+                continue;
+
+            gradeIndexScalarDictionary.Add(grade, filteredMatrixStorage);
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ILinVectorGradedStorage<T2> MapScalars<T2>(Func<uint, ulong, T, T2> gradeIndexScalarMapping)
+        return gradeIndexScalarDictionary.CreateLinVectorGradedStorage();
+    }
+
+    public ILinVectorGradedStorage<T> FilterByGradeScalar(Func<uint, T, bool> gradeScalarFilter)
+    {
+        var gradeIndexScalarDictionary = new Dictionary<uint, ILinVectorStorage<T>>();
+
+        foreach (var (grade, evenDict) in _gradeIndexScalarDictionary)
         {
-            return _gradeIndexScalarDictionary
-                .ToDictionary(
-                    pair => pair.Key,
-                    pair => pair.Value.MapScalars(
-                        (index, scalar) => gradeIndexScalarMapping(pair.Key, index, scalar))
-                    )
-                .CreateLinVectorGradedStorage();
+            var evenDictionary = evenDict.FilterByScalar(
+                scalar => gradeScalarFilter(grade, scalar)
+            );
+
+            if (evenDictionary.IsEmpty()) continue;
+
+            gradeIndexScalarDictionary.Add(grade, evenDictionary);
         }
 
-        public ILinVectorGradedStorage<T> FilterByGrade(Func<uint, bool> gradeFilter)
+        return gradeIndexScalarDictionary.CreateLinVectorGradedStorage();
+    }
+
+    public ILinVectorGradedStorage<T> FilterByIndexScalar(Func<ulong, T, bool> indexScalarFilter)
+    {
+        var gradeIndexScalarDictionary = new Dictionary<uint, ILinVectorStorage<T>>();
+
+        foreach (var (grade, matrixStorage) in _gradeIndexScalarDictionary)
         {
-            var gradeIndexScalarDictionary = new Dictionary<uint, ILinVectorStorage<T>>();
+            var filteredMatrixStorage = 
+                matrixStorage.FilterByIndexScalar(indexScalarFilter);
 
-            foreach (var (grade, evenDictionary) in _gradeIndexScalarDictionary)
-            {
-                if (!gradeFilter(grade) || evenDictionary.IsEmpty()) 
-                    continue;
+            if (filteredMatrixStorage.IsEmpty()) 
+                continue;
 
-                gradeIndexScalarDictionary.Add(grade, evenDictionary);
-            }
-
-            return gradeIndexScalarDictionary.CreateLinVectorGradedStorage();
+            gradeIndexScalarDictionary.Add(grade, filteredMatrixStorage);
         }
 
-        public ILinVectorGradedStorage<T> FilterByIndex(Func<ulong, bool> indexFilter)
+        return gradeIndexScalarDictionary.CreateLinVectorGradedStorage();
+    }
+
+    public ILinVectorGradedStorage<T> FilterByGradeIndexScalar(Func<uint, ulong, T, bool> gradeIndexScalarFilter)
+    {
+        var gradeIndexScalarDictionary = new Dictionary<uint, ILinVectorStorage<T>>();
+
+        foreach (var (grade, evenDict) in _gradeIndexScalarDictionary)
         {
-            var gradeIndexScalarDictionary = new Dictionary<uint, ILinVectorStorage<T>>();
+            var evenDictionary = evenDict.FilterByIndexScalar(
+                (index, scalar) => gradeIndexScalarFilter(grade, index, scalar)
+            );
 
-            foreach (var (grade, matrixStorage) in _gradeIndexScalarDictionary)
-            {
-                var filteredMatrixStorage = 
-                    matrixStorage.FilterByIndex(indexFilter);
+            if (evenDictionary.IsEmpty()) 
+                continue;
 
-                if (filteredMatrixStorage.IsEmpty()) 
-                    continue;
-
-                gradeIndexScalarDictionary.Add(grade, filteredMatrixStorage);
-            }
-
-            return gradeIndexScalarDictionary.CreateLinVectorGradedStorage();
+            gradeIndexScalarDictionary.Add(grade, evenDictionary);
         }
 
-        public ILinVectorGradedStorage<T> FilterByGradeIndex(Func<uint, ulong, bool> gradeIndexFilter)
+        return gradeIndexScalarDictionary.CreateLinVectorGradedStorage();
+    }
+
+    public ILinVectorGradedStorage<T> FilterByScalar(Func<T, bool> scalarFilter)
+    {
+        var gradeIndexScalarDictionary = new Dictionary<uint, ILinVectorStorage<T>>();
+
+        foreach (var (grade, evenDict) in _gradeIndexScalarDictionary)
         {
-            var gradeIndexScalarDictionary = new Dictionary<uint, ILinVectorStorage<T>>();
+            var evenDictionary = evenDict.FilterByScalar(scalarFilter);
 
-            foreach (var (grade, matrixStorage) in _gradeIndexScalarDictionary)
-            {
-                var filteredMatrixStorage = 
-                    matrixStorage.FilterByIndex(index => gradeIndexFilter(grade, index));
+            if (evenDictionary.IsEmpty()) 
+                continue;
 
-                if (filteredMatrixStorage.IsEmpty()) 
-                    continue;
-
-                gradeIndexScalarDictionary.Add(grade, filteredMatrixStorage);
-            }
-
-            return gradeIndexScalarDictionary.CreateLinVectorGradedStorage();
+            gradeIndexScalarDictionary.Add(grade, evenDictionary);
         }
 
-        public ILinVectorGradedStorage<T> FilterByGradeScalar(Func<uint, T, bool> gradeScalarFilter)
-        {
-            var gradeIndexScalarDictionary = new Dictionary<uint, ILinVectorStorage<T>>();
+        return gradeIndexScalarDictionary.CreateLinVectorGradedStorage();
+    }
 
-            foreach (var (grade, evenDict) in _gradeIndexScalarDictionary)
-            {
-                var evenDictionary = evenDict.FilterByScalar(
-                    scalar => gradeScalarFilter(grade, scalar)
+    public ILinVectorStorage<T> ToVectorStorage(Func<uint, ulong, ulong> gradeIndexToIndexMapping)
+    {
+        var indexValueDictionary = new Dictionary<ulong, T>();
+
+        foreach (var (grade, evenDictionary) in _gradeIndexScalarDictionary)
+        {
+            foreach (var (index, scalar) in evenDictionary.GetIndexScalarRecords())
+                indexValueDictionary.Add(
+                    gradeIndexToIndexMapping(grade, index), 
+                    scalar
                 );
-
-                if (evenDictionary.IsEmpty()) continue;
-
-                gradeIndexScalarDictionary.Add(grade, evenDictionary);
-            }
-
-            return gradeIndexScalarDictionary.CreateLinVectorGradedStorage();
         }
 
-        public ILinVectorGradedStorage<T> FilterByIndexScalar(Func<ulong, T, bool> indexScalarFilter)
+        return indexValueDictionary.CreateLinVectorStorage();
+    }
+
+    public bool TryGetCompactStorage(out ILinVectorGradedStorage<T> gradedStorage)
+    {
+        if (_gradeIndexScalarDictionary.Count == 0)
         {
-            var gradeIndexScalarDictionary = new Dictionary<uint, ILinVectorStorage<T>>();
-
-            foreach (var (grade, matrixStorage) in _gradeIndexScalarDictionary)
-            {
-                var filteredMatrixStorage = 
-                    matrixStorage.FilterByIndexScalar(indexScalarFilter);
-
-                if (filteredMatrixStorage.IsEmpty()) 
-                    continue;
-
-                gradeIndexScalarDictionary.Add(grade, filteredMatrixStorage);
-            }
-
-            return gradeIndexScalarDictionary.CreateLinVectorGradedStorage();
+            gradedStorage = LinVectorEmptyGradedStorage<T>.EmptyStorage;
+            return true;
         }
 
-        public ILinVectorGradedStorage<T> FilterByGradeIndexScalar(Func<uint, ulong, T, bool> gradeIndexScalarFilter)
+        if (_gradeIndexScalarDictionary.Count == 1)
         {
-            var gradeIndexScalarDictionary = new Dictionary<uint, ILinVectorStorage<T>>();
+            var (grade, storage) = _gradeIndexScalarDictionary.First();
 
-            foreach (var (grade, evenDict) in _gradeIndexScalarDictionary)
-            {
-                var evenDictionary = evenDict.FilterByIndexScalar(
-                    (index, scalar) => gradeIndexScalarFilter(grade, index, scalar)
-                );
+            gradedStorage = storage.TryGetCompactStorage(out var evenList1)
+                ? evenList1.CreateLinVectorSingleGradeStorage(grade)
+                : storage.CreateLinVectorSingleGradeStorage(grade);
 
-                if (evenDictionary.IsEmpty()) 
-                    continue;
-
-                gradeIndexScalarDictionary.Add(grade, evenDictionary);
-            }
-
-            return gradeIndexScalarDictionary.CreateLinVectorGradedStorage();
+            return true;
         }
 
-        public ILinVectorGradedStorage<T> FilterByScalar(Func<T, bool> scalarFilter)
-        {
-            var gradeIndexScalarDictionary = new Dictionary<uint, ILinVectorStorage<T>>();
-
-            foreach (var (grade, evenDict) in _gradeIndexScalarDictionary)
-            {
-                var evenDictionary = evenDict.FilterByScalar(scalarFilter);
-
-                if (evenDictionary.IsEmpty()) 
-                    continue;
-
-                gradeIndexScalarDictionary.Add(grade, evenDictionary);
-            }
-
-            return gradeIndexScalarDictionary.CreateLinVectorGradedStorage();
-        }
-
-        public ILinVectorStorage<T> ToVectorStorage(Func<uint, ulong, ulong> gradeIndexToIndexMapping)
-        {
-            var indexValueDictionary = new Dictionary<ulong, T>();
-
-            foreach (var (grade, evenDictionary) in _gradeIndexScalarDictionary)
-            {
-                foreach (var (index, scalar) in evenDictionary.GetIndexScalarRecords())
-                    indexValueDictionary.Add(
-                        gradeIndexToIndexMapping(grade, index), 
-                        scalar
-                    );
-            }
-
-            return indexValueDictionary.CreateLinVectorStorage();
-        }
-
-        public bool TryGetCompactStorage(out ILinVectorGradedStorage<T> gradedStorage)
-        {
-            if (_gradeIndexScalarDictionary.Count == 0)
-            {
-                gradedStorage = LinVectorEmptyGradedStorage<T>.EmptyStorage;
-                return true;
-            }
-
-            if (_gradeIndexScalarDictionary.Count == 1)
-            {
-                var (grade, storage) = _gradeIndexScalarDictionary.First();
-
-                gradedStorage = storage.TryGetCompactStorage(out var evenList1)
-                    ? evenList1.CreateLinVectorSingleGradeStorage(grade)
-                    : storage.CreateLinVectorSingleGradeStorage(grade);
-
-                return true;
-            }
-
-            gradedStorage = this;
-            return false;
-        }
+        gradedStorage = this;
+        return false;
     }
 }

@@ -1,9 +1,8 @@
-﻿namespace GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.Xeogl.Constants
+﻿namespace GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.Xeogl.Constants;
+
+public enum XeoglPerspectiveFieldOfViewAxis
 {
-    public enum XeoglPerspectiveFieldOfViewAxis
-    {
-        X = 0,
-        Y = 1,
-        Min = 2
-    }
+    X = 0,
+    Y = 1,
+    Min = 2
 }

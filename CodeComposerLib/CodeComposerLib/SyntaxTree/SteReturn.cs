@@ -1,8 +1,7 @@
-﻿namespace CodeComposerLib.SyntaxTree
-{
-    public class SteReturn : SteSyntaxElement
-    {
-        public ISyntaxTreeElement ReturnedValue { get; set; }
+﻿namespace CodeComposerLib.SyntaxTree;
 
-    }
+public class SteReturn : SteSyntaxElement
+{
+    public ISyntaxTreeElement ReturnedValue { get; set; }
+
 }

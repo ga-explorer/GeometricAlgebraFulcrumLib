@@ -6,120 +6,119 @@ using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Restricted.Float64.Multiv
 using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Restricted.Float64.Processors;
 using GeometricAlgebraFulcrumLib.Lite.LinearAlgebra.LinearMaps.SpaceND;
 
-namespace GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Restricted.Float64.LinearMaps.Projectors
+namespace GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Restricted.Float64.LinearMaps.Projectors;
+
+public sealed class RGaFloat64Projector :
+    RGaFloat64OutermorphismBase,
+    IRGaFloat64Projector
 {
-    public sealed class RGaFloat64Projector :
-        RGaFloat64OutermorphismBase,
-        IRGaFloat64Projector
+    public override RGaFloat64Processor Processor 
+        => Blade.Processor;
+        
+    public RGaFloat64KVector Blade { get; }
+
+    public RGaFloat64KVector BladePseudoInverse { get; }
+
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    internal RGaFloat64Projector(RGaFloat64KVector blade, bool useBladeInverse)
     {
-        public override RGaFloat64Processor Processor 
-            => Blade.Processor;
+        Blade = blade;
+        BladePseudoInverse = useBladeInverse ? blade.PseudoInverse() : blade;
+    }
+
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public override bool IsValid()
+    {
+        return true;
+    }
         
-        public RGaFloat64KVector Blade { get; }
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public override IRGaFloat64Outermorphism GetOmAdjoint()
+    {
+        throw new NotImplementedException();
+    }
 
-        public RGaFloat64KVector BladePseudoInverse { get; }
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public override RGaFloat64Vector OmMapBasisVector(int index)
+    {
+        var id = index.BasisVectorIndexToId();
 
+        return OmMapBasisBlade(id).GetVectorPart();
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal RGaFloat64Projector(RGaFloat64KVector blade, bool useBladeInverse)
-        {
-            Blade = blade;
-            BladePseudoInverse = useBladeInverse ? blade.PseudoInverse() : blade;
-        }
-
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override bool IsValid()
-        {
-            return true;
-        }
+    }
         
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override IRGaFloat64Outermorphism GetOmAdjoint()
-        {
-            throw new NotImplementedException();
-        }
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public override RGaFloat64Bivector OmMapBasisBivector(int index1, int index2)
+    {
+        var id = BasisBivectorUtils.IndexPairToBivectorId(index1, index2);
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override RGaFloat64Vector OmMapBasisVector(int index)
-        {
-            var id = index.BasisVectorIndexToId();
+        return OmMapBasisBlade(id).GetBivectorPart();
+    }
 
-            return OmMapBasisBlade(id).GetVectorPart();
-
-        }
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public override RGaFloat64KVector OmMapBasisBlade(ulong id)
+    {
+        return OmMap(
+            Processor.CreateTermKVector(id, 1d)
+        );
+    }
         
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override RGaFloat64Bivector OmMapBasisBivector(int index1, int index2)
-        {
-            var id = BasisBivectorUtils.IndexPairToBivectorId(index1, index2);
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public override RGaFloat64Vector OmMap(RGaFloat64Vector vector)
+    {
+        return vector.Fdp(BladePseudoInverse).Gp(Blade).GetVectorPart();
+    }
 
-            return OmMapBasisBlade(id).GetBivectorPart();
-        }
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public override RGaFloat64Bivector OmMap(RGaFloat64Bivector bivector)
+    {
+        return bivector.Fdp(BladePseudoInverse).Gp(Blade).GetBivectorPart();
+    }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override RGaFloat64KVector OmMapBasisBlade(ulong id)
-        {
-            return OmMap(
-                Processor.CreateTermKVector(id, 1d)
-            );
-        }
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public override RGaFloat64HigherKVector OmMap(RGaFloat64HigherKVector kVector)
+    {
+        return kVector.Fdp(BladePseudoInverse).Gp(Blade).GetHigherKVectorPart(kVector.Grade);
+    }
         
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override RGaFloat64Vector OmMap(RGaFloat64Vector vector)
-        {
-            return vector.Fdp(BladePseudoInverse).Gp(Blade).GetVectorPart();
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override RGaFloat64Bivector OmMap(RGaFloat64Bivector bivector)
-        {
-            return bivector.Fdp(BladePseudoInverse).Gp(Blade).GetBivectorPart();
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override RGaFloat64HigherKVector OmMap(RGaFloat64HigherKVector kVector)
-        {
-            return kVector.Fdp(BladePseudoInverse).Gp(Blade).GetHigherKVectorPart(kVector.Grade);
-        }
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public override RGaFloat64Multivector OmMap(RGaFloat64Multivector multivector)
+    {
+        return multivector.Fdp(BladePseudoInverse).Gp(Blade);
+    }
         
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override RGaFloat64Multivector OmMap(RGaFloat64Multivector multivector)
-        {
-            return multivector.Fdp(BladePseudoInverse).Gp(Blade);
-        }
-        
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override IEnumerable<KeyValuePair<ulong, RGaFloat64Vector>> GetOmMappedBasisVectors(int vSpaceDimensions)
-        {
-            return Processor
-                .GetBasisVectorIds(vSpaceDimensions)
-                .Select(id => 
-                    new KeyValuePair<ulong, RGaFloat64Vector>(
-                        id,
-                        OmMap(
-                            Processor.CreateTermVector(id, 1d)
-                        )
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public override IEnumerable<KeyValuePair<ulong, RGaFloat64Vector>> GetOmMappedBasisVectors(int vSpaceDimensions)
+    {
+        return Processor
+            .GetBasisVectorIds(vSpaceDimensions)
+            .Select(id => 
+                new KeyValuePair<ulong, RGaFloat64Vector>(
+                    id,
+                    OmMap(
+                        Processor.CreateTermVector(id, 1d)
                     )
-                ).Where(r => !r.Value.IsZero);
-        }
+                )
+            ).Where(r => !r.Value.IsZero);
+    }
 
-        public override LinFloat64UnilinearMap GetVectorMapPart(int vSpaceDimensions)
-        {
-            throw new NotImplementedException();
-        }
+    public override LinFloat64UnilinearMap GetVectorMapPart(int vSpaceDimensions)
+    {
+        throw new NotImplementedException();
+    }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override IEnumerable<KeyValuePair<ulong, RGaFloat64Multivector>> GetMappedBasisBlades(int vSpaceDimensions)
-        {
-            return Processor
-                .GetBasisBladeIds(vSpaceDimensions)
-                .Select(id => 
-                    new KeyValuePair<ulong, RGaFloat64Multivector>(
-                        id,
-                        OmMapBasisBlade(id)
-                    )
-                ).Where(r => !r.Value.IsZero);
-        }
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public override IEnumerable<KeyValuePair<ulong, RGaFloat64Multivector>> GetMappedBasisBlades(int vSpaceDimensions)
+    {
+        return Processor
+            .GetBasisBladeIds(vSpaceDimensions)
+            .Select(id => 
+                new KeyValuePair<ulong, RGaFloat64Multivector>(
+                    id,
+                    OmMapBasisBlade(id)
+                )
+            ).Where(r => !r.Value.IsZero);
     }
 }

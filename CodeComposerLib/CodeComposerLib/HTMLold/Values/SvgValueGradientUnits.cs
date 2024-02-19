@@ -1,16 +1,15 @@
-﻿namespace CodeComposerLib.HTMLold.Values
+﻿namespace CodeComposerLib.HTMLold.Values;
+
+public sealed class HtmlValueGradientUnits : HtmlStoredValue
 {
-    public sealed class HtmlValueGradientUnits : HtmlStoredValue
+    public static HtmlValueGradientUnits UserSpaceOnUse { get; }
+        = new HtmlValueGradientUnits("userSpaceOnUse");
+
+    public static HtmlValueGradientUnits ObjectBoundingBox { get; }
+        = new HtmlValueGradientUnits("objectBoundingBox");
+
+
+    private HtmlValueGradientUnits(string value) : base(value)
     {
-        public static HtmlValueGradientUnits UserSpaceOnUse { get; }
-            = new HtmlValueGradientUnits("userSpaceOnUse");
-
-        public static HtmlValueGradientUnits ObjectBoundingBox { get; }
-            = new HtmlValueGradientUnits("objectBoundingBox");
-
-
-        private HtmlValueGradientUnits(string value) : base(value)
-        {
-        }
     }
 }

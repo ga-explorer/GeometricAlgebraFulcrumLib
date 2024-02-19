@@ -1,10 +1,9 @@
-﻿namespace GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Records
+﻿namespace GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Records;
+
+public interface IGaVIndexRecord
 {
-    public interface IGaVIndexRecord
-    {
-        /// <summary>
-        /// Tha Basis Vector Index
-        /// </summary>
-        int VIndex { get; }
-    }
+    /// <summary>
+    /// Tha Basis Vector Index
+    /// </summary>
+    int VIndex { get; }
 }

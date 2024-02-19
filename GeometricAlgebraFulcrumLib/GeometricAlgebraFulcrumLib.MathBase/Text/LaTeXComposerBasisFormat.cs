@@ -1,9 +1,8 @@
-﻿namespace GeometricAlgebraFulcrumLib.MathBase.Text
+﻿namespace GeometricAlgebraFulcrumLib.MathBase.Text;
+
+public enum LaTeXComposerBasisFormat
 {
-    public enum LaTeXComposerBasisFormat
-    {
-        CommaSeparated,
-        Concatenated,
-        OuterProduct
-    }
+    CommaSeparated,
+    Concatenated,
+    OuterProduct
 }

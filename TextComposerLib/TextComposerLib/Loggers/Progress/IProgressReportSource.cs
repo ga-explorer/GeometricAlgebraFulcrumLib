@@ -1,15 +1,14 @@
-﻿namespace TextComposerLib.Loggers.Progress
-{
-    public interface IProgressReportSource
-    {
-        /// <summary>
-        /// The ID of this class as a progress reporting source
-        /// </summary>
-        string ProgressSourceId { get; }
+﻿namespace TextComposerLib.Loggers.Progress;
 
-        /// <summary>
-        /// The progress composer object used for reporting progress events on this class
-        /// </summary>
-        ProgressComposer Progress { get; }
-    }
+public interface IProgressReportSource
+{
+    /// <summary>
+    /// The ID of this class as a progress reporting source
+    /// </summary>
+    string ProgressSourceId { get; }
+
+    /// <summary>
+    /// The progress composer object used for reporting progress events on this class
+    /// </summary>
+    ProgressComposer Progress { get; }
 }

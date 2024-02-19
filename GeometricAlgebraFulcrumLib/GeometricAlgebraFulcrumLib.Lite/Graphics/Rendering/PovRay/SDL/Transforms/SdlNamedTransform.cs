@@ -1,13 +1,12 @@
-﻿namespace GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.PovRay.SDL.Transforms
+﻿namespace GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.PovRay.SDL.Transforms;
+
+public sealed class SdlNamedTransform : SdlTransform
 {
-    public sealed class SdlNamedTransform : SdlTransform
+    public string Identifier { get; set; }
+
+
+    internal SdlNamedTransform(string ident)
     {
-        public string Identifier { get; set; }
-
-
-        internal SdlNamedTransform(string ident)
-        {
-            Identifier = ident;
-        }
+        Identifier = ident;
     }
 }

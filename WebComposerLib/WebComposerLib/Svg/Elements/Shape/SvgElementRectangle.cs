@@ -3,290 +3,289 @@ using WebComposerLib.Svg.Elements.Categories;
 using WebComposerLib.Svg.Transforms;
 using WebComposerLib.Svg.Values;
 
-namespace WebComposerLib.Svg.Elements.Shape
+namespace WebComposerLib.Svg.Elements.Shape;
+
+public sealed class SvgElementRectangle : SvgElement, ISvgBasicShapeElement
 {
-    public sealed class SvgElementRectangle : SvgElement, ISvgBasicShapeElement
+    public static SvgElementRectangle Create()
     {
-        public static SvgElementRectangle Create()
+        return new SvgElementRectangle();
+    }
+
+    public static SvgElementRectangle Create(string id)
+    {
+        return new SvgElementRectangle() {Id = id};
+    }
+
+
+    public override string ElementName => "rect";
+
+
+    //public SvgEavString<SvgElementRectangle> Id
+    //{
+    //    get
+    //    {
+    //        var attrInfo = SvgAttributes.Id;
+
+    //        ISvgAttributeValue attrValue;
+    //        if (AttributesTable.TryGetValue(attrInfo.Id, out attrValue))
+    //            return attrValue as SvgEavString<SvgElementRectangle>;
+
+    //        var attrValue1 = new SvgEavString<SvgElementRectangle>(this, attrInfo);
+    //        AttributesTable.Add(attrInfo.Id, attrValue1);
+
+    //        return attrValue1;
+    //    }
+    //}
+
+    public SvgEavString<SvgElementRectangle> XmlBase
+    {
+        get
         {
-            return new SvgElementRectangle();
-        }
+            var attrInfo = SvgAttributeUtils.XmlBase;
 
-        public static SvgElementRectangle Create(string id)
+            if (AttributesTable.TryGetValue(attrInfo.Id, out var attrValue))
+                return attrValue as SvgEavString<SvgElementRectangle>;
+
+            var attrValue1 = new SvgEavString<SvgElementRectangle>(this, attrInfo);
+            AttributesTable.Add(attrInfo.Id, attrValue1);
+
+            return attrValue1;
+        }
+    }
+
+    public SvgEavString<SvgElementRectangle> XmlLanguage
+    {
+        get
         {
-            return new SvgElementRectangle() {Id = id};
+            var attrInfo = SvgAttributeUtils.XmlLanguage;
+
+            if (AttributesTable.TryGetValue(attrInfo.Id, out var attrValue))
+                return attrValue as SvgEavString<SvgElementRectangle>;
+
+            var attrValue1 = new SvgEavString<SvgElementRectangle>(this, attrInfo);
+            AttributesTable.Add(attrInfo.Id, attrValue1);
+
+            return attrValue1;
         }
+    }
 
-
-        public override string ElementName => "rect";
-
-
-        //public SvgEavString<SvgElementRectangle> Id
-        //{
-        //    get
-        //    {
-        //        var attrInfo = SvgAttributes.Id;
-
-        //        ISvgAttributeValue attrValue;
-        //        if (AttributesTable.TryGetValue(attrInfo.Id, out attrValue))
-        //            return attrValue as SvgEavString<SvgElementRectangle>;
-
-        //        var attrValue1 = new SvgEavString<SvgElementRectangle>(this, attrInfo);
-        //        AttributesTable.Add(attrInfo.Id, attrValue1);
-
-        //        return attrValue1;
-        //    }
-        //}
-
-        public SvgEavString<SvgElementRectangle> XmlBase
+    public SvgEavStruct<bool, SvgElementRectangle> ExternalResourcesRequired
+    {
+        get
         {
-            get
-            {
-                var attrInfo = SvgAttributeUtils.XmlBase;
+            var attrInfo = SvgAttributeUtils.ExternalResourcesRequired;
 
-                if (AttributesTable.TryGetValue(attrInfo.Id, out var attrValue))
-                    return attrValue as SvgEavString<SvgElementRectangle>;
+            if (AttributesTable.TryGetValue(attrInfo.Id, out var attrValue))
+                return attrValue as SvgEavStruct<bool, SvgElementRectangle>;
 
-                var attrValue1 = new SvgEavString<SvgElementRectangle>(this, attrInfo);
-                AttributesTable.Add(attrInfo.Id, attrValue1);
+            var attrValue1 = new SvgEavStruct<bool, SvgElementRectangle>(this, attrInfo);
+            AttributesTable.Add(attrInfo.Id, attrValue1);
 
-                return attrValue1;
-            }
+            return attrValue1;
         }
+    }
 
-        public SvgEavString<SvgElementRectangle> XmlLanguage
+    public SvgEavString<SvgElementRectangle> Class
+    {
+        get
         {
-            get
-            {
-                var attrInfo = SvgAttributeUtils.XmlLanguage;
+            var attrInfo = SvgAttributeUtils.Class;
 
-                if (AttributesTable.TryGetValue(attrInfo.Id, out var attrValue))
-                    return attrValue as SvgEavString<SvgElementRectangle>;
+            if (AttributesTable.TryGetValue(attrInfo.Id, out var attrValue))
+                return attrValue as SvgEavString<SvgElementRectangle>;
 
-                var attrValue1 = new SvgEavString<SvgElementRectangle>(this, attrInfo);
-                AttributesTable.Add(attrInfo.Id, attrValue1);
+            var attrValue1 = new SvgEavString<SvgElementRectangle>(this, attrInfo);
+            AttributesTable.Add(attrInfo.Id, attrValue1);
 
-                return attrValue1;
-            }
+            return attrValue1;
         }
+    }
 
-        public SvgEavStruct<bool, SvgElementRectangle> ExternalResourcesRequired
+    //public SvgEavStyle<SvgElementRectangle> Style
+    //{
+    //    get
+    //    {
+    //        var attrInfo = SvgAttributes.Style;
+
+    //        ISvgAttributeValue attrValue;
+    //        if (AttributesTable.TryGetValue(attrInfo.Id, out attrValue))
+    //            return attrValue as SvgEavStyle<SvgElementRectangle>;
+
+    //        var attrValue1 = new SvgEavStyle<SvgElementRectangle>(this);
+    //        AttributesTable.Add(attrInfo.Id, attrValue1);
+
+    //        return attrValue1;
+    //    }
+    //}
+
+    public SvgEav<SvgTransform, SvgElementRectangle> Transform
+    {
+        get
         {
-            get
-            {
-                var attrInfo = SvgAttributeUtils.ExternalResourcesRequired;
+            var attrInfo = SvgAttributeUtils.Transform;
 
-                if (AttributesTable.TryGetValue(attrInfo.Id, out var attrValue))
-                    return attrValue as SvgEavStruct<bool, SvgElementRectangle>;
+            if (AttributesTable.TryGetValue(attrInfo.Id, out var attrValue))
+                return attrValue as SvgEav<SvgTransform, SvgElementRectangle>;
 
-                var attrValue1 = new SvgEavStruct<bool, SvgElementRectangle>(this, attrInfo);
-                AttributesTable.Add(attrInfo.Id, attrValue1);
+            var attrValue1 = new SvgEav<SvgTransform, SvgElementRectangle>(this, attrInfo);
+            AttributesTable.Add(attrInfo.Id, attrValue1);
 
-                return attrValue1;
-            }
+            return attrValue1;
         }
+    }
 
-        public SvgEavString<SvgElementRectangle> Class
+    public SvgEavLength<SvgElementRectangle> MinX
+    {
+        get
         {
-            get
-            {
-                var attrInfo = SvgAttributeUtils.Class;
+            var attrInfo = SvgAttributeUtils.X;
 
-                if (AttributesTable.TryGetValue(attrInfo.Id, out var attrValue))
-                    return attrValue as SvgEavString<SvgElementRectangle>;
+            if (AttributesTable.TryGetValue(attrInfo.Id, out var attrValue))
+                return attrValue as SvgEavLength<SvgElementRectangle>;
 
-                var attrValue1 = new SvgEavString<SvgElementRectangle>(this, attrInfo);
-                AttributesTable.Add(attrInfo.Id, attrValue1);
+            var attrValue1 = new SvgEavLength<SvgElementRectangle>(this, attrInfo);
+            AttributesTable.Add(attrInfo.Id, attrValue1);
 
-                return attrValue1;
-            }
+            return attrValue1;
         }
+    }
 
-        //public SvgEavStyle<SvgElementRectangle> Style
-        //{
-        //    get
-        //    {
-        //        var attrInfo = SvgAttributes.Style;
-
-        //        ISvgAttributeValue attrValue;
-        //        if (AttributesTable.TryGetValue(attrInfo.Id, out attrValue))
-        //            return attrValue as SvgEavStyle<SvgElementRectangle>;
-
-        //        var attrValue1 = new SvgEavStyle<SvgElementRectangle>(this);
-        //        AttributesTable.Add(attrInfo.Id, attrValue1);
-
-        //        return attrValue1;
-        //    }
-        //}
-
-        public SvgEav<SvgTransform, SvgElementRectangle> Transform
+    public SvgEavLength<SvgElementRectangle> MinY
+    {
+        get
         {
-            get
-            {
-                var attrInfo = SvgAttributeUtils.Transform;
+            var attrInfo = SvgAttributeUtils.Y;
 
-                if (AttributesTable.TryGetValue(attrInfo.Id, out var attrValue))
-                    return attrValue as SvgEav<SvgTransform, SvgElementRectangle>;
+            if (AttributesTable.TryGetValue(attrInfo.Id, out var attrValue))
+                return attrValue as SvgEavLength<SvgElementRectangle>;
 
-                var attrValue1 = new SvgEav<SvgTransform, SvgElementRectangle>(this, attrInfo);
-                AttributesTable.Add(attrInfo.Id, attrValue1);
+            var attrValue1 = new SvgEavLength<SvgElementRectangle>(this, attrInfo);
+            AttributesTable.Add(attrInfo.Id, attrValue1);
 
-                return attrValue1;
-            }
+            return attrValue1;
         }
+    }
 
-        public SvgEavLength<SvgElementRectangle> MinX
+    public SvgEavLength<SvgElementRectangle> Width
+    {
+        get
         {
-            get
-            {
-                var attrInfo = SvgAttributeUtils.X;
+            var attrInfo = SvgAttributeUtils.Width;
 
-                if (AttributesTable.TryGetValue(attrInfo.Id, out var attrValue))
-                    return attrValue as SvgEavLength<SvgElementRectangle>;
+            if (AttributesTable.TryGetValue(attrInfo.Id, out var attrValue))
+                return attrValue as SvgEavLength<SvgElementRectangle>;
 
-                var attrValue1 = new SvgEavLength<SvgElementRectangle>(this, attrInfo);
-                AttributesTable.Add(attrInfo.Id, attrValue1);
+            var attrValue1 = new SvgEavLength<SvgElementRectangle>(this, attrInfo);
+            AttributesTable.Add(attrInfo.Id, attrValue1);
 
-                return attrValue1;
-            }
+            return attrValue1;
         }
+    }
 
-        public SvgEavLength<SvgElementRectangle> MinY
+    public SvgEavLength<SvgElementRectangle> Height
+    {
+        get
         {
-            get
-            {
-                var attrInfo = SvgAttributeUtils.Y;
+            var attrInfo = SvgAttributeUtils.Height;
 
-                if (AttributesTable.TryGetValue(attrInfo.Id, out var attrValue))
-                    return attrValue as SvgEavLength<SvgElementRectangle>;
+            if (AttributesTable.TryGetValue(attrInfo.Id, out var attrValue))
+                return attrValue as SvgEavLength<SvgElementRectangle>;
 
-                var attrValue1 = new SvgEavLength<SvgElementRectangle>(this, attrInfo);
-                AttributesTable.Add(attrInfo.Id, attrValue1);
+            var attrValue1 = new SvgEavLength<SvgElementRectangle>(this, attrInfo);
+            AttributesTable.Add(attrInfo.Id, attrValue1);
 
-                return attrValue1;
-            }
+            return attrValue1;
         }
+    }
 
-        public SvgEavLength<SvgElementRectangle> Width
+    public SvgEavLength<SvgElementRectangle> RadiusX
+    {
+        get
         {
-            get
-            {
-                var attrInfo = SvgAttributeUtils.Width;
+            var attrInfo = SvgAttributeUtils.RadiusX;
 
-                if (AttributesTable.TryGetValue(attrInfo.Id, out var attrValue))
-                    return attrValue as SvgEavLength<SvgElementRectangle>;
+            if (AttributesTable.TryGetValue(attrInfo.Id, out var attrValue))
+                return attrValue as SvgEavLength<SvgElementRectangle>;
 
-                var attrValue1 = new SvgEavLength<SvgElementRectangle>(this, attrInfo);
-                AttributesTable.Add(attrInfo.Id, attrValue1);
+            var attrValue1 = new SvgEavLength<SvgElementRectangle>(this, attrInfo);
+            AttributesTable.Add(attrInfo.Id, attrValue1);
 
-                return attrValue1;
-            }
+            return attrValue1;
         }
+    }
 
-        public SvgEavLength<SvgElementRectangle> Height
+    public SvgEavLength<SvgElementRectangle> RadiusY
+    {
+        get
         {
-            get
-            {
-                var attrInfo = SvgAttributeUtils.Height;
+            var attrInfo = SvgAttributeUtils.RadiusY;
 
-                if (AttributesTable.TryGetValue(attrInfo.Id, out var attrValue))
-                    return attrValue as SvgEavLength<SvgElementRectangle>;
+            if (AttributesTable.TryGetValue(attrInfo.Id, out var attrValue))
+                return attrValue as SvgEavLength<SvgElementRectangle>;
 
-                var attrValue1 = new SvgEavLength<SvgElementRectangle>(this, attrInfo);
-                AttributesTable.Add(attrInfo.Id, attrValue1);
+            var attrValue1 = new SvgEavLength<SvgElementRectangle>(this, attrInfo);
+            AttributesTable.Add(attrInfo.Id, attrValue1);
 
-                return attrValue1;
-            }
+            return attrValue1;
         }
-
-        public SvgEavLength<SvgElementRectangle> RadiusX
-        {
-            get
-            {
-                var attrInfo = SvgAttributeUtils.RadiusX;
-
-                if (AttributesTable.TryGetValue(attrInfo.Id, out var attrValue))
-                    return attrValue as SvgEavLength<SvgElementRectangle>;
-
-                var attrValue1 = new SvgEavLength<SvgElementRectangle>(this, attrInfo);
-                AttributesTable.Add(attrInfo.Id, attrValue1);
-
-                return attrValue1;
-            }
-        }
-
-        public SvgEavLength<SvgElementRectangle> RadiusY
-        {
-            get
-            {
-                var attrInfo = SvgAttributeUtils.RadiusY;
-
-                if (AttributesTable.TryGetValue(attrInfo.Id, out var attrValue))
-                    return attrValue as SvgEavLength<SvgElementRectangle>;
-
-                var attrValue1 = new SvgEavLength<SvgElementRectangle>(this, attrInfo);
-                AttributesTable.Add(attrInfo.Id, attrValue1);
-
-                return attrValue1;
-            }
-        }
+    }
 
 
-        private SvgElementRectangle()
-        {
-        }
+    private SvgElementRectangle()
+    {
+    }
 
 
-        public SvgElementRectangle SetSize(double width, double height)
-        {
-            Width.Length = width;
-            Height.Length = height;
+    public SvgElementRectangle SetSize(double width, double height)
+    {
+        Width.Length = width;
+        Height.Length = height;
 
-            return this;
-        }
+        return this;
+    }
 
-        public SvgElementRectangle SetSize(double width, double height, SvgLengthUnit unit)
-        {
-            Width.SetTo(width, unit);
-            Height.SetTo(height, unit);
+    public SvgElementRectangle SetSize(double width, double height, SvgLengthUnit unit)
+    {
+        Width.SetTo(width, unit);
+        Height.SetTo(height, unit);
 
-            return this;
-        }
+        return this;
+    }
 
-        public SvgElementRectangle SetRectangle(double x, double y, double width, double height)
-        {
-            MinX.Length = x;
-            MinY.Length = y;
-            Width.Length = width;
-            Height.Length = height;
+    public SvgElementRectangle SetRectangle(double x, double y, double width, double height)
+    {
+        MinX.Length = x;
+        MinY.Length = y;
+        Width.Length = width;
+        Height.Length = height;
 
-            return this;
-        }
+        return this;
+    }
 
-        public SvgElementRectangle SetRectangle(double x, double y, double width, double height, SvgLengthUnit unit)
-        {
-            MinX.SetTo(x, unit);
-            MinY.SetTo(y, unit);
-            Width.SetTo(width, unit);
-            Height.SetTo(height, unit);
+    public SvgElementRectangle SetRectangle(double x, double y, double width, double height, SvgLengthUnit unit)
+    {
+        MinX.SetTo(x, unit);
+        MinY.SetTo(y, unit);
+        Width.SetTo(width, unit);
+        Height.SetTo(height, unit);
 
-            return this;
-        }
+        return this;
+    }
 
-        public SvgElementRectangle SetRadii(double radiusX, double radiusY)
-        {
-            RadiusX.Length = radiusX;
-            RadiusY.Length = radiusY;
+    public SvgElementRectangle SetRadii(double radiusX, double radiusY)
+    {
+        RadiusX.Length = radiusX;
+        RadiusY.Length = radiusY;
 
-            return this;
-        }
+        return this;
+    }
 
-        public SvgElementRectangle SetRadii(double radiusX, double radiusY, SvgLengthUnit unit)
-        {
-            RadiusX.SetTo(radiusX, unit);
-            RadiusY.SetTo(radiusY, unit);
+    public SvgElementRectangle SetRadii(double radiusX, double radiusY, SvgLengthUnit unit)
+    {
+        RadiusX.SetTo(radiusX, unit);
+        RadiusY.SetTo(radiusY, unit);
 
-            return this;
-        }
+        return this;
     }
 }

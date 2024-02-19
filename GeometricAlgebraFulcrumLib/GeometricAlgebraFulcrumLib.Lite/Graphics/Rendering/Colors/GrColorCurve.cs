@@ -5,67 +5,66 @@ using GeometricAlgebraFulcrumLib.Lite.Geometry.Parametric.Space3D.Curves.Adaptiv
 using GeometricAlgebraFulcrumLib.Lite.LinearAlgebra.Vectors.Space3D;
 using GeometricAlgebraFulcrumLib.Lite.ScalarAlgebra;
 
-namespace GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.Colors
+namespace GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.Colors;
+
+public class GrColorCurve
 {
-    public class GrColorCurve
+    public static GrColorCurve Create(params Color[] colorArray)
     {
-        public static GrColorCurve Create(params Color[] colorArray)
-        {
-            var curve = 
-                colorArray
-                    .Select(c => c.RgbToVector3D())
-                    .CreateCatmullRomSpline3D(
-                        CatmullRomSplineType.Centripetal, 
-                        false
-                    )
-                    .CreateAdaptiveCurve3D(
-                        new AdaptiveCurveSamplingOptions3D(
-                            5d.DegreesToRadians(), 
-                            3, 
-                            16
-                        )
-                    );
-            
-            var colorList =
-                0d.GetLinearRange(
-                    curve.Length, 
-                    256, 
+        var curve = 
+            colorArray
+                .Select(c => c.RgbToVector3D())
+                .CreateCatmullRomSpline3D(
+                    CatmullRomSplineType.Centripetal, 
                     false
-                ).Select(k => 
-                    curve.GetPoint(curve.LengthToParameter(k)).ToRgbColor()
-                ).ToImmutableArray();
+                )
+                .CreateAdaptiveCurve3D(
+                    new AdaptiveCurveSamplingOptions3D(
+                        5d.DegreesToRadians(), 
+                        3, 
+                        16
+                    )
+                );
+            
+        var colorList =
+            0d.GetLinearRange(
+                curve.Length, 
+                256, 
+                false
+            ).Select(k => 
+                curve.GetPoint(curve.LengthToParameter(k)).ToRgbColor()
+            ).ToImmutableArray();
 
-            return new GrColorCurve(colorList);
-        }
+        return new GrColorCurve(colorList);
+    }
 
-        public IReadOnlyList<Color> ColorList { get; }
-
-
-        private GrColorCurve(IReadOnlyList<Color> colorList)
-        {
-            ColorList = colorList;
-        }
+    public IReadOnlyList<Color> ColorList { get; }
 
 
-        public Color GetColor(double t)
-        {
-            if (t is > 1 or < 0)
-                t -= Math.Truncate(t);
+    private GrColorCurve(IReadOnlyList<Color> colorList)
+    {
+        ColorList = colorList;
+    }
 
-            if (t < 0)
-                t = 1d - t;
 
-            var x = t * (ColorList.Count - 1);
+    public Color GetColor(double t)
+    {
+        if (t is > 1 or < 0)
+            t -= Math.Truncate(t);
 
-            if (x.IsInteger()) return ColorList[(int) x];
+        if (t < 0)
+            t = 1d - t;
 
-            var index1 = (int) x.IntegerPart();
-            var index2 = index1 + 1;
+        var x = t * (ColorList.Count - 1);
 
-            var c1 = ColorList[index1].RgbToVector3D();
-            var c2 = ColorList[index2].RgbToVector3D();
+        if (x.IsInteger()) return ColorList[(int) x];
 
-            return (x - x.IntegerPart()).Lerp(c1, c2).ToRgbColor();
-        }
+        var index1 = (int) x.IntegerPart();
+        var index2 = index1 + 1;
+
+        var c1 = ColorList[index1].RgbToVector3D();
+        var c2 = ColorList[index2].RgbToVector3D();
+
+        return (x - x.IntegerPart()).Lerp(c1, c2).ToRgbColor();
     }
 }

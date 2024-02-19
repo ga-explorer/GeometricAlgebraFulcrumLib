@@ -1,30 +1,29 @@
 ﻿using TextComposerLib.Text;
 using TextComposerLib.Text.Linear;
 
-namespace GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.KonvaJs
+namespace GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.KonvaJs;
+
+public abstract class GrKonvaJsObjectOptions :
+    GrKonvaJsAttributeSet
 {
-    public abstract class GrKonvaJsObjectOptions :
-        GrKonvaJsAttributeSet
+    public override string GetCode()
     {
-        public override string GetCode()
-        {
-            var keyValuePairs = 
-                GetKeyValueCodePairs().Select(pair => 
-                    $"{pair.Key}: {pair.Value}"
-                ).Concatenate("," + Environment.NewLine);
+        var keyValuePairs = 
+            GetKeyValueCodePairs().Select(pair => 
+                $"{pair.Key}: {pair.Value}"
+            ).Concatenate("," + Environment.NewLine);
             
-            return new LinearTextComposer()
-                .AppendLine("{")
-                .IncreaseIndentation()
-                .AppendLine(keyValuePairs)
-                .DecreaseIndentation()
-                .AppendAtNewLine("}")
-                .ToString();
-        }
+        return new LinearTextComposer()
+            .AppendLine("{")
+            .IncreaseIndentation()
+            .AppendLine(keyValuePairs)
+            .DecreaseIndentation()
+            .AppendAtNewLine("}")
+            .ToString();
+    }
         
-        public override string ToString()
-        {
-            return GetCode();
-        }
+    public override string ToString()
+    {
+        return GetCode();
     }
 }

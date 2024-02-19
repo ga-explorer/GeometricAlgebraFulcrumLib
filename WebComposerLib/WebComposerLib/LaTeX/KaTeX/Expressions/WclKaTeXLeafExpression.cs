@@ -1,31 +1,30 @@
-﻿namespace WebComposerLib.LaTeX.KaTeX.Expressions
+﻿namespace WebComposerLib.LaTeX.KaTeX.Expressions;
+
+public sealed class WclKaTeXLeafExpression : IWclKaTeXExpression
 {
-    public sealed class WclKaTeXLeafExpression : IWclKaTeXExpression
+    public string TexCode { get; }
+
+    public bool IsLeafExpression 
+        => true;
+
+    public bool IsFunctionExpression 
+        => false;
+
+    public int ChildExpressionsCount 
+        => 0;
+
+    public IEnumerable<IWclKaTeXExpression> ChildExpressions
+        => Enumerable.Empty<IWclKaTeXExpression>();
+
+
+    internal WclKaTeXLeafExpression(string texCode)
     {
-        public string TexCode { get; }
-
-        public bool IsLeafExpression 
-            => true;
-
-        public bool IsFunctionExpression 
-            => false;
-
-        public int ChildExpressionsCount 
-            => 0;
-
-        public IEnumerable<IWclKaTeXExpression> ChildExpressions
-            => Enumerable.Empty<IWclKaTeXExpression>();
+        TexCode = texCode;
+    }
 
 
-        internal WclKaTeXLeafExpression(string texCode)
-        {
-            TexCode = texCode;
-        }
-
-
-        public override string ToString()
-        {
-            return TexCode;
-        }
+    public override string ToString()
+    {
+        return TexCode;
     }
 }

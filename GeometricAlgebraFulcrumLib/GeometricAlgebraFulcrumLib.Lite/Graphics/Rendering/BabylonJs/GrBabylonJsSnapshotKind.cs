@@ -1,9 +1,8 @@
-﻿namespace GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.BabylonJs
+﻿namespace GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.BabylonJs;
+
+public enum GrBabylonJsSnapshotKind
 {
-    public enum GrBabylonJsSnapshotKind
-    {
-        PngOnly,
-        HtmlOnly,
-        HtmlAndPng
-    }
+    PngOnly,
+    HtmlOnly,
+    HtmlAndPng
 }

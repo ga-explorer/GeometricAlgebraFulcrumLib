@@ -1,32 +1,31 @@
-﻿namespace GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.Xeogl.Geometry.Builtin
+﻿namespace GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.Xeogl.Geometry.Builtin;
+
+/// <summary>
+/// A TeapotGeometry defines a Utah Teapot geometry for attached Meshes.
+/// http://xeogl.org/docs/classes/TeapotGeometry.html
+/// </summary>
+public sealed class XeoglTeapotGeometry
+    : XeoglGeometry
 {
-    /// <summary>
-    /// A TeapotGeometry defines a Utah Teapot geometry for attached Meshes.
-    /// http://xeogl.org/docs/classes/TeapotGeometry.html
-    /// </summary>
-    public sealed class XeoglTeapotGeometry
-        : XeoglGeometry
-    {
-        public override string JavaScriptClassName => "TeapotGeometry";
+    public override string JavaScriptClassName => "TeapotGeometry";
 
 
-        //protected override void UpdateAttributesComposer(XeoglAttributesTextComposer composer)
-        //{
-        //    base.UpdateAttributesComposer(composer);
+    //protected override void UpdateAttributesComposer(XeoglAttributesTextComposer composer)
+    //{
+    //    base.UpdateAttributesComposer(composer);
 
-        //    //composer
-        //    //    .SetAttributeValue("primitive", PrimitiveType, GraphicsPrimitiveType3D.Triangles);
-        //}
+    //    //composer
+    //    //    .SetAttributeValue("primitive", PrimitiveType, GraphicsPrimitiveType3D.Triangles);
+    //}
 
-        //public override string ToString()
-        //{
-        //    var composer = new XeoglAttributesTextComposer();
+    //public override string ToString()
+    //{
+    //    var composer = new XeoglAttributesTextComposer();
 
-        //    UpdateAttributesComposer(composer);
+    //    UpdateAttributesComposer(composer);
 
-        //    return composer
-        //        .AppendXeoglConstructorCall(this)
-        //        .ToString();
-        //}
-    }
+    //    return composer
+    //        .AppendXeoglConstructorCall(this)
+    //        .ToString();
+    //}
 }

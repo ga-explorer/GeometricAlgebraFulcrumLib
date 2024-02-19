@@ -8,260 +8,259 @@ using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Restricted.Records;
 using GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors.Graded;
 using GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors.Sparse;
 
-namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors.Dense
+namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors.Dense;
+
+public sealed class LinVectorRepeatedScalarStorage<T> :
+    ILinVectorDenseStorage<T>
 {
-    public sealed class LinVectorRepeatedScalarStorage<T> :
-        ILinVectorDenseStorage<T>
+    public T Scalar { get; set; }
+
+    public int Count { get; }
+
+    public T this[int index] 
+        => GetScalar((ulong) index);
+
+    public T this[ulong index] 
+        => GetScalar(index);
+
+
+    internal LinVectorRepeatedScalarStorage(int count, T value)
     {
-        public T Scalar { get; set; }
+        if (count < 0)
+            throw new ArgumentOutOfRangeException(nameof(count));
 
-        public int Count { get; }
-
-        public T this[int index] 
-            => GetScalar((ulong) index);
-
-        public T this[ulong index] 
-            => GetScalar(index);
-
-
-        internal LinVectorRepeatedScalarStorage(int count, T value)
-        {
-            if (count < 0)
-                throw new ArgumentOutOfRangeException(nameof(count));
-
-            Count = count;
-            Scalar = value;
-        }
+        Count = count;
+        Scalar = value;
+    }
 
         
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public int GetSparseCount()
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public int GetSparseCount()
+    {
+        return Count;
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public T GetScalar(ulong index)
+    {
+        return index < (ulong) Count
+            ? Scalar
+            : throw new KeyNotFoundException(nameof(index));
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public IEnumerable<ulong> GetIndices()
+    {
+        return ((ulong) GetSparseCount()).GetRange();
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public IEnumerable<T> GetScalars()
+    {
+        return Enumerable.Repeat(Scalar, GetSparseCount());
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public bool ContainsIndex(ulong index)
+    {
+        return index < (ulong) GetSparseCount();
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public bool TryGetScalar(ulong index, out T value)
+    {
+        if (index < (ulong) GetSparseCount())
         {
-            return Count;
+            value = Scalar;
+            return true;
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public T GetScalar(ulong index)
-        {
-            return index < (ulong) Count
-                ? Scalar
-                : throw new KeyNotFoundException(nameof(index));
-        }
+        value = default;
+        return false;
+    }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public IEnumerable<ulong> GetIndices()
-        {
-            return ((ulong) GetSparseCount()).GetRange();
-        }
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public bool IsEmpty()
+    {
+        return false;
+    }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public IEnumerable<T> GetScalars()
-        {
-            return Enumerable.Repeat(Scalar, GetSparseCount());
-        }
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public ulong GetMinIndex()
+    {
+        return 0UL;
+    }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public bool ContainsIndex(ulong index)
-        {
-            return index < (ulong) GetSparseCount();
-        }
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public ulong GetMaxIndex()
+    {
+        return (ulong) (GetSparseCount() - 1);
+    }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public bool TryGetScalar(ulong index, out T value)
-        {
-            if (index < (ulong) GetSparseCount())
-            {
-                value = Scalar;
-                return true;
-            }
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public IEnumerable<ulong> GetEmptyIndices(ulong maxCount)
+    {
+        var count = (ulong) GetSparseCount();
 
-            value = default;
-            return false;
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public bool IsEmpty()
-        {
-            return false;
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ulong GetMinIndex()
-        {
-            return 0UL;
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ulong GetMaxIndex()
-        {
-            return (ulong) (GetSparseCount() - 1);
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public IEnumerable<ulong> GetEmptyIndices(ulong maxCount)
-        {
-            var count = (ulong) GetSparseCount();
-
-            return maxCount <= count
-                ? Enumerable.Empty<ulong>()
-                : (maxCount - count).GetRange(count);
-        }
+        return maxCount <= count
+            ? Enumerable.Empty<ulong>()
+            : (maxCount - count).GetRange(count);
+    }
         
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ILinVectorStorage<T> GetCopy()
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public ILinVectorStorage<T> GetCopy()
+    {
+        return new LinVectorRepeatedScalarStorage<T>(GetSparseCount(), Scalar);
+    }
+
+    public ILinVectorStorage<T> GetPermutation(Func<ulong, ulong> indexMapping)
+    {
+        var valueDictionary = new Dictionary<ulong, T>();
+
+        for (var index = 0UL; index < (ulong) GetSparseCount(); index++)
+            valueDictionary.Add(indexMapping(index), Scalar);
+
+        return valueDictionary.CreateLinVectorStorage();
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public ILinVectorStorage<T2> MapScalars<T2>(Func<T, T2> valueMapping)
+    {
+        return new LinVectorRepeatedScalarStorage<T2>(
+            GetSparseCount(), 
+            valueMapping(Scalar)
+        );
+    }
+
+    public ILinVectorStorage<T2> MapScalars<T2>(Func<ulong, T, T2> indexValueMapping)
+    {
+        var valuesList = new T2[GetSparseCount()];
+
+        for (var i = 0; i < GetSparseCount(); i++)
+            valuesList[i] = indexValueMapping((ulong) i, Scalar);
+
+        return new LinVectorListStorage<T2>(valuesList);
+    }
+
+    public ILinVectorStorage<T> FilterByIndex(Func<ulong, bool> indexFilter)
+    {
+        var valueDictionary = new Dictionary<ulong, T>();
+
+        for (var index = 0UL; index < (ulong) GetSparseCount(); index++)
+            if (indexFilter(index))
+                valueDictionary.Add(index, Scalar);
+
+        return valueDictionary.CreateLinVectorStorage();
+    }
+
+    public ILinVectorStorage<T> FilterByIndexScalar(Func<ulong, T, bool> indexValueFilter)
+    {
+        var valueDictionary = new Dictionary<ulong, T>();
+
+        for (var index = 0UL; index < (ulong) GetSparseCount(); index++)
+            if (indexValueFilter(index, Scalar))
+                valueDictionary.Add(index, Scalar);
+
+        return new LinVectorSparseStorage<T>(valueDictionary);
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public ILinVectorStorage<T> FilterByScalar(Func<T, bool> valueFilter)
+    {
+        return valueFilter(Scalar)
+            ? this 
+            : LinVectorEmptyStorage<T>.EmptyStorage;
+    }
+
+    public ILinVectorGradedStorage<T> ToVectorGradedStorage(
+        Func<ulong, RGaGradeKvIndexRecord> indexToGradeIndexMapping)
+    {
+        var gradeIndexScalarDictionary = new Dictionary<uint, Dictionary<ulong, T>>();
+
+        for (var id = 0UL; id < (ulong) GetSparseCount(); id++)
         {
-            return new LinVectorRepeatedScalarStorage<T>(GetSparseCount(), Scalar);
-        }
+            var (grade, index) = indexToGradeIndexMapping(id);
 
-        public ILinVectorStorage<T> GetPermutation(Func<ulong, ulong> indexMapping)
-        {
-            var valueDictionary = new Dictionary<ulong, T>();
-
-            for (var index = 0UL; index < (ulong) GetSparseCount(); index++)
-                valueDictionary.Add(indexMapping(index), Scalar);
-
-            return valueDictionary.CreateLinVectorStorage();
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ILinVectorStorage<T2> MapScalars<T2>(Func<T, T2> valueMapping)
-        {
-            return new LinVectorRepeatedScalarStorage<T2>(
-                GetSparseCount(), 
-                valueMapping(Scalar)
-            );
-        }
-
-        public ILinVectorStorage<T2> MapScalars<T2>(Func<ulong, T, T2> indexValueMapping)
-        {
-            var valuesList = new T2[GetSparseCount()];
-
-            for (var i = 0; i < GetSparseCount(); i++)
-                valuesList[i] = indexValueMapping((ulong) i, Scalar);
-
-            return new LinVectorListStorage<T2>(valuesList);
-        }
-
-        public ILinVectorStorage<T> FilterByIndex(Func<ulong, bool> indexFilter)
-        {
-            var valueDictionary = new Dictionary<ulong, T>();
-
-            for (var index = 0UL; index < (ulong) GetSparseCount(); index++)
-                if (indexFilter(index))
-                    valueDictionary.Add(index, Scalar);
-
-            return valueDictionary.CreateLinVectorStorage();
-        }
-
-        public ILinVectorStorage<T> FilterByIndexScalar(Func<ulong, T, bool> indexValueFilter)
-        {
-            var valueDictionary = new Dictionary<ulong, T>();
-
-            for (var index = 0UL; index < (ulong) GetSparseCount(); index++)
-                if (indexValueFilter(index, Scalar))
-                    valueDictionary.Add(index, Scalar);
-
-            return new LinVectorSparseStorage<T>(valueDictionary);
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ILinVectorStorage<T> FilterByScalar(Func<T, bool> valueFilter)
-        {
-            return valueFilter(Scalar)
-                ? this 
-                : LinVectorEmptyStorage<T>.EmptyStorage;
-        }
-
-        public ILinVectorGradedStorage<T> ToVectorGradedStorage(
-            Func<ulong, RGaGradeKvIndexRecord> indexToGradeIndexMapping)
-        {
-            var gradeIndexScalarDictionary = new Dictionary<uint, Dictionary<ulong, T>>();
-
-            for (var id = 0UL; id < (ulong) GetSparseCount(); id++)
+            if (!gradeIndexScalarDictionary.TryGetValue(grade, out var indexValueDictionary))
             {
-                var (grade, index) = indexToGradeIndexMapping(id);
-
-                if (!gradeIndexScalarDictionary.TryGetValue(grade, out var indexValueDictionary))
-                {
-                    indexValueDictionary = new Dictionary<ulong, T>();
-                    gradeIndexScalarDictionary.Add(grade, indexValueDictionary);
-                }
-
-                if (indexValueDictionary.ContainsKey(index))
-                    indexValueDictionary[index] = Scalar;
-                else
-                    indexValueDictionary.Add(index, Scalar);
+                indexValueDictionary = new Dictionary<ulong, T>();
+                gradeIndexScalarDictionary.Add(grade, indexValueDictionary);
             }
 
-            return gradeIndexScalarDictionary.CreateLinVectorGradedStorage();
+            if (indexValueDictionary.ContainsKey(index))
+                indexValueDictionary[index] = Scalar;
+            else
+                indexValueDictionary.Add(index, Scalar);
         }
 
-        public ILinVectorGradedStorage<T> ToVectorGradedStorage(Func<ulong, T, RGaGradeKvIndexScalarRecord<T>> indexScalarToGradeIndexScalarMapping)
+        return gradeIndexScalarDictionary.CreateLinVectorGradedStorage();
+    }
+
+    public ILinVectorGradedStorage<T> ToVectorGradedStorage(Func<ulong, T, RGaGradeKvIndexScalarRecord<T>> indexScalarToGradeIndexScalarMapping)
+    {
+        var gradeIndexScalarDictionary = new Dictionary<uint, Dictionary<ulong, T>>();
+
+        for (var id = 0UL; id < (ulong) GetSparseCount(); id++)
         {
-            var gradeIndexScalarDictionary = new Dictionary<uint, Dictionary<ulong, T>>();
+            var (grade, index, scalar) = indexScalarToGradeIndexScalarMapping(id, Scalar);
 
-            for (var id = 0UL; id < (ulong) GetSparseCount(); id++)
+            if (!gradeIndexScalarDictionary.TryGetValue(grade, out var indexValueDictionary))
             {
-                var (grade, index, scalar) = indexScalarToGradeIndexScalarMapping(id, Scalar);
-
-                if (!gradeIndexScalarDictionary.TryGetValue(grade, out var indexValueDictionary))
-                {
-                    indexValueDictionary = new Dictionary<ulong, T>();
-                    gradeIndexScalarDictionary.Add(grade, indexValueDictionary);
-                }
-
-                if (indexValueDictionary.ContainsKey(index))
-                    indexValueDictionary[index] = scalar;
-                else
-                    indexValueDictionary.Add(index, scalar);
+                indexValueDictionary = new Dictionary<ulong, T>();
+                gradeIndexScalarDictionary.Add(grade, indexValueDictionary);
             }
 
-            return gradeIndexScalarDictionary.CreateLinVectorGradedStorage();
+            if (indexValueDictionary.ContainsKey(index))
+                indexValueDictionary[index] = scalar;
+            else
+                indexValueDictionary.Add(index, scalar);
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public bool TryGetCompactStorage(out ILinVectorStorage<T> vectorStorage)
+        return gradeIndexScalarDictionary.CreateLinVectorGradedStorage();
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public bool TryGetCompactStorage(out ILinVectorStorage<T> vectorStorage)
+    {
+        if (Count == 0)
         {
-            if (Count == 0)
-            {
-                vectorStorage = LinVectorEmptyStorage<T>.EmptyStorage;
-                return true;
-            }
-
-            if (Count == 1)
-            {
-                vectorStorage = new LinVectorSingleScalarDenseStorage<T>(Scalar);
-                return true;
-            }
-
-            vectorStorage = this;
-            return false;
+            vectorStorage = LinVectorEmptyStorage<T>.EmptyStorage;
+            return true;
         }
 
-        public IEnumerable<RGaKvIndexScalarRecord<T>> GetIndexScalarRecords()
+        if (Count == 1)
         {
-            var count = (ulong) GetSparseCount();
-
-            for (var index = 0UL; index < count; index++)
-                yield return new RGaKvIndexScalarRecord<T>(index, Scalar);
+            vectorStorage = new LinVectorSingleScalarDenseStorage<T>(Scalar);
+            return true;
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ILinVectorDenseStorage<T> GetDensePermutation(Func<ulong, ulong> indexMapping)
-        {
-            return this;
-        }
+        vectorStorage = this;
+        return false;
+    }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public IEnumerator<T> GetEnumerator()
-        {
-            return Enumerable.Repeat(Scalar, Count).GetEnumerator();
-        }
+    public IEnumerable<RGaKvIndexScalarRecord<T>> GetIndexScalarRecords()
+    {
+        var count = (ulong) GetSparseCount();
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
-        }
+        for (var index = 0UL; index < count; index++)
+            yield return new RGaKvIndexScalarRecord<T>(index, Scalar);
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public ILinVectorDenseStorage<T> GetDensePermutation(Func<ulong, ulong> indexMapping)
+    {
+        return this;
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public IEnumerator<T> GetEnumerator()
+    {
+        return Enumerable.Repeat(Scalar, Count).GetEnumerator();
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    IEnumerator IEnumerable.GetEnumerator()
+    {
+        return GetEnumerator();
     }
 }

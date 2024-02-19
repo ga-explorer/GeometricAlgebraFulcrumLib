@@ -2,200 +2,199 @@
 using Microsoft.CSharp.RuntimeBinder;
 using TextComposerLib.Text.Linear;
 
-namespace GeometricAlgebraFulcrumLib.Lite.Geometry.Differential.Functions.Visitors
+namespace GeometricAlgebraFulcrumLib.Lite.Geometry.Differential.Functions.Visitors;
+
+public class MathematicaStringVisitor :
+    IDynamicTreeVisitor<DifferentialFunction, string>
 {
-    public class MathematicaStringVisitor :
-        IDynamicTreeVisitor<DifferentialFunction, string>
+    public static MathematicaStringVisitor DefaultVisitor { get; }
+        = new MathematicaStringVisitor();
+
+
+    public bool UseExceptions
+        => true;
+
+    public bool IgnoreNullElements 
+        => false;
+
+
+    public string VarName { get; set; } = "x";
+
+
+    public string Fallback(DifferentialFunction item, RuntimeBinderException excException)
     {
-        public static MathematicaStringVisitor DefaultVisitor { get; }
-            = new MathematicaStringVisitor();
+        throw new NotImplementedException();
+    }
 
 
-        public bool UseExceptions
-            => true;
-
-        public bool IgnoreNullElements 
-            => false;
-
-
-        public string VarName { get; set; } = "x";
-
-
-        public string Fallback(DifferentialFunction item, RuntimeBinderException excException)
-        {
-            throw new NotImplementedException();
-        }
-
-
-        public string Visit(DfConstant dfConstant)
-        {
-            return dfConstant.Value.ToString("G");
-        }
+    public string Visit(DfConstant dfConstant)
+    {
+        return dfConstant.Value.ToString("G");
+    }
         
-        public string Visit(DfVar dfVar)
-        {
-            return VarName;
-        }
+    public string Visit(DfVar dfVar)
+    {
+        return VarName;
+    }
         
-        public string Visit(DfCos dfCos)
+    public string Visit(DfCos dfCos)
+    {
+        if (dfCos.TreeDepth <= 3)
         {
-            if (dfCos.TreeDepth <= 3)
-            {
-                var arg1Text = dfCos.Argument.AcceptVisitor(this);
+            var arg1Text = dfCos.Argument.AcceptVisitor(this);
 
-                return $"Cos[{arg1Text}]";
-            }
-
-            var composer = new LinearTextComposer();
-
-            var argText =
-                dfCos.Argument.AcceptVisitor(this);
-
-            composer
-                .AppendLine("Cos[")
-                .IncreaseIndentation()
-                .Append(argText)
-                .DecreaseIndentation()
-                .AppendAtNewLine("]");
-
-            return composer.ToString();
+            return $"Cos[{arg1Text}]";
         }
+
+        var composer = new LinearTextComposer();
+
+        var argText =
+            dfCos.Argument.AcceptVisitor(this);
+
+        composer
+            .AppendLine("Cos[")
+            .IncreaseIndentation()
+            .Append(argText)
+            .DecreaseIndentation()
+            .AppendAtNewLine("]");
+
+        return composer.ToString();
+    }
         
-        public string Visit(DfSin dfSin)
+    public string Visit(DfSin dfSin)
+    {
+        if (dfSin.TreeDepth <= 3)
         {
-            if (dfSin.TreeDepth <= 3)
-            {
-                var arg1Text = dfSin.Argument.AcceptVisitor(this);
+            var arg1Text = dfSin.Argument.AcceptVisitor(this);
 
-                return $"Sin[{arg1Text}]";
-            }
-
-            var composer = new LinearTextComposer();
-
-            var argText =
-                dfSin.Argument.AcceptVisitor(this);
-
-            composer
-                .AppendLine("Sin[")
-                .IncreaseIndentation()
-                .Append(argText)
-                .DecreaseIndentation()
-                .AppendAtNewLine("]");
-
-            return composer.ToString();
+            return $"Sin[{arg1Text}]";
         }
+
+        var composer = new LinearTextComposer();
+
+        var argText =
+            dfSin.Argument.AcceptVisitor(this);
+
+        composer
+            .AppendLine("Sin[")
+            .IncreaseIndentation()
+            .Append(argText)
+            .DecreaseIndentation()
+            .AppendAtNewLine("]");
+
+        return composer.ToString();
+    }
         
-        public string Visit(DfExp dfExp)
+    public string Visit(DfExp dfExp)
+    {
+        if (dfExp.TreeDepth <= 3)
         {
-            if (dfExp.TreeDepth <= 3)
-            {
-                var arg1Text = dfExp.Argument.AcceptVisitor(this);
+            var arg1Text = dfExp.Argument.AcceptVisitor(this);
 
-                return $"Exp[{arg1Text}]";
-            }
-
-            var composer = new LinearTextComposer();
-
-            var argText =
-                dfExp.Argument.AcceptVisitor(this);
-
-            composer
-                .AppendLine("Exp[")
-                .IncreaseIndentation()
-                .Append(argText)
-                .DecreaseIndentation()
-                .AppendAtNewLine("]");
-
-            return composer.ToString();
+            return $"Exp[{arg1Text}]";
         }
+
+        var composer = new LinearTextComposer();
+
+        var argText =
+            dfExp.Argument.AcceptVisitor(this);
+
+        composer
+            .AppendLine("Exp[")
+            .IncreaseIndentation()
+            .Append(argText)
+            .DecreaseIndentation()
+            .AppendAtNewLine("]");
+
+        return composer.ToString();
+    }
         
-        public string Visit(DfPowerScalar dfPowerScalar)
+    public string Visit(DfPowerScalar dfPowerScalar)
+    {
+        var powerText = dfPowerScalar.PowerValue.ToString("G");
+
+        if (dfPowerScalar.TreeDepth <= 3)
         {
-            var powerText = dfPowerScalar.PowerValue.ToString("G");
+            var arg1Text = dfPowerScalar.Argument.AcceptVisitor(this);
 
-            if (dfPowerScalar.TreeDepth <= 3)
-            {
-                var arg1Text = dfPowerScalar.Argument.AcceptVisitor(this);
-
-                return $"Power[{arg1Text}, {powerText}]";
-            }
-
-            var composer = new LinearTextComposer();
-
-            var argText =
-                dfPowerScalar.Argument.AcceptVisitor(this);
-
-            composer
-                .AppendLine("Power[")
-                .IncreaseIndentation()
-                .Append(argText)
-                .AppendLine(",")
-                .Append(powerText)
-                .DecreaseIndentation()
-                .AppendAtNewLine("]");
-
-            return composer.ToString();
+            return $"Power[{arg1Text}, {powerText}]";
         }
 
-        public string Visit(DfTimes dfTimes)
+        var composer = new LinearTextComposer();
+
+        var argText =
+            dfPowerScalar.Argument.AcceptVisitor(this);
+
+        composer
+            .AppendLine("Power[")
+            .IncreaseIndentation()
+            .Append(argText)
+            .AppendLine(",")
+            .Append(powerText)
+            .DecreaseIndentation()
+            .AppendAtNewLine("]");
+
+        return composer.ToString();
+    }
+
+    public string Visit(DfTimes dfTimes)
+    {
+        if (dfTimes.TreeDepth <= 3)
         {
-            if (dfTimes.TreeDepth <= 3)
-            {
-                return dfTimes
-                    .Arguments
-                    .Select(f => f.AcceptVisitor(this))
-                    .ConcatenateText(", ", "Times[", "]");
-            }
-
-            var composer = new LinearTextComposer();
-
-            var argText =
-                dfTimes
-                    .Arguments
-                    .Select(f => f.AcceptVisitor(this))
-                    .ConcatenateText("," + Environment.NewLine);
-
-            composer
-                .AppendLine("Times[")
-                .IncreaseIndentation()
-                .Append(argText)
-                .DecreaseIndentation()
-                .AppendAtNewLine("]");
-
-            return composer.ToString();
+            return dfTimes
+                .Arguments
+                .Select(f => f.AcceptVisitor(this))
+                .ConcatenateText(", ", "Times[", "]");
         }
 
-        public string Visit(DfPlus dfPlus)
+        var composer = new LinearTextComposer();
+
+        var argText =
+            dfTimes
+                .Arguments
+                .Select(f => f.AcceptVisitor(this))
+                .ConcatenateText("," + Environment.NewLine);
+
+        composer
+            .AppendLine("Times[")
+            .IncreaseIndentation()
+            .Append(argText)
+            .DecreaseIndentation()
+            .AppendAtNewLine("]");
+
+        return composer.ToString();
+    }
+
+    public string Visit(DfPlus dfPlus)
+    {
+        if (dfPlus.TreeDepth <= 3)
         {
-            if (dfPlus.TreeDepth <= 3)
-            {
-                return dfPlus
-                    .Arguments
-                    .Select(f => f.AcceptVisitor(this))
-                    .ConcatenateText(", ", "Plus[", "]");
-            }
-
-            var composer = new LinearTextComposer();
-
-            var argText =
-                dfPlus
-                    .Arguments
-                    .Select(f => f.AcceptVisitor(this))
-                    .ConcatenateText("," + Environment.NewLine);
-
-            composer
-                .AppendLine("Plus[")
-                .IncreaseIndentation()
-                .Append(argText)
-                .DecreaseIndentation()
-                .AppendAtNewLine("]");
-
-            return composer.ToString();
+            return dfPlus
+                .Arguments
+                .Select(f => f.AcceptVisitor(this))
+                .ConcatenateText(", ", "Plus[", "]");
         }
 
-        public string Visit(DifferentialCustomFunction dfCustom)
-        {
-            return dfCustom.Name;
-        }
+        var composer = new LinearTextComposer();
+
+        var argText =
+            dfPlus
+                .Arguments
+                .Select(f => f.AcceptVisitor(this))
+                .ConcatenateText("," + Environment.NewLine);
+
+        composer
+            .AppendLine("Plus[")
+            .IncreaseIndentation()
+            .Append(argText)
+            .DecreaseIndentation()
+            .AppendAtNewLine("]");
+
+        return composer.ToString();
+    }
+
+    public string Visit(DifferentialCustomFunction dfCustom)
+    {
+        return dfCustom.Name;
     }
 }

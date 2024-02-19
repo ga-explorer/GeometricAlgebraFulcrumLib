@@ -1,15 +1,14 @@
 ﻿using CodeComposerLib.MathML.Elements.Layout;
 
-namespace CodeComposerLib.MathML
+namespace CodeComposerLib.MathML;
+
+/// <summary>
+/// A composer for presentation MathML code
+/// </summary>
+public class MathMlComposer
 {
-    /// <summary>
-    /// A composer for presentation MathML code
-    /// </summary>
-    public class MathMlComposer
-    {
-        public MathMlMath MathElement { get; }
-            = new MathMlMath();
+    public MathMlMath MathElement { get; }
+        = new MathMlMath();
 
 
-    }
 }

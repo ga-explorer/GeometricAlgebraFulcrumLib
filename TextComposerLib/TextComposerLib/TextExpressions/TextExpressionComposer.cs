@@ -1,91 +1,90 @@
 ﻿using TextComposerLib.Text.Linear;
 using TextComposerLib.TextExpressions.Ast;
 
-namespace TextComposerLib.TextExpressions
+namespace TextComposerLib.TextExpressions;
+
+public sealed class TextExpressionComposer : TextExpressionVisitor
 {
-    public sealed class TextExpressionComposer : TextExpressionVisitor
+    public LinearTextComposer TextComposer { get; }
+
+
+    private TextExpressionComposer()
     {
-        public LinearTextComposer TextComposer { get; }
+        TextComposer = new LinearTextComposer();
+    }
 
 
-        private TextExpressionComposer()
+    public override void Visit(TeLiteralNumber textExpr)
+    {
+        if (ReferenceEquals(textExpr, null)) return;
+
+        TextComposer.Append(textExpr.ToString());
+    }
+
+    public override void Visit(TeLiteralString textExpr)
+    {
+        if (ReferenceEquals(textExpr, null)) return;
+
+        TextComposer.Append(textExpr.ToString());
+    }
+
+    public override void Visit(TeIdentifier textExpr)
+    {
+        if (ReferenceEquals(textExpr, null)) return;
+
+        TextComposer.Append(textExpr.ToString());
+    }
+
+    public override void Visit(TeList textExpr)
+    {
+        if (ReferenceEquals(textExpr, null)) return;
+
+        if (textExpr.IsNamed) 
+            TextComposer.Append(textExpr.Name.ToString());
+
+        TextComposer.Append("[");
+
+        var flag = false;
+        foreach (var subExpr in textExpr)
         {
-            TextComposer = new LinearTextComposer();
+            if (flag) TextComposer.Append(", ");
+            else flag = true;
+
+            Visit(subExpr);
         }
 
+        TextComposer.Append("]");
+    }
 
-        public override void Visit(TeLiteralNumber textExpr)
+    public override void Visit(TeDictionary textExpr)
+    {
+        if (ReferenceEquals(textExpr, null)) return;
+
+        if (textExpr.IsNamed)
+            TextComposer.Append(textExpr.Name.ToString()).AppendLine(" {").IncreaseIndentation();
+        else
+            TextComposer.AppendLine("{").IncreaseIndentation();
+
+        var flag = false;
+        foreach (var pair in textExpr)
         {
-            if (ReferenceEquals(textExpr, null)) return;
+            if (flag) TextComposer.AppendLine(", ");
+            else flag = true;
 
-            TextComposer.Append(textExpr.ToString());
+            TextComposer.Append(pair.Key).Append(" : ");
+
+            Visit(pair.Value);
         }
 
-        public override void Visit(TeLiteralString textExpr)
-        {
-            if (ReferenceEquals(textExpr, null)) return;
+        TextComposer.DecreaseIndentation().AppendAtNewLine("}");
+    }
 
-            TextComposer.Append(textExpr.ToString());
-        }
+    public static string Generate(ITextExpression textExpr)
+    {
+        var composer = new TextExpressionComposer();
 
-        public override void Visit(TeIdentifier textExpr)
-        {
-            if (ReferenceEquals(textExpr, null)) return;
+        composer.Visit(textExpr);
 
-            TextComposer.Append(textExpr.ToString());
-        }
-
-        public override void Visit(TeList textExpr)
-        {
-            if (ReferenceEquals(textExpr, null)) return;
-
-            if (textExpr.IsNamed) 
-                TextComposer.Append(textExpr.Name.ToString());
-
-            TextComposer.Append("[");
-
-            var flag = false;
-            foreach (var subExpr in textExpr)
-            {
-                if (flag) TextComposer.Append(", ");
-                else flag = true;
-
-                Visit(subExpr);
-            }
-
-            TextComposer.Append("]");
-        }
-
-        public override void Visit(TeDictionary textExpr)
-        {
-            if (ReferenceEquals(textExpr, null)) return;
-
-            if (textExpr.IsNamed)
-                TextComposer.Append(textExpr.Name.ToString()).AppendLine(" {").IncreaseIndentation();
-            else
-                TextComposer.AppendLine("{").IncreaseIndentation();
-
-            var flag = false;
-            foreach (var pair in textExpr)
-            {
-                if (flag) TextComposer.AppendLine(", ");
-                else flag = true;
-
-                TextComposer.Append(pair.Key).Append(" : ");
-
-                Visit(pair.Value);
-            }
-
-            TextComposer.DecreaseIndentation().AppendAtNewLine("}");
-        }
-
-        public static string Generate(ITextExpression textExpr)
-        {
-            var composer = new TextExpressionComposer();
-
-            composer.Visit(textExpr);
-
-            return composer.TextComposer.ToString();
-        }
+        return composer.TextComposer.ToString();
     }
 }

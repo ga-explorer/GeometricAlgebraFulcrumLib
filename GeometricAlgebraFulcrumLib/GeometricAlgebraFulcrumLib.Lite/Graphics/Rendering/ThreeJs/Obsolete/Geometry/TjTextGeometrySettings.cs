@@ -1,19 +1,18 @@
-﻿namespace GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.ThreeJs.Obsolete.Geometry
+﻿namespace GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.ThreeJs.Obsolete.Geometry;
+
+public sealed class TjTextGeometrySettings
+    : TjComponentSimple
 {
-    public sealed class TjTextGeometrySettings
-        : TjComponentSimple
+    public override string JavaScriptClassName 
+        => "Object";
+
+    protected override string GetConstructorArgumentsText()
     {
-        public override string JavaScriptClassName 
-            => "Object";
+        throw new NotImplementedException();
+    }
 
-        protected override string GetConstructorArgumentsText()
-        {
-            throw new NotImplementedException();
-        }
-
-        protected override string GetSetMethodArgumentsText()
-        {
-            throw new NotImplementedException();
-        }
+    protected override string GetSetMethodArgumentsText()
+    {
+        throw new NotImplementedException();
     }
 }

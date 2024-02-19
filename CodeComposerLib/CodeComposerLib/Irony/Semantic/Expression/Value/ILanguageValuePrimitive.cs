@@ -1,6 +1,5 @@
-﻿namespace CodeComposerLib.Irony.Semantic.Expression.Value
+﻿namespace CodeComposerLib.Irony.Semantic.Expression.Value;
+
+public interface ILanguageValuePrimitive : ILanguageValue
 {
-    public interface ILanguageValuePrimitive : ILanguageValue
-    {
-    }
 }

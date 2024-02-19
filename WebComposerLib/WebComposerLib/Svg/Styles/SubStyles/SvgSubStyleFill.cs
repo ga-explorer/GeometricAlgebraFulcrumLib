@@ -2,68 +2,67 @@
 using WebComposerLib.Svg.Styles.Properties;
 using WebComposerLib.Svg.Values;
 
-namespace WebComposerLib.Svg.Styles.SubStyles
+namespace WebComposerLib.Svg.Styles.SubStyles;
+
+public sealed class SvgSubStyleFill : SvgSubStyle
 {
-    public sealed class SvgSubStyleFill : SvgSubStyle
+    private static readonly SvgAttributeInfo[] UsedPropertyInfos =
     {
-        private static readonly SvgAttributeInfo[] UsedPropertyInfos =
-        {
-            SvgAttributeUtils.Fill,
-            SvgAttributeUtils.FillOpacity,
-            SvgAttributeUtils.FillRule
-        };
+        SvgAttributeUtils.Fill,
+        SvgAttributeUtils.FillOpacity,
+        SvgAttributeUtils.FillRule
+    };
 
 
-        public static SvgSubStyleFill Create()
-        {
-            return new SvgSubStyleFill();
-        }
+    public static SvgSubStyleFill Create()
+    {
+        return new SvgSubStyleFill();
+    }
 
-        public static SvgSubStyleFill Create(SvgStyle baseStyle)
-        {
-            return new SvgSubStyleFill(baseStyle);
-        }
-
-
-        public override IEnumerable<SvgAttributeInfo> PropertyInfos
-            => UsedPropertyInfos;
-
-        public SvgSpvPaint Paint => BaseStyle.Fill;
-
-        public SvgSpvNumber Opacity => BaseStyle.FillOpacity;
-
-        public SvgSpv<SvgValueFillRule> Rule => BaseStyle.FillRule;
+    public static SvgSubStyleFill Create(SvgStyle baseStyle)
+    {
+        return new SvgSubStyleFill(baseStyle);
+    }
 
 
-        private SvgSubStyleFill() : base(null)
-        {
-        }
+    public override IEnumerable<SvgAttributeInfo> PropertyInfos
+        => UsedPropertyInfos;
 
-        private SvgSubStyleFill(SvgStyle baseStyle) : base(baseStyle)
-        {
-        }
+    public SvgSpvPaint Paint => BaseStyle.Fill;
+
+    public SvgSpvNumber Opacity => BaseStyle.FillOpacity;
+
+    public SvgSpv<SvgValueFillRule> Rule => BaseStyle.FillRule;
 
 
-        public override void UpdateTargetStyle(SvgStyle targetStyle)
-        {
-            targetStyle.Fill.UpdateFrom(Paint);
-            targetStyle.FillOpacity.UpdateFrom(Opacity);
-            targetStyle.FillRule.UpdateFrom(Rule);
-        }
+    private SvgSubStyleFill() : base(null)
+    {
+    }
 
-        public void ClearPaint()
-        {
-            BaseStyle.ClearProperty(SvgAttributeUtils.Fill);
-        }
+    private SvgSubStyleFill(SvgStyle baseStyle) : base(baseStyle)
+    {
+    }
 
-        public void ClearOpacity()
-        {
-            BaseStyle.ClearProperty(SvgAttributeUtils.FillOpacity);
-        }
 
-        public void ClearRule()
-        {
-            BaseStyle.ClearProperty(SvgAttributeUtils.FillRule);
-        }
+    public override void UpdateTargetStyle(SvgStyle targetStyle)
+    {
+        targetStyle.Fill.UpdateFrom(Paint);
+        targetStyle.FillOpacity.UpdateFrom(Opacity);
+        targetStyle.FillRule.UpdateFrom(Rule);
+    }
+
+    public void ClearPaint()
+    {
+        BaseStyle.ClearProperty(SvgAttributeUtils.Fill);
+    }
+
+    public void ClearOpacity()
+    {
+        BaseStyle.ClearProperty(SvgAttributeUtils.FillOpacity);
+    }
+
+    public void ClearRule()
+    {
+        BaseStyle.ClearProperty(SvgAttributeUtils.FillRule);
     }
 }

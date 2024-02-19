@@ -1,14 +1,13 @@
 ﻿using GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.Xeogl.Constants;
 
-namespace GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.Xeogl.Materials
+namespace GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.Xeogl.Materials;
+
+public sealed class XeoglSpecularMaterial : XeoglMaterial
 {
-    public sealed class XeoglSpecularMaterial : XeoglMaterial
-    {
-        public override string JavaScriptClassName => "SpecularMaterial";
+    public override string JavaScriptClassName => "SpecularMaterial";
 
-        public override XeoglMaterialType MaterialType
-            => XeoglMaterialType.Specular;
+    public override XeoglMaterialType MaterialType
+        => XeoglMaterialType.Specular;
 
 
-    }
 }

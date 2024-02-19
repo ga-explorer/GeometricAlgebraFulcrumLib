@@ -1,23 +1,22 @@
 ﻿using GeometricAlgebraFulcrumLib.Lite.LinearAlgebra.Vectors.Space3D;
 
-namespace GeometricAlgebraFulcrumLib.Lite.Graphics.SdfGeometry.Transforms
+namespace GeometricAlgebraFulcrumLib.Lite.Graphics.SdfGeometry.Transforms;
+
+/// <summary>
+/// http://iquilezles.org/www/articles/distfunctions/distfunctions.htm
+/// </summary>
+public sealed class SdfScale3D : SdfUnaryOperation
 {
-    /// <summary>
-    /// http://iquilezles.org/www/articles/distfunctions/distfunctions.htm
-    /// </summary>
-    public sealed class SdfScale3D : SdfUnaryOperation
+    public double Factor { get; set; }
+        = 1.0d;
+
+    public override double GetScalarDistance(IFloat64Vector3D point)
     {
-        public double Factor { get; set; }
-            = 1.0d;
+        var s = 1d / Factor;
+        var p = Float64Vector3D.Create(point.X * s,
+            point.Y * s,
+            point.Z * s);
 
-        public override double GetScalarDistance(IFloat64Vector3D point)
-        {
-            var s = 1d / Factor;
-            var p = Float64Vector3D.Create(point.X * s,
-                point.Y * s,
-                point.Z * s);
-
-            return Factor * Surface.GetScalarDistance(p);
-        }
+        return Factor * Surface.GetScalarDistance(p);
     }
 }

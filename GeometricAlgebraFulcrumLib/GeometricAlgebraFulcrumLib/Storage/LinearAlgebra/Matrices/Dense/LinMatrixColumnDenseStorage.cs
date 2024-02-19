@@ -5,61 +5,60 @@ using GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors;
 using GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors.Dense;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Records;
 
-namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices.Dense
+namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices.Dense;
+
+public sealed class LinMatrixColumnDenseStorage<T> :
+    LinMatrixImmutableDenseStorageBase<T>
 {
-    public sealed class LinMatrixColumnDenseStorage<T> :
-        LinMatrixImmutableDenseStorageBase<T>
+    public ILinVectorDenseStorage<T> VectorStorage { get; }
+
+    public override int Count1 
+        => VectorStorage.Count;
+
+    public override int Count2 
+        => 1;
+
+
+    internal LinMatrixColumnDenseStorage(ILinVectorDenseStorage<T> sourceList)
     {
-        public ILinVectorDenseStorage<T> VectorStorage { get; }
-
-        public override int Count1 
-            => VectorStorage.Count;
-
-        public override int Count2 
-            => 1;
+        VectorStorage = sourceList;
+    }
 
 
-        internal LinMatrixColumnDenseStorage(ILinVectorDenseStorage<T> sourceList)
-        {
-            VectorStorage = sourceList;
-        }
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public override T GetScalar(ulong index1, ulong index2)
+    {
+        return index2 == 0
+            ? VectorStorage.GetScalar(index1)
+            : throw new KeyNotFoundException();
+    }
 
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public override ILinMatrixStorage<T> GetCopy()
+    {
+        return this;
+    }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override T GetScalar(ulong index1, ulong index2)
-        {
-            return index2 == 0
-                ? VectorStorage.GetScalar(index1)
-                : throw new KeyNotFoundException();
-        }
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public override IEnumerable<RGaKvIndexLinVectorStorageRecord<T>> GetDenseRows(IEnumerable<ulong> rowIndexList)
+    {
+        return rowIndexList
+            .Where(VectorStorage.ContainsIndex)
+            .Select(index => 
+                new RGaKvIndexLinVectorStorageRecord<T>(
+                    index,
+                    VectorStorage.GetScalar(index).CreateLinVectorSingleScalarStorage(index)
+                )
+            );
+    }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override ILinMatrixStorage<T> GetCopy()
-        {
-            return this;
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override IEnumerable<RGaKvIndexLinVectorStorageRecord<T>> GetDenseRows(IEnumerable<ulong> rowIndexList)
-        {
-            return rowIndexList
-                .Where(VectorStorage.ContainsIndex)
-                .Select(index => 
-                    new RGaKvIndexLinVectorStorageRecord<T>(
-                        index,
-                        VectorStorage.GetScalar(index).CreateLinVectorSingleScalarStorage(index)
-                    )
-                );
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override IEnumerable<RGaKvIndexLinVectorStorageRecord<T>> GetDenseColumns(IEnumerable<ulong> columnIndexList)
-        {
-            if (columnIndexList.Any(i => i == 0))
-                yield return new RGaKvIndexLinVectorStorageRecord<T>(
-                    0,
-                    VectorStorage
-                );
-        }
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public override IEnumerable<RGaKvIndexLinVectorStorageRecord<T>> GetDenseColumns(IEnumerable<ulong> columnIndexList)
+    {
+        if (columnIndexList.Any(i => i == 0))
+            yield return new RGaKvIndexLinVectorStorageRecord<T>(
+                0,
+                VectorStorage
+            );
     }
 }

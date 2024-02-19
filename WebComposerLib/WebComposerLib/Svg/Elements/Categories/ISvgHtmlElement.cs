@@ -1,7 +1,6 @@
-﻿namespace WebComposerLib.Svg.Elements.Categories
+﻿namespace WebComposerLib.Svg.Elements.Categories;
+
+public interface ISvgHtmlElement : ISvgElement
 {
-    public interface ISvgHtmlElement : ISvgElement
-    {
-        //<audio>, <canvas>, <iframe>, <video>
-    }
+    //<audio>, <canvas>, <iframe>, <video>
 }

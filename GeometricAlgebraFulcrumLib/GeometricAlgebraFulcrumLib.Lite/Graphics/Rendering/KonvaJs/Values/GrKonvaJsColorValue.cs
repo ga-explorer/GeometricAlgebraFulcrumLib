@@ -1,37 +1,36 @@
 ﻿using DataStructuresLib.AttributeSet;
 
-namespace GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.KonvaJs.Values
+namespace GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.KonvaJs.Values;
+
+public sealed class GrKonvaJsColorValue :
+    SparseCodeAttributeValue<Color>
 {
-    public sealed class GrKonvaJsColorValue :
-        SparseCodeAttributeValue<Color>
+    public static implicit operator GrKonvaJsColorValue(string valueText)
     {
-        public static implicit operator GrKonvaJsColorValue(string valueText)
-        {
-            return new GrKonvaJsColorValue(valueText);
-        }
+        return new GrKonvaJsColorValue(valueText);
+    }
 
-        public static implicit operator GrKonvaJsColorValue(Color value)
-        {
-            return new GrKonvaJsColorValue(value);
-        }
+    public static implicit operator GrKonvaJsColorValue(Color value)
+    {
+        return new GrKonvaJsColorValue(value);
+    }
 
 
-        private GrKonvaJsColorValue(string valueText)
-            : base(valueText)
-        {
-        }
+    private GrKonvaJsColorValue(string valueText)
+        : base(valueText)
+    {
+    }
 
-        private GrKonvaJsColorValue(Color value)
-            : base(value)
-        {
-        }
+    private GrKonvaJsColorValue(Color value)
+        : base(value)
+    {
+    }
 
 
-        public override string GetCode()
-        {
-            return string.IsNullOrEmpty(ValueText) 
-                ? Value.GetKonvaJsCode(true) 
-                : ValueText;
-        }
+    public override string GetCode()
+    {
+        return string.IsNullOrEmpty(ValueText) 
+            ? Value.GetKonvaJsCode(true) 
+            : ValueText;
     }
 }

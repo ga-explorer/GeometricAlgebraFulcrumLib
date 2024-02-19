@@ -1,16 +1,15 @@
 ﻿using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Restricted.Float64.Processors;
 using NUnit.Framework;
 
-namespace GeometricAlgebraFulcrumLib.UnitTests.Algebra
+namespace GeometricAlgebraFulcrumLib.UnitTests.Algebra;
+
+[TestFixture]
+public sealed class ProcessorsTests
 {
-    [TestFixture]
-    public sealed class ProcessorsTests
-    {
-        private static uint VSpaceDimensions = 6;
+    private static uint VSpaceDimensions = 6;
 
-        private readonly RGaFloat64Processor _basisSet 
-            = RGaFloat64Processor.Conformal;
+    private readonly RGaFloat64Processor _basisSet 
+        = RGaFloat64Processor.Conformal;
 
 
-    }
 }

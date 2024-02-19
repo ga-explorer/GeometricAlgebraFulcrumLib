@@ -1,10 +1,9 @@
-﻿namespace CodeComposerLib.Languages.CSharp
+﻿namespace CodeComposerLib.Languages.CSharp;
+
+public class CclCSharpSyntaxFactory : CclLanguageSyntaxFactory
 {
-    public class CclCSharpSyntaxFactory : CclLanguageSyntaxFactory
+    internal CclCSharpSyntaxFactory()
     {
-        internal CclCSharpSyntaxFactory()
-        {
             
-        }
     }
 }

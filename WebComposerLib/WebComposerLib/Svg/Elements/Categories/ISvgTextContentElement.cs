@@ -1,8 +1,7 @@
-﻿namespace WebComposerLib.Svg.Elements.Categories
+﻿namespace WebComposerLib.Svg.Elements.Categories;
+
+public interface ISvgTextContentElement : ISvgElement
 {
-    public interface ISvgTextContentElement : ISvgElement
-    {
-        //<altGlyph>, <altGlyphDef>, <altGlyphItem>, <glyph>, <glyphRef>, <textPath>, <text>,
-        //<tref>, <tspan>
-    }
+    //<altGlyph>, <altGlyphDef>, <altGlyphItem>, <glyph>, <glyphRef>, <textPath>, <text>,
+    //<tref>, <tspan>
 }

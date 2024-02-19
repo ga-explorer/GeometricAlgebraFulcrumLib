@@ -1,19 +1,18 @@
-﻿namespace GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.ThreeJs.Obsolete.Geometry.Curves
+﻿namespace GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.ThreeJs.Obsolete.Geometry.Curves;
+
+public class TjShape :
+    TjPath
 {
-    public class TjShape :
-        TjPath
+    public override string JavaScriptClassName
+        => "Shape";
+
+    protected override string GetConstructorArgumentsText()
     {
-        public override string JavaScriptClassName
-            => "Shape";
+        throw new NotImplementedException();
+    }
 
-        protected override string GetConstructorArgumentsText()
-        {
-            throw new NotImplementedException();
-        }
-
-        protected override string GetSetMethodArgumentsText()
-        {
-            throw new NotImplementedException();
-        }
+    protected override string GetSetMethodArgumentsText()
+    {
+        throw new NotImplementedException();
     }
 }

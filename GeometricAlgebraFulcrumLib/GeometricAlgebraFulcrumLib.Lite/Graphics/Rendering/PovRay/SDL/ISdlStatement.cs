@@ -1,7 +1,6 @@
-﻿namespace GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.PovRay.SDL
+﻿namespace GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.PovRay.SDL;
+
+public interface ISdlStatement : ISdlElement
 {
-    public interface ISdlStatement : ISdlElement
-    {
          
-    }
 }

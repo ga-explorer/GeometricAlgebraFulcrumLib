@@ -1,8 +1,7 @@
-﻿namespace GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.Visuals
+﻿namespace GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.Visuals;
+
+public interface IGrVisualElement :
+    IGeometricElement
 {
-    public interface IGrVisualElement :
-        IGeometricElement
-    {
-        public string Name { get; }
-    }
+    public string Name { get; }
 }

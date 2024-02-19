@@ -1,4 +1,5 @@
 ﻿using System.Runtime.CompilerServices;
+using GeometricAlgebraFulcrumLib.Lite.Geometry.Parametric.Space1D.Angles;
 using GeometricAlgebraFulcrumLib.Lite.Geometry.Parametric.Space1D.Scalars;
 using GeometricAlgebraFulcrumLib.Lite.Geometry.Parametric.Space2D.Curves;
 using GeometricAlgebraFulcrumLib.Lite.Geometry.Parametric.Space3D.Curves;
@@ -79,6 +80,25 @@ public static class GrVisualAnimatedGeometryComposerUtils
         );
     }
     
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static GrVisualAnimatedScalar CreateAnimatedScalar(this GrVisualAnimationSpecs animationSpecs, IParametricAngle baseCurve)
+    {
+        return GrVisualAnimatedScalar.Create(
+            animationSpecs,
+            baseCurve.ToRadianParametricScalar()
+        );
+    }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static GrVisualAnimatedScalar CreateAnimatedScalar(this GrVisualAnimationSpecs animationSpecs, Float64ScalarRange baseParameterRange, IParametricAngle baseCurve)
+    {
+        return GrVisualAnimatedScalar.Create(
+            animationSpecs,
+            baseCurve.ToRadianParametricScalar(),
+            baseParameterRange
+        );
+    }
+
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static GrVisualAnimatedVector2D CreateAnimatedVector2D(this GrVisualAnimationSpecs animationSpecs, Float64Vector2D baseCurveValue)

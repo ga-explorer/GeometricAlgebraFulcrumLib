@@ -1,20 +1,19 @@
 ﻿using System.Collections.Generic;
 
-namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra
+namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra;
+
+public interface ILinArrayGradedStorage<out T> :
+    ILinArrayStorage<T>
 {
-    public interface ILinArrayGradedStorage<out T> :
-        ILinArrayStorage<T>
-    {
-        int GradesCount { get; }
+    int GradesCount { get; }
 
-        IEnumerable<uint> GetGrades();
+    IEnumerable<uint> GetGrades();
         
-        IEnumerable<uint> GetEmptyGrades(uint vSpaceDimensions);
+    IEnumerable<uint> GetEmptyGrades(uint vSpaceDimensions);
 
-        uint GetMinGrade();
+    uint GetMinGrade();
 
-        uint GetMaxGrade();
+    uint GetMaxGrade();
         
-        bool ContainsGrade(uint grade);
-    }
+    bool ContainsGrade(uint grade);
 }

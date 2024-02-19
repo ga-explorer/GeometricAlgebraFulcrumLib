@@ -12,28 +12,28 @@ using TextComposerLib.Text.Linear;
 using WebComposerLib.ImageSharp.Processing.AutoCrop.Extensions;
 using System.Net;
 
-namespace WebComposerLib.LaTeX.KaTeX
+namespace WebComposerLib.LaTeX.KaTeX;
+
+/// <summary>
+/// https://github.com/KaTeX/KaTeX
+/// https://katex.org/docs/supported.html
+/// </summary>
+public class WclKaTeXComposer
 {
-    /// <summary>
-    /// https://github.com/KaTeX/KaTeX
-    /// https://katex.org/docs/supported.html
-    /// </summary>
-    public class WclKaTeXComposer
+    //For Unicode Direct Input use these sites:
+    //https://unicodelookup.com/
+    //https://r12a.github.io/app-conversion/
+    //https://r12a.github.io/uniview/?charlist=<put_unicode_characters_here>#title
+
+
+    public enum OutputKind
     {
-        //For Unicode Direct Input use these sites:
-        //https://unicodelookup.com/
-        //https://r12a.github.io/app-conversion/
-        //https://r12a.github.io/uniview/?charlist=<put_unicode_characters_here>#title
+        Html = 1,
+        MathMl = 2,
+        HtmlAndMathMl = 3
+    }
 
-
-        public enum OutputKind
-        {
-            Html = 1,
-            MathMl = 2,
-            HtmlAndMathMl = 3
-        }
-
-        public static string HtmlTemplateText { get; } = @"
+    public static string HtmlTemplateText { get; } = @"
 <!DOCTYPE html>
 <html>
     <head>
@@ -105,314 +105,313 @@ namespace WebComposerLib.LaTeX.KaTeX
 ".Trim();
 
 
-        public string WorkingFolder { get; }
+    public string WorkingFolder { get; }
 
-        public List<string> KaTeXCodeList { get; }
-            = new List<string>();
+    public List<string> KaTeXCodeList { get; }
+        = new List<string>();
 
-        public List<Image<Rgba32>> KaTeXPngImageList { get; }
-            = new List<Image<Rgba32>>();
+    public List<Image<Rgba32>> KaTeXPngImageList { get; }
+        = new List<Image<Rgba32>>();
         
-        public List<string> KaTeXImageFileName { get; }
-            = new List<string>();
+    public List<string> KaTeXImageFileName { get; }
+        = new List<string>();
 
-        public bool SaveImages { get; set; } 
-            = false;
+    public bool SaveImages { get; set; } 
+        = false;
 
-        public bool DisplayMode { get; set; }
-            = false;
+    public bool DisplayMode { get; set; }
+        = false;
 
-        public OutputKind Output { get; set; }
-            = OutputKind.HtmlAndMathMl;
+    public OutputKind Output { get; set; }
+        = OutputKind.HtmlAndMathMl;
 
-        public bool ThrowOnError { get; set; }
-            = true;
+    public bool ThrowOnError { get; set; }
+        = true;
 
-        public Color ErrorColor { get; set; }
-            = Color.DarkRed;
+    public Color ErrorColor { get; set; }
+        = Color.DarkRed;
 
-        public float FontSizeEm { get; set; }
-            = 1.21f;
+    public float FontSizeEm { get; set; }
+        = 1.21f;
 
         
-        public WclKaTeXComposer(string workingFolder)
+    public WclKaTeXComposer(string workingFolder)
+    {
+        if (workingFolder.IsNullOrEmpty())
+            workingFolder = Path.GetTempPath();
+
+        if (!Path.Exists(workingFolder))
+            throw new DirectoryNotFoundException(workingFolder);
+
+        WorkingFolder = workingFolder;
+    }
+
+
+    /// <summary>
+    /// Converts the value of this instance to a hexadecimal string.
+    /// </summary>
+    /// <returns>A hexadecimal string representation of the value.</returns>
+    public static string RgbToHex(Color color)
+    {
+        var c = color.ToPixel<Rgb24>();
+
+        var hexOrder = (uint)(c.B << 0 | c.G << 8 | c.R << 16);
+
+        return hexOrder.ToString("X6", CultureInfo.InvariantCulture);
+    }
+
+    /// <summary>
+    /// Converts the value of this instance to a hexadecimal string.
+    /// </summary>
+    /// <returns>A hexadecimal string representation of the value.</returns>
+    public static string RgbaToHex(Color color)
+    {
+        var c = color.ToPixel<Rgba32>();
+
+        var hexOrder = (uint)(c.A << 0 | c.B << 8 | c.G << 16 | c.R << 24);
+
+        return hexOrder.ToString("X8", CultureInfo.InvariantCulture);
+    }
+
+    private string GetOptionsCode()
+    {
+        var displayMode =
+            DisplayMode ? "displayMode: true" : string.Empty;
+
+        var output = Output switch
         {
-            if (workingFolder.IsNullOrEmpty())
-                workingFolder = Path.GetTempPath();
+            OutputKind.Html => "output: 'html'",
+            OutputKind.MathMl => "output: 'mathml'",
+            _ => string.Empty
+        };
 
-            if (!Path.Exists(workingFolder))
-                throw new DirectoryNotFoundException(workingFolder);
+        var throwOnError =
+            ThrowOnError ? string.Empty : "throwOnError: false";
 
-            WorkingFolder = workingFolder;
-        }
+        var errorColor =
+            $"errorColor: '#{RgbToHex(ErrorColor)}'";
 
-
-        /// <summary>
-        /// Converts the value of this instance to a hexadecimal string.
-        /// </summary>
-        /// <returns>A hexadecimal string representation of the value.</returns>
-        public static string RgbToHex(Color color)
-        {
-            var c = color.ToPixel<Rgb24>();
-
-            var hexOrder = (uint)(c.B << 0 | c.G << 8 | c.R << 16);
-
-            return hexOrder.ToString("X6", CultureInfo.InvariantCulture);
-        }
-
-        /// <summary>
-        /// Converts the value of this instance to a hexadecimal string.
-        /// </summary>
-        /// <returns>A hexadecimal string representation of the value.</returns>
-        public static string RgbaToHex(Color color)
-        {
-            var c = color.ToPixel<Rgba32>();
-
-            var hexOrder = (uint)(c.A << 0 | c.B << 8 | c.G << 16 | c.R << 24);
-
-            return hexOrder.ToString("X8", CultureInfo.InvariantCulture);
-        }
-
-        private string GetOptionsCode()
-        {
-            var displayMode =
-                DisplayMode ? "displayMode: true" : string.Empty;
-
-            var output = Output switch
-            {
-                OutputKind.Html => "output: 'html'",
-                OutputKind.MathMl => "output: 'mathml'",
-                _ => string.Empty
-            };
-
-            var throwOnError =
-                ThrowOnError ? string.Empty : "throwOnError: false";
-
-            var errorColor =
-                $"errorColor: '#{RgbToHex(ErrorColor)}'";
-
-            return new[]
+        return new[]
             {
                 displayMode,
                 output,
                 throwOnError,
                 errorColor
             }
-                .Where(s => !s.IsNullOrEmpty())
-                .Concatenate(", ", "{", "}");
-        }
+            .Where(s => !s.IsNullOrEmpty())
+            .Concatenate(", ", "{", "}");
+    }
         
-        private async Task<string> CreateFullHtmlDocument()
-        {
-            var htmlCode =
-                HtmlTemplateText.Replace(
-                    "#font-size#",
-                    FontSizeEm.ToString("N2") + "em"
-                );
-
-            //Create initial HTML document
-            var config =
-                AngleSharp.Configuration.Default
-                    .WithCss();
-
-            // Create empty document
-            var document = await BrowsingContext.New(config).OpenAsync(
-                m => m.Content(htmlCode)
+    private async Task<string> CreateFullHtmlDocument()
+    {
+        var htmlCode =
+            HtmlTemplateText.Replace(
+                "#font-size#",
+                FontSizeEm.ToString("N2") + "em"
             );
 
-            var documentBody =
-                document.Body ?? throw new InvalidOperationException();
+        //Create initial HTML document
+        var config =
+            AngleSharp.Configuration.Default
+                .WithCss();
 
-            var codeComposer = new LinearTextComposer();
+        // Create empty document
+        var document = await BrowsingContext.New(config).OpenAsync(
+            m => m.Content(htmlCode)
+        );
 
-            var i = 0;
-            foreach (var latexCode in KaTeXCodeList)
-            {
-                var divId = $"katex-div-{i}";
+        var documentBody =
+            document.Body ?? throw new InvalidOperationException();
 
-                var divElement = document.CreateElement<IHtmlDivElement>();
+        var codeComposer = new LinearTextComposer();
 
-                divElement.SetAttribute("class", "katexDiv");
-                divElement.SetAttribute("id", divId);
+        var i = 0;
+        foreach (var latexCode in KaTeXCodeList)
+        {
+            var divId = $"katex-div-{i}";
 
-                documentBody.AppendChild(divElement);
+            var divElement = document.CreateElement<IHtmlDivElement>();
 
-                var optionsCode = GetOptionsCode();
+            divElement.SetAttribute("class", "katexDiv");
+            divElement.SetAttribute("id", divId);
 
-                var latexHtmlString =
-                    WebUtility.HtmlEncode(
-                        latexCode.Replace(@"\", @"\\")
-                    );
+            documentBody.AppendChild(divElement);
 
-                codeComposer.AppendLineAtNewLine(
-                    @$"katex.render('{latexHtmlString}', document.getElementById('{divId}'), {optionsCode});"
+            var optionsCode = GetOptionsCode();
+
+            var latexHtmlString =
+                WebUtility.HtmlEncode(
+                    latexCode.Replace(@"\", @"\\")
                 );
 
-                i++;
-            }
+            codeComposer.AppendLineAtNewLine(
+                @$"katex.render('{latexHtmlString}', document.getElementById('{divId}'), {optionsCode});"
+            );
 
-            var scriptElement = document.CreateElement<IHtmlScriptElement>();
-            scriptElement.TextContent = codeComposer.ToString();
-            documentBody.AppendChild(scriptElement);
-
-            return document.ToHtml();
+            i++;
         }
 
-        private void RenderKaTeX(string htmlCode)
-        {
-            KaTeXPngImageList.Clear();
-            KaTeXImageFileName.Clear();
+        var scriptElement = document.CreateElement<IHtmlScriptElement>();
+        scriptElement.TextContent = codeComposer.ToString();
+        documentBody.AppendChild(scriptElement);
 
-            //Save html document to local file
-            var filePath =
-                WorkingFolder.GetFilePath(
-                    "katex" + Path.GetFileNameWithoutExtension(Path.GetTempFileName()),
-                    "html"
-                );
+        return document.ToHtml();
+    }
 
-            File.WriteAllText(
-                filePath,
-                htmlCode
+    private void RenderKaTeX(string htmlCode)
+    {
+        KaTeXPngImageList.Clear();
+        KaTeXImageFileName.Clear();
+
+        //Save html document to local file
+        var filePath =
+            WorkingFolder.GetFilePath(
+                "katex" + Path.GetFileNameWithoutExtension(Path.GetTempFileName()),
+                "html"
             );
 
-            // https://www.automatetheplanet.com/selenium-webdriver-csharp-cheat-sheet/
-            // Read document and execute javascript
-            var chromeOptions = new ChromeOptions
-            {
-                PageLoadStrategy = PageLoadStrategy.Normal,
-                UnhandledPromptBehavior = UnhandledPromptBehavior.Accept
-            };
+        File.WriteAllText(
+            filePath,
+            htmlCode
+        );
 
-            chromeOptions.AddUserProfilePreference("download.default_directory", WorkingFolder);
-            chromeOptions.AddUserProfilePreference("download.prompt_for_download", false);
-            chromeOptions.AddUserProfilePreference("disable-popup-blocking", "true");
+        // https://www.automatetheplanet.com/selenium-webdriver-csharp-cheat-sheet/
+        // Read document and execute javascript
+        var chromeOptions = new ChromeOptions
+        {
+            PageLoadStrategy = PageLoadStrategy.Normal,
+            UnhandledPromptBehavior = UnhandledPromptBehavior.Accept
+        };
 
-            //chromeOptions.AddAdditionalChromeOption("window-size", "1920,1080");
-            chromeOptions.AddArgument("headless");
+        chromeOptions.AddUserProfilePreference("download.default_directory", WorkingFolder);
+        chromeOptions.AddUserProfilePreference("download.prompt_for_download", false);
+        chromeOptions.AddUserProfilePreference("disable-popup-blocking", "true");
 
-            var driver = new ChromeDriver(chromeOptions);
+        //chromeOptions.AddAdditionalChromeOption("window-size", "1920,1080");
+        chromeOptions.AddArgument("headless");
 
-            driver.Manage().Window.Position = new System.Drawing.Point(0, 0);
-            driver.Manage().Window.Maximize();
-            driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromMilliseconds(2000);
+        var driver = new ChromeDriver(chromeOptions);
 
-            try
-            {
-                // Open a new tab
-                var tabHandleCollection = driver.WindowHandles;
+        driver.Manage().Window.Position = new System.Drawing.Point(0, 0);
+        driver.Manage().Window.Maximize();
+        driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromMilliseconds(2000);
 
-                if (tabHandleCollection.Count < 1)
-                    driver.SwitchTo().NewWindow(WindowType.Tab);
+        try
+        {
+            // Open a new tab
+            var tabHandleCollection = driver.WindowHandles;
 
-                driver.SwitchTo().Window(
-                    tabHandleCollection.First()
-                );
+            if (tabHandleCollection.Count < 1)
+                driver.SwitchTo().NewWindow(WindowType.Tab);
 
-                var fileUri =
-                    new UriBuilder()
-                    {
-                        Scheme = Uri.UriSchemeFile,
-                        Host = "",
-                        Path = filePath
-                    }.Uri.AbsoluteUri;
+            driver.SwitchTo().Window(
+                tabHandleCollection.First()
+            );
 
-                driver.Navigate().GoToUrl(fileUri);
-
-                // Wait until a page is fully loaded via JavaScript
-                var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(30));
-                wait.Until((x) =>
+            var fileUri =
+                new UriBuilder()
                 {
-                    return ((IJavaScriptExecutor)driver).ExecuteScript("return document.readyState").Equals("complete");
-                });
+                    Scheme = Uri.UriSchemeFile,
+                    Host = "",
+                    Path = filePath
+                }.Uri.AbsoluteUri;
 
-                var divElements =
-                    driver.FindElements(By.TagName("div")).ToArray();
+            driver.Navigate().GoToUrl(fileUri);
 
-                var index = 0;
-                foreach (var divElement in divElements)
+            // Wait until a page is fully loaded via JavaScript
+            var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(30));
+            wait.Until((x) =>
+            {
+                return ((IJavaScriptExecutor)driver).ExecuteScript("return document.readyState").Equals("complete");
+            });
+
+            var divElements =
+                driver.FindElements(By.TagName("div")).ToArray();
+
+            var index = 0;
+            foreach (var divElement in divElements)
+            {
+                var screenShot = ((ITakesScreenshot)divElement).GetScreenshot();
+
+                var image = Image.Load<Rgba32>(screenShot.AsByteArray);
+
+                // Crop white space around equation
+                image.Mutate(x => x.AutoCrop());
+
+                // Replace white background with transparent background
+                // https://docs.sixlabors.com/articles/imagesharp/pixelbuffers.html
+                image.ProcessPixelRows(accessor =>
                 {
-                    var screenShot = ((ITakesScreenshot)divElement).GetScreenshot();
+                    // Color is pixel-agnostic, but it's implicitly convertible to the Rgba32 pixel type
+                    //Rgba32 transparent = Color.Transparent;
 
-                    var image = Image.Load<Rgba32>(screenShot.AsByteArray);
-
-                    // Crop white space around equation
-                    image.Mutate(x => x.AutoCrop());
-
-                    // Replace white background with transparent background
-                    // https://docs.sixlabors.com/articles/imagesharp/pixelbuffers.html
-                    image.ProcessPixelRows(accessor =>
+                    for (var y = 0; y < accessor.Height; y++)
                     {
-                        // Color is pixel-agnostic, but it's implicitly convertible to the Rgba32 pixel type
-                        //Rgba32 transparent = Color.Transparent;
+                        var pixelRow = accessor.GetRowSpan(y);
 
-                        for (var y = 0; y < accessor.Height; y++)
+                        // pixelRow.Length has the same value as accessor.Width,
+                        // but using pixelRow.Length allows the JIT to optimize away bounds checks:
+                        for (var x = 0; x < pixelRow.Length; x++)
                         {
-                            var pixelRow = accessor.GetRowSpan(y);
+                            // Get a reference to the pixel at position x
+                            ref var pixel = ref pixelRow[x];
 
-                            // pixelRow.Length has the same value as accessor.Width,
-                            // but using pixelRow.Length allows the JIT to optimize away bounds checks:
-                            for (var x = 0; x < pixelRow.Length; x++)
-                            {
-                                // Get a reference to the pixel at position x
-                                ref var pixel = ref pixelRow[x];
+                            pixel.A = (byte)(255 - pixel.ToGrayscale());
 
-                                pixel.A = (byte)(255 - pixel.ToGrayscale());
-
-                                //if (pixel.R == 255 && pixel.G == 255 && pixel.B == 255)
-                                //{
-                                //    // Overwrite the pixel referenced by 'ref Rgba32 pixel':
-                                //    pixel = transparent;
-                                //}
-                            }
+                            //if (pixel.R == 255 && pixel.G == 255 && pixel.B == 255)
+                            //{
+                            //    // Overwrite the pixel referenced by 'ref Rgba32 pixel':
+                            //    pixel = transparent;
+                            //}
                         }
-                    });
-                    
-                    KaTeXPngImageList.Add(image);
-                    
-                    if (SaveImages)
-                    {
-                        var imageFileName = $"KaTeX-{index:D6}";
-
-                        KaTeXImageFileName.Add(imageFileName);
-
-                        image.SaveAsPng(
-                            WorkingFolder.GetPngFilePath(imageFileName)
-                        );
                     }
+                });
+                    
+                KaTeXPngImageList.Add(image);
+                    
+                if (SaveImages)
+                {
+                    var imageFileName = $"KaTeX-{index:D6}";
 
-                    index++;
+                    KaTeXImageFileName.Add(imageFileName);
+
+                    image.SaveAsPng(
+                        WorkingFolder.GetPngFilePath(imageFileName)
+                    );
                 }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Error: {ex.Message}");
-            }
-            finally
-            {
-                Thread.Sleep(200);
 
-                driver.Quit();
+                index++;
             }
-
-            if (File.Exists(filePath))
-                File.Delete(filePath);
         }
-
-        public async void RenderKaTeX()
+        catch (Exception ex)
         {
-            var htmlCode = await CreateFullHtmlDocument();
-
-            RenderKaTeX(htmlCode);
+            Console.WriteLine($"Error: {ex.Message}");
         }
+        finally
+        {
+            Thread.Sleep(200);
+
+            driver.Quit();
+        }
+
+        if (File.Exists(filePath))
+            File.Delete(filePath);
+    }
+
+    public async void RenderKaTeX()
+    {
+        var htmlCode = await CreateFullHtmlDocument();
+
+        RenderKaTeX(htmlCode);
+    }
         
-        public async void RenderKaTeX(IEnumerable<string> kaTeXCodeList)
-        {
-            KaTeXCodeList.Clear();
-            KaTeXCodeList.AddRange(kaTeXCodeList);
+    public async void RenderKaTeX(IEnumerable<string> kaTeXCodeList)
+    {
+        KaTeXCodeList.Clear();
+        KaTeXCodeList.AddRange(kaTeXCodeList);
 
-            var htmlCode = await CreateFullHtmlDocument();
+        var htmlCode = await CreateFullHtmlDocument();
 
-            RenderKaTeX(htmlCode);
-        }
+        RenderKaTeX(htmlCode);
     }
 }

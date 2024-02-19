@@ -1,10 +1,9 @@
-﻿namespace GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Records
+﻿namespace GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Records;
+
+public interface IGaScalarRecord<out T>
 {
-    public interface IGaScalarRecord<out T>
-    {
-        /// <summary>
-        /// The Scalar Value
-        /// </summary>
-        T Scalar { get; }
-    }
+    /// <summary>
+    /// The Scalar Value
+    /// </summary>
+    T Scalar { get; }
 }

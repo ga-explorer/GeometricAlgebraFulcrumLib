@@ -1,99 +1,98 @@
 ﻿using WebComposerLib.LaTeX.CodeComposer.Code;
 
-namespace WebComposerLib.LaTeX.CodeComposer.Documents
+namespace WebComposerLib.LaTeX.CodeComposer.Documents;
+
+/// <summary>
+/// https://en.wikibooks.org/wiki/LaTeX/Document_Structure
+/// </summary>
+public sealed class LaTeXDocumentSection : LaTeXEnvironment
 {
-    /// <summary>
-    /// https://en.wikibooks.org/wiki/LaTeX/Document_Structure
-    /// </summary>
-    public sealed class LaTeXDocumentSection : LaTeXEnvironment
+    public LaTeXDocumentSection Create(LaTeXDocumentSectionKind sectionKind, string title)
     {
-        public LaTeXDocumentSection Create(LaTeXDocumentSectionKind sectionKind, string title)
+        return new LaTeXDocumentSection(sectionKind)
         {
-            return new LaTeXDocumentSection(sectionKind)
-            {
-                SectionTitle = title.ToLaTeXText()
-            };
-        }
+            SectionTitle = title.ToLaTeXText()
+        };
+    }
 
-        public LaTeXDocumentSection CreatePart(string title)
+    public LaTeXDocumentSection CreatePart(string title)
+    {
+        return new LaTeXDocumentSection(LaTeXDocumentSectionKind.Part)
         {
-            return new LaTeXDocumentSection(LaTeXDocumentSectionKind.Part)
-            {
-                SectionTitle = title.ToLaTeXText()
-            };
-        }
+            SectionTitle = title.ToLaTeXText()
+        };
+    }
 
-        public LaTeXDocumentSection CreateChapter(string title)
+    public LaTeXDocumentSection CreateChapter(string title)
+    {
+        return new LaTeXDocumentSection(LaTeXDocumentSectionKind.Chapter)
         {
-            return new LaTeXDocumentSection(LaTeXDocumentSectionKind.Chapter)
-            {
-                SectionTitle = title.ToLaTeXText()
-            };
-        }
+            SectionTitle = title.ToLaTeXText()
+        };
+    }
 
-        public LaTeXDocumentSection CreateSection(string title)
+    public LaTeXDocumentSection CreateSection(string title)
+    {
+        return new LaTeXDocumentSection(LaTeXDocumentSectionKind.Section)
         {
-            return new LaTeXDocumentSection(LaTeXDocumentSectionKind.Section)
-            {
-                SectionTitle = title.ToLaTeXText()
-            };
-        }
+            SectionTitle = title.ToLaTeXText()
+        };
+    }
 
-        public LaTeXDocumentSection CreateSubSection(string title)
+    public LaTeXDocumentSection CreateSubSection(string title)
+    {
+        return new LaTeXDocumentSection(LaTeXDocumentSectionKind.SubSection)
         {
-            return new LaTeXDocumentSection(LaTeXDocumentSectionKind.SubSection)
-            {
-                SectionTitle = title.ToLaTeXText()
-            };
-        }
+            SectionTitle = title.ToLaTeXText()
+        };
+    }
 
-        public LaTeXDocumentSection CreateSubSubSection(string title)
+    public LaTeXDocumentSection CreateSubSubSection(string title)
+    {
+        return new LaTeXDocumentSection(LaTeXDocumentSectionKind.SubSubSection)
         {
-            return new LaTeXDocumentSection(LaTeXDocumentSectionKind.SubSubSection)
-            {
-                SectionTitle = title.ToLaTeXText()
-            };
-        }
+            SectionTitle = title.ToLaTeXText()
+        };
+    }
 
-        public LaTeXDocumentSection CreateParagraph(string title)
+    public LaTeXDocumentSection CreateParagraph(string title)
+    {
+        return new LaTeXDocumentSection(LaTeXDocumentSectionKind.Paragraph)
         {
-            return new LaTeXDocumentSection(LaTeXDocumentSectionKind.Paragraph)
-            {
-                SectionTitle = title.ToLaTeXText()
-            };
-        }
+            SectionTitle = title.ToLaTeXText()
+        };
+    }
 
-        public LaTeXDocumentSection CreateSubParagraph(string title)
+    public LaTeXDocumentSection CreateSubParagraph(string title)
+    {
+        return new LaTeXDocumentSection(LaTeXDocumentSectionKind.SubParagraph)
         {
-            return new LaTeXDocumentSection(LaTeXDocumentSectionKind.SubParagraph)
-            {
-                SectionTitle = title.ToLaTeXText()
-            };
-        }
+            SectionTitle = title.ToLaTeXText()
+        };
+    }
 
 
-        public LaTeXDocumentSectionKind SectionKind { get; }
+    public LaTeXDocumentSectionKind SectionKind { get; }
 
-        public int SectionKindLevel 
-            => (int) SectionKind;
+    public int SectionKindLevel 
+        => (int) SectionKind;
 
-        public string SectionKindName 
-            => SectionKind.GetName(Unnumbered);
+    public string SectionKindName 
+        => SectionKind.GetName(Unnumbered);
 
-        public ILaTeXCodeElement SectionTitle { get; set; }
+    public ILaTeXCodeElement SectionTitle { get; set; }
 
-        public ILaTeXCodeElement SectionTocTitle { get; set; }
+    public ILaTeXCodeElement SectionTocTitle { get; set; }
 
-        public bool Unnumbered { get; set; }
+    public bool Unnumbered { get; set; }
 
-        public bool HideInToc { get; set; }
+    public bool HideInToc { get; set; }
 
 
-        private LaTeXDocumentSection(LaTeXDocumentSectionKind sectionKind)
-        {
-            SectionKind = sectionKind;
+    private LaTeXDocumentSection(LaTeXDocumentSectionKind sectionKind)
+    {
+        SectionKind = sectionKind;
 
-            ArgumentsList.Set(0, SectionKindName.ToLaTeXText());
-        }
+        ArgumentsList.Set(0, SectionKindName.ToLaTeXText());
     }
 }

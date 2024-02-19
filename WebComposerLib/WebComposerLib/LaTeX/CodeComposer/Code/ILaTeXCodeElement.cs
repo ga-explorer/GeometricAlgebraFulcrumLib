@@ -1,15 +1,14 @@
 ﻿using TextComposerLib.Text.Linear;
 
-namespace WebComposerLib.LaTeX.CodeComposer.Code
-{
-    /// <summary>
-    /// Represents a LaTeX code element, like logical code sections, LaTeX commands, text, and command
-    /// arguments.
-    /// </summary>
-    public interface ILaTeXCodeElement
-    {
-        bool IsEmpty();
+namespace WebComposerLib.LaTeX.CodeComposer.Code;
 
-        void ToText(LinearTextComposer composer);
-    }
+/// <summary>
+/// Represents a LaTeX code element, like logical code sections, LaTeX commands, text, and command
+/// arguments.
+/// </summary>
+public interface ILaTeXCodeElement
+{
+    bool IsEmpty();
+
+    void ToText(LinearTextComposer composer);
 }

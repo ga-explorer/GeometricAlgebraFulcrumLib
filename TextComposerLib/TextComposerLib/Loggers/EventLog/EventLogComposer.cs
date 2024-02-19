@@ -3,164 +3,163 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace TextComposerLib.Loggers.EventLog
+namespace TextComposerLib.Loggers.EventLog;
+
+public sealed class EventLogComposer
 {
-    public sealed class EventLogComposer
+    private EventLogComposerPeriod _activeEvent;
+
+    private readonly List<EventLogComposerPeriod> _rootEvents =
+        new List<EventLogComposerPeriod>();
+
+    private readonly Dictionary<int, EventLogComposerPeriod> _events =
+        new Dictionary<int, EventLogComposerPeriod>();
+
+
+
+    public void Clear()
     {
-        private EventLogComposerPeriod _activeEvent;
+        _activeEvent = null;
+        _rootEvents.Clear();
+        _events.Clear();
+    }
 
-        private readonly List<EventLogComposerPeriod> _rootEvents =
-            new List<EventLogComposerPeriod>();
+    public IEnumerable<EventLogComposerPeriod> Events()
+    {
+        return _events.Select(pair => pair.Value);
+    }
 
-        private readonly Dictionary<int, EventLogComposerPeriod> _events =
-            new Dictionary<int, EventLogComposerPeriod>();
+    public IEnumerable<string> EventNames()
+    {
+        return _events.Select(pair => pair.Value.EventName).Distinct();
+    }
 
+    public Dictionary<string, TimeSpan> RootEventsSpan()
+    {
+        var result = new Dictionary<string, TimeSpan>();
 
+        var rootEventNames =
+            _events.Select(pair => pair.Value.EventName).Distinct();
 
-        public void Clear()
+        foreach (var rootEventName in rootEventNames)
         {
-            _activeEvent = null;
-            _rootEvents.Clear();
-            _events.Clear();
+            var rootEvents = RootEvents(rootEventName);
+
+            result.Add(
+                rootEventName, 
+                rootEvents.Aggregate(
+                    new TimeSpan(), 
+                    (accum, rootEvent) => accum + rootEvent.Span
+                )
+            );
         }
 
-        public IEnumerable<EventLogComposerPeriod> Events()
-        {
-            return _events.Select(pair => pair.Value);
-        }
+        return result;
+    }
 
-        public IEnumerable<string> EventNames()
-        {
-            return _events.Select(pair => pair.Value.EventName).Distinct();
-        }
+    public string RootEventsSpanToString()
+    {
+        var dict = RootEventsSpan();
 
-        public Dictionary<string, TimeSpan> RootEventsSpan()
-        {
-            var result = new Dictionary<string, TimeSpan>();
+        var s = new StringBuilder();
 
-            var rootEventNames =
-                _events.Select(pair => pair.Value.EventName).Distinct();
+        foreach (var pair in dict)
+            s.Append(pair.Key)
+                .Append(": ")
+                .AppendLine(pair.Value.ToString());
 
-            foreach (var rootEventName in rootEventNames)
-            {
-                var rootEvents = RootEvents(rootEventName);
+        return s.ToString();
+    }
 
-                result.Add(
-                    rootEventName, 
-                    rootEvents.Aggregate(
-                        new TimeSpan(), 
-                        (accum, rootEvent) => accum + rootEvent.Span
-                        )
-                    );
-            }
-
-            return result;
-        }
-
-        public string RootEventsSpanToString()
-        {
-            var dict = RootEventsSpan();
-
-            var s = new StringBuilder();
-
-            foreach (var pair in dict)
-                s.Append(pair.Key)
-                    .Append(": ")
-                    .AppendLine(pair.Value.ToString());
-
-            return s.ToString();
-        }
-
-        public IEnumerable<EventLogComposerPeriod> Events(string eventName)
-        {
-            return 
-                _events
+    public IEnumerable<EventLogComposerPeriod> Events(string eventName)
+    {
+        return 
+            _events
                 .Where(pair => pair.Value.EventName == eventName)
                 .Select(pair => pair.Value);
-        }
+    }
 
-        public IEnumerable<EventLogComposerPeriod> ActiveEvents()
-        {
-            return 
-                _events
+    public IEnumerable<EventLogComposerPeriod> ActiveEvents()
+    {
+        return 
+            _events
                 .Where(pair => ! pair.Value.EventEnded)
                 .Select(pair => pair.Value);
-        }
+    }
 
-        public IEnumerable<EventLogComposerPeriod> RootEvents()
-        {
-            return _rootEvents;
-        }
+    public IEnumerable<EventLogComposerPeriod> RootEvents()
+    {
+        return _rootEvents;
+    }
 
-        public IEnumerable<EventLogComposerPeriod> RootEvents(string eventName)
+    public IEnumerable<EventLogComposerPeriod> RootEvents(string eventName)
+    {
+        foreach (var rootEvent in _rootEvents)
         {
-            foreach (var rootEvent in _rootEvents)
+            var stack = new Stack<EventLogComposerPeriod>();
+
+            stack.Push(rootEvent);
+
+            while (stack.Count > 0)
             {
-                var stack = new Stack<EventLogComposerPeriod>();
+                var eventPeriod = stack.Pop();
 
-                stack.Push(rootEvent);
+                if (eventPeriod.EventName == eventName)
+                    yield return eventPeriod;
 
-                while (stack.Count > 0)
+                else
                 {
-                    var eventPeriod = stack.Pop();
+                    if (!eventPeriod.HasSubEvents)
+                        continue;
 
-                    if (eventPeriod.EventName == eventName)
-                        yield return eventPeriod;
-
-                    else
-                    {
-                        if (!eventPeriod.HasSubEvents)
-                            continue;
-
-                        foreach (var subEvent in eventPeriod.SubEvents)
-                            stack.Push(subEvent);
-                    }
+                    foreach (var subEvent in eventPeriod.SubEvents)
+                        stack.Push(subEvent);
                 }
             }
         }
+    }
 
 
-        public int StartEvent(string eventName)
+    public int StartEvent(string eventName)
+    {
+        var eventPeriod = new EventLogComposerPeriod(eventName);
+
+        _events.Add(eventPeriod.EventId, eventPeriod);
+
+        if (_activeEvent == null)
         {
-            var eventPeriod = new EventLogComposerPeriod(eventName);
+            _rootEvents.Add(eventPeriod);
+        }
+        else
+        {
+            eventPeriod.ParentEvent = _activeEvent;
 
-            _events.Add(eventPeriod.EventId, eventPeriod);
-
-            if (_activeEvent == null)
-            {
-                _rootEvents.Add(eventPeriod);
-            }
-            else
-            {
-                eventPeriod.ParentEvent = _activeEvent;
-
-                _activeEvent.AddSubEvent(eventPeriod);
-            }
-
-            _activeEvent = eventPeriod;
-
-            return eventPeriod.EventId;
+            _activeEvent.AddSubEvent(eventPeriod);
         }
 
-        public EventLogComposerPeriod EndEvent(int id)
-        {
-            var eventPeriod = _events[id];
+        _activeEvent = eventPeriod;
 
-            eventPeriod.EndEvent();
+        return eventPeriod.EventId;
+    }
 
-            _activeEvent = eventPeriod.ParentEvent;
+    public EventLogComposerPeriod EndEvent(int id)
+    {
+        var eventPeriod = _events[id];
 
-            return eventPeriod;
-        }
+        eventPeriod.EndEvent();
 
-        public override string ToString()
-        {
-            var s = new StringBuilder();
+        _activeEvent = eventPeriod.ParentEvent;
 
-            foreach (var pair in _events)
-                s.Append(pair.Value);
+        return eventPeriod;
+    }
 
-            return s.ToString();
-        }
+    public override string ToString()
+    {
+        var s = new StringBuilder();
+
+        foreach (var pair in _events)
+            s.Append(pair.Value);
+
+        return s.ToString();
     }
 }

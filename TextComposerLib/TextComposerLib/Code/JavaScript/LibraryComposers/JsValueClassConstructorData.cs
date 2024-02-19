@@ -2,45 +2,44 @@
 using System.Linq;
 using TextComposerLib.Text;
 
-namespace TextComposerLib.Code.JavaScript.LibraryComposers
+namespace TextComposerLib.Code.JavaScript.LibraryComposers;
+
+public class JsValueClassConstructorData :
+    JsValueData
 {
-    public class JsValueClassConstructorData :
-        JsValueData
+    public List<JsValueData> ParametersList { get; }
+        = new List<JsValueData>();
+
+
+    public JsValueClassConstructorData(JsClassNameData valueType) 
+        : base(valueType)
     {
-        public List<JsValueData> ParametersList { get; }
-            = new List<JsValueData>();
+    }
 
 
-        public JsValueClassConstructorData(JsClassNameData valueType) 
-            : base(valueType)
-        {
-        }
+    public override string GetJsCode()
+    {
+        var className = 
+            ValueType.ClassJsFullName;
 
+        var argumentsCode = 
+            ParametersList
+                .Select(v => v.GetJsCode())
+                .Concatenate(", ");
 
-        public override string GetJsCode()
-        {
-            var className = 
-                ValueType.ClassJsFullName;
+        return $"new {className}({argumentsCode})";
+    }
 
-            var argumentsCode = 
-                ParametersList
-                    .Select(v => v.GetJsCode())
-                    .Concatenate(", ");
+    public override string GetCsCode()
+    {
+        var className = 
+            ValueType.ClassCsName;
 
-            return $"new {className}({argumentsCode})";
-        }
+        var argumentsCode = 
+            ParametersList
+                .Select(v => v.GetCsCode())
+                .Concatenate(", ");
 
-        public override string GetCsCode()
-        {
-            var className = 
-                ValueType.ClassCsName;
-
-            var argumentsCode = 
-                ParametersList
-                    .Select(v => v.GetCsCode())
-                    .Concatenate(", ");
-
-            return $"new {className}({argumentsCode})";
-        }
+        return $"new {className}({argumentsCode})";
     }
 }

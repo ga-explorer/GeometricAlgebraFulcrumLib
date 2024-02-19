@@ -1,10 +1,9 @@
-﻿namespace CodeComposerLib.Irony.Semantic
+﻿namespace CodeComposerLib.Irony.Semantic;
+
+public interface IIronyAstObject
 {
-    public interface IIronyAstObject
-    {
-        /// <summary>
-        /// The parent Irony DSL where the object is stored
-        /// </summary>
-        IronyAst RootAst { get; }
-    }
+    /// <summary>
+    /// The parent Irony DSL where the object is stored
+    /// </summary>
+    IronyAst RootAst { get; }
 }

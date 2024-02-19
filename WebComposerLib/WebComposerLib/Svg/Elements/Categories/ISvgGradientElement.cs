@@ -1,7 +1,6 @@
-﻿namespace WebComposerLib.Svg.Elements.Categories
+﻿namespace WebComposerLib.Svg.Elements.Categories;
+
+public interface ISvgGradientElement : ISvgElement
 {
-    public interface ISvgGradientElement : ISvgElement
-    {
-        //<linearGradient>, <meshgradient>, <radialGradient>, <stop>
-    }
+    //<linearGradient>, <meshgradient>, <radialGradient>, <stop>
 }

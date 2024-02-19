@@ -1,10 +1,9 @@
-﻿namespace GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.GraphViz
+﻿namespace GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.GraphViz;
+
+public sealed class GvTextOutputFormat : GvOutputFormat
 {
-    public sealed class GvTextOutputFormat : GvOutputFormat
+    internal GvTextOutputFormat(string name) 
+        : base(name)
     {
-        internal GvTextOutputFormat(string name) 
-            : base(name)
-        {
-        }
     }
 }

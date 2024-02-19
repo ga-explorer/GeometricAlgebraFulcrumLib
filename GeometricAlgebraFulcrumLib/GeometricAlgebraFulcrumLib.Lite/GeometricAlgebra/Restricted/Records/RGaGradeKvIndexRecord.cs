@@ -1,5 +1,4 @@
-﻿namespace GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Restricted.Records
-{
-    public sealed record RGaGradeKvIndexRecord(uint Grade, ulong KvIndex) : 
-        IRGaGradeKvIndexRecord;
-}
+﻿namespace GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Restricted.Records;
+
+public sealed record RGaGradeKvIndexRecord(uint Grade, ulong KvIndex) : 
+    IRGaGradeKvIndexRecord;

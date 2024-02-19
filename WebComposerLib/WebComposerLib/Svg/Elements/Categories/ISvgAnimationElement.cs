@@ -1,7 +1,6 @@
-﻿namespace WebComposerLib.Svg.Elements.Categories
+﻿namespace WebComposerLib.Svg.Elements.Categories;
+
+public interface ISvgAnimationElement : ISvgElement
 {
-    public interface ISvgAnimationElement : ISvgElement
-    {
-        //<animate>, <animateColor>, <animateMotion>, <animateTransform>, <discard>, <mpath>, <set>
-    }
+    //<animate>, <animateColor>, <animateMotion>, <animateTransform>, <discard>, <mpath>, <set>
 }

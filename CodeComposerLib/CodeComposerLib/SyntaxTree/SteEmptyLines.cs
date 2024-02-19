@@ -1,18 +1,17 @@
-﻿namespace CodeComposerLib.SyntaxTree
+﻿namespace CodeComposerLib.SyntaxTree;
+
+public sealed class SteEmptyLines : SteSyntaxElement
 {
-    public sealed class SteEmptyLines : SteSyntaxElement
+    public int LinesCount { get; set; }
+
+
+    public SteEmptyLines()
     {
-        public int LinesCount { get; set; }
+        LinesCount = 1;
+    }
 
-
-        public SteEmptyLines()
-        {
-            LinesCount = 1;
-        }
-
-        public SteEmptyLines(int count)
-        {
-            LinesCount = count;
-        }
+    public SteEmptyLines(int count)
+    {
+        LinesCount = count;
     }
 }

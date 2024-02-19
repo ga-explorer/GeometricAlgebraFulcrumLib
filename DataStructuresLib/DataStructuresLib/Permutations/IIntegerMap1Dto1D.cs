@@ -1,11 +1,10 @@
 ﻿using System.Collections.Generic;
 
-namespace DataStructuresLib.Permutations
-{
-    public interface IIntegerMap1Dto1D
-    {
-        int this[int input] { get; }
+namespace DataStructuresLib.Permutations;
 
-        IEnumerable<int> this[IEnumerable<int> inputsList] { get; }
-    }
+public interface IIntegerMap1Dto1D
+{
+    int this[int input] { get; }
+
+    IEnumerable<int> this[IEnumerable<int> inputsList] { get; }
 }

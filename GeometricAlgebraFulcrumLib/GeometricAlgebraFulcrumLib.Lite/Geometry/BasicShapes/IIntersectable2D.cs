@@ -1,10 +1,9 @@
-﻿namespace GeometricAlgebraFulcrumLib.Lite.Geometry.BasicShapes
+﻿namespace GeometricAlgebraFulcrumLib.Lite.Geometry.BasicShapes;
+
+public interface IIntersectable
 {
-    public interface IIntersectable
-    {
-        /// <summary>
-        /// Enable or disable intersections test for this geometric object
-        /// </summary>
-        bool IntersectionTestsEnabled { get; }
-    }
+    /// <summary>
+    /// Enable or disable intersections test for this geometric object
+    /// </summary>
+    bool IntersectionTestsEnabled { get; }
 }

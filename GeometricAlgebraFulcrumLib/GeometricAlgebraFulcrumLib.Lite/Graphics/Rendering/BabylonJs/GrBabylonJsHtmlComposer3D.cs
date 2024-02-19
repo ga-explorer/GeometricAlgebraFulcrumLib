@@ -4,12 +4,12 @@ using TextComposerLib.Text;
 using TextComposerLib.Text.Parametric;
 using WebComposerLib.Html.Media;
 
-namespace GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.BabylonJs
+namespace GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.BabylonJs;
+
+public class GrBabylonJsHtmlComposer3D
 {
-    public class GrBabylonJsHtmlComposer3D
-    {
-        private static readonly ParametricTextComposer BabylonjsCodeComposer
-            = new ParametricTextComposer("!#", "#!", @"
+    private static readonly ParametricTextComposer BabylonjsCodeComposer
+        = new ParametricTextComposer("!#", "#!", @"
 var canvas = document.getElementById(""renderCanvas"");
 
 !#js-canvas-size#!
@@ -88,9 +88,9 @@ window.addEventListener(""resize"", function () {
     engine.resize();
 });
 ".Trim()
-            );
+        );
 
-        private static readonly string JsLibCodeOffline = @"
+    private static readonly string JsLibCodeOffline = @"
 <!--  -->
 <script src=""https://cdnjs.cloudflare.com/ajax/libs/dat-gui/0.6.2/dat.gui.min.js""></script>
 
@@ -151,7 +151,7 @@ window.addEventListener(""resize"", function () {
 <script src=""html2canvas/html2canvas.min.js""></script>
 ".Trim();
         
-        private static readonly string JsLibCodeOnline = @"
+    private static readonly string JsLibCodeOnline = @"
 <!--  -->
 <script src=""https://cdnjs.cloudflare.com/ajax/libs/dat-gui/0.6.2/dat.gui.min.js""></script>
 
@@ -210,8 +210,8 @@ window.addEventListener(""resize"", function () {
 ".Trim();
 
         
-        private static readonly ParametricTextComposer HtmlCodeComposer 
-            = new ParametricTextComposer("!#", "#!", @"
+    private static readonly ParametricTextComposer HtmlCodeComposer 
+        = new ParametricTextComposer("!#", "#!", @"
 <!DOCTYPE html>
 <html>
     <head>
@@ -264,168 +264,168 @@ window.addEventListener(""resize"", function () {
     </body>
 </html>
 ".Trim()
-            );
+        );
 
 
-        private readonly Dictionary<string, GrBabylonJsSceneComposer3D> _sceneComposerList
-            = new Dictionary<string, GrBabylonJsSceneComposer3D>();
+    private readonly Dictionary<string, GrBabylonJsSceneComposer3D> _sceneComposerList
+        = new Dictionary<string, GrBabylonJsSceneComposer3D>();
 
 
-        public bool OfflineJavaScriptLibraries { get; set; } = false;
+    public bool OfflineJavaScriptLibraries { get; set; } = false;
 
-        public bool CanvasFullScreen { get; set; } = true;
+    public bool CanvasFullScreen { get; set; } = true;
 
-        public int CanvasWidth { get; set; } = 1280;
+    public int CanvasWidth { get; set; } = 1280;
 
-        public int CanvasHeight { get; set; } = 720;
+    public int CanvasHeight { get; set; } = 720;
 
-        public string HtmlPageTitle { get; set; } = "Babylon.js Scene";
+    public string HtmlPageTitle { get; set; } = "Babylon.js Scene";
 
-        public double LaTeXScalingFactor { get; set; }
-            = 1 / 75d;
+    public double LaTeXScalingFactor { get; set; }
+        = 1 / 75d;
 
-        public WclHtmlImageDataUrlCache ImageCache { get; }
-            = new WclHtmlImageDataUrlCache();
+    public WclHtmlImageDataUrlCache ImageCache { get; }
+        = new WclHtmlImageDataUrlCache();
 
-        public GrBabylonJsSceneComposer3D this[string sceneName]
+    public GrBabylonJsSceneComposer3D this[string sceneName]
+    {
+        get => _sceneComposerList[sceneName];
+        set
         {
-            get => _sceneComposerList[sceneName];
-            set
-            {
-                if (_sceneComposerList.ContainsKey(sceneName))
-                    _sceneComposerList[sceneName] = value;
-                else
-                    _sceneComposerList.Add(sceneName, value);
-            }
+            if (_sceneComposerList.ContainsKey(sceneName))
+                _sceneComposerList[sceneName] = value;
+            else
+                _sceneComposerList.Add(sceneName, value);
         }
+    }
 
-        public GrBabylonJsSceneComposer3D ActiveSceneComposer { get; private set; }
+    public GrBabylonJsSceneComposer3D ActiveSceneComposer { get; private set; }
 
-        public GrBabylonJsSceneComposer3D FirstSceneComposer 
-            => _sceneComposerList.First().Value;
+    public GrBabylonJsSceneComposer3D FirstSceneComposer 
+        => _sceneComposerList.First().Value;
 
-        public GrBabylonJsScene FirstScene
-            => _sceneComposerList.First().Value.SceneObject;
+    public GrBabylonJsScene FirstScene
+        => _sceneComposerList.First().Value.SceneObject;
 
-        public GrBabylonJsSceneComposer3D LastSceneComposer
-            => _sceneComposerList.Last().Value;
+    public GrBabylonJsSceneComposer3D LastSceneComposer
+        => _sceneComposerList.Last().Value;
 
-        public GrBabylonJsScene LastScene
-            => _sceneComposerList.Last().Value.SceneObject;
+    public GrBabylonJsScene LastScene
+        => _sceneComposerList.Last().Value.SceneObject;
 
-        public int SceneComposerCount
-            => _sceneComposerList.Count;
+    public int SceneComposerCount
+        => _sceneComposerList.Count;
 
-        public IEnumerable<string> SceneNames
-            => _sceneComposerList.Keys;
+    public IEnumerable<string> SceneNames
+        => _sceneComposerList.Keys;
 
-        public IEnumerable<GrBabylonJsSceneComposer3D> SceneComposers 
-            => _sceneComposerList.Values;
+    public IEnumerable<GrBabylonJsSceneComposer3D> SceneComposers 
+        => _sceneComposerList.Values;
 
-        public IEnumerable<GrBabylonJsScene> Scenes
-            => _sceneComposerList.Values.Select(c => c.SceneObject);
+    public IEnumerable<GrBabylonJsScene> Scenes
+        => _sceneComposerList.Values.Select(c => c.SceneObject);
         
 
-        public GrBabylonJsHtmlComposer3D()
-            : this(new GrBabylonJsSceneComposer3D())
-        {
-        }
+    public GrBabylonJsHtmlComposer3D()
+        : this(new GrBabylonJsSceneComposer3D())
+    {
+    }
 
-        public GrBabylonJsHtmlComposer3D(string constName)
-            : this(new GrBabylonJsSceneComposer3D(constName))
-        {
-        }
+    public GrBabylonJsHtmlComposer3D(string constName)
+        : this(new GrBabylonJsSceneComposer3D(constName))
+    {
+    }
 
-        public GrBabylonJsHtmlComposer3D(string constName, GrBabylonJsSnapshotSpecs snapshotSpecs)
-            : this(new GrBabylonJsSceneComposer3D(constName, snapshotSpecs))
-        {
-        }
+    public GrBabylonJsHtmlComposer3D(string constName, GrBabylonJsSnapshotSpecs snapshotSpecs)
+        : this(new GrBabylonJsSceneComposer3D(constName, snapshotSpecs))
+    {
+    }
 
-        public GrBabylonJsHtmlComposer3D(GrBabylonJsSceneComposer3D sceneComposer)
-        {
+    public GrBabylonJsHtmlComposer3D(GrBabylonJsSceneComposer3D sceneComposer)
+    {
+        ActiveSceneComposer = sceneComposer;
+
+        _sceneComposerList.Add(
+            ActiveSceneComposer.SceneObject.ConstName,
+            ActiveSceneComposer
+        );
+    }
+
+
+    public GrBabylonJsSceneComposer3D GetSceneComposer(string constName)
+    {
+        return _sceneComposerList[constName];
+    }
+
+    public GrBabylonJsScene GetScene(string constName)
+    {
+        return _sceneComposerList[constName].SceneObject;
+    }
+
+    public GrBabylonJsHtmlComposer3D SetActiveSceneComposer(string constName)
+    {
+        ActiveSceneComposer = _sceneComposerList[constName];
+
+        return this;
+    }
+
+    public GrBabylonJsHtmlComposer3D ClearSceneComposers()
+    {
+        _sceneComposerList.Clear();
+
+        AddSceneComposer(
+            new GrBabylonJsSceneComposer3D(),
+            true
+        );
+
+        return this;
+    }
+
+    public GrBabylonJsSceneComposer3D AddSceneComposer(GrBabylonJsSceneComposer3D sceneComposer, bool setActive = true)
+    {
+        _sceneComposerList.Add(
+            sceneComposer.SceneObject.ConstName, 
+            sceneComposer
+        );
+
+        if (setActive)
             ActiveSceneComposer = sceneComposer;
 
-            _sceneComposerList.Add(
-                ActiveSceneComposer.SceneObject.ConstName,
-                ActiveSceneComposer
-            );
-        }
+        return sceneComposer;
+    }
+
+    public GrBabylonJsSceneComposer3D AddSceneComposer(string constName, bool setActive = true)
+    {
+        var sceneComposer = new GrBabylonJsSceneComposer3D(constName);
+
+        return AddSceneComposer(sceneComposer, setActive);
+    }
+
+    public GrBabylonJsSceneComposer3D AddSceneComposer(string constName, GrBabylonJsSnapshotSpecs snapshotSpecs, bool setActive = true)
+    {
+        var sceneComposer = new GrBabylonJsSceneComposer3D(constName, snapshotSpecs);
+
+        return AddSceneComposer(sceneComposer, setActive);
+    }
 
 
-        public GrBabylonJsSceneComposer3D GetSceneComposer(string constName)
-        {
-            return _sceneComposerList[constName];
-        }
-
-        public GrBabylonJsScene GetScene(string constName)
-        {
-            return _sceneComposerList[constName].SceneObject;
-        }
-
-        public GrBabylonJsHtmlComposer3D SetActiveSceneComposer(string constName)
-        {
-            ActiveSceneComposer = _sceneComposerList[constName];
-
-            return this;
-        }
-
-        public GrBabylonJsHtmlComposer3D ClearSceneComposers()
-        {
-            _sceneComposerList.Clear();
-
-            AddSceneComposer(
-                new GrBabylonJsSceneComposer3D(),
-                true
-            );
-
-            return this;
-        }
-
-        public GrBabylonJsSceneComposer3D AddSceneComposer(GrBabylonJsSceneComposer3D sceneComposer, bool setActive = true)
-        {
-            _sceneComposerList.Add(
-                sceneComposer.SceneObject.ConstName, 
-                sceneComposer
-            );
-
-            if (setActive)
-                ActiveSceneComposer = sceneComposer;
-
-            return sceneComposer;
-        }
-
-        public GrBabylonJsSceneComposer3D AddSceneComposer(string constName, bool setActive = true)
-        {
-            var sceneComposer = new GrBabylonJsSceneComposer3D(constName);
-
-            return AddSceneComposer(sceneComposer, setActive);
-        }
-
-        public GrBabylonJsSceneComposer3D AddSceneComposer(string constName, GrBabylonJsSnapshotSpecs snapshotSpecs, bool setActive = true)
-        {
-            var sceneComposer = new GrBabylonJsSceneComposer3D(constName, snapshotSpecs);
-
-            return AddSceneComposer(sceneComposer, setActive);
-        }
-
-
-        private string GetJsCanvasSizeCode()
-        {
-            if (CanvasFullScreen)
-                return @"
+    private string GetJsCanvasSizeCode()
+    {
+        if (CanvasFullScreen)
+            return @"
 canvas.width  = canvas.clientWidth;
 canvas.height = canvas.clientHeight;
 ".Trim();
 
-            return $@"
+        return $@"
 canvas.width  = {CanvasWidth};
 canvas.height = {CanvasHeight};
 ".Trim();
-        }
+    }
 
-        private string GetCssTextDivCode()
-        {
-            return @"
+    private string GetCssTextDivCode()
+    {
+        return @"
 #textDiv {
 	position: absolute;
 	top: 0px;
@@ -436,13 +436,13 @@ canvas.height = {CanvasHeight};
 	background-color: rgba(255, 255, 255, 0.05);
 }
 ".Trim();
-        }
+    }
 
-        private string GetCssRenderCanvasCode()
+    private string GetCssRenderCanvasCode()
+    {
+        if (CanvasFullScreen)
         {
-            if (CanvasFullScreen)
-            {
-                return @"
+            return @"
 #renderCanvas {
     position: absolute;
     top: 0px;
@@ -452,9 +452,9 @@ canvas.height = {CanvasHeight};
     touch-action: none;
 }
 ".Trim();
-            }
+        }
 
-            return $@"
+        return $@"
 #renderCanvas {{
     position: absolute;
     top: 0px;
@@ -464,107 +464,106 @@ canvas.height = {CanvasHeight};
 	touch-action: none;
 }}
 ".Trim();
-        }
-
-        public string GetCreateScenesCode()
-        {
-            var lineSeparator = 
-                Environment.NewLine + Environment.NewLine;
-
-            return _sceneComposerList
-                .Values
-                .Select(c => c.GetCreateSceneCode())
-                .Concatenate(lineSeparator);
-        }
-
-        public string GetAddScenesCode()
-        {
-            var lineSeparator = 
-                Environment.NewLine;
-
-            return _sceneComposerList
-                .Values
-                .Select(c => c.GetAddSceneCode())
-                .Concatenate(lineSeparator);
-        }
-
-        public string GetBabylonJsCode()
-        {
-            return GetBabylonJsCode(
-                GetCreateScenesCode(),
-                GetAddScenesCode()
-            );
-        }
-
-        public string GetBabylonJsCode(string createScenesCode, string addScenesCode)
-        {
-            var canvasSizeCode =
-                GetJsCanvasSizeCode();
-
-            return BabylonjsCodeComposer.GenerateText(
-                new Dictionary<string, string>
-                {
-                    {"js-canvas-size", canvasSizeCode},
-                    {"create-scenes-code", createScenesCode},
-                    {"add-scenes-code", addScenesCode}
-                }
-            );
-        }
-
-        public string GetHtmlCode(string createScenesCode, string addScenesCode)
-        {
-            var jsLibCode = OfflineJavaScriptLibraries
-                ? JsLibCodeOffline
-                : JsLibCodeOnline;
-
-            var renderCanvasCode = 
-                GetCssRenderCanvasCode();
-
-            var textDivCode =
-                GetCssTextDivCode();
-
-            var babylonJsCode = 
-                GetBabylonJsCode(createScenesCode, addScenesCode);
-
-            return HtmlCodeComposer.GenerateText(
-                new Dictionary<string, string>
-                {
-                    {"page-title", HtmlPageTitle},
-                    {"js-lib-code", jsLibCode},
-                    {"css-renderCanvas-code", renderCanvasCode},
-                    {"css-textDiv-code", textDivCode},
-                    {"babylonjs-code", babylonJsCode}
-                }
-            );
-        }
-
-        public string GetHtmlCode()
-        {
-            return GetHtmlCode(
-                GetCreateScenesCode(),
-                GetAddScenesCode()
-            ).RemoveRepeatedEmptyLines();
-        }
-
-        public TextFilesComposer GetCodeFiles()
-        {
-            var filesComposer = new TextFilesComposer();
-            
-            var fileComposer = 
-                filesComposer.InitializeFile("index.html").ActiveFileComposer;
-
-            fileComposer.TextComposer.Append(
-                GetHtmlCode(
-                    GetCreateScenesCode(),
-                    GetAddScenesCode()
-                )
-            );
-
-            filesComposer.FinalizeAllFiles();
-
-            return filesComposer;
-        }
-
-
     }
+
+    public string GetCreateScenesCode()
+    {
+        var lineSeparator = 
+            Environment.NewLine + Environment.NewLine;
+
+        return _sceneComposerList
+            .Values
+            .Select(c => c.GetCreateSceneCode())
+            .Concatenate(lineSeparator);
+    }
+
+    public string GetAddScenesCode()
+    {
+        var lineSeparator = 
+            Environment.NewLine;
+
+        return _sceneComposerList
+            .Values
+            .Select(c => c.GetAddSceneCode())
+            .Concatenate(lineSeparator);
+    }
+
+    public string GetBabylonJsCode()
+    {
+        return GetBabylonJsCode(
+            GetCreateScenesCode(),
+            GetAddScenesCode()
+        );
+    }
+
+    public string GetBabylonJsCode(string createScenesCode, string addScenesCode)
+    {
+        var canvasSizeCode =
+            GetJsCanvasSizeCode();
+
+        return BabylonjsCodeComposer.GenerateText(
+            new Dictionary<string, string>
+            {
+                {"js-canvas-size", canvasSizeCode},
+                {"create-scenes-code", createScenesCode},
+                {"add-scenes-code", addScenesCode}
+            }
+        );
+    }
+
+    public string GetHtmlCode(string createScenesCode, string addScenesCode)
+    {
+        var jsLibCode = OfflineJavaScriptLibraries
+            ? JsLibCodeOffline
+            : JsLibCodeOnline;
+
+        var renderCanvasCode = 
+            GetCssRenderCanvasCode();
+
+        var textDivCode =
+            GetCssTextDivCode();
+
+        var babylonJsCode = 
+            GetBabylonJsCode(createScenesCode, addScenesCode);
+
+        return HtmlCodeComposer.GenerateText(
+            new Dictionary<string, string>
+            {
+                {"page-title", HtmlPageTitle},
+                {"js-lib-code", jsLibCode},
+                {"css-renderCanvas-code", renderCanvasCode},
+                {"css-textDiv-code", textDivCode},
+                {"babylonjs-code", babylonJsCode}
+            }
+        );
+    }
+
+    public string GetHtmlCode()
+    {
+        return GetHtmlCode(
+            GetCreateScenesCode(),
+            GetAddScenesCode()
+        ).RemoveRepeatedEmptyLines();
+    }
+
+    public TextFilesComposer GetCodeFiles()
+    {
+        var filesComposer = new TextFilesComposer();
+            
+        var fileComposer = 
+            filesComposer.InitializeFile("index.html").ActiveFileComposer;
+
+        fileComposer.TextComposer.Append(
+            GetHtmlCode(
+                GetCreateScenesCode(),
+                GetAddScenesCode()
+            )
+        );
+
+        filesComposer.FinalizeAllFiles();
+
+        return filesComposer;
+    }
+
+
 }

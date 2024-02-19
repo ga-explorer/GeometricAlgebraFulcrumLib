@@ -2,12 +2,11 @@
 using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Extended;
 using GeometricAlgebraFulcrumLib.Lite.ScalarAlgebra;
 
-namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic
+namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic;
+
+public interface IXGaElement<T> : 
+    IScalarAlgebraElement<T>,
+    IXGaElement
 {
-    public interface IXGaElement<T> : 
-        IScalarAlgebraElement<T>,
-        IXGaElement
-    {
-        XGaProcessor<T> Processor { get; }
-    }
+    XGaProcessor<T> Processor { get; }
 }

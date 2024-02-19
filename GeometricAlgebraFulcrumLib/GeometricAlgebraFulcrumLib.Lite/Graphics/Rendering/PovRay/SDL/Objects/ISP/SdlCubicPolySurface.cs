@@ -1,11 +1,10 @@
-﻿namespace GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.PovRay.SDL.Objects.ISP
+﻿namespace GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.PovRay.SDL.Objects.ISP;
+
+public class SdlCubicPolySurface : SdlPolySurface
 {
-    public class SdlCubicPolySurface : SdlPolySurface
+    internal SdlCubicPolySurface()
+        : base(3)
     {
-        internal SdlCubicPolySurface()
-            : base(3)
-        {
             
-        }
     }
 }

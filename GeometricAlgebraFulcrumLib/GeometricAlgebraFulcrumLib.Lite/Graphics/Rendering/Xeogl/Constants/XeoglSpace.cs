@@ -1,8 +1,7 @@
-﻿namespace GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.Xeogl.Constants
+﻿namespace GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.Xeogl.Constants;
+
+public enum XeoglSpace
 {
-    public enum XeoglSpace
-    {
-        View = 0,
-        World = 1
-    }
+    View = 0,
+    World = 1
 }

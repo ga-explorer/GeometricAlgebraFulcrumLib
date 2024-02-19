@@ -5,388 +5,387 @@ using DataStructuresLib.Extensions;
 
 // ReSharper disable CompareOfFloatsByEqualityOperator
 
-namespace GeometricAlgebraFulcrumLib.Lite.Geometry.Differential.Functions
+namespace GeometricAlgebraFulcrumLib.Lite.Geometry.Differential.Functions;
+
+public sealed class DfTimes :
+    DifferentialNaryFunction
 {
-    public sealed class DfTimes :
-        DifferentialNaryFunction
+    private static bool FlattenArgumentTree(IEnumerable<DifferentialFunction> arguments, List<DifferentialFunction> argList)
     {
-        private static bool FlattenArgumentTree(IEnumerable<DifferentialFunction> arguments, List<DifferentialFunction> argList)
+        foreach (var fArg in arguments)
         {
-            foreach (var fArg in arguments)
+            if (fArg.IsConstantZero)
             {
-                if (fArg.IsConstantZero)
-                {
-                    argList.Clear();
-                    argList.Add(DfConstant.Zero);
-                    return true;
-                }
-
-                if (fArg.IsConstantOne)
-                    continue;
-
-                if (fArg is DfTimes fArgTimes)
-                {
-                    var zeroFlag = FlattenArgumentTree(fArgTimes.Arguments, argList);
-                    if (zeroFlag) return true;
-                    continue;
-                }
-
-                argList.Add(fArg);
+                argList.Clear();
+                argList.Add(DfConstant.Zero);
+                return true;
             }
 
-            return false;
-        }
+            if (fArg.IsConstantOne)
+                continue;
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static DfTimes Create(IEnumerable<DifferentialFunction> baseFunctions, bool canBeSimplified = true)
-        {
-            var argList = new List<DifferentialFunction>();
-
-            var zeroFlag = FlattenArgumentTree(baseFunctions, argList);
-
-            if (zeroFlag)
+            if (fArg is DfTimes fArgTimes)
             {
-                Debug.Assert(canBeSimplified);
-
-                return new DfTimes(argList, true);
+                var zeroFlag = FlattenArgumentTree(fArgTimes.Arguments, argList);
+                if (zeroFlag) return true;
+                continue;
             }
 
-            var scalarFactor = 1d;
-            var timesArgumentList = new List<DifferentialFunction>(argList.Count);
-            var arguments = 
-                argList
-                    .OrderBy(a => a.TreeDepth)
-                    .ThenBy(a => a.ToString());
-
-            foreach (var arg in arguments)
-            {
-                if (arg is DfConstant argConstant)
-                {
-                    scalarFactor *= argConstant.Value;
-                    continue;
-                }
-
-                timesArgumentList.Add(arg);
-            }
-
-            if (scalarFactor != 1d)
-                timesArgumentList.Insert(0, scalarFactor);
-
-            return new DfTimes(timesArgumentList, canBeSimplified);
+            argList.Add(fArg);
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static DfTimes Create(DifferentialFunction baseFunction1, DifferentialFunction baseFunction2, bool canBeSimplified = true)
-        {
-            return Create(
-                new[] { baseFunction1, baseFunction2 }, 
-                canBeSimplified
-            );
-        }
-    
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static DfTimes Create(DifferentialFunction baseFunction1, DifferentialFunction baseFunction2, DifferentialFunction baseFunction3, bool canBeSimplified = true)
-        {
-            return Create(
-                new[] { baseFunction1, baseFunction2, baseFunction3 }, 
-                canBeSimplified
-            );
-        }
-
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private DfTimes(IReadOnlyList<DifferentialFunction> baseFunctions, bool canBeSimplified) 
-            : base(baseFunctions, canBeSimplified)
-        {
-        }
-
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal Tuple<double, DifferentialFunction> SeparateConstant()
-        {
-            if (Arguments.Count == 0) 
-                return new Tuple<double, DifferentialFunction>(1d, DfConstant.One);
-
-            var scalar = 1d;
-            var argumentList = Arguments;
-
-            if (Arguments[0] is DfConstant a1Constant)
-            {
-                scalar = a1Constant.Value;
-                argumentList = Arguments.SubList(1);
-            }
-
-            return argumentList.Count switch
-            {
-                0 => new Tuple<double, DifferentialFunction>(
-                    scalar, 
-                    DfConstant.One
-                ),
-
-                1 => new Tuple<double, DifferentialFunction>(
-                    scalar, 
-                    argumentList[0]
-                ),
-
-                _ => new Tuple<double, DifferentialFunction>(
-                    scalar, 
-                    Create(argumentList, CanBeSimplified)
-                )
-            };
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal DifferentialFunction ScaleBy(double scalingFactor)
-        {
-            var (scalar, term) = SeparateConstant();
-
-            scalar *= scalingFactor;
-
-            return scalar switch
-            {
-                0d => DfConstant.Zero,
-                1d => term,
-                _ => Create(scalar, term, CanBeSimplified)
-            };
-        }
-
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override double GetValue(double t)
-        {
-            return Arguments.Aggregate(
-                1d,
-                (v, f) => v * f.GetValue(t)
-            );
-        }
-
-    
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override Tuple<bool, DifferentialFunction> TrySimplify()
-        {
-            if (!CanBeSimplified) 
-                return new Tuple<bool, DifferentialFunction>(false, this);
-
-            return new Tuple<bool, DifferentialFunction>(true, Simplify());
-        }
-
-        public override DifferentialFunction Simplify()
-        {
-            if (!CanBeSimplified) return this;
-
-            var scalarFactor = 1d;
-            var factorGroupList = new List<Tuple<double, DifferentialFunction>>();
-            var factorList = new List<DifferentialFunction>();
-
-            var fArguments = 
-                Arguments.Select(f => f.Simplify());
-
-            var isZero = FlattenArgumentTree(fArguments, factorList);
-            if (isZero) return DfConstant.Zero;
-        
-            if (factorList.Count == 0)
-                return DfConstant.One;
-
-            if (factorList.Count == 1)
-                return factorList[0];
-        
-            // Group similar factors
-            foreach (var f in factorList)
-            {
-                if (f is DfConstant fConstant)
-                {
-                    scalarFactor *= fConstant.Value;
-                    continue;
-                }
-
-                var fScalar = 1d;
-                var fFactor = f;
-
-                if (f is DfPowerScalar fPowerScalar)
-                {
-                    fScalar = fPowerScalar.PowerValue;
-                    fFactor = fPowerScalar.Argument;
-                }
-
-                var termGroupFound = false;
-                for (var i = 0; i < factorGroupList.Count; i++)
-                {
-                    var (gScalar, gTerm) = factorGroupList[i];
-
-                    if (!gTerm.IsSame(fFactor)) continue;
-
-                    factorGroupList[i] = new Tuple<double, DifferentialFunction>(
-                        gScalar + fScalar,
-                        gTerm
-                    );
-
-                    termGroupFound = true;
-                    break;
-                }
-
-                if (!termGroupFound)
-                    factorGroupList.Add(
-                        new Tuple<double, DifferentialFunction>(fScalar, fFactor)
-                    );
-            }
-
-            factorList.Clear();
-
-            if (scalarFactor != 1d)
-                factorList.Add(scalarFactor);
-
-            var termList =
-                factorGroupList
-                    .OrderBy(t => t.Item2.TreeDepth)
-                    .ThenBy(t => t.Item2.ToString());
-
-            foreach (var (gScalar, gTerm) in termList)
-            {
-                //if (gTerm is DfTimes)
-                //    throw new NotImplementedException();
-
-                if (gScalar == 1d)
-                {
-                    factorList.Add(gTerm);
-                    continue;
-                }
-            
-                if (gTerm is not DfPowerScalar gTermPowerScalar)
-                {
-                    factorList.Add(
-                        DfPowerScalar.Create(gTerm, gScalar, false)
-                    );
-                    continue;
-                }
-
-                factorList.Add(
-                    gTermPowerScalar.ScalePowerBy(gScalar)
-                );
-            }
-        
-            //var scalarFactor = 1d;
-            //var cosSinPowerSinList = new List<DfPowerScalar>();
-            //var cosSinList = new List<DifferentialFunction>();
-            //var timesList = new List<DifferentialFunction>();
-
-            //var fArguments = 
-            //    Arguments.Select(f => f.Simplify());
-
-            //// Flatten the Times tree as best as possible, and collect scaling factors 
-            //foreach (var f in fArguments)
-            //{
-            //    if (f is DfConstant fConstant)
-            //    {
-            //        if (fConstant.IsZero) return DfConstant.Zero;
-
-            //        if (!fConstant.IsOne)
-            //            scalarFactor *= fConstant.Value;
-
-            //        continue;
-            //    }
-
-            //    if (f is DfCos or DfSin)
-            //    {
-            //        cosSinList.Add(f);
-            //        continue;
-            //    }
-
-            //    if (f is DfPowerScalar fPowerScalar)
-            //    {
-            //        if (fPowerScalar.PowerValue >= 2 && fPowerScalar.PowerValueIsInteger)
-            //        {
-            //            if (fPowerScalar.Argument is DfCos or DfSin)
-            //            {
-            //                cosSinPowerSinList.Add(fPowerScalar);
-            //                continue;
-            //            }
-            //        }
-            //    }
-
-            //    if (f is DfTimes fTimes)
-            //    {
-            //        foreach (var g in fTimes.Arguments)
-            //        {
-            //            if (g is DfConstant gConstant)
-            //            {
-            //                if (!gConstant.IsOne)
-            //                    scalarFactor *= gConstant.Value;
-
-            //                continue;
-            //            }
-
-            //            timesList.Add(g);
-            //        }
-
-            //        continue;
-            //    }
-
-            //    timesList.Add(f);
-            //}
-
-            return factorList.Count switch
-            {
-                0 => DfConstant.One,
-                1 => factorList[0],
-                _ => new DfTimes(factorList, false)
-            };
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override DifferentialFunction GetDerivative1()
-        {
-            var argumentDerivatives = 
-                Arguments.Select(f => f.GetDerivative1()).ToImmutableArray();
-
-            var plusArgumentList = new List<DifferentialFunction>(ArgumentCount);
-
-            for (var i = 0; i < ArgumentCount; i++)
-            {
-                var fDt = argumentDerivatives[i];
-
-                if (fDt is DfConstant { IsZero:true })
-                    continue;
-
-                var k = i;
-
-                var term =
-                    MapArguments((j, f) =>
-                        j == k ? fDt : f
-                    ).Simplify();
-
-                if (term is DfConstant { IsZero:true })
-                    continue;
-
-                plusArgumentList.Add(term);
-            }
-
-            return DfPlus.Create(plusArgumentList).Simplify();
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override DifferentialFunction MapArguments(Func<DifferentialFunction, DifferentialFunction> functionMapping)
-        {
-            var baseFunctions = 
-                Arguments.Select(functionMapping).ToArray();
-
-            return Create(baseFunctions);
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override DifferentialFunction MapArguments(Func<int, DifferentialFunction, DifferentialFunction> functionMapping)
-        {
-            var baseFunctions = 
-                Arguments.Select((f, i) => functionMapping(i, f)).ToArray();
-
-            return Create(baseFunctions);
-        }
-    
-        //[MethodImpl(MethodImplOptions.AggressiveInlining)]
-        //public override string ToString()
-        //{
-        //    return $"Times[{Arguments.Concatenate(", ")}]";
-        //}
+        return false;
     }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static DfTimes Create(IEnumerable<DifferentialFunction> baseFunctions, bool canBeSimplified = true)
+    {
+        var argList = new List<DifferentialFunction>();
+
+        var zeroFlag = FlattenArgumentTree(baseFunctions, argList);
+
+        if (zeroFlag)
+        {
+            Debug.Assert(canBeSimplified);
+
+            return new DfTimes(argList, true);
+        }
+
+        var scalarFactor = 1d;
+        var timesArgumentList = new List<DifferentialFunction>(argList.Count);
+        var arguments = 
+            argList
+                .OrderBy(a => a.TreeDepth)
+                .ThenBy(a => a.ToString());
+
+        foreach (var arg in arguments)
+        {
+            if (arg is DfConstant argConstant)
+            {
+                scalarFactor *= argConstant.Value;
+                continue;
+            }
+
+            timesArgumentList.Add(arg);
+        }
+
+        if (scalarFactor != 1d)
+            timesArgumentList.Insert(0, scalarFactor);
+
+        return new DfTimes(timesArgumentList, canBeSimplified);
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static DfTimes Create(DifferentialFunction baseFunction1, DifferentialFunction baseFunction2, bool canBeSimplified = true)
+    {
+        return Create(
+            new[] { baseFunction1, baseFunction2 }, 
+            canBeSimplified
+        );
+    }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static DfTimes Create(DifferentialFunction baseFunction1, DifferentialFunction baseFunction2, DifferentialFunction baseFunction3, bool canBeSimplified = true)
+    {
+        return Create(
+            new[] { baseFunction1, baseFunction2, baseFunction3 }, 
+            canBeSimplified
+        );
+    }
+
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    private DfTimes(IReadOnlyList<DifferentialFunction> baseFunctions, bool canBeSimplified) 
+        : base(baseFunctions, canBeSimplified)
+    {
+    }
+
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    internal Tuple<double, DifferentialFunction> SeparateConstant()
+    {
+        if (Arguments.Count == 0) 
+            return new Tuple<double, DifferentialFunction>(1d, DfConstant.One);
+
+        var scalar = 1d;
+        var argumentList = Arguments;
+
+        if (Arguments[0] is DfConstant a1Constant)
+        {
+            scalar = a1Constant.Value;
+            argumentList = Arguments.SubList(1);
+        }
+
+        return argumentList.Count switch
+        {
+            0 => new Tuple<double, DifferentialFunction>(
+                scalar, 
+                DfConstant.One
+            ),
+
+            1 => new Tuple<double, DifferentialFunction>(
+                scalar, 
+                argumentList[0]
+            ),
+
+            _ => new Tuple<double, DifferentialFunction>(
+                scalar, 
+                Create(argumentList, CanBeSimplified)
+            )
+        };
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    internal DifferentialFunction ScaleBy(double scalingFactor)
+    {
+        var (scalar, term) = SeparateConstant();
+
+        scalar *= scalingFactor;
+
+        return scalar switch
+        {
+            0d => DfConstant.Zero,
+            1d => term,
+            _ => Create(scalar, term, CanBeSimplified)
+        };
+    }
+
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public override double GetValue(double t)
+    {
+        return Arguments.Aggregate(
+            1d,
+            (v, f) => v * f.GetValue(t)
+        );
+    }
+
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public override Tuple<bool, DifferentialFunction> TrySimplify()
+    {
+        if (!CanBeSimplified) 
+            return new Tuple<bool, DifferentialFunction>(false, this);
+
+        return new Tuple<bool, DifferentialFunction>(true, Simplify());
+    }
+
+    public override DifferentialFunction Simplify()
+    {
+        if (!CanBeSimplified) return this;
+
+        var scalarFactor = 1d;
+        var factorGroupList = new List<Tuple<double, DifferentialFunction>>();
+        var factorList = new List<DifferentialFunction>();
+
+        var fArguments = 
+            Arguments.Select(f => f.Simplify());
+
+        var isZero = FlattenArgumentTree(fArguments, factorList);
+        if (isZero) return DfConstant.Zero;
+        
+        if (factorList.Count == 0)
+            return DfConstant.One;
+
+        if (factorList.Count == 1)
+            return factorList[0];
+        
+        // Group similar factors
+        foreach (var f in factorList)
+        {
+            if (f is DfConstant fConstant)
+            {
+                scalarFactor *= fConstant.Value;
+                continue;
+            }
+
+            var fScalar = 1d;
+            var fFactor = f;
+
+            if (f is DfPowerScalar fPowerScalar)
+            {
+                fScalar = fPowerScalar.PowerValue;
+                fFactor = fPowerScalar.Argument;
+            }
+
+            var termGroupFound = false;
+            for (var i = 0; i < factorGroupList.Count; i++)
+            {
+                var (gScalar, gTerm) = factorGroupList[i];
+
+                if (!gTerm.IsSame(fFactor)) continue;
+
+                factorGroupList[i] = new Tuple<double, DifferentialFunction>(
+                    gScalar + fScalar,
+                    gTerm
+                );
+
+                termGroupFound = true;
+                break;
+            }
+
+            if (!termGroupFound)
+                factorGroupList.Add(
+                    new Tuple<double, DifferentialFunction>(fScalar, fFactor)
+                );
+        }
+
+        factorList.Clear();
+
+        if (scalarFactor != 1d)
+            factorList.Add(scalarFactor);
+
+        var termList =
+            factorGroupList
+                .OrderBy(t => t.Item2.TreeDepth)
+                .ThenBy(t => t.Item2.ToString());
+
+        foreach (var (gScalar, gTerm) in termList)
+        {
+            //if (gTerm is DfTimes)
+            //    throw new NotImplementedException();
+
+            if (gScalar == 1d)
+            {
+                factorList.Add(gTerm);
+                continue;
+            }
+            
+            if (gTerm is not DfPowerScalar gTermPowerScalar)
+            {
+                factorList.Add(
+                    DfPowerScalar.Create(gTerm, gScalar, false)
+                );
+                continue;
+            }
+
+            factorList.Add(
+                gTermPowerScalar.ScalePowerBy(gScalar)
+            );
+        }
+        
+        //var scalarFactor = 1d;
+        //var cosSinPowerSinList = new List<DfPowerScalar>();
+        //var cosSinList = new List<DifferentialFunction>();
+        //var timesList = new List<DifferentialFunction>();
+
+        //var fArguments = 
+        //    Arguments.Select(f => f.Simplify());
+
+        //// Flatten the Times tree as best as possible, and collect scaling factors 
+        //foreach (var f in fArguments)
+        //{
+        //    if (f is DfConstant fConstant)
+        //    {
+        //        if (fConstant.IsZero) return DfConstant.Zero;
+
+        //        if (!fConstant.IsOne)
+        //            scalarFactor *= fConstant.Value;
+
+        //        continue;
+        //    }
+
+        //    if (f is DfCos or DfSin)
+        //    {
+        //        cosSinList.Add(f);
+        //        continue;
+        //    }
+
+        //    if (f is DfPowerScalar fPowerScalar)
+        //    {
+        //        if (fPowerScalar.PowerValue >= 2 && fPowerScalar.PowerValueIsInteger)
+        //        {
+        //            if (fPowerScalar.Argument is DfCos or DfSin)
+        //            {
+        //                cosSinPowerSinList.Add(fPowerScalar);
+        //                continue;
+        //            }
+        //        }
+        //    }
+
+        //    if (f is DfTimes fTimes)
+        //    {
+        //        foreach (var g in fTimes.Arguments)
+        //        {
+        //            if (g is DfConstant gConstant)
+        //            {
+        //                if (!gConstant.IsOne)
+        //                    scalarFactor *= gConstant.Value;
+
+        //                continue;
+        //            }
+
+        //            timesList.Add(g);
+        //        }
+
+        //        continue;
+        //    }
+
+        //    timesList.Add(f);
+        //}
+
+        return factorList.Count switch
+        {
+            0 => DfConstant.One,
+            1 => factorList[0],
+            _ => new DfTimes(factorList, false)
+        };
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public override DifferentialFunction GetDerivative1()
+    {
+        var argumentDerivatives = 
+            Arguments.Select(f => f.GetDerivative1()).ToImmutableArray();
+
+        var plusArgumentList = new List<DifferentialFunction>(ArgumentCount);
+
+        for (var i = 0; i < ArgumentCount; i++)
+        {
+            var fDt = argumentDerivatives[i];
+
+            if (fDt is DfConstant { IsZero:true })
+                continue;
+
+            var k = i;
+
+            var term =
+                MapArguments((j, f) =>
+                    j == k ? fDt : f
+                ).Simplify();
+
+            if (term is DfConstant { IsZero:true })
+                continue;
+
+            plusArgumentList.Add(term);
+        }
+
+        return DfPlus.Create(plusArgumentList).Simplify();
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public override DifferentialFunction MapArguments(Func<DifferentialFunction, DifferentialFunction> functionMapping)
+    {
+        var baseFunctions = 
+            Arguments.Select(functionMapping).ToArray();
+
+        return Create(baseFunctions);
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public override DifferentialFunction MapArguments(Func<int, DifferentialFunction, DifferentialFunction> functionMapping)
+    {
+        var baseFunctions = 
+            Arguments.Select((f, i) => functionMapping(i, f)).ToArray();
+
+        return Create(baseFunctions);
+    }
+    
+    //[MethodImpl(MethodImplOptions.AggressiveInlining)]
+    //public override string ToString()
+    //{
+    //    return $"Times[{Arguments.Concatenate(", ")}]";
+    //}
 }
 
 //public sealed class DfTimes :

@@ -4,36 +4,35 @@ using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.Proc
 using GeometricAlgebraFulcrumLib.MetaProgramming.Composers;
 using GeometricAlgebraFulcrumLib.MetaProgramming.Expressions;
 
-namespace GeometricAlgebraFulcrumLib.MetaProgramming.Applications.CSharp.DenseKVectorsLib
+namespace GeometricAlgebraFulcrumLib.MetaProgramming.Applications.CSharp.DenseKVectorsLib;
+
+internal abstract class GaFuLLibraryPartComposerBase : 
+    GaFuLCodePartComposerBase
 {
-    internal abstract class GaFuLLibraryPartComposerBase : 
-        GaFuLCodePartComposerBase
-    {
-        internal XGaProcessor<IMetaExpressionAtomic> GeometricProcessor
-            => DenseKVectorsLibraryComposer.GeometricProcessor;
+    internal XGaProcessor<IMetaExpressionAtomic> GeometricProcessor
+        => DenseKVectorsLibraryComposer.GeometricProcessor;
 
-        internal XGaProcessor<IMetaExpressionAtomic> EuclideanProcessor 
-            => DenseKVectorsLibraryComposer.EuclideanProcessor;
+    internal XGaProcessor<IMetaExpressionAtomic> EuclideanProcessor 
+        => DenseKVectorsLibraryComposer.EuclideanProcessor;
 
-        public int VSpaceDimensions 
-            => DenseKVectorsLibraryComposer.VSpaceDimensions;
+    public int VSpaceDimensions 
+        => DenseKVectorsLibraryComposer.VSpaceDimensions;
         
-        public int GradesCount 
-            => VSpaceDimensions + 1;
+    public int GradesCount 
+        => VSpaceDimensions + 1;
 
-        public IEnumerable<int> Grades 
-            => GradesCount.GetRange();
+    public IEnumerable<int> Grades 
+        => GradesCount.GetRange();
 
-        internal string CurrentNamespace 
-            => DenseKVectorsLibraryComposer.CurrentNamespace;
+    internal string CurrentNamespace 
+        => DenseKVectorsLibraryComposer.CurrentNamespace;
 
-        internal GaFuLLibraryComposer DenseKVectorsLibraryComposer 
-            => (GaFuLLibraryComposer) CodeComposer;
+    internal GaFuLLibraryComposer DenseKVectorsLibraryComposer 
+        => (GaFuLLibraryComposer) CodeComposer;
 
 
-        internal GaFuLLibraryPartComposerBase(GaFuLLibraryComposer libGen)
-            : base(libGen)
-        {
-        }
+    internal GaFuLLibraryPartComposerBase(GaFuLLibraryComposer libGen)
+        : base(libGen)
+    {
     }
 }

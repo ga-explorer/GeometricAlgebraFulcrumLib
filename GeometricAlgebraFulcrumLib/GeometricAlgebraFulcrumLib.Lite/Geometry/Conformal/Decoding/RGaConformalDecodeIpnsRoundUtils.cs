@@ -396,15 +396,62 @@ public static class RGaConformalDecodeIpnsRoundUtils
                 ipnsRound.ConformalSpace.ZeroVectorBlade
             );
 
+        var center = pointPair.CenterToRGaVector();
+        var direction = pointPair.DirectionToRGaVector();
+
         var point1 = 
-            (pointPair.CenterToRGaVector() - pointPair.RealRadius * pointPair.DirectionToRGaVector())
-                .EncodeEGaVectorBlade(ipnsRound.ConformalSpace);
+            (center - pointPair.RealRadius * direction).EncodeEGaVectorBlade(ipnsRound.ConformalSpace);
 
         var point2 = 
-            (pointPair.CenterToRGaVector() + pointPair.RealRadius * pointPair.DirectionToRGaVector())
-            .EncodeEGaVectorBlade(ipnsRound.ConformalSpace);
+            (center + pointPair.RealRadius * direction).EncodeEGaVectorBlade(ipnsRound.ConformalSpace);
 
         return new Pair<RGaConformalBlade>(point1, point2);
+    }
+    
+    public static Pair<Float64Vector2D> DecodeIpnsPointPairEGaPointsAsVector2D(this RGaConformalBlade ipnsRound)
+    {
+        var pointPair =
+            ipnsRound.DecodeIpnsRound();
+
+        if (!pointPair.IsRoundPointPair)
+            return new Pair<Float64Vector2D>(
+                Float64Vector2D.Zero,
+                Float64Vector2D.Zero
+            );
+
+        var center = pointPair.CenterToVector2D();
+        var direction = pointPair.DirectionToVector2D();
+
+        var point1 = 
+            center - pointPair.RealRadius * direction;
+
+        var point2 = 
+            center + pointPair.RealRadius * direction;
+
+        return new Pair<Float64Vector2D>(point1, point2);
+    }
+    
+    public static Pair<Float64Vector3D> DecodeIpnsPointPairEGaPointsAsVector3D(this RGaConformalBlade ipnsRound)
+    {
+        var pointPair =
+            ipnsRound.DecodeIpnsRound();
+
+        if (!pointPair.IsRoundPointPair)
+            return new Pair<Float64Vector3D>(
+                Float64Vector3D.Zero,
+                Float64Vector3D.Zero
+            );
+
+        var center = pointPair.CenterToVector3D();
+        var direction = pointPair.DirectionToVector3D();
+
+        var point1 = 
+            center - pointPair.RealRadius * direction;
+
+        var point2 = 
+            center + pointPair.RealRadius * direction;
+
+        return new Pair<Float64Vector3D>(point1, point2);
     }
 
 

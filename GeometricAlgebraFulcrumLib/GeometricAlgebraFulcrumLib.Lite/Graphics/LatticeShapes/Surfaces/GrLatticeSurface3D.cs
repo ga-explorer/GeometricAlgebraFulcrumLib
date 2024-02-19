@@ -6,735 +6,734 @@ using GeometricAlgebraFulcrumLib.Lite.LinearAlgebra.Vectors.Space2D;
 using GeometricAlgebraFulcrumLib.Lite.LinearAlgebra.Vectors.Space3D;
 using GeometricAlgebraFulcrumLib.Lite.ScalarAlgebra;
 
-namespace GeometricAlgebraFulcrumLib.Lite.Graphics.LatticeShapes.Surfaces
+namespace GeometricAlgebraFulcrumLib.Lite.Graphics.LatticeShapes.Surfaces;
+
+/// <summary>
+/// This class describes the shape of a 3D surface using a mapping
+/// from a finite set of discrete coordinates (u, v) to 3D points (x, y, z)
+/// </summary>
+public sealed class GrLatticeSurface3D :
+    IReadOnlyList<GrLatticeSurfaceLocalFrame3D>
 {
-    /// <summary>
-    /// This class describes the shape of a 3D surface using a mapping
-    /// from a finite set of discrete coordinates (u, v) to 3D points (x, y, z)
-    /// </summary>
-    public sealed class GrLatticeSurface3D :
-        IReadOnlyList<GrLatticeSurfaceLocalFrame3D>
+    private Dictionary<Triplet<double>, GrLatticeSurfaceLocalFrame3D> _pointToVertexDictionary
+        = new Dictionary<Triplet<double>, GrLatticeSurfaceLocalFrame3D>();
+
+    private GrLatticeSurfaceLocalFrame3D[,] _indexUvToVertexArray;
+
+
+    public GrLatticeSurfaceList3D ParentList { get; }
+
+    public bool ReverseNormals { get; set; } = false;
+
+    public int CurveIndex { get; }
+
+    public int LatticeSizeU { get; }
+
+    public int LatticeSizeV { get; }
+
+    public int Count 
+        => IsReady ? VertexList.Count : _pointToVertexDictionary.Count;
+        
+    public bool LatticeClosedU { get; }
+
+    public bool LatticeClosedV { get; }
+
+    public IEnumerable<GrLatticeSurfaceLocalFrame3D> Vertices 
+        => IsReady 
+            ? VertexList 
+            : _pointToVertexDictionary.Values;
+
+    public IEnumerable<Float64Vector3D> VertexPoints 
+        => Vertices.Select(v => v.Point);
+
+    public IEnumerable<IFloat64Vector3D> VertexNormals 
+        => Vertices.Select(v => v.Normal);
+
+    public IEnumerable<Pair<double>> VertexTextureUvs 
+        => Vertices.Select(v => v.ParameterValue);
+
+    public IEnumerable<Color> VertexColors 
+        => Vertices.Select(v => v.Color);
+
+    public bool IsReady 
+        => VertexList.Count > 0;
+
+    public GrLatticeSurfaceLocalFrame3D this[int index] 
+        => IsReady
+            ? VertexList[index]
+            : _pointToVertexDictionary.Skip(index).First().Value;
+
+    public GrLatticeSurfaceLocalFrame3D this[double x, double y, double z] 
+        => this[new Triplet<double>(x, y, z)];
+
+    public GrLatticeSurfaceLocalFrame3D this[ITriplet<double> triplet] 
+        => this[triplet.ToTriplet()];
+
+    public GrLatticeSurfaceLocalFrame3D this[Triplet<double> key] 
+        => _pointToVertexDictionary.TryGetValue(key, out var vertex)
+            ? vertex
+            : throw new KeyNotFoundException();
+        
+    public IReadOnlyList<GrLatticeSurfaceLocalFrame3D> VertexList { get; private set; } 
+        = Array.Empty<GrLatticeSurfaceLocalFrame3D>();
+
+
+    internal GrLatticeSurface3D(GrLatticeSurfaceList3D parentList, int batchIndex, int countU, int countV, bool closeU, bool closeV)
     {
-        private Dictionary<Triplet<double>, GrLatticeSurfaceLocalFrame3D> _pointToVertexDictionary
-            = new Dictionary<Triplet<double>, GrLatticeSurfaceLocalFrame3D>();
+        if (countU < 2)
+            throw new ArgumentOutOfRangeException(nameof(countU));
 
-        private GrLatticeSurfaceLocalFrame3D[,] _indexUvToVertexArray;
+        if (countV < 2)
+            throw new ArgumentOutOfRangeException(nameof(countV));
 
+        ParentList = parentList;
+        CurveIndex = batchIndex;
 
-        public GrLatticeSurfaceList3D ParentList { get; }
+        LatticeSizeU = countU;
+        LatticeSizeV = countV;
 
-        public bool ReverseNormals { get; set; } = false;
+        LatticeClosedU = closeU;
+        LatticeClosedV = closeV;
 
-        public int CurveIndex { get; }
-
-        public int LatticeSizeU { get; }
-
-        public int LatticeSizeV { get; }
-
-        public int Count 
-            => IsReady ? VertexList.Count : _pointToVertexDictionary.Count;
-        
-        public bool LatticeClosedU { get; }
-
-        public bool LatticeClosedV { get; }
-
-        public IEnumerable<GrLatticeSurfaceLocalFrame3D> Vertices 
-            => IsReady 
-                ? VertexList 
-                : _pointToVertexDictionary.Values;
-
-        public IEnumerable<Float64Vector3D> VertexPoints 
-            => Vertices.Select(v => v.Point);
-
-        public IEnumerable<IFloat64Vector3D> VertexNormals 
-            => Vertices.Select(v => v.Normal);
-
-        public IEnumerable<Pair<double>> VertexTextureUvs 
-            => Vertices.Select(v => v.ParameterValue);
-
-        public IEnumerable<Color> VertexColors 
-            => Vertices.Select(v => v.Color);
-
-        public bool IsReady 
-            => VertexList.Count > 0;
-
-        public GrLatticeSurfaceLocalFrame3D this[int index] 
-            => IsReady
-                ? VertexList[index]
-                : _pointToVertexDictionary.Skip(index).First().Value;
-
-        public GrLatticeSurfaceLocalFrame3D this[double x, double y, double z] 
-            => this[new Triplet<double>(x, y, z)];
-
-        public GrLatticeSurfaceLocalFrame3D this[ITriplet<double> triplet] 
-            => this[triplet.ToTriplet()];
-
-        public GrLatticeSurfaceLocalFrame3D this[Triplet<double> key] 
-            => _pointToVertexDictionary.TryGetValue(key, out var vertex)
-                ? vertex
-                : throw new KeyNotFoundException();
-        
-        public IReadOnlyList<GrLatticeSurfaceLocalFrame3D> VertexList { get; private set; } 
-            = Array.Empty<GrLatticeSurfaceLocalFrame3D>();
+        _indexUvToVertexArray = new GrLatticeSurfaceLocalFrame3D[countU, countV];
+    }
 
 
-        internal GrLatticeSurface3D(GrLatticeSurfaceList3D parentList, int batchIndex, int countU, int countV, bool closeU, bool closeV)
-        {
-            if (countU < 2)
-                throw new ArgumentOutOfRangeException(nameof(countU));
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public GrLatticeSurface3D Clear()
+    {
+        _pointToVertexDictionary.Clear();
+        _indexUvToVertexArray = new GrLatticeSurfaceLocalFrame3D[LatticeSizeU, LatticeSizeV];
+        VertexList = Array.Empty<GrLatticeSurfaceLocalFrame3D>();
 
-            if (countV < 2)
-                throw new ArgumentOutOfRangeException(nameof(countV));
-
-            ParentList = parentList;
-            CurveIndex = batchIndex;
-
-            LatticeSizeU = countU;
-            LatticeSizeV = countV;
-
-            LatticeClosedU = closeU;
-            LatticeClosedV = closeV;
-
-            _indexUvToVertexArray = new GrLatticeSurfaceLocalFrame3D[countU, countV];
-        }
-
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public GrLatticeSurface3D Clear()
-        {
-            _pointToVertexDictionary.Clear();
-            _indexUvToVertexArray = new GrLatticeSurfaceLocalFrame3D[LatticeSizeU, LatticeSizeV];
-            VertexList = Array.Empty<GrLatticeSurfaceLocalFrame3D>();
-
-            return this;
-        }
+        return this;
+    }
         
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public bool ContainsPoint(double x, double y, double z)
-        {
-            var key = new Triplet<double>(x, y, z);
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public bool ContainsPoint(double x, double y, double z)
+    {
+        var key = new Triplet<double>(x, y, z);
 
-            return _pointToVertexDictionary.ContainsKey(key);
-        }
+        return _pointToVertexDictionary.ContainsKey(key);
+    }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public bool ContainsPoint(ITriplet<double> triplet)
-        {
-            return _pointToVertexDictionary.ContainsKey(triplet.ToTriplet());
-        }
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public bool ContainsPoint(ITriplet<double> triplet)
+    {
+        return _pointToVertexDictionary.ContainsKey(triplet.ToTriplet());
+    }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public bool ContainsPoint(Triplet<double> key)
-        {
-            return _pointToVertexDictionary.ContainsKey(key);
-        }
-
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public bool TryGetVertex(double x, double y, double z, out GrLatticeSurfaceLocalFrame3D vertex)
-        {
-            return _pointToVertexDictionary.TryGetValue(new Triplet<double>(x, y, z), out vertex);
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public bool TryGetVertex(ITriplet<double> triplet, out GrLatticeSurfaceLocalFrame3D vertex)
-        {
-            return _pointToVertexDictionary.TryGetValue(triplet.ToTriplet(), out vertex);
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public bool TryGetVertex(Triplet<double> key, out GrLatticeSurfaceLocalFrame3D vertex)
-        {
-            return _pointToVertexDictionary.TryGetValue(key, out vertex);
-        }
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public bool ContainsPoint(Triplet<double> key)
+    {
+        return _pointToVertexDictionary.ContainsKey(key);
+    }
 
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public GrLatticeSurfaceLocalFrame3D GetVertex(int index)
-        {
-            return this[index];
-        }
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public bool TryGetVertex(double x, double y, double z, out GrLatticeSurfaceLocalFrame3D vertex)
+    {
+        return _pointToVertexDictionary.TryGetValue(new Triplet<double>(x, y, z), out vertex);
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public bool TryGetVertex(ITriplet<double> triplet, out GrLatticeSurfaceLocalFrame3D vertex)
+    {
+        return _pointToVertexDictionary.TryGetValue(triplet.ToTriplet(), out vertex);
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public bool TryGetVertex(Triplet<double> key, out GrLatticeSurfaceLocalFrame3D vertex)
+    {
+        return _pointToVertexDictionary.TryGetValue(key, out vertex);
+    }
+
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public GrLatticeSurfaceLocalFrame3D GetVertex(int index)
+    {
+        return this[index];
+    }
         
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public GrLatticeSurfaceLocalFrame3D GetLatticeVertex(int indexU, int indexV)
-        {
-            return _indexUvToVertexArray[
-                indexU.Mod(LatticeSizeU), 
-                indexV.Mod(LatticeSizeV)
-            ];
-        }
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public GrLatticeSurfaceLocalFrame3D GetLatticeVertex(int indexU, int indexV)
+    {
+        return _indexUvToVertexArray[
+            indexU.Mod(LatticeSizeU), 
+            indexV.Mod(LatticeSizeV)
+        ];
+    }
         
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public GrLatticeSurfaceLocalFrame3D GetLatticeVertex(IPair<int> indexUvPair)
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public GrLatticeSurfaceLocalFrame3D GetLatticeVertex(IPair<int> indexUvPair)
+    {
+        return _indexUvToVertexArray[
+            indexUvPair.Item1.Mod(LatticeSizeU), 
+            indexUvPair.Item2.Mod(LatticeSizeV)
+        ];
+    }
+
+    public Float64Vector2D GetLatticeTextureUv(int indexU, int indexV)
+    {
+        return Float64Vector2D.Create((Float64Scalar)(indexU / (double)(LatticeSizeU - 1)),
+            (Float64Scalar)(indexV / (double)(LatticeSizeV - 1)));
+    }
+
+    public Float64Vector3D GetLatticeTangentU(int indexU, int indexV)
+    {
+        if (LatticeClosedU || (indexU > 0 && indexU < LatticeSizeU - 1))
         {
-            return _indexUvToVertexArray[
-                indexUvPair.Item1.Mod(LatticeSizeU), 
-                indexUvPair.Item2.Mod(LatticeSizeV)
-            ];
-        }
+            var p1 = GetLatticeVertex(indexU - 1, indexV).Point;
+            var p2 = GetLatticeVertex(indexU + 1, indexV).Point;
 
-        public Float64Vector2D GetLatticeTextureUv(int indexU, int indexV)
+            return p2 - p1;
+        }
+        else if (indexU == 0)
         {
-            return Float64Vector2D.Create((Float64Scalar)(indexU / (double)(LatticeSizeU - 1)),
-                (Float64Scalar)(indexV / (double)(LatticeSizeV - 1)));
-        }
+            var p1 = GetLatticeVertex(0, indexV).Point;
+            var p2 = GetLatticeVertex(1, indexV).Point;
 
-        public Float64Vector3D GetLatticeTangentU(int indexU, int indexV)
+            return p2 - p1;
+        }
+        else // indexU == CountU - 1
         {
-            if (LatticeClosedU || (indexU > 0 && indexU < LatticeSizeU - 1))
-            {
-                var p1 = GetLatticeVertex(indexU - 1, indexV).Point;
-                var p2 = GetLatticeVertex(indexU + 1, indexV).Point;
+            var p1 = GetLatticeVertex(LatticeSizeU - 2, indexV).Point;
+            var p2 = GetLatticeVertex(LatticeSizeU - 1, indexV).Point;
 
-                return p2 - p1;
-            }
-            else if (indexU == 0)
-            {
-                var p1 = GetLatticeVertex(0, indexV).Point;
-                var p2 = GetLatticeVertex(1, indexV).Point;
-
-                return p2 - p1;
-            }
-            else // indexU == CountU - 1
-            {
-                var p1 = GetLatticeVertex(LatticeSizeU - 2, indexV).Point;
-                var p2 = GetLatticeVertex(LatticeSizeU - 1, indexV).Point;
-
-                return p2 - p1;
-            }
+            return p2 - p1;
         }
+    }
         
-        public Float64Vector3D GetLatticeTangentV(int indexU, int indexV)
+    public Float64Vector3D GetLatticeTangentV(int indexU, int indexV)
+    {
+        if (LatticeClosedV || (indexV > 0 && indexV < LatticeSizeV - 1))
         {
-            if (LatticeClosedV || (indexV > 0 && indexV < LatticeSizeV - 1))
-            {
-                var p1 = GetLatticeVertex(indexU, indexV - 1).Point;
-                var p2 = GetLatticeVertex(indexU, indexV + 1).Point;
+            var p1 = GetLatticeVertex(indexU, indexV - 1).Point;
+            var p2 = GetLatticeVertex(indexU, indexV + 1).Point;
 
-                return p2 - p1;
-            }
-            else if (indexV == 0)
-            {
-                var p1 = GetLatticeVertex(indexU, 0).Point;
-                var p2 = GetLatticeVertex(indexU, 1).Point;
-
-                return p2 - p1;
-            }
-            else // indexV == CountV - 1
-            {
-                var p1 = GetLatticeVertex(indexU, LatticeSizeV - 2).Point;
-                var p2 = GetLatticeVertex(indexU, LatticeSizeV - 1).Point;
-
-                return p2 - p1;
-            }
+            return p2 - p1;
         }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public GrLatticeSurfaceLocalFrame3D GetVertex(double x, double y, double z)
+        else if (indexV == 0)
         {
-            return _pointToVertexDictionary[new Triplet<double>(x, y, z)];
-        }
+            var p1 = GetLatticeVertex(indexU, 0).Point;
+            var p2 = GetLatticeVertex(indexU, 1).Point;
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public GrLatticeSurfaceLocalFrame3D GetVertex(ITriplet<double> triplet)
+            return p2 - p1;
+        }
+        else // indexV == CountV - 1
         {
-            return _pointToVertexDictionary[triplet.ToTriplet()];
-        }
+            var p1 = GetLatticeVertex(indexU, LatticeSizeV - 2).Point;
+            var p2 = GetLatticeVertex(indexU, LatticeSizeV - 1).Point;
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public GrLatticeSurfaceLocalFrame3D GetVertex(Triplet<double> key)
-        {
-            return _pointToVertexDictionary[key];
+            return p2 - p1;
         }
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public GrLatticeSurfaceLocalFrame3D GetVertex(double x, double y, double z)
+    {
+        return _pointToVertexDictionary[new Triplet<double>(x, y, z)];
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public GrLatticeSurfaceLocalFrame3D GetVertex(ITriplet<double> triplet)
+    {
+        return _pointToVertexDictionary[triplet.ToTriplet()];
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public GrLatticeSurfaceLocalFrame3D GetVertex(Triplet<double> key)
+    {
+        return _pointToVertexDictionary[key];
+    }
 
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public GrLatticeSurfaceLocalFrame3D SetLatticeVertex(int indexU, int indexV, double x, double y, double z)
-        {
-            return SetLatticeVertex(indexU, indexV, new Triplet<double>(x, y, z));
-        }
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public GrLatticeSurfaceLocalFrame3D SetLatticeVertex(int indexU, int indexV, double x, double y, double z)
+    {
+        return SetLatticeVertex(indexU, indexV, new Triplet<double>(x, y, z));
+    }
         
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public GrLatticeSurfaceLocalFrame3D SetLatticeVertex(int indexU, int indexV, ITriplet<double> newPointTriplet)
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public GrLatticeSurfaceLocalFrame3D SetLatticeVertex(int indexU, int indexV, ITriplet<double> newPointTriplet)
+    {
+        return SetLatticeVertex(indexU, indexV, newPointTriplet.ToTriplet());
+    }
+
+    public GrLatticeSurfaceLocalFrame3D SetLatticeVertex(int indexU, int indexV, Triplet<double> newPointTriplet)
+    {
+        if (IsReady)
+            throw new InvalidOperationException();
+
+        var uvIndexPair = new Pair<int>(indexU, indexV);
+        var oldVertex = _indexUvToVertexArray[indexU, indexV];
+
+        // Rounding components
+        newPointTriplet = new Triplet<double>(
+            Math.Round(newPointTriplet.Item1, 7),
+            Math.Round(newPointTriplet.Item2, 7),
+            Math.Round(newPointTriplet.Item3, 7)
+        );
+
+        if (oldVertex is null)
         {
-            return SetLatticeVertex(indexU, indexV, newPointTriplet.ToTriplet());
-        }
-
-        public GrLatticeSurfaceLocalFrame3D SetLatticeVertex(int indexU, int indexV, Triplet<double> newPointTriplet)
-        {
-            if (IsReady)
-                throw new InvalidOperationException();
-
-            var uvIndexPair = new Pair<int>(indexU, indexV);
-            var oldVertex = _indexUvToVertexArray[indexU, indexV];
-
-            // Rounding components
-            newPointTriplet = new Triplet<double>(
-                Math.Round(newPointTriplet.Item1, 7),
-                Math.Round(newPointTriplet.Item2, 7),
-                Math.Round(newPointTriplet.Item3, 7)
-            );
-
-            if (oldVertex is null)
+            // There is no vertex stored at (indexU, indexV)
+            if (!_pointToVertexDictionary.TryGetValue(newPointTriplet, out var vertex))
             {
-                // There is no vertex stored at (indexU, indexV)
-                if (!_pointToVertexDictionary.TryGetValue(newPointTriplet, out var vertex))
-                {
-                    // The new vertex point is not stored in the set, so add it
-                    vertex = new GrLatticeSurfaceLocalFrame3D(this, uvIndexPair, newPointTriplet);
-
-                    _pointToVertexDictionary.Add(newPointTriplet, vertex);
-                }
-
-                _indexUvToVertexArray[indexU, indexV] = vertex;
-
-                return vertex;
-            }
-            else
-            {
-                // There is a vertex stored at (indexU, indexV)
-                var oldPointTriplet = oldVertex.PointTriplet;
-
-                // If the new vertex point is the same as the old vertex point, do nothing
-                if (oldPointTriplet == newPointTriplet)
-                    return oldVertex;
-
-                // Remove (indexU, indexV) from the old vertex data
-                oldVertex.LatticeIndexSet.Remove(uvIndexPair);
-
-                // If old vertex has no (indexU, indexV), remove it from storage
-                if (oldVertex.LatticeIndexSet.Count == 0) 
-                    _pointToVertexDictionary.Remove(oldPointTriplet);
-
-                // Create a new vertex and add it to storage
-                var vertex = new GrLatticeSurfaceLocalFrame3D(this, uvIndexPair, newPointTriplet);
+                // The new vertex point is not stored in the set, so add it
+                vertex = new GrLatticeSurfaceLocalFrame3D(this, uvIndexPair, newPointTriplet);
 
                 _pointToVertexDictionary.Add(newPointTriplet, vertex);
-
-                _indexUvToVertexArray[indexU, indexV] = vertex;
-
-                return vertex;
             }
+
+            _indexUvToVertexArray[indexU, indexV] = vertex;
+
+            return vertex;
         }
-
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public GrLatticeSurfaceLocalFrame3D SetLatticeVerticesAtIndexU(int indexU, Triplet<double> newPointTriplet)
+        else
         {
-            for (var indexV = 0; indexV < LatticeSizeV; indexV++)
-                SetLatticeVertex(indexU, indexV, newPointTriplet);
+            // There is a vertex stored at (indexU, indexV)
+            var oldPointTriplet = oldVertex.PointTriplet;
 
-            return _pointToVertexDictionary[newPointTriplet];
+            // If the new vertex point is the same as the old vertex point, do nothing
+            if (oldPointTriplet == newPointTriplet)
+                return oldVertex;
+
+            // Remove (indexU, indexV) from the old vertex data
+            oldVertex.LatticeIndexSet.Remove(uvIndexPair);
+
+            // If old vertex has no (indexU, indexV), remove it from storage
+            if (oldVertex.LatticeIndexSet.Count == 0) 
+                _pointToVertexDictionary.Remove(oldPointTriplet);
+
+            // Create a new vertex and add it to storage
+            var vertex = new GrLatticeSurfaceLocalFrame3D(this, uvIndexPair, newPointTriplet);
+
+            _pointToVertexDictionary.Add(newPointTriplet, vertex);
+
+            _indexUvToVertexArray[indexU, indexV] = vertex;
+
+            return vertex;
         }
+    }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public GrLatticeSurfaceLocalFrame3D SetLatticeVerticesAtIndexV(int indexV, Triplet<double> newPointTriplet)
-        {
-            for (var indexU = 0; indexU < LatticeSizeU; indexU++)
-                SetLatticeVertex(indexU, indexV, newPointTriplet);
 
-            return _pointToVertexDictionary[newPointTriplet];
-        }
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public GrLatticeSurfaceLocalFrame3D SetLatticeVerticesAtIndexU(int indexU, Triplet<double> newPointTriplet)
+    {
+        for (var indexV = 0; indexV < LatticeSizeV; indexV++)
+            SetLatticeVertex(indexU, indexV, newPointTriplet);
+
+        return _pointToVertexDictionary[newPointTriplet];
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public GrLatticeSurfaceLocalFrame3D SetLatticeVerticesAtIndexV(int indexV, Triplet<double> newPointTriplet)
+    {
+        for (var indexU = 0; indexU < LatticeSizeU; indexU++)
+            SetLatticeVertex(indexU, indexV, newPointTriplet);
+
+        return _pointToVertexDictionary[newPointTriplet];
+    }
         
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public GrLatticeSurface3D SetLatticeVerticesAtIndexU(int indexU, Func<int, Triplet<double>> pointFactory)
-        {
-            for (var indexV = 0; indexV < LatticeSizeV; indexV++)
-                SetLatticeVertex(indexU, indexV, pointFactory(indexV));
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public GrLatticeSurface3D SetLatticeVerticesAtIndexU(int indexU, Func<int, Triplet<double>> pointFactory)
+    {
+        for (var indexV = 0; indexV < LatticeSizeV; indexV++)
+            SetLatticeVertex(indexU, indexV, pointFactory(indexV));
 
-            return this;
-        }
+        return this;
+    }
         
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public GrLatticeSurface3D SetLatticeVerticesAtIndexV(int indexV, Func<int, Triplet<double>> pointFactory)
-        {
-            for (var indexU = 0; indexU < LatticeSizeU; indexU++)
-                SetLatticeVertex(indexU, indexV, pointFactory(indexU));
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public GrLatticeSurface3D SetLatticeVerticesAtIndexV(int indexV, Func<int, Triplet<double>> pointFactory)
+    {
+        for (var indexU = 0; indexU < LatticeSizeU; indexU++)
+            SetLatticeVertex(indexU, indexV, pointFactory(indexU));
 
-            return this;
-        }
+        return this;
+    }
         
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public GrLatticeSurface3D SetLatticeVerticesAtIndexU(int indexU, Func<double, Triplet<double>> pointFactory)
-        {
-            var s = 1d / (LatticeSizeV - 1);
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public GrLatticeSurface3D SetLatticeVerticesAtIndexU(int indexU, Func<double, Triplet<double>> pointFactory)
+    {
+        var s = 1d / (LatticeSizeV - 1);
 
-            for (var indexV = 0; indexV < LatticeSizeV; indexV++)
-                SetLatticeVertex(indexU, indexV, pointFactory(s * indexV));
+        for (var indexV = 0; indexV < LatticeSizeV; indexV++)
+            SetLatticeVertex(indexU, indexV, pointFactory(s * indexV));
 
-            return this;
-        }
+        return this;
+    }
         
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public GrLatticeSurface3D SetLatticeVerticesAtIndexV(int indexV, Func<double, Triplet<double>> pointFactory)
-        {
-            var s = 1d / (LatticeSizeU - 1);
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public GrLatticeSurface3D SetLatticeVerticesAtIndexV(int indexV, Func<double, Triplet<double>> pointFactory)
+    {
+        var s = 1d / (LatticeSizeU - 1);
 
-            for (var indexU = 0; indexU < LatticeSizeU; indexU++)
-                SetLatticeVertex(indexU, indexV, pointFactory(s * indexU));
+        for (var indexU = 0; indexU < LatticeSizeU; indexU++)
+            SetLatticeVertex(indexU, indexV, pointFactory(s * indexU));
 
-            return this;
-        }
+        return this;
+    }
         
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public GrLatticeSurface3D SetLatticeVertices(Func<int, int, Triplet<double>> pointFactory)
-        {
-            for (var indexU = 0; indexU < LatticeSizeU; indexU++)
-            for (var indexV = 0; indexV < LatticeSizeV; indexV++)
-                SetLatticeVertex(indexU, indexV, pointFactory(indexU, indexV));
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public GrLatticeSurface3D SetLatticeVertices(Func<int, int, Triplet<double>> pointFactory)
+    {
+        for (var indexU = 0; indexU < LatticeSizeU; indexU++)
+        for (var indexV = 0; indexV < LatticeSizeV; indexV++)
+            SetLatticeVertex(indexU, indexV, pointFactory(indexU, indexV));
 
-            return this;
-        }
+        return this;
+    }
         
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public GrLatticeSurface3D SetLatticeVertices(Func<double, double, Triplet<double>> pointFactory)
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public GrLatticeSurface3D SetLatticeVertices(Func<double, double, Triplet<double>> pointFactory)
+    {
+        var sU = 1d / (LatticeSizeU - 1);
+        var sV = 1d / (LatticeSizeV - 1);
+
+        for (var indexU = 0; indexU < LatticeSizeU; indexU++)
+        for (var indexV = 0; indexV < LatticeSizeV; indexV++)
+            SetLatticeVertex(indexU, indexV, pointFactory(sU * indexU, sV * indexV));
+
+        return this;
+    }
+
+
+    private void UpdateInternalVertexKeys()
+    {
+        if (IsReady)
+            throw new InvalidOperationException();
+
+        var pointToVertexDictionary = new Dictionary<Triplet<double>, GrLatticeSurfaceLocalFrame3D>();
+
+        foreach (var vertex in _pointToVertexDictionary.Values)
         {
-            var sU = 1d / (LatticeSizeU - 1);
-            var sV = 1d / (LatticeSizeV - 1);
+            var newKey = vertex.PointTriplet;
 
-            for (var indexU = 0; indexU < LatticeSizeU; indexU++)
-            for (var indexV = 0; indexV < LatticeSizeV; indexV++)
-                SetLatticeVertex(indexU, indexV, pointFactory(sU * indexU, sV * indexV));
-
-            return this;
-        }
-
-
-        private void UpdateInternalVertexKeys()
-        {
-            if (IsReady)
-                throw new InvalidOperationException();
-
-            var pointToVertexDictionary = new Dictionary<Triplet<double>, GrLatticeSurfaceLocalFrame3D>();
-
-            foreach (var vertex in _pointToVertexDictionary.Values)
+            if (!pointToVertexDictionary.TryGetValue(newKey, out var prevVertex))
             {
-                var newKey = vertex.PointTriplet;
-
-                if (!pointToVertexDictionary.TryGetValue(newKey, out var prevVertex))
-                {
-                    pointToVertexDictionary.Add(newKey, vertex);
-                    continue;
-                }
+                pointToVertexDictionary.Add(newKey, vertex);
+                continue;
+            }
                 
-                // Merge data of vertex into prevVertex because they have the same point
-                foreach (var uvIndexPair in vertex.LatticeIndexSet)
-                {
-                    _indexUvToVertexArray[uvIndexPair.Item1, uvIndexPair.Item2] = prevVertex;
-
-                    prevVertex.LatticeIndexSet.Add(uvIndexPair);
-                }
-            }
-
-            _pointToVertexDictionary = pointToVertexDictionary;
-        }
-
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public GrLatticeSurface3D MapPoints(Func<Float64Vector3D, Float64Vector3D> mappingFunc)
-        {
-            foreach (var vertex in _pointToVertexDictionary.Values)
-                vertex.Point = mappingFunc(vertex.Point);
-
-            UpdateInternalVertexKeys();
-
-            return this;
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public GrLatticeSurface3D TranslatePointsBy(double dx, double dy, double dz)
-        {
-            return MapPoints(p => 
-                p.TranslateBy(dx, dy, dz)
-            );
-        }
-        
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public GrLatticeSurface3D TranslatePointsBy(IFloat64Vector3D translationVector)
-        {
-            return MapPoints(p => 
-                p.TranslateBy(translationVector)
-            );
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public GrLatticeSurface3D ScalePointsBy(double s)
-        {
-            return MapPoints(p => 
-                p.ScaleBy(s)
-            );
-        }
-        
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public GrLatticeSurface3D ScalePointsBy(double sx, double sy, double sz)
-        {
-            return MapPoints(p => 
-                p.ScaleBy(sx, sy, sz)
-            );
-        }
-        
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public GrLatticeSurface3D XRotatePointsBy(double angle)
-        {
-            return MapPoints(p => 
-                p.XRotateBy(angle)
-            );
-        }
-        
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public GrLatticeSurface3D YRotatePointsBy(double angle)
-        {
-            return MapPoints(p => 
-                p.YRotateBy(angle)
-            );
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public GrLatticeSurface3D ZRotatePointsBy(double angle)
-        {
-            return MapPoints(p => 
-                p.ZRotateBy(angle)
-            );
-        }
-        
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public GrLatticeSurface3D XRotatePointsByDegrees(double angle)
-        {
-            return MapPoints(p => 
-                p.XRotateByDegrees(angle)
-            );
-        }
-        
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public GrLatticeSurface3D YRotatePointsByDegrees(double angle)
-        {
-            return MapPoints(p => 
-                p.YRotateByDegrees(angle)
-            );
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public GrLatticeSurface3D ZRotatePointsByDegrees(double angle)
-        {
-            return MapPoints(p => 
-                p.ZRotateByDegrees(angle)
-            );
-        }
-
-
-        private bool IsInternalDataValid()
-        {
-            Debug.Assert(
-                _pointToVertexDictionary.Values.All(vertex => vertex.LatticeIndexSet.Count > 0)
-            );
-
-            for (var indexU = 0; indexU < LatticeSizeU; indexU++)
-            for (var indexV = 0; indexV < LatticeSizeV; indexV++)
-                if (_indexUvToVertexArray[indexU, indexV] is null)
-                    return false;
-
-            return true;
-        }
-
-        internal GrLatticeSurface3D FinalizeSurface(int setIndexOffset)
-        {
-            if (IsReady) 
-                return this;
-
-            // Validate internal data
-            if (!IsInternalDataValid())
-                throw new InvalidOperationException();
-
-            VertexList = _pointToVertexDictionary.Values.ToArray();
-
-            var i = 0;
-            foreach (var vertex in VertexList)
+            // Merge data of vertex into prevVertex because they have the same point
+            foreach (var uvIndexPair in vertex.LatticeIndexSet)
             {
-                //vertex.BatchIndex = i;
-                vertex.Index = setIndexOffset + i;
+                _indexUvToVertexArray[uvIndexPair.Item1, uvIndexPair.Item2] = prevVertex;
 
-                i++;
-            }
-
-            _pointToVertexDictionary.Clear();
-
-            foreach (var vertex in VertexList)
-            {
-                //vertex.ComputeLocalFrame();
-                vertex.ComputeTextureUv();
-
-                // TODO: Compute color values per vertex
-                // TODO: Make computations dynamic through specialized classes
-            }
-
-            return this;
-        }
-
-        public IEnumerable<Quad<GrLatticeSurfaceLocalFrame3D>> GetVertexQuads()
-        {
-            if (!IsReady)
-                throw new InvalidOperationException();
-
-            var countU = LatticeClosedU ? LatticeSizeU + 1 : LatticeSizeU;
-            var countV = LatticeClosedV ? LatticeSizeV + 1 : LatticeSizeV;
-
-            for (var indexU = 1; indexU < countU; indexU++)
-            {
-                var u1 = indexU - 1;
-                var u2 = indexU.Mod(LatticeSizeU);
-
-                for (var indexV = 1; indexV < countV; indexV++)
-                {
-                    var v1 = indexV - 1;
-                    var v2 = indexV % LatticeSizeV;
-
-                    yield return new Quad<GrLatticeSurfaceLocalFrame3D>(
-                        _indexUvToVertexArray[u1, v1],
-                        _indexUvToVertexArray[u1, v2],
-                        _indexUvToVertexArray[u2, v1],
-                        _indexUvToVertexArray[u2, v2]
-                    );
-                }
+                prevVertex.LatticeIndexSet.Add(uvIndexPair);
             }
         }
 
+        _pointToVertexDictionary = pointToVertexDictionary;
+    }
 
-        private static bool TryAddTriangle(Dictionary<Triplet<int>, Triplet<GrLatticeSurfaceLocalFrame3D>> trianglesSet, GrLatticeSurfaceLocalFrame3D vertex1, GrLatticeSurfaceLocalFrame3D vertex2, GrLatticeSurfaceLocalFrame3D vertex3)
-        {
-            var index1 = vertex1.Index;
-            var index2 = vertex2.Index;
-            var index3 = vertex3.Index;
 
-            if (index1 == index2 || index2 == index3 || index3 == index1)
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public GrLatticeSurface3D MapPoints(Func<Float64Vector3D, Float64Vector3D> mappingFunc)
+    {
+        foreach (var vertex in _pointToVertexDictionary.Values)
+            vertex.Point = mappingFunc(vertex.Point);
+
+        UpdateInternalVertexKeys();
+
+        return this;
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public GrLatticeSurface3D TranslatePointsBy(double dx, double dy, double dz)
+    {
+        return MapPoints(p => 
+            p.TranslateBy(dx, dy, dz)
+        );
+    }
+        
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public GrLatticeSurface3D TranslatePointsBy(IFloat64Vector3D translationVector)
+    {
+        return MapPoints(p => 
+            p.TranslateBy(translationVector)
+        );
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public GrLatticeSurface3D ScalePointsBy(double s)
+    {
+        return MapPoints(p => 
+            p.ScaleBy(s)
+        );
+    }
+        
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public GrLatticeSurface3D ScalePointsBy(double sx, double sy, double sz)
+    {
+        return MapPoints(p => 
+            p.ScaleBy(sx, sy, sz)
+        );
+    }
+        
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public GrLatticeSurface3D XRotatePointsBy(double angle)
+    {
+        return MapPoints(p => 
+            p.XRotateBy(angle)
+        );
+    }
+        
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public GrLatticeSurface3D YRotatePointsBy(double angle)
+    {
+        return MapPoints(p => 
+            p.YRotateBy(angle)
+        );
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public GrLatticeSurface3D ZRotatePointsBy(double angle)
+    {
+        return MapPoints(p => 
+            p.ZRotateBy(angle)
+        );
+    }
+        
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public GrLatticeSurface3D XRotatePointsByDegrees(double angle)
+    {
+        return MapPoints(p => 
+            p.XRotateByDegrees(angle)
+        );
+    }
+        
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public GrLatticeSurface3D YRotatePointsByDegrees(double angle)
+    {
+        return MapPoints(p => 
+            p.YRotateByDegrees(angle)
+        );
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public GrLatticeSurface3D ZRotatePointsByDegrees(double angle)
+    {
+        return MapPoints(p => 
+            p.ZRotateByDegrees(angle)
+        );
+    }
+
+
+    private bool IsInternalDataValid()
+    {
+        Debug.Assert(
+            _pointToVertexDictionary.Values.All(vertex => vertex.LatticeIndexSet.Count > 0)
+        );
+
+        for (var indexU = 0; indexU < LatticeSizeU; indexU++)
+        for (var indexV = 0; indexV < LatticeSizeV; indexV++)
+            if (_indexUvToVertexArray[indexU, indexV] is null)
                 return false;
 
-            Triplet<int> indexTriplet;
-            Triplet<GrLatticeSurfaceLocalFrame3D> vertexTriplet;
+        return true;
+    }
 
-            if (index1 < index2 && index1 < index3)
-            {
-                indexTriplet = new Triplet<int>(index1, index2, index3);
-                vertexTriplet = new Triplet<GrLatticeSurfaceLocalFrame3D>(vertex1, vertex2, vertex3);
-            }
-            else if (index2 < index1 && index2 < index3)
-            {
-                indexTriplet = new Triplet<int>(index2, index3, index1);
-                vertexTriplet = new Triplet<GrLatticeSurfaceLocalFrame3D>(vertex2, vertex3, vertex1);
-            }
-            else
-            {
-                indexTriplet = new Triplet<int>(index3, index1, index2);
-                vertexTriplet = new Triplet<GrLatticeSurfaceLocalFrame3D>(vertex3, vertex1, vertex2);
-            }
-            
-            if (trianglesSet.ContainsKey(indexTriplet))
-                return false;
+    internal GrLatticeSurface3D FinalizeSurface(int setIndexOffset)
+    {
+        if (IsReady) 
+            return this;
 
-            trianglesSet.Add(indexTriplet, vertexTriplet);
+        // Validate internal data
+        if (!IsInternalDataValid())
+            throw new InvalidOperationException();
 
-            return true;
+        VertexList = _pointToVertexDictionary.Values.ToArray();
+
+        var i = 0;
+        foreach (var vertex in VertexList)
+        {
+            //vertex.BatchIndex = i;
+            vertex.Index = setIndexOffset + i;
+
+            i++;
         }
 
-        public IEnumerable<Triplet<GrLatticeSurfaceLocalFrame3D>> GetVertexTriangles()
+        _pointToVertexDictionary.Clear();
+
+        foreach (var vertex in VertexList)
         {
-            if (!IsReady)
-                throw new InvalidOperationException();
+            //vertex.ComputeLocalFrame();
+            vertex.ComputeTextureUv();
 
-            var trianglesSet = 
-                new Dictionary<Triplet<int>, Triplet<GrLatticeSurfaceLocalFrame3D>>();
+            // TODO: Compute color values per vertex
+            // TODO: Make computations dynamic through specialized classes
+        }
 
-            var countU = LatticeClosedU ? LatticeSizeU + 1 : LatticeSizeU;
-            var countV = LatticeClosedV ? LatticeSizeV + 1 : LatticeSizeV;
+        return this;
+    }
 
-            for (var indexU = 1; indexU < countU; indexU++)
+    public IEnumerable<Quad<GrLatticeSurfaceLocalFrame3D>> GetVertexQuads()
+    {
+        if (!IsReady)
+            throw new InvalidOperationException();
+
+        var countU = LatticeClosedU ? LatticeSizeU + 1 : LatticeSizeU;
+        var countV = LatticeClosedV ? LatticeSizeV + 1 : LatticeSizeV;
+
+        for (var indexU = 1; indexU < countU; indexU++)
+        {
+            var u1 = indexU - 1;
+            var u2 = indexU.Mod(LatticeSizeU);
+
+            for (var indexV = 1; indexV < countV; indexV++)
             {
-                var u1 = indexU - 1;
-                var u2 = indexU.Mod(LatticeSizeU);
+                var v1 = indexV - 1;
+                var v2 = indexV % LatticeSizeV;
 
-                for (var indexV = 1; indexV < countV; indexV++)
+                yield return new Quad<GrLatticeSurfaceLocalFrame3D>(
+                    _indexUvToVertexArray[u1, v1],
+                    _indexUvToVertexArray[u1, v2],
+                    _indexUvToVertexArray[u2, v1],
+                    _indexUvToVertexArray[u2, v2]
+                );
+            }
+        }
+    }
+
+
+    private static bool TryAddTriangle(Dictionary<Triplet<int>, Triplet<GrLatticeSurfaceLocalFrame3D>> trianglesSet, GrLatticeSurfaceLocalFrame3D vertex1, GrLatticeSurfaceLocalFrame3D vertex2, GrLatticeSurfaceLocalFrame3D vertex3)
+    {
+        var index1 = vertex1.Index;
+        var index2 = vertex2.Index;
+        var index3 = vertex3.Index;
+
+        if (index1 == index2 || index2 == index3 || index3 == index1)
+            return false;
+
+        Triplet<int> indexTriplet;
+        Triplet<GrLatticeSurfaceLocalFrame3D> vertexTriplet;
+
+        if (index1 < index2 && index1 < index3)
+        {
+            indexTriplet = new Triplet<int>(index1, index2, index3);
+            vertexTriplet = new Triplet<GrLatticeSurfaceLocalFrame3D>(vertex1, vertex2, vertex3);
+        }
+        else if (index2 < index1 && index2 < index3)
+        {
+            indexTriplet = new Triplet<int>(index2, index3, index1);
+            vertexTriplet = new Triplet<GrLatticeSurfaceLocalFrame3D>(vertex2, vertex3, vertex1);
+        }
+        else
+        {
+            indexTriplet = new Triplet<int>(index3, index1, index2);
+            vertexTriplet = new Triplet<GrLatticeSurfaceLocalFrame3D>(vertex3, vertex1, vertex2);
+        }
+            
+        if (trianglesSet.ContainsKey(indexTriplet))
+            return false;
+
+        trianglesSet.Add(indexTriplet, vertexTriplet);
+
+        return true;
+    }
+
+    public IEnumerable<Triplet<GrLatticeSurfaceLocalFrame3D>> GetVertexTriangles()
+    {
+        if (!IsReady)
+            throw new InvalidOperationException();
+
+        var trianglesSet = 
+            new Dictionary<Triplet<int>, Triplet<GrLatticeSurfaceLocalFrame3D>>();
+
+        var countU = LatticeClosedU ? LatticeSizeU + 1 : LatticeSizeU;
+        var countV = LatticeClosedV ? LatticeSizeV + 1 : LatticeSizeV;
+
+        for (var indexU = 1; indexU < countU; indexU++)
+        {
+            var u1 = indexU - 1;
+            var u2 = indexU.Mod(LatticeSizeU);
+
+            for (var indexV = 1; indexV < countV; indexV++)
+            {
+                var v1 = indexV - 1;
+                var v2 = indexV % LatticeSizeV;
+
+                var vertex1 = _indexUvToVertexArray[u1, v1];
+                var vertex2 = _indexUvToVertexArray[u1, v2];
+                var vertex3 = _indexUvToVertexArray[u2, v1];
+                var vertex4 = _indexUvToVertexArray[u2, v2];
+
+                if (ParentList.ReverseNormals)
                 {
-                    var v1 = indexV - 1;
-                    var v2 = indexV % LatticeSizeV;
-
-                    var vertex1 = _indexUvToVertexArray[u1, v1];
-                    var vertex2 = _indexUvToVertexArray[u1, v2];
-                    var vertex3 = _indexUvToVertexArray[u2, v1];
-                    var vertex4 = _indexUvToVertexArray[u2, v2];
-
-                    if (ParentList.ReverseNormals)
-                    {
-                        TryAddTriangle(trianglesSet, vertex3, vertex1, vertex4);
-                        TryAddTriangle(trianglesSet, vertex2, vertex4, vertex1);
-                    }
-                    else
-                    {
-                        TryAddTriangle(trianglesSet, vertex3, vertex4, vertex1);
-                        TryAddTriangle(trianglesSet, vertex2, vertex1, vertex4);
-                    }
+                    TryAddTriangle(trianglesSet, vertex3, vertex1, vertex4);
+                    TryAddTriangle(trianglesSet, vertex2, vertex4, vertex1);
+                }
+                else
+                {
+                    TryAddTriangle(trianglesSet, vertex3, vertex4, vertex1);
+                    TryAddTriangle(trianglesSet, vertex2, vertex1, vertex4);
                 }
             }
-
-            return trianglesSet.Values;
         }
+
+        return trianglesSet.Values;
+    }
         
-        public IEnumerable<Triplet<int>> GetIndexTriangles()
-        {
-            if (!IsReady)
-                throw new InvalidOperationException();
+    public IEnumerable<Triplet<int>> GetIndexTriangles()
+    {
+        if (!IsReady)
+            throw new InvalidOperationException();
             
-            var trianglesSet = 
-                new Dictionary<Triplet<int>, Triplet<GrLatticeSurfaceLocalFrame3D>>();
+        var trianglesSet = 
+            new Dictionary<Triplet<int>, Triplet<GrLatticeSurfaceLocalFrame3D>>();
 
-            var countU = LatticeClosedU ? LatticeSizeU + 1 : LatticeSizeU;
-            var countV = LatticeClosedV ? LatticeSizeV + 1 : LatticeSizeV;
+        var countU = LatticeClosedU ? LatticeSizeU + 1 : LatticeSizeU;
+        var countV = LatticeClosedV ? LatticeSizeV + 1 : LatticeSizeV;
 
-            for (var indexU = 1; indexU < countU; indexU++)
+        for (var indexU = 1; indexU < countU; indexU++)
+        {
+            var u1 = indexU - 1;
+            var u2 = indexU.Mod(LatticeSizeU);
+
+            for (var indexV = 1; indexV < countV; indexV++)
             {
-                var u1 = indexU - 1;
-                var u2 = indexU.Mod(LatticeSizeU);
+                var v1 = indexV - 1;
+                var v2 = indexV % LatticeSizeV;
 
-                for (var indexV = 1; indexV < countV; indexV++)
-                {
-                    var v1 = indexV - 1;
-                    var v2 = indexV % LatticeSizeV;
-
-                    var vertex1 = _indexUvToVertexArray[u1, v1];
-                    var vertex2 = _indexUvToVertexArray[u1, v2];
-                    var vertex3 = _indexUvToVertexArray[u2, v1];
-                    var vertex4 = _indexUvToVertexArray[u2, v2];
+                var vertex1 = _indexUvToVertexArray[u1, v1];
+                var vertex2 = _indexUvToVertexArray[u1, v2];
+                var vertex3 = _indexUvToVertexArray[u2, v1];
+                var vertex4 = _indexUvToVertexArray[u2, v2];
                     
-                    if (ParentList.ReverseNormals)
-                    {
-                        TryAddTriangle(trianglesSet, vertex3, vertex1, vertex4);
-                        TryAddTriangle(trianglesSet, vertex2, vertex4, vertex1);
-                    }
-                    else
-                    {
-                        TryAddTriangle(trianglesSet, vertex3, vertex4, vertex1);
-                        TryAddTriangle(trianglesSet, vertex2, vertex1, vertex4);
-                    }
-                    //yield return new Triplet<int>(vertex3, vertex1, vertex4);
-                    //yield return new Triplet<int>(vertex2, vertex4, vertex1);
+                if (ParentList.ReverseNormals)
+                {
+                    TryAddTriangle(trianglesSet, vertex3, vertex1, vertex4);
+                    TryAddTriangle(trianglesSet, vertex2, vertex4, vertex1);
                 }
+                else
+                {
+                    TryAddTriangle(trianglesSet, vertex3, vertex4, vertex1);
+                    TryAddTriangle(trianglesSet, vertex2, vertex1, vertex4);
+                }
+                //yield return new Triplet<int>(vertex3, vertex1, vertex4);
+                //yield return new Triplet<int>(vertex2, vertex4, vertex1);
             }
-
-            return trianglesSet.Keys;
         }
 
+        return trianglesSet.Keys;
+    }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public IEnumerator<GrLatticeSurfaceLocalFrame3D> GetEnumerator()
-        {
-            return IsReady
-                ? VertexList.GetEnumerator()
-                : _pointToVertexDictionary.Values.GetEnumerator();
-        }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
-        }
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public IEnumerator<GrLatticeSurfaceLocalFrame3D> GetEnumerator()
+    {
+        return IsReady
+            ? VertexList.GetEnumerator()
+            : _pointToVertexDictionary.Values.GetEnumerator();
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    IEnumerator IEnumerable.GetEnumerator()
+    {
+        return GetEnumerator();
     }
 }

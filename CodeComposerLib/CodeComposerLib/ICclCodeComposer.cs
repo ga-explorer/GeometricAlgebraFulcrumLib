@@ -4,25 +4,24 @@ using TextComposerLib.Loggers.Progress;
 using TextComposerLib.Text.Linear;
 using TextComposerLib.Text.Parametric;
 
-namespace CodeComposerLib
+namespace CodeComposerLib;
+
+public interface ICclCodeComposer : 
+    IProgressReportSource
 {
-    public interface ICclCodeComposer : 
-        IProgressReportSource
-    {
-        string Name { get; }
+    string Name { get; }
 
-        string Description { get; }
+    string Description { get; }
 
-        CclLanguageServerBase Language { get; }
+    CclLanguageServerBase Language { get; }
 
-        CclLanguageCodeGeneratorBase CodeComposer { get; }
+    CclLanguageCodeGeneratorBase CodeComposer { get; }
 
-        CclLanguageSyntaxFactory SyntaxFactory { get; }
+    CclLanguageSyntaxFactory SyntaxFactory { get; }
 
-        TextFileComposer ActiveFileComposer { get; }
+    TextFileComposer ActiveFileComposer { get; }
 
-        ParametricTextComposerCollection Templates { get; }
+    ParametricTextComposerCollection Templates { get; }
 
-        LinearTextComposer ActiveFileTextComposer { get; }
-    }
+    LinearTextComposer ActiveFileTextComposer { get; }
 }

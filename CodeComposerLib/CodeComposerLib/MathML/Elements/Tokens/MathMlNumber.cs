@@ -1,62 +1,61 @@
-﻿namespace CodeComposerLib.MathML.Elements.Tokens
+﻿namespace CodeComposerLib.MathML.Elements.Tokens;
+
+/// <summary>
+/// https://developer.mozilla.org/en-US/docs/Web/MathML/Element/mn
+/// </summary>
+public sealed class MathMlNumber : MathMlTextTokenElement
 {
-    /// <summary>
-    /// https://developer.mozilla.org/en-US/docs/Web/MathML/Element/mn
-    /// </summary>
-    public sealed class MathMlNumber : MathMlTextTokenElement
+    public static MathMlNumber Create()
     {
-        public static MathMlNumber Create()
+        return new MathMlNumber();
+    }
+
+    public static MathMlNumber Create(string text)
+    {
+        return new MathMlNumber()
         {
-            return new MathMlNumber();
-        }
+            Text = text
+        };
+    }
 
-        public static MathMlNumber Create(string text)
+    public static MathMlNumber Create(int value)
+    {
+        return new MathMlNumber()
         {
-            return new MathMlNumber()
-            {
-                Text = text
-            };
-        }
+            Text = value.ToString()
+        };
+    }
 
-        public static MathMlNumber Create(int value)
+    public static MathMlNumber Create(long value)
+    {
+        return new MathMlNumber()
         {
-            return new MathMlNumber()
-            {
-                Text = value.ToString()
-            };
-        }
+            Text = value.ToString()
+        };
+    }
 
-        public static MathMlNumber Create(long value)
+    public static MathMlNumber Create(float value)
+    {
+        return new MathMlNumber()
         {
-            return new MathMlNumber()
-            {
-                Text = value.ToString()
-            };
-        }
+            Text = value.ToString("G")
+        };
+    }
 
-        public static MathMlNumber Create(float value)
+    public static MathMlNumber Create(double value)
+    {
+        return new MathMlNumber()
         {
-            return new MathMlNumber()
-            {
-                Text = value.ToString("G")
-            };
-        }
-
-        public static MathMlNumber Create(double value)
-        {
-            return new MathMlNumber()
-            {
-                Text = value.ToString("G")
-            };
-        }
+            Text = value.ToString("G")
+        };
+    }
 
 
-        public override string XmlTagName 
-            => "mn";
+    public override string XmlTagName 
+        => "mn";
 
 
-        internal MathMlNumber()
-        {
-        }
+    internal MathMlNumber()
+    {
     }
 }

@@ -7,60 +7,59 @@ using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.Mult
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Multivectors;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Multivectors.Composers;
 
-namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors
+namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors;
+
+public static class LinVectorStoragePolynomialUtils
 {
-    public static class LinVectorStoragePolynomialUtils
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static ILinVectorStorage<T> GetValue<T>(this IPolynomialBasisSet<T> basisSet, T parameterValue, params ILinVectorStorage<T>[] vectorsList)
     {
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static ILinVectorStorage<T> GetValue<T>(this IPolynomialBasisSet<T> basisSet, T parameterValue, params ILinVectorStorage<T>[] vectorsList)
-        {
-            return basisSet.ScalarProcessor.Add(
-                vectorsList.Select((mv, index) =>
-                    basisSet.ScalarProcessor.Times(
-                        mv,
-                        basisSet.GetValue(index, parameterValue).ScalarValue
-                    )
+        return basisSet.ScalarProcessor.Add(
+            vectorsList.Select((mv, index) =>
+                basisSet.ScalarProcessor.Times(
+                    mv,
+                    basisSet.GetValue(index, parameterValue).ScalarValue
                 )
-            );
-        }
+            )
+        );
+    }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static ILinVectorStorage<T> GetValue<T>(this IPolynomialBasisSet<T> basisSet, T parameterValue, IEnumerable<ILinVectorStorage<T>> vectorsList)
-        {
-            return basisSet.ScalarProcessor.Add(
-                vectorsList.Select((mv, index) =>
-                    basisSet.ScalarProcessor.Times(
-                        mv,
-                        basisSet.GetValue(index, parameterValue).ScalarValue
-                    )
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static ILinVectorStorage<T> GetValue<T>(this IPolynomialBasisSet<T> basisSet, T parameterValue, IEnumerable<ILinVectorStorage<T>> vectorsList)
+    {
+        return basisSet.ScalarProcessor.Add(
+            vectorsList.Select((mv, index) =>
+                basisSet.ScalarProcessor.Times(
+                    mv,
+                    basisSet.GetValue(index, parameterValue).ScalarValue
                 )
-            );
-        }
+            )
+        );
+    }
         
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static XGaVector<T> GetValue<T>(this IPolynomialBasisSet<T> basisSet, T parameterValue, params XGaVector<T>[] vectorsList)
-        {
-            var processor = vectorsList[0].Processor;
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static XGaVector<T> GetValue<T>(this IPolynomialBasisSet<T> basisSet, T parameterValue, params XGaVector<T>[] vectorsList)
+    {
+        var processor = vectorsList[0].Processor;
 
-            return vectorsList.Select(
-                (mv, index) => mv * basisSet.GetValue(index, parameterValue)
-            ).Aggregate(
-                processor.CreateZeroVector(),
-                (a, b) => a + b
-            );
-        }
+        return vectorsList.Select(
+            (mv, index) => mv * basisSet.GetValue(index, parameterValue)
+        ).Aggregate(
+            processor.CreateZeroVector(),
+            (a, b) => a + b
+        );
+    }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static RGaVector<T> GetValue<T>(this IPolynomialBasisSet<T> basisSet, T parameterValue, params RGaVector<T>[] vectorsList)
-        {
-            var processor = vectorsList[0].Processor;
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static RGaVector<T> GetValue<T>(this IPolynomialBasisSet<T> basisSet, T parameterValue, params RGaVector<T>[] vectorsList)
+    {
+        var processor = vectorsList[0].Processor;
 
-            return vectorsList.Select(
-                (mv, index) => mv * basisSet.GetValue(index, parameterValue)
-            ).Aggregate(
-                processor.CreateZeroVector(),
-                (a, b) => a + b
-            );
-        }
+        return vectorsList.Select(
+            (mv, index) => mv * basisSet.GetValue(index, parameterValue)
+        ).Aggregate(
+            processor.CreateZeroVector(),
+            (a, b) => a + b
+        );
     }
 }

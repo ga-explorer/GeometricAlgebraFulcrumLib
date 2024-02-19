@@ -1,8 +1,7 @@
-﻿namespace GeometricAlgebraFulcrumLib.MetaProgramming.Expressions
-{
-    public interface IMetaExpressionAtomicIndependent :
-        IMetaExpressionAtomic
-    {
+﻿namespace GeometricAlgebraFulcrumLib.MetaProgramming.Expressions;
 
-    }
+public interface IMetaExpressionAtomicIndependent :
+    IMetaExpressionAtomic
+{
+
 }

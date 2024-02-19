@@ -4,16 +4,15 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using GeometricAlgebraFulcrumLib.Lite.ScalarAlgebra;
 using System.Data;
-using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Restricted.Float64.Multivectors;
-using GeometricAlgebraFulcrumLib.Lite.LinearAlgebra.Vectors.Space2D;
-using GeometricAlgebraFulcrumLib.Lite.LinearAlgebra.Vectors.Space3D;
-using GeometricAlgebraFulcrumLib.Lite.LinearAlgebra.Vectors.SpaceND;
 
 namespace GeometricAlgebraFulcrumLib.Lite.Geometry.Conformal.Elements;
 
 public class RGaConformalDirection :
     RGaConformalElement
 {
+    public override RGaConformalBlade Position 
+        => ConformalSpace.ZeroVectorBlade;
+
     public override double RadiusSquared
     {
         get => 0d;
@@ -27,7 +26,6 @@ public class RGaConformalDirection :
             conformalSpace,
             RGaConformalElementKind.Direction,
             weight, 
-            conformalSpace.ZeroVectorBlade,
             direction
         )
     {
@@ -75,39 +73,6 @@ public class RGaConformalDirection :
     
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public RGaConformalDirection TranslateBy(Float64Vector2D egaVector)
-    {
-        return this;
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public RGaConformalDirection TranslateBy(Float64Vector3D egaVector)
-    {
-        return this;
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public RGaConformalDirection TranslateBy(Float64Vector egaVector)
-    {
-        return this;
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public RGaConformalDirection TranslateBy(RGaFloat64Vector egaVector)
-    {
-        return this;
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public RGaConformalDirection TranslateBy(RGaConformalBlade egaVector)
-    {
-        Debug.Assert(egaVector.IsEGaVector());
-
-        return this;
-    }
-
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public override string ToString()
     {
         if (Weight.IsNearZero())
@@ -115,7 +80,7 @@ public class RGaConformalDirection :
 
         return new StringBuilder()
             .AppendLine("Conformal Direction:")
-            .AppendLine($"   Weight: ${ConformalSpace.ToLaTeX(Weight)}$")
+            .AppendLine($"   Weight: ${BasisSpecs.ToLaTeX(Weight)}$")
             .AppendLine($"   Unit Direction Grade: ${Direction.Grade}$")
             .AppendLine($"   Unit Direction: ${Direction.ToLaTeX()}$")
             .AppendLine($"   Unit Direction Normal: ${NormalDirection.ToLaTeX()}$")

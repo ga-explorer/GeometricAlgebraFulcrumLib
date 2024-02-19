@@ -1,14 +1,13 @@
 ﻿using WebComposerLib.LaTeX.CodeComposer.Code.Commands;
 using WebComposerLib.LaTeX.CodeComposer.Constants;
 
-namespace WebComposerLib.LaTeX.CodeComposer.Documents
+namespace WebComposerLib.LaTeX.CodeComposer.Documents;
+
+public class LaTeXEnvironment : LaTeXCommandBlockMultiArgs
 {
-    public class LaTeXEnvironment : LaTeXCommandBlockMultiArgs
+    public LaTeXEnvironment() 
+        : base(LaTeXCommandTagNames.Begin, LaTeXCommandTagNames.End)
     {
-        public LaTeXEnvironment() 
-            : base(LaTeXCommandTagNames.Begin, LaTeXCommandTagNames.End)
-        {
-            ArgumentsList.FixedArgumentsCount = 1;
-        }
+        ArgumentsList.FixedArgumentsCount = 1;
     }
 }

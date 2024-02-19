@@ -1,72 +1,71 @@
 ﻿using CodeComposerLib.HTMLold.Elements;
 
-namespace CodeComposerLib.HTMLold.Attributes
+namespace CodeComposerLib.HTMLold.Attributes;
+
+public sealed class HtmlEavNumber<TParentElement>
+    : HtmlElementAttributeValue<TParentElement> where TParentElement : HtmlElement
 {
-    public sealed class HtmlEavNumber<TParentElement>
-        : HtmlElementAttributeValue<TParentElement> where TParentElement : HtmlElement
+    private double _number;
+    public double Number
     {
-        private double _number;
-        public double Number
+        get { return _number; }
+        set
         {
-            get { return _number; }
-            set
-            {
-                _number = value;
-                IsValueComputed = true;
-            }
+            _number = value;
+            IsValueComputed = true;
         }
+    }
 
-        private bool _isPercent;
-        public bool IsPercent
+    private bool _isPercent;
+    public bool IsPercent
+    {
+        get { return _isPercent; }
+        set
         {
-            get { return _isPercent; }
-            set
-            {
-                _isPercent = value;
-                IsValueComputed = true;
-            }
+            _isPercent = value;
+            IsValueComputed = true;
         }
+    }
 
-        protected override string ValueComputedText
-            => _number.ToHtmlNumberText(IsPercent);
-
-
-        internal HtmlEavNumber(TParentElement parentElement, HtmlAttributeInfo attributeInfo)
-            : base(parentElement, attributeInfo)
-        {
-        }
+    protected override string ValueComputedText
+        => _number.ToHtmlNumberText(IsPercent);
 
 
-        public override IHtmlAttributeValue CreateCopy()
-        {
-            throw new System.NotImplementedException();
-        }
+    internal HtmlEavNumber(TParentElement parentElement, HtmlAttributeInfo attributeInfo)
+        : base(parentElement, attributeInfo)
+    {
+    }
 
-        public override IHtmlAttributeValue UpdateFrom(IHtmlAttributeValue sourceAttributeValue)
-        {
-            throw new System.NotImplementedException();
-        }
 
-        public TParentElement SetToNumber(double number)
-        {
-            Number = number;
+    public override IHtmlAttributeValue CreateCopy()
+    {
+        throw new System.NotImplementedException();
+    }
 
-            return ParentElement;
-        }
+    public override IHtmlAttributeValue UpdateFrom(IHtmlAttributeValue sourceAttributeValue)
+    {
+        throw new System.NotImplementedException();
+    }
 
-        public TParentElement SetToPercent(double number)
-        {
-            Number = number;
-            IsPercent = true;
+    public TParentElement SetToNumber(double number)
+    {
+        Number = number;
 
-            return ParentElement;
-        }
+        return ParentElement;
+    }
 
-        public TParentElement SetToIndefinite()
-        {
-            ValueStoredText = "indefinite";
+    public TParentElement SetToPercent(double number)
+    {
+        Number = number;
+        IsPercent = true;
 
-            return ParentElement;
-        }
+        return ParentElement;
+    }
+
+    public TParentElement SetToIndefinite()
+    {
+        ValueStoredText = "indefinite";
+
+        return ParentElement;
     }
 }

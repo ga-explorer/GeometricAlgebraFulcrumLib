@@ -1,13 +1,12 @@
-﻿namespace GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.PovRay.SDL
+﻿namespace GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.PovRay.SDL;
+
+public class SdlFreeCode : ISdlStatement
 {
-    public class SdlFreeCode : ISdlStatement
+    public string Code { get; set; }
+
+
+    public override string ToString()
     {
-        public string Code { get; set; }
-
-
-        public override string ToString()
-        {
-            return Code;
-        }
+        return Code;
     }
 }

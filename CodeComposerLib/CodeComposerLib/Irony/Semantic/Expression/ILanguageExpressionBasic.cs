@@ -1,12 +1,11 @@
 ﻿using System.Collections.Generic;
 using CodeComposerLib.Irony.Semantic.Operator;
 
-namespace CodeComposerLib.Irony.Semantic.Expression
-{
-    public interface ILanguageExpressionBasic : ILanguageExpression
-    {
-        ILanguageOperator Operator { get; }
+namespace CodeComposerLib.Irony.Semantic.Expression;
 
-        IEnumerable<ILanguageExpressionAtomic> RhsOperands { get; }
-    }
+public interface ILanguageExpressionBasic : ILanguageExpression
+{
+    ILanguageOperator Operator { get; }
+
+    IEnumerable<ILanguageExpressionAtomic> RhsOperands { get; }
 }

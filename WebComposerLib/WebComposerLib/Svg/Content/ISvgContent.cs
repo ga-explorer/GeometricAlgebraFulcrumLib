@@ -1,11 +1,10 @@
-﻿namespace WebComposerLib.Svg.Content
+﻿namespace WebComposerLib.Svg.Content;
+
+public interface ISvgContent
 {
-    public interface ISvgContent
-    {
-        bool IsContentText { get; }
+    bool IsContentText { get; }
 
-        bool IsContentComment { get; }
+    bool IsContentComment { get; }
 
-        bool IsContentElement { get; }
-    }
+    bool IsContentElement { get; }
 }

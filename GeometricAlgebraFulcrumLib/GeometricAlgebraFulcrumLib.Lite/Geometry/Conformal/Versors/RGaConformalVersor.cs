@@ -4,10 +4,6 @@ using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Restricted.Float64.Multiv
 using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Restricted.Float64.Multivectors.Composers;
 using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Restricted.Float64.Processors;
 using GeometricAlgebraFulcrumLib.Lite.Geometry.Conformal.Blades;
-using GeometricAlgebraFulcrumLib.Lite.Geometry.Conformal.Encoding;
-using GeometricAlgebraFulcrumLib.Lite.LinearAlgebra.Vectors.Space2D;
-using GeometricAlgebraFulcrumLib.Lite.LinearAlgebra.Vectors.Space3D;
-using GeometricAlgebraFulcrumLib.Lite.LinearAlgebra.Vectors.SpaceND;
 using GeometricAlgebraFulcrumLib.Lite.ScalarAlgebra;
 
 namespace GeometricAlgebraFulcrumLib.Lite.Geometry.Conformal.Versors;
@@ -58,6 +54,9 @@ public sealed record RGaConformalVersor
 
 
     public RGaConformalSpace ConformalSpace { get; }
+
+    public RGaGeometrySpaceBasisSpecs BasisSpecs 
+        => ConformalSpace.BasisSpecs;
 
     public RGaFloat64Multivector InternalMultivector { get; }
 
@@ -470,46 +469,6 @@ public sealed record RGaConformalVersor
         return new RGaConformalVersor(ConformalSpace, kVector);
     }
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public RGaConformalVersor TranslateBy(Float64Vector2D egaTranslationVector)
-    {
-        return TranslateBy(
-            ConformalSpace.EncodeEGaVector(egaTranslationVector)
-        );
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public RGaConformalVersor TranslateBy(Float64Vector3D egaTranslationVector)
-    {
-        return TranslateBy(
-            ConformalSpace.EncodeEGaVector(egaTranslationVector)
-        );
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public RGaConformalVersor TranslateBy(Float64Vector egaTranslationVector)
-    {
-        return TranslateBy(
-            ConformalSpace.EncodeEGaVector(egaTranslationVector)
-        );
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public RGaConformalVersor TranslateBy(RGaConformalBlade egaTranslationVector)
-    {
-        Debug.Assert(
-            egaTranslationVector.IsEGaVector()
-        );
-
-        var eit =
-            0.5d * ConformalSpace.EiVector.Op(egaTranslationVector.InternalKVector);
-
-        var kVector =
-            (1 + eit).Gp(InternalMultivector).Gp(1 - eit);
-
-        return new RGaConformalVersor(ConformalSpace, kVector);
-    }
-
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     internal RGaConformalBlade MapBlade(RGaFloat64KVector blade)
@@ -582,11 +541,17 @@ public sealed record RGaConformalVersor
         return InverseMapVersor(versor.InternalMultivector);
     }
 
-
+    
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public string ToLaTeX()
     {
-        return ConformalSpace.ToLaTeX(InternalMultivector);
+        return BasisSpecs.ToLaTeX(InternalMultivector);
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public string ToLaTeX(RGaGeometrySpaceBasisSpecs basisSpecs)
+    {
+        return basisSpecs.ToLaTeX(InternalMultivector);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]

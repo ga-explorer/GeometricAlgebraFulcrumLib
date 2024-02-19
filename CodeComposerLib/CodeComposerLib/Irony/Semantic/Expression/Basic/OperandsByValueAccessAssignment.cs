@@ -1,41 +1,40 @@
 ﻿using System;
 using CodeComposerLib.Irony.Semantic.Expression.ValueAccess;
 
-namespace CodeComposerLib.Irony.Semantic.Expression.Basic
+namespace CodeComposerLib.Irony.Semantic.Expression.Basic;
+
+public sealed class OperandsByValueAccessAssignment : IIronyAstObject
 {
-    public sealed class OperandsByValueAccessAssignment : IIronyAstObject
+    /// <summary>
+    /// The LHS of the operand assignment
+    /// </summary>
+    public LanguageValueAccess LhsValueAccess { get; }
+
+    /// <summary>
+    /// The RHS of the operand assignment
+    /// </summary>
+    public ILanguageExpressionAtomic RhsExpression { get; private set; }
+
+    public IronyAst RootAst => LhsValueAccess.RootAst;
+
+
+    public OperandsByValueAccessAssignment(LanguageValueAccess lhsValue, ILanguageExpressionAtomic rhsExpr)
     {
-        /// <summary>
-        /// The LHS of the operand assignment
-        /// </summary>
-        public LanguageValueAccess LhsValueAccess { get; }
-
-        /// <summary>
-        /// The RHS of the operand assignment
-        /// </summary>
-        public ILanguageExpressionAtomic RhsExpression { get; private set; }
-
-        public IronyAst RootAst => LhsValueAccess.RootAst;
+        LhsValueAccess = lhsValue;
+        RhsExpression = rhsExpr;
+    }
 
 
-        public OperandsByValueAccessAssignment(LanguageValueAccess lhsValue, ILanguageExpressionAtomic rhsExpr)
-        {
-            LhsValueAccess = lhsValue;
+    public void ChangeRhsExpression(ILanguageExpressionAtomic rhsExpr)
+    {
+        if (rhsExpr.ExpressionType.IsSameType(RhsExpression.ExpressionType))
             RhsExpression = rhsExpr;
-        }
+        else
+            throw new InvalidOperationException();
+    }
 
-
-        public void ChangeRhsExpression(ILanguageExpressionAtomic rhsExpr)
-        {
-            if (rhsExpr.ExpressionType.IsSameType(RhsExpression.ExpressionType))
-                RhsExpression = rhsExpr;
-            else
-                throw new InvalidOperationException();
-        }
-
-        public override string ToString()
-        {
-            return RootAst.Describe(this);
-        }
+    public override string ToString()
+    {
+        return RootAst.Describe(this);
     }
 }

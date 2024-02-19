@@ -1,33 +1,32 @@
 ﻿using System;
 using System.Globalization;
 
-namespace TextComposerLib.Text.Linear.LineHeader
+namespace TextComposerLib.Text.Linear.LineHeader;
+
+public sealed class LtcTimeStamp : LtcLineHeader
 {
-    public sealed class LtcTimeStamp : LtcLineHeader
+    public string FormatString { get; } = "hh:mm:ss.fffffff";
+
+
+    public LtcTimeStamp()
     {
-        public string FormatString { get; } = "hh:mm:ss.fffffff";
+    }
+
+    public LtcTimeStamp(string formatString)
+    {
+        FormatString = formatString;
+    }
 
 
-        public LtcTimeStamp()
-        {
-        }
+    public override void Reset()
+    {
+    }
 
-        public LtcTimeStamp(string formatString)
-        {
-            FormatString = formatString;
-        }
-
-
-        public override void Reset()
-        {
-        }
-
-        public override string GetHeaderText()
-        {
-            return 
-                string.IsNullOrEmpty(FormatString) 
+    public override string GetHeaderText()
+    {
+        return 
+            string.IsNullOrEmpty(FormatString) 
                 ? DateTime.Now.ToString(CultureInfo.InvariantCulture) 
                 : DateTime.Now.ToString(FormatString);
-        }
     }
 }

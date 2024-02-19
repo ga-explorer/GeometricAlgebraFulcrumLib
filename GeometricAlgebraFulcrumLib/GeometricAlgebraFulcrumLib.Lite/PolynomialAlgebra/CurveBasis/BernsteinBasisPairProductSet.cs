@@ -1,160 +1,159 @@
 ﻿using System.Runtime.CompilerServices;
 using DataStructuresLib.Combinations;
 
-namespace GeometricAlgebraFulcrumLib.Lite.PolynomialAlgebra.CurveBasis
+namespace GeometricAlgebraFulcrumLib.Lite.PolynomialAlgebra.CurveBasis;
+
+/// <summary>
+/// A polynomial in this set is the product of two Bernstein polynomials
+/// from half degree basis set
+/// </summary>
+public sealed class BernsteinBasisPairProductSet :
+    IPolynomialPairProductSet
 {
-    /// <summary>
-    /// A polynomial in this set is the product of two Bernstein polynomials
-    /// from half degree basis set
-    /// </summary>
-    public sealed class BernsteinBasisPairProductSet :
-        IPolynomialPairProductSet
+    private static readonly Dictionary<int, BernsteinBasisPairProductSet> BasisSetCache
+        = new Dictionary<int, BernsteinBasisPairProductSet>();
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static BernsteinBasisPairProductSet Create(BernsteinBasisSet bernsteinBasisSet)
     {
-        private static readonly Dictionary<int, BernsteinBasisPairProductSet> BasisSetCache
-            = new Dictionary<int, BernsteinBasisPairProductSet>();
+        var n2 = 2 * bernsteinBasisSet.Degree;
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static BernsteinBasisPairProductSet Create(BernsteinBasisSet bernsteinBasisSet)
-        {
-            var n2 = 2 * bernsteinBasisSet.Degree;
-
-            if (BasisSetCache.TryGetValue(n2, out var basisSet))
-                return basisSet;
-
-            basisSet = new BernsteinBasisPairProductSet(bernsteinBasisSet);
-
-            BasisSetCache.Add(n2, basisSet);
-
+        if (BasisSetCache.TryGetValue(n2, out var basisSet))
             return basisSet;
-        }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static BernsteinBasisPairProductSet Create(int degree)
-        {
-            var n2 = 2 * degree;
+        basisSet = new BernsteinBasisPairProductSet(bernsteinBasisSet);
 
-            if (BasisSetCache.TryGetValue(n2, out var basisSet))
-                return basisSet;
+        BasisSetCache.Add(n2, basisSet);
 
-            var bernsteinBasisSet = BernsteinBasisSet.Create(degree);
-            basisSet = new BernsteinBasisPairProductSet(bernsteinBasisSet);
+        return basisSet;
+    }
 
-            BasisSetCache.Add(n2, basisSet);
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static BernsteinBasisPairProductSet Create(int degree)
+    {
+        var n2 = 2 * degree;
 
+        if (BasisSetCache.TryGetValue(n2, out var basisSet))
             return basisSet;
-        }
+
+        var bernsteinBasisSet = BernsteinBasisSet.Create(degree);
+        basisSet = new BernsteinBasisPairProductSet(bernsteinBasisSet);
+
+        BasisSetCache.Add(n2, basisSet);
+
+        return basisSet;
+    }
 
 
-        private readonly ulong _binomialConstantsDenominator;
-        private readonly ulong[,] _binomialConstantsNumerators;
-        private readonly BernsteinBasisSet _bernsteinBasisSet2;
+    private readonly ulong _binomialConstantsDenominator;
+    private readonly ulong[,] _binomialConstantsNumerators;
+    private readonly BernsteinBasisSet _bernsteinBasisSet2;
         
 
-        public BernsteinBasisSet BasisSet { get; }
+    public BernsteinBasisSet BasisSet { get; }
 
-        public int Degree 
-            => 2 * BasisSet.Degree;
+    public int Degree 
+        => 2 * BasisSet.Degree;
 
         
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private BernsteinBasisPairProductSet(BernsteinBasisSet bernsteinBasisSet)
-        {
-            var degree = bernsteinBasisSet.Degree;
-            var n2 = 2 * degree;
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    private BernsteinBasisPairProductSet(BernsteinBasisSet bernsteinBasisSet)
+    {
+        var degree = bernsteinBasisSet.Degree;
+        var n2 = 2 * degree;
             
-            BasisSet = bernsteinBasisSet;
-            _bernsteinBasisSet2 = BernsteinBasisSet.Create(n2);
-            _binomialConstantsNumerators = new ulong[degree + 1, degree + 1];
-            _binomialConstantsDenominator = n2.GetMaxBinomialCoefficient();
+        BasisSet = bernsteinBasisSet;
+        _bernsteinBasisSet2 = BernsteinBasisSet.Create(n2);
+        _binomialConstantsNumerators = new ulong[degree + 1, degree + 1];
+        _binomialConstantsDenominator = n2.GetMaxBinomialCoefficient();
 
-            FillBinomialConstants();
-        }
+        FillBinomialConstants();
+    }
         
 
-        private void FillBinomialConstants()
+    private void FillBinomialConstants()
+    {
+        var degree = BasisSet.Degree;
+        var n2 = 2 * degree;
+
+        for (var i = 0; i <= degree; i++)
         {
-            var degree = BasisSet.Degree;
-            var n2 = 2 * degree;
+            var nCi = degree.GetBinomialCoefficient(i);
 
-            for (var i = 0; i <= degree; i++)
+            _binomialConstantsNumerators[i, i] = 
+                _binomialConstantsDenominator * nCi * nCi /
+                n2.GetBinomialCoefficient(2 * i);
+
+            for (var j = i + 1; j <= degree; j++)
             {
-                var nCi = degree.GetBinomialCoefficient(i);
+                var nCj = degree.GetBinomialCoefficient(j);
 
-                _binomialConstantsNumerators[i, i] = 
-                    _binomialConstantsDenominator * nCi * nCi /
-                    n2.GetBinomialCoefficient(2 * i);
+                var binomialConstantNumerator = 
+                    _binomialConstantsDenominator * nCi * nCj /
+                    n2.GetBinomialCoefficient(i + j);
 
-                for (var j = i + 1; j <= degree; j++)
-                {
-                    var nCj = degree.GetBinomialCoefficient(j);
-
-                    var binomialConstantNumerator = 
-                        _binomialConstantsDenominator * nCi * nCj /
-                        n2.GetBinomialCoefficient(i + j);
-
-                    _binomialConstantsNumerators[i, j] = binomialConstantNumerator;
-                    _binomialConstantsNumerators[j, i] = binomialConstantNumerator;
-                }
+                _binomialConstantsNumerators[i, j] = binomialConstantNumerator;
+                _binomialConstantsNumerators[j, i] = binomialConstantNumerator;
             }
         }
+    }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public double GetBinomialConstant(int index1, int index2)
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public double GetBinomialConstant(int index1, int index2)
+    {
+        return 
+            _binomialConstantsNumerators[index1, index2] /
+            (double) _binomialConstantsDenominator;
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public double GetValue(int index1, int index2, double parameterValue)
+    {
+        return _bernsteinBasisSet2.GetValue(
+            index1 + index2, 
+            parameterValue, 
+            GetBinomialConstant(index1, index2)
+        );
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public double GetValue(int index1, int index2, double parameterValue, double termScalar)
+    {
+        return termScalar * GetValue(index1, index2, parameterValue);
+    }
+
+    public double GetValue(double parameterValue, double[,] termScalarsList)
+    {
+        var m = BasisSet.Degree;
+        var value = 0d;
+
+        for (var i = 0; i <= m; i++)
+        for (var j = 0; j <= m; j++)
         {
-            return 
-                _binomialConstantsNumerators[index1, index2] /
-                (double) _binomialConstantsDenominator;
+            value += GetValue(i, j, parameterValue, termScalarsList[i, j]);
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public double GetValue(int index1, int index2, double parameterValue)
+        return value;
+    }
+
+    public double[,] GetValues(double parameterValue)
+    {
+        var n = BasisSet.Degree;
+        var valueArray = new double[n + 1, n + 1];
+
+        for (var i = 0; i <= n; i++)
+        for (var j = 0; j <= n; j++)
         {
-            return _bernsteinBasisSet2.GetValue(
-                index1 + index2, 
-                parameterValue, 
-                GetBinomialConstant(index1, index2)
-            );
+            valueArray[i, j] = GetValue(i, j, parameterValue);
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public double GetValue(int index1, int index2, double parameterValue, double termScalar)
-        {
-            return termScalar * GetValue(index1, index2, parameterValue);
-        }
-
-        public double GetValue(double parameterValue, double[,] termScalarsList)
-        {
-            var m = BasisSet.Degree;
-            var value = 0d;
-
-            for (var i = 0; i <= m; i++)
-            for (var j = 0; j <= m; j++)
-            {
-                value += GetValue(i, j, parameterValue, termScalarsList[i, j]);
-            }
-
-            return value;
-        }
-
-        public double[,] GetValues(double parameterValue)
-        {
-            var n = BasisSet.Degree;
-            var valueArray = new double[n + 1, n + 1];
-
-            for (var i = 0; i <= n; i++)
-            for (var j = 0; j <= n; j++)
-            {
-                valueArray[i, j] = GetValue(i, j, parameterValue);
-            }
-
-            return valueArray;
-        }
+        return valueArray;
+    }
 
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public BernsteinBasisPairProductIntegralSet CreateIntegralSet()
-        {
-            return BernsteinBasisPairProductIntegralSet.Create(this);
-        }
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public BernsteinBasisPairProductIntegralSet CreateIntegralSet()
+    {
+        return BernsteinBasisPairProductIntegralSet.Create(this);
     }
 }

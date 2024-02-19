@@ -1,9 +1,8 @@
-﻿namespace GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.BabylonJs.Constants
+﻿namespace GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.BabylonJs.Constants;
+
+public enum GrBabylonJsVerticalAlignment
 {
-    public enum GrBabylonJsVerticalAlignment
-    {
-        Bottom,
-        Center,
-        Top
-    }
+    Bottom,
+    Center,
+    Top
 }

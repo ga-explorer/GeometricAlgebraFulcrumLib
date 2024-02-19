@@ -1,16 +1,15 @@
-﻿namespace CodeComposerLib.MathML.Values.Color
+﻿namespace CodeComposerLib.MathML.Values.Color;
+
+public sealed class MathMlNamedColorValue : MathMlColorValue
 {
-    public sealed class MathMlNamedColorValue : MathMlColorValue
+    public string ValueName { get; }
+
+    public override string ValueText 
+        => ValueName;
+
+    internal MathMlNamedColorValue(string valueName)
     {
-        public string ValueName { get; }
-
-        public override string ValueText 
-            => ValueName;
-
-        internal MathMlNamedColorValue(string valueName)
-        {
-            ValueName = valueName;
-        }
-
+        ValueName = valueName;
     }
+
 }

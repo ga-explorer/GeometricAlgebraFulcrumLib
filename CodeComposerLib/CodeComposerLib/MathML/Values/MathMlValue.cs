@@ -1,13 +1,12 @@
-﻿namespace CodeComposerLib.MathML.Values
+﻿namespace CodeComposerLib.MathML.Values;
+
+public abstract class MathMlValue : IMathMlValue
 {
-    public abstract class MathMlValue : IMathMlValue
+    public abstract string ValueText { get; }
+
+
+    public override string ToString()
     {
-        public abstract string ValueText { get; }
-
-
-        public override string ToString()
-        {
-            return ValueText;
-        }
+        return ValueText;
     }
 }

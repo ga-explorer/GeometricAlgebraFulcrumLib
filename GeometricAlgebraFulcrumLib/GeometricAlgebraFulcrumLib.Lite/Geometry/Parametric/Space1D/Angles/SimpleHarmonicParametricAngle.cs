@@ -1,4 +1,6 @@
 ﻿using System.Runtime.CompilerServices;
+using GeometricAlgebraFulcrumLib.Lite.Geometry.Parametric.Space1D.Scalars;
+using GeometricAlgebraFulcrumLib.Lite.Geometry.Parametric.Space1D.Scalars.Harmonic;
 using GeometricAlgebraFulcrumLib.Lite.LinearAlgebra;
 using GeometricAlgebraFulcrumLib.Lite.ScalarAlgebra;
 
@@ -86,6 +88,17 @@ public class SimpleHarmonicParametricAngle :
         return Float64PlanarAngle.CreateFromRadians(
             angle,
             Float64PlanarAngleRange.Positive
+        );
+    }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public IParametricScalar ToRadianParametricScalar()
+    {
+        return SimpleHarmonicParametricScalar.Create(
+            ParameterRange,
+            Frequency,
+            Magnitude,
+            ParameterShift
         );
     }
 

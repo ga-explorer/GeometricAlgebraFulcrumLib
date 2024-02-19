@@ -1,15 +1,14 @@
-﻿namespace CodeComposerLib.Languages.Mathematica
+﻿namespace CodeComposerLib.Languages.Mathematica;
+
+public static class CclMathematicaUtils
 {
-    public static class CclMathematicaUtils
+    public static CclLanguageInfo Mathematica7Info { get; private set; }
+
+
+    static CclMathematicaUtils()
     {
-        public static CclLanguageInfo Mathematica7Info { get; private set; }
-
-
-        static CclMathematicaUtils()
-        {
-            Mathematica7Info = new CclLanguageInfo("Mathematica", "7.0", "Mathematica 7.0");
-        }
-
-
+        Mathematica7Info = new CclLanguageInfo("Mathematica", "7.0", "Mathematica 7.0");
     }
+
+
 }

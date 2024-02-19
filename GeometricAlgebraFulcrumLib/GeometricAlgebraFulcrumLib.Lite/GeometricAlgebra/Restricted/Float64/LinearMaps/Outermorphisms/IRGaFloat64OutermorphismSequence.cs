@@ -1,7 +1,6 @@
-﻿namespace GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Restricted.Float64.LinearMaps.Outermorphisms
+﻿namespace GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Restricted.Float64.LinearMaps.Outermorphisms;
+
+public interface IRGaFloat64OutermorphismSequence
 {
-    public interface IRGaFloat64OutermorphismSequence
-    {
-        IEnumerable<IRGaFloat64Outermorphism> GetLeafOutermorphisms();
-    }
+    IEnumerable<IRGaFloat64Outermorphism> GetLeafOutermorphisms();
 }

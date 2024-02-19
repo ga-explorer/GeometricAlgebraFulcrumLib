@@ -45,5 +45,4 @@ public abstract class LibType
     public abstract IReadOnlyList<RGaBasisBlade> GetBasisBlades();
 
     public abstract IReadOnlyList<int> GetBasisBladeIDs();
-
 }

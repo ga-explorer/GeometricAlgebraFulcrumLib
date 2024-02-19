@@ -2,40 +2,39 @@
 using TextComposerLib.Code.JavaScript;
 using TextComposerLib.Text;
 
-namespace GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.ThreeJs.Obsolete.Geometry
+namespace GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.ThreeJs.Obsolete.Geometry;
+
+/// <summary>
+/// Creates extruded geometry from a path shape.
+/// https://threejs.org/docs/#api/en/geometries/ExtrudeGeometry
+/// </summary>
+public class TjExtrudeGeometry :
+    TjBufferGeometryBase
 {
-    /// <summary>
-    /// Creates extruded geometry from a path shape.
-    /// https://threejs.org/docs/#api/en/geometries/ExtrudeGeometry
-    /// </summary>
-    public class TjExtrudeGeometry :
-        TjBufferGeometryBase
+    public override string JavaScriptClassName 
+        => "ExtrudeGeometry";
+
+    public TjExtrudeGeometrySettings Settings { get; }
+        = new TjExtrudeGeometrySettings();
+
+    public List<TjShape> ShapesList { get; }
+        = new List<TjShape>();
+
+
+    public override void UpdateConstructorAttributes(JavaScriptAttributesDictionary attributesDictionary)
     {
-        public override string JavaScriptClassName 
-            => "ExtrudeGeometry";
+        base.UpdateConstructorAttributes(attributesDictionary);
 
-        public TjExtrudeGeometrySettings Settings { get; }
-            = new TjExtrudeGeometrySettings();
+        var shapesText =
+            ShapesList
+                .Select(s => s.GetJavaScriptVariableNameOrCode())
+                .Concatenate(", ", "[", "]");
 
-        public List<TjShape> ShapesList { get; }
-            = new List<TjShape>();
+        var settingsText =
+            Settings.GetJavaScriptVariableNameOrCode();
 
-
-        public override void UpdateConstructorAttributes(JavaScriptAttributesDictionary attributesDictionary)
-        {
-            base.UpdateConstructorAttributes(attributesDictionary);
-
-            var shapesText =
-                ShapesList
-                    .Select(s => s.GetJavaScriptVariableNameOrCode())
-                    .Concatenate(", ", "[", "]");
-
-            var settingsText =
-                Settings.GetJavaScriptVariableNameOrCode();
-
-            attributesDictionary
-                .SetTextValue("shapes", shapesText, "[]")
-                .SetTextValue("options", settingsText, "{}");
-        }
+        attributesDictionary
+            .SetTextValue("shapes", shapesText, "[]")
+            .SetTextValue("options", settingsText, "{}");
     }
 }

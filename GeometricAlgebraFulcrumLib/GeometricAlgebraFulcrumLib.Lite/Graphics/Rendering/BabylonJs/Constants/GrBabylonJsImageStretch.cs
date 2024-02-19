@@ -1,11 +1,10 @@
-﻿namespace GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.BabylonJs.Constants
+﻿namespace GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.BabylonJs.Constants;
+
+public enum GrBabylonJsImageStretch
 {
-    public enum GrBabylonJsImageStretch
-    {
-        None = 0,
-        Fill = 1,
-        Uniform = 2,
-        Extend = 3,
-        NinePatch = 4
-    }
+    None = 0,
+    Fill = 1,
+    Uniform = 2,
+    Extend = 3,
+    NinePatch = 4
 }

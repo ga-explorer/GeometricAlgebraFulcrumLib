@@ -1,7 +1,6 @@
-﻿namespace GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.PovRay.SDL.Objects
+﻿namespace GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.PovRay.SDL.Objects;
+
+public abstract class SdlPolynomialObject : SdlObject, ISdlPolynomialObject
 {
-    public abstract class SdlPolynomialObject : SdlObject, ISdlPolynomialObject
-    {
-        public bool SturmianRootSolver { get; set; }
-    }
+    public bool SturmianRootSolver { get; set; }
 }

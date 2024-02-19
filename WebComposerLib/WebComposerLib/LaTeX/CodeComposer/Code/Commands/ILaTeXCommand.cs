@@ -1,20 +1,19 @@
 ﻿using WebComposerLib.LaTeX.CodeComposer.Code.Arguments;
 
-namespace WebComposerLib.LaTeX.CodeComposer.Code.Commands
+namespace WebComposerLib.LaTeX.CodeComposer.Code.Commands;
+
+/// <summary>
+/// This interface represents a single LaTeX command.
+/// </summary>
+public interface ILaTeXCommand : ILaTeXCodeSection
 {
     /// <summary>
-    /// This interface represents a single LaTeX command.
+    /// The name of the command; for example: begin, documentclass, usepackage, maketitle, etc.
     /// </summary>
-    public interface ILaTeXCommand : ILaTeXCodeSection
-    {
-        /// <summary>
-        /// The name of the command; for example: begin, documentclass, usepackage, maketitle, etc.
-        /// </summary>
-        string CommandName { get; }
+    string CommandName { get; }
 
-        /// <summary>
-        /// The arguments of this command
-        /// </summary>
-        IEnumerable<LaTeXArgument> Arguments { get; }
-    }
+    /// <summary>
+    /// The arguments of this command
+    /// </summary>
+    IEnumerable<LaTeXArgument> Arguments { get; }
 }

@@ -161,6 +161,64 @@ public static class RGaConformalEncodeEGaUtils
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static RGaConformalBlade EncodeEGaVectorBlade(this IFloat64Vector2D egaKVector, RGaConformalSpace conformalSpace)
+    {
+        return conformalSpace.EncodeEGaVector(egaKVector);
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static RGaConformalBlade EncodeEGaVectorBlade(this IFloat64Vector3D egaKVector, RGaConformalSpace conformalSpace)
+    {
+        return conformalSpace.EncodeEGaVector(egaKVector);
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static RGaConformalBlade EncodeEGaVectorBlade(this Float64Vector egaKVector, RGaConformalSpace conformalSpace)
+    {
+        return conformalSpace.EncodeEGaVector(egaKVector);
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static RGaConformalBlade EncodeEGaVectorBlade(this RGaFloat64Vector egaKVector, RGaConformalSpace conformalSpace)
+    {
+        return conformalSpace.EncodeEGaVector(egaKVector);
+    }
+
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static RGaConformalBlade EncodeEGaBivectorBlade(this Float64Bivector2D egaKVector, RGaConformalSpace conformalSpace)
+    {
+        return conformalSpace.EncodeEGaBivector(egaKVector);
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static RGaConformalBlade EncodeEGaBivectorBlade(this Float64Bivector3D egaKVector, RGaConformalSpace conformalSpace)
+    {
+        return conformalSpace.EncodeEGaBivector(egaKVector);
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static RGaConformalBlade EncodeEGaBivectorBlade(this RGaFloat64Bivector egaKVector, RGaConformalSpace conformalSpace)
+    {
+        return conformalSpace.EncodeEGaBivector(egaKVector);
+    }
+
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static RGaConformalBlade EncodeEGaTrivectorBlade(this Float64Trivector3D egaKVector, RGaConformalSpace conformalSpace)
+    {
+        return conformalSpace.EncodeEGaTrivector(egaKVector);
+    }
+
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static RGaConformalBlade EncodeEGaBlade(this RGaFloat64KVector egaKVector, RGaConformalSpace conformalSpace)
+    {
+        return conformalSpace.EncodeEGaBlade(egaKVector);
+    }
+
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static RGaConformalBlade EncodeEGaVector(this RGaConformalSpace conformalSpace, double x, double y)
     {
         return new RGaConformalBlade(

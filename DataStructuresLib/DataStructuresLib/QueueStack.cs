@@ -1,110 +1,109 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 
-namespace DataStructuresLib
+namespace DataStructuresLib;
+
+/// <summary>
+/// This structure can act as either a stack or queue depending on how it's
+/// initialized
+/// </summary>
+/// <typeparam name="T"></typeparam>
+public class QueueStack<T> : IEnumerable<T>
 {
-    /// <summary>
-    /// This structure can act as either a stack or queue depending on how it's
-    /// initialized
-    /// </summary>
-    /// <typeparam name="T"></typeparam>
-    public class QueueStack<T> : IEnumerable<T>
+    private readonly Stack<T> _stack;
+    private readonly Queue<T> _queue;
+
+
+    public bool IsStack { get; }
+
+    public bool IsQueue => !IsStack;
+
+    public int Count 
+        => IsStack ? _stack.Count : _queue.Count;
+
+
+    public QueueStack(bool isStack)
     {
-        private readonly Stack<T> _stack;
-        private readonly Queue<T> _queue;
+        IsStack = isStack;
+
+        _stack = isStack ? new Stack<T>() : null;
+        _queue = isStack ? null : new Queue<T>();
+    }
 
 
-        public bool IsStack { get; }
+    public void Clear()
+    {
+        if (IsStack)
+            _stack.Clear();
+        else
+            _queue.Clear();
+    }
 
-        public bool IsQueue => !IsStack;
+    public bool Contains(T item)
+    {
+        return IsStack
+            ? _stack.Contains(item)
+            : _queue.Contains(item);
+    }
 
-        public int Count 
-            => IsStack ? _stack.Count : _queue.Count;
+    public T Peek()
+    {
+        return IsStack
+            ? _stack.Peek()
+            : _queue.Peek();
+    }
 
+    public void Add(T item)
+    {
+        if (IsStack)
+            _stack.Push(item);
 
-        public QueueStack(bool isStack)
-        {
-            IsStack = isStack;
+        else
+            _queue.Enqueue(item);
+    }
 
-            _stack = isStack ? new Stack<T>() : null;
-            _queue = isStack ? null : new Queue<T>();
-        }
-
-
-        public void Clear()
-        {
-            if (IsStack)
-                _stack.Clear();
-            else
-                _queue.Clear();
-        }
-
-        public bool Contains(T item)
-        {
-            return IsStack
-                ? _stack.Contains(item)
-                : _queue.Contains(item);
-        }
-
-        public T Peek()
-        {
-            return IsStack
-                ? _stack.Peek()
-                : _queue.Peek();
-        }
-
-        public void Add(T item)
-        {
-            if (IsStack)
+    public void AddItems(params T[] items)
+    {
+        if (IsStack)
+            foreach (var item in items)
                 _stack.Push(item);
 
-            else
+        else
+            foreach (var item in items)
                 _queue.Enqueue(item);
-        }
+    }
 
-        public void AddItems(params T[] items)
-        {
-            if (IsStack)
-                foreach (var item in items)
-                    _stack.Push(item);
+    public void AddItems(IEnumerable<T> items)
+    {
+        if (IsStack)
+            foreach (var item in items)
+                _stack.Push(item);
 
-            else
-                foreach (var item in items)
-                    _queue.Enqueue(item);
-        }
+        else
+            foreach (var item in items)
+                _queue.Enqueue(item);
+    }
 
-        public void AddItems(IEnumerable<T> items)
-        {
-            if (IsStack)
-                foreach (var item in items)
-                    _stack.Push(item);
+    public T Remove()
+    {
+        return IsStack 
+            ? _stack.Pop() 
+            : _queue.Dequeue();
+    }
 
-            else
-                foreach (var item in items)
-                    _queue.Enqueue(item);
-        }
+    public IEnumerator<T> GetEnumerator()
+    {
+        if (IsStack)
+            return _stack.GetEnumerator();
 
-        public T Remove()
-        {
-            return IsStack 
-                ? _stack.Pop() 
-                : _queue.Dequeue();
-        }
+        return _queue.GetEnumerator();
+    }
 
-        public IEnumerator<T> GetEnumerator()
-        {
-            if (IsStack)
-                return _stack.GetEnumerator();
+    IEnumerator IEnumerable.GetEnumerator()
+    {
+        if (IsStack)
+            return _stack.GetEnumerator();
 
-            return _queue.GetEnumerator();
-        }
-
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            if (IsStack)
-                return _stack.GetEnumerator();
-
-            return _queue.GetEnumerator();
-        }
+        return _queue.GetEnumerator();
     }
 }

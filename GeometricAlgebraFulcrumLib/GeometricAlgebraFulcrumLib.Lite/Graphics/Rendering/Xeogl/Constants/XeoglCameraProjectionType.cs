@@ -1,10 +1,9 @@
-﻿namespace GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.Xeogl.Constants
+﻿namespace GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.Xeogl.Constants;
+
+public enum XeoglCameraProjectionType
 {
-    public enum XeoglCameraProjectionType
-    {
-        Perspective = 0, 
-        Orthographic = 1, 
-        Frustum = 2,
-        Custom = 3
-    }
+    Perspective = 0, 
+    Orthographic = 1, 
+    Frustum = 2,
+    Custom = 3
 }

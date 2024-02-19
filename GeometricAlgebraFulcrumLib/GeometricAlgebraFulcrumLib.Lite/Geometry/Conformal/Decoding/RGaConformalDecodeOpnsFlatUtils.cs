@@ -126,7 +126,7 @@ public static class RGaConformalDecodeOpnsFlatUtils
         );
 
         Debug.Assert(
-            flat.IpnsFlatPosition.Op(opnsFlat).IsNearZero()
+            flat.PositionToIpnsPoint().Op(opnsFlat).IsNearZero()
         );
 
         return flat;
@@ -265,6 +265,12 @@ public static class RGaConformalDecodeOpnsFlatUtils
             opnsFlat.ConformalSpace.ZeroVectorBlade
         );
     }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static Float64Vector2D DecodeOpnsFlatEGaPosition2D(this RGaConformalBlade opnsFlat)
+    {
+        return opnsFlat.DecodeOpnsFlatEGaPosition().DecodeEGaVector2D();
+    }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Float64Vector2D DecodeOpnsFlatEGaPosition2D(this RGaConformalBlade opnsFlat, Float64Vector2D egaProbePoint)
@@ -272,6 +278,12 @@ public static class RGaConformalDecodeOpnsFlatUtils
         return opnsFlat.DecodeOpnsFlatEGaPosition(
             opnsFlat.ConformalSpace.EncodeEGaVector(egaProbePoint)
         ).DecodeEGaVector2D();
+    }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static Float64Vector3D DecodeOpnsFlatEGaPosition3D(this RGaConformalBlade opnsFlat)
+    {
+        return opnsFlat.DecodeOpnsFlatEGaPosition().DecodeEGaVector3D();
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]

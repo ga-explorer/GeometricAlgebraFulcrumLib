@@ -7,129 +7,128 @@ using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.Proc
 using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Generic;
 using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Generic.LinearMaps;
 
-namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.LinearMaps.Projectors
+namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.LinearMaps.Projectors;
+
+public sealed class XGaProjector<T> :
+    XGaOutermorphismBase<T>,
+    IXGaProjector<T>
 {
-    public sealed class XGaProjector<T> :
-        XGaOutermorphismBase<T>,
-        IXGaProjector<T>
+    public override XGaProcessor<T> Processor 
+        => Blade.Processor;
+        
+    public XGaKVector<T> Blade { get; }
+
+    public XGaKVector<T> BladePseudoInverse { get; }
+
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    internal XGaProjector(XGaKVector<T> blade, bool useBladeInverse)
     {
-        public override XGaProcessor<T> Processor 
-            => Blade.Processor;
+        Blade = blade;
+        BladePseudoInverse = useBladeInverse ? blade.PseudoInverse() : blade;
+    }
+
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public override bool IsValid()
+    {
+        return true;
+    }
         
-        public XGaKVector<T> Blade { get; }
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public override IXGaOutermorphism<T> GetOmAdjoint()
+    {
+        throw new NotImplementedException();
+    }
 
-        public XGaKVector<T> BladePseudoInverse { get; }
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public override XGaVector<T> OmMapBasisVector(int index)
+    {
+        var id = index.IndexToIndexSet();
 
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal XGaProjector(XGaKVector<T> blade, bool useBladeInverse)
-        {
-            Blade = blade;
-            BladePseudoInverse = useBladeInverse ? blade.PseudoInverse() : blade;
-        }
-
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override bool IsValid()
-        {
-            return true;
-        }
-        
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override IXGaOutermorphism<T> GetOmAdjoint()
-        {
-            throw new NotImplementedException();
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override XGaVector<T> OmMapBasisVector(int index)
-        {
-            var id = index.IndexToIndexSet();
-
-            return OmMapBasisBlade(id).GetVectorPart();
-
-        }
-        
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override XGaBivector<T> OmMapBasisBivector(int index1, int index2)
-        {
-            var id = IndexSetUtils.IndexPairToIndexSet(index1, index2);
-
-            return OmMapBasisBlade(id).GetBivectorPart();
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override XGaKVector<T> OmMapBasisBlade(IIndexSet id)
-        {
-            return OmMap(
-                Processor.CreateTermKVector(
-                    id, 
-                    ScalarProcessor.ScalarOne
-                )
-            );
-        }
-        
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override XGaVector<T> OmMap(XGaVector<T> vector)
-        {
-            return vector.Fdp(BladePseudoInverse).Gp(Blade).GetVectorPart();
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override XGaBivector<T> OmMap(XGaBivector<T> bivector)
-        {
-            return bivector.Fdp(BladePseudoInverse).Gp(Blade).GetBivectorPart();
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override XGaHigherKVector<T> OmMap(XGaHigherKVector<T> kVector)
-        {
-            return kVector.Fdp(BladePseudoInverse).Gp(Blade).GetHigherKVectorPart(kVector.Grade);
-        }
-        
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override XGaMultivector<T> OmMap(XGaMultivector<T> multivector)
-        {
-            return multivector.Fdp(BladePseudoInverse).Gp(Blade);
-        }
-        
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override IEnumerable<KeyValuePair<IIndexSet, XGaVector<T>>> GetOmMappedBasisVectors(int vSpaceDimensions)
-        {
-            return Processor
-                .GetBasisVectorIds(vSpaceDimensions)
-                .Select(id => 
-                    new KeyValuePair<IIndexSet, XGaVector<T>>(
-                        id,
-                        OmMap(
-                            Processor.CreateTermVector(id, ScalarProcessor.ScalarOne)
-                        )
-                    )
-                ).Where(r => !r.Value.IsZero);
-        }
-        
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override IEnumerable<KeyValuePair<IIndexSet, XGaMultivector<T>>> GetMappedBasisBlades(
-            int vSpaceDimensions)
-        {
-            return Processor
-                .GetBasisBladeIds(vSpaceDimensions)
-                .Select(id => 
-                    new KeyValuePair<IIndexSet, XGaMultivector<T>>(
-                        id,
-                        OmMapBasisBlade(id)
-                    )
-                ).Where(r => !r.Value.IsZero);
-        }
-        
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override LinUnilinearMap<T> GetVectorMapPart(int vSpaceDimensions)
-        {
-            return ScalarProcessor.CreateLinUnilinearMap(
-                vSpaceDimensions,
-                index => OmMapBasisVector(index).ToLinVector()
-            );
-        }
+        return OmMapBasisBlade(id).GetVectorPart();
 
     }
+        
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public override XGaBivector<T> OmMapBasisBivector(int index1, int index2)
+    {
+        var id = IndexSetUtils.IndexPairToIndexSet(index1, index2);
+
+        return OmMapBasisBlade(id).GetBivectorPart();
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public override XGaKVector<T> OmMapBasisBlade(IIndexSet id)
+    {
+        return OmMap(
+            Processor.CreateTermKVector(
+                id, 
+                ScalarProcessor.ScalarOne
+            )
+        );
+    }
+        
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public override XGaVector<T> OmMap(XGaVector<T> vector)
+    {
+        return vector.Fdp(BladePseudoInverse).Gp(Blade).GetVectorPart();
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public override XGaBivector<T> OmMap(XGaBivector<T> bivector)
+    {
+        return bivector.Fdp(BladePseudoInverse).Gp(Blade).GetBivectorPart();
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public override XGaHigherKVector<T> OmMap(XGaHigherKVector<T> kVector)
+    {
+        return kVector.Fdp(BladePseudoInverse).Gp(Blade).GetHigherKVectorPart(kVector.Grade);
+    }
+        
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public override XGaMultivector<T> OmMap(XGaMultivector<T> multivector)
+    {
+        return multivector.Fdp(BladePseudoInverse).Gp(Blade);
+    }
+        
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public override IEnumerable<KeyValuePair<IIndexSet, XGaVector<T>>> GetOmMappedBasisVectors(int vSpaceDimensions)
+    {
+        return Processor
+            .GetBasisVectorIds(vSpaceDimensions)
+            .Select(id => 
+                new KeyValuePair<IIndexSet, XGaVector<T>>(
+                    id,
+                    OmMap(
+                        Processor.CreateTermVector(id, ScalarProcessor.ScalarOne)
+                    )
+                )
+            ).Where(r => !r.Value.IsZero);
+    }
+        
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public override IEnumerable<KeyValuePair<IIndexSet, XGaMultivector<T>>> GetMappedBasisBlades(
+        int vSpaceDimensions)
+    {
+        return Processor
+            .GetBasisBladeIds(vSpaceDimensions)
+            .Select(id => 
+                new KeyValuePair<IIndexSet, XGaMultivector<T>>(
+                    id,
+                    OmMapBasisBlade(id)
+                )
+            ).Where(r => !r.Value.IsZero);
+    }
+        
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public override LinUnilinearMap<T> GetVectorMapPart(int vSpaceDimensions)
+    {
+        return ScalarProcessor.CreateLinUnilinearMap(
+            vSpaceDimensions,
+            index => OmMapBasisVector(index).ToLinVector()
+        );
+    }
+
 }

@@ -4,75 +4,74 @@ using System.Collections.Generic;
 using System.Linq;
 using DataStructuresLib.Basic;
 
-namespace DataStructuresLib.Collections.PeriodicLists
+namespace DataStructuresLib.Collections.PeriodicLists;
+
+public class ProListChainedLists<TValue> :
+    IPeriodicReadOnlyList<TValue>
 {
-    public class ProListChainedLists<TValue> :
-        IPeriodicReadOnlyList<TValue>
+    private readonly List<IPeriodicReadOnlyList<TValue>> _laticesList
+        = new List<IPeriodicReadOnlyList<TValue>>();
+
+
+    public int Count 
+        => _laticesList.Sum(lattice => lattice.Count);
+
+    public TValue this[int index]
     {
-        private readonly List<IPeriodicReadOnlyList<TValue>> _laticesList
-            = new List<IPeriodicReadOnlyList<TValue>>();
-
-
-        public int Count 
-            => _laticesList.Sum(lattice => lattice.Count);
-
-        public TValue this[int index]
+        get
         {
-            get
+            index = index.Mod(Count);
+            foreach (var sourceLattice in _laticesList)
             {
-                index = index.Mod(Count);
-                foreach (var sourceLattice in _laticesList)
-                {
-                    if (index < sourceLattice.Count)
-                        return sourceLattice[index];
+                if (index < sourceLattice.Count)
+                    return sourceLattice[index];
 
-                    index -= sourceLattice.Count;
-                }
-
-                //This should never happen
-                throw new InvalidOperationException();
+                index -= sourceLattice.Count;
             }
+
+            //This should never happen
+            throw new InvalidOperationException();
         }
+    }
 
         
-        public ProListChainedLists<TValue> AppendLattice(IPeriodicReadOnlyList<TValue> sourceLattice)
-        {
-            _laticesList.Add(sourceLattice);
+    public ProListChainedLists<TValue> AppendLattice(IPeriodicReadOnlyList<TValue> sourceLattice)
+    {
+        _laticesList.Add(sourceLattice);
 
-            return this;
-        }
+        return this;
+    }
 
-        public ProListChainedLists<TValue> PrependLattice(IPeriodicReadOnlyList<TValue> sourceLattice)
-        {
-            _laticesList.Insert(0, sourceLattice);
+    public ProListChainedLists<TValue> PrependLattice(IPeriodicReadOnlyList<TValue> sourceLattice)
+    {
+        _laticesList.Insert(0, sourceLattice);
 
-            return this;
-        }
+        return this;
+    }
 
-        public ProListChainedLists<TValue> PrependLattice(IPeriodicReadOnlyList<TValue> sourceLattice, int index)
-        {
-            _laticesList.Insert(index, sourceLattice);
+    public ProListChainedLists<TValue> PrependLattice(IPeriodicReadOnlyList<TValue> sourceLattice, int index)
+    {
+        _laticesList.Insert(index, sourceLattice);
 
-            return this;
-        }
+        return this;
+    }
 
-        public ProListChainedLists<TValue> RemoveLattice(int index)
-        {
-            _laticesList.RemoveAt(index);
+    public ProListChainedLists<TValue> RemoveLattice(int index)
+    {
+        _laticesList.RemoveAt(index);
 
-            return this;
-        }
+        return this;
+    }
 
-        public IEnumerator<TValue> GetEnumerator()
-        {
-            return _laticesList
-                .SelectMany(lattice => lattice)
-                .GetEnumerator();
-        }
+    public IEnumerator<TValue> GetEnumerator()
+    {
+        return _laticesList
+            .SelectMany(lattice => lattice)
+            .GetEnumerator();
+    }
 
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
-        }
+    IEnumerator IEnumerable.GetEnumerator()
+    {
+        return GetEnumerator();
     }
 }

@@ -1,7 +1,6 @@
-﻿namespace CodeComposerLib.HTMLold.Values
+﻿namespace CodeComposerLib.HTMLold.Values;
+
+public interface IHtmlValue
 {
-    public interface IHtmlValue
-    {
-        string ValueText { get; }
-    }
+    string ValueText { get; }
 }

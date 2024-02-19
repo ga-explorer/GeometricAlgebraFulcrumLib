@@ -1,7 +1,6 @@
-﻿namespace WebComposerLib.Svg.Elements.Categories
+﻿namespace WebComposerLib.Svg.Elements.Categories;
+
+public interface ISvgPaintServerElement : ISvgElement
 {
-    public interface ISvgPaintServerElement : ISvgElement
-    {
         
-    }
 }

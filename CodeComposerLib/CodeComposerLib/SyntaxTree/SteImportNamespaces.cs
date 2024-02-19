@@ -1,20 +1,19 @@
 ﻿using System.Collections.Generic;
 
-namespace CodeComposerLib.SyntaxTree
+namespace CodeComposerLib.SyntaxTree;
+
+public class SteImportNamespaces : SteSyntaxElement
 {
-    public class SteImportNamespaces : SteSyntaxElement
+    public List<string> ImportedNamespaces { get; private set; }
+
+
+    public SteImportNamespaces()
     {
-        public List<string> ImportedNamespaces { get; private set; }
+        ImportedNamespaces = new List<string>();
+    }
 
-
-        public SteImportNamespaces()
-        {
-            ImportedNamespaces = new List<string>();
-        }
-
-        public SteImportNamespaces(IEnumerable<string> importedNamespaces)
-        {
-            ImportedNamespaces = new List<string>(importedNamespaces);
-        }
+    public SteImportNamespaces(IEnumerable<string> importedNamespaces)
+    {
+        ImportedNamespaces = new List<string>(importedNamespaces);
     }
 }

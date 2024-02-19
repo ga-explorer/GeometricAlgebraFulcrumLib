@@ -1,37 +1,36 @@
-﻿namespace CodeComposerLib.Irony.Semantic.Scope
+﻿namespace CodeComposerLib.Irony.Semantic.Scope;
+
+/// <summary>
+/// This class represents a root scope. There can be one root scope per parent Irony DSL
+/// </summary>
+public sealed class ScopeRoot : LanguageScope
 {
     /// <summary>
-    /// This class represents a root scope. There can be one root scope per parent Irony DSL
+    /// The parent Irony DSL for this scope
     /// </summary>
-    public sealed class ScopeRoot : LanguageScope
+    public override IronyAst RootAst { get; }
+
+
+    private ScopeRoot(IronyAst parentDsl)
+        : base(null)
     {
-        /// <summary>
-        /// The parent Irony DSL for this scope
-        /// </summary>
-        public override IronyAst RootAst { get; }
+        RootAst = parentDsl;
+    }
+
+    private ScopeRoot(IronyAst parentDsl, string scopeName)
+        : base(null, scopeName)
+    {
+        RootAst = parentDsl;
+    }
 
 
-        private ScopeRoot(IronyAst parentDsl)
-            : base(null)
-        {
-            RootAst = parentDsl;
-        }
+    public static ScopeRoot Create(IronyAst parentDsl)
+    {
+        return new ScopeRoot(parentDsl);
+    }
 
-        private ScopeRoot(IronyAst parentDsl, string scopeName)
-            : base(null, scopeName)
-        {
-            RootAst = parentDsl;
-        }
-
-
-        public static ScopeRoot Create(IronyAst parentDsl)
-        {
-            return new ScopeRoot(parentDsl);
-        }
-
-        public static ScopeRoot Create(IronyAst parentDsl, string scopeName)
-        {
-            return new ScopeRoot(parentDsl, scopeName);
-        }
+    public static ScopeRoot Create(IronyAst parentDsl, string scopeName)
+    {
+        return new ScopeRoot(parentDsl, scopeName);
     }
 }

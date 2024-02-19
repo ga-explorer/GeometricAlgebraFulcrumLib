@@ -1,13 +1,12 @@
 ﻿using System.Collections.Generic;
 
-namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra
+namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra;
+
+public interface ILinArrayStorage<out T>
 {
-    public interface ILinArrayStorage<out T>
-    {
-        bool IsEmpty();
+    bool IsEmpty();
 
-        int GetSparseCount();
+    int GetSparseCount();
 
-        IEnumerable<T> GetScalars();
-    }
+    IEnumerable<T> GetScalars();
 }

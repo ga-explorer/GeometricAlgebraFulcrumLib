@@ -1,7 +1,6 @@
-﻿namespace GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.KonvaJs
+﻿namespace GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.KonvaJs;
+
+public interface IGrKonvaJsCodeElement
 {
-    public interface IGrKonvaJsCodeElement
-    {
-        string GetCode();
-    }
+    string GetCode();
 }

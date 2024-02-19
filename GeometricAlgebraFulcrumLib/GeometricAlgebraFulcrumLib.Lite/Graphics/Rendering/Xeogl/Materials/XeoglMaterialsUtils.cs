@@ -1,32 +1,31 @@
 ﻿
 
-namespace GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.Xeogl.Materials
+namespace GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.Xeogl.Materials;
+
+public static class XeoglMaterialsUtils
 {
-    public static class XeoglMaterialsUtils
+    public static XeoglLambertMaterial ToXeoglEmissiveLambertMaterial(this Color color)
     {
-        public static XeoglLambertMaterial ToXeoglEmissiveLambertMaterial(this Color color)
+        return new XeoglLambertMaterial()
         {
-            return new XeoglLambertMaterial()
-            {
-                EmissiveColor = color
-            };
-        }
+            EmissiveColor = color
+        };
+    }
 
-        public static XeoglPhongMaterial ToXeoglEmissivePhongMaterial(this Color color)
+    public static XeoglPhongMaterial ToXeoglEmissivePhongMaterial(this Color color)
+    {
+        return new XeoglPhongMaterial()
         {
-            return new XeoglPhongMaterial()
-            {
-                EmissiveColor = color
-            };
-        }
+            EmissiveColor = color
+        };
+    }
 
-        public static XeoglPhongMaterial ToXeoglEmissivePhongMaterial(this Color color, int linePixelsWidth)
+    public static XeoglPhongMaterial ToXeoglEmissivePhongMaterial(this Color color, int linePixelsWidth)
+    {
+        return new XeoglPhongMaterial()
         {
-            return new XeoglPhongMaterial()
-            {
-                EmissiveColor = color,
-                LinePixelsWidth = linePixelsWidth
-            };
-        }
+            EmissiveColor = color,
+            LinePixelsWidth = linePixelsWidth
+        };
     }
 }

@@ -2,19 +2,18 @@
 using GeometricAlgebraFulcrumLib.Lite.LinearAlgebra.Frames.Space3D;
 using GeometricAlgebraFulcrumLib.Lite.LinearAlgebra.Vectors.Space3D;
 
-namespace GeometricAlgebraFulcrumLib.Lite.Graphics.Primitives
+namespace GeometricAlgebraFulcrumLib.Lite.Graphics.Primitives;
+
+public interface IGraphicsSurfaceLocalFrame3D : 
+    IFloat64Vector3D
 {
-    public interface IGraphicsSurfaceLocalFrame3D : 
-        IFloat64Vector3D
-    {
-        int Index { get; }
+    int Index { get; }
 
-        Float64Vector3D Point { get; }
+    Float64Vector3D Point { get; }
 
-        Color Color { get; set; }
+    Color Color { get; set; }
 
-        Pair<double> ParameterValue { get; }
+    Pair<double> ParameterValue { get; }
 
-        Normal3D Normal { get; }
-    }
+    Normal3D Normal { get; }
 }

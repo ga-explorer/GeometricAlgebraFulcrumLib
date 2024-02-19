@@ -1,7 +1,6 @@
-﻿namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices
+﻿namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices;
+
+public interface IMatrixStorageContainer<T>
 {
-    public interface IMatrixStorageContainer<T>
-    {
-        ILinMatrixStorage<T> GetLinMatrixStorage();
-    }
+    ILinMatrixStorage<T> GetLinMatrixStorage();
 }

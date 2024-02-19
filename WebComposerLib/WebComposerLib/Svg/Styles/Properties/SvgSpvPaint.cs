@@ -3,235 +3,234 @@ using WebComposerLib.Html.Media;
 using WebComposerLib.Svg.Attributes;
 using WebComposerLib.Svg.Values;
 
-namespace WebComposerLib.Svg.Styles.Properties
+namespace WebComposerLib.Svg.Styles.Properties;
+
+/// <inheritdoc />
+/// <summary>
+/// https://www.w3.org/TR/SVG/painting.html#SpecifyingPaint
+/// </summary>
+public sealed class SvgSpvPaint : SvgStylePropertyValue
 {
-    /// <inheritdoc />
-    /// <summary>
-    /// https://www.w3.org/TR/SVG/painting.html#SpecifyingPaint
-    /// </summary>
-    public sealed class SvgSpvPaint : SvgStylePropertyValue
+    private SvgConstants.ColorSpecs _colorSpecs = SvgConstants.ColorSpecs.ColorValue;
+    public SvgConstants.ColorSpecs ColorSpecs
     {
-        private SvgConstants.ColorSpecs _colorSpecs = SvgConstants.ColorSpecs.ColorValue;
-        public SvgConstants.ColorSpecs ColorSpecs
+        get => _colorSpecs;
+        set
         {
-            get => _colorSpecs;
-            set
-            {
-                _colorSpecs = value;
-                IsValueComputed = true;
-            }
+            _colorSpecs = value;
+            IsValueComputed = true;
         }
+    }
 
-        private string _paintServer;
-        public string PaintServer
+    private string _paintServer;
+    public string PaintServer
+    {
+        get => _paintServer;
+        set
         {
-            get => _paintServer;
-            set
-            {
-                _paintServer = value ?? string.Empty;
-                IsValueComputed = true;
-            }
+            _paintServer = value ?? string.Empty;
+            IsValueComputed = true;
         }
+    }
 
-        private Color _colorValue;
-        public Color ColorValue
+    private Color _colorValue;
+    public Color ColorValue
+    {
+        get => _colorValue;
+        set
         {
-            get => _colorValue;
-            set
-            {
-                _colorValue = value;
-                _colorSpecs = SvgConstants.ColorSpecs.ColorValue;
-                IsValueComputed = true;
-            }
+            _colorValue = value;
+            _colorSpecs = SvgConstants.ColorSpecs.ColorValue;
+            IsValueComputed = true;
         }
+    }
 
-        private string _iccColorValue;
-        public string IccColorValue
+    private string _iccColorValue;
+    public string IccColorValue
+    {
+        get => _iccColorValue;
+        set
         {
-            get => _iccColorValue;
-            set
-            {
-                _iccColorValue = value ?? string.Empty;
-                _colorSpecs = SvgConstants.ColorSpecs.ColorValue;
-                IsValueComputed = true;
-            }
+            _iccColorValue = value ?? string.Empty;
+            _colorSpecs = SvgConstants.ColorSpecs.ColorValue;
+            IsValueComputed = true;
         }
+    }
 
 
-        protected override string ValueComputedText
+    protected override string ValueComputedText
+    {
+        get
         {
-            get
-            {
-                var s = new StringBuilder();
+            var s = new StringBuilder();
 
-                if (!string.IsNullOrEmpty(PaintServer))
-                    s.Append("url(#")
-                        .Append(PaintServer)
-                        .Append(") ");
+            if (!string.IsNullOrEmpty(PaintServer))
+                s.Append("url(#")
+                    .Append(PaintServer)
+                    .Append(") ");
 
-                if (ColorSpecs == SvgConstants.ColorSpecs.None)
-                    s.Append("none");
+            if (ColorSpecs == SvgConstants.ColorSpecs.None)
+                s.Append("none");
 
-                else if (ColorSpecs == SvgConstants.ColorSpecs.CurrentColor)
-                    s.Append("currentColor");
+            else if (ColorSpecs == SvgConstants.ColorSpecs.CurrentColor)
+                s.Append("currentColor");
 
-                else
-                    s.Append(ColorValue.ToSvgColorHexText())
-                        .Append(IccColorValue);
+            else
+                s.Append(ColorValue.ToSvgColorHexText())
+                    .Append(IccColorValue);
 
-                return s.ToString();
-            }
+            return s.ToString();
         }
+    }
 
 
-        internal SvgSpvPaint(SvgStyle parentElement, SvgAttributeInfo attributeInfo)
-            : base(parentElement, attributeInfo)
+    internal SvgSpvPaint(SvgStyle parentElement, SvgAttributeInfo attributeInfo)
+        : base(parentElement, attributeInfo)
+    {
+    }
+
+
+    public override SvgStylePropertyValue CreateCopy()
+    {
+        var result = new SvgSpvPaint(ParentStyle, AttributeInfo);
+
+        if (IsValueStored)
         {
-        }
-
-
-        public override SvgStylePropertyValue CreateCopy()
-        {
-            var result = new SvgSpvPaint(ParentStyle, AttributeInfo);
-
-            if (IsValueStored)
-            {
-                result._colorSpecs = _colorSpecs;
-                result._paintServer = _paintServer;
-                result._colorValue = _colorValue;
-                result._iccColorValue = _iccColorValue;
-                result.ValueStoredText = ValueStoredText;
-
-                return result;
-            }
-
-            result.ColorSpecs = ColorSpecs;
-            result.PaintServer = PaintServer;
-            result.ColorValue = ColorValue;
-            result.IccColorValue = IccColorValue;
+            result._colorSpecs = _colorSpecs;
+            result._paintServer = _paintServer;
+            result._colorValue = _colorValue;
+            result._iccColorValue = _iccColorValue;
+            result.ValueStoredText = ValueStoredText;
 
             return result;
         }
 
-        public override SvgStylePropertyValue UpdateFrom(SvgStylePropertyValue sourcePropertyValue)
+        result.ColorSpecs = ColorSpecs;
+        result.PaintServer = PaintServer;
+        result.ColorValue = ColorValue;
+        result.IccColorValue = IccColorValue;
+
+        return result;
+    }
+
+    public override SvgStylePropertyValue UpdateFrom(SvgStylePropertyValue sourcePropertyValue)
+    {
+        var source = sourcePropertyValue as SvgSpvPaint;
+
+        if (ReferenceEquals(source, null) || source.IsValueStored)
         {
-            var source = sourcePropertyValue as SvgSpvPaint;
-
-            if (ReferenceEquals(source, null) || source.IsValueStored)
-            {
-                ValueStoredText = source?.ValueStoredText;
-
-                return this;
-            }
-
-            ColorSpecs = source.ColorSpecs;
-            PaintServer = source.PaintServer;
-            ColorValue = source.ColorValue;
-            IccColorValue = source.IccColorValue;
+            ValueStoredText = source?.ValueStoredText;
 
             return this;
         }
 
-        public SvgStyle SetToNone()
-        {
-            PaintServer = string.Empty;
-            ColorSpecs = SvgConstants.ColorSpecs.None;
+        ColorSpecs = source.ColorSpecs;
+        PaintServer = source.PaintServer;
+        ColorValue = source.ColorValue;
+        IccColorValue = source.IccColorValue;
 
-            return ParentStyle;
-        }
+        return this;
+    }
 
-        public SvgStyle SetToNone(string paintServer)
-        {
-            PaintServer = paintServer;
-            ColorSpecs = SvgConstants.ColorSpecs.None;
+    public SvgStyle SetToNone()
+    {
+        PaintServer = string.Empty;
+        ColorSpecs = SvgConstants.ColorSpecs.None;
 
-            return ParentStyle;
-        }
+        return ParentStyle;
+    }
 
-        public SvgStyle SetToCurrentColor()
-        {
-            PaintServer = string.Empty;
-            ColorSpecs = SvgConstants.ColorSpecs.CurrentColor;
+    public SvgStyle SetToNone(string paintServer)
+    {
+        PaintServer = paintServer;
+        ColorSpecs = SvgConstants.ColorSpecs.None;
 
-            return ParentStyle;
-        }
+        return ParentStyle;
+    }
 
-        public SvgStyle SetToCurrentColor(string paintServer)
-        {
-            PaintServer = paintServer;
-            ColorSpecs = SvgConstants.ColorSpecs.CurrentColor;
+    public SvgStyle SetToCurrentColor()
+    {
+        PaintServer = string.Empty;
+        ColorSpecs = SvgConstants.ColorSpecs.CurrentColor;
 
-            return ParentStyle;
-        }
+        return ParentStyle;
+    }
 
-        public SvgStyle SetToRgb(Color value)
-        {
-            PaintServer = string.Empty;
-            ColorSpecs = SvgConstants.ColorSpecs.ColorValue;
-            ColorValue = value;
+    public SvgStyle SetToCurrentColor(string paintServer)
+    {
+        PaintServer = paintServer;
+        ColorSpecs = SvgConstants.ColorSpecs.CurrentColor;
 
-            return ParentStyle;
-        }
+        return ParentStyle;
+    }
 
-        public SvgStyle SetToRgb(string paintServer, Color value)
-        {
-            PaintServer = paintServer;
-            ColorSpecs = SvgConstants.ColorSpecs.ColorValue;
-            ColorValue = value;
+    public SvgStyle SetToRgb(Color value)
+    {
+        PaintServer = string.Empty;
+        ColorSpecs = SvgConstants.ColorSpecs.ColorValue;
+        ColorValue = value;
 
-            return ParentStyle;
-        }
+        return ParentStyle;
+    }
 
-        public SvgStyle SetToRgbPercent(double red, double green, double blue)
-        {
-            PaintServer = string.Empty;
-            ColorSpecs = SvgConstants.ColorSpecs.ColorValue;
-            ColorValue = Color.FromRgb(
-                (byte) Math.Round(red * 255),
-                (byte) Math.Round(green * 255),
-                (byte) Math.Round(blue * 255)
-            );
+    public SvgStyle SetToRgb(string paintServer, Color value)
+    {
+        PaintServer = paintServer;
+        ColorSpecs = SvgConstants.ColorSpecs.ColorValue;
+        ColorValue = value;
 
-            return ParentStyle;
-        }
+        return ParentStyle;
+    }
 
-        public SvgStyle SetToRgbPercent(string paintServer, double red, double green, double blue)
-        {
-            PaintServer = paintServer;
-            ColorSpecs = SvgConstants.ColorSpecs.ColorValue;
-            ColorValue = Color.FromRgb(
-                (byte) Math.Round(red * 255),
-                (byte) Math.Round(green * 255),
-                (byte) Math.Round(blue * 255)
-            );
+    public SvgStyle SetToRgbPercent(double red, double green, double blue)
+    {
+        PaintServer = string.Empty;
+        ColorSpecs = SvgConstants.ColorSpecs.ColorValue;
+        ColorValue = Color.FromRgb(
+            (byte) Math.Round(red * 255),
+            (byte) Math.Round(green * 255),
+            (byte) Math.Round(blue * 255)
+        );
 
-            return ParentStyle;
-        }
+        return ParentStyle;
+    }
 
-        public SvgStyle SetToRgb(int red, int green, int blue)
-        {
-            PaintServer = string.Empty;
-            ColorSpecs = SvgConstants.ColorSpecs.ColorValue;
-            ColorValue = Color.FromRgb(
-                (byte) red, 
-                (byte) green, 
-                (byte) blue
-            );
+    public SvgStyle SetToRgbPercent(string paintServer, double red, double green, double blue)
+    {
+        PaintServer = paintServer;
+        ColorSpecs = SvgConstants.ColorSpecs.ColorValue;
+        ColorValue = Color.FromRgb(
+            (byte) Math.Round(red * 255),
+            (byte) Math.Round(green * 255),
+            (byte) Math.Round(blue * 255)
+        );
 
-            return ParentStyle;
-        }
+        return ParentStyle;
+    }
 
-        public SvgStyle SetToRgb(string paintServer, int red, int green, int blue)
-        {
-            PaintServer = paintServer;
-            ColorSpecs = SvgConstants.ColorSpecs.ColorValue;
-            ColorValue = Color.FromRgb(
-                (byte) red, 
-                (byte) green, 
-                (byte) blue
-            );
+    public SvgStyle SetToRgb(int red, int green, int blue)
+    {
+        PaintServer = string.Empty;
+        ColorSpecs = SvgConstants.ColorSpecs.ColorValue;
+        ColorValue = Color.FromRgb(
+            (byte) red, 
+            (byte) green, 
+            (byte) blue
+        );
 
-            return ParentStyle;
-        }
+        return ParentStyle;
+    }
+
+    public SvgStyle SetToRgb(string paintServer, int red, int green, int blue)
+    {
+        PaintServer = paintServer;
+        ColorSpecs = SvgConstants.ColorSpecs.ColorValue;
+        ColorValue = Color.FromRgb(
+            (byte) red, 
+            (byte) green, 
+            (byte) blue
+        );
+
+        return ParentStyle;
     }
 }

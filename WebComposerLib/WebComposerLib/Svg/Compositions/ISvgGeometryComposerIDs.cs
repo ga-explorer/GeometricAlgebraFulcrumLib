@@ -1,7 +1,6 @@
-﻿namespace WebComposerLib.Svg.Compositions
+﻿namespace WebComposerLib.Svg.Compositions;
+
+public interface ISvgGeometryComposerIDs
 {
-    public interface ISvgGeometryComposerIDs
-    {
-        string ElementId { get; set; }
-    }
+    string ElementId { get; set; }
 }

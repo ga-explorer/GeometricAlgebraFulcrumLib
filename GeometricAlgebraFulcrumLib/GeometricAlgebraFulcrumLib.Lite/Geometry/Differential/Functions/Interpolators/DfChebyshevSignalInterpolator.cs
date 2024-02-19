@@ -2,101 +2,100 @@
 using GeometricAlgebraFulcrumLib.Lite.Geometry.Differential.Functions.Polynomials;
 using GeometricAlgebraFulcrumLib.Lite.SignalAlgebra;
 
-namespace GeometricAlgebraFulcrumLib.Lite.Geometry.Differential.Functions.Interpolators
+namespace GeometricAlgebraFulcrumLib.Lite.Geometry.Differential.Functions.Interpolators;
+
+public class DfChebyshevSignalInterpolator :
+    DifferentialSignalInterpolatorFunction
 {
-    public class DfChebyshevSignalInterpolator :
-        DifferentialSignalInterpolatorFunction
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static DfChebyshevSignalInterpolator Create(Float64Signal signal, int sampleIndex1, int sampleIndex2, DfChebyshevSignalInterpolatorOptions options)
     {
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static DfChebyshevSignalInterpolator Create(Float64Signal signal, int sampleIndex1, int sampleIndex2, DfChebyshevSignalInterpolatorOptions options)
-        {
-            signal = signal.GetSmoothedSignal(options);
-            var samplingSpecs = signal.SamplingSpecs;
+        signal = signal.GetSmoothedSignal(options);
+        var samplingSpecs = signal.SamplingSpecs;
 
-            var sampleCount = sampleIndex2 - sampleIndex1 + 1;
-            var (minVarValue, maxVarValue) = 
-                samplingSpecs.GetSampledTimeValues(sampleIndex1, sampleIndex2);
+        var sampleCount = sampleIndex2 - sampleIndex1 + 1;
+        var (minVarValue, maxVarValue) = 
+            samplingSpecs.GetSampledTimeValues(sampleIndex1, sampleIndex2);
 
-            var polynomial = DfChebyshevPolynomial.CreateApproximating(
-                options.PolynomialDegree,
-                signal.LinearInterpolation,
-                minVarValue,
-                maxVarValue, 
-                sampleCount
-            );
+        var polynomial = DfChebyshevPolynomial.CreateApproximating(
+            options.PolynomialDegree,
+            signal.LinearInterpolation,
+            minVarValue,
+            maxVarValue, 
+            sampleCount
+        );
 
-            return new DfChebyshevSignalInterpolator(
-                samplingSpecs,
-                sampleIndex1,
-                sampleIndex2,
-                options,
-                polynomial
-            );
-        }
+        return new DfChebyshevSignalInterpolator(
+            samplingSpecs,
+            sampleIndex1,
+            sampleIndex2,
+            options,
+            polynomial
+        );
+    }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static DfChebyshevSignalInterpolator Create(Float64Signal signal, DfChebyshevSignalInterpolatorOptions options)
-        {
-            signal = signal.GetSmoothedSignal(options);
-            var samplingSpecs = signal.SamplingSpecs;
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static DfChebyshevSignalInterpolator Create(Float64Signal signal, DfChebyshevSignalInterpolatorOptions options)
+    {
+        signal = signal.GetSmoothedSignal(options);
+        var samplingSpecs = signal.SamplingSpecs;
             
-            var polynomial = DfChebyshevPolynomial.CreateApproximating(
-                options.PolynomialDegree,
-                signal.LinearInterpolation,
-                samplingSpecs.MinTime,
-                samplingSpecs.MaxTime, 
-                samplingSpecs.SampleCount
-            );
+        var polynomial = DfChebyshevPolynomial.CreateApproximating(
+            options.PolynomialDegree,
+            signal.LinearInterpolation,
+            samplingSpecs.MinTime,
+            samplingSpecs.MaxTime, 
+            samplingSpecs.SampleCount
+        );
 
-            return new DfChebyshevSignalInterpolator(
-                samplingSpecs,
-                0,
-                samplingSpecs.SampleCount - 1,
-                options,
-                polynomial
-            );
-        }
+        return new DfChebyshevSignalInterpolator(
+            samplingSpecs,
+            0,
+            samplingSpecs.SampleCount - 1,
+            options,
+            polynomial
+        );
+    }
 
 
-        public DfChebyshevSignalInterpolatorOptions Options { get; }
+    public DfChebyshevSignalInterpolatorOptions Options { get; }
         
-        public DfChebyshevPolynomial Polynomial { get; }
+    public DfChebyshevPolynomial Polynomial { get; }
         
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private DfChebyshevSignalInterpolator(Float64SignalSamplingSpecs samplingSpecs, int sampleIndex1, int sampleIndex2, DfChebyshevSignalInterpolatorOptions options, DfChebyshevPolynomial polynomial) 
-            : base(samplingSpecs, sampleIndex1, sampleIndex2)
-        {
-            Options = options;
-            Polynomial = polynomial;
-        }
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    private DfChebyshevSignalInterpolator(Float64SignalSamplingSpecs samplingSpecs, int sampleIndex1, int sampleIndex2, DfChebyshevSignalInterpolatorOptions options, DfChebyshevPolynomial polynomial) 
+        : base(samplingSpecs, sampleIndex1, sampleIndex2)
+    {
+        Options = options;
+        Polynomial = polynomial;
+    }
 
         
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override double GetValue(double t)
-        {
-            return Polynomial.GetValue(t);
-        }
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public override double GetValue(double t)
+    {
+        return Polynomial.GetValue(t);
+    }
         
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override DifferentialFunction GetDerivative1()
-        {
-            var pDt1 = new DfChebyshevSignalInterpolator(
-                SamplingSpecs,
-                SampleIndex1,
-                SampleIndex2,
-                Options,
-                Polynomial.GetPolynomialDerivative1()
-            );
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public override DifferentialFunction GetDerivative1()
+    {
+        var pDt1 = new DfChebyshevSignalInterpolator(
+            SamplingSpecs,
+            SampleIndex1,
+            SampleIndex2,
+            Options,
+            Polynomial.GetPolynomialDerivative1()
+        );
 
-            //return pDt1;
+        //return pDt1;
             
-            return Create(
-                SamplingSpecs.GetSampledFunctionSignal(pDt1), 
-                SampleIndex1,
-                SampleIndex2,
-                Options
-            );
-        }
+        return Create(
+            SamplingSpecs.GetSampledFunctionSignal(pDt1), 
+            SampleIndex1,
+            SampleIndex2,
+            Options
+        );
     }
 }

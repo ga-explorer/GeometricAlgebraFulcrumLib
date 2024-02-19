@@ -1,18 +1,17 @@
-﻿namespace TextComposerLib.Text.Columns
+﻿namespace TextComposerLib.Text.Columns;
+
+public enum TextRowAlignment
 {
-    public enum TextRowAlignment
+    Top, Bottom
+}
+
+internal sealed class TextRowSpecs
+{
+    public TextRowAlignment Alignment { get; set; }
+
+
+    public TextRowSpecs()
     {
-        Top, Bottom
-    }
-
-    internal sealed class TextRowSpecs
-    {
-        public TextRowAlignment Alignment { get; set; }
-
-
-        public TextRowSpecs()
-        {
-            Alignment = TextRowAlignment.Top;
-        }
+        Alignment = TextRowAlignment.Top;
     }
 }

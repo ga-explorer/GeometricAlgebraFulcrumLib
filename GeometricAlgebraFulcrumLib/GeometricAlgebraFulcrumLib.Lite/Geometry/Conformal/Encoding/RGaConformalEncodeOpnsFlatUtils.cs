@@ -3,6 +3,7 @@ using System.Runtime.CompilerServices;
 using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Restricted.Float64.Multivectors;
 using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Restricted.Float64.Multivectors.Composers;
 using GeometricAlgebraFulcrumLib.Lite.Geometry.Conformal.Blades;
+using GeometricAlgebraFulcrumLib.Lite.Geometry.Conformal.Operations;
 using GeometricAlgebraFulcrumLib.Lite.LinearAlgebra.Vectors.Space2D;
 using GeometricAlgebraFulcrumLib.Lite.LinearAlgebra.Vectors.Space3D;
 using GeometricAlgebraFulcrumLib.Lite.LinearAlgebra.Vectors.SpaceND;
@@ -12,7 +13,7 @@ namespace GeometricAlgebraFulcrumLib.Lite.Geometry.Conformal.Encoding;
 public static class RGaConformalEncodeOpnsFlatUtils
 {
     /// <summary>
-    /// Convert a 2D Euclidean point into a CGA IPNS flat point
+    /// Convert a 2D Euclidean point into a CGA OPNS flat point
     /// </summary>
     /// <param name="conformalSpace"></param>
     /// <param name="pointX"></param>
@@ -27,7 +28,7 @@ public static class RGaConformalEncodeOpnsFlatUtils
     }
 
     /// <summary>
-    /// Convert a 2D Euclidean point into a CGA IPNS flat point
+    /// Convert a 2D Euclidean point into a CGA OPNS flat point
     /// </summary>
     /// <param name="conformalSpace"></param>
     /// <param name="egaPoint"></param>
@@ -41,7 +42,7 @@ public static class RGaConformalEncodeOpnsFlatUtils
     }
 
     /// <summary>
-    /// Convert a 3D Euclidean point into a CGA IPNS flat point
+    /// Convert a 3D Euclidean point into a CGA OPNS flat point
     /// </summary>
     /// <param name="conformalSpace"></param>
     /// <param name="pointX"></param>
@@ -57,7 +58,7 @@ public static class RGaConformalEncodeOpnsFlatUtils
     }
 
     /// <summary>
-    /// Convert a 3D Euclidean point into a CGA IPNS flat point
+    /// Convert a 3D Euclidean point into a CGA OPNS flat point
     /// </summary>
     /// <param name="conformalSpace"></param>
     /// <param name="egaPoint"></param>
@@ -71,7 +72,7 @@ public static class RGaConformalEncodeOpnsFlatUtils
     }
     
     /// <summary>
-    /// Convert a Euclidean point a CGA IPNS flat point
+    /// Convert a Euclidean point a CGA OPNS flat point
     /// </summary>
     /// <param name="conformalSpace"></param>
     /// <param name="egaPoint"></param>
@@ -85,7 +86,7 @@ public static class RGaConformalEncodeOpnsFlatUtils
     }
 
     /// <summary>
-    /// Convert a Euclidean point a CGA IPNS flat point
+    /// Convert a Euclidean point a CGA OPNS flat point
     /// </summary>
     /// <param name="conformalSpace"></param>
     /// <param name="egaPoint"></param>
@@ -97,7 +98,7 @@ public static class RGaConformalEncodeOpnsFlatUtils
     }
     
     /// <summary>
-    /// Convert a Euclidean point a CGA IPNS flat point
+    /// Convert a Euclidean point a CGA OPNS flat point
     /// </summary>
     /// <param name="conformalSpace"></param>
     /// <param name="egaPoint"></param>
@@ -110,7 +111,7 @@ public static class RGaConformalEncodeOpnsFlatUtils
 
 
     /// <summary>
-    /// Convert a 2D egaNormalVector vector and distance to origin into a CGA IPNS flat line
+    /// Convert a 2D egaNormalVector vector and distance to origin into a CGA OPNS flat line
     /// </summary>
     /// <param name="conformalSpace"></param>
     /// <param name="distance"></param>
@@ -127,7 +128,7 @@ public static class RGaConformalEncodeOpnsFlatUtils
     }
 
     /// <summary>
-    /// Convert a 2D egaNormalVector vector and distance to origin into a CGA IPNS flat line
+    /// Convert a 2D egaNormalVector vector and distance to origin into a CGA OPNS flat line
     /// </summary>
     /// <param name="conformalSpace"></param>
     /// <param name="distance"></param>
@@ -143,7 +144,7 @@ public static class RGaConformalEncodeOpnsFlatUtils
     }
 
     /// <summary>
-    /// Convert a 2D Euclidean point and vector into a CGA IPNS flat line
+    /// Convert a 2D Euclidean point and vector into a CGA OPNS flat line
     /// </summary>
     /// <param name="conformalSpace"></param>
     /// <param name="point"></param>
@@ -159,7 +160,7 @@ public static class RGaConformalEncodeOpnsFlatUtils
     }
     
     /// <summary>
-    /// Convert a 3D Euclidean point and a direction vector into a CGA IPNS flat line
+    /// Convert a 3D Euclidean point and a direction vector into a CGA OPNS flat line
     /// </summary>
     /// <param name="conformalSpace"></param>
     /// <param name="egaPoint"></param>
@@ -175,7 +176,7 @@ public static class RGaConformalEncodeOpnsFlatUtils
     }
 
     /// <summary>
-    /// Convert a Euclidean point and direction vector into a CGA IPNS flat line
+    /// Convert a Euclidean point and direction vector into a CGA OPNS flat line
     /// </summary>
     /// <param name="conformalSpace"></param>
     /// <param name="egaPoint"></param>
@@ -194,7 +195,7 @@ public static class RGaConformalEncodeOpnsFlatUtils
     }
     
     /// <summary>
-    /// Convert a Euclidean point and direction vector into a CGA IPNS flat line
+    /// Convert a Euclidean point and direction vector into a CGA OPNS flat line
     /// </summary>
     /// <param name="conformalSpace"></param>
     /// <param name="egaPoint"></param>
@@ -217,7 +218,7 @@ public static class RGaConformalEncodeOpnsFlatUtils
     }
 
     /// <summary>
-    /// Convert two 2D Euclidean points into a CGA IPNS flat line
+    /// Convert two 2D Euclidean points into a CGA OPNS flat line
     /// </summary>
     /// <param name="conformalSpace"></param>
     /// <param name="point1"></param>
@@ -233,7 +234,7 @@ public static class RGaConformalEncodeOpnsFlatUtils
     }
 
     /// <summary>
-    /// Convert a set of 2 Euclidean points in 3D into a CGA IPNS flat line
+    /// Convert a set of 2 Euclidean points in 3D into a CGA OPNS flat line
     /// </summary>
     /// <param name="conformalSpace"></param>
     /// <param name="egaPoint1"></param>
@@ -249,7 +250,7 @@ public static class RGaConformalEncodeOpnsFlatUtils
     }
     
     /// <summary>
-    /// Convert a set of 2 Euclidean points into a CGA IPNS flat line
+    /// Convert a set of 2 Euclidean points into a CGA OPNS flat line
     /// </summary>
     /// <param name="conformalSpace"></param>
     /// <param name="egaPoint1"></param>
@@ -269,7 +270,7 @@ public static class RGaConformalEncodeOpnsFlatUtils
 
 
     /// <summary>
-    /// Convert a 3D egaNormalVector vector and distance to origin into a CGA IPNS flat plane
+    /// Convert a 3D egaNormalVector vector and distance to origin into a CGA OPNS flat plane
     /// </summary>
     /// <param name="conformalSpace"></param>
     /// <param name="distance"></param>
@@ -287,7 +288,7 @@ public static class RGaConformalEncodeOpnsFlatUtils
     }
 
     /// <summary>
-    /// Convert a 3D egaNormalVector vector and distance to origin into a CGA IPNS flat plane
+    /// Convert a 3D egaNormalVector vector and distance to origin into a CGA OPNS flat plane
     /// </summary>
     /// <param name="conformalSpace"></param>
     /// <param name="distance"></param>
@@ -303,7 +304,7 @@ public static class RGaConformalEncodeOpnsFlatUtils
     }
 
     /// <summary>
-    /// Convert a 3D Euclidean point and two direction vectors into a CGA IPNS flat plane
+    /// Convert a 3D Euclidean point and two direction vectors into a CGA OPNS flat plane
     /// </summary>
     /// <param name="conformalSpace"></param>
     /// <param name="egaPoint"></param>
@@ -323,7 +324,7 @@ public static class RGaConformalEncodeOpnsFlatUtils
     }
 
     /// <summary>
-    /// Convert a 3D Euclidean point and egaNormalVector direction vector into a CGA IPNS flat plane
+    /// Convert a 3D Euclidean point and egaNormalVector direction vector into a CGA OPNS flat plane
     /// </summary>
     /// <param name="conformalSpace"></param>
     /// <param name="egaPoint"></param>
@@ -342,7 +343,7 @@ public static class RGaConformalEncodeOpnsFlatUtils
     }
 
     /// <summary>
-    /// Convert a 3D Euclidean point and direction 2-blade into a CGA IPNS flat plane
+    /// Convert a 3D Euclidean point and direction 2-blade into a CGA OPNS flat plane
     /// </summary>
     /// <param name="conformalSpace"></param>
     /// <param name="egaPoint"></param>
@@ -358,7 +359,7 @@ public static class RGaConformalEncodeOpnsFlatUtils
     }
 
     /// <summary>
-    /// Convert a set of 3 Euclidean points in 3D into a CGA IPNS flat plane
+    /// Convert a set of 3 Euclidean points in 3D into a CGA OPNS flat plane
     /// </summary>
     /// <param name="conformalSpace"></param>
     /// <param name="egaPoint1"></param>
@@ -376,7 +377,7 @@ public static class RGaConformalEncodeOpnsFlatUtils
     }
 
     /// <summary>
-    /// Convert a Euclidean point and direction 2-blade into a CGA IPNS flat plane
+    /// Convert a Euclidean point and direction 2-blade into a CGA OPNS flat plane
     /// </summary>
     /// <param name="conformalSpace"></param>
     /// <param name="egaPoint"></param>
@@ -395,7 +396,7 @@ public static class RGaConformalEncodeOpnsFlatUtils
     }
 
     /// <summary>
-    /// Convert a set of 3 Euclidean points into a CGA IPNS flat
+    /// Convert a set of 3 Euclidean points into a CGA OPNS flat
     /// </summary>
     /// <param name="conformalSpace"></param>
     /// <param name="egaPoint1"></param>
@@ -458,7 +459,7 @@ public static class RGaConformalEncodeOpnsFlatUtils
 
 
     /// <summary>
-    /// Convert a Euclidean point and direction blade into a CGA IPNS flat
+    /// Convert a Euclidean point and direction blade into a CGA OPNS flat
     /// </summary>
     /// <param name="conformalSpace"></param>
     /// <param name="egaPoint"></param>
@@ -477,7 +478,7 @@ public static class RGaConformalEncodeOpnsFlatUtils
     }
 
     /// <summary>
-    /// Convert a set of Euclidean points into a CGA IPNS flat
+    /// Convert a set of Euclidean points into a CGA OPNS flat
     /// </summary>
     /// <param name="conformalSpace"></param>
     /// <param name="egaPointArray"></param>
@@ -492,7 +493,7 @@ public static class RGaConformalEncodeOpnsFlatUtils
             egaPointArray
                 .Skip(1)
                 .Select(egaPoint2 => egaPoint2 - egaPoint1)
-                .Op();
+                .Op(conformalSpace.Processor);
 
         return conformalSpace.EncodeOpnsFlat(
             egaPoint1,
@@ -501,7 +502,7 @@ public static class RGaConformalEncodeOpnsFlatUtils
     }
 
     /// <summary>
-    /// Convert a set of Euclidean points into a CGA IPNS flat
+    /// Convert a set of Euclidean points into a CGA OPNS flat
     /// </summary>
     /// <param name="conformalSpace"></param>
     /// <param name="egaPointList"></param>
@@ -516,7 +517,7 @@ public static class RGaConformalEncodeOpnsFlatUtils
             egaPointList
                 .Skip(1)
                 .Select(egaPoint2 => egaPoint2 - egaPoint1)
-                .Op();
+                .Op(conformalSpace.Processor);
 
         return conformalSpace.EncodeOpnsFlat(
             egaPoint1,

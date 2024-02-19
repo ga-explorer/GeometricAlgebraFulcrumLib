@@ -1,8 +1,7 @@
-﻿namespace GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.BabylonJs.Constants
+﻿namespace GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.BabylonJs.Constants;
+
+public enum GrBabylonJsCameraFovMode
 {
-    public enum GrBabylonJsCameraFovMode
-    {
-        VerticalFixed = 0,
-        HorizontalFixed = 1
-    }
+    VerticalFixed = 0,
+    HorizontalFixed = 1
 }

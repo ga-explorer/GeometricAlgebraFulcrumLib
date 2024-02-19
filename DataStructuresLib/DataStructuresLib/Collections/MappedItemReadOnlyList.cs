@@ -4,75 +4,74 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
 
-namespace DataStructuresLib.Collections
+namespace DataStructuresLib.Collections;
+
+public class MappedReadOnlyList<T> :
+    IReadOnlyList<T>
 {
-    public class MappedReadOnlyList<T> :
-        IReadOnlyList<T>
+    public IReadOnlyList<T> BaseList { get; }
+
+    public Func<T, T> ItemMapping { get; }
+
+    public int Count
+        => BaseList.Count;
+
+    public T this[int index]
+        => ItemMapping(BaseList[index]);
+
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public MappedReadOnlyList(IReadOnlyList<T> baseList, Func<T, T> itemMapping)
     {
-        public IReadOnlyList<T> BaseList { get; }
-
-        public Func<T, T> ItemMapping { get; }
-
-        public int Count
-            => BaseList.Count;
-
-        public T this[int index]
-            => ItemMapping(BaseList[index]);
-
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public MappedReadOnlyList(IReadOnlyList<T> baseList, Func<T, T> itemMapping)
-        {
-            BaseList = baseList;
-            ItemMapping = itemMapping;
-        }
-
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public IEnumerator<T> GetEnumerator()
-        {
-            return BaseList.Select(ItemMapping).GetEnumerator();
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
-        }
+        BaseList = baseList;
+        ItemMapping = itemMapping;
     }
 
-    public class MappedReadOnlyList<T1, T2> :
-        IReadOnlyList<T2>
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public IEnumerator<T> GetEnumerator()
     {
-        public IReadOnlyList<T1> BaseList { get; }
+        return BaseList.Select(ItemMapping).GetEnumerator();
+    }
 
-        public Func<T1, T2> ItemMapping { get; }
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    IEnumerator IEnumerable.GetEnumerator()
+    {
+        return GetEnumerator();
+    }
+}
 
-        public int Count 
-            => BaseList.Count;
+public class MappedReadOnlyList<T1, T2> :
+    IReadOnlyList<T2>
+{
+    public IReadOnlyList<T1> BaseList { get; }
 
-        public T2 this[int index] 
-            => ItemMapping(BaseList[index]);
+    public Func<T1, T2> ItemMapping { get; }
+
+    public int Count 
+        => BaseList.Count;
+
+    public T2 this[int index] 
+        => ItemMapping(BaseList[index]);
 
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public MappedReadOnlyList(IReadOnlyList<T1> baseList, Func<T1, T2> itemMapping)
-        {
-            BaseList = baseList;
-            ItemMapping = itemMapping;
-        }
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public MappedReadOnlyList(IReadOnlyList<T1> baseList, Func<T1, T2> itemMapping)
+    {
+        BaseList = baseList;
+        ItemMapping = itemMapping;
+    }
 
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public IEnumerator<T2> GetEnumerator()
-        {
-            return BaseList.Select(ItemMapping).GetEnumerator();
-        }
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public IEnumerator<T2> GetEnumerator()
+    {
+        return BaseList.Select(ItemMapping).GetEnumerator();
+    }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
-        }
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    IEnumerator IEnumerable.GetEnumerator()
+    {
+        return GetEnumerator();
     }
 }

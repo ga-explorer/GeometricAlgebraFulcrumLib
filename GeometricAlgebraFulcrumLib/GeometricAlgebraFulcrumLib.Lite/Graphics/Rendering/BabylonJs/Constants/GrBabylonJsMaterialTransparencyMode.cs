@@ -1,10 +1,9 @@
-﻿namespace GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.BabylonJs.Constants
+﻿namespace GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.BabylonJs.Constants;
+
+public enum GrBabylonJsMaterialTransparencyMode
 {
-    public enum GrBabylonJsMaterialTransparencyMode
-    {
-        Opaque = 0,
-        AlphaTest = 1,
-        AlphaBlend = 2,
-        AlphaTestAndBlend = 3
-    }
+    Opaque = 0,
+    AlphaTest = 1,
+    AlphaBlend = 2,
+    AlphaTestAndBlend = 3
 }

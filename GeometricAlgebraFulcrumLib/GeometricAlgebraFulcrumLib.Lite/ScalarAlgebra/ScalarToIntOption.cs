@@ -1,9 +1,8 @@
-﻿namespace GeometricAlgebraFulcrumLib.Lite.ScalarAlgebra
+﻿namespace GeometricAlgebraFulcrumLib.Lite.ScalarAlgebra;
+
+public enum ScalarToIntOption
 {
-    public enum ScalarToIntOption
-    {
-        Floor,
-        Ceiling,
-        Round
-    }
+    Floor,
+    Ceiling,
+    Round
 }

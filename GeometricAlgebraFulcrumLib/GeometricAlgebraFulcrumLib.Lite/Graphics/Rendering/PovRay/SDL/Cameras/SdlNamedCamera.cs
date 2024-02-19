@@ -1,7 +1,6 @@
-﻿namespace GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.PovRay.SDL.Cameras
+﻿namespace GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.PovRay.SDL.Cameras;
+
+public class SdlNamedCamera : SdlCamera
 {
-    public class SdlNamedCamera : SdlCamera
-    {
-        public string Name { get; set; }
-    }
+    public string Name { get; set; }
 }

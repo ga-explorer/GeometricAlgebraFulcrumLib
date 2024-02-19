@@ -1,48 +1,47 @@
 ﻿using System.Runtime.CompilerServices;
 using PeterO.Numbers;
 
-namespace GeometricAlgebraFulcrumLib.Lite.Geometry.Differential.Functions.Constants
+namespace GeometricAlgebraFulcrumLib.Lite.Geometry.Differential.Functions.Constants;
+
+public sealed class DfConstantValueRational :
+    DfConstantValue
 {
-    public sealed class DfConstantValueRational :
-        DfConstantValue
+    public override bool IsZero 
+        => RationalValue.IsZero;
+
+    public override bool IsOne 
+        => (RationalValue - ERational.One).IsZero;
+
+    public ERational RationalValue { get; }
+
+    public override double Float64Value
+        => RationalValue.ToDouble();
+
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    internal DfConstantValueRational(ERational rationalValue)
     {
-        public override bool IsZero 
-            => RationalValue.IsZero;
+        if (rationalValue.IsNaN() || rationalValue.IsQuietNaN() || rationalValue.IsSignalingNaN() || rationalValue.IsInfinity())
+            throw new NotFiniteNumberException(nameof(rationalValue));
 
-        public override bool IsOne 
-            => (RationalValue - ERational.One).IsZero;
-
-        public ERational RationalValue { get; }
-
-        public override double Float64Value
-            => RationalValue.ToDouble();
+        RationalValue = rationalValue.ToLowestTerms();
+    }
 
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal DfConstantValueRational(ERational rationalValue)
-        {
-            if (rationalValue.IsNaN() || rationalValue.IsQuietNaN() || rationalValue.IsSignalingNaN() || rationalValue.IsInfinity())
-                throw new NotFiniteNumberException(nameof(rationalValue));
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public override DfConstantValue Simplify()
+    {
+        if (RationalValue.IsInteger())
+            return new DfConstantValueInteger(
+                RationalValue.ToEIntegerIfExact()
+            );
 
-            RationalValue = rationalValue.ToLowestTerms();
-        }
+        return this;
+    }
 
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override DfConstantValue Simplify()
-        {
-            if (RationalValue.IsInteger())
-                return new DfConstantValueInteger(
-                    RationalValue.ToEIntegerIfExact()
-                );
-
-            return this;
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override string ToString()
-        {
-            return RationalValue.ToString();
-        }
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public override string ToString()
+    {
+        return RationalValue.ToString();
     }
 }

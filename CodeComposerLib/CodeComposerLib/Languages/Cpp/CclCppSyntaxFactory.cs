@@ -1,10 +1,9 @@
-﻿namespace CodeComposerLib.Languages.Cpp
+﻿namespace CodeComposerLib.Languages.Cpp;
+
+public class CclCppSyntaxFactory : CclLanguageSyntaxFactory
 {
-    public class CclCppSyntaxFactory : CclLanguageSyntaxFactory
+    internal CclCppSyntaxFactory()
     {
-        internal CclCppSyntaxFactory()
-        {
             
-        }
     }
 }

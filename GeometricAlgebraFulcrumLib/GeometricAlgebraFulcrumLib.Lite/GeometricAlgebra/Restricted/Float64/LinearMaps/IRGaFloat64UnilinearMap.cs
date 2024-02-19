@@ -1,16 +1,15 @@
 ﻿using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Restricted.Float64.Multivectors;
 
-namespace GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Restricted.Float64.LinearMaps
+namespace GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Restricted.Float64.LinearMaps;
+
+public interface IRGaFloat64UnilinearMap : 
+    IRGaFloat64Element
 {
-    public interface IRGaFloat64UnilinearMap : 
-        IRGaFloat64Element
-    {
-        IRGaFloat64UnilinearMap GetAdjoint();
+    IRGaFloat64UnilinearMap GetAdjoint();
         
-        RGaFloat64Multivector MapBasisBlade(ulong id);
+    RGaFloat64Multivector MapBasisBlade(ulong id);
     
-        RGaFloat64Multivector Map(RGaFloat64Multivector multivector);
+    RGaFloat64Multivector Map(RGaFloat64Multivector multivector);
     
-        IEnumerable<KeyValuePair<ulong, RGaFloat64Multivector>> GetMappedBasisBlades(int vSpaceDimensions);
-    }
+    IEnumerable<KeyValuePair<ulong, RGaFloat64Multivector>> GetMappedBasisBlades(int vSpaceDimensions);
 }

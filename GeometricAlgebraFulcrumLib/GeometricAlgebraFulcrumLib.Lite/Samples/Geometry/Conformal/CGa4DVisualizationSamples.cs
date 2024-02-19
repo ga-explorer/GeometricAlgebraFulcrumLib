@@ -1,6 +1,7 @@
 ﻿using GeometricAlgebraFulcrumLib.Lite.Geometry.Conformal;
 using GeometricAlgebraFulcrumLib.Lite.Geometry.Conformal.Elements;
 using GeometricAlgebraFulcrumLib.Lite.Geometry.Conformal.Interpolation;
+using GeometricAlgebraFulcrumLib.Lite.Geometry.Conformal.Operations;
 using GeometricAlgebraFulcrumLib.Lite.Geometry.Parametric.Space1D.Scalars;
 using GeometricAlgebraFulcrumLib.Lite.Geometry.Parametric.Space1D.Scalars.Harmonic;
 using GeometricAlgebraFulcrumLib.Lite.Geometry.Parametric.Space2D.Curves;

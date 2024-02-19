@@ -1,8 +1,7 @@
-﻿namespace DataStructuresLib.ODS
+﻿namespace DataStructuresLib.ODS;
+
+public class XFastNode
 {
-    public class XFastNode
-    {
-        internal XFastNode Left;
-        internal XFastNode Right;
-    }
+    internal XFastNode Left;
+    internal XFastNode Right;
 }

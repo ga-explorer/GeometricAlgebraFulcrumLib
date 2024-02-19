@@ -1,22 +1,21 @@
 ﻿using System.Collections.Generic;
 
-namespace TextComposerLib.Text.Region
+namespace TextComposerLib.Text.Region;
+
+public interface IRcTemplatePart
 {
-    public interface IRcTemplatePart
-    {
-        /// <summary>
-        /// The text lines inside the tag
-        /// </summary>
-        IEnumerable<string> TextLines { get; }
+    /// <summary>
+    /// The text lines inside the tag
+    /// </summary>
+    IEnumerable<string> TextLines { get; }
 
-        /// <summary>
-        /// The marked text lines inside the tag
-        /// </summary>
-        IEnumerable<string> TemplateTextLines { get; }
+    /// <summary>
+    /// The marked text lines inside the tag
+    /// </summary>
+    IEnumerable<string> TemplateTextLines { get; }
 
-        /// <summary>
-        /// The unmarked text lines inside the tag
-        /// </summary>
-        IEnumerable<string> GeneratedTextLines { get; }
-    }
+    /// <summary>
+    /// The unmarked text lines inside the tag
+    /// </summary>
+    IEnumerable<string> GeneratedTextLines { get; }
 }

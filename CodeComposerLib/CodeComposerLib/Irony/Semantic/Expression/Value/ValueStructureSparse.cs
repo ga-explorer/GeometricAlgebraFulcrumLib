@@ -1,67 +1,66 @@
 ﻿using CodeComposerLib.Irony.Semantic.Type;
 
-namespace CodeComposerLib.Irony.Semantic.Expression.Value
+namespace CodeComposerLib.Irony.Semantic.Expression.Value;
+
+public class ValueStructureSparse : ValueCompositeSparse<string>
 {
-    public class ValueStructureSparse : ValueCompositeSparse<string>
+    public TypeStructure ValueStructureType { get; }
+
+    public override ILanguageType ExpressionType => ValueStructureType;
+
+
+    protected ValueStructureSparse(TypeStructure valueType)
     {
-        public TypeStructure ValueStructureType { get; }
+        ValueStructureType = valueType;
+    }
 
-        public override ILanguageType ExpressionType => ValueStructureType;
 
-
-        protected ValueStructureSparse(TypeStructure valueType)
+    public override ILanguageValue this[string accessKey]
+    {
+        get
         {
-            ValueStructureType = valueType;
-        }
-
-
-        public override ILanguageValue this[string accessKey]
-        {
-            get
-            {
-                if (InternalDictionary.TryGetValue(accessKey, out var compValue))
-                    return compValue;
-
-                var dataMemberType = ValueStructureType.GetDataMemberType(accessKey);
-
-                compValue = ValueStructureType.RootAst.CreateDefaultValue(dataMemberType);
-
-                InternalDictionary.Add(accessKey, compValue);
-
+            if (InternalDictionary.TryGetValue(accessKey, out var compValue))
                 return compValue;
-            }
-            set
-            {
-                //TODO: Should you verify that the structure type contains a data member with the name in 'access_key'?
 
-                if (InternalDictionary.ContainsKey(accessKey))
-                    InternalDictionary[accessKey] = value;
+            var dataMemberType = ValueStructureType.GetDataMemberType(accessKey);
 
-                else
-                    InternalDictionary.Add(accessKey, value);
-            }
+            compValue = ValueStructureType.RootAst.CreateDefaultValue(dataMemberType);
+
+            InternalDictionary.Add(accessKey, compValue);
+
+            return compValue;
         }
-
-        public override ILanguageValue DuplicateValue(bool deepCopy)
+        set
         {
-            var value = new ValueStructureSparse(ValueStructureType);
+            //TODO: Should you verify that the structure type contains a data member with the name in 'access_key'?
 
-            foreach (var pair in InternalDictionary)
-                value.InternalDictionary.Add(pair.Key, pair.Value);
+            if (InternalDictionary.ContainsKey(accessKey))
+                InternalDictionary[accessKey] = value;
 
-            return value;
+            else
+                InternalDictionary.Add(accessKey, value);
         }
+    }
+
+    public override ILanguageValue DuplicateValue(bool deepCopy)
+    {
+        var value = new ValueStructureSparse(ValueStructureType);
+
+        foreach (var pair in InternalDictionary)
+            value.InternalDictionary.Add(pair.Key, pair.Value);
+
+        return value;
+    }
 
 
-        public override string ToString()
-        {
-            return RootAst.Describe(this);
-        }
+    public override string ToString()
+    {
+        return RootAst.Describe(this);
+    }
 
 
-        public static ValueStructureSparse Create(TypeStructure valueType)
-        {
-            return new ValueStructureSparse(valueType);
-        }
+    public static ValueStructureSparse Create(TypeStructure valueType)
+    {
+        return new ValueStructureSparse(valueType);
     }
 }

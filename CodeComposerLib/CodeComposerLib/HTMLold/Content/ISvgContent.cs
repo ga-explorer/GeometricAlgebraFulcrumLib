@@ -1,11 +1,10 @@
-﻿namespace CodeComposerLib.HTMLold.Content
+﻿namespace CodeComposerLib.HTMLold.Content;
+
+public interface IHtmlContent
 {
-    public interface IHtmlContent
-    {
-        bool IsContentText { get; }
+    bool IsContentText { get; }
 
-        bool IsContentComment { get; }
+    bool IsContentComment { get; }
 
-        bool IsContentElement { get; }
-    }
+    bool IsContentElement { get; }
 }

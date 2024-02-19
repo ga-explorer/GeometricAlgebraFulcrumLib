@@ -6,7 +6,7 @@ namespace GeometricAlgebraFulcrumLib.Lite.LinearAlgebra.Vectors.Space2D;
 public static class Float64Vector2DRandomUtils
 {
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Float64Vector2D GetVector2D(this System.Random random)
+    public static Float64Vector2D GetVector2D(this Random random)
     {
         return Float64Vector2D.CreateFromPolar(
             random.NextDouble(),
@@ -15,7 +15,16 @@ public static class Float64Vector2DRandomUtils
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Float64Vector2D GetUnitVector2D(this System.Random randomGenerator)
+    public static Float64Vector2D GetVector2D(this Random random, double minLength, double maxLength)
+    {
+        return Float64Vector2D.CreateFromPolar(
+            random.NextDouble(minLength, maxLength),
+            random.GetAngle()
+        );
+    }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static Float64Vector2D GetUnitVector2D(this Random randomGenerator)
     {
         return Float64Vector2D.CreateFromPolar(
             randomGenerator.GetAngle()
@@ -23,7 +32,7 @@ public static class Float64Vector2DRandomUtils
     }
 
 
-    public static IReadOnlyList<Float64Vector2D> GetPolygonPoints2D(this System.Random randomGenerator, int sidesCount, double radius)
+    public static IReadOnlyList<Float64Vector2D> GetPolygonPoints2D(this Random randomGenerator, int sidesCount, double radius)
     {
         var pointsList = new List<Float64Vector2D>(sidesCount);
 
@@ -44,7 +53,7 @@ public static class Float64Vector2DRandomUtils
         return pointsList;
     }
 
-    public static IReadOnlyList<Float64Vector2D> GetPolygonPoints2D(this System.Random randomGenerator, int sidesCount, params double[] radiusList)
+    public static IReadOnlyList<Float64Vector2D> GetPolygonPoints2D(this Random randomGenerator, int sidesCount, params double[] radiusList)
     {
         var pointsList = new List<Float64Vector2D>(sidesCount);
 
@@ -67,7 +76,7 @@ public static class Float64Vector2DRandomUtils
         return pointsList;
     }
 
-    public static IReadOnlyList<Float64Vector2D> GetPolygonPoints2D(this System.Random randomGenerator, int sidesCount, Float64Vector2D centerPoint, double radius)
+    public static IReadOnlyList<Float64Vector2D> GetPolygonPoints2D(this Random randomGenerator, int sidesCount, Float64Vector2D centerPoint, double radius)
     {
         var pointsList = new List<Float64Vector2D>(sidesCount);
 
@@ -88,7 +97,7 @@ public static class Float64Vector2DRandomUtils
         return pointsList;
     }
 
-    public static IReadOnlyList<Float64Vector2D> GetPolygonPoints2D(this System.Random randomGenerator, int sidesCount, Float64Vector2D centerPoint, params double[] radiusList)
+    public static IReadOnlyList<Float64Vector2D> GetPolygonPoints2D(this Random randomGenerator, int sidesCount, Float64Vector2D centerPoint, params double[] radiusList)
     {
         var pointsList = new List<Float64Vector2D>(sidesCount);
 
@@ -112,7 +121,7 @@ public static class Float64Vector2DRandomUtils
     }
     
 
-    public static Float64Vector2D GetPointInside(this System.Random randomGenerator, IEnumerable<IFloat64Vector2D> pointsList)
+    public static Float64Vector2D GetPointInside(this Random randomGenerator, IEnumerable<IFloat64Vector2D> pointsList)
     {
         var x = 0.0d;
         var y = 0.0d;

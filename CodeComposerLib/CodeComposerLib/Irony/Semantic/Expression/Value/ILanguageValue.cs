@@ -1,7 +1,6 @@
-﻿namespace CodeComposerLib.Irony.Semantic.Expression.Value
+﻿namespace CodeComposerLib.Irony.Semantic.Expression.Value;
+
+public interface ILanguageValue : ILanguageExpressionAtomic
 {
-    public interface ILanguageValue : ILanguageExpressionAtomic
-    {
-        ILanguageValue DuplicateValue(bool deepCopy);
-    }
+    ILanguageValue DuplicateValue(bool deepCopy);
 }

@@ -3,104 +3,103 @@ using TextComposerLib;
 using WebComposerLib.Svg.Elements;
 using WebComposerLib.Svg.Values;
 
-namespace WebComposerLib.Svg.Attributes
+namespace WebComposerLib.Svg.Attributes;
+
+/// <summary>
+/// This class holds information about the value of an attribute for a parent element
+/// </summary>
+/// <typeparam name="TParentElement"></typeparam>
+public abstract class SvgElementAttributeValue<TParentElement> : 
+    ISvgAttributeValue 
+    where TParentElement : SvgElement
 {
-    /// <summary>
-    /// This class holds information about the value of an attribute for a parent element
-    /// </summary>
-    /// <typeparam name="TParentElement"></typeparam>
-    public abstract class SvgElementAttributeValue<TParentElement> : 
-        ISvgAttributeValue 
-        where TParentElement : SvgElement
+    public TParentElement ParentElement { get; }
+
+    protected abstract string ValueComputedText { get; }
+
+    private string _valueStoredText = string.Empty;
+    protected string ValueStoredText
     {
-        public TParentElement ParentElement { get; }
-
-        protected abstract string ValueComputedText { get; }
-
-        private string _valueStoredText = string.Empty;
-        protected string ValueStoredText
+        get => _valueStoredText;
+        set
         {
-            get => _valueStoredText;
-            set
-            {
-                _valueStoredText = value ?? string.Empty;
-                IsValueComputed = false;
-            }
+            _valueStoredText = value ?? string.Empty;
+            IsValueComputed = false;
         }
+    }
 
-        public bool IsValueComputed { get; protected set; }
+    public bool IsValueComputed { get; protected set; }
 
-        public bool IsValueStored => !IsValueComputed;
+    public bool IsValueStored => !IsValueComputed;
 
-        public bool IsValueEmpty => string.IsNullOrEmpty(ValueText);
+    public bool IsValueEmpty => string.IsNullOrEmpty(ValueText);
 
-        public string ValueText
+    public string ValueText
+    {
+        get
         {
-            get
-            {
-                if (IsValueStored)
-                    return ValueStoredText;
-
-                ValueStoredText = ValueComputedText;
-                IsValueComputed = false;
-
+            if (IsValueStored)
                 return ValueStoredText;
-            }
+
+            ValueStoredText = ValueComputedText;
+            IsValueComputed = false;
+
+            return ValueStoredText;
         }
+    }
 
-        public SvgAttributeInfo AttributeInfo { get; }
+    public SvgAttributeInfo AttributeInfo { get; }
 
-        public int AttributeId => AttributeInfo.Id;
+    public int AttributeId => AttributeInfo.Id;
 
-        public string AttributeName => AttributeInfo.Name;
-
-
-        protected SvgElementAttributeValue(TParentElement parentElement, SvgAttributeInfo attributeInfo)
-        {
-            ParentElement = parentElement;
-            AttributeInfo = attributeInfo;
-        }
+    public string AttributeName => AttributeInfo.Name;
 
 
-        public abstract ISvgAttributeValue CreateCopy();
+    protected SvgElementAttributeValue(TParentElement parentElement, SvgAttributeInfo attributeInfo)
+    {
+        ParentElement = parentElement;
+        AttributeInfo = attributeInfo;
+    }
 
-        public abstract ISvgAttributeValue UpdateFrom(ISvgAttributeValue sourceAttributeValue);
 
-        public TParentElement SetToText(string value)
-        {
-            ValueStoredText = value;
+    public abstract ISvgAttributeValue CreateCopy();
 
-            return ParentElement;
-        }
+    public abstract ISvgAttributeValue UpdateFrom(ISvgAttributeValue sourceAttributeValue);
 
-        public TParentElement SetToText(ISvgValue value)
-        {
-            ValueStoredText = value.ValueText;
+    public TParentElement SetToText(string value)
+    {
+        ValueStoredText = value;
 
-            return ParentElement;
-        }
+        return ParentElement;
+    }
 
-        public TParentElement SetToInherit()
-        {
-            ValueStoredText = "inherit";
+    public TParentElement SetToText(ISvgValue value)
+    {
+        ValueStoredText = value.ValueText;
 
-            return ParentElement;
-        }
+        return ParentElement;
+    }
 
-        public TParentElement SetToEmptyDefault()
-        {
-            ValueStoredText = string.Empty;
+    public TParentElement SetToInherit()
+    {
+        ValueStoredText = "inherit";
 
-            return ParentElement;
-        }
+        return ParentElement;
+    }
 
-        public override string ToString()
-        {
-            return new StringBuilder()
-                .Append(AttributeInfo.Name)
-                .Append("=")
-                .Append(ValueText.ToHtmlSafeLiteral())
-                .ToString();
-        }
+    public TParentElement SetToEmptyDefault()
+    {
+        ValueStoredText = string.Empty;
+
+        return ParentElement;
+    }
+
+    public override string ToString()
+    {
+        return new StringBuilder()
+            .Append(AttributeInfo.Name)
+            .Append("=")
+            .Append(ValueText.ToHtmlSafeLiteral())
+            .ToString();
     }
 }

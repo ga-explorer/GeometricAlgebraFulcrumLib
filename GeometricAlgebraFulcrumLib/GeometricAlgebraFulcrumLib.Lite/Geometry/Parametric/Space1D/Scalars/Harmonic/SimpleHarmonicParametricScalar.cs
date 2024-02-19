@@ -9,7 +9,23 @@ public class SimpleHarmonicParametricScalar :
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static SimpleHarmonicParametricScalar Create(double frequencyHz = 1d, double magnitude = 1, double parameterShift = 0)
     {
-        return new SimpleHarmonicParametricScalar(frequencyHz, magnitude, parameterShift);
+        return new SimpleHarmonicParametricScalar(
+            Float64ScalarRange.Infinite,
+            frequencyHz, 
+            magnitude, 
+            parameterShift
+        );
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static SimpleHarmonicParametricScalar Create(Float64ScalarRange parameterRange, double frequencyHz = 1d, double magnitude = 1, double parameterShift = 0)
+    {
+        return new SimpleHarmonicParametricScalar(
+            parameterRange,
+            frequencyHz, 
+            magnitude, 
+            parameterShift
+        );
     }
 
 
@@ -22,13 +38,13 @@ public class SimpleHarmonicParametricScalar :
 
     public Float64Scalar ParameterShift { get; }
     
-    public Float64ScalarRange ParameterRange
-        => Float64ScalarRange.Infinite;
+    public Float64ScalarRange ParameterRange { get; }
         
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    private SimpleHarmonicParametricScalar(Float64Scalar frequencyHz, double magnitude, double parameterShift)
+    private SimpleHarmonicParametricScalar(Float64ScalarRange parameterRange, Float64Scalar frequencyHz, double magnitude, double parameterShift)
     {
+        ParameterRange = parameterRange;
         FrequencyHz = frequencyHz;
         Magnitude = magnitude;
         ParameterShift = parameterShift;

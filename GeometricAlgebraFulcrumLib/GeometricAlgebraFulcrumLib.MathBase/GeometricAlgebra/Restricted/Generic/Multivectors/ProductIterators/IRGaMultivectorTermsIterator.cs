@@ -1,56 +1,55 @@
 ﻿using GeometricAlgebraFulcrumLib.Lite.ScalarAlgebra;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Processors;
 
-namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Multivectors.ProductIterators
+namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Multivectors.ProductIterators;
+
+public interface IRGaMultivectorTermsIterator<T>
 {
-    public interface IRGaMultivectorTermsIterator<T>
-    {
-        IScalarProcessor<T> ScalarProcessor { get; }
+    IScalarProcessor<T> ScalarProcessor { get; }
 
-        RGaProcessor<T> Processor { get; }
+    RGaProcessor<T> Processor { get; }
 
-        RGaMultivector<T> Multivector1 { get; }
+    RGaMultivector<T> Multivector1 { get; }
 
-        RGaMultivector<T> Multivector2 { get; }
+    RGaMultivector<T> Multivector2 { get; }
 
 
-        IEnumerable<KeyValuePair<ulong, T>> GetOpIdScalarRecords();
+    IEnumerable<KeyValuePair<ulong, T>> GetOpIdScalarRecords();
 
-        IEnumerable<KeyValuePair<ulong, T>> GetEGpIdScalarRecords();
+    IEnumerable<KeyValuePair<ulong, T>> GetEGpIdScalarRecords();
 
-        IEnumerable<KeyValuePair<ulong, T>> GetESpIdScalarRecords();
+    IEnumerable<KeyValuePair<ulong, T>> GetESpIdScalarRecords();
 
-        IEnumerable<T> GetESpScalars();
+    IEnumerable<T> GetESpScalars();
 
-        IEnumerable<KeyValuePair<ulong, T>> GetELcpIdScalarRecords();
+    IEnumerable<KeyValuePair<ulong, T>> GetELcpIdScalarRecords();
 
-        IEnumerable<KeyValuePair<ulong, T>> GetERcpIdScalarRecords();
+    IEnumerable<KeyValuePair<ulong, T>> GetERcpIdScalarRecords();
 
-        IEnumerable<KeyValuePair<ulong, T>> GetEHipIdScalarRecords();
+    IEnumerable<KeyValuePair<ulong, T>> GetEHipIdScalarRecords();
 
-        IEnumerable<KeyValuePair<ulong, T>> GetEFdpIdScalarRecords();
+    IEnumerable<KeyValuePair<ulong, T>> GetEFdpIdScalarRecords();
 
-        IEnumerable<KeyValuePair<ulong, T>> GetECpIdScalarRecords();
+    IEnumerable<KeyValuePair<ulong, T>> GetECpIdScalarRecords();
 
-        IEnumerable<KeyValuePair<ulong, T>> GetEAcpIdScalarRecords();
+    IEnumerable<KeyValuePair<ulong, T>> GetEAcpIdScalarRecords();
 
 
-        IEnumerable<KeyValuePair<ulong, T>> GetGpIdScalarRecords();
+    IEnumerable<KeyValuePair<ulong, T>> GetGpIdScalarRecords();
 
-        IEnumerable<KeyValuePair<ulong, T>> GetSpIdScalarRecords();
+    IEnumerable<KeyValuePair<ulong, T>> GetSpIdScalarRecords();
 
-        IEnumerable<T> GetSpScalars();
+    IEnumerable<T> GetSpScalars();
 
-        IEnumerable<KeyValuePair<ulong, T>> GetLcpIdScalarRecords();
+    IEnumerable<KeyValuePair<ulong, T>> GetLcpIdScalarRecords();
 
-        IEnumerable<KeyValuePair<ulong, T>> GetRcpIdScalarRecords();
+    IEnumerable<KeyValuePair<ulong, T>> GetRcpIdScalarRecords();
 
-        IEnumerable<KeyValuePair<ulong, T>> GetHipIdScalarRecords();
+    IEnumerable<KeyValuePair<ulong, T>> GetHipIdScalarRecords();
 
-        IEnumerable<KeyValuePair<ulong, T>> GetFdpIdScalarRecords();
+    IEnumerable<KeyValuePair<ulong, T>> GetFdpIdScalarRecords();
 
-        IEnumerable<KeyValuePair<ulong, T>> GetCpIdScalarRecords();
+    IEnumerable<KeyValuePair<ulong, T>> GetCpIdScalarRecords();
 
-        IEnumerable<KeyValuePair<ulong, T>> GetAcpIdScalarRecords();
-    }
+    IEnumerable<KeyValuePair<ulong, T>> GetAcpIdScalarRecords();
 }

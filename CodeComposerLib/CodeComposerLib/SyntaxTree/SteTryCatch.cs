@@ -1,63 +1,62 @@
 ﻿using System.Collections.Generic;
 
-namespace CodeComposerLib.SyntaxTree
-{
-    public sealed class SteTryCatchItem : SteSyntaxElement
-    {
-        public ISyntaxTreeElement CatchException { get; set; }
+namespace CodeComposerLib.SyntaxTree;
 
-        public ISyntaxTreeElement CatchCode { get; set; }
+public sealed class SteTryCatchItem : SteSyntaxElement
+{
+    public ISyntaxTreeElement CatchException { get; set; }
+
+    public ISyntaxTreeElement CatchCode { get; set; }
+}
+
+public class SteTryCatch : SteSyntaxElement
+{
+    public ISyntaxTreeElement TryCode { get; set; }
+
+    public List<SteTryCatchItem> CatchItems { get; }
+
+    public ISyntaxTreeElement FinallyCode { get; set; }
+
+
+    public SteTryCatch()
+    {
+        CatchItems = new List<SteTryCatchItem>(); 
     }
 
-    public class SteTryCatch : SteSyntaxElement
+
+    public SteTryCatch AddCatch(ISyntaxTreeElement catchException, ISyntaxTreeElement catchCode)
     {
-        public ISyntaxTreeElement TryCode { get; set; }
+        CatchItems.Add(
+            new SteTryCatchItem()
+            {
+                CatchException = catchException,
+                CatchCode = catchCode
+            });
 
-        public List<SteTryCatchItem> CatchItems { get; }
+        return this;
+    }
 
-        public ISyntaxTreeElement FinallyCode { get; set; }
+    public SteTryCatch AddCatch(string catchException, ISyntaxTreeElement catchCode)
+    {
+        CatchItems.Add(
+            new SteTryCatchItem()
+            {
+                CatchException = new SteFixedCode(catchException),
+                CatchCode = catchCode
+            });
 
+        return this;
+    }
 
-        public SteTryCatch()
-        {
-            CatchItems = new List<SteTryCatchItem>(); 
-        }
+    public SteTryCatch AddCatch(string catchException, string catchCode)
+    {
+        CatchItems.Add(
+            new SteTryCatchItem()
+            {
+                CatchException = new SteFixedCode(catchException),
+                CatchCode = new SteFixedCode(catchCode)
+            });
 
-
-        public SteTryCatch AddCatch(ISyntaxTreeElement catchException, ISyntaxTreeElement catchCode)
-        {
-            CatchItems.Add(
-                new SteTryCatchItem()
-                {
-                    CatchException = catchException,
-                    CatchCode = catchCode
-                });
-
-            return this;
-        }
-
-        public SteTryCatch AddCatch(string catchException, ISyntaxTreeElement catchCode)
-        {
-            CatchItems.Add(
-                new SteTryCatchItem()
-                {
-                    CatchException = new SteFixedCode(catchException),
-                    CatchCode = catchCode
-                });
-
-            return this;
-        }
-
-        public SteTryCatch AddCatch(string catchException, string catchCode)
-        {
-            CatchItems.Add(
-                new SteTryCatchItem()
-                {
-                    CatchException = new SteFixedCode(catchException),
-                    CatchCode = new SteFixedCode(catchCode)
-                });
-
-            return this;
-        }
+        return this;
     }
 }

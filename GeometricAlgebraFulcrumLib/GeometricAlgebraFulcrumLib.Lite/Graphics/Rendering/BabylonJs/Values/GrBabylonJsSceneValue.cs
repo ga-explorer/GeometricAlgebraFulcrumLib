@@ -1,37 +1,36 @@
 ﻿using DataStructuresLib.AttributeSet;
 
-namespace GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.BabylonJs.Values
+namespace GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.BabylonJs.Values;
+
+public sealed class GrBabylonJsSceneValue :
+    SparseCodeAttributeValue<GrBabylonJsScene>
 {
-    public sealed class GrBabylonJsSceneValue :
-        SparseCodeAttributeValue<GrBabylonJsScene>
+    public static implicit operator GrBabylonJsSceneValue(string valueText)
     {
-        public static implicit operator GrBabylonJsSceneValue(string valueText)
-        {
-            return new GrBabylonJsSceneValue(valueText);
-        }
+        return new GrBabylonJsSceneValue(valueText);
+    }
 
-        public static implicit operator GrBabylonJsSceneValue(GrBabylonJsScene value)
-        {
-            return new GrBabylonJsSceneValue(value);
-        }
+    public static implicit operator GrBabylonJsSceneValue(GrBabylonJsScene value)
+    {
+        return new GrBabylonJsSceneValue(value);
+    }
 
 
-        private GrBabylonJsSceneValue(string valueText)
-            : base(valueText)
-        {
-        }
+    private GrBabylonJsSceneValue(string valueText)
+        : base(valueText)
+    {
+    }
 
-        private GrBabylonJsSceneValue(GrBabylonJsScene value)
-            : base(value)
-        {
-        }
+    private GrBabylonJsSceneValue(GrBabylonJsScene value)
+        : base(value)
+    {
+    }
 
 
-        public override string GetCode()
-        {
-            return string.IsNullOrEmpty(ValueText) 
-                ? Value.ToString() 
-                : ValueText;
-        }
+    public override string GetCode()
+    {
+        return string.IsNullOrEmpty(ValueText) 
+            ? Value.ToString() 
+            : ValueText;
     }
 }

@@ -1,27 +1,26 @@
 ﻿using System.Collections.Generic;
 using GeometricAlgebraFulcrumLib.Mathematica.Mathematica.Expression;
 
-namespace GeometricAlgebraFulcrumLib.Mathematica.Mathematica
+namespace GeometricAlgebraFulcrumLib.Mathematica.Mathematica;
+
+public interface ISymbolicVector : ISymbolicObject, IEnumerable<MathematicaScalar>
 {
-    public interface ISymbolicVector : ISymbolicObject, IEnumerable<MathematicaScalar>
-    {
-        int Size { get; }
+    int Size { get; }
 
-        MathematicaScalar this[int index] { get; }
+    MathematicaScalar this[int index] { get; }
 
 
-        bool IsFullVector();
+    bool IsFullVector();
 
-        bool IsSparseVector();
+    bool IsSparseVector();
 
         
-        ISymbolicVector Times(ISymbolicMatrix m);
+    ISymbolicVector Times(ISymbolicMatrix m);
 
 
-        MathematicaVector ToMathematicaVector();
+    MathematicaVector ToMathematicaVector();
 
-        MathematicaVector ToMathematicaFullVector();
+    MathematicaVector ToMathematicaFullVector();
 
-        MathematicaVector ToMathematicaSparseVector();
-    }
+    MathematicaVector ToMathematicaSparseVector();
 }

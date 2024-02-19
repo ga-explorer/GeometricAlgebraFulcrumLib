@@ -3,72 +3,71 @@ using System.Collections.Generic;
 using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Restricted.Records;
 using GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors.Graded;
 
-namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors
+namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors;
+
+/// <summary>
+/// This interface represent a sparse list with a single index of type ulong.
+/// The interface members are designed to serve GA data structures.
+/// </summary>
+/// <typeparam name="T"></typeparam>
+public interface ILinVectorStorage<T> :
+    ILinArrayStorage1D<T>
 {
+    IEnumerable<ulong> GetIndices();
+
+    T GetScalar(ulong index);
+
+    IEnumerable<RGaKvIndexScalarRecord<T>> GetIndexScalarRecords();
+
+    bool ContainsIndex(ulong index);
+
+    bool TryGetScalar(ulong index, out T scalar);
+
     /// <summary>
-    /// This interface represent a sparse list with a single index of type ulong.
-    /// The interface members are designed to serve GA data structures.
+    /// The smallest index stored in this structure
     /// </summary>
-    /// <typeparam name="T"></typeparam>
-    public interface ILinVectorStorage<T> :
-        ILinArrayStorage1D<T>
-    {
-        IEnumerable<ulong> GetIndices();
+    /// <returns></returns>
+    ulong GetMinIndex();
 
-        T GetScalar(ulong index);
+    /// <summary>
+    /// The largest index stored in this structure
+    /// </summary>
+    /// <returns></returns>
+    ulong GetMaxIndex();
 
-        IEnumerable<RGaKvIndexScalarRecord<T>> GetIndexScalarRecords();
+    /// <summary>
+    /// The indices not stored in this list in range 0 to maxKey
+    /// </summary>
+    /// <param name="maxCount"></param>
+    /// <returns></returns>
+    IEnumerable<ulong> GetEmptyIndices(ulong maxCount);
 
-        bool ContainsIndex(ulong index);
+    /// <summary>
+    /// Copy the current state of this structure
+    /// </summary>
+    /// <returns></returns>
+    ILinVectorStorage<T> GetCopy();
 
-        bool TryGetScalar(ulong index, out T scalar);
+    /// <summary>
+    /// Create a permutation of this structure, the index mapping must be one to one
+    /// </summary>
+    /// <param name="indexMapping"></param>
+    /// <returns></returns>
+    ILinVectorStorage<T> GetPermutation(Func<ulong, ulong> indexMapping);
 
-        /// <summary>
-        /// The smallest index stored in this structure
-        /// </summary>
-        /// <returns></returns>
-        ulong GetMinIndex();
+    ILinVectorStorage<T2> MapScalars<T2>(Func<T, T2> scalarMapping);
 
-        /// <summary>
-        /// The largest index stored in this structure
-        /// </summary>
-        /// <returns></returns>
-        ulong GetMaxIndex();
+    ILinVectorStorage<T2> MapScalars<T2>(Func<ulong, T, T2> indexScalarMapping);
 
-        /// <summary>
-        /// The indices not stored in this list in range 0 to maxKey
-        /// </summary>
-        /// <param name="maxCount"></param>
-        /// <returns></returns>
-        IEnumerable<ulong> GetEmptyIndices(ulong maxCount);
+    ILinVectorStorage<T> FilterByIndex(Func<ulong, bool> indexFilter);
 
-        /// <summary>
-        /// Copy the current state of this structure
-        /// </summary>
-        /// <returns></returns>
-        ILinVectorStorage<T> GetCopy();
+    ILinVectorStorage<T> FilterByIndexScalar(Func<ulong, T, bool> indexScalarFilter);
 
-        /// <summary>
-        /// Create a permutation of this structure, the index mapping must be one to one
-        /// </summary>
-        /// <param name="indexMapping"></param>
-        /// <returns></returns>
-        ILinVectorStorage<T> GetPermutation(Func<ulong, ulong> indexMapping);
+    ILinVectorStorage<T> FilterByScalar(Func<T, bool> scalarFilter);
 
-        ILinVectorStorage<T2> MapScalars<T2>(Func<T, T2> scalarMapping);
+    ILinVectorGradedStorage<T> ToVectorGradedStorage(Func<ulong, RGaGradeKvIndexRecord> indexToGradeIndexMapping);
 
-        ILinVectorStorage<T2> MapScalars<T2>(Func<ulong, T, T2> indexScalarMapping);
+    ILinVectorGradedStorage<T> ToVectorGradedStorage(Func<ulong, T, RGaGradeKvIndexScalarRecord<T>> indexScalarToGradeIndexScalarMapping);
 
-        ILinVectorStorage<T> FilterByIndex(Func<ulong, bool> indexFilter);
-
-        ILinVectorStorage<T> FilterByIndexScalar(Func<ulong, T, bool> indexScalarFilter);
-
-        ILinVectorStorage<T> FilterByScalar(Func<T, bool> scalarFilter);
-
-        ILinVectorGradedStorage<T> ToVectorGradedStorage(Func<ulong, RGaGradeKvIndexRecord> indexToGradeIndexMapping);
-
-        ILinVectorGradedStorage<T> ToVectorGradedStorage(Func<ulong, T, RGaGradeKvIndexScalarRecord<T>> indexScalarToGradeIndexScalarMapping);
-
-        bool TryGetCompactStorage(out ILinVectorStorage<T> vectorStorage);
-    }
+    bool TryGetCompactStorage(out ILinVectorStorage<T> vectorStorage);
 }

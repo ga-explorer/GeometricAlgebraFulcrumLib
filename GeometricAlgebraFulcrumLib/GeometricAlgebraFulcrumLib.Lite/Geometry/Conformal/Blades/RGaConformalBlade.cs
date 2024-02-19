@@ -1,14 +1,9 @@
 ﻿using System.Diagnostics;
 using System.Runtime.CompilerServices;
-using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Restricted.Float64.LinearMaps.Outermorphisms;
+using DataStructuresLib.Basic;
 using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Restricted.Float64.Multivectors;
 using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Restricted.Float64.Processors;
-using GeometricAlgebraFulcrumLib.Lite.Geometry.Conformal.Encoding;
-using GeometricAlgebraFulcrumLib.Lite.Geometry.Conformal.Versors;
 using GeometricAlgebraFulcrumLib.Lite.Geometry.Conformal.Visualizer;
-using GeometricAlgebraFulcrumLib.Lite.LinearAlgebra.Vectors.Space2D;
-using GeometricAlgebraFulcrumLib.Lite.LinearAlgebra.Vectors.Space3D;
-using GeometricAlgebraFulcrumLib.Lite.LinearAlgebra.Vectors.SpaceND;
 using GeometricAlgebraFulcrumLib.Lite.ScalarAlgebra;
 
 namespace GeometricAlgebraFulcrumLib.Lite.Geometry.Conformal.Blades;
@@ -78,6 +73,9 @@ public sealed record RGaConformalBlade
 
 
     public RGaConformalSpace ConformalSpace { get; }
+
+    public RGaGeometrySpaceBasisSpecs BasisSpecs 
+        => ConformalSpace.BasisSpecs;
 
     public RGaConformalVisualizer Visualizer 
         => ConformalSpace switch
@@ -193,8 +191,9 @@ public sealed record RGaConformalBlade
     {
         var eiIdMask = (1UL << (VSpaceDimensions - 1)) - 1UL;
 
-        var kVector = ConformalSpace.LaTeXBasisMapInverse.OmMap(
-            ConformalSpace.LaTeXBasisMap
+        var kVector = BasisSpecs.BasisMapInverse.OmMap(
+            BasisSpecs
+                .BasisMap
                 .OmMap(InternalKVector)
                 .MapBasisBlades(id => id & eiIdMask)
                 .GetFirstKVectorPart()
@@ -712,419 +711,53 @@ public sealed record RGaConformalBlade
     {
         return InternalKVector.Gp(mv2);
     }
-
-    
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public RGaConformalBlade MapUsingMusicalIsomorphism()
-    {
-        return new RGaConformalBlade(
-            ConformalSpace,
-            ConformalSpace.MusicalIsomorphism.OmMap(InternalKVector)
-        );
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public RGaConformalBlade MapUsing(IRGaFloat64Outermorphism outerMorphism)
-    {
-        return new RGaConformalBlade(
-            ConformalSpace,
-            outerMorphism.OmMap(InternalKVector)
-        );
-    }
-    
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public RGaConformalBlade MapUsing(RGaConformalVersor versor)
-    {
-        return versor.MapBlade(InternalKVector);
-    }
-
-
-    /// <summary>
-    /// Apply a uniform scaling to this CGA blade
-    /// </summary>
-    /// <param name="scalingFactor"></param>
-    /// <returns></returns>
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public RGaConformalBlade ScaleBy(double scalingFactor)
-    {
-        Debug.Assert(
-            scalingFactor.IsValid() &&
-            scalingFactor > 0
-        );
-
-        var g = 0.5 * scalingFactor.LogE();
-        var s0 = Math.Cosh(g);
-        var s2 = Math.Sinh(g) * ConformalSpace.Eoi.InternalKVector;
-
-        var kVector =
-            (s0 + s2).Gp(InternalKVector).Gp(s0 - s2).GetKVectorPart(InternalKVector.Grade);
-
-        return new RGaConformalBlade(ConformalSpace, kVector);
-    }
-
-
-    /// <summary>
-    /// Apply a CGA translation to this CGA blade
-    /// </summary>
-    /// <param name="egaTranslationVector"></param>
-    /// <returns></returns>
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public RGaConformalBlade TranslateBy(Float64Vector2D egaTranslationVector)
-    {
-        return TranslateBy(
-            ConformalSpace.EncodeEGaVector(egaTranslationVector)
-        );
-    }
-
-    /// <summary>
-    /// Apply a CGA translation to this CGA blade
-    /// </summary>
-    /// <param name="egaTranslationVector"></param>
-    /// <returns></returns>
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public RGaConformalBlade TranslateBy(Float64Vector3D egaTranslationVector)
-    {
-        return TranslateBy(
-            ConformalSpace.EncodeEGaVector(egaTranslationVector)
-        );
-    }
-
-    /// <summary>
-    /// Apply a CGA translation to this CGA blade
-    /// </summary>
-    /// <param name="egaTranslationVector"></param>
-    /// <returns></returns>
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public RGaConformalBlade TranslateBy(Float64Vector egaTranslationVector)
-    {
-        return TranslateBy(
-            ConformalSpace.EncodeEGaVector(egaTranslationVector)
-        );
-    }
-    
-    /// <summary>
-    /// Apply a CGA translation to this CGA blade
-    /// </summary>
-    /// <param name="egaTranslationVector"></param>
-    /// <returns></returns>
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public RGaConformalBlade TranslateBy(RGaFloat64Vector egaTranslationVector)
-    {
-        return TranslateBy(
-            ConformalSpace.EncodeEGaVector(egaTranslationVector)
-        );
-    }
-
-    /// <summary>
-    /// Apply a CGA translation to this CGA blade
-    /// </summary>
-    /// <param name="egaTranslationVector"></param>
-    /// <returns></returns>
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public RGaConformalBlade TranslateBy(RGaConformalBlade egaTranslationVector)
-    {
-        Debug.Assert(
-            egaTranslationVector.IsEGaVector()
-        );
-
-        var eit =
-            0.5d * ConformalSpace.Ei.InternalKVector.Op(egaTranslationVector.InternalKVector);
-
-        var kVector =
-            (1 + eit).Gp(InternalKVector).Gp(1 - eit).GetKVectorPart(Grade);
-
-        return new RGaConformalBlade(ConformalSpace, kVector);
-    }
     
 
-    /// <summary>
-    /// Apply a PGA translation to this PGA blade
-    /// </summary>
-    /// <param name="egaTranslationVector"></param>
-    /// <returns></returns>
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public RGaConformalBlade TranslatePGaBy(Float64Vector2D egaTranslationVector)
+    public RGaConformalBlade GetEuclideanMeet(RGaConformalBlade blade2)
     {
-        return TranslatePGaBy(
-            ConformalSpace.EncodeEGaVector(egaTranslationVector)
-        );
-    }
+        var a = InternalKVector;
+        var b = blade2.InternalKVector;
 
-    /// <summary>
-    /// Apply a PGA translation to this PGA blade
-    /// </summary>
-    /// <param name="egaTranslationVector"></param>
-    /// <returns></returns>
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public RGaConformalBlade TranslatePGaBy(Float64Vector3D egaTranslationVector)
-    {
-        return TranslatePGaBy(
-            ConformalSpace.EncodeEGaVector(egaTranslationVector)
-        );
-    }
-
-    /// <summary>
-    /// Apply a PGA translation to this PGA blade
-    /// </summary>
-    /// <param name="egaTranslationVector"></param>
-    /// <returns></returns>
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public RGaConformalBlade TranslatePGaBy(Float64Vector egaTranslationVector)
-    {
-        return TranslatePGaBy(
-            ConformalSpace.EncodeEGaVector(egaTranslationVector)
-        );
-    }
-
-    /// <summary>
-    /// Apply a PGA translation to this PGA blade
-    /// </summary>
-    /// <param name="egaTranslationVector"></param>
-    /// <returns></returns>
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public RGaConformalBlade TranslatePGaBy(RGaFloat64Vector egaTranslationVector)
-    {
-        return TranslatePGaBy(
-            ConformalSpace.EncodeEGaVector(egaTranslationVector)
-        );
-    }
-
-    /// <summary>
-    /// Apply a PGA translation to this PGA blade
-    /// </summary>
-    /// <param name="egaTranslationVector"></param>
-    /// <returns></returns>
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public RGaConformalBlade TranslatePGaBy(RGaConformalBlade egaTranslationVector)
-    {
-        Debug.Assert(
-            this.IsPGaBlade() &&
-            egaTranslationVector.IsEGaBlade()
+        var meetVectorsList = new List<RGaFloat64Vector>(
+            Math.Min(a.Grade, b.Grade)
         );
 
-        var eot = 
-            0.5d * ConformalSpace.EoVector.Op(egaTranslationVector.InternalVector);
-
-        var kVector = 
-            (1 - eot).Gp(InternalKVector).Gp(1 + eot).GetKVectorPart(InternalKVector.Grade);
-
-        return new RGaConformalBlade(ConformalSpace, kVector);
-    }
-
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    internal RGaConformalBlade ProjectOn(RGaFloat64KVector subspace)
-    {
-        var projectedBlade =
-            InternalKVector
-                .Fdp(subspace)
-                .Gp(subspace)
-                .GetKVectorPart(InternalKVector.Grade);
-
-        var scalarFactor = subspace.SpSquared();
-
-        var kVector = scalarFactor.IsNearZero()
-            ? projectedBlade
-            : projectedBlade / scalarFactor;
-
-        return new RGaConformalBlade(ConformalSpace, kVector);
-    }
-    
-    /// <summary>
-    /// Project this EGA Blade on another EGA Blade
-    /// </summary>
-    /// <param name="subspace"></param>
-    /// <returns></returns>
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public RGaConformalBlade ProjectEGaOnEGa(RGaConformalBlade subspace)
-    {
-        Debug.Assert(
-            this.IsEGaBlade() &&
-            subspace.IsEGaBlade()
+        meetVectorsList.AddRange(
+            Grade <= blade2.Grade
+                ? a.BladeToVectors().Where(vector => vector.Op(b).IsNearZero())
+                : b.BladeToVectors().Where(vector => a.Op(vector).IsNearZero())
         );
 
-        return ProjectOn(subspace.InternalKVector);
+        return meetVectorsList
+            .Op(ConformalProcessor)
+            .ToConformalBlade(ConformalSpace);
     }
 
-    /// <summary>
-    /// Project this CGA OPNS Blade on another CGA OPNS Blade
-    /// </summary>
-    /// <param name="subspace"></param>
-    /// <returns></returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public RGaConformalBlade ProjectOpnsOnOpns(RGaConformalBlade subspace)
+    public RGaConformalBlade GetEuclideanJoin(RGaConformalBlade blade2)
     {
-        return ProjectOn(subspace.InternalKVector);
-    }
-    
-    /// <summary>
-    /// Project this CGA IPNS Blade on another CGA IPNS Blade
-    /// </summary>
-    /// <param name="subspace"></param>
-    /// <returns></returns>
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public RGaConformalBlade ProjectIpnsOnIpns(RGaConformalBlade subspace)
-    {
-        return ProjectOn(subspace.InternalKVector);
+        return InternalKVector
+            .BladeToVectors()
+            .Concat(blade2.InternalKVector.BladeToVectors())
+            .SpanToBlade(ConformalProcessor)
+            .ToConformalBlade(ConformalSpace);
     }
 
-    /// <summary>
-    /// Project this PGA Blade on another PGA Blade
-    /// </summary>
-    /// <param name="subspace"></param>
-    /// <returns></returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public RGaConformalBlade ProjectPGaOnPGa(RGaConformalBlade subspace)
+    public Pair<RGaConformalBlade> GetEuclideanMeetJoin(RGaConformalBlade blade2)
     {
-        Debug.Assert(
-            this.IsPGaBlade() &&
-            subspace.IsPGaBlade()
-        );
+        var meet = 
+            GetEuclideanMeet(blade2);
+        
+        var join = 
+            InternalKVector.Op(
+                meet.InternalKVector.Lcp(blade2.InternalKVector)
+            ).DivideByENorm().ToConformalBlade(ConformalSpace);
 
-        return ProjectOn(subspace.InternalKVector);
-    }
-    
-
-    /// <summary>
-    /// Intersect this CGA OPNS Blade with another CGA OPNS Blade
-    /// </summary>
-    /// <param name="blade2"></param>
-    /// <returns></returns>
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public RGaConformalBlade IntersectOpnsWithOpns(RGaConformalBlade blade2)
-    {
-        return Op(blade2);
-    }
-    
-    /// <summary>
-    /// Intersect this CGA OPNS Blade with two other CGA OPNS Blades
-    /// </summary>
-    /// <param name="blade2"></param>
-    /// <param name="blade3"></param>
-    /// <returns></returns>
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public RGaConformalBlade IntersectOpnsWithOpns(RGaConformalBlade blade2, RGaConformalBlade blade3)
-    {
-        return Op(blade2).Op(blade3);
+        return new Pair<RGaConformalBlade>(meet, join);
     }
 
     
-    /// <summary>
-    /// Intersect this CGA IPNS Blade with another CGA IPNS Blade
-    /// </summary>
-    /// <param name="blade2"></param>
-    /// <returns></returns>
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public RGaConformalBlade IntersectIpnsWithIpns(RGaConformalBlade blade2)
-    {
-        return blade2.Op(this);
-    }
-    
-    /// <summary>
-    /// Intersect this CGA IPNS Blade with two other CGA IPNS Blades
-    /// </summary>
-    /// <param name="blade2"></param>
-    /// <param name="blade3"></param>
-    /// <returns></returns>
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public RGaConformalBlade IntersectIpnsWithIpns(RGaConformalBlade blade2, RGaConformalBlade blade3)
-    {
-        return blade3.Op(blade2).Op(this);
-    }
-    
-    
-    /// <summary>
-    /// Reflect this CGA OPNS Blade on another CGA OPNS Blade
-    /// </summary>
-    /// <param name="blade2"></param>
-    /// <returns></returns>
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public RGaConformalBlade ReflectOpnsOnOpns(RGaConformalBlade blade2)
-    {
-        return new RGaConformalBlade(
-            ConformalSpace,
-            ConformalSpace.ReflectOpnsOnOpns(InternalKVector, blade2.InternalKVector)
-        );
-    }
-    
-    /// <summary>
-    /// Reflect this CGA OPNS Blade on another CGA IPNS Blade
-    /// </summary>
-    /// <param name="blade2"></param>
-    /// <returns></returns>
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public RGaConformalBlade ReflectOpnsOnIpns(RGaConformalBlade blade2)
-    {
-        return new RGaConformalBlade(
-            ConformalSpace,
-            ConformalSpace.ReflectOpnsOnIpns(InternalKVector, blade2.InternalKVector)
-        );
-    }
-
-    /// <summary>
-    /// Reflect this CGA IPNS Blade on another CGA OPNS Blade
-    /// </summary>
-    /// <param name="blade2"></param>
-    /// <returns></returns>
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public RGaConformalBlade ReflectIpnsOnOpns(RGaConformalBlade blade2)
-    {
-        return new RGaConformalBlade(
-            ConformalSpace,
-            ConformalSpace.ReflectIpnsOnOpns(InternalKVector, blade2.InternalKVector)
-        );
-    }
-    
-    /// <summary>
-    /// Reflect this CGA IPNS Blade on another CGA IPNS Blade
-    /// </summary>
-    /// <param name="blade2"></param>
-    /// <returns></returns>
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public RGaConformalBlade ReflectIpnsOnIpns(RGaConformalBlade blade2)
-    {
-        return new RGaConformalBlade(
-            ConformalSpace,
-            ConformalSpace.ReflectIpnsOnIpns(InternalKVector, blade2.InternalKVector)
-        );
-    }
-
-
-    /// <summary>
-    /// Intersect this PGA Blade with another PGA Blade
-    /// </summary>
-    /// <param name="blade2"></param>
-    /// <returns></returns>
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public RGaConformalBlade IntersectPGaWithPGa(RGaConformalBlade blade2)
-    {
-        Debug.Assert(
-            this.IsPGaBlade() &&
-            blade2.IsPGaBlade()
-        );
-
-        return blade2.Op(this);
-    }
-    
-    /// <summary>
-    /// Intersect this PGA Blade with two other PGA Blades
-    /// </summary>
-    /// <param name="blade2"></param>
-    /// <param name="blade3"></param>
-    /// <returns></returns>
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public RGaConformalBlade IntersectPGaWithPGa(RGaConformalBlade blade2, RGaConformalBlade blade3)
-    {
-        Debug.Assert(
-            this.IsPGaBlade() &&
-            blade2.IsPGaBlade() &&
-            blade3.IsPGaBlade()
-        );
-
-        return blade3.Op(blade2).Op(this);
-    }
-
-
     /// <summary>
     /// Get the IPNS distance of this blade with another (equal to -2 * blade1.Sp(blade2)
     /// Each of the two blades must be either a CGA vector or a pseudo-vector
@@ -1196,7 +829,13 @@ public sealed record RGaConformalBlade
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public string ToLaTeX()
     {
-        return ConformalSpace.ToLaTeX(InternalKVector);
+        return BasisSpecs.ToLaTeX(InternalKVector);
+    }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public string ToLaTeX(RGaGeometrySpaceBasisSpecs basisSpecs)
+    {
+        return basisSpecs.ToLaTeX(InternalKVector);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]

@@ -2,35 +2,34 @@
 using GeometricAlgebraFulcrumLib.Lite.LinearAlgebra.Vectors.Space3D;
 using TextComposerLib.Code.JavaScript;
 
-namespace GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.ThreeJs.Obsolete
+namespace GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.ThreeJs.Obsolete;
+
+public static class ThreeJsUtils
 {
-    public static class ThreeJsUtils
+    public static JavaScriptAttributesDictionary SetThreeJsVector3Value(this JavaScriptAttributesDictionary composer, string key, IFloat64Vector3D value)
     {
-        public static JavaScriptAttributesDictionary SetThreeJsVector3Value(this JavaScriptAttributesDictionary composer, string key, IFloat64Vector3D value)
-        {
-            composer.SetTextValue(
-                key, 
-                value.ToThreeJsVector3().GetJavaScriptCode()
-            );
+        composer.SetTextValue(
+            key, 
+            value.ToThreeJsVector3().GetJavaScriptCode()
+        );
 
-            return composer;
-        }
+        return composer;
+    }
 
-        public static JavaScriptAttributesDictionary SetThreeJsVector3Value(this JavaScriptAttributesDictionary composer, string key, IFloat64Vector3D value, IFloat64Vector3D valueDefault)
-        {
-            composer.SetTextValue(
-                key, 
-                value.ToThreeJsVector3().ToString(), 
-                valueDefault.ToThreeJsVector3().ToString()
-            );
+    public static JavaScriptAttributesDictionary SetThreeJsVector3Value(this JavaScriptAttributesDictionary composer, string key, IFloat64Vector3D value, IFloat64Vector3D valueDefault)
+    {
+        composer.SetTextValue(
+            key, 
+            value.ToThreeJsVector3().ToString(), 
+            valueDefault.ToThreeJsVector3().ToString()
+        );
 
-            return composer;
-        }
+        return composer;
+    }
 
 
-        public static TjVector3 ToThreeJsVector3(this IFloat64Vector3D value)
-        {
-            return value is TjVector3 v ? v : new TjVector3(value);
-        }
+    public static TjVector3 ToThreeJsVector3(this IFloat64Vector3D value)
+    {
+        return value is TjVector3 v ? v : new TjVector3(value);
     }
 }

@@ -39,7 +39,7 @@ public sealed class LibTypeMultivector :
             .GetRange()
             .ToImmutableArray();
     }
-
+    
     public override string ToString()
     {
         return ClassName;

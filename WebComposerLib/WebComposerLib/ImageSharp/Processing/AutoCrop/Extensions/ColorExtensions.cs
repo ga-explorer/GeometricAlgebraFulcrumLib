@@ -1,10 +1,9 @@
-﻿namespace WebComposerLib.ImageSharp.Processing.AutoCrop.Extensions
+﻿namespace WebComposerLib.ImageSharp.Processing.AutoCrop.Extensions;
+
+internal static class ColorExtensions
 {
-    internal static class ColorExtensions
+    public static byte ToColorBucket(this Color color)
     {
-        public static byte ToColorBucket(this Color color)
-        {
-            return color.ToPixel<Rgba32>().ToColorBucket();
-        }
+        return color.ToPixel<Rgba32>().ToColorBucket();
     }
 }

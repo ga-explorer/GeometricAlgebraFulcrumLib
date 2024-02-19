@@ -4,185 +4,184 @@ using WebComposerLib.Svg.Elements.Categories;
 using WebComposerLib.Svg.Transforms;
 using WebComposerLib.Svg.Values;
 
-namespace WebComposerLib.Svg.Elements.Shape
+namespace WebComposerLib.Svg.Elements.Shape;
+
+public sealed class SvgElementPolygon : SvgElement, ISvgBasicShapeElement
 {
-    public sealed class SvgElementPolygon : SvgElement, ISvgBasicShapeElement
+    public static SvgElementPolygon Create()
     {
-        public static SvgElementPolygon Create()
+        return new SvgElementPolygon();
+    }
+
+    public static SvgElementPolygon Create(string id)
+    {
+        return new SvgElementPolygon() { Id = id };
+    }
+
+
+    public override string ElementName => "polygon";
+
+
+    //public SvgEavString<SvgElementPolygon> Id
+    //{
+    //    get
+    //    {
+    //        var attrInfo = SvgAttributes.Id;
+
+    //        ISvgAttributeValue attrValue;
+    //        if (AttributesTable.TryGetValue(attrInfo.Id, out attrValue))
+    //            return attrValue as SvgEavString<SvgElementPolygon>;
+
+    //        var attrValue1 = new SvgEavString<SvgElementPolygon>(this, attrInfo);
+    //        AttributesTable.Add(attrInfo.Id, attrValue1);
+
+    //        return attrValue1;
+    //    }
+    //}
+
+    public SvgEavString<SvgElementPolygon> XmlBase
+    {
+        get
         {
-            return new SvgElementPolygon();
-        }
+            var attrInfo = SvgAttributeUtils.XmlBase;
 
-        public static SvgElementPolygon Create(string id)
+            if (AttributesTable.TryGetValue(attrInfo.Id, out var attrValue))
+                return attrValue as SvgEavString<SvgElementPolygon>;
+
+            var attrValue1 = new SvgEavString<SvgElementPolygon>(this, attrInfo);
+            AttributesTable.Add(attrInfo.Id, attrValue1);
+
+            return attrValue1;
+        }
+    }
+
+    public SvgEavString<SvgElementPolygon> XmlLanguage
+    {
+        get
         {
-            return new SvgElementPolygon() { Id = id };
+            var attrInfo = SvgAttributeUtils.XmlLanguage;
+
+            if (AttributesTable.TryGetValue(attrInfo.Id, out var attrValue))
+                return attrValue as SvgEavString<SvgElementPolygon>;
+
+            var attrValue1 = new SvgEavString<SvgElementPolygon>(this, attrInfo);
+            AttributesTable.Add(attrInfo.Id, attrValue1);
+
+            return attrValue1;
         }
+    }
 
-
-        public override string ElementName => "polygon";
-
-
-        //public SvgEavString<SvgElementPolygon> Id
-        //{
-        //    get
-        //    {
-        //        var attrInfo = SvgAttributes.Id;
-
-        //        ISvgAttributeValue attrValue;
-        //        if (AttributesTable.TryGetValue(attrInfo.Id, out attrValue))
-        //            return attrValue as SvgEavString<SvgElementPolygon>;
-
-        //        var attrValue1 = new SvgEavString<SvgElementPolygon>(this, attrInfo);
-        //        AttributesTable.Add(attrInfo.Id, attrValue1);
-
-        //        return attrValue1;
-        //    }
-        //}
-
-        public SvgEavString<SvgElementPolygon> XmlBase
+    public SvgEavStruct<bool, SvgElementPolygon> ExternalResourcesRequired
+    {
+        get
         {
-            get
-            {
-                var attrInfo = SvgAttributeUtils.XmlBase;
+            var attrInfo = SvgAttributeUtils.ExternalResourcesRequired;
 
-                if (AttributesTable.TryGetValue(attrInfo.Id, out var attrValue))
-                    return attrValue as SvgEavString<SvgElementPolygon>;
+            if (AttributesTable.TryGetValue(attrInfo.Id, out var attrValue))
+                return attrValue as SvgEavStruct<bool, SvgElementPolygon>;
 
-                var attrValue1 = new SvgEavString<SvgElementPolygon>(this, attrInfo);
-                AttributesTable.Add(attrInfo.Id, attrValue1);
+            var attrValue1 = new SvgEavStruct<bool, SvgElementPolygon>(this, attrInfo);
+            AttributesTable.Add(attrInfo.Id, attrValue1);
 
-                return attrValue1;
-            }
+            return attrValue1;
         }
+    }
 
-        public SvgEavString<SvgElementPolygon> XmlLanguage
+    public SvgEavString<SvgElementPolygon> Class
+    {
+        get
         {
-            get
-            {
-                var attrInfo = SvgAttributeUtils.XmlLanguage;
+            var attrInfo = SvgAttributeUtils.Class;
 
-                if (AttributesTable.TryGetValue(attrInfo.Id, out var attrValue))
-                    return attrValue as SvgEavString<SvgElementPolygon>;
+            if (AttributesTable.TryGetValue(attrInfo.Id, out var attrValue))
+                return attrValue as SvgEavString<SvgElementPolygon>;
 
-                var attrValue1 = new SvgEavString<SvgElementPolygon>(this, attrInfo);
-                AttributesTable.Add(attrInfo.Id, attrValue1);
+            var attrValue1 = new SvgEavString<SvgElementPolygon>(this, attrInfo);
+            AttributesTable.Add(attrInfo.Id, attrValue1);
 
-                return attrValue1;
-            }
+            return attrValue1;
         }
+    }
 
-        public SvgEavStruct<bool, SvgElementPolygon> ExternalResourcesRequired
+    //public SvgEavStyle<SvgElementPolygon> Style
+    //{
+    //    get
+    //    {
+    //        var attrInfo = SvgAttributes.Style;
+
+    //        ISvgAttributeValue attrValue;
+    //        if (AttributesTable.TryGetValue(attrInfo.Id, out attrValue))
+    //            return attrValue as SvgEavStyle<SvgElementPolygon>;
+
+    //        var attrValue1 = new SvgEavStyle<SvgElementPolygon>(this);
+    //        AttributesTable.Add(attrInfo.Id, attrValue1);
+
+    //        return attrValue1;
+    //    }
+    //}
+
+    public SvgEav<SvgTransform, SvgElementPolygon> Transform
+    {
+        get
         {
-            get
-            {
-                var attrInfo = SvgAttributeUtils.ExternalResourcesRequired;
+            var attrInfo = SvgAttributeUtils.Transform;
 
-                if (AttributesTable.TryGetValue(attrInfo.Id, out var attrValue))
-                    return attrValue as SvgEavStruct<bool, SvgElementPolygon>;
+            if (AttributesTable.TryGetValue(attrInfo.Id, out var attrValue))
+                return attrValue as SvgEav<SvgTransform, SvgElementPolygon>;
 
-                var attrValue1 = new SvgEavStruct<bool, SvgElementPolygon>(this, attrInfo);
-                AttributesTable.Add(attrInfo.Id, attrValue1);
+            var attrValue1 = new SvgEav<SvgTransform, SvgElementPolygon>(this, attrInfo);
+            AttributesTable.Add(attrInfo.Id, attrValue1);
 
-                return attrValue1;
-            }
+            return attrValue1;
         }
+    }
 
-        public SvgEavString<SvgElementPolygon> Class
+    public SvgEav<SvgPointList, SvgElementPolygon> Points
+    {
+        get
         {
-            get
-            {
-                var attrInfo = SvgAttributeUtils.Class;
+            var attrInfo = SvgAttributeUtils.Points;
 
-                if (AttributesTable.TryGetValue(attrInfo.Id, out var attrValue))
-                    return attrValue as SvgEavString<SvgElementPolygon>;
+            if (AttributesTable.TryGetValue(attrInfo.Id, out var attrValue))
+                return attrValue as SvgEav<SvgPointList, SvgElementPolygon>;
 
-                var attrValue1 = new SvgEavString<SvgElementPolygon>(this, attrInfo);
-                AttributesTable.Add(attrInfo.Id, attrValue1);
+            var attrValue1 = new SvgEav<SvgPointList, SvgElementPolygon>(this, attrInfo);
+            AttributesTable.Add(attrInfo.Id, attrValue1);
 
-                return attrValue1;
-            }
+            return attrValue1;
         }
-
-        //public SvgEavStyle<SvgElementPolygon> Style
-        //{
-        //    get
-        //    {
-        //        var attrInfo = SvgAttributes.Style;
-
-        //        ISvgAttributeValue attrValue;
-        //        if (AttributesTable.TryGetValue(attrInfo.Id, out attrValue))
-        //            return attrValue as SvgEavStyle<SvgElementPolygon>;
-
-        //        var attrValue1 = new SvgEavStyle<SvgElementPolygon>(this);
-        //        AttributesTable.Add(attrInfo.Id, attrValue1);
-
-        //        return attrValue1;
-        //    }
-        //}
-
-        public SvgEav<SvgTransform, SvgElementPolygon> Transform
-        {
-            get
-            {
-                var attrInfo = SvgAttributeUtils.Transform;
-
-                if (AttributesTable.TryGetValue(attrInfo.Id, out var attrValue))
-                    return attrValue as SvgEav<SvgTransform, SvgElementPolygon>;
-
-                var attrValue1 = new SvgEav<SvgTransform, SvgElementPolygon>(this, attrInfo);
-                AttributesTable.Add(attrInfo.Id, attrValue1);
-
-                return attrValue1;
-            }
-        }
-
-        public SvgEav<SvgPointList, SvgElementPolygon> Points
-        {
-            get
-            {
-                var attrInfo = SvgAttributeUtils.Points;
-
-                if (AttributesTable.TryGetValue(attrInfo.Id, out var attrValue))
-                    return attrValue as SvgEav<SvgPointList, SvgElementPolygon>;
-
-                var attrValue1 = new SvgEav<SvgPointList, SvgElementPolygon>(this, attrInfo);
-                AttributesTable.Add(attrInfo.Id, attrValue1);
-
-                return attrValue1;
-            }
-        }
+    }
 
 
-        private SvgElementPolygon()
-        {
-        }
+    private SvgElementPolygon()
+    {
+    }
 
 
-        public SvgElementPolygon SetPoints(SvgPointList points)
-        {
-            Points.SetTo(points);
+    public SvgElementPolygon SetPoints(SvgPointList points)
+    {
+        Points.SetTo(points);
 
-            return this;
-        }
+        return this;
+    }
 
-        public SvgElementPolygon SetPoints(IEnumerable<IPair<double>> points)
-        {
-            return SetPoints(SvgPointList.Create(points));
-        }
+    public SvgElementPolygon SetPoints(IEnumerable<IPair<double>> points)
+    {
+        return SetPoints(SvgPointList.Create(points));
+    }
 
-        public SvgElementPolygon SetPoints(SvgLengthUnit unit, IEnumerable<IPair<double>> points)
-        {
-            return SetPoints(SvgPointList.Create(unit, points));
-        }
+    public SvgElementPolygon SetPoints(SvgLengthUnit unit, IEnumerable<IPair<double>> points)
+    {
+        return SetPoints(SvgPointList.Create(unit, points));
+    }
 
-        public SvgElementPolygon SetPoints(params double[] points)
-        {
-            return SetPoints(SvgPointList.Create(points));
-        }
+    public SvgElementPolygon SetPoints(params double[] points)
+    {
+        return SetPoints(SvgPointList.Create(points));
+    }
 
-        public SvgElementPolygon SetPoints(SvgLengthUnit unit, params double[] points)
-        {
-            return SetPoints(SvgPointList.Create(unit, points));
-        }
+    public SvgElementPolygon SetPoints(SvgLengthUnit unit, params double[] points)
+    {
+        return SetPoints(SvgPointList.Create(unit, points));
     }
 }

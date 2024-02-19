@@ -7,6 +7,7 @@ using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Restricted.Float64.Multiv
 using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Restricted.Float64.Multivectors.Composers;
 using GeometricAlgebraFulcrumLib.Lite.Geometry.Conformal.Blades;
 using GeometricAlgebraFulcrumLib.Lite.Geometry.Conformal.Encoding;
+using GeometricAlgebraFulcrumLib.Lite.Geometry.Conformal.Operations;
 using GeometricAlgebraFulcrumLib.Lite.LinearAlgebra.Vectors.Space2D;
 using GeometricAlgebraFulcrumLib.Lite.LinearAlgebra.Vectors.Space3D;
 using GeometricAlgebraFulcrumLib.Lite.LinearAlgebra.Vectors.SpaceND;
@@ -17,6 +18,8 @@ namespace GeometricAlgebraFulcrumLib.Lite.Geometry.Conformal.Elements;
 public class RGaConformalRound :
     RGaConformalElement
 {
+    public override RGaConformalBlade Position { get; }
+
     public RGaConformalBlade Center
         => Position;
     
@@ -36,10 +39,11 @@ public class RGaConformalRound :
             conformalSpace, 
             RGaConformalElementKind.Round, 
             weight, 
-            position, 
             direction
         )
     {
+        Position = position;
+
         _radiusSquared = 
             Direction.IsScalar || 
             Weight.IsNearZero() ||
@@ -56,8 +60,8 @@ public class RGaConformalRound :
         return Weight.IsValid() && 
                Weight >= 0 &&
                Direction.IsEGaBlade() &&
+               Position.IsEGaVector() &&
                Direction.Norm().IsNearOne() &&
-               Center.IsEGaBlade() &&
                RadiusSquared.IsValid();
     }
 
@@ -130,9 +134,7 @@ public class RGaConformalRound :
 
         if (IsRoundPointPair)
             return PositionToVector2D() + 
-                   egaProbeDirection
-                       .ProjectOnVector(DirectionToVector2D())
-                       .SetLength(distanceFromSurface + RealRadius);
+                   DirectionToVector2D().SetLength(distanceFromSurface + RealRadius);
 
         if (IsRoundCircle)
             return PositionToVector2D() + 
@@ -150,7 +152,7 @@ public class RGaConformalRound :
 
         if (IsRoundPointPair)
             return PositionToVector3D() + 
-                   egaProbeDirection.ProjectOnVector(DirectionToVector3D()).SetLength(RealRadius + distanceFromSurface);
+                   DirectionToVector3D().SetLength(RealRadius + distanceFromSurface);
 
         if (IsRoundCircle)
             return PositionToVector3D() + 
@@ -327,69 +329,6 @@ public class RGaConformalRound :
     
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public RGaConformalRound TranslateBy(Float64Vector2D egaVector)
-    {
-        return new RGaConformalRound(
-            ConformalSpace,
-            Weight,
-            RadiusSquared,
-            Position + egaVector.EncodeEGaVectorBlade(ConformalSpace),
-            Direction
-        );
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public RGaConformalRound TranslateBy(Float64Vector3D egaVector)
-    {
-        return new RGaConformalRound(
-            ConformalSpace,
-            Weight,
-            RadiusSquared,
-            Position + egaVector.EncodeEGaVectorBlade(ConformalSpace),
-            Direction
-        );
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public RGaConformalRound TranslateBy(Float64Vector egaVector)
-    {
-        return new RGaConformalRound(
-            ConformalSpace,
-            Weight,
-            RadiusSquared,
-            Position + egaVector.EncodeEGaVectorBlade(ConformalSpace),
-            Direction
-        );
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public RGaConformalRound TranslateBy(RGaFloat64Vector egaVector)
-    {
-        return new RGaConformalRound(
-            ConformalSpace,
-            Weight,
-            RadiusSquared,
-            Position + egaVector.EncodeEGaVectorBlade(ConformalSpace),
-            Direction
-        );
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public RGaConformalRound TranslateBy(RGaConformalBlade egaVector)
-    {
-        Debug.Assert(egaVector.IsEGaVector());
-
-        return new RGaConformalRound(
-            ConformalSpace,
-            Weight,
-            RadiusSquared,
-            Position + egaVector,
-            Direction
-        );
-    }
-
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public override string ToString()
     {
         if (Weight.IsNearZero())
@@ -397,12 +336,12 @@ public class RGaConformalRound :
 
         return new StringBuilder()
             .AppendLine("Conformal Round:")
-            .AppendLine($"   Weight: ${ConformalSpace.ToLaTeX(Weight)}$")
+            .AppendLine($"   Weight: ${BasisSpecs.ToLaTeX(Weight)}$")
             .AppendLine($"   Unit Direction Grade: ${Direction.Grade}$")
             .AppendLine($"   Unit Direction: ${Direction.ToLaTeX()}$")
             .AppendLine($"   Unit Direction Normal: ${NormalDirection.ToLaTeX()}$")
             .AppendLine($"   Position: ${Position.ToLaTeX()}$")
-            .AppendLine($"   Squared Radius: ${ConformalSpace.ToLaTeX(RadiusSquared)}$")
+            .AppendLine($"   Squared Radius: ${BasisSpecs.ToLaTeX(RadiusSquared)}$")
             .AppendLine($"   OPNS Blade: ${EncodeOpnsBlade().ToLaTeX()}$")
             .AppendLine($"   IPNS Blade: ${EncodeIpnsBlade().ToLaTeX()}$")
             .ToString();

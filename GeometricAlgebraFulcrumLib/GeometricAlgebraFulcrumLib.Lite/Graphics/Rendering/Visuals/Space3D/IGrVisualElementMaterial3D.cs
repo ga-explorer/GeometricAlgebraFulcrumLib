@@ -1,7 +1,6 @@
-﻿namespace GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.Visuals.Space3D
+﻿namespace GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.Visuals.Space3D;
+
+public interface IGrVisualElementMaterial3D
 {
-    public interface IGrVisualElementMaterial3D
-    {
-        string MaterialName { get; }
-    }
+    string MaterialName { get; }
 }

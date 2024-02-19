@@ -5,195 +5,194 @@ using GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors;
 using GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors.Graded;
 using GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors.Sparse;
 
-namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
+namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra;
+
+public interface IMultivectorStorage
 {
-    public interface IMultivectorStorage
-    {
-        uint MinVSpaceDimension { get; }
+    uint MinVSpaceDimension { get; }
 
-        int TermsCount { get; }
+    int TermsCount { get; }
 
-        int GradesCount { get; }
+    int GradesCount { get; }
 
-        bool IsEven { get; }
+    bool IsEven { get; }
 
-        bool IsGraded { get; }
+    bool IsGraded { get; }
 
 
-        bool ContainsTerm(ulong id);
+    bool ContainsTerm(ulong id);
 
-        bool ContainsTerm(uint grade, ulong index);
+    bool ContainsTerm(uint grade, ulong index);
 
-        bool ContainsScalarPart();
+    bool ContainsScalarPart();
 
-        bool ContainsVectorPart();
+    bool ContainsVectorPart();
 
-        bool ContainsBivectorPart();
+    bool ContainsBivectorPart();
 
-        bool ContainsKVectorPart(uint grade);
+    bool ContainsKVectorPart(uint grade);
 
 
-        bool IsEmpty();
+    bool IsEmpty();
         
-        bool IsScalar();
+    bool IsScalar();
 
-        bool IsVector();
+    bool IsVector();
 
-        bool IsBivector();
+    bool IsBivector();
 
-        bool IsKVector();
+    bool IsKVector();
 
-        bool IsKVector(uint grade);
+    bool IsKVector(uint grade);
 
 
-        ulong GetMinId();
+    ulong GetMinId();
 
-        ulong GetMaxId();
+    ulong GetMaxId();
         
-        ulong GetMinId(uint grade);
+    ulong GetMinId(uint grade);
 
-        ulong GetMaxId(uint grade);
+    ulong GetMaxId(uint grade);
 
-        uint GetMinGrade();
+    uint GetMinGrade();
 
-        uint GetMaxGrade();
+    uint GetMaxGrade();
         
-        ulong GetMinIndex(uint grade);
+    ulong GetMinIndex(uint grade);
 
-        ulong GetMaxIndex(uint grade);
+    ulong GetMaxIndex(uint grade);
 
 
-        IEnumerable<ulong> GetIds();
+    IEnumerable<ulong> GetIds();
 
-        IEnumerable<uint> GetGrades();
+    IEnumerable<uint> GetGrades();
 
-        ulong GetStoredGradesBitPattern();
+    ulong GetStoredGradesBitPattern();
 
-        ulong GetStoredBasisVectorsBitPattern();
+    ulong GetStoredBasisVectorsBitPattern();
 
-        IEnumerable<RGaGradeKvIndexRecord> GetGradeIndexRecords();
-    }
+    IEnumerable<RGaGradeKvIndexRecord> GetGradeIndexRecords();
+}
 
-    public interface IMultivectorStorage<T> 
-        : IMultivectorStorage
-    {
-        bool TryGetScalar(out T value);
+public interface IMultivectorStorage<T> 
+    : IMultivectorStorage
+{
+    bool TryGetScalar(out T value);
 
-        bool TryGetTermScalar(ulong id, out T value);
+    bool TryGetTermScalar(ulong id, out T value);
 
-        bool TryGetTermScalar(uint grade, ulong index, out T value);
+    bool TryGetTermScalar(uint grade, ulong index, out T value);
         
-        bool TryGetTerm(ulong id, out KeyValuePair<ulong, T> term);
+    bool TryGetTerm(ulong id, out KeyValuePair<ulong, T> term);
 
-        bool TryGetTerm(uint grade, ulong index, out KeyValuePair<ulong, T> term);
-
-
-        ILinVectorStorage<T> GetScalarPartList();
-
-        ILinVectorStorage<T> GetVectorPartList();
-
-        ILinVectorStorage<T> GetBivectorPartList();
-
-        ILinVectorStorage<T> GetKVectorPartList(uint grade);
+    bool TryGetTerm(uint grade, ulong index, out KeyValuePair<ulong, T> term);
 
 
-        bool TryGetVectorPart(out VectorStorage<T> vector);
+    ILinVectorStorage<T> GetScalarPartList();
 
-        bool TryGetBivectorPart(out BivectorStorage<T> bivector);
+    ILinVectorStorage<T> GetVectorPartList();
 
-        bool TryGetKVectorPart(uint grade, out KVectorStorage<T> kVector);
+    ILinVectorStorage<T> GetBivectorPartList();
+
+    ILinVectorStorage<T> GetKVectorPartList(uint grade);
+
+
+    bool TryGetVectorPart(out VectorStorage<T> vector);
+
+    bool TryGetBivectorPart(out BivectorStorage<T> bivector);
+
+    bool TryGetKVectorPart(uint grade, out KVectorStorage<T> kVector);
 
         
-        ILinVectorStorage<T> GetLinVectorIdScalarStorage();
+    ILinVectorStorage<T> GetLinVectorIdScalarStorage();
 
-        ILinVectorGradedStorage<T> GetLinVectorGradedStorage();
+    ILinVectorGradedStorage<T> GetLinVectorGradedStorage();
 
-        ILinVectorStorage<T> GetLinVectorIndexScalarStorage(uint grade);
-
-
-        bool TryGetScalarPartList(out ILinVectorStorage<T> indexScalarList);
-
-        bool TryGetVectorPartList(out ILinVectorStorage<T> indexScalarList);
-
-        bool TryGetBivectorPartList(out ILinVectorStorage<T> indexScalarList);
-
-        bool TryGetKVectorPartList(uint grade, out ILinVectorStorage<T> indexScalarList);
+    ILinVectorStorage<T> GetLinVectorIndexScalarStorage(uint grade);
 
 
-        IEnumerable<T> GetScalars();
+    bool TryGetScalarPartList(out ILinVectorStorage<T> indexScalarList);
 
-        IEnumerable<RGaKvIndexScalarRecord<T>> GetIdScalarRecords();
+    bool TryGetVectorPartList(out ILinVectorStorage<T> indexScalarList);
 
-        IEnumerable<RGaKvIndexScalarRecord<T>> GetIndexScalarRecords(uint grade);
+    bool TryGetBivectorPartList(out ILinVectorStorage<T> indexScalarList);
 
-        IEnumerable<RGaGradeKvIndexScalarRecord<T>> GetGradeIndexScalarRecords();
+    bool TryGetKVectorPartList(uint grade, out ILinVectorStorage<T> indexScalarList);
 
 
-        IEnumerable<KeyValuePair<ulong, T>> GetTerms();
+    IEnumerable<T> GetScalars();
 
-        IEnumerable<KeyValuePair<ulong, T>> GetTerms(Func<ulong, bool> idSelection);
+    IEnumerable<RGaKvIndexScalarRecord<T>> GetIdScalarRecords();
 
-        IEnumerable<KeyValuePair<ulong, T>> GetTerms(Func<uint, ulong, bool> gradeIndexSelection);
+    IEnumerable<RGaKvIndexScalarRecord<T>> GetIndexScalarRecords(uint grade);
 
-        IEnumerable<KeyValuePair<ulong, T>> GetTerms(Func<T, bool> scalarSelection);
+    IEnumerable<RGaGradeKvIndexScalarRecord<T>> GetGradeIndexScalarRecords();
 
-        IEnumerable<KeyValuePair<ulong, T>> GetTerms(Func<ulong, T, bool> idScalarSelection);
 
-        IEnumerable<KeyValuePair<ulong, T>> GetTerms(Func<uint, ulong, T, bool> gradeIndexScalarSelection);
+    IEnumerable<KeyValuePair<ulong, T>> GetTerms();
+
+    IEnumerable<KeyValuePair<ulong, T>> GetTerms(Func<ulong, bool> idSelection);
+
+    IEnumerable<KeyValuePair<ulong, T>> GetTerms(Func<uint, ulong, bool> gradeIndexSelection);
+
+    IEnumerable<KeyValuePair<ulong, T>> GetTerms(Func<T, bool> scalarSelection);
+
+    IEnumerable<KeyValuePair<ulong, T>> GetTerms(Func<ulong, T, bool> idScalarSelection);
+
+    IEnumerable<KeyValuePair<ulong, T>> GetTerms(Func<uint, ulong, T, bool> gradeIndexScalarSelection);
         
 
-        LinVectorTreeStorage<T> GetBinaryTree(int treeDepth);
+    LinVectorTreeStorage<T> GetBinaryTree(int treeDepth);
 
 
-        MultivectorStorage<T> ToMultivectorStorage();
+    MultivectorStorage<T> ToMultivectorStorage();
 
-        MultivectorGradedStorage<T> ToMultivectorGradedStorage();
-
-
-        VectorStorage<T> GetVectorPart();
-
-        VectorStorage<T> GetVectorPart(Func<T, bool> scalarSelection);
-
-        VectorStorage<T> GetVectorPart(Func<ulong, T, bool> indexScalarSelection);
-
-        VectorStorage<T> GetVectorPart(Func<ulong, bool> indexSelection);
+    MultivectorGradedStorage<T> ToMultivectorGradedStorage();
 
 
-        BivectorStorage<T> GetBivectorPart();
+    VectorStorage<T> GetVectorPart();
 
-        BivectorStorage<T> GetBivectorPart(Func<T, bool> scalarSelection);
+    VectorStorage<T> GetVectorPart(Func<T, bool> scalarSelection);
 
-        BivectorStorage<T> GetBivectorPart(Func<ulong, T, bool> indexScalarSelection);
+    VectorStorage<T> GetVectorPart(Func<ulong, T, bool> indexScalarSelection);
 
-        BivectorStorage<T> GetBivectorPart(Func<ulong, bool> indexSelection);
-
-
-        KVectorStorage<T> GetKVectorPart(uint grade);
-
-        KVectorStorage<T> GetKVectorPart(uint grade, Func<T, bool> scalarSelection);
-
-        KVectorStorage<T> GetKVectorPart(uint grade, Func<ulong, T, bool> indexScalarSelection);
-
-        KVectorStorage<T> GetKVectorPart(uint grade, Func<ulong, bool> indexSelection);
+    VectorStorage<T> GetVectorPart(Func<ulong, bool> indexSelection);
 
 
-        IMultivectorStorage<T> GetMultivectorPart(Func<ulong, bool> idSelection);
+    BivectorStorage<T> GetBivectorPart();
 
-        IMultivectorStorage<T> GetMultivectorPart(Func<uint, ulong, bool> gradeIndexSelection);
+    BivectorStorage<T> GetBivectorPart(Func<T, bool> scalarSelection);
 
-        IMultivectorStorage<T> GetMultivectorPart(Func<T, bool> scalarSelection);
+    BivectorStorage<T> GetBivectorPart(Func<ulong, T, bool> indexScalarSelection);
 
-        IMultivectorStorage<T> GetMultivectorPart(Func<ulong, T, bool> idScalarSelection);
-
-        IMultivectorStorage<T> GetMultivectorPart(Func<uint, ulong, T, bool> gradeIndexScalarSelection);
+    BivectorStorage<T> GetBivectorPart(Func<ulong, bool> indexSelection);
 
 
-        Tuple<IMultivectorStorage<T>, IMultivectorStorage<T>> SplitEvenOddParts();
+    KVectorStorage<T> GetKVectorPart(uint grade);
 
-        Tuple<VectorStorage<T>, VectorStorage<T>> SplitVectorPart(Func<ulong, bool> indexSelection);
+    KVectorStorage<T> GetKVectorPart(uint grade, Func<T, bool> scalarSelection);
 
-        Tuple<VectorStorage<T>, VectorStorage<T>> SplitVectorPart(Func<ulong, T, bool> indexScalarSelection);
+    KVectorStorage<T> GetKVectorPart(uint grade, Func<ulong, T, bool> indexScalarSelection);
 
-        Tuple<VectorStorage<T>, VectorStorage<T>> SplitVectorPart(Func<T, bool> scalarSelection);
-    }
+    KVectorStorage<T> GetKVectorPart(uint grade, Func<ulong, bool> indexSelection);
+
+
+    IMultivectorStorage<T> GetMultivectorPart(Func<ulong, bool> idSelection);
+
+    IMultivectorStorage<T> GetMultivectorPart(Func<uint, ulong, bool> gradeIndexSelection);
+
+    IMultivectorStorage<T> GetMultivectorPart(Func<T, bool> scalarSelection);
+
+    IMultivectorStorage<T> GetMultivectorPart(Func<ulong, T, bool> idScalarSelection);
+
+    IMultivectorStorage<T> GetMultivectorPart(Func<uint, ulong, T, bool> gradeIndexScalarSelection);
+
+
+    Tuple<IMultivectorStorage<T>, IMultivectorStorage<T>> SplitEvenOddParts();
+
+    Tuple<VectorStorage<T>, VectorStorage<T>> SplitVectorPart(Func<ulong, bool> indexSelection);
+
+    Tuple<VectorStorage<T>, VectorStorage<T>> SplitVectorPart(Func<ulong, T, bool> indexScalarSelection);
+
+    Tuple<VectorStorage<T>, VectorStorage<T>> SplitVectorPart(Func<T, bool> scalarSelection);
 }

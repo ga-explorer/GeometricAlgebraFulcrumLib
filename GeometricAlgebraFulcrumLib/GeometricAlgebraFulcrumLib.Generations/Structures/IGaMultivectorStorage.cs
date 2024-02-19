@@ -1,21 +1,20 @@
-﻿namespace GeometricAlgebraFulcrumLib.Generations.Structures
+﻿namespace GeometricAlgebraFulcrumLib.Generations.Structures;
+
+public interface IGaKVectorStorage 
 {
-    public interface IGaKVectorStorage 
-    {
-        int VSpaceDimensions { get; }
+    int VSpaceDimensions { get; }
 
-        int Grade { get; }
+    int Grade { get; }
 
-        int SparseCount { get; }
+    int SparseCount { get; }
         
-        double GetScalarByIndex(int index);
+    double GetScalarByIndex(int index);
 
-        double GetScalarById(ulong id);
+    double GetScalarById(ulong id);
 
-        IEnumerable<KeyValuePair<int, double>> GetIndexScalarPairs();
+    IEnumerable<KeyValuePair<int, double>> GetIndexScalarPairs();
 
-        IEnumerable<KeyValuePair<ulong, double>> GetIdScalarPairs();
+    IEnumerable<KeyValuePair<ulong, double>> GetIdScalarPairs();
 
 
-    }
 }

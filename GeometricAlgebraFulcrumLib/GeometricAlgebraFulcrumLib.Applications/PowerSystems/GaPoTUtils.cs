@@ -1,9 +1,8 @@
-﻿namespace GeometricAlgebraFulcrumLib.Applications.PowerSystems
+﻿namespace GeometricAlgebraFulcrumLib.Applications.PowerSystems;
+
+public static class GaPoTUtils
 {
-    public static class GaPoTUtils
-    {
         
 
         
-    }
 }

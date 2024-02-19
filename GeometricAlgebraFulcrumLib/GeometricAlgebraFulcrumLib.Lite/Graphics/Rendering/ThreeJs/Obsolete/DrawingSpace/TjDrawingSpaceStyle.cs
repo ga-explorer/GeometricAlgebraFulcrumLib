@@ -1,19 +1,18 @@
-﻿namespace GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.ThreeJs.Obsolete.DrawingSpace
-{
-    //public sealed class TjDrawingSpaceStyle
-    //{
-    //    public TjDrawingSpace ParentDrawingSpace { get; }
+﻿namespace GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.ThreeJs.Obsolete.DrawingSpace;
 
-    //    public TjMaterial PointMaterial { get; set; }
+//public sealed class TjDrawingSpaceStyle
+//{
+//    public TjDrawingSpace ParentDrawingSpace { get; }
 
-    //    public TjMaterial LineMaterial { get; set; }
+//    public TjMaterial PointMaterial { get; set; }
 
-    //    public TjMaterial SurfaceMaterial { get; set; }
+//    public TjMaterial LineMaterial { get; set; }
+
+//    public TjMaterial SurfaceMaterial { get; set; }
 
 
-    //    internal TjDrawingSpaceStyle(TjDrawingSpace parentDrawingSpace)
-    //    {
-    //        ParentDrawingSpace = parentDrawingSpace;
-    //    }
-    //}
-}
+//    internal TjDrawingSpaceStyle(TjDrawingSpace parentDrawingSpace)
+//    {
+//        ParentDrawingSpace = parentDrawingSpace;
+//    }
+//}

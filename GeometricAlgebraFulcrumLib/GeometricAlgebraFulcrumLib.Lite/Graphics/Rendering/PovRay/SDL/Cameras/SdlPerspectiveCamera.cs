@@ -1,6 +1,5 @@
-﻿namespace GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.PovRay.SDL.Cameras
+﻿namespace GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.PovRay.SDL.Cameras;
+
+public class SdlPerspectiveCamera : SdlFullCamera
 {
-    public class SdlPerspectiveCamera : SdlFullCamera
-    {
-    }
 }

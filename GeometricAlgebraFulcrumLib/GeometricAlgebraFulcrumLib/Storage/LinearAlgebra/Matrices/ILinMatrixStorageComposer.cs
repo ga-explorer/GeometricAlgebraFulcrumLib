@@ -1,17 +1,16 @@
 ﻿using GeometricAlgebraFulcrumLib.Lite.ScalarAlgebra;
 
-namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices
+namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices;
+
+public interface ILinMatrixStorageComposer<T>
 {
-    public interface ILinMatrixStorageComposer<T>
-    {
-        IScalarProcessor<T> ScalarProcessor { get; }
+    IScalarProcessor<T> ScalarProcessor { get; }
 
-        bool IsEmpty();
+    bool IsEmpty();
 
-        ILinMatrixStorage<T> CreateLinMatrixStorage();
+    ILinMatrixStorage<T> CreateLinMatrixStorage();
 
-        //ILinMatrixDenseStorage<T> CreateLinMatrixDenseStorage();
+    //ILinMatrixDenseStorage<T> CreateLinMatrixDenseStorage();
 
-        //ILinMatrixGradedStorage<T> CreateLinMatrixGradedStorage();
-    }
+    //ILinMatrixGradedStorage<T> CreateLinMatrixGradedStorage();
 }

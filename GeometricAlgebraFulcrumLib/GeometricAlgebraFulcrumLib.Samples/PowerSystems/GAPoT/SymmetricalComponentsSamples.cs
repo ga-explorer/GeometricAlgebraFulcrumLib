@@ -17,220 +17,219 @@ using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Generic;
 using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Generic.LinearMaps;
 using MathNet.Numerics.LinearAlgebra;
 
-namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GAPoT
+namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GAPoT;
+
+public static class SymmetricalComponentsSamples
 {
-    public static class SymmetricalComponentsSamples
+    public static IXGaOutermorphism<T> CreateClarkePhasorMap<T>(this XGaProcessor<T> processor, int vSpaceDimensions)
     {
-        public static IXGaOutermorphism<T> CreateClarkePhasorMap<T>(this XGaProcessor<T> processor, int vSpaceDimensions)
+        Debug.Assert(
+            vSpaceDimensions.IsEven()
+        );
+
+        var scalarProcessor = processor.ScalarProcessor;
+
+        var phasorCount = vSpaceDimensions / 2;
+
+        var clarkeArray =
+            scalarProcessor.CreateClarkeRotationArray(phasorCount);
+
+        var clarkePhasorMapArray =
+            scalarProcessor.CreateArrayZero2D(phasorCount * 2);
+
+        for (var i = 0; i < phasorCount; i++)
+        for (var j = 0; j < phasorCount; j++)
         {
-            Debug.Assert(
-                vSpaceDimensions.IsEven()
+            clarkePhasorMapArray[i, j] = clarkeArray[i, j];
+            clarkePhasorMapArray[i + phasorCount, j + phasorCount] = clarkeArray[i, j];
+        }
+
+        var basisVectorImagesDictionary =
+            new Dictionary<int, LinVector<T>>();
+
+        for (var i = 0; i < phasorCount * 2; i++)
+            basisVectorImagesDictionary.Add(
+                i,
+                clarkePhasorMapArray.ColumnToLinVector(scalarProcessor, i)
             );
 
-            var scalarProcessor = processor.ScalarProcessor;
-
-            var phasorCount = vSpaceDimensions / 2;
-
-            var clarkeArray =
-                scalarProcessor.CreateClarkeRotationArray(phasorCount);
-
-            var clarkePhasorMapArray =
-                scalarProcessor.CreateArrayZero2D(phasorCount * 2);
-
-            for (var i = 0; i < phasorCount; i++)
-            for (var j = 0; j < phasorCount; j++)
-            {
-                clarkePhasorMapArray[i, j] = clarkeArray[i, j];
-                clarkePhasorMapArray[i + phasorCount, j + phasorCount] = clarkeArray[i, j];
-            }
-
-            var basisVectorImagesDictionary =
-                new Dictionary<int, LinVector<T>>();
-
-            for (var i = 0; i < phasorCount * 2; i++)
-                basisVectorImagesDictionary.Add(
-                    i,
-                    clarkePhasorMapArray.ColumnToLinVector(scalarProcessor, i)
-                );
-
-            return scalarProcessor.CreateLinUnilinearMap(
-                basisVectorImagesDictionary
-            ).ToOutermorphism(processor);
-        }
+        return scalarProcessor.CreateLinUnilinearMap(
+            basisVectorImagesDictionary
+        ).ToOutermorphism(processor);
+    }
 
         
-        public static T[,] GetPMatrix<T>(this XGaProcessor<T> processor, int vSpaceDimensions, int a, int b, int c, int d)
+    public static T[,] GetPMatrix<T>(this XGaProcessor<T> processor, int vSpaceDimensions, int a, int b, int c, int d)
+    {
+        var scalarProcessor = processor.ScalarProcessor;
+
+        var ea = processor.CreateTermVector(a);
+        var eb = processor.CreateTermVector(b);
+        var ec = processor.CreateTermVector(c);
+        var ed = processor.CreateTermVector(d);
+
+        var pArray = ea.CreatePureRotorSequence(
+            eb,
+            ec, 
+            ed,
+            true
+        ).GetVectorMapArray(vSpaceDimensions, vSpaceDimensions);
+
+        for (var j = 0; j < pArray.GetLength(1); j++)
         {
-            var scalarProcessor = processor.ScalarProcessor;
+            if (j == a || j == b)
+                continue;
 
-            var ea = processor.CreateTermVector(a);
-            var eb = processor.CreateTermVector(b);
-            var ec = processor.CreateTermVector(c);
-            var ed = processor.CreateTermVector(d);
-
-            var pArray = ea.CreatePureRotorSequence(
-                eb,
-                ec, 
-                ed,
-                true
-            ).GetVectorMapArray(vSpaceDimensions, vSpaceDimensions);
-
-            for (var j = 0; j < pArray.GetLength(1); j++)
-            {
-                if (j == a || j == b)
-                    continue;
-
-                for (var i = 0; i < pArray.GetLength(0); i++)
-                    pArray[i, j] = scalarProcessor.ScalarZero;
-            }
-
-            return pArray;
+            for (var i = 0; i < pArray.GetLength(0); i++)
+                pArray[i, j] = scalarProcessor.ScalarZero;
         }
 
-        public static T[,] GetNMatrix<T>(this XGaProcessor<T> processor, int vSpaceDimensions, int a, int b, int c, int d)
+        return pArray;
+    }
+
+    public static T[,] GetNMatrix<T>(this XGaProcessor<T> processor, int vSpaceDimensions, int a, int b, int c, int d)
+    {
+        var scalarProcessor = processor.ScalarProcessor;
+
+        var ea = processor.CreateTermVector(a);
+        var eb = processor.CreateTermVector(b);
+        var ec = processor.CreateTermVector(c);
+        var ed = processor.CreateTermVector(d);
+
+        var nArray = ea.CreatePureRotorSequence(
+            eb,
+            ec, 
+            -ed,
+            true
+        ).GetVectorMapArray(vSpaceDimensions, vSpaceDimensions);
+
+        for (var j = 0; j < nArray.GetLength(1); j++)
         {
-            var scalarProcessor = processor.ScalarProcessor;
+            if (j == a || j == b)
+                continue;
 
-            var ea = processor.CreateTermVector(a);
-            var eb = processor.CreateTermVector(b);
-            var ec = processor.CreateTermVector(c);
-            var ed = processor.CreateTermVector(d);
-
-            var nArray = ea.CreatePureRotorSequence(
-                eb,
-                ec, 
-                -ed,
-                true
-            ).GetVectorMapArray(vSpaceDimensions, vSpaceDimensions);
-
-            for (var j = 0; j < nArray.GetLength(1); j++)
-            {
-                if (j == a || j == b)
-                    continue;
-
-                for (var i = 0; i < nArray.GetLength(0); i++)
-                    nArray[i, j] = scalarProcessor.ScalarZero;
-            }
-
-            return nArray;
+            for (var i = 0; i < nArray.GetLength(0); i++)
+                nArray[i, j] = scalarProcessor.ScalarZero;
         }
 
-        public static T[,] GetTMatrix<T>(this XGaProcessor<T> processor, int vSpaceDimensions, int k)
+        return nArray;
+    }
+
+    public static T[,] GetTMatrix<T>(this XGaProcessor<T> processor, int vSpaceDimensions, int k)
+    {
+        var n = vSpaceDimensions / 2;
+
+        if (k == 0)
+            return processor.GetPMatrix(vSpaceDimensions, 0, n, n - 1, 2 * n - 1);
+
+        if (n.IsEven() && k == n / 2)
+            return processor.GetPMatrix(vSpaceDimensions, n / 2, n / 2 + n, n - 2, 2 * n - 2);
+
+        var a = k;
+        var b = k + n;
+        var cp = 0;
+        var dp = 0;
+        var cn = 0;
+        var dn = 0;
+        var nNegative = false;
+
+        if (n.IsOdd())
         {
-            var n = vSpaceDimensions / 2;
-
-            if (k == 0)
-                return processor.GetPMatrix(vSpaceDimensions, 0, n, n - 1, 2 * n - 1);
-
-            if (n.IsEven() && k == n / 2)
-                return processor.GetPMatrix(vSpaceDimensions, n / 2, n / 2 + n, n - 2, 2 * n - 2);
-
-            var a = k;
-            var b = k + n;
-            var cp = 0;
-            var dp = 0;
-            var cn = 0;
-            var dn = 0;
-            var nNegative = false;
-
-            if (n.IsOdd())
+            if (k <= (n - 1) / 2)
             {
-                if (k <= (n - 1) / 2)
-                {
-                    k = k - 1;
+                k = k - 1;
 
-                    cn = k * 2;
-                    dn = k * 2 + 1;
+                cn = k * 2;
+                dn = k * 2 + 1;
 
-                    cp = dn + n;
-                    dp = cn + n;
-                }
-                else
-                {
-                    k = n - k - 1;
-                    cp = k * 2;
-                    dp = k * 2 + 1;
-
-                    cn = dp + n;
-                    dn = cp + n;
-
-                    nNegative = true;
-                }
+                cp = dn + n;
+                dp = cn + n;
             }
             else
             {
-                if (k < n / 2)
-                {
-                    k = k - 1;
+                k = n - k - 1;
+                cp = k * 2;
+                dp = k * 2 + 1;
 
-                    cn = k * 2;
-                    dn = k * 2 + 1;
+                cn = dp + n;
+                dn = cp + n;
 
-                    cp = dn + n;
-                    dp = cn + n;
-                }
-                else
-                {
-                    k = n - k - 1;
-                    cp = k * 2;
-                    dp = k * 2 + 1;
-
-                    cn = dp + n;
-                    dn = cp + n;
-
-                    nNegative = true;
-                }
+                nNegative = true;
             }
-
-            var pMatrix = processor.GetPMatrix(vSpaceDimensions, a, b, cp, dp);
-            var nMatrix = processor.GetNMatrix(vSpaceDimensions, a, b, cn, dn);
-
-            var scalarProcessor = processor.ScalarProcessor;
-
-            var sqrt2 = scalarProcessor.Sqrt(scalarProcessor.ScalarTwo);
-
-            var tMatrix = nNegative
-                ? scalarProcessor.Subtract(pMatrix, nMatrix)
-                : scalarProcessor.Add(pMatrix, nMatrix);
-
-            return scalarProcessor.Divide(tMatrix, sqrt2);
         }
-        
-        public static void EigenDecompositionSample()
+        else
         {
-            const int n = 9;
+            if (k < n / 2)
+            {
+                k = k - 1;
 
-            var metric = XGaFloat64Processor.Euclidean;
-            var matrix = n.CreateUnitaryDftMatrix();
-            var matrixInv = n.CreateUnitaryDftMatrix(true);
+                cn = k * 2;
+                dn = k * 2 + 1;
 
-            Debug.Assert(
-                (matrixInv * matrix - n.CreateDenseIdentityMatrix().ToComplex()).L2Norm().IsNearZero()
+                cp = dn + n;
+                dp = cn + n;
+            }
+            else
+            {
+                k = n - k - 1;
+                cp = k * 2;
+                dp = k * 2 + 1;
+
+                cn = dp + n;
+                dn = cp + n;
+
+                nNegative = true;
+            }
+        }
+
+        var pMatrix = processor.GetPMatrix(vSpaceDimensions, a, b, cp, dp);
+        var nMatrix = processor.GetNMatrix(vSpaceDimensions, a, b, cn, dn);
+
+        var scalarProcessor = processor.ScalarProcessor;
+
+        var sqrt2 = scalarProcessor.Sqrt(scalarProcessor.ScalarTwo);
+
+        var tMatrix = nNegative
+            ? scalarProcessor.Subtract(pMatrix, nMatrix)
+            : scalarProcessor.Add(pMatrix, nMatrix);
+
+        return scalarProcessor.Divide(tMatrix, sqrt2);
+    }
+        
+    public static void EigenDecompositionSample()
+    {
+        const int n = 9;
+
+        var metric = XGaFloat64Processor.Euclidean;
+        var matrix = n.CreateUnitaryDftMatrix();
+        var matrixInv = n.CreateUnitaryDftMatrix(true);
+
+        Debug.Assert(
+            (matrixInv * matrix - n.CreateDenseIdentityMatrix().ToComplex()).L2Norm().IsNearZero()
+        );
+
+        var eigenPairList =
+            matrix
+                .GetComplexEigenPairs()
+                .OrderByDescending(p => p.Item1.Magnitude);
+
+        var i = 1;
+        foreach (var (value, vector) in eigenPairList)
+        {
+            var angle = GeoPoTNumUtils.RadiansToDegrees(Math.Atan2(value.Imaginary, value.Real)).Round(6);
+            var blade = metric.CreateVector(vector.Imaginary().ToArray().MapItems(d => d.Round(6))).Op(
+                metric.CreateVector(vector.Real().ToArray().MapItems(d => d.Round(6)))
             );
 
-            var eigenPairList =
-                matrix
-                    .GetComplexEigenPairs()
-                    .OrderByDescending(p => p.Item1.Magnitude);
+            blade = blade.Divide(blade.ENorm().ScalarValue());
 
-            var i = 1;
-            foreach (var (value, vector) in eigenPairList)
-            {
-                var angle = GeoPoTNumUtils.RadiansToDegrees(Math.Atan2(value.Imaginary, value.Real)).Round(6);
-                var blade = metric.CreateVector(vector.Imaginary().ToArray().MapItems(d => d.Round(6))).Op(
-                    metric.CreateVector(vector.Real().ToArray().MapItems(d => d.Round(6)))
-                );
+            //Console.WriteLine($" Eigen Value {i}: {value}");
+            //Console.WriteLine($"Eigen Vector {i}: {vector}");
+            Console.WriteLine($"           Angle: {angle} degrees");
+            Console.WriteLine($"     Eigen Blade: {blade}");
+            Console.WriteLine();
 
-                blade = blade.Divide(blade.ENorm().ScalarValue());
-
-                //Console.WriteLine($" Eigen Value {i}: {value}");
-                //Console.WriteLine($"Eigen Vector {i}: {vector}");
-                Console.WriteLine($"           Angle: {angle} degrees");
-                Console.WriteLine($"     Eigen Blade: {blade}");
-                Console.WriteLine();
-
-                i++;
-            }
+            i++;
         }
     }
 }

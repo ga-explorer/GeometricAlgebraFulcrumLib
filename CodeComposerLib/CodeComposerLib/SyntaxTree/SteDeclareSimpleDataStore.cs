@@ -1,9 +1,8 @@
-﻿namespace CodeComposerLib.SyntaxTree
-{
-    public class SteDeclareSimpleDataStore : SteSyntaxElement
-    {
-        public string DataStoreName { get; set; }
+﻿namespace CodeComposerLib.SyntaxTree;
 
-        public string DataStoreType { get; set; }
-    }
+public class SteDeclareSimpleDataStore : SteSyntaxElement
+{
+    public string DataStoreName { get; set; }
+
+    public string DataStoreType { get; set; }
 }

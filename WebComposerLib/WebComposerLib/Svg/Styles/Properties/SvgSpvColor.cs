@@ -2,140 +2,139 @@
 using WebComposerLib.Html.Media;
 using WebComposerLib.Svg.Attributes;
 
-namespace WebComposerLib.Svg.Styles.Properties
+namespace WebComposerLib.Svg.Styles.Properties;
+
+public sealed class SvgSpvColor : SvgStylePropertyValue
 {
-    public sealed class SvgSpvColor : SvgStylePropertyValue
+    private Color _colorValue;
+    public Color ColorValue
     {
-        private Color _colorValue;
-        public Color ColorValue
+        get => _colorValue;
+        set
         {
-            get => _colorValue;
-            set
-            {
-                _colorValue = value;
-                IsValueComputed = true;
-            }
+            _colorValue = value;
+            IsValueComputed = true;
         }
+    }
 
-        private string _iccColorValue;
-        public string IccColorValue
+    private string _iccColorValue;
+    public string IccColorValue
+    {
+        get => _iccColorValue;
+        set
         {
-            get => _iccColorValue;
-            set
-            {
-                _iccColorValue = value ?? string.Empty;
-                IsValueComputed = true;
-            }
+            _iccColorValue = value ?? string.Empty;
+            IsValueComputed = true;
         }
+    }
 
 
-        protected override string ValueComputedText 
-            => new StringBuilder()
-                .Append(ColorValue.ToSvgColorHexText())
-                .Append(IccColorValue)
-                .ToString();
+    protected override string ValueComputedText 
+        => new StringBuilder()
+            .Append(ColorValue.ToSvgColorHexText())
+            .Append(IccColorValue)
+            .ToString();
 
 
-        internal SvgSpvColor(SvgStyle parentElement, SvgAttributeInfo attributeInfo)
-            : base(parentElement, attributeInfo)
+    internal SvgSpvColor(SvgStyle parentElement, SvgAttributeInfo attributeInfo)
+        : base(parentElement, attributeInfo)
+    {
+    }
+
+
+    public override SvgStylePropertyValue CreateCopy()
+    {
+        var result = new SvgSpvColor(ParentStyle, AttributeInfo);
+
+        if (IsValueStored)
         {
-        }
-
-
-        public override SvgStylePropertyValue CreateCopy()
-        {
-            var result = new SvgSpvColor(ParentStyle, AttributeInfo);
-
-            if (IsValueStored)
-            {
-                result._colorValue = _colorValue;
-                result._iccColorValue = _iccColorValue;
-                result.ValueStoredText = ValueStoredText;
-
-                return result;
-            }
-
-            result.ColorValue = ColorValue;
-            result.IccColorValue = IccColorValue;
+            result._colorValue = _colorValue;
+            result._iccColorValue = _iccColorValue;
+            result.ValueStoredText = ValueStoredText;
 
             return result;
         }
 
-        public override SvgStylePropertyValue UpdateFrom(SvgStylePropertyValue sourcePropertyValue)
+        result.ColorValue = ColorValue;
+        result.IccColorValue = IccColorValue;
+
+        return result;
+    }
+
+    public override SvgStylePropertyValue UpdateFrom(SvgStylePropertyValue sourcePropertyValue)
+    {
+        var source = sourcePropertyValue as SvgSpvColor;
+
+        if (ReferenceEquals(source, null) || source.IsValueStored)
         {
-            var source = sourcePropertyValue as SvgSpvColor;
-
-            if (ReferenceEquals(source, null) || source.IsValueStored)
-            {
-                ValueStoredText = source?.ValueStoredText;
-
-                return this;
-            }
-
-            ColorValue = source.ColorValue;
-            IccColorValue = source.IccColorValue;
+            ValueStoredText = source?.ValueStoredText;
 
             return this;
         }
 
-        public SvgStyle SetToCurrentColor()
-        {
-            ValueStoredText = "currentColor";
+        ColorValue = source.ColorValue;
+        IccColorValue = source.IccColorValue;
 
-            return ParentStyle;
-        }
+        return this;
+    }
 
-        public SvgStyle SetToRgba(Color colorValue)
-        {
-            ColorValue = colorValue;
+    public SvgStyle SetToCurrentColor()
+    {
+        ValueStoredText = "currentColor";
 
-            return ParentStyle;
-        }
+        return ParentStyle;
+    }
 
-        public SvgStyle SetToRgbPercent(double red, double green, double blue)
-        {
-            ColorValue = Color.FromRgb(
-                (byte) Math.Round(red * 255),
-                (byte) Math.Round(green * 255),
-                (byte) Math.Round(blue * 255)
-            );
+    public SvgStyle SetToRgba(Color colorValue)
+    {
+        ColorValue = colorValue;
 
-            return ParentStyle;
-        }
+        return ParentStyle;
+    }
+
+    public SvgStyle SetToRgbPercent(double red, double green, double blue)
+    {
+        ColorValue = Color.FromRgb(
+            (byte) Math.Round(red * 255),
+            (byte) Math.Round(green * 255),
+            (byte) Math.Round(blue * 255)
+        );
+
+        return ParentStyle;
+    }
         
-        public SvgStyle SetToRgbaPercent(double red, double green, double blue, double alpha)
-        {
-            ColorValue = Color.FromRgba(
-                (byte) Math.Round(red * 255),
-                (byte) Math.Round(green * 255),
-                (byte) Math.Round(blue * 255),
-                (byte) Math.Round(alpha * 255)
-            );
+    public SvgStyle SetToRgbaPercent(double red, double green, double blue, double alpha)
+    {
+        ColorValue = Color.FromRgba(
+            (byte) Math.Round(red * 255),
+            (byte) Math.Round(green * 255),
+            (byte) Math.Round(blue * 255),
+            (byte) Math.Round(alpha * 255)
+        );
 
-            return ParentStyle;
-        }
+        return ParentStyle;
+    }
 
-        public SvgStyle SetToRgb(int red, int green, int blue)
-        {
-            ColorValue = Color.FromRgb(
-                (byte) red, 
-                (byte) green,
-                (byte) blue
-            );
+    public SvgStyle SetToRgb(int red, int green, int blue)
+    {
+        ColorValue = Color.FromRgb(
+            (byte) red, 
+            (byte) green,
+            (byte) blue
+        );
 
-            return ParentStyle;
-        }
+        return ParentStyle;
+    }
         
-        public SvgStyle SetToRgba(int red, int green, int blue, int alpha)
-        {
-            ColorValue = Color.FromRgba(
-                (byte) red, 
-                (byte) green,
-                (byte) blue,
-                (byte) alpha
-            );
+    public SvgStyle SetToRgba(int red, int green, int blue, int alpha)
+    {
+        ColorValue = Color.FromRgba(
+            (byte) red, 
+            (byte) green,
+            (byte) blue,
+            (byte) alpha
+        );
 
-            return ParentStyle;
-        }
+        return ParentStyle;
     }
 }

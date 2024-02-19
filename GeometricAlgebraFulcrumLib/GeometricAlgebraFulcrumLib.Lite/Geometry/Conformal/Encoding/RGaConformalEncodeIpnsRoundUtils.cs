@@ -3,6 +3,7 @@ using System.Runtime.CompilerServices;
 using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Restricted.Float64.Multivectors;
 using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Restricted.Float64.Multivectors.Composers;
 using GeometricAlgebraFulcrumLib.Lite.Geometry.Conformal.Blades;
+using GeometricAlgebraFulcrumLib.Lite.Geometry.Conformal.Operations;
 using GeometricAlgebraFulcrumLib.Lite.LinearAlgebra.Vectors.Space2D;
 using GeometricAlgebraFulcrumLib.Lite.LinearAlgebra.Vectors.Space3D;
 using GeometricAlgebraFulcrumLib.Lite.LinearAlgebra.Vectors.SpaceND;

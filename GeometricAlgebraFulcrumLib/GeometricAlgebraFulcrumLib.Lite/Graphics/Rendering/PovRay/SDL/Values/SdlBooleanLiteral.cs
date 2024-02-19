@@ -1,32 +1,31 @@
-﻿namespace GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.PovRay.SDL.Values
+﻿namespace GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.PovRay.SDL.Values;
+
+public sealed class SdlBooleanLiteral : SdlValue, ISdlBooleanValue
 {
-    public sealed class SdlBooleanLiteral : SdlValue, ISdlBooleanValue
+    public static SdlBooleanLiteral True { get; private set; }
+
+    public static SdlBooleanLiteral False { get; private set; }
+
+    static SdlBooleanLiteral()
     {
-        public static SdlBooleanLiteral True { get; private set; }
+        True = new SdlBooleanLiteral(true);
 
-        public static SdlBooleanLiteral False { get; private set; }
-
-        static SdlBooleanLiteral()
-        {
-            True = new SdlBooleanLiteral(true);
-
-            False = new SdlBooleanLiteral(false);
-        }
+        False = new SdlBooleanLiteral(false);
+    }
 
 
-        public bool BooleanValue { get; }
+    public bool BooleanValue { get; }
 
-        public override string Value => BooleanValue ? "on" : "off";
+    public override string Value => BooleanValue ? "on" : "off";
 
 
-        private SdlBooleanLiteral(bool value)
-        {
-            BooleanValue = value;
-        }
+    private SdlBooleanLiteral(bool value)
+    {
+        BooleanValue = value;
+    }
 
-        public override string ToString()
-        {
-            return Value;
-        }
+    public override string ToString()
+    {
+        return Value;
     }
 }

@@ -1,6 +1,5 @@
-﻿namespace TextComposerLib.TextExpressions.Ast
+﻿namespace TextComposerLib.TextExpressions.Ast;
+
+public interface ISimpleTextExpression : ITextExpression
 {
-    public interface ISimpleTextExpression : ITextExpression
-    {
-    }
 }

@@ -1,12 +1,11 @@
-﻿namespace CodeComposerLib.Irony.Semantic.Operator
-{
-    /// <summary>
-    /// This interface is used for defining language operators
-    /// </summary>
-    public interface ILanguageOperator
-    {
-        string OperatorName { get; }
+﻿namespace CodeComposerLib.Irony.Semantic.Operator;
 
-        ILanguageOperator DuplicateOperator();
-    }
+/// <summary>
+/// This interface is used for defining language operators
+/// </summary>
+public interface ILanguageOperator
+{
+    string OperatorName { get; }
+
+    ILanguageOperator DuplicateOperator();
 }

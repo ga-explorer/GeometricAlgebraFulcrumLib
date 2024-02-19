@@ -1,6 +1,5 @@
-﻿namespace GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.PovRay.SDL.Cameras
+﻿namespace GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.PovRay.SDL.Cameras;
+
+public interface ISdlCamera : ISdlStatement, ISdlTransformable, ISdlNameable
 {
-    public interface ISdlCamera : ISdlStatement, ISdlTransformable, ISdlNameable
-    {
-    }
 }

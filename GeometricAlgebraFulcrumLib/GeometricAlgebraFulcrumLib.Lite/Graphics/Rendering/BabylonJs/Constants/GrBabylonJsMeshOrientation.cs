@@ -1,9 +1,8 @@
-﻿namespace GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.BabylonJs.Constants
+﻿namespace GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.BabylonJs.Constants;
+
+public enum GrBabylonJsMeshOrientation
 {
-    public enum GrBabylonJsMeshOrientation
-    {
-        Front,
-        Back,
-        FrontAndBack
-    }
+    Front,
+    Back,
+    FrontAndBack
 }

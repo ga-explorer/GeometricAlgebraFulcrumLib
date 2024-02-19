@@ -1,8 +1,7 @@
-﻿namespace GeometricAlgebraFulcrumLib.Lite.Graphics.GeometricAlgebra
+﻿namespace GeometricAlgebraFulcrumLib.Lite.Graphics.GeometricAlgebra;
+
+public enum MultivectorNullSpaceKind
 {
-    public enum MultivectorNullSpaceKind
-    {
-        OuterProductNullSpace,
-        InnerProductNullSpace
-    }
+    OuterProductNullSpace,
+    InnerProductNullSpace
 }

@@ -6,6 +6,7 @@ using GeometricAlgebraFulcrumLib.Lite.LinearAlgebra.Vectors.Space2D;
 using GeometricAlgebraFulcrumLib.Lite.LinearAlgebra.Vectors.Space3D;
 using System.Runtime.CompilerServices;
 using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Restricted.Float64.Multivectors;
+using GeometricAlgebraFulcrumLib.Lite.Geometry.Conformal.Encoding;
 using GeometricAlgebraFulcrumLib.Lite.LinearAlgebra.Vectors.SpaceND;
 using GeometricAlgebraFulcrumLib.Lite.ScalarAlgebra;
 
@@ -577,6 +578,9 @@ public sealed class RGaConformalElementSpecs :
 
 
     public RGaConformalSpace ConformalSpace { get; }
+
+    public RGaGeometrySpaceBasisSpecs BasisSpecs 
+        => ConformalSpace.BasisSpecs;
 
     public RGaConformalElementKind Kind { get; }
 

@@ -1,18 +1,17 @@
-﻿namespace GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.PovRay.SDL.Directives
+﻿namespace GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.PovRay.SDL.Directives;
+
+public sealed class SdlMacroDirective : SdlDirective
 {
-    public sealed class SdlMacroDirective : SdlDirective
+    public string Name { get; set; }
+
+    public List<string> Parameters { get; private set; }
+
+    public List<ISdlStatement> Statements { get; private set; }
+
+
+    internal SdlMacroDirective()
     {
-        public string Name { get; set; }
-
-        public List<string> Parameters { get; private set; }
-
-        public List<ISdlStatement> Statements { get; private set; }
-
-
-        internal SdlMacroDirective()
-        {
-            Parameters = new List<string>();
-            Statements = new List<ISdlStatement>();
-        }
+        Parameters = new List<string>();
+        Statements = new List<ISdlStatement>();
     }
 }

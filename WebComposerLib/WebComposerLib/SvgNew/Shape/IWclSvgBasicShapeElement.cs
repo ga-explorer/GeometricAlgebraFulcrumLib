@@ -1,8 +1,7 @@
-﻿namespace WebComposerLib.SvgNew.Shape
+﻿namespace WebComposerLib.SvgNew.Shape;
+
+public interface IWclSvgBasicShapeElement : 
+    IWclSvgShapeElement
 {
-    public interface IWclSvgBasicShapeElement : 
-        IWclSvgShapeElement
-    {
-        //<circle>, <ellipse>, <line>, <polygon>, <polyline>, <rect>
-    }
+    //<circle>, <ellipse>, <line>, <polygon>, <polyline>, <rect>
 }

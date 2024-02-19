@@ -1,26 +1,25 @@
-﻿namespace GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.Xeogl.Transforms
+﻿namespace GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.Xeogl.Transforms;
+
+public interface IXeoglTransform
 {
-    public interface IXeoglTransform
-    {
-        bool ContainsMatrix { get; }
+    bool ContainsMatrix { get; }
 
-        bool ContainsQuaternion { get; }
+    bool ContainsQuaternion { get; }
 
-        bool ContainsRotate { get; }
+    bool ContainsRotate { get; }
 
-        bool ContainsScale { get; }
+    bool ContainsScale { get; }
 
-        bool ContainsTranslate { get; }
+    bool ContainsTranslate { get; }
 
 
-        string GetMatrixText();
+    string GetMatrixText();
 
-        string GetQuaternionText();
+    string GetQuaternionText();
 
-        string GetRotateText();
+    string GetRotateText();
 
-        string GetScaleText();
+    string GetScaleText();
 
-        string GetTranslateText();
-    }
+    string GetTranslateText();
 }

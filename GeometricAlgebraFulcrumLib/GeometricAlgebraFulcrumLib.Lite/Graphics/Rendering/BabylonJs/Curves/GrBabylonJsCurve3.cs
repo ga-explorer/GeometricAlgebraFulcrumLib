@@ -1,25 +1,24 @@
 ﻿using GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.BabylonJs.Values;
 
-namespace GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.BabylonJs.Curves
-{
-    public sealed class GrBabylonJsCurve3 :
-        GrBabylonJsCurve3Base
-    {
-        protected override string ConstructorName 
-            => "new BABYLON.Curve3";
+namespace GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.BabylonJs.Curves;
 
-        public GrBabylonJsVector3ArrayValue Points { get; set; }
+public sealed class GrBabylonJsCurve3 :
+    GrBabylonJsCurve3Base
+{
+    protected override string ConstructorName 
+        => "new BABYLON.Curve3";
+
+    public GrBabylonJsVector3ArrayValue Points { get; set; }
     
 
-        public GrBabylonJsCurve3(string constName) 
-            : base(constName)
-        {
-        }
+    public GrBabylonJsCurve3(string constName) 
+        : base(constName)
+    {
+    }
 
 
-        protected override IEnumerable<string> GetConstructorArguments()
-        {
-            yield return Points.GetCode();
-        }
+    protected override IEnumerable<string> GetConstructorArguments()
+    {
+        yield return Points.GetCode();
     }
 }

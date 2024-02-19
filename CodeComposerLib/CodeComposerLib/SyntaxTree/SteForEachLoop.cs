@@ -1,15 +1,14 @@
-﻿namespace CodeComposerLib.SyntaxTree
+﻿namespace CodeComposerLib.SyntaxTree;
+
+public class SteForEachLoop : SteSyntaxElement
 {
-    public class SteForEachLoop : SteSyntaxElement
-    {
-        public string LoopVariableName { get; set; }
+    public string LoopVariableName { get; set; }
 
-        public string LoopVariableType { get; set; }
+    public string LoopVariableType { get; set; }
 
-        public ISyntaxTreeElement LoopCollection { get; set; }
+    public ISyntaxTreeElement LoopCollection { get; set; }
 
-        public ISyntaxTreeElement LoopCode { get; set; }
+    public ISyntaxTreeElement LoopCode { get; set; }
 
 
-    }
 }

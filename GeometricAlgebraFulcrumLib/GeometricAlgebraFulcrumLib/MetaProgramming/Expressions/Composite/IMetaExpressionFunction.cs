@@ -1,22 +1,21 @@
 ﻿using GeometricAlgebraFulcrumLib.MetaProgramming.Expressions.HeadSpecs;
 
-namespace GeometricAlgebraFulcrumLib.MetaProgramming.Expressions.Composite
+namespace GeometricAlgebraFulcrumLib.MetaProgramming.Expressions.Composite;
+
+public interface IMetaExpressionFunction : 
+    IMetaExpressionComposite
 {
-    public interface IMetaExpressionFunction : 
-        IMetaExpressionComposite
-    {
-        IMetaExpressionHeadSpecsFunction FunctionHeadSpecs { get; }
+    IMetaExpressionHeadSpecsFunction FunctionHeadSpecs { get; }
 
-        IMetaExpressionHeadSpecsOperator OperatorHeadSpecs { get; }
+    IMetaExpressionHeadSpecsOperator OperatorHeadSpecs { get; }
 
-        bool IsLeftAssociative { get; }
+    bool IsLeftAssociative { get; }
 
-        bool IsRightAssociative { get; }
+    bool IsRightAssociative { get; }
 
-        bool IsAssociative { get; }
+    bool IsAssociative { get; }
 
-        bool IsNonAssociative { get; }
+    bool IsNonAssociative { get; }
 
-        MetaExpressionFunctionAssociationKind AssociationKind { get; }
-    }
+    MetaExpressionFunctionAssociationKind AssociationKind { get; }
 }

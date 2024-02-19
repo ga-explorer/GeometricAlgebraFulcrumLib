@@ -1,68 +1,67 @@
 ﻿using System;
 using GeometricAlgebraFulcrumLib.MetaProgramming.Context;
 
-namespace GeometricAlgebraFulcrumLib.MetaProgramming.Expressions.HeadSpecs
+namespace GeometricAlgebraFulcrumLib.MetaProgramming.Expressions.HeadSpecs;
+
+public sealed record MetaExpressionHeadSpecsArrayAccess : 
+    IMetaExpressionHeadSpecsComposite
 {
-    public sealed record MetaExpressionHeadSpecsArrayAccess : 
-        IMetaExpressionHeadSpecsComposite
+    public static MetaExpressionHeadSpecsArrayAccess Create(MetaContext context, string arrayName)
     {
-        public static MetaExpressionHeadSpecsArrayAccess Create(MetaContext context, string arrayName)
-        {
-            return new MetaExpressionHeadSpecsArrayAccess(context, arrayName);
-        }
+        return new MetaExpressionHeadSpecsArrayAccess(context, arrayName);
+    }
 
 
-        public string ArrayName { get; }
+    public string ArrayName { get; }
 
-        public MetaContext Context { get; }
+    public MetaContext Context { get; }
 
-        public string HeadText 
-            => ArrayName;
+    public string HeadText 
+        => ArrayName;
 
-        public bool IsNumber 
-            => false;
+    public bool IsNumber 
+        => false;
 
-        public bool IsSymbolicNumber 
-            => false;
+    public bool IsSymbolicNumber 
+        => false;
 
-        public bool IsLiteralNumber 
-            => false;
+    public bool IsLiteralNumber 
+        => false;
 
-        public bool IsSymbolicNumberOrVariable 
-            => false;
+    public bool IsSymbolicNumberOrVariable 
+        => false;
 
-        public bool IsVariable 
-            => false;
+    public bool IsVariable 
+        => false;
 
-        public bool IsAtomic 
-            => false;
+    public bool IsAtomic 
+        => false;
 
-        public bool IsComposite 
-            => true;
+    public bool IsComposite 
+        => true;
 
-        public bool IsFunction 
-            => false;
+    public bool IsFunction 
+        => false;
 
-        public bool IsOperator 
-            => false;
+    public bool IsOperator 
+        => false;
 
-        public bool IsArrayAccess
-            => true;
-
-
-        private MetaExpressionHeadSpecsArrayAccess(MetaContext context, string arrayName)
-        {
-            if (string.IsNullOrEmpty(arrayName))
-                throw new ArgumentNullException(nameof(arrayName), @"Array name not initialized");
-
-            Context = context; 
-            ArrayName = arrayName;
-        }
+    public bool IsArrayAccess
+        => true;
 
 
-        public override string ToString()
-        {
-            return ArrayName;
-        }
+    private MetaExpressionHeadSpecsArrayAccess(MetaContext context, string arrayName)
+    {
+        if (string.IsNullOrEmpty(arrayName))
+            throw new ArgumentNullException(nameof(arrayName), @"Array name not initialized");
+
+        Context = context; 
+        ArrayName = arrayName;
+    }
+
+
+    public override string ToString()
+    {
+        return ArrayName;
     }
 }

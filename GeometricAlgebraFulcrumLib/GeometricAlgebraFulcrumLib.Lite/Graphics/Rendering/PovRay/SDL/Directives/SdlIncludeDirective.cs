@@ -1,7 +1,6 @@
-﻿namespace GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.PovRay.SDL.Directives
+﻿namespace GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.PovRay.SDL.Directives;
+
+public sealed class SdlIncludeDirective : SdlDirective
 {
-    public sealed class SdlIncludeDirective : SdlDirective
-    {
-        public string FileName { get; set; }
-    }
+    public string FileName { get; set; }
 }

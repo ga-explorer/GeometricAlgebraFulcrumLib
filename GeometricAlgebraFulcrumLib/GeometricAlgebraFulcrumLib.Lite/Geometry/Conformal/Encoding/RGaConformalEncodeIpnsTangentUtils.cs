@@ -3,6 +3,7 @@ using System.Runtime.CompilerServices;
 using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Restricted.Float64.Multivectors;
 using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Restricted.Float64.Multivectors.Composers;
 using GeometricAlgebraFulcrumLib.Lite.Geometry.Conformal.Blades;
+using GeometricAlgebraFulcrumLib.Lite.Geometry.Conformal.Operations;
 using GeometricAlgebraFulcrumLib.Lite.LinearAlgebra.Vectors.Space2D;
 using GeometricAlgebraFulcrumLib.Lite.LinearAlgebra.Vectors.Space3D;
 using GeometricAlgebraFulcrumLib.Lite.LinearAlgebra.Vectors.SpaceND;
@@ -436,7 +437,7 @@ public static class RGaConformalEncodeIpnsTangentUtils
             egaPointArray
                 .Skip(1)
                 .Select(egaPoint2 => egaPoint2 - egaPoint1)
-                .Op();
+                .Op(conformalSpace.Processor);
 
         return conformalSpace.EncodeIpnsTangent(
             egaPoint1,
@@ -460,7 +461,7 @@ public static class RGaConformalEncodeIpnsTangentUtils
             egaPointList
                 .Skip(1)
                 .Select(egaPoint2 => egaPoint2 - egaPoint1)
-                .Op();
+                .Op(conformalSpace.Processor);
 
         return conformalSpace.EncodeIpnsTangent(
             egaPoint1,

@@ -1,19 +1,18 @@
-﻿namespace GeometricAlgebraFulcrumLib.Lite.Geometry.Differential.AutoDiff.Compiled
-{
-    internal sealed class Sum : TapeElement
-    {
-        public override void Eval()
-        {
-            Value = 0;
-            for (var i = 0; i < Inputs.Length; ++i)
-                Value += Inputs.Element(i).Value;
-        }
+﻿namespace GeometricAlgebraFulcrumLib.Lite.Geometry.Differential.AutoDiff.Compiled;
 
-        public override void Diff()
-        {
-            Value = 0;
-            for (var i = 0; i < Inputs.Length; ++i)
-                Value += Inputs.Element(i).Value;
-        }
+internal sealed class Sum : TapeElement
+{
+    public override void Eval()
+    {
+        Value = 0;
+        for (var i = 0; i < Inputs.Length; ++i)
+            Value += Inputs.Element(i).Value;
+    }
+
+    public override void Diff()
+    {
+        Value = 0;
+        for (var i = 0; i < Inputs.Length; ++i)
+            Value += Inputs.Element(i).Value;
     }
 }

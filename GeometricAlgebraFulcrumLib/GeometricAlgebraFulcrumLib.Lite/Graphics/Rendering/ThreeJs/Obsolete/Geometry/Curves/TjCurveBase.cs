@@ -1,8 +1,7 @@
-﻿namespace GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.ThreeJs.Obsolete.Geometry.Curves
+﻿namespace GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.ThreeJs.Obsolete.Geometry.Curves;
+
+public abstract class TjCurveBase
+    : TjComponentSimple
 {
-    public abstract class TjCurveBase
-        : TjComponentSimple
-    {
         
-    }
 }

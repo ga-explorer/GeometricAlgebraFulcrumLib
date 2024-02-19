@@ -1,30 +1,29 @@
-﻿namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Multivectors.GuidedBinaryTraversal
+﻿namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Multivectors.GuidedBinaryTraversal;
+
+public interface IRGaGbtStack
 {
-    public interface IRGaGbtStack
-    {
-        int Capacity { get; }
+    int Capacity { get; }
 
-        int Count { get; }
+    int Count { get; }
 
-        bool IsEmpty { get; }
+    bool IsEmpty { get; }
 
 
-        bool TosIsLeaf { get; }
+    bool TosIsLeaf { get; }
 
-        bool TosIsLeafParent { get; }
+    bool TosIsLeafParent { get; }
 
-        bool TosIsInternal { get; }
+    bool TosIsInternal { get; }
 
-        int TosIndex { get; }
+    int TosIndex { get; }
 
-        int TosTreeDepth { get; }
-
-
-        int RootTreeDepth { get; }
+    int TosTreeDepth { get; }
 
 
-        void PushRootData();
+    int RootTreeDepth { get; }
 
-        void PopNodeData();
-    }
+
+    void PushRootData();
+
+    void PopNodeData();
 }

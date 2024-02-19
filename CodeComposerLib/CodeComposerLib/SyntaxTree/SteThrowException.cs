@@ -1,7 +1,6 @@
-﻿namespace CodeComposerLib.SyntaxTree
+﻿namespace CodeComposerLib.SyntaxTree;
+
+public class SteThrowException : SteSyntaxElement
 {
-    public class SteThrowException : SteSyntaxElement
-    {
-        public ISyntaxTreeElement ExceptionCode { get; set; }
-    }
+    public ISyntaxTreeElement ExceptionCode { get; set; }
 }

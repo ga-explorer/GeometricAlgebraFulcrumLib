@@ -1,10 +1,9 @@
-﻿namespace GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.Xeogl.Cameras
+﻿namespace GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.Xeogl.Cameras;
+
+public sealed class XeoglCameraAxisHelper
 {
-    public sealed class XeoglCameraAxisHelper
-    {
-        public bool Enabled { get; set; }
-            = true;
-        public int PixelsSize { get; set; } 
-            = 250;
-    }
+    public bool Enabled { get; set; }
+        = true;
+    public int PixelsSize { get; set; } 
+        = 250;
 }

@@ -234,7 +234,7 @@ public static class RGaConformalDirectionComposerUtils
     {
         return conformalSpace.DefineDirection(
             1,
-            directionVectors.Select(v => v.ToRGaFloat64Vector()).Op()
+            directionVectors.Select(v => v.ToRGaFloat64Vector()).Op(conformalSpace.Processor)
         );
     }
 
@@ -243,7 +243,7 @@ public static class RGaConformalDirectionComposerUtils
     {
         return conformalSpace.DefineDirection(
             1,
-            directionVectors.Select(v => v.ToRGaFloat64Vector()).Op()
+            directionVectors.Select(v => v.ToRGaFloat64Vector()).Op(conformalSpace.Processor)
         );
     }
 
@@ -252,7 +252,7 @@ public static class RGaConformalDirectionComposerUtils
     {
         return conformalSpace.DefineDirection(
             1,
-            directionVectors.Select(v => v.ToRGaFloat64Vector()).Op()
+            directionVectors.Select(v => v.ToRGaFloat64Vector()).Op(conformalSpace.Processor)
         );
     }
 
@@ -261,7 +261,7 @@ public static class RGaConformalDirectionComposerUtils
     {
         return conformalSpace.DefineDirection(
             1,
-            directionVectors.Op()
+            directionVectors.Op(conformalSpace.Processor)
         );
     }
 
@@ -270,7 +270,7 @@ public static class RGaConformalDirectionComposerUtils
     {
         return conformalSpace.DefineDirection(
             1,
-            directionVectors.Op()
+            directionVectors.Op(conformalSpace.Processor)
         );
     }
 
@@ -280,7 +280,7 @@ public static class RGaConformalDirectionComposerUtils
     {
         return conformalSpace.DefineDirection(
             weight,
-            directionVectors.Select(v => v.ToRGaFloat64Vector()).Op()
+            directionVectors.Select(v => v.ToRGaFloat64Vector()).Op(conformalSpace.Processor)
         );
     }
 
@@ -289,7 +289,7 @@ public static class RGaConformalDirectionComposerUtils
     {
         return conformalSpace.DefineDirection(
             weight,
-            directionVectors.Select(v => v.ToRGaFloat64Vector()).Op()
+            directionVectors.Select(v => v.ToRGaFloat64Vector()).Op(conformalSpace.Processor)
         );
     }
 
@@ -298,7 +298,7 @@ public static class RGaConformalDirectionComposerUtils
     {
         return conformalSpace.DefineDirection(
             weight,
-            directionVectors.Select(v => v.ToRGaFloat64Vector()).Op()
+            directionVectors.Select(v => v.ToRGaFloat64Vector()).Op(conformalSpace.Processor)
         );
     }
 
@@ -307,7 +307,7 @@ public static class RGaConformalDirectionComposerUtils
     {
         return conformalSpace.DefineDirection(
             weight,
-            directionVectors.Op()
+            directionVectors.Op(conformalSpace.Processor)
         );
     }
 
@@ -316,7 +316,7 @@ public static class RGaConformalDirectionComposerUtils
     {
         return conformalSpace.DefineDirection(
             weight,
-            directionVectors.Op()
+            directionVectors.Op(conformalSpace.Processor)
         );
     }
 }

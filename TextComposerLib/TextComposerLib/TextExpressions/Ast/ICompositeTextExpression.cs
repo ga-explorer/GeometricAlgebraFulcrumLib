@@ -1,15 +1,14 @@
 ﻿using System.Collections.Generic;
 
-namespace TextComposerLib.TextExpressions.Ast
+namespace TextComposerLib.TextExpressions.Ast;
+
+public interface ICompositeTextExpression : ITextExpression
 {
-    public interface ICompositeTextExpression : ITextExpression
-    {
-        TeIdentifier Name { get; }
+    TeIdentifier Name { get; }
 
-        bool IsNamed { get; }
+    bool IsNamed { get; }
 
-        bool IsNameless { get; }
+    bool IsNameless { get; }
 
-        IEnumerable<ITextExpression> ChildExpressions { get; }
-    }
+    IEnumerable<ITextExpression> ChildExpressions { get; }
 }

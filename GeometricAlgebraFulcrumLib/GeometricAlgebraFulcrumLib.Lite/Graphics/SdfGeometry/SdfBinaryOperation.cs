@@ -1,9 +1,8 @@
-﻿namespace GeometricAlgebraFulcrumLib.Lite.Graphics.SdfGeometry
-{
-    public abstract class SdfBinaryOperation : ScalarDistanceFunction
-    {
-        public ISdfGeometry3D Surface1 { get; set; }
+﻿namespace GeometricAlgebraFulcrumLib.Lite.Graphics.SdfGeometry;
 
-        public ISdfGeometry3D Surface2 { get; set; }
-    }
+public abstract class SdfBinaryOperation : ScalarDistanceFunction
+{
+    public ISdfGeometry3D Surface1 { get; set; }
+
+    public ISdfGeometry3D Surface2 { get; set; }
 }

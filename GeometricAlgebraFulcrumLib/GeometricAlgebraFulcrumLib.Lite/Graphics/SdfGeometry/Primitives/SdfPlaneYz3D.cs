@@ -1,15 +1,14 @@
 ﻿using GeometricAlgebraFulcrumLib.Lite.LinearAlgebra.Vectors.Space3D;
 
-namespace GeometricAlgebraFulcrumLib.Lite.Graphics.SdfGeometry.Primitives
+namespace GeometricAlgebraFulcrumLib.Lite.Graphics.SdfGeometry.Primitives;
+
+/// <summary>
+/// http://iquilezles.org/www/articles/distfunctions/distfunctions.htm
+/// </summary>
+public sealed class SdfPlaneYz3D : ScalarDistanceFunction
 {
-    /// <summary>
-    /// http://iquilezles.org/www/articles/distfunctions/distfunctions.htm
-    /// </summary>
-    public sealed class SdfPlaneYz3D : ScalarDistanceFunction
+    public override double GetScalarDistance(IFloat64Vector3D point)
     {
-        public override double GetScalarDistance(IFloat64Vector3D point)
-        {
-            return point.X;
-        }
+        return point.X;
     }
 }

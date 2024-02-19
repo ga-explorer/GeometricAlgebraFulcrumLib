@@ -1,64 +1,63 @@
 ﻿using GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.Visuals.Space3D.Styles;
 
-namespace GeometricAlgebraFulcrumLib.Lite.Geometry.Visualizer
+namespace GeometricAlgebraFulcrumLib.Lite.Geometry.Visualizer;
+
+public enum GeometryVisualizerSurfaceStyleKind
 {
-    public enum GeometryVisualizerSurfaceStyleKind
+    Thin,
+    Thick
+}
+
+public sealed record GeometryVisualizerSurfaceStyle :
+    GeometryVisualizerElementStyle
+{
+    public GeometryVisualizerSurfaceStyleKind Kind { get; private set; }
+
+    public bool Thin
+        => Kind == GeometryVisualizerSurfaceStyleKind.Thin;
+
+    public bool Thick
+        => Kind == GeometryVisualizerSurfaceStyleKind.Thick;
+
+
+    internal GeometryVisualizerSurfaceStyle(GeometryVisualizer visualizer, double thickness)
+        : base(visualizer, thickness)
     {
-        Thin,
-        Thick
+        Kind = GeometryVisualizerSurfaceStyleKind.Thick;
     }
 
-    public sealed record GeometryVisualizerSurfaceStyle :
-        GeometryVisualizerElementStyle
+    internal GeometryVisualizerSurfaceStyle(GeometryVisualizer visualizer)
+        : base(visualizer)
     {
-        public GeometryVisualizerSurfaceStyleKind Kind { get; private set; }
-
-        public bool Thin
-            => Kind == GeometryVisualizerSurfaceStyleKind.Thin;
-
-        public bool Thick
-            => Kind == GeometryVisualizerSurfaceStyleKind.Thick;
+        Kind = GeometryVisualizerSurfaceStyleKind.Thin;
+    }
 
 
-        internal GeometryVisualizerSurfaceStyle(GeometryVisualizer visualizer, double thickness)
-            : base(visualizer, thickness)
-        {
-            Kind = GeometryVisualizerSurfaceStyleKind.Thick;
-        }
+    public GeometryVisualizer SetThickStyle(double thickness)
+    {
+        Kind = GeometryVisualizerSurfaceStyleKind.Thick;
+        Thickness = thickness;
 
-        internal GeometryVisualizerSurfaceStyle(GeometryVisualizer visualizer)
-            : base(visualizer)
-        {
-            Kind = GeometryVisualizerSurfaceStyleKind.Thin;
-        }
+        return Visualizer;
+    }
 
+    public GeometryVisualizer SetThinStyle()
+    {
+        Kind = GeometryVisualizerSurfaceStyleKind.Thin;
 
-        public GeometryVisualizer SetThickStyle(double thickness)
-        {
-            Kind = GeometryVisualizerSurfaceStyleKind.Thick;
-            Thickness = thickness;
+        return Visualizer;
+    }
 
-            return Visualizer;
-        }
-
-        public GeometryVisualizer SetThinStyle()
-        {
-            Kind = GeometryVisualizerSurfaceStyleKind.Thin;
-
-            return Visualizer;
-        }
-
-        public GrVisualSurfaceStyle3D GetVisualStyle(Color color)
-        {
-            if (Thick)
-                return new GrVisualSurfaceThickStyle3D(
-                    Visualizer.MainSceneComposer.AddOrGetColorMaterial(color),
-                    Thickness
-                );
-
-            return new GrVisualSurfaceThinStyle3D(
-                Visualizer.MainSceneComposer.AddOrGetColorMaterial(color)
+    public GrVisualSurfaceStyle3D GetVisualStyle(Color color)
+    {
+        if (Thick)
+            return new GrVisualSurfaceThickStyle3D(
+                Visualizer.MainSceneComposer.AddOrGetColorMaterial(color),
+                Thickness
             );
-        }
+
+        return new GrVisualSurfaceThinStyle3D(
+            Visualizer.MainSceneComposer.AddOrGetColorMaterial(color)
+        );
     }
 }

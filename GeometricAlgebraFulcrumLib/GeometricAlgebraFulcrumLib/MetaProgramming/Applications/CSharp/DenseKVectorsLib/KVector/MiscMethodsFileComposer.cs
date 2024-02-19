@@ -12,327 +12,326 @@ using GeometricAlgebraFulcrumLib.Utilities.Extensions;
 using TextComposerLib.Text.Linear;
 using TextComposerLib.Text.Structured;
 
-namespace GeometricAlgebraFulcrumLib.MetaProgramming.Applications.CSharp.DenseKVectorsLib.KVector
+namespace GeometricAlgebraFulcrumLib.MetaProgramming.Applications.CSharp.DenseKVectorsLib.KVector;
+
+internal sealed class MiscMethodsFileComposer : 
+    GaFuLLibraryFileComposerBase
 {
-    internal sealed class MiscMethodsFileComposer : 
-        GaFuLLibraryFileComposerBase
+    internal MiscMethodsFileComposer(GaFuLLibraryComposer libGen)
+        : base(libGen)
     {
-        internal MiscMethodsFileComposer(GaFuLLibraryComposer libGen)
-            : base(libGen)
+    }
+
+    //private GeoClcInfoMetaContext AddEuclideanDualGeoClcMetaContext()
+    //{
+    //    var codeText =
+    //        Templates["edual_macro"].GenerateUsing(CurrentNamespace);
+
+    //    var metaContext =
+    //        _tempSymbolsCompiler.CompileMetaContext(
+    //            codeText,
+    //            _currentFrame.AssociatedFrame.ChildScope
+    //            );
+
+    //    return new GeoClcInfoMetaContext(metaContext);
+    //}
+
+    private void GenerateEuclideanDualFunction(int inGrade)
+    {
+        var outGrade = VSpaceDimensions - inGrade;
+
+        var context = new MetaContext(
+            DenseKVectorsLibraryComposer.DefaultContextOptions
+        )
         {
+            XGaProcessor = GeometricProcessor
+        };
+
+        var inputKVector = 
+            context.ParameterVariablesFactory.CreateDenseKVector(
+                VSpaceDimensions,
+                inGrade,
+                index => $"inputKVectorScalar{index}"
+            );
+
+        var outputKVector = inputKVector.EDual(VSpaceDimensions);
+
+        outputKVector.SetIsOutput(true);
+
+        context.OptimizeContext();
+            
+        context.SetExternalNamesByTermIndex(
+            inputKVector,
+            index => $"scalars[{index}]"
+        );
+            
+        context.SetExternalNamesByTermIndex(
+            outputKVector,
+            index => $"c[{index}]"
+        );
+
+        context.SetIntermediateExternalNamesByNameIndex(
+            DenseKVectorsLibraryComposer.MaxTargetLocalVars,
+            index => $"tempVar{index:X4}",
+            index => $"tempArray[{index}]"
+        );
+
+        var macroComposer = new GaFuLMetaContextCodeComposer(
+            DenseKVectorsLibraryComposer.GeoLanguage, 
+            context,
+            DenseKVectorsLibraryComposer.DefaultContextCodeComposerOptions
+        );
+            
+        //Generate code from macro binding
+        var computationsText = macroComposer.Generate();
+
+        TextComposer.Append(
+            Templates["edual"],
+            "double", GeoLanguage.ScalarTypeName,
+            "grade", inGrade,
+            "num", VSpaceDimensions.KVectorSpaceDimension(inGrade),
+            "computations", computationsText
+        );
+    }
+
+    private void GenerateMiscFunctions(ulong kvSpaceDim)
+    {
+        //This code can be replaced using ListTextBuilderCollection and ParametricTextBuilderCollection
+        //objects. See GenerateMainMiscFunctions() in this file for an example
+        var addCasesTemplate = Templates["add_case"];
+        var subtCasesTemplate = Templates["subt_case"];
+        var timesCasesTemplate = Templates["times_case"];
+
+        var addCasesText = new ListTextComposer("," + Environment.NewLine);
+        var subtCasesText = new ListTextComposer("," + Environment.NewLine);
+        var timesCasesText = new ListTextComposer("," + Environment.NewLine);
+
+        for (var index = 0UL; index < kvSpaceDim; index++)
+        {
+            addCasesText.Add(addCasesTemplate, "index", index);
+            subtCasesText.Add(subtCasesTemplate, "index", index);
+            timesCasesText.Add(timesCasesTemplate, "index", index);
         }
 
-        //private GeoClcInfoMetaContext AddEuclideanDualGeoClcMetaContext()
-        //{
-        //    var codeText =
-        //        Templates["edual_macro"].GenerateUsing(CurrentNamespace);
 
-        //    var metaContext =
-        //        _tempSymbolsCompiler.CompileMetaContext(
-        //            codeText,
-        //            _currentFrame.AssociatedFrame.ChildScope
-        //            );
+        var miscFuncsTemplate = Templates["misc"];
 
-        //    return new GeoClcInfoMetaContext(metaContext);
-        //}
+        TextComposer.Append(miscFuncsTemplate,
+            "double", GeoLanguage.ScalarTypeName,
+            "num", kvSpaceDim,
+            "addcases", addCasesText,
+            "subtcases", subtCasesText,
+            "timescases", timesCasesText
+        );
+    }
 
-        private void GenerateEuclideanDualFunction(int inGrade)
+
+    private void TestSelfDpGradeFunctionComputationCondition(SteSyntaxElementsList textBuilder, GaFuLMetaContextComputationCodeInfo compInfo)
+    {
+        if (compInfo.ComputedVariable.RhsExpression.ToString() == "0")
         {
-            var outGrade = VSpaceDimensions - inGrade;
+            compInfo.EnableCodeGeneration = false;
+            //return;
+        }
 
-            var context = new MetaContext(
-                DenseKVectorsLibraryComposer.DefaultContextOptions
-            )
-            {
-                XGaProcessor = GeometricProcessor
-            };
+        ////Prevent generation of processing code if output grade equals 0 because this is the default grade
+        ////returned by the function
+        //var valueAccess = ((TlOutputVariable)compInfo.ComputedVariable).AssociatedValueAccess;
 
-            var inputKVector = 
-                context.ParameterVariablesFactory.CreateDenseKVector(
+        //var id = ((ValueAccessStepByKey<int>)valueAccess.LastAccessStep).AccessKey;
+
+        //var grade = GeoUtils.ID_To_Grade(id);
+
+        //if (grade == 0)
+        //    compInfo.EnableCodeGeneration = false;
+    }
+
+    private static void AddSelfDpGradeFunctionComputationCondition(SteSyntaxElementsList textBuilder, GaFuLMetaContextComputationCodeInfo compInfo)
+    {
+        if (compInfo.ComputedVariable.IsOutputVariable == false || compInfo.EnableCodeGeneration == false)
+            return;
+
+        //var basisBlade = 
+        //    (compInfo.ComputedVariable).ValueAccess.GetBasisBlade();
+
+        //var grade = basisBlade.Grade;
+        var grade = 0; //TODO: Fix this
+
+        textBuilder.AddFixedCode($"if (c <= -Epsilon || c >= Epsilon) return {grade};");
+        textBuilder.AddEmptyLines(2);
+    }
+
+    private void GenerateSelfDpGradeFunction(int inGrade)
+    {
+        var context = new MetaContext(
+            DenseKVectorsLibraryComposer.DefaultContextOptions
+        )
+        {
+            XGaProcessor = GeometricProcessor
+        };
+
+        //var outGradesList =
+        //    GeometricProcessor
+        //        .BasisSet
+        //        .GradesOfEGp(inGrade, inGrade)
+        //        .Where(grade => grade > 0)
+        //        .OrderByDescending(g => g);
+
+        var inputKVector =
+            context
+                .ParameterVariablesFactory
+                .CreateDenseKVector(
                     VSpaceDimensions,
                     inGrade,
                     index => $"inputKVectorScalar{index}"
                 );
 
-            var outputKVector = inputKVector.EDual(VSpaceDimensions);
+        var outputKVector = 
+            inputKVector.EGp(inputKVector);
 
-            outputKVector.SetIsOutput(true);
+        outputKVector
+            .Scalars
+            .SetIsOutput(true);
 
-            context.OptimizeContext();
+        context.ContextOptions.FixOutputComputationsOrder = true;
+
+        context.OptimizeContext();
             
-            context.SetExternalNamesByTermIndex(
-                inputKVector,
-                index => $"scalars[{index}]"
-            );
+        context.SetExternalNamesByTermIndex(
+            inputKVector,
+            index => $"scalars[{index}]"
+        );
             
-            context.SetExternalNamesByTermIndex(
-                outputKVector,
-                index => $"c[{index}]"
-            );
+        context.SetExternalNamesByTermId(
+            outputKVector,
+            id => "c"
+        );
 
-            context.SetIntermediateExternalNamesByNameIndex(
-                DenseKVectorsLibraryComposer.MaxTargetLocalVars,
-                index => $"tempVar{index:X4}",
-                index => $"tempArray[{index}]"
-            );
+        context.SetIntermediateExternalNamesByNameIndex(
+            DenseKVectorsLibraryComposer.MaxTargetLocalVars,
+            index => $"tempVar{index:X4}",
+            index => $"tempArray[{index}]"
+        );
 
-            var macroComposer = new GaFuLMetaContextCodeComposer(
-                DenseKVectorsLibraryComposer.GeoLanguage, 
-                context,
-                DenseKVectorsLibraryComposer.DefaultContextCodeComposerOptions
-            );
-            
-            //Generate code from macro binding
-            var computationsText = macroComposer.Generate();
-
-            TextComposer.Append(
-                Templates["edual"],
-                "double", GeoLanguage.ScalarTypeName,
-                "grade", inGrade,
-                "num", VSpaceDimensions.KVectorSpaceDimension(inGrade),
-                "computations", computationsText
-            );
-        }
-
-        private void GenerateMiscFunctions(ulong kvSpaceDim)
+        var macroComposer = new GaFuLMetaContextCodeComposer(
+            DenseKVectorsLibraryComposer.GeoLanguage, 
+            context,
+            DenseKVectorsLibraryComposer.DefaultContextCodeComposerOptions
+        )
         {
-            //This code can be replaced using ListTextBuilderCollection and ParametricTextBuilderCollection
-            //objects. See GenerateMainMiscFunctions() in this file for an example
-            var addCasesTemplate = Templates["add_case"];
-            var subtCasesTemplate = Templates["subt_case"];
-            var timesCasesTemplate = Templates["times_case"];
-
-            var addCasesText = new ListTextComposer("," + Environment.NewLine);
-            var subtCasesText = new ListTextComposer("," + Environment.NewLine);
-            var timesCasesText = new ListTextComposer("," + Environment.NewLine);
-
-            for (var index = 0UL; index < kvSpaceDim; index++)
+            ComposerOptions =
             {
-                addCasesText.Add(addCasesTemplate, "index", index);
-                subtCasesText.Add(subtCasesTemplate, "index", index);
-                timesCasesText.Add(timesCasesTemplate, "index", index);
+                ActionBeforeGenerateSingleComputation = TestSelfDpGradeFunctionComputationCondition,
+                ActionAfterGenerateSingleComputation = AddSelfDpGradeFunctionComputationCondition
             }
+        };
 
+        //Generate code from macro binding
+        var computationsText = macroComposer.Generate();
 
-            var miscFuncsTemplate = Templates["misc"];
+        TextComposer.Append(
+            Templates["self_dp_grade"],
+            "grade", inGrade,
+            "double", GeoLanguage.ScalarTypeName,
+            "computations", computationsText
+        );
+    }
 
-            TextComposer.Append(miscFuncsTemplate,
-                "double", GeoLanguage.ScalarTypeName,
-                "num", kvSpaceDim,
-                "addcases", addCasesText,
-                "subtcases", subtCasesText,
-                "timescases", timesCasesText
-            );
+    private void GenerateMainSelfDpGradeFunction()
+    {
+        if (VSpaceDimensions <= 3)
+        {
+            TextComposer.Append("public int SelfDPGrade() { return 0; }");
+
+            return;
         }
 
+        var selfDpGradeCasesText = new ListTextComposer(Environment.NewLine);
 
-        private void TestSelfDpGradeFunctionComputationCondition(SteSyntaxElementsList textBuilder, GaFuLMetaContextComputationCodeInfo compInfo)
-        {
-            if (compInfo.ComputedVariable.RhsExpression.ToString() == "0")
-            {
-                compInfo.EnableCodeGeneration = false;
-                //return;
-            }
-
-            ////Prevent generation of processing code if output grade equals 0 because this is the default grade
-            ////returned by the function
-            //var valueAccess = ((TlOutputVariable)compInfo.ComputedVariable).AssociatedValueAccess;
-
-            //var id = ((ValueAccessStepByKey<int>)valueAccess.LastAccessStep).AccessKey;
-
-            //var grade = GeoUtils.ID_To_Grade(id);
-
-            //if (grade == 0)
-            //    compInfo.EnableCodeGeneration = false;
-        }
-
-        private static void AddSelfDpGradeFunctionComputationCondition(SteSyntaxElementsList textBuilder, GaFuLMetaContextComputationCodeInfo compInfo)
-        {
-            if (compInfo.ComputedVariable.IsOutputVariable == false || compInfo.EnableCodeGeneration == false)
-                return;
-
-            //var basisBlade = 
-            //    (compInfo.ComputedVariable).ValueAccess.GetBasisBlade();
-
-            //var grade = basisBlade.Grade;
-            var grade = 0; //TODO: Fix this
-
-            textBuilder.AddFixedCode($"if (c <= -Epsilon || c >= Epsilon) return {grade};");
-            textBuilder.AddEmptyLines(2);
-        }
-
-        private void GenerateSelfDpGradeFunction(int inGrade)
-        {
-            var context = new MetaContext(
-                DenseKVectorsLibraryComposer.DefaultContextOptions
-            )
-            {
-                XGaProcessor = GeometricProcessor
-            };
-
-            //var outGradesList =
-            //    GeometricProcessor
-            //        .BasisSet
-            //        .GradesOfEGp(inGrade, inGrade)
-            //        .Where(grade => grade > 0)
-            //        .OrderByDescending(g => g);
-
-            var inputKVector =
-                context
-                    .ParameterVariablesFactory
-                    .CreateDenseKVector(
-                        VSpaceDimensions,
-                        inGrade,
-                        index => $"inputKVectorScalar{index}"
-                    );
-
-            var outputKVector = 
-                inputKVector.EGp(inputKVector);
-
-            outputKVector
-                .Scalars
-                .SetIsOutput(true);
-
-            context.ContextOptions.FixOutputComputationsOrder = true;
-
-            context.OptimizeContext();
-            
-            context.SetExternalNamesByTermIndex(
-                inputKVector,
-                index => $"scalars[{index}]"
-            );
-            
-            context.SetExternalNamesByTermId(
-                outputKVector,
-                id => "c"
+        for (var grade = 2; grade < VSpaceDimensions - 1; grade++)
+            selfDpGradeCasesText.Add(
+                Templates["main_self_dp_grade_case"].GenerateUsing(grade)
             );
 
-            context.SetIntermediateExternalNamesByNameIndex(
-                DenseKVectorsLibraryComposer.MaxTargetLocalVars,
-                index => $"tempVar{index:X4}",
-                index => $"tempArray[{index}]"
+        TextComposer.Append(
+            Templates["main_self_dp_grade"],
+            "signature", CurrentNamespace,
+            "main_self_dp_grade_cases", selfDpGradeCasesText.ToString()
+        );
+    }
+
+    private void GenerateMainMiscFunctions()
+    {
+        var miscCasesTemplates =
+            Templates.SubCollection(
+                "main_add_case",
+                "main_subt_case",
+                "main_times_case",
+                "main_divide_case",
+                "main_inverse_case",
+                "main_edual_case"
             );
 
-            var macroComposer = new GaFuLMetaContextCodeComposer(
-                DenseKVectorsLibraryComposer.GeoLanguage, 
-                context,
-                DenseKVectorsLibraryComposer.DefaultContextCodeComposerOptions
-            )
-            {
-                ComposerOptions =
-                {
-                    ActionBeforeGenerateSingleComputation = TestSelfDpGradeFunctionComputationCondition,
-                    ActionAfterGenerateSingleComputation = AddSelfDpGradeFunctionComputationCondition
-                }
-            };
+        var miscCasesText = new ListComposerCollection(
+            "main_add_case",
+            "main_subt_case",
+            "main_times_case",
+            "main_divide_case",
+            "main_inverse_case",
+            "main_edual_case"
+        );
 
-            //Generate code from macro binding
-            var computationsText = macroComposer.Generate();
+        miscCasesText.SetSeparator(Environment.NewLine);
 
-            TextComposer.Append(
-                Templates["self_dp_grade"],
-                "grade", inGrade,
-                "double", GeoLanguage.ScalarTypeName,
-                "computations", computationsText
-            );
-        }
-
-        private void GenerateMainSelfDpGradeFunction()
+        foreach (var grade in Grades)
         {
-            if (VSpaceDimensions <= 3)
-            {
-                TextComposer.Append("public int SelfDPGrade() { return 0; }");
-
-                return;
-            }
-
-            var selfDpGradeCasesText = new ListTextComposer(Environment.NewLine);
-
-            for (var grade = 2; grade < VSpaceDimensions - 1; grade++)
-                selfDpGradeCasesText.Add(
-                    Templates["main_self_dp_grade_case"].GenerateUsing(grade)
-                );
-
-            TextComposer.Append(
-                Templates["main_self_dp_grade"],
+            miscCasesText.AddTextItems(miscCasesTemplates,
                 "signature", CurrentNamespace,
-                "main_self_dp_grade_cases", selfDpGradeCasesText.ToString()
+                "grade", grade,
+                "num", VSpaceDimensions.KVectorSpaceDimension(grade),
+                "sign", grade.ReverseIsNegativeOfGrade() ? "-" : "",
+                "invgrade", VSpaceDimensions - grade
             );
         }
 
-        private void GenerateMainMiscFunctions()
-        {
-            var miscCasesTemplates =
-                Templates.SubCollection(
-                    "main_add_case",
-                    "main_subt_case",
-                    "main_times_case",
-                    "main_divide_case",
-                    "main_inverse_case",
-                    "main_edual_case"
-                );
+        var mainFuncsTemplate = Templates["misc_main"];
 
-            var miscCasesText = new ListComposerCollection(
-                    "main_add_case",
-                    "main_subt_case",
-                    "main_times_case",
-                    "main_divide_case",
-                    "main_inverse_case",
-                    "main_edual_case"
-                );
+        mainFuncsTemplate.SetParametersValues(miscCasesText);
 
-            miscCasesText.SetSeparator(Environment.NewLine);
+        TextComposer.Append(
+            mainFuncsTemplate,
+            "signature", CurrentNamespace,
+            "double", GeoLanguage.ScalarTypeName,
+            "norm2_opname", GaFuLLanguageOperationKind.UnaryNormSquared.GetName(false),
+            "emag2_opname", GaFuLLanguageOperationKind.UnaryNormSquared.GetName(true)
+        );
 
-            foreach (var grade in Grades)
-            {
-                miscCasesText.AddTextItems(miscCasesTemplates,
-                    "signature", CurrentNamespace,
-                    "grade", grade,
-                    "num", VSpaceDimensions.KVectorSpaceDimension(grade),
-                    "sign", grade.ReverseIsNegativeOfGrade() ? "-" : "",
-                    "invgrade", VSpaceDimensions - grade
-                    );
-            }
+        GenerateMainSelfDpGradeFunction();
+    }
 
-            var mainFuncsTemplate = Templates["misc_main"];
+    public override void Generate()
+    {
+        GenerateKVectorFileStartCode();
 
-            mainFuncsTemplate.SetParametersValues(miscCasesText);
+        var kvSpaceDimList =
+            VSpaceDimensions
+                .GetRange()
+                .Select(grade => VSpaceDimensions.KVectorSpaceDimension(grade))
+                .Distinct();
 
-            TextComposer.Append(
-                mainFuncsTemplate,
-                "signature", CurrentNamespace,
-                "double", GeoLanguage.ScalarTypeName,
-                "norm2_opname", GaFuLLanguageOperationKind.UnaryNormSquared.GetName(false),
-                "emag2_opname", GaFuLLanguageOperationKind.UnaryNormSquared.GetName(true)
-            );
+        foreach (var kvSpaceDim in kvSpaceDimList)
+            GenerateMiscFunctions(kvSpaceDim);
 
-            GenerateMainSelfDpGradeFunction();
-        }
+        foreach (var inGrade in Grades)
+            GenerateEuclideanDualFunction(inGrade);
 
-        public override void Generate()
-        {
-            GenerateKVectorFileStartCode();
+        for (var inGrade = 2; inGrade < VSpaceDimensions - 1; inGrade++)
+            GenerateSelfDpGradeFunction(inGrade);
 
-            var kvSpaceDimList =
-                VSpaceDimensions
-                    .GetRange()
-                    .Select(grade => VSpaceDimensions.KVectorSpaceDimension(grade))
-                    .Distinct();
+        GenerateMainMiscFunctions();
 
-            foreach (var kvSpaceDim in kvSpaceDimList)
-                GenerateMiscFunctions(kvSpaceDim);
+        GenerateKVectorFileFinishCode();
 
-            foreach (var inGrade in Grades)
-                GenerateEuclideanDualFunction(inGrade);
-
-            for (var inGrade = 2; inGrade < VSpaceDimensions - 1; inGrade++)
-                GenerateSelfDpGradeFunction(inGrade);
-
-            GenerateMainMiscFunctions();
-
-            GenerateKVectorFileFinishCode();
-
-            FileComposer.FinalizeText();
-        }
+        FileComposer.FinalizeText();
     }
 }

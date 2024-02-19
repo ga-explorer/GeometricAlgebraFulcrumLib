@@ -1,10 +1,9 @@
-﻿namespace GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Records
+﻿namespace GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Records;
+
+public interface IGaGradeRecord
 {
-    public interface IGaGradeRecord
-    {
-        /// <summary>
-        /// Tha Basis Blade Grade
-        /// </summary>
-        uint Grade { get; }
-    }
+    /// <summary>
+    /// Tha Basis Blade Grade
+    /// </summary>
+    uint Grade { get; }
 }

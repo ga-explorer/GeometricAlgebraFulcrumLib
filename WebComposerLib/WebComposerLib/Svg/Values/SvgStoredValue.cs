@@ -1,17 +1,16 @@
-﻿namespace WebComposerLib.Svg.Values
+﻿namespace WebComposerLib.Svg.Values;
+
+public abstract class SvgStoredValue : ISvgValue
 {
-    public abstract class SvgStoredValue : ISvgValue
+    public string ValueText { get; }
+
+    protected SvgStoredValue(string value)
     {
-        public string ValueText { get; }
+        ValueText = value;
+    }
 
-        protected SvgStoredValue(string value)
-        {
-            ValueText = value;
-        }
-
-        public override string ToString()
-        {
-            return ValueText;
-        }
+    public override string ToString()
+    {
+        return ValueText;
     }
 }

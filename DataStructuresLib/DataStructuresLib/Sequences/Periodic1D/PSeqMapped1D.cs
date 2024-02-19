@@ -3,85 +3,84 @@ using System.Collections.Generic;
 using System.Linq;
 using DataStructuresLib.Basic;
 
-namespace DataStructuresLib.Sequences.Periodic1D
+namespace DataStructuresLib.Sequences.Periodic1D;
+
+public abstract class PSeqMapped1D<T>
+    : IPeriodicSequence1D<T>
 {
-    public abstract class PSeqMapped1D<T>
-        : IPeriodicSequence1D<T>
+    public IPeriodicSequence1D<T> BaseSequence { get; }
+
+    protected abstract T MappingFunction(T input);
+
+    public int Count 
+        => BaseSequence.Count;
+
+    public T this[int index] 
+        => MappingFunction(BaseSequence[index]);
+
+    public bool IsBasic 
+        => false;
+
+    public bool IsOperator 
+        => true;
+
+
+    protected PSeqMapped1D(IPeriodicSequence1D<T> baseSequence)
     {
-        public IPeriodicSequence1D<T> BaseSequence { get; }
-
-        protected abstract T MappingFunction(T input);
-
-        public int Count 
-            => BaseSequence.Count;
-
-        public T this[int index] 
-            => MappingFunction(BaseSequence[index]);
-
-        public bool IsBasic 
-            => false;
-
-        public bool IsOperator 
-            => true;
-
-
-        protected PSeqMapped1D(IPeriodicSequence1D<T> baseSequence)
-        {
-            BaseSequence = baseSequence;
-        }
-
-
-        public IEnumerator<T> GetEnumerator()
-        {
-            return BaseSequence.Select(MappingFunction).GetEnumerator();
-        }
-
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return BaseSequence.Select(MappingFunction).GetEnumerator();
-        }
+        BaseSequence = baseSequence;
     }
 
-    public abstract class PSeqMapped1D<TU, T>
-        : IPeriodicSequence1D<T>
+
+    public IEnumerator<T> GetEnumerator()
     {
-        public IPeriodicSequence1D<TU> BaseSequence { get; }
+        return BaseSequence.Select(MappingFunction).GetEnumerator();
+    }
 
-        protected abstract T MappingFunction(TU input);
+    IEnumerator IEnumerable.GetEnumerator()
+    {
+        return BaseSequence.Select(MappingFunction).GetEnumerator();
+    }
+}
 
-        public int Count 
-            => BaseSequence.Count;
+public abstract class PSeqMapped1D<TU, T>
+    : IPeriodicSequence1D<T>
+{
+    public IPeriodicSequence1D<TU> BaseSequence { get; }
 
-        public T this[int index] 
-            => MappingFunction(BaseSequence[index]);
+    protected abstract T MappingFunction(TU input);
 
-        public Pair<T> this[int index1, int index2] 
-            => new Pair<T>(
-                MappingFunction(BaseSequence[index1]),
-                MappingFunction(BaseSequence[index2])
-            );
+    public int Count 
+        => BaseSequence.Count;
 
-        public bool IsBasic 
-            => false;
+    public T this[int index] 
+        => MappingFunction(BaseSequence[index]);
 
-        public bool IsOperator 
-            => true;
+    public Pair<T> this[int index1, int index2] 
+        => new Pair<T>(
+            MappingFunction(BaseSequence[index1]),
+            MappingFunction(BaseSequence[index2])
+        );
+
+    public bool IsBasic 
+        => false;
+
+    public bool IsOperator 
+        => true;
 
 
-        protected PSeqMapped1D(IPeriodicSequence1D<TU> baseSequence)
-        {
-            BaseSequence = baseSequence;
-        }
+    protected PSeqMapped1D(IPeriodicSequence1D<TU> baseSequence)
+    {
+        BaseSequence = baseSequence;
+    }
 
 
-        public IEnumerator<T> GetEnumerator()
-        {
-            return BaseSequence.Select(MappingFunction).GetEnumerator();
-        }
+    public IEnumerator<T> GetEnumerator()
+    {
+        return BaseSequence.Select(MappingFunction).GetEnumerator();
+    }
 
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return BaseSequence.Select(MappingFunction).GetEnumerator();
-        }
+    IEnumerator IEnumerable.GetEnumerator()
+    {
+        return BaseSequence.Select(MappingFunction).GetEnumerator();
     }
 }

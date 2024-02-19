@@ -1,12 +1,11 @@
-﻿namespace WebComposerLib.Html.Media
+﻿namespace WebComposerLib.Html.Media;
+
+public interface IWclHtmlImageDataUrlCache :
+    IWclHtmlDataUrlCache
 {
-    public interface IWclHtmlImageDataUrlCache :
-        IWclHtmlDataUrlCache
-    {
-        Color WhitespaceColor { get; }
+    Color WhitespaceColor { get; }
 
-        int MarginSize { get; set; }
+    int MarginSize { get; set; }
 
-        Color BackgroundColor { get; set; }
-    }
+    Color BackgroundColor { get; set; }
 }

@@ -1,11 +1,10 @@
 ﻿using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.Multivectors;
 
-namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.Frames
+namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.Frames;
+
+public interface IXGaMultivectorFrame<T> :
+    IReadOnlyList<XGaMultivector<T>>,
+    IXGaElement<T>
 {
-    public interface IXGaMultivectorFrame<T> :
-        IReadOnlyList<XGaMultivector<T>>,
-        IXGaElement<T>
-    {
-        int VSpaceDimensions { get; }
-    }
+    int VSpaceDimensions { get; }
 }

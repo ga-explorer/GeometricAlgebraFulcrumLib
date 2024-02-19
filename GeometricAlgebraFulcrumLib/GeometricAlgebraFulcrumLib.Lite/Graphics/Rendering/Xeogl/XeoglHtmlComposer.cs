@@ -6,122 +6,122 @@ using TextComposerLib.Text.Linear;
 using TextComposerLib.Text.Parametric;
 using TextComposerLib.Text.Structured;
 
-namespace GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.Xeogl
+namespace GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.Xeogl;
+
+public sealed class XeoglHtmlComposer
 {
-    public sealed class XeoglHtmlComposer
+    private readonly LinearTextComposer _scriptComposer
+        = new LinearTextComposer();
+
+    private readonly List<XeoglMeshGenerator> _generatorsList
+        = new List<XeoglMeshGenerator>();
+
+
+    public string PageTitle { get; set; } = "xeogl Script";
+
+    public bool RotateCamera
+        => !RotateCameraRate.X.IsZero() ||
+           !RotateCameraRate.Y.IsZero() ||
+           !RotateCameraRate.Z.IsZero();
+
+    public Float64Vector3DComposer RotateCameraRate { get; }
+        = Float64Vector3DComposer.Create();
+
+    public List<string> IncludesList { get; }
+        = new List<string>();
+
+
+    private void GenerateInitializationCode()
     {
-        private readonly LinearTextComposer _scriptComposer
-            = new LinearTextComposer();
 
-        private readonly List<XeoglMeshGenerator> _generatorsList
-            = new List<XeoglMeshGenerator>();
+    }
 
-
-        public string PageTitle { get; set; } = "xeogl Script";
-
-        public bool RotateCamera
-            => !RotateCameraRate.X.IsZero() ||
-               !RotateCameraRate.Y.IsZero() ||
-               !RotateCameraRate.Z.IsZero();
-
-        public Float64Vector3DComposer RotateCameraRate { get; }
-            = Float64Vector3DComposer.Create();
-
-        public List<string> IncludesList { get; }
-            = new List<string>();
-
-
-        private void GenerateInitializationCode()
+    private void GenerateFinalizationCode()
+    {
+        if (RotateCamera)
         {
+            _scriptComposer
+                .AppendAtNewLine(@"xeogl.scene.on('tick', function () {")
+                .IncreaseIndentation();
 
-        }
-
-        private void GenerateFinalizationCode()
-        {
-            if (RotateCamera)
-            {
+            if (!RotateCameraRate.X.IsZero())
                 _scriptComposer
-                    .AppendAtNewLine(@"xeogl.scene.on('tick', function () {")
-                    .IncreaseIndentation();
+                    .AppendAtNewLine("xeogl.scene.camera.view.rotateEyeX(")
+                    .Append(RotateCameraRate.X.ToString("G"))
+                    .Append(")");
 
-                if (!RotateCameraRate.X.IsZero())
-                    _scriptComposer
-                        .AppendAtNewLine("xeogl.scene.camera.view.rotateEyeX(")
-                        .Append(RotateCameraRate.X.ToString("G"))
-                        .Append(")");
-
-                if (!RotateCameraRate.Y.IsZero())
-                    _scriptComposer
-                        .AppendAtNewLine("xeogl.scene.camera.view.rotateEyeY(")
-                        .Append(RotateCameraRate.Y.ToString("G"))
-                        .Append(")");
-
-                if (!RotateCameraRate.Z.IsZero())
-                    _scriptComposer
-                        .AppendAtNewLine("xeogl.scene.camera.view.rotateEyeZ(")
-                        .Append(RotateCameraRate.Z.ToString("G"))
-                        .Append(")");
-
+            if (!RotateCameraRate.Y.IsZero())
                 _scriptComposer
-                    .DecreaseIndentation()
-                    .AppendAtNewLine("});")
-                    .AppendLine();
-            }
+                    .AppendAtNewLine("xeogl.scene.camera.view.rotateEyeY(")
+                    .Append(RotateCameraRate.Y.ToString("G"))
+                    .Append(")");
+
+            if (!RotateCameraRate.Z.IsZero())
+                _scriptComposer
+                    .AppendAtNewLine("xeogl.scene.camera.view.rotateEyeZ(")
+                    .Append(RotateCameraRate.Z.ToString("G"))
+                    .Append(")");
 
             _scriptComposer
-                .AppendAtNewLine(@"new xeogl.CameraControl();");
+                .DecreaseIndentation()
+                .AppendAtNewLine("});")
+                .AppendLine();
         }
 
-        public string GenerateScript()
-        {
-            _scriptComposer.Clear();
+        _scriptComposer
+            .AppendAtNewLine(@"new xeogl.CameraControl();");
+    }
 
-            GenerateInitializationCode();
+    public string GenerateScript()
+    {
+        _scriptComposer.Clear();
 
-            foreach (var generator in _generatorsList)
-                _scriptComposer.AppendLineAtNewLine(generator.Generate());
+        GenerateInitializationCode();
 
-            GenerateFinalizationCode();
+        foreach (var generator in _generatorsList)
+            _scriptComposer.AppendLineAtNewLine(generator.Generate());
 
-            return _scriptComposer.ToString();
-        }
+        GenerateFinalizationCode();
 
-        private string GenerateIncludes()
-        {
-            var composer =
-                new ListTextComposer(Environment.NewLine)
-                {
-                    ActiveItemPrefix = @"<script src = """,
-                    ActiveItemSuffix = @""" ></script>"
-                };
+        return _scriptComposer.ToString();
+    }
 
-            foreach (var i in IncludesList)
-                composer.Add(i);
+    private string GenerateIncludes()
+    {
+        var composer =
+            new ListTextComposer(Environment.NewLine)
+            {
+                ActiveItemPrefix = @"<script src = """,
+                ActiveItemSuffix = @""" ></script>"
+            };
 
-            return composer.ToString();
-        }
+        foreach (var i in IncludesList)
+            composer.Add(i);
 
-
-        public XeoglLinesMeshGenerator AddLinesGeometry(IGraphicsLineGeometry3D geometry, string material)
-        {
-            var generator = new XeoglLinesMeshGenerator(geometry, material);
-            _generatorsList.Add(generator);
-
-            return generator;
-        }
-
-        public XeoglTrianglesMeshGenerator AddTrianglesGeometry(IGraphicsTriangleGeometry3D geometry, string material)
-        {
-            var generator = new XeoglTrianglesMeshGenerator(geometry, material);
-            _generatorsList.Add(generator);
-
-            return generator;
-        }
+        return composer.ToString();
+    }
 
 
-        public string GenerateHtmlPage()
-        {
-            var template = new ParametricTextComposer("#", "#", @"
+    public XeoglLinesMeshGenerator AddLinesGeometry(IGraphicsLineGeometry3D geometry, string material)
+    {
+        var generator = new XeoglLinesMeshGenerator(geometry, material);
+        _generatorsList.Add(generator);
+
+        return generator;
+    }
+
+    public XeoglTrianglesMeshGenerator AddTrianglesGeometry(IGraphicsTriangleGeometry3D geometry, string material)
+    {
+        var generator = new XeoglTrianglesMeshGenerator(geometry, material);
+        _generatorsList.Add(generator);
+
+        return generator;
+    }
+
+
+    public string GenerateHtmlPage()
+    {
+        var template = new ParametricTextComposer("#", "#", @"
 <!DOCTYPE html>
 <html>
     <head>
@@ -156,11 +156,10 @@ namespace GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.Xeogl
 </html>
 ");
 
-            return template.GenerateText(
-                "page-title", PageTitle,
-                "includes", GenerateIncludes(),
-                "script", GenerateScript()
-            );
-        }
+        return template.GenerateText(
+            "page-title", PageTitle,
+            "includes", GenerateIncludes(),
+            "script", GenerateScript()
+        );
     }
 }

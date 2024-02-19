@@ -1,19 +1,18 @@
 ﻿using GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.PovRay.SDL.Values;
 
-namespace GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.PovRay.SDL.Objects.FSP
+namespace GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.PovRay.SDL.Objects.FSP;
+
+public class SdlCylinder : SdlObject, ISdlFspObject
 {
-    public class SdlCylinder : SdlObject, ISdlFspObject
-    {
-        public ISdlVectorValue BasePoint { get; set; }
+    public ISdlVectorValue BasePoint { get; set; }
 
-        public ISdlVectorValue CapPoint { get; set; }
+    public ISdlVectorValue CapPoint { get; set; }
 
-        public ISdlScalarValue Radius { get; set; }
+    public ISdlScalarValue Radius { get; set; }
 
-        public bool Open { get; set; }
+    public bool Open { get; set; }
 
 
 
 
-    }
 }

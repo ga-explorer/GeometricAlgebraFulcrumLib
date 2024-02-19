@@ -1,44 +1,43 @@
 ﻿using CodeComposerLib.Irony.Semantic.Command;
 using CodeComposerLib.Irony.Semantic.Expression;
 
-namespace CodeComposerLib.Irony.Semantic.Scope
+namespace CodeComposerLib.Irony.Semantic.Scope;
+
+public sealed class ScopeCommandBlockChild : LanguageScope
 {
-    public sealed class ScopeCommandBlockChild : LanguageScope
+    public CommandBlock ParentCommandBlock { get; }
+
+    public CompositeExpression ParentCompositeExpression => ParentCommandBlock as CompositeExpression;
+
+
+    private ScopeCommandBlockChild(CommandBlock parentBlock)
+        : base(parentBlock.ParentScope)
     {
-        public CommandBlock ParentCommandBlock { get; }
+        ParentCommandBlock = parentBlock;
+    }
 
-        public CompositeExpression ParentCompositeExpression => ParentCommandBlock as CompositeExpression;
-
-
-        private ScopeCommandBlockChild(CommandBlock parentBlock)
-            : base(parentBlock.ParentScope)
-        {
-            ParentCommandBlock = parentBlock;
-        }
-
-        private ScopeCommandBlockChild(CommandBlock parentBlockExpr, string scopeName)
-            : base(parentBlockExpr.ParentScope, scopeName)
-        {
-            ParentCommandBlock = parentBlockExpr;
-        }
+    private ScopeCommandBlockChild(CommandBlock parentBlockExpr, string scopeName)
+        : base(parentBlockExpr.ParentScope, scopeName)
+    {
+        ParentCommandBlock = parentBlockExpr;
+    }
 
 
-        public static ScopeCommandBlockChild Create(CommandBlock parentBlockExpr)
-        {
-            var scope = new ScopeCommandBlockChild(parentBlockExpr);
+    public static ScopeCommandBlockChild Create(CommandBlock parentBlockExpr)
+    {
+        var scope = new ScopeCommandBlockChild(parentBlockExpr);
 
-            RegisterChildScope(scope.ParentScope, scope);
+        RegisterChildScope(scope.ParentScope, scope);
 
-            return scope;
-        }
+        return scope;
+    }
 
-        public static ScopeCommandBlockChild Create(CommandBlock parentBlock, string scopeName)
-        {
-            var scope = new ScopeCommandBlockChild(parentBlock, scopeName);
+    public static ScopeCommandBlockChild Create(CommandBlock parentBlock, string scopeName)
+    {
+        var scope = new ScopeCommandBlockChild(parentBlock, scopeName);
 
-            RegisterChildScope(scope.ParentScope, scope);
+        RegisterChildScope(scope.ParentScope, scope);
 
-            return scope;
-        }
+        return scope;
     }
 }

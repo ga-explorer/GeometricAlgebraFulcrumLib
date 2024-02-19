@@ -13,7 +13,7 @@ namespace GeometricAlgebraFulcrumLib.Lite.Geometry.Conformal.Encoding;
 public static class RGaConformalEncodeVersorUtils
 {
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static RGaConformalVersor EncodeCGaRotation(this RGaConformalSpace conformalSpace, Float64PlanarAngle angle, double bivectorXy)
+    public static RGaConformalVersor EncodeEGaRotation(this RGaConformalSpace conformalSpace, Float64PlanarAngle angle, double bivectorXy = 1d)
     {
         Debug.Assert(conformalSpace.Is4D);
 
@@ -30,7 +30,7 @@ public static class RGaConformalEncodeVersorUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static RGaConformalVersor EncodeCGaRotation(this RGaConformalSpace conformalSpace, Float64PlanarAngle angle, Float64Bivector2D bivector)
+    public static RGaConformalVersor EncodeEGaRotation(this RGaConformalSpace conformalSpace, Float64PlanarAngle angle, Float64Bivector2D bivector)
     {
         Debug.Assert(conformalSpace.Is4D);
 
@@ -46,21 +46,7 @@ public static class RGaConformalEncodeVersorUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static RGaConformalVersor EncodeCGaRotation(this RGaConformalSpace conformalSpace, Float64PlanarAngle angle, Float64Vector2D egaAxisPoint1, Float64Vector2D egaAxisPoint2)
-    {
-        Debug.Assert(conformalSpace.Is4D);
-
-        var bivector = 
-            conformalSpace.EncodeOpnsFlatLineFromPoints(
-                egaAxisPoint1, 
-                egaAxisPoint2
-            ).InternalBivector;
-
-        return conformalSpace.EncodeCGaRotation(angle, bivector);
-    }
-    
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static RGaConformalVersor EncodeCGaRotation(this RGaConformalSpace conformalSpace, Float64PlanarAngle angle, double bivectorXy, double bivectorXz, double bivectorYz)
+    public static RGaConformalVersor EncodeEGaRotation(this RGaConformalSpace conformalSpace, Float64PlanarAngle angle, double bivectorXy, double bivectorXz, double bivectorYz)
     {
         var scalar = Math.Cos(angle / 2);
         var bivectorNorm = (bivectorXy * bivectorXy + bivectorXz * bivectorXz + bivectorYz * bivectorYz).Sqrt();
@@ -77,7 +63,7 @@ public static class RGaConformalEncodeVersorUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static RGaConformalVersor EncodeCGaRotation(this RGaConformalSpace conformalSpace, Float64PlanarAngle angle, Float64Bivector3D bivector)
+    public static RGaConformalVersor EncodeEGaRotation(this RGaConformalSpace conformalSpace, Float64PlanarAngle angle, Float64Bivector3D bivector)
     {
         Debug.Assert(conformalSpace.Is5D);
 
@@ -93,17 +79,31 @@ public static class RGaConformalEncodeVersorUtils
             .GetSimpleMultivector()
             .ToConformalCGaVersor(conformalSpace);
     }
+    
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static RGaConformalVersor EncodeCGaRotation(this RGaConformalSpace conformalSpace, Float64PlanarAngle angle, Float64Vector3D egaAxisPoint1, Float64Vector3D egaAxisPoint2)
+    public static RGaConformalVersor EncodeCGaRotation(this RGaConformalSpace conformalSpace, Float64PlanarAngle angle, Float64Vector2D egaAxisPoint)
+    {
+        Debug.Assert(conformalSpace.Is4D);
+
+        var bivector = 
+            conformalSpace.EncodeOpnsFlatPoint(
+                egaAxisPoint
+            ).InternalBivector;
+
+        return conformalSpace.EncodeCGaRotation(angle, bivector);
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static RGaConformalVersor EncodeCGaRotation(this RGaConformalSpace conformalSpace, Float64PlanarAngle angle, Float64Vector3D egaAxisPoint, Float64Vector3D egaAxisVector)
     {
         Debug.Assert(conformalSpace.Is5D);
 
         var bivector = 
-            conformalSpace.EncodeOpnsFlatLineFromPoints(
-                egaAxisPoint1,
-                egaAxisPoint2
-            ).CGaUnDual().InternalBivector;
+            conformalSpace.EncodeIpnsFlatLine(
+                egaAxisPoint,
+                egaAxisVector
+            ).InternalBivector;
 
         return conformalSpace.EncodeCGaRotation(angle, bivector);
     }
@@ -111,8 +111,9 @@ public static class RGaConformalEncodeVersorUtils
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static RGaConformalVersor EncodeCGaRotation(this RGaConformalSpace conformalSpace, Float64PlanarAngle angle, RGaFloat64Bivector bivector)
     {
-        return (Math.Cos(angle / 2) + Math.Sin(angle / 2) / bivector.Norm() * bivector)
-            .ToConformalCGaVersor(conformalSpace);
+        var halfAngle = angle.GetHalfAngleInPositiveRange();
+
+        return (halfAngle.Cos().Value + halfAngle.Sin().Value / bivector.Norm().Scalar() * bivector).ToConformalCGaVersor(conformalSpace);
     }
 
     
@@ -127,13 +128,16 @@ public static class RGaConformalEncodeVersorUtils
         );
     }
 
+
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static RGaConformalVersor EncodeCGaTranslation(this RGaConformalSpace conformalSpace, double vectorX, double vectorY)
     {
         Debug.Assert(conformalSpace.Is4D);
 
+        var vector = Float64Vector2D.Create(vectorX, vectorY);
+
         return conformalSpace.EncodeCGaTranslation(
-            Float64Vector2D.Create(vectorX, vectorY).ToRGaFloat64Vector()
+            conformalSpace.EncodeEGaVectorAsVector(vector)
         );
     }
 
@@ -143,7 +147,7 @@ public static class RGaConformalEncodeVersorUtils
         Debug.Assert(conformalSpace.Is4D);
 
         return conformalSpace.EncodeCGaTranslation(
-            vector.ToRGaFloat64Vector()
+            conformalSpace.EncodeEGaVectorAsVector(vector)
         );
     }
     
@@ -152,8 +156,10 @@ public static class RGaConformalEncodeVersorUtils
     {
         Debug.Assert(conformalSpace.Is5D);
 
+        var vector = Float64Vector3D.Create(vectorX, vectorY, vectorZ);
+
         return conformalSpace.EncodeCGaTranslation(
-            Float64Vector3D.Create(vectorX, vectorY, vectorZ).ToRGaFloat64Vector()
+            conformalSpace.EncodeEGaVectorAsVector(vector)
         );
     }
 
@@ -163,7 +169,8 @@ public static class RGaConformalEncodeVersorUtils
         Debug.Assert(conformalSpace.Is5D);
 
         return conformalSpace.EncodeCGaTranslation(
-            vector.ToRGaFloat64Vector()
+            conformalSpace.EncodeEGaVectorAsVector(vector)
+            //vector.ToRGaFloat64Vector()
         );
     }
     
@@ -182,8 +189,7 @@ public static class RGaConformalEncodeVersorUtils
     {
         var g = 0.5 * scalingFactor.LogE();
 
-        return (Math.Cosh(g) + Math.Sinh(g) * conformalSpace.EoiBivector)
-            .ToConformalCGaVersor(conformalSpace);
+        return (Math.Cosh(g) + Math.Sinh(g) * conformalSpace.EoiBivector).ToConformalCGaVersor(conformalSpace);
     }
 
 }

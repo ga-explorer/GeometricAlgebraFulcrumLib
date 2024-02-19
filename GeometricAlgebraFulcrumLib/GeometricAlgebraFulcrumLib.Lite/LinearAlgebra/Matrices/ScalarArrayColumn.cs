@@ -2,45 +2,44 @@
 using System.Runtime.CompilerServices;
 using DataStructuresLib.BitManipulation;
 
-namespace GeometricAlgebraFulcrumLib.Lite.LinearAlgebra.Matrices
+namespace GeometricAlgebraFulcrumLib.Lite.LinearAlgebra.Matrices;
+
+public class ScalarArrayColumn<T> :
+    IReadOnlyList<T>
+
 {
-    public class ScalarArrayColumn<T> :
-        IReadOnlyList<T>
+    public T[,] ScalarArray { get; }
 
+    public int ColumnIndex { get; }
+
+    public int Count { get; }
+
+    public T this[int index]
+        => ScalarArray[index, ColumnIndex];
+
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public ScalarArrayColumn(T[,] scalarArray, int columnIndex)
     {
-        public T[,] ScalarArray { get; }
+        if (columnIndex < 0 || columnIndex > scalarArray.GetLength(1))
+            throw new ArgumentOutOfRangeException(nameof(columnIndex));
 
-        public int ColumnIndex { get; }
+        ScalarArray = scalarArray;
+        ColumnIndex = columnIndex;
+        Count = scalarArray.GetLength(0);
+    }
 
-        public int Count { get; }
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public IEnumerator<T> GetEnumerator()
+    {
+        return Count
+            .GetRange(i => ScalarArray[i, ColumnIndex])
+            .GetEnumerator();
+    }
 
-        public T this[int index]
-            => ScalarArray[index, ColumnIndex];
-
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ScalarArrayColumn(T[,] scalarArray, int columnIndex)
-        {
-            if (columnIndex < 0 || columnIndex > scalarArray.GetLength(1))
-                throw new ArgumentOutOfRangeException(nameof(columnIndex));
-
-            ScalarArray = scalarArray;
-            ColumnIndex = columnIndex;
-            Count = scalarArray.GetLength(0);
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public IEnumerator<T> GetEnumerator()
-        {
-            return Count
-                .GetRange(i => ScalarArray[i, ColumnIndex])
-                .GetEnumerator();
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
-        }
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    IEnumerator IEnumerable.GetEnumerator()
+    {
+        return GetEnumerator();
     }
 }

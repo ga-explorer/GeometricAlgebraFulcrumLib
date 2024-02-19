@@ -1,7 +1,6 @@
-﻿namespace GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.PovRay.SDL.Finishes
+﻿namespace GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.PovRay.SDL.Finishes;
+
+public interface ISdlFinishItem : ISdlElement
 {
-    public interface ISdlFinishItem : ISdlElement
-    {
          
-    }
 }

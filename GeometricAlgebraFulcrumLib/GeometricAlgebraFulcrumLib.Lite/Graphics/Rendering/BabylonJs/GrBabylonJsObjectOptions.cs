@@ -1,24 +1,23 @@
 ﻿using TextComposerLib.Text;
 
-namespace GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.BabylonJs
+namespace GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.BabylonJs;
+
+public abstract class GrBabylonJsObjectOptions :
+    GrBabylonJsAttributeSet
 {
-    public abstract class GrBabylonJsObjectOptions :
-        GrBabylonJsAttributeSet
+    public override string GetCode()
     {
-        public override string GetCode()
-        {
-            return GetKeyValueCodePairs()
-                .Select(p => $"{p.Key}: {p.Value}")
-                .Concatenate(
-                    ", ", 
-                    "{", 
-                    "}"
-                );
-        }
+        return GetKeyValueCodePairs()
+            .Select(p => $"{p.Key}: {p.Value}")
+            .Concatenate(
+                ", ", 
+                "{", 
+                "}"
+            );
+    }
         
-        public override string ToString()
-        {
-            return GetCode();
-        }
+    public override string ToString()
+    {
+        return GetCode();
     }
 }

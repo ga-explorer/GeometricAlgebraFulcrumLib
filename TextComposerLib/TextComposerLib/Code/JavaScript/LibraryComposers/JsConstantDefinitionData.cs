@@ -1,27 +1,26 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using Humanizer;
 
-namespace TextComposerLib.Code.JavaScript.LibraryComposers
+namespace TextComposerLib.Code.JavaScript.LibraryComposers;
+
+public class JsConstantDefinitionData
 {
-    public class JsConstantDefinitionData
-    {
-        public string JsConstantName { get; }
+    public string JsConstantName { get; }
         
-        public JsValueData ValueData { get; }
+    public JsValueData ValueData { get; }
 
-        public string CsVariableName 
-            => JsConstantName.Replace('$', '_').Pascalize();
+    public string CsVariableName 
+        => JsConstantName.Replace('$', '_').Pascalize();
 
-        public JsClassNameData ConstantType 
-            => ValueData.ValueType;
+    public JsClassNameData ConstantType 
+        => ValueData.ValueType;
 
-        public bool IsReferenced { get; internal set; } = false;
+    public bool IsReferenced { get; internal set; } = false;
 
 
-        internal JsConstantDefinitionData([NotNull] string jsConstantName, [NotNull] JsValueData valueData)
-        {
-            JsConstantName = jsConstantName;
-            ValueData = valueData;
-        }
+    internal JsConstantDefinitionData([NotNull] string jsConstantName, [NotNull] JsValueData valueData)
+    {
+        JsConstantName = jsConstantName;
+        ValueData = valueData;
     }
 }

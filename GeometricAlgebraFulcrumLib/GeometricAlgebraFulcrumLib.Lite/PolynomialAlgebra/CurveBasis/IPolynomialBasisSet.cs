@@ -1,15 +1,14 @@
-﻿namespace GeometricAlgebraFulcrumLib.Lite.PolynomialAlgebra.CurveBasis
+﻿namespace GeometricAlgebraFulcrumLib.Lite.PolynomialAlgebra.CurveBasis;
+
+public interface IPolynomialBasisSet
 {
-    public interface IPolynomialBasisSet
-    {
-        public int Degree { get; }
+    public int Degree { get; }
 
-        double GetValue(int index, double parameterValue);
+    double GetValue(int index, double parameterValue);
 
-        double GetValue(int index, double parameterValue, double termScalar);
+    double GetValue(int index, double parameterValue, double termScalar);
 
-        double GetValue(double parameterValue, params double[] termScalarsList);
+    double GetValue(double parameterValue, params double[] termScalarsList);
 
-        IReadOnlyList<double> GetValues(double parameterValue);
-    }
+    IReadOnlyList<double> GetValues(double parameterValue);
 }

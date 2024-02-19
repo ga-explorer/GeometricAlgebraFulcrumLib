@@ -2,161 +2,160 @@
 using WebComposerLib.LaTeX.CodeComposer.Code.Commands;
 using WebComposerLib.LaTeX.CodeComposer.Constants;
 
-namespace WebComposerLib.LaTeX.CodeComposer.Documents
+namespace WebComposerLib.LaTeX.CodeComposer.Documents;
+
+public sealed class LaTeXPreamble : LaTeXCodeSectionsList
 {
-    public sealed class LaTeXPreamble : LaTeXCodeSectionsList
+    public LaTeXPreamble AddRenameElementTitle(string elementName, string newValue)
     {
-        public LaTeXPreamble AddRenameElementTitle(string elementName, string newValue)
-        {
-            SubSectionsList.Add(
-                LaTeXCommands.RenewCommand(elementName, newValue)
-            );
+        SubSectionsList.Add(
+            LaTeXCommands.RenewCommand(elementName, newValue)
+        );
 
-            return this;
-        }
+        return this;
+    }
 
-        public LaTeXPreamble AddRenameAbstract(string newValue)
-        {
-            SubSectionsList.Add(
-                LaTeXCommands.RenewCommand(LaTeXElementNames.Abstract, newValue)
-            );
+    public LaTeXPreamble AddRenameAbstract(string newValue)
+    {
+        SubSectionsList.Add(
+            LaTeXCommands.RenewCommand(LaTeXElementNames.Abstract, newValue)
+        );
 
-            return this;
-        }
+        return this;
+    }
 
-        public LaTeXPreamble AddRenameAppendix(string newValue)
-        {
-            SubSectionsList.Add(
-                LaTeXCommands.RenewCommand(LaTeXElementNames.Appendix, newValue)
-            );
+    public LaTeXPreamble AddRenameAppendix(string newValue)
+    {
+        SubSectionsList.Add(
+            LaTeXCommands.RenewCommand(LaTeXElementNames.Appendix, newValue)
+        );
 
-            return this;
-        }
+        return this;
+    }
 
-        public LaTeXPreamble AddRenameBibliography(string newValue)
-        {
-            SubSectionsList.Add(
-                LaTeXCommands.RenewCommand(LaTeXElementNames.Bibliography, newValue)
-            );
+    public LaTeXPreamble AddRenameBibliography(string newValue)
+    {
+        SubSectionsList.Add(
+            LaTeXCommands.RenewCommand(LaTeXElementNames.Bibliography, newValue)
+        );
 
-            return this;
-        }
+        return this;
+    }
 
-        public LaTeXPreamble AddRenameChapter(string newValue)
-        {
-            SubSectionsList.Add(
-                LaTeXCommands.RenewCommand(LaTeXElementNames.Chapter, newValue)
-            );
+    public LaTeXPreamble AddRenameChapter(string newValue)
+    {
+        SubSectionsList.Add(
+            LaTeXCommands.RenewCommand(LaTeXElementNames.Chapter, newValue)
+        );
 
-            return this;
-        }
+        return this;
+    }
 
-        public LaTeXPreamble AddRenameContents(string newValue)
-        {
-            SubSectionsList.Add(
-                LaTeXCommands.RenewCommand(LaTeXElementNames.Contents, newValue)
-            );
+    public LaTeXPreamble AddRenameContents(string newValue)
+    {
+        SubSectionsList.Add(
+            LaTeXCommands.RenewCommand(LaTeXElementNames.Contents, newValue)
+        );
 
-            return this;
-        }
+        return this;
+    }
 
-        public LaTeXPreamble AddRenameFigure(string newValue)
-        {
-            SubSectionsList.Add(
-                LaTeXCommands.RenewCommand(LaTeXElementNames.Figure, newValue)
-            );
+    public LaTeXPreamble AddRenameFigure(string newValue)
+    {
+        SubSectionsList.Add(
+            LaTeXCommands.RenewCommand(LaTeXElementNames.Figure, newValue)
+        );
 
-            return this;
-        }
+        return this;
+    }
 
-        public LaTeXPreamble AddRenameIndex(string newValue)
-        {
-            SubSectionsList.Add(
-                LaTeXCommands.RenewCommand(LaTeXElementNames.Index, newValue)
-            );
+    public LaTeXPreamble AddRenameIndex(string newValue)
+    {
+        SubSectionsList.Add(
+            LaTeXCommands.RenewCommand(LaTeXElementNames.Index, newValue)
+        );
 
-            return this;
-        }
+        return this;
+    }
 
-        public LaTeXPreamble AddRenameListOfFigures(string newValue)
-        {
-            SubSectionsList.Add(
-                LaTeXCommands.RenewCommand(LaTeXElementNames.ListOfFigures, newValue)
-            );
+    public LaTeXPreamble AddRenameListOfFigures(string newValue)
+    {
+        SubSectionsList.Add(
+            LaTeXCommands.RenewCommand(LaTeXElementNames.ListOfFigures, newValue)
+        );
 
-            return this;
-        }
+        return this;
+    }
 
-        public LaTeXPreamble AddRenameListOfTables(string newValue)
-        {
-            SubSectionsList.Add(
-                LaTeXCommands.RenewCommand(LaTeXElementNames.ListOfTables, newValue)
-            );
+    public LaTeXPreamble AddRenameListOfTables(string newValue)
+    {
+        SubSectionsList.Add(
+            LaTeXCommands.RenewCommand(LaTeXElementNames.ListOfTables, newValue)
+        );
 
-            return this;
-        }
+        return this;
+    }
 
-        public LaTeXPreamble AddRenamePart(string newValue)
-        {
-            SubSectionsList.Add(
-                LaTeXCommands.RenewCommand(LaTeXElementNames.Part, newValue)
-            );
+    public LaTeXPreamble AddRenamePart(string newValue)
+    {
+        SubSectionsList.Add(
+            LaTeXCommands.RenewCommand(LaTeXElementNames.Part, newValue)
+        );
 
-            return this;
-        }
+        return this;
+    }
 
-        public LaTeXPreamble AddRenameReferences(string newValue)
-        {
-            SubSectionsList.Add(
-                LaTeXCommands.RenewCommand(LaTeXElementNames.References, newValue)
-            );
+    public LaTeXPreamble AddRenameReferences(string newValue)
+    {
+        SubSectionsList.Add(
+            LaTeXCommands.RenewCommand(LaTeXElementNames.References, newValue)
+        );
 
-            return this;
-        }
+        return this;
+    }
 
-        public LaTeXPreamble AddRenameTable(string newValue)
-        {
-            SubSectionsList.Add(
-                LaTeXCommands.RenewCommand(LaTeXElementNames.Table, newValue)
-            );
+    public LaTeXPreamble AddRenameTable(string newValue)
+    {
+        SubSectionsList.Add(
+            LaTeXCommands.RenewCommand(LaTeXElementNames.Table, newValue)
+        );
 
-            return this;
-        }
+        return this;
+    }
 
-        public LaTeXPreamble AddSetCounter(string counterName, int value)
-        {
-            SubSectionsList.Add(
-                LaTeXCommands.SetCounter(counterName, value)
-            );
+    public LaTeXPreamble AddSetCounter(string counterName, int value)
+    {
+        SubSectionsList.Add(
+            LaTeXCommands.SetCounter(counterName, value)
+        );
 
-            return this;
-        }
+        return this;
+    }
 
-        //public LaTeXPreamble AddSetSectionNumberDepthCounter(int value)
-        //{
-        //    SubSectionsList.Add(
-        //        LaTeXSetCounter.CreateSectionNumberDepth(value)
-        //    );
+    //public LaTeXPreamble AddSetSectionNumberDepthCounter(int value)
+    //{
+    //    SubSectionsList.Add(
+    //        LaTeXSetCounter.CreateSectionNumberDepth(value)
+    //    );
 
-        //    return this;
-        //}
+    //    return this;
+    //}
 
-        //public LaTeXPreamble AddSetTableOfContentsDepthCounter(int value)
-        //{
-        //    SubSectionsList.Add(
-        //        LaTeXSetCounter.CreateTableOfContentsDepth(value)
-        //    );
+    //public LaTeXPreamble AddSetTableOfContentsDepthCounter(int value)
+    //{
+    //    SubSectionsList.Add(
+    //        LaTeXSetCounter.CreateTableOfContentsDepth(value)
+    //    );
 
-        //    return this;
-        //}
+    //    return this;
+    //}
 
-        public LaTeXPreamble AddUsePackage(string packageName)
-        {
-            SubSectionsList.Add(
-                LaTeXCommands.UsePackage(packageName)
-            );
+    public LaTeXPreamble AddUsePackage(string packageName)
+    {
+        SubSectionsList.Add(
+            LaTeXCommands.UsePackage(packageName)
+        );
 
-            return this;
-        }
+        return this;
     }
 }

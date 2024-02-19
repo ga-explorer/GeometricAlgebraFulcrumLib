@@ -9,11 +9,11 @@ using TextComposerLib.Text.Linear;
 using Configuration = AngleSharp.Configuration;
 using WebComposerLib.ImageSharp.Processing.AutoCrop.Extensions;
 
-namespace WebComposerLib.Samples.BabylonJs
+namespace WebComposerLib.Samples.BabylonJs;
+
+public static class BabylonJsSamples
 {
-    public static class BabylonJsSamples
-    {
-        public static string HtmlTemplateText { get; } = @"
+    public static string HtmlTemplateText { get; } = @"
 <!DOCTYPE html>
 <html>
     <head>
@@ -125,176 +125,175 @@ namespace WebComposerLib.Samples.BabylonJs
 ".Trim();
 
 
-        public static async void Example1()
+    public static async void Example1()
+    {
+        var workingFolder = @"D:\Projects\Active\WebComposerLib\Study";
+
+        var latexCodeArray = new[]
         {
-            var workingFolder = @"D:\Projects\Active\WebComposerLib\Study";
+            "x_2-y_1",
+            @"f \\left( x \\right) = e^{\\pi/2kt}"
+        };
 
-            var latexCodeArray = new[]
-            {
-                "x_2-y_1",
-                @"f \\left( x \\right) = e^{\\pi/2kt}"
-            };
+        var htmlCode = await CreateDocument(workingFolder, latexCodeArray);
 
-            var htmlCode = await CreateDocument(workingFolder, latexCodeArray);
+        SaveKaTeXImages(htmlCode, workingFolder);
 
-            SaveKaTeXImages(htmlCode, workingFolder);
+        //await File.WriteAllTextAsync(
+        //    Path.Combine(workingFolder, "Example1.html"),
+        //    htmlCode
+        //);
+    }
 
-            //await File.WriteAllTextAsync(
-            //    Path.Combine(workingFolder, "Example1.html"),
-            //    htmlCode
-            //);
-        }
+    public static async Task<string> CreateDocument(string workingPath, IEnumerable<string> latexCodeArray)
+    {
+        //Create initial HTML document
+        var config =
+            Configuration.Default
+                .WithJs()
+                .WithCss();
 
-        public static async Task<string> CreateDocument(string workingPath, IEnumerable<string> latexCodeArray)
+        // Create empty document
+        var document = await BrowsingContext.New(config).OpenAsync(
+            m => m.Content(HtmlTemplateText)
+        );
+
+        var documentBody =
+            document.Body ?? throw new InvalidOperationException();
+
+        var codeComposer = new LinearTextComposer();
+
+        var i = 0;
+        foreach (var latexCode in latexCodeArray)
         {
-            //Create initial HTML document
-            var config =
-                Configuration.Default
-                    .WithJs()
-                    .WithCss();
+            var divId = $"katex-div-{i}";
 
-            // Create empty document
-            var document = await BrowsingContext.New(config).OpenAsync(
-                m => m.Content(HtmlTemplateText)
+            var divElement = document.CreateElement<IHtmlDivElement>();
+
+            divElement.SetAttribute("id", divId);
+
+            documentBody.AppendChild(divElement);
+
+            codeComposer.AppendLineAtNewLine(
+                @$"katex.render('{latexCode}', document.getElementById('{divId}'), {{throwOnError: true}});"
             );
 
-            var documentBody =
-                document.Body ?? throw new InvalidOperationException();
-
-            var codeComposer = new LinearTextComposer();
-
-            var i = 0;
-            foreach (var latexCode in latexCodeArray)
-            {
-                var divId = $"katex-div-{i}";
-
-                var divElement = document.CreateElement<IHtmlDivElement>();
-
-                divElement.SetAttribute("id", divId);
-
-                documentBody.AppendChild(divElement);
-
-                codeComposer.AppendLineAtNewLine(
-                    @$"katex.render('{latexCode}', document.getElementById('{divId}'), {{throwOnError: true}});"
-                );
-
-                i++;
-            }
-            
-            var scriptElement = document.CreateElement<IHtmlScriptElement>();
-            scriptElement.TextContent = codeComposer.ToString();
-            documentBody.AppendChild(scriptElement);
-
-            //document.ExecuteScript(codeComposer.ToString());
-
-            return document.ToHtml();
+            i++;
         }
+            
+        var scriptElement = document.CreateElement<IHtmlScriptElement>();
+        scriptElement.TextContent = codeComposer.ToString();
+        documentBody.AppendChild(scriptElement);
 
-        public static string SaveKaTeXImages(string htmlCode, string workingPath)
-        {
-            //Save html document to local file
-            var filePath =
-                workingPath.GetFilePath(
-                    "katex" + Path.GetFileNameWithoutExtension(Path.GetTempFileName()), 
-                    "html"
-                );
+        //document.ExecuteScript(codeComposer.ToString());
 
-            File.WriteAllText(
-                filePath, 
-                htmlCode
+        return document.ToHtml();
+    }
+
+    public static string SaveKaTeXImages(string htmlCode, string workingPath)
+    {
+        //Save html document to local file
+        var filePath =
+            workingPath.GetFilePath(
+                "katex" + Path.GetFileNameWithoutExtension(Path.GetTempFileName()), 
+                "html"
             );
+
+        File.WriteAllText(
+            filePath, 
+            htmlCode
+        );
             
-            // https://www.automatetheplanet.com/selenium-webdriver-csharp-cheat-sheet/
-            // Read document and execute javascript
-            var chromeOptions = new ChromeOptions
-            {
-                PageLoadStrategy = PageLoadStrategy.Normal,
-                UnhandledPromptBehavior = UnhandledPromptBehavior.Accept
-            };
+        // https://www.automatetheplanet.com/selenium-webdriver-csharp-cheat-sheet/
+        // Read document and execute javascript
+        var chromeOptions = new ChromeOptions
+        {
+            PageLoadStrategy = PageLoadStrategy.Normal,
+            UnhandledPromptBehavior = UnhandledPromptBehavior.Accept
+        };
 
-            chromeOptions.AddUserProfilePreference("download.default_directory", workingPath);
-            chromeOptions.AddUserProfilePreference("download.prompt_for_download", false);
-            chromeOptions.AddUserProfilePreference("disable-popup-blocking", "true");
+        chromeOptions.AddUserProfilePreference("download.default_directory", workingPath);
+        chromeOptions.AddUserProfilePreference("download.prompt_for_download", false);
+        chromeOptions.AddUserProfilePreference("disable-popup-blocking", "true");
 
-            //chromeOptions.AddAdditionalChromeOption("window-size", "1920,1080");
-            //chromeOptions.AddArgument("headless");
+        //chromeOptions.AddAdditionalChromeOption("window-size", "1920,1080");
+        //chromeOptions.AddArgument("headless");
 
-            var driver = new ChromeDriver(chromeOptions);
+        var driver = new ChromeDriver(chromeOptions);
             
-            driver.Manage().Window.Position = new System.Drawing.Point(0, 0);
-            driver.Manage().Window.Maximize();
-            driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromMilliseconds(2000);
+        driver.Manage().Window.Position = new System.Drawing.Point(0, 0);
+        driver.Manage().Window.Maximize();
+        driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromMilliseconds(2000);
 
-            try
-            {
-                // Open a new tab
-                var tabHandleCollection = driver.WindowHandles;
+        try
+        {
+            // Open a new tab
+            var tabHandleCollection = driver.WindowHandles;
 
-                if (tabHandleCollection.Count < 1)
-                    driver.SwitchTo().NewWindow(WindowType.Tab);
+            if (tabHandleCollection.Count < 1)
+                driver.SwitchTo().NewWindow(WindowType.Tab);
                 
-                driver.SwitchTo().Window(
-                    tabHandleCollection.First()
+            driver.SwitchTo().Window(
+                tabHandleCollection.First()
+            );
+
+            var fileUri =
+                new UriBuilder()
+                {
+                    Scheme = Uri.UriSchemeFile,
+                    Host = "",
+                    Path = filePath
+                }.Uri.AbsoluteUri;
+
+            driver.Navigate().GoToUrl(fileUri);
+
+            // Wait until a page is fully loaded via JavaScript
+            var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(30));
+            wait.Until((x) =>
+            {
+                return ((IJavaScriptExecutor)driver).ExecuteScript("return document.readyState").Equals("complete");
+            });
+
+            var divElements = 
+                driver.FindElements(By.TagName("div")).ToArray();
+
+            var index = 0;
+            foreach (var divElement in divElements)
+            {
+                var screenShot = ((ITakesScreenshot) divElement).GetScreenshot();
+                    
+                var image = Image.Load<Rgba32>(screenShot.AsByteArray);
+
+                image.Mutate(x => x.AutoCrop());
+
+                image.SaveAsPng(
+                    workingPath.GetFilePath($"KaTeX-{index:D6}", "png")
                 );
 
-                var fileUri =
-                    new UriBuilder()
-                    {
-                        Scheme = Uri.UriSchemeFile,
-                        Host = "",
-                        Path = filePath
-                    }.Uri.AbsoluteUri;
+                //screenShot.SaveAsFile(
+                //    workingPath.GetFilePath($"KaTeX-{index:D6}", "png"),
+                //    ScreenshotImageFormat.Png
+                //);
 
-                driver.Navigate().GoToUrl(fileUri);
-
-                // Wait until a page is fully loaded via JavaScript
-                var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(30));
-                wait.Until((x) =>
-                {
-                    return ((IJavaScriptExecutor)driver).ExecuteScript("return document.readyState").Equals("complete");
-                });
-
-                var divElements = 
-                    driver.FindElements(By.TagName("div")).ToArray();
-
-                var index = 0;
-                foreach (var divElement in divElements)
-                {
-                    var screenShot = ((ITakesScreenshot) divElement).GetScreenshot();
-                    
-                    var image = Image.Load<Rgba32>(screenShot.AsByteArray);
-
-                    image.Mutate(x => x.AutoCrop());
-
-                    image.SaveAsPng(
-                        workingPath.GetFilePath($"KaTeX-{index:D6}", "png")
-                    );
-
-                    //screenShot.SaveAsFile(
-                    //    workingPath.GetFilePath($"KaTeX-{index:D6}", "png"),
-                    //    ScreenshotImageFormat.Png
-                    //);
-
-                    index++;
-                }
-
-                htmlCode = driver.PageSource;
+                index++;
             }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Error: {ex.Message}");
-            }
-            finally
-            {
-                Thread.Sleep(2000);
 
-                driver.Quit();
-            }
-            
-            if (File.Exists(filePath))
-                File.Delete(filePath);
-
-            return htmlCode;
+            htmlCode = driver.PageSource;
         }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error: {ex.Message}");
+        }
+        finally
+        {
+            Thread.Sleep(2000);
+
+            driver.Quit();
+        }
+            
+        if (File.Exists(filePath))
+            File.Delete(filePath);
+
+        return htmlCode;
     }
 }

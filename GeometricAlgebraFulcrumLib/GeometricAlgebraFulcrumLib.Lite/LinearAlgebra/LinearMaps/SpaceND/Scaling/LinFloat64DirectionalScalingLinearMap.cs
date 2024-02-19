@@ -4,113 +4,112 @@ using GeometricAlgebraFulcrumLib.Lite.LinearAlgebra.Vectors.SpaceND;
 using GeometricAlgebraFulcrumLib.Lite.ScalarAlgebra;
 using MathNet.Numerics.LinearAlgebra;
 
-namespace GeometricAlgebraFulcrumLib.Lite.LinearAlgebra.LinearMaps.SpaceND.Scaling
+namespace GeometricAlgebraFulcrumLib.Lite.LinearAlgebra.LinearMaps.SpaceND.Scaling;
+
+/// <summary>
+/// This class represents the most basic kind of linear operations:
+/// Scaling by a factor in a given direction.
+/// </summary>
+public abstract class LinFloat64DirectionalScalingLinearMap :
+    ILinFloat64DirectionalScalingLinearMap
 {
-    /// <summary>
-    /// This class represents the most basic kind of linear operations:
-    /// Scaling by a factor in a given direction.
-    /// </summary>
-    public abstract class LinFloat64DirectionalScalingLinearMap :
-        ILinFloat64DirectionalScalingLinearMap
+    public abstract int VSpaceDimensions { get; }
+
+    public bool SwapsHandedness
+        => ScalingFactor < 0;
+
+    public abstract double ScalingFactor { get; }
+
+    public abstract Float64Vector ScalingVector { get; }
+
+
+    public abstract bool IsValid();
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public bool IsIdentity()
     {
-        public abstract int VSpaceDimensions { get; }
+        return ScalingFactor.IsOne();
+    }
 
-        public bool SwapsHandedness
-            => ScalingFactor < 0;
+    public bool IsReflection()
+    {
+        throw new NotImplementedException();
+    }
 
-        public abstract double ScalingFactor { get; }
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public bool IsNearIdentity(double epsilon = 1E-12)
+    {
+        return ScalingFactor.IsNearOne(epsilon);
+    }
 
-        public abstract Float64Vector ScalingVector { get; }
+    public bool IsNearReflection(double epsilon = 1E-12)
+    {
+        throw new NotImplementedException();
+    }
+
+    public abstract Float64Vector MapBasisVector(int basisIndex);
+
+    public abstract Float64Vector MapVector(Float64Vector vector);
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public IEnumerable<KeyValuePair<int, Float64Vector>> GetMappedBasisVectors(int vSpaceDimensions)
+    {
+        return vSpaceDimensions
+            .GetRange(i =>
+                new KeyValuePair<int, Float64Vector>(
+                    i,
+                    MapBasisVector(i)
+                )
+            ).Where(p => !p.Value.IsZero);
+    }
 
 
-        public abstract bool IsValid();
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public virtual Matrix<double> ToMatrix(int rowCount, int colCount)
+    {
+        var columnList =
+            colCount
+                .GetRange()
+                .Select(i => MapBasisVector(i).ToArray(rowCount));
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public bool IsIdentity()
+        return Matrix<double>
+            .Build
+            .DenseOfColumnArrays(columnList);
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public virtual LinFloat64UnilinearMap ToUnilinearMap(int vSpaceDimensions)
+    {
+        return vSpaceDimensions.CreateLinUnilinearMap(MapBasisVector);
+    }
+
+    public virtual double[,] ToArray(int rowCount, int colCount)
+    {
+        var array = new double[rowCount, colCount];
+
+        for (var j = 0; j < colCount; j++)
         {
-            return ScalingFactor.IsOne();
-        }
+            var columnVector = MapBasisVector(j);
 
-        public bool IsReflection()
-        {
-            throw new NotImplementedException();
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public bool IsNearIdentity(double epsilon = 1E-12)
-        {
-            return ScalingFactor.IsNearOne(epsilon);
-        }
-
-        public bool IsNearReflection(double epsilon = 1E-12)
-        {
-            throw new NotImplementedException();
-        }
-
-        public abstract Float64Vector MapBasisVector(int basisIndex);
-
-        public abstract Float64Vector MapVector(Float64Vector vector);
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public IEnumerable<KeyValuePair<int, Float64Vector>> GetMappedBasisVectors(int vSpaceDimensions)
-        {
-            return vSpaceDimensions
-                .GetRange(i =>
-                    new KeyValuePair<int, Float64Vector>(
-                        i,
-                        MapBasisVector(i)
-                    )
-                ).Where(p => !p.Value.IsZero);
-        }
-
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public virtual Matrix<double> ToMatrix(int rowCount, int colCount)
-        {
-            var columnList =
-                colCount
-                    .GetRange()
-                    .Select(i => MapBasisVector(i).ToArray(rowCount));
-
-            return Matrix<double>
-                .Build
-                .DenseOfColumnArrays(columnList);
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public virtual LinFloat64UnilinearMap ToUnilinearMap(int vSpaceDimensions)
-        {
-            return vSpaceDimensions.CreateLinUnilinearMap(MapBasisVector);
-        }
-
-        public virtual double[,] ToArray(int rowCount, int colCount)
-        {
-            var array = new double[rowCount, colCount];
-
-            for (var j = 0; j < colCount; j++)
+            foreach (var (i, scalar) in columnVector)
             {
-                var columnVector = MapBasisVector(j);
+                if (i >= rowCount)
+                    throw new InvalidOperationException();
 
-                foreach (var (i, scalar) in columnVector)
-                {
-                    if (i >= rowCount)
-                        throw new InvalidOperationException();
-
-                    array[i, j] = scalar;
-                }
+                array[i, j] = scalar;
             }
-
-            return array;
         }
 
-        public abstract ILinFloat64DirectionalScalingLinearMap GetDirectionalScalingInverse();
+        return array;
+    }
 
-        public abstract LinFloat64VectorDirectionalScaling ToVectorDirectionalScaling();
+    public abstract ILinFloat64DirectionalScalingLinearMap GetDirectionalScalingInverse();
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ILinFloat64UnilinearMap GetInverseMap()
-        {
-            return GetDirectionalScalingInverse();
-        }
+    public abstract LinFloat64VectorDirectionalScaling ToVectorDirectionalScaling();
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public ILinFloat64UnilinearMap GetInverseMap()
+    {
+        return GetDirectionalScalingInverse();
     }
 }

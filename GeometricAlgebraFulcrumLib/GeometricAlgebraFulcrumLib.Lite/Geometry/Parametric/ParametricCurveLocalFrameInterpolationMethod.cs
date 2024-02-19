@@ -1,8 +1,7 @@
-﻿namespace GeometricAlgebraFulcrumLib.Lite.Geometry.Parametric
+﻿namespace GeometricAlgebraFulcrumLib.Lite.Geometry.Parametric;
+
+public enum ParametricCurveLocalFrameInterpolationMethod
 {
-    public enum ParametricCurveLocalFrameInterpolationMethod
-    {
-        TangentLinearInterpolation = 0,
-        SphericalLinearInterpolation = 1
-    }
+    TangentLinearInterpolation = 0,
+    SphericalLinearInterpolation = 1
 }

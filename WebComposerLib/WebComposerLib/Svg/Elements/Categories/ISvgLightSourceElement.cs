@@ -1,7 +1,6 @@
-﻿namespace WebComposerLib.Svg.Elements.Categories
+﻿namespace WebComposerLib.Svg.Elements.Categories;
+
+public interface ISvgLightSourceElement : ISvgElement
 {
-    public interface ISvgLightSourceElement : ISvgElement
-    {
-        //<feDistantLight>, <fePointLight>, <feSpotLight>
-    }
+    //<feDistantLight>, <fePointLight>, <feSpotLight>
 }

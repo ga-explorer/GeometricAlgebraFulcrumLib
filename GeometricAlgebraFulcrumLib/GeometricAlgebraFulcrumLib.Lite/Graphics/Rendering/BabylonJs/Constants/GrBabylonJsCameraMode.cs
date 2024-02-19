@@ -1,8 +1,7 @@
-﻿namespace GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.BabylonJs.Constants
+﻿namespace GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.BabylonJs.Constants;
+
+public enum GrBabylonJsCameraMode
 {
-    public enum GrBabylonJsCameraMode
-    {
-        PerspectiveCamera = 0,
-        OrthographicCamera = 1
-    }
+    PerspectiveCamera = 0,
+    OrthographicCamera = 1
 }

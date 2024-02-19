@@ -1,19 +1,18 @@
 ﻿using AngouriMath;
 
-namespace GeometricAlgebraFulcrumLib.SymbolicApplications.Samples.AngouriMath
-{
-    public static class Sample1
-    {
-        public static void Execute()
-        {
-            //var expr = MathS.FromString("-a + b * c");
-            var expr = MathS.FromString("tempVar_1");
+namespace GeometricAlgebraFulcrumLib.SymbolicApplications.Samples.AngouriMath;
 
-            foreach (var node in expr.Nodes)
-            {
-                Console.WriteLine(node.GetType().Name);
-                Console.WriteLine(node.ToString());
-            }
+public static class Sample1
+{
+    public static void Execute()
+    {
+        //var expr = MathS.FromString("-a + b * c");
+        var expr = MathS.FromString("tempVar_1");
+
+        foreach (var node in expr.Nodes)
+        {
+            Console.WriteLine(node.GetType().Name);
+            Console.WriteLine(node.ToString());
         }
     }
 }

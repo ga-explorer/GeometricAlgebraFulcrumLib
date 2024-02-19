@@ -1,29 +1,28 @@
 ﻿using System.Text;
 using DataStructuresLib.Basic;
 
-namespace WebComposerLib.SvgNew
+namespace WebComposerLib.SvgNew;
+
+public abstract class WclSvgElementAttributes :
+    IWclSvgCodeElement
 {
-    public abstract class WclSvgElementAttributes :
-        IWclSvgCodeElement
-    {
-        protected abstract IEnumerable<Pair<string>?> GetNameValuePairs();
+    protected abstract IEnumerable<Pair<string>?> GetNameValuePairs();
         
-        public string GetCode()
-        {
-            var composer = new StringBuilder();
+    public string GetCode()
+    {
+        var composer = new StringBuilder();
 
-            var valuePairs = 
-                GetNameValuePairs().Where(p => p is not null);
+        var valuePairs = 
+            GetNameValuePairs().Where(p => p is not null);
 
-            foreach (var (name, value) in valuePairs)
-                composer.AppendLine($"{name}={value};");
+        foreach (var (name, value) in valuePairs)
+            composer.AppendLine($"{name}={value};");
 
-            return composer.ToString();
-        }
+        return composer.ToString();
+    }
     
-        public override string ToString()
-        {
-            return GetCode();
-        }
+    public override string ToString()
+    {
+        return GetCode();
     }
 }

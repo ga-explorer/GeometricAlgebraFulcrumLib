@@ -2,6 +2,7 @@
 using GeometricAlgebraFulcrumLib.Lite.Geometry.Conformal;
 using GeometricAlgebraFulcrumLib.Lite.Geometry.Conformal.Decoding;
 using GeometricAlgebraFulcrumLib.Lite.Geometry.Conformal.Elements;
+using GeometricAlgebraFulcrumLib.Lite.Geometry.Conformal.Operations;
 using GeometricAlgebraFulcrumLib.Lite.LinearAlgebra.Vectors.Space3D;
 
 namespace GeometricAlgebraFulcrumLib.Lite.Samples.Geometry.Conformal;
@@ -112,7 +113,7 @@ public static class CGa5DIntersectionSamples
         foreach (var flat2 in flatList)
         {
             var intersectionElement =
-                flat1.EncodeIpnsBlade().IntersectIpnsWithIpns(
+                flat1.EncodeIpnsBlade().IntersectIpns(
                     flat2.EncodeIpnsBlade()
                 ).DecodeIpnsElement();
 
@@ -142,7 +143,7 @@ public static class CGa5DIntersectionSamples
         foreach (var round2 in roundList)
         {
             var intersectionElement =
-                flat1.EncodeIpnsBlade().IntersectIpnsWithIpns(
+                flat1.EncodeIpnsBlade().IntersectIpns(
                     round2.EncodeIpnsBlade()
                 ).DecodeIpnsElement();
 
@@ -169,7 +170,7 @@ public static class CGa5DIntersectionSamples
         foreach (var round2 in roundList)
         {
             var intersectionElement =
-                round1.EncodeIpnsBlade().IntersectIpnsWithIpns(
+                round1.EncodeIpnsBlade().IntersectIpns(
                     round2.EncodeIpnsBlade()
                 ).DecodeIpnsElement();
 

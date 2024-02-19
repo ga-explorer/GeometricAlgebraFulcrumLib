@@ -4,32 +4,31 @@ using GeometricAlgebraFulcrumLib.Lite.ScalarAlgebra;
 using GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra;
 using GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors.Graded;
 
-namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors
+namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors;
+
+public interface ILinVectorStorageComposer<T>
 {
-    public interface ILinVectorStorageComposer<T>
-    {
-        IScalarProcessor<T> ScalarProcessor { get; }
+    IScalarProcessor<T> ScalarProcessor { get; }
 
-        bool IsEmpty();
+    bool IsEmpty();
 
-        IEnumerable<RGaKvIndexScalarRecord<T>> GetIndexScalarRecords();
+    IEnumerable<RGaKvIndexScalarRecord<T>> GetIndexScalarRecords();
 
-        ILinVectorStorage<T> CreateLinVectorStorage();
+    ILinVectorStorage<T> CreateLinVectorStorage();
 
-        //ILinVectorDenseStorage<T> CreateLinVectorDenseStorage();
+    //ILinVectorDenseStorage<T> CreateLinVectorDenseStorage();
 
-        ILinVectorGradedStorage<T> CreateLinVectorGradedStorage();
+    ILinVectorGradedStorage<T> CreateLinVectorGradedStorage();
 
-        VectorStorage<T> CreateVectorStorage();
+    VectorStorage<T> CreateVectorStorage();
 
-        BivectorStorage<T> CreateBivectorStorage();
+    BivectorStorage<T> CreateBivectorStorage();
 
-        KVectorStorage<T> CreateKVectorStorage(uint grade);
+    KVectorStorage<T> CreateKVectorStorage(uint grade);
 
-        IMultivectorStorage<T> CreateMultivectorStorage();
+    IMultivectorStorage<T> CreateMultivectorStorage();
 
-        MultivectorStorage<T> CreateMultivectorStorageSparse();
+    MultivectorStorage<T> CreateMultivectorStorageSparse();
 
-        MultivectorGradedStorage<T> CreateMultivectorGradedStorage();
-    }
+    MultivectorGradedStorage<T> CreateMultivectorGradedStorage();
 }

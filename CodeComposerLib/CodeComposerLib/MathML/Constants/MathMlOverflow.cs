@@ -1,12 +1,11 @@
-﻿namespace CodeComposerLib.MathML.Constants
+﻿namespace CodeComposerLib.MathML.Constants;
+
+public enum MathMlOverflow
 {
-    public enum MathMlOverflow
-    {
-        LineBreak = 0,
-        Scroll = 1,
-        Elide = 2,
-        Truncate = 3,
-        Scale = 4,
-        Empty = 5
-    }
+    LineBreak = 0,
+    Scroll = 1,
+    Elide = 2,
+    Truncate = 3,
+    Scale = 4,
+    Empty = 5
 }

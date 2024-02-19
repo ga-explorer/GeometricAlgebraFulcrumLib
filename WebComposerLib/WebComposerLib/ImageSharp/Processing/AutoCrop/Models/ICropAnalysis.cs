@@ -1,9 +1,8 @@
-﻿namespace WebComposerLib.ImageSharp.Processing.AutoCrop.Models
+﻿namespace WebComposerLib.ImageSharp.Processing.AutoCrop.Models;
+
+public interface ICropAnalysis
 {
-    public interface ICropAnalysis
-    {
-        Rectangle BoundingBox { get; }
-        Color Background { get; }
-        bool Success { get; }
-    }
+    Rectangle BoundingBox { get; }
+    Color Background { get; }
+    bool Success { get; }
 }

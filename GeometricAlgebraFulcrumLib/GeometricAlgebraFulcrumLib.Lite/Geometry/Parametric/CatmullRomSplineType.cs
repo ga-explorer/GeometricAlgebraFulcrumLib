@@ -1,9 +1,8 @@
-﻿namespace GeometricAlgebraFulcrumLib.Lite.Geometry.Parametric
+﻿namespace GeometricAlgebraFulcrumLib.Lite.Geometry.Parametric;
+
+public enum CatmullRomSplineType
 {
-    public enum CatmullRomSplineType
-    {
-        Chordal,
-        Centripetal,
-        Uniform,
-    }
+    Chordal,
+    Centripetal,
+    Uniform,
 }

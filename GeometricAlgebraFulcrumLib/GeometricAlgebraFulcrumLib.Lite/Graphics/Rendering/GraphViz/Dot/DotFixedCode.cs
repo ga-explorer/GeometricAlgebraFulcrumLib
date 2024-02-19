@@ -1,57 +1,56 @@
-﻿namespace GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.GraphViz.Dot
+﻿namespace GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.GraphViz.Dot;
+
+/// <summary>
+/// The type of the fixed code
+/// </summary>
+public enum DotFixedCodeType
 {
     /// <summary>
-    /// The type of the fixed code
+    /// The code text is output as-is to the final dot code
     /// </summary>
-    public enum DotFixedCodeType
-    {
-        /// <summary>
-        /// The code text is output as-is to the final dot code
-        /// </summary>
-        AsIs,
-
-        /// <summary>
-        /// The code text is separated into lines with each starting with a //
-        /// </summary>
-        SingleLineComment,
-
-        /// <summary>
-        /// The code text is surrounded by /* */
-        /// </summary>
-        MultiLineComment
-    }
+    AsIs,
 
     /// <summary>
-    /// This class represents fixed code that will be output as-is in the
-    /// final dot code
+    /// The code text is separated into lines with each starting with a //
     /// </summary>
-    public sealed class DotFixedCode : IDotStatement
+    SingleLineComment,
+
+    /// <summary>
+    /// The code text is surrounded by /* */
+    /// </summary>
+    MultiLineComment
+}
+
+/// <summary>
+/// This class represents fixed code that will be output as-is in the
+/// final dot code
+/// </summary>
+public sealed class DotFixedCode : IDotStatement
+{
+    public IDotGraph ParentGraph { get; }
+
+    public DotGraph MainGraph => ParentGraph.MainGraph;
+
+    /// <summary>
+    /// The text of this fixed code
+    /// </summary>
+    public string Code { get; }
+
+    /// <summary>
+    /// The type of the fixed code: as-is, single line comment, or multi-line comment
+    /// </summary>
+    public DotFixedCodeType CodeType { get; set; }
+
+
+    internal DotFixedCode(IDotGraph parentGraph, string code)
     {
-        public IDotGraph ParentGraph { get; }
-
-        public DotGraph MainGraph => ParentGraph.MainGraph;
-
-        /// <summary>
-        /// The text of this fixed code
-        /// </summary>
-        public string Code { get; }
-
-        /// <summary>
-        /// The type of the fixed code: as-is, single line comment, or multi-line comment
-        /// </summary>
-        public DotFixedCodeType CodeType { get; set; }
+        ParentGraph = parentGraph;
+        Code = code;
+    }
 
 
-        internal DotFixedCode(IDotGraph parentGraph, string code)
-        {
-            ParentGraph = parentGraph;
-            Code = code;
-        }
-
-
-        public override string ToString()
-        {
-            return Code;
-        }
+    public override string ToString()
+    {
+        return Code;
     }
 }

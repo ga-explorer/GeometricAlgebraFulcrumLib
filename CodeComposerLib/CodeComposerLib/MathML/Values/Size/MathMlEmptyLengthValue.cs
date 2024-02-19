@@ -1,13 +1,12 @@
-﻿namespace CodeComposerLib.MathML.Values.Size
+﻿namespace CodeComposerLib.MathML.Values.Size;
+
+public sealed class MathMlEmptyLengthValue : MathMlLengthValue
 {
-    public sealed class MathMlEmptyLengthValue : MathMlLengthValue
+    public override string ValueText 
+        => string.Empty;
+
+    internal MathMlEmptyLengthValue()
     {
-        public override string ValueText 
-            => string.Empty;
-
-        internal MathMlEmptyLengthValue()
-        {
-        }
-
     }
+
 }

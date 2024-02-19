@@ -1,40 +1,39 @@
 ﻿using System;
 
-namespace CodeComposerLib.Irony.SourceCode
+namespace CodeComposerLib.Irony.SourceCode;
+
+[Serializable]
+public sealed class LanguageCodeFileLine : ISourceCodeUnitLine
 {
-    [Serializable]
-    public sealed class LanguageCodeFileLine : ISourceCodeUnitLine
+    public LanguageCodeFile ParentCodeFileUnit { get; }
+
+    public ISourceCodeUnit ParentCodeUnit => ParentCodeFileUnit;
+
+    public int LineNumber { get; }
+
+    public int FirstCharacterPosition { get; }
+
+    public int LastCharacterPosition => FirstCharacterPosition + CharactersCount - 1;
+
+    public int CharactersCount { get; }
+
+    public string LineCodeText => ParentCodeFileUnit.CodeText.Substring(FirstCharacterPosition, CharactersCount);
+
+
+    internal LanguageCodeFileLine(LanguageCodeFile parentFile, int lineNumber, int firstCharPos, int charCount)
     {
-        public LanguageCodeFile ParentCodeFileUnit { get; }
+        ParentCodeFileUnit = parentFile;
 
-        public ISourceCodeUnit ParentCodeUnit => ParentCodeFileUnit;
+        LineNumber = lineNumber;
 
-        public int LineNumber { get; }
+        FirstCharacterPosition = firstCharPos;
 
-        public int FirstCharacterPosition { get; }
-
-        public int LastCharacterPosition => FirstCharacterPosition + CharactersCount - 1;
-
-        public int CharactersCount { get; }
-
-        public string LineCodeText => ParentCodeFileUnit.CodeText.Substring(FirstCharacterPosition, CharactersCount);
+        CharactersCount = charCount;
+    }
 
 
-        internal LanguageCodeFileLine(LanguageCodeFile parentFile, int lineNumber, int firstCharPos, int charCount)
-        {
-            ParentCodeFileUnit = parentFile;
-
-            LineNumber = lineNumber;
-
-            FirstCharacterPosition = firstCharPos;
-
-            CharactersCount = charCount;
-        }
-
-
-        public override string ToString()
-        {
-            return LineCodeText;
-        }
+    public override string ToString()
+    {
+        return LineCodeText;
     }
 }

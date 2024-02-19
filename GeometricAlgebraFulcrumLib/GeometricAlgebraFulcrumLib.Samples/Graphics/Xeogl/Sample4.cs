@@ -8,76 +8,75 @@ using GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.Xeogl;
 using GeometricAlgebraFulcrumLib.Lite.Graphics.Textures;
 using SixLabors.ImageSharp.Formats.Png;
 
-namespace GeometricAlgebraFulcrumLib.Samples.Graphics.Xeogl
+namespace GeometricAlgebraFulcrumLib.Samples.Graphics.Xeogl;
+
+public static class Sample4
 {
-    public static class Sample4
+    public static string Generate()
     {
-        public static string Generate()
-        {
-            var xyGridComposer = new XyGridComposer();
-            var yzGridComposer = new YzGridComposer();
-            var zxGridComposer = new ZxGridComposer();
-            yzGridComposer.Center.X = xyGridComposer.XMin;
-            zxGridComposer.Center.Y = xyGridComposer.YMin;
+        var xyGridComposer = new XyGridComposer();
+        var yzGridComposer = new YzGridComposer();
+        var zxGridComposer = new ZxGridComposer();
+        yzGridComposer.Center.X = xyGridComposer.XMin;
+        zxGridComposer.Center.Y = xyGridComposer.YMin;
 
-            var trianglesComposer = 
-                new GrTriangleGeometryComposer3D();
+        var trianglesComposer = 
+            new GrTriangleGeometryComposer3D();
 
-            //Make two patches covering the whole path mesh to render triangles from both sides
-            trianglesComposer
-                .BeginBatch()
-                .AddTrianglesFromMesh(xyGridComposer.ComposeTexturedMesh())
-                .EndBatch();
+        //Make two patches covering the whole path mesh to render triangles from both sides
+        trianglesComposer
+            .BeginBatch()
+            .AddTrianglesFromMesh(xyGridComposer.ComposeTexturedMesh())
+            .EndBatch();
 
-            trianglesComposer
-                .BeginBatch()
-                .AddTrianglesFromMesh(yzGridComposer.ComposeTexturedMesh())
-                .EndBatch();
+        trianglesComposer
+            .BeginBatch()
+            .AddTrianglesFromMesh(yzGridComposer.ComposeTexturedMesh())
+            .EndBatch();
 
-            trianglesComposer
-                .BeginBatch()
-                .AddTrianglesFromMesh(zxGridComposer.ComposeTexturedMesh())
-                .EndBatch();
+        trianglesComposer
+            .BeginBatch()
+            .AddTrianglesFromMesh(zxGridComposer.ComposeTexturedMesh())
+            .EndBatch();
 
-            var trianglesGeometry = trianglesComposer;//.GenerateGeometry();
+        var trianglesGeometry = trianglesComposer;//.GenerateGeometry();
 
-            //Render normals to mesh patches
-            var normalsLineComposer = new GrLineGeometryComposer3D();
-            normalsLineComposer.AddLines(trianglesGeometry.GetNormalLines(1));
+        //Render normals to mesh patches
+        var normalsLineComposer = new GrLineGeometryComposer3D();
+        normalsLineComposer.AddLines(trianglesGeometry.GetNormalLines(1));
 
-            var normalsLineGeometry = normalsLineComposer.GenerateGeometry();
+        var normalsLineGeometry = normalsLineComposer.GenerateGeometry();
 
-            //Render triangles of mesh patches
-            var linesComposer = new GrLineGeometryComposer3D();
+        //Render triangles of mesh patches
+        var linesComposer = new GrLineGeometryComposer3D();
             
-            linesComposer.AddLines(
-                trianglesGeometry.GetDisplacedTriangleEdges(-0.025d)
-            );
+        linesComposer.AddLines(
+            trianglesGeometry.GetDisplacedTriangleEdges(-0.025d)
+        );
 
-            linesComposer.AddLines(
-                trianglesGeometry.GetDisplacedTriangleEdges(0.025d)
-            );
+        linesComposer.AddLines(
+            trianglesGeometry.GetDisplacedTriangleEdges(0.025d)
+        );
 
-            var linesGeometry = linesComposer.GenerateGeometry();
+        var linesGeometry = linesComposer.GenerateGeometry();
 
-            var scriptGenerator = new XeoglHtmlComposer();
-            scriptGenerator.IncludesList.Add("js/xeogl/xeogl.js");
-            scriptGenerator.IncludesList.Add("js/generation/geometryBuilder.js");
+        var scriptGenerator = new XeoglHtmlComposer();
+        scriptGenerator.IncludesList.Add("js/xeogl/xeogl.js");
+        scriptGenerator.IncludesList.Add("js/generation/geometryBuilder.js");
 
-            scriptGenerator.AddTrianglesGeometry(trianglesGeometry, @"new xeogl.PhongMaterial({ diffuseMap: new xeogl.Texture({ src: ""Sample4/gridTexture.png"" }) })");
-            //scriptGenerator.AddLineMeshGenerator(normalsLineGeometry, @"new xeogl.PhongMaterial({ emissive: [Math.random() + 0.5, Math.random() + 0.5, Math.random() + 0.5] })");
-            //scriptGenerator.AddLineMeshGenerator(linesGeometry, @"new xeogl.PhongMaterial({ emissive: [Math.random() + 0.5, Math.random() + 0.5, Math.random() + 0.5] })");
+        scriptGenerator.AddTrianglesGeometry(trianglesGeometry, @"new xeogl.PhongMaterial({ diffuseMap: new xeogl.Texture({ src: ""Sample4/gridTexture.png"" }) })");
+        //scriptGenerator.AddLineMeshGenerator(normalsLineGeometry, @"new xeogl.PhongMaterial({ emissive: [Math.random() + 0.5, Math.random() + 0.5, Math.random() + 0.5] })");
+        //scriptGenerator.AddLineMeshGenerator(linesGeometry, @"new xeogl.PhongMaterial({ emissive: [Math.random() + 0.5, Math.random() + 0.5, Math.random() + 0.5] })");
 
-            var gridTexture = new GridTextureComposer();
-            var gridTextureImage = gridTexture.ComposeImage();
+        var gridTexture = new GridTextureComposer();
+        var gridTextureImage = gridTexture.ComposeImage();
 
-            using var stream = File.OpenWrite(@"C:\Projects\Study\WebGL\samples\Sample4\gridTexture.png");
+        using var stream = File.OpenWrite(@"C:\Projects\Study\WebGL\samples\Sample4\gridTexture.png");
 
-            gridTextureImage.Save(stream, new PngEncoder());
+        gridTextureImage.Save(stream, new PngEncoder());
 
-            var scriptCode = scriptGenerator.GenerateHtmlPage();
+        var scriptCode = scriptGenerator.GenerateHtmlPage();
 
-            return scriptCode;
-        }
+        return scriptCode;
     }
 }

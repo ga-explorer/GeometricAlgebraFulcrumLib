@@ -1,7 +1,6 @@
-﻿namespace GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.PovRay.SDL.Modifiers
+﻿namespace GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.PovRay.SDL.Modifiers;
+
+public interface ISdlObjectModifier : ISdlNameable
 {
-    public interface ISdlObjectModifier : ISdlNameable
-    {
          
-    }
 }

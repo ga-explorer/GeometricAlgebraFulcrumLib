@@ -1,73 +1,72 @@
 ﻿using WebComposerLib.Html.Media;
 using WebComposerLib.Svg.Elements;
 
-namespace WebComposerLib.Svg.Attributes
+namespace WebComposerLib.Svg.Attributes;
+
+public sealed class SvgEavNumber<TParentElement>
+    : SvgElementAttributeValue<TParentElement> where TParentElement : SvgElement
 {
-    public sealed class SvgEavNumber<TParentElement>
-        : SvgElementAttributeValue<TParentElement> where TParentElement : SvgElement
+    private double _number;
+    public double Number
     {
-        private double _number;
-        public double Number
+        get => _number;
+        set
         {
-            get => _number;
-            set
-            {
-                _number = value;
-                IsValueComputed = true;
-            }
+            _number = value;
+            IsValueComputed = true;
         }
+    }
 
-        private bool _isPercent;
-        public bool IsPercent
+    private bool _isPercent;
+    public bool IsPercent
+    {
+        get => _isPercent;
+        set
         {
-            get => _isPercent;
-            set
-            {
-                _isPercent = value;
-                IsValueComputed = true;
-            }
+            _isPercent = value;
+            IsValueComputed = true;
         }
+    }
 
-        protected override string ValueComputedText
-            => _number.ToSvgNumberText(IsPercent);
-
-
-        internal SvgEavNumber(TParentElement parentElement, SvgAttributeInfo attributeInfo)
-            : base(parentElement, attributeInfo)
-        {
-        }
+    protected override string ValueComputedText
+        => _number.ToSvgNumberText(IsPercent);
 
 
-        public override ISvgAttributeValue CreateCopy()
-        {
-            throw new NotImplementedException();
-        }
+    internal SvgEavNumber(TParentElement parentElement, SvgAttributeInfo attributeInfo)
+        : base(parentElement, attributeInfo)
+    {
+    }
 
-        public override ISvgAttributeValue UpdateFrom(ISvgAttributeValue sourceAttributeValue)
-        {
-            throw new NotImplementedException();
-        }
 
-        public TParentElement SetToNumber(double number)
-        {
-            Number = number;
+    public override ISvgAttributeValue CreateCopy()
+    {
+        throw new NotImplementedException();
+    }
 
-            return ParentElement;
-        }
+    public override ISvgAttributeValue UpdateFrom(ISvgAttributeValue sourceAttributeValue)
+    {
+        throw new NotImplementedException();
+    }
 
-        public TParentElement SetToPercent(double number)
-        {
-            Number = number;
-            IsPercent = true;
+    public TParentElement SetToNumber(double number)
+    {
+        Number = number;
 
-            return ParentElement;
-        }
+        return ParentElement;
+    }
 
-        public TParentElement SetToIndefinite()
-        {
-            ValueStoredText = "indefinite";
+    public TParentElement SetToPercent(double number)
+    {
+        Number = number;
+        IsPercent = true;
 
-            return ParentElement;
-        }
+        return ParentElement;
+    }
+
+    public TParentElement SetToIndefinite()
+    {
+        ValueStoredText = "indefinite";
+
+        return ParentElement;
     }
 }

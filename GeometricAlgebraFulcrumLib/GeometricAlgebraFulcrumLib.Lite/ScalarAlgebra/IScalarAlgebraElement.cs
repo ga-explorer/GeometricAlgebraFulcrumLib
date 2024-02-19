@@ -1,7 +1,6 @@
-﻿namespace GeometricAlgebraFulcrumLib.Lite.ScalarAlgebra
+﻿namespace GeometricAlgebraFulcrumLib.Lite.ScalarAlgebra;
+
+public interface IScalarAlgebraElement<T>
 {
-    public interface IScalarAlgebraElement<T>
-    {
-        IScalarProcessor<T> ScalarProcessor { get; }
-    }
+    IScalarProcessor<T> ScalarProcessor { get; }
 }

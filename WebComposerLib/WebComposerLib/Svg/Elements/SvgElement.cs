@@ -6,216 +6,215 @@ using WebComposerLib.Svg.Elements.Categories;
 using WebComposerLib.Svg.Styles;
 using WebComposerLib.Svg.Styles.SubStyles;
 
-namespace WebComposerLib.Svg.Elements
+namespace WebComposerLib.Svg.Elements;
+
+public abstract class SvgElement : ISvgElement
 {
-    public abstract class SvgElement : ISvgElement
+    protected Dictionary<int, ISvgAttributeValue> AttributesTable { get; }
+        = new Dictionary<int, ISvgAttributeValue>();
+
+    public abstract string ElementName { get; }
+
+    public bool IsContentText => false;
+
+    public bool IsContentComment => false;
+
+    public bool IsContentElement => true;
+
+    public string Id
     {
-        protected Dictionary<int, ISvgAttributeValue> AttributesTable { get; }
-            = new Dictionary<int, ISvgAttributeValue>();
-
-        public abstract string ElementName { get; }
-
-        public bool IsContentText => false;
-
-        public bool IsContentComment => false;
-
-        public bool IsContentElement => true;
-
-        public string Id
+        get =>
+            AttributesTable.TryGetValue(SvgAttributeUtils.Id.Id, out var idAttrValue)
+                ? idAttrValue.ValueText
+                : string.Empty;
+        set
         {
-            get =>
-                AttributesTable.TryGetValue(SvgAttributeUtils.Id.Id, out var idAttrValue)
-                    ? idAttrValue.ValueText
-                    : string.Empty;
-            set
+            var attrInfo = SvgAttributeUtils.Id;
+
+            if (AttributesTable.TryGetValue(attrInfo.Id, out var attrValue))
             {
-                var attrInfo = SvgAttributeUtils.Id;
+                var idAttrValue = attrValue as SvgEavString<SvgElement>;
 
-                if (AttributesTable.TryGetValue(attrInfo.Id, out var attrValue))
-                {
-                    var idAttrValue = attrValue as SvgEavString<SvgElement>;
+                idAttrValue?.SetToText(value);
 
-                    idAttrValue?.SetToText(value);
-
-                    return;
-                }
-
-                var idAttrValue1 = new SvgEavString<SvgElement>(this, attrInfo);
-                AttributesTable.Add(attrInfo.Id, idAttrValue1);
-
-                idAttrValue1.SetToText(value);
+                return;
             }
+
+            var idAttrValue1 = new SvgEavString<SvgElement>(this, attrInfo);
+            AttributesTable.Add(attrInfo.Id, idAttrValue1);
+
+            idAttrValue1.SetToText(value);
         }
+    }
 
-        public SvgStyle Style
+    public SvgStyle Style
+    {
+        get
         {
-            get
-            {
-                var attrInfo = SvgAttributeUtils.Style;
+            var attrInfo = SvgAttributeUtils.Style;
 
-                if (AttributesTable.TryGetValue(attrInfo.Id, out var attrValue))
-                    return attrValue as SvgStyle;
+            if (AttributesTable.TryGetValue(attrInfo.Id, out var attrValue))
+                return attrValue as SvgStyle;
 
-                var attrValue1 = SvgStyle.Create(this);
-                AttributesTable.Add(attrInfo.Id, attrValue1);
+            var attrValue1 = SvgStyle.Create(this);
+            AttributesTable.Add(attrInfo.Id, attrValue1);
 
-                return attrValue1;
-            }
+            return attrValue1;
         }
+    }
 
-        public bool HasId =>
-            AttributesTable.TryGetValue(SvgAttributeUtils.Id.Id, out var idAttrValue) && 
-            !string.IsNullOrEmpty(idAttrValue.ValueText);
+    public bool HasId =>
+        AttributesTable.TryGetValue(SvgAttributeUtils.Id.Id, out var idAttrValue) && 
+        !string.IsNullOrEmpty(idAttrValue.ValueText);
 
-        public IEnumerable<ISvgAttributeValue> Attributes
-            => AttributesTable.Values;
+    public IEnumerable<ISvgAttributeValue> Attributes
+        => AttributesTable.Values;
 
-        public SvgContentsList Contents { get; }
-            = new SvgContentsList();
+    public SvgContentsList Contents { get; }
+        = new SvgContentsList();
 
-        public IEnumerable<SvgElement> ChildElements
-            => Contents
-                .Select(c => c as SvgElement)
-                .Where(c => !ReferenceEquals(c, null));
+    public IEnumerable<SvgElement> ChildElements
+        => Contents
+            .Select(c => c as SvgElement)
+            .Where(c => !ReferenceEquals(c, null));
 
-        public string ContentsText
-            => Contents.ToString();
+    public string ContentsText
+        => Contents.ToString();
 
-        public string AttributesText
+    public string AttributesText
+    {
+        get
         {
-            get
-            {
-                if (AttributesTable.Count == 0)
-                    return string.Empty;
+            if (AttributesTable.Count == 0)
+                return string.Empty;
 
-                var composer = new StringBuilder();
+            var composer = new StringBuilder();
 
-                foreach (var pair in AttributesTable)
-                    composer
-                        .Append(pair.Value)
-                        .Append(" ");
-
-                return composer.ToString().Trim();
-            }
-        }
-
-        public string BeginEndTagText
-        {
-            get
-            {
-                var composer = new LinearTextComposer();
-
+            foreach (var pair in AttributesTable)
                 composer
-                    .Append("<")
-                    .Append(ElementName);
+                    .Append(pair.Value)
+                    .Append(" ");
 
-                var attrText = AttributesText;
-                if (!string.IsNullOrEmpty(attrText))
-                    composer.Append(" ").Append(attrText);
-
-                return composer.Append("/>").ToString();
-            }
+            return composer.ToString().Trim();
         }
+    }
 
-        public string BeginTagText
+    public string BeginEndTagText
+    {
+        get
         {
-            get
-            {
-                var composer = new StringBuilder();
+            var composer = new LinearTextComposer();
 
-                composer
-                    .Append("<")
-                    .Append(ElementName);
+            composer
+                .Append("<")
+                .Append(ElementName);
 
-                var attrText = AttributesText;
-                if (!string.IsNullOrEmpty(attrText))
-                    composer.Append(" ").Append(attrText);
+            var attrText = AttributesText;
+            if (!string.IsNullOrEmpty(attrText))
+                composer.Append(" ").Append(attrText);
 
-                return composer.Append(">").ToString();
-            }
+            return composer.Append("/>").ToString();
         }
+    }
 
-        public string EndTagText
-            => new StringBuilder()
-                .Append("</")
-                .Append(ElementName)
-                .Append(">")
+    public string BeginTagText
+    {
+        get
+        {
+            var composer = new StringBuilder();
+
+            composer
+                .Append("<")
+                .Append(ElementName);
+
+            var attrText = AttributesText;
+            if (!string.IsNullOrEmpty(attrText))
+                composer.Append(" ").Append(attrText);
+
+            return composer.Append(">").ToString();
+        }
+    }
+
+    public string EndTagText
+        => new StringBuilder()
+            .Append("</")
+            .Append(ElementName)
+            .Append(">")
+            .ToString();
+
+    public string TagText
+    {
+        get
+        {
+            var contents = ContentsText.Trim();
+
+            if (string.IsNullOrEmpty(contents))
+                return BeginEndTagText;
+
+            var composer = new LinearTextComposer() {IndentationDefault = "  "};
+
+            return composer
+                .AppendAtNewLine(BeginTagText)
+                .IncreaseIndentation()
+                .AppendAtNewLine(ContentsText)
+                .DecreaseIndentation()
+                .AppendAtNewLine(EndTagText)
                 .ToString();
-
-        public string TagText
-        {
-            get
-            {
-                var contents = ContentsText.Trim();
-
-                if (string.IsNullOrEmpty(contents))
-                    return BeginEndTagText;
-
-                var composer = new LinearTextComposer() {IndentationDefault = "  "};
-
-                return composer
-                    .AppendAtNewLine(BeginTagText)
-                    .IncreaseIndentation()
-                    .AppendAtNewLine(ContentsText)
-                    .DecreaseIndentation()
-                    .AppendAtNewLine(EndTagText)
-                    .ToString();
-            }
         }
+    }
 
 
-        public ISvgElement ClearAttributes()
-        {
-            AttributesTable.Clear();
+    public ISvgElement ClearAttributes()
+    {
+        AttributesTable.Clear();
 
-            return this;
-        }
+        return this;
+    }
 
-        public ISvgElement ClearAttribute(SvgAttributeInfo attributeInfo)
-        {
+    public ISvgElement ClearAttribute(SvgAttributeInfo attributeInfo)
+    {
+        AttributesTable.Remove(attributeInfo.Id);
+
+        return this;
+    }
+
+    public ISvgElement ClearAttributes(params SvgAttributeInfo[] attributeInfoList)
+    {
+        foreach (var attributeInfo in attributeInfoList)
             AttributesTable.Remove(attributeInfo.Id);
 
-            return this;
-        }
+        return this;
+    }
 
-        public ISvgElement ClearAttributes(params SvgAttributeInfo[] attributeInfoList)
-        {
-            foreach (var attributeInfo in attributeInfoList)
-                AttributesTable.Remove(attributeInfo.Id);
-
-            return this;
-        }
-
-        public ISvgElement ClearDefaultAttributes(bool clearInChildren)
-        {
-            var attrIDs = 
-                AttributesTable
+    public ISvgElement ClearDefaultAttributes(bool clearInChildren)
+    {
+        var attrIDs = 
+            AttributesTable
                 .Where(pair => pair.Value.IsNullOrDefault())
                 .Select(pair => pair.Key);
 
-            foreach (var attrId in attrIDs)
-                AttributesTable.Remove(attrId);
+        foreach (var attrId in attrIDs)
+            AttributesTable.Remove(attrId);
 
-            if (!clearInChildren)
-                return this;
-
-            foreach (var childElement in ChildElements)
-                childElement.ClearDefaultAttributes(true);
-
+        if (!clearInChildren)
             return this;
-        }
 
-        public SvgElement UpdateStyleFrom(SvgSubStyle sourceStyle)
-        {
-            sourceStyle.UpdateTargetStyle(Style);
+        foreach (var childElement in ChildElements)
+            childElement.ClearDefaultAttributes(true);
 
-            return this;
-        }
+        return this;
+    }
+
+    public SvgElement UpdateStyleFrom(SvgSubStyle sourceStyle)
+    {
+        sourceStyle.UpdateTargetStyle(Style);
+
+        return this;
+    }
 
 
-        public override string ToString()
-        {
-            return TagText;
-        }
+    public override string ToString()
+    {
+        return TagText;
     }
 }

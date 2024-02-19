@@ -1,16 +1,15 @@
-﻿namespace WebComposerLib.Svg.Values
+﻿namespace WebComposerLib.Svg.Values;
+
+public sealed class SvgValueMarkerUnits : SvgStoredValue
 {
-    public sealed class SvgValueMarkerUnits : SvgStoredValue
+    public static SvgValueMarkerUnits UserSpaceOnUse { get; }
+        = new SvgValueMarkerUnits("userSpaceOnUse");
+
+    public static SvgValueMarkerUnits StrokeWidth { get; }
+        = new SvgValueMarkerUnits("strokeWidth");
+
+
+    private SvgValueMarkerUnits(string value) : base(value)
     {
-        public static SvgValueMarkerUnits UserSpaceOnUse { get; }
-            = new SvgValueMarkerUnits("userSpaceOnUse");
-
-        public static SvgValueMarkerUnits StrokeWidth { get; }
-            = new SvgValueMarkerUnits("strokeWidth");
-
-
-        private SvgValueMarkerUnits(string value) : base(value)
-        {
-        }
     }
 }

@@ -1,14 +1,13 @@
-﻿namespace GeometricAlgebraFulcrumLib.Lite.Geometry.Borders.Space2D
+﻿namespace GeometricAlgebraFulcrumLib.Lite.Geometry.Borders.Space2D;
+
+public interface IBoundingBox2D : IBorderCurve2D
 {
-    public interface IBoundingBox2D : IBorderCurve2D
-    {
-        double MinX { get; }
+    double MinX { get; }
 
-        double MinY { get; }
+    double MinY { get; }
 
 
-        double MaxX { get; }
+    double MaxX { get; }
 
-        double MaxY { get; }
-    }
+    double MaxY { get; }
 }

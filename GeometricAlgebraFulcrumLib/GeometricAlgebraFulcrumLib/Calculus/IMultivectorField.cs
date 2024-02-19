@@ -2,16 +2,15 @@
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.Multivectors;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.Processors;
 
-namespace GeometricAlgebraFulcrumLib.Calculus
+namespace GeometricAlgebraFulcrumLib.Calculus;
+
+public interface IXGaMultivectorField<T>
 {
-    public interface IXGaMultivectorField<T>
-    {
-        XGaProcessor<T> GeometricProcessor { get; }
+    XGaProcessor<T> GeometricProcessor { get; }
 
-        IXGaMultivectorFieldProcessor<T> FieldProcessor { get; }
+    IXGaMultivectorFieldProcessor<T> FieldProcessor { get; }
 
-        XGaMultivector<T> GetValue(XGaVector<T> v);
+    XGaMultivector<T> GetValue(XGaVector<T> v);
 
-        XGaMultivector<T> GetVectorDerivativeValue(XGaVector<T> v, XGaVector<T> w);
-    }
+    XGaMultivector<T> GetVectorDerivativeValue(XGaVector<T> v, XGaVector<T> w);
 }

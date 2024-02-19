@@ -1,12 +1,11 @@
 ﻿using DataStructuresLib.Basic;
 
-namespace GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Records
+namespace GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Records;
+
+public interface IGaSignRecord
 {
-    public interface IGaSignRecord
-    {
-        /// <summary>
-        /// The Sign
-        /// </summary>
-        IntegerSign Sign { get; }
-    }
+    /// <summary>
+    /// The Sign
+    /// </summary>
+    IntegerSign Sign { get; }
 }

@@ -1,11 +1,10 @@
 ﻿using GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.PovRay.SDL.Values;
 
-namespace GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.PovRay.SDL.Pigments
-{
-    public abstract class SdlPigment : ISdlPigment
-    {
-        public string PigmentIdentifier { get; set; }
+namespace GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.PovRay.SDL.Pigments;
 
-        public ISdlColorValue QuickColor { get; set; }
-    }
+public abstract class SdlPigment : ISdlPigment
+{
+    public string PigmentIdentifier { get; set; }
+
+    public ISdlColorValue QuickColor { get; set; }
 }

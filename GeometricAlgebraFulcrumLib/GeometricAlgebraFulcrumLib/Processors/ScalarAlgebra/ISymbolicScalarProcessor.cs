@@ -2,17 +2,16 @@
 using GeometricAlgebraFulcrumLib.MetaProgramming.Context;
 using GeometricAlgebraFulcrumLib.MetaProgramming.Expressions;
 
-namespace GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra
+namespace GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra;
+
+public interface ISymbolicScalarProcessor<T> :
+    IScalarProcessor<T>
 {
-    public interface ISymbolicScalarProcessor<T> :
-        IScalarProcessor<T>
-    {
-        T Simplify(T scalar);
+    T Simplify(T scalar);
 
-        T GetSymbol(string symbolNameText);
+    T GetSymbol(string symbolNameText);
 
-        T MetaExpressionToScalar(IMetaExpression expression);
+    T MetaExpressionToScalar(IMetaExpression expression);
 
-        IMetaExpression ScalarToMetaExpression(MetaContext context, T scalar);
-    }
+    IMetaExpression ScalarToMetaExpression(MetaContext context, T scalar);
 }

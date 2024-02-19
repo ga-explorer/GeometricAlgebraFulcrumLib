@@ -1,12 +1,11 @@
 ﻿using GeometricAlgebraFulcrumLib.MetaProgramming.Expressions.HeadSpecs;
 
-namespace GeometricAlgebraFulcrumLib.MetaProgramming.Expressions.Variables
+namespace GeometricAlgebraFulcrumLib.MetaProgramming.Expressions.Variables;
+
+public interface IMetaExpressionVariable : 
+    IMetaExpressionAtomic
 {
-    public interface IMetaExpressionVariable : 
-        IMetaExpressionAtomic
-    {
-        MetaExpressionHeadSpecsVariable VariableHeadSpecs { get; }
+    MetaExpressionHeadSpecsVariable VariableHeadSpecs { get; }
         
-        void SetRhsExpressionValue(double number);
-    }
+    void SetRhsExpressionValue(double number);
 }

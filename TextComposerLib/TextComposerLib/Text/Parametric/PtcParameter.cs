@@ -1,56 +1,55 @@
 ﻿using System.Text;
 
-namespace TextComposerLib.Text.Parametric
+namespace TextComposerLib.Text.Parametric;
+
+internal sealed class PtcParameter
 {
-    internal sealed class PtcParameter
+    internal ParametricTextComposer ParentTemplate { get; }
+
+    internal string ParameterName { get; }
+
+    internal string ParameterValue { get; set; }
+
+
+    /// <summary>
+    /// Return the number of characters in the parameter placeholder inside the parent text template
+    /// </summary>
+    internal int ParameterPlaceholderLength => ParentTemplate.LeftDelimiter.Length + 
+                                               ParameterName.Length + 
+                                               ParentTemplate.RightDelimiter.Length;
+
+    /// <summary>
+    /// Return the full string placeholder of this parameter inside the parent text template
+    /// </summary>
+    internal string ParameterPlaceholder
     {
-        internal ParametricTextComposer ParentTemplate { get; }
-
-        internal string ParameterName { get; }
-
-        internal string ParameterValue { get; set; }
-
-
-        /// <summary>
-        /// Return the number of characters in the parameter placeholder inside the parent text template
-        /// </summary>
-        internal int ParameterPlaceholderLength => ParentTemplate.LeftDelimiter.Length + 
-                                                   ParameterName.Length + 
-                                                   ParentTemplate.RightDelimiter.Length;
-
-        /// <summary>
-        /// Return the full string placeholder of this parameter inside the parent text template
-        /// </summary>
-        internal string ParameterPlaceholder
+        get 
         {
-            get 
-            {
-                var s = new StringBuilder(ParameterPlaceholderLength);
+            var s = new StringBuilder(ParameterPlaceholderLength);
 
-                s.Append(ParentTemplate.LeftDelimiter);
+            s.Append(ParentTemplate.LeftDelimiter);
 
-                s.Append(ParameterName);
+            s.Append(ParameterName);
 
-                s.Append(ParentTemplate.RightDelimiter);
+            s.Append(ParentTemplate.RightDelimiter);
 
-                return s.ToString();
-            }
+            return s.ToString();
         }
+    }
 
 
-        internal PtcParameter(ParametricTextComposer parentTemplate, string parameterName)
-        {
-            ParentTemplate = parentTemplate;
+    internal PtcParameter(ParametricTextComposer parentTemplate, string parameterName)
+    {
+        ParentTemplate = parentTemplate;
 
-            ParameterName = parameterName;
+        ParameterName = parameterName;
 
-            ParameterValue = string.Empty;
-        }
+        ParameterValue = string.Empty;
+    }
 
 
-        internal void ClearValue()
-        {
-            ParameterValue = string.Empty;
-        }
+    internal void ClearValue()
+    {
+        ParameterValue = string.Empty;
     }
 }

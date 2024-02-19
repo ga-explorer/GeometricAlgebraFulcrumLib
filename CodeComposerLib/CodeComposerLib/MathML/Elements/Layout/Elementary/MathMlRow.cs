@@ -2,52 +2,51 @@ using System.Collections.Generic;
 using CodeComposerLib.MathML.Constants;
 using CodeComposerLib.MathML.Values.Color;
 
-namespace CodeComposerLib.MathML.Elements.Layout.Elementary
+namespace CodeComposerLib.MathML.Elements.Layout.Elementary;
+
+public sealed class MathMlRow
+    : MathMlLayoutListElement<IMathMlElement>
 {
-    public sealed class MathMlRow
-        : MathMlLayoutListElement<IMathMlElement>
+    public static MathMlRow Create()
     {
-        public static MathMlRow Create()
-        {
-            return new MathMlRow();
-        }
+        return new MathMlRow();
+    }
 
-        public static MathMlRow Create(IEnumerable<IMathMlElement> contents)
-        {
-            var row = new MathMlRow();
+    public static MathMlRow Create(IEnumerable<IMathMlElement> contents)
+    {
+        var row = new MathMlRow();
 
-            row.AppendElements(contents);
+        row.AppendElements(contents);
 
-            return row;
-        }
+        return row;
+    }
 
 
-        public override string XmlTagName 
-            => "mrow";
+    public override string XmlTagName 
+        => "mrow";
 
-        public MathMlTextDirection TextDirection { get; set; }
-            = MathMlTextDirection.Empty;
+    public MathMlTextDirection TextDirection { get; set; }
+        = MathMlTextDirection.Empty;
 
-        public MathMlColorValue BackgroundColor { get; set; }
-            = MathMlColorValue.Empty;
+    public MathMlColorValue BackgroundColor { get; set; }
+        = MathMlColorValue.Empty;
 
-        public MathMlColorValue TextColor { get; set; }
-            = MathMlColorValue.Empty;
-
-
-        internal MathMlRow()
-        {
-        }
+    public MathMlColorValue TextColor { get; set; }
+        = MathMlColorValue.Empty;
 
 
-        internal override void UpdateAttributesComposer(MathMlAttributesComposer composer)
-        {
-            base.UpdateAttributesComposer(composer);
+    internal MathMlRow()
+    {
+    }
 
-            composer
-                .SetAttributeValue("dir", TextDirection)
-                .SetAttributeValue("mathcolor", TextColor)
-                .SetAttributeValue("mathbackground", BackgroundColor);
-        }
+
+    internal override void UpdateAttributesComposer(MathMlAttributesComposer composer)
+    {
+        base.UpdateAttributesComposer(composer);
+
+        composer
+            .SetAttributeValue("dir", TextDirection)
+            .SetAttributeValue("mathcolor", TextColor)
+            .SetAttributeValue("mathbackground", BackgroundColor);
     }
 }

@@ -4,112 +4,111 @@ using System.Collections.Generic;
 using System.Linq;
 using TextComposerLib.Text;
 
-namespace CodeComposerLib.MathML.Elements.Layout
+namespace CodeComposerLib.MathML.Elements.Layout;
+
+public abstract class MathMlLayoutListElement<T>
+    : MathMlLayoutElement, IMathMlLayoutElement<T> where T : IMathMlElement
 {
-    public abstract class MathMlLayoutListElement<T>
-        : MathMlLayoutElement, IMathMlLayoutElement<T> where T : IMathMlElement
+    protected readonly List<T> ContentsList 
+        = new List<T>();
+
+
+    public override IEnumerable<IMathMlElement> Contents
+        => ContentsList.Cast<IMathMlElement>();
+
+    public override string ContentsText
+        => ContentsList
+            .Select(e => e.ToString())
+            .Concatenate(Environment.NewLine);
+
+    public int Count 
+        => ContentsList.Count;
+
+    public T this[int index]
     {
-        protected readonly List<T> ContentsList 
-            = new List<T>();
+        get => ContentsList[index];
+        set => ContentsList[index] = value;
+    }
 
 
-        public override IEnumerable<IMathMlElement> Contents
-            => ContentsList.Cast<IMathMlElement>();
+    public MathMlLayoutListElement<T> Clear()
+    {
+        ContentsList.Clear();
 
-        public override string ContentsText
-            => ContentsList
-                .Select(e => e.ToString())
-                .Concatenate(Environment.NewLine);
+        return this;
+    }
 
-        public int Count 
-            => ContentsList.Count;
+    public MathMlLayoutListElement<T> Append(T element)
+    {
+        ContentsList.Add(element);
 
-        public T this[int index]
-        {
-            get => ContentsList[index];
-            set => ContentsList[index] = value;
-        }
+        return this;
+    }
 
+    public MathMlLayoutListElement<T> AppendElements(IEnumerable<T> elementsList)
+    {
+        ContentsList.AddRange(elementsList);
 
-        public MathMlLayoutListElement<T> Clear()
-        {
-            ContentsList.Clear();
+        return this;
+    }
 
-            return this;
-        }
+    public MathMlLayoutListElement<T> AppendElements(params T[] elementsList)
+    {
+        ContentsList.AddRange(elementsList);
 
-        public MathMlLayoutListElement<T> Append(T element)
-        {
-            ContentsList.Add(element);
+        return this;
+    }
 
-            return this;
-        }
+    public MathMlLayoutListElement<T> Prepend(T element)
+    {
+        ContentsList.Insert(0, element);
 
-        public MathMlLayoutListElement<T> AppendElements(IEnumerable<T> elementsList)
-        {
-            ContentsList.AddRange(elementsList);
+        return this;
+    }
 
-            return this;
-        }
+    public MathMlLayoutListElement<T> PrependElements(IEnumerable<T> elementsList)
+    {
+        ContentsList.InsertRange(0, elementsList);
 
-        public MathMlLayoutListElement<T> AppendElements(params T[] elementsList)
-        {
-            ContentsList.AddRange(elementsList);
+        return this;
+    }
 
-            return this;
-        }
+    public MathMlLayoutListElement<T> PrependElements(params T[] elementsList)
+    {
+        ContentsList.InsertRange(0, elementsList);
 
-        public MathMlLayoutListElement<T> Prepend(T element)
-        {
-            ContentsList.Insert(0, element);
+        return this;
+    }
 
-            return this;
-        }
+    public MathMlLayoutListElement<T> Insert(int index, T element)
+    {
+        ContentsList.Insert(index, element);
 
-        public MathMlLayoutListElement<T> PrependElements(IEnumerable<T> elementsList)
-        {
-            ContentsList.InsertRange(0, elementsList);
+        return this;
+    }
 
-            return this;
-        }
+    public MathMlLayoutListElement<T> InsertElements(int index, IEnumerable<T> elementsList)
+    {
+        ContentsList.InsertRange(index, elementsList);
 
-        public MathMlLayoutListElement<T> PrependElements(params T[] elementsList)
-        {
-            ContentsList.InsertRange(0, elementsList);
+        return this;
+    }
 
-            return this;
-        }
+    public MathMlLayoutListElement<T> InsertElements(int index, params T[] elementsList)
+    {
+        ContentsList.InsertRange(index, elementsList);
 
-        public MathMlLayoutListElement<T> Insert(int index, T element)
-        {
-            ContentsList.Insert(index, element);
-
-            return this;
-        }
-
-        public MathMlLayoutListElement<T> InsertElements(int index, IEnumerable<T> elementsList)
-        {
-            ContentsList.InsertRange(index, elementsList);
-
-            return this;
-        }
-
-        public MathMlLayoutListElement<T> InsertElements(int index, params T[] elementsList)
-        {
-            ContentsList.InsertRange(index, elementsList);
-
-            return this;
-        }
+        return this;
+    }
 
 
-        public IEnumerator<T> GetEnumerator()
-        {
-            return ContentsList.GetEnumerator();
-        }
+    public IEnumerator<T> GetEnumerator()
+    {
+        return ContentsList.GetEnumerator();
+    }
 
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return ContentsList.GetEnumerator();
-        }
+    IEnumerator IEnumerable.GetEnumerator()
+    {
+        return ContentsList.GetEnumerator();
     }
 }

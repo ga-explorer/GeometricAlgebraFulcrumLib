@@ -2,248 +2,247 @@
 using GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.GraphViz.Dot.Value;
 using TextComposerLib.Text.Linear;
 
-namespace GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.GraphViz.Dot.Label.Table
+namespace GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.GraphViz.Dot.Label.Table;
+
+/// <summary>
+/// This class represents a row inside an HTML table tag in the dot language
+/// See http://www.graphviz.org/content/node-shapes#html for more details
+/// </summary>
+public sealed class DotHtmlRow : DotHtmlTag, IList<DotHtmlCell>
 {
+    private readonly List<DotHtmlCell> _cells = new List<DotHtmlCell>();
+
+
     /// <summary>
-    /// This class represents a row inside an HTML table tag in the dot language
-    /// See http://www.graphviz.org/content/node-shapes#html for more details
+    /// Get or set the state of the horizontal rule for this row
     /// </summary>
-    public sealed class DotHtmlRow : DotHtmlTag, IList<DotHtmlCell>
+    public bool HorizontalRule { get; set; }
+
+    public override IEnumerable<KeyValuePair<string, string>> Attributes => Enumerable.Empty<KeyValuePair<string, string>>();
+
+    public DotHtmlCell FirstCell => _cells.Count > 0 ? _cells[0] : null;
+
+    public DotHtmlCell SecondCell => _cells.Count > 1 ? _cells[1] : null;
+
+    public DotHtmlCell ThirdCell => _cells.Count > 2 ? _cells[2] : null;
+
+    public DotHtmlCell LastCell => _cells.Count > 0 ? _cells[_cells.Count - 1] : null;
+
+
+    internal DotHtmlRow()
+        : base("TR")
     {
-        private readonly List<DotHtmlCell> _cells = new List<DotHtmlCell>();
+    }
 
 
-        /// <summary>
-        /// Get or set the state of the horizontal rule for this row
-        /// </summary>
-        public bool HorizontalRule { get; set; }
+    public DotHtmlCell AddCell()
+    {
+        var cell = new DotHtmlCell();
 
-        public override IEnumerable<KeyValuePair<string, string>> Attributes => Enumerable.Empty<KeyValuePair<string, string>>();
+        Add(cell);
 
-        public DotHtmlCell FirstCell => _cells.Count > 0 ? _cells[0] : null;
+        return cell;
+    }
 
-        public DotHtmlCell SecondCell => _cells.Count > 1 ? _cells[1] : null;
+    public DotHtmlCell AddCell(string text)
+    {
+        var cell = new DotHtmlCell().SetContents(text);
 
-        public DotHtmlCell ThirdCell => _cells.Count > 2 ? _cells[2] : null;
+        Add(cell);
 
-        public DotHtmlCell LastCell => _cells.Count > 0 ? _cells[_cells.Count - 1] : null;
+        return cell;
+    }
+
+    public DotHtmlCell AddCell(IDotHtmlLabel label)
+    {
+        var cell = new DotHtmlCell().SetContents(label);
+
+        Add(cell);
+
+        return cell;
+    }
+
+    public DotHtmlCell AddCell(string imageFilePath, DotNodeImageScale imageScaleMethod)
+    {
+        var cell = new DotHtmlCell().SetContents(imageFilePath, imageScaleMethod);
+
+        Add(cell);
+
+        return cell;
+    }
+
+    public DotHtmlCell AddCell(DotHtmlCellImage imageTag)
+    {
+        var cell = new DotHtmlCell().SetContents(imageTag);
+
+        Add(cell);
+
+        return cell;
+    }
+
+    public DotHtmlCell AddCell(DotHtmlCell cell)
+    {
+        Add(cell);
+
+        return cell;
+    }
 
 
-        internal DotHtmlRow()
-            : base("TR")
-        {
-        }
+    public DotHtmlRow AddCells(int cellsCount)
+    {
+        for (var i = 0; i < cellsCount; i++)
+            Add(new DotHtmlCell());
 
+        return this;
+    }
 
-        public DotHtmlCell AddCell()
-        {
-            var cell = new DotHtmlCell();
+    public DotHtmlRow AddCells(params string[] text)
+    {
+        foreach (var cellText in text)
+            AddCell(cellText);
 
+        return this;
+    }
+
+    public DotHtmlRow AddCells(IEnumerable<string> text)
+    {
+        foreach (var cellText in text)
+            AddCell(cellText);
+
+        return this;
+    }
+
+    public DotHtmlRow AddCells(params IDotHtmlLabel[] labels)
+    {
+        foreach (var label in labels)
+            AddCell(label);
+
+        return this;
+    }
+
+    public DotHtmlRow AddCells(IEnumerable<IDotHtmlLabel> labels)
+    {
+        foreach (var label in labels)
+            AddCell(label);
+
+        return this;
+    }
+
+    public DotHtmlRow AddCells(params DotHtmlCellImage[] imageTags)
+    {
+        foreach (var imageTag in imageTags)
+            AddCell(imageTag);
+
+        return this;
+    }
+
+    public DotHtmlRow AddCells(IEnumerable<DotHtmlCellImage> imageTags)
+    {
+        foreach (var imageTag in imageTags)
+            AddCell(imageTag);
+
+        return this;
+    }
+
+    public DotHtmlRow AddCells(params DotHtmlCell[] cells)
+    {
+        foreach (var cell in cells)
             Add(cell);
 
-            return cell;
-        }
+        return this;
+    }
 
-        public DotHtmlCell AddCell(string text)
-        {
-            var cell = new DotHtmlCell().SetContents(text);
-
+    public DotHtmlRow AddCells(IEnumerable<DotHtmlCell> cells)
+    {
+        foreach (var cell in cells)
             Add(cell);
 
-            return cell;
-        }
+        return this;
+    }
 
-        public DotHtmlCell AddCell(IDotHtmlLabel label)
+
+    public int IndexOf(DotHtmlCell item)
+    {
+        return _cells.IndexOf(item);
+    }
+
+    public void Insert(int index, DotHtmlCell item)
+    {
+        _cells.Insert(index, item);
+    }
+
+    public void RemoveAt(int index)
+    {
+        _cells.RemoveAt(index);
+    }
+
+    public DotHtmlCell this[int index]
+    {
+        get => _cells[index];
+        set
         {
-            var cell = new DotHtmlCell().SetContents(label);
+            if (ReferenceEquals(value, null))
+                throw new ArgumentNullException(nameof(value));
 
-            Add(cell);
-
-            return cell;
+            _cells[index] = value;
         }
+    }
 
-        public DotHtmlCell AddCell(string imageFilePath, DotNodeImageScale imageScaleMethod)
-        {
-            var cell = new DotHtmlCell().SetContents(imageFilePath, imageScaleMethod);
+    public void Add(DotHtmlCell item)
+    {
+        _cells.Add(item);
+    }
 
-            Add(cell);
+    public void Clear()
+    {
+        _cells.Clear();
+    }
 
-            return cell;
-        }
+    public bool Contains(DotHtmlCell item)
+    {
+        return _cells.Contains(item);
+    }
 
-        public DotHtmlCell AddCell(DotHtmlCellImage imageTag)
-        {
-            var cell = new DotHtmlCell().SetContents(imageTag);
+    public void CopyTo(DotHtmlCell[] array, int arrayIndex)
+    {
+        _cells.CopyTo(array, arrayIndex);
+    }
 
-            Add(cell);
+    public int Count => _cells.Count;
 
-            return cell;
-        }
+    public bool IsReadOnly => false;
 
-        public DotHtmlCell AddCell(DotHtmlCell cell)
-        {
-            Add(cell);
+    public bool Remove(DotHtmlCell item)
+    {
+        return _cells.Remove(item);
+    }
 
-            return cell;
-        }
+    public IEnumerator<DotHtmlCell> GetEnumerator()
+    {
+        return _cells.GetEnumerator();
+    }
 
-
-        public DotHtmlRow AddCells(int cellsCount)
-        {
-            for (var i = 0; i < cellsCount; i++)
-                Add(new DotHtmlCell());
-
-            return this;
-        }
-
-        public DotHtmlRow AddCells(params string[] text)
-        {
-            foreach (var cellText in text)
-                AddCell(cellText);
-
-            return this;
-        }
-
-        public DotHtmlRow AddCells(IEnumerable<string> text)
-        {
-            foreach (var cellText in text)
-                AddCell(cellText);
-
-            return this;
-        }
-
-        public DotHtmlRow AddCells(params IDotHtmlLabel[] labels)
-        {
-            foreach (var label in labels)
-                AddCell(label);
-
-            return this;
-        }
-
-        public DotHtmlRow AddCells(IEnumerable<IDotHtmlLabel> labels)
-        {
-            foreach (var label in labels)
-                AddCell(label);
-
-            return this;
-        }
-
-        public DotHtmlRow AddCells(params DotHtmlCellImage[] imageTags)
-        {
-            foreach (var imageTag in imageTags)
-                AddCell(imageTag);
-
-            return this;
-        }
-
-        public DotHtmlRow AddCells(IEnumerable<DotHtmlCellImage> imageTags)
-        {
-            foreach (var imageTag in imageTags)
-                AddCell(imageTag);
-
-            return this;
-        }
-
-        public DotHtmlRow AddCells(params DotHtmlCell[] cells)
-        {
-            foreach (var cell in cells)
-                Add(cell);
-
-            return this;
-        }
-
-        public DotHtmlRow AddCells(IEnumerable<DotHtmlCell> cells)
-        {
-            foreach (var cell in cells)
-                Add(cell);
-
-            return this;
-        }
+    IEnumerator IEnumerable.GetEnumerator()
+    {
+        return _cells.GetEnumerator();
+    }
 
 
-        public int IndexOf(DotHtmlCell item)
-        {
-            return _cells.IndexOf(item);
-        }
+    public override string ToString()
+    {
+        var composer = new LinearTextComposer();
 
-        public void Insert(int index, DotHtmlCell item)
-        {
-            _cells.Insert(index, item);
-        }
+        composer
+            .AppendLineAtNewLine(@"<TR>")
+            .IncreaseIndentation();
 
-        public void RemoveAt(int index)
-        {
-            _cells.RemoveAt(index);
-        }
+        foreach (var cell in _cells)
+            composer.AppendLineAtNewLine(cell.ToString());
 
-        public DotHtmlCell this[int index]
-        {
-            get => _cells[index];
-            set
-            {
-                if (ReferenceEquals(value, null))
-                    throw new ArgumentNullException(nameof(value));
+        composer
+            .DecreaseIndentation()
+            .AppendAtNewLine(@"</TR>");
 
-                _cells[index] = value;
-            }
-        }
-
-        public void Add(DotHtmlCell item)
-        {
-            _cells.Add(item);
-        }
-
-        public void Clear()
-        {
-            _cells.Clear();
-        }
-
-        public bool Contains(DotHtmlCell item)
-        {
-            return _cells.Contains(item);
-        }
-
-        public void CopyTo(DotHtmlCell[] array, int arrayIndex)
-        {
-            _cells.CopyTo(array, arrayIndex);
-        }
-
-        public int Count => _cells.Count;
-
-        public bool IsReadOnly => false;
-
-        public bool Remove(DotHtmlCell item)
-        {
-            return _cells.Remove(item);
-        }
-
-        public IEnumerator<DotHtmlCell> GetEnumerator()
-        {
-            return _cells.GetEnumerator();
-        }
-
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return _cells.GetEnumerator();
-        }
-
-
-        public override string ToString()
-        {
-            var composer = new LinearTextComposer();
-
-            composer
-                .AppendLineAtNewLine(@"<TR>")
-                .IncreaseIndentation();
-
-            foreach (var cell in _cells)
-                composer.AppendLineAtNewLine(cell.ToString());
-
-            composer
-                .DecreaseIndentation()
-                .AppendAtNewLine(@"</TR>");
-
-            return composer.ToString();
-        }
+        return composer.ToString();
     }
 }

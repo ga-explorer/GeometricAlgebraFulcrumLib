@@ -1,17 +1,16 @@
 ﻿using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.LinearMaps.Outermorphisms;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.Multivectors;
 
-namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.LinearMaps.Versors
+namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.LinearMaps.Versors;
+
+public interface IXGaVersor<T> : 
+    IXGaAutomorphism<T>
 {
-    public interface IXGaVersor<T> : 
-        IXGaAutomorphism<T>
-    {
-        IXGaVersor<T> GetVersorInverse();
+    IXGaVersor<T> GetVersorInverse();
 
-        XGaMultivector<T> GetMultivector();
+    XGaMultivector<T> GetMultivector();
 
-        XGaMultivector<T> GetMultivectorReverse();
+    XGaMultivector<T> GetMultivectorReverse();
 
-        XGaMultivector<T> GetMultivectorInverse();
-    }
+    XGaMultivector<T> GetMultivectorInverse();
 }

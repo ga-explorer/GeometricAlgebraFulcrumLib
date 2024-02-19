@@ -5,94 +5,93 @@ using GeometricAlgebraFulcrumLib.Lite.Graphics.Primitives.Lines;
 using GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.Xeogl;
 using GeometricAlgebraFulcrumLib.Lite.LinearAlgebra.Vectors.Space3D;
 
-namespace GeometricAlgebraFulcrumLib.Lite.Samples.Graphics.Xeogl
+namespace GeometricAlgebraFulcrumLib.Lite.Samples.Graphics.Xeogl;
+
+public static class Sample2
 {
-    public static class Sample2
+    private static IPathsMesh3D ConstructPathsMesh()
     {
-        private static IPathsMesh3D ConstructPathsMesh()
-        {
-            var path1 = new ConstantPointsPath3D(
-                4, 
-                Float64Vector3D.Create(0, 0, -2)
-            );
+        var path1 = new ConstantPointsPath3D(
+            4, 
+            Float64Vector3D.Create(0, 0, -2)
+        );
 
-            var path2 = new ArrayPointsPath3D(
-                Float64Vector3D.Create(-2, -2, -2),
-                Float64Vector3D.Create(2, -2, -2),
-                Float64Vector3D.Create(2, 2, -2),
-                Float64Vector3D.Create(-2, 2, -2)
-            );
+        var path2 = new ArrayPointsPath3D(
+            Float64Vector3D.Create(-2, -2, -2),
+            Float64Vector3D.Create(2, -2, -2),
+            Float64Vector3D.Create(2, 2, -2),
+            Float64Vector3D.Create(-2, 2, -2)
+        );
 
-            var path3 = new ArrayPointsPath3D(
-                Float64Vector3D.Create(-2, -2, 2),
-                Float64Vector3D.Create(2, -2, 2),
-                Float64Vector3D.Create(2, 2, 2),
-                Float64Vector3D.Create(-2, 2, 2)
-            );
+        var path3 = new ArrayPointsPath3D(
+            Float64Vector3D.Create(-2, -2, 2),
+            Float64Vector3D.Create(2, -2, 2),
+            Float64Vector3D.Create(2, 2, 2),
+            Float64Vector3D.Create(-2, 2, 2)
+        );
 
-            var path4 = new ArrayPointsPath3D(
-                Float64Vector3D.Create(-1, -1, 2),
-                Float64Vector3D.Create(1, -1, 2),
-                Float64Vector3D.Create(1, 1, 2),
-                Float64Vector3D.Create(-1, 1, 2)
-            );
+        var path4 = new ArrayPointsPath3D(
+            Float64Vector3D.Create(-1, -1, 2),
+            Float64Vector3D.Create(1, -1, 2),
+            Float64Vector3D.Create(1, 1, 2),
+            Float64Vector3D.Create(-1, 1, 2)
+        );
 
-            var pathMesh = new ArrayPathsMesh3D(
-                4, 
-                path1, 
-                path2, 
-                path3, 
-                path4
-            );
+        var pathMesh = new ArrayPathsMesh3D(
+            4, 
+            path1, 
+            path2, 
+            path3, 
+            path4
+        );
 
-            return pathMesh;
-        }
+        return pathMesh;
+    }
 
-        private static IGraphicsLineGeometry3D ConstructLinesGeometry(IPathsMesh3D pathMesh)
-        {
-            //Test 1:
-            var lineMesh = GrLineSoupGeometry3D.Create(
-                pathMesh.GetLines(true, true)
-            );
+    private static IGraphicsLineGeometry3D ConstructLinesGeometry(IPathsMesh3D pathMesh)
+    {
+        //Test 1:
+        var lineMesh = GrLineSoupGeometry3D.Create(
+            pathMesh.GetLines(true, true)
+        );
 
 
-            //Test 2:
-            //foreach (var patch in pathMesh.GetQuadPatches(true, true, false))
-            //    triMesh.AddPatch(patch);
+        //Test 2:
+        //foreach (var patch in pathMesh.GetQuadPatches(true, true, false))
+        //    triMesh.AddPatch(patch);
 
 
-            //Test 3:
-            //var patch = new PathMeshPatch3D(pathMesh);
+        //Test 3:
+        //var patch = new PathMeshPatch3D(pathMesh);
 
-            //patch.SetPathsRange(0, 2, false);
-            //triMesh.AddPatch(patch);
+        //patch.SetPathsRange(0, 2, false);
+        //triMesh.AddPatch(patch);
 
-            //patch.SetPathsRange(1, 2, false);
-            //triMesh.AddPatch(patch);
+        //patch.SetPathsRange(1, 2, false);
+        //triMesh.AddPatch(patch);
 
-            //patch.SetPathsRange(2, 2, false);
-            //triMesh.AddPatch(patch);
+        //patch.SetPathsRange(2, 2, false);
+        //triMesh.AddPatch(patch);
 
-            //patch.SetPathsRange(3, 2, false);
-            //triMesh.AddPatch(patch);
+        //patch.SetPathsRange(3, 2, false);
+        //triMesh.AddPatch(patch);
 
-            return lineMesh;
-        }
+        return lineMesh;
+    }
 
-        public static string Generate()
-        {
-            var pathsMesh = ConstructPathsMesh();
-            var linesGeometry = ConstructLinesGeometry(pathsMesh);
+    public static string Generate()
+    {
+        var pathsMesh = ConstructPathsMesh();
+        var linesGeometry = ConstructLinesGeometry(pathsMesh);
 
-            var scriptGenerator = new XeoglHtmlComposer();
-            scriptGenerator.IncludesList.Add("js/xeogl/xeogl.js");
-            scriptGenerator.IncludesList.Add("js/generation/geometryBuilder.js");
+        var scriptGenerator = new XeoglHtmlComposer();
+        scriptGenerator.IncludesList.Add("js/xeogl/xeogl.js");
+        scriptGenerator.IncludesList.Add("js/generation/geometryBuilder.js");
 
-            scriptGenerator.AddLinesGeometry(linesGeometry, @"new xeogl.PhongMaterial({ emissive: [Math.random() + 0.5, Math.random() + 0.5, Math.random() + 0.5] })");
+        scriptGenerator.AddLinesGeometry(linesGeometry, @"new xeogl.PhongMaterial({ emissive: [Math.random() + 0.5, Math.random() + 0.5, Math.random() + 0.5] })");
 
-            var scriptCode = scriptGenerator.GenerateHtmlPage();
+        var scriptCode = scriptGenerator.GenerateHtmlPage();
 
-            return scriptCode;
-        }
+        return scriptCode;
     }
 }

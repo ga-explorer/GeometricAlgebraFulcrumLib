@@ -1,30 +1,29 @@
-﻿namespace GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.BabylonJs.Constants
+﻿namespace GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.BabylonJs.Constants;
+
+public enum GrBabylonJsAlphaBlendingMode
 {
-    public enum GrBabylonJsAlphaBlendingMode
-    {
-        Add,
-        AlphaToColor,
-        Combine,
-        Disable,
-        EquationAdd,
-        EquationDarken,
-        EquationMax,
-        EquationMin,
-        EquationReverseSubtract,
-        EquationSubtract,
-        Exclusion,
-        Interpolate,
-        LayerAccumulate,
-        Maximized,
-        Multiply,
-        OneOne,
-        OneOneOneOne,
-        OneOneOneZero,
-        PreMultiplied,
-        PreMultipliedPorterDuff,
-        ReverseOneMinus,
-        ScreenMode,
-        SrcDstOneMinusSrcAlpha,
-        Subtract
-    }
+    Add,
+    AlphaToColor,
+    Combine,
+    Disable,
+    EquationAdd,
+    EquationDarken,
+    EquationMax,
+    EquationMin,
+    EquationReverseSubtract,
+    EquationSubtract,
+    Exclusion,
+    Interpolate,
+    LayerAccumulate,
+    Maximized,
+    Multiply,
+    OneOne,
+    OneOneOneOne,
+    OneOneOneZero,
+    PreMultiplied,
+    PreMultipliedPorterDuff,
+    ReverseOneMinus,
+    ScreenMode,
+    SrcDstOneMinusSrcAlpha,
+    Subtract
 }

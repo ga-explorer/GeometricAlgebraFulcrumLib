@@ -3,291 +3,290 @@ using WebComposerLib.Svg.Elements.Categories;
 using WebComposerLib.Svg.Transforms;
 using WebComposerLib.Svg.Values;
 
-namespace WebComposerLib.Svg.Elements.Containers
+namespace WebComposerLib.Svg.Elements.Containers;
+
+/// <summary>
+/// The 'pattern' element defines a graphics object which can be redrawn at repeated x
+/// and y-coordinate intervals ("tiled") to cover an area. The 'pattern' is referenced by
+/// the fill and/or stroke attributes on other graphics elements to fill or stroke those
+/// elements with the referenced pattern.
+/// </summary>
+public sealed class SvgElementPattern : SvgElement, ISvgContainerElement
 {
-    /// <summary>
-    /// The 'pattern' element defines a graphics object which can be redrawn at repeated x
-    /// and y-coordinate intervals ("tiled") to cover an area. The 'pattern' is referenced by
-    /// the fill and/or stroke attributes on other graphics elements to fill or stroke those
-    /// elements with the referenced pattern.
-    /// </summary>
-    public sealed class SvgElementPattern : SvgElement, ISvgContainerElement
+    public static SvgElementPattern Create()
     {
-        public static SvgElementPattern Create()
+        return new SvgElementPattern();
+    }
+
+    public static SvgElementPattern Create(string id)
+    {
+        return new SvgElementPattern() { Id = id };
+    }
+
+
+    public override string ElementName => "pattern";
+
+
+    //public SvgEavString<SvgElementPattern> Id
+    //{
+    //    get
+    //    {
+    //        var attrInfo = SvgAttributes.Id;
+
+    //        ISvgAttributeValue attrValue;
+    //        if (AttributesTable.TryGetValue(attrInfo.Id, out attrValue))
+    //            return attrValue as SvgEavString<SvgElementPattern>;
+
+    //        var attrValue1 = new SvgEavString<SvgElementPattern>(this, attrInfo);
+    //        AttributesTable.Add(attrInfo.Id, attrValue1);
+
+    //        return attrValue1;
+    //    }
+    //}
+
+    public SvgEavString<SvgElementPattern> XmlBase
+    {
+        get
         {
-            return new SvgElementPattern();
-        }
+            var attrInfo = SvgAttributeUtils.XmlBase;
 
-        public static SvgElementPattern Create(string id)
+            if (AttributesTable.TryGetValue(attrInfo.Id, out var attrValue))
+                return attrValue as SvgEavString<SvgElementPattern>;
+
+            var attrValue1 = new SvgEavString<SvgElementPattern>(this, attrInfo);
+            AttributesTable.Add(attrInfo.Id, attrValue1);
+
+            return attrValue1;
+        }
+    }
+
+    public SvgEavString<SvgElementPattern> XmlLanguage
+    {
+        get
         {
-            return new SvgElementPattern() { Id = id };
+            var attrInfo = SvgAttributeUtils.XmlLanguage;
+
+            if (AttributesTable.TryGetValue(attrInfo.Id, out var attrValue))
+                return attrValue as SvgEavString<SvgElementPattern>;
+
+            var attrValue1 = new SvgEavString<SvgElementPattern>(this, attrInfo);
+            AttributesTable.Add(attrInfo.Id, attrValue1);
+
+            return attrValue1;
         }
+    }
 
-
-        public override string ElementName => "pattern";
-
-
-        //public SvgEavString<SvgElementPattern> Id
-        //{
-        //    get
-        //    {
-        //        var attrInfo = SvgAttributes.Id;
-
-        //        ISvgAttributeValue attrValue;
-        //        if (AttributesTable.TryGetValue(attrInfo.Id, out attrValue))
-        //            return attrValue as SvgEavString<SvgElementPattern>;
-
-        //        var attrValue1 = new SvgEavString<SvgElementPattern>(this, attrInfo);
-        //        AttributesTable.Add(attrInfo.Id, attrValue1);
-
-        //        return attrValue1;
-        //    }
-        //}
-
-        public SvgEavString<SvgElementPattern> XmlBase
+    public SvgEavStruct<bool, SvgElementPattern> ExternalResourcesRequired
+    {
+        get
         {
-            get
-            {
-                var attrInfo = SvgAttributeUtils.XmlBase;
+            var attrInfo = SvgAttributeUtils.ExternalResourcesRequired;
 
-                if (AttributesTable.TryGetValue(attrInfo.Id, out var attrValue))
-                    return attrValue as SvgEavString<SvgElementPattern>;
+            if (AttributesTable.TryGetValue(attrInfo.Id, out var attrValue))
+                return attrValue as SvgEavStruct<bool, SvgElementPattern>;
 
-                var attrValue1 = new SvgEavString<SvgElementPattern>(this, attrInfo);
-                AttributesTable.Add(attrInfo.Id, attrValue1);
+            var attrValue1 = new SvgEavStruct<bool, SvgElementPattern>(this, attrInfo);
+            AttributesTable.Add(attrInfo.Id, attrValue1);
 
-                return attrValue1;
-            }
+            return attrValue1;
         }
+    }
 
-        public SvgEavString<SvgElementPattern> XmlLanguage
+    public SvgEavString<SvgElementPattern> Class
+    {
+        get
         {
-            get
-            {
-                var attrInfo = SvgAttributeUtils.XmlLanguage;
+            var attrInfo = SvgAttributeUtils.Class;
 
-                if (AttributesTable.TryGetValue(attrInfo.Id, out var attrValue))
-                    return attrValue as SvgEavString<SvgElementPattern>;
+            if (AttributesTable.TryGetValue(attrInfo.Id, out var attrValue))
+                return attrValue as SvgEavString<SvgElementPattern>;
 
-                var attrValue1 = new SvgEavString<SvgElementPattern>(this, attrInfo);
-                AttributesTable.Add(attrInfo.Id, attrValue1);
+            var attrValue1 = new SvgEavString<SvgElementPattern>(this, attrInfo);
+            AttributesTable.Add(attrInfo.Id, attrValue1);
 
-                return attrValue1;
-            }
+            return attrValue1;
         }
+    }
 
-        public SvgEavStruct<bool, SvgElementPattern> ExternalResourcesRequired
+    //public SvgEavStyle<SvgElementPattern> Style
+    //{
+    //    get
+    //    {
+    //        var attrInfo = SvgAttributes.Style;
+
+    //        ISvgAttributeValue attrValue;
+    //        if (AttributesTable.TryGetValue(attrInfo.Id, out attrValue))
+    //            return attrValue as SvgEavStyle<SvgElementPattern>;
+
+    //        var attrValue1 = new SvgEavStyle<SvgElementPattern>(this);
+    //        AttributesTable.Add(attrInfo.Id, attrValue1);
+
+    //        return attrValue1;
+    //    }
+    //}
+
+    public SvgEavLength<SvgElementPattern> X
+    {
+        get
         {
-            get
-            {
-                var attrInfo = SvgAttributeUtils.ExternalResourcesRequired;
+            var attrInfo = SvgAttributeUtils.X;
 
-                if (AttributesTable.TryGetValue(attrInfo.Id, out var attrValue))
-                    return attrValue as SvgEavStruct<bool, SvgElementPattern>;
+            if (AttributesTable.TryGetValue(attrInfo.Id, out var attrValue))
+                return attrValue as SvgEavLength<SvgElementPattern>;
 
-                var attrValue1 = new SvgEavStruct<bool, SvgElementPattern>(this, attrInfo);
-                AttributesTable.Add(attrInfo.Id, attrValue1);
+            var attrValue1 = new SvgEavLength<SvgElementPattern>(this, attrInfo);
+            AttributesTable.Add(attrInfo.Id, attrValue1);
 
-                return attrValue1;
-            }
+            return attrValue1;
         }
+    }
 
-        public SvgEavString<SvgElementPattern> Class
+    public SvgEavLength<SvgElementPattern> Y
+    {
+        get
         {
-            get
-            {
-                var attrInfo = SvgAttributeUtils.Class;
+            var attrInfo = SvgAttributeUtils.Y;
 
-                if (AttributesTable.TryGetValue(attrInfo.Id, out var attrValue))
-                    return attrValue as SvgEavString<SvgElementPattern>;
+            if (AttributesTable.TryGetValue(attrInfo.Id, out var attrValue))
+                return attrValue as SvgEavLength<SvgElementPattern>;
 
-                var attrValue1 = new SvgEavString<SvgElementPattern>(this, attrInfo);
-                AttributesTable.Add(attrInfo.Id, attrValue1);
+            var attrValue1 = new SvgEavLength<SvgElementPattern>(this, attrInfo);
+            AttributesTable.Add(attrInfo.Id, attrValue1);
 
-                return attrValue1;
-            }
+            return attrValue1;
         }
+    }
 
-        //public SvgEavStyle<SvgElementPattern> Style
-        //{
-        //    get
-        //    {
-        //        var attrInfo = SvgAttributes.Style;
-
-        //        ISvgAttributeValue attrValue;
-        //        if (AttributesTable.TryGetValue(attrInfo.Id, out attrValue))
-        //            return attrValue as SvgEavStyle<SvgElementPattern>;
-
-        //        var attrValue1 = new SvgEavStyle<SvgElementPattern>(this);
-        //        AttributesTable.Add(attrInfo.Id, attrValue1);
-
-        //        return attrValue1;
-        //    }
-        //}
-
-        public SvgEavLength<SvgElementPattern> X
+    public SvgEavLength<SvgElementPattern> Width
+    {
+        get
         {
-            get
-            {
-                var attrInfo = SvgAttributeUtils.X;
+            var attrInfo = SvgAttributeUtils.Width;
 
-                if (AttributesTable.TryGetValue(attrInfo.Id, out var attrValue))
-                    return attrValue as SvgEavLength<SvgElementPattern>;
+            if (AttributesTable.TryGetValue(attrInfo.Id, out var attrValue))
+                return attrValue as SvgEavLength<SvgElementPattern>;
 
-                var attrValue1 = new SvgEavLength<SvgElementPattern>(this, attrInfo);
-                AttributesTable.Add(attrInfo.Id, attrValue1);
+            var attrValue1 = new SvgEavLength<SvgElementPattern>(this, attrInfo);
+            AttributesTable.Add(attrInfo.Id, attrValue1);
 
-                return attrValue1;
-            }
+            return attrValue1;
         }
+    }
 
-        public SvgEavLength<SvgElementPattern> Y
+    public SvgEavLength<SvgElementPattern> Height
+    {
+        get
         {
-            get
-            {
-                var attrInfo = SvgAttributeUtils.Y;
+            var attrInfo = SvgAttributeUtils.Height;
 
-                if (AttributesTable.TryGetValue(attrInfo.Id, out var attrValue))
-                    return attrValue as SvgEavLength<SvgElementPattern>;
+            if (AttributesTable.TryGetValue(attrInfo.Id, out var attrValue))
+                return attrValue as SvgEavLength<SvgElementPattern>;
 
-                var attrValue1 = new SvgEavLength<SvgElementPattern>(this, attrInfo);
-                AttributesTable.Add(attrInfo.Id, attrValue1);
+            var attrValue1 = new SvgEavLength<SvgElementPattern>(this, attrInfo);
+            AttributesTable.Add(attrInfo.Id, attrValue1);
 
-                return attrValue1;
-            }
+            return attrValue1;
         }
+    }
 
-        public SvgEavLength<SvgElementPattern> Width
+    public SvgEavViewBox<SvgElementPattern> ViewBox
+    {
+        get
         {
-            get
-            {
-                var attrInfo = SvgAttributeUtils.Width;
+            var attrInfo = SvgAttributeUtils.ViewBox;
 
-                if (AttributesTable.TryGetValue(attrInfo.Id, out var attrValue))
-                    return attrValue as SvgEavLength<SvgElementPattern>;
+            if (AttributesTable.TryGetValue(attrInfo.Id, out var attrValue))
+                return attrValue as SvgEavViewBox<SvgElementPattern>;
 
-                var attrValue1 = new SvgEavLength<SvgElementPattern>(this, attrInfo);
-                AttributesTable.Add(attrInfo.Id, attrValue1);
+            var attrValue1 = new SvgEavViewBox<SvgElementPattern>(this);
+            AttributesTable.Add(attrInfo.Id, attrValue1);
 
-                return attrValue1;
-            }
+            return attrValue1;
         }
+    }
 
-        public SvgEavLength<SvgElementPattern> Height
+    public SvgEavPreserveAspectRatio<SvgElementPattern> PreserveAspectRatio
+    {
+        get
         {
-            get
-            {
-                var attrInfo = SvgAttributeUtils.Height;
+            var attrInfo = SvgAttributeUtils.PreserveAspectRatio;
 
-                if (AttributesTable.TryGetValue(attrInfo.Id, out var attrValue))
-                    return attrValue as SvgEavLength<SvgElementPattern>;
+            if (AttributesTable.TryGetValue(attrInfo.Id, out var attrValue))
+                return attrValue as SvgEavPreserveAspectRatio<SvgElementPattern>;
 
-                var attrValue1 = new SvgEavLength<SvgElementPattern>(this, attrInfo);
-                AttributesTable.Add(attrInfo.Id, attrValue1);
+            var attrValue1 = new SvgEavPreserveAspectRatio<SvgElementPattern>(this);
+            AttributesTable.Add(attrInfo.Id, attrValue1);
 
-                return attrValue1;
-            }
+            return attrValue1;
         }
+    }
 
-        public SvgEavViewBox<SvgElementPattern> ViewBox
+    public SvgEavString<SvgElementPattern> HRef
+    {
+        get
         {
-            get
-            {
-                var attrInfo = SvgAttributeUtils.ViewBox;
+            var attrInfo = SvgAttributeUtils.HRef;
 
-                if (AttributesTable.TryGetValue(attrInfo.Id, out var attrValue))
-                    return attrValue as SvgEavViewBox<SvgElementPattern>;
+            if (AttributesTable.TryGetValue(attrInfo.Id, out var attrValue))
+                return attrValue as SvgEavString<SvgElementPattern>;
 
-                var attrValue1 = new SvgEavViewBox<SvgElementPattern>(this);
-                AttributesTable.Add(attrInfo.Id, attrValue1);
+            var attrValue1 = new SvgEavString<SvgElementPattern>(this, attrInfo);
+            AttributesTable.Add(attrInfo.Id, attrValue1);
 
-                return attrValue1;
-            }
+            return attrValue1;
         }
+    }
 
-        public SvgEavPreserveAspectRatio<SvgElementPattern> PreserveAspectRatio
+    public SvgEav<SvgValuePatternUnits, SvgElementPattern> PatternUnits
+    {
+        get
         {
-            get
-            {
-                var attrInfo = SvgAttributeUtils.PreserveAspectRatio;
+            var attrInfo = SvgAttributeUtils.PatternUnits;
 
-                if (AttributesTable.TryGetValue(attrInfo.Id, out var attrValue))
-                    return attrValue as SvgEavPreserveAspectRatio<SvgElementPattern>;
+            if (AttributesTable.TryGetValue(attrInfo.Id, out var attrValue))
+                return attrValue as SvgEav<SvgValuePatternUnits, SvgElementPattern>;
 
-                var attrValue1 = new SvgEavPreserveAspectRatio<SvgElementPattern>(this);
-                AttributesTable.Add(attrInfo.Id, attrValue1);
+            var attrValue1 = new SvgEav<SvgValuePatternUnits, SvgElementPattern>(this, attrInfo);
+            AttributesTable.Add(attrInfo.Id, attrValue1);
 
-                return attrValue1;
-            }
+            return attrValue1;
         }
+    }
 
-        public SvgEavString<SvgElementPattern> HRef
+    public SvgEav<SvgValuePatternUnits, SvgElementPattern> PatternContentUnits
+    {
+        get
         {
-            get
-            {
-                var attrInfo = SvgAttributeUtils.HRef;
+            var attrInfo = SvgAttributeUtils.PatternContentUnits;
 
-                if (AttributesTable.TryGetValue(attrInfo.Id, out var attrValue))
-                    return attrValue as SvgEavString<SvgElementPattern>;
+            if (AttributesTable.TryGetValue(attrInfo.Id, out var attrValue))
+                return attrValue as SvgEav<SvgValuePatternUnits, SvgElementPattern>;
 
-                var attrValue1 = new SvgEavString<SvgElementPattern>(this, attrInfo);
-                AttributesTable.Add(attrInfo.Id, attrValue1);
+            var attrValue1 = new SvgEav<SvgValuePatternUnits, SvgElementPattern>(this, attrInfo);
+            AttributesTable.Add(attrInfo.Id, attrValue1);
 
-                return attrValue1;
-            }
+            return attrValue1;
         }
+    }
 
-        public SvgEav<SvgValuePatternUnits, SvgElementPattern> PatternUnits
+    public SvgEav<SvgTransform, SvgElementPattern> PatternTransform
+    {
+        get
         {
-            get
-            {
-                var attrInfo = SvgAttributeUtils.PatternUnits;
+            var attrInfo = SvgAttributeUtils.PatternTransform;
 
-                if (AttributesTable.TryGetValue(attrInfo.Id, out var attrValue))
-                    return attrValue as SvgEav<SvgValuePatternUnits, SvgElementPattern>;
+            if (AttributesTable.TryGetValue(attrInfo.Id, out var attrValue))
+                return attrValue as SvgEav<SvgTransform, SvgElementPattern>;
 
-                var attrValue1 = new SvgEav<SvgValuePatternUnits, SvgElementPattern>(this, attrInfo);
-                AttributesTable.Add(attrInfo.Id, attrValue1);
+            var attrValue1 = new SvgEav<SvgTransform, SvgElementPattern>(this, attrInfo);
+            AttributesTable.Add(attrInfo.Id, attrValue1);
 
-                return attrValue1;
-            }
+            return attrValue1;
         }
-
-        public SvgEav<SvgValuePatternUnits, SvgElementPattern> PatternContentUnits
-        {
-            get
-            {
-                var attrInfo = SvgAttributeUtils.PatternContentUnits;
-
-                if (AttributesTable.TryGetValue(attrInfo.Id, out var attrValue))
-                    return attrValue as SvgEav<SvgValuePatternUnits, SvgElementPattern>;
-
-                var attrValue1 = new SvgEav<SvgValuePatternUnits, SvgElementPattern>(this, attrInfo);
-                AttributesTable.Add(attrInfo.Id, attrValue1);
-
-                return attrValue1;
-            }
-        }
-
-        public SvgEav<SvgTransform, SvgElementPattern> PatternTransform
-        {
-            get
-            {
-                var attrInfo = SvgAttributeUtils.PatternTransform;
-
-                if (AttributesTable.TryGetValue(attrInfo.Id, out var attrValue))
-                    return attrValue as SvgEav<SvgTransform, SvgElementPattern>;
-
-                var attrValue1 = new SvgEav<SvgTransform, SvgElementPattern>(this, attrInfo);
-                AttributesTable.Add(attrInfo.Id, attrValue1);
-
-                return attrValue1;
-            }
-        }
+    }
 
 
-        private SvgElementPattern()
-        {
-        }
+    private SvgElementPattern()
+    {
     }
 }

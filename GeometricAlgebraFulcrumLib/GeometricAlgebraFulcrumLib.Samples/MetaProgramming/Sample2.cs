@@ -3,29 +3,28 @@ using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.Proc
 using GeometricAlgebraFulcrumLib.MetaProgramming.Applications.CSharp.DenseKVectorsLib;
 using GeometricAlgebraFulcrumLib.MetaProgramming.Context;
 
-namespace GeometricAlgebraFulcrumLib.Samples.MetaProgramming
+namespace GeometricAlgebraFulcrumLib.Samples.MetaProgramming;
+
+public static class Sample2
 {
-    public static class Sample2
+    public static void Execute()
     {
-        public static void Execute()
-        {
-            //var code = 
-            //    GeoLibraryComposer.GenerateCode(4);
+        //var code = 
+        //    GeoLibraryComposer.GenerateCode(4);
 
-            var processor = 
-                new MetaContext().CreateEuclideanXGaProcessor();
+        var processor = 
+            new MetaContext().CreateEuclideanXGaProcessor();
 
-            var codeComposer = 
-                GaFuLLibraryComposer.Generate(
-                    "Euclidean3D", 
-                    processor, 
-                    4, 
-                    false
-                );
+        var codeComposer = 
+            GaFuLLibraryComposer.Generate(
+                "Euclidean3D", 
+                processor, 
+                4, 
+                false
+            );
 
-            codeComposer.CodeFilesComposer.SaveToFolder(@"D:\CodeGenOutput\");
+        codeComposer.CodeFilesComposer.SaveToFolder(@"D:\CodeGenOutput\");
 
-            Console.WriteLine("Done");
-        }
+        Console.WriteLine("Done");
     }
 }

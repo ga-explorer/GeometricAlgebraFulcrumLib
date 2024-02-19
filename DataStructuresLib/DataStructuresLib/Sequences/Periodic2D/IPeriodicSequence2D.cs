@@ -1,15 +1,14 @@
 ﻿using DataStructuresLib.Collections;
 using DataStructuresLib.Sequences.Periodic1D;
 
-namespace DataStructuresLib.Sequences.Periodic2D
+namespace DataStructuresLib.Sequences.Periodic2D;
+
+public interface IPeriodicSequence2D<T>
+    : IReadOnlyList2D<T>
 {
-    public interface IPeriodicSequence2D<T>
-        : IReadOnlyList2D<T>
-    {
-        bool IsBasic { get; }
+    bool IsBasic { get; }
 
-        bool IsOperator { get; }
+    bool IsOperator { get; }
 
-        PSeqSlice1D<T> GetSliceAt(int dimension, int index);
-    }
+    PSeqSlice1D<T> GetSliceAt(int dimension, int index);
 }

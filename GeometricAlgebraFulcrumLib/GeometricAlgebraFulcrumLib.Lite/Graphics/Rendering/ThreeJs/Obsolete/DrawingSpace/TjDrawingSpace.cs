@@ -1,5 +1,5 @@
-﻿namespace GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.ThreeJs.Obsolete.DrawingSpace
-{
+﻿namespace GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.ThreeJs.Obsolete.DrawingSpace;
+
 //    public sealed class TjDrawingSpace : 
 //        IReadOnlyList<TjDrawingSpaceLayer>, 
 //        IJsCodeHtmlPageGenerator
@@ -664,4 +664,3 @@
 //            return GetJavaScriptCode();
 //        }
 //    }
-}

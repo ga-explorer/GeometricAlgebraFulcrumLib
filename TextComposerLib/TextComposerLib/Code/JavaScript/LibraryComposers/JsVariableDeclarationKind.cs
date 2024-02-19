@@ -1,9 +1,8 @@
-﻿namespace TextComposerLib.Code.JavaScript.LibraryComposers
+﻿namespace TextComposerLib.Code.JavaScript.LibraryComposers;
+
+public enum JsVariableDeclarationKind
 {
-    public enum JsVariableDeclarationKind
-    {
-        Const,
-        Let,
-        Var
-    }
+    Const,
+    Let,
+    Var
 }

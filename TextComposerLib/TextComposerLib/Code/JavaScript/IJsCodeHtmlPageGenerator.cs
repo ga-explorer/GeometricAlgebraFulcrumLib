@@ -1,15 +1,14 @@
 ﻿using System.Collections.Generic;
 
-namespace TextComposerLib.Code.JavaScript
+namespace TextComposerLib.Code.JavaScript;
+
+public interface IJsCodeHtmlPageGenerator
 {
-    public interface IJsCodeHtmlPageGenerator
-    {
-        string HtmlTemplateText { get; }
+    string HtmlTemplateText { get; }
 
-        string HtmlPageTitle { get; }
+    string HtmlPageTitle { get; }
 
-        IEnumerable<string> JavaScriptIncludes { get; }
+    IEnumerable<string> JavaScriptIncludes { get; }
 
-        string GetJavaScriptCode();
-    }
+    string GetJavaScriptCode();
 }

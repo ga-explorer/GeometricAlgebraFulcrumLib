@@ -1,10 +1,9 @@
-﻿namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors.Dense
-{
-    public interface ILinVectorImmutableDenseStorage<T> :
-        ILinVectorDenseStorage<T>
-    {
-        public T this[int index] { get; }
+﻿namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors.Dense;
 
-        public T this[ulong index] { get; }
-    }
+public interface ILinVectorImmutableDenseStorage<T> :
+    ILinVectorDenseStorage<T>
+{
+    public T this[int index] { get; }
+
+    public T this[ulong index] { get; }
 }

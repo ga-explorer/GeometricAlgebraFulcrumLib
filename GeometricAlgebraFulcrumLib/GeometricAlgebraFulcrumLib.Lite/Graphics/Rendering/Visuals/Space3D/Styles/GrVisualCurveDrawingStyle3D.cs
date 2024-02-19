@@ -1,9 +1,8 @@
-﻿namespace GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.Visuals.Space3D.Styles
+﻿namespace GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.Visuals.Space3D.Styles;
+
+public enum GrVisualCurveDrawingStyle3D
 {
-    public enum GrVisualCurveDrawingStyle3D
-    {
-        Tube,
-        SolidLine,
-        DashedLine
-    }
+    Tube,
+    SolidLine,
+    DashedLine
 }

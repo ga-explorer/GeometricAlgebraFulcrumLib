@@ -7,68 +7,68 @@ using GeometricAlgebraFulcrumLib.MetaProgramming.Expressions;
 using GeometricAlgebraFulcrumLib.MetaProgramming.Languages;
 using TextComposerLib.Text.Parametric;
 
-namespace GeometricAlgebraFulcrumLib.MetaProgramming.Applications.CSharp.DenseMultivectorsLib
+namespace GeometricAlgebraFulcrumLib.MetaProgramming.Applications.CSharp.DenseMultivectorsLib;
+
+public sealed class GaFuLLibraryComposer :
+    GaFuLCodeLibraryComposerBase
 {
-    public sealed class GaFuLLibraryComposer :
-        GaFuLCodeLibraryComposerBase
+    public static string GenerateCode(int vSpaceDimensions)
     {
-        public static string GenerateCode(int vSpaceDimensions)
-        {
-            var codeLibraryComposer = new GaFuLLibraryComposer(vSpaceDimensions);
+        var codeLibraryComposer = new GaFuLLibraryComposer(vSpaceDimensions);
 
-            if (codeLibraryComposer.VerifyReadyToGenerate() == false)
-                return string.Empty;
+        if (codeLibraryComposer.VerifyReadyToGenerate() == false)
+            return string.Empty;
 
-            codeLibraryComposer.InitializeGenerator();
+        codeLibraryComposer.InitializeGenerator();
 
-            codeLibraryComposer.ComposeTextFiles();
+        codeLibraryComposer.ComposeTextFiles();
 
-            codeLibraryComposer.CodeFilesComposer.FinalizeAllFiles();
+        codeLibraryComposer.CodeFilesComposer.FinalizeAllFiles();
 
-            codeLibraryComposer.FinalizeGenerator();
+        codeLibraryComposer.FinalizeGenerator();
 
-            return codeLibraryComposer.CodeFilesComposer.ToString();
-        }
+        return codeLibraryComposer.CodeFilesComposer.ToString();
+    }
 
 
-        public override string Name 
-            => "C# Dense Multivector code library composer";
+    public override string Name 
+        => "C# Dense Multivector code library composer";
 
-        public override string Description 
-            => "C# Dense Multivector code library composer";
+    public override string Description 
+        => "C# Dense Multivector code library composer";
 
-        public XGaProcessor<IMetaExpressionAtomic> GeometricProcessor { get; }
+    public XGaProcessor<IMetaExpressionAtomic> GeometricProcessor { get; }
 
-        public int VSpaceDimensions { get; }
+    public int VSpaceDimensions { get; }
 
-        public ulong GaSpaceDimensions 
-            => 1UL << VSpaceDimensions;
+    public ulong GaSpaceDimensions 
+        => 1UL << VSpaceDimensions;
 
-        public string RootNamespace 
-            => $"EGA{VSpaceDimensions}D";
+    public string RootNamespace 
+        => $"EGA{VSpaceDimensions}D";
         
-        public ParametricTextComposer MultivectorClassTemplate 
-            => Templates["multivectorClass"];
+    public ParametricTextComposer MultivectorClassTemplate 
+        => Templates["multivectorClass"];
 
 
-        public GaFuLLibraryComposer(int vSpaceDimensions) : 
-            base(GaFuLLanguageServerBase.CSharpFloat64())
-        {
-            if (vSpaceDimensions < 2)
-                throw new ArgumentOutOfRangeException(nameof(vSpaceDimensions));
+    public GaFuLLibraryComposer(int vSpaceDimensions) : 
+        base(GaFuLLanguageServerBase.CSharpFloat64())
+    {
+        if (vSpaceDimensions < 2)
+            throw new ArgumentOutOfRangeException(nameof(vSpaceDimensions));
 
-            VSpaceDimensions = vSpaceDimensions;
-            GeometricProcessor = new MetaContext().CreateEuclideanXGaProcessor();
-        }
+        VSpaceDimensions = vSpaceDimensions;
+        GeometricProcessor = new MetaContext().CreateEuclideanXGaProcessor();
+    }
 
 
-        protected override bool InitializeTemplates()
-        {
-            Templates.Clear();
+    protected override bool InitializeTemplates()
+    {
+        Templates.Clear();
 
-            var codeTemplate1 = new ParametricTextComposer("#", "#");
+        var codeTemplate1 = new ParametricTextComposer("#", "#");
 
-            codeTemplate1.SetTemplateText(@"
+        codeTemplate1.SetTemplateText(@"
 using System.Collections;
 using System.Collections.Generic;
 
@@ -199,172 +199,171 @@ namespace EGA#vSpaceDimensions#D
     }
 }
 "
-            );
+        );
 
-            Templates.Add("multivectorClass", codeTemplate1);
+        Templates.Add("multivectorClass", codeTemplate1);
 
-            return true;
-        }
+        return true;
+    }
 
-        protected override void InitializeSubComponents()
-        {
+    protected override void InitializeSubComponents()
+    {
             
-        }
+    }
 
-        protected override bool VerifyReadyToGenerate()
-        {
-            return true;
-        }
-
-
-        private string GetMultivectorBinaryOperationCode(Func<XGaMultivector<IMetaExpressionAtomic>, XGaMultivector<IMetaExpressionAtomic>, XGaMultivector<IMetaExpressionAtomic>> binaryOperationFunc, Func<ulong, string> namingFunc1, Func<ulong, string> namingFunc2, Func<ulong, string> namingFunc3)
-        {
-            var context = new MetaContext(GeometricProcessor);
-
-            //context.AttachMathematicaExpressionEvaluator();
-
-            var mv1 = 
-                context.ParameterVariablesFactory.CreateDenseMultivector(
-                    VSpaceDimensions,
-                    id => $"mv1s{id}"
-                );
-
-            var mv2 = 
-                context.ParameterVariablesFactory.CreateDenseMultivector(
-                    VSpaceDimensions,
-                    id => $"mv2s{id}"
-                );
-
-            context.MergeExpressions = true;
-
-            var mv3 = 
-                binaryOperationFunc(mv1, mv2);
-
-            context.MergeExpressions = false;
-
-            mv3.SetIsOutput(true);
-
-            mv1.SetExternalNamesByTermId(namingFunc1);
-            mv2.SetExternalNamesByTermId(namingFunc2);
-            mv3.SetExternalNamesByTermId(namingFunc3);
-
-            //Console.WriteLine("Before Simplification:");
-            //Console.WriteLine(context);
-            //Console.WriteLine();
-
-            //context.SimplifyRhsExpressions();
-
-            //Console.WriteLine("After Simplification:");
-            //Console.WriteLine(context);
-            //Console.WriteLine();
-
-            context.OptimizeContext();
-
-            context.SetIntermediateExternalNamesByNameIndex(index => $"tempVar{index}");
-
-            var codeComposer = new GaFuLMetaContextCodeComposer(GeoLanguage, context);
-
-            return codeComposer.Generate();
-        }
+    protected override bool VerifyReadyToGenerate()
+    {
+        return true;
+    }
 
 
-        protected override void ComposeTextFiles()
-        {
-            // All code is generated inside a single file
-            CodeFilesComposer.InitializeFile("Multivector.cs");
+    private string GetMultivectorBinaryOperationCode(Func<XGaMultivector<IMetaExpressionAtomic>, XGaMultivector<IMetaExpressionAtomic>, XGaMultivector<IMetaExpressionAtomic>> binaryOperationFunc, Func<ulong, string> namingFunc1, Func<ulong, string> namingFunc2, Func<ulong, string> namingFunc3)
+    {
+        var context = new MetaContext(GeometricProcessor);
 
-            //Fill code parts of parametric template
-            MultivectorClassTemplate["vSpaceDimensions"] = VSpaceDimensions.ToString();
+        //context.AttachMathematicaExpressionEvaluator();
 
-            MultivectorClassTemplate["gaSpaceDimensions"] = GaSpaceDimensions.ToString();
-
-            MultivectorClassTemplate["mvAddCode"] = GetMultivectorBinaryOperationCode(
-                (mv1, mv2) => mv1 + mv2,
-                id => $"mv1._scalarsArray[{id}]",
-                id => $"mv2._scalarsArray[{id}]",
-                id => $"mv._scalarsArray[{id}]"
+        var mv1 = 
+            context.ParameterVariablesFactory.CreateDenseMultivector(
+                VSpaceDimensions,
+                id => $"mv1s{id}"
             );
 
-            MultivectorClassTemplate["mvSubtractCode"] = GetMultivectorBinaryOperationCode(
-                (mv1, mv2) => mv1 - mv2,
-                id => $"mv1._scalarsArray[{id}]",
-                id => $"mv2._scalarsArray[{id}]",
-                id => $"mv._scalarsArray[{id}]"
+        var mv2 = 
+            context.ParameterVariablesFactory.CreateDenseMultivector(
+                VSpaceDimensions,
+                id => $"mv2s{id}"
             );
 
-            MultivectorClassTemplate["mvGpCode"] = GetMultivectorBinaryOperationCode(
-                (mv1, mv2) => mv1.EGp(mv2),
-                id => $"_scalarsArray[{id}]",
-                id => $"mv2._scalarsArray[{id}]",
-                id => $"mv._scalarsArray[{id}]"
-            );
+        context.MergeExpressions = true;
 
-            MultivectorClassTemplate["mvOpCode"] = GetMultivectorBinaryOperationCode(
-                (mv1, mv2) => mv1.Op(mv2),
-                id => $"_scalarsArray[{id}]",
-                id => $"mv2._scalarsArray[{id}]",
-                id => $"mv._scalarsArray[{id}]"
-            );
+        var mv3 = 
+            binaryOperationFunc(mv1, mv2);
 
-            MultivectorClassTemplate["mvLcpCode"] = GetMultivectorBinaryOperationCode(
-                (mv1, mv2) => mv1.ELcp(mv2),
-                id => $"_scalarsArray[{id}]",
-                id => $"mv2._scalarsArray[{id}]",
-                id => $"mv._scalarsArray[{id}]"
-            );
+        context.MergeExpressions = false;
 
-            MultivectorClassTemplate["mvRcpCode"] = GetMultivectorBinaryOperationCode(
-                (mv1, mv2) => mv1.ERcp(mv2),
-                id => $"_scalarsArray[{id}]",
-                id => $"mv2._scalarsArray[{id}]",
-                id => $"mv._scalarsArray[{id}]"
-            );
+        mv3.SetIsOutput(true);
 
-            MultivectorClassTemplate["mvFdpCode"] = GetMultivectorBinaryOperationCode(
-                (mv1, mv2) => mv1.EFdp(mv2),
-                id => $"_scalarsArray[{id}]",
-                id => $"mv2._scalarsArray[{id}]",
-                id => $"mv._scalarsArray[{id}]"
-            );
+        mv1.SetExternalNamesByTermId(namingFunc1);
+        mv2.SetExternalNamesByTermId(namingFunc2);
+        mv3.SetExternalNamesByTermId(namingFunc3);
 
-            MultivectorClassTemplate["mvHipCode"] = GetMultivectorBinaryOperationCode(
-                (mv1, mv2) => mv1.EHip(mv2),
-                id => $"_scalarsArray[{id}]",
-                id => $"mv2._scalarsArray[{id}]",
-                id => $"mv._scalarsArray[{id}]"
-            );
+        //Console.WriteLine("Before Simplification:");
+        //Console.WriteLine(context);
+        //Console.WriteLine();
 
-            MultivectorClassTemplate["mvAcpCode"] = GetMultivectorBinaryOperationCode(
-                (mv1, mv2) => mv1.EAcp(mv2),
-                id => $"_scalarsArray[{id}]",
-                id => $"mv2._scalarsArray[{id}]",
-                id => $"mv._scalarsArray[{id}]"
-            );
+        //context.SimplifyRhsExpressions();
 
-            MultivectorClassTemplate["mvCpCode"] = GetMultivectorBinaryOperationCode(
-                (mv1, mv2) => mv1.ECp(mv2),
-                id => $"_scalarsArray[{id}]",
-                id => $"mv2._scalarsArray[{id}]",
-                id => $"mv._scalarsArray[{id}]"
-            );
+        //Console.WriteLine("After Simplification:");
+        //Console.WriteLine(context);
+        //Console.WriteLine();
 
-            //Generate template code
-            var classCode = 
-                MultivectorClassTemplate.GenerateText();
+        context.OptimizeContext();
 
-            CodeFilesComposer.ActiveFileTextComposer.AppendLineAtNewLine(classCode);
+        context.SetIntermediateExternalNamesByNameIndex(index => $"tempVar{index}");
 
-            CodeFilesComposer.FinalizeActiveFile();
-        }
+        var codeComposer = new GaFuLMetaContextCodeComposer(GeoLanguage, context);
 
-        protected override void FinalizeSubComponents()
-        {
+        return codeComposer.Generate();
+    }
+
+
+    protected override void ComposeTextFiles()
+    {
+        // All code is generated inside a single file
+        CodeFilesComposer.InitializeFile("Multivector.cs");
+
+        //Fill code parts of parametric template
+        MultivectorClassTemplate["vSpaceDimensions"] = VSpaceDimensions.ToString();
+
+        MultivectorClassTemplate["gaSpaceDimensions"] = GaSpaceDimensions.ToString();
+
+        MultivectorClassTemplate["mvAddCode"] = GetMultivectorBinaryOperationCode(
+            (mv1, mv2) => mv1 + mv2,
+            id => $"mv1._scalarsArray[{id}]",
+            id => $"mv2._scalarsArray[{id}]",
+            id => $"mv._scalarsArray[{id}]"
+        );
+
+        MultivectorClassTemplate["mvSubtractCode"] = GetMultivectorBinaryOperationCode(
+            (mv1, mv2) => mv1 - mv2,
+            id => $"mv1._scalarsArray[{id}]",
+            id => $"mv2._scalarsArray[{id}]",
+            id => $"mv._scalarsArray[{id}]"
+        );
+
+        MultivectorClassTemplate["mvGpCode"] = GetMultivectorBinaryOperationCode(
+            (mv1, mv2) => mv1.EGp(mv2),
+            id => $"_scalarsArray[{id}]",
+            id => $"mv2._scalarsArray[{id}]",
+            id => $"mv._scalarsArray[{id}]"
+        );
+
+        MultivectorClassTemplate["mvOpCode"] = GetMultivectorBinaryOperationCode(
+            (mv1, mv2) => mv1.Op(mv2),
+            id => $"_scalarsArray[{id}]",
+            id => $"mv2._scalarsArray[{id}]",
+            id => $"mv._scalarsArray[{id}]"
+        );
+
+        MultivectorClassTemplate["mvLcpCode"] = GetMultivectorBinaryOperationCode(
+            (mv1, mv2) => mv1.ELcp(mv2),
+            id => $"_scalarsArray[{id}]",
+            id => $"mv2._scalarsArray[{id}]",
+            id => $"mv._scalarsArray[{id}]"
+        );
+
+        MultivectorClassTemplate["mvRcpCode"] = GetMultivectorBinaryOperationCode(
+            (mv1, mv2) => mv1.ERcp(mv2),
+            id => $"_scalarsArray[{id}]",
+            id => $"mv2._scalarsArray[{id}]",
+            id => $"mv._scalarsArray[{id}]"
+        );
+
+        MultivectorClassTemplate["mvFdpCode"] = GetMultivectorBinaryOperationCode(
+            (mv1, mv2) => mv1.EFdp(mv2),
+            id => $"_scalarsArray[{id}]",
+            id => $"mv2._scalarsArray[{id}]",
+            id => $"mv._scalarsArray[{id}]"
+        );
+
+        MultivectorClassTemplate["mvHipCode"] = GetMultivectorBinaryOperationCode(
+            (mv1, mv2) => mv1.EHip(mv2),
+            id => $"_scalarsArray[{id}]",
+            id => $"mv2._scalarsArray[{id}]",
+            id => $"mv._scalarsArray[{id}]"
+        );
+
+        MultivectorClassTemplate["mvAcpCode"] = GetMultivectorBinaryOperationCode(
+            (mv1, mv2) => mv1.EAcp(mv2),
+            id => $"_scalarsArray[{id}]",
+            id => $"mv2._scalarsArray[{id}]",
+            id => $"mv._scalarsArray[{id}]"
+        );
+
+        MultivectorClassTemplate["mvCpCode"] = GetMultivectorBinaryOperationCode(
+            (mv1, mv2) => mv1.ECp(mv2),
+            id => $"_scalarsArray[{id}]",
+            id => $"mv2._scalarsArray[{id}]",
+            id => $"mv._scalarsArray[{id}]"
+        );
+
+        //Generate template code
+        var classCode = 
+            MultivectorClassTemplate.GenerateText();
+
+        CodeFilesComposer.ActiveFileTextComposer.AppendLineAtNewLine(classCode);
+
+        CodeFilesComposer.FinalizeActiveFile();
+    }
+
+    protected override void FinalizeSubComponents()
+    {
             
-        }
+    }
 
-        public override GaFuLCodeLibraryComposerBase CreateEmptyComposer()
-        {
-            return new GaFuLLibraryComposer(VSpaceDimensions);
-        }
+    public override GaFuLCodeLibraryComposerBase CreateEmptyComposer()
+    {
+        return new GaFuLLibraryComposer(VSpaceDimensions);
     }
 }

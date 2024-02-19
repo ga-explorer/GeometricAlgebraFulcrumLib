@@ -10,5 +10,4 @@ public static class RGaConformalVersorComposerUtils
     {
         return new RGaConformalVersor(conformalSpace, cgaMultivector);
     }
-
 }

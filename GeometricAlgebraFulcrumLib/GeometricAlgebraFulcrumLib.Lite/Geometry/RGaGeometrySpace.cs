@@ -1,13 +1,7 @@
-﻿using System.Diagnostics;
-using System.Runtime.CompilerServices;
-using DataStructuresLib;
-using DataStructuresLib.BitManipulation;
-using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Basis;
+﻿using System.Runtime.CompilerServices;
 using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Restricted;
-using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Restricted.Float64.LinearMaps.Outermorphisms;
 using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Restricted.Float64.LinearMaps.Reflectors;
 using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Restricted.Float64.Multivectors;
-using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Restricted.Float64.Multivectors.Composers;
 using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Restricted.Float64.Processors;
 
 // ReSharper disable CompareOfFloatsByEqualityOperator
@@ -16,27 +10,25 @@ namespace GeometricAlgebraFulcrumLib.Lite.Geometry;
 
 public abstract class RGaGeometrySpace
 {
-    public int VSpaceDimensions { get; }
+    public RGaGeometrySpaceBasisSpecs BasisSpecs { get; }
+
+    public RGaFloat64Processor Processor 
+        => BasisSpecs.Processor;
+    
+    public RGaMetric Metric 
+        => Processor;
+
+    public int VSpaceDimensions 
+        => BasisSpecs.VSpaceDimensions;
     
     public ulong GaSpaceDimensions 
         => 1UL << VSpaceDimensions;
 
-    public RGaMetric Metric 
-        => Processor;
-
-    public abstract RGaFloat64Processor Processor { get; }
-
-    public abstract IReadOnlyList<string> LaTeXVectorSubscripts { get; }
-    
-    public abstract IRGaFloat64Outermorphism LaTeXBasisMap { get; }
-
-    public abstract IRGaFloat64Outermorphism LaTeXBasisMapInverse { get; }
-    
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    protected RGaGeometrySpace(int vSpaceDimensions)
+    protected RGaGeometrySpace(RGaGeometrySpaceBasisSpecs basisSpecs)
     {
-        VSpaceDimensions = vSpaceDimensions;
+        BasisSpecs = basisSpecs;
     }
 
     
@@ -48,130 +40,130 @@ public abstract class RGaGeometrySpace
     }
 
 
-    protected string BasisBladeToLaTeX(ulong id)
-    {
-        Debug.Assert(id > 0 && id < GaSpaceDimensions);
+    //protected string BasisBladeToLaTeX(ulong id)
+    //{
+    //    Debug.Assert(id > 0 && id < GaSpaceDimensions);
 
-        var subscriptText = 
-            id
-                .PatternToPositions()
-                .Select(i => LaTeXVectorSubscripts[i])
-                .ConcatenateText(",");
+    //    var subscriptText = 
+    //        id
+    //            .PatternToPositions()
+    //            .Select(i => BasisSpecs.LaTeXVectorSubscripts[i])
+    //            .ConcatenateText(",");
 
-        return @$"\boldsymbol{{e}}_{{{subscriptText}}}";
-    }
+    //    return @$"\boldsymbol{{e}}_{{{subscriptText}}}";
+    //}
 
-    protected string ScalarToLaTeX(double scalar)
-    {
-        Debug.Assert(scalar != 0);
+    //protected string ScalarToLaTeX(double scalar)
+    //{
+    //    Debug.Assert(scalar != 0);
 
-        if (scalar == 1)
-            return " +";
+    //    if (scalar == 1)
+    //        return " +";
 
-        if (scalar == -1)
-            return " -";
+    //    if (scalar == -1)
+    //        return " -";
 
-        var scalarText = 
-            Math.Abs(scalar).ToString("G8");
+    //    var scalarText = 
+    //        Math.Abs(scalar).ToString("G8");
             
-        var eIndex = 
-            scalarText.IndexOf(
-                'E', 
-                StringComparison.InvariantCultureIgnoreCase
-            );
+    //    var eIndex = 
+    //        scalarText.IndexOf(
+    //            'E', 
+    //            StringComparison.InvariantCultureIgnoreCase
+    //        );
 
-        if (eIndex < 0)
-            return scalar > 0 
-                ? " + " + scalarText
-                : " - " + scalarText;
+    //    if (eIndex < 0)
+    //        return scalar > 0 
+    //            ? " + " + scalarText
+    //            : " - " + scalarText;
 
-        var scalarTextPart1 = 
-            scalarText[..eIndex];
+    //    var scalarTextPart1 = 
+    //        scalarText[..eIndex];
             
-        var scalarTextPart2 = 
-            scalarText[(eIndex + 1)..];
+    //    var scalarTextPart2 = 
+    //        scalarText[(eIndex + 1)..];
 
-        scalarText = @$"{scalarTextPart1}\times10^{{{scalarTextPart2}}}";
+    //    scalarText = @$"{scalarTextPart1}\times10^{{{scalarTextPart2}}}";
         
-        return scalar > 0 
-            ? " + " + scalarText
-            : " - " + scalarText; 
-    }
+    //    return scalar > 0 
+    //        ? " + " + scalarText
+    //        : " - " + scalarText; 
+    //}
 
-    protected string ScalarTermToLaTeX(double scalar)
-    {
-        Debug.Assert(scalar != 0);
+    //protected string ScalarTermToLaTeX(double scalar)
+    //{
+    //    Debug.Assert(scalar != 0);
 
-        var scalarText = 
-            Math.Abs(scalar).ToString("G8");
+    //    var scalarText = 
+    //        Math.Abs(scalar).ToString("G8");
             
-        var eIndex = 
-            scalarText.IndexOf(
-                'E', 
-                StringComparison.InvariantCultureIgnoreCase
-            );
+    //    var eIndex = 
+    //        scalarText.IndexOf(
+    //            'E', 
+    //            StringComparison.InvariantCultureIgnoreCase
+    //        );
 
-        if (eIndex < 0)
-            return scalar > 0 
-                ? " + " + scalarText
-                : " - " + scalarText;
+    //    if (eIndex < 0)
+    //        return scalar > 0 
+    //            ? " + " + scalarText
+    //            : " - " + scalarText;
 
-        var scalarTextPart1 = 
-            scalarText[..eIndex];
+    //    var scalarTextPart1 = 
+    //        scalarText[..eIndex];
             
-        var scalarTextPart2 = 
-            scalarText[(eIndex + 1)..];
+    //    var scalarTextPart2 = 
+    //        scalarText[(eIndex + 1)..];
 
-        scalarText = @$"{scalarTextPart1}\times10^{{{scalarTextPart2}}}";
+    //    scalarText = @$"{scalarTextPart1}\times10^{{{scalarTextPart2}}}";
         
-        return scalar > 0 
-            ? " + " + scalarText
-            : " - " + scalarText;
-    }
+    //    return scalar > 0 
+    //        ? " + " + scalarText
+    //        : " - " + scalarText;
+    //}
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    protected string TermToLaTeX(ulong id, double scalar)
-    {
-        return id == 0 
-            ? ScalarTermToLaTeX(scalar) 
-            : $"{ScalarToLaTeX(scalar)} {BasisBladeToLaTeX(id)}";
-    }
+    //[MethodImpl(MethodImplOptions.AggressiveInlining)]
+    //protected string TermToLaTeX(ulong id, double scalar)
+    //{
+    //    return id == 0 
+    //        ? ScalarTermToLaTeX(scalar) 
+    //        : $"{ScalarToLaTeX(scalar)} {BasisBladeToLaTeX(id)}";
+    //}
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public string ToLaTeX(double mv)
-    {
-        return ToLaTeX(
-            (RGaFloat64Multivector) Processor.CreateScalar(mv)
-        );
-    }
+    //[MethodImpl(MethodImplOptions.AggressiveInlining)]
+    //public string ToLaTeX(double mv)
+    //{
+    //    return ToLaTeX(
+    //        (RGaFloat64Multivector) Processor.CreateScalar(mv)
+    //    );
+    //}
     
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public string ToLaTeX(RGaFloat64Scalar mv)
-    {
-        return ToLaTeX(
-            (RGaFloat64Multivector) mv
-        );
-    }
+    //[MethodImpl(MethodImplOptions.AggressiveInlining)]
+    //public string ToLaTeX(RGaFloat64Scalar mv)
+    //{
+    //    return ToLaTeX(
+    //        (RGaFloat64Multivector) mv
+    //    );
+    //}
 
-    public string ToLaTeX(RGaFloat64Multivector mv)
-    {
-        if (mv.IsZero)
-            return "0";
+    //public string ToLaTeX(RGaFloat64Multivector mv)
+    //{
+    //    if (mv.IsZero)
+    //        return "0";
         
-        var latexText =
-            LaTeXBasisMap.OmMap(mv)
-                .IdScalarPairs
-                .OrderBy(p => p.Key.Grade())
-                .ThenBy(p => p.Key)
-                .Select(p => TermToLaTeX(p.Key, p.Value))
-                .ConcatenateText();
+    //    var latexText =
+    //        BasisMap.OmMap(mv)
+    //            .IdScalarPairs
+    //            .OrderBy(p => p.Key.Grade())
+    //            .ThenBy(p => p.Key)
+    //            .Select(p => TermToLaTeX(p.Key, p.Value))
+    //            .ConcatenateText();
 
-        latexText = latexText[1] == '+'
-            ? latexText[2..] 
-            : "-" + latexText[2..];
+    //    latexText = latexText[1] == '+'
+    //        ? latexText[2..] 
+    //        : "-" + latexText[2..];
 
-        return latexText.Trim();
-    }
+    //    return latexText.Trim();
+    //}
     
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]

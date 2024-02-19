@@ -1,23 +1,22 @@
 ﻿using GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.PovRay.SDL.Values;
 
-namespace GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.PovRay.SDL.Lights
+namespace GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.PovRay.SDL.Lights;
+
+public enum SdlSpotLightShape
 {
-    public enum SdlSpotLightShape
-    {
-        Conic = 0, Cylindrical = 1
-    }
+    Conic = 0, Cylindrical = 1
+}
 
-    public sealed class SdlSpotLightSpecs
-    {
-        public SdlSpotLightShape Shape { get; set; }
+public sealed class SdlSpotLightSpecs
+{
+    public SdlSpotLightShape Shape { get; set; }
 
-        public ISdlScalarValue Radius { get; set; }
+    public ISdlScalarValue Radius { get; set; }
 
-        public ISdlScalarValue FallOff { get; set; }
+    public ISdlScalarValue FallOff { get; set; }
 
-        public ISdlScalarValue Tightness { get; set; }
+    public ISdlScalarValue Tightness { get; set; }
 
-        public ISdlVectorValue PointAt { get; set; }
+    public ISdlVectorValue PointAt { get; set; }
 
-    }
 }

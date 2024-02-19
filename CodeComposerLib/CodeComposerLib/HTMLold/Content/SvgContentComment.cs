@@ -1,48 +1,47 @@
 ﻿using TextComposerLib.Text.Linear;
 
-namespace CodeComposerLib.HTMLold.Content
+namespace CodeComposerLib.HTMLold.Content;
+
+public sealed class HtmlContentComment : IHtmlContent
 {
-    public sealed class HtmlContentComment : IHtmlContent
+    public static HtmlContentComment Create(string commentText)
     {
-        public static HtmlContentComment Create(string commentText)
-        {
-            return new HtmlContentComment(commentText);
-        }
+        return new HtmlContentComment(commentText);
+    }
 
 
-        public bool IsContentText => false;
+    public bool IsContentText => false;
 
-        public bool IsContentComment => true;
+    public bool IsContentComment => true;
 
-        public bool IsContentElement => false;
+    public bool IsContentElement => false;
 
-        private string _commentText;
-        public string CommentText
-        {
-            get { return _commentText; }
-            set { _commentText = value ?? string.Empty; }
-        }
+    private string _commentText;
+    public string CommentText
+    {
+        get { return _commentText; }
+        set { _commentText = value ?? string.Empty; }
+    }
 
-        private HtmlContentComment(string commentText)
-        {
-            _commentText = commentText ?? string.Empty;
-        }
+    private HtmlContentComment(string commentText)
+    {
+        _commentText = commentText ?? string.Empty;
+    }
 
 
-        public override string ToString()
-        {
-            if (string.IsNullOrEmpty(CommentText))
-                return "<!-- -->";
+    public override string ToString()
+    {
+        if (string.IsNullOrEmpty(CommentText))
+            return "<!-- -->";
 
-            var composer = new LinearTextComposer();
+        var composer = new LinearTextComposer();
 
-            return composer
-                .AppendLine("<!-- ")
-                .IncreaseIndentation()
-                .AppendLine(CommentText)
-                .DecreaseIndentation()
-                .AppendAtNewLine(" -->")
-                .ToString();
-        }
+        return composer
+            .AppendLine("<!-- ")
+            .IncreaseIndentation()
+            .AppendLine(CommentText)
+            .DecreaseIndentation()
+            .AppendAtNewLine(" -->")
+            .ToString();
     }
 }

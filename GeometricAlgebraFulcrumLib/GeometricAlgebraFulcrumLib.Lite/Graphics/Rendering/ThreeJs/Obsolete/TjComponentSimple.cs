@@ -1,13 +1,12 @@
 ﻿using TextComposerLib.Code.JavaScript.Obsolete;
 
-namespace GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.ThreeJs.Obsolete
+namespace GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.ThreeJs.Obsolete;
+
+public abstract class TjComponentSimple :
+    JsCodeComponentSimple
 {
-    public abstract class TjComponentSimple :
-        JsCodeComponentSimple
+    protected TjComponentSimple()
     {
-        protected TjComponentSimple()
-        {
-            DefaultParentName = "THREE";
-        }
+        DefaultParentName = "THREE";
     }
 }

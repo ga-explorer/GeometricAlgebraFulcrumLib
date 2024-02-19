@@ -1,8 +1,7 @@
-﻿namespace WebComposerLib.Svg.Elements.Categories
+﻿namespace WebComposerLib.Svg.Elements.Categories;
+
+public interface ISvgBasicShapeElement : 
+    ISvgShapeElement
 {
-    public interface ISvgBasicShapeElement : 
-        ISvgShapeElement
-    {
-        //<circle>, <ellipse>, <line>, <polygon>, <polyline>, <rect>
-    }
+    //<circle>, <ellipse>, <line>, <polygon>, <polyline>, <rect>
 }

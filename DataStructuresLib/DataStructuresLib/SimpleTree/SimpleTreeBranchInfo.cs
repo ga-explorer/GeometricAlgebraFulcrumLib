@@ -1,6 +1,5 @@
-﻿namespace DataStructuresLib.SimpleTree
+﻿namespace DataStructuresLib.SimpleTree;
+
+public class SimpleTreeBranchInfo
 {
-    public class SimpleTreeBranchInfo
-    {
-    }
 }

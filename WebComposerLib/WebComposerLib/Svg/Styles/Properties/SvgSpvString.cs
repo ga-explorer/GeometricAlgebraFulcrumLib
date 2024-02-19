@@ -1,47 +1,46 @@
 ﻿using TextComposerLib.Text;
 using WebComposerLib.Svg.Attributes;
 
-namespace WebComposerLib.Svg.Styles.Properties
+namespace WebComposerLib.Svg.Styles.Properties;
+
+public sealed class SvgSpvString : SvgStylePropertyValue
 {
-    public sealed class SvgSpvString : SvgStylePropertyValue
+    protected override string ValueComputedText 
+        => string.Empty;
+
+
+    internal SvgSpvString(SvgStyle parentElement, SvgAttributeInfo attributeInfo)
+        : base(parentElement, attributeInfo)
     {
-        protected override string ValueComputedText 
-            => string.Empty;
+    }
 
 
-        internal SvgSpvString(SvgStyle parentElement, SvgAttributeInfo attributeInfo)
-            : base(parentElement, attributeInfo)
+    public override SvgStylePropertyValue CreateCopy()
+    {
+        return new SvgSpvString(ParentStyle, AttributeInfo)
         {
-        }
+            ValueStoredText = ValueStoredText
+        };
+    }
 
+    public override SvgStylePropertyValue UpdateFrom(SvgStylePropertyValue sourcePropertyValue)
+    {
+        ValueStoredText = sourcePropertyValue?.ValueText;
 
-        public override SvgStylePropertyValue CreateCopy()
-        {
-            return new SvgSpvString(ParentStyle, AttributeInfo)
-            {
-                ValueStoredText = ValueStoredText
-            };
-        }
+        return this;
+    }
 
-        public override SvgStylePropertyValue UpdateFrom(SvgStylePropertyValue sourcePropertyValue)
-        {
-            ValueStoredText = sourcePropertyValue?.ValueText;
+    public SvgStyle SetTo(params string[] values)
+    {
+        ValueStoredText = values?.Concatenate(" ") ?? string.Empty;
 
-            return this;
-        }
+        return ParentStyle;
+    }
 
-        public SvgStyle SetTo(params string[] values)
-        {
-            ValueStoredText = values?.Concatenate(" ") ?? string.Empty;
+    public SvgStyle SetTo(IEnumerable<string> values)
+    {
+        ValueStoredText = values?.Concatenate(" ") ?? string.Empty;
 
-            return ParentStyle;
-        }
-
-        public SvgStyle SetTo(IEnumerable<string> values)
-        {
-            ValueStoredText = values?.Concatenate(" ") ?? string.Empty;
-
-            return ParentStyle;
-        }
+        return ParentStyle;
     }
 }

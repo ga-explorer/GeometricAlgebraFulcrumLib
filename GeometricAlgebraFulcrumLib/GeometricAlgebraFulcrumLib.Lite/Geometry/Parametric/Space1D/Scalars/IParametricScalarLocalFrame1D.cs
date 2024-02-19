@@ -1,15 +1,14 @@
-﻿namespace GeometricAlgebraFulcrumLib.Lite.Geometry.Parametric.Space1D.Scalars
+﻿namespace GeometricAlgebraFulcrumLib.Lite.Geometry.Parametric.Space1D.Scalars;
+
+public interface IParametricScalarLocalFrame1D
 {
-    public interface IParametricScalarLocalFrame1D
-    {
-        int Index { get; }
+    int Index { get; }
 
-        double Point { get; }
+    double Point { get; }
 
-        Color Color { get; set; }
+    Color Color { get; set; }
 
-        double ParameterValue { get; }
+    double ParameterValue { get; }
 
-        double Tangent { get; }
-    }
+    double Tangent { get; }
 }

@@ -4,59 +4,58 @@ using GeometricAlgebraFulcrumLib.Mathematica.Processors;
 using GeometricAlgebraFulcrumLib.Text;
 using Wolfram.NETLink;
 
-namespace GeometricAlgebraFulcrumLib.Mathematica.Text
+namespace GeometricAlgebraFulcrumLib.Mathematica.Text;
+
+public sealed class TextMathematicaComposer
+    : TextComposer<Expr>
 {
-    public sealed class TextMathematicaComposer
-        : TextComposer<Expr>
+    public static TextMathematicaComposer DefaultComposer { get; }
+        = new();
+
+
+    private TextMathematicaComposer() 
+        : base(ScalarProcessorOfWolframExpr.DefaultProcessor)
     {
-        public static TextMathematicaComposer DefaultComposer { get; }
-            = new();
+    }
 
 
-        private TextMathematicaComposer() 
-            : base(ScalarProcessorOfWolframExpr.DefaultProcessor)
+    public override string GetAngleText(Float64PlanarAngle angle)
+    {
+        return $"{angle.Degrees} Degree";
+    }
+
+    public override string GetScalarText(Expr scalar)
+    {
+        return scalar.ToString();
+    }
+
+    public override string GetArrayText(Expr[,] array)
+    {
+        var composer = new StringBuilder();
+
+        composer.Append("List[");
+
+        var rowsCount = array.GetLength(0);
+        var colsCount = array.GetLength(1);
+
+        for (var i = 0; i < rowsCount; i++)
         {
-        }
-
-
-        public override string GetAngleText(Float64PlanarAngle angle)
-        {
-            return $"{angle.Degrees} Degree";
-        }
-
-        public override string GetScalarText(Expr scalar)
-        {
-            return scalar.ToString();
-        }
-
-        public override string GetArrayText(Expr[,] array)
-        {
-            var composer = new StringBuilder();
+            if (i > 0) composer.Append(", ");
 
             composer.Append("List[");
 
-            var rowsCount = array.GetLength(0);
-            var colsCount = array.GetLength(1);
-
-            for (var i = 0; i < rowsCount; i++)
+            for (var j = 0; j < colsCount; j++)
             {
-                if (i > 0) composer.Append(", ");
+                if (j > 0) composer.Append(", ");
 
-                composer.Append("List[");
-
-                for (var j = 0; j < colsCount; j++)
-                {
-                    if (j > 0) composer.Append(", ");
-
-                    composer.Append(GetScalarText(array[i, j]));
-                }
-
-                composer.Append("]");
+                composer.Append(GetScalarText(array[i, j]));
             }
 
             composer.Append("]");
-
-            return composer.ToString();
         }
+
+        composer.Append("]");
+
+        return composer.ToString();
     }
 }

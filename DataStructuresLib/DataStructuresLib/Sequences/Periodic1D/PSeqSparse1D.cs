@@ -3,91 +3,90 @@ using System.Collections.Generic;
 using System.Linq;
 using DataStructuresLib.Basic;
 
-namespace DataStructuresLib.Sequences.Periodic1D
+namespace DataStructuresLib.Sequences.Periodic1D;
+
+public class PSeqSparse1D<T>
+    : IPeriodicSequence1D<T>
 {
-    public class PSeqSparse1D<T>
-        : IPeriodicSequence1D<T>
+    private readonly Dictionary<int, T> _dataDictionary;
+
+
+    public int Count { get; }
+
+    public T DefaultValue { get; set; }
+
+    public T this[int index]
     {
-        private readonly Dictionary<int, T> _dataDictionary;
-
-
-        public int Count { get; }
-
-        public T DefaultValue { get; set; }
-
-        public T this[int index]
+        get => _dataDictionary.TryGetValue(
+            index.Mod(Count),
+            out var value
+        ) ? value : DefaultValue;
+        set
         {
-            get => _dataDictionary.TryGetValue(
-                index.Mod(Count),
-                out var value
-            ) ? value : DefaultValue;
-            set
-            {
-                index = index.Mod(Count);
+            index = index.Mod(Count);
 
-                if (_dataDictionary.ContainsKey(index))
-                    _dataDictionary[index] = value;
-                else
-                    _dataDictionary.Add(index, value);
-            }
+            if (_dataDictionary.ContainsKey(index))
+                _dataDictionary[index] = value;
+            else
+                _dataDictionary.Add(index, value);
         }
+    }
 
-        public bool IsBasic 
-            => true;
+    public bool IsBasic 
+        => true;
 
-        public bool IsOperator 
-            => false;
-
-
-        public PSeqSparse1D(int count, IEnumerable<KeyValuePair<int, T>> dataDictionary)
-        {
-            Count = count;
-            DefaultValue = default;
-            _dataDictionary = dataDictionary.ToDictionary(
-                p => p.Key, 
-                p => p.Value
-            );
-        }
-
-        public PSeqSparse1D(int count, T defaultValue, IEnumerable<KeyValuePair<int, T>> dataDictionary)
-        {
-            Count = count;
-            DefaultValue = defaultValue;
-            _dataDictionary = dataDictionary.ToDictionary(
-                p => p.Key, 
-                p => p.Value
-            );
-        }
+    public bool IsOperator 
+        => false;
 
 
-        public PSeqSparse1D<T> Clear()
-        {
-            _dataDictionary.Clear();
+    public PSeqSparse1D(int count, IEnumerable<KeyValuePair<int, T>> dataDictionary)
+    {
+        Count = count;
+        DefaultValue = default;
+        _dataDictionary = dataDictionary.ToDictionary(
+            p => p.Key, 
+            p => p.Value
+        );
+    }
 
-            return this;
-        }
+    public PSeqSparse1D(int count, T defaultValue, IEnumerable<KeyValuePair<int, T>> dataDictionary)
+    {
+        Count = count;
+        DefaultValue = defaultValue;
+        _dataDictionary = dataDictionary.ToDictionary(
+            p => p.Key, 
+            p => p.Value
+        );
+    }
 
-        public PSeqSparse1D<T> SetToDefault(int index)
-        {
-            _dataDictionary.Remove(index.Mod(Count));
 
-            return this;
-        }
+    public PSeqSparse1D<T> Clear()
+    {
+        _dataDictionary.Clear();
 
-        public IEnumerator<T> GetEnumerator()
-        {
-            return Enumerable
-                .Range(0, Count)
-                .Select(i => this[i])
-                .GetEnumerator();
-        }
+        return this;
+    }
 
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return Enumerable
-                .Range(0, Count)
-                .Select(i => this[i])
-                .GetEnumerator();
-        }
+    public PSeqSparse1D<T> SetToDefault(int index)
+    {
+        _dataDictionary.Remove(index.Mod(Count));
+
+        return this;
+    }
+
+    public IEnumerator<T> GetEnumerator()
+    {
+        return Enumerable
+            .Range(0, Count)
+            .Select(i => this[i])
+            .GetEnumerator();
+    }
+
+    IEnumerator IEnumerable.GetEnumerator()
+    {
+        return Enumerable
+            .Range(0, Count)
+            .Select(i => this[i])
+            .GetEnumerator();
     }
 }

@@ -1,6 +1,7 @@
 ﻿using GeometricAlgebraFulcrumLib.Lite.Geometry.Conformal.Blades;
 using GeometricAlgebraFulcrumLib.Lite.Geometry.Conformal.Decoding;
 using System.Runtime.CompilerServices;
+using GeometricAlgebraFulcrumLib.Lite.Geometry.Conformal.Encoding;
 using GeometricAlgebraFulcrumLib.Lite.LinearAlgebra.Vectors.Space2D;
 using GeometricAlgebraFulcrumLib.Lite.LinearAlgebra.Vectors.Space3D;
 

@@ -1,8 +1,7 @@
-﻿namespace GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.BabylonJs
+﻿namespace GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.BabylonJs;
+
+public enum GrBabylonJsGridMaterialKind
 {
-    public enum GrBabylonJsGridMaterialKind
-    {
-        GridMaterial,
-        TexturedMaterial
-    }
+    GridMaterial,
+    TexturedMaterial
 }

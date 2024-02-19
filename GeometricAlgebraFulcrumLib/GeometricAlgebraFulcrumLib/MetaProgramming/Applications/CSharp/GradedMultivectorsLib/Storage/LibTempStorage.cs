@@ -3,63 +3,62 @@ using System.Collections;
 using System.Collections.Generic;
 using DataStructuresLib.BitManipulation;
 
-namespace GeometricAlgebraFulcrumLib.MetaProgramming.Applications.CSharp.GradedMultivectorsLib.Storage
+namespace GeometricAlgebraFulcrumLib.MetaProgramming.Applications.CSharp.GradedMultivectorsLib.Storage;
+
+public abstract class LibTempStorage :
+    IReadOnlyList<string>
 {
-    public abstract class LibTempStorage :
-        IReadOnlyList<string>
+    public static LibTempVariable CreateVariable(string name)
     {
-        public static LibTempVariable CreateVariable(string name)
+        return new LibTempVariable(name);
+    }
+
+    public static LibTempArray CreateArray(string name, int count)
+    {
+        return new LibTempArray(count, name);
+    }
+
+    public static LibTempVariableSet CreateVariableSet(Func<int, string> name, int count)
+    {
+        return new LibTempVariableSet(count, name);
+    }
+
+    public static LibTempStorage CreateAutomatic(string name, int count)
+    {
+        return count switch
         {
-            return new LibTempVariable(name);
-        }
+            1 => new LibTempVariable(name),
 
-        public static LibTempArray CreateArray(string name, int count)
-        {
-            return new LibTempArray(count, name);
-        }
+            <= 10 => new LibTempVariableSet(
+                count,
+                i => $"tempScalar{i}"
+            ),
 
-        public static LibTempVariableSet CreateVariableSet(Func<int, string> name, int count)
-        {
-            return new LibTempVariableSet(count, name);
-        }
-
-        public static LibTempStorage CreateAutomatic(string name, int count)
-        {
-            return count switch
-            {
-                1 => new LibTempVariable(name),
-
-                <= 10 => new LibTempVariableSet(
-                    count,
-                    i => $"tempScalar{i}"
-                    ),
-
-                _ => new LibTempArray(count, name)
-            };
-        }
+            _ => new LibTempArray(count, name)
+        };
+    }
 
 
-        public int Count { get; }
+    public int Count { get; }
 
-        public abstract string this[int index] { get; }
-
-
-        protected LibTempStorage(int count)
-        {
-            Count = count;
-        }
+    public abstract string this[int index] { get; }
 
 
-        public abstract string GetDeclareCode();
+    protected LibTempStorage(int count)
+    {
+        Count = count;
+    }
 
-        public IEnumerator<string> GetEnumerator()
-        {
-            return Count.GetRange(i => this[i]).GetEnumerator();
-        }
 
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
-        }
+    public abstract string GetDeclareCode();
+
+    public IEnumerator<string> GetEnumerator()
+    {
+        return Count.GetRange(i => this[i]).GetEnumerator();
+    }
+
+    IEnumerator IEnumerable.GetEnumerator()
+    {
+        return GetEnumerator();
     }
 }

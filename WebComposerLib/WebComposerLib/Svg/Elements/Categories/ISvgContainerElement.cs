@@ -1,8 +1,7 @@
-﻿namespace WebComposerLib.Svg.Elements.Categories
+﻿namespace WebComposerLib.Svg.Elements.Categories;
+
+public interface ISvgContainerElement : ISvgElement
 {
-    public interface ISvgContainerElement : ISvgElement
-    {
-        //<a>, <defs>, <g>, <marker>, <mask>, <missing-glyph>, <pattern>, <svg>, <switch>,
-        //<symbol>, <unknown>
-    }
+    //<a>, <defs>, <g>, <marker>, <mask>, <missing-glyph>, <pattern>, <svg>, <switch>,
+    //<symbol>, <unknown>
 }

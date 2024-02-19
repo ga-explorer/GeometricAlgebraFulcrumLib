@@ -1,8 +1,7 @@
-﻿namespace WebComposerLib.LaTeX.ImageComposers
+﻿namespace WebComposerLib.LaTeX.ImageComposers;
+
+public enum WclCSharpMathLaTeXRendererType
 {
-    public enum WclCSharpMathLaTeXRendererType
-    {
-        MathPainter,
-        TextPainter
-    }
+    MathPainter,
+    TextPainter
 }

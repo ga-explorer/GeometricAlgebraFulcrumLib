@@ -7,145 +7,144 @@ using GeometricAlgebraFulcrumLib.MetaProgramming.Languages;
 using TextComposerLib.Text.Linear;
 using TextComposerLib.Text.Structured;
 
-namespace GeometricAlgebraFulcrumLib.MetaProgramming.Applications.CSharp.DenseKVectorsLib.KVector
+namespace GeometricAlgebraFulcrumLib.MetaProgramming.Applications.CSharp.DenseKVectorsLib.KVector;
+
+internal sealed class SdfMethodsFileComposer 
+    : GaFuLLibraryMetaContextFileComposerBase
 {
-    internal sealed class SdfMethodsFileComposer 
-        : GaFuLLibraryMetaContextFileComposerBase
+    private int _inGrade;
+    private XGaKVector<IMetaExpressionAtomic> _inputKVector;
+    private MetaExpressionVariableComputed _outputScalar;
+    private GaFuLLanguageOperationSpecs _operationSpecs;
+
+    private readonly GaFuLLanguageOperationSpecs[] _operationSpecsArray = new[]
     {
-        private int _inGrade;
-        private XGaKVector<IMetaExpressionAtomic> _inputKVector;
-        private MetaExpressionVariableComputed _outputScalar;
-        private GaFuLLanguageOperationSpecs _operationSpecs;
+        GaFuLLanguageOperationKind.UnaryNorm.CreateEuclideanOperationSpecs(),
+        GaFuLLanguageOperationKind.UnaryNorm.CreateMetricOperationSpecs(),
 
-        private readonly GaFuLLanguageOperationSpecs[] _operationSpecsArray = new[]
-        {
-            GaFuLLanguageOperationKind.UnaryNorm.CreateEuclideanOperationSpecs(),
-            GaFuLLanguageOperationKind.UnaryNorm.CreateMetricOperationSpecs(),
+        GaFuLLanguageOperationKind.UnaryNormSquared.CreateEuclideanOperationSpecs(),
+        GaFuLLanguageOperationKind.UnaryNormSquared.CreateMetricOperationSpecs()
 
-            GaFuLLanguageOperationKind.UnaryNormSquared.CreateEuclideanOperationSpecs(),
-            GaFuLLanguageOperationKind.UnaryNormSquared.CreateMetricOperationSpecs()
-
-        };
+    };
 
 
-        internal SdfMethodsFileComposer(GaFuLLibraryComposer libGen)
-            : base(libGen)
-        {
-        }
+    internal SdfMethodsFileComposer(GaFuLLibraryComposer libGen)
+        : base(libGen)
+    {
+    }
 
         
-        protected override void DefineContextParameters(MetaContext context)
+    protected override void DefineContextParameters(MetaContext context)
+    {
+        _inputKVector = context.ParameterVariablesFactory.CreateDenseKVector(
+            VSpaceDimensions,
+            _inGrade,
+            index => $"kVectorScalar{index}"
+        );
+    }
+
+    protected override void DefineContextComputations(MetaContext context)
+    {
+        var outputScalar = _operationSpecs.OperationKind switch
         {
-            _inputKVector = context.ParameterVariablesFactory.CreateDenseKVector(
-                VSpaceDimensions,
-                _inGrade,
-                index => $"kVectorScalar{index}"
-            );
-        }
+            GaFuLLanguageOperationKind.UnaryNorm =>
+                _operationSpecs.IsEuclidean
+                    ? _inputKVector.ENorm() 
+                    : _inputKVector.Norm(),
 
-        protected override void DefineContextComputations(MetaContext context)
-        {
-            var outputScalar = _operationSpecs.OperationKind switch
-            {
-                GaFuLLanguageOperationKind.UnaryNorm =>
-                    _operationSpecs.IsEuclidean
-                        ? _inputKVector.ENorm() 
-                        : _inputKVector.Norm(),
+            GaFuLLanguageOperationKind.UnaryNormSquared =>
+                _operationSpecs.IsEuclidean
+                    ? _inputKVector.ENormSquared() 
+                    : _inputKVector.NormSquared(),
 
-                GaFuLLanguageOperationKind.UnaryNormSquared =>
-                    _operationSpecs.IsEuclidean
-                        ? _inputKVector.ENormSquared() 
-                        : _inputKVector.NormSquared(),
+            //GeoClcOperationKind.UnaryMagnitude =>
+            //    OperationSpecs.IsEuclidean
+            //        ? _inputKVector.EMagnitude() 
+            //        : _inputKVector.Magnitude(GeometricProcessor),
 
-                //GeoClcOperationKind.UnaryMagnitude =>
-                //    OperationSpecs.IsEuclidean
-                //        ? _inputKVector.EMagnitude() 
-                //        : _inputKVector.Magnitude(GeometricProcessor),
+            //GeoClcOperationKind.UnaryMagnitudeSquared =>
+            //    OperationSpecs.IsEuclidean
+            //        ? _inputKVector.EMagnitudeSquared() 
+            //        : _inputKVector.MagnitudeSquared(GeometricProcessor),
 
-                //GeoClcOperationKind.UnaryMagnitudeSquared =>
-                //    OperationSpecs.IsEuclidean
-                //        ? _inputKVector.EMagnitudeSquared() 
-                //        : _inputKVector.MagnitudeSquared(GeometricProcessor),
+            _ => throw new InvalidOperationException()
+        };
 
-                _ => throw new InvalidOperationException()
-            };
+        _outputScalar = (MetaExpressionVariableComputed) outputScalar.ScalarValue();
 
-            _outputScalar = (MetaExpressionVariableComputed) outputScalar.ScalarValue();
+        _outputScalar.IsOutputVariable = true;
+    }
 
-            _outputScalar.IsOutputVariable = true;
-        }
+    protected override void DefineContextExternalNames(MetaContext context)
+    {
+        _inputKVector.SetExternalNamesByTermIndex(
+            index => $"scalars[{index}]"
+        );
 
-        protected override void DefineContextExternalNames(MetaContext context)
-        {
-            _inputKVector.SetExternalNamesByTermIndex(
-                index => $"scalars[{index}]"
-            );
-
-            _outputScalar.ExternalName = "result";
+        _outputScalar.ExternalName = "result";
             
-            context.SetIntermediateExternalNamesByNameIndex(
-                DenseKVectorsLibraryComposer.MaxTargetLocalVars,
-                index => $"tempVar{index:X4}",
-                index => $"tempArray[{index}]"
-            );
-        }
+        context.SetIntermediateExternalNamesByNameIndex(
+            DenseKVectorsLibraryComposer.MaxTargetLocalVars,
+            index => $"tempVar{index:X4}",
+            index => $"tempArray[{index}]"
+        );
+    }
 
-        private void GenerateNormFunction(GaFuLLanguageOperationSpecs opSpecs, int inGrade)
-        {
-            _inGrade = inGrade;
-            _operationSpecs = opSpecs;
+    private void GenerateNormFunction(GaFuLLanguageOperationSpecs opSpecs, int inGrade)
+    {
+        _inGrade = inGrade;
+        _operationSpecs = opSpecs;
 
-            var computationsCode = GenerateCode();
+        var computationsCode = GenerateCode();
 
-            TextComposer.AppendAtNewLine(
-                Templates["norm"],
+        TextComposer.AppendAtNewLine(
+            Templates["norm"],
+            "name", opSpecs,
+            "grade", inGrade,
+            "double", GeoLanguage.ScalarTypeName,
+            "computations", computationsCode
+        );
+    }
+
+    private void GenerateMainNormFunction(string opSpecs)
+    {
+        var caseTemplate = Templates["main_norm_case"];
+
+        var casesText = new ListTextComposer(Environment.NewLine);
+
+        foreach (var grade in Grades)
+            casesText.Add(
+                caseTemplate,
                 "name", opSpecs,
-                "grade", inGrade,
-                "double", GeoLanguage.ScalarTypeName,
-                "computations", computationsCode
+                "grade", grade
             );
-        }
 
-        private void GenerateMainNormFunction(string opSpecs)
+        TextComposer.AppendAtNewLine(
+            Templates["main_norm"],
+            "name", opSpecs,
+            "double", GeoLanguage.ScalarTypeName,
+            "main_norm_case", casesText
+        );
+    }
+
+    public override void Generate()
+    {
+        GenerateBladeFileStartCode();
+
+        foreach (var opSpecs in _operationSpecsArray)
         {
-            var caseTemplate = Templates["main_norm_case"];
+            GenerateBeginRegion(opSpecs.GetName());
 
-            var casesText = new ListTextComposer(Environment.NewLine);
+            foreach (var inGrade in Grades)
+                GenerateNormFunction(opSpecs, inGrade);
 
-            foreach (var grade in Grades)
-                casesText.Add(
-                    caseTemplate,
-                    "name", opSpecs,
-                    "grade", grade
-                );
+            GenerateMainNormFunction(opSpecs.GetName());
 
-            TextComposer.AppendAtNewLine(
-                Templates["main_norm"],
-                "name", opSpecs,
-                "double", GeoLanguage.ScalarTypeName,
-                "main_norm_case", casesText
-            );
+            GenerateEndRegion();
         }
 
-        public override void Generate()
-        {
-            GenerateBladeFileStartCode();
+        GenerateBladeFileFinishCode();
 
-            foreach (var opSpecs in _operationSpecsArray)
-            {
-                GenerateBeginRegion(opSpecs.GetName());
-
-                foreach (var inGrade in Grades)
-                    GenerateNormFunction(opSpecs, inGrade);
-
-                GenerateMainNormFunction(opSpecs.GetName());
-
-                GenerateEndRegion();
-            }
-
-            GenerateBladeFileFinishCode();
-
-            FileComposer.FinalizeText();
-        }
+        FileComposer.FinalizeText();
     }
 }

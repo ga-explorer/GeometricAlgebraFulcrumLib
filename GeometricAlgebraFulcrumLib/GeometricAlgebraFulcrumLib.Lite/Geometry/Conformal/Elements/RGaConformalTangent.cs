@@ -3,12 +3,9 @@ using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Text;
 using DataStructuresLib.BitManipulation;
-using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Restricted.Float64.Multivectors;
 using GeometricAlgebraFulcrumLib.Lite.Geometry.Conformal.Blades;
 using GeometricAlgebraFulcrumLib.Lite.Geometry.Conformal.Decoding;
-using GeometricAlgebraFulcrumLib.Lite.LinearAlgebra.Vectors.Space2D;
-using GeometricAlgebraFulcrumLib.Lite.LinearAlgebra.Vectors.Space3D;
-using GeometricAlgebraFulcrumLib.Lite.LinearAlgebra.Vectors.SpaceND;
+using GeometricAlgebraFulcrumLib.Lite.Geometry.Conformal.Operations;
 using GeometricAlgebraFulcrumLib.Lite.ScalarAlgebra;
 
 namespace GeometricAlgebraFulcrumLib.Lite.Geometry.Conformal.Elements;
@@ -16,6 +13,8 @@ namespace GeometricAlgebraFulcrumLib.Lite.Geometry.Conformal.Elements;
 public class RGaConformalTangent :
     RGaConformalElement
 {
+    public override RGaConformalBlade Position { get; }
+
     public override double RadiusSquared
     {
         get => 0d;
@@ -29,10 +28,11 @@ public class RGaConformalTangent :
             conformalSpace, 
             RGaConformalElementKind.Tangent, 
             weight, 
-            position, 
             direction
         )
     {
+        Position = position;
+
         Debug.Assert(IsValid());
     }
 
@@ -43,8 +43,8 @@ public class RGaConformalTangent :
         return Weight.IsValid() && 
                Weight >= 0 &&
                Direction.IsEGaBlade() &&
-               Direction.Norm().IsNearOne() &&
-               Position.IsEGaBlade();
+               Position.IsEGaVector() &&
+               Direction.Norm().IsNearOne();
     }
 
     
@@ -87,64 +87,6 @@ public class RGaConformalTangent :
     
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public RGaConformalTangent TranslateBy(Float64Vector2D egaVector)
-    {
-        return new RGaConformalTangent(
-            ConformalSpace,
-            Weight,
-            Position + egaVector.EncodeEGaVectorBlade(ConformalSpace),
-            Direction
-        );
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public RGaConformalTangent TranslateBy(Float64Vector3D egaVector)
-    {
-        return new RGaConformalTangent(
-            ConformalSpace,
-            Weight,
-            Position + egaVector.EncodeEGaVectorBlade(ConformalSpace),
-            Direction
-        );
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public RGaConformalTangent TranslateBy(Float64Vector egaVector)
-    {
-        return new RGaConformalTangent(
-            ConformalSpace,
-            Weight,
-            Position + egaVector.EncodeEGaVectorBlade(ConformalSpace),
-            Direction
-        );
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public RGaConformalTangent TranslateBy(RGaFloat64Vector egaVector)
-    {
-        return new RGaConformalTangent(
-            ConformalSpace,
-            Weight,
-            Position + egaVector.EncodeEGaVectorBlade(ConformalSpace),
-            Direction
-        );
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public RGaConformalTangent TranslateBy(RGaConformalBlade egaVector)
-    {
-        Debug.Assert(egaVector.IsEGaVector());
-
-        return new RGaConformalTangent(
-            ConformalSpace,
-            Weight,
-            Position + egaVector,
-            Direction
-        );
-    }
-
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public override string ToString()
     {
         if (Weight.IsNearZero())
@@ -152,7 +94,7 @@ public class RGaConformalTangent :
 
         return new StringBuilder()
             .AppendLine("Conformal Tangent:")
-            .AppendLine($"   Weight: ${ConformalSpace.ToLaTeX(Weight)}$")
+            .AppendLine($"   Weight: ${BasisSpecs.ToLaTeX(Weight)}$")
             .AppendLine($"   Unit Direction Grade: ${Direction.Grade}$")
             .AppendLine($"   Unit Direction: ${Direction.ToLaTeX()}$")
             .AppendLine($"   Unit Direction Normal: ${NormalDirection.ToLaTeX()}$")

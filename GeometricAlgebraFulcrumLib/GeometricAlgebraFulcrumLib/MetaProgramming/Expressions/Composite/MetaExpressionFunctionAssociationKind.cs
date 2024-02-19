@@ -1,10 +1,9 @@
-﻿namespace GeometricAlgebraFulcrumLib.MetaProgramming.Expressions.Composite
+﻿namespace GeometricAlgebraFulcrumLib.MetaProgramming.Expressions.Composite;
+
+public enum MetaExpressionFunctionAssociationKind
 {
-    public enum MetaExpressionFunctionAssociationKind
-    {
-        None = 0, 
-        Left = 1, 
-        Right = 2,
-        LeftRight = 3
-    }
+    None = 0, 
+    Left = 1, 
+    Right = 2,
+    LeftRight = 3
 }

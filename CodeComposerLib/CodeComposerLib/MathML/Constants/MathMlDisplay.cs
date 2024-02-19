@@ -1,9 +1,8 @@
-﻿namespace CodeComposerLib.MathML.Constants
+﻿namespace CodeComposerLib.MathML.Constants;
+
+public enum MathMlDisplay
 {
-    public enum MathMlDisplay
-    {
-        Inline = 0,
-        Block = 1,
-        Empty = 2
-    }
+    Inline = 0,
+    Block = 1,
+    Empty = 2
 }

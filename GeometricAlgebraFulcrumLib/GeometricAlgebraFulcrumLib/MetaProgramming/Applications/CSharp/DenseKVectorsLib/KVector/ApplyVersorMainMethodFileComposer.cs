@@ -3,62 +3,61 @@ using GeometricAlgebraFulcrumLib.MetaProgramming.Languages;
 using TextComposerLib.Text.Linear;
 using TextComposerLib.Text.Structured;
 
-namespace GeometricAlgebraFulcrumLib.MetaProgramming.Applications.CSharp.DenseKVectorsLib.KVector
+namespace GeometricAlgebraFulcrumLib.MetaProgramming.Applications.CSharp.DenseKVectorsLib.KVector;
+
+internal sealed class ApplyVersorMainMethodFileComposer : 
+    GaFuLLibraryFileComposerBase 
 {
-    internal sealed class ApplyVersorMainMethodFileComposer : 
-        GaFuLLibraryFileComposerBase 
+    internal GaFuLLanguageOperationSpecs OperationSpecs { get; }
+
+
+    internal ApplyVersorMainMethodFileComposer(GaFuLLibraryComposer libGen, GaFuLLanguageOperationSpecs opSpecs)
+        : base(libGen)
     {
-        internal GaFuLLanguageOperationSpecs OperationSpecs { get; }
+        OperationSpecs = opSpecs;
+    }
 
 
-        internal ApplyVersorMainMethodFileComposer(GaFuLLibraryComposer libGen, GaFuLLanguageOperationSpecs opSpecs)
-            : base(libGen)
+    public override void Generate()
+    {
+        GenerateKVectorFileStartCode();
+
+        var t2 = Templates["applyversor_main_case"];
+
+        var casesText = new ListTextComposer(Environment.NewLine);
+
+        foreach (var inGrade1 in Grades)
         {
-            OperationSpecs = opSpecs;
-        }
-
-
-        public override void Generate()
-        {
-            GenerateKVectorFileStartCode();
-
-            var t2 = Templates["applyversor_main_case"];
-
-            var casesText = new ListTextComposer(Environment.NewLine);
-
-            foreach (var inGrade1 in Grades)
+            foreach (var inGrade2 in Grades)
             {
-                foreach (var inGrade2 in Grades)
-                {
-                    var outGrade = inGrade2;
+                var outGrade = inGrade2;
 
-                    var id = inGrade1 + inGrade2 * GradesCount;
+                var id = inGrade1 + inGrade2 * GradesCount;
 
-                    var name = OperationSpecs.GetName(
-                        inGrade1, inGrade2, outGrade
-                    );
+                var name = OperationSpecs.GetName(
+                    inGrade1, inGrade2, outGrade
+                );
 
-                    casesText.Add(t2,
-                        "name", name,
-                        "id", id,
-                        "g1", inGrade1,
-                        "g2", inGrade2,
-                        "grade", outGrade,
-                        "signature", CurrentNamespace
-                    );
-                }
+                casesText.Add(t2,
+                    "name", name,
+                    "id", id,
+                    "g1", inGrade1,
+                    "g2", inGrade2,
+                    "grade", outGrade,
+                    "signature", CurrentNamespace
+                );
             }
-            
-            TextComposer.AppendAtNewLine(
-                Templates["applyversor_main"],
-                "name", OperationSpecs.GetName(),
-                "signature", CurrentNamespace,
-                "cases", casesText
-            );
-
-            GenerateKVectorFileFinishCode();
-
-            FileComposer.FinalizeText();
         }
+            
+        TextComposer.AppendAtNewLine(
+            Templates["applyversor_main"],
+            "name", OperationSpecs.GetName(),
+            "signature", CurrentNamespace,
+            "cases", casesText
+        );
+
+        GenerateKVectorFileFinishCode();
+
+        FileComposer.FinalizeText();
     }
 }

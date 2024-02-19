@@ -1,9 +1,8 @@
-﻿namespace CodeComposerLib.MathML.Constants
+﻿namespace CodeComposerLib.MathML.Constants;
+
+public enum MathMlBoolean
 {
-    public enum MathMlBoolean
-    {
-        False = 0,
-        True = 1,
-        Empty = 2
-    }
+    False = 0,
+    True = 1,
+    Empty = 2
 }

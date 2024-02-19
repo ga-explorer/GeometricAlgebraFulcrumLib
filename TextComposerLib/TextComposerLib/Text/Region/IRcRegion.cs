@@ -1,18 +1,17 @@
-﻿namespace TextComposerLib.Text.Region
+﻿namespace TextComposerLib.Text.Region;
+
+/// <summary>
+/// The main interface for both fixed and slot text regions
+/// </summary>
+public interface IRcRegion : IRcTemplatePart
 {
     /// <summary>
-    /// The main interface for both fixed and slot text regions
+    /// True if the text region is fixed
     /// </summary>
-    public interface IRcRegion : IRcTemplatePart
-    {
-        /// <summary>
-        /// True if the text region is fixed
-        /// </summary>
-        bool IsFixed { get; }
+    bool IsFixed { get; }
 
-        /// <summary>
-        /// True if the text region is a slot
-        /// </summary>
-        bool IsSlot { get; }
-    }
+    /// <summary>
+    /// True if the text region is a slot
+    /// </summary>
+    bool IsSlot { get; }
 }

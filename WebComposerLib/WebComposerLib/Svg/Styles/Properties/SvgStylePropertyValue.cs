@@ -3,102 +3,101 @@ using TextComposerLib;
 using WebComposerLib.Svg.Attributes;
 using WebComposerLib.Svg.Values;
 
-namespace WebComposerLib.Svg.Styles.Properties
+namespace WebComposerLib.Svg.Styles.Properties;
+
+/// <summary>
+/// This class holds information about the value of a style property for a parent style
+/// </summary>
+public abstract class SvgStylePropertyValue : ISvgAttributeValue
 {
-    /// <summary>
-    /// This class holds information about the value of a style property for a parent style
-    /// </summary>
-    public abstract class SvgStylePropertyValue : ISvgAttributeValue
+    public SvgStyle ParentStyle { get; }
+
+    protected abstract string ValueComputedText { get; }
+
+    private string _valueStoredText = string.Empty;
+    protected string ValueStoredText
     {
-        public SvgStyle ParentStyle { get; }
-
-        protected abstract string ValueComputedText { get; }
-
-        private string _valueStoredText = string.Empty;
-        protected string ValueStoredText
+        get => _valueStoredText;
+        set
         {
-            get => _valueStoredText;
-            set
-            {
-                _valueStoredText = value ?? string.Empty;
-                IsValueComputed = false;
-            }
+            _valueStoredText = value ?? string.Empty;
+            IsValueComputed = false;
         }
+    }
 
-        public bool IsValueComputed { get; protected set; }
+    public bool IsValueComputed { get; protected set; }
 
-        public bool IsValueStored => !IsValueComputed;
+    public bool IsValueStored => !IsValueComputed;
 
-        public bool IsValueEmpty => string.IsNullOrEmpty(ValueText);
+    public bool IsValueEmpty => string.IsNullOrEmpty(ValueText);
 
-        public string ValueText
+    public string ValueText
+    {
+        get
         {
-            get
-            {
-                if (IsValueStored)
-                    return ValueStoredText;
-
-                ValueStoredText = ValueComputedText;
-                IsValueComputed = false;
-
+            if (IsValueStored)
                 return ValueStoredText;
-            }
+
+            ValueStoredText = ValueComputedText;
+            IsValueComputed = false;
+
+            return ValueStoredText;
         }
+    }
 
-        public SvgAttributeInfo AttributeInfo { get; }
+    public SvgAttributeInfo AttributeInfo { get; }
 
-        public int AttributeId => AttributeInfo.Id;
+    public int AttributeId => AttributeInfo.Id;
 
-        public string AttributeName => AttributeInfo.Name;
-
-
-        protected SvgStylePropertyValue(SvgStyle parentStyle, SvgAttributeInfo attributeInfo)
-        {
-            ParentStyle = parentStyle;
-            AttributeInfo = attributeInfo;
-        }
+    public string AttributeName => AttributeInfo.Name;
 
 
-        public abstract SvgStylePropertyValue CreateCopy();
+    protected SvgStylePropertyValue(SvgStyle parentStyle, SvgAttributeInfo attributeInfo)
+    {
+        ParentStyle = parentStyle;
+        AttributeInfo = attributeInfo;
+    }
 
-        public abstract SvgStylePropertyValue UpdateFrom(SvgStylePropertyValue sourcePropertyValue);
 
-        public SvgStyle SetToText(string value)
-        {
-            ValueStoredText = value;
+    public abstract SvgStylePropertyValue CreateCopy();
 
-            return ParentStyle;
-        }
+    public abstract SvgStylePropertyValue UpdateFrom(SvgStylePropertyValue sourcePropertyValue);
 
-        public SvgStyle SetToText(ISvgValue value)
-        {
-            ValueStoredText = value.ValueText;
+    public SvgStyle SetToText(string value)
+    {
+        ValueStoredText = value;
 
-            return ParentStyle;
-        }
+        return ParentStyle;
+    }
 
-        public SvgStyle SetToInherit()
-        {
-            ValueStoredText = "inherit";
+    public SvgStyle SetToText(ISvgValue value)
+    {
+        ValueStoredText = value.ValueText;
 
-            return ParentStyle;
-        }
+        return ParentStyle;
+    }
 
-        public SvgStyle SetToEmptyDefault()
-        {
-            ValueStoredText = string.Empty;
+    public SvgStyle SetToInherit()
+    {
+        ValueStoredText = "inherit";
 
-            return ParentStyle;
-        }
+        return ParentStyle;
+    }
 
-        public override string ToString()
-        {
-            return new StringBuilder()
-                .Append(AttributeInfo.Name)
-                .Append(": ")
-                .Append(ValueText.ToHtmlSafeString())
-                .Append(";")
-                .ToString();
-        }
+    public SvgStyle SetToEmptyDefault()
+    {
+        ValueStoredText = string.Empty;
+
+        return ParentStyle;
+    }
+
+    public override string ToString()
+    {
+        return new StringBuilder()
+            .Append(AttributeInfo.Name)
+            .Append(": ")
+            .Append(ValueText.ToHtmlSafeString())
+            .Append(";")
+            .ToString();
     }
 }

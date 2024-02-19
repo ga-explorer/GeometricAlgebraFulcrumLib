@@ -1,30 +1,29 @@
 ﻿using System.Text;
 
-namespace GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.PovRay.SDL.Values
+namespace GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.PovRay.SDL.Values;
+
+public sealed class SdlVector2D : SdlValue, ISdlVectorValue
 {
-    public sealed class SdlVector2D : SdlValue, ISdlVectorValue
+    public ISdlScalarValue X { get; set; }
+
+    public ISdlScalarValue Y { get; set; }
+
+    public override string Value => new StringBuilder()
+        .Append(X.ScalarOrDefault())
+        .Append(',')
+        .Append(Y.ScalarOrDefault())
+        .ToString();
+
+
+    public SdlVector2D(ISdlScalarValue x, ISdlScalarValue y)
     {
-        public ISdlScalarValue X { get; set; }
-
-        public ISdlScalarValue Y { get; set; }
-
-        public override string Value => new StringBuilder()
-            .Append(X.ScalarOrDefault())
-            .Append(',')
-            .Append(Y.ScalarOrDefault())
-            .ToString();
+        X = x;
+        Y = y;
+    }
 
 
-        public SdlVector2D(ISdlScalarValue x, ISdlScalarValue y)
-        {
-            X = x;
-            Y = y;
-        }
-
-
-        public override string ToString()
-        {
-            return TaggedValue;
-        }
+    public override string ToString()
+    {
+        return TaggedValue;
     }
 }

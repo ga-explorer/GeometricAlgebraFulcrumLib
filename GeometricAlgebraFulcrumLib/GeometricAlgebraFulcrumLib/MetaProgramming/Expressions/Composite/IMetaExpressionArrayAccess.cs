@@ -1,10 +1,9 @@
 ﻿using GeometricAlgebraFulcrumLib.MetaProgramming.Expressions.HeadSpecs;
 
-namespace GeometricAlgebraFulcrumLib.MetaProgramming.Expressions.Composite
+namespace GeometricAlgebraFulcrumLib.MetaProgramming.Expressions.Composite;
+
+public interface IMetaExpressionArrayAccess : 
+    IMetaExpressionComposite
 {
-    public interface IMetaExpressionArrayAccess : 
-        IMetaExpressionComposite
-    {
-        MetaExpressionHeadSpecsArrayAccess ArrayAccessHeadSpecs { get; }
-    }
+    MetaExpressionHeadSpecsArrayAccess ArrayAccessHeadSpecs { get; }
 }

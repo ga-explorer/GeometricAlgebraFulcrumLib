@@ -1,9 +1,8 @@
-﻿namespace WebComposerLib.SvgNew
+﻿namespace WebComposerLib.SvgNew;
+
+public interface IWclSvgGraphicsElement : 
+    IWclSvgCodeElement
 {
-    public interface IWclSvgGraphicsElement : 
-        IWclSvgCodeElement
-    {
-        //<circle>, <ellipse>, <image>, <line>, <mesh>, <path>, <polygon>, <polyline>, <rect>,
-        //<text>, <use>
-    }
+    //<circle>, <ellipse>, <image>, <line>, <mesh>, <path>, <polygon>, <polyline>, <rect>,
+    //<text>, <use>
 }

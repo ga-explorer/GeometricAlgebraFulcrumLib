@@ -2,107 +2,106 @@
 using WebComposerLib.Html.Media;
 using WebComposerLib.Svg.Elements;
 
-namespace WebComposerLib.Svg.Attributes
+namespace WebComposerLib.Svg.Attributes;
+
+public sealed class SvgEavViewBox<TParentElement> 
+    : SvgElementAttributeValue<TParentElement> where TParentElement : SvgElement
 {
-    public sealed class SvgEavViewBox<TParentElement> 
-        : SvgElementAttributeValue<TParentElement> where TParentElement : SvgElement
+    private double _minX;
+    public double MinX
     {
-        private double _minX;
-        public double MinX
+        get => _minX;
+        set
         {
-            get => _minX;
-            set
-            {
-                _minX = value;
-                IsValueComputed = true;
-            }
+            _minX = value;
+            IsValueComputed = true;
         }
+    }
 
-        private double _minY;
-        public double MinY
+    private double _minY;
+    public double MinY
+    {
+        get => _minY;
+        set
         {
-            get => _minY;
-            set
-            {
-                _minY = value;
-                IsValueComputed = true;
-            }
+            _minY = value;
+            IsValueComputed = true;
         }
+    }
 
-        private double _width;
-        public double Width
+    private double _width;
+    public double Width
+    {
+        get => _width;
+        set
         {
-            get => _width;
-            set
-            {
-                _width = value;
-                IsValueComputed = true;
-            }
+            _width = value;
+            IsValueComputed = true;
         }
+    }
 
-        private double _height;
-        public double Height
+    private double _height;
+    public double Height
+    {
+        get => _height;
+        set
         {
-            get => _height;
-            set
-            {
-                _height = value;
-                IsValueComputed = true;
-            }
+            _height = value;
+            IsValueComputed = true;
         }
+    }
 
-        protected override string ValueComputedText 
-            => new StringBuilder()
-                .Append(MinX.ToSvgNumberText())
-                .Append(", ")
-                .Append(MinY.ToSvgNumberText())
-                .Append(", ")
-                .Append(Width.ToSvgNumberText())
-                .Append(", ")
-                .Append(Height.ToSvgNumberText())
-                .ToString();
-
-
-        internal SvgEavViewBox(TParentElement parentElement)
-            : base(parentElement, SvgAttributeUtils.ViewBox)
-        {
-        }
+    protected override string ValueComputedText 
+        => new StringBuilder()
+            .Append(MinX.ToSvgNumberText())
+            .Append(", ")
+            .Append(MinY.ToSvgNumberText())
+            .Append(", ")
+            .Append(Width.ToSvgNumberText())
+            .Append(", ")
+            .Append(Height.ToSvgNumberText())
+            .ToString();
 
 
-        public override ISvgAttributeValue CreateCopy()
-        {
-            throw new NotImplementedException();
-        }
+    internal SvgEavViewBox(TParentElement parentElement)
+        : base(parentElement, SvgAttributeUtils.ViewBox)
+    {
+    }
 
-        public override ISvgAttributeValue UpdateFrom(ISvgAttributeValue sourceAttributeValue)
-        {
-            throw new NotImplementedException();
-        }
 
-        public TParentElement SetMinCorner(double minX, double minY)
-        {
-            MinX = minX;
-            MinY = minY;
+    public override ISvgAttributeValue CreateCopy()
+    {
+        throw new NotImplementedException();
+    }
 
-            return ParentElement;
-        }
+    public override ISvgAttributeValue UpdateFrom(ISvgAttributeValue sourceAttributeValue)
+    {
+        throw new NotImplementedException();
+    }
 
-        public TParentElement SetSize(double width, double height)
-        {
-            Width = width;
-            Height = height;
+    public TParentElement SetMinCorner(double minX, double minY)
+    {
+        MinX = minX;
+        MinY = minY;
 
-            return ParentElement;
-        }
+        return ParentElement;
+    }
 
-        public TParentElement SetTo(double minX, double minY, double width, double height)
-        {
-            MinX = minX;
-            MinY = minY;
-            Width = width;
-            Height = height;
+    public TParentElement SetSize(double width, double height)
+    {
+        Width = width;
+        Height = height;
 
-            return ParentElement;
-        }
+        return ParentElement;
+    }
+
+    public TParentElement SetTo(double minX, double minY, double width, double height)
+    {
+        MinX = minX;
+        MinY = minY;
+        Width = width;
+        Height = height;
+
+        return ParentElement;
     }
 }

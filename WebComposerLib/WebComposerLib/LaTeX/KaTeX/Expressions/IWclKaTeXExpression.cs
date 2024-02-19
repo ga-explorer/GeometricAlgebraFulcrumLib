@@ -1,15 +1,14 @@
-﻿namespace WebComposerLib.LaTeX.KaTeX.Expressions
+﻿namespace WebComposerLib.LaTeX.KaTeX.Expressions;
+
+public interface IWclKaTeXExpression
 {
-    public interface IWclKaTeXExpression
-    {
-        string TexCode { get; }
+    string TexCode { get; }
 
-        bool IsLeafExpression { get; }
+    bool IsLeafExpression { get; }
 
-        bool IsFunctionExpression { get; }
+    bool IsFunctionExpression { get; }
 
-        int ChildExpressionsCount { get; }
+    int ChildExpressionsCount { get; }
 
-        IEnumerable<IWclKaTeXExpression> ChildExpressions { get; }
-    }
+    IEnumerable<IWclKaTeXExpression> ChildExpressions { get; }
 }

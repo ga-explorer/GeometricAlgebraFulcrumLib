@@ -1,18 +1,17 @@
-﻿namespace TextComposerLib.Text.Columns
+﻿namespace TextComposerLib.Text.Columns;
+
+public enum TextColumnAlignment
 {
-    public enum TextColumnAlignment
+    Left, Right
+}
+
+internal sealed class TextColumnSpecs
+{
+    public TextColumnAlignment Alignment { get; set; }
+
+
+    public TextColumnSpecs()
     {
-        Left, Right
-    }
-
-    internal sealed class TextColumnSpecs
-    {
-        public TextColumnAlignment Alignment { get; set; }
-
-
-        public TextColumnSpecs()
-        {
-            Alignment = TextColumnAlignment.Left;
-        }
+        Alignment = TextColumnAlignment.Left;
     }
 }

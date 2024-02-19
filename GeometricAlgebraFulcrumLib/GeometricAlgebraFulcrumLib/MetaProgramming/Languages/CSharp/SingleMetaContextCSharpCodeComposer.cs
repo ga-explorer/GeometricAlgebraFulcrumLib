@@ -1,87 +1,86 @@
 ﻿using GeometricAlgebraFulcrumLib.MetaProgramming.Composers;
 using GeometricAlgebraFulcrumLib.MetaProgramming.Context;
 
-namespace GeometricAlgebraFulcrumLib.MetaProgramming.Languages.CSharp
+namespace GeometricAlgebraFulcrumLib.MetaProgramming.Languages.CSharp;
+
+// ReSharper disable once InconsistentNaming
+public sealed class SingleMetaContextCSharpCodeComposer : 
+    GaFuLSingleMetaContextCodeComposerBase
 {
-    // ReSharper disable once InconsistentNaming
-    public sealed class SingleMetaContextCSharpCodeComposer : 
-        GaFuLSingleMetaContextCodeComposerBase
+    public SingleMetaContextCSharpCodeComposer(MetaContext context)
+        : base(context, GaFuLLanguageServerBase.CSharpFloat64())
     {
-        public SingleMetaContextCSharpCodeComposer(MetaContext context)
-            : base(context, GaFuLLanguageServerBase.CSharpFloat64())
-        {
-        }
+    }
 
 
-        //protected override void GenerateTypeDefaultValue(AstType typeInfo)
+    //protected override void GenerateTypeDefaultValue(AstType typeInfo)
+    //{
+    //    if (typeInfo.IsValidIntegerType)
+    //        ActiveFileTextComposer.Append("0");
+
+    //    else if (typeInfo.IsValidBooleanType)
+    //        ActiveFileTextComposer.Append("false");
+
+    //    else if (typeInfo.IsValidScalarType)
+    //        ActiveFileTextComposer.Append("0.0D");
+
+    //    else
+    //        ActiveFileTextComposer.Append("new " + typeInfo.GeoClcTypeSignature + "()");
+    //}
+
+    protected override void GenerateMetaContextCode()
+    {
+        ActiveFileTextComposer.AppendAtNewLine("public static ");
+        GenerateTypeName();
+        ActiveFileTextComposer.Append(" ");
+        ActiveFileTextComposer.Append(Context.ContextOptions.ContextName);
+        ActiveFileTextComposer.Append("(");
+
+        GenerateInputsCode(Context);
+
+        ActiveFileTextComposer.AppendLine(")");
+
+        ActiveFileTextComposer.AppendLineAtNewLine("{");
+        ActiveFileTextComposer.IncreaseIndentation();
+
+        ActiveFileTextComposer.AppendAtNewLine(GeoLanguage.ScalarTypeName);
+        ActiveFileTextComposer.AppendLine(" result;");
+
+        //if (macroBinding.BaseMetaContext.OutputType.IsValidScalarType)
         //{
-        //    if (typeInfo.IsValidIntegerType)
-        //        ActiveFileTextComposer.Append("0");
+        //    ActiveFileTextComposer.AppendAtNewLine(GeoClcLanguage.ScalarTypeName);
+        //    ActiveFileTextComposer.AppendLine(" result;");
+        //}
+        //else
+        //{
+        //    ActiveFileTextComposer.AppendAtNewLine("var result = ");
 
-        //    else if (typeInfo.IsValidBooleanType)
-        //        ActiveFileTextComposer.Append("false");
+        //    GenerateTypeDefaultValue(macroBinding.BaseMetaContext.OutputType);
 
-        //    else if (typeInfo.IsValidScalarType)
-        //        ActiveFileTextComposer.Append("0.0D");
-
-        //    else
-        //        ActiveFileTextComposer.Append("new " + typeInfo.GeoClcTypeSignature + "()");
+        //    ActiveFileTextComposer.AppendLine(";");
         //}
 
-        protected override void GenerateMetaContextCode()
+        ActiveFileTextComposer.AppendLine();
+
+        if (AllowGenerateMetaContextCode)
         {
-            ActiveFileTextComposer.AppendAtNewLine("public static ");
-            GenerateTypeName();
-            ActiveFileTextComposer.Append(" ");
-            ActiveFileTextComposer.Append(Context.ContextOptions.ContextName);
-            ActiveFileTextComposer.Append("(");
+            var contextComposer = InitMetaContextCodeComposer();
 
-            GenerateInputsCode(Context);
-
-            ActiveFileTextComposer.AppendLine(")");
-
-            ActiveFileTextComposer.AppendLineAtNewLine("{");
-            ActiveFileTextComposer.IncreaseIndentation();
-
-            ActiveFileTextComposer.AppendAtNewLine(GeoLanguage.ScalarTypeName);
-            ActiveFileTextComposer.AppendLine(" result;");
-
-            //if (macroBinding.BaseMetaContext.OutputType.IsValidScalarType)
-            //{
-            //    ActiveFileTextComposer.AppendAtNewLine(GeoClcLanguage.ScalarTypeName);
-            //    ActiveFileTextComposer.AppendLine(" result;");
-            //}
-            //else
-            //{
-            //    ActiveFileTextComposer.AppendAtNewLine("var result = ");
-
-            //    GenerateTypeDefaultValue(macroBinding.BaseMetaContext.OutputType);
-
-            //    ActiveFileTextComposer.AppendLine(";");
-            //}
-
-            ActiveFileTextComposer.AppendLine();
-
-            if (AllowGenerateMetaContextCode)
-            {
-                var contextComposer = InitMetaContextCodeComposer();
-
-                ActiveFileTextComposer.AppendLineAtNewLine(
-                    contextComposer.Generate()
-                );
-            }
-
-            ActiveFileTextComposer.AppendLineAtNewLine("return result;");
-
-            ActiveFileTextComposer.DecreaseIndentation();
-            ActiveFileTextComposer.AppendLineAtNewLine("}");
-            ActiveFileTextComposer.AppendLine();
+            ActiveFileTextComposer.AppendLineAtNewLine(
+                contextComposer.Generate()
+            );
         }
 
+        ActiveFileTextComposer.AppendLineAtNewLine("return result;");
 
-        public override GaFuLCodeLibraryComposerBase CreateEmptyComposer()
-        {
-            return new SingleMetaContextCSharpCodeComposer(Context);
-        }
+        ActiveFileTextComposer.DecreaseIndentation();
+        ActiveFileTextComposer.AppendLineAtNewLine("}");
+        ActiveFileTextComposer.AppendLine();
+    }
+
+
+    public override GaFuLCodeLibraryComposerBase CreateEmptyComposer()
+    {
+        return new SingleMetaContextCSharpCodeComposer(Context);
     }
 }

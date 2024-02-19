@@ -1,25 +1,24 @@
 ﻿using GeometricAlgebraFulcrumLib.Lite.ScalarAlgebra;
 
-namespace GeometricAlgebraFulcrumLib.Lite.Geometry.Parametric.Space1D.Scalars.Samplers
+namespace GeometricAlgebraFulcrumLib.Lite.Geometry.Parametric.Space1D.Scalars.Samplers;
+
+public interface IParametricScalarSampler :
+    IGeometricElement,
+    IReadOnlyList<ParametricScalarLocalFrame>
 {
-    public interface IParametricScalarSampler :
-        IGeometricElement,
-        IReadOnlyList<ParametricScalarLocalFrame>
-    {
-        IParametricScalar Curve { get; }
+    IParametricScalar Curve { get; }
 
-        Float64ScalarRange ParameterRange { get; }
+    Float64ScalarRange ParameterRange { get; }
         
-        bool IsPeriodic { get; }
+    bool IsPeriodic { get; }
 
-        IEnumerable<double> GetParameterValues();
+    IEnumerable<double> GetParameterValues();
 
-        IEnumerable<Float64ScalarRange> GetParameterSections();
+    IEnumerable<Float64ScalarRange> GetParameterSections();
 
-        IEnumerable<double> GetPoints();
+    IEnumerable<double> GetPoints();
 
-        IEnumerable<double> GetTangents();
+    IEnumerable<double> GetTangents();
 
-        IEnumerable<ParametricScalarLocalFrame> GetFrames();
-    }
+    IEnumerable<ParametricScalarLocalFrame> GetFrames();
 }

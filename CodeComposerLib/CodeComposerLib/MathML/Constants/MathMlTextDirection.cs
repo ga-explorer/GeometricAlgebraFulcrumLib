@@ -1,9 +1,8 @@
-﻿namespace CodeComposerLib.MathML.Constants
+﻿namespace CodeComposerLib.MathML.Constants;
+
+public enum MathMlTextDirection
 {
-    public enum MathMlTextDirection
-    {
-        LeftToRight = 0,
-        RightToLeft = 1,
-        Empty = 2
-    }
+    LeftToRight = 0,
+    RightToLeft = 1,
+    Empty = 2
 }

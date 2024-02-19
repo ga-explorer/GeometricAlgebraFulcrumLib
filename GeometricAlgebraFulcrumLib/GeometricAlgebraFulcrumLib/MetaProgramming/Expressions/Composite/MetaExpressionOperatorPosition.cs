@@ -1,9 +1,8 @@
-﻿namespace GeometricAlgebraFulcrumLib.MetaProgramming.Expressions.Composite
+﻿namespace GeometricAlgebraFulcrumLib.MetaProgramming.Expressions.Composite;
+
+public enum MetaExpressionOperatorPosition
 {
-    public enum MetaExpressionOperatorPosition
-    {
-        Prefix = 0, 
-        Infix = 1, 
-        Suffix = 2
-    }
+    Prefix = 0, 
+    Infix = 1, 
+    Suffix = 2
 }

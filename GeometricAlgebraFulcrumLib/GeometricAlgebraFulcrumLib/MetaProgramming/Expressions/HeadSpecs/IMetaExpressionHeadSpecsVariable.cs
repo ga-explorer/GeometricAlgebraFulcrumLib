@@ -1,8 +1,7 @@
-﻿namespace GeometricAlgebraFulcrumLib.MetaProgramming.Expressions.HeadSpecs
+﻿namespace GeometricAlgebraFulcrumLib.MetaProgramming.Expressions.HeadSpecs;
+
+public interface IMetaExpressionHeadSpecsVariable :
+    IMetaExpressionHeadSpecsAtomic
 {
-    public interface IMetaExpressionHeadSpecsVariable :
-        IMetaExpressionHeadSpecsAtomic
-    {
-        string VariableName { get; }
-    }
+    string VariableName { get; }
 }

@@ -2,372 +2,371 @@
 using WebComposerLib.Svg.Elements.Categories;
 using WebComposerLib.Svg.Values;
 
-namespace WebComposerLib.Svg.Elements.Animation
+namespace WebComposerLib.Svg.Elements.Animation;
+
+/// <summary>
+/// The 'animate' SVG element is used to animate an attribute or property of an element over time.
+/// It's normally inserted inside the element or referenced by the href attribute of the target element.
+/// http://docs.w3cub.com/svg/element/animate/
+/// https://www.w3.org/TR/smil-animation/
+/// </summary>
+public sealed class SvgElementAnimate : SvgElement, ISvgAnimationElement
 {
-    /// <summary>
-    /// The 'animate' SVG element is used to animate an attribute or property of an element over time.
-    /// It's normally inserted inside the element or referenced by the href attribute of the target element.
-    /// http://docs.w3cub.com/svg/element/animate/
-    /// https://www.w3.org/TR/smil-animation/
-    /// </summary>
-    public sealed class SvgElementAnimate : SvgElement, ISvgAnimationElement
+    public static SvgElementAnimate Create()
     {
-        public static SvgElementAnimate Create()
+        return new SvgElementAnimate();
+    }
+
+    public static SvgElementAnimate Create(string id)
+    {
+        return new SvgElementAnimate() { Id = id };
+    }
+
+
+    public override string ElementName => "animate";
+
+
+    //public SvgEavString<SvgElementAnimate> Id
+    //{
+    //    get
+    //    {
+    //        var attrInfo = SvgAttributes.Id;
+
+    //        ISvgAttributeValue attrValue;
+    //        if (AttributesTable.TryGetValue(attrInfo.Id, out attrValue))
+    //            return attrValue as SvgEavString<SvgElementAnimate>;
+
+    //        var attrValue1 = new SvgEavString<SvgElementAnimate>(this, attrInfo);
+    //        AttributesTable.Add(attrInfo.Id, attrValue1);
+
+    //        return attrValue1;
+    //    }
+    //}
+
+    public SvgEavString<SvgElementAnimate> XmlBase
+    {
+        get
         {
-            return new SvgElementAnimate();
-        }
+            var attrInfo = SvgAttributeUtils.XmlBase;
 
-        public static SvgElementAnimate Create(string id)
+            if (AttributesTable.TryGetValue(attrInfo.Id, out var attrValue))
+                return attrValue as SvgEavString<SvgElementAnimate>;
+
+            var attrValue1 = new SvgEavString<SvgElementAnimate>(this, attrInfo);
+            AttributesTable.Add(attrInfo.Id, attrValue1);
+
+            return attrValue1;
+        }
+    }
+
+    public SvgEavString<SvgElementAnimate> XmlLanguage
+    {
+        get
         {
-            return new SvgElementAnimate() { Id = id };
+            var attrInfo = SvgAttributeUtils.XmlLanguage;
+
+            if (AttributesTable.TryGetValue(attrInfo.Id, out var attrValue))
+                return attrValue as SvgEavString<SvgElementAnimate>;
+
+            var attrValue1 = new SvgEavString<SvgElementAnimate>(this, attrInfo);
+            AttributesTable.Add(attrInfo.Id, attrValue1);
+
+            return attrValue1;
         }
+    }
 
-
-        public override string ElementName => "animate";
-
-
-        //public SvgEavString<SvgElementAnimate> Id
-        //{
-        //    get
-        //    {
-        //        var attrInfo = SvgAttributes.Id;
-
-        //        ISvgAttributeValue attrValue;
-        //        if (AttributesTable.TryGetValue(attrInfo.Id, out attrValue))
-        //            return attrValue as SvgEavString<SvgElementAnimate>;
-
-        //        var attrValue1 = new SvgEavString<SvgElementAnimate>(this, attrInfo);
-        //        AttributesTable.Add(attrInfo.Id, attrValue1);
-
-        //        return attrValue1;
-        //    }
-        //}
-
-        public SvgEavString<SvgElementAnimate> XmlBase
+    public SvgEavStruct<bool, SvgElementAnimate> ExternalResourcesRequired
+    {
+        get
         {
-            get
-            {
-                var attrInfo = SvgAttributeUtils.XmlBase;
+            var attrInfo = SvgAttributeUtils.ExternalResourcesRequired;
 
-                if (AttributesTable.TryGetValue(attrInfo.Id, out var attrValue))
-                    return attrValue as SvgEavString<SvgElementAnimate>;
+            if (AttributesTable.TryGetValue(attrInfo.Id, out var attrValue))
+                return attrValue as SvgEavStruct<bool, SvgElementAnimate>;
 
-                var attrValue1 = new SvgEavString<SvgElementAnimate>(this, attrInfo);
-                AttributesTable.Add(attrInfo.Id, attrValue1);
+            var attrValue1 = new SvgEavStruct<bool, SvgElementAnimate>(this, attrInfo);
+            AttributesTable.Add(attrInfo.Id, attrValue1);
 
-                return attrValue1;
-            }
+            return attrValue1;
         }
+    }
 
-        public SvgEavString<SvgElementAnimate> XmlLanguage
+    public SvgEavAttribute<SvgElementAnimate> Attribute
+    {
+        get
         {
-            get
-            {
-                var attrInfo = SvgAttributeUtils.XmlLanguage;
+            var attrInfo = SvgAttributeUtils.AttributeName;
 
-                if (AttributesTable.TryGetValue(attrInfo.Id, out var attrValue))
-                    return attrValue as SvgEavString<SvgElementAnimate>;
+            if (AttributesTable.TryGetValue(attrInfo.Id, out var attrValue))
+                return attrValue as SvgEavAttribute<SvgElementAnimate>;
 
-                var attrValue1 = new SvgEavString<SvgElementAnimate>(this, attrInfo);
-                AttributesTable.Add(attrInfo.Id, attrValue1);
+            var attrValue1 = new SvgEavAttribute<SvgElementAnimate>(this);
+            AttributesTable.Add(attrInfo.Id, attrValue1);
 
-                return attrValue1;
-            }
+            return attrValue1;
         }
+    }
 
-        public SvgEavStruct<bool, SvgElementAnimate> ExternalResourcesRequired
+    public SvgEav<SvgValueAttributeType, SvgElementAnimate> AttributeType
+    {
+        get
         {
-            get
-            {
-                var attrInfo = SvgAttributeUtils.ExternalResourcesRequired;
+            var attrInfo = SvgAttributeUtils.AttributeType;
 
-                if (AttributesTable.TryGetValue(attrInfo.Id, out var attrValue))
-                    return attrValue as SvgEavStruct<bool, SvgElementAnimate>;
+            if (AttributesTable.TryGetValue(attrInfo.Id, out var attrValue))
+                return attrValue as SvgEav<SvgValueAttributeType, SvgElementAnimate>;
 
-                var attrValue1 = new SvgEavStruct<bool, SvgElementAnimate>(this, attrInfo);
-                AttributesTable.Add(attrInfo.Id, attrValue1);
+            var attrValue1 = new SvgEav<SvgValueAttributeType, SvgElementAnimate>(this, attrInfo);
+            AttributesTable.Add(attrInfo.Id, attrValue1);
 
-                return attrValue1;
-            }
+            return attrValue1;
         }
+    }
 
-        public SvgEavAttribute<SvgElementAnimate> Attribute
+    public SvgEavString<SvgElementAnimate> From
+    {
+        get
         {
-            get
-            {
-                var attrInfo = SvgAttributeUtils.AttributeName;
+            var attrInfo = SvgAttributeUtils.From;
 
-                if (AttributesTable.TryGetValue(attrInfo.Id, out var attrValue))
-                    return attrValue as SvgEavAttribute<SvgElementAnimate>;
+            if (AttributesTable.TryGetValue(attrInfo.Id, out var attrValue))
+                return attrValue as SvgEavString<SvgElementAnimate>;
 
-                var attrValue1 = new SvgEavAttribute<SvgElementAnimate>(this);
-                AttributesTable.Add(attrInfo.Id, attrValue1);
+            var attrValue1 = new SvgEavString<SvgElementAnimate>(this, attrInfo);
+            AttributesTable.Add(attrInfo.Id, attrValue1);
 
-                return attrValue1;
-            }
+            return attrValue1;
         }
+    }
 
-        public SvgEav<SvgValueAttributeType, SvgElementAnimate> AttributeType
+    public SvgEavString<SvgElementAnimate> To
+    {
+        get
         {
-            get
-            {
-                var attrInfo = SvgAttributeUtils.AttributeType;
+            var attrInfo = SvgAttributeUtils.To;
 
-                if (AttributesTable.TryGetValue(attrInfo.Id, out var attrValue))
-                    return attrValue as SvgEav<SvgValueAttributeType, SvgElementAnimate>;
+            if (AttributesTable.TryGetValue(attrInfo.Id, out var attrValue))
+                return attrValue as SvgEavString<SvgElementAnimate>;
 
-                var attrValue1 = new SvgEav<SvgValueAttributeType, SvgElementAnimate>(this, attrInfo);
-                AttributesTable.Add(attrInfo.Id, attrValue1);
+            var attrValue1 = new SvgEavString<SvgElementAnimate>(this, attrInfo);
+            AttributesTable.Add(attrInfo.Id, attrValue1);
 
-                return attrValue1;
-            }
+            return attrValue1;
         }
+    }
 
-        public SvgEavString<SvgElementAnimate> From
+    public SvgEavString<SvgElementAnimate> By
+    {
+        get
         {
-            get
-            {
-                var attrInfo = SvgAttributeUtils.From;
+            var attrInfo = SvgAttributeUtils.By;
 
-                if (AttributesTable.TryGetValue(attrInfo.Id, out var attrValue))
-                    return attrValue as SvgEavString<SvgElementAnimate>;
+            if (AttributesTable.TryGetValue(attrInfo.Id, out var attrValue))
+                return attrValue as SvgEavString<SvgElementAnimate>;
 
-                var attrValue1 = new SvgEavString<SvgElementAnimate>(this, attrInfo);
-                AttributesTable.Add(attrInfo.Id, attrValue1);
+            var attrValue1 = new SvgEavString<SvgElementAnimate>(this, attrInfo);
+            AttributesTable.Add(attrInfo.Id, attrValue1);
 
-                return attrValue1;
-            }
+            return attrValue1;
         }
+    }
 
-        public SvgEavString<SvgElementAnimate> To
+    public SvgEavString<SvgElementAnimate> Values
+    {
+        get
         {
-            get
-            {
-                var attrInfo = SvgAttributeUtils.To;
+            var attrInfo = SvgAttributeUtils.Values;
 
-                if (AttributesTable.TryGetValue(attrInfo.Id, out var attrValue))
-                    return attrValue as SvgEavString<SvgElementAnimate>;
+            if (AttributesTable.TryGetValue(attrInfo.Id, out var attrValue))
+                return attrValue as SvgEavString<SvgElementAnimate>;
 
-                var attrValue1 = new SvgEavString<SvgElementAnimate>(this, attrInfo);
-                AttributesTable.Add(attrInfo.Id, attrValue1);
+            var attrValue1 = new SvgEavString<SvgElementAnimate>(this, attrInfo);
+            AttributesTable.Add(attrInfo.Id, attrValue1);
 
-                return attrValue1;
-            }
+            return attrValue1;
         }
+    }
 
-        public SvgEavString<SvgElementAnimate> By
+    public SvgEavClock<SvgElementAnimate> Duration
+    {
+        get
         {
-            get
-            {
-                var attrInfo = SvgAttributeUtils.By;
+            var attrInfo = SvgAttributeUtils.Duration;
 
-                if (AttributesTable.TryGetValue(attrInfo.Id, out var attrValue))
-                    return attrValue as SvgEavString<SvgElementAnimate>;
+            if (AttributesTable.TryGetValue(attrInfo.Id, out var attrValue))
+                return attrValue as SvgEavClock<SvgElementAnimate>;
 
-                var attrValue1 = new SvgEavString<SvgElementAnimate>(this, attrInfo);
-                AttributesTable.Add(attrInfo.Id, attrValue1);
+            var attrValue1 = new SvgEavClock<SvgElementAnimate>(this, attrInfo);
+            AttributesTable.Add(attrInfo.Id, attrValue1);
 
-                return attrValue1;
-            }
+            return attrValue1;
         }
+    }
 
-        public SvgEavString<SvgElementAnimate> Values
+    public SvgEavClock<SvgElementAnimate> RepeatDuration
+    {
+        get
         {
-            get
-            {
-                var attrInfo = SvgAttributeUtils.Values;
+            var attrInfo = SvgAttributeUtils.RepeatDuration;
 
-                if (AttributesTable.TryGetValue(attrInfo.Id, out var attrValue))
-                    return attrValue as SvgEavString<SvgElementAnimate>;
+            if (AttributesTable.TryGetValue(attrInfo.Id, out var attrValue))
+                return attrValue as SvgEavClock<SvgElementAnimate>;
 
-                var attrValue1 = new SvgEavString<SvgElementAnimate>(this, attrInfo);
-                AttributesTable.Add(attrInfo.Id, attrValue1);
+            var attrValue1 = new SvgEavClock<SvgElementAnimate>(this, attrInfo);
+            AttributesTable.Add(attrInfo.Id, attrValue1);
 
-                return attrValue1;
-            }
+            return attrValue1;
         }
+    }
 
-        public SvgEavClock<SvgElementAnimate> Duration
+    public SvgEavClock<SvgElementAnimate> MinDuration
+    {
+        get
         {
-            get
-            {
-                var attrInfo = SvgAttributeUtils.Duration;
+            var attrInfo = SvgAttributeUtils.Min;
 
-                if (AttributesTable.TryGetValue(attrInfo.Id, out var attrValue))
-                    return attrValue as SvgEavClock<SvgElementAnimate>;
+            if (AttributesTable.TryGetValue(attrInfo.Id, out var attrValue))
+                return attrValue as SvgEavClock<SvgElementAnimate>;
 
-                var attrValue1 = new SvgEavClock<SvgElementAnimate>(this, attrInfo);
-                AttributesTable.Add(attrInfo.Id, attrValue1);
+            var attrValue1 = new SvgEavClock<SvgElementAnimate>(this, attrInfo);
+            AttributesTable.Add(attrInfo.Id, attrValue1);
 
-                return attrValue1;
-            }
+            return attrValue1;
         }
+    }
 
-        public SvgEavClock<SvgElementAnimate> RepeatDuration
+    public SvgEavClock<SvgElementAnimate> MaxDuration
+    {
+        get
         {
-            get
-            {
-                var attrInfo = SvgAttributeUtils.RepeatDuration;
+            var attrInfo = SvgAttributeUtils.Max;
 
-                if (AttributesTable.TryGetValue(attrInfo.Id, out var attrValue))
-                    return attrValue as SvgEavClock<SvgElementAnimate>;
+            if (AttributesTable.TryGetValue(attrInfo.Id, out var attrValue))
+                return attrValue as SvgEavClock<SvgElementAnimate>;
 
-                var attrValue1 = new SvgEavClock<SvgElementAnimate>(this, attrInfo);
-                AttributesTable.Add(attrInfo.Id, attrValue1);
+            var attrValue1 = new SvgEavClock<SvgElementAnimate>(this, attrInfo);
+            AttributesTable.Add(attrInfo.Id, attrValue1);
 
-                return attrValue1;
-            }
+            return attrValue1;
         }
+    }
 
-        public SvgEavClock<SvgElementAnimate> MinDuration
+    public SvgEavNumber<SvgElementAnimate> RepeatCount
+    {
+        get
         {
-            get
-            {
-                var attrInfo = SvgAttributeUtils.Min;
+            var attrInfo = SvgAttributeUtils.RepeatCount;
 
-                if (AttributesTable.TryGetValue(attrInfo.Id, out var attrValue))
-                    return attrValue as SvgEavClock<SvgElementAnimate>;
+            if (AttributesTable.TryGetValue(attrInfo.Id, out var attrValue))
+                return attrValue as SvgEavNumber<SvgElementAnimate>;
 
-                var attrValue1 = new SvgEavClock<SvgElementAnimate>(this, attrInfo);
-                AttributesTable.Add(attrInfo.Id, attrValue1);
+            var attrValue1 = new SvgEavNumber<SvgElementAnimate>(this, attrInfo);
+            AttributesTable.Add(attrInfo.Id, attrValue1);
 
-                return attrValue1;
-            }
+            return attrValue1;
         }
+    }
 
-        public SvgEavClock<SvgElementAnimate> MaxDuration
+    public SvgEav<SvgValueAnimationFill, SvgElementAnimate> Fill
+    {
+        get
         {
-            get
-            {
-                var attrInfo = SvgAttributeUtils.Max;
+            var attrInfo = SvgAttributeUtils.Fill;
 
-                if (AttributesTable.TryGetValue(attrInfo.Id, out var attrValue))
-                    return attrValue as SvgEavClock<SvgElementAnimate>;
+            if (AttributesTable.TryGetValue(attrInfo.Id, out var attrValue))
+                return attrValue as SvgEav<SvgValueAnimationFill, SvgElementAnimate>;
 
-                var attrValue1 = new SvgEavClock<SvgElementAnimate>(this, attrInfo);
-                AttributesTable.Add(attrInfo.Id, attrValue1);
+            var attrValue1 = new SvgEav<SvgValueAnimationFill, SvgElementAnimate>(this, attrInfo);
+            AttributesTable.Add(attrInfo.Id, attrValue1);
 
-                return attrValue1;
-            }
+            return attrValue1;
         }
+    }
 
-        public SvgEavNumber<SvgElementAnimate> RepeatCount
+    public SvgEav<SvgValueAnimationAdditive, SvgElementAnimate> Additive
+    {
+        get
         {
-            get
-            {
-                var attrInfo = SvgAttributeUtils.RepeatCount;
+            var attrInfo = SvgAttributeUtils.Additive;
 
-                if (AttributesTable.TryGetValue(attrInfo.Id, out var attrValue))
-                    return attrValue as SvgEavNumber<SvgElementAnimate>;
+            if (AttributesTable.TryGetValue(attrInfo.Id, out var attrValue))
+                return attrValue as SvgEav<SvgValueAnimationAdditive, SvgElementAnimate>;
 
-                var attrValue1 = new SvgEavNumber<SvgElementAnimate>(this, attrInfo);
-                AttributesTable.Add(attrInfo.Id, attrValue1);
+            var attrValue1 = new SvgEav<SvgValueAnimationAdditive, SvgElementAnimate>(this, attrInfo);
+            AttributesTable.Add(attrInfo.Id, attrValue1);
 
-                return attrValue1;
-            }
+            return attrValue1;
         }
+    }
 
-        public SvgEav<SvgValueAnimationFill, SvgElementAnimate> Fill
+    public SvgEav<SvgValueAnimationAccumulate, SvgElementAnimate> Accumulate
+    {
+        get
         {
-            get
-            {
-                var attrInfo = SvgAttributeUtils.Fill;
+            var attrInfo = SvgAttributeUtils.Accumulate;
 
-                if (AttributesTable.TryGetValue(attrInfo.Id, out var attrValue))
-                    return attrValue as SvgEav<SvgValueAnimationFill, SvgElementAnimate>;
+            if (AttributesTable.TryGetValue(attrInfo.Id, out var attrValue))
+                return attrValue as SvgEav<SvgValueAnimationAccumulate, SvgElementAnimate>;
 
-                var attrValue1 = new SvgEav<SvgValueAnimationFill, SvgElementAnimate>(this, attrInfo);
-                AttributesTable.Add(attrInfo.Id, attrValue1);
+            var attrValue1 = new SvgEav<SvgValueAnimationAccumulate, SvgElementAnimate>(this, attrInfo);
+            AttributesTable.Add(attrInfo.Id, attrValue1);
 
-                return attrValue1;
-            }
+            return attrValue1;
         }
+    }
 
-        public SvgEav<SvgValueAnimationAdditive, SvgElementAnimate> Additive
+    public SvgEav<SvgValueAnimationRestart, SvgElementAnimate> Restart
+    {
+        get
         {
-            get
-            {
-                var attrInfo = SvgAttributeUtils.Additive;
+            var attrInfo = SvgAttributeUtils.Restart;
 
-                if (AttributesTable.TryGetValue(attrInfo.Id, out var attrValue))
-                    return attrValue as SvgEav<SvgValueAnimationAdditive, SvgElementAnimate>;
+            if (AttributesTable.TryGetValue(attrInfo.Id, out var attrValue))
+                return attrValue as SvgEav<SvgValueAnimationRestart, SvgElementAnimate>;
 
-                var attrValue1 = new SvgEav<SvgValueAnimationAdditive, SvgElementAnimate>(this, attrInfo);
-                AttributesTable.Add(attrInfo.Id, attrValue1);
+            var attrValue1 = new SvgEav<SvgValueAnimationRestart, SvgElementAnimate>(this, attrInfo);
+            AttributesTable.Add(attrInfo.Id, attrValue1);
 
-                return attrValue1;
-            }
+            return attrValue1;
         }
+    }
 
-        public SvgEav<SvgValueAnimationAccumulate, SvgElementAnimate> Accumulate
+    public SvgEav<SvgValueAnimationCalcMode, SvgElementAnimate> CalcMode
+    {
+        get
         {
-            get
-            {
-                var attrInfo = SvgAttributeUtils.Accumulate;
+            var attrInfo = SvgAttributeUtils.CalcMode;
 
-                if (AttributesTable.TryGetValue(attrInfo.Id, out var attrValue))
-                    return attrValue as SvgEav<SvgValueAnimationAccumulate, SvgElementAnimate>;
+            if (AttributesTable.TryGetValue(attrInfo.Id, out var attrValue))
+                return attrValue as SvgEav<SvgValueAnimationCalcMode, SvgElementAnimate>;
 
-                var attrValue1 = new SvgEav<SvgValueAnimationAccumulate, SvgElementAnimate>(this, attrInfo);
-                AttributesTable.Add(attrInfo.Id, attrValue1);
+            var attrValue1 = new SvgEav<SvgValueAnimationCalcMode, SvgElementAnimate>(this, attrInfo);
+            AttributesTable.Add(attrInfo.Id, attrValue1);
 
-                return attrValue1;
-            }
+            return attrValue1;
         }
+    }
 
-        public SvgEav<SvgValueAnimationRestart, SvgElementAnimate> Restart
+    public SvgEav<SvgValueLengthsList, SvgElementAnimate> KeyTimes
+    {
+        get
         {
-            get
-            {
-                var attrInfo = SvgAttributeUtils.Restart;
+            var attrInfo = SvgAttributeUtils.KeyTimes;
 
-                if (AttributesTable.TryGetValue(attrInfo.Id, out var attrValue))
-                    return attrValue as SvgEav<SvgValueAnimationRestart, SvgElementAnimate>;
+            if (AttributesTable.TryGetValue(attrInfo.Id, out var attrValue))
+                return attrValue as SvgEav<SvgValueLengthsList, SvgElementAnimate>;
 
-                var attrValue1 = new SvgEav<SvgValueAnimationRestart, SvgElementAnimate>(this, attrInfo);
-                AttributesTable.Add(attrInfo.Id, attrValue1);
+            var attrValue1 = new SvgEav<SvgValueLengthsList, SvgElementAnimate>(this, attrInfo);
+            AttributesTable.Add(attrInfo.Id, attrValue1);
 
-                return attrValue1;
-            }
+            return attrValue1;
         }
+    }
 
-        public SvgEav<SvgValueAnimationCalcMode, SvgElementAnimate> CalcMode
-        {
-            get
-            {
-                var attrInfo = SvgAttributeUtils.CalcMode;
+    //TODO: Implement the begin and end attributes http://docs.w3cub.com/svg/attribute/begin/
+    //TODO: Implement the keySplines attribute http://docs.w3cub.com/svg/attribute/keysplines/http://docs.w3cub.com/svg/attribute/keysplines/
 
-                if (AttributesTable.TryGetValue(attrInfo.Id, out var attrValue))
-                    return attrValue as SvgEav<SvgValueAnimationCalcMode, SvgElementAnimate>;
-
-                var attrValue1 = new SvgEav<SvgValueAnimationCalcMode, SvgElementAnimate>(this, attrInfo);
-                AttributesTable.Add(attrInfo.Id, attrValue1);
-
-                return attrValue1;
-            }
-        }
-
-        public SvgEav<SvgValueLengthsList, SvgElementAnimate> KeyTimes
-        {
-            get
-            {
-                var attrInfo = SvgAttributeUtils.KeyTimes;
-
-                if (AttributesTable.TryGetValue(attrInfo.Id, out var attrValue))
-                    return attrValue as SvgEav<SvgValueLengthsList, SvgElementAnimate>;
-
-                var attrValue1 = new SvgEav<SvgValueLengthsList, SvgElementAnimate>(this, attrInfo);
-                AttributesTable.Add(attrInfo.Id, attrValue1);
-
-                return attrValue1;
-            }
-        }
-
-        //TODO: Implement the begin and end attributes http://docs.w3cub.com/svg/attribute/begin/
-        //TODO: Implement the keySplines attribute http://docs.w3cub.com/svg/attribute/keysplines/http://docs.w3cub.com/svg/attribute/keysplines/
-
-        private SvgElementAnimate()
-        {
-        }
+    private SvgElementAnimate()
+    {
     }
 }

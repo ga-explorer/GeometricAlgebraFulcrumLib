@@ -1,8 +1,7 @@
-﻿namespace GeometricAlgebraFulcrumLib.MetaProgramming.Expressions
-{
-    public interface IMetaExpressionComputed :
-        IMetaExpression
-    {
+﻿namespace GeometricAlgebraFulcrumLib.MetaProgramming.Expressions;
 
-    }
+public interface IMetaExpressionComputed :
+    IMetaExpression
+{
+
 }

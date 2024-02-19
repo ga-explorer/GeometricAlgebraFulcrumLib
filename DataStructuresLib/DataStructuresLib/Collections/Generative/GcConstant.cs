@@ -1,25 +1,24 @@
-﻿namespace DataStructuresLib.Collections.Generative
+﻿namespace DataStructuresLib.Collections.Generative;
+
+public sealed class GcConstant<T> : GenerativeCollection<T>
 {
-    public sealed class GcConstant<T> : GenerativeCollection<T>
+    public static GcConstant<T> Create(T defaultValue)
     {
-        public static GcConstant<T> Create(T defaultValue)
-        {
-            return new GcConstant<T>(defaultValue);
-        }
+        return new GcConstant<T>(defaultValue);
+    }
 
 
-        public T this[int index] => DefaultValue;
+    public T this[int index] => DefaultValue;
 
 
-        private GcConstant(T defaultValue)
-        {
-            DefaultValue = defaultValue;
-        }
+    private GcConstant(T defaultValue)
+    {
+        DefaultValue = defaultValue;
+    }
 
 
-        public override T GetItem(int index)
-        {
-            return DefaultValue;
-        }
+    public override T GetItem(int index)
+    {
+        return DefaultValue;
     }
 }

@@ -1,59 +1,58 @@
 ﻿using GeometricAlgebraFulcrumLib.Mathematica.Mathematica.Expression;
 
-namespace GeometricAlgebraFulcrumLib.Mathematica.Mathematica
+namespace GeometricAlgebraFulcrumLib.Mathematica.Mathematica;
+
+public interface ISymbolicMatrix : ISymbolicObject
 {
-    public interface ISymbolicMatrix : ISymbolicObject
-    {
-        int RowCount { get; }
+    int RowCount { get; }
 
-        int ColumnCount { get; }
+    int ColumnCount { get; }
 
 
-        bool IsZero();
+    bool IsZero();
 
-        bool IsIdentity();
+    bool IsIdentity();
 
-        bool IsDiagonal();
+    bool IsDiagonal();
 
-        bool IsSymmetric();
+    bool IsSymmetric();
 
-        bool IsOrthogonal();
+    bool IsOrthogonal();
 
-        bool IsInvertable();
+    bool IsInvertable();
 
-        bool IsFullMatrix();
+    bool IsFullMatrix();
 
-        bool IsSparseMatrix();
+    bool IsSparseMatrix();
 
-        bool IsSquare();
+    bool IsSquare();
 
-        bool IsRowVector();
+    bool IsRowVector();
 
-        bool IsColumnVector();
-
-
-        MathematicaScalar this[int row, int column] { get; }
-
-        ISymbolicVector GetRow(int row);
-
-        ISymbolicVector GetColumn(int column);
-
-        ISymbolicVector GetDiagonal();
+    bool IsColumnVector();
 
 
-        ISymbolicVector Times(ISymbolicVector v);
+    MathematicaScalar this[int row, int column] { get; }
 
-        ISymbolicMatrix Transpose();
+    ISymbolicVector GetRow(int row);
 
-        ISymbolicMatrix Inverse();
+    ISymbolicVector GetColumn(int column);
 
-        ISymbolicMatrix InverseTranspose();
+    ISymbolicVector GetDiagonal();
 
 
-        MathematicaMatrix ToMathematicaMatrix();
+    ISymbolicVector Times(ISymbolicVector v);
 
-        MathematicaMatrix ToMathematicaFullMatrix();
+    ISymbolicMatrix Transpose();
 
-        MathematicaMatrix ToMathematicaSparseMatrix();
-    }
+    ISymbolicMatrix Inverse();
+
+    ISymbolicMatrix InverseTranspose();
+
+
+    MathematicaMatrix ToMathematicaMatrix();
+
+    MathematicaMatrix ToMathematicaFullMatrix();
+
+    MathematicaMatrix ToMathematicaSparseMatrix();
 }

@@ -11,6 +11,7 @@ using GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.Visuals.Space3D.Animati
 using GeometricAlgebraFulcrumLib.Lite.LinearAlgebra.Vectors.Space3D;
 using GeometricAlgebraFulcrumLib.Lite.ScalarAlgebra;
 using GeometricAlgebraFulcrumLib.Lite.Geometry.Conformal.Interpolation;
+using GeometricAlgebraFulcrumLib.Lite.Geometry.Conformal.Operations;
 
 namespace GeometricAlgebraFulcrumLib.Lite.Samples.Geometry.Conformal;
 

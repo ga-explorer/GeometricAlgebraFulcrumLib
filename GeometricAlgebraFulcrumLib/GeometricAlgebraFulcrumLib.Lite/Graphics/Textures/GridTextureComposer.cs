@@ -1,58 +1,57 @@
-﻿namespace GeometricAlgebraFulcrumLib.Lite.Graphics.Textures
+﻿namespace GeometricAlgebraFulcrumLib.Lite.Graphics.Textures;
+
+public sealed class GridTextureComposer
 {
-    public sealed class GridTextureComposer
+    public static string Pattern1 { get; private set; }
+
+    public static string Pattern2 { get; private set; }
+
+    public static string Pattern3 { get; private set; }
+
+    static GridTextureComposer()
     {
-        public static string Pattern1 { get; private set; }
+        Pattern1 = "||-------|-------|-------||-------|-------|-------||";
+        Pattern2 = "||-----------------------||-----------------------||";
+        Pattern3 = "||------------------------------------------------||";
+    }
 
-        public static string Pattern2 { get; private set; }
 
-        public static string Pattern3 { get; private set; }
+    public string XPattern { get; set; } = Pattern2;
 
-        static GridTextureComposer()
+    public string YPattern { get; set; } = Pattern2;
+
+    public Color BackgroundColor { get; set; } = Color.White;
+
+    public Color LineColor { get; set; } = Color.CornflowerBlue;
+
+    public int LineWidth { get; set; } = 1;
+
+    public int ImageWidth 
+        => LineWidth * XPattern.Length;
+
+    public int ImageHeight 
+        => LineWidth * YPattern.Length;
+
+
+    public Image ComposeImage()
+    {
+        var image = new Image<Rgba32>(ImageWidth, ImageHeight);
+
+        for (var x = 0; x < ImageWidth; x++)
         {
-            Pattern1 = "||-------|-------|-------||-------|-------|-------||";
-            Pattern2 = "||-----------------------||-----------------------||";
-            Pattern3 = "||------------------------------------------------||";
-        }
+            var i = x / LineWidth;
+            var xFlag = XPattern[i] == '|';
 
-
-        public string XPattern { get; set; } = Pattern2;
-
-        public string YPattern { get; set; } = Pattern2;
-
-        public Color BackgroundColor { get; set; } = Color.White;
-
-        public Color LineColor { get; set; } = Color.CornflowerBlue;
-
-        public int LineWidth { get; set; } = 1;
-
-        public int ImageWidth 
-            => LineWidth * XPattern.Length;
-
-        public int ImageHeight 
-            => LineWidth * YPattern.Length;
-
-
-        public Image ComposeImage()
-        {
-            var image = new Image<Rgba32>(ImageWidth, ImageHeight);
-
-            for (var x = 0; x < ImageWidth; x++)
+            for (var y = 0; y < ImageHeight; y++)
             {
-                var i = x / LineWidth;
-                var xFlag = XPattern[i] == '|';
+                var j = y / LineWidth;
 
-                for (var y = 0; y < ImageHeight; y++)
-                {
-                    var j = y / LineWidth;
-
-                    image[x, y] = xFlag || YPattern[j] == '|'
-                        ? LineColor
-                        : BackgroundColor;
-                }
+                image[x, y] = xFlag || YPattern[j] == '|'
+                    ? LineColor
+                    : BackgroundColor;
             }
-
-            return image;
         }
+
+        return image;
     }
 }

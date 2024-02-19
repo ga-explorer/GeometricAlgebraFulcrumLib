@@ -1,11 +1,10 @@
-﻿namespace GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.BabylonJs.Constants
+﻿namespace GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.BabylonJs.Constants;
+
+public enum GrBabylonJsBillboardMode
 {
-    public enum GrBabylonJsBillboardMode
-    {
-        None = 0,
-        X = 1,
-        Y = 2,
-        Z = 4,
-        All = 7
-    }
+    None = 0,
+    X = 1,
+    Y = 2,
+    Z = 4,
+    All = 7
 }

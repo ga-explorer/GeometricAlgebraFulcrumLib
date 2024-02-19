@@ -1,105 +1,104 @@
 ﻿using System;
 using System.Text;
 
-namespace DataStructuresLib.Combinations
+namespace DataStructuresLib.Combinations;
+
+public sealed class PascalTriangleUInt32
 {
-    public sealed class PascalTriangleUInt32
+    private readonly uint[][] _rows;
+
+
+    public int RowsCount 
+        => _rows.Length;
+
+    public uint this[int n, int k]
     {
-        private readonly uint[][] _rows;
-
-
-        public int RowsCount 
-            => _rows.Length;
-
-        public uint this[int n, int k]
+        get
         {
-            get
-            {
-                if (n < 0 || k < 0)
-                    throw new IndexOutOfRangeException();
+            if (n < 0 || k < 0)
+                throw new IndexOutOfRangeException();
 
-                if (k > n)
-                    return 0U;
+            if (k > n)
+                return 0U;
 
-                if (k > n / 2) 
-                    k = n - k;
+            if (k > n / 2) 
+                k = n - k;
 
-                return _rows[n][k];
-            }
+            return _rows[n][k];
         }
+    }
 
-        public PascalTriangleUInt32(int maxRowIndex)
-        {
-            if (maxRowIndex < 0 || maxRowIndex > 34)
-                throw new ArgumentOutOfRangeException($"{nameof(maxRowIndex)} must be between 0 and 34");
+    public PascalTriangleUInt32(int maxRowIndex)
+    {
+        if (maxRowIndex < 0 || maxRowIndex > 34)
+            throw new ArgumentOutOfRangeException($"{nameof(maxRowIndex)} must be between 0 and 34");
 
-            _rows = new uint[maxRowIndex + 1][];
+        _rows = new uint[maxRowIndex + 1][];
 
-            ComputePascalTriangleRows(maxRowIndex);
-        }
+        ComputePascalTriangleRows(maxRowIndex);
+    }
 
         
-        private void ComputePascalTriangleRows(int maxRowIndex)
-        {
-            //First row of Pascal triangle
-            _rows[0] = new[] {1U};
+    private void ComputePascalTriangleRows(int maxRowIndex)
+    {
+        //First row of Pascal triangle
+        _rows[0] = new[] {1U};
             
-            //Second row of Pascal triangle
-            _rows[1] = new[] {1U};
+        //Second row of Pascal triangle
+        _rows[1] = new[] {1U};
 
-            //Remaining rows of Pascal triangle
-            var prevRow = _rows[1];
-            for (var i = 2; i <= maxRowIndex; i++)
-            {
-                var rowSize = i / 2 + 1;
-
-                var row = new uint[rowSize];
-
-                row[0] = 1U;
-                row[1] = (uint)i;
-
-                var value1 = (uint)(i - 1);
-                for (var j = 2; j < rowSize; j++)
-                {
-                    var value2 = j < prevRow.Length 
-                        ? prevRow[j] 
-                        : prevRow[^1];
-
-                    checked { row[j] = value1 + value2; }
-
-                    value1 = value2;
-                }
-
-                _rows[i] = row;
-
-                prevRow = row;
-            }
-        }
-
-        public override string ToString()
+        //Remaining rows of Pascal triangle
+        var prevRow = _rows[1];
+        for (var i = 2; i <= maxRowIndex; i++)
         {
-            var composer = new StringBuilder();
+            var rowSize = i / 2 + 1;
 
-            composer.AppendLine("{");
+            var row = new uint[rowSize];
 
-            for (var n = 0; n < RowsCount; n++)
+            row[0] = 1U;
+            row[1] = (uint)i;
+
+            var value1 = (uint)(i - 1);
+            for (var j = 2; j < rowSize; j++)
             {
-                composer.Append("   {");
+                var value2 = j < prevRow.Length 
+                    ? prevRow[j] 
+                    : prevRow[^1];
 
-                for (var k = 0; k <= n; k++)
-                {
-                    composer.Append(this[n, k]);
+                checked { row[j] = value1 + value2; }
 
-                    if (k < n)
-                        composer.Append(", ");
-                }
+                value1 = value2;
+            }
 
-                composer.AppendLine("}");
+            _rows[i] = row;
+
+            prevRow = row;
+        }
+    }
+
+    public override string ToString()
+    {
+        var composer = new StringBuilder();
+
+        composer.AppendLine("{");
+
+        for (var n = 0; n < RowsCount; n++)
+        {
+            composer.Append("   {");
+
+            for (var k = 0; k <= n; k++)
+            {
+                composer.Append(this[n, k]);
+
+                if (k < n)
+                    composer.Append(", ");
             }
 
             composer.AppendLine("}");
-
-            return composer.ToString();
         }
+
+        composer.AppendLine("}");
+
+        return composer.ToString();
     }
 }

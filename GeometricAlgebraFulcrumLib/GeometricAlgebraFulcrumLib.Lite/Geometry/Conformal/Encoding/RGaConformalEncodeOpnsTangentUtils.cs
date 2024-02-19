@@ -6,6 +6,7 @@ using GeometricAlgebraFulcrumLib.Lite.LinearAlgebra.Vectors.SpaceND;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Restricted.Float64.Multivectors.Composers;
+using GeometricAlgebraFulcrumLib.Lite.Geometry.Conformal.Operations;
 
 namespace GeometricAlgebraFulcrumLib.Lite.Geometry.Conformal.Encoding;
 
@@ -431,7 +432,7 @@ public static class RGaConformalEncodeOpnsTangentUtils
             egaPointArray
                 .Skip(1)
                 .Select(egaPoint2 => egaPoint2 - egaPoint1)
-                .Op();
+                .Op(conformalSpace.Processor);
 
         return conformalSpace.EncodeOpnsTangent(
             egaPoint1,
@@ -455,7 +456,7 @@ public static class RGaConformalEncodeOpnsTangentUtils
             egaPointList
                 .Skip(1)
                 .Select(egaPoint2 => egaPoint2 - egaPoint1)
-                .Op();
+                .Op(conformalSpace.Processor);
 
         return conformalSpace.EncodeOpnsTangent(
             egaPoint1,

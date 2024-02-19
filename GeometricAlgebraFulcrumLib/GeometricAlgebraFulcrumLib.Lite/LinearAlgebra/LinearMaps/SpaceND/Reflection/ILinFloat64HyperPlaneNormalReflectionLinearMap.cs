@@ -1,15 +1,14 @@
 ﻿using GeometricAlgebraFulcrumLib.Lite.LinearAlgebra.LinearMaps.SpaceND.Scaling;
 using GeometricAlgebraFulcrumLib.Lite.LinearAlgebra.Vectors.SpaceND;
 
-namespace GeometricAlgebraFulcrumLib.Lite.LinearAlgebra.LinearMaps.SpaceND.Reflection
+namespace GeometricAlgebraFulcrumLib.Lite.LinearAlgebra.LinearMaps.SpaceND.Reflection;
+
+public interface ILinFloat64HyperPlaneNormalReflectionLinearMap :
+    ILinFloat64DirectionalScalingLinearMap
 {
-    public interface ILinFloat64HyperPlaneNormalReflectionLinearMap :
-        ILinFloat64DirectionalScalingLinearMap
-    {
-        Float64Vector ReflectionNormal { get; }
+    Float64Vector ReflectionNormal { get; }
 
-        ILinFloat64HyperPlaneNormalReflectionLinearMap GetHyperPlaneNormalReflectionLinearMapInverse();
+    ILinFloat64HyperPlaneNormalReflectionLinearMap GetHyperPlaneNormalReflectionLinearMapInverse();
 
-        LinFloat64HyperPlaneNormalReflection ToHyperPlaneNormalReflection();
-    }
+    LinFloat64HyperPlaneNormalReflection ToHyperPlaneNormalReflection();
 }

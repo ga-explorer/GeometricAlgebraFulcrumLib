@@ -1,8 +1,7 @@
-﻿namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors.Sparse
+﻿namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors.Sparse;
+
+public interface ILinVectorSparseStorage<T> :
+    ILinVectorStorage<T>
 {
-    public interface ILinVectorSparseStorage<T> :
-        ILinVectorStorage<T>
-    {
         
-    }
 }

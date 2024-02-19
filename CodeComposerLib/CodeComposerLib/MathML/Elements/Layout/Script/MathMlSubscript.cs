@@ -3,109 +3,108 @@ using System.Collections;
 using System.Collections.Generic;
 using CodeComposerLib.MathML.Values.Color;
 
-namespace CodeComposerLib.MathML.Elements.Layout.Script
+namespace CodeComposerLib.MathML.Elements.Layout.Script;
+
+public sealed class MathMlSubscript
+    : MathMlLayoutElement, IMathMlLayoutElement<IMathMlElement>
 {
-    public sealed class MathMlSubscript
-        : MathMlLayoutElement, IMathMlLayoutElement<IMathMlElement>
+    public static MathMlSubscript Create()
     {
-        public static MathMlSubscript Create()
+        return new MathMlSubscript();
+    }
+
+    public static MathMlSubscript Create(IMathMlElement baseElement, IMathMlElement subscriptElement)
+    {
+        return new MathMlSubscript()
         {
-            return new MathMlSubscript();
+            Base = baseElement,
+            Subscript = subscriptElement
+        };
+    }
+
+
+    public override string XmlTagName 
+        => "msub";
+
+    public override IEnumerable<IMathMlElement> Contents
+    {
+        get
+        {
+            yield return Base;
+            yield return Subscript;
+        }
+    }
+
+    public override string ContentsText
+        => Base + Environment.NewLine + Subscript;
+
+    public int Count 
+        => 2;
+
+    public IMathMlElement this[int index]
+    {
+        get
+        {
+            if (index == 0) return Base;
+
+            if (index == 1) return Subscript;
+
+            throw new IndexOutOfRangeException();
         }
 
-        public static MathMlSubscript Create(IMathMlElement baseElement, IMathMlElement subscriptElement)
+        set
         {
-            return new MathMlSubscript()
-            {
-                Base = baseElement,
-                Subscript = subscriptElement
-            };
-        }
-
-
-        public override string XmlTagName 
-            => "msub";
-
-        public override IEnumerable<IMathMlElement> Contents
-        {
-            get
-            {
-                yield return Base;
-                yield return Subscript;
-            }
-        }
-
-        public override string ContentsText
-            => Base + Environment.NewLine + Subscript;
-
-        public int Count 
-            => 2;
-
-        public IMathMlElement this[int index]
-        {
-            get
-            {
-                if (index == 0) return Base;
-
-                if (index == 1) return Subscript;
-
+            if (index == 0)
+                Base = value;
+            else if (index == 1)
+                Subscript = value;
+            else
                 throw new IndexOutOfRangeException();
-            }
-
-            set
-            {
-                if (index == 0)
-                    Base = value;
-                else if (index == 1)
-                    Subscript = value;
-                else
-                    throw new IndexOutOfRangeException();
-            }
         }
+    }
 
-        public IMathMlElement Base { get; set; }
+    public IMathMlElement Base { get; set; }
 
-        public IMathMlElement Subscript { get; set; }
+    public IMathMlElement Subscript { get; set; }
 
-        public MathMlColorValue BackgroundColor { get; set; }
-            = MathMlColorValue.Empty;
+    public MathMlColorValue BackgroundColor { get; set; }
+        = MathMlColorValue.Empty;
 
-        public MathMlColorValue TextColor { get; set; }
-            = MathMlColorValue.Empty;
-
-
-        internal MathMlSubscript()
-        {
-        }
+    public MathMlColorValue TextColor { get; set; }
+        = MathMlColorValue.Empty;
 
 
-        public MathMlSubscript SetContents(IMathMlElement baseElement, IMathMlElement subscriptElement)
-        {
-            Base = baseElement;
-            Subscript = subscriptElement;
+    internal MathMlSubscript()
+    {
+    }
 
-            return this;
-        }
 
-        internal override void UpdateAttributesComposer(MathMlAttributesComposer composer)
-        {
-            base.UpdateAttributesComposer(composer);
+    public MathMlSubscript SetContents(IMathMlElement baseElement, IMathMlElement subscriptElement)
+    {
+        Base = baseElement;
+        Subscript = subscriptElement;
 
-            composer
-                .SetAttributeValue("mathcolor", TextColor)
-                .SetAttributeValue("mathbackground", BackgroundColor);
-        }
+        return this;
+    }
 
-        public IEnumerator<IMathMlElement> GetEnumerator()
-        {
-            yield return Base;
-            yield return Subscript;
-        }
+    internal override void UpdateAttributesComposer(MathMlAttributesComposer composer)
+    {
+        base.UpdateAttributesComposer(composer);
 
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            yield return Base;
-            yield return Subscript;
-        }
+        composer
+            .SetAttributeValue("mathcolor", TextColor)
+            .SetAttributeValue("mathbackground", BackgroundColor);
+    }
+
+    public IEnumerator<IMathMlElement> GetEnumerator()
+    {
+        yield return Base;
+        yield return Subscript;
+    }
+
+    IEnumerator IEnumerable.GetEnumerator()
+    {
+        yield return Base;
+        yield return Subscript;
     }
 }

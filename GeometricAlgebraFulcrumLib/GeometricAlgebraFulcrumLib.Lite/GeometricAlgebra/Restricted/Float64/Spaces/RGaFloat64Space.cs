@@ -1,18 +1,17 @@
 ﻿using DataStructuresLib.BitManipulation;
 using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Restricted.Float64.Processors;
 
-namespace GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Restricted.Float64.Spaces
+namespace GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Restricted.Float64.Spaces;
+
+public abstract class RGaFloat64Space
 {
-    public abstract class RGaFloat64Space
-    {
-        public abstract int VSpaceDimensions { get; }
+    public abstract int VSpaceDimensions { get; }
 
-        public abstract RGaFloat64Processor Processor { get; }
+    public abstract RGaFloat64Processor Processor { get; }
 
-        public IEnumerable<int> Grades 
-            => (1 + VSpaceDimensions).GetRange();
+    public IEnumerable<int> Grades 
+        => (1 + VSpaceDimensions).GetRange();
 
-        public RGaMetric Metric 
-            => Processor;
-    }
+    public RGaMetric Metric 
+        => Processor;
 }

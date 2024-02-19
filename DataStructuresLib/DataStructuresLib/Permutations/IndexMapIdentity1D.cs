@@ -1,27 +1,26 @@
 ﻿using System.Collections.Generic;
 
-namespace DataStructuresLib.Permutations
+namespace DataStructuresLib.Permutations;
+
+public sealed class IndexMapIdentity1D
+    : IIndexMap1D
 {
-    public sealed class IndexMapIdentity1D
-        : IIndexMap1D
+    public int IndexCount { get; set; }
+
+    public int this[int index]
+        => index;
+
+    public IEnumerable<int> this[IEnumerable<int> indexList]
+        => indexList;
+
+
+    public IndexMapIdentity1D()
     {
-        public int IndexCount { get; set; }
+        IndexCount = 0;
+    }
 
-        public int this[int index]
-            => index;
-
-        public IEnumerable<int> this[IEnumerable<int> indexList]
-            => indexList;
-
-
-        public IndexMapIdentity1D()
-        {
-            IndexCount = 0;
-        }
-
-        public IndexMapIdentity1D(int indexCount)
-        {
-            IndexCount = indexCount;
-        }
+    public IndexMapIdentity1D(int indexCount)
+    {
+        IndexCount = indexCount;
     }
 }

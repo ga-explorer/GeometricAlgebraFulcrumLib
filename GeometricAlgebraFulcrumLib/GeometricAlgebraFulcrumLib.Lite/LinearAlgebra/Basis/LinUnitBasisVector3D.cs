@@ -1,14 +1,13 @@
-﻿namespace GeometricAlgebraFulcrumLib.Lite.LinearAlgebra.Basis
+﻿namespace GeometricAlgebraFulcrumLib.Lite.LinearAlgebra.Basis;
+
+public enum LinUnitBasisVector3D
 {
-    public enum LinUnitBasisVector3D
-    {
-        PositiveX = 0,
-        NegativeX = 1,
+    PositiveX = 0,
+    NegativeX = 1,
 
-        PositiveY = 2,
-        NegativeY = 3,
+    PositiveY = 2,
+    NegativeY = 3,
 
-        PositiveZ = 4,
-        NegativeZ = 5
-    }
+    PositiveZ = 4,
+    NegativeZ = 5
 }

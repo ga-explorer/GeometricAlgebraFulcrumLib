@@ -5,125 +5,124 @@ using GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.ThreeJs.Obsolete.Math;
 using GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.ThreeJs.Obsolete.Objects;
 using TextComposerLib.Code.JavaScript;
 
-namespace GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.ThreeJs.Obsolete.Scenes
+namespace GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.ThreeJs.Obsolete.Scenes;
+
+/// <summary>
+/// Scenes allow you to set up what and where is to be rendered by three.js.
+/// This is where you place objects, lights and cameras.
+/// https://threejs.org/docs/#api/en/scenes/Scene
+/// </summary>
+public class TjScene :
+    TjComponentWithAttributes,
+    IReadOnlyCollection<TjObject3D>
 {
-    /// <summary>
-    /// Scenes allow you to set up what and where is to be rendered by three.js.
-    /// This is where you place objects, lights and cameras.
-    /// https://threejs.org/docs/#api/en/scenes/Scene
-    /// </summary>
-    public class TjScene :
-        TjComponentWithAttributes,
-        IReadOnlyCollection<TjObject3D>
+    private readonly List<TjObject3D> _objectsList
+        = new List<TjObject3D>();
+
+
+    public override string JavaScriptClassName 
+        => "Scene";
+
+    public int Count 
+        => _objectsList.Count;
+
+    public bool AutoUpdate { get; set; }
+
+    public ITjSceneBackgroundObject Background { get; set; }
+
+    public TjFog Fog { get; private set; }
+
+    public TjMaterialBase OverrideMaterial { get; set; }
+
+
+    public TjScene Reset()
     {
-        private readonly List<TjObject3D> _objectsList
-            = new List<TjObject3D>();
+        _objectsList.Clear();
 
+        return this;
+    }
 
-        public override string JavaScriptClassName 
-            => "Scene";
-
-        public int Count 
-            => _objectsList.Count;
-
-        public bool AutoUpdate { get; set; }
-
-        public ITjSceneBackgroundObject Background { get; set; }
-
-        public TjFog Fog { get; private set; }
-
-        public TjMaterialBase OverrideMaterial { get; set; }
-
-
-        public TjScene Reset()
+    public TjScene SetLinearFog(TjColor color, double nearDistance, double farDistance)
+    {
+        Fog = new TjLinearFog()
         {
-            _objectsList.Clear();
+            Color = color,
+            NearDistance = nearDistance,
+            FarDistance = farDistance,
+            Description = "Linear Fog"
+        };
 
-            return this;
-        }
+        return this;
+    }
 
-        public TjScene SetLinearFog(TjColor color, double nearDistance, double farDistance)
+    public TjScene SetExponentialSquaredFog(TjColor color, double density)
+    {
+        Fog = new TjExponentialSquaredFog()
         {
-            Fog = new TjLinearFog()
-            {
-                Color = color,
-                NearDistance = nearDistance,
-                FarDistance = farDistance,
-                Description = "Linear Fog"
-            };
+            Color = color,
+            Density = density,
+            Description = "Exponential Squared Fog"
+        };
 
-            return this;
-        }
+        return this;
+    }
 
-        public TjScene SetExponentialSquaredFog(TjColor color, double density)
-        {
-            Fog = new TjExponentialSquaredFog()
-            {
-                Color = color,
-                Density = density,
-                Description = "Exponential Squared Fog"
-            };
+    public TjScene RemoveFog()
+    {
+        Fog = null;
 
-            return this;
-        }
+        return this;
+    }
 
-        public TjScene RemoveFog()
-        {
-            Fog = null;
+    public TjScene Add(TjObject3D sceneObject)
+    {
+        sceneObject.ParentScene = this;
+        _objectsList.Add(sceneObject);
 
-            return this;
-        }
+        return this;
+    }
 
-        public TjScene Add(TjObject3D sceneObject)
+    public TjScene Add(params TjObject3D[] sceneObjectList)
+    {
+        foreach (var sceneObject in sceneObjectList)
         {
             sceneObject.ParentScene = this;
             _objectsList.Add(sceneObject);
-
-            return this;
         }
 
-        public TjScene Add(params TjObject3D[] sceneObjectList)
+        return this;
+    }
+
+    public TjScene Add(IEnumerable<TjObject3D> sceneObjectList)
+    {
+        foreach (var sceneObject in sceneObjectList)
         {
-            foreach (var sceneObject in sceneObjectList)
-            {
-                sceneObject.ParentScene = this;
-                _objectsList.Add(sceneObject);
-            }
-
-            return this;
+            sceneObject.ParentScene = this;
+            _objectsList.Add(sceneObject);
         }
 
-        public TjScene Add(IEnumerable<TjObject3D> sceneObjectList)
-        {
-            foreach (var sceneObject in sceneObjectList)
-            {
-                sceneObject.ParentScene = this;
-                _objectsList.Add(sceneObject);
-            }
+        return this;
+    }
 
-            return this;
-        }
+    public override void UpdateConstructorAttributes(JavaScriptAttributesDictionary composer)
+    {
+        base.UpdateConstructorAttributes(composer);
 
-        public override void UpdateConstructorAttributes(JavaScriptAttributesDictionary composer)
-        {
-            base.UpdateConstructorAttributes(composer);
-
-            composer
-                .SetValue("autoUpdate", AutoUpdate, true)
-                .SetTextValue("background", Background.ToString(), string.Empty)
-                .SetTextValue("overrideMaterial", OverrideMaterial.ToString(), string.Empty)
-                ;
-        }
+        composer
+            .SetValue("autoUpdate", AutoUpdate, true)
+            .SetTextValue("background", Background.ToString(), string.Empty)
+            .SetTextValue("overrideMaterial", OverrideMaterial.ToString(), string.Empty)
+            ;
+    }
         
 
-        public IEnumerator<TjObject3D> GetEnumerator()
-        {
-            return _objectsList.GetEnumerator();
-        }
+    public IEnumerator<TjObject3D> GetEnumerator()
+    {
+        return _objectsList.GetEnumerator();
+    }
 
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
-        }
+    IEnumerator IEnumerable.GetEnumerator()
+    {
+        return GetEnumerator();
     }
 }

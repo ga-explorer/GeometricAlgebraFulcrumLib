@@ -6,81 +6,81 @@ using GeometricAlgebraFulcrumLib.Lite.LinearAlgebra.Basis;
 using GeometricAlgebraFulcrumLib.Lite.LinearAlgebra.Vectors.Space3D;
 using GeometricAlgebraFulcrumLib.Lite.ScalarAlgebra;
 
-namespace GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.Visuals.Space3D.Surfaces
+namespace GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.Visuals.Space3D.Surfaces;
+
+public sealed class GrVisualCircleRingSurface3D :
+    GrVisualSurfaceWithAnimation3D
 {
-    public sealed class GrVisualCircleRingSurface3D :
-        GrVisualSurfaceWithAnimation3D
+    public sealed record KeyFrameRecord(
+        int FrameIndex, 
+        double Time,
+        double Visibility,
+        Float64Vector3D Center, 
+        Float64Vector3D Normal,
+        double MinRadius,
+        double MaxRadius
+    ) : GrVisualAnimatedGeometryKeyFrameRecord(
+        FrameIndex,
+        Time,
+        Visibility
+    );
+
+
+    public static GrVisualCircleRingSurface3D CreateStatic(string name, GrVisualSurfaceStyle3D style, IFloat64Vector3D normal, double minRadius, double maxRadius)
     {
-        public sealed record KeyFrameRecord(
-            int FrameIndex, 
-            double Time,
-            double Visibility,
-            Float64Vector3D Center, 
-            Float64Vector3D Normal,
-            double MinRadius,
-            double MaxRadius
-        ) : GrVisualAnimatedGeometryKeyFrameRecord(
-            FrameIndex,
-            Time,
-            Visibility
+        return new GrVisualCircleRingSurface3D(
+            name, 
+            style, 
+            Float64Vector3D.Zero, 
+            normal, 
+            minRadius, 
+            maxRadius,
+            GrVisualAnimationSpecs.Static
         );
-
-
-        public static GrVisualCircleRingSurface3D CreateStatic(string name, GrVisualSurfaceStyle3D style, IFloat64Vector3D normal, double minRadius, double maxRadius)
-        {
-            return new GrVisualCircleRingSurface3D(
-                name, 
-                style, 
-                Float64Vector3D.Zero, 
-                normal, 
-                minRadius, 
-                maxRadius,
-                GrVisualAnimationSpecs.Static
-            );
-        }
+    }
         
-        public static GrVisualCircleRingSurface3D CreateStatic(string name, GrVisualSurfaceStyle3D style, IFloat64Vector3D center, IFloat64Vector3D normal, double minRadius, double maxRadius)
-        {
-            return new GrVisualCircleRingSurface3D(
-                name, 
-                style, 
-                center, 
-                normal, 
-                minRadius, 
-                maxRadius,
-                GrVisualAnimationSpecs.Static
-            );
-        }
+    public static GrVisualCircleRingSurface3D CreateStatic(string name, GrVisualSurfaceStyle3D style, IFloat64Vector3D center, IFloat64Vector3D normal, double minRadius, double maxRadius)
+    {
+        return new GrVisualCircleRingSurface3D(
+            name, 
+            style, 
+            center, 
+            normal, 
+            minRadius, 
+            maxRadius,
+            GrVisualAnimationSpecs.Static
+        );
+    }
 
-        public static GrVisualCircleRingSurface3D Create(string name, GrVisualSurfaceStyle3D style, IFloat64Vector3D normal, double minRadius, double maxRadius, GrVisualAnimationSpecs animationSpecs)
-        {
-            return new GrVisualCircleRingSurface3D(
-                name, 
-                style, 
-                Float64Vector3D.Zero, 
-                normal, 
-                minRadius, 
-                maxRadius,
-                animationSpecs
-            );
-        }
+    public static GrVisualCircleRingSurface3D Create(string name, GrVisualSurfaceStyle3D style, IFloat64Vector3D normal, double minRadius, double maxRadius, GrVisualAnimationSpecs animationSpecs)
+    {
+        return new GrVisualCircleRingSurface3D(
+            name, 
+            style, 
+            Float64Vector3D.Zero, 
+            normal, 
+            minRadius, 
+            maxRadius,
+            animationSpecs
+        );
+    }
         
-        public static GrVisualCircleRingSurface3D Create(string name, GrVisualSurfaceStyle3D style, IFloat64Vector3D center, IFloat64Vector3D normal, double minRadius, double maxRadius, GrVisualAnimationSpecs animationSpecs)
-        {
-            return new GrVisualCircleRingSurface3D(
-                name, 
-                style, 
-                center, 
-                normal, 
-                minRadius, 
-                maxRadius,
-                animationSpecs
-            );
-        }
+    public static GrVisualCircleRingSurface3D Create(string name, GrVisualSurfaceStyle3D style, IFloat64Vector3D center, IFloat64Vector3D normal, double minRadius, double maxRadius, GrVisualAnimationSpecs animationSpecs)
+    {
+        return new GrVisualCircleRingSurface3D(
+            name, 
+            style, 
+            center, 
+            normal, 
+            minRadius, 
+            maxRadius,
+            animationSpecs
+        );
+    }
         
-        public static GrVisualCircleRingSurface3D CreateAnimated(string name, GrVisualSurfaceStyle3D style, GrVisualAnimatedVector3D normal, GrVisualAnimatedScalar minRadius, GrVisualAnimatedScalar maxRadius)
-        {
-            return new GrVisualCircleRingSurface3D(
+    public static GrVisualCircleRingSurface3D CreateAnimated(string name, GrVisualSurfaceStyle3D style, GrVisualAnimatedVector3D normal, GrVisualAnimatedScalar minRadius, GrVisualAnimatedScalar maxRadius)
+    {
+        return new GrVisualCircleRingSurface3D(
                 name, 
                 style, 
                 Float64Vector3D.Zero, 
@@ -89,13 +89,13 @@ namespace GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.Visuals.Space3D.Sur
                 1d,
                 normal.AnimationSpecs
             ).SetAnimatedNormal(normal)
-                .SetAnimatedMinRadius(minRadius)
-                .SetAnimatedMaxRadius(maxRadius);
-        }
+            .SetAnimatedMinRadius(minRadius)
+            .SetAnimatedMaxRadius(maxRadius);
+    }
         
-        public static GrVisualCircleRingSurface3D CreateAnimated(string name, GrVisualSurfaceStyle3D style, GrVisualAnimatedVector3D center, GrVisualAnimatedVector3D normal, GrVisualAnimatedScalar minRadius, GrVisualAnimatedScalar maxRadius)
-        {
-            return new GrVisualCircleRingSurface3D(
+    public static GrVisualCircleRingSurface3D CreateAnimated(string name, GrVisualSurfaceStyle3D style, GrVisualAnimatedVector3D center, GrVisualAnimatedVector3D normal, GrVisualAnimatedScalar minRadius, GrVisualAnimatedScalar maxRadius)
+    {
+        return new GrVisualCircleRingSurface3D(
                 name, 
                 style, 
                 Float64Vector3D.Zero, 
@@ -104,212 +104,211 @@ namespace GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.Visuals.Space3D.Sur
                 1d,
                 center.AnimationSpecs
             ).SetAnimatedCenter(center)
-                .SetAnimatedNormal(normal)
-                .SetAnimatedMinRadius(minRadius)
-                .SetAnimatedMaxRadius(maxRadius);
-        }
+            .SetAnimatedNormal(normal)
+            .SetAnimatedMinRadius(minRadius)
+            .SetAnimatedMaxRadius(maxRadius);
+    }
 
 
-        public IFloat64Vector3D Center { get; }
+    public IFloat64Vector3D Center { get; }
 
-        public Float64Vector3D Normal { get; }
+    public Float64Vector3D Normal { get; }
 
-        public double MinRadius { get; }
+    public double MinRadius { get; }
 
-        public double MaxRadius { get; }
+    public double MaxRadius { get; }
         
-        public GrVisualAnimatedVector3D? AnimatedCenter { get; set; }
+    public GrVisualAnimatedVector3D? AnimatedCenter { get; set; }
 
-        public GrVisualAnimatedVector3D? AnimatedNormal { get; set; }
+    public GrVisualAnimatedVector3D? AnimatedNormal { get; set; }
 
-        public GrVisualAnimatedScalar? AnimatedMinRadius { get; set; }
+    public GrVisualAnimatedScalar? AnimatedMinRadius { get; set; }
         
-        public GrVisualAnimatedScalar? AnimatedMaxRadius { get; set; }
+    public GrVisualAnimatedScalar? AnimatedMaxRadius { get; set; }
 
 
-        private GrVisualCircleRingSurface3D(string name, GrVisualSurfaceStyle3D style, IFloat64Vector3D center, IFloat64Vector3D normal, double minRadius, double maxRadius, GrVisualAnimationSpecs animationSpecs) 
-            : base(name, style, animationSpecs)
-        {
-            Center = center;
-            Normal = normal.ToUnitVector();
-            MinRadius = minRadius;
-            MaxRadius = maxRadius;
+    private GrVisualCircleRingSurface3D(string name, GrVisualSurfaceStyle3D style, IFloat64Vector3D center, IFloat64Vector3D normal, double minRadius, double maxRadius, GrVisualAnimationSpecs animationSpecs) 
+        : base(name, style, animationSpecs)
+    {
+        Center = center;
+        Normal = normal.ToUnitVector();
+        MinRadius = minRadius;
+        MaxRadius = maxRadius;
 
-            Debug.Assert(IsValid());
-        }
+        Debug.Assert(IsValid());
+    }
         
         
-        public override bool IsValid()
-        {
-            return Center.IsValid() &&
-                   Normal.IsValid() &&
-                   Normal.IsNearUnitVector() &&
-                   MinRadius.IsValid() &&
-                   MaxRadius.IsValid() &&
-                   MinRadius > 0 && 
-                   MinRadius < MaxRadius &&
-                   GetAnimatedGeometries().All(g => g.IsValid());
-        }
+    public override bool IsValid()
+    {
+        return Center.IsValid() &&
+               Normal.IsValid() &&
+               Normal.IsNearUnitVector() &&
+               MinRadius.IsValid() &&
+               MaxRadius.IsValid() &&
+               MinRadius > 0 && 
+               MinRadius < MaxRadius &&
+               GetAnimatedGeometries().All(g => g.IsValid());
+    }
         
-        public double GetInnerEdgeLength()
-        {
-            return 2d * Math.PI * MinRadius;
-        }
+    public double GetInnerEdgeLength()
+    {
+        return 2d * Math.PI * MinRadius;
+    }
         
-        public double GetOuterEdgeLength()
-        {
-            return 2d * Math.PI * MaxRadius;
-        }
+    public double GetOuterEdgeLength()
+    {
+        return 2d * Math.PI * MaxRadius;
+    }
 
-        public Triplet<Float64Vector3D> GetInnerEdgePointsTriplet()
-        {
-            var quaternion = LinUnitBasisVector3D.PositiveZ.CreateAxisToVectorRotationQuaternion(
-                Normal.ToUnitVector()
-            );
+    public Triplet<Float64Vector3D> GetInnerEdgePointsTriplet()
+    {
+        var quaternion = LinUnitBasisVector3D.PositiveZ.CreateAxisToVectorRotationQuaternion(
+            Normal.ToUnitVector()
+        );
 
-            const double angle = 2d * Math.PI / 3d;
+        const double angle = 2d * Math.PI / 3d;
 
-            var a = MinRadius * Math.Cos(angle);
-            var b = MinRadius * Math.Sin(angle);
+        var a = MinRadius * Math.Cos(angle);
+        var b = MinRadius * Math.Sin(angle);
 
-            var point1 = Center + quaternion.RotateVector(MinRadius, 0, 0);
-            var point2 = Center + quaternion.RotateVector(a, b, 0);
-            var point3 = Center + quaternion.RotateVector(a, -b, 0);
+        var point1 = Center + quaternion.RotateVector(MinRadius, 0, 0);
+        var point2 = Center + quaternion.RotateVector(a, b, 0);
+        var point3 = Center + quaternion.RotateVector(a, -b, 0);
 
-            return new Triplet<Float64Vector3D>(point1, point2, point3);
-        }
+        return new Triplet<Float64Vector3D>(point1, point2, point3);
+    }
         
-        public Triplet<Float64Vector3D> GetOuterEdgePointsTriplet()
-        {
-            var quaternion = LinUnitBasisVector3D.PositiveZ.CreateAxisToVectorRotationQuaternion(
-                Normal.ToUnitVector()
-            );
+    public Triplet<Float64Vector3D> GetOuterEdgePointsTriplet()
+    {
+        var quaternion = LinUnitBasisVector3D.PositiveZ.CreateAxisToVectorRotationQuaternion(
+            Normal.ToUnitVector()
+        );
 
-            const double angle = 2d * Math.PI / 3d;
+        const double angle = 2d * Math.PI / 3d;
 
-            var a = MaxRadius * Math.Cos(angle);
-            var b = MaxRadius * Math.Sin(angle);
+        var a = MaxRadius * Math.Cos(angle);
+        var b = MaxRadius * Math.Sin(angle);
 
-            var point1 = Center + quaternion.RotateVector(MaxRadius, 0, 0);
-            var point2 = Center + quaternion.RotateVector(a, b, 0);
-            var point3 = Center + quaternion.RotateVector(a, -b, 0);
+        var point1 = Center + quaternion.RotateVector(MaxRadius, 0, 0);
+        var point2 = Center + quaternion.RotateVector(a, b, 0);
+        var point3 = Center + quaternion.RotateVector(a, -b, 0);
 
-            return new Triplet<Float64Vector3D>(point1, point2, point3);
-        }
+        return new Triplet<Float64Vector3D>(point1, point2, point3);
+    }
 
-        public GrVisualCircleRingSurface3D SetAnimatedVisibility(GrVisualAnimatedScalar visibility)
-        {
-            AnimatedVisibility = visibility;
+    public GrVisualCircleRingSurface3D SetAnimatedVisibility(GrVisualAnimatedScalar visibility)
+    {
+        AnimatedVisibility = visibility;
             
-            return this;
-        }
+        return this;
+    }
 
-        public GrVisualCircleRingSurface3D SetAnimatedCenter(GrVisualAnimatedVector3D center)
-        {
-            AnimatedCenter = center;
+    public GrVisualCircleRingSurface3D SetAnimatedCenter(GrVisualAnimatedVector3D center)
+    {
+        AnimatedCenter = center;
             
-            return this;
-        }
+        return this;
+    }
         
-        public GrVisualCircleRingSurface3D SetAnimatedNormal(GrVisualAnimatedVector3D normal)
-        {
-            AnimatedNormal = normal;
+    public GrVisualCircleRingSurface3D SetAnimatedNormal(GrVisualAnimatedVector3D normal)
+    {
+        AnimatedNormal = normal;
             
-            return this;
-        }
+        return this;
+    }
         
-        public GrVisualCircleRingSurface3D SetAnimatedMinRadius(GrVisualAnimatedScalar radius)
-        {
-            AnimatedMinRadius = radius;
+    public GrVisualCircleRingSurface3D SetAnimatedMinRadius(GrVisualAnimatedScalar radius)
+    {
+        AnimatedMinRadius = radius;
             
-            return this;
-        }
+        return this;
+    }
         
-        public GrVisualCircleRingSurface3D SetAnimatedMaxRadius(GrVisualAnimatedScalar radius)
-        {
-            AnimatedMaxRadius = radius;
+    public GrVisualCircleRingSurface3D SetAnimatedMaxRadius(GrVisualAnimatedScalar radius)
+    {
+        AnimatedMaxRadius = radius;
             
-            return this;
-        }
+        return this;
+    }
 
-        public GrVisualCircleRingSurface3D SetAnimatedCenterNormalRadius(GrVisualAnimatedVector3D center, GrVisualAnimatedVector3D normal, GrVisualAnimatedScalar minRadius, GrVisualAnimatedScalar maxRadius)
-        {
-            AnimatedCenter = center;
-            AnimatedNormal = normal;
-            AnimatedMinRadius = minRadius;
-            AnimatedMaxRadius = maxRadius;
+    public GrVisualCircleRingSurface3D SetAnimatedCenterNormalRadius(GrVisualAnimatedVector3D center, GrVisualAnimatedVector3D normal, GrVisualAnimatedScalar minRadius, GrVisualAnimatedScalar maxRadius)
+    {
+        AnimatedCenter = center;
+        AnimatedNormal = normal;
+        AnimatedMinRadius = minRadius;
+        AnimatedMaxRadius = maxRadius;
             
-            return this;
-        }
+        return this;
+    }
 
-        public override IReadOnlyList<GrVisualAnimatedGeometry> GetAnimatedGeometries()
-        {
-            var animatedGeometries = new List<GrVisualAnimatedGeometry>(2);
+    public override IReadOnlyList<GrVisualAnimatedGeometry> GetAnimatedGeometries()
+    {
+        var animatedGeometries = new List<GrVisualAnimatedGeometry>(2);
 
-            if (AnimatedVisibility is not null)
-                animatedGeometries.Add(AnimatedVisibility);
+        if (AnimatedVisibility is not null)
+            animatedGeometries.Add(AnimatedVisibility);
 
-            if (AnimatedCenter is not null)
-                animatedGeometries.Add(AnimatedCenter);
+        if (AnimatedCenter is not null)
+            animatedGeometries.Add(AnimatedCenter);
             
-            if (AnimatedNormal is not null)
-                animatedGeometries.Add(AnimatedNormal);
+        if (AnimatedNormal is not null)
+            animatedGeometries.Add(AnimatedNormal);
             
-            if (AnimatedMinRadius is not null)
-                animatedGeometries.Add(AnimatedMinRadius);
+        if (AnimatedMinRadius is not null)
+            animatedGeometries.Add(AnimatedMinRadius);
 
-            if (AnimatedMaxRadius is not null)
-                animatedGeometries.Add(AnimatedMaxRadius);
+        if (AnimatedMaxRadius is not null)
+            animatedGeometries.Add(AnimatedMaxRadius);
 
-            return animatedGeometries;
-        }
+        return animatedGeometries;
+    }
         
-        public Float64Vector3D GetCenter(double time)
-        {
-            return AnimationSpecs.IsStatic || AnimatedCenter is null
-                ? Center.ToVector3D()
-                : AnimatedCenter.GetPoint(time);
-        }
+    public Float64Vector3D GetCenter(double time)
+    {
+        return AnimationSpecs.IsStatic || AnimatedCenter is null
+            ? Center.ToVector3D()
+            : AnimatedCenter.GetPoint(time);
+    }
         
-        public Float64Vector3D GetNormal(double time)
-        {
-            return AnimationSpecs.IsStatic || AnimatedNormal is null
-                ? Normal
-                : AnimatedNormal.GetPoint(time).ToUnitVector();
-        }
+    public Float64Vector3D GetNormal(double time)
+    {
+        return AnimationSpecs.IsStatic || AnimatedNormal is null
+            ? Normal
+            : AnimatedNormal.GetPoint(time).ToUnitVector();
+    }
 
-        public double GetMinRadius(double time)
-        {
-            return AnimationSpecs.IsStatic || AnimatedMinRadius is null
-                ? MinRadius
-                : AnimatedMinRadius.GetValue(time);
-        }
+    public double GetMinRadius(double time)
+    {
+        return AnimationSpecs.IsStatic || AnimatedMinRadius is null
+            ? MinRadius
+            : AnimatedMinRadius.GetValue(time);
+    }
         
-        public double GetMaxRadius(double time)
-        {
-            return AnimationSpecs.IsStatic || AnimatedMaxRadius is null
-                ? MaxRadius
-                : AnimatedMaxRadius.GetValue(time);
-        }
+    public double GetMaxRadius(double time)
+    {
+        return AnimationSpecs.IsStatic || AnimatedMaxRadius is null
+            ? MaxRadius
+            : AnimatedMaxRadius.GetValue(time);
+    }
 
-        public IEnumerable<KeyFrameRecord> GetKeyFrameRecords()
-        {
-            Debug.Assert(IsValid());
+    public IEnumerable<KeyFrameRecord> GetKeyFrameRecords()
+    {
+        Debug.Assert(IsValid());
 
-            foreach (var frameIndex in GetValidFrameIndexSet())
-            {
-                var time = (double)frameIndex / AnimationSpecs.FrameRate;
+        foreach (var frameIndex in GetValidFrameIndexSet())
+        {
+            var time = (double)frameIndex / AnimationSpecs.FrameRate;
                 
-                yield return new KeyFrameRecord(
-                    frameIndex, 
-                    time, 
-                    GetVisibility(time),
-                    GetCenter(time), 
-                    GetNormal(time),
-                    GetMinRadius(time),
-                    GetMaxRadius(time)
-                );
-            }
+            yield return new KeyFrameRecord(
+                frameIndex, 
+                time, 
+                GetVisibility(time),
+                GetCenter(time), 
+                GetNormal(time),
+                GetMinRadius(time),
+                GetMaxRadius(time)
+            );
         }
     }
 }

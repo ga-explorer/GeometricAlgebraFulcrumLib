@@ -1,8 +1,7 @@
-﻿namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
+﻿namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra;
+
+public interface IBivectorStorageContainer<T> :
+    IKVectorStorageContainer<T>
 {
-    public interface IBivectorStorageContainer<T> :
-        IKVectorStorageContainer<T>
-    {
-        BivectorStorage<T> GetBivectorStorage();
-    }
+    BivectorStorage<T> GetBivectorStorage();
 }

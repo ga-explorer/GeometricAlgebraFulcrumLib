@@ -1,13 +1,12 @@
-﻿namespace GeometricAlgebraFulcrumLib.Lite.Geometry.BasicShapes.Circles
+﻿namespace GeometricAlgebraFulcrumLib.Lite.Geometry.BasicShapes.Circles;
+
+public interface ICircle2D : IFiniteGeometricShape2D
 {
-    public interface ICircle2D : IFiniteGeometricShape2D
-    {
-        double CenterX { get; }
+    double CenterX { get; }
 
-        double CenterY { get; }
+    double CenterY { get; }
 
-        double Radius { get; }
+    double Radius { get; }
 
-        double RadiusSquared { get; }
-    }
+    double RadiusSquared { get; }
 }

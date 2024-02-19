@@ -2,28 +2,27 @@
 using GeometricAlgebraFulcrumLib.Processors.MatrixAlgebra;
 using GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors;
 
-namespace GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Matrices
+namespace GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Matrices;
+
+public sealed class LinMatrixRow<TMatrix, TScalar> :
+    LinMatrixRowBase<TMatrix, TScalar>
 {
-    public sealed class LinMatrixRow<TMatrix, TScalar> :
-        LinMatrixRowBase<TMatrix, TScalar>
+    public override TScalar GetScalar(ulong index) => MatrixProcessor.GetScalar(MatrixStorage, RowIndex, (int) index);
+
+
+    internal LinMatrixRow(IMatrixProcessor<TMatrix, TScalar> matrixProcessor, TMatrix matrix, int rowIndex)
+        : base(matrixProcessor, matrix, rowIndex)
     {
-        public override TScalar GetScalar(ulong index) => MatrixProcessor.GetScalar(MatrixStorage, RowIndex, (int) index);
-
-
-        internal LinMatrixRow(IMatrixProcessor<TMatrix, TScalar> matrixProcessor, TMatrix matrix, int rowIndex)
-            : base(matrixProcessor, matrix, rowIndex)
-        {
-        }
+    }
         
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override ILinVectorStorage<TScalar> GetCopy()
-        {
-            return new LinMatrixRow<TMatrix, TScalar>(
-                MatrixProcessor, 
-                MatrixStorage, 
-                RowIndex
-            );
-        }
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public override ILinVectorStorage<TScalar> GetCopy()
+    {
+        return new LinMatrixRow<TMatrix, TScalar>(
+            MatrixProcessor, 
+            MatrixStorage, 
+            RowIndex
+        );
     }
 }

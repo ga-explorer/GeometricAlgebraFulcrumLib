@@ -1,6 +1,5 @@
-﻿namespace TextComposerLib.Settings
+﻿namespace TextComposerLib.Settings;
+
+public static class SettingsUtils
 {
-    public static class SettingsUtils
-    {
-    }
 }

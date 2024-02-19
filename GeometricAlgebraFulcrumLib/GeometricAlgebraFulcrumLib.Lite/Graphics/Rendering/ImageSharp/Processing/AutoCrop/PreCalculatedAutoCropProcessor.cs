@@ -1,31 +1,30 @@
 ﻿using GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.ImageSharp.Processing.AutoCrop.Models;
 using SixLabors.ImageSharp.Processing.Processors;
 
-namespace GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.ImageSharp.Processing.AutoCrop
+namespace GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.ImageSharp.Processing.AutoCrop;
+
+public sealed class PreCalculatedAutoCropProcessor : AutoCropProcessor
 {
-    public sealed class PreCalculatedAutoCropProcessor : AutoCropProcessor
+    private readonly IAutoCropSettings _settings;
+
+    public PreCalculatedAutoCropProcessor(IAutoCropSettings settings, ICropAnalysis cropAnalysis, IWeightAnalysis weightAnalysis = null) : base(settings)
     {
-        private readonly IAutoCropSettings _settings;
-
-        public PreCalculatedAutoCropProcessor(IAutoCropSettings settings, ICropAnalysis cropAnalysis, IWeightAnalysis weightAnalysis = null) : base(settings)
-        {
-            _settings = settings;
-            CropAnalysis = cropAnalysis;
-            WeightAnalysis = weightAnalysis;
-        }
-
-        public override ICloningImageProcessor<TPixel> CreatePixelSpecificCloningProcessor<TPixel>(Configuration configuration, Image<TPixel> source, Rectangle sourceRectangle)
-        {
-            return new PreCalculatedAutoCropProcessor<TPixel>(configuration, _settings, source, CropAnalysis, WeightAnalysis);
-        }
+        _settings = settings;
+        CropAnalysis = cropAnalysis;
+        WeightAnalysis = weightAnalysis;
     }
 
-    public sealed class PreCalculatedAutoCropProcessor<TPixel> : AutoCropProcessor<TPixel> where TPixel : unmanaged, IPixel<TPixel>
+    public override ICloningImageProcessor<TPixel> CreatePixelSpecificCloningProcessor<TPixel>(Configuration configuration, Image<TPixel> source, Rectangle sourceRectangle)
     {
-        public PreCalculatedAutoCropProcessor(Configuration configuration, IAutoCropSettings settings, Image<TPixel> source, ICropAnalysis cropAnalysis, IWeightAnalysis weightAnalysis) : base(configuration, settings, source)
-        {
-            CropAnalysis = cropAnalysis;
-            WeightAnalysis = weightAnalysis;
-        }
+        return new PreCalculatedAutoCropProcessor<TPixel>(configuration, _settings, source, CropAnalysis, WeightAnalysis);
+    }
+}
+
+public sealed class PreCalculatedAutoCropProcessor<TPixel> : AutoCropProcessor<TPixel> where TPixel : unmanaged, IPixel<TPixel>
+{
+    public PreCalculatedAutoCropProcessor(Configuration configuration, IAutoCropSettings settings, Image<TPixel> source, ICropAnalysis cropAnalysis, IWeightAnalysis weightAnalysis) : base(configuration, settings, source)
+    {
+        CropAnalysis = cropAnalysis;
+        WeightAnalysis = weightAnalysis;
     }
 }

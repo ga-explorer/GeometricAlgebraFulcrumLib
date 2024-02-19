@@ -1,57 +1,56 @@
 ﻿using TextComposerLib.Text.Linear;
 
-namespace TextComposerLib.Code.JavaScript.Obsolete
+namespace TextComposerLib.Code.JavaScript.Obsolete;
+
+public abstract class JsCodeComponentSimple :
+    JsCodeComponent
 {
-    public abstract class JsCodeComponentSimple :
-        JsCodeComponent
+    /// <summary>
+    /// Returns the arguments used in the constructor of this component
+    /// </summary>
+    /// <returns></returns>
+    protected abstract string GetConstructorArgumentsText();
+
+    /// <summary>
+    /// Returns the arguments used in the .set() method of this component
+    /// </summary>
+    /// <returns></returns>
+    protected abstract string GetSetMethodArgumentsText();
+
+    public string GetJavaScriptSetMethodCode(string prefixText)
     {
-        /// <summary>
-        /// Returns the arguments used in the constructor of this component
-        /// </summary>
-        /// <returns></returns>
-        protected abstract string GetConstructorArgumentsText();
+        var argumentsText = GetSetMethodArgumentsText();
 
-        /// <summary>
-        /// Returns the arguments used in the .set() method of this component
-        /// </summary>
-        /// <returns></returns>
-        protected abstract string GetSetMethodArgumentsText();
+        return $"{prefixText}.set({argumentsText});";
+    }
 
-        public string GetJavaScriptSetMethodCode(string prefixText)
+    public override string GetJavaScriptCode()
+    {
+        var composer = new LinearTextComposer();
+
+        if (string.IsNullOrEmpty(JavaScriptVariableName))
         {
-            var argumentsText = GetSetMethodArgumentsText();
+            composer.AppendAtNewLine(
+                string.IsNullOrEmpty(DefaultParentName)
+                    ? $"new {JavaScriptClassName}"
+                    : $"new {DefaultParentName}.{JavaScriptClassName}"
+            );
+        }
+        else
+        {
+            composer.AppendAtNewLine($"const {JavaScriptVariableName}");
 
-            return $"{prefixText}.set({argumentsText});";
+            composer.AppendAtNewLine(
+                string.IsNullOrEmpty(DefaultParentName)
+                    ? $"new {JavaScriptClassName}"
+                    : $"new {DefaultParentName}.{JavaScriptClassName}"
+            );
         }
 
-        public override string GetJavaScriptCode()
-        {
-            var composer = new LinearTextComposer();
+        var argumentsText = GetConstructorArgumentsText();
 
-            if (string.IsNullOrEmpty(JavaScriptVariableName))
-            {
-                composer.AppendAtNewLine(
-                    string.IsNullOrEmpty(DefaultParentName)
-                        ? $"new {JavaScriptClassName}"
-                        : $"new {DefaultParentName}.{JavaScriptClassName}"
-                );
-            }
-            else
-            {
-                composer.AppendAtNewLine($"const {JavaScriptVariableName}");
+        composer.Append($"({argumentsText})");
 
-                composer.AppendAtNewLine(
-                    string.IsNullOrEmpty(DefaultParentName)
-                        ? $"new {JavaScriptClassName}"
-                        : $"new {DefaultParentName}.{JavaScriptClassName}"
-                );
-            }
-
-            var argumentsText = GetConstructorArgumentsText();
-
-            composer.Append($"({argumentsText})");
-
-            return composer.ToString();
-        }
+        return composer.ToString();
     }
 }

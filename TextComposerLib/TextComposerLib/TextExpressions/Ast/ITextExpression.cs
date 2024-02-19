@@ -1,41 +1,40 @@
-﻿namespace TextComposerLib.TextExpressions.Ast
+﻿namespace TextComposerLib.TextExpressions.Ast;
+
+public interface ITextExpression
 {
-    public interface ITextExpression
-    {
-        string Text { get; }
+    string Text { get; }
 
-        string TextLiteral { get; }
+    string TextLiteral { get; }
 
 
-        bool IsSimple { get; }
+    bool IsSimple { get; }
 
-        bool IsComposite { get; }
+    bool IsComposite { get; }
 
-        bool IsLiteral { get; }
+    bool IsLiteral { get; }
 
-        bool IsLiteralNumber { get; }
+    bool IsLiteralNumber { get; }
 
-        bool IsLiteralString { get; }
+    bool IsLiteralString { get; }
 
-        bool IsIdentifier { get; }
+    bool IsIdentifier { get; }
 
-        bool IsSingleIdentifier { get; }
+    bool IsSingleIdentifier { get; }
 
-        bool IsQualifiedIdentifier { get; }
+    bool IsQualifiedIdentifier { get; }
 
-        bool IsList { get; }
+    bool IsList { get; }
 
-        bool IsNamedList { get; }
+    bool IsNamedList { get; }
 
-        bool IsNamelessList { get; }
+    bool IsNamelessList { get; }
 
-        bool IsDictionary { get; }
+    bool IsDictionary { get; }
 
-        bool IsNamedDictionary { get; }
+    bool IsNamedDictionary { get; }
 
-        bool IsNamelessDictionary { get; }
+    bool IsNamelessDictionary { get; }
 
 
-        ITextExpression CreateCopy();
-    }
+    ITextExpression CreateCopy();
 }

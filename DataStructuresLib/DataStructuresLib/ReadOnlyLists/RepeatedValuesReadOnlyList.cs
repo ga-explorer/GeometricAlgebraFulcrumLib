@@ -3,45 +3,44 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace DataStructuresLib.ReadOnlyLists
+namespace DataStructuresLib.ReadOnlyLists;
+
+public sealed class RepeatedValuesReadOnlyList<T>
+    : IReadOnlyList<T> where T : struct
 {
-    public sealed class RepeatedValuesReadOnlyList<T>
-        : IReadOnlyList<T> where T : struct
+    public T DefaultValue { get; }
+
+    public int Count { get; }
+
+    public T this[int index]
     {
-        public T DefaultValue { get; }
-
-        public int Count { get; }
-
-        public T this[int index]
+        get
         {
-            get
-            {
-                if (index < 0 || index >= Count)
-                    throw new IndexOutOfRangeException();
+            if (index < 0 || index >= Count)
+                throw new IndexOutOfRangeException();
 
-                return DefaultValue;
-            }
+            return DefaultValue;
         }
+    }
 
 
-        public RepeatedValuesReadOnlyList(int count, T defaultValue)
-        {
-            if (count < 0) 
-                throw new InvalidOperationException();
+    public RepeatedValuesReadOnlyList(int count, T defaultValue)
+    {
+        if (count < 0) 
+            throw new InvalidOperationException();
 
-            Count = count;
-            DefaultValue = defaultValue;
-        }
+        Count = count;
+        DefaultValue = defaultValue;
+    }
         
 
-        public IEnumerator<T> GetEnumerator()
-        {
-            return Enumerable.Repeat(DefaultValue, Count).GetEnumerator();
-        }
+    public IEnumerator<T> GetEnumerator()
+    {
+        return Enumerable.Repeat(DefaultValue, Count).GetEnumerator();
+    }
 
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
-        }
+    IEnumerator IEnumerable.GetEnumerator()
+    {
+        return GetEnumerator();
     }
 }

@@ -1,15 +1,14 @@
-﻿namespace WebComposerLib.Svg.Attributes
+﻿namespace WebComposerLib.Svg.Attributes;
+
+public interface ISvgAttributeValue
 {
-    public interface ISvgAttributeValue
-    {
-        string ValueText { get; }
+    string ValueText { get; }
 
-        SvgAttributeInfo AttributeInfo { get; }
+    SvgAttributeInfo AttributeInfo { get; }
 
-        int AttributeId { get; }
+    int AttributeId { get; }
 
-        string AttributeName { get; }
+    string AttributeName { get; }
 
 
-    }
 }

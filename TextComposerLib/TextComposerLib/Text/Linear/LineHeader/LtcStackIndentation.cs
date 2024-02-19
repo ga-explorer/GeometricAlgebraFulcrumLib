@@ -2,68 +2,67 @@
 using System.Linq;
 using System.Text;
 
-namespace TextComposerLib.Text.Linear.LineHeader
+namespace TextComposerLib.Text.Linear.LineHeader;
+
+public sealed class LtcStackIndentation : LtcLineHeader
 {
-    public sealed class LtcStackIndentation : LtcLineHeader
+    private readonly Stack<string> _indentationStack = new Stack<string>();
+
+
+    public string DefaultIndentation { get; set; } = "    ";
+
+    public int IndentationLevel => _indentationStack.Count;
+
+    public int IndentationWidth
     {
-        private readonly Stack<string> _indentationStack = new Stack<string>();
-
-
-        public string DefaultIndentation { get; set; } = "    ";
-
-        public int IndentationLevel => _indentationStack.Count;
-
-        public int IndentationWidth
+        get
         {
-            get
-            {
-                return _indentationStack.Sum(indent => indent.Length);
-            }
+            return _indentationStack.Sum(indent => indent.Length);
         }
+    }
 
-        public string IndentationString
+    public string IndentationString
+    {
+        get
         {
-            get
-            {
-                var s = new StringBuilder();
+            var s = new StringBuilder();
 
-                foreach (var indent in _indentationStack.Reverse())
-                    s.Append(indent);
+            foreach (var indent in _indentationStack.Reverse())
+                s.Append(indent);
 
-                return s.ToString();
-            }
+            return s.ToString();
         }
+    }
 
 
-        public void PushIndentation()
-        {
-            _indentationStack.Push(DefaultIndentation);
-        }
+    public void PushIndentation()
+    {
+        _indentationStack.Push(DefaultIndentation);
+    }
 
-        public void PushIndentation(string indent)
-        {
-            _indentationStack.Push(indent);
-        }
+    public void PushIndentation(string indent)
+    {
+        _indentationStack.Push(indent);
+    }
 
-        public void PopIndentation()
-        {
-            if (_indentationStack.Count > 0)
-                _indentationStack.Pop();
-        }
+    public void PopIndentation()
+    {
+        if (_indentationStack.Count > 0)
+            _indentationStack.Pop();
+    }
 
-        public override void Reset()
-        {
-            _indentationStack.Clear();
-        }
+    public override void Reset()
+    {
+        _indentationStack.Clear();
+    }
 
-        public override string GetHeaderText()
-        {
-            return IndentationString;
-        }
+    public override string GetHeaderText()
+    {
+        return IndentationString;
+    }
 
-        public override string ToString()
-        {
-            return IndentationString;
-        }
+    public override string ToString()
+    {
+        return IndentationString;
     }
 }

@@ -1,7 +1,6 @@
-﻿namespace WebComposerLib.SvgNew
+﻿namespace WebComposerLib.SvgNew;
+
+public interface IWclSvgCodeElement
 {
-    public interface IWclSvgCodeElement
-    {
-        string GetCode();
-    }
+    string GetCode();
 }

@@ -3,258 +3,257 @@ using WebComposerLib.Svg.Elements.Categories;
 using WebComposerLib.Svg.Transforms;
 using WebComposerLib.Svg.Values;
 
-namespace WebComposerLib.Svg.Elements.Shape
+namespace WebComposerLib.Svg.Elements.Shape;
+
+public sealed class SvgElementEllipse : SvgElement, ISvgBasicShapeElement
 {
-    public sealed class SvgElementEllipse : SvgElement, ISvgBasicShapeElement
+    public static SvgElementEllipse Create()
     {
-        public static SvgElementEllipse Create()
+        return new SvgElementEllipse();
+    }
+
+    public static SvgElementEllipse Create(string id)
+    {
+        return new SvgElementEllipse() { Id = id };
+    }
+
+
+    public override string ElementName => "ellipse";
+
+
+    //public SvgEavString<SvgElementEllipse> Id
+    //{
+    //    get
+    //    {
+    //        var attrInfo = SvgAttributes.Id;
+
+    //        ISvgAttributeValue attrValue;
+    //        if (AttributesTable.TryGetValue(attrInfo.Id, out attrValue))
+    //            return attrValue as SvgEavString<SvgElementEllipse>;
+
+    //        var attrValue1 = new SvgEavString<SvgElementEllipse>(this, attrInfo);
+    //        AttributesTable.Add(attrInfo.Id, attrValue1);
+
+    //        return attrValue1;
+    //    }
+    //}
+
+    public SvgEavString<SvgElementEllipse> XmlBase
+    {
+        get
         {
-            return new SvgElementEllipse();
-        }
+            var attrInfo = SvgAttributeUtils.XmlBase;
 
-        public static SvgElementEllipse Create(string id)
+            if (AttributesTable.TryGetValue(attrInfo.Id, out var attrValue))
+                return attrValue as SvgEavString<SvgElementEllipse>;
+
+            var attrValue1 = new SvgEavString<SvgElementEllipse>(this, attrInfo);
+            AttributesTable.Add(attrInfo.Id, attrValue1);
+
+            return attrValue1;
+        }
+    }
+
+    public SvgEavString<SvgElementEllipse> XmlLanguage
+    {
+        get
         {
-            return new SvgElementEllipse() { Id = id };
+            var attrInfo = SvgAttributeUtils.XmlLanguage;
+
+            if (AttributesTable.TryGetValue(attrInfo.Id, out var attrValue))
+                return attrValue as SvgEavString<SvgElementEllipse>;
+
+            var attrValue1 = new SvgEavString<SvgElementEllipse>(this, attrInfo);
+            AttributesTable.Add(attrInfo.Id, attrValue1);
+
+            return attrValue1;
         }
+    }
 
-
-        public override string ElementName => "ellipse";
-
-
-        //public SvgEavString<SvgElementEllipse> Id
-        //{
-        //    get
-        //    {
-        //        var attrInfo = SvgAttributes.Id;
-
-        //        ISvgAttributeValue attrValue;
-        //        if (AttributesTable.TryGetValue(attrInfo.Id, out attrValue))
-        //            return attrValue as SvgEavString<SvgElementEllipse>;
-
-        //        var attrValue1 = new SvgEavString<SvgElementEllipse>(this, attrInfo);
-        //        AttributesTable.Add(attrInfo.Id, attrValue1);
-
-        //        return attrValue1;
-        //    }
-        //}
-
-        public SvgEavString<SvgElementEllipse> XmlBase
+    public SvgEavStruct<bool, SvgElementEllipse> ExternalResourcesRequired
+    {
+        get
         {
-            get
-            {
-                var attrInfo = SvgAttributeUtils.XmlBase;
+            var attrInfo = SvgAttributeUtils.ExternalResourcesRequired;
 
-                if (AttributesTable.TryGetValue(attrInfo.Id, out var attrValue))
-                    return attrValue as SvgEavString<SvgElementEllipse>;
+            if (AttributesTable.TryGetValue(attrInfo.Id, out var attrValue))
+                return attrValue as SvgEavStruct<bool, SvgElementEllipse>;
 
-                var attrValue1 = new SvgEavString<SvgElementEllipse>(this, attrInfo);
-                AttributesTable.Add(attrInfo.Id, attrValue1);
+            var attrValue1 = new SvgEavStruct<bool, SvgElementEllipse>(this, attrInfo);
+            AttributesTable.Add(attrInfo.Id, attrValue1);
 
-                return attrValue1;
-            }
+            return attrValue1;
         }
+    }
 
-        public SvgEavString<SvgElementEllipse> XmlLanguage
+    public SvgEavString<SvgElementEllipse> Class
+    {
+        get
         {
-            get
-            {
-                var attrInfo = SvgAttributeUtils.XmlLanguage;
+            var attrInfo = SvgAttributeUtils.Class;
 
-                if (AttributesTable.TryGetValue(attrInfo.Id, out var attrValue))
-                    return attrValue as SvgEavString<SvgElementEllipse>;
+            if (AttributesTable.TryGetValue(attrInfo.Id, out var attrValue))
+                return attrValue as SvgEavString<SvgElementEllipse>;
 
-                var attrValue1 = new SvgEavString<SvgElementEllipse>(this, attrInfo);
-                AttributesTable.Add(attrInfo.Id, attrValue1);
+            var attrValue1 = new SvgEavString<SvgElementEllipse>(this, attrInfo);
+            AttributesTable.Add(attrInfo.Id, attrValue1);
 
-                return attrValue1;
-            }
+            return attrValue1;
         }
+    }
 
-        public SvgEavStruct<bool, SvgElementEllipse> ExternalResourcesRequired
+    //public SvgEavStyle<SvgElementEllipse> Style
+    //{
+    //    get
+    //    {
+    //        var attrInfo = SvgAttributes.Style;
+
+    //        ISvgAttributeValue attrValue;
+    //        if (AttributesTable.TryGetValue(attrInfo.Id, out attrValue))
+    //            return attrValue as SvgEavStyle<SvgElementEllipse>;
+
+    //        var attrValue1 = new SvgEavStyle<SvgElementEllipse>(this);
+    //        AttributesTable.Add(attrInfo.Id, attrValue1);
+
+    //        return attrValue1;
+    //    }
+    //}
+
+    public SvgEav<SvgTransform, SvgElementEllipse> Transform
+    {
+        get
         {
-            get
-            {
-                var attrInfo = SvgAttributeUtils.ExternalResourcesRequired;
+            var attrInfo = SvgAttributeUtils.Transform;
 
-                if (AttributesTable.TryGetValue(attrInfo.Id, out var attrValue))
-                    return attrValue as SvgEavStruct<bool, SvgElementEllipse>;
+            if (AttributesTable.TryGetValue(attrInfo.Id, out var attrValue))
+                return attrValue as SvgEav<SvgTransform, SvgElementEllipse>;
 
-                var attrValue1 = new SvgEavStruct<bool, SvgElementEllipse>(this, attrInfo);
-                AttributesTable.Add(attrInfo.Id, attrValue1);
+            var attrValue1 = new SvgEav<SvgTransform, SvgElementEllipse>(this, attrInfo);
+            AttributesTable.Add(attrInfo.Id, attrValue1);
 
-                return attrValue1;
-            }
+            return attrValue1;
         }
+    }
 
-        public SvgEavString<SvgElementEllipse> Class
+    public SvgEavLength<SvgElementEllipse> CenterX
+    {
+        get
         {
-            get
-            {
-                var attrInfo = SvgAttributeUtils.Class;
+            var attrInfo = SvgAttributeUtils.CenterX;
 
-                if (AttributesTable.TryGetValue(attrInfo.Id, out var attrValue))
-                    return attrValue as SvgEavString<SvgElementEllipse>;
+            if (AttributesTable.TryGetValue(attrInfo.Id, out var attrValue))
+                return attrValue as SvgEavLength<SvgElementEllipse>;
 
-                var attrValue1 = new SvgEavString<SvgElementEllipse>(this, attrInfo);
-                AttributesTable.Add(attrInfo.Id, attrValue1);
+            var attrValue1 = new SvgEavLength<SvgElementEllipse>(this, attrInfo);
+            AttributesTable.Add(attrInfo.Id, attrValue1);
 
-                return attrValue1;
-            }
+            return attrValue1;
         }
+    }
 
-        //public SvgEavStyle<SvgElementEllipse> Style
-        //{
-        //    get
-        //    {
-        //        var attrInfo = SvgAttributes.Style;
-
-        //        ISvgAttributeValue attrValue;
-        //        if (AttributesTable.TryGetValue(attrInfo.Id, out attrValue))
-        //            return attrValue as SvgEavStyle<SvgElementEllipse>;
-
-        //        var attrValue1 = new SvgEavStyle<SvgElementEllipse>(this);
-        //        AttributesTable.Add(attrInfo.Id, attrValue1);
-
-        //        return attrValue1;
-        //    }
-        //}
-
-        public SvgEav<SvgTransform, SvgElementEllipse> Transform
+    public SvgEavLength<SvgElementEllipse> CenterY
+    {
+        get
         {
-            get
-            {
-                var attrInfo = SvgAttributeUtils.Transform;
+            var attrInfo = SvgAttributeUtils.CenterY;
 
-                if (AttributesTable.TryGetValue(attrInfo.Id, out var attrValue))
-                    return attrValue as SvgEav<SvgTransform, SvgElementEllipse>;
+            if (AttributesTable.TryGetValue(attrInfo.Id, out var attrValue))
+                return attrValue as SvgEavLength<SvgElementEllipse>;
 
-                var attrValue1 = new SvgEav<SvgTransform, SvgElementEllipse>(this, attrInfo);
-                AttributesTable.Add(attrInfo.Id, attrValue1);
+            var attrValue1 = new SvgEavLength<SvgElementEllipse>(this, attrInfo);
+            AttributesTable.Add(attrInfo.Id, attrValue1);
 
-                return attrValue1;
-            }
+            return attrValue1;
         }
+    }
 
-        public SvgEavLength<SvgElementEllipse> CenterX
+    public SvgEavLength<SvgElementEllipse> RadiusX
+    {
+        get
         {
-            get
-            {
-                var attrInfo = SvgAttributeUtils.CenterX;
+            var attrInfo = SvgAttributeUtils.RadiusX;
 
-                if (AttributesTable.TryGetValue(attrInfo.Id, out var attrValue))
-                    return attrValue as SvgEavLength<SvgElementEllipse>;
+            if (AttributesTable.TryGetValue(attrInfo.Id, out var attrValue))
+                return attrValue as SvgEavLength<SvgElementEllipse>;
 
-                var attrValue1 = new SvgEavLength<SvgElementEllipse>(this, attrInfo);
-                AttributesTable.Add(attrInfo.Id, attrValue1);
+            var attrValue1 = new SvgEavLength<SvgElementEllipse>(this, attrInfo);
+            AttributesTable.Add(attrInfo.Id, attrValue1);
 
-                return attrValue1;
-            }
+            return attrValue1;
         }
+    }
 
-        public SvgEavLength<SvgElementEllipse> CenterY
+    public SvgEavLength<SvgElementEllipse> RadiusY
+    {
+        get
         {
-            get
-            {
-                var attrInfo = SvgAttributeUtils.CenterY;
+            var attrInfo = SvgAttributeUtils.RadiusY;
 
-                if (AttributesTable.TryGetValue(attrInfo.Id, out var attrValue))
-                    return attrValue as SvgEavLength<SvgElementEllipse>;
+            if (AttributesTable.TryGetValue(attrInfo.Id, out var attrValue))
+                return attrValue as SvgEavLength<SvgElementEllipse>;
 
-                var attrValue1 = new SvgEavLength<SvgElementEllipse>(this, attrInfo);
-                AttributesTable.Add(attrInfo.Id, attrValue1);
+            var attrValue1 = new SvgEavLength<SvgElementEllipse>(this, attrInfo);
+            AttributesTable.Add(attrInfo.Id, attrValue1);
 
-                return attrValue1;
-            }
+            return attrValue1;
         }
-
-        public SvgEavLength<SvgElementEllipse> RadiusX
-        {
-            get
-            {
-                var attrInfo = SvgAttributeUtils.RadiusX;
-
-                if (AttributesTable.TryGetValue(attrInfo.Id, out var attrValue))
-                    return attrValue as SvgEavLength<SvgElementEllipse>;
-
-                var attrValue1 = new SvgEavLength<SvgElementEllipse>(this, attrInfo);
-                AttributesTable.Add(attrInfo.Id, attrValue1);
-
-                return attrValue1;
-            }
-        }
-
-        public SvgEavLength<SvgElementEllipse> RadiusY
-        {
-            get
-            {
-                var attrInfo = SvgAttributeUtils.RadiusY;
-
-                if (AttributesTable.TryGetValue(attrInfo.Id, out var attrValue))
-                    return attrValue as SvgEavLength<SvgElementEllipse>;
-
-                var attrValue1 = new SvgEavLength<SvgElementEllipse>(this, attrInfo);
-                AttributesTable.Add(attrInfo.Id, attrValue1);
-
-                return attrValue1;
-            }
-        }
+    }
 
 
-        private SvgElementEllipse()
-        {
-        }
+    private SvgElementEllipse()
+    {
+    }
 
 
-        public SvgElementEllipse SetCenter(double centerX, double centerY)
-        {
-            CenterX.Length = centerX;
-            CenterY.Length = centerY;
+    public SvgElementEllipse SetCenter(double centerX, double centerY)
+    {
+        CenterX.Length = centerX;
+        CenterY.Length = centerY;
 
-            return this;
-        }
+        return this;
+    }
 
-        public SvgElementEllipse SetCenter(double centerX, double centerY, SvgLengthUnit unit)
-        {
-            CenterX.SetTo(centerX, unit);
-            CenterY.SetTo(centerY, unit);
+    public SvgElementEllipse SetCenter(double centerX, double centerY, SvgLengthUnit unit)
+    {
+        CenterX.SetTo(centerX, unit);
+        CenterY.SetTo(centerY, unit);
 
-            return this;
-        }
+        return this;
+    }
 
-        public SvgElementEllipse SetRadii(double radiusX, double radiusY)
-        {
-            RadiusX.Length = radiusX;
-            RadiusY.Length = radiusY;
+    public SvgElementEllipse SetRadii(double radiusX, double radiusY)
+    {
+        RadiusX.Length = radiusX;
+        RadiusY.Length = radiusY;
 
-            return this;
-        }
+        return this;
+    }
 
-        public SvgElementEllipse SetRadii(double radiusX, double radiusY, SvgLengthUnit unit)
-        {
-            RadiusX.SetTo(radiusX, unit);
-            RadiusY.SetTo(radiusY, unit);
+    public SvgElementEllipse SetRadii(double radiusX, double radiusY, SvgLengthUnit unit)
+    {
+        RadiusX.SetTo(radiusX, unit);
+        RadiusY.SetTo(radiusY, unit);
 
-            return this;
-        }
+        return this;
+    }
 
-        public SvgElementEllipse SetEllipse(double centerX, double centerY, double radiusX, double radiusY)
-        {
-            CenterX.Length = centerX;
-            CenterY.Length = centerY;
-            RadiusX.Length = radiusX;
-            RadiusY.Length = radiusY;
+    public SvgElementEllipse SetEllipse(double centerX, double centerY, double radiusX, double radiusY)
+    {
+        CenterX.Length = centerX;
+        CenterY.Length = centerY;
+        RadiusX.Length = radiusX;
+        RadiusY.Length = radiusY;
 
-            return this;
-        }
+        return this;
+    }
 
-        public SvgElementEllipse SetEllipse(double centerX, double centerY, double radiusX, double radiusY, SvgLengthUnit unit)
-        {
-            CenterX.SetTo(centerX, unit);
-            CenterY.SetTo(centerY, unit);
-            RadiusX.SetTo(radiusX, unit);
-            RadiusY.SetTo(radiusY, unit);
+    public SvgElementEllipse SetEllipse(double centerX, double centerY, double radiusX, double radiusY, SvgLengthUnit unit)
+    {
+        CenterX.SetTo(centerX, unit);
+        CenterY.SetTo(centerY, unit);
+        RadiusX.SetTo(radiusX, unit);
+        RadiusY.SetTo(radiusY, unit);
 
-            return this;
-        }
+        return this;
     }
 }

@@ -1,10 +1,9 @@
-﻿namespace CodeComposerLib.MathML.Elements.Tokens
+﻿namespace CodeComposerLib.MathML.Elements.Tokens;
+
+public abstract class MathMlNonTextTokenElement 
+    : MathMlTokenElement
 {
-    public abstract class MathMlNonTextTokenElement 
-        : MathMlTokenElement
-    {
         
 
 
-    }
 }

@@ -2,44 +2,43 @@
 using System.Linq;
 using CodeComposerLib.Irony.Semantic.Type;
 
-namespace CodeComposerLib.Irony.Semantic.Expression.Value
+namespace CodeComposerLib.Irony.Semantic.Expression.Value;
+
+public class ValueTuple : ILanguageValueComposite
 {
-    public class ValueTuple : ILanguageValueComposite
+    public TypeTuple ValueTupleType { get; }
+
+    public List<ILanguageValue> Value { get; private set; }
+
+    public ILanguageType ExpressionType => ValueTupleType;
+
+    public IronyAst RootAst => ValueTupleType.RootAst;
+
+    /// <summary>
+    /// A language value is always a simple expression
+    /// </summary>
+    public bool IsSimpleExpression => true;
+
+
+    protected ValueTuple(TypeTuple valueType, IEnumerable<ILanguageValue> value)
     {
-        public TypeTuple ValueTupleType { get; }
+        ValueTupleType = valueType;
 
-        public List<ILanguageValue> Value { get; private set; }
-
-        public ILanguageType ExpressionType => ValueTupleType;
-
-        public IronyAst RootAst => ValueTupleType.RootAst;
-
-        /// <summary>
-        /// A language value is always a simple expression
-        /// </summary>
-        public bool IsSimpleExpression => true;
+        Value.AddRange(value);
+    }
 
 
-        protected ValueTuple(TypeTuple valueType, IEnumerable<ILanguageValue> value)
-        {
-            ValueTupleType = valueType;
-
-            Value.AddRange(value);
-        }
-
-
-        public virtual ILanguageValue DuplicateValue(bool deepCopy)
-        {
-            return 
-                deepCopy ? 
+    public virtual ILanguageValue DuplicateValue(bool deepCopy)
+    {
+        return 
+            deepCopy ? 
                 new ValueTuple(ValueTupleType, Value.Select(x => x.DuplicateValue(true))) : 
                 new ValueTuple(ValueTupleType, Value);
-        }
+    }
 
 
-        public static ValueTuple Create(TypeTuple valueType, IEnumerable<ILanguageValue> value)
-        {
-            return new ValueTuple(valueType, value);
-        }
+    public static ValueTuple Create(TypeTuple valueType, IEnumerable<ILanguageValue> value)
+    {
+        return new ValueTuple(valueType, value);
     }
 }

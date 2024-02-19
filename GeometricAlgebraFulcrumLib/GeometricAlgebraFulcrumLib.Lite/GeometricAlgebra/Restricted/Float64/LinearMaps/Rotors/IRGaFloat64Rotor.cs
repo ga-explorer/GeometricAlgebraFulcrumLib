@@ -1,8 +1,7 @@
-﻿namespace GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Restricted.Float64.LinearMaps.Rotors
+﻿namespace GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Restricted.Float64.LinearMaps.Rotors;
+
+public interface IRGaFloat64Rotor : 
+    IRGaFloat64ScaledRotor
 {
-    public interface IRGaFloat64Rotor : 
-        IRGaFloat64ScaledRotor
-    {
-        IRGaFloat64Rotor GetRotorInverse();
-    }
+    IRGaFloat64Rotor GetRotorInverse();
 }

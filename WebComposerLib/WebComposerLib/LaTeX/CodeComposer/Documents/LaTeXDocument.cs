@@ -1,211 +1,210 @@
-﻿namespace WebComposerLib.LaTeX.CodeComposer.Documents
+﻿namespace WebComposerLib.LaTeX.CodeComposer.Documents;
+
+public sealed class LaTeXDocument : LaTeXEnvironment
 {
-    public sealed class LaTeXDocument : LaTeXEnvironment
+    public LaTeXDocumentTopMatter TopMatter
     {
-        public LaTeXDocumentTopMatter TopMatter
+        get
         {
-            get
-            {
-                var result = 
-                    SubSectionsList.FirstOrDefault(c => c.IsTopMatter()) as LaTeXDocumentTopMatter;
+            var result = 
+                SubSectionsList.FirstOrDefault(c => c.IsTopMatter()) as LaTeXDocumentTopMatter;
 
-                if (!ReferenceEquals(result, null))
-                    return result;
-
-                result = new LaTeXDocumentTopMatter();
-
-                SubSectionsList.Add(result);
-
+            if (!ReferenceEquals(result, null))
                 return result;
-            }
+
+            result = new LaTeXDocumentTopMatter();
+
+            SubSectionsList.Add(result);
+
+            return result;
         }
+    }
 
-        public LaTeXDocumentAbstract Abstract
+    public LaTeXDocumentAbstract Abstract
+    {
+        get
         {
-            get
-            {
-                var result =
-                    SubSectionsList.FirstOrDefault(c => c.IsAbstract()) as LaTeXDocumentAbstract;
+            var result =
+                SubSectionsList.FirstOrDefault(c => c.IsAbstract()) as LaTeXDocumentAbstract;
 
-                if (!ReferenceEquals(result, null))
-                    return result;
-
-                result = new LaTeXDocumentAbstract();
-
-                SubSectionsList.Add(result);
-
+            if (!ReferenceEquals(result, null))
                 return result;
-            }
+
+            result = new LaTeXDocumentAbstract();
+
+            SubSectionsList.Add(result);
+
+            return result;
         }
+    }
 
-        public LaTeXDocumentMatter FrontMatter
+    public LaTeXDocumentMatter FrontMatter
+    {
+        get
         {
-            get
-            {
-                var result =
-                    SubSectionsList.FirstOrDefault(c => c.IsFrontMatter()) as LaTeXDocumentMatter;
+            var result =
+                SubSectionsList.FirstOrDefault(c => c.IsFrontMatter()) as LaTeXDocumentMatter;
 
-                if (!ReferenceEquals(result, null))
-                    return result;
-
-                result = LaTeXDocumentMatter.CreateFrontMatter();
-
-                SubSectionsList.Add(result);
-
+            if (!ReferenceEquals(result, null))
                 return result;
-            }
+
+            result = LaTeXDocumentMatter.CreateFrontMatter();
+
+            SubSectionsList.Add(result);
+
+            return result;
         }
+    }
 
-        public LaTeXDocumentMatter MainMatter
+    public LaTeXDocumentMatter MainMatter
+    {
+        get
         {
-            get
-            {
-                var result =
-                    SubSectionsList.FirstOrDefault(c => c.IsMainMatter()) as LaTeXDocumentMatter;
+            var result =
+                SubSectionsList.FirstOrDefault(c => c.IsMainMatter()) as LaTeXDocumentMatter;
 
-                if (!ReferenceEquals(result, null))
-                    return result;
-
-                result = LaTeXDocumentMatter.CreateMainMatter();
-
-                SubSectionsList.Add(result);
-
+            if (!ReferenceEquals(result, null))
                 return result;
-            }
+
+            result = LaTeXDocumentMatter.CreateMainMatter();
+
+            SubSectionsList.Add(result);
+
+            return result;
         }
+    }
 
-        public LaTeXDocumentMatter Appendix
+    public LaTeXDocumentMatter Appendix
+    {
+        get
         {
-            get
-            {
-                var result =
-                    SubSectionsList.FirstOrDefault(c => c.IsAppendix()) as LaTeXDocumentMatter;
+            var result =
+                SubSectionsList.FirstOrDefault(c => c.IsAppendix()) as LaTeXDocumentMatter;
 
-                if (!ReferenceEquals(result, null))
-                    return result;
-
-                result = LaTeXDocumentMatter.CreateAppendix();
-
-                SubSectionsList.Add(result);
-
+            if (!ReferenceEquals(result, null))
                 return result;
-            }
+
+            result = LaTeXDocumentMatter.CreateAppendix();
+
+            SubSectionsList.Add(result);
+
+            return result;
         }
+    }
 
-        public LaTeXDocumentMatter BackMatter
+    public LaTeXDocumentMatter BackMatter
+    {
+        get
         {
-            get
-            {
-                var result =
-                    SubSectionsList.FirstOrDefault(c => c.IsBackMatter()) as LaTeXDocumentMatter;
+            var result =
+                SubSectionsList.FirstOrDefault(c => c.IsBackMatter()) as LaTeXDocumentMatter;
 
-                if (!ReferenceEquals(result, null))
-                    return result;
-
-                result = LaTeXDocumentMatter.CreateBackMatter();
-
-                SubSectionsList.Add(result);
-
+            if (!ReferenceEquals(result, null))
                 return result;
-            }
+
+            result = LaTeXDocumentMatter.CreateBackMatter();
+
+            SubSectionsList.Add(result);
+
+            return result;
         }
+    }
 
-        public bool ContainsAbstract
-            => SubSectionsList.Any(c => c.IsAbstract());
+    public bool ContainsAbstract
+        => SubSectionsList.Any(c => c.IsAbstract());
 
-        public bool ContainsTopMatter
-            => SubSectionsList.Any(c => c is LaTeXDocumentTopMatter);
+    public bool ContainsTopMatter
+        => SubSectionsList.Any(c => c is LaTeXDocumentTopMatter);
 
-        public bool ContainsFrontMatter
-            => SubSectionsList.Any(c => c.IsFrontMatter());
+    public bool ContainsFrontMatter
+        => SubSectionsList.Any(c => c.IsFrontMatter());
 
-        public bool ContainsMainMatter
-            => SubSectionsList.Any(c => c.IsMainMatter());
+    public bool ContainsMainMatter
+        => SubSectionsList.Any(c => c.IsMainMatter());
 
-        public bool ContainsAppendix
-            => SubSectionsList.Any(c => c.IsAppendix());
+    public bool ContainsAppendix
+        => SubSectionsList.Any(c => c.IsAppendix());
 
-        public bool ContainsBackMatter
-            => SubSectionsList.Any(c => c.IsBackMatter());
+    public bool ContainsBackMatter
+        => SubSectionsList.Any(c => c.IsBackMatter());
 
 
-        public LaTeXDocument Clear()
-        {
-            TopMatter.Clear();
+    public LaTeXDocument Clear()
+    {
+        TopMatter.Clear();
 
+        return this;
+    }
+
+    public LaTeXDocument RemoveTopMatter()
+    {
+        var index = SubSectionsList.FindIndex(c => c.IsTopMatter());
+
+        if (index < 0)
             return this;
-        }
 
-        public LaTeXDocument RemoveTopMatter()
-        {
-            var index = SubSectionsList.FindIndex(c => c.IsTopMatter());
+        SubSectionsList.Remove(index);
 
-            if (index < 0)
-                return this;
+        return this;
+    }
 
-            SubSectionsList.Remove(index);
+    public LaTeXDocument RemoveAbstract()
+    {
+        var index = SubSectionsList.FindIndex(c => c.IsAbstract());
 
+        if (index < 0)
             return this;
-        }
 
-        public LaTeXDocument RemoveAbstract()
-        {
-            var index = SubSectionsList.FindIndex(c => c.IsAbstract());
+        SubSectionsList.Remove(index);
 
-            if (index < 0)
-                return this;
+        return this;
+    }
 
-            SubSectionsList.Remove(index);
+    public LaTeXDocument RemoveFrontMatter()
+    {
+        var index = SubSectionsList.FindIndex(c => c.IsFrontMatter());
 
+        if (index < 0)
             return this;
-        }
 
-        public LaTeXDocument RemoveFrontMatter()
-        {
-            var index = SubSectionsList.FindIndex(c => c.IsFrontMatter());
+        SubSectionsList.Remove(index);
 
-            if (index < 0)
-                return this;
+        return this;
+    }
 
-            SubSectionsList.Remove(index);
+    public LaTeXDocument RemoveMainMatter()
+    {
+        var index = SubSectionsList.FindIndex(c => c.IsMainMatter());
 
+        if (index < 0)
             return this;
-        }
 
-        public LaTeXDocument RemoveMainMatter()
-        {
-            var index = SubSectionsList.FindIndex(c => c.IsMainMatter());
+        SubSectionsList.Remove(index);
 
-            if (index < 0)
-                return this;
+        return this;
+    }
 
-            SubSectionsList.Remove(index);
+    public LaTeXDocument RemoveAppendix()
+    {
+        var index = SubSectionsList.FindIndex(c => c.IsAppendix());
 
+        if (index < 0)
             return this;
-        }
 
-        public LaTeXDocument RemoveAppendix()
-        {
-            var index = SubSectionsList.FindIndex(c => c.IsAppendix());
+        SubSectionsList.Remove(index);
 
-            if (index < 0)
-                return this;
+        return this;
+    }
 
-            SubSectionsList.Remove(index);
+    public LaTeXDocument RemoveBackMatter()
+    {
+        var index = SubSectionsList.FindIndex(c => c.IsBackMatter());
 
+        if (index < 0)
             return this;
-        }
 
-        public LaTeXDocument RemoveBackMatter()
-        {
-            var index = SubSectionsList.FindIndex(c => c.IsBackMatter());
+        SubSectionsList.Remove(index);
 
-            if (index < 0)
-                return this;
-
-            SubSectionsList.Remove(index);
-
-            return this;
-        }
+        return this;
     }
 }

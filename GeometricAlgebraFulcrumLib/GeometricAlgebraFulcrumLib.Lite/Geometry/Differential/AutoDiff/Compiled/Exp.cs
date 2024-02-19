@@ -1,19 +1,18 @@
-﻿namespace GeometricAlgebraFulcrumLib.Lite.Geometry.Differential.AutoDiff.Compiled
+﻿namespace GeometricAlgebraFulcrumLib.Lite.Geometry.Differential.AutoDiff.Compiled;
+
+internal sealed class Exp : TapeElement
 {
-    internal sealed class Exp : TapeElement
+    private const int ArgIdx = 0;
+    private TapeElement Arg => Inputs.Element(ArgIdx);
+
+    public override void Eval()
     {
-        private const int ArgIdx = 0;
-        private TapeElement Arg => Inputs.Element(ArgIdx);
+        Value = Math.Exp(Arg.Value);
+    }
 
-        public override void Eval()
-        {
-            Value = Math.Exp(Arg.Value);
-        }
-
-        public override void Diff()
-        {
-            Value = Math.Exp(Arg.Value);
-            Inputs.SetWeight(ArgIdx, Value);
-        }
+    public override void Diff()
+    {
+        Value = Math.Exp(Arg.Value);
+        Inputs.SetWeight(ArgIdx, Value);
     }
 }

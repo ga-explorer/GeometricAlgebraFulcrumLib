@@ -1,28 +1,27 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using Humanizer;
 
-namespace TextComposerLib.Code.JavaScript.LibraryComposers
+namespace TextComposerLib.Code.JavaScript.LibraryComposers;
+
+public class JsFunctionArgumentData
 {
-    public class JsFunctionArgumentData
+    public string ArgumentJsName { get; }
+
+    public string ArgumentCsName 
+        => "arg" + ArgumentJsName.Pascalize();
+
+    public JsClassNameData ArgumentType { get; }
+
+    public JsValueData DefaultValue { get; }
+
+    public string DefaultValueJsCode 
+        => DefaultValue?.GetJsCode() ?? string.Empty;
+
+
+    internal JsFunctionArgumentData([NotNull] string argumentName, [NotNull] JsClassNameData argumentType, JsValueData defaultValue)
     {
-        public string ArgumentJsName { get; }
-
-        public string ArgumentCsName 
-            => "arg" + ArgumentJsName.Pascalize();
-
-        public JsClassNameData ArgumentType { get; }
-
-        public JsValueData DefaultValue { get; }
-
-        public string DefaultValueJsCode 
-            => DefaultValue?.GetJsCode() ?? string.Empty;
-
-
-        internal JsFunctionArgumentData([NotNull] string argumentName, [NotNull] JsClassNameData argumentType, JsValueData defaultValue)
-        {
-            ArgumentJsName = argumentName;
-            DefaultValue = defaultValue;
-            ArgumentType = argumentType;
-        }
+        ArgumentJsName = argumentName;
+        DefaultValue = defaultValue;
+        ArgumentType = argumentType;
     }
 }

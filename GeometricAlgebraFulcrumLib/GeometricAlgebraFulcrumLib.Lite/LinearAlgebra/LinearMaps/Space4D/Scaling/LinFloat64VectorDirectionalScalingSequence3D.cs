@@ -6,268 +6,267 @@ using GeometricAlgebraFulcrumLib.Lite.LinearAlgebra.Matrices;
 using GeometricAlgebraFulcrumLib.Lite.LinearAlgebra.Vectors.Space4D;
 using GeometricAlgebraFulcrumLib.Lite.ScalarAlgebra;
 
-namespace GeometricAlgebraFulcrumLib.Lite.LinearAlgebra.LinearMaps.Space4D.Scaling
+namespace GeometricAlgebraFulcrumLib.Lite.LinearAlgebra.LinearMaps.Space4D.Scaling;
+
+public sealed class LinFloat64VectorDirectionalScalingSequence4D :
+    ILinFloat64UnilinearMap4D,
+    IReadOnlyList<LinFloat64VectorDirectionalScaling4D>
 {
-    public sealed class LinFloat64VectorDirectionalScalingSequence4D :
-        ILinFloat64UnilinearMap4D,
-        IReadOnlyList<LinFloat64VectorDirectionalScaling4D>
+    //[MethodImpl(MethodImplOptions.AggressiveInlining)]
+    //public static VectorDirectionalScalingSequence CreateFromMatrix(Matrix<double> matrix)
+    //{
+    //    // Make sure it's a square matrix
+    //    Debug.Assert(
+    //        matrix.RowCount == matrix.ColumnCount
+    //    );
+
+    //    var mapList = 
+    //        matrix
+    //            .GetSimpleEigenSubspaces()
+    //            .SelectMany(s => s.GetVectorDirectionalScalingMaps())
+    //            //.Select(s => s.ToVectorDirectionalScaling())
+    //            .ToList();
+
+    //    return new VectorDirectionalScalingSequence(matrix.RowCount, mapList);
+    //}
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static LinFloat64VectorDirectionalScalingSequence4D CreateFromMatrix(SquareMatrix4 matrix)
     {
-        //[MethodImpl(MethodImplOptions.AggressiveInlining)]
-        //public static VectorDirectionalScalingSequence CreateFromMatrix(Matrix<double> matrix)
-        //{
-        //    // Make sure it's a square matrix
-        //    Debug.Assert(
-        //        matrix.RowCount == matrix.ColumnCount
-        //    );
+        return matrix.GetVectorDirectionalScalingSequence4D();
+    }
 
-        //    var mapList = 
-        //        matrix
-        //            .GetSimpleEigenSubspaces()
-        //            .SelectMany(s => s.GetVectorDirectionalScalingMaps())
-        //            //.Select(s => s.ToVectorDirectionalScaling())
-        //            .ToList();
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static LinFloat64VectorDirectionalScalingSequence4D Create()
+    {
+        return new LinFloat64VectorDirectionalScalingSequence4D();
+    }
 
-        //    return new VectorDirectionalScalingSequence(matrix.RowCount, mapList);
-        //}
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static LinFloat64VectorDirectionalScalingSequence4D Create(LinFloat64VectorDirectionalScaling4D scaling)
+    {
+        var reflectionSequence =
+            new LinFloat64VectorDirectionalScalingSequence4D();
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static LinFloat64VectorDirectionalScalingSequence4D CreateFromMatrix(SquareMatrix4 matrix)
-        {
-            return matrix.GetVectorDirectionalScalingSequence4D();
-        }
+        reflectionSequence.AppendMap(scaling);
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static LinFloat64VectorDirectionalScalingSequence4D Create()
-        {
-            return new LinFloat64VectorDirectionalScalingSequence4D();
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static LinFloat64VectorDirectionalScalingSequence4D Create(LinFloat64VectorDirectionalScaling4D scaling)
-        {
-            var reflectionSequence =
-                new LinFloat64VectorDirectionalScalingSequence4D();
-
-            reflectionSequence.AppendMap(scaling);
-
-            return reflectionSequence;
-        }
+        return reflectionSequence;
+    }
 
 
-        private readonly List<LinFloat64VectorDirectionalScaling4D> _mapList
-            = new List<LinFloat64VectorDirectionalScaling4D>();
+    private readonly List<LinFloat64VectorDirectionalScaling4D> _mapList
+        = new List<LinFloat64VectorDirectionalScaling4D>();
 
 
-        public int Count
-            => _mapList.Count;
+    public int Count
+        => _mapList.Count;
 
-        public LinFloat64VectorDirectionalScaling4D this[int index] 
-            => _mapList[index];
+    public LinFloat64VectorDirectionalScaling4D this[int index] 
+        => _mapList[index];
     
-        public int VSpaceDimensions { get; }
+    public int VSpaceDimensions { get; }
 
-        public bool SwapsHandedness
-            => _mapList
-                .Count(m => m.SwapsHandedness)
-                .IsOdd();
-
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private LinFloat64VectorDirectionalScalingSequence4D()
-        {
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private LinFloat64VectorDirectionalScalingSequence4D(int dimensions, List<LinFloat64VectorDirectionalScaling4D> scalingFactorVectorList)
-        {
-            if (dimensions < 1)
-                throw new ArgumentOutOfRangeException(nameof(dimensions));
-
-            VSpaceDimensions = dimensions;
-            _mapList = scalingFactorVectorList;
-
-            Debug.Assert(IsValid());
-        }
+    public bool SwapsHandedness
+        => _mapList
+            .Count(m => m.SwapsHandedness)
+            .IsOdd();
 
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public LinFloat64VectorDirectionalScalingSequence4D AppendMap(double scalingFactor, Float64Vector4D scalingVector)
-        {
-            _mapList.Add(
-                LinFloat64VectorDirectionalScaling4D.Create(scalingFactor, scalingVector)
-            );
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    private LinFloat64VectorDirectionalScalingSequence4D()
+    {
+    }
 
-            return this;
-        }
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    private LinFloat64VectorDirectionalScalingSequence4D(int dimensions, List<LinFloat64VectorDirectionalScaling4D> scalingFactorVectorList)
+    {
+        if (dimensions < 1)
+            throw new ArgumentOutOfRangeException(nameof(dimensions));
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public LinFloat64VectorDirectionalScalingSequence4D AppendMap(LinFloat64VectorDirectionalScaling4D scaling)
-        {
-            _mapList.Add(scaling);
+        VSpaceDimensions = dimensions;
+        _mapList = scalingFactorVectorList;
 
-            return this;
-        }
+        Debug.Assert(IsValid());
+    }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public LinFloat64VectorDirectionalScalingSequence4D AppendMaps(IEnumerable<LinFloat64VectorDirectionalScaling4D> scalingList)
-        {
-            foreach (var scaling in scalingList)
-                AppendMap(scaling);
 
-            return this;
-        }
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public LinFloat64VectorDirectionalScalingSequence4D AppendMap(double scalingFactor, Float64Vector4D scalingVector)
+    {
+        _mapList.Add(
+            LinFloat64VectorDirectionalScaling4D.Create(scalingFactor, scalingVector)
+        );
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public LinFloat64VectorDirectionalScalingSequence4D PrependMap(LinFloat64VectorDirectionalScaling4D scaling)
-        {
-            _mapList.Insert(0, scaling);
+        return this;
+    }
 
-            return this;
-        }
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public LinFloat64VectorDirectionalScalingSequence4D AppendMap(LinFloat64VectorDirectionalScaling4D scaling)
+    {
+        _mapList.Add(scaling);
+
+        return this;
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public LinFloat64VectorDirectionalScalingSequence4D AppendMaps(IEnumerable<LinFloat64VectorDirectionalScaling4D> scalingList)
+    {
+        foreach (var scaling in scalingList)
+            AppendMap(scaling);
+
+        return this;
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public LinFloat64VectorDirectionalScalingSequence4D PrependMap(LinFloat64VectorDirectionalScaling4D scaling)
+    {
+        _mapList.Insert(0, scaling);
+
+        return this;
+    }
     
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public LinFloat64VectorDirectionalScalingSequence4D InsertMap(int index, LinFloat64VectorDirectionalScaling4D scaling)
-        {
-            _mapList.Insert(index, scaling);
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public LinFloat64VectorDirectionalScalingSequence4D InsertMap(int index, LinFloat64VectorDirectionalScaling4D scaling)
+    {
+        _mapList.Insert(index, scaling);
 
-            return this;
-        }
+        return this;
+    }
 
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public bool IsValid()
-        {
-            return _mapList.All(a => a.IsValid());
-        }
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public bool IsValid()
+    {
+        return _mapList.All(a => a.IsValid());
+    }
 
-        public bool IsIdentity()
-        {
-            if (_mapList.Count == 0)
-                return true;
-
-            for (var basisIndex = 0; basisIndex < VSpaceDimensions; basisIndex++)
-            {
-                var isSameVectorBasis =
-                    MapBasisVector(basisIndex).IsVectorBasis(basisIndex);
-
-                if (!isSameVectorBasis) return false;
-            }
-
+    public bool IsIdentity()
+    {
+        if (_mapList.Count == 0)
             return true;
-        }
 
-        public bool IsNearIdentity(double epsilon = 1E-12)
+        for (var basisIndex = 0; basisIndex < VSpaceDimensions; basisIndex++)
         {
-            for (var basisIndex = 0; basisIndex < VSpaceDimensions; basisIndex++)
-            {
-                var isSameVectorBasis =
-                    MapBasisVector(basisIndex).IsNearVectorBasis(basisIndex, epsilon);
+            var isSameVectorBasis =
+                MapBasisVector(basisIndex).IsVectorBasis(basisIndex);
 
-                if (!isSameVectorBasis) return false;
-            }
-
-            return true;
+            if (!isSameVectorBasis) return false;
         }
 
-        public double[] MapVectorInPlace(double[] vector)
+        return true;
+    }
+
+    public bool IsNearIdentity(double epsilon = 1E-12)
+    {
+        for (var basisIndex = 0; basisIndex < VSpaceDimensions; basisIndex++)
         {
-            foreach (var scaling in _mapList)
-            {
-                var u = scaling.ScalingVector;
-                var s = (scaling.ScalingFactor - 1d) * vector.VectorDot(u);
+            var isSameVectorBasis =
+                MapBasisVector(basisIndex).IsNearVectorBasis(basisIndex, epsilon);
 
-                if (s.IsZero()) continue;
-
-                vector[0] += s * u.X;
-                vector[1] += s * u.Y;
-                vector[2] += s * u.Z;
-            }
-
-            return vector;
+            if (!isSameVectorBasis) return false;
         }
+
+        return true;
+    }
+
+    public double[] MapVectorInPlace(double[] vector)
+    {
+        foreach (var scaling in _mapList)
+        {
+            var u = scaling.ScalingVector;
+            var s = (scaling.ScalingFactor - 1d) * vector.VectorDot(u);
+
+            if (s.IsZero()) continue;
+
+            vector[0] += s * u.X;
+            vector[1] += s * u.Y;
+            vector[2] += s * u.Z;
+        }
+
+        return vector;
+    }
     
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Float64Vector4D MapBasisVector(int basisIndex)
-        {
-            Debug.Assert(
-                basisIndex >= 0
-            );
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public Float64Vector4D MapBasisVector(int basisIndex)
+    {
+        Debug.Assert(
+            basisIndex >= 0
+        );
             
-            if (_mapList.Count == 0)
-                return Float64Vector4D.BasisVectors[basisIndex];
+        if (_mapList.Count == 0)
+            return Float64Vector4D.BasisVectors[basisIndex];
 
-            var composer = Float64Vector4DComposer.Create();
+        var composer = Float64Vector4DComposer.Create();
 
-            composer.SetTerm(basisIndex, 1d);
+        composer.SetTerm(basisIndex, 1d);
 
-            foreach (var scaling in _mapList)
-            {
-                var u = scaling.ScalingVector;
-                var s = (scaling.ScalingFactor - 1d) * composer.ESp(u);
-
-                if (s.IsZero()) continue;
-
-                composer.AddVector(u, s);
-            }
-
-            return composer.GetVector();
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Float64Vector4D MapVector(IFloat64Vector4D vector)
+        foreach (var scaling in _mapList)
         {
-            if (_mapList.Count == 0)
-                return vector.ToTuple4D();
+            var u = scaling.ScalingVector;
+            var s = (scaling.ScalingFactor - 1d) * composer.ESp(u);
 
-            var composer = Float64Vector4DComposer.Create();
+            if (s.IsZero()) continue;
 
-            composer.SetVector(vector);
-
-            foreach (var scaling in _mapList)
-            {
-                var u = scaling.ScalingVector;
-                var s = (scaling.ScalingFactor - 1d) * composer.ESp(u);
-
-                if (s.IsZero()) continue;
-
-                composer.AddVector(u, s);
-            }
-
-            return composer.GetVector();
+            composer.AddVector(u, s);
         }
+
+        return composer.GetVector();
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public Float64Vector4D MapVector(IFloat64Vector4D vector)
+    {
+        if (_mapList.Count == 0)
+            return vector.ToTuple4D();
+
+        var composer = Float64Vector4DComposer.Create();
+
+        composer.SetVector(vector);
+
+        foreach (var scaling in _mapList)
+        {
+            var u = scaling.ScalingVector;
+            var s = (scaling.ScalingFactor - 1d) * composer.ESp(u);
+
+            if (s.IsZero()) continue;
+
+            composer.AddVector(u, s);
+        }
+
+        return composer.GetVector();
+    }
         
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public LinFloat64VectorDirectionalScalingSequence4D GetDirectionalScalingSequenceInverse()
-        {
-            if (_mapList.Count == 0)
-                return this;
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public LinFloat64VectorDirectionalScalingSequence4D GetDirectionalScalingSequenceInverse()
+    {
+        if (_mapList.Count == 0)
+            return this;
 
-            var scalingFactorVectorList =
-                ((IEnumerable<LinFloat64VectorDirectionalScaling4D>) _mapList)
-                .Reverse()
-                .Select(t => t.GetVectorDirectionalScalingInverse())
-                .ToList();
+        var scalingFactorVectorList =
+            ((IEnumerable<LinFloat64VectorDirectionalScaling4D>) _mapList)
+            .Reverse()
+            .Select(t => t.GetVectorDirectionalScalingInverse())
+            .ToList();
 
-            return new LinFloat64VectorDirectionalScalingSequence4D(VSpaceDimensions, scalingFactorVectorList);
-        }
+        return new LinFloat64VectorDirectionalScalingSequence4D(VSpaceDimensions, scalingFactorVectorList);
+    }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ILinFloat64UnilinearMap4D GetInverseMap()
-        {
-            return GetDirectionalScalingSequenceInverse();
-        }
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public ILinFloat64UnilinearMap4D GetInverseMap()
+    {
+        return GetDirectionalScalingSequenceInverse();
+    }
     
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public IEnumerator<LinFloat64VectorDirectionalScaling4D> GetEnumerator()
-        {
-            return _mapList.GetEnumerator();
-        }
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public IEnumerator<LinFloat64VectorDirectionalScaling4D> GetEnumerator()
+    {
+        return _mapList.GetEnumerator();
+    }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
-        }
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    IEnumerator IEnumerable.GetEnumerator()
+    {
+        return GetEnumerator();
     }
 }

@@ -1,13 +1,13 @@
 ﻿using System.Text;
 
-namespace GeometricAlgebraFulcrumLib.MetaProgramming.Applications.CSharp.DenseKVectorsLib
+namespace GeometricAlgebraFulcrumLib.MetaProgramming.Applications.CSharp.DenseKVectorsLib;
+
+internal static class GaFuLLibraryComposerUtils
 {
-    internal static class GaFuLLibraryComposerUtils
+    internal static string ScalarItem(this string name, object row, object column)
     {
-        internal static string ScalarItem(this string name, object row, object column)
-        {
-            return
-                new StringBuilder()
+        return
+            new StringBuilder()
                 .Append(name)
                 .Append("[")
                 .Append(row)
@@ -15,8 +15,7 @@ namespace GeometricAlgebraFulcrumLib.MetaProgramming.Applications.CSharp.DenseKV
                 .Append(column)
                 .Append("]")
                 .ToString();
-        }
-
-
     }
+
+
 }

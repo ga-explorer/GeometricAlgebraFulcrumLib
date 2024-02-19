@@ -1,8 +1,7 @@
-﻿namespace WebComposerLib.Svg.Elements.Categories
+﻿namespace WebComposerLib.Svg.Elements.Categories;
+
+public interface ISvgUncategorizedElement : ISvgElement
 {
-    public interface ISvgUncategorizedElement : ISvgElement
-    {
-        //<clipPath>, <color-profile>, <cursor>, <filter>, <foreignObject>, <hatchpath>,
-        //<meshpatch>, <meshrow>, <script>, <style>, <view>
-    }
+    //<clipPath>, <color-profile>, <cursor>, <filter>, <foreignObject>, <hatchpath>,
+    //<meshpatch>, <meshrow>, <script>, <style>, <view>
 }

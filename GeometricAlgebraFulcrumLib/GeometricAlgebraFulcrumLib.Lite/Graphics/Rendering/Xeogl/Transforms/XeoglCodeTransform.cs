@@ -1,204 +1,203 @@
 ﻿using TextComposerLib.Text.Linear;
 
-namespace GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.Xeogl.Transforms
+namespace GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.Xeogl.Transforms;
+
+public sealed class XeoglCodeTransform : IXeoglTransform
 {
-    public sealed class XeoglCodeTransform : IXeoglTransform
-    {
-        public static XeoglCodeTransform CreateMatrix(string code)
-            => new XeoglCodeTransform()
-            {
-                UseMatrix = true,
-                MatrixCode = code
-            };
-
-        public static XeoglCodeTransform CreateQuaternion(string quaternionCode)
-            => new XeoglCodeTransform()
-            {
-                UseQuaternion = true,
-                QuaternionCode = quaternionCode
-            };
-
-        public static XeoglCodeTransform CreateRotate(string rotateCode)
-            => new XeoglCodeTransform()
-            {
-                RotateCode = rotateCode
-            };
-
-        public static XeoglCodeTransform CreateScale(string scaleCode)
-            => new XeoglCodeTransform()
-            {
-                ScaleCode = scaleCode
-            };
-
-        public static XeoglCodeTransform CreateTranslate(string translateCode)
-            => new XeoglCodeTransform()
-            {
-                TranslateCode = translateCode
-            };
-
-        public static XeoglCodeTransform CreateQuaternionScaleTranslate(string quaternionCode, string scaleCode, string translateCode)
-            => new XeoglCodeTransform()
-            {
-                UseQuaternion = true,
-                QuaternionCode = quaternionCode,
-                ScaleCode = scaleCode,
-                TranslateCode = translateCode
-            };
-
-        public static XeoglCodeTransform CreateQuaternionScale(string quaternionCode, string scaleCode)
-            => new XeoglCodeTransform()
-            {
-                UseQuaternion = true,
-                QuaternionCode = quaternionCode,
-                ScaleCode = scaleCode
-            };
-
-        public static XeoglCodeTransform CreateQuaternionTranslate(string quaternionCode, string translateCode)
-            => new XeoglCodeTransform()
-            {
-                UseQuaternion = true,
-                QuaternionCode = quaternionCode,
-                TranslateCode = translateCode
-            };
-
-        public static XeoglCodeTransform CreateRotateScaleTranslate(string rotateCode, string scaleCode, string translateCode)
-            => new XeoglCodeTransform()
-            {
-                RotateCode = rotateCode,
-                ScaleCode = scaleCode,
-                TranslateCode = translateCode
-            };
-
-        public static XeoglCodeTransform CreateRotateScale(string rotateCode, string scaleCode)
-            => new XeoglCodeTransform()
-            {
-                RotateCode = rotateCode,
-                ScaleCode = scaleCode
-            };
-
-        public static XeoglCodeTransform CreateRotateTranslate(string rotateCode, string translateCode)
-            => new XeoglCodeTransform()
-            {
-                RotateCode = rotateCode,
-                TranslateCode = translateCode
-            };
-
-        public static XeoglCodeTransform CreateScaleTranslate(string scaleCode, string translateCode)
-            => new XeoglCodeTransform()
-            {
-                ScaleCode = scaleCode,
-                TranslateCode = translateCode
-            };
-
-
-        public bool UseMatrix { get; set; }
-
-        public bool UseQuaternion { get; set; }
-
-        public string MatrixCode { get; set; }
-
-        public string QuaternionCode { get; set; }
-
-        public string RotateCode { get; set; }
-
-        public string ScaleCode { get; set; }
-
-        public string TranslateCode { get; set; }
-
-
-        public bool ContainsMatrix
-            => !string.IsNullOrEmpty(MatrixCode);
-
-        public bool ContainsQuaternion 
-            => !string.IsNullOrEmpty(QuaternionCode);
-
-        public bool ContainsRotate 
-            => !string.IsNullOrEmpty(RotateCode);
-
-        public bool ContainsScale
-            => !string.IsNullOrEmpty(ScaleCode);
-
-        public bool ContainsTranslate
-            => !string.IsNullOrEmpty(TranslateCode);
-
-
-        public string GetMatrixText()
-            => MatrixCode;
-
-        public string GetQuaternionText()
-            => QuaternionCode;
-
-        public string GetRotateText()
-            => RotateCode;
-
-        public string GetScaleText()
-            => ScaleCode;
-
-        public string GetTranslateText()
-            => TranslateCode;
-
-
-        public override string ToString()
+    public static XeoglCodeTransform CreateMatrix(string code)
+        => new XeoglCodeTransform()
         {
-            var composer = new LinearTextComposer();
+            UseMatrix = true,
+            MatrixCode = code
+        };
 
-            if (UseMatrix)
-            {
-                if (string.IsNullOrEmpty(MatrixCode))
-                    return string.Empty;
+    public static XeoglCodeTransform CreateQuaternion(string quaternionCode)
+        => new XeoglCodeTransform()
+        {
+            UseQuaternion = true,
+            QuaternionCode = quaternionCode
+        };
 
-                composer
-                    .Append("matrix: ")
-                    .Append(MatrixCode);
+    public static XeoglCodeTransform CreateRotate(string rotateCode)
+        => new XeoglCodeTransform()
+        {
+            RotateCode = rotateCode
+        };
 
-                return composer.ToString();
-            }
+    public static XeoglCodeTransform CreateScale(string scaleCode)
+        => new XeoglCodeTransform()
+        {
+            ScaleCode = scaleCode
+        };
 
-            var commaFlag = false;
+    public static XeoglCodeTransform CreateTranslate(string translateCode)
+        => new XeoglCodeTransform()
+        {
+            TranslateCode = translateCode
+        };
 
-            if (UseQuaternion)
-            {
-                if (ContainsQuaternion)
-                {
-                    composer
-                        .Append("quaternion: ")
-                        .Append(QuaternionCode);
+    public static XeoglCodeTransform CreateQuaternionScaleTranslate(string quaternionCode, string scaleCode, string translateCode)
+        => new XeoglCodeTransform()
+        {
+            UseQuaternion = true,
+            QuaternionCode = quaternionCode,
+            ScaleCode = scaleCode,
+            TranslateCode = translateCode
+        };
 
-                    commaFlag = true;
-                }
-            }
-            else if (ContainsRotate)
-            {
-                composer
-                    .Append("rotation: ")
-                    .Append(RotateCode);
+    public static XeoglCodeTransform CreateQuaternionScale(string quaternionCode, string scaleCode)
+        => new XeoglCodeTransform()
+        {
+            UseQuaternion = true,
+            QuaternionCode = quaternionCode,
+            ScaleCode = scaleCode
+        };
 
-                commaFlag = true;
-            }
+    public static XeoglCodeTransform CreateQuaternionTranslate(string quaternionCode, string translateCode)
+        => new XeoglCodeTransform()
+        {
+            UseQuaternion = true,
+            QuaternionCode = quaternionCode,
+            TranslateCode = translateCode
+        };
 
-            if (ContainsScale)
-            {
-                if (commaFlag)
-                    composer.AppendLine(",");
+    public static XeoglCodeTransform CreateRotateScaleTranslate(string rotateCode, string scaleCode, string translateCode)
+        => new XeoglCodeTransform()
+        {
+            RotateCode = rotateCode,
+            ScaleCode = scaleCode,
+            TranslateCode = translateCode
+        };
 
-                composer
-                    .AppendAtNewLine("scale: ")
-                    .Append(ScaleCode);
+    public static XeoglCodeTransform CreateRotateScale(string rotateCode, string scaleCode)
+        => new XeoglCodeTransform()
+        {
+            RotateCode = rotateCode,
+            ScaleCode = scaleCode
+        };
 
-                commaFlag = true;
-            }
+    public static XeoglCodeTransform CreateRotateTranslate(string rotateCode, string translateCode)
+        => new XeoglCodeTransform()
+        {
+            RotateCode = rotateCode,
+            TranslateCode = translateCode
+        };
 
-            if (ContainsTranslate)
-            {
-                if (commaFlag)
-                    composer.AppendLine(",");
+    public static XeoglCodeTransform CreateScaleTranslate(string scaleCode, string translateCode)
+        => new XeoglCodeTransform()
+        {
+            ScaleCode = scaleCode,
+            TranslateCode = translateCode
+        };
 
-                composer
-                    .AppendAtNewLine("position: ")
-                    .Append(TranslateCode);
-            }
+
+    public bool UseMatrix { get; set; }
+
+    public bool UseQuaternion { get; set; }
+
+    public string MatrixCode { get; set; }
+
+    public string QuaternionCode { get; set; }
+
+    public string RotateCode { get; set; }
+
+    public string ScaleCode { get; set; }
+
+    public string TranslateCode { get; set; }
+
+
+    public bool ContainsMatrix
+        => !string.IsNullOrEmpty(MatrixCode);
+
+    public bool ContainsQuaternion 
+        => !string.IsNullOrEmpty(QuaternionCode);
+
+    public bool ContainsRotate 
+        => !string.IsNullOrEmpty(RotateCode);
+
+    public bool ContainsScale
+        => !string.IsNullOrEmpty(ScaleCode);
+
+    public bool ContainsTranslate
+        => !string.IsNullOrEmpty(TranslateCode);
+
+
+    public string GetMatrixText()
+        => MatrixCode;
+
+    public string GetQuaternionText()
+        => QuaternionCode;
+
+    public string GetRotateText()
+        => RotateCode;
+
+    public string GetScaleText()
+        => ScaleCode;
+
+    public string GetTranslateText()
+        => TranslateCode;
+
+
+    public override string ToString()
+    {
+        var composer = new LinearTextComposer();
+
+        if (UseMatrix)
+        {
+            if (string.IsNullOrEmpty(MatrixCode))
+                return string.Empty;
+
+            composer
+                .Append("matrix: ")
+                .Append(MatrixCode);
 
             return composer.ToString();
         }
+
+        var commaFlag = false;
+
+        if (UseQuaternion)
+        {
+            if (ContainsQuaternion)
+            {
+                composer
+                    .Append("quaternion: ")
+                    .Append(QuaternionCode);
+
+                commaFlag = true;
+            }
+        }
+        else if (ContainsRotate)
+        {
+            composer
+                .Append("rotation: ")
+                .Append(RotateCode);
+
+            commaFlag = true;
+        }
+
+        if (ContainsScale)
+        {
+            if (commaFlag)
+                composer.AppendLine(",");
+
+            composer
+                .AppendAtNewLine("scale: ")
+                .Append(ScaleCode);
+
+            commaFlag = true;
+        }
+
+        if (ContainsTranslate)
+        {
+            if (commaFlag)
+                composer.AppendLine(",");
+
+            composer
+                .AppendAtNewLine("position: ")
+                .Append(TranslateCode);
+        }
+
+        return composer.ToString();
     }
 }

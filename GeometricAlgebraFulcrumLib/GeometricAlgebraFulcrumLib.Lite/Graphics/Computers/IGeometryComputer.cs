@@ -1,9 +1,8 @@
 ﻿using DataStructuresLib.Statistics;
 
-namespace GeometricAlgebraFulcrumLib.Lite.Graphics.Computers
+namespace GeometricAlgebraFulcrumLib.Lite.Graphics.Computers;
+
+public interface IGeometryComputer
 {
-    public interface IGeometryComputer
-    {
-        EventSummaryCollection EventCounters { get; }
-    }
+    EventSummaryCollection EventCounters { get; }
 }

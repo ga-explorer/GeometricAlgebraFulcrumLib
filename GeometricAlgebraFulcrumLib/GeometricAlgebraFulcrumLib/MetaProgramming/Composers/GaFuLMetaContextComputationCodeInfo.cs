@@ -2,19 +2,18 @@
 using GeometricAlgebraFulcrumLib.MetaProgramming.Expressions.Variables;
 using GeometricAlgebraFulcrumLib.MetaProgramming.Languages;
 
-namespace GeometricAlgebraFulcrumLib.MetaProgramming.Composers
+namespace GeometricAlgebraFulcrumLib.MetaProgramming.Composers;
+
+public sealed class GaFuLMetaContextComputationCodeInfo
 {
-    public sealed class GaFuLMetaContextComputationCodeInfo
-    {
-        public IMetaExpressionVariableComputed ComputedVariable { get; internal init; }
+    public IMetaExpressionVariableComputed ComputedVariable { get; internal init; }
 
-        public string ExternalName 
-            => ComputedVariable.ExternalName;
+    public string ExternalName 
+        => ComputedVariable.ExternalName;
 
-        public SteExpression RhsSimpleTextExpression { get; internal init; }
+    public SteExpression RhsSimpleTextExpression { get; internal init; }
 
-        public GaFuLLanguageServerBase LanguageServer { get; internal init; }
+    public GaFuLLanguageServerBase LanguageServer { get; internal init; }
 
-        public bool EnableCodeGeneration { get; set; }
-    }
+    public bool EnableCodeGeneration { get; set; }
 }

@@ -51,20 +51,11 @@ public class RGaConformalSpace :
     public RGaFloat64ConformalProcessor ConformalProcessor
         => RGaFloat64ConformalProcessor.Instance;
 
-    public override RGaFloat64Processor Processor
-        => ConformalProcessor;
-
     /// <summary>
     /// This isomorphism is used for converting CGA multivectors to and from PGA subspace
     /// </summary>
     public RGaFloat64MusicalAutomorphism MusicalIsomorphism
         => RGaFloat64MusicalAutomorphism.Instance;
-
-    public override IReadOnlyList<string> LaTeXVectorSubscripts { get; }
-
-    public override IRGaFloat64Outermorphism LaTeXBasisMap { get; }
-
-    public override IRGaFloat64Outermorphism LaTeXBasisMapInverse { get; }
 
     public bool Is4D 
         => VSpaceDimensions == 4;
@@ -224,15 +215,11 @@ public class RGaConformalSpace :
     
 
     protected RGaConformalSpace(int vSpaceDimensions)
-        : base(vSpaceDimensions)
+        : base(RGaGeometrySpaceBasisSpecs.CreateCGa(vSpaceDimensions))
     {
         if (vSpaceDimensions < 4)
             throw new ArgumentOutOfRangeException(nameof(vSpaceDimensions));
 
-        LaTeXVectorSubscripts = GetCGaVectorSubscripts().ToImmutableArray();
-        LaTeXBasisMap = GetCGaBasisMap();
-        LaTeXBasisMapInverse = GetCGaBasisMapInverse();
-        
         OneScalarBlade = new RGaConformalBlade(this, ConformalProcessor.CreateOneScalar());
         ZeroVectorBlade = new RGaConformalBlade(this, ConformalProcessor.CreateZeroVector());
 
@@ -260,14 +247,26 @@ public class RGaConformalSpace :
     }
 
 
-    protected IEnumerable<string> GetCGaVectorSubscripts()
+    protected IEnumerable<string> GetCGaVectorSubscripts(bool orthogonalBasis = false)
     {
-        yield return "o";
+        if (orthogonalBasis)
+        {
+            yield return "+";
 
-        for (var i = 0; i < VSpaceDimensions - 2; i++)
-            yield return (i + 1).ToString();
+            for (var i = 0; i < VSpaceDimensions - 2; i++)
+                yield return (i + 1).ToString();
 
-        yield return @"\infty";
+            yield return "-";
+        }
+        else
+        {
+            yield return "o";
+
+            for (var i = 0; i < VSpaceDimensions - 2; i++)
+                yield return (i + 1).ToString();
+
+            yield return @"\infty";
+        }
     }
 
     protected RGaFloat64LinearMapOutermorphism GetCGaBasisMap()
@@ -346,7 +345,7 @@ public class RGaConformalSpace :
         var maskEi = 1UL << VSpaceDimensions - 1;
 
         return mv.IsZero ||
-               LaTeXBasisMap.OmMap(mv).Ids.All(id => (id & maskEi) == 0);
+               BasisSpecs.BasisMap.OmMap(mv).Ids.All(id => (id & maskEi) == 0);
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -358,7 +357,7 @@ public class RGaConformalSpace :
         const ulong maskEo = 1UL;
 
         return mv.IsZero ||
-               LaTeXBasisMap.OmMap(mv).Ids.All(id => (id & maskEo) == 0);
+               BasisSpecs.BasisMap.OmMap(mv).Ids.All(id => (id & maskEo) == 0);
     }
 
 
@@ -380,7 +379,7 @@ public class RGaConformalSpace :
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public string ToLaTeX(Float64Vector2D vector)
     {
-        return ToLaTeX(
+        return BasisSpecs.ToLaTeX(
             this.EncodeEGaVector(vector).InternalKVector
         );
     }
@@ -388,7 +387,7 @@ public class RGaConformalSpace :
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public string ToLaTeX(Float64Vector3D vector)
     {
-        return ToLaTeX(
+        return BasisSpecs.ToLaTeX(
             this.EncodeEGaVector(vector).InternalKVector
         );
     }
@@ -396,7 +395,7 @@ public class RGaConformalSpace :
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public string ToLaTeX(Float64Vector vector)
     {
-        return ToLaTeX(
+        return BasisSpecs.ToLaTeX(
             vector.ToRGaFloat64Vector()
         );
     }
@@ -404,7 +403,7 @@ public class RGaConformalSpace :
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public string ToLaTeX(Float64Bivector2D vector)
     {
-        return ToLaTeX(
+        return BasisSpecs.ToLaTeX(
             this.EncodeEGaBivector(vector).InternalKVector
         );
     }
@@ -412,7 +411,7 @@ public class RGaConformalSpace :
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public string ToLaTeX(Float64Bivector3D vector)
     {
-        return ToLaTeX(
+        return BasisSpecs.ToLaTeX(
             this.EncodeEGaBivector(vector).InternalKVector
         );
     }
@@ -420,7 +419,7 @@ public class RGaConformalSpace :
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public string ToLaTeX(Float64Trivector3D vector)
     {
-        return ToLaTeX(
+        return BasisSpecs.ToLaTeX(
             this.EncodeEGaTrivector(vector.Scalar123).InternalKVector
         );
     }

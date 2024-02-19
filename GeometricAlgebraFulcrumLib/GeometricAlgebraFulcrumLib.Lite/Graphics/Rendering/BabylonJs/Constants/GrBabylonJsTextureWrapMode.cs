@@ -1,9 +1,8 @@
-﻿namespace GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.BabylonJs.Constants
+﻿namespace GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.BabylonJs.Constants;
+
+public enum GrBabylonJsTextureWrapMode
 {
-    public enum GrBabylonJsTextureWrapMode
-    {
-        Clamp = 0,
-        Wrap = 1,
-        Mirror = 2
-    }
+    Clamp = 0,
+    Wrap = 1,
+    Mirror = 2
 }

@@ -1,132 +1,131 @@
 ﻿using CodeComposerLib.HTMLold.Attributes;
 
-namespace CodeComposerLib.HTMLold.Elements.Descriptive
+namespace CodeComposerLib.HTMLold.Elements.Descriptive;
+
+public sealed class HtmlElementTitle : HtmlElement
 {
-    public sealed class HtmlElementTitle : HtmlElement
+    public static HtmlElementTitle Create(string titleText)
     {
-        public static HtmlElementTitle Create(string titleText)
+        var element = new HtmlElementTitle();
+
+        element.Contents.AppendText(titleText);
+
+        return element;
+    }
+
+    public static HtmlElementTitle Create(string id, string titleText)
+    {
+        var element = new HtmlElementTitle() { Id = id };
+
+        element.Contents.AppendText(titleText);
+
+        return element;
+    }
+
+
+    public override string ElementName => "title";
+
+
+    //public HtmlEavString<HtmlElementTitle> Id
+    //{
+    //    get
+    //    {
+    //        var attrInfo = HtmlAttributes.Id;
+
+    //        IHtmlAttributeValue attrValue;
+    //        if (AttributesTable.TryGetValue(attrInfo.Id, out attrValue))
+    //            return attrValue as HtmlEavString<HtmlElementTitle>;
+
+    //        var attrValue1 = new HtmlEavString<HtmlElementTitle>(this, attrInfo);
+    //        AttributesTable.Add(attrInfo.Id, attrValue1);
+
+    //        return attrValue1;
+    //    }
+    //}
+
+    public HtmlEavString<HtmlElementTitle> XmlBase
+    {
+        get
         {
-            var element = new HtmlElementTitle();
+            var attrInfo = HtmlAttributeUtils.XmlBase;
 
-            element.Contents.AppendText(titleText);
+            if (AttributesTable.TryGetValue(attrInfo.Id, out var attrValue))
+                return attrValue as HtmlEavString<HtmlElementTitle>;
 
-            return element;
+            var attrValue1 = new HtmlEavString<HtmlElementTitle>(this, attrInfo);
+            AttributesTable.Add(attrInfo.Id, attrValue1);
+
+            return attrValue1;
         }
+    }
 
-        public static HtmlElementTitle Create(string id, string titleText)
+    public HtmlEavString<HtmlElementTitle> XmlLanguage
+    {
+        get
         {
-            var element = new HtmlElementTitle() { Id = id };
+            var attrInfo = HtmlAttributeUtils.XmlLanguage;
 
-            element.Contents.AppendText(titleText);
+            if (AttributesTable.TryGetValue(attrInfo.Id, out var attrValue))
+                return attrValue as HtmlEavString<HtmlElementTitle>;
 
-            return element;
+            var attrValue1 = new HtmlEavString<HtmlElementTitle>(this, attrInfo);
+            AttributesTable.Add(attrInfo.Id, attrValue1);
+
+            return attrValue1;
         }
+    }
 
-
-        public override string ElementName => "title";
-
-
-        //public HtmlEavString<HtmlElementTitle> Id
-        //{
-        //    get
-        //    {
-        //        var attrInfo = HtmlAttributes.Id;
-
-        //        IHtmlAttributeValue attrValue;
-        //        if (AttributesTable.TryGetValue(attrInfo.Id, out attrValue))
-        //            return attrValue as HtmlEavString<HtmlElementTitle>;
-
-        //        var attrValue1 = new HtmlEavString<HtmlElementTitle>(this, attrInfo);
-        //        AttributesTable.Add(attrInfo.Id, attrValue1);
-
-        //        return attrValue1;
-        //    }
-        //}
-
-        public HtmlEavString<HtmlElementTitle> XmlBase
+    public HtmlEavStruct<bool, HtmlElementTitle> ExternalResourcesRequired
+    {
+        get
         {
-            get
-            {
-                var attrInfo = HtmlAttributeUtils.XmlBase;
+            var attrInfo = HtmlAttributeUtils.ExternalResourcesRequired;
 
-                if (AttributesTable.TryGetValue(attrInfo.Id, out var attrValue))
-                    return attrValue as HtmlEavString<HtmlElementTitle>;
+            if (AttributesTable.TryGetValue(attrInfo.Id, out var attrValue))
+                return attrValue as HtmlEavStruct<bool, HtmlElementTitle>;
 
-                var attrValue1 = new HtmlEavString<HtmlElementTitle>(this, attrInfo);
-                AttributesTable.Add(attrInfo.Id, attrValue1);
+            var attrValue1 = new HtmlEavStruct<bool, HtmlElementTitle>(this, attrInfo);
+            AttributesTable.Add(attrInfo.Id, attrValue1);
 
-                return attrValue1;
-            }
+            return attrValue1;
         }
+    }
 
-        public HtmlEavString<HtmlElementTitle> XmlLanguage
+    public HtmlEavString<HtmlElementTitle> Class
+    {
+        get
         {
-            get
-            {
-                var attrInfo = HtmlAttributeUtils.XmlLanguage;
+            var attrInfo = HtmlAttributeUtils.Class;
 
-                if (AttributesTable.TryGetValue(attrInfo.Id, out var attrValue))
-                    return attrValue as HtmlEavString<HtmlElementTitle>;
+            if (AttributesTable.TryGetValue(attrInfo.Id, out var attrValue))
+                return attrValue as HtmlEavString<HtmlElementTitle>;
 
-                var attrValue1 = new HtmlEavString<HtmlElementTitle>(this, attrInfo);
-                AttributesTable.Add(attrInfo.Id, attrValue1);
+            var attrValue1 = new HtmlEavString<HtmlElementTitle>(this, attrInfo);
+            AttributesTable.Add(attrInfo.Id, attrValue1);
 
-                return attrValue1;
-            }
+            return attrValue1;
         }
+    }
 
-        public HtmlEavStruct<bool, HtmlElementTitle> ExternalResourcesRequired
-        {
-            get
-            {
-                var attrInfo = HtmlAttributeUtils.ExternalResourcesRequired;
+    //public HtmlEavStyle<HtmlElementTitle> Style
+    //{
+    //    get
+    //    {
+    //        var attrInfo = HtmlAttributes.Style;
 
-                if (AttributesTable.TryGetValue(attrInfo.Id, out var attrValue))
-                    return attrValue as HtmlEavStruct<bool, HtmlElementTitle>;
+    //        IHtmlAttributeValue attrValue;
+    //        if (AttributesTable.TryGetValue(attrInfo.Id, out attrValue))
+    //            return attrValue as HtmlEavStyle<HtmlElementTitle>;
 
-                var attrValue1 = new HtmlEavStruct<bool, HtmlElementTitle>(this, attrInfo);
-                AttributesTable.Add(attrInfo.Id, attrValue1);
+    //        var attrValue1 = new HtmlEavStyle<HtmlElementTitle>(this);
+    //        AttributesTable.Add(attrInfo.Id, attrValue1);
 
-                return attrValue1;
-            }
-        }
-
-        public HtmlEavString<HtmlElementTitle> Class
-        {
-            get
-            {
-                var attrInfo = HtmlAttributeUtils.Class;
-
-                if (AttributesTable.TryGetValue(attrInfo.Id, out var attrValue))
-                    return attrValue as HtmlEavString<HtmlElementTitle>;
-
-                var attrValue1 = new HtmlEavString<HtmlElementTitle>(this, attrInfo);
-                AttributesTable.Add(attrInfo.Id, attrValue1);
-
-                return attrValue1;
-            }
-        }
-
-        //public HtmlEavStyle<HtmlElementTitle> Style
-        //{
-        //    get
-        //    {
-        //        var attrInfo = HtmlAttributes.Style;
-
-        //        IHtmlAttributeValue attrValue;
-        //        if (AttributesTable.TryGetValue(attrInfo.Id, out attrValue))
-        //            return attrValue as HtmlEavStyle<HtmlElementTitle>;
-
-        //        var attrValue1 = new HtmlEavStyle<HtmlElementTitle>(this);
-        //        AttributesTable.Add(attrInfo.Id, attrValue1);
-
-        //        return attrValue1;
-        //    }
-        //}
+    //        return attrValue1;
+    //    }
+    //}
 
 
-        private HtmlElementTitle()
-        {
-        }
+    private HtmlElementTitle()
+    {
     }
 }

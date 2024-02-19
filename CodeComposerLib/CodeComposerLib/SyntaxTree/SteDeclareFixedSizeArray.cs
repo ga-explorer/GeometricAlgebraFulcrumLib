@@ -1,7 +1,6 @@
-﻿namespace CodeComposerLib.SyntaxTree
+﻿namespace CodeComposerLib.SyntaxTree;
+
+public class SteDeclareFixedSizeArray : SteDeclareDataStore
 {
-    public class SteDeclareFixedSizeArray : SteDeclareDataStore
-    {
-        public string ArraySize { get; set; }
-    }
+    public string ArraySize { get; set; }
 }

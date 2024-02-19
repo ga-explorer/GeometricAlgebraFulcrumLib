@@ -1,7 +1,6 @@
-﻿namespace WebComposerLib.Svg.Values
+﻿namespace WebComposerLib.Svg.Values;
+
+public interface ISvgValue
 {
-    public interface ISvgValue
-    {
-        string ValueText { get; }
-    }
+    string ValueText { get; }
 }

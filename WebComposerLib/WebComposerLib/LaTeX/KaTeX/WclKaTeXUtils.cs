@@ -1,43 +1,42 @@
-﻿namespace WebComposerLib.LaTeX.KaTeX
+﻿namespace WebComposerLib.LaTeX.KaTeX;
+
+public static class WclKaTeXUtils
 {
-    public static class WclKaTeXUtils
-    {
         
 
-        //public static Bitmap GenerateScreenshot(string url)
-        //{
-        //    // Load the webpage into a WebBrowser control
-        //    var wb = new WebBrowser
-        //    {
-        //        ScrollBarsEnabled = false, 
-        //        ScriptErrorsSuppressed = true
-        //    };
-        //    wb.Navigate(url);
-        //    //wb.DocumentText = "";
+    //public static Bitmap GenerateScreenshot(string url)
+    //{
+    //    // Load the webpage into a WebBrowser control
+    //    var wb = new WebBrowser
+    //    {
+    //        ScrollBarsEnabled = false, 
+    //        ScriptErrorsSuppressed = true
+    //    };
+    //    wb.Navigate(url);
+    //    //wb.DocumentText = "";
             
 
-        //    // waits for the page to be completely loaded
-        //    while (wb.ReadyState != WebBrowserReadyState.Complete) ;
+    //    // waits for the page to be completely loaded
+    //    while (wb.ReadyState != WebBrowserReadyState.Complete) ;
 
-        //    // Take Screenshot of the web pages full width + some padding
-        //    wb.Width = wb.Document.Body.ScrollRectangle.Height;
-        //    // Take Screenshot of the web pages full height
-        //    wb.Height = wb.Document.Body.ScrollRectangle.Height;
+    //    // Take Screenshot of the web pages full width + some padding
+    //    wb.Width = wb.Document.Body.ScrollRectangle.Height;
+    //    // Take Screenshot of the web pages full height
+    //    wb.Height = wb.Document.Body.ScrollRectangle.Height;
 
-        //    // Get a Bitmap representation of the webpage as it's rendered in the WebBrowser control
-        //    var bitmap = new Bitmap(wb.Width, wb.Height);
-        //    wb.DrawToBitmap(bitmap, new System.Drawing.Rectangle(0, 0, wb.Width, wb.Height));
-        //    wb.Dispose();
+    //    // Get a Bitmap representation of the webpage as it's rendered in the WebBrowser control
+    //    var bitmap = new Bitmap(wb.Width, wb.Height);
+    //    wb.DrawToBitmap(bitmap, new System.Drawing.Rectangle(0, 0, wb.Width, wb.Height));
+    //    wb.Dispose();
 
-        //    return bitmap;
-        //}
+    //    return bitmap;
+    //}
 
-        //public static void TestKaTeX()
-        //{
-        //    var url = Directory.GetCurrentDirectory().GetFilePath("sample", "html");
-        //    var image = GenerateScreenshot(url);
+    //public static void TestKaTeX()
+    //{
+    //    var url = Directory.GetCurrentDirectory().GetFilePath("sample", "html");
+    //    var image = GenerateScreenshot(url);
 
-        //    image.Save("sample.png");
-        //}
-    }
+    //    image.Save("sample.png");
+    //}
 }

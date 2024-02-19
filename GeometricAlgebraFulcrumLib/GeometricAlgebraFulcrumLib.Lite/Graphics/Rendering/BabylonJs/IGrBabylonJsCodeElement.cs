@@ -1,7 +1,6 @@
-﻿namespace GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.BabylonJs
+﻿namespace GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.BabylonJs;
+
+public interface IGrBabylonJsCodeElement
 {
-    public interface IGrBabylonJsCodeElement
-    {
-        string GetCode();
-    }
+    string GetCode();
 }

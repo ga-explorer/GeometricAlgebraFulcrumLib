@@ -1,15 +1,14 @@
 ﻿using GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.PovRay.SDL.Modifiers;
 
-namespace GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.PovRay.SDL.Objects
+namespace GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.PovRay.SDL.Objects;
+
+public abstract class SdlObject : ISdlObject
 {
-    public abstract class SdlObject : ISdlObject
+    public List<ISdlObjectModifier> Modifiers { get; private set; }
+
+
+    protected SdlObject()
     {
-        public List<ISdlObjectModifier> Modifiers { get; private set; }
-
-
-        protected SdlObject()
-        {
-            Modifiers = new List<ISdlObjectModifier>();
-        }
+        Modifiers = new List<ISdlObjectModifier>();
     }
 }

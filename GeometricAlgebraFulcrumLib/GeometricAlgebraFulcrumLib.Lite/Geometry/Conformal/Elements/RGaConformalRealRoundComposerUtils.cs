@@ -623,7 +623,7 @@ public static class RGaConformalRealRoundComposerUtils
             conformalSpace.EncodeEGaVector(position),
             directionVectors
                 .Select(v => v.ToRGaFloat64Vector())
-                .Op()
+                .Op(conformalSpace.Processor)
                 .EncodeEGaBlade(conformalSpace)
         );
     }
@@ -637,7 +637,7 @@ public static class RGaConformalRealRoundComposerUtils
             conformalSpace.EncodeEGaVector(position),
             directionVectors
                 .Select(v => v.ToRGaFloat64Vector())
-                .Op()
+                .Op(conformalSpace.Processor)
                 .EncodeEGaBlade(conformalSpace)
         );
     }
@@ -651,7 +651,7 @@ public static class RGaConformalRealRoundComposerUtils
             conformalSpace.EncodeEGaVector(position),
             directionVectors
                 .Select(v => v.ToRGaFloat64Vector())
-                .Op()
+                .Op(conformalSpace.Processor)
                 .EncodeEGaBlade(conformalSpace)
         );
     }
@@ -663,7 +663,7 @@ public static class RGaConformalRealRoundComposerUtils
             1,
             radius,
             position,
-            directionVectors.Op()
+            directionVectors.Op(conformalSpace.Processor)
         );
     }
 
@@ -674,7 +674,7 @@ public static class RGaConformalRealRoundComposerUtils
             1,
             radius,
             position,
-            directionVectors.Op()
+            directionVectors.Op(conformalSpace.Processor)
         );
     }
 
@@ -688,7 +688,7 @@ public static class RGaConformalRealRoundComposerUtils
             conformalSpace.EncodeEGaVector(position),
             directionVectors
                 .Select(v => v.ToRGaFloat64Vector())
-                .Op()
+                .Op(conformalSpace.Processor)
                 .EncodeEGaBlade(conformalSpace)
         );
     }
@@ -702,7 +702,7 @@ public static class RGaConformalRealRoundComposerUtils
             conformalSpace.EncodeEGaVector(position),
             directionVectors
                 .Select(v => v.ToRGaFloat64Vector())
-                .Op()
+                .Op(conformalSpace.Processor)
                 .EncodeEGaBlade(conformalSpace)
         );
     }
@@ -716,7 +716,7 @@ public static class RGaConformalRealRoundComposerUtils
             conformalSpace.EncodeEGaVector(position),
             directionVectors
                 .Select(v => v.ToRGaFloat64Vector())
-                .Op()
+                .Op(conformalSpace.Processor)
                 .EncodeEGaBlade(conformalSpace)
         );
     }
@@ -728,7 +728,7 @@ public static class RGaConformalRealRoundComposerUtils
             weight,
             radius,
             position,
-            directionVectors.Op()
+            directionVectors.Op(conformalSpace.Processor)
         );
     }
 
@@ -739,7 +739,7 @@ public static class RGaConformalRealRoundComposerUtils
             weight,
             radius,
             position,
-            directionVectors.Op()
+            directionVectors.Op(conformalSpace.Processor)
         );
     }
     

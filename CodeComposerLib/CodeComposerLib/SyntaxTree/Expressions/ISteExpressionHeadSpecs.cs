@@ -1,10 +1,9 @@
-﻿namespace CodeComposerLib.SyntaxTree.Expressions
+﻿namespace CodeComposerLib.SyntaxTree.Expressions;
+
+/// <summary>
+/// Any expression header must be an immutable class that implements this interface
+/// </summary>
+public interface ISteExpressionHeadSpecs : ISyntaxTreeElement
 {
-    /// <summary>
-    /// Any expression header must be an immutable class that implements this interface
-    /// </summary>
-    public interface ISteExpressionHeadSpecs : ISyntaxTreeElement
-    {
-        string HeadText { get; }
-    }
+    string HeadText { get; }
 }

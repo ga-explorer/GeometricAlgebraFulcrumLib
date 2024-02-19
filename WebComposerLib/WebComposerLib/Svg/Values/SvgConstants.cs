@@ -1,36 +1,35 @@
-﻿namespace WebComposerLib.Svg.Values
+﻿namespace WebComposerLib.Svg.Values;
+
+public static class SvgConstants
 {
-    public static class SvgConstants
+    public enum Alignment { Min, Mid, Max }
+
+    public enum ColorSpecs { None, CurrentColor, ColorValue }
+
+    public enum FontSize
     {
-        public enum Alignment { Min, Mid, Max }
+        AbsoluteSmallXx,
+        AbsoluteSmallX,
+        AbsoluteSmall,
+        AbsoluteMedium,
+        AbsoluteLarge,
+        AbsoluteLargeX,
+        AbsoluteLargeXx,
+        RelativeLarger,
+        RelativeSmaller,
+        Length
+    }
 
-        public enum ColorSpecs { None, CurrentColor, ColorValue }
+    public static class GenericFontFamilies
+    {
+        public static string Serif { get; } = "serif";
 
-        public enum FontSize
-        {
-            AbsoluteSmallXx,
-            AbsoluteSmallX,
-            AbsoluteSmall,
-            AbsoluteMedium,
-            AbsoluteLarge,
-            AbsoluteLargeX,
-            AbsoluteLargeXx,
-            RelativeLarger,
-            RelativeSmaller,
-            Length
-        }
+        public static string SansSerif { get; } = "sans-serif";
 
-        public static class GenericFontFamilies
-        {
-            public static string Serif { get; } = "serif";
+        public static string Cursive { get; } = "cursive";
 
-            public static string SansSerif { get; } = "sans-serif";
+        public static string Fantasy { get; } = "fantasy";
 
-            public static string Cursive { get; } = "cursive";
-
-            public static string Fantasy { get; } = "fantasy";
-
-            public static string Monospace { get; } = "monospace";
-        }
+        public static string Monospace { get; } = "monospace";
     }
 }

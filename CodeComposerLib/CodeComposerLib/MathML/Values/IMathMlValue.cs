@@ -1,7 +1,6 @@
-﻿namespace CodeComposerLib.MathML.Values
+﻿namespace CodeComposerLib.MathML.Values;
+
+public interface IMathMlValue
 {
-    public interface IMathMlValue
-    {
-        string ValueText { get; }
-    }
+    string ValueText { get; }
 }

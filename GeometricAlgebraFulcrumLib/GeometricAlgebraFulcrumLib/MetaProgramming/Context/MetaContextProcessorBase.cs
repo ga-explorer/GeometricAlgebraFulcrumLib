@@ -1,16 +1,15 @@
-﻿namespace GeometricAlgebraFulcrumLib.MetaProgramming.Context
+﻿namespace GeometricAlgebraFulcrumLib.MetaProgramming.Context;
+
+internal abstract class MetaContextProcessorBase
 {
-    internal abstract class MetaContextProcessorBase
+    public MetaContext Context { get; }
+
+
+    protected MetaContextProcessorBase(MetaContext context)
     {
-        public MetaContext Context { get; }
-
-
-        protected MetaContextProcessorBase(MetaContext context)
-        {
-            Context = context;
-        }
-
-
-        protected abstract void BeginProcessing();
+        Context = context;
     }
+
+
+    protected abstract void BeginProcessing();
 }

@@ -4,140 +4,139 @@ using System.Linq;
 using System.Text;
 using DataStructuresLib.Basic;
 
-namespace DataStructuresLib.Permutations
+namespace DataStructuresLib.Permutations;
+
+public sealed class IndexMapRange1D
+    : IReadOnlyList<int>, IIndexMap1D
 {
-    public sealed class IndexMapRange1D
-        : IReadOnlyList<int>, IIndexMap1D
+    public int Count 
+        => IndexCount;
+
+    public int IndexCount { get; }
+
+    public int FirstIndex { get; set; }
+
+    public int LastIndex 
+        => MoveForward 
+            ? FirstIndex + Count - 1 
+            : FirstIndex - Count + 1;
+
+    public int MinIndex
+        => MoveForward 
+            ? FirstIndex 
+            : FirstIndex - Count + 1;
+
+    public int MaxIndex
+        => MoveForward 
+            ? FirstIndex + Count - 1 
+            : FirstIndex;
+
+    public bool MoveForward { get; set; }
+
+    public bool MoveBackward
     {
-        public int Count 
-            => IndexCount;
+        get => !MoveForward;
+        set => MoveForward = !value;
+    }
 
-        public int IndexCount { get; }
+    public int this[int index] 
+        => MoveForward 
+            ? FirstIndex + index 
+            : FirstIndex - index;
 
-        public int FirstIndex { get; set; }
+    public int[] this[params int[] indexList] 
+        => MoveForward
+            ? indexList.Select(i => FirstIndex + i).ToArray()
+            : indexList.Select(i => FirstIndex - i).ToArray();
 
-        public int LastIndex 
-            => MoveForward 
-                ? FirstIndex + Count - 1 
-                : FirstIndex - Count + 1;
+    public IEnumerable<int> this[IEnumerable<int> indexList] 
+        => MoveForward
+            ? indexList.Select(i => FirstIndex + i)
+            : indexList.Select(i => FirstIndex - i);
 
-        public int MinIndex
-            => MoveForward 
-                ? FirstIndex 
-                : FirstIndex - Count + 1;
 
-        public int MaxIndex
-            => MoveForward 
-                ? FirstIndex + Count - 1 
-                : FirstIndex;
+    public IndexMapRange1D(int indexCount)
+    {
+        FirstIndex = 0;
+        IndexCount = indexCount;
+        MoveForward = true;
+    }
 
-        public bool MoveForward { get; set; }
+    public IndexMapRange1D(int indexCount, int firstIndex)
+    {
+        FirstIndex = firstIndex;
+        IndexCount = indexCount;
+        MoveForward = true;
+    }
 
-        public bool MoveBackward
+    public IndexMapRange1D(int indexCount, int firstIndex, bool moveForward)
+    {
+        FirstIndex = firstIndex;
+        IndexCount = indexCount;
+        MoveForward = moveForward;
+    }
+
+
+    public IndexMapRange1D ReverseDirection()
+    {
+        FirstIndex = LastIndex;
+        MoveForward = !MoveForward;
+
+        return this;
+    }
+
+    public IEnumerable<Pair<int>> GetIndexPairs(bool periodicPairs = false)
+    {
+        var step = MoveForward ? 1 : -1;
+
+        var index1 = FirstIndex;
+        var index2 = FirstIndex;
+        var stepsLeft = IndexCount - 1;
+        var indexPair = new Pair<int>(index1, index1);
+
+        while (stepsLeft > 0)
         {
-            get => !MoveForward;
-            set => MoveForward = !value;
+            index2 += step;
+
+            yield return indexPair.NextPair(index2);
+
+            stepsLeft--;
         }
 
-        public int this[int index] 
-            => MoveForward 
-                ? FirstIndex + index 
-                : FirstIndex - index;
-
-        public int[] this[params int[] indexList] 
-            => MoveForward
-                ? indexList.Select(i => FirstIndex + i).ToArray()
-                : indexList.Select(i => FirstIndex - i).ToArray();
-
-        public IEnumerable<int> this[IEnumerable<int> indexList] 
-            => MoveForward
-                ? indexList.Select(i => FirstIndex + i)
-                : indexList.Select(i => FirstIndex - i);
-
-
-        public IndexMapRange1D(int indexCount)
-        {
-            FirstIndex = 0;
-            IndexCount = indexCount;
-            MoveForward = true;
-        }
-
-        public IndexMapRange1D(int indexCount, int firstIndex)
-        {
-            FirstIndex = firstIndex;
-            IndexCount = indexCount;
-            MoveForward = true;
-        }
-
-        public IndexMapRange1D(int indexCount, int firstIndex, bool moveForward)
-        {
-            FirstIndex = firstIndex;
-            IndexCount = indexCount;
-            MoveForward = moveForward;
-        }
-
-
-        public IndexMapRange1D ReverseDirection()
-        {
-            FirstIndex = LastIndex;
-            MoveForward = !MoveForward;
-
-            return this;
-        }
-
-        public IEnumerable<Pair<int>> GetIndexPairs(bool periodicPairs = false)
-        {
-            var step = MoveForward ? 1 : -1;
-
-            var index1 = FirstIndex;
-            var index2 = FirstIndex;
-            var stepsLeft = IndexCount - 1;
-            var indexPair = new Pair<int>(index1, index1);
-
-            while (stepsLeft > 0)
-            {
-                index2 += step;
-
-                yield return indexPair.NextPair(index2);
-
-                stepsLeft--;
-            }
-
-            if (periodicPairs)
-                yield return indexPair.NextPair(FirstIndex);
-        }
+        if (periodicPairs)
+            yield return indexPair.NextPair(FirstIndex);
+    }
         
 
-        public IEnumerator<int> GetEnumerator()
+    public IEnumerator<int> GetEnumerator()
+    {
+        var step = MoveForward ? 1 : -1;
+        var index = FirstIndex;
+        var stepsLeft = IndexCount;
+
+        while (stepsLeft > 0)
         {
-            var step = MoveForward ? 1 : -1;
-            var index = FirstIndex;
-            var stepsLeft = IndexCount;
+            yield return index;
 
-            while (stepsLeft > 0)
-            {
-                yield return index;
+            index += step;
 
-                index += step;
-
-                stepsLeft--;
-            }
+            stepsLeft--;
         }
+    }
 
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
-        }
+    IEnumerator IEnumerable.GetEnumerator()
+    {
+        return GetEnumerator();
+    }
 
-        public override string ToString()
-        {
-            return new StringBuilder()
-                .AppendLine("Index Range <")
-                .Append(FirstIndex)
-                .Append(", ")
-                .Append(LastIndex)
-                .AppendLine(">")
-                .ToString();
-        }
+    public override string ToString()
+    {
+        return new StringBuilder()
+            .AppendLine("Index Range <")
+            .Append(FirstIndex)
+            .Append(", ")
+            .Append(LastIndex)
+            .AppendLine(">")
+            .ToString();
     }
 }

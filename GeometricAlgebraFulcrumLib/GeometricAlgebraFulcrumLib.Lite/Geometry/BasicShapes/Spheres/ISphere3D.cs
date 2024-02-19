@@ -1,15 +1,14 @@
-﻿namespace GeometricAlgebraFulcrumLib.Lite.Geometry.BasicShapes.Spheres
+﻿namespace GeometricAlgebraFulcrumLib.Lite.Geometry.BasicShapes.Spheres;
+
+public interface ISphere3D : IFiniteGeometricShape3D
 {
-    public interface ISphere3D : IFiniteGeometricShape3D
-    {
-        double CenterX { get; }
+    double CenterX { get; }
 
-        double CenterY { get; }
+    double CenterY { get; }
 
-        double CenterZ { get; }
+    double CenterZ { get; }
 
-        double Radius { get; }
+    double Radius { get; }
 
-        double RadiusSquared { get; }
-    }
+    double RadiusSquared { get; }
 }

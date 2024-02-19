@@ -4,45 +4,44 @@ using CodeComposerLib.SyntaxTree;
 using CodeComposerLib.SyntaxTree.Expressions;
 using Microsoft.CSharp.RuntimeBinder;
 
-namespace CodeComposerLib.Languages
+namespace CodeComposerLib.Languages;
+
+public abstract class CclLanguageSyntaxConverterBase : 
+    ICclLanguageSyntaxConverter
 {
-    public abstract class CclLanguageSyntaxConverterBase : 
-        ICclLanguageSyntaxConverter
+    public CclLanguageInfo SourceLanguageInfo { get; }
+
+    public CclLanguageInfo TargetLanguageInfo { get; }
+
+    public bool UseExceptions { get; set; }
+
+    public bool IgnoreNullElements { get; set; }
+
+
+    protected CclLanguageSyntaxConverterBase(CclLanguageInfo srcInfo, CclLanguageInfo trgtInfo)
     {
-        public CclLanguageInfo SourceLanguageInfo { get; }
-
-        public CclLanguageInfo TargetLanguageInfo { get; }
-
-        public bool UseExceptions { get; set; }
-
-        public bool IgnoreNullElements { get; set; }
-
-
-        protected CclLanguageSyntaxConverterBase(CclLanguageInfo srcInfo, CclLanguageInfo trgtInfo)
-        {
-            SourceLanguageInfo = srcInfo;
-            TargetLanguageInfo = trgtInfo;
-        }
-
-
-        public virtual ISyntaxTreeElement Fallback(ISyntaxTreeElement objItem, RuntimeBinderException excException)
-        {
-            return objItem;
-        }
-
-
-        public virtual ISyntaxTreeElement Visit(SteExpression expr)
-        {
-            return Convert(expr);
-        }
-
-        public IEnumerable<SteExpression> Convert(IEnumerable<SteExpression> exprList)
-        {
-            return exprList.Select(Convert);
-        }
-
-        public abstract SteExpression Convert(SteExpression expr);
-
-        public abstract SteExpression Convert(SteExpression expr, IDictionary<string, string> targetVarsDictionary);
+        SourceLanguageInfo = srcInfo;
+        TargetLanguageInfo = trgtInfo;
     }
+
+
+    public virtual ISyntaxTreeElement Fallback(ISyntaxTreeElement objItem, RuntimeBinderException excException)
+    {
+        return objItem;
+    }
+
+
+    public virtual ISyntaxTreeElement Visit(SteExpression expr)
+    {
+        return Convert(expr);
+    }
+
+    public IEnumerable<SteExpression> Convert(IEnumerable<SteExpression> exprList)
+    {
+        return exprList.Select(Convert);
+    }
+
+    public abstract SteExpression Convert(SteExpression expr);
+
+    public abstract SteExpression Convert(SteExpression expr, IDictionary<string, string> targetVarsDictionary);
 }

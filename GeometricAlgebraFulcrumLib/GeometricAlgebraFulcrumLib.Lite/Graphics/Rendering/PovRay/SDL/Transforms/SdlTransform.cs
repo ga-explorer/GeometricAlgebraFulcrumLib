@@ -1,6 +1,5 @@
-﻿namespace GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.PovRay.SDL.Transforms
+﻿namespace GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.PovRay.SDL.Transforms;
+
+public abstract class SdlTransform : ISdlTransform
 {
-    public abstract class SdlTransform : ISdlTransform
-    {
-    }
 }

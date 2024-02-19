@@ -1,10 +1,9 @@
-﻿namespace GeometricAlgebraFulcrumLib.Generations
+﻿namespace GeometricAlgebraFulcrumLib.Generations;
+
+internal class Program
 {
-    internal class Program
+    static void Main(string[] args)
     {
-        static void Main(string[] args)
-        {
             
-        }
     }
 }

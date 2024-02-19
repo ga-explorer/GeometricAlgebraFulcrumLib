@@ -1,21 +1,20 @@
-﻿namespace CodeComposerLib.SyntaxTree.Expressions
+﻿namespace CodeComposerLib.SyntaxTree.Expressions;
+
+public class SteFunctionHeadSpecs : ISteCompositeHeadSpecs
 {
-    public class SteFunctionHeadSpecs : ISteCompositeHeadSpecs
+    public string FunctionName { get; }
+
+    public string HeadText => FunctionName;
+
+
+    public SteFunctionHeadSpecs(string functionName)
     {
-        public string FunctionName { get; }
-
-        public string HeadText => FunctionName;
-
-
-        public SteFunctionHeadSpecs(string functionName)
-        {
-            FunctionName = functionName;
-        }
+        FunctionName = functionName;
+    }
 
 
-        public override string ToString()
-        {
-            return FunctionName;
-        }
+    public override string ToString()
+    {
+        return FunctionName;
     }
 }

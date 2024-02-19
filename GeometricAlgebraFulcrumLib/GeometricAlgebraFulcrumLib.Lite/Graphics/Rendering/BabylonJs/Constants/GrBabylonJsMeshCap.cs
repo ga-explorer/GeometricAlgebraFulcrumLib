@@ -1,10 +1,9 @@
-﻿namespace GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.BabylonJs.Constants
+﻿namespace GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.BabylonJs.Constants;
+
+public enum GrBabylonJsMeshCap
 {
-    public enum GrBabylonJsMeshCap
-    {
-        None,
-        Start,
-        End,
-        StartAndEnd
-    }
+    None,
+    Start,
+    End,
+    StartAndEnd
 }

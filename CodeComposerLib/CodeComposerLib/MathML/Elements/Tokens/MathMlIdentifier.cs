@@ -1,26 +1,25 @@
-﻿namespace CodeComposerLib.MathML.Elements.Tokens
+﻿namespace CodeComposerLib.MathML.Elements.Tokens;
+
+/// <summary>
+/// https://developer.mozilla.org/en-US/docs/Web/MathML/Element/mi
+/// </summary>
+public sealed class MathMlIdentifier : MathMlTextTokenElement
 {
-    /// <summary>
-    /// https://developer.mozilla.org/en-US/docs/Web/MathML/Element/mi
-    /// </summary>
-    public sealed class MathMlIdentifier : MathMlTextTokenElement
+    public static MathMlIdentifier Create()
     {
-        public static MathMlIdentifier Create()
-        {
-            return new MathMlIdentifier();
-        }
+        return new MathMlIdentifier();
+    }
 
-        public static MathMlIdentifier Create(string text)
-        {
-            return new MathMlIdentifier(){Text = text};
-        }
+    public static MathMlIdentifier Create(string text)
+    {
+        return new MathMlIdentifier(){Text = text};
+    }
 
 
-        public override string XmlTagName => "mi";
+    public override string XmlTagName => "mi";
 
 
-        internal MathMlIdentifier()
-        {
-        }
+    internal MathMlIdentifier()
+    {
     }
 }

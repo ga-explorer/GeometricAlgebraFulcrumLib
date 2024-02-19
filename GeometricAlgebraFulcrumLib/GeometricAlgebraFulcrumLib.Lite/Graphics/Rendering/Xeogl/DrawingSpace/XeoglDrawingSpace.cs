@@ -11,22 +11,22 @@ using TextComposerLib.Code.JavaScript;
 using TextComposerLib.Text;
 using TextComposerLib.Text.Linear;
 
-namespace GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.Xeogl.DrawingSpace
+namespace GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.Xeogl.DrawingSpace;
+
+public sealed class XeoglDrawingSpace : 
+    IReadOnlyList<XeoglDrawingSpaceLayer>, 
+    IJsCodeHtmlPageGenerator
 {
-    public sealed class XeoglDrawingSpace : 
-        IReadOnlyList<XeoglDrawingSpaceLayer>, 
-        IJsCodeHtmlPageGenerator
-    {
-        private readonly List<string> _javascriptIncludes 
-            = new List<string>()
-            {
-                "js/xeogl/xeogl.js",
-                "js/xeogl/geometry/vectorTextGeometry.js",
-                "js/xeogl/helpers/axisHelper.js"
-            };
+    private readonly List<string> _javascriptIncludes 
+        = new List<string>()
+        {
+            "js/xeogl/xeogl.js",
+            "js/xeogl/geometry/vectorTextGeometry.js",
+            "js/xeogl/helpers/axisHelper.js"
+        };
 
 
-        private const string HtmlTemplateText1 = @"
+    private const string HtmlTemplateText1 = @"
 <!DOCTYPE html>
 <html lang=""en"">
     <head>
@@ -50,7 +50,7 @@ namespace GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.Xeogl.DrawingSpace
 </html>
 ";
 
-        private const string HtmlTemplateText2 = @"
+    private const string HtmlTemplateText2 = @"
 <!DOCTYPE html>
 <html>
     <head>
@@ -86,597 +86,596 @@ namespace GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.Xeogl.DrawingSpace
 ";
 
 
-        public static XeoglDrawingSpace Create()
+    public static XeoglDrawingSpace Create()
+    {
+        return new XeoglDrawingSpace();
+    }
+
+
+    private readonly List<XeoglDrawingSpaceLayer> _layersList
+        = new List<XeoglDrawingSpaceLayer>();
+
+    private readonly List<XeoglLight> _lightsList
+        = new List<XeoglLight>();
+
+    private readonly Dictionary<string, XeoglGeometry> _geometryDictionary
+        = new ADictionary<string, XeoglGeometry>();
+
+    private readonly Dictionary<string, XeoglMaterial> _materialDictionary
+        = new ADictionary<string, XeoglMaterial>();
+
+
+    public XeoglCamera Camera { get; }
+        = new XeoglCamera();
+
+    public XeoglDrawingSpaceLayer ActiveLayer { get; private set; }
+
+    public XeoglDrawingSpaceLayer BackLayer
+        => _layersList[0];
+
+    public XeoglDrawingSpaceLayer FrontLayer
+        => _layersList[^1];
+
+    public IEnumerable<XeoglDrawingSpaceLayer> Layers
+        => _layersList;
+
+    public IEnumerable<XeoglDrawingSpaceLayer> DrawableLayers
+        => _layersList.Where(r => r.IsVisible && !r.IsEmpty);
+
+    public int Count
+        => _layersList.Count;
+
+    public XeoglDrawingSpaceLayer this[int layerIndex]
+        => _layersList[layerIndex.Mod(_layersList.Count)];
+
+    public XeoglDrawingSpaceLayer this[string layerName]
+        => _layersList.FirstOrDefault(layer => layer.LayerName == layerName);
+
+    public Color AmbientLightColor { get; set; }
+        = Color.BlanchedAlmond;
+
+    public double AmbientLightIntensity { get; set; }
+        = 0.75;
+
+
+    public string HtmlTemplateText 
+        => HtmlTemplateText1;
+
+    public string HtmlPageTitle { get; set; } 
+        = "xeogl";
+
+    public IEnumerable<string> JavaScriptIncludes 
+        => _javascriptIncludes;
+
+
+    public XeoglDrawingSpace()
+    {
+        Reset();
+    }
+
+
+    public XeoglScene GetXeoglScene()
+    {
+        var scene = new XeoglScene
         {
-            return new XeoglDrawingSpace();
-        }
+            BackgroundColor = AmbientLightColor
+        };
 
+        scene.Add(
+            DrawableLayers.Select(r => r.GetXeoglObject())
+        );
 
-        private readonly List<XeoglDrawingSpaceLayer> _layersList
-            = new List<XeoglDrawingSpaceLayer>();
+        return scene;
+    }
 
-        private readonly List<XeoglLight> _lightsList
-            = new List<XeoglLight>();
+    public string GetJavaScriptCode()
+    {
+        var composer = new LinearTextComposer();
 
-        private readonly Dictionary<string, XeoglGeometry> _geometryDictionary
-            = new ADictionary<string, XeoglGeometry>();
+        //Initialize scene and add light sources
+        composer
+            .AppendLine("var scene = xeogl.getDefaultScene();")
+            .AppendLine("scene.clearLights();")
+            .AppendLine();
 
-        private readonly Dictionary<string, XeoglMaterial> _materialDictionary
-            = new ADictionary<string, XeoglMaterial>();
-
-
-        public XeoglCamera Camera { get; }
-            = new XeoglCamera();
-
-        public XeoglDrawingSpaceLayer ActiveLayer { get; private set; }
-
-        public XeoglDrawingSpaceLayer BackLayer
-            => _layersList[0];
-
-        public XeoglDrawingSpaceLayer FrontLayer
-            => _layersList[^1];
-
-        public IEnumerable<XeoglDrawingSpaceLayer> Layers
-            => _layersList;
-
-        public IEnumerable<XeoglDrawingSpaceLayer> DrawableLayers
-            => _layersList.Where(r => r.IsVisible && !r.IsEmpty);
-
-        public int Count
-            => _layersList.Count;
-
-        public XeoglDrawingSpaceLayer this[int layerIndex]
-            => _layersList[layerIndex.Mod(_layersList.Count)];
-
-        public XeoglDrawingSpaceLayer this[string layerName]
-            => _layersList.FirstOrDefault(layer => layer.LayerName == layerName);
-
-        public Color AmbientLightColor { get; set; }
-            = Color.BlanchedAlmond;
-
-        public double AmbientLightIntensity { get; set; }
-            = 0.75;
-
-
-        public string HtmlTemplateText 
-            => HtmlTemplateText1;
-
-        public string HtmlPageTitle { get; set; } 
-            = "xeogl";
-
-        public IEnumerable<string> JavaScriptIncludes 
-            => _javascriptIncludes;
-
-
-        public XeoglDrawingSpace()
+        var ambientLight = new XeoglAmbientLight()
         {
-            Reset();
-        }
+            LightColor = AmbientLightColor,
+            LightIntensity = AmbientLightIntensity
+        };
 
+        composer
+            .Append(ambientLight.ToString())
+            .AppendLine(";")
+            .AppendLine();
 
-        public XeoglScene GetXeoglScene()
+        foreach (var light in _lightsList)
         {
-            var scene = new XeoglScene
-            {
-                BackgroundColor = AmbientLightColor
-            };
-
-            scene.Add(
-                DrawableLayers.Select(r => r.GetXeoglObject())
-            );
-
-            return scene;
-        }
-
-        public string GetJavaScriptCode()
-        {
-            var composer = new LinearTextComposer();
-
-            //Initialize scene and add light sources
             composer
-                .AppendLine("var scene = xeogl.getDefaultScene();")
-                .AppendLine("scene.clearLights();")
-                .AppendLine();
-
-            var ambientLight = new XeoglAmbientLight()
-            {
-                LightColor = AmbientLightColor,
-                LightIntensity = AmbientLightIntensity
-            };
-
-            composer
-                .Append(ambientLight.ToString())
+                .Append(light.ToString())
                 .AppendLine(";")
                 .AppendLine();
+        }
 
-            foreach (var light in _lightsList)
-            {
-                composer
-                    .Append(light.ToString())
-                    .AppendLine(";")
-                    .AppendLine();
-            }
-
-            //Create variables for stored geometry elements
-            foreach (var pair in _geometryDictionary)
-            {
-                composer
-                    .AppendAtNewLine("const ")
-                    .Append(pair.Key)
-                    .Append("Geometry = ")
-                    .Append(pair.Value.ToString())
-                    .AppendLine(";")
-                    .AppendLine();
-            }
-
-            //Create variables for stored material elements
-            foreach (var pair in _materialDictionary)
-            {
-                composer
-                    .AppendAtNewLine("const ")
-                    .Append(pair.Key)
-                    .Append("Material = ")
-                    .Append(pair.Value.ToString())
-                    .AppendLine(";")
-                    .AppendLine();
-            }
-
-            //Create a single variable per layer, each layer is either
-            //a mesh or a group in the main xeogl scene
-            foreach (var layer in DrawableLayers)
-            {
-                var xeoglObject = layer.GetXeoglObject();
-
-                if (!string.IsNullOrEmpty(layer.LayerDescription))
-                    composer
-                        .AppendAtNewLine(
-                            layer.LayerDescription.PrefixTextLines("//")
-                        );
-
-                composer
-                    .AppendAtNewLine("const ")
-                    .Append(layer.LayerName)
-                    .Append("Layer = ")
-                    .Append(xeoglObject.ToString())
-                    .AppendLine(";")
-                    .AppendLine();
-            }
-
-            //Add camera code
+        //Create variables for stored geometry elements
+        foreach (var pair in _geometryDictionary)
+        {
             composer
-                .AppendLineAtNewLine("var camera = scene.camera;")
-                .AppendLine()
-                .Append(Camera.ToString());
-
-            return composer.ToString();
+                .AppendAtNewLine("const ")
+                .Append(pair.Key)
+                .Append("Geometry = ")
+                .Append(pair.Value.ToString())
+                .AppendLine(";")
+                .AppendLine();
         }
 
-
-        /// <summary>
-        /// Clear all contents of white board without changing its current
-        /// properties
-        /// </summary>
-        /// <returns></returns>
-        public XeoglDrawingSpace Clear()
+        //Create variables for stored material elements
+        foreach (var pair in _materialDictionary)
         {
-            _lightsList.Clear();
-            _geometryDictionary.Clear();
-            _materialDictionary.Clear();
-
-            return ClearLayers();
+            composer
+                .AppendAtNewLine("const ")
+                .Append(pair.Key)
+                .Append("Material = ")
+                .Append(pair.Value.ToString())
+                .AppendLine(";")
+                .AppendLine();
         }
 
-        /// <summary>
-        /// Clear all contents of white board and reset its
-        /// properties to their defaults except for its pixels width and height
-        /// </summary>
-        /// <returns></returns>
-        public XeoglDrawingSpace Reset()
+        //Create a single variable per layer, each layer is either
+        //a mesh or a group in the main xeogl scene
+        foreach (var layer in DrawableLayers)
         {
-            AmbientLightColor = Color.BlanchedAlmond;
-            Camera.Reset();
+            var xeoglObject = layer.GetXeoglObject();
 
-            return Clear();
+            if (!string.IsNullOrEmpty(layer.LayerDescription))
+                composer
+                    .AppendAtNewLine(
+                        layer.LayerDescription.PrefixTextLines("//")
+                    );
+
+            composer
+                .AppendAtNewLine("const ")
+                .Append(layer.LayerName)
+                .Append("Layer = ")
+                .Append(xeoglObject.ToString())
+                .AppendLine(";")
+                .AppendLine();
         }
 
+        //Add camera code
+        composer
+            .AppendLineAtNewLine("var camera = scene.camera;")
+            .AppendLine()
+            .Append(Camera.ToString());
 
-        public XeoglDrawingSpace ClearLights()
-        {
-            _lightsList.Clear();
-
-            return this;
-        }
-
-        public XeoglDrawingSpace AddLight(XeoglLight light)
-        {
-            _lightsList.Add(light);
-
-            return this;
-        }
+        return composer.ToString();
+    }
 
 
-        public XeoglDrawingSpace ClearStoredGeometry()
-        {
-            _geometryDictionary.Clear();
+    /// <summary>
+    /// Clear all contents of white board without changing its current
+    /// properties
+    /// </summary>
+    /// <returns></returns>
+    public XeoglDrawingSpace Clear()
+    {
+        _lightsList.Clear();
+        _geometryDictionary.Clear();
+        _materialDictionary.Clear();
 
-            return this;
-        }
+        return ClearLayers();
+    }
 
-        public bool ContainsStoredGeometry(string variableName)
-        {
-            return _geometryDictionary.ContainsKey(variableName);
-        }
+    /// <summary>
+    /// Clear all contents of white board and reset its
+    /// properties to their defaults except for its pixels width and height
+    /// </summary>
+    /// <returns></returns>
+    public XeoglDrawingSpace Reset()
+    {
+        AmbientLightColor = Color.BlanchedAlmond;
+        Camera.Reset();
 
-        public XeoglGeometry GetStoredGeometry(string variableName)
-        {
-            _geometryDictionary.TryGetValue(variableName, out var geometry);
-
-            return geometry;
-        }
-
-        public XeoglDrawingSpace SetStoredGeometry(string variableName, XeoglGeometry geometry)
-        {
-            _geometryDictionary.Remove(variableName);
-
-            if (!ReferenceEquals(geometry, null))
-                _geometryDictionary.Add(variableName, geometry);
-
-            return this;
-        }
-
-        public XeoglDrawingSpace SetStoredGeometry(string variableName, string geometryCode)
-        {
-            _geometryDictionary.Remove(variableName);
-
-            if (string.IsNullOrEmpty(geometryCode))
-                _geometryDictionary.Add(
-                    variableName, 
-                    XeoglCodeGeometry.Create(geometryCode)
-                );
-
-            return this;
-        }
-
-        public XeoglDrawingSpace RemoveStoredGeometry(string variableName)
-        {
-            _geometryDictionary.Remove(variableName);
-
-            return this;
-        }
+        return Clear();
+    }
 
 
-        public XeoglDrawingSpace ClearStoredMaterial()
-        {
-            _materialDictionary.Clear();
+    public XeoglDrawingSpace ClearLights()
+    {
+        _lightsList.Clear();
 
-            return this;
-        }
+        return this;
+    }
 
-        public bool ContainsStoredMaterial(string variableName)
-        {
-            return _materialDictionary.ContainsKey(variableName);
-        }
+    public XeoglDrawingSpace AddLight(XeoglLight light)
+    {
+        _lightsList.Add(light);
 
-        public XeoglMaterial GetStoredMaterial(string variableName)
-        {
-            _materialDictionary.TryGetValue(variableName, out var materials);
-
-            return materials;
-        }
-
-        public XeoglDrawingSpace SetStoredMaterial(string variableName, XeoglMaterial materials)
-        {
-            _materialDictionary.Remove(variableName);
-
-            if (!ReferenceEquals(materials, null))
-                _materialDictionary.Add(variableName, materials);
-
-            return this;
-        }
-
-        public XeoglDrawingSpace SetStoredMaterial(string variableName, string materialsCode)
-        {
-            _materialDictionary.Remove(variableName);
-
-            if (string.IsNullOrEmpty(materialsCode))
-                _materialDictionary.Add(
-                    variableName, 
-                    XeoglCodeMaterial.Create(materialsCode)
-                );
-
-            return this;
-        }
-
-        public XeoglDrawingSpace RemoveStoredMaterial(string variableName)
-        {
-            _materialDictionary.Remove(variableName);
-
-            return this;
-        }
+        return this;
+    }
 
 
-        public XeoglDrawingSpace ClearLayers()
-        {
-            _layersList.Clear();
+    public XeoglDrawingSpace ClearStoredGeometry()
+    {
+        _geometryDictionary.Clear();
 
-            ActiveLayer = new XeoglDrawingSpaceLayer(this, "layer0");
-            _layersList.Add(ActiveLayer);
+        return this;
+    }
 
-            return this;
-        }
+    public bool ContainsStoredGeometry(string variableName)
+    {
+        return _geometryDictionary.ContainsKey(variableName);
+    }
 
-        public XeoglDrawingSpaceLayer AddFrontLayer(string layerName, bool setAsActiveLayer = true)
-        {
-            var layer = new XeoglDrawingSpaceLayer(this, layerName);
+    public XeoglGeometry GetStoredGeometry(string variableName)
+    {
+        _geometryDictionary.TryGetValue(variableName, out var geometry);
 
-            _layersList.Add(layer);
+        return geometry;
+    }
 
-            if (setAsActiveLayer)
-                ActiveLayer = layer;
+    public XeoglDrawingSpace SetStoredGeometry(string variableName, XeoglGeometry geometry)
+    {
+        _geometryDictionary.Remove(variableName);
 
-            return layer;
-        }
+        if (!ReferenceEquals(geometry, null))
+            _geometryDictionary.Add(variableName, geometry);
 
-        public XeoglDrawingSpace AddFrontLayers(params string[] layerNamesList)
-        {
-            foreach (var layerName in layerNamesList)
-                _layersList.Add(
-                    new XeoglDrawingSpaceLayer(this, layerName)
-                );
+        return this;
+    }
 
-            return this;
-        }
+    public XeoglDrawingSpace SetStoredGeometry(string variableName, string geometryCode)
+    {
+        _geometryDictionary.Remove(variableName);
 
-        public XeoglDrawingSpace AddFrontLayers(IEnumerable<string> layerNamesList)
-        {
-            foreach (var layerName in layerNamesList)
-                _layersList.Add(
-                    new XeoglDrawingSpaceLayer(this, layerName)
-                );
+        if (string.IsNullOrEmpty(geometryCode))
+            _geometryDictionary.Add(
+                variableName, 
+                XeoglCodeGeometry.Create(geometryCode)
+            );
 
-            return this;
-        }
+        return this;
+    }
 
-        public XeoglDrawingSpaceLayer AddBackLayer(string layerName, bool setAsActiveLayer = true)
-        {
-            var layer = new XeoglDrawingSpaceLayer(this, layerName);
+    public XeoglDrawingSpace RemoveStoredGeometry(string variableName)
+    {
+        _geometryDictionary.Remove(variableName);
 
+        return this;
+    }
+
+
+    public XeoglDrawingSpace ClearStoredMaterial()
+    {
+        _materialDictionary.Clear();
+
+        return this;
+    }
+
+    public bool ContainsStoredMaterial(string variableName)
+    {
+        return _materialDictionary.ContainsKey(variableName);
+    }
+
+    public XeoglMaterial GetStoredMaterial(string variableName)
+    {
+        _materialDictionary.TryGetValue(variableName, out var materials);
+
+        return materials;
+    }
+
+    public XeoglDrawingSpace SetStoredMaterial(string variableName, XeoglMaterial materials)
+    {
+        _materialDictionary.Remove(variableName);
+
+        if (!ReferenceEquals(materials, null))
+            _materialDictionary.Add(variableName, materials);
+
+        return this;
+    }
+
+    public XeoglDrawingSpace SetStoredMaterial(string variableName, string materialsCode)
+    {
+        _materialDictionary.Remove(variableName);
+
+        if (string.IsNullOrEmpty(materialsCode))
+            _materialDictionary.Add(
+                variableName, 
+                XeoglCodeMaterial.Create(materialsCode)
+            );
+
+        return this;
+    }
+
+    public XeoglDrawingSpace RemoveStoredMaterial(string variableName)
+    {
+        _materialDictionary.Remove(variableName);
+
+        return this;
+    }
+
+
+    public XeoglDrawingSpace ClearLayers()
+    {
+        _layersList.Clear();
+
+        ActiveLayer = new XeoglDrawingSpaceLayer(this, "layer0");
+        _layersList.Add(ActiveLayer);
+
+        return this;
+    }
+
+    public XeoglDrawingSpaceLayer AddFrontLayer(string layerName, bool setAsActiveLayer = true)
+    {
+        var layer = new XeoglDrawingSpaceLayer(this, layerName);
+
+        _layersList.Add(layer);
+
+        if (setAsActiveLayer)
+            ActiveLayer = layer;
+
+        return layer;
+    }
+
+    public XeoglDrawingSpace AddFrontLayers(params string[] layerNamesList)
+    {
+        foreach (var layerName in layerNamesList)
+            _layersList.Add(
+                new XeoglDrawingSpaceLayer(this, layerName)
+            );
+
+        return this;
+    }
+
+    public XeoglDrawingSpace AddFrontLayers(IEnumerable<string> layerNamesList)
+    {
+        foreach (var layerName in layerNamesList)
+            _layersList.Add(
+                new XeoglDrawingSpaceLayer(this, layerName)
+            );
+
+        return this;
+    }
+
+    public XeoglDrawingSpaceLayer AddBackLayer(string layerName, bool setAsActiveLayer = true)
+    {
+        var layer = new XeoglDrawingSpaceLayer(this, layerName);
+
+        _layersList.Insert(0, layer);
+
+        if (setAsActiveLayer)
+            ActiveLayer = layer;
+
+        return layer;
+    }
+
+    public XeoglDrawingSpace AddBackLayers(params string[] layerNamesList)
+    {
+        foreach (var layerName in layerNamesList)
+            _layersList.Insert(
+                0,
+                new XeoglDrawingSpaceLayer(this, layerName)
+            );
+
+        return this;
+    }
+
+    public XeoglDrawingSpace AddBackLayers(IEnumerable<string> layerNamesList)
+    {
+        foreach (var layerName in layerNamesList)
+            _layersList.Insert(
+                0,
+                new XeoglDrawingSpaceLayer(this, layerName)
+            );
+
+        return this;
+    }
+
+    public XeoglDrawingSpaceLayer AddLayer(int layerIndex, string layerName, bool setAsActiveLayer = true)
+    {
+        var layer = new XeoglDrawingSpaceLayer(this, layerName);
+
+        if (layerIndex < 0)
             _layersList.Insert(0, layer);
 
-            if (setAsActiveLayer)
-                ActiveLayer = layer;
+        else if (layerIndex >= _layersList.Count)
+            _layersList.Add(layer);
 
-            return layer;
-        }
+        else
+            _layersList.Insert(layerIndex, layer);
 
-        public XeoglDrawingSpace AddBackLayers(params string[] layerNamesList)
+        if (setAsActiveLayer)
+            ActiveLayer = layer;
+
+        return layer;
+    }
+
+
+    public XeoglDrawingSpace RemoveEmptyLayers()
+    {
+        for (var i = _layersList.Count - 1; i >= 0; i++)
+            if (_layersList[i].IsEmpty)
+                RemoveLayer(i);
+
+        return this;
+    }
+
+    public XeoglDrawingSpace RemoveLayer(int layerIndex)
+    {
+        if (ReferenceEquals(ActiveLayer, _layersList[layerIndex]))
+            ActiveLayer = null;
+
+        _layersList.RemoveAt(layerIndex);
+
+        //Make sure there is at least one layer in this drawing board
+        if (_layersList.Count == 0)
         {
-            foreach (var layerName in layerNamesList)
-                _layersList.Insert(
-                    0,
-                    new XeoglDrawingSpaceLayer(this, layerName)
-                );
-
-            return this;
+            ActiveLayer = new XeoglDrawingSpaceLayer(this, "Layer 0");
+            _layersList.Add(ActiveLayer);
         }
 
-        public XeoglDrawingSpace AddBackLayers(IEnumerable<string> layerNamesList)
-        {
-            foreach (var layerName in layerNamesList)
-                _layersList.Insert(
-                    0,
-                    new XeoglDrawingSpaceLayer(this, layerName)
-                );
+        //Make sure the active layer is not null
+        if (ReferenceEquals(ActiveLayer, null))
+            ActiveLayer = _layersList[0];
 
-            return this;
-        }
+        return this;
+    }
 
-        public XeoglDrawingSpaceLayer AddLayer(int layerIndex, string layerName, bool setAsActiveLayer = true)
-        {
-            var layer = new XeoglDrawingSpaceLayer(this, layerName);
+    public XeoglDrawingSpace RemoveLayer(string layerName)
+    {
+        return RemoveLayer(GetLayerIndex(layerName));
+    }
 
-            if (layerIndex < 0)
-                _layersList.Insert(0, layer);
+    public XeoglDrawingSpace RemoveLayers(params string[] layerNamesList)
+    {
+        foreach (var layerName in layerNamesList)
+            RemoveLayer(GetLayerIndex(layerName));
 
-            else if (layerIndex >= _layersList.Count)
-                _layersList.Add(layer);
+        return this;
+    }
 
-            else
-                _layersList.Insert(layerIndex, layer);
+    public XeoglDrawingSpace RemoveLayers(IEnumerable<string> layerNamesList)
+    {
+        foreach (var layerName in layerNamesList)
+            RemoveLayer(GetLayerIndex(layerName));
 
-            if (setAsActiveLayer)
-                ActiveLayer = layer;
-
-            return layer;
-        }
+        return this;
+    }
 
 
-        public XeoglDrawingSpace RemoveEmptyLayers()
-        {
-            for (var i = _layersList.Count - 1; i >= 0; i++)
-                if (_layersList[i].IsEmpty)
-                    RemoveLayer(i);
+    public XeoglDrawingSpace ShowLayer(int layerIndex)
+    {
+        _layersList[layerIndex].IsVisible = true;
 
-            return this;
-        }
+        return this;
+    }
 
-        public XeoglDrawingSpace RemoveLayer(int layerIndex)
-        {
-            if (ReferenceEquals(ActiveLayer, _layersList[layerIndex]))
-                ActiveLayer = null;
+    public XeoglDrawingSpace ShowLayer(string layerName)
+    {
+        return ShowLayer(GetLayerIndex(layerName));
+    }
 
-            _layersList.RemoveAt(layerIndex);
+    public XeoglDrawingSpace ShowLayers(params string[] layerNamesList)
+    {
+        foreach (var layerName in layerNamesList)
+            ShowLayer(GetLayerIndex(layerName));
 
-            //Make sure there is at least one layer in this drawing board
-            if (_layersList.Count == 0)
-            {
-                ActiveLayer = new XeoglDrawingSpaceLayer(this, "Layer 0");
-                _layersList.Add(ActiveLayer);
-            }
+        return this;
+    }
 
-            //Make sure the active layer is not null
-            if (ReferenceEquals(ActiveLayer, null))
-                ActiveLayer = _layersList[0];
+    public XeoglDrawingSpace ShowLayers(IEnumerable<string> layerNamesList)
+    {
+        foreach (var layerName in layerNamesList)
+            ShowLayer(GetLayerIndex(layerName));
 
-            return this;
-        }
-
-        public XeoglDrawingSpace RemoveLayer(string layerName)
-        {
-            return RemoveLayer(GetLayerIndex(layerName));
-        }
-
-        public XeoglDrawingSpace RemoveLayers(params string[] layerNamesList)
-        {
-            foreach (var layerName in layerNamesList)
-                RemoveLayer(GetLayerIndex(layerName));
-
-            return this;
-        }
-
-        public XeoglDrawingSpace RemoveLayers(IEnumerable<string> layerNamesList)
-        {
-            foreach (var layerName in layerNamesList)
-                RemoveLayer(GetLayerIndex(layerName));
-
-            return this;
-        }
+        return this;
+    }
 
 
-        public XeoglDrawingSpace ShowLayer(int layerIndex)
-        {
-            _layersList[layerIndex].IsVisible = true;
+    public XeoglDrawingSpace HideLayer(int layerIndex)
+    {
+        _layersList[layerIndex].IsVisible = false;
 
-            return this;
-        }
+        return this;
+    }
 
-        public XeoglDrawingSpace ShowLayer(string layerName)
-        {
-            return ShowLayer(GetLayerIndex(layerName));
-        }
+    public XeoglDrawingSpace HideLayer(string layerName)
+    {
+        return HideLayer(GetLayerIndex(layerName));
+    }
 
-        public XeoglDrawingSpace ShowLayers(params string[] layerNamesList)
-        {
-            foreach (var layerName in layerNamesList)
-                ShowLayer(GetLayerIndex(layerName));
+    public XeoglDrawingSpace HideLayers(params string[] layerNamesList)
+    {
+        foreach (var layerName in layerNamesList)
+            HideLayer(GetLayerIndex(layerName));
 
-            return this;
-        }
+        return this;
+    }
 
-        public XeoglDrawingSpace ShowLayers(IEnumerable<string> layerNamesList)
-        {
-            foreach (var layerName in layerNamesList)
-                ShowLayer(GetLayerIndex(layerName));
+    public XeoglDrawingSpace HideLayers(IEnumerable<string> layerNamesList)
+    {
+        foreach (var layerName in layerNamesList)
+            HideLayer(GetLayerIndex(layerName));
 
-            return this;
-        }
-
-
-        public XeoglDrawingSpace HideLayer(int layerIndex)
-        {
-            _layersList[layerIndex].IsVisible = false;
-
-            return this;
-        }
-
-        public XeoglDrawingSpace HideLayer(string layerName)
-        {
-            return HideLayer(GetLayerIndex(layerName));
-        }
-
-        public XeoglDrawingSpace HideLayers(params string[] layerNamesList)
-        {
-            foreach (var layerName in layerNamesList)
-                HideLayer(GetLayerIndex(layerName));
-
-            return this;
-        }
-
-        public XeoglDrawingSpace HideLayers(IEnumerable<string> layerNamesList)
-        {
-            foreach (var layerName in layerNamesList)
-                HideLayer(GetLayerIndex(layerName));
-
-            return this;
-        }
+        return this;
+    }
 
 
-        public int GetLayerIndex(string layerName)
-        {
-            return _layersList.FindIndex(layer => layer.LayerName == layerName);
-        }
+    public int GetLayerIndex(string layerName)
+    {
+        return _layersList.FindIndex(layer => layer.LayerName == layerName);
+    }
 
 
-        public XeoglDrawingSpaceLayer SetActiveLayer(int layerIndex)
-        {
-            ActiveLayer = _layersList[layerIndex.Mod(_layersList.Count)];
+    public XeoglDrawingSpaceLayer SetActiveLayer(int layerIndex)
+    {
+        ActiveLayer = _layersList[layerIndex.Mod(_layersList.Count)];
 
-            return ActiveLayer;
-        }
+        return ActiveLayer;
+    }
 
-        public XeoglDrawingSpaceLayer SetActiveLayer(string layerName)
-        {
-            var layer = this[layerName];
+    public XeoglDrawingSpaceLayer SetActiveLayer(string layerName)
+    {
+        var layer = this[layerName];
 
-            if (!ReferenceEquals(layer, null))
-                ActiveLayer = layer;
+        if (!ReferenceEquals(layer, null))
+            ActiveLayer = layer;
 
-            return ActiveLayer;
-        }
-
-
-        public XeoglDrawingSpace SwapLayers(int layerIndex1, int layerIndex2)
-        {
-            _layersList.SwapItems(
-                layerIndex1.Mod(_layersList.Count),
-                layerIndex2.Mod(_layersList.Count)
-            );
-
-            return this;
-        }
-
-        public XeoglDrawingSpace SetLayerIndex(int oldLayerIndex, int newLayerIndex)
-        {
-            _layersList.SetItemIndex(
-                oldLayerIndex.Mod(_layersList.Count),
-                newLayerIndex
-            );
-
-            return this;
-        }
-
-        public XeoglDrawingSpace SetLayerAsBack(int oldLayerIndex)
-        {
-            _layersList.SetItemFirst(
-                oldLayerIndex.Mod(_layersList.Count)
-            );
-
-            return this;
-        }
-
-        public XeoglDrawingSpace SetLayerAsFront(int oldLayerIndex)
-        {
-            _layersList.SetItemLast(
-                oldLayerIndex.Mod(_layersList.Count)
-            );
-
-            return this;
-        }
+        return ActiveLayer;
+    }
 
 
-        public IEnumerator<XeoglDrawingSpaceLayer> GetEnumerator()
-        {
-            return _layersList.GetEnumerator();
-        }
+    public XeoglDrawingSpace SwapLayers(int layerIndex1, int layerIndex2)
+    {
+        _layersList.SwapItems(
+            layerIndex1.Mod(_layersList.Count),
+            layerIndex2.Mod(_layersList.Count)
+        );
 
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return _layersList.GetEnumerator();
-        }
+        return this;
+    }
 
-        public override string ToString()
-        {
-            return GetJavaScriptCode();
-        }
+    public XeoglDrawingSpace SetLayerIndex(int oldLayerIndex, int newLayerIndex)
+    {
+        _layersList.SetItemIndex(
+            oldLayerIndex.Mod(_layersList.Count),
+            newLayerIndex
+        );
+
+        return this;
+    }
+
+    public XeoglDrawingSpace SetLayerAsBack(int oldLayerIndex)
+    {
+        _layersList.SetItemFirst(
+            oldLayerIndex.Mod(_layersList.Count)
+        );
+
+        return this;
+    }
+
+    public XeoglDrawingSpace SetLayerAsFront(int oldLayerIndex)
+    {
+        _layersList.SetItemLast(
+            oldLayerIndex.Mod(_layersList.Count)
+        );
+
+        return this;
+    }
+
+
+    public IEnumerator<XeoglDrawingSpaceLayer> GetEnumerator()
+    {
+        return _layersList.GetEnumerator();
+    }
+
+    IEnumerator IEnumerable.GetEnumerator()
+    {
+        return _layersList.GetEnumerator();
+    }
+
+    public override string ToString()
+    {
+        return GetJavaScriptCode();
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics;
 using System.Runtime.CompilerServices;
+using GeometricAlgebraFulcrumLib.Lite.Geometry.Parametric.Space1D.Scalars;
 using GeometricAlgebraFulcrumLib.Lite.LinearAlgebra;
 using GeometricAlgebraFulcrumLib.Lite.ScalarAlgebra;
 
@@ -62,6 +63,16 @@ public class ConstantParametricAngle :
     public Float64PlanarAngle GetDerivative1Angle(double parameterValue)
     {
         return Tangent;
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public IParametricScalar ToRadianParametricScalar()
+    {
+        return ConstantParametricScalar.Create(
+            ParameterRange,
+            Point.Radians.Value,
+            Tangent.Radians.Value
+        );
     }
 
     //[MethodImpl(MethodImplOptions.AggressiveInlining)]

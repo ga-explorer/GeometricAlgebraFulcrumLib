@@ -1,13 +1,12 @@
-﻿namespace GeometricAlgebraFulcrumLib.Mathematica.Mathematica
+﻿namespace GeometricAlgebraFulcrumLib.Mathematica.Mathematica;
+
+public interface ISymbolicObject
 {
-    public interface ISymbolicObject
-    {
-        MathematicaInterface CasInterface { get; }
+    MathematicaInterface CasInterface { get; }
 
-        MathematicaConnection CasConnection { get; }
+    MathematicaConnection CasConnection { get; }
 
-        MathematicaEvaluator CasEvaluator { get; }
+    MathematicaEvaluator CasEvaluator { get; }
 
-        MathematicaConstants CasConstants { get; }
-   }
+    MathematicaConstants CasConstants { get; }
 }

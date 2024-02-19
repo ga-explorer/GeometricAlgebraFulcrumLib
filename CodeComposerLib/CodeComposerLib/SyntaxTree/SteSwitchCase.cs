@@ -1,65 +1,64 @@
 ﻿using System.Collections.Generic;
 
-namespace CodeComposerLib.SyntaxTree
+namespace CodeComposerLib.SyntaxTree;
+
+public sealed class TccSwitchCaseItem : SteSyntaxElement
 {
-    public sealed class TccSwitchCaseItem : SteSyntaxElement
+    public bool BreakCase { get; set; }
+
+    public ISyntaxTreeElement CaseValue { get; set; }
+
+    public ISyntaxTreeElement CaseCode { get; set; }
+}
+
+public class SteSwitchCase : SteSyntaxElement
+{
+    public ISyntaxTreeElement SwitchExpression { get; set; }
+
+    public List<TccSwitchCaseItem> CasesList { get; }
+
+    public ISyntaxTreeElement DefaultCode { get; set; }
+
+
+    public SteSwitchCase()
     {
-        public bool BreakCase { get; set; }
-
-        public ISyntaxTreeElement CaseValue { get; set; }
-
-        public ISyntaxTreeElement CaseCode { get; set; }
+        CasesList = new List<TccSwitchCaseItem>();
     }
 
-    public class SteSwitchCase : SteSyntaxElement
+
+    public SteSwitchCase AddCase(ISyntaxTreeElement caseItem, ISyntaxTreeElement caseCode)
     {
-        public ISyntaxTreeElement SwitchExpression { get; set; }
+        CasesList.Add(
+            new TccSwitchCaseItem()
+            {
+                CaseValue = caseItem, 
+                CaseCode = caseCode
+            });
 
-        public List<TccSwitchCaseItem> CasesList { get; }
+        return this;
+    }
 
-        public ISyntaxTreeElement DefaultCode { get; set; }
+    public SteSwitchCase AddCase(string caseItem, ISyntaxTreeElement caseCode)
+    {
+        CasesList.Add(
+            new TccSwitchCaseItem()
+            {
+                CaseValue = new SteFixedCode(caseItem),
+                CaseCode = caseCode
+            });
 
+        return this;
+    }
 
-        public SteSwitchCase()
-        {
-            CasesList = new List<TccSwitchCaseItem>();
-        }
+    public SteSwitchCase AddCase(string caseItem, string caseCode)
+    {
+        CasesList.Add(
+            new TccSwitchCaseItem()
+            {
+                CaseValue = new SteFixedCode(caseItem),
+                CaseCode = new SteFixedCode(caseCode)
+            });
 
-
-        public SteSwitchCase AddCase(ISyntaxTreeElement caseItem, ISyntaxTreeElement caseCode)
-        {
-            CasesList.Add(
-                new TccSwitchCaseItem()
-                {
-                    CaseValue = caseItem, 
-                    CaseCode = caseCode
-                });
-
-            return this;
-        }
-
-        public SteSwitchCase AddCase(string caseItem, ISyntaxTreeElement caseCode)
-        {
-            CasesList.Add(
-                new TccSwitchCaseItem()
-                {
-                    CaseValue = new SteFixedCode(caseItem),
-                    CaseCode = caseCode
-                });
-
-            return this;
-        }
-
-        public SteSwitchCase AddCase(string caseItem, string caseCode)
-        {
-            CasesList.Add(
-                new TccSwitchCaseItem()
-                {
-                    CaseValue = new SteFixedCode(caseItem),
-                    CaseCode = new SteFixedCode(caseCode)
-                });
-
-            return this;
-        }
+        return this;
     }
 }

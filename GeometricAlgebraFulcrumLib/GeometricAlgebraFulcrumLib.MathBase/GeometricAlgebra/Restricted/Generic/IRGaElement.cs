@@ -2,12 +2,11 @@
 using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Restricted;
 using GeometricAlgebraFulcrumLib.Lite.ScalarAlgebra;
 
-namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic
+namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic;
+
+public interface IRGaElement<T> : 
+    IScalarAlgebraElement<T>,
+    IRGaElement
 {
-    public interface IRGaElement<T> : 
-        IScalarAlgebraElement<T>,
-        IRGaElement
-    {
-        RGaProcessor<T> Processor { get; }
-    }
+    RGaProcessor<T> Processor { get; }
 }

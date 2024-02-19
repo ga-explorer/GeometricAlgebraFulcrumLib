@@ -1,47 +1,46 @@
 ﻿using CodeComposerLib.MathML.Values.Size;
 
-namespace CodeComposerLib.MathML.Elements.Tokens
+namespace CodeComposerLib.MathML.Elements.Tokens;
+
+/// <summary>
+/// https://developer.mozilla.org/en-US/docs/Web/MathML/Element/mspace
+/// </summary>
+public sealed class MathMlSpace : MathMlNonTextTokenElement
 {
-    /// <summary>
-    /// https://developer.mozilla.org/en-US/docs/Web/MathML/Element/mspace
-    /// </summary>
-    public sealed class MathMlSpace : MathMlNonTextTokenElement
+    public static MathMlSpace Create()
     {
-        public static MathMlSpace Create()
-        {
-            return new MathMlSpace();
-        }
+        return new MathMlSpace();
+    }
 
 
-        public override string XmlTagName 
-            => "mspace";
+    public override string XmlTagName 
+        => "mspace";
 
-        public override string ContentsText 
-            => string.Empty;
+    public override string ContentsText 
+        => string.Empty;
 
-        public MathMlLengthValue Depth { get; set; }
-            = MathMlLengthValue.Empty;
+    public MathMlLengthValue Depth { get; set; }
+        = MathMlLengthValue.Empty;
 
-        public MathMlLengthValue Width { get; set; }
-            = MathMlLengthValue.Empty;
+    public MathMlLengthValue Width { get; set; }
+        = MathMlLengthValue.Empty;
 
-        public MathMlLengthValue Height { get; set; }
-            = MathMlLengthValue.Empty;
-
-
-        internal MathMlSpace()
-        {
-        }
+    public MathMlLengthValue Height { get; set; }
+        = MathMlLengthValue.Empty;
 
 
-        internal override void UpdateAttributesComposer(MathMlAttributesComposer composer)
-        {
-            base.UpdateAttributesComposer(composer);
+    internal MathMlSpace()
+    {
+    }
 
-            composer
-                .SetAttributeValue("depth", Depth)
-                .SetAttributeValue("width", Width)
-                .SetAttributeValue("height", Height);
-        }
+
+    internal override void UpdateAttributesComposer(MathMlAttributesComposer composer)
+    {
+        base.UpdateAttributesComposer(composer);
+
+        composer
+            .SetAttributeValue("depth", Depth)
+            .SetAttributeValue("width", Width)
+            .SetAttributeValue("height", Height);
     }
 }

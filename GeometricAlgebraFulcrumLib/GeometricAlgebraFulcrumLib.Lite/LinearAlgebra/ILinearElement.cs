@@ -1,17 +1,16 @@
 ﻿using GeometricAlgebraFulcrumLib.Lite.ScalarAlgebra;
 
-namespace GeometricAlgebraFulcrumLib.Lite.LinearAlgebra
+namespace GeometricAlgebraFulcrumLib.Lite.LinearAlgebra;
+
+public interface ILinearElement :
+    IGeometricElement
 {
-    public interface ILinearElement :
-        IGeometricElement
-    {
-        int VSpaceDimensions { get; }
-    }
+    int VSpaceDimensions { get; }
+}
 
-    public interface ILinearElement<T> :
-        IScalarAlgebraElement<T>,
-        ILinearElement
-    {
+public interface ILinearElement<T> :
+    IScalarAlgebraElement<T>,
+    ILinearElement
+{
 
-    }
 }

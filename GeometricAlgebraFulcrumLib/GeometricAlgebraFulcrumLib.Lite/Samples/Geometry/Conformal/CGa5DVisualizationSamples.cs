@@ -5,13 +5,14 @@ using GeometricAlgebraFulcrumLib.Lite.Geometry.Parametric.Space3D.Curves.Spheric
 using GeometricAlgebraFulcrumLib.Lite.Geometry.Parametric.Space3D.Curves;
 using GeometricAlgebraFulcrumLib.Lite.LinearAlgebra.Vectors.Space3D;
 using GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.Visuals.Space3D.Animations;
-using GeometricAlgebraFulcrumLib.Lite.Geometry.Conformal.Decoding;
 using GeometricAlgebraFulcrumLib.Lite.Geometry.Conformal.Elements;
 using GeometricAlgebraFulcrumLib.Lite.Geometry.Conformal.Encoding;
 using GeometricAlgebraFulcrumLib.Lite.ScalarAlgebra;
 using WebComposerLib.Colors;
 using GeometricAlgebraFulcrumLib.Lite.Geometry.Conformal.Interpolation;
 using GeometricAlgebraFulcrumLib.Lite.Geometry.Conformal.Visualizer;
+using GeometricAlgebraFulcrumLib.Lite.Geometry.Parametric.Space1D.Angles;
+using GeometricAlgebraFulcrumLib.Lite.Geometry.Conformal.Operations;
 
 namespace GeometricAlgebraFulcrumLib.Lite.Samples.Geometry.Conformal;
 
@@ -1925,6 +1926,219 @@ public static class CGa5DVisualizationSamples
         );
 
         // Draw LaTeX expressions
+        CGa.Visualizer.SaveHtmlFile();
+
+        Console.WriteLine("Animated Example Finished.");
+    }
+
+    public static void ParametricCircleRotationExample1()
+    {
+        const double maxTime = 9;
+        const int frameRate = 30;
+
+        Console.WriteLine("Animated Example Started ..");
+
+        var animationSpecs =
+            GrVisualAnimationSpecs.Create(frameRate, maxTime);
+        
+        // Define a parametric angle that cycles from 0 to 2 Pi
+        var rotationAngle = 
+            ComputedParametricAngle.CreateCosWaveCycles(maxTime, 1);
+            //ComputedParametricAngle.CreateLinearCycles(maxTime, 1);
+
+        // Define the rotation axis flat line element
+        var rotationAxisPoint = Float64Vector3D.Create(0, 1, 0);
+        var rotationAxisVector = Float64Vector3D.Create(1, 2, 3);
+
+        var rotationAxis =
+            CGa.DefineFlatLine(
+                rotationAxisPoint, 
+                rotationAxisVector
+            );
+        
+        // Create a static line to be rotated
+        var flatLine1 =
+            CGa.DefineFlatLine(
+                Float64Vector3D.Create(-1, 3, -3),
+                Float64Vector3D.E3
+            );
+
+        // Create a static circle to be rotated
+        var roundCircle1 =
+            CGa.DefineRealRoundCircle(
+                2, 
+                Float64Vector3D.Create(-1, 3, -3),
+                Float64Bivector3D.E12
+            );
+
+        // Rotate the line and circle using the parametric angle and static axis
+        var flatLine2 =
+            flatLine1.RotateUsing(
+                rotationAngle, 
+                rotationAxisPoint, 
+                rotationAxisVector
+            );
+
+        var roundCircle2 =
+            roundCircle1.RotateUsing(
+                rotationAngle, 
+                rotationAxisPoint, 
+                rotationAxisVector
+            );
+
+        // Prepare latex expressions
+        var latexDictionary = new Dictionary<string, string>()
+        {
+            {"axis", @"a"},
+            {"line1", @"l"},
+            {"line2", @"R l R^{\sim}"},
+            {"circle1", @"C"},
+            {"circle2", @"R C R^{\sim}"},
+            {"angle", @"\alpha"}
+        };
+        
+        // Initialize visualizer for 3D animated drawing
+        CGa.Visualizer
+            .SetWorkingFolder(@"D:\Projects\Study\Web\Babylon.js")
+            .SetAnimationSpecs(animationSpecs)
+            .BeginDrawing3D(@"Parametric 3D Circle Rotation Example 1", latexDictionary);
+        
+        // Draw the axis
+        CGa.Visualizer
+            .SetFlatStyle(
+                0.065, 
+                7,
+                false, 
+                0, 
+                0,
+                0
+            ).DrawElement(Color.Bisque, rotationAxis);
+        
+        // Draw the lines
+        CGa.Visualizer
+            .SetFlatStyle(
+                0.065,
+                7,
+                false,
+                0,
+                0,
+                0.5
+            ).DrawFlat(Color.Red, flatLine1)
+            .DrawFlatLine3D(Color.Green, flatLine2);
+
+        // Draw the circles
+        CGa.Visualizer
+            .SetRoundStyle(
+                0.065,
+                true,
+                false,
+                1,
+                1,
+                0.5
+            ).DrawRound(Color.Red, roundCircle1)
+            .DrawRoundCircle3D(Color.Green, roundCircle2);
+        
+        // Draw the circular path of the rotated circle center
+        var center = 
+            roundCircle1.ProjectPositionOnFlat3D(rotationAxis);
+
+        var radius = 
+            center.GetDistanceToPoint(roundCircle1.CenterToVector3D());
+
+        var direction1 = 
+            center.GetUnitDirectionTo(roundCircle1.CenterToVector3D());
+
+        var direction2 =
+            rotationAxis.DirectionToVector3D().VectorUnitCross(direction1);
+
+        var alphaPosition =
+            rotationAngle
+                .MapAngles(a => a / 2)
+                .CreatePolarCurve(1, center, direction1, direction2);
+
+            //ComputedParametricCurve3D.Create(
+            //    rotationAngle.ParameterRange,
+            //    t =>
+            //        {
+            //            var a = 
+            //                rotationAngle.GetAngle(t) / 2;
+
+            //            return center + 1 * (a.Cos() * direction1 + a.Sin() * direction2);
+            //        }
+            //);
+
+        CGa.Visualizer
+            .SetCurveStyleTube(0.03)
+            .DrawCircleCurve(
+                Color.Green,
+                center,
+                Float64Vector3D.Create(1, 2, 3),
+                radius
+            ).DrawPoint(Color.Green, center)
+            .SetCurveStyleSolid()
+            .DrawLineCurve(
+                Color.Red, 
+                center, 
+                roundCircle1.CenterToVector3D()
+            )
+            .DrawLineCurve(
+                Color.Red, 
+                center, 
+                roundCircle2.GetRoundCenterCurve3D()
+            )
+            .SetSurfaceStyleThin()
+            .DrawCircleSector(
+                Color.Green,
+                center,
+                direction1,
+                direction2,
+                0.7,
+                rotationAngle
+            );
+
+        // Draw LaTeX expressions
+        CGa.Visualizer
+            .DrawLaTeX(
+                "line", 
+                rotationAxis.SurfacePointToVector3D(
+                    Float64Vector3D.E2, 
+                    5, 
+                    0.5
+                )
+            ).DrawLaTeX(
+                "line1", 
+                flatLine1.SurfacePointToVector3D(
+                    Float64Vector3D.E2, 
+                    6, 
+                    0.5
+                )
+            ).DrawLaTeX(
+                "line2", 
+                flatLine2.GetSurfacePointCurve3D(
+                    Float64Vector3D.E2, 
+                    6, 
+                    0.5
+                )
+            ).DrawLaTeX(
+                "circle1", 
+                roundCircle1.SurfacePointToVector3D(
+                    Float64Vector3D.E2, 
+                    0, 
+                    0.5
+                )
+            ).DrawLaTeX(
+                "circle2", 
+                roundCircle2.GetSurfacePointCurve3D(
+                    Float64Vector3D.E2, 
+                    0, 
+                    0.5
+                )
+            ).DrawLaTeX(
+                "angle", 
+                alphaPosition
+            );
+        
+        // Save the HTML animation file
         CGa.Visualizer.SaveHtmlFile();
 
         Console.WriteLine("Animated Example Finished.");

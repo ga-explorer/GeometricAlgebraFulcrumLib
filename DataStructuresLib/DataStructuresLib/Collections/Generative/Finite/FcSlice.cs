@@ -1,107 +1,106 @@
-﻿namespace DataStructuresLib.Collections.Generative.Finite
+﻿namespace DataStructuresLib.Collections.Generative.Finite;
+
+/// <summary>
+/// This class represents a part (slice) of another base finite collection
+/// </summary>
+/// <typeparam name="T"></typeparam>
+public sealed class FcSlice<T> : FiniteCollection<T>
 {
     /// <summary>
-    /// This class represents a part (slice) of another base finite collection
+    /// Create a slice of a base collection
     /// </summary>
-    /// <typeparam name="T"></typeparam>
-    public sealed class FcSlice<T> : FiniteCollection<T>
+    /// <param name="firstIndex"></param>
+    /// <param name="lastIndex"></param>
+    /// <param name="baseCollection"></param>
+    /// <returns></returns>
+    public static FcSlice<T> Create(GenerativeCollection<T> baseCollection, int firstIndex, int lastIndex)
     {
-        /// <summary>
-        /// Create a slice of a base collection
-        /// </summary>
-        /// <param name="firstIndex"></param>
-        /// <param name="lastIndex"></param>
-        /// <param name="baseCollection"></param>
-        /// <returns></returns>
-        public static FcSlice<T> Create(GenerativeCollection<T> baseCollection, int firstIndex, int lastIndex)
-        {
-            return new FcSlice<T>(baseCollection, firstIndex, lastIndex);
-        }
+        return new FcSlice<T>(baseCollection, firstIndex, lastIndex);
+    }
 
 
-        private int _firstBaseIndex;
+    private int _firstBaseIndex;
 
-        private int _lastBaseIndex;
-
-
-        public GenerativeCollection<T> BaseCollection { get; set; }
-
-        public override int MinIndex => _firstBaseIndex;
-
-        public override int MaxIndex => _lastBaseIndex;
-
-        public override int Count => _lastBaseIndex - _firstBaseIndex + 1;
+    private int _lastBaseIndex;
 
 
-        public T this[int index]
-        {
-            get
-            {
-                if (index < MinIndex || index > MaxIndex || BaseCollection == null)
-                    return DefaultValue;
+    public GenerativeCollection<T> BaseCollection { get; set; }
 
-                return BaseCollection.GetItem(index);
-            }
-        }
+    public override int MinIndex => _firstBaseIndex;
+
+    public override int MaxIndex => _lastBaseIndex;
+
+    public override int Count => _lastBaseIndex - _firstBaseIndex + 1;
 
 
-        private FcSlice(GenerativeCollection<T> baseCollection, int firstIndex, int lastIndex)
-        {
-            BaseCollection = baseCollection;
-
-            if (firstIndex <= lastIndex)
-            {
-                _firstBaseIndex = firstIndex;
-                _lastBaseIndex = lastIndex;
-            }
-            else
-            {
-                _firstBaseIndex = lastIndex;
-                _lastBaseIndex = firstIndex;
-            }
-        }
-
-        public override T GetItem(int index)
+    public T this[int index]
+    {
+        get
         {
             if (index < MinIndex || index > MaxIndex || BaseCollection == null)
                 return DefaultValue;
 
             return BaseCollection.GetItem(index);
         }
+    }
 
 
-        public FcSlice<T> Reset(GenerativeCollection<T> baseCollection, int firstIndex, int lastIndex)
+    private FcSlice(GenerativeCollection<T> baseCollection, int firstIndex, int lastIndex)
+    {
+        BaseCollection = baseCollection;
+
+        if (firstIndex <= lastIndex)
         {
-            BaseCollection = baseCollection;
+            _firstBaseIndex = firstIndex;
+            _lastBaseIndex = lastIndex;
+        }
+        else
+        {
+            _firstBaseIndex = lastIndex;
+            _lastBaseIndex = firstIndex;
+        }
+    }
 
-            if (firstIndex <= lastIndex)
-            {
-                _firstBaseIndex = firstIndex;
-                _lastBaseIndex = lastIndex;
-            }
-            else
-            {
-                _firstBaseIndex = lastIndex;
-                _lastBaseIndex = firstIndex;
-            }
+    public override T GetItem(int index)
+    {
+        if (index < MinIndex || index > MaxIndex || BaseCollection == null)
+            return DefaultValue;
 
-            return this;
+        return BaseCollection.GetItem(index);
+    }
+
+
+    public FcSlice<T> Reset(GenerativeCollection<T> baseCollection, int firstIndex, int lastIndex)
+    {
+        BaseCollection = baseCollection;
+
+        if (firstIndex <= lastIndex)
+        {
+            _firstBaseIndex = firstIndex;
+            _lastBaseIndex = lastIndex;
+        }
+        else
+        {
+            _firstBaseIndex = lastIndex;
+            _lastBaseIndex = firstIndex;
         }
 
-        public FcSlice<T> ResetRange(int firstIndex, int lastIndex)
-        {
-            if (firstIndex <= lastIndex)
-            {
-                _firstBaseIndex = firstIndex;
-                _lastBaseIndex = lastIndex;
-            }
-            else
-            {
-                _firstBaseIndex = lastIndex;
-                _lastBaseIndex = firstIndex;
-            }
+        return this;
+    }
 
-            return this;
+    public FcSlice<T> ResetRange(int firstIndex, int lastIndex)
+    {
+        if (firstIndex <= lastIndex)
+        {
+            _firstBaseIndex = firstIndex;
+            _lastBaseIndex = lastIndex;
         }
+        else
+        {
+            _firstBaseIndex = lastIndex;
+            _lastBaseIndex = firstIndex;
+        }
+
+        return this;
     }
 }

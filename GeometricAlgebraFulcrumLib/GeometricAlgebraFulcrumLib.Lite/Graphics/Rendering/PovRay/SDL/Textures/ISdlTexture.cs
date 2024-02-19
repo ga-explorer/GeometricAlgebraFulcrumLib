@@ -1,9 +1,8 @@
 ﻿using GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.PovRay.SDL.Modifiers;
 
-namespace GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.PovRay.SDL.Textures
+namespace GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.PovRay.SDL.Textures;
+
+public interface ISdlTexture : ISdlObjectModifier
 {
-    public interface ISdlTexture : ISdlObjectModifier
-    {
          
-    }
 }

@@ -1,36 +1,35 @@
 ﻿using DataStructuresLib.AttributeSet;
 using TextComposerLib;
 
-namespace GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.BabylonJs.Values
+namespace GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.BabylonJs.Values;
+
+public sealed class GrBabylonJsStringValue :
+    SparseCodeAttributeValue<string>
 {
-    public sealed class GrBabylonJsStringValue :
-        SparseCodeAttributeValue<string>
+    public static implicit operator GrBabylonJsStringValue(string valueText)
     {
-        public static implicit operator GrBabylonJsStringValue(string valueText)
-        {
-            return new GrBabylonJsStringValue(valueText);
-        }
+        return new GrBabylonJsStringValue(valueText);
+    }
 
-        public static GrBabylonJsStringValue CreateLiteralFromValue(string value)
-        {
-            return new GrBabylonJsStringValue(value.ValueToQuotedLiteral());
-        }
+    public static GrBabylonJsStringValue CreateLiteralFromValue(string value)
+    {
+        return new GrBabylonJsStringValue(value.ValueToQuotedLiteral());
+    }
     
-        public static GrBabylonJsStringValue CreateLiteralFromLiteral(string value)
-        {
-            return new GrBabylonJsStringValue(value);
-        }
+    public static GrBabylonJsStringValue CreateLiteralFromLiteral(string value)
+    {
+        return new GrBabylonJsStringValue(value);
+    }
 
 
-        private GrBabylonJsStringValue(string valueText)
-            : base(valueText)
-        {
-        }
+    private GrBabylonJsStringValue(string valueText)
+        : base(valueText)
+    {
+    }
     
 
-        public override string GetCode()
-        {
-            return ValueText;
-        }
+    public override string GetCode()
+    {
+        return ValueText;
     }
 }

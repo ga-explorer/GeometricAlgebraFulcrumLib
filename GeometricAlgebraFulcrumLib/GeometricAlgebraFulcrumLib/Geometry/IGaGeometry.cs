@@ -1,4 +1,1 @@
-﻿namespace GeometricAlgebraFulcrumLib.Geometry
-{
-    
-}
+﻿namespace GeometricAlgebraFulcrumLib.Geometry;

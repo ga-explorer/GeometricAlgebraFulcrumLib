@@ -1,45 +1,44 @@
 ﻿using CodeComposerLib.HTMLold.Elements;
 
-namespace CodeComposerLib.HTMLold.Attributes
+namespace CodeComposerLib.HTMLold.Attributes;
+
+public sealed class HtmlEavAttribute<TParentElement>
+    : HtmlElementAttributeValue<TParentElement> where TParentElement : HtmlElement
 {
-    public sealed class HtmlEavAttribute<TParentElement>
-        : HtmlElementAttributeValue<TParentElement> where TParentElement : HtmlElement
+    private HtmlAttributeInfo _attribute;
+    public HtmlAttributeInfo Attribute
     {
-        private HtmlAttributeInfo _attribute;
-        public HtmlAttributeInfo Attribute
+        get { return _attribute; }
+        set
         {
-            get { return _attribute; }
-            set
-            {
-                _attribute = value;
-                IsValueComputed = true;
-            }
+            _attribute = value;
+            IsValueComputed = true;
         }
+    }
 
-        protected override string ValueComputedText => _attribute.Name;
-
-
-        internal HtmlEavAttribute(TParentElement parentElement)
-            : base(parentElement, HtmlAttributeUtils.AttributeName)
-        {
-        }
+    protected override string ValueComputedText => _attribute.Name;
 
 
-        public override IHtmlAttributeValue CreateCopy()
-        {
-            throw new System.NotImplementedException();
-        }
+    internal HtmlEavAttribute(TParentElement parentElement)
+        : base(parentElement, HtmlAttributeUtils.AttributeName)
+    {
+    }
 
-        public override IHtmlAttributeValue UpdateFrom(IHtmlAttributeValue sourceAttributeValue)
-        {
-            throw new System.NotImplementedException();
-        }
 
-        public TParentElement SetTo(HtmlAttributeInfo value)
-        {
-            Attribute = value;
+    public override IHtmlAttributeValue CreateCopy()
+    {
+        throw new System.NotImplementedException();
+    }
 
-            return ParentElement;
-        }
+    public override IHtmlAttributeValue UpdateFrom(IHtmlAttributeValue sourceAttributeValue)
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public TParentElement SetTo(HtmlAttributeInfo value)
+    {
+        Attribute = value;
+
+        return ParentElement;
     }
 }

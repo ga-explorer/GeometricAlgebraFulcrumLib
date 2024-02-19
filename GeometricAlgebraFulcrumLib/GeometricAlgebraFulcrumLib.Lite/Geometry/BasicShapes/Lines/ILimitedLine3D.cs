@@ -1,9 +1,8 @@
-﻿namespace GeometricAlgebraFulcrumLib.Lite.Geometry.BasicShapes.Lines
-{
-    public interface ILimitedLine3D : ILine3D
-    {
-        double ParameterMinValue { get; }
+﻿namespace GeometricAlgebraFulcrumLib.Lite.Geometry.BasicShapes.Lines;
 
-        double ParameterMaxValue { get; }
-    }
+public interface ILimitedLine3D : ILine3D
+{
+    double ParameterMinValue { get; }
+
+    double ParameterMaxValue { get; }
 }

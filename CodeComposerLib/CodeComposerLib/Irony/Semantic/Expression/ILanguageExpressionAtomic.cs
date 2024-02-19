@@ -1,6 +1,5 @@
-﻿namespace CodeComposerLib.Irony.Semantic.Expression
+﻿namespace CodeComposerLib.Irony.Semantic.Expression;
+
+public interface ILanguageExpressionAtomic : ILanguageExpression
 {
-    public interface ILanguageExpressionAtomic : ILanguageExpression
-    {
-    }
 }

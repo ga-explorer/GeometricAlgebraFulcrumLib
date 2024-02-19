@@ -3,31 +3,30 @@ using DataStructuresLib.Sequences.Periodic1D;
 using GeometricAlgebraFulcrumLib.Lite.Graphics.Meshes.PointsMesh;
 using GeometricAlgebraFulcrumLib.Lite.LinearAlgebra.Vectors.Space2D;
 
-namespace GeometricAlgebraFulcrumLib.Lite.Graphics.Meshes.PointsPath.Space2D
+namespace GeometricAlgebraFulcrumLib.Lite.Graphics.Meshes.PointsPath.Space2D;
+
+public sealed class PointsMeshSubsetPointsPath2D
+    : PSeq2DSubset1D<IFloat64Vector2D>, IPointsPath2D
 {
-    public sealed class PointsMeshSubsetPointsPath2D
-        : PSeq2DSubset1D<IFloat64Vector2D>, IPointsPath2D
+    public IPointsMesh2D BaseMesh { get; }
+
+
+    internal PointsMeshSubsetPointsPath2D(IPointsMesh2D baseMesh, IIndexMap1DTo2D indexMapping)
+        : base(baseMesh, indexMapping)
     {
-        public IPointsMesh2D BaseMesh { get; }
-
-
-        internal PointsMeshSubsetPointsPath2D(IPointsMesh2D baseMesh, IIndexMap1DTo2D indexMapping)
-            : base(baseMesh, indexMapping)
-        {
-            BaseMesh = baseMesh;
-        }
+        BaseMesh = baseMesh;
+    }
 
         
-        public bool IsValid()
-        {
-            return this.All(p => p.IsValid());
-        }
+    public bool IsValid()
+    {
+        return this.All(p => p.IsValid());
+    }
 
-        public IPointsPath2D MapPoints(Func<IFloat64Vector2D, IFloat64Vector2D> pointMapping)
-        {
-            return new ArrayPointsPath2D(
-                this.Select(pointMapping).ToArray()
-            );
-        }
+    public IPointsPath2D MapPoints(Func<IFloat64Vector2D, IFloat64Vector2D> pointMapping)
+    {
+        return new ArrayPointsPath2D(
+            this.Select(pointMapping).ToArray()
+        );
     }
 }

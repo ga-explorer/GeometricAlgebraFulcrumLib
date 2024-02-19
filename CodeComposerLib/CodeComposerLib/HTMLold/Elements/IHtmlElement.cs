@@ -1,37 +1,36 @@
 ﻿using CodeComposerLib.HTMLold.Attributes;
 using CodeComposerLib.HTMLold.Content;
 
-namespace CodeComposerLib.HTMLold.Elements
+namespace CodeComposerLib.HTMLold.Elements;
+
+/// <summary>
+/// http://docs.w3cub.com/svg/element/
+/// </summary>
+public interface IHtmlElement : IHtmlContent
 {
-    /// <summary>
-    /// http://docs.w3cub.com/svg/element/
-    /// </summary>
-    public interface IHtmlElement : IHtmlContent
-    {
-        HtmlContentsList Contents { get; }
+    HtmlContentsList Contents { get; }
 
-        string ElementName { get; }
+    string ElementName { get; }
 
-        string Id { get; }
+    string Id { get; }
 
-        string ContentsText { get; }
+    string ContentsText { get; }
 
-        string AttributesText { get; }
+    string AttributesText { get; }
 
-        string BeginEndTagText { get; }
+    string BeginEndTagText { get; }
 
-        string BeginTagText { get; }
+    string BeginTagText { get; }
 
-        string EndTagText { get; }
+    string EndTagText { get; }
 
-        string TagText { get; }
+    string TagText { get; }
 
-        IHtmlElement ClearAttributes();
+    IHtmlElement ClearAttributes();
 
-        IHtmlElement ClearAttribute(HtmlAttributeInfo attributeInfo);
+    IHtmlElement ClearAttribute(HtmlAttributeInfo attributeInfo);
 
-        IHtmlElement ClearAttributes(params HtmlAttributeInfo[] attributeInfoList);
+    IHtmlElement ClearAttributes(params HtmlAttributeInfo[] attributeInfoList);
 
-        IHtmlElement ClearDefaultAttributes(bool clearInChildren);
-    }
+    IHtmlElement ClearDefaultAttributes(bool clearInChildren);
 }

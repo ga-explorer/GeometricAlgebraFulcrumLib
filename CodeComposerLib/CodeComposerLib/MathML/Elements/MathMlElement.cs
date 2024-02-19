@@ -1,55 +1,54 @@
-﻿namespace CodeComposerLib.MathML.Elements
+﻿namespace CodeComposerLib.MathML.Elements;
+
+public abstract class MathMlElement : IMathMlElement
 {
-    public abstract class MathMlElement : IMathMlElement
+    public abstract bool IsToken { get; }
+
+    public bool IsLayout => !IsToken;
+
+    public abstract string XmlTagName { get; }
+
+    public abstract string ContentsText { get; }
+
+    public string Class { get; set; }
+
+    public string Id { get; set; }
+
+    public string Style { get; set; }
+
+
+    internal virtual void UpdateAttributesComposer(MathMlAttributesComposer composer)
     {
-        public abstract bool IsToken { get; }
+        composer.SetAttributeValue(
+            "class", 
+            Class, 
+            string.IsNullOrEmpty
+        );
 
-        public bool IsLayout => !IsToken;
+        composer.SetAttributeValue(
+            "id", 
+            Id,
+            string.IsNullOrEmpty
+        );
 
-        public abstract string XmlTagName { get; }
+        composer.SetAttributeValue(
+            "style", 
+            Style,
+            string.IsNullOrEmpty
+        );
+    }
 
-        public abstract string ContentsText { get; }
-
-        public string Class { get; set; }
-
-        public string Id { get; set; }
-
-        public string Style { get; set; }
-
-
-        internal virtual void UpdateAttributesComposer(MathMlAttributesComposer composer)
+    public override string ToString()
+    {
+        var composer = new MathMlAttributesComposer
         {
-            composer.SetAttributeValue(
-                "class", 
-                Class, 
-                string.IsNullOrEmpty
-            );
+            IndentationDefault = "  "
+        };
 
-            composer.SetAttributeValue(
-                "id", 
-                Id,
-                string.IsNullOrEmpty
-            );
+        UpdateAttributesComposer(composer);
 
-            composer.SetAttributeValue(
-                "style", 
-                Style,
-                string.IsNullOrEmpty
-            );
-        }
-
-        public override string ToString()
-        {
-            var composer = new MathMlAttributesComposer
-            {
-                IndentationDefault = "  "
-            };
-
-            UpdateAttributesComposer(composer);
-
-            return composer
-                .AppendTagCode(XmlTagName, ContentsText, IsToken)
-                .ToString();
-        }
+        return composer
+            .AppendTagCode(XmlTagName, ContentsText, IsToken)
+            .ToString();
     }
 }

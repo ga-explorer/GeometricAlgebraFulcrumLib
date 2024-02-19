@@ -123,7 +123,7 @@ The power of GA comes from the unified encoding of geometric objects, as blades,
 
 * EGA blades are defined using only the $n$ Euclidean basis vectors $\{ e_{1}, e_{2}, \ldots, e_{n} \}$. These can only encode Euclidean subspaces and, by some geometric misuse, Euclidean points. The direction and position components of elements are actually stored as EGA blades.
 * PGA blades are defined using $n+1$ projective basis vectors $\{ e_{o}, e_{1}, e_{2}, \ldots, e_{n} \}$. These blades can be used to represent flats using PGA.
-* OPNS\IPNS blades are the standard direct\dual representations of CGA elements, which may use the full set of $n+2$ CGA basis vectors $\{ e_{o}, e_{1}, e_{2}, \ldots, e_{n}, e_{\infty} \}$.
+* CGA OPNS\IPNS blades are the standard direct\dual representations of CGA elements, which may use the full set of $n+2$ CGA basis vectors $\{ e_{o}, e_{1}, e_{2}, \ldots, e_{n}, e_{\infty} \}$.
 
 While directions can be encoded as EGA, PGA, OPNS, or IPNS blades, flats can be encoded only using PGA, OPNS, or IPNS blades. Furthermore, tangents and rounds can only be encoded as OPNS\IPNS blades.
 
@@ -167,7 +167,7 @@ Note that this is only an illustrative example, there is a simpler way for inter
 var intersectionElement = plane.Intersect(sphere);
 ```
 
-It is also possible to encode CGA blades directly without defining elements using code similar to:
+It is also possible to encode CGA blades directly from Eucludean components without defining elements using code similar to:
 
 ```c#
 var cga = RGaConformalSpace.Create(5);

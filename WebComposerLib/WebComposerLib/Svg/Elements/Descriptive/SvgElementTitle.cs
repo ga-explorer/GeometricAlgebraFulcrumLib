@@ -1,132 +1,131 @@
 ﻿using WebComposerLib.Svg.Attributes;
 
-namespace WebComposerLib.Svg.Elements.Descriptive
+namespace WebComposerLib.Svg.Elements.Descriptive;
+
+public sealed class SvgElementTitle : SvgElement
 {
-    public sealed class SvgElementTitle : SvgElement
+    public static SvgElementTitle Create(string titleText)
     {
-        public static SvgElementTitle Create(string titleText)
+        var element = new SvgElementTitle();
+
+        element.Contents.AppendText(titleText);
+
+        return element;
+    }
+
+    public static SvgElementTitle Create(string id, string titleText)
+    {
+        var element = new SvgElementTitle() { Id = id };
+
+        element.Contents.AppendText(titleText);
+
+        return element;
+    }
+
+
+    public override string ElementName => "title";
+
+
+    //public SvgEavString<SvgElementTitle> Id
+    //{
+    //    get
+    //    {
+    //        var attrInfo = SvgAttributes.Id;
+
+    //        ISvgAttributeValue attrValue;
+    //        if (AttributesTable.TryGetValue(attrInfo.Id, out attrValue))
+    //            return attrValue as SvgEavString<SvgElementTitle>;
+
+    //        var attrValue1 = new SvgEavString<SvgElementTitle>(this, attrInfo);
+    //        AttributesTable.Add(attrInfo.Id, attrValue1);
+
+    //        return attrValue1;
+    //    }
+    //}
+
+    public SvgEavString<SvgElementTitle> XmlBase
+    {
+        get
         {
-            var element = new SvgElementTitle();
+            var attrInfo = SvgAttributeUtils.XmlBase;
 
-            element.Contents.AppendText(titleText);
+            if (AttributesTable.TryGetValue(attrInfo.Id, out var attrValue))
+                return attrValue as SvgEavString<SvgElementTitle>;
 
-            return element;
+            var attrValue1 = new SvgEavString<SvgElementTitle>(this, attrInfo);
+            AttributesTable.Add(attrInfo.Id, attrValue1);
+
+            return attrValue1;
         }
+    }
 
-        public static SvgElementTitle Create(string id, string titleText)
+    public SvgEavString<SvgElementTitle> XmlLanguage
+    {
+        get
         {
-            var element = new SvgElementTitle() { Id = id };
+            var attrInfo = SvgAttributeUtils.XmlLanguage;
 
-            element.Contents.AppendText(titleText);
+            if (AttributesTable.TryGetValue(attrInfo.Id, out var attrValue))
+                return attrValue as SvgEavString<SvgElementTitle>;
 
-            return element;
+            var attrValue1 = new SvgEavString<SvgElementTitle>(this, attrInfo);
+            AttributesTable.Add(attrInfo.Id, attrValue1);
+
+            return attrValue1;
         }
+    }
 
-
-        public override string ElementName => "title";
-
-
-        //public SvgEavString<SvgElementTitle> Id
-        //{
-        //    get
-        //    {
-        //        var attrInfo = SvgAttributes.Id;
-
-        //        ISvgAttributeValue attrValue;
-        //        if (AttributesTable.TryGetValue(attrInfo.Id, out attrValue))
-        //            return attrValue as SvgEavString<SvgElementTitle>;
-
-        //        var attrValue1 = new SvgEavString<SvgElementTitle>(this, attrInfo);
-        //        AttributesTable.Add(attrInfo.Id, attrValue1);
-
-        //        return attrValue1;
-        //    }
-        //}
-
-        public SvgEavString<SvgElementTitle> XmlBase
+    public SvgEavStruct<bool, SvgElementTitle> ExternalResourcesRequired
+    {
+        get
         {
-            get
-            {
-                var attrInfo = SvgAttributeUtils.XmlBase;
+            var attrInfo = SvgAttributeUtils.ExternalResourcesRequired;
 
-                if (AttributesTable.TryGetValue(attrInfo.Id, out var attrValue))
-                    return attrValue as SvgEavString<SvgElementTitle>;
+            if (AttributesTable.TryGetValue(attrInfo.Id, out var attrValue))
+                return attrValue as SvgEavStruct<bool, SvgElementTitle>;
 
-                var attrValue1 = new SvgEavString<SvgElementTitle>(this, attrInfo);
-                AttributesTable.Add(attrInfo.Id, attrValue1);
+            var attrValue1 = new SvgEavStruct<bool, SvgElementTitle>(this, attrInfo);
+            AttributesTable.Add(attrInfo.Id, attrValue1);
 
-                return attrValue1;
-            }
+            return attrValue1;
         }
+    }
 
-        public SvgEavString<SvgElementTitle> XmlLanguage
+    public SvgEavString<SvgElementTitle> Class
+    {
+        get
         {
-            get
-            {
-                var attrInfo = SvgAttributeUtils.XmlLanguage;
+            var attrInfo = SvgAttributeUtils.Class;
 
-                if (AttributesTable.TryGetValue(attrInfo.Id, out var attrValue))
-                    return attrValue as SvgEavString<SvgElementTitle>;
+            if (AttributesTable.TryGetValue(attrInfo.Id, out var attrValue))
+                return attrValue as SvgEavString<SvgElementTitle>;
 
-                var attrValue1 = new SvgEavString<SvgElementTitle>(this, attrInfo);
-                AttributesTable.Add(attrInfo.Id, attrValue1);
+            var attrValue1 = new SvgEavString<SvgElementTitle>(this, attrInfo);
+            AttributesTable.Add(attrInfo.Id, attrValue1);
 
-                return attrValue1;
-            }
+            return attrValue1;
         }
+    }
 
-        public SvgEavStruct<bool, SvgElementTitle> ExternalResourcesRequired
-        {
-            get
-            {
-                var attrInfo = SvgAttributeUtils.ExternalResourcesRequired;
+    //public SvgEavStyle<SvgElementTitle> Style
+    //{
+    //    get
+    //    {
+    //        var attrInfo = SvgAttributes.Style;
 
-                if (AttributesTable.TryGetValue(attrInfo.Id, out var attrValue))
-                    return attrValue as SvgEavStruct<bool, SvgElementTitle>;
+    //        ISvgAttributeValue attrValue;
+    //        if (AttributesTable.TryGetValue(attrInfo.Id, out attrValue))
+    //            return attrValue as SvgEavStyle<SvgElementTitle>;
 
-                var attrValue1 = new SvgEavStruct<bool, SvgElementTitle>(this, attrInfo);
-                AttributesTable.Add(attrInfo.Id, attrValue1);
+    //        var attrValue1 = new SvgEavStyle<SvgElementTitle>(this);
+    //        AttributesTable.Add(attrInfo.Id, attrValue1);
 
-                return attrValue1;
-            }
-        }
-
-        public SvgEavString<SvgElementTitle> Class
-        {
-            get
-            {
-                var attrInfo = SvgAttributeUtils.Class;
-
-                if (AttributesTable.TryGetValue(attrInfo.Id, out var attrValue))
-                    return attrValue as SvgEavString<SvgElementTitle>;
-
-                var attrValue1 = new SvgEavString<SvgElementTitle>(this, attrInfo);
-                AttributesTable.Add(attrInfo.Id, attrValue1);
-
-                return attrValue1;
-            }
-        }
-
-        //public SvgEavStyle<SvgElementTitle> Style
-        //{
-        //    get
-        //    {
-        //        var attrInfo = SvgAttributes.Style;
-
-        //        ISvgAttributeValue attrValue;
-        //        if (AttributesTable.TryGetValue(attrInfo.Id, out attrValue))
-        //            return attrValue as SvgEavStyle<SvgElementTitle>;
-
-        //        var attrValue1 = new SvgEavStyle<SvgElementTitle>(this);
-        //        AttributesTable.Add(attrInfo.Id, attrValue1);
-
-        //        return attrValue1;
-        //    }
-        //}
+    //        return attrValue1;
+    //    }
+    //}
 
 
-        private SvgElementTitle()
-        {
-        }
+    private SvgElementTitle()
+    {
     }
 }

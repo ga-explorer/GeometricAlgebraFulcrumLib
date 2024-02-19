@@ -1,10 +1,9 @@
-﻿namespace WebComposerLib.Svg.Styles
+﻿namespace WebComposerLib.Svg.Styles;
+
+public sealed class SvgStyleSheetComposer
 {
-    public sealed class SvgStyleSheetComposer
-    {
-        private Dictionary<string, SvgStyle> _stylesDictionary = 
-            new Dictionary<string, SvgStyle>();
+    private Dictionary<string, SvgStyle> _stylesDictionary = 
+        new Dictionary<string, SvgStyle>();
 
         
-    }
 }

@@ -1,10 +1,9 @@
 ﻿using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Restricted.Float64.LinearMaps.Versors;
 
-namespace GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Restricted.Float64.LinearMaps.Reflectors
+namespace GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Restricted.Float64.LinearMaps.Reflectors;
+
+public interface IRGaFloat64Reflector : 
+    IRGaFloat64Versor
 {
-    public interface IRGaFloat64Reflector : 
-        IRGaFloat64Versor
-    {
-        IRGaFloat64Reflector GetReflectorInverse();
-    }
+    IRGaFloat64Reflector GetReflectorInverse();
 }

@@ -1,9 +1,8 @@
-﻿namespace GeometricAlgebraFulcrumLib.Lite.Geometry.Differential.AutoDiff.Compiled
-{
-    internal struct InputEdge
-    {
-        public TapeElement Element;
+﻿namespace GeometricAlgebraFulcrumLib.Lite.Geometry.Differential.AutoDiff.Compiled;
 
-        public double Weight;
-    }
+internal struct InputEdge
+{
+    public TapeElement Element;
+
+    public double Weight;
 }

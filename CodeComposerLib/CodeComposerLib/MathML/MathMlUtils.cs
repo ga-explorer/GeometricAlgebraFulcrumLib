@@ -5,189 +5,188 @@ using CodeComposerLib.MathML.Elements.Layout.Elementary;
 using CodeComposerLib.MathML.Elements.Layout.Script;
 using CodeComposerLib.MathML.Elements.Tokens;
 
-namespace CodeComposerLib.MathML
+namespace CodeComposerLib.MathML;
+
+public static class MathMlUtils
 {
-    public static class MathMlUtils
+    public static MathMlText ToMathMlText(this string text)
     {
-        public static MathMlText ToMathMlText(this string text)
+        return new MathMlText()
         {
-            return new MathMlText()
-            {
-                Text = text
-            };
-        }
+            Text = text
+        };
+    }
 
-        public static MathMlString ToMathMlString(this string text)
+    public static MathMlString ToMathMlString(this string text)
+    {
+        return new MathMlString()
         {
-            return new MathMlString()
-            {
-                Text = text
-            };
-        }
+            Text = text
+        };
+    }
 
-        public static MathMlIdentifier ToMathMlIdentifier(this string text)
+    public static MathMlIdentifier ToMathMlIdentifier(this string text)
+    {
+        return new MathMlIdentifier()
         {
-            return new MathMlIdentifier()
-            {
-                Text = text
-            };
-        }
+            Text = text
+        };
+    }
 
-        public static MathMlNumber ToMathMlNumber(this string value)
+    public static MathMlNumber ToMathMlNumber(this string value)
+    {
+        return new MathMlNumber()
         {
-            return new MathMlNumber()
-            {
-                Text = value
-            };
-        }
+            Text = value
+        };
+    }
 
-        public static MathMlNumber ToMathMlNumber(this int value)
+    public static MathMlNumber ToMathMlNumber(this int value)
+    {
+        return new MathMlNumber()
         {
-            return new MathMlNumber()
-            {
-                Text = value.ToString()
-            };
-        }
+            Text = value.ToString()
+        };
+    }
 
-        public static MathMlNumber ToMathMlNumber(this long value)
+    public static MathMlNumber ToMathMlNumber(this long value)
+    {
+        return new MathMlNumber()
         {
-            return new MathMlNumber()
-            {
-                Text = value.ToString()
-            };
-        }
+            Text = value.ToString()
+        };
+    }
 
-        public static MathMlNumber ToMathMlNumber(this uint value)
+    public static MathMlNumber ToMathMlNumber(this uint value)
+    {
+        return new MathMlNumber()
         {
-            return new MathMlNumber()
-            {
-                Text = value.ToString()
-            };
-        }
+            Text = value.ToString()
+        };
+    }
 
-        public static MathMlNumber ToMathMlNumber(this ulong value)
+    public static MathMlNumber ToMathMlNumber(this ulong value)
+    {
+        return new MathMlNumber()
         {
-            return new MathMlNumber()
-            {
-                Text = value.ToString()
-            };
-        }
+            Text = value.ToString()
+        };
+    }
 
-        public static MathMlNumber ToMathMlNumber(this float value)
+    public static MathMlNumber ToMathMlNumber(this float value)
+    {
+        return new MathMlNumber()
         {
-            return new MathMlNumber()
-            {
-                Text = value.ToString("G")
-            };
-        }
+            Text = value.ToString("G")
+        };
+    }
 
-        public static MathMlNumber ToMathMlNumber(this double value)
+    public static MathMlNumber ToMathMlNumber(this double value)
+    {
+        return new MathMlNumber()
         {
-            return new MathMlNumber()
-            {
-                Text = value.ToString("G")
-            };
-        }
+            Text = value.ToString("G")
+        };
+    }
 
-        public static MathMlOperator ToMathMlOperator(this string text)
+    public static MathMlOperator ToMathMlOperator(this string text)
+    {
+        return new MathMlOperator()
         {
-            return new MathMlOperator()
-            {
-                Text = text
-            };
-        }
+            Text = text
+        };
+    }
 
-        public static MathMlSubscript ToMathMlSubscript(this string baseText, string subscriptText)
+    public static MathMlSubscript ToMathMlSubscript(this string baseText, string subscriptText)
+    {
+        return new MathMlSubscript()
         {
-            return new MathMlSubscript()
-            {
-                Base = new MathMlIdentifier() { Text = baseText },
-                Subscript = new MathMlIdentifier() { Text = subscriptText }
-            };
-        }
+            Base = new MathMlIdentifier() { Text = baseText },
+            Subscript = new MathMlIdentifier() { Text = subscriptText }
+        };
+    }
 
-        public static MathMlSubscript ToMathMlSubscript(this string baseText, int subscriptValue)
+    public static MathMlSubscript ToMathMlSubscript(this string baseText, int subscriptValue)
+    {
+        return new MathMlSubscript()
         {
-            return new MathMlSubscript()
-            {
-                Base = new MathMlIdentifier() { Text = baseText },
-                Subscript = subscriptValue.ToMathMlNumber()
-            };
-        }
+            Base = new MathMlIdentifier() { Text = baseText },
+            Subscript = subscriptValue.ToMathMlNumber()
+        };
+    }
 
-        public static MathMlSubscript AddSubscript(this IMathMlElement baseElement)
+    public static MathMlSubscript AddSubscript(this IMathMlElement baseElement)
+    {
+        return new MathMlSubscript()
         {
-            return new MathMlSubscript()
-            {
-                Base = baseElement
-            };
-        }
+            Base = baseElement
+        };
+    }
 
-        public static MathMlSubscript AddSubscript(this IMathMlElement baseElement, IMathMlElement subscriptElement)
+    public static MathMlSubscript AddSubscript(this IMathMlElement baseElement, IMathMlElement subscriptElement)
+    {
+        return new MathMlSubscript()
         {
-            return new MathMlSubscript()
-            {
-                Base = baseElement,
-                Subscript = subscriptElement
-            };
-        }
+            Base = baseElement,
+            Subscript = subscriptElement
+        };
+    }
 
-        public static MathMlRow ToMathMlRow(this IMathMlElement element)
-        {
-            var rowElement = new MathMlRow();
-            rowElement.Append(element);
+    public static MathMlRow ToMathMlRow(this IMathMlElement element)
+    {
+        var rowElement = new MathMlRow();
+        rowElement.Append(element);
 
-            return rowElement;
-
-        }
-
-        public static MathMlRow ToMathMlRow(this IEnumerable<IMathMlElement> elementsList)
-        {
-            var rowElement = new MathMlRow();
-            rowElement.AppendElements(elementsList);
-
-            return rowElement;
-        }
-
-        public static MathMlMath ToMathMlMath(this IMathMlElement element)
-        {
-            if (element is MathMlMath mathElement) 
-                return mathElement;
-
-            mathElement = new MathMlMath();
-            mathElement.Append(element);
-
-            return mathElement;
-
-        }
-
-        public static MathMlMath ToMathMlMath(this IEnumerable<IMathMlElement> elementsList)
-        {
-            var mathElement = new MathMlMath();
-            mathElement.AppendElements(elementsList);
-
-            return mathElement;
-        }
-
-        public static string ToMathMlCode(this IMathMlElement element)
-        {
-            if (element is MathMlMath mathElement) 
-                return mathElement.ToString();
-
-            mathElement = new MathMlMath();
-            mathElement.Append(element);
-
-            return mathElement.ToString();
-
-        }
-
-        public static string ToMathMlCode(this IEnumerable<IMathMlElement> elementsList)
-        {
-            var mathElement = new MathMlMath();
-            mathElement.AppendElements(elementsList);
-
-            return mathElement.ToString();
-        }
+        return rowElement;
 
     }
+
+    public static MathMlRow ToMathMlRow(this IEnumerable<IMathMlElement> elementsList)
+    {
+        var rowElement = new MathMlRow();
+        rowElement.AppendElements(elementsList);
+
+        return rowElement;
+    }
+
+    public static MathMlMath ToMathMlMath(this IMathMlElement element)
+    {
+        if (element is MathMlMath mathElement) 
+            return mathElement;
+
+        mathElement = new MathMlMath();
+        mathElement.Append(element);
+
+        return mathElement;
+
+    }
+
+    public static MathMlMath ToMathMlMath(this IEnumerable<IMathMlElement> elementsList)
+    {
+        var mathElement = new MathMlMath();
+        mathElement.AppendElements(elementsList);
+
+        return mathElement;
+    }
+
+    public static string ToMathMlCode(this IMathMlElement element)
+    {
+        if (element is MathMlMath mathElement) 
+            return mathElement.ToString();
+
+        mathElement = new MathMlMath();
+        mathElement.Append(element);
+
+        return mathElement.ToString();
+
+    }
+
+    public static string ToMathMlCode(this IEnumerable<IMathMlElement> elementsList)
+    {
+        var mathElement = new MathMlMath();
+        mathElement.AppendElements(elementsList);
+
+        return mathElement.ToString();
+    }
+
 }

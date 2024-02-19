@@ -1,11 +1,10 @@
 ﻿using System.Collections.Generic;
 
-namespace TextComposerLib.Text.Columns
+namespace TextComposerLib.Text.Columns;
+
+public sealed class TextColumn : List<string>
 {
-    public sealed class TextColumn : List<string>
-    {
 
 
         
-    }
 }

@@ -7,169 +7,168 @@ using Microsoft.CSharp.RuntimeBinder;
 using TextComposerLib;
 using TextComposerLib.Text.Linear;
 
-namespace CodeComposerLib.MathML.Composers
+namespace CodeComposerLib.MathML.Composers;
+
+public sealed class MathMlWordCodeComposer 
+    : IDynamicTreeVisitor<IMathMlElement>
 {
-    public sealed class MathMlWordCodeComposer 
-        : IDynamicTreeVisitor<IMathMlElement>
+    public static string ComposeCode(IMathMlElement element)
     {
-        public static string ComposeCode(IMathMlElement element)
+        var composer = new MathMlWordCodeComposer();
+
+        element
+            .ToMathMlMath()
+            .AcceptVisitor(composer);
+
+        return composer
+            ._codeComposer
+            .ToString();
+    }
+
+    public static string ComposeCode(IEnumerable<IMathMlElement> elementsList)
+    {
+        var composer = new MathMlWordCodeComposer();
+
+        elementsList
+            .ToMathMlMath()
+            .AcceptVisitor(composer);
+
+        return composer
+            ._codeComposer
+            .ToString();
+    }
+
+
+    private readonly LinearTextComposer _codeComposer 
+        = new LinearTextComposer()
         {
-            var composer = new MathMlWordCodeComposer();
+            IndentationDefault = "  "
+        };
 
-            element
-                .ToMathMlMath()
-                .AcceptVisitor(composer);
+    private readonly MathMlAttributesComposer _attrComposer
+        = new MathMlAttributesComposer();
 
-            return composer
-                ._codeComposer
-                .ToString();
+
+    public bool UseExceptions => true;
+
+    public bool IgnoreNullElements => false;
+
+
+    private MathMlWordCodeComposer()
+    {
+    }
+
+
+    public void Fallback(IMathMlElement item, RuntimeBinderException excException)
+    {
+        throw excException;
+    }
+
+
+    public void Visit(MathMlNonTextTokenElement element)
+    {
+        _attrComposer.Clear();
+
+        element.UpdateAttributesComposer(_attrComposer);
+
+        _codeComposer
+            .AppendAtNewLine("<mml:")
+            .Append(element.XmlTagName);
+
+        if (_attrComposer.ContainsNonDefaultAttributes)
+        {
+            _codeComposer
+                .Append(" ")
+                .Append(_attrComposer.AttributesText);
         }
 
-        public static string ComposeCode(IEnumerable<IMathMlElement> elementsList)
+        _codeComposer
+            .Append("/>");
+    }
+
+    public void Visit(MathMlTextTokenElement element)
+    {
+        _attrComposer.Clear();
+
+        element.UpdateAttributesComposer(_attrComposer);
+
+        _codeComposer
+            .AppendAtNewLine("<mml:")
+            .Append(element.XmlTagName);
+
+        if (_attrComposer.ContainsNonDefaultAttributes)
         {
-            var composer = new MathMlWordCodeComposer();
-
-            elementsList
-                .ToMathMlMath()
-                .AcceptVisitor(composer);
-
-            return composer
-                ._codeComposer
-                .ToString();
+            _codeComposer
+                .Append(" ")
+                .Append(_attrComposer.AttributesText);
         }
 
+        _codeComposer
+            .Append(">")
+            .Append(element.ContentsText)
+            .Append("</mml:")
+            .Append(element.XmlTagName)
+            .Append(">");
+    }
 
-        private readonly LinearTextComposer _codeComposer 
-            = new LinearTextComposer()
-            {
-                IndentationDefault = "  "
-            };
+    public void Visit(MathMlLayoutElement element)
+    {
+        _attrComposer.Clear();
 
-        private readonly MathMlAttributesComposer _attrComposer
-            = new MathMlAttributesComposer();
+        element.UpdateAttributesComposer(_attrComposer);
 
+        _codeComposer
+            .AppendAtNewLine("<mml:")
+            .Append(element.XmlTagName);
 
-        public bool UseExceptions => true;
-
-        public bool IgnoreNullElements => false;
-
-
-        private MathMlWordCodeComposer()
+        if (_attrComposer.ContainsNonDefaultAttributes)
         {
+            _codeComposer
+                .Append(" ")
+                .Append(_attrComposer.AttributesText);
         }
 
+        _codeComposer
+            .AppendLine(">")
+            .IncreaseIndentation();
 
-        public void Fallback(IMathMlElement item, RuntimeBinderException excException)
-        {
-            throw excException;
-        }
+        foreach (var childElement in element.Contents)
+            childElement.AcceptVisitor(this);
 
+        _codeComposer
+            .DecreaseIndentation()
+            .AppendAtNewLine("</mml:")
+            .Append(element.XmlTagName)
+            .Append(">");
+    }
 
-        public void Visit(MathMlNonTextTokenElement element)
-        {
-            _attrComposer.Clear();
+    public void Visit(MathMlMath element)
+    {
+        _attrComposer.Clear();
 
-            element.UpdateAttributesComposer(_attrComposer);
+        _attrComposer.SetAttributeValue(
+            "xmlns:mml",
+            "http://www.w3.org/1998/Math/MathML".DoubleQuote()
+        );
 
-            _codeComposer
-                .AppendAtNewLine("<mml:")
-                .Append(element.XmlTagName);
+        _attrComposer.SetAttributeValue(
+            "xmlns:m",
+            "http://schemas.openxmlformats.org/officeDocument/2006/math".DoubleQuote()
+        );
 
-            if (_attrComposer.ContainsNonDefaultAttributes)
-            {
-                _codeComposer
-                    .Append(" ")
-                    .Append(_attrComposer.AttributesText);
-            }
+        element.UpdateAttributesComposer(_attrComposer);
 
-            _codeComposer
-                .Append("/>");
-        }
+        _codeComposer
+            .AppendAtNewLine("<mml:math ")
+            .Append(_attrComposer.AttributesText)
+            .AppendLine(">")
+            .IncreaseIndentation();
 
-        public void Visit(MathMlTextTokenElement element)
-        {
-            _attrComposer.Clear();
+        foreach (var childElement in element)
+            childElement.AcceptVisitor(this);
 
-            element.UpdateAttributesComposer(_attrComposer);
-
-            _codeComposer
-                .AppendAtNewLine("<mml:")
-                .Append(element.XmlTagName);
-
-            if (_attrComposer.ContainsNonDefaultAttributes)
-            {
-                _codeComposer
-                    .Append(" ")
-                    .Append(_attrComposer.AttributesText);
-            }
-
-            _codeComposer
-                .Append(">")
-                .Append(element.ContentsText)
-                .Append("</mml:")
-                .Append(element.XmlTagName)
-                .Append(">");
-        }
-
-        public void Visit(MathMlLayoutElement element)
-        {
-            _attrComposer.Clear();
-
-            element.UpdateAttributesComposer(_attrComposer);
-
-            _codeComposer
-                .AppendAtNewLine("<mml:")
-                .Append(element.XmlTagName);
-
-            if (_attrComposer.ContainsNonDefaultAttributes)
-            {
-                _codeComposer
-                    .Append(" ")
-                    .Append(_attrComposer.AttributesText);
-            }
-
-            _codeComposer
-                .AppendLine(">")
-                .IncreaseIndentation();
-
-            foreach (var childElement in element.Contents)
-                childElement.AcceptVisitor(this);
-
-            _codeComposer
-                .DecreaseIndentation()
-                .AppendAtNewLine("</mml:")
-                .Append(element.XmlTagName)
-                .Append(">");
-        }
-
-        public void Visit(MathMlMath element)
-        {
-            _attrComposer.Clear();
-
-            _attrComposer.SetAttributeValue(
-                "xmlns:mml",
-                "http://www.w3.org/1998/Math/MathML".DoubleQuote()
-            );
-
-            _attrComposer.SetAttributeValue(
-                "xmlns:m",
-                "http://schemas.openxmlformats.org/officeDocument/2006/math".DoubleQuote()
-            );
-
-            element.UpdateAttributesComposer(_attrComposer);
-
-            _codeComposer
-                .AppendAtNewLine("<mml:math ")
-                .Append(_attrComposer.AttributesText)
-                .AppendLine(">")
-                .IncreaseIndentation();
-
-            foreach (var childElement in element)
-                childElement.AcceptVisitor(this);
-
-            _codeComposer
-                .DecreaseIndentation()
-                .AppendAtNewLine("</mml:math>");
-        }
+        _codeComposer
+            .DecreaseIndentation()
+            .AppendAtNewLine("</mml:math>");
     }
 }

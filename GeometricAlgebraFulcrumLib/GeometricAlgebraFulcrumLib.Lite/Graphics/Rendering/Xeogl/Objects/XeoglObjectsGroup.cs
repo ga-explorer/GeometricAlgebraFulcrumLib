@@ -6,121 +6,120 @@ using GeometricAlgebraFulcrumLib.Lite.LinearAlgebra.Matrices;
 using TextComposerLib.Code.JavaScript;
 using TextComposerLib.Code.JavaScript.Obsolete;
 
-namespace GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.Xeogl.Objects
+namespace GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.Xeogl.Objects;
+
+/// <summary>
+/// A Group is an Object that groups other Objects.
+/// http://xeogl.org/docs/classes/Group.html
+/// http://xeogl.org/docs/classes/Object.html#creating-an-object-hierarchy
+/// </summary>
+public class XeoglObjectsGroup 
+    : XeoglObject, IReadOnlyCollection<XeoglObject>
 {
-    /// <summary>
-    /// A Group is an Object that groups other Objects.
-    /// http://xeogl.org/docs/classes/Group.html
-    /// http://xeogl.org/docs/classes/Object.html#creating-an-object-hierarchy
-    /// </summary>
-    public class XeoglObjectsGroup 
-        : XeoglObject, IReadOnlyCollection<XeoglObject>
+    private readonly List<XeoglObject> _childObjects 
+        = new List<XeoglObject>();
+
+
+    public override string JavaScriptClassName => "Group";
+
+    public int Count 
+        => _childObjects.Count;
+
+
+    public XeoglObjectsGroup AddChild(XeoglObject childObject)
     {
-        private readonly List<XeoglObject> _childObjects 
-            = new List<XeoglObject>();
+        if (ReferenceEquals(childObject, null))
+            throw new ArgumentNullException(nameof(childObject));
 
+        _childObjects.Add(childObject);
 
-        public override string JavaScriptClassName => "Group";
+        return this;
+    }
 
-        public int Count 
-            => _childObjects.Count;
-
-
-        public XeoglObjectsGroup AddChild(XeoglObject childObject)
+    public XeoglObjectsGroup AddChildren(params XeoglObject[] childObjectsList)
+    {
+        foreach (var childObject in childObjectsList)
         {
             if (ReferenceEquals(childObject, null))
                 throw new ArgumentNullException(nameof(childObject));
 
             _childObjects.Add(childObject);
-
-            return this;
         }
 
-        public XeoglObjectsGroup AddChildren(params XeoglObject[] childObjectsList)
+        return this;
+    }
+
+    public XeoglObjectsGroup AddChildren(IEnumerable<XeoglObject> childObjectsList)
+    {
+        foreach (var childObject in childObjectsList)
         {
-            foreach (var childObject in childObjectsList)
-            {
-                if (ReferenceEquals(childObject, null))
-                    throw new ArgumentNullException(nameof(childObject));
+            if (ReferenceEquals(childObject, null))
+                throw new ArgumentNullException(nameof(childObject));
 
-                _childObjects.Add(childObject);
-            }
-
-            return this;
+            _childObjects.Add(childObject);
         }
 
-        public XeoglObjectsGroup AddChildren(IEnumerable<XeoglObject> childObjectsList)
+        return this;
+    }
+
+    public XeoglObjectsGroup AddChild(XeoglGeometry geometry, XeoglMaterial material)
+    {
+        var mesh = new XeoglMesh()
         {
-            foreach (var childObject in childObjectsList)
-            {
-                if (ReferenceEquals(childObject, null))
-                    throw new ArgumentNullException(nameof(childObject));
+            Geometry = geometry,
+            Material = material
+        };
 
-                _childObjects.Add(childObject);
-            }
+        _childObjects.Add(mesh);
 
-            return this;
-        }
+        return this;
+    }
 
-        public XeoglObjectsGroup AddChild(XeoglGeometry geometry, XeoglMaterial material)
+    public XeoglObjectsGroup AddChild(XeoglGeometry geometry, XeoglMaterial material, SquareMatrix4 matrix)
+    {
+        var mesh = new XeoglMesh()
         {
-            var mesh = new XeoglMesh()
-            {
-                Geometry = geometry,
-                Material = material
-            };
+            Geometry = geometry,
+            Material = material,
+            Transform = new XeoglMatrixTransform(matrix)
+        };
 
-            _childObjects.Add(mesh);
+        _childObjects.Add(mesh);
 
-            return this;
-        }
+        return this;
+    }
 
-        public XeoglObjectsGroup AddChild(XeoglGeometry geometry, XeoglMaterial material, SquareMatrix4 matrix)
+    public XeoglObjectsGroup AddChild(XeoglGeometry geometry, XeoglMaterial material, IXeoglTransform transform)
+    {
+        var mesh = new XeoglMesh()
         {
-            var mesh = new XeoglMesh()
-            {
-                Geometry = geometry,
-                Material = material,
-                Transform = new XeoglMatrixTransform(matrix)
-            };
+            Geometry = geometry,
+            Material = material,
+            Transform = transform
+        };
 
-            _childObjects.Add(mesh);
+        _childObjects.Add(mesh);
 
-            return this;
-        }
-
-        public XeoglObjectsGroup AddChild(XeoglGeometry geometry, XeoglMaterial material, IXeoglTransform transform)
-        {
-            var mesh = new XeoglMesh()
-            {
-                Geometry = geometry,
-                Material = material,
-                Transform = transform
-            };
-
-            _childObjects.Add(mesh);
-
-            return this;
-        }
+        return this;
+    }
 
 
-        public IEnumerator<XeoglObject> GetEnumerator()
-        {
-            return _childObjects.GetEnumerator();
-        }
+    public IEnumerator<XeoglObject> GetEnumerator()
+    {
+        return _childObjects.GetEnumerator();
+    }
 
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return _childObjects.GetEnumerator();
-        }
+    IEnumerator IEnumerable.GetEnumerator()
+    {
+        return _childObjects.GetEnumerator();
+    }
 
 
-        public override void UpdateConstructorAttributes(JavaScriptAttributesDictionary composer)
-        {
-            base.UpdateConstructorAttributes(composer);
+    public override void UpdateConstructorAttributes(JavaScriptAttributesDictionary composer)
+    {
+        base.UpdateConstructorAttributes(composer);
 
-            composer
-                .SetTextValue("children", _childObjects.ToJavaScriptObjectsArrayText(), "[]");
-        }
+        composer
+            .SetTextValue("children", _childObjects.ToJavaScriptObjectsArrayText(), "[]");
     }
 }

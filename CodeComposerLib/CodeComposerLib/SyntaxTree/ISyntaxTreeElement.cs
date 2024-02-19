@@ -1,6 +1,5 @@
-﻿namespace CodeComposerLib.SyntaxTree
+﻿namespace CodeComposerLib.SyntaxTree;
+
+public interface ISyntaxTreeElement
 {
-    public interface ISyntaxTreeElement
-    {
-    }
 }

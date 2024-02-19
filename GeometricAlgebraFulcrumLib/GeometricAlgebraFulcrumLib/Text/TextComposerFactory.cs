@@ -1,17 +1,16 @@
 ﻿using GeometricAlgebraFulcrumLib.Lite.ScalarAlgebra;
 
-namespace GeometricAlgebraFulcrumLib.Text
-{
-    public static class TextComposerFactory
-    {
-        public static TextComposer<T> CreateTextComposer<T>(this IScalarProcessor<T> processor)
-        {
-            return new TextComposer<T>(processor);
-        }
+namespace GeometricAlgebraFulcrumLib.Text;
 
-        public static LaTeXComposer<T> CreateLaTeXComposer<T>(this IScalarProcessor<T> processor)
-        {
-            return new LaTeXComposer<T>(processor);
-        }
+public static class TextComposerFactory
+{
+    public static TextComposer<T> CreateTextComposer<T>(this IScalarProcessor<T> processor)
+    {
+        return new TextComposer<T>(processor);
+    }
+
+    public static LaTeXComposer<T> CreateLaTeXComposer<T>(this IScalarProcessor<T> processor)
+    {
+        return new LaTeXComposer<T>(processor);
     }
 }

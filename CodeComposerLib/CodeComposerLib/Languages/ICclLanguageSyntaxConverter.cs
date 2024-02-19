@@ -1,12 +1,11 @@
 ﻿using CodeComposerLib.SyntaxTree;
 
-namespace CodeComposerLib.Languages
-{
-    public interface ICclLanguageSyntaxConverter : 
-        ISteDynamicVisitor<ISyntaxTreeElement>
-    {
-        CclLanguageInfo SourceLanguageInfo { get; }
+namespace CodeComposerLib.Languages;
 
-        CclLanguageInfo TargetLanguageInfo { get; }
-    }
+public interface ICclLanguageSyntaxConverter : 
+    ISteDynamicVisitor<ISyntaxTreeElement>
+{
+    CclLanguageInfo SourceLanguageInfo { get; }
+
+    CclLanguageInfo TargetLanguageInfo { get; }
 }

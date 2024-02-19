@@ -1,16 +1,15 @@
-﻿namespace CodeComposerLib.MathML.Values.Size
+﻿namespace CodeComposerLib.MathML.Values.Size;
+
+public sealed class MathMlNamedSizeValue : MathMlLengthValue
 {
-    public sealed class MathMlNamedSizeValue : MathMlLengthValue
+    public string ValueName { get; }
+
+    public override string ValueText 
+        => ValueName;
+
+    internal MathMlNamedSizeValue(string valueName)
     {
-        public string ValueName { get; }
-
-        public override string ValueText 
-            => ValueName;
-
-        internal MathMlNamedSizeValue(string valueName)
-        {
-            ValueName = valueName;
-        }
-
+        ValueName = valueName;
     }
+
 }

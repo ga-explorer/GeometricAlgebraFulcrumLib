@@ -10,135 +10,134 @@ using GeometricAlgebraFulcrumLib.Lite.Graphics.Accelerators.Grids.Space2D;
 using GeometricAlgebraFulcrumLib.Lite.Graphics.Computers.Intersections;
 using GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.Svg.DrawingBoard;
 using GeometricAlgebraFulcrumLib.Lite.LinearAlgebra.Vectors.Space2D;
-using GeometricAlgebraFulcrumLib.Lite.Random;
+using GeometricAlgebraFulcrumLib.Lite.Statistics;
 
-namespace GeometricAlgebraFulcrumLib.Lite.Samples.Graphics.Accelerators
+namespace GeometricAlgebraFulcrumLib.Lite.Samples.Graphics.Accelerators;
+
+/// <summary>
+/// This sample constructs a random collection of line segments in 2D.
+/// Then a Grid is constructed and the intersections of a line
+/// are computed in two ways to validate their equivalence
+/// </summary>
+public static class Sample2
 {
-    /// <summary>
-    /// This sample constructs a random collection of line segments in 2D.
-    /// Then a Grid is constructed and the intersections of a line
-    /// are computed in two ways to validate their equivalence
-    /// </summary>
-    public static class Sample2
+    public static void Execute()
     {
-        public static void Execute()
+        var randGen = new System.Random(10);
+
+        var boundingBox = BoundingBox2D.Create(-160, -120, 160, 120);
+        var divisions = boundingBox.GetSubdivisions(8, 8);
+
+        //Generate one object per bounding box division
+        var objectsList = new List<LineSegment2D>();
+        for (var ix = 0; ix < divisions.GetLength(0) - 1; ix++)
+        for (var iy = 0; iy < divisions.GetLength(1) - 1; iy++)
         {
-            var randGen = new System.Random(10);
-
-            var boundingBox = BoundingBox2D.Create(-160, -120, 160, 120);
-            var divisions = boundingBox.GetSubdivisions(8, 8);
-
-            //Generate one object per bounding box division
-            var objectsList = new List<LineSegment2D>();
-            for (var ix = 0; ix < divisions.GetLength(0) - 1; ix++)
-            for (var iy = 0; iy < divisions.GetLength(1) - 1; iy++)
+            if (randGen.GetNumber() > 0.1)
             {
-                if (randGen.GetNumber() > 0.1)
-                {
-                    objectsList.Add(randGen.GetLineSegmentInside(divisions[ix, iy]));
-                    continue;
-                }
-
-                var p1 = randGen.GetPointInside(divisions[ix, iy]);
-                var p2 = randGen.GetPointInside(divisions[ix + 1, iy + 1]);
-
-                var lineSegment = LineSegment2D.Create(p1, p2);
-
-                objectsList.Add(lineSegment);
+                objectsList.Add(randGen.GetLineSegmentInside(divisions[ix, iy]));
+                continue;
             }
 
-            //Create Grid
-            var grid = objectsList.ToGrid2D();
+            var p1 = randGen.GetPointInside(divisions[ix, iy]);
+            var p2 = randGen.GetPointInside(divisions[ix + 1, iy + 1]);
 
-            var drawingBoard =
-                grid
-                    .BoundingBox
-                    .GetMutableBoundingBox()
-                    .UpdateSizeByFactor(0.1d)
-                    .CreateDrawingBoard(8);
+            var lineSegment = LineSegment2D.Create(p1, p2);
 
-            var drawingSettings = new AccGridDrawingSettings2D()
-            {
-                DrawActiveCells = true
-            };
+            objectsList.Add(lineSegment);
+        }
 
-            drawingBoard.DrawGrid(grid, drawingSettings);
+        //Create Grid
+        var grid = objectsList.ToGrid2D();
 
-            var fileName = "grid.svg";
-            var filePath = Path.Combine(Directory.GetCurrentDirectory(), fileName);
-            drawingBoard.SaveToSvgFile(filePath);
+        var drawingBoard =
+            grid
+                .BoundingBox
+                .GetMutableBoundingBox()
+                .UpdateSizeByFactor(0.1d)
+                .CreateDrawingBoard(8);
 
-            //Find intersections of a line with the objects
-            var intersector = new GcLineIntersector2D();
+        var drawingSettings = new AccGridDrawingSettings2D()
+        {
+            DrawActiveCells = true
+        };
 
-            //Generate 5 random lines and intersect each with geometric objects
-            var linesData = new List<Tuple<Line2D, double[]>>();
+        drawingBoard.DrawGrid(grid, drawingSettings);
 
-            for (var i = 0; i < 5; i++)
-            {
-                var lineOrigin = randGen.GetPointInside(boundingBox);
-                var lineDirection = randGen.GetUnitVector2D();
+        var fileName = "grid.svg";
+        var filePath = Path.Combine(Directory.GetCurrentDirectory(), fileName);
+        drawingBoard.SaveToSvgFile(filePath);
 
-                var line = Line2D.Create(lineOrigin, lineDirection);
+        //Find intersections of a line with the objects
+        var intersector = new GcLineIntersector2D();
 
-                intersector.SetLine(lineOrigin, lineDirection);
+        //Generate 5 random lines and intersect each with geometric objects
+        var linesData = new List<Tuple<Line2D, double[]>>();
 
-                //var t = intersector.ComputeFirstIntersection(grid);
-                //var tList1 = new List<double>();
-                //if (t.Item1) tList1.Add(t.Item2);
+        for (var i = 0; i < 5; i++)
+        {
+            var lineOrigin = randGen.GetPointInside(boundingBox);
+            var lineDirection = randGen.GetUnitVector2D();
 
-                var tList1 = intersector.ComputeIntersections(grid);
+            var line = Line2D.Create(lineOrigin, lineDirection);
 
-                linesData.Add(Tuple.Create(
-                    line, 
-                    tList1.Select(t => t.Item1).ToArray()
-                ));
-            }
+            intersector.SetLine(lineOrigin, lineDirection);
 
-            ////For each line draw the traversed grid cells
-            //var traversalData = grid.GetLineTraversalData(linesData[1].Item1);
+            //var t = intersector.ComputeFirstIntersection(grid);
+            //var tList1 = new List<double>();
+            //if (t.Item1) tList1.Add(t.Item2);
 
-            //drawingBoard.DrawGridLineTraversal(traversalData, drawingSettings);
+            var tList1 = intersector.ComputeIntersections(grid);
 
-            //Create drawing boards and draw intersections
-            var db1 = boundingBox.CreateDrawingBoard(8);
+            linesData.Add(Tuple.Create(
+                line, 
+                tList1.Select(t => t.Item1).ToArray()
+            ));
+        }
 
-            //Draw all geometric objects in light salmon color
-            db1
-                .ActiveLayer
-                .SetPen(2, Color.LightSalmon)
-                .DrawShapes(grid);
+        ////For each line draw the traversed grid cells
+        //var traversalData = grid.GetLineTraversalData(linesData[1].Item1);
 
-            //Draw bounding box of geometric objects
+        //drawingBoard.DrawGridLineTraversal(traversalData, drawingSettings);
+
+        //Create drawing boards and draw intersections
+        var db1 = boundingBox.CreateDrawingBoard(8);
+
+        //Draw all geometric objects in light salmon color
+        db1
+            .ActiveLayer
+            .SetPen(2, Color.LightSalmon)
+            .DrawShapes(grid);
+
+        //Draw bounding box of geometric objects
+        db1
+            .ActiveLayer
+            .SetPen(2, Color.Black)
+            .SetFill(Color.Black, 0.25)
+            .DrawBoundingBox(boundingBox);
+
+        //Draw intersecting lines and their intersection points
+        foreach (var lineData in linesData)
+        {
+            var line = lineData.Item1;
+            var pointsList = 
+                line.GetPointsAt(lineData.Item2).Cast<IFloat64Vector2D>();
+
             db1
                 .ActiveLayer
                 .SetPen(2, Color.Black)
-                .SetFill(Color.Black, 0.25)
-                .DrawBoundingBox(boundingBox);
+                .DrawLine(line);
 
-            //Draw intersecting lines and their intersection points
-            foreach (var lineData in linesData)
-            {
-                var line = lineData.Item1;
-                var pointsList = 
-                    line.GetPointsAt(lineData.Item2).Cast<IFloat64Vector2D>();
-
-                db1
-                    .ActiveLayer
-                    .SetPen(2, Color.Black)
-                    .DrawLine(line);
-
-                db1
-                    .ActiveLayer
-                    .SetPen(1, Color.Black)
-                    .SetFill(Color.White)
-                    .DrawCircleMarkers(pointsList, 5);
-            }
-
-            //Save to file
-            db1.SaveToPngFile(
-                Path.Combine(Directory.GetCurrentDirectory(), "grid.png")
-            );
+            db1
+                .ActiveLayer
+                .SetPen(1, Color.Black)
+                .SetFill(Color.White)
+                .DrawCircleMarkers(pointsList, 5);
         }
+
+        //Save to file
+        db1.SaveToPngFile(
+            Path.Combine(Directory.GetCurrentDirectory(), "grid.png")
+        );
     }
 }

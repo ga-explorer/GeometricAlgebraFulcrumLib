@@ -1,43 +1,42 @@
 ﻿using System.Text;
 using GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.GraphViz.Dot.Label.Text;
 
-namespace GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.GraphViz.Dot.Label
+namespace GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.GraphViz.Dot.Label;
+
+/// <summary>
+/// This class represents an HTML formatting tag in the dot language like bold, italic, etc.
+/// See http://www.graphviz.org/content/node-shapes#html for more details
+/// </summary>
+public sealed class DotHtmlTagFormatting : DotHtmlTag, IDotHtmlTagFormatting
 {
-    /// <summary>
-    /// This class represents an HTML formatting tag in the dot language like bold, italic, etc.
-    /// See http://www.graphviz.org/content/node-shapes#html for more details
-    /// </summary>
-    public sealed class DotHtmlTagFormatting : DotHtmlTag, IDotHtmlTagFormatting
+    public override IEnumerable<KeyValuePair<string, string>> Attributes => Enumerable.Empty<KeyValuePair<string, string>>();
+
+
+    internal DotHtmlTagFormatting(string name)
+        : base(name)
     {
-        public override IEnumerable<KeyValuePair<string, string>> Attributes => Enumerable.Empty<KeyValuePair<string, string>>();
+    }
 
 
-        internal DotHtmlTagFormatting(string name)
-            : base(name)
-        {
-        }
+    public string FormatText(DotHtmlText text)
+    {
+        var s = new StringBuilder();
 
+        s.Append("<")
+            .Append(TagName)
+            .Append(">");
 
-        public string FormatText(DotHtmlText text)
-        {
-            var s = new StringBuilder();
+        s.Append(ReferenceEquals(text, null) ? "" : text.ToString());
 
-            s.Append("<")
-                .Append(TagName)
-                .Append(">");
+        return s
+            .Append("</")
+            .Append(TagName)
+            .Append(">")
+            .ToString();
+    }
 
-            s.Append(ReferenceEquals(text, null) ? "" : text.ToString());
-
-            return s
-                .Append("</")
-                .Append(TagName)
-                .Append(">")
-                .ToString();
-        }
-
-        public override string ToString()
-        {
-            return FormatText(null);
-        }
+    public override string ToString()
+    {
+        return FormatText(null);
     }
 }

@@ -3,423 +3,422 @@ using WebComposerLib.Svg.Elements.Categories;
 using WebComposerLib.Svg.Transforms;
 using WebComposerLib.Svg.Values;
 
-namespace WebComposerLib.Svg.Elements.Gradient
+namespace WebComposerLib.Svg.Elements.Gradient;
+
+public sealed class SvgElementRadialGradient : SvgElement, ISvgGradientElement
 {
-    public sealed class SvgElementRadialGradient : SvgElement, ISvgGradientElement
+    public static SvgElementRadialGradient Create()
     {
-        public static SvgElementRadialGradient Create()
+        return new SvgElementRadialGradient();
+    }
+
+    public static SvgElementRadialGradient Create(string id)
+    {
+        return new SvgElementRadialGradient() { Id = id };
+    }
+
+
+    public override string ElementName => "radialGradient";
+
+
+    public SvgEavString<SvgElementRadialGradient> Class
+    {
+        get
         {
-            return new SvgElementRadialGradient();
-        }
+            var attrInfo = SvgAttributeUtils.Class;
 
-        public static SvgElementRadialGradient Create(string id)
+            if (AttributesTable.TryGetValue(attrInfo.Id, out var attrValue))
+                return attrValue as SvgEavString<SvgElementRadialGradient>;
+
+            var attrValue1 = new SvgEavString<SvgElementRadialGradient>(this, attrInfo);
+            AttributesTable.Add(attrInfo.Id, attrValue1);
+
+            return attrValue1;
+        }
+    }
+
+    public SvgEavString<SvgElementRadialGradient> XmlBase
+    {
+        get
         {
-            return new SvgElementRadialGradient() { Id = id };
+            var attrInfo = SvgAttributeUtils.XmlBase;
+
+            if (AttributesTable.TryGetValue(attrInfo.Id, out var attrValue))
+                return attrValue as SvgEavString<SvgElementRadialGradient>;
+
+            var attrValue1 = new SvgEavString<SvgElementRadialGradient>(this, attrInfo);
+            AttributesTable.Add(attrInfo.Id, attrValue1);
+
+            return attrValue1;
         }
+    }
 
-
-        public override string ElementName => "radialGradient";
-
-
-        public SvgEavString<SvgElementRadialGradient> Class
+    public SvgEavString<SvgElementRadialGradient> XmlLanguage
+    {
+        get
         {
-            get
-            {
-                var attrInfo = SvgAttributeUtils.Class;
+            var attrInfo = SvgAttributeUtils.XmlLanguage;
 
-                if (AttributesTable.TryGetValue(attrInfo.Id, out var attrValue))
-                    return attrValue as SvgEavString<SvgElementRadialGradient>;
+            if (AttributesTable.TryGetValue(attrInfo.Id, out var attrValue))
+                return attrValue as SvgEavString<SvgElementRadialGradient>;
 
-                var attrValue1 = new SvgEavString<SvgElementRadialGradient>(this, attrInfo);
-                AttributesTable.Add(attrInfo.Id, attrValue1);
+            var attrValue1 = new SvgEavString<SvgElementRadialGradient>(this, attrInfo);
+            AttributesTable.Add(attrInfo.Id, attrValue1);
 
-                return attrValue1;
-            }
+            return attrValue1;
         }
+    }
 
-        public SvgEavString<SvgElementRadialGradient> XmlBase
+    public SvgEavStruct<bool, SvgElementRadialGradient> ExternalResourcesRequired
+    {
+        get
         {
-            get
-            {
-                var attrInfo = SvgAttributeUtils.XmlBase;
+            var attrInfo = SvgAttributeUtils.ExternalResourcesRequired;
 
-                if (AttributesTable.TryGetValue(attrInfo.Id, out var attrValue))
-                    return attrValue as SvgEavString<SvgElementRadialGradient>;
+            if (AttributesTable.TryGetValue(attrInfo.Id, out var attrValue))
+                return attrValue as SvgEavStruct<bool, SvgElementRadialGradient>;
 
-                var attrValue1 = new SvgEavString<SvgElementRadialGradient>(this, attrInfo);
-                AttributesTable.Add(attrInfo.Id, attrValue1);
+            var attrValue1 = new SvgEavStruct<bool, SvgElementRadialGradient>(this, attrInfo);
+            AttributesTable.Add(attrInfo.Id, attrValue1);
 
-                return attrValue1;
-            }
+            return attrValue1;
         }
+    }
 
-        public SvgEavString<SvgElementRadialGradient> XmlLanguage
+    public SvgEavLength<SvgElementRadialGradient> FocalCenterX
+    {
+        get
         {
-            get
-            {
-                var attrInfo = SvgAttributeUtils.XmlLanguage;
+            var attrInfo = SvgAttributeUtils.FocalCenterX;
 
-                if (AttributesTable.TryGetValue(attrInfo.Id, out var attrValue))
-                    return attrValue as SvgEavString<SvgElementRadialGradient>;
+            if (AttributesTable.TryGetValue(attrInfo.Id, out var attrValue))
+                return attrValue as SvgEavLength<SvgElementRadialGradient>;
 
-                var attrValue1 = new SvgEavString<SvgElementRadialGradient>(this, attrInfo);
-                AttributesTable.Add(attrInfo.Id, attrValue1);
+            var attrValue1 = new SvgEavLength<SvgElementRadialGradient>(this, attrInfo);
+            AttributesTable.Add(attrInfo.Id, attrValue1);
 
-                return attrValue1;
-            }
+            return attrValue1;
         }
+    }
 
-        public SvgEavStruct<bool, SvgElementRadialGradient> ExternalResourcesRequired
+    public SvgEavLength<SvgElementRadialGradient> FocalCenterY
+    {
+        get
         {
-            get
-            {
-                var attrInfo = SvgAttributeUtils.ExternalResourcesRequired;
+            var attrInfo = SvgAttributeUtils.FocalCenterY;
 
-                if (AttributesTable.TryGetValue(attrInfo.Id, out var attrValue))
-                    return attrValue as SvgEavStruct<bool, SvgElementRadialGradient>;
+            if (AttributesTable.TryGetValue(attrInfo.Id, out var attrValue))
+                return attrValue as SvgEavLength<SvgElementRadialGradient>;
 
-                var attrValue1 = new SvgEavStruct<bool, SvgElementRadialGradient>(this, attrInfo);
-                AttributesTable.Add(attrInfo.Id, attrValue1);
+            var attrValue1 = new SvgEavLength<SvgElementRadialGradient>(this, attrInfo);
+            AttributesTable.Add(attrInfo.Id, attrValue1);
 
-                return attrValue1;
-            }
+            return attrValue1;
         }
+    }
 
-        public SvgEavLength<SvgElementRadialGradient> FocalCenterX
+    public SvgEavLength<SvgElementRadialGradient> CenterX
+    {
+        get
         {
-            get
-            {
-                var attrInfo = SvgAttributeUtils.FocalCenterX;
+            var attrInfo = SvgAttributeUtils.CenterX;
 
-                if (AttributesTable.TryGetValue(attrInfo.Id, out var attrValue))
-                    return attrValue as SvgEavLength<SvgElementRadialGradient>;
+            if (AttributesTable.TryGetValue(attrInfo.Id, out var attrValue))
+                return attrValue as SvgEavLength<SvgElementRadialGradient>;
 
-                var attrValue1 = new SvgEavLength<SvgElementRadialGradient>(this, attrInfo);
-                AttributesTable.Add(attrInfo.Id, attrValue1);
+            var attrValue1 = new SvgEavLength<SvgElementRadialGradient>(this, attrInfo);
+            AttributesTable.Add(attrInfo.Id, attrValue1);
 
-                return attrValue1;
-            }
+            return attrValue1;
         }
+    }
 
-        public SvgEavLength<SvgElementRadialGradient> FocalCenterY
+    public SvgEavLength<SvgElementRadialGradient> CenterY
+    {
+        get
         {
-            get
-            {
-                var attrInfo = SvgAttributeUtils.FocalCenterY;
+            var attrInfo = SvgAttributeUtils.CenterY;
 
-                if (AttributesTable.TryGetValue(attrInfo.Id, out var attrValue))
-                    return attrValue as SvgEavLength<SvgElementRadialGradient>;
+            if (AttributesTable.TryGetValue(attrInfo.Id, out var attrValue))
+                return attrValue as SvgEavLength<SvgElementRadialGradient>;
 
-                var attrValue1 = new SvgEavLength<SvgElementRadialGradient>(this, attrInfo);
-                AttributesTable.Add(attrInfo.Id, attrValue1);
+            var attrValue1 = new SvgEavLength<SvgElementRadialGradient>(this, attrInfo);
+            AttributesTable.Add(attrInfo.Id, attrValue1);
 
-                return attrValue1;
-            }
+            return attrValue1;
         }
+    }
 
-        public SvgEavLength<SvgElementRadialGradient> CenterX
+    public SvgEavLength<SvgElementRadialGradient> Radius
+    {
+        get
         {
-            get
-            {
-                var attrInfo = SvgAttributeUtils.CenterX;
+            var attrInfo = SvgAttributeUtils.Radius;
 
-                if (AttributesTable.TryGetValue(attrInfo.Id, out var attrValue))
-                    return attrValue as SvgEavLength<SvgElementRadialGradient>;
+            if (AttributesTable.TryGetValue(attrInfo.Id, out var attrValue))
+                return attrValue as SvgEavLength<SvgElementRadialGradient>;
 
-                var attrValue1 = new SvgEavLength<SvgElementRadialGradient>(this, attrInfo);
-                AttributesTable.Add(attrInfo.Id, attrValue1);
+            var attrValue1 = new SvgEavLength<SvgElementRadialGradient>(this, attrInfo);
+            AttributesTable.Add(attrInfo.Id, attrValue1);
 
-                return attrValue1;
-            }
+            return attrValue1;
         }
+    }
 
-        public SvgEavLength<SvgElementRadialGradient> CenterY
+    public SvgEav<SvgValueGradientUnits, SvgElementRadialGradient> GradientUnits
+    {
+        get
         {
-            get
-            {
-                var attrInfo = SvgAttributeUtils.CenterY;
+            var attrInfo = SvgAttributeUtils.GradientUnits;
 
-                if (AttributesTable.TryGetValue(attrInfo.Id, out var attrValue))
-                    return attrValue as SvgEavLength<SvgElementRadialGradient>;
+            if (AttributesTable.TryGetValue(attrInfo.Id, out var attrValue))
+                return attrValue as SvgEav<SvgValueGradientUnits, SvgElementRadialGradient>;
 
-                var attrValue1 = new SvgEavLength<SvgElementRadialGradient>(this, attrInfo);
-                AttributesTable.Add(attrInfo.Id, attrValue1);
+            var attrValue1 = new SvgEav<SvgValueGradientUnits, SvgElementRadialGradient>(this, attrInfo);
+            AttributesTable.Add(attrInfo.Id, attrValue1);
 
-                return attrValue1;
-            }
+            return attrValue1;
         }
+    }
 
-        public SvgEavLength<SvgElementRadialGradient> Radius
+    public SvgEav<SvgTransform, SvgElementRadialGradient> GradientTransform
+    {
+        get
         {
-            get
-            {
-                var attrInfo = SvgAttributeUtils.Radius;
+            var attrInfo = SvgAttributeUtils.GradientTransform;
 
-                if (AttributesTable.TryGetValue(attrInfo.Id, out var attrValue))
-                    return attrValue as SvgEavLength<SvgElementRadialGradient>;
+            if (AttributesTable.TryGetValue(attrInfo.Id, out var attrValue))
+                return attrValue as SvgEav<SvgTransform, SvgElementRadialGradient>;
 
-                var attrValue1 = new SvgEavLength<SvgElementRadialGradient>(this, attrInfo);
-                AttributesTable.Add(attrInfo.Id, attrValue1);
+            var attrValue1 = new SvgEav<SvgTransform, SvgElementRadialGradient>(this, attrInfo);
+            AttributesTable.Add(attrInfo.Id, attrValue1);
 
-                return attrValue1;
-            }
+            return attrValue1;
         }
+    }
 
-        public SvgEav<SvgValueGradientUnits, SvgElementRadialGradient> GradientUnits
+    public SvgEav<SvgValueGradientSpreadMethod, SvgElementRadialGradient> GradientSpreadMethod
+    {
+        get
         {
-            get
-            {
-                var attrInfo = SvgAttributeUtils.GradientUnits;
+            var attrInfo = SvgAttributeUtils.GradientSpreadMethod;
 
-                if (AttributesTable.TryGetValue(attrInfo.Id, out var attrValue))
-                    return attrValue as SvgEav<SvgValueGradientUnits, SvgElementRadialGradient>;
+            if (AttributesTable.TryGetValue(attrInfo.Id, out var attrValue))
+                return attrValue as SvgEav<SvgValueGradientSpreadMethod, SvgElementRadialGradient>;
 
-                var attrValue1 = new SvgEav<SvgValueGradientUnits, SvgElementRadialGradient>(this, attrInfo);
-                AttributesTable.Add(attrInfo.Id, attrValue1);
+            var attrValue1 = new SvgEav<SvgValueGradientSpreadMethod, SvgElementRadialGradient>(this, attrInfo);
+            AttributesTable.Add(attrInfo.Id, attrValue1);
 
-                return attrValue1;
-            }
+            return attrValue1;
         }
+    }
 
-        public SvgEav<SvgTransform, SvgElementRadialGradient> GradientTransform
+    public SvgEavString<SvgElementRadialGradient> HRef
+    {
+        get
         {
-            get
-            {
-                var attrInfo = SvgAttributeUtils.GradientTransform;
+            var attrInfo = SvgAttributeUtils.HRef;
 
-                if (AttributesTable.TryGetValue(attrInfo.Id, out var attrValue))
-                    return attrValue as SvgEav<SvgTransform, SvgElementRadialGradient>;
+            if (AttributesTable.TryGetValue(attrInfo.Id, out var attrValue))
+                return attrValue as SvgEavString<SvgElementRadialGradient>;
 
-                var attrValue1 = new SvgEav<SvgTransform, SvgElementRadialGradient>(this, attrInfo);
-                AttributesTable.Add(attrInfo.Id, attrValue1);
+            var attrValue1 = new SvgEavString<SvgElementRadialGradient>(this, attrInfo);
+            AttributesTable.Add(attrInfo.Id, attrValue1);
 
-                return attrValue1;
-            }
+            return attrValue1;
         }
-
-        public SvgEav<SvgValueGradientSpreadMethod, SvgElementRadialGradient> GradientSpreadMethod
-        {
-            get
-            {
-                var attrInfo = SvgAttributeUtils.GradientSpreadMethod;
-
-                if (AttributesTable.TryGetValue(attrInfo.Id, out var attrValue))
-                    return attrValue as SvgEav<SvgValueGradientSpreadMethod, SvgElementRadialGradient>;
-
-                var attrValue1 = new SvgEav<SvgValueGradientSpreadMethod, SvgElementRadialGradient>(this, attrInfo);
-                AttributesTable.Add(attrInfo.Id, attrValue1);
-
-                return attrValue1;
-            }
-        }
-
-        public SvgEavString<SvgElementRadialGradient> HRef
-        {
-            get
-            {
-                var attrInfo = SvgAttributeUtils.HRef;
-
-                if (AttributesTable.TryGetValue(attrInfo.Id, out var attrValue))
-                    return attrValue as SvgEavString<SvgElementRadialGradient>;
-
-                var attrValue1 = new SvgEavString<SvgElementRadialGradient>(this, attrInfo);
-                AttributesTable.Add(attrInfo.Id, attrValue1);
-
-                return attrValue1;
-            }
-        }
+    }
 
 
-        private SvgElementRadialGradient()
-        {
-        }
+    private SvgElementRadialGradient()
+    {
+    }
 
 
-        public SvgElementRadialGradient SetFocalCenter(double centerX, double centerY)
-        {
-            FocalCenterX.Length = centerX;
-            FocalCenterY.Length = centerY;
+    public SvgElementRadialGradient SetFocalCenter(double centerX, double centerY)
+    {
+        FocalCenterX.Length = centerX;
+        FocalCenterY.Length = centerY;
 
-            return this;
-        }
+        return this;
+    }
 
-        public SvgElementRadialGradient SetFocalCenter(double centerX, double centerY, SvgLengthUnit unit)
-        {
-            FocalCenterX.SetTo(centerX, unit);
-            FocalCenterY.SetTo(centerY, unit);
+    public SvgElementRadialGradient SetFocalCenter(double centerX, double centerY, SvgLengthUnit unit)
+    {
+        FocalCenterX.SetTo(centerX, unit);
+        FocalCenterY.SetTo(centerY, unit);
 
-            return this;
-        }
+        return this;
+    }
 
-        public SvgElementRadialGradient SetLargestCircleCenter(double centerX, double centerY)
-        {
-            CenterX.Length = centerX;
-            CenterY.Length = centerY;
+    public SvgElementRadialGradient SetLargestCircleCenter(double centerX, double centerY)
+    {
+        CenterX.Length = centerX;
+        CenterY.Length = centerY;
 
-            return this;
-        }
+        return this;
+    }
 
-        public SvgElementRadialGradient SetLargestCircleCenter(double centerX, double centerY, SvgLengthUnit unit)
-        {
-            CenterX.SetTo(centerX, unit);
-            CenterY.SetTo(centerY, unit);
+    public SvgElementRadialGradient SetLargestCircleCenter(double centerX, double centerY, SvgLengthUnit unit)
+    {
+        CenterX.SetTo(centerX, unit);
+        CenterY.SetTo(centerY, unit);
 
-            return this;
-        }
+        return this;
+    }
 
-        public SvgElementRadialGradient SetLargestCircle(double centerX, double centerY, double radius)
-        {
-            CenterX.Length = centerX;
-            CenterY.Length = centerY;
-            Radius.Length = radius;
+    public SvgElementRadialGradient SetLargestCircle(double centerX, double centerY, double radius)
+    {
+        CenterX.Length = centerX;
+        CenterY.Length = centerY;
+        Radius.Length = radius;
 
-            return this;
-        }
+        return this;
+    }
 
-        public SvgElementRadialGradient SetLargestCircle(double centerX, double centerY, double radius, SvgLengthUnit unit)
-        {
-            CenterX.SetTo(centerX, unit);
-            CenterY.SetTo(centerY, unit);
-            Radius.SetTo(radius, unit);
+    public SvgElementRadialGradient SetLargestCircle(double centerX, double centerY, double radius, SvgLengthUnit unit)
+    {
+        CenterX.SetTo(centerX, unit);
+        CenterY.SetTo(centerY, unit);
+        Radius.SetTo(radius, unit);
 
-            return this;
-        }
+        return this;
+    }
 
 
-        public SvgElementRadialGradient AppendAbsoluteStop(double offset, Color color)
-        {
-            Contents.Append(
-                SvgElementGradientStop
-                    .Create()
-                    .SetAbsoluteStop(offset, color)
-            );
+    public SvgElementRadialGradient AppendAbsoluteStop(double offset, Color color)
+    {
+        Contents.Append(
+            SvgElementGradientStop
+                .Create()
+                .SetAbsoluteStop(offset, color)
+        );
 
-            return this;
-        }
+        return this;
+    }
 
-        public SvgElementRadialGradient AppendAbsoluteStop(double offset, Color color, double opacity)
-        {
-            Contents.Append(
-                SvgElementGradientStop
-                    .Create()
-                    .SetAbsoluteStop(offset, color, opacity)
-            );
+    public SvgElementRadialGradient AppendAbsoluteStop(double offset, Color color, double opacity)
+    {
+        Contents.Append(
+            SvgElementGradientStop
+                .Create()
+                .SetAbsoluteStop(offset, color, opacity)
+        );
 
-            return this;
-        }
+        return this;
+    }
 
-        public SvgElementRadialGradient AppendRelativeStop(double offset, Color color)
-        {
-            Contents.Append(
-                SvgElementGradientStop
-                    .Create()
-                    .SetRelativeStop(offset, color)
-            );
+    public SvgElementRadialGradient AppendRelativeStop(double offset, Color color)
+    {
+        Contents.Append(
+            SvgElementGradientStop
+                .Create()
+                .SetRelativeStop(offset, color)
+        );
 
-            return this;
-        }
+        return this;
+    }
 
-        public SvgElementRadialGradient AppendRelativeStop(double offset, Color color, double opacity)
-        {
-            Contents.Append(
-                SvgElementGradientStop
-                    .Create()
-                    .SetRelativeStop(offset, color, opacity)
-            );
+    public SvgElementRadialGradient AppendRelativeStop(double offset, Color color, double opacity)
+    {
+        Contents.Append(
+            SvgElementGradientStop
+                .Create()
+                .SetRelativeStop(offset, color, opacity)
+        );
 
-            return this;
-        }
+        return this;
+    }
 
-        public SvgElementRadialGradient PrependAbsoluteStop(double offset, Color color)
-        {
-            Contents.Prepend(
-                SvgElementGradientStop
-                    .Create()
-                    .SetAbsoluteStop(offset, color)
-            );
+    public SvgElementRadialGradient PrependAbsoluteStop(double offset, Color color)
+    {
+        Contents.Prepend(
+            SvgElementGradientStop
+                .Create()
+                .SetAbsoluteStop(offset, color)
+        );
 
-            return this;
-        }
+        return this;
+    }
 
-        public SvgElementRadialGradient PrependAbsoluteStop(double offset, Color color, double opacity)
-        {
-            Contents.Prepend(
-                SvgElementGradientStop
-                    .Create()
-                    .SetAbsoluteStop(offset, color, opacity)
-            );
+    public SvgElementRadialGradient PrependAbsoluteStop(double offset, Color color, double opacity)
+    {
+        Contents.Prepend(
+            SvgElementGradientStop
+                .Create()
+                .SetAbsoluteStop(offset, color, opacity)
+        );
 
-            return this;
-        }
+        return this;
+    }
 
-        public SvgElementRadialGradient PrependRelativeStop(double offset, Color color)
-        {
-            Contents.Prepend(
-                SvgElementGradientStop
-                    .Create()
-                    .SetRelativeStop(offset, color)
-            );
+    public SvgElementRadialGradient PrependRelativeStop(double offset, Color color)
+    {
+        Contents.Prepend(
+            SvgElementGradientStop
+                .Create()
+                .SetRelativeStop(offset, color)
+        );
 
-            return this;
-        }
+        return this;
+    }
 
-        public SvgElementRadialGradient PrependRelativeStop(double offset, Color color, double opacity)
-        {
-            Contents.Prepend(
-                SvgElementGradientStop
-                    .Create()
-                    .SetRelativeStop(offset, color, opacity)
-            );
+    public SvgElementRadialGradient PrependRelativeStop(double offset, Color color, double opacity)
+    {
+        Contents.Prepend(
+            SvgElementGradientStop
+                .Create()
+                .SetRelativeStop(offset, color, opacity)
+        );
 
-            return this;
-        }
+        return this;
+    }
 
-        public SvgElementRadialGradient InsertAbsoluteStop(int index, double offset, Color color)
-        {
-            Contents.Insert(
-                index,
-                SvgElementGradientStop
-                    .Create()
-                    .SetAbsoluteStop(offset, color)
-            );
+    public SvgElementRadialGradient InsertAbsoluteStop(int index, double offset, Color color)
+    {
+        Contents.Insert(
+            index,
+            SvgElementGradientStop
+                .Create()
+                .SetAbsoluteStop(offset, color)
+        );
 
-            return this;
-        }
+        return this;
+    }
 
-        public SvgElementRadialGradient InsertAbsoluteStop(int index, double offset, Color color, double opacity)
-        {
-            Contents.Insert(
-                index,
-                SvgElementGradientStop
-                    .Create()
-                    .SetAbsoluteStop(offset, color, opacity)
-            );
+    public SvgElementRadialGradient InsertAbsoluteStop(int index, double offset, Color color, double opacity)
+    {
+        Contents.Insert(
+            index,
+            SvgElementGradientStop
+                .Create()
+                .SetAbsoluteStop(offset, color, opacity)
+        );
 
-            return this;
-        }
+        return this;
+    }
 
-        public SvgElementRadialGradient InsertRelativeStop(int index, double offset, Color color)
-        {
-            Contents.Insert(
-                index,
-                SvgElementGradientStop
-                    .Create()
-                    .SetRelativeStop(offset, color)
-            );
+    public SvgElementRadialGradient InsertRelativeStop(int index, double offset, Color color)
+    {
+        Contents.Insert(
+            index,
+            SvgElementGradientStop
+                .Create()
+                .SetRelativeStop(offset, color)
+        );
 
-            return this;
-        }
+        return this;
+    }
 
-        public SvgElementRadialGradient InsertRelativeStop(int index, double offset, Color color, double opacity)
-        {
-            Contents.Insert(
-                index,
-                SvgElementGradientStop
-                    .Create()
-                    .SetRelativeStop(offset, color, opacity)
-            );
+    public SvgElementRadialGradient InsertRelativeStop(int index, double offset, Color color, double opacity)
+    {
+        Contents.Insert(
+            index,
+            SvgElementGradientStop
+                .Create()
+                .SetRelativeStop(offset, color, opacity)
+        );
 
-            return this;
-        }
+        return this;
     }
 }

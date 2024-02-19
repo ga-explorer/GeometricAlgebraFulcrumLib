@@ -1,15 +1,14 @@
-﻿namespace WebComposerLib.Html.Media
+﻿namespace WebComposerLib.Html.Media;
+
+public sealed class WclHtmlImageDataUrlFromLaTeX :
+    WclHtmlImageUrl
 {
-    public sealed class WclHtmlImageDataUrlFromLaTeX :
-        WclHtmlImageUrl
+    public string LaTeXCode { get; }
+
+
+    internal WclHtmlImageDataUrlFromLaTeX(string key, string? latexCode, int marginSize, Color backgroundColor)
+        : base(key, marginSize, backgroundColor)
     {
-        public string LaTeXCode { get; }
-
-
-        internal WclHtmlImageDataUrlFromLaTeX(string key, string? latexCode, int marginSize, Color backgroundColor)
-            : base(key, marginSize, backgroundColor)
-        {
-            LaTeXCode = latexCode ?? string.Empty;
-        }
+        LaTeXCode = latexCode ?? string.Empty;
     }
 }

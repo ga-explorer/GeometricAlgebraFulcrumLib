@@ -1,47 +1,46 @@
 ﻿using System.Text;
 
-namespace TextComposerLib.Text.Structured
+namespace TextComposerLib.Text.Structured;
+
+public sealed class StructuredTextItem
 {
-    public sealed class StructuredTextItem
+    public static StructuredTextItem Empty { get; private set; }
+
+    static StructuredTextItem()
     {
-        public static StructuredTextItem Empty { get; private set; }
-
-        static StructuredTextItem()
-        {
-            Empty = new StructuredTextItem(string.Empty);
-        }
+        Empty = new StructuredTextItem(string.Empty);
+    }
 
 
-        public string Prefix { get; }
+    public string Prefix { get; }
 
-        public string Suffix { get; }
+    public string Suffix { get; }
 
-        public string Text { get; }
-
-
-        public StructuredTextItem(string text)
-        {
-            Prefix = string.Empty;
-            Suffix = string.Empty;
-            Text = text ?? string.Empty;
-        }
-
-        public StructuredTextItem(string prefix, string text, string suffix)
-        {
-            Prefix = prefix ?? string.Empty;
-            Suffix = suffix ?? string.Empty;
-            Text = text ?? string.Empty;
-        }
+    public string Text { get; }
 
 
-        public override string ToString()
-        {
-            return 
-                new StringBuilder(Prefix.Length + Text.Length + Suffix.Length)
+    public StructuredTextItem(string text)
+    {
+        Prefix = string.Empty;
+        Suffix = string.Empty;
+        Text = text ?? string.Empty;
+    }
+
+    public StructuredTextItem(string prefix, string text, string suffix)
+    {
+        Prefix = prefix ?? string.Empty;
+        Suffix = suffix ?? string.Empty;
+        Text = text ?? string.Empty;
+    }
+
+
+    public override string ToString()
+    {
+        return 
+            new StringBuilder(Prefix.Length + Text.Length + Suffix.Length)
                 .Append(Prefix)
                 .Append(Text)
                 .Append(Suffix)
                 .ToString();
-        }
     }
 }

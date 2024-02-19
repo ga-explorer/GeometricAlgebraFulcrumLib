@@ -1,6 +1,5 @@
-﻿namespace CodeComposerLib.SyntaxTree
+﻿namespace CodeComposerLib.SyntaxTree;
+
+public abstract class SteSyntaxElement : ISyntaxTreeElement
 {
-    public abstract class SteSyntaxElement : ISyntaxTreeElement
-    {
-    }
 }

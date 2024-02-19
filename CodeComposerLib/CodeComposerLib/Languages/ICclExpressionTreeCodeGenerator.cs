@@ -1,10 +1,9 @@
 ﻿using CodeComposerLib.SyntaxTree.Expressions;
 
-namespace CodeComposerLib.Languages
+namespace CodeComposerLib.Languages;
+
+public interface ICclExpressionTreeCodeGenerator : 
+    ICclLanguageCodeGenerator
 {
-    public interface ICclExpressionTreeCodeGenerator : 
-        ICclLanguageCodeGenerator
-    {
-        void Visit(SteExpression code);
-    }
+    void Visit(SteExpression code);
 }

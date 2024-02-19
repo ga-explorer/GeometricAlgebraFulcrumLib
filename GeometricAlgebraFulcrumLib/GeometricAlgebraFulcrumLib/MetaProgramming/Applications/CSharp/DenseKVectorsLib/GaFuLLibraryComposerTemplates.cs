@@ -1,10 +1,10 @@
-﻿namespace GeometricAlgebraFulcrumLib.MetaProgramming.Applications.CSharp.DenseKVectorsLib
+﻿namespace GeometricAlgebraFulcrumLib.MetaProgramming.Applications.CSharp.DenseKVectorsLib;
+
+public sealed partial class GaFuLLibraryComposer
 {
-    public sealed partial class GaFuLLibraryComposer
-    {
-        #region GeoClcCode
-        internal const string GeoClcCodeTemplates =
-@"
+    #region GeoClcCode
+    internal const string GeoClcCodeTemplates =
+        @"
 delimiters < >
 
 begin factor_struct_member
@@ -115,10 +115,10 @@ begin
 end
 end sdf_normal_macro
 ";
-        #endregion
+    #endregion
 
 
-        //        #region General
+    //        #region General
 //        internal const string GeneralTemplates =
 //@"
 //delimiters #
@@ -145,10 +145,10 @@ end sdf_normal_macro
 //";
 //        #endregion
 
-        #region Frame Utils
+    #region Frame Utils
 
-        internal const string FrameUtilsTemplates =
-@"
+    internal const string FrameUtilsTemplates =
+        @"
 delimiters #
 
 begin frame_utils
@@ -281,11 +281,11 @@ namespace #signature#
 }
 end frame_utils
 ";
-        #endregion
+    #endregion
 
-        #region KVector
-        internal const string KVectorTemplates =
-@"
+    #region KVector
+    internal const string KVectorTemplates =
+        @"
 delimiters #
 
 begin kvector_file_start
@@ -659,11 +659,11 @@ public override string ToString()
 }
 end kvector
 ";
-        #endregion
+    #endregion
 
-        #region KVector Static
-        internal const string KVectorStaticTemplates =
-            @"
+    #region KVector Static
+    internal const string KVectorStaticTemplates =
+        @"
 delimiters #
 
 begin static_basisblade_name
@@ -688,11 +688,11 @@ private static string[][] BasisBladesNamesArray { get; }
 
 end static
 ";
-        #endregion
+    #endregion
 
-        #region Multivector
-        internal const string MultivectorTemplates =
-@"
+    #region Multivector
+    internal const string MultivectorTemplates =
+        @"
 delimiters #
 
 begin multivector
@@ -1029,11 +1029,11 @@ namespace #signature#
 }
 end multivector
 ";
-        #endregion
+    #endregion
 
-        #region Vector
-        internal const string VectorTemplates =
-@"
+    #region Vector
+    internal const string VectorTemplates =
+        @"
 delimiters #
 
 begin vector
@@ -1179,10 +1179,10 @@ namespace #signature#
 
 end factored_blade
 ";
-        #endregion
+    #endregion
 
-        #region Outermorphism
-        internal const string OutermorphismTemplates = @"
+    #region Outermorphism
+    internal const string OutermorphismTemplates = @"
 delimiters #
 
 begin om_file_start
@@ -1359,10 +1359,10 @@ public static #signature#Outermorphism operator -(#signature#Outermorphism om)
 
 end outermorphism
 ";
-        #endregion
+    #endregion
 
-        #region KVector Equals
-        internal const string KVectorEqualsTemplates = @"
+    #region KVector Equals
+    internal const string KVectorEqualsTemplates = @"
 delimiters #
 
 begin equals_case
@@ -1417,10 +1417,10 @@ public bool Equals(#signature#kVector blade2)
 
 end main_equals
 ";
-        #endregion
+    #endregion
 
-        #region KVector IsZero
-        internal const string KVectorIsZeroTemplates = @"
+    #region KVector IsZero
+    internal const string KVectorIsZeroTemplates = @"
 delimiters #
 
 begin iszero_case
@@ -1497,10 +1497,10 @@ public #signature#kVector TrimNearZero
 }
 
 end main_iszero";
-        #endregion
+    #endregion
 
-        #region KVector Involutions
-        internal const string KVectorInvolutionsTemplates = @"
+    #region KVector Involutions
+    internal const string KVectorInvolutionsTemplates = @"
 delimiters #
 
 begin negative_case
@@ -1551,11 +1551,11 @@ public #signature#kVector #name#
 
 end main_involution
 ";
-        #endregion
+    #endregion
 
-        #region KVector Norm
-        internal const string KVectorNormTemplates =
-@"
+    #region KVector Norm
+    internal const string KVectorNormTemplates =
+        @"
 delimiters #
 
 begin norm
@@ -1595,20 +1595,20 @@ public #double# #name#
 
 end main_norm
 ";
-        #endregion
+    #endregion
 
-        #region KVector Misc
+    #region KVector Misc
 
-        internal const string KVectorSdfTemplates = 
-@"
+    internal const string KVectorSdfTemplates = 
+        @"
 delimiters #
 
 ";
-        #endregion
+    #endregion
 
-        #region KVector Misc
-        internal const string KVectorMiscTemplates =
-@"
+    #region KVector Misc
+    internal const string KVectorMiscTemplates =
+        @"
 delimiters #
 
 begin add_case
@@ -1852,11 +1852,11 @@ public #signature#kVector EuclideanDual
 
 end misc_main
 ";
-        #endregion
+    #endregion
 
-        #region KVector BilinearProducts
-        internal const string KVectorBilinearProductsTemplates =
-@"
+    #region KVector BilinearProducts
+    internal const string KVectorBilinearProductsTemplates =
+        @"
 delimiters #
 
 begin bilinearproduct
@@ -2090,12 +2090,12 @@ public static #signature#kVector OP(#signature#Vector[] vectors)
 
 end op_vectors_main
 ";
-        #endregion
+    #endregion
 
-        #region KVector Factorization
+    #region KVector Factorization
 
-        internal const string KVectorFactorizationTemplates =
-@"
+    internal const string KVectorFactorizationTemplates =
+        @"
 delimiters #
 
 begin factor
@@ -2195,6 +2195,5 @@ public #signature#FactoredBlade Factor()
 
 end factor_main
 ";
-        #endregion
-    }
+    #endregion
 }

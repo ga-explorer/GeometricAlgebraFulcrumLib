@@ -1,85 +1,84 @@
 ﻿using CodeComposerLib.HTMLold.Elements;
 using CodeComposerLib.HTMLold.Values;
 
-namespace CodeComposerLib.HTMLold.Attributes
+namespace CodeComposerLib.HTMLold.Attributes;
+
+/// <summary>
+/// http://docs.w3cub.com/svg/content_type/#Angle
+/// </summary>
+/// <typeparam name="TParentElement"></typeparam>
+public sealed class HtmlEavAngle<TParentElement>
+    : HtmlElementAttributeValue<TParentElement> where TParentElement : HtmlElement
 {
-    /// <summary>
-    /// http://docs.w3cub.com/svg/content_type/#Angle
-    /// </summary>
-    /// <typeparam name="TParentElement"></typeparam>
-    public sealed class HtmlEavAngle<TParentElement>
-        : HtmlElementAttributeValue<TParentElement> where TParentElement : HtmlElement
+    private double _angle;
+    public double Angle
     {
-        private double _angle;
-        public double Angle
+        get { return _angle; }
+        set
         {
-            get { return _angle; }
-            set
-            {
-                _angle = value;
-                IsValueComputed = true;
-            }
+            _angle = value;
+            IsValueComputed = true;
         }
+    }
 
-        private HtmlValueAngleUnit _unit = HtmlValueAngleUnit.None;
-        public HtmlValueAngleUnit Unit
+    private HtmlValueAngleUnit _unit = HtmlValueAngleUnit.None;
+    public HtmlValueAngleUnit Unit
+    {
+        get { return _unit; }
+        set
         {
-            get { return _unit; }
-            set
-            {
-                _unit = value ?? HtmlValueAngleUnit.None;
-                IsValueComputed = true;
-            }
+            _unit = value ?? HtmlValueAngleUnit.None;
+            IsValueComputed = true;
         }
+    }
 
-        protected override string ValueComputedText
-            => _angle.ToHtmlAngleText(_unit);
-
-
-        internal HtmlEavAngle(TParentElement parentElement, HtmlAttributeInfo attributeInfo)
-            : base(parentElement, attributeInfo)
-        {
-        }
+    protected override string ValueComputedText
+        => _angle.ToHtmlAngleText(_unit);
 
 
-        public override IHtmlAttributeValue CreateCopy()
-        {
-            throw new System.NotImplementedException();
-        }
+    internal HtmlEavAngle(TParentElement parentElement, HtmlAttributeInfo attributeInfo)
+        : base(parentElement, attributeInfo)
+    {
+    }
 
-        public override IHtmlAttributeValue UpdateFrom(IHtmlAttributeValue sourceAttributeValue)
-        {
-            throw new System.NotImplementedException();
-        }
 
-        public TParentElement SetTo(double angle)
-        {
-            Angle = angle;
-            Unit = HtmlValueAngleUnit.None;
+    public override IHtmlAttributeValue CreateCopy()
+    {
+        throw new System.NotImplementedException();
+    }
 
-            return ParentElement;
-        }
+    public override IHtmlAttributeValue UpdateFrom(IHtmlAttributeValue sourceAttributeValue)
+    {
+        throw new System.NotImplementedException();
+    }
 
-        public TParentElement SetTo(double angle, HtmlValueAngleUnit unit)
-        {
-            Angle = angle;
-            Unit = unit;
+    public TParentElement SetTo(double angle)
+    {
+        Angle = angle;
+        Unit = HtmlValueAngleUnit.None;
 
-            return ParentElement;
-        }
+        return ParentElement;
+    }
 
-        public TParentElement SetToAuto()
-        {
-            ValueStoredText = "auto";
+    public TParentElement SetTo(double angle, HtmlValueAngleUnit unit)
+    {
+        Angle = angle;
+        Unit = unit;
 
-            return ParentElement;
-        }
+        return ParentElement;
+    }
 
-        public TParentElement SetToAutoStartReverse()
-        {
-            ValueStoredText = "auto-start-reverse";
+    public TParentElement SetToAuto()
+    {
+        ValueStoredText = "auto";
 
-            return ParentElement;
-        }
+        return ParentElement;
+    }
+
+    public TParentElement SetToAutoStartReverse()
+    {
+        ValueStoredText = "auto-start-reverse";
+
+        return ParentElement;
     }
 }

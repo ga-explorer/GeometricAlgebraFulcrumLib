@@ -1,15 +1,14 @@
-﻿namespace CodeComposerLib.HTMLold.Attributes
+﻿namespace CodeComposerLib.HTMLold.Attributes;
+
+public interface IHtmlAttributeValue
 {
-    public interface IHtmlAttributeValue
-    {
-        string ValueText { get; }
+    string ValueText { get; }
 
-        HtmlAttributeInfo AttributeInfo { get; }
+    HtmlAttributeInfo AttributeInfo { get; }
 
-        int AttributeId { get; }
+    int AttributeId { get; }
 
-        string AttributeName { get; }
+    string AttributeName { get; }
 
 
-    }
 }

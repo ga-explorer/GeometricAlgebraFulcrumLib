@@ -1,23 +1,22 @@
 ﻿using GeometricAlgebraFulcrumLib.Lite.Geometry.BasicShapes.Lines.Immutable;
 
-namespace GeometricAlgebraFulcrumLib.Lite.Geometry.BasicShapes.Lines
+namespace GeometricAlgebraFulcrumLib.Lite.Geometry.BasicShapes.Lines;
+
+public interface ILine3D : IGeometricElement
 {
-    public interface ILine3D : IGeometricElement
-    {
-        double OriginX { get; }
+    double OriginX { get; }
 
-        double OriginY { get; }
+    double OriginY { get; }
 
-        double OriginZ { get; }
+    double OriginZ { get; }
 
 
-        double DirectionX { get; }
+    double DirectionX { get; }
 
-        double DirectionY { get; }
+    double DirectionY { get; }
 
-        double DirectionZ { get; }
+    double DirectionZ { get; }
 
 
-        Line3D ToLine();
-    }
+    Line3D ToLine();
 }

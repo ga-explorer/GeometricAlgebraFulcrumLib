@@ -1,17 +1,16 @@
 ﻿using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Restricted.Float64.LinearMaps.Outermorphisms;
 using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Restricted.Float64.Multivectors;
 
-namespace GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Restricted.Float64.LinearMaps.Versors
+namespace GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Restricted.Float64.LinearMaps.Versors;
+
+public interface IRGaFloat64Versor : 
+    IRGaFloat64Automorphism
 {
-    public interface IRGaFloat64Versor : 
-        IRGaFloat64Automorphism
-    {
-        IRGaFloat64Versor GetVersorInverse();
+    IRGaFloat64Versor GetVersorInverse();
 
-        RGaFloat64Multivector GetMultivector();
+    RGaFloat64Multivector GetMultivector();
 
-        RGaFloat64Multivector GetMultivectorReverse();
+    RGaFloat64Multivector GetMultivectorReverse();
 
-        RGaFloat64Multivector GetMultivectorInverse();
-    }
+    RGaFloat64Multivector GetMultivectorInverse();
 }

@@ -3,6 +3,7 @@ using System.Runtime.CompilerServices;
 using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Restricted.Float64.Multivectors;
 using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Restricted.Float64.Multivectors.Composers;
 using GeometricAlgebraFulcrumLib.Lite.Geometry.Conformal.Blades;
+using GeometricAlgebraFulcrumLib.Lite.Geometry.Conformal.Operations;
 using GeometricAlgebraFulcrumLib.Lite.LinearAlgebra.Vectors.Space2D;
 using GeometricAlgebraFulcrumLib.Lite.LinearAlgebra.Vectors.Space3D;
 using GeometricAlgebraFulcrumLib.Lite.LinearAlgebra.Vectors.SpaceND;
@@ -379,6 +380,60 @@ public static class RGaConformalEncodeIpnsFlatUtils
         );
     }
 
+    
+    /// <summary>
+    /// Convert a 3D Euclidean point and normal direction scalar into a CGA IPNS flat volume
+    /// </summary>
+    /// <param name="conformalSpace"></param>
+    /// <param name="egaPoint"></param>
+    /// <param name="egaNormal"></param>
+    /// <returns></returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static RGaConformalBlade EncodeIpnsFlatVolume(this RGaConformalSpace conformalSpace, Float64Vector3D egaPoint, double egaNormal)
+    {
+        var egaDirectionTrivector =
+            Float64Trivector3D.Create(1d / egaNormal);
+
+        return conformalSpace.EncodeIpnsFlatVolume(
+            egaPoint,
+            egaDirectionTrivector
+        );
+    }
+
+    /// <summary>
+    /// Convert a 3D Euclidean point and direction 3-blade into a CGA IPNS flat volume
+    /// </summary>
+    /// <param name="conformalSpace"></param>
+    /// <param name="egaPoint"></param>
+    /// <param name="egaTrivector"></param>
+    /// <returns></returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static RGaConformalBlade EncodeIpnsFlatVolume(this RGaConformalSpace conformalSpace, Float64Vector3D egaPoint, Float64Trivector3D egaTrivector)
+    {
+        return conformalSpace.EncodeIpnsFlatVolume(
+            egaPoint.ToRGaFloat64Vector(),
+            egaTrivector.ToRGaFloat64Trivector()
+        );
+    }
+    
+    /// <summary>
+    /// Convert a Euclidean point and direction 2-blade into a CGA IPNS flat plane
+    /// </summary>
+    /// <param name="conformalSpace"></param>
+    /// <param name="egaPoint"></param>
+    /// <param name="egaDirection"></param>
+    /// <returns></returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static RGaConformalBlade EncodeIpnsFlatVolume(this RGaConformalSpace conformalSpace, RGaFloat64Vector egaPoint, RGaFloat64HigherKVector egaDirection)
+    {
+        return egaDirection
+            .EncodeEGaBlade(conformalSpace)
+            .DivideByNorm()
+            .EGaDual()
+            .GradeInvolution()
+            .TranslateBy(egaPoint);
+    }
+
 
     /// <summary>
     /// Convert a normal vector and distance to origin into a CGA IPNS flat hyper-plane
@@ -454,7 +509,7 @@ public static class RGaConformalEncodeIpnsFlatUtils
             egaPointArray
                 .Skip(1)
                 .Select(egaPoint2 => egaPoint2 - egaPoint1)
-                .Op();
+                .Op(conformalSpace.Processor);
 
         return conformalSpace.EncodeIpnsFlat(
             egaPoint1,
@@ -478,7 +533,7 @@ public static class RGaConformalEncodeIpnsFlatUtils
             egaPointList
                 .Skip(1)
                 .Select(egaPoint2 => egaPoint2 - egaPoint1)
-                .Op();
+                .Op(conformalSpace.Processor);
 
         return conformalSpace.EncodeIpnsFlat(
             egaPoint1,

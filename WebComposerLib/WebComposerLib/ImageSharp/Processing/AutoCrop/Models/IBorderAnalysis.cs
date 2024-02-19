@@ -1,10 +1,9 @@
-﻿namespace WebComposerLib.ImageSharp.Processing.AutoCrop.Models
+﻿namespace WebComposerLib.ImageSharp.Processing.AutoCrop.Models;
+
+public interface IBorderAnalysis
 {
-    public interface IBorderAnalysis
-    {
-        int Colors { get; }
-        Color Background { get; }
-        float BucketRatio { get; }
-        bool Success { get; }
-    }
+    int Colors { get; }
+    Color Background { get; }
+    float BucketRatio { get; }
+    bool Success { get; }
 }

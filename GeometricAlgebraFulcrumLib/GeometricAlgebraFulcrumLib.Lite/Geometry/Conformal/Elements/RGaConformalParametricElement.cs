@@ -1,9 +1,9 @@
 ﻿using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using DataStructuresLib.Basic;
-using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Restricted.Float64.Multivectors;
 using GeometricAlgebraFulcrumLib.Lite.Geometry.Conformal.Blades;
 using GeometricAlgebraFulcrumLib.Lite.Geometry.Conformal.Decoding;
+using GeometricAlgebraFulcrumLib.Lite.Geometry.Conformal.Encoding;
 using GeometricAlgebraFulcrumLib.Lite.Geometry.Conformal.Visualizer;
 using GeometricAlgebraFulcrumLib.Lite.Geometry.Parametric.Space1D.Angles;
 using GeometricAlgebraFulcrumLib.Lite.Geometry.Parametric.Space1D.Scalars;
@@ -16,7 +16,6 @@ using GeometricAlgebraFulcrumLib.Lite.Geometry.Parametric.Space3D.Trivectors;
 using GeometricAlgebraFulcrumLib.Lite.LinearAlgebra;
 using GeometricAlgebraFulcrumLib.Lite.LinearAlgebra.Vectors.Space2D;
 using GeometricAlgebraFulcrumLib.Lite.LinearAlgebra.Vectors.Space3D;
-using GeometricAlgebraFulcrumLib.Lite.LinearAlgebra.Vectors.SpaceND;
 using GeometricAlgebraFulcrumLib.Lite.ScalarAlgebra;
 
 namespace GeometricAlgebraFulcrumLib.Lite.Geometry.Conformal.Elements;
@@ -641,118 +640,5 @@ public sealed class RGaConformalParametricElement :
             )
         );
     }
-
     
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public RGaConformalParametricElement Intersect(RGaConformalElement element2)
-    {
-        return new RGaConformalParametricElement(
-            ConformalSpace,
-            ParameterRange,
-            t => GetElement(t).Intersect(element2)
-        );
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public RGaConformalParametricElement Intersect(RGaConformalParametricElement element2)
-    {
-        return new RGaConformalParametricElement(
-            ConformalSpace,
-            ParameterRange.Intersect(element2.ParameterRange),
-            t => GetElement(t).Intersect(element2.GetElement(t))
-        );
-    }
-
-    
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public RGaConformalParametricElement ProjectOn(RGaConformalElement element2)
-    {
-        return new RGaConformalParametricElement(
-            ConformalSpace,
-            ParameterRange,
-            t => GetElement(t).ProjectOn(element2)
-        );
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public RGaConformalParametricElement ProjectOn(RGaConformalParametricElement element2)
-    {
-        return new RGaConformalParametricElement(
-            ConformalSpace,
-            ParameterRange.Intersect(element2.ParameterRange),
-            t => GetElement(t).ProjectOn(element2.GetElement(t))
-        );
-    }
-    
-    
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public RGaConformalParametricElement ReflectOn(RGaConformalElement element2)
-    {
-        return new RGaConformalParametricElement(
-            ConformalSpace,
-            ParameterRange,
-            t => GetElement(t).ReflectOn(element2)
-        );
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public RGaConformalParametricElement ReflectOn(RGaConformalParametricElement element2)
-    {
-        return new RGaConformalParametricElement(
-            ConformalSpace,
-            ParameterRange.Intersect(element2.ParameterRange),
-            t => GetElement(t).ReflectOn(element2.GetElement(t))
-        );
-    }
-    
-    
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public RGaConformalParametricElement TranslateElementBy(Float64Vector2D egaVector)
-    {
-        return new RGaConformalParametricElement(
-            ConformalSpace,
-            ParameterRange,
-            t => GetElement(t).TranslateElementBy(egaVector)
-        );
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public RGaConformalParametricElement TranslateElementBy(Float64Vector3D egaVector)
-    {
-        return new RGaConformalParametricElement(
-            ConformalSpace,
-            ParameterRange,
-            t => GetElement(t).TranslateElementBy(egaVector)
-        );
-    }
-    
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public RGaConformalParametricElement TranslateElementBy(Float64Vector egaVector)
-    {
-        return new RGaConformalParametricElement(
-            ConformalSpace,
-            ParameterRange,
-            t => GetElement(t).TranslateElementBy(egaVector)
-        );
-    }
-    
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public RGaConformalParametricElement TranslateElementBy(RGaFloat64Vector egaVector)
-    {
-        return new RGaConformalParametricElement(
-            ConformalSpace,
-            ParameterRange,
-            t => GetElement(t).TranslateElementBy(egaVector)
-        );
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public RGaConformalParametricElement TranslateElementBy(IParametricCurve3D egaVector)
-    {
-        return new RGaConformalParametricElement(
-            ConformalSpace,
-            ParameterRange.Intersect(egaVector.ParameterRange),
-            t => GetElement(t).TranslateElementBy(egaVector.GetPoint(t))
-        );
-    }
 }

@@ -1,34 +1,33 @@
-﻿namespace TextComposerLib.Text.Parametric
+﻿namespace TextComposerLib.Text.Parametric;
+
+internal sealed class PtcLineSegment
 {
-    internal sealed class PtcLineSegment
+    internal string SegmentText { get; }
+
+    internal PtcParameter SegmentParameter { get; }
+
+    internal bool IsFixed => SegmentParameter == null;
+
+    internal bool IsParametric => SegmentParameter != null;
+
+
+    internal PtcLineSegment(string segmentText)
     {
-        internal string SegmentText { get; }
+        SegmentText = segmentText;
 
-        internal PtcParameter SegmentParameter { get; }
+        SegmentParameter = null;
+    }
 
-        internal bool IsFixed => SegmentParameter == null;
+    internal PtcLineSegment(PtcParameter segmentParameter)
+    {
+        SegmentText = segmentParameter.ParameterPlaceholder;
 
-        internal bool IsParametric => SegmentParameter != null;
-
-
-        internal PtcLineSegment(string segmentText)
-        {
-            SegmentText = segmentText;
-
-            SegmentParameter = null;
-        }
-
-        internal PtcLineSegment(PtcParameter segmentParameter)
-        {
-            SegmentText = segmentParameter.ParameterPlaceholder;
-
-            SegmentParameter = segmentParameter;
-        }
+        SegmentParameter = segmentParameter;
+    }
 
 
-        public override string ToString()
-        {
-            return SegmentText;
-        }
+    public override string ToString()
+    {
+        return SegmentText;
     }
 }

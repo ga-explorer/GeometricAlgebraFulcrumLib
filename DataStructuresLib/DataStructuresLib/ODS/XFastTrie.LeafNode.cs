@@ -1,11 +1,10 @@
-﻿namespace DataStructuresLib.ODS
+﻿namespace DataStructuresLib.ODS;
+
+partial class XFastTrie<T>
 {
-    partial class XFastTrie<T>
+    internal class LeafNode : XFastNode
     {
-        internal class LeafNode : XFastNode
-        {
-            internal uint Key;
-            internal T Value;
-        }
+        internal uint Key;
+        internal T Value;
     }
 }

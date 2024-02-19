@@ -1,8 +1,7 @@
-﻿namespace GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.Xeogl.Constants
+﻿namespace GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.Xeogl.Constants;
+
+public enum XeoglWindingDirection
 {
-    public enum XeoglWindingDirection
-    {
-        CounterClockwise = 0,
-        Clockwise = 1
-    }
+    CounterClockwise = 0,
+    Clockwise = 1
 }

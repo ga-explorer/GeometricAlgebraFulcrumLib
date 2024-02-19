@@ -2,54 +2,53 @@
 using System.Collections;
 using System.Collections.Generic;
 
-namespace DataStructuresLib.Collections
+namespace DataStructuresLib.Collections;
+
+public sealed class SingleItemReadOnlyList<T> : 
+    IReadOnlyList<T>
 {
-    public sealed class SingleItemReadOnlyList<T> : 
-        IReadOnlyList<T>
+    public T ItemValue { get; }
+
+    public int ItemIndex { get; }
+
+    public int Count { get; }
+
+    public T this[int index] 
+        => index == ItemIndex 
+            ? ItemValue 
+            : default;
+
+
+    public SingleItemReadOnlyList(int count, int itemIndex, T itemValue)
     {
-        public T ItemValue { get; }
+        if (itemIndex < 0 || itemIndex >= Count)
+            throw new IndexOutOfRangeException();
 
-        public int ItemIndex { get; }
-
-        public int Count { get; }
-
-        public T this[int index] 
-            => index == ItemIndex 
-                ? ItemValue 
-                : default;
+        Count = count;
+        ItemIndex = itemIndex;
+        ItemValue = itemValue;
+    }
 
 
-        public SingleItemReadOnlyList(int count, int itemIndex, T itemValue)
-        {
-            if (itemIndex < 0 || itemIndex >= Count)
-                throw new IndexOutOfRangeException();
+    public IEnumerator<T> GetEnumerator()
+    {
+        for (var i = 0; i < ItemIndex; i++)
+            yield return default;
 
-            Count = count;
-            ItemIndex = itemIndex;
-            ItemValue = itemValue;
-        }
+        yield return ItemValue;
 
+        for (var i = ItemIndex + 1; i < Count; i++)
+            yield return default;
+    }
 
-        public IEnumerator<T> GetEnumerator()
-        {
-            for (var i = 0; i < ItemIndex; i++)
-                yield return default;
+    IEnumerator IEnumerable.GetEnumerator()
+    {
+        for (var i = 0; i < ItemIndex; i++)
+            yield return default;
 
-            yield return ItemValue;
+        yield return ItemValue;
 
-            for (var i = ItemIndex + 1; i < Count; i++)
-                yield return default;
-        }
-
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            for (var i = 0; i < ItemIndex; i++)
-                yield return default;
-
-            yield return ItemValue;
-
-            for (var i = ItemIndex + 1; i < Count; i++)
-                yield return default;
-        }
+        for (var i = ItemIndex + 1; i < Count; i++)
+            yield return default;
     }
 }

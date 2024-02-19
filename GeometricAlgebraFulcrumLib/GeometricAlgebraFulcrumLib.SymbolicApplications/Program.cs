@@ -1,10 +1,14 @@
-﻿namespace GeometricAlgebraFulcrumLib.SymbolicApplications
+﻿using GeometricAlgebraFulcrumLib.SymbolicApplications.Samples.Geometry;
+using GeometricAlgebraFulcrumLib.SymbolicApplications.Samples.PowerSystems.PowerQuality;
+
+namespace GeometricAlgebraFulcrumLib.SymbolicApplications;
+
+internal class Program
 {
-    internal class Program
+    static void Main(string[] args)
     {
-        static void Main(string[] args)
-        {
-            Console.WriteLine("Hello, World!");
-        }
+        //VoltageSags3Phase4WireSample.Execute();
+        //SnelliusPothenotProblemSample.SymbolicCGaCassini();
+        SnelliusPothenotProblemSample.GenerateCGaCollinsCode();
     }
 }

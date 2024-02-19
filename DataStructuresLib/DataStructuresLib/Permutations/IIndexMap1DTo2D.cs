@@ -1,8 +1,7 @@
-﻿namespace DataStructuresLib.Permutations
+﻿namespace DataStructuresLib.Permutations;
+
+public interface IIndexMap1DTo2D
+    : IIntegerMap1Dto2D
 {
-    public interface IIndexMap1DTo2D
-        : IIntegerMap1Dto2D
-    {
-        int IndexCount { get; }
-    }
+    int IndexCount { get; }
 }

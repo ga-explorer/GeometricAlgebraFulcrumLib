@@ -7,106 +7,105 @@ using GeometricAlgebraFulcrumLib.Lite.SignalAlgebra;
 using GeometricAlgebraFulcrumLib.Lite.SignalAlgebra.Composers;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.Multivectors.Composers;
 
-namespace GeometricAlgebraFulcrumLib.MathBase.SignalAlgebra
+namespace GeometricAlgebraFulcrumLib.MathBase.SignalAlgebra;
+
+public static class Float64SignalComposerUtils
 {
-    public static class Float64SignalComposerUtils
+    public static XGaVector<Float64Signal> MapSignalVectors(this XGaVector<Float64Signal> vectorSignal, Func<XGaFloat64Vector, XGaFloat64Vector> vectorMapping, int vSpaceDimensions)
     {
-        public static XGaVector<Float64Signal> MapSignalVectors(this XGaVector<Float64Signal> vectorSignal, Func<XGaFloat64Vector, XGaFloat64Vector> vectorMapping, int vSpaceDimensions)
+        var processor = vectorSignal.Processor;
+        var scalarSignals = vectorSignal.Scalars.ToArray();
+        var samplingRate = scalarSignals[0].SamplingRate;
+        var vectorCount = scalarSignals.Max(s => s.Count);
+
+        // Extract separate vectors from signal
+        var vectorScalarArray = new double[vectorCount][];
+
+        for (var rowIndex = 0; rowIndex < vectorCount; rowIndex++)
+            vectorScalarArray[rowIndex] = new double[vSpaceDimensions];
+
+        foreach (var (colIndex, scalarArray) in vectorSignal.IndexScalarPairs)
+            for (var rowIndex = 0; rowIndex < scalarArray.Count; rowIndex++)
+                vectorScalarArray[rowIndex][colIndex] = scalarArray[rowIndex];
+
+        // Map signal vectors
+        for (var rowIndex = 0; rowIndex < vectorCount; rowIndex++)
         {
-            var processor = vectorSignal.Processor;
-            var scalarSignals = vectorSignal.Scalars.ToArray();
-            var samplingRate = scalarSignals[0].SamplingRate;
-            var vectorCount = scalarSignals.Max(s => s.Count);
+            var scalarArray = vectorScalarArray[rowIndex];
 
-            // Extract separate vectors from signal
-            var vectorScalarArray = new double[vectorCount][];
-
-            for (var rowIndex = 0; rowIndex < vectorCount; rowIndex++)
-                vectorScalarArray[rowIndex] = new double[vSpaceDimensions];
-
-            foreach (var (colIndex, scalarArray) in vectorSignal.IndexScalarPairs)
-                for (var rowIndex = 0; rowIndex < scalarArray.Count; rowIndex++)
-                    vectorScalarArray[rowIndex][colIndex] = scalarArray[rowIndex];
-
-            // Map signal vectors
-            for (var rowIndex = 0; rowIndex < vectorCount; rowIndex++)
-            {
-                var scalarArray = vectorScalarArray[rowIndex];
-
-                var mappedVector = vectorMapping(
-                    XGaFloat64Processor.Euclidean.CreateVector(scalarArray)
-                );
-
-                for (var colIndex = 0; colIndex < vSpaceDimensions; colIndex++)
-                    scalarArray[colIndex] = mappedVector[colIndex];
-            }
-
-            // Construct mapped signal
-            var signalScalarArray = new Float64Signal[vSpaceDimensions];
+            var mappedVector = vectorMapping(
+                XGaFloat64Processor.Euclidean.CreateVector(scalarArray)
+            );
 
             for (var colIndex = 0; colIndex < vSpaceDimensions; colIndex++)
-            {
-                var scalarArray = new double[vectorCount];
-
-                for (var rowIndex = 0; rowIndex < vectorCount; rowIndex++)
-                {
-                    scalarArray[rowIndex] = vectorScalarArray[rowIndex][colIndex];
-                }
-
-                signalScalarArray[colIndex] = scalarArray.CreateSignal(samplingRate);
-            }
-
-            return processor.CreateVector(signalScalarArray);
+                scalarArray[colIndex] = mappedVector[colIndex];
         }
 
-        public static XGaVector<IReadOnlyList<T>> MapSignalVectors<T>(this XGaVector<IReadOnlyList<T>> vectorSignal, XGaProcessor<T> processor, Func<XGaVector<T>, XGaVector<T>> vectorMapping, int vSpaceDimensions)
+        // Construct mapped signal
+        var signalScalarArray = new Float64Signal[vSpaceDimensions];
+
+        for (var colIndex = 0; colIndex < vSpaceDimensions; colIndex++)
         {
-            var vectorCount = vectorSignal.Scalars.Max(s => s.Count);
-
-            // Extract separate vectors from signal
-            var vectorScalarArray = new T[vectorCount][];
+            var scalarArray = new double[vectorCount];
 
             for (var rowIndex = 0; rowIndex < vectorCount; rowIndex++)
             {
-                vectorScalarArray[rowIndex] =
-                    Enumerable
-                        .Repeat(processor.ScalarProcessor.ScalarZero, vSpaceDimensions)
-                        .ToArray();
+                scalarArray[rowIndex] = vectorScalarArray[rowIndex][colIndex];
             }
 
-            foreach (var (colIndex, scalarArray) in vectorSignal.IndexScalarPairs)
-                for (var rowIndex = 0; rowIndex < scalarArray.Count; rowIndex++)
-                    vectorScalarArray[rowIndex][colIndex] = scalarArray[rowIndex];
+            signalScalarArray[colIndex] = scalarArray.CreateSignal(samplingRate);
+        }
 
-            // Map signal vectors
-            for (var rowIndex = 0; rowIndex < vectorCount; rowIndex++)
-            {
-                var scalarArray = vectorScalarArray[rowIndex];
+        return processor.CreateVector(signalScalarArray);
+    }
 
-                var mappedVector = vectorMapping(
-                    processor.CreateVector(scalarArray)
-                );
+    public static XGaVector<IReadOnlyList<T>> MapSignalVectors<T>(this XGaVector<IReadOnlyList<T>> vectorSignal, XGaProcessor<T> processor, Func<XGaVector<T>, XGaVector<T>> vectorMapping, int vSpaceDimensions)
+    {
+        var vectorCount = vectorSignal.Scalars.Max(s => s.Count);
 
-                for (var colIndex = 0; colIndex < vSpaceDimensions; colIndex++)
-                    scalarArray[colIndex] = mappedVector[colIndex];
-            }
+        // Extract separate vectors from signal
+        var vectorScalarArray = new T[vectorCount][];
 
-            // Construct mapped signal
-            var signalScalarArray = new IReadOnlyList<T>[vSpaceDimensions];
+        for (var rowIndex = 0; rowIndex < vectorCount; rowIndex++)
+        {
+            vectorScalarArray[rowIndex] =
+                Enumerable
+                    .Repeat(processor.ScalarProcessor.ScalarZero, vSpaceDimensions)
+                    .ToArray();
+        }
+
+        foreach (var (colIndex, scalarArray) in vectorSignal.IndexScalarPairs)
+            for (var rowIndex = 0; rowIndex < scalarArray.Count; rowIndex++)
+                vectorScalarArray[rowIndex][colIndex] = scalarArray[rowIndex];
+
+        // Map signal vectors
+        for (var rowIndex = 0; rowIndex < vectorCount; rowIndex++)
+        {
+            var scalarArray = vectorScalarArray[rowIndex];
+
+            var mappedVector = vectorMapping(
+                processor.CreateVector(scalarArray)
+            );
 
             for (var colIndex = 0; colIndex < vSpaceDimensions; colIndex++)
+                scalarArray[colIndex] = mappedVector[colIndex];
+        }
+
+        // Construct mapped signal
+        var signalScalarArray = new IReadOnlyList<T>[vSpaceDimensions];
+
+        for (var colIndex = 0; colIndex < vSpaceDimensions; colIndex++)
+        {
+            var scalarArray = new T[vectorCount];
+
+            for (var rowIndex = 0; rowIndex < vectorCount; rowIndex++)
             {
-                var scalarArray = new T[vectorCount];
-
-                for (var rowIndex = 0; rowIndex < vectorCount; rowIndex++)
-                {
-                    scalarArray[rowIndex] = vectorScalarArray[rowIndex][colIndex];
-                }
-
-                signalScalarArray[colIndex] = scalarArray;
+                scalarArray[rowIndex] = vectorScalarArray[rowIndex][colIndex];
             }
 
-            return vectorSignal.Processor.CreateVector(signalScalarArray);
+            signalScalarArray[colIndex] = scalarArray;
         }
+
+        return vectorSignal.Processor.CreateVector(signalScalarArray);
     }
 }

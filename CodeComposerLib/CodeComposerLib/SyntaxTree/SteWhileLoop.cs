@@ -1,12 +1,11 @@
-﻿namespace CodeComposerLib.SyntaxTree
+﻿namespace CodeComposerLib.SyntaxTree;
+
+public class SteWhileLoop : SteSyntaxElement
 {
-    public class SteWhileLoop : SteSyntaxElement
-    {
-        public bool DoLoop { get; set; }
+    public bool DoLoop { get; set; }
 
-        public ISyntaxTreeElement LoopCondition { get; set; }
+    public ISyntaxTreeElement LoopCondition { get; set; }
 
-        public ISyntaxTreeElement LoopCode { get; set; }
+    public ISyntaxTreeElement LoopCode { get; set; }
 
-    }
 }

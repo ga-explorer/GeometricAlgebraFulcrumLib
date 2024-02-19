@@ -1,11 +1,10 @@
-﻿namespace CodeComposerLib.SyntaxTree
+﻿namespace CodeComposerLib.SyntaxTree;
+
+public class SteAssign : SteSyntaxElement
 {
-    public class SteAssign : SteSyntaxElement
-    {
-        public bool LocalAssignment { get; set; }
+    public bool LocalAssignment { get; set; }
 
-        public ISyntaxTreeElement LeftHandSide { get; set; }
+    public ISyntaxTreeElement LeftHandSide { get; set; }
 
-        public ISyntaxTreeElement RightHandSide { get; set; }
-    }
+    public ISyntaxTreeElement RightHandSide { get; set; }
 }

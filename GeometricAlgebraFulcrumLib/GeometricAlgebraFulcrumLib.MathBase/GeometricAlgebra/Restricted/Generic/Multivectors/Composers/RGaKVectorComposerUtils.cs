@@ -5,257 +5,256 @@ using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Restricted.Basis;
 using GeometricAlgebraFulcrumLib.Lite.ScalarAlgebra;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Processors;
 
-namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Multivectors.Composers
+namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Multivectors.Composers;
+
+public static class RGaKVectorComposerUtils
 {
-    public static class RGaKVectorComposerUtils
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static RGaHigherKVector<T> CreateZeroHigherKVector<T>(this RGaProcessor<T> processor, int grade)
     {
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static RGaHigherKVector<T> CreateZeroHigherKVector<T>(this RGaProcessor<T> processor, int grade)
+        return new RGaHigherKVector<T>(processor, grade);
+    }
+
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static RGaHigherKVector<T> CreateTermHigherKVector<T>(this RGaProcessor<T> processor, ulong id)
+    {
+        var grade = id.Grade();
+
+        return new RGaHigherKVector<T>(
+            processor,
+
+            grade,
+            new SingleItemDictionary<ulong, T>(id, processor.ScalarProcessor.ScalarOne)
+        );
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static RGaHigherKVector<T> CreateTermHigherKVector<T>(this RGaProcessor<T> processor, ulong id, T scalar)
+    {
+        var grade = id.Grade();
+
+        return processor.ScalarProcessor.IsZero(scalar)
+            ? new RGaHigherKVector<T>(processor, grade)
+            : new RGaHigherKVector<T>(processor, grade, new SingleItemDictionary<ulong, T>(id, scalar));
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static RGaHigherKVector<T> CreateTermHigherKVector<T>(this RGaProcessor<T> processor, KeyValuePair<ulong, T> term)
+    {
+        var (id, scalar) = term;
+
+        var grade = id.Grade();
+
+        return processor.ScalarProcessor.IsZero(scalar)
+            ? new RGaHigherKVector<T>(processor, grade)
+            : new RGaHigherKVector<T>(processor, grade, new SingleItemDictionary<ulong, T>(id, scalar));
+    }
+
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static RGaHigherKVector<T> CreateHigherKVector<T>(this RGaProcessor<T> processor, int grade, IReadOnlyDictionary<ulong, T> basisScalarDictionary)
+    {
+        if (basisScalarDictionary.Count == 0 && basisScalarDictionary is not EmptyDictionary<ulong, T>)
+            return processor.CreateZeroHigherKVector(grade);
+
+        if (basisScalarDictionary.Count == 1 && basisScalarDictionary is not SingleItemDictionary<ulong, T>)
+            return processor.CreateTermHigherKVector(basisScalarDictionary.First());
+
+        return new RGaHigherKVector<T>(
+            processor,
+            grade,
+            basisScalarDictionary
+        );
+    }
+
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static RGaKVector<T> CreateZeroKVector<T>(this RGaProcessor<T> processor, int grade)
+    {
+        if (grade < 0)
+            throw new ArgumentOutOfRangeException(nameof(grade));
+
+        return grade switch
         {
-            return new RGaHigherKVector<T>(processor, grade);
-        }
+            0 => processor.CreateZeroScalar(),
+            1 => processor.CreateZeroVector(),
+            2 => processor.CreateZeroBivector(),
+            _ => new RGaHigherKVector<T>(processor, grade)
+        };
+    }
 
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static RGaHigherKVector<T> CreateTermHigherKVector<T>(this RGaProcessor<T> processor, ulong id)
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static RGaKVector<T> CreateTermKVector<T>(this RGaProcessor<T> processor, KeyValuePair<ulong, T> term)
+    {
+        var grade = term.Key.Grade();
+
+        return grade switch
         {
-            var grade = id.Grade();
+            0 => new RGaScalar<T>(processor, term.Value),
+            1 => new RGaVector<T>(processor, term),
+            2 => new RGaBivector<T>(processor, term),
+            _ => new RGaHigherKVector<T>(processor, term)
+        };
+    }
 
-            return new RGaHigherKVector<T>(
-                processor,
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static RGaKVector<T> CreateTermKVector<T>(this RGaProcessor<T> processor, ulong basisBlade)
+    {
+        return processor.CreateTermKVector(
+            new KeyValuePair<ulong, T>(basisBlade, processor.ScalarProcessor.ScalarOne)
+        );
+    }
 
-                grade,
-                new SingleItemDictionary<ulong, T>(id, processor.ScalarProcessor.ScalarOne)
-            );
-        }
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static RGaKVector<T> CreateTermKVector<T>(this RGaProcessor<T> processor, ulong basisBlade, T scalar)
+    {
+        var grade = basisBlade.Grade();
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static RGaHigherKVector<T> CreateTermHigherKVector<T>(this RGaProcessor<T> processor, ulong id, T scalar)
-        {
-            var grade = id.Grade();
+        if (processor.ScalarProcessor.IsZero(scalar))
+            return processor.CreateZeroKVector(grade);
 
-            return processor.ScalarProcessor.IsZero(scalar)
-                ? new RGaHigherKVector<T>(processor, grade)
-                : new RGaHigherKVector<T>(processor, grade, new SingleItemDictionary<ulong, T>(id, scalar));
-        }
+        return processor.CreateTermKVector(
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static RGaHigherKVector<T> CreateTermHigherKVector<T>(this RGaProcessor<T> processor, KeyValuePair<ulong, T> term)
-        {
-            var (id, scalar) = term;
-
-            var grade = id.Grade();
-
-            return processor.ScalarProcessor.IsZero(scalar)
-                ? new RGaHigherKVector<T>(processor, grade)
-                : new RGaHigherKVector<T>(processor, grade, new SingleItemDictionary<ulong, T>(id, scalar));
-        }
+            new KeyValuePair<ulong, T>(basisBlade, scalar)
+        );
+    }
 
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static RGaHigherKVector<T> CreateHigherKVector<T>(this RGaProcessor<T> processor, int grade, IReadOnlyDictionary<ulong, T> basisScalarDictionary)
-        {
-            if (basisScalarDictionary.Count == 0 && basisScalarDictionary is not EmptyDictionary<ulong, T>)
-                return processor.CreateZeroHigherKVector(grade);
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static RGaKVector<T> CreatePseudoScalar<T>(this RGaProcessor<T> processor, int vSpaceDimensions)
+    {
+        var id = processor.GetBasisPseudoScalarId(vSpaceDimensions);
 
-            if (basisScalarDictionary.Count == 1 && basisScalarDictionary is not SingleItemDictionary<ulong, T>)
-                return processor.CreateTermHigherKVector(basisScalarDictionary.First());
+        return processor.CreateTermKVector(
 
-            return new RGaHigherKVector<T>(
-                processor,
-                grade,
-                basisScalarDictionary
-            );
-        }
+            new KeyValuePair<ulong, T>(id, processor.ScalarProcessor.ScalarOne)
+        );
+    }
 
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static RGaKVector<T> CreatePseudoScalar<T>(this RGaProcessor<T> processor, int vSpaceDimensions, T scalarValue)
+    {
+        var id = processor.GetBasisPseudoScalarId(vSpaceDimensions);
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static RGaKVector<T> CreateZeroKVector<T>(this RGaProcessor<T> processor, int grade)
-        {
-            if (grade < 0)
-                throw new ArgumentOutOfRangeException(nameof(grade));
+        return processor.CreateTermKVector(
 
-            return grade switch
-            {
-                0 => processor.CreateZeroScalar(),
-                1 => processor.CreateZeroVector(),
-                2 => processor.CreateZeroBivector(),
-                _ => new RGaHigherKVector<T>(processor, grade)
-            };
-        }
+            new KeyValuePair<ulong, T>(id, scalarValue)
+        );
+    }
 
+    public static RGaKVector<T> CreatePseudoScalarReverse<T>(this RGaProcessor<T> processor, int vSpaceDimensions)
+    {
+        var id =
+            processor.GetBasisPseudoScalarId(vSpaceDimensions);
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static RGaKVector<T> CreateTermKVector<T>(this RGaProcessor<T> processor, KeyValuePair<ulong, T> term)
-        {
-            var grade = term.Key.Grade();
+        var scalar =
+            vSpaceDimensions.ReverseIsNegativeOfGrade()
+                ? processor.ScalarProcessor.ScalarMinusOne
+                : processor.ScalarProcessor.ScalarOne;
 
-            return grade switch
-            {
-                0 => new RGaScalar<T>(processor, term.Value),
-                1 => new RGaVector<T>(processor, term),
-                2 => new RGaBivector<T>(processor, term),
-                _ => new RGaHigherKVector<T>(processor, term)
-            };
-        }
+        return processor.CreateTermKVector(
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static RGaKVector<T> CreateTermKVector<T>(this RGaProcessor<T> processor, ulong basisBlade)
-        {
-            return processor.CreateTermKVector(
-                new KeyValuePair<ulong, T>(basisBlade, processor.ScalarProcessor.ScalarOne)
-            );
-        }
+            new KeyValuePair<ulong, T>(id, scalar)
+        );
+    }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static RGaKVector<T> CreateTermKVector<T>(this RGaProcessor<T> processor, ulong basisBlade, T scalar)
-        {
-            var grade = basisBlade.Grade();
+    public static RGaKVector<T> CreatePseudoScalarConjugate<T>(this RGaProcessor<T> processor, int vSpaceDimensions)
+    {
+        var id =
+            processor.GetBasisPseudoScalarId(vSpaceDimensions);
 
-            if (processor.ScalarProcessor.IsZero(scalar))
-                return processor.CreateZeroKVector(grade);
+        var sign =
+            processor.ConjugateSign(id);
 
-            return processor.CreateTermKVector(
+        if (sign.IsZero)
+            throw new DivideByZeroException();
 
-                new KeyValuePair<ulong, T>(basisBlade, scalar)
-            );
-        }
+        var scalar = sign.ToScalarValue(processor.ScalarProcessor);
 
+        return processor.CreateTermKVector(
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static RGaKVector<T> CreatePseudoScalar<T>(this RGaProcessor<T> processor, int vSpaceDimensions)
-        {
-            var id = processor.GetBasisPseudoScalarId(vSpaceDimensions);
+            new KeyValuePair<ulong, T>(id, scalar)
+        );
+    }
 
-            return processor.CreateTermKVector(
+    public static RGaKVector<T> CreatePseudoScalarEInverse<T>(this RGaProcessor<T> processor, int vSpaceDimensions)
+    {
+        var id =
+            processor.GetBasisPseudoScalarId(vSpaceDimensions);
 
-                new KeyValuePair<ulong, T>(id, processor.ScalarProcessor.ScalarOne)
-            );
-        }
+        var sign =
+            processor.EGpSquaredSign(id);
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static RGaKVector<T> CreatePseudoScalar<T>(this RGaProcessor<T> processor, int vSpaceDimensions, T scalarValue)
-        {
-            var id = processor.GetBasisPseudoScalarId(vSpaceDimensions);
+        var scalar = sign.ToScalarValue(processor.ScalarProcessor);
 
-            return processor.CreateTermKVector(
+        return processor.CreateTermKVector(
 
-                new KeyValuePair<ulong, T>(id, scalarValue)
-            );
-        }
+            new KeyValuePair<ulong, T>(id, scalar)
+        );
+    }
 
-        public static RGaKVector<T> CreatePseudoScalarReverse<T>(this RGaProcessor<T> processor, int vSpaceDimensions)
-        {
-            var id =
-                processor.GetBasisPseudoScalarId(vSpaceDimensions);
+    public static RGaKVector<T> CreatePseudoScalarInverse<T>(this RGaProcessor<T> processor, int vSpaceDimensions)
+    {
+        var id =
+            processor.GetBasisPseudoScalarId(vSpaceDimensions);
 
-            var scalar =
-                vSpaceDimensions.ReverseIsNegativeOfGrade()
-                    ? processor.ScalarProcessor.ScalarMinusOne
-                    : processor.ScalarProcessor.ScalarOne;
+        var sign =
+            processor.GpSquaredSign(id);
 
-            return processor.CreateTermKVector(
+        if (sign.IsZero)
+            throw new DivideByZeroException();
 
-                new KeyValuePair<ulong, T>(id, scalar)
-            );
-        }
+        var scalar = sign.ToScalarValue(processor.ScalarProcessor);
 
-        public static RGaKVector<T> CreatePseudoScalarConjugate<T>(this RGaProcessor<T> processor, int vSpaceDimensions)
-        {
-            var id =
-                processor.GetBasisPseudoScalarId(vSpaceDimensions);
+        return processor.CreateTermKVector(
 
-            var sign =
-                processor.ConjugateSign(id);
-
-            if (sign.IsZero)
-                throw new DivideByZeroException();
-
-            var scalar = sign.ToScalarValue(processor.ScalarProcessor);
-
-            return processor.CreateTermKVector(
-
-                new KeyValuePair<ulong, T>(id, scalar)
-            );
-        }
-
-        public static RGaKVector<T> CreatePseudoScalarEInverse<T>(this RGaProcessor<T> processor, int vSpaceDimensions)
-        {
-            var id =
-                processor.GetBasisPseudoScalarId(vSpaceDimensions);
-
-            var sign =
-                processor.EGpSquaredSign(id);
-
-            var scalar = sign.ToScalarValue(processor.ScalarProcessor);
-
-            return processor.CreateTermKVector(
-
-                new KeyValuePair<ulong, T>(id, scalar)
-            );
-        }
-
-        public static RGaKVector<T> CreatePseudoScalarInverse<T>(this RGaProcessor<T> processor, int vSpaceDimensions)
-        {
-            var id =
-                processor.GetBasisPseudoScalarId(vSpaceDimensions);
-
-            var sign =
-                processor.GpSquaredSign(id);
-
-            if (sign.IsZero)
-                throw new DivideByZeroException();
-
-            var scalar = sign.ToScalarValue(processor.ScalarProcessor);
-
-            return processor.CreateTermKVector(
-
-                new KeyValuePair<ulong, T>(id, scalar)
-            );
-        }
+            new KeyValuePair<ulong, T>(id, scalar)
+        );
+    }
 
         
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static RGaKVector<T> CreateKVector<T>(this RGaProcessor<T> processor, int grade, IReadOnlyDictionary<ulong, T> basisScalarDictionary)
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static RGaKVector<T> CreateKVector<T>(this RGaProcessor<T> processor, int grade, IReadOnlyDictionary<ulong, T> basisScalarDictionary)
+    {
+        if (basisScalarDictionary.Count == 0 && basisScalarDictionary is not EmptyDictionary<ulong, T>)
+            return processor.CreateZeroKVector(grade);
+
+        if (basisScalarDictionary.Count == 1 && basisScalarDictionary is not SingleItemDictionary<ulong, T>)
+            return processor.CreateTermKVector(basisScalarDictionary.First());
+
+        return grade switch
         {
-            if (basisScalarDictionary.Count == 0 && basisScalarDictionary is not EmptyDictionary<ulong, T>)
-                return processor.CreateZeroKVector(grade);
-
-            if (basisScalarDictionary.Count == 1 && basisScalarDictionary is not SingleItemDictionary<ulong, T>)
-                return processor.CreateTermKVector(basisScalarDictionary.First());
-
-            return grade switch
-            {
-                0 => new RGaScalar<T>(processor, basisScalarDictionary),
-                1 => new RGaVector<T>(processor, basisScalarDictionary),
-                2 => new RGaBivector<T>(processor, basisScalarDictionary),
-                _ => new RGaHigherKVector<T>(processor, grade, basisScalarDictionary)
-            };
-        }
-
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static RGaKVector<T> ToKVector<T>(this RGaBasisBlade basisBlade)
-        {
-            var processor = (RGaProcessor<T>)basisBlade.Metric;
-
-            return processor.CreateTermKVector(
-                basisBlade.Id,
-                processor.ScalarProcessor.ScalarOne
-            );
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static RGaKVector<T> ToKVector<T>(this RGaSignedBasisBlade basisBlade)
-        {
-            var processor = (RGaProcessor<T>)basisBlade.Metric;
-
-            return processor.CreateTermKVector(
-                basisBlade.Id,
-                basisBlade.Sign.ToScalarValue(processor.ScalarProcessor)
-            );
-        }
-
-
+            0 => new RGaScalar<T>(processor, basisScalarDictionary),
+            1 => new RGaVector<T>(processor, basisScalarDictionary),
+            2 => new RGaBivector<T>(processor, basisScalarDictionary),
+            _ => new RGaHigherKVector<T>(processor, grade, basisScalarDictionary)
+        };
     }
+
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static RGaKVector<T> ToKVector<T>(this RGaBasisBlade basisBlade)
+    {
+        var processor = (RGaProcessor<T>)basisBlade.Metric;
+
+        return processor.CreateTermKVector(
+            basisBlade.Id,
+            processor.ScalarProcessor.ScalarOne
+        );
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static RGaKVector<T> ToKVector<T>(this RGaSignedBasisBlade basisBlade)
+    {
+        var processor = (RGaProcessor<T>)basisBlade.Metric;
+
+        return processor.CreateTermKVector(
+            basisBlade.Id,
+            basisBlade.Sign.ToScalarValue(processor.ScalarProcessor)
+        );
+    }
+
+
 }

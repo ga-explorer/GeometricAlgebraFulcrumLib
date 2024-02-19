@@ -13,6 +13,18 @@ namespace GeometricAlgebraFulcrumLib.Lite.Geometry.Conformal.Elements;
 public static class RGaConformalRoundComposerUtils
 {
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static RGaConformalRound DefineRoundPoint(this RGaConformalSpace conformalSpace, double centerX, double centerY)
+    {
+        return new RGaConformalRound(
+            conformalSpace,
+            1,
+            0,
+            conformalSpace.EncodeEGaVector(centerY, centerY),
+            conformalSpace.EncodeScalar(1)
+        );
+    }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static RGaConformalRound DefineRoundPoint(this RGaConformalSpace conformalSpace, Float64Vector2D center)
     {
         return new RGaConformalRound(
@@ -20,6 +32,18 @@ public static class RGaConformalRoundComposerUtils
             1,
             0,
             conformalSpace.EncodeEGaVector(center),
+            conformalSpace.EncodeScalar(1)
+        );
+    }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static RGaConformalRound DefineRoundPoint(this RGaConformalSpace conformalSpace, double centerX, double centerY, double centerZ)
+    {
+        return new RGaConformalRound(
+            conformalSpace,
+            1,
+            0,
+            conformalSpace.EncodeEGaVector(centerY, centerY, centerZ),
             conformalSpace.EncodeScalar(1)
         );
     }
@@ -441,7 +465,7 @@ public static class RGaConformalRoundComposerUtils
             conformalSpace.EncodeEGaVector(center),
             directionVectors
                 .Select(v => v.ToRGaFloat64Vector())
-                .Op()
+                .Op(conformalSpace.Processor)
                 .EncodeEGaBlade(conformalSpace)
         );
     }
@@ -455,7 +479,7 @@ public static class RGaConformalRoundComposerUtils
             conformalSpace.EncodeEGaVector(center),
             directionVectors
                 .Select(v => v.ToRGaFloat64Vector())
-                .Op()
+                .Op(conformalSpace.Processor)
                 .EncodeEGaBlade(conformalSpace)
         );
     }
@@ -469,7 +493,7 @@ public static class RGaConformalRoundComposerUtils
             conformalSpace.EncodeEGaVector(center),
             directionVectors
                 .Select(v => v.ToRGaFloat64Vector())
-                .Op()
+                .Op(conformalSpace.Processor)
                 .EncodeEGaBlade(conformalSpace)
         );
     }
@@ -481,7 +505,7 @@ public static class RGaConformalRoundComposerUtils
             1,
             radiusSquared,
             center,
-            directionVectors.Op()
+            directionVectors.Op(conformalSpace.Processor)
         );
     }
 
@@ -492,7 +516,7 @@ public static class RGaConformalRoundComposerUtils
             1,
             radiusSquared,
             center,
-            directionVectors.Op()
+            directionVectors.Op(conformalSpace.Processor)
         );
     }
 
@@ -506,7 +530,7 @@ public static class RGaConformalRoundComposerUtils
             conformalSpace.EncodeEGaVector(center),
             directionVectors
                 .Select(v => v.ToRGaFloat64Vector())
-                .Op()
+                .Op(conformalSpace.Processor)
                 .EncodeEGaBlade(conformalSpace)
         );
     }
@@ -520,7 +544,7 @@ public static class RGaConformalRoundComposerUtils
             conformalSpace.EncodeEGaVector(center),
             directionVectors
                 .Select(v => v.ToRGaFloat64Vector())
-                .Op()
+                .Op(conformalSpace.Processor)
                 .EncodeEGaBlade(conformalSpace)
         );
     }
@@ -534,7 +558,7 @@ public static class RGaConformalRoundComposerUtils
             conformalSpace.EncodeEGaVector(center),
             directionVectors
                 .Select(v => v.ToRGaFloat64Vector())
-                .Op()
+                .Op(conformalSpace.Processor)
                 .EncodeEGaBlade(conformalSpace)
         );
     }
@@ -546,7 +570,7 @@ public static class RGaConformalRoundComposerUtils
             weight,
             radiusSquared,
             center,
-            directionVectors.Op()
+            directionVectors.Op(conformalSpace.Processor)
         );
     }
 
@@ -557,7 +581,7 @@ public static class RGaConformalRoundComposerUtils
             weight,
             radiusSquared,
             center,
-            directionVectors.Op()
+            directionVectors.Op(conformalSpace.Processor)
         );
     }
     
@@ -568,7 +592,7 @@ public static class RGaConformalRoundComposerUtils
         var kVector =
             egaPoints.Select(p =>
                 conformalSpace.EncodeIpnsRoundPoint(p).InternalVector
-            ).Op();
+            ).Op(conformalSpace.Processor);
 
         return kVector.EncodeEGaBlade(conformalSpace).DecodeOpnsRound();
     }
@@ -579,7 +603,7 @@ public static class RGaConformalRoundComposerUtils
         var kVector =
             egaPoints.Select(p =>
                 conformalSpace.EncodeIpnsRoundPoint(p).InternalVector
-            ).Op();
+            ).Op(conformalSpace.Processor);
 
         return kVector.EncodeEGaBlade(conformalSpace).DecodeOpnsRound();
     }
@@ -590,7 +614,7 @@ public static class RGaConformalRoundComposerUtils
         var kVector =
             egaPoints.Select(p =>
                 conformalSpace.EncodeIpnsRoundPoint(p).InternalVector
-            ).Op();
+            ).Op(conformalSpace.Processor);
 
         return kVector.EncodeEGaBlade(conformalSpace).DecodeOpnsRound();
     }
@@ -601,7 +625,7 @@ public static class RGaConformalRoundComposerUtils
         var kVector =
             egaPoints.Select(p =>
                 conformalSpace.EncodeIpnsRoundPoint(p).InternalVector
-            ).Op();
+            ).Op(conformalSpace.Processor);
 
         return kVector.EncodeEGaBlade(conformalSpace).DecodeOpnsRound();
     }
@@ -612,7 +636,7 @@ public static class RGaConformalRoundComposerUtils
         var kVector =
             egaPoints.Select(p =>
                 conformalSpace.EncodeIpnsRoundPoint(p).InternalVector
-            ).Op();
+            ).Op(conformalSpace.Processor);
 
         return kVector.EncodeEGaBlade(conformalSpace).DecodeOpnsRound();
     }
@@ -624,7 +648,7 @@ public static class RGaConformalRoundComposerUtils
         var kVector =
             weight * egaPoints.Select(p =>
                 conformalSpace.EncodeIpnsRoundPoint(p).InternalVector
-            ).Op();
+            ).Op(conformalSpace.Processor);
 
         return kVector.EncodeEGaBlade(conformalSpace).DecodeOpnsRound();
     }
@@ -635,7 +659,7 @@ public static class RGaConformalRoundComposerUtils
         var kVector =
             weight * egaPoints.Select(p =>
                 conformalSpace.EncodeIpnsRoundPoint(p).InternalVector
-            ).Op();
+            ).Op(conformalSpace.Processor);
 
         return kVector.EncodeEGaBlade(conformalSpace).DecodeOpnsRound();
     }
@@ -646,7 +670,7 @@ public static class RGaConformalRoundComposerUtils
         var kVector =
             weight * egaPoints.Select(p =>
                 conformalSpace.EncodeIpnsRoundPoint(p).InternalVector
-            ).Op();
+            ).Op(conformalSpace.Processor);
 
         return kVector.EncodeEGaBlade(conformalSpace).DecodeOpnsRound();
     }
@@ -657,7 +681,7 @@ public static class RGaConformalRoundComposerUtils
         var kVector =
             weight * egaPoints.Select(p =>
                 conformalSpace.EncodeIpnsRoundPoint(p).InternalVector
-            ).Op();
+            ).Op(conformalSpace.Processor);
 
         return kVector.EncodeEGaBlade(conformalSpace).DecodeOpnsRound();
     }
@@ -668,7 +692,7 @@ public static class RGaConformalRoundComposerUtils
         var kVector =
             weight * egaPoints.Select(p =>
                 conformalSpace.EncodeIpnsRoundPoint(p).InternalVector
-            ).Op();
+            ).Op(conformalSpace.Processor);
 
         return kVector.EncodeEGaBlade(conformalSpace).DecodeOpnsRound();
     }

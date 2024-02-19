@@ -1,6 +1,5 @@
-﻿namespace GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.PovRay.SDL.Textures
+﻿namespace GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.PovRay.SDL.Textures;
+
+public abstract class SdlTexture
 {
-    public abstract class SdlTexture
-    {
-    }
 }

@@ -1,9 +1,8 @@
 ﻿using GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.PovRay.SDL.Transforms;
 
-namespace GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.PovRay.SDL
+namespace GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.PovRay.SDL;
+
+public interface ISdlTransformable : ISdlElement
 {
-    public interface ISdlTransformable : ISdlElement
-    {
-        List<ISdlTransform> Transforms { get; }
-    }
+    List<ISdlTransform> Transforms { get; }
 }

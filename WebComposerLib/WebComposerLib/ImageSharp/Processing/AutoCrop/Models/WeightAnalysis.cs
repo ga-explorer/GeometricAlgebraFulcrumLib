@@ -1,7 +1,6 @@
-﻿namespace WebComposerLib.ImageSharp.Processing.AutoCrop.Models
+﻿namespace WebComposerLib.ImageSharp.Processing.AutoCrop.Models;
+
+public sealed class WeightAnalysis : IWeightAnalysis
 {
-    public sealed class WeightAnalysis : IWeightAnalysis
-    {
-        public PointF Weight { get; set; }
-    }
+    public PointF Weight { get; set; }
 }

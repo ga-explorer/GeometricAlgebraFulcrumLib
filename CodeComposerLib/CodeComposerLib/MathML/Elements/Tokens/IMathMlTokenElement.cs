@@ -1,7 +1,6 @@
-﻿namespace CodeComposerLib.MathML.Elements.Tokens
-{
-    public interface IMathMlTokenElement : IMathMlElement
-    {
+﻿namespace CodeComposerLib.MathML.Elements.Tokens;
 
-    }
+public interface IMathMlTokenElement : IMathMlElement
+{
+
 }

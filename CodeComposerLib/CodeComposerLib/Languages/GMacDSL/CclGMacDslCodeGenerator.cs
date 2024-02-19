@@ -1,92 +1,91 @@
 ﻿using CodeComposerLib.SyntaxTree;
 using DataStructuresLib;
 
-namespace CodeComposerLib.Languages.GMacDSL
+namespace CodeComposerLib.Languages.GMacDSL;
+
+//TODO: Complete this for GMacDSL
+public class CclGMacDslCodeGenerator 
+    : CclLanguageCodeGeneratorBase
 {
-    //TODO: Complete this for GMacDSL
-    public class CclGMacDslCodeGenerator 
-        : CclLanguageCodeGeneratorBase
+    internal CclGMacDslCodeGenerator()
     {
-        internal CclGMacDslCodeGenerator()
-        {
-            LanguageInfo = new CclLanguageInfo("GMacDSL", "1.0", "GMacDSL 1.0");
+        LanguageInfo = new CclLanguageInfo("GMacDSL", "1.0", "GMacDSL 1.0");
 
-            ScalarTypeName = "scalar";
-            ScalarZero = "'0'";
+        ScalarTypeName = "scalar";
+        ScalarZero = "'0'";
+    }
+
+    public override void Visit(SteComment code)
+    {
+        foreach (var commentLine in code.CommentedTextLines)
+            TextComposer.Append("//").AppendLine(commentLine);
+
+        TextComposer.AppendAtNewLine();
+    }
+
+    public override void Visit(SteDeclareDataStore code)
+    {
+        if (code.LocalDataStore == false)
+        {
+            AddInternalComment("Non-local declaration not implemented: ", code.ToString());
+
+            return;
         }
 
-        public override void Visit(SteComment code)
+        if (code.InitialValue == null)
         {
-            foreach (var commentLine in code.CommentedTextLines)
-                TextComposer.Append("//").AppendLine(commentLine);
-
-            TextComposer.AppendAtNewLine();
-        }
-
-        public override void Visit(SteDeclareDataStore code)
-        {
-            if (code.LocalDataStore == false)
-            {
-                AddInternalComment("Non-local declaration not implemented: ", code.ToString());
-
-                return;
-            }
-
-            if (code.InitialValue == null)
-            {
-                TextComposer
-                    .Append("declare ")
-                    .Append(code.DataStoreName)
-                    .Append(" : ")
-                    .Append(code.DataStoreType);
-
-                TextComposer.AppendAtNewLine();
-
-                return;
-            }
-
             TextComposer
-                .Append("let ")
+                .Append("declare ")
                 .Append(code.DataStoreName)
                 .Append(" : ")
-                .Append(code.DataStoreType)
-                .Append(" = ");
-
-            code.InitialValue.AcceptVisitor(this);
+                .Append(code.DataStoreType);
 
             TextComposer.AppendAtNewLine();
+
+            return;
         }
 
-        public override void Visit(SteDeclareFixedSizeArray code)
+        TextComposer
+            .Append("let ")
+            .Append(code.DataStoreName)
+            .Append(" : ")
+            .Append(code.DataStoreType)
+            .Append(" = ");
+
+        code.InitialValue.AcceptVisitor(this);
+
+        TextComposer.AppendAtNewLine();
+    }
+
+    public override void Visit(SteDeclareFixedSizeArray code)
+    {
+        AddInternalComment("Fixed-size array declaration not implemented: ", code.ToString());
+    }
+
+    public override void Visit(SteAssign code)
+    {
+        if (code.LocalAssignment == false)
         {
-            AddInternalComment("Fixed-size array declaration not implemented: ", code.ToString());
+            AddInternalComment("Non-local assignment not implemented: ", code.ToString());
+
+            return;
         }
 
-        public override void Visit(SteAssign code)
-        {
-            if (code.LocalAssignment == false)
-            {
-                AddInternalComment("Non-local assignment not implemented: ", code.ToString());
+        TextComposer.Append("let ");
 
-                return;
-            }
+        code.LeftHandSide.AcceptVisitor(this);
 
-            TextComposer.Append("let ");
+        TextComposer.Append(" = ");
 
-            code.LeftHandSide.AcceptVisitor(this);
+        code.RightHandSide.AcceptVisitor(this);
 
-            TextComposer.Append(" = ");
+        TextComposer.AppendAtNewLine();
+    }
 
-            code.RightHandSide.AcceptVisitor(this);
+    public override void Visit(SteReturn code)
+    {
+        TextComposer.AppendAtNewLine("return ");
 
-            TextComposer.AppendAtNewLine();
-        }
-
-        public override void Visit(SteReturn code)
-        {
-            TextComposer.AppendAtNewLine("return ");
-
-            code.ReturnedValue.AcceptVisitor(this);
-        }
+        code.ReturnedValue.AcceptVisitor(this);
     }
 }

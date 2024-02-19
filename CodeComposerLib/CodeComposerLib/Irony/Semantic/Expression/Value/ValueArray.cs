@@ -3,74 +3,73 @@ using System.Collections.Generic;
 using System.Linq;
 using CodeComposerLib.Irony.Semantic.Type;
 
-namespace CodeComposerLib.Irony.Semantic.Expression.Value
+namespace CodeComposerLib.Irony.Semantic.Expression.Value;
+
+public class ValueArray : ILanguageValueComposite
 {
-    public class ValueArray : ILanguageValueComposite
+    public TypeArray ValueArrayType { get; }
+
+    public List<ILanguageValue> Value { get; } = new List<ILanguageValue>();
+
+
+    public ILanguageType ExpressionType => ValueArrayType;
+
+    public IronyAst RootAst => ValueArrayType.RootAst;
+
+    public ILanguageType ItemType => ValueArrayType.ArrayItemType;
+
+    /// <summary>
+    /// A language value is always a simple expression
+    /// </summary>
+    public bool IsSimpleExpression => true;
+
+
+    protected ValueArray(TypeArray valueType, IEnumerable<ILanguageValue> value)
     {
-        public TypeArray ValueArrayType { get; }
+        ValueArrayType = valueType;
 
-        public List<ILanguageValue> Value { get; } = new List<ILanguageValue>();
-
-
-        public ILanguageType ExpressionType => ValueArrayType;
-
-        public IronyAst RootAst => ValueArrayType.RootAst;
-
-        public ILanguageType ItemType => ValueArrayType.ArrayItemType;
-
-        /// <summary>
-        /// A language value is always a simple expression
-        /// </summary>
-        public bool IsSimpleExpression => true;
+        Value.AddRange(value);
+    }
 
 
-        protected ValueArray(TypeArray valueType, IEnumerable<ILanguageValue> value)
+    public ILanguageValue this[int index]
+    {
+        get
         {
-            ValueArrayType = valueType;
-
-            Value.AddRange(value);
+            return Value[index];
         }
-
-
-        public ILanguageValue this[int index]
+        set
         {
-            get
-            {
-                return Value[index];
-            }
-            set
-            {
-                if (value == null)
-                    throw new ArgumentNullException();
+            if (value == null)
+                throw new ArgumentNullException();
 
-                if (!value.ExpressionType.IsSameType(ExpressionType))
-                    throw new InvalidCastException();
+            if (!value.ExpressionType.IsSameType(ExpressionType))
+                throw new InvalidCastException();
 
-                Value[index] = value;
-            }
+            Value[index] = value;
         }
+    }
 
-        public virtual ILanguageValue DuplicateValue(bool deepCopy)
-        {
-            return 
-                deepCopy ? 
+    public virtual ILanguageValue DuplicateValue(bool deepCopy)
+    {
+        return 
+            deepCopy ? 
                 new ValueArray(ValueArrayType, Value.Select(x => x.DuplicateValue(true))) : 
                 new ValueArray(ValueArrayType, Value);
-        }
+    }
 
 
-        //public virtual void AcceptVisitor(IASTNodeAcyclicVisitor visitor)
-        //{
-        //    if (visitor is IASTNodeAcyclicVisitor<ValueArray>)
-        //        ((IASTNodeAcyclicVisitor<ValueArray>)visitor).Visit(this);
+    //public virtual void AcceptVisitor(IASTNodeAcyclicVisitor visitor)
+    //{
+    //    if (visitor is IASTNodeAcyclicVisitor<ValueArray>)
+    //        ((IASTNodeAcyclicVisitor<ValueArray>)visitor).Visit(this);
 
-        //    //You can write fall back logic here if needed.
-        //}
+    //    //You can write fall back logic here if needed.
+    //}
 
 
-        public static ValueArray Create(TypeArray valueType, IEnumerable<ILanguageValue> value)
-        {
-            return new ValueArray(valueType, value);
-        }
+    public static ValueArray Create(TypeArray valueType, IEnumerable<ILanguageValue> value)
+    {
+        return new ValueArray(valueType, value);
     }
 }

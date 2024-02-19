@@ -1,10 +1,9 @@
 ﻿using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Records;
 
-namespace GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Restricted.Records
+namespace GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Restricted.Records;
+
+public interface IRGaGradeKvIndexRecord :
+    IGaGradeRecord,
+    IRGaKvIndexRecord
 {
-    public interface IRGaGradeKvIndexRecord :
-        IGaGradeRecord,
-        IRGaKvIndexRecord
-    {
-    }
 }

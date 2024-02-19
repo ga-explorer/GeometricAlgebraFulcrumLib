@@ -1,13 +1,12 @@
 ﻿using WebComposerLib.Svg.Elements;
 
-namespace WebComposerLib.Svg.Compositions
+namespace WebComposerLib.Svg.Compositions;
+
+public interface ISvgGeometryComposerStyler
 {
-    public interface ISvgGeometryComposerStyler
-    {
-        SvgElement ComposedElement { get; }
+    SvgElement ComposedElement { get; }
 
-        ISvgGeometryComposerIDs ComposedElementsIDs { get; }
+    ISvgGeometryComposerIDs ComposedElementsIDs { get; }
 
-        SvgElement ApplyStyles();
-    }
+    SvgElement ApplyStyles();
 }
