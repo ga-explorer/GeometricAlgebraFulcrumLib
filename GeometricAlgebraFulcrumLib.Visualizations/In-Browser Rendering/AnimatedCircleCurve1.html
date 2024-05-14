@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+        <title>Animated Circle Curve</title>
+        
+        <!--  -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/dat-gui/0.6.2/dat.gui.min.js"></script>
+        
+        <!--  -->
+        <script src="https://assets.babylonjs.com/generated/Assets.js"></script>
+        
+        <!--  -->
+        <script src="https://preview.babylonjs.com/ammo.js"></script>
+        
+        <!--  -->
+        <script src="https://preview.babylonjs.com/cannon.js"></script>
+        
+        <!--  -->
+        <script src="https://preview.babylonjs.com/Oimo.js"></script>
+        
+        <!--  -->
+        <script src="https://preview.babylonjs.com/earcut.min.js"></script>
+        
+        <!-- Babylon.js Core -->
+        <script src="https://cdn.babylonjs.com/babylon.js"></script>
+        
+        <!-- Babylon.js Supported Advanced Materials -->
+        <script src="https://cdn.babylonjs.com/materialsLibrary/babylonjs.materials.min.js"></script>
+        
+        <!-- Babylon.js Procedural Textures -->
+        <script src="https://cdn.babylonjs.com/proceduralTexturesLibrary/babylonjs.proceduralTextures.min.js"></script>
+        
+        <!-- Babylon.js Post Processes -->
+        <script src="https://cdn.babylonjs.com/postProcessesLibrary/babylonjs.postProcess.min.js"></script>
+        
+        <!-- Babylon.js All Official Loaders (OBJ, STL, glTF) -->
+        <script src="https://cdn.babylonjs.com/loaders/babylonjs.loaders.min.js"></script>
+        
+        <!-- Babylon.js Scene/Mesh Serializers -->
+        <script src="https://cdn.babylonjs.com/serializers/babylonjs.serializers.min.js"></script>
+        
+        <!-- Babylon.js GUI -->
+        <script src="https://cdn.babylonjs.com/gui/babylon.gui.min.js"></script>
+        
+        <!-- Babylon.js Inspector -->
+        <script src="https://cdn.babylonjs.com/inspector/babylon.inspector.bundle.js"></script>
+        
+        <!-- Babylon.js Viewer -->
+        <script src="https://cdn.babylonjs.com/viewer/babylon.viewer.js"></script>
+        
+        <!-- KaTeX Core -->
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.7/dist/katex.min.css" integrity="sha384-Xi8rHCmBmhbuyyhbI88391ZKP2dmfnOl4rT9ZfRI7mLTdk1wblIUnrIq35nqwEvC" crossorigin="anonymous">
+        <script src="https://cdn.jsdelivr.net/npm/katex@0.16.7/dist/katex.min.js" integrity="sha384-X/XCfMm41VSsqRNQgDerQczD69XqmjOOOwYQvr/uuC+j4OPoNhVgjdGFwhvN02Ja" crossorigin="anonymous"></script>
+        
+        <!-- KaTeX Auto-render extension -->
+        <!-- To automatically render math in text elements, include the auto-render extension: -->
+        <script src="https://cdn.jsdelivr.net/npm/katex@0.16.7/dist/contrib/auto-render.min.js" integrity="sha384-+XBljXPPiv+OzfbB3cVmLHf4hdUFHlWNZN5spNQ7rmHTXpd7WvJum6fIACpNNfIR" crossorigin="anonymous" ></script>
+        
+        <!-- html2canvas.js -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" integrity="sha512-BNaRQnYJYiPSqHHDb58B0yaPfCu+Wgds8Gp/gU33kqBtgNS4tSPHuGibyoeqMV/TJlSKda6FXzoEyYGjTe+vXA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+	    
+        <script>
+          document.addEventListener("DOMContentLoaded", function() {
+            renderMathInElement(document.body, {
+              delimiters: 
+		      [
+                {left: "$$", right: "$$", display: true},
+			    {left: '$', right: '$', display: false},
+                {left: "\\(", right: "\\)", display: false},
+                {left: "\\begin{equation}", right: "\\end{equation}", display: true},
+                {left: "\\begin{align}", right: "\\end{align}", display: true},
+                {left: "\\begin{alignat}", right: "\\end{alignat}", display: true},
+                {left: "\\begin{gather}", right: "\\end{gather}", display: true},
+                {left: "\\begin{CD}", right: "\\end{CD}", display: true},
+                {left: "\\[", right: "\\]", display: true}
+              ],
+              throwOnError : false
+            });
+          });
+        </script>
+
+        <style>
+            html, body {
+                overflow: auto;
+                width: 100%;
+                height: 100%;
+                margin: 0;
+                padding: 0;
+            }
+
+            #renderCanvas {
+                position: absolute;
+                top: 0px;
+                left: 0px;
+            	width: 1024px;
+            	height: 728px;
+            	touch-action: none;
+            }
+
+            #textDiv {
+            	position: absolute;
+            	top: 0px;
+            	left: 0px;
+            	margin: 10px;
+            	padding: 10px;
+            	touch-action: none;
+            	background-color: rgba(255, 255, 255, 0.05);
+            }
+        </style>
+    </head>
+    <body>
+        <canvas id="renderCanvas"> </canvas>
+
+        <script>
+            var canvas = document.getElementById("renderCanvas");
+            
+            canvas.width  = 1024;
+            canvas.height = 728;
+            
+            function renderHtmlToCanvas( canvas, html ) {
+            	const ctx = canvas.getContext( '2d' );
+            
+            	const svg = `
+            		<svg xmlns="http://www.w3.org/2000/svg" width="${canvas.width}" height="${canvas.height}">
+            		<foreignObject width="100%" height="100%">
+            			<div xmlns="http://www.w3.org/1999/xhtml">${html}</div>
+            		</foreignObject>
+            		</svg>`;
+            	
+            	const svgBlob = new Blob( [svg], { type: 'image/svg+xml;charset=utf-8' } );
+            	const svgObjectUrl = URL.createObjectURL( svgBlob );
+            	
+            	//await new Promise(res => setTimeout(res, 100));
+            
+            	const tempImg = new Image();
+            	tempImg.addEventListener( 
+            		'load', 
+            		function() {
+            			ctx.drawImage( tempImg, 0, 0 );
+            			URL.revokeObjectURL( svgObjectUrl );
+            		} 
+            	);
+            
+            	tempImg.src = svgObjectUrl;
+            }
+            
+            function startRenderLoop(engine, canvas) {
+                engine.runRenderLoop(function () {
+                    if (scenesToRender) {
+                        const scenesToRenderLength = scenesToRender.length;
+                        
+                        for (let i = 0; i < scenesToRenderLength; i++) {
+                            if (scenesToRender[i].activeCamera) { scenesToRender[i].render(); }
+                        }
+                    }
+                });
+            }
+            
+            var engine = null;
+            var scenes = [];
+            var scenesToRender = [];
+            
+            var createDefaultEngine = function() { 
+                return new BABYLON.Engine(canvas, true, { preserveDrawingBuffer: true, stencil: true,  disableWebGL2Support: false}); 
+            };
+            
+            function createMainScene() {
+                
+                const mainScene = new BABYLON.Scene(engine, {});
+                mainScene.useRightHandedSystem = true;
+                
+                const light = new BABYLON.HemisphericLight("light", new BABYLON.Vector3(0, 1, 0), mainScene);
+                //light.intensity = 0.7;
+                
+                const floatKeyFrames0002 = [
+                    {frame: 0, value: 1},
+                    {frame: 1, value: 1.0157706},
+                    {frame: 2, value: 1.0628337},
+                    {frame: 3, value: 1.140447},
+                    {frame: 4, value: 1.2473867},
+                    {frame: 5, value: 1.381966},
+                    {frame: 6, value: 1.5420628},
+                    {frame: 7, value: 1.725152},
+                    {frame: 8, value: 1.9283464},
+                    {frame: 9, value: 2.1484413},
+                    {frame: 10, value: 2.381966},
+                    {frame: 11, value: 2.6252375},
+                    {frame: 12, value: 2.874419},
+                    {frame: 13, value: 3.125581},
+                    {frame: 14, value: 3.3747625},
+                    {frame: 15, value: 3.618034},
+                    {frame: 16, value: 3.8515587},
+                    {frame: 17, value: 4.0716534},
+                    {frame: 18, value: 4.274848},
+                    {frame: 19, value: 4.4579372},
+                    {frame: 20, value: 4.618034},
+                    {frame: 21, value: 4.7526135},
+                    {frame: 22, value: 4.859553},
+                    {frame: 23, value: 4.937166},
+                    {frame: 24, value: 4.9842296},
+                    {frame: 25, value: 5},
+                    {frame: 26, value: 4.9842296},
+                    {frame: 27, value: 4.937166},
+                    {frame: 28, value: 4.859553},
+                    {frame: 29, value: 4.7526135},
+                    {frame: 30, value: 4.618034},
+                    {frame: 31, value: 4.4579372},
+                    {frame: 32, value: 4.274848},
+                    {frame: 33, value: 4.0716534},
+                    {frame: 34, value: 3.8515587},
+                    {frame: 35, value: 3.618034},
+                    {frame: 36, value: 3.3747625},
+                    {frame: 37, value: 3.125581},
+                    {frame: 38, value: 2.874419},
+                    {frame: 39, value: 2.6252375},
+                    {frame: 40, value: 2.381966},
+                    {frame: 41, value: 2.1484413},
+                    {frame: 42, value: 1.9283464},
+                    {frame: 43, value: 1.725152},
+                    {frame: 44, value: 1.5420628},
+                    {frame: 45, value: 1.381966},
+                    {frame: 46, value: 1.2473867},
+                    {frame: 47, value: 1.140447},
+                    {frame: 48, value: 1.0628337},
+                    {frame: 49, value: 1.0157706},
+                    {frame: 50, value: 1}
+                ];
+                
+                const prototypeDisc = BABYLON.MeshBuilder.CreateDisc("prototypeDisc", {radius: 1, sideOrientation: BABYLON.Mesh.DOUBLESIDE, tessellation: 512}, mainScene);
+                prototypeDisc.isVisible = false;
+                prototypeDisc.position = new BABYLON.Vector3(0, 0, 0);
+                
+                const prototypeInnerSphere = BABYLON.MeshBuilder.CreateSphere("prototypeInnerSphere", {diameter: 2, segments: 512, sideOrientation: BABYLON.Mesh.BACKSIDE}, mainScene);
+                prototypeInnerSphere.isVisible = false;
+                prototypeInnerSphere.position = new BABYLON.Vector3(0, 0, 0);
+                
+                const prototypeOuterSphere = BABYLON.MeshBuilder.CreateSphere("prototypeOuterSphere", {diameter: 2, segments: 512, sideOrientation: BABYLON.Mesh.FRONTSIDE}, mainScene);
+                prototypeOuterSphere.isVisible = false;
+                prototypeOuterSphere.position = new BABYLON.Vector3(0, 0, 0);
+                
+                const prototypeCone = BABYLON.MeshBuilder.CreateCylinder("prototypeCone", {cap: BABYLON.Mesh.CAP_START, diameterBottom: 2, diameterTop: 0, height: 1, sideOrientation: BABYLON.Mesh.DOUBLESIDE, subdivisions: 1, tessellation: 512}, mainScene);
+                prototypeCone.isVisible = false;
+                prototypeCone.position = new BABYLON.Vector3(0, 0, 0);
+                
+                const defaultGridXyTexture = new BABYLON.Texture('data:image/png;base64,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', mainScene);
+                defaultGridXyTexture.hasAlpha = true;
+                defaultGridXyTexture.uScale = 24;
+                defaultGridXyTexture.vScale = 24;
+                
+                const defaultGridXyMaterial = new BABYLON.StandardMaterial("defaultGridXyMaterial", mainScene);
+                defaultGridXyMaterial.alpha = 0.25;
+                defaultGridXyMaterial.backFaceCulling = false;
+                defaultGridXyMaterial.diffuseTexture = defaultGridXyTexture;
+                defaultGridXyMaterial.sideOrientation = BABYLON.Mesh.DOUBLESIDE;
+                defaultGridXyMaterial.transparencyMode = BABYLON.Material.MATERIAL_ALPHABLEND;
+                defaultGridXyMaterial.useAlphaFromDiffuseTexture = true;
+                
+                const defaultGridXyGround = BABYLON.MeshBuilder.CreateGround("defaultGridXyGround", {height: 24, width: 24}, mainScene);
+                defaultGridXyGround.material = defaultGridXyMaterial;
+                defaultGridXyGround.position = new BABYLON.Vector3(0, 0, -12);
+                defaultGridXyGround.rotationQuaternion = new BABYLON.Quaternion(0.70710677, -0, -0, 0.70710677);
+                
+                const defaultGridYzTexture = new BABYLON.Texture('data:image/png;base64,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', mainScene);
+                defaultGridYzTexture.hasAlpha = true;
+                defaultGridYzTexture.uScale = 24;
+                defaultGridYzTexture.vScale = 24;
+                
+                const defaultGridYzMaterial = new BABYLON.StandardMaterial("defaultGridYzMaterial", mainScene);
+                defaultGridYzMaterial.alpha = 0.25;
+                defaultGridYzMaterial.backFaceCulling = false;
+                defaultGridYzMaterial.diffuseTexture = defaultGridYzTexture;
+                defaultGridYzMaterial.sideOrientation = BABYLON.Mesh.DOUBLESIDE;
+                defaultGridYzMaterial.transparencyMode = BABYLON.Material.MATERIAL_ALPHABLEND;
+                defaultGridYzMaterial.useAlphaFromDiffuseTexture = true;
+                
+                const defaultGridYzGround = BABYLON.MeshBuilder.CreateGround("defaultGridYzGround", {height: 24, width: 24}, mainScene);
+                defaultGridYzGround.material = defaultGridYzMaterial;
+                defaultGridYzGround.position = new BABYLON.Vector3(-12, 0, 0);
+                defaultGridYzGround.rotationQuaternion = new BABYLON.Quaternion(-0, -0, -0.70710677, 0.70710677);
+                
+                const defaultGridZxTexture = new BABYLON.Texture('data:image/png;base64,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', mainScene);
+                defaultGridZxTexture.hasAlpha = true;
+                defaultGridZxTexture.uScale = 24;
+                defaultGridZxTexture.vScale = 24;
+                
+                const defaultGridZxMaterial = new BABYLON.StandardMaterial("defaultGridZxMaterial", mainScene);
+                defaultGridZxMaterial.alpha = 0.25;
+                defaultGridZxMaterial.backFaceCulling = false;
+                defaultGridZxMaterial.diffuseTexture = defaultGridZxTexture;
+                defaultGridZxMaterial.sideOrientation = BABYLON.Mesh.DOUBLESIDE;
+                defaultGridZxMaterial.transparencyMode = BABYLON.Material.MATERIAL_ALPHABLEND;
+                defaultGridZxMaterial.useAlphaFromDiffuseTexture = true;
+                
+                const defaultGridZxGround = BABYLON.MeshBuilder.CreateGround("defaultGridZxGround", {height: 24, width: 24}, mainScene);
+                defaultGridZxGround.material = defaultGridZxMaterial;
+                defaultGridZxGround.position = new BABYLON.Vector3(0, -12, 0);
+                defaultGridZxGround.rotationQuaternion = new BABYLON.Quaternion(-0, -0, -0, 1);
+                
+                const axisFrameOriginMaterial = new BABYLON.SimpleMaterial("axisFrameOriginMaterial", mainScene);
+                axisFrameOriginMaterial.diffuseColor = BABYLON.Color3.FromInts(169, 169, 169);
+                
+                const axisFrameXMaterial = new BABYLON.SimpleMaterial("axisFrameXMaterial", mainScene);
+                axisFrameXMaterial.diffuseColor = BABYLON.Color3.FromInts(139, 0, 0);
+                
+                const axisFrameYMaterial = new BABYLON.SimpleMaterial("axisFrameYMaterial", mainScene);
+                axisFrameYMaterial.diffuseColor = BABYLON.Color3.FromInts(0, 100, 0);
+                
+                const axisFrameZMaterial = new BABYLON.SimpleMaterial("axisFrameZMaterial", mainScene);
+                axisFrameZMaterial.diffuseColor = BABYLON.Color3.FromInts(0, 0, 139);
+                
+                const axisFrameOriginSphere = prototypeOuterSphere.clone("axisFrameOriginSphere");
+                axisFrameOriginSphere.isVisible = true;
+                axisFrameOriginSphere.material = axisFrameOriginMaterial;
+                axisFrameOriginSphere.position = new BABYLON.Vector3(0, 0, 0);
+                axisFrameOriginSphere.scaling = new BABYLON.Vector3(0.075, 0.075, 0.075);
+                axisFrameOriginSphere.visibility = 1;
+                
+                const axisFrameLineSegment1Points = [
+                    new BABYLON.Vector3(0, 0, 0),
+                    new BABYLON.Vector3(0.8425, 0, 0)
+                ];
+                let axisFrameLineSegment1Tube = BABYLON.MeshBuilder.CreateTube("axisFrameLineSegment1Tube", {cap: BABYLON.Mesh.CAP_ALL, path: axisFrameLineSegment1Points, radius: 0.0175, tessellation: 32, updatable: false}, mainScene);
+                axisFrameLineSegment1Tube.material = axisFrameXMaterial;
+                axisFrameLineSegment1Tube.visibility = 1;
+                
+                const axisFrameLineSegment2Points = [
+                    new BABYLON.Vector3(0, 0, 0),
+                    new BABYLON.Vector3(0, 0.8425, 0)
+                ];
+                let axisFrameLineSegment2Tube = BABYLON.MeshBuilder.CreateTube("axisFrameLineSegment2Tube", {cap: BABYLON.Mesh.CAP_ALL, path: axisFrameLineSegment2Points, radius: 0.0175, tessellation: 32, updatable: false}, mainScene);
+                axisFrameLineSegment2Tube.material = axisFrameYMaterial;
+                axisFrameLineSegment2Tube.visibility = 1;
+                
+                const axisFrameLineSegment3Points = [
+                    new BABYLON.Vector3(0, 0, 0),
+                    new BABYLON.Vector3(0, 0, 0.8425)
+                ];
+                let axisFrameLineSegment3Tube = BABYLON.MeshBuilder.CreateTube("axisFrameLineSegment3Tube", {cap: BABYLON.Mesh.CAP_ALL, path: axisFrameLineSegment3Points, radius: 0.0175, tessellation: 32, updatable: false}, mainScene);
+                axisFrameLineSegment3Tube.material = axisFrameZMaterial;
+                axisFrameLineSegment3Tube.visibility = 1;
+                
+                const axisFrameArrowHead1Cylinder = prototypeCone.clone("axisFrameArrowHead1Cylinder");
+                axisFrameArrowHead1Cylinder.isVisible = true;
+                axisFrameArrowHead1Cylinder.material = axisFrameXMaterial;
+                axisFrameArrowHead1Cylinder.position = new BABYLON.Vector3(0.92125, 0, 0);
+                axisFrameArrowHead1Cylinder.rotationQuaternion = new BABYLON.Quaternion(0, 0, -0.70710677, 0.70710677);
+                axisFrameArrowHead1Cylinder.scaling = new BABYLON.Vector3(0.0525, 0.1575, 0.0525);
+                axisFrameArrowHead1Cylinder.visibility = 1;
+                
+                const axisFrameArrowHead2Cylinder = prototypeCone.clone("axisFrameArrowHead2Cylinder");
+                axisFrameArrowHead2Cylinder.isVisible = true;
+                axisFrameArrowHead2Cylinder.material = axisFrameYMaterial;
+                axisFrameArrowHead2Cylinder.position = new BABYLON.Vector3(0, 0.92125, 0);
+                axisFrameArrowHead2Cylinder.rotationQuaternion = new BABYLON.Quaternion(0, 0, 0, 1);
+                axisFrameArrowHead2Cylinder.scaling = new BABYLON.Vector3(0.0525, 0.1575, 0.0525);
+                axisFrameArrowHead2Cylinder.visibility = 1;
+                
+                const axisFrameArrowHead3Cylinder = prototypeCone.clone("axisFrameArrowHead3Cylinder");
+                axisFrameArrowHead3Cylinder.isVisible = true;
+                axisFrameArrowHead3Cylinder.material = axisFrameZMaterial;
+                axisFrameArrowHead3Cylinder.position = new BABYLON.Vector3(0, 0, 0.92125);
+                axisFrameArrowHead3Cylinder.rotationQuaternion = new BABYLON.Quaternion(0.70710677, 0, -0, 0.70710677);
+                axisFrameArrowHead3Cylinder.scaling = new BABYLON.Vector3(0.0525, 0.1575, 0.0525);
+                axisFrameArrowHead3Cylinder.visibility = 1;
+                
+                const environmentHelper = mainScene.createDefaultEnvironment({createGround: true, groundColor: BABYLON.Color3.FromInts(255, 255, 255), groundSize: 8, groundYBias: 0.01, skyboxColor: BABYLON.Color3.FromInts(135, 206, 250), skyboxSize: 34});
+                
+                const defaultCamera = new BABYLON.ArcRotateCamera("defaultCamera", 2 * Math.PI / 20, 2 * Math.PI / 5, 15, BABYLON.Vector3.Zero(), mainScene, true);
+                defaultCamera.mode = BABYLON.Camera.PERSPECTIVE_CAMERA;
+                defaultCamera.attachControl(true);
+                
+                const colorMaterial8A2BE2FF = new BABYLON.SimpleMaterial("colorMaterial8A2BE2FF", mainScene);
+                colorMaterial8A2BE2FF.diffuseColor = BABYLON.Color3.FromInts(138, 43, 226);
+                
+                const circle0Torus = BABYLON.MeshBuilder.CreateTorus("circle0Torus", {diameter: 2, tessellation: 360, thickness: 0.05}, mainScene);
+                circle0Torus.isVisible = true;
+                circle0Torus.material = colorMaterial8A2BE2FF;
+                circle0Torus.position = new BABYLON.Vector3(0, 0, 0);
+                circle0Torus.rotationQuaternion = new BABYLON.Quaternion(0, 0, 0, 1);
+                circle0Torus.visibility = 1;
+                
+                const circle0ScalingXAnimation = new BABYLON.Animation("circle0ScalingXAnimation", "x", 10, BABYLON.Animation.ANIMATIONTYPE_FLOAT, BABYLON.Animation.ANIMATIONLOOPMODE_CYCLE, false);
+                
+                circle0ScalingXAnimation.setKeys(floatKeyFrames0002);
+                
+                const circle0ScalingYAnimation = new BABYLON.Animation("circle0ScalingYAnimation", "y", 10, BABYLON.Animation.ANIMATIONTYPE_FLOAT, BABYLON.Animation.ANIMATIONLOOPMODE_CYCLE, false);
+                
+                circle0ScalingYAnimation.setKeys(floatKeyFrames0002);
+                
+                const circle0ScalingZAnimation = new BABYLON.Animation("circle0ScalingZAnimation", "z", 10, BABYLON.Animation.ANIMATIONTYPE_FLOAT, BABYLON.Animation.ANIMATIONLOOPMODE_CYCLE, false);
+                
+                circle0ScalingZAnimation.setKeys(floatKeyFrames0002);
+                
+                circle0Torus.visibility = 1;
+                circle0Torus.position.x = 0;
+                circle0Torus.position.y = 0;
+                circle0Torus.position.z = 0;
+                circle0Torus.rotationQuaternion = new BABYLON.Quaternion(0, 0, 0, 1);
+                mainScene.beginDirectAnimation(circle0Torus.scaling, [circle0ScalingXAnimation, circle0ScalingYAnimation, circle0ScalingZAnimation], 0, 50, true, 1);
+                
+                return mainScene;
+            }
+            
+            window.initFunction = async function() {
+                var asyncEngineCreation = async function() {
+                    try {
+                        return createDefaultEngine();
+                    } catch(e) {
+                        console.log("the available createEngine function failed. Creating the default engine instead");
+                        return createDefaultEngine();
+                    }
+                }
+            
+                window.engine = await asyncEngineCreation();
+                if (!engine) throw 'engine should not be null.';
+                startRenderLoop(engine, canvas);
+                
+                window.scenes.push( createMainScene() );
+            };
+            
+            initFunction().then(() => {
+                scenesToRender = scenes                    
+            });
+            
+            window.addEventListener("resize", function () {
+                engine.resize();
+            });
+        </script>
+    </body>
+</html>

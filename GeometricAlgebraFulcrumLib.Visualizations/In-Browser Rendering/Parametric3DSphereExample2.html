@@ -1,0 +1,2433 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+        <title>Parametric 3D Sphere Example 2</title>
+        
+        <!--  -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/dat-gui/0.6.2/dat.gui.min.js"></script>
+        
+        <!--  -->
+        <script src="https://assets.babylonjs.com/generated/Assets.js"></script>
+        
+        <!--  -->
+        <script src="https://preview.babylonjs.com/ammo.js"></script>
+        
+        <!--  -->
+        <script src="https://preview.babylonjs.com/cannon.js"></script>
+        
+        <!--  -->
+        <script src="https://preview.babylonjs.com/Oimo.js"></script>
+        
+        <!--  -->
+        <script src="https://preview.babylonjs.com/earcut.min.js"></script>
+        
+        <!-- Babylon.js Core -->
+        <script src="https://cdn.babylonjs.com/babylon.js"></script>
+        
+        <!-- Babylon.js Supported Advanced Materials -->
+        <script src="https://cdn.babylonjs.com/materialsLibrary/babylonjs.materials.min.js"></script>
+        
+        <!-- Babylon.js Procedural Textures -->
+        <script src="https://cdn.babylonjs.com/proceduralTexturesLibrary/babylonjs.proceduralTextures.min.js"></script>
+        
+        <!-- Babylon.js Post Processes -->
+        <script src="https://cdn.babylonjs.com/postProcessesLibrary/babylonjs.postProcess.min.js"></script>
+        
+        <!-- Babylon.js All Official Loaders (OBJ, STL, glTF) -->
+        <script src="https://cdn.babylonjs.com/loaders/babylonjs.loaders.min.js"></script>
+        
+        <!-- Babylon.js Scene/Mesh Serializers -->
+        <script src="https://cdn.babylonjs.com/serializers/babylonjs.serializers.min.js"></script>
+        
+        <!-- Babylon.js GUI -->
+        <script src="https://cdn.babylonjs.com/gui/babylon.gui.min.js"></script>
+        
+        <!-- Babylon.js Inspector -->
+        <script src="https://cdn.babylonjs.com/inspector/babylon.inspector.bundle.js"></script>
+        
+        <!-- Babylon.js Viewer -->
+        <script src="https://cdn.babylonjs.com/viewer/babylon.viewer.js"></script>
+        
+        <!-- KaTeX Core -->
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.7/dist/katex.min.css" integrity="sha384-Xi8rHCmBmhbuyyhbI88391ZKP2dmfnOl4rT9ZfRI7mLTdk1wblIUnrIq35nqwEvC" crossorigin="anonymous">
+        <script src="https://cdn.jsdelivr.net/npm/katex@0.16.7/dist/katex.min.js" integrity="sha384-X/XCfMm41VSsqRNQgDerQczD69XqmjOOOwYQvr/uuC+j4OPoNhVgjdGFwhvN02Ja" crossorigin="anonymous"></script>
+        
+        <!-- KaTeX Auto-render extension -->
+        <!-- To automatically render math in text elements, include the auto-render extension: -->
+        <script src="https://cdn.jsdelivr.net/npm/katex@0.16.7/dist/contrib/auto-render.min.js" integrity="sha384-+XBljXPPiv+OzfbB3cVmLHf4hdUFHlWNZN5spNQ7rmHTXpd7WvJum6fIACpNNfIR" crossorigin="anonymous" ></script>
+        
+        <!-- html2canvas.js -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" integrity="sha512-BNaRQnYJYiPSqHHDb58B0yaPfCu+Wgds8Gp/gU33kqBtgNS4tSPHuGibyoeqMV/TJlSKda6FXzoEyYGjTe+vXA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+	    
+        <script>
+          document.addEventListener("DOMContentLoaded", function() {
+            renderMathInElement(document.body, {
+              delimiters: 
+		      [
+                {left: "$$", right: "$$", display: true},
+			    {left: '$', right: '$', display: false},
+                {left: "\\(", right: "\\)", display: false},
+                {left: "\\begin{equation}", right: "\\end{equation}", display: true},
+                {left: "\\begin{align}", right: "\\end{align}", display: true},
+                {left: "\\begin{alignat}", right: "\\end{alignat}", display: true},
+                {left: "\\begin{gather}", right: "\\end{gather}", display: true},
+                {left: "\\begin{CD}", right: "\\end{CD}", display: true},
+                {left: "\\[", right: "\\]", display: true}
+              ],
+              throwOnError : false
+            });
+          });
+        </script>
+
+        <style>
+            html, body {
+                overflow: auto;
+                width: 100%;
+                height: 100%;
+                margin: 0;
+                padding: 0;
+            }
+
+            #renderCanvas {
+                position: absolute;
+                top: 0px;
+                left: 0px;
+            	width: 1024px;
+            	height: 728px;
+            	touch-action: none;
+            }
+
+            #textDiv {
+            	position: absolute;
+            	top: 0px;
+            	left: 0px;
+            	margin: 10px;
+            	padding: 10px;
+            	touch-action: none;
+            	background-color: rgba(255, 255, 255, 0.05);
+            }
+        </style>
+    </head>
+    <body>
+        <canvas id="renderCanvas"> </canvas>
+
+        <script>
+            var canvas = document.getElementById("renderCanvas");
+            
+            canvas.width  = 1024;
+            canvas.height = 728;
+            
+            function renderHtmlToCanvas( canvas, html ) {
+            	const ctx = canvas.getContext( '2d' );
+            
+            	const svg = `
+            		<svg xmlns="http://www.w3.org/2000/svg" width="${canvas.width}" height="${canvas.height}">
+            		<foreignObject width="100%" height="100%">
+            			<div xmlns="http://www.w3.org/1999/xhtml">${html}</div>
+            		</foreignObject>
+            		</svg>`;
+            	
+            	const svgBlob = new Blob( [svg], { type: 'image/svg+xml;charset=utf-8' } );
+            	const svgObjectUrl = URL.createObjectURL( svgBlob );
+            	
+            	//await new Promise(res => setTimeout(res, 100));
+            
+            	const tempImg = new Image();
+            	tempImg.addEventListener( 
+            		'load', 
+            		function() {
+            			ctx.drawImage( tempImg, 0, 0 );
+            			URL.revokeObjectURL( svgObjectUrl );
+            		} 
+            	);
+            
+            	tempImg.src = svgObjectUrl;
+            }
+            
+            function startRenderLoop(engine, canvas) {
+                engine.runRenderLoop(function () {
+                    if (scenesToRender) {
+                        const scenesToRenderLength = scenesToRender.length;
+                        
+                        for (let i = 0; i < scenesToRenderLength; i++) {
+                            if (scenesToRender[i].activeCamera) { scenesToRender[i].render(); }
+                        }
+                    }
+                });
+            }
+            
+            var engine = null;
+            var scenes = [];
+            var scenesToRender = [];
+            
+            var createDefaultEngine = function() { 
+                return new BABYLON.Engine(canvas, true, { preserveDrawingBuffer: true, stencil: true,  disableWebGL2Support: false}); 
+            };
+            
+            function createMainScene() {
+                
+                const mainScene = new BABYLON.Scene(engine, {});
+                mainScene.useRightHandedSystem = true;
+                
+                const light = new BABYLON.HemisphericLight("light", new BABYLON.Vector3(0, 1, 0), mainScene);
+                //light.intensity = 0.7;
+                
+                const floatKeyFrames0001 = [
+                    {frame: 0, value: 3},
+                    {frame: 1, value: 2.9979393},
+                    {frame: 2, value: 2.9917042},
+                    {frame: 3, value: 2.9811366},
+                    {frame: 4, value: 2.9659793},
+                    {frame: 5, value: 2.9458842},
+                    {frame: 6, value: 2.920425},
+                    {frame: 7, value: 2.8891113},
+                    {frame: 8, value: 2.8514059},
+                    {frame: 9, value: 2.8067453},
+                    {frame: 10, value: 2.7545588},
+                    {frame: 11, value: 2.6942923},
+                    {frame: 12, value: 2.6254294},
+                    {frame: 13, value: 2.5475132},
+                    {frame: 14, value: 2.4601698},
+                    {frame: 15, value: 2.363126},
+                    {frame: 16, value: 2.2562287},
+                    {frame: 17, value: 2.1394608},
+                    {frame: 18, value: 2.012954},
+                    {frame: 19, value: 1.8769989},
+                    {frame: 20, value: 1.7320508},
+                    {frame: 21, value: 1.578733},
+                    {frame: 22, value: 1.4178349},
+                    {frame: 23, value: 1.2503074},
+                    {frame: 24, value: 1.0772543},
+                    {frame: 25, value: 0.8999181},
+                    {frame: 26, value: 0.7196657},
+                    {frame: 28, value: 0.35637817},
+                    {frame: 29, value: 0.17650774},
+                    {frame: 30, value: 0},
+                    {frame: 31, value: -0.17149693},
+                    {frame: 32, value: -0.336358},
+                    {frame: 33, value: -0.49300912},
+                    {frame: 34, value: -0.63995427},
+                    {frame: 35, value: -0.7758018},
+                    {frame: 36, value: -0.8992883},
+                    {frame: 37, value: -1.0093008},
+                    {frame: 38, value: -1.104896},
+                    {frame: 39, value: -1.1853157},
+                    {frame: 40, value: -1.25},
+                    {frame: 41, value: -1.2985953},
+                    {frame: 42, value: -1.3309592},
+                    {frame: 43, value: -1.3471613},
+                    {frame: 44, value: -1.3474792},
+                    {frame: 45, value: -1.3323922},
+                    {frame: 46, value: -1.3025694},
+                    {frame: 47, value: -1.2588557},
+                    {frame: 48, value: -1.2022543},
+                    {frame: 49, value: -1.1339064},
+                    {frame: 50, value: -1.0550691},
+                    {frame: 51, value: -0.96709144},
+                    {frame: 52, value: -0.87138915},
+                    {frame: 53, value: -0.76941955},
+                    {frame: 54, value: -0.6626559},
+                    {frame: 55, value: -0.55256265},
+                    {frame: 56, value: -0.4405723},
+                    {frame: 57, value: -0.32806295},
+                    {frame: 58, value: -0.21633932},
+                    {frame: 59, value: -0.1066153},
+                    {frame: 60, value: 0},
+                    {frame: 61, value: 0.10251329},
+                    {frame: 62, value: 0.20005472},
+                    {frame: 63, value: 0.29188213},
+                    {frame: 64, value: 0.37738186},
+                    {frame: 65, value: 0.45606628},
+                    {frame: 66, value: 0.5275683},
+                    {frame: 67, value: 0.5916326},
+                    {frame: 68, value: 0.6481051},
+                    {frame: 69, value: 0.6969193},
+                    {frame: 70, value: 0.7380818},
+                    {frame: 71, value: 0.7716561},
+                    {frame: 72, value: 0.79774576},
+                    {frame: 73, value: 0.81647754},
+                    {frame: 74, value: 0.8279849},
+                    {frame: 75, value: 0.8323922},
+                    {frame: 76, value: 0.82980025},
+                    {frame: 77, value: 0.82027406},
+                    {frame: 78, value: 0.8038321},
+                    {frame: 79, value: 0.78043896},
+                    {frame: 80, value: 0.75},
+                    {frame: 81, value: 0.71235937},
+                    {frame: 82, value: 0.6673013},
+                    {frame: 83, value: 0.6145539},
+                    {frame: 84, value: 0.55379677},
+                    {frame: 85, value: 0.4846706},
+                    {frame: 86, value: 0.40679023},
+                    {frame: 87, value: 0.31975934},
+                    {frame: 88, value: 0.22318754},
+                    {frame: 89, value: 0.11670863},
+                    {frame: 90, value: 0},
+                    {frame: 91, value: -0.12719755},
+                    {frame: 92, value: -0.26506013},
+                    {frame: 93, value: -0.41366166},
+                    {frame: 94, value: -0.57295614},
+                    {frame: 95, value: -0.74276155},
+                    {frame: 96, value: -0.92274576},
+                    {frame: 97, value: -1.1124158},
+                    {frame: 98, value: -1.3111095},
+                    {frame: 99, value: -1.5179913},
+                    {frame: 100, value: -1.7320508},
+                    {frame: 101, value: -1.9521059},
+                    {frame: 102, value: -2.17681},
+                    {frame: 103, value: -2.404662},
+                    {frame: 104, value: -2.6340213},
+                    {frame: 105, value: -2.863126},
+                    {frame: 106, value: -3.0901139},
+                    {frame: 107, value: -3.313047},
+                    {frame: 108, value: -3.5299377},
+                    {frame: 109, value: -3.7387788},
+                    {frame: 110, value: -3.9375715},
+                    {frame: 111, value: -4.124358},
+                    {frame: 112, value: -4.2972527},
+                    {frame: 113, value: -4.454469},
+                    {frame: 114, value: -4.5943546},
+                    {frame: 115, value: -4.715413},
+                    {frame: 116, value: -4.8163342},
+                    {frame: 117, value: -4.8960123},
+                    {frame: 118, value: -4.953567},
+                    {frame: 119, value: -4.9883595},
+                    {frame: 120, value: -5},
+                    {frame: 121, value: -4.9883595},
+                    {frame: 122, value: -4.953567},
+                    {frame: 123, value: -4.8960123},
+                    {frame: 124, value: -4.8163342},
+                    {frame: 125, value: -4.715413},
+                    {frame: 126, value: -4.5943546},
+                    {frame: 127, value: -4.454469},
+                    {frame: 128, value: -4.2972527},
+                    {frame: 129, value: -4.124358},
+                    {frame: 130, value: -3.9375715},
+                    {frame: 131, value: -3.7387788},
+                    {frame: 132, value: -3.5299377},
+                    {frame: 133, value: -3.313047},
+                    {frame: 134, value: -3.0901139},
+                    {frame: 135, value: -2.863126},
+                    {frame: 136, value: -2.6340213},
+                    {frame: 137, value: -2.404662},
+                    {frame: 138, value: -2.17681},
+                    {frame: 139, value: -1.9521059},
+                    {frame: 140, value: -1.7320508},
+                    {frame: 141, value: -1.5179913},
+                    {frame: 142, value: -1.3111095},
+                    {frame: 143, value: -1.1124158},
+                    {frame: 144, value: -0.92274576},
+                    {frame: 145, value: -0.74276155},
+                    {frame: 146, value: -0.57295614},
+                    {frame: 147, value: -0.41366166},
+                    {frame: 148, value: -0.26506013},
+                    {frame: 149, value: -0.12719755},
+                    {frame: 150, value: 0},
+                    {frame: 151, value: 0.11670863},
+                    {frame: 152, value: 0.22318754},
+                    {frame: 153, value: 0.31975934},
+                    {frame: 154, value: 0.40679023},
+                    {frame: 155, value: 0.4846706},
+                    {frame: 156, value: 0.55379677},
+                    {frame: 157, value: 0.6145539},
+                    {frame: 158, value: 0.6673013},
+                    {frame: 159, value: 0.71235937},
+                    {frame: 160, value: 0.75},
+                    {frame: 161, value: 0.78043896},
+                    {frame: 162, value: 0.8038321},
+                    {frame: 163, value: 0.82027406},
+                    {frame: 164, value: 0.82980025},
+                    {frame: 165, value: 0.8323922},
+                    {frame: 166, value: 0.8279849},
+                    {frame: 167, value: 0.81647754},
+                    {frame: 168, value: 0.79774576},
+                    {frame: 169, value: 0.7716561},
+                    {frame: 170, value: 0.7380818},
+                    {frame: 171, value: 0.6969193},
+                    {frame: 172, value: 0.6481051},
+                    {frame: 173, value: 0.5916326},
+                    {frame: 174, value: 0.5275683},
+                    {frame: 175, value: 0.45606628},
+                    {frame: 176, value: 0.37738186},
+                    {frame: 177, value: 0.29188213},
+                    {frame: 178, value: 0.20005472},
+                    {frame: 179, value: 0.10251329},
+                    {frame: 180, value: 0},
+                    {frame: 181, value: -0.1066153},
+                    {frame: 182, value: -0.21633932},
+                    {frame: 183, value: -0.32806295},
+                    {frame: 184, value: -0.4405723},
+                    {frame: 185, value: -0.55256265},
+                    {frame: 186, value: -0.6626559},
+                    {frame: 187, value: -0.76941955},
+                    {frame: 188, value: -0.87138915},
+                    {frame: 189, value: -0.96709144},
+                    {frame: 190, value: -1.0550691},
+                    {frame: 191, value: -1.1339064},
+                    {frame: 192, value: -1.2022543},
+                    {frame: 193, value: -1.2588557},
+                    {frame: 194, value: -1.3025694},
+                    {frame: 195, value: -1.3323922},
+                    {frame: 196, value: -1.3474792},
+                    {frame: 197, value: -1.3471613},
+                    {frame: 198, value: -1.3309592},
+                    {frame: 199, value: -1.2985953},
+                    {frame: 200, value: -1.25},
+                    {frame: 201, value: -1.1853157},
+                    {frame: 202, value: -1.104896},
+                    {frame: 203, value: -1.0093008},
+                    {frame: 204, value: -0.8992883},
+                    {frame: 205, value: -0.7758018},
+                    {frame: 206, value: -0.63995427},
+                    {frame: 207, value: -0.49300912},
+                    {frame: 208, value: -0.336358},
+                    {frame: 209, value: -0.17149693},
+                    {frame: 210, value: 0},
+                    {frame: 211, value: 0.17650774},
+                    {frame: 212, value: 0.35637817},
+                    {frame: 213, value: 0.5379679},
+                    {frame: 214, value: 0.7196657},
+                    {frame: 215, value: 0.8999181},
+                    {frame: 216, value: 1.0772543},
+                    {frame: 217, value: 1.2503074},
+                    {frame: 218, value: 1.4178349},
+                    {frame: 219, value: 1.578733},
+                    {frame: 220, value: 1.7320508},
+                    {frame: 221, value: 1.8769989},
+                    {frame: 222, value: 2.012954},
+                    {frame: 223, value: 2.1394608},
+                    {frame: 224, value: 2.2562287},
+                    {frame: 225, value: 2.363126},
+                    {frame: 226, value: 2.4601698},
+                    {frame: 227, value: 2.5475132},
+                    {frame: 228, value: 2.6254294},
+                    {frame: 229, value: 2.6942923},
+                    {frame: 230, value: 2.7545588},
+                    {frame: 231, value: 2.8067453},
+                    {frame: 232, value: 2.8514059},
+                    {frame: 233, value: 2.8891113},
+                    {frame: 234, value: 2.920425},
+                    {frame: 235, value: 2.9458842},
+                    {frame: 236, value: 2.9659793},
+                    {frame: 237, value: 2.9811366},
+                    {frame: 238, value: 2.9917042},
+                    {frame: 239, value: 2.9979393},
+                    {frame: 240, value: 3}
+                ];
+                
+                const floatKeyFrames0002 = [
+                    {frame: 0, value: 0},
+                    {frame: 1, value: 0.0785038},
+                    {frame: 2, value: 0.15678857},
+                    {frame: 3, value: 0.23462054},
+                    {frame: 4, value: 0.311737},
+                    {frame: 5, value: 0.38783303},
+                    {frame: 6, value: 0.4625499},
+                    {frame: 7, value: 0.5354651},
+                    {frame: 8, value: 0.60608506},
+                    {frame: 9, value: 0.6738399},
+                    {frame: 10, value: 0.7380818},
+                    {frame: 11, value: 0.79808575},
+                    {frame: 12, value: 0.8530537},
+                    {frame: 13, value: 0.9021218},
+                    {frame: 14, value: 0.94437075},
+                    {frame: 15, value: 0.9788388},
+                    {frame: 16, value: 1.0045377},
+                    {frame: 17, value: 1.0204704},
+                    {frame: 18, value: 1.0256513},
+                    {frame: 19, value: 1.0191272},
+                    {frame: 20, value: 1},
+                    {frame: 21, value: 0.9674488},
+                    {frame: 22, value: 0.9207527},
+                    {frame: 23, value: 0.85931253},
+                    {frame: 24, value: 0.78267103},
+                    {frame: 25, value: 0.69053143},
+                    {frame: 26, value: 0.5827738},
+                    {frame: 27, value: 0.45946804},
+                    {frame: 28, value: 0.32088435},
+                    {frame: 29, value: 0.1674996},
+                    {frame: 30, value: 0},
+                    {frame: 31, value: -0.18072006},
+                    {frame: 32, value: -0.3735634},
+                    {frame: 33, value: -0.5772395},
+                    {frame: 34, value: -0.7902777},
+                    {frame: 35, value: -1.0110446},
+                    {frame: 36, value: -1.2377641},
+                    {frame: 37, value: -1.4685417},
+                    {frame: 38, value: -1.7013905},
+                    {frame: 39, value: -1.9342594},
+                    {frame: 40, value: -2.1650636},
+                    {frame: 41, value: -2.391715},
+                    {frame: 42, value: -2.6121547},
+                    {frame: 43, value: -2.8243823},
+                    {frame: 44, value: -3.0264878},
+                    {frame: 45, value: -3.2166793},
+                    {frame: 46, value: -3.393309},
+                    {frame: 47, value: -3.5548987},
+                    {frame: 48, value: -3.700158},
+                    {frame: 49, value: -3.828004},
+                    {frame: 50, value: -3.9375715},
+                    {frame: 51, value: -4.028226},
+                    {frame: 52, value: -4.0995636},
+                    {frame: 53, value: -4.1514163},
+                    {frame: 54, value: -4.1838446},
+                    {frame: 55, value: -4.19713},
+                    {frame: 56, value: -4.1917653},
+                    {frame: 57, value: -4.168435},
+                    {frame: 58, value: -4.1280003},
+                    {frame: 59, value: -4.071474},
+                    {frame: 60, value: -4},
+                    {frame: 61, value: -3.9148245},
+                    {frame: 62, value: -3.8172715},
+                    {frame: 63, value: -3.708714},
+                    {frame: 64, value: -3.5905485},
+                    {frame: 65, value: -3.4641674},
+                    {frame: 66, value: -3.330935},
+                    {frame: 67, value: -3.192164},
+                    {frame: 68, value: -3.0490947},
+                    {frame: 69, value: -2.9028778},
+                    {frame: 70, value: -2.7545588},
+                    {frame: 71, value: -2.6050673},
+                    {frame: 72, value: -2.455209},
+                    {frame: 73, value: -2.3056614},
+                    {frame: 74, value: -2.1569746},
+                    {frame: 75, value: -2.0095725},
+                    {frame: 76, value: -1.8637619},
+                    {frame: 77, value: -1.7197403},
+                    {frame: 78, value: -1.5776093},
+                    {frame: 79, value: -1.4373899},
+                    {frame: 80, value: -1.299038},
+                    {frame: 81, value: -1.1624649},
+                    {frame: 82, value: -1.0275539},
+                    {frame: 83, value: -0.8941815},
+                    {frame: 84, value: -0.7622359},
+                    {frame: 85, value: -0.63163507},
+                    {frame: 86, value: -0.50234413},
+                    {frame: 87, value: -0.3743901},
+                    {frame: 88, value: -0.24787489},
+                    {frame: 89, value: -0.12298523},
+                    {frame: 90, value: 0},
+                    {frame: 91, value: 0.12070596},
+                    {frame: 92, value: 0.2386612},
+                    {frame: 93, value: 0.35330045},
+                    {frame: 94, value: 0.46397075},
+                    {frame: 95, value: 0.569941},
+                    {frame: 96, value: 0.67041403},
+                    {frame: 97, value: 0.7645422},
+                    {frame: 98, value: 0.85144454},
+                    {frame: 99, value: 0.9302263},
+                    {frame: 100, value: 1},
+                    {frame: 101, value: 1.0599071},
+                    {frame: 102, value: 1.10914},
+                    {frame: 103, value: 1.1469649},
+                    {frame: 104, value: 1.1727418},
+                    {frame: 105, value: 1.1859456},
+                    {frame: 106, value: 1.1861836},
+                    {frame: 107, value: 1.1732115},
+                    {frame: 108, value: 1.1469463},
+                    {frame: 109, value: 1.1074767},
+                    {frame: 110, value: 1.0550691},
+                    {frame: 111, value: 0.99017084},
+                    {frame: 112, value: 0.91340923},
+                    {frame: 113, value: 0.82558703},
+                    {frame: 114, value: 0.72767425},
+                    {frame: 115, value: 0.62079597},
+                    {frame: 116, value: 0.5062171},
+                    {frame: 117, value: 0.38532454},
+                    {frame: 118, value: 0.25960547},
+                    {frame: 119, value: 0.13062479},
+                    {frame: 120, value: 0},
+                    {frame: 121, value: -0.13062479},
+                    {frame: 122, value: -0.25960547},
+                    {frame: 123, value: -0.38532454},
+                    {frame: 124, value: -0.5062171},
+                    {frame: 125, value: -0.62079597},
+                    {frame: 126, value: -0.72767425},
+                    {frame: 127, value: -0.82558703},
+                    {frame: 128, value: -0.91340923},
+                    {frame: 129, value: -0.99017084},
+                    {frame: 130, value: -1.0550691},
+                    {frame: 131, value: -1.1074767},
+                    {frame: 132, value: -1.1469463},
+                    {frame: 133, value: -1.1732115},
+                    {frame: 134, value: -1.1861836},
+                    {frame: 135, value: -1.1859456},
+                    {frame: 136, value: -1.1727418},
+                    {frame: 137, value: -1.1469649},
+                    {frame: 138, value: -1.10914},
+                    {frame: 139, value: -1.0599071},
+                    {frame: 140, value: -1},
+                    {frame: 141, value: -0.9302263},
+                    {frame: 142, value: -0.85144454},
+                    {frame: 143, value: -0.7645422},
+                    {frame: 144, value: -0.67041403},
+                    {frame: 145, value: -0.569941},
+                    {frame: 146, value: -0.46397075},
+                    {frame: 147, value: -0.35330045},
+                    {frame: 148, value: -0.2386612},
+                    {frame: 149, value: -0.12070596},
+                    {frame: 150, value: 0},
+                    {frame: 151, value: 0.12298523},
+                    {frame: 152, value: 0.24787489},
+                    {frame: 153, value: 0.3743901},
+                    {frame: 154, value: 0.50234413},
+                    {frame: 155, value: 0.63163507},
+                    {frame: 156, value: 0.7622359},
+                    {frame: 157, value: 0.8941815},
+                    {frame: 158, value: 1.0275539},
+                    {frame: 159, value: 1.1624649},
+                    {frame: 160, value: 1.299038},
+                    {frame: 161, value: 1.4373899},
+                    {frame: 162, value: 1.5776093},
+                    {frame: 163, value: 1.7197403},
+                    {frame: 164, value: 1.8637619},
+                    {frame: 165, value: 2.0095725},
+                    {frame: 166, value: 2.1569746},
+                    {frame: 167, value: 2.3056614},
+                    {frame: 168, value: 2.455209},
+                    {frame: 169, value: 2.6050673},
+                    {frame: 170, value: 2.7545588},
+                    {frame: 171, value: 2.9028778},
+                    {frame: 172, value: 3.0490947},
+                    {frame: 173, value: 3.192164},
+                    {frame: 174, value: 3.330935},
+                    {frame: 175, value: 3.4641674},
+                    {frame: 176, value: 3.5905485},
+                    {frame: 177, value: 3.708714},
+                    {frame: 178, value: 3.8172715},
+                    {frame: 179, value: 3.9148245},
+                    {frame: 180, value: 4},
+                    {frame: 181, value: 4.071474},
+                    {frame: 182, value: 4.1280003},
+                    {frame: 183, value: 4.168435},
+                    {frame: 184, value: 4.1917653},
+                    {frame: 185, value: 4.19713},
+                    {frame: 186, value: 4.1838446},
+                    {frame: 187, value: 4.1514163},
+                    {frame: 188, value: 4.0995636},
+                    {frame: 189, value: 4.028226},
+                    {frame: 190, value: 3.9375715},
+                    {frame: 191, value: 3.828004},
+                    {frame: 192, value: 3.700158},
+                    {frame: 193, value: 3.5548987},
+                    {frame: 194, value: 3.393309},
+                    {frame: 195, value: 3.2166793},
+                    {frame: 196, value: 3.0264878},
+                    {frame: 197, value: 2.8243823},
+                    {frame: 198, value: 2.6121547},
+                    {frame: 199, value: 2.391715},
+                    {frame: 200, value: 2.1650636},
+                    {frame: 201, value: 1.9342594},
+                    {frame: 202, value: 1.7013905},
+                    {frame: 203, value: 1.4685417},
+                    {frame: 204, value: 1.2377641},
+                    {frame: 205, value: 1.0110446},
+                    {frame: 206, value: 0.7902777},
+                    {frame: 207, value: 0.5772395},
+                    {frame: 208, value: 0.3735634},
+                    {frame: 209, value: 0.18072006},
+                    {frame: 210, value: 0},
+                    {frame: 211, value: -0.1674996},
+                    {frame: 212, value: -0.32088435},
+                    {frame: 213, value: -0.45946804},
+                    {frame: 214, value: -0.5827738},
+                    {frame: 215, value: -0.69053143},
+                    {frame: 216, value: -0.78267103},
+                    {frame: 217, value: -0.85931253},
+                    {frame: 218, value: -0.9207527},
+                    {frame: 219, value: -0.9674488},
+                    {frame: 220, value: -1},
+                    {frame: 221, value: -1.0191272},
+                    {frame: 222, value: -1.0256513},
+                    {frame: 223, value: -1.0204704},
+                    {frame: 224, value: -1.0045377},
+                    {frame: 225, value: -0.9788388},
+                    {frame: 226, value: -0.94437075},
+                    {frame: 227, value: -0.9021218},
+                    {frame: 228, value: -0.8530537},
+                    {frame: 229, value: -0.79808575},
+                    {frame: 230, value: -0.7380818},
+                    {frame: 231, value: -0.6738399},
+                    {frame: 232, value: -0.60608506},
+                    {frame: 233, value: -0.5354651},
+                    {frame: 234, value: -0.4625499},
+                    {frame: 235, value: -0.38783303},
+                    {frame: 236, value: -0.311737},
+                    {frame: 237, value: -0.23462054},
+                    {frame: 238, value: -0.15678857},
+                    {frame: 239, value: -0.0785038},
+                    {frame: 240, value: 0}
+                ];
+                
+                const floatKeyFrames0003 = [
+                    {frame: 0, value: 0},
+                    {frame: 1, value: 0.15716921},
+                    {frame: 2, value: 0.3148723},
+                    {frame: 3, value: 0.4736257},
+                    {frame: 4, value: 0.633911},
+                    {frame: 5, value: 0.79615855},
+                    {frame: 6, value: 0.9607318},
+                    {frame: 7, value: 1.1279129},
+                    {frame: 8, value: 1.2978897},
+                    {frame: 9, value: 1.470745},
+                    {frame: 10, value: 1.6464466},
+                    {frame: 11, value: 1.8248414},
+                    {frame: 12, value: 2.0056496},
+                    {frame: 13, value: 2.1884625},
+                    {frame: 14, value: 2.3727434},
+                    {frame: 16, value: 2.742935},
+                    {frame: 17, value: 2.9271626},
+                    {frame: 18, value: 3.10951},
+                    {frame: 19, value: 3.2888808},
+                    {frame: 20, value: 3.4641016},
+                    {frame: 21, value: 3.6339335},
+                    {frame: 22, value: 3.7970917},
+                    {frame: 23, value: 3.9522617},
+                    {frame: 24, value: 4.098119},
+                    {frame: 25, value: 4.233347},
+                    {frame: 26, value: 4.35666},
+                    {frame: 27, value: 4.4668193},
+                    {frame: 28, value: 4.562653},
+                    {frame: 29, value: 4.643076},
+                    {frame: 30, value: 4.7071066},
+                    {frame: 31, value: 4.753882},
+                    {frame: 32, value: 4.782673},
+                    {frame: 33, value: 4.7928963},
+                    {frame: 34, value: 4.7841263},
+                    {frame: 35, value: 4.7561026},
+                    {frame: 36, value: 4.7087345},
+                    {frame: 37, value: 4.642107},
+                    {frame: 38, value: 4.55648},
+                    {frame: 39, value: 4.452286},
+                    {frame: 40, value: 4.3301272},
+                    {frame: 41, value: 4.1907673},
+                    {frame: 42, value: 4.035125},
+                    {frame: 43, value: 3.864257},
+                    {frame: 44, value: 3.679352},
+                    {frame: 45, value: 3.4817085},
+                    {frame: 46, value: 3.2727222},
+                    {frame: 47, value: 3.0538654},
+                    {frame: 48, value: 2.8266692},
+                    {frame: 49, value: 2.5927029},
+                    {frame: 50, value: 2.3535533},
+                    {frame: 51, value: 2.1108053},
+                    {frame: 52, value: 1.8660203},
+                    {frame: 53, value: 1.6207185},
+                    {frame: 54, value: 1.3763587},
+                    {frame: 55, value: 1.1343219},
+                    {frame: 56, value: 0.895895},
+                    {frame: 57, value: 0.6622568},
+                    {frame: 58, value: 0.4344657},
+                    {frame: 59, value: 0.21345006},
+                    {frame: 60, value: 0},
+                    {frame: 61, value: -0.2052376},
+                    {frame: 62, value: -0.401762},
+                    {frame: 63, value: -0.589219},
+                    {frame: 64, value: -0.76739854},
+                    {frame: 65, value: -0.9362304},
+                    {frame: 66, value: -1.0957772},
+                    {frame: 67, value: -1.246225},
+                    {frame: 68, value: -1.3878728},
+                    {frame: 69, value: -1.5211188},
+                    {frame: 70, value: -1.6464466},
+                    {frame: 71, value: -1.7644094},
+                    {frame: 72, value: -1.8756127},
+                    {frame: 73, value: -1.9806978},
+                    {frame: 74, value: -2.0803227},
+                    {frame: 75, value: -2.1751456},
+                    {frame: 76, value: -2.2658067},
+                    {frame: 77, value: -2.3529105},
+                    {frame: 78, value: -2.4370112},
+                    {frame: 79, value: -2.5185971},
+                    {frame: 80, value: -2.598076},
+                    {frame: 81, value: -2.6757662},
+                    {frame: 82, value: -2.7518837},
+                    {frame: 83, value: -2.8265362},
+                    {frame: 84, value: -2.8997176},
+                    {frame: 85, value: -2.9713042},
+                    {frame: 86, value: -3.0410545},
+                    {frame: 87, value: -3.1086106},
+                    {frame: 88, value: -3.1735024},
+                    {frame: 89, value: -3.2351544},
+                    {frame: 90, value: -3.2928932},
+                    {frame: 91, value: -3.3459601},
+                    {frame: 92, value: -3.3935223},
+                    {frame: 93, value: -3.4346876},
+                    {frame: 94, value: -3.4685206},
+                    {frame: 95, value: -3.4940596},
+                    {frame: 96, value: -3.5103335},
+                    {frame: 97, value: -3.5163817},
+                    {frame: 98, value: -3.511272},
+                    {frame: 99, value: -3.4941185},
+                    {frame: 100, value: -3.4641016},
+                    {frame: 101, value: -3.4204836},
+                    {frame: 102, value: -3.362626},
+                    {frame: 103, value: -3.290005},
+                    {frame: 104, value: -3.2022238},
+                    {frame: 105, value: -3.0990252},
+                    {frame: 106, value: -2.9803014},
+                    {frame: 107, value: -2.8461006},
+                    {frame: 108, value: -2.6966326},
+                    {frame: 109, value: -2.532271},
+                    {frame: 110, value: -2.3535533},
+                    {frame: 111, value: -2.161179},
+                    {frame: 112, value: -1.9560034},
+                    {frame: 113, value: -1.7390307},
+                    {frame: 114, value: -1.5114042},
+                    {frame: 115, value: -1.2743938},
+                    {frame: 116, value: -1.0293826},
+                    {frame: 117, value: -0.77785003},
+                    {frame: 118, value: -0.5213554},
+                    {frame: 119, value: -0.26151845},
+                    {frame: 121, value: 0.26151845},
+                    {frame: 122, value: 0.5213554},
+                    {frame: 123, value: 0.77785003},
+                    {frame: 124, value: 1.0293826},
+                    {frame: 125, value: 1.2743938},
+                    {frame: 126, value: 1.5114042},
+                    {frame: 127, value: 1.7390307},
+                    {frame: 128, value: 1.9560034},
+                    {frame: 129, value: 2.161179},
+                    {frame: 130, value: 2.3535533},
+                    {frame: 131, value: 2.532271},
+                    {frame: 132, value: 2.6966326},
+                    {frame: 133, value: 2.8461006},
+                    {frame: 134, value: 2.9803014},
+                    {frame: 135, value: 3.0990252},
+                    {frame: 136, value: 3.2022238},
+                    {frame: 137, value: 3.290005},
+                    {frame: 138, value: 3.362626},
+                    {frame: 139, value: 3.4204836},
+                    {frame: 140, value: 3.4641016},
+                    {frame: 141, value: 3.4941185},
+                    {frame: 142, value: 3.511272},
+                    {frame: 143, value: 3.5163817},
+                    {frame: 144, value: 3.5103335},
+                    {frame: 145, value: 3.4940596},
+                    {frame: 146, value: 3.4685206},
+                    {frame: 147, value: 3.4346876},
+                    {frame: 148, value: 3.3935223},
+                    {frame: 149, value: 3.3459601},
+                    {frame: 150, value: 3.2928932},
+                    {frame: 151, value: 3.2351544},
+                    {frame: 152, value: 3.1735024},
+                    {frame: 153, value: 3.1086106},
+                    {frame: 154, value: 3.0410545},
+                    {frame: 155, value: 2.9713042},
+                    {frame: 156, value: 2.8997176},
+                    {frame: 157, value: 2.8265362},
+                    {frame: 158, value: 2.7518837},
+                    {frame: 159, value: 2.6757662},
+                    {frame: 160, value: 2.598076},
+                    {frame: 161, value: 2.5185971},
+                    {frame: 162, value: 2.4370112},
+                    {frame: 163, value: 2.3529105},
+                    {frame: 164, value: 2.2658067},
+                    {frame: 165, value: 2.1751456},
+                    {frame: 166, value: 2.0803227},
+                    {frame: 167, value: 1.9806978},
+                    {frame: 168, value: 1.8756127},
+                    {frame: 169, value: 1.7644094},
+                    {frame: 170, value: 1.6464466},
+                    {frame: 171, value: 1.5211188},
+                    {frame: 172, value: 1.3878728},
+                    {frame: 173, value: 1.246225},
+                    {frame: 174, value: 1.0957772},
+                    {frame: 175, value: 0.9362304},
+                    {frame: 176, value: 0.76739854},
+                    {frame: 177, value: 0.589219},
+                    {frame: 178, value: 0.401762},
+                    {frame: 179, value: 0.2052376},
+                    {frame: 180, value: 0},
+                    {frame: 181, value: -0.21345006},
+                    {frame: 182, value: -0.4344657},
+                    {frame: 183, value: -0.6622568},
+                    {frame: 184, value: -0.895895},
+                    {frame: 185, value: -1.1343219},
+                    {frame: 186, value: -1.3763587},
+                    {frame: 187, value: -1.6207185},
+                    {frame: 188, value: -1.8660203},
+                    {frame: 189, value: -2.1108053},
+                    {frame: 190, value: -2.3535533},
+                    {frame: 191, value: -2.5927029},
+                    {frame: 192, value: -2.8266692},
+                    {frame: 193, value: -3.0538654},
+                    {frame: 194, value: -3.2727222},
+                    {frame: 195, value: -3.4817085},
+                    {frame: 196, value: -3.679352},
+                    {frame: 197, value: -3.864257},
+                    {frame: 198, value: -4.035125},
+                    {frame: 199, value: -4.1907673},
+                    {frame: 200, value: -4.3301272},
+                    {frame: 201, value: -4.452286},
+                    {frame: 202, value: -4.55648},
+                    {frame: 203, value: -4.642107},
+                    {frame: 204, value: -4.7087345},
+                    {frame: 205, value: -4.7561026},
+                    {frame: 206, value: -4.7841263},
+                    {frame: 207, value: -4.7928963},
+                    {frame: 208, value: -4.782673},
+                    {frame: 209, value: -4.753882},
+                    {frame: 210, value: -4.7071066},
+                    {frame: 211, value: -4.643076},
+                    {frame: 212, value: -4.562653},
+                    {frame: 213, value: -4.4668193},
+                    {frame: 214, value: -4.35666},
+                    {frame: 215, value: -4.233347},
+                    {frame: 216, value: -4.098119},
+                    {frame: 217, value: -3.9522617},
+                    {frame: 218, value: -3.7970917},
+                    {frame: 219, value: -3.6339335},
+                    {frame: 220, value: -3.4641016},
+                    {frame: 221, value: -3.2888808},
+                    {frame: 222, value: -3.10951},
+                    {frame: 223, value: -2.9271626},
+                    {frame: 224, value: -2.742935},
+                    {frame: 226, value: -2.3727434},
+                    {frame: 227, value: -2.1884625},
+                    {frame: 228, value: -2.0056496},
+                    {frame: 229, value: -1.8248414},
+                    {frame: 230, value: -1.6464466},
+                    {frame: 231, value: -1.470745},
+                    {frame: 232, value: -1.2978897},
+                    {frame: 233, value: -1.1279129},
+                    {frame: 234, value: -0.9607318},
+                    {frame: 235, value: -0.79615855},
+                    {frame: 236, value: -0.633911},
+                    {frame: 237, value: -0.4736257},
+                    {frame: 238, value: -0.3148723},
+                    {frame: 239, value: -0.15716921},
+                    {frame: 240, value: 0}
+                ];
+                
+                const floatKeyFrames0004 = [
+                    {frame: 0, value: 1},
+                    {frame: 1, value: 1.0122368},
+                    {frame: 2, value: 1.047801},
+                    {frame: 3, value: 1.1036245},
+                    {frame: 4, value: 1.1755705},
+                    {frame: 5, value: 1.2592801},
+                    {frame: 6, value: 1.3507144},
+                    {frame: 7, value: 1.4463813},
+                    {frame: 8, value: 1.5433619},
+                    {frame: 9, value: 1.6392471},
+                    {frame: 10, value: 1.7320508},
+                    {frame: 11, value: 1.8201288},
+                    {frame: 12, value: 1.9021131},
+                    {frame: 13, value: 1.9768614},
+                    {frame: 14, value: 2.0434213},
+                    {frame: 15, value: 2.101003},
+                    {frame: 16, value: 2.148961},
+                    {frame: 17, value: 2.1867814},
+                    {frame: 18, value: 2.2140715},
+                    {frame: 19, value: 2.2305553},
+                    {frame: 20, value: 2.236068},
+                    {frame: 21, value: 2.2305553},
+                    {frame: 22, value: 2.2140715},
+                    {frame: 23, value: 2.1867814},
+                    {frame: 24, value: 2.148961},
+                    {frame: 25, value: 2.101003},
+                    {frame: 26, value: 2.0434213},
+                    {frame: 27, value: 1.9768614},
+                    {frame: 28, value: 1.9021131},
+                    {frame: 29, value: 1.8201288},
+                    {frame: 30, value: 1.7320508},
+                    {frame: 31, value: 1.6392471},
+                    {frame: 32, value: 1.5433619},
+                    {frame: 33, value: 1.4463813},
+                    {frame: 34, value: 1.3507144},
+                    {frame: 35, value: 1.2592801},
+                    {frame: 36, value: 1.1755705},
+                    {frame: 37, value: 1.1036245},
+                    {frame: 38, value: 1.047801},
+                    {frame: 39, value: 1.0122368},
+                    {frame: 40, value: 1},
+                    {frame: 41, value: 1.0122368},
+                    {frame: 42, value: 1.047801},
+                    {frame: 43, value: 1.1036245},
+                    {frame: 44, value: 1.1755705},
+                    {frame: 45, value: 1.2592801},
+                    {frame: 46, value: 1.3507144},
+                    {frame: 47, value: 1.4463813},
+                    {frame: 48, value: 1.5433619},
+                    {frame: 49, value: 1.6392471},
+                    {frame: 50, value: 1.7320508},
+                    {frame: 51, value: 1.8201288},
+                    {frame: 52, value: 1.9021131},
+                    {frame: 53, value: 1.9768614},
+                    {frame: 54, value: 2.0434213},
+                    {frame: 55, value: 2.101003},
+                    {frame: 56, value: 2.148961},
+                    {frame: 57, value: 2.1867814},
+                    {frame: 58, value: 2.2140715},
+                    {frame: 59, value: 2.2305553},
+                    {frame: 60, value: 2.236068},
+                    {frame: 61, value: 2.2305553},
+                    {frame: 62, value: 2.2140715},
+                    {frame: 63, value: 2.1867814},
+                    {frame: 64, value: 2.148961},
+                    {frame: 65, value: 2.101003},
+                    {frame: 66, value: 2.0434213},
+                    {frame: 67, value: 1.9768614},
+                    {frame: 68, value: 1.9021131},
+                    {frame: 69, value: 1.8201288},
+                    {frame: 70, value: 1.7320508},
+                    {frame: 71, value: 1.6392471},
+                    {frame: 72, value: 1.5433619},
+                    {frame: 73, value: 1.4463813},
+                    {frame: 74, value: 1.3507144},
+                    {frame: 75, value: 1.2592801},
+                    {frame: 76, value: 1.1755705},
+                    {frame: 77, value: 1.1036245},
+                    {frame: 78, value: 1.047801},
+                    {frame: 79, value: 1.0122368},
+                    {frame: 80, value: 1},
+                    {frame: 81, value: 1.0122368},
+                    {frame: 82, value: 1.047801},
+                    {frame: 83, value: 1.1036245},
+                    {frame: 84, value: 1.1755705},
+                    {frame: 85, value: 1.2592801},
+                    {frame: 86, value: 1.3507144},
+                    {frame: 87, value: 1.4463813},
+                    {frame: 88, value: 1.5433619},
+                    {frame: 89, value: 1.6392471},
+                    {frame: 90, value: 1.7320508},
+                    {frame: 91, value: 1.8201288},
+                    {frame: 92, value: 1.9021131},
+                    {frame: 93, value: 1.9768614},
+                    {frame: 94, value: 2.0434213},
+                    {frame: 95, value: 2.101003},
+                    {frame: 96, value: 2.148961},
+                    {frame: 97, value: 2.1867814},
+                    {frame: 98, value: 2.2140715},
+                    {frame: 99, value: 2.2305553},
+                    {frame: 100, value: 2.236068},
+                    {frame: 101, value: 2.2305553},
+                    {frame: 102, value: 2.2140715},
+                    {frame: 103, value: 2.1867814},
+                    {frame: 104, value: 2.148961},
+                    {frame: 105, value: 2.101003},
+                    {frame: 106, value: 2.0434213},
+                    {frame: 107, value: 1.9768614},
+                    {frame: 108, value: 1.9021131},
+                    {frame: 109, value: 1.8201288},
+                    {frame: 110, value: 1.7320508},
+                    {frame: 111, value: 1.6392471},
+                    {frame: 112, value: 1.5433619},
+                    {frame: 113, value: 1.4463813},
+                    {frame: 114, value: 1.3507144},
+                    {frame: 115, value: 1.2592801},
+                    {frame: 116, value: 1.1755705},
+                    {frame: 117, value: 1.1036245},
+                    {frame: 118, value: 1.047801},
+                    {frame: 119, value: 1.0122368},
+                    {frame: 120, value: 1},
+                    {frame: 121, value: 1.0122368},
+                    {frame: 122, value: 1.047801},
+                    {frame: 123, value: 1.1036245},
+                    {frame: 124, value: 1.1755705},
+                    {frame: 125, value: 1.2592801},
+                    {frame: 126, value: 1.3507144},
+                    {frame: 127, value: 1.4463813},
+                    {frame: 128, value: 1.5433619},
+                    {frame: 129, value: 1.6392471},
+                    {frame: 130, value: 1.7320508},
+                    {frame: 131, value: 1.8201288},
+                    {frame: 132, value: 1.9021131},
+                    {frame: 133, value: 1.9768614},
+                    {frame: 134, value: 2.0434213},
+                    {frame: 135, value: 2.101003},
+                    {frame: 136, value: 2.148961},
+                    {frame: 137, value: 2.1867814},
+                    {frame: 138, value: 2.2140715},
+                    {frame: 139, value: 2.2305553},
+                    {frame: 140, value: 2.236068},
+                    {frame: 141, value: 2.2305553},
+                    {frame: 142, value: 2.2140715},
+                    {frame: 143, value: 2.1867814},
+                    {frame: 144, value: 2.148961},
+                    {frame: 145, value: 2.101003},
+                    {frame: 146, value: 2.0434213},
+                    {frame: 147, value: 1.9768614},
+                    {frame: 148, value: 1.9021131},
+                    {frame: 149, value: 1.8201288},
+                    {frame: 150, value: 1.7320508},
+                    {frame: 151, value: 1.6392471},
+                    {frame: 152, value: 1.5433619},
+                    {frame: 153, value: 1.4463813},
+                    {frame: 154, value: 1.3507144},
+                    {frame: 155, value: 1.2592801},
+                    {frame: 156, value: 1.1755705},
+                    {frame: 157, value: 1.1036245},
+                    {frame: 158, value: 1.047801},
+                    {frame: 159, value: 1.0122368},
+                    {frame: 160, value: 1},
+                    {frame: 161, value: 1.0122368},
+                    {frame: 162, value: 1.047801},
+                    {frame: 163, value: 1.1036245},
+                    {frame: 164, value: 1.1755705},
+                    {frame: 165, value: 1.2592801},
+                    {frame: 166, value: 1.3507144},
+                    {frame: 167, value: 1.4463813},
+                    {frame: 168, value: 1.5433619},
+                    {frame: 169, value: 1.6392471},
+                    {frame: 170, value: 1.7320508},
+                    {frame: 171, value: 1.8201288},
+                    {frame: 172, value: 1.9021131},
+                    {frame: 173, value: 1.9768614},
+                    {frame: 174, value: 2.0434213},
+                    {frame: 175, value: 2.101003},
+                    {frame: 176, value: 2.148961},
+                    {frame: 177, value: 2.1867814},
+                    {frame: 178, value: 2.2140715},
+                    {frame: 179, value: 2.2305553},
+                    {frame: 180, value: 2.236068},
+                    {frame: 181, value: 2.2305553},
+                    {frame: 182, value: 2.2140715},
+                    {frame: 183, value: 2.1867814},
+                    {frame: 184, value: 2.148961},
+                    {frame: 185, value: 2.101003},
+                    {frame: 186, value: 2.0434213},
+                    {frame: 187, value: 1.9768614},
+                    {frame: 188, value: 1.9021131},
+                    {frame: 189, value: 1.8201288},
+                    {frame: 190, value: 1.7320508},
+                    {frame: 191, value: 1.6392471},
+                    {frame: 192, value: 1.5433619},
+                    {frame: 193, value: 1.4463813},
+                    {frame: 194, value: 1.3507144},
+                    {frame: 195, value: 1.2592801},
+                    {frame: 196, value: 1.1755705},
+                    {frame: 197, value: 1.1036245},
+                    {frame: 198, value: 1.047801},
+                    {frame: 199, value: 1.0122368},
+                    {frame: 200, value: 1},
+                    {frame: 201, value: 1.0122368},
+                    {frame: 202, value: 1.047801},
+                    {frame: 203, value: 1.1036245},
+                    {frame: 204, value: 1.1755705},
+                    {frame: 205, value: 1.2592801},
+                    {frame: 206, value: 1.3507144},
+                    {frame: 207, value: 1.4463813},
+                    {frame: 208, value: 1.5433619},
+                    {frame: 209, value: 1.6392471},
+                    {frame: 210, value: 1.7320508},
+                    {frame: 211, value: 1.8201288},
+                    {frame: 212, value: 1.9021131},
+                    {frame: 213, value: 1.9768614},
+                    {frame: 214, value: 2.0434213},
+                    {frame: 215, value: 2.101003},
+                    {frame: 216, value: 2.148961},
+                    {frame: 217, value: 2.1867814},
+                    {frame: 218, value: 2.2140715},
+                    {frame: 219, value: 2.2305553},
+                    {frame: 220, value: 2.236068},
+                    {frame: 221, value: 2.2305553},
+                    {frame: 222, value: 2.2140715},
+                    {frame: 223, value: 2.1867814},
+                    {frame: 224, value: 2.148961},
+                    {frame: 225, value: 2.101003},
+                    {frame: 226, value: 2.0434213},
+                    {frame: 227, value: 1.9768614},
+                    {frame: 228, value: 1.9021131},
+                    {frame: 229, value: 1.8201288},
+                    {frame: 230, value: 1.7320508},
+                    {frame: 231, value: 1.6392471},
+                    {frame: 232, value: 1.5433619},
+                    {frame: 233, value: 1.4463813},
+                    {frame: 234, value: 1.3507144},
+                    {frame: 235, value: 1.2592801},
+                    {frame: 236, value: 1.1755705},
+                    {frame: 237, value: 1.1036245},
+                    {frame: 238, value: 1.047801},
+                    {frame: 239, value: 1.0122368},
+                    {frame: 240, value: 1}
+                ];
+                
+                const floatKeyFrames0005 = [
+                    {frame: 0, value: 3.1443377},
+                    {frame: 1, value: 3.142277},
+                    {frame: 2, value: 3.1360419},
+                    {frame: 3, value: 3.1254742},
+                    {frame: 4, value: 3.110317},
+                    {frame: 5, value: 3.090222},
+                    {frame: 6, value: 3.0647626},
+                    {frame: 7, value: 3.0334487},
+                    {frame: 8, value: 2.9957435},
+                    {frame: 9, value: 2.9510827},
+                    {frame: 10, value: 2.8988965},
+                    {frame: 11, value: 2.83863},
+                    {frame: 12, value: 2.7697668},
+                    {frame: 13, value: 2.691851},
+                    {frame: 14, value: 2.6045074},
+                    {frame: 15, value: 2.5074635},
+                    {frame: 16, value: 2.400566},
+                    {frame: 17, value: 2.2837982},
+                    {frame: 18, value: 2.1572917},
+                    {frame: 19, value: 2.0213366},
+                    {frame: 20, value: 1.8763884},
+                    {frame: 21, value: 1.7230705},
+                    {frame: 22, value: 1.5621724},
+                    {frame: 23, value: 1.3946451},
+                    {frame: 24, value: 1.2215918},
+                    {frame: 25, value: 1.0442556},
+                    {frame: 26, value: 0.86400324},
+                    {frame: 28, value: 0.50071573},
+                    {frame: 29, value: 0.3208453},
+                    {frame: 30, value: 0.14433756},
+                    {frame: 31, value: -0.027159367},
+                    {frame: 32, value: -0.19202045},
+                    {frame: 33, value: -0.34867156},
+                    {frame: 34, value: -0.49561673},
+                    {frame: 35, value: -0.63146424},
+                    {frame: 36, value: -0.7549507},
+                    {frame: 37, value: -0.86496323},
+                    {frame: 38, value: -0.96055835},
+                    {frame: 39, value: -1.0409781},
+                    {frame: 40, value: -1.1056625},
+                    {frame: 41, value: -1.1542578},
+                    {frame: 42, value: -1.1866217},
+                    {frame: 43, value: -1.2028236},
+                    {frame: 44, value: -1.2031417},
+                    {frame: 45, value: -1.1880547},
+                    {frame: 46, value: -1.1582319},
+                    {frame: 47, value: -1.114518},
+                    {frame: 48, value: -1.0579166},
+                    {frame: 49, value: -0.9895688},
+                    {frame: 50, value: -0.91073155},
+                    {frame: 51, value: -0.82275385},
+                    {frame: 52, value: -0.7270516},
+                    {frame: 53, value: -0.62508196},
+                    {frame: 54, value: -0.5183183},
+                    {frame: 55, value: -0.40822512},
+                    {frame: 56, value: -0.2962347},
+                    {frame: 57, value: -0.18372539},
+                    {frame: 58, value: -0.07200175},
+                    {frame: 59, value: 0.037722267},
+                    {frame: 60, value: 0.14433756},
+                    {frame: 61, value: 0.24685086},
+                    {frame: 62, value: 0.3443923},
+                    {frame: 63, value: 0.4362197},
+                    {frame: 64, value: 0.5217194},
+                    {frame: 65, value: 0.60040385},
+                    {frame: 66, value: 0.6719058},
+                    {frame: 67, value: 0.7359702},
+                    {frame: 68, value: 0.7924427},
+                    {frame: 69, value: 0.84125686},
+                    {frame: 70, value: 0.8824194},
+                    {frame: 71, value: 0.9159937},
+                    {frame: 72, value: 0.9420833},
+                    {frame: 73, value: 0.96081513},
+                    {frame: 74, value: 0.9723225},
+                    {frame: 75, value: 0.97672975},
+                    {frame: 76, value: 0.97413784},
+                    {frame: 77, value: 0.9646116},
+                    {frame: 78, value: 0.9481697},
+                    {frame: 79, value: 0.92477655},
+                    {frame: 80, value: 0.8943376},
+                    {frame: 81, value: 0.85669696},
+                    {frame: 82, value: 0.81163883},
+                    {frame: 83, value: 0.7588915},
+                    {frame: 84, value: 0.69813436},
+                    {frame: 85, value: 0.6290082},
+                    {frame: 86, value: 0.5511278},
+                    {frame: 87, value: 0.46409693},
+                    {frame: 88, value: 0.3675251},
+                    {frame: 89, value: 0.2610462},
+                    {frame: 90, value: 0.14433756},
+                    {frame: 91, value: 0.017140023},
+                    {frame: 92, value: -0.12072255},
+                    {frame: 93, value: -0.2693241},
+                    {frame: 94, value: -0.4286186},
+                    {frame: 95, value: -0.59842396},
+                    {frame: 96, value: -0.77840817},
+                    {frame: 97, value: -0.96807826},
+                    {frame: 98, value: -1.166772},
+                    {frame: 99, value: -1.3736538},
+                    {frame: 100, value: -1.5877132},
+                    {frame: 101, value: -1.8077683},
+                    {frame: 102, value: -2.0324724},
+                    {frame: 103, value: -2.2603242},
+                    {frame: 104, value: -2.4896836},
+                    {frame: 105, value: -2.7187884},
+                    {frame: 106, value: -2.9457762},
+                    {frame: 107, value: -3.1687093},
+                    {frame: 108, value: -3.3856003},
+                    {frame: 109, value: -3.5944412},
+                    {frame: 110, value: -3.793234},
+                    {frame: 111, value: -3.9800208},
+                    {frame: 112, value: -4.152915},
+                    {frame: 113, value: -4.3101315},
+                    {frame: 114, value: -4.450017},
+                    {frame: 115, value: -4.571076},
+                    {frame: 116, value: -4.6719966},
+                    {frame: 117, value: -4.7516747},
+                    {frame: 118, value: -4.80923},
+                    {frame: 119, value: -4.844022},
+                    {frame: 120, value: -4.8556623},
+                    {frame: 121, value: -4.844022},
+                    {frame: 122, value: -4.80923},
+                    {frame: 123, value: -4.7516747},
+                    {frame: 124, value: -4.6719966},
+                    {frame: 125, value: -4.571076},
+                    {frame: 126, value: -4.450017},
+                    {frame: 127, value: -4.3101315},
+                    {frame: 128, value: -4.152915},
+                    {frame: 129, value: -3.9800208},
+                    {frame: 130, value: -3.793234},
+                    {frame: 131, value: -3.5944412},
+                    {frame: 132, value: -3.3856003},
+                    {frame: 133, value: -3.1687093},
+                    {frame: 134, value: -2.9457762},
+                    {frame: 135, value: -2.7187884},
+                    {frame: 136, value: -2.4896836},
+                    {frame: 137, value: -2.2603242},
+                    {frame: 138, value: -2.0324724},
+                    {frame: 139, value: -1.8077683},
+                    {frame: 140, value: -1.5877132},
+                    {frame: 141, value: -1.3736538},
+                    {frame: 142, value: -1.166772},
+                    {frame: 143, value: -0.96807826},
+                    {frame: 144, value: -0.77840817},
+                    {frame: 145, value: -0.59842396},
+                    {frame: 146, value: -0.4286186},
+                    {frame: 147, value: -0.2693241},
+                    {frame: 148, value: -0.12072255},
+                    {frame: 149, value: 0.017140023},
+                    {frame: 150, value: 0.14433756},
+                    {frame: 151, value: 0.2610462},
+                    {frame: 152, value: 0.3675251},
+                    {frame: 153, value: 0.46409693},
+                    {frame: 154, value: 0.5511278},
+                    {frame: 155, value: 0.6290082},
+                    {frame: 156, value: 0.69813436},
+                    {frame: 157, value: 0.7588915},
+                    {frame: 158, value: 0.81163883},
+                    {frame: 159, value: 0.85669696},
+                    {frame: 160, value: 0.8943376},
+                    {frame: 161, value: 0.92477655},
+                    {frame: 162, value: 0.9481697},
+                    {frame: 163, value: 0.9646116},
+                    {frame: 164, value: 0.97413784},
+                    {frame: 165, value: 0.97672975},
+                    {frame: 166, value: 0.9723225},
+                    {frame: 167, value: 0.96081513},
+                    {frame: 168, value: 0.9420833},
+                    {frame: 169, value: 0.9159937},
+                    {frame: 170, value: 0.8824194},
+                    {frame: 171, value: 0.84125686},
+                    {frame: 172, value: 0.7924427},
+                    {frame: 173, value: 0.7359702},
+                    {frame: 174, value: 0.6719058},
+                    {frame: 175, value: 0.60040385},
+                    {frame: 176, value: 0.5217194},
+                    {frame: 177, value: 0.4362197},
+                    {frame: 178, value: 0.3443923},
+                    {frame: 179, value: 0.24685086},
+                    {frame: 180, value: 0.14433756},
+                    {frame: 181, value: 0.037722267},
+                    {frame: 182, value: -0.07200175},
+                    {frame: 183, value: -0.18372539},
+                    {frame: 184, value: -0.2962347},
+                    {frame: 185, value: -0.40822512},
+                    {frame: 186, value: -0.5183183},
+                    {frame: 187, value: -0.62508196},
+                    {frame: 188, value: -0.7270516},
+                    {frame: 189, value: -0.82275385},
+                    {frame: 190, value: -0.91073155},
+                    {frame: 191, value: -0.9895688},
+                    {frame: 192, value: -1.0579166},
+                    {frame: 193, value: -1.114518},
+                    {frame: 194, value: -1.1582319},
+                    {frame: 195, value: -1.1880547},
+                    {frame: 196, value: -1.2031417},
+                    {frame: 197, value: -1.2028236},
+                    {frame: 198, value: -1.1866217},
+                    {frame: 199, value: -1.1542578},
+                    {frame: 200, value: -1.1056625},
+                    {frame: 201, value: -1.0409781},
+                    {frame: 202, value: -0.96055835},
+                    {frame: 203, value: -0.86496323},
+                    {frame: 204, value: -0.7549507},
+                    {frame: 205, value: -0.63146424},
+                    {frame: 206, value: -0.49561673},
+                    {frame: 207, value: -0.34867156},
+                    {frame: 208, value: -0.19202045},
+                    {frame: 209, value: -0.027159367},
+                    {frame: 210, value: 0.14433756},
+                    {frame: 211, value: 0.3208453},
+                    {frame: 212, value: 0.50071573},
+                    {frame: 213, value: 0.6823055},
+                    {frame: 214, value: 0.86400324},
+                    {frame: 215, value: 1.0442556},
+                    {frame: 216, value: 1.2215918},
+                    {frame: 217, value: 1.3946451},
+                    {frame: 218, value: 1.5621724},
+                    {frame: 219, value: 1.7230705},
+                    {frame: 220, value: 1.8763884},
+                    {frame: 221, value: 2.0213366},
+                    {frame: 222, value: 2.1572917},
+                    {frame: 223, value: 2.2837982},
+                    {frame: 224, value: 2.400566},
+                    {frame: 225, value: 2.5074635},
+                    {frame: 226, value: 2.6045074},
+                    {frame: 227, value: 2.691851},
+                    {frame: 228, value: 2.7697668},
+                    {frame: 229, value: 2.83863},
+                    {frame: 230, value: 2.8988965},
+                    {frame: 231, value: 2.9510827},
+                    {frame: 232, value: 2.9957435},
+                    {frame: 233, value: 3.0334487},
+                    {frame: 234, value: 3.0647626},
+                    {frame: 235, value: 3.090222},
+                    {frame: 236, value: 3.110317},
+                    {frame: 237, value: 3.1254742},
+                    {frame: 238, value: 3.1360419},
+                    {frame: 239, value: 3.142277},
+                    {frame: 240, value: 3.1443377}
+                ];
+                
+                const floatKeyFrames0006 = [
+                    {frame: 0, value: 0.14433756},
+                    {frame: 1, value: 0.22284137},
+                    {frame: 2, value: 0.30112615},
+                    {frame: 3, value: 0.3789581},
+                    {frame: 4, value: 0.45607457},
+                    {frame: 5, value: 0.5321706},
+                    {frame: 6, value: 0.60688746},
+                    {frame: 7, value: 0.67980266},
+                    {frame: 8, value: 0.7504226},
+                    {frame: 9, value: 0.81817746},
+                    {frame: 10, value: 0.8824194},
+                    {frame: 11, value: 0.94242334},
+                    {frame: 12, value: 0.9973913},
+                    {frame: 13, value: 1.0464593},
+                    {frame: 14, value: 1.0887083},
+                    {frame: 15, value: 1.1231763},
+                    {frame: 16, value: 1.1488752},
+                    {frame: 17, value: 1.164808},
+                    {frame: 18, value: 1.1699889},
+                    {frame: 19, value: 1.1634648},
+                    {frame: 20, value: 1.1443375},
+                    {frame: 21, value: 1.1117864},
+                    {frame: 22, value: 1.0650903},
+                    {frame: 23, value: 1.0036501},
+                    {frame: 24, value: 0.92700857},
+                    {frame: 25, value: 0.834869},
+                    {frame: 26, value: 0.72711134},
+                    {frame: 27, value: 0.6038056},
+                    {frame: 28, value: 0.4652219},
+                    {frame: 29, value: 0.31183717},
+                    {frame: 30, value: 0.14433756},
+                    {frame: 31, value: -0.036382493},
+                    {frame: 32, value: -0.22922584},
+                    {frame: 33, value: -0.43290195},
+                    {frame: 34, value: -0.6459402},
+                    {frame: 35, value: -0.866707},
+                    {frame: 36, value: -1.0934266},
+                    {frame: 37, value: -1.3242042},
+                    {frame: 38, value: -1.557053},
+                    {frame: 39, value: -1.7899219},
+                    {frame: 40, value: -2.020726},
+                    {frame: 41, value: -2.2473774},
+                    {frame: 42, value: -2.467817},
+                    {frame: 43, value: -2.6800447},
+                    {frame: 44, value: -2.8821504},
+                    {frame: 45, value: -3.0723417},
+                    {frame: 46, value: -3.2489717},
+                    {frame: 47, value: -3.410561},
+                    {frame: 48, value: -3.5558205},
+                    {frame: 49, value: -3.6836662},
+                    {frame: 50, value: -3.793234},
+                    {frame: 51, value: -3.8838882},
+                    {frame: 52, value: -3.9552262},
+                    {frame: 53, value: -4.0070786},
+                    {frame: 54, value: -4.039507},
+                    {frame: 55, value: -4.0527925},
+                    {frame: 56, value: -4.0474277},
+                    {frame: 57, value: -4.0240974},
+                    {frame: 58, value: -3.9836624},
+                    {frame: 59, value: -3.9271364},
+                    {frame: 60, value: -3.8556623},
+                    {frame: 61, value: -3.770487},
+                    {frame: 62, value: -3.6729338},
+                    {frame: 63, value: -3.5643764},
+                    {frame: 64, value: -3.4462109},
+                    {frame: 65, value: -3.3198297},
+                    {frame: 66, value: -3.1865973},
+                    {frame: 67, value: -3.0478263},
+                    {frame: 68, value: -2.904757},
+                    {frame: 69, value: -2.7585402},
+                    {frame: 70, value: -2.6102214},
+                    {frame: 71, value: -2.4607298},
+                    {frame: 72, value: -2.3108714},
+                    {frame: 73, value: -2.161324},
+                    {frame: 74, value: -2.012637},
+                    {frame: 75, value: -1.865235},
+                    {frame: 76, value: -1.7194244},
+                    {frame: 77, value: -1.5754027},
+                    {frame: 78, value: -1.4332718},
+                    {frame: 79, value: -1.2930522},
+                    {frame: 80, value: -1.1547005},
+                    {frame: 81, value: -1.0181273},
+                    {frame: 82, value: -0.8832163},
+                    {frame: 83, value: -0.74984396},
+                    {frame: 84, value: -0.6178983},
+                    {frame: 85, value: -0.48729748},
+                    {frame: 86, value: -0.35800654},
+                    {frame: 87, value: -0.23005253},
+                    {frame: 88, value: -0.10353731},
+                    {frame: 89, value: 0.021352336},
+                    {frame: 90, value: 0.14433756},
+                    {frame: 91, value: 0.26504353},
+                    {frame: 92, value: 0.38299876},
+                    {frame: 93, value: 0.49763802},
+                    {frame: 94, value: 0.6083083},
+                    {frame: 95, value: 0.7142785},
+                    {frame: 96, value: 0.8147516},
+                    {frame: 97, value: 0.90887976},
+                    {frame: 98, value: 0.9957821},
+                    {frame: 99, value: 1.0745639},
+                    {frame: 100, value: 1.1443375},
+                    {frame: 101, value: 1.2042446},
+                    {frame: 102, value: 1.2534776},
+                    {frame: 103, value: 1.2913024},
+                    {frame: 104, value: 1.3170793},
+                    {frame: 105, value: 1.3302832},
+                    {frame: 106, value: 1.3305211},
+                    {frame: 107, value: 1.317549},
+                    {frame: 108, value: 1.2912838},
+                    {frame: 109, value: 1.2518142},
+                    {frame: 110, value: 1.1994067},
+                    {frame: 111, value: 1.1345084},
+                    {frame: 112, value: 1.0577468},
+                    {frame: 113, value: 0.9699246},
+                    {frame: 114, value: 0.87201184},
+                    {frame: 115, value: 0.7651335},
+                    {frame: 116, value: 0.6505547},
+                    {frame: 117, value: 0.5296621},
+                    {frame: 118, value: 0.40394303},
+                    {frame: 119, value: 0.27496237},
+                    {frame: 120, value: 0.14433756},
+                    {frame: 121, value: 0.013712783},
+                    {frame: 122, value: -0.115267895},
+                    {frame: 123, value: -0.24098696},
+                    {frame: 124, value: -0.36187956},
+                    {frame: 125, value: -0.47645837},
+                    {frame: 126, value: -0.5833367},
+                    {frame: 127, value: -0.6812495},
+                    {frame: 128, value: -0.76907164},
+                    {frame: 129, value: -0.84583324},
+                    {frame: 130, value: -0.91073155},
+                    {frame: 131, value: -0.9631392},
+                    {frame: 132, value: -1.0026088},
+                    {frame: 133, value: -1.0288739},
+                    {frame: 134, value: -1.041846},
+                    {frame: 135, value: -1.041608},
+                    {frame: 136, value: -1.0284042},
+                    {frame: 137, value: -1.0026273},
+                    {frame: 138, value: -0.9648025},
+                    {frame: 139, value: -0.9155695},
+                    {frame: 140, value: -0.8556624},
+                    {frame: 141, value: -0.78588873},
+                    {frame: 142, value: -0.70710695},
+                    {frame: 143, value: -0.6202046},
+                    {frame: 144, value: -0.52607644},
+                    {frame: 145, value: -0.4256034},
+                    {frame: 146, value: -0.3196332},
+                    {frame: 147, value: -0.20896287},
+                    {frame: 148, value: -0.09432363},
+                    {frame: 149, value: 0.023631604},
+                    {frame: 150, value: 0.14433756},
+                    {frame: 151, value: 0.2673228},
+                    {frame: 152, value: 0.39221245},
+                    {frame: 153, value: 0.51872766},
+                    {frame: 154, value: 0.64668167},
+                    {frame: 155, value: 0.7759726},
+                    {frame: 156, value: 0.9065734},
+                    {frame: 157, value: 1.038519},
+                    {frame: 158, value: 1.1718915},
+                    {frame: 159, value: 1.3068024},
+                    {frame: 160, value: 1.4433757},
+                    {frame: 161, value: 1.5817274},
+                    {frame: 162, value: 1.721947},
+                    {frame: 163, value: 1.8640778},
+                    {frame: 164, value: 2.0080996},
+                    {frame: 165, value: 2.1539102},
+                    {frame: 166, value: 2.301312},
+                    {frame: 167, value: 2.449999},
+                    {frame: 168, value: 2.5995464},
+                    {frame: 169, value: 2.749405},
+                    {frame: 170, value: 2.8988965},
+                    {frame: 171, value: 3.0472155},
+                    {frame: 172, value: 3.1934323},
+                    {frame: 173, value: 3.3365014},
+                    {frame: 174, value: 3.4752724},
+                    {frame: 175, value: 3.608505},
+                    {frame: 176, value: 3.734886},
+                    {frame: 177, value: 3.8530517},
+                    {frame: 178, value: 3.9616091},
+                    {frame: 179, value: 4.059162},
+                    {frame: 180, value: 4.1443377},
+                    {frame: 181, value: 4.2158117},
+                    {frame: 182, value: 4.2723374},
+                    {frame: 183, value: 4.3127728},
+                    {frame: 184, value: 4.336103},
+                    {frame: 185, value: 4.341468},
+                    {frame: 186, value: 4.328182},
+                    {frame: 187, value: 4.295754},
+                    {frame: 188, value: 4.2439013},
+                    {frame: 189, value: 4.172563},
+                    {frame: 190, value: 4.081909},
+                    {frame: 191, value: 3.9723413},
+                    {frame: 192, value: 3.8444958},
+                    {frame: 193, value: 3.6992364},
+                    {frame: 194, value: 3.5376468},
+                    {frame: 195, value: 3.361017},
+                    {frame: 196, value: 3.1708255},
+                    {frame: 197, value: 2.96872},
+                    {frame: 198, value: 2.7564921},
+                    {frame: 199, value: 2.5360527},
+                    {frame: 200, value: 2.309401},
+                    {frame: 201, value: 2.078597},
+                    {frame: 202, value: 1.845728},
+                    {frame: 203, value: 1.6128794},
+                    {frame: 204, value: 1.3821017},
+                    {frame: 205, value: 1.1553822},
+                    {frame: 206, value: 0.9346153},
+                    {frame: 207, value: 0.72157705},
+                    {frame: 208, value: 0.517901},
+                    {frame: 209, value: 0.32505763},
+                    {frame: 210, value: 0.14433756},
+                    {frame: 211, value: -0.02316203},
+                    {frame: 212, value: -0.17654678},
+                    {frame: 213, value: -0.31513047},
+                    {frame: 214, value: -0.4384362},
+                    {frame: 215, value: -0.5461939},
+                    {frame: 216, value: -0.63833344},
+                    {frame: 217, value: -0.71497494},
+                    {frame: 218, value: -0.7764151},
+                    {frame: 219, value: -0.8231112},
+                    {frame: 220, value: -0.8556624},
+                    {frame: 221, value: -0.8747897},
+                    {frame: 222, value: -0.88131374},
+                    {frame: 223, value: -0.87613285},
+                    {frame: 224, value: -0.8602001},
+                    {frame: 225, value: -0.83450127},
+                    {frame: 226, value: -0.80003315},
+                    {frame: 227, value: -0.7577842},
+                    {frame: 228, value: -0.7087161},
+                    {frame: 229, value: -0.6537482},
+                    {frame: 230, value: -0.5937443},
+                    {frame: 231, value: -0.52950233},
+                    {frame: 232, value: -0.46174747},
+                    {frame: 233, value: -0.39112756},
+                    {frame: 234, value: -0.31821233},
+                    {frame: 235, value: -0.24349545},
+                    {frame: 236, value: -0.16739942},
+                    {frame: 237, value: -0.09028298},
+                    {frame: 238, value: -0.012451009},
+                    {frame: 239, value: 0.06583376},
+                    {frame: 240, value: 0.14433756}
+                ];
+                
+                const floatKeyFrames0007 = [
+                    {frame: 0, value: 0.14433756},
+                    {frame: 1, value: 0.30150676},
+                    {frame: 2, value: 0.4592099},
+                    {frame: 3, value: 0.61796325},
+                    {frame: 4, value: 0.77824855},
+                    {frame: 5, value: 0.94049615},
+                    {frame: 6, value: 1.1050694},
+                    {frame: 7, value: 1.2722504},
+                    {frame: 8, value: 1.4422272},
+                    {frame: 9, value: 1.6150825},
+                    {frame: 10, value: 1.7907841},
+                    {frame: 11, value: 1.9691789},
+                    {frame: 12, value: 2.149987},
+                    {frame: 13, value: 2.3328001},
+                    {frame: 14, value: 2.517081},
+                    {frame: 16, value: 2.8872726},
+                    {frame: 17, value: 3.0715003},
+                    {frame: 18, value: 3.2538474},
+                    {frame: 19, value: 3.4332185},
+                    {frame: 20, value: 3.6084392},
+                    {frame: 21, value: 3.7782712},
+                    {frame: 22, value: 3.9414294},
+                    {frame: 23, value: 4.096599},
+                    {frame: 24, value: 4.2424564},
+                    {frame: 25, value: 4.3776846},
+                    {frame: 26, value: 4.5009975},
+                    {frame: 27, value: 4.6111565},
+                    {frame: 28, value: 4.7069902},
+                    {frame: 29, value: 4.7874136},
+                    {frame: 30, value: 4.8514442},
+                    {frame: 31, value: 4.8982196},
+                    {frame: 32, value: 4.92701},
+                    {frame: 33, value: 4.9372334},
+                    {frame: 34, value: 4.928464},
+                    {frame: 35, value: 4.9004397},
+                    {frame: 36, value: 4.853072},
+                    {frame: 37, value: 4.7864447},
+                    {frame: 38, value: 4.7008176},
+                    {frame: 39, value: 4.5966234},
+                    {frame: 40, value: 4.4744644},
+                    {frame: 41, value: 4.335105},
+                    {frame: 42, value: 4.1794624},
+                    {frame: 43, value: 4.008595},
+                    {frame: 44, value: 3.8236897},
+                    {frame: 45, value: 3.6260462},
+                    {frame: 46, value: 3.4170597},
+                    {frame: 47, value: 3.198203},
+                    {frame: 48, value: 2.9710069},
+                    {frame: 49, value: 2.7370405},
+                    {frame: 50, value: 2.497891},
+                    {frame: 51, value: 2.255143},
+                    {frame: 52, value: 2.0103579},
+                    {frame: 53, value: 1.7650561},
+                    {frame: 54, value: 1.5206963},
+                    {frame: 55, value: 1.2786595},
+                    {frame: 56, value: 1.0402325},
+                    {frame: 57, value: 0.8065943},
+                    {frame: 58, value: 0.5788033},
+                    {frame: 59, value: 0.35778764},
+                    {frame: 60, value: 0.14433756},
+                    {frame: 61, value: -0.060900025},
+                    {frame: 62, value: -0.25742444},
+                    {frame: 63, value: -0.44488138},
+                    {frame: 64, value: -0.62306094},
+                    {frame: 65, value: -0.7918928},
+                    {frame: 66, value: -0.9514396},
+                    {frame: 67, value: -1.1018875},
+                    {frame: 68, value: -1.2435352},
+                    {frame: 69, value: -1.3767812},
+                    {frame: 70, value: -1.502109},
+                    {frame: 71, value: -1.6200718},
+                    {frame: 72, value: -1.7312752},
+                    {frame: 73, value: -1.8363601},
+                    {frame: 74, value: -1.9359851},
+                    {frame: 75, value: -2.030808},
+                    {frame: 76, value: -2.121469},
+                    {frame: 77, value: -2.2085729},
+                    {frame: 78, value: -2.2926738},
+                    {frame: 79, value: -2.3742595},
+                    {frame: 80, value: -2.4537387},
+                    {frame: 81, value: -2.5314286},
+                    {frame: 82, value: -2.607546},
+                    {frame: 83, value: -2.6821985},
+                    {frame: 84, value: -2.75538},
+                    {frame: 85, value: -2.8269665},
+                    {frame: 86, value: -2.8967168},
+                    {frame: 87, value: -2.964273},
+                    {frame: 88, value: -3.0291648},
+                    {frame: 89, value: -3.0908167},
+                    {frame: 90, value: -3.1485558},
+                    {frame: 91, value: -3.2016225},
+                    {frame: 92, value: -3.2491846},
+                    {frame: 93, value: -3.29035},
+                    {frame: 94, value: -3.3241832},
+                    {frame: 95, value: -3.349722},
+                    {frame: 96, value: -3.365996},
+                    {frame: 97, value: -3.372044},
+                    {frame: 98, value: -3.3669343},
+                    {frame: 99, value: -3.349781},
+                    {frame: 100, value: -3.3197641},
+                    {frame: 101, value: -3.276146},
+                    {frame: 102, value: -3.2182887},
+                    {frame: 103, value: -3.1456673},
+                    {frame: 104, value: -3.0578861},
+                    {frame: 105, value: -2.9546876},
+                    {frame: 106, value: -2.8359637},
+                    {frame: 107, value: -2.701763},
+                    {frame: 108, value: -2.552295},
+                    {frame: 109, value: -2.3879333},
+                    {frame: 110, value: -2.2092159},
+                    {frame: 111, value: -2.0168414},
+                    {frame: 112, value: -1.8116659},
+                    {frame: 113, value: -1.5946932},
+                    {frame: 114, value: -1.3670666},
+                    {frame: 115, value: -1.1300563},
+                    {frame: 116, value: -0.885045},
+                    {frame: 117, value: -0.63351244},
+                    {frame: 118, value: -0.37701783},
+                    {frame: 119, value: -0.11718088},
+                    {frame: 121, value: 0.405856},
+                    {frame: 122, value: 0.665693},
+                    {frame: 123, value: 0.92218757},
+                    {frame: 124, value: 1.1737201},
+                    {frame: 125, value: 1.4187313},
+                    {frame: 126, value: 1.6557417},
+                    {frame: 127, value: 1.8833683},
+                    {frame: 128, value: 2.100341},
+                    {frame: 129, value: 2.3055167},
+                    {frame: 130, value: 2.497891},
+                    {frame: 131, value: 2.6766086},
+                    {frame: 132, value: 2.84097},
+                    {frame: 133, value: 2.9904382},
+                    {frame: 134, value: 3.124639},
+                    {frame: 135, value: 3.2433627},
+                    {frame: 136, value: 3.3465612},
+                    {frame: 137, value: 3.4343426},
+                    {frame: 138, value: 3.5069637},
+                    {frame: 139, value: 3.5648212},
+                    {frame: 140, value: 3.6084392},
+                    {frame: 141, value: 3.638456},
+                    {frame: 142, value: 3.6556094},
+                    {frame: 143, value: 3.6607192},
+                    {frame: 144, value: 3.654671},
+                    {frame: 145, value: 3.638397},
+                    {frame: 146, value: 3.6128583},
+                    {frame: 147, value: 3.5790253},
+                    {frame: 148, value: 3.53786},
+                    {frame: 149, value: 3.4902978},
+                    {frame: 150, value: 3.4372308},
+                    {frame: 151, value: 3.3794918},
+                    {frame: 152, value: 3.31784},
+                    {frame: 153, value: 3.2529483},
+                    {frame: 154, value: 3.1853921},
+                    {frame: 155, value: 3.1156418},
+                    {frame: 156, value: 3.0440552},
+                    {frame: 157, value: 2.9708738},
+                    {frame: 158, value: 2.8962212},
+                    {frame: 159, value: 2.820104},
+                    {frame: 160, value: 2.7424138},
+                    {frame: 161, value: 2.6629345},
+                    {frame: 162, value: 2.581349},
+                    {frame: 163, value: 2.4972482},
+                    {frame: 164, value: 2.410144},
+                    {frame: 165, value: 2.3194833},
+                    {frame: 166, value: 2.2246602},
+                    {frame: 167, value: 2.1250353},
+                    {frame: 168, value: 2.0199504},
+                    {frame: 169, value: 1.908747},
+                    {frame: 170, value: 1.7907841},
+                    {frame: 171, value: 1.6654563},
+                    {frame: 172, value: 1.5322104},
+                    {frame: 173, value: 1.3905627},
+                    {frame: 174, value: 1.2401148},
+                    {frame: 175, value: 1.080568},
+                    {frame: 176, value: 0.9117361},
+                    {frame: 177, value: 0.7335565},
+                    {frame: 178, value: 0.54609954},
+                    {frame: 179, value: 0.34957516},
+                    {frame: 180, value: 0.14433756},
+                    {frame: 181, value: -0.06911249},
+                    {frame: 182, value: -0.29012814},
+                    {frame: 183, value: -0.5179192},
+                    {frame: 184, value: -0.75155747},
+                    {frame: 185, value: -0.9899844},
+                    {frame: 186, value: -1.2320212},
+                    {frame: 187, value: -1.476381},
+                    {frame: 188, value: -1.7216828},
+                    {frame: 189, value: -1.9664676},
+                    {frame: 190, value: -2.2092159},
+                    {frame: 191, value: -2.4483654},
+                    {frame: 192, value: -2.6823318},
+                    {frame: 193, value: -2.9095278},
+                    {frame: 194, value: -3.1283846},
+                    {frame: 195, value: -3.337371},
+                    {frame: 196, value: -3.5350144},
+                    {frame: 197, value: -3.7199197},
+                    {frame: 198, value: -3.8907871},
+                    {frame: 199, value: -4.04643},
+                    {frame: 200, value: -4.1857896},
+                    {frame: 201, value: -4.3079486},
+                    {frame: 202, value: -4.4121423},
+                    {frame: 203, value: -4.49777},
+                    {frame: 204, value: -4.564397},
+                    {frame: 205, value: -4.611765},
+                    {frame: 206, value: -4.6397886},
+                    {frame: 207, value: -4.6485586},
+                    {frame: 208, value: -4.638335},
+                    {frame: 209, value: -4.6095443},
+                    {frame: 210, value: -4.5627694},
+                    {frame: 211, value: -4.498739},
+                    {frame: 212, value: -4.4183154},
+                    {frame: 213, value: -4.3224816},
+                    {frame: 214, value: -4.2123227},
+                    {frame: 215, value: -4.08901},
+                    {frame: 216, value: -3.9537811},
+                    {frame: 217, value: -3.8079243},
+                    {frame: 218, value: -3.6527543},
+                    {frame: 219, value: -3.4895961},
+                    {frame: 220, value: -3.3197641},
+                    {frame: 221, value: -3.1445434},
+                    {frame: 222, value: -2.9651723},
+                    {frame: 223, value: -2.7828252},
+                    {frame: 224, value: -2.5985973},
+                    {frame: 226, value: -2.228406},
+                    {frame: 227, value: -2.044125},
+                    {frame: 228, value: -1.8613119},
+                    {frame: 229, value: -1.6805038},
+                    {frame: 230, value: -1.502109},
+                    {frame: 231, value: -1.3264073},
+                    {frame: 232, value: -1.1535522},
+                    {frame: 233, value: -0.98357534},
+                    {frame: 234, value: -0.81639427},
+                    {frame: 235, value: -0.651821},
+                    {frame: 236, value: -0.48957342},
+                    {frame: 237, value: -0.32928813},
+                    {frame: 238, value: -0.17053474},
+                    {frame: 239, value: -0.012831636},
+                    {frame: 240, value: 0.14433756}
+                ];
+                
+                function createXyCirclePathPoints() {
+                	const path = new Array(361);
+                	const n = path.length;
+                
+                	for (let i = 0; i < n; i++) {
+                		const a = 2 * Math.PI * i / (n - 1);
+                		
+                		path[i] = new BABYLON.Vector3(Math.cos(a), Math.sin(a), 0);
+                	}
+                
+                	return path;
+                }
+                
+                function updateXyCirclePathPoints(path, radius) {
+                	const n = path.length;
+                
+                	for (let i = 0; i < n; i++) {
+                		const a = 2 * Math.PI * i / (n - 1);
+                		
+                		path[i].x = radius * Math.cos(a);
+                		path[i].y = radius * Math.sin(a);
+                	}
+                }
+                const prototypeDisc = BABYLON.MeshBuilder.CreateDisc("prototypeDisc", {radius: 1, sideOrientation: BABYLON.Mesh.DOUBLESIDE, tessellation: 512}, mainScene);
+                prototypeDisc.isVisible = false;
+                prototypeDisc.position = new BABYLON.Vector3(0, 0, 0);
+                
+                const prototypeInnerSphere = BABYLON.MeshBuilder.CreateSphere("prototypeInnerSphere", {diameter: 2, segments: 512, sideOrientation: BABYLON.Mesh.BACKSIDE}, mainScene);
+                prototypeInnerSphere.isVisible = false;
+                prototypeInnerSphere.position = new BABYLON.Vector3(0, 0, 0);
+                
+                const prototypeOuterSphere = BABYLON.MeshBuilder.CreateSphere("prototypeOuterSphere", {diameter: 2, segments: 512, sideOrientation: BABYLON.Mesh.FRONTSIDE}, mainScene);
+                prototypeOuterSphere.isVisible = false;
+                prototypeOuterSphere.position = new BABYLON.Vector3(0, 0, 0);
+                
+                const prototypeCone = BABYLON.MeshBuilder.CreateCylinder("prototypeCone", {cap: BABYLON.Mesh.CAP_START, diameterBottom: 2, diameterTop: 0, height: 1, sideOrientation: BABYLON.Mesh.DOUBLESIDE, subdivisions: 1, tessellation: 512}, mainScene);
+                prototypeCone.isVisible = false;
+                prototypeCone.position = new BABYLON.Vector3(0, 0, 0);
+                
+                const defaultGridXyTexture = new BABYLON.Texture('data:image/png;base64,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', mainScene);
+                defaultGridXyTexture.hasAlpha = true;
+                defaultGridXyTexture.uScale = 14;
+                defaultGridXyTexture.vScale = 14;
+                
+                const defaultGridXyMaterial = new BABYLON.StandardMaterial("defaultGridXyMaterial", mainScene);
+                defaultGridXyMaterial.alpha = 0.25;
+                defaultGridXyMaterial.backFaceCulling = false;
+                defaultGridXyMaterial.diffuseTexture = defaultGridXyTexture;
+                defaultGridXyMaterial.sideOrientation = BABYLON.Mesh.DOUBLESIDE;
+                defaultGridXyMaterial.transparencyMode = BABYLON.Material.MATERIAL_ALPHABLEND;
+                defaultGridXyMaterial.useAlphaFromDiffuseTexture = true;
+                
+                const defaultGridXyGround = BABYLON.MeshBuilder.CreateGround("defaultGridXyGround", {height: 14, width: 14}, mainScene);
+                defaultGridXyGround.material = defaultGridXyMaterial;
+                defaultGridXyGround.position = new BABYLON.Vector3(0, 0, -7);
+                defaultGridXyGround.rotationQuaternion = new BABYLON.Quaternion(0.70710677, -0, -0, 0.70710677);
+                
+                const defaultGridYzTexture = new BABYLON.Texture('data:image/png;base64,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', mainScene);
+                defaultGridYzTexture.hasAlpha = true;
+                defaultGridYzTexture.uScale = 14;
+                defaultGridYzTexture.vScale = 14;
+                
+                const defaultGridYzMaterial = new BABYLON.StandardMaterial("defaultGridYzMaterial", mainScene);
+                defaultGridYzMaterial.alpha = 0.25;
+                defaultGridYzMaterial.backFaceCulling = false;
+                defaultGridYzMaterial.diffuseTexture = defaultGridYzTexture;
+                defaultGridYzMaterial.sideOrientation = BABYLON.Mesh.DOUBLESIDE;
+                defaultGridYzMaterial.transparencyMode = BABYLON.Material.MATERIAL_ALPHABLEND;
+                defaultGridYzMaterial.useAlphaFromDiffuseTexture = true;
+                
+                const defaultGridYzGround = BABYLON.MeshBuilder.CreateGround("defaultGridYzGround", {height: 14, width: 14}, mainScene);
+                defaultGridYzGround.material = defaultGridYzMaterial;
+                defaultGridYzGround.position = new BABYLON.Vector3(-7, 0, 0);
+                defaultGridYzGround.rotationQuaternion = new BABYLON.Quaternion(-0, -0, -0.70710677, 0.70710677);
+                
+                const defaultGridZxTexture = new BABYLON.Texture('data:image/png;base64,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', mainScene);
+                defaultGridZxTexture.hasAlpha = true;
+                defaultGridZxTexture.uScale = 14;
+                defaultGridZxTexture.vScale = 14;
+                
+                const defaultGridZxMaterial = new BABYLON.StandardMaterial("defaultGridZxMaterial", mainScene);
+                defaultGridZxMaterial.alpha = 0.25;
+                defaultGridZxMaterial.backFaceCulling = false;
+                defaultGridZxMaterial.diffuseTexture = defaultGridZxTexture;
+                defaultGridZxMaterial.sideOrientation = BABYLON.Mesh.DOUBLESIDE;
+                defaultGridZxMaterial.transparencyMode = BABYLON.Material.MATERIAL_ALPHABLEND;
+                defaultGridZxMaterial.useAlphaFromDiffuseTexture = true;
+                
+                const defaultGridZxGround = BABYLON.MeshBuilder.CreateGround("defaultGridZxGround", {height: 14, width: 14}, mainScene);
+                defaultGridZxGround.material = defaultGridZxMaterial;
+                defaultGridZxGround.position = new BABYLON.Vector3(0, -7, 0);
+                defaultGridZxGround.rotationQuaternion = new BABYLON.Quaternion(-0, -0, -0, 1);
+                
+                const axisFrameOriginMaterial = new BABYLON.SimpleMaterial("axisFrameOriginMaterial", mainScene);
+                axisFrameOriginMaterial.diffuseColor = BABYLON.Color3.FromInts(169, 169, 169);
+                
+                const axisFrameXMaterial = new BABYLON.SimpleMaterial("axisFrameXMaterial", mainScene);
+                axisFrameXMaterial.diffuseColor = BABYLON.Color3.FromInts(139, 0, 0);
+                
+                const axisFrameYMaterial = new BABYLON.SimpleMaterial("axisFrameYMaterial", mainScene);
+                axisFrameYMaterial.diffuseColor = BABYLON.Color3.FromInts(0, 100, 0);
+                
+                const axisFrameZMaterial = new BABYLON.SimpleMaterial("axisFrameZMaterial", mainScene);
+                axisFrameZMaterial.diffuseColor = BABYLON.Color3.FromInts(0, 0, 139);
+                
+                const axisFrameOriginSphere = prototypeOuterSphere.clone("axisFrameOriginSphere");
+                axisFrameOriginSphere.isVisible = true;
+                axisFrameOriginSphere.material = axisFrameOriginMaterial;
+                axisFrameOriginSphere.position = new BABYLON.Vector3(0, 0, 0);
+                axisFrameOriginSphere.scaling = new BABYLON.Vector3(0.075, 0.075, 0.075);
+                axisFrameOriginSphere.visibility = 1;
+                
+                const axisFrameLineSegment1Points = [
+                    new BABYLON.Vector3(0, 0, 0),
+                    new BABYLON.Vector3(0.8425, 0, 0)
+                ];
+                let axisFrameLineSegment1Tube = BABYLON.MeshBuilder.CreateTube("axisFrameLineSegment1Tube", {cap: BABYLON.Mesh.CAP_ALL, path: axisFrameLineSegment1Points, radius: 0.0175, tessellation: 32, updatable: false}, mainScene);
+                axisFrameLineSegment1Tube.material = axisFrameXMaterial;
+                axisFrameLineSegment1Tube.visibility = 1;
+                
+                const axisFrameLineSegment2Points = [
+                    new BABYLON.Vector3(0, 0, 0),
+                    new BABYLON.Vector3(0, 0.8425, 0)
+                ];
+                let axisFrameLineSegment2Tube = BABYLON.MeshBuilder.CreateTube("axisFrameLineSegment2Tube", {cap: BABYLON.Mesh.CAP_ALL, path: axisFrameLineSegment2Points, radius: 0.0175, tessellation: 32, updatable: false}, mainScene);
+                axisFrameLineSegment2Tube.material = axisFrameYMaterial;
+                axisFrameLineSegment2Tube.visibility = 1;
+                
+                const axisFrameLineSegment3Points = [
+                    new BABYLON.Vector3(0, 0, 0),
+                    new BABYLON.Vector3(0, 0, 0.8425)
+                ];
+                let axisFrameLineSegment3Tube = BABYLON.MeshBuilder.CreateTube("axisFrameLineSegment3Tube", {cap: BABYLON.Mesh.CAP_ALL, path: axisFrameLineSegment3Points, radius: 0.0175, tessellation: 32, updatable: false}, mainScene);
+                axisFrameLineSegment3Tube.material = axisFrameZMaterial;
+                axisFrameLineSegment3Tube.visibility = 1;
+                
+                const axisFrameArrowHead1Cylinder = prototypeCone.clone("axisFrameArrowHead1Cylinder");
+                axisFrameArrowHead1Cylinder.isVisible = true;
+                axisFrameArrowHead1Cylinder.material = axisFrameXMaterial;
+                axisFrameArrowHead1Cylinder.position = new BABYLON.Vector3(0.92125, 0, 0);
+                axisFrameArrowHead1Cylinder.rotationQuaternion = new BABYLON.Quaternion(0, 0, -0.70710677, 0.70710677);
+                axisFrameArrowHead1Cylinder.scaling = new BABYLON.Vector3(0.0525, 0.1575, 0.0525);
+                axisFrameArrowHead1Cylinder.visibility = 1;
+                
+                const axisFrameArrowHead2Cylinder = prototypeCone.clone("axisFrameArrowHead2Cylinder");
+                axisFrameArrowHead2Cylinder.isVisible = true;
+                axisFrameArrowHead2Cylinder.material = axisFrameYMaterial;
+                axisFrameArrowHead2Cylinder.position = new BABYLON.Vector3(0, 0.92125, 0);
+                axisFrameArrowHead2Cylinder.rotationQuaternion = new BABYLON.Quaternion(0, 0, 0, 1);
+                axisFrameArrowHead2Cylinder.scaling = new BABYLON.Vector3(0.0525, 0.1575, 0.0525);
+                axisFrameArrowHead2Cylinder.visibility = 1;
+                
+                const axisFrameArrowHead3Cylinder = prototypeCone.clone("axisFrameArrowHead3Cylinder");
+                axisFrameArrowHead3Cylinder.isVisible = true;
+                axisFrameArrowHead3Cylinder.material = axisFrameZMaterial;
+                axisFrameArrowHead3Cylinder.position = new BABYLON.Vector3(0, 0, 0.92125);
+                axisFrameArrowHead3Cylinder.rotationQuaternion = new BABYLON.Quaternion(0.70710677, 0, -0, 0.70710677);
+                axisFrameArrowHead3Cylinder.scaling = new BABYLON.Vector3(0.0525, 0.1575, 0.0525);
+                axisFrameArrowHead3Cylinder.visibility = 1;
+                
+                const environmentHelper = mainScene.createDefaultEnvironment({createGround: true, groundColor: BABYLON.Color3.FromInts(255, 255, 255), groundSize: 8, groundYBias: 0.01, skyboxColor: BABYLON.Color3.FromInts(135, 206, 250), skyboxSize: 24});
+                
+                const defaultCamera = new BABYLON.ArcRotateCamera("defaultCamera", 2 * Math.PI / 20, 2 * Math.PI / 5, 15, BABYLON.Vector3.Zero(), mainScene, true);
+                defaultCamera.mode = BABYLON.Camera.PERSPECTIVE_CAMERA;
+                defaultCamera.attachControl(true);
+                
+                const colorMaterialFF000033 = new BABYLON.StandardMaterial("colorMaterialFF000033", mainScene);
+                colorMaterialFF000033.alpha = 0.2;
+                colorMaterialFF000033.ambientColor = BABYLON.Color3.FromInts(255, 0, 0);
+                colorMaterialFF000033.backFaceCulling = true;
+                colorMaterialFF000033.diffuseColor = BABYLON.Color3.FromInts(255, 0, 0);
+                colorMaterialFF000033.specularColor = BABYLON.Color3.FromInts(255, 0, 0);
+                colorMaterialFF000033.transparencyMode = BABYLON.Material.MATERIAL_ALPHABLEND;
+                
+                const curve0Points = [
+                    new BABYLON.Vector3(3, 0, 0),
+                    new BABYLON.Vector3(2.9927163, 0.14702272, 0.2951123),
+                    new BABYLON.Vector3(2.9702165, 0.2925408, 0.5936715),
+                    new BABYLON.Vector3(2.9306307, 0.434718, 0.8987245),
+                    new BABYLON.Vector3(2.8710923, 0.57109576, 1.2125441),
+                    new BABYLON.Vector3(2.7880876, 0.6983796, 1.536305),
+                    new BABYLON.Vector3(2.6779015, 0.8123326, 1.869831),
+                    new BABYLON.Vector3(2.6115222, 0.8627304, 2.0397887),
+                    new BABYLON.Vector3(2.5371177, 0.9077952, 2.2114298),
+                    new BABYLON.Vector3(2.454391, 0.9467631, 2.3842952),
+                    new BABYLON.Vector3(2.363126, 0.9788388, 2.5578291),
+                    new BABYLON.Vector3(2.2631993, 1.0032073, 2.7313817),
+                    new BABYLON.Vector3(2.1545935, 1.0190468, 2.9042156),
+                    new BABYLON.Vector3(2.0374048, 1.0255433, 3.0755122),
+                    new BABYLON.Vector3(1.9118514, 1.0219059, 3.2443802),
+                    new BABYLON.Vector3(1.7782788, 1.0073825, 3.4098647),
+                    new BABYLON.Vector3(1.6371614, 0.9812768, 3.5709589),
+                    new BABYLON.Vector3(1.4891032, 0.94296414, 3.7266152),
+                    new BABYLON.Vector3(1.3348343, 0.89190775, 3.8757582),
+                    new BABYLON.Vector3(1.1752064, 0.82767373, 4.017298),
+                    new BABYLON.Vector3(1.0111842, 0.74994534, 4.150145),
+                    new BABYLON.Vector3(0.84383523, 0.6585355, 4.273222),
+                    new BABYLON.Vector3(0.6743173, 0.5533979, 4.38548),
+                    new BABYLON.Vector3(0.5038637, 0.43463582, 4.4859133),
+                    new BABYLON.Vector3(0.33376685, 0.30250862, 4.57357),
+                    new BABYLON.Vector3(0.16536036, 0.15743615, 4.6475677),
+                    new BABYLON.Vector3(2.0380738E-16, 2.0380738E-16, 4.7071066),
+                    new BABYLON.Vector3(-0.16095611, -0.1690575, 4.7514787),
+                    new BABYLON.Vector3(-0.3161677, -0.34883732, 4.780079),
+                    new BABYLON.Vector3(-0.46433252, -0.53829044, 4.792415),
+                    new BABYLON.Vector3(-0.604206, -0.7362272, 4.7881165),
+                    new BABYLON.Vector3(-0.7346207, -0.9413294, 4.7669373),
+                    new BABYLON.Vector3(-0.8545036, -1.1521647, 4.7287626),
+                    new BABYLON.Vector3(-0.96289283, -1.3672028, 4.673614),
+                    new BABYLON.Vector3(-1.0589525, -1.5848343, 4.6016455),
+                    new BABYLON.Vector3(-1.1419846, -1.8033906, 4.513148),
+                    new BABYLON.Vector3(-1.2114398, -2.0211654, 4.408544),
+                    new BABYLON.Vector3(-1.2669252, -2.236436, 4.288385),
+                    new BABYLON.Vector3(-1.308209, -2.4474866, 4.153344),
+                    new BABYLON.Vector3(-1.3352226, -2.6526318, 4.0042124),
+                    new BABYLON.Vector3(-1.3480617, -2.8502371, 3.841886),
+                    new BABYLON.Vector3(-1.3469816, -3.0387418, 3.6673584),
+                    new BABYLON.Vector3(-1.3323922, -3.2166793, 3.4817085),
+                    new BABYLON.Vector3(-1.3048499, -3.3826962, 3.2860887),
+                    new BABYLON.Vector3(-1.2650467, -3.5355685, 3.0817103),
+                    new BABYLON.Vector3(-1.2137979, -3.6742187, 2.869832),
+                    new BABYLON.Vector3(-1.1520276, -3.797726, 2.6517425),
+                    new BABYLON.Vector3(-1.0807526, -3.905338, 2.4287484),
+                    new BABYLON.Vector3(-1.0010655, -3.9964776, 2.2021577),
+                    new BABYLON.Vector3(-0.9141167, -4.0707464, 1.9732658),
+                    new BABYLON.Vector3(-0.82109576, -4.1279273, 1.7433412),
+                    new BABYLON.Vector3(-0.7232135, -4.167982, 1.5136118),
+                    new BABYLON.Vector3(-0.62168324, -4.191048, 1.2852514),
+                    new BABYLON.Vector3(-0.5177035, -4.1974287, 1.0593681),
+                    new BABYLON.Vector3(-0.41244122, -4.1875863, 0.83699304),
+                    new BABYLON.Vector3(-0.307017, -4.162128, 0.6190707),
+                    new BABYLON.Vector3(-0.20249066, -4.121792, 0.40645066),
+                    new BABYLON.Vector3(-0.09984986, -4.0674324, 0.19988035),
+                    new BABYLON.Vector3(-2.4492937E-16, -4, 4.8985874E-16),
+                    new BABYLON.Vector3(0.09624348, -3.9205248, -0.19266106),
+                    new BABYLON.Vector3(0.18816054, -3.830096, -0.37768647),
+                    new BABYLON.Vector3(0.2751297, -3.7298427, -0.5547731),
+                    new BABYLON.Vector3(0.35662892, -3.6209142, -0.72372955),
+                    new BABYLON.Vector3(0.432234, -3.5044608, -0.8844734),
+                    new BABYLON.Vector3(0.5016152, -3.3816152, -1.037026),
+                    new BABYLON.Vector3(0.5645317, -3.2534764, -1.181507),
+                    new BABYLON.Vector3(0.62082386, -3.1210923, -1.3181262),
+                    new BABYLON.Vector3(0.67040473, -2.985448, -1.447175),
+                    new BABYLON.Vector3(0.71324956, -2.847452, -1.5690162),
+                    new BABYLON.Vector3(0.7493847, -2.7079284, -1.6840736),
+                    new BABYLON.Vector3(0.7788755, -2.5676086, -1.7928194),
+                    new BABYLON.Vector3(0.81830835, -2.2870188, -1.9934359),
+                    new BABYLON.Vector3(0.8323922, -2.0095725, -2.1751456),
+                    new BABYLON.Vector3(0.8218429, -1.7376409, -2.3421974),
+                    new BABYLON.Vector3(0.7869431, -1.4722669, -2.4984126),
+                    new BABYLON.Vector3(0.727331, -1.2134784, -2.646826),
+                    new BABYLON.Vector3(0.6879431, -1.0863808, -2.7187662),
+                    new BABYLON.Vector3(0.64190775, -0.96068287, -2.7893908),
+                    new BABYLON.Vector3(0.58897865, -0.8362855, -2.8587387),
+                    new BABYLON.Vector3(0.52887547, -0.71310604, -2.92676),
+                    new BABYLON.Vector3(0.46129194, -0.59109104, -2.993313),
+                    new BABYLON.Vector3(0.38590586, -0.47022766, -3.0581658),
+                    new BABYLON.Vector3(0.30239037, -0.35055447, -3.1209967),
+                    new BABYLON.Vector3(0.21042658, -0.23216997, -3.181399),
+                    new BABYLON.Vector3(0.109717086, -0.11523946, -3.2388852),
+                    new BABYLON.Vector3(4.2772512E-16, -4.2772512E-16, -3.2928932),
+                    new BABYLON.Vector3(-0.1189366, 0.11323705, -3.3427958),
+                    new BABYLON.Vector3(-0.24724044, 0.22408567, -3.387908),
+                    new BABYLON.Vector3(-0.38498122, 0.33208707, -3.427499),
+                    new BABYLON.Vector3(-0.5321376, 0.43671402, -3.460802),
+                    new BABYLON.Vector3(-0.6885852, 0.5373772, -3.4870284),
+                    new BABYLON.Vector3(-0.8540865, 0.6334337, -3.5053778),
+                    new BABYLON.Vector3(-1.0282818, 0.72419775, -3.5150545),
+                    new BABYLON.Vector3(-1.2106829, 0.80895245, -3.515278),
+                    new BABYLON.Vector3(-1.4006684, 0.8869635, -3.5052993),
+                    new BABYLON.Vector3(-1.5974823, 0.9574941, -3.4844112),
+                    new BABYLON.Vector3(-1.8002341, 1.01982, -3.4519641),
+                    new BABYLON.Vector3(-2.0079021, 1.0732461, -3.4073768),
+                    new BABYLON.Vector3(-2.21934, 1.1171219, -3.350148),
+                    new BABYLON.Vector3(-2.4332843, 1.1508578, -3.2798681),
+                    new BABYLON.Vector3(-2.6483665, 1.1739402, -3.1962273),
+                    new BABYLON.Vector3(-2.863126, 1.1859456, -3.0990252),
+                    new BABYLON.Vector3(-3.0760255, 1.186554, -2.9881763),
+                    new BABYLON.Vector3(-3.2854695, 1.1755599, -2.8637164),
+                    new BABYLON.Vector3(-3.4898233, 1.1528819, -2.7258058),
+                    new BABYLON.Vector3(-3.687433, 1.1185706, -2.5747309),
+                    new BABYLON.Vector3(-3.8766477, 1.0728129, -2.4109056),
+                    new BABYLON.Vector3(-4.055842, 1.0159355, -2.234869),
+                    new BABYLON.Vector3(-4.223438, 0.94840467, -2.047282),
+                    new BABYLON.Vector3(-4.3779273, 0.87082386, -1.8489233),
+                    new BABYLON.Vector3(-4.517894, 0.78392893, -1.6406829),
+                    new BABYLON.Vector3(-4.6420326, 0.68858045, -1.423553),
+                    new BABYLON.Vector3(-4.749171, 0.58575433, -1.1986195),
+                    new BABYLON.Vector3(-4.8382835, 0.47652936, -0.9670511),
+                    new BABYLON.Vector3(-4.9085116, 0.36207357, -0.73008716),
+                    new BABYLON.Vector3(-4.9591713, 0.24362847, -0.48902482),
+                    new BABYLON.Vector3(-4.9897676, 0.122491926, -0.24520542),
+                    new BABYLON.Vector3(-5, 6.123234E-16, -1.2246468E-15),
+                    new BABYLON.Vector3(-4.9897676, -0.122491926, 0.24520542),
+                    new BABYLON.Vector3(-4.9591713, -0.24362847, 0.48902482),
+                    new BABYLON.Vector3(-4.9085116, -0.36207357, 0.73008716),
+                    new BABYLON.Vector3(-4.8382835, -0.47652936, 0.9670511),
+                    new BABYLON.Vector3(-4.749171, -0.58575433, 1.1986195),
+                    new BABYLON.Vector3(-4.6420326, -0.68858045, 1.423553),
+                    new BABYLON.Vector3(-4.517894, -0.78392893, 1.6406829),
+                    new BABYLON.Vector3(-4.3779273, -0.87082386, 1.8489233),
+                    new BABYLON.Vector3(-4.223438, -0.94840467, 2.047282),
+                    new BABYLON.Vector3(-4.055842, -1.0159355, 2.234869),
+                    new BABYLON.Vector3(-3.8766477, -1.0728129, 2.4109056),
+                    new BABYLON.Vector3(-3.687433, -1.1185706, 2.5747309),
+                    new BABYLON.Vector3(-3.4898233, -1.1528819, 2.7258058),
+                    new BABYLON.Vector3(-3.2854695, -1.1755599, 2.8637164),
+                    new BABYLON.Vector3(-3.0760255, -1.186554, 2.9881763),
+                    new BABYLON.Vector3(-2.863126, -1.1859456, 3.0990252),
+                    new BABYLON.Vector3(-2.6483665, -1.1739402, 3.1962273),
+                    new BABYLON.Vector3(-2.4332843, -1.1508578, 3.2798681),
+                    new BABYLON.Vector3(-2.21934, -1.1171219, 3.350148),
+                    new BABYLON.Vector3(-2.0079021, -1.0732461, 3.4073768),
+                    new BABYLON.Vector3(-1.8002341, -1.01982, 3.4519641),
+                    new BABYLON.Vector3(-1.5974823, -0.9574941, 3.4844112),
+                    new BABYLON.Vector3(-1.4006684, -0.8869635, 3.5052993),
+                    new BABYLON.Vector3(-1.2106829, -0.80895245, 3.515278),
+                    new BABYLON.Vector3(-1.0282818, -0.72419775, 3.5150545),
+                    new BABYLON.Vector3(-0.8540865, -0.6334337, 3.5053778),
+                    new BABYLON.Vector3(-0.6885852, -0.5373772, 3.4870284),
+                    new BABYLON.Vector3(-0.5321376, -0.43671402, 3.460802),
+                    new BABYLON.Vector3(-0.38498122, -0.33208707, 3.427499),
+                    new BABYLON.Vector3(-0.24724044, -0.22408567, 3.387908),
+                    new BABYLON.Vector3(-0.1189366, -0.11323705, 3.3427958),
+                    new BABYLON.Vector3(-2.7809339E-15, -2.7809339E-15, 3.2928932),
+                    new BABYLON.Vector3(0.109717086, 0.11523946, 3.2388852),
+                    new BABYLON.Vector3(0.21042658, 0.23216997, 3.181399),
+                    new BABYLON.Vector3(0.30239037, 0.35055447, 3.1209967),
+                    new BABYLON.Vector3(0.38590586, 0.47022766, 3.0581658),
+                    new BABYLON.Vector3(0.46129194, 0.59109104, 2.993313),
+                    new BABYLON.Vector3(0.52887547, 0.71310604, 2.92676),
+                    new BABYLON.Vector3(0.58897865, 0.8362855, 2.8587387),
+                    new BABYLON.Vector3(0.64190775, 0.96068287, 2.7893908),
+                    new BABYLON.Vector3(0.6879431, 1.0863808, 2.7187662),
+                    new BABYLON.Vector3(0.727331, 1.2134784, 2.646826),
+                    new BABYLON.Vector3(0.7869431, 1.4722669, 2.4984126),
+                    new BABYLON.Vector3(0.8218429, 1.7376409, 2.3421974),
+                    new BABYLON.Vector3(0.8323922, 2.0095725, 2.1751456),
+                    new BABYLON.Vector3(0.81830835, 2.2870188, 1.9934359),
+                    new BABYLON.Vector3(0.7788755, 2.5676086, 1.7928194),
+                    new BABYLON.Vector3(0.7493847, 2.7079284, 1.6840736),
+                    new BABYLON.Vector3(0.71324956, 2.847452, 1.5690162),
+                    new BABYLON.Vector3(0.67040473, 2.985448, 1.447175),
+                    new BABYLON.Vector3(0.62082386, 3.1210923, 1.3181262),
+                    new BABYLON.Vector3(0.5645317, 3.2534764, 1.181507),
+                    new BABYLON.Vector3(0.5016152, 3.3816152, 1.037026),
+                    new BABYLON.Vector3(0.432234, 3.5044608, 0.8844734),
+                    new BABYLON.Vector3(0.35662892, 3.6209142, 0.72372955),
+                    new BABYLON.Vector3(0.2751297, 3.7298427, 0.5547731),
+                    new BABYLON.Vector3(0.18816054, 3.830096, 0.37768647),
+                    new BABYLON.Vector3(0.09624348, 3.9205248, 0.19266106),
+                    new BABYLON.Vector3(7.3478806E-16, 4, 1.4695761E-15),
+                    new BABYLON.Vector3(-0.09984986, 4.0674324, -0.19988035),
+                    new BABYLON.Vector3(-0.20249066, 4.121792, -0.40645066),
+                    new BABYLON.Vector3(-0.307017, 4.162128, -0.6190707),
+                    new BABYLON.Vector3(-0.41244122, 4.1875863, -0.83699304),
+                    new BABYLON.Vector3(-0.5177035, 4.1974287, -1.0593681),
+                    new BABYLON.Vector3(-0.62168324, 4.191048, -1.2852514),
+                    new BABYLON.Vector3(-0.7232135, 4.167982, -1.5136118),
+                    new BABYLON.Vector3(-0.82109576, 4.1279273, -1.7433412),
+                    new BABYLON.Vector3(-0.9141167, 4.0707464, -1.9732658),
+                    new BABYLON.Vector3(-1.0010655, 3.9964776, -2.2021577),
+                    new BABYLON.Vector3(-1.0807526, 3.905338, -2.4287484),
+                    new BABYLON.Vector3(-1.1520276, 3.797726, -2.6517425),
+                    new BABYLON.Vector3(-1.2137979, 3.6742187, -2.869832),
+                    new BABYLON.Vector3(-1.2650467, 3.5355685, -3.0817103),
+                    new BABYLON.Vector3(-1.3048499, 3.3826962, -3.2860887),
+                    new BABYLON.Vector3(-1.3323922, 3.2166793, -3.4817085),
+                    new BABYLON.Vector3(-1.3469816, 3.0387418, -3.6673584),
+                    new BABYLON.Vector3(-1.3480617, 2.8502371, -3.841886),
+                    new BABYLON.Vector3(-1.3352226, 2.6526318, -4.0042124),
+                    new BABYLON.Vector3(-1.308209, 2.4474866, -4.153344),
+                    new BABYLON.Vector3(-1.2669252, 2.236436, -4.288385),
+                    new BABYLON.Vector3(-1.2114398, 2.0211654, -4.408544),
+                    new BABYLON.Vector3(-1.1419846, 1.8033906, -4.513148),
+                    new BABYLON.Vector3(-1.0589525, 1.5848343, -4.6016455),
+                    new BABYLON.Vector3(-0.96289283, 1.3672028, -4.673614),
+                    new BABYLON.Vector3(-0.8545036, 1.1521647, -4.7287626),
+                    new BABYLON.Vector3(-0.7346207, 0.9413294, -4.7669373),
+                    new BABYLON.Vector3(-0.604206, 0.7362272, -4.7881165),
+                    new BABYLON.Vector3(-0.46433252, 0.53829044, -4.792415),
+                    new BABYLON.Vector3(-0.3161677, 0.34883732, -4.780079),
+                    new BABYLON.Vector3(-0.16095611, 0.1690575, -4.7514787),
+                    new BABYLON.Vector3(-1.4266517E-15, 1.4266517E-15, -4.7071066),
+                    new BABYLON.Vector3(0.16536036, -0.15743615, -4.6475677),
+                    new BABYLON.Vector3(0.33376685, -0.30250862, -4.57357),
+                    new BABYLON.Vector3(0.5038637, -0.43463582, -4.4859133),
+                    new BABYLON.Vector3(0.6743173, -0.5533979, -4.38548),
+                    new BABYLON.Vector3(0.84383523, -0.6585355, -4.273222),
+                    new BABYLON.Vector3(1.0111842, -0.74994534, -4.150145),
+                    new BABYLON.Vector3(1.1752064, -0.82767373, -4.017298),
+                    new BABYLON.Vector3(1.3348343, -0.89190775, -3.8757582),
+                    new BABYLON.Vector3(1.4891032, -0.94296414, -3.7266152),
+                    new BABYLON.Vector3(1.6371614, -0.9812768, -3.5709589),
+                    new BABYLON.Vector3(1.7782788, -1.0073825, -3.4098647),
+                    new BABYLON.Vector3(1.9118514, -1.0219059, -3.2443802),
+                    new BABYLON.Vector3(2.0374048, -1.0255433, -3.0755122),
+                    new BABYLON.Vector3(2.1545935, -1.0190468, -2.9042156),
+                    new BABYLON.Vector3(2.2631993, -1.0032073, -2.7313817),
+                    new BABYLON.Vector3(2.363126, -0.9788388, -2.5578291),
+                    new BABYLON.Vector3(2.454391, -0.9467631, -2.3842952),
+                    new BABYLON.Vector3(2.5371177, -0.9077952, -2.2114298),
+                    new BABYLON.Vector3(2.6115222, -0.8627304, -2.0397887),
+                    new BABYLON.Vector3(2.6779015, -0.8123326, -1.869831),
+                    new BABYLON.Vector3(2.7880876, -0.6983796, -1.536305),
+                    new BABYLON.Vector3(2.8710923, -0.57109576, -1.2125441),
+                    new BABYLON.Vector3(2.9306307, -0.434718, -0.8987245),
+                    new BABYLON.Vector3(2.9702165, -0.2925408, -0.5936715),
+                    new BABYLON.Vector3(2.9927163, -0.14702272, -0.2951123),
+                    new BABYLON.Vector3(3, -7.3478806E-16, -1.4695761E-15)
+                ];
+                let curve0Tube = BABYLON.MeshBuilder.CreateTube("curve0Tube", {cap: BABYLON.Mesh.CAP_ALL, path: curve0Points, radius: 0.015, tessellation: 32, updatable: false}, mainScene);
+                curve0Tube.material = colorMaterialFF000033;
+                curve0Tube.visibility = 1;
+                
+                const colorMaterialFFE4C466 = new BABYLON.StandardMaterial("colorMaterialFFE4C466", mainScene);
+                colorMaterialFFE4C466.alpha = 0.4;
+                colorMaterialFFE4C466.ambientColor = BABYLON.Color3.FromInts(255, 228, 196);
+                colorMaterialFFE4C466.backFaceCulling = true;
+                colorMaterialFFE4C466.diffuseColor = BABYLON.Color3.FromInts(255, 228, 196);
+                colorMaterialFFE4C466.specularColor = BABYLON.Color3.FromInts(255, 228, 196);
+                colorMaterialFFE4C466.transparencyMode = BABYLON.Material.MATERIAL_ALPHABLEND;
+                
+                const sphere0Sphere = prototypeOuterSphere.clone("sphere0Sphere");
+                sphere0Sphere.isVisible = true;
+                sphere0Sphere.material = colorMaterialFFE4C466;
+                sphere0Sphere.position = new BABYLON.Vector3(0, 0, 0);
+                sphere0Sphere.scaling = new BABYLON.Vector3(1, 1, 1);
+                sphere0Sphere.visibility = 1;
+                
+                const sphere0SpherePositionXAnimation = new BABYLON.Animation("sphere0SpherePositionXAnimation", "x", 10, BABYLON.Animation.ANIMATIONTYPE_FLOAT, BABYLON.Animation.ANIMATIONLOOPMODE_CYCLE, false);
+                
+                sphere0SpherePositionXAnimation.setKeys(floatKeyFrames0001);
+                
+                const sphere0SpherePositionYAnimation = new BABYLON.Animation("sphere0SpherePositionYAnimation", "y", 10, BABYLON.Animation.ANIMATIONTYPE_FLOAT, BABYLON.Animation.ANIMATIONLOOPMODE_CYCLE, false);
+                
+                sphere0SpherePositionYAnimation.setKeys(floatKeyFrames0002);
+                
+                const sphere0SpherePositionZAnimation = new BABYLON.Animation("sphere0SpherePositionZAnimation", "z", 10, BABYLON.Animation.ANIMATIONTYPE_FLOAT, BABYLON.Animation.ANIMATIONLOOPMODE_CYCLE, false);
+                
+                sphere0SpherePositionZAnimation.setKeys(floatKeyFrames0003);
+                
+                const sphere0SphereScalingXAnimation = new BABYLON.Animation("sphere0SphereScalingXAnimation", "x", 10, BABYLON.Animation.ANIMATIONTYPE_FLOAT, BABYLON.Animation.ANIMATIONLOOPMODE_CYCLE, false);
+                
+                sphere0SphereScalingXAnimation.setKeys(floatKeyFrames0004);
+                
+                const sphere0SphereScalingYAnimation = new BABYLON.Animation("sphere0SphereScalingYAnimation", "y", 10, BABYLON.Animation.ANIMATIONTYPE_FLOAT, BABYLON.Animation.ANIMATIONLOOPMODE_CYCLE, false);
+                
+                sphere0SphereScalingYAnimation.setKeys(floatKeyFrames0004);
+                
+                const sphere0SphereScalingZAnimation = new BABYLON.Animation("sphere0SphereScalingZAnimation", "z", 10, BABYLON.Animation.ANIMATIONTYPE_FLOAT, BABYLON.Animation.ANIMATIONLOOPMODE_CYCLE, false);
+                
+                sphere0SphereScalingZAnimation.setKeys(floatKeyFrames0004);
+                
+                sphere0Sphere.visibility = 1;
+                const sphere0Animation = new BABYLON.AnimationGroup("sphere0Animation", mainScene);
+                sphere0Animation.isAdditive = false;
+                sphere0Animation.loopAnimation = true;
+                sphere0Animation.speedRatio = 1;
+                sphere0Animation.addTargetedAnimation(sphere0SpherePositionXAnimation, sphere0Sphere.position);
+                sphere0Animation.addTargetedAnimation(sphere0SpherePositionYAnimation, sphere0Sphere.position);
+                sphere0Animation.addTargetedAnimation(sphere0SpherePositionZAnimation, sphere0Sphere.position);
+                sphere0Animation.addTargetedAnimation(sphere0SphereScalingXAnimation, sphere0Sphere.scaling);
+                sphere0Animation.addTargetedAnimation(sphere0SphereScalingYAnimation, sphere0Sphere.scaling);
+                sphere0Animation.addTargetedAnimation(sphere0SphereScalingZAnimation, sphere0Sphere.scaling);
+                sphere0Animation.normalize(0, 240);
+                sphere0Animation.play(true);
+                
+                const colorMaterialFFE4C47F = new BABYLON.StandardMaterial("colorMaterialFFE4C47F", mainScene);
+                colorMaterialFFE4C47F.alpha = 0.49803922;
+                colorMaterialFFE4C47F.ambientColor = BABYLON.Color3.FromInts(255, 228, 196);
+                colorMaterialFFE4C47F.backFaceCulling = true;
+                colorMaterialFFE4C47F.diffuseColor = BABYLON.Color3.FromInts(255, 228, 196);
+                colorMaterialFFE4C47F.specularColor = BABYLON.Color3.FromInts(255, 228, 196);
+                colorMaterialFFE4C47F.transparencyMode = BABYLON.Material.MATERIAL_ALPHABLEND;
+                
+                const point0Sphere = prototypeOuterSphere.clone("point0Sphere");
+                point0Sphere.isVisible = true;
+                point0Sphere.material = colorMaterialFFE4C47F;
+                point0Sphere.position = new BABYLON.Vector3(0, 0, 0);
+                point0Sphere.scaling = new BABYLON.Vector3(0.06, 0.06, 0.06);
+                point0Sphere.visibility = 1;
+                
+                const point0SpherePositionXAnimation = new BABYLON.Animation("point0SpherePositionXAnimation", "x", 10, BABYLON.Animation.ANIMATIONTYPE_FLOAT, BABYLON.Animation.ANIMATIONLOOPMODE_CYCLE, false);
+                
+                point0SpherePositionXAnimation.setKeys(floatKeyFrames0001);
+                
+                const point0SpherePositionYAnimation = new BABYLON.Animation("point0SpherePositionYAnimation", "y", 10, BABYLON.Animation.ANIMATIONTYPE_FLOAT, BABYLON.Animation.ANIMATIONLOOPMODE_CYCLE, false);
+                
+                point0SpherePositionYAnimation.setKeys(floatKeyFrames0002);
+                
+                const point0SpherePositionZAnimation = new BABYLON.Animation("point0SpherePositionZAnimation", "z", 10, BABYLON.Animation.ANIMATIONTYPE_FLOAT, BABYLON.Animation.ANIMATIONLOOPMODE_CYCLE, false);
+                
+                point0SpherePositionZAnimation.setKeys(floatKeyFrames0003);
+                
+                mainScene.beginDirectAnimation(point0Sphere.position, [point0SpherePositionXAnimation, point0SpherePositionYAnimation, point0SpherePositionZAnimation], 0, 240, true, 1);
+                
+                const laTeX0Texture = new BABYLON.Texture("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAACXBIWXMAAA7EAAAOxAGVKw4bAAADhklEQVR4nK2VYWjcZBjHn+nRvcoYGRMTpIPsg+yd/dAUhL43lEQRF0EwgtCUCQb8YGBuzX3YmoMJJ4jNIdJMRTOc7jbQpvjBFPbhuoHNKbqcVkz94K4MMWOIOVEXh27Rzp2Xux3r9dpyPfqHEN4nz/v8nufJy/OmarUadK94S1jxH6yEYX/gBw9FQN3NEvKdwOF5CsH15Z6R7wz4jHQj1U3YKCiytmEeNk7MqpcB7ulwoPnfxkwra8j4FAL4L/KMh8W0P6P/Ij2+PiDyKFNV3jSmF5+vAp3aMzJxdkqV3hEJ/vJOxvGWwDUfUWXhAwW8Pou1vxbT2fNl/tQix8CVNQGRq++T5PxHpSqwND/mTVm5QzKm5js9UY0V9C8cB0aE9O7PdgBQjaJE/A0LcH1VQGArkjB6+uOkHcMvfVqwLelg4rxesYhovjFuTj6Wr76arGXCzSXvDkBgy8+S0Wm7CtBHj0yd7SZ4qxIiyuchf7wOeOYGwehiByD2jCF5dPrDJDgMTyw4BfnF7oLfRrDczzzAHyVeukQYuNwOiL1tppZ9vdzo4eDShKkdJQh+hY0IoaX65qVW/9sAvqUdyJZBbCxeyJ1TCZqDHtXq/x1A5Ow0M+VjTRN9a1wRTyaZbDhyFN+L+LF5kUPftgECx3riNEB/wzKoX5SFHrPHyo+2C08vN9UBQcotzD7XMtAymeMA/oRNUgpC/75iCfa1DBKHL8AmKgVBhZ4GeKC55P8hmPphcwFtwjcZCq72FCmOtibTdeVUXQFgb1IUXOslvmfigxI4u0OdHGoHIPTvIMC1BYDt0Ktid5tjMiN6kRxZ+SkFmLsiAPzeBPh9YQj3A7OxNgWO+WSe05Z+4qBj2tYrIH9L43TheGMKulu9SrxXYtBi99HtXboW5iaLysvsKnMrlUxBQdY/Gc5nMmWoUnnTOawK8jm2myFXv5AMWXsPTM/SOPh8NZfmT+bUijVhvzKULb8NMxqvmviIo3GvJdff2pk7/aqsngnkYsmR2RNrud0+RajG6cV3L4B0l5QtvTGbGcphdzJtGcq4iKmF5RviqLLDLegHVCM6KlnesaLEnlmvyGXHlLpFdPctn5jzqpI5OTOT2f9U/QF6z1UeM983XMLKztIi2rt/LPe+7SuPtmZ+l4CmGEH7ygnUgdB3B1yvkg7jcHsQwC6WZQMGk0u2wJUYBH9Bl/of64RhmlQhupwAAAAASUVORK5CYIIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=", mainScene);
+                laTeX0Texture.hasAlpha = true;
+                laTeX0Texture.uScale = -1;
+                
+                const laTeX0Material = new BABYLON.StandardMaterial("laTeX0Material", mainScene);
+                laTeX0Material.backFaceCulling = true;
+                laTeX0Material.diffuseTexture = laTeX0Texture;
+                laTeX0Material.transparencyMode = BABYLON.Material.MATERIAL_ALPHABLEND;
+                laTeX0Material.useAlphaFromDiffuseTexture = true;
+                
+                const laTeX0Plane = BABYLON.MeshBuilder.CreatePlane("laTeX0Plane", {height: 0.32, width: 0.32}, mainScene);
+                laTeX0Plane.billboardMode = BABYLON.AbstractMesh.BILLBOARDMODE_ALL;
+                laTeX0Plane.material = laTeX0Material;
+                laTeX0Plane.position = new BABYLON.Vector3(0, 0, 0);
+                laTeX0Plane.visibility = 1;
+                
+                const laTeX0PlanePositionXAnimation = new BABYLON.Animation("laTeX0PlanePositionXAnimation", "x", 10, BABYLON.Animation.ANIMATIONTYPE_FLOAT, BABYLON.Animation.ANIMATIONLOOPMODE_CYCLE, false);
+                
+                laTeX0PlanePositionXAnimation.setKeys(floatKeyFrames0005);
+                
+                const laTeX0PlanePositionYAnimation = new BABYLON.Animation("laTeX0PlanePositionYAnimation", "y", 10, BABYLON.Animation.ANIMATIONTYPE_FLOAT, BABYLON.Animation.ANIMATIONLOOPMODE_CYCLE, false);
+                
+                laTeX0PlanePositionYAnimation.setKeys(floatKeyFrames0006);
+                
+                const laTeX0PlanePositionZAnimation = new BABYLON.Animation("laTeX0PlanePositionZAnimation", "z", 10, BABYLON.Animation.ANIMATIONTYPE_FLOAT, BABYLON.Animation.ANIMATIONLOOPMODE_CYCLE, false);
+                
+                laTeX0PlanePositionZAnimation.setKeys(floatKeyFrames0007);
+                
+                mainScene.beginDirectAnimation(laTeX0Plane.position, [laTeX0PlanePositionXAnimation, laTeX0PlanePositionYAnimation, laTeX0PlanePositionZAnimation], 0, 240, true, 1);
+                
+                return mainScene;
+            }
+            
+            window.initFunction = async function() {
+                var asyncEngineCreation = async function() {
+                    try {
+                        return createDefaultEngine();
+                    } catch(e) {
+                        console.log("the available createEngine function failed. Creating the default engine instead");
+                        return createDefaultEngine();
+                    }
+                }
+            
+                window.engine = await asyncEngineCreation();
+                if (!engine) throw 'engine should not be null.';
+                startRenderLoop(engine, canvas);
+                
+                window.scenes.push( createMainScene() );
+            };
+            
+            initFunction().then(() => {
+                scenesToRender = scenes                    
+            });
+            
+            window.addEventListener("resize", function () {
+                engine.resize();
+            });
+        </script>
+    </body>
+</html>

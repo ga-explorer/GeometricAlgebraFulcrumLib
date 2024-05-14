@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+        <title>Static Rounds Example</title>
+        
+        <!--  -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/dat-gui/0.6.2/dat.gui.min.js"></script>
+        
+        <!--  -->
+        <script src="https://assets.babylonjs.com/generated/Assets.js"></script>
+        
+        <!--  -->
+        <script src="https://preview.babylonjs.com/ammo.js"></script>
+        
+        <!--  -->
+        <script src="https://preview.babylonjs.com/cannon.js"></script>
+        
+        <!--  -->
+        <script src="https://preview.babylonjs.com/Oimo.js"></script>
+        
+        <!--  -->
+        <script src="https://preview.babylonjs.com/earcut.min.js"></script>
+        
+        <!-- Babylon.js Core -->
+        <script src="https://cdn.babylonjs.com/babylon.js"></script>
+        
+        <!-- Babylon.js Supported Advanced Materials -->
+        <script src="https://cdn.babylonjs.com/materialsLibrary/babylonjs.materials.min.js"></script>
+        
+        <!-- Babylon.js Procedural Textures -->
+        <script src="https://cdn.babylonjs.com/proceduralTexturesLibrary/babylonjs.proceduralTextures.min.js"></script>
+        
+        <!-- Babylon.js Post Processes -->
+        <script src="https://cdn.babylonjs.com/postProcessesLibrary/babylonjs.postProcess.min.js"></script>
+        
+        <!-- Babylon.js All Official Loaders (OBJ, STL, glTF) -->
+        <script src="https://cdn.babylonjs.com/loaders/babylonjs.loaders.min.js"></script>
+        
+        <!-- Babylon.js Scene/Mesh Serializers -->
+        <script src="https://cdn.babylonjs.com/serializers/babylonjs.serializers.min.js"></script>
+        
+        <!-- Babylon.js GUI -->
+        <script src="https://cdn.babylonjs.com/gui/babylon.gui.min.js"></script>
+        
+        <!-- Babylon.js Inspector -->
+        <script src="https://cdn.babylonjs.com/inspector/babylon.inspector.bundle.js"></script>
+        
+        <!-- Babylon.js Viewer -->
+        <script src="https://cdn.babylonjs.com/viewer/babylon.viewer.js"></script>
+        
+        <!-- KaTeX Core -->
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.7/dist/katex.min.css" integrity="sha384-Xi8rHCmBmhbuyyhbI88391ZKP2dmfnOl4rT9ZfRI7mLTdk1wblIUnrIq35nqwEvC" crossorigin="anonymous">
+        <script src="https://cdn.jsdelivr.net/npm/katex@0.16.7/dist/katex.min.js" integrity="sha384-X/XCfMm41VSsqRNQgDerQczD69XqmjOOOwYQvr/uuC+j4OPoNhVgjdGFwhvN02Ja" crossorigin="anonymous"></script>
+        
+        <!-- KaTeX Auto-render extension -->
+        <!-- To automatically render math in text elements, include the auto-render extension: -->
+        <script src="https://cdn.jsdelivr.net/npm/katex@0.16.7/dist/contrib/auto-render.min.js" integrity="sha384-+XBljXPPiv+OzfbB3cVmLHf4hdUFHlWNZN5spNQ7rmHTXpd7WvJum6fIACpNNfIR" crossorigin="anonymous" ></script>
+        
+        <!-- html2canvas.js -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" integrity="sha512-BNaRQnYJYiPSqHHDb58B0yaPfCu+Wgds8Gp/gU33kqBtgNS4tSPHuGibyoeqMV/TJlSKda6FXzoEyYGjTe+vXA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+	    
+        <script>
+          document.addEventListener("DOMContentLoaded", function() {
+            renderMathInElement(document.body, {
+              delimiters: 
+		      [
+                {left: "$$", right: "$$", display: true},
+			    {left: '$', right: '$', display: false},
+                {left: "\\(", right: "\\)", display: false},
+                {left: "\\begin{equation}", right: "\\end{equation}", display: true},
+                {left: "\\begin{align}", right: "\\end{align}", display: true},
+                {left: "\\begin{alignat}", right: "\\end{alignat}", display: true},
+                {left: "\\begin{gather}", right: "\\end{gather}", display: true},
+                {left: "\\begin{CD}", right: "\\end{CD}", display: true},
+                {left: "\\[", right: "\\]", display: true}
+              ],
+              throwOnError : false
+            });
+          });
+        </script>
+
+        <style>
+            html, body {
+                overflow: auto;
+                width: 100%;
+                height: 100%;
+                margin: 0;
+                padding: 0;
+            }
+
+            #renderCanvas {
+                position: absolute;
+                top: 0px;
+                left: 0px;
+            	width: 1024px;
+            	height: 728px;
+            	touch-action: none;
+            }
+
+            #textDiv {
+            	position: absolute;
+            	top: 0px;
+            	left: 0px;
+            	margin: 10px;
+            	padding: 10px;
+            	touch-action: none;
+            	background-color: rgba(255, 255, 255, 0.05);
+            }
+        </style>
+    </head>
+    <body>
+        <canvas id="renderCanvas"> </canvas>
+
+        <script>
+            var canvas = document.getElementById("renderCanvas");
+            
+            canvas.width  = 1024;
+            canvas.height = 728;
+            
+            function renderHtmlToCanvas( canvas, html ) {
+            	const ctx = canvas.getContext( '2d' );
+            
+            	const svg = `
+            		<svg xmlns="http://www.w3.org/2000/svg" width="${canvas.width}" height="${canvas.height}">
+            		<foreignObject width="100%" height="100%">
+            			<div xmlns="http://www.w3.org/1999/xhtml">${html}</div>
+            		</foreignObject>
+            		</svg>`;
+            	
+            	const svgBlob = new Blob( [svg], { type: 'image/svg+xml;charset=utf-8' } );
+            	const svgObjectUrl = URL.createObjectURL( svgBlob );
+            	
+            	//await new Promise(res => setTimeout(res, 100));
+            
+            	const tempImg = new Image();
+            	tempImg.addEventListener( 
+            		'load', 
+            		function() {
+            			ctx.drawImage( tempImg, 0, 0 );
+            			URL.revokeObjectURL( svgObjectUrl );
+            		} 
+            	);
+            
+            	tempImg.src = svgObjectUrl;
+            }
+            
+            function startRenderLoop(engine, canvas) {
+                engine.runRenderLoop(function () {
+                    if (scenesToRender) {
+                        const scenesToRenderLength = scenesToRender.length;
+                        
+                        for (let i = 0; i < scenesToRenderLength; i++) {
+                            if (scenesToRender[i].activeCamera) { scenesToRender[i].render(); }
+                        }
+                    }
+                });
+            }
+            
+            var engine = null;
+            var scenes = [];
+            var scenesToRender = [];
+            
+            var createDefaultEngine = function() { 
+                return new BABYLON.Engine(canvas, true, { preserveDrawingBuffer: true, stencil: true,  disableWebGL2Support: false}); 
+            };
+            
+            function createMainScene() {
+                
+                const mainScene = new BABYLON.Scene(engine, {});
+                mainScene.useRightHandedSystem = true;
+                
+                const light = new BABYLON.HemisphericLight("light", new BABYLON.Vector3(0, 1, 0), mainScene);
+                //light.intensity = 0.7;
+                
+                function createXyCirclePathPoints() {
+                	const path = new Array(361);
+                	const n = path.length;
+                
+                	for (let i = 0; i < n; i++) {
+                		const a = 2 * Math.PI * i / (n - 1);
+                		
+                		path[i] = new BABYLON.Vector3(Math.cos(a), Math.sin(a), 0);
+                	}
+                
+                	return path;
+                }
+                
+                function updateXyCirclePathPoints(path, radius) {
+                	const n = path.length;
+                
+                	for (let i = 0; i < n; i++) {
+                		const a = 2 * Math.PI * i / (n - 1);
+                		
+                		path[i].x = radius * Math.cos(a);
+                		path[i].y = radius * Math.sin(a);
+                	}
+                }
+                const prototypeDisc = BABYLON.MeshBuilder.CreateDisc("prototypeDisc", {radius: 1, sideOrientation: BABYLON.Mesh.DOUBLESIDE, tessellation: 512}, mainScene);
+                prototypeDisc.isVisible = false;
+                prototypeDisc.position = new BABYLON.Vector3(0, 0, 0);
+                
+                const prototypeInnerSphere = BABYLON.MeshBuilder.CreateSphere("prototypeInnerSphere", {diameter: 2, segments: 512, sideOrientation: BABYLON.Mesh.BACKSIDE}, mainScene);
+                prototypeInnerSphere.isVisible = false;
+                prototypeInnerSphere.position = new BABYLON.Vector3(0, 0, 0);
+                
+                const prototypeOuterSphere = BABYLON.MeshBuilder.CreateSphere("prototypeOuterSphere", {diameter: 2, segments: 512, sideOrientation: BABYLON.Mesh.FRONTSIDE}, mainScene);
+                prototypeOuterSphere.isVisible = false;
+                prototypeOuterSphere.position = new BABYLON.Vector3(0, 0, 0);
+                
+                const prototypeCone = BABYLON.MeshBuilder.CreateCylinder("prototypeCone", {cap: BABYLON.Mesh.CAP_START, diameterBottom: 2, diameterTop: 0, height: 1, sideOrientation: BABYLON.Mesh.DOUBLESIDE, subdivisions: 1, tessellation: 512}, mainScene);
+                prototypeCone.isVisible = false;
+                prototypeCone.position = new BABYLON.Vector3(0, 0, 0);
+                
+                const defaultGridXyTexture = new BABYLON.Texture('data:image/png;base64,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', mainScene);
+                defaultGridXyTexture.hasAlpha = true;
+                defaultGridXyTexture.uScale = 24;
+                defaultGridXyTexture.vScale = 24;
+                
+                const defaultGridXyMaterial = new BABYLON.StandardMaterial("defaultGridXyMaterial", mainScene);
+                defaultGridXyMaterial.alpha = 0.25;
+                defaultGridXyMaterial.backFaceCulling = false;
+                defaultGridXyMaterial.diffuseTexture = defaultGridXyTexture;
+                defaultGridXyMaterial.sideOrientation = BABYLON.Mesh.DOUBLESIDE;
+                defaultGridXyMaterial.transparencyMode = BABYLON.Material.MATERIAL_ALPHABLEND;
+                defaultGridXyMaterial.useAlphaFromDiffuseTexture = true;
+                
+                const defaultGridXyGround = BABYLON.MeshBuilder.CreateGround("defaultGridXyGround", {height: 24, width: 24}, mainScene);
+                defaultGridXyGround.material = defaultGridXyMaterial;
+                defaultGridXyGround.position = new BABYLON.Vector3(0, 0, -12);
+                defaultGridXyGround.rotationQuaternion = new BABYLON.Quaternion(0.70710677, -0, -0, 0.70710677);
+                
+                const defaultGridYzTexture = new BABYLON.Texture('data:image/png;base64,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', mainScene);
+                defaultGridYzTexture.hasAlpha = true;
+                defaultGridYzTexture.uScale = 24;
+                defaultGridYzTexture.vScale = 24;
+                
+                const defaultGridYzMaterial = new BABYLON.StandardMaterial("defaultGridYzMaterial", mainScene);
+                defaultGridYzMaterial.alpha = 0.25;
+                defaultGridYzMaterial.backFaceCulling = false;
+                defaultGridYzMaterial.diffuseTexture = defaultGridYzTexture;
+                defaultGridYzMaterial.sideOrientation = BABYLON.Mesh.DOUBLESIDE;
+                defaultGridYzMaterial.transparencyMode = BABYLON.Material.MATERIAL_ALPHABLEND;
+                defaultGridYzMaterial.useAlphaFromDiffuseTexture = true;
+                
+                const defaultGridYzGround = BABYLON.MeshBuilder.CreateGround("defaultGridYzGround", {height: 24, width: 24}, mainScene);
+                defaultGridYzGround.material = defaultGridYzMaterial;
+                defaultGridYzGround.position = new BABYLON.Vector3(-12, 0, 0);
+                defaultGridYzGround.rotationQuaternion = new BABYLON.Quaternion(-0, -0, -0.70710677, 0.70710677);
+                
+                const defaultGridZxTexture = new BABYLON.Texture('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAQoAAAEKCAYAAADqyxvJAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAD50lEQVR4nO3XsW2aQRiA4SvcuYxEzwyeIWYG5DUyAH3wEC4QA7giO2QGpqBOJIKRfoq8A9zzNP9d++nTy/H08/u3PwPgP54GQBAKIC1C8ePX7zGr8+l4/a432zGry2G3uD+/7cas7MMY+9eX+9mLAkhCASShAJJQAEkogCQUQBIKIAkFkIQCSEIBJKEAklAASSiAJBRAEgogCQWQhAJIQgEkoQCSUABJKIAkFEASCiAJBZCEAkhCASShAJJQAEkogCQUQBIKIAkFkIQCSEIBJKEAklAASSiAJBRAEgogCQWQhAJIQgEkoQCSUABJKIAkFEASCiAJBZCEAkhCASShAJJQAEkogCQUQBIKIAkFkIQCSEIBJKEAklAASSiAJBRAWoTifDqO2c08g9XD/WwfzODGiwJIi1CsN9sxq69fjplncDnsFve1fZh6BuN9fz96UQBJKIAkFEASCiAJBZCEAkhCASShAJJQAEkogCQUQBIKIAkFkIQCSEIBJKEAklAASSiAJBRAEgogCQWQhAJIQgEkoQCSUABJKIAkFEASCiAJBZCEAkhCASShAJJQAEkogCQUQBIKIAkFkIQCSEIBJKEAklAASSiAJBRAEgogCQWQhAJIQgEkoQCSUABJKIAkFEASCiAJBZCEAkhCASShAJJQAEkogCQUQBIKIAkFkIQCSItQXA67MavV7TvzDB5d7MOwD/94UQBJKIAkFEBahOL5bTdmdT4dr9/1Zjtm9fh/3D7MvQ/j4/N+9KIAklAASSiAJBRAEgogCQWQhAJIQgEkoQCSUABJKIAkFEASCiAJBZCEAkhCASShAJJQAEkogCQUQBIKIAkFkIQCSEIBJKEAklAASSiAJBRAEgogCQWQhAJIQgEkoQCSUABJKIAkFEASCiAJBZCEAkhCASShAJJQAEkogCQUQBIKIAkFkIQCSEIBJKEAklAASSiAJBRAEgogCQWQhAJIQgEkoQCSUABJKIAkFEASCiAJBZAWoTifjmN2M89g9XA/2wczuPGiANIiFOvNdszq65dj5hlcDrvFfW0fpp7BeN/fj14UQBIKIAkFkIQCSEIBJKEAklAASSiAJBRAEgogCQWQhAJIQgEkoQCSUABJKIAkFEASCiAJBZCEAkhCASShAJJQAEkogCQUQBIKIAkFkIQCSEIBJKEAklAASSiAJBRAEgogCQWQhAJIQgEkoQCSUABJKIAkFEASCiAJBZCEAkhCASShAJJQAEkogCQUQBIKIAkFkIQCSEIBJKEAklAASSiAJBRAEgogCQWQhAJIQgEkoQDSIhT715cxvff94Objc0zPPlx5UQBJKID0F2crUfJ/CTyxAAAAAElFTkSuQmCCAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==', mainScene);
+                defaultGridZxTexture.hasAlpha = true;
+                defaultGridZxTexture.uScale = 24;
+                defaultGridZxTexture.vScale = 24;
+                
+                const defaultGridZxMaterial = new BABYLON.StandardMaterial("defaultGridZxMaterial", mainScene);
+                defaultGridZxMaterial.alpha = 0.25;
+                defaultGridZxMaterial.backFaceCulling = false;
+                defaultGridZxMaterial.diffuseTexture = defaultGridZxTexture;
+                defaultGridZxMaterial.sideOrientation = BABYLON.Mesh.DOUBLESIDE;
+                defaultGridZxMaterial.transparencyMode = BABYLON.Material.MATERIAL_ALPHABLEND;
+                defaultGridZxMaterial.useAlphaFromDiffuseTexture = true;
+                
+                const defaultGridZxGround = BABYLON.MeshBuilder.CreateGround("defaultGridZxGround", {height: 24, width: 24}, mainScene);
+                defaultGridZxGround.material = defaultGridZxMaterial;
+                defaultGridZxGround.position = new BABYLON.Vector3(0, -12, 0);
+                defaultGridZxGround.rotationQuaternion = new BABYLON.Quaternion(-0, -0, -0, 1);
+                
+                const axisFrameOriginMaterial = new BABYLON.SimpleMaterial("axisFrameOriginMaterial", mainScene);
+                axisFrameOriginMaterial.diffuseColor = BABYLON.Color3.FromInts(169, 169, 169);
+                
+                const axisFrameXMaterial = new BABYLON.SimpleMaterial("axisFrameXMaterial", mainScene);
+                axisFrameXMaterial.diffuseColor = BABYLON.Color3.FromInts(139, 0, 0);
+                
+                const axisFrameYMaterial = new BABYLON.SimpleMaterial("axisFrameYMaterial", mainScene);
+                axisFrameYMaterial.diffuseColor = BABYLON.Color3.FromInts(0, 100, 0);
+                
+                const axisFrameZMaterial = new BABYLON.SimpleMaterial("axisFrameZMaterial", mainScene);
+                axisFrameZMaterial.diffuseColor = BABYLON.Color3.FromInts(0, 0, 139);
+                
+                const axisFrameOriginSphere = prototypeOuterSphere.clone("axisFrameOriginSphere");
+                axisFrameOriginSphere.isVisible = true;
+                axisFrameOriginSphere.material = axisFrameOriginMaterial;
+                axisFrameOriginSphere.position = new BABYLON.Vector3(0, 0, 0);
+                axisFrameOriginSphere.scaling = new BABYLON.Vector3(0.075, 0.075, 0.075);
+                axisFrameOriginSphere.visibility = 1;
+                
+                const axisFrameLineSegment1Points = [
+                    new BABYLON.Vector3(0, 0, 0),
+                    new BABYLON.Vector3(0.8425, 0, 0)
+                ];
+                let axisFrameLineSegment1Tube = BABYLON.MeshBuilder.CreateTube("axisFrameLineSegment1Tube", {cap: BABYLON.Mesh.CAP_ALL, path: axisFrameLineSegment1Points, radius: 0.0175, tessellation: 32, updatable: false}, mainScene);
+                axisFrameLineSegment1Tube.material = axisFrameXMaterial;
+                axisFrameLineSegment1Tube.visibility = 1;
+                
+                const axisFrameLineSegment2Points = [
+                    new BABYLON.Vector3(0, 0, 0),
+                    new BABYLON.Vector3(0, 0.8425, 0)
+                ];
+                let axisFrameLineSegment2Tube = BABYLON.MeshBuilder.CreateTube("axisFrameLineSegment2Tube", {cap: BABYLON.Mesh.CAP_ALL, path: axisFrameLineSegment2Points, radius: 0.0175, tessellation: 32, updatable: false}, mainScene);
+                axisFrameLineSegment2Tube.material = axisFrameYMaterial;
+                axisFrameLineSegment2Tube.visibility = 1;
+                
+                const axisFrameLineSegment3Points = [
+                    new BABYLON.Vector3(0, 0, 0),
+                    new BABYLON.Vector3(0, 0, 0.8425)
+                ];
+                let axisFrameLineSegment3Tube = BABYLON.MeshBuilder.CreateTube("axisFrameLineSegment3Tube", {cap: BABYLON.Mesh.CAP_ALL, path: axisFrameLineSegment3Points, radius: 0.0175, tessellation: 32, updatable: false}, mainScene);
+                axisFrameLineSegment3Tube.material = axisFrameZMaterial;
+                axisFrameLineSegment3Tube.visibility = 1;
+                
+                const axisFrameArrowHead1Cylinder = prototypeCone.clone("axisFrameArrowHead1Cylinder");
+                axisFrameArrowHead1Cylinder.isVisible = true;
+                axisFrameArrowHead1Cylinder.material = axisFrameXMaterial;
+                axisFrameArrowHead1Cylinder.position = new BABYLON.Vector3(0.92125, 0, 0);
+                axisFrameArrowHead1Cylinder.rotationQuaternion = new BABYLON.Quaternion(0, 0, -0.70710677, 0.70710677);
+                axisFrameArrowHead1Cylinder.scaling = new BABYLON.Vector3(0.0525, 0.1575, 0.0525);
+                axisFrameArrowHead1Cylinder.visibility = 1;
+                
+                const axisFrameArrowHead2Cylinder = prototypeCone.clone("axisFrameArrowHead2Cylinder");
+                axisFrameArrowHead2Cylinder.isVisible = true;
+                axisFrameArrowHead2Cylinder.material = axisFrameYMaterial;
+                axisFrameArrowHead2Cylinder.position = new BABYLON.Vector3(0, 0.92125, 0);
+                axisFrameArrowHead2Cylinder.rotationQuaternion = new BABYLON.Quaternion(0, 0, 0, 1);
+                axisFrameArrowHead2Cylinder.scaling = new BABYLON.Vector3(0.0525, 0.1575, 0.0525);
+                axisFrameArrowHead2Cylinder.visibility = 1;
+                
+                const axisFrameArrowHead3Cylinder = prototypeCone.clone("axisFrameArrowHead3Cylinder");
+                axisFrameArrowHead3Cylinder.isVisible = true;
+                axisFrameArrowHead3Cylinder.material = axisFrameZMaterial;
+                axisFrameArrowHead3Cylinder.position = new BABYLON.Vector3(0, 0, 0.92125);
+                axisFrameArrowHead3Cylinder.rotationQuaternion = new BABYLON.Quaternion(0.70710677, 0, -0, 0.70710677);
+                axisFrameArrowHead3Cylinder.scaling = new BABYLON.Vector3(0.0525, 0.1575, 0.0525);
+                axisFrameArrowHead3Cylinder.visibility = 1;
+                
+                const environmentHelper = mainScene.createDefaultEnvironment({createGround: true, groundColor: BABYLON.Color3.FromInts(255, 255, 255), groundSize: 8, groundYBias: 0.01, skyboxColor: BABYLON.Color3.FromInts(135, 206, 250), skyboxSize: 34});
+                
+                const defaultCamera = new BABYLON.ArcRotateCamera("defaultCamera", 2 * Math.PI / 20, 2 * Math.PI / 5, 15, BABYLON.Vector3.Zero(), mainScene, true);
+                defaultCamera.mode = BABYLON.Camera.PERSPECTIVE_CAMERA;
+                defaultCamera.attachControl(true);
+                
+                const colorMaterial008000FF = new BABYLON.SimpleMaterial("colorMaterial008000FF", mainScene);
+                colorMaterial008000FF.diffuseColor = BABYLON.Color3.FromInts(0, 128, 0);
+                
+                const point0Sphere = prototypeOuterSphere.clone("point0Sphere");
+                point0Sphere.isVisible = true;
+                point0Sphere.material = colorMaterial008000FF;
+                point0Sphere.position = new BABYLON.Vector3(3, 3, 3);
+                point0Sphere.scaling = new BABYLON.Vector3(0.08, 0.08, 0.08);
+                point0Sphere.visibility = 1;
+                
+                const point1Sphere = prototypeOuterSphere.clone("point1Sphere");
+                point1Sphere.isVisible = true;
+                point1Sphere.material = colorMaterial008000FF;
+                point1Sphere.position = new BABYLON.Vector3(-0.57735026, 0.21132487, 0.7886751);
+                point1Sphere.scaling = new BABYLON.Vector3(0.08, 0.08, 0.08);
+                point1Sphere.visibility = 1;
+                
+                const line0Points = [
+                    new BABYLON.Vector3(3, 3, 3),
+                    new BABYLON.Vector3(-0.57735026, 0.21132487, 0.7886751)
+                ];
+                let line0DashedLines = BABYLON.MeshBuilder.CreateDashedLines("line0DashedLines", {dashNb: 32, dashSize: 5, gapSize: 3, points: line0Points, updatable: false}, mainScene);
+                line0DashedLines.color = BABYLON.Color3.FromInts(0, 128, 0);
+                line0DashedLines.visibility = 1;
+                
+                const colorMaterial0080007F = new BABYLON.StandardMaterial("colorMaterial0080007F", mainScene);
+                colorMaterial0080007F.alpha = 0.49803922;
+                colorMaterial0080007F.ambientColor = BABYLON.Color3.FromInts(0, 128, 0);
+                colorMaterial0080007F.backFaceCulling = true;
+                colorMaterial0080007F.diffuseColor = BABYLON.Color3.FromInts(0, 128, 0);
+                colorMaterial0080007F.specularColor = BABYLON.Color3.FromInts(0, 128, 0);
+                colorMaterial0080007F.transparencyMode = BABYLON.Material.MATERIAL_ALPHABLEND;
+                
+                const point2Sphere = prototypeOuterSphere.clone("point2Sphere");
+                point2Sphere.isVisible = true;
+                point2Sphere.material = colorMaterial0080007F;
+                point2Sphere.position = new BABYLON.Vector3(1.2113248, 1.6056625, 1.8943375);
+                point2Sphere.scaling = new BABYLON.Vector3(0.12, 0.12, 0.12);
+                point2Sphere.visibility = 1;
+                
+                const vector0LineSegmentPoints = [
+                    new BABYLON.Vector3(1.2113248, 1.6056625, 1.8943375),
+                    new BABYLON.Vector3(0.757616, 1.2519798, 1.6138792)
+                ];
+                let vector0LineSegmentTube = BABYLON.MeshBuilder.CreateTube("vector0LineSegmentTube", {cap: BABYLON.Mesh.CAP_ALL, path: vector0LineSegmentPoints, radius: 0.04, tessellation: 32, updatable: false}, mainScene);
+                vector0LineSegmentTube.material = colorMaterial0080007F;
+                vector0LineSegmentTube.visibility = 1;
+                
+                const vector0ArrowHeadCylinder = prototypeCone.clone("vector0ArrowHeadCylinder");
+                vector0ArrowHeadCylinder.isVisible = true;
+                vector0ArrowHeadCylinder.material = colorMaterial0080007F;
+                vector0ArrowHeadCylinder.position = new BABYLON.Vector3(0.63001037, 1.1525066, 1.5350003);
+                vector0ArrowHeadCylinder.rotationQuaternion = new BABYLON.Quaternion(-0.46327567, 0, 0.7494599, 0.47295398);
+                vector0ArrowHeadCylinder.scaling = new BABYLON.Vector3(0.12, 0.36, 0.12);
+                vector0ArrowHeadCylinder.visibility = 1;
+                
+                const bivector0Vector1LineSegmentPoints = [
+                    new BABYLON.Vector3(0.555504, 2.3507695, 2.01564),
+                    new BABYLON.Vector3(0.9091866, 2.3192863, 1.4831765)
+                ];
+                let bivector0Vector1LineSegmentTube = BABYLON.MeshBuilder.CreateTube("bivector0Vector1LineSegmentTube", {cap: BABYLON.Mesh.CAP_ALL, path: bivector0Vector1LineSegmentPoints, radius: 0.04, tessellation: 32, updatable: false}, mainScene);
+                bivector0Vector1LineSegmentTube.material = colorMaterial0080007F;
+                bivector0Vector1LineSegmentTube.visibility = 1;
+                
+                const bivector0Vector1ArrowHeadCylinder = prototypeCone.clone("bivector0Vector1ArrowHeadCylinder");
+                bivector0Vector1ArrowHeadCylinder.isVisible = true;
+                bivector0Vector1ArrowHeadCylinder.material = colorMaterial0080007F;
+                bivector0Vector1ArrowHeadCylinder.position = new BABYLON.Vector3(1.0086598, 2.3104317, 1.3334211);
+                bivector0Vector1ArrowHeadCylinder.rotationQuaternion = new BABYLON.Quaternion(-0.60332125, 0, -0.40074906, 0.6894952);
+                bivector0Vector1ArrowHeadCylinder.scaling = new BABYLON.Vector3(0.12, 0.36, 0.12);
+                bivector0Vector1ArrowHeadCylinder.visibility = 1;
+                
+                const bivector0Vector2LineSegmentPoints = [
+                    new BABYLON.Vector3(1.7639539, 1.5564697, 1.0623633),
+                    new BABYLON.Vector3(1.8299967, 1.1110845, 1.5171933)
+                ];
+                let bivector0Vector2LineSegmentTube = BABYLON.MeshBuilder.CreateTube("bivector0Vector2LineSegmentTube", {cap: BABYLON.Mesh.CAP_ALL, path: bivector0Vector2LineSegmentPoints, radius: 0.04, tessellation: 32, updatable: false}, mainScene);
+                bivector0Vector2LineSegmentTube.material = colorMaterial0080007F;
+                bivector0Vector2LineSegmentTube.visibility = 1;
+                
+                const bivector0Vector2ArrowHeadCylinder = prototypeCone.clone("bivector0Vector2ArrowHeadCylinder");
+                bivector0Vector2ArrowHeadCylinder.isVisible = true;
+                bivector0Vector2ArrowHeadCylinder.material = colorMaterial0080007F;
+                bivector0Vector2ArrowHeadCylinder.position = new BABYLON.Vector3(1.8485712, 0.9858198, 1.6451142);
+                bivector0Vector2ArrowHeadCylinder.rotationQuaternion = new BABYLON.Quaternion(0.9112893, 0, -0.13232203, 0.3899266);
+                bivector0Vector2ArrowHeadCylinder.scaling = new BABYLON.Vector3(0.12, 0.36, 0.12);
+                bivector0Vector2ArrowHeadCylinder.visibility = 1;
+                
+                const bivector0Vector3LineSegmentPoints = [
+                    new BABYLON.Vector3(1.3145167, 0.90974796, 2.6050093),
+                    new BABYLON.Vector3(0.8947913, 1.3866166, 2.682643)
+                ];
+                let bivector0Vector3LineSegmentTube = BABYLON.MeshBuilder.CreateTube("bivector0Vector3LineSegmentTube", {cap: BABYLON.Mesh.CAP_ALL, path: bivector0Vector3LineSegmentPoints, radius: 0.04, tessellation: 32, updatable: false}, mainScene);
+                bivector0Vector3LineSegmentTube.material = colorMaterial0080007F;
+                bivector0Vector3LineSegmentTube.visibility = 1;
+                
+                const bivector0Vector3ArrowHeadCylinder = prototypeCone.clone("bivector0Vector3ArrowHeadCylinder");
+                bivector0Vector3ArrowHeadCylinder.isVisible = true;
+                bivector0Vector3ArrowHeadCylinder.material = colorMaterial0080007F;
+                bivector0Vector3ArrowHeadCylinder.position = new BABYLON.Vector3(0.77674353, 1.5207359, 2.7044773);
+                bivector0Vector3ArrowHeadCylinder.rotationQuaternion = new BABYLON.Quaternion(0.064929694, 0, 0.35104206, 0.93410575);
+                bivector0Vector3ArrowHeadCylinder.scaling = new BABYLON.Vector3(0.12, 0.36, 0.12);
+                bivector0Vector3ArrowHeadCylinder.visibility = 1;
+                
+                const bivector0DiscSphere = prototypeOuterSphere.clone("bivector0DiscSphere");
+                bivector0DiscSphere.isVisible = true;
+                bivector0DiscSphere.material = colorMaterial0080007F;
+                bivector0DiscSphere.position = new BABYLON.Vector3(1.2113248, 1.6056625, 1.8943375);
+                bivector0DiscSphere.rotationQuaternion = new BABYLON.Quaternion(-0.46327567, 0, 0.7494599, 0.47295398);
+                bivector0DiscSphere.scaling = new BABYLON.Vector3(1, 0.04, 1);
+                bivector0DiscSphere.visibility = 1;
+                
+                const colorMaterial0000FFFF = new BABYLON.SimpleMaterial("colorMaterial0000FFFF", mainScene);
+                colorMaterial0000FFFF.diffuseColor = BABYLON.Color3.FromInts(0, 0, 255);
+                
+                const circle0Torus = BABYLON.MeshBuilder.CreateTorus("circle0Torus", {diameter: 4, tessellation: 360, thickness: 0.08}, mainScene);
+                circle0Torus.isVisible = true;
+                circle0Torus.material = colorMaterial0000FFFF;
+                circle0Torus.position = new BABYLON.Vector3(-2, -2, -2);
+                circle0Torus.rotationQuaternion = new BABYLON.Quaternion(0.3250576, 0, -0.3250576, 0.88807386);
+                circle0Torus.visibility = 1;
+                
+                const colorMaterial0000FF7F = new BABYLON.StandardMaterial("colorMaterial0000FF7F", mainScene);
+                colorMaterial0000FF7F.alpha = 0.49803922;
+                colorMaterial0000FF7F.ambientColor = BABYLON.Color3.FromInts(0, 0, 255);
+                colorMaterial0000FF7F.backFaceCulling = true;
+                colorMaterial0000FF7F.diffuseColor = BABYLON.Color3.FromInts(0, 0, 255);
+                colorMaterial0000FF7F.specularColor = BABYLON.Color3.FromInts(0, 0, 255);
+                colorMaterial0000FF7F.transparencyMode = BABYLON.Material.MATERIAL_ALPHABLEND;
+                
+                const point3Sphere = prototypeOuterSphere.clone("point3Sphere");
+                point3Sphere.isVisible = true;
+                point3Sphere.material = colorMaterial0000FF7F;
+                point3Sphere.position = new BABYLON.Vector3(-2, -2, -2);
+                point3Sphere.scaling = new BABYLON.Vector3(0.08, 0.08, 0.08);
+                point3Sphere.visibility = 1;
+                
+                const point4Sphere = prototypeOuterSphere.clone("point4Sphere");
+                point4Sphere.isVisible = true;
+                point4Sphere.material = colorMaterial0000FF7F;
+                point4Sphere.position = new BABYLON.Vector3(-2, -2, -2);
+                point4Sphere.scaling = new BABYLON.Vector3(0.12, 0.12, 0.12);
+                point4Sphere.visibility = 1;
+                
+                const bivector1Vector1LineSegmentPoints = [
+                    new BABYLON.Vector3(-1.2113248, -2.211325, -2.5773504),
+                    new BABYLON.Vector3(-1.580829, -1.7065728, -2.712598)
+                ];
+                let bivector1Vector1LineSegmentTube = BABYLON.MeshBuilder.CreateTube("bivector1Vector1LineSegmentTube", {cap: BABYLON.Mesh.CAP_ALL, path: bivector1Vector1LineSegmentPoints, radius: 0.04, tessellation: 32, updatable: false}, mainScene);
+                bivector1Vector1LineSegmentTube.material = colorMaterial0000FF7F;
+                bivector1Vector1LineSegmentTube.visibility = 1;
+                
+                const bivector1Vector1ArrowHeadCylinder = prototypeCone.clone("bivector1Vector1ArrowHeadCylinder");
+                bivector1Vector1ArrowHeadCylinder.isVisible = true;
+                bivector1Vector1ArrowHeadCylinder.material = colorMaterial0000FF7F;
+                bivector1Vector1ArrowHeadCylinder.position = new BABYLON.Vector3(-1.6847521, -1.5646112, -2.7506366);
+                bivector1Vector1ArrowHeadCylinder.rotationQuaternion = new BABYLON.Quaternion(-0.11173002, 0, 0.30525208, 0.9456942);
+                bivector1Vector1ArrowHeadCylinder.scaling = new BABYLON.Vector3(0.12, 0.36, 0.12);
+                bivector1Vector1ArrowHeadCylinder.visibility = 1;
+                
+                const bivector1Vector2LineSegmentPoints = [
+                    new BABYLON.Vector3(-2.5773504, -1.2113248, -2.211325),
+                    new BABYLON.Vector3(-2.712598, -1.580829, -1.7065728)
+                ];
+                let bivector1Vector2LineSegmentTube = BABYLON.MeshBuilder.CreateTube("bivector1Vector2LineSegmentTube", {cap: BABYLON.Mesh.CAP_ALL, path: bivector1Vector2LineSegmentPoints, radius: 0.04, tessellation: 32, updatable: false}, mainScene);
+                bivector1Vector2LineSegmentTube.material = colorMaterial0000FF7F;
+                bivector1Vector2LineSegmentTube.visibility = 1;
+                
+                const bivector1Vector2ArrowHeadCylinder = prototypeCone.clone("bivector1Vector2ArrowHeadCylinder");
+                bivector1Vector2ArrowHeadCylinder.isVisible = true;
+                bivector1Vector2ArrowHeadCylinder.material = colorMaterial0000FF7F;
+                bivector1Vector2ArrowHeadCylinder.position = new BABYLON.Vector3(-2.7506366, -1.6847521, -1.5646112);
+                bivector1Vector2ArrowHeadCylinder.rotationQuaternion = new BABYLON.Quaternion(0.8578135, 0, 0.22985043, 0.45970085);
+                bivector1Vector2ArrowHeadCylinder.scaling = new BABYLON.Vector3(0.12, 0.36, 0.12);
+                bivector1Vector2ArrowHeadCylinder.visibility = 1;
+                
+                const bivector1Vector3LineSegmentPoints = [
+                    new BABYLON.Vector3(-2.211325, -2.5773504, -1.2113248),
+                    new BABYLON.Vector3(-1.7065728, -2.712598, -1.580829)
+                ];
+                let bivector1Vector3LineSegmentTube = BABYLON.MeshBuilder.CreateTube("bivector1Vector3LineSegmentTube", {cap: BABYLON.Mesh.CAP_ALL, path: bivector1Vector3LineSegmentPoints, radius: 0.04, tessellation: 32, updatable: false}, mainScene);
+                bivector1Vector3LineSegmentTube.material = colorMaterial0000FF7F;
+                bivector1Vector3LineSegmentTube.visibility = 1;
+                
+                const bivector1Vector3ArrowHeadCylinder = prototypeCone.clone("bivector1Vector3ArrowHeadCylinder");
+                bivector1Vector3ArrowHeadCylinder.isVisible = true;
+                bivector1Vector3ArrowHeadCylinder.material = colorMaterial0000FF7F;
+                bivector1Vector3ArrowHeadCylinder.position = new BABYLON.Vector3(-1.5646112, -2.7506366, -1.6847521);
+                bivector1Vector3ArrowHeadCylinder.rotationQuaternion = new BABYLON.Quaternion(-0.45970085, 0, -0.627963, 0.627963);
+                bivector1Vector3ArrowHeadCylinder.scaling = new BABYLON.Vector3(0.12, 0.36, 0.12);
+                bivector1Vector3ArrowHeadCylinder.visibility = 1;
+                
+                const bivector1DiscSphere = prototypeOuterSphere.clone("bivector1DiscSphere");
+                bivector1DiscSphere.isVisible = true;
+                bivector1DiscSphere.material = colorMaterial0000FF7F;
+                bivector1DiscSphere.position = new BABYLON.Vector3(-2, -2, -2);
+                bivector1DiscSphere.rotationQuaternion = new BABYLON.Quaternion(0.3250576, 0, -0.3250576, 0.88807386);
+                bivector1DiscSphere.scaling = new BABYLON.Vector3(1, 0.04, 1);
+                bivector1DiscSphere.visibility = 1;
+                
+                const vector1LineSegmentPoints = [
+                    new BABYLON.Vector3(-2, -2, -2),
+                    new BABYLON.Vector3(-1.6304958, -1.6304958, -1.6304958)
+                ];
+                let vector1LineSegmentTube = BABYLON.MeshBuilder.CreateTube("vector1LineSegmentTube", {cap: BABYLON.Mesh.CAP_ALL, path: vector1LineSegmentPoints, radius: 0.04, tessellation: 32, updatable: false}, mainScene);
+                vector1LineSegmentTube.material = colorMaterial0000FF7F;
+                vector1LineSegmentTube.visibility = 1;
+                
+                const vector1ArrowHeadCylinder = prototypeCone.clone("vector1ArrowHeadCylinder");
+                vector1ArrowHeadCylinder.isVisible = true;
+                vector1ArrowHeadCylinder.material = colorMaterial0000FF7F;
+                vector1ArrowHeadCylinder.position = new BABYLON.Vector3(-1.5265728, -1.5265728, -1.5265728);
+                vector1ArrowHeadCylinder.rotationQuaternion = new BABYLON.Quaternion(0.3250576, 0, -0.3250576, 0.88807386);
+                vector1ArrowHeadCylinder.scaling = new BABYLON.Vector3(0.12, 0.36, 0.12);
+                vector1ArrowHeadCylinder.visibility = 1;
+                
+                const colorMaterialFF0000B2 = new BABYLON.StandardMaterial("colorMaterialFF0000B2", mainScene);
+                colorMaterialFF0000B2.alpha = 0.69803923;
+                colorMaterialFF0000B2.ambientColor = BABYLON.Color3.FromInts(255, 0, 0);
+                colorMaterialFF0000B2.backFaceCulling = true;
+                colorMaterialFF0000B2.diffuseColor = BABYLON.Color3.FromInts(255, 0, 0);
+                colorMaterialFF0000B2.specularColor = BABYLON.Color3.FromInts(255, 0, 0);
+                colorMaterialFF0000B2.transparencyMode = BABYLON.Material.MATERIAL_ALPHABLEND;
+                
+                const sphere0Sphere = prototypeOuterSphere.clone("sphere0Sphere");
+                sphere0Sphere.isVisible = true;
+                sphere0Sphere.material = colorMaterialFF0000B2;
+                sphere0Sphere.position = new BABYLON.Vector3(-5, -5, -5);
+                sphere0Sphere.scaling = new BABYLON.Vector3(2, 2, 2);
+                sphere0Sphere.visibility = 1;
+                
+                const colorMaterialFF00007F = new BABYLON.StandardMaterial("colorMaterialFF00007F", mainScene);
+                colorMaterialFF00007F.alpha = 0.49803922;
+                colorMaterialFF00007F.ambientColor = BABYLON.Color3.FromInts(255, 0, 0);
+                colorMaterialFF00007F.backFaceCulling = true;
+                colorMaterialFF00007F.diffuseColor = BABYLON.Color3.FromInts(255, 0, 0);
+                colorMaterialFF00007F.specularColor = BABYLON.Color3.FromInts(255, 0, 0);
+                colorMaterialFF00007F.transparencyMode = BABYLON.Material.MATERIAL_ALPHABLEND;
+                
+                const point5Sphere = prototypeOuterSphere.clone("point5Sphere");
+                point5Sphere.isVisible = true;
+                point5Sphere.material = colorMaterialFF00007F;
+                point5Sphere.position = new BABYLON.Vector3(-5, -5, -5);
+                point5Sphere.scaling = new BABYLON.Vector3(0.12, 0.12, 0.12);
+                point5Sphere.visibility = 1;
+                
+                return mainScene;
+            }
+            
+            window.initFunction = async function() {
+                var asyncEngineCreation = async function() {
+                    try {
+                        return createDefaultEngine();
+                    } catch(e) {
+                        console.log("the available createEngine function failed. Creating the default engine instead");
+                        return createDefaultEngine();
+                    }
+                }
+            
+                window.engine = await asyncEngineCreation();
+                if (!engine) throw 'engine should not be null.';
+                startRenderLoop(engine, canvas);
+                
+                window.scenes.push( createMainScene() );
+            };
+            
+            initFunction().then(() => {
+                scenesToRender = scenes                    
+            });
+            
+            window.addEventListener("resize", function () {
+                engine.resize();
+            });
+        </script>
+    </body>
+</html>
