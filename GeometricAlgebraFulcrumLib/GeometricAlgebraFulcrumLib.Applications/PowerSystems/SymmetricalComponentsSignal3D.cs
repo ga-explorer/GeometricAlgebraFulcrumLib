@@ -1,17 +1,17 @@
 ﻿using System.Runtime.CompilerServices;
-using DataStructuresLib.Basic;
-using GeometricAlgebraFulcrumLib.Lite.Geometry.Differential.Functions.Phasors;
-using GeometricAlgebraFulcrumLib.Lite.LinearAlgebra.Vectors.Space2D;
-using GeometricAlgebraFulcrumLib.Lite.LinearAlgebra.Vectors.Space3D;
-using GeometricAlgebraFulcrumLib.Lite.ScalarAlgebra;
-using GeometricAlgebraFulcrumLib.Lite.SignalAlgebra;
+using GeometricAlgebraFulcrumLib.Utilities.Structures.Basic;
+using GeometricAlgebraFulcrumLib.Core.Modeling.Geometry.Differential.Functions.Phasors;
+using GeometricAlgebraFulcrumLib.Core.Algebra.LinearAlgebra.Float64.Vectors.Space2D;
+using GeometricAlgebraFulcrumLib.Core.Algebra.LinearAlgebra.Float64.Vectors.Space3D;
+using GeometricAlgebraFulcrumLib.Core.Algebra.Scalars.Float64;
+using GeometricAlgebraFulcrumLib.Core.Algebra.Signals;
 
 namespace GeometricAlgebraFulcrumLib.Applications.PowerSystems;
 
 public class SymmetricalComponentsSignal3D :
     PowerSignal3D
 {
-    public static SymmetricalComponentsSignal3D Create(Float64Signal timeValues, double frequency, IFloat64PolarVector2D phasor1, IFloat64PolarVector2D phasor2, IFloat64PolarVector2D phasor3)
+    public static SymmetricalComponentsSignal3D Create(Float64Signal timeValues, double frequency, ILinFloat64PolarVector2D phasor1, ILinFloat64PolarVector2D phasor2, ILinFloat64PolarVector2D phasor3)
     {
         var sqrt2Inv = 1d / 2d.Sqrt();
 
@@ -73,13 +73,13 @@ public class SymmetricalComponentsSignal3D :
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public override Triplet<Float64Vector3D> GetComponentVectors(double t)
+    public override Triplet<LinFloat64Vector3D> GetComponentVectors(double t)
     {
-        var x = Float64Vector3D.Create(0, 0, CosFunc1.GetValue(t));
-        var y = Float64Vector3D.Create(CosFunc2.GetValue(t), SinFunc2.GetValue(t), 0);
-        var z = Float64Vector3D.Create(CosFunc3.GetValue(t), SinFunc3.GetValue(t), 0);
+        var x = LinFloat64Vector3D.Create(0, 0, CosFunc1.GetValue(t));
+        var y = LinFloat64Vector3D.Create(CosFunc2.GetValue(t), SinFunc2.GetValue(t), 0);
+        var z = LinFloat64Vector3D.Create(CosFunc3.GetValue(t), SinFunc3.GetValue(t), 0);
 
-        return new Triplet<Float64Vector3D>(x, y, z);
+        return new Triplet<LinFloat64Vector3D>(x, y, z);
     }
     
 }

@@ -1,5 +1,6 @@
 ﻿using System;
-using GeometricAlgebraFulcrumLib.Lite.Geometry.Differential.AutoDiff;
+using GeometricAlgebraFulcrumLib.Core.Modeling.Geometry.Differential.AutoDiff;
+using GeometricAlgebraFulcrumLib.Core.Algebra.Scalars.Float64;
 
 namespace GeometricAlgebraFulcrumLib.Samples.AutoDiff;
 
@@ -128,12 +129,12 @@ public static class AutoDiffSamples
     {
         // create function factory for arctangent
         var arctan = UnaryFunc.Factory(
-            x => Math.Atan(x),      // evaluate
+            x => x.ArcTan(),      // evaluate
             x => 1 / (1 + x * x));  // derivative of atan
 
         // create function factory for atan2
         var atan2 = BinaryFunc.Factory(
-            (x, y) => Math.Atan2(y, x),
+            (x, y) => x.ArcTan2(y),
             (x, y) => Tuple.Create(
                 -y / (x*x + y*y),  // d/dx (from wikipedia)
                 x / (x*x + y*y))); // d/dy (from wikipedia)

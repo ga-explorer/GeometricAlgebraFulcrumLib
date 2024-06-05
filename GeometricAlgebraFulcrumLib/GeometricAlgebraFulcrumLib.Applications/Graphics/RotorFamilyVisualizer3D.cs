@@ -1,30 +1,30 @@
 ﻿using System.Collections.Immutable;
-using DataStructuresLib.Basic;
-using DataStructuresLib.Files;
-using GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.BabylonJs;
-using GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.BabylonJs.Constants;
-using GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.BabylonJs.GUI;
-using GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.Visuals.Space3D.Styles;
-using GeometricAlgebraFulcrumLib.Lite.LinearAlgebra;
-using GeometricAlgebraFulcrumLib.Lite.LinearAlgebra.Vectors.Space3D;
-using GeometricAlgebraFulcrumLib.Lite.ScalarAlgebra;
+using GeometricAlgebraFulcrumLib.Utilities.Structures.Basic;
+using GeometricAlgebraFulcrumLib.Utilities.Structures.Files;
+using GeometricAlgebraFulcrumLib.Core.Modeling.Graphics.Rendering.BabylonJs;
+using GeometricAlgebraFulcrumLib.Core.Modeling.Graphics.Rendering.BabylonJs.Constants;
+using GeometricAlgebraFulcrumLib.Core.Modeling.Graphics.Rendering.BabylonJs.GUI;
+using GeometricAlgebraFulcrumLib.Core.Modeling.Graphics.Rendering.Visuals.Space3D.Styles;
+using GeometricAlgebraFulcrumLib.Core.Algebra.LinearAlgebra.Float64.Angles;
+using GeometricAlgebraFulcrumLib.Core.Algebra.LinearAlgebra.Float64.Vectors.Space3D;
+using GeometricAlgebraFulcrumLib.Core.Algebra.Scalars.Float64;
 using OxyPlot;
 using OxyPlot.Axes;
 using OxyPlot.Series;
 using OxyPlot.SkiaSharp;
 using SixLabors.ImageSharp;
-using WebComposerLib.Colors;
+using GeometricAlgebraFulcrumLib.Utilities.Web.Colors;
 
 namespace GeometricAlgebraFulcrumLib.Applications.Graphics;
 
 public class RotorFamilyVisualizer3D :
     GrBabylonJsSnapshotComposer3D
 {
-    public Float64Vector3D SourceVector { get; }
+    public LinFloat64Vector3D SourceVector { get; }
 
-    public Float64Vector3D TargetVector { get; }
+    public LinFloat64Vector3D TargetVector { get; }
 
-    public IReadOnlyList<Float64PlanarAngle> ThetaValues { get; }
+    public IReadOnlyList<LinFloat64Angle> ThetaValues { get; }
     
     public bool DrawRotorTrace { get; set; }
 
@@ -33,18 +33,18 @@ public class RotorFamilyVisualizer3D :
     public int DataTextImageMaxHeight { get; private set; }
 
 
-    public RotorFamilyVisualizer3D(IReadOnlyList<double> cameraAlphaValues, IReadOnlyList<double> cameraBetaValues, IFloat64Vector3D sourceVector, IFloat64Vector3D targetVector, IReadOnlyList<Float64PlanarAngle> thetaValues) 
+    public RotorFamilyVisualizer3D(IReadOnlyList<double> cameraAlphaValues, IReadOnlyList<double> cameraBetaValues, ILinFloat64Vector3D sourceVector, ILinFloat64Vector3D targetVector, IReadOnlyList<LinFloat64Angle> thetaValues) 
         : base(cameraAlphaValues, cameraBetaValues)
     {
-        SourceVector = sourceVector.ToUnitVector();
-        TargetVector = targetVector.ToUnitVector();
+        SourceVector = sourceVector.ToUnitLinVector3D();
+        TargetVector = targetVector.ToUnitLinVector3D();
         ThetaValues = thetaValues;
     }
 
 
-    public Float64PlanarAngle GetPhiMin()
+    public LinFloat64Angle GetPhiMin()
     {
-        return GetPhiMinCos().ArcCos();
+        return GetPhiMinCos().CosToPolarAngle();
     }
     
     public double GetPhiMinCos()
@@ -52,25 +52,25 @@ public class RotorFamilyVisualizer3D :
         return SourceVector.GetUnitVectorsAngleCos(TargetVector);
     }
 
-    public Float64PlanarAngle ThetaToPhi(Float64PlanarAngle theta)
+    public LinFloat64Angle ThetaToPhi(LinFloat64Angle theta)
     {
-        return ThetaToPhiCos(theta).ArcCos();
+        return ThetaToPhiCos(theta).CosToPolarAngle();
     }
 
-    public Float64Vector3D ThetaToUnitNormal(Float64PlanarAngle theta)
+    public LinFloat64Vector3D ThetaToUnitNormal(LinFloat64Angle theta)
     {
         var n = 
             SourceVector.VectorUnitCross(TargetVector);
 
         return n.RotateUsing(
-            (TargetVector - SourceVector).ToUnitVector(),
+            (TargetVector - SourceVector).ToUnitLinVector3D(),
             theta
         );
     }
 
-    public double ThetaToPhiCos(Float64PlanarAngle theta)
+    public double ThetaToPhiCos(LinFloat64Angle theta)
     {
-        if (!theta.Degrees.IsNearInRange(-90, 90))
+        if (!theta.DegreesValue.IsNearInRange(-90, 90))
             throw new ArgumentOutOfRangeException(nameof(theta));
 
         var phiMinCos = GetPhiMinCos();
@@ -78,7 +78,7 @@ public class RotorFamilyVisualizer3D :
         return 1d + (2d * (1 - phiMinCos)) / (theta.Sin().Square() * (1 + phiMinCos) - 2d);
     }
 
-    public Float64Quaternion ThetaToQuaternion(Float64PlanarAngle theta)
+    public LinFloat64Quaternion ThetaToQuaternion(LinFloat64Angle theta)
     {
         var phi = ThetaToPhi(theta);
         var normal = ThetaToUnitNormal(theta);
@@ -86,16 +86,16 @@ public class RotorFamilyVisualizer3D :
         return normal.CreateQuaternion(phi);
     }
 
-    public Float64PlanarAngle PhiToTheta(Float64PlanarAngle phi)
+    public LinFloat64Angle PhiToTheta(LinFloat64Angle phi)
     {
-        return PhiToThetaSin(phi).ArcSin();
+        return PhiToThetaSin(phi).SinToPolarAngle();
     }
 
-    public double PhiToThetaSin(Float64PlanarAngle phi)
+    public double PhiToThetaSin(LinFloat64Angle phi)
     {
         var phiMinCos = GetPhiMinCos();
 
-        if (phi < phiMinCos.ArcCos() || phi > Math.PI)
+        if (phi.RadiansValue < phiMinCos.ArcCos() || phi.RadiansValue > Math.PI)
             throw new ArgumentOutOfRangeException(nameof(phi));
 
         var phiCos = phi.Cos();
@@ -103,19 +103,19 @@ public class RotorFamilyVisualizer3D :
         return (2d * (phiCos - phiMinCos) / ((1 + phiMinCos) * (phiCos - 1))).Sqrt();
     }
     
-    public Float64Vector3D PhiToUnitNormal(Float64PlanarAngle phi)
+    public LinFloat64Vector3D PhiToUnitNormal(LinFloat64Angle phi)
     {
         return ThetaToUnitNormal(PhiToTheta(phi));
     }
     
-    public Float64Quaternion PhiToQuaternion(Float64PlanarAngle phi)
+    public LinFloat64Quaternion PhiToQuaternion(LinFloat64Angle phi)
     {
         var normal = PhiToUnitNormal(phi);
 
         return normal.CreateQuaternion(phi);
     }
 
-    public Float64PlanarAngle GetTheta(int index)
+    public LinFloat64Angle GetTheta(int index)
     {
         return ThetaValues[index];
 
@@ -156,7 +156,7 @@ public class RotorFamilyVisualizer3D :
         );
 
         model.Series.Add(
-            new FunctionSeries(theta => ThetaToPhi(theta.DegreesToAngle()).Degrees, -90, 90, 180d / 450)
+            new FunctionSeries(theta => ThetaToPhi(theta.DegreesToDirectedAngle()).DegreesValue, -90, 90, 180d / 450)
             {
                 Color = System.Drawing.Color.DarkBlue.ToOxyColor(),
                 CanTrackerInterpolatePoints = false,
@@ -177,7 +177,7 @@ public class RotorFamilyVisualizer3D :
                 MarkerType = MarkerType.Circle,
                 Points =
                 {
-                    new ScatterPoint(theta.Degrees, phi.Degrees)
+                    new ScatterPoint(theta.DegreesValue, phi.DegreesValue)
                 }
             }
         );
@@ -281,7 +281,7 @@ public class RotorFamilyVisualizer3D :
         //ImageCache.BackgroundColor = Color.FromRgba(32, 32, 255, 16);
 
         var phiMin = GetPhiMin();
-        var vuDiff = (TargetVector - SourceVector).ToUnitVector();
+        var vuDiff = (TargetVector - SourceVector).ToUnitLinVector3D();
         var uvNormal = SourceVector.VectorUnitCross(TargetVector);
         
         ImageCache.AddLaTeXAlignedEquations(
@@ -290,7 +290,7 @@ public class RotorFamilyVisualizer3D :
             {
                 new (@"\boldsymbol{u}", @$"\left( {SourceVector.X:F4}, {SourceVector.Y:F4}, {SourceVector.Z:F4} \right)"),
                 new (@"\boldsymbol{v}", @$"\left( {TargetVector.X:F4}, {TargetVector.Y:F4}, {TargetVector.Z:F4} \right)"),
-                new (@"\phi", @$"\cos^{{-1}}\left(\boldsymbol{{u}}\cdot\boldsymbol{{v}}\right) = {phiMin.Degrees:F4}"),
+                new (@"\phi", @$"\cos^{{-1}}\left(\boldsymbol{{u}}\cdot\boldsymbol{{v}}\right) = {phiMin.DegreesValue:F4}"),
                 new (@"\boldsymbol{B}", @"\left(\boldsymbol{v}-\boldsymbol{u}\right)\rfloor\boldsymbol{e}^{-1}_{123}"),
                 new (@"\boldsymbol{\hat{B}}", @$"\frac{{\boldsymbol{{B}}}}{{\sqrt{{-\boldsymbol{{B}}^{{2}}}}}}"),
                 new (@"", @$"\left( {vuDiff.X:F4}, {vuDiff.Y:F4}, {vuDiff.Z:F4} \right)^{{*}}"),
@@ -317,11 +317,11 @@ public class RotorFamilyVisualizer3D :
                 $"dataText-{i:D6}",
                 new Pair<string>[]
                 {
-                    new (@"\theta", @$"{theta.Degrees:F4}"),
+                    new (@"\theta", @$"{theta.DegreesValue:F4}"),
                     new (@"\boldsymbol{\hat{N}}\left( \theta \right)", @$"\left( {uvNormal1.X:F4}, {uvNormal1.Y:F4}, {uvNormal1.Z:F4} \right)^{{*}}"),
                     new (@"\boldsymbol{u}\left( \theta \right)", @$"\left( {u1.X:F4}, {u1.Y:F4}, {u1.Z:F4} \right)"),
                     new (@"\boldsymbol{v}\left( \theta \right)", @$"\left( {v1.X:F4}, {v1.Y:F4}, {v1.Z:F4} \right)"),
-                    new (@"\varphi\left( \theta \right)", @$"{phi.Degrees:F4}")
+                    new (@"\varphi\left( \theta \right)", @$"{phi.DegreesValue:F4}")
                 }
             );
         }
@@ -584,7 +584,7 @@ public class RotorFamilyVisualizer3D :
         var u = SourceVector * 4;
         var v = TargetVector * 4;
         var uvNormal = u.VectorUnitCross(v);
-        var thetaPlaneNormal = (v - u).ToUnitVector();
+        var thetaPlaneNormal = (v - u).ToUnitLinVector3D();
         var theta = ThetaValues[index];
         var uvNormal1 = uvNormal.RotateUsing(thetaPlaneNormal, theta);
         var u1 = u.RejectOnVector(uvNormal1);
@@ -601,7 +601,7 @@ public class RotorFamilyVisualizer3D :
         ).AddLineSegment(
             "originSegment",
             u - u1,
-            Float64Vector3D.Zero,
+            LinFloat64Vector3D.Zero,
             Color.DarkGreen,
             dashSpecs
         ).AddLineSegment(
@@ -621,7 +621,7 @@ public class RotorFamilyVisualizer3D :
             ).AddLaTeXText(
                 "sourceVector1Text", 
                 ImageCache, 
-                u1 + u1.ToUnitVector() * 0.35d, 
+                u1 + u1.ToUnitLinVector3D() * 0.35d, 
                 LaTeXScalingFactor
             );
 
@@ -634,7 +634,7 @@ public class RotorFamilyVisualizer3D :
             ).AddLaTeXText(
                 "targetVector1Text", 
                 ImageCache, 
-                v1 + v1.ToUnitVector() * 0.35d, 
+                v1 + v1.ToUnitLinVector3D() * 0.35d, 
                 LaTeXScalingFactor
             );
     }
@@ -646,7 +646,7 @@ public class RotorFamilyVisualizer3D :
         var u = SourceVector * 4;
         var v = TargetVector * 4;
         var vuSum = (v + u) * 0.5;
-        var vuDiff = (v - u).ToUnitVector();
+        var vuDiff = (v - u).ToUnitLinVector3D();
         var uvNormal = u.VectorUnitCross(v);
         var theta = ThetaValues[index];
         var uvNormal1 = uvNormal.RotateUsing(vuDiff, theta);
@@ -656,10 +656,10 @@ public class RotorFamilyVisualizer3D :
 
         MainSceneComposer.AddDiscSector(
             "phiMinRotor",
-            Float64Vector3D.Zero,
+            LinFloat64Vector3D.Zero,
             u,
             v,
-            u1.ENorm(),
+            u1.VectorENorm(),
             true,
             System.Drawing.Color.IndianRed.ToImageSharpColor(128),
             0.05,
@@ -667,18 +667,18 @@ public class RotorFamilyVisualizer3D :
         ).AddLaTeXText(
             "phiMinRotorText",
             ImageCache,
-            0.5d.Lerp(u, v).SetLength(u1.ENorm() + 0.35d),
+            0.5d.Lerp(u, v).SetLength(u1.VectorENorm() + 0.35d),
             LaTeXScalingFactor
         );
 
-        if (!theta.Degrees.IsNearZero(1e-5))
+        if (!theta.DegreesValue.IsNearZero(1e-5))
         {
             MainSceneComposer.AddDiscSector(
                 "thetaRotor",
-                Float64Vector3D.Zero,
+                LinFloat64Vector3D.Zero,
                 vuSum,
                 vuSum1,
-                u1.ENorm(),
+                u1.VectorENorm(),
                 true,
                 System.Drawing.Color.LightGreen.ToImageSharpColor(128),
                 0.05,
@@ -686,17 +686,17 @@ public class RotorFamilyVisualizer3D :
             ).AddLaTeXText(
                 "thetaRotorText",
                 ImageCache,
-                0.5d.Lerp(vuSum, vuSum1).SetLength(u1.ENorm() + 0.35d),
+                0.5d.Lerp(vuSum, vuSum1).SetLength(u1.VectorENorm() + 0.35d),
                 LaTeXScalingFactor
             );
         }
 
         MainSceneComposer.AddDiscSector(
             "phiRotor",
-            Float64Vector3D.Zero,
+            LinFloat64Vector3D.Zero,
             u1,
             v1,
-            u1.ENorm(),
+            u1.VectorENorm(),
             true,
             System.Drawing.Color.DarkSlateBlue.ToImageSharpColor(128),
             0.05,
@@ -704,7 +704,7 @@ public class RotorFamilyVisualizer3D :
         ).AddLaTeXText(
             "phiRotorText",
             ImageCache,
-            0.5d.Lerp(u1, v1).SetLength(u1.ENorm() + 0.35d),
+            0.5d.Lerp(u1, v1).SetLength(u1.VectorENorm() + 0.35d),
             LaTeXScalingFactor
         );
 
@@ -713,7 +713,7 @@ public class RotorFamilyVisualizer3D :
             u - u1,
             u1,
             v1,
-            u1.ENorm(),
+            u1.VectorENorm(),
             true,
             System.Drawing.Color.DarkSlateBlue.ToImageSharpColor(128),
             0.05,
@@ -721,13 +721,13 @@ public class RotorFamilyVisualizer3D :
         ).AddLaTeXText(
             "phiRotorCopyText",
             ImageCache,
-            u - u1 + 0.5d.Lerp(u1, v1).SetLength(u1.ENorm() + 0.35d),
+            u - u1 + 0.5d.Lerp(u1, v1).SetLength(u1.VectorENorm() + 0.35d),
             LaTeXScalingFactor
         );
 
         MainSceneComposer.AddDisc(
             "thetaRotorPlane",
-            Float64Vector3D.Zero,
+            LinFloat64Vector3D.Zero,
             vuDiff,
             5d,
             System.Drawing.Color.YellowGreen.ToImageSharpColor(64),
@@ -742,7 +742,7 @@ public class RotorFamilyVisualizer3D :
 
         MainSceneComposer.AddDisc(
             "phiRotorPlane",
-            Float64Vector3D.Zero,
+            LinFloat64Vector3D.Zero,
             uvNormal1,
             5d,
             System.Drawing.Color.BurlyWood.ToImageSharpColor(64),
@@ -761,22 +761,22 @@ public class RotorFamilyVisualizer3D :
         var scene = MainSceneComposer.SceneObject;
 
         var thetaDegrees = 
-            ThetaValues.Select(t => t.Degrees).ToImmutableArray();
+            ThetaValues.Select(t => t.DegreesValue).ToImmutableArray();
 
         var thetaMin = thetaDegrees.Min();
         var thetaMax = thetaDegrees.Max();
 
         var thetaDegreesArray = 
-            thetaMin.Value.GetLinearRange(thetaMax, 31, false).ToImmutableArray();
+            thetaMin.GetLinearRange(thetaMax, 31, false).ToImmutableArray();
 
         var u = SourceVector * 4;
         var v = TargetVector * 4;
-        var vuDiff = (v - u).ToUnitVector();
+        var vuDiff = (v - u).ToUnitLinVector3D();
         var uvNormal = u.VectorUnitCross(v);
         
         for (var i = 0; i < thetaDegreesArray.Length; i++)
         {
-            var theta = thetaDegreesArray[i].DegreesToAngle();
+            var theta = thetaDegreesArray[i].DegreesToDirectedAngle();
             var uvNormal1 = uvNormal.RotateUsing(vuDiff, theta);
             var u1 = u.RejectOnVector(uvNormal1);
             var v1 = v.RejectOnVector(uvNormal1);
@@ -785,7 +785,7 @@ public class RotorFamilyVisualizer3D :
                 $"phiRotorTrace{i}",
                 u - u1,
                 u1.VectorUnitCross(v1),
-                u1.ENorm(),
+                u1.VectorENorm(),
                 System.Drawing.Color.DarkSlateBlue.ToImageSharpColor(64),
                 0.025
             );
@@ -815,7 +815,7 @@ public class RotorFamilyVisualizer3D :
         var u = SourceVector * 4;
         var v = TargetVector * 4;
         var vuSum = (v + u) * 0.5;
-        var vuDiff = (v - u).ToUnitVector();
+        var vuDiff = (v - u).ToUnitLinVector3D();
         var uvNormal = u.VectorUnitCross(v);
         var theta = ThetaValues[index];
         var uvNormal1 = uvNormal.RotateUsing(vuDiff, theta);
@@ -830,7 +830,7 @@ public class RotorFamilyVisualizer3D :
             i=> $"intersectionPoint{i + 1}", 
             intersectionPointColor, 
             0.08, 
-            Float64Vector3D.Zero, 
+            LinFloat64Vector3D.Zero, 
             vuSum1.SetLength(5d),
             vuSum1.SetLength(-5d),
             u - u1,
@@ -838,10 +838,10 @@ public class RotorFamilyVisualizer3D :
             v,
             u1,
             v1,
-            vuSum.SetLength(u1.ENorm()),
-            vuSum1.SetLength(u1.ENorm()),
-            u.SetLength(u1.ENorm()),
-            v.SetLength(u1.ENorm())
+            vuSum.SetLength(u1.VectorENorm()),
+            vuSum1.SetLength(u1.VectorENorm()),
+            u.SetLength(u1.VectorENorm()),
+            v.SetLength(u1.VectorENorm())
         );
 
         MainSceneComposer.AddLineSegment(
@@ -852,7 +852,7 @@ public class RotorFamilyVisualizer3D :
             0.035
         );
 
-        if ((u - u1).ENorm() > 1)
+        if ((u - u1).VectorENorm() > 1)
         {
             MainSceneComposer.AddRightAngle(
                 "rightAngle1",

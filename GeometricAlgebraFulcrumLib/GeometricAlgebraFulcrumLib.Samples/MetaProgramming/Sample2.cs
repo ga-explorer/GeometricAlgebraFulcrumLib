@@ -1,5 +1,5 @@
 ﻿using System;
-using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.Processors;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Extended.Generic.Processors;
 using GeometricAlgebraFulcrumLib.MetaProgramming.Applications.CSharp.DenseKVectorsLib;
 using GeometricAlgebraFulcrumLib.MetaProgramming.Context;
 

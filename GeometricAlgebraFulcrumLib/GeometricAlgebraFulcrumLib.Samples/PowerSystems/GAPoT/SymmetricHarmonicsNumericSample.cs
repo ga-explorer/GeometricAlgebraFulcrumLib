@@ -2,16 +2,18 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Extended.Float64.LinearMaps.Outermorphisms;
-using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Extended.Float64.LinearMaps.Rotors;
-using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Extended.Float64.Multivectors;
-using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Extended.Float64.Multivectors.Composers;
-using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Extended.Float64.Processors;
-using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Extended.Float64.Subspaces;
-using GeometricAlgebraFulcrumLib.Lite.LinearAlgebra.Matrices;
-using GeometricAlgebraFulcrumLib.Lite.ScalarAlgebra;
-using GeometricAlgebraFulcrumLib.MathBase.Text;
-using GeometricAlgebraFulcrumLib.Processors.MatrixAlgebra;
+using GeometricAlgebraFulcrumLib.Core.Algebra.GeometricAlgebra.Extended.Float64.LinearMaps.Outermorphisms;
+using GeometricAlgebraFulcrumLib.Core.Algebra.GeometricAlgebra.Extended.Float64.LinearMaps.Rotors;
+using GeometricAlgebraFulcrumLib.Core.Algebra.GeometricAlgebra.Extended.Float64.Multivectors;
+using GeometricAlgebraFulcrumLib.Core.Algebra.GeometricAlgebra.Extended.Float64.Multivectors.Composers;
+using GeometricAlgebraFulcrumLib.Core.Algebra.GeometricAlgebra.Extended.Float64.Processors;
+using GeometricAlgebraFulcrumLib.Core.Algebra.GeometricAlgebra.Extended.Float64.Subspaces;
+using GeometricAlgebraFulcrumLib.Core.Algebra.LinearAlgebra.Float64.Angles;
+using GeometricAlgebraFulcrumLib.Core.Algebra.LinearAlgebra.Float64.Matrices;
+using GeometricAlgebraFulcrumLib.Core.Algebra.Scalars.Float64;
+using GeometricAlgebraFulcrumLib.Core.Algebra.Scalars.Float64Complex;
+using GeometricAlgebraFulcrumLib.Algebra.Utilities.Text;
+//using GeometricAlgebraFulcrumLib.Processors.MatrixAlgebra;
 
 namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GAPoT;
 
@@ -20,8 +22,8 @@ public static class SymmetricHarmonicsNumericSample
     private static Random RandomGenerator { get; }
         = new Random(10);
 
-    public static MatrixProcessorOfFloat64 MatrixProcessor { get; }
-        = MatrixProcessorOfFloat64.DefaultProcessor;
+    //public static MatrixProcessorOfFloat64 MatrixProcessor { get; }
+    //    = MatrixProcessorOfFloat64.Instance;
 
     public static XGaFloat64Processor GeometricProcessor { get; }
         = XGaFloat64Processor.Euclidean;
@@ -33,17 +35,17 @@ public static class SymmetricHarmonicsNumericSample
         = LaTeXComposerFloat64.DefaultComposer;
 
 
-    public static void ValidatePhasor(int k, int n, XGaFloat64Vector phasor2, double theta)
+    public static void ValidatePhasor(int k, int n, XGaFloat64Vector phasor2, LinFloat64PolarAngle theta)
     {
         var composer = GeometricProcessor.CreateComposer();
 
         for (var i = 0; i < n; i++)
         {
             var angle = i == 0
-                ? Math.Cos(k * theta)
-                : Math.Cos(k * theta - 2d * Math.PI * i / n);
+                ? theta.AngleTimes(k)
+                : theta.AngleTimes(k).AngleSubtract(LinFloat64Angle.Angle360Radians * i / n);
 
-            composer.SetTerm((ulong)i, angle);
+            composer.SetTerm((ulong)i, angle.RadiansValue);
         }
 
         var phasor1 =
@@ -67,12 +69,12 @@ public static class SymmetricHarmonicsNumericSample
         Console.WriteLine();
     }
 
-    public static Tuple<XGaFloat64Vector, XGaFloat64Vector> GetComponentPhasorsTuple(int i, int k, int n, double theta)
+    public static Tuple<XGaFloat64Vector, XGaFloat64Vector> GetComponentPhasorsTuple(int i, int k, int n, LinFloat64PolarAngle theta)
     {
         Debug.Assert(n >= 2 && i >= 0 && i < n);
 
         var muStorage =
-            GeometricProcessor.CreateTermVector(i, 1d);
+            GeometricProcessor.VectorTerm(i, 1d);
 
         var muSubspace = muStorage.ToSubspace();
 
@@ -80,9 +82,9 @@ public static class SymmetricHarmonicsNumericSample
         //    GeoEuclideanVector<double>.Create(muStorage);
 
         var angle = i == 0
-            ? Math.Cos(k * theta)
-            : Math.Cos(k * theta - 2d * Math.PI * i / n);
-
+            ? theta.AngleTimes(k)
+            : theta.AngleTimes(k).AngleSubtract(LinFloat64Angle.Angle360Radians * i / n);
+        
         var rotor = GeometricProcessor.CreateGivensRotor(
             i, n, angle
         );
@@ -112,7 +114,7 @@ public static class SymmetricHarmonicsNumericSample
         return new Tuple<XGaFloat64Vector, XGaFloat64Vector>(phasor1, phasor2);
     }
 
-    public static Tuple<XGaFloat64Vector, XGaFloat64Vector> GetPhasorsTuple(int k, int n, double theta)
+    public static Tuple<XGaFloat64Vector, XGaFloat64Vector> GetPhasorsTuple(int k, int n, LinFloat64PolarAngle theta)
     {
         var phasorTuples =
             Enumerable
@@ -124,7 +126,7 @@ public static class SymmetricHarmonicsNumericSample
             phasorTuples
                 .Select(t => t.Item1)
                 .Aggregate(
-                    GeometricProcessor.CreateZeroVector(),
+                    GeometricProcessor.VectorZero,
                     (current, vector) => current + vector
                 );
 
@@ -132,7 +134,7 @@ public static class SymmetricHarmonicsNumericSample
             phasorTuples
                 .Select(t => t.Item2)
                 .Aggregate(
-                    GeometricProcessor.CreateZeroVector(),
+                    GeometricProcessor.VectorZero,
                     (current, vector) => current + vector
                 );
 
@@ -162,20 +164,20 @@ public static class SymmetricHarmonicsNumericSample
             Console.WriteLine();
 
             var unitKirchhoffVector =
-                GeometricProcessor.CreateSymmetricUnitVector(n);
+                GeometricProcessor.VectorSymmetricUnit(n);
 
             var theta =
-                RandomGenerator.NextDouble() * 2d * Math.PI;
+                RandomGenerator.GetPolarAngle();
 
             var (_, inputPhasor) = GetPhasorsTuple(1, n, theta);
 
             var e1 =
-                GeometricProcessor.CreateTermVector(0);
+                GeometricProcessor.VectorTerm(0);
 
             var e2 =
-                GeometricProcessor.CreateTermVector(1);
+                GeometricProcessor.VectorTerm(1);
 
-            var (_, mv1) = GetPhasorsTuple(1, n, 0);
+            var (_, mv1) = GetPhasorsTuple(1, n, LinFloat64PolarAngle.Angle0);
 
             var v1 = mv1 / mv1.ENorm();
 
@@ -184,7 +186,7 @@ public static class SymmetricHarmonicsNumericSample
             );
             Console.WriteLine();
 
-            var (_, mv2) = GetPhasorsTuple(1, n, 0.5d * Math.PI);
+            var (_, mv2) = GetPhasorsTuple(1, n, LinFloat64PolarAngle.Angle90);
 
             var v2 = mv2 / mv2.ENorm();
 

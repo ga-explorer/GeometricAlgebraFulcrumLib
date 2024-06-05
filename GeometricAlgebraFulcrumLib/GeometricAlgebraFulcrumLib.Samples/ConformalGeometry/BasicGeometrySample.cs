@@ -1,10 +1,12 @@
 ﻿using System;
-using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.Multivectors.Composers;
-using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.Processors;
-using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.Spaces;
-using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.Spaces.Conformal;
-using GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra;
-using GeometricAlgebraFulcrumLib.Text;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Extended.Generic.Multivectors.Composers;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Extended.Generic.Processors;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Extended.Generic.Spaces;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Extended.Generic.Spaces.Conformal;
+using GeometricAlgebraFulcrumLib.MetaProgramming.Context.Processors;
+using GeometricAlgebraFulcrumLib.MetaProgramming.Utilities.Text;
+
+//using GeometricAlgebraFulcrumLib.Text;
 
 namespace GeometricAlgebraFulcrumLib.Samples.ConformalGeometry;
 
@@ -14,7 +16,7 @@ public static class BasicGeometrySample
     {
         var processor =
             ScalarProcessorOfAngouriMathEntity
-                .DefaultProcessor
+                .Instance
                 .CreateConformalXGaProcessor();
 
         var space = processor.CreateSpace(5);
@@ -26,22 +28,22 @@ public static class BasicGeometrySample
             LaTeXAngouriMathComposer.DefaultComposer;
 
         var pointA = 
-            processor.CreateVector("A_x", "A_y", "A_z");
+            processor.Vector("A_x", "A_y", "A_z");
 
         var pointB = 
-            processor.CreateVector("B_x", "B_y", "B_z");
+            processor.Vector("B_x", "B_y", "B_z");
 
         var pointC = 
-            processor.CreateVector("C_x", "C_y", "C_z");
+            processor.Vector("C_x", "C_y", "C_z");
 
         var pointD = 
-            processor.CreateVector("D_x", "D_y", "D_z");
+            processor.Vector("D_x", "D_y", "D_z");
 
         var normalN = 
-            processor.CreateVector("N_x", "N_y", "N_z");
+            processor.Vector("N_x", "N_y", "N_z");
 
         var normalM = 
-            processor.CreateVector("M_x", "M_y", "M_z");
+            processor.Vector("M_x", "M_y", "M_z");
 
         // Create IPNS conformal point
         var ipnsA = "a" * space.CreateIpnsPoint(pointA);
@@ -61,7 +63,7 @@ public static class BasicGeometrySample
             space.CreateIpnsHyperPlane(normalM, "d_2");
             
         Console.WriteLine($"IPNS point = {textComposer.GetMultivectorText(ipnsA.Vector)}");
-        Console.WriteLine($"point square = {textComposer.GetScalarText(ipnsA.Square().Scalar())}");
+        Console.WriteLine($"point square = {textComposer.GetScalarText(ipnsA.Square())}");
         Console.WriteLine($"point weight = {textComposer.GetScalarText(ipnsA.Weight())}");
         Console.WriteLine($"point distance = {textComposer.GetScalarText(ipnsA.GetDistance(pointB))}");
         Console.WriteLine();

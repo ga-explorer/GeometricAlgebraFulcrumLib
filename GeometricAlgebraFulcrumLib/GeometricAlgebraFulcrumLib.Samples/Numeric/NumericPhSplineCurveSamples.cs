@@ -1,7 +1,7 @@
 ﻿using System;
-using GeometricAlgebraFulcrumLib.Lite.PolynomialAlgebra.BSplineCurveBasis;
-using GeometricAlgebraFulcrumLib.MathBase.Geometry.Differential;
-using TextComposerLib.Text;
+using GeometricAlgebraFulcrumLib.Core.Algebra.Polynomials.BSplineCurveBasis;
+using GeometricAlgebraFulcrumLib.Modeling.Geometry.Differential;
+using GeometricAlgebraFulcrumLib.Utilities.Text.Text;
 
 namespace GeometricAlgebraFulcrumLib.Samples.Numeric;
 

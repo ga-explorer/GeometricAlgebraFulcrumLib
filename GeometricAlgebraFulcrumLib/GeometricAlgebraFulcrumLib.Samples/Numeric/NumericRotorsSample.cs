@@ -1,18 +1,17 @@
 ﻿using System;
-using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Extended.Float64.Frames;
-using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Extended.Float64.LinearMaps.Outermorphisms;
-using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Extended.Float64.LinearMaps.Rotors;
-using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Extended.Float64.Multivectors;
-using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Extended.Float64.Multivectors.Composers;
-using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Extended.Float64.Processors;
-using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Extended.Float64.Subspaces;
-using GeometricAlgebraFulcrumLib.Lite.LinearAlgebra.Basis;
-using GeometricAlgebraFulcrumLib.Lite.ScalarAlgebra;
-using GeometricAlgebraFulcrumLib.MathBase.Text;
-using XGaFloat64KVectorUtils = GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Extended.Float64.Multivectors.XGaFloat64KVectorUtils;
-using XGaFloat64MultivectorUtils = GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Extended.Float64.Multivectors.XGaFloat64MultivectorUtils;
-using XGaFloat64ScalarUtils = GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Extended.Float64.Multivectors.XGaFloat64ScalarUtils;
-using XGaFloat64VectorUtils = GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Extended.Float64.Multivectors.XGaFloat64VectorUtils;
+using System.Linq;
+using GeometricAlgebraFulcrumLib.Algebra.Scalars;
+using GeometricAlgebraFulcrumLib.Core.Algebra.GeometricAlgebra.Extended.Float64.LinearMaps.Outermorphisms;
+using GeometricAlgebraFulcrumLib.Core.Algebra.GeometricAlgebra.Extended.Float64.LinearMaps.Rotors;
+using GeometricAlgebraFulcrumLib.Core.Algebra.GeometricAlgebra.Extended.Float64.Multivectors;
+using GeometricAlgebraFulcrumLib.Core.Algebra.GeometricAlgebra.Extended.Float64.Multivectors.Composers;
+using GeometricAlgebraFulcrumLib.Core.Algebra.GeometricAlgebra.Extended.Float64.Processors;
+using GeometricAlgebraFulcrumLib.Core.Algebra.GeometricAlgebra.Extended.Float64.Subspaces;
+using GeometricAlgebraFulcrumLib.Core.Algebra.LinearAlgebra.Basis;
+using GeometricAlgebraFulcrumLib.Core.Algebra.LinearAlgebra.Float64.Angles;
+using GeometricAlgebraFulcrumLib.Core.Algebra.Scalars.Float64;
+using GeometricAlgebraFulcrumLib.Core.Algebra.GeometricAlgebra.Extended.Float64.Frames;
+using GeometricAlgebraFulcrumLib.Algebra.Utilities.Text;
 
 namespace GeometricAlgebraFulcrumLib.Samples.Numeric;
 
@@ -21,7 +20,7 @@ public static class NumericRotorsSample
     // This is a pre-defined scalar processor for float 64
     // numerical scalars
     public static ScalarProcessorOfFloat64 ScalarProcessor { get; }
-        = ScalarProcessorOfFloat64.DefaultProcessor;
+        = ScalarProcessorOfFloat64.Instance;
 
     public static int VSpaceDimensions 
         => 3;
@@ -41,7 +40,7 @@ public static class NumericRotorsSample
 
     // A random number generator for creating random numerical multivectors
     public static XGaFloat64RandomComposer Random { get; }
-        = XGaFloat64MultivectorUtils.CreateXGaRandomComposer(GeometricProcessor, VSpaceDimensions, 10);
+        = GeometricProcessor.CreateXGaRandomComposer(VSpaceDimensions, 10);
 
 
     /// <summary>
@@ -49,13 +48,13 @@ public static class NumericRotorsSample
     /// </summary>
     public static void Example1()
     {
-        var e1 = GeometricProcessor.CreateTermVector(0);
-        var e2 = GeometricProcessor.CreateTermVector(1);
-        var e3 = GeometricProcessor.CreateTermVector(2);
+        var e1 = GeometricProcessor.VectorTerm(0);
+        var e2 = GeometricProcessor.VectorTerm(1);
+        var e3 = GeometricProcessor.VectorTerm(2);
         var pseudoScalar = e1.Gp(e2).Gp(e3).GetKVectorPart(3);
 
         // Define angle of rotation
-        var angle = Random.GetScalarValue(0, 2 * Math.PI);
+        var angle = Random.RandomGenerator.GetPolarAngle();
 
         // Define 2-blade of rotation
         var rotationBlade =
@@ -65,7 +64,7 @@ public static class NumericRotorsSample
              Random.GetScalarValue() * e1.Gp(e3)).GetBivectorPart();
 
         // The rotation axis is only required here for validation
-        var rotationAxis = rotationBlade.Gp(XGaFloat64KVectorUtils.Inverse(pseudoScalar)).GetVectorPart();
+        var rotationAxis = rotationBlade.Gp(pseudoScalar.Inverse()).GetVectorPart();
 
         // Compute the rotor from the angle and 2-blade of rotation
         var rotor = rotationBlade.CreatePureRotor(angle);
@@ -81,13 +80,13 @@ public static class NumericRotorsSample
         var b = rotor.OmMap(a);
 
         // Compute the projection of a and b on rotation 2-blade
-        var pa = XGaFloat64VectorUtils.ProjectOn(a, rotationBlade.ToSubspace());
-        var pb = XGaFloat64VectorUtils.ProjectOn(b, rotationBlade.ToSubspace());
+        var pa = a.ProjectOn(rotationBlade.ToSubspace());
+        var pb = b.ProjectOn(rotationBlade.ToSubspace());
 
         // Compute angle between projected vectors, the result must equal
         // the original angle of rotation of the rotor
         var diff3 =
-            (XGaFloat64ScalarUtils.ArcCos((pa.ESp(pb) / (pa.ENorm() * pb.ENorm()))) - angle);
+            (pa.ESp(pb) / (pa.ENorm() * pb.ENorm())).CosToPolarAngle() - angle;
 
         // Make sure the projection of a on the rotation 2-blade is rotated
         // correctly into the projection of b on the rotation 2-blade
@@ -103,7 +102,7 @@ public static class NumericRotorsSample
         Console.WriteLine($@"$a_{{\Vert}} = {LaTeXComposer.GetMultivectorText(pa)}$");
         Console.WriteLine($@"$b_{{\Vert}} = {LaTeXComposer.GetMultivectorText(pb)}$");
         Console.WriteLine(
-            $@"$\angle \left( a_{{\Vert}},b_{{\Vert}} \right) - \theta = {LaTeXComposer.GetScalarText(diff3)}$");
+            $@"$\angle \left( a_{{\Vert}},b_{{\Vert}} \right) - \theta = {LaTeXComposer.GetScalarText(diff3.ScalarValue)}$");
         Console.WriteLine($@"$R a_{{\Vert}} R^{{\sim}} - b_{{\Vert}} = {LaTeXComposer.GetMultivectorText(diff4)}$");
         Console.WriteLine();
     }
@@ -113,12 +112,12 @@ public static class NumericRotorsSample
     /// </summary>
     public static void Example2()
     {
-        var e1 = GeometricProcessor.CreateTermVector(0);
-        var e2 = GeometricProcessor.CreateTermVector(1);
-        var e3 = GeometricProcessor.CreateTermVector(2);
+        var e1 = GeometricProcessor.VectorTerm(0);
+        var e2 = GeometricProcessor.VectorTerm(1);
+        var e3 = GeometricProcessor.VectorTerm(2);
         var pseudoScalar = e1.Gp(e2).Gp(e3).GetKVectorPart(3);
 
-        var angle = Random.GetScalarValue(0, 2 * Math.PI);
+        var angle = Random.RandomGenerator.GetPolarAngle();
 
         var rotationAxis =
             Random.GetScalarValue() * e1 +
@@ -126,7 +125,7 @@ public static class NumericRotorsSample
             Random.GetScalarValue() * e3;
 
         var rotationBlade =
-            rotationAxis.Gp(XGaFloat64KVectorUtils.Inverse(pseudoScalar)).GetBivectorPart();
+            rotationAxis.Gp(pseudoScalar.Inverse()).GetBivectorPart();
 
         // Compute the rotor from the angle and 2-blade of rotation
         var rotor = rotationBlade.CreatePureRotor(angle);
@@ -145,13 +144,13 @@ public static class NumericRotorsSample
         var b = rotor.OmMap(a);
 
         // Compute the projection of a and b on rotation 2-blade
-        var pa = XGaFloat64VectorUtils.ProjectOn(a, rotationBlade.ToSubspace());
-        var pb = XGaFloat64VectorUtils.ProjectOn(b, rotationBlade.ToSubspace());
+        var pa = a.ProjectOn(rotationBlade.ToSubspace());
+        var pb = b.ProjectOn(rotationBlade.ToSubspace());
 
         // Compute angle between projected vectors, the result must equal
         // the original angle of rotation of the rotor
         var diff3 =
-            (XGaFloat64ScalarUtils.ArcCos((pa.ESp(pb) / (pa.ENorm() * pb.ENorm()))) - angle);
+            (pa.ESp(pb) / (pa.ENorm() * pb.ENorm())).CosToPolarAngle() - angle;
 
         // Make sure the projection of a on the rotation 2-blade is rotated
         // correctly into the projection of b on the rotation 2-blade
@@ -167,7 +166,7 @@ public static class NumericRotorsSample
         Console.WriteLine($@"$a_{{\Vert}} = {LaTeXComposer.GetMultivectorText(pa)}$");
         Console.WriteLine($@"$b_{{\Vert}} = {LaTeXComposer.GetMultivectorText(pb)}$");
         Console.WriteLine(
-            $@"$\angle \left( a_{{\Vert}},b_{{\Vert}} \right) - \theta = {LaTeXComposer.GetScalarText(diff3)}$");
+            $@"$\angle \left( a_{{\Vert}},b_{{\Vert}} \right) - \theta = {LaTeXComposer.GetScalarText(diff3.ScalarValue)}$");
         Console.WriteLine($@"$R a_{{\Vert}} R^{{\sim}} - b_{{\Vert}} = {LaTeXComposer.GetMultivectorText(diff4)}$");
         Console.WriteLine();
     }
@@ -177,9 +176,9 @@ public static class NumericRotorsSample
     /// </summary>
     public static void Example3()
     {
-        var e1 = GeometricProcessor.CreateTermVector(0);
-        var e2 = GeometricProcessor.CreateTermVector(1);
-        var e3 = GeometricProcessor.CreateTermVector(2);
+        var e1 = GeometricProcessor.VectorTerm(0);
+        var e2 = GeometricProcessor.VectorTerm(1);
+        var e3 = GeometricProcessor.VectorTerm(2);
         var pseudoScalar = e1.Gp(e2).Gp(e3).GetKVectorPart(3);
 
         var v1 = Random.GetVector(true);
@@ -187,7 +186,7 @@ public static class NumericRotorsSample
 
         // Rotation angle
         var angle =
-            XGaFloat64ScalarUtils.ArcCos(v1.ESp(v2)).ScalarValue();
+            v1.ESp(v2).ArcCos().ScalarValue;
 
         // Compute the rotor from the angle and 2-blade of rotation
         var rotor = v1.CreatePureRotor(v2, true);
@@ -196,7 +195,7 @@ public static class NumericRotorsSample
             rotor.Multivector.GetBivectorPart();
 
         var rotationAxis =
-            rotationBlade.Gp(XGaFloat64KVectorUtils.Inverse(pseudoScalar)).GetVectorPart();
+            rotationBlade.Gp(pseudoScalar.Inverse()).GetVectorPart();
 
         // Make sure v1 rotates into v2
         var diff1 = rotor.OmMap(v1) - v2;
@@ -215,13 +214,13 @@ public static class NumericRotorsSample
         var b = rotor.OmMap(a);
 
         // Compute the projection of a and b on rotation 2-blade
-        var pa = XGaFloat64VectorUtils.ProjectOn(a, rotationBlade.ToSubspace());
-        var pb = XGaFloat64VectorUtils.ProjectOn(b, rotationBlade.ToSubspace());
+        var pa = a.ProjectOn(rotationBlade.ToSubspace());
+        var pb = b.ProjectOn(rotationBlade.ToSubspace());
 
         // Compute angle between projected vectors, the result must equal
         // the original angle of rotation of the rotor
         var diff4 =
-            XGaFloat64ScalarUtils.ArcCos((pa.ESp(pb) / (pa.ENorm() * pb.ENorm()))) - angle;
+            (pa.ESp(pb) / (pa.ENorm() * pb.ENorm())).ArcCos() - angle;
 
         // Make sure the projection of a on the rotation 2-blade is rotated
         // correctly into the projection of b on the rotation 2-blade
@@ -238,7 +237,7 @@ public static class NumericRotorsSample
         Console.WriteLine($@"$a_{{\Vert}} = {LaTeXComposer.GetMultivectorText(pa)}$");
         Console.WriteLine($@"$b_{{\Vert}} = {LaTeXComposer.GetMultivectorText(pb)}$");
         Console.WriteLine(
-            $@"$\angle \left( a_{{\Vert}},b_{{\Vert}} \right) - \theta = {LaTeXComposer.GetScalarText(diff4)}$");
+            $@"$\angle \left( a_{{\Vert}},b_{{\Vert}} \right) - \theta = {LaTeXComposer.GetScalarText(diff4.RadiansValue)}$");
         Console.WriteLine($@"$R a_{{\Vert}} R^{{\sim}} - b_{{\Vert}} = {LaTeXComposer.GetMultivectorText(diff5)}$");
         Console.WriteLine();
     }
@@ -249,11 +248,11 @@ public static class NumericRotorsSample
     /// </summary>
     public static void Example4()
     {
-        var e1 = GeometricProcessor.CreateTermVector(0);
-        var e2 = GeometricProcessor.CreateTermVector(1);
-        var e3 = GeometricProcessor.CreateTermVector(2);
+        var e1 = GeometricProcessor.VectorTerm(0);
+        var e2 = GeometricProcessor.VectorTerm(1);
+        var e3 = GeometricProcessor.VectorTerm(2);
         var pseudoScalar = e1.Gp(e2).Gp(e3).GetKVectorPart(3);
-        var pseudoScalarInverse = XGaFloat64KVectorUtils.Inverse(pseudoScalar);
+        var pseudoScalarInverse = pseudoScalar.Inverse();
 
         // Define two random unit vectors
         var v1 = Random.GetVector(true);
@@ -262,7 +261,11 @@ public static class NumericRotorsSample
         Console.WriteLine($@"$v_1 = {LaTeXComposer.GetMultivectorText(v1)}$");
         Console.WriteLine($@"$v_2 = {LaTeXComposer.GetMultivectorText(v2)}$");
 
-        foreach (var angleTheta in 0d.GetLinearRange(Math.PI, 19))
+        var angleThetaValues = 
+            0d.GetLinearRange(Math.PI, 19)
+                .Select(r => r.RadiansToPolarAngle());
+
+        foreach (var angleTheta in angleThetaValues)
         {
             // Define a rotor with angle theta in the plane orthogonal to v2 - v1
             var rotorSBlade = (v2 - v1).Gp(pseudoScalarInverse).GetBivectorPart();
@@ -279,8 +282,8 @@ public static class NumericRotorsSample
             var rotationBladeSubspace =
                 rotationBlade.ToSubspace();
 
-            var u1 = XGaFloat64VectorUtils.ProjectOn(v1, rotationBladeSubspace);
-            var u2 = XGaFloat64VectorUtils.ProjectOn(v2, rotationBladeSubspace);
+            var u1 = v1.ProjectOn(rotationBladeSubspace);
+            var u2 = v2.ProjectOn(rotationBladeSubspace);
 
             // Define the actual rotor taking v1 into v2
             var rotor = u1.CreatePureRotor(u2, false);
@@ -289,7 +292,7 @@ public static class NumericRotorsSample
                 rotationBlade.Gp(pseudoScalarInverse).GetVectorPart();
 
             var rotationAngle =
-                XGaFloat64VectorUtils.GetEuclideanAngle(u1, u2);
+                u1.GetEuclideanAngle(u2);
 
             // Make sure v1 rotates into v2 using the pure rotor at theta = 0
             var diff1 = (rotor0.OmMap(v1) - v2);
@@ -324,11 +327,11 @@ public static class NumericRotorsSample
     /// </summary>
     public static void Example5()
     {
-        var e1 = GeometricProcessor.CreateTermVector(0);
-        var e2 = GeometricProcessor.CreateTermVector(1);
-        var e3 = GeometricProcessor.CreateTermVector(2);
+        var e1 = GeometricProcessor.VectorTerm(0);
+        var e2 = GeometricProcessor.VectorTerm(1);
+        var e3 = GeometricProcessor.VectorTerm(2);
         var pseudoScalar = e1.Op(e2).Op(e3);
-        var pseudoScalarInverse = XGaFloat64KVectorUtils.Inverse(pseudoScalar);
+        var pseudoScalarInverse = pseudoScalar.Inverse();
 
         // Define two random unit vectors
         var v1 = Random.GetVector(true);
@@ -339,7 +342,8 @@ public static class NumericRotorsSample
         Console.WriteLine($@"$v_2 = {LaTeXComposer.GetMultivectorText(v2)}$");
 
         var angleThetaRange = 
-            (-0.5d * Math.PI).GetLinearRange(0.5d * Math.PI, 19);
+            (-0.5d * Math.PI).GetLinearRange(0.5d * Math.PI, 19)
+            .Select(r => r.RadiansToPolarAngle());
 
         foreach (var angleTheta in angleThetaRange)
         {
@@ -356,7 +360,7 @@ public static class NumericRotorsSample
                 
             // Define parametric angle of rotation
             var rotorAngle = 
-                (1 + 2 * (v1v2Dot - 1) / (2 - Math.Pow(Math.Sin(angleTheta), 2) * (v1v2Dot + 1))).ArcCos().ScalarValue();
+                (1 + 2 * (v1v2Dot - 1) / (2 - Math.Pow(angleTheta.Sin(), 2) * (v1v2Dot + 1))).CosToPolarAngle();
                 
             // Define the actual rotor taking v1 into v2
             var rotor = rotorBlade.CreatePureRotor(rotorAngle);
@@ -371,7 +375,7 @@ public static class NumericRotorsSample
             var diff2 = (rotor.OmMap(v1) - v2);
 
             var rotor0A = 
-                v1.CreateParametricPureRotor3D(v2, 0).Multivector;
+                v1.CreateParametricPureRotor3D(v2, LinFloat64PolarAngle.Angle0).Multivector;
 
             var rotorA = 
                 v1.CreateParametricPureRotor3D(v2, angleTheta).Multivector;
@@ -405,10 +409,10 @@ public static class NumericRotorsSample
     public static void Example7()
     {
         var u = 
-            GeometricProcessor.CreateVector(1, 1, 1);
+            GeometricProcessor.Vector(1, 1, 1);
 
         var v = 
-            GeometricProcessor.CreateVector(2, 1, -1);
+            GeometricProcessor.Vector(2, 1, -1);
 
         var scaledRotor = u.CreateScaledPureRotor(v);
 
@@ -460,9 +464,9 @@ public static class NumericRotorsSample
         
     public static void Example10()
     {
-        var e1 = GeometricProcessor.CreateTermVector(0);
-        var e2 = GeometricProcessor.CreateTermVector(1);
-        var e3 = GeometricProcessor.CreateTermVector(2);
+        var e1 = GeometricProcessor.VectorTerm(0);
+        var e2 = GeometricProcessor.VectorTerm(1);
+        var e3 = GeometricProcessor.VectorTerm(2);
 
         var u = Random.GetVector(0, 10).DivideByENorm();
 

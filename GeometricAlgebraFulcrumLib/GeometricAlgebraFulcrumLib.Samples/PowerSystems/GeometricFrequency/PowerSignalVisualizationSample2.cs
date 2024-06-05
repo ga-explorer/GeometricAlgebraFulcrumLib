@@ -1,14 +1,15 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
-using DataStructuresLib.Basic;
+using GeometricAlgebraFulcrumLib.Utilities.Structures.Basic;
 using GeometricAlgebraFulcrumLib.Applications.PowerSystems;
-using GeometricAlgebraFulcrumLib.Lite.Geometry.Differential.Functions.Interpolators;
-using GeometricAlgebraFulcrumLib.Lite.Geometry.Parametric;
-using GeometricAlgebraFulcrumLib.Lite.ScalarAlgebra;
-using GeometricAlgebraFulcrumLib.Lite.SignalAlgebra.Composers;
-using GeometricAlgebraFulcrumLib.MathBase;
+using GeometricAlgebraFulcrumLib.Core.Modeling.Geometry.Differential.Functions.Interpolators;
+using GeometricAlgebraFulcrumLib.Core.Modeling.Geometry.Parametric;
+using GeometricAlgebraFulcrumLib.Core.Algebra.LinearAlgebra.Float64.Angles;
+using GeometricAlgebraFulcrumLib.Core.Algebra.Scalars.Float64;
+using GeometricAlgebraFulcrumLib.Core.Algebra.Signals.Composers;
 using OfficeOpenXml;
+using GeometricAlgebraFulcrumLib.Algebra.Utilities;
 
 namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GeometricFrequency;
 

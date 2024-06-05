@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Collections.Immutable;
 using System.Linq;
-using GeometricAlgebraFulcrumLib.Lite.Geometry.Differential.Functions;
-using GeometricAlgebraFulcrumLib.Lite.Geometry.Differential.Functions.Polynomials;
-using GeometricAlgebraFulcrumLib.Lite.LinearAlgebra.Vectors.SpaceND;
-using GeometricAlgebraFulcrumLib.Lite.ScalarAlgebra;
-using GeometricAlgebraFulcrumLib.Lite.SignalAlgebra;
-using GeometricAlgebraFulcrumLib.Lite.SignalAlgebra.Composers;
-using GeometricAlgebraFulcrumLib.MathBase.SignalAlgebra;
+using GeometricAlgebraFulcrumLib.Core.Modeling.Geometry.Differential.Functions;
+using GeometricAlgebraFulcrumLib.Core.Modeling.Geometry.Differential.Functions.Polynomials;
+using GeometricAlgebraFulcrumLib.Core.Algebra.LinearAlgebra.Float64.Vectors.SpaceND;
+using GeometricAlgebraFulcrumLib.Core.Algebra.Scalars.Float64;
+using GeometricAlgebraFulcrumLib.Core.Algebra.Signals;
+using GeometricAlgebraFulcrumLib.Core.Algebra.Signals.Composers;
+using GeometricAlgebraFulcrumLib.Modeling.Geometry.Differential;
 using SixLabors.ImageSharp;
 
 namespace GeometricAlgebraFulcrumLib.Samples.Numeric;
@@ -148,7 +148,7 @@ public static class ChebyshevSamples
 
         var p1 = 
             DfChebyshevPolynomial.Create(
-                new Float64Vector(
+                new LinFloat64Vector(
                     new []{1, -0.7, 0.3, -0.1}
                 ),
                 -1, 1
@@ -156,7 +156,7 @@ public static class ChebyshevSamples
 
         var p2 = 
             DfChebyshevPolynomial.Create(
-                new Float64Vector(
+                new LinFloat64Vector(
                     new []{-1.5, -0.75, -0.2, 1.1}
                 ),
                 -1, 1

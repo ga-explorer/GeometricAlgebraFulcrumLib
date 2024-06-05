@@ -1,12 +1,12 @@
 ﻿using System;
-using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Extended.Float64.LinearMaps;
-using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Extended.Float64.LinearMaps.Rotors;
-using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Extended.Float64.Multivectors;
-using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Extended.Float64.Multivectors.Composers;
-using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Extended.Float64.Processors;
-using GeometricAlgebraFulcrumLib.Lite.LinearAlgebra.LinearMaps.SpaceND;
-using GeometricAlgebraFulcrumLib.Lite.LinearAlgebra.Matrices;
-using GeometricAlgebraFulcrumLib.Lite.LinearAlgebra.Vectors.SpaceND;
+using GeometricAlgebraFulcrumLib.Core.Algebra.GeometricAlgebra.Extended.Float64.LinearMaps;
+using GeometricAlgebraFulcrumLib.Core.Algebra.GeometricAlgebra.Extended.Float64.LinearMaps.Rotors;
+using GeometricAlgebraFulcrumLib.Core.Algebra.GeometricAlgebra.Extended.Float64.Multivectors;
+using GeometricAlgebraFulcrumLib.Core.Algebra.GeometricAlgebra.Extended.Float64.Multivectors.Composers;
+using GeometricAlgebraFulcrumLib.Core.Algebra.GeometricAlgebra.Extended.Float64.Processors;
+using GeometricAlgebraFulcrumLib.Core.Algebra.LinearAlgebra.Float64.LinearMaps.SpaceND;
+using GeometricAlgebraFulcrumLib.Core.Algebra.LinearAlgebra.Float64.Matrices;
+using GeometricAlgebraFulcrumLib.Core.Algebra.LinearAlgebra.Float64.Vectors.SpaceND;
 
 namespace GeometricAlgebraFulcrumLib.Samples.EuclideanGeometry;
 
@@ -19,9 +19,9 @@ public static class Euclidean3DNumericSample
 
         var processor =
             XGaFloat64Processor.Euclidean;
-        //ScalarProcessorFloat64.DefaultProcessor.CreateXGafGeometricAlgebraEuclideanProcessor(n);
+        //ScalarProcessorFloat64.Instance.CreateXGafGeometricAlgebraEuclideanProcessor(n);
 
-        var v = processor.CreateVector(
+        var v = processor.Vector(
             randGen.NextDouble(), 
             randGen.NextDouble(),
             randGen.NextDouble()
@@ -29,7 +29,7 @@ public static class Euclidean3DNumericSample
 
         v = v.DivideByENorm();
 
-        var u = processor.CreateVector(
+        var u = processor.Vector(
             randGen.NextDouble(), 
             randGen.NextDouble(),
             randGen.NextDouble()
@@ -51,25 +51,25 @@ public static class Euclidean3DNumericSample
         var rotorMatrix1 =
             n.CreateLinUnilinearMap(
                 (int index) =>
-                    rotorMv.EGp(processor.CreateTermVector(index)).GetVectorPart().ToLinVector()
+                    rotorMv.EGp(processor.VectorTerm(index)).GetVectorPart().ToLinVector()
             ).ToArray(n, n);
 
         var rotorMatrix2 =
             n.CreateLinUnilinearMap(
                 (int index) =>
-                    processor.CreateTermVector(index).EGp(rotorMvReverse).GetVectorPart().ToLinVector()
+                    processor.VectorTerm(index).EGp(rotorMvReverse).GetVectorPart().ToLinVector()
             ).ToArray(n, n);
 
         var rotorMatrix21 = 
-            rotorMatrix2.Times(rotorMatrix1);
+            rotorMatrix2.MatrixProduct(rotorMatrix1);
 
         var vMatrix = v.VectorToColumnArray2D(n);
         var uMatrix = u.VectorToColumnArray2D(n);
 
         var u1 = rotor.OmMap(v);
-        var u2 = rotorMatrix.Times(vMatrix);
-        var u3 = rotorMatrix21.Times(vMatrix);
-        var u4 = rotorMatrix2.Times(rotorMatrix1, vMatrix);
+        var u2 = rotorMatrix.MatrixProduct(vMatrix);
+        var u3 = rotorMatrix21.MatrixProduct(vMatrix);
+        var u4 = rotorMatrix2.MatrixProduct(rotorMatrix1, vMatrix);
 
         Console.WriteLine("Rotor Matrix:");
         Console.WriteLine(rotorMatrix.ToString());

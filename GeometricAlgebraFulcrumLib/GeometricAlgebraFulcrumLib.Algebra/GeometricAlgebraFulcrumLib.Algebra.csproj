@@ -1,0 +1,41 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AngouriMath" Version="1.3.0" />
+    <PackageReference Include="Dew.Lab.Studio" Version="6.2.3" />
+    <PackageReference Include="Dew.Lab.Studio.Core" Version="6.2.3" />
+    <PackageReference Include="Dew.Math" Version="6.2.3" />
+    <PackageReference Include="Dew.Math.Core" Version="6.2.3" />
+    <PackageReference Include="Dew.Signal" Version="6.2.3" />
+    <PackageReference Include="Dew.Signal.Core" Version="6.2.3" />
+    <PackageReference Include="Dew.Stats" Version="6.2.3" />
+    <PackageReference Include="Dew.Stats.Core" Version="6.2.3" />
+    <PackageReference Include="EPPlus" Version="7.1.3" />
+    <PackageReference Include="MathNet.Numerics" Version="5.0.0" />
+    <PackageReference Include="NumpyDotNet" Version="0.9.86.2" />
+    <PackageReference Include="OxyPlot.Core" Version="2.1.2" />
+    <PackageReference Include="OxyPlot.Core.Drawing" Version="2.1.0" />
+    <PackageReference Include="OxyPlot.SkiaSharp" Version="2.1.2" />
+    <PackageReference Include="PeterO.Numbers" Version="1.8.2" />
+    <PackageReference Include="SixLabors.ImageSharp" Version="3.1.4" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\GeometricAlgebraFulcrumLib.Core\GeometricAlgebraFulcrumLib.Core.csproj" />
+    <ProjectReference Include="..\GeometricAlgebraFulcrumLib.Utilities.Structures\GeometricAlgebraFulcrumLib.Utilities.Structures.csproj" />
+    <ProjectReference Include="..\GeometricAlgebraFulcrumLib.Utilities.Text\GeometricAlgebraFulcrumLib.Utilities.Text.csproj" />
+    <ProjectReference Include="..\GeometricAlgebraFulcrumLib.Utilities.Web\GeometricAlgebraFulcrumLib.Utilities.Web.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Scalars\Symbolic\" />
+  </ItemGroup>
+
+</Project>

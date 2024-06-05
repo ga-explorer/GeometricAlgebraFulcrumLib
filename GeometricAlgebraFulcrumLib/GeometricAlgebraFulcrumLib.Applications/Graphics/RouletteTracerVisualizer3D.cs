@@ -1,27 +1,27 @@
 ﻿using System.Collections.Immutable;
-using DataStructuresLib.Files;
-using GeometricAlgebraFulcrumLib.Lite.Geometry.Parametric.Space3D.Curves;
-using GeometricAlgebraFulcrumLib.Lite.Geometry.Parametric.Space3D.Curves.Adaptive;
-using GeometricAlgebraFulcrumLib.Lite.Geometry.Parametric.Space3D.Curves.Roulettes;
-using GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.BabylonJs;
-using GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.BabylonJs.Constants;
-using GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.BabylonJs.GUI;
-using GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.Visuals.Space3D.Animations;
-using GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.Visuals.Space3D.Basic;
-using GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.Visuals.Space3D.Styles;
-using GeometricAlgebraFulcrumLib.Lite.LinearAlgebra;
-using GeometricAlgebraFulcrumLib.Lite.LinearAlgebra.Vectors.Space3D;
-using GeometricAlgebraFulcrumLib.Lite.Maps.Space3D;
-using GeometricAlgebraFulcrumLib.Lite.ScalarAlgebra;
+using GeometricAlgebraFulcrumLib.Utilities.Structures.Files;
+using GeometricAlgebraFulcrumLib.Core.Modeling.Geometry.Parametric.Space3D.Curves;
+using GeometricAlgebraFulcrumLib.Core.Modeling.Geometry.Parametric.Space3D.Curves.Adaptive;
+using GeometricAlgebraFulcrumLib.Core.Modeling.Geometry.Parametric.Space3D.Curves.Roulettes;
+using GeometricAlgebraFulcrumLib.Core.Modeling.Graphics.Rendering.BabylonJs;
+using GeometricAlgebraFulcrumLib.Core.Modeling.Graphics.Rendering.BabylonJs.Constants;
+using GeometricAlgebraFulcrumLib.Core.Modeling.Graphics.Rendering.BabylonJs.GUI;
+using GeometricAlgebraFulcrumLib.Core.Modeling.Graphics.Rendering.Visuals.Space3D.Animations;
+using GeometricAlgebraFulcrumLib.Core.Modeling.Graphics.Rendering.Visuals.Space3D.Basic;
+using GeometricAlgebraFulcrumLib.Core.Modeling.Graphics.Rendering.Visuals.Space3D.Styles;
+using GeometricAlgebraFulcrumLib.Core.Algebra.LinearAlgebra.Float64.Angles;
+using GeometricAlgebraFulcrumLib.Core.Algebra.LinearAlgebra.Float64.Vectors.Space3D;
+using GeometricAlgebraFulcrumLib.Core.Algebra.Scalars.Float64;
+using GeometricAlgebraFulcrumLib.Core.Modeling.Geometry.Maps.Space3D;
 using SixLabors.ImageSharp;
-using WebComposerLib.Colors;
+using GeometricAlgebraFulcrumLib.Utilities.Web.Colors;
 
 namespace GeometricAlgebraFulcrumLib.Applications.Graphics;
 
 public class RouletteTracerVisualizer3D :
     GrBabylonJsSnapshotComposer3D
 {
-    public sealed record GeneratorPoint(Float64Vector3D Point, Color PointColor);
+    public sealed record GeneratorPoint(LinFloat64Vector3D Point, Color PointColor);
 
     
     public IArcLengthCurve3D FixedCurve { get; }
@@ -66,7 +66,7 @@ public class RouletteTracerVisualizer3D :
             _rouletteCurveList.Select(curve =>
                 curve.CreateAdaptiveCurve3D(
                     Float64ScalarRange.Create(0, rouletteDistance),
-                    new AdaptiveCurveSamplingOptions3D(3.DegreesToAngle(), 3, 16)
+                    new AdaptiveCurveSamplingOptions3D(3.DegreesToDirectedAngle(), 3, 16)
                 )
             )
         );
@@ -173,10 +173,10 @@ public class RouletteTracerVisualizer3D :
             FixedCurve.ParameterRange;
 
         var tValues =
-            tMin.Value.GetLinearRange(tMax, 501, false).ToImmutableArray();
+            tMin.ScalarValue.GetLinearRange(tMax, 501, false).ToImmutableArray();
 
         var tValuesFrames = 
-            tMin.Value.GetLinearRange(tMax, FixedCurveFrameCount, false).ToImmutableArray();
+            tMin.ScalarValue.GetLinearRange(tMax, FixedCurveFrameCount, false).ToImmutableArray();
         
         MainSceneComposer.AddParametricCurve(
             "fixedCurve",
@@ -212,10 +212,10 @@ public class RouletteTracerVisualizer3D :
             MovingCurve.ParameterRange;
 
         var tValues =
-            tMin.Value.GetLinearRange(tMax, 501, false).ToImmutableArray();
+            tMin.ScalarValue.GetLinearRange(tMax, 501, false).ToImmutableArray();
         
         var tValuesFrames = 
-            tMin.Value.GetLinearRange(tMax, MovingCurveFrameCount, false).ToImmutableArray();
+            tMin.ScalarValue.GetLinearRange(tMax, MovingCurveFrameCount, false).ToImmutableArray();
 
         var t = RouletteDistance * index / (FrameCount - 1);
         var rouletteMap = GetRouletteMap(t);

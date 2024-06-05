@@ -1,18 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Restricted.Float64.Processors;
-using GeometricAlgebraFulcrumLib.Lite.Geometry.Differential.Functions;
-using GeometricAlgebraFulcrumLib.Lite.Geometry.Differential.Functions.Interpolators;
-using GeometricAlgebraFulcrumLib.Lite.ScalarAlgebra;
-using GeometricAlgebraFulcrumLib.Lite.SignalAlgebra;
-using GeometricAlgebraFulcrumLib.MathBase;
-using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Processors;
-using GeometricAlgebraFulcrumLib.MathBase.SignalAlgebra;
-using GeometricAlgebraFulcrumLib.MathBase.Text;
-using GeometricAlgebraFulcrumLib.Processors;
-using GeometricAlgebraFulcrumLib.Processors.SignalAlgebra;
+using GeometricAlgebraFulcrumLib.Core.Algebra.GeometricAlgebra.Restricted.Float64.Processors;
+using GeometricAlgebraFulcrumLib.Core.Modeling.Geometry.Differential.Functions;
+using GeometricAlgebraFulcrumLib.Core.Modeling.Geometry.Differential.Functions.Interpolators;
+using GeometricAlgebraFulcrumLib.Core.Algebra.Signals;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Generic.Processors;
+using GeometricAlgebraFulcrumLib.Algebra.Scalars;
+using GeometricAlgebraFulcrumLib.Algebra.Signals;
 using OfficeOpenXml;
+using GeometricAlgebraFulcrumLib.Algebra.Utilities;
+using GeometricAlgebraFulcrumLib.Algebra.Utilities.Text;
 
 namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.SystemIdentification;
 
@@ -24,7 +22,7 @@ public static class Model3Samples
     private static string FileName = "";
     
     public static ScalarProcessorOfFloat64 ScalarProcessor { get; }
-        = ScalarProcessorOfFloat64.DefaultProcessor;
+        = ScalarProcessorOfFloat64.Instance;
 
     public static int VSpaceDimensions
         => 5;
@@ -52,7 +50,7 @@ public static class Model3Samples
 
 
     public static ScalarProcessorOfFloat64Signal ScalarSignalProcessor { get; }
-        = ProcessorFactory.CreateFloat64ScalarSignalProcessor(
+        = Float64SignalComposerUtils.CreateFloat64ScalarSignalProcessor(
             SamplingRate,
             SignalSamplesCount
         );

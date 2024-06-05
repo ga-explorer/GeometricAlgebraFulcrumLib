@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Basis;
-using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Restricted.Float64.Processors;
+using GeometricAlgebraFulcrumLib.Core.Algebra.GeometricAlgebra.Basis;
+using GeometricAlgebraFulcrumLib.Core.Algebra.GeometricAlgebra.Restricted.Float64.Processors;
 
 namespace GeometricAlgebraFulcrumLib.Benchmarks.Generations;
 

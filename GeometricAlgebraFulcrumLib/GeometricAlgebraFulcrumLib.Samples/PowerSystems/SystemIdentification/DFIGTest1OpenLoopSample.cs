@@ -2,26 +2,26 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using DataStructuresLib.Basic;
-using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Restricted.Float64.Processors;
-using GeometricAlgebraFulcrumLib.Lite.Geometry.Differential.Functions;
-using GeometricAlgebraFulcrumLib.Lite.Geometry.Differential.Functions.Interpolators;
-using GeometricAlgebraFulcrumLib.Lite.Geometry.Differential.Functions.Phasors;
-using GeometricAlgebraFulcrumLib.Lite.Geometry.Parametric;
-using GeometricAlgebraFulcrumLib.Lite.LinearAlgebra;
-using GeometricAlgebraFulcrumLib.Lite.ScalarAlgebra;
-using GeometricAlgebraFulcrumLib.Lite.SignalAlgebra;
-using GeometricAlgebraFulcrumLib.Lite.SignalAlgebra.Composers;
-using GeometricAlgebraFulcrumLib.MathBase;
-using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Processors;
-using GeometricAlgebraFulcrumLib.MathBase.SignalAlgebra;
-using GeometricAlgebraFulcrumLib.MathBase.Text;
-using GeometricAlgebraFulcrumLib.Processors;
-using GeometricAlgebraFulcrumLib.Processors.SignalAlgebra;
+using GeometricAlgebraFulcrumLib.Utilities.Structures.Basic;
+using GeometricAlgebraFulcrumLib.Core.Algebra.GeometricAlgebra.Restricted.Float64.Processors;
+using GeometricAlgebraFulcrumLib.Core.Modeling.Geometry.Differential.Functions;
+using GeometricAlgebraFulcrumLib.Core.Modeling.Geometry.Differential.Functions.Interpolators;
+using GeometricAlgebraFulcrumLib.Core.Modeling.Geometry.Differential.Functions.Phasors;
+using GeometricAlgebraFulcrumLib.Core.Modeling.Geometry.Parametric;
+using GeometricAlgebraFulcrumLib.Core.Algebra.LinearAlgebra.Float64.Angles;
+using GeometricAlgebraFulcrumLib.Core.Algebra.Scalars.Float64;
+using GeometricAlgebraFulcrumLib.Core.Algebra.Signals;
+using GeometricAlgebraFulcrumLib.Core.Algebra.Signals.Composers;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Generic.Processors;
+using GeometricAlgebraFulcrumLib.Algebra.Scalars;
+using GeometricAlgebraFulcrumLib.Algebra.Signals;
 using OfficeOpenXml;
 using OxyPlot;
 using OxyPlot.Series;
-using TextComposerLib.Text;
+using GeometricAlgebraFulcrumLib.Utilities.Text.Text;
+using Float64SignalComposerUtils = GeometricAlgebraFulcrumLib.Algebra.Signals.Float64SignalComposerUtils;
+using GeometricAlgebraFulcrumLib.Algebra.Utilities;
+using GeometricAlgebraFulcrumLib.Algebra.Utilities.Text;
 
 namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.SystemIdentification;
 
@@ -32,7 +32,7 @@ public static class DFIGTest1OpenLoopSample
 
     // This is a pre-defined scalar processor for numeric scalars
     public static ScalarProcessorOfFloat64 ScalarProcessor { get; }
-        = ScalarProcessorOfFloat64.DefaultProcessor;
+        = ScalarProcessorOfFloat64.Instance;
 
     public static uint VSpaceDimensions
         => 5;
@@ -69,7 +69,7 @@ public static class DFIGTest1OpenLoopSample
     // This is a pre-defined scalar processor for tuples of numeric scalars
 
     public static ScalarProcessorOfFloat64Signal ScalarSignalProcessor { get; }
-        = ProcessorFactory.CreateFloat64ScalarSignalProcessor(
+        = Float64SignalComposerUtils.CreateFloat64ScalarSignalProcessor(
             SamplingRate, 
             SignalSamplesCount
         );
@@ -204,16 +204,16 @@ public static class DFIGTest1OpenLoopSample
     //    var i2Dt4 = tData.Select(i2Func.GetDerivative4Value).CreateSignal(SamplingRate).FilterSpikes(filterEpsilon);
 
     //    var z = 
-    //        GeometricSignalProcessor.CreateVector(i1, i2, i1Dt1, i2Dt1, v1 - v2);
+    //        GeometricSignalProcessor.Vector(i1, i2, i1Dt1, i2Dt1, v1 - v2);
         
     //    var zDt1 = 
-    //        GeometricSignalProcessor.CreateVector(i1Dt1, i2Dt1, i1Dt2, i2Dt2, v1Dt1 - v2Dt1);
+    //        GeometricSignalProcessor.Vector(i1Dt1, i2Dt1, i1Dt2, i2Dt2, v1Dt1 - v2Dt1);
         
     //    var zDt2 = 
-    //        GeometricSignalProcessor.CreateVector(i1Dt2, i2Dt2, i1Dt3, i2Dt3, v1Dt2 - v2Dt2);
+    //        GeometricSignalProcessor.Vector(i1Dt2, i2Dt2, i1Dt3, i2Dt3, v1Dt2 - v2Dt2);
 
     //    var zDt3 = 
-    //        GeometricSignalProcessor.CreateVector(i1Dt3, i2Dt3, i1Dt4, i2Dt4, v1Dt3 - v2Dt3);
+    //        GeometricSignalProcessor.Vector(i1Dt3, i2Dt3, i1Dt4, i2Dt4, v1Dt3 - v2Dt3);
 
     //    var zOp = 
     //        z.Op(zDt1).Op(zDt2).Op(zDt3);
@@ -935,9 +935,9 @@ public static class DFIGTest1OpenLoopSample
         const double tMax = cycleCount / freqHz;
         const double samplingRate = (tMax - tMin) / (sampleCount - 1);
 
-        var phaseA = DfCosPhasor.Create(1, freq, 0);
-        var phaseB = DfCosPhasor.Create(1, freq, 120.DegreesToAngle());
-        var phaseC = DfCosPhasor.Create(1, freq, 240.DegreesToAngle());
+        var phaseA = DfCosPhasor.Create(1, freq, 0.DegreesToDirectedAngle());
+        var phaseB = DfCosPhasor.Create(1, freq, 120.DegreesToDirectedAngle());
+        var phaseC = DfCosPhasor.Create(1, freq, 240.DegreesToDirectedAngle());
 
         var abcFunc = new Triplet<DifferentialFunction>(phaseA, phaseB, phaseC);
 

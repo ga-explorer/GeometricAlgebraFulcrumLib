@@ -1,9 +1,9 @@
-﻿using GeometricAlgebraFulcrumLib.Lite.Graphics.Meshes.PathsMesh;
-using GeometricAlgebraFulcrumLib.Lite.Graphics.Meshes.PathsMesh.Space3D;
-using GeometricAlgebraFulcrumLib.Lite.Graphics.Meshes.PointsPath.Space3D;
-using GeometricAlgebraFulcrumLib.Lite.Graphics.Primitives.Lines;
-using GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.Xeogl;
-using GeometricAlgebraFulcrumLib.Lite.LinearAlgebra.Vectors.Space3D;
+﻿using GeometricAlgebraFulcrumLib.Core.Modeling.Graphics.Meshes.PathsMesh;
+using GeometricAlgebraFulcrumLib.Core.Modeling.Graphics.Meshes.PathsMesh.Space3D;
+using GeometricAlgebraFulcrumLib.Core.Modeling.Graphics.Meshes.PointsPath.Space3D;
+using GeometricAlgebraFulcrumLib.Core.Modeling.Graphics.Primitives.Lines;
+using GeometricAlgebraFulcrumLib.Core.Modeling.Graphics.Rendering.Xeogl;
+using GeometricAlgebraFulcrumLib.Core.Algebra.LinearAlgebra.Float64.Vectors.Space3D;
 
 namespace GeometricAlgebraFulcrumLib.Samples.Graphics.Xeogl;
 
@@ -13,28 +13,28 @@ public static class Sample2
     {
         var path1 = new ConstantPointsPath3D(
             4, 
-            Float64Vector3D.Create(0, 0, -2)
+            LinFloat64Vector3D.Create(0, 0, -2)
         );
 
         var path2 = new ArrayPointsPath3D(
-            Float64Vector3D.Create(-2, -2, -2),
-            Float64Vector3D.Create(2, -2, -2),
-            Float64Vector3D.Create(2, 2, -2),
-            Float64Vector3D.Create(-2, 2, -2)
+            LinFloat64Vector3D.Create(-2, -2, -2),
+            LinFloat64Vector3D.Create(2, -2, -2),
+            LinFloat64Vector3D.Create(2, 2, -2),
+            LinFloat64Vector3D.Create(-2, 2, -2)
         );
 
         var path3 = new ArrayPointsPath3D(
-            Float64Vector3D.Create(-2, -2, 2),
-            Float64Vector3D.Create(2, -2, 2),
-            Float64Vector3D.Create(2, 2, 2),
-            Float64Vector3D.Create(-2, 2, 2)
+            LinFloat64Vector3D.Create(-2, -2, 2),
+            LinFloat64Vector3D.Create(2, -2, 2),
+            LinFloat64Vector3D.Create(2, 2, 2),
+            LinFloat64Vector3D.Create(-2, 2, 2)
         );
 
         var path4 = new ArrayPointsPath3D(
-            Float64Vector3D.Create(-1, -1, 2),
-            Float64Vector3D.Create(1, -1, 2),
-            Float64Vector3D.Create(1, 1, 2),
-            Float64Vector3D.Create(-1, 1, 2)
+            LinFloat64Vector3D.Create(-1, -1, 2),
+            LinFloat64Vector3D.Create(1, -1, 2),
+            LinFloat64Vector3D.Create(1, 1, 2),
+            LinFloat64Vector3D.Create(-1, 1, 2)
         );
 
         var pathMesh = new ArrayPathsMesh3D(

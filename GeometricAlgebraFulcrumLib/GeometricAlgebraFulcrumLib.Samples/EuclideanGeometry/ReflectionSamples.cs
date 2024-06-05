@@ -1,15 +1,15 @@
 ﻿using System;
 using System.Diagnostics;
-using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Restricted.Float64.Multivectors;
-using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Restricted.Float64.Processors;
-using GeometricAlgebraFulcrumLib.Lite.LinearAlgebra;
-using GeometricAlgebraFulcrumLib.Lite.LinearAlgebra.LinearMaps.SpaceND;
-using GeometricAlgebraFulcrumLib.Lite.LinearAlgebra.LinearMaps.SpaceND.Reflection;
-using GeometricAlgebraFulcrumLib.Lite.LinearAlgebra.Matrices;
-using GeometricAlgebraFulcrumLib.Lite.LinearAlgebra.Vectors.SpaceND;
-using GeometricAlgebraFulcrumLib.Lite.ScalarAlgebra;
-using GeometricAlgebraFulcrumLib.MathBase.Text;
-using GeometricAlgebraFulcrumLib.Processors.MatrixAlgebra;
+using GeometricAlgebraFulcrumLib.Core.Algebra.GeometricAlgebra.Restricted.Float64.Multivectors;
+using GeometricAlgebraFulcrumLib.Core.Algebra.GeometricAlgebra.Restricted.Float64.Processors;
+using GeometricAlgebraFulcrumLib.Core.Algebra.LinearAlgebra.Float64;
+using GeometricAlgebraFulcrumLib.Core.Algebra.LinearAlgebra.Float64.LinearMaps.SpaceND;
+using GeometricAlgebraFulcrumLib.Core.Algebra.LinearAlgebra.Float64.LinearMaps.SpaceND.Reflection;
+using GeometricAlgebraFulcrumLib.Core.Algebra.LinearAlgebra.Float64.Matrices;
+using GeometricAlgebraFulcrumLib.Core.Algebra.LinearAlgebra.Float64.Vectors.SpaceND;
+using GeometricAlgebraFulcrumLib.Core.Algebra.Scalars.Float64;
+using GeometricAlgebraFulcrumLib.Algebra.Utilities.Text;
+//using GeometricAlgebraFulcrumLib.Processors.MatrixAlgebra;
 
 namespace GeometricAlgebraFulcrumLib.Samples.EuclideanGeometry;
 
@@ -17,11 +17,11 @@ public static class ReflectionSamples
 {
     public static void ReflectionMatrixToHyperPlaneReflectionsSample(int n, int reflectionCount)
     {
-        var scalarProcessor =
-            ScalarProcessorOfFloat64.DefaultProcessor;
+        //var scalarProcessor =
+        //    ScalarProcessorOfFloat64.Instance;
 
-        var matrixProcessor =
-            MatrixProcessorOfFloat64.DefaultProcessor;
+        //var matrixProcessor =
+        //    MatrixProcessorOfFloat64.Instance;
 
         var geometricProcessor =
             RGaFloat64Processor.Euclidean;
@@ -219,7 +219,7 @@ public static class ReflectionSamples
                 // reflection sequence computations
                 for (var i = 0; i < 100; i++)
                 {
-                    var x = random.GetFloat64Tuple(n).CreateLinVector();
+                    var x = random.GetLinVector(n).CreateLinVector();
 
                     var y1 = reflectionSequence.MapVector(x);
                     var y2 = (reflectionMatrix * MathNetNumericsUtils.ToMathNetVector(x, n)).CreateLinVector();
@@ -265,7 +265,7 @@ public static class ReflectionSamples
             // reflection sequence computations
             for (var i = 0; i < 100; i++)
             {
-                var x = random.GetFloat64Tuple(n).CreateLinVector();
+                var x = random.GetLinVector(n).CreateLinVector();
 
                 var y1 = reflectionSequence.MapVector(x);
                 var y2 = (reflectionMatrix * MathNetNumericsUtils.ToMathNetVector(x, n)).CreateLinVector();

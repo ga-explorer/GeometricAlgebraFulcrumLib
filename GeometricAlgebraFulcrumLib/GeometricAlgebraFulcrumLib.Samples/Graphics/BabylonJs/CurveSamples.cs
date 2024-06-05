@@ -3,21 +3,21 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.IO;
 using System.Linq;
-using DataStructuresLib.Extensions;
+using GeometricAlgebraFulcrumLib.Utilities.Structures.Extensions;
 using GeometricAlgebraFulcrumLib.Applications.Graphics;
-using GeometricAlgebraFulcrumLib.Lite.Geometry.Parametric.Space3D.Curves;
-using GeometricAlgebraFulcrumLib.Lite.Geometry.Parametric.Space3D.Curves.Circles;
-using GeometricAlgebraFulcrumLib.Lite.Geometry.Parametric.Space3D.Curves.Lines;
-using GeometricAlgebraFulcrumLib.Lite.Geometry.Parametric.Space3D.Curves.Roulettes;
-using GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.BabylonJs;
-using GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.BabylonJs.Cameras;
-using GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.BabylonJs.Constants;
-using GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.Visuals.Space3D.Basic;
-using GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.Visuals.Space3D.Grids;
-using GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.Visuals.Space3D.Styles;
-using GeometricAlgebraFulcrumLib.Lite.LinearAlgebra;
-using GeometricAlgebraFulcrumLib.Lite.LinearAlgebra.Vectors.Space3D;
-using GeometricAlgebraFulcrumLib.Lite.ScalarAlgebra;
+using GeometricAlgebraFulcrumLib.Core.Modeling.Geometry.Parametric.Space3D.Curves;
+using GeometricAlgebraFulcrumLib.Core.Modeling.Geometry.Parametric.Space3D.Curves.Circles;
+using GeometricAlgebraFulcrumLib.Core.Modeling.Geometry.Parametric.Space3D.Curves.Lines;
+using GeometricAlgebraFulcrumLib.Core.Modeling.Geometry.Parametric.Space3D.Curves.Roulettes;
+using GeometricAlgebraFulcrumLib.Core.Modeling.Graphics.Rendering.BabylonJs;
+using GeometricAlgebraFulcrumLib.Core.Modeling.Graphics.Rendering.BabylonJs.Cameras;
+using GeometricAlgebraFulcrumLib.Core.Modeling.Graphics.Rendering.BabylonJs.Constants;
+using GeometricAlgebraFulcrumLib.Core.Modeling.Graphics.Rendering.Visuals.Space3D.Basic;
+using GeometricAlgebraFulcrumLib.Core.Modeling.Graphics.Rendering.Visuals.Space3D.Grids;
+using GeometricAlgebraFulcrumLib.Core.Modeling.Graphics.Rendering.Visuals.Space3D.Styles;
+using GeometricAlgebraFulcrumLib.Core.Algebra.LinearAlgebra.Float64.Angles;
+using GeometricAlgebraFulcrumLib.Core.Algebra.LinearAlgebra.Float64.Vectors.Space3D;
+using GeometricAlgebraFulcrumLib.Core.Algebra.Scalars.Float64;
 using Color = SixLabors.ImageSharp.Color;
 
 namespace GeometricAlgebraFulcrumLib.Samples.Graphics.BabylonJs;
@@ -116,7 +116,7 @@ public static class CurveSamples
                             .AddSimpleMaterial("axisFrameZMaterial", Color.Blue)
                             .CreateTubeCurveStyle(0.035)
                 },
-                Float64Vector3D.Zero
+                LinFloat64Vector3D.Zero
             )
         );
 
@@ -128,13 +128,13 @@ public static class CurveSamples
         
         var fixedCurve = 
             new ParametricCircleZx3D(fixedCurveFactor, 1).GetRotatedNormalsCurve(
-                t => Float64PlanarAngle.Angle45
+                t => LinFloat64PolarAngle.Angle45
                 //t => t.CosWave(0, 1 * Math.PI, 3) //-0.25 * Math.PI //t * 2 * Math.PI
             );
 
         var movingCurve =
             new ParametricCircleZx3D(movingCurveFactor, 1).GetRotatedNormalsCurve(
-                t => 0
+                t => LinFloat64PolarAngle.Angle0
                 //t => t.CosWave(-0.75 * Math.PI, 0.25 * Math.PI, 3) //-0.25 * Math.PI //t * 2 * Math.PI
             );
         
@@ -210,7 +210,7 @@ public static class CurveSamples
 
         var fixedCurve =
             new ParametricCircleZx3D(fixedCurveFactor, 1).GetRotatedNormalsCurve(
-                t => 45.DegreesToAngle()
+                t => 45.DegreesToDirectedAngle()
             );
 
         //var harmonicCurve = new GrHarmonicCurve3D();
@@ -250,7 +250,7 @@ public static class CurveSamples
                 t => 
                     //-PlanarAngle.Angle45
                     //5 * t * PlanarAngle.Angle360
-                    t.CosWave(-45 + 10, -45 - 10, 3).DegreesToAngle()
+                    t.CosWave(-45 + 10, -45 - 10, 3).DegreesToDirectedAngle()
             );
 
         var rouletteDistance =
@@ -264,9 +264,9 @@ public static class CurveSamples
 
         var generatorPointList = new List<RouletteTracerVisualizer3D.GeneratorPoint>
         {
-            new(Float64Vector3D.Create(0, -1, 0), Color.Red),
-            new(Float64Vector3D.Create(radius / 2, 0, 0), Color.Green),
-            new(Float64Vector3D.Create(radius, 1, 0), Color.Blue),
+            new(LinFloat64Vector3D.Create(0, -1, 0), Color.Red),
+            new(LinFloat64Vector3D.Create(radius / 2, 0, 0), Color.Green),
+            new(LinFloat64Vector3D.Create(radius, 1, 0), Color.Blue),
             //new(movingCurve.GetPoint(t1), Color.Red),
             //new(movingCurve.GetPoint(t2), Color.Green),
             //new(movingCurve.GetPoint(t3), Color.Blue),
@@ -320,7 +320,7 @@ public static class CurveSamples
 
         var fixedCurve =
             new ParametricCircleZx3D(fixedCurveFactor, 1).GetRotatedNormalsCurve(
-                t => 0d.DegreesToAngle()
+                t => 0d.DegreesToDirectedAngle()
             );
         
         var movingCurveLength = 
@@ -333,7 +333,7 @@ public static class CurveSamples
                 1
             ).GetRotatedNormalsCurve(
                 t =>
-                    -45.DegreesToAngle()
+                    -45.DegreesToDirectedAngle()
                 //(parameterValue * 360).DegreesToAngle()
             );
 
@@ -343,8 +343,8 @@ public static class CurveSamples
             movingCurveFactor;
 
         var generatorPointCurve = new ArcLengthLineSegment3D(
-            Float64Vector3D.Create(-radius, -radius, -radius),
-            Float64Vector3D.Create(radius, radius, radius)
+            LinFloat64Vector3D.Create(-radius, -radius, -radius),
+            LinFloat64Vector3D.Create(radius, radius, radius)
         ).GetMappedParameterCurveCosWave(2);
 
         var generatorPoint = 

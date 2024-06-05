@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Diagnostics;
-using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Restricted.Float64.Multivectors;
-using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Restricted.Float64.Processors;
-using GeometricAlgebraFulcrumLib.Lite.LinearAlgebra.LinearMaps.SpaceND.Scaling;
-using GeometricAlgebraFulcrumLib.Lite.LinearAlgebra.Matrices;
-using GeometricAlgebraFulcrumLib.Lite.LinearAlgebra.Vectors.SpaceND;
-using GeometricAlgebraFulcrumLib.Lite.ScalarAlgebra;
-using GeometricAlgebraFulcrumLib.MathBase.Text;
-using GeometricAlgebraFulcrumLib.Processors.MatrixAlgebra;
+using GeometricAlgebraFulcrumLib.Core.Algebra.GeometricAlgebra.Restricted.Float64.Multivectors;
+using GeometricAlgebraFulcrumLib.Core.Algebra.GeometricAlgebra.Restricted.Float64.Processors;
+using GeometricAlgebraFulcrumLib.Core.Algebra.LinearAlgebra.Float64;
+using GeometricAlgebraFulcrumLib.Core.Algebra.LinearAlgebra.Float64.LinearMaps.SpaceND.Scaling;
+using GeometricAlgebraFulcrumLib.Core.Algebra.LinearAlgebra.Float64.Matrices;
+using GeometricAlgebraFulcrumLib.Core.Algebra.Scalars.Float64;
+using GeometricAlgebraFulcrumLib.Algebra.Utilities.Text;
 
 namespace GeometricAlgebraFulcrumLib.Samples.EuclideanGeometry;
 
@@ -18,11 +17,11 @@ public static class EigenSubspaceSamples
         const int n = 5;
         const int reflectionCount = 7;
 
-        var scalarProcessor =
-            ScalarProcessorOfFloat64.DefaultProcessor;
+        //var scalarProcessor =
+        //    ScalarProcessorOfFloat64.Instance;
 
-        var matrixProcessor =
-            MatrixProcessorOfFloat64.DefaultProcessor;
+        //var matrixProcessor =
+        //    MatrixProcessorOfFloat64.Instance;
 
         var geometricProcessor =
             RGaFloat64Processor.Euclidean;

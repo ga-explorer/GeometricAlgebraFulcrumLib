@@ -1,25 +1,25 @@
 ﻿using System.Collections.Immutable;
 using System.Runtime.CompilerServices;
-using DataStructuresLib.Basic;
-using DataStructuresLib.Collections;
-using DataStructuresLib.Extensions;
-using GeometricAlgebraFulcrumLib.Lite.Geometry.Borders.Space3D.Immutable;
-using GeometricAlgebraFulcrumLib.Lite.Geometry.Differential.Curves;
-using GeometricAlgebraFulcrumLib.Lite.Geometry.Differential.Functions;
-using GeometricAlgebraFulcrumLib.Lite.Geometry.Parametric;
-using GeometricAlgebraFulcrumLib.Lite.Geometry.Parametric.Space3D.Curves;
-using GeometricAlgebraFulcrumLib.Lite.Geometry.Parametric.Space3D.Curves.Adaptive;
-using GeometricAlgebraFulcrumLib.Lite.LinearAlgebra;
-using GeometricAlgebraFulcrumLib.Lite.LinearAlgebra.Frames.Space3D;
-using GeometricAlgebraFulcrumLib.Lite.LinearAlgebra.Vectors.Space3D;
-using GeometricAlgebraFulcrumLib.Lite.ScalarAlgebra;
-using GeometricAlgebraFulcrumLib.Lite.SignalAlgebra;
-using GeometricAlgebraFulcrumLib.Lite.SignalAlgebra.Composers;
+using GeometricAlgebraFulcrumLib.Utilities.Structures.Basic;
+using GeometricAlgebraFulcrumLib.Utilities.Structures.Collections;
+using GeometricAlgebraFulcrumLib.Utilities.Structures.Extensions;
+using GeometricAlgebraFulcrumLib.Core.Modeling.Geometry.Borders.Space3D.Immutable;
+using GeometricAlgebraFulcrumLib.Core.Modeling.Geometry.Differential.Curves;
+using GeometricAlgebraFulcrumLib.Core.Modeling.Geometry.Differential.Functions;
+using GeometricAlgebraFulcrumLib.Core.Modeling.Geometry.Parametric;
+using GeometricAlgebraFulcrumLib.Core.Modeling.Geometry.Parametric.Space3D.Curves;
+using GeometricAlgebraFulcrumLib.Core.Modeling.Geometry.Parametric.Space3D.Curves.Adaptive;
+using GeometricAlgebraFulcrumLib.Core.Algebra.LinearAlgebra.Float64.Angles;
+using GeometricAlgebraFulcrumLib.Core.Algebra.LinearAlgebra.Float64.Frames.Space3D;
+using GeometricAlgebraFulcrumLib.Core.Algebra.LinearAlgebra.Float64.Vectors.Space3D;
+using GeometricAlgebraFulcrumLib.Core.Algebra.Scalars.Float64;
+using GeometricAlgebraFulcrumLib.Core.Algebra.Signals;
+using GeometricAlgebraFulcrumLib.Core.Algebra.Signals.Composers;
 using OxyPlot;
 using OxyPlot.Axes;
 using OxyPlot.Series;
 using SixLabors.ImageSharp;
-using WebComposerLib.Colors;
+using GeometricAlgebraFulcrumLib.Utilities.Web.Colors;
 using PngExporter = OxyPlot.SkiaSharp.PngExporter;
 
 namespace GeometricAlgebraFulcrumLib.Applications.PowerSystems;
@@ -73,11 +73,11 @@ public class PowerSignal3D :
 
     public AdaptiveCurve3D? SampledCurve { get; private set; }
 
-    public IReadOnlyList<AffineFrame3D>? FrameList { get; private set; }
+    public IReadOnlyList<LinFloat64AffineFrame3D>? FrameList { get; private set; }
 
     public IReadOnlyList<Pair<double>>? CurvatureList { get; private set; }
 
-    public IReadOnlyList<Float64Bivector3D>? DarbouxBivectorList { get; private set; }
+    public IReadOnlyList<LinFloat64Bivector3D>? DarbouxBivectorList { get; private set; }
 
     public IReadOnlyList<double>? FrequencyHzList { get; private set; }
 
@@ -138,7 +138,7 @@ public class PowerSignal3D :
             };
 
         var options = new AdaptiveCurveSamplingOptions3D(
-            18.DegreesToAngle(),
+            18.DegreesToDirectedAngle(),
             9,
             20
         );
@@ -593,19 +593,19 @@ public class PowerSignal3D :
 
     }
 
-    public Float64Bivector3D GetDarbouxBivectorMean()
+    public LinFloat64Bivector3D GetDarbouxBivectorMean()
     {
         return GetDarbouxBivectorMean(0, SampleCount - 1);
     }
 
-    public Float64Bivector3D GetDarbouxBivectorMean(int index)
+    public LinFloat64Bivector3D GetDarbouxBivectorMean(int index)
     {
         return GetDarbouxBivectorMean(0, index);
     }
 
-    public Float64Bivector3D GetDarbouxBivectorMean(int index1, int index2)
+    public LinFloat64Bivector3D GetDarbouxBivectorMean(int index1, int index2)
     {
-        var dbMean = Float64Bivector3D.Zero;
+        var dbMean = LinFloat64Bivector3D.Zero;
 
         if (DarbouxBivectorList is null)
             return dbMean;
@@ -633,7 +633,7 @@ public class PowerSignal3D :
 
         FrequencyHzList =
             DarbouxBivectorList.CreateMappedList(db => 
-                (db.Norm() / (2d * Math.PI)).Value
+                (db.Norm() / (2d * Math.PI)).ScalarValue
             );
 
         ComputeBounds();

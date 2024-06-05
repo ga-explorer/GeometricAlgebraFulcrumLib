@@ -1,5 +1,5 @@
-﻿using GeometricAlgebraFulcrumLib.Lite.LinearAlgebra.Vectors.Space3D;
-using GeometricAlgebraFulcrumLib.Lite.Maps;
+﻿using GeometricAlgebraFulcrumLib.Core.Algebra.LinearAlgebra.Float64.Vectors.Space3D;
+using GeometricAlgebraFulcrumLib.Core.Modeling.Geometry.Maps;
 
 namespace GeometricAlgebraFulcrumLib.Samples.Graphics.Xeogl;
 
@@ -10,11 +10,11 @@ public static class Sample5
         var map = TrstMap3D.CreateFromXSectionToLineSectionMap(
             section1StartX : 0,
             section1EndX : 1,
-            section2Start : Float64Vector3D.Create(0, 0, 0),
-            section2End : Float64Vector3D.Create(2, 2, 0)
+            section2Start : LinFloat64Vector3D.Create(0, 0, 0),
+            section2End : LinFloat64Vector3D.Create(2, 2, 0)
         );
 
-        var point = map.MapPoint(Float64Vector3D.Create(1, 0, 0));
+        var point = map.MapPoint(LinFloat64Vector3D.Create(1, 0, 0));
 
         return point.ToString();
     }

@@ -5,34 +5,34 @@ using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
-using DataStructuresLib.Basic;
-using DataStructuresLib.Extensions;
-using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Extended.Float64.LinearMaps.Rotors;
-using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Extended.Float64.Multivectors.Composers;
-using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Extended.Float64.Processors;
-using GeometricAlgebraFulcrumLib.Lite.Geometry.Borders.Space2D.Mutable;
-using GeometricAlgebraFulcrumLib.Lite.Geometry.Differential.Curves;
-using GeometricAlgebraFulcrumLib.Lite.Geometry.Differential.Functions;
-using GeometricAlgebraFulcrumLib.Lite.Geometry.Differential.Functions.Interpolators;
-using GeometricAlgebraFulcrumLib.Lite.Geometry.Parametric;
-using GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.Svg.DrawingBoard;
-using GeometricAlgebraFulcrumLib.Lite.LinearAlgebra.Vectors.Space2D;
-using GeometricAlgebraFulcrumLib.Lite.ScalarAlgebra;
-using GeometricAlgebraFulcrumLib.Lite.SignalAlgebra;
-using GeometricAlgebraFulcrumLib.Lite.SignalAlgebra.Composers;
-using GeometricAlgebraFulcrumLib.Lite.SignalAlgebra.Interpolators;
-using GeometricAlgebraFulcrumLib.MathBase;
-using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.Multivectors;
-using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.Multivectors.Composers;
-using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.Processors;
-using GeometricAlgebraFulcrumLib.MathBase.SignalAlgebra;
-using GeometricAlgebraFulcrumLib.MathBase.SignalAlgebra.Interpolators;
-using GeometricAlgebraFulcrumLib.MathBase.SignalAlgebra.Processors;
-using GeometricAlgebraFulcrumLib.MathBase.Text;
-using GeometricAlgebraFulcrumLib.Processors;
-using GeometricAlgebraFulcrumLib.Processors.SignalAlgebra;
+using GeometricAlgebraFulcrumLib.Utilities.Structures.Basic;
+using GeometricAlgebraFulcrumLib.Utilities.Structures.Extensions;
+using GeometricAlgebraFulcrumLib.Core.Algebra.GeometricAlgebra.Extended.Float64.LinearMaps.Rotors;
+using GeometricAlgebraFulcrumLib.Core.Algebra.GeometricAlgebra.Extended.Float64.Multivectors.Composers;
+using GeometricAlgebraFulcrumLib.Core.Algebra.GeometricAlgebra.Extended.Float64.Processors;
+using GeometricAlgebraFulcrumLib.Core.Modeling.Geometry.Borders.Space2D.Mutable;
+using GeometricAlgebraFulcrumLib.Core.Modeling.Geometry.Differential.Curves;
+using GeometricAlgebraFulcrumLib.Core.Modeling.Geometry.Differential.Functions;
+using GeometricAlgebraFulcrumLib.Core.Modeling.Geometry.Differential.Functions.Interpolators;
+using GeometricAlgebraFulcrumLib.Core.Modeling.Geometry.Parametric;
+using GeometricAlgebraFulcrumLib.Core.Modeling.Graphics.Rendering.Svg.DrawingBoard;
+using GeometricAlgebraFulcrumLib.Core.Algebra.LinearAlgebra.Float64.Vectors.Space2D;
+using GeometricAlgebraFulcrumLib.Core.Algebra.Scalars.Float64;
+using GeometricAlgebraFulcrumLib.Core.Algebra.Signals;
+using GeometricAlgebraFulcrumLib.Core.Algebra.Signals.Composers;
+using GeometricAlgebraFulcrumLib.Core.Algebra.Signals.Interpolators;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Extended.Generic.Multivectors;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Extended.Generic.Multivectors.Composers;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Extended.Generic.Processors;
+using GeometricAlgebraFulcrumLib.Algebra.Scalars;
+using GeometricAlgebraFulcrumLib.Algebra.Signals;
+using GeometricAlgebraFulcrumLib.Algebra.Signals.Interpolators;
+using GeometricAlgebraFulcrumLib.Algebra.Signals.Processors;
 using OfficeOpenXml;
-using TextComposerLib.Text;
+using GeometricAlgebraFulcrumLib.Utilities.Text.Text;
+using Float64SignalComposerUtils = GeometricAlgebraFulcrumLib.Algebra.Signals.Float64SignalComposerUtils;
+using GeometricAlgebraFulcrumLib.Algebra.Utilities;
+using GeometricAlgebraFulcrumLib.Algebra.Utilities.Text;
 
 namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GeometricFrequency;
 
@@ -45,7 +45,7 @@ public static class NumericGeometricFrequencySample
 
     // This is a pre-defined scalar processor for numeric scalars
     public static ScalarProcessorOfFloat64 ScalarProcessor { get; }
-        = ScalarProcessorOfFloat64.DefaultProcessor;
+        = ScalarProcessorOfFloat64.Instance;
 
     public static int VSpaceDimensions { get; private set; }
         = 3;
@@ -204,7 +204,7 @@ public static class NumericGeometricFrequencySample
             scalarArray[j] = scalar.CreateSignal(SamplingRate);
         }
 
-        return GeometricSignalProcessor.CreateVector(scalarArray);
+        return GeometricSignalProcessor.Vector(scalarArray);
     }
 
 
@@ -227,9 +227,9 @@ public static class NumericGeometricFrequencySample
         var normSignal1 = vData.Norm();
 
         //var freqIndexSet = Enumerable.Range(0, 33).Select(i => i * 10).ToArray();
-        var freqIndexSet = normSignal1.ScalarValue().GetDominantFrequencyIndexSet(0.998d).ToArray();
+        var freqIndexSet = normSignal1.ScalarValue.GetDominantFrequencyIndexSet(0.998d).ToArray();
 
-        var normSignal2 = normSignal1.ScalarValue().FourierInterpolate(freqIndexSet);
+        var normSignal2 = normSignal1.ScalarValue.FourierInterpolate(freqIndexSet);
         var v = normSignal2 / normSignal1 * vData;
 
         var fourierInterpolator =
@@ -313,7 +313,7 @@ public static class NumericGeometricFrequencySample
         var vDataNorm1 = vData.Norm();
 
         var normInterpolator =
-            vDataNorm1.ScalarValue()
+            vDataNorm1.ScalarValue
                 .CreateScalarPolynomialInterpolator();
 
         normInterpolator.InterpolationSamples = 128;
@@ -372,8 +372,8 @@ public static class NumericGeometricFrequencySample
         var normSignal2 =
             vectorSignal2.Norm();
 
-        normSignal1.Scalar().PlotSignal(
-            normSignal2.Scalar(),
+        normSignal1.PlotSignal(
+            normSignal2,
             tMin,
             tMax,
             "Signal Norm".CombineFolderPath()
@@ -474,7 +474,7 @@ public static class NumericGeometricFrequencySample
         var dataList = ReadData(inputFileName);
 
         ScalarSignalProcessor =
-            ProcessorFactory.CreateFloat64ScalarSignalProcessor(
+            Float64SignalComposerUtils.CreateFloat64ScalarSignalProcessor(
                 50000d / DownSampleFactor,
                 dataList.Count
             );
@@ -503,16 +503,16 @@ public static class NumericGeometricFrequencySample
 
             var tMax = (dataList.Count - 1) / SamplingRate;
 
-            vectorSignal.Norm().Scalar().PlotSignal(
-                smoothedVectorSignal.Norm().Scalar(),
+            vectorSignal.Norm().PlotSignal(
+                smoothedVectorSignal.Norm(),
                 0,
                 tMax,
                 @"Signal Norm1".CombineFolderPath()
             );
 
 
-            vectorSignal.Norm().Scalar().PlotSignal(
-                smoothedVectorSignal.Norm().Scalar(),
+            vectorSignal.Norm().PlotSignal(
+                smoothedVectorSignal.Norm(),
                 0,
                 tMax,
                 @"Signal Norm2".CombineFolderPath()
@@ -546,7 +546,7 @@ public static class NumericGeometricFrequencySample
         var index2 = index1 + SampleCount - 1;
 
         ScalarSignalProcessor =
-            ProcessorFactory.CreateFloat64ScalarSignalProcessor(
+            Float64SignalComposerUtils.CreateFloat64ScalarSignalProcessor(
                 50000d / DownSampleFactor,
                 4096 * 4
             );
@@ -600,11 +600,11 @@ public static class NumericGeometricFrequencySample
             vectorSignal1.Norm();
 
         var normSignal1PaddedLinear =
-            normSignal1.ScalarValue()
+            normSignal1.ScalarValue
                 .GetLinearPaddedSignal();
 
         var normSignal1Padded =
-            normSignal1.ScalarValue()
+            normSignal1.ScalarValue
                 .GetPeriodicPaddedSignal(sampleCount / 200);
 
         normSignal1PaddedLinear.PlotSignal(
@@ -719,8 +719,8 @@ public static class NumericGeometricFrequencySample
         Console.WriteLine();
 
 
-        normSignal1.Scalar().PlotSignal(
-            normSignal2.Scalar(),
+        normSignal1.PlotSignal(
+            normSignal2,
             tMin,
             tMax,
             "Signal Norm".CombineFolderPath()
@@ -784,11 +784,11 @@ public static class NumericGeometricFrequencySample
             vectorSignal1.Norm();
 
         var normSignal1PaddedLinear =
-            normSignal1.ScalarValue()
+            normSignal1.ScalarValue
                 .GetLinearPaddedSignal();
 
         var normSignal1Padded =
-            normSignal1.ScalarValue()
+            normSignal1.ScalarValue
                 .GetPeriodicPaddedSignal(50);
 
         normSignal1PaddedLinear.PlotSignal(
@@ -885,8 +885,8 @@ public static class NumericGeometricFrequencySample
         var normSignal2 =
             vectorSignal2.Norm();
 
-        normSignal1.Scalar().PlotSignal(
-            normSignal2.Scalar(),
+        normSignal1.PlotSignal(
+            normSignal2,
             tMin,
             tMax,
             "Signal Norm".CombineFolderPath()
@@ -993,8 +993,8 @@ public static class NumericGeometricFrequencySample
         var normSignal2 =
             vectorSignal2.Norm();
 
-        normSignal1.Scalar().PlotSignal(
-            normSignal2.Scalar(),
+        normSignal1.PlotSignal(
+            normSignal2,
             tMin,
             tMax,
             "Signal Norm".CombineFolderPath()
@@ -1316,7 +1316,7 @@ public static class NumericGeometricFrequencySample
         ScalarSignalProcessor = new ScalarProcessorOfFloat64Signal(samplingRate, sampleCount);
         GeometricSignalProcessor = ScalarSignalProcessor.CreateEuclideanXGaProcessor();
 
-        return GeometricSignalProcessor.CreateVector(v1, v2, v3);
+        return GeometricSignalProcessor.Vector(v1, v2, v3);
     }
         
     private static void ProcessSignalSection3D1(XGaVector<Float64Signal> vectorSignal, ExcelWorksheet workSheet, int sectionFirstIndex)
@@ -1367,27 +1367,27 @@ public static class NumericGeometricFrequencySample
         Console.WriteLine($"z-Signal PSNR: {zPsnr} Db");
         Console.WriteLine();
 
-        var v = GeometricSignalProcessor.CreateVector(
+        var v = GeometricSignalProcessor.Vector(
             xSignal,
             ySignal,
             zSignal
         );
 
-        var vDt1 = GeometricSignalProcessor.CreateVector(
+        var vDt1 = GeometricSignalProcessor.Vector(
             curve
                 .ComponentsDerivative1
                 .MapItems(f => tSignal.SampleFunction(f))
                 .GetItems()
         );
 
-        var vDt2 = GeometricSignalProcessor.CreateVector(
+        var vDt2 = GeometricSignalProcessor.Vector(
             curve
                 .ComponentsDerivative2
                 .MapItems(f => tSignal.SampleFunction(f))
                 .GetItems()
         );
 
-        var vDt3 = GeometricSignalProcessor.CreateVector(
+        var vDt3 = GeometricSignalProcessor.Vector(
             curve
                 .ComponentsDerivative3
                 .MapItems(f => tSignal.SampleFunction(f))
@@ -1415,21 +1415,21 @@ public static class NumericGeometricFrequencySample
         var sDt2 = tSignal.SampleFunction(curve.GetArcLengthVariableDerivative2());
         var sDt3 = tSignal.SampleFunction(curve.GetArcLengthVariableDerivative3());
             
-        var vDs1 = GeometricSignalProcessor.CreateVector(
+        var vDs1 = GeometricSignalProcessor.Vector(
             curve
                 .GetComponentsArcLengthDerivative1()
                 .MapItems(f => tSignal.SampleFunction(f))
                 .GetItems()
         );
 
-        var vDs2 = GeometricSignalProcessor.CreateVector(
+        var vDs2 = GeometricSignalProcessor.Vector(
             curve
                 .GetComponentsArcLengthDerivative2()
                 .MapItems(f => tSignal.SampleFunction(f))
                 .GetItems()
         );
 
-        var vDs3 = GeometricSignalProcessor.CreateVector(
+        var vDs3 = GeometricSignalProcessor.Vector(
             curve
                 .GetComponentsArcLengthDerivative3()
                 .MapItems(f => tSignal.SampleFunction(f))
@@ -1439,19 +1439,19 @@ public static class NumericGeometricFrequencySample
         var uFrameList =
             tSignal.Select(curve.GetArcLengthFrame).ToImmutableArray();
 
-        var u1s = GeometricSignalProcessor.CreateVector(
+        var u1s = GeometricSignalProcessor.Vector(
             uFrameList.Select(f => f.Direction1.X).CreateSignal(tSignal.SamplingRate),
             uFrameList.Select(f => f.Direction1.Y).CreateSignal(tSignal.SamplingRate),
             uFrameList.Select(f => f.Direction1.Z).CreateSignal(tSignal.SamplingRate)
         );
 
-        var u2s = GeometricSignalProcessor.CreateVector(
+        var u2s = GeometricSignalProcessor.Vector(
             uFrameList.Select(f => f.Direction2.X).CreateSignal(tSignal.SamplingRate),
             uFrameList.Select(f => f.Direction2.Y).CreateSignal(tSignal.SamplingRate),
             uFrameList.Select(f => f.Direction2.Z).CreateSignal(tSignal.SamplingRate)
         );
 
-        var u3s = GeometricSignalProcessor.CreateVector(
+        var u3s = GeometricSignalProcessor.Vector(
             uFrameList.Select(f => f.Direction3.X).CreateSignal(tSignal.SamplingRate),
             uFrameList.Select(f => f.Direction3.Y).CreateSignal(tSignal.SamplingRate),
             uFrameList.Select(f => f.Direction3.Z).CreateSignal(tSignal.SamplingRate)
@@ -1489,25 +1489,25 @@ public static class NumericGeometricFrequencySample
         var darbouxBivectorList = 
             tSignal.Select(curve.GetDarbouxBivector).ToImmutableArray();
 
-        var omega1 = GeometricSignalProcessor.CreateBivector3D(
+        var omega1 = GeometricSignalProcessor.Bivector3D(
             darbouxBladesList.Select(db => db.Item1.Scalar12).CreateSignal(tSignal.SamplingRate),
             darbouxBladesList.Select(db => db.Item1.Scalar13).CreateSignal(tSignal.SamplingRate),
             darbouxBladesList.Select(db => db.Item1.Scalar23).CreateSignal(tSignal.SamplingRate)
         );
             
-        var omega2 = GeometricSignalProcessor.CreateBivector3D(
+        var omega2 = GeometricSignalProcessor.Bivector3D(
             darbouxBladesList.Select(db => db.Item2.Scalar12).CreateSignal(tSignal.SamplingRate),
             darbouxBladesList.Select(db => db.Item2.Scalar13).CreateSignal(tSignal.SamplingRate),
             darbouxBladesList.Select(db => db.Item2.Scalar23).CreateSignal(tSignal.SamplingRate)
         );
 
-        var omega3 = GeometricSignalProcessor.CreateBivector3D(
+        var omega3 = GeometricSignalProcessor.Bivector3D(
             darbouxBladesList.Select(db => db.Item3.Scalar12).CreateSignal(tSignal.SamplingRate),
             darbouxBladesList.Select(db => db.Item3.Scalar13).CreateSignal(tSignal.SamplingRate),
             darbouxBladesList.Select(db => db.Item3.Scalar23).CreateSignal(tSignal.SamplingRate)
         );
 
-        var omegaBivector = GeometricSignalProcessor.CreateBivector3D(
+        var omegaBivector = GeometricSignalProcessor.Bivector3D(
             darbouxBivectorList.Select(db => db.Scalar12).CreateSignal(tSignal.SamplingRate),
             darbouxBivectorList.Select(db => db.Scalar13).CreateSignal(tSignal.SamplingRate),
             darbouxBivectorList.Select(db => db.Scalar23).CreateSignal(tSignal.SamplingRate)
@@ -1529,7 +1529,7 @@ public static class NumericGeometricFrequencySample
         foreach (var omega in omegaList)
         {
             var omegaMean = omega.Mean();
-            var omegaMeanNorm = omegaMean.Norm().ScalarValue();
+            var omegaMeanNorm = omegaMean.Norm().ScalarValue;
             var omegaMeanNormHz = omegaMeanNorm / (2 * Math.PI);
 
             Console.WriteLine($"Omega {omegaIndex}");
@@ -1622,8 +1622,8 @@ public static class NumericGeometricFrequencySample
         {
             var omegaNorm = omegaAverageList[i].Norm() / (2 * Math.PI);
 
-            omegaNorm.Scalar().PlotScalarSignal($"Darboux Blade Average Norm {i + 1}", $"DBANorm{i + 1}".CombineFolderPath());
-            omegaNorm.Log10().Scalar().PlotScalarSignal($"Darboux Blade Average Norm {i + 1} Log10", $"DBANorm{i + 1}Log10".CombineFolderPath());
+            omegaNorm.PlotScalarSignal($"Darboux Blade Average Norm {i + 1}", $"DBANorm{i + 1}".CombineFolderPath());
+            omegaNorm.Log10().PlotScalarSignal($"Darboux Blade Average Norm {i + 1} Log10", $"DBANorm{i + 1}Log10".CombineFolderPath());
         }
 
         //var vNorm = v.Norm();
@@ -1911,7 +1911,7 @@ public static class NumericGeometricFrequencySample
         foreach (var omega in omegaList)
         {
             var omegaMean = omega.Mean();
-            var omegaMeanNorm = omegaMean.Norm().ScalarValue();
+            var omegaMeanNorm = omegaMean.Norm().ScalarValue;
             var omegaMeanNormHz = omegaMeanNorm / (2 * Math.PI);
 
             Console.WriteLine($"Omega {omegaIndex}");
@@ -1923,7 +1923,7 @@ public static class NumericGeometricFrequencySample
         }
 
         var dbSignalsMean = db.Mean();
-        var dbSignalsMeanNorm = dbSignalsMean.Norm().ScalarValue();
+        var dbSignalsMeanNorm = dbSignalsMean.Norm().ScalarValue;
         var dbSignalsMeanNormHz = dbSignalsMeanNorm / (2 * Math.PI);
 
         Console.WriteLine($"Darboux Bivector");
@@ -2256,7 +2256,7 @@ public static class NumericGeometricFrequencySample
         foreach (var omega in omegaList)
         {
             var omegaMean = omega.Mean();
-            var omegaMeanNorm = omegaMean.Norm().ScalarValue();
+            var omegaMeanNorm = omegaMean.Norm().ScalarValue;
             var omegaMeanNormHz = omegaMeanNorm / (2 * Math.PI);
 
             Console.WriteLine($"Omega {omegaIndex}");
@@ -2268,7 +2268,7 @@ public static class NumericGeometricFrequencySample
         }
             
         var dbSignalsMean = db.Mean();
-        var dbSignalsMeanNorm = dbSignalsMean.Norm().ScalarValue();
+        var dbSignalsMeanNorm = dbSignalsMean.Norm().ScalarValue;
         var dbSignalsMeanNormHz = dbSignalsMeanNorm / (2 * Math.PI);
 
         Console.WriteLine($"Darboux Bivector");
@@ -2684,7 +2684,7 @@ public static class NumericGeometricFrequencySample
         foreach (var omega in omegaList)
         {
             var omegaMean = omega.Mean();
-            var omegaMeanNorm = omegaMean.Norm().ScalarValue();
+            var omegaMeanNorm = omegaMean.Norm().ScalarValue;
             var omegaMeanNormHz = omegaMeanNorm / (2 * Math.PI);
 
             Console.WriteLine($"Omega {omegaIndex}");
@@ -2962,7 +2962,7 @@ public static class NumericGeometricFrequencySample
         var fileName = @"Corrientes_malaga_6250Hz.xlsx".CombineFolderPath();
 
         ScalarSignalProcessor =
-            ProcessorFactory.CreateFloat64ScalarSignalProcessor(
+            Float64SignalComposerUtils.CreateFloat64ScalarSignalProcessor(
                 50000d / DownSampleFactor,
                 250250 / 26
             );
@@ -3066,12 +3066,12 @@ public static class NumericGeometricFrequencySample
         var usArray =
             new[] { vDs1, vDs2, vDs3, vDs4, vDs5, vDs6 }.ApplyGramSchmidtByProjections(VSpaceDimensions, false);
 
-        var u1s = usArray.Count < 1 ? GeometricSignalProcessor.CreateZeroVector() : usArray[0];
-        var u2s = usArray.Count < 2 ? GeometricSignalProcessor.CreateZeroVector() : usArray[1];
-        var u3s = usArray.Count < 3 ? GeometricSignalProcessor.CreateZeroVector() : usArray[2];
-        var u4s = usArray.Count < 4 ? GeometricSignalProcessor.CreateZeroVector() : usArray[3];
-        var u5s = usArray.Count < 5 ? GeometricSignalProcessor.CreateZeroVector() : usArray[4];
-        var u6s = usArray.Count < 6 ? GeometricSignalProcessor.CreateZeroVector() : usArray[5];
+        var u1s = usArray.Count < 1 ? GeometricSignalProcessor.VectorZero : usArray[0];
+        var u2s = usArray.Count < 2 ? GeometricSignalProcessor.VectorZero : usArray[1];
+        var u3s = usArray.Count < 3 ? GeometricSignalProcessor.VectorZero : usArray[2];
+        var u4s = usArray.Count < 4 ? GeometricSignalProcessor.VectorZero : usArray[3];
+        var u5s = usArray.Count < 5 ? GeometricSignalProcessor.VectorZero : usArray[4];
+        var u6s = usArray.Count < 6 ? GeometricSignalProcessor.VectorZero : usArray[5];
 
         var u1sNorm = u1s.Norm();
         var u2sNorm = u2s.Norm();
@@ -3088,11 +3088,11 @@ public static class NumericGeometricFrequencySample
         var e6s = u6s / u6sNorm;
 
         // Curvatures
-        var kappa1 = (u2sNorm / u1sNorm).ScalarValue().MapSamples(s => s.NaNToZero()).CreateScalar(ScalarSignalProcessor);
-        var kappa2 = (u3sNorm / u2sNorm).ScalarValue().MapSamples(s => s.NaNToZero()).CreateScalar(ScalarSignalProcessor);
-        var kappa3 = (u4sNorm / u3sNorm).ScalarValue().MapSamples(s => s.NaNToZero()).CreateScalar(ScalarSignalProcessor);
-        var kappa4 = (u5sNorm / u4sNorm).ScalarValue().MapSamples(s => s.NaNToZero()).CreateScalar(ScalarSignalProcessor);
-        var kappa5 = (u6sNorm / u5sNorm).ScalarValue().MapSamples(s => s.NaNToZero()).CreateScalar(ScalarSignalProcessor);
+        var kappa1 = (u2sNorm / u1sNorm).ScalarValue.MapSamples(s => s.NaNToZero()).ScalarFromValue(ScalarSignalProcessor);
+        var kappa2 = (u3sNorm / u2sNorm).ScalarValue.MapSamples(s => s.NaNToZero()).ScalarFromValue(ScalarSignalProcessor);
+        var kappa3 = (u4sNorm / u3sNorm).ScalarValue.MapSamples(s => s.NaNToZero()).ScalarFromValue(ScalarSignalProcessor);
+        var kappa4 = (u5sNorm / u4sNorm).ScalarValue.MapSamples(s => s.NaNToZero()).ScalarFromValue(ScalarSignalProcessor);
+        var kappa5 = (u6sNorm / u5sNorm).ScalarValue.MapSamples(s => s.NaNToZero()).ScalarFromValue(ScalarSignalProcessor);
 
         var kappa1Mean = kappa1.ScalarValue.Mean();
         var kappa2Mean = kappa2.ScalarValue.Mean();
@@ -3154,10 +3154,10 @@ public static class NumericGeometricFrequencySample
         //    omegaBarNormScaledSignal.GetDominantFrequencyDataRecords(0.998d).ToArray();
 
         var omegaScaledMeanNorm =
-            (omega * sDt1).Mean().Norm().ScalarValue();
+            (omega * sDt1).Mean().Norm().ScalarValue;
 
         var omegaBarScaledMeanNorm =
-            (omegaBar * sDt1).Mean().Norm().ScalarValue();
+            (omegaBar * sDt1).Mean().Norm().ScalarValue;
 
         Console.WriteLine($"Norm of Scaled OmegaBar Signal Mean: {omegaBarScaledMeanNorm:G}");
         Console.WriteLine($"Norm of Scaled Omega Signal Mean: {omegaScaledMeanNorm:G}");
@@ -3224,23 +3224,23 @@ public static class NumericGeometricFrequencySample
         vDs5.PlotVectorSignalComponents("5th s-derivative", "vDs5".CombineFolderPath());
         vDs6.PlotVectorSignalComponents("6th s-derivative", "vDs6".CombineFolderPath());
 
-        sDt1.Scalar().PlotScalarSignal("1st t-derivative of arc-length", "sDt1".CombineFolderPath());
-        sDt1.Scalar().Log10().PlotScalarSignal("1st t-derivative of arc-length Log10", "sDt1Log10".CombineFolderPath());
+        sDt1.PlotScalarSignal("1st t-derivative of arc-length", "sDt1".CombineFolderPath());
+        sDt1.Log10().PlotScalarSignal("1st t-derivative of arc-length Log10", "sDt1Log10".CombineFolderPath());
 
-        sDt2.Scalar().PlotScalarSignal("2nd t-derivative of arc-length", "sDt2".CombineFolderPath());
-        sDt2.Scalar().Log10().PlotScalarSignal("2nd t-derivative of arc-length Log10", "sDt2Log10".CombineFolderPath());
+        sDt2.ToScalar().PlotScalarSignal("2nd t-derivative of arc-length", "sDt2".CombineFolderPath());
+        sDt2.Log10().PlotScalarSignal("2nd t-derivative of arc-length Log10", "sDt2Log10".CombineFolderPath());
 
-        sDt3.Scalar().PlotScalarSignal("3rd t-derivative of arc-length", "sDt3".CombineFolderPath());
-        sDt3.Scalar().Log10().PlotScalarSignal("3rd t-derivative of arc-length Log10", "sDt3Log10".CombineFolderPath());
+        sDt3.PlotScalarSignal("3rd t-derivative of arc-length", "sDt3".CombineFolderPath());
+        sDt3.Log10().PlotScalarSignal("3rd t-derivative of arc-length Log10", "sDt3Log10".CombineFolderPath());
 
-        sDt4.Scalar().PlotScalarSignal("4th t-derivative of arc-length", "sDt4".CombineFolderPath());
-        sDt4.Scalar().Log10().PlotScalarSignal("4th t-derivative of arc-length Log10", "sDt4Log10".CombineFolderPath());
+        sDt4.PlotScalarSignal("4th t-derivative of arc-length", "sDt4".CombineFolderPath());
+        sDt4.Log10().PlotScalarSignal("4th t-derivative of arc-length Log10", "sDt4Log10".CombineFolderPath());
 
-        sDt5.Scalar().PlotScalarSignal("5th t-derivative of arc-length", "sDt5".CombineFolderPath());
-        sDt5.Scalar().Log10().PlotScalarSignal("5th t-derivative of arc-length Log10", "sDt5Log10".CombineFolderPath());
+        sDt5.PlotScalarSignal("5th t-derivative of arc-length", "sDt5".CombineFolderPath());
+        sDt5.Log10().PlotScalarSignal("5th t-derivative of arc-length Log10", "sDt5Log10".CombineFolderPath());
 
-        sDt6.Scalar().PlotScalarSignal("6th t-derivative of arc-length", "sDt6".CombineFolderPath());
-        sDt6.Scalar().Log10().PlotScalarSignal("6th t-derivative of arc-length Log10", "sDt6Log10".CombineFolderPath());
+        sDt6.PlotScalarSignal("6th t-derivative of arc-length", "sDt6".CombineFolderPath());
+        sDt6.Log10().PlotScalarSignal("6th t-derivative of arc-length Log10", "sDt6Log10".CombineFolderPath());
 
         kappa1.PlotScalarSignal("1st curvature coefficient", "kappa1".CombineFolderPath());
         kappa1.Log10().PlotScalarSignal("1st curvature coefficient Log10", "kappa1Log10".CombineFolderPath());
@@ -3257,17 +3257,17 @@ public static class NumericGeometricFrequencySample
         kappa5.PlotScalarSignal("5th curvature coefficient", "kappa5".CombineFolderPath());
         kappa5.Log10().PlotScalarSignal("5th curvature coefficient Log10", "kappa5Log10".CombineFolderPath());
 
-        omegaBarNormScaled.Scalar().PlotScalarSignal("Norm of scaled angular velocity blade", "omegaBarNormScaled".CombineFolderPath());
-        omegaBarNormScaled.Scalar().Log10().PlotScalarSignal("Log10 norm of scaled angular velocity blade", "omegaBarNormScaledLog10".CombineFolderPath());
+        omegaBarNormScaled.PlotScalarSignal("Norm of scaled angular velocity blade", "omegaBarNormScaled".CombineFolderPath());
+        omegaBarNormScaled.Log10().PlotScalarSignal("Log10 norm of scaled angular velocity blade", "omegaBarNormScaledLog10".CombineFolderPath());
 
-        omegaBarNorm.Scalar().PlotScalarSignal("Norm of angular velocity blade", "omegaBarNorm".CombineFolderPath());
-        omegaBarNorm.Scalar().Log10().PlotScalarSignal("Log10 norm of angular velocity blade", "omegaBarNormLog10".CombineFolderPath());
+        omegaBarNorm.PlotScalarSignal("Norm of angular velocity blade", "omegaBarNorm".CombineFolderPath());
+        omegaBarNorm.Log10().PlotScalarSignal("Log10 norm of angular velocity blade", "omegaBarNormLog10".CombineFolderPath());
 
-        omegaNorm.Scalar().PlotScalarSignal("Norm of Darboux bivector", "omegaNorm".CombineFolderPath());
-        omegaNorm.Scalar().Log10().PlotScalarSignal("Log10 Norm of Darboux bivector", "omegaNormLog10".CombineFolderPath());
+        omegaNorm.PlotScalarSignal("Norm of Darboux bivector", "omegaNorm".CombineFolderPath());
+        omegaNorm.Log10().PlotScalarSignal("Log10 Norm of Darboux bivector", "omegaNormLog10".CombineFolderPath());
 
-        bBivectorNorm.Scalar().PlotScalarSignal("Norm of B bivector", "bBivectorNorm".CombineFolderPath());
-        bBivectorNorm.Scalar().Log10().PlotScalarSignal("Log10 Norm of B bivector", "bBivectorNormLog10".CombineFolderPath());
+        bBivectorNorm.PlotScalarSignal("Norm of B bivector", "bBivectorNorm".CombineFolderPath());
+        bBivectorNorm.Log10().PlotScalarSignal("Log10 Norm of B bivector", "bBivectorNormLog10".CombineFolderPath());
 
 
         ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
@@ -3616,7 +3616,7 @@ public static class NumericGeometricFrequencySample
                 Console.WriteLine($"{n}-Dimensions, Harmonics: {harmonicsListText}");
 
 
-                var vectorSignal = GeometricSignalProcessor.CreateZeroVector();
+                var vectorSignal = GeometricSignalProcessor.VectorZero;
 
                 for (var harmonicFactorIndex = 0; harmonicFactorIndex < harmonicCount; harmonicFactorIndex++)
                 {
@@ -3668,7 +3668,7 @@ public static class NumericGeometricFrequencySample
                 // Angular velocity blade
                 var omega = vectorSignalProcessor.AngularVelocityBlades;
                 var omegaMean = omega.Mean();
-                var omegaMeanNorm = omegaMean.Norm().ScalarValue();
+                var omegaMeanNorm = omegaMean.Norm().ScalarValue;
                 var omegaMeanNormHz = (omegaMeanNorm / (2 * Math.PI)).Round(4);
                 var omegaMeanNormRatioHz = (omegaMeanNormHz / 50).Round(4);
 
@@ -3691,8 +3691,8 @@ public static class NumericGeometricFrequencySample
                 //Console.WriteLine($"$v_{{2}} = {LaTeXComposer.GetMultivectorText(v2)}$");
                 //Console.WriteLine();
 
-                var s1 = GeometricProcessor.CreateTermVector(0);
-                var s2 = GeometricProcessor.CreateTermVector(1);
+                var s1 = GeometricProcessor.VectorTerm(0);
+                var s2 = GeometricProcessor.VectorTerm(1);
 
                 var r =
                     v1.CreatePureRotorSequence(v2, s1, s2, false);
@@ -3745,11 +3745,11 @@ public static class NumericGeometricFrequencySample
                 var pointList =
                     Enumerable
                         .Range(0, SampleCount)
-                        .Select(j => Float64Vector2D.Create((Float64Scalar)xValues[j], (Float64Scalar)yValues[j]))
+                        .Select(j => LinFloat64Vector2D.Create((Float64Scalar)xValues[j], (Float64Scalar)yValues[j]))
                         .ToArray();
 
                 var normList =
-                    pointList.Select(p => p.ENorm()).ToArray();
+                    pointList.Select(p => p.VectorENorm()).ToArray();
 
                 var minNorm = normList.Min();
                 var maxNorm = normList.Max();
@@ -3807,7 +3807,7 @@ public static class NumericGeometricFrequencySample
                 Console.WriteLine($"{n}-Dimensions, Harmonics: {harmonicsListText}");
 
 
-                var vectorSignal = GeometricSignalProcessor.CreateZeroVector();
+                var vectorSignal = GeometricSignalProcessor.VectorZero;
 
                 for (var harmonicFactorIndex = 0; harmonicFactorIndex < harmonicCount; harmonicFactorIndex++)
                 {
@@ -3864,7 +3864,7 @@ public static class NumericGeometricFrequencySample
                 {
                     var omega = vectorSignalProcessor.AngularVelocityBlades[omegaIndex];
                     var omegaMean = omega.Mean();
-                    var omegaMeanNorm = omegaMean.Norm().ScalarValue();
+                    var omegaMeanNorm = omegaMean.Norm().ScalarValue;
                     var omegaMeanNormHz = (omegaMeanNorm / (2 * Math.PI)).Round(4);
                     var omegaMeanNormRatioHz = (omegaMeanNormHz / w).Round(4);
 

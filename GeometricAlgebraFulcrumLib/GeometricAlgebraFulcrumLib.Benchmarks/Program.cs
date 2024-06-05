@@ -1,6 +1,5 @@
 ﻿using BenchmarkDotNet.Running;
-using GeometricAlgebraFulcrumLib.Benchmarks.Applications;
-using GeometricAlgebraFulcrumLib.Benchmarks.Generations;
+using GeometricAlgebraFulcrumLib.Benchmarks.Comparisons;
 
 namespace GeometricAlgebraFulcrumLib.Benchmarks;
 
@@ -20,6 +19,9 @@ class Program
         //BenchmarkRunner.Run<ClarkeBenchmark>();
         //BenchmarkRunner.Run<DictionaryJoinBenchmarks>();
         //BenchmarkRunner.Run<GenerationsBenchmarks>();
-        BenchmarkRunner.Run<SnelliusPothenotProblemBenchmarks>();
+        //BenchmarkRunner.Run<HansenProblemBenchmarks>();
+        //BenchmarkRunner.Run<SnelliusPothenotProblemBenchmarks>();
+        //BenchmarkRunner.Run<ScalarOperationsBenchmarks>();
+        BenchmarkRunner.Run<ComparisonBenchmarks>();
     }
 }

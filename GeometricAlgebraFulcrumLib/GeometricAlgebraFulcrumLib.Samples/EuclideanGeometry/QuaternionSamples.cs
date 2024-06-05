@@ -1,9 +1,9 @@
 ﻿using System;
-using DataStructuresLib.Random;
-using GeometricAlgebraFulcrumLib.Lite.LinearAlgebra;
-using GeometricAlgebraFulcrumLib.Lite.LinearAlgebra.Basis;
-using GeometricAlgebraFulcrumLib.Lite.LinearAlgebra.Vectors.Space3D;
-using GeometricAlgebraFulcrumLib.Lite.ScalarAlgebra;
+using GeometricAlgebraFulcrumLib.Utilities.Structures.Random;
+using GeometricAlgebraFulcrumLib.Core.Algebra.LinearAlgebra.Basis;
+using GeometricAlgebraFulcrumLib.Core.Algebra.LinearAlgebra.Float64.Angles;
+using GeometricAlgebraFulcrumLib.Core.Algebra.LinearAlgebra.Float64.Vectors.Space3D;
+using GeometricAlgebraFulcrumLib.Core.Algebra.Scalars.Float64;
 
 namespace GeometricAlgebraFulcrumLib.Samples.EuclideanGeometry;
 
@@ -19,7 +19,7 @@ public static class QuaternionSamples
         Console.WriteLine();
     }
         
-    public static void ValidateNearZero(this string textDescription, Float64Bivector3D value, double epsilon = 1e-12d)
+    public static void ValidateNearZero(this string textDescription, LinFloat64Bivector3D value, double epsilon = 1e-12d)
     {
         if (value.IsNearZero(epsilon))
             return;
@@ -41,9 +41,9 @@ public static class QuaternionSamples
         Console.WriteLine();
     }
         
-    public static void ValidateNearEqual(this string textDescription, Float64PlanarAngle value1, Float64PlanarAngle value2, double epsilon = 1e-12d)
+    public static void ValidateNearEqual(this string textDescription, LinFloat64Angle value1, LinFloat64Angle value2, double epsilon = 1e-12d)
     {
-        if (value1.IsNearEqual(value2, epsilon))
+        if (value1.RadiansValue.IsNearEqual(value2.RadiansValue, epsilon))
             return;
 
         Console.WriteLine(textDescription);
@@ -52,18 +52,7 @@ public static class QuaternionSamples
         Console.WriteLine();
     }
 
-    public static void ValidateNearEqual(this string textDescription, Float64Vector3D value1, Float64Vector3D value2, double epsilon = 1e-12d)
-    {
-        if ((value1 - value2).IsNearZero(epsilon))
-            return;
-
-        Console.WriteLine(textDescription);
-        Console.WriteLine($"   Value1: {value1}");
-        Console.WriteLine($"   Value2: {value2}");
-        Console.WriteLine();
-    }
-
-    public static void ValidateNearEqual(this string textDescription, Float64Bivector3D value1, Float64Bivector3D value2, double epsilon = 1e-12d)
+    public static void ValidateNearEqual(this string textDescription, LinFloat64Vector3D value1, LinFloat64Vector3D value2, double epsilon = 1e-12d)
     {
         if ((value1 - value2).IsNearZero(epsilon))
             return;
@@ -73,8 +62,8 @@ public static class QuaternionSamples
         Console.WriteLine($"   Value2: {value2}");
         Console.WriteLine();
     }
-        
-    public static void ValidateNearEqual(this string textDescription, Float64Quaternion value1, Float64Quaternion value2, double epsilon = 1e-12d)
+
+    public static void ValidateNearEqual(this string textDescription, LinFloat64Bivector3D value1, LinFloat64Bivector3D value2, double epsilon = 1e-12d)
     {
         if ((value1 - value2).IsNearZero(epsilon))
             return;
@@ -85,7 +74,18 @@ public static class QuaternionSamples
         Console.WriteLine();
     }
         
-    public static void ValidateNearEqual(this string textDescription, Float64Multivector3D value1, Float64Multivector3D value2, double epsilon = 1e-12d)
+    public static void ValidateNearEqual(this string textDescription, LinFloat64Quaternion value1, LinFloat64Quaternion value2, double epsilon = 1e-12d)
+    {
+        if ((value1 - value2).IsNearZero(epsilon))
+            return;
+
+        Console.WriteLine(textDescription);
+        Console.WriteLine($"   Value1: {value1}");
+        Console.WriteLine($"   Value2: {value2}");
+        Console.WriteLine();
+    }
+        
+    public static void ValidateNearEqual(this string textDescription, LinFloat64Multivector3D value1, LinFloat64Multivector3D value2, double epsilon = 1e-12d)
     {
         if ((value1 - value2).IsNearZero(epsilon))
             return;
@@ -129,13 +129,13 @@ public static class QuaternionSamples
                 var angleValue = 360 * i + anglePositiveValue;
 
                 //var angleFull = angleValue.DegreesToAngle(Float64PlanarAngleRange.Full);
-                var anglePositive = angleValue.DegreesToAngle(Float64PlanarAngleRange.Positive);
-                var angleNegative = angleValue.DegreesToAngle(Float64PlanarAngleRange.Negative);
-                var angleSymmetric = angleValue.DegreesToAngle(Float64PlanarAngleRange.Symmetric);
+                var anglePositive = angleValue.DegreesToDirectedAngle(LinAngleRange.Positive360);
+                var angleNegative = angleValue.DegreesToDirectedAngle(LinAngleRange.Negative360);
+                var angleSymmetric = angleValue.DegreesToDirectedAngle(LinAngleRange.Symmetric180);
 
-                "Angle in Positive Range".ValidateNearEqual(anglePositiveValue, anglePositive.Degrees);
-                "Angle in Negative Range".ValidateNearEqual(angleNegativeValue, angleNegative.Degrees);
-                "Angle in Symmetric Range".ValidateNearEqual(angleSymmetricValue, angleSymmetric.Degrees);
+                "Angle in Positive Range".ValidateNearEqual(anglePositiveValue, anglePositive.DegreesValue);
+                "Angle in Negative Range".ValidateNearEqual(angleNegativeValue, angleNegative.DegreesValue);
+                "Angle in Symmetric Range".ValidateNearEqual(angleSymmetricValue, angleSymmetric.DegreesValue);
 
                 //Console.WriteLine(angleFull.ToString());
                 //Console.WriteLine(anglePositive.ToString());
@@ -163,7 +163,7 @@ public static class QuaternionSamples
 
         foreach (var axis in axisArray)
         {
-            var axisVector = axis.ToVector3D();
+            var axisVector = axis.ToLinVector3D();
 
             var bivector1 = axis.NormalToUnitDirection3D();
             var bivector2 = axisVector.NormalToUnitDirection3D();
@@ -178,8 +178,8 @@ public static class QuaternionSamples
 
         for (var i = 0; i < 100; i++)
         {
-            var b1v1 = randomGen.GetVector3D().ToUnitVector();
-            var b1v2 = randomGen.GetVector3D().RejectOnUnitVector(b1v1).ToUnitVector();
+            var b1v1 = randomGen.GetLinVector3D().ToUnitLinVector3D();
+            var b1v2 = randomGen.GetLinVector3D().RejectOnUnitVector(b1v1).ToUnitLinVector3D();
             var b1 = b1v1.Op(b1v2);
 
             var n1 = b1v1.VectorCross(b1v2);
@@ -195,7 +195,7 @@ public static class QuaternionSamples
             // Validate vB = -Bv for bivector B and vector v in the
             // plane of the bivector
             var (v1, v2) = 
-                randomGen.GetOrthonormalVectorPair3D();
+                randomGen.GetOrthonormalLinVector3DPair();
 
             var b = v1.Op(v2);
 
@@ -216,7 +216,7 @@ public static class QuaternionSamples
         for (var i = 0; i < 100; i++)
         {
             // Validate quaternion construction from\to a scalar and bivector
-            var q1 = randomGen.GetQuaternion();
+            var q1 = randomGen.GetLinQuaternion();
             var (s1, b1) = q1.GetScalarAndBivector();
 
             "Quaternion Scalar".ValidateNearEqual(q1.Scalar, s1.Scalar);
@@ -225,9 +225,9 @@ public static class QuaternionSamples
             "Quaternion Scalar k".ValidateNearEqual(q1.ScalarK, -b1.Scalar12);
 
             var s2 = randomGen.GetScalar3D();
-            var b2 = randomGen.GetBivector3D();
+            var b2 = randomGen.GetLinBivector3D();
 
-            var q2 = Float64Quaternion.Create(s2.Scalar, b2);
+            var q2 = LinFloat64Quaternion.Create(s2.Scalar, b2);
 
             "Quaternion Scalar".ValidateNearEqual(q2.Scalar, s2.Scalar);
             "Quaternion Bivector".ValidateNearEqual(q2.GetBivector(), b2);
@@ -266,30 +266,30 @@ public static class QuaternionSamples
             "Quaternion Normalized".ValidateNearEqual(q2.Norm(), 1d);
 
             // Validate quaternion construction from\to a scalar and bivector
-            q1 = randomGen.GetQuaternion().Normalize();
+            q1 = randomGen.GetLinQuaternion().Normalize();
 
             var (angle, normal) = q1.GetAngleAndNormal();
 
-            q2 = Float64Quaternion.CreateFromNormalAndAngle(normal, angle);
+            q2 = LinFloat64Quaternion.CreateFromNormalAndAngle(normal, angle);
 
             "Quaternion From Normal and Angle".ValidateNearEqual(q1, q2);
                 
-            q2 = Float64Quaternion.CreateFromNormalAndAngle(
+            q2 = LinFloat64Quaternion.CreateFromNormalAndAngle(
                 -normal, 
-                Float64PlanarAngle.Angle360 - angle
+                LinFloat64PolarAngle.Angle360 - angle
             );
 
             "Quaternion From Negative Normal and Angle".ValidateNearEqual(q1, -q2);
 
             var (angle1, bivector1) = q1.GetAngleAndBivector();
 
-            q2 = Float64Quaternion.CreateFromPlaneAndAngle(bivector1, angle1);
+            q2 = LinFloat64Quaternion.CreateFromPlaneAndAngle(bivector1, angle1);
 
             "Quaternion From Plane and Angle".ValidateNearEqual(q1, q2);
                 
-            q2 = Float64Quaternion.CreateFromPlaneAndAngle(
+            q2 = LinFloat64Quaternion.CreateFromPlaneAndAngle(
                 -bivector1, 
-                Float64PlanarAngle.Angle360 - angle1
+                LinFloat64PolarAngle.Angle360 - angle1
             );
 
             "Quaternion From Negative Plane and Angle".ValidateNearEqual(q1, -q2);
@@ -305,9 +305,9 @@ public static class QuaternionSamples
         for (var i = 0; i < 100; i++)
         {
             var (basisVector1, basisVector2) = 
-                randomGen.GetOrthonormalVectorPair3D();
+                randomGen.GetOrthonormalLinVector3DPair();
 
-            var angle = randomGen.GetAngle();
+            var angle = randomGen.GetPolarAngle();
             var bivector = basisVector1.Op(basisVector2);
 
             var length = randomGen.GetNumber(10);
@@ -316,7 +316,7 @@ public static class QuaternionSamples
                 length * angle.Cos() * basisVector1 + 
                 length * angle.Sin() * basisVector2;
 
-            var quaternion = Float64Quaternion.CreateFromPlaneAndAngle(
+            var quaternion = LinFloat64Quaternion.CreateFromPlaneAndAngle(
                 bivector,
                 angle
             );

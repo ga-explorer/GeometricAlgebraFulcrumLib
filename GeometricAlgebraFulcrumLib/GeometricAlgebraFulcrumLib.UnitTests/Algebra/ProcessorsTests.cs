@@ -1,4 +1,4 @@
-﻿using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Restricted.Float64.Processors;
+﻿using GeometricAlgebraFulcrumLib.Core.Algebra.GeometricAlgebra.Restricted.Float64.Processors;
 using NUnit.Framework;
 
 namespace GeometricAlgebraFulcrumLib.UnitTests.Algebra;

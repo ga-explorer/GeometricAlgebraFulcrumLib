@@ -1,8 +1,8 @@
 ﻿using System;
-using GeometricAlgebraFulcrumLib.Lite.LinearAlgebra.Basis;
-using GeometricAlgebraFulcrumLib.Lite.LinearAlgebra.Vectors.Space3D;
-using GeometricAlgebraFulcrumLib.Lite.ScalarAlgebra;
-using TextComposerLib.Text.Linear;
+using GeometricAlgebraFulcrumLib.Core.Algebra.LinearAlgebra.Basis;
+using GeometricAlgebraFulcrumLib.Core.Algebra.LinearAlgebra.Float64.Angles;
+using GeometricAlgebraFulcrumLib.Core.Algebra.LinearAlgebra.Float64.Vectors.Space3D;
+using GeometricAlgebraFulcrumLib.Utilities.Text.Text.Linear;
 
 namespace GeometricAlgebraFulcrumLib.Samples.Graphics.Basic;
 
@@ -44,7 +44,7 @@ public static class QuaternionRotationSample
         {
             var axis1 = axisList[i1];
             var axisName1 = axisNameList[i1];
-            var axisVector1 = axis1.ToVector3D();
+            var axisVector1 = axis1.ToLinVector3D();
 
             composer
                 .AppendLineAtNewLine($"{axisName1} => axis2 switch")
@@ -55,7 +55,7 @@ public static class QuaternionRotationSample
             {
                 var axis2 = axisList[i2];
                 var axisName2 = axisNameList[i2];
-                var axisVector2 = axis2.ToVector3D();
+                var axisVector2 = axis2.ToLinVector3D();
 
                 if (axis1 == axis2)
                 {
@@ -65,12 +65,12 @@ public static class QuaternionRotationSample
                 {
                     var rotationAxis = axis1 switch
                     {
-                        LinUnitBasisVector3D.PositiveX or LinUnitBasisVector3D.NegativeX => Float64Vector3D.E3,
-                        LinUnitBasisVector3D.PositiveY or LinUnitBasisVector3D.NegativeY => Float64Vector3D.E1,
-                        _ => Float64Vector3D.E2
+                        LinUnitBasisVector3D.PositiveX or LinUnitBasisVector3D.NegativeX => LinFloat64Vector3D.E3,
+                        LinUnitBasisVector3D.PositiveY or LinUnitBasisVector3D.NegativeY => LinFloat64Vector3D.E1,
+                        _ => LinFloat64Vector3D.E2
                     };
 
-                    var q = rotationAxis.CreateQuaternion(Math.PI);
+                    var q = rotationAxis.CreateQuaternion(LinFloat64PolarAngle.Angle180);
                         
                     composer
                         .AppendLineAtNewLine($"{axisName2} => new Tuple4D({q.ScalarI}, {q.ScalarJ}, {q.ScalarK}, {q.Scalar}),");
@@ -78,9 +78,9 @@ public static class QuaternionRotationSample
                 else
                 {
                     var v3 = axisVector1.VectorCross(axisVector2);
-                    var rotationAxis = Float64Vector3D.Create(v3.X, v3.Y, v3.Z);
+                    var rotationAxis = LinFloat64Vector3D.Create(v3.X, v3.Y, v3.Z);
 
-                    var q = rotationAxis.CreateQuaternion(Math.PI / 2);
+                    var q = rotationAxis.CreateQuaternion(LinFloat64PolarAngle.Angle90);
 
                     composer
                         .AppendLineAtNewLine($"{axisName2} => new Tuple4D({q.ScalarI}, {q.ScalarJ}, {q.ScalarK}, {q.Scalar}),");
@@ -128,7 +128,7 @@ public static class QuaternionRotationSample
                     s => Math.Round(s, 3)
                 );
 
-                if ((v2 - axis2.ToVector3D()).ENorm().IsNearZero(1e-7))
+                if ((v2 - axis2.ToLinVector3D()).VectorENorm().IsNearZero(1e-7))
                     continue;
 
                 Console.WriteLine($"              Axis1: {axis1}");
@@ -145,15 +145,15 @@ public static class QuaternionRotationSample
     /// </summary>
     public static void Example3()
     {
-        var k = Float64Vector3D.Create(1, 1, 1);
+        var k = LinFloat64Vector3D.Create(1, 1, 1);
         var vectorList = new []
         {
-            (LinUnitBasisVector3D.PositiveX.ToVector3D() + k).ToUnitVector(),
-            (LinUnitBasisVector3D.PositiveY.ToVector3D() + k).ToUnitVector(),
-            (LinUnitBasisVector3D.PositiveZ.ToVector3D() + k).ToUnitVector(),
-            (LinUnitBasisVector3D.NegativeX.ToVector3D() - k).ToUnitVector(),
-            (LinUnitBasisVector3D.NegativeY.ToVector3D() - k).ToUnitVector(),
-            (LinUnitBasisVector3D.NegativeZ.ToVector3D() - k).ToUnitVector()
+            (LinUnitBasisVector3D.PositiveX.ToLinVector3D() + k).ToUnitLinVector3D(),
+            (LinUnitBasisVector3D.PositiveY.ToLinVector3D() + k).ToUnitLinVector3D(),
+            (LinUnitBasisVector3D.PositiveZ.ToLinVector3D() + k).ToUnitLinVector3D(),
+            (LinUnitBasisVector3D.NegativeX.ToLinVector3D() - k).ToUnitLinVector3D(),
+            (LinUnitBasisVector3D.NegativeY.ToLinVector3D() - k).ToUnitLinVector3D(),
+            (LinUnitBasisVector3D.NegativeZ.ToLinVector3D() - k).ToUnitLinVector3D()
         };
 
         for (var i1 = 0; i1 < 6; i1++)
@@ -164,7 +164,7 @@ public static class QuaternionRotationSample
                 vector.CreateNearestAxisToVectorRotationQuaternion();
 
             var axisVector = 
-                axis.ToVector3D();
+                axis.ToLinVector3D();
 
             var (u, a) = 
                 axisVector.CreateVectorToVectorRotationAxisAngle(vector);
@@ -202,15 +202,15 @@ public static class QuaternionRotationSample
             LinUnitBasisVector3D.NegativeZ
         };
 
-        var k = Float64Vector3D.Create(1, 1, 1);
+        var k = LinFloat64Vector3D.Create(1, 1, 1);
         var vectorList = new []
         {
-            (LinUnitBasisVector3D.PositiveX.ToVector3D() + k).ToUnitVector(),
-            (LinUnitBasisVector3D.PositiveY.ToVector3D() + k).ToUnitVector(),
-            (LinUnitBasisVector3D.PositiveZ.ToVector3D() + k).ToUnitVector(),
-            (LinUnitBasisVector3D.NegativeX.ToVector3D() - k).ToUnitVector(),
-            (LinUnitBasisVector3D.NegativeY.ToVector3D() - k).ToUnitVector(),
-            (LinUnitBasisVector3D.NegativeZ.ToVector3D() - k).ToUnitVector()
+            (LinUnitBasisVector3D.PositiveX.ToLinVector3D() + k).ToUnitLinVector3D(),
+            (LinUnitBasisVector3D.PositiveY.ToLinVector3D() + k).ToUnitLinVector3D(),
+            (LinUnitBasisVector3D.PositiveZ.ToLinVector3D() + k).ToUnitLinVector3D(),
+            (LinUnitBasisVector3D.NegativeX.ToLinVector3D() - k).ToUnitLinVector3D(),
+            (LinUnitBasisVector3D.NegativeY.ToLinVector3D() - k).ToUnitLinVector3D(),
+            (LinUnitBasisVector3D.NegativeZ.ToLinVector3D() - k).ToUnitLinVector3D()
         };
 
         for (var i1 = 0; i1 < 6; i1++)
@@ -221,7 +221,7 @@ public static class QuaternionRotationSample
             {
                 var axis = axisList[i2];
                 var axisVector = 
-                    axis.ToVector3D();
+                    axis.ToLinVector3D();
 
                 var quaternion = 
                     axis.CreateAxisToVectorRotationQuaternion(vector);
@@ -234,8 +234,8 @@ public static class QuaternionRotationSample
                 var v1 = quaternion.RotateVector(axis);
                 var v2 = q.RotateVector(axis);
 
-                var l1 = (v1 - vector).ENormSquared();
-                var l2 = (v2 - vector).ENormSquared();
+                var l1 = (v1 - vector).VectorENormSquared();
+                var l2 = (v2 - vector).VectorENormSquared();
 
                 var qDiff = (quaternion - q).NormSquared();
 

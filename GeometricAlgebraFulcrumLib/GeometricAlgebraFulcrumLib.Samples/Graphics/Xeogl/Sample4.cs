@@ -1,11 +1,11 @@
 ﻿using System.IO;
-using GeometricAlgebraFulcrumLib.Lite.Graphics.Composers;
-using GeometricAlgebraFulcrumLib.Lite.Graphics.Meshes.PathsMesh;
-using GeometricAlgebraFulcrumLib.Lite.Graphics.Primitives;
-using GeometricAlgebraFulcrumLib.Lite.Graphics.Primitives.Lines;
-using GeometricAlgebraFulcrumLib.Lite.Graphics.Primitives.Triangles;
-using GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.Xeogl;
-using GeometricAlgebraFulcrumLib.Lite.Graphics.Textures;
+using GeometricAlgebraFulcrumLib.Core.Modeling.Graphics.Composers;
+using GeometricAlgebraFulcrumLib.Core.Modeling.Graphics.Meshes.PathsMesh;
+using GeometricAlgebraFulcrumLib.Core.Modeling.Graphics.Primitives;
+using GeometricAlgebraFulcrumLib.Core.Modeling.Graphics.Primitives.Lines;
+using GeometricAlgebraFulcrumLib.Core.Modeling.Graphics.Primitives.Triangles;
+using GeometricAlgebraFulcrumLib.Core.Modeling.Graphics.Rendering.Xeogl;
+using GeometricAlgebraFulcrumLib.Core.Modeling.Graphics.Textures;
 using SixLabors.ImageSharp.Formats.Png;
 
 namespace GeometricAlgebraFulcrumLib.Samples.Graphics.Xeogl;

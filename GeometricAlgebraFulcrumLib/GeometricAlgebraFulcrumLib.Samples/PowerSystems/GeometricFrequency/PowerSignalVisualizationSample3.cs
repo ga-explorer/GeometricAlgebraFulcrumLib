@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Linq;
-using DataStructuresLib.Basic;
+using GeometricAlgebraFulcrumLib.Utilities.Structures.Basic;
 using GeometricAlgebraFulcrumLib.Applications.PowerSystems;
-using GeometricAlgebraFulcrumLib.Lite.LinearAlgebra;
-using GeometricAlgebraFulcrumLib.Lite.LinearAlgebra.Vectors.Space2D;
-using GeometricAlgebraFulcrumLib.Lite.ScalarAlgebra;
-using GeometricAlgebraFulcrumLib.Lite.SignalAlgebra.Composers;
-using WebComposerLib.LaTeX.CodeComposer;
+using GeometricAlgebraFulcrumLib.Core.Algebra.LinearAlgebra.Float64.Angles;
+using GeometricAlgebraFulcrumLib.Core.Algebra.LinearAlgebra.Float64.Vectors.Space2D;
+using GeometricAlgebraFulcrumLib.Core.Algebra.Scalars.Float64;
+using GeometricAlgebraFulcrumLib.Core.Algebra.Signals.Composers;
+using GeometricAlgebraFulcrumLib.Utilities.Web.LaTeX.CodeComposer;
 
 namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GeometricFrequency;
 
@@ -18,17 +18,17 @@ public static class PowerSignalVisualizationSample3
     public static double Frequency
         => 2d * Math.PI * FrequencyHz;
 
-    public static Triplet<Float64PolarVector2D> Phasors { get; }
+    public static Triplet<LinFloat64PolarVector2D> Phasors { get; }
     //= new Triplet<PolarPosition2D>(
-    //    0d.DegreesToAngle().ToPolarPosition(4),
-    //    240d.DegreesToAngle().ToPolarPosition(4),
-    //    120.DegreesToAngle().ToPolarPosition(4)
+    //    0d.DegreesToPolarAngle().ToPolarVector2D(4),
+    //    240d.DegreesToPolarAngle().ToPolarVector2D(4),
+    //    120.DegreesToPolarAngle().ToPolarVector2D(4)
     //);
 
-        = new Triplet<Float64PolarVector2D>(
-            0d.DegreesToAngle().ToPolarPosition(2),
-            230d.DegreesToAngle().ToPolarPosition(4),
-            135d.DegreesToAngle().ToPolarPosition(1)
+        = new Triplet<LinFloat64PolarVector2D>(
+            0d.DegreesToPolarAngle().ToPolarVector2D(2),
+            230d.DegreesToPolarAngle().ToPolarVector2D(4),
+            135d.DegreesToPolarAngle().ToPolarVector2D(1)
         );
 
 

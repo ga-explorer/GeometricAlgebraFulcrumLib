@@ -1,11 +1,11 @@
-﻿using GeometricAlgebraFulcrumLib.Lite.Graphics.Meshes.PathsMesh;
-using GeometricAlgebraFulcrumLib.Lite.Graphics.Meshes.PathsMesh.Space3D;
-using GeometricAlgebraFulcrumLib.Lite.Graphics.Meshes.PointsPath.Space3D;
-using GeometricAlgebraFulcrumLib.Lite.Graphics.Primitives;
-using GeometricAlgebraFulcrumLib.Lite.Graphics.Primitives.Lines;
-using GeometricAlgebraFulcrumLib.Lite.Graphics.Primitives.Triangles;
-using GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.Xeogl;
-using GeometricAlgebraFulcrumLib.Lite.LinearAlgebra.Vectors.Space3D;
+﻿using GeometricAlgebraFulcrumLib.Core.Modeling.Graphics.Meshes.PathsMesh;
+using GeometricAlgebraFulcrumLib.Core.Modeling.Graphics.Meshes.PathsMesh.Space3D;
+using GeometricAlgebraFulcrumLib.Core.Modeling.Graphics.Meshes.PointsPath.Space3D;
+using GeometricAlgebraFulcrumLib.Core.Modeling.Graphics.Primitives;
+using GeometricAlgebraFulcrumLib.Core.Modeling.Graphics.Primitives.Lines;
+using GeometricAlgebraFulcrumLib.Core.Modeling.Graphics.Primitives.Triangles;
+using GeometricAlgebraFulcrumLib.Core.Modeling.Graphics.Rendering.Xeogl;
+using GeometricAlgebraFulcrumLib.Core.Algebra.LinearAlgebra.Float64.Vectors.Space3D;
 
 namespace GeometricAlgebraFulcrumLib.Samples.Graphics.Xeogl;
 
@@ -14,14 +14,14 @@ public static class Sample3
     public static string Generate()
     {
         var firstPath = new LinearPointsPath3D(
-            Float64Vector3D.Create(-3,0,0), 
-            Float64Vector3D.Create(3,0,0), 
+            LinFloat64Vector3D.Create(-3,0,0), 
+            LinFloat64Vector3D.Create(3,0,0), 
             5
         );
 
         var lastPath = new LinearPointsPath3D(
-            Float64Vector3D.Create(0, -2, 0),
-            Float64Vector3D.Create(0, 2, 2),
+            LinFloat64Vector3D.Create(0, -2, 0),
+            LinFloat64Vector3D.Create(0, 2, 2),
             5
         );
 

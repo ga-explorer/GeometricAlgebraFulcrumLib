@@ -3,21 +3,21 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics;
 using System.Linq;
-using DataStructuresLib.BitManipulation;
-using DataStructuresLib.Combinations;
-using DataStructuresLib.IndexSets;
-using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Basis;
-using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Extended.Basis;
-using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Extended.Float64.Multivectors;
-using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Extended.Float64.Multivectors.Composers;
-using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Extended.Float64.Processors;
-using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Restricted.Basis;
-using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Restricted.Float64.Multivectors;
-using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Restricted.Float64.Multivectors.Composers;
-using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Restricted.Float64.Processors;
-using GeometricAlgebraFulcrumLib.Lite.ScalarAlgebra;
-using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Converters.Float64;
-using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.Multivectors;
+using GeometricAlgebraFulcrumLib.Utilities.Structures.BitManipulation;
+using GeometricAlgebraFulcrumLib.Utilities.Structures.Combinations;
+using GeometricAlgebraFulcrumLib.Utilities.Structures.IndexSets;
+using GeometricAlgebraFulcrumLib.Core.Algebra.GeometricAlgebra.Basis;
+using GeometricAlgebraFulcrumLib.Core.Algebra.GeometricAlgebra.Extended.Float64.Multivectors;
+using GeometricAlgebraFulcrumLib.Core.Algebra.GeometricAlgebra.Extended.Float64.Multivectors.Composers;
+using GeometricAlgebraFulcrumLib.Core.Algebra.GeometricAlgebra.Extended.Float64.Processors;
+using GeometricAlgebraFulcrumLib.Core.Algebra.GeometricAlgebra.Restricted.Basis;
+using GeometricAlgebraFulcrumLib.Core.Algebra.GeometricAlgebra.Restricted.Float64.Multivectors;
+using GeometricAlgebraFulcrumLib.Core.Algebra.GeometricAlgebra.Restricted.Float64.Multivectors.Composers;
+using GeometricAlgebraFulcrumLib.Core.Algebra.GeometricAlgebra.Restricted.Float64.Processors;
+using GeometricAlgebraFulcrumLib.Core.Algebra.Scalars.Float64;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Converters.Float64;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Extended.Generic.Multivectors;
+using GeometricAlgebraFulcrumLib.Core.Algebra.GeometricAlgebra.Extended.Basis;
 
 namespace GeometricAlgebraFulcrumLib.Samples.Numeric;
 
@@ -247,8 +247,8 @@ public static class XGaMultivectorValidationSamples
                     mvDiff.IsZero
                 );
 
-                var esp1 = mv11.ESp(mv21).ScalarValue();
-                var esp2 = mv12.ESp(mv22).ScalarValue();
+                var esp1 = mv11.ESp(mv21).ScalarValue;
+                var esp2 = mv12.ESp(mv22).ScalarValue;
 
                 var espDiff = 
                     esp2 - esp1;
@@ -1696,13 +1696,13 @@ public static class XGaMultivectorValidationSamples
                 );
 
                 ValidateDifference(
-                    mv11.ESp(mv21).ScalarValue(),
-                    mv12.ESp(mv22).ScalarValue()
+                    mv11.ESp(mv21).ScalarValue,
+                    mv12.ESp(mv22).ScalarValue
                 );
                     
                 ValidateDifference(
-                    mv11.Sp(mv21).ScalarValue(),
-                    mv12.Sp(mv22).ScalarValue()
+                    mv11.Sp(mv21).ScalarValue,
+                    mv12.Sp(mv22).ScalarValue
                 );
             }
         }
@@ -1894,13 +1894,13 @@ public static class XGaMultivectorValidationSamples
                 );
 
                 ValidateDifference(
-                    mv11.ESp(mv21).ScalarValue(),
-                    mv12.ESp(mv22).ScalarValue()
+                    mv11.ESp(mv21).ScalarValue,
+                    mv12.ESp(mv22).ScalarValue
                 );
                     
                 ValidateDifference(
-                    mv11.Sp(mv21).ScalarValue(),
-                    mv12.Sp(mv22).ScalarValue()
+                    mv11.Sp(mv21).ScalarValue,
+                    mv12.Sp(mv22).ScalarValue
                 );
             }
         }
@@ -2095,13 +2095,13 @@ public static class XGaMultivectorValidationSamples
                 );
 
                 ValidateDifference(
-                    mv11.ESp(mv21).ScalarValue(),
-                    mv12.ESp(mv22).ScalarValue()
+                    mv11.ESp(mv21).ScalarValue,
+                    mv12.ESp(mv22).ScalarValue
                 );
                     
                 ValidateDifference(
-                    mv11.Sp(mv21).ScalarValue(),
-                    mv12.Sp(mv22).ScalarValue()
+                    mv11.Sp(mv21).ScalarValue,
+                    mv12.Sp(mv22).ScalarValue
                 );
             }
         }

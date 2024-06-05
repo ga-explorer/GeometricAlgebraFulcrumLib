@@ -2,24 +2,25 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using DataStructuresLib.Basic;
-using DataStructuresLib.Extensions;
-using DataStructuresLib.Files;
-using GeometricAlgebraFulcrumLib.Lite.Geometry.Differential;
-using GeometricAlgebraFulcrumLib.Lite.Geometry.Differential.Functions;
-using GeometricAlgebraFulcrumLib.Lite.Geometry.Differential.Functions.Interpolators;
-using GeometricAlgebraFulcrumLib.Lite.Geometry.Differential.Functions.Phasors;
-using GeometricAlgebraFulcrumLib.Lite.Geometry.Parametric;
-using GeometricAlgebraFulcrumLib.Lite.LinearAlgebra;
-using GeometricAlgebraFulcrumLib.Lite.ScalarAlgebra;
-using GeometricAlgebraFulcrumLib.Lite.SignalAlgebra;
-using GeometricAlgebraFulcrumLib.Lite.SignalAlgebra.Composers;
-using GeometricAlgebraFulcrumLib.MathBase;
-using GeometricAlgebraFulcrumLib.MathBase.SignalAlgebra;
+using GeometricAlgebraFulcrumLib.Utilities.Structures.Basic;
+using GeometricAlgebraFulcrumLib.Utilities.Structures.Extensions;
+using GeometricAlgebraFulcrumLib.Utilities.Structures.Files;
+using GeometricAlgebraFulcrumLib.Core.Modeling.Geometry.Differential;
+using GeometricAlgebraFulcrumLib.Core.Modeling.Geometry.Differential.Functions;
+using GeometricAlgebraFulcrumLib.Core.Modeling.Geometry.Differential.Functions.Interpolators;
+using GeometricAlgebraFulcrumLib.Core.Modeling.Geometry.Differential.Functions.Phasors;
+using GeometricAlgebraFulcrumLib.Core.Modeling.Geometry.Parametric;
+using GeometricAlgebraFulcrumLib.Core.Algebra.LinearAlgebra.Float64.Angles;
+using GeometricAlgebraFulcrumLib.Core.Algebra.Scalars.Float64;
+using GeometricAlgebraFulcrumLib.Core.Algebra.Signals;
+using GeometricAlgebraFulcrumLib.Core.Algebra.Signals.Composers;
+using GeometricAlgebraFulcrumLib.Algebra.Scalars;
+using GeometricAlgebraFulcrumLib.Algebra.Signals;
 using OfficeOpenXml;
 using OxyPlot;
 using OxyPlot.Series;
 using SixLabors.ImageSharp;
+using GeometricAlgebraFulcrumLib.Algebra.Utilities;
 
 namespace GeometricAlgebraFulcrumLib.Samples.Numeric;
 
@@ -29,7 +30,7 @@ public static class InterpolationSample
         = @"D:\Projects\Books\The Geometric Algebra Cookbook\Geometric Frequency\Data";
 
     public static ScalarProcessorOfFloat64 ScalarProcessor { get; }
-        = ScalarProcessorOfFloat64.DefaultProcessor;
+        = ScalarProcessorOfFloat64.Instance;
 
     public static double SamplingRate
         => 1000;
@@ -1065,9 +1066,9 @@ public static class InterpolationSample
             tMin.GetLinearRange(tMax, (int) sampleCount, false).CreateSignal(samplingRate);
 
         var f1 = 
-            DfCosPhasor.Create(10, frequency, 0d.DegreesToAngle()) +
-            DfCosPhasor.Create(3, frequency * 2, 30.DegreesToAngle()) +
-            DfCosPhasor.Create(1, frequency * 5, 50.DegreesToAngle());
+            DfCosPhasor.Create(10, frequency, 0d.DegreesToDirectedAngle()) +
+            DfCosPhasor.Create(3, frequency * 2, 30.DegreesToDirectedAngle()) +
+            DfCosPhasor.Create(1, frequency * 5, 50.DegreesToDirectedAngle());
 
         //var valueFunction = SmoothedCatmullRomSplineD0Function.CreateSmoothedCatmullRomSplineD0Function(
         //    tSignal.MapSamples(f1.GetValue),
@@ -1190,9 +1191,9 @@ public static class InterpolationSample
             tMin.GetLinearRange(tMax, (int) sampleCount, false).CreateSignal(samplingRate);
 
         var f1 = 
-            DfCosPhasor.Create(10, frequency, 0d.DegreesToAngle()) +
-            DfCosPhasor.Create(3, frequency * 2, 30.DegreesToAngle()) +
-            DfCosPhasor.Create(1, frequency * 5, 50.DegreesToAngle());
+            DfCosPhasor.Create(10, frequency, 0d.DegreesToDirectedAngle()) +
+            DfCosPhasor.Create(3, frequency * 2, 30.DegreesToDirectedAngle()) +
+            DfCosPhasor.Create(1, frequency * 5, 50.DegreesToDirectedAngle());
 
         //var valueFunction = SmoothedCatmullRomSplineD0Function.CreateSmoothedCatmullRomSplineD0Function(
         //    tSignal.MapSamples(f1.GetValue),
@@ -1330,9 +1331,9 @@ public static class InterpolationSample
             tMin.GetLinearRange(tMax, (int) sampleCount, false).CreateSignal(samplingRate);
 
         var f1 = 
-            DfCosPhasor.Create(10, frequency, 0d.DegreesToAngle()) +
-            DfCosPhasor.Create(3, frequency * 2, 30.DegreesToAngle()) +
-            DfCosPhasor.Create(1, frequency * 5, 50.DegreesToAngle());
+            DfCosPhasor.Create(10, frequency, 0d.DegreesToDirectedAngle()) +
+            DfCosPhasor.Create(3, frequency * 2, 30.DegreesToDirectedAngle()) +
+            DfCosPhasor.Create(1, frequency * 5, 50.DegreesToDirectedAngle());
 
         var s1 =
             tSignal
@@ -1475,9 +1476,9 @@ public static class InterpolationSample
         const double samplingRate = (sampleCount - 1) / (tMax - tMin);
 
         var f1 = 
-            DfCosPhasor.Create(10, frequency, 0d.DegreesToAngle()) +
-            DfCosPhasor.Create(3, frequency * 2, 30.DegreesToAngle()) +
-            DfCosPhasor.Create(1, frequency * 5, 50.DegreesToAngle());
+            DfCosPhasor.Create(10, frequency, 0d.DegreesToDirectedAngle()) +
+            DfCosPhasor.Create(3, frequency * 2, 30.DegreesToDirectedAngle()) +
+            DfCosPhasor.Create(1, frequency * 5, 50.DegreesToDirectedAngle());
             
         var tSignal =
             //0d.GetLinearRange(3.75d, (int) (3.75d * samplingRate) + 1, false).CreateSignal(samplingRate);

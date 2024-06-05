@@ -1,0 +1,64 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1" GroupingSetting="Access" MembersFormat="FullSignature">
+  <Class Name="GeometricAlgebraFulcrumLib.Utilities.Text.Text.Structured.ListComposer">
+    <Position X="0.5" Y="3.5" Width="4" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAAAAAAEAAEAAAAAAAAQAABEBAAAAAAAEBEAAA=</HashCode>
+      <FileName>Text\Structured\ListComposer.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="GeometricAlgebraFulcrumLib.Utilities.Text.Text.Structured.StackComposer">
+    <Position X="4.75" Y="3.5" Width="4.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAEAAEAAAAAAAAQACBEBAAAAAAAEBAGAA=</HashCode>
+      <FileName>Text\Structured\StackComposer.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="GeometricAlgebraFulcrumLib.Utilities.Text.Text.Structured.QueueComposer">
+    <Position X="9.25" Y="3.5" Width="4.25" />
+    <TypeIdentifier>
+      <HashCode>IABAAAAAAAAAEAAEAAAAAAAAQAABFBAAAAAAAEBAAAA=</HashCode>
+      <FileName>Text\Structured\QueueComposer.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="GeometricAlgebraFulcrumLib.Utilities.Text.Text.Structured.StructuredTextItem">
+    <Position X="4.75" Y="0.5" Width="3.75" />
+    <Compartments>
+      <Compartment Name="Private" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAEAAIAAAACAAAAAAAAACAACAAAAAA=</HashCode>
+      <FileName>Text\Structured\StructuredTextItem.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GeometricAlgebraFulcrumLib.Utilities.Text.Text.Structured.PriorityQueueComposer&lt;TPriority&gt;">
+    <Position X="13.75" Y="3.5" Width="5" />
+    <TypeIdentifier>
+      <HashCode>AABAAAAAAAAAEAAEAAAAAAAAQAABEBAAAAAAAEBAAAA=</HashCode>
+      <FileName>Text\Structured\PriorityQueueComposer.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="GeometricAlgebraFulcrumLib.Utilities.Text.Text.Structured.SequenceComposer">
+    <Position X="19" Y="3.5" Width="4.25" />
+    <Compartments>
+      <Compartment Name="Private" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAEBAEIAAAAAAAQAABERAEAAAAAEBAAAA=</HashCode>
+      <FileName>Text\Structured\SequenceComposer.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Interface Name="GeometricAlgebraFulcrumLib.Utilities.Text.Text.Structured.IStructuredComposer">
+    <Position X="0.5" Y="0.5" Width="4" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAEAAAAAAAAAAAQAABEBAAAAAAAEBAAAA=</HashCode>
+      <FileName>Text\Structured\IStructuredComposer.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

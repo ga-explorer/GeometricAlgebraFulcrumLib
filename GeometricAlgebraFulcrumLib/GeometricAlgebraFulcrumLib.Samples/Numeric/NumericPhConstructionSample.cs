@@ -1,12 +1,13 @@
 ﻿using System;
-using GeometricAlgebraFulcrumLib.Algebra.PolynomialAlgebra.Basis;
-using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Maps;
-using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Restricted.Float64.LinearMaps.Rotors;
-using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Restricted.Float64.Multivectors;
-using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Restricted.Float64.Multivectors.Composers;
-using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Restricted.Float64.Processors;
-using GeometricAlgebraFulcrumLib.Lite.ScalarAlgebra;
-using GeometricAlgebraFulcrumLib.MathBase.Text;
+using GeometricAlgebraFulcrumLib.Algebra.Polynomials.Basis;
+using GeometricAlgebraFulcrumLib.Algebra.Scalars;
+using GeometricAlgebraFulcrumLib.Core.Algebra.GeometricAlgebra.Maps;
+using GeometricAlgebraFulcrumLib.Core.Algebra.GeometricAlgebra.Restricted.Float64.LinearMaps.Rotors;
+using GeometricAlgebraFulcrumLib.Core.Algebra.GeometricAlgebra.Restricted.Float64.Multivectors;
+using GeometricAlgebraFulcrumLib.Core.Algebra.GeometricAlgebra.Restricted.Float64.Multivectors.Composers;
+using GeometricAlgebraFulcrumLib.Core.Algebra.GeometricAlgebra.Restricted.Float64.Processors;
+using GeometricAlgebraFulcrumLib.Core.Algebra.LinearAlgebra.Float64.Angles;
+using GeometricAlgebraFulcrumLib.Algebra.Utilities.Text;
 
 namespace GeometricAlgebraFulcrumLib.Samples.Numeric;
 
@@ -14,7 +15,7 @@ public static class NumericPhConstructionSample
 {
     // This is a pre-defined scalar processor for numeric scalars
     public static ScalarProcessorOfFloat64 ScalarProcessor { get; }
-        = ScalarProcessorOfFloat64.DefaultProcessor;
+        = ScalarProcessorOfFloat64.Instance;
             
     // Create a 3-dimensional Euclidean geometric algebra processor based on the
     // selected scalar processor
@@ -52,7 +53,7 @@ public static class NumericPhConstructionSample
             );
                 
 
-            var valueSum1 = ScalarProcessor.CreateScalarZero();
+            var valueSum1 = ScalarProcessor.Zero;
             for (var index = 0; index <= degree; index++)
             {
                 var value = basis.GetValue(index, parameterValue);
@@ -61,14 +62,14 @@ public static class NumericPhConstructionSample
 
                 valueSum1 += value;
 
-                Console.WriteLine($@"$B_{{{index},{degree}}}\left(t\right) = {LaTeXComposer.GetScalarText(value)}$");
-                Console.WriteLine($@"$B_{{{index},{degree}}}\left(0\right) = {LaTeXComposer.GetScalarText(value0)}$");
-                Console.WriteLine($@"$B_{{{index},{degree}}}\left(1\right) = {LaTeXComposer.GetScalarText(value1)}$");
+                Console.WriteLine($@"$B_{{{index},{degree}}}\left(t\right) = {LaTeXComposer.GetScalarText(value.ScalarValue)}$");
+                Console.WriteLine($@"$B_{{{index},{degree}}}\left(0\right) = {LaTeXComposer.GetScalarText(value0.ScalarValue)}$");
+                Console.WriteLine($@"$B_{{{index},{degree}}}\left(1\right) = {LaTeXComposer.GetScalarText(value1.ScalarValue)}$");
                 Console.WriteLine();
             }
 
             Console.WriteLine();
-            Console.WriteLine($@"$\sum_{{i=0}}^{{{degree}}}B_{{i,{degree}}}\left(t\right) = {LaTeXComposer.GetScalarText(valueSum1)}$");
+            Console.WriteLine($@"$\sum_{{i=0}}^{{{degree}}}B_{{i,{degree}}}\left(t\right) = {LaTeXComposer.GetScalarText(valueSum1.ScalarValue)}$");
             Console.WriteLine();
         }
     }
@@ -92,7 +93,7 @@ public static class NumericPhConstructionSample
                 Beta = 0
             };
 
-            var valueSum1 = ScalarProcessor.CreateScalarZero();
+            var valueSum1 = ScalarProcessor.Zero;
             for (var index = 0; index <= degree; index++)
             {
                 var value = basis.GetValue(index, parameterValue);
@@ -101,14 +102,14 @@ public static class NumericPhConstructionSample
 
                 valueSum1 += value;
 
-                Console.WriteLine($@"$B_{{{index},{degree}}}\left(t\right) = {LaTeXComposer.GetScalarText(value)}$");
-                Console.WriteLine($@"$B_{{{index},{degree}}}\left(0\right) = {LaTeXComposer.GetScalarText(value0)}$");
-                Console.WriteLine($@"$B_{{{index},{degree}}}\left(1\right) = {LaTeXComposer.GetScalarText(value1)}$");
+                Console.WriteLine($@"$B_{{{index},{degree}}}\left(t\right) = {LaTeXComposer.GetScalarText(value.ScalarValue)}$");
+                Console.WriteLine($@"$B_{{{index},{degree}}}\left(0\right) = {LaTeXComposer.GetScalarText(value0.ScalarValue)}$");
+                Console.WriteLine($@"$B_{{{index},{degree}}}\left(1\right) = {LaTeXComposer.GetScalarText(value1.ScalarValue)}$");
                 Console.WriteLine();
             }
 
             Console.WriteLine();
-            Console.WriteLine($@"$\sum_{{i=0}}^{{{degree}}}B_{{i,{degree}}}\left(t\right) = {LaTeXComposer.GetScalarText(valueSum1)}$");
+            Console.WriteLine($@"$\sum_{{i=0}}^{{{degree}}}B_{{i,{degree}}}\left(t\right) = {LaTeXComposer.GetScalarText(valueSum1.ScalarValue)}$");
             Console.WriteLine();
         }
     }
@@ -125,10 +126,10 @@ public static class NumericPhConstructionSample
         var basisSet = BernsteinBasisSet<double>.Create(ScalarProcessor, degree);
 
         var e1 = 
-            GeometricProcessor.CreateTermVector(0);
+            GeometricProcessor.VectorTerm(0);
 
         var p1 =
-            GeometricProcessor.CreateVector(1, 1, 1);
+            GeometricProcessor.Vector(1, 1, 1);
 
         var d1 = p1 - e1;
         var d1Norm = d1.ENorm();
@@ -138,7 +139,7 @@ public static class NumericPhConstructionSample
             GeometricProcessor.CreateGivensRotor(
                 1, 
                 2, 
-                0
+                LinFloat64PolarAngle.Angle0
             );
 
         var a0 = 
@@ -147,8 +148,8 @@ public static class NumericPhConstructionSample
         var scaledRotor1 = 
             e1.CreateScaledParametricPureRotor3D(
                 d1Unit,
-                0,
-                d1Norm.Sqrt().ScalarValue()
+                LinFloat64PolarAngle.Angle0, 
+                d1Norm.Sqrt().ScalarValue
             );
 
         var a1 = 
@@ -166,8 +167,8 @@ public static class NumericPhConstructionSample
         var a11 = 2 * a1.Gp(e1).Gp(a1.Reverse());
         var a01 = a0.Gp(e1).Gp(a1.Reverse()) + a1.Gp(e1).Gp(a0);
 
-        var b0 = basisSet.GetValue(0, t);
-        var b1 = basisSet.GetValue(1, t);
+        var b0 = basisSet.GetValue(0, t).ScalarValue;
+        var b1 = basisSet.GetValue(1, t).ScalarValue;
 
         var a = a0 * b0 + a1 * b1;
 

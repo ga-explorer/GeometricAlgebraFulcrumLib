@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Linq;
-using DataStructuresLib.Random;
-using GeometricAlgebraFulcrumLib.Lite.LinearAlgebra;
-using GeometricAlgebraFulcrumLib.Lite.LinearAlgebra.LinearMaps.SpaceND;
-using GeometricAlgebraFulcrumLib.Lite.LinearAlgebra.LinearMaps.SpaceND.Scaling;
-using GeometricAlgebraFulcrumLib.Lite.LinearAlgebra.Matrices;
-using GeometricAlgebraFulcrumLib.Lite.LinearAlgebra.SubSpaces.SpaceND;
-using GeometricAlgebraFulcrumLib.Lite.LinearAlgebra.Vectors.SpaceND;
-using GeometricAlgebraFulcrumLib.Lite.ScalarAlgebra;
+using GeometricAlgebraFulcrumLib.Utilities.Structures.Random;
+using GeometricAlgebraFulcrumLib.Core.Algebra.LinearAlgebra.Float64;
+using GeometricAlgebraFulcrumLib.Core.Algebra.LinearAlgebra.Float64.LinearMaps.SpaceND;
+using GeometricAlgebraFulcrumLib.Core.Algebra.LinearAlgebra.Float64.LinearMaps.SpaceND.Scaling;
+using GeometricAlgebraFulcrumLib.Core.Algebra.LinearAlgebra.Float64.Matrices;
+using GeometricAlgebraFulcrumLib.Core.Algebra.LinearAlgebra.Float64.SubSpaces.SpaceND;
+using GeometricAlgebraFulcrumLib.Core.Algebra.LinearAlgebra.Float64.Vectors.SpaceND;
+using GeometricAlgebraFulcrumLib.Core.Algebra.Scalars.Float64;
 using MathNet.Numerics.LinearAlgebra;
 
 namespace GeometricAlgebraFulcrumLib.Samples.EuclideanGeometry;
@@ -329,7 +329,7 @@ public static class OrthogonalLinearMapSequenceSamples
                 // map sequence computations
                 for (var i = 0; i < 100; i++)
                 {
-                    var x = random.GetFloat64Tuple(n).CreateLinVector();
+                    var x = random.GetLinVector(n).CreateLinVector();
 
                     var y1 = mapSequence.MapVector(x);
                     var y2 = (mapMatrix * MathNetNumericsUtils.ToMathNetVector(x, n)).CreateLinVector();
@@ -365,7 +365,7 @@ public static class OrthogonalLinearMapSequenceSamples
                 // map sequence computations
                 for (var i = 0; i < 100; i++)
                 {
-                    var x = random.GetFloat64Tuple(n).CreateLinVector();
+                    var x = random.GetLinVector(n).CreateLinVector();
 
                     var y1 = mapSequence.MapVector(x);
                     var y2 = (mapMatrix * MathNetNumericsUtils.ToMathNetVector(x, n)).CreateLinVector();
@@ -411,7 +411,7 @@ public static class OrthogonalLinearMapSequenceSamples
             // map sequence computations
             for (var i = 0; i < 100; i++)
             {
-                var x = random.GetFloat64Tuple(n).CreateLinVector();
+                var x = random.GetLinVector(n).CreateLinVector();
 
                 var y1 = mapSequence.MapVector(x);
                 var y2 = (mapMatrix * MathNetNumericsUtils.ToMathNetVector(x, n)).CreateLinVector();

@@ -1,16 +1,17 @@
 ﻿using System;
-using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Restricted.Float64.Multivectors;
-using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Restricted.Float64.Multivectors.Composers;
-using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Restricted.Float64.Processors;
-using GeometricAlgebraFulcrumLib.Lite.ScalarAlgebra;
-using GeometricAlgebraFulcrumLib.MathBase.Text;
+using GeometricAlgebraFulcrumLib.Algebra.Scalars;
+using GeometricAlgebraFulcrumLib.Core.Algebra.GeometricAlgebra.Restricted.Float64.Multivectors;
+using GeometricAlgebraFulcrumLib.Core.Algebra.GeometricAlgebra.Restricted.Float64.Multivectors.Composers;
+using GeometricAlgebraFulcrumLib.Core.Algebra.GeometricAlgebra.Restricted.Float64.Processors;
+using GeometricAlgebraFulcrumLib.Core.Algebra.Scalars.Float32;
+using GeometricAlgebraFulcrumLib.Algebra.Utilities.Text;
 
 namespace GeometricAlgebraFulcrumLib.Samples.Numeric;
 
-public static class Pothenot_GA
+public static class PothenotGa
 {
     
-    public static ScalarProcessorOfFloat64 ScalarProcessor { get; } = ScalarProcessorOfFloat64.DefaultProcessor;
+    public static ScalarProcessorOfFloat64 ScalarProcessor { get; } = ScalarProcessorOfFloat64.Instance;
 
     //public static int VSpaceDimensions => 2;
 
@@ -36,22 +37,22 @@ public static class Pothenot_GA
     public static void test_algoritm(){
 
         // Exmaple points locations to test
-        float[] A = new float[2]{-4, 3};
-        float[] B = new float[2]{0, 5};
-        float[] C = new float[2]{7, 4};
-        float[] P = new float[2]{1, 0};
+        var a = new float[2]{-4, 3};
+        var b = new float[2]{0, 5};
+        var c = new float[2]{7, 4};
+        var p = new float[2]{1, 0};
 
-        float[] result = new float[3];
+        var result = new float[3];
             
-        result = GetAngles(A, B, C, P);
-        VGAMethod_SP(A, B, C, result[0], result[1], result[2]);
+        result = GetAngles(a, b, c, p);
+        VGAMethod_SP(a, b, c, result[0], result[1], result[2]);
 
     }
-    public static float[] VGAMethod_SP(float[] A, float[] B, float[] C, float alpha, float beta, float origin)
+    public static float[] VGAMethod_SP(float[] a, float[] b, float[] c, float alpha, float beta, float origin)
     {
         //// This is a pre-defined scalar processor for the standard
         //// 64-bit floating point scalars
-        //var scalarProcessor = ScalarProcessorOfFloat64.DefaultProcessor;
+        //var scalarProcessor = ScalarProcessorOfFloat64.Instance;
 
         //// Create a 2-dimensional Euclidean geometric algebra processor based on the
         //// selected scalar processor
@@ -62,26 +63,26 @@ public static class Pothenot_GA
         //var textComposer = TextComposerFloat64.DefaultComposer;
 
 
-        var e1 = GeometricProcessor.CreateTermVector(0);
-        var e2 = GeometricProcessor.CreateTermVector(1);
+        var e1 = GeometricProcessor.VectorTerm(0);
+        var e2 = GeometricProcessor.VectorTerm(1);
 
         //select the central beacon depending on the origin
-        float[] center = new float[2];
+        var center = new float[2];
             
             
-        var v1 = GeometricProcessor.CreateVector(A[0]-B[0], A[1]-B[1]);
-        var v2 = GeometricProcessor.CreateVector(C[0]-B[0], C[1]-B[1]);
-        center = B;
+        var v1 = GeometricProcessor.Vector(a[0]-b[0], a[1]-b[1]);
+        var v2 = GeometricProcessor.Vector(c[0]-b[0], c[1]-b[1]);
+        center = b;
 
         if (origin == 1){
-            v1 = GeometricProcessor.CreateVector(B[0]-A[0], B[1]-A[1]);
-            v2 = GeometricProcessor.CreateVector(C[0]-A[0], C[1]-A[1]);
-            center = A;
+            v1 = GeometricProcessor.Vector(b[0]-a[0], b[1]-a[1]);
+            v2 = GeometricProcessor.Vector(c[0]-a[0], c[1]-a[1]);
+            center = a;
 
         }else if (origin == 3){
-            v1 = GeometricProcessor.CreateVector(A[0]-C[0], A[1]-C[1]);
-            v2 = GeometricProcessor.CreateVector(B[0]-C[0], B[1]-C[1]);
-            center = C;
+            v1 = GeometricProcessor.Vector(a[0]-c[0], a[1]-c[1]);
+            v2 = GeometricProcessor.Vector(b[0]-c[0], b[1]-c[1]);
+            center = c;
 
         }
 
@@ -105,43 +106,43 @@ public static class Pothenot_GA
 
 
         var p = (d1.Op(d)).Gp(d.Inverse());
-        float[] global_pos = new float[2]{ center[0] + (float)p.Scalar(0), center[1] + (float)p.Scalar(1) };
+        var globalPos = new float[2]{ center[0] + (float)p.Scalar(0), center[1] + (float)p.Scalar(1) };
 
-        return global_pos;
+        return globalPos;
         //Console.WriteLine();
         //Console.WriteLine(value: $"Vector p = {TextComposer.GetMultivectorText(p)}");
         //Console.WriteLine($"Global position of P = {(global_pos[0],global_pos[1])}");
     }
 
-    static float[] GetAngles(float[] A, float[] B, float[] C, float[] P)
+    static float[] GetAngles(float[] a, float[] b, float[] c, float[] p)
     {
-        float theta_ua, theta_ub, theta_uc, alpha, beta, origin;
+        float thetaUa, thetaUb, thetaUc, alpha, beta, origin;
       
-        float[] ua = new float[2]{A[0]-P[0], A[1]-P[1]};
-        float[] ub = new float[2]{B[0]-P[0], B[1]-P[1]};
-        float[] uc = new float[2]{C[0]-P[0], C[1]-P[1]};
-
+        var ua = new float[2]{a[0]-p[0], a[1]-p[1]};
+        var ub = new float[2]{b[0]-p[0], b[1]-p[1]};
+        var uc = new float[2]{c[0]-p[0], c[1]-p[1]};
+        
         //Angles at which P sees the beacons
-        theta_ua = (float)Math.Atan2(ua[1], ua[0]);
-        theta_ub = (float)Math.Atan2(ub[1], ub[0]);
-        theta_uc = (float)Math.Atan2(uc[1], uc[0]);
+        thetaUa = ua[0].ArcTan2(ua[1]);
+        thetaUb = ub[0].ArcTan2(ub[1]);
+        thetaUc = uc[0].ArcTan2(uc[1]);
 
-        alpha =  theta_ua-theta_ub;
-        beta =  theta_ub-theta_uc;
+        alpha =  thetaUa-thetaUb;
+        beta =  thetaUb-thetaUc;
         origin = 2; //2 = B
 
         // If beta or alpha are null we mest change the origin
         if(beta == 0){
-            alpha =  theta_ub-theta_ua;
-            beta =  theta_ua-theta_uc;
+            alpha =  thetaUb-thetaUa;
+            beta =  thetaUa-thetaUc;
             origin = 1; //1=A
         }else if(alpha == 0){
-            alpha =  theta_ua-theta_uc;
-            beta =  theta_uc-theta_ub;
+            alpha =  thetaUa-thetaUc;
+            beta =  thetaUc-thetaUb;
             origin = 3; //3=C
         }
 
-        float[] result = new float[]{alpha, beta, origin};
+        var result = new float[]{alpha, beta, origin};
 
         //Console.WriteLine();
         //Console.WriteLine($"Angles from P  -----> A:{theta_ua*180/Math.PI}, B:{theta_ub*180/Math.PI}, C:{theta_uc*180/Math.PI}");

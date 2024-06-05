@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Extended.Float64.Multivectors;
-using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Extended.Float64.Multivectors.Composers;
-using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Extended.Float64.Processors;
-using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Restricted.Float64.Multivectors;
-using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Restricted.Float64.Multivectors.Composers;
-using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Restricted.Float64.Processors;
-using GeometricAlgebraFulcrumLib.Utilities.Extensions;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra;
+using GeometricAlgebraFulcrumLib.Core.Algebra.GeometricAlgebra.Extended.Float64.Multivectors;
+using GeometricAlgebraFulcrumLib.Core.Algebra.GeometricAlgebra.Extended.Float64.Multivectors.Composers;
+using GeometricAlgebraFulcrumLib.Core.Algebra.GeometricAlgebra.Extended.Float64.Processors;
+using GeometricAlgebraFulcrumLib.Core.Algebra.GeometricAlgebra.Restricted.Float64.Multivectors;
+using GeometricAlgebraFulcrumLib.Core.Algebra.GeometricAlgebra.Restricted.Float64.Multivectors.Composers;
+using GeometricAlgebraFulcrumLib.Core.Algebra.GeometricAlgebra.Restricted.Float64.Processors;
 using NUnit.Framework;
 
 namespace GeometricAlgebraFulcrumLib.UnitTests.Processing;
@@ -119,7 +119,7 @@ public sealed class MultivectorStoragesTests
     {
         return funcName switch
         {
-            "sp" => (mv1, mv2) => mv1.Sp(mv2).ScalarValue(),
+            "sp" => (mv1, mv2) => mv1.Sp(mv2).ScalarValue,
             _ => null
         };
     }
@@ -128,7 +128,7 @@ public sealed class MultivectorStoragesTests
     {
         return funcName switch
         {
-            "sp" => (mv1, mv2) => mv1.Sp(mv2).ScalarValue(),
+            "sp" => (mv1, mv2) => mv1.Sp(mv2).ScalarValue,
             _ => null
         };
     }
@@ -193,8 +193,8 @@ public sealed class MultivectorStoragesTests
     {
         return funcName switch
         {
-            "spSquared" => mv => mv.SpSquared().ScalarValue(),
-            "spReverse" => mv => mv.NormSquared().ScalarValue(),
+            "spSquared" => mv => mv.SpSquared().ScalarValue,
+            "spReverse" => mv => mv.NormSquared().ScalarValue,
             _ => null
         };
     }
@@ -203,8 +203,8 @@ public sealed class MultivectorStoragesTests
     {
         return funcName switch
         {
-            "spSquared" => mv => mv.Sp(mv).ScalarValue(),
-            "spReverse" => mv => mv.Sp(mv.Reverse()).ScalarValue(),
+            "spSquared" => mv => mv.Sp(mv).ScalarValue,
+            "spReverse" => mv => mv.Sp(mv.Reverse()).ScalarValue,
             _ => null
         };
     }
@@ -272,17 +272,17 @@ public sealed class MultivectorStoragesTests
     public void AssertCorrectInitialization()
     {
         Debug.Assert(_mvList1.Count == _mvList2.Count);
-        Assert.IsTrue(_mvList1.Count == _mvList2.Count);
+        Assert.That(_mvList1.Count == _mvList2.Count);
 
         for (var i = 0; i < _mvList1.Count; i++)
         {
             Debug.Assert(_mvList1[i].Count == _mvList2[i].Count);
-            Assert.IsTrue(_mvList1[i].Count == _mvList2[i].Count);
+            Assert.That(_mvList1[i].Count == _mvList2[i].Count);
 
             var mvStorageDiff = 
                 Subtract(_mvList1[i], _mvList2[i]);
 
-            Assert.IsTrue(mvStorageDiff.IsZero);
+            Assert.That(mvStorageDiff.IsZero);
         }
     }
         
@@ -310,7 +310,7 @@ public sealed class MultivectorStoragesTests
                 var storageDiff = Subtract(result1, result2);
 
                 Debug.Assert(storageDiff.IsZero);
-                Assert.IsTrue(storageDiff.IsZero);
+                Assert.That(storageDiff.IsZero);
             }
         }
     }
@@ -339,11 +339,11 @@ public sealed class MultivectorStoragesTests
                 var result1 = testedFunction1(storage1, storage2);
                 var result2 = testedFunction2(termsStorage1, termsStorage2);
 
-                var storageDiff = GeometricProcessor.CreateScalar(
+                var storageDiff = GeometricProcessor.Scalar(
                     result1 - result2
                 );
 
-                Assert.IsTrue(storageDiff.IsNearZero());
+                Assert.That(storageDiff.IsNearZero());
             }
         }
     }
@@ -369,7 +369,7 @@ public sealed class MultivectorStoragesTests
 
             var storageDiff = Subtract(result1, result2);
 
-            Assert.IsTrue(storageDiff.IsZero);
+            Assert.That(storageDiff.IsZero);
         }
     }
 
@@ -392,12 +392,12 @@ public sealed class MultivectorStoragesTests
             var result1 = testedFunction1(storage1);
             var result2 = testedFunction2(termsStorage1);
 
-            var storageDiff = GeometricProcessor.CreateScalar(
+            var storageDiff = GeometricProcessor.Scalar(
                 result1 - result2
             );
 
             Debug.Assert(storageDiff.IsNearZero());    
-            Assert.IsTrue(storageDiff.IsNearZero());
+            Assert.That(storageDiff.IsNearZero());
         }
     }
 
@@ -414,7 +414,7 @@ public sealed class MultivectorStoragesTests
 
             var storageDiff = Subtract(result1, result2);
 
-            Assert.IsTrue(storageDiff.IsZero);
+            Assert.That(storageDiff.IsZero);
 
 
             result1 = storage1.Gp(storage1.Reverse());
@@ -422,23 +422,23 @@ public sealed class MultivectorStoragesTests
 
             storageDiff = Subtract(result1, result2);
 
-            Assert.IsTrue(storageDiff.IsZero);
+            Assert.That(storageDiff.IsZero);
 
 
             var scalar1 = storage1.SpSquared();
-            var scalar2 = termsStorage1.Sp(termsStorage1);
+            var scalar2 = termsStorage1.Sp(termsStorage1).ToScalar();
 
-            var scalarDiff = scalar1 - scalar2.ScalarValue();
+            var scalarDiff = scalar1 - scalar2.ScalarValue;
 
-            Assert.IsTrue(scalarDiff.IsNearZero());
+            Assert.That(scalarDiff.IsNearZero());
                 
 
             scalar1 = storage1.NormSquared();
             scalar2 = termsStorage1.NormSquared();
 
-            scalarDiff = scalar1 - scalar2.ScalarValue();
+            scalarDiff = scalar1 - scalar2.ScalarValue;
 
-            Assert.IsTrue(scalarDiff.IsNearZero());
+            Assert.That(scalarDiff.IsNearZero());
         }
     }
 }
@@ -453,7 +453,7 @@ public sealed class MultivectorStoragesTests
 
 
 //    public IGeometricAlgebraProcessor<double> GeometricProcessor { get; }
-//        = ScalarAlgebraFloat64Processor.DefaultProcessor.CreateGeometricAlgebraEuclideanProcessor(5);
+//        = ScalarAlgebraFloat64Processor.Instance.CreateGeometricAlgebraEuclideanProcessor(5);
 
 //    public uint VSpaceDimensions 
 //        => GeometricProcessor.VSpaceDimensions;
@@ -718,17 +718,17 @@ public sealed class MultivectorStoragesTests
 //    public void AssertCorrectInitialization()
 //    {
 //        Debug.Assert(_mvList1.Count == _mvList2.Count);
-//        Assert.IsTrue(_mvList1.Count == _mvList2.Count);
+//        Assert.That(_mvList1.Count == _mvList2.Count);
 
 //        for (var i = 0; i < _mvList1.Count; i++)
 //        {
 //            Debug.Assert(_mvList1[i].TermsCount == _mvList2[i].Count);
-//            Assert.IsTrue(_mvList1[i].TermsCount == _mvList2[i].Count);
+//            Assert.That(_mvList1[i].TermsCount == _mvList2[i].Count);
 
 //            var mvStorageDiff = 
 //                Subtract(_mvList1[i], _mvList2[i]);
 
-//            Assert.IsTrue(mvStorageDiff.IsZero());
+//            Assert.That(mvStorageDiff.IsZero());
 //        }
 //    }
         
@@ -756,7 +756,7 @@ public sealed class MultivectorStoragesTests
 //                var storageDiff = Subtract(result1, result2);
 
 //                Debug.Assert(storageDiff.IsZero());
-//                Assert.IsTrue(storageDiff.IsZero());
+//                Assert.That(storageDiff.IsZero());
 //            }
 //        }
 //    }
@@ -789,7 +789,7 @@ public sealed class MultivectorStoragesTests
 //                    result1 - result2
 //                );
 
-//                Assert.IsTrue(GeometricProcessor.IsNearZero(storageDiff));
+//                Assert.That(GeometricProcessor.IsNearZero(storageDiff));
 //            }
 //        }
 //    }
@@ -815,7 +815,7 @@ public sealed class MultivectorStoragesTests
 
 //            var storageDiff = Subtract(result1, result2);
 
-//            Assert.IsTrue(storageDiff.IsZero());
+//            Assert.That(storageDiff.IsZero());
 //        }
 //    }
 
@@ -842,7 +842,7 @@ public sealed class MultivectorStoragesTests
 //                result1 - result2
 //            );
 
-//            Assert.IsTrue(GeometricProcessor.IsNearZero(storageDiff));
+//            Assert.That(GeometricProcessor.IsNearZero(storageDiff));
 //        }
 //    }
 
@@ -859,7 +859,7 @@ public sealed class MultivectorStoragesTests
 
 //            var storageDiff = Subtract(result1, result2);
 
-//            Assert.IsTrue(storageDiff.IsZero());
+//            Assert.That(storageDiff.IsZero());
 
 
 //            result1 = GeometricProcessor.GpReverse(storage1);
@@ -867,7 +867,7 @@ public sealed class MultivectorStoragesTests
 
 //            storageDiff = Subtract(result1, result2);
 
-//            Assert.IsTrue(storageDiff.IsZero());
+//            Assert.That(storageDiff.IsZero());
 
 
 //            var scalar1 = GeometricProcessor.Sp(storage1);
@@ -875,7 +875,7 @@ public sealed class MultivectorStoragesTests
 
 //            var scalarDiff = scalar1 - scalar2;
 
-//            Assert.IsTrue(GeometricProcessor.IsNearZero(scalarDiff));
+//            Assert.That(GeometricProcessor.IsNearZero(scalarDiff));
                 
 
 //            scalar1 = GeometricProcessor.NormSquared(storage1);
@@ -883,7 +883,7 @@ public sealed class MultivectorStoragesTests
 
 //            scalarDiff = scalar1 - scalar2;
 
-//            Assert.IsTrue(GeometricProcessor.IsNearZero(scalarDiff));
+//            Assert.That(GeometricProcessor.IsNearZero(scalarDiff));
 //        }
 //    }
 //}

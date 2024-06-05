@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using BenchmarkDotNet.Attributes;
-using DataStructuresLib.Basic;
+using GeometricAlgebraFulcrumLib.Utilities.Structures.Basic;
 using GAPoTNumLib.GAPoT;
-using GeometricAlgebraFulcrumLib.Lite.LinearAlgebra.LinearMaps.SpaceND.Rotation;
-using GeometricAlgebraFulcrumLib.Lite.LinearAlgebra.Matrices;
-using GeometricAlgebraFulcrumLib.Lite.LinearAlgebra.Vectors.SpaceND;
+using GeometricAlgebraFulcrumLib.Core.Algebra.LinearAlgebra.Float64.LinearMaps.SpaceND.Rotation;
+using GeometricAlgebraFulcrumLib.Core.Algebra.LinearAlgebra.Float64.Matrices;
+using GeometricAlgebraFulcrumLib.Core.Algebra.LinearAlgebra.Float64.Vectors.SpaceND;
 
 namespace GeometricAlgebraFulcrumLib.Benchmarks.GAPoT;
 
@@ -69,7 +69,7 @@ public class SkrClarkeBenchmark
 
         //ClarkeArray =
         //    ScalarAlgebraFloat64Processor
-        //        .DefaultProcessor
+        //        .Instance
         //        .CreateClarkeArray(VSpaceDimensions);
 
         //SkrRotateFunction = VSpaceDimensions switch
@@ -370,8 +370,8 @@ public class SkrClarkeBenchmark
 
     public void Validate()
     {
-        var vList1 = ClarkeMatrixProduct().Select(Float64Vector.Create).ToImmutableArray();
-        var vList2 = ClarkeSimpleRotors().Select(Float64Vector.Create).ToImmutableArray();
+        var vList1 = ClarkeMatrixProduct().Select(LinFloat64Vector.Create).ToImmutableArray();
+        var vList2 = ClarkeSimpleRotors().Select(LinFloat64Vector.Create).ToImmutableArray();
 
         for (var i = 0; i < vList1.Length; i++)
         {

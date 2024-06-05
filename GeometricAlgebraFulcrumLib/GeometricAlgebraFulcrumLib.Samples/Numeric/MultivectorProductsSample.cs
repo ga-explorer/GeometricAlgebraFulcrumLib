@@ -1,8 +1,8 @@
 ﻿using System;
-using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Restricted.Float64.Multivectors.Composers;
-using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Restricted.Float64.Processors;
-using GeometricAlgebraFulcrumLib.Lite.ScalarAlgebra;
-using GeometricAlgebraFulcrumLib.MathBase.Text;
+using GeometricAlgebraFulcrumLib.Algebra.Scalars;
+using GeometricAlgebraFulcrumLib.Core.Algebra.GeometricAlgebra.Restricted.Float64.Multivectors.Composers;
+using GeometricAlgebraFulcrumLib.Core.Algebra.GeometricAlgebra.Restricted.Float64.Processors;
+using GeometricAlgebraFulcrumLib.Algebra.Utilities.Text;
 
 namespace GeometricAlgebraFulcrumLib.Samples.Numeric;
 
@@ -10,7 +10,7 @@ public static class MultivectorProductsSample
 {
     // This is a pre-defined scalar processor for numeric scalars
     public static ScalarProcessorOfFloat64 ScalarProcessor { get; }
-        = ScalarProcessorOfFloat64.DefaultProcessor;
+        = ScalarProcessorOfFloat64.Instance;
             
     // Create a 3-dimensional Euclidean geometric algebra processor based on the
     // selected scalar processor
@@ -33,7 +33,7 @@ public static class MultivectorProductsSample
     {
         // This is a pre-defined scalar processor for the standard
         // 64-bit floating point scalars
-        var scalarProcessor = ScalarProcessorOfFloat64.DefaultProcessor;
+        var scalarProcessor = ScalarProcessorOfFloat64.Instance;
 
         // Create a 3-dimensional Euclidean geometric algebra processor based on the
         // selected scalar processor
@@ -50,8 +50,8 @@ public static class MultivectorProductsSample
         var latexComposer = LaTeXComposerFloat64.DefaultComposer;
 
         // Create two GA vectors each having 3 components
-        var u = geometricProcessor.CreateVector(1.2, -1, 1.25);
-        var v = geometricProcessor.CreateVector(2.1, 0.9, 2.1);
+        var u = geometricProcessor.Vector(1.2, -1, 1.25);
+        var v = geometricProcessor.Vector(2.1, 0.9, 2.1);
 
         // Compute their outer product as a bivector
         var uvOp = u.Op(v);

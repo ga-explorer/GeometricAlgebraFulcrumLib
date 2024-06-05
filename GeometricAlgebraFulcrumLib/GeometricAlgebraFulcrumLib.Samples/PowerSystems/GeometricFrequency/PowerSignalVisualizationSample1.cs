@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Globalization;
 using System.Linq;
-using DataStructuresLib.BitManipulation;
+using GeometricAlgebraFulcrumLib.Utilities.Structures.BitManipulation;
 using GeometricAlgebraFulcrumLib.Applications.PowerSystems;
-using GeometricAlgebraFulcrumLib.Lite.Geometry.Differential.Functions;
-using GeometricAlgebraFulcrumLib.Lite.Geometry.Differential.Functions.Phasors;
-using GeometricAlgebraFulcrumLib.Lite.ScalarAlgebra;
-using GeometricAlgebraFulcrumLib.Lite.SignalAlgebra.Composers;
-using WebComposerLib.LaTeX.CodeComposer;
+using GeometricAlgebraFulcrumLib.Core.Modeling.Geometry.Differential.Functions;
+using GeometricAlgebraFulcrumLib.Core.Modeling.Geometry.Differential.Functions.Phasors;
+using GeometricAlgebraFulcrumLib.Core.Algebra.LinearAlgebra.Float64.Angles;
+using GeometricAlgebraFulcrumLib.Core.Algebra.Scalars.Float64;
+using GeometricAlgebraFulcrumLib.Core.Algebra.Signals.Composers;
+using GeometricAlgebraFulcrumLib.Utilities.Web.LaTeX.CodeComposer;
 
 // ReSharper disable CompareOfFloatsByEqualityOperator
 
@@ -213,7 +214,7 @@ public static class PowerSignalVisualizationSample1
             HarmonicCount.GetRange().Select(i => DfSinPhasor.Create(
                 Magnitudes[1, i],
                 Frequency * HarmonicFactors[i],
-                -2d * Math.PI / 3 * HarmonicFactors[i]
+                (-2d * Math.PI / 3 * HarmonicFactors[i]).RadiansToDirectedAngle()
             ))
         );
 
@@ -221,7 +222,7 @@ public static class PowerSignalVisualizationSample1
             HarmonicCount.GetRange().Select(i => DfSinPhasor.Create(
                 Magnitudes[2, i],
                 Frequency * HarmonicFactors[i],
-                2d * Math.PI / 3 * HarmonicFactors[i]
+                (2d * Math.PI / 3 * HarmonicFactors[i]).RadiansToDirectedAngle()
             ))
         );
 
@@ -259,9 +260,9 @@ public static class PowerSignalVisualizationSample1
         // 2.97467 sin(0.628319 t - 0.459056)
         // -1.54809 sin(0.628319 t + 2.64468)
 
-        var phase1 = DfSinPhasor.Create(3.12327, Frequency, 1.88399);
-        var phase2 = DfSinPhasor.Create(2.97467, Frequency, -0.459056);
-        var phase3 = DfSinPhasor.Create(-1.54809, Frequency, 2.64468);
+        var phase1 = DfSinPhasor.Create(3.12327, Frequency, 1.88399.RadiansToDirectedAngle());
+        var phase2 = DfSinPhasor.Create(2.97467, Frequency, -0.459056.RadiansToDirectedAngle());
+        var phase3 = DfSinPhasor.Create(-1.54809, Frequency, 2.64468.RadiansToDirectedAngle());
 
         //var phase1 = CosFunction.Create(2, Frequency, 0.DegreesToAngle());
         //var phase2 = CosFunction.Create(4, Frequency, 230.DegreesToAngle());

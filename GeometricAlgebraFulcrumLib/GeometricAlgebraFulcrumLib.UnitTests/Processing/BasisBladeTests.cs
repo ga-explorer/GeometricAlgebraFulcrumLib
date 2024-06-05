@@ -1,10 +1,10 @@
 ﻿using System.Diagnostics;
 using System.Numerics;
-using DataStructuresLib.Basic;
-using DataStructuresLib.Combinations;
-using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Basis;
-using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Restricted.Float64.Processors;
-using GeometricAlgebraFulcrumLib.Utilities.Extensions;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra;
+using GeometricAlgebraFulcrumLib.Core.Algebra.GeometricAlgebra.Basis;
+using GeometricAlgebraFulcrumLib.Utilities.Structures.Basic;
+using GeometricAlgebraFulcrumLib.Utilities.Structures.Combinations;
+using GeometricAlgebraFulcrumLib.Core.Algebra.GeometricAlgebra.Restricted.Float64.Processors;
 using NUnit.Framework;
 
 namespace GeometricAlgebraFulcrumLib.UnitTests.Processing;
@@ -33,19 +33,19 @@ public sealed class BasisBladeTests
             var kvSpaceDimension2 = VSpaceDimensions.KVectorSpaceDimension((int) grade);
 
             Debug.Assert(kvSpaceDimensions == kvSpaceDimension2);
-            Assert.IsTrue(kvSpaceDimensions == kvSpaceDimension2);
+            Assert.That(kvSpaceDimensions == kvSpaceDimension2);
 
             Debug.Assert(grade == BitOperations.PopCount(id));
-            Assert.IsTrue(grade == BitOperations.PopCount(id));
+            Assert.That(grade == BitOperations.PopCount(id));
 
             Debug.Assert(grade <= VSpaceDimensions);
-            Assert.IsTrue(grade <= VSpaceDimensions);
+            Assert.That(grade <= VSpaceDimensions);
 
             Debug.Assert(index < kvSpaceDimensions);
-            Assert.IsTrue(index < kvSpaceDimensions);
+            Assert.That(index < kvSpaceDimensions);
 
             Debug.Assert(id == id2);
-            Assert.IsTrue(id == id2);
+            Assert.That(id == id2);
         }
 
         for (var grade = 0U; grade <= VSpaceDimensions; grade++)
@@ -58,13 +58,13 @@ public sealed class BasisBladeTests
                 var (grade2, index2) = id.BasisBladeIdToGradeIndex();
                     
                 Debug.Assert(grade == grade2);
-                Assert.IsTrue(grade == grade2);
+                Assert.That(grade == grade2);
                     
                 Debug.Assert(index == index2);
-                Assert.IsTrue(index == index2);
+                Assert.That(index == index2);
                     
                 Debug.Assert(id < GaSpaceDimensions);
-                Assert.IsTrue(id < GaSpaceDimensions);
+                Assert.That(id < GaSpaceDimensions);
             }
         }
     }
@@ -83,7 +83,7 @@ public sealed class BasisBladeTests
                 grade.GradeInvolutionSignOfGrade();
 
             Debug.Assert(equalFlag);
-            Assert.IsTrue(equalFlag);
+            Assert.That(equalFlag);
 
 
             equalFlag =
@@ -91,7 +91,7 @@ public sealed class BasisBladeTests
                 grade.GradeInvolutionSignOfGrade();
 
             Debug.Assert(equalFlag);
-            Assert.IsTrue(equalFlag);
+            Assert.That(equalFlag);
 
 
             equalFlag =
@@ -99,7 +99,7 @@ public sealed class BasisBladeTests
                 grade.GradeInvolutionIsNegativeOfGrade();
 
             Debug.Assert(equalFlag);
-            Assert.IsTrue(equalFlag);
+            Assert.That(equalFlag);
 
 
             equalFlag =
@@ -107,7 +107,7 @@ public sealed class BasisBladeTests
                 grade.GradeInvolutionIsPositiveOfGrade();
 
             Debug.Assert(equalFlag);
-            Assert.IsTrue(equalFlag);
+            Assert.That(equalFlag);
                 
 
             equalFlag =
@@ -115,7 +115,7 @@ public sealed class BasisBladeTests
                 !id.GradeInvolutionIsPositiveOfBasisBladeId();
 
             Debug.Assert(equalFlag);
-            Assert.IsTrue(equalFlag);
+            Assert.That(equalFlag);
                 
 
             equalFlag =
@@ -123,7 +123,7 @@ public sealed class BasisBladeTests
                 (id.GradeInvolutionSignOfBasisBladeId().IsNegative);
 
             Debug.Assert(equalFlag);
-            Assert.IsTrue(equalFlag);
+            Assert.That(equalFlag);
                 
 
             equalFlag =
@@ -131,7 +131,7 @@ public sealed class BasisBladeTests
                 (id.GradeInvolutionSignOfBasisBladeId().IsPositive);
 
             Debug.Assert(equalFlag);
-            Assert.IsTrue(equalFlag);
+            Assert.That(equalFlag);
         }
     }
 
@@ -149,7 +149,7 @@ public sealed class BasisBladeTests
                 grade.ReverseSignOfGrade();
 
             Debug.Assert(equalFlag);
-            Assert.IsTrue(equalFlag);
+            Assert.That(equalFlag);
 
 
             equalFlag =
@@ -157,7 +157,7 @@ public sealed class BasisBladeTests
                 grade.ReverseSignOfGrade();
 
             Debug.Assert(equalFlag);
-            Assert.IsTrue(equalFlag);
+            Assert.That(equalFlag);
 
 
             equalFlag =
@@ -165,7 +165,7 @@ public sealed class BasisBladeTests
                 grade.ReverseIsNegativeOfGrade();
 
             Debug.Assert(equalFlag);
-            Assert.IsTrue(equalFlag);
+            Assert.That(equalFlag);
 
 
             equalFlag =
@@ -173,7 +173,7 @@ public sealed class BasisBladeTests
                 grade.ReverseIsPositiveOfGrade();
 
             Debug.Assert(equalFlag);
-            Assert.IsTrue(equalFlag);
+            Assert.That(equalFlag);
                 
 
             equalFlag =
@@ -181,7 +181,7 @@ public sealed class BasisBladeTests
                 !id.ReverseIsPositiveOfBasisBladeId();
 
             Debug.Assert(equalFlag);
-            Assert.IsTrue(equalFlag);
+            Assert.That(equalFlag);
                 
 
             equalFlag =
@@ -189,7 +189,7 @@ public sealed class BasisBladeTests
                 (id.ReverseSignOfBasisBladeId().IsNegative);
 
             Debug.Assert(equalFlag);
-            Assert.IsTrue(equalFlag);
+            Assert.That(equalFlag);
                 
 
             equalFlag =
@@ -197,7 +197,7 @@ public sealed class BasisBladeTests
                 (id.ReverseSignOfBasisBladeId().IsPositive);
 
             Debug.Assert(equalFlag);
-            Assert.IsTrue(equalFlag);
+            Assert.That(equalFlag);
         }
     }
         
@@ -214,7 +214,7 @@ public sealed class BasisBladeTests
                 grade.CliffordConjugateSignOfGrade();
 
             Debug.Assert(equalFlag);
-            Assert.IsTrue(equalFlag);
+            Assert.That(equalFlag);
 
 
             equalFlag =
@@ -222,7 +222,7 @@ public sealed class BasisBladeTests
                 grade.CliffordConjugateSignOfGrade();
 
             Debug.Assert(equalFlag);
-            Assert.IsTrue(equalFlag);
+            Assert.That(equalFlag);
 
 
             equalFlag =
@@ -230,7 +230,7 @@ public sealed class BasisBladeTests
                 grade.CliffordConjugateIsNegativeOfGrade();
 
             Debug.Assert(equalFlag);
-            Assert.IsTrue(equalFlag);
+            Assert.That(equalFlag);
 
 
             equalFlag =
@@ -238,7 +238,7 @@ public sealed class BasisBladeTests
                 grade.CliffordConjugateIsPositiveOfGrade();
 
             Debug.Assert(equalFlag);
-            Assert.IsTrue(equalFlag);
+            Assert.That(equalFlag);
                 
 
             equalFlag =
@@ -246,7 +246,7 @@ public sealed class BasisBladeTests
                 !id.CliffordConjugateIsPositiveOfBasisBladeId();
 
             Debug.Assert(equalFlag);
-            Assert.IsTrue(equalFlag);
+            Assert.That(equalFlag);
                 
 
             equalFlag =
@@ -254,7 +254,7 @@ public sealed class BasisBladeTests
                 (id.CliffordConjugateSignOfBasisBladeId().IsNegative);
 
             Debug.Assert(equalFlag);
-            Assert.IsTrue(equalFlag);
+            Assert.That(equalFlag);
                 
 
             equalFlag =
@@ -262,7 +262,7 @@ public sealed class BasisBladeTests
                 (id.CliffordConjugateSignOfBasisBladeId().IsPositive);
 
             Debug.Assert(equalFlag);
-            Assert.IsTrue(equalFlag);
+            Assert.That(equalFlag);
         }
     }
         
@@ -278,10 +278,10 @@ public sealed class BasisBladeTests
             var egpSign2 = BasisSet.EGpSquaredSign(id1);
 
             Debug.Assert(gpSign1 == gpSign2);
-            Assert.IsTrue(gpSign1 == gpSign2);
+            Assert.That(gpSign1 == gpSign2);
                 
             Debug.Assert(egpSign1 == egpSign2);
-            Assert.IsTrue(egpSign1 == egpSign2);
+            Assert.That(egpSign1 == egpSign2);
         }
     }
 
@@ -299,22 +299,22 @@ public sealed class BasisBladeTests
             var egpSign3 = BasisSet.EGpReverseSign(id1);
 
             Debug.Assert(gpSign1 == gpSign2);
-            Assert.IsTrue(gpSign1 == gpSign2);
+            Assert.That(gpSign1 == gpSign2);
                 
             Debug.Assert(gpSign2 == gpSign3);
-            Assert.IsTrue(gpSign2 == gpSign3);
+            Assert.That(gpSign2 == gpSign3);
                 
             Debug.Assert(gpSign3 == gpSign1);
-            Assert.IsTrue(gpSign3 == gpSign1);
+            Assert.That(gpSign3 == gpSign1);
                 
             Debug.Assert(egpSign1 == egpSign2);
-            Assert.IsTrue(egpSign1 == egpSign2);
+            Assert.That(egpSign1 == egpSign2);
                 
             Debug.Assert(egpSign2 == egpSign3);
-            Assert.IsTrue(egpSign2 == egpSign3);
+            Assert.That(egpSign2 == egpSign3);
                 
             Debug.Assert(egpSign3 == egpSign1);
-            Assert.IsTrue(egpSign3 == egpSign1);
+            Assert.That(egpSign3 == egpSign1);
 
             for (var id2 = 0UL; id2 < GaSpaceDimensions; id2++)
             {
@@ -325,10 +325,10 @@ public sealed class BasisBladeTests
                 egpSign2 = BasisSet.EGpReverseSign(id1, id2);
 
                 Debug.Assert(gpSign1 == gpSign2);
-                Assert.IsTrue(gpSign1 == gpSign2);
+                Assert.That(gpSign1 == gpSign2);
                     
                 Debug.Assert(egpSign1 == egpSign2);
-                Assert.IsTrue(egpSign1 == egpSign2);
+                Assert.That(egpSign1 == egpSign2);
             }
         }
     }

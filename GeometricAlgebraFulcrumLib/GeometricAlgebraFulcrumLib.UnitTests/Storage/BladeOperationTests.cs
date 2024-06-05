@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
-using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Restricted.Float64.Multivectors;
-using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Restricted.Float64.Multivectors.Composers;
-using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Restricted.Float64.Processors;
-using GeometricAlgebraFulcrumLib.Utilities.Extensions;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra;
+using GeometricAlgebraFulcrumLib.Core.Algebra.GeometricAlgebra.Restricted.Float64.Multivectors;
+using GeometricAlgebraFulcrumLib.Core.Algebra.GeometricAlgebra.Restricted.Float64.Multivectors.Composers;
+using GeometricAlgebraFulcrumLib.Core.Algebra.GeometricAlgebra.Restricted.Float64.Processors;
 using NUnit.Framework;
 
 namespace GeometricAlgebraFulcrumLib.UnitTests.Storage;
@@ -57,27 +57,27 @@ public sealed class BladeOperationTests
         {
             blade2 = ((blade1 * _scalar) / _scalar);
             diff = blade1 - blade2;
-            Assert.IsTrue(diff.IsNearZero());
+            Assert.That(diff.IsNearZero());
 
             blade2 = ((_scalar * blade1) / _scalar);
             diff = blade1 - blade2;
-            Assert.IsTrue(diff.IsNearZero());
+            Assert.That(diff.IsNearZero());
 
             blade2 = (_scalar.Op(blade1) / _scalar);
             diff = blade1 - blade2;
-            Assert.IsTrue(diff.IsNearZero());
+            Assert.That(diff.IsNearZero());
 
             blade2 = (blade1.Op(_scalar) / _scalar);
             diff = blade1 - blade2;
-            Assert.IsTrue(diff.IsNearZero());
+            Assert.That(diff.IsNearZero());
 
             blade2 = (_scalar.EGp(blade1) / _scalar);
             diff = blade1 - blade2;
-            Assert.IsTrue(diff.IsNearZero());
+            Assert.That(diff.IsNearZero());
 
             blade2 = (blade1.EGp(_scalar) / _scalar);
             diff = blade1 - blade2;
-            Assert.IsTrue(diff.IsNearZero());
+            Assert.That(diff.IsNearZero());
         }
     }
 }

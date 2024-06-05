@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Linq;
-using GeometricAlgebraFulcrumLib.Lite.ScalarAlgebra;
-using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Multivectors.Composers;
-using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Multivectors.GuidedBinaryTraversal.Products;
-using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Processors;
-using GeometricAlgebraFulcrumLib.MathBase.Text;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Generic.Multivectors.Composers;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Generic.Multivectors.GuidedBinaryTraversal.Products;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Generic.Processors;
+using GeometricAlgebraFulcrumLib.Algebra.Scalars;
+using GeometricAlgebraFulcrumLib.Algebra.Utilities.Text;
 
 namespace GeometricAlgebraFulcrumLib.Samples.Storage;
 
@@ -13,13 +13,13 @@ public static class Sample1
     public static void Execute()
     {
         var vSpaceDimensions = 5;
-        var scalarProcessor = ScalarProcessorOfFloat64.DefaultProcessor;
+        var scalarProcessor = ScalarProcessorOfFloat64.Instance;
         var processor = scalarProcessor.CreateEuclideanRGaProcessor();
         var textComposer = TextComposerFloat64.DefaultComposer;
 
         var randomGenerator = new Random(10);
 
-        var vectorStorage1 = processor.CreateVector(
+        var vectorStorage1 = processor.Vector(
             Enumerable
                 .Range(0, vSpaceDimensions)
                 .ToDictionary(
@@ -28,7 +28,7 @@ public static class Sample1
                 )
         );
 
-        var vectorStorage2 = processor.CreateVector(
+        var vectorStorage2 = processor.Vector(
             Enumerable
                 .Range(0, vSpaceDimensions - 2)
                 .ToDictionary(
@@ -47,7 +47,7 @@ public static class Sample1
             );
 
         var multivector =
-            processor.CreateMultivector(
+            processor.Multivector(
                 gbtStack.GetEGpIdScalarRecords()
             );
 

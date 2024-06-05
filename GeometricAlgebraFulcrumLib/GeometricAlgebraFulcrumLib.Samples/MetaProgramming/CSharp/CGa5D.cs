@@ -1,5 +1,5 @@
 ﻿using System.Runtime.CompilerServices;
-using GeometricAlgebraFulcrumLib.Lite.ScalarAlgebra;
+using GeometricAlgebraFulcrumLib.Core.Algebra.Scalars.Float64;
 
 namespace GeometricAlgebraFulcrumLib.Samples.MetaProgramming.CSharp;
 

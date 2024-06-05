@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Linq;
-using DataStructuresLib.BitManipulation;
-using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Restricted.Float64.Multivectors;
-using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Restricted.Float64.Multivectors.Composers;
-using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Restricted.Float64.Processors;
-using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Restricted.Float64.Subspaces;
-using GeometricAlgebraFulcrumLib.MathBase.Text;
+using GeometricAlgebraFulcrumLib.Utilities.Structures.BitManipulation;
+using GeometricAlgebraFulcrumLib.Core.Algebra.GeometricAlgebra.Restricted.Float64.Multivectors;
+using GeometricAlgebraFulcrumLib.Core.Algebra.GeometricAlgebra.Restricted.Float64.Multivectors.Composers;
+using GeometricAlgebraFulcrumLib.Core.Algebra.GeometricAlgebra.Restricted.Float64.Processors;
+using GeometricAlgebraFulcrumLib.Core.Algebra.GeometricAlgebra.Restricted.Float64.Subspaces;
+using GeometricAlgebraFulcrumLib.Algebra.Utilities.Text;
 
 namespace GeometricAlgebraFulcrumLib.Samples.EuclideanGeometry;
 
@@ -18,10 +18,10 @@ public static class RegularSimplexSample
 
         // You can also use other kinds of symbolic processors and text composers
 
-        //var scalarProcessor = ScalarAlgebraMathematicaProcessor.DefaultProcessor;
+        //var scalarProcessor = ScalarAlgebraMathematicaProcessor.Instance;
         //var textComposer = LaTeXComposerExpr.DefaultComposer;
 
-        //var scalarProcessor = ScalarAlgebraAngouriMathProcessor.DefaultProcessor;
+        //var scalarProcessor = ScalarAlgebraAngouriMathProcessor.Instance;
         //var textComposer = TextAngouriMathComposer.DefaultComposer;
 
         // Make the same construction for dimensions 2, 3, ..., 10
@@ -40,7 +40,7 @@ public static class RegularSimplexSample
                 
             // The ones vector is the core of this geometric construction
             var onesVector = processor
-                .CreateSymmetricVector(vSpaceDimensions);
+                .VectorSymmetric(vSpaceDimensions);
             //.MapScalars(expr => Mfs.N[expr].Evaluate());
 
             // This hyperspace is the orthogonal complement of the all-ones vector
@@ -49,7 +49,7 @@ public static class RegularSimplexSample
 
             // Basis vectors of GA space
             var basisVectors =
-                vSpaceDimensions.GetRange(processor.CreateTermVector).ToArray();
+                vSpaceDimensions.GetRange(processor.VectorTerm).ToArray();
 
             // Simplex centroid to vertex vectors are projections of basis vectors
             // onto hyperSpace
@@ -58,7 +58,7 @@ public static class RegularSimplexSample
 
             // Take the average of the first n basis vectors of the larger GA space
             var avgVector = 
-                processor.CreateSymmetricVector(vSpaceDimensions, 1d / n);
+                processor.VectorSymmetric(vSpaceDimensions, 1d / n);
 
             // Projecting the average vector onto the hyperplane gives a radius of
             // the inner sphere

@@ -1,0 +1,108 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1" GroupingSetting="Access" MembersFormat="FullSignature">
+  <Class Name="GeometricAlgebraFulcrumLib.Utilities.Text.Text.Region.RcTemplate">
+    <Position X="4.75" Y="0.5" Width="4.75" />
+    <Compartments>
+      <Compartment Name="Private" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAAEA4ABAgAEABEEAAAjCAAAQAMAAAAQIAATAAAARAA=</HashCode>
+      <FileName>Text\Region\RcTemplate.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="GeometricAlgebraFulcrumLib.Utilities.Text.Text.Region.RcSlotTag">
+    <Position X="14.25" Y="8" Width="4.5" />
+    <Compartments>
+      <Compartment Name="Internal" Collapsed="true" />
+      <Compartment Name="Private" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>CiAAAkABAAAAAREEAAAgAAAgQACAAAAQOgAQAAEAgAA=</HashCode>
+      <FileName>Text\Region\RcSlotTag.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="GeometricAlgebraFulcrumLib.Utilities.Text.Text.Region.RcSlotRegion">
+    <Position X="14.25" Y="0.5" Width="4.25" />
+    <Compartments>
+      <Compartment Name="Internal" Collapsed="true" />
+      <Compartment Name="Private" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AgACEoABAABAQBUEAgIgCEAgQASAAEAQKBQQAABARAA=</HashCode>
+      <FileName>Text\Region\RcSlotRegion.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="GeometricAlgebraFulcrumLib.Utilities.Text.Text.Region.RcFixedTag">
+    <Position X="10" Y="8" Width="4" />
+    <Compartments>
+      <Compartment Name="Internal" Collapsed="true" />
+      <Compartment Name="Private" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAAAAgABAAAAAAEFAIgCAAACQACAAAAQCCAAAAAABAA=</HashCode>
+      <FileName>Text\Region\RcFixedTag.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="GeometricAlgebraFulcrumLib.Utilities.Text.Text.Region.RcFixedRegion">
+    <Position X="9.75" Y="0.5" Width="4.25" />
+    <Compartments>
+      <Compartment Name="Internal" Collapsed="true" />
+      <Compartment Name="Private" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAAAAgABAAAAAAEFAIgCAAAAAACAAAAQCCAAAAAAAAA=</HashCode>
+      <FileName>Text\Region\RcFixedRegion.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="GeometricAlgebraFulcrumLib.Utilities.Text.Text.Region.RcTemplateProcessor">
+    <Position X="0.5" Y="4.5" Width="3.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAARAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Text\Region\RcTemplateProcessor.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GeometricAlgebraFulcrumLib.Utilities.Text.Text.Region.RegionComposer">
+    <Position X="0.5" Y="7" Width="4.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAEAAAAAEAAAAAAAAAAAAAAAAAgAAAAAAAAA=</HashCode>
+      <FileName>Text\Region\RegionComposer.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GeometricAlgebraFulcrumLib.Utilities.Text.Text.Region.RegionUtils">
+    <Position X="0.5" Y="9.75" Width="5" />
+    <Compartments>
+      <Compartment Name="Private" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAEAAAgIAAAgAAAIAAAABKAAGAAAAEABIBIAAAAAEAA=</HashCode>
+      <FileName>Text\Region\RegionUtils.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Interface Name="GeometricAlgebraFulcrumLib.Utilities.Text.Text.Region.IRcRegion">
+    <Position X="0.5" Y="2.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAACAAAAACAAAAAAAAAA=</HashCode>
+      <FileName>Text\Region\IRcRegion.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="GeometricAlgebraFulcrumLib.Utilities.Text.Text.Region.IRcTemplatePart">
+    <Position X="0.5" Y="0.5" Width="3.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAABAAAAAAEAAAAAAAAAAAAAAAAQAAAAAAAAAAA=</HashCode>
+      <FileName>Text\Region\IRcTemplatePart.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="GeometricAlgebraFulcrumLib.Utilities.Text.Text.Region.IRcTag">
+    <Position X="2.5" Y="2.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAACAAAAACAAAAAAAAAA=</HashCode>
+      <FileName>Text\Region\IRcTag.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using GAPoTNumLib.GAPoT;
-using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Restricted.Float64.LinearMaps.Rotors;
-using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Restricted.Float64.Multivectors;
-using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Restricted.Float64.Multivectors.Composers;
-using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Restricted.Float64.Processors;
+using GeometricAlgebraFulcrumLib.Core.Algebra.GeometricAlgebra.Restricted.Float64.LinearMaps.Rotors;
+using GeometricAlgebraFulcrumLib.Core.Algebra.GeometricAlgebra.Restricted.Float64.Multivectors;
+using GeometricAlgebraFulcrumLib.Core.Algebra.GeometricAlgebra.Restricted.Float64.Multivectors.Composers;
+using GeometricAlgebraFulcrumLib.Core.Algebra.GeometricAlgebra.Restricted.Float64.Processors;
 using NUnit.Framework;
 
 namespace GeometricAlgebraFulcrumLib.UnitTests.Geometry;
@@ -73,14 +73,14 @@ public sealed class GeoSimpleRotorsEuclideanTests
             var v1 = rotor.OmMap(u);
 
             var vectorDiffNormSquared = 
-                (v1 - v).ENormSquared().ScalarValue();
+                (v1 - v).ENormSquared().ScalarValue;
 
             if (!vectorDiffNormSquared.IsNearZero())
             {
                 Console.WriteLine(vectorDiffNormSquared);
             }
 
-            Assert.IsTrue(vectorDiffNormSquared.IsNearZero());
+            Assert.That(vectorDiffNormSquared.IsNearZero());
 
             count--;
         }

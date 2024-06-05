@@ -3,9 +3,9 @@ using System.Collections.Immutable;
 using System.IO;
 using System.Linq;
 using GeometricAlgebraFulcrumLib.Applications.Graphics;
-using GeometricAlgebraFulcrumLib.Lite.LinearAlgebra;
-using GeometricAlgebraFulcrumLib.Lite.LinearAlgebra.Vectors.Space3D;
-using GeometricAlgebraFulcrumLib.Lite.ScalarAlgebra;
+using GeometricAlgebraFulcrumLib.Core.Algebra.LinearAlgebra.Float64.Angles;
+using GeometricAlgebraFulcrumLib.Core.Algebra.LinearAlgebra.Float64.Vectors.Space3D;
+using GeometricAlgebraFulcrumLib.Core.Algebra.Scalars.Float64;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.PixelFormats;
 using SixLabors.ImageSharp.Processing;
@@ -20,8 +20,8 @@ public static class RotorFamilySamples
     {
         const int frameCount = 1001;
 
-        var sourceVector = Float64Vector3D.E3;
-        var targetVector = Float64Vector3D.Create(1, 1, 1).ToUnitVector();
+        var sourceVector = LinFloat64Vector3D.E3;
+        var targetVector = LinFloat64Vector3D.Create(1, 1, 1).ToUnitLinVector3D();
 
 
         //var cameraAlphaValues =
@@ -45,7 +45,7 @@ public static class RotorFamilySamples
         const double thetaEpsilon = 5e-5d;
         var thetaValues =
             (-90d + thetaEpsilon).GetCosRange(90d - thetaEpsilon, frameCount, 1, false)
-            .Select(t => t.DegreesToAngle())
+            .Select(t => (LinFloat64Angle) t.DegreesToDirectedAngle())
             .ToImmutableArray();
 
         var visualizer = new RotorFamilyVisualizer3D(

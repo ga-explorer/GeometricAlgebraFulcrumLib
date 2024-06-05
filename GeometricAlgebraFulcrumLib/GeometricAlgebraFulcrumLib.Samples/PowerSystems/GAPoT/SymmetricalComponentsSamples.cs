@@ -2,19 +2,22 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using DataStructuresLib.BitManipulation;
-using DataStructuresLib.Extensions;
+using GeometricAlgebraFulcrumLib.Utilities.Structures.BitManipulation;
+using GeometricAlgebraFulcrumLib.Utilities.Structures.Extensions;
 using GAPoTNumLib.GAPoT;
-using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Extended.Float64.Multivectors.Composers;
-using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Extended.Float64.Processors;
-using GeometricAlgebraFulcrumLib.Lite.LinearAlgebra.Matrices;
-using GeometricAlgebraFulcrumLib.Lite.ScalarAlgebra;
-using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.LinearMaps.Outermorphisms;
-using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.LinearMaps.Rotors;
-using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.Multivectors.Composers;
-using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.Processors;
-using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Generic;
-using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Generic.LinearMaps;
+using GeometricAlgebraFulcrumLib.Core.Algebra.GeometricAlgebra.Extended.Float64.Multivectors.Composers;
+using GeometricAlgebraFulcrumLib.Core.Algebra.GeometricAlgebra.Extended.Float64.Processors;
+using GeometricAlgebraFulcrumLib.Core.Algebra.LinearAlgebra.Float64.Angles;
+using GeometricAlgebraFulcrumLib.Core.Algebra.LinearAlgebra.Float64.Matrices;
+using GeometricAlgebraFulcrumLib.Core.Algebra.Scalars.Float64;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Extended.Generic.LinearMaps.Outermorphisms;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Extended.Generic.LinearMaps.Rotors;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Extended.Generic.Multivectors.Composers;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Extended.Generic.Processors;
+using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Generic.LinearMaps;
+using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Generic.Matrices;
+using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Generic.Vectors.SpaceND;
+using GeometricAlgebraFulcrumLib.Algebra.Scalars;
 using MathNet.Numerics.LinearAlgebra;
 
 namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GAPoT;
@@ -63,10 +66,10 @@ public static class SymmetricalComponentsSamples
     {
         var scalarProcessor = processor.ScalarProcessor;
 
-        var ea = processor.CreateTermVector(a);
-        var eb = processor.CreateTermVector(b);
-        var ec = processor.CreateTermVector(c);
-        var ed = processor.CreateTermVector(d);
+        var ea = processor.VectorTerm(a);
+        var eb = processor.VectorTerm(b);
+        var ec = processor.VectorTerm(c);
+        var ed = processor.VectorTerm(d);
 
         var pArray = ea.CreatePureRotorSequence(
             eb,
@@ -81,7 +84,7 @@ public static class SymmetricalComponentsSamples
                 continue;
 
             for (var i = 0; i < pArray.GetLength(0); i++)
-                pArray[i, j] = scalarProcessor.ScalarZero;
+                pArray[i, j] = scalarProcessor.ZeroValue;
         }
 
         return pArray;
@@ -91,10 +94,10 @@ public static class SymmetricalComponentsSamples
     {
         var scalarProcessor = processor.ScalarProcessor;
 
-        var ea = processor.CreateTermVector(a);
-        var eb = processor.CreateTermVector(b);
-        var ec = processor.CreateTermVector(c);
-        var ed = processor.CreateTermVector(d);
+        var ea = processor.VectorTerm(a);
+        var eb = processor.VectorTerm(b);
+        var ec = processor.VectorTerm(c);
+        var ed = processor.VectorTerm(d);
 
         var nArray = ea.CreatePureRotorSequence(
             eb,
@@ -109,7 +112,7 @@ public static class SymmetricalComponentsSamples
                 continue;
 
             for (var i = 0; i < nArray.GetLength(0); i++)
-                nArray[i, j] = scalarProcessor.ScalarZero;
+                nArray[i, j] = scalarProcessor.ZeroValue;
         }
 
         return nArray;
@@ -127,10 +130,10 @@ public static class SymmetricalComponentsSamples
 
         var a = k;
         var b = k + n;
-        var cp = 0;
-        var dp = 0;
-        var cn = 0;
-        var dn = 0;
+        int cp;
+        int dp;
+        int cn;
+        int dn;
         var nNegative = false;
 
         if (n.IsOdd())
@@ -187,7 +190,7 @@ public static class SymmetricalComponentsSamples
 
         var scalarProcessor = processor.ScalarProcessor;
 
-        var sqrt2 = scalarProcessor.Sqrt(scalarProcessor.ScalarTwo);
+        var sqrt2 = scalarProcessor.Sqrt(scalarProcessor.TwoValue).ScalarValue;
 
         var tMatrix = nNegative
             ? scalarProcessor.Subtract(pMatrix, nMatrix)
@@ -213,23 +216,20 @@ public static class SymmetricalComponentsSamples
                 .GetComplexEigenPairs()
                 .OrderByDescending(p => p.Item1.Magnitude);
 
-        var i = 1;
         foreach (var (value, vector) in eigenPairList)
         {
-            var angle = GeoPoTNumUtils.RadiansToDegrees(Math.Atan2(value.Imaginary, value.Real)).Round(6);
-            var blade = metric.CreateVector(vector.Imaginary().ToArray().MapItems(d => d.Round(6))).Op(
-                metric.CreateVector(vector.Real().ToArray().MapItems(d => d.Round(6)))
+            var angle = value.GetPhaseAsPolarAngle();
+            var blade = metric.Vector(vector.Imaginary().ToArray().MapItems(d => d.Round(6))).Op(
+                metric.Vector(vector.Real().ToArray().MapItems(d => d.Round(6)))
             );
 
-            blade = blade.Divide(blade.ENorm().ScalarValue());
+            blade = blade.Divide(blade.ENorm().ScalarValue);
 
             //Console.WriteLine($" Eigen Value {i}: {value}");
             //Console.WriteLine($"Eigen Vector {i}: {vector}");
-            Console.WriteLine($"           Angle: {angle} degrees");
+            Console.WriteLine($"           Angle: {angle}");
             Console.WriteLine($"     Eigen Blade: {blade}");
             Console.WriteLine();
-
-            i++;
         }
     }
 }

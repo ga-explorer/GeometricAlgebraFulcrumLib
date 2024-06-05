@@ -3,27 +3,30 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Numerics;
-using DataStructuresLib.Random;
-using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Extended.Float64.LinearMaps.Outermorphisms;
-using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Extended.Float64.LinearMaps.Rotors;
-using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Extended.Float64.Multivectors;
-using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Extended.Float64.Multivectors.Composers;
-using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Extended.Float64.Processors;
-using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Extended.Float64.Subspaces;
-using GeometricAlgebraFulcrumLib.Lite.LinearAlgebra;
-using GeometricAlgebraFulcrumLib.Lite.LinearAlgebra.Basis;
-using GeometricAlgebraFulcrumLib.Lite.LinearAlgebra.LinearMaps.Space3D.Rotation;
-using GeometricAlgebraFulcrumLib.Lite.LinearAlgebra.LinearMaps.SpaceND;
-using GeometricAlgebraFulcrumLib.Lite.LinearAlgebra.LinearMaps.SpaceND.Composers;
-using GeometricAlgebraFulcrumLib.Lite.LinearAlgebra.LinearMaps.SpaceND.Rotation;
-using GeometricAlgebraFulcrumLib.Lite.LinearAlgebra.LinearMaps.SpaceND.Scaling;
-using GeometricAlgebraFulcrumLib.Lite.LinearAlgebra.Matrices;
-using GeometricAlgebraFulcrumLib.Lite.LinearAlgebra.SubSpaces.SpaceND;
-using GeometricAlgebraFulcrumLib.Lite.LinearAlgebra.Vectors.Space3D;
-using GeometricAlgebraFulcrumLib.Lite.LinearAlgebra.Vectors.SpaceND;
-using GeometricAlgebraFulcrumLib.Lite.ScalarAlgebra;
-using GeometricAlgebraFulcrumLib.MathBase.Text;
+using GeometricAlgebraFulcrumLib.Algebra.Scalars;
+using GeometricAlgebraFulcrumLib.Utilities.Structures.Random;
+using GeometricAlgebraFulcrumLib.Core.Algebra.GeometricAlgebra.Extended.Float64.LinearMaps.Outermorphisms;
+using GeometricAlgebraFulcrumLib.Core.Algebra.GeometricAlgebra.Extended.Float64.LinearMaps.Rotors;
+using GeometricAlgebraFulcrumLib.Core.Algebra.GeometricAlgebra.Extended.Float64.Multivectors;
+using GeometricAlgebraFulcrumLib.Core.Algebra.GeometricAlgebra.Extended.Float64.Multivectors.Composers;
+using GeometricAlgebraFulcrumLib.Core.Algebra.GeometricAlgebra.Extended.Float64.Processors;
+using GeometricAlgebraFulcrumLib.Core.Algebra.GeometricAlgebra.Extended.Float64.Subspaces;
+using GeometricAlgebraFulcrumLib.Core.Algebra.LinearAlgebra.Basis;
+using GeometricAlgebraFulcrumLib.Core.Algebra.LinearAlgebra.Float64;
+using GeometricAlgebraFulcrumLib.Core.Algebra.LinearAlgebra.Float64.Angles;
+using GeometricAlgebraFulcrumLib.Core.Algebra.LinearAlgebra.Float64.LinearMaps.Space3D.Rotation;
+using GeometricAlgebraFulcrumLib.Core.Algebra.LinearAlgebra.Float64.LinearMaps.SpaceND;
+using GeometricAlgebraFulcrumLib.Core.Algebra.LinearAlgebra.Float64.LinearMaps.SpaceND.Composers;
+using GeometricAlgebraFulcrumLib.Core.Algebra.LinearAlgebra.Float64.LinearMaps.SpaceND.Rotation;
+using GeometricAlgebraFulcrumLib.Core.Algebra.LinearAlgebra.Float64.LinearMaps.SpaceND.Scaling;
+using GeometricAlgebraFulcrumLib.Core.Algebra.LinearAlgebra.Float64.Matrices;
+using GeometricAlgebraFulcrumLib.Core.Algebra.LinearAlgebra.Float64.SubSpaces.SpaceND;
+using GeometricAlgebraFulcrumLib.Core.Algebra.LinearAlgebra.Float64.Vectors.Space3D;
+using GeometricAlgebraFulcrumLib.Core.Algebra.LinearAlgebra.Float64.Vectors.SpaceND;
+using GeometricAlgebraFulcrumLib.Core.Algebra.Scalars.Float64;
+using GeometricAlgebraFulcrumLib.Core.Algebra.Scalars.Float64Complex;
 using MathNet.Numerics.LinearAlgebra;
+using GeometricAlgebraFulcrumLib.Algebra.Utilities.Text;
 
 namespace GeometricAlgebraFulcrumLib.Samples.EuclideanGeometry;
 
@@ -32,7 +35,7 @@ public static class RotationSamples
     public static void RotationMatrixToSimpleRotationsSample(int n)
     {
         var scalarProcessor =
-            ScalarProcessorOfFloat64.DefaultProcessor;
+            ScalarProcessorOfFloat64.Instance;
             
         var geometricProcessor =
             XGaFloat64Processor.Euclidean;
@@ -103,13 +106,13 @@ public static class RotationSamples
             var kVectorRotated = 
                 rotation.MapVector(kVector);
 
-            var angle = rotation.RotationAngle.Degrees;
+            var angle = rotation.RotationAngle;
 
             var eigenValue = eigenValueArray[i];
 
             Console.WriteLine($"Rotation {i + 1}:");
             Console.WriteLine($"   Eigen Value: {eigenValue}");
-            Console.WriteLine($"         Angle: {angle} degrees");
+            Console.WriteLine($"         Angle: {angle}");
             Console.WriteLine($"             k: {kVectorRotated}");
             Console.WriteLine();
         }
@@ -122,7 +125,7 @@ public static class RotationSamples
     public static void ClarkeMatrixToSimpleRotationsSample(int n)
     {
         var scalarProcessor =
-            ScalarProcessorOfFloat64.DefaultProcessor;
+            ScalarProcessorOfFloat64.Instance;
             
         var geometricProcessor =
             XGaFloat64Processor.Euclidean;
@@ -158,7 +161,7 @@ public static class RotationSamples
 
         for (var i = 0; i < eigenPairsCount; i++)
         {
-            var angle = Math.Atan2(imagPairs[i].Item1, realPairs[i].Item1).RadiansToAngle();
+            var angle = LinFloat64PolarAngle.CreateFromVector(realPairs[i].Item1, imagPairs[i].Item1);
 
             Console.WriteLine($"Eigen Value {i + 1}");
             Console.WriteLine($"Real part: {textComposer.GetScalarText(realPairs[i].Item1)}");
@@ -170,7 +173,7 @@ public static class RotationSamples
             Console.WriteLine($"Imag part: {textComposer.GetArrayText(imagPairs[i].Item2)}");
             Console.WriteLine();
 
-            Console.WriteLine($"Angle: {angle.Degrees} degrees");
+            Console.WriteLine($"Angle: {angle}");
             Console.WriteLine();
         }
 
@@ -197,15 +200,15 @@ public static class RotationSamples
                 geometricProcessor.ComplexEigenPairToPureRotor(
                     realValue,
                     imagValue,
-                    geometricProcessor.CreateVector(realPairs[i].Item2),
-                    geometricProcessor.CreateVector(imagPairs[i].Item2)
+                    geometricProcessor.Vector(realPairs[i].Item2),
+                    geometricProcessor.Vector(imagPairs[i].Item2)
                 );
 
             var (angle, bivector) =
                 rotorsArray[i].GetEuclideanAngleBivector();
 
             Console.WriteLine($"Rotor {i + 1}:");
-            Console.WriteLine($"      Angle: {angle.RadiansToDegrees()} degrees");
+            Console.WriteLine($"      Angle: {angle}");
             Console.WriteLine($"   Bivector: {textComposer.GetMultivectorText(bivector)}");
             Console.WriteLine();
         }
@@ -250,25 +253,25 @@ public static class RotationSamples
             var vectorRotation = vectorRotationSequence[i];
 
             var u1 = vectorRotation.BasisVector1;
-            var u2 = geometricProcessor.CreateVector(u1);
+            var u2 = geometricProcessor.Vector(u1);
             
             Debug.Assert(
                 (u1 - u2.ToLinVector()).GetVectorNormSquared().IsNearZero()
             );
 
             var v1 = vectorRotation.MapBasisVector1();
-            var v2 = geometricProcessor.CreateVector(v1);
+            var v2 = geometricProcessor.Vector(v1);
             
             Debug.Assert(
                 (v1 - v2.ToLinVector()).GetVectorNormSquared().IsNearZero()
             );
 
-            var angle1 = vectorRotation.RotationAngle.Degrees;
+            var angle1 = vectorRotation.RotationAngle;
             var bivector1 = v2.Op(u2);
             bivector1 /= bivector1.ENorm();
 
             Console.WriteLine($"Simple Vector Rotation {i + 1}:");
-            Console.WriteLine($"      Angle: {angle1} degrees");
+            Console.WriteLine($"      Angle: {angle1}");
             Console.WriteLine($"   Bivector: {textComposer.GetMultivectorText(bivector1)}");
             Console.WriteLine();
 
@@ -278,7 +281,7 @@ public static class RotationSamples
                 rotor.GetEuclideanAngleBivector();
 
             Console.WriteLine($"Rotor {i + 1}:");
-            Console.WriteLine($"      Angle: {angle2.RadiansToDegrees()} degrees");
+            Console.WriteLine($"      Angle: {angle2}");
             Console.WriteLine($"   Bivector: {textComposer.GetMultivectorText(bivector2)}");
             Console.WriteLine();
             
@@ -315,15 +318,15 @@ public static class RotationSamples
         var matrix2 = matrix1.GetOutermorphismMatrix(2);
         var matrix3 = matrix1.GetOutermorphismMatrix(3);
 
-        var x1 = random.GetFloat64Tuple(n);
-        var x2 = random.GetFloat64Tuple(n);
-        var x3 = random.GetFloat64Tuple(n);
+        var x1 = random.GetLinVector(n);
+        var x2 = random.GetLinVector(n);
+        var x3 = random.GetLinVector(n);
 
-        var x12 = metric.CreateVector(x1).Op(metric.CreateVector(x2));
-        var x123 = x12.Op(metric.CreateVector(x3));
+        var x12 = metric.Vector(x1).Op(metric.Vector(x2));
+        var x123 = x12.Op(metric.Vector(x3));
 
-        var t1 = (matrix2 * x12.MultivectorToArray(n).ToMathNetVector()).ToArray().CreateVector();
-        var t2 = metric.CreateVector(matrix1.MapVector(x1)).Op(metric.CreateVector(matrix1.MapVector(x2))).MultivectorToArray(n).CreateVector();
+        var t1 = (matrix2 * x12.MultivectorToArray(n).ToMathNetVector()).ToArray().ToLinVector();
+        var t2 = metric.Vector(matrix1.MapVector(x1)).Op(metric.Vector(matrix1.MapVector(x2))).MultivectorToArray(n).ToLinVector();
 
         Debug.Assert(
             (t1 - t2).GetVectorNormSquared().IsNearZero()
@@ -396,7 +399,7 @@ public static class RotationSamples
         const int n = 6;
 
         var scalarProcessor =
-            ScalarProcessorOfFloat64.DefaultProcessor;
+            ScalarProcessorOfFloat64.Instance;
 
         var geometricProcessor =
             XGaFloat64Processor.Euclidean;
@@ -597,7 +600,7 @@ public static class RotationSamples
                 // rotation sequence computations
                 for (var i = 0; i < 100; i++)
                 {
-                    var x = random.GetFloat64Tuple(n).CreateLinVector();
+                    var x = random.GetLinVector(n).CreateLinVector();
 
                     var y1 = rotationSequence.MapVector(x);
                     var y2 = (rotationMatrix * MathNetNumericsUtils.ToMathNetVector(x, n)).CreateLinVector();
@@ -643,7 +646,7 @@ public static class RotationSamples
             // rotation sequence computations
             for (var i = 0; i < 100; i++)
             {
-                var x = random.GetFloat64Tuple(n).CreateLinVector();
+                var x = random.GetLinVector(n).CreateLinVector();
 
                 var y1 = rotationSequence.MapVector(x);
                 var y2 = (rotationMatrix * MathNetNumericsUtils.ToMathNetVector(x, n)).CreateLinVector();
@@ -661,15 +664,15 @@ public static class RotationSamples
 
         var random = new Random(10);
 
-        var u = random.GetFloat64Tuple(n).CreateUnitLinVector();
-        var v = random.GetFloat64Tuple(n).CreateUnitLinVector();
+        var u = random.GetLinVector(n).CreateUnitLinVector();
+        var v = random.GetLinVector(n).CreateUnitLinVector();
 
         var rotation = 
             LinFloat64VectorToVectorRotation.CreateFromRotatedVector(u, v);
 
         for (var i = 0; i < 100; i++)
         {
-            var x = random.GetFloat64Tuple(n).CreateLinVector();
+            var x = random.GetLinVector(n).CreateLinVector();
 
             var y1 = rotation.MapVectorProjection(x);
             var y2 = rotation.MapVector(rotation.GetVectorProjection(x));
@@ -693,9 +696,9 @@ public static class RotationSamples
         for (var i = 0; i < 100; i++)
         {
             // Create a random planar rotation
-            var vector1 = random.GetVector3D();
-            var vector2 = random.GetVector3D();
-            var rotationAngle = random.GetAngle(Float64PlanarAngle.Angle90);
+            var vector1 = random.GetLinVector3D();
+            var vector2 = random.GetLinVector3D();
+            var rotationAngle = random.GetPolarAngleInQuadrant(0);
 
             var rotation = LinFloat64PlanarRotation3D.CreateFromSpanningVectors(
                 vector1,
@@ -713,7 +716,7 @@ public static class RotationSamples
             );
 
             Debug.Assert(
-                vector1.ToUnitVector().IsNearEqual(rotation.BasisVector1)
+                vector1.ToUnitLinVector3D().IsNearEqual(rotation.BasisVector1)
             );
 
             Debug.Assert(
@@ -726,9 +729,7 @@ public static class RotationSamples
             );
                 
             Debug.Assert(
-                rotationAngle.IsNearEqualOrFullRotation(
-                    rotation.BasisVector1.GetAngle(rotation.MapBasisVector1())
-                )
+                rotation.BasisVector1.GetAngle(rotation.MapBasisVector1()).IsNearEqual(rotationAngle)
             );
 
 
@@ -737,9 +738,7 @@ public static class RotationSamples
             );
 
             Debug.Assert(
-                rotationAngle.IsNearEqualOrFullRotation(
-                    rotation.BasisVector2.GetAngle(rotation.MapBasisVector2())
-                )
+                rotation.BasisVector2.GetAngle(rotation.MapBasisVector2()).IsNearEqual(rotationAngle)
             );
 
                 
@@ -752,17 +751,17 @@ public static class RotationSamples
 
             for (var j = 0; j < 10; j++)
             {
-                var u = random.GetVector3D() * 10;
+                var u = random.GetLinVector3D() * 10;
 
                 var u1 = rotation.MapVector(u);
                 var u2 = rotationInv.MapVector(u1);
 
                 Debug.Assert(
-                    u.ENormSquared().IsNearEqual(u1.ENormSquared())
+                    u.VectorENormSquared().IsNearEqual(u1.VectorENormSquared())
                 );
 
                 Debug.Assert(
-                    u.ENormSquared().IsNearEqual(u2.ENormSquared())
+                    u.VectorENormSquared().IsNearEqual(u2.VectorENormSquared())
                 );
 
                 Debug.Assert(
@@ -770,7 +769,7 @@ public static class RotationSamples
                 );
 
                 Debug.Assert(
-                    u.GetAngle(u1) < rotationAngle
+                    u.GetAngle(u1).RadiansValue < rotationAngle.RadiansValue
                 );
             }
         }
@@ -807,7 +806,7 @@ public static class RotationSamples
         const int n = 10;
 
         var scalarProcessor =
-            ScalarProcessorOfFloat64.DefaultProcessor;
+            ScalarProcessorOfFloat64.Instance;
 
         var geometricProcessor =
             XGaFloat64Processor.Euclidean;
@@ -849,7 +848,7 @@ public static class RotationSamples
             for (var axisIndex = 0; axisIndex < n; axisIndex++)
             {
                 var x =
-                    geometricProcessor.CreateTermVector(axisIndex);
+                    geometricProcessor.VectorTerm(axisIndex);
 
                 var y1 = uvRotor.OmMap(x).ToLinVector();
                 var y2 = uvVectorRotation.MapBasisVector(axisIndex);
@@ -896,7 +895,7 @@ public static class RotationSamples
         const int n = 10;
 
         var scalarProcessor =
-            ScalarProcessorOfFloat64.DefaultProcessor;
+            ScalarProcessorOfFloat64.Instance;
 
         var geometricProcessor =
             XGaFloat64Processor.Euclidean;
@@ -916,7 +915,7 @@ public static class RotationSamples
                 random.GetBasisVectorIndex();
 
             var u =
-                geometricProcessor.CreateTermVector(uAxisIndex);
+                geometricProcessor.VectorTerm(uAxisIndex);
 
             if (uAxisNegative)
                 u = -u;
@@ -936,7 +935,7 @@ public static class RotationSamples
             for (var axisIndex = 0; axisIndex < n; axisIndex++)
             {
                 var x =
-                    geometricProcessor.CreateTermVector(axisIndex);
+                    geometricProcessor.VectorTerm(axisIndex);
 
                 var y1 = uvRotor.OmMap(x).ToLinVector();
                 var y2 = uvVectorRotation.MapBasisVector(axisIndex);
@@ -983,7 +982,7 @@ public static class RotationSamples
         const int n = 10;
 
         var scalarProcessor =
-            ScalarProcessorOfFloat64.DefaultProcessor;
+            ScalarProcessorOfFloat64.Instance;
 
         var geometricProcessor =
             XGaFloat64Processor.Euclidean;
@@ -1006,7 +1005,7 @@ public static class RotationSamples
                 random.GetVector(-1, 1).DivideByNorm();
 
             var v =
-                geometricProcessor.CreateTermVector(vAxisIndex);
+                geometricProcessor.VectorTerm(vAxisIndex);
 
             if (vAxisNegative)
                 v = -v;
@@ -1023,7 +1022,7 @@ public static class RotationSamples
             for (var axisIndex = 0; axisIndex < n; axisIndex++)
             {
                 var x =
-                    geometricProcessor.CreateTermVector(axisIndex);
+                    geometricProcessor.VectorTerm(axisIndex);
 
                 var y1 = uvRotor.OmMap(x).ToLinVector();
                 var y2 = uvVectorRotation.MapBasisVector(axisIndex);
@@ -1070,7 +1069,7 @@ public static class RotationSamples
         const int n = 10;
 
         var scalarProcessor =
-            ScalarProcessorOfFloat64.DefaultProcessor;
+            ScalarProcessorOfFloat64.Instance;
 
         var geometricProcessor =
             XGaFloat64Processor.Euclidean;
@@ -1087,7 +1086,7 @@ public static class RotationSamples
         for (var uAxisIndex = 0; uAxisIndex < n; uAxisIndex++)
         {
             var u =
-                geometricProcessor.CreateTermVector(uAxisIndex);
+                geometricProcessor.VectorTerm(uAxisIndex);
 
             if (uAxisNegative)
                 u = -u;
@@ -1097,7 +1096,7 @@ public static class RotationSamples
                 if (uAxisIndex == vAxisIndex) continue;
 
                 var v =
-                    geometricProcessor.CreateTermVector(vAxisIndex);
+                    geometricProcessor.VectorTerm(vAxisIndex);
 
                 if (vAxisNegative)
                     v = -v;
@@ -1109,13 +1108,13 @@ public static class RotationSamples
                     LinFloat64AxisToAxisRotation.Create(
                         LinSignedBasisVector.Create(uAxisIndex, uAxisNegative),
                         LinSignedBasisVector.Create(vAxisIndex, vAxisNegative),
-                        Float64PlanarAngle.Angle90
+                        LinFloat64PolarAngle.Angle90
                     );
 
                 for (var axisIndex = 0; axisIndex < n; axisIndex++)
                 {
                     var x =
-                        geometricProcessor.CreateTermVector(axisIndex);
+                        geometricProcessor.VectorTerm(axisIndex);
 
                     var y1 = uvRotor.OmMap(x).ToLinVector();
                     var y2 = uvVectorRotation.MapBasisVector(axisIndex);
@@ -1163,7 +1162,7 @@ public static class RotationSamples
         const int n = 3;
 
         var scalarProcessor =
-            ScalarProcessorOfFloat64.DefaultProcessor;
+            ScalarProcessorOfFloat64.Instance;
 
         var geometricProcessor =
             XGaFloat64Processor.Euclidean;
@@ -1206,16 +1205,16 @@ public static class RotationSamples
 
             foreach (var axisIndex in axisArray)
             {
-                var y = axisIndex.ToVector3D();
+                var y = axisIndex.ToLinVector3D();
 
                 var x =
-                    geometricProcessor.CreateVector(y.X, y.Y, y.Z);
+                    geometricProcessor.Vector(y.X, y.Y, y.Z);
 
                 var y1 = uvRotor.OmMap(x).GetTuple3D();
                 var y2 = uvVectorRotation.MapVector(axisIndex);
 
                 Debug.Assert(
-                    (y1 - y2).ENorm().IsNearZero()
+                    (y1 - y2).VectorENorm().IsNearZero()
                 );
             }
 
@@ -1228,7 +1227,7 @@ public static class RotationSamples
                 var y2 = uvVectorRotation.MapVector(x.GetTuple3D());
 
                 Debug.Assert(
-                    (y1 - y2).ENorm().IsNearZero()
+                    (y1 - y2).VectorENorm().IsNearZero()
                 );
                 
                 var (_, bv) = uvRotor.GetEuclideanAngleBivector();
@@ -1240,7 +1239,7 @@ public static class RotationSamples
                 var z3 = uvVectorRotation.MapVectorProjection(x.GetTuple3D());
 
                 Debug.Assert(
-                    (z1 - z2).ENorm().IsNearZero()
+                    (z1 - z2).VectorENorm().IsNearZero()
                 );
 
                 if (!uvVectorRotation.IsIdentity())
@@ -1256,7 +1255,7 @@ public static class RotationSamples
         const int n = 3;
 
         var scalarProcessor =
-            ScalarProcessorOfFloat64.DefaultProcessor;
+            ScalarProcessorOfFloat64.Instance;
 
         var geometricProcessor =
             XGaFloat64Processor.Euclidean;
@@ -1294,7 +1293,7 @@ public static class RotationSamples
             };
 
             var u =
-                geometricProcessor.CreateTermVector(uAxisIndex);
+                geometricProcessor.VectorTerm(uAxisIndex);
 
             if (uAxisNegative)
                 u = -u;
@@ -1307,22 +1306,22 @@ public static class RotationSamples
 
             var uvVectorRotation =
                 LinFloat64PlanarRotation3D.CreateFromRotatedVector(
-                    uAxis.ToVector3D(),
+                    uAxis.ToLinVector3D(),
                     v.GetTuple3D()
                 );
 
             foreach (var axisIndex in axisArray)
             {
-                var y = axisIndex.ToVector3D();
+                var y = axisIndex.ToLinVector3D();
 
                 var x =
-                    geometricProcessor.CreateVector(y.X, y.Y, y.Z);
+                    geometricProcessor.Vector(y.X, y.Y, y.Z);
 
                 var y1 = uvRotor.OmMap(x).GetTuple3D();
                 var y2 = uvVectorRotation.MapVector(axisIndex);
 
                 Debug.Assert(
-                    (y1 - y2).ENorm().IsNearZero()
+                    (y1 - y2).VectorENorm().IsNearZero()
                 );
             }
 
@@ -1335,7 +1334,7 @@ public static class RotationSamples
                 var y2 = uvVectorRotation.MapVector(x.GetTuple3D());
 
                 Debug.Assert(
-                    (y1 - y2).ENorm().IsNearZero()
+                    (y1 - y2).VectorENorm().IsNearZero()
                 );
                 
                 var (_, bv) = uvRotor.GetEuclideanAngleBivector();
@@ -1347,12 +1346,12 @@ public static class RotationSamples
                 var z3 = uvVectorRotation.MapVectorProjection(x.GetTuple3D());
 
                 Debug.Assert(
-                    (z1 - z2).ENorm().IsNearZero()
+                    (z1 - z2).VectorENorm().IsNearZero()
                 );
 
                 if (!uvVectorRotation.IsIdentity())
                     Debug.Assert(
-                        (z1 - z3).ENorm().IsNearZero()
+                        (z1 - z3).VectorENorm().IsNearZero()
                     );
             }
         }
@@ -1363,7 +1362,7 @@ public static class RotationSamples
         const int n = 3;
 
         var scalarProcessor =
-            ScalarProcessorOfFloat64.DefaultProcessor;
+            ScalarProcessorOfFloat64.Instance;
 
         var geometricProcessor =
             XGaFloat64Processor.Euclidean;
@@ -1404,7 +1403,7 @@ public static class RotationSamples
             };
 
             var v =
-                geometricProcessor.CreateTermVector(vAxisIndex);
+                geometricProcessor.VectorTerm(vAxisIndex);
 
             if (vAxisNegative)
                 v = -v;
@@ -1415,21 +1414,21 @@ public static class RotationSamples
             var uvVectorRotation =
                 LinFloat64PlanarRotation3D.CreateFromRotatedVector(
                     u.GetTuple3D(),
-                    vAxis.ToVector3D()
+                    vAxis.ToLinVector3D()
                 );
 
             foreach (var axisIndex in axisArray)
             {
-                var y = axisIndex.ToVector3D();
+                var y = axisIndex.ToLinVector3D();
 
                 var x =
-                    geometricProcessor.CreateVector(y.X, y.Y, y.Z);
+                    geometricProcessor.Vector(y.X, y.Y, y.Z);
 
                 var y1 = uvRotor.OmMap(x).GetTuple3D();
                 var y2 = uvVectorRotation.MapVector(axisIndex);
 
                 Debug.Assert(
-                    (y1 - y2).ENorm().IsNearZero()
+                    (y1 - y2).VectorENorm().IsNearZero()
                 );
             }
 
@@ -1442,7 +1441,7 @@ public static class RotationSamples
                 var y2 = uvVectorRotation.MapVector(x.GetTuple3D());
 
                 Debug.Assert(
-                    (y1 - y2).ENorm().IsNearZero()
+                    (y1 - y2).VectorENorm().IsNearZero()
                 );
                 
                 var (_, bv) = uvRotor.GetEuclideanAngleBivector();
@@ -1454,7 +1453,7 @@ public static class RotationSamples
                 var z3 = uvVectorRotation.MapVectorProjection(x.GetTuple3D());
 
                 Debug.Assert(
-                    (z1 - z2).ENorm().IsNearZero()
+                    (z1 - z2).VectorENorm().IsNearZero()
                 );
 
                 if (!uvVectorRotation.IsIdentity())
@@ -1470,7 +1469,7 @@ public static class RotationSamples
         const int n = 3;
 
         var scalarProcessor =
-            ScalarProcessorOfFloat64.DefaultProcessor;
+            ScalarProcessorOfFloat64.Instance;
 
         var geometricProcessor =
             XGaFloat64Processor.Euclidean;
@@ -1505,7 +1504,7 @@ public static class RotationSamples
             };
 
             var u =
-                geometricProcessor.CreateTermVector(uAxisIndex);
+                geometricProcessor.VectorTerm(uAxisIndex);
 
             if (uAxisNegative)
                 u = -u;
@@ -1523,7 +1522,7 @@ public static class RotationSamples
                 };
 
                 var v =
-                    geometricProcessor.CreateTermVector(vAxisIndex);
+                    geometricProcessor.VectorTerm(vAxisIndex);
 
                 if (vAxisNegative)
                     v = -v;
@@ -1533,23 +1532,23 @@ public static class RotationSamples
 
                 var uvVectorRotation =
                     LinFloat64PlanarRotation3D.CreateFromOrthonormalVectors(
-                        uAxis.ToVector3D(),
-                        vAxis.ToVector3D(),
-                        Float64PlanarAngle.Angle90
+                        uAxis.ToLinVector3D(),
+                        vAxis.ToLinVector3D(),
+                        LinFloat64PolarAngle.Angle90
                     );
 
                 foreach (var axis in axisArray)
                 {
-                    var y = axis.ToVector3D();
+                    var y = axis.ToLinVector3D();
 
                     var x =
-                        geometricProcessor.CreateVector(y.X, y.Y, y.Z);
+                        geometricProcessor.Vector(y.X, y.Y, y.Z);
 
                     var y1 = uvRotor.OmMap(x).GetTuple3D();
                     var y2 = uvVectorRotation.MapVector(axis);
 
                     Debug.Assert(
-                        (y1 - y2).ENorm().IsNearZero()
+                        (y1 - y2).VectorENorm().IsNearZero()
                     );
                 }
 
@@ -1562,7 +1561,7 @@ public static class RotationSamples
                     var y2 = uvVectorRotation.MapVector(x.GetTuple3D());
 
                     Debug.Assert(
-                        (y1 - y2).ENorm().IsNearZero()
+                        (y1 - y2).VectorENorm().IsNearZero()
                     );
                     
                     var (_, bv) = uvRotor.GetEuclideanAngleBivector();
@@ -1574,7 +1573,7 @@ public static class RotationSamples
                     var z3 = uvVectorRotation.MapVectorProjection(x.GetTuple3D());
 
                     Debug.Assert(
-                        (z1 - z2).ENorm().IsNearZero()
+                        (z1 - z2).VectorENorm().IsNearZero()
                     );
 
                     if (!uvVectorRotation.IsIdentity())
@@ -1590,7 +1589,7 @@ public static class RotationSamples
     {
         const int n = 10;
         var scalarProcessor =
-            ScalarProcessorOfFloat64.DefaultProcessor;
+            ScalarProcessorOfFloat64.Instance;
 
         var geometricProcessor =
             XGaFloat64Processor.Euclidean;
@@ -1622,7 +1621,7 @@ public static class RotationSamples
         for (var axisIndex = 0; axisIndex < n; axisIndex++)
         {
             //var x =
-            //    geometricProcessor.CreateVector(axisIndex);
+            //    geometricProcessor.Vector(axisIndex);
 
             var y1 = uvRotation.MapBasisVector(axisIndex);
             var y2 = uvRotationSequence.MapBasisVector(axisIndex);
@@ -1650,7 +1649,7 @@ public static class RotationSamples
     {
         const int n = 10;
         var scalarProcessor =
-            ScalarProcessorOfFloat64.DefaultProcessor;
+            ScalarProcessorOfFloat64.Instance;
 
         var geometricProcessor =
             XGaFloat64Processor.Euclidean;
@@ -1666,7 +1665,7 @@ public static class RotationSamples
 
         var scaling = LinFloat64VectorDirectionalScaling.Create(
             random.GetScalarValue(-10, 10),
-            random.RandomGenerator.GetFloat64Tuple(n).CreateUnitLinVector()
+            random.RandomGenerator.GetLinVector(n).CreateUnitLinVector()
         );
 
         var matrix = 

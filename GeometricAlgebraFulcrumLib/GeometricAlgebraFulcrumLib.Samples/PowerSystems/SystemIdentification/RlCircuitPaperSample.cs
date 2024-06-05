@@ -2,28 +2,27 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using DataStructuresLib.Basic;
-using GeometricAlgebraFulcrumLib.Algebra.PolynomialAlgebra.Polynomials;
-using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Restricted.Float64.Processors;
-using GeometricAlgebraFulcrumLib.Lite.Geometry.Differential.Functions.Interpolators;
-using GeometricAlgebraFulcrumLib.Lite.ScalarAlgebra;
-using GeometricAlgebraFulcrumLib.Lite.SignalAlgebra;
-using GeometricAlgebraFulcrumLib.Lite.SignalAlgebra.Composers;
-using GeometricAlgebraFulcrumLib.MathBase;
-using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Multivectors;
-using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Multivectors.Composers;
-using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Processors;
-using GeometricAlgebraFulcrumLib.MathBase.SignalAlgebra;
-using GeometricAlgebraFulcrumLib.MathBase.SignalAlgebra.Interpolators;
-using GeometricAlgebraFulcrumLib.MathBase.SignalAlgebra.Processors;
-using GeometricAlgebraFulcrumLib.MathBase.Text;
-using GeometricAlgebraFulcrumLib.Processors;
-using GeometricAlgebraFulcrumLib.Processors.SignalAlgebra;
+using GeometricAlgebraFulcrumLib.Utilities.Structures.Basic;
+using GeometricAlgebraFulcrumLib.Algebra.Polynomials;
+using GeometricAlgebraFulcrumLib.Core.Algebra.GeometricAlgebra.Restricted.Float64.Processors;
+using GeometricAlgebraFulcrumLib.Core.Modeling.Geometry.Differential.Functions.Interpolators;
+using GeometricAlgebraFulcrumLib.Core.Algebra.Signals;
+using GeometricAlgebraFulcrumLib.Core.Algebra.Signals.Composers;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Generic.Multivectors;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Generic.Multivectors.Composers;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Generic.Processors;
+using GeometricAlgebraFulcrumLib.Algebra.Scalars;
+using GeometricAlgebraFulcrumLib.Algebra.Signals;
+using GeometricAlgebraFulcrumLib.Algebra.Signals.Interpolators;
+using GeometricAlgebraFulcrumLib.Algebra.Signals.Processors;
 using MathNet.Numerics;
 using Newtonsoft.Json.Linq;
 using OfficeOpenXml;
 using OxyPlot;
 using OxyPlot.Series;
+using Float64SignalComposerUtils = GeometricAlgebraFulcrumLib.Algebra.Signals.Float64SignalComposerUtils;
+using GeometricAlgebraFulcrumLib.Algebra.Utilities;
+using GeometricAlgebraFulcrumLib.Algebra.Utilities.Text;
 
 namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.SystemIdentification;
 
@@ -34,7 +33,7 @@ public static class RlCircuitPaperSample
 
     // This is a pre-defined scalar processor for numeric scalars
     public static ScalarProcessorOfFloat64 ScalarProcessor { get; }
-        = ScalarProcessorOfFloat64.DefaultProcessor;
+        = ScalarProcessorOfFloat64.Instance;
 
     public static int VSpaceDimensions
         => 4;
@@ -63,7 +62,7 @@ public static class RlCircuitPaperSample
 
     // This is a pre-defined scalar processor for tuples of numeric scalars
     public static ScalarProcessorOfFloat64Signal ScalarSignalProcessor { get; }
-        = ProcessorFactory.CreateFloat64ScalarSignalProcessor(SamplingRate, SignalSamplesCount);
+        = Float64SignalComposerUtils.CreateFloat64ScalarSignalProcessor(SamplingRate, SignalSamplesCount);
 
     // Create a 3-dimensional Euclidean geometric algebra processor based on the
     // selected tuple scalar processor
@@ -205,15 +204,15 @@ public static class RlCircuitPaperSample
     private static Triplet<Scalar<Float64Signal>> GetCurveWithDt2(this IReadOnlyList<double> tData, PolynomialFunction<double> interpolator)
     {
         var u =
-            interpolator.GetValues(tData).CreateSignal(SamplingRate).CreateScalar(ScalarSignalProcessor);
+            interpolator.GetValues(tData).CreateSignal(SamplingRate).ScalarFromValue(ScalarSignalProcessor);
 
         var i1 = interpolator.GetDerivative();
         var uDt1 =
-            i1.GetValues(tData).CreateSignal(SamplingRate).CreateScalar(ScalarSignalProcessor);
+            i1.GetValues(tData).CreateSignal(SamplingRate).ScalarFromValue(ScalarSignalProcessor);
 
         var i2 = i1.GetDerivative();
         var uDt2 =
-            i2.GetValues(tData).CreateSignal(SamplingRate).CreateScalar(ScalarSignalProcessor);
+            i2.GetValues(tData).CreateSignal(SamplingRate).ScalarFromValue(ScalarSignalProcessor);
 
         return new Triplet<Scalar<Float64Signal>>(u, uDt1, uDt2);
     }
@@ -221,19 +220,19 @@ public static class RlCircuitPaperSample
     private static Quad<Scalar<Float64Signal>> GetCurveWithDt3(this IReadOnlyList<double> tData, PolynomialFunction<double> interpolator)
     {
         var u =
-            interpolator.GetValues(tData).CreateSignal(SamplingRate).CreateScalar(ScalarSignalProcessor);
+            interpolator.GetValues(tData).CreateSignal(SamplingRate).ScalarFromValue(ScalarSignalProcessor);
 
         var i1 = interpolator.GetDerivative();
         var uDt1 =
-            i1.GetValues(tData).CreateSignal(SamplingRate).CreateScalar(ScalarSignalProcessor);
+            i1.GetValues(tData).CreateSignal(SamplingRate).ScalarFromValue(ScalarSignalProcessor);
 
         var i2 = i1.GetDerivative();
         var uDt2 =
-            i2.GetValues(tData).CreateSignal(SamplingRate).CreateScalar(ScalarSignalProcessor);
+            i2.GetValues(tData).CreateSignal(SamplingRate).ScalarFromValue(ScalarSignalProcessor);
 
         var i3 = i2.GetDerivative();
         var uDt3 =
-            i3.GetValues(tData).CreateSignal(SamplingRate).CreateScalar(ScalarSignalProcessor);
+            i3.GetValues(tData).CreateSignal(SamplingRate).ScalarFromValue(ScalarSignalProcessor);
 
         return new Quad<Scalar<Float64Signal>>(u, uDt1, uDt2, uDt3);
     }
@@ -241,23 +240,23 @@ public static class RlCircuitPaperSample
     private static Quint<Scalar<Float64Signal>> GetCurveWithDt4(this IReadOnlyList<double> tData, PolynomialFunction<double> interpolator)
     {
         var u =
-            interpolator.GetValues(tData).CreateSignal(SamplingRate).CreateScalar(ScalarSignalProcessor);
+            interpolator.GetValues(tData).CreateSignal(SamplingRate).ScalarFromValue(ScalarSignalProcessor);
 
         var i1 = interpolator.GetDerivative();
         var uDt1 =
-            i1.GetValues(tData).CreateSignal(SamplingRate).CreateScalar(ScalarSignalProcessor);
+            i1.GetValues(tData).CreateSignal(SamplingRate).ScalarFromValue(ScalarSignalProcessor);
 
         var i2 = i1.GetDerivative();
         var uDt2 =
-            i2.GetValues(tData).CreateSignal(SamplingRate).CreateScalar(ScalarSignalProcessor);
+            i2.GetValues(tData).CreateSignal(SamplingRate).ScalarFromValue(ScalarSignalProcessor);
 
         var i3 = i2.GetDerivative();
         var uDt3 =
-            i3.GetValues(tData).CreateSignal(SamplingRate).CreateScalar(ScalarSignalProcessor);
+            i3.GetValues(tData).CreateSignal(SamplingRate).ScalarFromValue(ScalarSignalProcessor);
 
         var i4 = i3.GetDerivative();
         var uDt4 =
-            i4.GetValues(tData).CreateSignal(SamplingRate).CreateScalar(ScalarSignalProcessor);
+            i4.GetValues(tData).CreateSignal(SamplingRate).ScalarFromValue(ScalarSignalProcessor);
 
         return new Quint<Scalar<Float64Signal>>(u, uDt1, uDt2, uDt3, uDt4);
     }
@@ -345,16 +344,16 @@ public static class RlCircuitPaperSample
     //    );
 
     //    var u = 
-    //        uFourierInterpolator.GetVectors(tData).CreateVector(GeometricSignalProcessor);
+    //        uFourierInterpolator.GetVectors(tData).Vector(GeometricSignalProcessor);
 
     //    var uDt1 = 
-    //        uFourierInterpolator.GetVectorsDt(tData, 1).CreateVector(GeometricSignalProcessor);
+    //        uFourierInterpolator.GetVectorsDt(tData, 1).Vector(GeometricSignalProcessor);
 
     //    var uDt2 = 
-    //        uFourierInterpolator.GetVectorsDt(tData, 2).CreateVector(GeometricSignalProcessor);
+    //        uFourierInterpolator.GetVectorsDt(tData, 2).Vector(GeometricSignalProcessor);
 
     //    //var uDt3 = 
-    //    //    uFourierInterpolator.GetVectorsDt(tData, 3).CreateVector(GeometricSignalProcessor);
+    //    //    uFourierInterpolator.GetVectorsDt(tData, 3).Vector(GeometricSignalProcessor);
 
     //    //v = v.WienerFilter1D(SignalSamplesCount, WienerFilterOrder);
     //    //vDt1 = vDt1.WienerFilter1D(SignalSamplesCount, WienerFilterOrder);
@@ -383,16 +382,16 @@ public static class RlCircuitPaperSample
     //    );
 
     //    var i = 
-    //        iFourierInterpolator.GetVectors(tData).CreateVector(GeometricSignalProcessor);
+    //        iFourierInterpolator.GetVectors(tData).Vector(GeometricSignalProcessor);
 
     //    var iDt1 = 
-    //        iFourierInterpolator.GetVectorsDt(tData, 1).CreateVector(GeometricSignalProcessor);
+    //        iFourierInterpolator.GetVectorsDt(tData, 1).Vector(GeometricSignalProcessor);
 
     //    var iDt2 = 
-    //        iFourierInterpolator.GetVectorsDt(tData, 2).CreateVector(GeometricSignalProcessor);
+    //        iFourierInterpolator.GetVectorsDt(tData, 2).Vector(GeometricSignalProcessor);
 
     //    var iDt3 = 
-    //        iFourierInterpolator.GetVectorsDt(tData, 3).CreateVector(GeometricSignalProcessor);
+    //        iFourierInterpolator.GetVectorsDt(tData, 3).Vector(GeometricSignalProcessor);
 
 
     //    var r1 = 
@@ -1193,12 +1192,12 @@ public static class RlCircuitPaperSample
         }
 
         var uSignal =
-            GeometricSignalProcessor.CreateVector(
+            GeometricSignalProcessor.Vector(
                 new[] { uData.CreateSignal(SamplingRate) }
             );
 
         var iSignal =
-            GeometricSignalProcessor.CreateVector(
+            GeometricSignalProcessor.Vector(
                 new[] { iData.CreateSignal(SamplingRate) }
             );
 

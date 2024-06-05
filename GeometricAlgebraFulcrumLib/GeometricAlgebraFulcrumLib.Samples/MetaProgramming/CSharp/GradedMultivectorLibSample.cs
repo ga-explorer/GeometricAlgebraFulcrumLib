@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using DataStructuresLib.Basic;
-using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Restricted.Float64.Processors;
+using GeometricAlgebraFulcrumLib.Utilities.Structures.Basic;
+using GeometricAlgebraFulcrumLib.Core.Algebra.GeometricAlgebra.Restricted.Float64.Processors;
 using GeometricAlgebraFulcrumLib.MetaProgramming.Applications.CSharp.GradedMultivectorsLib;
 
 namespace GeometricAlgebraFulcrumLib.Samples.MetaProgramming.CSharp;

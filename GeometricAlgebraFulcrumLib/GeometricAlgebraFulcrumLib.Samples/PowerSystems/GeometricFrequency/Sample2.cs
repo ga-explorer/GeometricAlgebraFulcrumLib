@@ -1,14 +1,16 @@
 ﻿using System;
-using DataStructuresLib.Basic;
-using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Restricted.Float64.LinearMaps.Rotors;
-using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Restricted.Float64.Multivectors;
-using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Restricted.Float64.Multivectors.Composers;
-using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Restricted.Float64.Processors;
-using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Restricted.Float64.Subspaces;
-using GeometricAlgebraFulcrumLib.Lite.ScalarAlgebra;
-using GeometricAlgebraFulcrumLib.MathBase.Text;
+using GeometricAlgebraFulcrumLib.Algebra.Scalars;
+using GeometricAlgebraFulcrumLib.Utilities.Structures.Basic;
+using GeometricAlgebraFulcrumLib.Core.Algebra.GeometricAlgebra.Restricted.Float64.LinearMaps.Rotors;
+using GeometricAlgebraFulcrumLib.Core.Algebra.GeometricAlgebra.Restricted.Float64.Multivectors;
+using GeometricAlgebraFulcrumLib.Core.Algebra.GeometricAlgebra.Restricted.Float64.Multivectors.Composers;
+using GeometricAlgebraFulcrumLib.Core.Algebra.GeometricAlgebra.Restricted.Float64.Processors;
+using GeometricAlgebraFulcrumLib.Core.Algebra.GeometricAlgebra.Restricted.Float64.Subspaces;
+using GeometricAlgebraFulcrumLib.Core.Algebra.LinearAlgebra.Float64.Angles;
+using GeometricAlgebraFulcrumLib.Core.Algebra.Scalars.Float64;
 using OxyPlot;
 using OxyPlot.Series;
+using GeometricAlgebraFulcrumLib.Algebra.Utilities.Text;
 
 namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GeometricFrequency;
 
@@ -16,7 +18,7 @@ public static class Sample2
 {
     // This is a pre-defined scalar processor for numeric scalars
     public static ScalarProcessorOfFloat64 ScalarProcessor { get; }
-        = ScalarProcessorOfFloat64.DefaultProcessor;
+        = ScalarProcessorOfFloat64.Instance;
 
     // Create a 3-dimensional Euclidean geometric algebra processor based on the
     // selected scalar processor
@@ -63,7 +65,7 @@ public static class Sample2
         = Math.Sqrt(ConstA * ConstA + ConstB * ConstB);
 
     public static RGaFloat64Vector K { get; }
-        = GeometricProcessor.CreateVector(Vb * Vc, Va * Vc, Va * Vb);
+        = GeometricProcessor.Vector(Vb * Vc, Va * Vc, Va * Vb);
 
     public static double KNorm { get; }
         = K.Norm();
@@ -80,7 +82,7 @@ public static class Sample2
         const double pi = Math.PI;
         var sqrt2 = Math.Sqrt(2);
 
-        return GeometricProcessor.CreateVector(
+        return GeometricProcessor.Vector(
             sqrt2 * Va * (Freq * t).Cos(),
             sqrt2 * Vb * (Freq * t - 2 * pi / 3).Cos(),
             sqrt2 * Vc * (Freq * t + 2 * pi / 3).Cos()
@@ -94,7 +96,7 @@ public static class Sample2
         var wtCos = (Freq * t).Cos();
         var wtSin = (Freq * t).Sin();
 
-        return -Freq / sqrt2 * GeometricProcessor.CreateVector(
+        return -Freq / sqrt2 * GeometricProcessor.Vector(
             2 * Va * wtSin,
             -Vb * (wtSin + sqrt3 * wtCos),
             -Vc * (wtSin - sqrt3 * wtCos)
@@ -108,7 +110,7 @@ public static class Sample2
         var wtCos = (Freq * t).Cos();
         var wtSin = (Freq * t).Sin();
 
-        return -Freq.Square() / sqrt2 * GeometricProcessor.CreateVector(
+        return -Freq.Square() / sqrt2 * GeometricProcessor.Vector(
             2 * Va * wtCos,
             Vb * (sqrt3 * wtSin - wtCos),
             -Vc * (sqrt3 * wtSin + wtCos)
@@ -122,7 +124,7 @@ public static class Sample2
         var wtCos = (Freq * t).Cos();
         var wtSin = (Freq * t).Sin();
 
-        return Freq.Cube() / sqrt2 * GeometricProcessor.CreateVector(
+        return Freq.Cube() / sqrt2 * GeometricProcessor.Vector(
             2 * Va * wtSin,
             -Vb * (wtSin + sqrt3 * wtCos),
             -Vc * (wtSin - sqrt3 * wtCos)
@@ -200,19 +202,19 @@ public static class Sample2
         var g = G(t);
         var gDt = GDt(t);
 
-        var e1d = gDt / (sqrt2 * g.Square()) * GeometricProcessor.CreateVector(
+        var e1d = gDt / (sqrt2 * g.Square()) * GeometricProcessor.Vector(
             2 * Va * wtCos,
             Vb * (sqrt3 * wtSin - wtCos),
             -Vc * (sqrt3 * wtSin + wtCos)
         );
 
-        var e2d = gDt / (sqrt2 * g.Square() * KNorm) * GeometricProcessor.CreateVector(
+        var e2d = gDt / (sqrt2 * g.Square() * KNorm) * GeometricProcessor.Vector(
             Va * (3 * (vc2 + vb2) * wtSin + (vc2 - vb2) * wtCos),
             -Vb * (sqrt3 * vc2 * wtSin + (2 * va2 + vc2) * wtCos),
             Vc * (sqrt3 * vb2 * wtSin - (2 * va2 + vb2) * wtCos)
         );
 
-        var e3d = GeometricProcessor.CreateZeroVector();
+        var e3d = GeometricProcessor.VectorZero;
 
         return new Triplet<RGaFloat64Vector>(e1d, e2d, e3d);
     }
@@ -330,15 +332,15 @@ public static class Sample2
         PlotKappa1(@"D:\Projects\Study\Geometric Frequency\Kappa1.pdf");
 
         {
-            var tAxis = Math.Atan2(ConstB / ConstD, ConstA / ConstD) / (2 * Freq);
+            var tAxis = LinFloat64PolarAngle.CreateFromVector(ConstA / ConstD, ConstB / ConstD).RadiansValue / (2 * Freq);
 
             var (a1, a2, _) = CurveFrameDt(tAxis);
 
             var a3 = KUnit;
 
-            var sigma1 = GeometricProcessor.CreateTermVector(0);
-            var sigma2 = GeometricProcessor.CreateTermVector(1);
-            var sigma3 = GeometricProcessor.CreateTermVector(2);
+            var sigma1 = GeometricProcessor.VectorTerm(0);
+            var sigma2 = GeometricProcessor.VectorTerm(1);
+            var sigma3 = GeometricProcessor.VectorTerm(2);
 
             var rotor1 =
                 sigma3.CreatePureRotor(KUnit, true);
@@ -361,7 +363,7 @@ public static class Sample2
             //Console.WriteLine($@"R1 = {TextComposer.GetMultivectorText(rotor1)}");
             Console.WriteLine($@"$\boldsymbol{{R}}_{{1}} = {LaTeXComposer.GetMultivectorText(rotor1)}$");
             Console.WriteLine($@"$\boldsymbol{{R}}_{{1}}\boldsymbol{{\sigma}}_{{1}}\boldsymbol{{R}}_{{1}}^{{\dagger}} = {LaTeXComposer.GetMultivectorText(r1)}$");
-            Console.WriteLine($@"$\cos\left(\varphi_{{2}}\right) = {LaTeXComposer.GetScalarText(angle2)}$");
+            Console.WriteLine($@"$\cos\left(\varphi_{{2}}\right) = {LaTeXComposer.GetScalarText(angle2.RadiansValue)}$");
             Console.WriteLine();
 
             Console.WriteLine($@"$\boldsymbol{{R}}_{{2}} = {LaTeXComposer.GetMultivectorText(rotor2)}$");

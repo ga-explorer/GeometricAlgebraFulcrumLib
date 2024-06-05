@@ -2,24 +2,24 @@
 using System.Collections.Immutable;
 using System.IO;
 using System.Linq;
-using DataStructuresLib.Files;
-using GeometricAlgebraFulcrumLib.Lite.Geometry.Differential.Functions.Phasors;
-using GeometricAlgebraFulcrumLib.Lite.Geometry.Parametric.Space1D.Scalars;
-using GeometricAlgebraFulcrumLib.Lite.Geometry.Parametric.Space3D.Curves;
-using GeometricAlgebraFulcrumLib.Lite.Geometry.Parametric.Space3D.Curves.Circles;
-using GeometricAlgebraFulcrumLib.Lite.Geometry.Parametric.Space3D.Curves.Lines;
-using GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.BabylonJs;
-using GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.Visuals.Space3D.Animations;
-using GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.Visuals.Space3D.Basic;
-using GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.Visuals.Space3D.Curves;
-using GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.Visuals.Space3D.Styles;
-using GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.Visuals.Space3D.Surfaces;
-using GeometricAlgebraFulcrumLib.Lite.LinearAlgebra;
-using GeometricAlgebraFulcrumLib.Lite.LinearAlgebra.LinearMaps.Space3D.Rotation;
-using GeometricAlgebraFulcrumLib.Lite.LinearAlgebra.Vectors.Space3D;
-using GeometricAlgebraFulcrumLib.Lite.ScalarAlgebra;
+using GeometricAlgebraFulcrumLib.Utilities.Structures.Files;
+using GeometricAlgebraFulcrumLib.Core.Modeling.Geometry.Differential.Functions.Phasors;
+using GeometricAlgebraFulcrumLib.Core.Modeling.Geometry.Parametric.Space1D.Scalars;
+using GeometricAlgebraFulcrumLib.Core.Modeling.Geometry.Parametric.Space3D.Curves;
+using GeometricAlgebraFulcrumLib.Core.Modeling.Geometry.Parametric.Space3D.Curves.Circles;
+using GeometricAlgebraFulcrumLib.Core.Modeling.Geometry.Parametric.Space3D.Curves.Lines;
+using GeometricAlgebraFulcrumLib.Core.Modeling.Graphics.Rendering.BabylonJs;
+using GeometricAlgebraFulcrumLib.Core.Modeling.Graphics.Rendering.Visuals.Space3D.Animations;
+using GeometricAlgebraFulcrumLib.Core.Modeling.Graphics.Rendering.Visuals.Space3D.Basic;
+using GeometricAlgebraFulcrumLib.Core.Modeling.Graphics.Rendering.Visuals.Space3D.Curves;
+using GeometricAlgebraFulcrumLib.Core.Modeling.Graphics.Rendering.Visuals.Space3D.Styles;
+using GeometricAlgebraFulcrumLib.Core.Modeling.Graphics.Rendering.Visuals.Space3D.Surfaces;
+using GeometricAlgebraFulcrumLib.Core.Algebra.LinearAlgebra.Float64.Angles;
+using GeometricAlgebraFulcrumLib.Core.Algebra.LinearAlgebra.Float64.LinearMaps.Space3D.Rotation;
+using GeometricAlgebraFulcrumLib.Core.Algebra.LinearAlgebra.Float64.Vectors.Space3D;
+using GeometricAlgebraFulcrumLib.Core.Algebra.Scalars.Float64;
 using SixLabors.ImageSharp;
-using WebComposerLib.Html.Media;
+using GeometricAlgebraFulcrumLib.Utilities.Web.Html.Media;
 
 namespace GeometricAlgebraFulcrumLib.Samples.Graphics.BabylonJs;
 
@@ -31,8 +31,8 @@ public static class AnimationSamples
     private const int GridUnitCount = 24;
     private const double CameraDistance = 15;
 
-    private static Float64Vector3D AxesOrigin { get; }
-        = Float64Vector3D.Zero;
+    private static LinFloat64Vector3D AxesOrigin { get; }
+        = LinFloat64Vector3D.Zero;
 
     private static GrBabylonJsHtmlComposer3D HtmlComposer { get; set; }
 
@@ -328,23 +328,23 @@ public static class AnimationSamples
         );
 
         var curve0 = new ArcLengthLineSegment3D(
-            Float64Vector3D.Zero,
-            Float64Vector3D.Symmetric * 5
+            LinFloat64Vector3D.Zero,
+            LinFloat64Vector3D.Symmetric * 5
         );
 
         var curve1 = new ArcLengthLineSegment3D(
-            Float64Vector3D.Zero,
-            Float64Vector3D.E1 * 5
+            LinFloat64Vector3D.Zero,
+            LinFloat64Vector3D.E1 * 5
         );
 
         var curve2 = new ArcLengthLineSegment3D(
-            Float64Vector3D.Zero,
-            Float64Vector3D.E2 * 5
+            LinFloat64Vector3D.Zero,
+            LinFloat64Vector3D.E2 * 5
         );
 
         var curve3 = new ArcLengthLineSegment3D(
-            Float64Vector3D.Zero,
-            Float64Vector3D.E3 * 5
+            LinFloat64Vector3D.Zero,
+            LinFloat64Vector3D.E3 * 5
         );
 
 
@@ -528,8 +528,8 @@ public static class AnimationSamples
             GrVisualCircleCurve3D.CreateStatic(
                 "c1",
                 Color.DarkTurquoise.CreateSolidLineCurveStyle(),
-                Float64Vector3D.Create(0, 0, 0),
-                Float64Vector3D.Create(1, 1, 1),
+                LinFloat64Vector3D.Create(0, 0, 0),
+                LinFloat64Vector3D.Create(1, 1, 1),
                 5
             )
         );
@@ -538,8 +538,8 @@ public static class AnimationSamples
             GrVisualCircleCurve3D.CreateStatic(
                 "c2",
                 Color.LightBlue.CreateSolidLineCurveStyle(),
-                Float64Vector3D.Create(0, 0, 0),
-                Float64Vector3D.Create(0, 1, 0),
+                LinFloat64Vector3D.Create(0, 0, 0),
+                LinFloat64Vector3D.Create(0, 1, 0),
                 3
             )
         );
@@ -569,8 +569,8 @@ public static class AnimationSamples
 
 
         var curve1 = new ParametricCircle3D(
-            Float64Vector3D.Create(0, 0, 0),
-            Float64Vector3D.Create(1, 1, 1).ToUnitVector(),
+            LinFloat64Vector3D.Create(0, 0, 0),
+            LinFloat64Vector3D.Create(1, 1, 1).ToUnitLinVector3D(),
             5,
             -3
         );
@@ -637,19 +637,19 @@ public static class AnimationSamples
         var xPhasorFunction = DfCosPhasor.Create(
             magnitude,
             frequency,
-            0d.DegreesToAngle()
+            0d.DegreesToDirectedAngle()
         );
 
         var yPhasorFunction = DfCosPhasor.Create(
             magnitude,
             frequency,
-            120d.DegreesToAngle()
+            120d.DegreesToDirectedAngle()
         );
 
         var zPhasorFunction = DfCosPhasor.Create(
             magnitude,
             frequency,
-            240d.DegreesToAngle()
+            240d.DegreesToDirectedAngle()
         );
 
 
@@ -663,26 +663,26 @@ public static class AnimationSamples
             zPhasorFunction.GetDerivative1();
 
 
-        var xPhasorCurve = ComputedParametricCurve3D.Create(t => xPhasorFunction.GetValue(t) * Float64Vector3D.E1,
-            t => xPhasorTangentFunction.GetValue(t) * Float64Vector3D.E1);
+        var xPhasorCurve = ComputedParametricCurve3D.Create(t => xPhasorFunction.GetValue(t) * LinFloat64Vector3D.E1,
+            t => xPhasorTangentFunction.GetValue(t) * LinFloat64Vector3D.E1);
 
-        var yPhasorCurve = ComputedParametricCurve3D.Create(t => yPhasorFunction.GetValue(t) * Float64Vector3D.E2,
-            t => yPhasorTangentFunction.GetValue(t) * Float64Vector3D.E2);
+        var yPhasorCurve = ComputedParametricCurve3D.Create(t => yPhasorFunction.GetValue(t) * LinFloat64Vector3D.E2,
+            t => yPhasorTangentFunction.GetValue(t) * LinFloat64Vector3D.E2);
 
-        var zPhasorCurve = ComputedParametricCurve3D.Create(t => zPhasorFunction.GetValue(t) * Float64Vector3D.E3,
-            t => zPhasorTangentFunction.GetValue(t) * Float64Vector3D.E3);
+        var zPhasorCurve = ComputedParametricCurve3D.Create(t => zPhasorFunction.GetValue(t) * LinFloat64Vector3D.E3,
+            t => zPhasorTangentFunction.GetValue(t) * LinFloat64Vector3D.E3);
 
-        var uPhasorCurve = ComputedParametricCurve3D.Create(t => Float64Vector3D.Create(xPhasorFunction.GetValue(t),
+        var uPhasorCurve = ComputedParametricCurve3D.Create(t => LinFloat64Vector3D.Create(xPhasorFunction.GetValue(t),
                 yPhasorFunction.GetValue(t),
                 zPhasorFunction.GetValue(t)),
-            t => Float64Vector3D.Create(xPhasorTangentFunction.GetValue(t),
+            t => LinFloat64Vector3D.Create(xPhasorTangentFunction.GetValue(t),
                 yPhasorTangentFunction.GetValue(t),
                 zPhasorTangentFunction.GetValue(t)));
 
 
         var originCurve = ConstantParametricCurve3D.Create(
-            Float64Vector3D.Zero,
-            Float64Vector3D.UnitSymmetric
+            LinFloat64Vector3D.Zero,
+            LinFloat64Vector3D.UnitSymmetric
         );
 
         var uDiscRadiusCurve = ConstantParametricScalar.Create(
@@ -769,8 +769,8 @@ public static class AnimationSamples
         var kVector = GrVisualVector3D.CreateStatic(
             "kVector",
             orangeMaterial.CreateTubeCurveStyle(thickness),
-            Float64Vector3D.Zero,
-            magnitude * Math.Sqrt(3d / 2d) * Float64Vector3D.UnitSymmetric
+            LinFloat64Vector3D.Zero,
+            magnitude * Math.Sqrt(3d / 2d) * LinFloat64Vector3D.UnitSymmetric
         );
 
         MainSceneComposer.AddElements(
@@ -906,8 +906,8 @@ public static class AnimationSamples
             GrVisualCircleCurve3D.CreateStatic(
                 "uRing",
                 orangeMaterial.CreateTubeCurveStyle(thickness),
-                Float64Vector3D.Zero,
-                Float64Vector3D.UnitSymmetric,
+                LinFloat64Vector3D.Zero,
+                LinFloat64Vector3D.UnitSymmetric,
                 magnitude * Math.Sqrt(3d / 2d)
             )
         );
@@ -991,14 +991,14 @@ public static class AnimationSamples
         //);
 
         var planarRotation1 = LinFloat64PlanarRotation3D.CreateFromRotatedVector(
-            Float64Vector3D.Create(1, 1, 0).ToUnitVector(),
-            Float64Vector3D.Create(0, 0, 1).ToUnitVector(),
+            LinFloat64Vector3D.Create(1, 1, 0).ToUnitLinVector3D(),
+            LinFloat64Vector3D.Create(0, 0, 1).ToUnitLinVector3D(),
             true
         );
 
         var planarRotation2 = LinFloat64PlanarRotation3D.CreateFromRotatedVector(
-            Float64Vector3D.Create(1, 0, 1).ToUnitVector(),
-            Float64Vector3D.Create(1, 2, 3).ToUnitVector(),
+            LinFloat64Vector3D.Create(1, 0, 1).ToUnitLinVector3D(),
+            LinFloat64Vector3D.Create(1, 2, 3).ToUnitLinVector3D(),
             false
         );
 
@@ -1045,7 +1045,7 @@ public static class AnimationSamples
                 t => 
                 planarRotation1
                     .InterpolateTo(planarRotation2, tValueCurve.GetValue(t))
-                    .RotationAngle.Radians
+                    .RotationAngle.RadiansValue
             );
         
         var radiusCurve = 
@@ -1164,7 +1164,7 @@ public static class AnimationSamples
             GrVisualCircleArcCurve3D.CreateStatic(
                 "rotation1Arc",
                 vector1Style,
-                Float64Vector3D.Zero,
+                LinFloat64Vector3D.Zero,
                 planarRotation1.BasisVector1,
                 planarRotation1.BasisVector2,
                 vectorLength,
@@ -1196,7 +1196,7 @@ public static class AnimationSamples
             GrVisualCircleArcCurve3D.CreateStatic(
                 "rotation2Arc",
                 vector1Style,
-                Float64Vector3D.Zero,
+                LinFloat64Vector3D.Zero,
                 planarRotation2.BasisVector1,
                 planarRotation2.BasisVector2,
                 vectorLength,

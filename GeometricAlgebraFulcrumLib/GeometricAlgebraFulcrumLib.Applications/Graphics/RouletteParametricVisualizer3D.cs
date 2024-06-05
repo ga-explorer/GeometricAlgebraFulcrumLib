@@ -1,13 +1,13 @@
 ﻿using System.Collections.Immutable;
-using DataStructuresLib.Files;
-using GeometricAlgebraFulcrumLib.Lite.Geometry.Parametric.Space3D.Curves;
-using GeometricAlgebraFulcrumLib.Lite.Geometry.Parametric.Space3D.Curves.Adaptive;
-using GeometricAlgebraFulcrumLib.Lite.Geometry.Parametric.Space3D.Curves.Roulettes;
-using GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.BabylonJs;
-using GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.BabylonJs.Constants;
-using GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.BabylonJs.GUI;
-using GeometricAlgebraFulcrumLib.Lite.LinearAlgebra;
-using GeometricAlgebraFulcrumLib.Lite.ScalarAlgebra;
+using GeometricAlgebraFulcrumLib.Utilities.Structures.Files;
+using GeometricAlgebraFulcrumLib.Core.Modeling.Geometry.Parametric.Space3D.Curves;
+using GeometricAlgebraFulcrumLib.Core.Modeling.Geometry.Parametric.Space3D.Curves.Adaptive;
+using GeometricAlgebraFulcrumLib.Core.Modeling.Geometry.Parametric.Space3D.Curves.Roulettes;
+using GeometricAlgebraFulcrumLib.Core.Modeling.Graphics.Rendering.BabylonJs;
+using GeometricAlgebraFulcrumLib.Core.Modeling.Graphics.Rendering.BabylonJs.Constants;
+using GeometricAlgebraFulcrumLib.Core.Modeling.Graphics.Rendering.BabylonJs.GUI;
+using GeometricAlgebraFulcrumLib.Core.Algebra.LinearAlgebra.Float64.Angles;
+using GeometricAlgebraFulcrumLib.Core.Algebra.Scalars.Float64;
 using SixLabors.ImageSharp;
 
 namespace GeometricAlgebraFulcrumLib.Applications.Graphics;
@@ -139,10 +139,10 @@ public class RouletteParametricVisualizer3D :
             _activeCurve.FixedCurve.ParameterRange;
             
         var tValues =
-            tMin.Value.GetLinearRange(tMax, 501, false).ToImmutableArray();
+            tMin.ScalarValue.GetLinearRange(tMax, 501, false).ToImmutableArray();
 
         var tValuesFrames = 
-            tMin.Value.GetLinearRange(tMax, FixedCurveFrameCount, false).ToImmutableArray();
+            tMin.ScalarValue.GetLinearRange(tMax, FixedCurveFrameCount, false).ToImmutableArray();
         
         MainSceneComposer.AddParametricCurve(
             "fixedCurve", 
@@ -163,10 +163,10 @@ public class RouletteParametricVisualizer3D :
             _activeCurve.MovingCurve.ParameterRange;
             
         var tValues =
-            tMin.Value.GetLinearRange(tMax, 501, false).ToImmutableArray();
+            tMin.ScalarValue.GetLinearRange(tMax, 501, false).ToImmutableArray();
             
         var tValuesFrames = 
-            tMin.Value.GetLinearRange(tMax, MovingCurveFrameCount, false).ToImmutableArray();
+            tMin.ScalarValue.GetLinearRange(tMax, MovingCurveFrameCount, false).ToImmutableArray();
             
         MainSceneComposer.AddParametricCurve(
             "movingCurve",
@@ -227,7 +227,7 @@ public class RouletteParametricVisualizer3D :
         
         var sampledCurve = _activeCurve.CreateAdaptiveCurve3D(
             _activeCurve.ParameterRange, 
-            new AdaptiveCurveSamplingOptions3D(5.DegreesToAngle(), 3, 16)
+            new AdaptiveCurveSamplingOptions3D(5.DegreesToDirectedAngle(), 3, 16)
         );
 
         var pointList =

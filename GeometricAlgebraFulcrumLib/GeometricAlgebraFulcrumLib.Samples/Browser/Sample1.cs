@@ -2,7 +2,7 @@
 using System.IO;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
-using TextComposerLib.Text.Parametric;
+using GeometricAlgebraFulcrumLib.Utilities.Text.Text.Parametric;
 
 namespace GeometricAlgebraFulcrumLib.Samples.Browser;
 
@@ -370,8 +370,7 @@ public static class Sample1
                 ((ITakesScreenshot) webElement).GetScreenshot();
 
             elementScreenShot.SaveAsFile(
-                Path.Combine(workingPath, "text-div Screen Shot.png"), 
-                ScreenshotImageFormat.Png
+                Path.Combine(workingPath, "text-div Screen Shot.png")
             );
 
             webElement = driver.FindElement(By.Id("katex-div"));
@@ -380,8 +379,7 @@ public static class Sample1
                 ((ITakesScreenshot) webElement).GetScreenshot();
 
             elementScreenShot.SaveAsFile(
-                Path.Combine(workingPath, "katex-div Screen Shot.png"), 
-                ScreenshotImageFormat.Png
+                Path.Combine(workingPath, "katex-div Screen Shot.png")
             );
         }
         catch (Exception ex)

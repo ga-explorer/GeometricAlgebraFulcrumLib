@@ -1,6 +1,6 @@
 ﻿using System;
-using GeometricAlgebraFulcrumLib.Lite.LinearAlgebra;
-using GeometricAlgebraFulcrumLib.Lite.LinearAlgebra.Vectors.Space2D;
+using GeometricAlgebraFulcrumLib.Core.Algebra.LinearAlgebra.Float64.Angles;
+using GeometricAlgebraFulcrumLib.Core.Algebra.LinearAlgebra.Float64.Vectors.Space2D;
 
 namespace GeometricAlgebraFulcrumLib.Samples.Numeric;
 
@@ -11,10 +11,10 @@ public static class SnelliusPothenotProblem
 {
     public static void Execute()
     {
-        var pointA = Float64Vector2D.Create(-4, 3);
-        var pointB = Float64Vector2D.Create(0, 5);
-        var pointC = Float64Vector2D.Create(7, 4);
-        var pointP = Float64Vector2D.Create(1, 0);
+        var pointA = LinFloat64Vector2D.Create(-4, 3);
+        var pointB = LinFloat64Vector2D.Create(0, 5);
+        var pointC = LinFloat64Vector2D.Create(7, 4);
+        var pointP = LinFloat64Vector2D.Create(1, 0);
 
         var (angleAlpha, angleBeta, originIndex) = 
             GetAngles(pointA, pointB, pointC, pointP);
@@ -34,7 +34,7 @@ public static class SnelliusPothenotProblem
     }
 
         
-    public static Tuple<Float64PlanarAngle, Float64PlanarAngle, int> GetAngles(Float64Vector2D pointA, Float64Vector2D pointB, Float64Vector2D pointC, Float64Vector2D pointP)
+    public static Tuple<LinFloat64Angle, LinFloat64Angle, int> GetAngles(LinFloat64Vector2D pointA, LinFloat64Vector2D pointB, LinFloat64Vector2D pointC, LinFloat64Vector2D pointP)
     {
         var ua = pointA - pointP;
         var ub = pointB - pointP;
@@ -45,21 +45,21 @@ public static class SnelliusPothenotProblem
         var theta_ub = ub.GetPolarAngle();
         var theta_uc = uc.GetPolarAngle();
 
-        var alpha = theta_ua - theta_ub;
-        var beta = theta_ub - theta_uc;
+        var alpha = theta_ua.AngleSubtract(theta_ub.ScalarValue);
+        var beta = theta_ub.AngleSubtract(theta_uc.ScalarValue);
         var originIndex = 2; //2 = B
 
         // If beta or alpha are null we must change the origin
         if (beta.IsNearZero())
         {
-            alpha = theta_ub - theta_ua;
-            beta = theta_ua - theta_uc;
+            alpha = theta_ub.AngleSubtract(theta_ua.ScalarValue);
+            beta = theta_ua.AngleSubtract(theta_uc.ScalarValue);
             originIndex = 1; //1 = A
         }
         else if (alpha.IsNearZero())
         {
-            alpha = theta_ua - theta_uc;
-            beta = theta_uc - theta_ub;
+            alpha = theta_ua.AngleSubtract(theta_uc.ScalarValue);
+            beta = theta_uc.AngleSubtract(theta_ub.ScalarValue);
             originIndex = 3; //3 = C
         }
             
@@ -70,17 +70,17 @@ public static class SnelliusPothenotProblem
         //Console.WriteLine($"origin: {origin}");
         //Console.WriteLine();
 
-        return new Tuple<Float64PlanarAngle, Float64PlanarAngle, int>(
+        return new Tuple<LinFloat64Angle, LinFloat64Angle, int>(
             alpha,
             beta,
             originIndex
         );
     }
 
-    public static Tuple<bool, Float64Vector2D> Solve(Float64Vector2D pointA, Float64Vector2D pointB, Float64Vector2D pointC, int originIndex, Float64PlanarAngle angleAlpha, Float64PlanarAngle angleBeta)
+    public static Tuple<bool, LinFloat64Vector2D> Solve(LinFloat64Vector2D pointA, LinFloat64Vector2D pointB, LinFloat64Vector2D pointC, int originIndex, LinFloat64Angle angleAlpha, LinFloat64Angle angleBeta)
     {
         //select the central beacon depending on the origin
-        Float64Vector2D center, v1, v2;
+        LinFloat64Vector2D center, v1, v2;
 
         if (originIndex == 1)
         {
@@ -101,7 +101,7 @@ public static class SnelliusPothenotProblem
             v2 = pointB - pointC;
         }
             
-        var e12 = Float64Bivector2D.E12;
+        var e12 = LinFloat64Bivector2D.E12;
 
         // Calculate the vector p
         var d1 = v1 + (v1 / angleAlpha.Tan()).Gp(e12);
@@ -110,12 +110,12 @@ public static class SnelliusPothenotProblem
         var d = d2 - d1;
 
         if (d.IsNearZero())
-            return new Tuple<bool, Float64Vector2D>(false, Float64Vector2D.Zero);
+            return new Tuple<bool, LinFloat64Vector2D>(false, LinFloat64Vector2D.Zero);
 
         var dInv = d1.Inverse();
             
         var p = d1.Op(d).Gp(dInv);
             
-        return new Tuple<bool, Float64Vector2D>(true, center + p);
+        return new Tuple<bool, LinFloat64Vector2D>(true, center + p);
     }
 }

@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Restricted.Float64.Multivectors;
-using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Restricted.Float64.Multivectors.Composers;
-using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Restricted.Float64.Processors;
-using GeometricAlgebraFulcrumLib.Lite.ScalarAlgebra;
-using GeometricAlgebraFulcrumLib.Utilities.Extensions;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra;
+using GeometricAlgebraFulcrumLib.Core.Algebra.GeometricAlgebra.Restricted.Float64.Multivectors;
+using GeometricAlgebraFulcrumLib.Core.Algebra.GeometricAlgebra.Restricted.Float64.Multivectors.Composers;
+using GeometricAlgebraFulcrumLib.Core.Algebra.GeometricAlgebra.Restricted.Float64.Processors;
+using GeometricAlgebraFulcrumLib.Core.Algebra.Scalars.Float64;
 using NUnit.Framework;
 
 namespace GeometricAlgebraFulcrumLib.UnitTests.Processing;
@@ -98,16 +98,16 @@ public sealed class MultivectorConsistencyTests
     [Test]
     public void AssertCorrectInitialization()
     {
-        Assert.IsTrue(_mvListTested.Count == _mvListRef.Count);
+        Assert.That(_mvListTested.Count == _mvListRef.Count);
 
         for (var i = 0; i < _mvListTested.Count; i++)
         {
-            Assert.IsTrue(_mvListTested[i].Count == _mvListRef[i].Count);
+            Assert.That(_mvListTested[i].Count == _mvListRef[i].Count);
 
             var mvDiff = 
                 _mvListTested[i] - _mvListRef[i];
 
-            Assert.IsTrue(mvDiff.IsZero);
+            Assert.That(mvDiff.IsZero);
         }
     }
 
@@ -161,30 +161,30 @@ public sealed class MultivectorConsistencyTests
         for (var i = 0; i < _mvListTested.Count; i++)
         {
             // Test unary operations on multivectors
-            Assert.IsTrue(TestDiffIsZero(i, mv => _scalar * mv));
-            Assert.IsTrue(TestDiffIsZero(i, mv => mv * _scalar));
-            Assert.IsTrue(TestDiffIsZero(i, mv => mv / _scalar));
-            Assert.IsTrue(TestDiffIsZero(i, mv => mv.Gp(mv)));
-            Assert.IsTrue(TestDiffIsZero(i, mv => mv.Gp(mv.Reverse())));
-            Assert.IsTrue(TestDiffIsZero(i, mv => mv.SpSquared().ScalarValue()));
-            Assert.IsTrue(TestDiffIsZero(i, mv => mv.Norm().ScalarValue()));
-            Assert.IsTrue(TestDiffIsZero(i, mv => mv.NormSquared().ScalarValue()));
+            Assert.That(TestDiffIsZero(i, mv => _scalar * mv));
+            Assert.That(TestDiffIsZero(i, mv => mv * _scalar));
+            Assert.That(TestDiffIsZero(i, mv => mv / _scalar));
+            Assert.That(TestDiffIsZero(i, mv => mv.Gp(mv)));
+            Assert.That(TestDiffIsZero(i, mv => mv.Gp(mv.Reverse())));
+            Assert.That(TestDiffIsZero(i, mv => mv.SpSquared().ScalarValue));
+            Assert.That(TestDiffIsZero(i, mv => mv.Norm().ScalarValue));
+            Assert.That(TestDiffIsZero(i, mv => mv.NormSquared().ScalarValue));
 
             for (var j = 0; j < _mvListTested.Count; j++)
             {
                 // Test binary operations on multivectors
-                Assert.IsTrue(TestDiffIsZero(i, j, (mv1, mv2) => mv1 + mv2));
-                Assert.IsTrue(TestDiffIsZero(i, j, (mv1, mv2) => mv1 - mv2));
-                Assert.IsTrue(TestDiffIsZero(i, j, (mv1, mv2) => mv1.Op(mv2)));
-                Assert.IsTrue(TestDiffIsZero(i, j, (mv1, mv2) => mv1.Gp(mv2)));
-                Assert.IsTrue(TestDiffIsZero(i, j, (mv1, mv2) => mv1.Gp(mv2.Reverse())));
-                Assert.IsTrue(TestDiffIsZero(i, j, (mv1, mv2) => mv1.Sp(mv2).ScalarValue()));
-                Assert.IsTrue(TestDiffIsZero(i, j, (mv1, mv2) => mv1.Lcp(mv2)));
-                Assert.IsTrue(TestDiffIsZero(i, j, (mv1, mv2) => mv1.Rcp(mv2)));
-                Assert.IsTrue(TestDiffIsZero(i, j, (mv1, mv2) => mv1.Fdp(mv2)));
-                Assert.IsTrue(TestDiffIsZero(i, j, (mv1, mv2) => mv1.Hip(mv2)));
-                Assert.IsTrue(TestDiffIsZero(i, j, (mv1, mv2) => mv1.Acp(mv2)));
-                Assert.IsTrue(TestDiffIsZero(i, j, (mv1, mv2) => mv1.Cp(mv2)));
+                Assert.That(TestDiffIsZero(i, j, (mv1, mv2) => mv1 + mv2));
+                Assert.That(TestDiffIsZero(i, j, (mv1, mv2) => mv1 - mv2));
+                Assert.That(TestDiffIsZero(i, j, (mv1, mv2) => mv1.Op(mv2)));
+                Assert.That(TestDiffIsZero(i, j, (mv1, mv2) => mv1.Gp(mv2)));
+                Assert.That(TestDiffIsZero(i, j, (mv1, mv2) => mv1.Gp(mv2.Reverse())));
+                Assert.That(TestDiffIsZero(i, j, (mv1, mv2) => mv1.Sp(mv2).ScalarValue));
+                Assert.That(TestDiffIsZero(i, j, (mv1, mv2) => mv1.Lcp(mv2)));
+                Assert.That(TestDiffIsZero(i, j, (mv1, mv2) => mv1.Rcp(mv2)));
+                Assert.That(TestDiffIsZero(i, j, (mv1, mv2) => mv1.Fdp(mv2)));
+                Assert.That(TestDiffIsZero(i, j, (mv1, mv2) => mv1.Hip(mv2)));
+                Assert.That(TestDiffIsZero(i, j, (mv1, mv2) => mv1.Acp(mv2)));
+                Assert.That(TestDiffIsZero(i, j, (mv1, mv2) => mv1.Cp(mv2)));
             }
         }
     }

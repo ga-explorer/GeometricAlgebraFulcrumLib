@@ -1,0 +1,34 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <Platforms>AnyCPU;x64</Platforms>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AngouriMath" Version="1.3.0" />
+    <PackageReference Include="BenchmarkDotNet" Version="0.13.12" />
+    <PackageReference Include="CSharpMath.Evaluation" Version="0.5.1" />
+    <PackageReference Include="CsvHelper" Version="32.0.3" />
+    <PackageReference Include="ILGPU" Version="1.5.1" />
+    <PackageReference Include="ILGPU.Algorithms" Version="1.5.1" />
+    <PackageReference Include="ILGPU.Lightning" Version="0.3.0" />
+    <PackageReference Include="MathNet.Numerics" Version="5.0.0" />
+    <PackageReference Include="NumpyDotNet" Version="0.9.86.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\CodeComposerLib\CodeComposerLib\CodeComposerLib.csproj" />
+    <ProjectReference Include="..\..\GAPoTNumLib\GAPoTNumLib\GAPoTNumLib.csproj" />
+    <ProjectReference Include="..\..\GeometricAlgebraFulcrumLib.Utilities.Web\GeometricAlgebraFulcrumLib.Utilities.Web\GeometricAlgebraFulcrumLib.Utilities.Web.csproj" />
+    <ProjectReference Include="..\GeometricAlgebraFulcrumLib.Applications\GeometricAlgebraFulcrumLib.Applications.csproj" />
+    <ProjectReference Include="..\GeometricAlgebraFulcrumLib.Generations\GeometricAlgebraFulcrumLib.Generations.csproj" />
+    <ProjectReference Include="..\GeometricAlgebraFulcrumLib.Lite\GeometricAlgebraFulcrumLib.Lite.csproj" />
+    <ProjectReference Include="..\GeometricAlgebraFulcrumLib.MathBase\GeometricAlgebraFulcrumLib.MathBase.csproj" />
+    <ProjectReference Include="..\GeometricAlgebraFulcrumLib.Utilities.Structures\GeometricAlgebraFulcrumLib.Utilities.Structures.csproj" />
+    <ProjectReference Include="..\GeometricAlgebraFulcrumLib.Utilities.Text\GeometricAlgebraFulcrumLib.Utilities.Text.csproj" />
+    <ProjectReference Include="..\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.csproj" />
+  </ItemGroup>
+
+</Project>

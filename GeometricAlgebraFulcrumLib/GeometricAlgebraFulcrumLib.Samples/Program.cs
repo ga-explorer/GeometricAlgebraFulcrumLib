@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GeometricAlgebraFulcrumLib.Samples.Geometry.Conformal;
+using System;
 
 namespace GeometricAlgebraFulcrumLib.Samples;
 
@@ -133,8 +134,10 @@ class Program
         //NumericPhSplineCurveSamples.Example1();
 
         //MetaProgramming.CSharp.GradedMultivectorLibSample.GenerateCode();
-        MetaProgramming.Matlab.GradedMultivectorLibSample.GenerateCode();
+        //MetaProgramming.Matlab.GradedMultivectorLibSample.GenerateCode();
         
+        ConformalSpace5DSamples.Example1();
+
         Console.WriteLine();
         Console.WriteLine("Press any key to exit..");
         Console.ReadKey();

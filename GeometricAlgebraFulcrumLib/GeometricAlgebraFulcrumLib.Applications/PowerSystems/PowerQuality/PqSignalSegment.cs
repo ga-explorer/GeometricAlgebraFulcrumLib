@@ -1,13 +1,13 @@
-﻿using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Processors;
-using GeometricAlgebraFulcrumLib.Lite.LinearAlgebra;
-using GeometricAlgebraFulcrumLib.Lite.ScalarAlgebra;
+﻿using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Generic.Processors;
+using GeometricAlgebraFulcrumLib.Algebra.Scalars;
+using GeometricAlgebraFulcrumLib.Core.Algebra.LinearAlgebra.Float64.Angles;
 
 namespace GeometricAlgebraFulcrumLib.Applications.PowerSystems.PowerQuality
 {
     public abstract class PqSignalSegment
     {
         public static ScalarProcessorOfFloat64 ScalarProcessor { get; }
-            = ScalarProcessorOfFloat64.DefaultProcessor;
+            = ScalarProcessorOfFloat64.Instance;
 
         public static RGaProcessor<double> GeometricProcessor { get; }
             = ScalarProcessor.CreateEuclideanRGaProcessor();
@@ -43,7 +43,7 @@ namespace GeometricAlgebraFulcrumLib.Applications.PowerSystems.PowerQuality
         public double FaultDuration 
             => SegmentDuration - TransitionDuration;
 
-        public Float64PlanarAngle PhaseAngleJump { get; }
+        public LinFloat64Angle PhaseAngleJump { get; }
 
         public double NoisePercentage { get; }
     }

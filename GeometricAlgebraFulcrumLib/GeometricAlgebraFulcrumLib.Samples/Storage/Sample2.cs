@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using DataStructuresLib.BitManipulation;
-using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Restricted.Float64.Multivectors;
-using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Restricted.Float64.Multivectors.Composers;
-using GeometricAlgebraFulcrumLib.Lite.GeometricAlgebra.Restricted.Float64.Processors;
-using GeometricAlgebraFulcrumLib.Utilities.Extensions;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra;
+using GeometricAlgebraFulcrumLib.Utilities.Structures.BitManipulation;
+using GeometricAlgebraFulcrumLib.Core.Algebra.GeometricAlgebra.Restricted.Float64.Multivectors;
+using GeometricAlgebraFulcrumLib.Core.Algebra.GeometricAlgebra.Restricted.Float64.Multivectors.Composers;
+using GeometricAlgebraFulcrumLib.Core.Algebra.GeometricAlgebra.Restricted.Float64.Processors;
 
 namespace GeometricAlgebraFulcrumLib.Samples.Storage;
 
@@ -50,7 +50,7 @@ public static class Sample2
     {
         //Create a scalar storage
         sList1.Add(
-            Processor.CreateScalar(
+            Processor.Scalar(
                 RandomGenerator.NextDouble()
             )
         );
@@ -58,7 +58,7 @@ public static class Sample2
         //Create a set of term storages
         for (var id = 0UL; id < GaSpaceDimensions; id++)
             sList1.Add(
-                Processor.CreateTermKVector(
+                Processor.KVectorTerm(
                     id,
                     RandomGenerator.NextDouble()
                 )
@@ -66,18 +66,18 @@ public static class Sample2
 
         //Create a vector storage
         sList1.Add(
-            Processor.CreateVector(GetRandomKVectorDictionary(1))
+            Processor.Vector(GetRandomKVectorDictionary(1))
         );
 
         //Create a bivector storage
         sList1.Add(
-            Processor.CreateBivector(GetRandomKVectorDictionary(2))
+            Processor.Bivector(GetRandomKVectorDictionary(2))
         );
 
         //Create k-vector storages
         for (var grade = 0; grade <= VSpaceDimensions; grade++)
             sList1.Add(
-                Processor.CreateKVector(
+                Processor.KVector(
                     grade, 
                     GetRandomKVectorDictionary(grade)
                 )
@@ -90,11 +90,11 @@ public static class Sample2
         for (var grade = 0; grade <= VSpaceDimensions; grade++)
             gradeIndexScalarDictionary.Add(
                 grade, 
-                Processor.CreateKVector(grade, GetRandomKVectorDictionary(grade))
+                Processor.KVector(grade, GetRandomKVectorDictionary(grade))
             );
 
         sList1.Add(
-            Processor.CreateMultivector(gradeIndexScalarDictionary)
+            Processor.Multivector(gradeIndexScalarDictionary)
         );
 
         //Convert all storages into multivector terms storages

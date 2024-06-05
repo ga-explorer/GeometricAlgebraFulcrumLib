@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Linq;
-using GeometricAlgebraFulcrumLib.Lite.LinearAlgebra;
-using GeometricAlgebraFulcrumLib.Lite.LinearAlgebra.Vectors.Space2D;
-using GeometricAlgebraFulcrumLib.Lite.LinearAlgebra.Vectors.Space3D;
-using GeometricAlgebraFulcrumLib.Lite.PolynomialAlgebra.PhCurves;
-using GeometricAlgebraFulcrumLib.Lite.ScalarAlgebra;
-using GeometricAlgebraFulcrumLib.MathBase.Text;
+using GeometricAlgebraFulcrumLib.Core.Algebra.LinearAlgebra.Float64.Angles;
+using GeometricAlgebraFulcrumLib.Core.Algebra.LinearAlgebra.Float64.Vectors.Space2D;
+using GeometricAlgebraFulcrumLib.Core.Algebra.LinearAlgebra.Float64.Vectors.Space3D;
+using GeometricAlgebraFulcrumLib.Core.Algebra.Polynomials.PhCurves;
+using GeometricAlgebraFulcrumLib.Core.Algebra.Scalars.Float64;
+using GeometricAlgebraFulcrumLib.Algebra.Utilities.Text;
 
 namespace GeometricAlgebraFulcrumLib.Samples.Numeric;
 
@@ -16,8 +16,8 @@ public static class NumericPhCurveSamples
     /// </summary>
     public static void Example1()
     {
-        var point1 = Float64Vector2D.Create((Float64Scalar)10, -1);
-        var tangent1 = Float64Vector2D.Create((Float64Scalar)1.2, (Float64Scalar)0.9);
+        var point1 = LinFloat64Vector2D.Create((Float64Scalar)10, -1);
+        var tangent1 = LinFloat64Vector2D.Create((Float64Scalar)1.2, (Float64Scalar)0.9);
 
         Console.WriteLine(@$"c'(1) = {tangent1}");
         Console.WriteLine(@$"c(1) = {point1}");
@@ -59,8 +59,8 @@ public static class NumericPhCurveSamples
     /// </summary>
     public static void Example2()
     {
-        var point1 = Float64Vector3D.Create(10, -1, 3);
-        var tangent1 = Float64Vector3D.Create(1.2, 0.9, -0.5);
+        var point1 = LinFloat64Vector3D.Create(10, -1, 3);
+        var tangent1 = LinFloat64Vector3D.Create(1.2, 0.9, -0.5);
 
         Console.WriteLine(@$"c'(1) = {tangent1}");
         Console.WriteLine(@$"c(1) = {point1}");
@@ -68,7 +68,7 @@ public static class NumericPhCurveSamples
 
         var thetaRange = 
             (-89d).GetLinearRange(89d, 7)
-            .Select(Float64PlanarAngle.CreateFromDegrees)
+            .Select(LinFloat64PolarAngle.CreateFromDegrees)
             .ToArray();
 
         var lengthArray = new double[thetaRange.Length, thetaRange.Length];
@@ -129,11 +129,11 @@ public static class NumericPhCurveSamples
     /// </summary>
     public static void Example3()
     {
-        var point0 = Float64Vector2D.Create((Float64Scalar)1, 1);
-        var tangent0 = Float64Vector2D.Create((Float64Scalar)(-1.2), (Float64Scalar)(-0.9));
+        var point0 = LinFloat64Vector2D.Create((Float64Scalar)1, 1);
+        var tangent0 = LinFloat64Vector2D.Create((Float64Scalar)(-1.2), (Float64Scalar)(-0.9));
 
-        var point1 = Float64Vector2D.Create((Float64Scalar)10, -1);
-        var tangent1 = Float64Vector2D.Create((Float64Scalar)1.2, (Float64Scalar)0.9);
+        var point1 = LinFloat64Vector2D.Create((Float64Scalar)10, -1);
+        var tangent1 = LinFloat64Vector2D.Create((Float64Scalar)1.2, (Float64Scalar)0.9);
 
         Console.WriteLine(@$"c'(0) = {tangent0}");
         Console.WriteLine(@$"c'(1) = {tangent1}");
@@ -210,11 +210,11 @@ public static class NumericPhCurveSamples
     /// </summary>
     public static void Example4()
     {
-        var point0 = Float64Vector3D.Create(1, 1, 0);
-        var tangent0 = Float64Vector3D.Create(-1.2, -0.9, 0.5);
+        var point0 = LinFloat64Vector3D.Create(1, 1, 0);
+        var tangent0 = LinFloat64Vector3D.Create(-1.2, -0.9, 0.5);
 
-        var point1 = Float64Vector3D.Create(10, -1, 3);
-        var tangent1 = Float64Vector3D.Create(1.2, 0.9, -0.5);
+        var point1 = LinFloat64Vector3D.Create(10, -1, 3);
+        var tangent1 = LinFloat64Vector3D.Create(1.2, 0.9, -0.5);
 
         Console.WriteLine(@$"c'(0) = {tangent0}");
         Console.WriteLine(@$"c'(1) = {tangent1}");
@@ -257,7 +257,7 @@ public static class NumericPhCurveSamples
 
         var thetaRange = 
             (-89d).GetLinearRange(89d, 7)
-            .Select(Float64PlanarAngle.CreateFromDegrees)
+            .Select(LinFloat64PolarAngle.CreateFromDegrees)
             .ToArray();
 
         var lengthArray = new double[thetaRange.Length, thetaRange.Length];

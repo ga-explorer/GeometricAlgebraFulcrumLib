@@ -1,24 +1,24 @@
 ﻿using System.Collections.Immutable;
-using DataStructuresLib.Basic;
-using DataStructuresLib.Files;
-using GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.BabylonJs;
-using GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.BabylonJs.Cameras;
-using GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.BabylonJs.Constants;
-using GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.BabylonJs.GUI;
-using GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.BabylonJs.Materials;
-using GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.BabylonJs.Meshes;
-using GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.BabylonJs.Textures;
-using GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.Visuals.Space3D.Animations;
-using GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.Visuals.Space3D.Basic;
-using GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.Visuals.Space3D.Grids;
-using GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.Visuals.Space3D.Images;
-using GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.Visuals.Space3D.Styles;
-using GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.Visuals.Space3D.Surfaces;
-using GeometricAlgebraFulcrumLib.Lite.LinearAlgebra.Vectors.Space3D;
-using GeometricAlgebraFulcrumLib.Lite.ScalarAlgebra;
+using GeometricAlgebraFulcrumLib.Utilities.Structures.Basic;
+using GeometricAlgebraFulcrumLib.Utilities.Structures.Files;
+using GeometricAlgebraFulcrumLib.Core.Modeling.Graphics.Rendering.BabylonJs;
+using GeometricAlgebraFulcrumLib.Core.Modeling.Graphics.Rendering.BabylonJs.Cameras;
+using GeometricAlgebraFulcrumLib.Core.Modeling.Graphics.Rendering.BabylonJs.Constants;
+using GeometricAlgebraFulcrumLib.Core.Modeling.Graphics.Rendering.BabylonJs.GUI;
+using GeometricAlgebraFulcrumLib.Core.Modeling.Graphics.Rendering.BabylonJs.Materials;
+using GeometricAlgebraFulcrumLib.Core.Modeling.Graphics.Rendering.BabylonJs.Meshes;
+using GeometricAlgebraFulcrumLib.Core.Modeling.Graphics.Rendering.BabylonJs.Textures;
+using GeometricAlgebraFulcrumLib.Core.Modeling.Graphics.Rendering.Visuals.Space3D.Animations;
+using GeometricAlgebraFulcrumLib.Core.Modeling.Graphics.Rendering.Visuals.Space3D.Basic;
+using GeometricAlgebraFulcrumLib.Core.Modeling.Graphics.Rendering.Visuals.Space3D.Grids;
+using GeometricAlgebraFulcrumLib.Core.Modeling.Graphics.Rendering.Visuals.Space3D.Images;
+using GeometricAlgebraFulcrumLib.Core.Modeling.Graphics.Rendering.Visuals.Space3D.Styles;
+using GeometricAlgebraFulcrumLib.Core.Modeling.Graphics.Rendering.Visuals.Space3D.Surfaces;
+using GeometricAlgebraFulcrumLib.Core.Algebra.LinearAlgebra.Float64.Vectors.Space3D;
+using GeometricAlgebraFulcrumLib.Core.Algebra.Scalars.Float64;
 using SixLabors.ImageSharp;
-using WebComposerLib.Colors;
-using WebComposerLib.Html.Media;
+using GeometricAlgebraFulcrumLib.Utilities.Web.Colors;
+using GeometricAlgebraFulcrumLib.Utilities.Web.Html.Media;
 
 namespace GeometricAlgebraFulcrumLib.Applications.PowerSystems;
 
@@ -37,7 +37,7 @@ public class SymmetricalComponentsSignalVisualizer3D :
 
     public bool ShowRightPanel { get; set; } = true;
     
-    public Float64Vector3D OmegaFrameOrigin { get; set; } = Float64Vector3D.Create(-6, 2, 1);
+    public LinFloat64Vector3D OmegaFrameOrigin { get; set; } = LinFloat64Vector3D.Create(-6, 2, 1);
     
     public int SignalTextImageMaxWidth { get; private set; }
 
@@ -193,9 +193,9 @@ public class SymmetricalComponentsSignalVisualizer3D :
 
             var frame = Signal.FrameList[i]; //GetSignalFrame(t);
 
-            var e1 = frame.Direction1.ToUnitVector();
-            var e2 = frame.Direction2.ToUnitVector();
-            var e3 = frame.Direction3.ToUnitVector();
+            var e1 = frame.Direction1.ToUnitLinVector3D();
+            var e2 = frame.Direction2.ToUnitLinVector3D();
+            var e3 = frame.Direction3.ToUnitLinVector3D();
             
             var sDt = Signal.GetTangentNormValue(t);
 
@@ -570,18 +570,18 @@ public class SymmetricalComponentsSignalVisualizer3D :
         }
     }
 
-    private void AddPhaseVector1(Float64Vector3D x)
+    private void AddPhaseVector1(LinFloat64Vector3D x)
     {
         MainSceneComposer.AddVector(
             "v1Vector",
-            Float64Vector3D.Zero,
+            LinFloat64Vector3D.Zero,
             x,
             Color.Red,
             0.05
         ).AddLaTeXText(
             "v1VectorText",
             ImageCache,
-            x + x.ToUnitVector() * 0.25d,
+            x + x.ToUnitLinVector3D() * 0.25d,
             LaTeXScalingFactor
         );
 
@@ -589,25 +589,25 @@ public class SymmetricalComponentsSignalVisualizer3D :
 
         MainSceneComposer.AddLineSegment(
             "v1Trail",
-            Float64Vector3D.Create(0, 0, -r),
-            Float64Vector3D.Create(0, 0, r),
+            LinFloat64Vector3D.Create(0, 0, -r),
+            LinFloat64Vector3D.Create(0, 0, r),
             Color.Red.SetAlpha(0.35d),
             0.045
         );
     }
 
-    private void AddPhaseVector2(Float64Vector3D y)
+    private void AddPhaseVector2(LinFloat64Vector3D y)
     {
         MainSceneComposer.AddVector(
             "v2Vector", 
-            Float64Vector3D.Zero, 
+            LinFloat64Vector3D.Zero, 
             y,
             Color.Green,
             0.05
         ).AddLaTeXText(
             "v2VectorText",
             ImageCache,
-            y + y.ToUnitVector() * 0.25d,
+            y + y.ToUnitLinVector3D() * 0.25d,
             LaTeXScalingFactor
         );
 
@@ -621,18 +621,18 @@ public class SymmetricalComponentsSignalVisualizer3D :
         );
     }
 
-    private void AddPhaseVector3(Float64Vector3D z)
+    private void AddPhaseVector3(LinFloat64Vector3D z)
     {
         MainSceneComposer.AddVector(
             "v3Vector", 
-            Float64Vector3D.Zero, 
+            LinFloat64Vector3D.Zero, 
             z,
             Color.Blue,
             0.05
         ).AddLaTeXText(
             "v3VectorText",
             ImageCache,
-            z + z.ToUnitVector() * 0.25d,
+            z + z.ToUnitLinVector3D() * 0.25d,
             LaTeXScalingFactor
         );
         
@@ -646,20 +646,20 @@ public class SymmetricalComponentsSignalVisualizer3D :
         );
     }
 
-    private void AddSignalVector(Float64Vector3D x, Float64Vector3D y, Float64Vector3D z)
+    private void AddSignalVector(LinFloat64Vector3D x, LinFloat64Vector3D y, LinFloat64Vector3D z)
     {
         var v = x + y + z;
         
         MainSceneComposer.AddVector(
             "vVector",
-            Float64Vector3D.Zero,
+            LinFloat64Vector3D.Zero,
             v,
             Color.DarkOrange,
             0.05
         ).AddLaTeXText(
             "vVectorText",
             ImageCache,
-            v + v.ToUnitVector() * 0.25d,
+            v + v.ToUnitLinVector3D() * 0.25d,
             LaTeXScalingFactor
         );
         
@@ -757,7 +757,7 @@ public class SymmetricalComponentsSignalVisualizer3D :
     //    return SceneComposer;
     //}
 
-    private void AddSignalPlane(IFloat64Vector3D k)
+    private void AddSignalPlane(ILinFloat64Vector3D k)
     {
         var scene = MainSceneComposer.SceneObject;
 
@@ -775,7 +775,7 @@ public class SymmetricalComponentsSignalVisualizer3D :
         var disc = GrVisualCircleSurface3D.CreateStatic(
             "disc",
             scene.GetMaterial("discMaterial").CreateThickSurfaceStyle(0.025),
-            Float64Vector3D.Zero,
+            LinFloat64Vector3D.Zero,
             k,
             Signal.ScalarBounds.MaxValue * 1.5d, //Math.Sqrt(3d / 2d)
             false
@@ -784,7 +784,7 @@ public class SymmetricalComponentsSignalVisualizer3D :
         var ring = GrVisualCircleRingSurface3D.Create(
             "ring",
             scene.GetMaterial("discMaterial").CreateThickSurfaceStyle(0.025),
-            Float64Vector3D.Zero,
+            LinFloat64Vector3D.Zero,
             k,
             Signal.ScalarBounds.MaxValue * Math.Sqrt(3d / 2d) - 0.5d,
             Signal.ScalarBounds.MaxValue * Math.Sqrt(3d / 2d) + 0.5d,
@@ -878,7 +878,7 @@ public class SymmetricalComponentsSignalVisualizer3D :
 
         var scene = MainSceneComposer.SceneObject;
 
-        var lineArrayList = new List<Float64Vector3D[]>(Signal.SampledCurve.CornerCount);
+        var lineArrayList = new List<LinFloat64Vector3D[]>(Signal.SampledCurve.CornerCount);
         var colorArrayList = new List<Color[]>(Signal.SampledCurve.CornerCount);
 
         var xColor1 = Color.Red.SetAlpha(0.8f); //Color.Red.SetAlpha(128);
@@ -906,9 +906,9 @@ public class SymmetricalComponentsSignalVisualizer3D :
             if (i % FrameSeparationCount == 0)
             {
                 var origin = frame.Origin;
-                var xPoint = origin + length * frame.Direction1.ToUnitVector();
-                var yPoint = origin + length * frame.Direction2.ToUnitVector();
-                var zPoint = origin + length * frame.Direction3.ToUnitVector();
+                var xPoint = origin + length * frame.Direction1.ToUnitLinVector3D();
+                var yPoint = origin + length * frame.Direction2.ToUnitLinVector3D();
+                var zPoint = origin + length * frame.Direction3.ToUnitLinVector3D();
 
                 lineArrayList.Add(new[] { origin, xPoint });
                 lineArrayList.Add(new[] { origin, yPoint });
@@ -973,7 +973,7 @@ public class SymmetricalComponentsSignalVisualizer3D :
             ImageCache,
             curveFrame.Origin + 
             curveFrame.Direction1 + 
-            curveFrame.Direction1.ToUnitVector() * 0.25d,
+            curveFrame.Direction1.ToUnitLinVector3D() * 0.25d,
             LaTeXScalingFactor
         );
         
@@ -982,7 +982,7 @@ public class SymmetricalComponentsSignalVisualizer3D :
             ImageCache,
             curveFrame.Origin + 
             curveFrame.Direction2 + 
-            curveFrame.Direction2.ToUnitVector() * 0.25d,
+            curveFrame.Direction2.ToUnitLinVector3D() * 0.25d,
             LaTeXScalingFactor
         );
         
@@ -991,15 +991,15 @@ public class SymmetricalComponentsSignalVisualizer3D :
             ImageCache,
             curveFrame.Origin + 
             curveFrame.Direction3 + 
-            curveFrame.Direction3.ToUnitVector() * 0.25d,
+            curveFrame.Direction3.ToUnitLinVector3D() * 0.25d,
             LaTeXScalingFactor
         );
 
         var (kappa1, kappa2) = Signal.CurvatureList[index];
 
-        var e1 = curveFrame.Direction1.ToUnitVector();
-        var e2 = curveFrame.Direction2.ToUnitVector();
-        var e3 = curveFrame.Direction3.ToUnitVector();
+        var e1 = curveFrame.Direction1.ToUnitLinVector3D();
+        var e2 = curveFrame.Direction2.ToUnitLinVector3D();
+        var e3 = curveFrame.Direction3.ToUnitLinVector3D();
 
         var t = Signal.TimeValues[index];
         var sDt = Signal.GetTangentNormValue(t);
@@ -1007,7 +1007,7 @@ public class SymmetricalComponentsSignalVisualizer3D :
         var omegaNorm = (kappa1.Square() + kappa2.Square()).Sqrt() / 2;
         
         var radius = sDt / (2 * omegaNorm);
-        var center = Float64Vector3D.Zero; //curveFrame.Origin + e2 * radius; 
+        var center = LinFloat64Vector3D.Zero; //curveFrame.Origin + e2 * radius; 
         var normal = e2.VectorUnitCross(k21Vector);
 
         MainSceneComposer.AddDisc(
@@ -1059,9 +1059,9 @@ public class SymmetricalComponentsSignalVisualizer3D :
         // Display bivector omega = kappa1 e12 + kappa2 e23
         var (kappa1, kappa2) = Signal.CurvatureList[index];
 
-        var e1 = Float64Vector3D.E1;
-        var e2 = Float64Vector3D.E2;
-        var e3 = Float64Vector3D.E3;
+        var e1 = LinFloat64Vector3D.E1;
+        var e2 = LinFloat64Vector3D.E2;
+        var e3 = LinFloat64Vector3D.E3;
 
         var e1Ds = kappa1 * e2;
         var e2Ds = kappa2 * e3 - kappa1 * e1;
@@ -1117,7 +1117,7 @@ public class SymmetricalComponentsSignalVisualizer3D :
             LaTeXScalingFactor
         );
 
-        if (e1Ds.ENorm() > 0.1)
+        if (e1Ds.VectorENorm() > 0.1)
         {
             OmegaSceneComposer.AddVector(
                 "e1DsVector",
@@ -1130,7 +1130,7 @@ public class SymmetricalComponentsSignalVisualizer3D :
             OmegaSceneComposer.AddLaTeXText(
                 "e1DsVectorText",
                 ImageCache,
-                OmegaFrameOrigin + e1Ds + e1Ds.ToUnitVector() * 0.25d,
+                OmegaFrameOrigin + e1Ds + e1Ds.ToUnitLinVector3D() * 0.25d,
                 LaTeXScalingFactor
             );
 
@@ -1160,7 +1160,7 @@ public class SymmetricalComponentsSignalVisualizer3D :
             );
         }
 
-        if (e2Ds.ENorm() > 0.1)
+        if (e2Ds.VectorENorm() > 0.1)
         {
             OmegaSceneComposer.AddVector(
                 "e2DsVector",
@@ -1173,7 +1173,7 @@ public class SymmetricalComponentsSignalVisualizer3D :
             OmegaSceneComposer.AddLaTeXText(
                 "e2DsVectorText",
                 ImageCache,
-                OmegaFrameOrigin + e2Ds + e2Ds.ToUnitVector() * 0.25d,
+                OmegaFrameOrigin + e2Ds + e2Ds.ToUnitLinVector3D() * 0.25d,
                 LaTeXScalingFactor
             );
 
@@ -1203,7 +1203,7 @@ public class SymmetricalComponentsSignalVisualizer3D :
             );
         }
 
-        if (e3Ds.ENorm() > 0.1)
+        if (e3Ds.VectorENorm() > 0.1)
         {
             var e3DsVectorMaterial = OmegaSceneComposer.SceneObject.AddStandardMaterial(
                 "e3DsVectorMaterial",
@@ -1221,7 +1221,7 @@ public class SymmetricalComponentsSignalVisualizer3D :
             OmegaSceneComposer.AddLaTeXText(
                 "e3DsVectorText",
                 ImageCache,
-                OmegaFrameOrigin + e3Ds + e3Ds.ToUnitVector() * 0.25d,
+                OmegaFrameOrigin + e3Ds + e3Ds.ToUnitLinVector3D() * 0.25d,
                 LaTeXScalingFactor
             );
 

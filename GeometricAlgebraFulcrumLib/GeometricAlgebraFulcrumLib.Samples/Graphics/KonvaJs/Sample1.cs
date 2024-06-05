@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Immutable;
-using DataStructuresLib.BitManipulation;
-using GeometricAlgebraFulcrumLib.Lite.Graphics.Rendering.KonvaJs.Containers;
-using GeometricAlgebraFulcrumLib.Lite.LinearAlgebra.Vectors.Space2D;
+using GeometricAlgebraFulcrumLib.Utilities.Structures.BitManipulation;
+using GeometricAlgebraFulcrumLib.Core.Modeling.Graphics.Rendering.KonvaJs.Containers;
+using GeometricAlgebraFulcrumLib.Core.Algebra.LinearAlgebra.Float64.Vectors.Space2D;
 using SixLabors.ImageSharp;
 
 namespace GeometricAlgebraFulcrumLib.Samples.Graphics.KonvaJs;
@@ -35,8 +35,8 @@ public static class Sample1
             .SetDashedColorStyle(1, new float[]{2, 5}, Color.Blue)
             .AddLine(
                 "line01",
-                Float64Vector2D.Create(0, 0),
-                Float64Vector2D.Create(100, 150)
+                LinFloat64Vector2D.Create(0, 0),
+                LinFloat64Vector2D.Create(100, 150)
             )
             .SwitchLayer(1)
             .SetColorStyle(2, Color.Black, Color.Beige)
@@ -60,7 +60,7 @@ public static class Sample1
         );
 
         var pointArray = 
-            7.GetRange(i => random.GetVector2D() * 200).ToImmutableArray();
+            7.GetRange(i => random.GetLinVector2D() * 200).ToImmutableArray();
 
         stage
             .LayerComposers[0]

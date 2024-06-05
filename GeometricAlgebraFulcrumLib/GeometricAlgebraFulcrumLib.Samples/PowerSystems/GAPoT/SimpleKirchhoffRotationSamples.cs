@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Linq;
-using DataStructuresLib.BitManipulation;
+using GeometricAlgebraFulcrumLib.Utilities.Structures.BitManipulation;
 using GAPoTNumLib.Text.Linear;
-using TextComposerLib.Text;
+using GeometricAlgebraFulcrumLib.Utilities.Text.Text;
 
 namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GAPoT;
 
