@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using GAPoTNumLib.GAPoT;
 using GeometricAlgebraFulcrumLib.Core.Algebra.GeometricAlgebra.Restricted.Float64.LinearMaps.Rotors;
 using GeometricAlgebraFulcrumLib.Core.Algebra.GeometricAlgebra.Restricted.Float64.Multivectors;
 using GeometricAlgebraFulcrumLib.Core.Algebra.GeometricAlgebra.Restricted.Float64.Multivectors.Composers;
 using GeometricAlgebraFulcrumLib.Core.Algebra.GeometricAlgebra.Restricted.Float64.Processors;
+using GeometricAlgebraFulcrumLib.Core.Algebra.Scalars.Float64;
 using NUnit.Framework;
 
 namespace GeometricAlgebraFulcrumLib.UnitTests.Geometry;

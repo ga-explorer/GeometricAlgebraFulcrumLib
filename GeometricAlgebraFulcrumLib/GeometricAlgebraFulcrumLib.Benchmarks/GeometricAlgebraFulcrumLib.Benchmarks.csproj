@@ -19,7 +19,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\GAPoTNumLib\GAPoTNumLib\GAPoTNumLib.csproj" />
     <ProjectReference Include="..\GeometricAlgebraFulcrumLib.Algebra\GeometricAlgebraFulcrumLib.Algebra.csproj" />
     <ProjectReference Include="..\GeometricAlgebraFulcrumLib.Applications\GeometricAlgebraFulcrumLib.Applications.csproj" />
     <ProjectReference Include="..\GeometricAlgebraFulcrumLib.Core\GeometricAlgebraFulcrumLib.Core.csproj" />

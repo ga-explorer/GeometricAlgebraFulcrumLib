@@ -10,16 +10,15 @@
 
   <ItemGroup>
     <ProjectReference Include="..\GeometricAlgebraFulcrumLib.Algebra\GeometricAlgebraFulcrumLib.Algebra.csproj" />
-    <ProjectReference Include="..\GeometricAlgebraFulcrumLib.Utilities.Code\GeometricAlgebraFulcrumLib.Utilities.Code.csproj" />
+    <ProjectReference Include="..\GeometricAlgebraFulcrumLib.Modeling\GeometricAlgebraFulcrumLib.Modeling.csproj" />
     <ProjectReference Include="..\GeometricAlgebraFulcrumLib.Utilities.Structures\GeometricAlgebraFulcrumLib.Utilities.Structures.csproj" />
     <ProjectReference Include="..\GeometricAlgebraFulcrumLib.Utilities.Text\GeometricAlgebraFulcrumLib.Utilities.Text.csproj" />
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Electromagnetics\ImageMethod\" />
     <Folder Include="Geometry\PhCurves\" />
     <Folder Include="Geometry\Rotations\" />
-    <Folder Include="Geometry\Voronoi\" />
-    <Folder Include="MetaProgramming\" />
   </ItemGroup>
 
   <ItemGroup>

@@ -1,4 +1,6 @@
-﻿namespace GeometricAlgebraFulcrumLib.Applications.Symbolic;
+﻿using GeometricAlgebraFulcrumLib.Applications.Symbolic.Robotics;
+
+namespace GeometricAlgebraFulcrumLib.Applications.Symbolic;
 
 internal class Program
 {
@@ -17,11 +19,6 @@ internal class Program
         //HansenProblemSample.GenerateTrigCode();
         //HansenProblemSample.GenerateComplexCode();
         //HansenProblemSample.GenerateVGaCode();
-        //HansenProblemSample.GenerateCGaCode();
-        Samples.MetaProgramming.ComparisonSamples.GetSphereCenterExample();
-
-        //Samples.ComplexAlgebra.Sample1.Example1();
-
-        //Samples.GeneticProgramming.CGpSamples.Example1();
+        HansenProblemSample.GenerateCGaCode();
     }
 }

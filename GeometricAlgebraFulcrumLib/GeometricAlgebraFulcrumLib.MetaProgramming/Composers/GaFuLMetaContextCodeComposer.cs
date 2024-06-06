@@ -149,14 +149,14 @@ public sealed class GaFuLMetaContextCodeComposer :
         = new GaFuLMetaContextCodeComposerOptions();
 
 
-    internal GaFuLMetaContextCodeComposer(GaFuLLanguageServerBase languageServer, MetaContext context)
+    public GaFuLMetaContextCodeComposer(GaFuLLanguageServerBase languageServer, MetaContext context)
     {
         GeoLanguage = languageServer;
         SyntaxList = new SteSyntaxElementsList();
         Context = context;
     }
 
-    internal GaFuLMetaContextCodeComposer(GaFuLLanguageServerBase languageServer, MetaContext context, GaFuLMetaContextCodeComposerOptions options)
+    public GaFuLMetaContextCodeComposer(GaFuLLanguageServerBase languageServer, MetaContext context, GaFuLMetaContextCodeComposerOptions options)
         : this(languageServer, context)
     {
         ComposerOptions.SetOptions(options);

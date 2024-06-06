@@ -4,6 +4,7 @@
     <OutputType>Exe</OutputType>
     <TargetFramework>net8.0</TargetFramework>
     <Platforms>AnyCPU;x64</Platforms>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
 
   <ItemGroup>
@@ -38,22 +39,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\GAPoTNumLib\GAPoTNumLib\GAPoTNumLib.csproj" />
     <ProjectReference Include="..\GeometricAlgebraFulcrumLib.Algebra\GeometricAlgebraFulcrumLib.Algebra.csproj" />
     <ProjectReference Include="..\GeometricAlgebraFulcrumLib.Applications\GeometricAlgebraFulcrumLib.Applications.csproj" />
-    <ProjectReference Include="..\GeometricAlgebraFulcrumLib.MetaProgramming\GeometricAlgebraFulcrumLib.MetaProgramming.csproj" />
     <ProjectReference Include="..\GeometricAlgebraFulcrumLib.Modeling\GeometricAlgebraFulcrumLib.Modeling.csproj" />
-    <ProjectReference Include="..\GeometricAlgebraFulcrumLib.Utilities.Code\GeometricAlgebraFulcrumLib.Utilities.Code.csproj" />
     <ProjectReference Include="..\GeometricAlgebraFulcrumLib.Utilities.Structures\GeometricAlgebraFulcrumLib.Utilities.Structures.csproj" />
     <ProjectReference Include="..\GeometricAlgebraFulcrumLib.Utilities.Text\GeometricAlgebraFulcrumLib.Utilities.Text.csproj" />
     <ProjectReference Include="..\GeometricAlgebraFulcrumLib.Utilities.Web\GeometricAlgebraFulcrumLib.Utilities.Web.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Graphics\ThreeJs\" />
-    <Folder Include="ImageMethod\" />
-    <Folder Include="PowerSystems\PowerQuality\" />
-    <Folder Include="Symbolic\" />
   </ItemGroup>
 
   <ItemGroup>

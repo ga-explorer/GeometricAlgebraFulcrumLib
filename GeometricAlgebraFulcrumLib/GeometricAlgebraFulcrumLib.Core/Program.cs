@@ -1,6 +1,4 @@
-﻿using GeometricAlgebraFulcrumLib.Core.Samples.Modeling.Geometry.Projective;
-
-namespace GeometricAlgebraFulcrumLib.Core;
+﻿namespace GeometricAlgebraFulcrumLib.Core;
 
 internal class Program
 {
@@ -85,6 +83,6 @@ internal class Program
         //Samples.Geometry.PlanarAngleSamples.QuadrantValidationExample();
         //Samples.Geometry.SnelliusPothenotProblemSamples.ValidationExample1();
         //Samples.Geometry.HansenProblemSamples.ValidationExample1();
-        PGaSamples.PGaBasisExample();
+        
     }
 }
