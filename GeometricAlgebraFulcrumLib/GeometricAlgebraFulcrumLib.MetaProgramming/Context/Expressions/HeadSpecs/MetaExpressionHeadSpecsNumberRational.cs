@@ -1,4 +1,4 @@
-﻿using GeometricAlgebraFulcrumLib.Algebra.Scalars;
+﻿using GeometricAlgebraFulcrumLib.Algebra.Scalars.Generic;
 using GeometricAlgebraFulcrumLib.MetaProgramming.Context.Expressions.Numbers;
 
 namespace GeometricAlgebraFulcrumLib.MetaProgramming.Context.Expressions.HeadSpecs;

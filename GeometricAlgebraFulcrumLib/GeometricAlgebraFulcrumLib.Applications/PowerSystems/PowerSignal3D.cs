@@ -1,26 +1,26 @@
 ﻿using System.Collections.Immutable;
 using System.Runtime.CompilerServices;
+using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Angles;
+using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Frames.Space3D;
+using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space3D;
+using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Basic;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Collections;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Extensions;
-using GeometricAlgebraFulcrumLib.Core.Modeling.Geometry.Borders.Space3D.Immutable;
-using GeometricAlgebraFulcrumLib.Core.Modeling.Geometry.Differential.Curves;
-using GeometricAlgebraFulcrumLib.Core.Modeling.Geometry.Differential.Functions;
-using GeometricAlgebraFulcrumLib.Core.Modeling.Geometry.Parametric;
-using GeometricAlgebraFulcrumLib.Core.Modeling.Geometry.Parametric.Space3D.Curves;
-using GeometricAlgebraFulcrumLib.Core.Modeling.Geometry.Parametric.Space3D.Curves.Adaptive;
-using GeometricAlgebraFulcrumLib.Core.Algebra.LinearAlgebra.Float64.Angles;
-using GeometricAlgebraFulcrumLib.Core.Algebra.LinearAlgebra.Float64.Frames.Space3D;
-using GeometricAlgebraFulcrumLib.Core.Algebra.LinearAlgebra.Float64.Vectors.Space3D;
-using GeometricAlgebraFulcrumLib.Core.Algebra.Scalars.Float64;
-using GeometricAlgebraFulcrumLib.Core.Algebra.Signals;
-using GeometricAlgebraFulcrumLib.Core.Algebra.Signals.Composers;
 using OxyPlot;
 using OxyPlot.Axes;
 using OxyPlot.Series;
 using SixLabors.ImageSharp;
 using GeometricAlgebraFulcrumLib.Utilities.Web.Colors;
 using PngExporter = OxyPlot.SkiaSharp.PngExporter;
+using GeometricAlgebraFulcrumLib.Modeling.Calculus.Curves;
+using GeometricAlgebraFulcrumLib.Modeling.Calculus.Functions.Float64;
+using GeometricAlgebraFulcrumLib.Modeling.Geometry.Parametric.Float64;
+using GeometricAlgebraFulcrumLib.Modeling.Geometry.Parametric.Float64.Space3D.Curves;
+using GeometricAlgebraFulcrumLib.Modeling.Geometry.Parametric.Float64.Space3D.Curves.Adaptive;
+using GeometricAlgebraFulcrumLib.Modeling.Geometry.Borders.Space3D.Immutable;
+using GeometricAlgebraFulcrumLib.Modeling.Signals;
+using GeometricAlgebraFulcrumLib.Modeling.Signals.Composers;
 
 namespace GeometricAlgebraFulcrumLib.Applications.PowerSystems;
 

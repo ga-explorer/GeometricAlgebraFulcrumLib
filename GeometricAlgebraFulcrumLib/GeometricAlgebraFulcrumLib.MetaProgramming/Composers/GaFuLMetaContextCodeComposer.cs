@@ -1,11 +1,11 @@
 ﻿using System.Text;
 using GeometricAlgebraFulcrumLib.Utilities.Code.Languages;
 using GeometricAlgebraFulcrumLib.Utilities.Code.SyntaxTree;
-using GeometricAlgebraFulcrumLib.Core.Modeling.Graphics.Rendering.GraphViz.Dot.Value;
-using GeometricAlgebraFulcrumLib.Core.Modeling.Graphics.Rendering.GraphViz.Dot;
 using GeometricAlgebraFulcrumLib.MetaProgramming.Context;
 using GeometricAlgebraFulcrumLib.Utilities.Text.Loggers.Progress;
 using GeometricAlgebraFulcrumLib.MetaProgramming.Utilities.Code;
+using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.GraphViz.Dot;
+using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.GraphViz.Dot.Value;
 
 namespace GeometricAlgebraFulcrumLib.MetaProgramming.Composers;
 

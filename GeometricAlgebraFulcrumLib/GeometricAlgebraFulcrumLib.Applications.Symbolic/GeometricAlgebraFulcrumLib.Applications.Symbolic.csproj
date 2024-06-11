@@ -9,7 +9,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\GeometricAlgebraFulcrumLib.Algebra\GeometricAlgebraFulcrumLib.Algebra.csproj" />
-    <ProjectReference Include="..\GeometricAlgebraFulcrumLib.Core\GeometricAlgebraFulcrumLib.Core.csproj" />
     <ProjectReference Include="..\GeometricAlgebraFulcrumLib.Mathematica\GeometricAlgebraFulcrumLib.Mathematica.csproj" />
     <ProjectReference Include="..\GeometricAlgebraFulcrumLib.MetaProgramming\GeometricAlgebraFulcrumLib.MetaProgramming.csproj" />
     <ProjectReference Include="..\GeometricAlgebraFulcrumLib.Modeling\GeometricAlgebraFulcrumLib.Modeling.csproj" />

@@ -1,4 +1,4 @@
-﻿using GeometricAlgebraFulcrumLib.Algebra.Scalars;
+﻿using GeometricAlgebraFulcrumLib.Algebra.Scalars.Generic;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.IndexSets;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Extended.Generic.LinearMaps;

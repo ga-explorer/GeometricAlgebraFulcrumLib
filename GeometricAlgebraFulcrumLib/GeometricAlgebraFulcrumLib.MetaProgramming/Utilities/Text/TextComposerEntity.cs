@@ -1,7 +1,7 @@
 ﻿using System.Runtime.CompilerServices;
 using AngouriMath;
+using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Angles;
 using GeometricAlgebraFulcrumLib.Algebra.Utilities.Text;
-using GeometricAlgebraFulcrumLib.Core.Algebra.LinearAlgebra.Float64.Angles;
 using GeometricAlgebraFulcrumLib.MetaProgramming.Context.Processors;
 
 namespace GeometricAlgebraFulcrumLib.MetaProgramming.Utilities.Text;

@@ -1,11 +1,11 @@
 ﻿using System.Runtime.CompilerServices;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Generic.Multivectors;
-using GeometricAlgebraFulcrumLib.Algebra.Scalars;
+using GeometricAlgebraFulcrumLib.Algebra.Scalars.Generic;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Generic.Spaces.Conformal;
 
 public class RGaConformalOpnsFlat<T> :
-    RGaConformalBlade<T>
+    CGaFloat64Blade<T>
 {
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static RGaConformalOpnsFlat<T> operator *(RGaConformalOpnsFlat<T> mv, T s)

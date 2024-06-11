@@ -1,18 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using GeometricAlgebraFulcrumLib.Core.Algebra.LinearAlgebra.Float64.Angles;
-using GeometricAlgebraFulcrumLib.Core.Algebra.LinearAlgebra.Float64.Vectors.Space3D;
-using GeometricAlgebraFulcrumLib.Core.Algebra.Scalars.Float64;
-using GeometricAlgebraFulcrumLib.Core.Modeling.Geometry.Parametric;
-using GeometricAlgebraFulcrumLib.Core.Modeling.Geometry.Parametric.Space3D.Curves;
-using GeometricAlgebraFulcrumLib.Core.Modeling.Geometry.Parametric.Space3D.Curves.Adaptive;
-using GeometricAlgebraFulcrumLib.Core.Modeling.Geometry.Parametric.Space3D.Curves.Bezier;
-using GeometricAlgebraFulcrumLib.Core.Modeling.Graphics.LatticeShapes;
-using GeometricAlgebraFulcrumLib.Core.Modeling.Graphics.LatticeShapes.Surfaces;
-using GeometricAlgebraFulcrumLib.Core.Modeling.Graphics.Primitives;
-using GeometricAlgebraFulcrumLib.Core.Modeling.Graphics.Primitives.Lines;
-using GeometricAlgebraFulcrumLib.Core.Modeling.Graphics.Rendering.Xeogl;
+using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Angles;
+using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space3D;
+using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
+using GeometricAlgebraFulcrumLib.Modeling.Geometry.Parametric.Float64;
+using GeometricAlgebraFulcrumLib.Modeling.Geometry.Parametric.Float64.Space3D.Curves;
+using GeometricAlgebraFulcrumLib.Modeling.Geometry.Parametric.Float64.Space3D.Curves.Adaptive;
+using GeometricAlgebraFulcrumLib.Modeling.Geometry.Parametric.Float64.Space3D.Curves.Bezier;
+using GeometricAlgebraFulcrumLib.Modeling.Graphics.LatticeShapes;
+using GeometricAlgebraFulcrumLib.Modeling.Graphics.LatticeShapes.Surfaces;
+using GeometricAlgebraFulcrumLib.Modeling.Graphics.Primitives;
+using GeometricAlgebraFulcrumLib.Modeling.Graphics.Primitives.Lines;
+using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.Xeogl;
 
 namespace GeometricAlgebraFulcrumLib.Samples.Modeling.Graphics.Geometry.BezierShapes;
 

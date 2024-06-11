@@ -1,23 +1,22 @@
 ﻿using System.Diagnostics;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Extended.Float64.LinearMaps.Rotors;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Extended.Float64.Multivectors.Composers;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Extended.Float64.Processors;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Extended.Generic.Frames;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Extended.Generic.Multivectors;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Extended.Generic.Processors;
-using GeometricAlgebraFulcrumLib.Algebra.Scalars;
-using GeometricAlgebraFulcrumLib.Algebra.Signals;
-using GeometricAlgebraFulcrumLib.Algebra.Signals.Interpolators;
-using GeometricAlgebraFulcrumLib.Algebra.Utilities;
+using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
+using GeometricAlgebraFulcrumLib.Algebra.Scalars.Generic;
 using GeometricAlgebraFulcrumLib.Algebra.Utilities.Text;
-using GeometricAlgebraFulcrumLib.Core.Algebra.GeometricAlgebra.Extended.Float64.LinearMaps.Rotors;
-using GeometricAlgebraFulcrumLib.Core.Algebra.GeometricAlgebra.Extended.Float64.Multivectors.Composers;
-using GeometricAlgebraFulcrumLib.Core.Algebra.GeometricAlgebra.Extended.Float64.Processors;
-using GeometricAlgebraFulcrumLib.Core.Algebra.Scalars.Float64;
-using GeometricAlgebraFulcrumLib.Core.Algebra.Signals;
-using GeometricAlgebraFulcrumLib.Core.Algebra.Signals.Composers;
+using GeometricAlgebraFulcrumLib.Modeling.Signals;
+using GeometricAlgebraFulcrumLib.Modeling.Signals.Composers;
+using GeometricAlgebraFulcrumLib.Modeling.Signals.Interpolators;
+using GeometricAlgebraFulcrumLib.Modeling.Utilities;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Basic;
 using OfficeOpenXml;
 using OxyPlot;
 using OxyPlot.Series;
-using Float64SignalComposerUtils = GeometricAlgebraFulcrumLib.Algebra.Signals.Float64SignalComposerUtils;
+using Float64SignalComposerUtils = GeometricAlgebraFulcrumLib.Modeling.Signals.Float64SignalComposerUtils;
 
 // ReSharper disable InconsistentNaming
 

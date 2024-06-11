@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Linq;
-using GeometricAlgebraFulcrumLib.Core.Algebra.LinearAlgebra.Float64.Vectors.Space2D;
-using GeometricAlgebraFulcrumLib.Core.Modeling.Geometry;
-using GeometricAlgebraFulcrumLib.Core.Modeling.Geometry.Borders;
-using GeometricAlgebraFulcrumLib.Core.Modeling.Geometry.Borders.Space2D.Immutable;
-using GeometricAlgebraFulcrumLib.Core.Modeling.Geometry.Borders.Space2D.Mutable;
-using GeometricAlgebraFulcrumLib.Core.Modeling.Graphics.Computers.Voronoi;
-using GeometricAlgebraFulcrumLib.Core.Modeling.Graphics.Rendering.Svg.DrawingBoard;
+using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space2D;
+using GeometricAlgebraFulcrumLib.Modeling.Geometry;
+using GeometricAlgebraFulcrumLib.Modeling.Geometry.Borders;
+using GeometricAlgebraFulcrumLib.Modeling.Geometry.Borders.Space2D.Immutable;
+using GeometricAlgebraFulcrumLib.Modeling.Geometry.Borders.Space2D.Mutable;
+using GeometricAlgebraFulcrumLib.Modeling.Graphics.Computers.Voronoi;
+using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.Svg.DrawingBoard;
 using SixLabors.ImageSharp;
 
 namespace GeometricAlgebraFulcrumLib.Samples.Modeling.Graphics.Computers.Voronoi;

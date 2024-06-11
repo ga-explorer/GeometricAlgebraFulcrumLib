@@ -1,5 +1,5 @@
-﻿using GeometricAlgebraFulcrumLib.Core.Algebra.LinearAlgebra.Float64.Vectors.Space3D;
-using GeometricAlgebraFulcrumLib.Core.Modeling.Geometry.Maps;
+﻿using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space3D;
+using GeometricAlgebraFulcrumLib.Modeling.Geometry.AffineMaps;
 
 namespace GeometricAlgebraFulcrumLib.Samples.Modeling.Graphics.Xeogl;
 

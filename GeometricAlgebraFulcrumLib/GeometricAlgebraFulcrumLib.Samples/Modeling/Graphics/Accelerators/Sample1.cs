@@ -1,15 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using GeometricAlgebraFulcrumLib.Core.Modeling.Geometry;
-using GeometricAlgebraFulcrumLib.Core.Modeling.Geometry.BasicShapes.Lines;
-using GeometricAlgebraFulcrumLib.Core.Modeling.Geometry.BasicShapes.Lines.Immutable;
-using GeometricAlgebraFulcrumLib.Core.Modeling.Geometry.Borders;
-using GeometricAlgebraFulcrumLib.Core.Modeling.Geometry.Borders.Space2D.Immutable;
-using GeometricAlgebraFulcrumLib.Core.Modeling.Graphics.Accelerators;
-using GeometricAlgebraFulcrumLib.Core.Modeling.Graphics.Accelerators.BIH;
-using GeometricAlgebraFulcrumLib.Core.Modeling.Graphics.Rendering.Svg.DrawingBoard;
-using GeometricAlgebraFulcrumLib.Core.Modeling.Statistics;
+using GeometricAlgebraFulcrumLib.Modeling.Geometry;
+using GeometricAlgebraFulcrumLib.Modeling.Geometry.BasicShapes.Lines;
+using GeometricAlgebraFulcrumLib.Modeling.Geometry.BasicShapes.Lines.Immutable;
+using GeometricAlgebraFulcrumLib.Modeling.Geometry.Borders;
+using GeometricAlgebraFulcrumLib.Modeling.Geometry.Borders.Space2D.Immutable;
+using GeometricAlgebraFulcrumLib.Modeling.Graphics.Accelerators;
+using GeometricAlgebraFulcrumLib.Modeling.Graphics.Accelerators.BIH;
+using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.Svg.DrawingBoard;
+using GeometricAlgebraFulcrumLib.Modeling.Statistics;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Random;
 using SixLabors.ImageSharp;
 

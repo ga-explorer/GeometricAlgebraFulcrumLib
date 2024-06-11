@@ -1,5 +1,4 @@
-﻿using GeometricAlgebraFulcrumLib.Mathematica.Utilities.Structures;
-using Wolfram.NETLink;
+﻿using Wolfram.NETLink;
 
 namespace GeometricAlgebraFulcrumLib.Mathematica.Utilities.Structures.Expression;
 

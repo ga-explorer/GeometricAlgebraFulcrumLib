@@ -2,9 +2,9 @@
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Generic.Multivectors.Composers;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Generic.Processors;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Generic.Angles;
-using GeometricAlgebraFulcrumLib.Algebra.Polynomials.Basis;
-using GeometricAlgebraFulcrumLib.Algebra.Polynomials.PhCurves;
-using GeometricAlgebraFulcrumLib.Algebra.Scalars;
+using GeometricAlgebraFulcrumLib.Algebra.Polynomials.Generic.Basis;
+using GeometricAlgebraFulcrumLib.Algebra.Polynomials.Generic.PhCurves;
+using GeometricAlgebraFulcrumLib.Algebra.Scalars.Generic;
 using GeometricAlgebraFulcrumLib.Mathematica.Algebra.GeometricAlgebra;
 using GeometricAlgebraFulcrumLib.Mathematica.Algebra.Scalars;
 using GeometricAlgebraFulcrumLib.Mathematica.Utilities.Structures;

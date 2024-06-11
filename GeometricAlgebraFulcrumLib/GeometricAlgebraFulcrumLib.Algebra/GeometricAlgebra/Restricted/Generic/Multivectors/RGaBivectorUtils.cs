@@ -1,4 +1,4 @@
-﻿using GeometricAlgebraFulcrumLib.Algebra.Scalars;
+﻿using GeometricAlgebraFulcrumLib.Algebra.Scalars.Generic;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.BitManipulation;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Combinations;
 

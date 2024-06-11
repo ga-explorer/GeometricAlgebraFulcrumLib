@@ -1,10 +1,9 @@
-﻿using GeometricAlgebraFulcrumLib.Utilities.Structures.Basic;
+﻿using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Basis;
+using GeometricAlgebraFulcrumLib.Utilities.Structures.Basic;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.BitManipulation;
-using GeometricAlgebraFulcrumLib.Core.Algebra.GeometricAlgebra.Basis;
-using GeometricAlgebraFulcrumLib.Core.Algebra.GeometricAlgebra.Restricted;
-using GeometricAlgebraFulcrumLib.Core.Algebra.GeometricAlgebra.Restricted.Basis;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Generic.Processors;
-using GeometricAlgebraFulcrumLib.Algebra.Scalars;
+using GeometricAlgebraFulcrumLib.Algebra.Scalars.Generic;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Generic.Combinations;
 

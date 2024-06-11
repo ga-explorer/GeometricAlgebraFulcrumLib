@@ -1,5 +1,5 @@
-﻿using GeometricAlgebraFulcrumLib.Utilities.Structures.IndexSets;
-using GeometricAlgebraFulcrumLib.Core.Algebra.GeometricAlgebra.Extended.Records;
+﻿using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Extended.Records;
+using GeometricAlgebraFulcrumLib.Utilities.Structures.IndexSets;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Extended.Generic.Records;
 

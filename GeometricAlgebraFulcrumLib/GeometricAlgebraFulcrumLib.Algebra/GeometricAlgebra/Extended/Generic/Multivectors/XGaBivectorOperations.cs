@@ -1,13 +1,13 @@
 ﻿using System.Diagnostics;
 using System.Runtime.CompilerServices;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Extended.Float64.Multivectors;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Extended.Float64.Multivectors.Composers;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Extended.Float64.Processors;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Basic;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.IndexSets;
-using GeometricAlgebraFulcrumLib.Core.Algebra.GeometricAlgebra.Extended.Float64.Multivectors;
-using GeometricAlgebraFulcrumLib.Core.Algebra.GeometricAlgebra.Extended.Float64.Multivectors.Composers;
-using GeometricAlgebraFulcrumLib.Core.Algebra.GeometricAlgebra.Extended.Float64.Processors;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Extended.Generic.Multivectors.Composers;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Extended.Generic.Processors;
-using GeometricAlgebraFulcrumLib.Algebra.Scalars;
+using GeometricAlgebraFulcrumLib.Algebra.Scalars.Generic;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Extended.Generic.Multivectors;
 
@@ -685,6 +685,22 @@ public sealed partial class XGaBivector<T>
             .GetBivector();
     }
         
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public XGaMultivector<T> Add(IScalar<T> mv2)
+    {
+        if (IsZero)
+            return Processor.Scalar(mv2);
+
+        if (mv2.IsZero())
+            return this;
+
+        return Processor
+            .CreateComposer()
+            .SetMultivector(this)
+            .AddScalar(mv2)
+            .GetSimpleMultivector();
+    }
+
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public override XGaMultivector<T> Add(XGaMultivector<T> mv2)
     {

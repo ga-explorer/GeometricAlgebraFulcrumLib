@@ -1,7 +1,7 @@
 ﻿using System.Runtime.CompilerServices;
 using AngouriMath;
-using GeometricAlgebraFulcrumLib.Algebra.Scalars;
-using GeometricAlgebraFulcrumLib.Core.Algebra.Scalars.Float64;
+using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
+using GeometricAlgebraFulcrumLib.Algebra.Scalars.Generic;
 using GeometricAlgebraFulcrumLib.MetaProgramming.Context.Expressions;
 
 namespace GeometricAlgebraFulcrumLib.MetaProgramming.Context.Processors;

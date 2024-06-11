@@ -1,9 +1,9 @@
 ﻿using System.Runtime.CompilerServices;
-using GeometricAlgebraFulcrumLib.Core.Algebra.GeometricAlgebra.Extended.Basis;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Extended;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Extended.Basis;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Basis;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Float64.Processors;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.IndexSets;
-using GeometricAlgebraFulcrumLib.Core.Algebra.GeometricAlgebra.Extended;
-using GeometricAlgebraFulcrumLib.Core.Algebra.GeometricAlgebra.Restricted.Basis;
-using GeometricAlgebraFulcrumLib.Core.Algebra.GeometricAlgebra.Restricted.Float64.Processors;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Converters;
 

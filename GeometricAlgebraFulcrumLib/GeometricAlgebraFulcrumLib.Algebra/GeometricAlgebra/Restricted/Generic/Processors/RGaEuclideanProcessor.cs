@@ -1,4 +1,4 @@
-﻿using GeometricAlgebraFulcrumLib.Algebra.Scalars;
+﻿using GeometricAlgebraFulcrumLib.Algebra.Scalars.Generic;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Generic.Processors;
 

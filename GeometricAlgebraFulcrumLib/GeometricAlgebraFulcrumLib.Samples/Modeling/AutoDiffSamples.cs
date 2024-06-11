@@ -1,6 +1,6 @@
 ﻿using System;
-using GeometricAlgebraFulcrumLib.Core.Algebra.Scalars.Float64;
-using GeometricAlgebraFulcrumLib.Core.Modeling.Geometry.Differential.AutoDiff;
+using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
+using GeometricAlgebraFulcrumLib.Modeling.Calculus.AutoDiff;
 
 namespace GeometricAlgebraFulcrumLib.Samples.Modeling;
 

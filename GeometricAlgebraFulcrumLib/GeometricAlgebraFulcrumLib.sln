@@ -31,8 +31,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GeometricAlgebraFulcrumLib.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GeometricAlgebraFulcrumLib.Samples.Generations", "GeometricAlgebraFulcrumLib.Samples.Generations\GeometricAlgebraFulcrumLib.Samples.Generations.csproj", "{6B9E8AB2-D9AB-445C-B0D9-9B735C6320E6}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GeometricAlgebraFulcrumLib.Core", "GeometricAlgebraFulcrumLib.Core\GeometricAlgebraFulcrumLib.Core.csproj", "{645994B4-F0E2-44CC-A0B3-4FFE9089F474}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GeometricAlgebraFulcrumLib.Samples.Symbolic", "GeometricAlgebraFulcrumLib.Samples.Symbolic\GeometricAlgebraFulcrumLib.Samples.Symbolic.csproj", "{C357F163-99A2-47E1-A1D9-42FC918670A1}"
 EndProject
 Global
@@ -213,18 +211,6 @@ Global
 		{6B9E8AB2-D9AB-445C-B0D9-9B735C6320E6}.Release|ARM32.Build.0 = Release|Any CPU
 		{6B9E8AB2-D9AB-445C-B0D9-9B735C6320E6}.Release|x64.ActiveCfg = Release|Any CPU
 		{6B9E8AB2-D9AB-445C-B0D9-9B735C6320E6}.Release|x64.Build.0 = Release|Any CPU
-		{645994B4-F0E2-44CC-A0B3-4FFE9089F474}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{645994B4-F0E2-44CC-A0B3-4FFE9089F474}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{645994B4-F0E2-44CC-A0B3-4FFE9089F474}.Debug|ARM32.ActiveCfg = Debug|Any CPU
-		{645994B4-F0E2-44CC-A0B3-4FFE9089F474}.Debug|ARM32.Build.0 = Debug|Any CPU
-		{645994B4-F0E2-44CC-A0B3-4FFE9089F474}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{645994B4-F0E2-44CC-A0B3-4FFE9089F474}.Debug|x64.Build.0 = Debug|Any CPU
-		{645994B4-F0E2-44CC-A0B3-4FFE9089F474}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{645994B4-F0E2-44CC-A0B3-4FFE9089F474}.Release|Any CPU.Build.0 = Release|Any CPU
-		{645994B4-F0E2-44CC-A0B3-4FFE9089F474}.Release|ARM32.ActiveCfg = Release|Any CPU
-		{645994B4-F0E2-44CC-A0B3-4FFE9089F474}.Release|ARM32.Build.0 = Release|Any CPU
-		{645994B4-F0E2-44CC-A0B3-4FFE9089F474}.Release|x64.ActiveCfg = Release|Any CPU
-		{645994B4-F0E2-44CC-A0B3-4FFE9089F474}.Release|x64.Build.0 = Release|Any CPU
 		{C357F163-99A2-47E1-A1D9-42FC918670A1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{C357F163-99A2-47E1-A1D9-42FC918670A1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C357F163-99A2-47E1-A1D9-42FC918670A1}.Debug|ARM32.ActiveCfg = Debug|Any CPU

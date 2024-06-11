@@ -1,6 +1,5 @@
-﻿using GeometricAlgebraFulcrumLib.Samples.Modeling;
-using GeometricAlgebraFulcrumLib.Samples.Modeling.Geometry.Projective;
-using System;
+﻿using System;
+using GeometricAlgebraFulcrumLib.Samples.Modeling.Geometry.PGa;
 
 namespace GeometricAlgebraFulcrumLib.Samples;
 

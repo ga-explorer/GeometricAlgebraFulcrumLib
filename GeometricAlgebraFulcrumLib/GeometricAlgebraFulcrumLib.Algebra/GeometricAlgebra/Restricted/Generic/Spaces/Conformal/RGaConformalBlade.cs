@@ -1,12 +1,11 @@
 ﻿using System.Runtime.CompilerServices;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Generic.Multivectors;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Generic.Processors;
-using GeometricAlgebraFulcrumLib.Algebra.Scalars;
-using GeometricAlgebraFulcrumLib.Core.Algebra;
+using GeometricAlgebraFulcrumLib.Algebra.Scalars.Generic;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Generic.Spaces.Conformal;
 
-public abstract class RGaConformalBlade<T> :
+public abstract class CGaFloat64Blade<T> :
     IAlgebraicElement
 {
     public RGaConformalSpace<T> Space { get; }
@@ -24,7 +23,7 @@ public abstract class RGaConformalBlade<T> :
 
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    protected RGaConformalBlade(RGaConformalSpace<T> space)
+    protected CGaFloat64Blade(RGaConformalSpace<T> space)
     {
         Space = space;
     }

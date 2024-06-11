@@ -1,6 +1,6 @@
 ﻿using System;
-using GeometricAlgebraFulcrumLib.Core.Modeling.Graphics.Rendering.GraphViz.Dot;
-using GeometricAlgebraFulcrumLib.Core.Modeling.Graphics.Rendering.GraphViz.Dot.Value;
+using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.GraphViz.Dot;
+using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.GraphViz.Dot.Value;
 
 namespace GeometricAlgebraFulcrumLib.Samples.Modeling.Graphics.GraphViz;
 

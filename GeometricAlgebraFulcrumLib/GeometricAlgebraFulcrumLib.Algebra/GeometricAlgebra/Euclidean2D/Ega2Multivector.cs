@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics;
 using System.Runtime.CompilerServices;
-using GeometricAlgebraFulcrumLib.Core.Algebra;
-using GeometricAlgebraFulcrumLib.Core.Algebra.Scalars.Float64;
+using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space2D;
+using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Euclidean2D;
 
@@ -49,7 +49,7 @@ public sealed record Ega2Multivector :
     }
         
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Ega2Multivector Vector(Core.Algebra.LinearAlgebra.Float64.Vectors.Space2D.ILinFloat64Vector2D vector)
+    public static Ega2Multivector Vector(ILinFloat64Vector2D vector)
     {
         return new Ega2Multivector(0d, vector.X, vector.Y, 0d);
     }
@@ -67,7 +67,7 @@ public sealed record Ega2Multivector :
     }
         
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Ega2Multivector Create(double scalar0, Core.Algebra.LinearAlgebra.Float64.Vectors.Space2D.ILinFloat64Vector2D vector, double scalar12)
+    public static Ega2Multivector Create(double scalar0, ILinFloat64Vector2D vector, double scalar12)
     {
         return new Ega2Multivector(scalar0, vector.X, vector.Y, scalar12);
     }
@@ -86,7 +86,7 @@ public sealed record Ega2Multivector :
     }
         
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static implicit operator Ega2Multivector(Core.Algebra.LinearAlgebra.Float64.Vectors.Space2D.LinFloat64Vector2D vector)
+    public static implicit operator Ega2Multivector(LinFloat64Vector2D vector)
     {
         return new Ega2Multivector(0, vector.X, vector.Y, 0);
     }
@@ -133,7 +133,7 @@ public sealed record Ega2Multivector :
     }
         
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Ega2Multivector operator +(Ega2Multivector mv1, Core.Algebra.LinearAlgebra.Float64.Vectors.Space2D.ILinFloat64Vector2D mv2)
+    public static Ega2Multivector operator +(Ega2Multivector mv1, ILinFloat64Vector2D mv2)
     {
         return new Ega2Multivector(
             mv1.Scalar0,
@@ -144,7 +144,7 @@ public sealed record Ega2Multivector :
     }
         
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Ega2Multivector operator +(Core.Algebra.LinearAlgebra.Float64.Vectors.Space2D.ILinFloat64Vector2D mv1, Ega2Multivector mv2)
+    public static Ega2Multivector operator +(ILinFloat64Vector2D mv1, Ega2Multivector mv2)
     {
         return new Ega2Multivector(
             mv2.Scalar0,
@@ -189,7 +189,7 @@ public sealed record Ega2Multivector :
     }
         
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Ega2Multivector operator -(Ega2Multivector mv1, Core.Algebra.LinearAlgebra.Float64.Vectors.Space2D.ILinFloat64Vector2D mv2)
+    public static Ega2Multivector operator -(Ega2Multivector mv1, ILinFloat64Vector2D mv2)
     {
         return new Ega2Multivector(
             mv1.Scalar0,
@@ -200,7 +200,7 @@ public sealed record Ega2Multivector :
     }
         
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Ega2Multivector operator -(Core.Algebra.LinearAlgebra.Float64.Vectors.Space2D.ILinFloat64Vector2D mv1, Ega2Multivector mv2)
+    public static Ega2Multivector operator -(ILinFloat64Vector2D mv1, Ega2Multivector mv2)
     {
         return new Ega2Multivector(
             -mv2.Scalar0,
@@ -347,9 +347,9 @@ public sealed record Ega2Multivector :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public Core.Algebra.LinearAlgebra.Float64.Vectors.Space2D.LinFloat64Vector2D GetVectorPartAsTuple2D()
+    public LinFloat64Vector2D GetVectorPartAsTuple2D()
     {
-        return Core.Algebra.LinearAlgebra.Float64.Vectors.Space2D.LinFloat64Vector2D.Create((Float64Scalar)Scalar1, (Float64Scalar)Scalar2);
+        return LinFloat64Vector2D.Create((Float64Scalar)Scalar1, (Float64Scalar)Scalar2);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]

@@ -1,15 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using GeometricAlgebraFulcrumLib.Core.Modeling.Geometry;
-using GeometricAlgebraFulcrumLib.Core.Modeling.Geometry.BasicShapes.Lines;
-using GeometricAlgebraFulcrumLib.Core.Modeling.Geometry.BasicShapes.Lines.Immutable;
-using GeometricAlgebraFulcrumLib.Core.Modeling.Geometry.Borders;
-using GeometricAlgebraFulcrumLib.Core.Modeling.Geometry.Borders.Space2D.Immutable;
-using GeometricAlgebraFulcrumLib.Core.Modeling.Graphics.Accelerators.BIH;
-using GeometricAlgebraFulcrumLib.Core.Modeling.Graphics.Accelerators.Grids;
-using GeometricAlgebraFulcrumLib.Core.Modeling.Graphics.Computers.Intersections;
-using GeometricAlgebraFulcrumLib.Core.Modeling.Statistics;
+using GeometricAlgebraFulcrumLib.Modeling.Geometry;
+using GeometricAlgebraFulcrumLib.Modeling.Geometry.BasicShapes.Lines;
+using GeometricAlgebraFulcrumLib.Modeling.Geometry.BasicShapes.Lines.Immutable;
+using GeometricAlgebraFulcrumLib.Modeling.Geometry.Borders;
+using GeometricAlgebraFulcrumLib.Modeling.Geometry.Borders.Space2D.Immutable;
+using GeometricAlgebraFulcrumLib.Modeling.Graphics.Accelerators.BIH;
+using GeometricAlgebraFulcrumLib.Modeling.Graphics.Accelerators.Grids;
+using GeometricAlgebraFulcrumLib.Modeling.Graphics.Computers.Intersections;
+using GeometricAlgebraFulcrumLib.Modeling.Statistics;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Random;
 using GeometricAlgebraFulcrumLib.Utilities.Text.Text.Linear;
 

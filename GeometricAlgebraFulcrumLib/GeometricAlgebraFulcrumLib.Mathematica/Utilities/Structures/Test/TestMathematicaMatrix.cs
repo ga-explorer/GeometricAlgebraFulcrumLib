@@ -1,5 +1,4 @@
-﻿using GeometricAlgebraFulcrumLib.Mathematica.Utilities.Structures;
-using GeometricAlgebraFulcrumLib.Mathematica.Utilities.Structures.Expression;
+﻿using GeometricAlgebraFulcrumLib.Mathematica.Utilities.Structures.Expression;
 using GeometricAlgebraFulcrumLib.Mathematica.Utilities.Structures.ExprFactory;
 
 namespace GeometricAlgebraFulcrumLib.Mathematica.Utilities.Structures.Test;

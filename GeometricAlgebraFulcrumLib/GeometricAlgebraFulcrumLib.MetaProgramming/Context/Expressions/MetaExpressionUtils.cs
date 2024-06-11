@@ -3,17 +3,17 @@ using System.Runtime.CompilerServices;
 using GeometricAlgebraFulcrumLib.Utilities.Structures;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Basic;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.IndexSets;
-using GeometricAlgebraFulcrumLib.Core.Algebra.GeometricAlgebra.Basis;
 using GeometricAlgebraFulcrumLib.Algebra.ComplexAlgebra;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Extended.Generic.Multivectors;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Generic.Angles;
-using GeometricAlgebraFulcrumLib.Algebra.Scalars;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.Conformal.Blades;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.Geometry.Euclidean.Space3D.Objects;
+using GeometricAlgebraFulcrumLib.Algebra.Scalars.Generic;
 using GeometricAlgebraFulcrumLib.MetaProgramming.Context.Expressions.Composite;
 using GeometricAlgebraFulcrumLib.MetaProgramming.Context.Expressions.Evaluators;
 using GeometricAlgebraFulcrumLib.MetaProgramming.Context.Expressions.Numbers;
 using GeometricAlgebraFulcrumLib.MetaProgramming.Context.Expressions.Variables;
+using GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Generic.Blades;
+using GeometricAlgebraFulcrumLib.Modeling.Geometry.Euclidean.Space3D.Objects;
 
 namespace GeometricAlgebraFulcrumLib.MetaProgramming.Context.Expressions;
 
@@ -290,7 +290,7 @@ public static class MetaExpressionUtils
         }
     }
 
-    public static void SetAsOutputByTermIndex(this XGaConformalBlade<IMetaExpressionAtomic> kVector, Func<ulong, string> namingFunc)
+    public static void SetAsOutputByTermIndex(this CGaBlade<IMetaExpressionAtomic> kVector, Func<ulong, string> namingFunc)
     {
         kVector.InternalKVector.SetAsOutputByTermIndex(namingFunc);
     }

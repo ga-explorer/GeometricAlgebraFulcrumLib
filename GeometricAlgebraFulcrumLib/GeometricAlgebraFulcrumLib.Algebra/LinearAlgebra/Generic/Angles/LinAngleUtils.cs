@@ -3,15 +3,15 @@ using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Basic;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Random;
-using GeometricAlgebraFulcrumLib.Core.Algebra.LinearAlgebra.Basis;
-using GeometricAlgebraFulcrumLib.Core.Algebra.LinearAlgebra.Float64.Angles;
-using GeometricAlgebraFulcrumLib.Core.Algebra.Scalars.Float64;
 using GeometricAlgebraFulcrumLib.Algebra.ComplexAlgebra;
+using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Basis;
+using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Angles;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Generic.Vectors.Space2D;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Generic.Vectors.Space3D;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Generic.Vectors.Space4D;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Generic.Vectors.SpaceND;
-using GeometricAlgebraFulcrumLib.Algebra.Scalars;
+using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
+using GeometricAlgebraFulcrumLib.Algebra.Scalars.Generic;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Generic.Angles;
 
@@ -661,7 +661,7 @@ public static class LinAngleUtils
     {
         Debug.Assert(maxAngleRatio <= 1);
 
-        return ((randomGenerator.GetNumber(0, maxAngleRatio) * scalarProcessor.PiTimes2)).RadiansToPolarAngle();
+        return (randomGenerator.GetNumber(0, maxAngleRatio) * scalarProcessor.PiTimes2).RadiansToPolarAngle();
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -669,20 +669,20 @@ public static class LinAngleUtils
     {
         Debug.Assert(minAngleRatio >= -1 && maxAngleRatio <= 1);
 
-        return ((randomGenerator.GetNumber(minAngleRatio, maxAngleRatio) * scalarProcessor.PiTimes2)).RadiansToPolarAngle();
+        return (randomGenerator.GetNumber(minAngleRatio, maxAngleRatio) * scalarProcessor.PiTimes2).RadiansToPolarAngle();
     }
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static LinDirectedAngle<T> GetDirectedAngle<T>(this Random randomGenerator, IScalarProcessor<T> scalarProcessor)
     {
-        return ((randomGenerator.GetNumber(-2, 2) * scalarProcessor.Pi)).RadiansToDirectedAngle();
+        return (randomGenerator.GetNumber(-2, 2) * scalarProcessor.Pi).RadiansToDirectedAngle();
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static LinDirectedAngle<T> GetDirectedAngleInQuadrant<T>(this Random randomGenerator, int quadrantIndex, IScalarProcessor<T> scalarProcessor)
     {
-        return (((randomGenerator.GetNumber(0, 1) + quadrantIndex % 4) * scalarProcessor.PiOver2)).RadiansToDirectedAngle();
+        return ((randomGenerator.GetNumber(0, 1) + quadrantIndex % 4) * scalarProcessor.PiOver2).RadiansToDirectedAngle();
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -690,7 +690,7 @@ public static class LinAngleUtils
     {
         Debug.Assert(maxAngleRatio <= 1);
 
-        return ((randomGenerator.GetNumber(0, maxAngleRatio) * scalarProcessor.PiTimes2)).RadiansToDirectedAngle();
+        return (randomGenerator.GetNumber(0, maxAngleRatio) * scalarProcessor.PiTimes2).RadiansToDirectedAngle();
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -698,7 +698,7 @@ public static class LinAngleUtils
     {
         Debug.Assert(minAngleRatio >= -1 && maxAngleRatio <= 1);
 
-        return ((randomGenerator.GetNumber(minAngleRatio, maxAngleRatio) * scalarProcessor.PiTimes2)).RadiansToDirectedAngle();
+        return (randomGenerator.GetNumber(minAngleRatio, maxAngleRatio) * scalarProcessor.PiTimes2).RadiansToDirectedAngle();
     }
     
     
@@ -1019,7 +1019,7 @@ public static class LinAngleUtils
         var t2 = v1.Item1 * v1.Item1 + v1.Item2 * v1.Item2;
         var t3 = v2.Item1 * v2.Item1 + v2.Item2 * v2.Item2;
 
-        return (t1 / (t2 * t3).Sqrt());
+        return t1 / (t2 * t3).Sqrt();
     }
 
     /// <summary>
@@ -1180,7 +1180,7 @@ public static class LinAngleUtils
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static LinPolarAngle<T> GetUnitVectorsAngle<T>(this ITriplet<Scalar<T>> v1, ITriplet<Scalar<T>> v2)
     {
-        return (v1.GetUnitVectorsAngleCos(v2).ArcCos()).RadiansToPolarAngle();
+        return v1.GetUnitVectorsAngleCos(v2).ArcCos().RadiansToPolarAngle();
     }
     
     /// <summary>
@@ -1192,7 +1192,7 @@ public static class LinAngleUtils
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static LinPolarAngle<T> GetUnitVectorsAngle<T>(this IQuad<Scalar<T>> v1, IQuad<Scalar<T>> v2)
     {
-        return (v1.GetUnitVectorsAngleCos(v2).ArcCos()).RadiansToPolarAngle();
+        return v1.GetUnitVectorsAngleCos(v2).ArcCos().RadiansToPolarAngle();
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]

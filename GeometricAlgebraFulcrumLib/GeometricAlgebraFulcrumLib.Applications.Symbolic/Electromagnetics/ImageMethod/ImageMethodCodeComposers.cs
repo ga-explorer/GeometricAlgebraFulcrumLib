@@ -3,7 +3,7 @@ using GeometricAlgebraFulcrumLib.MetaProgramming.Composers;
 using GeometricAlgebraFulcrumLib.MetaProgramming.Context;
 using GeometricAlgebraFulcrumLib.MetaProgramming.Context.Expressions;
 using GeometricAlgebraFulcrumLib.MetaProgramming.Utilities.Code;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.Geometry.Homogeneous;
+using GeometricAlgebraFulcrumLib.Modeling.Geometry.HGa.Generic;
 
 namespace GeometricAlgebraFulcrumLib.Applications.Symbolic.Electromagnetics.ImageMethod;
 
@@ -36,7 +36,7 @@ public static class ImageMethodCodeComposers
 
         // Define a Homogeneous geometry object using the context
         var geometry = 
-            new RGaHomogeneousGeometry4D<IMetaExpressionAtomic>(context);
+            new HGaGeometricSpace4D<IMetaExpressionAtomic>(context);
             
         // Stage 2: Define the input parameters of the context
         // The input parameters are named variables created as

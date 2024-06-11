@@ -1,6 +1,6 @@
 ﻿using AngouriMath;
 using AngouriMath.Core;
-using GeometricAlgebraFulcrumLib.Algebra.Scalars;
+using GeometricAlgebraFulcrumLib.Algebra.Scalars.Generic;
 using GeometricAlgebraFulcrumLib.Utilities.Structures;
 using Microsoft.CSharp.RuntimeBinder;
 using GeometricAlgebraFulcrumLib.MetaProgramming.Context.Expressions.Numbers;

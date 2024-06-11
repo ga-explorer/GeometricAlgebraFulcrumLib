@@ -1,6 +1,6 @@
 ﻿using System;
-using GeometricAlgebraFulcrumLib.Core.Algebra.Polynomials.BSplineCurveBasis;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.Differential;
+using GeometricAlgebraFulcrumLib.Algebra.Polynomials.Float64.BSplineCurveBasis;
+using GeometricAlgebraFulcrumLib.Modeling.Graphics;
 using GeometricAlgebraFulcrumLib.Utilities.Text.Text;
 
 namespace GeometricAlgebraFulcrumLib.Samples.Algebra.Polynomials;

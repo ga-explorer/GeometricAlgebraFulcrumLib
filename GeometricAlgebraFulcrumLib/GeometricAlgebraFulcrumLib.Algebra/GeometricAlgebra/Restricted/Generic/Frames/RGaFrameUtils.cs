@@ -1,9 +1,6 @@
 ﻿using GeometricAlgebraFulcrumLib.Utilities.Structures.Basic;
-using GeometricAlgebraFulcrumLib.Core.Algebra.Signals;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Generic.Multivectors;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Generic.Subspaces;
-using GeometricAlgebraFulcrumLib.Algebra.Signals;
-using MathNet.Numerics.LinearAlgebra.Double;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Generic.Frames;
 
@@ -272,84 +269,4 @@ public static class RGaFrameUtils
     }
 
         
-    public static IReadOnlyList<RGaVector<Float64Signal>> ApplyGramSchmidtByProjections(this IReadOnlyList<RGaVector<Float64Signal>> vectorsList, bool makeUnitVectors)
-    {
-        var vectorMatrixList =
-            vectorsList
-                .Select(v => v.ToMatrix())
-                .ToArray();
-
-        var processor = vectorsList[0].Processor;
-        var samplingSpecs = vectorsList[0].GetSamplingSpecs();
-        var vectorCount = vectorMatrixList.Length;
-        var samplingRate = samplingSpecs.SamplingRate;
-        var sampleCount = samplingSpecs.SampleCount;
-        var vSpaceDimensions = vectorMatrixList[0].ColumnCount;
-
-        for (var sampleIndex = 0; sampleIndex < sampleCount; sampleIndex++)
-        {
-            var index = sampleIndex;
-
-            var matrix = (Matrix)Matrix.Build.Dense(
-                vSpaceDimensions,
-                vectorCount,
-                (i, j) => vectorMatrixList[j][index, i]
-            );
-
-            var rank = matrix.Rank();
-
-            var c = matrix.ColumnAbsoluteSums();
-            var colList = new List<int>(c.Count);
-            for (var i = 0; i < c.Count; i++)
-                if (c[i] != 0) colList.Add(i);
-
-            var gramSchmidt = Matrix.Build.Dense(
-                vSpaceDimensions,
-                rank,
-                (i, j) => j < colList.Count ? matrix[i, colList[j]] : 0d
-            ).GramSchmidt();
-
-            //if (rank >= 3)
-            //{
-            //    Console.WriteLine($"Q: {gramSchmidt.Q}");
-            //    Console.WriteLine($"R: {gramSchmidt.R}");
-            //}
-
-            var orthogonalMatrix = gramSchmidt.Q;
-            var vectorNorms = gramSchmidt.R.Diagonal();
-
-            for (var j = 0; j < vectorCount; j++)
-            {
-                var vectorMatrix = vectorMatrixList[j];
-
-                if (j < orthogonalMatrix.ColumnCount)
-                {
-                    var vectorNorm =
-                        makeUnitVectors ? 1d : vectorNorms[j];
-
-                    for (var i = 0; i < orthogonalMatrix.RowCount; i++)
-                        vectorMatrix[index, i] = vectorNorm * orthogonalMatrix[i, j];
-                }
-                else
-                {
-                    for (var i = 0; i < orthogonalMatrix.RowCount; i++)
-                        vectorMatrix[index, i] = 0d;
-                }
-            }
-        }
-
-        var orthogonalVectors =
-            vectorMatrixList.Select(matrix =>
-                processor.ToRGaVectorSignal(
-                    matrix, 
-                    vSpaceDimensions, 
-                    samplingRate
-                )
-            );
-
-        return makeUnitVectors
-            ? orthogonalVectors.Select(v => v.DivideByNorm()).ToArray()
-            : orthogonalVectors.ToArray();
-    }
-
 }

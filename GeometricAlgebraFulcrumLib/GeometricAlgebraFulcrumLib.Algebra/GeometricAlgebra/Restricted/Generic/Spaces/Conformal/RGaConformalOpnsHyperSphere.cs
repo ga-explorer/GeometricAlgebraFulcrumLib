@@ -1,11 +1,11 @@
 ﻿using System.Runtime.CompilerServices;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Generic.Multivectors;
-using GeometricAlgebraFulcrumLib.Algebra.Scalars;
+using GeometricAlgebraFulcrumLib.Algebra.Scalars.Generic;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Generic.Spaces.Conformal;
 
 public class RGaConformalOpnsHyperSphere<T> :
-    RGaConformalBlade<T>
+    CGaFloat64Blade<T>
 {
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static RGaConformalOpnsHyperSphere<T> operator *(RGaConformalOpnsHyperSphere<T> mv, T s)

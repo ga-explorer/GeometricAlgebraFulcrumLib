@@ -4,7 +4,7 @@ using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Extended.Generic.Multi
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Extended.Generic.Processors;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Generic.Angles;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Generic.Vectors.Space2D;
-using GeometricAlgebraFulcrumLib.Algebra.Scalars;
+using GeometricAlgebraFulcrumLib.Algebra.Scalars.Generic;
 using GeometricAlgebraFulcrumLib.Mathematica.Utilities.Structures;
 using GeometricAlgebraFulcrumLib.MetaProgramming.Composers;
 using GeometricAlgebraFulcrumLib.MetaProgramming.Context;
@@ -13,11 +13,11 @@ using GeometricAlgebraFulcrumLib.MetaProgramming.Context.Optimizer.Genetic;
 using GeometricAlgebraFulcrumLib.MetaProgramming.Context.Optimizer.Genetic.Cost;
 using GeometricAlgebraFulcrumLib.MetaProgramming.Context.Optimizer.Genetic.Mutation;
 using GeometricAlgebraFulcrumLib.MetaProgramming.Utilities.Code;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.Conformal;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.Conformal.Decoding;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.Conformal.Encoding;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.Conformal.Operations;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.Conformal.Versors;
+using GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Generic;
+using GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Generic.Decoding;
+using GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Generic.Encoding;
+using GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Generic.Operations;
+using GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Generic.Versors;
 
 namespace GeometricAlgebraFulcrumLib.Applications.Symbolic.Robotics;
 
@@ -1222,7 +1222,7 @@ public static class HansenProblemSample
         context.AttachMathematicaExpressionEvaluator();
 
         // Define a Euclidean multivectors processor for the context
-        var cgaSpace = context.CreateConformalXGaSpace4D();
+        var cgaSpace = context.CreateCGaGeometricSpace4D();
         var cgaProcessor = cgaSpace.ConformalProcessor;
         var scalarProcessor = cgaSpace.ScalarProcessor;
 
@@ -1332,13 +1332,13 @@ public static class HansenProblemSample
         // Point e is the intersection of lA1 and lB1
         var e =
             cgaSpace.EncodeIpnsRoundPoint(
-                lA1.IntersectIpns(lB1).DecodeIpnsFlatEGaPosition().DecodeEGaVector2D()
+                lA1.MeetIpns(lB1).DecodeIpnsFlatVGaPosition().DecodeVGaVector2D()
             );
 
         // Point f is the intersection of lA2 and lB2
         var f =
             cgaSpace.EncodeIpnsRoundPoint(
-                lA2.IntersectIpns(lB2).DecodeIpnsFlatEGaPosition().DecodeEGaVector2D()
+                lA2.MeetIpns(lB2).DecodeIpnsFlatVGaPosition().DecodeVGaVector2D()
             );
 
         // Line lef passing through points e,f
@@ -1351,19 +1351,19 @@ public static class HansenProblemSample
         var c2 = a.Op(b).Op(f);
 
         // Intersect c1 with lef to get a point pair blade
-        var pp1 = c1.IntersectOpns(lef);
+        var pp1 = c1.MeetOpns(lef);
 
         // Intersect c2 with lef to get a point pair blade
-        var pp2 = c2.IntersectOpns(lef);
+        var pp2 = c2.MeetOpns(lef);
 
         var m1 =
-            pp1.DecodeIpnsRoundEGaCenter().DecodeEGaVector2D();
+            pp1.DecodeIpnsRoundVGaCenter().DecodeVGaVector2D();
 
         var m2 =
-            pp2.DecodeIpnsRoundEGaCenter().DecodeEGaVector2D();
+            pp2.DecodeIpnsRoundVGaCenter().DecodeVGaVector2D();
 
-        var pvP1 = 2 * m1 - e.DecodeIpnsCircleEGaCenter2D();
-        var pvP2 = 2 * m2 - f.DecodeIpnsCircleEGaCenter2D();
+        var pvP1 = 2 * m1 - e.DecodeIpnsCircleVGaCenter2D();
+        var pvP2 = 2 * m2 - f.DecodeIpnsCircleVGaCenter2D();
 
 
         // Stage 5: Assign code generated variable names for all variables

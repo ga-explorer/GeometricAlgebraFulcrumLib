@@ -1,17 +1,20 @@
 ﻿using System;
 using System.Linq;
-using GeometricAlgebraFulcrumLib.Algebra.Scalars;
-using GeometricAlgebraFulcrumLib.Core.Algebra.GeometricAlgebra.Extended.Float64.LinearMaps.Outermorphisms;
-using GeometricAlgebraFulcrumLib.Core.Algebra.GeometricAlgebra.Extended.Float64.LinearMaps.Rotors;
-using GeometricAlgebraFulcrumLib.Core.Algebra.GeometricAlgebra.Extended.Float64.Multivectors;
-using GeometricAlgebraFulcrumLib.Core.Algebra.GeometricAlgebra.Extended.Float64.Multivectors.Composers;
-using GeometricAlgebraFulcrumLib.Core.Algebra.GeometricAlgebra.Extended.Float64.Processors;
-using GeometricAlgebraFulcrumLib.Core.Algebra.GeometricAlgebra.Extended.Float64.Subspaces;
-using GeometricAlgebraFulcrumLib.Core.Algebra.LinearAlgebra.Basis;
-using GeometricAlgebraFulcrumLib.Core.Algebra.LinearAlgebra.Float64.Angles;
-using GeometricAlgebraFulcrumLib.Core.Algebra.Scalars.Float64;
-using GeometricAlgebraFulcrumLib.Core.Algebra.GeometricAlgebra.Extended.Float64.Frames;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Extended.Float64.Frames;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Extended.Float64.LinearMaps.Outermorphisms;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Extended.Float64.LinearMaps.Rotors;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Extended.Float64.Multivectors;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Extended.Float64.Multivectors.Composers;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Extended.Float64.Processors;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Extended.Float64.Subspaces;
+using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Basis;
+using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Angles;
+using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
+using GeometricAlgebraFulcrumLib.Algebra.Scalars.Generic;
 using GeometricAlgebraFulcrumLib.Algebra.Utilities.Text;
+using XGaFloat64KVectorUtils = GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Extended.Float64.Multivectors.XGaFloat64KVectorUtils;
+using XGaFloat64MultivectorUtils = GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Extended.Float64.Multivectors.XGaFloat64MultivectorUtils;
+using XGaFloat64VectorUtils = GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Extended.Float64.Multivectors.XGaFloat64VectorUtils;
 
 namespace GeometricAlgebraFulcrumLib.Samples.Algebra.GeometricAlgebra;
 
@@ -40,7 +43,7 @@ public static class NumericRotorsSample
 
     // A random number generator for creating random numerical multivectors
     public static XGaFloat64RandomComposer Random { get; }
-        = GeometricProcessor.CreateXGaRandomComposer(VSpaceDimensions, 10);
+        = XGaFloat64MultivectorUtils.CreateXGaRandomComposer(GeometricProcessor, VSpaceDimensions, 10);
 
 
     /// <summary>
@@ -64,7 +67,7 @@ public static class NumericRotorsSample
              Random.GetScalarValue() * e1.Gp(e3)).GetBivectorPart();
 
         // The rotation axis is only required here for validation
-        var rotationAxis = rotationBlade.Gp(pseudoScalar.Inverse()).GetVectorPart();
+        var rotationAxis = rotationBlade.Gp(XGaFloat64KVectorUtils.Inverse(pseudoScalar)).GetVectorPart();
 
         // Compute the rotor from the angle and 2-blade of rotation
         var rotor = rotationBlade.CreatePureRotor(angle);
@@ -80,8 +83,8 @@ public static class NumericRotorsSample
         var b = rotor.OmMap(a);
 
         // Compute the projection of a and b on rotation 2-blade
-        var pa = a.ProjectOn(rotationBlade.ToSubspace());
-        var pb = b.ProjectOn(rotationBlade.ToSubspace());
+        var pa = XGaFloat64VectorUtils.ProjectOn(a, rotationBlade.ToSubspace());
+        var pb = XGaFloat64VectorUtils.ProjectOn(b, rotationBlade.ToSubspace());
 
         // Compute angle between projected vectors, the result must equal
         // the original angle of rotation of the rotor
@@ -125,7 +128,7 @@ public static class NumericRotorsSample
             Random.GetScalarValue() * e3;
 
         var rotationBlade =
-            rotationAxis.Gp(pseudoScalar.Inverse()).GetBivectorPart();
+            rotationAxis.Gp(XGaFloat64KVectorUtils.Inverse(pseudoScalar)).GetBivectorPart();
 
         // Compute the rotor from the angle and 2-blade of rotation
         var rotor = rotationBlade.CreatePureRotor(angle);
@@ -144,8 +147,8 @@ public static class NumericRotorsSample
         var b = rotor.OmMap(a);
 
         // Compute the projection of a and b on rotation 2-blade
-        var pa = a.ProjectOn(rotationBlade.ToSubspace());
-        var pb = b.ProjectOn(rotationBlade.ToSubspace());
+        var pa = XGaFloat64VectorUtils.ProjectOn(a, rotationBlade.ToSubspace());
+        var pb = XGaFloat64VectorUtils.ProjectOn(b, rotationBlade.ToSubspace());
 
         // Compute angle between projected vectors, the result must equal
         // the original angle of rotation of the rotor
@@ -195,7 +198,7 @@ public static class NumericRotorsSample
             rotor.Multivector.GetBivectorPart();
 
         var rotationAxis =
-            rotationBlade.Gp(pseudoScalar.Inverse()).GetVectorPart();
+            rotationBlade.Gp(XGaFloat64KVectorUtils.Inverse(pseudoScalar)).GetVectorPart();
 
         // Make sure v1 rotates into v2
         var diff1 = rotor.OmMap(v1) - v2;
@@ -214,8 +217,8 @@ public static class NumericRotorsSample
         var b = rotor.OmMap(a);
 
         // Compute the projection of a and b on rotation 2-blade
-        var pa = a.ProjectOn(rotationBlade.ToSubspace());
-        var pb = b.ProjectOn(rotationBlade.ToSubspace());
+        var pa = XGaFloat64VectorUtils.ProjectOn(a, rotationBlade.ToSubspace());
+        var pb = XGaFloat64VectorUtils.ProjectOn(b, rotationBlade.ToSubspace());
 
         // Compute angle between projected vectors, the result must equal
         // the original angle of rotation of the rotor
@@ -252,7 +255,7 @@ public static class NumericRotorsSample
         var e2 = GeometricProcessor.VectorTerm(1);
         var e3 = GeometricProcessor.VectorTerm(2);
         var pseudoScalar = e1.Gp(e2).Gp(e3).GetKVectorPart(3);
-        var pseudoScalarInverse = pseudoScalar.Inverse();
+        var pseudoScalarInverse = XGaFloat64KVectorUtils.Inverse(pseudoScalar);
 
         // Define two random unit vectors
         var v1 = Random.GetVector(true);
@@ -282,8 +285,8 @@ public static class NumericRotorsSample
             var rotationBladeSubspace =
                 rotationBlade.ToSubspace();
 
-            var u1 = v1.ProjectOn(rotationBladeSubspace);
-            var u2 = v2.ProjectOn(rotationBladeSubspace);
+            var u1 = XGaFloat64VectorUtils.ProjectOn(v1, rotationBladeSubspace);
+            var u2 = XGaFloat64VectorUtils.ProjectOn(v2, rotationBladeSubspace);
 
             // Define the actual rotor taking v1 into v2
             var rotor = u1.CreatePureRotor(u2, false);
@@ -292,7 +295,7 @@ public static class NumericRotorsSample
                 rotationBlade.Gp(pseudoScalarInverse).GetVectorPart();
 
             var rotationAngle =
-                u1.GetEuclideanAngle(u2);
+                XGaFloat64VectorUtils.GetEuclideanAngle(u1, u2);
 
             // Make sure v1 rotates into v2 using the pure rotor at theta = 0
             var diff1 = rotor0.OmMap(v1) - v2;
@@ -331,7 +334,7 @@ public static class NumericRotorsSample
         var e2 = GeometricProcessor.VectorTerm(1);
         var e3 = GeometricProcessor.VectorTerm(2);
         var pseudoScalar = e1.Op(e2).Op(e3);
-        var pseudoScalarInverse = pseudoScalar.Inverse();
+        var pseudoScalarInverse = XGaFloat64KVectorUtils.Inverse(pseudoScalar);
 
         // Define two random unit vectors
         var v1 = Random.GetVector(true);

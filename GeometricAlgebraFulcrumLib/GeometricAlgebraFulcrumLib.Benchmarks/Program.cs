@@ -22,6 +22,6 @@ class Program
         //BenchmarkRunner.Run<HansenProblemBenchmarks>();
         //BenchmarkRunner.Run<SnelliusPothenotProblemBenchmarks>();
         //BenchmarkRunner.Run<ScalarOperationsBenchmarks>();
-        BenchmarkRunner.Run<ComparisonBenchmarks>();
+        BenchmarkRunner.Run<GaalopComparisonsBenchmarks>();
     }
 }

@@ -1,9 +1,9 @@
 ﻿using System.Globalization;
-using GeometricAlgebraFulcrumLib.Core.Algebra.LinearAlgebra.Float64.Angles;
-using GeometricAlgebraFulcrumLib.Core.Algebra.Scalars.Float64;
-using GeometricAlgebraFulcrumLib.Core.Algebra.Signals.Composers;
-using GeometricAlgebraFulcrumLib.Core.Modeling.Geometry.Differential.Functions;
-using GeometricAlgebraFulcrumLib.Core.Modeling.Geometry.Differential.Functions.Phasors;
+using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Angles;
+using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
+using GeometricAlgebraFulcrumLib.Modeling.Calculus.Functions.Float64;
+using GeometricAlgebraFulcrumLib.Modeling.Calculus.Functions.Float64.Phasors;
+using GeometricAlgebraFulcrumLib.Modeling.Signals.Composers;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.BitManipulation;
 using GeometricAlgebraFulcrumLib.Utilities.Web.LaTeX.CodeComposer;
 

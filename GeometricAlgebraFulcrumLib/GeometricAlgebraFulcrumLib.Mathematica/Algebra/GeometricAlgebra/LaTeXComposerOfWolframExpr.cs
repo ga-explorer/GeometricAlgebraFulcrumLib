@@ -1,6 +1,6 @@
 ﻿using System.Runtime.CompilerServices;
+using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Angles;
 using Wolfram.NETLink;
-using GeometricAlgebraFulcrumLib.Core.Algebra.LinearAlgebra.Float64.Angles;
 using GeometricAlgebraFulcrumLib.Mathematica.Algebra.Scalars;
 using GeometricAlgebraFulcrumLib.Algebra.Utilities.Text;
 using GeometricAlgebraFulcrumLib.Mathematica.Utilities.Structures.ExprFactory;

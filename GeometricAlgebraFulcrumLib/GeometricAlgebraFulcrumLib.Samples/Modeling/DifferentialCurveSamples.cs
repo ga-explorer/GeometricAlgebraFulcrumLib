@@ -1,6 +1,6 @@
 ﻿using System;
-using GeometricAlgebraFulcrumLib.Core.Modeling.Geometry.Differential.Curves;
-using GeometricAlgebraFulcrumLib.Core.Modeling.Geometry.Differential.Functions;
+using GeometricAlgebraFulcrumLib.Modeling.Calculus.Curves;
+using GeometricAlgebraFulcrumLib.Modeling.Calculus.Functions.Float64;
 
 namespace GeometricAlgebraFulcrumLib.Samples.Modeling;
 

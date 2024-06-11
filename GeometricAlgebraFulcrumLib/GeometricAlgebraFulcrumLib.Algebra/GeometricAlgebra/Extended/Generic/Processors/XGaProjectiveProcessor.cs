@@ -1,8 +1,8 @@
-﻿using GeometricAlgebraFulcrumLib.Utilities.Structures.BitManipulation;
+﻿using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.IndexSets;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Extended.Generic.Multivectors;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Extended.Generic.Multivectors.Composers;
-using GeometricAlgebraFulcrumLib.Algebra.Scalars;
+using GeometricAlgebraFulcrumLib.Algebra.Scalars.Generic;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Extended.Generic.Processors;
 
@@ -20,13 +20,13 @@ public class XGaProjectiveProcessor<T> :
         if (kVector.VSpaceDimensions > vSpaceDimensions)
             throw new InvalidCastException();
 
-        var sign = vSpaceDimensions.IsEven() ? 1 : -1;
+        var sign = vSpaceDimensions.CliffordConjugateIsPositiveOfGrade() ? 1 : -1;
 
         var termList =
             kVector.IdScalarPairs.Select(
                 term =>
                 {
-                    var signedBasisBlade = EDual(term.Key, vSpaceDimensions);
+                    var signedBasisBlade = EUnDual(term.Key, vSpaceDimensions);
 
                     return new KeyValuePair<IIndexSet, T>(
                         signedBasisBlade.Id,
@@ -49,13 +49,72 @@ public class XGaProjectiveProcessor<T> :
         if (mv.VSpaceDimensions > vSpaceDimensions)
             throw new InvalidCastException();
 
-        var sign = vSpaceDimensions.IsEven() ? 1 : -1;
+        var sign = vSpaceDimensions.CliffordConjugateIsPositiveOfGrade() ? 1 : -1;
 
         var termList =
             mv.IdScalarPairs.Select(
                 term =>
                 {
-                    var signedBasisBlade = EDual(term.Key, vSpaceDimensions);
+                    var signedBasisBlade = EUnDual(term.Key, vSpaceDimensions);
+
+                    return new KeyValuePair<IIndexSet, T>(
+                        signedBasisBlade.Id,
+                        ScalarProcessor.Times(
+                            term.Value, 
+                            sign * signedBasisBlade.Sign
+                        ).ScalarValue
+                    );
+                }
+            );
+
+        return this
+            .CreateComposer()
+            .AddTerms(termList)
+            .GetSimpleMultivector();
+    }
+
+    
+    public XGaKVector<T> PGaUnDual(XGaKVector<T> kVector, int vSpaceDimensions)
+    {
+        if (kVector.VSpaceDimensions > vSpaceDimensions)
+            throw new InvalidCastException();
+
+        var sign = vSpaceDimensions.GradeInvolutionIsPositiveOfGrade() ? 1 : -1;
+
+        var termList =
+            kVector.IdScalarPairs.Select(
+                term =>
+                {
+                    var signedBasisBlade = EUnDual(term.Key, vSpaceDimensions);
+
+                    return new KeyValuePair<IIndexSet, T>(
+                        signedBasisBlade.Id,
+                        ScalarProcessor.Times(
+                            term.Value, 
+                            sign * signedBasisBlade.Sign
+                        ).ScalarValue
+                    );
+                }
+            );
+
+        return this
+            .CreateComposer()
+            .AddTerms(termList)
+            .GetKVector(vSpaceDimensions - kVector.Grade);
+    }
+
+    public XGaMultivector<T> PGaUnDual(XGaMultivector<T> mv, int vSpaceDimensions)
+    {
+        if (mv.VSpaceDimensions > vSpaceDimensions)
+            throw new InvalidCastException();
+
+        var sign = vSpaceDimensions.GradeInvolutionIsPositiveOfGrade() ? 1 : -1;
+
+        var termList =
+            mv.IdScalarPairs.Select(
+                term =>
+                {
+                    var signedBasisBlade = EUnDual(term.Key, vSpaceDimensions);
 
                     return new KeyValuePair<IIndexSet, T>(
                         signedBasisBlade.Id,
@@ -149,7 +208,7 @@ public class XGaProjectiveProcessor<T> :
         var kVector1Dual = PGaDual(kVector1, vSpaceDimensions);
         var kVector2Dual = PGaDual(kVector2, vSpaceDimensions);
 
-        return PGaDual(
+        return PGaUnDual(
             kVector1Dual.Op(kVector2Dual),
             vSpaceDimensions
         );
@@ -160,7 +219,7 @@ public class XGaProjectiveProcessor<T> :
         var kVector1Dual = PGaDual(kVector1, vSpaceDimensions);
         var kVector2Dual = PGaDual(kVector2, vSpaceDimensions);
 
-        return PGaDual(
+        return PGaUnDual(
             kVector1Dual.Op(kVector2Dual),
             vSpaceDimensions
         );

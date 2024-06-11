@@ -1,5 +1,5 @@
 ﻿using System.IO;
-using GeometricAlgebraFulcrumLib.Core.Modeling.Graphics.Rendering.Visuals.Space3D;
+using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.Visuals.Space3D;
 
 namespace GeometricAlgebraFulcrumLib.Samples.Modeling.Graphics.SkiaSharp;
 

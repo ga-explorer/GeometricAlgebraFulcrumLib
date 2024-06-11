@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Collections.Immutable;
 using System.Linq;
-using GeometricAlgebraFulcrumLib.Core.Modeling.Geometry.Differential.Functions;
-using GeometricAlgebraFulcrumLib.Core.Modeling.Geometry.Differential.Functions.Polynomials;
-using GeometricAlgebraFulcrumLib.Core.Algebra.LinearAlgebra.Float64.Vectors.SpaceND;
-using GeometricAlgebraFulcrumLib.Core.Algebra.Scalars.Float64;
-using GeometricAlgebraFulcrumLib.Core.Algebra.Signals;
-using GeometricAlgebraFulcrumLib.Core.Algebra.Signals.Composers;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.Differential;
+using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.SpaceND;
+using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
 using SixLabors.ImageSharp;
+using GeometricAlgebraFulcrumLib.Modeling.Calculus.Functions.Float64;
+using GeometricAlgebraFulcrumLib.Modeling.Calculus.Functions.Float64.Polynomials;
+using GeometricAlgebraFulcrumLib.Modeling.Graphics;
+using GeometricAlgebraFulcrumLib.Modeling.Signals;
+using GeometricAlgebraFulcrumLib.Modeling.Signals.Composers;
 
 namespace GeometricAlgebraFulcrumLib.Samples.Algebra.Polynomials;
 

@@ -22,7 +22,7 @@ internal class Program
         //HansenProblemSample.GenerateComplexCode();
         //HansenProblemSample.GenerateVGaCode();
         //HansenProblemSample.GenerateCGaCode();
-        GaalopComparisonSamples.GetSphereCenterExample();
+        GaalopComparisonsSamples.SnelliusPothenotProblemCassiniExample();
 
         //Samples.ComplexAlgebra.Sample1.Example1();
 

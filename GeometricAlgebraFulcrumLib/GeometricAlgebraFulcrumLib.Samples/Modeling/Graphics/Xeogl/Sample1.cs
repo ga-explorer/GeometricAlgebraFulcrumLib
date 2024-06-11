@@ -1,12 +1,12 @@
 ﻿using System.IO;
-using GeometricAlgebraFulcrumLib.Core.Modeling.Graphics.Meshes.PathsMesh;
-using GeometricAlgebraFulcrumLib.Core.Modeling.Graphics.Meshes.PathsMesh.Space3D;
-using GeometricAlgebraFulcrumLib.Core.Modeling.Graphics.Meshes.PointsPath.Space3D;
-using GeometricAlgebraFulcrumLib.Core.Modeling.Graphics.Primitives;
-using GeometricAlgebraFulcrumLib.Core.Modeling.Graphics.Primitives.Lines;
-using GeometricAlgebraFulcrumLib.Core.Modeling.Graphics.Primitives.Triangles;
-using GeometricAlgebraFulcrumLib.Core.Modeling.Graphics.Rendering.Xeogl;
-using GeometricAlgebraFulcrumLib.Core.Algebra.LinearAlgebra.Float64.Vectors.Space3D;
+using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space3D;
+using GeometricAlgebraFulcrumLib.Modeling.Graphics.Meshes.PathsMesh;
+using GeometricAlgebraFulcrumLib.Modeling.Graphics.Meshes.PathsMesh.Space3D;
+using GeometricAlgebraFulcrumLib.Modeling.Graphics.Meshes.PointsPath.Space3D;
+using GeometricAlgebraFulcrumLib.Modeling.Graphics.Primitives;
+using GeometricAlgebraFulcrumLib.Modeling.Graphics.Primitives.Lines;
+using GeometricAlgebraFulcrumLib.Modeling.Graphics.Primitives.Triangles;
+using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.Xeogl;
 
 namespace GeometricAlgebraFulcrumLib.Samples.Modeling.Graphics.Xeogl;
 

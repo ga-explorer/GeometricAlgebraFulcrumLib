@@ -2,7 +2,7 @@
 using System.Runtime.CompilerServices;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Basic;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Extended.Generic.Multivectors.Composers;
-using GeometricAlgebraFulcrumLib.Algebra.Scalars;
+using GeometricAlgebraFulcrumLib.Algebra.Scalars.Generic;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Extended.Generic.Multivectors;
 
@@ -135,7 +135,7 @@ public abstract partial class XGaMultivector<T>
     public static XGaMultivector<T> operator +(XGaMultivector<T> mv1, Scalar<T> mv2)
     {
         return mv1.Add(
-            mv1.Processor.Scalar(mv2.ScalarValue)
+            mv1.Processor.Scalar(mv2)
         );
     }
 
@@ -143,7 +143,7 @@ public abstract partial class XGaMultivector<T>
     public static XGaMultivector<T> operator +(Scalar<T> mv1, XGaMultivector<T> mv2)
     {
         return mv2.Add(
-            mv2.Processor.Scalar(mv1.ScalarValue)
+            mv2.Processor.Scalar(mv1)
         );
     }
 
@@ -578,7 +578,7 @@ public abstract partial class XGaMultivector<T>
         return ScalarProcessor.Add(scalarList);
     }
         
-        
+    
     public abstract XGaMultivector<T> Add(XGaMultivector<T> mv2);
         
     public abstract XGaMultivector<T> Subtract(XGaMultivector<T> mv2);

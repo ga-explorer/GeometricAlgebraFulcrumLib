@@ -1,5 +1,5 @@
 ﻿using System;
-using GeometricAlgebraFulcrumLib.Core.Modeling.Statistics.Discrete;
+using GeometricAlgebraFulcrumLib.Modeling.Statistics.Discrete;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Random;
 
 namespace GeometricAlgebraFulcrumLib.Samples.Modeling.Statistics

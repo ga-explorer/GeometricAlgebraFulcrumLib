@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
-using GeometricAlgebraFulcrumLib.Core.Algebra.LinearAlgebra.Float64.Angles;
+using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Angles;
 
 namespace GeometricAlgebraFulcrumLib.Samples.Algebra.LinearAlgebra
 {

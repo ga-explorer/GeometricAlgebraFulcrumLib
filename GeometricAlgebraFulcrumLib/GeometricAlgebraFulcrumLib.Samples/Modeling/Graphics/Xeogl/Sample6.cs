@@ -1,9 +1,9 @@
 ﻿using System.IO;
-using GeometricAlgebraFulcrumLib.Core.Modeling.Graphics.LatticeShapes;
-using GeometricAlgebraFulcrumLib.Core.Modeling.Graphics.LatticeShapes.Surfaces;
-using GeometricAlgebraFulcrumLib.Core.Modeling.Graphics.Primitives;
-using GeometricAlgebraFulcrumLib.Core.Modeling.Graphics.Primitives.Lines;
-using GeometricAlgebraFulcrumLib.Core.Modeling.Graphics.Rendering.Xeogl;
+using GeometricAlgebraFulcrumLib.Modeling.Graphics.LatticeShapes;
+using GeometricAlgebraFulcrumLib.Modeling.Graphics.LatticeShapes.Surfaces;
+using GeometricAlgebraFulcrumLib.Modeling.Graphics.Primitives;
+using GeometricAlgebraFulcrumLib.Modeling.Graphics.Primitives.Lines;
+using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.Xeogl;
 
 namespace GeometricAlgebraFulcrumLib.Samples.Modeling.Graphics.Xeogl;
 

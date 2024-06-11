@@ -1,24 +1,23 @@
-﻿using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Generic.Multivectors;
+﻿using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Float64.Processors;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Generic.Multivectors;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Generic.Multivectors.Composers;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Generic.Processors;
-using GeometricAlgebraFulcrumLib.Algebra.Polynomials;
-using GeometricAlgebraFulcrumLib.Algebra.Scalars;
-using GeometricAlgebraFulcrumLib.Algebra.Signals;
-using GeometricAlgebraFulcrumLib.Algebra.Signals.Interpolators;
-using GeometricAlgebraFulcrumLib.Algebra.Signals.Processors;
-using GeometricAlgebraFulcrumLib.Algebra.Utilities;
+using GeometricAlgebraFulcrumLib.Algebra.Polynomials.Generic;
+using GeometricAlgebraFulcrumLib.Algebra.Scalars.Generic;
 using GeometricAlgebraFulcrumLib.Algebra.Utilities.Text;
-using GeometricAlgebraFulcrumLib.Core.Algebra.GeometricAlgebra.Restricted.Float64.Processors;
-using GeometricAlgebraFulcrumLib.Core.Algebra.Signals;
-using GeometricAlgebraFulcrumLib.Core.Algebra.Signals.Composers;
-using GeometricAlgebraFulcrumLib.Core.Modeling.Geometry.Differential.Functions.Interpolators;
+using GeometricAlgebraFulcrumLib.Modeling.Calculus.Functions.Float64.Interpolators;
+using GeometricAlgebraFulcrumLib.Modeling.Signals;
+using GeometricAlgebraFulcrumLib.Modeling.Signals.Composers;
+using GeometricAlgebraFulcrumLib.Modeling.Signals.Interpolators;
+using GeometricAlgebraFulcrumLib.Modeling.Signals.Processors;
+using GeometricAlgebraFulcrumLib.Modeling.Utilities;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Basic;
 using MathNet.Numerics;
 using Newtonsoft.Json.Linq;
 using OfficeOpenXml;
 using OxyPlot;
 using OxyPlot.Series;
-using Float64SignalComposerUtils = GeometricAlgebraFulcrumLib.Algebra.Signals.Float64SignalComposerUtils;
+using Float64SignalComposerUtils = GeometricAlgebraFulcrumLib.Modeling.Signals.Float64SignalComposerUtils;
 
 namespace GeometricAlgebraFulcrumLib.Applications.PowerSystems.SystemIdentification;
 

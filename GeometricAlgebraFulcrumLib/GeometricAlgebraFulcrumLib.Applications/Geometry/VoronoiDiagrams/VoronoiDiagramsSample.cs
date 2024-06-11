@@ -1,12 +1,12 @@
 ﻿using System.Drawing;
-using GeometricAlgebraFulcrumLib.Core.Algebra.GeometricAlgebra.Restricted.Float64.Frames;
-using GeometricAlgebraFulcrumLib.Core.Algebra.GeometricAlgebra.Restricted.Float64.Multivectors;
-using GeometricAlgebraFulcrumLib.Core.Algebra.GeometricAlgebra.Restricted.Float64.Multivectors.Composers;
-using GeometricAlgebraFulcrumLib.Core.Algebra.GeometricAlgebra.Restricted.Float64.Processors;
-using GeometricAlgebraFulcrumLib.Core.Modeling.Geometry.Borders;
-using GeometricAlgebraFulcrumLib.Core.Modeling.Geometry.Borders.Space2D.Immutable;
-using GeometricAlgebraFulcrumLib.Core.Modeling.Graphics.Rendering.Svg.DrawingBoard;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.Geometry.Graphics.Space2D;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Float64.Frames;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Float64.Multivectors;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Float64.Multivectors.Composers;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Float64.Processors;
+using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space2D;
+using GeometricAlgebraFulcrumLib.Modeling.Geometry.Borders;
+using GeometricAlgebraFulcrumLib.Modeling.Geometry.Borders.Space2D.Immutable;
+using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.Svg.DrawingBoard;
 
 namespace GeometricAlgebraFulcrumLib.Applications.Geometry.VoronoiDiagrams;
 
@@ -19,7 +19,7 @@ public static class VoronoiDiagramsSample
 {
     private static RGaFloat64RandomComposer _randomComposer;
 
-    public static EuclideanPoint2D[] PointsArray { get; private set; }
+    public static LinFloat64Vector2D[] PointsArray { get; private set; }
 
     public static RGaFloat64Processor ConformalProcessor { get; }
         = RGaFloat64Processor.Conformal;
@@ -35,10 +35,10 @@ public static class VoronoiDiagramsSample
         _randomComposer = ConformalProcessor.CreateRGaRandomComposer(VSpaceDimensions, 10);
 
         // Fill random points array
-        PointsArray = new EuclideanPoint2D[8];
+        PointsArray = new LinFloat64Vector2D[8];
 
         for (var i = 0; i < PointsArray.Length; i++)
-            PointsArray[i] = new EuclideanPoint2D(
+            PointsArray[i] = LinFloat64Vector2D.Create(
                 _randomComposer.GetScalarValue(-500, 500),
                 _randomComposer.GetScalarValue(-500, 500)
             );

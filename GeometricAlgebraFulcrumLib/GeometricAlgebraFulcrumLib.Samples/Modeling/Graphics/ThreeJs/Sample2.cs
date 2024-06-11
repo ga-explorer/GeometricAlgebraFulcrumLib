@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using GeometricAlgebraFulcrumLib.Core.Modeling.Graphics.Rendering.ThreeJs;
-using GeometricAlgebraFulcrumLib.Core.Modeling.Graphics.Rendering.ThreeJs.Objects;
+using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.ThreeJs;
+using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.ThreeJs.Objects;
 using GeometricAlgebraFulcrumLib.Utilities.Text.Code.JavaScript;
 
 namespace GeometricAlgebraFulcrumLib.Samples.Modeling.Graphics.ThreeJs;

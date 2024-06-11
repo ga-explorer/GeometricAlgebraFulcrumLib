@@ -1,6 +1,6 @@
 ﻿using System;
-using GeometricAlgebraFulcrumLib.Core.Modeling.PropagatorNetworks;
-using GeometricAlgebraFulcrumLib.Core.Modeling.PropagatorNetworks.Float64;
+using GeometricAlgebraFulcrumLib.Modeling.PropagatorNetworks;
+using GeometricAlgebraFulcrumLib.Modeling.PropagatorNetworks.Float64;
 
 namespace GeometricAlgebraFulcrumLib.Samples.Modeling.PropagatorNetworks
 {

@@ -1,8 +1,8 @@
 ﻿using System.Diagnostics;
 using AngouriMath;
-using GeometricAlgebraFulcrumLib.Algebra.Scalars;
+using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
+using GeometricAlgebraFulcrumLib.Algebra.Scalars.Generic;
 using GeometricAlgebraFulcrumLib.Utilities.Code.SyntaxTree.Expressions;
-using GeometricAlgebraFulcrumLib.Core.Algebra.Scalars.Float64;
 using GeometricAlgebraFulcrumLib.MetaProgramming.Context.Expressions.Evaluators;
 using GeometricAlgebraFulcrumLib.MetaProgramming.Context.Expressions.HeadSpecs;
 using GeometricAlgebraFulcrumLib.MetaProgramming.Context.Expressions.Variables;

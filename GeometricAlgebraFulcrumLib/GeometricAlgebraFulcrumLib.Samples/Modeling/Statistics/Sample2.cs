@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using GeometricAlgebraFulcrumLib.Core.Modeling.Graphics.Rendering.Images;
+using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.Images;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Random;
 using MathNet.Numerics.Statistics;
 

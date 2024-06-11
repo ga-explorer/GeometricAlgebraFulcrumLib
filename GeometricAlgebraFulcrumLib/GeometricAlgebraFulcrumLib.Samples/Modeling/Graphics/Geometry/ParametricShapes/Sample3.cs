@@ -1,13 +1,13 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
-using GeometricAlgebraFulcrumLib.Core.Modeling.Geometry.BasicShapes.Lines.Immutable;
-using GeometricAlgebraFulcrumLib.Core.Modeling.Geometry.Borders.Space3D.Immutable;
-using GeometricAlgebraFulcrumLib.Core.Modeling.Graphics.ParametricShapes.Volumes;
-using GeometricAlgebraFulcrumLib.Core.Modeling.Graphics.ParametricShapes.Volumes.Sampled;
-using GeometricAlgebraFulcrumLib.Core.Modeling.Graphics.Primitives.Lines;
-using GeometricAlgebraFulcrumLib.Core.Modeling.Graphics.Rendering.Xeogl;
-using GeometricAlgebraFulcrumLib.Core.Modeling.Graphics.SdfGeometry.Primitives;
+using GeometricAlgebraFulcrumLib.Modeling.Geometry.BasicShapes.Lines.Immutable;
+using GeometricAlgebraFulcrumLib.Modeling.Geometry.Borders.Space3D.Immutable;
+using GeometricAlgebraFulcrumLib.Modeling.Graphics.ParametricShapes.Volumes;
+using GeometricAlgebraFulcrumLib.Modeling.Graphics.ParametricShapes.Volumes.Sampled;
+using GeometricAlgebraFulcrumLib.Modeling.Graphics.Primitives.Lines;
+using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.Xeogl;
+using GeometricAlgebraFulcrumLib.Modeling.Graphics.SdfGeometry.Primitives;
 using GeometricAlgebraFulcrumLib.Utilities.Structures;
 
 namespace GeometricAlgebraFulcrumLib.Samples.Modeling.Graphics.Geometry.ParametricShapes;

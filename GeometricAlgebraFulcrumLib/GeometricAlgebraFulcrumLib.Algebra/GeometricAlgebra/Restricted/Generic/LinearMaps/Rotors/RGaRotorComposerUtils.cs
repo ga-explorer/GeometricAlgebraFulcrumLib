@@ -1,13 +1,13 @@
 ﻿using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Basic;
-using GeometricAlgebraFulcrumLib.Core.Algebra.LinearAlgebra.Basis;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Generic.Frames;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Generic.Multivectors;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Generic.Multivectors.Composers;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Generic.Processors;
+using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Basis;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Generic.Angles;
-using GeometricAlgebraFulcrumLib.Algebra.Scalars;
+using GeometricAlgebraFulcrumLib.Algebra.Scalars.Generic;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Generic.LinearMaps.Rotors;
 
@@ -843,7 +843,7 @@ public static class RGaRotorComposerUtils
     /// <param name="r23"></param>
     /// <returns></returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static RGaScaledPureRotor<T> CreateScaledPureRotor3D<T>(this RGaProcessor<T> processor, Scalars.IScalar<T> r0, Scalars.IScalar<T> r12, Scalars.IScalar<T> r13, Scalars.IScalar<T> r23)
+    public static RGaScaledPureRotor<T> CreateScaledPureRotor3D<T>(this RGaProcessor<T> processor, Scalars.Generic.IScalar<T> r0, Scalars.Generic.IScalar<T> r12, Scalars.Generic.IScalar<T> r13, Scalars.Generic.IScalar<T> r23)
     {
         return RGaScaledPureRotor<T>.Create(
             processor

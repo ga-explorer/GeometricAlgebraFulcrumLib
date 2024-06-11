@@ -1,9 +1,9 @@
-﻿using GeometricAlgebraFulcrumLib.Algebra.Utilities;
-using GeometricAlgebraFulcrumLib.Core.Algebra.LinearAlgebra.Float64.Angles;
-using GeometricAlgebraFulcrumLib.Core.Algebra.Scalars.Float64;
-using GeometricAlgebraFulcrumLib.Core.Algebra.Signals.Composers;
-using GeometricAlgebraFulcrumLib.Core.Modeling.Geometry.Differential.Functions.Interpolators;
-using GeometricAlgebraFulcrumLib.Core.Modeling.Geometry.Parametric;
+﻿using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Angles;
+using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
+using GeometricAlgebraFulcrumLib.Modeling.Calculus.Functions.Float64.Interpolators;
+using GeometricAlgebraFulcrumLib.Modeling.Geometry.Parametric.Float64;
+using GeometricAlgebraFulcrumLib.Modeling.Signals.Composers;
+using GeometricAlgebraFulcrumLib.Modeling.Utilities;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Basic;
 using OfficeOpenXml;
 

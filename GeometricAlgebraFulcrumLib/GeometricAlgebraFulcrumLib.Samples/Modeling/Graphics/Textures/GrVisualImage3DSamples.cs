@@ -1,5 +1,5 @@
 ﻿using System.IO;
-using GeometricAlgebraFulcrumLib.Core.Modeling.Graphics.Rendering.Visuals.Space3D.Images;
+using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.Visuals.Space3D.Images;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Formats.Bmp;
 

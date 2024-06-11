@@ -1,10 +1,10 @@
 ﻿using System;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Generic.Vectors.Space3D;
-using GeometricAlgebraFulcrumLib.Algebra.Scalars;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.Conformal;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.Conformal.Decoding;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.Conformal.Encoding;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.Conformal.Operations;
+using GeometricAlgebraFulcrumLib.Algebra.Scalars.Generic;
+using GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Generic;
+using GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Generic.Decoding;
+using GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Generic.Encoding;
+using GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Generic.Operations;
 
 namespace GeometricAlgebraFulcrumLib.Samples.Modeling
 {
@@ -18,7 +18,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.Modeling
 
             // Create the CGA space object based on the selected
             // kind of scalars
-            var cga = XGaConformalSpace5D<double>.Create(scalarProcessor);
+            var cga = CGaGeometricSpace5D<double>.Create(scalarProcessor);
 
             // Encode 4 points as CGA null vectors
             var a = cga.EncodeIpnsRoundPoint(3.5, 4.3, 2.6);

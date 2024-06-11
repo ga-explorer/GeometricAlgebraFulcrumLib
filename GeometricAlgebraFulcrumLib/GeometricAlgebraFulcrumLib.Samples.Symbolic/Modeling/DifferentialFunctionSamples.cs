@@ -1,6 +1,6 @@
-﻿using GeometricAlgebraFulcrumLib.Core.Modeling.Geometry.Differential.Functions;
-using GeometricAlgebraFulcrumLib.Mathematica.Utilities.Structures;
+﻿using GeometricAlgebraFulcrumLib.Mathematica.Utilities.Structures;
 using GeometricAlgebraFulcrumLib.Mathematica.Utilities.Structures.ExprFactory;
+using GeometricAlgebraFulcrumLib.Modeling.Calculus.Functions.Float64;
 
 namespace GeometricAlgebraFulcrumLib.Samples.Symbolic.Modeling;
 

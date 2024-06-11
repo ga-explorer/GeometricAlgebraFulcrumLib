@@ -1,12 +1,12 @@
 ﻿using System.Diagnostics;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.BitManipulation;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.IndexSets;
-using GeometricAlgebraFulcrumLib.Core.Algebra.GeometricAlgebra.Basis;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Extended.Generic.Multivectors;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Extended.Generic.Multivectors.Composers;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.Geometry.Euclidean.Space3D.Objects;
 using GeometricAlgebraFulcrumLib.MetaProgramming.Context.Expressions.Variables;
+using GeometricAlgebraFulcrumLib.Modeling.Geometry.Euclidean.Space3D.Objects;
 
 namespace GeometricAlgebraFulcrumLib.MetaProgramming.Context.Expressions;
 

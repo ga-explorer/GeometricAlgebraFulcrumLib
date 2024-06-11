@@ -1,12 +1,12 @@
 ﻿using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Generic.Multivectors;
-using GeometricAlgebraFulcrumLib.Algebra.Scalars;
+using GeometricAlgebraFulcrumLib.Algebra.Scalars.Generic;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Generic.Spaces.Conformal;
 
 public abstract class RGaConformalIpnsVector<T> :
-    RGaConformalBlade<T>
+    CGaFloat64Blade<T>
 {
     protected bool AssumeUnitWeight { get; private set; }
 

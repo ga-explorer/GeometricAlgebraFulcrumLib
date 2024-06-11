@@ -2,7 +2,7 @@
 using System.Diagnostics;
 using System.Text;
 using GeometricAlgebraFulcrumLib.Algebra.ComplexAlgebra;
-using GeometricAlgebraFulcrumLib.Algebra.Scalars;
+using GeometricAlgebraFulcrumLib.Algebra.Scalars.Generic;
 using GeometricAlgebraFulcrumLib.Algebra.Utilities.Text;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Generic.Vectors.Space3D;
