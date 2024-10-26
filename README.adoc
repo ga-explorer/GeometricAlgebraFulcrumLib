@@ -31,7 +31,7 @@ You can cite GA-FuL using https://www.mdpi.com/2227-7390/12/14/2272[this article
 }
 ----
 
-== GA-FuL Core Design
+== GA-FuL Design
 
 === Core Design Intentions
 
@@ -47,7 +47,7 @@ The high-level design of GA-FuL targets a specific set of *Core Design Intention
 
 * *CDI-5: Providing a unified, generic, and extensible API for several classes of applications.* The final design goal of GA-FuL is to expose the system functionality through a good *Application Programming Interface (API)*. The API should have a unified public interface with uniform conventions to aid usability. Additionally, the API should be generic regarding the kinds of scalars and GAs it can handle, reflecting the capabilities of the underlying system. API extensibility is also important for future development of the system to aid in the addition of more features and widening system usage. Finally, the API should support the development of various classes of applications including, but not limited to, numerical prototyping computations, symbolic mathematical manipulations, signal processing, visualization, and metaprogramming.
 
-=== Data-Oriented Programming (DOP)
+=== Data-Oriented Programming (DOP) in GA-FuL
 
 During the initial design of GA-FuL, satisfying the set of CDIs using traditional *Object-Oriented Programming (OOP)* was found to be non-practical. This is mainly due to the tendency of classical OOP practices to increase the code-base complexity of large systems such as GA-FuL. In this context, complexity specifically means the deep coupling of data and behavior code typically imposed by classical OOP principles, especially encapsulation and inheritance. This typically results in complicated relations between system classes and complex inheritance hierarchies, leading to difficulties in understanding the design of large systems. If not properly mitigated, this can eventually result in reduced code understanding and difficulty in system maintenance and extensibility.
 
