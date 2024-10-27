@@ -9,8 +9,6 @@ using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space3D;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.SpaceND;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Float64.Blades;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Float64.Decoding;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Float64.Encoding;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Float64.Operations;
 
 namespace GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Float64.Elements;
@@ -161,7 +159,7 @@ public class CGaFloat64Flat :
     public IReadOnlyList<CGaFloat64Blade> GetSurfacePointVGaBlades()
     {
         return GetSurfacePointVectors()
-            .Select(GeometricSpace.EncodeVGaVector)
+            .Select(GeometricSpace.Encode.VGa.Vector)
             .ToImmutableArray();
     }
 
@@ -169,7 +167,7 @@ public class CGaFloat64Flat :
     public IReadOnlyList<CGaFloat64Blade> GetSurfacePointPGaBlades()
     {
         return GetSurfacePointVectors()
-            .Select(GeometricSpace.EncodePGaPoint)
+            .Select(GeometricSpace.Encode.PGa.Point)
             .ToImmutableArray();
     }
 
@@ -177,7 +175,7 @@ public class CGaFloat64Flat :
     public IReadOnlyList<CGaFloat64Blade> GetSurfacePointIpnsBlades()
     {
         return GetSurfacePointVectors()
-            .Select(GeometricSpace.EncodeIpnsRoundPoint)
+            .Select(GeometricSpace.Encode.IpnsRound.Point)
             .ToImmutableArray();
     }
 
@@ -185,7 +183,7 @@ public class CGaFloat64Flat :
     public IReadOnlyList<CGaFloat64Blade> GetSurfacePointOpnsFlatBlades()
     {
         return GetSurfacePointVectors()
-            .Select(GeometricSpace.EncodeOpnsFlatPoint)
+            .Select(GeometricSpace.Encode.OpnsFlat.Point)
             .ToImmutableArray();
     }
 
@@ -259,7 +257,7 @@ public class CGaFloat64Flat :
     public bool SurfaceNearContainsPoint(CGaFloat64Blade egaPoint, double epsilon = 1e-12)
     {
         return IsDirectionNearParallelTo(
-            (egaPoint - Position).DecodeVGaVector(),
+            (egaPoint - Position).DecodeVGaDirection.RGaVector(),
             epsilon
         );
     }

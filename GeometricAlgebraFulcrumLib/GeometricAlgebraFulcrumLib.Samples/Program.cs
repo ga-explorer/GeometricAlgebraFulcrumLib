@@ -1,5 +1,5 @@
 ﻿using System;
-using GeometricAlgebraFulcrumLib.Samples.Modeling.Geometry.PGa;
+using GeometricAlgebraFulcrumLib.Samples.Modeling.Geometry.CGa;
 
 namespace GeometricAlgebraFulcrumLib.Samples;
 
@@ -136,9 +136,9 @@ class Program
         //MetaProgramming.CSharp.GradedMultivectorLibSample.GenerateCode();
         //MetaProgramming.Matlab.GradedMultivectorLibSample.GenerateCode();
         
-        //ConformalSpace5DSamples.Example1();
-
-        PGaSamples.PGaBasisExample();
+        CGa5DBasicSamples.BasisInfoTableExample();
+        
+        //PGaSamples.PGaBasisExample();
 
         Console.WriteLine();
         Console.WriteLine("Press any key to exit..");

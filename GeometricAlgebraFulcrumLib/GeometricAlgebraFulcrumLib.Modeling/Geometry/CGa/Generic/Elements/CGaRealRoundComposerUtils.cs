@@ -6,7 +6,6 @@ using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Generic.Vectors.Space3D;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Generic.Vectors.SpaceND;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Generic;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Generic.Blades;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Generic.Decoding;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Generic.Encoding;
 
 namespace GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Generic.Elements;
@@ -20,8 +19,8 @@ public static class CGaRealRoundComposerUtils
             cgaGeometricSpace,
             cgaGeometricSpace.ScalarOne,
             radius.Square(),
-            cgaGeometricSpace.EncodeVGaVector(position),
-            cgaGeometricSpace.EncodeVGaVector(direction)
+            cgaGeometricSpace.EncodeVGa.Vector(position),
+            cgaGeometricSpace.EncodeVGa.Vector(direction)
         );
     }
 
@@ -32,8 +31,8 @@ public static class CGaRealRoundComposerUtils
             cgaGeometricSpace,
             cgaGeometricSpace.ScalarOne,
             radius.Square(),
-            cgaGeometricSpace.EncodeVGaVector(position),
-            cgaGeometricSpace.EncodeVGaVector(direction)
+            cgaGeometricSpace.EncodeVGa.Vector(position),
+            cgaGeometricSpace.EncodeVGa.Vector(direction)
         );
     }
 
@@ -44,8 +43,8 @@ public static class CGaRealRoundComposerUtils
             cgaGeometricSpace,
             cgaGeometricSpace.ScalarOne,
             radius.Square(),
-            cgaGeometricSpace.EncodeVGaVector(position),
-            cgaGeometricSpace.EncodeVGaVector(direction)
+            cgaGeometricSpace.EncodeVGa.Vector(position),
+            cgaGeometricSpace.EncodeVGa.Vector(direction)
         );
     }
 
@@ -56,8 +55,8 @@ public static class CGaRealRoundComposerUtils
             cgaGeometricSpace,
             cgaGeometricSpace.ScalarOne,
             radius.Square(),
-            cgaGeometricSpace.EncodeVGaVector(position),
-            cgaGeometricSpace.EncodeVGaVector(direction)
+            cgaGeometricSpace.EncodeVGa.Vector(position),
+            cgaGeometricSpace.EncodeVGa.Vector(direction)
         );
     }
 
@@ -73,8 +72,8 @@ public static class CGaRealRoundComposerUtils
             cgaGeometricSpace,
             cgaGeometricSpace.ScalarOne,
             radiusSquared,
-            cgaGeometricSpace.EncodeVGaVector(center),
-            cgaGeometricSpace.EncodeVGaVector(direction)
+            cgaGeometricSpace.EncodeVGa.Vector(center),
+            cgaGeometricSpace.EncodeVGa.Vector(direction)
         );
     }
 
@@ -89,8 +88,8 @@ public static class CGaRealRoundComposerUtils
             cgaGeometricSpace,
             cgaGeometricSpace.ScalarOne,
             radiusSquared,
-            cgaGeometricSpace.EncodeVGaVector(center),
-            cgaGeometricSpace.EncodeVGaVector(direction)
+            cgaGeometricSpace.EncodeVGa.Vector(center),
+            cgaGeometricSpace.EncodeVGa.Vector(direction)
         );
     }
 
@@ -105,8 +104,8 @@ public static class CGaRealRoundComposerUtils
             cgaGeometricSpace,
             cgaGeometricSpace.ScalarOne,
             radiusSquared,
-            cgaGeometricSpace.EncodeVGaVector(center),
-            cgaGeometricSpace.EncodeVGaVector(direction)
+            cgaGeometricSpace.EncodeVGa.Vector(center),
+            cgaGeometricSpace.EncodeVGa.Vector(direction)
         );
     }
 
@@ -121,8 +120,8 @@ public static class CGaRealRoundComposerUtils
             cgaGeometricSpace,
             cgaGeometricSpace.ScalarOne,
             radiusSquared,
-            cgaGeometricSpace.EncodeVGaVector(center),
-            cgaGeometricSpace.EncodeVGaVector(direction)
+            cgaGeometricSpace.EncodeVGa.Vector(center),
+            cgaGeometricSpace.EncodeVGa.Vector(direction)
         );
     }
 
@@ -138,8 +137,8 @@ public static class CGaRealRoundComposerUtils
             cgaGeometricSpace,
             weight,
             radiusSquared,
-            cgaGeometricSpace.EncodeVGaVector(center),
-            cgaGeometricSpace.EncodeVGaVector(direction)
+            cgaGeometricSpace.EncodeVGa.Vector(center),
+            cgaGeometricSpace.EncodeVGa.Vector(direction)
         );
     }
 
@@ -154,8 +153,8 @@ public static class CGaRealRoundComposerUtils
             cgaGeometricSpace,
             weight,
             radiusSquared,
-            cgaGeometricSpace.EncodeVGaVector(center),
-            cgaGeometricSpace.EncodeVGaVector(direction)
+            cgaGeometricSpace.EncodeVGa.Vector(center),
+            cgaGeometricSpace.EncodeVGa.Vector(direction)
         );
     }
 
@@ -170,8 +169,8 @@ public static class CGaRealRoundComposerUtils
             cgaGeometricSpace,
             weight,
             radiusSquared,
-            cgaGeometricSpace.EncodeVGaVector(center),
-            cgaGeometricSpace.EncodeVGaVector(direction)
+            cgaGeometricSpace.EncodeVGa.Vector(center),
+            cgaGeometricSpace.EncodeVGa.Vector(direction)
         );
     }
 
@@ -186,8 +185,8 @@ public static class CGaRealRoundComposerUtils
             cgaGeometricSpace,
             weight,
             radiusSquared,
-            cgaGeometricSpace.EncodeVGaVector(center),
-            cgaGeometricSpace.EncodeVGaVector(direction)
+            cgaGeometricSpace.EncodeVGa.Vector(center),
+            cgaGeometricSpace.EncodeVGa.Vector(direction)
         );
     }
 
@@ -199,8 +198,8 @@ public static class CGaRealRoundComposerUtils
             cgaGeometricSpace,
             weight,
             radius.Square(),
-            cgaGeometricSpace.EncodeVGaVector(position),
-            cgaGeometricSpace.EncodeVGaVector(direction)
+            cgaGeometricSpace.EncodeVGa.Vector(position),
+            cgaGeometricSpace.EncodeVGa.Vector(direction)
         );
     }
 
@@ -211,8 +210,8 @@ public static class CGaRealRoundComposerUtils
             cgaGeometricSpace,
             weight,
             radius.Square(),
-            cgaGeometricSpace.EncodeVGaVector(position),
-            cgaGeometricSpace.EncodeVGaVector(direction)
+            cgaGeometricSpace.EncodeVGa.Vector(position),
+            cgaGeometricSpace.EncodeVGa.Vector(direction)
         );
     }
 
@@ -223,8 +222,8 @@ public static class CGaRealRoundComposerUtils
             cgaGeometricSpace,
             weight,
             radius.Square(),
-            cgaGeometricSpace.EncodeVGaVector(position),
-            cgaGeometricSpace.EncodeVGaVector(direction)
+            cgaGeometricSpace.EncodeVGa.Vector(position),
+            cgaGeometricSpace.EncodeVGa.Vector(direction)
         );
     }
 
@@ -235,8 +234,8 @@ public static class CGaRealRoundComposerUtils
             cgaGeometricSpace,
             weight,
             radius.Square(),
-            cgaGeometricSpace.EncodeVGaVector(position),
-            cgaGeometricSpace.EncodeVGaVector(direction)
+            cgaGeometricSpace.EncodeVGa.Vector(position),
+            cgaGeometricSpace.EncodeVGa.Vector(direction)
         );
     }
 
@@ -248,8 +247,8 @@ public static class CGaRealRoundComposerUtils
             cgaGeometricSpace,
             cgaGeometricSpace.ScalarOne,
             radius.Square(),
-            cgaGeometricSpace.EncodeVGaVector(position),
-            cgaGeometricSpace.EncodeVGaBivector(LinBivector2D<T>.E12(cgaGeometricSpace.ScalarProcessor))
+            cgaGeometricSpace.EncodeVGa.Vector(position),
+            cgaGeometricSpace.EncodeVGa.Bivector(LinBivector2D<T>.E12(cgaGeometricSpace.ScalarProcessor))
         );
     }
 
@@ -260,8 +259,8 @@ public static class CGaRealRoundComposerUtils
             cgaGeometricSpace,
             cgaGeometricSpace.ScalarOne,
             radius.Square(),
-            cgaGeometricSpace.EncodeVGaVector(position),
-            cgaGeometricSpace.EncodeVGaBivector(direction)
+            cgaGeometricSpace.EncodeVGa.Vector(position),
+            cgaGeometricSpace.EncodeVGa.Bivector(direction)
         );
     }
 
@@ -272,8 +271,8 @@ public static class CGaRealRoundComposerUtils
             cgaGeometricSpace,
             cgaGeometricSpace.ScalarOne,
             radius.Square(),
-            cgaGeometricSpace.EncodeVGaVector(position),
-            cgaGeometricSpace.EncodeVGaBivector(direction)
+            cgaGeometricSpace.EncodeVGa.Vector(position),
+            cgaGeometricSpace.EncodeVGa.Bivector(direction)
         );
     }
 
@@ -284,8 +283,8 @@ public static class CGaRealRoundComposerUtils
             cgaGeometricSpace,
             cgaGeometricSpace.ScalarOne,
             radius.Square(),
-            cgaGeometricSpace.EncodeVGaVector(position),
-            cgaGeometricSpace.EncodeVGaBivector(direction)
+            cgaGeometricSpace.EncodeVGa.Vector(position),
+            cgaGeometricSpace.EncodeVGa.Bivector(direction)
         );
     }
 
@@ -297,8 +296,8 @@ public static class CGaRealRoundComposerUtils
             cgaGeometricSpace,
             weight,
             radius.Square(),
-            cgaGeometricSpace.EncodeVGaVector(position),
-            cgaGeometricSpace.EncodeVGaBivector(LinBivector2D<T>.E12(cgaGeometricSpace.ScalarProcessor))
+            cgaGeometricSpace.EncodeVGa.Vector(position),
+            cgaGeometricSpace.EncodeVGa.Bivector(LinBivector2D<T>.E12(cgaGeometricSpace.ScalarProcessor))
         );
     }
 
@@ -309,8 +308,8 @@ public static class CGaRealRoundComposerUtils
             cgaGeometricSpace,
             weight,
             radius.Square(),
-            cgaGeometricSpace.EncodeVGaVector(position),
-            cgaGeometricSpace.EncodeVGaBivector(direction)
+            cgaGeometricSpace.EncodeVGa.Vector(position),
+            cgaGeometricSpace.EncodeVGa.Bivector(direction)
         );
     }
 
@@ -321,8 +320,8 @@ public static class CGaRealRoundComposerUtils
             cgaGeometricSpace,
             weight,
             radius.Square(),
-            cgaGeometricSpace.EncodeVGaVector(position),
-            cgaGeometricSpace.EncodeVGaBivector(direction)
+            cgaGeometricSpace.EncodeVGa.Vector(position),
+            cgaGeometricSpace.EncodeVGa.Bivector(direction)
         );
     }
 
@@ -333,8 +332,8 @@ public static class CGaRealRoundComposerUtils
             cgaGeometricSpace,
             weight,
             radius.Square(),
-            cgaGeometricSpace.EncodeVGaVector(position),
-            cgaGeometricSpace.EncodeVGaBivector(direction)
+            cgaGeometricSpace.EncodeVGa.Vector(position),
+            cgaGeometricSpace.EncodeVGa.Bivector(direction)
         );
     }
 
@@ -342,11 +341,11 @@ public static class CGaRealRoundComposerUtils
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static CGaRound<T> DefineRealRoundCircleFromPoints<T>(this CGaGeometricSpace<T> cgaGeometricSpace, LinVector2D<T> point1, LinVector2D<T> point2, LinVector2D<T> point3)
     {
-        var round = cgaGeometricSpace.EncodeOpnsRoundCircle(
+        var round = cgaGeometricSpace.EncodeOpnsRound.Circle(
             point1,
             point2,
             point3
-        ).DecodeOpnsRound();
+        ).Decode.OpnsRound.Element();
 
         round.Weight = cgaGeometricSpace.ScalarOne;
 
@@ -356,11 +355,11 @@ public static class CGaRealRoundComposerUtils
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static CGaRound<T> DefineRealRoundCircleFromPoints<T>(this CGaGeometricSpace<T> cgaGeometricSpace, LinVector3D<T> point1, LinVector3D<T> point2, LinVector3D<T> point3)
     {
-        var round = cgaGeometricSpace.EncodeOpnsRoundCircle(
+        var round = cgaGeometricSpace.EncodeOpnsRound.Circle(
             point1,
             point2,
             point3
-        ).DecodeOpnsRound();
+        ).Decode.OpnsRound.Element();
 
         round.Weight = cgaGeometricSpace.ScalarOne;
 
@@ -370,11 +369,11 @@ public static class CGaRealRoundComposerUtils
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static CGaRound<T> DefineRealRoundCircleFromPoints<T>(this CGaGeometricSpace<T> cgaGeometricSpace, LinVector<T> point1, LinVector<T> point2, LinVector<T> point3)
     {
-        var round = cgaGeometricSpace.EncodeOpnsRoundCircle(
+        var round = cgaGeometricSpace.EncodeOpnsRound.Circle(
             point1.ToXGaVector(cgaGeometricSpace.Processor),
             point2.ToXGaVector(cgaGeometricSpace.Processor),
             point3.ToXGaVector(cgaGeometricSpace.Processor)
-        ).DecodeOpnsRound();
+        ).Decode.OpnsRound.Element();
 
         round.Weight = cgaGeometricSpace.ScalarOne;
 
@@ -384,11 +383,11 @@ public static class CGaRealRoundComposerUtils
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static CGaRound<T> DefineRealRoundCircleFromPoints<T>(this CGaGeometricSpace<T> cgaGeometricSpace, XGaVector<T> point1, XGaVector<T> point2, XGaVector<T> point3)
     {
-        var round = cgaGeometricSpace.EncodeOpnsRoundCircle(
+        var round = cgaGeometricSpace.EncodeOpnsRound.Circle(
             point1,
             point2,
             point3
-        ).DecodeOpnsRound();
+        ).Decode.OpnsRound.Element();
 
         round.Weight = cgaGeometricSpace.ScalarOne;
 
@@ -399,11 +398,11 @@ public static class CGaRealRoundComposerUtils
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static CGaRound<T> DefineRealRoundCircleFromPoints<T>(this CGaGeometricSpace<T> cgaGeometricSpace, Scalar<T> weight, LinVector2D<T> point1, LinVector2D<T> point2, LinVector2D<T> point3)
     {
-        var round = cgaGeometricSpace.EncodeOpnsRoundCircle(
+        var round = cgaGeometricSpace.EncodeOpnsRound.Circle(
             point1,
             point2,
             point3
-        ).DecodeOpnsRound();
+        ).Decode.OpnsRound.Element();
 
         round.Weight = weight;
 
@@ -413,11 +412,11 @@ public static class CGaRealRoundComposerUtils
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static CGaRound<T> DefineRealRoundCircleFromPoints<T>(this CGaGeometricSpace<T> cgaGeometricSpace, Scalar<T> weight, LinVector3D<T> point1, LinVector3D<T> point2, LinVector3D<T> point3)
     {
-        var round = cgaGeometricSpace.EncodeOpnsRoundCircle(
+        var round = cgaGeometricSpace.EncodeOpnsRound.Circle(
             point1,
             point2,
             point3
-        ).DecodeOpnsRound();
+        ).Decode.OpnsRound.Element();
 
         round.Weight = weight;
 
@@ -427,11 +426,11 @@ public static class CGaRealRoundComposerUtils
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static CGaRound<T> DefineRealRoundCircleFromPoints<T>(this CGaGeometricSpace<T> cgaGeometricSpace, Scalar<T> weight, LinVector<T> point1, LinVector<T> point2, LinVector<T> point3)
     {
-        var round = cgaGeometricSpace.EncodeOpnsRoundCircle(
+        var round = cgaGeometricSpace.EncodeOpnsRound.Circle(
             point1.ToXGaVector(cgaGeometricSpace.Processor),
             point2.ToXGaVector(cgaGeometricSpace.Processor),
             point3.ToXGaVector(cgaGeometricSpace.Processor)
-        ).DecodeOpnsRound();
+        ).Decode.OpnsRound.Element();
 
         round.Weight = weight;
 
@@ -441,11 +440,11 @@ public static class CGaRealRoundComposerUtils
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static CGaRound<T> DefineRealRoundCircleFromPoints<T>(this CGaGeometricSpace<T> cgaGeometricSpace, Scalar<T> weight, XGaVector<T> point1, XGaVector<T> point2, XGaVector<T> point3)
     {
-        var round = cgaGeometricSpace.EncodeOpnsRoundCircle(
+        var round = cgaGeometricSpace.EncodeOpnsRound.Circle(
             point1,
             point2,
             point3
-        ).DecodeOpnsRound();
+        ).Decode.OpnsRound.Element();
 
         round.Weight = weight;
 
@@ -460,8 +459,8 @@ public static class CGaRealRoundComposerUtils
             cgaGeometricSpace,
             cgaGeometricSpace.ScalarOne,
             radius.Square(),
-            cgaGeometricSpace.EncodeVGaVector(position),
-            cgaGeometricSpace.EncodeVGaTrivector(1)
+            cgaGeometricSpace.EncodeVGa.Vector(position),
+            cgaGeometricSpace.EncodeVGa.Trivector(1)
         );
     }
 
@@ -472,8 +471,8 @@ public static class CGaRealRoundComposerUtils
             cgaGeometricSpace,
             cgaGeometricSpace.ScalarOne,
             radius.Square(),
-            cgaGeometricSpace.EncodeVGaVector(position),
-            cgaGeometricSpace.EncodeVGaTrivector(direction)
+            cgaGeometricSpace.EncodeVGa.Vector(position),
+            cgaGeometricSpace.EncodeVGa.Trivector(direction)
         );
     }
 
@@ -485,8 +484,8 @@ public static class CGaRealRoundComposerUtils
             cgaGeometricSpace,
             weight,
             radius.Square(),
-            cgaGeometricSpace.EncodeVGaVector(position),
-            cgaGeometricSpace.EncodeVGaTrivector(1)
+            cgaGeometricSpace.EncodeVGa.Vector(position),
+            cgaGeometricSpace.EncodeVGa.Trivector(1)
         );
     }
 
@@ -497,8 +496,8 @@ public static class CGaRealRoundComposerUtils
             cgaGeometricSpace,
             weight,
             radius.Square(),
-            cgaGeometricSpace.EncodeVGaVector(position),
-            cgaGeometricSpace.EncodeVGaTrivector(direction)
+            cgaGeometricSpace.EncodeVGa.Vector(position),
+            cgaGeometricSpace.EncodeVGa.Trivector(direction)
         );
     }
 
@@ -506,12 +505,12 @@ public static class CGaRealRoundComposerUtils
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static CGaRound<T> DefineRealRoundSphereFromPoints<T>(this CGaGeometricSpace<T> cgaGeometricSpace, LinVector3D<T> point1, LinVector3D<T> point2, LinVector3D<T> point3, LinVector3D<T> point4)
     {
-        var round = cgaGeometricSpace.EncodeOpnsRoundSphere(
+        var round = cgaGeometricSpace.EncodeOpnsRound.Sphere(
             point1,
             point2,
             point3,
             point4
-        ).DecodeOpnsRound();
+        ).Decode.OpnsRound.Element();
 
         round.Weight = cgaGeometricSpace.ScalarOne;
 
@@ -521,12 +520,12 @@ public static class CGaRealRoundComposerUtils
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static CGaRound<T> DefineRealRoundSphereFromPoints<T>(this CGaGeometricSpace<T> cgaGeometricSpace, XGaVector<T> point1, XGaVector<T> point2, XGaVector<T> point3, XGaVector<T> point4)
     {
-        var round = cgaGeometricSpace.EncodeOpnsRoundSphere(
+        var round = cgaGeometricSpace.EncodeOpnsRound.Sphere(
             point1,
             point2,
             point3,
             point4
-        ).DecodeOpnsRound();
+        ).Decode.OpnsRound.Element();
 
         round.Weight = cgaGeometricSpace.ScalarOne;
 
@@ -537,12 +536,12 @@ public static class CGaRealRoundComposerUtils
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static CGaRound<T> DefineRealRoundSphereFromPoints<T>(this CGaGeometricSpace<T> cgaGeometricSpace, Scalar<T> weight, LinVector3D<T> point1, LinVector3D<T> point2, LinVector3D<T> point3, LinVector3D<T> point4)
     {
-        var round = cgaGeometricSpace.EncodeOpnsRoundSphere(
+        var round = cgaGeometricSpace.EncodeOpnsRound.Sphere(
             point1,
             point2,
             point3,
             point4
-        ).DecodeOpnsRound();
+        ).Decode.OpnsRound.Element();
 
         round.Weight = weight;
 
@@ -552,12 +551,12 @@ public static class CGaRealRoundComposerUtils
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static CGaRound<T> DefineRealRoundSphereFromPoints<T>(this CGaGeometricSpace<T> cgaGeometricSpace, Scalar<T> weight, XGaVector<T> point1, XGaVector<T> point2, XGaVector<T> point3, XGaVector<T> point4)
     {
-        var round = cgaGeometricSpace.EncodeOpnsRoundSphere(
+        var round = cgaGeometricSpace.EncodeOpnsRound.Sphere(
             point1,
             point2,
             point3,
             point4
-        ).DecodeOpnsRound();
+        ).Decode.OpnsRound.Element();
 
         round.Weight = weight;
 
@@ -572,8 +571,8 @@ public static class CGaRealRoundComposerUtils
             cgaGeometricSpace,
             cgaGeometricSpace.ScalarOne,
             radius.Square(),
-            cgaGeometricSpace.EncodeVGaVector(position),
-            cgaGeometricSpace.EncodeVGaBlade(direction)
+            cgaGeometricSpace.EncodeVGa.Vector(position),
+            cgaGeometricSpace.EncodeVGa.Blade(direction)
         );
     }
 
@@ -597,8 +596,8 @@ public static class CGaRealRoundComposerUtils
             cgaGeometricSpace,
             weight,
             radius.Square(),
-            cgaGeometricSpace.EncodeVGaVector(position),
-            cgaGeometricSpace.EncodeVGaBlade(direction)
+            cgaGeometricSpace.EncodeVGa.Vector(position),
+            cgaGeometricSpace.EncodeVGa.Blade(direction)
         );
     }
 
@@ -621,7 +620,7 @@ public static class CGaRealRoundComposerUtils
         return cgaGeometricSpace.DefineRealRound(
             cgaGeometricSpace.ScalarOne,
             radius,
-            cgaGeometricSpace.EncodeVGaVector(position),
+            cgaGeometricSpace.EncodeVGa.Vector(position),
             directionVectors
                 .Select(v => v.ToXGaVector(cgaGeometricSpace.Processor))
                 .Op(cgaGeometricSpace.Processor)
@@ -635,7 +634,7 @@ public static class CGaRealRoundComposerUtils
         return cgaGeometricSpace.DefineRealRound(
             cgaGeometricSpace.ScalarOne,
             radius,
-            cgaGeometricSpace.EncodeVGaVector(position),
+            cgaGeometricSpace.EncodeVGa.Vector(position),
             directionVectors
                 .Select(v => v.ToXGaVector(cgaGeometricSpace.Processor))
                 .Op(cgaGeometricSpace.Processor)
@@ -649,7 +648,7 @@ public static class CGaRealRoundComposerUtils
         return cgaGeometricSpace.DefineRealRound(
             cgaGeometricSpace.ScalarOne,
             radius,
-            cgaGeometricSpace.EncodeVGaVector(position),
+            cgaGeometricSpace.EncodeVGa.Vector(position),
             directionVectors
                 .Select(v => v.ToXGaVector(cgaGeometricSpace.Processor))
                 .Op(cgaGeometricSpace.Processor)
@@ -686,7 +685,7 @@ public static class CGaRealRoundComposerUtils
         return cgaGeometricSpace.DefineRealRound(
             weight,
             radius,
-            cgaGeometricSpace.EncodeVGaVector(position),
+            cgaGeometricSpace.EncodeVGa.Vector(position),
             directionVectors
                 .Select(v => v.ToXGaVector(cgaGeometricSpace.Processor))
                 .Op(cgaGeometricSpace.Processor)
@@ -700,7 +699,7 @@ public static class CGaRealRoundComposerUtils
         return cgaGeometricSpace.DefineRealRound(
             weight,
             radius,
-            cgaGeometricSpace.EncodeVGaVector(position),
+            cgaGeometricSpace.EncodeVGa.Vector(position),
             directionVectors
                 .Select(v => v.ToXGaVector(cgaGeometricSpace.Processor))
                 .Op(cgaGeometricSpace.Processor)
@@ -714,7 +713,7 @@ public static class CGaRealRoundComposerUtils
         return cgaGeometricSpace.DefineRealRound(
             weight,
             radius,
-            cgaGeometricSpace.EncodeVGaVector(position),
+            cgaGeometricSpace.EncodeVGa.Vector(position),
             directionVectors
                 .Select(v => v.ToXGaVector(cgaGeometricSpace.Processor))
                 .Op(cgaGeometricSpace.Processor)

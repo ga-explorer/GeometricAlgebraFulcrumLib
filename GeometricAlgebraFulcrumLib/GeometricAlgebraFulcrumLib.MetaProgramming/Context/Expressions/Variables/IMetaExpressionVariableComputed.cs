@@ -52,6 +52,8 @@ public interface IMetaExpressionVariableComputed :
 
     bool SetAsOutput(string externalName);
 
+    void DisableMerge();
+
     bool ReplaceRhsExpression(IMetaExpression oldRhsExpression, string newVariableName);
 
     bool ReplaceRhsVariable(string oldVariableName, string newVariableName);

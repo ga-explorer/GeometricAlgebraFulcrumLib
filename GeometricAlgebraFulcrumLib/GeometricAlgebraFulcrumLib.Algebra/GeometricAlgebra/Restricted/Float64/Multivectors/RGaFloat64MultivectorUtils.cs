@@ -642,4 +642,38 @@ public static class RGaFloat64MultivectorUtils
         
         return array;
     }
+
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static RGaFloat64Multivector[,] GetMapTable(this IReadOnlyList<RGaFloat64Multivector> multivectorList, Func<RGaFloat64Multivector, RGaFloat64Multivector, RGaFloat64Multivector> multivectorMap)
+    {
+        return GetMapTable(
+            multivectorList,
+            multivectorList,
+            multivectorMap
+        );
+    }
+
+    public static RGaFloat64Multivector[,] GetMapTable(this IReadOnlyList<RGaFloat64Multivector> multivectorList1, IReadOnlyList<RGaFloat64Multivector> multivectorList2, Func<RGaFloat64Multivector, RGaFloat64Multivector, RGaFloat64Multivector> multivectorMap)
+    {
+        var rowCount = multivectorList1.Count;
+        var colCount = multivectorList2.Count;
+
+        var tableArray = new RGaFloat64Multivector[rowCount, colCount];
+
+        for (var i = 0; i < rowCount; i++)
+        {
+            var b1 = multivectorList1[i];
+
+            for (var j = 0; j < colCount; j++)
+            {
+                var b2 = multivectorList2[j];
+
+                tableArray[i, j] = multivectorMap(b1, b2);
+            }
+        }
+
+        return tableArray;
+    }
+
 }

@@ -1,5 +1,7 @@
-﻿using System.Runtime.CompilerServices;
+﻿using System.Collections.Immutable;
+using System.Runtime.CompilerServices;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Basic;
+using GeometricAlgebraFulcrumLib.Utilities.Structures.Collections.Lists;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Collections.PeriodicLists2D;
 
 namespace GeometricAlgebraFulcrumLib.Utilities.Structures.Collections;
@@ -143,7 +145,7 @@ public static class CollectionsUtils
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static bool IsNullOrEmpty<T>(this IReadOnlyCollection<T> collection)
+    public static bool IsNullOrEmpty<T>(this IReadOnlyCollection<T>? collection)
     {
         return collection == null || collection.Count == 0;
     }
@@ -159,5 +161,20 @@ public static class CollectionsUtils
     public static MappedReadOnlyList<T1, T2> CreateMappedList<T1, T2>(this IReadOnlyList<T1> baseList, Func<T1, T2> itemMapping)
     {
         return new MappedReadOnlyList<T1, T2>(baseList, itemMapping);
+    }
+
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static BijectiveList<TKey, TValue> ToBijectiveList<TKey, TValue>(this IEnumerable<TValue> baseList, Func<TValue, TKey> valueToKeyMap) 
+        where TKey : IEquatable<TKey>
+    {
+        return new BijectiveList<TKey, TValue>(baseList.ToImmutableArray(), valueToKeyMap);
+    }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static BijectiveList<TKey, TValue> ToBijectiveList<TKey, TValue>(this IReadOnlyList<TValue> baseList, Func<TValue, TKey> valueToKeyMap) 
+        where TKey : IEquatable<TKey>
+    {
+        return new BijectiveList<TKey, TValue>(baseList, valueToKeyMap);
     }
 }

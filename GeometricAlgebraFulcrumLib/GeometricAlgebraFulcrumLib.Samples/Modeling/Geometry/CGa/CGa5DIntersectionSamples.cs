@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space3D;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Float64;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Float64.Decoding;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Float64.Elements;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Float64.Operations;
 
@@ -117,7 +116,7 @@ public static class CGa5DIntersectionSamples
                 var intersectionElement =
                     flat1.EncodeIpnsBlade().MeetIpns(
                         flat2.EncodeIpnsBlade()
-                    ).DecodeIpnsElement();
+                    ).Decode.IpnsElement();
 
                 Console.WriteLine("First Element:");
                 Console.WriteLine(flat1);
@@ -147,7 +146,7 @@ public static class CGa5DIntersectionSamples
                 var intersectionElement =
                     flat1.EncodeIpnsBlade().MeetIpns(
                         round2.EncodeIpnsBlade()
-                    ).DecodeIpnsElement();
+                    ).Decode.IpnsElement();
 
                 Console.WriteLine("First Element:");
                 Console.WriteLine(flat1);
@@ -174,7 +173,7 @@ public static class CGa5DIntersectionSamples
                 var intersectionElement =
                     round1.EncodeIpnsBlade().MeetIpns(
                         round2.EncodeIpnsBlade()
-                    ).DecodeIpnsElement();
+                    ).Decode.IpnsElement();
 
                 Console.WriteLine("First Element:");
                 Console.WriteLine(round1);

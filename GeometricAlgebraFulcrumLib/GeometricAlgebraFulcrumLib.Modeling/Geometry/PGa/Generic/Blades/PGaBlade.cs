@@ -42,13 +42,13 @@ public sealed record PGaBlade<T>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static PGaBlade<T> operator -(PGaBlade<T> blade1, XGaKVector<T> blade2)
     {
-        return blade1.Subtract(new PGaBlade<T>(blade1.Geometry, blade2));
+        return blade1.Subtract(new PGaBlade<T>(blade1.GeometricSpace, blade2));
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static PGaBlade<T> operator -(XGaKVector<T> blade1, PGaBlade<T> blade2)
     {
-        return new PGaBlade<T>(blade2.Geometry, blade1).Subtract(blade2);
+        return new PGaBlade<T>(blade2.GeometricSpace, blade1).Subtract(blade2);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -184,10 +184,10 @@ public sealed record PGaBlade<T>
     }
 
 
-    public PGaGeometricSpace<T> Geometry { get; }
+    public PGaGeometricSpace<T> GeometricSpace { get; }
 
     public GaGeometricSpaceBasisSpecs<T> BasisSpecs
-        => Geometry.BasisSpecs;
+        => GeometricSpace.BasisSpecs;
 
     public XGaKVector<T> InternalKVector { get; }
 
@@ -204,16 +204,16 @@ public sealed record PGaBlade<T>
         => InternalKVector.GetBivectorPart();
 
     public XGaProjectiveProcessor<T> ProjectiveProcessor
-        => Geometry.ProjectiveProcessor;
+        => GeometricSpace.ProjectiveProcessor;
 
     public IScalarProcessor<T> ScalarProcessor
-        => Geometry.ProjectiveProcessor.ScalarProcessor;
+        => GeometricSpace.ProjectiveProcessor.ScalarProcessor;
 
     public int Grade
         => InternalKVector.Grade;
 
     public int VSpaceDimensions
-        => Geometry.VSpaceDimensions;
+        => GeometricSpace.VSpaceDimensions;
 
     public Scalar<T> this[int i]
         => InternalKVector[i];
@@ -240,10 +240,10 @@ public sealed record PGaBlade<T>
         => InternalKVector.Grade == 3;
 
     public bool IsPseudoVector
-        => InternalKVector.Grade == Geometry.VSpaceDimensions - 1;
+        => InternalKVector.Grade == GeometricSpace.VSpaceDimensions - 1;
 
     public bool IsPseudoScalar
-        => InternalKVector.Grade == Geometry.VSpaceDimensions;
+        => InternalKVector.Grade == GeometricSpace.VSpaceDimensions;
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -258,13 +258,13 @@ public sealed record PGaBlade<T>
         // relative to the max-magnitude scalar term of the k-vector
         //InternalKVector = kVector.RemoveSmallTerms(); 
         InternalKVector = kVector;
-        Geometry = pgaGeometricSpace;
+        GeometricSpace = pgaGeometricSpace;
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public void Deconstruct(out PGaGeometricSpace<T> pgaGeometricSpace, out XGaKVector<T> kVector)
     {
-        pgaGeometricSpace = Geometry;
+        pgaGeometricSpace = GeometricSpace;
         kVector = InternalKVector;
     }
 
@@ -306,25 +306,25 @@ public sealed record PGaBlade<T>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public bool IsPGaPoint()
     {
-        return Geometry.IsValidPGaPoint(InternalKVector);
+        return GeometricSpace.IsValidPGaPoint(InternalKVector);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public bool IsPGaIdealPoint()
     {
-        return Geometry.IsValidPGaVector(InternalKVector);
+        return GeometricSpace.IsValidPGaVector(InternalKVector);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public bool IsHGaPoint()
     {
-        return Geometry.IsValidHGaPoint(InternalKVector);
+        return GeometricSpace.IsValidHGaPoint(InternalKVector);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public bool IsHGaIdealPoint()
     {
-        return Geometry.IsValidHGaVector(InternalKVector);
+        return GeometricSpace.IsValidHGaVector(InternalKVector);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -397,7 +397,7 @@ public sealed record PGaBlade<T>
     public PGaBlade<T> Negative()
     {
         return new PGaBlade<T>(
-            Geometry,
+            GeometricSpace,
             InternalKVector.Negative()
         );
     }
@@ -406,7 +406,7 @@ public sealed record PGaBlade<T>
     public PGaBlade<T> Reverse()
     {
         return new PGaBlade<T>(
-            Geometry,
+            GeometricSpace,
             InternalKVector.Reverse()
         );
     }
@@ -415,7 +415,7 @@ public sealed record PGaBlade<T>
     public PGaBlade<T> GradeInvolution()
     {
         return new PGaBlade<T>(
-            Geometry,
+            GeometricSpace,
             InternalKVector.GradeInvolution()
         );
     }
@@ -424,7 +424,7 @@ public sealed record PGaBlade<T>
     public PGaBlade<T> CliffordConjugate()
     {
         return new PGaBlade<T>(
-            Geometry,
+            GeometricSpace,
             InternalKVector.CliffordConjugate()
         );
     }
@@ -433,7 +433,7 @@ public sealed record PGaBlade<T>
     public PGaBlade<T> Inverse()
     {
         return new PGaBlade<T>(
-            Geometry,
+            GeometricSpace,
             InternalKVector.Inverse()
         );
     }
@@ -442,7 +442,7 @@ public sealed record PGaBlade<T>
     public PGaBlade<T> Times(T scalar)
     {
         return new PGaBlade<T>(
-            Geometry,
+            GeometricSpace,
             InternalKVector.Times(scalar)
         );
     }
@@ -451,7 +451,7 @@ public sealed record PGaBlade<T>
     public PGaBlade<T> Times(Scalar<T> scalar)
     {
         return new PGaBlade<T>(
-            Geometry,
+            GeometricSpace,
             InternalKVector.Times(scalar.ScalarValue)
         );
     }
@@ -460,7 +460,7 @@ public sealed record PGaBlade<T>
     public PGaBlade<T> Times(IScalar<T> scalar)
     {
         return new PGaBlade<T>(
-            Geometry,
+            GeometricSpace,
             InternalKVector.Times(scalar.ScalarValue)
         );
     }
@@ -469,7 +469,7 @@ public sealed record PGaBlade<T>
     public PGaBlade<T> Divide(T scalar)
     {
         return new PGaBlade<T>(
-            Geometry,
+            GeometricSpace,
             InternalKVector.Divide(scalar)
         );
     }
@@ -478,7 +478,7 @@ public sealed record PGaBlade<T>
     public PGaBlade<T> Divide(Scalar<T> scalar)
     {
         return new PGaBlade<T>(
-            Geometry,
+            GeometricSpace,
             InternalKVector.Divide(scalar.ScalarValue)
         );
     }
@@ -487,7 +487,7 @@ public sealed record PGaBlade<T>
     public PGaBlade<T> Divide(IScalar<T> scalar)
     {
         return new PGaBlade<T>(
-            Geometry,
+            GeometricSpace,
             InternalKVector.Divide(scalar.ScalarValue)
         );
     }
@@ -542,12 +542,12 @@ public sealed record PGaBlade<T>
     public PGaBlade<T> VGaNormal()
     {
         Debug.Assert(
-            Geometry.IsValidVGaElement(InternalKVector)
+            GeometricSpace.IsValidVGaElement(InternalKVector)
         );
 
         return new PGaBlade<T>(
-            Geometry,
-            InternalKVector.Inverse().Lcp(Geometry.Ie.InternalKVector)
+            GeometricSpace,
+            InternalKVector.Inverse().Lcp(GeometricSpace.Ie.InternalKVector)
         );
     }
 
@@ -559,12 +559,12 @@ public sealed record PGaBlade<T>
     public PGaBlade<T> VGaUnNormal()
     {
         Debug.Assert(
-            Geometry.IsValidVGaElement(InternalKVector)
+            GeometricSpace.IsValidVGaElement(InternalKVector)
         );
 
         return new PGaBlade<T>(
-            Geometry,
-            Geometry.Ie.InternalKVector.Rcp(InternalKVector.Inverse())
+            GeometricSpace,
+            GeometricSpace.Ie.InternalKVector.Rcp(InternalKVector.Inverse())
         );
     }
 
@@ -576,12 +576,12 @@ public sealed record PGaBlade<T>
     public PGaBlade<T> VGaDual()
     {
         Debug.Assert(
-            Geometry.IsValidVGaElement(InternalKVector)
+            GeometricSpace.IsValidVGaElement(InternalKVector)
         );
 
         return new PGaBlade<T>(
-            Geometry,
-            InternalKVector.Lcp(Geometry.IeInv.InternalKVector)
+            GeometricSpace,
+            InternalKVector.Lcp(GeometricSpace.IeInv.InternalKVector)
         );
     }
 
@@ -589,10 +589,10 @@ public sealed record PGaBlade<T>
     public XGaKVector<T> VGaDualKVector()
     {
         Debug.Assert(
-            Geometry.IsValidVGaElement(InternalKVector)
+            GeometricSpace.IsValidVGaElement(InternalKVector)
         );
 
-        return InternalKVector.Lcp(Geometry.IeInv.InternalKVector);
+        return InternalKVector.Lcp(GeometricSpace.IeInv.InternalKVector);
     }
 
     /// <summary>
@@ -603,12 +603,12 @@ public sealed record PGaBlade<T>
     public PGaBlade<T> VGaUnDual()
     {
         Debug.Assert(
-            Geometry.IsValidVGaElement(InternalKVector)
+            GeometricSpace.IsValidVGaElement(InternalKVector)
         );
 
         return new PGaBlade<T>(
-            Geometry,
-            InternalKVector.Lcp(Geometry.Ie.InternalKVector)
+            GeometricSpace,
+            InternalKVector.Lcp(GeometricSpace.Ie.InternalKVector)
         );
     }
 
@@ -616,10 +616,10 @@ public sealed record PGaBlade<T>
     public XGaKVector<T> VGaUnDualKVector()
     {
         Debug.Assert(
-            Geometry.IsValidVGaElement(InternalKVector)
+            GeometricSpace.IsValidVGaElement(InternalKVector)
         );
 
-        return InternalKVector.Lcp(Geometry.Ie.InternalKVector);
+        return InternalKVector.Lcp(GeometricSpace.Ie.InternalKVector);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -636,7 +636,7 @@ public sealed record PGaBlade<T>
     public PGaBlade<T> PGaDual()
     {
         return new PGaBlade<T>(
-            Geometry,
+            GeometricSpace,
             PGaDualKVector()
         );
     }
@@ -645,10 +645,10 @@ public sealed record PGaBlade<T>
     public XGaKVector<T> PGaDualKVector()
     {
         Debug.Assert(
-            Geometry.IsValidElement(InternalKVector)
+            GeometricSpace.IsValidElement(InternalKVector)
         );
 
-        return Geometry
+        return GeometricSpace
             .ProjectiveProcessor
             .PGaDual(InternalKVector, VSpaceDimensions);
     }
@@ -661,7 +661,7 @@ public sealed record PGaBlade<T>
     public PGaBlade<T> PGaUnDual()
     {
         return new PGaBlade<T>(
-            Geometry,
+            GeometricSpace,
             PGaUnDualKVector()
         );
     }
@@ -670,10 +670,10 @@ public sealed record PGaBlade<T>
     public XGaKVector<T> PGaUnDualKVector()
     {
         Debug.Assert(
-            Geometry.IsValidElement(InternalKVector)
+            GeometricSpace.IsValidElement(InternalKVector)
         );
 
-        return Geometry
+        return GeometricSpace
             .ProjectiveProcessor
             .PGaUnDual(InternalKVector, VSpaceDimensions);
     }
@@ -686,7 +686,7 @@ public sealed record PGaBlade<T>
     public PGaBlade<T> PGaPolarity()
     {
         return new PGaBlade<T>(
-            Geometry,
+            GeometricSpace,
             PGaPolarityKVector()
         );
     }
@@ -695,10 +695,10 @@ public sealed record PGaBlade<T>
     public XGaKVector<T> PGaPolarityKVector()
     {
         Debug.Assert(
-            Geometry.IsValidElement(InternalKVector)
+            GeometricSpace.IsValidElement(InternalKVector)
         );
 
-        return Geometry
+        return GeometricSpace
             .ProjectiveProcessor
             .PGaPolarity(InternalKVector, VSpaceDimensions);
     }
@@ -711,7 +711,7 @@ public sealed record PGaBlade<T>
             throw new InvalidOperationException();
 
         return new PGaBlade<T>(
-            Geometry,
+            GeometricSpace,
             InternalKVector.Add(blade2).GetKVectorPart(InternalKVector.Grade)
         );
     }
@@ -723,7 +723,7 @@ public sealed record PGaBlade<T>
             throw new InvalidOperationException();
 
         return new PGaBlade<T>(
-            Geometry,
+            GeometricSpace,
             InternalKVector.Add(blade2.InternalKVector).GetKVectorPart(InternalKVector.Grade)
         );
     }
@@ -735,7 +735,7 @@ public sealed record PGaBlade<T>
             throw new InvalidOperationException();
 
         return new PGaBlade<T>(
-            Geometry,
+            GeometricSpace,
             InternalKVector.Subtract(blade2.InternalKVector).GetKVectorPart(InternalKVector.Grade)
         );
     }
@@ -771,7 +771,7 @@ public sealed record PGaBlade<T>
     public PGaBlade<T> Op(PGaBlade<T> blade2)
     {
         return new PGaBlade<T>(
-            Geometry,
+            GeometricSpace,
             InternalKVector.Op(blade2.InternalKVector)
         );
     }
@@ -785,7 +785,7 @@ public sealed record PGaBlade<T>
     public PGaBlade<T> Op(XGaKVector<T> blade2)
     {
         return new PGaBlade<T>(
-            Geometry,
+            GeometricSpace,
             InternalKVector.Op(blade2)
         );
     }
@@ -799,7 +799,7 @@ public sealed record PGaBlade<T>
     public PGaBlade<T> Lcp(PGaBlade<T> blade2)
     {
         return new PGaBlade<T>(
-            Geometry,
+            GeometricSpace,
             InternalKVector.Lcp(blade2.InternalKVector)
         );
     }
@@ -813,7 +813,7 @@ public sealed record PGaBlade<T>
     public PGaBlade<T> Lcp(XGaKVector<T> blade2)
     {
         return new PGaBlade<T>(
-            Geometry,
+            GeometricSpace,
             InternalKVector.Lcp(blade2)
         );
     }
@@ -827,7 +827,7 @@ public sealed record PGaBlade<T>
     public PGaBlade<T> Rcp(PGaBlade<T> blade2)
     {
         return new PGaBlade<T>(
-            Geometry,
+            GeometricSpace,
             InternalKVector.Rcp(blade2.InternalKVector)
         );
     }
@@ -841,7 +841,7 @@ public sealed record PGaBlade<T>
     public PGaBlade<T> Rcp(XGaKVector<T> blade2)
     {
         return new PGaBlade<T>(
-            Geometry,
+            GeometricSpace,
             InternalKVector.Rcp(blade2)
         );
     }
@@ -855,7 +855,7 @@ public sealed record PGaBlade<T>
     public PGaBlade<T> Fdp(PGaBlade<T> blade2)
     {
         return new PGaBlade<T>(
-            Geometry,
+            GeometricSpace,
             InternalKVector.Fdp(blade2.InternalKVector).GetFirstKVectorPart()
         );
     }
@@ -869,7 +869,7 @@ public sealed record PGaBlade<T>
     public PGaBlade<T> Fdp(XGaKVector<T> blade2)
     {
         return new PGaBlade<T>(
-            Geometry,
+            GeometricSpace,
             InternalKVector.Fdp(blade2).GetFirstKVectorPart()
         );
     }
@@ -914,7 +914,7 @@ public sealed record PGaBlade<T>
 
         return meetVectorsList
             .Op(ProjectiveProcessor)
-            .ToProjectiveBlade(Geometry);
+            .ToProjectiveBlade(GeometricSpace);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -924,7 +924,7 @@ public sealed record PGaBlade<T>
             .BladeToVectors()
             .Concat(blade2.InternalKVector.BladeToVectors())
             .SpanToBlade(ProjectiveProcessor)
-            .ToProjectiveBlade(Geometry);
+            .ToProjectiveBlade(GeometricSpace);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -936,7 +936,7 @@ public sealed record PGaBlade<T>
         var join =
             InternalKVector.Op(
                 meet.InternalKVector.Lcp(blade2.InternalKVector)
-            ).DivideByENorm().ToProjectiveBlade(Geometry);
+            ).DivideByENorm().ToProjectiveBlade(GeometricSpace);
 
         return new Pair<PGaBlade<T>>(meet, join);
     }

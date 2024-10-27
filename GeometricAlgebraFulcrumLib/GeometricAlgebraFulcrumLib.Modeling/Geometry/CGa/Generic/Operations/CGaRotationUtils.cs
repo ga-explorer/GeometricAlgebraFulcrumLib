@@ -3,9 +3,7 @@ using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Generic.Angles;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Generic.Vectors.Space2D;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Generic.Vectors.Space3D;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Generic.Blades;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Generic.Decoding;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Generic.Elements;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Generic.Encoding;
 
 namespace GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Generic.Operations;
 
@@ -17,7 +15,7 @@ public static class CGaRotationUtils
         return element
             .EncodeOpnsBlade()
             .RotateUsing(angle, egaAxisPoint)
-            .DecodeOpnsElement();
+            .Decode.OpnsElement();
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -26,7 +24,7 @@ public static class CGaRotationUtils
         return element
             .EncodeOpnsBlade()
             .RotateUsing(angle, egaAxisPoint, egaAxisVector)
-            .DecodeOpnsElement();
+            .Decode.OpnsElement();
     }
 
     //[MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -187,7 +185,7 @@ public static class CGaRotationUtils
         return element
             .EncodeOpnsBlade()
             .RotateUsing(angle, egaAxisPoint)
-            .DecodeOpnsDirection();
+            .Decode.OpnsDirection.Element();
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -196,7 +194,7 @@ public static class CGaRotationUtils
         return element
             .EncodeOpnsBlade()
             .RotateUsing(angle, egaAxisPoint, egaAxisVector)
-            .DecodeOpnsDirection();
+            .Decode.OpnsDirection.Element();
     }
 
 
@@ -206,7 +204,7 @@ public static class CGaRotationUtils
         return element
             .EncodeOpnsBlade()
             .RotateUsing(angle, egaAxisPoint)
-            .DecodeOpnsTangent();
+            .Decode.OpnsTangent.Element();
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -215,7 +213,7 @@ public static class CGaRotationUtils
         return element
             .EncodeOpnsBlade()
             .RotateUsing(angle, egaAxisPoint, egaAxisVector)
-            .DecodeOpnsTangent();
+            .Decode.OpnsTangent.Element();
     }
 
 
@@ -225,7 +223,7 @@ public static class CGaRotationUtils
         return element
             .EncodeOpnsBlade()
             .RotateUsing(angle, egaAxisPoint)
-            .DecodeOpnsFlat();
+            .Decode.OpnsFlat.Element();
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -234,7 +232,7 @@ public static class CGaRotationUtils
         return element
             .EncodeOpnsBlade()
             .RotateUsing(angle, egaAxisPoint, egaAxisVector)
-            .DecodeOpnsFlat();
+            .Decode.OpnsFlat.Element();
     }
 
 
@@ -244,7 +242,7 @@ public static class CGaRotationUtils
         return element
             .EncodeOpnsBlade()
             .RotateUsing(angle, egaAxisPoint)
-            .DecodeOpnsRound();
+            .Decode.OpnsRound.Element();
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -253,14 +251,14 @@ public static class CGaRotationUtils
         return element
             .EncodeOpnsBlade()
             .RotateUsing(angle, egaAxisPoint, egaAxisVector)
-            .DecodeOpnsRound();
+            .Decode.OpnsRound.Element();
     }
 
 
     public static CGaBlade<T> RotateUsing<T>(this CGaBlade<T> blade, LinAngle<T> angle, LinVector2D<T> egaAxisPoint)
     {
         var bivector =
-            blade.GeometricSpace.EncodeIpnsFlatPoint(
+            blade.GeometricSpace.EncodeIpnsFlat.Point(
                 egaAxisPoint
             ).InternalBivector;
 
@@ -281,7 +279,7 @@ public static class CGaRotationUtils
     public static CGaBlade<T> RotateUsing<T>(this CGaBlade<T> blade, LinAngle<T> angle, LinVector3D<T> egaAxisPoint, LinVector3D<T> egaAxisVector)
     {
         var bivector =
-            blade.GeometricSpace.EncodeIpnsFlatLine(
+            blade.GeometricSpace.EncodeIpnsFlat.Line(
                 egaAxisPoint,
                 egaAxisVector
             ).InternalBivector;

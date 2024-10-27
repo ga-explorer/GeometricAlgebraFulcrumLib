@@ -38,6 +38,8 @@ public abstract class MetaExpressionVariableBase :
 
     public abstract bool HasDependingVariables { get; }
 
+    public abstract bool MergeEnabled { get; }
+
     public abstract bool IsOutputOrHasDependingVariables { get; }
 
     public IMetaExpressionVariableComputed LastDependingVariable

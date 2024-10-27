@@ -1,6 +1,5 @@
 ﻿using System.Runtime.CompilerServices;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Generic;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.Euclidean.Space3D;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.Euclidean.Space3D.Objects;
 
 namespace GeometricAlgebraFulcrumLib.Modeling.Geometry.Euclidean.Space3D.Maps;

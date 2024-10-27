@@ -8,9 +8,9 @@
 
   <ItemGroup>
     <PackageReference Include="AngouriMath" Version="1.3.0" />
-    <PackageReference Include="BenchmarkDotNet" Version="0.13.12" />
+    <PackageReference Include="BenchmarkDotNet" Version="0.14.0" />
     <PackageReference Include="CSharpMath.Evaluation" Version="0.5.1" />
-    <PackageReference Include="CsvHelper" Version="32.0.3" />
+    <PackageReference Include="CsvHelper" Version="33.0.1" />
     <PackageReference Include="ILGPU" Version="1.5.1" />
     <PackageReference Include="ILGPU.Algorithms" Version="1.5.1" />
     <PackageReference Include="ILGPU.Lightning" Version="0.3.0" />

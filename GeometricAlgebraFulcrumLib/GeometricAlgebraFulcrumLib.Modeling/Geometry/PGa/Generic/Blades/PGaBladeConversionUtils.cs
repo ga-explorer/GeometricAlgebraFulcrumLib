@@ -76,7 +76,7 @@ public static class PGaBladeConversionUtils
         Debug.Assert(vector.IsVector);
 
         return new PGaBlade<T>(
-            vector.Geometry,
+            vector.GeometricSpace,
             vector.InternalVector.GetVectorPart(i => i >= 2)
         );
     }
@@ -89,7 +89,7 @@ public static class PGaBladeConversionUtils
             blade.IsVGaVector()
         );
 
-        var pgaGeometricSpace = blade.Geometry;
+        var pgaGeometricSpace = blade.GeometricSpace;
 
         return (pgaGeometricSpace.Eo + blade).PGaDual();
     }

@@ -11,6 +11,7 @@ using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.SpaceND;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Float64.Blades;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Float64.Encoding;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.BitManipulation;
+using GeometricAlgebraFulcrumLib.Utilities.Text.Text.Markdown.Tables;
 
 namespace GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Float64;
 
@@ -44,9 +45,6 @@ public class CGaFloat64GeometricSpace :
         };
     }
 
-
-    public RGaFloat64EuclideanProcessor EuclideanProcessor
-        => RGaFloat64EuclideanProcessor.Instance;
 
     public RGaFloat64ConformalProcessor ConformalProcessor
         => RGaFloat64ConformalProcessor.Instance;
@@ -214,6 +212,42 @@ public class CGaFloat64GeometricSpace :
         => IcRev.InternalKVector;
 
 
+    public CGaFloat64Encoder Encode { get; }
+
+    public CGaFloat64VGaEncoder EncodeVGa
+        => Encode.VGa;
+    
+    public CGaFloat64HGaEncoder EncodeHGa 
+        => Encode.HGa;
+
+    public CGaFloat64PGaEncoder EncodePGa 
+        => Encode.PGa;
+
+    public CGaFloat64OpnsDirectionEncoder EncodeOpnsDirection 
+        => Encode.OpnsDirection;
+
+    public CGaFloat64OpnsTangentEncoder EncodeOpnsTangent 
+        => Encode.OpnsTangent;
+
+    public CGaFloat64OpnsFlatEncoder EncodeOpnsFlat 
+        => Encode.OpnsFlat;
+
+    public CGaFloat64OpnsRoundEncoder EncodeOpnsRound 
+        => Encode.OpnsRound;
+
+    public CGaFloat64IpnsDirectionEncoder EncodeIpnsDirection 
+        => Encode.IpnsDirection;
+
+    public CGaFloat64IpnsTangentEncoder EncodeIpnsTangent 
+        => Encode.IpnsTangent;
+
+    public CGaFloat64IpnsFlatEncoder EncodeIpnsFlat 
+        => Encode.IpnsFlat;
+
+    public CGaFloat64IpnsRoundEncoder EncodeIpnsRound 
+        => Encode.IpnsRound;
+
+
     protected CGaFloat64GeometricSpace(int vSpaceDimensions)
         : base(GaFloat64GeometricSpaceBasisSpecs.CreateCGa(vSpaceDimensions))
     {
@@ -244,6 +278,8 @@ public class CGaFloat64GeometricSpace :
         Ic = new CGaFloat64Blade(this, ConformalProcessor.KVectorTerm(VSpaceDimensions.GetRange().ToImmutableArray()));
         IcInv = Ic.Inverse();
         IcRev = Ic.Reverse();
+
+        Encode = new CGaFloat64Encoder(this);
     }
 
 
@@ -361,26 +397,71 @@ public class CGaFloat64GeometricSpace :
     }
 
 
-    /// <summary>
-    /// Create a CGA 0-blade representing scalar
-    /// </summary>
-    /// <param name="s"></param>
-    /// <returns></returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public CGaFloat64Blade EncodeScalar(double s)
+    internal RGaFloat64KVector RemoveEi(RGaFloat64KVector kVector)
     {
-        return new CGaFloat64Blade(
-            this,
-            Processor.Scalar(s)
+        var eiIndex = VSpaceDimensions - 1;
+        var eiIdMask = (1UL << VSpaceDimensions - 1) - 1UL;
+
+        var termList = 
+            BasisSpecs
+                .BasisMap
+                .OmMap(kVector)
+                .IdScalarPairs
+                .Where(term => 
+                    term.Key.IsOneAt(eiIndex)
+                ).Select(term => 
+                    new KeyValuePair<ulong, double>(
+                        term.Key & eiIdMask, 
+                        term.Value
+                    )
+                );
+
+        return BasisSpecs.BasisMapInverse.OmMap(
+            ConformalProcessor
+                .CreateComposer()
+                .AddTerms(termList)
+                .GetKVector(kVector.Grade - 1)
         );
+
+        //return BasisSpecs.BasisMapInverse.OmMap(
+        //    BasisSpecs
+        //        .BasisMap
+        //        .OmMap(kVector)
+        //        .MapBasisBlades(id => id & eiIdMask)
+        //        .GetFirstKVectorPart()
+        //);
     }
+
+
+    ///// <summary>
+    ///// Create a CGA 0-blade representing scalar
+    ///// </summary>
+    ///// <param name="s"></param>
+    ///// <returns></returns>
+    //[MethodImpl(MethodImplOptions.AggressiveInlining)]
+    //public CGaFloat64Blade EncodeScalar(double s)
+    //{
+    //    return new CGaFloat64Blade(
+    //        this,
+    //        Processor.Scalar(s)
+    //    );
+    //}
+    
+    //[MethodImpl(MethodImplOptions.AggressiveInlining)]
+    //public CGaFloat64Blade EncodeBlade(RGaFloat64KVector kVector)
+    //{
+    //    Debug.Assert(IsValidElement(kVector));
+
+    //    return new CGaFloat64Blade(this, kVector);
+    //}
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public string ToLaTeX(LinFloat64Vector2D vector)
     {
         return BasisSpecs.ToLaTeX(
-            this.EncodeVGaVector(vector).InternalKVector
+            Encode.VGa.Vector(vector).InternalKVector
         );
     }
 
@@ -388,7 +469,7 @@ public class CGaFloat64GeometricSpace :
     public string ToLaTeX(LinFloat64Vector3D vector)
     {
         return BasisSpecs.ToLaTeX(
-            this.EncodeVGaVector(vector).InternalKVector
+            Encode.VGa.Vector(vector).InternalKVector
         );
     }
 
@@ -404,7 +485,7 @@ public class CGaFloat64GeometricSpace :
     public string ToLaTeX(LinFloat64Bivector2D vector)
     {
         return BasisSpecs.ToLaTeX(
-            this.EncodeVGaBivector(vector).InternalKVector
+            Encode.VGa.Bivector(vector).InternalKVector
         );
     }
 
@@ -412,7 +493,7 @@ public class CGaFloat64GeometricSpace :
     public string ToLaTeX(LinFloat64Bivector3D vector)
     {
         return BasisSpecs.ToLaTeX(
-            this.EncodeVGaBivector(vector).InternalKVector
+            Encode.VGa.Bivector(vector).InternalKVector
         );
     }
 
@@ -420,7 +501,67 @@ public class CGaFloat64GeometricSpace :
     public string ToLaTeX(LinFloat64Trivector3D vector)
     {
         return BasisSpecs.ToLaTeX(
-            this.EncodeVGaTrivector(vector.Scalar123).InternalKVector
+            Encode.VGa.Trivector(vector.Scalar123).InternalKVector
         );
+    }
+
+    public string GetBilinearMapMarkdownTable(Func<CGaFloat64Blade, CGaFloat64Blade, RGaFloat64Multivector> basisMap)
+    {
+        var n = 1 << VSpaceDimensions;
+
+        var basisBladeList = 
+            this.GetBasisBladesCGa().ToImmutableArray();
+
+        var tableArray = new RGaFloat64Multivector[n, n];
+
+        for (var i = 0; i < n; i++)
+        {
+            var b1 = basisBladeList[i];
+
+            for (var j = 0; j < n; j++)
+            {
+                var b2 = basisBladeList[j];
+
+                tableArray[i, j] = basisMap(b1, b2);
+            }
+        }
+
+        var composer = new MarkdownTable();
+        var columns = new MarkdownTableColumn[n + 1];
+
+        columns[0] = composer.AddColumn(
+            "basisBlade", 
+            MarkdownTableColumnAlignment.Right, 
+            ""
+        );
+        
+        for (var j = 0; j < n; j++)
+        {
+            columns[j + 1] = composer.AddColumn(
+                $"basisBlade{j}", 
+                MarkdownTableColumnAlignment.Center, 
+                $"${basisBladeList[j].ToLaTeX()}$"
+            );
+        }
+
+        columns[0].AddRange(
+            basisBladeList.Select(
+                b => $"${b.ToLaTeX()}$"
+            )
+        );
+
+        for (var j = 0; j < n; j++)
+        {
+            var column = columns[j + 1];
+
+            for (var i = 0; i < n; i++)
+            {
+                column.Add(
+                    $"${BasisSpecs.ToLaTeX(tableArray[i, j])}$"
+                );
+            }
+        }
+
+        return composer.ToString();
     }
 }

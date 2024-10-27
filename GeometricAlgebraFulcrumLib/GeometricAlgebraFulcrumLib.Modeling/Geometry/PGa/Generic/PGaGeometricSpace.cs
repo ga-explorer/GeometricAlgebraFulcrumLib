@@ -310,6 +310,20 @@ public class PGaGeometricSpace<T> :
             Processor.Scalar(s)
         );
     }
+    
+    /// <summary>
+    /// Create a PGA 0-blade representing scalar
+    /// </summary>
+    /// <param name="kVector"></param>
+    /// <returns></returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public PGaBlade<T> EncodeBlade(XGaKVector<T> kVector)
+    {
+        return new PGaBlade<T>(
+            this,
+            kVector
+        );
+    }
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]

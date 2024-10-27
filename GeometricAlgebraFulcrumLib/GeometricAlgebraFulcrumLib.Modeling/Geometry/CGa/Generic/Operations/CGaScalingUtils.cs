@@ -2,7 +2,6 @@
 using System.Runtime.CompilerServices;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Generic;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Generic.Blades;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Generic.Decoding;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Generic.Elements;
 
 namespace GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Generic.Operations;
@@ -12,7 +11,7 @@ public static class CGaScalingUtils
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static CGaElement<T> ScaleBy<T>(this CGaElement<T> element, T scalingFactor)
     {
-        return element.EncodeOpnsBlade().ScaleBy(scalingFactor).DecodeOpnsElement();
+        return element.EncodeOpnsBlade().ScaleBy(scalingFactor).Decode.OpnsElement();
     }
 
     //[MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -59,19 +58,19 @@ public static class CGaScalingUtils
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static CGaTangent<T> ScaleBy<T>(this CGaTangent<T> element, T scalingFactor)
     {
-        return element.EncodeOpnsBlade().ScaleBy(scalingFactor).DecodeOpnsTangent();
+        return element.EncodeOpnsBlade().ScaleBy(scalingFactor).Decode.OpnsTangent.Element();
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static CGaFlat<T> ScaleBy<T>(this CGaFlat<T> element, T scalingFactor)
     {
-        return element.EncodeOpnsBlade().ScaleBy(scalingFactor).DecodeOpnsFlat();
+        return element.EncodeOpnsBlade().ScaleBy(scalingFactor).Decode.OpnsFlat.Element();
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static CGaRound<T> ScaleBy<T>(this CGaRound<T> element, T scalingFactor)
     {
-        return element.EncodeOpnsBlade().ScaleBy(scalingFactor).DecodeOpnsRound();
+        return element.EncodeOpnsBlade().ScaleBy(scalingFactor).Decode.OpnsRound.Element();
     }
 
 

@@ -10,8 +10,120 @@ public static class SequenceExtensions
         return sequence.Aggregate(0, (acc, value) => acc ^ value);
     }
 
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static int SelectFirstIndexWhere<T>(this IEnumerable<T> sequence, Func<T, bool> valueFilter)
+    {
+        var i = 0;
+        foreach (var value in sequence)
+        {
+            if (valueFilter(value)) 
+                return i;
 
-        
+            i++;
+        }
+
+        return -1;
+    }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static int SelectFirstIndexWhere<T>(this IEnumerable<T> sequence, Func<int, T, bool> valueFilter)
+    {
+        var i = 0;
+        foreach (var value in sequence)
+        {
+            if (valueFilter(i, value)) 
+                return i;
+
+            i++;
+        }
+
+        return -1;
+    }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static KeyValuePair<int, T> SelectFirstIndexValueWhere<T>(this IEnumerable<T> sequence, Func<T, bool> valueFilter)
+    {
+        var i = 0;
+        foreach (var value in sequence)
+        {
+            if (valueFilter(value)) 
+                return new KeyValuePair<int, T>(i, value);
+
+            i++;
+        }
+
+        return new KeyValuePair<int, T>(-1, default!);
+    }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static KeyValuePair<int, T> SelectFirstIndexValueWhere<T>(this IEnumerable<T> sequence, Func<int, T, bool> valueFilter)
+    {
+        var i = 0;
+        foreach (var value in sequence)
+        {
+            if (valueFilter(i, value)) 
+                return new KeyValuePair<int, T>(i, value);
+
+            i++;
+        }
+
+        return new KeyValuePair<int, T>(-1, default!);
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static IEnumerable<int> SelectIndexWhere<T>(this IEnumerable<T> sequence, Func<T, bool> valueFilter)
+    {
+        var i = 0;
+        foreach (var value in sequence)
+        {
+            if (valueFilter(value)) 
+                yield return i;
+
+            i++;
+        }
+    }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static IEnumerable<int> SelectIndexWhere<T>(this IEnumerable<T> sequence, Func<int, T, bool> valueFilter)
+    {
+        var i = 0;
+        foreach (var value in sequence)
+        {
+            if (valueFilter(i, value)) 
+                yield return i;
+
+            i++;
+        }
+    }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static IEnumerable<KeyValuePair<int, T>> SelectIndexValueWhere<T>(this IEnumerable<T> sequence, Func<T, bool> valueFilter)
+    {
+        var i = 0;
+        foreach (var value in sequence)
+        {
+            if (valueFilter(value)) 
+                yield return new KeyValuePair<int, T>(i, value);
+
+            i++;
+        }
+    }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static IEnumerable<KeyValuePair<int, T>> SelectIndexValueWhere<T>(this IEnumerable<T> sequence, Func<int, T, bool> valueFilter)
+    {
+        var i = 0;
+        foreach (var value in sequence)
+        {
+            if (valueFilter(i, value)) 
+                yield return new KeyValuePair<int, T>(i, value);
+
+            i++;
+        }
+    }
+
+    
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static IEnumerable<T2> MapItems<T, T2>(this IEnumerable<T> sequence, Func<T, T2> itemMapping)
     {

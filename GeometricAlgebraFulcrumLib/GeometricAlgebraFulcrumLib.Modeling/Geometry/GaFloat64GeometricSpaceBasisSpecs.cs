@@ -6,10 +6,10 @@ using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Float64.Lin
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Float64.Multivectors;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Float64.Multivectors.Composers;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Float64.Processors;
-using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.LinearMaps.SpaceND;
-using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.SpaceND;
 using GeometricAlgebraFulcrumLib.Utilities.Structures;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.BitManipulation;
+using GeometricAlgebraFulcrumLib.Utilities.Text.Text.Markdown;
+using GeometricAlgebraFulcrumLib.Utilities.Text.Text.Markdown.Tables;
 
 // ReSharper disable CompareOfFloatsByEqualityOperator
 
@@ -61,10 +61,7 @@ public sealed class GaFloat64GeometricSpaceBasisSpecs
         vectorMapArray[vSpaceDimensions - 1, 0] = 0.5d;
         vectorMapArray[vSpaceDimensions - 1, 1] = -0.5d;
 
-        return vectorMapArray
-            .ColumnsToLinVectors()
-            .ToLinUnilinearMap()
-            .ToOutermorphism(processor);
+        return vectorMapArray.ColumnsToOutermorphism(processor);
     }
 
     private static RGaFloat64LinearMapOutermorphism GetCGaBasisMapInverse(int vSpaceDimensions)
@@ -90,14 +87,11 @@ public sealed class GaFloat64GeometricSpaceBasisSpecs
         vectorMapArray[0, vSpaceDimensions - 1] = 1d;
         vectorMapArray[1, vSpaceDimensions - 1] = -1d;
 
-        return vectorMapArray
-            .ColumnsToLinVectors()
-            .ToLinUnilinearMap()
-            .ToOutermorphism(processor);
+        return vectorMapArray.ColumnsToOutermorphism(processor);
     }
 
 
-    public static GaFloat64GeometricSpaceBasisSpecs CreateEGa(int vSpaceDimensions)
+    public static GaFloat64GeometricSpaceBasisSpecs CreateVGa(int vSpaceDimensions)
     {
         if (vSpaceDimensions < 2)
             throw new ArgumentOutOfRangeException(nameof(vSpaceDimensions));
@@ -182,6 +176,22 @@ public sealed class GaFloat64GeometricSpaceBasisSpecs
         LaTeXVectorSubscripts = laTeXVectorSubscripts;
         BasisMap = basisMap;
         BasisMapInverse = basisMapInverse;
+    }
+
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public IEnumerable<RGaFloat64KVector> GetBasisBlades(bool orderByGrade = true)
+    {
+        if (orderByGrade)
+            return GaSpaceDimensions
+                .GetRange()
+                .OrderBy(id => id.Grade())
+                .ThenBy(id => id)
+                .Select(BasisMapInverse.OmMapBasisBlade);
+
+        return GaSpaceDimensions
+            .GetRange()
+            .Select(BasisMapInverse.OmMapBasisBlade);
     }
 
 
@@ -309,5 +319,122 @@ public sealed class GaFloat64GeometricSpaceBasisSpecs
             : "-" + latexText[2..];
 
         return latexText.Trim();
+    }
+
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public Tuple<IReadOnlyList<RGaFloat64KVector>, RGaFloat64Multivector[,]> GetBasisMapTable(Func<RGaFloat64Multivector, RGaFloat64Multivector, RGaFloat64Multivector> basisMap)
+    {
+        var basisBladeList = 
+            GetBasisBlades().ToImmutableArray();
+
+        var mapArray = basisBladeList.GetMapTable(
+            basisBladeList,
+            basisMap
+        );
+
+        return new Tuple<IReadOnlyList<RGaFloat64KVector>, RGaFloat64Multivector[,]>(
+            basisBladeList,
+            mapArray
+        );
+    }
+
+    public MarkdownTable GetBasisMapMarkdownTable(Func<RGaFloat64Multivector, RGaFloat64Multivector, RGaFloat64Multivector> basisMap)
+    {
+        var (basisBladeList, tableArray) = 
+            GetBasisMapTable(basisMap);
+
+        var n = basisBladeList.Count;
+
+        var composer = new MarkdownTable();
+        var columns = new MarkdownTableColumn[n + 1];
+
+        columns[0] = composer.AddColumn(
+            "basisBlade", 
+            MarkdownTableColumnAlignment.Right, 
+            string.Empty
+        );
+        
+        for (var j = 0; j < n; j++)
+        {
+            columns[j + 1] = composer.AddColumn(
+                $"basisBlade{j}", 
+                MarkdownTableColumnAlignment.Center, 
+                $"${ToLaTeX(basisBladeList[j])}$"
+            );
+        }
+
+        columns[0].AddRange(
+            basisBladeList.Select(
+                b => $"${ToLaTeX(b)}$"
+            )
+        );
+
+        for (var j = 0; j < n; j++)
+        {
+            var column = columns[j + 1];
+
+            for (var i = 0; i < n; i++)
+            {
+                var itemText = ToLaTeX(tableArray[i, j]);
+
+                column.Add(
+                    itemText == "0" 
+                        ? string.Empty 
+                        : $"${itemText}$"
+                );
+            }
+        }
+
+        return composer;
+    }
+
+    public MarkdownTable GetBasisInfoMarkdownTable()
+    {
+        var indexList = 
+            (1 << VSpaceDimensions)
+                .GetRange()
+                .ToImmutableArray();
+
+        var basisBladeIdList =
+            GaSpaceDimensions
+                .GetRange()
+                .OrderBy(id => id.Grade())
+                .ThenBy(id => id)
+                .ToImmutableArray();
+
+        var basisBladeList = 
+            basisBladeIdList
+                .Select(BasisMapInverse.OmMapBasisBlade)
+                .ToImmutableArray();
+
+        var n = basisBladeList.Length;
+
+        var columnHeaders = new string[]
+        {
+            @"Basis $\boldsymbol{E}_{i}$",
+            @"Grade $k$",
+            @"Index $j$",
+            @"$i=\Phi\left(k,j\right)$",
+            @"$\mathrm{sgn}\left(\boldsymbol{E}_{i}^{\sim}\right)$"
+        };
+
+        var mappingFunctions = new Func<int, string>[]
+        {
+            i => $@"${ToLaTeX(basisBladeList[i])}$",
+            i => basisBladeIdList[i].Grade().ToString(),
+            i => basisBladeIdList[i].BasisBladeIdToIndex().ToString(),
+            i => $@"${basisBladeIdList[i].PatternToString(VSpaceDimensions)}_{{2}}={basisBladeIdList[i]}$",
+            i => basisBladeIdList[i].ReverseIsPositiveOfBasisBladeId() ? "+" : "-"
+        };
+
+        var mdTable = indexList.MapToMarkdownTable(
+            columnHeaders,
+            mappingFunctions
+        );
+
+        mdTable[0].ColumnAlignment = MarkdownTableColumnAlignment.Left;
+
+        return mdTable;
     }
 }

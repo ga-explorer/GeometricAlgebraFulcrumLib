@@ -1,10 +1,13 @@
 ﻿using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Float64.Multivectors;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Float64.Multivectors.Composers;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Float64.Processors;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
+using GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Float64.Decoding;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Float64.Visualizer;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Basic;
+using GeometricAlgebraFulcrumLib.Utilities.Structures.BitManipulation;
 
 namespace GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Float64.Blades;
 
@@ -138,6 +141,41 @@ public sealed record CGaFloat64Blade
     public bool IsPseudoScalar
         => InternalKVector.Grade == GeometricSpace.VSpaceDimensions;
 
+    
+    private CGaFloat64BladeDecoder? _decoder;
+    public CGaFloat64BladeDecoder Decode 
+        => _decoder ??= new CGaFloat64BladeDecoder(this);
+
+    public CGaFloat64VGaDirectionBladeDecoder DecodeVGaDirection 
+        => Decode.VGaDirection;
+    
+    public CGaFloat64PGaFlatBladeDecoder DecodePGaFlat
+        => Decode.PGaFlat;
+    
+    public CGaFloat64IpnsDirectionBladeDecoder DecodeIpnsDirection 
+        => Decode.IpnsDirection;
+    
+    public CGaFloat64IpnsTangentBladeDecoder DecodeIpnsTangent 
+        => Decode.IpnsTangent;
+    
+    public CGaFloat64IpnsFlatBladeDecoder DecodeIpnsFlat 
+        => Decode.IpnsFlat;
+    
+    public CGaFloat64IpnsRoundBladeDecoder DecodeIpnsRound 
+        => Decode.IpnsRound;
+    
+    public CGaFloat64OpnsDirectionBladeDecoder DecodeOpnsDirection 
+        => Decode.OpnsDirection;
+    
+    public CGaFloat64OpnsTangentBladeDecoder DecodeOpnsTangent 
+        => Decode.OpnsTangent;
+    
+    public CGaFloat64OpnsFlatBladeDecoder DecodeOpnsFlat 
+        => Decode.OpnsFlat;
+    
+    public CGaFloat64OpnsRoundBladeDecoder DecodeOpnsRound 
+        => Decode.OpnsRound;
+
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     internal CGaFloat64Blade(CGaFloat64GeometricSpace cgaGeometricSpace, RGaFloat64KVector kVector)
@@ -186,27 +224,44 @@ public sealed record CGaFloat64Blade
     }
 
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    internal CGaFloat64Blade RemoveEi()
-    {
-        var eiIdMask = (1UL << VSpaceDimensions - 1) - 1UL;
-
-        var kVector = BasisSpecs.BasisMapInverse.OmMap(
-            BasisSpecs
-                .BasisMap
-                .OmMap(InternalKVector)
-                .MapBasisBlades(id => id & eiIdMask)
-                .GetFirstKVectorPart()
-        );
-
-        return new CGaFloat64Blade(GeometricSpace, kVector);
-    }
-
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public double DecodeScalar()
     {
         return InternalScalar.ScalarValue;
+    }
+
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public CGaFloat64Blade RemoveNearZeroTerms(double zeroEpsilon = 1e-12)
+    {
+        return new CGaFloat64Blade(
+            GeometricSpace,
+            InternalKVector.MapScalars(s => s.IsNearZero(zeroEpsilon) ? 0 : s)
+        );
+    }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public CGaFloat64Blade GetVGaPart(bool removeEi)
+    {
+        var kVector1 = removeEi 
+            ? GeometricSpace.RemoveEi(InternalKVector) 
+            : InternalKVector;
+
+        var termList =
+            kVector1.IdScalarPairs.Where(
+                term =>
+                    !term.Key.IsOneAt(0) && 
+                    !term.Key.IsOneAt(1)
+            );
+
+        var internalKVector = 
+            ConformalProcessor
+                .CreateComposer()
+                .SetTerms(termList)
+                .GetKVector(kVector1.Grade);
+
+        return new CGaFloat64Blade(GeometricSpace, internalKVector);
     }
 
 

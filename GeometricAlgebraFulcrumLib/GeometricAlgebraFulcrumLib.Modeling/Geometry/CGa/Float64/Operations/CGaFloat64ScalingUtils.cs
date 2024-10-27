@@ -2,7 +2,6 @@
 using System.Runtime.CompilerServices;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Float64.Blades;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Float64.Decoding;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Float64.Elements;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.Parametric.Float64.Space1D.Scalars;
 
@@ -13,7 +12,7 @@ public static class CGaFloat64ScalingUtils
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static CGaFloat64Element ScaleBy(this CGaFloat64Element element, double scalingFactor)
     {
-        return element.EncodeOpnsBlade().ScaleBy(scalingFactor).DecodeOpnsElement();
+        return element.EncodeOpnsBlade().ScaleBy(scalingFactor).Decode.OpnsElement();
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -60,19 +59,19 @@ public static class CGaFloat64ScalingUtils
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static CGaFloat64Tangent ScaleBy(this CGaFloat64Tangent element, double scalingFactor)
     {
-        return element.EncodeOpnsBlade().ScaleBy(scalingFactor).DecodeOpnsTangent();
+        return element.EncodeOpnsBlade().ScaleBy(scalingFactor).DecodeOpnsTangent.Element();
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static CGaFloat64Flat ScaleBy(this CGaFloat64Flat element, double scalingFactor)
     {
-        return element.EncodeOpnsBlade().ScaleBy(scalingFactor).DecodeOpnsFlat();
+        return element.EncodeOpnsBlade().ScaleBy(scalingFactor).DecodeOpnsFlat.Element();
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static CGaFloat64Round ScaleBy(this CGaFloat64Round element, double scalingFactor)
     {
-        return element.EncodeOpnsBlade().ScaleBy(scalingFactor).DecodeOpnsRound();
+        return element.EncodeOpnsBlade().ScaleBy(scalingFactor).DecodeOpnsRound.Element();
     }
 
 

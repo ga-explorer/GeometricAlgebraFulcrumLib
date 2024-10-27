@@ -7,8 +7,6 @@ using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Generic.Vectors.Space3D;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Generic.Vectors.SpaceND;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Generic;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Generic.Blades;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Generic.Decoding;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Generic.Encoding;
 
 // ReSharper disable CompareOfFloatsByEqualityOperator
 
@@ -278,123 +276,123 @@ public abstract class CGaElement<T> :
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public LinVector2D<T> PositionToVector2D()
     {
-        return Position.DecodeVGaVector2D();
+        return Position.Decode.VGaDirection.Vector2D();
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public LinVector3D<T> PositionToVector3D()
     {
-        return Position.DecodeVGaVector3D();
+        return Position.Decode.VGaDirection.Vector3D();
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public LinVector<T> PositionToVector()
     {
-        return Position.DecodeVGaVectorND();
+        return Position.Decode.VGaDirection.VectorND();
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public XGaVector<T> PositionToXGaVector()
     {
-        return Position.DecodeVGaVector();
+        return Position.Decode.VGaDirection.Vector();
     }
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public LinVector2D<T> DirectionToVector2D()
     {
-        return Direction.DecodeVGaVector2D();
+        return Direction.Decode.VGaDirection.Vector2D();
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public LinVector2D<T> DirectionToVector2D(T length)
     {
-        return Direction.DecodeVGaVector2D().SetLength(length);
+        return Direction.Decode.VGaDirection.Vector2D().SetLength(length);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public LinVector3D<T> DirectionToVector3D()
     {
-        return Direction.DecodeVGaVector3D();
+        return Direction.Decode.VGaDirection.Vector3D();
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public LinVector3D<T> DirectionToVector3D(T length)
     {
-        return Direction.DecodeVGaVector3D().SetLength(length);
+        return Direction.Decode.VGaDirection.Vector3D().SetLength(length);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public LinVector<T> DirectionToVector()
     {
-        return Direction.DecodeVGaVectorND();
+        return Direction.Decode.VGaDirection.VectorND();
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public XGaVector<T> DirectionToXGaVector()
     {
-        return Direction.DecodeVGaVector();
+        return Direction.Decode.VGaDirection.Vector();
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public LinBivector2D<T> DirectionToBivector2D()
     {
-        return Direction.DecodeVGaBivector2D();
+        return Direction.Decode.VGaDirection.Bivector2D();
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public LinBivector3D<T> DirectionToBivector3D()
     {
-        return Direction.DecodeVGaBivector3D();
+        return Direction.Decode.VGaDirection.Bivector3D();
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public XGaBivector<T> DirectionToXGaBivector()
     {
-        return Direction.DecodeVGaBivector();
+        return Direction.Decode.VGaDirection.Bivector();
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public LinTrivector3D<T> DirectionToTrivector3D()
     {
-        return Direction.DecodeVGaTrivector3D();
+        return Direction.Decode.VGaDirection.Trivector3D();
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public XGaKVector<T> DirectionToXGaKVector()
     {
-        return Direction.DecodeVGaKVector();
+        return Direction.Decode.VGaDirection.KVector();
     }
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public IReadOnlyList<LinVector2D<T>> DirectionToVectors2D()
     {
-        return Direction.DecodeVGaBladeToVectors2D();
+        return Direction.Decode.VGaDirection.BladeToVectors2D();
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public IReadOnlyList<LinVector3D<T>> DirectionToVectors3D()
     {
-        return Direction.DecodeVGaBladeToVectors3D();
+        return Direction.Decode.VGaDirection.BladeToVectors3D();
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public IReadOnlyList<LinVector<T>> DirectionToVectors()
     {
-        return Direction.DecodeVGaBladeToVectorsND();
+        return Direction.Decode.VGaDirection.BladeToVectorsND();
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public IReadOnlyList<XGaVector<T>> DirectionToXGaVectors()
     {
-        return Direction.DecodeVGaBladeToVectors();
+        return Direction.Decode.VGaDirection.BladeToVectors();
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public IReadOnlyList<CGaBlade<T>> DirectionToVGaVectorBlades()
     {
-        return Direction.DecodeVGaBladeToVectorVGaBlades();
+        return Direction.Decode.VGaDirection.BladeToVectorVGaBlades();
     }
 
 
@@ -403,7 +401,7 @@ public abstract class CGaElement<T> :
     {
         Debug.Assert(GeometricSpace.Is4D);
 
-        return NormalDirection.DecodeVGaVector2D();
+        return NormalDirection.Decode.VGaDirection.Vector2D();
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -411,92 +409,92 @@ public abstract class CGaElement<T> :
     {
         Debug.Assert(GeometricSpace.Is4D);
 
-        return NormalDirection.DecodeVGaVector2D().SetLength(length);
+        return NormalDirection.Decode.VGaDirection.Vector2D().SetLength(length);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public LinVector3D<T> NormalDirectionToVector3D()
     {
-        return NormalDirection.DecodeVGaVector3D();
+        return NormalDirection.Decode.VGaDirection.Vector3D();
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public LinVector3D<T> NormalDirectionToVector3D(IScalar<T> length)
     {
-        return NormalDirection.DecodeVGaVector3D().SetLength(length);
+        return NormalDirection.Decode.VGaDirection.Vector3D().SetLength(length);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public LinVector<T> NormalDirectionToVector()
     {
-        return NormalDirection.DecodeVGaVectorND();
+        return NormalDirection.Decode.VGaDirection.VectorND();
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public XGaVector<T> NormalDirectionToXGaVector()
     {
-        return NormalDirection.DecodeVGaVector();
+        return NormalDirection.Decode.VGaDirection.Vector();
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public LinBivector2D<T> NormalDirectionToBivector2D()
     {
-        return NormalDirection.DecodeVGaBivector2D();
+        return NormalDirection.Decode.VGaDirection.Bivector2D();
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public LinBivector3D<T> NormalDirectionToBivector3D()
     {
-        return NormalDirection.DecodeVGaBivector3D();
+        return NormalDirection.Decode.VGaDirection.Bivector3D();
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public XGaBivector<T> NormalDirectionToXGaBivector()
     {
-        return NormalDirection.DecodeVGaBivector();
+        return NormalDirection.Decode.VGaDirection.Bivector();
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public LinTrivector3D<T> NormalDirectionToTrivector3D()
     {
-        return NormalDirection.DecodeVGaTrivector3D();
+        return NormalDirection.Decode.VGaDirection.Trivector3D();
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public XGaKVector<T> NormalDirectionToXGaKVector()
     {
-        return NormalDirection.DecodeVGaKVector();
+        return NormalDirection.Decode.VGaDirection.KVector();
     }
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public IReadOnlyList<LinVector2D<T>> NormalDirectionToVectors2D()
     {
-        return NormalDirection.DecodeVGaBladeToVectors2D();
+        return NormalDirection.Decode.VGaDirection.BladeToVectors2D();
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public IReadOnlyList<LinVector3D<T>> NormalDirectionToVectors3D()
     {
-        return NormalDirection.DecodeVGaBladeToVectors3D();
+        return NormalDirection.Decode.VGaDirection.BladeToVectors3D();
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public IReadOnlyList<LinVector<T>> NormalDirectionToVectors()
     {
-        return NormalDirection.DecodeVGaBladeToVectorsND();
+        return NormalDirection.Decode.VGaDirection.BladeToVectorsND();
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public IReadOnlyList<XGaVector<T>> NormalDirectionToXGaVectors()
     {
-        return NormalDirection.DecodeVGaBladeToVectors();
+        return NormalDirection.Decode.VGaDirection.BladeToVectors();
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public IReadOnlyList<CGaBlade<T>> NormalDirectionToVGaVectorBlades()
     {
-        return NormalDirection.DecodeVGaBladeToVectorVGaBlades();
+        return NormalDirection.Decode.VGaDirection.BladeToVectorVGaBlades();
     }
 
 
@@ -504,7 +502,7 @@ public abstract class CGaElement<T> :
     public bool IsDirectionParallelTo(LinVector2D<T> egaVector)
     {
         return GeometricSpace
-            .EncodeVGaVectorAsXGaVector(egaVector)
+            .EncodeVGa.VectorAsXGaVector(egaVector)
             .Op(Direction.InternalKVector)
             .IsZero;
     }
@@ -513,7 +511,7 @@ public abstract class CGaElement<T> :
     public bool IsDirectionParallelTo(LinVector3D<T> egaVector)
     {
         return GeometricSpace
-            .EncodeVGaVectorAsXGaVector(egaVector)
+            .EncodeVGa.VectorAsXGaVector(egaVector)
             .Op(Direction.InternalKVector)
             .IsZero;
     }
@@ -522,7 +520,7 @@ public abstract class CGaElement<T> :
     public bool IsDirectionParallelTo(LinVector<T> egaVector)
     {
         return GeometricSpace
-            .EncodeVGaVectorAsXGaVector(egaVector)
+            .EncodeVGa.VectorAsXGaVector(egaVector)
             .Op(Direction.InternalKVector)
             .IsZero;
     }
@@ -531,7 +529,7 @@ public abstract class CGaElement<T> :
     public bool IsDirectionParallelTo(XGaVector<T> egaVector)
     {
         return GeometricSpace
-            .EncodeVGaVectorAsXGaVector(egaVector)
+            .EncodeVGa.VectorAsXGaVector(egaVector)
             .Op(Direction.InternalKVector)
             .IsZero;
     }
@@ -541,7 +539,7 @@ public abstract class CGaElement<T> :
     public bool IsDirectionOrthogonalTo(LinVector2D<T> egaVector)
     {
         return GeometricSpace
-            .EncodeVGaVectorAsXGaVector(egaVector)
+            .EncodeVGa.VectorAsXGaVector(egaVector)
             .Lcp(Direction.InternalKVector)
             .IsZero;
     }
@@ -550,7 +548,7 @@ public abstract class CGaElement<T> :
     public bool IsDirectionOrthogonalTo(LinVector3D<T> egaVector)
     {
         return GeometricSpace
-            .EncodeVGaVectorAsXGaVector(egaVector)
+            .EncodeVGa.VectorAsXGaVector(egaVector)
             .Lcp(Direction.InternalKVector)
             .IsZero;
     }
@@ -559,7 +557,7 @@ public abstract class CGaElement<T> :
     public bool IsDirectionOrthogonalTo(LinVector<T> egaVector)
     {
         return GeometricSpace
-            .EncodeVGaVectorAsXGaVector(egaVector)
+            .EncodeVGa.VectorAsXGaVector(egaVector)
             .Lcp(Direction.InternalKVector)
             .IsZero;
     }
@@ -568,7 +566,7 @@ public abstract class CGaElement<T> :
     public bool IsDirectionOrthogonalTo(XGaVector<T> egaVector)
     {
         return GeometricSpace
-            .EncodeVGaVectorAsXGaVector(egaVector)
+            .EncodeVGa.VectorAsXGaVector(egaVector)
             .Lcp(Direction.InternalKVector)
             .IsZero;
     }
@@ -578,7 +576,7 @@ public abstract class CGaElement<T> :
     public bool IsDirectionNearParallelTo(LinVector2D<T> egaVector)
     {
         return GeometricSpace
-            .EncodeVGaVectorAsXGaVector(egaVector)
+            .EncodeVGa.VectorAsXGaVector(egaVector)
             .Op(Direction.InternalKVector)
             .IsNearZero();
     }
@@ -587,7 +585,7 @@ public abstract class CGaElement<T> :
     public bool IsDirectionNearParallelTo(LinVector3D<T> egaVector)
     {
         return GeometricSpace
-            .EncodeVGaVectorAsXGaVector(egaVector)
+            .EncodeVGa.VectorAsXGaVector(egaVector)
             .Op(Direction.InternalKVector)
             .IsNearZero();
     }
@@ -596,7 +594,7 @@ public abstract class CGaElement<T> :
     public bool IsDirectionNearParallelTo(LinVector<T> egaVector)
     {
         return GeometricSpace
-            .EncodeVGaVectorAsXGaVector(egaVector)
+            .EncodeVGa.VectorAsXGaVector(egaVector)
             .Op(Direction.InternalKVector)
             .IsNearZero();
     }
@@ -605,7 +603,7 @@ public abstract class CGaElement<T> :
     public bool IsDirectionNearParallelTo(XGaVector<T> egaVector)
     {
         return GeometricSpace
-            .EncodeVGaVectorAsXGaVector(egaVector)
+            .EncodeVGa.VectorAsXGaVector(egaVector)
             .Op(Direction.InternalKVector)
             .IsNearZero();
     }
@@ -615,7 +613,7 @@ public abstract class CGaElement<T> :
     public bool IsDirectionNearOrthogonalTo(LinVector2D<T> egaVector)
     {
         return GeometricSpace
-            .EncodeVGaVectorAsXGaVector(egaVector)
+            .EncodeVGa.VectorAsXGaVector(egaVector)
             .Lcp(Direction.InternalKVector)
             .IsNearZero();
     }
@@ -624,7 +622,7 @@ public abstract class CGaElement<T> :
     public bool IsDirectionNearOrthogonalTo(LinVector3D<T> egaVector)
     {
         return GeometricSpace
-            .EncodeVGaVectorAsXGaVector(egaVector)
+            .EncodeVGa.VectorAsXGaVector(egaVector)
             .Lcp(Direction.InternalKVector)
             .IsNearZero();
     }
@@ -633,7 +631,7 @@ public abstract class CGaElement<T> :
     public bool IsDirectionNearOrthogonalTo(LinVector<T> egaVector)
     {
         return GeometricSpace
-            .EncodeVGaVectorAsXGaVector(egaVector)
+            .EncodeVGa.VectorAsXGaVector(egaVector)
             .Lcp(Direction.InternalKVector)
             .IsNearZero();
     }
@@ -642,7 +640,7 @@ public abstract class CGaElement<T> :
     public bool IsDirectionNearOrthogonalTo(XGaVector<T> egaVector)
     {
         return GeometricSpace
-            .EncodeVGaVectorAsXGaVector(egaVector)
+            .EncodeVGa.VectorAsXGaVector(egaVector)
             .Lcp(Direction.InternalKVector)
             .IsNearZero();
     }
@@ -728,7 +726,7 @@ public abstract class CGaElement<T> :
     public CGaFlat<T> ToFlat(LinVector2D<T> egaPosition)
     {
         return ToFlat(
-            GeometricSpace.EncodeVGaVector(egaPosition)
+            GeometricSpace.EncodeVGa.Vector(egaPosition)
         );
     }
 
@@ -736,7 +734,7 @@ public abstract class CGaElement<T> :
     public CGaFlat<T> ToFlat(LinVector3D<T> egaPosition)
     {
         return ToFlat(
-            GeometricSpace.EncodeVGaVector(egaPosition)
+            GeometricSpace.EncodeVGa.Vector(egaPosition)
         );
     }
 
@@ -744,7 +742,7 @@ public abstract class CGaElement<T> :
     public CGaFlat<T> ToFlat(LinVector<T> egaPosition)
     {
         return ToFlat(
-            GeometricSpace.EncodeVGaVector(egaPosition)
+            GeometricSpace.EncodeVGa.Vector(egaPosition)
         );
     }
 
@@ -752,7 +750,7 @@ public abstract class CGaElement<T> :
     public CGaFlat<T> ToFlat(XGaVector<T> egaPosition)
     {
         return ToFlat(
-            GeometricSpace.EncodeVGaVector(egaPosition)
+            GeometricSpace.EncodeVGa.Vector(egaPosition)
         );
     }
 
@@ -786,7 +784,7 @@ public abstract class CGaElement<T> :
     public CGaTangent<T> ToTangent(LinVector2D<T> egaPosition)
     {
         return ToTangent(
-            GeometricSpace.EncodeVGaVector(egaPosition)
+            GeometricSpace.EncodeVGa.Vector(egaPosition)
         );
     }
 
@@ -794,7 +792,7 @@ public abstract class CGaElement<T> :
     public CGaTangent<T> ToTangent(LinVector3D<T> egaPosition)
     {
         return ToTangent(
-            GeometricSpace.EncodeVGaVector(egaPosition)
+            GeometricSpace.EncodeVGa.Vector(egaPosition)
         );
     }
 
@@ -802,7 +800,7 @@ public abstract class CGaElement<T> :
     public CGaTangent<T> ToTangent(LinVector<T> egaPosition)
     {
         return ToTangent(
-            GeometricSpace.EncodeVGaVector(egaPosition)
+            GeometricSpace.EncodeVGa.Vector(egaPosition)
         );
     }
 
@@ -810,7 +808,7 @@ public abstract class CGaElement<T> :
     public CGaTangent<T> ToTangent(XGaVector<T> egaPosition)
     {
         return ToTangent(
-            GeometricSpace.EncodeVGaVector(egaPosition)
+            GeometricSpace.EncodeVGa.Vector(egaPosition)
         );
     }
 
@@ -845,7 +843,7 @@ public abstract class CGaElement<T> :
     public CGaRound<T> ToRound(LinVector2D<T> egaPosition, Scalar<T> radiusSquared)
     {
         return ToRound(
-            GeometricSpace.EncodeVGaVector(egaPosition),
+            GeometricSpace.EncodeVGa.Vector(egaPosition),
             radiusSquared
         );
     }
@@ -854,7 +852,7 @@ public abstract class CGaElement<T> :
     public CGaRound<T> ToRound(LinVector3D<T> egaPosition, Scalar<T> radiusSquared)
     {
         return ToRound(
-            GeometricSpace.EncodeVGaVector(egaPosition),
+            GeometricSpace.EncodeVGa.Vector(egaPosition),
             radiusSquared
         );
     }
@@ -863,7 +861,7 @@ public abstract class CGaElement<T> :
     public CGaRound<T> ToRound(LinVector<T> egaPosition, Scalar<T> radiusSquared)
     {
         return ToRound(
-            GeometricSpace.EncodeVGaVector(egaPosition),
+            GeometricSpace.EncodeVGa.Vector(egaPosition),
             radiusSquared
         );
     }
@@ -872,7 +870,7 @@ public abstract class CGaElement<T> :
     public CGaRound<T> ToRound(XGaVector<T> egaPosition, Scalar<T> radiusSquared)
     {
         return ToRound(
-            GeometricSpace.EncodeVGaVector(egaPosition),
+            GeometricSpace.EncodeVGa.Vector(egaPosition),
             radiusSquared
         );
     }
@@ -894,7 +892,7 @@ public abstract class CGaElement<T> :
     public CGaRound<T> ToRealRound(LinVector2D<T> egaPosition, Scalar<T> radius)
     {
         return ToRound(
-            GeometricSpace.EncodeVGaVector(egaPosition),
+            GeometricSpace.EncodeVGa.Vector(egaPosition),
             radius * radius
         );
     }
@@ -903,7 +901,7 @@ public abstract class CGaElement<T> :
     public CGaRound<T> ToRealRound(LinVector3D<T> egaPosition, Scalar<T> radius)
     {
         return ToRound(
-            GeometricSpace.EncodeVGaVector(egaPosition),
+            GeometricSpace.EncodeVGa.Vector(egaPosition),
             radius * radius
         );
     }
@@ -940,7 +938,7 @@ public abstract class CGaElement<T> :
     public CGaRound<T> ToImaginaryRound(LinVector3D<T> egaPosition, Scalar<T> radius)
     {
         return ToRound(
-            GeometricSpace.EncodeVGaVector(egaPosition),
+            GeometricSpace.EncodeVGa.Vector(egaPosition),
             radius.Square().Negative()
         );
     }

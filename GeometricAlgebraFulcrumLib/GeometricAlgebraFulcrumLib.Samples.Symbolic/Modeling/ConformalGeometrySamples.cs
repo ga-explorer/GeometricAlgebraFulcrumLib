@@ -11,7 +11,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.Symbolic.Modeling;
 
 public static class ConformalGeometrySamples
 {
-    public static void Execute()
+    public static void Example1()
     {
         var processor =
             ScalarProcessorOfAngouriMathEntity
@@ -82,5 +82,10 @@ public static class ConformalGeometrySamples
         Console.WriteLine($"sphere distance = {textComposer.GetScalarText(ipnsSphere1.GetDistance(ipnsSphere2))}");
         Console.WriteLine($"plane distance = {textComposer.GetScalarText(ipnsSphere1.GetDistance(ipnsPlane1))}");
         Console.WriteLine();
+    }
+
+    public static void Example2()
+    {
+
     }
 }

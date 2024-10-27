@@ -1,7 +1,6 @@
 ﻿using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Generic.Blades;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Generic.Decoding;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Generic.Elements;
 
 namespace GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Generic.Operations;
@@ -13,7 +12,7 @@ public static class CGaMeetUtils
     {
         return element2.EncodeIpnsBlade()
             .Op(element1.EncodeIpnsBlade())
-            .DecodeIpnsElement();
+            .Decode.IpnsElement();
     }
 
     //[MethodImpl(MethodImplOptions.AggressiveInlining)]

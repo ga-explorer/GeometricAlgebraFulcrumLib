@@ -18,7 +18,7 @@ public static class CGaTangentComposerUtils
         return new CGaTangent<T>(
             cgaGeometricSpace,
             cgaGeometricSpace.ScalarOne,
-            cgaGeometricSpace.EncodeVGaVector(position),
+            cgaGeometricSpace.EncodeVGa.Vector(position),
             cgaGeometricSpace.OneScalarBlade
         );
     }
@@ -29,7 +29,7 @@ public static class CGaTangentComposerUtils
         return new CGaTangent<T>(
             cgaGeometricSpace,
             cgaGeometricSpace.ScalarOne,
-            cgaGeometricSpace.EncodeVGaVector(position),
+            cgaGeometricSpace.EncodeVGa.Vector(position),
             cgaGeometricSpace.OneScalarBlade
         );
     }
@@ -40,7 +40,7 @@ public static class CGaTangentComposerUtils
         return new CGaTangent<T>(
             cgaGeometricSpace,
             cgaGeometricSpace.ScalarOne,
-            cgaGeometricSpace.EncodeVGaVector(position),
+            cgaGeometricSpace.EncodeVGa.Vector(position),
             cgaGeometricSpace.OneScalarBlade
         );
     }
@@ -51,7 +51,7 @@ public static class CGaTangentComposerUtils
         return new CGaTangent<T>(
             cgaGeometricSpace,
             cgaGeometricSpace.ScalarOne,
-            cgaGeometricSpace.EncodeVGaVector(position),
+            cgaGeometricSpace.EncodeVGa.Vector(position),
             cgaGeometricSpace.OneScalarBlade
         );
     }
@@ -63,7 +63,7 @@ public static class CGaTangentComposerUtils
         return new CGaTangent<T>(
             cgaGeometricSpace,
             weight,
-            cgaGeometricSpace.EncodeVGaVector(position),
+            cgaGeometricSpace.EncodeVGa.Vector(position),
             cgaGeometricSpace.OneScalarBlade
         );
     }
@@ -74,7 +74,7 @@ public static class CGaTangentComposerUtils
         return new CGaTangent<T>(
             cgaGeometricSpace,
             weight,
-            cgaGeometricSpace.EncodeVGaVector(position),
+            cgaGeometricSpace.EncodeVGa.Vector(position),
             cgaGeometricSpace.OneScalarBlade
         );
     }
@@ -85,7 +85,7 @@ public static class CGaTangentComposerUtils
         return new CGaTangent<T>(
             cgaGeometricSpace,
             weight,
-            cgaGeometricSpace.EncodeVGaVector(position),
+            cgaGeometricSpace.EncodeVGa.Vector(position),
             cgaGeometricSpace.OneScalarBlade
         );
     }
@@ -96,7 +96,7 @@ public static class CGaTangentComposerUtils
         return new CGaTangent<T>(
             cgaGeometricSpace,
             weight,
-            cgaGeometricSpace.EncodeVGaVector(position),
+            cgaGeometricSpace.EncodeVGa.Vector(position),
             cgaGeometricSpace.OneScalarBlade
         );
     }
@@ -108,8 +108,8 @@ public static class CGaTangentComposerUtils
         return new CGaTangent<T>(
             cgaGeometricSpace,
             cgaGeometricSpace.ScalarOne,
-            cgaGeometricSpace.EncodeVGaVector(position),
-            cgaGeometricSpace.EncodeVGaVector(direction)
+            cgaGeometricSpace.EncodeVGa.Vector(position),
+            cgaGeometricSpace.EncodeVGa.Vector(direction)
         );
     }
 
@@ -119,8 +119,8 @@ public static class CGaTangentComposerUtils
         return new CGaTangent<T>(
             cgaGeometricSpace,
             cgaGeometricSpace.ScalarOne,
-            cgaGeometricSpace.EncodeVGaVector(position),
-            cgaGeometricSpace.EncodeVGaVector(direction)
+            cgaGeometricSpace.EncodeVGa.Vector(position),
+            cgaGeometricSpace.EncodeVGa.Vector(direction)
         );
     }
 
@@ -130,8 +130,8 @@ public static class CGaTangentComposerUtils
         return new CGaTangent<T>(
             cgaGeometricSpace,
             cgaGeometricSpace.ScalarOne,
-            cgaGeometricSpace.EncodeVGaVector(position),
-            cgaGeometricSpace.EncodeVGaVector(direction)
+            cgaGeometricSpace.EncodeVGa.Vector(position),
+            cgaGeometricSpace.EncodeVGa.Vector(direction)
         );
     }
 
@@ -141,8 +141,8 @@ public static class CGaTangentComposerUtils
         return new CGaTangent<T>(
             cgaGeometricSpace,
             cgaGeometricSpace.ScalarOne,
-            cgaGeometricSpace.EncodeVGaVector(position),
-            cgaGeometricSpace.EncodeVGaVector(direction)
+            cgaGeometricSpace.EncodeVGa.Vector(position),
+            cgaGeometricSpace.EncodeVGa.Vector(direction)
         );
     }
 
@@ -153,8 +153,8 @@ public static class CGaTangentComposerUtils
         return new CGaTangent<T>(
             cgaGeometricSpace,
             weight,
-            cgaGeometricSpace.EncodeVGaVector(position),
-            cgaGeometricSpace.EncodeVGaVector(direction)
+            cgaGeometricSpace.EncodeVGa.Vector(position),
+            cgaGeometricSpace.EncodeVGa.Vector(direction)
         );
     }
 
@@ -164,8 +164,8 @@ public static class CGaTangentComposerUtils
         return new CGaTangent<T>(
             cgaGeometricSpace,
             weight,
-            cgaGeometricSpace.EncodeVGaVector(position),
-            cgaGeometricSpace.EncodeVGaVector(direction)
+            cgaGeometricSpace.EncodeVGa.Vector(position),
+            cgaGeometricSpace.EncodeVGa.Vector(direction)
         );
     }
 
@@ -175,8 +175,8 @@ public static class CGaTangentComposerUtils
         return new CGaTangent<T>(
             cgaGeometricSpace,
             weight,
-            cgaGeometricSpace.EncodeVGaVector(position),
-            cgaGeometricSpace.EncodeVGaVector(direction)
+            cgaGeometricSpace.EncodeVGa.Vector(position),
+            cgaGeometricSpace.EncodeVGa.Vector(direction)
         );
     }
 
@@ -186,8 +186,8 @@ public static class CGaTangentComposerUtils
         return new CGaTangent<T>(
             cgaGeometricSpace,
             weight,
-            cgaGeometricSpace.EncodeVGaVector(position),
-            cgaGeometricSpace.EncodeVGaVector(direction)
+            cgaGeometricSpace.EncodeVGa.Vector(position),
+            cgaGeometricSpace.EncodeVGa.Vector(direction)
         );
     }
 
@@ -201,8 +201,8 @@ public static class CGaTangentComposerUtils
         return new CGaTangent<T>(
             cgaGeometricSpace,
             cgaGeometricSpace.ScalarOne,
-            cgaGeometricSpace.EncodeVGaVector(position),
-            cgaGeometricSpace.EncodeVGaVector(direction)
+            cgaGeometricSpace.EncodeVGa.Vector(position),
+            cgaGeometricSpace.EncodeVGa.Vector(direction)
         );
     }
 
@@ -215,8 +215,8 @@ public static class CGaTangentComposerUtils
         return new CGaTangent<T>(
             cgaGeometricSpace,
             cgaGeometricSpace.ScalarOne,
-            cgaGeometricSpace.EncodeVGaVector(position),
-            cgaGeometricSpace.EncodeVGaVector(direction)
+            cgaGeometricSpace.EncodeVGa.Vector(position),
+            cgaGeometricSpace.EncodeVGa.Vector(direction)
         );
     }
 
@@ -229,8 +229,8 @@ public static class CGaTangentComposerUtils
         return new CGaTangent<T>(
             cgaGeometricSpace,
             cgaGeometricSpace.ScalarOne,
-            cgaGeometricSpace.EncodeVGaVector(position),
-            cgaGeometricSpace.EncodeVGaVector(direction)
+            cgaGeometricSpace.EncodeVGa.Vector(position),
+            cgaGeometricSpace.EncodeVGa.Vector(direction)
         );
     }
 
@@ -243,8 +243,8 @@ public static class CGaTangentComposerUtils
         return new CGaTangent<T>(
             cgaGeometricSpace,
             cgaGeometricSpace.ScalarOne,
-            cgaGeometricSpace.EncodeVGaVector(position),
-            cgaGeometricSpace.EncodeVGaVector(direction)
+            cgaGeometricSpace.EncodeVGa.Vector(position),
+            cgaGeometricSpace.EncodeVGa.Vector(direction)
         );
     }
 
@@ -258,8 +258,8 @@ public static class CGaTangentComposerUtils
         return new CGaTangent<T>(
             cgaGeometricSpace,
             weight,
-            cgaGeometricSpace.EncodeVGaVector(position),
-            cgaGeometricSpace.EncodeVGaVector(direction)
+            cgaGeometricSpace.EncodeVGa.Vector(position),
+            cgaGeometricSpace.EncodeVGa.Vector(direction)
         );
     }
 
@@ -272,8 +272,8 @@ public static class CGaTangentComposerUtils
         return new CGaTangent<T>(
             cgaGeometricSpace,
             weight,
-            cgaGeometricSpace.EncodeVGaVector(position),
-            cgaGeometricSpace.EncodeVGaVector(direction)
+            cgaGeometricSpace.EncodeVGa.Vector(position),
+            cgaGeometricSpace.EncodeVGa.Vector(direction)
         );
     }
 
@@ -286,8 +286,8 @@ public static class CGaTangentComposerUtils
         return new CGaTangent<T>(
             cgaGeometricSpace,
             weight,
-            cgaGeometricSpace.EncodeVGaVector(position),
-            cgaGeometricSpace.EncodeVGaVector(direction)
+            cgaGeometricSpace.EncodeVGa.Vector(position),
+            cgaGeometricSpace.EncodeVGa.Vector(direction)
         );
     }
 
@@ -300,8 +300,8 @@ public static class CGaTangentComposerUtils
         return new CGaTangent<T>(
             cgaGeometricSpace,
             weight,
-            cgaGeometricSpace.EncodeVGaVector(position),
-            cgaGeometricSpace.EncodeVGaVector(direction)
+            cgaGeometricSpace.EncodeVGa.Vector(position),
+            cgaGeometricSpace.EncodeVGa.Vector(direction)
         );
     }
 
@@ -312,8 +312,8 @@ public static class CGaTangentComposerUtils
         return new CGaTangent<T>(
             cgaGeometricSpace,
             cgaGeometricSpace.ScalarOne,
-            cgaGeometricSpace.EncodeVGaVector(position),
-            cgaGeometricSpace.EncodeVGaBivector(direction)
+            cgaGeometricSpace.EncodeVGa.Vector(position),
+            cgaGeometricSpace.EncodeVGa.Bivector(direction)
         );
     }
 
@@ -323,8 +323,8 @@ public static class CGaTangentComposerUtils
         return new CGaTangent<T>(
             cgaGeometricSpace,
             cgaGeometricSpace.ScalarOne,
-            cgaGeometricSpace.EncodeVGaVector(position),
-            cgaGeometricSpace.EncodeVGaBivector(direction)
+            cgaGeometricSpace.EncodeVGa.Vector(position),
+            cgaGeometricSpace.EncodeVGa.Bivector(direction)
         );
     }
 
@@ -334,8 +334,8 @@ public static class CGaTangentComposerUtils
         return new CGaTangent<T>(
             cgaGeometricSpace,
             cgaGeometricSpace.ScalarOne,
-            cgaGeometricSpace.EncodeVGaVector(position),
-            cgaGeometricSpace.EncodeVGaBivector(direction)
+            cgaGeometricSpace.EncodeVGa.Vector(position),
+            cgaGeometricSpace.EncodeVGa.Bivector(direction)
         );
     }
 
@@ -346,8 +346,8 @@ public static class CGaTangentComposerUtils
         return new CGaTangent<T>(
             cgaGeometricSpace,
             weight,
-            cgaGeometricSpace.EncodeVGaVector(position),
-            cgaGeometricSpace.EncodeVGaBivector(direction)
+            cgaGeometricSpace.EncodeVGa.Vector(position),
+            cgaGeometricSpace.EncodeVGa.Bivector(direction)
         );
     }
 
@@ -357,8 +357,8 @@ public static class CGaTangentComposerUtils
         return new CGaTangent<T>(
             cgaGeometricSpace,
             weight,
-            cgaGeometricSpace.EncodeVGaVector(position),
-            cgaGeometricSpace.EncodeVGaBivector(direction)
+            cgaGeometricSpace.EncodeVGa.Vector(position),
+            cgaGeometricSpace.EncodeVGa.Bivector(direction)
         );
     }
 
@@ -368,8 +368,8 @@ public static class CGaTangentComposerUtils
         return new CGaTangent<T>(
             cgaGeometricSpace,
             weight,
-            cgaGeometricSpace.EncodeVGaVector(position),
-            cgaGeometricSpace.EncodeVGaBivector(direction)
+            cgaGeometricSpace.EncodeVGa.Vector(position),
+            cgaGeometricSpace.EncodeVGa.Bivector(direction)
         );
     }
 
@@ -383,8 +383,8 @@ public static class CGaTangentComposerUtils
         return new CGaTangent<T>(
             cgaGeometricSpace,
             cgaGeometricSpace.ScalarOne,
-            cgaGeometricSpace.EncodeVGaVector(position),
-            cgaGeometricSpace.EncodeVGaBivector(direction)
+            cgaGeometricSpace.EncodeVGa.Vector(position),
+            cgaGeometricSpace.EncodeVGa.Bivector(direction)
         );
     }
 
@@ -397,8 +397,8 @@ public static class CGaTangentComposerUtils
         return new CGaTangent<T>(
             cgaGeometricSpace,
             cgaGeometricSpace.ScalarOne,
-            cgaGeometricSpace.EncodeVGaVector(position),
-            cgaGeometricSpace.EncodeVGaBivector(direction)
+            cgaGeometricSpace.EncodeVGa.Vector(position),
+            cgaGeometricSpace.EncodeVGa.Bivector(direction)
         );
     }
 
@@ -408,13 +408,13 @@ public static class CGaTangentComposerUtils
         var position = (point1 + point2 + point3) / 3;
         var direction =
             cgaGeometricSpace
-                .EncodeVGaVector(point2 - point1)
-                .Op(cgaGeometricSpace.EncodeVGaVector(point3 - point2));
+                .EncodeVGa.Vector(point2 - point1)
+                .Op(cgaGeometricSpace.EncodeVGa.Vector(point3 - point2));
 
         return new CGaTangent<T>(
             cgaGeometricSpace,
             cgaGeometricSpace.ScalarOne,
-            cgaGeometricSpace.EncodeVGaVector(position),
+            cgaGeometricSpace.EncodeVGa.Vector(position),
             direction
         );
     }
@@ -428,8 +428,8 @@ public static class CGaTangentComposerUtils
         return new CGaTangent<T>(
             cgaGeometricSpace,
             cgaGeometricSpace.ScalarOne,
-            cgaGeometricSpace.EncodeVGaVector(position),
-            cgaGeometricSpace.EncodeVGaBivector(direction)
+            cgaGeometricSpace.EncodeVGa.Vector(position),
+            cgaGeometricSpace.EncodeVGa.Bivector(direction)
         );
     }
 
@@ -443,8 +443,8 @@ public static class CGaTangentComposerUtils
         return new CGaTangent<T>(
             cgaGeometricSpace,
             weight,
-            cgaGeometricSpace.EncodeVGaVector(position),
-            cgaGeometricSpace.EncodeVGaBivector(direction)
+            cgaGeometricSpace.EncodeVGa.Vector(position),
+            cgaGeometricSpace.EncodeVGa.Bivector(direction)
         );
     }
 
@@ -457,8 +457,8 @@ public static class CGaTangentComposerUtils
         return new CGaTangent<T>(
             cgaGeometricSpace,
             weight,
-            cgaGeometricSpace.EncodeVGaVector(position),
-            cgaGeometricSpace.EncodeVGaBivector(direction)
+            cgaGeometricSpace.EncodeVGa.Vector(position),
+            cgaGeometricSpace.EncodeVGa.Bivector(direction)
         );
     }
 
@@ -468,13 +468,13 @@ public static class CGaTangentComposerUtils
         var position = (point1 + point2 + point3) / 3;
         var direction =
             cgaGeometricSpace
-                .EncodeVGaVector(point2 - point1)
-                .Op(cgaGeometricSpace.EncodeVGaVector(point3 - point2));
+                .EncodeVGa.Vector(point2 - point1)
+                .Op(cgaGeometricSpace.EncodeVGa.Vector(point3 - point2));
 
         return new CGaTangent<T>(
             cgaGeometricSpace,
             weight,
-            cgaGeometricSpace.EncodeVGaVector(position),
+            cgaGeometricSpace.EncodeVGa.Vector(position),
             direction
         );
     }
@@ -488,8 +488,8 @@ public static class CGaTangentComposerUtils
         return new CGaTangent<T>(
             cgaGeometricSpace,
             weight,
-            cgaGeometricSpace.EncodeVGaVector(position),
-            cgaGeometricSpace.EncodeVGaBivector(direction)
+            cgaGeometricSpace.EncodeVGa.Vector(position),
+            cgaGeometricSpace.EncodeVGa.Bivector(direction)
         );
     }
 
@@ -500,8 +500,8 @@ public static class CGaTangentComposerUtils
         return new CGaTangent<T>(
             cgaGeometricSpace,
             weight,
-            cgaGeometricSpace.EncodeVGaVector(position),
-            cgaGeometricSpace.EncodeVGaTrivector(direction)
+            cgaGeometricSpace.EncodeVGa.Vector(position),
+            cgaGeometricSpace.EncodeVGa.Trivector(direction)
         );
     }
 
@@ -512,8 +512,8 @@ public static class CGaTangentComposerUtils
         return new CGaTangent<T>(
             cgaGeometricSpace,
             cgaGeometricSpace.ScalarOne,
-            cgaGeometricSpace.EncodeVGaVector(position),
-            cgaGeometricSpace.EncodeVGaBlade(direction)
+            cgaGeometricSpace.EncodeVGa.Vector(position),
+            cgaGeometricSpace.EncodeVGa.Blade(direction)
         );
     }
 
@@ -535,8 +535,8 @@ public static class CGaTangentComposerUtils
         return new CGaTangent<T>(
             cgaGeometricSpace,
             weight,
-            cgaGeometricSpace.EncodeVGaVector(position),
-            cgaGeometricSpace.EncodeVGaBlade(direction)
+            cgaGeometricSpace.EncodeVGa.Vector(position),
+            cgaGeometricSpace.EncodeVGa.Blade(direction)
         );
     }
 
@@ -557,7 +557,7 @@ public static class CGaTangentComposerUtils
     {
         return cgaGeometricSpace.DefineTangent(
             cgaGeometricSpace.ScalarOne,
-            cgaGeometricSpace.EncodeVGaVector(position),
+            cgaGeometricSpace.EncodeVGa.Vector(position),
             directionVectors
                 .Select(v => v.ToXGaVector(cgaGeometricSpace.Processor))
                 .Op(cgaGeometricSpace.Processor)
@@ -570,7 +570,7 @@ public static class CGaTangentComposerUtils
     {
         return cgaGeometricSpace.DefineTangent(
             cgaGeometricSpace.ScalarOne,
-            cgaGeometricSpace.EncodeVGaVector(position),
+            cgaGeometricSpace.EncodeVGa.Vector(position),
             directionVectors
                 .Select(v => v.ToXGaVector(cgaGeometricSpace.Processor))
                 .Op(cgaGeometricSpace.Processor)
@@ -583,7 +583,7 @@ public static class CGaTangentComposerUtils
     {
         return cgaGeometricSpace.DefineTangent(
             cgaGeometricSpace.ScalarOne,
-            cgaGeometricSpace.EncodeVGaVector(position),
+            cgaGeometricSpace.EncodeVGa.Vector(position),
             directionVectors
                 .Select(v => v.ToXGaVector(cgaGeometricSpace.Processor))
                 .Op(cgaGeometricSpace.Processor)
@@ -617,7 +617,7 @@ public static class CGaTangentComposerUtils
     {
         return cgaGeometricSpace.DefineTangent(
             weight,
-            cgaGeometricSpace.EncodeVGaVector(position),
+            cgaGeometricSpace.EncodeVGa.Vector(position),
             directionVectors
                 .Select(v => v.ToXGaVector(cgaGeometricSpace.Processor))
                 .Op(cgaGeometricSpace.Processor)
@@ -630,7 +630,7 @@ public static class CGaTangentComposerUtils
     {
         return cgaGeometricSpace.DefineTangent(
             weight,
-            cgaGeometricSpace.EncodeVGaVector(position),
+            cgaGeometricSpace.EncodeVGa.Vector(position),
             directionVectors
                 .Select(v => v.ToXGaVector(cgaGeometricSpace.Processor))
                 .Op(cgaGeometricSpace.Processor)
@@ -643,7 +643,7 @@ public static class CGaTangentComposerUtils
     {
         return cgaGeometricSpace.DefineTangent(
             weight,
-            cgaGeometricSpace.EncodeVGaVector(position),
+            cgaGeometricSpace.EncodeVGa.Vector(position),
             directionVectors
                 .Select(v => v.ToXGaVector(cgaGeometricSpace.Processor))
                 .Op(cgaGeometricSpace.Processor)

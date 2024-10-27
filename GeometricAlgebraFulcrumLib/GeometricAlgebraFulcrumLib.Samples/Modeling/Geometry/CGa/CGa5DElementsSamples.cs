@@ -3,9 +3,7 @@ using System.Diagnostics;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space3D;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Float64;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Float64.Decoding;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Float64.Elements;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Float64.Encoding;
 
 namespace GeometricAlgebraFulcrumLib.Samples.Modeling.Geometry.CGa;
 
@@ -20,13 +18,13 @@ public static class CGa5DElementsSamples
         var cga = CGaFloat64GeometricSpace.Create(5);
 
         // Encode a plane in 3-dimensions using as a IPNS blade
-        var planeBlade = cga.EncodeIpnsFlatPlane(
+        var planeBlade = cga.Encode.IpnsFlat.Plane(
             3,
             LinFloat64Vector3D.Create(1, 2, -1)
         );
 
         // Define a real sphere with radius 5
-        var sphereBlade = cga.EncodeIpnsRealRoundSphere(
+        var sphereBlade = cga.Encode.IpnsRound.RealSphere(
             5,
             LinFloat64Vector3D.Create(1, 1, 1)
         );
@@ -35,7 +33,7 @@ public static class CGa5DElementsSamples
         var intersectionBlade = sphereBlade.Op(planeBlade);
 
         // Decode the blade of intersection into a CGA element
-        var intersectionElement = intersectionBlade.DecodeIpnsElement();
+        var intersectionElement = intersectionBlade.Decode.IpnsElement();
 
 
     }
@@ -101,33 +99,33 @@ public static class CGa5DElementsSamples
 
             // Make sure that decoding the OPNS\IPNS blade gives the same direction element
             Debug.Assert(
-                cgaElementOpnsBlade.DecodeOpnsDirection().IsSameElement(cgaElement)
+                cgaElementOpnsBlade.DecodeOpnsDirection.Element().IsSameElement(cgaElement)
             );
 
             Debug.Assert(
-                cgaElementIpnsBlade.DecodeIpnsDirection().IsSameElement(cgaElement)
+                cgaElementIpnsBlade.DecodeIpnsDirection.Element().IsSameElement(cgaElement)
             );
 
 
             // We can partially decode the OPNS\IPNS blade to only get the weight of
             // the direction element
             Debug.Assert(
-                cgaElementOpnsBlade.DecodeOpnsDirectionWeight().IsNearEqual(cgaElement.Weight)
+                cgaElementOpnsBlade.DecodeOpnsDirection.Weight().IsNearEqual(cgaElement.Weight)
             );
 
             Debug.Assert(
-                cgaElementIpnsBlade.DecodeIpnsDirectionWeight().IsNearEqual(cgaElement.Weight)
+                cgaElementIpnsBlade.DecodeIpnsDirection.Weight().IsNearEqual(cgaElement.Weight)
             );
 
 
             // We can partially decode the OPNS\IPNS blade to only get the Euclidean
             // Subspace blade
             Debug.Assert(
-                cgaElementOpnsBlade.DecodeOpnsDirectionVGaDirection().IsNearEqual(cgaElement.Direction)
+                cgaElementOpnsBlade.DecodeOpnsDirection.VGaDirection().IsNearEqual(cgaElement.Direction)
             );
 
             Debug.Assert(
-                cgaElementIpnsBlade.DecodeIpnsDirectionVGaDirection().IsNearEqual(cgaElement.Direction)
+                cgaElementIpnsBlade.DecodeIpnsDirection.VGaDirection().IsNearEqual(cgaElement.Direction)
             );
 
             Console.WriteLine($"Direction Grade: {cgaElement.Direction.Grade}");
@@ -136,11 +134,11 @@ public static class CGa5DElementsSamples
             Console.WriteLine();
 
             Console.WriteLine("Decoded OPNS Direction:");
-            Console.WriteLine(cgaElementOpnsBlade.DecodeOpnsDirection().ToString());
+            Console.WriteLine(cgaElementOpnsBlade.DecodeOpnsDirection.Element().ToString());
             Console.WriteLine();
 
             Console.WriteLine("Decoded IPNS Direction:");
-            Console.WriteLine(cgaElementIpnsBlade.DecodeIpnsDirection().ToString());
+            Console.WriteLine(cgaElementIpnsBlade.DecodeIpnsDirection.Element().ToString());
             Console.WriteLine();
         }
     }
@@ -207,44 +205,44 @@ public static class CGa5DElementsSamples
 
             // Make sure that decoding the OPNS\IPNS blade gives the same tangent element
             Debug.Assert(
-                cgaElementOpnsBlade.DecodeOpnsTangent().IsSameElement(cgaElement)
+                cgaElementOpnsBlade.DecodeOpnsTangent.Element().IsSameElement(cgaElement)
             );
 
             Debug.Assert(
-                cgaElementIpnsBlade.DecodeIpnsTangent().IsSameElement(cgaElement)
+                cgaElementIpnsBlade.DecodeIpnsTangent.Element().IsSameElement(cgaElement)
             );
 
 
             // We can partially decode the OPNS\IPNS blade to only get the weight of
             // the tangent element
             Debug.Assert(
-                cgaElementOpnsBlade.DecodeOpnsTangentWeight().IsNearEqual(cgaElement.Weight)
+                cgaElementOpnsBlade.DecodeOpnsTangent.Weight().IsNearEqual(cgaElement.Weight)
             );
 
             Debug.Assert(
-                cgaElementIpnsBlade.DecodeIpnsTangentWeight().IsNearEqual(cgaElement.Weight)
+                cgaElementIpnsBlade.DecodeIpnsTangent.Weight().IsNearEqual(cgaElement.Weight)
             );
 
 
             // We can partially decode the OPNS\IPNS blade to only get the Euclidean
             // direction blade of the tangent element
             Debug.Assert(
-                cgaElementOpnsBlade.DecodeOpnsTangentVGaDirection().IsNearEqual(cgaElement.Direction)
+                cgaElementOpnsBlade.DecodeOpnsTangent.VGaDirection().IsNearEqual(cgaElement.Direction)
             );
 
             Debug.Assert(
-                cgaElementIpnsBlade.DecodeIpnsTangentVGaDirection().IsNearEqual(cgaElement.Direction)
+                cgaElementIpnsBlade.DecodeIpnsTangent.VGaDirection().IsNearEqual(cgaElement.Direction)
             );
 
 
             // We can partially decode the OPNS\IPNS blade to only get the Euclidean
             // position vector of the tangent element
             Debug.Assert(
-                cgaElementOpnsBlade.DecodeOpnsTangentVGaPosition().IsNearEqual(cgaElement.Position)
+                cgaElementOpnsBlade.DecodeOpnsTangent.VGaPosition().IsNearEqual(cgaElement.Position)
             );
 
             Debug.Assert(
-                cgaElementIpnsBlade.DecodeIpnsTangentVGaPosition().IsNearEqual(cgaElement.Position)
+                cgaElementIpnsBlade.DecodeIpnsTangent.VGaPosition().IsNearEqual(cgaElement.Position)
             );
 
             Console.WriteLine($"Tangent Direction Grade: {cgaElement.Direction.Grade}");
@@ -253,11 +251,11 @@ public static class CGa5DElementsSamples
             Console.WriteLine();
 
             Console.WriteLine("Decoded OPNS Tangent:");
-            Console.WriteLine(cgaElementOpnsBlade.DecodeOpnsTangent().ToString());
+            Console.WriteLine(cgaElementOpnsBlade.DecodeOpnsTangent.Element().ToString());
             Console.WriteLine();
 
             Console.WriteLine("Decoded IPNS Tangent:");
-            Console.WriteLine(cgaElementIpnsBlade.DecodeIpnsTangent().ToString());
+            Console.WriteLine(cgaElementIpnsBlade.DecodeIpnsTangent.Element().ToString());
             Console.WriteLine();
         }
     }
@@ -324,45 +322,45 @@ public static class CGa5DElementsSamples
 
             // Make sure that decoding the OPNS\IPNS\PGA blade gives the same flat element
             Debug.Assert(
-                cgaElementOpnsBlade.DecodeOpnsFlat().IsSameElement(cgaElement)
+                cgaElementOpnsBlade.DecodeOpnsFlat.Element().IsSameElement(cgaElement)
             );
 
             Debug.Assert(
-                cgaElementIpnsBlade.DecodeIpnsFlat().IsSameElement(cgaElement)
+                cgaElementIpnsBlade.DecodeIpnsFlat.Element().IsSameElement(cgaElement)
             );
 
             Debug.Assert(
-                cgaElementPGaBlade.DecodePGaFlat().IsSameElement(cgaElement)
+                cgaElementPGaBlade.DecodePGaFlat.Element().IsSameElement(cgaElement)
             );
 
 
             // We can partially decode the OPNS\IPNS\PGA blade to only get the weight of
             // the flat element
             Debug.Assert(
-                cgaElementOpnsBlade.DecodeOpnsFlatWeight().IsNearEqual(cgaElement.Weight)
+                cgaElementOpnsBlade.DecodeOpnsFlat.Weight().IsNearEqual(cgaElement.Weight)
             );
 
             Debug.Assert(
-                cgaElementIpnsBlade.DecodeIpnsFlatWeight().IsNearEqual(cgaElement.Weight)
+                cgaElementIpnsBlade.DecodeIpnsFlat.Weight().IsNearEqual(cgaElement.Weight)
             );
 
             Debug.Assert(
-                cgaElementPGaBlade.DecodePGaFlatWeight().IsNearEqual(cgaElement.Weight)
+                cgaElementPGaBlade.DecodePGaFlat.Weight().IsNearEqual(cgaElement.Weight)
             );
 
 
             // We can partially decode the OPNS\IPNS blade to only get the Euclidean direction of
             // the flat element
             Debug.Assert(
-                cgaElementOpnsBlade.DecodeOpnsFlatVGaDirection().IsNearEqual(cgaElement.Direction)
+                cgaElementOpnsBlade.DecodeOpnsFlat.VGaDirection().IsNearEqual(cgaElement.Direction)
             );
 
             Debug.Assert(
-                cgaElementIpnsBlade.DecodeIpnsFlatVGaDirection().IsNearEqual(cgaElement.Direction)
+                cgaElementIpnsBlade.DecodeIpnsFlat.VGaDirection().IsNearEqual(cgaElement.Direction)
             );
 
             Debug.Assert(
-                cgaElementPGaBlade.DecodePGaFlatVGaDirection().IsNearEqual(cgaElement.Direction)
+                cgaElementPGaBlade.DecodePGaFlat.VGaDirection().IsNearEqual(cgaElement.Direction)
             );
 
 
@@ -370,19 +368,19 @@ public static class CGa5DElementsSamples
             // the flat element
             Debug.Assert(
                 cgaElement.SurfaceNearContainsPoint(
-                    cgaElementOpnsBlade.DecodeOpnsFlatVGaPosition()
+                    cgaElementOpnsBlade.DecodeOpnsFlat.VGaPosition()
                 )
             );
 
             Debug.Assert(
                 cgaElement.SurfaceNearContainsPoint(
-                    cgaElementIpnsBlade.DecodeIpnsFlatVGaPosition()
+                    cgaElementIpnsBlade.DecodeIpnsFlat.VGaPosition()
                 )
             );
 
             Debug.Assert(
                 cgaElement.SurfaceNearContainsPoint(
-                    cgaElementPGaBlade.DecodePGaFlatVGaPosition()
+                    cgaElementPGaBlade.DecodePGaFlat.VGaPosition()
                 )
             );
 
@@ -392,15 +390,15 @@ public static class CGa5DElementsSamples
             Console.WriteLine();
 
             Console.WriteLine("Decoded OPNS Flat:");
-            Console.WriteLine(cgaElementOpnsBlade.DecodeOpnsFlat().ToString());
+            Console.WriteLine(cgaElementOpnsBlade.DecodeOpnsFlat.Element().ToString());
             Console.WriteLine();
 
             Console.WriteLine("Decoded IPNS Flat:");
-            Console.WriteLine(cgaElementIpnsBlade.DecodeIpnsFlat().ToString());
+            Console.WriteLine(cgaElementIpnsBlade.DecodeIpnsFlat.Element().ToString());
             Console.WriteLine();
 
             Console.WriteLine("Decoded PGA Flat:");
-            Console.WriteLine(cgaElementPGaBlade.DecodePGaFlat().ToString());
+            Console.WriteLine(cgaElementPGaBlade.DecodePGaFlat.Element().ToString());
             Console.WriteLine();
         }
     }
@@ -466,55 +464,55 @@ public static class CGa5DElementsSamples
 
             // Make sure that decoding the OPNS\IPNS blade gives the same round element
             Debug.Assert(
-                cgaElementOpnsBlade.DecodeOpnsRound().IsSameElement(cgaElement)
+                cgaElementOpnsBlade.DecodeOpnsRound.Element().IsSameElement(cgaElement)
             );
 
             Debug.Assert(
-                cgaElementIpnsBlade.DecodeIpnsRound().IsSameElement(cgaElement)
+                cgaElementIpnsBlade.DecodeIpnsRound.Element().IsSameElement(cgaElement)
             );
 
 
             // We can partially decode the OPNS\IPNS blade to only get the weight of
             // the round element
             Debug.Assert(
-                cgaElementOpnsBlade.DecodeOpnsRoundWeight().IsNearEqual(cgaElement.Weight)
+                cgaElementOpnsBlade.DecodeOpnsRound.Weight().IsNearEqual(cgaElement.Weight)
             );
 
             Debug.Assert(
-                cgaElementIpnsBlade.DecodeIpnsRoundWeight().IsNearEqual(cgaElement.Weight)
+                cgaElementIpnsBlade.DecodeIpnsRound.Weight().IsNearEqual(cgaElement.Weight)
             );
 
 
             // We can partially decode the OPNS\IPNS blade to only get the Euclidean direction of
             // the round element
             Debug.Assert(
-                cgaElementOpnsBlade.DecodeOpnsRoundVGaDirection().IsNearEqual(cgaElement.Direction)
+                cgaElementOpnsBlade.DecodeOpnsRound.VGaDirection().IsNearEqual(cgaElement.Direction)
             );
 
             Debug.Assert(
-                cgaElementIpnsBlade.DecodeIpnsRoundVGaDirection().IsNearEqual(cgaElement.Direction)
+                cgaElementIpnsBlade.DecodeIpnsRound.VGaDirection().IsNearEqual(cgaElement.Direction)
             );
 
 
             // We can partially decode the OPNS\IPNS blade to only get the Euclidean center of
             // the round element
             Debug.Assert(
-                cgaElementOpnsBlade.DecodeOpnsRoundVGaCenter().IsNearEqual(cgaElement.Center)
+                cgaElementOpnsBlade.DecodeOpnsRound.VGaCenter().IsNearEqual(cgaElement.Center)
             );
 
             Debug.Assert(
-                cgaElementIpnsBlade.DecodeIpnsRoundVGaCenter().IsNearEqual(cgaElement.Center)
+                cgaElementIpnsBlade.DecodeIpnsRound.VGaCenter().IsNearEqual(cgaElement.Center)
             );
 
 
             // We can partially decode the OPNS\IPNS blade to only get the squared radius of
             // the round element
             Debug.Assert(
-                cgaElementOpnsBlade.DecodeOpnsRoundRadiusSquared().IsNearEqual(cgaElement.RadiusSquared)
+                cgaElementOpnsBlade.DecodeOpnsRound.RadiusSquared().IsNearEqual(cgaElement.RadiusSquared)
             );
 
             Debug.Assert(
-                cgaElementIpnsBlade.DecodeIpnsRoundRadiusSquared().IsNearEqual(cgaElement.RadiusSquared)
+                cgaElementIpnsBlade.DecodeIpnsRound.RadiusSquared().IsNearEqual(cgaElement.RadiusSquared)
             );
 
             Console.WriteLine($"Round Direction Grade: {cgaElement.Direction.Grade}");
@@ -523,11 +521,11 @@ public static class CGa5DElementsSamples
             Console.WriteLine();
 
             Console.WriteLine("Decoded OPNS Round:");
-            Console.WriteLine(cgaElementOpnsBlade.DecodeOpnsRound().ToString());
+            Console.WriteLine(cgaElementOpnsBlade.DecodeOpnsRound.Element().ToString());
             Console.WriteLine();
 
             Console.WriteLine("Decoded IPNS Round:");
-            Console.WriteLine(cgaElementIpnsBlade.DecodeIpnsRound().ToString());
+            Console.WriteLine(cgaElementIpnsBlade.DecodeIpnsRound.Element().ToString());
             Console.WriteLine();
         }
     }
@@ -575,43 +573,43 @@ public static class CGa5DElementsSamples
             var cgaElementIpnsBlade = cgaElement.EncodeIpnsBlade();
 
             Debug.Assert(
-                cgaElementOpnsBlade.DecodeOpnsRound().IsSameElement(cgaElement)
+                cgaElementOpnsBlade.DecodeOpnsRound.Element().IsSameElement(cgaElement)
             );
 
             Debug.Assert(
-                cgaElementIpnsBlade.DecodeIpnsRound().IsSameElement(cgaElement)
+                cgaElementIpnsBlade.DecodeIpnsRound.Element().IsSameElement(cgaElement)
             );
 
             Debug.Assert(
-                cgaElementOpnsBlade.DecodeOpnsRoundWeight().IsNearEqual(cgaElement.Weight)
+                cgaElementOpnsBlade.DecodeOpnsRound.Weight().IsNearEqual(cgaElement.Weight)
             );
 
             Debug.Assert(
-                cgaElementIpnsBlade.DecodeIpnsRoundWeight().IsNearEqual(cgaElement.Weight)
+                cgaElementIpnsBlade.DecodeIpnsRound.Weight().IsNearEqual(cgaElement.Weight)
             );
 
             Debug.Assert(
-                cgaElementOpnsBlade.DecodeOpnsRoundVGaDirection().IsNearEqual(cgaElement.Direction)
+                cgaElementOpnsBlade.DecodeOpnsRound.VGaDirection().IsNearEqual(cgaElement.Direction)
             );
 
             Debug.Assert(
-                cgaElementIpnsBlade.DecodeIpnsRoundVGaDirection().IsNearEqual(cgaElement.Direction)
+                cgaElementIpnsBlade.DecodeIpnsRound.VGaDirection().IsNearEqual(cgaElement.Direction)
             );
 
             Debug.Assert(
-                cgaElementOpnsBlade.DecodeOpnsRoundVGaCenter().IsNearEqual(cgaElement.Center)
+                cgaElementOpnsBlade.DecodeOpnsRound.VGaCenter().IsNearEqual(cgaElement.Center)
             );
 
             Debug.Assert(
-                cgaElementIpnsBlade.DecodeIpnsRoundVGaCenter().IsNearEqual(cgaElement.Center)
+                cgaElementIpnsBlade.DecodeIpnsRound.VGaCenter().IsNearEqual(cgaElement.Center)
             );
 
             Debug.Assert(
-                cgaElementOpnsBlade.DecodeOpnsRoundRadiusSquared().IsNearEqual(cgaElement.RadiusSquared)
+                cgaElementOpnsBlade.DecodeOpnsRound.RadiusSquared().IsNearEqual(cgaElement.RadiusSquared)
             );
 
             Debug.Assert(
-                cgaElementIpnsBlade.DecodeIpnsRoundRadiusSquared().IsNearEqual(cgaElement.RadiusSquared)
+                cgaElementIpnsBlade.DecodeIpnsRound.RadiusSquared().IsNearEqual(cgaElement.RadiusSquared)
             );
 
             Console.WriteLine($"Round Direction Grade: {cgaElement.Direction.Grade}");
@@ -620,11 +618,11 @@ public static class CGa5DElementsSamples
             Console.WriteLine();
 
             Console.WriteLine("Decoded OPNS Round:");
-            Console.WriteLine(cgaElementOpnsBlade.DecodeOpnsRound().ToString());
+            Console.WriteLine(cgaElementOpnsBlade.DecodeOpnsRound.Element().ToString());
             Console.WriteLine();
 
             Console.WriteLine("Decoded IPNS Round:");
-            Console.WriteLine(cgaElementIpnsBlade.DecodeIpnsRound().ToString());
+            Console.WriteLine(cgaElementIpnsBlade.DecodeIpnsRound.Element().ToString());
             Console.WriteLine();
         }
     }
@@ -672,43 +670,43 @@ public static class CGa5DElementsSamples
             var cgaElementIpnsBlade = cgaElement.EncodeIpnsBlade();
 
             Debug.Assert(
-                cgaElementOpnsBlade.DecodeOpnsRound().IsSameElement(cgaElement)
+                cgaElementOpnsBlade.DecodeOpnsRound.Element().IsSameElement(cgaElement)
             );
 
             Debug.Assert(
-                cgaElementIpnsBlade.DecodeIpnsRound().IsSameElement(cgaElement)
+                cgaElementIpnsBlade.DecodeIpnsRound.Element().IsSameElement(cgaElement)
             );
 
             Debug.Assert(
-                cgaElementOpnsBlade.DecodeOpnsRoundWeight().IsNearEqual(cgaElement.Weight)
+                cgaElementOpnsBlade.DecodeOpnsRound.Weight().IsNearEqual(cgaElement.Weight)
             );
 
             Debug.Assert(
-                cgaElementIpnsBlade.DecodeIpnsRoundWeight().IsNearEqual(cgaElement.Weight)
+                cgaElementIpnsBlade.DecodeIpnsRound.Weight().IsNearEqual(cgaElement.Weight)
             );
 
             Debug.Assert(
-                cgaElementOpnsBlade.DecodeOpnsRoundVGaDirection().IsNearEqual(cgaElement.Direction)
+                cgaElementOpnsBlade.DecodeOpnsRound.VGaDirection().IsNearEqual(cgaElement.Direction)
             );
 
             Debug.Assert(
-                cgaElementIpnsBlade.DecodeIpnsRoundVGaDirection().IsNearEqual(cgaElement.Direction)
+                cgaElementIpnsBlade.DecodeIpnsRound.VGaDirection().IsNearEqual(cgaElement.Direction)
             );
 
             Debug.Assert(
-                cgaElementOpnsBlade.DecodeOpnsRoundVGaCenter().IsNearEqual(cgaElement.Center)
+                cgaElementOpnsBlade.DecodeOpnsRound.VGaCenter().IsNearEqual(cgaElement.Center)
             );
 
             Debug.Assert(
-                cgaElementIpnsBlade.DecodeIpnsRoundVGaCenter().IsNearEqual(cgaElement.Center)
+                cgaElementIpnsBlade.DecodeIpnsRound.VGaCenter().IsNearEqual(cgaElement.Center)
             );
 
             Debug.Assert(
-                cgaElementOpnsBlade.DecodeOpnsRoundRadiusSquared().IsNearEqual(cgaElement.RadiusSquared)
+                cgaElementOpnsBlade.DecodeOpnsRound.RadiusSquared().IsNearEqual(cgaElement.RadiusSquared)
             );
 
             Debug.Assert(
-                cgaElementIpnsBlade.DecodeIpnsRoundRadiusSquared().IsNearEqual(cgaElement.RadiusSquared)
+                cgaElementIpnsBlade.DecodeIpnsRound.RadiusSquared().IsNearEqual(cgaElement.RadiusSquared)
             );
 
             Console.WriteLine($"Round Direction Grade: {cgaElement.Direction.Grade}");
@@ -717,11 +715,11 @@ public static class CGa5DElementsSamples
             Console.WriteLine();
 
             Console.WriteLine("Decoded OPNS Round:");
-            Console.WriteLine(cgaElementOpnsBlade.DecodeOpnsRound().ToString());
+            Console.WriteLine(cgaElementOpnsBlade.DecodeOpnsRound.Element().ToString());
             Console.WriteLine();
 
             Console.WriteLine("Decoded IPNS Round:");
-            Console.WriteLine(cgaElementIpnsBlade.DecodeIpnsRound().ToString());
+            Console.WriteLine(cgaElementIpnsBlade.DecodeIpnsRound.Element().ToString());
             Console.WriteLine();
         }
     }

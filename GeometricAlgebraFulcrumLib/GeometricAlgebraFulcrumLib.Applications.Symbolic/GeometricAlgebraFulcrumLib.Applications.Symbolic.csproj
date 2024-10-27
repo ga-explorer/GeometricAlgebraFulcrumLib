@@ -5,13 +5,20 @@
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <Platforms>AnyCPU;x64</Platforms>
   </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="GeneticSharp" Version="3.1.4" />
+    <PackageReference Include="GeneticSharp.Extensions" Version="3.1.4" />
+  </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\GeometricAlgebraFulcrumLib.Algebra\GeometricAlgebraFulcrumLib.Algebra.csproj" />
     <ProjectReference Include="..\GeometricAlgebraFulcrumLib.Mathematica\GeometricAlgebraFulcrumLib.Mathematica.csproj" />
     <ProjectReference Include="..\GeometricAlgebraFulcrumLib.MetaProgramming\GeometricAlgebraFulcrumLib.MetaProgramming.csproj" />
     <ProjectReference Include="..\GeometricAlgebraFulcrumLib.Modeling\GeometricAlgebraFulcrumLib.Modeling.csproj" />
+    <ProjectReference Include="..\GeometricAlgebraFulcrumLib.Optimization\GeometricAlgebraFulcrumLib.Optimization.csproj" />
     <ProjectReference Include="..\GeometricAlgebraFulcrumLib.Utilities.Code\GeometricAlgebraFulcrumLib.Utilities.Code.csproj" />
     <ProjectReference Include="..\GeometricAlgebraFulcrumLib.Utilities.Structures\GeometricAlgebraFulcrumLib.Utilities.Structures.csproj" />
     <ProjectReference Include="..\GeometricAlgebraFulcrumLib.Utilities.Text\GeometricAlgebraFulcrumLib.Utilities.Text.csproj" />
@@ -22,6 +29,10 @@
     <Reference Include="Wolfram.NETLink">
       <HintPath>C:\Program Files\Wolfram Research\Mathematica\13.1\SystemFiles\Links\NETLink\Wolfram.NETLink.dll</HintPath>
     </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="GeneticProgramming\" />
   </ItemGroup>
 
 </Project>

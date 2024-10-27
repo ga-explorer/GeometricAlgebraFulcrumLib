@@ -6,7 +6,6 @@ using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Generic.Vectors.Space3D;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Generic.Vectors.SpaceND;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Generic;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Generic.Blades;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Generic.Decoding;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Generic.Encoding;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Extensions;
 
@@ -20,7 +19,7 @@ public static class CGaFlatComposerUtils
         return new CGaFlat<T>(
             cgaGeometricSpace,
             cgaGeometricSpace.ScalarOne,
-            cgaGeometricSpace.EncodeVGaVector(position),
+            cgaGeometricSpace.EncodeVGa.Vector(position),
             cgaGeometricSpace.OneScalarBlade
         );
     }
@@ -31,7 +30,7 @@ public static class CGaFlatComposerUtils
         return new CGaFlat<T>(
             cgaGeometricSpace,
             cgaGeometricSpace.ScalarOne,
-            cgaGeometricSpace.EncodeVGaVector(position),
+            cgaGeometricSpace.EncodeVGa.Vector(position),
             cgaGeometricSpace.OneScalarBlade
         );
     }
@@ -42,7 +41,7 @@ public static class CGaFlatComposerUtils
         return new CGaFlat<T>(
             cgaGeometricSpace,
             cgaGeometricSpace.ScalarOne,
-            cgaGeometricSpace.EncodeVGaVector(position),
+            cgaGeometricSpace.EncodeVGa.Vector(position),
             cgaGeometricSpace.OneScalarBlade
         );
     }
@@ -53,7 +52,7 @@ public static class CGaFlatComposerUtils
         return new CGaFlat<T>(
             cgaGeometricSpace,
             cgaGeometricSpace.ScalarOne,
-            cgaGeometricSpace.EncodeVGaVector(position),
+            cgaGeometricSpace.EncodeVGa.Vector(position),
             cgaGeometricSpace.OneScalarBlade
         );
     }
@@ -65,7 +64,7 @@ public static class CGaFlatComposerUtils
         return new CGaFlat<T>(
             cgaGeometricSpace,
             weight,
-            cgaGeometricSpace.EncodeVGaVector(position),
+            cgaGeometricSpace.EncodeVGa.Vector(position),
             cgaGeometricSpace.OneScalarBlade
         );
     }
@@ -76,7 +75,7 @@ public static class CGaFlatComposerUtils
         return new CGaFlat<T>(
             cgaGeometricSpace,
             weight,
-            cgaGeometricSpace.EncodeVGaVector(position),
+            cgaGeometricSpace.EncodeVGa.Vector(position),
             cgaGeometricSpace.OneScalarBlade
         );
     }
@@ -87,7 +86,7 @@ public static class CGaFlatComposerUtils
         return new CGaFlat<T>(
             cgaGeometricSpace,
             weight,
-            cgaGeometricSpace.EncodeVGaVector(position),
+            cgaGeometricSpace.EncodeVGa.Vector(position),
             cgaGeometricSpace.OneScalarBlade
         );
     }
@@ -98,7 +97,7 @@ public static class CGaFlatComposerUtils
         return new CGaFlat<T>(
             cgaGeometricSpace,
             weight,
-            cgaGeometricSpace.EncodeVGaVector(position),
+            cgaGeometricSpace.EncodeVGa.Vector(position),
             cgaGeometricSpace.OneScalarBlade
         );
     }
@@ -110,8 +109,8 @@ public static class CGaFlatComposerUtils
         return new CGaFlat<T>(
             cgaGeometricSpace,
             cgaGeometricSpace.ScalarOne,
-            cgaGeometricSpace.EncodeVGaVector(position),
-            cgaGeometricSpace.EncodeVGaVector(direction)
+            cgaGeometricSpace.EncodeVGa.Vector(position),
+            cgaGeometricSpace.EncodeVGa.Vector(direction)
         );
     }
 
@@ -121,8 +120,8 @@ public static class CGaFlatComposerUtils
         return new CGaFlat<T>(
             cgaGeometricSpace,
             cgaGeometricSpace.ScalarOne,
-            cgaGeometricSpace.EncodeVGaVector(position),
-            cgaGeometricSpace.EncodeVGaVector(direction)
+            cgaGeometricSpace.EncodeVGa.Vector(position),
+            cgaGeometricSpace.EncodeVGa.Vector(direction)
         );
     }
 
@@ -132,8 +131,8 @@ public static class CGaFlatComposerUtils
         return new CGaFlat<T>(
             cgaGeometricSpace,
             cgaGeometricSpace.ScalarOne,
-            cgaGeometricSpace.EncodeVGaVector(position),
-            cgaGeometricSpace.EncodeVGaVector(direction)
+            cgaGeometricSpace.EncodeVGa.Vector(position),
+            cgaGeometricSpace.EncodeVGa.Vector(direction)
         );
     }
 
@@ -143,8 +142,8 @@ public static class CGaFlatComposerUtils
         return new CGaFlat<T>(
             cgaGeometricSpace,
             cgaGeometricSpace.ScalarOne,
-            cgaGeometricSpace.EncodeVGaVector(position),
-            cgaGeometricSpace.EncodeVGaVector(direction)
+            cgaGeometricSpace.EncodeVGa.Vector(position),
+            cgaGeometricSpace.EncodeVGa.Vector(direction)
         );
     }
 
@@ -155,8 +154,8 @@ public static class CGaFlatComposerUtils
         return new CGaFlat<T>(
             cgaGeometricSpace,
             weight,
-            cgaGeometricSpace.EncodeVGaVector(position),
-            cgaGeometricSpace.EncodeVGaVector(direction)
+            cgaGeometricSpace.EncodeVGa.Vector(position),
+            cgaGeometricSpace.EncodeVGa.Vector(direction)
         );
     }
 
@@ -166,8 +165,8 @@ public static class CGaFlatComposerUtils
         return new CGaFlat<T>(
             cgaGeometricSpace,
             weight,
-            cgaGeometricSpace.EncodeVGaVector(position),
-            cgaGeometricSpace.EncodeVGaVector(direction)
+            cgaGeometricSpace.EncodeVGa.Vector(position),
+            cgaGeometricSpace.EncodeVGa.Vector(direction)
         );
     }
 
@@ -177,8 +176,8 @@ public static class CGaFlatComposerUtils
         return new CGaFlat<T>(
             cgaGeometricSpace,
             weight,
-            cgaGeometricSpace.EncodeVGaVector(position),
-            cgaGeometricSpace.EncodeVGaVector(direction)
+            cgaGeometricSpace.EncodeVGa.Vector(position),
+            cgaGeometricSpace.EncodeVGa.Vector(direction)
         );
     }
 
@@ -188,8 +187,8 @@ public static class CGaFlatComposerUtils
         return new CGaFlat<T>(
             cgaGeometricSpace,
             weight,
-            cgaGeometricSpace.EncodeVGaVector(position),
-            cgaGeometricSpace.EncodeVGaVector(direction)
+            cgaGeometricSpace.EncodeVGa.Vector(position),
+            cgaGeometricSpace.EncodeVGa.Vector(direction)
         );
     }
 
@@ -203,8 +202,8 @@ public static class CGaFlatComposerUtils
         return new CGaFlat<T>(
             cgaGeometricSpace,
             cgaGeometricSpace.ScalarOne,
-            cgaGeometricSpace.EncodeVGaVector(position),
-            cgaGeometricSpace.EncodeVGaVector(direction)
+            cgaGeometricSpace.EncodeVGa.Vector(position),
+            cgaGeometricSpace.EncodeVGa.Vector(direction)
         );
     }
 
@@ -217,8 +216,8 @@ public static class CGaFlatComposerUtils
         return new CGaFlat<T>(
             cgaGeometricSpace,
             cgaGeometricSpace.ScalarOne,
-            cgaGeometricSpace.EncodeVGaVector(position),
-            cgaGeometricSpace.EncodeVGaVector(direction)
+            cgaGeometricSpace.EncodeVGa.Vector(position),
+            cgaGeometricSpace.EncodeVGa.Vector(direction)
         );
     }
 
@@ -231,8 +230,8 @@ public static class CGaFlatComposerUtils
         return new CGaFlat<T>(
             cgaGeometricSpace,
             cgaGeometricSpace.ScalarOne,
-            cgaGeometricSpace.EncodeVGaVector(position),
-            cgaGeometricSpace.EncodeVGaVector(direction)
+            cgaGeometricSpace.EncodeVGa.Vector(position),
+            cgaGeometricSpace.EncodeVGa.Vector(direction)
         );
     }
 
@@ -245,8 +244,8 @@ public static class CGaFlatComposerUtils
         return new CGaFlat<T>(
             cgaGeometricSpace,
             cgaGeometricSpace.ScalarOne,
-            cgaGeometricSpace.EncodeVGaVector(position),
-            cgaGeometricSpace.EncodeVGaVector(direction)
+            cgaGeometricSpace.EncodeVGa.Vector(position),
+            cgaGeometricSpace.EncodeVGa.Vector(direction)
         );
     }
 
@@ -260,8 +259,8 @@ public static class CGaFlatComposerUtils
         return new CGaFlat<T>(
             cgaGeometricSpace,
             weight,
-            cgaGeometricSpace.EncodeVGaVector(position),
-            cgaGeometricSpace.EncodeVGaVector(direction)
+            cgaGeometricSpace.EncodeVGa.Vector(position),
+            cgaGeometricSpace.EncodeVGa.Vector(direction)
         );
     }
 
@@ -274,8 +273,8 @@ public static class CGaFlatComposerUtils
         return new CGaFlat<T>(
             cgaGeometricSpace,
             weight,
-            cgaGeometricSpace.EncodeVGaVector(position),
-            cgaGeometricSpace.EncodeVGaVector(direction)
+            cgaGeometricSpace.EncodeVGa.Vector(position),
+            cgaGeometricSpace.EncodeVGa.Vector(direction)
         );
     }
 
@@ -288,8 +287,8 @@ public static class CGaFlatComposerUtils
         return new CGaFlat<T>(
             cgaGeometricSpace,
             weight,
-            cgaGeometricSpace.EncodeVGaVector(position),
-            cgaGeometricSpace.EncodeVGaVector(direction)
+            cgaGeometricSpace.EncodeVGa.Vector(position),
+            cgaGeometricSpace.EncodeVGa.Vector(direction)
         );
     }
 
@@ -302,8 +301,8 @@ public static class CGaFlatComposerUtils
         return new CGaFlat<T>(
             cgaGeometricSpace,
             weight,
-            cgaGeometricSpace.EncodeVGaVector(position),
-            cgaGeometricSpace.EncodeVGaVector(direction)
+            cgaGeometricSpace.EncodeVGa.Vector(position),
+            cgaGeometricSpace.EncodeVGa.Vector(direction)
         );
     }
 
@@ -314,8 +313,8 @@ public static class CGaFlatComposerUtils
         return new CGaFlat<T>(
             cgaGeometricSpace,
             cgaGeometricSpace.ScalarOne,
-            cgaGeometricSpace.EncodeVGaVector(position),
-            cgaGeometricSpace.EncodeVGaBivector(normal.NormalToUnitDirection3D())
+            cgaGeometricSpace.EncodeVGa.Vector(position),
+            cgaGeometricSpace.EncodeVGa.Bivector(normal.NormalToUnitDirection3D())
         );
     }
 
@@ -326,8 +325,8 @@ public static class CGaFlatComposerUtils
         return new CGaFlat<T>(
             cgaGeometricSpace,
             cgaGeometricSpace.ScalarOne,
-            cgaGeometricSpace.EncodeVGaVector(position),
-            cgaGeometricSpace.EncodeVGaBivector(direction)
+            cgaGeometricSpace.EncodeVGa.Vector(position),
+            cgaGeometricSpace.EncodeVGa.Bivector(direction)
         );
     }
 
@@ -337,8 +336,8 @@ public static class CGaFlatComposerUtils
         return new CGaFlat<T>(
             cgaGeometricSpace,
             cgaGeometricSpace.ScalarOne,
-            cgaGeometricSpace.EncodeVGaVector(position),
-            cgaGeometricSpace.EncodeVGaBivector(direction)
+            cgaGeometricSpace.EncodeVGa.Vector(position),
+            cgaGeometricSpace.EncodeVGa.Bivector(direction)
         );
     }
 
@@ -348,8 +347,8 @@ public static class CGaFlatComposerUtils
         return new CGaFlat<T>(
             cgaGeometricSpace,
             cgaGeometricSpace.ScalarOne,
-            cgaGeometricSpace.EncodeVGaVector(position),
-            cgaGeometricSpace.EncodeVGaBivector(direction)
+            cgaGeometricSpace.EncodeVGa.Vector(position),
+            cgaGeometricSpace.EncodeVGa.Bivector(direction)
         );
     }
 
@@ -363,8 +362,8 @@ public static class CGaFlatComposerUtils
         return new CGaFlat<T>(
             cgaGeometricSpace,
             cgaGeometricSpace.ScalarOne,
-            cgaGeometricSpace.EncodeVGaVector(position),
-            cgaGeometricSpace.EncodeVGaBivector(direction)
+            cgaGeometricSpace.EncodeVGa.Vector(position),
+            cgaGeometricSpace.EncodeVGa.Bivector(direction)
         );
     }
 
@@ -378,8 +377,8 @@ public static class CGaFlatComposerUtils
         return new CGaFlat<T>(
             cgaGeometricSpace,
             weight,
-            cgaGeometricSpace.EncodeVGaVector(position),
-            cgaGeometricSpace.EncodeVGaBivector(direction)
+            cgaGeometricSpace.EncodeVGa.Vector(position),
+            cgaGeometricSpace.EncodeVGa.Bivector(direction)
         );
     }
 
@@ -393,8 +392,8 @@ public static class CGaFlatComposerUtils
         return new CGaFlat<T>(
             cgaGeometricSpace,
             cgaGeometricSpace.ScalarOne,
-            cgaGeometricSpace.EncodeVGaVector(position),
-            cgaGeometricSpace.EncodeVGaBivector(direction)
+            cgaGeometricSpace.EncodeVGa.Vector(position),
+            cgaGeometricSpace.EncodeVGa.Bivector(direction)
         );
     }
 
@@ -407,8 +406,8 @@ public static class CGaFlatComposerUtils
         return new CGaFlat<T>(
             cgaGeometricSpace,
             cgaGeometricSpace.ScalarOne,
-            cgaGeometricSpace.EncodeVGaVector(position),
-            cgaGeometricSpace.EncodeVGaBivector(direction)
+            cgaGeometricSpace.EncodeVGa.Vector(position),
+            cgaGeometricSpace.EncodeVGa.Bivector(direction)
         );
     }
 
@@ -421,8 +420,8 @@ public static class CGaFlatComposerUtils
         return new CGaFlat<T>(
             cgaGeometricSpace,
             cgaGeometricSpace.ScalarOne,
-            cgaGeometricSpace.EncodeVGaVector(position),
-            cgaGeometricSpace.EncodeVGaBivector(direction)
+            cgaGeometricSpace.EncodeVGa.Vector(position),
+            cgaGeometricSpace.EncodeVGa.Bivector(direction)
         );
     }
 
@@ -436,8 +435,8 @@ public static class CGaFlatComposerUtils
         return new CGaFlat<T>(
             cgaGeometricSpace,
             weight,
-            cgaGeometricSpace.EncodeVGaVector(position),
-            cgaGeometricSpace.EncodeVGaBivector(direction)
+            cgaGeometricSpace.EncodeVGa.Vector(position),
+            cgaGeometricSpace.EncodeVGa.Bivector(direction)
         );
     }
 
@@ -450,8 +449,8 @@ public static class CGaFlatComposerUtils
         return new CGaFlat<T>(
             cgaGeometricSpace,
             weight,
-            cgaGeometricSpace.EncodeVGaVector(position),
-            cgaGeometricSpace.EncodeVGaBivector(direction)
+            cgaGeometricSpace.EncodeVGa.Vector(position),
+            cgaGeometricSpace.EncodeVGa.Bivector(direction)
         );
     }
 
@@ -464,8 +463,8 @@ public static class CGaFlatComposerUtils
         return new CGaFlat<T>(
             cgaGeometricSpace,
             weight,
-            cgaGeometricSpace.EncodeVGaVector(position),
-            cgaGeometricSpace.EncodeVGaBivector(direction)
+            cgaGeometricSpace.EncodeVGa.Vector(position),
+            cgaGeometricSpace.EncodeVGa.Bivector(direction)
         );
     }
 
@@ -476,8 +475,8 @@ public static class CGaFlatComposerUtils
         return new CGaFlat<T>(
             cgaGeometricSpace,
             cgaGeometricSpace.ScalarOne,
-            cgaGeometricSpace.EncodeVGaVector(position),
-            cgaGeometricSpace.EncodeVGaTrivector(1)
+            cgaGeometricSpace.EncodeVGa.Vector(position),
+            cgaGeometricSpace.EncodeVGa.Trivector(1)
         );
     }
 
@@ -487,8 +486,8 @@ public static class CGaFlatComposerUtils
         return new CGaFlat<T>(
             cgaGeometricSpace,
             cgaGeometricSpace.ScalarOne,
-            cgaGeometricSpace.EncodeVGaVector(position),
-            cgaGeometricSpace.EncodeVGaTrivector(direction)
+            cgaGeometricSpace.EncodeVGa.Vector(position),
+            cgaGeometricSpace.EncodeVGa.Trivector(direction)
         );
     }
 
@@ -499,8 +498,8 @@ public static class CGaFlatComposerUtils
         return new CGaFlat<T>(
             cgaGeometricSpace,
             weight,
-            cgaGeometricSpace.EncodeVGaVector(position),
-            cgaGeometricSpace.EncodeVGaBivector(direction)
+            cgaGeometricSpace.EncodeVGa.Vector(position),
+            cgaGeometricSpace.EncodeVGa.Bivector(direction)
         );
     }
 
@@ -510,8 +509,8 @@ public static class CGaFlatComposerUtils
         return new CGaFlat<T>(
             cgaGeometricSpace,
             weight,
-            cgaGeometricSpace.EncodeVGaVector(position),
-            cgaGeometricSpace.EncodeVGaBivector(direction)
+            cgaGeometricSpace.EncodeVGa.Vector(position),
+            cgaGeometricSpace.EncodeVGa.Bivector(direction)
         );
     }
 
@@ -521,8 +520,8 @@ public static class CGaFlatComposerUtils
         return new CGaFlat<T>(
             cgaGeometricSpace,
             weight,
-            cgaGeometricSpace.EncodeVGaVector(position),
-            cgaGeometricSpace.EncodeVGaBivector(direction)
+            cgaGeometricSpace.EncodeVGa.Vector(position),
+            cgaGeometricSpace.EncodeVGa.Bivector(direction)
         );
     }
 
@@ -533,8 +532,8 @@ public static class CGaFlatComposerUtils
         return new CGaFlat<T>(
             cgaGeometricSpace,
             weight,
-            cgaGeometricSpace.EncodeVGaVector(position),
-            cgaGeometricSpace.EncodeVGaTrivector(direction)
+            cgaGeometricSpace.EncodeVGa.Vector(position),
+            cgaGeometricSpace.EncodeVGa.Trivector(direction)
         );
     }
 
@@ -545,8 +544,8 @@ public static class CGaFlatComposerUtils
         return new CGaFlat<T>(
             cgaGeometricSpace,
             cgaGeometricSpace.ScalarOne,
-            cgaGeometricSpace.EncodeVGaVector(position),
-            cgaGeometricSpace.EncodeVGaBlade(direction)
+            cgaGeometricSpace.EncodeVGa.Vector(position),
+            cgaGeometricSpace.EncodeVGa.Blade(direction)
         );
     }
 
@@ -568,8 +567,8 @@ public static class CGaFlatComposerUtils
         return new CGaFlat<T>(
             cgaGeometricSpace,
             weight,
-            cgaGeometricSpace.EncodeVGaVector(position),
-            cgaGeometricSpace.EncodeVGaBlade(direction)
+            cgaGeometricSpace.EncodeVGa.Vector(position),
+            cgaGeometricSpace.EncodeVGa.Blade(direction)
         );
     }
 
@@ -590,7 +589,7 @@ public static class CGaFlatComposerUtils
     {
         return cgaGeometricSpace.DefineFlat(
             cgaGeometricSpace.ScalarOne,
-            cgaGeometricSpace.EncodeVGaVector(position),
+            cgaGeometricSpace.EncodeVGa.Vector(position),
             directionVectors
                 .Select(v => v.ToXGaVector(cgaGeometricSpace.Processor))
                 .Op(cgaGeometricSpace.Processor)
@@ -603,7 +602,7 @@ public static class CGaFlatComposerUtils
     {
         return cgaGeometricSpace.DefineFlat(
             cgaGeometricSpace.ScalarOne,
-            cgaGeometricSpace.EncodeVGaVector(position),
+            cgaGeometricSpace.EncodeVGa.Vector(position),
             directionVectors
                 .Select(v => v.ToXGaVector(cgaGeometricSpace.Processor))
                 .Op(cgaGeometricSpace.Processor)
@@ -616,7 +615,7 @@ public static class CGaFlatComposerUtils
     {
         return cgaGeometricSpace.DefineFlat(
             cgaGeometricSpace.ScalarOne,
-            cgaGeometricSpace.EncodeVGaVector(position),
+            cgaGeometricSpace.EncodeVGa.Vector(position),
             directionVectors
                 .Select(v => v.ToXGaVector(cgaGeometricSpace.Processor))
                 .Op(cgaGeometricSpace.Processor)
@@ -650,7 +649,7 @@ public static class CGaFlatComposerUtils
     {
         return cgaGeometricSpace.DefineFlat(
             weight,
-            cgaGeometricSpace.EncodeVGaVector(position),
+            cgaGeometricSpace.EncodeVGa.Vector(position),
             directionVectors
                 .Select(v => v.ToXGaVector(cgaGeometricSpace.Processor))
                 .Op(cgaGeometricSpace.Processor)
@@ -663,7 +662,7 @@ public static class CGaFlatComposerUtils
     {
         return cgaGeometricSpace.DefineFlat(
             weight,
-            cgaGeometricSpace.EncodeVGaVector(position),
+            cgaGeometricSpace.EncodeVGa.Vector(position),
             directionVectors
                 .Select(v => v.ToXGaVector(cgaGeometricSpace.Processor))
                 .Op(cgaGeometricSpace.Processor)
@@ -676,7 +675,7 @@ public static class CGaFlatComposerUtils
     {
         return cgaGeometricSpace.DefineFlat(
             weight,
-            cgaGeometricSpace.EncodeVGaVector(position),
+            cgaGeometricSpace.EncodeVGa.Vector(position),
             directionVectors
                 .Select(v => v.ToXGaVector(cgaGeometricSpace.Processor))
                 .Op(cgaGeometricSpace.Processor)
@@ -709,43 +708,43 @@ public static class CGaFlatComposerUtils
     public static CGaFlat<T> DefineFlatFromPoints<T>(this CGaGeometricSpace<T> cgaGeometricSpace, Scalar<T> weight, params LinVector2D<T>[] egaPoints)
     {
         return cgaGeometricSpace
-            .EncodeOpnsFlatFromPoints(
+            .EncodeOpnsFlat.BladeFromPoints(
                 egaPoints.SelectToArray(p => p.ToXGaVector(cgaGeometricSpace.Processor))
-            ).DecodeOpnsFlat();
+            ).Decode.OpnsFlat.Element();
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static CGaFlat<T> DefineFlatFromPoints<T>(this CGaGeometricSpace<T> cgaGeometricSpace, Scalar<T> weight, params LinVector3D<T>[] egaPoints)
     {
         return cgaGeometricSpace
-            .EncodeOpnsFlatFromPoints(
+            .EncodeOpnsFlat.BladeFromPoints(
                 egaPoints.SelectToArray(p => p.ToXGaVector(cgaGeometricSpace.Processor))
-            ).DecodeOpnsFlat();
+            ).Decode.OpnsFlat.Element();
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static CGaFlat<T> DefineFlatFromPoints<T>(this CGaGeometricSpace<T> cgaGeometricSpace, Scalar<T> weight, params LinVector<T>[] egaPoints)
     {
         return cgaGeometricSpace
-            .EncodeOpnsFlatFromPoints(
+            .EncodeOpnsFlat.BladeFromPoints(
                 egaPoints.SelectToArray(p => p.ToXGaVector(cgaGeometricSpace.Processor))
             )
-            .DecodeOpnsFlat();
+            .Decode.OpnsFlat.Element();
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static CGaFlat<T> DefineFlatFromPoints<T>(this CGaGeometricSpace<T> cgaGeometricSpace, Scalar<T> weight, params XGaVector<T>[] egaPoints)
     {
         return cgaGeometricSpace
-            .EncodeOpnsFlatFromPoints(egaPoints)
-            .DecodeOpnsFlat();
+            .EncodeOpnsFlat.BladeFromPoints(egaPoints)
+            .Decode.OpnsFlat.Element();
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static CGaFlat<T> DefineFlatFromPoints<T>(this CGaGeometricSpace<T> cgaGeometricSpace, Scalar<T> weight, IReadOnlyList<XGaVector<T>> egaPoints)
     {
         return cgaGeometricSpace
-            .EncodeOpnsFlatFromPoints(egaPoints)
-            .DecodeOpnsFlat();
+            .EncodeOpnsFlat.BladeFromPoints(egaPoints)
+            .Decode.OpnsFlat.Element();
     }
 }

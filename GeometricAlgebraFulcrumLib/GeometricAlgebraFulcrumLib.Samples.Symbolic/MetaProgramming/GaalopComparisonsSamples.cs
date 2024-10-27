@@ -267,13 +267,13 @@ public static class GaalopComparisonsSamples
 
         // Encode points as IPNS null vectors
         var x1 =
-            cgaSpace.EncodeIpnsRoundPoint(a1, a2, a3).InternalVector;
+            cgaSpace.EncodeIpnsRound.Point(a1, a2, a3).InternalVector;
 
         var x2 =
-            cgaSpace.EncodeIpnsRoundPoint(b1, b2, b3).InternalVector;
+            cgaSpace.EncodeIpnsRound.Point(b1, b2, b3).InternalVector;
 
         var x3 =
-            cgaSpace.EncodeIpnsRoundPoint(c1, c2, c3).InternalVector;
+            cgaSpace.EncodeIpnsRound.Point(c1, c2, c3).InternalVector;
 
         var s1 = x1 - 0.5 * (d14 * d14) * ei;
         var s2 = x2 - 0.5 * (d24 * d24) * ei;

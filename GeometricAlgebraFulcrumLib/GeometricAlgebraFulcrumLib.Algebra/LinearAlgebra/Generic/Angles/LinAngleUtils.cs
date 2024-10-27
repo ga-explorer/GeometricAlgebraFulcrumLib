@@ -893,6 +893,63 @@ public static class LinAngleUtils
 
         return t1 / t2;
     }
+    
+    /// <summary>
+    /// Find the angle between this vector and another
+    /// </summary>
+    /// <param name="v1"></param>
+    /// <returns></returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static Scalar<T> GetAngleCosWithE1<T>(this ITriplet<Scalar<T>> v1)
+    {
+        var t1 = v1.Item1;
+
+        var t2 = (
+            v1.Item1 * v1.Item1 +
+            v1.Item2 * v1.Item2 +
+            v1.Item3 * v1.Item3
+        ).Sqrt();
+
+        return t1 / t2;
+    }
+    
+    /// <summary>
+    /// Find the angle between this vector and another
+    /// </summary>
+    /// <param name="v1"></param>
+    /// <returns></returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static Scalar<T> GetAngleCosWithE2<T>(this ITriplet<Scalar<T>> v1)
+    {
+        var t1 = v1.Item2;
+
+        var t2 = (
+            v1.Item1 * v1.Item1 +
+            v1.Item2 * v1.Item2 +
+            v1.Item3 * v1.Item3
+        ).Sqrt();
+
+        return t1 / t2;
+    }
+    
+    /// <summary>
+    /// Find the angle between this vector and another
+    /// </summary>
+    /// <param name="v1"></param>
+    /// <returns></returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static Scalar<T> GetAngleCosWithE3<T>(this ITriplet<Scalar<T>> v1)
+    {
+        var t1 = v1.Item3;
+
+        var t2 = (
+            v1.Item1 * v1.Item1 +
+            v1.Item2 * v1.Item2 +
+            v1.Item3 * v1.Item3
+        ).Sqrt();
+
+        return t1 / t2;
+    }
 
     /// <summary>
     /// Find the angle between this vector and another
@@ -1079,6 +1136,39 @@ public static class LinAngleUtils
     public static LinPolarAngle<T> GetAngleWithUnit<T>(this IPair<Scalar<T>> v1, IPair<Scalar<T>> v2)
     {
         return v1.GetAngleCosWithUnit(v2).ArcCos();
+    }
+    
+    /// <summary>
+    /// Find the angle between this vector and another
+    /// </summary>
+    /// <param name="v1"></param>
+    /// <returns></returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static LinPolarAngle<T> GetAngleWithE1<T>(this ITriplet<Scalar<T>> v1)
+    {
+        return v1.GetAngleCosWithE1().ArcCos();
+    }
+    
+    /// <summary>
+    /// Find the angle between this vector and another
+    /// </summary>
+    /// <param name="v1"></param>
+    /// <returns></returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static LinPolarAngle<T> GetAngleWithE2<T>(this ITriplet<Scalar<T>> v1)
+    {
+        return v1.GetAngleCosWithE2().ArcCos();
+    }
+    
+    /// <summary>
+    /// Find the angle between this vector and another
+    /// </summary>
+    /// <param name="v1"></param>
+    /// <returns></returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static LinPolarAngle<T> GetAngleWithE3<T>(this ITriplet<Scalar<T>> v1)
+    {
+        return v1.GetAngleCosWithE3().ArcCos();
     }
 
     /// <summary>

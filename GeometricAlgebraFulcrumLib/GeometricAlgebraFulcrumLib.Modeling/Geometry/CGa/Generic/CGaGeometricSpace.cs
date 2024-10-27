@@ -12,6 +12,7 @@ using GeometricAlgebraFulcrumLib.Algebra.Scalars.Generic;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Generic.Blades;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Generic.Encoding;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.BitManipulation;
+using GeometricAlgebraFulcrumLib.Utilities.Structures.IndexSets;
 
 namespace GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Generic;
 
@@ -214,6 +215,42 @@ public class CGaGeometricSpace<T> :
     public XGaKVector<T> IcRevKVector
         => IcRev.InternalKVector;
 
+    
+    public CGaEncoder<T> Encode { get; }
+
+    public CGaVGaEncoder<T> EncodeVGa 
+        => Encode.VGa;
+    
+    public CGaHGaEncoder<T> EncodeHGa 
+        => Encode.HGa;
+
+    public CGaPGaEncoder<T> EncodePGa 
+        => Encode.PGa;
+
+    public CGaOpnsDirectionEncoder<T> EncodeOpnsDirection 
+        => Encode.OpnsDirection;
+
+    public CGaOpnsTangentEncoder<T> EncodeOpnsTangent 
+        => Encode.OpnsTangent;
+
+    public CGaOpnsFlatEncoder<T> EncodeOpnsFlat 
+        => Encode.OpnsFlat;
+
+    public CGaOpnsRoundEncoder<T> EncodeOpnsRound 
+        => Encode.OpnsRound;
+
+    public CGaIpnsDirectionEncoder<T> EncodeIpnsDirection 
+        => Encode.IpnsDirection;
+
+    public CGaIpnsTangentEncoder<T> EncodeIpnsTangent 
+        => Encode.IpnsTangent;
+
+    public CGaIpnsFlatEncoder<T> EncodeIpnsFlat 
+        => Encode.IpnsFlat;
+
+    public CGaIpnsRoundEncoder<T> EncodeIpnsRound 
+        => Encode.IpnsRound;
+
 
     protected CGaGeometricSpace(IScalarProcessor<T> scalarProcessor, int vSpaceDimensions)
         : base(GaGeometricSpaceBasisSpecs<T>.CreateCGa(scalarProcessor, vSpaceDimensions))
@@ -256,6 +293,8 @@ public class CGaGeometricSpace<T> :
         Ic = new CGaBlade<T>(this, ConformalProcessor.KVectorTerm(VSpaceDimensions.GetRange().ToImmutableArray()));
         IcInv = Ic.Inverse();
         IcRev = Ic.Reverse();
+
+        Encode = new CGaEncoder<T>(this);
     }
 
 
@@ -373,55 +412,49 @@ public class CGaGeometricSpace<T> :
                BasisSpecs.BasisMap.OmMap(mv).Ids.All(id => !id.Contains(eoIndex));
     }
 
-
-    /// <summary>
-    /// Create a CGA 0-blade representing scalar
-    /// </summary>
-    /// <param name="s"></param>
-    /// <returns></returns>
+    
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public CGaBlade<T> EncodeScalar(int s)
+    internal XGaKVector<T> RemoveEi(XGaKVector<T> kVector)
     {
-        return new CGaBlade<T>(
-            this,
-            Processor.Scalar(s)
+        //var eiIdMask = (1UL << (VSpaceDimensions - 1)) - 1UL;
+        var eiIndex = VSpaceDimensions - 1;
+
+        var termList = 
+            BasisSpecs
+                .BasisMap
+                .OmMap(kVector)
+                .IdScalarPairs
+                .Where(term => 
+                    term.Key.Contains(eiIndex)
+                ).Select(term => 
+                    new KeyValuePair<IIndexSet, T>(
+                        term.Key.Remove(eiIndex), 
+                        term.Value
+                    )
+                );
+
+        return BasisSpecs.BasisMapInverse.OmMap(
+            ConformalProcessor
+                .CreateComposer()
+                .AddTerms(termList)
+                .GetKVector(kVector.Grade - 1)
         );
+
+        //return BasisSpecs.BasisMapInverse.OmMap(
+        //    BasisSpecs
+        //        .BasisMap
+        //        .OmMap(InternalKVector)
+        //        .MapBasisBlades(id => id.Remove(eiIndex))
+        //        .GetFirstKVectorPart()
+        //);
     }
 
-    /// <summary>
-    /// Create a CGA 0-blade representing scalar
-    /// </summary>
-    /// <param name="s"></param>
-    /// <returns></returns>
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public CGaBlade<T> EncodeScalar(Scalar<T> s)
-    {
-        return new CGaBlade<T>(
-            this,
-            Processor.Scalar(s)
-        );
-    }
-
-    /// <summary>
-    /// Create a CGA 0-blade representing scalar
-    /// </summary>
-    /// <param name="s"></param>
-    /// <returns></returns>
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public CGaBlade<T> EncodeScalar(T s)
-    {
-        return new CGaBlade<T>(
-            this,
-            Processor.Scalar(s)
-        );
-    }
-
-
+    
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public string ToLaTeX(LinVector2D<T> vector)
     {
         return BasisSpecs.ToLaTeX(
-            this.EncodeVGaVector(vector).InternalKVector
+            Encode.VGa.Vector(vector).InternalKVector
         );
     }
 
@@ -429,7 +462,7 @@ public class CGaGeometricSpace<T> :
     public string ToLaTeX(LinVector3D<T> vector)
     {
         return BasisSpecs.ToLaTeX(
-            this.EncodeVGaVector(vector).InternalKVector
+            Encode.VGa.Vector(vector).InternalKVector
         );
     }
 
@@ -445,7 +478,7 @@ public class CGaGeometricSpace<T> :
     public string ToLaTeX(LinBivector2D<T> vector)
     {
         return BasisSpecs.ToLaTeX(
-            this.EncodeVGaBivector(vector).InternalKVector
+            Encode.VGa.Bivector(vector).InternalKVector
         );
     }
 
@@ -453,7 +486,7 @@ public class CGaGeometricSpace<T> :
     public string ToLaTeX(LinBivector3D<T> vector)
     {
         return BasisSpecs.ToLaTeX(
-            this.EncodeVGaBivector(vector).InternalKVector
+            Encode.VGa.Bivector(vector).InternalKVector
         );
     }
 
@@ -461,7 +494,7 @@ public class CGaGeometricSpace<T> :
     public string ToLaTeX(LinTrivector3D<T> vector)
     {
         return BasisSpecs.ToLaTeX(
-            this.EncodeVGaTrivector(vector.Scalar123).InternalKVector
+            Encode.VGa.Trivector(vector.Scalar123).InternalKVector
         );
     }
 }

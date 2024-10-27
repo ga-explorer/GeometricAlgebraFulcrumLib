@@ -14,6 +14,56 @@ public static class LinVector3DComposerUtils
         return LinVector3D<T>.Create(scalarProcessor, x, y, z);
     }
 
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static LinVector3D<T> Vector3D<T>(this IScalarProcessor<T> scalarProcessor, IScalar<T> x, IScalar<T> y, IScalar<T> z)
+    {
+        return LinVector3D<T>.Create(x, y, z);
+    }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static LinVector3D<T> ZeroVector3D<T>(this IScalarProcessor<T> scalarProcessor)
+    {
+        return LinVector3D<T>.Create(
+            scalarProcessor, 
+            scalarProcessor.ZeroValue, 
+            scalarProcessor.ZeroValue, 
+            scalarProcessor.ZeroValue
+        );
+    }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static LinVector3D<T> E1Vector3D<T>(this IScalarProcessor<T> scalarProcessor, IScalar<T> scalingFactor)
+    {
+        return LinVector3D<T>.Create(
+            scalarProcessor, 
+            scalingFactor.ScalarValue,
+            scalarProcessor.ZeroValue, 
+            scalarProcessor.ZeroValue
+        );
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static LinVector3D<T> E2Vector3D<T>(this IScalarProcessor<T> scalarProcessor, IScalar<T> scalingFactor)
+    {
+        return LinVector3D<T>.Create(
+            scalarProcessor, 
+            scalarProcessor.ZeroValue, 
+            scalingFactor.ScalarValue,
+            scalarProcessor.ZeroValue
+        );
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static LinVector3D<T> E3Vector3D<T>(this IScalarProcessor<T> scalarProcessor, IScalar<T> scalingFactor)
+    {
+        return LinVector3D<T>.Create(
+            scalarProcessor, 
+            scalarProcessor.ZeroValue, 
+            scalarProcessor.ZeroValue, 
+            scalingFactor.ScalarValue
+        );
+    }
+
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static LinVector3DComposer<T> ToComposer<T>(this ITriplet<Scalar<T>> mv)

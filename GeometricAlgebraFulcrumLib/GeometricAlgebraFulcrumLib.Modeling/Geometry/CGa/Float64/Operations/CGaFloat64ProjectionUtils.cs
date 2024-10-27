@@ -4,7 +4,6 @@ using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Float64.Mul
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space2D;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space3D;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Float64.Blades;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Float64.Decoding;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Float64.Elements;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.Parametric.Float64.Space2D.Curves;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.Parametric.Float64.Space3D.Curves;
@@ -18,7 +17,7 @@ public static class CGaFloat64ProjectionUtils
     {
         return element1.EncodeOpnsBlade()
             .ProjectOpnsOn(element2.EncodeOpnsBlade())
-            .DecodeOpnsElement();
+            .Decode.OpnsElement();
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -58,7 +57,7 @@ public static class CGaFloat64ProjectionUtils
         return element
             .PositionToOpnsFlatPoint()
             .ProjectOpnsOn(flat.EncodeOpnsBlade())
-            .DecodeOpnsFlatVGaPosition();
+            .Decode.OpnsFlat.VGaPosition();
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -67,7 +66,7 @@ public static class CGaFloat64ProjectionUtils
         return element
             .PositionToOpnsFlatPoint()
             .ProjectOpnsOn(flat.EncodeOpnsBlade())
-            .DecodeOpnsFlatVGaPosition2D();
+            .DecodeOpnsFlat.VGaPosition2D();
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -76,7 +75,7 @@ public static class CGaFloat64ProjectionUtils
         return element
             .PositionToOpnsFlatPoint()
             .ProjectOpnsOn(flat.EncodeOpnsBlade())
-            .DecodeOpnsFlatVGaPosition3D();
+            .DecodeOpnsFlat.VGaPosition3D();
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]

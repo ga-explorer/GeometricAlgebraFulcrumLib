@@ -24,7 +24,7 @@ public abstract class RGaEuclideanGeometrySpace :
 
 
     protected RGaEuclideanGeometrySpace(int vSpaceDimensions)
-        : base(GaFloat64GeometricSpaceBasisSpecs.CreateEGa(vSpaceDimensions))
+        : base(GaFloat64GeometricSpaceBasisSpecs.CreateVGa(vSpaceDimensions))
     {
         if (vSpaceDimensions < 2)
             throw new ArgumentOutOfRangeException(nameof(vSpaceDimensions));

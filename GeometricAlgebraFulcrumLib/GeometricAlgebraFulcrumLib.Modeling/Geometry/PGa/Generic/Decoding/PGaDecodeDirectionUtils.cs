@@ -35,7 +35,7 @@ public static class PGaDecodeDirectionUtils
     public static PGaElement<T> DecodeDirection<T>(this PGaBlade<T> pgaDirection)
     {
         return pgaDirection.DecodeDirection(
-            pgaDirection.Geometry.ZeroVectorBlade
+            pgaDirection.GeometricSpace.ZeroVectorBlade
         );
     }
 
@@ -43,7 +43,7 @@ public static class PGaDecodeDirectionUtils
     public static PGaElement<T> DecodeDirection<T>(this PGaBlade<T> pgaDirection, LinVector2D<T> egaProbePoint)
     {
         return pgaDirection.DecodeDirection(
-            pgaDirection.Geometry.EncodeVGaVector(egaProbePoint)
+            pgaDirection.GeometricSpace.EncodeVGaVector(egaProbePoint)
         );
     }
 
@@ -51,7 +51,7 @@ public static class PGaDecodeDirectionUtils
     public static PGaElement<T> DecodeDirection<T>(this PGaBlade<T> pgaDirection, LinVector3D<T> egaProbePoint)
     {
         return pgaDirection.DecodeDirection(
-            pgaDirection.Geometry.EncodeVGaVector(egaProbePoint)
+            pgaDirection.GeometricSpace.EncodeVGaVector(egaProbePoint)
         );
     }
 
@@ -59,7 +59,7 @@ public static class PGaDecodeDirectionUtils
     public static PGaElement<T> DecodeDirection<T>(this PGaBlade<T> pgaDirection, LinVector<T> egaProbePoint)
     {
         return pgaDirection.DecodeDirection(
-            pgaDirection.Geometry.EncodeVGaVector(egaProbePoint)
+            pgaDirection.GeometricSpace.EncodeVGaVector(egaProbePoint)
         );
     }
 
@@ -95,7 +95,7 @@ public static class PGaDecodeDirectionUtils
     //    return XGaProjectiveParametricElement<T>.Create(
     //        blade.Specs,
     //        blade.ParameterRange,
-    //        t => blade.GetBlade(t).DecodeOpnsDirection()
+    //        t => blade.GetBlade(t).DecodeOpnsDirection.Element()
     //    );
     //}
 
@@ -108,7 +108,7 @@ public static class PGaDecodeDirectionUtils
     //    return XGaProjectiveParametricElement<T>.Create(
     //        blade.Specs,
     //        blade.ParameterRange,
-    //        t => blade.GetBlade(t).DecodeOpnsDirection()
+    //        t => blade.GetBlade(t).DecodeOpnsDirection.Element()
     //    );
     //}
 
@@ -121,7 +121,7 @@ public static class PGaDecodeDirectionUtils
     //    return XGaProjectiveParametricElement<T>.Create(
     //        blade.Specs,
     //        blade.ParameterRange,
-    //        t => blade.GetBlade(t).DecodeOpnsDirection(
+    //        t => blade.GetBlade(t).DecodeOpnsDirection.Element(
     //            egaProbePoint.GetPoint(t).EncodeVGaVectorBlade(blade.ProjectiveSpace)
     //        )
     //    );
@@ -136,7 +136,7 @@ public static class PGaDecodeDirectionUtils
     //    return XGaProjectiveParametricElement<T>.Create(
     //        blade.Specs,
     //        blade.ParameterRange,
-    //        t => blade.GetBlade(t).DecodeOpnsDirection(
+    //        t => blade.GetBlade(t).DecodeOpnsDirection.Element(
     //            egaProbePoint.GetPoint(t).EncodeVGaVectorBlade(blade.ProjectiveSpace)
     //        )
     //    );

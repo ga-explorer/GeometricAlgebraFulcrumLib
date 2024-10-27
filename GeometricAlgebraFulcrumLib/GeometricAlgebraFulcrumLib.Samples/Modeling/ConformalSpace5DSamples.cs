@@ -2,8 +2,6 @@
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Generic.Vectors.Space3D;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Generic;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Generic;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Generic.Decoding;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Generic.Encoding;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Generic.Operations;
 
 namespace GeometricAlgebraFulcrumLib.Samples.Modeling
@@ -21,10 +19,10 @@ namespace GeometricAlgebraFulcrumLib.Samples.Modeling
             var cga = CGaGeometricSpace5D<double>.Create(scalarProcessor);
 
             // Encode 4 points as CGA null vectors
-            var a = cga.EncodeIpnsRoundPoint(3.5, 4.3, 2.6);
-            var b = cga.EncodeIpnsRoundPoint(-2.1, 3.4, 5);
-            var c = cga.EncodeIpnsRoundPoint(7.4, -1.5, -4.5);
-            var d = cga.EncodeIpnsRoundPoint(3, -2, 5);
+            var a = cga.EncodeIpnsRound.Point(3.5, 4.3, 2.6);
+            var b = cga.EncodeIpnsRound.Point(-2.1, 3.4, 5);
+            var c = cga.EncodeIpnsRound.Point(7.4, -1.5, -4.5);
+            var d = cga.EncodeIpnsRound.Point(3, -2, 5);
 
             // Use the outer product to define the OPNS blade encoding a
             // sphere passing through points a,b,c
@@ -32,7 +30,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.Modeling
 
             // Encode a line passing through a point parallel to
             // a direction vector
-            var line = cga.EncodeOpnsFlatLine(
+            var line = cga.EncodeOpnsFlat.Line(
                 scalarProcessor.Vector3D(3.5, 4.3, 2.6),
                 scalarProcessor.Vector3D(1, 1, 1)
             );
@@ -42,7 +40,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.Modeling
 
             // Decode the circle to separate its individual Euclidean
             // geometric components
-            var circleComponents = circle.DecodeOpnsRound();
+            var circleComponents = circle.Decode.OpnsRound.Element();
 
             // Center of circle:
             var center = circleComponents.CenterToVector3D();

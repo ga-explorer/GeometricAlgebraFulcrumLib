@@ -1,11 +1,12 @@
-﻿using System.Text;
+﻿using System.Diagnostics;
+using System.Text;
 using GeometricAlgebraFulcrumLib.Utilities.Text.Text.Markdown.Tables;
 
 namespace GeometricAlgebraFulcrumLib.Utilities.Text.Text.Markdown;
 
 public static class MarkdownUtils
 {
-    public static string MarkdownHeader(this string text, int level = 1)
+    public static string ToMarkdownHeader(this string text, int level = 1)
     {
         if (string.IsNullOrEmpty(text)) return "# ";
 
@@ -21,7 +22,7 @@ public static class MarkdownUtils
             .ToString();
     }
 
-    public static string MarkdownUnderlinedHeader(this string text, int level = 1)
+    public static string ToMarkdownUnderlinedHeader(this string text, int level = 1)
     {
         if (string.IsNullOrEmpty(text)) return "";
 
@@ -36,7 +37,7 @@ public static class MarkdownUtils
             .ToString();
     }
 
-    public static string MarkdownEmphasis(this string text, bool asterisks = false)
+    public static string ToMarkdownEmphasis(this string text, bool asterisks = false)
     {
         if (string.IsNullOrEmpty(text)) return "";
 
@@ -49,7 +50,7 @@ public static class MarkdownUtils
             .ToString();
     }
 
-    public static string MarkdownStrongEmphasis(this string text, bool asterisks = false)
+    public static string ToMarkdownStrongEmphasis(this string text, bool asterisks = false)
     {
         if (string.IsNullOrEmpty(text)) return "";
 
@@ -64,7 +65,7 @@ public static class MarkdownUtils
             .ToString();
     }
 
-    public static string MarkdownStrikethrough(this string text)
+    public static string ToMarkdownStrikethrough(this string text)
     {
         if (string.IsNullOrEmpty(text)) return "";
 
@@ -79,7 +80,7 @@ public static class MarkdownUtils
             .ToString();
     }
 
-    public static string MarkdownInlineLink(this string text, string url, string title = "")
+    public static string ToMarkdownInlineLink(this string text, string url, string title = "")
     {
         if (string.IsNullOrEmpty(text) || string.IsNullOrEmpty(url)) return "";
 
@@ -99,7 +100,7 @@ public static class MarkdownUtils
         return s.ToString();
     }
 
-    public static string MarkdownInlineImage(this string text, string url, string title = "")
+    public static string ToMarkdownInlineImage(this string text, string url, string title = "")
     {
         if (string.IsNullOrEmpty(text) || string.IsNullOrEmpty(url)) return "";
 
@@ -120,7 +121,7 @@ public static class MarkdownUtils
         return s.ToString();
     }
 
-    public static string MarkdownReferenceLink(this string text, string refText)
+    public static string ToMarkdownReferenceLink(this string text, string refText)
     {
         if (string.IsNullOrEmpty(text) || string.IsNullOrEmpty(refText)) return "";
 
@@ -134,7 +135,7 @@ public static class MarkdownUtils
             .ToString();
     }
 
-    public static string MarkdownReferenceLink(this string text, int refNumber)
+    public static string ToMarkdownReferenceLink(this string text, int refNumber)
     {
         if (string.IsNullOrEmpty(text)) return "";
 
@@ -148,7 +149,7 @@ public static class MarkdownUtils
             .ToString();
     }
 
-    public static string MarkdownReferenceLink(this string refText)
+    public static string ToMarkdownReferenceLink(this string refText)
     {
         if (string.IsNullOrEmpty(refText)) return "";
 
@@ -159,7 +160,7 @@ public static class MarkdownUtils
             .ToString();
     }
 
-    public static string MarkdownReferenceImage(this string text, string refText)
+    public static string ToMarkdownReferenceImage(this string text, string refText)
     {
         if (string.IsNullOrEmpty(text) || string.IsNullOrEmpty(refText)) return "";
 
@@ -174,7 +175,7 @@ public static class MarkdownUtils
             .ToString();
     }
 
-    public static string MarkdownReferenceImage(this string text, int refNumber)
+    public static string ToMarkdownReferenceImage(this string text, int refNumber)
     {
         if (string.IsNullOrEmpty(text)) return "";
 
@@ -189,7 +190,7 @@ public static class MarkdownUtils
             .ToString();
     }
 
-    public static string MarkdownUrl(this string url)
+    public static string ToMarkdownUrl(this string url)
     {
         if (string.IsNullOrEmpty(url)) return "";
 
@@ -200,7 +201,7 @@ public static class MarkdownUtils
             .ToString();
     }
 
-    public static string MarkdownReference(this string refText, string url, string title = "")
+    public static string ToMarkdownReference(this string refText, string url, string title = "")
     {
         if (string.IsNullOrEmpty(refText) || string.IsNullOrEmpty(url)) return "";
 
@@ -219,7 +220,7 @@ public static class MarkdownUtils
         return s.ToString();
     }
 
-    public static string MarkdownInlineCode(this string codeText, bool addSpaces = false)
+    public static string ToMarkdownInlineCode(this string codeText, bool addSpaces = false)
     {
         if (string.IsNullOrEmpty(codeText)) return "";
 
@@ -230,7 +231,7 @@ public static class MarkdownUtils
             .ToString();
     }
 
-    public static string MarkdownBlockCode(this string codeText, string langName = "")
+    public static string ToMarkdownBlockCode(this string codeText, string langName = "")
     {
         if (string.IsNullOrEmpty(codeText)) return "";
 
@@ -242,7 +243,7 @@ public static class MarkdownUtils
             .ToString();
     }
 
-    public static string MarkdownBlockquote(this string text)
+    public static string ToMarkdownBlockquote(this string text)
     {
         if (string.IsNullOrEmpty(text)) return "> ";
 
@@ -252,7 +253,7 @@ public static class MarkdownUtils
             .ToString();
     }
 
-    public static string MarkdownHorizontalRule(int n = 3)
+    public static string ToMarkdownHorizontalRule(int n = 3)
     {
         if (n < 3) n = 3;
 
@@ -261,7 +262,7 @@ public static class MarkdownUtils
             .ToString();
     }
 
-    public static string MarkdownHorizontalRule_Hyphens(int n = 3)
+    public static string ToMarkdownHorizontalRule_Hyphens(int n = 3)
     {
         if (n < 3) n = 3;
 
@@ -270,7 +271,7 @@ public static class MarkdownUtils
             .ToString();
     }
 
-    public static string MarkdownHorizontalRule_Asterisks(int n = 3)
+    public static string ToMarkdownHorizontalRule_Asterisks(int n = 3)
     {
         if (n < 3) n = 3;
 
@@ -279,7 +280,7 @@ public static class MarkdownUtils
             .ToString();
     }
 
-    public static string MarkdownHorizontalRule_Underscores(int n = 3)
+    public static string ToMarkdownHorizontalRule_Underscores(int n = 3)
     {
         if (n < 3) n = 3;
 
@@ -299,7 +300,7 @@ public static class MarkdownUtils
             var column = table.AddColumn(c.ToString());
 
             for (var r = 0; r < rowCount; r++)
-                column.Add(items[r, c].ToString());
+                column.Add(items[r, c]?.ToString() ?? string.Empty);
         }
 
         return table;
@@ -313,7 +314,7 @@ public static class MarkdownUtils
         var column = table.AddColumn("0");
 
         for (var r = 0; r < rowCount; r++)
-            column.Add(items[r].ToString());
+            column.Add(items[r]?.ToString() ?? string.Empty);
 
         return table;
     }
@@ -321,7 +322,7 @@ public static class MarkdownUtils
     public static MarkdownTable ToMarkdownTable<T>(this IEnumerable<T> items, bool useAsColumnTitles)
     {
         var table = new MarkdownTable();
-        var itemsText = items.Select(r => r.ToString()).ToArray();
+        var itemsText = items.Select(r => r?.ToString() ?? string.Empty).ToArray();
 
         if (useAsColumnTitles)
         {
@@ -332,6 +333,41 @@ public static class MarkdownUtils
 
         var column = table.AddColumn("0");
         column.AddRange(itemsText);
+
+        return table;
+    }
+
+    public static MarkdownTable MapToMarkdownTable<T>(this IReadOnlyList<T> rowItems, IReadOnlyList<string> columnHeaders, IReadOnlyList<Func<T, string>> mappingFunctions)
+    {
+        Debug.Assert(
+            columnHeaders.Count == mappingFunctions.Count
+        );
+
+        var table = new MarkdownTable();
+
+        var rowCount = rowItems.Count;
+        var colCount = Math.Min(columnHeaders.Count, mappingFunctions.Count);
+
+        for (var j = 0; j < colCount; j++)
+        {
+            var colHeader = columnHeaders[j];
+            var mappingFunc = mappingFunctions[j];
+
+            var column = table.AddColumn(
+                $"column{j}", 
+                MarkdownTableColumnAlignment.Center, 
+                colHeader
+            );
+
+            for (var i = 0; i < rowCount; i++)
+            {
+                var rowItem = rowItems[i];
+
+                column.Add(
+                    mappingFunc(rowItem)
+                );
+            }
+        }
 
         return table;
     }

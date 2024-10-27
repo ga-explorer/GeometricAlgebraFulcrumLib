@@ -4,7 +4,6 @@ using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space3D;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Float64;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Float64.Elements;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Float64.Encoding;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Float64.Interpolation;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Float64.Operations;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Float64.Visualizer;
@@ -81,16 +80,16 @@ public static class CGa5DVisualizationSamples
     /// </summary>
     public static void StaticFlatsExample()
     {
-        var flatPoint = CGa.EncodeOpnsFlatPoint(
+        var flatPoint = CGa.Encode.OpnsFlat.Point(
             LinFloat64Vector3D.Create(4, 4, 4)
         );
 
-        var flatLine = CGa.EncodeOpnsFlatLine(
+        var flatLine = CGa.Encode.OpnsFlat.Line(
             LinFloat64Vector3D.Create(1, 1, 1),
             LinFloat64Vector3D.Create(1, 1, 1).GetNormal()
         );
 
-        var flatPlane = CGa.EncodeOpnsFlatPlane(
+        var flatPlane = CGa.Encode.OpnsFlat.Plane(
             3,
             LinFloat64Vector3D.Create(1, 1, 1).Negative()
         );
@@ -121,23 +120,23 @@ public static class CGa5DVisualizationSamples
     public static void StaticRoundsExample()
     {
         var roundPoint =
-            CGa.EncodeIpnsRoundPoint(4, 4, 4);
+            CGa.Encode.IpnsRound.Point(4, 4, 4);
 
         var roundPointPair =
-            CGa.EncodeOpnsRoundPointPair(
+            CGa.Encode.OpnsRound.PointPair(
                 LinFloat64Vector3D.Create(3, 3, 3),
                 LinFloat64Vector3D.Create(-4, 4, -4).GetNormal()
             );
 
         var roundCircle =
-            CGa.EncodeIpnsRoundCircle(
+            CGa.Encode.IpnsRound.Circle(
                 4,
                 LinFloat64Vector3D.Create(-2, -2, -2),
                 LinFloat64Vector3D.Create(1, 1, 1)
             ).CGaUnDual();
 
         var roundSphere =
-            CGa.EncodeIpnsRoundSphere(
+            CGa.Encode.IpnsRound.Sphere(
                 4,
                 LinFloat64Vector3D.Create(-5, -5, -5)
             ).CGaUnDual();

@@ -1,6 +1,5 @@
 ﻿using System.Runtime.CompilerServices;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Generic.Blades;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Generic.Decoding;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Generic.Elements;
 
 namespace GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Generic.Operations;
@@ -13,7 +12,7 @@ public static class CGaReflectionUtils
         return element1
             .EncodeOpnsBlade()
             .ReflectOpnsOn(element2.EncodeOpnsBlade())
-            .DecodeOpnsElement();
+            .Decode.OpnsElement();
     }
 
     //[MethodImpl(MethodImplOptions.AggressiveInlining)]

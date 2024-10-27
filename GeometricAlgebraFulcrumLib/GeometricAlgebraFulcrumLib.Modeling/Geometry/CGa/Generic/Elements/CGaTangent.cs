@@ -4,7 +4,6 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Generic;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Generic.Blades;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Generic.Decoding;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Generic.Operations;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.BitManipulation;
 
@@ -98,7 +97,7 @@ public class CGaTangent<T> :
             .AppendLine($"   Unit Direction Grade: ${Direction.Grade}$")
             .AppendLine($"   Unit Direction: ${Direction.ToLaTeX()}$")
             .AppendLine($"   Unit Direction Normal: ${NormalDirection.ToLaTeX()}$")
-            .AppendLine($"   Position: ${Position.DecodeVGaVector3D()}$")
+            .AppendLine($"   Position: ${Position.Decode.VGaDirection.Vector3D()}$")
             .AppendLine($"   OPNS Blade: ${EncodeOpnsBlade().ToLaTeX()}$")
             .AppendLine($"   IPNS Blade: ${EncodeIpnsBlade().ToLaTeX()}$")
             .ToString();

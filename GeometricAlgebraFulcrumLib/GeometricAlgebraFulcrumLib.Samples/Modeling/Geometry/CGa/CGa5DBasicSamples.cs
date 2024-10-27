@@ -1,9 +1,8 @@
 ﻿using System;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space3D;
+using GeometricAlgebraFulcrumLib.Modeling.Geometry;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Float64;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Float64.Blades;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Float64.Decoding;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Float64.Encoding;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Float64.Operations;
 
 namespace GeometricAlgebraFulcrumLib.Samples.Modeling.Geometry.CGa;
@@ -59,22 +58,44 @@ public static class CGa5DBasicSamples
 
         Console.WriteLine();
     }
+    
+    
+    public static void BasisInfoTableExample()
+    {
+        var cgaBasisSpecs = GaFloat64GeometricSpaceBasisSpecs.CreateCGa(5);
 
+        var basisInfoTable = cgaBasisSpecs.GetBasisInfoMarkdownTable();
+
+        Console.WriteLine(basisInfoTable);
+        Console.WriteLine();
+    }
+
+    public static void ProductTablesExample()
+    {
+        var cgaBasisSpecs = GaFloat64GeometricSpaceBasisSpecs.CreateVGa(4);
+
+        var gpTable = cgaBasisSpecs.GetBasisMapMarkdownTable(
+            (a, b) => a.Cp(b)
+        );
+
+        Console.WriteLine(gpTable);
+        Console.WriteLine();
+    }
 
     public static void TranslationExamples()
     {
         var ga = CGaFloat64GeometricSpace5D.Instance;
 
         var point1 =
-            ga.EncodeIpnsRoundPoint(-1.4, 2.4, 5.2);
+            ga.Encode.IpnsRound.Point(-1.4, 2.4, 5.2);
 
         var point2 =
             point1.TranslateBy(
                 LinFloat64Vector3D.Create(1, -2, -5)
             );
 
-        Console.WriteLine($"${point1.DecodeIpnsHyperSphereVGaCenter().ToLaTeX()}$");
-        Console.WriteLine($"${point2.DecodeIpnsHyperSphereVGaCenter().ToLaTeX()}$");
+        Console.WriteLine($"${point1.DecodeIpnsRound.HyperSphereVGaCenter().ToLaTeX()}$");
+        Console.WriteLine($"${point2.DecodeIpnsRound.HyperSphereVGaCenter().ToLaTeX()}$");
         Console.WriteLine();
     }
 
@@ -90,7 +111,7 @@ public static class CGa5DBasicSamples
 
         var ga = CGaFloat64GeometricSpace5D.Instance;
 
-        var cgaScalar = ga.EncodeScalar(2.5);
+        var cgaScalar = ga.Encode.Scalar(2.5);
 
         Console.WriteLine("Original Scalar: 2.5");
         Console.WriteLine($"Encoded Scalar : {cgaScalar}");
@@ -98,24 +119,24 @@ public static class CGa5DBasicSamples
         Console.WriteLine();
 
         var cgaVector =
-            ga.EncodeVGaVector(-1.3, 2.8, 1.4);
+            ga.Encode.VGa.Vector(-1.3, 2.8, 1.4);
 
         Console.WriteLine("Original Vector: (-1.3)<1> + (2.8)<2> + (1.4)<3>");
         Console.WriteLine($"Encoded Vector : {cgaVector}");
-        Console.WriteLine($"Decoded Vector : {cgaVector.DecodeVGaVector3D()}");
+        Console.WriteLine($"Decoded Vector : {cgaVector.DecodeVGaDirection.Vector3D()}");
         Console.WriteLine();
 
         var cgaBivector =
-            ga.EncodeVGaBivector(-3.4, -1.4, 2.5);
+            ga.Encode.VGa.Bivector(-3.4, -1.4, 2.5);
 
         Console.WriteLine("Original Bivector: (-3.4)<1,2> + (-1.4)<1,3> + (2.5)<2,3>");
         Console.WriteLine($"Encoded Bivector : {cgaBivector}");
-        Console.WriteLine($"Decoded Bivector : {cgaBivector.DecodeVGaBivector3D()}");
+        Console.WriteLine($"Decoded Bivector : {cgaBivector.DecodeVGaDirection.Bivector3D()}");
         Console.WriteLine();
 
-        var cgaPoint = 3.7 * ga.EncodeIpnsRoundPoint(-1.3, 2.8, 1.4);
-        var (w1, p1) = cgaPoint.DecodeIpnsSphereWeightVGaCenter3D();
-        var point = cgaPoint.DecodeIpnsHyperSphereVGaCenter();
+        var cgaPoint = 3.7 * ga.Encode.IpnsRound.Point(-1.3, 2.8, 1.4);
+        var (w1, p1) = cgaPoint.DecodeIpnsRound.SphereWeightVGaCenter3D();
+        var point = cgaPoint.DecodeIpnsRound.HyperSphereVGaCenter();
 
         Console.WriteLine("Original Point: Weight: 3.7, Position: (-1.3)<1> + (2.8)<2> + (1.4)<3>");
         Console.WriteLine($"Encoded Point : {cgaPoint}");
@@ -123,9 +144,9 @@ public static class CGa5DBasicSamples
         Console.WriteLine($"Decoded Weighted Point: Weight: {w1:G10}, Position: {p1}");
         Console.WriteLine();
 
-        var cgaSphere = 2.4 * ga.EncodeIpnsRealRoundSphere(4, -1.3, 2.8, 1.4);
+        var cgaSphere = 2.4 * ga.Encode.IpnsRound.RealSphere(4, -1.3, 2.8, 1.4);
         //var sphere = ga.DecodeIpnsSphere3D(cgaSphere);
-        var sphere = cgaSphere.DecodeIpnsRound();
+        var sphere = cgaSphere.DecodeIpnsRound.Element();
 
         Console.WriteLine("Original Sphere: Weight: 2.4, Radius: 4, Center: (-1.3, 2.8, 1.4)");
         Console.WriteLine($"Encoded Sphere: {cgaSphere}");
@@ -133,15 +154,15 @@ public static class CGa5DBasicSamples
         Console.WriteLine();
 
         var n = LinFloat64Vector3D.CreateUnitVector(-1.2, -3.4, 1.4);
-        var cgaPlane = -4.1 * ga.EncodeIpnsFlatPlane(3.5, n);
-        var plane = cgaPlane.DecodeIpnsPlane3D();
+        var cgaPlane = -4.1 * ga.Encode.IpnsFlat.Plane(3.5, n);
+        var plane = cgaPlane.DecodeIpnsFlat.Plane3D();
 
         Console.WriteLine($"Original Plane: Weight: -4.1, Distance: 3.5, Unit Normal: {n}");
         Console.WriteLine($"Encoded Plane : {cgaPlane}");
         Console.WriteLine($"Decoded Weighted Plane: Weight: {plane.Weight:G10}, Distance: {plane.OriginToHyperPlaneDistance:G10}, Normal: {plane.NormalDirectionToVector3D()}");
         Console.WriteLine();
 
-        var cgaLine = ga.EncodeIpnsFlatLine(
+        var cgaLine = ga.Encode.IpnsFlat.Line(
             LinFloat64Vector3D.Create(-1.2, -3.4, 1.4),
             LinFloat64Vector3D.Create(-1, 1, 1)
         );
@@ -166,7 +187,7 @@ public static class CGa5DBasicSamples
         // Encode the real sphere passing through the 4 points as a
         // OPNS blade
         var opnsSphere1 =
-            ga.EncodeOpnsRoundSphere(p1, p2, p3, p4);
+            ga.Encode.OpnsRound.Sphere(p1, p2, p3, p4);
 
         // Convert the OPNS blade into IPNS vector
         var ipnsSphere1 =
@@ -174,7 +195,7 @@ public static class CGa5DBasicSamples
 
         // Decode the sphere parameters of the IPNS
         var sphere1 =
-            ipnsSphere1.DecodeIpnsSphere3D();
+            ipnsSphere1.DecodeIpnsRound.Sphere3D();
 
         Console.WriteLine($"OPNS Sphere: {opnsSphere1}");
         Console.WriteLine($"IPNS Sphere: {ipnsSphere1}");
@@ -219,23 +240,23 @@ public static class CGa5DBasicSamples
         var p3 = LinFloat64Vector3D.Create(0, 0, -1);
 
         // Encode a point as a PGA blade
-        var pgaPoint = ga.EncodePGaPoint(p);
+        var pgaPoint = ga.Encode.PGa.Point(p);
 
         // Encode a line passing through two points as a PGA blade
         var pgaLine =
-            ga.EncodePGaLineFromPoints(p, p2);
+            ga.Encode.PGa.LineFromPoints(p, p2);
 
         // Encode a plane passing through three points as a PGA blade
         var pgaPlane =
-            ga.EncodePGaPlaneFromPoints(p1, p2, p3);
+            ga.Encode.PGa.PlaneFromPoints(p1, p2, p3);
 
         // Encode a real sphere as an IPNS CGA vector
         var ipnsSphere =
-            ga.EncodeIpnsRealRoundSphere(0.25, 1, 0.5, 0);
+            ga.Encode.IpnsRound.RealSphere(0.25, 1, 0.5, 0);
 
         // PGA Intersection of line and plane
         var pgaLinePlaneIntersection =
-            pgaLine.MeetPGa(pgaPlane).DecodePGaPoint3D();
+            pgaLine.MeetPGa(pgaPlane).DecodePGaFlat.Point3D();
 
         // PGA Projection of point on plane
         var pgaPointOnPlaneProjection =

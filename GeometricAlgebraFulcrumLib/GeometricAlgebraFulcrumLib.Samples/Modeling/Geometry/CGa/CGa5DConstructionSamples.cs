@@ -4,9 +4,7 @@ using System.Linq;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space3D;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Float64;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Float64.Decoding;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Float64.Elements;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Float64.Encoding;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Float64.Interpolation;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Float64.Operations;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.Parametric.Float64.Space1D.Scalars;
@@ -26,13 +24,13 @@ public static class CGa5DConstructionSamples
     public static void Example1()
     {
         // Encode a point-pair OPNS blade
-        var pointPair1Blade = Ga.EncodeOpnsRoundPointPair(
+        var pointPair1Blade = Ga.Encode.OpnsRound.PointPair(
             LinFloat64Vector3D.Create(1, 2, 1),
             LinFloat64Vector3D.Create(-1, 0, 2)
         );
 
         // Encode a flat point OPNS blade
-        var point1Blade = Ga.EncodeOpnsFlatPoint(
+        var point1Blade = Ga.Encode.OpnsFlat.Point(
             LinFloat64Vector3D.Create(3, -2, 3)
         );
 
@@ -50,9 +48,9 @@ public static class CGa5DConstructionSamples
         var pointPair2Blade =
             pointPair1Blade.ReflectOpnsOnIpns(point1Blade);
 
-        Console.WriteLine(pointPair1Blade.DecodeOpnsRound());
-        Console.WriteLine(pointPair2Blade.DecodeOpnsRound());
-        Console.WriteLine(bivector1.DecodeOpnsElement());
+        Console.WriteLine(pointPair1Blade.DecodeOpnsRound.Element());
+        Console.WriteLine(pointPair2Blade.DecodeOpnsRound.Element());
+        Console.WriteLine(bivector1.Decode.OpnsElement());
     }
 
 

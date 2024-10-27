@@ -3,9 +3,7 @@ using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Angles;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space2D;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space3D;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Float64.Blades;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Float64.Decoding;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Float64.Elements;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Float64.Encoding;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.Parametric.Float64.Space1D.Angles;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.Parametric.Float64.Space2D.Curves;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.Parametric.Float64.Space3D.Curves;
@@ -20,7 +18,7 @@ public static class CGaFloat64RotationUtils
         return element
             .EncodeOpnsBlade()
             .RotateUsing(angle, egaAxisPoint)
-            .DecodeOpnsElement();
+            .Decode.OpnsElement();
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -29,7 +27,7 @@ public static class CGaFloat64RotationUtils
         return element
             .EncodeOpnsBlade()
             .RotateUsing(angle, egaAxisPoint, egaAxisVector)
-            .DecodeOpnsElement();
+            .Decode.OpnsElement();
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -190,7 +188,7 @@ public static class CGaFloat64RotationUtils
         return element
             .EncodeOpnsBlade()
             .RotateUsing(angle, egaAxisPoint)
-            .DecodeOpnsDirection();
+            .DecodeOpnsDirection.Element();
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -199,7 +197,7 @@ public static class CGaFloat64RotationUtils
         return element
             .EncodeOpnsBlade()
             .RotateUsing(angle, egaAxisPoint, egaAxisVector)
-            .DecodeOpnsDirection();
+            .DecodeOpnsDirection.Element();
     }
 
 
@@ -209,7 +207,7 @@ public static class CGaFloat64RotationUtils
         return element
             .EncodeOpnsBlade()
             .RotateUsing(angle, egaAxisPoint)
-            .DecodeOpnsTangent();
+            .DecodeOpnsTangent.Element();
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -218,7 +216,7 @@ public static class CGaFloat64RotationUtils
         return element
             .EncodeOpnsBlade()
             .RotateUsing(angle, egaAxisPoint, egaAxisVector)
-            .DecodeOpnsTangent();
+            .DecodeOpnsTangent.Element();
     }
 
 
@@ -228,7 +226,7 @@ public static class CGaFloat64RotationUtils
         return element
             .EncodeOpnsBlade()
             .RotateUsing(angle, egaAxisPoint)
-            .DecodeOpnsFlat();
+            .DecodeOpnsFlat.Element();
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -237,7 +235,7 @@ public static class CGaFloat64RotationUtils
         return element
             .EncodeOpnsBlade()
             .RotateUsing(angle, egaAxisPoint, egaAxisVector)
-            .DecodeOpnsFlat();
+            .DecodeOpnsFlat.Element();
     }
 
 
@@ -247,7 +245,7 @@ public static class CGaFloat64RotationUtils
         return element
             .EncodeOpnsBlade()
             .RotateUsing(angle, egaAxisPoint)
-            .DecodeOpnsRound();
+            .DecodeOpnsRound.Element();
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -256,14 +254,14 @@ public static class CGaFloat64RotationUtils
         return element
             .EncodeOpnsBlade()
             .RotateUsing(angle, egaAxisPoint, egaAxisVector)
-            .DecodeOpnsRound();
+            .DecodeOpnsRound.Element();
     }
 
 
     public static CGaFloat64Blade RotateUsing(this CGaFloat64Blade blade, LinFloat64Angle angle, LinFloat64Vector2D egaAxisPoint)
     {
         var bivector =
-            blade.GeometricSpace.EncodeIpnsFlatPoint(
+            blade.GeometricSpace.EncodeIpnsFlat.Point(
                 egaAxisPoint
             ).InternalBivector;
 
@@ -284,7 +282,7 @@ public static class CGaFloat64RotationUtils
     public static CGaFloat64Blade RotateUsing(this CGaFloat64Blade blade, LinFloat64Angle angle, LinFloat64Vector3D egaAxisPoint, LinFloat64Vector3D egaAxisVector)
     {
         var bivector =
-            blade.GeometricSpace.EncodeIpnsFlatLine(
+            blade.GeometricSpace.EncodeIpnsFlat.Line(
                 egaAxisPoint,
                 egaAxisVector
             ).InternalBivector;

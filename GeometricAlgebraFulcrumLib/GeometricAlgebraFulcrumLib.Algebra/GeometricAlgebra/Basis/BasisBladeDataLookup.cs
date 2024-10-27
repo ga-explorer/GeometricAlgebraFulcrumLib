@@ -1,6 +1,7 @@
 ﻿using System.Numerics;
 using System.Runtime.CompilerServices;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Records;
+using GeometricAlgebraFulcrumLib.Utilities.Structures;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Basic;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.BitManipulation;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Combinations;
@@ -15,7 +16,7 @@ public static class BasisBladeDataLookup
 
 
     public static uint MaxVSpaceDimension { get; } 
-        = 13;
+        = 12;
 
     public static ulong MaxGaSpaceDimension { get; } 
         = 1U << (int) MaxVSpaceDimension;
@@ -77,12 +78,25 @@ public static class BasisBladeDataLookup
 
     static BasisBladeDataLookup()
     {
+        Console.WriteLine("Initializing GA lookup tables ..");
+
+        var dataSize = 0L;
+
         BasisBladeDataArray = new BasisBladeData[MaxGaSpaceDimension];
         BasisBladeDataGradedArray = new BasisBladeData[MaxVSpaceDimension + 1][];
+
+        dataSize = BasisBladeDataArray.SizeInBytes();
 
         GenerateBasisBladeData();
             
         GenerateVectorKVectorOpIndexLookupTables();
+
+        dataSize += BasisBladeDataGradedArray.SizeInBytes();
+
+        dataSize += VectorKVectorOpIndexLookupTables.SizeInBytes();
+
+        Console.WriteLine($"GA lookup tables size: {dataSize:N0} bytes");
+        Console.WriteLine();
     }
         
 

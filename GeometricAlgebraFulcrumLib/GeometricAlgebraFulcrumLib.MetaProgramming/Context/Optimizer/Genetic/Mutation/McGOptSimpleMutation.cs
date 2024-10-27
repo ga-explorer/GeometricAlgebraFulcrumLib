@@ -132,7 +132,7 @@ public sealed class McGOptSimpleMutation :
     private static void MutateInPlace(McGOptParameters parameters, MetaContext newContext)
     {
         var intermediateVariableList =
-            newContext.GetIntermediateVariables().ToList();
+            newContext.GetIntermediateVariablesList();
 
         var n = intermediateVariableList.Count;
 
@@ -140,34 +140,33 @@ public sealed class McGOptSimpleMutation :
             throw new InvalidOperationException();
 
         // Select a random intermediate variable and remove it
-        var index = parameters.GetRandomIndex(n);
-        var intermediateVariable = intermediateVariableList[index];
+        var varIndex = 
+            parameters.GetRandomIndex(n);
 
-        //newContext.RemoveIntermediateVariable(intermediateVariable);
+        var varIndexSet =
+            intermediateVariableList.GetIntermediateDependencyIndexSet(varIndex, 2);
 
-        // Initialize a list of intermediate variables with the selected one
-        var intermediateVariableSet = new HashSet<IMetaExpressionVariableComputed>()
-        {
-            intermediateVariable
-        };
+        newContext.RemoveIntermediateVariables(varIndexSet);
 
-        // Add all intermediate variables that directly depend on the selected one
-        // to the list
-        intermediateVariableSet.AddRange(
-            intermediateVariableSet.SelectMany(
-                v => v.DirectDependingIntermediateVariables
-            ).ToImmutableArray()
-        );
+        //var intermediateVariable = intermediateVariableList[index];
 
+        //// Initialize a list of intermediate variables with the selected one
+        //var intermediateVariableSet = new HashSet<IMetaExpressionVariableComputed>()
+        //{
+        //    intermediateVariable
+        //};
+        
+        //// Add all intermediate variables that directly depend on the selected one
+        //// to the list
         //intermediateVariableSet.AddRange(
         //    intermediateVariableSet.SelectMany(
         //        v => v.DirectDependingIntermediateVariables
         //    ).ToImmutableArray()
         //);
-
-        // Remove all selected intermediate variables in the list from the context
-        foreach (var ivar in intermediateVariableSet)
-            newContext.RemoveIntermediateVariable(ivar);
+        
+        //// Remove all selected intermediate variables in the list from the context
+        //foreach (var ivar in intermediateVariableSet)
+        //    newContext.RemoveIntermediateVariable(ivar);
     }
 
     public override MetaContext ApplyMutation(McGOptParameters parameters, MetaContext context)

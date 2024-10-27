@@ -5,7 +5,6 @@ using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space2D;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space3D;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.SpaceND;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Float64.Blades;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Float64.Decoding;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Float64.Encoding;
 
 namespace GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Float64.Elements;
@@ -19,8 +18,8 @@ public static class CGaFloat64RoundComposerUtils
             cgaGeometricSpace,
             1,
             0,
-            cgaGeometricSpace.EncodeVGaVector(centerY, centerY),
-            cgaGeometricSpace.EncodeScalar(1)
+            cgaGeometricSpace.Encode.VGa.Vector(centerY, centerY),
+            cgaGeometricSpace.Encode.Scalar(1)
         );
     }
 
@@ -31,8 +30,8 @@ public static class CGaFloat64RoundComposerUtils
             cgaGeometricSpace,
             1,
             0,
-            cgaGeometricSpace.EncodeVGaVector(center),
-            cgaGeometricSpace.EncodeScalar(1)
+            cgaGeometricSpace.Encode.VGa.Vector(center),
+            cgaGeometricSpace.Encode.Scalar(1)
         );
     }
 
@@ -43,8 +42,8 @@ public static class CGaFloat64RoundComposerUtils
             cgaGeometricSpace,
             1,
             0,
-            cgaGeometricSpace.EncodeVGaVector(centerY, centerY, centerZ),
-            cgaGeometricSpace.EncodeScalar(1)
+            cgaGeometricSpace.Encode.VGa.Vector(centerY, centerY, centerZ),
+            cgaGeometricSpace.Encode.Scalar(1)
         );
     }
 
@@ -55,8 +54,8 @@ public static class CGaFloat64RoundComposerUtils
             cgaGeometricSpace,
             1,
             0,
-            cgaGeometricSpace.EncodeVGaVector(center),
-            cgaGeometricSpace.EncodeScalar(1)
+            cgaGeometricSpace.Encode.VGa.Vector(center),
+            cgaGeometricSpace.Encode.Scalar(1)
         );
     }
 
@@ -67,8 +66,8 @@ public static class CGaFloat64RoundComposerUtils
             cgaGeometricSpace,
             1,
             0,
-            cgaGeometricSpace.EncodeVGaVector(center),
-            cgaGeometricSpace.EncodeScalar(1)
+            cgaGeometricSpace.Encode.VGa.Vector(center),
+            cgaGeometricSpace.Encode.Scalar(1)
         );
     }
 
@@ -79,8 +78,8 @@ public static class CGaFloat64RoundComposerUtils
             cgaGeometricSpace,
             1,
             0,
-            cgaGeometricSpace.EncodeVGaVector(center),
-            cgaGeometricSpace.EncodeScalar(direction)
+            cgaGeometricSpace.Encode.VGa.Vector(center),
+            cgaGeometricSpace.Encode.Scalar(direction)
         );
     }
 
@@ -92,8 +91,8 @@ public static class CGaFloat64RoundComposerUtils
             cgaGeometricSpace,
             weight,
             0,
-            cgaGeometricSpace.EncodeVGaVector(center),
-            cgaGeometricSpace.EncodeScalar(1)
+            cgaGeometricSpace.Encode.VGa.Vector(center),
+            cgaGeometricSpace.Encode.Scalar(1)
         );
     }
 
@@ -104,8 +103,8 @@ public static class CGaFloat64RoundComposerUtils
             cgaGeometricSpace,
             weight,
             0,
-            cgaGeometricSpace.EncodeVGaVector(center),
-            cgaGeometricSpace.EncodeScalar(1)
+            cgaGeometricSpace.Encode.VGa.Vector(center),
+            cgaGeometricSpace.Encode.Scalar(1)
         );
     }
 
@@ -116,8 +115,8 @@ public static class CGaFloat64RoundComposerUtils
             cgaGeometricSpace,
             weight,
             0,
-            cgaGeometricSpace.EncodeVGaVector(center),
-            cgaGeometricSpace.EncodeScalar(1)
+            cgaGeometricSpace.Encode.VGa.Vector(center),
+            cgaGeometricSpace.Encode.Scalar(1)
         );
     }
 
@@ -128,8 +127,8 @@ public static class CGaFloat64RoundComposerUtils
             cgaGeometricSpace,
             weight,
             0,
-            cgaGeometricSpace.EncodeVGaVector(center),
-            cgaGeometricSpace.EncodeScalar(direction)
+            cgaGeometricSpace.Encode.VGa.Vector(center),
+            cgaGeometricSpace.Encode.Scalar(direction)
         );
     }
 
@@ -141,8 +140,8 @@ public static class CGaFloat64RoundComposerUtils
             cgaGeometricSpace,
             1,
             radiusSquared,
-            cgaGeometricSpace.EncodeVGaVector(center),
-            cgaGeometricSpace.EncodeVGaVector(direction)
+            cgaGeometricSpace.Encode.VGa.Vector(center),
+            cgaGeometricSpace.Encode.VGa.Vector(direction)
         );
     }
 
@@ -153,8 +152,8 @@ public static class CGaFloat64RoundComposerUtils
             cgaGeometricSpace,
             1,
             radiusSquared,
-            cgaGeometricSpace.EncodeVGaVector(center),
-            cgaGeometricSpace.EncodeVGaVector(direction)
+            cgaGeometricSpace.Encode.VGa.Vector(center),
+            cgaGeometricSpace.Encode.VGa.Vector(direction)
         );
     }
 
@@ -165,8 +164,8 @@ public static class CGaFloat64RoundComposerUtils
             cgaGeometricSpace,
             1,
             radiusSquared,
-            cgaGeometricSpace.EncodeVGaVector(center),
-            cgaGeometricSpace.EncodeVGaVector(direction)
+            cgaGeometricSpace.Encode.VGa.Vector(center),
+            cgaGeometricSpace.Encode.VGa.Vector(direction)
         );
     }
 
@@ -177,8 +176,8 @@ public static class CGaFloat64RoundComposerUtils
             cgaGeometricSpace,
             1,
             radiusSquared,
-            cgaGeometricSpace.EncodeVGaVector(center),
-            cgaGeometricSpace.EncodeVGaVector(direction)
+            cgaGeometricSpace.Encode.VGa.Vector(center),
+            cgaGeometricSpace.Encode.VGa.Vector(direction)
         );
     }
 
@@ -190,8 +189,8 @@ public static class CGaFloat64RoundComposerUtils
             cgaGeometricSpace,
             weight,
             radiusSquared,
-            cgaGeometricSpace.EncodeVGaVector(center),
-            cgaGeometricSpace.EncodeVGaVector(direction)
+            cgaGeometricSpace.Encode.VGa.Vector(center),
+            cgaGeometricSpace.Encode.VGa.Vector(direction)
         );
     }
 
@@ -202,8 +201,8 @@ public static class CGaFloat64RoundComposerUtils
             cgaGeometricSpace,
             weight,
             radiusSquared,
-            cgaGeometricSpace.EncodeVGaVector(center),
-            cgaGeometricSpace.EncodeVGaVector(direction)
+            cgaGeometricSpace.Encode.VGa.Vector(center),
+            cgaGeometricSpace.Encode.VGa.Vector(direction)
         );
     }
 
@@ -214,8 +213,8 @@ public static class CGaFloat64RoundComposerUtils
             cgaGeometricSpace,
             weight,
             radiusSquared,
-            cgaGeometricSpace.EncodeVGaVector(center),
-            cgaGeometricSpace.EncodeVGaVector(direction)
+            cgaGeometricSpace.Encode.VGa.Vector(center),
+            cgaGeometricSpace.Encode.VGa.Vector(direction)
         );
     }
 
@@ -226,8 +225,8 @@ public static class CGaFloat64RoundComposerUtils
             cgaGeometricSpace,
             weight,
             radiusSquared,
-            cgaGeometricSpace.EncodeVGaVector(center),
-            cgaGeometricSpace.EncodeVGaVector(direction)
+            cgaGeometricSpace.Encode.VGa.Vector(center),
+            cgaGeometricSpace.Encode.VGa.Vector(direction)
         );
     }
 
@@ -239,8 +238,8 @@ public static class CGaFloat64RoundComposerUtils
             cgaGeometricSpace,
             1,
             radiusSquared,
-            cgaGeometricSpace.EncodeVGaVector(center),
-            cgaGeometricSpace.EncodeVGaBivector(1)
+            cgaGeometricSpace.Encode.VGa.Vector(center),
+            cgaGeometricSpace.Encode.VGa.Bivector(1)
         );
     }
 
@@ -251,8 +250,8 @@ public static class CGaFloat64RoundComposerUtils
             cgaGeometricSpace,
             1,
             radiusSquared,
-            cgaGeometricSpace.EncodeVGaVector(center),
-            cgaGeometricSpace.EncodeVGaBivector(direction)
+            cgaGeometricSpace.Encode.VGa.Vector(center),
+            cgaGeometricSpace.Encode.VGa.Bivector(direction)
         );
     }
 
@@ -264,8 +263,8 @@ public static class CGaFloat64RoundComposerUtils
             cgaGeometricSpace,
             weight,
             radiusSquared,
-            cgaGeometricSpace.EncodeVGaVector(center),
-            cgaGeometricSpace.EncodeVGaBivector(normalDirection.NormalToUnitDirection3D())
+            cgaGeometricSpace.Encode.VGa.Vector(center),
+            cgaGeometricSpace.Encode.VGa.Bivector(normalDirection.NormalToUnitDirection3D())
         );
     }
 
@@ -276,8 +275,8 @@ public static class CGaFloat64RoundComposerUtils
             cgaGeometricSpace,
             weight,
             radiusSquared,
-            cgaGeometricSpace.EncodeVGaVector(center),
-            cgaGeometricSpace.EncodeVGaBivector(1)
+            cgaGeometricSpace.Encode.VGa.Vector(center),
+            cgaGeometricSpace.Encode.VGa.Bivector(1)
         );
     }
 
@@ -288,8 +287,8 @@ public static class CGaFloat64RoundComposerUtils
             cgaGeometricSpace,
             weight,
             radiusSquared,
-            cgaGeometricSpace.EncodeVGaVector(center),
-            cgaGeometricSpace.EncodeVGaBivector(direction)
+            cgaGeometricSpace.Encode.VGa.Vector(center),
+            cgaGeometricSpace.Encode.VGa.Bivector(direction)
         );
     }
 
@@ -301,8 +300,8 @@ public static class CGaFloat64RoundComposerUtils
             cgaGeometricSpace,
             1,
             radiusSquared,
-            cgaGeometricSpace.EncodeVGaVector(center),
-            cgaGeometricSpace.EncodeVGaBivector(normalDirection.NormalToUnitDirection3D())
+            cgaGeometricSpace.Encode.VGa.Vector(center),
+            cgaGeometricSpace.Encode.VGa.Bivector(normalDirection.NormalToUnitDirection3D())
         );
     }
 
@@ -313,8 +312,8 @@ public static class CGaFloat64RoundComposerUtils
             cgaGeometricSpace,
             1,
             radiusSquared,
-            cgaGeometricSpace.EncodeVGaVector(center),
-            cgaGeometricSpace.EncodeVGaBivector(direction)
+            cgaGeometricSpace.Encode.VGa.Vector(center),
+            cgaGeometricSpace.Encode.VGa.Bivector(direction)
         );
     }
 
@@ -325,8 +324,8 @@ public static class CGaFloat64RoundComposerUtils
             cgaGeometricSpace,
             1,
             radiusSquared,
-            cgaGeometricSpace.EncodeVGaVector(center),
-            cgaGeometricSpace.EncodeVGaBivector(direction)
+            cgaGeometricSpace.Encode.VGa.Vector(center),
+            cgaGeometricSpace.Encode.VGa.Bivector(direction)
         );
     }
 
@@ -338,8 +337,8 @@ public static class CGaFloat64RoundComposerUtils
             cgaGeometricSpace,
             weight,
             radiusSquared,
-            cgaGeometricSpace.EncodeVGaVector(center),
-            cgaGeometricSpace.EncodeVGaBivector(direction)
+            cgaGeometricSpace.Encode.VGa.Vector(center),
+            cgaGeometricSpace.Encode.VGa.Bivector(direction)
         );
     }
 
@@ -350,8 +349,8 @@ public static class CGaFloat64RoundComposerUtils
             cgaGeometricSpace,
             weight,
             radiusSquared,
-            cgaGeometricSpace.EncodeVGaVector(center),
-            cgaGeometricSpace.EncodeVGaBivector(direction)
+            cgaGeometricSpace.Encode.VGa.Vector(center),
+            cgaGeometricSpace.Encode.VGa.Bivector(direction)
         );
     }
 
@@ -363,8 +362,8 @@ public static class CGaFloat64RoundComposerUtils
             cgaGeometricSpace,
             1,
             radiusSquared,
-            cgaGeometricSpace.EncodeVGaVector(center),
-            cgaGeometricSpace.EncodeVGaTrivector(1)
+            cgaGeometricSpace.Encode.VGa.Vector(center),
+            cgaGeometricSpace.Encode.VGa.Trivector(1)
         );
     }
 
@@ -375,8 +374,8 @@ public static class CGaFloat64RoundComposerUtils
             cgaGeometricSpace,
             1,
             radiusSquared,
-            cgaGeometricSpace.EncodeVGaVector(center),
-            cgaGeometricSpace.EncodeVGaTrivector(direction)
+            cgaGeometricSpace.Encode.VGa.Vector(center),
+            cgaGeometricSpace.Encode.VGa.Trivector(direction)
         );
     }
 
@@ -388,8 +387,8 @@ public static class CGaFloat64RoundComposerUtils
             cgaGeometricSpace,
             weight,
             radiusSquared,
-            cgaGeometricSpace.EncodeVGaVector(center),
-            cgaGeometricSpace.EncodeVGaTrivector(1)
+            cgaGeometricSpace.Encode.VGa.Vector(center),
+            cgaGeometricSpace.Encode.VGa.Trivector(1)
         );
     }
 
@@ -400,8 +399,8 @@ public static class CGaFloat64RoundComposerUtils
             cgaGeometricSpace,
             weight,
             radiusSquared,
-            cgaGeometricSpace.EncodeVGaVector(center),
-            cgaGeometricSpace.EncodeVGaTrivector(direction)
+            cgaGeometricSpace.Encode.VGa.Vector(center),
+            cgaGeometricSpace.Encode.VGa.Trivector(direction)
         );
     }
 
@@ -413,8 +412,8 @@ public static class CGaFloat64RoundComposerUtils
             cgaGeometricSpace,
             1,
             radiusSquared,
-            cgaGeometricSpace.EncodeVGaVector(center),
-            cgaGeometricSpace.EncodeVGaBlade(direction)
+            cgaGeometricSpace.Encode.VGa.Vector(center),
+            cgaGeometricSpace.Encode.VGa.Blade(direction)
         );
     }
 
@@ -438,8 +437,8 @@ public static class CGaFloat64RoundComposerUtils
             cgaGeometricSpace,
             weight,
             radiusSquared,
-            cgaGeometricSpace.EncodeVGaVector(center),
-            cgaGeometricSpace.EncodeVGaBlade(direction)
+            cgaGeometricSpace.Encode.VGa.Vector(center),
+            cgaGeometricSpace.Encode.VGa.Blade(direction)
         );
     }
 
@@ -462,7 +461,7 @@ public static class CGaFloat64RoundComposerUtils
         return cgaGeometricSpace.DefineRound(
             1,
             radiusSquared,
-            cgaGeometricSpace.EncodeVGaVector(center),
+            cgaGeometricSpace.Encode.VGa.Vector(center),
             directionVectors
                 .Select(v => v.ToRGaFloat64Vector())
                 .Op(cgaGeometricSpace.Processor)
@@ -476,7 +475,7 @@ public static class CGaFloat64RoundComposerUtils
         return cgaGeometricSpace.DefineRound(
             1,
             radiusSquared,
-            cgaGeometricSpace.EncodeVGaVector(center),
+            cgaGeometricSpace.Encode.VGa.Vector(center),
             directionVectors
                 .Select(v => v.ToRGaFloat64Vector())
                 .Op(cgaGeometricSpace.Processor)
@@ -490,7 +489,7 @@ public static class CGaFloat64RoundComposerUtils
         return cgaGeometricSpace.DefineRound(
             1,
             radiusSquared,
-            cgaGeometricSpace.EncodeVGaVector(center),
+            cgaGeometricSpace.Encode.VGa.Vector(center),
             directionVectors
                 .Select(v => v.ToRGaFloat64Vector())
                 .Op(cgaGeometricSpace.Processor)
@@ -527,7 +526,7 @@ public static class CGaFloat64RoundComposerUtils
         return cgaGeometricSpace.DefineRound(
             weight,
             radiusSquared,
-            cgaGeometricSpace.EncodeVGaVector(center),
+            cgaGeometricSpace.Encode.VGa.Vector(center),
             directionVectors
                 .Select(v => v.ToRGaFloat64Vector())
                 .Op(cgaGeometricSpace.Processor)
@@ -541,7 +540,7 @@ public static class CGaFloat64RoundComposerUtils
         return cgaGeometricSpace.DefineRound(
             weight,
             radiusSquared,
-            cgaGeometricSpace.EncodeVGaVector(center),
+            cgaGeometricSpace.Encode.VGa.Vector(center),
             directionVectors
                 .Select(v => v.ToRGaFloat64Vector())
                 .Op(cgaGeometricSpace.Processor)
@@ -555,7 +554,7 @@ public static class CGaFloat64RoundComposerUtils
         return cgaGeometricSpace.DefineRound(
             weight,
             radiusSquared,
-            cgaGeometricSpace.EncodeVGaVector(center),
+            cgaGeometricSpace.Encode.VGa.Vector(center),
             directionVectors
                 .Select(v => v.ToRGaFloat64Vector())
                 .Op(cgaGeometricSpace.Processor)
@@ -591,10 +590,10 @@ public static class CGaFloat64RoundComposerUtils
     {
         var kVector =
             egaPoints.Select(p =>
-                cgaGeometricSpace.EncodeIpnsRoundPoint(p).InternalVector
+                cgaGeometricSpace.Encode.IpnsRound.Point(p).InternalVector
             ).Op(cgaGeometricSpace.Processor);
 
-        return kVector.EncodeVGaBlade(cgaGeometricSpace).DecodeOpnsRound();
+        return kVector.EncodeVGaBlade(cgaGeometricSpace).DecodeOpnsRound.Element();
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -602,10 +601,10 @@ public static class CGaFloat64RoundComposerUtils
     {
         var kVector =
             egaPoints.Select(p =>
-                cgaGeometricSpace.EncodeIpnsRoundPoint(p).InternalVector
+                cgaGeometricSpace.Encode.IpnsRound.Point(p).InternalVector
             ).Op(cgaGeometricSpace.Processor);
 
-        return kVector.EncodeVGaBlade(cgaGeometricSpace).DecodeOpnsRound();
+        return kVector.EncodeVGaBlade(cgaGeometricSpace).DecodeOpnsRound.Element();
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -613,10 +612,10 @@ public static class CGaFloat64RoundComposerUtils
     {
         var kVector =
             egaPoints.Select(p =>
-                cgaGeometricSpace.EncodeIpnsRoundPoint(p).InternalVector
+                cgaGeometricSpace.Encode.IpnsRound.Point(p).InternalVector
             ).Op(cgaGeometricSpace.Processor);
 
-        return kVector.EncodeVGaBlade(cgaGeometricSpace).DecodeOpnsRound();
+        return kVector.EncodeVGaBlade(cgaGeometricSpace).DecodeOpnsRound.Element();
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -624,10 +623,10 @@ public static class CGaFloat64RoundComposerUtils
     {
         var kVector =
             egaPoints.Select(p =>
-                cgaGeometricSpace.EncodeIpnsRoundPoint(p).InternalVector
+                cgaGeometricSpace.Encode.IpnsRound.Point(p).InternalVector
             ).Op(cgaGeometricSpace.Processor);
 
-        return kVector.EncodeVGaBlade(cgaGeometricSpace).DecodeOpnsRound();
+        return kVector.EncodeVGaBlade(cgaGeometricSpace).DecodeOpnsRound.Element();
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -635,10 +634,10 @@ public static class CGaFloat64RoundComposerUtils
     {
         var kVector =
             egaPoints.Select(p =>
-                cgaGeometricSpace.EncodeIpnsRoundPoint(p).InternalVector
+                cgaGeometricSpace.Encode.IpnsRound.Point(p).InternalVector
             ).Op(cgaGeometricSpace.Processor);
 
-        return kVector.EncodeVGaBlade(cgaGeometricSpace).DecodeOpnsRound();
+        return kVector.EncodeVGaBlade(cgaGeometricSpace).DecodeOpnsRound.Element();
     }
 
 
@@ -647,10 +646,10 @@ public static class CGaFloat64RoundComposerUtils
     {
         var kVector =
             weight * egaPoints.Select(p =>
-                cgaGeometricSpace.EncodeIpnsRoundPoint(p).InternalVector
+                cgaGeometricSpace.Encode.IpnsRound.Point(p).InternalVector
             ).Op(cgaGeometricSpace.Processor);
 
-        return kVector.EncodeVGaBlade(cgaGeometricSpace).DecodeOpnsRound();
+        return kVector.EncodeVGaBlade(cgaGeometricSpace).DecodeOpnsRound.Element();
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -658,10 +657,10 @@ public static class CGaFloat64RoundComposerUtils
     {
         var kVector =
             weight * egaPoints.Select(p =>
-                cgaGeometricSpace.EncodeIpnsRoundPoint(p).InternalVector
+                cgaGeometricSpace.Encode.IpnsRound.Point(p).InternalVector
             ).Op(cgaGeometricSpace.Processor);
 
-        return kVector.EncodeVGaBlade(cgaGeometricSpace).DecodeOpnsRound();
+        return kVector.EncodeVGaBlade(cgaGeometricSpace).DecodeOpnsRound.Element();
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -669,10 +668,10 @@ public static class CGaFloat64RoundComposerUtils
     {
         var kVector =
             weight * egaPoints.Select(p =>
-                cgaGeometricSpace.EncodeIpnsRoundPoint(p).InternalVector
+                cgaGeometricSpace.Encode.IpnsRound.Point(p).InternalVector
             ).Op(cgaGeometricSpace.Processor);
 
-        return kVector.EncodeVGaBlade(cgaGeometricSpace).DecodeOpnsRound();
+        return kVector.EncodeVGaBlade(cgaGeometricSpace).DecodeOpnsRound.Element();
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -680,10 +679,10 @@ public static class CGaFloat64RoundComposerUtils
     {
         var kVector =
             weight * egaPoints.Select(p =>
-                cgaGeometricSpace.EncodeIpnsRoundPoint(p).InternalVector
+                cgaGeometricSpace.Encode.IpnsRound.Point(p).InternalVector
             ).Op(cgaGeometricSpace.Processor);
 
-        return kVector.EncodeVGaBlade(cgaGeometricSpace).DecodeOpnsRound();
+        return kVector.EncodeVGaBlade(cgaGeometricSpace).DecodeOpnsRound.Element();
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -691,10 +690,10 @@ public static class CGaFloat64RoundComposerUtils
     {
         var kVector =
             weight * egaPoints.Select(p =>
-                cgaGeometricSpace.EncodeIpnsRoundPoint(p).InternalVector
+                cgaGeometricSpace.Encode.IpnsRound.Point(p).InternalVector
             ).Op(cgaGeometricSpace.Processor);
 
-        return kVector.EncodeVGaBlade(cgaGeometricSpace).DecodeOpnsRound();
+        return kVector.EncodeVGaBlade(cgaGeometricSpace).DecodeOpnsRound.Element();
     }
 
 }

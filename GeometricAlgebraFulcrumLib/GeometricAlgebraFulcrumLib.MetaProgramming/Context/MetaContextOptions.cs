@@ -76,6 +76,7 @@ public sealed class MetaContextOptions
         = false;
 
     public bool AllowGenerateComments { get; set; }
+        = true;
 
     public bool AllowGenerateCode { get; set; }
         = true;

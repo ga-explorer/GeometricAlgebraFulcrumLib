@@ -723,7 +723,7 @@ namespace GeometricAlgebraFulcrumLib.Benchmarks.Comparisons
         }
 
 
-        public static void TriangleInterpolationGaFuL(LinFloat64Vector3D p1, LinFloat64Vector3D p2, LinFloat64Vector3D p3, double t, double[] AI, double[] At, double[] BI, double[] Bt, double[] CI, double[] Ct)
+        public static void ReconstructMotorGaFuL(LinFloat64Vector3D p1, LinFloat64Vector3D p2, LinFloat64Vector3D p3, double t, double[] AI, double[] At, double[] BI, double[] Bt, double[] CI, double[] Ct)
         {
             var ax = p1.X.ScalarValue;
             var ay = p1.Y.ScalarValue;
@@ -1292,7 +1292,7 @@ namespace GeometricAlgebraFulcrumLib.Benchmarks.Comparisons
 
         }
 
-        public static void TriangleInterpolationGaalop(LinFloat64Vector3D p1, LinFloat64Vector3D p2, LinFloat64Vector3D p3, double t, double[] AI, double[] At, double[] BI, double[] Bt, double[] CI, double[] Ct)
+        public static void ReconstructMotorGaalop(LinFloat64Vector3D p1, LinFloat64Vector3D p2, LinFloat64Vector3D p3, double t, double[] AI, double[] At, double[] BI, double[] Bt, double[] CI, double[] Ct)
         {
             var ax = p1.X.ScalarValue;
             var ay = p1.Y.ScalarValue;
@@ -2561,11 +2561,11 @@ namespace GeometricAlgebraFulcrumLib.Benchmarks.Comparisons
 
 
         [Benchmark]
-        public void TriangleInterpolationGaFuL()
+        public void ReconstructMotorGaFuL()
         {
             for (var i = 0; i < Count; i++)
             {
-                TriangleInterpolationGaFuL(
+                ReconstructMotorGaFuL(
                     Point1Array[i],
                     Point2Array[i],
                     Point3Array[i],
@@ -2581,11 +2581,11 @@ namespace GeometricAlgebraFulcrumLib.Benchmarks.Comparisons
         }
 
         [Benchmark]
-        public void TriangleInterpolationGaalop()
+        public void ReconstructMotorGaalop()
         {
             for (var i = 0; i < Count; i++)
             {
-                TriangleInterpolationGaalop(
+                ReconstructMotorGaalop(
                     Point1Array[i],
                     Point2Array[i],
                     Point3Array[i],

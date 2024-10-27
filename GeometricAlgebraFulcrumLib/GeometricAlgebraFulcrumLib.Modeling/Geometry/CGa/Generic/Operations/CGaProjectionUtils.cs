@@ -5,7 +5,6 @@ using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Generic.Vectors.Space2D;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Generic.Vectors.Space3D;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Generic;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Generic.Blades;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Generic.Decoding;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Generic.Elements;
 
 namespace GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Generic.Operations;
@@ -17,7 +16,7 @@ public static class CGaProjectionUtils
     {
         return element1.EncodeOpnsBlade()
             .ProjectOpnsOn(element2.EncodeOpnsBlade())
-            .DecodeOpnsElement();
+            .Decode.OpnsElement();
     }
 
     //[MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -57,7 +56,7 @@ public static class CGaProjectionUtils
         return element
             .PositionToOpnsFlatPoint()
             .ProjectOpnsOn(flat.EncodeOpnsBlade())
-            .DecodeOpnsFlatVGaPosition();
+            .Decode.OpnsFlat.VGaPosition();
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -66,7 +65,7 @@ public static class CGaProjectionUtils
         return element
             .PositionToOpnsFlatPoint()
             .ProjectOpnsOn(flat.EncodeOpnsBlade())
-            .DecodeOpnsFlatVGaPosition2D();
+            .Decode.OpnsFlat.VGaPositionAsVector2D();
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -75,7 +74,7 @@ public static class CGaProjectionUtils
         return element
             .PositionToOpnsFlatPoint()
             .ProjectOpnsOn(flat.EncodeOpnsBlade())
-            .DecodeOpnsFlatVGaPosition3D();
+            .Decode.OpnsFlat.VGaPositionAsVector3D();
     }
 
     //[MethodImpl(MethodImplOptions.AggressiveInlining)]

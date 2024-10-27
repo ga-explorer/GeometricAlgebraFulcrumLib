@@ -15,10 +15,10 @@ public static class PGaDecodeElementUtils
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static PGaElement<T> DecodeLine2D<T>(this PGaBlade<T> pgaElement)
     {
-        Debug.Assert(pgaElement.Geometry.Is3D);
+        Debug.Assert(pgaElement.GeometricSpace.Is3D);
 
         return pgaElement.DecodeHyperPlane(
-            pgaElement.Geometry.ZeroVectorBlade
+            pgaElement.GeometricSpace.ZeroVectorBlade
         );
     }
 
@@ -26,17 +26,17 @@ public static class PGaDecodeElementUtils
     public static PGaElement<T> DecodeLine2D<T>(this PGaBlade<T> pgaElement, LinVector2D<T> egaProbePoint)
     {
         return pgaElement.DecodeHyperPlane(
-            pgaElement.Geometry.EncodeVGaVector(egaProbePoint)
+            pgaElement.GeometricSpace.EncodeVGaVector(egaProbePoint)
         );
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static PGaElement<T> DecodePlane3D<T>(this PGaBlade<T> pgaElement)
     {
-        Debug.Assert(pgaElement.Geometry.Is4D);
+        Debug.Assert(pgaElement.GeometricSpace.Is4D);
 
         return pgaElement.DecodeHyperPlane(
-            pgaElement.Geometry.ZeroVectorBlade
+            pgaElement.GeometricSpace.ZeroVectorBlade
         );
     }
 
@@ -44,7 +44,7 @@ public static class PGaDecodeElementUtils
     public static PGaElement<T> DecodePlane3D<T>(this PGaBlade<T> pgaElement, LinVector3D<T> egaProbePoint)
     {
         return pgaElement.DecodeHyperPlane(
-            pgaElement.Geometry.EncodeVGaVector(egaProbePoint)
+            pgaElement.GeometricSpace.EncodeVGaVector(egaProbePoint)
         );
     }
 
@@ -52,7 +52,7 @@ public static class PGaDecodeElementUtils
     public static PGaElement<T> DecodeHyperPlane<T>(this PGaBlade<T> pgaElement)
     {
         return pgaElement.DecodeHyperPlane(
-            pgaElement.Geometry.ZeroVectorBlade
+            pgaElement.GeometricSpace.ZeroVectorBlade
         );
     }
 
@@ -67,7 +67,7 @@ public static class PGaDecodeElementUtils
     public static PGaElement<T> DecodeElement<T>(this PGaBlade<T> pgaElement, LinVector2D<T> egaProbePoint)
     {
         return pgaElement.DecodeElement(
-            pgaElement.Geometry.EncodeVGaVector(egaProbePoint)
+            pgaElement.GeometricSpace.EncodeVGaVector(egaProbePoint)
         );
     }
 
@@ -75,7 +75,7 @@ public static class PGaDecodeElementUtils
     public static PGaElement<T> DecodeElement<T>(this PGaBlade<T> pgaElement, LinVector3D<T> egaProbePoint)
     {
         return pgaElement.DecodeElement(
-            pgaElement.Geometry.EncodeVGaVector(egaProbePoint)
+            pgaElement.GeometricSpace.EncodeVGaVector(egaProbePoint)
         );
     }
 
@@ -83,7 +83,7 @@ public static class PGaDecodeElementUtils
     public static PGaElement<T> DecodeElement<T>(this PGaBlade<T> pgaElement, LinVector<T> egaProbePoint)
     {
         return pgaElement.DecodeElement(
-            pgaElement.Geometry.EncodeVGaVector(egaProbePoint)
+            pgaElement.GeometricSpace.EncodeVGaVector(egaProbePoint)
         );
     }
 
@@ -91,7 +91,7 @@ public static class PGaDecodeElementUtils
     public static PGaElement<T> DecodeElement<T>(this PGaBlade<T> pgaElement)
     {
         return pgaElement.DecodeElement(
-            pgaElement.Geometry.ZeroVectorBlade
+            pgaElement.GeometricSpace.ZeroVectorBlade
         );
     }
 
@@ -231,7 +231,7 @@ public static class PGaDecodeElementUtils
     public static PGaBlade<T> DecodeLineVGaPosition2D<T>(this PGaBlade<T> pgaElement, LinVector2D<T> egaProbePoint)
     {
         return pgaElement.DecodeHyperPlaneVGaPosition(
-            pgaElement.Geometry.EncodeVGaVector(egaProbePoint)
+            pgaElement.GeometricSpace.EncodeVGaVector(egaProbePoint)
         );
     }
 
@@ -239,7 +239,7 @@ public static class PGaDecodeElementUtils
     public static PGaBlade<T> DecodePlaneVGaPosition3D<T>(this PGaBlade<T> pgaElement, LinVector3D<T> egaProbePoint)
     {
         return pgaElement.DecodeHyperPlaneVGaPosition(
-            pgaElement.Geometry.EncodeVGaVector(egaProbePoint)
+            pgaElement.GeometricSpace.EncodeVGaVector(egaProbePoint)
         );
     }
 
@@ -247,7 +247,7 @@ public static class PGaDecodeElementUtils
     public static PGaBlade<T> DecodeHyperPlaneVGaPosition<T>(this PGaBlade<T> pgaElement, LinVector<T> egaProbePoint)
     {
         return pgaElement.DecodeHyperPlaneVGaPosition(
-            pgaElement.Geometry.EncodeVGaVector(egaProbePoint)
+            pgaElement.GeometricSpace.EncodeVGaVector(egaProbePoint)
         );
     }
 
@@ -255,7 +255,7 @@ public static class PGaDecodeElementUtils
     public static PGaBlade<T> DecodeHyperPlaneVGaPosition<T>(this PGaBlade<T> pgaElement)
     {
         return pgaElement.DecodeHyperPlaneVGaPosition(
-            pgaElement.Geometry.ZeroVectorBlade
+            pgaElement.GeometricSpace.ZeroVectorBlade
         );
     }
 
@@ -270,7 +270,7 @@ public static class PGaDecodeElementUtils
     public static PGaBlade<T> DecodeElementVGaPosition<T>(this PGaBlade<T> pgaElement)
     {
         return pgaElement.DecodeElementVGaPosition(
-            pgaElement.Geometry.ZeroVectorBlade
+            pgaElement.GeometricSpace.ZeroVectorBlade
         );
     }
 
@@ -284,7 +284,7 @@ public static class PGaDecodeElementUtils
     public static LinVector2D<T> DecodeElementVGaPosition2D<T>(this PGaBlade<T> pgaElement, LinVector2D<T> egaProbePoint)
     {
         return pgaElement.DecodeElementVGaPosition(
-            pgaElement.Geometry.EncodeVGaVector(egaProbePoint)
+            pgaElement.GeometricSpace.EncodeVGaVector(egaProbePoint)
         ).DecodeVGaVector2D();
     }
 
@@ -298,7 +298,7 @@ public static class PGaDecodeElementUtils
     public static LinVector3D<T> DecodeElementVGaPosition3D<T>(this PGaBlade<T> pgaElement, LinVector3D<T> egaProbePoint)
     {
         return pgaElement.DecodeElementVGaPosition(
-            pgaElement.Geometry.EncodeVGaVector(egaProbePoint)
+            pgaElement.GeometricSpace.EncodeVGaVector(egaProbePoint)
         ).DecodeVGaVector3D();
     }
 
@@ -306,7 +306,7 @@ public static class PGaDecodeElementUtils
     public static PGaBlade<T> DecodeElementVGaPosition<T>(this PGaBlade<T> pgaElement, LinVector2D<T> egaProbePoint)
     {
         return pgaElement.DecodeElementVGaPosition(
-            pgaElement.Geometry.EncodeVGaVector(egaProbePoint)
+            pgaElement.GeometricSpace.EncodeVGaVector(egaProbePoint)
         );
     }
 
@@ -314,7 +314,7 @@ public static class PGaDecodeElementUtils
     public static PGaBlade<T> DecodeElementVGaPosition<T>(this PGaBlade<T> pgaElement, LinVector3D<T> egaProbePoint)
     {
         return pgaElement.DecodeElementVGaPosition(
-            pgaElement.Geometry.EncodeVGaVector(egaProbePoint)
+            pgaElement.GeometricSpace.EncodeVGaVector(egaProbePoint)
         );
     }
 
@@ -322,7 +322,7 @@ public static class PGaDecodeElementUtils
     public static LinVector3D<T> DecodeElementVGaPosition<T>(this PGaBlade<T> pgaElement, LinVector<T> egaProbePoint)
     {
         return pgaElement.DecodeElementVGaPosition(
-            pgaElement.Geometry.EncodeVGaVector(egaProbePoint)
+            pgaElement.GeometricSpace.EncodeVGaVector(egaProbePoint)
         ).DecodeVGaVector3D();
     }
 
@@ -354,7 +354,7 @@ public static class PGaDecodeElementUtils
     public static Scalar<T> DecodeElementWeight<T>(this PGaBlade<T> pgaElement)
     {
         return pgaElement.DecodeElementWeight(
-            pgaElement.Geometry.ZeroVectorBlade
+            pgaElement.GeometricSpace.ZeroVectorBlade
         );
     }
 
@@ -362,7 +362,7 @@ public static class PGaDecodeElementUtils
     public static Scalar<T> DecodeElementWeight2D<T>(this PGaBlade<T> pgaElement, LinVector2D<T> egaProbePoint)
     {
         return pgaElement.DecodeElementWeight(
-            pgaElement.Geometry.EncodeVGaVector(egaProbePoint)
+            pgaElement.GeometricSpace.EncodeVGaVector(egaProbePoint)
         );
     }
 
@@ -370,7 +370,7 @@ public static class PGaDecodeElementUtils
     public static Scalar<T> DecodeElementWeight3D<T>(this PGaBlade<T> pgaElement, LinVector3D<T> egaProbePoint)
     {
         return pgaElement.DecodeElementWeight(
-            pgaElement.Geometry.EncodeVGaVector(egaProbePoint)
+            pgaElement.GeometricSpace.EncodeVGaVector(egaProbePoint)
         );
     }
 
@@ -378,7 +378,7 @@ public static class PGaDecodeElementUtils
     public static Scalar<T> DecodeElementWeight<T>(this PGaBlade<T> pgaElement, LinVector<T> egaProbePoint)
     {
         return pgaElement.DecodeElementWeight(
-            pgaElement.Geometry.EncodeVGaVector(egaProbePoint)
+            pgaElement.GeometricSpace.EncodeVGaVector(egaProbePoint)
         );
     }
 

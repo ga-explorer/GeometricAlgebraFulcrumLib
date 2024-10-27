@@ -8,7 +8,6 @@ using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space3D;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.SpaceND;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Float64.Blades;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Float64.Encoding;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Float64.Operations;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.BitManipulation;
 
@@ -242,7 +241,7 @@ public class CGaFloat64Round :
     public IReadOnlyList<CGaFloat64Blade> GetSurfacePointVGaVectorBlades()
     {
         return GetSurfacePointRGaVectors()
-            .Select(GeometricSpace.EncodeVGaVector)
+            .Select(GeometricSpace.Encode.VGa.Vector)
             .ToImmutableArray();
     }
 
@@ -250,7 +249,7 @@ public class CGaFloat64Round :
     public IReadOnlyList<CGaFloat64Blade> GetSurfacePointPGaVectorBlades()
     {
         return GetSurfacePointRGaVectors()
-            .Select(GeometricSpace.EncodePGaPoint)
+            .Select(GeometricSpace.Encode.PGa.Point)
             .ToImmutableArray();
     }
 
@@ -258,7 +257,7 @@ public class CGaFloat64Round :
     public IReadOnlyList<CGaFloat64Blade> GetSurfacePointIpnsBlades()
     {
         return GetSurfacePointRGaVectors()
-            .Select(GeometricSpace.EncodeIpnsRoundPoint)
+            .Select(GeometricSpace.Encode.IpnsRound.Point)
             .ToImmutableArray();
     }
 
@@ -266,7 +265,7 @@ public class CGaFloat64Round :
     public IReadOnlyList<CGaFloat64Blade> GetSurfacePointOpnsFlatBlades()
     {
         return GetSurfacePointRGaVectors()
-            .Select(GeometricSpace.EncodeOpnsFlatPoint)
+            .Select(GeometricSpace.Encode.OpnsFlat.Point)
             .ToImmutableArray();
     }
 

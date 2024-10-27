@@ -221,7 +221,7 @@ public sealed record LinVector3D<T> :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinVector3D<T> Create(Scalar<T> x, Scalar<T> y, Scalar<T> z)
+    public static LinVector3D<T> Create(IScalar<T> x, IScalar<T> y, IScalar<T> z)
     {
         return new LinVector3D<T>(x, y, z);
     }
@@ -528,11 +528,11 @@ public sealed record LinVector3D<T> :
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    private LinVector3D(Scalar<T> scalar1, Scalar<T> scalar2, Scalar<T> scalar3)
+    private LinVector3D(IScalar<T> scalar1, IScalar<T> scalar2, IScalar<T> scalar3)
     {
-        Scalar1 = scalar1;
-        Scalar2 = scalar2;
-        Scalar3 = scalar3;
+        Scalar1 = scalar1.ToScalar();
+        Scalar2 = scalar2.ToScalar();
+        Scalar3 = scalar3.ToScalar();
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]

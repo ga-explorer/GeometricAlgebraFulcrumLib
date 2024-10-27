@@ -8,7 +8,7 @@ public static class PGaDecodeUtils
     public static PGaElement<T> DecodeElement<T>(this PGaBlade<T> blade, PGaElementSpecs<T> specs)
     {
         return blade.DecodeElement(
-            blade.Geometry.ZeroVectorBlade,
+            blade.GeometricSpace.ZeroVectorBlade,
             specs
         );
     }

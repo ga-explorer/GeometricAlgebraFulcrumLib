@@ -56,6 +56,10 @@ public sealed class MetaExpressionVariableComputed :
     public override bool IsIntermediateVariable
         => !IsOutputVariable;
 
+    private bool _mergeEnabled = true;
+    public override bool MergeEnabled 
+        => _mergeEnabled;
+
     private bool _isOutputVariable;
     public override bool IsOutputVariable
         => _isOutputVariable;
@@ -168,9 +172,27 @@ public sealed class MetaExpressionVariableComputed :
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public override IMetaExpression GetScalarValue(bool useRhsScalarValue)
     {
-        return useRhsScalarValue
-            ? RhsExpression
-            : this;
+        SimplifyRhsExpression();
+
+        //if (RhsExpression.IsNumberOrParameter)
+        //    return RhsExpression;
+        
+        if (RhsVariables.Count() <= 1)
+            return RhsExpression;
+
+        if (!useRhsScalarValue) 
+            return this;
+
+        if (MergeEnabled)
+            return RhsExpression;
+
+        //if (RhsVariables.Count() <= 2)
+        //    return RhsExpression;
+        
+        //if (MergeEnabled && RhsExpression.ComputationsCount <= 4)
+        //    return RhsExpression;
+
+        return this;
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -297,6 +319,7 @@ public sealed class MetaExpressionVariableComputed :
         //    variable.RhsExpression.CopyToContext(Context)
         //);
 
+        _mergeEnabled = variable.MergeEnabled;
         _isOutputVariable = variable.IsOutputVariable;
         _externalName = variable.ExternalName;
         _outputExternalName = variable.OutputExternalName;
@@ -473,6 +496,17 @@ public sealed class MetaExpressionVariableComputed :
             _externalName = externalName;
 
         return _externalName != externalNameOld;
+    }
+    
+    public void DisableMerge()
+    {
+        if (!_mergeEnabled) return;
+
+        _mergeEnabled = false;
+
+        SimplifyRhsExpression();
+        //Console.WriteLine($"[{RhsExpression.ComputationsCount:####}]: {InternalName} = {RhsExpressionText}");
+        //Console.WriteLine();
     }
 
     public bool SetAsOutput(string externalName)

@@ -1,6 +1,5 @@
 ﻿using System.Runtime.CompilerServices;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Float64.Blades;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Float64.Decoding;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Float64.Elements;
 
 namespace GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Float64.Operations;
@@ -13,7 +12,7 @@ public static class CGaFloat64ReflectionUtils
         return element1
             .EncodeOpnsBlade()
             .ReflectOpnsOn(element2.EncodeOpnsBlade())
-            .DecodeOpnsElement();
+            .Decode.OpnsElement();
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]

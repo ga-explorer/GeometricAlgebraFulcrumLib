@@ -450,7 +450,8 @@ public readonly struct UInt64IndexSet :
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public IIndexSet Remove(int index)
     {
-        if (!Contains(index))
+        if (!Contains(index)) 
+            //return this;
             throw new InvalidOperationException();
 
         return new UInt64IndexSet(

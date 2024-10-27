@@ -4,8 +4,8 @@ using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Extended.Generic.Multi
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Generic.Vectors.Space2D;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Generic.Vectors.Space3D;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Generic.Vectors.SpaceND;
+using GeometricAlgebraFulcrumLib.Algebra.Scalars.Generic;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Generic.Blades;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Generic.Decoding;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Generic.Elements;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Generic.Encoding;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Generic.Versors;
@@ -23,7 +23,7 @@ public static class CGaTranslationUtils
             CGaTangent<T> el => el.TranslateBy(egaVector),
             CGaFlat<T> el => el.TranslateBy(egaVector),
             CGaRound<T> el => el.TranslateBy(egaVector),
-            _ => element.EncodeOpnsBlade().TranslateBy(egaVector).DecodeOpnsElement()
+            _ => element.EncodeOpnsBlade().TranslateBy(egaVector).Decode.OpnsElement()
         };
     }
 
@@ -36,7 +36,7 @@ public static class CGaTranslationUtils
             CGaTangent<T> el => el.TranslateBy(egaVector),
             CGaFlat<T> el => el.TranslateBy(egaVector),
             CGaRound<T> el => el.TranslateBy(egaVector),
-            _ => element.EncodeOpnsBlade().TranslateBy(egaVector).DecodeOpnsElement()
+            _ => element.EncodeOpnsBlade().TranslateBy(egaVector).Decode.OpnsElement()
         };
     }
 
@@ -49,7 +49,7 @@ public static class CGaTranslationUtils
             CGaTangent<T> el => el.TranslateBy(egaVector),
             CGaFlat<T> el => el.TranslateBy(egaVector),
             CGaRound<T> el => el.TranslateBy(egaVector),
-            _ => element.EncodeOpnsBlade().TranslateBy(egaVector).DecodeOpnsElement()
+            _ => element.EncodeOpnsBlade().TranslateBy(egaVector).Decode.OpnsElement()
         };
     }
 
@@ -62,7 +62,7 @@ public static class CGaTranslationUtils
             CGaTangent<T> el => el.TranslateBy(egaVector),
             CGaFlat<T> el => el.TranslateBy(egaVector),
             CGaRound<T> el => el.TranslateBy(egaVector),
-            _ => element.EncodeOpnsBlade().TranslateBy(egaVector).DecodeOpnsElement()
+            _ => element.EncodeOpnsBlade().TranslateBy(egaVector).Decode.OpnsElement()
         };
     }
 
@@ -75,7 +75,7 @@ public static class CGaTranslationUtils
             CGaTangent<T> el => el.TranslateBy(egaVector),
             CGaFlat<T> el => el.TranslateBy(egaVector),
             CGaRound<T> el => el.TranslateBy(egaVector),
-            _ => element.EncodeOpnsBlade().TranslateBy(egaVector).DecodeOpnsElement()
+            _ => element.EncodeOpnsBlade().TranslateBy(egaVector).Decode.OpnsElement()
         };
     }
 
@@ -147,7 +147,7 @@ public static class CGaTranslationUtils
         return new CGaTangent<T>(
             element.GeometricSpace,
             element.Weight,
-            element.Position + egaVector.EncodeVGaVectorBlade(element.GeometricSpace),
+            element.Position + egaVector.EncodeVGaVector(element.GeometricSpace),
             element.Direction
         );
     }
@@ -158,7 +158,7 @@ public static class CGaTranslationUtils
         return new CGaTangent<T>(
             element.GeometricSpace,
             element.Weight,
-            element.Position + egaVector.EncodeVGaVectorBlade(element.GeometricSpace),
+            element.Position + egaVector.EncodeVGaVector(element.GeometricSpace),
             element.Direction
         );
     }
@@ -169,7 +169,7 @@ public static class CGaTranslationUtils
         return new CGaTangent<T>(
             element.GeometricSpace,
             element.Weight,
-            element.Position + egaVector.EncodeVGaVectorBlade(element.GeometricSpace),
+            element.Position + egaVector.EncodeVGaVector(element.GeometricSpace),
             element.Direction
         );
     }
@@ -180,7 +180,7 @@ public static class CGaTranslationUtils
         return new CGaTangent<T>(
             element.GeometricSpace,
             element.Weight,
-            element.Position + egaVector.EncodeVGaVectorBlade(element.GeometricSpace),
+            element.Position + egaVector.EncodeVGaVector(element.GeometricSpace),
             element.Direction
         );
     }
@@ -205,7 +205,7 @@ public static class CGaTranslationUtils
         return new CGaFlat<T>(
             element.GeometricSpace,
             element.Weight,
-            element.Position + egaVector.EncodeVGaVectorBlade(element.GeometricSpace),
+            element.Position + egaVector.EncodeVGaVector(element.GeometricSpace),
             element.Direction
         );
     }
@@ -216,7 +216,7 @@ public static class CGaTranslationUtils
         return new CGaFlat<T>(
             element.GeometricSpace,
             element.Weight,
-            element.Position + egaVector.EncodeVGaVectorBlade(element.GeometricSpace),
+            element.Position + egaVector.EncodeVGaVector(element.GeometricSpace),
             element.Direction
         );
     }
@@ -227,7 +227,7 @@ public static class CGaTranslationUtils
         return new CGaFlat<T>(
             element.GeometricSpace,
             element.Weight,
-            element.Position + egaVector.EncodeVGaVectorBlade(element.GeometricSpace),
+            element.Position + egaVector.EncodeVGaVector(element.GeometricSpace),
             element.Direction
         );
     }
@@ -238,7 +238,7 @@ public static class CGaTranslationUtils
         return new CGaFlat<T>(
             element.GeometricSpace,
             element.Weight,
-            element.Position + egaVector.EncodeVGaVectorBlade(element.GeometricSpace),
+            element.Position + egaVector.EncodeVGaVector(element.GeometricSpace),
             element.Direction
         );
     }
@@ -264,7 +264,7 @@ public static class CGaTranslationUtils
             element.GeometricSpace,
             element.Weight,
             element.RadiusSquared,
-            element.Position + egaVector.EncodeVGaVectorBlade(element.GeometricSpace),
+            element.Position + egaVector.EncodeVGaVector(element.GeometricSpace),
             element.Direction
         );
     }
@@ -276,7 +276,7 @@ public static class CGaTranslationUtils
             element.GeometricSpace,
             element.Weight,
             element.RadiusSquared,
-            element.Position + egaVector.EncodeVGaVectorBlade(element.GeometricSpace),
+            element.Position + egaVector.EncodeVGaVector(element.GeometricSpace),
             element.Direction
         );
     }
@@ -288,7 +288,7 @@ public static class CGaTranslationUtils
             element.GeometricSpace,
             element.Weight,
             element.RadiusSquared,
-            element.Position + egaVector.EncodeVGaVectorBlade(element.GeometricSpace),
+            element.Position + egaVector.EncodeVGaVector(element.GeometricSpace),
             element.Direction
         );
     }
@@ -300,7 +300,7 @@ public static class CGaTranslationUtils
             element.GeometricSpace,
             element.Weight,
             element.RadiusSquared,
-            element.Position + egaVector.EncodeVGaVectorBlade(element.GeometricSpace),
+            element.Position + egaVector.EncodeVGaVector(element.GeometricSpace),
             element.Direction
         );
     }
@@ -330,7 +330,39 @@ public static class CGaTranslationUtils
     public static CGaBlade<T> TranslateBy<T>(this CGaBlade<T> blade, LinVector2D<T> egaTranslationVector)
     {
         return blade.TranslateBy(
-            blade.GeometricSpace.EncodeVGaVector(egaTranslationVector)
+            blade.GeometricSpace.EncodeVGa.Vector(egaTranslationVector)
+        );
+    }
+    
+    /// <summary>
+    /// Apply a CGA translation to this CGA blade
+    /// </summary>
+    /// <param name="blade"></param>
+    /// <param name="egaTranslationVectorX"></param>
+    /// <param name="egaTranslationVectorY"></param>
+    /// <param name="egaTranslationVectorZ"></param>
+    /// <returns></returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static CGaBlade<T> TranslateBy<T>(this CGaBlade<T> blade, double egaTranslationVectorX, double egaTranslationVectorY, double egaTranslationVectorZ)
+    {
+        return blade.TranslateBy(
+            blade.GeometricSpace.EncodeVGa.Vector(egaTranslationVectorX, egaTranslationVectorY, egaTranslationVectorZ)
+        );
+    }
+
+    /// <summary>
+    /// Apply a CGA translation to this CGA blade
+    /// </summary>
+    /// <param name="blade"></param>
+    /// <param name="egaTranslationVectorX"></param>
+    /// <param name="egaTranslationVectorY"></param>
+    /// <param name="egaTranslationVectorZ"></param>
+    /// <returns></returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static CGaBlade<T> TranslateBy<T>(this CGaBlade<T> blade, IScalar<T> egaTranslationVectorX, IScalar<T> egaTranslationVectorY, IScalar<T> egaTranslationVectorZ)
+    {
+        return blade.TranslateBy(
+            blade.GeometricSpace.EncodeVGa.Vector(egaTranslationVectorX, egaTranslationVectorY, egaTranslationVectorZ)
         );
     }
 
@@ -344,7 +376,7 @@ public static class CGaTranslationUtils
     public static CGaBlade<T> TranslateBy<T>(this CGaBlade<T> blade, LinVector3D<T> egaTranslationVector)
     {
         return blade.TranslateBy(
-            blade.GeometricSpace.EncodeVGaVector(egaTranslationVector)
+            blade.GeometricSpace.EncodeVGa.Vector(egaTranslationVector)
         );
     }
 
@@ -358,7 +390,7 @@ public static class CGaTranslationUtils
     public static CGaBlade<T> TranslateBy<T>(this CGaBlade<T> blade, LinVector<T> egaTranslationVector)
     {
         return blade.TranslateBy(
-            blade.GeometricSpace.EncodeVGaVector(egaTranslationVector)
+            blade.GeometricSpace.EncodeVGa.Vector(egaTranslationVector)
         );
     }
 
@@ -372,7 +404,7 @@ public static class CGaTranslationUtils
     public static CGaBlade<T> TranslateBy<T>(this CGaBlade<T> blade, XGaVector<T> egaTranslationVector)
     {
         return blade.TranslateBy(
-            blade.GeometricSpace.EncodeVGaVector(egaTranslationVector)
+            blade.GeometricSpace.EncodeVGa.Vector(egaTranslationVector)
         );
     }
 
@@ -390,10 +422,15 @@ public static class CGaTranslationUtils
         );
 
         var eit =
-            0.5d * blade.GeometricSpace.Ei.InternalKVector.Op(egaTranslationVector.InternalKVector);
+            blade.GeometricSpace.Ei.InternalKVector
+                .Op(egaTranslationVector.InternalKVector)
+                .Divide(2);
 
         var kVector =
-            (1 + eit).Gp(blade.InternalKVector).Gp(1 - eit).GetKVectorPart(blade.Grade);
+            (1 + eit)
+            .Gp(blade.InternalKVector)
+            .Gp(1 - eit)
+            .GetKVectorPart(blade.Grade);
 
         return new CGaBlade<T>(blade.GeometricSpace, kVector);
     }
@@ -408,7 +445,7 @@ public static class CGaTranslationUtils
     public static CGaBlade<T> TranslatePGaBy<T>(this CGaBlade<T> blade, LinVector2D<T> egaTranslationVector)
     {
         return blade.TranslatePGaBy(
-            blade.GeometricSpace.EncodeVGaVector(egaTranslationVector)
+            blade.GeometricSpace.EncodeVGa.Vector(egaTranslationVector)
         );
     }
 
@@ -422,7 +459,7 @@ public static class CGaTranslationUtils
     public static CGaBlade<T> TranslatePGaBy<T>(this CGaBlade<T> blade, LinVector3D<T> egaTranslationVector)
     {
         return blade.TranslatePGaBy(
-            blade.GeometricSpace.EncodeVGaVector(egaTranslationVector)
+            blade.GeometricSpace.EncodeVGa.Vector(egaTranslationVector)
         );
     }
 
@@ -436,7 +473,7 @@ public static class CGaTranslationUtils
     public static CGaBlade<T> TranslatePGaBy<T>(this CGaBlade<T> blade, LinVector<T> egaTranslationVector)
     {
         return blade.TranslatePGaBy(
-            blade.GeometricSpace.EncodeVGaVector(egaTranslationVector)
+            blade.GeometricSpace.EncodeVGa.Vector(egaTranslationVector)
         );
     }
 
@@ -450,7 +487,7 @@ public static class CGaTranslationUtils
     public static CGaBlade<T> TranslatePGaBy<T>(this CGaBlade<T> blade, XGaVector<T> egaTranslationVector)
     {
         return blade.TranslatePGaBy(
-            blade.GeometricSpace.EncodeVGaVector(egaTranslationVector)
+            blade.GeometricSpace.EncodeVGa.Vector(egaTranslationVector)
         );
     }
 
@@ -469,10 +506,15 @@ public static class CGaTranslationUtils
         );
 
         var eot =
-            0.5d * blade.GeometricSpace.EoVector.Op(egaTranslationVector.InternalVector);
+            blade.GeometricSpace.EoVector
+                .Op(egaTranslationVector.InternalVector)
+                .Divide(2);
 
         var kVector =
-            (1 - eot).Gp(blade.InternalKVector).Gp(1 + eot).GetKVectorPart(blade.InternalKVector.Grade);
+            (1 - eot)
+            .Gp(blade.InternalKVector)
+            .Gp(1 + eot)
+            .GetKVectorPart(blade.InternalKVector.Grade);
 
         return new CGaBlade<T>(blade.GeometricSpace, kVector);
     }
@@ -482,7 +524,7 @@ public static class CGaTranslationUtils
     public static CGaVersor<T> TranslateBy<T>(this CGaVersor<T> versor, LinVector2D<T> egaTranslationVector)
     {
         return versor.TranslateBy(
-            versor.GeometricSpace.EncodeVGaVector(egaTranslationVector)
+            versor.GeometricSpace.EncodeVGa.Vector(egaTranslationVector)
         );
     }
 
@@ -490,7 +532,7 @@ public static class CGaTranslationUtils
     public static CGaVersor<T> TranslateBy<T>(this CGaVersor<T> versor, LinVector3D<T> egaTranslationVector)
     {
         return versor.TranslateBy(
-            versor.GeometricSpace.EncodeVGaVector(egaTranslationVector)
+            versor.GeometricSpace.EncodeVGa.Vector(egaTranslationVector)
         );
     }
 
@@ -498,7 +540,7 @@ public static class CGaTranslationUtils
     public static CGaVersor<T> TranslateBy<T>(this CGaVersor<T> versor, LinVector<T> egaTranslationVector)
     {
         return versor.TranslateBy(
-            versor.GeometricSpace.EncodeVGaVector(egaTranslationVector)
+            versor.GeometricSpace.EncodeVGa.Vector(egaTranslationVector)
         );
     }
 
@@ -510,10 +552,14 @@ public static class CGaTranslationUtils
         );
 
         var eit =
-            0.5d * versor.GeometricSpace.EiVector.Op(egaTranslationVector.InternalKVector);
+            versor.GeometricSpace.EiVector
+                .Op(egaTranslationVector.InternalKVector)
+                .Divide(2);
 
         var kVector =
-            (1 + eit).Gp(versor.InternalMultivector).Gp(1 - eit);
+            (1 + eit)
+            .Gp(versor.InternalMultivector)
+            .Gp(1 - eit);
 
         return new CGaVersor<T>(versor.GeometricSpace, kVector);
     }

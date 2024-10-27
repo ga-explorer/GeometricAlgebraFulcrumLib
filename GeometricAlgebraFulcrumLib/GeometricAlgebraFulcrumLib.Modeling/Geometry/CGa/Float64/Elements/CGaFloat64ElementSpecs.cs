@@ -5,7 +5,6 @@ using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space3D;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.SpaceND;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Float64.Blades;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Float64.Decoding;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Float64.Encoding;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.Parametric.Float64.Space2D.Curves;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.Parametric.Float64.Space3D.Curves;
@@ -799,7 +798,7 @@ public sealed class CGaFloat64ElementSpecs :
         return CGaFloat64ParametricElement.Create(
             GeometricSpace,
             parameterRange,
-            t => getBladeFunc(t).DecodeElement(this)
+            t => getBladeFunc(t).Decode.Element(this)
         );
     }
 
@@ -807,13 +806,13 @@ public sealed class CGaFloat64ElementSpecs :
     public CGaFloat64ParametricElement CreateParametricElement(Float64ScalarRange parameterRange, Func<double, CGaFloat64Blade> getBladeFunc, ILinFloat64Vector2D egaProbePoint)
     {
         var egaProbePointBlade =
-            egaProbePoint.EncodeVGaVectorBlade(GeometricSpace);
+            egaProbePoint.EncodeVGaVector(GeometricSpace);
 
         return CGaFloat64ParametricElement.Create(
             GeometricSpace,
             parameterRange,
             t =>
-                getBladeFunc(t).DecodeElement(
+                getBladeFunc(t).Decode.Element(
                     egaProbePointBlade,
                     this
                 )
@@ -824,13 +823,13 @@ public sealed class CGaFloat64ElementSpecs :
     public CGaFloat64ParametricElement CreateParametricElement(Float64ScalarRange parameterRange, Func<double, CGaFloat64Blade> getBladeFunc, ILinFloat64Vector3D egaProbePoint)
     {
         var egaProbePointBlade =
-            egaProbePoint.EncodeVGaVectorBlade(GeometricSpace);
+            egaProbePoint.EncodeVGaVector(GeometricSpace);
 
         return CGaFloat64ParametricElement.Create(
             GeometricSpace,
             parameterRange,
             t =>
-                getBladeFunc(t).DecodeElement(
+                getBladeFunc(t).Decode.Element(
                     egaProbePointBlade,
                     this
                 )
@@ -841,13 +840,13 @@ public sealed class CGaFloat64ElementSpecs :
     public CGaFloat64ParametricElement CreateParametricElement(Float64ScalarRange parameterRange, Func<double, CGaFloat64Blade> getBladeFunc, LinFloat64Vector egaProbePoint)
     {
         var egaProbePointBlade =
-            egaProbePoint.EncodeVGaVectorBlade(GeometricSpace);
+            egaProbePoint.EncodeVGaVector(GeometricSpace);
 
         return CGaFloat64ParametricElement.Create(
             GeometricSpace,
             parameterRange,
             t =>
-                getBladeFunc(t).DecodeElement(
+                getBladeFunc(t).Decode.Element(
                     egaProbePointBlade,
                     this
                 )
@@ -858,13 +857,13 @@ public sealed class CGaFloat64ElementSpecs :
     public CGaFloat64ParametricElement CreateParametricElement(Float64ScalarRange parameterRange, Func<double, CGaFloat64Blade> getBladeFunc, RGaFloat64Vector egaProbePoint)
     {
         var egaProbePointBlade =
-            egaProbePoint.EncodeVGaVectorBlade(GeometricSpace);
+            egaProbePoint.EncodeVGaVector(GeometricSpace);
 
         return CGaFloat64ParametricElement.Create(
             GeometricSpace,
             parameterRange,
             t =>
-                getBladeFunc(t).DecodeElement(
+                getBladeFunc(t).Decode.Element(
                     egaProbePointBlade,
                     this
                 )
@@ -878,10 +877,10 @@ public sealed class CGaFloat64ElementSpecs :
             GeometricSpace,
             parameterRange,
             t =>
-                getBladeFunc(t).DecodeElement(
+                getBladeFunc(t).Decode.Element(
                     egaProbePointCurve
                         .GetPoint(t)
-                        .EncodeVGaVectorBlade(GeometricSpace),
+                        .EncodeVGaVector(GeometricSpace),
                     this
                 )
             );
@@ -894,10 +893,10 @@ public sealed class CGaFloat64ElementSpecs :
             GeometricSpace,
             parameterRange,
             t =>
-                getBladeFunc(t).DecodeElement(
+                getBladeFunc(t).Decode.Element(
                     egaProbePointCurve
                         .GetPoint(t)
-                        .EncodeVGaVectorBlade(GeometricSpace),
+                        .EncodeVGaVector(GeometricSpace),
                     this
                 )
             );

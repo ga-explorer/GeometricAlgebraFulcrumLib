@@ -1,7 +1,9 @@
-﻿using System.Diagnostics;
+﻿using System.Collections.Immutable;
+using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 using System.Text;
+using GeneticSharp;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Extended.Generic.Processors;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Generic;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
@@ -14,7 +16,13 @@ using GeometricAlgebraFulcrumLib.MetaProgramming.Context.Expressions.Evaluators;
 using GeometricAlgebraFulcrumLib.MetaProgramming.Context.Expressions.HeadSpecs;
 using GeometricAlgebraFulcrumLib.MetaProgramming.Context.Expressions.Numbers;
 using GeometricAlgebraFulcrumLib.MetaProgramming.Context.Expressions.Variables;
+using GeometricAlgebraFulcrumLib.MetaProgramming.Context.Optimizer.Genetic2;
 using GeometricAlgebraFulcrumLib.MetaProgramming.Context.Processors;
+using GeometricAlgebraFulcrumLib.Utilities.Structures.Collections;
+using GeometricAlgebraFulcrumLib.Utilities.Structures.Collections.Lists;
+using GeometricAlgebraFulcrumLib.Utilities.Structures.Extensions;
+
+// ReSharper disable CompareOfFloatsByEqualityOperator
 
 // ReSharper disable MemberCanBePrivate.Global
 
@@ -152,9 +160,10 @@ public sealed class MetaContext :
     public MetaExpressionFunctionHeadSpecsFactory FunctionHeadSpecsFactory { get; }
 
     public string DefaultSymbolName { get; set; } 
-        = "tmpVar";
+        = "tmpVar_";
 
     public bool MergeExpressions { get; set; }
+        = false;
 
     public int ComputationsCount 
         => _computedVariablesDictionary.Values.Aggregate(
@@ -421,6 +430,48 @@ public sealed class MetaContext :
         return context;
     }
 
+    public MetaContext GetContextCopyWithMerge(SortedSet<int> intermediateVarIndexList)
+    {
+        var newContext = GetContextCopy();
+
+        var intermediateVariableArray = 
+            newContext.GetIntermediateVariables().ToImmutableArray();
+
+        if (intermediateVarIndexList.Count > 0 && intermediateVarIndexList.Last() >= intermediateVariableArray.Length)
+            throw new IndexOutOfRangeException();
+
+        var intermediateVariables = 
+            intermediateVarIndexList.Select(i => intermediateVariableArray[i]);
+
+        foreach (var intermediateVariable in intermediateVariables)
+        {
+            if (intermediateVariable.RhsExpression.ComputationsCount > 20)
+                continue;
+
+            // Initialize a list of intermediate variables with the selected one
+            var intermediateVariableSet = new HashSet<IMetaExpressionVariableComputed>()
+            {
+                intermediateVariable
+            };
+        
+            // Add all intermediate variables that directly depend on the selected one
+            // to the list
+            intermediateVariableSet.AddRange(
+                intermediateVariableSet.SelectMany(
+                    v => v.DirectDependingIntermediateVariables
+                ).ToImmutableArray()
+            );
+        
+            // Remove all selected intermediate variables in the list from the context
+            foreach (var ivar in intermediateVariableSet)
+                newContext.RemoveIntermediateVariable(ivar);
+
+            newContext.RemoveIntermediateVariable(intermediateVariable);
+        }
+
+        return newContext;
+    }
+
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public void AttachXGaProcessor(XGaProcessor<IMetaExpressionAtomic> processor)
@@ -495,8 +546,20 @@ public sealed class MetaContext :
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public IEnumerable<IMetaExpressionVariableComputed> GetIntermediateVariables()
     {
-        return GetComputedVariables()
-            .Where(s => s.IsIntermediateVariable);
+        return _computedVariablesDictionary
+            .Values
+            .Where(s => s.IsIntermediateVariable)
+            .OrderBy(v => v.ComputationOrder);
+    }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public BijectiveList<string, IMetaExpressionVariableComputed> GetIntermediateVariablesList()
+    {
+        return _computedVariablesDictionary
+            .Values
+            .Where(s => s.IsIntermediateVariable)
+            .OrderBy(v => v.ComputationOrder)
+            .ToBijectiveList(v => v.InternalName);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -1291,6 +1354,56 @@ public sealed class MetaContext :
         ResetComputedVariables(computedVariablesList);
 
         McOptDependencyUpdate.Process(this);
+    }
+    
+    public void RemoveIntermediateVariables(SortedSet<int> intermediateVariableIndexSet)
+    {
+        var intermediateVarList = 
+            GetIntermediateVariables().ToImmutableArray();
+
+        foreach (var index in intermediateVariableIndexSet)
+        {
+            var intermediateVariable = intermediateVarList[index];
+
+            foreach (var depVar in intermediateVariable.DirectDependingVariables)
+            {
+                depVar.ReplaceRhsVariable(intermediateVariable.InternalName, intermediateVariable.RhsExpression);
+                depVar.SimplifyRhsExpression();
+            }
+        }
+
+        var intermediateVariableNameSet =
+            intermediateVariableIndexSet.SelectToImmutableSortedSet(
+                i => intermediateVarList[i].InternalName
+            );
+
+        var computedVariablesList = 
+            new List<IMetaExpressionVariableComputed>(
+                _computedVariablesDictionary.Count
+            );
+
+        var computationOrder = 0;
+        foreach (var computedVariable in GetComputedVariables())
+        {
+            var computedVariableName = computedVariable.InternalName;
+
+            if (intermediateVariableNameSet.Any(varName => varName == computedVariableName))
+                continue;
+
+            computedVariablesList.Add(computedVariable);
+
+            computedVariable.SetComputationOrder(computationOrder++);
+        }
+
+        ResetComputedVariables(computedVariablesList);
+
+        McOptDependencyUpdate.Process(this);
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public void UpdateDependencyData(bool removeNotUsedAtomics)
+    {
+        McOptDependencyUpdate.Process(this, removeNotUsedAtomics);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -2134,7 +2247,7 @@ public sealed class MetaContext :
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public void OptimizeContext()
+    public MetaContext OptimizeContext()
     {
         SimplifyRhsExpressions();
             
@@ -2147,6 +2260,8 @@ public sealed class MetaContext :
 
         //Optimize low-level macro computations
         MetaContextOptimizer.Process(this, inputsWithTestValues);
+
+        return this;
     }
 
     /// <summary>
@@ -2160,6 +2275,116 @@ public sealed class MetaContext :
         OptimizeContext();
 
         return MetaContextGeneticOptimizer.Process(optParameters, this);
+    }
+
+    public SortedSet<int> OptimizeContextLoop(int costThreshold)
+    {
+        var indexSet = new SortedSet<int>();
+
+        var computationsCount = ComputationsCount;
+        Console.WriteLine($"Original Cost = {computationsCount}");
+        Console.WriteLine();
+
+        //var minCost = computationsCount;
+        //var minCostContext = this;
+
+        var intermediateVars = 
+            GetIntermediateVariablesList();
+
+        var n = intermediateVars.Count;
+        for (var i = 0; i < n; i++)
+        {
+            //var intermediateVar = intermediateVars[i];
+            var newContext = GetContextCopy();
+
+            var intermediateVarIndexSet = 
+                intermediateVars.GetIntermediateDependencyIndexSet(i, 2);
+
+            
+            newContext.RemoveIntermediateVariables(intermediateVarIndexSet);
+
+            newContext.OptimizeContext();
+
+            var newComputationsCount = newContext.ComputationsCount;
+
+            if (computationsCount - newComputationsCount >= costThreshold)
+            {
+                indexSet.Add(i);
+
+                Console.WriteLine($"   Removing Intermediate Variable {i,3} of {n,3}: Cost = {newComputationsCount, 3}, Fitness = {computationsCount - newComputationsCount, 3}");
+            }
+
+            //if (newComputationsCount < minCost)
+            //{
+            //    minCost = newComputationsCount;
+            //    minCostContext = newContext;
+
+                
+            //}
+        }
+
+        return indexSet;
+    }
+
+    /// <summary>
+    /// Try new Genetic Algorithm optimization method
+    /// </summary>
+    /// <returns></returns>
+    public MetaContext OptimizeContextGenetic()
+    {
+        Console.WriteLine($"Original Cost = {ComputationsCount}");
+        Console.WriteLine();
+
+        var fitness = new McOptGaFitness(this);
+
+        var chromosome = new McOptGaChromosome(fitness.IntermediateVariableCount);
+
+        var population = new Population(4, 8, chromosome);
+
+        var selection = new TournamentSelection();
+        var crossover = new OnePointCrossover();
+        var mutation = new FlipBitMutation();
+        var termination = new FitnessStagnationTermination(100);
+
+        var ga = new GeneticAlgorithm(
+            population,
+            fitness,
+            selection,
+            crossover,
+            mutation)
+        {
+            Termination = termination, 
+            //MutationProbability = 0.5f
+        };
+
+        //Console.WriteLine("Generation: (x1, y1), (x2, y2) = distance");
+
+        var latestFitness = 0d;
+
+        ga.GenerationRan += (sender, e) =>
+        {
+            var bestChromosome = (McOptGaChromosome)ga.BestChromosome;
+                
+            Debug.Assert(bestChromosome.Fitness != null, "bestChromosome.Fitness != null");
+                
+            var bestFitness = bestChromosome.Fitness.Value;
+                
+            if (bestFitness == latestFitness) return;
+
+            latestFitness = bestFitness;
+            var bestContext = fitness.GetMetaContext(bestChromosome);
+
+            Console.WriteLine(
+                "Generation {0,4}: Cost = {1}, Fitness = {2}",
+                ga.GenerationsNumber,
+                bestContext.ComputationsCount,
+                bestFitness
+            );
+        };
+
+        ga.Start();
+
+        return fitness.GetMetaContext((McOptGaChromosome)ga.BestChromosome);
     }
 
         

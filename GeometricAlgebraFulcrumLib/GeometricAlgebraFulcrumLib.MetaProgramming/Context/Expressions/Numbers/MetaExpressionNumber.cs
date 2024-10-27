@@ -300,6 +300,9 @@ public sealed class MetaExpressionNumber :
     public bool HasDependingVariables
         => DependingVariablesCache.Count > 0;
 
+    public bool MergeEnabled 
+        => false;
+
     public bool IsOutputOrHasDependingVariables
         => DependingVariablesCache.Count > 0;
 

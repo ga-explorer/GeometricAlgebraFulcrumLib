@@ -19,6 +19,9 @@ internal class Program
         //HansenProblemSample.GenerateTrigCode();
         //HansenProblemSample.GenerateComplexCode();
         //HansenProblemSample.GenerateVGaCode();
-        HansenProblemSample.GenerateCGaCode();
+        //HansenProblemSample.GenerateCGaCode();
+        HansenProblemSample.GenerateCGaCodeOpt();
+
+        //InverseKinematics6RSamples.MetaprogrammingExample2();
     }
 }

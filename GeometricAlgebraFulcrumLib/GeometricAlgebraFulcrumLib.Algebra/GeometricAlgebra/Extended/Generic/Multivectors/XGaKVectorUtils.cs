@@ -259,6 +259,21 @@ public static class XGaKVectorUtils
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static XGaKVector<T> Divide<T>(this XGaKVector<T> mv, int scalar)
+    {
+        var scalarValue = mv.ScalarProcessor.ScalarFromNumber(scalar).ScalarValue;
+
+        return mv switch
+        {
+            XGaScalar<T> mv1 => mv1.Divide(scalarValue),
+            XGaVector<T> mv1 => mv1.Divide(scalarValue),
+            XGaBivector<T> mv1 => mv1.Divide(scalarValue),
+            XGaHigherKVector<T> mv1 => mv1.Divide(scalarValue),
+            _ => throw new InvalidOperationException()
+        };
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static XGaKVector<T> Divide<T>(this XGaKVector<T> mv, Scalar<T> scalar)
     {
         return mv switch

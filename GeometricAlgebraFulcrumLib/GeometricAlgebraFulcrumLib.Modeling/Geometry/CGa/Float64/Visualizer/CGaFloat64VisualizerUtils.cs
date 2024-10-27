@@ -1,6 +1,5 @@
 ﻿using System.Runtime.CompilerServices;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Float64.Blades;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Float64.Decoding;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Float64.Elements;
 using SixLabors.ImageSharp;
 
@@ -60,7 +59,7 @@ public static class CGaFloat64VisualizerUtils
     {
         return visualizer.DrawFlat(
             color,
-            blade.DecodePGaFlat()
+            blade.DecodePGaFlat.Element()
         );
     }
 
@@ -69,7 +68,7 @@ public static class CGaFloat64VisualizerUtils
     //{
     //    return visualizer.DrawFlat(
     //        color,
-    //        blade.DecodePGaFlat()
+    //        blade.DecodePGaFlat.Element()
     //    );
     //}
 
@@ -78,7 +77,7 @@ public static class CGaFloat64VisualizerUtils
     {
         return blade.Visualizer.DrawFlat(
             color,
-            blade.DecodePGaFlat()
+            blade.DecodePGaFlat.Element()
         );
     }
 
@@ -87,7 +86,7 @@ public static class CGaFloat64VisualizerUtils
     //{
     //    return blade.Visualizer.DrawFlat(
     //        color,
-    //        blade.DecodePGaFlat()
+    //        blade.DecodePGaFlat.Element()
     //    );
     //}
 
@@ -96,7 +95,7 @@ public static class CGaFloat64VisualizerUtils
     //{
     //    return blade.Visualizer.DrawFlat(
     //        color,
-    //        blade.DecodePGaFlat()
+    //        blade.DecodePGaFlat.Element()
     //    );
     //}
 
@@ -159,7 +158,7 @@ public static class CGaFloat64VisualizerUtils
     {
         return visualizer.DrawDirection(
             color,
-            blade.DecodeOpnsDirection()
+            blade.DecodeOpnsDirection.Element()
         );
     }
 
@@ -168,7 +167,7 @@ public static class CGaFloat64VisualizerUtils
     //{
     //    return visualizer.DrawDirection(
     //        color,
-    //        blade.DecodeOpnsDirection()
+    //        blade.DecodeOpnsDirection.Element()
     //    );
     //}
 
@@ -177,7 +176,7 @@ public static class CGaFloat64VisualizerUtils
     //{
     //    return visualizer.DrawDirection(
     //        color,
-    //        blade.DecodeOpnsDirection()
+    //        blade.DecodeOpnsDirection.Element()
     //    );
     //}
 
@@ -186,7 +185,7 @@ public static class CGaFloat64VisualizerUtils
     {
         return blade.Visualizer.DrawDirection(
             color,
-            blade.DecodeOpnsDirection()
+            blade.DecodeOpnsDirection.Element()
         );
     }
 
@@ -195,7 +194,7 @@ public static class CGaFloat64VisualizerUtils
     //{
     //    return blade.Visualizer.DrawDirection(
     //        color,
-    //        blade.DecodeOpnsDirection()
+    //        blade.DecodeOpnsDirection.Element()
     //    );
     //}
 
@@ -204,7 +203,7 @@ public static class CGaFloat64VisualizerUtils
     //{
     //    return blade.Visualizer.DrawDirection(
     //        color,
-    //        blade.DecodeOpnsDirection()
+    //        blade.DecodeOpnsDirection.Element()
     //    );
     //}
 
@@ -214,7 +213,7 @@ public static class CGaFloat64VisualizerUtils
     {
         return visualizer.DrawTangent(
             color,
-            blade.DecodeOpnsTangent()
+            blade.DecodeOpnsTangent.Element()
         );
     }
 
@@ -223,7 +222,7 @@ public static class CGaFloat64VisualizerUtils
     //{
     //    return visualizer.DrawTangent(
     //        color,
-    //        blade.DecodeOpnsTangent()
+    //        blade.DecodeOpnsTangent.Element()
     //    );
     //}
 
@@ -232,7 +231,7 @@ public static class CGaFloat64VisualizerUtils
     //{
     //    return visualizer.DrawTangent(
     //        color,
-    //        blade.DecodeOpnsTangent()
+    //        blade.DecodeOpnsTangent.Element()
     //    );
     //}
 
@@ -241,7 +240,7 @@ public static class CGaFloat64VisualizerUtils
     {
         return blade.Visualizer.DrawTangent(
             color,
-            blade.DecodeOpnsTangent()
+            blade.DecodeOpnsTangent.Element()
         );
     }
 
@@ -250,7 +249,7 @@ public static class CGaFloat64VisualizerUtils
     //{
     //    return blade.Visualizer.DrawTangent(
     //        color,
-    //        blade.DecodeOpnsTangent()
+    //        blade.DecodeOpnsTangent.Element()
     //    );
     //}
 
@@ -259,7 +258,7 @@ public static class CGaFloat64VisualizerUtils
     //{
     //    return blade.Visualizer.DrawTangent(
     //        color,
-    //        blade.DecodeOpnsTangent()
+    //        blade.DecodeOpnsTangent.Element()
     //    );
     //}
 
@@ -269,7 +268,7 @@ public static class CGaFloat64VisualizerUtils
     {
         return visualizer.DrawFlat(
             color,
-            blade.DecodeOpnsFlat()
+            blade.DecodeOpnsFlat.Element()
         );
     }
 
@@ -278,7 +277,7 @@ public static class CGaFloat64VisualizerUtils
     //{
     //    return visualizer.DrawFlat(
     //        color,
-    //        blade.DecodeOpnsFlat()
+    //        blade.DecodeOpnsFlat.Element()
     //    );
     //}
 
@@ -287,7 +286,7 @@ public static class CGaFloat64VisualizerUtils
     //{
     //    return visualizer.DrawFlat(
     //        color,
-    //        blade.DecodeOpnsFlat()
+    //        blade.DecodeOpnsFlat.Element()
     //    );
     //}
 
@@ -296,7 +295,7 @@ public static class CGaFloat64VisualizerUtils
     {
         return blade.Visualizer.DrawFlat(
             color,
-            blade.DecodeOpnsFlat()
+            blade.DecodeOpnsFlat.Element()
         );
     }
 
@@ -305,7 +304,7 @@ public static class CGaFloat64VisualizerUtils
     //{
     //    return blade.Visualizer.DrawFlat(
     //        color,
-    //        blade.DecodeOpnsFlat()
+    //        blade.DecodeOpnsFlat.Element()
     //    );
     //}
 
@@ -314,7 +313,7 @@ public static class CGaFloat64VisualizerUtils
     //{
     //    return blade.Visualizer.DrawFlat(
     //        color,
-    //        blade.DecodeOpnsFlat()
+    //        blade.DecodeOpnsFlat.Element()
     //    );
     //}
 
@@ -324,7 +323,7 @@ public static class CGaFloat64VisualizerUtils
     {
         return visualizer.DrawRound(
             color,
-            blade.DecodeOpnsRound()
+            blade.DecodeOpnsRound.Element()
         );
     }
 
@@ -333,7 +332,7 @@ public static class CGaFloat64VisualizerUtils
     //{
     //    return visualizer.DrawRound(
     //        color,
-    //        blade.DecodeOpnsRound()
+    //        blade.DecodeOpnsRound.Element()
     //    );
     //}
 
@@ -342,7 +341,7 @@ public static class CGaFloat64VisualizerUtils
     //{
     //    return visualizer.DrawRound(
     //        color,
-    //        blade.DecodeOpnsRound()
+    //        blade.DecodeOpnsRound.Element()
     //    );
     //}
 
@@ -351,7 +350,7 @@ public static class CGaFloat64VisualizerUtils
     {
         return blade.Visualizer.DrawRound(
             color,
-            blade.DecodeOpnsRound()
+            blade.DecodeOpnsRound.Element()
         );
     }
 
@@ -360,7 +359,7 @@ public static class CGaFloat64VisualizerUtils
     //{
     //    return blade.Visualizer.DrawRound(
     //        color,
-    //        blade.DecodeOpnsRound()
+    //        blade.DecodeOpnsRound.Element()
     //    );
     //}
 
@@ -369,7 +368,7 @@ public static class CGaFloat64VisualizerUtils
     //{
     //    return blade.Visualizer.DrawRound(
     //        color,
-    //        blade.DecodeOpnsRound()
+    //        blade.DecodeOpnsRound.Element()
     //    );
     //}
 
@@ -547,7 +546,7 @@ public static class CGaFloat64VisualizerUtils
     {
         return visualizer.DrawDirection(
             color,
-            blade.DecodeIpnsDirection()
+            blade.DecodeIpnsDirection.Element()
         );
     }
 
@@ -556,7 +555,7 @@ public static class CGaFloat64VisualizerUtils
     //{
     //    return visualizer.DrawDirection(
     //        color,
-    //        blade.DecodeIpnsDirection()
+    //        blade.DecodeIpnsDirection.Element()
     //    );
     //}
 
@@ -565,7 +564,7 @@ public static class CGaFloat64VisualizerUtils
     //{
     //    return visualizer.DrawDirection(
     //        color,
-    //        blade.DecodeIpnsDirection()
+    //        blade.DecodeIpnsDirection.Element()
     //    );
     //}
 
@@ -574,7 +573,7 @@ public static class CGaFloat64VisualizerUtils
     {
         return blade.Visualizer.DrawDirection(
             color,
-            blade.DecodeIpnsDirection()
+            blade.DecodeIpnsDirection.Element()
         );
     }
 
@@ -583,7 +582,7 @@ public static class CGaFloat64VisualizerUtils
     //{
     //    return blade.Visualizer.DrawDirection(
     //        color,
-    //        blade.DecodeIpnsDirection()
+    //        blade.DecodeIpnsDirection.Element()
     //    );
     //}
 
@@ -592,7 +591,7 @@ public static class CGaFloat64VisualizerUtils
     //{
     //    return blade.Visualizer.DrawDirection(
     //        color,
-    //        blade.DecodeIpnsDirection()
+    //        blade.DecodeIpnsDirection.Element()
     //    );
     //}
 
@@ -602,7 +601,7 @@ public static class CGaFloat64VisualizerUtils
     {
         return visualizer.DrawTangent(
             color,
-            blade.DecodeIpnsTangent()
+            blade.DecodeIpnsTangent.Element()
         );
     }
 
@@ -611,7 +610,7 @@ public static class CGaFloat64VisualizerUtils
     //{
     //    return visualizer.DrawTangent(
     //        color,
-    //        blade.DecodeIpnsTangent()
+    //        blade.DecodeIpnsTangent.Element()
     //    );
     //}
 
@@ -620,7 +619,7 @@ public static class CGaFloat64VisualizerUtils
     //{
     //    return visualizer.DrawTangent(
     //        color,
-    //        blade.DecodeIpnsTangent()
+    //        blade.DecodeIpnsTangent.Element()
     //    );
     //}
 
@@ -629,7 +628,7 @@ public static class CGaFloat64VisualizerUtils
     {
         return blade.Visualizer.DrawTangent(
             color,
-            blade.DecodeIpnsTangent()
+            blade.DecodeIpnsTangent.Element()
         );
     }
 
@@ -638,7 +637,7 @@ public static class CGaFloat64VisualizerUtils
     //{
     //    return blade.Visualizer.DrawTangent(
     //        color,
-    //        blade.DecodeIpnsTangent()
+    //        blade.DecodeIpnsTangent.Element()
     //    );
     //}
 
@@ -647,7 +646,7 @@ public static class CGaFloat64VisualizerUtils
     //{
     //    return blade.Visualizer.DrawTangent(
     //        color,
-    //        blade.DecodeIpnsTangent()
+    //        blade.DecodeIpnsTangent.Element()
     //    );
     //}
 
@@ -657,7 +656,7 @@ public static class CGaFloat64VisualizerUtils
     {
         return visualizer.DrawFlat(
             color,
-            blade.DecodeIpnsFlat()
+            blade.DecodeIpnsFlat.Element()
         );
     }
 
@@ -666,7 +665,7 @@ public static class CGaFloat64VisualizerUtils
     //{
     //    return visualizer.DrawFlat(
     //        color,
-    //        blade.DecodeIpnsFlat()
+    //        blade.DecodeIpnsFlat.Element()
     //    );
     //}
 
@@ -675,7 +674,7 @@ public static class CGaFloat64VisualizerUtils
     //{
     //    return visualizer.DrawFlat(
     //        color,
-    //        blade.DecodeIpnsFlat()
+    //        blade.DecodeIpnsFlat.Element()
     //    );
     //}
 
@@ -684,7 +683,7 @@ public static class CGaFloat64VisualizerUtils
     {
         return blade.Visualizer.DrawFlat(
             color,
-            blade.DecodeIpnsFlat()
+            blade.DecodeIpnsFlat.Element()
         );
     }
 
@@ -693,7 +692,7 @@ public static class CGaFloat64VisualizerUtils
     //{
     //    return blade.Visualizer.DrawFlat(
     //        color,
-    //        blade.DecodeIpnsFlat()
+    //        blade.DecodeIpnsFlat.Element()
     //    );
     //}
 
@@ -702,7 +701,7 @@ public static class CGaFloat64VisualizerUtils
     //{
     //    return blade.Visualizer.DrawFlat(
     //        color,
-    //        blade.DecodeIpnsFlat()
+    //        blade.DecodeIpnsFlat.Element()
     //    );
     //}
 
@@ -712,7 +711,7 @@ public static class CGaFloat64VisualizerUtils
     {
         return visualizer.DrawRound(
             color,
-            blade.DecodeIpnsRound()
+            blade.DecodeIpnsRound.Element()
         );
     }
 
@@ -721,7 +720,7 @@ public static class CGaFloat64VisualizerUtils
     //{
     //    return visualizer.DrawRound(
     //        color,
-    //        blade.DecodeIpnsRound()
+    //        blade.DecodeIpnsRound.Element()
     //    );
     //}
 
@@ -730,7 +729,7 @@ public static class CGaFloat64VisualizerUtils
     //{
     //    return visualizer.DrawRound(
     //        color,
-    //        blade.DecodeIpnsRound()
+    //        blade.DecodeIpnsRound.Element()
     //    );
     //}
 
@@ -739,7 +738,7 @@ public static class CGaFloat64VisualizerUtils
     {
         return blade.Visualizer.DrawRound(
             color,
-            blade.DecodeIpnsRound()
+            blade.DecodeIpnsRound.Element()
         );
     }
 
@@ -748,7 +747,7 @@ public static class CGaFloat64VisualizerUtils
     //{
     //    return blade.Visualizer.DrawRound(
     //        color,
-    //        blade.DecodeIpnsRound()
+    //        blade.DecodeIpnsRound.Element()
     //    );
     //}
 
@@ -757,7 +756,7 @@ public static class CGaFloat64VisualizerUtils
     //{
     //    return blade.Visualizer.DrawRound(
     //        color,
-    //        blade.DecodeIpnsRound()
+    //        blade.DecodeIpnsRound.Element()
     //    );
     //}
 

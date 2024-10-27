@@ -8,7 +8,6 @@ using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Generic.Vectors.Space3D;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Generic.Vectors.SpaceND;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Generic;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Generic.Blades;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Generic.Encoding;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Generic.Operations;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.BitManipulation;
 
@@ -50,10 +49,10 @@ public class CGaRound<T> :
     public sealed override bool IsValid()
     {
         return Weight.IsValid() &&
-               Weight >= 0 &&
+               //Weight >= 0 &&
                Direction.IsVGaBlade() &&
                Position.IsVGaVector() &&
-               Direction.Norm().IsNearOne() &&
+               //Direction.Norm().IsNearOne() &&
                RadiusSquared.IsValid();
     }
 
@@ -235,7 +234,7 @@ public class CGaRound<T> :
     public IReadOnlyList<CGaBlade<T>> GetSurfacePointVGaVectorBlades()
     {
         return GetSurfacePointXGaVectors()
-            .Select(GeometricSpace.EncodeVGaVector)
+            .Select(GeometricSpace.EncodeVGa.Vector)
             .ToImmutableArray();
     }
 
@@ -243,7 +242,7 @@ public class CGaRound<T> :
     public IReadOnlyList<CGaBlade<T>> GetSurfacePointPGaVectorBlades()
     {
         return GetSurfacePointXGaVectors()
-            .Select(GeometricSpace.EncodePGaPoint)
+            .Select(GeometricSpace.EncodePGa.Point)
             .ToImmutableArray();
     }
 
@@ -251,7 +250,7 @@ public class CGaRound<T> :
     public IReadOnlyList<CGaBlade<T>> GetSurfacePointIpnsBlades()
     {
         return GetSurfacePointXGaVectors()
-            .Select(GeometricSpace.EncodeIpnsRoundPoint)
+            .Select(GeometricSpace.EncodeIpnsRound.Point)
             .ToImmutableArray();
     }
 
@@ -259,7 +258,7 @@ public class CGaRound<T> :
     public IReadOnlyList<CGaBlade<T>> GetSurfacePointOpnsFlatBlades()
     {
         return GetSurfacePointXGaVectors()
-            .Select(GeometricSpace.EncodeOpnsFlatPoint)
+            .Select(GeometricSpace.EncodeOpnsFlat.Point)
             .ToImmutableArray();
     }
 

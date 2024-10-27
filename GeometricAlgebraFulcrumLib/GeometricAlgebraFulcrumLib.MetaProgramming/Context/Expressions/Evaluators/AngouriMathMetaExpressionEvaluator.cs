@@ -38,7 +38,7 @@ public sealed class AngouriMathMetaExpressionEvaluator
 
     public bool IsAffineCombination(IMetaExpression expr)
     {
-        throw new NotImplementedException();
+        return false;
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]

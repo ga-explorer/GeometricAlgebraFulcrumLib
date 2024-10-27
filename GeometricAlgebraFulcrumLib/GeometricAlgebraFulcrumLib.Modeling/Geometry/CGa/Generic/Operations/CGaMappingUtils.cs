@@ -1,7 +1,6 @@
 ﻿using System.Runtime.CompilerServices;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Extended.Generic.LinearMaps.Outermorphisms;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Generic.Blades;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Generic.Decoding;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Generic.Elements;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Generic.Versors;
 
@@ -15,7 +14,7 @@ public static class CGaMappingUtils
         return element
             .EncodeOpnsBlade()
             .MapUsing(outerMorphism)
-            .DecodeOpnsElement();
+            .Decode.OpnsElement();
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -24,7 +23,7 @@ public static class CGaMappingUtils
         return element
             .EncodeOpnsBlade()
             .MapUsing(versor)
-            .DecodeOpnsElement();
+            .Decode.OpnsElement();
     }
 
 

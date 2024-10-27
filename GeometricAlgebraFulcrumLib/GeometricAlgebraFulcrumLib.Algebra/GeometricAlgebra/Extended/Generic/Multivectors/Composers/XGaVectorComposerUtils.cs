@@ -108,6 +108,21 @@ public static class XGaVectorComposerUtils
     {
         return new XGaVector<T>(processor, basisScalarDictionary.CreateVectorDictionary());
     }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static XGaVector<T> Vector<T>(this XGaProcessor<T> processor, params double[] scalarArray)
+    {
+        var scalarDictionary = CreateValidVectorDictionary(
+            processor,
+            scalarArray.Select(
+                text => processor.ScalarProcessor.ScalarFromNumber(text)
+            )
+        );
+
+        return processor.Vector(
+            scalarDictionary
+        );
+    }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static XGaVector<T> Vector<T>(this XGaProcessor<T> processor, params string[] scalarArray)

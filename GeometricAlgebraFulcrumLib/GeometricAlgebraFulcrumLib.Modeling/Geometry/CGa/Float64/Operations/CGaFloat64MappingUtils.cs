@@ -1,7 +1,6 @@
 ﻿using System.Runtime.CompilerServices;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Float64.LinearMaps.Outermorphisms;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Float64.Blades;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Float64.Decoding;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Float64.Elements;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Float64.Versors;
 
@@ -15,7 +14,7 @@ public static class CGaFloat64MappingUtils
         return element
             .EncodeOpnsBlade()
             .MapUsing(outerMorphism)
-            .DecodeOpnsElement();
+            .Decode.OpnsElement();
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -24,7 +23,7 @@ public static class CGaFloat64MappingUtils
         return element
             .EncodeOpnsBlade()
             .MapUsing(versor)
-            .DecodeOpnsElement();
+            .Decode.OpnsElement();
     }
 
 

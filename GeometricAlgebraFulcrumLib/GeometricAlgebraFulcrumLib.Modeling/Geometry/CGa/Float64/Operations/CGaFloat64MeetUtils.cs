@@ -1,7 +1,6 @@
 ﻿using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Float64.Blades;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Float64.Decoding;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Float64.Elements;
 
 namespace GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Float64.Operations;
@@ -13,7 +12,7 @@ public static class CGaFloat64MeetUtils
     {
         return element2.EncodeIpnsBlade()
             .Op(element1.EncodeIpnsBlade())
-            .DecodeIpnsElement();
+            .Decode.IpnsElement();
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]

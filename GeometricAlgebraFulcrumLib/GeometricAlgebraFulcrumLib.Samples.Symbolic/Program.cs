@@ -1,6 +1,7 @@
 ﻿//using GeometricAlgebraFulcrumLib.Samples.Symbolic.MetaProgramming;
 
 using GeometricAlgebraFulcrumLib.Samples.Symbolic.MetaProgramming;
+using GeometricAlgebraFulcrumLib.Samples.Symbolic.Modeling;
 
 namespace GeometricAlgebraFulcrumLib.Samples.Symbolic;
 
@@ -22,10 +23,17 @@ internal class Program
         //HansenProblemSample.GenerateComplexCode();
         //HansenProblemSample.GenerateVGaCode();
         //HansenProblemSample.GenerateCGaCode();
-        GaalopComparisonsSamples.SnelliusPothenotProblemCassiniExample();
+        //GaalopComparisonsSamples.TriangleInterpolationExample();
 
         //Samples.ComplexAlgebra.Sample1.Example1();
 
-        //Samples.GeneticProgramming.CGpSamples.Example1();
+        //ModelingVsAlgebraSamples.AlgebraExample();
+        //ModelingVsAlgebraSamples.ModelingExample();
+
+        SpaceOfSpheresSamples.SphereEquation();
+
+        Console.WriteLine();
+        Console.WriteLine("Press any key to end ..");
+        Console.ReadKey();
     }
 }

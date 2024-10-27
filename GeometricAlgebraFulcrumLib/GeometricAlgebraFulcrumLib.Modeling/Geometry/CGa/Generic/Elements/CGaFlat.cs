@@ -9,8 +9,6 @@ using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Generic.Vectors.Space3D;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Generic.Vectors.SpaceND;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Generic;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Generic.Blades;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Generic.Decoding;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Generic.Encoding;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Generic.Operations;
 
 namespace GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Generic.Elements;
@@ -161,7 +159,7 @@ public class CGaFlat<T> :
     public IReadOnlyList<CGaBlade<T>> GetSurfacePointVGaBlades()
     {
         return GetSurfacePointVectors()
-            .Select(GeometricSpace.EncodeVGaVector)
+            .Select(GeometricSpace.EncodeVGa.Vector)
             .ToImmutableArray();
     }
 
@@ -169,7 +167,7 @@ public class CGaFlat<T> :
     public IReadOnlyList<CGaBlade<T>> GetSurfacePointPGaBlades()
     {
         return GetSurfacePointVectors()
-            .Select(GeometricSpace.EncodePGaPoint)
+            .Select(GeometricSpace.EncodePGa.Point)
             .ToImmutableArray();
     }
 
@@ -177,7 +175,7 @@ public class CGaFlat<T> :
     public IReadOnlyList<CGaBlade<T>> GetSurfacePointIpnsBlades()
     {
         return GetSurfacePointVectors()
-            .Select(GeometricSpace.EncodeIpnsRoundPoint)
+            .Select(GeometricSpace.EncodeIpnsRound.Point)
             .ToImmutableArray();
     }
 
@@ -185,7 +183,7 @@ public class CGaFlat<T> :
     public IReadOnlyList<CGaBlade<T>> GetSurfacePointOpnsFlatBlades()
     {
         return GetSurfacePointVectors()
-            .Select(GeometricSpace.EncodeOpnsFlatPoint)
+            .Select(GeometricSpace.EncodeOpnsFlat.Point)
             .ToImmutableArray();
     }
 
@@ -259,7 +257,7 @@ public class CGaFlat<T> :
     public bool SurfaceNearContainsPoint(CGaBlade<T> egaPoint)
     {
         return IsDirectionNearParallelTo(
-            (egaPoint - Position).DecodeVGaVector()
+            (egaPoint - Position).Decode.VGaDirection.Vector()
         );
     }
 

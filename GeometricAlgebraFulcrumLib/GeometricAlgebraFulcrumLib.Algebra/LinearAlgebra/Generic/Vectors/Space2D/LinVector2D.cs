@@ -135,7 +135,7 @@ public sealed record LinVector2D<T> :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinVector2D<T> Create(Scalar<T> x, Scalar<T> y)
+    public static LinVector2D<T> Create(IScalar<T> x, IScalar<T> y)
     {
         return new LinVector2D<T>(x, y);
     }
@@ -390,10 +390,10 @@ public sealed record LinVector2D<T> :
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    private LinVector2D(Scalar<T> x, Scalar<T> y)
+    private LinVector2D(IScalar<T> x, IScalar<T> y)
     {
-        X = x;
-        Y = y;
+        X = x.ToScalar();
+        Y = y.ToScalar();
     }
 
 

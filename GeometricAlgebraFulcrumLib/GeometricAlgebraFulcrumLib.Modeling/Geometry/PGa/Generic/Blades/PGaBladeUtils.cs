@@ -14,34 +14,34 @@ public static class PGaBladeUtils
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static bool IsVGaVector<T>(this PGaBlade<T> blade)
     {
-        return blade.Geometry.IsValidVGaElement(blade.InternalKVector) &&
+        return blade.GeometricSpace.IsValidVGaElement(blade.InternalKVector) &&
                blade.InternalKVector.IsVector();
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static bool IsVGaBivector<T>(this PGaBlade<T> blade)
     {
-        return blade.Geometry.IsValidVGaElement(blade.InternalKVector) &&
+        return blade.GeometricSpace.IsValidVGaElement(blade.InternalKVector) &&
                blade.InternalKVector.IsBivector();
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static bool IsVGaTrivector<T>(this PGaBlade<T> blade)
     {
-        return blade.Geometry.IsValidVGaElement(blade.InternalKVector) &&
+        return blade.GeometricSpace.IsValidVGaElement(blade.InternalKVector) &&
                blade.InternalKVector.Grade == 3;
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static bool IsVGaBlade<T>(this PGaBlade<T> blade)
     {
-        return blade.Geometry.IsValidVGaElement(blade.InternalKVector);
+        return blade.GeometricSpace.IsValidVGaElement(blade.InternalKVector);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static bool IsPGaBlade<T>(this PGaBlade<T> blade)
     {
-        return blade.Geometry.IsValidElement(blade.InternalKVector);
+        return blade.GeometricSpace.IsValidElement(blade.InternalKVector);
     }
 
 
@@ -60,7 +60,7 @@ public static class PGaBladeUtils
 
     public static PGaElementSpecs<T> GetElementSpecs<T>(this PGaBlade<T> blade)
     {
-        var pgaGeometricSpace = blade.Geometry;
+        var pgaGeometricSpace = blade.GeometricSpace;
 
         var signature = blade.InternalKVector.SpSquared();
 
@@ -124,7 +124,7 @@ public static class PGaBladeUtils
     public static PGaBlade<T> Op<T>(this IEnumerable<PGaBlade<T>> bladeList)
     {
         return new PGaBlade<T>(
-            bladeList.First().Geometry,
+            bladeList.First().GeometricSpace,
             bladeList.Select(blade => blade.InternalKVector).Op().GetFirstKVectorPart()
         );
     }

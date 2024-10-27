@@ -3,7 +3,6 @@ using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Extended.Generic.Multivectors;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Extended.Generic.Multivectors.Composers;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Generic;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Generic.Decoding;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Generic.Elements;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.BitManipulation;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.IndexSets;
@@ -169,7 +168,7 @@ public static class CGaBladeUtils
                     cgaGeometricSpace,
                     CGaElementKind.Tangent,
                     CGaElementEncoding.Opns,
-                    blade.DecodeOpnsTangentVGaDirection().Grade
+                    blade.Decode.OpnsTangent.VGaDirection().Grade
                 );
 
             // OPNS Round
@@ -177,7 +176,7 @@ public static class CGaBladeUtils
                 cgaGeometricSpace,
                 CGaElementKind.Round,
                 CGaElementEncoding.Opns,
-                blade.DecodeOpnsRoundVGaDirection().Grade
+                blade.Decode.OpnsRound.VGaDirection().Grade
             );
         }
 
@@ -187,7 +186,7 @@ public static class CGaBladeUtils
                 cgaGeometricSpace,
                 CGaElementKind.Direction,
                 CGaElementEncoding.Opns,
-                blade.DecodeOpnsDirectionVGaDirection().Grade
+                blade.Decode.OpnsDirection.VGaDirectionAsBlade().Grade
             );
 
         // OPNS Flat
@@ -196,7 +195,7 @@ public static class CGaBladeUtils
                 cgaGeometricSpace,
                 CGaElementKind.Flat,
                 CGaElementEncoding.Opns,
-                blade.DecodeOpnsFlatVGaDirection().Grade
+                blade.Decode.OpnsFlat.VGaDirection().Grade
             );
 
         // IPNS Flat
@@ -204,7 +203,7 @@ public static class CGaBladeUtils
             cgaGeometricSpace,
             CGaElementKind.Flat,
             CGaElementEncoding.Ipns,
-            blade.DecodeIpnsFlatVGaDirection().Grade
+            blade.Decode.IpnsFlat.VGaDirection().Grade
         );
     }
 
@@ -222,7 +221,7 @@ public static class CGaBladeUtils
                     cgaGeometricSpace,
                     CGaElementKind.Tangent,
                     CGaElementEncoding.Ipns,
-                    blade.DecodeIpnsTangentVGaDirection().Grade
+                    blade.Decode.IpnsTangent.VGaDirection().Grade
                 );
 
             // IPNS Round
@@ -230,7 +229,7 @@ public static class CGaBladeUtils
                 cgaGeometricSpace,
                 CGaElementKind.Round,
                 CGaElementEncoding.Ipns,
-                blade.DecodeIpnsRoundVGaDirection().Grade
+                blade.Decode.IpnsRound.VGaDirection().Grade
             );
         }
 
@@ -240,7 +239,7 @@ public static class CGaBladeUtils
                 cgaGeometricSpace,
                 CGaElementKind.Direction,
                 CGaElementEncoding.Ipns,
-                blade.DecodeIpnsDirectionVGaDirection().Grade
+                blade.Decode.IpnsDirection.VGaDirectionAsBlade().Grade
             );
 
         if (isZeroEiOpX)
@@ -248,7 +247,7 @@ public static class CGaBladeUtils
                 cgaGeometricSpace,
                 CGaElementKind.Flat,
                 CGaElementEncoding.Opns,
-                blade.DecodeOpnsFlatVGaDirection().Grade
+                blade.Decode.OpnsFlat.VGaDirection().Grade
             );
 
         // IPNS Flat
@@ -256,7 +255,7 @@ public static class CGaBladeUtils
             cgaGeometricSpace,
             CGaElementKind.Flat,
             CGaElementEncoding.Ipns,
-            blade.DecodeIpnsFlatVGaDirection().Grade
+            blade.Decode.IpnsFlat.VGaDirection().Grade
         );
     }
 
@@ -371,4 +370,7 @@ public static class CGaBladeUtils
             bladeList.Select(blade => blade.InternalKVector).Op().GetFirstKVectorPart()
         );
     }
+
+
+    
 }

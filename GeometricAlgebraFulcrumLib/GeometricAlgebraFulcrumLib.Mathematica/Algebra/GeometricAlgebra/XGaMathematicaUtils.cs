@@ -13,6 +13,8 @@ using Wolfram.NETLink;
 using GeometricAlgebraFulcrumLib.Mathematica.Algebra.Scalars;
 using GeometricAlgebraFulcrumLib.Mathematica.Utilities.Structures.ExprFactory;
 using GeometricAlgebraFulcrumLib.Mathematica.Utilities.Structures;
+using GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Generic.Blades;
+using GeometricAlgebraFulcrumLib.Modeling.Geometry.PGa.Generic.Blades;
 using GeometricAlgebraFulcrumLib.Modeling.Signals;
 
 namespace GeometricAlgebraFulcrumLib.Mathematica.Algebra.GeometricAlgebra;
@@ -322,6 +324,12 @@ public static class XGaMathematicaUtils
     {
         return mv.MapScalars(scalar => scalar.FullSimplify());
     }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static XGaKVector<Expr> FullSimplifyScalars(this XGaKVector<Expr> mv, Expr assumptionsExpr)
+    {
+        return mv.MapScalars(scalar => scalar.FullSimplify(assumptionsExpr));
+    }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static XGaMultivector<Expr> FullSimplifyScalars(this XGaMultivector<Expr> mv)
@@ -333,6 +341,38 @@ public static class XGaMathematicaUtils
     public static XGaMultivector<Expr> FullSimplifyScalars(this XGaMultivector<Expr> mv, Expr assumptionsExpr)
     {
         return mv.MapScalars(scalar => scalar.FullSimplify(assumptionsExpr));
+    }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static CGaBlade<Expr> FullSimplifyScalars(this CGaBlade<Expr> mv)
+    {
+        return mv.GeometricSpace.Encode.Blade(
+            mv.InternalKVector.FullSimplifyScalars()
+        );
+    }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static CGaBlade<Expr> FullSimplifyScalars(this CGaBlade<Expr> mv, Expr assumptionsExpr)
+    {
+        return mv.GeometricSpace.Encode.Blade(
+            mv.InternalKVector.FullSimplifyScalars(assumptionsExpr)
+        );
+    }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static PGaBlade<Expr> FullSimplifyScalars(this PGaBlade<Expr> mv)
+    {
+        return mv.GeometricSpace.EncodeBlade(
+            mv.InternalKVector.FullSimplifyScalars()
+        );
+    }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static PGaBlade<Expr> FullSimplifyScalars(this PGaBlade<Expr> mv, Expr assumptionsExpr)
+    {
+        return mv.GeometricSpace.EncodeBlade(
+            mv.InternalKVector.FullSimplifyScalars(assumptionsExpr)
+        );
     }
 
     public static Expr AsListExpr(this XGaMultivector<Expr> vector)

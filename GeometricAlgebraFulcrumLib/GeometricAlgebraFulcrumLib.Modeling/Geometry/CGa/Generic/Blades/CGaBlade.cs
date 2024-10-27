@@ -1,8 +1,10 @@
 ﻿using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Extended.Generic.Multivectors;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Extended.Generic.Multivectors.Composers;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Extended.Generic.Processors;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Generic;
+using GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Generic.Decoding;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Basic;
 
 namespace GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Generic.Blades;
@@ -235,6 +237,41 @@ public sealed record CGaBlade<T>
         => InternalKVector.Grade == GeometricSpace.VSpaceDimensions;
 
 
+    private CGaBladeDecoder<T>? _decoder;
+    public CGaBladeDecoder<T> Decode 
+        => _decoder ??= new CGaBladeDecoder<T>(this);
+
+    public CGaVGaDirectionBladeDecoder<T> DecodeVGaDirection 
+        => Decode.VGaDirection;
+    
+    public CGaPGaFlatBladeDecoder<T> DecodePGaFlat
+        => Decode.PGaFlat;
+    
+    public CGaIpnsDirectionBladeDecoder<T> DecodeIpnsDirection 
+        => Decode.IpnsDirection;
+    
+    public CGaIpnsTangentBladeDecoder<T> DecodeIpnsTangent 
+        => Decode.IpnsTangent;
+    
+    public CGaIpnsFlatBladeDecoder<T> DecodeIpnsFlat 
+        => Decode.IpnsFlat;
+    
+    public CGaIpnsRoundBladeDecoder<T> DecodeIpnsRound 
+        => Decode.IpnsRound;
+    
+    public CGaOpnsDirectionBladeDecoder<T> DecodeOpnsDirection 
+        => Decode.OpnsDirection;
+    
+    public CGaOpnsTangentBladeDecoder<T> DecodeOpnsTangent 
+        => Decode.OpnsTangent;
+    
+    public CGaOpnsFlatBladeDecoder<T> DecodeOpnsFlat 
+        => Decode.OpnsFlat;
+    
+    public CGaOpnsRoundBladeDecoder<T> DecodeOpnsRound 
+        => Decode.OpnsRound;
+
+
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     internal CGaBlade(CGaGeometricSpace<T> cgaGeometricSpace, XGaKVector<T> kVector)
     {
@@ -284,20 +321,32 @@ public sealed record CGaBlade<T>
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    internal CGaBlade<T> RemoveEi()
+    public XGaKVector<T> GetVGaPartAsXGaKVector(bool removeEi)
     {
-        //var eiIdMask = (1UL << (VSpaceDimensions - 1)) - 1UL;
-        var eiIndex = VSpaceDimensions - 1;
+        var kVector1 = removeEi 
+            ? GeometricSpace.RemoveEi(InternalKVector) 
+            : InternalKVector;
 
-        var kVector = BasisSpecs.BasisMapInverse.OmMap(
-            BasisSpecs
-                .BasisMap
-                .OmMap(InternalKVector)
-                .MapBasisBlades(id => id.Remove(eiIndex))
-                .GetFirstKVectorPart()
+        var termList =
+            kVector1.IdScalarPairs.Where(
+                term =>
+                    !term.Key.Contains(0) && 
+                    !term.Key.Contains(1)
+            );
+
+        return ConformalProcessor
+            .CreateComposer()
+            .SetTerms(termList)
+            .GetKVector(kVector1.Grade);
+    }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public CGaBlade<T> GetVGaPart(bool removeEi)
+    {
+        return new CGaBlade<T>(
+            GeometricSpace,
+            GetVGaPartAsXGaKVector(removeEi)
         );
-
-        return new CGaBlade<T>(GeometricSpace, kVector);
     }
 
 

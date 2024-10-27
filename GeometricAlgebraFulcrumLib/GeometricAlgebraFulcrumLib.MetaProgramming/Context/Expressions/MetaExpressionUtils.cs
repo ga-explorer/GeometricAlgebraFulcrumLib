@@ -7,6 +7,9 @@ using GeometricAlgebraFulcrumLib.Algebra.ComplexAlgebra;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Extended.Generic.Multivectors;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Generic.Angles;
+using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Generic.Vectors.Space2D;
+using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Generic.Vectors.Space3D;
+using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Generic.Vectors.Space4D;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Generic;
 using GeometricAlgebraFulcrumLib.MetaProgramming.Context.Expressions.Composite;
 using GeometricAlgebraFulcrumLib.MetaProgramming.Context.Expressions.Evaluators;
@@ -66,7 +69,7 @@ public static class MetaExpressionUtils
                funcExpr.Arguments.All(a => a is IMetaExpressionAtomic);
     }
 
-
+    
     public static void SetAsOutput(this IMetaExpressionAtomic scalar, string externalName)
     {
         if (scalar is MetaExpressionVariableComputed computedVariable)

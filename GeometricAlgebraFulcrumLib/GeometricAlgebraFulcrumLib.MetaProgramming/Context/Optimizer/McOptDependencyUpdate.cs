@@ -3,18 +3,21 @@
 internal sealed class McOptDependencyUpdate : 
     MetaContextProcessorBase
 {
-    internal static void Process(MetaContext context)
+    internal static void Process(MetaContext context, bool removeNotUsedAtomics = true)
     {
-        var processor = new McOptDependencyUpdate(context);
+        var processor = new McOptDependencyUpdate(context, removeNotUsedAtomics);
 
         processor.BeginProcessing();
     }
 
 
-    private McOptDependencyUpdate(MetaContext context)
+    public bool RemoveNotUsedAtomics { get; }
+
+
+    private McOptDependencyUpdate(MetaContext context, bool removeNotUsedAtomics)
         : base(context)
     {
-            
+        RemoveNotUsedAtomics = removeNotUsedAtomics;
     }
 
         
@@ -48,7 +51,7 @@ internal sealed class McOptDependencyUpdate :
         }
 
         //Remove all atomics not used in computing the outputs of this context
-        Context.RemoveNotUsedAtomics();
+        if (RemoveNotUsedAtomics) Context.RemoveNotUsedAtomics();
 
         //Update ComputationOrder property for each computed variable in the block
         var i = 0;

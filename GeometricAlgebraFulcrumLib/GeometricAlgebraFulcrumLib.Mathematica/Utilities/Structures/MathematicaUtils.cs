@@ -523,6 +523,8 @@ public static class MathematicaUtils
     {
         context.SymbolicEvaluator =
             new MathematicaMetaExpressionEvaluator(context);
+
+        context.DefaultSymbolName = "tmpVar";
     }
 
 

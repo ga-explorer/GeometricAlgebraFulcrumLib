@@ -273,7 +273,7 @@ public static class XGaMultivectorUtils
             mv.IdScalarPairs.Select(
                 term =>
                     termMapping(term.Key, term.Value)
-            );
+            ).Where(p => !mv.ScalarProcessor.IsZero(p.Value));
 
         return mv.Processor
             .CreateComposer()
@@ -720,5 +720,38 @@ public static class XGaMultivectorUtils
         }
         
         return array;
+    }
+    
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static XGaMultivector<T>[,] GetMapTable<T>(this IReadOnlyList<XGaMultivector<T>> multivectorList, Func<XGaMultivector<T>, XGaMultivector<T>, XGaMultivector<T>> multivectorMap)
+    {
+        return GetMapTable(
+            multivectorList,
+            multivectorList,
+            multivectorMap
+        );
+    }
+
+    public static XGaMultivector<T>[,] GetMapTable<T>(this IReadOnlyList<XGaMultivector<T>> multivectorList1, IReadOnlyList<XGaMultivector<T>> multivectorList2, Func<XGaMultivector<T>, XGaMultivector<T>, XGaMultivector<T>> multivectorMap)
+    {
+        var rowCount = multivectorList1.Count;
+        var colCount = multivectorList2.Count;
+
+        var tableArray = new XGaMultivector<T>[rowCount, colCount];
+
+        for (var i = 0; i < rowCount; i++)
+        {
+            var b1 = multivectorList1[i];
+
+            for (var j = 0; j < colCount; j++)
+            {
+                var b2 = multivectorList2[j];
+
+                tableArray[i, j] = multivectorMap(b1, b2);
+            }
+        }
+
+        return tableArray;
     }
 }

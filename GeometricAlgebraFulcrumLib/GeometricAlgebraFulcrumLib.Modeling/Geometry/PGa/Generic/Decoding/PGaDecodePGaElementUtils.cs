@@ -16,7 +16,7 @@ public static class PGaDecodePGaElementUtils
     public static LinVector2D<T> DecodePGaPoint2D<T>(this PGaBlade<T> pgaPoint)
     {
         Debug.Assert(
-            pgaPoint.Geometry.Is3D &&
+            pgaPoint.GeometricSpace.Is3D &&
             pgaPoint.IsPGaPoint()
         );
 
@@ -33,7 +33,7 @@ public static class PGaDecodePGaElementUtils
     public static LinVector2D<T> DecodePGaIdealPoint2D<T>(this PGaBlade<T> pgaPoint)
     {
         Debug.Assert(
-            pgaPoint.Geometry.Is3D &&
+            pgaPoint.GeometricSpace.Is3D &&
             pgaPoint.IsPGaIdealPoint()
         );
 
@@ -51,7 +51,7 @@ public static class PGaDecodePGaElementUtils
     public static LinVector3D<T> DecodePGaPoint3D<T>(this PGaBlade<T> pgaPoint)
     {
         Debug.Assert(
-            pgaPoint.Geometry.Is4D &&
+            pgaPoint.GeometricSpace.Is4D &&
             pgaPoint.IsPGaPoint()
         );
 
@@ -69,7 +69,7 @@ public static class PGaDecodePGaElementUtils
     public static LinVector3D<T> DecodePGaIdealPoint3D<T>(this PGaBlade<T> pgaPoint)
     {
         Debug.Assert(
-            pgaPoint.Geometry.Is4D &&
+            pgaPoint.GeometricSpace.Is4D &&
             pgaPoint.IsPGaIdealPoint()
         );
 
@@ -88,7 +88,7 @@ public static class PGaDecodePGaElementUtils
     public static PGaElement<T> DecodePGaElement<T>(this PGaBlade<T> pgaElement)
     {
         return pgaElement.DecodePGaElement(
-            pgaElement.Geometry.ZeroVectorBlade
+            pgaElement.GeometricSpace.ZeroVectorBlade
         );
     }
 
@@ -169,7 +169,7 @@ public static class PGaDecodePGaElementUtils
     {
         return pgaElement
             .DecodePGaElementVGaNormalDirection()
-            .Lcp(pgaElement.Geometry.Ie);
+            .Lcp(pgaElement.GeometricSpace.Ie);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]

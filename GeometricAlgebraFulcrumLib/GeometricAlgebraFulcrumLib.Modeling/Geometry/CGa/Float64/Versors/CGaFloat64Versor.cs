@@ -130,6 +130,16 @@ public sealed record CGaFloat64Versor
         return InternalMultivector.IsNearZero(epsilon);
     }
 
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public CGaFloat64Versor RemoveNearZeroTerms(double zeroEpsilon = 1e-12)
+    {
+        return new CGaFloat64Versor(
+            GeometricSpace,
+            InternalMultivector.MapScalars(s => s.IsNearZero(zeroEpsilon) ? 0 : s)
+        );
+    }
+
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public double SpSquared()

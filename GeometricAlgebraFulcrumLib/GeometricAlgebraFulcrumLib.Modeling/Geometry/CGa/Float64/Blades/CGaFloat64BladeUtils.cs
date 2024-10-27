@@ -3,7 +3,6 @@ using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Float64.Multivectors;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Float64.Multivectors.Composers;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Float64.Decoding;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Float64.Elements;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.BitManipulation;
 
@@ -168,7 +167,7 @@ public static class CGaFloat64BladeUtils
                     cgaGeometricSpace,
                     CGaFloat64ElementKind.Tangent,
                     CGaFloat64ElementEncoding.Opns,
-                    blade.DecodeOpnsTangentVGaDirection().Grade
+                    blade.DecodeOpnsTangent.VGaDirection().Grade
                 );
 
             // OPNS Round
@@ -176,7 +175,7 @@ public static class CGaFloat64BladeUtils
                 cgaGeometricSpace,
                 CGaFloat64ElementKind.Round,
                 CGaFloat64ElementEncoding.Opns,
-                blade.DecodeOpnsRoundVGaDirection().Grade
+                blade.DecodeOpnsRound.VGaDirection().Grade
             );
         }
 
@@ -186,7 +185,7 @@ public static class CGaFloat64BladeUtils
                 cgaGeometricSpace,
                 CGaFloat64ElementKind.Direction,
                 CGaFloat64ElementEncoding.Opns,
-                blade.DecodeOpnsDirectionVGaDirection().Grade
+                blade.DecodeOpnsDirection.VGaDirection().Grade
             );
 
         // OPNS Flat
@@ -195,7 +194,7 @@ public static class CGaFloat64BladeUtils
                 cgaGeometricSpace,
                 CGaFloat64ElementKind.Flat,
                 CGaFloat64ElementEncoding.Opns,
-                blade.DecodeOpnsFlatVGaDirection().Grade
+                blade.DecodeOpnsFlat.VGaDirection().Grade
             );
 
         // IPNS Flat
@@ -203,7 +202,7 @@ public static class CGaFloat64BladeUtils
             cgaGeometricSpace,
             CGaFloat64ElementKind.Flat,
             CGaFloat64ElementEncoding.Ipns,
-            blade.DecodeIpnsFlatVGaDirection().Grade
+            blade.DecodeIpnsFlat.VGaDirection().Grade
         );
     }
 
@@ -221,7 +220,7 @@ public static class CGaFloat64BladeUtils
                     cgaGeometricSpace,
                     CGaFloat64ElementKind.Tangent,
                     CGaFloat64ElementEncoding.Ipns,
-                    blade.DecodeIpnsTangentVGaDirection().Grade
+                    blade.DecodeIpnsTangent.VGaDirection().Grade
                 );
 
             // IPNS Round
@@ -229,7 +228,7 @@ public static class CGaFloat64BladeUtils
                 cgaGeometricSpace,
                 CGaFloat64ElementKind.Round,
                 CGaFloat64ElementEncoding.Ipns,
-                blade.DecodeIpnsRoundVGaDirection().Grade
+                blade.DecodeIpnsRound.VGaDirection().Grade
             );
         }
 
@@ -239,7 +238,7 @@ public static class CGaFloat64BladeUtils
                 cgaGeometricSpace,
                 CGaFloat64ElementKind.Direction,
                 CGaFloat64ElementEncoding.Ipns,
-                blade.DecodeIpnsDirectionVGaDirection().Grade
+                blade.DecodeIpnsDirection.VGaDirection().Grade
             );
 
         if (isZeroEiOpX)
@@ -247,7 +246,7 @@ public static class CGaFloat64BladeUtils
                 cgaGeometricSpace,
                 CGaFloat64ElementKind.Flat,
                 CGaFloat64ElementEncoding.Opns,
-                blade.DecodeOpnsFlatVGaDirection().Grade
+                blade.DecodeOpnsFlat.VGaDirection().Grade
             );
 
         // IPNS Flat
@@ -255,7 +254,7 @@ public static class CGaFloat64BladeUtils
             cgaGeometricSpace,
             CGaFloat64ElementKind.Flat,
             CGaFloat64ElementEncoding.Ipns,
-            blade.DecodeIpnsFlatVGaDirection().Grade
+            blade.DecodeIpnsFlat.VGaDirection().Grade
         );
     }
 

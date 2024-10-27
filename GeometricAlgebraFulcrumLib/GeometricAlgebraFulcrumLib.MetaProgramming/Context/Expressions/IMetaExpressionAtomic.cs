@@ -22,6 +22,8 @@ public interface IMetaExpressionAtomic :
 
     bool HasDependingVariables { get; }
 
+    bool MergeEnabled { get; }
+
     /// <summary>
     /// True if this is an atomic expression (number or variable) used in a following computation
     /// </summary>

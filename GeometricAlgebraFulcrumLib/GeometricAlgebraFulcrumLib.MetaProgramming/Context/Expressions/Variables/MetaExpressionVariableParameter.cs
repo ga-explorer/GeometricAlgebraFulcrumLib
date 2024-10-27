@@ -67,6 +67,9 @@ public sealed class MetaExpressionVariableParameter :
     {
         return context.ImportCopy(this);
     }
+    
+    public override bool MergeEnabled 
+        => false;
 
     public override bool HasDependingVariables
         => DependingVariablesCache.Count > 0;

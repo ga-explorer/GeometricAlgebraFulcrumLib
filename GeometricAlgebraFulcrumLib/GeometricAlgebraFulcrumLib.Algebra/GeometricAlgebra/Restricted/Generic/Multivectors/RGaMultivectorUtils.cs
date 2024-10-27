@@ -716,4 +716,38 @@ public static class RGaMultivectorUtils
         
         return array;
     }
+    
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static RGaMultivector<T>[,] GetMapTable<T>(this IReadOnlyList<RGaMultivector<T>> multivectorList, Func<RGaMultivector<T>, RGaMultivector<T>, RGaMultivector<T>> multivectorMap)
+    {
+        return GetMapTable(
+            multivectorList,
+            multivectorList,
+            multivectorMap
+        );
+    }
+
+    public static RGaMultivector<T>[,] GetMapTable<T>(this IReadOnlyList<RGaMultivector<T>> multivectorList1, IReadOnlyList<RGaMultivector<T>> multivectorList2, Func<RGaMultivector<T>, RGaMultivector<T>, RGaMultivector<T>> multivectorMap)
+    {
+        var rowCount = multivectorList1.Count;
+        var colCount = multivectorList2.Count;
+
+        var tableArray = new RGaMultivector<T>[rowCount, colCount];
+
+        for (var i = 0; i < rowCount; i++)
+        {
+            var b1 = multivectorList1[i];
+
+            for (var j = 0; j < colCount; j++)
+            {
+                var b2 = multivectorList2[j];
+
+                tableArray[i, j] = multivectorMap(b1, b2);
+            }
+        }
+
+        return tableArray;
+    }
+
 }

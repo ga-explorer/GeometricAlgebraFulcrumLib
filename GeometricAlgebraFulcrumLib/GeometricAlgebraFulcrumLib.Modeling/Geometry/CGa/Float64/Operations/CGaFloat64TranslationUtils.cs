@@ -5,7 +5,6 @@ using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space2D;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space3D;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.SpaceND;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Float64.Blades;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Float64.Decoding;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Float64.Elements;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Float64.Encoding;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Float64.Versors;
@@ -24,7 +23,7 @@ public static class CGaFloat64TranslationUtils
             CGaFloat64Tangent el => el.TranslateBy(egaVector),
             CGaFloat64Flat el => el.TranslateBy(egaVector),
             CGaFloat64Round el => el.TranslateBy(egaVector),
-            _ => element.EncodeOpnsBlade().TranslateBy(egaVector).DecodeOpnsElement()
+            _ => element.EncodeOpnsBlade().TranslateBy(egaVector).Decode.OpnsElement()
         };
     }
 
@@ -37,7 +36,7 @@ public static class CGaFloat64TranslationUtils
             CGaFloat64Tangent el => el.TranslateBy(egaVector),
             CGaFloat64Flat el => el.TranslateBy(egaVector),
             CGaFloat64Round el => el.TranslateBy(egaVector),
-            _ => element.EncodeOpnsBlade().TranslateBy(egaVector).DecodeOpnsElement()
+            _ => element.EncodeOpnsBlade().TranslateBy(egaVector).Decode.OpnsElement()
         };
     }
 
@@ -50,7 +49,7 @@ public static class CGaFloat64TranslationUtils
             CGaFloat64Tangent el => el.TranslateBy(egaVector),
             CGaFloat64Flat el => el.TranslateBy(egaVector),
             CGaFloat64Round el => el.TranslateBy(egaVector),
-            _ => element.EncodeOpnsBlade().TranslateBy(egaVector).DecodeOpnsElement()
+            _ => element.EncodeOpnsBlade().TranslateBy(egaVector).Decode.OpnsElement()
         };
     }
 
@@ -63,7 +62,7 @@ public static class CGaFloat64TranslationUtils
             CGaFloat64Tangent el => el.TranslateBy(egaVector),
             CGaFloat64Flat el => el.TranslateBy(egaVector),
             CGaFloat64Round el => el.TranslateBy(egaVector),
-            _ => element.EncodeOpnsBlade().TranslateBy(egaVector).DecodeOpnsElement()
+            _ => element.EncodeOpnsBlade().TranslateBy(egaVector).Decode.OpnsElement()
         };
     }
 
@@ -76,7 +75,7 @@ public static class CGaFloat64TranslationUtils
             CGaFloat64Tangent el => el.TranslateBy(egaVector),
             CGaFloat64Flat el => el.TranslateBy(egaVector),
             CGaFloat64Round el => el.TranslateBy(egaVector),
-            _ => element.EncodeOpnsBlade().TranslateBy(egaVector).DecodeOpnsElement()
+            _ => element.EncodeOpnsBlade().TranslateBy(egaVector).Decode.OpnsElement()
         };
     }
 
@@ -148,7 +147,7 @@ public static class CGaFloat64TranslationUtils
         return new CGaFloat64Tangent(
             element.GeometricSpace,
             element.Weight,
-            element.Position + egaVector.EncodeVGaVectorBlade(element.GeometricSpace),
+            element.Position + egaVector.EncodeVGaVector(element.GeometricSpace),
             element.Direction
         );
     }
@@ -159,7 +158,7 @@ public static class CGaFloat64TranslationUtils
         return new CGaFloat64Tangent(
             element.GeometricSpace,
             element.Weight,
-            element.Position + egaVector.EncodeVGaVectorBlade(element.GeometricSpace),
+            element.Position + egaVector.EncodeVGaVector(element.GeometricSpace),
             element.Direction
         );
     }
@@ -170,7 +169,7 @@ public static class CGaFloat64TranslationUtils
         return new CGaFloat64Tangent(
             element.GeometricSpace,
             element.Weight,
-            element.Position + egaVector.EncodeVGaVectorBlade(element.GeometricSpace),
+            element.Position + egaVector.EncodeVGaVector(element.GeometricSpace),
             element.Direction
         );
     }
@@ -181,7 +180,7 @@ public static class CGaFloat64TranslationUtils
         return new CGaFloat64Tangent(
             element.GeometricSpace,
             element.Weight,
-            element.Position + egaVector.EncodeVGaVectorBlade(element.GeometricSpace),
+            element.Position + egaVector.EncodeVGaVector(element.GeometricSpace),
             element.Direction
         );
     }
@@ -206,7 +205,7 @@ public static class CGaFloat64TranslationUtils
         return new CGaFloat64Flat(
             element.GeometricSpace,
             element.Weight,
-            element.Position + egaVector.EncodeVGaVectorBlade(element.GeometricSpace),
+            element.Position + egaVector.EncodeVGaVector(element.GeometricSpace),
             element.Direction
         );
     }
@@ -217,7 +216,7 @@ public static class CGaFloat64TranslationUtils
         return new CGaFloat64Flat(
             element.GeometricSpace,
             element.Weight,
-            element.Position + egaVector.EncodeVGaVectorBlade(element.GeometricSpace),
+            element.Position + egaVector.EncodeVGaVector(element.GeometricSpace),
             element.Direction
         );
     }
@@ -228,7 +227,7 @@ public static class CGaFloat64TranslationUtils
         return new CGaFloat64Flat(
             element.GeometricSpace,
             element.Weight,
-            element.Position + egaVector.EncodeVGaVectorBlade(element.GeometricSpace),
+            element.Position + egaVector.EncodeVGaVector(element.GeometricSpace),
             element.Direction
         );
     }
@@ -239,7 +238,7 @@ public static class CGaFloat64TranslationUtils
         return new CGaFloat64Flat(
             element.GeometricSpace,
             element.Weight,
-            element.Position + egaVector.EncodeVGaVectorBlade(element.GeometricSpace),
+            element.Position + egaVector.EncodeVGaVector(element.GeometricSpace),
             element.Direction
         );
     }
@@ -265,7 +264,7 @@ public static class CGaFloat64TranslationUtils
             element.GeometricSpace,
             element.Weight,
             element.RadiusSquared,
-            element.Position + egaVector.EncodeVGaVectorBlade(element.GeometricSpace),
+            element.Position + egaVector.EncodeVGaVector(element.GeometricSpace),
             element.Direction
         );
     }
@@ -277,7 +276,7 @@ public static class CGaFloat64TranslationUtils
             element.GeometricSpace,
             element.Weight,
             element.RadiusSquared,
-            element.Position + egaVector.EncodeVGaVectorBlade(element.GeometricSpace),
+            element.Position + egaVector.EncodeVGaVector(element.GeometricSpace),
             element.Direction
         );
     }
@@ -289,7 +288,7 @@ public static class CGaFloat64TranslationUtils
             element.GeometricSpace,
             element.Weight,
             element.RadiusSquared,
-            element.Position + egaVector.EncodeVGaVectorBlade(element.GeometricSpace),
+            element.Position + egaVector.EncodeVGaVector(element.GeometricSpace),
             element.Direction
         );
     }
@@ -301,7 +300,7 @@ public static class CGaFloat64TranslationUtils
             element.GeometricSpace,
             element.Weight,
             element.RadiusSquared,
-            element.Position + egaVector.EncodeVGaVectorBlade(element.GeometricSpace),
+            element.Position + egaVector.EncodeVGaVector(element.GeometricSpace),
             element.Direction
         );
     }
@@ -320,6 +319,24 @@ public static class CGaFloat64TranslationUtils
         );
     }
 
+    
+    /// <summary>
+    /// Apply a CGA translation to this CGA blade
+    /// </summary>
+    /// <param name="blade"></param>
+    /// <param name="egaTranslationVectorX"></param>
+    /// <param name="egaTranslationVectorY"></param>
+    /// <returns></returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static CGaFloat64Blade TranslateBy(this CGaFloat64Blade blade, double egaTranslationVectorX, double egaTranslationVectorY)
+    {
+        return blade.TranslateBy(
+            blade.GeometricSpace.EncodeVGa.Vector(
+                egaTranslationVectorX, 
+                egaTranslationVectorY
+            )
+        );
+    }
 
     /// <summary>
     /// Apply a CGA translation to this CGA blade
@@ -331,7 +348,27 @@ public static class CGaFloat64TranslationUtils
     public static CGaFloat64Blade TranslateBy(this CGaFloat64Blade blade, LinFloat64Vector2D egaTranslationVector)
     {
         return blade.TranslateBy(
-            blade.GeometricSpace.EncodeVGaVector(egaTranslationVector)
+            blade.GeometricSpace.EncodeVGa.Vector(egaTranslationVector)
+        );
+    }
+    
+    /// <summary>
+    /// Apply a CGA translation to this CGA blade
+    /// </summary>
+    /// <param name="blade"></param>
+    /// <param name="egaTranslationVectorX"></param>
+    /// <param name="egaTranslationVectorY"></param>
+    /// <param name="egaTranslationVectorZ"></param>
+    /// <returns></returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static CGaFloat64Blade TranslateBy(this CGaFloat64Blade blade, double egaTranslationVectorX, double egaTranslationVectorY, double egaTranslationVectorZ)
+    {
+        return blade.TranslateBy(
+            blade.GeometricSpace.EncodeVGa.Vector(
+                egaTranslationVectorX, 
+                egaTranslationVectorY, 
+                egaTranslationVectorZ
+            )
         );
     }
 
@@ -345,7 +382,7 @@ public static class CGaFloat64TranslationUtils
     public static CGaFloat64Blade TranslateBy(this CGaFloat64Blade blade, LinFloat64Vector3D egaTranslationVector)
     {
         return blade.TranslateBy(
-            blade.GeometricSpace.EncodeVGaVector(egaTranslationVector)
+            blade.GeometricSpace.EncodeVGa.Vector(egaTranslationVector)
         );
     }
 
@@ -359,7 +396,7 @@ public static class CGaFloat64TranslationUtils
     public static CGaFloat64Blade TranslateBy(this CGaFloat64Blade blade, LinFloat64Vector egaTranslationVector)
     {
         return blade.TranslateBy(
-            blade.GeometricSpace.EncodeVGaVector(egaTranslationVector)
+            blade.GeometricSpace.EncodeVGa.Vector(egaTranslationVector)
         );
     }
 
@@ -373,7 +410,7 @@ public static class CGaFloat64TranslationUtils
     public static CGaFloat64Blade TranslateBy(this CGaFloat64Blade blade, RGaFloat64Vector egaTranslationVector)
     {
         return blade.TranslateBy(
-            blade.GeometricSpace.EncodeVGaVector(egaTranslationVector)
+            blade.GeometricSpace.EncodeVGa.Vector(egaTranslationVector)
         );
     }
 
@@ -409,7 +446,7 @@ public static class CGaFloat64TranslationUtils
     public static CGaFloat64Blade TranslatePGaBy(this CGaFloat64Blade blade, LinFloat64Vector2D egaTranslationVector)
     {
         return blade.TranslatePGaBy(
-            blade.GeometricSpace.EncodeVGaVector(egaTranslationVector)
+            blade.GeometricSpace.EncodeVGa.Vector(egaTranslationVector)
         );
     }
 
@@ -423,7 +460,7 @@ public static class CGaFloat64TranslationUtils
     public static CGaFloat64Blade TranslatePGaBy(this CGaFloat64Blade blade, LinFloat64Vector3D egaTranslationVector)
     {
         return blade.TranslatePGaBy(
-            blade.GeometricSpace.EncodeVGaVector(egaTranslationVector)
+            blade.GeometricSpace.EncodeVGa.Vector(egaTranslationVector)
         );
     }
 
@@ -437,7 +474,7 @@ public static class CGaFloat64TranslationUtils
     public static CGaFloat64Blade TranslatePGaBy(this CGaFloat64Blade blade, LinFloat64Vector egaTranslationVector)
     {
         return blade.TranslatePGaBy(
-            blade.GeometricSpace.EncodeVGaVector(egaTranslationVector)
+            blade.GeometricSpace.EncodeVGa.Vector(egaTranslationVector)
         );
     }
 
@@ -451,7 +488,7 @@ public static class CGaFloat64TranslationUtils
     public static CGaFloat64Blade TranslatePGaBy(this CGaFloat64Blade blade, RGaFloat64Vector egaTranslationVector)
     {
         return blade.TranslatePGaBy(
-            blade.GeometricSpace.EncodeVGaVector(egaTranslationVector)
+            blade.GeometricSpace.EncodeVGa.Vector(egaTranslationVector)
         );
     }
 
@@ -483,7 +520,7 @@ public static class CGaFloat64TranslationUtils
     public static CGaFloat64Versor TranslateBy(this CGaFloat64Versor versor, LinFloat64Vector2D egaTranslationVector)
     {
         return versor.TranslateBy(
-            versor.GeometricSpace.EncodeVGaVector(egaTranslationVector)
+            versor.GeometricSpace.EncodeVGa.Vector(egaTranslationVector)
         );
     }
 
@@ -491,7 +528,7 @@ public static class CGaFloat64TranslationUtils
     public static CGaFloat64Versor TranslateBy(this CGaFloat64Versor versor, LinFloat64Vector3D egaTranslationVector)
     {
         return versor.TranslateBy(
-            versor.GeometricSpace.EncodeVGaVector(egaTranslationVector)
+            versor.GeometricSpace.EncodeVGa.Vector(egaTranslationVector)
         );
     }
 
@@ -499,7 +536,7 @@ public static class CGaFloat64TranslationUtils
     public static CGaFloat64Versor TranslateBy(this CGaFloat64Versor versor, LinFloat64Vector egaTranslationVector)
     {
         return versor.TranslateBy(
-            versor.GeometricSpace.EncodeVGaVector(egaTranslationVector)
+            versor.GeometricSpace.EncodeVGa.Vector(egaTranslationVector)
         );
     }
 

@@ -1219,6 +1219,66 @@ public static class LinFloat64AngleUtils
 
         return Float64Utils.Clamp(t1 / t2, -1d, 1d);
     }
+    
+    /// <summary>
+    /// Find the angle between this vector and another
+    /// </summary>
+    /// <param name="v1"></param>
+    /// <returns></returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static Float64Scalar GetAngleCosWithE1(this ITriplet<Float64Scalar> v1)
+    {
+        var t1 =
+            v1.Item1.ScalarValue;
+
+        var t2 = Math.Sqrt(
+            v1.Item1.ScalarValue * v1.Item1.ScalarValue +
+            v1.Item2.ScalarValue * v1.Item2.ScalarValue +
+            v1.Item3.ScalarValue * v1.Item3.ScalarValue
+        );
+
+        return Float64Utils.Clamp(t1 / t2, -1d, 1d);
+    }
+    
+    /// <summary>
+    /// Find the angle between this vector and another
+    /// </summary>
+    /// <param name="v1"></param>
+    /// <returns></returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static Float64Scalar GetAngleCosWithE2(this ITriplet<Float64Scalar> v1)
+    {
+        var t1 =
+            v1.Item2.ScalarValue;
+
+        var t2 = Math.Sqrt(
+            v1.Item1.ScalarValue * v1.Item1.ScalarValue +
+            v1.Item2.ScalarValue * v1.Item2.ScalarValue +
+            v1.Item3.ScalarValue * v1.Item3.ScalarValue
+        );
+
+        return Float64Utils.Clamp(t1 / t2, -1d, 1d);
+    }
+    
+    /// <summary>
+    /// Find the angle between this vector and another
+    /// </summary>
+    /// <param name="v1"></param>
+    /// <returns></returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static Float64Scalar GetAngleCosWithE3(this ITriplet<Float64Scalar> v1)
+    {
+        var t1 =
+            v1.Item3.ScalarValue;
+
+        var t2 = Math.Sqrt(
+            v1.Item1.ScalarValue * v1.Item1.ScalarValue +
+            v1.Item2.ScalarValue * v1.Item2.ScalarValue +
+            v1.Item3.ScalarValue * v1.Item3.ScalarValue
+        );
+
+        return Float64Utils.Clamp(t1 / t2, -1d, 1d);
+    }
 
     /// <summary>
     /// Find the angle between this vector and another
@@ -1417,6 +1477,39 @@ public static class LinFloat64AngleUtils
     public static LinFloat64PolarAngle GetAngleWithUnit(this IPair<Float64Scalar> v1, IPair<Float64Scalar> v2)
     {
         return v1.GetAngleCosWithUnit(v2).CosToPolarAngle();
+    }
+    
+    /// <summary>
+    /// Find the angle between this vector and another
+    /// </summary>
+    /// <param name="v1"></param>
+    /// <returns></returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static LinFloat64PolarAngle GetAngleWithE1(this ITriplet<Float64Scalar> v1)
+    {
+        return v1.GetAngleCosWithE1().CosToPolarAngle();
+    }
+    
+    /// <summary>
+    /// Find the angle between this vector and another
+    /// </summary>
+    /// <param name="v1"></param>
+    /// <returns></returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static LinFloat64PolarAngle GetAngleWithE2(this ITriplet<Float64Scalar> v1)
+    {
+        return v1.GetAngleCosWithE2().CosToPolarAngle();
+    }
+
+    /// <summary>
+    /// Find the angle between this vector and another
+    /// </summary>
+    /// <param name="v1"></param>
+    /// <returns></returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static LinFloat64PolarAngle GetAngleWithE3(this ITriplet<Float64Scalar> v1)
+    {
+        return v1.GetAngleCosWithE3().CosToPolarAngle();
     }
 
     /// <summary>

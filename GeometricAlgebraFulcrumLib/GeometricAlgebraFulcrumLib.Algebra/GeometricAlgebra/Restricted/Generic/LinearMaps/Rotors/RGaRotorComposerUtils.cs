@@ -843,7 +843,7 @@ public static class RGaRotorComposerUtils
     /// <param name="r23"></param>
     /// <returns></returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static RGaScaledPureRotor<T> CreateScaledPureRotor3D<T>(this RGaProcessor<T> processor, Scalars.Generic.IScalar<T> r0, Scalars.Generic.IScalar<T> r12, Scalars.Generic.IScalar<T> r13, Scalars.Generic.IScalar<T> r23)
+    public static RGaScaledPureRotor<T> CreateScaledPureRotor3D<T>(this RGaProcessor<T> processor, IScalar<T> r0, IScalar<T> r12, IScalar<T> r13, IScalar<T> r23)
     {
         return RGaScaledPureRotor<T>.Create(
             processor

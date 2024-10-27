@@ -5,6 +5,7 @@
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <Platforms>AnyCPU;x64</Platforms>
   </PropertyGroup>
 
   <ItemGroup>
@@ -26,6 +27,11 @@
 
   <ItemGroup>
     <Folder Include="Algebra\Signals\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="GeneticSharp" Version="3.1.4" />
+    <PackageReference Include="GeneticSharp.Extensions" Version="3.1.4" />
   </ItemGroup>
 
 </Project>

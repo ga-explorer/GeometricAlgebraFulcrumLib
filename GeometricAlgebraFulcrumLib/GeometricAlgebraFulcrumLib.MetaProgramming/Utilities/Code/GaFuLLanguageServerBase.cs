@@ -7,6 +7,8 @@ using GeometricAlgebraFulcrumLib.MetaProgramming.Utilities.Code.Cpp;
 using GeometricAlgebraFulcrumLib.MetaProgramming.Utilities.Code.CSharp;
 using GeometricAlgebraFulcrumLib.MetaProgramming.Utilities.Code.Excel;
 using GeometricAlgebraFulcrumLib.MetaProgramming.Context.Expressions;
+using GeometricAlgebraFulcrumLib.MetaProgramming.Utilities.Code.Matlab;
+using GeometricAlgebraFulcrumLib.Utilities.Code.Languages.Matlab;
 
 namespace GeometricAlgebraFulcrumLib.MetaProgramming.Utilities.Code;
 
@@ -41,6 +43,15 @@ public abstract class GaFuLLanguageServerBase :
             CclCSharpUtils.CSharp4CodeComposer(),
             CclCSharpUtils.CSharp4SyntaxFactory(),
             MetaExpressionToCSharpFloat64Converter.DefaultConverter
+        );
+    }
+    
+    public static GaFuLMatlabServer MatlabFloat64()
+    {
+        return new GaFuLMatlabServer(
+            CclMatlabUtils.Matlab4CodeComposer(),
+            CclMatlabUtils.Matlab4SyntaxFactory(),
+            MetaExpressionToMatlabFloat64Converter.DefaultConverter
         );
     }
 
@@ -90,7 +101,7 @@ public abstract class GaFuLLanguageServerBase :
     public virtual string GenerateCode(IMetaExpression expr)
     {
         if (ReferenceEquals(ExpressionConverter, null))
-            return expr.ToString();
+            return expr?.ToString() ?? string.Empty;
 
         var targetExprTextTree = ExpressionConverter.Convert(expr);
 

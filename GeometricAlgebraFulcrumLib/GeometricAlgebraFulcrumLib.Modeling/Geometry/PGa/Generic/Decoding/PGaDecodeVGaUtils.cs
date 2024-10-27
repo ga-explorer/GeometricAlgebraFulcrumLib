@@ -97,13 +97,13 @@ public static class PGaDecodeVGaUtils
 
         if (weight.IsZero())
             return new PGaElement<T>(
-                blade.Geometry,
-                blade.Geometry.ScalarProcessor.Zero,
-                blade.Geometry.OneScalarBlade
+                blade.GeometricSpace,
+                blade.GeometricSpace.ScalarProcessor.Zero,
+                blade.GeometricSpace.OneScalarBlade
             );
 
         return new PGaElement<T>(
-            blade.Geometry,
+            blade.GeometricSpace,
             weight,
             blade.Divide(weight)
         );
@@ -158,7 +158,7 @@ public static class PGaDecodeVGaUtils
     public static LinVector<T> DecodeVGaVectorND<T>(this PGaBlade<T> blade)
     {
         return blade.InternalVector.DecodeVGaBladeToFloat64Vector(
-            blade.Geometry
+            blade.GeometricSpace
         );
     }
 
@@ -166,7 +166,7 @@ public static class PGaDecodeVGaUtils
     public static XGaVector<T> DecodeVGaVector<T>(this PGaBlade<T> blade)
     {
         return blade.InternalVector.DecodeVGaBladeToXGaFloat64Vector(
-            blade.Geometry
+            blade.GeometricSpace
         );
     }
 
@@ -202,7 +202,7 @@ public static class PGaDecodeVGaUtils
     public static XGaBivector<T> DecodeVGaBivector<T>(this PGaBlade<T> blade)
     {
         return blade.InternalBivector.DecodeVGaBladeToXGaFloat64Bivector(
-            blade.Geometry
+            blade.GeometricSpace
         );
     }
 
@@ -223,7 +223,7 @@ public static class PGaDecodeVGaUtils
     public static XGaKVector<T> DecodeVGaKVector<T>(this PGaBlade<T> blade)
     {
         return blade.InternalKVector.DecodeVGaBladeToXGaFloat64KVector(
-            blade.Geometry
+            blade.GeometricSpace
         );
     }
 
@@ -265,7 +265,7 @@ public static class PGaDecodeVGaUtils
     {
         return blade
             .DecodeVGaBladeToVectors()
-            .SelectToImmutableArray(blade.Geometry.EncodeVGaVector);
+            .SelectToImmutableArray(blade.GeometricSpace.EncodeVGaVector);
     }
 
 }
