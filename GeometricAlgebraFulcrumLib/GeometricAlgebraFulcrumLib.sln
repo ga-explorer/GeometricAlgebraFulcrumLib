@@ -7,8 +7,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GeometricAlgebraFulcrumLib.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GeometricAlgebraFulcrumLib.Benchmarks", "GeometricAlgebraFulcrumLib.Benchmarks\GeometricAlgebraFulcrumLib.Benchmarks.csproj", "{DFCB27CE-326D-414F-8FD3-A6EB4E77031F}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GeometricAlgebraFulcrumLib.Samples", "GeometricAlgebraFulcrumLib.Samples\GeometricAlgebraFulcrumLib.Samples.csproj", "{9B5CDE6B-D314-42BC-AD15-62409CD2B419}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GeometricAlgebraFulcrumLib.Applications", "GeometricAlgebraFulcrumLib.Applications\GeometricAlgebraFulcrumLib.Applications.csproj", "{3865CF02-60BF-47EC-83C2-4867AFFF0462}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GeometricAlgebraFulcrumLib.Mathematica", "GeometricAlgebraFulcrumLib.Mathematica\GeometricAlgebraFulcrumLib.Mathematica.csproj", "{76284D74-E778-4A53-BF32-612A8C3F4FEF}"
@@ -30,8 +28,6 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GeometricAlgebraFulcrumLib.Applications.Symbolic", "GeometricAlgebraFulcrumLib.Applications.Symbolic\GeometricAlgebraFulcrumLib.Applications.Symbolic.csproj", "{DC4D55EA-F99E-4848-B98D-E73F86DDA97F}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GeometricAlgebraFulcrumLib.Samples.Generations", "GeometricAlgebraFulcrumLib.Samples.Generations\GeometricAlgebraFulcrumLib.Samples.Generations.csproj", "{6B9E8AB2-D9AB-445C-B0D9-9B735C6320E6}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GeometricAlgebraFulcrumLib.Samples.Symbolic", "GeometricAlgebraFulcrumLib.Samples.Symbolic\GeometricAlgebraFulcrumLib.Samples.Symbolic.csproj", "{C357F163-99A2-47E1-A1D9-42FC918670A1}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GeometricAlgebraFulcrumLib.Optimization", "GeometricAlgebraFulcrumLib.Optimization\GeometricAlgebraFulcrumLib.Optimization.csproj", "{C66C8284-D610-42D1-BBA7-04CBAD905EFF}"
 EndProject
@@ -69,18 +65,6 @@ Global
 		{DFCB27CE-326D-414F-8FD3-A6EB4E77031F}.Release|ARM32.Build.0 = Release|Any CPU
 		{DFCB27CE-326D-414F-8FD3-A6EB4E77031F}.Release|x64.ActiveCfg = Release|x64
 		{DFCB27CE-326D-414F-8FD3-A6EB4E77031F}.Release|x64.Build.0 = Release|x64
-		{9B5CDE6B-D314-42BC-AD15-62409CD2B419}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{9B5CDE6B-D314-42BC-AD15-62409CD2B419}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{9B5CDE6B-D314-42BC-AD15-62409CD2B419}.Debug|ARM32.ActiveCfg = Debug|Any CPU
-		{9B5CDE6B-D314-42BC-AD15-62409CD2B419}.Debug|ARM32.Build.0 = Debug|Any CPU
-		{9B5CDE6B-D314-42BC-AD15-62409CD2B419}.Debug|x64.ActiveCfg = Debug|x64
-		{9B5CDE6B-D314-42BC-AD15-62409CD2B419}.Debug|x64.Build.0 = Debug|x64
-		{9B5CDE6B-D314-42BC-AD15-62409CD2B419}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{9B5CDE6B-D314-42BC-AD15-62409CD2B419}.Release|Any CPU.Build.0 = Release|Any CPU
-		{9B5CDE6B-D314-42BC-AD15-62409CD2B419}.Release|ARM32.ActiveCfg = Release|Any CPU
-		{9B5CDE6B-D314-42BC-AD15-62409CD2B419}.Release|ARM32.Build.0 = Release|Any CPU
-		{9B5CDE6B-D314-42BC-AD15-62409CD2B419}.Release|x64.ActiveCfg = Release|x64
-		{9B5CDE6B-D314-42BC-AD15-62409CD2B419}.Release|x64.Build.0 = Release|x64
 		{3865CF02-60BF-47EC-83C2-4867AFFF0462}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{3865CF02-60BF-47EC-83C2-4867AFFF0462}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3865CF02-60BF-47EC-83C2-4867AFFF0462}.Debug|ARM32.ActiveCfg = Debug|Any CPU
@@ -213,18 +197,6 @@ Global
 		{6B9E8AB2-D9AB-445C-B0D9-9B735C6320E6}.Release|ARM32.Build.0 = Release|Any CPU
 		{6B9E8AB2-D9AB-445C-B0D9-9B735C6320E6}.Release|x64.ActiveCfg = Release|x64
 		{6B9E8AB2-D9AB-445C-B0D9-9B735C6320E6}.Release|x64.Build.0 = Release|x64
-		{C357F163-99A2-47E1-A1D9-42FC918670A1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C357F163-99A2-47E1-A1D9-42FC918670A1}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C357F163-99A2-47E1-A1D9-42FC918670A1}.Debug|ARM32.ActiveCfg = Debug|Any CPU
-		{C357F163-99A2-47E1-A1D9-42FC918670A1}.Debug|ARM32.Build.0 = Debug|Any CPU
-		{C357F163-99A2-47E1-A1D9-42FC918670A1}.Debug|x64.ActiveCfg = Debug|x64
-		{C357F163-99A2-47E1-A1D9-42FC918670A1}.Debug|x64.Build.0 = Debug|x64
-		{C357F163-99A2-47E1-A1D9-42FC918670A1}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C357F163-99A2-47E1-A1D9-42FC918670A1}.Release|Any CPU.Build.0 = Release|Any CPU
-		{C357F163-99A2-47E1-A1D9-42FC918670A1}.Release|ARM32.ActiveCfg = Release|Any CPU
-		{C357F163-99A2-47E1-A1D9-42FC918670A1}.Release|ARM32.Build.0 = Release|Any CPU
-		{C357F163-99A2-47E1-A1D9-42FC918670A1}.Release|x64.ActiveCfg = Release|x64
-		{C357F163-99A2-47E1-A1D9-42FC918670A1}.Release|x64.Build.0 = Release|x64
 		{C66C8284-D610-42D1-BBA7-04CBAD905EFF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{C66C8284-D610-42D1-BBA7-04CBAD905EFF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C66C8284-D610-42D1-BBA7-04CBAD905EFF}.Debug|ARM32.ActiveCfg = Debug|Any CPU

@@ -7,10 +7,10 @@ using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Extended.Generic.Proce
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Extended.Generic.Subspaces;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Matrices;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Generic;
-using GeometricAlgebraFulcrumLib.Mathematica.Algebra.GeometricAlgebra;
-using GeometricAlgebraFulcrumLib.Mathematica.Algebra.Scalars;
+using GeometricAlgebraFulcrumLib.Mathematica.Algebra;
 using GeometricAlgebraFulcrumLib.Mathematica.Utilities.Structures;
 using GeometricAlgebraFulcrumLib.Mathematica.Utilities.Structures.ExprFactory;
+using GeometricAlgebraFulcrumLib.Mathematica.Utilities.Text;
 using Wolfram.NETLink;
 
 namespace GeometricAlgebraFulcrumLib.Applications.Symbolic.PowerSystems.GAPoT;

@@ -5,10 +5,10 @@ using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Generic.Pro
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Generic.Subspaces;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Generic.Angles;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Generic;
-using GeometricAlgebraFulcrumLib.Mathematica.Algebra.GeometricAlgebra;
-using GeometricAlgebraFulcrumLib.Mathematica.Algebra.Scalars;
+using GeometricAlgebraFulcrumLib.Mathematica.Algebra;
 using GeometricAlgebraFulcrumLib.Mathematica.Utilities.Structures;
 using GeometricAlgebraFulcrumLib.Mathematica.Utilities.Structures.ExprFactory;
+using GeometricAlgebraFulcrumLib.Mathematica.Utilities.Text;
 using GeometricAlgebraFulcrumLib.Modeling.Signals.Composers;
 using GeometricAlgebraFulcrumLib.Utilities.Text.Text;
 using Wolfram.NETLink;

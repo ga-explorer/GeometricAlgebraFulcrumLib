@@ -1,9 +1,9 @@
 ﻿using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Generic.Multivectors;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Generic.Multivectors.Composers;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Generic.Processors;
-using GeometricAlgebraFulcrumLib.Mathematica.Algebra.GeometricAlgebra;
-using GeometricAlgebraFulcrumLib.Mathematica.Algebra.Scalars;
+using GeometricAlgebraFulcrumLib.Mathematica.Algebra;
 using GeometricAlgebraFulcrumLib.Mathematica.Utilities.Structures;
+using GeometricAlgebraFulcrumLib.Mathematica.Utilities.Text;
 using Wolfram.NETLink;
 
 namespace GeometricAlgebraFulcrumLib.Applications.Symbolic.PowerSystems.PowerQuality

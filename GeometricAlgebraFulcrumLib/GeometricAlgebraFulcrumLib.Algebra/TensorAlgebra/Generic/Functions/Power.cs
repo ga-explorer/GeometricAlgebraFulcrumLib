@@ -25,7 +25,6 @@
 #endregion
 
 
-using GenericTensor.Functions;
 using Threading = GeometricAlgebraFulcrumLib.Algebra.TensorAlgebra.Generic.Core.Threading;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.TensorAlgebra.Generic.Functions

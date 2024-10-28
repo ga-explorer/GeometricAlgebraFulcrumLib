@@ -18,13 +18,13 @@
     <PackageReference Include="Dew.Signal.Core" Version="6.2.3" />
     <PackageReference Include="Dew.Stats" Version="6.2.3" />
     <PackageReference Include="Dew.Stats.Core" Version="6.2.3" />
-    <PackageReference Include="EPPlus" Version="7.2.2" />
+    <PackageReference Include="EPPlus" Version="7.4.2" />
     <PackageReference Include="HonkPerf.NET.Core" Version="1.0.2" />
     <PackageReference Include="MathNet.Numerics" Version="5.0.0" />
     <PackageReference Include="NumpyDotNet" Version="0.9.86.2" />
-    <PackageReference Include="OxyPlot.Core" Version="2.1.2" />
+    <PackageReference Include="OxyPlot.Core" Version="2.2.0" />
     <PackageReference Include="OxyPlot.Core.Drawing" Version="2.1.0" />
-    <PackageReference Include="OxyPlot.SkiaSharp" Version="2.1.2" />
+    <PackageReference Include="OxyPlot.SkiaSharp" Version="2.2.0" />
     <PackageReference Include="PeterO.Numbers" Version="1.8.2" />
     <PackageReference Include="SixLabors.ImageSharp" Version="3.1.5" />
   </ItemGroup>

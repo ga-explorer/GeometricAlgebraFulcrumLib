@@ -1,7 +1,7 @@
 ﻿using System.Text;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Angles;
 using GeometricAlgebraFulcrumLib.Algebra.Utilities.Text;
-using GeometricAlgebraFulcrumLib.Mathematica.Algebra.Scalars;
+using GeometricAlgebraFulcrumLib.Mathematica.Algebra;
 using Wolfram.NETLink;
 
 namespace GeometricAlgebraFulcrumLib.Mathematica.Utilities.Text;

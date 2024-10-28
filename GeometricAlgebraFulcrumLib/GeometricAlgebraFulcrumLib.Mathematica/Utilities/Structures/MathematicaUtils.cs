@@ -12,15 +12,15 @@ using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Extended.Generic.Multi
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Matrices;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Generic;
-using GeometricAlgebraFulcrumLib.Mathematica.Algebra.GeometricAlgebra;
 using GeometricAlgebraFulcrumLib.Mathematica.MetaProgramming;
-using GeometricAlgebraFulcrumLib.Mathematica.Algebra.Scalars;
 using GeometricAlgebraFulcrumLib.Mathematica.Utilities.Structures.Expression;
 using GeometricAlgebraFulcrumLib.Mathematica.Utilities.Structures.ExprFactory;
 using GeometricAlgebraFulcrumLib.MetaProgramming.Context.Expressions;
 using GeometricAlgebraFulcrumLib.MetaProgramming.Context.Expressions.Composite;
 using GeometricAlgebraFulcrumLib.MetaProgramming.Context.Expressions.HeadSpecs;
 using GeometricAlgebraFulcrumLib.Modeling.Signals;
+using GeometricAlgebraFulcrumLib.Mathematica.Utilities.Text;
+using GeometricAlgebraFulcrumLib.Mathematica.Algebra;
 
 namespace GeometricAlgebraFulcrumLib.Mathematica.Utilities.Structures;
 

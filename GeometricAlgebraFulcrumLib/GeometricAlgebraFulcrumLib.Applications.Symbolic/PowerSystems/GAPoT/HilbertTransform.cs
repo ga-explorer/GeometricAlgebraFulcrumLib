@@ -1,4 +1,4 @@
-﻿using GeometricAlgebraFulcrumLib.Mathematica.Algebra.GeometricAlgebra;
+﻿using GeometricAlgebraFulcrumLib.Mathematica.Algebra;
 using GeometricAlgebraFulcrumLib.Mathematica.Utilities.Structures;
 
 namespace GeometricAlgebraFulcrumLib.Applications.Symbolic.PowerSystems.GAPoT;

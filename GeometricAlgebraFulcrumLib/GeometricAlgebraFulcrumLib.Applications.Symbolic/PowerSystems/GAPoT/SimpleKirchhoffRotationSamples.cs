@@ -7,10 +7,10 @@ using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Generic.Mul
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Generic.Processors;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Angles;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Generic;
-using GeometricAlgebraFulcrumLib.Mathematica.Algebra.GeometricAlgebra;
-using GeometricAlgebraFulcrumLib.Mathematica.Algebra.Scalars;
+using GeometricAlgebraFulcrumLib.Mathematica.Algebra;
 using GeometricAlgebraFulcrumLib.Mathematica.Utilities.Structures;
 using GeometricAlgebraFulcrumLib.Mathematica.Utilities.Structures.ExprFactory;
+using GeometricAlgebraFulcrumLib.Mathematica.Utilities.Text;
 using GeometricAlgebraFulcrumLib.MetaProgramming.Composers;
 using GeometricAlgebraFulcrumLib.MetaProgramming.Context;
 using GeometricAlgebraFulcrumLib.MetaProgramming.Context.Expressions;

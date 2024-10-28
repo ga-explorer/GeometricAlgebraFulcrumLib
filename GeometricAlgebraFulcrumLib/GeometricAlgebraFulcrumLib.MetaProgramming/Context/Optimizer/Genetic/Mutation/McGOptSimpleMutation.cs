@@ -1,7 +1,6 @@
 ﻿using System.Collections.Immutable;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Matrices;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Basic;
-using GeometricAlgebraFulcrumLib.Utilities.Structures.Extensions;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Random;
 using MathNet.Numerics.LinearAlgebra.Double;
 using GeometricAlgebraFulcrumLib.MetaProgramming.Context.Expressions.Variables;

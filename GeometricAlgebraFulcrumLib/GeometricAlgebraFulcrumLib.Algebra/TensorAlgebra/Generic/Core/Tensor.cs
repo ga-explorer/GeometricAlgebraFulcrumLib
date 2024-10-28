@@ -26,7 +26,6 @@
 
 
 using System.Runtime.CompilerServices;
-using GenericTensor.Functions;
 using GeometricAlgebraFulcrumLib.Algebra.TensorAlgebra.Generic.Functions;
 using HonkPerf.NET.Core;
 

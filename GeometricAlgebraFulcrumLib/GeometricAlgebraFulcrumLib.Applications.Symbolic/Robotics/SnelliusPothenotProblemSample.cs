@@ -3,9 +3,9 @@ using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Extended.Generic.Multi
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Extended.Generic.Processors;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Generic.Angles;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Generic;
-using GeometricAlgebraFulcrumLib.Mathematica.Algebra.GeometricAlgebra;
-using GeometricAlgebraFulcrumLib.Mathematica.Algebra.Scalars;
+using GeometricAlgebraFulcrumLib.Mathematica.Algebra;
 using GeometricAlgebraFulcrumLib.Mathematica.Utilities.Structures;
+using GeometricAlgebraFulcrumLib.Mathematica.Utilities.Text;
 using GeometricAlgebraFulcrumLib.MetaProgramming.Composers;
 using GeometricAlgebraFulcrumLib.MetaProgramming.Context;
 using GeometricAlgebraFulcrumLib.MetaProgramming.Context.Expressions;

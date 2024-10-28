@@ -1,6 +1,4 @@
-﻿using System.Diagnostics;
-using GeneticSharp;
-using GeometricAlgebraFulcrumLib.Algebra.ComplexAlgebra;
+﻿using GeometricAlgebraFulcrumLib.Algebra.ComplexAlgebra;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Extended.Generic.Multivectors;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Extended.Generic.Multivectors.Composers;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Extended.Generic.Processors;
@@ -11,18 +9,13 @@ using GeometricAlgebraFulcrumLib.Mathematica.Utilities.Structures;
 using GeometricAlgebraFulcrumLib.MetaProgramming.Composers;
 using GeometricAlgebraFulcrumLib.MetaProgramming.Context;
 using GeometricAlgebraFulcrumLib.MetaProgramming.Context.Expressions;
-using GeometricAlgebraFulcrumLib.MetaProgramming.Context.Optimizer;
 using GeometricAlgebraFulcrumLib.MetaProgramming.Context.Optimizer.Genetic;
 using GeometricAlgebraFulcrumLib.MetaProgramming.Context.Optimizer.Genetic.Cost;
 using GeometricAlgebraFulcrumLib.MetaProgramming.Context.Optimizer.Genetic.Mutation;
-using GeometricAlgebraFulcrumLib.MetaProgramming.Context.Optimizer.Genetic2;
 using GeometricAlgebraFulcrumLib.MetaProgramming.Utilities.Code;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Generic;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Generic.Decoding;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Generic.Encoding;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Generic.Operations;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Generic.Versors;
-using GeometricAlgebraFulcrumLib.Utilities.Text.Text;
 
 // ReSharper disable CompareOfFloatsByEqualityOperator
 

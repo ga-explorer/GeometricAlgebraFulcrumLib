@@ -1,7 +1,7 @@
 ﻿using System.Runtime.CompilerServices;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Angles;
 using GeometricAlgebraFulcrumLib.Algebra.Utilities.Text;
-using GeometricAlgebraFulcrumLib.Mathematica.Algebra.Scalars;
+using GeometricAlgebraFulcrumLib.Mathematica.Algebra;
 using GeometricAlgebraFulcrumLib.Mathematica.Utilities.Structures;
 using GeometricAlgebraFulcrumLib.Mathematica.Utilities.Structures.ExprFactory;
 

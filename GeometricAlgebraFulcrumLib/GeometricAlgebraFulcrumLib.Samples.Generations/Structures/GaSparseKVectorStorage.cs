@@ -15,8 +15,7 @@ public sealed class GaSparseKVectorStorage :
 
     public double this[ulong id]
     {
-        get => _idScalarDictionary.TryGetValue(id, out var scalar)
-                ? scalar : 0d;
+        get => _idScalarDictionary.GetValueOrDefault(id, 0d);
         set
         {
             if (value == 0d)
@@ -55,8 +54,7 @@ public sealed class GaSparseKVectorStorage :
 
     public double GetScalarById(ulong id)
     {
-        return _idScalarDictionary.TryGetValue(id, out var scalar)
-            ? scalar : 0d;
+        return _idScalarDictionary.GetValueOrDefault(id, 0d);
     }
 
     public IEnumerable<KeyValuePair<int, double>> GetIndexScalarPairs()

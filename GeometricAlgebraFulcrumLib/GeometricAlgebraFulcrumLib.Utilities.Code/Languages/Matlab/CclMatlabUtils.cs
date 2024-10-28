@@ -1,5 +1,4 @@
-﻿using GeometricAlgebraFulcrumLib.Utilities.Code.Languages.Matlab;
-using GeometricAlgebraFulcrumLib.Utilities.Code.SyntaxTree.Expressions;
+﻿using GeometricAlgebraFulcrumLib.Utilities.Code.SyntaxTree.Expressions;
 using System.Text;
 
 namespace GeometricAlgebraFulcrumLib.Utilities.Code.Languages.Matlab;

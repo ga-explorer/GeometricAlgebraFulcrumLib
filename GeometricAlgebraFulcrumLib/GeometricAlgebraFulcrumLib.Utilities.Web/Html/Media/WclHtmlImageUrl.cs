@@ -105,8 +105,8 @@ public class WclHtmlImageUrl
         var imageFormat = 
             mediaType.GetImageMagickFormat();
 
-        Width = image.Width;
-        Height = image.Height;
+        Width = (int)image.Width;
+        Height = (int)image.Height;
         MediaType = mediaType;
         IsDataUrl = true;
         IsBase64 = true;
@@ -122,8 +122,8 @@ public class WclHtmlImageUrl
 
         var image = new MagickImage(new FileInfo(filePath));
 
-        Width = image.Width;
-        Height = image.Height;
+        Width = (int)image.Width;
+        Height = (int)image.Height;
         MediaType = mediaType;
         IsDataUrl = true;
         IsBase64 = true;
