@@ -28,7 +28,7 @@ public sealed class GrBabylonJsAnimationLoopModeValue :
     }
 
 
-    public override string GetCode()
+    public override string GetAttributeValueCode()
     {
         return string.IsNullOrEmpty(ValueText) 
             ? Value.GetBabylonJsCode() 
@@ -61,7 +61,7 @@ public sealed class GrBabylonJsAnimationTypeValue :
     }
 
 
-    public override string GetCode()
+    public override string GetAttributeValueCode()
     {
         return string.IsNullOrEmpty(ValueText) 
             ? Value.GetBabylonJsCode() 

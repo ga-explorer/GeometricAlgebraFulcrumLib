@@ -1,5 +1,4 @@
-﻿using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.KonvaJs.Values;
-using GeometricAlgebraFulcrumLib.Utilities.Text;
+﻿using GeometricAlgebraFulcrumLib.Utilities.Text;
 
 namespace GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.KonvaJs.Shapes;
 
@@ -9,45 +8,12 @@ namespace GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.KonvaJs.Shapes;
 public class GrKonvaJsRect :
     GrKonvaJsShapeBase
 {
-    public class RectOptions :
-        GrKonvaJsShapeBaseOptions
-    {
-        public GrKonvaJsFloat32Value? CornerRadius
-        {
-            get => GetAttributeValueOrNull<GrKonvaJsFloat32Value>("cornerRadius");
-            set => SetAttributeValue("cornerRadius", value);
-        }
-        
-
-        public RectOptions()
-        {
-        }
-
-        public RectOptions(RectOptions options)
-        {
-            SetAttributeValues(options);
-        }
-    }
-
-    public class RectProperties :
-        GrKonvaJsShapeBaseProperties
-    {
-        public GrKonvaJsFloat32Value? CornerRadius
-        {
-            get => GetAttributeValueOrNull<GrKonvaJsFloat32Value>("cornerRadius");
-            set => SetAttributeValue("cornerRadius", value);
-        }
-
-       
-    }
-
-    
     protected override string ConstructorName
         => "new Konva.Rect";
 
-    public RectOptions Options { get; private set; }
+    public GrKonvaJsRectOptions Options { get; private set; }
 
-    public RectProperties Properties { get; private set; }
+    public GrKonvaJsRectProperties Properties { get; private set; }
 
     public override GrKonvaJsObjectOptions ObjectOptions
         => Options;
@@ -59,19 +25,19 @@ public class GrKonvaJsRect :
     public GrKonvaJsRect(string constName) 
         : base(constName)
     {
-        Options = new RectOptions
+        Options = new GrKonvaJsRectOptions
         {
             Id = NodeId.SingleQuote(),
             Name = ConstName.SingleQuote()
         };
 
-        Properties = new RectProperties();
+        Properties = new GrKonvaJsRectProperties();
     }
     
 
-    public GrKonvaJsRect SetOptions(RectOptions options)
+    public GrKonvaJsRect SetOptions(GrKonvaJsRectOptions options)
     {
-        Options = new RectOptions(options)
+        Options = new GrKonvaJsRectOptions(options)
         {
             Id = NodeId.SingleQuote(),
             Name = ConstName.SingleQuote()
@@ -80,7 +46,7 @@ public class GrKonvaJsRect :
         return this;
     }
 
-    public GrKonvaJsRect SetProperties(RectProperties properties)
+    public GrKonvaJsRect SetProperties(GrKonvaJsRectProperties properties)
     {
         Properties = properties;
 

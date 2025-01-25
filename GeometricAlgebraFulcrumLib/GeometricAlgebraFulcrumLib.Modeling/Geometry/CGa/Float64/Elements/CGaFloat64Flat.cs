@@ -214,51 +214,51 @@ public class CGaFloat64Flat :
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool SurfaceNearContainsPoint(double egaPointX, double egaPointY, double epsilon = 1e-12)
+    public bool SurfaceNearContainsPoint(double egaPointX, double egaPointY, double zeroEpsilon = Float64Utils.ZeroEpsilon)
     {
         var egaPoint = LinFloat64Vector2D.Create(egaPointX, egaPointY);
 
-        return IsDirectionNearParallelTo(egaPoint - PositionToVector2D(), epsilon);
+        return IsDirectionNearParallelTo(egaPoint - PositionToVector2D(), zeroEpsilon);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool SurfaceNearContainsPoint(LinFloat64Vector2D egaPoint, double epsilon = 1e-12)
+    public bool SurfaceNearContainsPoint(LinFloat64Vector2D egaPoint, double zeroEpsilon = Float64Utils.ZeroEpsilon)
     {
-        return IsDirectionNearParallelTo(egaPoint - PositionToVector2D(), epsilon);
+        return IsDirectionNearParallelTo(egaPoint - PositionToVector2D(), zeroEpsilon);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool SurfaceNearContainsPoint(double egaPointX, double egaPointY, double egaPointZ, double epsilon = 1e-12)
+    public bool SurfaceNearContainsPoint(double egaPointX, double egaPointY, double egaPointZ, double zeroEpsilon = Float64Utils.ZeroEpsilon)
     {
         var egaPoint = LinFloat64Vector3D.Create(egaPointX, egaPointY, egaPointZ);
 
-        return IsDirectionNearParallelTo(egaPoint - PositionToVector3D(), epsilon);
+        return IsDirectionNearParallelTo(egaPoint - PositionToVector3D(), zeroEpsilon);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool SurfaceNearContainsPoint(LinFloat64Vector3D egaPoint, double epsilon = 1e-12)
+    public bool SurfaceNearContainsPoint(LinFloat64Vector3D egaPoint, double zeroEpsilon = Float64Utils.ZeroEpsilon)
     {
-        return IsDirectionNearParallelTo(egaPoint - PositionToVector3D(), epsilon);
+        return IsDirectionNearParallelTo(egaPoint - PositionToVector3D(), zeroEpsilon);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool SurfaceNearContainsPoint(LinFloat64Vector egaPoint, double epsilon = 1e-12)
+    public bool SurfaceNearContainsPoint(LinFloat64Vector egaPoint, double zeroEpsilon = Float64Utils.ZeroEpsilon)
     {
-        return IsDirectionNearParallelTo(egaPoint - PositionToVector(), epsilon);
+        return IsDirectionNearParallelTo(egaPoint - PositionToVector(), zeroEpsilon);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool SurfaceNearContainsPoint(RGaFloat64Vector egaPoint, double epsilon = 1e-12)
+    public bool SurfaceNearContainsPoint(RGaFloat64Vector egaPoint, double zeroEpsilon = Float64Utils.ZeroEpsilon)
     {
-        return IsDirectionNearParallelTo(egaPoint - PositionToRGaVector(), epsilon);
+        return IsDirectionNearParallelTo(egaPoint - PositionToRGaVector(), zeroEpsilon);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool SurfaceNearContainsPoint(CGaFloat64Blade egaPoint, double epsilon = 1e-12)
+    public bool SurfaceNearContainsPoint(CGaFloat64Blade egaPoint, double zeroEpsilon = Float64Utils.ZeroEpsilon)
     {
         return IsDirectionNearParallelTo(
             (egaPoint - Position).DecodeVGaDirection.RGaVector(),
-            epsilon
+            zeroEpsilon
         );
     }
 

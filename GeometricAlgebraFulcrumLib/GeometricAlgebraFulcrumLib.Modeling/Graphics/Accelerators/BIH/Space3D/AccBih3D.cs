@@ -1,12 +1,11 @@
 ﻿using System.Collections;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.BasicShapes;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.Borders.Space3D.Immutable;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.Borders.Space3D.Mutable;
+using GeometricAlgebraFulcrumLib.Modeling.Geometry.Borders.Space3D.Float64;
 
 namespace GeometricAlgebraFulcrumLib.Modeling.Graphics.Accelerators.BIH.Space3D;
 
 public class AccBih3D<T> : IAccBih3D<T> 
-    where T : IFiniteGeometricShape3D
+    where T : IFloat64FiniteGeometricShape3D
 {
     public bool IsValid()
     {
@@ -15,7 +14,7 @@ public class AccBih3D<T> : IAccBih3D<T>
 
     public int BihDepth { get; }
 
-    public BoundingBox3D BoundingBox { get; }
+    public Float64BoundingBox3D BoundingBox { get; }
 
     public int Count => RootNode.Count;
 
@@ -43,17 +42,17 @@ public class AccBih3D<T> : IAccBih3D<T>
     }
 
 
-    public BoundingBox3D GetBoundingBox()
+    public Float64BoundingBox3D GetBoundingBox()
     {
-        return BoundingBox3D.Create(
-            (IEnumerable<IFiniteGeometricShape3D>) RootNode
+        return Float64BoundingBox3D.Create(
+            (IEnumerable<IFloat64FiniteGeometricShape3D>) RootNode
         );
     }
 
-    public MutableBoundingBox3D GetMutableBoundingBox()
+    public Float64BoundingBoxComposer3D GetBoundingBoxComposer()
     {
-        return MutableBoundingBox3D.Create(
-            (IEnumerable<IFiniteGeometricShape3D>) RootNode
+        return Float64BoundingBoxComposer3D.Create(
+            (IEnumerable<IFloat64FiniteGeometricShape3D>) RootNode
         );
     }
 

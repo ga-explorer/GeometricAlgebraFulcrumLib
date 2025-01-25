@@ -509,18 +509,18 @@ public sealed record LinVector3D<T> :
         }
     }
 
-    public Scalar<T> this[LinUnitBasisVector3D axis]
+    public Scalar<T> this[LinBasisVector3D axis]
     {
         get
         {
             return axis switch
             {
-                LinUnitBasisVector3D.PositiveX => X,
-                LinUnitBasisVector3D.PositiveY => Y,
-                LinUnitBasisVector3D.PositiveZ => Z,
-                LinUnitBasisVector3D.NegativeX => -X,
-                LinUnitBasisVector3D.NegativeY => -Y,
-                LinUnitBasisVector3D.NegativeZ => -Z,
+                LinBasisVector3D.Px => X,
+                LinBasisVector3D.Py => Y,
+                LinBasisVector3D.Pz => Z,
+                LinBasisVector3D.Nx => -X,
+                LinBasisVector3D.Ny => -Y,
+                LinBasisVector3D.Nz => -Z,
                 _ => ScalarProcessor.Zero
             };
         }

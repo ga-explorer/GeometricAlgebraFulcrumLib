@@ -6,6 +6,7 @@ using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.LinearMaps.SpaceN
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.LinearMaps.SpaceND.Rotation;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Matrices;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.SpaceND;
+using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
 using MathNet.Numerics.LinearAlgebra;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.LinearMaps.SpaceND.Composers;
@@ -332,12 +333,12 @@ public sealed class LinFloat64PlanarRotationSequence :
         return true;
     }
 
-    public override bool IsNearIdentity(double epsilon = 1E-12)
+    public override bool IsNearIdentity(double zeroEpsilon = 1E-12)
     {
         for (var basisIndex = 0; basisIndex < VSpaceDimensions; basisIndex++)
         {
             var isSameVectorBasis =
-                MapBasisVector(basisIndex).IsNearVectorBasis(basisIndex, epsilon);
+                MapBasisVector(basisIndex).IsNearVectorBasis(basisIndex, zeroEpsilon);
 
             if (!isSameVectorBasis) return false;
         }
@@ -349,7 +350,7 @@ public sealed class LinFloat64PlanarRotationSequence :
     /// Test if all rotation planes in this sequence are nearly pair-wise orthogonal
     /// </summary>
     /// <returns></returns>
-    public bool IsNearOrthogonalRotationsSequence(double epsilon = 1e-12)
+    public bool IsNearOrthogonalRotationsSequence(double zeroEpsilon = Float64Utils.ZeroEpsilon)
     {
         if (_mapList.Count > VSpaceDimensions / 2)
             return false;
@@ -364,10 +365,10 @@ public sealed class LinFloat64PlanarRotationSequence :
                 var u2 = _mapList[j].BasisVector1;
                 var v2 = _mapList[j].MapBasisVector1();
 
-                if (!u1.IsNearOrthogonalTo(u2, epsilon)) return false;
-                if (!u1.IsNearOrthogonalTo(v2, epsilon)) return false;
-                if (!v1.IsNearOrthogonalTo(u2, epsilon)) return false;
-                if (!v1.IsNearOrthogonalTo(v2, epsilon)) return false;
+                if (!u1.IsNearOrthogonalTo(u2, zeroEpsilon)) return false;
+                if (!u1.IsNearOrthogonalTo(v2, zeroEpsilon)) return false;
+                if (!v1.IsNearOrthogonalTo(u2, zeroEpsilon)) return false;
+                if (!v1.IsNearOrthogonalTo(v2, zeroEpsilon)) return false;
             }
         }
 

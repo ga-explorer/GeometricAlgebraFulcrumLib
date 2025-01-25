@@ -1,14 +1,14 @@
 ﻿using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.BasicShapes;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.BasicShapes.Lines;
+using GeometricAlgebraFulcrumLib.Modeling.Geometry.BasicShapes.Lines.Space3D.Float64;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Computers;
 
 namespace GeometricAlgebraFulcrumLib.Modeling.Graphics.Accelerators.BIH.Space3D.Traversal;
 
 public sealed class AccBihLineTraverser3D<T>
-    where T : IFiniteGeometricShape3D
+    where T : IFloat64FiniteGeometricShape3D
 {
-    public static AccBihLineTraverser3D<T> Create(IAccBih3D<T> bih, ILine3D line)
+    public static AccBihLineTraverser3D<T> Create(IAccBih3D<T> bih, IFloat64Line3D line)
     {
         return new AccBihLineTraverser3D<T>(
             bih,
@@ -17,7 +17,7 @@ public sealed class AccBihLineTraverser3D<T>
         );
     }
 
-    public static AccBihLineTraverser3D<T> Create(IAccBih3D<T> bih, ILine3D line, Float64ScalarRange lineParamLimits)
+    public static AccBihLineTraverser3D<T> Create(IAccBih3D<T> bih, IFloat64Line3D line, Float64ScalarRange lineParamLimits)
     {
         return new AccBihLineTraverser3D<T>(
             bih,
@@ -26,7 +26,7 @@ public sealed class AccBihLineTraverser3D<T>
         );
     }
 
-    public static AccBihLineTraverser3D<T> Create(IAccBih3D<T> bih, ILine3D line, double lineParamLimit1, double lineParamLimit2)
+    public static AccBihLineTraverser3D<T> Create(IAccBih3D<T> bih, IFloat64Line3D line, double lineParamLimit1, double lineParamLimit2)
     {
         return new AccBihLineTraverser3D<T>(
             bih,
@@ -42,7 +42,7 @@ public sealed class AccBihLineTraverser3D<T>
 
     public IAccBih3D<T> Bih { get; }
 
-    public ILine3D Line { get; }
+    public IFloat64Line3D Line { get; }
 
     public LineTraversalData3D LineData { get; }
 
@@ -51,7 +51,7 @@ public sealed class AccBihLineTraverser3D<T>
     public IEnumerable<AccBihLineTraversalState3D> TraversalStates => _statesList;
 
 
-    private AccBihLineTraverser3D(IAccBih3D<T> bih, ILine3D line, Float64ScalarRange lineParamLimits)
+    private AccBihLineTraverser3D(IAccBih3D<T> bih, IFloat64Line3D line, Float64ScalarRange lineParamLimits)
     {
         Bih = bih;
         Line = line;

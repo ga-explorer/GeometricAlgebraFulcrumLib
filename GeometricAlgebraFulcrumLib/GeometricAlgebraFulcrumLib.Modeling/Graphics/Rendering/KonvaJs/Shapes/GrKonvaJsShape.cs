@@ -1,5 +1,4 @@
-﻿using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.KonvaJs.Values;
-using GeometricAlgebraFulcrumLib.Utilities.Text;
+﻿using GeometricAlgebraFulcrumLib.Utilities.Text;
 
 namespace GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.KonvaJs.Shapes;
 
@@ -10,39 +9,12 @@ namespace GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.KonvaJs.Shapes;
 public class GrKonvaJsShape :
     GrKonvaJsShapeBase
 {
-    public class ShapeOptions :
-        GrKonvaJsShapeBaseOptions
-    {
-        public GrKonvaJsCodeValue SceneFunc
-        {
-            get => GetAttributeValueOrNull<GrKonvaJsCodeValue>("SceneFunc");
-            set => SetAttributeValue("SceneFunc", value);
-        }
-        
-
-        public ShapeOptions()
-        {
-        }
-
-        public ShapeOptions(ShapeOptions options)
-        {
-            SetAttributeValues(options);
-        }
-    }
-    
-    public class ShapeProperties :
-        GrKonvaJsShapeBaseProperties
-    {
-
-    }
-
-    
     protected override string ConstructorName
         => "new Konva.Shape";
 
-    public ShapeOptions Options { get; private set; }
+    public GrKonvaJsShapeOptions Options { get; private set; }
     
-    public ShapeProperties Properties { get; private set; }
+    public GrKonvaJsShapeProperties Properties { get; private set; }
 
     public override GrKonvaJsObjectOptions ObjectOptions 
         => Options;
@@ -54,22 +26,22 @@ public class GrKonvaJsShape :
     public GrKonvaJsShape(string constName) 
         : base(constName)
     {
-        Options = new ShapeOptions
+        Options = new GrKonvaJsShapeOptions
         {
             Id = NodeId.SingleQuote(),
             Name = ConstName.SingleQuote()
         };
 
-        Properties = new ShapeProperties();
+        Properties = new GrKonvaJsShapeProperties();
     }
     
 
-    public GrKonvaJsShape SetOptions(ShapeOptions options)
+    public GrKonvaJsShape SetOptions(GrKonvaJsShapeOptions options)
     {
         var sceneFunc = 
             Options.SceneFunc;
 
-        Options = new ShapeOptions(options)
+        Options = new GrKonvaJsShapeOptions(options)
         {
             SceneFunc = sceneFunc,
             Id = NodeId.SingleQuote(),
@@ -79,7 +51,7 @@ public class GrKonvaJsShape :
         return this;
     }
 
-    public GrKonvaJsShape SetProperties(ShapeProperties properties)
+    public GrKonvaJsShape SetProperties(GrKonvaJsShapeProperties properties)
     {
         Properties = properties;
 

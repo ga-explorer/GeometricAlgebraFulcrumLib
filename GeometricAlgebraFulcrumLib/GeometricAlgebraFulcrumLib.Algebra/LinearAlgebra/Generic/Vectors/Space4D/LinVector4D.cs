@@ -187,6 +187,12 @@ public sealed record LinVector4D<T> :
     {
         return new LinVector4D<T>(scalarProcessor, x, y, z, w);
     }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static LinVector4D<T> Create(IScalar<T> x, IScalar<T> y, IScalar<T> z, IScalar<T> w)
+    {
+        return new LinVector4D<T>(x, y, z, w);
+    }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static LinVector4D<T> Create(Scalar<T> x, Scalar<T> y, Scalar<T> z, Scalar<T> w)
@@ -394,12 +400,12 @@ public sealed record LinVector4D<T> :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    private LinVector4D(Scalar<T> x, Scalar<T> y, Scalar<T> z, Scalar<T> w)
+    private LinVector4D(IScalar<T> x, IScalar<T> y, IScalar<T> z, IScalar<T> w)
     {
-        Scalar1 = x;
-        Scalar2 = y;
-        Scalar3 = z;
-        Scalar4 = w;
+        Scalar1 = x.ToScalar();
+        Scalar2 = y.ToScalar();
+        Scalar3 = z.ToScalar();
+        Scalar4 = w.ToScalar();
     }
 
 

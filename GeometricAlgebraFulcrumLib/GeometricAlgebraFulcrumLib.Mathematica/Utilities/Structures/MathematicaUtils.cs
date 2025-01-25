@@ -130,7 +130,7 @@ public static class MathematicaUtils
             ? doubleValue : invalidValue;
     }
 
-    public static bool IsNullOrNearNumericZero(this Expr value, double epsilon = 1e-12)
+    public static bool IsNullOrNearNumericZero(this Expr value, double zeroEpsilon = Float64Utils.ZeroEpsilon)
     {
         if (ReferenceEquals(value, null))
             return true;
@@ -148,7 +148,7 @@ public static class MathematicaUtils
         if (!double.TryParse(textValue, out var doubleValue))
             return false;
 
-        return Math.Abs(doubleValue) <= epsilon;
+        return Math.Abs(doubleValue) <= zeroEpsilon;
     }
 
 
@@ -1246,75 +1246,75 @@ public static class MathematicaUtils
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static bool IsNearZero(this Expr expr, double epsilon = 1e-12)
+    public static bool IsNearZero(this Expr expr, double zeroEpsilon = Float64Utils.ZeroEpsilon)
     {
         var number = expr.ToNumber();
 
-        return number.IsNotNaN() && number.IsNearZero(epsilon);
+        return number.IsNotNaN() && number.IsNearZero(zeroEpsilon);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static bool IsNearOne(this Expr expr, double epsilon = 1e-12)
+    public static bool IsNearOne(this Expr expr, double zeroEpsilon = Float64Utils.ZeroEpsilon)
     {
         var number = expr.ToNumber();
 
-        return number.IsNotNaN() && (number - 1).IsNearZero(epsilon);
+        return number.IsNotNaN() && (number - 1).IsNearZero(zeroEpsilon);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static bool IsNearTwo(this Expr expr, double epsilon = 1e-12)
+    public static bool IsNearTwo(this Expr expr, double zeroEpsilon = Float64Utils.ZeroEpsilon)
     {
         var number = expr.ToNumber();
 
-        return number.IsNotNaN() && (number - 2).IsNearZero(epsilon);
+        return number.IsNotNaN() && (number - 2).IsNearZero(zeroEpsilon);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static bool IsNearThree(this Expr expr, double epsilon = 1e-12)
+    public static bool IsNearThree(this Expr expr, double zeroEpsilon = Float64Utils.ZeroEpsilon)
     {
         var number = expr.ToNumber();
 
-        return number.IsNotNaN() && (number - 3).IsNearZero(epsilon);
+        return number.IsNotNaN() && (number - 3).IsNearZero(zeroEpsilon);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static bool IsNearHalf(this Expr expr, double epsilon = 1e-12)
+    public static bool IsNearHalf(this Expr expr, double zeroEpsilon = Float64Utils.ZeroEpsilon)
     {
         var number = expr.ToNumber();
 
-        return number.IsNotNaN() && (number - 0.5).IsNearZero(epsilon);
+        return number.IsNotNaN() && (number - 0.5).IsNearZero(zeroEpsilon);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static bool IsNearMinusOne(this Expr expr, double epsilon = 1e-12)
+    public static bool IsNearMinusOne(this Expr expr, double zeroEpsilon = Float64Utils.ZeroEpsilon)
     {
         var number = expr.ToNumber();
 
-        return number.IsNotNaN() && (number + 1).IsNearZero(epsilon);
+        return number.IsNotNaN() && (number + 1).IsNearZero(zeroEpsilon);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static bool IsNearMinusTwo(this Expr expr, double epsilon = 1e-12)
+    public static bool IsNearMinusTwo(this Expr expr, double zeroEpsilon = Float64Utils.ZeroEpsilon)
     {
         var number = expr.ToNumber();
 
-        return number.IsNotNaN() && (number + 2).IsNearZero(epsilon);
+        return number.IsNotNaN() && (number + 2).IsNearZero(zeroEpsilon);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static bool IsNearMinusThree(this Expr expr, double epsilon = 1e-12)
+    public static bool IsNearMinusThree(this Expr expr, double zeroEpsilon = Float64Utils.ZeroEpsilon)
     {
         var number = expr.ToNumber();
 
-        return number.IsNotNaN() && (number + 3).IsNearZero(epsilon);
+        return number.IsNotNaN() && (number + 3).IsNearZero(zeroEpsilon);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static bool IsNearMinusHalf(this Expr expr, double epsilon = 1e-12)
+    public static bool IsNearMinusHalf(this Expr expr, double zeroEpsilon = Float64Utils.ZeroEpsilon)
     {
         var number = expr.ToNumber();
 
-        return number.IsNotNaN() && (number + 0.5).IsNearZero(epsilon);
+        return number.IsNotNaN() && (number + 0.5).IsNearZero(zeroEpsilon);
     }
 
 

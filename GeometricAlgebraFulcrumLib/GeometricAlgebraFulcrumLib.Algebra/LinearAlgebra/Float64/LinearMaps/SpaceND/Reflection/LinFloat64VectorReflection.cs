@@ -46,12 +46,12 @@ public sealed class LinFloat64VectorReflection :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool IsNearIdentity(double epsilon = 1E-12)
+    public bool IsNearIdentity(double zeroEpsilon = 1E-12)
     {
         return false;
     }
 
-    public bool IsNearReflection(double epsilon = 1E-12)
+    public bool IsNearReflection(double zeroEpsilon = 1E-12)
     {
         throw new NotImplementedException();
     }

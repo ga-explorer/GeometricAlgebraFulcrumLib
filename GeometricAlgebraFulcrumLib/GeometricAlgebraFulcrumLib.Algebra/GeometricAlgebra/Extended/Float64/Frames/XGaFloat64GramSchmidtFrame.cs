@@ -221,7 +221,7 @@ public class XGaFloat64GramSchmidtFrame
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public XGaFloat64GramSchmidtFrame CleanNorms(double epsilon = 1e-12)
+    public XGaFloat64GramSchmidtFrame CleanNorms(double zeroEpsilon = Float64Utils.ZeroEpsilon)
     {
         for (var i = 0; i < _directionNormsArray.Length; i++)
         {

@@ -180,9 +180,9 @@ public abstract record LinFloat64Angle :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool IsNearZero(double epsilon = 1e-12)
+    public bool IsNearZero(double zeroEpsilon = Float64Utils.ZeroEpsilon)
     {
-        return RadiansValue.IsNearZero(epsilon);
+        return RadiansValue.IsNearZero(zeroEpsilon);
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -195,12 +195,12 @@ public abstract record LinFloat64Angle :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool IsNearFull(double epsilon = 1e-12)
+    public bool IsNearFull(double zeroEpsilon = Float64Utils.ZeroEpsilon)
     {
         var radians = RadiansValue;
 
-        return (radians - PiTimes2).IsNearZero(epsilon) ||
-               (radians + PiTimes2).IsNearZero(epsilon);
+        return (radians - PiTimes2).IsNearZero(zeroEpsilon) ||
+               (radians + PiTimes2).IsNearZero(zeroEpsilon);
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -210,9 +210,9 @@ public abstract record LinFloat64Angle :
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool IsNearZeroOrFull(double epsilon = 1e-12)
+    public bool IsNearZeroOrFull(double zeroEpsilon = Float64Utils.ZeroEpsilon)
     {
-        return CosValue.IsNearOne(epsilon);
+        return CosValue.IsNearOne(zeroEpsilon);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -222,9 +222,9 @@ public abstract record LinFloat64Angle :
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool IsNearRight(double epsilon = 1e-12)
+    public bool IsNearRight(double zeroEpsilon = Float64Utils.ZeroEpsilon)
     {
-        return CosValue.IsNearZero(epsilon);
+        return CosValue.IsNearZero(zeroEpsilon);
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -234,9 +234,9 @@ public abstract record LinFloat64Angle :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool IsNearStraight(double epsilon = 1e-12)
+    public bool IsNearStraight(double zeroEpsilon = Float64Utils.ZeroEpsilon)
     {
-        return CosValue.IsNearMinusOne(epsilon);
+        return CosValue.IsNearMinusOne(zeroEpsilon);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -265,9 +265,9 @@ public abstract record LinFloat64Angle :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool IsNearEqual(LinFloat64Angle angle2, double epsilon = 1e-12)
+    public bool IsNearEqual(LinFloat64Angle angle2, double zeroEpsilon = Float64Utils.ZeroEpsilon)
     {
-        return (RadiansValue - angle2.RadiansValue).IsNearZero(epsilon);
+        return (RadiansValue - angle2.RadiansValue).IsNearZero(zeroEpsilon);
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -280,12 +280,12 @@ public abstract record LinFloat64Angle :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool IsNearEqualPolar(LinFloat64Angle angle, double epsilon = 1e-12)
+    public bool IsNearEqualPolar(LinFloat64Angle angle, double zeroEpsilon = Float64Utils.ZeroEpsilon)
     {
         var radians1 = LinAngleRange.Positive360.GetRadians(RadiansValue);
         var radians2 = LinAngleRange.Positive360.GetRadians(angle.RadiansValue);
 
-        return (radians1 - radians2).IsNearZero(epsilon);
+        return (radians1 - radians2).IsNearZero(zeroEpsilon);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -295,9 +295,9 @@ public abstract record LinFloat64Angle :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool IsNearComplementary(LinFloat64Angle angle, double epsilon = 1e-12)
+    public bool IsNearComplementary(LinFloat64Angle angle, double zeroEpsilon = Float64Utils.ZeroEpsilon)
     {
-        return this.AngleAdd(angle.RadiansValue).IsNearRight(epsilon);
+        return this.AngleAdd(angle.RadiansValue).IsNearRight(zeroEpsilon);
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -307,9 +307,9 @@ public abstract record LinFloat64Angle :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool IsNearSupplementary(LinFloat64Angle angle, double epsilon = 1e-12)
+    public bool IsNearSupplementary(LinFloat64Angle angle, double zeroEpsilon = Float64Utils.ZeroEpsilon)
     {
-        return this.AngleAdd(angle.RadiansValue).IsNearStraight(epsilon);
+        return this.AngleAdd(angle.RadiansValue).IsNearStraight(zeroEpsilon);
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -319,7 +319,7 @@ public abstract record LinFloat64Angle :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool IsNearUnitVector(double epsilon = 1E-12)
+    public bool IsNearUnitVector(double zeroEpsilon = 1E-12)
     {
         return true;
     }

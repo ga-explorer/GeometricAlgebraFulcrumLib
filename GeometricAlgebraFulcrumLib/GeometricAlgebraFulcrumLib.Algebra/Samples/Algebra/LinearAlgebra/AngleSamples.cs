@@ -1,8 +1,7 @@
-﻿using System;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Angles;
 
-namespace GeometricAlgebraFulcrumLib.Samples.Algebra.LinearAlgebra
+namespace GeometricAlgebraFulcrumLib.Algebra.Samples.Algebra.LinearAlgebra
 {
     public static class AngleSamples
     {

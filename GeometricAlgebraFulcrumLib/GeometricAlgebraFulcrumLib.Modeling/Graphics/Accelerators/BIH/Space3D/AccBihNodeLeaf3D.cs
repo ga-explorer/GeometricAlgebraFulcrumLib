@@ -1,12 +1,11 @@
 ﻿using System.Collections;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.BasicShapes;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.Borders.Space3D.Immutable;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.Borders.Space3D.Mutable;
+using GeometricAlgebraFulcrumLib.Modeling.Geometry.Borders.Space3D.Float64;
 
 namespace GeometricAlgebraFulcrumLib.Modeling.Graphics.Accelerators.BIH.Space3D;
 
 public sealed class AccBihNodeLeaf3D<T> : IAccBihNode3D<T>
-    where T : IFiniteGeometricShape3D
+    where T : IFloat64FiniteGeometricShape3D
 {
     private readonly T[] _geometricObjectsArray;
 
@@ -40,7 +39,7 @@ public sealed class AccBihNodeLeaf3D<T> : IAccBihNode3D<T>
 
     public int LastObjectIndex { get; }
 
-    public IEnumerable<IFiniteGeometricShape3D> Contents
+    public IEnumerable<IFloat64FiniteGeometricShape3D> Contents
     {
         get
         {
@@ -88,7 +87,7 @@ public sealed class AccBihNodeLeaf3D<T> : IAccBihNode3D<T>
         return null;
     }
 
-    public bool Contains(IFiniteGeometricShape3D shape)
+    public bool Contains(IFloat64FiniteGeometricShape3D shape)
     {
         for (var i = FirstObjectIndex; i <= LastObjectIndex; i++)
             if (ReferenceEquals(_geometricObjectsArray[i], shape))
@@ -97,14 +96,14 @@ public sealed class AccBihNodeLeaf3D<T> : IAccBihNode3D<T>
         return false;
     }
 
-    public BoundingBox3D GetBoundingBox()
+    public Float64BoundingBox3D GetBoundingBox()
     {
-        return BoundingBox3D.Create((IEnumerable<T>)this);
+        return Float64BoundingBox3D.Create((IEnumerable<T>)this);
     }
 
-    public MutableBoundingBox3D GetMutableBoundingBox()
+    public Float64BoundingBoxComposer3D GetBoundingBoxComposer()
     {
-        return MutableBoundingBox3D.Create((IEnumerable<T>)this);
+        return Float64BoundingBoxComposer3D.Create((IEnumerable<T>)this);
     }
 
     public IEnumerator<T> GetEnumerator()

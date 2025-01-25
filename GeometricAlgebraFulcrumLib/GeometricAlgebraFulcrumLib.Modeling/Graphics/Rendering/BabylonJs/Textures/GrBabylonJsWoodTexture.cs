@@ -5,38 +5,11 @@ namespace GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.BabylonJs.Textu
 public sealed class GrBabylonJsWoodTexture :
     GrBabylonJsProceduralTexture
 {
-    public sealed class WoodTextureProperties :
-        BaseTextureProperties
-    {
-        public GrBabylonJsColor4Value? WoodColor
-        {
-            get => GetAttributeValueOrNull<GrBabylonJsColor4Value>("woodColor");
-            set => SetAttributeValue("woodColor", value);
-        }
-
-        public GrBabylonJsVector2Value? AmpScale
-        {
-            get => GetAttributeValueOrNull<GrBabylonJsVector2Value>("ampScale");
-            set => SetAttributeValue("ampScale", value);
-        }
-
-            
-        public WoodTextureProperties()
-        {
-        }
-            
-        public WoodTextureProperties(WoodTextureProperties properties)
-        {
-            SetAttributeValues(properties);
-        }
-    }
-
-
     protected override string ConstructorName
         => "new BABYLON.WoodProceduralTexture";
     
-    public WoodTextureProperties? Properties { get; private set; }
-        = new WoodTextureProperties();
+    public GrBabylonJsWoodTextureProperties? Properties { get; private set; }
+        = new GrBabylonJsWoodTextureProperties();
 
     public override GrBabylonJsObjectProperties? ObjectProperties 
         => Properties;
@@ -53,9 +26,9 @@ public sealed class GrBabylonJsWoodTexture :
     }
 
     
-    public GrBabylonJsWoodTexture SetProperties(WoodTextureProperties properties)
+    public GrBabylonJsWoodTexture SetProperties(GrBabylonJsWoodTextureProperties properties)
     {
-        Properties = new WoodTextureProperties(properties);
+        Properties = new GrBabylonJsWoodTextureProperties(properties);
 
         return this;
     }

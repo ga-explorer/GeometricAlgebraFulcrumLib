@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.Borders;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.Borders.Space2D;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.Borders.Space2D.Immutable;
+using GeometricAlgebraFulcrumLib.Modeling.Geometry.Borders.Space2D.Float64;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Basic;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Extensions;
 using GeometricAlgebraFulcrumLib.Utilities.Web.Html.Media;
@@ -39,7 +38,7 @@ public sealed class SvgDrawingBoard : IReadOnlyList<SvgDrawingBoardLayer>
             );
     }
 
-    public static SvgDrawingBoard Create(IBoundingBox2D viewBox, double pixelsByLengthRatio)
+    public static SvgDrawingBoard Create(IFloat64BoundingBox2D viewBox, double pixelsByLengthRatio)
     {
         var pixelsWidth = (int)(viewBox.GetLengthX() * pixelsByLengthRatio);
         var pixelsHeight = (int)(viewBox.GetLengthY() * pixelsByLengthRatio);
@@ -339,9 +338,9 @@ public sealed class SvgDrawingBoard : IReadOnlyList<SvgDrawingBoardLayer>
                ViewBoxMinY <= y && y <= ViewBoxMaxY;
     }
 
-    public BoundingBox2D GetViewBox()
+    public Float64BoundingBox2D GetViewBox()
     {
-        return BoundingBox2D.Create(
+        return Float64BoundingBox2D.Create(
             ViewBoxMinX,
             ViewBoxMinY,
             ViewBoxMaxX,

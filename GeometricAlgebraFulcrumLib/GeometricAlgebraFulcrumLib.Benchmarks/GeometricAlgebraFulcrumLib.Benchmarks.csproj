@@ -15,7 +15,7 @@
     <PackageReference Include="ILGPU.Algorithms" Version="1.5.1" />
     <PackageReference Include="ILGPU.Lightning" Version="0.3.0" />
     <PackageReference Include="MathNet.Numerics" Version="5.0.0" />
-    <PackageReference Include="NumpyDotNet" Version="0.9.86.2" />
+    <PackageReference Include="NumpyDotNet" Version="0.9.86.6" />
   </ItemGroup>
 
   <ItemGroup>

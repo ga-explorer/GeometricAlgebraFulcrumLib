@@ -107,10 +107,10 @@ public abstract partial class XGaFloat64Multivector :
 
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool IsNearZero(double epsilon = 1e-12)
+    public bool IsNearZero(double zeroEpsilon = Float64Utils.ZeroEpsilon)
     {
         return IsZero ||
-               Scalars.All(s => s.IsNearZero(epsilon));
+               Scalars.All(s => s.IsNearZero(zeroEpsilon));
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]

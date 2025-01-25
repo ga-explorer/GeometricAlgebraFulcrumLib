@@ -20,7 +20,7 @@ public sealed class LinFloat64AxisDirectionalScaling3D :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64AxisDirectionalScaling3D Create(double scalingFactor, LinUnitBasisVector3D scalingAxis)
+    public static LinFloat64AxisDirectionalScaling3D Create(double scalingFactor, LinBasisVector3D scalingAxis)
     {
         return new LinFloat64AxisDirectionalScaling3D(
             scalingFactor,
@@ -31,7 +31,7 @@ public sealed class LinFloat64AxisDirectionalScaling3D :
 
     public override double ScalingFactor { get; }
 
-    public LinUnitBasisVector3D ScalingAxis { get; }
+    public LinBasisVector3D ScalingAxis { get; }
 
     public override LinFloat64Vector3D ScalingVector
         => ScalingAxis.ToLinVector3D();

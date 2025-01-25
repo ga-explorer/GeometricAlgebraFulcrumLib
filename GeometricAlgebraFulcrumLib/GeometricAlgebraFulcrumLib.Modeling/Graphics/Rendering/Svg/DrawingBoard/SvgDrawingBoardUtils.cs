@@ -1,9 +1,9 @@
 ﻿using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space2D;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.BasicShapes;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.BasicShapes.Lines;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.BasicShapes.Triangles;
+using GeometricAlgebraFulcrumLib.Modeling.Geometry.BasicShapes.Lines.Space2D.Float64;
+using GeometricAlgebraFulcrumLib.Modeling.Geometry.BasicShapes.Triangles.Space2D.Float64;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.Borders;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.Borders.Space2D;
+using GeometricAlgebraFulcrumLib.Modeling.Geometry.Borders.Space2D.Float64;
 using GeometricAlgebraFulcrumLib.Utilities.Web.Svg.Styles;
 
 namespace GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.Svg.DrawingBoard;
@@ -34,12 +34,12 @@ public static class SvgDrawingBoardUtils
 
 
     #region SvgDrawingBoard Operations
-    public static SvgDrawingBoard CreateDrawingBoard(this IBoundingBox2D boundingBox, int scalingFactor, double marginPercent = 0.1d)
+    public static SvgDrawingBoard CreateDrawingBoard(this IFloat64BoundingBox2D boundingBox, int scalingFactor, double marginPercent = 0.1d)
     {
         var b = marginPercent == 0
             ? boundingBox
             : boundingBox
-                .GetMutableBoundingBox()
+                .GetBoundingBoxComposer()
                 .UpdateSizeByFactor(marginPercent);
 
         return SvgDrawingBoard.Create(
@@ -54,31 +54,31 @@ public static class SvgDrawingBoardUtils
 
 
 
-    public static SvgDrawingBoardLayer DrawShape(this SvgDrawingBoardLayer drawingBoardLayer, IFiniteGeometricShape2D shape)
+    public static SvgDrawingBoardLayer DrawShape(this SvgDrawingBoardLayer drawingBoardLayer, IFloat64FiniteGeometricShape2D shape)
     {
-        var lineSegment = shape as ILineSegment2D;
+        var lineSegment = shape as IFloat64LineSegment2D;
         if (!ReferenceEquals(lineSegment, null))
             return drawingBoardLayer.DrawLineSegment(lineSegment);
 
-        var triangle = shape as ITriangle2D;
+        var triangle = shape as IFloat64Triangle2D;
         if (!ReferenceEquals(triangle, null))
             return drawingBoardLayer.DrawTriangle(triangle);
 
         return drawingBoardLayer;
     }
 
-    public static SvgDrawingBoardLayer DrawShapes(this SvgDrawingBoardLayer drawingBoardLayer, IEnumerable<IFiniteGeometricShape2D> shapesList)
+    public static SvgDrawingBoardLayer DrawShapes(this SvgDrawingBoardLayer drawingBoardLayer, IEnumerable<IFloat64FiniteGeometricShape2D> shapesList)
     {
         foreach (var shape in shapesList)
         {
-            var lineSegment = shape as ILineSegment2D;
+            var lineSegment = shape as IFloat64LineSegment2D;
             if (!ReferenceEquals(lineSegment, null))
             {
                 drawingBoardLayer.DrawLineSegment(lineSegment);
                 continue;
             }
 
-            var triangle = shape as ITriangle2D;
+            var triangle = shape as IFloat64Triangle2D;
             if (!ReferenceEquals(triangle, null))
             {
                 drawingBoardLayer.DrawTriangle(triangle);
@@ -115,7 +115,7 @@ public static class SvgDrawingBoardUtils
     /// <param name="drawingLayer"></param>
     /// <param name="lineSegment"></param>
     /// <returns></returns>
-    public static SvgDrawingBoardLayer DrawLineSegment(this SvgDrawingBoardLayer drawingLayer, ILineSegment2D lineSegment)
+    public static SvgDrawingBoardLayer DrawLineSegment(this SvgDrawingBoardLayer drawingLayer, IFloat64LineSegment2D lineSegment)
     {
         drawingLayer.DrawLineSegment(
             lineSegment.Point1X,
@@ -133,7 +133,7 @@ public static class SvgDrawingBoardUtils
     /// <param name="drawingLayer"></param>
     /// <param name="lineSegmentsList"></param>
     /// <returns></returns>
-    public static SvgDrawingBoardLayer DrawLineSegments(this SvgDrawingBoardLayer drawingLayer, IEnumerable<ILineSegment2D> lineSegmentsList)
+    public static SvgDrawingBoardLayer DrawLineSegments(this SvgDrawingBoardLayer drawingLayer, IEnumerable<IFloat64LineSegment2D> lineSegmentsList)
     {
         foreach (var lineSegment in lineSegmentsList)
             drawingLayer.DrawLineSegment(
@@ -260,7 +260,7 @@ public static class SvgDrawingBoardUtils
         return drawingLayer;
     }
 
-    public static SvgDrawingBoardLayer DrawRectangle(this SvgDrawingBoardLayer drawingLayer, IBoundingBox2D boundingBox)
+    public static SvgDrawingBoardLayer DrawRectangle(this SvgDrawingBoardLayer drawingLayer, IFloat64BoundingBox2D boundingBox)
     {
         drawingLayer.DrawRectangle(
             boundingBox.MinX,
@@ -273,32 +273,34 @@ public static class SvgDrawingBoardUtils
     }
 
 
-    public static SvgDrawingBoardLayer DrawLine(this SvgDrawingBoardLayer drawingLayer, ILine2D line)
+    public static SvgDrawingBoardLayer DrawLine(this SvgDrawingBoardLayer drawingLayer, IFloat64Line2D line)
     {
-        var lineSegment =
+        var (flag, lineSegment) =
             drawingLayer
                 .ParentDrawingBoard
                 .GetViewBox()
                 .ClipLine(line);
 
-        return drawingLayer.DrawLineSegment(lineSegment);
+        return flag
+            ? drawingLayer.DrawLineSegment(lineSegment)
+            : drawingLayer;
     }
 
-    public static SvgDrawingBoardLayer DrawLine(this SvgDrawingBoardLayer drawingLayer, ILine2D line, double lineParamMinValue, double lineParamMaxValue = double.PositiveInfinity)
+    public static SvgDrawingBoardLayer DrawLine(this SvgDrawingBoardLayer drawingLayer, IFloat64Line2D line, double lineParamMinValue, double lineParamMaxValue = double.PositiveInfinity)
     {
-        var lineSegment =
+        var (flag, lineSegment) =
             drawingLayer
                 .ParentDrawingBoard
                 .GetViewBox()
                 .ClipLine(line, lineParamMinValue, lineParamMaxValue);
 
-        return ReferenceEquals(lineSegment, null)
-            ? drawingLayer
-            : drawingLayer.DrawLineSegment(lineSegment);
+        return flag
+            ? drawingLayer.DrawLineSegment(lineSegment)
+            : drawingLayer;
     }
 
 
-    public static SvgDrawingBoardLayer DrawTriangle(this SvgDrawingBoardLayer drawingLayer, ITriangle2D triangle)
+    public static SvgDrawingBoardLayer DrawTriangle(this SvgDrawingBoardLayer drawingLayer, IFloat64Triangle2D triangle)
     {
         drawingLayer.DrawPolygon(
             triangle.GetPoint1(),
@@ -309,7 +311,7 @@ public static class SvgDrawingBoardUtils
         return drawingLayer;
     }
 
-    public static SvgDrawingBoardLayer DrawTriangles(this SvgDrawingBoardLayer drawingLayer, IEnumerable<ITriangle2D> trianglesList)
+    public static SvgDrawingBoardLayer DrawTriangles(this SvgDrawingBoardLayer drawingLayer, IEnumerable<IFloat64Triangle2D> trianglesList)
     {
         foreach (var triangle in trianglesList)
             drawingLayer.DrawPolygon(
@@ -330,7 +332,7 @@ public static class SvgDrawingBoardUtils
     }
 
 
-    public static SvgDrawingBoardLayer DrawBoundingBox(this SvgDrawingBoardLayer drawingLayer, IBoundingBox2D boundingBox)
+    public static SvgDrawingBoardLayer DrawBoundingBox(this SvgDrawingBoardLayer drawingLayer, IFloat64BoundingBox2D boundingBox)
     {
         var boardViewBox =
             drawingLayer.ParentDrawingBoard.GetViewBox();

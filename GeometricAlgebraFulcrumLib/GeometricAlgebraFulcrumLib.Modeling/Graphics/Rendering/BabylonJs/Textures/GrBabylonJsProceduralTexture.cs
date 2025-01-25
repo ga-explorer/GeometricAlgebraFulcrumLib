@@ -6,45 +6,6 @@ namespace GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.BabylonJs.Textu
 public abstract class GrBabylonJsProceduralTexture : 
     GrBabylonJsBaseTexture
 {
-    public abstract class ProceduralTextureProperties :
-        BaseTextureProperties
-    {
-        public GrBabylonJsBooleanValue? IsEnabled
-        {
-            get => GetAttributeValueOrNull<GrBabylonJsBooleanValue>("isEnabled");
-            set => SetAttributeValue("isEnabled", value);
-        }
-
-        public GrBabylonJsBooleanValue? Animate
-        {
-            get => GetAttributeValueOrNull<GrBabylonJsBooleanValue>("animate");
-            set => SetAttributeValue("animate", value);
-        }
-
-        public GrBabylonJsBooleanValue? AutoClear
-        {
-            get => GetAttributeValueOrNull<GrBabylonJsBooleanValue>("autoClear");
-            set => SetAttributeValue("autoClear", value);
-        }
-        
-        public GrBabylonJsFloat32Value? RefreshRate
-        {
-            get => GetAttributeValueOrNull<GrBabylonJsFloat32Value>("refreshRate");
-            set => SetAttributeValue("refreshRate", value);
-        }
-
-        
-        protected ProceduralTextureProperties()
-        {
-        }
-
-        protected ProceduralTextureProperties(ProceduralTextureProperties properties)
-        {
-            SetAttributeValues(properties);
-        }
-    }
-
-    
     public GrBabylonJsSizeValue Size { get; set; }
 
     public GrBabylonJsTextureValue FallBackTexture { get; set; }
@@ -66,15 +27,15 @@ public abstract class GrBabylonJsProceduralTexture :
     protected override IEnumerable<string> GetConstructorArguments()
     {
         yield return ConstName.DoubleQuote();
-        yield return Size.GetCode();
+        yield return Size.GetAttributeValueCode();
 
         if (ParentScene.IsNullOrEmpty()) yield break;
         yield return ParentScene!.Value.ConstName;
 
         if (FallBackTexture.IsNullOrEmpty()) yield break;
-        yield return FallBackTexture.GetCode();
+        yield return FallBackTexture.GetAttributeValueCode();
 
         if (GenerateMipMaps.IsNullOrEmpty()) yield break;
-        yield return GenerateMipMaps.GetCode();
+        yield return GenerateMipMaps.GetAttributeValueCode();
     }
 }

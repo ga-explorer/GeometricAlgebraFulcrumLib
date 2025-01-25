@@ -192,7 +192,7 @@ public class DfFourierSignalInterpolator :
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    private DfFourierSignalInterpolator(Float64SignalSamplingSpecs samplingSpecs, int sampleIndex1, int sampleIndex2, DfFourierSignalInterpolatorOptions options, ComplexSignalSpectrum signalSpectrum)
+    private DfFourierSignalInterpolator(Float64SamplingSpecs samplingSpecs, int sampleIndex1, int sampleIndex2, DfFourierSignalInterpolatorOptions options, ComplexSignalSpectrum signalSpectrum)
         : base(samplingSpecs, sampleIndex1, sampleIndex2)
     {
         Options = options;

@@ -151,6 +151,14 @@ public readonly struct Float64Scalar :
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static implicit operator Float64Scalar(IntegerSign value)
+    {
+        if (value.IsPositive) return One;
+        if (value.IsNegative) return NegativeOne;
+        return Zero;
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static implicit operator double(Float64Scalar scalar)
     {
         return scalar.ScalarValue;
@@ -973,7 +981,7 @@ public readonly struct Float64Scalar :
     {
         return new Float64Scalar(double.Round(x.ScalarValue, digits, mode));
     }
-
+    
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Float64Scalar Acosh(Float64Scalar x)
     {
@@ -1194,43 +1202,63 @@ public readonly struct Float64Scalar :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool IsNearZero(double epsilon = 1e-12)
+    public bool IsNearZero(double zeroEpsilon = Float64Utils.ZeroEpsilon)
     {
         return !(double.IsInfinity(ScalarValue) || 
-                 ScalarValue < -epsilon || 
-                 ScalarValue > epsilon);
+                 ScalarValue < -zeroEpsilon || 
+                 ScalarValue > zeroEpsilon);
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool IsNearOne(double epsilon = 1e-12)
+    public bool IsNearOne(double zeroEpsilon = Float64Utils.ZeroEpsilon)
     {
         var value = ScalarValue - 1d;
 
         return !(double.IsInfinity(value) || 
-                 value < -epsilon || 
-                 value > epsilon);
+                 value < -zeroEpsilon || 
+                 value > zeroEpsilon);
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool IsNearNegativeOne(double epsilon = 1e-12)
+    public bool IsNearNegativeOne(double zeroEpsilon = Float64Utils.ZeroEpsilon)
     {
         var value = ScalarValue + 1d;
 
         return !(double.IsInfinity(value) || 
-                 value < -epsilon || 
-                 value > epsilon);
+                 value < -zeroEpsilon || 
+                 value > zeroEpsilon);
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool IsNearEqual(double value2, double epsilon = 1e-12)
+    public bool IsNearEqual(int value2, double zeroEpsilon = Float64Utils.ZeroEpsilon)
     {
         var value = ScalarValue - value2;
 
         return !(double.IsInfinity(value) || 
-                 value < -epsilon || 
-                 value > epsilon);
+                 value < -zeroEpsilon || 
+                 value > zeroEpsilon);
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public bool IsNearEqual(double value2, double zeroEpsilon = Float64Utils.ZeroEpsilon)
+    {
+        var value = ScalarValue - value2;
+
+        return !(double.IsInfinity(value) || 
+                 value < -zeroEpsilon || 
+                 value > zeroEpsilon);
     }
     
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public bool IsNearEqual(Float64Scalar value2, double zeroEpsilon = Float64Utils.ZeroEpsilon)
+    {
+        var value = ScalarValue - value2.ScalarValue;
+
+        return !(double.IsInfinity(value) || 
+                 value < -zeroEpsilon || 
+                 value > zeroEpsilon);
+    }
+
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public bool IsPositive()
     {
@@ -1268,7 +1296,7 @@ public readonly struct Float64Scalar :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool IsNearInRange(double value1, double value2, double epsilon = 1e-12d)
+    public bool IsNearInRange(double value1, double value2, double zeroEpsilon = Float64Utils.ZeroEpsilon)
     {
         Debug.Assert(
             !double.IsNaN(value1) &&
@@ -1276,7 +1304,7 @@ public readonly struct Float64Scalar :
             value1 < value2
         );
 
-        return !(IsInfinite() || ScalarValue < value1 - epsilon || ScalarValue > value2 + epsilon);
+        return !(IsInfinite() || ScalarValue < value1 - zeroEpsilon || ScalarValue > value2 + zeroEpsilon);
     }
 
     
@@ -1292,12 +1320,12 @@ public readonly struct Float64Scalar :
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public IntegerSign Sign(double epsilon)
+    public IntegerSign Sign(double zeroEpsilon)
     {
-        if (ScalarValue < -epsilon)
+        if (ScalarValue < -zeroEpsilon)
             return IntegerSign.Negative;
 
-        if (ScalarValue > epsilon)
+        if (ScalarValue > zeroEpsilon)
             return IntegerSign.Positive;
 
         return IntegerSign.Zero;
@@ -1390,11 +1418,17 @@ public readonly struct Float64Scalar :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public Float64Scalar Floor()
+    public Float64Scalar IntegerPart()
     {
-        return new Float64Scalar(Math.Floor(ScalarValue));
+        return new Float64Scalar(ScalarValue.IntegerPart());
     }
     
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public Float64Scalar FractionalPart()
+    {
+        return new Float64Scalar(ScalarValue.FractionalPart());
+    }
+
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public Float64Scalar MaxMagnitude(double y)
     {
@@ -1777,6 +1811,15 @@ public readonly struct Float64Scalar :
     }
     
 
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public Float64Scalar Clamp(int lowerLimit, int upperLimit)
+    {
+        if (ScalarValue < lowerLimit) return lowerLimit;
+        if (ScalarValue > upperLimit) return upperLimit;
+
+        return this;
+    }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public Float64Scalar Clamp(double lowerLimit, double upperLimit)
@@ -1787,6 +1830,15 @@ public readonly struct Float64Scalar :
         return this;
     }
     
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public Float64Scalar Clamp(Float64Scalar lowerLimit, Float64Scalar upperLimit)
+    {
+        if (ScalarValue < lowerLimit) return lowerLimit;
+        if (ScalarValue > upperLimit) return upperLimit;
+
+        return this;
+    }
+
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public Float64Scalar ClampPeriodic(double upperLimit)
     {
@@ -1846,6 +1898,12 @@ public readonly struct Float64Scalar :
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public Float64Scalar Lerp(Float64Scalar v1, Float64Scalar v2)
+    {
+        return (1.0d - ScalarValue) * v1 + ScalarValue * v2;
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public LinFloat64Vector Lerp(LinFloat64Vector v1, LinFloat64Vector v2)
     {
         return (1.0d - ScalarValue) * v1 + ScalarValue * v2;
@@ -1878,10 +1936,7 @@ public readonly struct Float64Scalar :
         var t = ScalarValue;
         var s = 1.0d - t;
 
-        return LinFloat64Quaternion.Create(s * v1.X + t * v2.X,
-            s * v1.Y + t * v2.Y,
-            s * v1.Z + t * v2.Z,
-            s * v1.W + t * v2.W);
+        return LinFloat64Quaternion.Create(s * v1.W + t * v2.W, s * v1.X + t * v2.X, s * v1.Y + t * v2.Y, s * v1.Z + t * v2.Z);
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -2149,6 +2204,20 @@ public readonly struct Float64Scalar :
             .Select(i => new Float64Scalar(start + i * n));
     }
     
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public IEnumerable<Float64Scalar> GetLinearRange(Float64Scalar finish, int count, bool isPeriodicRange = false)
+    {
+        var start = ScalarValue;
+        var length = finish - start;
+        var n = isPeriodicRange
+            ? length / count
+            : length / (count - 1);
+
+        return Enumerable
+            .Range(0, count)
+            .Select(i => new Float64Scalar(start + i * n));
+    }
+
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public IEnumerable<Float64Scalar> GetLinearPeriodicRange(double finish, int count)
     {

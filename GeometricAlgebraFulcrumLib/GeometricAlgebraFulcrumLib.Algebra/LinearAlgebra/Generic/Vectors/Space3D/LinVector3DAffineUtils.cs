@@ -259,12 +259,12 @@ public static class LinVector3DAffineUtils
     //{
     //    return vector switch
     //    {
-    //        LinUnitBasisVector3D.PositiveX => LinUnitBasisVector3D.PositiveY,
-    //        LinUnitBasisVector3D.PositiveY => LinUnitBasisVector3D.PositiveZ,
-    //        LinUnitBasisVector3D.PositiveZ => LinUnitBasisVector3D.PositiveX,
-    //        LinUnitBasisVector3D.NegativeX => LinUnitBasisVector3D.NegativeY,
-    //        LinUnitBasisVector3D.NegativeY => LinUnitBasisVector3D.NegativeZ,
-    //        _ => LinUnitBasisVector3D.NegativeX
+    //        LinUnitBasisVector3D.Px => LinUnitBasisVector3D.Py,
+    //        LinUnitBasisVector3D.Py => LinUnitBasisVector3D.Pz,
+    //        LinUnitBasisVector3D.Pz => LinUnitBasisVector3D.Px,
+    //        LinUnitBasisVector3D.Nx => LinUnitBasisVector3D.Ny,
+    //        LinUnitBasisVector3D.Ny => LinUnitBasisVector3D.Nz,
+    //        _ => LinUnitBasisVector3D.Nx
     //    };
     //}
 
@@ -273,12 +273,12 @@ public static class LinVector3DAffineUtils
     //{
     //    return vector switch
     //    {
-    //        LinUnitBasisVector3D.PositiveX => LinUnitBasisVector3D.PositiveY,
-    //        LinUnitBasisVector3D.PositiveY => LinUnitBasisVector3D.PositiveZ,
-    //        LinUnitBasisVector3D.PositiveZ => LinUnitBasisVector3D.PositiveX,
-    //        LinUnitBasisVector3D.NegativeX => LinUnitBasisVector3D.NegativeY,
-    //        LinUnitBasisVector3D.NegativeY => LinUnitBasisVector3D.NegativeZ,
-    //        _ => LinUnitBasisVector3D.NegativeX
+    //        LinUnitBasisVector3D.Px => LinUnitBasisVector3D.Py,
+    //        LinUnitBasisVector3D.Py => LinUnitBasisVector3D.Pz,
+    //        LinUnitBasisVector3D.Pz => LinUnitBasisVector3D.Px,
+    //        LinUnitBasisVector3D.Nx => LinUnitBasisVector3D.Ny,
+    //        LinUnitBasisVector3D.Ny => LinUnitBasisVector3D.Nz,
+    //        _ => LinUnitBasisVector3D.Nx
     //    };
     //}
 
@@ -295,10 +295,10 @@ public static class LinVector3DAffineUtils
 
         // For smoother motions, find the quaternion q that
         // rotates e1 to vector, then use q to rotate e2
-        return LinUnitBasisVector3D
-            .PositiveX
+        return LinBasisVector3D
+            .Px
             .CreateAxisToVectorRotationQuaternion(vector.ToUnitVector())
-            .RotateVector(LinUnitBasisVector3D.PositiveY);
+            .RotateVector(LinBasisVector3D.Py);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -327,12 +327,12 @@ public static class LinVector3DAffineUtils
 
         // For smoother motions, find the quaternion q that
         // rotates e1 to vector, then use q to rotate e2, e3
-        return LinUnitBasisVector3D
-            .PositiveX
+        return LinBasisVector3D
+            .Px
             .CreateAxisToVectorRotationQuaternion(vector.ToUnitVector())
             .RotateVectors(
-                LinUnitBasisVector3D.PositiveY,
-                LinUnitBasisVector3D.PositiveZ
+                LinBasisVector3D.Py,
+                LinBasisVector3D.Pz
             );
     }
 
@@ -369,7 +369,7 @@ public static class LinVector3DAffineUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinVector3D<T> RejectOnAxis<T>(this ITriplet<Scalar<T>> v, LinUnitBasisVector3D axis)
+    public static LinVector3D<T> RejectOnAxis<T>(this ITriplet<Scalar<T>> v, LinBasisVector3D axis)
     {
         var zero = v.GetScalarProcessor().Zero;
 

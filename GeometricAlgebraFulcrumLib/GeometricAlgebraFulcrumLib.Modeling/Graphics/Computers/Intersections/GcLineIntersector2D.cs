@@ -1,10 +1,9 @@
 ﻿using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space2D;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.BasicShapes;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.BasicShapes.Lines;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.BasicShapes.Lines.Immutable;
+using GeometricAlgebraFulcrumLib.Modeling.Geometry.BasicShapes.Lines.Space2D.Float64;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.Borders;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.Borders.Space2D;
+using GeometricAlgebraFulcrumLib.Modeling.Geometry.Borders.Space2D.Float64;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Accelerators.BIH;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Accelerators.BIH.Space2D;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Accelerators.BIH.Space2D.Traversal;
@@ -21,7 +20,7 @@ namespace GeometricAlgebraFulcrumLib.Modeling.Graphics.Computers.Intersections;
 /// </summary>
 public class GcLineIntersector2D
 {
-    public static bool TestIntersection(LineTraversalData2D lineData, IBoundingBox2D boundingBox)
+    public static bool TestIntersection(LineTraversalData2D lineData, IFloat64BoundingBox2D boundingBox)
     {
         var corners = new[]
         {
@@ -47,7 +46,7 @@ public class GcLineIntersector2D
         return true;
     }
 
-    public static Tuple<bool, double, double> ComputeIntersections(LineTraversalData2D lineData, IBoundingBox2D boundingBox)
+    public static Tuple<bool, double, double> ComputeIntersections(LineTraversalData2D lineData, IFloat64BoundingBox2D boundingBox)
     {
         var corners = new[]
         {
@@ -81,7 +80,7 @@ public class GcLineIntersector2D
         = Enumerable.Empty<AccBihLineTraversalState2D>();
 
 
-    public Line2D Line { get; private set; }
+    public Float64Line2D Line { get; private set; }
 
 
     /// <summary>
@@ -92,9 +91,9 @@ public class GcLineIntersector2D
     /// </summary>
     /// <param name="lineSegment"></param>
     /// <returns></returns>
-    public GcLineIntersector2D SetLine(ILineSegment2D lineSegment)
+    public GcLineIntersector2D SetLine(IFloat64LineSegment2D lineSegment)
     {
-        Line = new Line2D(
+        Line = new Float64Line2D(
             lineSegment.Point1X,
             lineSegment.Point1Y,
             lineSegment.Point2X - lineSegment.Point1X,
@@ -106,7 +105,7 @@ public class GcLineIntersector2D
 
     public GcLineIntersector2D SetLine(ILinFloat64Vector2D lineOrigin, ILinFloat64Vector2D lineDirection)
     {
-        Line = new Line2D(
+        Line = new Float64Line2D(
             lineOrigin.X,
             lineOrigin.Y,
             lineDirection.X,
@@ -116,7 +115,7 @@ public class GcLineIntersector2D
         return this;
     }
 
-    public GcLineIntersector2D SetLine(ILine2D line)
+    public GcLineIntersector2D SetLine(IFloat64Line2D line)
     {
         Line = line.ToLine();
 
@@ -130,7 +129,7 @@ public class GcLineIntersector2D
     /// </summary>
     /// <param name="lineSegment"></param>
     /// <returns></returns>
-    public bool TestIntersection(ILineSegment2D lineSegment)
+    public bool TestIntersection(IFloat64LineSegment2D lineSegment)
     {
         if (!lineSegment.IntersectionTestsEnabled)
             return false;
@@ -203,7 +202,7 @@ public class GcLineIntersector2D
         return (d0 <= 0 && d1 <= 0) || (d0 >= 0 && d1 >= 0);
     }
 
-    public Tuple<bool, double> ComputeIntersection(ILineSegment2D lineSegment)
+    public Tuple<bool, double> ComputeIntersection(IFloat64LineSegment2D lineSegment)
     {
         if (!lineSegment.IntersectionTestsEnabled)
             return IntersectionUtils.NoIntersection;
@@ -357,7 +356,7 @@ public class GcLineIntersector2D
         return new Tuple<bool, double>(true, t);
     }
 
-    public Tuple<bool, double> ComputeIntersection(ILineSegment2D lineSegment, double lineParamMinValue, double lineParamMaxValue)
+    public Tuple<bool, double> ComputeIntersection(IFloat64LineSegment2D lineSegment, double lineParamMinValue, double lineParamMaxValue)
     {
         if (!lineSegment.IntersectionTestsEnabled)
             return IntersectionUtils.NoIntersection;
@@ -555,29 +554,29 @@ public class GcLineIntersector2D
     /// </summary>
     /// <param name="lineSegmentsList"></param>
     /// <returns></returns>
-    public bool TestIntersection(IEnumerable<ILineSegment2D> lineSegmentsList)
+    public bool TestIntersection(IEnumerable<IFloat64LineSegment2D> lineSegmentsList)
     {
         return lineSegmentsList.Any(TestIntersection);
     }
 
-    public IEnumerable<Tuple<double, ILineSegment2D>> ComputeIntersections(IEnumerable<ILineSegment2D> lineSegmentsList)
+    public IEnumerable<Tuple<double, IFloat64LineSegment2D>> ComputeIntersections(IEnumerable<IFloat64LineSegment2D> lineSegmentsList)
     {
         foreach (var lineSegment in lineSegmentsList)
         {
             var result = ComputeIntersection(lineSegment);
 
             if (result.Item1)
-                yield return new Tuple<double, ILineSegment2D>(
+                yield return new Tuple<double, IFloat64LineSegment2D>(
                     result.Item2, lineSegment
                 );
         }
     }
 
-    public Tuple<bool, double, ILineSegment2D> ComputeFirstIntersection(IEnumerable<ILineSegment2D> lineSegmentsList)
+    public Tuple<bool, double, IFloat64LineSegment2D> ComputeFirstIntersection(IEnumerable<IFloat64LineSegment2D> lineSegmentsList)
     {
         var hasIntersection = false;
         var tValue = double.PositiveInfinity;
-        ILineSegment2D hitLineSegment = null;
+        IFloat64LineSegment2D hitLineSegment = null;
 
         foreach (var lineSegment in lineSegmentsList)
         {
@@ -591,18 +590,18 @@ public class GcLineIntersector2D
             hitLineSegment = lineSegment;
         }
 
-        return new Tuple<bool, double, ILineSegment2D>(
+        return new Tuple<bool, double, IFloat64LineSegment2D>(
             hasIntersection,
             tValue,
             hitLineSegment
         );
     }
 
-    public Tuple<bool, double, ILineSegment2D> ComputeLastIntersection(IEnumerable<ILineSegment2D> lineSegmentsList)
+    public Tuple<bool, double, IFloat64LineSegment2D> ComputeLastIntersection(IEnumerable<IFloat64LineSegment2D> lineSegmentsList)
     {
         var hasIntersection = false;
         var tValue = double.NegativeInfinity;
-        ILineSegment2D hitLineSegment = null;
+        IFloat64LineSegment2D hitLineSegment = null;
 
         foreach (var lineSegment in lineSegmentsList)
         {
@@ -616,20 +615,20 @@ public class GcLineIntersector2D
             hitLineSegment = lineSegment;
         }
 
-        return new Tuple<bool, double, ILineSegment2D>(
+        return new Tuple<bool, double, IFloat64LineSegment2D>(
             hasIntersection,
             tValue,
             hitLineSegment
         );
     }
 
-    public Tuple<bool, double, double, ILineSegment2D, ILineSegment2D> ComputeEdgeIntersections(IEnumerable<ILineSegment2D> lineSegmentsList)
+    public Tuple<bool, double, double, IFloat64LineSegment2D, IFloat64LineSegment2D> ComputeEdgeIntersections(IEnumerable<IFloat64LineSegment2D> lineSegmentsList)
     {
         var hasIntersection = false;
         var tValue1 = double.PositiveInfinity;
         var tValue2 = double.NegativeInfinity;
-        ILineSegment2D hitLineSegment1 = null;
-        ILineSegment2D hitLineSegment2 = null;
+        IFloat64LineSegment2D hitLineSegment1 = null;
+        IFloat64LineSegment2D hitLineSegment2 = null;
 
         foreach (var lineSegment in lineSegmentsList)
         {
@@ -665,7 +664,7 @@ public class GcLineIntersector2D
 
 
     #region Line-Bounding Box Intersection
-    public bool TestIntersection(IBoundingBox2D boundingBox)
+    public bool TestIntersection(IFloat64BoundingBox2D boundingBox)
     {
         var tMin = double.NegativeInfinity;
         var tMax = double.PositiveInfinity;
@@ -717,7 +716,7 @@ public class GcLineIntersector2D
         return true;
     }
 
-    public Tuple<bool, double, double> ComputeIntersections(IBoundingBox2D boundingBox)
+    public Tuple<bool, double, double> ComputeIntersections(IFloat64BoundingBox2D boundingBox)
     {
         var tMin = double.NegativeInfinity;
         var tMax = double.PositiveInfinity;
@@ -770,7 +769,7 @@ public class GcLineIntersector2D
     }
 
 
-    public bool TestIntersection(IEnumerable<IBoundingBox2D> boundingBoxesList)
+    public bool TestIntersection(IEnumerable<IFloat64BoundingBox2D> boundingBoxesList)
     {
         var lineData = Line.GetLineTraversalData();
 
@@ -781,49 +780,49 @@ public class GcLineIntersector2D
 
 
     #region Line-Acceleration Grid Intersection
-    public bool TestIntersection(IAccGrid2D<ILineSegment2D> grid)
+    public bool TestIntersection(IAccGrid2D<IFloat64LineSegment2D> grid)
     {
         return grid
             .GetLineTraverser(Line)
             .GetCells()
             .Where(cell => !ReferenceEquals(cell, null))
-            .Select(cell => TestIntersection((IEnumerable<ILineSegment2D>)cell))
+            .Select(cell => TestIntersection((IEnumerable<IFloat64LineSegment2D>)cell))
             .Any(v => v);
     }
 
-    public IEnumerable<Tuple<double, ILineSegment2D>> ComputeIntersections(IAccGrid2D<ILineSegment2D> grid)
+    public IEnumerable<Tuple<double, IFloat64LineSegment2D>> ComputeIntersections(IAccGrid2D<IFloat64LineSegment2D> grid)
     {
         var lineTraverser = AccGridLineTraverser2D.Create(grid, Line);
 
         foreach (var cell in lineTraverser.GetActiveCells())
         {
-            var tList = ComputeIntersections(cell.Cast<ILineSegment2D>());
+            var tList = ComputeIntersections(cell.Cast<IFloat64LineSegment2D>());
 
             foreach (var t in tList.Where(t => t.Item1 < lineTraverser.TNext))
                 yield return t;
         }
     }
 
-    public Tuple<bool, double, ILineSegment2D> ComputeFirstIntersection(IAccGrid2D<ILineSegment2D> grid)
+    public Tuple<bool, double, IFloat64LineSegment2D> ComputeFirstIntersection(IAccGrid2D<IFloat64LineSegment2D> grid)
     {
         var lineTraverser = AccGridLineTraverser2D.Create(grid, Line);
 
         foreach (var cell in lineTraverser.GetActiveCells())
         {
-            var t = ComputeFirstIntersection(cell.Cast<ILineSegment2D>());
+            var t = ComputeFirstIntersection(cell.Cast<IFloat64LineSegment2D>());
 
             if (t.Item1 && t.Item2 < lineTraverser.TNext)
                 return t;
         }
 
-        return new Tuple<bool, double, ILineSegment2D>(false, 0, null);
+        return new Tuple<bool, double, IFloat64LineSegment2D>(false, 0, null);
     }
 
-    public Tuple<bool, double, ILineSegment2D> ComputeLastIntersection(IAccGrid2D<ILineSegment2D> grid)
+    public Tuple<bool, double, IFloat64LineSegment2D> ComputeLastIntersection(IAccGrid2D<IFloat64LineSegment2D> grid)
     {
         var oldLine = Line;
 
-        Line = new Line2D(
+        Line = new Float64Line2D(
             oldLine.OriginX + oldLine.DirectionX,
             oldLine.OriginY + oldLine.DirectionY,
             -oldLine.DirectionX,
@@ -836,16 +835,16 @@ public class GcLineIntersector2D
 
         return result.Item1
             ? Tuple.Create(true, 1 - result.Item2, result.Item3)
-            : new Tuple<bool, double, ILineSegment2D>(false, 0, null);
+            : new Tuple<bool, double, IFloat64LineSegment2D>(false, 0, null);
     }
 
-    public Tuple<bool, double, double, ILineSegment2D, ILineSegment2D> ComputeEdgeIntersections(IAccGrid2D<ILineSegment2D> grid)
+    public Tuple<bool, double, double, IFloat64LineSegment2D, IFloat64LineSegment2D> ComputeEdgeIntersections(IAccGrid2D<IFloat64LineSegment2D> grid)
     {
         var first = ComputeFirstIntersection(grid);
         var last = ComputeLastIntersection(grid);
 
         if (first.Item1 && last.Item1)
-            return new Tuple<bool, double, double, ILineSegment2D, ILineSegment2D>(
+            return new Tuple<bool, double, double, IFloat64LineSegment2D, IFloat64LineSegment2D>(
                 true,
                 first.Item2,
                 last.Item2,
@@ -854,7 +853,7 @@ public class GcLineIntersector2D
             );
 
         if (first.Item1)
-            return new Tuple<bool, double, double, ILineSegment2D, ILineSegment2D>(
+            return new Tuple<bool, double, double, IFloat64LineSegment2D, IFloat64LineSegment2D>(
                 true,
                 first.Item2,
                 first.Item2,
@@ -863,7 +862,7 @@ public class GcLineIntersector2D
             );
 
         if (last.Item1)
-            return new Tuple<bool, double, double, ILineSegment2D, ILineSegment2D>(
+            return new Tuple<bool, double, double, IFloat64LineSegment2D, IFloat64LineSegment2D>(
                 true,
                 last.Item2,
                 last.Item2,
@@ -871,7 +870,7 @@ public class GcLineIntersector2D
                 last.Item3
             );
 
-        return new Tuple<bool, double, double, ILineSegment2D, ILineSegment2D>(
+        return new Tuple<bool, double, double, IFloat64LineSegment2D, IFloat64LineSegment2D>(
             false,
             0,
             0,
@@ -883,7 +882,7 @@ public class GcLineIntersector2D
 
 
     #region Line-Acceleration BIH Intersection
-    public bool TestIntersection(IAccBih2D<ILineSegment2D> bih, bool storeTraversalStates = false)
+    public bool TestIntersection(IAccBih2D<IFloat64LineSegment2D> bih, bool storeTraversalStates = false)
     {
         if (storeTraversalStates)
             BihLineTraversalStates =
@@ -901,7 +900,7 @@ public class GcLineIntersector2D
         var hasIntersection =
             lineTraverser
                 .GetLeafTraversalStates(storeTraversalStates)
-                .Any(state => TestIntersection((IEnumerable<ILineSegment2D>)state.BihNode));
+                .Any(state => TestIntersection((IEnumerable<IFloat64LineSegment2D>)state.BihNode));
 
         if (storeTraversalStates)
             BihLineTraversalStates =
@@ -910,7 +909,7 @@ public class GcLineIntersector2D
         return hasIntersection;
     }
 
-    public IEnumerable<Tuple<double, ILineSegment2D>> ComputeIntersections(IAccBih2D<ILineSegment2D> bih, bool storeTraversalStates = false)
+    public IEnumerable<Tuple<double, IFloat64LineSegment2D>> ComputeIntersections(IAccBih2D<IFloat64LineSegment2D> bih, bool storeTraversalStates = false)
     {
         if (storeTraversalStates)
             BihLineTraversalStates =
@@ -928,7 +927,7 @@ public class GcLineIntersector2D
 
         foreach (var state in lineTraverser.GetLeafTraversalStates(storeTraversalStates))
         {
-            var node = (IAccBihNode2D<ILineSegment2D>)state.BihNode;
+            var node = (IAccBihNode2D<IFloat64LineSegment2D>)state.BihNode;
             //var t0 = state.LineParameterMinValue;
             //var t1 = state.LineParameterMaxValue;
 
@@ -939,7 +938,7 @@ public class GcLineIntersector2D
                 var result = ComputeIntersection(lineSegment);//, t0, t1);
 
                 if (result.Item1)
-                    yield return new Tuple<double, ILineSegment2D>(
+                    yield return new Tuple<double, IFloat64LineSegment2D>(
                         result.Item2,
                         lineSegment
                     );
@@ -951,7 +950,7 @@ public class GcLineIntersector2D
                 lineTraverser.TraversalStates;
     }
 
-    public Tuple<bool, double, ILineSegment2D> ComputeFirstIntersection(IAccBih2D<ILineSegment2D> bih, bool storeTraversalStates = false)
+    public Tuple<bool, double, IFloat64LineSegment2D> ComputeFirstIntersection(IAccBih2D<IFloat64LineSegment2D> bih, bool storeTraversalStates = false)
     {
         if (storeTraversalStates)
             BihLineTraversalStates =
@@ -961,18 +960,18 @@ public class GcLineIntersector2D
         var lineLimits = ComputeIntersections(bih.BoundingBox);
 
         if (!lineLimits.Item1)
-            return new Tuple<bool, double, ILineSegment2D>(false, 0, null);
+            return new Tuple<bool, double, IFloat64LineSegment2D>(false, 0, null);
 
         //Traverse BIH nodes
         var lineTraverser =
             bih.GetLineTraverser(Line, lineLimits.Item2, lineLimits.Item3);
 
         var hasIntersection = false;
-        ILineSegment2D hitLineSegment = null;
+        IFloat64LineSegment2D hitLineSegment = null;
 
         foreach (var state in lineTraverser.GetLeafTraversalStates(storeTraversalStates))
         {
-            var node = (IAccBihNode2D<ILineSegment2D>)state.BihNode;
+            var node = (IAccBihNode2D<IFloat64LineSegment2D>)state.BihNode;
             //var t0 = state.LineParameterMinValue;
             //var t1 = state.LineParameterMaxValue;
 
@@ -1003,14 +1002,14 @@ public class GcLineIntersector2D
             BihLineTraversalStates =
                 lineTraverser.TraversalStates;
 
-        return new Tuple<bool, double, ILineSegment2D>(
+        return new Tuple<bool, double, IFloat64LineSegment2D>(
             hasIntersection,
             lineTraverser.LineParameterRange.MaxValue,
             hitLineSegment
         );
     }
 
-    public Tuple<bool, double, ILineSegment2D> ComputeLastIntersection(IAccBih2D<ILineSegment2D> bih, bool storeTraversalStates = false)
+    public Tuple<bool, double, IFloat64LineSegment2D> ComputeLastIntersection(IAccBih2D<IFloat64LineSegment2D> bih, bool storeTraversalStates = false)
     {
         if (storeTraversalStates)
             BihLineTraversalStates =
@@ -1020,18 +1019,18 @@ public class GcLineIntersector2D
         var lineLimits = ComputeIntersections(bih.BoundingBox);
 
         if (!lineLimits.Item1)
-            return new Tuple<bool, double, ILineSegment2D>(false, 0, null);
+            return new Tuple<bool, double, IFloat64LineSegment2D>(false, 0, null);
 
         //Traverse BIH nodes
         var lineTraverser =
             bih.GetLineTraverser(Line, lineLimits.Item2, lineLimits.Item3);
 
         var hasIntersection = false;
-        ILineSegment2D hitLineSegment = null;
+        IFloat64LineSegment2D hitLineSegment = null;
 
         foreach (var state in lineTraverser.GetLeafTraversalStates(storeTraversalStates))
         {
-            var node = (IAccBihNode2D<ILineSegment2D>)state.BihNode;
+            var node = (IAccBihNode2D<IFloat64LineSegment2D>)state.BihNode;
             //var t0 = state.LineParameterMinValue;
             //var t1 = state.LineParameterMaxValue;
 
@@ -1062,14 +1061,14 @@ public class GcLineIntersector2D
             BihLineTraversalStates =
                 lineTraverser.TraversalStates;
 
-        return new Tuple<bool, double, ILineSegment2D>(
+        return new Tuple<bool, double, IFloat64LineSegment2D>(
             hasIntersection,
             lineTraverser.LineParameterRange.MinValue,
             hitLineSegment
         );
     }
 
-    public Tuple<bool, double, double, ILineSegment2D, ILineSegment2D> ComputeEdgeIntersections(IAccBih2D<ILineSegment2D> bih, bool storeTraversalStates = false)
+    public Tuple<bool, double, double, IFloat64LineSegment2D, IFloat64LineSegment2D> ComputeEdgeIntersections(IAccBih2D<IFloat64LineSegment2D> bih, bool storeTraversalStates = false)
     {
         if (storeTraversalStates)
             BihLineTraversalStates =
@@ -1079,7 +1078,7 @@ public class GcLineIntersector2D
         var lineLimits = ComputeIntersections(bih.BoundingBox);
 
         if (!lineLimits.Item1)
-            return new Tuple<bool, double, double, ILineSegment2D, ILineSegment2D>(
+            return new Tuple<bool, double, double, IFloat64LineSegment2D, IFloat64LineSegment2D>(
                 false,
                 0, 0,
                 null, null
@@ -1088,8 +1087,8 @@ public class GcLineIntersector2D
         var hasIntersection = false;
         var tValue1 = double.PositiveInfinity;
         var tValue2 = double.NegativeInfinity;
-        ILineSegment2D hitLineSegment1 = null;
-        ILineSegment2D hitLineSegment2 = null;
+        IFloat64LineSegment2D hitLineSegment1 = null;
+        IFloat64LineSegment2D hitLineSegment2 = null;
 
         //Traverse BIH nodes
         var lineTraverser =
@@ -1097,7 +1096,7 @@ public class GcLineIntersector2D
 
         foreach (var state in lineTraverser.GetLeafTraversalStates(storeTraversalStates))
         {
-            var node = (IAccBihNode2D<ILineSegment2D>)state.BihNode;
+            var node = (IAccBihNode2D<IFloat64LineSegment2D>)state.BihNode;
             //var t0 = state.LineParameterMinValue;
             //var t1 = state.LineParameterMaxValue;
 
@@ -1129,7 +1128,7 @@ public class GcLineIntersector2D
             BihLineTraversalStates =
                 lineTraverser.TraversalStates;
 
-        return new Tuple<bool, double, double, ILineSegment2D, ILineSegment2D>(
+        return new Tuple<bool, double, double, IFloat64LineSegment2D, IFloat64LineSegment2D>(
             hasIntersection,
             tValue1,
             tValue2,
@@ -1140,78 +1139,78 @@ public class GcLineIntersector2D
     #endregion
 
 
-    public bool TestIntersection(IGeometricObjectsContainer2D<ILineSegment2D> lineSegmentsList)
+    public bool TestIntersection(IFloat64GeometricObjectsContainer2D<IFloat64LineSegment2D> lineSegmentsList)
     {
-        var grid = lineSegmentsList as IAccGrid2D<ILineSegment2D>;
+        var grid = lineSegmentsList as IAccGrid2D<IFloat64LineSegment2D>;
         if (!ReferenceEquals(grid, null))
             return TestIntersection(grid);
 
-        var bih = lineSegmentsList as IAccBih2D<ILineSegment2D>;
+        var bih = lineSegmentsList as IAccBih2D<IFloat64LineSegment2D>;
         if (!ReferenceEquals(bih, null))
             return TestIntersection(bih);
 
         return TestIntersection(
-            (IEnumerable<ILineSegment2D>)lineSegmentsList
+            (IEnumerable<IFloat64LineSegment2D>)lineSegmentsList
         );
     }
 
-    public IEnumerable<Tuple<double, ILineSegment2D>> ComputeIntersections(IGeometricObjectsContainer2D<ILineSegment2D> lineSegmentsList)
+    public IEnumerable<Tuple<double, IFloat64LineSegment2D>> ComputeIntersections(IFloat64GeometricObjectsContainer2D<IFloat64LineSegment2D> lineSegmentsList)
     {
-        var grid = lineSegmentsList as IAccGrid2D<ILineSegment2D>;
+        var grid = lineSegmentsList as IAccGrid2D<IFloat64LineSegment2D>;
         if (!ReferenceEquals(grid, null))
             return ComputeIntersections(grid);
 
-        var bih = lineSegmentsList as IAccBih2D<ILineSegment2D>;
+        var bih = lineSegmentsList as IAccBih2D<IFloat64LineSegment2D>;
         if (!ReferenceEquals(bih, null))
             return ComputeIntersections(bih);
 
         return ComputeIntersections(
-            (IEnumerable<ILineSegment2D>)lineSegmentsList
+            (IEnumerable<IFloat64LineSegment2D>)lineSegmentsList
         );
     }
 
-    public Tuple<bool, double, ILineSegment2D> ComputeFirstIntersection(IGeometricObjectsContainer2D<ILineSegment2D> lineSegmentsList)
+    public Tuple<bool, double, IFloat64LineSegment2D> ComputeFirstIntersection(IFloat64GeometricObjectsContainer2D<IFloat64LineSegment2D> lineSegmentsList)
     {
-        var grid = lineSegmentsList as IAccGrid2D<ILineSegment2D>;
+        var grid = lineSegmentsList as IAccGrid2D<IFloat64LineSegment2D>;
         if (!ReferenceEquals(grid, null))
             return ComputeFirstIntersection(grid);
 
-        var bih = lineSegmentsList as IAccBih2D<ILineSegment2D>;
+        var bih = lineSegmentsList as IAccBih2D<IFloat64LineSegment2D>;
         if (!ReferenceEquals(bih, null))
             return ComputeFirstIntersection(bih);
 
         return ComputeFirstIntersection(
-            (IEnumerable<ILineSegment2D>)lineSegmentsList
+            (IEnumerable<IFloat64LineSegment2D>)lineSegmentsList
         );
     }
 
-    public Tuple<bool, double, ILineSegment2D> ComputeLastIntersection(IGeometricObjectsContainer2D<ILineSegment2D> lineSegmentsList)
+    public Tuple<bool, double, IFloat64LineSegment2D> ComputeLastIntersection(IFloat64GeometricObjectsContainer2D<IFloat64LineSegment2D> lineSegmentsList)
     {
-        var grid = lineSegmentsList as IAccGrid2D<ILineSegment2D>;
+        var grid = lineSegmentsList as IAccGrid2D<IFloat64LineSegment2D>;
         if (!ReferenceEquals(grid, null))
             return ComputeLastIntersection(grid);
 
-        var bih = lineSegmentsList as IAccBih2D<ILineSegment2D>;
+        var bih = lineSegmentsList as IAccBih2D<IFloat64LineSegment2D>;
         if (!ReferenceEquals(bih, null))
             return ComputeLastIntersection(bih);
 
         return ComputeLastIntersection(
-            (IEnumerable<ILineSegment2D>)lineSegmentsList
+            (IEnumerable<IFloat64LineSegment2D>)lineSegmentsList
         );
     }
 
-    public Tuple<bool, double, double, ILineSegment2D, ILineSegment2D> ComputeEdgeIntersections(IGeometricObjectsContainer2D<ILineSegment2D> lineSegmentsList)
+    public Tuple<bool, double, double, IFloat64LineSegment2D, IFloat64LineSegment2D> ComputeEdgeIntersections(IFloat64GeometricObjectsContainer2D<IFloat64LineSegment2D> lineSegmentsList)
     {
-        var grid = lineSegmentsList as IAccGrid2D<ILineSegment2D>;
+        var grid = lineSegmentsList as IAccGrid2D<IFloat64LineSegment2D>;
         if (!ReferenceEquals(grid, null))
             return ComputeEdgeIntersections(grid);
 
-        var bih = lineSegmentsList as IAccBih2D<ILineSegment2D>;
+        var bih = lineSegmentsList as IAccBih2D<IFloat64LineSegment2D>;
         if (!ReferenceEquals(bih, null))
             return ComputeEdgeIntersections(bih);
 
         return ComputeEdgeIntersections(
-            (IEnumerable<ILineSegment2D>)lineSegmentsList
+            (IEnumerable<IFloat64LineSegment2D>)lineSegmentsList
         );
     }
 }

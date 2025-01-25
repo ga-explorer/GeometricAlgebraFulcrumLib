@@ -3,6 +3,7 @@ using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space3D;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.Visuals.Space3D.Animations;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.Visuals.Space3D.Styles;
+using GeometricAlgebraFulcrumLib.Modeling.Signals;
 
 namespace GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.Visuals.Space3D.Surfaces;
 
@@ -31,11 +32,11 @@ public sealed class GrVisualTriangleSurface3D :
             position1,
             position2,
             position3,
-            GrVisualAnimationSpecs.Static
+            Float64SamplingSpecs.Static
         );
     }
     
-    public static GrVisualTriangleSurface3D Create(string name, GrVisualSurfaceStyle3D style, ILinFloat64Vector3D position1, ILinFloat64Vector3D position2, ILinFloat64Vector3D position3, GrVisualAnimationSpecs animationSpecs)
+    public static GrVisualTriangleSurface3D Create(string name, GrVisualSurfaceStyle3D style, ILinFloat64Vector3D position1, ILinFloat64Vector3D position2, ILinFloat64Vector3D position3, Float64SamplingSpecs samplingSpecs)
     {
         return new GrVisualTriangleSurface3D(
             name,
@@ -43,7 +44,7 @@ public sealed class GrVisualTriangleSurface3D :
             position1,
             position2,
             position3,
-            animationSpecs
+            samplingSpecs
         );
     }
     
@@ -55,7 +56,7 @@ public sealed class GrVisualTriangleSurface3D :
             LinFloat64Vector3D.E1,
             LinFloat64Vector3D.E2,
             LinFloat64Vector3D.E3,
-            position1.AnimationSpecs
+            position1.SamplingSpecs
         ).SetAnimatedPositions(position1, position2, position3);
     }
 
@@ -152,8 +153,8 @@ public sealed class GrVisualTriangleSurface3D :
     }
 
 
-    private GrVisualTriangleSurface3D(string name, GrVisualSurfaceStyle3D style, ILinFloat64Vector3D position1, ILinFloat64Vector3D position2, ILinFloat64Vector3D position3, GrVisualAnimationSpecs animationSpecs)
-        : base(name, style, animationSpecs)
+    private GrVisualTriangleSurface3D(string name, GrVisualSurfaceStyle3D style, ILinFloat64Vector3D position1, ILinFloat64Vector3D position2, ILinFloat64Vector3D position3, Float64SamplingSpecs samplingSpecs)
+        : base(name, style, samplingSpecs)
     {
         Position1 = position1;
         Position2 = position2;
@@ -230,21 +231,21 @@ public sealed class GrVisualTriangleSurface3D :
 
     public LinFloat64Vector3D GetPosition1(double time)
     {
-        return AnimationSpecs.IsStatic || AnimatedPosition1 is null
+        return SamplingSpecs.IsStatic || AnimatedPosition1 is null
             ? Position1.ToLinVector3D()
             : AnimatedPosition1.GetPoint(time);
     }
         
     public LinFloat64Vector3D GetPosition2(double time)
     {
-        return AnimationSpecs.IsStatic || AnimatedPosition2 is null
+        return SamplingSpecs.IsStatic || AnimatedPosition2 is null
             ? Position2.ToLinVector3D()
             : AnimatedPosition2.GetPoint(time);
     }
         
     public LinFloat64Vector3D GetPosition3(double time)
     {
-        return AnimationSpecs.IsStatic || AnimatedPosition3 is null
+        return SamplingSpecs.IsStatic || AnimatedPosition3 is null
             ? Position3.ToLinVector3D()
             : AnimatedPosition3.GetPoint(time);
     }
@@ -292,7 +293,7 @@ public sealed class GrVisualTriangleSurface3D :
 
         foreach (var frameIndex in GetValidFrameIndexSet())
         {
-            var time = (double)frameIndex / AnimationSpecs.FrameRate;
+            var time = (double)frameIndex / SamplingSpecs.SamplingRate;
                 
             yield return new KeyFrameRecord(
                 frameIndex, 

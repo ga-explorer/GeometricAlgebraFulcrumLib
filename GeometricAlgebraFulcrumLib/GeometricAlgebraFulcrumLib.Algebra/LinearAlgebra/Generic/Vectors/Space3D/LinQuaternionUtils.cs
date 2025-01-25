@@ -213,7 +213,7 @@ public static class LinQuaternionUtils
     }
 
 
-    public static LinQuaternion<T> CreateAxisToAxisRotationQuaternion<T>(this LinUnitBasisVector3D axis1, LinUnitBasisVector3D axis2, IScalarProcessor<T> scalarProcessor)
+    public static LinQuaternion<T> CreateAxisToAxisRotationQuaternion<T>(this LinBasisVector3D axis1, LinBasisVector3D axis2, IScalarProcessor<T> scalarProcessor)
     {
         var sqrt2Inv = scalarProcessor.One.Divide(scalarProcessor.Sqrt(2));
         var zero = scalarProcessor.Zero;
@@ -221,69 +221,69 @@ public static class LinQuaternionUtils
 
         return axis1 switch
         {
-            LinUnitBasisVector3D.PositiveX => axis2 switch
+            LinBasisVector3D.Px => axis2 switch
             {
-                LinUnitBasisVector3D.PositiveX => LinQuaternion<T>.Identity(scalarProcessor),
-                LinUnitBasisVector3D.PositiveY => LinQuaternion<T>.Create(zero, zero, sqrt2Inv, sqrt2Inv),
-                LinUnitBasisVector3D.PositiveZ => LinQuaternion<T>.Create(zero, -sqrt2Inv, zero, sqrt2Inv),
-                LinUnitBasisVector3D.NegativeX => LinQuaternion<T>.Create(zero, zero, one, zero),
-                LinUnitBasisVector3D.NegativeY => LinQuaternion<T>.Create(zero, zero, -sqrt2Inv, sqrt2Inv),
+                LinBasisVector3D.Px => LinQuaternion<T>.Identity(scalarProcessor),
+                LinBasisVector3D.Py => LinQuaternion<T>.Create(zero, zero, sqrt2Inv, sqrt2Inv),
+                LinBasisVector3D.Pz => LinQuaternion<T>.Create(zero, -sqrt2Inv, zero, sqrt2Inv),
+                LinBasisVector3D.Nx => LinQuaternion<T>.Create(zero, zero, one, zero),
+                LinBasisVector3D.Ny => LinQuaternion<T>.Create(zero, zero, -sqrt2Inv, sqrt2Inv),
                 _ => LinQuaternion<T>.Create(zero, sqrt2Inv, zero, sqrt2Inv),
             },
 
-            LinUnitBasisVector3D.PositiveY => axis2 switch
+            LinBasisVector3D.Py => axis2 switch
             {
-                LinUnitBasisVector3D.PositiveX => LinQuaternion<T>.Create(zero, zero, -sqrt2Inv, sqrt2Inv),
-                LinUnitBasisVector3D.PositiveY => LinQuaternion<T>.Identity(scalarProcessor),
-                LinUnitBasisVector3D.PositiveZ => LinQuaternion<T>.Create(sqrt2Inv, zero, zero, sqrt2Inv),
-                LinUnitBasisVector3D.NegativeX => LinQuaternion<T>.Create(zero, zero, sqrt2Inv, sqrt2Inv),
-                LinUnitBasisVector3D.NegativeY => LinQuaternion<T>.Create(one, zero, zero, zero),
+                LinBasisVector3D.Px => LinQuaternion<T>.Create(zero, zero, -sqrt2Inv, sqrt2Inv),
+                LinBasisVector3D.Py => LinQuaternion<T>.Identity(scalarProcessor),
+                LinBasisVector3D.Pz => LinQuaternion<T>.Create(sqrt2Inv, zero, zero, sqrt2Inv),
+                LinBasisVector3D.Nx => LinQuaternion<T>.Create(zero, zero, sqrt2Inv, sqrt2Inv),
+                LinBasisVector3D.Ny => LinQuaternion<T>.Create(one, zero, zero, zero),
                 _ => LinQuaternion<T>.Create(-sqrt2Inv, zero, zero, sqrt2Inv),
             },
 
-            LinUnitBasisVector3D.PositiveZ => axis2 switch
+            LinBasisVector3D.Pz => axis2 switch
             {
-                LinUnitBasisVector3D.PositiveX => LinQuaternion<T>.Create(zero, sqrt2Inv, zero, sqrt2Inv),
-                LinUnitBasisVector3D.PositiveY => LinQuaternion<T>.Create(-sqrt2Inv, zero, zero, sqrt2Inv),
-                LinUnitBasisVector3D.PositiveZ => LinQuaternion<T>.Identity(scalarProcessor),
-                LinUnitBasisVector3D.NegativeX => LinQuaternion<T>.Create(zero, -sqrt2Inv, zero, sqrt2Inv),
-                LinUnitBasisVector3D.NegativeY => LinQuaternion<T>.Create(sqrt2Inv, zero, zero, sqrt2Inv),
+                LinBasisVector3D.Px => LinQuaternion<T>.Create(zero, sqrt2Inv, zero, sqrt2Inv),
+                LinBasisVector3D.Py => LinQuaternion<T>.Create(-sqrt2Inv, zero, zero, sqrt2Inv),
+                LinBasisVector3D.Pz => LinQuaternion<T>.Identity(scalarProcessor),
+                LinBasisVector3D.Nx => LinQuaternion<T>.Create(zero, -sqrt2Inv, zero, sqrt2Inv),
+                LinBasisVector3D.Ny => LinQuaternion<T>.Create(sqrt2Inv, zero, zero, sqrt2Inv),
                 _ => LinQuaternion<T>.Create(zero, one, zero, zero),
             },
 
-            LinUnitBasisVector3D.NegativeX => axis2 switch
+            LinBasisVector3D.Nx => axis2 switch
             {
-                LinUnitBasisVector3D.PositiveX => LinQuaternion<T>.Create(zero, zero, one, zero),
-                LinUnitBasisVector3D.PositiveY => LinQuaternion<T>.Create(zero, zero, -sqrt2Inv, sqrt2Inv),
-                LinUnitBasisVector3D.PositiveZ => LinQuaternion<T>.Create(zero, sqrt2Inv, zero, sqrt2Inv),
-                LinUnitBasisVector3D.NegativeX => LinQuaternion<T>.Identity(scalarProcessor),
-                LinUnitBasisVector3D.NegativeY => LinQuaternion<T>.Create(zero, zero, sqrt2Inv, sqrt2Inv),
+                LinBasisVector3D.Px => LinQuaternion<T>.Create(zero, zero, one, zero),
+                LinBasisVector3D.Py => LinQuaternion<T>.Create(zero, zero, -sqrt2Inv, sqrt2Inv),
+                LinBasisVector3D.Pz => LinQuaternion<T>.Create(zero, sqrt2Inv, zero, sqrt2Inv),
+                LinBasisVector3D.Nx => LinQuaternion<T>.Identity(scalarProcessor),
+                LinBasisVector3D.Ny => LinQuaternion<T>.Create(zero, zero, sqrt2Inv, sqrt2Inv),
                 _ => LinQuaternion<T>.Create(zero, -sqrt2Inv, zero, sqrt2Inv),
             },
 
-            LinUnitBasisVector3D.NegativeY => axis2 switch
+            LinBasisVector3D.Ny => axis2 switch
             {
-                LinUnitBasisVector3D.PositiveX => LinQuaternion<T>.Create(zero, zero, sqrt2Inv, sqrt2Inv),
-                LinUnitBasisVector3D.PositiveY => LinQuaternion<T>.Create(one, zero, zero, zero),
-                LinUnitBasisVector3D.PositiveZ => LinQuaternion<T>.Create(-sqrt2Inv, zero, zero, sqrt2Inv),
-                LinUnitBasisVector3D.NegativeX => LinQuaternion<T>.Create(zero, zero, -sqrt2Inv, sqrt2Inv),
-                LinUnitBasisVector3D.NegativeY => LinQuaternion<T>.Identity(scalarProcessor),
+                LinBasisVector3D.Px => LinQuaternion<T>.Create(zero, zero, sqrt2Inv, sqrt2Inv),
+                LinBasisVector3D.Py => LinQuaternion<T>.Create(one, zero, zero, zero),
+                LinBasisVector3D.Pz => LinQuaternion<T>.Create(-sqrt2Inv, zero, zero, sqrt2Inv),
+                LinBasisVector3D.Nx => LinQuaternion<T>.Create(zero, zero, -sqrt2Inv, sqrt2Inv),
+                LinBasisVector3D.Ny => LinQuaternion<T>.Identity(scalarProcessor),
                 _ => LinQuaternion<T>.Create(sqrt2Inv, zero, zero, sqrt2Inv),
             },
 
             _ => axis2 switch
             {
-                LinUnitBasisVector3D.PositiveX => LinQuaternion<T>.Create(zero, -sqrt2Inv, zero, sqrt2Inv),
-                LinUnitBasisVector3D.PositiveY => LinQuaternion<T>.Create(sqrt2Inv, zero, zero, sqrt2Inv),
-                LinUnitBasisVector3D.PositiveZ => LinQuaternion<T>.Create(zero, one, zero, zero),
-                LinUnitBasisVector3D.NegativeX => LinQuaternion<T>.Create(zero, sqrt2Inv, zero, sqrt2Inv),
-                LinUnitBasisVector3D.NegativeY => LinQuaternion<T>.Create(-sqrt2Inv, zero, zero, sqrt2Inv),
+                LinBasisVector3D.Px => LinQuaternion<T>.Create(zero, -sqrt2Inv, zero, sqrt2Inv),
+                LinBasisVector3D.Py => LinQuaternion<T>.Create(sqrt2Inv, zero, zero, sqrt2Inv),
+                LinBasisVector3D.Pz => LinQuaternion<T>.Create(zero, one, zero, zero),
+                LinBasisVector3D.Nx => LinQuaternion<T>.Create(zero, sqrt2Inv, zero, sqrt2Inv),
+                LinBasisVector3D.Ny => LinQuaternion<T>.Create(-sqrt2Inv, zero, zero, sqrt2Inv),
                 _ => LinQuaternion<T>.Identity(scalarProcessor),
             },
         };
     }
 
-    public static LinVector3D<T> CreateAxisToVectorRotationVector<T>(this LinUnitBasisVector3D axis, ILinVector3D<T> unitVector)
+    public static LinVector3D<T> CreateAxisToVectorRotationVector<T>(this LinBasisVector3D axis, ILinVector3D<T> unitVector)
     {
         var scalarProcessor = unitVector.ScalarProcessor;
 
@@ -303,7 +303,7 @@ public static class LinQuaternionUtils
         return u.VectorTimes(a.Radians.Divide(scalarProcessor.PiTimes2Value));
     }
 
-    public static Tuple<ILinVector3D<T>, LinPolarAngle<T>> CreateAxisToVectorRotationAxisAngle<T>(this LinUnitBasisVector3D axis, ILinVector3D<T> unitVector)
+    public static Tuple<ILinVector3D<T>, LinPolarAngle<T>> CreateAxisToVectorRotationAxisAngle<T>(this LinBasisVector3D axis, ILinVector3D<T> unitVector)
     {
         var scalarProcessor = unitVector.ScalarProcessor;
 
@@ -427,7 +427,7 @@ public static class LinQuaternionUtils
         return u.CreateQuaternion(a);
     }
 
-    public static Tuple<LinUnitBasisVector3D, LinQuaternion<T>> CreateNearestAxisToVectorRotationQuaternion<T>(this ILinVector3D<T> unitVector)
+    public static Tuple<LinBasisVector3D, LinQuaternion<T>> CreateNearestAxisToVectorRotationQuaternion<T>(this ILinVector3D<T> unitVector)
     {
         //Debug.Assert(
         //    unitVector.ENormSquared().IsNearOne()
@@ -441,7 +441,7 @@ public static class LinQuaternionUtils
         var z = scalarProcessor.Zero;
         var w = scalarProcessor.Zero;
 
-        if (axis == LinUnitBasisVector3D.PositiveX)
+        if (axis == LinBasisVector3D.Px)
         {
             var v1 = 1 + unitVector.X;
             var v2 = 1 / (2 * v1).Sqrt();
@@ -451,7 +451,7 @@ public static class LinQuaternionUtils
             w = v1 * v2;
         }
 
-        if (axis == LinUnitBasisVector3D.NegativeX)
+        if (axis == LinBasisVector3D.Nx)
         {
             var v1 = 1 - unitVector.X;
             var v2 = 1 / (2 * v1).Sqrt();
@@ -461,7 +461,7 @@ public static class LinQuaternionUtils
             w = v1 * v2;
         }
 
-        if (axis == LinUnitBasisVector3D.PositiveY)
+        if (axis == LinBasisVector3D.Py)
         {
             var v1 = 1 + unitVector.Y;
             var v2 = 1 / (2 * v1).Sqrt();
@@ -471,7 +471,7 @@ public static class LinQuaternionUtils
             w = v1 * v2;
         }
 
-        if (axis == LinUnitBasisVector3D.NegativeY)
+        if (axis == LinBasisVector3D.Ny)
         {
             var v1 = 1d - unitVector.Y;
             var v2 = 1 / (2 * v1).Sqrt();
@@ -481,7 +481,7 @@ public static class LinQuaternionUtils
             w = v1 * v2;
         }
 
-        if (axis == LinUnitBasisVector3D.PositiveZ)
+        if (axis == LinBasisVector3D.Pz)
         {
             var v1 = 1d + unitVector.Z;
             var v2 = 1 / (2 * v1).Sqrt();
@@ -491,7 +491,7 @@ public static class LinQuaternionUtils
             w = v1 * v2;
         }
 
-        if (axis == LinUnitBasisVector3D.NegativeZ)
+        if (axis == LinBasisVector3D.Nz)
         {
             var v1 = 1d - unitVector.Z;
             var v2 = 1 / (2 * v1).Sqrt();
@@ -507,13 +507,13 @@ public static class LinQuaternionUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinQuaternion<T> CreateAxisToVectorRotationQuaternion<T>(this ILinVector3D<T> unitVector, LinUnitBasisVector3D axis)
+    public static LinQuaternion<T> CreateAxisToVectorRotationQuaternion<T>(this ILinVector3D<T> unitVector, LinBasisVector3D axis)
     {
         return axis.CreateAxisToVectorRotationQuaternion(unitVector);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinQuaternion<T> CreateAxisPairToVectorPairRotationQuaternion<T>(this LinUnitBasisVector3D axis1, LinUnitBasisVector3D axis2, ILinVector3D<T> unitVector1, ILinVector3D<T> unitVector2)
+    public static LinQuaternion<T> CreateAxisPairToVectorPairRotationQuaternion<T>(this LinBasisVector3D axis1, LinBasisVector3D axis2, ILinVector3D<T> unitVector1, ILinVector3D<T> unitVector2)
     {
         Debug.Assert(
             unitVector1.VectorENormSquared().IsNearOne() &&
@@ -548,7 +548,7 @@ public static class LinQuaternionUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Pair<LinQuaternion<T>> CreateAxisPairToVectorPairRotationQuaternionPair<T>(this LinUnitBasisVector3D axis1, LinUnitBasisVector3D axis2, ILinVector3D<T> unitVector1, ILinVector3D<T> unitVector2)
+    public static Pair<LinQuaternion<T>> CreateAxisPairToVectorPairRotationQuaternionPair<T>(this LinBasisVector3D axis1, LinBasisVector3D axis2, ILinVector3D<T> unitVector1, ILinVector3D<T> unitVector2)
     {
         Debug.Assert(
             unitVector1.VectorENormSquared().IsNearOne() &&
@@ -576,7 +576,7 @@ public static class LinQuaternionUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinQuaternion<T> CreateAxisToVectorRotationQuaternion<T>(this LinUnitBasisVector3D axis, ILinVector3D<T> unitVector)
+    public static LinQuaternion<T> CreateAxisToVectorRotationQuaternion<T>(this LinBasisVector3D axis, ILinVector3D<T> unitVector)
     {
         var (u, a) =
             axis.CreateAxisToVectorRotationAxisAngle(unitVector);
@@ -595,17 +595,17 @@ public static class LinQuaternionUtils
 
 
     //[MethodImpl(MethodImplOptions.AggressiveInlining)]
-    //public static bool IsNearZero<T>(this Quaternion quaternion, float epsilon = 1e-5f)
+    //public static bool IsNearZero<T>(this Quaternion quaternion, float zeroEpsilon = 1e-5f)
     //{
-    //    return quaternion.X.IsNearZero(epsilon) &&
-    //           quaternion.Y.IsNearZero(epsilon) &&
-    //           quaternion.Z.IsNearZero(epsilon);
+    //    return quaternion.X.IsNearZero(zeroEpsilon) &&
+    //           quaternion.Y.IsNearZero(zeroEpsilon) &&
+    //           quaternion.Z.IsNearZero(zeroEpsilon);
     //}
 
     //[MethodImpl(MethodImplOptions.AggressiveInlining)]
-    //public static bool IsNearNormalized<T>(this Quaternion quaternion, float epsilon = 1e-5f)
+    //public static bool IsNearNormalized<T>(this Quaternion quaternion, float zeroEpsilon = 1e-5f)
     //{
-    //    return (quaternion.LengthSquared() - 1f).IsNearZero(epsilon);
+    //    return (quaternion.LengthSquared() - 1f).IsNearZero(zeroEpsilon);
     //}
 
     //[MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -624,11 +624,11 @@ public static class LinQuaternionUtils
     //{
     //    return axis switch
     //    {
-    //        LinUnitBasisVector3D.PositiveX => new Quaternion(1, 0, 0, 0),
-    //        LinUnitBasisVector3D.PositiveY => new Quaternion(0, 1, 0, 0),
-    //        LinUnitBasisVector3D.PositiveZ => new Quaternion(0, 0, 1, 0),
-    //        LinUnitBasisVector3D.NegativeX => new Quaternion(-1, 0, 0, 0),
-    //        LinUnitBasisVector3D.NegativeY => new Quaternion(0, -1, 0, 0),
+    //        LinUnitBasisVector3D.Px => new Quaternion(1, 0, 0, 0),
+    //        LinUnitBasisVector3D.Py => new Quaternion(0, 1, 0, 0),
+    //        LinUnitBasisVector3D.Pz => new Quaternion(0, 0, 1, 0),
+    //        LinUnitBasisVector3D.Nx => new Quaternion(-1, 0, 0, 0),
+    //        LinUnitBasisVector3D.Ny => new Quaternion(0, -1, 0, 0),
     //        _ => new Quaternion(0, 0, -1, 0),
     //    };
     //}
@@ -719,7 +719,7 @@ public static class LinQuaternionUtils
     //}
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinVector3D<T> RotateVector<T>(this Quaternion quaternion, LinUnitBasisVector3D axis, IScalarProcessor<T> scalarProcessor)
+    public static LinVector3D<T> RotateVector<T>(this Quaternion quaternion, LinBasisVector3D axis, IScalarProcessor<T> scalarProcessor)
     {
         Debug.Assert(
             quaternion.IsNearNormalized()

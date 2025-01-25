@@ -1,10 +1,9 @@
 ﻿using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space2D;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space3D;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.BasicShapes.Lines;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.BasicShapes.Lines.Immutable;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.BasicShapes.Triangles;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.BasicShapes.Triangles.Immutable;
+using GeometricAlgebraFulcrumLib.Modeling.Geometry.BasicShapes.Lines.Space2D.Float64;
+using GeometricAlgebraFulcrumLib.Modeling.Geometry.BasicShapes.Lines.Space3D.Float64;
+using GeometricAlgebraFulcrumLib.Modeling.Geometry.BasicShapes.Triangles.Space3D.Float64;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Meshes.PointsMesh.Space2D;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Meshes.PointsMesh.Space3D;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Primitives;
@@ -328,7 +327,7 @@ public static class PointsMeshUtils
     }
 
 
-    public static IEnumerable<ILineSegment2D> GetLines(this IPointsMesh2D baseMesh, bool generateDimension1 = true, bool generateDimension2 = true)
+    public static IEnumerable<IFloat64LineSegment2D> GetLines(this IPointsMesh2D baseMesh, bool generateDimension1 = true, bool generateDimension2 = true)
     {
         if (generateDimension1)
         {
@@ -337,7 +336,7 @@ public static class PointsMeshUtils
             {
                 var index21 = index22 - 1;
 
-                yield return LineSegment2D.Create(
+                yield return Float64LineSegment2D.Create(
                     baseMesh[index1, index21],
                     baseMesh[index1, index22]
                 );
@@ -351,7 +350,7 @@ public static class PointsMeshUtils
             {
                 var index11 = index12 - 1;
 
-                yield return LineSegment2D.Create(
+                yield return Float64LineSegment2D.Create(
                     baseMesh[index11, index2],
                     baseMesh[index12, index2]
                 );
@@ -359,7 +358,7 @@ public static class PointsMeshUtils
         }
     }
 
-    public static IEnumerable<ILineSegment3D> GetLines(this IPointsMesh3D baseMesh, bool generateDimension1 = true, bool generateDimension2 = true)
+    public static IEnumerable<IFloat64LineSegment3D> GetLines(this IPointsMesh3D baseMesh, bool generateDimension1 = true, bool generateDimension2 = true)
     {
         if (generateDimension1)
         {
@@ -368,7 +367,7 @@ public static class PointsMeshUtils
             {
                 var index21 = index22 - 1;
 
-                yield return LineSegment3D.Create(
+                yield return Float64LineSegment3D.Create(
                     baseMesh[index1, index21],
                     baseMesh[index1, index22]
                 );
@@ -382,7 +381,7 @@ public static class PointsMeshUtils
             {
                 var index11 = index12 - 1;
 
-                yield return LineSegment3D.Create(
+                yield return Float64LineSegment3D.Create(
                     baseMesh[index11, index2],
                     baseMesh[index12, index2]
                 );
@@ -390,17 +389,17 @@ public static class PointsMeshUtils
         }
     }
 
-    public static IEnumerable<ITriangle3D> GetTriangles(this IPointsMesh3D baseMesh)
+    public static IEnumerable<IFloat64Triangle3D> GetTriangles(this IPointsMesh3D baseMesh)
     {
         foreach (var pointQuad in baseMesh.GetPointQuads())
         {
-            yield return Triangle3D.Create(
+            yield return Float64Triangle3D.Create(
                 pointQuad.Item3,
                 pointQuad.Item1,
                 pointQuad.Item4
             );
 
-            yield return Triangle3D.Create(
+            yield return Float64Triangle3D.Create(
                 pointQuad.Item2,
                 pointQuad.Item4,
                 pointQuad.Item1

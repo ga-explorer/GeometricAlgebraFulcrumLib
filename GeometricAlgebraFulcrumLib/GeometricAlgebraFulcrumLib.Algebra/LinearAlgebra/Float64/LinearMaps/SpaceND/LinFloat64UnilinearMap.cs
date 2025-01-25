@@ -119,12 +119,12 @@ public class LinFloat64UnilinearMap :
         throw new NotImplementedException();
     }
 
-    public bool IsNearIdentity(double epsilon = 1E-12)
+    public bool IsNearIdentity(double zeroEpsilon = 1E-12)
     {
         throw new NotImplementedException();
     }
 
-    public bool IsNearReflection(double epsilon = 1E-12)
+    public bool IsNearReflection(double zeroEpsilon = 1E-12)
     {
         throw new NotImplementedException();
     }

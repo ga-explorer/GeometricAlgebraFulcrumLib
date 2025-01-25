@@ -211,3 +211,4 @@ The utilities layer provides low-level services to the components in the other G
 
 == Code Samples
 
+For now, the best way to learn using GA-FuL is by studying and playing with code samples.

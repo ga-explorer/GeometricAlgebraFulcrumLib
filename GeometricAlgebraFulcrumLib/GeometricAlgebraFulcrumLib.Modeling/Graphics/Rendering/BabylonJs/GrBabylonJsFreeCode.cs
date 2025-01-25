@@ -36,8 +36,8 @@ public sealed class GrBabylonJsFreeCode :
         throw new NotImplementedException();
     }
 
-    public override string GetCode()
+    public override string GetBabylonJsCode()
     {
-        return Code.GetCode();
+        return Code.GetAttributeValueCode();
     }
 }

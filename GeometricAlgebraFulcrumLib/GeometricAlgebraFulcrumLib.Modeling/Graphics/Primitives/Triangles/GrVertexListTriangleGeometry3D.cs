@@ -2,8 +2,7 @@
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Frames.Space3D;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space2D;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space3D;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.BasicShapes.Triangles;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.BasicShapes.Triangles.Immutable;
+using GeometricAlgebraFulcrumLib.Modeling.Geometry.BasicShapes.Triangles.Space3D.Float64;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Primitives.Vertices;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Basic;
 using SixLabors.ImageSharp;
@@ -23,7 +22,7 @@ public sealed class GrVertexListTriangleGeometry3D :
 
 
     public GraphicsPrimitiveType3D PrimitiveType 
-        => GraphicsPrimitiveType3D.Triangles;
+        => GraphicsPrimitiveType3D.TriangleList;
 
     public int VertexCount 
         => _localFrameList.Count;
@@ -40,14 +39,14 @@ public sealed class GrVertexListTriangleGeometry3D :
     public int Count 
         => _triangleIndexTripletList.Count;
 
-    public ITriangle3D this[int index]
+    public IFloat64Triangle3D this[int index]
     {
         get
         {
             var (index1, index2, index3) = 
                 _triangleIndexTripletList[index];
 
-            return Triangle3D.Create(
+            return Float64Triangle3D.Create(
                 _localFrameList[index1],
                 _localFrameList[index2],
                 _localFrameList[index3]
@@ -159,10 +158,10 @@ public sealed class GrVertexListTriangleGeometry3D :
         throw new NotImplementedException();
     }
 
-    public IEnumerator<ITriangle3D> GetEnumerator()
+    public IEnumerator<IFloat64Triangle3D> GetEnumerator()
     {
         return _triangleIndexTripletList.Select(
-            t => Triangle3D.Create(
+            t => Float64Triangle3D.Create(
                 _localFrameList[t.Item1],
                 _localFrameList[t.Item2],
                 _localFrameList[t.Item3]

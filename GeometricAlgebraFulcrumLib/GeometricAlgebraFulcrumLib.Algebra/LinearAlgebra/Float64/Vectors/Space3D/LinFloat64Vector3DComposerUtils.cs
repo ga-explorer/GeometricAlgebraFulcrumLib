@@ -29,41 +29,41 @@ public static class LinFloat64Vector3DComposerUtils
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64Vector3D ToLinVector3D(this LinUnitBasisVector2D axis)
+    public static LinFloat64Vector3D ToLinVector3D(this LinBasisVector2D axis)
     {
         return axis switch
         {
-            LinUnitBasisVector2D.PositiveX => LinFloat64Vector3D.E1,
-            LinUnitBasisVector2D.NegativeX => LinFloat64Vector3D.NegativeE1,
-            LinUnitBasisVector2D.PositiveY => LinFloat64Vector3D.E2,
+            LinBasisVector2D.Px => LinFloat64Vector3D.E1,
+            LinBasisVector2D.Nx => LinFloat64Vector3D.NegativeE1,
+            LinBasisVector2D.Py => LinFloat64Vector3D.E2,
             _ => LinFloat64Vector3D.NegativeE2
         };
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64Vector3D ToLinVector3D(this LinUnitBasisVector3D axis)
+    public static LinFloat64Vector3D ToLinVector3D(this LinBasisVector3D axis)
     {
         return axis switch
         {
-            LinUnitBasisVector3D.PositiveX => LinFloat64Vector3D.E1,
-            LinUnitBasisVector3D.NegativeX => LinFloat64Vector3D.NegativeE1,
-            LinUnitBasisVector3D.PositiveY => LinFloat64Vector3D.E2,
-            LinUnitBasisVector3D.NegativeY => LinFloat64Vector3D.NegativeE2,
-            LinUnitBasisVector3D.PositiveZ => LinFloat64Vector3D.E3,
+            LinBasisVector3D.Px => LinFloat64Vector3D.E1,
+            LinBasisVector3D.Nx => LinFloat64Vector3D.NegativeE1,
+            LinBasisVector3D.Py => LinFloat64Vector3D.E2,
+            LinBasisVector3D.Ny => LinFloat64Vector3D.NegativeE2,
+            LinBasisVector3D.Pz => LinFloat64Vector3D.E3,
             _ => LinFloat64Vector3D.NegativeE3
         };
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64Vector3D ToLinVector3D(this LinUnitBasisVector3D axis, Float64Scalar scalingFactor)
+    public static LinFloat64Vector3D ToLinVector3D(this LinBasisVector3D axis, Float64Scalar scalingFactor)
     {
         return axis switch
         {
-            LinUnitBasisVector3D.PositiveX => LinFloat64Vector3D.Create(scalingFactor, 0, 0),
-            LinUnitBasisVector3D.NegativeX => LinFloat64Vector3D.Create(-scalingFactor, 0, 0),
-            LinUnitBasisVector3D.PositiveY => LinFloat64Vector3D.Create(0, scalingFactor, 0),
-            LinUnitBasisVector3D.NegativeY => LinFloat64Vector3D.Create(0, -scalingFactor, 0),
-            LinUnitBasisVector3D.PositiveZ => LinFloat64Vector3D.Create(0, 0, scalingFactor),
+            LinBasisVector3D.Px => LinFloat64Vector3D.Create(scalingFactor, 0, 0),
+            LinBasisVector3D.Nx => LinFloat64Vector3D.Create(-scalingFactor, 0, 0),
+            LinBasisVector3D.Py => LinFloat64Vector3D.Create(0, scalingFactor, 0),
+            LinBasisVector3D.Ny => LinFloat64Vector3D.Create(0, -scalingFactor, 0),
+            LinBasisVector3D.Pz => LinFloat64Vector3D.Create(0, 0, scalingFactor),
             _ => LinFloat64Vector3D.Create(0, 0, -scalingFactor)
         };
     }
@@ -296,6 +296,44 @@ public static class LinFloat64Vector3DComposerUtils
             scalarMapping(vector.Item3)
         );
     }
+    
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static LinFloat64Vector3D ToXyLinVector3D(this (double, double) vector)
+    {
+        return LinFloat64Vector3D.Create(vector.Item1, vector.Item2, 0d);
+    }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static LinFloat64Vector3D ToYxLinVector3D(this (double, double) vector)
+    {
+        return LinFloat64Vector3D.Create(vector.Item2, vector.Item1, 0d);
+    }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static LinFloat64Vector3D ToXzLinVector3D(this (double, double) vector)
+    {
+        return LinFloat64Vector3D.Create(vector.Item1, 0d, vector.Item2);
+    }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static LinFloat64Vector3D ToZxLinVector3D(this (double, double) vector)
+    {
+        return LinFloat64Vector3D.Create(vector.Item2, 0d, vector.Item1);
+    }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static LinFloat64Vector3D ToYzLinVector3D(this (double, double) vector)
+    {
+        return LinFloat64Vector3D.Create(0d, vector.Item1, vector.Item2);
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static LinFloat64Vector3D ToZyLinVector3D(this (double, double) vector)
+    {
+        return LinFloat64Vector3D.Create(0d, vector.Item2, vector.Item1);
+    }
+
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static LinFloat64Vector3D ToXyLinVector3D(this IPair<Float64Scalar> vector)

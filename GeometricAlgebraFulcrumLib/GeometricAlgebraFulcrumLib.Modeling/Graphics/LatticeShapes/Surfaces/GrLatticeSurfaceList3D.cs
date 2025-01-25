@@ -2,8 +2,8 @@
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Angles;
+using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space2D;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space3D;
-using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Primitives.Triangles;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Basic;
 using GeometricAlgebraFulcrumLib.Utilities.Text.Text.Linear;
@@ -48,7 +48,7 @@ public sealed class GrLatticeSurfaceList3D :
     public IEnumerable<ILinFloat64Vector3D> VertexNormals 
         => Vertices.Select(v => v.Normal);
 
-    public IEnumerable<Pair<Float64Scalar>> VertexTextureUVs 
+    public IEnumerable<LinFloat64Vector2D> VertexTextureUVs 
         => Vertices.Select(v => v.ParameterValue);
 
     public IEnumerable<Color> VertexColors 

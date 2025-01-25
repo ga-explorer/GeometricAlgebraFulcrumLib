@@ -11,7 +11,7 @@ namespace GeometricAlgebraFulcrumLib.Modeling.Signals.Interpolators;
 
 public class VectorChebyshevInterpolator
 {
-    public static VectorChebyshevInterpolator Create(XGaVector<Float64Signal> vectorSignal, Float64SignalSamplingSpecs samplingSpecs, DfChebyshevSignalInterpolatorOptions options)
+    public static VectorChebyshevInterpolator Create(XGaVector<Float64Signal> vectorSignal, Float64SamplingSpecs samplingSpecs, DfChebyshevSignalInterpolatorOptions options)
     {
         var n = vectorSignal.VSpaceDimensions;
 
@@ -52,7 +52,7 @@ public class VectorChebyshevInterpolator
 
     public int VSpaceDimensions { get; }
 
-    public Float64SignalSamplingSpecs SamplingSpecs { get; }
+    public Float64SamplingSpecs SamplingSpecs { get; }
 
     public double SamplingRate 
         => SamplingSpecs.SamplingRate;
@@ -66,7 +66,7 @@ public class VectorChebyshevInterpolator
 
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    private VectorChebyshevInterpolator(XGaVector<Float64Signal> scalarSamples, Float64SignalSamplingSpecs samplingSpecs, IReadOnlyList<DfChebyshevSignalInterpolator[]> interpolatorList)
+    private VectorChebyshevInterpolator(XGaVector<Float64Signal> scalarSamples, Float64SamplingSpecs samplingSpecs, IReadOnlyList<DfChebyshevSignalInterpolator[]> interpolatorList)
     {
         SamplingSpecs = samplingSpecs;
         VectorSamples = scalarSamples;

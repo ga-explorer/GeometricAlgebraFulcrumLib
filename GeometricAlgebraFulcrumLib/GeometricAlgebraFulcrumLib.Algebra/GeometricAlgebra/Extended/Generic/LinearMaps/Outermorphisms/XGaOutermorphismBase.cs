@@ -3,7 +3,9 @@ using GeometricAlgebraFulcrumLib.Utilities.Structures.IndexSets;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Extended.Generic.Multivectors;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Extended.Generic.Processors;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Generic.LinearMaps;
+using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Generic.Vectors.SpaceND;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Generic;
+using GeometricAlgebraFulcrumLib.Utilities.Structures.BitManipulation;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Extended.Generic.LinearMaps.Outermorphisms;
 
@@ -72,6 +74,21 @@ public abstract class XGaOutermorphismBase<T> :
     public abstract XGaMultivector<T> OmMap(XGaMultivector<T> multivector);
         
     public abstract IEnumerable<KeyValuePair<IIndexSet, XGaVector<T>>> GetOmMappedBasisVectors(int vSpaceDimensions);
-        
-    public abstract LinUnilinearMap<T> GetVectorMapPart(int vSpaceDimensions);
+
+    public virtual LinUnilinearMap<T> GetVectorMapPart(int vSpaceDimensions)
+    {
+        var indexVectorDictionary = vSpaceDimensions.GetRange(
+                index =>
+                    new KeyValuePair<int, XGaVector<T>>(
+                        index, 
+                        OmMapBasisVector(index)
+                    )
+            ).Where(p => !p.Value.IsZero)
+            .ToDictionary(
+                p => p.Key,
+                p => p.Value.ToLinVector()
+            );
+
+        return indexVectorDictionary.ToLinUnilinearMap(ScalarProcessor);
+    }
 }

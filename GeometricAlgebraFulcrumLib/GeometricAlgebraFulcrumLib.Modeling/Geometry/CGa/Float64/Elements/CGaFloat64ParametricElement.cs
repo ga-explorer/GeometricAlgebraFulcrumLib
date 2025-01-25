@@ -16,6 +16,7 @@ using GeometricAlgebraFulcrumLib.Modeling.Geometry.Parametric.Float64.Space3D.Bi
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.Parametric.Float64.Space3D.Curves;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.Parametric.Float64.Space3D.Quaternions;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.Parametric.Float64.Space3D.Trivectors;
+using GeometricAlgebraFulcrumLib.Modeling.Temporal.Float64.Scalars;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Basic;
 
 namespace GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Float64.Elements;
@@ -185,6 +186,24 @@ public sealed class CGaFloat64ParametricElement :
         return element;
     }
 
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public TemporalFloat64Scalar GetTemporalScalar(Func<CGaFloat64Element, double> elementMapping)
+    {
+        return TemporalFloat64Scalar.Computed(
+            t => elementMapping(GetElementFunc(t)),
+            ParameterRange
+        );
+    }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public TemporalFloat64Scalar GetTemporalScalar(Func<CGaFloat64Element, LinFloat64PolarAngle> elementMapping)
+    {
+        return TemporalFloat64Scalar.Computed(
+            t => elementMapping(GetElementFunc(t)).RadiansValue,
+            ParameterRange
+        );
+    }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public ComputedParametricScalar GetParametricScalar(Func<CGaFloat64Element, double> elementMapping)
@@ -264,6 +283,14 @@ public sealed class CGaFloat64ParametricElement :
     {
         return GetParametricScalar(
             element => element.RadiusSquared
+        );
+    }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public TemporalFloat64Scalar RealRadiusToTemporalScalar()
+    {
+        return GetTemporalScalar(
+            element => element.RealRadius
         );
     }
 

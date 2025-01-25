@@ -629,7 +629,7 @@ public class GrKonvaShapeStyle :
     }
 
 
-    public override string GetCode()
+    public override string GetKonvaJsCode()
     {
         throw new NotImplementedException();
     }

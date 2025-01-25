@@ -33,7 +33,7 @@ public sealed class GrBabylonJsMeshClone :
     }
     
     
-    public GrBabylonJsMeshClone SetProperties(MeshProperties properties)
+    public GrBabylonJsMeshClone SetProperties(GrBabylonJsMeshProperties properties)
     {
         Properties = properties;
 
@@ -46,16 +46,16 @@ public sealed class GrBabylonJsMeshClone :
         yield return ConstName.DoubleQuote();
         
         if (NewParent is null || NewParent.IsEmpty) yield break;
-        yield return NewParent.GetCode();
+        yield return NewParent.GetAttributeValueCode();
 
         if (DoNotCloneChildren is null || DoNotCloneChildren.IsEmpty) yield break;
-        yield return DoNotCloneChildren.GetCode();
+        yield return DoNotCloneChildren.GetAttributeValueCode();
         
         if (ClonePhysicsImpostor is null || ClonePhysicsImpostor.IsEmpty) yield break;
-        yield return ClonePhysicsImpostor.GetCode();
+        yield return ClonePhysicsImpostor.GetAttributeValueCode();
     }
     
-    public override string GetCode()
+    public override string GetBabylonJsCode()
     {
         var composer = new StringBuilder();
 

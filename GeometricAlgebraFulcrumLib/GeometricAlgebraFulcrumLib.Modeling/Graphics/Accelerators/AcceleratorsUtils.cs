@@ -1,5 +1,6 @@
 ﻿using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Tuples;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.BasicShapes.Lines;
+using GeometricAlgebraFulcrumLib.Modeling.Geometry.BasicShapes.Lines.Space2D.Float64;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Accelerators.BIH.Space2D;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Accelerators.Grids;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Accelerators.Grids.Space2D;
@@ -11,12 +12,12 @@ namespace GeometricAlgebraFulcrumLib.Modeling.Graphics.Accelerators;
 public static class AcceleratorsUtils
 {
 
-    public static SvgDrawingBoard DrawGrid(this SvgDrawingBoard drawingBoard, IAccGrid2D<ILineSegment2D> grid)
+    public static SvgDrawingBoard DrawGrid(this SvgDrawingBoard drawingBoard, IAccGrid2D<IFloat64LineSegment2D> grid)
     {
         return drawingBoard.DrawGrid(grid, new AccGridDrawingSettings2D());
     }
 
-    public static SvgDrawingBoard DrawGrid(this SvgDrawingBoard drawingBoard, IAccGrid2D<ILineSegment2D> grid, AccGridDrawingSettings2D drawingSettings)
+    public static SvgDrawingBoard DrawGrid(this SvgDrawingBoard drawingBoard, IAccGrid2D<IFloat64LineSegment2D> grid, AccGridDrawingSettings2D drawingSettings)
     {
         //Draw grid lines on a separate layer
         if (drawingSettings.DrawGridLines)
@@ -92,7 +93,7 @@ public static class AcceleratorsUtils
         return drawingBoard;
     }
 
-    public static SvgDrawingBoard DrawGridCells(this SvgDrawingBoard drawingBoard, IAccGrid2D<ILineSegment2D> grid, IEnumerable<IntTuple2D> cellIndicesList, AccGridDrawingSettings2D drawingSettings)
+    public static SvgDrawingBoard DrawGridCells(this SvgDrawingBoard drawingBoard, IAccGrid2D<IFloat64LineSegment2D> grid, IEnumerable<IntTuple2D> cellIndicesList, AccGridDrawingSettings2D drawingSettings)
     {
         //Draw selected cells
         drawingBoard

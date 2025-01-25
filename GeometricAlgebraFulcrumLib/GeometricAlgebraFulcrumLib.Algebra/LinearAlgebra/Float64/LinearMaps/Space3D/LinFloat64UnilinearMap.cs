@@ -114,7 +114,7 @@
 //            throw new NotImplementedException();
 //        }
 
-//        public bool IsNearIdentity(double epsilon = 1E-12)
+//        public bool IsNearIdentity(double zeroEpsilon = 1E-12)
 //        {
 //            throw new NotImplementedException();
 //        }

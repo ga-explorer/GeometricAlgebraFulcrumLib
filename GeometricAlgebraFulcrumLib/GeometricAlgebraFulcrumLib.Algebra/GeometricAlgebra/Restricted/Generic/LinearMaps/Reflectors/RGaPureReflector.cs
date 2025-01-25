@@ -1,6 +1,5 @@
 ﻿using System.Runtime.CompilerServices;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Generic.Multivectors;
-using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Generic.LinearMaps;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Generic.LinearMaps.Reflectors;
 
@@ -102,11 +101,6 @@ public sealed class RGaPureReflector<T> :
     public override RGaMultivector<T> OmMap(RGaMultivector<T> mv)
     {
         return Vector.Gp(mv).Gp(VectorInverse);
-    }
-
-    public override LinUnilinearMap<T> GetVectorMapPart(int vSpaceDimensions)
-    {
-        throw new NotImplementedException();
     }
 
 

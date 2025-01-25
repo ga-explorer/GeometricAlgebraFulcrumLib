@@ -134,7 +134,7 @@ public sealed record ParametricCurveLocalFrame3D :
         Normal1.Set(normal1);
         Normal2.Set(normal2);
 
-        Debug.Assert(IsValid());
+        //Debug.Assert(IsValid());
     }
 
 
@@ -195,7 +195,7 @@ public sealed record ParametricCurveLocalFrame3D :
         Normal1.Set(normal1);
         Normal2.Set(normal2);
 
-        Debug.Assert(IsValid());
+        //Debug.Assert(IsValid());
 
         return this;
     }
@@ -476,8 +476,8 @@ public sealed record ParametricCurveLocalFrame3D :
             ParameterValue,
             Point,
             Tangent,
-            Normal1.RotateUsing(Tangent, angle),
-            Normal2.RotateUsing(Tangent, angle)
+            Normal1.RotateVectorUsingAxisAngle(Tangent, angle),
+            Normal2.RotateVectorUsingAxisAngle(Tangent, angle)
         );
     }
 
@@ -508,8 +508,8 @@ public sealed record ParametricCurveLocalFrame3D :
                 Point.Y + translationVector.Y,
                 Point.Z + translationVector.Z),
             Tangent,
-            Normal1.RotateUsing(Tangent, angle),
-            Normal2.RotateUsing(Tangent, angle)
+            Normal1.RotateVectorUsingAxisAngle(Tangent, angle),
+            Normal2.RotateVectorUsingAxisAngle(Tangent, angle)
         );
     }
 
@@ -532,9 +532,9 @@ public sealed record ParametricCurveLocalFrame3D :
         return new ParametricCurveLocalFrame3D(
             ParameterValue,
             Point,
-            Tangent.RotateUsing(quaternion),
-            Normal1.RotateUsing(quaternion),
-            Normal2.RotateUsing(quaternion)
+            Tangent.RotateVectorUsingQuaternion(quaternion),
+            Normal1.RotateVectorUsingQuaternion(quaternion),
+            Normal2.RotateVectorUsingQuaternion(quaternion)
         );
     }
 

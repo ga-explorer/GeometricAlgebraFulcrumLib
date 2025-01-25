@@ -1,6 +1,5 @@
 ﻿using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space3D;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.BasicShapes.Triangles;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.BasicShapes.Triangles.Immutable;
+using GeometricAlgebraFulcrumLib.Modeling.Geometry.BasicShapes.Triangles.Space3D.Float64;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Basic;
 
 namespace GeometricAlgebraFulcrumLib.Modeling.Graphics.Primitives.Triangles;
@@ -44,8 +43,8 @@ public sealed class GrTriangleFanGeometry3D
     public override int Count
         => VertexCount - 2;
 
-    public override ITriangle3D this[int index] 
-        => Triangle3D.Create(
+    public override IFloat64Triangle3D this[int index] 
+        => Float64Triangle3D.Create(
             GetGeometryPoint(0),
             GetGeometryPoint(index + 1),
             GetGeometryPoint(index + 2)
@@ -89,7 +88,7 @@ public sealed class GrTriangleFanGeometry3D
     }
 
 
-    public override IEnumerator<ITriangle3D> GetEnumerator()
+    public override IEnumerator<IFloat64Triangle3D> GetEnumerator()
     {
         var point1 = GetGeometryPoint(0);
         for (var i = 0; i < VertexCount - 2; i++)
@@ -97,7 +96,7 @@ public sealed class GrTriangleFanGeometry3D
             var point2 = GetGeometryPoint(i + 1);
             var point3 = GetGeometryPoint(i + 2);
 
-            yield return Triangle3D.Create(point1, point2, point3);
+            yield return Float64Triangle3D.Create(point1, point2, point3);
         }
     }
 }

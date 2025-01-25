@@ -8,38 +8,11 @@ namespace GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.BabylonJs.Mater
 public sealed class GrBabylonJsShadowOnlyMaterial :
     GrBabylonJsMaterial
 {
-    public sealed class ShadowOnlyMaterialProperties :
-        MaterialProperties
-    {
-        public GrBabylonJsColor3Value? ShadowColor
-        {
-            get => GetAttributeValueOrNull<GrBabylonJsColor3Value>("shadowColor");
-            set => SetAttributeValue("shadowColor", value);
-        }
-            
-        public GrBabylonJsCodeValue? ActiveLight
-        {
-            get => GetAttributeValueOrNull<GrBabylonJsCodeValue>("activeLight");
-            set => SetAttributeValue("activeLight", value);
-        }
-
-
-        public ShadowOnlyMaterialProperties()
-        {
-        }
-
-        public ShadowOnlyMaterialProperties(ShadowOnlyMaterialProperties properties)
-        {
-            SetAttributeValues(properties);
-        }
-    }
-
-
     protected override string ConstructorName
         => "new BABYLON.ShadowOnlyMaterial";
 
-    public ShadowOnlyMaterialProperties Properties { get; private set; }
-        = new ShadowOnlyMaterialProperties();
+    public GrBabylonJsShadowOnlyMaterialProperties Properties { get; private set; }
+        = new GrBabylonJsShadowOnlyMaterialProperties();
     
     public override GrBabylonJsObjectProperties ObjectProperties 
         => Properties;
@@ -56,9 +29,9 @@ public sealed class GrBabylonJsShadowOnlyMaterial :
     }
 
 
-    public GrBabylonJsShadowOnlyMaterial SetProperties(ShadowOnlyMaterialProperties properties)
+    public GrBabylonJsShadowOnlyMaterial SetProperties(GrBabylonJsShadowOnlyMaterialProperties properties)
     {
-        Properties = new ShadowOnlyMaterialProperties(properties);
+        Properties = new GrBabylonJsShadowOnlyMaterialProperties(properties);
 
         return this;
     }

@@ -13,10 +13,10 @@ public abstract class GrKonvaJsObjectProperties :
     {
         ObjectName = objectName;
 
-        return GetCode();
+        return GetAttributeSetCode();
     }
 
-    public override string GetCode()
+    public override string GetKonvaJsCode()
     {
         if (string.IsNullOrEmpty(ObjectName))
             throw new InvalidOperationException();
@@ -40,6 +40,6 @@ public abstract class GrKonvaJsObjectProperties :
     
     public override string ToString()
     {
-        return GetCode();
+        return GetAttributeSetCode();
     }
 }

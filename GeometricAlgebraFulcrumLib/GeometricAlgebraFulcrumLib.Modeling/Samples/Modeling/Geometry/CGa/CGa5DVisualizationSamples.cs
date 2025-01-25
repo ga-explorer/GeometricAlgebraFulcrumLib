@@ -10,7 +10,7 @@ using GeometricAlgebraFulcrumLib.Modeling.Geometry.Parametric.Float64.Space1D.Sc
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.Parametric.Float64.Space1D.Scalars.Harmonic;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.Parametric.Float64.Space3D.Curves;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.Parametric.Float64.Space3D.Curves.Spherical;
-using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.Visuals.Space3D.Animations;
+using GeometricAlgebraFulcrumLib.Modeling.Signals;
 using GeometricAlgebraFulcrumLib.Utilities.Web.Colors;
 using SixLabors.ImageSharp;
 
@@ -92,9 +92,13 @@ public static class CGa5DVisualizationSamples
             LinFloat64Vector3D.Create(1, 1, 1).Negative()
         );
 
-        CGa.Visualizer
-            .SetWorkingFolder(@"D:\Projects\Study\Web\Babylon.js")
-            .BeginDrawing3D("Static Flats Example");
+        CGa.Visualizer.BeginDrawing3D(
+            @"D:\Projects\Study\Web\Babylon.js"
+        );
+        
+        CGa.VisualizerAnimationComposer.SetFileNameAndTitle(
+            "Static Flats"
+        );
 
         CGa.Visualizer
             .SetFlatStyle(
@@ -109,7 +113,7 @@ public static class CGa5DVisualizationSamples
             .DrawOpnsBlade(flatLine, Color.Green)
             .DrawOpnsBlade(flatPlane, Color.Blue.SetAlpha(0.7));
 
-        CGa.Visualizer.SaveHtmlFile();
+        CGa.VisualizerAnimationComposer.SaveHtmlFile();
     }
 
     /// <summary>
@@ -138,10 +142,14 @@ public static class CGa5DVisualizationSamples
                 4,
                 LinFloat64Vector3D.Create(-5, -5, -5)
             ).CGaUnDual();
-
-        CGa.Visualizer
-            .SetWorkingFolder(@"D:\Projects\Study\Web\Babylon.js")
-            .BeginDrawing3D("Static Rounds Example");
+        
+        CGa.Visualizer.BeginDrawing3D(
+            @"D:\Projects\Study\Web\Babylon.js"
+        );
+        
+        CGa.VisualizerAnimationComposer.SetFileNameAndTitle(
+            "Static Rounds"
+        );
 
         CGa.Visualizer
             .SetRoundStyle(
@@ -157,7 +165,7 @@ public static class CGa5DVisualizationSamples
             .DrawOpnsBlade(roundCircle, Color.Blue)
             .DrawOpnsBlade(roundSphere, Color.Red.SetAlpha(0.7));
 
-        CGa.Visualizer.SaveHtmlFile();
+        CGa.VisualizerAnimationComposer.SaveHtmlFile();
     }
 
 
@@ -171,8 +179,8 @@ public static class CGa5DVisualizationSamples
 
         Console.WriteLine("Animated Example Started ..");
 
-        var animationSpecs =
-            GrVisualAnimationSpecs.Create(frameRate, maxTime);
+        var samplingSpecs =
+            Float64SamplingSpecs.Create(frameRate, maxTime);
 
         // This curve defines the parametric position of the first point
         var point1Curve =
@@ -189,34 +197,39 @@ public static class CGa5DVisualizationSamples
                 point2Curve
             );
 
-        // Prepare latex expressions
-        var latexDictionary = new Dictionary<string, string>()
-        {
-            {"point1", @"P_{1}"},
-            {"point2", @"P_{2}"}
-        };
-
         // Initialize visualizer for 3D animated drawing
-        CGa.Visualizer
-            .SetWorkingFolder(@"D:\Projects\Study\Web\Babylon.js")
-            .SetAnimationSpecs(animationSpecs)
-            .BeginDrawing3D(@"Parametric 3D Line Example 1", latexDictionary);
+        CGa.Visualizer.BeginDrawing3D(
+            @"D:\Projects\Study\Web\Babylon.js",
+            samplingSpecs
+        );
+        
+        CGa.VisualizerAnimationComposer.SetFileNameAndTitle(
+            "Parametric 3D Line 1"
+        );
+
+        CGa.VisualizerKaTeXComposer.AddLaTeXCode(
+            new Dictionary<string, string>()
+            {
+                {"point1", "P_{1}"},
+                {"point2", "P_{2}"}
+            }
+        );
 
         // Draw the two position curves
-        CGa.Visualizer
+        CGa.VisualizerAnimationComposer
             .SetCurveStyleTube(0.05)
             .DrawCurve(
                 Color.Red.SetAlpha(0.2),
                 point1Curve,
-                animationSpecs.FrameTimeRange
+                samplingSpecs.TimeRange
             ).DrawCurve(
                 Color.Green.SetAlpha(0.2),
                 point2Curve,
-                animationSpecs.FrameTimeRange
+                samplingSpecs.TimeRange
             );
 
         // Draw the two points
-        CGa.Visualizer
+        CGa.VisualizerAnimationComposer
             .SetPointStyle(0.08)
             .DrawPoint(
                 Color.Red,
@@ -240,12 +253,12 @@ public static class CGa5DVisualizationSamples
         // Draw LaTeX expressions
         var latexOffset = LinFloat64Vector3D.VectorSymmetric(0.25);
 
-        CGa.Visualizer
+        CGa.VisualizerAnimationComposer
             .DrawLaTeX("point1", point1Curve.GetOffsetCurve(latexOffset))
             .DrawLaTeX("point2", point2Curve.GetOffsetCurve(latexOffset));
 
         // Save the HTML animation file
-        CGa.Visualizer.SaveHtmlFile();
+        CGa.VisualizerAnimationComposer.SaveHtmlFile();
 
         Console.WriteLine("Animated Example Finished.");
     }
@@ -260,8 +273,8 @@ public static class CGa5DVisualizationSamples
 
         Console.WriteLine("Animated Example Started ..");
 
-        var animationSpecs =
-            GrVisualAnimationSpecs.Create(frameRate, maxTime);
+        var samplingSpecs =
+            Float64SamplingSpecs.Create(frameRate, maxTime);
 
         // This curve defines the parametric position of the first point
         var positionCurve =
@@ -277,29 +290,34 @@ public static class CGa5DVisualizationSamples
                 vectorCurve
             );
 
-        // Prepare latex expressions
-        var latexDictionary = new Dictionary<string, string>()
-        {
-            {"point", @"P"}
-        };
-
         // Initialize visualizer for 3D animated drawing
-        CGa.Visualizer
-            .SetWorkingFolder(@"D:\Projects\Study\Web\Babylon.js")
-            .SetAnimationSpecs(animationSpecs)
-            .BeginDrawing3D(@"Parametric 3D Line Example 2", latexDictionary);
+        CGa.Visualizer.BeginDrawing3D(
+            @"D:\Projects\Study\Web\Babylon.js",
+            samplingSpecs
+        );
+        
+        CGa.VisualizerAnimationComposer.SetFileNameAndTitle(
+            "Parametric 3D Line 2"
+        );
+
+        CGa.VisualizerKaTeXComposer.AddLaTeXCode(
+            new Dictionary<string, string>()
+            {
+                {"point", "P"}
+            }
+        );
 
         // Draw the two position curves
-        CGa.Visualizer
+        CGa.VisualizerAnimationComposer
             .SetCurveStyleTube(0.05)
             .DrawCurve(
                 Color.Red.SetAlpha(0.2),
                 positionCurve,
-                animationSpecs.FrameTimeRange
+                samplingSpecs.TimeRange
             );
 
         // Draw the two points
-        CGa.Visualizer
+        CGa.VisualizerAnimationComposer
             .SetPointStyle(0.08)
             .DrawPoint(
                 Color.Red,
@@ -320,11 +338,11 @@ public static class CGa5DVisualizationSamples
         // Draw LaTeX expressions
         var latexOffset = LinFloat64Vector3D.VectorSymmetric(0.25);
 
-        CGa.Visualizer
+        CGa.VisualizerAnimationComposer
             .DrawLaTeX("point", positionCurve.GetOffsetCurve(latexOffset));
 
         // Save the HTML animation file
-        CGa.Visualizer.SaveHtmlFile();
+        CGa.VisualizerAnimationComposer.SaveHtmlFile();
 
         Console.WriteLine("Animated Example Finished.");
     }
@@ -339,8 +357,8 @@ public static class CGa5DVisualizationSamples
 
         Console.WriteLine("Animated Example Started ..");
 
-        var animationSpecs =
-            GrVisualAnimationSpecs.Create(frameRate, maxTime);
+        var samplingSpecs =
+            Float64SamplingSpecs.Create(frameRate, maxTime);
 
         // This curve defines the parametric position of the first point
         var point1Curve =
@@ -362,35 +380,40 @@ public static class CGa5DVisualizationSamples
                 point3Curve
             );
 
-        // Prepare latex expressions
-        var latexDictionary = new Dictionary<string, string>()
-        {
-            {"point1", @"P_{1}"},
-            {"point2", @"P_{2}"},
-            {"point3", @"P_{3}"}
-        };
-
         // Initialize visualizer for 3D animated drawing
-        CGa.Visualizer
-            .SetWorkingFolder(@"D:\Projects\Study\Web\Babylon.js")
-            .SetAnimationSpecs(animationSpecs)
-            .BeginDrawing3D(@"Parametric 3D Plane Example 1", latexDictionary);
+        CGa.Visualizer.BeginDrawing3D(
+            @"D:\Projects\Study\Web\Babylon.js",
+            samplingSpecs
+        );
+        
+        CGa.VisualizerAnimationComposer.SetFileNameAndTitle(
+            "Parametric 3D Plane 1"
+        );
+
+        CGa.VisualizerKaTeXComposer.AddLaTeXCode(
+            new Dictionary<string, string>()
+            {
+                {"point1", "P_{1}"},
+                {"point2", "P_{2}"},
+                {"point3", "P_{3}"}
+            }
+        );
 
         // Draw the two position curves
-        CGa.Visualizer
+        CGa.VisualizerAnimationComposer
             .SetCurveStyleTube(0.05)
             .DrawCurve(
                 Color.Red.SetAlpha(0.2),
                 point1Curve,
-                animationSpecs.FrameTimeRange
+                samplingSpecs.TimeRange
             ).DrawCurve(
                 Color.Green.SetAlpha(0.2),
                 point2Curve,
-                animationSpecs.FrameTimeRange
+                samplingSpecs.TimeRange
             );
 
         // Draw the two points
-        CGa.Visualizer
+        CGa.VisualizerAnimationComposer
             .SetPointStyle(0.08)
             .DrawPoint(
                 Color.Red,
@@ -417,13 +440,13 @@ public static class CGa5DVisualizationSamples
         // Draw LaTeX expressions
         var latexOffset = LinFloat64Vector3D.VectorSymmetric(0.75);
 
-        CGa.Visualizer
+        CGa.VisualizerAnimationComposer
             .DrawLaTeX("point1", point1Curve.GetOffsetCurve(latexOffset))
             .DrawLaTeX("point2", point2Curve.GetOffsetCurve(latexOffset))
             .DrawLaTeX("point3", point3Curve.Point.VectorAdd(latexOffset));
 
         // Save the HTML animation file
-        CGa.Visualizer.SaveHtmlFile();
+        CGa.VisualizerAnimationComposer.SaveHtmlFile();
 
         Console.WriteLine("Animated Example Finished.");
     }
@@ -439,8 +462,8 @@ public static class CGa5DVisualizationSamples
 
         Console.WriteLine("Animated Example Started ..");
 
-        var animationSpecs =
-            GrVisualAnimationSpecs.Create(frameRate, maxTime);
+        var samplingSpecs =
+            Float64SamplingSpecs.Create(frameRate, maxTime);
 
         // This curve defines the parametric position of the plane
         var positionCurve =
@@ -457,25 +480,30 @@ public static class CGa5DVisualizationSamples
                 normalCurve
             );
 
-        // Prepare latex expressions
-        var latexDictionary = new Dictionary<string, string>()
-        {
-            {"point", @"P"}
-        };
-
         // Initialize visualizer for 3D animated drawing
-        CGa.Visualizer
-            .SetWorkingFolder(@"D:\Projects\Study\Web\Babylon.js")
-            .SetAnimationSpecs(animationSpecs)
-            .BeginDrawing3D(@"Parametric 3D Plane Example 2", latexDictionary);
+        CGa.Visualizer.BeginDrawing3D(
+            @"D:\Projects\Study\Web\Babylon.js",
+            samplingSpecs
+        );
+        
+        CGa.VisualizerAnimationComposer.SetFileNameAndTitle(
+            "Parametric 3D Plane 2"
+        );
+
+        CGa.VisualizerAnimationComposer.KaTeXComposer.AddLaTeXCode(
+            new Dictionary<string, string>()
+            {
+                {"point", "P"}
+            }
+        );
 
         // Draw the position curve
-        CGa.Visualizer
+        CGa.VisualizerAnimationComposer
             .SetCurveStyleTube(0.05)
             .DrawCurve(
                 Color.Red.SetAlpha(0.2),
                 positionCurve,
-                animationSpecs.FrameTimeRange
+                samplingSpecs.TimeRange
             );
 
         // Draw the parametric plane
@@ -492,11 +520,11 @@ public static class CGa5DVisualizationSamples
         // Draw LaTeX expressions
         var latexOffset = LinFloat64Vector3D.VectorSymmetric(0.5);
 
-        CGa.Visualizer
+        CGa.VisualizerAnimationComposer
             .DrawLaTeX("point", positionCurve.GetOffsetCurve(latexOffset));
 
         // Save the HTML animation file
-        CGa.Visualizer.SaveHtmlFile();
+        CGa.VisualizerAnimationComposer.SaveHtmlFile();
 
         Console.WriteLine("Animated Example Finished.");
     }
@@ -511,8 +539,8 @@ public static class CGa5DVisualizationSamples
 
         Console.WriteLine("Animated Example Started ..");
 
-        var animationSpecs =
-            GrVisualAnimationSpecs.Create(frameRate, maxTime);
+        var samplingSpecs =
+            Float64SamplingSpecs.Create(frameRate, maxTime);
 
         // This curve defines the parametric position of the first point
         var point1Curve =
@@ -529,30 +557,35 @@ public static class CGa5DVisualizationSamples
                 point2Curve
             );
 
-        // Prepare latex expressions
-        var latexDictionary = new Dictionary<string, string>()
-        {
-            {"point1", @"P_{1}"},
-            {"point2", @"P_{2}"}
-        };
-
         // Initialize visualizer for 3D animated drawing
-        CGa.Visualizer
-            .SetWorkingFolder(@"D:\Projects\Study\Web\Babylon.js")
-            .SetAnimationSpecs(animationSpecs)
-            .BeginDrawing3D(@"Parametric 3D Point-Pair Example 1", latexDictionary);
+        CGa.Visualizer.BeginDrawing3D(
+            @"D:\Projects\Study\Web\Babylon.js", 
+            samplingSpecs
+        );
+        
+        CGa.VisualizerAnimationComposer.SetFileNameAndTitle(
+            "Parametric 3D Point-Pair 1"
+        );
+
+        CGa.VisualizerKaTeXComposer.AddLaTeXCode(
+            new Dictionary<string, string>()
+            {
+                {"point1", "P_{1}"},
+                {"point2", "P_{2}"}
+            }
+        );
 
         // Draw the two point curves
-        CGa.Visualizer
+        CGa.VisualizerAnimationComposer
             .SetCurveStyleTube(0.03)
             .DrawCurve(
                 Color.Red.SetAlpha(0.2),
                 point1Curve,
-                animationSpecs.FrameTimeRange
+                samplingSpecs.TimeRange
             ).DrawCurve(
                 Color.Blue.SetAlpha(0.2),
                 point2Curve,
-                animationSpecs.FrameTimeRange
+                samplingSpecs.TimeRange
             );
 
         // Draw the parametric point-pair
@@ -568,12 +601,12 @@ public static class CGa5DVisualizationSamples
         // Draw LaTeX expressions
         var latexOffset = LinFloat64Vector3D.VectorSymmetric(0.5);
 
-        CGa.Visualizer
+        CGa.VisualizerAnimationComposer
             .DrawLaTeX("point1", point1Curve.GetOffsetCurve(latexOffset))
             .DrawLaTeX("point2", point2Curve.GetOffsetCurve(latexOffset));
 
         // Save the HTML animation file
-        CGa.Visualizer.SaveHtmlFile();
+        CGa.VisualizerAnimationComposer.SaveHtmlFile();
 
         Console.WriteLine("Animated Example Finished.");
     }
@@ -588,8 +621,8 @@ public static class CGa5DVisualizationSamples
 
         Console.WriteLine("Animated Example Started ..");
 
-        var animationSpecs =
-            GrVisualAnimationSpecs.Create(frameRate, maxTime);
+        var samplingSpecs =
+            Float64SamplingSpecs.Create(frameRate, maxTime);
 
         // This curve defines the parametric radius of the sphere containing the point-pair
         var radiusCurve =
@@ -611,25 +644,30 @@ public static class CGa5DVisualizationSamples
                 vectorCurve
             );
 
-        // Prepare latex expressions
-        var latexDictionary = new Dictionary<string, string>()
-        {
-            {"center", @"C"}
-        };
-
         // Initialize visualizer for 3D animated drawing
-        CGa.Visualizer
-            .SetWorkingFolder(@"D:\Projects\Study\Web\Babylon.js")
-            .SetAnimationSpecs(animationSpecs)
-            .BeginDrawing3D(@"Parametric 3D Point-Pair Example 2", latexDictionary);
+        CGa.Visualizer.BeginDrawing3D(
+            @"D:\Projects\Study\Web\Babylon.js",
+            samplingSpecs
+        );
+
+        CGa.VisualizerKaTeXComposer.AddLaTeXCode(
+            new Dictionary<string, string>()
+            {
+                {"center", "C"}
+            }
+        );
+
+        CGa.VisualizerAnimationComposer.SetFileNameAndTitle(
+            "Parametric 3D Point-Pair 2"
+        );
 
         // Draw the position curve
-        CGa.Visualizer
+        CGa.VisualizerAnimationComposer
             .SetCurveStyleTube(0.03)
             .DrawCurve(
                 Color.Red.SetAlpha(0.2),
                 centerCurve,
-                animationSpecs.FrameTimeRange
+                samplingSpecs.TimeRange
             );
 
         // Draw the parametric point-pair
@@ -645,13 +683,13 @@ public static class CGa5DVisualizationSamples
         // Draw LaTeX expressions
         var latexOffset = LinFloat64Vector3D.VectorSymmetric(0.5);
 
-        CGa.Visualizer.DrawLaTeX(
+        CGa.VisualizerAnimationComposer.DrawLaTeX(
             "center",
             centerCurve.GetOffsetCurve(latexOffset)
         );
 
         // Save the HTML animation file
-        CGa.Visualizer.SaveHtmlFile();
+        CGa.VisualizerAnimationComposer.SaveHtmlFile();
 
         Console.WriteLine("Animated Example Finished.");
     }
@@ -666,8 +704,8 @@ public static class CGa5DVisualizationSamples
 
         Console.WriteLine("Animated Example Started ..");
 
-        var animationSpecs =
-            GrVisualAnimationSpecs.Create(frameRate, maxTime);
+        var samplingSpecs =
+            Float64SamplingSpecs.Create(frameRate, maxTime);
 
         // This curve defines the parametric position of the first point
         var point1Curve =
@@ -689,35 +727,40 @@ public static class CGa5DVisualizationSamples
                 point3Curve
             );
 
-        // Prepare latex expressions
-        var latexDictionary = new Dictionary<string, string>()
-        {
-            {"point1", @"P_{1}"},
-            {"point2", @"P_{2}"},
-            {"point3", @"P_{3}"}
-        };
-
         // Initialize visualizer for 3D animated drawing
-        CGa.Visualizer
-            .SetWorkingFolder(@"D:\Projects\Study\Web\Babylon.js")
-            .SetAnimationSpecs(animationSpecs)
-            .BeginDrawing3D(@"Parametric 3D Circle Example 1", latexDictionary);
+        CGa.Visualizer.BeginDrawing3D(
+            @"D:\Projects\Study\Web\Babylon.js",
+            samplingSpecs
+        );
+
+        CGa.VisualizerKaTeXComposer.AddLaTeXCode(
+            new Dictionary<string, string>()
+            {
+                {"point1", "P_{1}"},
+                {"point2", "P_{2}"},
+                {"point3", "P_{3}"}
+            }
+        );
+
+        CGa.VisualizerAnimationComposer.SetFileNameAndTitle(
+            "Parametric 3D Circle 1"
+        );
 
         // Draw the two position curves
-        CGa.Visualizer
+        CGa.VisualizerAnimationComposer
             .SetCurveStyleTube(0.03)
             .DrawCurve(
                 Color.Red.SetAlpha(0.2),
                 point1Curve,
-                animationSpecs.FrameTimeRange
+                samplingSpecs.TimeRange
             ).DrawCurve(
                 Color.Green.SetAlpha(0.2),
                 point2Curve,
-                animationSpecs.FrameTimeRange
+                samplingSpecs.TimeRange
             );
 
         // Draw the 3 points defining the circle
-        CGa.Visualizer
+        CGa.VisualizerAnimationComposer
             .SetPointStyle(0.08)
             .DrawPoint(Color.Red, point1Curve)
             .DrawPoint(Color.Green, point2Curve)
@@ -736,13 +779,13 @@ public static class CGa5DVisualizationSamples
         // Draw LaTeX expressions
         var latexOffset = LinFloat64Vector3D.VectorSymmetric(0.75);
 
-        CGa.Visualizer
+        CGa.VisualizerAnimationComposer
             .DrawLaTeX("point1", point1Curve.GetOffsetCurve(latexOffset))
             .DrawLaTeX("point2", point2Curve.GetOffsetCurve(latexOffset))
             .DrawLaTeX("point3", point3Curve.Point + latexOffset);
 
         // Save the HTML animation file
-        CGa.Visualizer.SaveHtmlFile();
+        CGa.VisualizerAnimationComposer.SaveHtmlFile();
 
         Console.WriteLine("Animated Example Finished.");
     }
@@ -757,8 +800,8 @@ public static class CGa5DVisualizationSamples
 
         Console.WriteLine("Animated Example Started ..");
 
-        var animationSpecs =
-            GrVisualAnimationSpecs.Create(frameRate, maxTime);
+        var samplingSpecs =
+            Float64SamplingSpecs.Create(frameRate, maxTime);
 
         // This curve defines the parametric radius of the sphere containing the circle
         var radiusCurve =
@@ -779,26 +822,31 @@ public static class CGa5DVisualizationSamples
                 centerCurve,
                 normalCurve
             );
-
-        // Prepare latex expressions
-        var latexDictionary = new Dictionary<string, string>()
-        {
-            {"center", @"C"}
-        };
-
+        
         // Initialize visualizer for 3D animated drawing
-        CGa.Visualizer
-            .SetWorkingFolder(@"D:\Projects\Study\Web\Babylon.js")
-            .SetAnimationSpecs(animationSpecs)
-            .BeginDrawing3D(@"Parametric 3D Circle Example 2", latexDictionary);
+        CGa.Visualizer.BeginDrawing3D(
+            @"D:\Projects\Study\Web\Babylon.js",
+            samplingSpecs
+        );
+
+        CGa.VisualizerKaTeXComposer.AddLaTeXCode(
+            new Dictionary<string, string>()
+            {
+                {"center", "C"}
+            }
+        );
+
+        CGa.VisualizerAnimationComposer.SetFileNameAndTitle(
+            "Parametric 3D Circle 2"
+        );
 
         // Draw the center curve
-        CGa.Visualizer
+        CGa.VisualizerAnimationComposer
             .SetCurveStyleTube(0.03)
             .DrawCurve(
                 Color.Red.SetAlpha(0.2),
                 centerCurve,
-                animationSpecs.FrameTimeRange
+                samplingSpecs.TimeRange
             );
 
         // Draw the parametric circle
@@ -814,13 +862,13 @@ public static class CGa5DVisualizationSamples
         // Draw LaTeX expressions
         var latexOffset = LinFloat64Vector3D.VectorSymmetric(0.5);
 
-        CGa.Visualizer.DrawLaTeX(
+        CGa.VisualizerAnimationComposer.DrawLaTeX(
             "center",
             centerCurve.GetOffsetCurve(latexOffset)
         );
 
         // Save the HTML animation file
-        CGa.Visualizer.SaveHtmlFile();
+        CGa.VisualizerAnimationComposer.SaveHtmlFile();
 
         Console.WriteLine("Animated Example Finished.");
     }
@@ -835,8 +883,8 @@ public static class CGa5DVisualizationSamples
 
         Console.WriteLine("Animated Example Started ..");
 
-        var animationSpecs =
-            GrVisualAnimationSpecs.Create(frameRate, maxTime);
+        var samplingSpecs =
+            Float64SamplingSpecs.Create(frameRate, maxTime);
 
         // This curve defines the parametric position of the first point
         var point1Curve =
@@ -892,20 +940,25 @@ public static class CGa5DVisualizationSamples
                 point4Curve
             );
 
-        // Prepare latex expressions
-        var latexDictionary = new Dictionary<string, string>()
-        {
-            {"point1", @"P_{1}"},
-            {"point2", @"P_{2}"},
-            {"point3", @"P_{3}"},
-            {"point4", @"P_{4}"}
-        };
-
         // Initialize visualizer for 3D animated drawing
-        CGa.Visualizer
-            .SetWorkingFolder(@"D:\Projects\Study\Web\Babylon.js")
-            .SetAnimationSpecs(animationSpecs)
-            .BeginDrawing3D(@"Parametric 3D Sphere Example 1", latexDictionary);
+        CGa.Visualizer.BeginDrawing3D(
+            @"D:\Projects\Study\Web\Babylon.js",
+            samplingSpecs
+        );
+
+        CGa.VisualizerKaTeXComposer.AddLaTeXCode(
+            new Dictionary<string, string>()
+            {
+                {"point1", "P_{1}"},
+                {"point2", "P_{2}"},
+                {"point3", "P_{3}"},
+                {"point4", "P_{4}"}
+            }
+        );
+
+        CGa.VisualizerAnimationComposer.SetFileNameAndTitle(
+            "Parametric 3D Sphere 1"
+        );
 
         //// Draw the two position curves
         //Ga.Visualizer
@@ -913,15 +966,15 @@ public static class CGa5DVisualizationSamples
         //    .DrawCurve(
         //        Color.Red.SetAlpha(0.2), 
         //        point1Curve, 
-        //        animationSpecs.TimeRange
+        //        samplingSpecs.TimeRange
         //    ).DrawCurve(
         //        Color.Green.SetAlpha(0.2), 
         //        point2Curve, 
-        //        animationSpecs.TimeRange
+        //        samplingSpecs.TimeRange
         //    );
 
         // Draw the 4 points defining the sphere
-        CGa.Visualizer
+        CGa.VisualizerAnimationComposer
             .SetPointStyle(0.08)
             .DrawPoint(Color.Red, point1Curve)
             .DrawPoint(Color.Green, point2Curve)
@@ -945,14 +998,14 @@ public static class CGa5DVisualizationSamples
         // Draw LaTeX expressions
         var latexOffset = LinFloat64Vector3D.VectorSymmetric(1);
 
-        CGa.Visualizer
+        CGa.VisualizerAnimationComposer
             .DrawLaTeX("point1", point1Curve.GetOffsetCurve(latexOffset))
             .DrawLaTeX("point2", point2Curve.GetOffsetCurve(latexOffset))
             .DrawLaTeX("point3", point3Curve.Point + latexOffset)
             .DrawLaTeX("point4", point4Curve.Point + latexOffset);
 
         // Save the HTML animation file
-        CGa.Visualizer.SaveHtmlFile();
+        CGa.VisualizerAnimationComposer.SaveHtmlFile();
 
         Console.WriteLine("Animated Example Finished.");
     }
@@ -967,8 +1020,8 @@ public static class CGa5DVisualizationSamples
 
         Console.WriteLine("Animated Example Started ..");
 
-        var animationSpecs =
-            GrVisualAnimationSpecs.Create(frameRate, maxTime);
+        var samplingSpecs =
+            Float64SamplingSpecs.Create(frameRate, maxTime);
 
         // This curve defines the parametric radius of the sphere
         var radiusCurve =
@@ -985,26 +1038,37 @@ public static class CGa5DVisualizationSamples
                 centerCurve
             );
 
-        // Prepare latex expressions
-        var latexDictionary = new Dictionary<string, string>()
-        {
-            {"center", @"C"}
-        };
-
         // Initialize visualizer for 3D animated drawing
-        CGa.Visualizer
-            .SetWorkingFolder(@"D:\Projects\Study\Web\Babylon.js")
-            .SetAnimationSpecs(animationSpecs)
-            .SetGrid(14, 1, 0.5)
-            .BeginDrawing3D(@"Parametric 3D Sphere Example 2", latexDictionary);
+        CGa.Visualizer.BeginDrawing3D(
+            @"D:\Projects\Study\Web\Babylon.js",
+            samplingSpecs
+        );
+
+        CGa.VisualizerKaTeXComposer.AddLaTeXCode(
+            new Dictionary<string, string>()
+            {
+                {"center", "C"}
+            }
+        );
+
+        CGa.VisualizerAnimationComposer.SetFileNameAndTitle(
+            "Parametric 3D Sphere 2"
+        );
+
+        CGa.VisualizerAnimationComposer.SetGrid(
+            LinFloat64Vector3D.Zero, 
+            14, 
+            1, 
+            0.5
+        );
 
         // Draw the center curve
-        CGa.Visualizer
+        CGa.VisualizerAnimationComposer
             .SetCurveStyleTube(0.03)
             .DrawCurve(
                 Color.Red.SetAlpha(0.2),
                 centerCurve,
-                animationSpecs.FrameTimeRange
+                samplingSpecs.TimeRange
             );
 
         // Draw the parametric point-pair
@@ -1017,13 +1081,13 @@ public static class CGa5DVisualizationSamples
         // Draw LaTeX expressions
         var latexOffset = LinFloat64Vector3D.VectorSymmetric(0.25);
 
-        CGa.Visualizer.DrawLaTeX(
+        CGa.VisualizerAnimationComposer.DrawLaTeX(
             "center",
             centerCurve.GetOffsetCurve(latexOffset)
         );
 
         // Save the HTML animation file
-        CGa.Visualizer.SaveHtmlFile();
+        CGa.VisualizerAnimationComposer.SaveHtmlFile();
 
         Console.WriteLine("Animated Example Finished.");
     }
@@ -1039,8 +1103,8 @@ public static class CGa5DVisualizationSamples
 
         Console.WriteLine("Animated Example Started ..");
 
-        var animationSpecs =
-            GrVisualAnimationSpecs.Create(frameRate, maxTime);
+        var samplingSpecs =
+            Float64SamplingSpecs.Create(frameRate, maxTime);
 
         // Encode a parametric real sphere
         // This curve defines the parametric center of the sphere
@@ -1070,19 +1134,24 @@ public static class CGa5DVisualizationSamples
         var intersectionElement =
             roundSphere1.Meet(roundSphere2);
 
-        // Prepare latex expressions
-        var latexDictionary = new Dictionary<string, string>()
-        {
-            {"element1", @"A"},
-            {"element2", @"B"},
-            {"intersectionElement", @"A \cap B"},
-        };
-
         // Initialize visualizer for 3D animated drawing
-        CGa.Visualizer
-            .SetWorkingFolder(@"D:\Projects\Study\Web\Babylon.js")
-            .SetAnimationSpecs(animationSpecs)
-            .BeginDrawing3D(@"Parametric 3D Sphere-Sphere Intersection Example", latexDictionary);
+        CGa.Visualizer.BeginDrawing3D(
+            @"D:\Projects\Study\Web\Babylon.js",
+            samplingSpecs
+        );
+
+        CGa.VisualizerKaTeXComposer.AddLaTeXCode(
+            new Dictionary<string, string>()
+            {
+                {"element1", "A"},
+                {"element2", "B"},
+                {"intersectionElement", @"A \cap B"}
+            }
+        );
+
+        CGa.VisualizerAnimationComposer.SetFileNameAndTitle(
+            "Parametric 3D Sphere-Sphere Intersection"
+        );
 
         // Draw curves for sphere centers
         //Ga.Visualizer
@@ -1090,11 +1159,11 @@ public static class CGa5DVisualizationSamples
         //    .DrawCurve(
         //        Color.Red.SetAlpha(0.2), 
         //        positionCurve1, 
-        //        animationSpecs.TimeRange
+        //        samplingSpecs.TimeRange
         //    ).DrawCurve(
         //        Color.Green.SetAlpha(0.2), 
         //        positionCurve2, 
-        //        animationSpecs.TimeRange
+        //        samplingSpecs.TimeRange
         //    );
 
         // Draw the two spheres and their intersection circle
@@ -1113,7 +1182,7 @@ public static class CGa5DVisualizationSamples
             .DrawRoundCircle3D(Color.Yellow, intersectionElement);
 
         // Draw the line segment between the two sphere centers
-        CGa.Visualizer
+        CGa.VisualizerAnimationComposer
             //.SetCurveStyleDashed(5, 3, 16)
             //.SetCurveStyleSolid()
             .SetCurveStyleTube(0.065)
@@ -1124,7 +1193,7 @@ public static class CGa5DVisualizationSamples
             );
 
         // Draw LaTeX expressions
-        CGa.Visualizer
+        CGa.VisualizerAnimationComposer
             .DrawLaTeX(
                 "element1",
                 positionCurve1.GetOffsetCurve(
@@ -1158,8 +1227,8 @@ public static class CGa5DVisualizationSamples
 
         Console.WriteLine("Animated Example Started ..");
 
-        var animationSpecs =
-            GrVisualAnimationSpecs.Create(frameRate, maxTime);
+        var samplingSpecs =
+            Float64SamplingSpecs.Create(frameRate, maxTime);
 
         // Encode a parametric real sphere
         // This curve defines the parametric center of the sphere
@@ -1190,19 +1259,24 @@ public static class CGa5DVisualizationSamples
         var intersectionElement =
             roundSphere.Meet(flatPlane);
 
-        // Prepare latex expressions
-        var latexDictionary = new Dictionary<string, string>()
-        {
-            {"element1", @"A"},
-            {"element2", @"B"},
-            {"intersectionElement", @"A \cap B"},
-        };
-
         // Initialize visualizer for 3D animated drawing
-        CGa.Visualizer
-            .SetWorkingFolder(@"D:\Projects\Study\Web\Babylon.js")
-            .SetAnimationSpecs(animationSpecs)
-            .BeginDrawing3D(@"Parametric 3D Sphere-Plane Intersection Example", latexDictionary);
+        CGa.Visualizer.BeginDrawing3D(
+            @"D:\Projects\Study\Web\Babylon.js",
+            samplingSpecs
+        );
+
+        CGa.VisualizerKaTeXComposer.AddLaTeXCode(
+            new Dictionary<string, string>()
+            {
+                {"element1", "A"},
+                {"element2", "B"},
+                {"intersectionElement", @"A \cap B"}
+            }
+        );
+
+        CGa.VisualizerAnimationComposer.SetFileNameAndTitle(
+            "Parametric 3D Sphere-Plane Intersection"
+        );
 
         // Draw curves for sphere centers
         //Ga.Visualizer
@@ -1210,11 +1284,11 @@ public static class CGa5DVisualizationSamples
         //    .DrawCurve(
         //        Color.Red.SetAlpha(0.2), 
         //        positionCurve1, 
-        //        animationSpecs.TimeRange
+        //        samplingSpecs.TimeRange
         //    ).DrawCurve(
         //        Color.Green.SetAlpha(0.2), 
         //        positionCurve2, 
-        //        animationSpecs.TimeRange
+        //        samplingSpecs.TimeRange
         //    );
 
         // Draw the sphere and plane and their intersection circle
@@ -1241,7 +1315,7 @@ public static class CGa5DVisualizationSamples
             .DrawRoundCircle3D(Color.Yellow, intersectionElement);
 
         // Draw the line segment between the sphere center and circle center
-        CGa.Visualizer
+        CGa.VisualizerAnimationComposer
             .SetCurveStyleDashed(5, 3, 16)
             //.SetCurveStyleSolid()
             //.SetCurveStyleTube(0.065)
@@ -1252,7 +1326,7 @@ public static class CGa5DVisualizationSamples
             );
 
         // Draw LaTeX expressions
-        CGa.Visualizer
+        CGa.VisualizerAnimationComposer
             .DrawLaTeX(
                 "element1",
                 positionCurve1.GetOffsetCurve(
@@ -1286,8 +1360,8 @@ public static class CGa5DVisualizationSamples
 
         Console.WriteLine("Animated Example Started ..");
 
-        var animationSpecs =
-            GrVisualAnimationSpecs.Create(frameRate, maxTime);
+        var samplingSpecs =
+            Float64SamplingSpecs.Create(frameRate, maxTime);
 
         // Encode a parametric real sphere
         // This curve defines the parametric center of the sphere
@@ -1333,19 +1407,24 @@ public static class CGa5DVisualizationSamples
                 positionCurve1.GetPlaneNormalCurve(p1Curve, p2Curve)
             );
 
-        // Prepare latex expressions
-        var latexDictionary = new Dictionary<string, string>()
-        {
-            {"element1", @"A"},
-            {"element2", @"B"},
-            {"intersectionElement", @"A \cap B"},
-        };
-
         // Initialize visualizer for 3D animated drawing
-        CGa.Visualizer
-            .SetWorkingFolder(@"D:\Projects\Study\Web\Babylon.js")
-            .SetAnimationSpecs(animationSpecs)
-            .BeginDrawing3D(@"Parametric 3D Sphere-Line Intersection Example", latexDictionary);
+        CGa.Visualizer.BeginDrawing3D(
+            @"D:\Projects\Study\Web\Babylon.js",
+            samplingSpecs
+        );
+
+        CGa.VisualizerKaTeXComposer.AddLaTeXCode(
+            new Dictionary<string, string>()
+            {
+                {"element1", "A"},
+                {"element2", "B"},
+                {"intersectionElement", @"A \cap B"}
+            }
+        );
+
+        CGa.VisualizerAnimationComposer.SetFileNameAndTitle(
+            "Parametric 3D Sphere-Line Intersection"
+        );
 
         // Draw curves for sphere centers
         //Ga.Visualizer
@@ -1353,11 +1432,11 @@ public static class CGa5DVisualizationSamples
         //    .DrawCurve(
         //        Color.Red.SetAlpha(0.2), 
         //        positionCurve1, 
-        //        animationSpecs.TimeRange
+        //        samplingSpecs.TimeRange
         //    ).DrawCurve(
         //        Color.Green.SetAlpha(0.2), 
         //        positionCurve2, 
-        //        animationSpecs.TimeRange
+        //        samplingSpecs.TimeRange
         //    );
 
         // Draw the sphere and line and their intersection point-pair
@@ -1394,7 +1473,7 @@ public static class CGa5DVisualizationSamples
 
         // Draw the line segments between the sphere center and point-pair
         // midpoint and two edge points
-        CGa.Visualizer
+        CGa.VisualizerAnimationComposer
             .SetCurveStyleDashed(5, 3, 16)
             //.SetCurveStyleSolid()
             //.SetCurveStyleTube(0.065)
@@ -1414,7 +1493,7 @@ public static class CGa5DVisualizationSamples
             );
 
         // Draw LaTeX expressions
-        CGa.Visualizer
+        CGa.VisualizerAnimationComposer
             .DrawLaTeX(
                 "element1",
                 roundSphere.GetRoundSurfacePointCurve3D(
@@ -1451,8 +1530,8 @@ public static class CGa5DVisualizationSamples
 
         Console.WriteLine("Animated Example Started ..");
 
-        var animationSpecs =
-            GrVisualAnimationSpecs.Create(frameRate, maxTime);
+        var samplingSpecs =
+            Float64SamplingSpecs.Create(frameRate, maxTime);
 
         // Encode a parametric real sphere
         // This curve defines the parametric center of the sphere
@@ -1499,19 +1578,24 @@ public static class CGa5DVisualizationSamples
                 positionCurve1.GetPlaneNormalCurve(p1Curve, p2Curve)
             );
 
-        // Prepare latex expressions
-        var latexDictionary = new Dictionary<string, string>()
-        {
-            {"element1", @"A"},
-            {"element2", @"B"},
-            {"intersectionElement", @"A \cap B"},
-        };
-
         // Initialize visualizer for 3D animated drawing
-        CGa.Visualizer
-            .SetWorkingFolder(@"D:\Projects\Study\Web\Babylon.js")
-            .SetAnimationSpecs(animationSpecs)
-            .BeginDrawing3D(@"Parametric 3D Sphere-Circle Intersection Example", latexDictionary);
+        CGa.Visualizer.BeginDrawing3D(
+            @"D:\Projects\Study\Web\Babylon.js",
+            samplingSpecs
+        );
+
+        CGa.VisualizerKaTeXComposer.AddLaTeXCode(
+            new Dictionary<string, string>()
+            {
+                {"element1", "A"},
+                {"element2", "B"},
+                {"intersectionElement", @"A \cap B"}
+            }
+        );
+
+        CGa.VisualizerAnimationComposer.SetFileNameAndTitle(
+            "Parametric 3D Sphere-Circle Intersection"
+        );
 
         // Draw curves for sphere centers
         //Ga.Visualizer
@@ -1519,11 +1603,11 @@ public static class CGa5DVisualizationSamples
         //    .DrawCurve(
         //        Color.Red.SetAlpha(0.2), 
         //        positionCurve1, 
-        //        animationSpecs.TimeRange
+        //        samplingSpecs.TimeRange
         //    ).DrawCurve(
         //        Color.Green.SetAlpha(0.2), 
         //        positionCurve2, 
-        //        animationSpecs.TimeRange
+        //        samplingSpecs.TimeRange
         //    );
 
         // Draw the sphere and line and their intersection point-pair
@@ -1552,7 +1636,7 @@ public static class CGa5DVisualizationSamples
 
         // Draw the line segments between the sphere center and point-pair
         // midpoint and two edge points
-        CGa.Visualizer
+        CGa.VisualizerAnimationComposer
             .SetCurveStyleDashed(5, 3, 16)
             //.SetCurveStyleSolid()
             //.SetCurveStyleTube(0.065)
@@ -1572,7 +1656,7 @@ public static class CGa5DVisualizationSamples
             );
 
         // Draw LaTeX expressions
-        CGa.Visualizer
+        CGa.VisualizerAnimationComposer
             .DrawLaTeX(
                 "element1",
                 roundSphere.GetRoundSurfacePointCurve3D(
@@ -1607,8 +1691,8 @@ public static class CGa5DVisualizationSamples
 
         Console.WriteLine("Animated Example Started ..");
 
-        var animationSpecs =
-            GrVisualAnimationSpecs.Create(frameRate, maxTime);
+        var samplingSpecs =
+            Float64SamplingSpecs.Create(frameRate, maxTime);
 
         // Encode a parametric real sphere
         // This curve defines the parametric center of the sphere
@@ -1644,20 +1728,25 @@ public static class CGa5DVisualizationSamples
         var reflectionElement =
             roundCircle.ReflectOn(roundSphere);
 
-        // Prepare latex expressions
-        var latexDictionary = new Dictionary<string, string>()
-        {
-            {"element1", @"A"},
-            {"element2", @"B"},
-            {"projectionElement", @"\left(B\bullet A\right)A^{-1}"},
-            {"reflectionElement", @"A B A^{-1}"},
-        };
-
         // Initialize visualizer for 3D animated drawing
-        CGa.Visualizer
-            .SetWorkingFolder(@"D:\Projects\Study\Web\Babylon.js")
-            .SetAnimationSpecs(animationSpecs)
-            .BeginDrawing3D(@"Parametric 3D Circle On Sphere Reflection Example", latexDictionary);
+        CGa.Visualizer.BeginDrawing3D(
+            @"D:\Projects\Study\Web\Babylon.js",
+            samplingSpecs
+        );
+
+        CGa.VisualizerKaTeXComposer.AddLaTeXCode(
+            new Dictionary<string, string>()
+            {
+                {"element1", "A"},
+                {"element2", "B"},
+                {"projectionElement", @"\left(B\bullet A\right)A^{-1}"},
+                {"reflectionElement", "A B A^{-1}"}
+            }
+        );
+
+        CGa.VisualizerAnimationComposer.SetFileNameAndTitle(
+            "Parametric 3D Circle On Sphere Reflection"
+        );
 
         // Draw curves for sphere centers
         //Ga.Visualizer
@@ -1665,11 +1754,11 @@ public static class CGa5DVisualizationSamples
         //    .DrawCurve(
         //        Color.Red.SetAlpha(0.2), 
         //        positionCurve1, 
-        //        animationSpecs.TimeRange
+        //        samplingSpecs.TimeRange
         //    ).DrawCurve(
         //        Color.Green.SetAlpha(0.2), 
         //        positionCurve2, 
-        //        animationSpecs.TimeRange
+        //        samplingSpecs.TimeRange
         //    );
 
         // Draw the two spheres and their intersection circle
@@ -1689,7 +1778,7 @@ public static class CGa5DVisualizationSamples
             .DrawRoundCircle3D(Color.Yellow, reflectionElement);
 
         // Draw LaTeX expressions
-        CGa.Visualizer
+        CGa.VisualizerAnimationComposer
             .DrawLaTeX(
                 "element1",
                 roundSphere.GetRoundSurfacePointCurve3D(
@@ -1731,14 +1820,14 @@ public static class CGa5DVisualizationSamples
 
         Console.WriteLine("Animated Example Started ..");
 
-        var animationSpecs =
-            GrVisualAnimationSpecs.Create(frameRate, maxTime);
+        var samplingSpecs =
+            Float64SamplingSpecs.Create(frameRate, maxTime);
 
         // Encode a parametric real plane
         // This curve defines the parametric position and normal of the plane
         var positionCurve1 =
             ConstantParametricCurve3D.Create(
-                animationSpecs.FrameTimeRange,
+                samplingSpecs.TimeRange,
                 LinFloat64Vector3D.Create(0, 0, 2),
                 LinFloat64Vector3D.Create(0, 1, 0)
             );
@@ -1773,20 +1862,25 @@ public static class CGa5DVisualizationSamples
         var reflectionElement =
             roundCircle.ReflectOn(flatPlane);
 
-        // Prepare latex expressions
-        var latexDictionary = new Dictionary<string, string>()
-        {
-            {"element1", @"A"},
-            {"element2", @"B"},
-            {"projectionElement", @"\left(B\bullet A\right)A^{-1}"},
-            {"reflectionElement", @"A B A^{-1}"},
-        };
-
         // Initialize visualizer for 3D animated drawing
-        CGa.Visualizer
-            .SetWorkingFolder(@"D:\Projects\Study\Web\Babylon.js")
-            .SetAnimationSpecs(animationSpecs)
-            .BeginDrawing3D(@"Parametric 3D Circle On Plane Reflection Example", latexDictionary);
+        CGa.Visualizer.BeginDrawing3D(
+            @"D:\Projects\Study\Web\Babylon.js",
+            samplingSpecs
+        );
+
+        CGa.VisualizerKaTeXComposer.AddLaTeXCode(
+            new Dictionary<string, string>()
+            {
+                {"element1", "A"},
+                {"element2", "B"},
+                {"projectionElement", @"\left(B\bullet A\right)A^{-1}"},
+                {"reflectionElement", "A B A^{-1}"}
+            }
+        );
+
+        CGa.VisualizerAnimationComposer.SetFileNameAndTitle(
+            "Parametric 3D Circle On Plane Reflection"
+        );
 
         // Draw curves for sphere centers
         //Ga.Visualizer
@@ -1794,11 +1888,11 @@ public static class CGa5DVisualizationSamples
         //    .DrawCurve(
         //        Color.Red.SetAlpha(0.2), 
         //        positionCurve1, 
-        //        animationSpecs.TimeRange
+        //        samplingSpecs.TimeRange
         //    ).DrawCurve(
         //        Color.Green.SetAlpha(0.2), 
         //        positionCurve2, 
-        //        animationSpecs.TimeRange
+        //        samplingSpecs.TimeRange
         //    );
 
         // Draw the two spheres and their intersection circle
@@ -1825,7 +1919,7 @@ public static class CGa5DVisualizationSamples
             .DrawRoundCircle3D(Color.Yellow, reflectionElement);
 
         // Draw LaTeX expressions
-        CGa.Visualizer
+        CGa.VisualizerAnimationComposer
             .DrawLaTeX(
                 "element1",
                 positionCurve1.GetOffsetCurve(
@@ -1867,8 +1961,8 @@ public static class CGa5DVisualizationSamples
 
         Console.WriteLine("Animated Example Started ..");
 
-        var animationSpecs =
-            GrVisualAnimationSpecs.Create(frameRate, maxTime);
+        var samplingSpecs =
+            Float64SamplingSpecs.Create(frameRate, maxTime);
 
         // Encode two parametric circles
         var roundCircle1 =
@@ -1884,12 +1978,16 @@ public static class CGa5DVisualizationSamples
                 LinFloat64Vector3D.Create(-5, -5, 2),
                 LinFloat64Vector3D.Create(0, 0, 1)
             );
-
+        
         // Initialize visualizer for 3D animated drawing
-        CGa.Visualizer
-            .SetWorkingFolder(@"D:\Projects\Study\Web\Babylon.js")
-            .SetAnimationSpecs(animationSpecs)
-            .BeginDrawing3D(@"Parametric 3D Circle Interpolation Example");
+        CGa.Visualizer.BeginDrawing3D(
+            @"D:\Projects\Study\Web\Babylon.js",
+            samplingSpecs
+        );
+
+        CGa.VisualizerAnimationComposer.SetFileNameAndTitle(
+            "Parametric 3D Circle Interpolation"
+        );
 
         // Draw the two circles
         CGa.Visualizer
@@ -1909,7 +2007,7 @@ public static class CGa5DVisualizationSamples
         var lerpCircle =
             CGaFloat64ParametricElement.Create(
                 CGa,
-                animationSpecs.FrameTimeRange,
+                samplingSpecs.TimeRange,
                 t =>
                     (t / maxTime)
                         .CosWave(0, 1, 1)
@@ -1926,7 +2024,7 @@ public static class CGa5DVisualizationSamples
         );
 
         // Draw LaTeX expressions
-        CGa.Visualizer.SaveHtmlFile();
+        CGa.VisualizerAnimationComposer.SaveHtmlFile();
 
         Console.WriteLine("Animated Example Finished.");
     }
@@ -1938,8 +2036,8 @@ public static class CGa5DVisualizationSamples
 
         Console.WriteLine("Animated Example Started ..");
 
-        var animationSpecs =
-            GrVisualAnimationSpecs.Create(frameRate, maxTime);
+        var samplingSpecs =
+            Float64SamplingSpecs.Create(frameRate, maxTime);
 
         // Define a parametric angle that cycles from 0 to 2 Pi
         var rotationAngle =
@@ -1986,22 +2084,27 @@ public static class CGa5DVisualizationSamples
                 rotationAxisVector
             );
 
-        // Prepare latex expressions
-        var latexDictionary = new Dictionary<string, string>()
-        {
-            {"axis", @"a"},
-            {"line1", @"l"},
-            {"line2", @"R l R^{\sim}"},
-            {"circle1", @"C"},
-            {"circle2", @"R C R^{\sim}"},
-            {"angle", @"\alpha"}
-        };
-
         // Initialize visualizer for 3D animated drawing
-        CGa.Visualizer
-            .SetWorkingFolder(@"D:\Projects\Study\Web\Babylon.js")
-            .SetAnimationSpecs(animationSpecs)
-            .BeginDrawing3D(@"Parametric 3D Circle Rotation Example 1", latexDictionary);
+        CGa.Visualizer.BeginDrawing3D(
+            @"D:\Projects\Study\Web\Babylon.js",
+            samplingSpecs
+        );
+
+        CGa.VisualizerKaTeXComposer.AddLaTeXCode(
+            new Dictionary<string, string>()
+            {
+                {"axis", "a"},
+                {"line1", "l"},
+                {"line2", @"R l R^{\sim}"},
+                {"circle1", "C"},
+                {"circle2", @"R C R^{\sim}"},
+                {"angle", @"\alpha"}
+            }
+        );
+
+        CGa.VisualizerAnimationComposer.SetFileNameAndTitle(
+            "Parametric 3D Circle Rotation 1"
+        );
 
         // Draw the axis
         CGa.Visualizer
@@ -2067,7 +2170,7 @@ public static class CGa5DVisualizationSamples
         //        }
         //);
 
-        CGa.Visualizer
+        CGa.VisualizerAnimationComposer
             .SetCurveStyleTube(0.03)
             .DrawCircleCurve(
                 Color.Green,
@@ -2097,7 +2200,7 @@ public static class CGa5DVisualizationSamples
             );
 
         // Draw LaTeX expressions
-        CGa.Visualizer
+        CGa.VisualizerAnimationComposer
             .DrawLaTeX(
                 "line",
                 rotationAxis.SurfacePointToVector3D(
@@ -2139,7 +2242,7 @@ public static class CGa5DVisualizationSamples
             );
 
         // Save the HTML animation file
-        CGa.Visualizer.SaveHtmlFile();
+        CGa.VisualizerAnimationComposer.SaveHtmlFile();
 
         Console.WriteLine("Animated Example Finished.");
     }

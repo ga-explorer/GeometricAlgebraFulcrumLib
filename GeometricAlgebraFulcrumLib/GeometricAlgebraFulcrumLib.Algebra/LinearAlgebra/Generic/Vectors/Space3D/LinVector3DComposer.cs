@@ -200,21 +200,21 @@ public sealed class LinVector3DComposer<T> :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public LinVector3DComposer<T> SetTerm(LinUnitBasisVector3D axis)
+    public LinVector3DComposer<T> SetTerm(LinBasisVector3D axis)
     {
-        if (axis == LinUnitBasisVector3D.PositiveX)
+        if (axis == LinBasisVector3D.Px)
             X = ScalarProcessor.One;
 
-        else if (axis == LinUnitBasisVector3D.PositiveY)
+        else if (axis == LinBasisVector3D.Py)
             Y = ScalarProcessor.One;
 
-        else if (axis == LinUnitBasisVector3D.PositiveZ)
+        else if (axis == LinBasisVector3D.Pz)
             Z = ScalarProcessor.One;
 
-        else if (axis == LinUnitBasisVector3D.NegativeX)
+        else if (axis == LinBasisVector3D.Nx)
             X = ScalarProcessor.MinusOne;
 
-        else if (axis == LinUnitBasisVector3D.NegativeY)
+        else if (axis == LinBasisVector3D.Ny)
             Y = ScalarProcessor.MinusOne;
 
         else
@@ -224,21 +224,21 @@ public sealed class LinVector3DComposer<T> :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public LinVector3DComposer<T> SetTerm(LinUnitBasisVector3D axis, Scalar<T> scalar)
+    public LinVector3DComposer<T> SetTerm(LinBasisVector3D axis, Scalar<T> scalar)
     {
-        if (axis == LinUnitBasisVector3D.PositiveX)
+        if (axis == LinBasisVector3D.Px)
             X = scalar;
 
-        else if (axis == LinUnitBasisVector3D.PositiveY)
+        else if (axis == LinBasisVector3D.Py)
             Y = scalar;
 
-        else if (axis == LinUnitBasisVector3D.PositiveZ)
+        else if (axis == LinBasisVector3D.Pz)
             Z = scalar;
 
-        else if (axis == LinUnitBasisVector3D.NegativeX)
+        else if (axis == LinBasisVector3D.Nx)
             X = -scalar;
 
-        else if (axis == LinUnitBasisVector3D.NegativeY)
+        else if (axis == LinBasisVector3D.Ny)
             Y = -scalar;
 
         else
@@ -292,21 +292,21 @@ public sealed class LinVector3DComposer<T> :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public LinVector3DComposer<T> AddTerm(LinUnitBasisVector3D axis)
+    public LinVector3DComposer<T> AddTerm(LinBasisVector3D axis)
     {
-        if (axis == LinUnitBasisVector3D.PositiveX)
+        if (axis == LinBasisVector3D.Px)
             X += 1;
 
-        else if (axis == LinUnitBasisVector3D.PositiveY)
+        else if (axis == LinBasisVector3D.Py)
             Y += 1;
 
-        else if (axis == LinUnitBasisVector3D.PositiveZ)
+        else if (axis == LinBasisVector3D.Pz)
             Z += 1;
 
-        else if (axis == LinUnitBasisVector3D.NegativeX)
+        else if (axis == LinBasisVector3D.Nx)
             X -= 1;
 
-        else if (axis == LinUnitBasisVector3D.NegativeY)
+        else if (axis == LinBasisVector3D.Ny)
             Y -= 1;
 
         else
@@ -316,21 +316,21 @@ public sealed class LinVector3DComposer<T> :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public LinVector3DComposer<T> AddTerm(LinUnitBasisVector3D axis, Scalar<T> scalar)
+    public LinVector3DComposer<T> AddTerm(LinBasisVector3D axis, Scalar<T> scalar)
     {
-        if (axis == LinUnitBasisVector3D.PositiveX)
+        if (axis == LinBasisVector3D.Px)
             X += scalar;
 
-        else if (axis == LinUnitBasisVector3D.PositiveY)
+        else if (axis == LinBasisVector3D.Py)
             Y += scalar;
 
-        else if (axis == LinUnitBasisVector3D.PositiveZ)
+        else if (axis == LinBasisVector3D.Pz)
             Z += scalar;
 
-        else if (axis == LinUnitBasisVector3D.NegativeX)
+        else if (axis == LinBasisVector3D.Nx)
             X -= scalar;
 
-        else if (axis == LinUnitBasisVector3D.NegativeY)
+        else if (axis == LinBasisVector3D.Ny)
             Y -= scalar;
 
         else
@@ -368,21 +368,21 @@ public sealed class LinVector3DComposer<T> :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public LinVector3DComposer<T> SubtractTerm(LinUnitBasisVector3D axis)
+    public LinVector3DComposer<T> SubtractTerm(LinBasisVector3D axis)
     {
-        if (axis == LinUnitBasisVector3D.PositiveX)
+        if (axis == LinBasisVector3D.Px)
             X -= 1;
 
-        else if (axis == LinUnitBasisVector3D.PositiveY)
+        else if (axis == LinBasisVector3D.Py)
             Y -= 1;
 
-        else if (axis == LinUnitBasisVector3D.PositiveZ)
+        else if (axis == LinBasisVector3D.Pz)
             Z -= 1;
 
-        else if (axis == LinUnitBasisVector3D.NegativeX)
+        else if (axis == LinBasisVector3D.Nx)
             X += 1;
 
-        else if (axis == LinUnitBasisVector3D.NegativeY)
+        else if (axis == LinBasisVector3D.Ny)
             Y += 1;
 
         else
@@ -392,21 +392,21 @@ public sealed class LinVector3DComposer<T> :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public LinVector3DComposer<T> SubtractTerm(LinUnitBasisVector3D axis, Scalar<T> scalar)
+    public LinVector3DComposer<T> SubtractTerm(LinBasisVector3D axis, Scalar<T> scalar)
     {
-        if (axis == LinUnitBasisVector3D.PositiveX)
+        if (axis == LinBasisVector3D.Px)
             X -= scalar;
 
-        else if (axis == LinUnitBasisVector3D.PositiveY)
+        else if (axis == LinBasisVector3D.Py)
             Y -= scalar;
 
-        else if (axis == LinUnitBasisVector3D.PositiveZ)
+        else if (axis == LinBasisVector3D.Pz)
             Z -= scalar;
 
-        else if (axis == LinUnitBasisVector3D.NegativeX)
+        else if (axis == LinBasisVector3D.Nx)
             X += scalar;
 
-        else if (axis == LinUnitBasisVector3D.NegativeY)
+        else if (axis == LinBasisVector3D.Ny)
             Y += scalar;
 
         else

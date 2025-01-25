@@ -6,6 +6,7 @@ using GeometricAlgebraFulcrumLib.Modeling.Graphics.Meshes.PointsPath.Space3D;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.Visuals.Space3D.Animations;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.Visuals.Space3D.Curves;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.Visuals.Space3D.Styles;
+using GeometricAlgebraFulcrumLib.Modeling.Signals;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Basic;
 
 namespace GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.Visuals.Space3D.Basic;
@@ -22,7 +23,7 @@ public sealed class GrVisualRightAngle3D :
             direction1,
             direction2,
             radius,
-            GrVisualAnimationSpecs.Static
+            Float64SamplingSpecs.Static
         );
     }
 
@@ -35,14 +36,14 @@ public sealed class GrVisualRightAngle3D :
             direction1,
             direction2,
             radius,
-            GrVisualAnimationSpecs.Static
+            Float64SamplingSpecs.Static
         )
         {
             InnerStyle = innerStyle
         };
     }
 
-    public static GrVisualRightAngle3D Create(string name, GrVisualCurveStyle3D style, ILinFloat64Vector3D origin, ILinFloat64Vector3D direction1, ILinFloat64Vector3D direction2, double radius, GrVisualAnimationSpecs animationSpecs)
+    public static GrVisualRightAngle3D Create(string name, GrVisualCurveStyle3D style, ILinFloat64Vector3D origin, ILinFloat64Vector3D direction1, ILinFloat64Vector3D direction2, double radius, Float64SamplingSpecs samplingSpecs)
     {
         return new GrVisualRightAngle3D(
             name,
@@ -51,11 +52,11 @@ public sealed class GrVisualRightAngle3D :
             direction1,
             direction2,
             radius,
-            animationSpecs
+            samplingSpecs
         );
     }
 
-    public static GrVisualRightAngle3D Create(string name, GrVisualCurveStyle3D style, GrVisualSurfaceThinStyle3D innerStyle, ILinFloat64Vector3D origin, ILinFloat64Vector3D direction1, ILinFloat64Vector3D direction2, double radius, GrVisualAnimationSpecs animationSpecs)
+    public static GrVisualRightAngle3D Create(string name, GrVisualCurveStyle3D style, GrVisualSurfaceThinStyle3D innerStyle, ILinFloat64Vector3D origin, ILinFloat64Vector3D direction1, ILinFloat64Vector3D direction2, double radius, Float64SamplingSpecs samplingSpecs)
     {
         return new GrVisualRightAngle3D(
             name,
@@ -64,7 +65,7 @@ public sealed class GrVisualRightAngle3D :
             direction1,
             direction2,
             radius,
-            animationSpecs
+            samplingSpecs
         )
         {
             InnerStyle = innerStyle
@@ -97,8 +98,8 @@ public sealed class GrVisualRightAngle3D :
     public GrVisualSurfaceThinStyle3D? InnerStyle { get; set; }
 
 
-    private GrVisualRightAngle3D(string name, GrVisualCurveStyle3D style, ILinFloat64Vector3D origin, ILinFloat64Vector3D direction1, ILinFloat64Vector3D direction2, double radius, GrVisualAnimationSpecs animationSpecs)
-        : base(name, style, animationSpecs)
+    private GrVisualRightAngle3D(string name, GrVisualCurveStyle3D style, ILinFloat64Vector3D origin, ILinFloat64Vector3D direction1, ILinFloat64Vector3D direction2, double radius, Float64SamplingSpecs samplingSpecs)
+        : base(name, style, samplingSpecs)
     {
         Origin = origin.ToLinVector3D();
         Direction1 = direction1.ToUnitLinVector3D();
@@ -111,7 +112,14 @@ public sealed class GrVisualRightAngle3D :
 
     public override bool IsValid()
     {
-        throw new NotImplementedException();
+        return Origin.IsValid() &&
+               Direction1.IsValid() && 
+               Direction2.IsValid() &&
+               Radius.IsValid() &&
+               Radius >= 0 &&
+               Direction1.IsNearUnitVector() &&
+               Direction2.IsNearUnitVector() &&
+               Direction1.VectorESp(Direction2).IsNearZero(1e-7);
     }
 
     public Triplet<LinFloat64Vector3D> GetArcPointsTriplet()

@@ -318,7 +318,7 @@ public class GrKonvaJsLayerComposer
         var circle = new GrKonvaJsCircle(name);
         
         circle.SetOptions(
-            new GrKonvaJsCircle.CircleOptions
+            new GrKonvaJsCircleOptions
             {
                 Radius = radius,
                 X = pointX,
@@ -360,7 +360,7 @@ public class GrKonvaJsLayerComposer
         var line = new GrKonvaJsLine(name);
         
         line.SetOptions(
-            new GrKonvaJsLine.LineOptions
+            new GrKonvaJsLineOptions
             {
                 Points = GrKonvaJsVector2ArrayValue.Create(pointArray),
                 Closed = closed
@@ -379,7 +379,7 @@ public class GrKonvaJsLayerComposer
         var line = new GrKonvaJsLine(name);
         
         line.SetOptions(
-            new GrKonvaJsLine.LineOptions
+            new GrKonvaJsLineOptions
             {
                 Points = GrKonvaJsVector2ArrayValue.Create(pointArray),
                 Closed = closed,
@@ -399,7 +399,7 @@ public class GrKonvaJsLayerComposer
         var line = new GrKonvaJsLine(name);
         
         line.SetOptions(
-            new GrKonvaJsLine.LineOptions
+            new GrKonvaJsLineOptions
             {
                 Points = GrKonvaJsVector2ArrayValue.Create(pointArray),
                 Bezier = true
@@ -426,7 +426,7 @@ public class GrKonvaJsLayerComposer
         var line = new GrKonvaJsLine(name);
         
         line.SetOptions(
-            new GrKonvaJsLine.LineOptions
+            new GrKonvaJsLineOptions
             {
                 Points = GrKonvaJsVector2ArrayValue.Create(pointArray),
                 Closed = closed,
@@ -455,7 +455,7 @@ public class GrKonvaJsLayerComposer
         var line = new GrKonvaJsLine(name);
         
         line.SetOptions(
-            new GrKonvaJsLine.LineOptions
+            new GrKonvaJsLineOptions
             {
                 Points = GrKonvaJsVector2ArrayValue.Create(point1, point2)
             }

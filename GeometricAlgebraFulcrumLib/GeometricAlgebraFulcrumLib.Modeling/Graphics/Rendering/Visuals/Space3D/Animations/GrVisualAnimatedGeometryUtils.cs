@@ -2,9 +2,9 @@
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space2D;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space3D;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.Parametric.Float64.Space1D.Scalars;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.Parametric.Float64.Space2D.Curves;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.Parametric.Float64.Space3D.Curves;
+using GeometricAlgebraFulcrumLib.Modeling.Temporal.Float64.Scalars;
 
 namespace GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.Visuals.Space3D.Animations;
 
@@ -24,21 +24,9 @@ public static class GrVisualAnimatedGeometryUtils
 
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static GrVisualAnimatedScalar? Negative(this GrVisualAnimatedScalar? animatedVector)
+    public static GrVisualAnimatedScalar? Negative(this GrVisualAnimatedScalar? animatedScalar)
     {
-        if (animatedVector is null) return null;
-
-        var baseCurve = ComputedParametricScalar.Create(
-            animatedVector.BaseParameterRange,
-            t => -animatedVector.BaseCurve.GetValue(t),
-            t => -animatedVector.BaseCurve.GetDerivative1Value(t)
-        );
-
-        return GrVisualAnimatedScalar.Create(
-            animatedVector.AnimationSpecs,
-            baseCurve,
-            animatedVector.BaseParameterRange
-        );
+        return animatedScalar is null ? null : -animatedScalar;
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -53,7 +41,7 @@ public static class GrVisualAnimatedGeometryUtils
         );
 
         return GrVisualAnimatedVector2D.Create(
-            animatedVector.AnimationSpecs,
+            animatedVector.SamplingSpecs,
             baseCurve,
             animatedVector.BaseParameterRange
         );
@@ -71,7 +59,7 @@ public static class GrVisualAnimatedGeometryUtils
         );
 
         return GrVisualAnimatedVector3D.Create(
-            animatedVector.AnimationSpecs,
+            animatedVector.SamplingSpecs,
             baseCurve,
             animatedVector.BaseParameterRange
         );
@@ -83,15 +71,9 @@ public static class GrVisualAnimatedGeometryUtils
     {
         if (animatedScalar is null) return null;
 
-        var baseCurve = ComputedParametricScalar.Create(
-            animatedScalar.BaseParameterRange,
-            t => scalarMapping(animatedScalar.BaseCurve.GetValue(t))
-        );
-
         return GrVisualAnimatedScalar.Create(
-            animatedScalar.AnimationSpecs,
-            baseCurve,
-            animatedScalar.BaseParameterRange
+            animatedScalar.TemporalScalar.MapValueUsing(scalarMapping),
+            animatedScalar.SamplingSpecs
         );
     }
 
@@ -106,7 +88,7 @@ public static class GrVisualAnimatedGeometryUtils
         );
 
         return GrVisualAnimatedVector2D.Create(
-            animatedVector.AnimationSpecs,
+            animatedVector.SamplingSpecs,
             baseCurve,
             animatedVector.BaseParameterRange
         );
@@ -123,7 +105,7 @@ public static class GrVisualAnimatedGeometryUtils
         );
 
         return GrVisualAnimatedVector3D.Create(
-            animatedVector.AnimationSpecs,
+            animatedVector.SamplingSpecs,
             baseCurve,
             animatedVector.BaseParameterRange
         );

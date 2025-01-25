@@ -4,6 +4,7 @@ using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space3D;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.Visuals.Space3D.Animations;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.Visuals.Space3D.Curves;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.Visuals.Space3D.Styles;
+using GeometricAlgebraFulcrumLib.Modeling.Signals;
 
 namespace GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.Visuals.Space3D.Basic;
 
@@ -31,7 +32,7 @@ public sealed class GrVisualVector3D :
             style,
             LinFloat64Vector3D.Zero,
             direction,
-            GrVisualAnimationSpecs.Static
+            Float64SamplingSpecs.Static
         );
     }
 
@@ -42,18 +43,18 @@ public sealed class GrVisualVector3D :
             style,
             origin,
             direction,
-            GrVisualAnimationSpecs.Static
+            Float64SamplingSpecs.Static
         );
     }
     
-    public static GrVisualVector3D Create(string name, GrVisualCurveTubeStyle3D style, ILinFloat64Vector3D origin, ILinFloat64Vector3D direction, GrVisualAnimationSpecs animationSpecs)
+    public static GrVisualVector3D Create(string name, GrVisualCurveTubeStyle3D style, ILinFloat64Vector3D origin, ILinFloat64Vector3D direction, Float64SamplingSpecs samplingSpecs)
     {
         return new GrVisualVector3D(
             name,
             style,
             origin,
             direction,
-            animationSpecs
+            samplingSpecs
         );
     }
 
@@ -64,7 +65,7 @@ public sealed class GrVisualVector3D :
             style,
             LinFloat64Vector3D.Zero,
             LinFloat64Vector3D.E1,
-            direction.AnimationSpecs
+            direction.SamplingSpecs
         ).SetAnimatedDirection(direction);
     }
 
@@ -75,7 +76,7 @@ public sealed class GrVisualVector3D :
             style,
             origin,
             LinFloat64Vector3D.E1,
-            direction.AnimationSpecs
+            direction.SamplingSpecs
         ).SetAnimatedDirection(direction);
     }
 
@@ -86,7 +87,7 @@ public sealed class GrVisualVector3D :
             style,
             LinFloat64Vector3D.Zero,
             LinFloat64Vector3D.E1,
-            origin.AnimationSpecs
+            origin.SamplingSpecs
         ).SetAnimatedOriginDirection(origin, direction);
     }
     
@@ -142,8 +143,8 @@ public sealed class GrVisualVector3D :
     }
 
 
-    private GrVisualVector3D(string name, GrVisualCurveTubeStyle3D style, ILinFloat64Vector3D origin, ILinFloat64Vector3D direction, GrVisualAnimationSpecs animationSpecs)
-        : base(name, animationSpecs)
+    private GrVisualVector3D(string name, GrVisualCurveTubeStyle3D style, ILinFloat64Vector3D origin, ILinFloat64Vector3D direction, Float64SamplingSpecs samplingSpecs)
+        : base(name, samplingSpecs)
     {
         Origin = origin;
         Direction = direction;
@@ -203,16 +204,16 @@ public sealed class GrVisualVector3D :
             Style,
             Origin,
             GetVisualLineSegmentPosition2(),
-            AnimationSpecs
+            SamplingSpecs
         );
 
         lineSegment.Visibility = Visibility;
 
-        if (AnimationSpecs.IsStatic) return lineSegment;
+        if (SamplingSpecs.IsStatic) return lineSegment;
         
         lineSegment.AnimatedVisibility = AnimatedVisibility;
         lineSegment.AnimatedPosition1 = AnimatedOrigin;
-        lineSegment.AnimatedPosition2 = AnimationSpecs.CreateAnimatedVector3D(GetVisualLineSegmentPosition2);
+        lineSegment.AnimatedPosition2 = SamplingSpecs.CreateAnimatedVector3D(GetVisualLineSegmentPosition2);
         
         //lineSegment.AddInvalidFrameIndices(
         //    GetInvalidFrameIndices()
@@ -228,12 +229,12 @@ public sealed class GrVisualVector3D :
             Style,
             Origin.VectorAdd(Direction),
             Direction,
-            AnimationSpecs
+            SamplingSpecs
         );
 
         arrowHead.Visibility = Visibility;
 
-        if (AnimationSpecs.IsStatic) return arrowHead;
+        if (SamplingSpecs.IsStatic) return arrowHead;
         
         arrowHead.AnimatedVisibility = AnimatedVisibility;
         arrowHead.AnimatedPosition = AnimatedPosition;
@@ -313,14 +314,14 @@ public sealed class GrVisualVector3D :
 
     public LinFloat64Vector3D GetOrigin(double time)
     {
-        return AnimationSpecs.IsStatic || AnimatedOrigin is null
+        return SamplingSpecs.IsStatic || AnimatedOrigin is null
             ? Origin.ToLinVector3D()
             : AnimatedOrigin.GetPoint(time);
     }
 
     public LinFloat64Vector3D GetDirection(double time)
     {
-        return AnimationSpecs.IsStatic || AnimatedDirection is null
+        return SamplingSpecs.IsStatic || AnimatedDirection is null
             ? Direction.ToLinVector3D()
             : AnimatedDirection.GetPoint(time);
     }
@@ -336,7 +337,7 @@ public sealed class GrVisualVector3D :
 
         foreach (var frameIndex in GetValidFrameIndexSet())
         {
-            var time = (double)frameIndex / AnimationSpecs.FrameRate;
+            var time = (double)frameIndex / SamplingSpecs.SamplingRate;
 
             yield return new KeyFrameRecord(
                 frameIndex,

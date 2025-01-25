@@ -1,9 +1,10 @@
 ﻿using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.BasicShapes;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.BasicShapes.Lines;
+using GeometricAlgebraFulcrumLib.Modeling.Geometry.BasicShapes.Lines.Space2D.Float64;
+using GeometricAlgebraFulcrumLib.Modeling.Geometry.BasicShapes.Lines.Space3D.Float64;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.Borders;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.Borders.Space2D.Immutable;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.Borders.Space3D.Immutable;
+using GeometricAlgebraFulcrumLib.Modeling.Geometry.Borders.Space2D.Float64;
+using GeometricAlgebraFulcrumLib.Modeling.Geometry.Borders.Space3D.Float64;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Accelerators.Grids.Space2D;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Accelerators.Grids.Space3D;
 
@@ -12,29 +13,29 @@ namespace GeometricAlgebraFulcrumLib.Modeling.Graphics.Accelerators.Grids;
 public static class GridsUtils
 {
     public static AccGrid2D<T> ToGrid2D<T>(this IReadOnlyList<T> geometricObjectsList)
-        where T : IFiniteGeometricShape2D
+        where T : IFloat64FiniteGeometricShape2D
     {
         return new AccGrid2D<T>(geometricObjectsList);
     }
 
-    public static AccGridInfo2D GetGridInfo(this IAccGrid2D<IFiniteGeometricShape2D> grid)
+    public static AccGridInfo2D GetGridInfo(this IAccGrid2D<IFloat64FiniteGeometricShape2D> grid)
     {
         return AccGridInfo2D.Create(grid);
     }
 
     public static double GetCellLengthX<T>(this IAccGrid2D<T> grid)
-        where T : IFiniteGeometricShape2D
+        where T : IFloat64FiniteGeometricShape2D
     {
         return grid.BoundingBox.GetLengthX() / grid.CellsCountX;
     }
 
     public static double GetCellLengthY<T>(this IAccGrid2D<T> grid)
-        where T : IFiniteGeometricShape2D
+        where T : IFloat64FiniteGeometricShape2D
     {
         return grid.BoundingBox.GetLengthY() / grid.CellsCountY;
     }
 
-    public static BoundingBox2D GetCellBoundingBox(this IAccGrid2D<IFiniteGeometricShape2D> grid, int indexX, int indexY)
+    public static Float64BoundingBox2D GetCellBoundingBox(this IAccGrid2D<IFloat64FiniteGeometricShape2D> grid, int indexX, int indexY)
     {
         var cellLengthX = grid.BoundingBox.GetLengthX() / grid.CellsCountX;
         var cellLengthY = grid.BoundingBox.GetLengthY() / grid.CellsCountY;
@@ -45,15 +46,15 @@ public static class GridsUtils
         var maxX = grid.BoundingBox.MinX + (indexX + 1) * cellLengthX;
         var maxY = grid.BoundingBox.MinY + (indexY + 1) * cellLengthY;
 
-        return new BoundingBox2D(minX, minY, maxX, maxY);
+        return new Float64BoundingBox2D(minX, minY, maxX, maxY);
     }
 
-    public static AccGridLineTraverser2D GetLineTraverser(this IAccGrid2D<IFiniteGeometricShape2D> grid, ILine2D line)
+    public static AccGridLineTraverser2D GetLineTraverser(this IAccGrid2D<IFloat64FiniteGeometricShape2D> grid, IFloat64Line2D line)
     {
         return AccGridLineTraverser2D.Create(grid, line);
     }
 
-    public static AccGridLineTraverser2D GetLineTraverser(this IAccGrid2D<IFiniteGeometricShape2D> grid, ILine2D line, double lineParamValue1, double lineParamValue2)
+    public static AccGridLineTraverser2D GetLineTraverser(this IAccGrid2D<IFloat64FiniteGeometricShape2D> grid, IFloat64Line2D line, double lineParamValue1, double lineParamValue2)
     {
         return AccGridLineTraverser2D.Create(
             grid,
@@ -62,7 +63,7 @@ public static class GridsUtils
         );
     }
 
-    public static AccGridLineTraverser2D GetLineTraverser(this IAccGrid2D<IFiniteGeometricShape2D> grid, ILine2D line, Float64ScalarRange lineParamRange)
+    public static AccGridLineTraverser2D GetLineTraverser(this IAccGrid2D<IFloat64FiniteGeometricShape2D> grid, IFloat64Line2D line, Float64ScalarRange lineParamRange)
     {
         return AccGridLineTraverser2D.Create(
             grid,
@@ -73,29 +74,29 @@ public static class GridsUtils
 
 
     public static AccGrid3D<T> ToGrid3D<T>(this IReadOnlyList<T> geometricObjectsList)
-        where T : IFiniteGeometricShape3D
+        where T : IFloat64FiniteGeometricShape3D
     {
         return new AccGrid3D<T>(geometricObjectsList);
     }
 
-    public static AccGridInfo3D GetGridInfo(this IAccGrid3D<IFiniteGeometricShape3D> grid)
+    public static AccGridInfo3D GetGridInfo(this IAccGrid3D<IFloat64FiniteGeometricShape3D> grid)
     {
         return AccGridInfo3D.Create(grid);
     }
 
     public static double GetCellLengthX<T>(this IAccGrid3D<T> grid)
-        where T : IFiniteGeometricShape3D
+        where T : IFloat64FiniteGeometricShape3D
     {
         return grid.BoundingBox.GetLengthX() / grid.CellsCountX;
     }
 
     public static double GetCellLengthY<T>(this IAccGrid3D<T> grid)
-        where T : IFiniteGeometricShape3D
+        where T : IFloat64FiniteGeometricShape3D
     {
         return grid.BoundingBox.GetLengthY() / grid.CellsCountY;
     }
 
-    public static BoundingBox3D GetCellBoundingBox(this IAccGrid3D<IFiniteGeometricShape3D> grid, int indexX, int indexY, int indexZ)
+    public static Float64BoundingBox3D GetCellBoundingBox(this IAccGrid3D<IFloat64FiniteGeometricShape3D> grid, int indexX, int indexY, int indexZ)
     {
         var cellLengthX = grid.BoundingBox.GetLengthX() / grid.CellsCountX;
         var cellLengthY = grid.BoundingBox.GetLengthY() / grid.CellsCountY;
@@ -109,15 +110,15 @@ public static class GridsUtils
         var maxY = grid.BoundingBox.MinY + (indexY + 1) * cellLengthY;
         var maxZ = grid.BoundingBox.MinZ + (indexZ + 1) * cellLengthZ;
 
-        return new BoundingBox3D(minX, minY, minZ, maxX, maxY, maxZ);
+        return new Float64BoundingBox3D(minX, minY, minZ, maxX, maxY, maxZ);
     }
 
-    public static AccGridLineTraverser3D GetLineTraverser(this IAccGrid3D<IFiniteGeometricShape3D> grid, ILine3D line)
+    public static AccGridLineTraverser3D GetLineTraverser(this IAccGrid3D<IFloat64FiniteGeometricShape3D> grid, IFloat64Line3D line)
     {
         return AccGridLineTraverser3D.Create(grid, line);
     }
 
-    public static AccGridLineTraverser3D GetLineTraverser(this IAccGrid3D<IFiniteGeometricShape3D> grid, ILine3D line, double lineParamValue1, double lineParamValue2)
+    public static AccGridLineTraverser3D GetLineTraverser(this IAccGrid3D<IFloat64FiniteGeometricShape3D> grid, IFloat64Line3D line, double lineParamValue1, double lineParamValue2)
     {
         return AccGridLineTraverser3D.Create(
             grid,
@@ -126,7 +127,7 @@ public static class GridsUtils
         );
     }
 
-    public static AccGridLineTraverser3D GetLineTraverser(this IAccGrid3D<IFiniteGeometricShape3D> grid, ILine3D line, Float64ScalarRange lineParamRange)
+    public static AccGridLineTraverser3D GetLineTraverser(this IAccGrid3D<IFloat64FiniteGeometricShape3D> grid, IFloat64Line3D line, Float64ScalarRange lineParamRange)
     {
         return AccGridLineTraverser3D.Create(
             grid,

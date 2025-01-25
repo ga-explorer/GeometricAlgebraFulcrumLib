@@ -167,7 +167,7 @@ public sealed class XeoglQRotateTransform : IXeoglNumericalTransform
         => SquareMatrix4.CreateIdentityMatrix();
 
     public LinFloat64Quaternion GetQuaternionTuple()
-        => LinFloat64Quaternion.Create(QuaternionX, QuaternionY, QuaternionZ, QuaternionW);
+        => LinFloat64Quaternion.Create(QuaternionW, QuaternionX, QuaternionY, QuaternionZ);
 
     public LinFloat64Vector3D GetRotateTuple()
         => LinFloat64Vector3D.Zero;

@@ -1,5 +1,4 @@
-﻿using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.BabylonJs.Values;
-using GeometricAlgebraFulcrumLib.Utilities.Text.Text.Linear;
+﻿using GeometricAlgebraFulcrumLib.Utilities.Text.Text.Linear;
 
 namespace GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.BabylonJs.GUI;
 
@@ -10,58 +9,6 @@ public abstract class GrBabylonJsGuiContainer :
     GrBabylonJsGuiControl,
     IGrBabylonJsGuiControlContainer
 {
-    public abstract class GuiContainerProperties :
-        GuiControlProperties
-    {
-        public GrBabylonJsBooleanValue? LogLayoutCycleErrors
-        {
-            get => GetAttributeValueOrNull<GrBabylonJsBooleanValue>("logLayoutCycleErrors");
-            set => SetAttributeValue("logLayoutCycleErrors", value);
-        }
-
-        public GrBabylonJsInt32Value? MaxLayoutCycle
-        {
-            get => GetAttributeValueOrNull<GrBabylonJsInt32Value>("maxLayoutCycle");
-            set => SetAttributeValue("maxLayoutCycle", value);
-        }
-
-        public GrBabylonJsBooleanValue? AdaptHeightToChildren
-        {
-            get => GetAttributeValueOrNull<GrBabylonJsBooleanValue>("adaptHeightToChildren");
-            set => SetAttributeValue("adaptHeightToChildren", value);
-        }
-
-        public GrBabylonJsBooleanValue? AdaptWidthToChildren
-        {
-            get => GetAttributeValueOrNull<GrBabylonJsBooleanValue>("adaptWidthToChildren");
-            set => SetAttributeValue("adaptWidthToChildren", value);
-        }
-
-        public GrBabylonJsBooleanValue? RenderToIntermediateTexture
-        {
-            get => GetAttributeValueOrNull<GrBabylonJsBooleanValue>("renderToIntermediateTexture");
-            set => SetAttributeValue("renderToIntermediateTexture", value);
-        }
-
-        public GrBabylonJsGuiColorValue? BackgroundColor
-        {
-            get => GetAttributeValueOrNull<GrBabylonJsGuiColorValue>("backgroundColor");
-            set => SetAttributeValue("backgroundColor", value);
-        }
-
-
-        protected GuiContainerProperties()
-        {
-
-        }
-
-        protected GuiContainerProperties(GuiContainerProperties properties)
-        {
-            SetAttributeValues(properties);
-        }
-    }
-
-    
     public GrBabylonJsGuiControlList ControlList { get; } 
         = new GrBabylonJsGuiControlList();
 
@@ -71,7 +18,7 @@ public abstract class GrBabylonJsGuiContainer :
     {
     }
 
-    public override string GetCode()
+    public override string GetBabylonJsCode()
     {
         var composer = new LinearTextComposer();
         
@@ -95,7 +42,7 @@ public abstract class GrBabylonJsGuiContainer :
 
             foreach (var control in ControlList)
                 composer
-                    .AppendAtNewLine(control.GetCode())
+                    .AppendAtNewLine(control.GetBabylonJsCode())
                     .AppendLineAtNewLine($"{ConstName}.addControl({control.ConstName});")
                     .AppendLine();
         }

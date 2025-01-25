@@ -20,7 +20,7 @@ public sealed class LinFloat64AxisDirectionalScaling4D :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64AxisDirectionalScaling4D Create(double scalingFactor, LinUnitBasisVector4D scalingAxis)
+    public static LinFloat64AxisDirectionalScaling4D Create(double scalingFactor, LinBasisVector4D scalingAxis)
     {
         return new LinFloat64AxisDirectionalScaling4D(
             scalingFactor,
@@ -31,7 +31,7 @@ public sealed class LinFloat64AxisDirectionalScaling4D :
 
     public override double ScalingFactor { get; }
 
-    public LinUnitBasisVector4D ScalingAxis { get; }
+    public LinBasisVector4D ScalingAxis { get; }
 
     public override LinFloat64Vector4D ScalingVector
         => ScalingAxis.ToLinVector4D();

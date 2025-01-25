@@ -4,8 +4,9 @@ using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space3D;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
 using GeometricAlgebraFulcrumLib.Modeling.Calculus.Functions.Float64;
 using GeometricAlgebraFulcrumLib.Modeling.Calculus.Functions.Float64.Polynomials;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.Parametric.Float64.Space1D.Scalars;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.Parametric.Float64.Space3D.Curves;
+using GeometricAlgebraFulcrumLib.Modeling.Signals;
+using GeometricAlgebraFulcrumLib.Modeling.Temporal.Float64.Scalars;
 
 namespace GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.Visuals.Space3D.Animations;
 
@@ -14,41 +15,41 @@ public class GrVisualAnimatedVector3D :
     IParametricCurve3D
 {
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static GrVisualAnimatedVector3D Create(GrVisualAnimationSpecs animationSpecs, IParametricCurve3D baseCurve)
+    public static GrVisualAnimatedVector3D Create(Float64SamplingSpecs samplingSpecs, IParametricCurve3D baseCurve)
     {
         return new GrVisualAnimatedVector3D(
-            animationSpecs,
+            samplingSpecs,
             baseCurve,
-            animationSpecs.FrameTimeRange
+            samplingSpecs.TimeRange
         );
     }
 
     //[MethodImpl(MethodImplOptions.AggressiveInlining)]
-    //public static GrVisualAnimatedVector3D Create(GrVisualAnimationSpecs animationSpecs, IParametricCurve3D baseCurve)
+    //public static GrVisualAnimatedVector3D Create(GrVisualAnimationSpecs samplingSpecs, IParametricCurve3D baseCurve)
     //{
     //    return new GrVisualAnimatedVector3D(
-    //        animationSpecs,
+    //        samplingSpecs,
     //        baseCurve,
-    //        animationSpecs.FrameTimeRange,
+    //        samplingSpecs.FrameTimeRange,
     //        invalidFrameIndices
     //    );
     //}
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static GrVisualAnimatedVector3D Create(GrVisualAnimationSpecs animationSpecs, IParametricCurve3D baseCurve, Float64ScalarRange baseParameterRange)
+    public static GrVisualAnimatedVector3D Create(Float64SamplingSpecs samplingSpecs, IParametricCurve3D baseCurve, Float64ScalarRange baseParameterRange)
     {
         return new GrVisualAnimatedVector3D(
-            animationSpecs,
+            samplingSpecs,
             baseCurve,
             baseParameterRange
         );
     }
 
     //[MethodImpl(MethodImplOptions.AggressiveInlining)]
-    //public static GrVisualAnimatedVector3D Create(GrVisualAnimationSpecs animationSpecs, IParametricCurve3D baseCurve, Float64ScalarRange baseParameterRange)
+    //public static GrVisualAnimatedVector3D Create(GrVisualAnimationSpecs samplingSpecs, IParametricCurve3D baseCurve, Float64ScalarRange baseParameterRange)
     //{
     //    return new GrVisualAnimatedVector3D(
-    //        animationSpecs,
+    //        samplingSpecs,
     //        baseCurve,
     //        baseParameterRange,
     //        invalidFrameIndices
@@ -62,9 +63,9 @@ public class GrVisualAnimatedVector3D :
             time => -p1.GetDerivative1Point(time));
 
         return new GrVisualAnimatedVector3D(
-            p1.AnimationSpecs,
+            p1.SamplingSpecs,
             baseCurve,
-            p1.FrameTimeRange
+            p1.TimeRange
         );
     }
     
@@ -74,9 +75,9 @@ public class GrVisualAnimatedVector3D :
             p1.GetDerivative1Point);
 
         return new GrVisualAnimatedVector3D(
-            p1.AnimationSpecs,
+            p1.SamplingSpecs,
             baseCurve,
-            p1.FrameTimeRange
+            p1.TimeRange
         );
     }
     
@@ -86,15 +87,15 @@ public class GrVisualAnimatedVector3D :
             p2.GetDerivative1Point);
 
         return new GrVisualAnimatedVector3D(
-            p2.AnimationSpecs,
+            p2.SamplingSpecs,
             baseCurve,
-            p2.FrameTimeRange
+            p2.TimeRange
         );
     }
 
     public static GrVisualAnimatedVector3D operator +(GrVisualAnimatedVector3D p1, GrVisualAnimatedVector3D p2)
     {
-        if (p1.AnimationSpecs != p2.AnimationSpecs)
+        if (p1.SamplingSpecs != p2.SamplingSpecs)
             throw new InvalidOperationException();
 
         var baseCurve = ComputedParametricCurve3D.Create(
@@ -103,9 +104,9 @@ public class GrVisualAnimatedVector3D :
         );
 
         return new GrVisualAnimatedVector3D(
-            p1.AnimationSpecs,
+            p1.SamplingSpecs,
             baseCurve,
-            p1.FrameTimeRange
+            p1.TimeRange
         );
     }
     
@@ -117,9 +118,9 @@ public class GrVisualAnimatedVector3D :
         );
 
         return new GrVisualAnimatedVector3D(
-            p1.AnimationSpecs,
+            p1.SamplingSpecs,
             baseCurve,
-            p1.FrameTimeRange
+            p1.TimeRange
         );
     }
     
@@ -131,15 +132,15 @@ public class GrVisualAnimatedVector3D :
         );
 
         return new GrVisualAnimatedVector3D(
-            p2.AnimationSpecs,
+            p2.SamplingSpecs,
             baseCurve,
-            p2.FrameTimeRange
+            p2.TimeRange
         );
     }
 
     public static GrVisualAnimatedVector3D operator -(GrVisualAnimatedVector3D p1, GrVisualAnimatedVector3D p2)
     {
-        if (p1.AnimationSpecs != p2.AnimationSpecs)
+        if (p1.SamplingSpecs != p2.SamplingSpecs)
             throw new InvalidOperationException();
 
         var baseCurve = ComputedParametricCurve3D.Create(
@@ -148,9 +149,9 @@ public class GrVisualAnimatedVector3D :
         );
 
         return new GrVisualAnimatedVector3D(
-            p1.AnimationSpecs,
+            p1.SamplingSpecs,
             baseCurve,
-            p1.FrameTimeRange
+            p1.TimeRange
         );
     }
 
@@ -162,9 +163,9 @@ public class GrVisualAnimatedVector3D :
         );
 
         return new GrVisualAnimatedVector3D(
-            p2.AnimationSpecs,
+            p2.SamplingSpecs,
             baseCurve,
-            p2.FrameTimeRange
+            p2.TimeRange
         );
     }
     
@@ -176,15 +177,15 @@ public class GrVisualAnimatedVector3D :
         );
 
         return new GrVisualAnimatedVector3D(
-            p1.AnimationSpecs,
+            p1.SamplingSpecs,
             baseCurve,
-            p1.FrameTimeRange
+            p1.TimeRange
         );
     }
     
     public static GrVisualAnimatedVector3D operator *(GrVisualAnimatedScalar p1, GrVisualAnimatedVector3D p2)
     {
-        if (p1.AnimationSpecs != p2.AnimationSpecs)
+        if (p1.SamplingSpecs != p2.SamplingSpecs)
             throw new InvalidOperationException();
 
         var baseCurve = ComputedParametricCurve3D.Create(
@@ -193,15 +194,15 @@ public class GrVisualAnimatedVector3D :
         );
 
         return new GrVisualAnimatedVector3D(
-            p1.AnimationSpecs,
+            p1.SamplingSpecs,
             baseCurve,
-            p1.FrameTimeRange
+            p1.TimeRange
         );
     }
     
     public static GrVisualAnimatedVector3D operator *(GrVisualAnimatedVector3D p1, GrVisualAnimatedScalar p2)
     {
-        if (p1.AnimationSpecs != p2.AnimationSpecs)
+        if (p1.SamplingSpecs != p2.SamplingSpecs)
             throw new InvalidOperationException();
 
         var baseCurve = ComputedParametricCurve3D.Create(
@@ -210,9 +211,9 @@ public class GrVisualAnimatedVector3D :
         );
 
         return new GrVisualAnimatedVector3D(
-            p1.AnimationSpecs,
+            p1.SamplingSpecs,
             baseCurve,
-            p1.FrameTimeRange
+            p1.TimeRange
         );
     }
 
@@ -226,9 +227,9 @@ public class GrVisualAnimatedVector3D :
         );
 
         return new GrVisualAnimatedVector3D(
-            p1.AnimationSpecs,
+            p1.SamplingSpecs,
             baseCurve,
-            p1.FrameTimeRange
+            p1.TimeRange
         );
     }
     
@@ -248,11 +249,11 @@ public class GrVisualAnimatedVector3D :
         => BaseParameterRange.MaxValue;
     
     public Float64ScalarRange ParameterRange 
-        => FrameTimeRange;
+        => TimeRange;
 
     
-    private GrVisualAnimatedVector3D(GrVisualAnimationSpecs animationSpecs, IParametricCurve3D baseCurve, Float64ScalarRange baseParameterRange)
-        : base(animationSpecs)
+    private GrVisualAnimatedVector3D(Float64SamplingSpecs samplingSpecs, IParametricCurve3D baseCurve, Float64ScalarRange baseParameterRange)
+        : base(samplingSpecs)
     {
         BaseCurve = baseCurve;
         BaseParameterRange = baseParameterRange;
@@ -260,13 +261,13 @@ public class GrVisualAnimatedVector3D :
         BaseParameterToTimeMap = DfAffinePolynomial.Create(
             MinBaseParameter,
             MaxBaseParameter,
-            MinFrameTime,
-            MaxFrameTime
+            MinTime,
+            MaxTime
         );
             
         TimeToBaseParameterMap = DfAffinePolynomial.Create(
-            MinFrameTime,
-            MaxFrameTime,
+            MinTime,
+            MaxTime,
             MinBaseParameter,
             MaxBaseParameter
         );
@@ -278,9 +279,9 @@ public class GrVisualAnimatedVector3D :
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public sealed override bool IsValid()
     {
-        return FrameTimeRange.IsValid() &&
-               FrameTimeRange.IsFinite &&
-               FrameTimeRange.MinValue >= 0 &&
+        return TimeRange.IsValid() &&
+               TimeRange.IsFinite &&
+               TimeRange.MinValue >= 0 &&
                BaseCurve.IsValid() &&
                BaseParameterRange.IsValid() &&
                BaseParameterRange.IsFinite;
@@ -290,7 +291,7 @@ public class GrVisualAnimatedVector3D :
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public LinFloat64Vector3D GetPoint(double time)
     {
-        if (!FrameTimeRange.Contains(time))
+        if (!TimeRange.Contains(time))
             throw new ArgumentOutOfRangeException();
 
         return BaseCurve.GetPoint(
@@ -300,7 +301,7 @@ public class GrVisualAnimatedVector3D :
 
     public LinFloat64Vector3D GetDerivative1Point(double time)
     {
-        if (!FrameTimeRange.Contains(time))
+        if (!TimeRange.Contains(time))
             throw new ArgumentOutOfRangeException();
 
         return BaseCurve.GetDerivative1Point(
@@ -310,7 +311,7 @@ public class GrVisualAnimatedVector3D :
 
     public ParametricCurveLocalFrame3D GetFrame(double time)
     {
-        if (!FrameTimeRange.Contains(time))
+        if (!TimeRange.Contains(time))
             throw new ArgumentOutOfRangeException();
 
         return BaseCurve.GetFrame(
@@ -321,7 +322,7 @@ public class GrVisualAnimatedVector3D :
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public IEnumerable<KeyValuePair<int, LinFloat64Vector3D>> GetKeyFrameIndexPositionPairs(int frameRate)
     {
-        return FrameIndexTimePairs.Select(
+        return SampleIndexTimePairs.Select(
             indexTimePair =>
             {
                 var (frameIndex, time) = indexTimePair;
@@ -339,7 +340,7 @@ public class GrVisualAnimatedVector3D :
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public IEnumerable<KeyValuePair<int, double>> GetKeyFrameIndexValuePairs(int frameRate, Func<LinFloat64Vector3D, double> positionToValueMap)
     {
-        return FrameIndexTimePairs.Select(
+        return SampleIndexTimePairs.Select(
             indexTimePair =>
             {
                 var (frameIndex, time) = indexTimePair;
@@ -358,9 +359,12 @@ public class GrVisualAnimatedVector3D :
     public GrVisualAnimatedScalar GetLength()
     {
         return GrVisualAnimatedScalar.Create(
-            AnimationSpecs,
-            ComputedParametricScalar.Create(time => GetPoint(time).VectorENorm()),
-            BaseParameterRange
+            TemporalFloat64Scalar.Computed(
+                time => GetPoint(time).VectorENorm(),
+                SamplingSpecs.MinTime,
+                SamplingSpecs.MaxTime
+            ),
+            SamplingSpecs
         );
     }
     
@@ -372,9 +376,9 @@ public class GrVisualAnimatedVector3D :
         );
 
         return new GrVisualAnimatedVector3D(
-            AnimationSpecs,
+            SamplingSpecs,
             baseCurve,
-            FrameTimeRange
+            TimeRange
         );
     }
 
@@ -387,16 +391,16 @@ public class GrVisualAnimatedVector3D :
         );
 
         return new GrVisualAnimatedVector3D(
-            AnimationSpecs,
+            SamplingSpecs,
             baseCurve,
-            FrameTimeRange
+            TimeRange
         );
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public GrVisualAnimatedVector3D AddLength(GrVisualAnimatedScalar length)
     {
-        if (AnimationSpecs != length.AnimationSpecs)
+        if (SamplingSpecs != length.SamplingSpecs)
             throw new InvalidOperationException();
 
         var baseCurve = ComputedParametricCurve3D.Create(
@@ -405,9 +409,9 @@ public class GrVisualAnimatedVector3D :
         );
 
         return new GrVisualAnimatedVector3D(
-            AnimationSpecs,
+            SamplingSpecs,
             baseCurve,
-            FrameTimeRange
+            TimeRange
         );
     }
 }

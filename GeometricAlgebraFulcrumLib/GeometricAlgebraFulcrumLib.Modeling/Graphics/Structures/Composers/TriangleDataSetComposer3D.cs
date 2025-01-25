@@ -3,7 +3,8 @@ using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Angles;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Frames.Space3D;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space2D;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space3D;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.BasicShapes.Triangles;
+using GeometricAlgebraFulcrumLib.Modeling.Geometry.BasicShapes.Triangles.Space2D.Float64;
+using GeometricAlgebraFulcrumLib.Modeling.Geometry.BasicShapes.Triangles.Space3D.Float64;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Primitives.Triangles;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Structures.Data;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Structures.Faces;
@@ -386,7 +387,7 @@ public class TriangleDataSetComposer3D
         );
     }
 
-    public bool AddTriangle(ITriangle3D triangle)
+    public bool AddTriangle(IFloat64Triangle3D triangle)
     {
         return StoreTriangle(
             AddVertex(triangle.GetPoint1()), 
@@ -396,7 +397,7 @@ public class TriangleDataSetComposer3D
     }
 
 
-    public TriangleDataSetComposer3D AddTriangles(IEnumerable<ITriangle3D> trianglesList)
+    public TriangleDataSetComposer3D AddTriangles(IEnumerable<IFloat64Triangle3D> trianglesList)
     {
         foreach (var triangle in trianglesList)
         {

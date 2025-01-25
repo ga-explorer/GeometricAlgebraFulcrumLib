@@ -35,7 +35,7 @@ public sealed class GrPointSoupGeometry3D
         => _vertexPoints;
 
     public GraphicsPrimitiveType3D PrimitiveType
-        => GraphicsPrimitiveType3D.Points;
+        => GraphicsPrimitiveType3D.PointList;
 
     public int VertexCount 
         => _vertexPoints.Count;

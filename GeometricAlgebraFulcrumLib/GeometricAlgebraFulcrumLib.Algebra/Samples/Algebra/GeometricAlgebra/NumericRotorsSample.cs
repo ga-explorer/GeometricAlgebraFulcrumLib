@@ -437,7 +437,7 @@ public static class NumericRotorsSample
     /// </summary>
     public static void Example9()
     {
-        var axis = LinSignedBasisVector.NegativeZ;
+        var axis = LinSignedBasisVector.Nz;
         var u = Random.GetVector(-10, 10);
         var u2 = u.Sp(u).Sqrt();
 

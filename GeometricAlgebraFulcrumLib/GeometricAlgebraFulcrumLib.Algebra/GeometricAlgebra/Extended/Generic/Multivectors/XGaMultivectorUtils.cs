@@ -627,7 +627,7 @@ public static class XGaMultivectorUtils
         
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64Vector2D GetVectorPartAsTuple2D(this XGaMultivector<double> mv)
+    public static LinFloat64Vector2D GetVectorPartAsVector2D(this XGaMultivector<double> mv)
     {
         return LinFloat64Vector2D.Create(
             (Float64Scalar)mv.Scalar(0).ScalarValue,
@@ -636,7 +636,7 @@ public static class XGaMultivectorUtils
     }
         
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64Vector3D GetVectorPartAsTuple3D(this XGaMultivector<double> mv)
+    public static LinFloat64Vector3D GetVectorPartAsVector3D(this XGaMultivector<double> mv)
     {
         return LinFloat64Vector3D.Create(
             mv.Scalar(0).ScalarValue,
@@ -645,7 +645,7 @@ public static class XGaMultivectorUtils
     }
         
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64Vector4D GetVectorPartAsTuple4D(this XGaMultivector<double> mv)
+    public static LinFloat64Vector4D GetVectorPartAsVector4D(this XGaMultivector<double> mv)
     {
         return LinFloat64Vector4D.Create(
             mv.Scalar(0).ScalarValue,

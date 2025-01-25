@@ -109,7 +109,7 @@ namespace GeometricAlgebraFulcrumLib.Modeling.Statistics.Discrete
             );
         }
 
-        public static DiscreteProbabilityMassFunction CreateBinomial(int trialCount, double successProbability, double zeroEpsilon = 1e-12)
+        public static DiscreteProbabilityMassFunction CreateBinomial(int trialCount, double successProbability, double zeroEpsilon = Float64Utils.ZeroEpsilon)
         {
             var sampleProbabilityDictionary = new SortedDictionary<int, double>();
 
@@ -172,7 +172,7 @@ namespace GeometricAlgebraFulcrumLib.Modeling.Statistics.Discrete
             );
         }
 
-        public static DiscreteProbabilityMassFunction CreatePoisson(double mean, double zeroEpsilon = 1e-12)
+        public static DiscreteProbabilityMassFunction CreatePoisson(double mean, double zeroEpsilon = Float64Utils.ZeroEpsilon)
         {
             var sampleProbabilityDictionary = new SortedDictionary<int, double>();
 
@@ -225,7 +225,7 @@ namespace GeometricAlgebraFulcrumLib.Modeling.Statistics.Discrete
             );
         }
 
-        public static DiscreteProbabilityMassFunction CreateNormal(double mean, double standardDeviation, int domainSampleCount, double zeroEpsilon = 1e-12)
+        public static DiscreteProbabilityMassFunction CreateNormal(double mean, double standardDeviation, int domainSampleCount, double zeroEpsilon = Float64Utils.ZeroEpsilon)
         {
             var variance =
                 standardDeviation * standardDeviation;
@@ -269,7 +269,7 @@ namespace GeometricAlgebraFulcrumLib.Modeling.Statistics.Discrete
             }
         }
 
-        public static DiscreteProbabilityMassFunction CreateExponential(double rate, int domainSampleCount, double zeroEpsilon = 1e-12)
+        public static DiscreteProbabilityMassFunction CreateExponential(double rate, int domainSampleCount, double zeroEpsilon = Float64Utils.ZeroEpsilon)
         {
             var domainLastValue = -Math.Log(zeroEpsilon / rate) / rate;
 
@@ -393,7 +393,7 @@ namespace GeometricAlgebraFulcrumLib.Modeling.Statistics.Discrete
                    );
         }
 
-        public DiscreteProbabilityMassFunction TrimProbabilities(double zeroEpsilon = 1e-12)
+        public DiscreteProbabilityMassFunction TrimProbabilities(double zeroEpsilon = Float64Utils.ZeroEpsilon)
         {
             var sum =
                 SampleProbabilityDictionary

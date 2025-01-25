@@ -5,7 +5,6 @@ using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Float64.Lin
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Float64.LinearMaps.Rotors;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Float64.Multivectors;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Float64.Processors;
-using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.LinearMaps.SpaceND;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Float64.LinearMaps.Versors;
 
@@ -226,11 +225,6 @@ public sealed class RGaFloat64PureVersorsSequence :
                 mv, 
                 (current, rotor) => rotor.OmMap(current)
             );
-    }
-
-    public override LinFloat64UnilinearMap GetVectorMapPart(int vSpaceDimensions)
-    {
-        throw new NotImplementedException();
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]

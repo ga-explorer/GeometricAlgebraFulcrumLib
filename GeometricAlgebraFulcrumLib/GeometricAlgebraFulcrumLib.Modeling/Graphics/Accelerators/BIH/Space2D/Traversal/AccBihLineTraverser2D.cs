@@ -1,14 +1,14 @@
 ﻿using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.BasicShapes;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.BasicShapes.Lines;
+using GeometricAlgebraFulcrumLib.Modeling.Geometry.BasicShapes.Lines.Space2D.Float64;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Computers;
 
 namespace GeometricAlgebraFulcrumLib.Modeling.Graphics.Accelerators.BIH.Space2D.Traversal;
 
 public sealed class AccBihLineTraverser2D<T> 
-    where T : IFiniteGeometricShape2D
+    where T : IFloat64FiniteGeometricShape2D
 {
-    public static AccBihLineTraverser2D<T> Create(IAccBih2D<T> bih, ILine2D line)
+    public static AccBihLineTraverser2D<T> Create(IAccBih2D<T> bih, IFloat64Line2D line)
     {
         return new AccBihLineTraverser2D<T>(
             bih,
@@ -17,7 +17,7 @@ public sealed class AccBihLineTraverser2D<T>
         );
     }
 
-    public static AccBihLineTraverser2D<T> Create(IAccBih2D<T> bih, ILine2D line, Float64ScalarRange lineParamLimits)
+    public static AccBihLineTraverser2D<T> Create(IAccBih2D<T> bih, IFloat64Line2D line, Float64ScalarRange lineParamLimits)
     {
         return new AccBihLineTraverser2D<T>(
             bih,
@@ -26,7 +26,7 @@ public sealed class AccBihLineTraverser2D<T>
         );
     }
 
-    public static AccBihLineTraverser2D<T> Create(IAccBih2D<T> bih, ILine2D line, double lineParamLimit1, double lineParamLimit2)
+    public static AccBihLineTraverser2D<T> Create(IAccBih2D<T> bih, IFloat64Line2D line, double lineParamLimit1, double lineParamLimit2)
     {
         return new AccBihLineTraverser2D<T>(
             bih,
@@ -42,7 +42,7 @@ public sealed class AccBihLineTraverser2D<T>
 
     public IAccBih2D<T> Bih { get; }
 
-    public ILine2D Line { get; }
+    public IFloat64Line2D Line { get; }
 
     public LineTraversalData2D LineData { get; }
 
@@ -52,7 +52,7 @@ public sealed class AccBihLineTraverser2D<T>
         => _statesList;
 
 
-    private AccBihLineTraverser2D(IAccBih2D<T> bih, ILine2D line, Float64ScalarRange lineParamLimits)
+    private AccBihLineTraverser2D(IAccBih2D<T> bih, IFloat64Line2D line, Float64ScalarRange lineParamLimits)
     {
         Bih = bih;
         Line = line;

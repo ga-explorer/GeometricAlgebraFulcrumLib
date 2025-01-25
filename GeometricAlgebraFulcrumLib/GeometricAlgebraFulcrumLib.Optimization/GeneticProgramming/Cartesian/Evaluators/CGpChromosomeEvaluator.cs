@@ -1,4 +1,5 @@
-﻿using System.Collections.Immutable;
+﻿using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
+using System.Collections.Immutable;
 using System.Diagnostics;
 
 namespace GeometricAlgebraFulcrumLib.Optimization.GeneticProgramming.Cartesian.Evaluators;
@@ -76,7 +77,7 @@ public abstract class CGpChromosomeEvaluator
 
     public abstract double ComputeCost(CGpChromosome chromosome);
 
-    private double[] ComputeCostGradient(CGpChromosome chromosome, IReadOnlyList<CGpNodeInputWeight> weightArray, double epsilon = 1e-7)
+    private double[] ComputeCostGradient(CGpChromosome chromosome, IReadOnlyList<CGpNodeInputWeight> weightArray, double zeroEpsilon = Float64Utils.ZeroEpsilon)
     {
         var gradientArray = new double[weightArray.Count];
 
@@ -87,13 +88,13 @@ public abstract class CGpChromosomeEvaluator
             var weightValue = weight.Value;
             
             // Set new value for this active parametric weight
-            weight.SetValue(weightValue + epsilon);
+            weight.SetValue(weightValue + zeroEpsilon);
 
             // Compute cost at new weight value
             var f1 = ComputeCost(chromosome);
 
             // Compute gradient value for this active parametric weight 
-            gradientArray[weightIndex] = (f1 - f0) / epsilon;
+            gradientArray[weightIndex] = (f1 - f0) / zeroEpsilon;
 
             // Restore original value for this active parametric weight 
             weight.SetValue(weightValue);
@@ -102,7 +103,7 @@ public abstract class CGpChromosomeEvaluator
         return gradientArray;
     }
 
-    public void OptimizeCost(CGpChromosome chromosome, double epsilon = 1e-7)
+    public void OptimizeCost(CGpChromosome chromosome, double zeroEpsilon = Float64Utils.ZeroEpsilon)
     {
         var weightArray = 
             chromosome.ActiveNodeParametricWeights.ToImmutableArray();
@@ -121,7 +122,7 @@ public abstract class CGpChromosomeEvaluator
 
         for (var iteration = 1; iteration <= iterationCount; iteration++)
         {
-            var gradients = ComputeCostGradient(chromosome, weightArray, epsilon);
+            var gradients = ComputeCostGradient(chromosome, weightArray, zeroEpsilon);
 
             weightValueArray = adamOptimizer.UpdateWeights(weightValueArray, gradients, iteration);
 

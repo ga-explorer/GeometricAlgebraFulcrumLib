@@ -1,5 +1,5 @@
 ﻿using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space3D;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.BasicShapes.Lines.Immutable;
+using GeometricAlgebraFulcrumLib.Modeling.Geometry.BasicShapes.Lines.Space3D.Float64;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.Colors;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.SdfGeometry.Primitives;
 using SixLabors.ImageSharp;
@@ -62,7 +62,7 @@ public sealed class RayMarchingScene3D
             for (var pixelY = 0; pixelY < image.Height; pixelY++)
             {
                 var rayDirection = Camera.GetRayDirection(pixelX, pixelY);
-                var ray = new Line3D(rayOrigin, rayDirection);
+                var ray = new Float64Line3D(rayOrigin, rayDirection);
                     
                 var intersectionInfo = 
                     Computer.ComputeIntersection(Shape.Surface, ray);

@@ -488,7 +488,7 @@ public static class HansenProblemSample
         var gamma = (s2 + s1).HalfPolarAngle().BreakMerge();
         var delta = (s2 - s1).HalfPolarAngle().BreakMerge();
 
-        var epsilon =
+        var zeroEpsilon =
             (gamma - (alpha1M + alpha2M + beta1M + beta2M)).BreakMerge();
 
         var theta =
@@ -522,13 +522,13 @@ public static class HansenProblemSample
 
         var xp2 = context.BreakMerge(
             xa +
-            epsilon.Sin() / beta2M.Sin() *
+            zeroEpsilon.Sin() / beta2M.Sin() *
             (xab * theta.Cos() + yab * theta.Sin())
         );
 
         var yp2 = context.BreakMerge(
             ya +
-            epsilon.Sin() / beta2M.Sin() *
+            zeroEpsilon.Sin() / beta2M.Sin() *
             (yab * theta.Cos() - xab * theta.Sin())
         );
 
@@ -1248,8 +1248,8 @@ public static class HansenProblemSample
         var yb = context["By"]; //context[6];
 
         // 2D Euclidean Position vector for points A,B
-        var pvA = scalarProcessor.CreateLinVector2D(xa.ScalarValue, ya.ScalarValue).BreakMerge();
-        var pvB = scalarProcessor.CreateLinVector2D(xb.ScalarValue, yb.ScalarValue).BreakMerge();
+        var pvA = scalarProcessor.Vector2D(xa.ScalarValue, ya.ScalarValue).BreakMerge();
+        var pvB = scalarProcessor.Vector2D(xb.ScalarValue, yb.ScalarValue).BreakMerge();
 
         // Define input angles
         var alpha1 =
@@ -1492,8 +1492,8 @@ public static class HansenProblemSample
         var yb = context["By"]; //context[6];
 
         // 2D Euclidean Position vector for points A,B
-        var pvA = scalarProcessor.CreateLinVector2D(xa.ScalarValue, ya.ScalarValue);
-        var pvB = scalarProcessor.CreateLinVector2D(xb.ScalarValue, yb.ScalarValue);
+        var pvA = scalarProcessor.Vector2D(xa.ScalarValue, ya.ScalarValue);
+        var pvB = scalarProcessor.Vector2D(xb.ScalarValue, yb.ScalarValue);
 
         // Define input angles
         var alpha1 =

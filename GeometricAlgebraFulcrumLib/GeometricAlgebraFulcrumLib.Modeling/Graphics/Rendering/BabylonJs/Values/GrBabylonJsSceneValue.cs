@@ -27,7 +27,7 @@ public sealed class GrBabylonJsSceneValue :
     }
 
 
-    public override string GetCode()
+    public override string GetAttributeValueCode()
     {
         return string.IsNullOrEmpty(ValueText) 
             ? Value.ToString() 

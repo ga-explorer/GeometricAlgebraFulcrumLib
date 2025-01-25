@@ -166,12 +166,12 @@ public sealed class LinFloat64VectorDirectionalScalingSequence :
         throw new NotImplementedException();
     }
 
-    public bool IsNearIdentity(double epsilon = 1E-12)
+    public bool IsNearIdentity(double zeroEpsilon = 1E-12)
     {
         for (var basisIndex = 0; basisIndex < VSpaceDimensions; basisIndex++)
         {
             var isSameVectorBasis =
-                MapBasisVector(basisIndex).IsNearVectorBasis(basisIndex, epsilon);
+                MapBasisVector(basisIndex).IsNearVectorBasis(basisIndex, zeroEpsilon);
 
             if (!isSameVectorBasis) return false;
         }
@@ -179,7 +179,7 @@ public sealed class LinFloat64VectorDirectionalScalingSequence :
         return true;
     }
 
-    public bool IsNearReflection(double epsilon = 1E-12)
+    public bool IsNearReflection(double zeroEpsilon = 1E-12)
     {
         throw new NotImplementedException();
     }

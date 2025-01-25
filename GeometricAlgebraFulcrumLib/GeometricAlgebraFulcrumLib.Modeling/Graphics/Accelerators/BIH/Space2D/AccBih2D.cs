@@ -1,12 +1,11 @@
 ﻿using System.Collections;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.BasicShapes;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.Borders.Space2D.Immutable;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.Borders.Space2D.Mutable;
+using GeometricAlgebraFulcrumLib.Modeling.Geometry.Borders.Space2D.Float64;
 
 namespace GeometricAlgebraFulcrumLib.Modeling.Graphics.Accelerators.BIH.Space2D;
 
 public class AccBih2D<T> : IAccBih2D<T> 
-    where T : IFiniteGeometricShape2D
+    where T : IFloat64FiniteGeometricShape2D
 {
     public bool IsValid()
     {
@@ -15,7 +14,7 @@ public class AccBih2D<T> : IAccBih2D<T>
 
     public int BihDepth { get; }
 
-    public BoundingBox2D BoundingBox { get; }
+    public Float64BoundingBox2D BoundingBox { get; }
 
     public int Count => RootNode.Count;
 
@@ -48,17 +47,17 @@ public class AccBih2D<T> : IAccBih2D<T>
         return AccBihNodeInfo2D.Create(this);
     }
 
-    public BoundingBox2D GetBoundingBox()
+    public Float64BoundingBox2D GetBoundingBox()
     {
-        return BoundingBox2D.Create(
-            (IEnumerable<IFiniteGeometricShape2D>) RootNode
+        return Float64BoundingBox2D.Create(
+            (IEnumerable<IFloat64FiniteGeometricShape2D>) RootNode
         );
     }
 
-    public MutableBoundingBox2D GetMutableBoundingBox()
+    public Float64BoundingBoxComposer2D GetBoundingBoxComposer()
     {
-        return MutableBoundingBox2D.Create(
-            (IEnumerable<IFiniteGeometricShape2D>) RootNode
+        return Float64BoundingBoxComposer2D.Create(
+            (IEnumerable<IFloat64FiniteGeometricShape2D>) RootNode
         );
     }
 

@@ -1,6 +1,6 @@
 ﻿using System.Text;
-using SixLabors.ImageSharp;
 using GeometricAlgebraFulcrumLib.Utilities.Web.Html.Media;
+using SixLabors.ImageSharp;
 using GeometricAlgebraFulcrumLib.Utilities.Web.Svg.Attributes;
 using GeometricAlgebraFulcrumLib.Utilities.Web.Svg.Values;
 

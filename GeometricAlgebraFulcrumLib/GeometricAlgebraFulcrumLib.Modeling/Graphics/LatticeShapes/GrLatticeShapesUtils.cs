@@ -1,9 +1,7 @@
 ﻿using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space3D;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.BasicShapes.Lines;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.BasicShapes.Lines.Immutable;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.BasicShapes.Triangles;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.BasicShapes.Triangles.Immutable;
+using GeometricAlgebraFulcrumLib.Modeling.Geometry.BasicShapes.Lines.Space3D.Float64;
+using GeometricAlgebraFulcrumLib.Modeling.Geometry.BasicShapes.Triangles.Space3D.Float64;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.Parametric.Float64.Space3D.Curves;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.LatticeShapes.Curves;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.LatticeShapes.Surfaces;
@@ -283,9 +281,9 @@ public static class GrLatticeShapesUtils
             vertex.Point.Z + t * vertex.Normal.Z);
     }
         
-    public static LineSegment3D GetDisplacedLineSegment(this GrLatticeSurfaceLocalFrame3D vertex, double t1, double t2)
+    public static Float64LineSegment3D GetDisplacedLineSegment(this GrLatticeSurfaceLocalFrame3D vertex, double t1, double t2)
     {
-        return LineSegment3D.Create(
+        return Float64LineSegment3D.Create(
             LinFloat64Vector3D.Create(vertex.Point.X + t1 * vertex.Normal.X,
                 vertex.Point.Y + t1 * vertex.Normal.Y,
                 vertex.Point.Z + t1 * vertex.Normal.Z),
@@ -295,27 +293,27 @@ public static class GrLatticeShapesUtils
         );
     }
 
-    public static IEnumerable<ILineSegment3D> GetNormalLines(this GrLatticeSurfaceList3D geometry, double t2)
+    public static IEnumerable<IFloat64LineSegment3D> GetNormalLines(this GrLatticeSurfaceList3D geometry, double t2)
     {
         return geometry.Select(v => 
-            LineSegment3D.Create(
+            Float64LineSegment3D.Create(
                 v, 
                 v.GetPointInDirection(v.Normal, t2)
             )
         );
     }
 
-    public static IEnumerable<ILineSegment3D> GetNormalLines(this GrLatticeSurfaceList3D geometry, double t1, double t2)
+    public static IEnumerable<IFloat64LineSegment3D> GetNormalLines(this GrLatticeSurfaceList3D geometry, double t1, double t2)
     {
         return geometry.Select(v => 
-            LineSegment3D.Create(
+            Float64LineSegment3D.Create(
                 v.GetPointInDirection(v.Normal, t1),
                 v.GetPointInDirection(v.Normal, t2)
             )
         );
     }
 
-    public static IEnumerable<ITriangle3D> GetDisplacedTriangles(this GrLatticeSurfaceList3D geometry, double t)
+    public static IEnumerable<IFloat64Triangle3D> GetDisplacedTriangles(this GrLatticeSurfaceList3D geometry, double t)
     {
         foreach (var triangleIndices in geometry.TriangleVerticesList)
         {
@@ -326,11 +324,11 @@ public static class GrLatticeShapesUtils
             var p2 = v2.GetPointInDirection(v2.Normal, t);
             var p3 = v3.GetPointInDirection(v3.Normal, t);
 
-            yield return Triangle3D.Create(p1, p2, p3);
+            yield return Float64Triangle3D.Create(p1, p2, p3);
         }
     }
 
-    public static IEnumerable<ILineSegment3D> GetDisplacedTriangleEdges(this GrLatticeSurfaceList3D geometry, double t)
+    public static IEnumerable<IFloat64LineSegment3D> GetDisplacedTriangleEdges(this GrLatticeSurfaceList3D geometry, double t)
     {
         foreach (var (v1, v2, v3) in geometry.TriangleVerticesList)
         {
@@ -338,9 +336,9 @@ public static class GrLatticeShapesUtils
             var p2 = v2.GetPointInDirection(v2.Normal, t);
             var p3 = v3.GetPointInDirection(v3.Normal, t);
 
-            yield return LineSegment3D.Create(p1, p2);
-            yield return LineSegment3D.Create(p2, p3);
-            yield return LineSegment3D.Create(p3, p1);
+            yield return Float64LineSegment3D.Create(p1, p2);
+            yield return Float64LineSegment3D.Create(p2, p3);
+            yield return Float64LineSegment3D.Create(p3, p1);
         }
     }
 }

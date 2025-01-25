@@ -11,7 +11,7 @@ namespace GeometricAlgebraFulcrumLib.Modeling.Geometry.Parametric.Float64.Space2
 public static class ParametricCurve2DUtils
 {
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static GrRouletteMappedFiniteParametricCurve2D GetRouletteMappedCurve(this IArcLengthCurve2D baseCurve, RouletteMap2D rouletteMap)
+    public static GrRouletteMappedFiniteParametricCurve2D GetRouletteMappedCurve(this IArcLengthCurve2D baseCurve, Float64RouletteAffineMap2D rouletteMap)
     {
         return new GrRouletteMappedFiniteParametricCurve2D(
             baseCurve,

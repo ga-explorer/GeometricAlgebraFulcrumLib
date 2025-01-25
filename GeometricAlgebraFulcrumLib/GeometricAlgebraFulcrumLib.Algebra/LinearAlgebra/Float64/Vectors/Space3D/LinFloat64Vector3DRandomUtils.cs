@@ -57,12 +57,7 @@ public static class LinFloat64Vector3DRandomUtils
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static LinFloat64Quaternion GetLinQuaternion(this Random random)
     {
-        return LinFloat64Quaternion.Create(
-            random.NextDouble(),
-            random.NextDouble(),
-            random.NextDouble(),
-            random.NextDouble()
-        );
+        return LinFloat64Quaternion.Create(random.NextDouble(), random.NextDouble(), random.NextDouble(), random.NextDouble());
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]

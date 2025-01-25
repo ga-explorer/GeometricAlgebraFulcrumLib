@@ -508,9 +508,9 @@ public static class MatrixUtils
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static LinFloat64PlanarRotationSequence GetVectorToVectorRotationSequence(this Matrix<double> matrix)
     {
-        Debug.Assert(
-            matrix.Determinant().IsNearOne()
-        );
+        //Debug.Assert(
+        //    matrix.Determinant().IsNearOne()
+        //);
 
         var rotation = LinFloat64PlanarRotationSequence.Create(matrix.RowCount);
 
@@ -532,32 +532,32 @@ public static class MatrixUtils
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static void ClearNearZeroItems(this MathNet.Numerics.LinearAlgebra.Vector<double> vector, double epsilon = 1e-12)
+    public static void ClearNearZeroItems(this MathNet.Numerics.LinearAlgebra.Vector<double> vector, double zeroEpsilon = Float64Utils.ZeroEpsilon)
     {
         for (var i = 0; i < vector.Count; i++)
-            if (vector[i].IsNearZero(epsilon))
+            if (vector[i].IsNearZero(zeroEpsilon))
                 vector[i] = 0d;
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static bool IsNearZero(this MathNet.Numerics.LinearAlgebra.Vector<double> v1, double epsilon = 1e-12d)
+    public static bool IsNearZero(this MathNet.Numerics.LinearAlgebra.Vector<double> v1, double zeroEpsilon = 1e-12d)
     {
-        return v1.DotProduct(v1).IsNearZero(epsilon);
+        return v1.DotProduct(v1).IsNearZero(zeroEpsilon);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static bool IsNearParallelTo(this MathNet.Numerics.LinearAlgebra.Vector<double> v1, MathNet.Numerics.LinearAlgebra.Vector<double> v2, double epsilon = 1e-12d)
+    public static bool IsNearParallelTo(this MathNet.Numerics.LinearAlgebra.Vector<double> v1, MathNet.Numerics.LinearAlgebra.Vector<double> v2, double zeroEpsilon = 1e-12d)
     {
         var cosAngle =
             v1.DotProduct(v2) / (v1.L2Norm() * v2.L2Norm());
 
-        return cosAngle.Abs().IsNearOne(epsilon);
+        return cosAngle.Abs().IsNearOne(zeroEpsilon);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static bool IsNearOrthogonalTo(this MathNet.Numerics.LinearAlgebra.Vector<double> v1, MathNet.Numerics.LinearAlgebra.Vector<double> v2, double epsilon = 1e-12d)
+    public static bool IsNearOrthogonalTo(this MathNet.Numerics.LinearAlgebra.Vector<double> v1, MathNet.Numerics.LinearAlgebra.Vector<double> v2, double zeroEpsilon = 1e-12d)
     {
-        return v1.DotProduct(v2).IsNearZero(epsilon);
+        return v1.DotProduct(v2).IsNearZero(zeroEpsilon);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]

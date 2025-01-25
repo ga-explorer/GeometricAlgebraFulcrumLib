@@ -1,13 +1,12 @@
 ﻿using System.Collections;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.BasicShapes;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.Borders.Space2D.Immutable;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.Borders.Space2D.Mutable;
+using GeometricAlgebraFulcrumLib.Modeling.Geometry.Borders.Space2D.Float64;
 
 namespace GeometricAlgebraFulcrumLib.Modeling.Graphics.Accelerators.BIH.Space2D;
 
 public sealed class AccBihNodeInternal2D<T> : 
     IAccBihNode2D<T> 
-    where T : IFiniteGeometricShape2D
+    where T : IFloat64FiniteGeometricShape2D
 {
     private readonly T[] _geometricObjectsArray;
     private readonly double[] _clipValues = new double[2];
@@ -92,7 +91,7 @@ public sealed class AccBihNodeInternal2D<T> :
 
     public IAccBihNode2D<T> RightChildNode { get; internal set; }
 
-    public IEnumerable<IFiniteGeometricShape2D> Contents
+    public IEnumerable<IFloat64FiniteGeometricShape2D> Contents
     {
         get
         {
@@ -125,7 +124,7 @@ public sealed class AccBihNodeInternal2D<T> :
         return (index & 1) == 0 ? LeftChildNode : RightChildNode;
     }
 
-    public bool Contains(IFiniteGeometricShape2D shape)
+    public bool Contains(IFloat64FiniteGeometricShape2D shape)
     {
         for (var i = FirstObjectIndex; i <= LastObjectIndex; i++)
             if (ReferenceEquals(_geometricObjectsArray[i], shape))
@@ -134,14 +133,14 @@ public sealed class AccBihNodeInternal2D<T> :
         return false;
     }
 
-    public BoundingBox2D GetBoundingBox()
+    public Float64BoundingBox2D GetBoundingBox()
     {
-        return BoundingBox2D.Create((IEnumerable<T>)this);
+        return Float64BoundingBox2D.Create((IEnumerable<T>)this);
     }
 
-    public MutableBoundingBox2D GetMutableBoundingBox()
+    public Float64BoundingBoxComposer2D GetBoundingBoxComposer()
     {
-        return MutableBoundingBox2D.Create((IEnumerable<T>)this);
+        return Float64BoundingBoxComposer2D.Create((IEnumerable<T>)this);
     }
 
     public IEnumerator<T> GetEnumerator()

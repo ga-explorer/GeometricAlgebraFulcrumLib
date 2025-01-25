@@ -1,17 +1,20 @@
 ﻿using System.Collections.Immutable;
+using System.Diagnostics;
+using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
+using GeometricAlgebraFulcrumLib.Modeling.Signals;
 
 namespace GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.Visuals.Space3D.Animations;
 
 public abstract class GrVisualElementWithAnimation3D :
     GrVisualElement3D
 {
-    public GrVisualAnimationSpecs AnimationSpecs { get; }
+    public Float64SamplingSpecs SamplingSpecs { get; }
 
     //protected HashSet<int> InvalidFrameIndexSet { get; }
     //    = new HashSet<int>();
 
     public bool IsStatic 
-        => AnimationSpecs.IsStatic ||
+        => SamplingSpecs.IsStatic ||
            GetAnimatedGeometries().Count == 0;
     
     public bool IsAnimated 
@@ -20,10 +23,14 @@ public abstract class GrVisualElementWithAnimation3D :
     public GrVisualAnimatedScalar? AnimatedVisibility { get; set; }
 
     
-    protected GrVisualElementWithAnimation3D(string name, GrVisualAnimationSpecs animationSpecs) 
+    protected GrVisualElementWithAnimation3D(string name, Float64SamplingSpecs samplingSpecs) 
         : base(name)
     {
-        AnimationSpecs = animationSpecs;
+        Debug.Assert(
+            samplingSpecs.SamplingRate.IsInteger()
+        );
+
+        SamplingSpecs = samplingSpecs;
     }
 
     
@@ -56,16 +63,16 @@ public abstract class GrVisualElementWithAnimation3D :
         if (IsStatic)
             return ImmutableSortedSet<int>.Empty;
 
-        return AnimationSpecs.FrameIndexRange.ToImmutableSortedSet();
+        return SamplingSpecs.SampleIndexRange.ToImmutableSortedSet();
 
         //var invalidFrameIndexList =
         //    GetInvalidFrameIndices();
 
         //return invalidFrameIndexList.Count == 0
-        //    ? AnimationSpecs
+        //    ? SamplingSpecs
         //        .FrameIndexRange
         //        .ToImmutableSortedSet()
-        //    : AnimationSpecs
+        //    : SamplingSpecs
         //        .FrameIndexRange
         //        .ToImmutableSortedSet()
         //        .Except(invalidFrameIndexList);
@@ -73,7 +80,7 @@ public abstract class GrVisualElementWithAnimation3D :
 
     public double GetVisibility(double time)
     {
-        return AnimationSpecs.IsStatic || AnimatedVisibility is null
+        return SamplingSpecs.IsStatic || AnimatedVisibility is null
             ? Visibility
             : AnimatedVisibility.GetValue(time);
     }

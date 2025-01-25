@@ -1,8 +1,7 @@
 ﻿using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space2D;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.Borders;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.Borders.Space2D.Immutable;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.Borders.Space2D.Mutable;
+using GeometricAlgebraFulcrumLib.Modeling.Geometry.Borders.Space2D.Float64;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Computers.Voronoi;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.Svg.DrawingBoard;
 using SixLabors.ImageSharp;
@@ -15,12 +14,12 @@ public static class Sample1
     {
         //Create a set of random points
         var randGen = new Random(10);
-        var boundingBox = BoundingBox2D.Create(-100, -100, 100, 100);
+        var boundingBox = Float64BoundingBox2D.Create(-100, -100, 100, 100);
 
         var pointsArray =
             boundingBox
                 .GetSubdivisions(10, 10)
-                .Cast<BoundingBox2D>()
+                .Cast<Float64BoundingBox2D>()
                 .Select(bb => randGen.GetPointInside(bb))
                 .Cast<ILinFloat64Vector2D>()
                 .ToArray();
@@ -31,7 +30,7 @@ public static class Sample1
             computer.ComputeDelaunayTriangulation(pointsArray);
 
         var drawingBoard =
-            MutableBoundingBox2D
+            Float64BoundingBoxComposer2D
                 .CreateFromPoints(triangulation.Points.Cast<ILinFloat64Vector2D>())
                 .CreateDrawingBoard(2);
 

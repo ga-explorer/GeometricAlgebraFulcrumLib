@@ -1,8 +1,8 @@
 ﻿using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Tuples;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space2D;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space3D;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.BasicShapes.Triangles;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.BasicShapes.Triangles.Immutable;
+using GeometricAlgebraFulcrumLib.Modeling.Geometry.BasicShapes.Triangles.Space2D.Float64;
+using GeometricAlgebraFulcrumLib.Modeling.Geometry.BasicShapes.Triangles.Space3D.Float64;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Structures.Vertices;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Basic;
 
@@ -55,7 +55,7 @@ public sealed class GrTriangleGeometry3D
         return new GrTriangleGeometry3D(pointsArray, indicesList.ToList());
     }
 
-    public static GrTriangleGeometry3D Create(params ITriangle3D[] trianglesList)
+    public static GrTriangleGeometry3D Create(params IFloat64Triangle3D[] trianglesList)
     {
         var pointsList = new DistinctTuplesList3D();
         var vertexIndicesList = new List<int>();
@@ -82,7 +82,7 @@ public sealed class GrTriangleGeometry3D
         return new GrTriangleGeometry3D(pointsList, vertexIndicesList);
     }
         
-    public static GrTriangleGeometry3D Create(IEnumerable<ITriangle3D> trianglesList, bool reversePoints)
+    public static GrTriangleGeometry3D Create(IEnumerable<IFloat64Triangle3D> trianglesList, bool reversePoints)
     {
         var pointsList = new DistinctTuplesList3D();
         var vertexIndicesList = new List<int>();
@@ -145,7 +145,7 @@ public sealed class GrTriangleGeometry3D
 
 
     public override GraphicsPrimitiveType3D PrimitiveType 
-        => GraphicsPrimitiveType3D.Triangles;
+        => GraphicsPrimitiveType3D.TriangleList;
 
     private readonly List<int> _vertexIndicesList;
     public override IEnumerable<int> GeometryIndices
@@ -154,8 +154,8 @@ public sealed class GrTriangleGeometry3D
     public override int Count
         => _vertexIndicesList.Count / 3;
 
-    public override ITriangle3D this[int index] 
-        => Triangle3D.Create(
+    public override IFloat64Triangle3D this[int index] 
+        => Float64Triangle3D.Create(
             GetGeometryPoint(_vertexIndicesList[3 * index]),
             GetGeometryPoint(_vertexIndicesList[3 * index + 1]),
             GetGeometryPoint(_vertexIndicesList[3 * index + 2])
@@ -457,7 +457,7 @@ public sealed class GrTriangleGeometry3D
     }
         
         
-    public override IEnumerator<ITriangle3D> GetEnumerator()
+    public override IEnumerator<IFloat64Triangle3D> GetEnumerator()
     {
         for (var i = 0; i < VertexCount; i += 3)
         {
@@ -465,7 +465,7 @@ public sealed class GrTriangleGeometry3D
             var point2 = GetGeometryPoint(_vertexIndicesList[i + 1]);
             var point3 = GetGeometryPoint(_vertexIndicesList[i + 2]);
 
-            yield return Triangle3D.Create(point1, point2, point3);
+            yield return Float64Triangle3D.Create(point1, point2, point3);
         }
     }
 }

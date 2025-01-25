@@ -347,7 +347,7 @@ public sealed record Ega2Multivector :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public LinFloat64Vector2D GetVectorPartAsTuple2D()
+    public LinFloat64Vector2D GetVectorPartAsVector2D()
     {
         return LinFloat64Vector2D.Create((Float64Scalar)Scalar1, (Float64Scalar)Scalar2);
     }

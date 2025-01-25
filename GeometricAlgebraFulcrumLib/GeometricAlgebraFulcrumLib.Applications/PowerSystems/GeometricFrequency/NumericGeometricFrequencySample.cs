@@ -14,7 +14,7 @@ using GeometricAlgebraFulcrumLib.Algebra.Utilities.Text;
 using GeometricAlgebraFulcrumLib.Modeling.Calculus.Curves;
 using GeometricAlgebraFulcrumLib.Modeling.Calculus.Functions.Float64;
 using GeometricAlgebraFulcrumLib.Modeling.Calculus.Functions.Float64.Interpolators;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.Borders.Space2D.Mutable;
+using GeometricAlgebraFulcrumLib.Modeling.Geometry.Borders.Space2D.Float64;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.Parametric.Float64;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.Svg.DrawingBoard;
 using GeometricAlgebraFulcrumLib.Modeling.Signals;
@@ -3729,7 +3729,7 @@ public static class NumericGeometricFrequencySample
                 var (yMin, yMax) = yValues.GetMinMaxValues();
 
                 var drawingBoard =
-                    MutableBoundingBox2D.CreateFromPoints(
+                    Float64BoundingBoxComposer2D.CreateFromPoints(
                         xMin,
                         yMin,
                         xMax,

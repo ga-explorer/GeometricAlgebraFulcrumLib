@@ -4,6 +4,7 @@ using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space3D;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.Visuals.Space3D.Animations;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.Visuals.Space3D.Styles;
+using GeometricAlgebraFulcrumLib.Modeling.Signals;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Basic;
 
 namespace GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.Visuals.Space3D.Surfaces;
@@ -35,7 +36,7 @@ public sealed class GrVisualCircleRingSurface3D :
             normal, 
             minRadius, 
             maxRadius,
-            GrVisualAnimationSpecs.Static
+            Float64SamplingSpecs.Static
         );
     }
         
@@ -48,11 +49,11 @@ public sealed class GrVisualCircleRingSurface3D :
             normal, 
             minRadius, 
             maxRadius,
-            GrVisualAnimationSpecs.Static
+            Float64SamplingSpecs.Static
         );
     }
 
-    public static GrVisualCircleRingSurface3D Create(string name, GrVisualSurfaceStyle3D style, ILinFloat64Vector3D normal, double minRadius, double maxRadius, GrVisualAnimationSpecs animationSpecs)
+    public static GrVisualCircleRingSurface3D Create(string name, GrVisualSurfaceStyle3D style, ILinFloat64Vector3D normal, double minRadius, double maxRadius, Float64SamplingSpecs samplingSpecs)
     {
         return new GrVisualCircleRingSurface3D(
             name, 
@@ -61,11 +62,11 @@ public sealed class GrVisualCircleRingSurface3D :
             normal, 
             minRadius, 
             maxRadius,
-            animationSpecs
+            samplingSpecs
         );
     }
         
-    public static GrVisualCircleRingSurface3D Create(string name, GrVisualSurfaceStyle3D style, ILinFloat64Vector3D center, ILinFloat64Vector3D normal, double minRadius, double maxRadius, GrVisualAnimationSpecs animationSpecs)
+    public static GrVisualCircleRingSurface3D Create(string name, GrVisualSurfaceStyle3D style, ILinFloat64Vector3D center, ILinFloat64Vector3D normal, double minRadius, double maxRadius, Float64SamplingSpecs samplingSpecs)
     {
         return new GrVisualCircleRingSurface3D(
             name, 
@@ -74,7 +75,7 @@ public sealed class GrVisualCircleRingSurface3D :
             normal, 
             minRadius, 
             maxRadius,
-            animationSpecs
+            samplingSpecs
         );
     }
         
@@ -87,7 +88,7 @@ public sealed class GrVisualCircleRingSurface3D :
                 LinFloat64Vector3D.E2, 
                 0.5d, 
                 1d,
-                normal.AnimationSpecs
+                normal.SamplingSpecs
             ).SetAnimatedNormal(normal)
             .SetAnimatedMinRadius(minRadius)
             .SetAnimatedMaxRadius(maxRadius);
@@ -102,7 +103,7 @@ public sealed class GrVisualCircleRingSurface3D :
                 LinFloat64Vector3D.E2, 
                 0.5d, 
                 1d,
-                center.AnimationSpecs
+                center.SamplingSpecs
             ).SetAnimatedCenter(center)
             .SetAnimatedNormal(normal)
             .SetAnimatedMinRadius(minRadius)
@@ -127,8 +128,8 @@ public sealed class GrVisualCircleRingSurface3D :
     public GrVisualAnimatedScalar? AnimatedMaxRadius { get; set; }
 
 
-    private GrVisualCircleRingSurface3D(string name, GrVisualSurfaceStyle3D style, ILinFloat64Vector3D center, ILinFloat64Vector3D normal, double minRadius, double maxRadius, GrVisualAnimationSpecs animationSpecs) 
-        : base(name, style, animationSpecs)
+    private GrVisualCircleRingSurface3D(string name, GrVisualSurfaceStyle3D style, ILinFloat64Vector3D center, ILinFloat64Vector3D normal, double minRadius, double maxRadius, Float64SamplingSpecs samplingSpecs) 
+        : base(name, style, samplingSpecs)
     {
         Center = center;
         Normal = normal.ToUnitLinVector3D();
@@ -163,7 +164,7 @@ public sealed class GrVisualCircleRingSurface3D :
 
     public Triplet<LinFloat64Vector3D> GetInnerEdgePointsTriplet()
     {
-        var quaternion = LinUnitBasisVector3D.PositiveZ.CreateAxisToVectorRotationQuaternion(
+        var quaternion = LinBasisVector3D.Pz.VectorToVectorRotationQuaternion(
             Normal.ToUnitLinVector3D()
         );
 
@@ -181,7 +182,7 @@ public sealed class GrVisualCircleRingSurface3D :
         
     public Triplet<LinFloat64Vector3D> GetOuterEdgePointsTriplet()
     {
-        var quaternion = LinUnitBasisVector3D.PositiveZ.CreateAxisToVectorRotationQuaternion(
+        var quaternion = LinBasisVector3D.Pz.VectorToVectorRotationQuaternion(
             Normal.ToUnitLinVector3D()
         );
 
@@ -266,28 +267,28 @@ public sealed class GrVisualCircleRingSurface3D :
         
     public LinFloat64Vector3D GetCenter(double time)
     {
-        return AnimationSpecs.IsStatic || AnimatedCenter is null
+        return SamplingSpecs.IsStatic || AnimatedCenter is null
             ? Center.ToLinVector3D()
             : AnimatedCenter.GetPoint(time);
     }
         
     public LinFloat64Vector3D GetNormal(double time)
     {
-        return AnimationSpecs.IsStatic || AnimatedNormal is null
+        return SamplingSpecs.IsStatic || AnimatedNormal is null
             ? Normal
             : AnimatedNormal.GetPoint(time).ToUnitLinVector3D();
     }
 
     public double GetMinRadius(double time)
     {
-        return AnimationSpecs.IsStatic || AnimatedMinRadius is null
+        return SamplingSpecs.IsStatic || AnimatedMinRadius is null
             ? MinRadius
             : AnimatedMinRadius.GetValue(time);
     }
         
     public double GetMaxRadius(double time)
     {
-        return AnimationSpecs.IsStatic || AnimatedMaxRadius is null
+        return SamplingSpecs.IsStatic || AnimatedMaxRadius is null
             ? MaxRadius
             : AnimatedMaxRadius.GetValue(time);
     }
@@ -298,7 +299,7 @@ public sealed class GrVisualCircleRingSurface3D :
 
         foreach (var frameIndex in GetValidFrameIndexSet())
         {
-            var time = (double)frameIndex / AnimationSpecs.FrameRate;
+            var time = (double)frameIndex / SamplingSpecs.SamplingRate;
                 
             yield return new KeyFrameRecord(
                 frameIndex, 

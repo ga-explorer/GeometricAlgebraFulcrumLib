@@ -5,8 +5,8 @@ using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Frames.Space3D;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space2D;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space3D;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.BasicShapes.Triangles;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.BasicShapes.Triangles.Immutable;
+using GeometricAlgebraFulcrumLib.Modeling.Geometry.BasicShapes.Triangles.Space2D.Float64;
+using GeometricAlgebraFulcrumLib.Modeling.Geometry.BasicShapes.Triangles.Space3D.Float64;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Primitives.Vertices;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Basic;
 using SixLabors.ImageSharp;
@@ -17,7 +17,7 @@ namespace GeometricAlgebraFulcrumLib.Modeling.Graphics.Primitives.Triangles;
 /// This class can be used to incrementally build a graphics triangle geometry
 /// in 3D
 /// </summary>
-public class GrTriangleGeometryComposer3D :
+public class  GrTriangleGeometryComposer3D :
     IGraphicsTriangleGeometry3D
 {
     private readonly Dictionary<Triplet<Float64Scalar>, IGraphicsVertex3D> _verticesTable
@@ -46,8 +46,8 @@ public class GrTriangleGeometryComposer3D :
     public int Count 
         => _indicesList.Count / 3;
 
-    public ITriangle3D this[int index] 
-        => Triangle3D.Create(
+    public IFloat64Triangle3D this[int index] 
+        => Float64Triangle3D.Create(
             _verticesList[_indicesList[index]],
             _verticesList[_indicesList[index + 1]],
             _verticesList[_indicesList[index + 2]]
@@ -59,7 +59,7 @@ public class GrTriangleGeometryComposer3D :
     public bool ReverseNormals { get; set; }
 
     public GraphicsPrimitiveType3D PrimitiveType 
-        => GraphicsPrimitiveType3D.Triangles;
+        => GraphicsPrimitiveType3D.TriangleList;
 
     public int VertexCount 
         => _verticesList.Count;
@@ -196,7 +196,7 @@ public class GrTriangleGeometryComposer3D :
         return new GrVertex3D(vertexIndex, point);
     }
 
-    private IGraphicsVertex3D CreateVertex(IGraphicsVertex3D vertex)
+    private IGraphicsVertex3D CreateVertex(IGraphicsSurfaceLocalFrame3D vertex)
     {
         var vertexIndex = _verticesList.Count;
 
@@ -525,7 +525,7 @@ public class GrTriangleGeometryComposer3D :
         );
     }
 
-    public bool AddTriangle(ITriangle3D triangle)
+    public bool AddTriangle(IFloat64Triangle3D triangle)
     {
         return StoreTriangle(
             AddVertex(triangle.GetPoint1()), 
@@ -535,7 +535,7 @@ public class GrTriangleGeometryComposer3D :
     }
 
 
-    public GrTriangleGeometryComposer3D AddTriangles(IEnumerable<ITriangle3D> trianglesList)
+    public GrTriangleGeometryComposer3D AddTriangles(IEnumerable<IFloat64Triangle3D> trianglesList)
     {
         foreach (var triangle in trianglesList)
         {
@@ -664,10 +664,10 @@ public class GrTriangleGeometryComposer3D :
     //    return geometry;
     //}
 
-    public IEnumerator<ITriangle3D> GetEnumerator()
+    public IEnumerator<IFloat64Triangle3D> GetEnumerator()
     {
         for (var i = 0; i < _indicesList.Count; i += 3)
-            yield return Triangle3D.Create(
+            yield return Float64Triangle3D.Create(
                 _verticesList[_indicesList[i]],
                 _verticesList[_indicesList[i + 1]],
                 _verticesList[_indicesList[i + 2]]

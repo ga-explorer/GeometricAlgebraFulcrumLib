@@ -37,7 +37,7 @@ public class ParametricCircle3D :
         UnitNormal = unitNormal.ToLinVector3D();
         Radius = radius;
 
-        var axis = unitNormal.SelectNearestAxis();
+        var axis = unitNormal.SelectNearestBasisVector();
 
         if (axis.IsNegative())
             rotationCount = -rotationCount;

@@ -37,12 +37,12 @@ public abstract class LinFloat64DirectionalScalingLinearMap :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool IsNearIdentity(double epsilon = 1E-12)
+    public bool IsNearIdentity(double zeroEpsilon = 1E-12)
     {
-        return ScalingFactor.IsNearOne(epsilon);
+        return ScalingFactor.IsNearOne(zeroEpsilon);
     }
 
-    public bool IsNearReflection(double epsilon = 1E-12)
+    public bool IsNearReflection(double zeroEpsilon = 1E-12)
     {
         throw new NotImplementedException();
     }

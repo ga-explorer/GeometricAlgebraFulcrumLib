@@ -345,12 +345,12 @@
 //            return true;
 //        }
 
-//        public override bool IsNearIdentity(double epsilon = 1E-12)
+//        public override bool IsNearIdentity(double zeroEpsilon = 1E-12)
 //        {
 //            for (var basisIndex = 0; basisIndex < VSpaceDimensions; basisIndex++)
 //            {
 //                var isSameVectorBasis = 
-//                    MapBasisVector(basisIndex).IsNearVectorBasis(basisIndex, epsilon);
+//                    MapBasisVector(basisIndex).IsNearVectorBasis(basisIndex, zeroEpsilon);
 
 //                if (!isSameVectorBasis) return false;
 //            }
@@ -362,7 +362,7 @@
 //        /// Test if all rotation planes in this sequence are nearly pair-wise orthogonal
 //        /// </summary>
 //        /// <returns></returns>
-//        public bool IsNearOrthogonalRotationsSequence(double epsilon = 1e-12)
+//        public bool IsNearOrthogonalRotationsSequence(double zeroEpsilon = Float64Utils.ZeroEpsilon)
 //        {
 //            if (_mapList.Count > VSpaceDimensions / 2)
 //                return false;
@@ -377,10 +377,10 @@
 //                    var u2 = _mapList[j].SourceVector;
 //                    var v2 = _mapList[j].TargetVector;
 
-//                    if (!u1.IsNearOrthogonalTo(u2, epsilon)) return false;
-//                    if (!u1.IsNearOrthogonalTo(v2, epsilon)) return false;
-//                    if (!v1.IsNearOrthogonalTo(u2, epsilon)) return false;
-//                    if (!v1.IsNearOrthogonalTo(v2, epsilon)) return false;
+//                    if (!u1.IsNearOrthogonalTo(u2, zeroEpsilon)) return false;
+//                    if (!u1.IsNearOrthogonalTo(v2, zeroEpsilon)) return false;
+//                    if (!v1.IsNearOrthogonalTo(u2, zeroEpsilon)) return false;
+//                    if (!v1.IsNearOrthogonalTo(v2, zeroEpsilon)) return false;
 //                }
 //            }
 

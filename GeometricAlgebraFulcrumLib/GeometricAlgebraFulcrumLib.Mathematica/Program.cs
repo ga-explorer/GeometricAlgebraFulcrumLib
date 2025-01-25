@@ -1,5 +1,4 @@
 ﻿using System;
-using GeometricAlgebraFulcrumLib.Mathematica.Samples.Modeling;
 
 namespace GeometricAlgebraFulcrumLib.Mathematica
 {
@@ -7,6 +6,8 @@ namespace GeometricAlgebraFulcrumLib.Mathematica
     {
         static void Main(string[] args)
         {
+            Samples.Algebra.GeometricAlgebra.SymbolicRotorsSample.Example6();
+
             //VoltageSags3Phase4WireSample.Execute();
             //SnelliusPothenotProblemSample.SymbolicCGaCassini()
 
@@ -28,7 +29,7 @@ namespace GeometricAlgebraFulcrumLib.Mathematica
             //ModelingVsAlgebraSamples.AlgebraExample();
             //ModelingVsAlgebraSamples.ModelingExample();
 
-            SpaceOfSpheresSamples.SphereEquation();
+            //SpaceOfSpheresSamples.SphereEquation();
 
             Console.WriteLine();
             Console.WriteLine("Press any key to end ..");

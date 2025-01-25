@@ -1,5 +1,5 @@
 ﻿using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space3D;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.BasicShapes.Lines;
+using GeometricAlgebraFulcrumLib.Modeling.Geometry.BasicShapes.Lines.Space3D.Float64;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Primitives;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Primitives.Lines;
 using GeometricAlgebraFulcrumLib.Utilities.Text.Code.JavaScript;
@@ -15,21 +15,21 @@ public sealed class XeoglLinesGeometry : XeoglPrimitivesGeometry
         return new XeoglLinesGeometry(geometryData);
     }
 
-    public static XeoglLinesGeometry CreateLineSegment(ILineSegment3D lineSegment)
+    public static XeoglLinesGeometry CreateLineSegment(IFloat64LineSegment3D lineSegment)
     {
         var geometryData = GrLineGeometry3D.Create(lineSegment);
 
         return new XeoglLinesGeometry(geometryData);
     }
 
-    public static XeoglLinesGeometry CreateLineSegments(params ILineSegment3D[] lineSegmentsList)
+    public static XeoglLinesGeometry CreateLineSegments(params IFloat64LineSegment3D[] lineSegmentsList)
     {
         var geometryData = GrLineGeometry3D.Create(lineSegmentsList);
 
         return new XeoglLinesGeometry(geometryData);
     }
 
-    public static XeoglLinesGeometry CreateLineSegments(IEnumerable<ILineSegment3D> lineSegmentsList)
+    public static XeoglLinesGeometry CreateLineSegments(IEnumerable<IFloat64LineSegment3D> lineSegmentsList)
     {
         var geometryData = GrLineGeometry3D.Create(lineSegmentsList);
 
@@ -58,7 +58,7 @@ public sealed class XeoglLinesGeometry : XeoglPrimitivesGeometry
         base.UpdateConstructorAttributes(composer);
 
         composer
-            .SetValue("primitive", PrimitiveType, GraphicsPrimitiveType3D.Triangles)
+            .SetValue("primitive", PrimitiveType, GraphicsPrimitiveType3D.TriangleList)
             .SetTextValue("positions", GraphicsLinesGeometry.GeometryPoints.ToJavaScriptNumbersArrayText(" // Vertex Position "), "[]")
             .SetTextValue("indices", GraphicsLinesGeometry.GeometryIndices.ToJavaScriptNumbersArrayText(), "[]");
     }

@@ -127,24 +127,24 @@ public class DifferentialCurveFrame3D :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool IsOrthogonal(double epsilon = 1e-12)
+    public bool IsOrthogonal(double zeroEpsilon = Float64Utils.ZeroEpsilon)
     {
         return 
-            Direction1.VectorESp(Direction2).IsNearZero(epsilon) &&
-            Direction1.VectorESp(Direction3).IsNearZero(epsilon) &&
-            Direction2.VectorESp(Direction3).IsNearZero(epsilon);
+            Direction1.VectorESp(Direction2).IsNearZero(zeroEpsilon) &&
+            Direction1.VectorESp(Direction3).IsNearZero(zeroEpsilon) &&
+            Direction2.VectorESp(Direction3).IsNearZero(zeroEpsilon);
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool IsOrthonormal(double epsilon = 1e-12)
+    public bool IsOrthonormal(double zeroEpsilon = Float64Utils.ZeroEpsilon)
     {
         return 
-            Direction1.VectorESp(Direction1).IsNearOne(epsilon) &&
-            Direction2.VectorESp(Direction2).IsNearOne(epsilon) &&
-            Direction3.VectorESp(Direction3).IsNearOne(epsilon) &&
-            Direction1.VectorESp(Direction2).IsNearZero(epsilon) &&
-            Direction1.VectorESp(Direction3).IsNearZero(epsilon) &&
-            Direction2.VectorESp(Direction3).IsNearZero(epsilon);
+            Direction1.VectorESp(Direction1).IsNearOne(zeroEpsilon) &&
+            Direction2.VectorESp(Direction2).IsNearOne(zeroEpsilon) &&
+            Direction3.VectorESp(Direction3).IsNearOne(zeroEpsilon) &&
+            Direction1.VectorESp(Direction2).IsNearZero(zeroEpsilon) &&
+            Direction1.VectorESp(Direction3).IsNearZero(zeroEpsilon) &&
+            Direction2.VectorESp(Direction3).IsNearZero(zeroEpsilon);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]

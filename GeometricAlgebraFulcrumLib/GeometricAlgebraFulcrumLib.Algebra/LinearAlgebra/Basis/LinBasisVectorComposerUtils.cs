@@ -18,7 +18,7 @@ public static class LinBasisVectorComposerUtils
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static LinBasisVector ToLinBasisVector(this int index)
     {
-        return new LinBasisVector(index);
+        return LinBasisVector.Create(index);
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -42,7 +42,7 @@ public static class LinBasisVectorComposerUtils
     {
         return vSpaceDimensions
             .GetRange()
-            .Select(id => new LinBasisVector(id));
+            .Select(LinBasisVector.Create);
     }
 
 }

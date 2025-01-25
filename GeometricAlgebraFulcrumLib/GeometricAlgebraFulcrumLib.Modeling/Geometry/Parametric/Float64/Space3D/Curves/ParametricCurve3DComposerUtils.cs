@@ -185,15 +185,15 @@ public static class ParametricCurve3DComposerUtils
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static IGraphicsParametricCircle3D CreateCircle3D(this LinUnitBasisVector3D normalAxis, double radius, int rotationCount = 1)
+    public static IGraphicsParametricCircle3D CreateCircle3D(this LinBasisVector3D normalAxis, double radius, int rotationCount = 1)
     {
         return normalAxis switch
         {
-            LinUnitBasisVector3D.PositiveX => new ParametricCircleYz3D(radius, rotationCount),
-            LinUnitBasisVector3D.NegativeX => new ParametricCircleYz3D(radius, -rotationCount),
-            LinUnitBasisVector3D.PositiveY => new ParametricCircleZx3D(radius, rotationCount),
-            LinUnitBasisVector3D.NegativeY => new ParametricCircleZx3D(radius, -rotationCount),
-            LinUnitBasisVector3D.PositiveZ => new ParametricCircleXy3D(radius, rotationCount),
+            LinBasisVector3D.Px => new ParametricCircleYz3D(radius, rotationCount),
+            LinBasisVector3D.Nx => new ParametricCircleYz3D(radius, -rotationCount),
+            LinBasisVector3D.Py => new ParametricCircleZx3D(radius, rotationCount),
+            LinBasisVector3D.Ny => new ParametricCircleZx3D(radius, -rotationCount),
+            LinBasisVector3D.Pz => new ParametricCircleXy3D(radius, rotationCount),
             _ => new ParametricCircleXy3D(radius, -rotationCount)
         };
     }
@@ -242,7 +242,7 @@ public static class ParametricCurve3DComposerUtils
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static GrMappedParametricCurve3D CreateMappedCurve3D(this IParametricCurve3D curve, IAffineMap3D map)
+    public static GrMappedParametricCurve3D CreateMappedCurve3D(this IParametricCurve3D curve, IFloat64AffineMap3D map)
     {
         return new GrMappedParametricCurve3D(curve, map);
     }

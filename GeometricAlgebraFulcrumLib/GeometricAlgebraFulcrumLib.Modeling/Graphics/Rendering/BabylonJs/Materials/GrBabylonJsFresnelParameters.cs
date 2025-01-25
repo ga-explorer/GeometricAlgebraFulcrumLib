@@ -1,106 +1,16 @@
-﻿using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.BabylonJs.Values;
-
-namespace GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.BabylonJs.Materials;
+﻿namespace GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.BabylonJs.Materials;
 
 public sealed class GrBabylonJsFresnelParameters :
     GrBabylonJsObject
 {
-    public sealed class FresnelParametersOptions :
-        GrBabylonJsObjectOptions
-    {
-        public GrBabylonJsFloat32Value? Bias
-        {
-            get => GetAttributeValueOrNull<GrBabylonJsFloat32Value>("bias");
-            set => SetAttributeValue("bias", value);
-        }
-
-        public GrBabylonJsBooleanValue? IsEnabled
-        {
-            get => GetAttributeValueOrNull<GrBabylonJsBooleanValue>("isEnabled");
-            set => SetAttributeValue("isEnabled", value);
-        }
-
-        public GrBabylonJsColor3Value? LeftColor
-        {
-            get => GetAttributeValueOrNull<GrBabylonJsColor3Value>("leftColor");
-            set => SetAttributeValue("leftColor", value);
-        }
-
-        public GrBabylonJsColor3Value? RightColor
-        {
-            get => GetAttributeValueOrNull<GrBabylonJsColor3Value>("rightColor");
-            set => SetAttributeValue("rightColor", value);
-        }
-
-        public GrBabylonJsFloat32Value? Power
-        {
-            get => GetAttributeValueOrNull<GrBabylonJsFloat32Value>("power");
-            set => SetAttributeValue("power", value);
-        }
-            
-
-        public FresnelParametersOptions()
-        {
-        }
-
-        public FresnelParametersOptions(FresnelParametersOptions options)
-        {
-            SetAttributeValues(options);
-        }
-    }
-
-    public class FresnelParametersProperties :
-        GrBabylonJsObjectProperties
-    {
-        public GrBabylonJsFloat32Value? Bias
-        {
-            get => GetAttributeValueOrNull<GrBabylonJsFloat32Value>("bias");
-            set => SetAttributeValue("bias", value);
-        }
-
-        public GrBabylonJsBooleanValue? IsEnabled
-        {
-            get => GetAttributeValueOrNull<GrBabylonJsBooleanValue>("isEnabled");
-            set => SetAttributeValue("isEnabled", value);
-        }
-
-        public GrBabylonJsColor3Value? LeftColor
-        {
-            get => GetAttributeValueOrNull<GrBabylonJsColor3Value>("leftColor");
-            set => SetAttributeValue("leftColor", value);
-        }
-
-        public GrBabylonJsColor3Value? RightColor
-        {
-            get => GetAttributeValueOrNull<GrBabylonJsColor3Value>("rightColor");
-            set => SetAttributeValue("rightColor", value);
-        }
-
-        public GrBabylonJsFloat32Value? Power
-        {
-            get => GetAttributeValueOrNull<GrBabylonJsFloat32Value>("power");
-            set => SetAttributeValue("power", value);
-        }
-            
-
-        public FresnelParametersProperties()
-        {
-        }
-
-        public FresnelParametersProperties(FresnelParametersProperties options)
-        {
-            SetAttributeValues(options);
-        }
-    }
-
     protected override string ConstructorName
         => "new BABYLON.FresnelParameters";
 
-    public FresnelParametersOptions Options { get; private set; }
-        = new FresnelParametersOptions();
+    public GrBabylonJsFresnelParametersOptions Options { get; private set; }
+        = new GrBabylonJsFresnelParametersOptions();
 
-    public FresnelParametersProperties Properties { get; private set; }
-        = new FresnelParametersProperties();
+    public GrBabylonJsFresnelParametersProperties Properties { get; private set; }
+        = new GrBabylonJsFresnelParametersProperties();
 
     public override GrBabylonJsObjectOptions ObjectOptions 
         => Options;
@@ -115,16 +25,16 @@ public sealed class GrBabylonJsFresnelParameters :
     }
 
 
-    public GrBabylonJsFresnelParameters SetOptions(FresnelParametersOptions options)
+    public GrBabylonJsFresnelParameters SetOptions(GrBabylonJsFresnelParametersOptions options)
     {
-        Options = new FresnelParametersOptions(options);
+        Options = new GrBabylonJsFresnelParametersOptions(options);
 
         return this;
     }
 
-    public GrBabylonJsFresnelParameters SetProperties(FresnelParametersProperties properties)
+    public GrBabylonJsFresnelParameters SetProperties(GrBabylonJsFresnelParametersProperties properties)
     {
-        Properties = new FresnelParametersProperties(properties);
+        Properties = new GrBabylonJsFresnelParametersProperties(properties);
 
         return this;
     }
@@ -135,7 +45,7 @@ public sealed class GrBabylonJsFresnelParameters :
         var optionsCode = 
             ObjectOptions.Count == 0
                 ? "{}" 
-                : ObjectOptions.GetCode();
+                : ObjectOptions.GetAttributeSetCode();
 
         yield return optionsCode;
     }

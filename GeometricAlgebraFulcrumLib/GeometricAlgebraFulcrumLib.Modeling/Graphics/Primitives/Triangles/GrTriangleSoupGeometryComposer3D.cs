@@ -3,8 +3,8 @@ using System.Diagnostics;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Frames.Space3D;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space2D;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space3D;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.BasicShapes.Triangles;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.BasicShapes.Triangles.Immutable;
+using GeometricAlgebraFulcrumLib.Modeling.Geometry.BasicShapes.Triangles.Space2D.Float64;
+using GeometricAlgebraFulcrumLib.Modeling.Geometry.BasicShapes.Triangles.Space3D.Float64;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Primitives.Vertices;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Basic;
 using SixLabors.ImageSharp;
@@ -33,15 +33,15 @@ public class GrTriangleSoupGeometryComposer3D :
     public int Count 
         => _verticesList.Count / 3;
 
-    public ITriangle3D this[int index] 
-        => Triangle3D.Create(
+    public IFloat64Triangle3D this[int index] 
+        => Float64Triangle3D.Create(
             _verticesList[3 * index],
             _verticesList[3 * index + 1],
             _verticesList[3 * index + 2]
         );
 
     public GraphicsPrimitiveType3D PrimitiveType 
-        => GraphicsPrimitiveType3D.Triangles;
+        => GraphicsPrimitiveType3D.TriangleList;
 
     public int VertexCount 
         => _verticesList.Count;
@@ -294,7 +294,7 @@ public class GrTriangleSoupGeometryComposer3D :
         throw new NotImplementedException();
     }
 
-    public bool AddTriangle(ITriangle3D triangle)
+    public bool AddTriangle(IFloat64Triangle3D triangle)
     {
         return StoreTriangle(
             AddVertex(triangle.GetPoint1()), 
@@ -340,7 +340,7 @@ public class GrTriangleSoupGeometryComposer3D :
     }
 
 
-    public GrTriangleSoupGeometryComposer3D AddTriangles(IEnumerable<ITriangle3D> trianglesList)
+    public GrTriangleSoupGeometryComposer3D AddTriangles(IEnumerable<IFloat64Triangle3D> trianglesList)
     {
         foreach (var triangle in trianglesList)
         {
@@ -434,10 +434,10 @@ public class GrTriangleSoupGeometryComposer3D :
     //    return geometry;
     //}
 
-    public IEnumerator<ITriangle3D> GetEnumerator()
+    public IEnumerator<IFloat64Triangle3D> GetEnumerator()
     {
         for (var i = 0; i < _verticesList.Count; i += 3)
-            yield return Triangle3D.Create(
+            yield return Float64Triangle3D.Create(
                 _verticesList[i],
                 _verticesList[i + 1],
                 _verticesList[i + 2]

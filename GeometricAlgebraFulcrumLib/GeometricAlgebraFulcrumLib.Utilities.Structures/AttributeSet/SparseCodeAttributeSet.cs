@@ -5,20 +5,20 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Structures.AttributeSet;
 public abstract class SparseCodeAttributeSet :
     ISparseCodeAttributeSet
 {
-    private readonly Dictionary<string, ISparseCodeAttributeValue> _attributeDictionary
-        = new Dictionary<string, ISparseCodeAttributeValue>();
+    private readonly Dictionary<string, ISparseCodeAttributeValue?> _attributeDictionary
+        = new Dictionary<string, ISparseCodeAttributeValue?>();
 
 
     public int Count 
         => _attributeDictionary.Count;
         
-    public ISparseCodeAttributeValue this[string key] 
+    public ISparseCodeAttributeValue? this[string key] 
         => _attributeDictionary[key];
 
     public IEnumerable<string> Keys 
         => _attributeDictionary.Keys;
 
-    public IEnumerable<ISparseCodeAttributeValue> Values 
+    public IEnumerable<ISparseCodeAttributeValue?> Values 
         => _attributeDictionary.Values;
 
 
@@ -47,7 +47,7 @@ public abstract class SparseCodeAttributeSet :
     public string GetAttributeValueText(string key)
     {
         return _attributeDictionary.TryGetValue(key, out var attributeValue) 
-            ? attributeValue.GetCode() 
+            ? attributeValue.GetAttributeValueCode() 
             : string.Empty;
     }
 
@@ -158,7 +158,7 @@ public abstract class SparseCodeAttributeSet :
         return true;
     }
 
-    public SparseCodeAttributeSet SetAttributeValue(string key, ISparseCodeAttributeValue value)
+    public SparseCodeAttributeSet SetAttributeValue(string key, ISparseCodeAttributeValue? value)
     {
         if (value is null || value.IsEmpty)
         {
@@ -176,15 +176,45 @@ public abstract class SparseCodeAttributeSet :
         return this;
     }
 
-    public SparseCodeAttributeSet SetAttributeValues(IEnumerable<KeyValuePair<string, ISparseCodeAttributeValue>> keyValuePairs)
+    public SparseCodeAttributeSet SetAttributeValues(IEnumerable<KeyValuePair<string, ISparseCodeAttributeValue?>> keyValuePairs)
     {
         foreach (var (key, value) in keyValuePairs)
             SetAttributeValue(key, value);
 
         return this;
     }
+    
+    public IEnumerable<string> GetAttributeValueCode(Func<string, string, string> concatFunc, IEnumerable<string> attributeNameList)
+    {
+        foreach (var attributeName in attributeNameList)
+            if (TryGetAttributeValue(attributeName, out var attributeValue))
+                yield return concatFunc(
+                    attributeName, 
+                    attributeValue.GetAttributeValueCode()
+                );
+    }
+    
+    public IEnumerable<string> GetAttributeValueCode(Func<string, string, string> concatFunc)
+    {
+        foreach (var (attributeName, attributeValue) in _attributeDictionary)
+            if (attributeValue is not null)
+                yield return concatFunc(
+                    attributeName, 
+                    attributeValue.GetAttributeValueCode()
+                );
+    }
 
-    public abstract string GetCode();
+    public IEnumerable<string> GetAttributeValueCode(Func<string, string, string> concatFunc, params string[] attributeNameList)
+    {
+        foreach (var attributeName in attributeNameList)
+            if (TryGetAttributeValue(attributeName, out var attributeValue))
+                yield return concatFunc(
+                    attributeName, 
+                    attributeValue.GetAttributeValueCode()
+                );
+    }
+
+    public abstract string GetAttributeSetCode();
 
     public virtual IEnumerable<KeyValuePair<string, string>> GetKeyValueCodePairs()
     {
@@ -192,9 +222,19 @@ public abstract class SparseCodeAttributeSet :
         {
             yield return new KeyValuePair<string, string>(
                 key,
-                attributeValue.GetCode()
+                attributeValue.GetAttributeValueCode()
             );
         }
+    }
+    
+    public IEnumerable<KeyValuePair<string, string>> GetKeyValueCodePairs(params string[] attributeNameList)
+    {
+        foreach (var attributeName in attributeNameList)
+            if (TryGetAttributeValue(attributeName, out var attributeValue))
+                yield return new KeyValuePair<string, string>(
+                    attributeName, 
+                    attributeValue.GetAttributeValueCode()
+                );
     }
 
     public IEnumerator<KeyValuePair<string, ISparseCodeAttributeValue>> GetEnumerator()

@@ -2,7 +2,7 @@
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Basis;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space3D;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.AffineMaps.Space3D;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.Borders.Space2D.Immutable;
+using GeometricAlgebraFulcrumLib.Modeling.Geometry.Borders.Space2D.Float64;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.Parametric.Float64.Space3D.Curves;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.Parametric.Float64.Space3D.Surfaces.Sampled;
 
@@ -16,9 +16,11 @@ public static class GrParametricSurfaceFactory3D
         var theta = t1 * 2 * Math.PI;
         var phi = (t2 - 0.5d) * Math.PI;
 
-        return LinFloat64Vector3D.Create(radius * Math.Sin(phi),
+        return LinFloat64Vector3D.Create(
+            radius * Math.Sin(phi),
             radius * Math.Cos(theta) * Math.Cos(phi),
-            radius * Math.Sin(theta) * Math.Cos(phi));
+            radius * Math.Sin(theta) * Math.Cos(phi)
+        );
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -27,9 +29,11 @@ public static class GrParametricSurfaceFactory3D
         var theta = t1 * -2 * Math.PI;
         var phi = (t2 - 0.5d) * Math.PI;
 
-        return LinFloat64Vector3D.Create(radius * Math.Sin(phi),
+        return LinFloat64Vector3D.Create(
+            radius * Math.Sin(phi),
             radius * Math.Cos(theta) * Math.Cos(phi),
-            radius * Math.Sin(theta) * Math.Cos(phi));
+            radius * Math.Sin(theta) * Math.Cos(phi)
+        );
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -38,9 +42,11 @@ public static class GrParametricSurfaceFactory3D
         var theta = t1 * 2 * Math.PI;
         var phi = (t2 - 0.5d) * Math.PI;
 
-        return LinFloat64Vector3D.Create(radius * Math.Sin(theta) * Math.Cos(phi),
+        return LinFloat64Vector3D.Create(
+            radius * Math.Sin(theta) * Math.Cos(phi),
             radius * Math.Sin(phi),
-            radius * Math.Cos(theta) * Math.Cos(phi));
+            radius * Math.Cos(theta) * Math.Cos(phi)
+        );
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -49,9 +55,11 @@ public static class GrParametricSurfaceFactory3D
         var theta = t1 * -2 * Math.PI;
         var phi = (t2 - 0.5d) * Math.PI;
 
-        return LinFloat64Vector3D.Create(radius * Math.Sin(theta) * Math.Cos(phi),
+        return LinFloat64Vector3D.Create(
+            radius * Math.Sin(theta) * Math.Cos(phi),
             radius * Math.Sin(phi),
-            radius * Math.Cos(theta) * Math.Cos(phi));
+            radius * Math.Cos(theta) * Math.Cos(phi)
+        );
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -60,9 +68,11 @@ public static class GrParametricSurfaceFactory3D
         var theta = t1 * 2 * Math.PI;
         var phi = (t2 - 0.5d) * Math.PI;
 
-        return LinFloat64Vector3D.Create(radius * Math.Cos(theta) * Math.Cos(phi),
+        return LinFloat64Vector3D.Create(
+            radius * Math.Cos(theta) * Math.Cos(phi),
             radius * Math.Sin(theta) * Math.Cos(phi),
-            radius * Math.Sin(phi));
+            radius * Math.Sin(phi)
+        );
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -71,9 +81,11 @@ public static class GrParametricSurfaceFactory3D
         var theta = t1 * -2 * Math.PI;
         var phi = (t2 - 0.5d) * Math.PI;
 
-        return LinFloat64Vector3D.Create(radius * Math.Cos(theta) * Math.Cos(phi),
+        return LinFloat64Vector3D.Create(
+            radius * Math.Cos(theta) * Math.Cos(phi),
             radius * Math.Sin(theta) * Math.Cos(phi),
-            radius * Math.Sin(phi));
+            radius * Math.Sin(phi)
+        );
     }
 
 
@@ -83,9 +95,11 @@ public static class GrParametricSurfaceFactory3D
         var theta = t1 * 2 * Math.PI;
         var phi = (t2 - 0.5d) * Math.PI;
 
-        return LinFloat64Vector3D.Create(Math.Sin(phi),
+        return LinFloat64Vector3D.Create(
+            Math.Sin(phi),
             Math.Cos(theta) * Math.Cos(phi),
-            Math.Sin(theta) * Math.Cos(phi));
+            Math.Sin(theta) * Math.Cos(phi)
+        );
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -94,9 +108,11 @@ public static class GrParametricSurfaceFactory3D
         var theta = t1 * -2 * Math.PI;
         var phi = (t2 - 0.5d) * Math.PI;
 
-        return LinFloat64Vector3D.Create(Math.Sin(phi),
+        return LinFloat64Vector3D.Create(
+            Math.Sin(phi),
             Math.Cos(theta) * Math.Cos(phi),
-            Math.Sin(theta) * Math.Cos(phi));
+            Math.Sin(theta) * Math.Cos(phi)
+        );
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -105,9 +121,11 @@ public static class GrParametricSurfaceFactory3D
         var theta = t1 * 2 * Math.PI;
         var phi = (t2 - 0.5d) * Math.PI;
 
-        return LinFloat64Vector3D.Create(Math.Sin(theta) * Math.Cos(phi),
+        return LinFloat64Vector3D.Create(
+            Math.Sin(theta) * Math.Cos(phi),
             Math.Sin(phi),
-            Math.Cos(theta) * Math.Cos(phi));
+            Math.Cos(theta) * Math.Cos(phi)
+        );
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -116,9 +134,11 @@ public static class GrParametricSurfaceFactory3D
         var theta = t1 * -2 * Math.PI;
         var phi = (t2 - 0.5d) * Math.PI;
 
-        return LinFloat64Vector3D.Create(Math.Sin(theta) * Math.Cos(phi),
+        return LinFloat64Vector3D.Create(
+            Math.Sin(theta) * Math.Cos(phi),
             Math.Sin(phi),
-            Math.Cos(theta) * Math.Cos(phi));
+            Math.Cos(theta) * Math.Cos(phi)
+        );
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -127,9 +147,11 @@ public static class GrParametricSurfaceFactory3D
         var theta = t1 * 2 * Math.PI;
         var phi = (t2 - 0.5d) * Math.PI;
 
-        return LinFloat64Vector3D.Create(Math.Cos(theta) * Math.Cos(phi),
+        return LinFloat64Vector3D.Create(
+            Math.Cos(theta) * Math.Cos(phi),
             Math.Sin(theta) * Math.Cos(phi),
-            Math.Sin(phi));
+            Math.Sin(phi)
+        );
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -138,57 +160,76 @@ public static class GrParametricSurfaceFactory3D
         var theta = t1 * -2 * Math.PI;
         var phi = (t2 - 0.5d) * Math.PI;
 
-        return LinFloat64Vector3D.Create(Math.Cos(theta) * Math.Cos(phi),
+        return LinFloat64Vector3D.Create(
+            Math.Cos(theta) * Math.Cos(phi),
             Math.Sin(theta) * Math.Cos(phi),
-            Math.Sin(phi));
+            Math.Sin(phi)
+        );
     }
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static GrComputedParametricSurface3D CreateSphere3D(this LinBasisVectorPair3D sliceAxisPair, double radius)
     {
-        return sliceAxisPair switch
+        return sliceAxisPair.Item1 switch
         {
-            LinBasisVectorPair3D.Xy =>
-                new GrComputedParametricSurface3D(
-                    (t1, t2) => GetPointOnXySphereSurface(radius, t1, t2),
-                    GetNormalOnXySphereSurface
-                ),
+            LinBasisVector3D.Px => sliceAxisPair.Item2 switch
+            {
+                LinBasisVector3D.Py => 
+                    new GrComputedParametricSurface3D(
+                        (t1, t2) => GetPointOnXySphereSurface(radius, t1, t2),
+                        GetNormalOnXySphereSurface
+                    ),
 
-            LinBasisVectorPair3D.Yx =>
-                new GrComputedParametricSurface3D(
-                    (t1, t2) => GetPointOnYxSphereSurface(radius, t1, t2),
-                    GetNormalOnYxSphereSurface
-                ),
+                LinBasisVector3D.Pz => 
+                    new GrComputedParametricSurface3D(
+                        (t1, t2) => GetPointOnXzSphereSurface(radius, t1, t2),
+                        GetNormalOnXzSphereSurface
+                    ),
 
-            LinBasisVectorPair3D.Yz =>
-                new GrComputedParametricSurface3D(
-                    (t1, t2) => GetPointOnYzSphereSurface(radius, t1, t2),
-                    GetNormalOnYzSphereSurface
-                ),
+                _ => throw new InvalidOperationException()
+            },
 
-            LinBasisVectorPair3D.Zy =>
-                new GrComputedParametricSurface3D(
-                    (t1, t2) => GetPointOnZySphereSurface(radius, t1, t2),
-                    GetNormalOnZySphereSurface
-                ),
+            LinBasisVector3D.Py => sliceAxisPair.Item2 switch
+            {
+                LinBasisVector3D.Pz => 
+                    new GrComputedParametricSurface3D(
+                        (t1, t2) => GetPointOnYzSphereSurface(radius, t1, t2),
+                        GetNormalOnYzSphereSurface
+                    ),
 
-            LinBasisVectorPair3D.Zx =>
-                new GrComputedParametricSurface3D(
-                    (t1, t2) => GetPointOnZxSphereSurface(radius, t1, t2),
-                    GetNormalOnZxSphereSurface
-                ),
+                LinBasisVector3D.Px => 
+                    new GrComputedParametricSurface3D(
+                        (t1, t2) => GetPointOnYxSphereSurface(radius, t1, t2),
+                        GetNormalOnYxSphereSurface
+                    ),
 
-            _ =>
-                new GrComputedParametricSurface3D(
-                    (t1, t2) => GetPointOnXzSphereSurface(radius, t1, t2),
-                    GetNormalOnXzSphereSurface
-                ),
+                _ => throw new InvalidOperationException()
+            },
+
+            LinBasisVector3D.Pz => sliceAxisPair.Item2 switch
+            {
+                LinBasisVector3D.Px => 
+                    new GrComputedParametricSurface3D(
+                        (t1, t2) => GetPointOnZxSphereSurface(radius, t1, t2),
+                        GetNormalOnZxSphereSurface
+                    ),
+
+                LinBasisVector3D.Py => 
+                    new GrComputedParametricSurface3D(
+                        (t1, t2) => GetPointOnZySphereSurface(radius, t1, t2),
+                        GetNormalOnZySphereSurface
+                    ),
+
+                _ => throw new InvalidOperationException()
+            },
+
+            _ => throw new InvalidOperationException()
         };
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static GrComputedParametricSurface3D CreateSphere3D(this LinUnitBasisVector3D sliceAxisNormal, double radius)
+    public static GrComputedParametricSurface3D CreateSphere3D(this LinBasisVector3D sliceAxisNormal, double radius)
     {
         return sliceAxisNormal
             .GetAxisPair3D()
@@ -199,7 +240,7 @@ public static class GrParametricSurfaceFactory3D
     public static GrComputedParametricSurface3D CreateSphere3D(this ILinFloat64Vector3D sliceAxisUnitNormal, double radius)
     {
         return sliceAxisUnitNormal
-            .SelectNearestAxis()
+            .SelectNearestBasisVector()
             .GetAxisPair3D()
             .CreateSphere3D(radius);
     }
@@ -226,14 +267,14 @@ public static class GrParametricSurfaceFactory3D
     {
         var surfaceTree = new GrParametricSurfaceTree3D(
             surface,
-            BoundingBox2D.Create(0, 0, 1, 1)
+            Float64BoundingBox2D.Create(0, 0, 1, 1)
         );
 
         return surfaceTree.GenerateTree(options);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static GrParametricSurfaceTree3D CreateSampledSurface3D(this IGraphicsParametricSurface3D surface, BoundingBox2D parameterValueRange, GrParametricSurfaceTreeOptions3D options)
+    public static GrParametricSurfaceTree3D CreateSampledSurface3D(this IGraphicsParametricSurface3D surface, Float64BoundingBox2D parameterValueRange, GrParametricSurfaceTreeOptions3D options)
     {
         var surfaceTree = new GrParametricSurfaceTree3D(
             surface,
@@ -245,7 +286,7 @@ public static class GrParametricSurfaceFactory3D
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static GrMappedParametricSurface3D CreateMappedSurface3D(this IGraphicsParametricSurface3D surface, IAffineMap3D map)
+    public static GrMappedParametricSurface3D CreateMappedSurface3D(this IGraphicsParametricSurface3D surface, IFloat64AffineMap3D map)
     {
         return new GrMappedParametricSurface3D(surface, map);
     }

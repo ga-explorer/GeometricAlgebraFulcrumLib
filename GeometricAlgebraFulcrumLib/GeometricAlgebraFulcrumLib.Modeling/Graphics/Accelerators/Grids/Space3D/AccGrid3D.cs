@@ -3,13 +3,12 @@ using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Tuples;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.BasicShapes;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.Borders;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.Borders.Space3D.Immutable;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.Borders.Space3D.Mutable;
+using GeometricAlgebraFulcrumLib.Modeling.Geometry.Borders.Space3D.Float64;
 
 namespace GeometricAlgebraFulcrumLib.Modeling.Graphics.Accelerators.Grids.Space3D;
 
 public class AccGrid3D<T> : IAccGrid3D<T>
-    where T : IFiniteGeometricShape3D
+    where T : IFloat64FiniteGeometricShape3D
 {
     private readonly IReadOnlyList<T> _geometricObjectsList;
     private readonly List<T>[,,] _gridCells;
@@ -31,7 +30,7 @@ public class AccGrid3D<T> : IAccGrid3D<T>
 
     public IReadOnlyList<T> this[int ix, int iy, int iz] => _gridCells[ix, iy, iz];
 
-    public BoundingBox3D BoundingBox { get; }
+    public Float64BoundingBox3D BoundingBox { get; }
 
     public int CellsCountX { get; }
 
@@ -95,8 +94,8 @@ public class AccGrid3D<T> : IAccGrid3D<T>
         }
 
         //Compute bounding box for entire grid
-        BoundingBox = BoundingBox3D.Create(
-            (IEnumerable<IFiniteGeometricShape3D>)_geometricObjectsList
+        BoundingBox = Float64BoundingBox3D.Create(
+            (IEnumerable<IFloat64FiniteGeometricShape3D>)_geometricObjectsList
         );
 
         var minX = BoundingBox.MinX;
@@ -171,14 +170,14 @@ public class AccGrid3D<T> : IAccGrid3D<T>
         return ((z - BoundingBox.MinZ) * _invCellLengthZ).ClampToInt(CellsCountZ - 1);
     }
 
-    public BoundingBox3D GetBoundingBox()
+    public Float64BoundingBox3D GetBoundingBox()
     {
         return BoundingBox;
     }
 
-    public MutableBoundingBox3D GetMutableBoundingBox()
+    public Float64BoundingBoxComposer3D GetBoundingBoxComposer()
     {
-        return MutableBoundingBox3D.Create(BoundingBox);
+        return Float64BoundingBoxComposer3D.Create(BoundingBox);
     }
 
     public IEnumerator<T> GetEnumerator()

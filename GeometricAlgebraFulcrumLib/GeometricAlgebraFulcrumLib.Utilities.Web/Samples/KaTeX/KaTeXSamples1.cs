@@ -27,7 +27,10 @@ public static class KaTeXSamples1
             SaveImages = true
         };
             
-        katexComposer.RenderKaTeX(KeTeXCode);
+        for (var i = 0; i < KeTeXCode.Length; i++)
+            katexComposer.AddLaTeXCode($"katex{i}", KeTeXCode[i]);
+
+        katexComposer.RenderKaTeX();
 
         //var index = 0;
         //foreach (var svgCode in katexComposer.KaTeXSvgDataUrlList)
@@ -52,11 +55,14 @@ public static class KaTeXSamples1
             FontSizeEm = 4,
             Output = WclKaTeXComposer.OutputKind.Html
         };
-            
-        katexComposer.RenderKaTeX(KeTeXCode);
+
+        for (var i = 0; i < KeTeXCode.Length; i++)
+            katexComposer.AddLaTeXCode($"katex{i}", KeTeXCode[i]);
+
+        katexComposer.RenderKaTeX();
 
         var index = 0;
-        foreach (var image in katexComposer.KaTeXPngImageList)
+        foreach (var image in katexComposer.Images)
         {
             image.SaveAsPng(
                 WorkingFolder.GetFilePath(

@@ -4,7 +4,7 @@ using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Angles;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Frames.Space3D;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space2D;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space3D;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.BasicShapes.Triangles;
+using GeometricAlgebraFulcrumLib.Modeling.Geometry.BasicShapes.Triangles.Space3D.Float64;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Primitives.Vertices;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Basic;
 using SixLabors.ImageSharp;
@@ -65,7 +65,7 @@ public abstract class GrTriangleGeometryBase3D
 
     public abstract int Count { get; }
 
-    public abstract ITriangle3D this[int index] { get; }
+    public abstract IFloat64Triangle3D this[int index] { get; }
 
     public abstract IEnumerable<Triplet<ILinFloat64Vector3D>> TriangleVertexPoints { get; }
 
@@ -261,7 +261,7 @@ public abstract class GrTriangleGeometryBase3D
         }
     }
 
-    public abstract IEnumerator<ITriangle3D> GetEnumerator();
+    public abstract IEnumerator<IFloat64Triangle3D> GetEnumerator();
 
     IEnumerator IEnumerable.GetEnumerator()
     {

@@ -161,7 +161,7 @@ public static class SymmetricalComponentsSamples
             processor.VectorSymmetric(3).DivideByENorm();
 
         var skr =
-            k.CreatePureRotorToAxis(LinSignedBasisVector.PositiveZ, true);
+            k.CreatePureRotorToAxis(LinSignedBasisVector.Pz, true);
 
         var r2 = e2.Op(e1).CreatePureRotor(
             @$"2 * Pi / 24".RadiansToPolarAngle(processor.ScalarProcessor)

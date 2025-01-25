@@ -53,7 +53,7 @@ public sealed class GrBabylonJsVector3ArrayValue :
     }
 
 
-    public override string GetCode()
+    public override string GetAttributeValueCode()
     {
         return string.IsNullOrEmpty(ValueText) 
             ? Value.GetBabylonJsCode() 

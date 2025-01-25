@@ -119,9 +119,9 @@ public sealed class CGaScalar4D
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool IsNearZero(double epsilon = 1e-12d)
+    public bool IsNearZero(double zeroEpsilon = Float64Utils.ZeroEpsilon)
     {
-        return Norm().IsNearZero(epsilon);
+        return Norm().IsNearZero(zeroEpsilon);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -1157,9 +1157,9 @@ public sealed class CGaVector4D
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool IsNearZero(double epsilon = 1e-12d)
+    public bool IsNearZero(double zeroEpsilon = Float64Utils.ZeroEpsilon)
     {
-        return Norm().IsNearZero(epsilon);
+        return Norm().IsNearZero(zeroEpsilon);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -2239,9 +2239,9 @@ public sealed class CGaBivector4D
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool IsNearZero(double epsilon = 1e-12d)
+    public bool IsNearZero(double zeroEpsilon = Float64Utils.ZeroEpsilon)
     {
-        return Norm().IsNearZero(epsilon);
+        return Norm().IsNearZero(zeroEpsilon);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -3311,9 +3311,9 @@ public sealed class CGaTrivector4D
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool IsNearZero(double epsilon = 1e-12d)
+    public bool IsNearZero(double zeroEpsilon = Float64Utils.ZeroEpsilon)
     {
-        return Norm().IsNearZero(epsilon);
+        return Norm().IsNearZero(zeroEpsilon);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -4299,9 +4299,9 @@ public sealed class CGa4Vector4D
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool IsNearZero(double epsilon = 1e-12d)
+    public bool IsNearZero(double zeroEpsilon = Float64Utils.ZeroEpsilon)
     {
-        return Norm().IsNearZero(epsilon);
+        return Norm().IsNearZero(zeroEpsilon);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -5403,9 +5403,9 @@ public sealed class CGaMultivector4D
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool IsNearZero(double epsilon = 1e-12d)
+    public bool IsNearZero(double zeroEpsilon = Float64Utils.ZeroEpsilon)
     {
-        return Norm().IsNearZero(epsilon);
+        return Norm().IsNearZero(zeroEpsilon);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]

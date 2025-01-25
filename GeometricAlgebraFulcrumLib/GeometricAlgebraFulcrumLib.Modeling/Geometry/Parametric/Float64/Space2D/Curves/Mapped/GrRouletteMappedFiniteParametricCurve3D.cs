@@ -11,14 +11,14 @@ public class GrRouletteMappedFiniteParametricCurve2D :
 {
     public IArcLengthCurve2D BaseCurve { get; }
 
-    public RouletteMap2D RouletteMap { get; }
+    public Float64RouletteAffineMap2D RouletteMap { get; }
 
     public Float64ScalarRange ParameterRange
         => BaseCurve.ParameterRange;
 
 
 
-    public GrRouletteMappedFiniteParametricCurve2D(IArcLengthCurve2D baseCurve, RouletteMap2D rouletteMap)
+    public GrRouletteMappedFiniteParametricCurve2D(IArcLengthCurve2D baseCurve, Float64RouletteAffineMap2D rouletteMap)
     {
         BaseCurve = baseCurve;
         RouletteMap = rouletteMap;

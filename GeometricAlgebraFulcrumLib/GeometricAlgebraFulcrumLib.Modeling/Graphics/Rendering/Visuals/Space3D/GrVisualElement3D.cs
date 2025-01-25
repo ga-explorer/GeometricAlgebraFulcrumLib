@@ -17,7 +17,7 @@ public abstract class GrVisualElement3D :
             if (!value.IsValid())
                 throw new ArgumentException(nameof(value));
 
-            _visibility = Float64Utils.Clamp(value, 0d, 1d);
+            _visibility = value.Clamp(0d, 1d);
         }
     }
         

@@ -24,7 +24,7 @@ public sealed class GrBabylonJsInstancedMesh :
     }
 
         
-    public GrBabylonJsInstancedMesh SetProperties(MeshProperties properties)
+    public GrBabylonJsInstancedMesh SetProperties(GrBabylonJsMeshProperties properties)
     {
         Properties = properties;
 

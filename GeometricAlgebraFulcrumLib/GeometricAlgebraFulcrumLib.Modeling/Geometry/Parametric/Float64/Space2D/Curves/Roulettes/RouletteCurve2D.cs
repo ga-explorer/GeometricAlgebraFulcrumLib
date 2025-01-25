@@ -45,7 +45,7 @@ public class RouletteCurve2D :
                MovingCurve.IsValid();
     }
 
-    public RouletteMap2D GetRouletteMap(double parameterValue)
+    public Float64RouletteAffineMap2D GetRouletteMap(double parameterValue)
     {
         var t1 = MovingCurve.LengthToParameter(parameterValue);
         var movingFrame = MovingCurve.GetTangent(t1);
@@ -53,7 +53,7 @@ public class RouletteCurve2D :
         var t2 = FixedCurve.LengthToParameter(parameterValue);
         var fixedFrame = FixedCurve.GetTangent(t2);
 
-        return new RouletteMap2D(
+        return new Float64RouletteAffineMap2D(
             FixedCurve.GetPoint(parameterValue),
             MovingCurve.GetPoint(parameterValue),
             movingFrame.GetAngle(fixedFrame).ToDirectedAngle()

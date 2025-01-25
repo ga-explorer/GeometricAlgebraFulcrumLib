@@ -3,8 +3,6 @@ using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Float64.Multivectors;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Float64.Multivectors.Composers;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Float64.Processors;
-using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.LinearMaps.SpaceND;
-using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.SpaceND;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.BitManipulation;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Float64.LinearMaps.Outermorphisms;
@@ -136,23 +134,5 @@ public sealed class RGaFloat64StoredOutermorphism :
                     p.Value
                 )
             );
-    }
-    
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public override LinFloat64UnilinearMap GetVectorMapPart(int vSpaceDimensions)
-    {
-        var indexVectorDictionary = vSpaceDimensions.GetRange(
-                index =>
-                    new KeyValuePair<int, RGaFloat64Vector>(
-                        index, 
-                        OmMapBasisVector(index)
-                    )
-            ).Where(p => !p.Value.IsZero)
-            .ToDictionary(
-                p => p.Key,
-                p => p.Value.ToLinVector()
-            );
-
-        return indexVectorDictionary.ToLinUnilinearMap();
     }
 }

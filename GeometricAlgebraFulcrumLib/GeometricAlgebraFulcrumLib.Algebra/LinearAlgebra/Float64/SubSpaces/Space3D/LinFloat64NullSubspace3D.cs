@@ -33,13 +33,13 @@ public sealed record LinFloat64NullSubspace3D :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool NearContains(ILinFloat64Vector3D vector, double epsilon = 1E-12D)
+    public bool NearContains(ILinFloat64Vector3D vector, double zeroEpsilon = 1E-12D)
     {
-        return vector.VectorENorm().IsNearZero(epsilon);
+        return vector.VectorENorm().IsNearZero(zeroEpsilon);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool NearContains(ILinFloat64Subspace3D subspace, double epsilon = 1E-12)
+    public bool NearContains(ILinFloat64Subspace3D subspace, double zeroEpsilon = 1E-12)
     {
         return subspace.SubspaceDimensions == 0;
     }

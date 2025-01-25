@@ -27,10 +27,10 @@ public sealed class GrKonvaJsCacheConfigValue :
     }
 
 
-    public override string GetCode()
+    public override string GetAttributeValueCode()
     {
         return string.IsNullOrEmpty(ValueText) 
-            ? Value.GetCode() 
+            ? Value.GetAttributeSetCode() 
             : ValueText;
     }
 }

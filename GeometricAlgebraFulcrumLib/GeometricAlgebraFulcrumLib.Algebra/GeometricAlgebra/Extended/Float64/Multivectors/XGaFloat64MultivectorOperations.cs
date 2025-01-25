@@ -604,14 +604,14 @@ public abstract partial class XGaFloat64Multivector
     /// <param name="mv2"></param>
     /// <returns></returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public XGaFloat64KVector Dp(XGaFloat64Multivector mv2, double epsilon = 1e-12)
+    public XGaFloat64KVector Dp(XGaFloat64Multivector mv2, double zeroEpsilon = Float64Utils.ZeroEpsilon)
     {
         var gp = Gp(mv2);
 
-        return gp.IsNearZero(epsilon) 
+        return gp.IsNearZero(zeroEpsilon) 
             ? Processor.ScalarZero 
             : gp.GetKVectorParts()
                 .OrderByDescending(kv => kv.Grade)
-                .First(kv => !kv.IsNearZero(epsilon));
+                .First(kv => !kv.IsNearZero(zeroEpsilon));
     }
 }

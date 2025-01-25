@@ -396,6 +396,9 @@ public class LaTeXComposer<T>
 
     public string GetVectorText(LinFloat64Vector v)
     {
+        if (v.IsZero)
+            return "0";
+
         return GetVectorTermsText(
             v.IndexScalarPairs.OrderBy(p => p.Key)
         );
@@ -403,6 +406,9 @@ public class LaTeXComposer<T>
 
     public string GetVectorText(LinVector<T> v)
     {
+        if (v.IsZero)
+            return "0";
+
         return GetVectorTermsText(
             v.IndexScalarPairs.OrderBy(p => p.Key)
         );
@@ -410,6 +416,9 @@ public class LaTeXComposer<T>
 
     public string GetMultivectorText(RGaFloat64Multivector mv)
     {
+        if (mv.IsZero)
+            return "0";
+
         return GetTermsText(
             mv
                 .IdScalarPairs
@@ -419,6 +428,9 @@ public class LaTeXComposer<T>
 
     public string GetMultivectorText(RGaMultivector<T> mv)
     {
+        if (mv.IsZero)
+            return "0";
+
         return GetTermsText(
             mv
                 .IdScalarPairs
@@ -428,6 +440,9 @@ public class LaTeXComposer<T>
 
     public string GetMultivectorText(XGaFloat64Multivector mv)
     {
+        if (mv.IsZero)
+            return "0";
+
         return GetTermsText(
             mv
                 .IdScalarPairs
@@ -437,6 +452,9 @@ public class LaTeXComposer<T>
 
     public string GetMultivectorText(XGaMultivector<T> mv)
     {
+        if (mv.IsZero)
+            return "0";
+
         return GetTermsText(
             mv
                 .IdScalarPairs

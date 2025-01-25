@@ -1,6 +1,7 @@
-﻿using GeometricAlgebraFulcrumLib.Modeling.Geometry.Borders;
+﻿using GeometricAlgebraFulcrumLib.Modeling.Geometry.Borders.Space1D;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.BabylonJs.Constants;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.Visuals.Space3D.Animations;
+using GeometricAlgebraFulcrumLib.Modeling.Signals;
 
 namespace GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.BabylonJs.Animations;
 
@@ -17,10 +18,10 @@ public sealed class GrBabylonJsAnimationSpecs
     public bool EnableBlending { get; init; }
 
     
-    public GrBabylonJsAnimationSpecs(GrVisualAnimationSpecs visualAnimationSpecs)
+    public GrBabylonJsAnimationSpecs(Float64SamplingSpecs visualAnimationSpecs)
     {
-        var frameRate = visualAnimationSpecs.FrameRate;
-        var frameRange = visualAnimationSpecs.FrameIndexRange;
+        var frameRate = (int)visualAnimationSpecs.SamplingRate;
+        var frameRange = visualAnimationSpecs.SampleIndexRange;
 
         if (frameRate < 1)
             throw new ArgumentOutOfRangeException(nameof(frameRate));
@@ -31,8 +32,8 @@ public sealed class GrBabylonJsAnimationSpecs
 
     public GrBabylonJsAnimationSpecs(GrVisualElementWithAnimation3D visualElement)
     {
-        var frameRate = visualElement.AnimationSpecs.FrameRate;
-        var frameRange = visualElement.AnimationSpecs.FrameIndexRange;
+        var frameRate = (int)visualElement.SamplingSpecs.SamplingRate;
+        var frameRange = visualElement.SamplingSpecs.SampleIndexRange;
 
         if (frameRate < 1)
             throw new ArgumentOutOfRangeException(nameof(frameRate));

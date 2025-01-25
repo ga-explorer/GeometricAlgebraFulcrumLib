@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.BasicShapes.Lines;
+using GeometricAlgebraFulcrumLib.Modeling.Geometry.BasicShapes.Lines.Space2D.Float64;
 
 namespace GeometricAlgebraFulcrumLib.Modeling.Geometry.BasicShapes;
 
@@ -13,7 +14,7 @@ public static class IntersectionUtils
 
 
     #region Intersection Tests in 2D with Limited Lines
-    public static bool TestIntersection(this ILimitedLine2D line, ILineSegment2D lineSegment)
+    public static bool TestIntersection(this IFloat64LimitedLine2D line, IFloat64LineSegment2D lineSegment)
     {
         if (!lineSegment.IntersectionTestsEnabled)
             return false;
@@ -182,7 +183,7 @@ public static class IntersectionUtils
         return d120 <= 0 && d121 <= 0 || d120 >= 0 && d121 >= 0;
     }
 
-    public static bool TestIntersectionVa(this ILimitedLine2D line, ILineSegment2D lineSegment)
+    public static bool TestIntersectionVa(this IFloat64LimitedLine2D line, IFloat64LineSegment2D lineSegment)
     {
         if (!lineSegment.IntersectionTestsEnabled)
             return false;
@@ -208,7 +209,7 @@ public static class IntersectionUtils
         return true;
     }
 
-    public static bool TestIntersectionVaOpt(this ILimitedLine2D line, ILineSegment2D lineSegment)
+    public static bool TestIntersectionVaOpt(this IFloat64LimitedLine2D line, IFloat64LineSegment2D lineSegment)
     {
         //http://www.cs.swan.ac.uk/~cssimon/line_intersection.html
 
@@ -253,7 +254,7 @@ public static class IntersectionUtils
 
 
     #region Intersection Computations in 2D with Limited Lines
-    public static Tuple<bool, double> ComputeIntersection(this ILimitedLine2D line, ILineSegment2D lineSegment)
+    public static Tuple<bool, double> ComputeIntersection(this IFloat64LimitedLine2D line, IFloat64LineSegment2D lineSegment)
     {
         if (!lineSegment.IntersectionTestsEnabled)
             return NoIntersection;
@@ -447,7 +448,7 @@ public static class IntersectionUtils
         return new Tuple<bool, double>(true, t1);
     }
 
-    public static Tuple<bool, double> ComputeIntersectionVa(this ILimitedLine2D line, ILineSegment2D lineSegment)
+    public static Tuple<bool, double> ComputeIntersectionVa(this IFloat64LimitedLine2D line, IFloat64LineSegment2D lineSegment)
     {
         if (!lineSegment.IntersectionTestsEnabled)
             return NoIntersection;
@@ -477,7 +478,7 @@ public static class IntersectionUtils
         return Tuple.Create(true, t);
     }
 
-    public static Tuple<bool, double> ComputeIntersectionVaOpt(this ILimitedLine2D line, ILineSegment2D lineSegment)
+    public static Tuple<bool, double> ComputeIntersectionVaOpt(this IFloat64LimitedLine2D line, IFloat64LineSegment2D lineSegment)
     {
         //http://www.cs.swan.ac.uk/~cssimon/line_intersection.html
 
@@ -521,7 +522,7 @@ public static class IntersectionUtils
 
 
     #region Intersection Tests in 2D with Infinite Lines
-    public static bool TestIntersection(this ILine2D line, ILineSegment2D lineSegment)
+    public static bool TestIntersection(this IFloat64Line2D line, IFloat64LineSegment2D lineSegment)
     {
         if (!lineSegment.IntersectionTestsEnabled)
             return false;
@@ -596,7 +597,7 @@ public static class IntersectionUtils
     #endregion
 
     #region Intersection Computations in 2D with Infinite Lines
-    public static Tuple<bool, double> ComputeIntersection(this ILine2D line, ILineSegment2D lineSegment)
+    public static Tuple<bool, double> ComputeIntersection(this IFloat64Line2D line, IFloat64LineSegment2D lineSegment)
     {
         if (!lineSegment.IntersectionTestsEnabled)
             return NoIntersection;
@@ -750,7 +751,7 @@ public static class IntersectionUtils
         return new Tuple<bool, double>(true, t);
     }
 
-    public static Tuple<bool, double> ComputeIntersection(this ILine2D line, double lineParamMinValue, double lineParamMaxValue, ILineSegment2D lineSegment)
+    public static Tuple<bool, double> ComputeIntersection(this IFloat64Line2D line, double lineParamMinValue, double lineParamMaxValue, IFloat64LineSegment2D lineSegment)
     {
         if (!lineSegment.IntersectionTestsEnabled)
             return NoIntersection;

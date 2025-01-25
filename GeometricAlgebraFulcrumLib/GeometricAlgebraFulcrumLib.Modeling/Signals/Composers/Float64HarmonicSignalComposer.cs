@@ -44,9 +44,9 @@ public class Float64HarmonicSignalComposer
     }
 
 
-    public Float64SignalSamplingSpecs GetSamplingSpecs()
+    public Float64SamplingSpecs GetSamplingSpecs()
     {
-        return new Float64SignalSamplingSpecs(SampleCount, SamplingRate);
+        return Float64SamplingSpecs.CreateFromSamplingRate(SampleCount, SamplingRate);
     }
 
     public Float64Signal[] GenerateEvenSignalComponents(double magnitude, double harmonicFactor, int phaseCount)

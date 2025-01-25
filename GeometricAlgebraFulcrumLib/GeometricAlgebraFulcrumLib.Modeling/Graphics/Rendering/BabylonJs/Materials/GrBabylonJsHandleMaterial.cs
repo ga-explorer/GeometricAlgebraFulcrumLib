@@ -8,75 +8,11 @@ namespace GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.BabylonJs.Mater
 public sealed class GrBabylonJsHandleMaterial :
     GrBabylonJsMaterial
 {
-    public sealed class HandleMaterialProperties :
-        MaterialProperties
-    {
-        public GrBabylonJsFloat32Value? AnimationLength
-        {
-            get => GetAttributeValueOrNull<GrBabylonJsFloat32Value>("animationLength");
-            set => SetAttributeValue("animationLength", value);
-        }
-
-        public GrBabylonJsColor3Value? BaseColor
-        {
-            get => GetAttributeValueOrNull<GrBabylonJsColor3Value>("baseColor");
-            set => SetAttributeValue("baseColor", value);
-        }
-
-        public GrBabylonJsFloat32Value? BaseScale
-        {
-            get => GetAttributeValueOrNull<GrBabylonJsFloat32Value>("baseScale");
-            set => SetAttributeValue("baseScale", value);
-        }
-
-        public GrBabylonJsFloat32Value? DragScale
-        {
-            get => GetAttributeValueOrNull<GrBabylonJsFloat32Value>("dragScale");
-            set => SetAttributeValue("dragScale", value);
-        }
-
-        public GrBabylonJsColor3Value? HoverColor
-        {
-            get => GetAttributeValueOrNull<GrBabylonJsColor3Value>("hoverColor");
-            set => SetAttributeValue("hoverColor", value);
-        }
-
-        public GrBabylonJsFloat32Value? HoverScale
-        {
-            get => GetAttributeValueOrNull<GrBabylonJsFloat32Value>("hoverScale");
-            set => SetAttributeValue("hoverScale", value);
-        }
-
-        public GrBabylonJsFloat32Value? Hover
-        {
-            get => GetAttributeValueOrNull<GrBabylonJsFloat32Value>("hover");
-            set => SetAttributeValue("hover", value);
-        }
-
-        public GrBabylonJsFloat32Value? Drag
-        {
-            get => GetAttributeValueOrNull<GrBabylonJsFloat32Value>("drag");
-            set => SetAttributeValue("drag", value);
-        }
-
-
-        public HandleMaterialProperties()
-        {
-
-        }
-
-        public HandleMaterialProperties(HandleMaterialProperties properties)
-        {
-            SetAttributeValues(properties);
-        }
-    }
-
-
     protected override string ConstructorName
         => "new BABYLON.HandleMaterial";
 
-    public HandleMaterialProperties Properties { get; private set; }
-        = new HandleMaterialProperties();
+    public GrBabylonJsHandleMaterialProperties Properties { get; private set; }
+        = new GrBabylonJsHandleMaterialProperties();
     
     public override GrBabylonJsObjectProperties ObjectProperties 
         => Properties;
@@ -93,9 +29,9 @@ public sealed class GrBabylonJsHandleMaterial :
     }
 
 
-    public GrBabylonJsHandleMaterial SetProperties(HandleMaterialProperties properties)
+    public GrBabylonJsHandleMaterial SetProperties(GrBabylonJsHandleMaterialProperties properties)
     {
-        Properties = new HandleMaterialProperties(properties);
+        Properties = new GrBabylonJsHandleMaterialProperties(properties);
 
         return this;
     }

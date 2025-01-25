@@ -8,86 +8,11 @@ namespace GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.BabylonJs.Meshe
 public sealed class GrBabylonJsIcoSphere :
     GrBabylonJsMesh
 {
-    public sealed class IcoSphereOptions :
-        GrBabylonJsObjectOptions
-    {
-        public GrBabylonJsBooleanValue? Flat
-        {
-            get => GetAttributeValueOrNull<GrBabylonJsBooleanValue>("flat");
-            set => SetAttributeValue("flat", value);
-        }
-
-        public GrBabylonJsFloat32Value? Radius
-        {
-            get => GetAttributeValueOrNull<GrBabylonJsFloat32Value>("radius");
-            set => SetAttributeValue("radius", value);
-        }
-
-        public GrBabylonJsFloat32Value? RadiusX
-        {
-            get => GetAttributeValueOrNull<GrBabylonJsFloat32Value>("radiusX");
-            set => SetAttributeValue("radiusX", value);
-        }
-
-        public GrBabylonJsFloat32Value? RadiusY
-        {
-            get => GetAttributeValueOrNull<GrBabylonJsFloat32Value>("radiusY");
-            set => SetAttributeValue("radiusY", value);
-        }
-
-        public GrBabylonJsFloat32Value? RadiusZ
-        {
-            get => GetAttributeValueOrNull<GrBabylonJsFloat32Value>("radiusZ");
-            set => SetAttributeValue("radiusZ", value);
-        }
-
-        public GrBabylonJsInt32Value? Subdivisions
-        {
-            get => GetAttributeValueOrNull<GrBabylonJsInt32Value>("subdivisions");
-            set => SetAttributeValue("subdivisions", value);
-        }
-
-        public GrBabylonJsMeshOrientationValue? SideOrientation
-        {
-            get => GetAttributeValueOrNull<GrBabylonJsMeshOrientationValue>("sideOrientation");
-            set => SetAttributeValue("sideOrientation", value);
-        }
-
-        public GrBabylonJsVector4Value? FrontUVs
-        {
-            get => GetAttributeValueOrNull<GrBabylonJsVector4Value>("frontUVs");
-            set => SetAttributeValue("frontUVs", value);
-        }
-
-        public GrBabylonJsVector4Value? BackUVs
-        {
-            get => GetAttributeValueOrNull<GrBabylonJsVector4Value>("backUVs");
-            set => SetAttributeValue("backUVs", value);
-        }
-
-        public GrBabylonJsBooleanValue? Updatable
-        {
-            get => GetAttributeValueOrNull<GrBabylonJsBooleanValue>("updatable");
-            set => SetAttributeValue("updatable", value);
-        }
-
-
-        public IcoSphereOptions()
-        {
-        }
-
-        public IcoSphereOptions(IcoSphereOptions options)
-        {
-            SetAttributeValues(options);
-        }
-    }
-
-
     protected override string ConstructorName
         => "BABYLON.MeshBuilder.CreateIcoSphere";
 
-    public IcoSphereOptions Options { get; private set; }
-        = new IcoSphereOptions();
+    public GrBabylonJsIcoSphereOptions Options { get; private set; }
+        = new GrBabylonJsIcoSphereOptions();
 
     public override GrBabylonJsObjectOptions ObjectOptions
         => Options;
@@ -104,16 +29,16 @@ public sealed class GrBabylonJsIcoSphere :
     }
 
 
-    public GrBabylonJsIcoSphere SetOptions(IcoSphereOptions options)
+    public GrBabylonJsIcoSphere SetOptions(GrBabylonJsIcoSphereOptions options)
     {
-        Options = new IcoSphereOptions(options);
+        Options = new GrBabylonJsIcoSphereOptions(options);
 
         return this;
     }
 
-    public GrBabylonJsIcoSphere SetProperties(MeshProperties properties)
+    public GrBabylonJsIcoSphere SetProperties(GrBabylonJsMeshProperties properties)
     {
-        Properties = new MeshProperties(properties);
+        Properties = new GrBabylonJsMeshProperties(properties);
 
         return this;
     }

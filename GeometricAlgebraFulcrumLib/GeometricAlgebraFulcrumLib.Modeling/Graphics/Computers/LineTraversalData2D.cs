@@ -1,8 +1,7 @@
 ﻿using System.Diagnostics;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space2D;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.BasicShapes.Lines;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.BasicShapes.Lines.Immutable;
+using GeometricAlgebraFulcrumLib.Modeling.Geometry.BasicShapes.Lines.Space2D.Float64;
 
 namespace GeometricAlgebraFulcrumLib.Modeling.Graphics.Computers;
 
@@ -33,7 +32,7 @@ public sealed class LineTraversalData2D
         !double.IsInfinity(ParameterMaxValue);
 
 
-    internal LineTraversalData2D(ILine2D line)
+    internal LineTraversalData2D(IFloat64Line2D line)
     {
         Origin[0] = line.OriginX;
         Origin[1] = line.OriginY;
@@ -51,7 +50,7 @@ public sealed class LineTraversalData2D
         ParameterMaxValue = double.PositiveInfinity;
     }
 
-    internal LineTraversalData2D(ILine2D line, Float64ScalarRange paramRange)
+    internal LineTraversalData2D(IFloat64Line2D line, Float64ScalarRange paramRange)
     {
         Origin[0] = line.OriginX;
         Origin[1] = line.OriginY;
@@ -69,7 +68,7 @@ public sealed class LineTraversalData2D
         ParameterMaxValue = paramRange.MaxValue;
     }
 
-    internal LineTraversalData2D(ILine2D line, double paramMinValue, double paramMaxValue)
+    internal LineTraversalData2D(IFloat64Line2D line, double paramMinValue, double paramMaxValue)
     {
         Origin[0] = line.OriginX;
         Origin[1] = line.OriginY;
@@ -103,9 +102,9 @@ public sealed class LineTraversalData2D
         => Float64ScalarRange.Create(ParameterMinValue, ParameterMaxValue);
         
 
-    public LineSegment2D GetLineSegment()
+    public Float64LineSegment2D GetLineSegment()
     {
-        return new LineSegment2D(
+        return new Float64LineSegment2D(
             Origin[0] + ParameterMinValue * Direction[0],
             Origin[1] + ParameterMinValue * Direction[1],
             Origin[0] + ParameterMaxValue * Direction[0],

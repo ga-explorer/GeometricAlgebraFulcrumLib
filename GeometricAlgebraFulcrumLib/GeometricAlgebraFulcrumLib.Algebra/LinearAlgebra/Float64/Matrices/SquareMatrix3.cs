@@ -114,7 +114,7 @@ public sealed class SquareMatrix3 //: IAffineMap2D
         return m;
     }
 
-    public static SquareMatrix3 CreateAxisToVectorRotationMatrix3D(LinUnitBasisVector3D axis, ILinFloat64Vector3D unitVector)
+    public static SquareMatrix3 CreateAxisToVectorRotationMatrix3D(LinBasisVector3D axis, ILinFloat64Vector3D unitVector)
     {
         //Debug.Assert(unitVector.IsNearUnitVector());
 
@@ -122,7 +122,7 @@ public sealed class SquareMatrix3 //: IAffineMap2D
         var y = unitVector.Y;
         var z = unitVector.Z;
 
-        if (axis == LinUnitBasisVector3D.PositiveX)
+        if (axis == LinBasisVector3D.Px)
         {
             var x1 = 1d / (x + 1d);
             var yz = -y * z * x1;
@@ -147,7 +147,7 @@ public sealed class SquareMatrix3 //: IAffineMap2D
             return matrix;
         }
 
-        if (axis == LinUnitBasisVector3D.NegativeX)
+        if (axis == LinBasisVector3D.Nx)
         {
             var x1 = 1d / (x - 1d);
             var yz = y * z * x1;
@@ -172,7 +172,7 @@ public sealed class SquareMatrix3 //: IAffineMap2D
             return matrix;
         }
 
-        if (axis == LinUnitBasisVector3D.PositiveY)
+        if (axis == LinBasisVector3D.Py)
         {
             var y1 = 1d / (y + 1d);
             var xz = -x * z * y1;
@@ -197,7 +197,7 @@ public sealed class SquareMatrix3 //: IAffineMap2D
             return matrix;
         }
 
-        if (axis == LinUnitBasisVector3D.NegativeY)
+        if (axis == LinBasisVector3D.Ny)
         {
             var y1 = 1d / (y - 1d);
             var xz = x * z * y1;
@@ -222,7 +222,7 @@ public sealed class SquareMatrix3 //: IAffineMap2D
             return matrix;
         }
 
-        if (axis == LinUnitBasisVector3D.PositiveZ)
+        if (axis == LinBasisVector3D.Pz)
         {
             var z1 = 1d / (z + 1d);
             var xy = -x * y * z1;
@@ -247,7 +247,7 @@ public sealed class SquareMatrix3 //: IAffineMap2D
             return matrix;
         }
 
-        if (axis == LinUnitBasisVector3D.NegativeZ)
+        if (axis == LinBasisVector3D.Nz)
         {
             var z1 = 1d / (z - 1d);
             var xy = x * y * z1;
@@ -275,7 +275,7 @@ public sealed class SquareMatrix3 //: IAffineMap2D
         throw new InvalidOperationException();
     }
 
-    public static SquareMatrix3 CreateVectorToAxisRotationMatrix3D(ILinFloat64Vector3D unitVector, LinUnitBasisVector3D axis)
+    public static SquareMatrix3 CreateVectorToAxisRotationMatrix3D(ILinFloat64Vector3D unitVector, LinBasisVector3D axis)
     {
         //Debug.Assert(unitVector.IsValid() && unitVector.IsNearUnitVector());
 
@@ -283,7 +283,7 @@ public sealed class SquareMatrix3 //: IAffineMap2D
         var y = unitVector.Y;
         var z = unitVector.Z;
 
-        if (axis == LinUnitBasisVector3D.PositiveX)
+        if (axis == LinBasisVector3D.Px)
         {
             var x1 = 1d / (x + 1d);
             var yz = -y * z * x1;
@@ -308,7 +308,7 @@ public sealed class SquareMatrix3 //: IAffineMap2D
             return matrix;
         }
 
-        if (axis == LinUnitBasisVector3D.NegativeX)
+        if (axis == LinBasisVector3D.Nx)
         {
             var x1 = 1d / (x - 1d);
             var yz = y * z * x1;
@@ -333,7 +333,7 @@ public sealed class SquareMatrix3 //: IAffineMap2D
             return matrix;
         }
 
-        if (axis == LinUnitBasisVector3D.PositiveY)
+        if (axis == LinBasisVector3D.Py)
         {
             var y1 = 1d / (y + 1d);
             var xz = -x * z * y1;
@@ -358,7 +358,7 @@ public sealed class SquareMatrix3 //: IAffineMap2D
             return matrix;
         }
 
-        if (axis == LinUnitBasisVector3D.NegativeY)
+        if (axis == LinBasisVector3D.Ny)
         {
             var y1 = 1d / (y - 1d);
             var xz = x * z * y1;
@@ -383,7 +383,7 @@ public sealed class SquareMatrix3 //: IAffineMap2D
             return matrix;
         }
 
-        if (axis == LinUnitBasisVector3D.PositiveZ)
+        if (axis == LinBasisVector3D.Pz)
         {
             var z1 = 1d / (z + 1d);
             var xy = -x * y * z1;
@@ -408,7 +408,7 @@ public sealed class SquareMatrix3 //: IAffineMap2D
             return matrix;
         }
 
-        if (axis == LinUnitBasisVector3D.NegativeZ)
+        if (axis == LinBasisVector3D.Nz)
         {
             var z1 = 1d / (z - 1d);
             var xy = x * y * z1;
@@ -465,16 +465,16 @@ public sealed class SquareMatrix3 //: IAffineMap2D
             var axis = sumVector.GetMaxAbsComponentIndex() switch
             {
                 0 => sumVector.X.IsPositive()
-                    ? LinUnitBasisVector3D.PositiveX
-                    : LinUnitBasisVector3D.NegativeX,
+                    ? LinBasisVector3D.Px
+                    : LinBasisVector3D.Nx,
 
                 1 => sumVector.Y.IsPositive()
-                    ? LinUnitBasisVector3D.PositiveY
-                    : LinUnitBasisVector3D.NegativeY,
+                    ? LinBasisVector3D.Py
+                    : LinBasisVector3D.Ny,
 
                 _ => sumVector.Z.IsPositive()
-                    ? LinUnitBasisVector3D.PositiveZ
-                    : LinUnitBasisVector3D.NegativeZ
+                    ? LinBasisVector3D.Pz
+                    : LinBasisVector3D.Nz
             };
 
             var m1 = CreateVectorToAxisRotationMatrix3D(unitVector1, axis);
@@ -864,6 +864,47 @@ public sealed class SquareMatrix3 //: IAffineMap2D
                Scalar21 == 0d &&
                Scalar22 == 1d;
     }
+    
+    public bool IsIdentity()
+    {
+        if (!Scalar00.IsOne()) return false;
+        if (!Scalar10.IsZero()) return false;
+        if (!Scalar20.IsZero()) return false;
+
+        if (!Scalar01.IsZero()) return false;
+        if (!Scalar11.IsOne()) return false;
+        if (!Scalar21.IsZero()) return false;
+
+        if (!Scalar02.IsZero()) return false;
+        if (!Scalar12.IsZero()) return false;
+        if (!Scalar22.IsOne()) return false;
+
+        return true;
+    }
+
+    public bool IsNearIdentity(double zeroEpsilon = Float64Utils.ZeroEpsilon)
+    {
+        if (!Scalar00.IsNearOne(zeroEpsilon)) return false;
+        if (!Scalar10.IsNearZero(zeroEpsilon)) return false;
+        if (!Scalar20.IsNearZero(zeroEpsilon)) return false;
+
+        if (!Scalar01.IsNearZero(zeroEpsilon)) return false;
+        if (!Scalar11.IsNearOne(zeroEpsilon)) return false;
+        if (!Scalar21.IsNearZero(zeroEpsilon)) return false;
+
+        if (!Scalar02.IsNearZero(zeroEpsilon)) return false;
+        if (!Scalar12.IsNearZero(zeroEpsilon)) return false;
+        if (!Scalar22.IsNearOne(zeroEpsilon)) return false;
+
+        return true;
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public bool IsNearRotation(double zeroEpsilon = Float64Utils.ZeroEpsilon)
+    {
+        return Determinant.IsNearOne(zeroEpsilon) &&
+               (this * Transpose()).IsNearIdentity(zeroEpsilon);
+    }
 
     public SquareMatrix3 NearestOrthogonalMatrix()
     {
@@ -899,10 +940,12 @@ public sealed class SquareMatrix3 //: IAffineMap2D
             var w = 0.5d * s;
             s = 0.5d / s;
 
-            return LinFloat64Quaternion.Create((Scalar21 - Scalar12) * s,
-                (Scalar02 - Scalar20) * s,
-                (Scalar10 - Scalar01) * s,
-                w);
+            return LinFloat64Quaternion.Create(
+                w, 
+                (Scalar21 - Scalar12) * s, 
+                (Scalar02 - Scalar20) * s, 
+                (Scalar10 - Scalar01) * s
+            );
         }
         else
         {
@@ -922,7 +965,7 @@ public sealed class SquareMatrix3 //: IAffineMap2D
             q[j] = (this[j, i] + this[i, j]) * s;
             q[k] = (this[k, i] + this[i, k]) * s;
 
-            return LinFloat64Quaternion.Create(q[0], q[1], q[2], w);
+            return LinFloat64Quaternion.Create(w, q[0], q[1], q[2]);
         }
     }
 

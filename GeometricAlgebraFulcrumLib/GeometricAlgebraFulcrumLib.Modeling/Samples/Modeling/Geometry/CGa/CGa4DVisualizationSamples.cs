@@ -8,7 +8,7 @@ using GeometricAlgebraFulcrumLib.Modeling.Geometry.Parametric.Float64.Space1D.Sc
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.Parametric.Float64.Space1D.Scalars.Harmonic;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.Parametric.Float64.Space2D.Curves;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.Parametric.Float64.Space2D.Curves.Polar;
-using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.Visuals.Space3D.Animations;
+using GeometricAlgebraFulcrumLib.Modeling.Signals;
 using GeometricAlgebraFulcrumLib.Utilities.Web.Colors;
 using SixLabors.ImageSharp;
 
@@ -77,8 +77,8 @@ public static class CGa4DVisualizationSamples
 
         Console.WriteLine("Animated Example Started ..");
 
-        var animationSpecs =
-            GrVisualAnimationSpecs.Create(frameRate, maxTime);
+        var samplingSpecs =
+            Float64SamplingSpecs.Create(frameRate, maxTime);
 
         // This curve defines the parametric position of the first point
         var point1Curve =
@@ -94,35 +94,40 @@ public static class CGa4DVisualizationSamples
                 point1Curve,
                 point2Curve
             );
+        
+        // Initialize visualizer for 3D animated drawing
+        CGa.Visualizer.BeginDrawing2D(
+            @"D:\Projects\Study\Web\Babylon.js",
+            samplingSpecs
+        );
+        
+        CGa.VisualizerAnimationComposer.SetFileNameAndTitle(
+            "Parametric 2D Line 1"
+        );
 
-        // Prepare latex expressions
-        var latexDictionary = new Dictionary<string, string>()
-        {
-            {"point1", @"P_{1}"},
-            {"point2", @"P_{2}"}
-        };
-
-        // Initialize visualizer for 2D animated drawing
-        CGa.Visualizer
-            .SetWorkingFolder(@"D:\Projects\Study\Web\Babylon.js")
-            .SetAnimationSpecs(animationSpecs)
-            .BeginDrawing2D(@"Parametric 2D Line Example 1", latexDictionary);
+        CGa.VisualizerKaTeXComposer.AddLaTeXCode(
+            new Dictionary<string, string>()
+            {
+                {"point1", "P_{1}"},
+                {"point2", "P_{2}"}
+            }
+        );
 
         // Draw the two position curves
-        CGa.Visualizer
+        CGa.Visualizer.AnimationComposer
             .SetCurveStyleTube(0.03)
             .DrawCurve(
                 Color.Red,
                 point1Curve,
-                animationSpecs.FrameTimeRange
+                samplingSpecs.TimeRange
             ).DrawCurve(
                 Color.Green,
                 point2Curve,
-                animationSpecs.FrameTimeRange
+                samplingSpecs.TimeRange
             );
 
         // Draw the two points
-        CGa.Visualizer
+        CGa.Visualizer.AnimationComposer
             .SetPointStyle(0.07)
             .DrawPoint(
                 Color.Red,
@@ -146,12 +151,12 @@ public static class CGa4DVisualizationSamples
         // Draw LaTeX expressions
         var latexOffset = LinFloat64Vector2D.VectorSymmetric(0.5);
 
-        CGa.Visualizer
+        CGa.Visualizer.AnimationComposer
             .DrawLaTeX("point1", point1Curve.GetOffsetCurve(latexOffset))
             .DrawLaTeX("point2", point2Curve.GetOffsetCurve(latexOffset));
 
         // Save the HTML animation file
-        CGa.Visualizer.SaveHtmlFile();
+        CGa.Visualizer.AnimationComposer.SaveHtmlFile();
 
         Console.WriteLine("Animated Example Finished.");
     }
@@ -166,8 +171,8 @@ public static class CGa4DVisualizationSamples
 
         Console.WriteLine("Animated Example Started ..");
 
-        var animationSpecs =
-            GrVisualAnimationSpecs.Create(frameRate, maxTime);
+        var samplingSpecs =
+            Float64SamplingSpecs.Create(frameRate, maxTime);
 
         // This curve defines the parametric position of the first point
         var positionCurve =
@@ -183,25 +188,30 @@ public static class CGa4DVisualizationSamples
                 vectorCurve
             );
 
-        // Prepare latex expressions
-        var latexDictionary = new Dictionary<string, string>()
-        {
-            {"point", @"P"}
-        };
+        // Initialize visualizer for 3D animated drawing
+        CGa.Visualizer.BeginDrawing2D(
+            @"D:\Projects\Study\Web\Babylon.js",
+            samplingSpecs
+        );
+        
+        CGa.VisualizerAnimationComposer.SetFileNameAndTitle(
+            "Parametric 2D Line 2"
+        );
 
-        // Initialize visualizer for 2D animated drawing
-        CGa.Visualizer
-            .SetWorkingFolder(@"D:\Projects\Study\Web\Babylon.js")
-            .SetAnimationSpecs(animationSpecs)
-            .BeginDrawing2D(@"Parametric 2D Line Example 2", latexDictionary);
+        CGa.VisualizerKaTeXComposer.AddLaTeXCode(
+            new Dictionary<string, string>()
+            {
+                {"point", "P"}
+            }
+        );
 
         // Draw the position curve
-        CGa.Visualizer
+        CGa.Visualizer.AnimationComposer
             .SetCurveStyleTube(0.05)
             .DrawCurve(
                 Color.Red,
                 positionCurve,
-                animationSpecs.FrameTimeRange
+                samplingSpecs.TimeRange
             );
 
         // Draw the parametric line
@@ -218,11 +228,11 @@ public static class CGa4DVisualizationSamples
         // Draw LaTeX expressions
         var latexOffset = LinFloat64Vector2D.VectorSymmetric(0.5);
 
-        CGa.Visualizer
+        CGa.Visualizer.AnimationComposer
             .DrawLaTeX("point", positionCurve.GetOffsetCurve(latexOffset));
 
         // Save the HTML animation file
-        CGa.Visualizer.SaveHtmlFile();
+        CGa.Visualizer.AnimationComposer.SaveHtmlFile();
 
         Console.WriteLine("Animated Example Finished.");
     }
@@ -237,8 +247,8 @@ public static class CGa4DVisualizationSamples
 
         Console.WriteLine("Animated Example Started ..");
 
-        var animationSpecs =
-            GrVisualAnimationSpecs.Create(frameRate, maxTime);
+        var samplingSpecs =
+            Float64SamplingSpecs.Create(frameRate, maxTime);
 
         // This curve defines the parametric position of the first point
         var point1Curve =
@@ -255,30 +265,35 @@ public static class CGa4DVisualizationSamples
                 point2Curve
             );
 
-        // Prepare latex expressions
-        var latexDictionary = new Dictionary<string, string>()
-        {
-            {"point1", @"P_{1}"},
-            {"point2", @"P_{2}"}
-        };
+        // Initialize visualizer for 3D animated drawing
+        CGa.Visualizer.BeginDrawing2D(
+            @"D:\Projects\Study\Web\Babylon.js",
+            samplingSpecs
+        );
+        
+        CGa.VisualizerAnimationComposer.SetFileNameAndTitle(
+            "Parametric 2D Point-Pair 1"
+        );
 
-        // Initialize visualizer for 2D animated drawing
-        CGa.Visualizer
-            .SetWorkingFolder(@"D:\Projects\Study\Web\Babylon.js")
-            .SetAnimationSpecs(animationSpecs)
-            .BeginDrawing2D(@"Parametric 2D Point-Pair Example 1", latexDictionary);
+        CGa.VisualizerKaTeXComposer.AddLaTeXCode(
+            new Dictionary<string, string>()
+            {
+                {"point1", "P_{1}"},
+                {"point2", "P_{2}"}
+            }
+        );
 
         // Draw the two point curves
-        CGa.Visualizer
+        CGa.Visualizer.AnimationComposer
             .SetCurveStyleTube(0.03)
             .DrawCurve(
                 Color.Red.SetAlpha(0.2),
                 point1Curve,
-                animationSpecs.FrameTimeRange
+                samplingSpecs.TimeRange
             ).DrawCurve(
                 Color.Blue.SetAlpha(0.2),
                 point2Curve,
-                animationSpecs.FrameTimeRange
+                samplingSpecs.TimeRange
             );
 
         // Draw the parametric point-pair
@@ -294,12 +309,12 @@ public static class CGa4DVisualizationSamples
         // Draw LaTeX expressions
         var latexOffset = LinFloat64Vector2D.VectorSymmetric(0.5);
 
-        CGa.Visualizer
+        CGa.Visualizer.AnimationComposer
             .DrawLaTeX("point1", point1Curve.GetOffsetCurve(latexOffset))
             .DrawLaTeX("point2", point2Curve.GetOffsetCurve(latexOffset));
 
         // Save the HTML animation file
-        CGa.Visualizer.SaveHtmlFile();
+        CGa.Visualizer.AnimationComposer.SaveHtmlFile();
 
         Console.WriteLine("Animated Example Finished.");
     }
@@ -314,8 +329,8 @@ public static class CGa4DVisualizationSamples
 
         Console.WriteLine("Animated Example Started ..");
 
-        var animationSpecs =
-            GrVisualAnimationSpecs.Create(frameRate, maxTime);
+        var samplingSpecs =
+            Float64SamplingSpecs.Create(frameRate, maxTime);
 
         // This curve defines the parametric radius of the circle containing the point-pair
         var radiusCurve =
@@ -337,25 +352,30 @@ public static class CGa4DVisualizationSamples
                 vectorCurve
             );
 
-        // Prepare latex expressions
-        var latexDictionary = new Dictionary<string, string>()
-        {
-            {"center", @"C"}
-        };
+        // Initialize visualizer for 3D animated drawing
+        CGa.Visualizer.BeginDrawing2D(
+            @"D:\Projects\Study\Web\Babylon.js",
+            samplingSpecs
+        );
+        
+        CGa.VisualizerAnimationComposer.SetFileNameAndTitle(
+            "Parametric 2D Point-Pair 2"
+        );
 
-        // Initialize visualizer for 2D animated drawing
-        CGa.Visualizer
-            .SetWorkingFolder(@"D:\Projects\Study\Web\Babylon.js")
-            .SetAnimationSpecs(animationSpecs)
-            .BeginDrawing2D(@"Parametric 2D Point-Pair Example 2", latexDictionary);
+        CGa.VisualizerKaTeXComposer.AddLaTeXCode(
+            new Dictionary<string, string>()
+            {
+                {"center", "C"}
+            }
+        );
 
         // Draw the position curve
-        CGa.Visualizer
+        CGa.Visualizer.AnimationComposer
             .SetCurveStyleTube(0.03)
             .DrawCurve(
                 Color.Red.SetAlpha(0.2),
                 centerCurve,
-                animationSpecs.FrameTimeRange
+                samplingSpecs.TimeRange
             );
 
         // Draw the parametric point-pair
@@ -371,13 +391,13 @@ public static class CGa4DVisualizationSamples
         // Draw LaTeX expressions
         var latexOffset = LinFloat64Vector2D.VectorSymmetric(0.5);
 
-        CGa.Visualizer.DrawLaTeX(
+        CGa.Visualizer.AnimationComposer.DrawLaTeX(
             "center",
             centerCurve.GetOffsetCurve(latexOffset)
         );
 
         // Save the HTML animation file
-        CGa.Visualizer.SaveHtmlFile();
+        CGa.Visualizer.AnimationComposer.SaveHtmlFile();
 
         Console.WriteLine("Animated Example Finished.");
     }
@@ -392,8 +412,8 @@ public static class CGa4DVisualizationSamples
 
         Console.WriteLine("Animated Example Started ..");
 
-        var animationSpecs =
-            GrVisualAnimationSpecs.Create(frameRate, maxTime);
+        var samplingSpecs =
+            Float64SamplingSpecs.Create(frameRate, maxTime);
 
         // This curve defines the parametric position of the first point
         var point1Curve =
@@ -415,35 +435,40 @@ public static class CGa4DVisualizationSamples
                 point3Curve
             );
 
-        // Prepare latex expressions
-        var latexDictionary = new Dictionary<string, string>()
-        {
-            {"point1", @"P_{1}"},
-            {"point2", @"P_{2}"},
-            {"point3", @"P_{3}"}
-        };
+        // Initialize visualizer for 3D animated drawing
+        CGa.Visualizer.BeginDrawing2D(
+            @"D:\Projects\Study\Web\Babylon.js",
+            samplingSpecs
+        );
+        
+        CGa.VisualizerAnimationComposer.SetFileNameAndTitle(
+            "Parametric 2D Circle 1"
+        );
 
-        // Initialize visualizer for 2D animated drawing
-        CGa.Visualizer
-            .SetWorkingFolder(@"D:\Projects\Study\Web\Babylon.js")
-            .SetAnimationSpecs(animationSpecs)
-            .BeginDrawing2D(@"Parametric 2D Circle Example 1", latexDictionary);
+        CGa.VisualizerKaTeXComposer.AddLaTeXCode(
+            new Dictionary<string, string>()
+            {
+                {"point1", "P_{1}"},
+                {"point2", "P_{2}"},
+                {"point3", "P_{3}"}
+            }
+        );
 
         // Draw the two position curves
-        CGa.Visualizer
+        CGa.Visualizer.AnimationComposer
             .SetCurveStyleTube(0.03)
             .DrawCurve(
                 Color.Red.SetAlpha(0.2),
                 point1Curve,
-                animationSpecs.FrameTimeRange
+                samplingSpecs.TimeRange
             ).DrawCurve(
                 Color.Green.SetAlpha(0.2),
                 point2Curve,
-                animationSpecs.FrameTimeRange
+                samplingSpecs.TimeRange
             );
 
         // Draw the 3 points defining the circle
-        CGa.Visualizer
+        CGa.Visualizer.AnimationComposer
             .SetPointStyle(0.08)
             .DrawPoint(Color.Red, point1Curve)
             .DrawPoint(Color.Green, point2Curve)
@@ -462,13 +487,13 @@ public static class CGa4DVisualizationSamples
         // Draw LaTeX expressions
         var latexOffset = LinFloat64Vector2D.VectorSymmetric(0.5);
 
-        CGa.Visualizer
+        CGa.Visualizer.AnimationComposer
             .DrawLaTeX("point1", point1Curve.GetOffsetCurve(latexOffset))
             .DrawLaTeX("point2", point2Curve.GetOffsetCurve(latexOffset))
             .DrawLaTeX("point3", point3Curve.Point + latexOffset);
 
         // Save the HTML animation file
-        CGa.Visualizer.SaveHtmlFile();
+        CGa.Visualizer.AnimationComposer.SaveHtmlFile();
 
         Console.WriteLine("Animated Example Finished.");
     }
@@ -483,8 +508,8 @@ public static class CGa4DVisualizationSamples
 
         Console.WriteLine("Animated Example Started ..");
 
-        var animationSpecs =
-            GrVisualAnimationSpecs.Create(frameRate, maxTime);
+        var samplingSpecs =
+            Float64SamplingSpecs.Create(frameRate, maxTime);
 
         // This curve defines the parametric radius of the circle containing the circle
         var radiusCurve =
@@ -501,25 +526,30 @@ public static class CGa4DVisualizationSamples
                 centerCurve
             );
 
-        // Prepare latex expressions
-        var latexDictionary = new Dictionary<string, string>()
-        {
-            {"center", @"C"}
-        };
+        // Initialize visualizer for 3D animated drawing
+        CGa.Visualizer.BeginDrawing2D(
+            @"D:\Projects\Study\Web\Babylon.js",
+            samplingSpecs
+        );
+        
+        CGa.VisualizerAnimationComposer.SetFileNameAndTitle(
+            "Parametric 2D Circle 2"
+        );
 
-        // Initialize visualizer for 2D animated drawing
-        CGa.Visualizer
-            .SetWorkingFolder(@"D:\Projects\Study\Web\Babylon.js")
-            .SetAnimationSpecs(animationSpecs)
-            .BeginDrawing2D(@"Parametric 2D Circle Example 2", latexDictionary);
+        CGa.VisualizerKaTeXComposer.AddLaTeXCode(
+            new Dictionary<string, string>()
+            {
+                {"center", "C"}
+            }
+        );
 
         // Draw the center curve
-        CGa.Visualizer
+        CGa.Visualizer.AnimationComposer
             .SetCurveStyleTube(0.03)
             .DrawCurve(
                 Color.Red.SetAlpha(0.2),
                 centerCurve,
-                animationSpecs.FrameTimeRange
+                samplingSpecs.TimeRange
             );
 
         // Draw the parametric circle
@@ -535,13 +565,13 @@ public static class CGa4DVisualizationSamples
         // Draw LaTeX expressions
         var latexOffset = LinFloat64Vector2D.VectorSymmetric(0.5);
 
-        CGa.Visualizer.DrawLaTeX(
+        CGa.Visualizer.AnimationComposer.DrawLaTeX(
             "center",
             centerCurve.GetOffsetCurve(latexOffset)
         );
 
         // Save the HTML animation file
-        CGa.Visualizer.SaveHtmlFile();
+        CGa.Visualizer.AnimationComposer.SaveHtmlFile();
 
         Console.WriteLine("Animated Example Finished.");
     }
@@ -557,8 +587,8 @@ public static class CGa4DVisualizationSamples
 
         Console.WriteLine("Animated Example Started ..");
 
-        var animationSpecs =
-            GrVisualAnimationSpecs.Create(frameRate, maxTime);
+        var samplingSpecs =
+            Float64SamplingSpecs.Create(frameRate, maxTime);
 
         // Define a parametric real circle
         // This curve defines the parametric center of the circle
@@ -588,19 +618,24 @@ public static class CGa4DVisualizationSamples
         var intersectionElement =
             roundCircle1.Meet(roundCircle2);
 
-        // Prepare latex expressions
-        var latexDictionary = new Dictionary<string, string>()
-        {
-            {"element1", @"A"},
-            {"element2", @"B"},
-            {"intersectionElement", @"A \cap B"},
-        };
+        // Initialize visualizer for 3D animated drawing
+        CGa.Visualizer.BeginDrawing2D(
+            @"D:\Projects\Study\Web\Babylon.js",
+            samplingSpecs
+        );
+        
+        CGa.VisualizerAnimationComposer.SetFileNameAndTitle(
+            "Parametric 2D Circle-Circle Intersection"
+        );
 
-        // Initialize visualizer for 2D animated drawing
-        CGa.Visualizer
-            .SetWorkingFolder(@"D:\Projects\Study\Web\Babylon.js")
-            .SetAnimationSpecs(animationSpecs)
-            .BeginDrawing2D(@"Parametric 2D Circle-Circle Intersection Example", latexDictionary);
+        CGa.VisualizerKaTeXComposer.AddLaTeXCode(
+            new Dictionary<string, string>()
+            {
+                {"element1", "A"},
+                {"element2", "B"},
+                {"intersectionElement", @"A \cap B"}
+            }
+        );
 
         // Draw curves for circle centers
         //Ga.Visualizer
@@ -608,11 +643,11 @@ public static class CGa4DVisualizationSamples
         //    .DrawCurve(
         //        Color.Red.SetAlpha(0.2), 
         //        positionCurve1, 
-        //        animationSpecs.TimeRange
+        //        samplingSpecs.TimeRange
         //    ).DrawCurve(
         //        Color.Green.SetAlpha(0.2), 
         //        positionCurve2, 
-        //        animationSpecs.TimeRange
+        //        samplingSpecs.TimeRange
         //    );
 
         // Draw the two circles and their intersection circle
@@ -631,7 +666,7 @@ public static class CGa4DVisualizationSamples
             .DrawRoundPointPair2D(Color.Yellow, intersectionElement);
 
         // Draw the line segment between the two circle centers
-        CGa.Visualizer
+        CGa.Visualizer.AnimationComposer
             //.SetCurveStyleDashed(5, 3, 16)
             //.SetCurveStyleSolid()
             .SetCurveStyleTube(0.065)
@@ -642,7 +677,7 @@ public static class CGa4DVisualizationSamples
             );
 
         // Draw LaTeX expressions
-        CGa.Visualizer
+        CGa.Visualizer.AnimationComposer
             .DrawLaTeX(
                 "element1",
                 roundCircle1.GetRoundSurfacePointCurve2D(
@@ -677,8 +712,8 @@ public static class CGa4DVisualizationSamples
 
         Console.WriteLine("Animated Example Started ..");
 
-        var animationSpecs =
-            GrVisualAnimationSpecs.Create(frameRate, maxTime);
+        var samplingSpecs =
+            Float64SamplingSpecs.Create(frameRate, maxTime);
 
         // Define a parametric real circle
         // This curve defines the parametric center of the circle
@@ -715,19 +750,24 @@ public static class CGa4DVisualizationSamples
         var p12Curve =
             intersectionElement.GetRoundCenterCurve2D();
 
-        // Prepare latex expressions
-        var latexDictionary = new Dictionary<string, string>()
-        {
-            {"element1", @"A"},
-            {"element2", @"B"},
-            {"intersectionElement", @"A \cap B"},
-        };
+        // Initialize visualizer for 3D animated drawing
+        CGa.Visualizer.BeginDrawing2D(
+            @"D:\Projects\Study\Web\Babylon.js",
+            samplingSpecs
+        );
+        
+        CGa.VisualizerAnimationComposer.SetFileNameAndTitle(
+            "Parametric 2D Circle-Line Intersection"
+        );
 
-        // Initialize visualizer for 2D animated drawing
-        CGa.Visualizer
-            .SetWorkingFolder(@"D:\Projects\Study\Web\Babylon.js")
-            .SetAnimationSpecs(animationSpecs)
-            .BeginDrawing2D(@"Parametric 2D Circle-Line Intersection Example", latexDictionary);
+        CGa.VisualizerKaTeXComposer.AddLaTeXCode(
+            new Dictionary<string, string>()
+            {
+                {"element1", "A"},
+                {"element2", "B"},
+                {"intersectionElement", @"A \cap B"}
+            }
+        );
 
         // Draw curves for circle centers
         //Ga.Visualizer
@@ -735,11 +775,11 @@ public static class CGa4DVisualizationSamples
         //    .DrawCurve(
         //        Color.Red.SetAlpha(0.2), 
         //        positionCurve1, 
-        //        animationSpecs.TimeRange
+        //        samplingSpecs.TimeRange
         //    ).DrawCurve(
         //        Color.Green.SetAlpha(0.2), 
         //        positionCurve2, 
-        //        animationSpecs.TimeRange
+        //        samplingSpecs.TimeRange
         //    );
 
         // Draw the circle and line and their intersection point-pair
@@ -767,7 +807,7 @@ public static class CGa4DVisualizationSamples
 
         // Draw the line segments between the circle center and point-pair
         // midpoint and two edge points
-        CGa.Visualizer
+        CGa.Visualizer.AnimationComposer
             .SetCurveStyleDashed(5, 3, 16)
             //.SetCurveStyleSolid()
             //.SetCurveStyleTube(0.065)
@@ -787,7 +827,7 @@ public static class CGa4DVisualizationSamples
             );
 
         // Draw LaTeX expressions
-        CGa.Visualizer
+        CGa.Visualizer.AnimationComposer
             .DrawLaTeX(
                 "element1",
                 flatLine.GetSurfacePointCurve2D(
@@ -823,8 +863,8 @@ public static class CGa4DVisualizationSamples
 
         Console.WriteLine("Animated Example Started ..");
 
-        var animationSpecs =
-            GrVisualAnimationSpecs.Create(frameRate, maxTime);
+        var samplingSpecs =
+            Float64SamplingSpecs.Create(frameRate, maxTime);
 
         // Encode a parametric real circle
         // This curve defines the parametric center of the circle
@@ -855,19 +895,24 @@ public static class CGa4DVisualizationSamples
         var reflectionElement =
             roundCircle2.ReflectOn(roundCircle1);
 
-        // Prepare latex expressions
-        var latexDictionary = new Dictionary<string, string>()
-        {
-            {"element1", @"A"},
-            {"element2", @"B"},
-            {"reflectionElement", @"A B A^{-1}"},
-        };
+        // Initialize visualizer for 3D animated drawing
+        CGa.Visualizer.BeginDrawing2D(
+            @"D:\Projects\Study\Web\Babylon.js",
+            samplingSpecs
+        );
+        
+        CGa.VisualizerAnimationComposer.SetFileNameAndTitle(
+            "Parametric 2D Circle On Circle Reflection"
+        );
 
-        // Initialize visualizer for 2D animated drawing
-        CGa.Visualizer
-            .SetWorkingFolder(@"D:\Projects\Study\Web\Babylon.js")
-            .SetAnimationSpecs(animationSpecs)
-            .BeginDrawing2D(@"Parametric 2D Circle On Circle Reflection Example", latexDictionary);
+        CGa.VisualizerKaTeXComposer.AddLaTeXCode(
+            new Dictionary<string, string>()
+            {
+                {"element1", "A"},
+                {"element2", "B"},
+                {"reflectionElement", "A B A^{-1}"}
+            }
+        );
 
         // Draw curves for circle centers
         //Ga.Visualizer
@@ -875,11 +920,11 @@ public static class CGa4DVisualizationSamples
         //    .DrawCurve(
         //        Color.Red.SetAlpha(0.2), 
         //        positionCurve1, 
-        //        animationSpecs.TimeRange
+        //        samplingSpecs.TimeRange
         //    ).DrawCurve(
         //        Color.Green.SetAlpha(0.2), 
         //        positionCurve2, 
-        //        animationSpecs.TimeRange
+        //        samplingSpecs.TimeRange
         //    );
 
         // Draw the two circles and their intersection circle
@@ -898,7 +943,7 @@ public static class CGa4DVisualizationSamples
             .DrawRoundCircle2D(Color.Yellow, reflectionElement);
 
         // Draw LaTeX expressions
-        CGa.Visualizer
+        CGa.Visualizer.AnimationComposer
             .DrawLaTeX(
                 "element1",
                 roundCircle1.GetRoundSurfacePointCurve2D(
@@ -934,14 +979,14 @@ public static class CGa4DVisualizationSamples
 
         Console.WriteLine("Animated Example Started ..");
 
-        var animationSpecs =
-            GrVisualAnimationSpecs.Create(frameRate, maxTime);
+        var samplingSpecs =
+            Float64SamplingSpecs.Create(frameRate, maxTime);
 
         // Encode a parametric real line
         // This curve defines the parametric position and normal of the line
         var positionCurve1 =
             ConstantParametricCurve2D.Create(
-                animationSpecs.FrameTimeRange,
+                samplingSpecs.TimeRange,
                 LinFloat64Vector2D.Create(0, 0),
                 LinFloat64Vector2D.Create(0, 1)
             );
@@ -971,19 +1016,24 @@ public static class CGa4DVisualizationSamples
         var reflectionElement =
             roundCircle.ReflectOn(flatLine);
 
-        // Prepare latex expressions
-        var latexDictionary = new Dictionary<string, string>()
-        {
-            {"element1", @"A"},
-            {"element2", @"B"},
-            {"reflectionElement", @"A B A^{-1}"},
-        };
+        // Initialize visualizer for 3D animated drawing
+        CGa.Visualizer.BeginDrawing2D(
+            @"D:\Projects\Study\Web\Babylon.js",
+            samplingSpecs
+        );
+        
+        CGa.VisualizerAnimationComposer.SetFileNameAndTitle(
+            "Parametric 2D Circle On Line Reflection"
+        );
 
-        // Initialize visualizer for 2D animated drawing
-        CGa.Visualizer
-            .SetWorkingFolder(@"D:\Projects\Study\Web\Babylon.js")
-            .SetAnimationSpecs(animationSpecs)
-            .BeginDrawing2D(@"Parametric 2D Circle On Line Reflection Example", latexDictionary);
+        CGa.VisualizerKaTeXComposer.AddLaTeXCode(
+            new Dictionary<string, string>()
+            {
+                {"element1", "A"},
+                {"element2", "B"},
+                {"reflectionElement", "A B A^{-1}"}
+            }
+        );
 
         // Draw curves for circle centers
         //Ga.Visualizer
@@ -991,11 +1041,11 @@ public static class CGa4DVisualizationSamples
         //    .DrawCurve(
         //        Color.Red.SetAlpha(0.2), 
         //        positionCurve1, 
-        //        animationSpecs.TimeRange
+        //        samplingSpecs.TimeRange
         //    ).DrawCurve(
         //        Color.Green.SetAlpha(0.2), 
         //        positionCurve2, 
-        //        animationSpecs.TimeRange
+        //        samplingSpecs.TimeRange
         //    );
 
         // Draw the two circles and their intersection circle
@@ -1021,7 +1071,7 @@ public static class CGa4DVisualizationSamples
             .DrawRoundCircle2D(Color.Yellow, reflectionElement);
 
         // Draw LaTeX expressions
-        CGa.Visualizer
+        CGa.Visualizer.AnimationComposer
             .DrawLaTeX(
                 "element1",
                 flatLine.GetSurfacePointCurve2D(
@@ -1058,14 +1108,14 @@ public static class CGa4DVisualizationSamples
 
         Console.WriteLine("Animated Example Started ..");
 
-        var animationSpecs =
-            GrVisualAnimationSpecs.Create(frameRate, maxTime);
+        var samplingSpecs =
+            Float64SamplingSpecs.Create(frameRate, maxTime);
 
         // Encode a parametric real line
         // This curve defines the parametric position and normal of the line
         var positionCurve1 =
             ConstantParametricCurve2D.Create(
-                animationSpecs.FrameTimeRange,
+                samplingSpecs.TimeRange,
                 LinFloat64Vector2D.Create(0, 0),
                 LinFloat64Vector2D.Create(0, 1)
             );
@@ -1100,20 +1150,25 @@ public static class CGa4DVisualizationSamples
         var reflectionElement =
             roundPointPair.ReflectOn(flatLine);
 
-        // Prepare latex expressions
-        var latexDictionary = new Dictionary<string, string>()
-        {
-            {"element1", @"A"},
-            {"element2", @"B"},
-            {"projectionElement", @"\left(B\bullet A\right)A^{-1}"},
-            {"reflectionElement", @"A B A^{-1}"},
-        };
+        // Initialize visualizer for 3D animated drawing
+        CGa.Visualizer.BeginDrawing2D(
+            @"D:\Projects\Study\Web\Babylon.js",
+            samplingSpecs
+        );
+        
+        CGa.VisualizerAnimationComposer.SetFileNameAndTitle(
+            "Parametric 2D Point-Pair On Line Reflection"
+        );
 
-        // Initialize visualizer for 2D animated drawing
-        CGa.Visualizer
-            .SetWorkingFolder(@"D:\Projects\Study\Web\Babylon.js")
-            .SetAnimationSpecs(animationSpecs)
-            .BeginDrawing2D(@"Parametric 2D Point-Pair On Line Reflection Example", latexDictionary);
+        CGa.VisualizerKaTeXComposer.AddLaTeXCode(
+            new Dictionary<string, string>()
+            {
+                {"element1", "A"},
+                {"element2", "B"},
+                {"projectionElement", @"\left(B\bullet A\right)A^{-1}"},
+                {"reflectionElement", "A B A^{-1}"}
+            }
+        );
 
         // Draw curves for circle centers
         //Ga.Visualizer
@@ -1121,11 +1176,11 @@ public static class CGa4DVisualizationSamples
         //    .DrawCurve(
         //        Color.Red.SetAlpha(0.2), 
         //        positionCurve1, 
-        //        animationSpecs.TimeRange
+        //        samplingSpecs.TimeRange
         //    ).DrawCurve(
         //        Color.Green.SetAlpha(0.2), 
         //        positionCurve2, 
-        //        animationSpecs.TimeRange
+        //        samplingSpecs.TimeRange
         //    );
 
         // Draw the line and point-pair and their intersection
@@ -1152,7 +1207,7 @@ public static class CGa4DVisualizationSamples
             .DrawRoundPointPair2D(Color.Yellow, reflectionElement);
 
         // Draw LaTeX expressions
-        CGa.Visualizer
+        CGa.Visualizer.AnimationComposer
             .DrawLaTeX(
                 "element1",
                 flatLine.GetSurfacePointCurve2D(
@@ -1190,8 +1245,8 @@ public static class CGa4DVisualizationSamples
 
         Console.WriteLine("Animated Example Started ..");
 
-        var animationSpecs =
-            GrVisualAnimationSpecs.Create(frameRate, maxTime);
+        var samplingSpecs =
+            Float64SamplingSpecs.Create(frameRate, maxTime);
 
         // Encode two parametric circle blades
         var roundCircle1 =
@@ -1206,12 +1261,16 @@ public static class CGa4DVisualizationSamples
                 LinFloat64Vector2D.Create(-5, -5),
                 LinFloat64Bivector2D.E21
             );
-
-        // Initialize visualizer for 2D animated drawing
-        CGa.Visualizer
-            .SetWorkingFolder(@"D:\Projects\Study\Web\Babylon.js")
-            .SetAnimationSpecs(animationSpecs)
-            .BeginDrawing2D(@"Parametric 2D Circle Interpolation Example");
+        
+        // Initialize visualizer for 3D animated drawing
+        CGa.Visualizer.BeginDrawing2D(
+            @"D:\Projects\Study\Web\Babylon.js",
+            samplingSpecs
+        );
+        
+        CGa.VisualizerAnimationComposer.SetFileNameAndTitle(
+            "Parametric 2D Circle Interpolation"
+        );
 
         // Draw the two circles
         CGa.Visualizer
@@ -1230,7 +1289,7 @@ public static class CGa4DVisualizationSamples
         var lerpCircle =
             CGaFloat64ParametricElement.Create(
                 CGa,
-                animationSpecs.FrameTimeRange,
+                samplingSpecs.TimeRange,
                 t =>
                     (t / maxTime)
                         .CosWave(0, 1, 1)
@@ -1244,7 +1303,7 @@ public static class CGa4DVisualizationSamples
         CGa.Visualizer.DrawRoundCircle2D(Color.Bisque, lerpCircle);
 
         // Draw LaTeX expressions
-        CGa.Visualizer.SaveHtmlFile();
+        CGa.Visualizer.AnimationComposer.SaveHtmlFile();
 
         Console.WriteLine("Animated Example Finished.");
     }

@@ -582,7 +582,7 @@ public class DotGraph : IDotGraph
 
     public DotGraph SetEpsilon(double value)
     {
-        return SetAttribute("epsilon", value.ToDotDouble());
+        return SetAttribute("zeroEpsilon", value.ToDotDouble());
     }
 
     public DotGraph SetEdgeSeparationMargins(double value)

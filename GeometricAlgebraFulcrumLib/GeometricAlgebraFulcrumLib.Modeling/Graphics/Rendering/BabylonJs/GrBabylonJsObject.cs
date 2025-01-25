@@ -41,11 +41,11 @@ public abstract class GrBabylonJsObject :
             return string.Empty;
 
         return string.IsNullOrEmpty(ConstName)
-            ? ObjectProperties.GetCode()
+            ? ObjectProperties.GetAttributeSetCode()
             : ObjectProperties.GetCode(ConstName);
     }
 
-    public virtual string GetCode()
+    public virtual string GetBabylonJsCode()
     {
         var composer = new StringBuilder();
 
@@ -69,7 +69,7 @@ public abstract class GrBabylonJsObject :
     public override string ToString()
     {
         return string.IsNullOrEmpty(ConstName)
-            ? GetCode() 
+            ? GetBabylonJsCode() 
             : ConstName;
     }
 }

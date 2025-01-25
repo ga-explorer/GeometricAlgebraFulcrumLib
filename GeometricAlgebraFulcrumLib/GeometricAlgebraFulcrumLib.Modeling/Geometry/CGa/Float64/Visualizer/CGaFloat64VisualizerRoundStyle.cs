@@ -34,7 +34,7 @@ public sealed record CGaFloat64VisualizerRoundStyle :
     public GrVisualSurfaceThickStyle3D GetPointPairVisualStyle(Color color)
     {
         return new GrVisualSurfaceThickStyle3D(
-            Visualizer.MainSceneComposer.AddOrGetColorMaterial(color),
+            AnimationComposer.SceneComposer.AddOrGetColorMaterial(color),
             Thickness
         );
     }
@@ -42,7 +42,7 @@ public sealed record CGaFloat64VisualizerRoundStyle :
     public GrVisualSurfaceThickStyle3D GetPointPairVisualStyle(Color color, double thickness)
     {
         return new GrVisualSurfaceThickStyle3D(
-            Visualizer.MainSceneComposer.AddOrGetColorMaterial(color),
+            AnimationComposer.SceneComposer.AddOrGetColorMaterial(color),
             thickness
         );
     }
@@ -50,7 +50,7 @@ public sealed record CGaFloat64VisualizerRoundStyle :
     public GrVisualCurveTubeStyle3D GetCircleVisualStyle(Color color)
     {
         return new GrVisualCurveTubeStyle3D(
-            Visualizer.MainSceneComposer.AddOrGetColorMaterial(color),
+            AnimationComposer.SceneComposer.AddOrGetColorMaterial(color),
             Thickness
         );
     }
@@ -58,7 +58,7 @@ public sealed record CGaFloat64VisualizerRoundStyle :
     public GrVisualCurveTubeStyle3D GetCircleVisualStyle(Color color, double thickness)
     {
         return new GrVisualCurveTubeStyle3D(
-            Visualizer.MainSceneComposer.AddOrGetColorMaterial(color),
+            AnimationComposer.SceneComposer.AddOrGetColorMaterial(color),
             thickness
         );
     }
@@ -66,7 +66,7 @@ public sealed record CGaFloat64VisualizerRoundStyle :
     public GrVisualSurfaceThinStyle3D GetSphereVisualStyle(Color color)
     {
         return new GrVisualSurfaceThinStyle3D(
-            Visualizer.MainSceneComposer.AddOrGetColorMaterial(color)
+            AnimationComposer.SceneComposer.AddOrGetColorMaterial(color)
         );
     }
 

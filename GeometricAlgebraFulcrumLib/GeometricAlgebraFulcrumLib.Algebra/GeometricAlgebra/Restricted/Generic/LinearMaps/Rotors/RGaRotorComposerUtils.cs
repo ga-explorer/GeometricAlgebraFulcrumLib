@@ -176,7 +176,6 @@ public static class RGaRotorComposerUtils
     public static RGaPureRotor<T> CreatePureRotor<T>(this RGaVector<T> sourceVector, RGaVector<T> targetVector, bool assumeUnitVectors = false)
     {
         var processor = sourceVector.Processor;
-
         var cosAngle =
             assumeUnitVectors
                 ? targetVector.ESp(sourceVector)
@@ -184,19 +183,20 @@ public static class RGaRotorComposerUtils
 
         if (cosAngle.IsOne)
             return processor.CreateIdentityRotor();
-            
-        var rotationBlade = 
-            cosAngle.IsMinusOne
-                ? throw new InvalidOperationException()//sourceVector.GetNormalVector().Op(sourceVector)
-                : targetVector.Op(sourceVector);
-                
+
+        if (cosAngle.IsMinusOne)
+            throw new InvalidOperationException();
+            //sourceVector.GetNormalVector().Op(sourceVector)
+
+        var (cosHalfAngle, sinHalfAngle) = 
+            LinPolarAngle<T>.CreateHalfAngleFromCos(cosAngle);
+
+        var rotationBlade = targetVector.Op(sourceVector);
+        
         var unitRotationBlade =
             rotationBlade / (-rotationBlade.ESpSquared()).Sqrt();
 
-        var cosHalfAngle = ((1 + cosAngle) / 2).Sqrt();
-        var sinHalfAngle = ((1 - cosAngle) / 2).Sqrt();
-            
-        var scalarPart = cosHalfAngle.ScalarValue;
+        var scalarPart = cosHalfAngle;
         var bivectorPart = sinHalfAngle * unitRotationBlade;
 
         return RGaPureRotor<T>.Create(

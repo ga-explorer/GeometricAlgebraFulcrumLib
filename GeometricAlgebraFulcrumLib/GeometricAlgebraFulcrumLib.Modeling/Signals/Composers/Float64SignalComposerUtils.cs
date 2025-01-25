@@ -47,5 +47,35 @@ public static class Float64SignalComposerUtils
         return Float64Signal.Create(samplingRate, signalSamples, false);
     }
 
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static Float64Signal CreateSignal(this IEnumerable<double> signalSamples, double samplingRate, Func<double, double> scalarMapping)
+    {
+        return Float64Signal.Create(
+            samplingRate, 
+            signalSamples.Select(scalarMapping), 
+            false
+        );
+    }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static Float64Signal CreateSignal(this IEnumerable<Float64Scalar> signalSamples, double samplingRate, Func<Float64Scalar, double> scalarMapping)
+    {
+        return Float64Signal.Create(
+            samplingRate, 
+            signalSamples.Select(scalarMapping), 
+            false
+        );
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static Float64Signal CreateSignal<T>(this IEnumerable<T> signalSamples, double samplingRate, Func<T, double> scalarMapping)
+    {
+        return Float64Signal.Create(
+            samplingRate, 
+            signalSamples.Select(scalarMapping), 
+            false
+        );
+    }
 
 }

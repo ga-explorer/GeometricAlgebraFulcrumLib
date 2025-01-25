@@ -1,10 +1,8 @@
 ﻿using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space2D;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space3D;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.BasicShapes.Lines;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.BasicShapes.Lines.Immutable;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.BasicShapes.Triangles;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.BasicShapes.Triangles.Immutable;
+using GeometricAlgebraFulcrumLib.Modeling.Geometry.BasicShapes.Lines.Space3D.Float64;
+using GeometricAlgebraFulcrumLib.Modeling.Geometry.BasicShapes.Triangles.Space3D.Float64;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Meshes.PathsMesh.Space2D;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Meshes.PathsMesh.Space3D;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Meshes.PointsPath;
@@ -391,13 +389,13 @@ public static class PathsMeshUtils
             );
     }
 
-    public static IEnumerable<ILineSegment3D> GetLines(this IPathsMesh3D baseMesh, bool generateFromPaths, bool generateFromPathPoints)
+    public static IEnumerable<IFloat64LineSegment3D> GetLines(this IPathsMesh3D baseMesh, bool generateFromPaths, bool generateFromPathPoints)
     {
         if (generateFromPaths)
         {
             foreach (var path in baseMesh)
                 for (var pathPointIndex = 1; pathPointIndex < baseMesh.PathPointsCount; pathPointIndex++)
-                    yield return LineSegment3D.Create(
+                    yield return Float64LineSegment3D.Create(
                         path[pathPointIndex - 1], 
                         path[pathPointIndex]
                     );
@@ -407,26 +405,26 @@ public static class PathsMeshUtils
         {
             for (var pathPointIndex = 0; pathPointIndex < baseMesh.PathPointsCount; pathPointIndex++)
             for (var pathIndex = 1; pathIndex < baseMesh.Count; pathIndex++)
-                yield return LineSegment3D.Create(
+                yield return Float64LineSegment3D.Create(
                     baseMesh[pathIndex - 1][pathPointIndex],
                     baseMesh[pathIndex][pathPointIndex]
                 );
         }
     }
 
-    public static IEnumerable<ITriangle3D> GetTriangles(this IPathsMesh3D baseMesh, bool reversePoints = false)
+    public static IEnumerable<IFloat64Triangle3D> GetTriangles(this IPathsMesh3D baseMesh, bool reversePoints = false)
     {
         if (reversePoints)
         {
             foreach (var pointQuad in baseMesh.GetPointQuads())
             {
-                yield return Triangle3D.Create(
+                yield return Float64Triangle3D.Create(
                     pointQuad.Item4,
                     pointQuad.Item1,
                     pointQuad.Item3
                 );
 
-                yield return Triangle3D.Create(
+                yield return Float64Triangle3D.Create(
                     pointQuad.Item1,
                     pointQuad.Item4,
                     pointQuad.Item2
@@ -437,13 +435,13 @@ public static class PathsMeshUtils
         {
             foreach (var pointQuad in baseMesh.GetPointQuads())
             {
-                yield return Triangle3D.Create(
+                yield return Float64Triangle3D.Create(
                     pointQuad.Item3,
                     pointQuad.Item1,
                     pointQuad.Item4
                 );
 
-                yield return Triangle3D.Create(
+                yield return Float64Triangle3D.Create(
                     pointQuad.Item2,
                     pointQuad.Item4,
                     pointQuad.Item1

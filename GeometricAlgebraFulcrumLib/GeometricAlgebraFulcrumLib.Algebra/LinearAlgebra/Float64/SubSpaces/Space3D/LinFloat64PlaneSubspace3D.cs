@@ -78,9 +78,9 @@ public sealed class LinFloat64PlaneSubspace3D :
     }
 
 
-    public bool NearContains(ILinFloat64Vector3D vector, double epsilon = 1E-12D)
+    public bool NearContains(ILinFloat64Vector3D vector, double zeroEpsilon = 1E-12D)
     {
-        if (vector.IsNearZero(epsilon))
+        if (vector.IsNearZero(zeroEpsilon))
             return true;
 
         // Project vector on subspace plane and compare with original vector
@@ -89,7 +89,7 @@ public sealed class LinFloat64PlaneSubspace3D :
 
         var diffNorm = (vector - (xuDot * BasisVector1 + xvDot * BasisVector2)).VectorENormSquared();
 
-        return diffNorm < epsilon;
+        return diffNorm < zeroEpsilon;
 
         //var rank = Matrix<double>.Build.DenseOfColumnArrays(
         //    vector,
@@ -105,10 +105,10 @@ public sealed class LinFloat64PlaneSubspace3D :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool NearContains(ILinFloat64Subspace3D subspace, double epsilon = 1E-12)
+    public bool NearContains(ILinFloat64Subspace3D subspace, double zeroEpsilon = 1E-12)
     {
         return subspace.VSpaceDimensions <= VSpaceDimensions &&
-               subspace.BasisVectors.All(v => NearContains(v, epsilon));
+               subspace.BasisVectors.All(v => NearContains(v, zeroEpsilon));
     }
 
     public bool IsValid()

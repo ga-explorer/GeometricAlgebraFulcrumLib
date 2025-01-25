@@ -1,6 +1,6 @@
 ﻿using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Matrices;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.AffineMaps.Space3D;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.BasicShapes.Triangles;
+using GeometricAlgebraFulcrumLib.Modeling.Geometry.BasicShapes.Triangles.Space3D.Float64;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Primitives;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.Xeogl.Constants;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.Xeogl.Geometry.Primitives;
@@ -128,7 +128,7 @@ public static class XeoglUtils
         return new XeoglMatrixTransform(matrix);
     }
 
-    public static XeoglQRotateScaleTranslateTransform ToXeoglTransform(this RotateScaleTranslateMap3D affineMap)
+    public static XeoglQRotateScaleTranslateTransform ToXeoglTransform(this Float64RotateScaleTranslateAffineMap3D affineMap)
     {
         var quaternion = affineMap.RotateQuaternion;
 
@@ -148,7 +148,7 @@ public static class XeoglUtils
     }
         
 
-    public static XeoglTrianglesGeometry ToXeoglTrianglesGeometry(this IEnumerable<ITriangle3D> trianglesList, bool reversePoints, bool reverseNormals)
+    public static XeoglTrianglesGeometry ToXeoglTrianglesGeometry(this IEnumerable<IFloat64Triangle3D> trianglesList, bool reversePoints, bool reverseNormals)
     {
         var geometry = trianglesList.ToGraphicsTrianglesGeometry(reversePoints);
         geometry.ComputeVertexNormals(reverseNormals);
@@ -156,7 +156,7 @@ public static class XeoglUtils
         return new XeoglTrianglesGeometry(geometry);
     }
 
-    public static XeoglTrianglesGeometry ToXeoglTrianglesListGeometry(this IEnumerable<ITriangle3D> trianglesList, bool reversePoints, bool reverseNormals)
+    public static XeoglTrianglesGeometry ToXeoglTrianglesListGeometry(this IEnumerable<IFloat64Triangle3D> trianglesList, bool reversePoints, bool reverseNormals)
     {
         var geometry = trianglesList.ToGraphicsTrianglesListGeometry(reversePoints);
         geometry.ComputeVertexNormals(reverseNormals);

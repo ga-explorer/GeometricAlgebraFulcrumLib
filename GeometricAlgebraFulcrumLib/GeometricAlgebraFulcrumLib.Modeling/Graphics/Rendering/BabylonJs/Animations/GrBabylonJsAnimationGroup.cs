@@ -1,6 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Immutable;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.Borders;
+using GeometricAlgebraFulcrumLib.Modeling.Geometry.Borders.Space1D;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.BabylonJs.Values;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Basic;
 using GeometricAlgebraFulcrumLib.Utilities.Text;
@@ -16,39 +16,6 @@ public sealed class GrBabylonJsAnimationGroup :
     GrBabylonJsObject,
     IReadOnlyList<Tuple<string, GrBabylonJsAnimation>>
 {
-    public sealed class AnimationGroupProperties :
-        GrBabylonJsObjectProperties
-    {
-        public GrBabylonJsBooleanValue? IsAdditive
-        {
-            get => GetAttributeValueOrNull<GrBabylonJsBooleanValue>("isAdditive");
-            set => SetAttributeValue("isAdditive", value);
-        }
-
-        public GrBabylonJsBooleanValue? LoopAnimation
-        {
-            get => GetAttributeValueOrNull<GrBabylonJsBooleanValue>("loopAnimation");
-            set => SetAttributeValue("loopAnimation", value);
-        }
-        
-        public GrBabylonJsFloat32Value? SpeedRatio
-        {
-            get => GetAttributeValueOrNull<GrBabylonJsFloat32Value>("speedRatio");
-            set => SetAttributeValue("speedRatio", value);
-        }
-        
-
-        public AnimationGroupProperties()
-        {
-        }
-
-        public AnimationGroupProperties(AnimationGroupProperties properties)
-        {
-            SetAttributeValues(properties);
-        }
-    }
-
-
     private readonly List<Tuple<string, GrBabylonJsAnimation>> _targetedAnimationList
         = new List<Tuple<string, GrBabylonJsAnimation>>();
 
@@ -64,8 +31,8 @@ public sealed class GrBabylonJsAnimationGroup :
     public override GrBabylonJsObjectOptions? ObjectOptions 
         => null;
     
-    public AnimationGroupProperties Properties { get; private set; }
-        = new AnimationGroupProperties();
+    public GrBabylonJsAnimationGroupProperties Properties { get; private set; }
+        = new GrBabylonJsAnimationGroupProperties();
 
     public override GrBabylonJsObjectProperties ObjectProperties
         => Properties;
@@ -157,9 +124,9 @@ public sealed class GrBabylonJsAnimationGroup :
     }
 
     
-    public GrBabylonJsAnimationGroup SetProperties(AnimationGroupProperties properties)
+    public GrBabylonJsAnimationGroup SetProperties(GrBabylonJsAnimationGroupProperties properties)
     {
-        Properties = new AnimationGroupProperties(properties);
+        Properties = new GrBabylonJsAnimationGroupProperties(properties);
 
         return this;
     }
@@ -169,7 +136,7 @@ public sealed class GrBabylonJsAnimationGroup :
         yield return ConstName.DoubleQuote();
 
         if (ParentScene is null || ParentScene.IsEmpty) yield break;
-        yield return ParentScene.GetCode();
+        yield return ParentScene.GetAttributeValueCode();
     }
 
     private bool AllSimilarAnimationSpecs(IReadOnlyList<Tuple<string, GrBabylonJsAnimation>> targetedAnimationList)
@@ -177,11 +144,11 @@ public sealed class GrBabylonJsAnimationGroup :
         if (targetedAnimationList.Count < 2)
             return true;
 
-        var specs1 = targetedAnimationList[0].Item2.AnimationSpecs;
+        var specs1 = targetedAnimationList[0].Item2.SamplingSpecs;
 
         for (var i = 1; i < targetedAnimationList.Count; i++)
         {
-            var specs2 = targetedAnimationList[i].Item2.AnimationSpecs;
+            var specs2 = targetedAnimationList[i].Item2.SamplingSpecs;
 
             if (specs2.Loop != specs1.Loop)
                 return false;
@@ -198,15 +165,15 @@ public sealed class GrBabylonJsAnimationGroup :
     public Int32Range1D GetFrameRange()
     {
         var frameRange0 = 
-            _targetedAnimationList[0].Item2.AnimationSpecs.FrameRange;
+            _targetedAnimationList[0].Item2.SamplingSpecs.FrameRange;
 
         return _targetedAnimationList
             .Select(f => 
-                f.Item2.AnimationSpecs.FrameRange
+                f.Item2.SamplingSpecs.FrameRange
             ).Aggregate(frameRange0, Int32Range1D.Create);
     }
 
-    public override string GetCode()
+    public override string GetBabylonJsCode()
     {
         var codeComposer = new LinearTextComposer();
 
@@ -229,9 +196,9 @@ public sealed class GrBabylonJsAnimationGroup :
         //if (nonConstantAnimations.Length == 1)
         //{
         //    var (targetName, animation) = nonConstantAnimations[0];
-        //    var fromFrame = animation.AnimationSpecs.FrameRange.MinValue.GetBabylonJsCode();
-        //    var toFrame = animation.AnimationSpecs.FrameRange.MaxValue.GetBabylonJsCode();
-        //    var loopAnimation = animation.AnimationSpecs.Loop.GetBabylonJsCode();
+        //    var fromFrame = animation.SamplingSpecs.FrameRange.MinValue.GetBabylonJsCode();
+        //    var toFrame = animation.SamplingSpecs.FrameRange.MaxValue.GetBabylonJsCode();
+        //    var loopAnimation = animation.SamplingSpecs.Loop.GetBabylonJsCode();
         //    var speedRatio = 
         //        Properties is null
         //        ? 1d.GetBabylonJsCode()
@@ -262,11 +229,11 @@ public sealed class GrBabylonJsAnimationGroup :
                     .Select(a => a.ConstName)
                     .Concatenate(", ", "[", "]");
 
-            var fromFrame = animation1.AnimationSpecs.FrameRange.MinValue.GetBabylonJsCode();
-            var toFrame = animation1.AnimationSpecs.FrameRange.MaxValue.GetBabylonJsCode();
-            var loopAnimation = animation1.AnimationSpecs.Loop.GetBabylonJsCode();
+            var fromFrame = animation1.SamplingSpecs.FrameRange.MinValue.GetBabylonJsCode();
+            var toFrame = animation1.SamplingSpecs.FrameRange.MaxValue.GetBabylonJsCode();
+            var loopAnimation = animation1.SamplingSpecs.Loop.GetBabylonJsCode();
             var speedRatio =
-                Properties.SpeedRatio?.GetCode() ?? 1d.GetBabylonJsCode();
+                Properties.SpeedRatio?.GetAttributeValueCode() ?? 1d.GetBabylonJsCode();
 
             return codeComposer
                 .AppendLine($"{SceneVariableName}.beginDirectAnimation({targetName}, {animations}, {fromFrame}, {toFrame}, {loopAnimation}, {speedRatio});")
@@ -297,7 +264,7 @@ public sealed class GrBabylonJsAnimationGroup :
 
         var (frame1, frame2) = GetFrameRange();
         var loop = 
-            Properties.LoopAnimation?.GetCode() ?? true.GetBabylonJsCode();
+            Properties.LoopAnimation?.GetAttributeValueCode() ?? true.GetBabylonJsCode();
         
         codeComposer.AppendLine(
             $"{ConstName}.normalize({frame1.GetBabylonJsCode()}, {frame2.GetBabylonJsCode()});"

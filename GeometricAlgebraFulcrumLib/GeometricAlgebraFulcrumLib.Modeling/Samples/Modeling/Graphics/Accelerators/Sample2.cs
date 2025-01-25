@@ -1,9 +1,9 @@
 ﻿using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space2D;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.BasicShapes.Lines;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.BasicShapes.Lines.Immutable;
+using GeometricAlgebraFulcrumLib.Modeling.Geometry.BasicShapes.Lines.Space2D.Float64;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.Borders;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.Borders.Space2D.Immutable;
+using GeometricAlgebraFulcrumLib.Modeling.Geometry.Borders.Space2D.Float64;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Accelerators;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Accelerators.Grids;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Accelerators.Grids.Space2D;
@@ -26,11 +26,11 @@ public static class Sample2
     {
         var randGen = new Random(10);
 
-        var boundingBox = BoundingBox2D.Create(-160, -120, 160, 120);
+        var boundingBox = Float64BoundingBox2D.Create(-160, -120, 160, 120);
         var divisions = boundingBox.GetSubdivisions(8, 8);
 
         //Generate one object per bounding box division
-        var objectsList = new List<LineSegment2D>();
+        var objectsList = new List<Float64LineSegment2D>();
         for (var ix = 0; ix < divisions.GetLength(0) - 1; ix++)
             for (var iy = 0; iy < divisions.GetLength(1) - 1; iy++)
             {
@@ -43,7 +43,7 @@ public static class Sample2
                 var p1 = randGen.GetPointInside(divisions[ix, iy]);
                 var p2 = randGen.GetPointInside(divisions[ix + 1, iy + 1]);
 
-                var lineSegment = LineSegment2D.Create(p1, p2);
+                var lineSegment = Float64LineSegment2D.Create(p1, p2);
 
                 objectsList.Add(lineSegment);
             }
@@ -54,7 +54,7 @@ public static class Sample2
         var drawingBoard =
             grid
                 .BoundingBox
-                .GetMutableBoundingBox()
+                .GetBoundingBoxComposer()
                 .UpdateSizeByFactor(0.1d)
                 .CreateDrawingBoard(8);
 
@@ -73,14 +73,14 @@ public static class Sample2
         var intersector = new GcLineIntersector2D();
 
         //Generate 5 random lines and intersect each with geometric objects
-        var linesData = new List<Tuple<Line2D, double[]>>();
+        var linesData = new List<Tuple<Float64Line2D, double[]>>();
 
         for (var i = 0; i < 5; i++)
         {
             var lineOrigin = randGen.GetPointInside(boundingBox);
             var lineDirection = randGen.GetUnitLinVector2D();
 
-            var line = Line2D.Create(lineOrigin, lineDirection);
+            var line = Float64Line2D.Create(lineOrigin, lineDirection);
 
             intersector.SetLine(lineOrigin, lineDirection);
 

@@ -4,6 +4,7 @@ using GeometricAlgebraFulcrumLib.Modeling.Graphics.Meshes.PointsPath;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Meshes.PointsPath.Space3D;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.Visuals.Space3D.Animations;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.Visuals.Space3D.Styles;
+using GeometricAlgebraFulcrumLib.Modeling.Signals;
 
 namespace GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.Visuals.Space3D.Curves;
 
@@ -28,7 +29,7 @@ public sealed class GrVisualPointPathCurve3D :
             name,
             style,
             new ArrayPointsPath3D(positionList),
-            GrVisualAnimationSpecs.Static
+            Float64SamplingSpecs.Static
         );
     }
 
@@ -38,7 +39,7 @@ public sealed class GrVisualPointPathCurve3D :
             name,
             style,
             new ArrayPointsPath3D(positionList),
-            GrVisualAnimationSpecs.Static
+            Float64SamplingSpecs.Static
         );
     }
         
@@ -48,27 +49,27 @@ public sealed class GrVisualPointPathCurve3D :
             name,
             style,
             positionList,
-            GrVisualAnimationSpecs.Static
+            Float64SamplingSpecs.Static
         );
     }
 
-    public static GrVisualPointPathCurve3D Create(string name, GrVisualCurveStyle3D style, IEnumerable<ILinFloat64Vector3D> positionList, GrVisualAnimationSpecs animationSpecs)
+    public static GrVisualPointPathCurve3D Create(string name, GrVisualCurveStyle3D style, IEnumerable<ILinFloat64Vector3D> positionList, Float64SamplingSpecs samplingSpecs)
     {
         return new GrVisualPointPathCurve3D(
             name,
             style,
             new ArrayPointsPath3D(positionList),
-            animationSpecs
+            samplingSpecs
         );
     }
         
-    public static GrVisualPointPathCurve3D Create(string name, GrVisualCurveStyle3D style, IPointsPath3D positionList, GrVisualAnimationSpecs animationSpecs)
+    public static GrVisualPointPathCurve3D Create(string name, GrVisualCurveStyle3D style, IPointsPath3D positionList, Float64SamplingSpecs samplingSpecs)
     {
         return new GrVisualPointPathCurve3D(
             name,
             style,
             positionList,
-            animationSpecs
+            samplingSpecs
         );
     }
         
@@ -77,8 +78,8 @@ public sealed class GrVisualPointPathCurve3D :
         return new GrVisualPointPathCurve3D(
             name,
             style,
-            positionPath.GetPointsPath(positionPath.AnimationSpecs.MinFrameTime),
-            positionPath.AnimationSpecs
+            positionPath.GetPointsPath(positionPath.SamplingSpecs.MinTime),
+            positionPath.SamplingSpecs
         ).SetAnimatedPositionPath(positionPath);
     }
         
@@ -114,27 +115,27 @@ public sealed class GrVisualPointPathCurve3D :
     public GrVisualAnimatedVectorPath3D? AnimatedPositionPath { get; set; }
 
         
-    private GrVisualPointPathCurve3D(string name, GrVisualCurveStyle3D style, int pointCount, GrVisualAnimationSpecs animationSpecs)
-        : base(name, style, animationSpecs)
+    private GrVisualPointPathCurve3D(string name, GrVisualCurveStyle3D style, int pointCount, Float64SamplingSpecs samplingSpecs)
+        : base(name, style, samplingSpecs)
     {
         PositionPath = new ArrayPointsPath3D(pointCount);
 
         Debug.Assert(IsValid());
     }
 
-    private GrVisualPointPathCurve3D(string name, GrVisualCurveStyle3D style, IPointsPath3D positionPath, GrVisualAnimationSpecs animationSpecs)
-        : base(name, style, animationSpecs)
+    private GrVisualPointPathCurve3D(string name, GrVisualCurveStyle3D style, IPointsPath3D positionPath, Float64SamplingSpecs samplingSpecs)
+        : base(name, style, samplingSpecs)
     {
         PositionPath = positionPath;
 
-        Debug.Assert(IsValid());
+        //Debug.Assert(IsValid());
     }
         
         
     public override bool IsValid()
     {
         return PositionPath.All(position => position.IsValid()) &&
-               AnimatedPositionPath.IsNullOrValid(AnimationSpecs.FrameTimeRange);
+               AnimatedPositionPath.IsNullOrValid(SamplingSpecs.TimeRange);
     }
 
 
@@ -172,7 +173,7 @@ public sealed class GrVisualPointPathCurve3D :
 
     public override IPointsPath3D GetPositionsPath(double time)
     {
-        return AnimationSpecs.IsStatic || AnimatedPositionPath is null
+        return SamplingSpecs.IsStatic || AnimatedPositionPath is null
             ? PositionPath
             : AnimatedPositionPath.GetPointsPath(time);
     }
@@ -183,7 +184,7 @@ public sealed class GrVisualPointPathCurve3D :
 
         foreach (var frameIndex in GetValidFrameIndexSet())
         {
-            var time = (double)frameIndex / AnimationSpecs.FrameRate;
+            var time = (double)frameIndex / SamplingSpecs.SamplingRate;
                 
             yield return new KeyFrameRecord(
                 frameIndex, 

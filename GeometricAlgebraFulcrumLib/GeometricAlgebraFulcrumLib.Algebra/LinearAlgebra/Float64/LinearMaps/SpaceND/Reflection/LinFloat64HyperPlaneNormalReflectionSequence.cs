@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Matrices;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.SpaceND;
+using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.BitManipulation;
 using MathNet.Numerics.LinearAlgebra;
 
@@ -380,12 +381,12 @@ public sealed class LinFloat64HyperPlaneNormalReflectionSequence :
         return true;
     }
 
-    public override bool IsNearIdentity(double epsilon = 1E-12)
+    public override bool IsNearIdentity(double zeroEpsilon = 1E-12)
     {
         for (var basisIndex = 0; basisIndex < VSpaceDimensions; basisIndex++)
         {
             var isSameVectorBasis =
-                MapBasisVector(basisIndex).IsNearVectorBasis(basisIndex, epsilon);
+                MapBasisVector(basisIndex).IsNearVectorBasis(basisIndex, zeroEpsilon);
 
             if (!isSameVectorBasis) return false;
         }
@@ -397,7 +398,7 @@ public sealed class LinFloat64HyperPlaneNormalReflectionSequence :
     /// Test if all reflection normals in this sequence are nearly pair-wise orthogonal
     /// </summary>
     /// <returns></returns>
-    public bool IsNearOrthogonalReflectionsSequence(double epsilon = 1e-12)
+    public bool IsNearOrthogonalReflectionsSequence(double zeroEpsilon = Float64Utils.ZeroEpsilon)
     {
         if (_mapList.Count > VSpaceDimensions)
             return false;
@@ -410,7 +411,7 @@ public sealed class LinFloat64HyperPlaneNormalReflectionSequence :
             {
                 var u2 = _mapList[j].ReflectionNormal;
 
-                if (!u1.IsNearOrthogonalTo(u2, epsilon)) return false;
+                if (!u1.IsNearOrthogonalTo(u2, zeroEpsilon)) return false;
             }
         }
 

@@ -1,17 +1,17 @@
 ﻿using GeometricAlgebraFulcrumLib.Modeling.Geometry.BasicShapes;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.Borders.Space3D.Immutable;
+using GeometricAlgebraFulcrumLib.Modeling.Geometry.Borders.Space3D.Float64;
 
 namespace GeometricAlgebraFulcrumLib.Modeling.Graphics.Accelerators.Grids.Space3D;
 
 public sealed class AccGridInfo3D
 {
-    public static AccGridInfo3D Create(IAccGrid3D<IFiniteGeometricShape3D> grid)
+    public static AccGridInfo3D Create(IAccGrid3D<IFloat64FiniteGeometricShape3D> grid)
     {
         return new AccGridInfo3D(grid);
     }
 
 
-    public IAccGrid3D<IFiniteGeometricShape3D> Grid { get; }
+    public IAccGrid3D<IFloat64FiniteGeometricShape3D> Grid { get; }
 
     public int CellsCountX => Grid.CellsCountX;
 
@@ -21,7 +21,7 @@ public sealed class AccGridInfo3D
 
     public int CellsCount => CellsCountX * CellsCountY * CellsCountZ;
 
-    public BoundingBox3D BoundingBox { get; }
+    public Float64BoundingBox3D BoundingBox { get; }
 
     public AccGridCellInfo3D this[int indexX, int indexY, int indexZ]
     {
@@ -67,7 +67,7 @@ public sealed class AccGridInfo3D
     }
 
 
-    private AccGridInfo3D(IAccGrid3D<IFiniteGeometricShape3D> grid)
+    private AccGridInfo3D(IAccGrid3D<IFloat64FiniteGeometricShape3D> grid)
     {
         Grid = grid;
         BoundingBox = Grid.GetBoundingBox();

@@ -299,30 +299,30 @@ public class CGaFloat64Round :
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool SurfaceNearContainsVGaPoint2D(LinFloat64Vector2D egaPoint, double epsilon = 1e-12)
+    public bool SurfaceNearContainsVGaPoint2D(LinFloat64Vector2D egaPoint, double zeroEpsilon = Float64Utils.ZeroEpsilon)
     {
         var v = egaPoint - PositionToVector2D();
 
-        return IsDirectionNearParallelTo(v, epsilon) &&
-               (v.Norm() - RealRadius).IsNearZero(epsilon);
+        return IsDirectionNearParallelTo(v, zeroEpsilon) &&
+               (v.Norm() - RealRadius).IsNearZero(zeroEpsilon);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool SurfaceNearContainsVGaPoint3D(LinFloat64Vector3D egaPoint, double epsilon = 1e-12)
+    public bool SurfaceNearContainsVGaPoint3D(LinFloat64Vector3D egaPoint, double zeroEpsilon = Float64Utils.ZeroEpsilon)
     {
         var v = egaPoint - PositionToVector3D();
 
-        return IsDirectionNearParallelTo(v, epsilon) &&
-               (v.Norm() - RealRadius).IsNearZero(epsilon);
+        return IsDirectionNearParallelTo(v, zeroEpsilon) &&
+               (v.Norm() - RealRadius).IsNearZero(zeroEpsilon);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool SurfaceNearContainsVGaPoint(RGaFloat64Vector egaPoint, double epsilon = 1e-12)
+    public bool SurfaceNearContainsVGaPoint(RGaFloat64Vector egaPoint, double zeroEpsilon = Float64Utils.ZeroEpsilon)
     {
         var v = egaPoint - PositionToRGaVector();
 
-        return IsDirectionNearParallelTo(v, epsilon) &&
-               (v.Norm() - RealRadius).IsNearZero(epsilon);
+        return IsDirectionNearParallelTo(v, zeroEpsilon) &&
+               (v.Norm() - RealRadius).IsNearZero(zeroEpsilon);
     }
 
 

@@ -402,10 +402,7 @@ public static class LinFloat64VectorUtils
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static LinFloat64Quaternion ToLinVector4D(this LinFloat64Vector vector)
     {
-        return LinFloat64Quaternion.Create(vector.X,
-            vector.Y,
-            vector.Z,
-            vector.W);
+        return LinFloat64Quaternion.Create(vector.W, vector.X, vector.Y, vector.Z);
     }
 
 
@@ -532,7 +529,7 @@ public static class LinFloat64VectorUtils
             return new Tuple<bool, double, LinSignedBasisVector>(
                 false,
                 0d,
-                LinSignedBasisVector.PositiveX
+                LinSignedBasisVector.Px
             );
 
         var (basisIndex, scalar) = vector.First();
@@ -545,10 +542,10 @@ public static class LinFloat64VectorUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Tuple<bool, double, LinSignedBasisVector> TryToNearAxis(this LinFloat64Vector vector, double epsilon = 1e-12)
+    public static Tuple<bool, double, LinSignedBasisVector> TryToNearAxis(this LinFloat64Vector vector, double zeroEpsilon = Float64Utils.ZeroEpsilon)
     {
         return vector
-            .GetCopyByScalar(s => !s.IsNearZero(epsilon))
+            .GetCopyByScalar(s => !s.IsNearZero(zeroEpsilon))
             .TryToAxis();
     }
 
@@ -559,7 +556,7 @@ public static class LinFloat64VectorUtils
             return new Tuple<bool, double, LinSignedBasisVector>(
                 false,
                 0d,
-                LinSignedBasisVector.PositiveX
+                LinSignedBasisVector.Px
             );
 
         var (basisIndex, scalar) = itemArray.First();
@@ -594,7 +591,7 @@ public static class LinFloat64VectorUtils
             return new Tuple<bool, double, LinSignedBasisVector>(
                 false,
                 0d,
-                LinSignedBasisVector.PositiveX
+                LinSignedBasisVector.Px
             );
 
         var scalar = itemArray[basisIndex];
@@ -606,7 +603,7 @@ public static class LinFloat64VectorUtils
         );
     }
 
-    public static Tuple<bool, double, LinSignedBasisVector> TryVectorToNearAxis(this double[] itemArray, double epsilon = 1e-12)
+    public static Tuple<bool, double, LinSignedBasisVector> TryVectorToNearAxis(this double[] itemArray, double zeroEpsilon = Float64Utils.ZeroEpsilon)
     {
         var dimensions = itemArray.Length;
 
@@ -614,7 +611,7 @@ public static class LinFloat64VectorUtils
         var basisIndex = -1;
         for (var i = 0; i < dimensions; i++)
         {
-            if (itemArray[i].IsNearZero(epsilon)) continue;
+            if (itemArray[i].IsNearZero(zeroEpsilon)) continue;
 
             if (basisIndex >= 0)
             {
@@ -629,7 +626,7 @@ public static class LinFloat64VectorUtils
             return new Tuple<bool, double, LinSignedBasisVector>(
                 false,
                 0d,
-                LinSignedBasisVector.PositiveX
+                LinSignedBasisVector.Px
             );
 
         var scalar = itemArray[basisIndex];

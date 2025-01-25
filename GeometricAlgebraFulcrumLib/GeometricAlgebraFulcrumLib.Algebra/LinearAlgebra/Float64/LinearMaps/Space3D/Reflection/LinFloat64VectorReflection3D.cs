@@ -36,7 +36,7 @@ public sealed class LinFloat64VectorReflection3D :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool IsNearIdentity(double epsilon = 1E-12)
+    public bool IsNearIdentity(double zeroEpsilon = 1E-12)
     {
         return false;
     }

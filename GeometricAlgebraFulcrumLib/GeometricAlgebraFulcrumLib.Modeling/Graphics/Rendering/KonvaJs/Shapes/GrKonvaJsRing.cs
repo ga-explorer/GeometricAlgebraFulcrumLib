@@ -1,5 +1,4 @@
-﻿using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.KonvaJs.Values;
-using GeometricAlgebraFulcrumLib.Utilities.Text;
+﻿using GeometricAlgebraFulcrumLib.Utilities.Text;
 
 namespace GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.KonvaJs.Shapes;
 
@@ -9,58 +8,12 @@ namespace GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.KonvaJs.Shapes;
 public class GrKonvaJsRing :
     GrKonvaJsShapeBase
 {
-    public class RingOptions :
-        GrKonvaJsShapeBaseOptions
-    {
-        public GrKonvaJsFloat32Value? InnerRadius
-        {
-            get => GetAttributeValueOrNull<GrKonvaJsFloat32Value>("innerRadius");
-            set => SetAttributeValue("innerRadius", value);
-        }
-        
-        public GrKonvaJsFloat32Value? OuterRadius
-        {
-            get => GetAttributeValueOrNull<GrKonvaJsFloat32Value>("outerRadius");
-            set => SetAttributeValue("outerRadius", value);
-        }
-
-
-        public RingOptions()
-        {
-        }
-
-        public RingOptions(RingOptions options)
-        {
-            SetAttributeValues(options);
-        }
-    }
-
-    public class RingProperties :
-        GrKonvaJsShapeBaseProperties
-    {
-        public GrKonvaJsFloat32Value? InnerRadius
-        {
-            get => GetAttributeValueOrNull<GrKonvaJsFloat32Value>("innerRadius");
-            set => SetAttributeValue("innerRadius", value);
-        }
-        
-        public GrKonvaJsFloat32Value? OuterRadius
-        {
-            get => GetAttributeValueOrNull<GrKonvaJsFloat32Value>("outerRadius");
-            set => SetAttributeValue("outerRadius", value);
-        }
-
-
-        
-    }
-
-    
     protected override string ConstructorName
         => "new Konva.Ring";
 
-    public RingOptions Options { get; private set; }
+    public GrKonvaJsRingOptions Options { get; private set; }
 
-    public RingProperties Properties { get; private set; }
+    public GrKonvaJsRingProperties Properties { get; private set; }
 
     public override GrKonvaJsObjectOptions ObjectOptions
         => Options;
@@ -72,19 +25,19 @@ public class GrKonvaJsRing :
     public GrKonvaJsRing(string constName) 
         : base(constName)
     {
-        Options = new RingOptions
+        Options = new GrKonvaJsRingOptions
         {
             Id = NodeId.SingleQuote(),
             Name = ConstName.SingleQuote()
         };
 
-        Properties = new RingProperties();
+        Properties = new GrKonvaJsRingProperties();
     }
     
 
-    public GrKonvaJsRing SetOptions(RingOptions options)
+    public GrKonvaJsRing SetOptions(GrKonvaJsRingOptions options)
     {
-        Options = new RingOptions(options)
+        Options = new GrKonvaJsRingOptions(options)
         {
             Id = NodeId.SingleQuote(),
             Name = ConstName.SingleQuote()
@@ -93,7 +46,7 @@ public class GrKonvaJsRing :
         return this;
     }
 
-    public GrKonvaJsRing SetProperties(RingProperties properties)
+    public GrKonvaJsRing SetProperties(GrKonvaJsRingProperties properties)
     {
         Properties = properties;
 
@@ -107,70 +60,12 @@ public class GrKonvaJsRing :
 public class GrKonvaJsStar :
     GrKonvaJsShapeBase
 {
-    public class StarOptions :
-        GrKonvaJsShapeBaseOptions
-    {
-        public GrKonvaJsInt32Value? NumPoints
-        {
-            get => GetAttributeValueOrNull<GrKonvaJsInt32Value>("NumPoints");
-            set => SetAttributeValue("NumPoints", value);
-        }
-        
-        public GrKonvaJsFloat32Value? InnerRadius
-        {
-            get => GetAttributeValueOrNull<GrKonvaJsFloat32Value>("innerRadius");
-            set => SetAttributeValue("innerRadius", value);
-        }
-        
-        public GrKonvaJsFloat32Value? OuterRadius
-        {
-            get => GetAttributeValueOrNull<GrKonvaJsFloat32Value>("outerRadius");
-            set => SetAttributeValue("outerRadius", value);
-        }
-
-
-        public StarOptions()
-        {
-        }
-
-        public StarOptions(StarOptions options)
-        {
-            SetAttributeValues(options);
-        }
-    }
-
-    public class StarProperties :
-        GrKonvaJsShapeBaseProperties
-    {
-        public GrKonvaJsInt32Value? NumPoints
-        {
-            get => GetAttributeValueOrNull<GrKonvaJsInt32Value>("NumPoints");
-            set => SetAttributeValue("NumPoints", value);
-        }
-        
-        public GrKonvaJsFloat32Value? InnerRadius
-        {
-            get => GetAttributeValueOrNull<GrKonvaJsFloat32Value>("innerRadius");
-            set => SetAttributeValue("innerRadius", value);
-        }
-        
-        public GrKonvaJsFloat32Value? OuterRadius
-        {
-            get => GetAttributeValueOrNull<GrKonvaJsFloat32Value>("outerRadius");
-            set => SetAttributeValue("outerRadius", value);
-        }
-
-
-        
-    }
-
-    
     protected override string ConstructorName
         => "new Konva.Star";
 
-    public StarOptions Options { get; private set; }
+    public GrKonvaJsStarOptions Options { get; private set; }
 
-    public StarProperties Properties { get; private set; }
+    public GrKonvaJsStarProperties Properties { get; private set; }
 
     public override GrKonvaJsObjectOptions ObjectOptions
         => Options;
@@ -182,19 +77,19 @@ public class GrKonvaJsStar :
     public GrKonvaJsStar(string constName) 
         : base(constName)
     {
-        Options = new StarOptions
+        Options = new GrKonvaJsStarOptions
         {
             Id = NodeId.SingleQuote(),
             Name = ConstName.SingleQuote()
         };
 
-        Properties = new StarProperties();
+        Properties = new GrKonvaJsStarProperties();
     }
     
 
-    public GrKonvaJsStar SetOptions(StarOptions options)
+    public GrKonvaJsStar SetOptions(GrKonvaJsStarOptions options)
     {
-        Options = new StarOptions(options)
+        Options = new GrKonvaJsStarOptions(options)
         {
             Id = NodeId.SingleQuote(),
             Name = ConstName.SingleQuote()
@@ -203,7 +98,7 @@ public class GrKonvaJsStar :
         return this;
     }
 
-    public GrKonvaJsStar SetProperties(StarProperties properties)
+    public GrKonvaJsStar SetProperties(GrKonvaJsStarProperties properties)
     {
         Properties = properties;
 

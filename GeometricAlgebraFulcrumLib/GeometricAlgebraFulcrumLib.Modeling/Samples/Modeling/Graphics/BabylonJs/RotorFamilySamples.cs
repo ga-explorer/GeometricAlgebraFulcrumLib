@@ -2,6 +2,7 @@
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Angles;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space3D;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
+using GeometricAlgebraFulcrumLib.Modeling.Signals;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.PixelFormats;
 using SixLabors.ImageSharp.Processing;
@@ -10,33 +11,13 @@ namespace GeometricAlgebraFulcrumLib.Modeling.Samples.Modeling.Graphics.BabylonJ
 
 public static class RotorFamilySamples
 {
-    private const string WorkingPath = @"D:\Projects\Study\Web\Babylon.js";
-
-    public static void Example1()
+    public static void BabylonJsExample()
     {
-        const int frameCount = 1001;
+        const int frameCount = 101;
 
         var sourceVector = LinFloat64Vector3D.E3;
         var targetVector = LinFloat64Vector3D.Create(1, 1, 1).ToUnitLinVector3D();
 
-
-        //var cameraAlphaValues =
-        //    60d.DegreesToRadians().GetCosRange(
-        //        150d.DegreesToRadians(),
-        //        frameCount,
-        //        1,
-        //        false
-        //    ).ToImmutableArray();
-
-        var cameraAlphaValues =
-            Enumerable
-                .Repeat(120d.DegreesToRadians(), frameCount)
-                .ToImmutableArray();
-
-        var cameraBetaValues =
-            Enumerable
-                .Repeat(75d.DegreesToRadians(), frameCount)
-                .ToImmutableArray();
 
         const double thetaEpsilon = 5e-5d;
         var thetaValues =
@@ -44,38 +25,42 @@ public static class RotorFamilySamples
             .Select(t => (LinFloat64Angle)t.DegreesToDirectedAngle())
             .ToImmutableArray();
 
-        var visualizer = new RotorFamilyVisualizer3D(
-            cameraAlphaValues,
-            cameraBetaValues,
+        var visualizer = new GrBabylonJsRotorFamilyVisualizer(
+            @"D:\Projects\Study\Web\Babylon.js\",
+            Float64SamplingSpecs.CreateFromSamplingRate(frameCount, 50), 
             sourceVector,
             targetVector,
             thetaValues
         )
         {
-            CanvasWidth = 3840 - 1080,
-            CanvasHeight = 2160,
+            CanvasWidth = 1024, // 3840 - 1080,
+            CanvasHeight = 768, //2160,
             ShowCopyright = true,
             ShowGuiLayer = true,
 
             Title = "Rotor Family of Two Vectors",
-            WorkingFolder = @"D:\Projects\Study\Web\Babylon.js\",
-            HostUrl = "http://localhost:5200/",
+            HostUrl = "http://127.0.0.1:5500/",//"http://localhost:5200/",
             //LiveReloadWebServer "D:/Projects/Study/Babylon.js/" --port 5200 --UseSsl False --LiveReloadEnabled False --OpenBrowser True
 
-            CameraDistance = 20,
             GridUnitCount = 20,
-            LaTeXScalingFactor = 1d / 60d,
-            DrawRotorTrace = false,
+            LaTeXScalingFactor = 1d / 72d,
+            DrawRotorTrace = true,
 
-            GenerateHtml = true,
-            GeneratePng = true,
-            GenerateAnimatedGif = false,
-            GenerateMp4 = false
+            ComposeSceneFilesEnabled = true,
+            RenderImageFilesEnabled = true,
+            RenderGifFileEnabled = false,
+            RenderVideoFileEnabled = false
         };
 
-        visualizer.GenerateSnapshots();
-    }
+        visualizer.SetCameraAlphaBetaDistance(
+            120d.DegreesToRadians(),
+            75d.DegreesToRadians(),
+            20
+        );
 
+        visualizer.RenderFiles();
+    }
+    
     public static void Example2()
     {
         const string imageFolderIn1 =

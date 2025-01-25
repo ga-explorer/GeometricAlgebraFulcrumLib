@@ -323,7 +323,7 @@ public sealed class XeoglCylinderGeometry : XeoglBuiltinSolidGeometry
         base.UpdateConstructorAttributes(composer);
 
         composer
-            .SetValue("primitive", PrimitiveType, GraphicsPrimitiveType3D.Triangles)
+            .SetValue("primitive", PrimitiveType, GraphicsPrimitiveType3D.TriangleList)
             .SetNumbersArrayValue("center", Center, LinFloat64Vector3D.Zero)
             .SetValue("radiusTop", RadiusTop, 1)
             .SetValue("radiusBottom", RadiusBottom, 1)

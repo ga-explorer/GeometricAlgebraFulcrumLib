@@ -6,12 +6,6 @@ namespace GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.BabylonJs.Textu
 public sealed class GrBabylonJsDynamicTexture :
     GrBabylonJsBaseTexture
 {
-    public class DynamicTextureProperties :
-        BaseTextureProperties
-    {
-        
-    }
-
     protected override string ConstructorName
         => "new BABYLON.DynamicTexture";
 
@@ -25,8 +19,8 @@ public sealed class GrBabylonJsDynamicTexture :
 
     public GrBabylonJsBooleanValue InvertY { get; set; }
 
-    public DynamicTextureProperties? Properties { get; private set; }
-        = new DynamicTextureProperties();
+    public GrBabylonJsDynamicTextureProperties? Properties { get; private set; }
+        = new GrBabylonJsDynamicTextureProperties();
 
     public override GrBabylonJsObjectProperties? ObjectProperties 
         => Properties;
@@ -43,7 +37,7 @@ public sealed class GrBabylonJsDynamicTexture :
     }
 
     
-    public GrBabylonJsDynamicTexture SetProperties(DynamicTextureProperties properties)
+    public GrBabylonJsDynamicTexture SetProperties(GrBabylonJsDynamicTextureProperties properties)
     {
         Properties = properties;
 
@@ -53,21 +47,21 @@ public sealed class GrBabylonJsDynamicTexture :
     protected override IEnumerable<string> GetConstructorArguments()
     {
         yield return ConstName.DoubleQuote();
-        yield return Size.GetCode();
+        yield return Size.GetAttributeValueCode();
 
         if (ParentScene.IsNullOrEmpty()) yield break;
         yield return ParentScene.Value.ConstName;
 
         if (GenerateMipMaps.IsNullOrEmpty()) yield break;
-        yield return GenerateMipMaps.GetCode();
+        yield return GenerateMipMaps.GetAttributeValueCode();
         
         if (SamplingMode.IsNullOrEmpty()) yield break;
-        yield return SamplingMode.GetCode();
+        yield return SamplingMode.GetAttributeValueCode();
         
         if (Format.IsNullOrEmpty()) yield break;
-        yield return Format.GetCode();
+        yield return Format.GetAttributeValueCode();
 
         if (InvertY.IsNullOrEmpty()) yield break;
-        yield return InvertY.GetCode();
+        yield return InvertY.GetAttributeValueCode();
     }
 }

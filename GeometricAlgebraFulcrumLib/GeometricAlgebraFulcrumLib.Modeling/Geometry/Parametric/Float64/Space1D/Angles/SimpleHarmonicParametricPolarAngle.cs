@@ -70,7 +70,7 @@ public class SimpleHarmonicParametricPolarAngle :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public LinFloat64PolarAngle GetDerivative2Point(double parameterValue)
+    public LinFloat64PolarAngle GetDerivative2Angle(double parameterValue)
     {
         parameterValue = parameterValue.ClampPeriodic(1d);
 
@@ -80,6 +80,24 @@ public class SimpleHarmonicParametricPolarAngle :
             -Magnitude * w * w * (w * (parameterValue + ParameterShift)).Cos();
 
         return angle.RadiansToPolarAngle();
+    }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public Float64Scalar GetValue(double parameterValue)
+    {
+        return GetAngle(parameterValue).Radians;
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public Float64Scalar GetDerivative1Value(double parameterValue)
+    {
+        return GetDerivative1Angle(parameterValue).Radians;
+    }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public Float64Scalar GetDerivative2Value(double parameterValue)
+    {
+        return GetDerivative2Angle(parameterValue).Radians;
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]

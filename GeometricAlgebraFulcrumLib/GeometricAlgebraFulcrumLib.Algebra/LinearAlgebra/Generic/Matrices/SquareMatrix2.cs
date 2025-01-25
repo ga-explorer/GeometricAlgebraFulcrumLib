@@ -87,14 +87,14 @@ public sealed class SquareMatrix2<T> :
         return m;
     }
 
-    public static SquareMatrix2<T> CreateAxisToVectorRotationMatrix2D(LinUnitBasisVector2D axis, ILinVector2D<T> unitVector)
+    public static SquareMatrix2<T> CreateAxisToVectorRotationMatrix2D(LinBasisVector2D axis, ILinVector2D<T> unitVector)
     {
         //Debug.Assert(unitVector.IsNearUnitVector());
 
         var x = unitVector.X;
         var y = unitVector.Y;
 
-        if (axis == LinUnitBasisVector2D.PositiveX)
+        if (axis == LinBasisVector2D.Px)
         {
             var x1 = 1d / (x + 1d);
 
@@ -112,7 +112,7 @@ public sealed class SquareMatrix2<T> :
             return matrix;
         }
 
-        if (axis == LinUnitBasisVector2D.NegativeX)
+        if (axis == LinBasisVector2D.Nx)
         {
             var x1 = 1d / (x - 1d);
 
@@ -130,7 +130,7 @@ public sealed class SquareMatrix2<T> :
             return matrix;
         }
 
-        if (axis == LinUnitBasisVector2D.PositiveY)
+        if (axis == LinBasisVector2D.Py)
         {
             var y1 = 1d / (y + 1d);
 
@@ -148,7 +148,7 @@ public sealed class SquareMatrix2<T> :
             return matrix;
         }
 
-        if (axis == LinUnitBasisVector2D.NegativeY)
+        if (axis == LinBasisVector2D.Ny)
         {
             var y1 = 1d / (y - 1d);
 
@@ -169,14 +169,14 @@ public sealed class SquareMatrix2<T> :
         throw new InvalidOperationException();
     }
 
-    public static SquareMatrix2<T> CreateVectorToAxisRotationMatrix2D(ILinVector2D<T> unitVector, LinUnitBasisVector2D axis)
+    public static SquareMatrix2<T> CreateVectorToAxisRotationMatrix2D(ILinVector2D<T> unitVector, LinBasisVector2D axis)
     {
         //Debug.Assert(unitVector.IsValid() && unitVector.IsNearUnitVector());
 
         var x = unitVector.X;
         var y = unitVector.Y;
 
-        if (axis == LinUnitBasisVector2D.PositiveX)
+        if (axis == LinBasisVector2D.Px)
         {
             var x1 = 1d / (x + 1d);
 
@@ -194,7 +194,7 @@ public sealed class SquareMatrix2<T> :
             return matrix;
         }
 
-        if (axis == LinUnitBasisVector2D.NegativeX)
+        if (axis == LinBasisVector2D.Nx)
         {
             var x1 = 1d / (x - 1d);
 
@@ -212,7 +212,7 @@ public sealed class SquareMatrix2<T> :
             return matrix;
         }
 
-        if (axis == LinUnitBasisVector2D.PositiveY)
+        if (axis == LinBasisVector2D.Py)
         {
             var y1 = 1d / (y + 1d);
 
@@ -230,7 +230,7 @@ public sealed class SquareMatrix2<T> :
             return matrix;
         }
 
-        if (axis == LinUnitBasisVector2D.NegativeY)
+        if (axis == LinBasisVector2D.Ny)
         {
             var y1 = 1d / (y - 1d);
 
@@ -279,12 +279,12 @@ public sealed class SquareMatrix2<T> :
             var axis = sumVector.GetMaxAbsComponentIndex() switch
             {
                 0 => sumVector.X.IsPositive()
-                    ? LinUnitBasisVector2D.PositiveX
-                    : LinUnitBasisVector2D.NegativeX,
+                    ? LinBasisVector2D.Px
+                    : LinBasisVector2D.Nx,
 
                 _ => sumVector.Y.IsPositive()
-                    ? LinUnitBasisVector2D.PositiveY
-                    : LinUnitBasisVector2D.NegativeY
+                    ? LinBasisVector2D.Py
+                    : LinBasisVector2D.Ny
             };
 
             var m1 = CreateVectorToAxisRotationMatrix2D(unitVector1, axis);

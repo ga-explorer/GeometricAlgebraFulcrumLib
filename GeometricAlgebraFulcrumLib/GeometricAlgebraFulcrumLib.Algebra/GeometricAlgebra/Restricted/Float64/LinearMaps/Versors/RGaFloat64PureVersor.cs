@@ -1,6 +1,5 @@
 ﻿using System.Runtime.CompilerServices;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Float64.Multivectors;
-using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.LinearMaps.SpaceND;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Float64.LinearMaps.Versors;
@@ -113,8 +112,4 @@ public sealed class RGaFloat64PureVersor
         return Vector.Gp(mv.GradeInvolution()).Gp(VectorInverse);
     }
 
-    public override LinFloat64UnilinearMap GetVectorMapPart(int vSpaceDimensions)
-    {
-        throw new NotImplementedException();
-    }
 }

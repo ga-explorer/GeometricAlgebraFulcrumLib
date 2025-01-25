@@ -86,13 +86,13 @@ public class GaScaledPureRotor :
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public LinFloat64Vector2D OmMap(ILinFloat64Vector2D vector)
     {
-        return Multivector.Gp(vector.ToRGaFloat64Vector(Processor)).Gp(MultivectorReverse).GetVectorPartAsTuple2D();
+        return Multivector.Gp(vector.ToRGaFloat64Vector(Processor)).Gp(MultivectorReverse).GetVectorPartAsVector2D();
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public LinFloat64Vector3D OmMap(ILinFloat64Vector3D vector)
     {
-        return Multivector.Gp(vector.ToRGaFloat64Vector(Processor)).Gp(MultivectorReverse).GetVectorPartAsTuple3D();
+        return Multivector.Gp(vector.ToRGaFloat64Vector(Processor)).Gp(MultivectorReverse).GetVectorPartAsVector3D();
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]

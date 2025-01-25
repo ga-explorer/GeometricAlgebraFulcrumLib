@@ -20,7 +20,7 @@ public abstract partial class RGaMultivector<T>
         var processor = mv1.Processor;
 
         return mv1.Add(
-            mv1.Processor.Scalar(
+            processor.Scalar(
                 processor.ScalarProcessor.ValueFromNumber(mv2)
             )
         );
@@ -32,7 +32,7 @@ public abstract partial class RGaMultivector<T>
         var processor = mv2.Processor;
 
         return mv2.Add(
-            mv2.Processor.Scalar(
+            processor.Scalar(
                     
                 processor.ScalarProcessor.ValueFromNumber(mv1)
             )
@@ -45,7 +45,7 @@ public abstract partial class RGaMultivector<T>
         var processor = mv1.Processor;
 
         return mv1.Add(
-            mv1.Processor.Scalar(
+            processor.Scalar(
                     
                 processor.ScalarProcessor.ValueFromNumber(mv2)
             )
@@ -58,7 +58,7 @@ public abstract partial class RGaMultivector<T>
         var processor = mv2.Processor;
 
         return mv2.Add(
-            mv2.Processor.Scalar(
+            processor.Scalar(
                     
                 processor.ScalarProcessor.ValueFromNumber(mv1)
             )
@@ -71,7 +71,7 @@ public abstract partial class RGaMultivector<T>
         var processor = mv1.Processor;
 
         return mv1.Add(
-            mv1.Processor.Scalar(
+            processor.Scalar(
                     
                 processor.ScalarProcessor.ValueFromNumber(mv2)
             )
@@ -84,7 +84,7 @@ public abstract partial class RGaMultivector<T>
         var processor = mv2.Processor;
 
         return mv2.Add(
-            mv2.Processor.Scalar(
+            processor.Scalar(
                     
                 processor.ScalarProcessor.ValueFromNumber(mv1)
             )
@@ -97,7 +97,7 @@ public abstract partial class RGaMultivector<T>
         var processor = mv1.Processor;
 
         return mv1.Add(
-            mv1.Processor.Scalar(
+            processor.Scalar(
                     
                 processor.ScalarProcessor.ValueFromNumber(mv2)
             )
@@ -110,7 +110,7 @@ public abstract partial class RGaMultivector<T>
         var processor = mv2.Processor;
 
         return mv2.Add(
-            mv2.Processor.Scalar(
+            processor.Scalar(
                     
                 processor.ScalarProcessor.ValueFromNumber(mv1)
             )
@@ -123,7 +123,7 @@ public abstract partial class RGaMultivector<T>
         var processor = mv1.Processor;
 
         return mv1.Add(
-            mv1.Processor.Scalar(
+            processor.Scalar(
                     
                 processor.ScalarProcessor.ValueFromNumber(mv2)
             )
@@ -136,7 +136,7 @@ public abstract partial class RGaMultivector<T>
         var processor = mv2.Processor;
 
         return mv2.Add(
-            mv2.Processor.Scalar(
+            processor.Scalar(
                     
                 processor.ScalarProcessor.ValueFromNumber(mv1)
             )
@@ -149,7 +149,7 @@ public abstract partial class RGaMultivector<T>
         var processor = mv1.Processor;
 
         return mv1.Add(
-            mv1.Processor.Scalar(
+            processor.Scalar(
                     
                 processor.ScalarProcessor.ValueFromNumber(mv2)
             )
@@ -162,7 +162,7 @@ public abstract partial class RGaMultivector<T>
         var processor = mv2.Processor;
 
         return mv2.Add(
-            mv2.Processor.Scalar(
+            processor.Scalar(
                     
                 processor.ScalarProcessor.ValueFromNumber(mv1)
             )
@@ -172,40 +172,50 @@ public abstract partial class RGaMultivector<T>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static RGaMultivector<T> operator +(RGaMultivector<T> mv1, T mv2)
     {
+        var processor = mv1.Processor;
+
         return mv1.Add(
-            mv1.Processor.Scalar(mv2)
+            processor.Scalar(mv2)
         );
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static RGaMultivector<T> operator +(T mv1, RGaMultivector<T> mv2)
     {
+        var processor = mv2.Processor;
+
         return mv2.Add(
-            mv2.Processor.Scalar(mv1)
+            processor.Scalar(mv1)
         );
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static RGaMultivector<T> operator +(IScalar<T> mv1, RGaMultivector<T> mv2)
     {
+        var processor = mv2.Processor;
+
         return mv2.Add(
-            mv2.Processor.Scalar(mv1.ScalarValue)
+            processor.Scalar(mv1.ScalarValue)
         );
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static RGaMultivector<T> operator +(RGaMultivector<T> mv1, Scalar<T> mv2)
     {
+        var processor = mv1.Processor;
+
         return mv1.Add(
-            mv1.Processor.Scalar(mv2.ScalarValue)
+            processor.Scalar(mv2.ScalarValue)
         );
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static RGaMultivector<T> operator +(Scalar<T> mv1, RGaMultivector<T> mv2)
     {
+        var processor = mv2.Processor;
+
         return mv2.Add(
-            mv2.Processor.Scalar(mv1.ScalarValue)
+            processor.Scalar(mv1.ScalarValue)
         );
     }
 
@@ -222,8 +232,7 @@ public abstract partial class RGaMultivector<T>
         var processor = mv1.Processor;
 
         return mv1.Subtract(
-            mv1.Processor.Scalar(
-                    
+            processor.Scalar(
                 processor.ScalarProcessor.ValueFromNumber(mv2)
             )
         );
@@ -234,12 +243,9 @@ public abstract partial class RGaMultivector<T>
     {
         var processor = mv2.Processor;
 
-        return mv2.Subtract(
-            mv2.Processor.Scalar(
-                    
-                processor.ScalarProcessor.ValueFromNumber(mv1)
-            )
-        );
+        return processor.Scalar(
+            processor.ScalarProcessor.ValueFromNumber(mv1)
+        ).Subtract(mv2);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -248,8 +254,7 @@ public abstract partial class RGaMultivector<T>
         var processor = mv1.Processor;
 
         return mv1.Subtract(
-            mv1.Processor.Scalar(
-                    
+            processor.Scalar(
                 processor.ScalarProcessor.ValueFromNumber(mv2)
             )
         );
@@ -260,12 +265,9 @@ public abstract partial class RGaMultivector<T>
     {
         var processor = mv2.Processor;
 
-        return mv2.Subtract(
-            mv2.Processor.Scalar(
-                    
-                processor.ScalarProcessor.ValueFromNumber(mv1)
-            )
-        );
+        return processor.Scalar(
+            processor.ScalarProcessor.ValueFromNumber(mv1)
+        ).Subtract(mv2);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -274,8 +276,7 @@ public abstract partial class RGaMultivector<T>
         var processor = mv1.Processor;
 
         return mv1.Subtract(
-            mv1.Processor.Scalar(
-                    
+            processor.Scalar(
                 processor.ScalarProcessor.ValueFromNumber(mv2)
             )
         );
@@ -286,12 +287,9 @@ public abstract partial class RGaMultivector<T>
     {
         var processor = mv2.Processor;
 
-        return mv2.Subtract(
-            mv2.Processor.Scalar(
-                    
-                processor.ScalarProcessor.ValueFromNumber(mv1)
-            )
-        );
+        return processor.Scalar(
+            processor.ScalarProcessor.ValueFromNumber(mv1)
+        ).Subtract(mv2);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -300,8 +298,7 @@ public abstract partial class RGaMultivector<T>
         var processor = mv1.Processor;
 
         return mv1.Subtract(
-            mv1.Processor.Scalar(
-                    
+            processor.Scalar(
                 processor.ScalarProcessor.ValueFromNumber(mv2)
             )
         );
@@ -312,12 +309,9 @@ public abstract partial class RGaMultivector<T>
     {
         var processor = mv2.Processor;
 
-        return mv2.Subtract(
-            mv2.Processor.Scalar(
-                    
-                processor.ScalarProcessor.ValueFromNumber(mv1)
-            )
-        );
+        return processor.Scalar(
+            processor.ScalarProcessor.ValueFromNumber(mv1)
+        ).Subtract(mv2);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -326,8 +320,7 @@ public abstract partial class RGaMultivector<T>
         var processor = mv1.Processor;
 
         return mv1.Subtract(
-            mv1.Processor.Scalar(
-                    
+            processor.Scalar(
                 processor.ScalarProcessor.ValueFromNumber(mv2)
             )
         );
@@ -338,12 +331,9 @@ public abstract partial class RGaMultivector<T>
     {
         var processor = mv2.Processor;
 
-        return mv2.Subtract(
-            mv2.Processor.Scalar(
-                    
-                processor.ScalarProcessor.ValueFromNumber(mv1)
-            )
-        );
+        return processor.Scalar(
+            processor.ScalarProcessor.ValueFromNumber(mv1)
+        ).Subtract(mv2);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -352,8 +342,7 @@ public abstract partial class RGaMultivector<T>
         var processor = mv1.Processor;
 
         return mv1.Subtract(
-            mv1.Processor.Scalar(
-                    
+            processor.Scalar(
                 processor.ScalarProcessor.ValueFromNumber(mv2)
             )
         );
@@ -364,52 +353,53 @@ public abstract partial class RGaMultivector<T>
     {
         var processor = mv2.Processor;
 
-        return mv2.Subtract(
-            mv2.Processor.Scalar(
-                    
-                processor.ScalarProcessor.ValueFromNumber(mv1)
-            )
-        );
+        return processor.Scalar(
+            processor.ScalarProcessor.ValueFromNumber(mv1)
+        ).Subtract(mv2);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static RGaMultivector<T> operator -(RGaMultivector<T> mv1, T mv2)
     {
+        var processor = mv1.Processor;
+
         return mv1.Subtract(
-            mv1.Processor.Scalar(mv2)
+            processor.Scalar(mv2)
         );
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static RGaMultivector<T> operator -(T mv1, RGaMultivector<T> mv2)
     {
-        return mv2.Subtract(
-            mv2.Processor.Scalar(mv1)
-        );
+        var processor = mv2.Processor;
+
+        return processor.Scalar(mv1).Subtract(mv2);
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static RGaMultivector<T> operator -(IScalar<T> mv1, RGaMultivector<T> mv2)
     {
-        return mv2.Subtract(
-            mv2.Processor.Scalar(mv1)
-        );
+        var processor = mv2.Processor;
+
+        return processor.Scalar(mv1).Subtract(mv2);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static RGaMultivector<T> operator -(RGaMultivector<T> mv1, Scalar<T> mv2)
     {
+        var processor = mv1.Processor;
+
         return mv1.Subtract(
-            mv1.Processor.Scalar(mv2.ScalarValue)
+            processor.Scalar(mv2.ScalarValue)
         );
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static RGaMultivector<T> operator -(Scalar<T> mv1, RGaMultivector<T> mv2)
     {
-        return mv2.Subtract(
-            mv2.Processor.Scalar(mv1.ScalarValue)
-        );
+        var processor = mv2.Processor;
+
+        return processor.Scalar(mv1.ScalarValue).Subtract(mv2);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -422,8 +412,10 @@ public abstract partial class RGaMultivector<T>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static RGaMultivector<T> operator *(RGaMultivector<T> mv1, IntegerSign mv2)
     {
+        var processor = mv1.Processor;
+
         if (mv2.IsZero)
-            return mv1.Processor.ScalarZero;
+            return processor.ScalarZero;
 
         return mv2.IsPositive ? mv1 : mv1.Negative();
     }
@@ -431,8 +423,10 @@ public abstract partial class RGaMultivector<T>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static RGaMultivector<T> operator *(IntegerSign mv1, RGaMultivector<T> mv2)
     {
+        var processor = mv2.Processor;
+
         if (mv1.IsZero)
-            return mv2.Processor.ScalarZero;
+            return processor.ScalarZero;
 
         return mv1.IsPositive ? mv2 : mv2.Negative();
     }

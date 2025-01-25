@@ -4,6 +4,7 @@ using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Float64.Mul
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Float64.Processors;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space2D;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space3D;
+using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space4D;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Combinations;
 
@@ -115,16 +116,16 @@ public static class RGaFloat64MultivectorUtils
     }
         
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static RGaFloat64Multivector RemoveSmallTerms(this RGaFloat64Multivector mv, double epsilon = 1e-12)
+    public static RGaFloat64Multivector RemoveSmallTerms(this RGaFloat64Multivector mv, double zeroEpsilon = Float64Utils.ZeroEpsilon)
     {
         return mv switch
         {
             RGaFloat64Scalar s => s,
-            RGaFloat64Vector v => v.RemoveSmallTerms(epsilon),
-            RGaFloat64Bivector bv => bv.RemoveSmallTerms(epsilon),
-            RGaFloat64HigherKVector kv => kv.RemoveSmallTerms(epsilon),
-            RGaFloat64GradedMultivector mv1 => mv1.RemoveSmallTerms(epsilon),
-            RGaFloat64UniformMultivector mv1 => mv1.RemoveSmallTerms(epsilon),
+            RGaFloat64Vector v => v.RemoveSmallTerms(zeroEpsilon),
+            RGaFloat64Bivector bv => bv.RemoveSmallTerms(zeroEpsilon),
+            RGaFloat64HigherKVector kv => kv.RemoveSmallTerms(zeroEpsilon),
+            RGaFloat64GradedMultivector mv1 => mv1.RemoveSmallTerms(zeroEpsilon),
+            RGaFloat64UniformMultivector mv1 => mv1.RemoveSmallTerms(zeroEpsilon),
             _ => throw new InvalidOperationException()
         };
     }
@@ -601,25 +602,27 @@ public static class RGaFloat64MultivectorUtils
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64Vector2D GetVectorPartAsTuple2D(this RGaFloat64Multivector mv)
+    public static LinFloat64Vector2D GetVectorPartAsVector2D(this RGaFloat64Multivector mv)
     {
         return LinFloat64Vector2D.Create((Float64Scalar)mv.GetBasisBladeScalar(1),
             (Float64Scalar)mv.GetBasisBladeScalar(2));
     }
         
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64Vector3D GetVectorPartAsTuple3D(this RGaFloat64Multivector mv)
+    public static LinFloat64Vector3D GetVectorPartAsVector3D(this RGaFloat64Multivector mv)
     {
         return LinFloat64Vector3D.Create(mv[1], mv[2], mv[3]);
     }
         
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64Quaternion GetVectorPartAsTuple4D(this RGaFloat64Multivector mv)
+    public static LinFloat64Vector4D GetVectorPartAsVector4D(this RGaFloat64Multivector mv)
     {
-        return LinFloat64Quaternion.Create(mv.GetBasisBladeScalar(1),
-            mv.GetBasisBladeScalar(2),
+        return LinFloat64Vector4D.Create(
+            mv.GetBasisBladeScalar(1), 
+            mv.GetBasisBladeScalar(2), 
             mv.GetBasisBladeScalar(4),
-            mv.GetBasisBladeScalar(8));
+            mv.GetBasisBladeScalar(8)
+        );
     }
 
         

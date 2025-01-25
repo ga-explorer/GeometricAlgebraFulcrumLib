@@ -1,4 +1,4 @@
-﻿using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.Visuals.Space3D.Images;
+﻿using GeometricAlgebraFulcrumLib.Utilities.Web.Images;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Formats.Bmp;
 
@@ -12,67 +12,60 @@ public static class GrVisualImage3DSamples
 
     public static void Example1()
     {
-        var composer = new GrVisualComputedImage3D("")
-        {
-            Width = 256,
-            Height = 1,
-            ColorFunc = (i, j) => Color.FromRgba(
+        GrVisualImageUtils.Create(
+            256,
+            1,
+            (i, j) => Color.FromRgba(
                 (byte)(255 - i),
                 (byte)(255 - i),
                 (byte)(255 - i),
                 (byte)(255 - i)
             )
-        };
-
-        composer.SaveImage(
+        ).Save(
             Path.Combine(WorkingPath, @"opacityTexture1.bmp"),
             new BmpEncoder()
         );
-
-
-        composer = new GrVisualComputedImage3D("")
-        {
-            Width = 1,
-            Height = 256,
-            ColorFunc = (i, j) => Color.FromRgba(
+        
+        GrVisualImageUtils.Create(
+            1,
+            256,
+            (i, j) => Color.FromRgba(
                 (byte)(255 - j),
                 (byte)(255 - j),
                 (byte)(255 - j),
                 (byte)(255 - j)
             )
-        };
-
-        composer.SaveImage(
+        ).Save(
             Path.Combine(WorkingPath, @"opacityTexture2.bmp"),
             new BmpEncoder()
         );
     }
 
-    public static void Example2()
-    {
-        var composer = new GrVisualLineGridImage3D("")
-        {
-            BaseSquareColor = Color.LightYellow,
-            BaseLineColor = Color.BurlyWood,
-            MidLineColor = Color.SandyBrown,
-            BorderLineColor = Color.SaddleBrown,
-            BaseSquareCount = 3,
-            BaseSquareSize = 64,
-            BaseLineWidth = 2,
-            MidLineWidth = 0,
-            BorderLineWidth = 3
-        };
+    //public static void Example2()
+    //{
+    //    var composer = new GrVisualLineGridImage3D("")
+    //    {
+    //        BaseSquareColor = Color.LightYellow,
+    //        BaseLineColor = Color.BurlyWood,
+    //        MidLineColor = Color.SandyBrown,
+    //        BorderLineColor = Color.SaddleBrown,
+    //        BaseSquareCount = 3,
+    //        BaseSquareSize = 64,
+    //        BaseLineWidth = 2,
+    //        MidLineWidth = 0,
+    //        BorderLineWidth = 3
+    //    };
 
-        var filePath = Path.Combine(
-            WorkingPath,
-            @"gridTexture4.bmp"
-        );
+    //    var filePath = Path.Combine(
+    //        WorkingPath,
+    //        @"gridTexture4.bmp"
+    //    );
 
-        composer.SaveImage(
-            filePath,
-            new BmpEncoder()
-        );
-    }
+    //    composer.GetImage().Save(
+    //        filePath,
+    //        new BmpEncoder()
+    //    );
+    //}
 
     public static void Example3()
     {
@@ -94,13 +87,7 @@ public static class GrVisualImage3DSamples
         colorArray[1, 2] = Color.FromRgb(0, 0, v2);
         colorArray[2, 2] = Color.FromRgb(0, 0, v3);
 
-        var composer = new GrVisualColorGridImage3D("")
-        {
-            ColorArray = colorArray,
-            SquareSize = 1
-        };
-
-        composer.SaveImage(
+        GrVisualImageUtils.CreateColorGrid(1, colorArray).Save(
             Path.Combine(WorkingPath, @"colorGridTexture1.bmp"),
             new BmpEncoder()
         );

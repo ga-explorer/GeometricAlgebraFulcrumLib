@@ -60,7 +60,7 @@ public static class ParametricCurve3DUtils
             frame1
                 .Tangent
                 .ToUnitLinVector3D()
-                .CreateVectorToVectorRotationQuaternion(frame2.Tangent.ToUnitLinVector3D());
+                .VectorToVectorRotationQuaternion(frame2.Tangent.ToUnitLinVector3D());
 
         Debug.Assert(
             (q1.RotateVector(frame1.Tangent) - frame2.Tangent).VectorENormSquared().IsNearZero(1e-7)
@@ -79,7 +79,7 @@ public static class ParametricCurve3DUtils
             q1
                 .RotateVector(frame1.Normal1)
                 .ToUnitLinVector3D()
-                .CreateVectorToVectorRotationQuaternion(frame2.Normal1.ToUnitLinVector3D(), frame2.Tangent);
+                .VectorToVectorRotationQuaternion(frame2.Normal1.ToUnitLinVector3D(), frame2.Tangent);
 
         var quaternion = q2.Concatenate(q1);
 
@@ -102,7 +102,7 @@ public static class ParametricCurve3DUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static GrRouletteMappedFiniteParametricCurve3D GetRouletteMappedCurve(this IArcLengthCurve3D baseCurve, RouletteMap3D rouletteMap)
+    public static GrRouletteMappedFiniteParametricCurve3D GetRouletteMappedCurve(this IArcLengthCurve3D baseCurve, Float64RouletteAffineMap3D rouletteMap)
     {
         return new GrRouletteMappedFiniteParametricCurve3D(
             baseCurve,

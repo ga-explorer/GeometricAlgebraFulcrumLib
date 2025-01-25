@@ -5,7 +5,7 @@ using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space3D;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space4D;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.AffineMaps.Space3D;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.Borders.Space2D.Immutable;
+using GeometricAlgebraFulcrumLib.Modeling.Geometry.Borders.Space2D.Float64;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.Colors;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.KonvaJs.Constants;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.KonvaJs.Values;
@@ -28,28 +28,28 @@ public static class GrKonvaJsUtils
     {
         return value is null || value.IsEmpty
             ? null
-            : value.GetCode();
+            : value.GetAttributeValueCode();
     }
 
     internal static Pair<string>? GetNameValueCodePair(this GrKonvaJsCodeValue? value, string name)
     {
         return value is null || value.IsEmpty
             ? null
-            : new Pair<string>(name, value.GetCode());
+            : new Pair<string>(name, value.GetAttributeValueCode());
     }
 
     internal static Pair<string>? GetNameValueCodePair<T>(this SparseCodeAttributeValue<T>? value, string name)
     {
         return value is null || value.IsEmpty
             ? null
-            : new Pair<string>(name, value.GetCode());
+            : new Pair<string>(name, value.GetAttributeValueCode());
     }
 
     internal static Pair<string>? GetNameValueCodePair<T>(this SparseCodeAttributeValue<T>? value, string name, SparseCodeAttributeValue<T>? defaultValue)
     {
         return value is null || value.IsEmpty
             ? defaultValue.GetNameValueCodePair(name)
-            : new Pair<string>(name, value.GetCode());
+            : new Pair<string>(name, value.GetAttributeValueCode());
     }
 
     public static GrKonvaJsVector3Value ToKonvaJsVector3Value(this ILinFloat64Vector3D value)
@@ -268,15 +268,15 @@ public static class GrKonvaJsUtils
         }
     }
 
-    public static string GetKonvaJsCode(this LinUnitBasisVector3D axis)
+    public static string GetKonvaJsCode(this LinBasisVector3D axis)
     {
         return axis switch
         {
-            LinUnitBasisVector3D.PositiveX => "Konva.Axis.X",
-            LinUnitBasisVector3D.NegativeX => "(-Konva.Axis.X)",
-            LinUnitBasisVector3D.PositiveY => "Konva.Axis.Y",
-            LinUnitBasisVector3D.NegativeY => "(-Konva.Axis.Y)",
-            LinUnitBasisVector3D.PositiveZ => "Konva.Axis.Z",
+            LinBasisVector3D.Px => "Konva.Axis.X",
+            LinBasisVector3D.Nx => "(-Konva.Axis.X)",
+            LinBasisVector3D.Py => "Konva.Axis.Y",
+            LinBasisVector3D.Ny => "(-Konva.Axis.Y)",
+            LinBasisVector3D.Pz => "Konva.Axis.Z",
             _ => "(-Konva.Axis.Z)"
         };
     }
@@ -296,7 +296,7 @@ public static class GrKonvaJsUtils
         return $"new Konva.Vector4({(float)vector.Item1:G}, {(float)vector.Item2:G}, {(float)vector.Item3:G}, {(float)vector.Item4:G})";
     }
     
-    public static string GetKonvaJsCode(this BoundingBox2D boundingBox)
+    public static string GetKonvaJsCode(this Float64BoundingBox2D boundingBox)
     {
         return $"{{ x: {(float)boundingBox.MinX:G}, y: {(float)boundingBox.MinY:G}, width: {(float)boundingBox.LengthX:G}, height: {(float)boundingBox.LengthY:G} }}";
     }
@@ -406,14 +406,14 @@ public static class GrKonvaJsUtils
         return $"Konva.Matrix.FromArray({affineMapArrayCode}, 0)";
     }
 
-    public static string GetKonvaJsArrayCode(this IAffineMap3D affineMap, bool isTransposed = false)
+    public static string GetKonvaJsArrayCode(this IFloat64AffineMap3D affineMap, bool isTransposed = false)
     {
         return affineMap
             .GetArray2D()
             .GetAffineMapKonvaJsArrayCode(isTransposed);
     }
 
-    public static string GetKonvaJsMatrixCode(this IAffineMap3D affineMap, bool isTransposed = false)
+    public static string GetKonvaJsMatrixCode(this IFloat64AffineMap3D affineMap, bool isTransposed = false)
     {
         return affineMap
             .GetArray2D()
@@ -423,7 +423,7 @@ public static class GrKonvaJsUtils
     public static string GetKonvaJsCode(this IEnumerable<SparseCodeAttributeValue> valueList)
     {
         return valueList.Select(
-            value => value.GetCode()
+            value => value.GetAttributeValueCode()
         ).GetKonvaJsArrayCode();
     }
 

@@ -1,4 +1,5 @@
 ﻿using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Frames.Space3D;
+using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space2D;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space3D;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Structures.Vertices;
@@ -23,7 +24,7 @@ public sealed class GrNormalTextureVertex3D
         set => throw new InvalidOperationException();
     }
 
-    public Pair<Float64Scalar> ParameterValue { get; set; }
+    public LinFloat64Vector2D ParameterValue { get; set; }
 
     public LinFloat64Normal3D Normal { get; }
         = new LinFloat64Normal3D();
@@ -72,21 +73,21 @@ public sealed class GrNormalTextureVertex3D
     {
         Index = index;
         Point = point.ToLinVector3D();
-        ParameterValue = new Pair<Float64Scalar>(0, 0);
+        ParameterValue = LinFloat64Vector2D.Zero;
     }
 
     public GrNormalTextureVertex3D(int index, ITriplet<Float64Scalar> point, IPair<Float64Scalar> textureUv)
     {
         Index = index;
         Point = point.ToLinVector3D();
-        ParameterValue = textureUv.ToPair();
+        ParameterValue = textureUv.ToLinVector2D();
     }
 
     public GrNormalTextureVertex3D(int index, ITriplet<Float64Scalar> point, IPair<Float64Scalar> textureUv, ITriplet<Float64Scalar> normal)
     {
         Index = index;
         Point = point.ToLinVector3D();
-        ParameterValue = textureUv.ToPair();
+        ParameterValue = textureUv.ToLinVector2D();
         Normal.Set(normal);
     }
 

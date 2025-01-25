@@ -1,5 +1,4 @@
-﻿using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.KonvaJs.Values;
-using GeometricAlgebraFulcrumLib.Utilities.Text;
+﻿using GeometricAlgebraFulcrumLib.Utilities.Text;
 
 namespace GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.KonvaJs.Shapes;
 
@@ -9,57 +8,12 @@ namespace GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.KonvaJs.Shapes;
 public class GrKonvaJsEllipse :
     GrKonvaJsShapeBase
 {
-    public class EllipseOptions :
-        GrKonvaJsShapeBaseOptions
-    {
-        public GrKonvaJsVector2Value? Radius
-        {
-            get => GetAttributeValueOrNull<GrKonvaJsVector2Value>("Radius");
-            set => SetAttributeValue("Radius", value);
-        }
-        
-
-        public EllipseOptions()
-        {
-        }
-
-        public EllipseOptions(EllipseOptions options)
-        {
-            SetAttributeValues(options);
-        }
-    }
-
-    public class EllipseProperties :
-        GrKonvaJsShapeBaseProperties
-    {
-        public GrKonvaJsVector2Value? Radius
-        {
-            get => GetAttributeValueOrNull<GrKonvaJsVector2Value>("Radius");
-            set => SetAttributeValue("Radius", value);
-        }
-
-        public GrKonvaJsFloat32Value? RadiusX
-        {
-            get => GetAttributeValueOrNull<GrKonvaJsFloat32Value>("RadiusX");
-            set => SetAttributeValue("RadiusX", value);
-        }
-        
-        public GrKonvaJsFloat32Value? RadiusY
-        {
-            get => GetAttributeValueOrNull<GrKonvaJsFloat32Value>("RadiusY");
-            set => SetAttributeValue("RadiusY", value);
-        }
-
-        
-    }
-
-    
     protected override string ConstructorName
         => "new Konva.Ellipse";
 
-    public EllipseOptions Options { get; private set; }
+    public GrKonvaJsEllipseOptions Options { get; private set; }
 
-    public EllipseProperties Properties { get; private set; }
+    public GrKonvaJsEllipseProperties Properties { get; private set; }
 
     public override GrKonvaJsObjectOptions ObjectOptions
         => Options;
@@ -71,19 +25,19 @@ public class GrKonvaJsEllipse :
     public GrKonvaJsEllipse(string constName) 
         : base(constName)
     {
-        Options = new EllipseOptions
+        Options = new GrKonvaJsEllipseOptions
         {
             Id = NodeId.SingleQuote(),
             Name = ConstName.SingleQuote()
         };
 
-        Properties = new EllipseProperties();
+        Properties = new GrKonvaJsEllipseProperties();
     }
     
 
-    public GrKonvaJsEllipse SetOptions(EllipseOptions options)
+    public GrKonvaJsEllipse SetOptions(GrKonvaJsEllipseOptions options)
     {
-        Options = new EllipseOptions(options)
+        Options = new GrKonvaJsEllipseOptions(options)
         {
             Id = NodeId.SingleQuote(),
             Name = ConstName.SingleQuote()
@@ -92,7 +46,7 @@ public class GrKonvaJsEllipse :
         return this;
     }
 
-    public GrKonvaJsEllipse SetProperties(EllipseProperties properties)
+    public GrKonvaJsEllipse SetProperties(GrKonvaJsEllipseProperties properties)
     {
         Properties = properties;
 

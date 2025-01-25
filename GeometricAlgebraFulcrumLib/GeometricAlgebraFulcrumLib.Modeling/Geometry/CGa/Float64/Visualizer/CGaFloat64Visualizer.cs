@@ -9,19 +9,22 @@ using GeometricAlgebraFulcrumLib.Modeling.Geometry.Parametric.Float64.Space3D.Bi
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.Parametric.Float64.Space3D.Curves;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.Parametric.Float64.Space3D.Trivectors;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.Visualizer;
+using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.BabylonJs.Composers;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.Visuals.Space3D.Animations;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.Visuals.Space3D.Basic;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.Visuals.Space3D.Curves;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.Visuals.Space3D.Styles;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.Visuals.Space3D.Surfaces;
+using GeometricAlgebraFulcrumLib.Modeling.Signals;
+using GeometricAlgebraFulcrumLib.Modeling.Temporal.Float64.Scalars;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Extensions;
 using GeometricAlgebraFulcrumLib.Utilities.Web.Colors;
+using GeometricAlgebraFulcrumLib.Utilities.Web.LaTeX.KaTeX;
 using SixLabors.ImageSharp;
 
 namespace GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Float64.Visualizer;
 
-public class CGaFloat64Visualizer :
-    GeometryVisualizer
+public class CGaFloat64Visualizer
 {
     public CGaFloat64GeometricSpace GeometricSpace { get; }
 
@@ -32,6 +35,17 @@ public class CGaFloat64Visualizer :
     public CGaFloat64VisualizerFlatStyle FlatStyle { get; }
 
     public CGaFloat64VisualizerRoundStyle RoundStyle { get; }
+
+    public GrBabylonJsGeometryAnimationComposer AnimationComposer { get; set; }
+
+    public Float64SamplingSpecs SamplingSpecs 
+        => AnimationComposer.SamplingSpecs;
+
+    public GrBabylonJsSceneComposer SceneComposer 
+        => AnimationComposer.SceneComposer;
+
+    public WclKaTeXComposer KaTeXComposer 
+        => AnimationComposer.KaTeXComposer;
 
 
     internal CGaFloat64Visualizer(CGaFloat64GeometricSpace cgaGeometricSpace)
@@ -48,8 +62,8 @@ public class CGaFloat64Visualizer :
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     protected IReadOnlyList<int> GetInvalidFrameIndices(CGaFloat64ParametricElement element, CGaFloat64ElementKind kind, int egaDirectionGrade)
     {
-        return AnimationSpecs
-            .GetFrameIndexValuePairs(element.GetElement)
+        return SamplingSpecs
+            .GetSampleIndexValuePairs(element.GetElement)
             .Where(indexElement =>
                 indexElement.Value.Specs.Kind != kind ||
                 indexElement.Value.Specs.VGaDirectionGrade != egaDirectionGrade
@@ -219,9 +233,36 @@ public class CGaFloat64Visualizer :
     }
 
 
-    public override CGaFloat64Visualizer BeginDrawing2D(string title, IReadOnlyDictionary<string, string> laTeXDictionary)
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public CGaFloat64Visualizer SetAnimationComposer(GrBabylonJsGeometryAnimationComposer animationComposer)
     {
-        base.BeginDrawing2D(title, laTeXDictionary);
+        AnimationComposer = animationComposer;
+
+        return this;
+    }
+    
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public CGaFloat64Visualizer BeginDrawing2D(string workingFolder, Float64SamplingSpecs samplingSpecs)
+    {
+        return BeginDrawing2D(
+            new GrBabylonJsGeometryAnimationComposer(workingFolder, samplingSpecs)
+        );
+    }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public CGaFloat64Visualizer BeginDrawing2D(string workingFolder, int samplingRate = 1, double maxTime = 1)
+    {
+        return BeginDrawing2D(
+            new GrBabylonJsGeometryAnimationComposer(workingFolder, samplingRate, maxTime)
+        );
+    }
+
+    public CGaFloat64Visualizer BeginDrawing2D(GrBabylonJsGeometryAnimationComposer animationComposer)
+    {
+        SetAnimationComposer(animationComposer);
+
+        AnimationComposer.BeginDrawing2D();
 
         DirectionStyle.SetStyle(0.08);
         TangentStyle.SetStyle(0.08);
@@ -231,9 +272,28 @@ public class CGaFloat64Visualizer :
         return this;
     }
 
-    public override CGaFloat64Visualizer BeginDrawing3D(string title, IReadOnlyDictionary<string, string> laTeXDictionary)
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public CGaFloat64Visualizer BeginDrawing3D(string workingFolder, Float64SamplingSpecs samplingSpecs)
     {
-        base.BeginDrawing3D(title, laTeXDictionary);
+        return BeginDrawing3D(
+            new GrBabylonJsGeometryAnimationComposer(workingFolder, samplingSpecs)
+        );
+    }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public CGaFloat64Visualizer BeginDrawing3D(string workingFolder, int samplingRate = 1, double maxTime = 1)
+    {
+        return BeginDrawing3D(
+            new GrBabylonJsGeometryAnimationComposer(workingFolder, samplingRate, maxTime)
+        );
+    }
+
+    public CGaFloat64Visualizer BeginDrawing3D(GrBabylonJsGeometryAnimationComposer animationComposer)
+    {
+        SetAnimationComposer(animationComposer);
+
+        AnimationComposer.BeginDrawing3D();
 
         DirectionStyle.SetStyle(0.08);
         TangentStyle.SetStyle(0.08);
@@ -301,9 +361,9 @@ public class CGaFloat64Visualizer :
 
     public CGaFloat64Visualizer DrawDirectionPoint2D(Color color, LinFloat64Vector2D position)
     {
-        MainSceneComposer.AddPoint(
+        SceneComposer.AddPoint(
             GrVisualPoint3D.CreateStatic(
-                GetNewSceneObjectName("point"),
+                AnimationComposer.GetNewSceneObjectName("point"),
                 DirectionStyle.GetPointVisualStyle(color),
                 position.ToXyLinVector3D()
             )
@@ -314,11 +374,11 @@ public class CGaFloat64Visualizer :
 
     public CGaFloat64Visualizer DrawDirectionPoint2D(Color color, IFloat64ParametricCurve2D position)
     {
-        MainSceneComposer.AddPoint(
+        SceneComposer.AddPoint(
             GrVisualPoint3D.CreateAnimated(
-                GetNewSceneObjectName("point"),
+                AnimationComposer.GetNewSceneObjectName("point"),
                 DirectionStyle.GetPointVisualStyle(color),
-                AnimationSpecs.CreateXyAnimatedVector3D(position)
+                SamplingSpecs.CreateXyAnimatedVector3D(position)
             )
         );
 
@@ -328,13 +388,13 @@ public class CGaFloat64Visualizer :
     public CGaFloat64Visualizer DrawDirectionPoint2D(Color color, CGaFloat64ParametricElement element)
     {
         var animatedPosition =
-            AnimationSpecs.CreateXyAnimatedVector3D(
+            SamplingSpecs.CreateXyAnimatedVector3D(
                 element.PositionToParametricCurve2D()
             );
 
-        MainSceneComposer.AddPoint(
+        SceneComposer.AddPoint(
             GrVisualPoint3D.CreateAnimated(
-                GetNewSceneObjectName("point"),
+                AnimationComposer.GetNewSceneObjectName("point"),
                 DirectionStyle.GetPointVisualStyle(color),
                 animatedPosition
             )
@@ -346,9 +406,9 @@ public class CGaFloat64Visualizer :
 
     public CGaFloat64Visualizer DrawDirectionPoint3D(Color color, LinFloat64Vector3D position)
     {
-        MainSceneComposer.AddPoint(
+        SceneComposer.AddPoint(
             GrVisualPoint3D.CreateStatic(
-                GetNewSceneObjectName("point"),
+                AnimationComposer.GetNewSceneObjectName("point"),
                 DirectionStyle.GetPointVisualStyle(color),
                 position
             )
@@ -359,11 +419,11 @@ public class CGaFloat64Visualizer :
 
     public CGaFloat64Visualizer DrawDirectionPoint3D(Color color, IParametricCurve3D position)
     {
-        MainSceneComposer.AddPoint(
+        SceneComposer.AddPoint(
             GrVisualPoint3D.CreateAnimated(
-                GetNewSceneObjectName("point"),
+                AnimationComposer.GetNewSceneObjectName("point"),
                 DirectionStyle.GetPointVisualStyle(color),
-                AnimationSpecs.CreateAnimatedVector3D(position)
+                SamplingSpecs.CreateAnimatedVector3D(position)
             )
         );
 
@@ -373,13 +433,13 @@ public class CGaFloat64Visualizer :
     public CGaFloat64Visualizer DrawDirectionPoint3D(Color color, CGaFloat64ParametricElement element)
     {
         var animatedPosition =
-            AnimationSpecs.CreateAnimatedVector3D(
+            SamplingSpecs.CreateAnimatedVector3D(
                 element.PositionToParametricCurve3D()
             );
 
-        MainSceneComposer.AddPoint(
+        SceneComposer.AddPoint(
             GrVisualPoint3D.CreateAnimated(
-                GetNewSceneObjectName("point"),
+                AnimationComposer.GetNewSceneObjectName("point"),
                 DirectionStyle.GetPointVisualStyle(color),
                 animatedPosition
             )
@@ -393,9 +453,9 @@ public class CGaFloat64Visualizer :
     {
         if (DirectionStyle.DrawPosition)
         {
-            MainSceneComposer.AddPoint(
+            SceneComposer.AddPoint(
                 GrVisualPoint3D.CreateStatic(
-                    GetNewSceneObjectName("point"),
+                    AnimationComposer.GetNewSceneObjectName("point"),
                     DirectionStyle.GetPointVisualStyle(
                         color.SetAlpha(DirectionStyle.AuxGeometryColorAlpha),
                         DirectionStyle.Thickness * 1.5
@@ -407,9 +467,9 @@ public class CGaFloat64Visualizer :
 
         if (DirectionStyle.DrawDirection)
         {
-            MainSceneComposer.AddVector(
+            SceneComposer.AddVector(
                 GrVisualVector3D.CreateStatic(
-                    GetNewSceneObjectName("vector"),
+                    AnimationComposer.GetNewSceneObjectName("vector"),
                     DirectionStyle.GetVectorVisualStyle(
                         color.SetAlpha(DirectionStyle.AuxGeometryColorAlpha),
                         DirectionStyle.Thickness
@@ -422,9 +482,9 @@ public class CGaFloat64Visualizer :
 
         if (DirectionStyle.DrawNormalDirection)
         {
-            MainSceneComposer.AddBivector(
+            SceneComposer.AddBivector(
                 GrVisualBivector3D.CreateStatic(
-                    GetNewSceneObjectName("bivector"),
+                    AnimationComposer.GetNewSceneObjectName("bivector"),
                     DirectionStyle.GetVectorVisualStyle(
                         color.SetAlpha(DirectionStyle.AuxGeometryColorAlpha),
                         DirectionStyle.Thickness
@@ -442,16 +502,16 @@ public class CGaFloat64Visualizer :
     public CGaFloat64Visualizer DrawDirectionLine2D(Color color, IFloat64ParametricCurve2D position, IFloat64ParametricCurve2D direction)
     {
         var animatedPosition =
-            AnimationSpecs.CreateXyAnimatedVector3D(position);
+            SamplingSpecs.CreateXyAnimatedVector3D(position);
 
         var animatedDirection =
-            AnimationSpecs.CreateXyAnimatedVector3D(direction);
+            SamplingSpecs.CreateXyAnimatedVector3D(direction);
 
         if (DirectionStyle.DrawPosition)
         {
-            MainSceneComposer.AddPoint(
+            SceneComposer.AddPoint(
                 GrVisualPoint3D.CreateAnimated(
-                    GetNewSceneObjectName("point"),
+                    AnimationComposer.GetNewSceneObjectName("point"),
                     DirectionStyle.GetPointVisualStyle(
                         color.SetAlpha(DirectionStyle.AuxGeometryColorAlpha),
                         DirectionStyle.Thickness * 1.5
@@ -464,13 +524,13 @@ public class CGaFloat64Visualizer :
         if (DirectionStyle.DrawDirection)
         {
             var animatedScaledVector =
-                AnimationSpecs.CreateAnimatedVector3D(t =>
+                SamplingSpecs.CreateAnimatedVector3D(t =>
                     direction.GetPoint(t).SetLength(DirectionStyle.DirectionRadius).ToXyLinVector3D()
                 );
 
-            MainSceneComposer.AddVector(
+            SceneComposer.AddVector(
                 GrVisualVector3D.CreateAnimated(
-                    GetNewSceneObjectName("vector"),
+                    AnimationComposer.GetNewSceneObjectName("vector"),
                     DirectionStyle.GetVectorVisualStyle(
                         color.SetAlpha(DirectionStyle.AuxGeometryColorAlpha),
                         DirectionStyle.Thickness
@@ -483,9 +543,9 @@ public class CGaFloat64Visualizer :
 
         if (DirectionStyle.DrawNormalDirection)
         {
-            MainSceneComposer.AddBivector(
+            SceneComposer.AddBivector(
                 GrVisualBivector3D.CreateAnimated(
-                    GetNewSceneObjectName("bivector"),
+                    AnimationComposer.GetNewSceneObjectName("bivector"),
                     DirectionStyle.GetVectorVisualStyle(
                         color.SetAlpha(DirectionStyle.AuxGeometryColorAlpha),
                         DirectionStyle.Thickness
@@ -503,25 +563,25 @@ public class CGaFloat64Visualizer :
     public CGaFloat64Visualizer DrawDirectionLine2D(Color color, CGaFloat64ParametricElement element)
     {
         var animatedPosition =
-            AnimationSpecs.CreateXyAnimatedVector3D(
+            SamplingSpecs.CreateXyAnimatedVector3D(
                 element.PositionToParametricCurve2D()
             );
 
         var animatedDirection =
-            AnimationSpecs.CreateXyAnimatedVector3D(
+            SamplingSpecs.CreateXyAnimatedVector3D(
                 element.DirectionToParametricCurve2D()
             );
 
         var animatedNormal =
-            AnimationSpecs.CreateXyAnimatedVector3D(
+            SamplingSpecs.CreateXyAnimatedVector3D(
                 element.NormalDirectionToParametricCurve2D()
             );
 
         if (DirectionStyle.DrawPosition)
         {
-            MainSceneComposer.AddPoint(
+            SceneComposer.AddPoint(
                 GrVisualPoint3D.CreateAnimated(
-                    GetNewSceneObjectName("point"),
+                    AnimationComposer.GetNewSceneObjectName("point"),
                     DirectionStyle.GetPointVisualStyle(
                         color.SetAlpha(DirectionStyle.AuxGeometryColorAlpha),
                         DirectionStyle.Thickness * 1.5
@@ -533,9 +593,9 @@ public class CGaFloat64Visualizer :
 
         if (DirectionStyle.DrawDirection)
         {
-            MainSceneComposer.AddVector(
+            SceneComposer.AddVector(
                 GrVisualVector3D.CreateAnimated(
-                    GetNewSceneObjectName("vector"),
+                    AnimationComposer.GetNewSceneObjectName("vector"),
                     DirectionStyle.GetVectorVisualStyle(
                         color.SetAlpha(DirectionStyle.AuxGeometryColorAlpha),
                         DirectionStyle.Thickness
@@ -548,9 +608,9 @@ public class CGaFloat64Visualizer :
 
         if (DirectionStyle.DrawNormalDirection)
         {
-            MainSceneComposer.AddVector(
+            SceneComposer.AddVector(
                 GrVisualVector3D.CreateAnimated(
-                    GetNewSceneObjectName("vector"),
+                    AnimationComposer.GetNewSceneObjectName("vector"),
                     RoundStyle.GetVectorVisualStyle(
                         color.SetAlpha(RoundStyle.AuxGeometryColorAlpha),
                         RoundStyle.Thickness
@@ -569,9 +629,9 @@ public class CGaFloat64Visualizer :
     {
         if (DirectionStyle.DrawPosition)
         {
-            MainSceneComposer.AddPoint(
+            SceneComposer.AddPoint(
                 GrVisualPoint3D.CreateStatic(
-                    GetNewSceneObjectName("point"),
+                    AnimationComposer.GetNewSceneObjectName("point"),
                     DirectionStyle.GetPointVisualStyle(
                         color.SetAlpha(DirectionStyle.AuxGeometryColorAlpha),
                         DirectionStyle.Thickness * 1.5
@@ -583,9 +643,9 @@ public class CGaFloat64Visualizer :
 
         if (DirectionStyle.DrawDirection)
         {
-            MainSceneComposer.AddVector(
+            SceneComposer.AddVector(
                 GrVisualVector3D.CreateStatic(
-                    GetNewSceneObjectName("vector"),
+                    AnimationComposer.GetNewSceneObjectName("vector"),
                     DirectionStyle.GetVectorVisualStyle(
                         color.SetAlpha(DirectionStyle.AuxGeometryColorAlpha),
                         DirectionStyle.Thickness
@@ -598,9 +658,9 @@ public class CGaFloat64Visualizer :
 
         if (DirectionStyle.DrawNormalDirection)
         {
-            MainSceneComposer.AddBivector(
+            SceneComposer.AddBivector(
                 GrVisualBivector3D.CreateStatic(
-                    GetNewSceneObjectName("bivector"),
+                    AnimationComposer.GetNewSceneObjectName("bivector"),
                     DirectionStyle.GetVectorVisualStyle(
                         color.SetAlpha(DirectionStyle.AuxGeometryColorAlpha),
                         DirectionStyle.Thickness
@@ -618,16 +678,16 @@ public class CGaFloat64Visualizer :
     public CGaFloat64Visualizer DrawDirectionLine3D(Color color, IParametricCurve3D position, IParametricCurve3D direction)
     {
         var animatedPosition =
-            AnimationSpecs.CreateAnimatedVector3D(position);
+            SamplingSpecs.CreateAnimatedVector3D(position);
 
         var animatedDirection =
-            AnimationSpecs.CreateAnimatedVector3D(direction);
+            SamplingSpecs.CreateAnimatedVector3D(direction);
 
         if (DirectionStyle.DrawPosition)
         {
-            MainSceneComposer.AddPoint(
+            SceneComposer.AddPoint(
                 GrVisualPoint3D.CreateAnimated(
-                    GetNewSceneObjectName("point"),
+                    AnimationComposer.GetNewSceneObjectName("point"),
                     DirectionStyle.GetPointVisualStyle(
                         color.SetAlpha(DirectionStyle.AuxGeometryColorAlpha),
                         DirectionStyle.Thickness * 1.5
@@ -640,13 +700,13 @@ public class CGaFloat64Visualizer :
         if (DirectionStyle.DrawDirection)
         {
             var animatedScaledVector =
-                AnimationSpecs.CreateAnimatedVector3D(t =>
+                SamplingSpecs.CreateAnimatedVector3D(t =>
                     direction.GetPoint(t).SetLength(DirectionStyle.DirectionRadius)
                 );
 
-            MainSceneComposer.AddVector(
+            SceneComposer.AddVector(
                 GrVisualVector3D.CreateAnimated(
-                    GetNewSceneObjectName("vector"),
+                    AnimationComposer.GetNewSceneObjectName("vector"),
                     DirectionStyle.GetVectorVisualStyle(
                         color.SetAlpha(DirectionStyle.AuxGeometryColorAlpha),
                         DirectionStyle.Thickness
@@ -659,9 +719,9 @@ public class CGaFloat64Visualizer :
 
         if (DirectionStyle.DrawNormalDirection)
         {
-            MainSceneComposer.AddBivector(
+            SceneComposer.AddBivector(
                 GrVisualBivector3D.CreateAnimated(
-                    GetNewSceneObjectName("bivector"),
+                    AnimationComposer.GetNewSceneObjectName("bivector"),
                     DirectionStyle.GetVectorVisualStyle(
                         color.SetAlpha(DirectionStyle.AuxGeometryColorAlpha),
                         DirectionStyle.Thickness
@@ -679,20 +739,20 @@ public class CGaFloat64Visualizer :
     public CGaFloat64Visualizer DrawDirectionLine3D(Color color, CGaFloat64ParametricElement element)
     {
         var animatedPosition =
-            AnimationSpecs.CreateAnimatedVector3D(
+            SamplingSpecs.CreateAnimatedVector3D(
                 element.PositionToParametricCurve3D()
             );
 
         var animatedDirection =
-            AnimationSpecs.CreateAnimatedVector3D(
+            SamplingSpecs.CreateAnimatedVector3D(
                 element.DirectionToParametricCurve3D()
             );
 
         if (DirectionStyle.DrawPosition)
         {
-            MainSceneComposer.AddPoint(
+            SceneComposer.AddPoint(
                 GrVisualPoint3D.CreateAnimated(
-                    GetNewSceneObjectName("point"),
+                    AnimationComposer.GetNewSceneObjectName("point"),
                     DirectionStyle.GetPointVisualStyle(
                         color.SetAlpha(DirectionStyle.AuxGeometryColorAlpha),
                         DirectionStyle.Thickness * 1.5
@@ -704,9 +764,9 @@ public class CGaFloat64Visualizer :
 
         if (DirectionStyle.DrawDirection)
         {
-            MainSceneComposer.AddVector(
+            SceneComposer.AddVector(
                 GrVisualVector3D.CreateAnimated(
-                    GetNewSceneObjectName("vector"),
+                    AnimationComposer.GetNewSceneObjectName("vector"),
                     DirectionStyle.GetVectorVisualStyle(
                         color.SetAlpha(DirectionStyle.AuxGeometryColorAlpha),
                         DirectionStyle.Thickness
@@ -719,9 +779,9 @@ public class CGaFloat64Visualizer :
 
         if (DirectionStyle.DrawNormalDirection)
         {
-            MainSceneComposer.AddBivector(
+            SceneComposer.AddBivector(
                 GrVisualBivector3D.CreateAnimated(
-                    GetNewSceneObjectName("bivector"),
+                    AnimationComposer.GetNewSceneObjectName("bivector"),
                     DirectionStyle.GetVectorVisualStyle(
                         color.SetAlpha(DirectionStyle.AuxGeometryColorAlpha),
                         DirectionStyle.Thickness
@@ -741,9 +801,9 @@ public class CGaFloat64Visualizer :
     {
         if (DirectionStyle.DrawPosition)
         {
-            MainSceneComposer.AddPoint(
+            SceneComposer.AddPoint(
                 GrVisualPoint3D.CreateStatic(
-                    GetNewSceneObjectName("point"),
+                    AnimationComposer.GetNewSceneObjectName("point"),
                     DirectionStyle.GetPointVisualStyle(
                         color.SetAlpha(DirectionStyle.AuxGeometryColorAlpha),
                         DirectionStyle.Thickness * 1.5
@@ -758,9 +818,9 @@ public class CGaFloat64Visualizer :
 
         if (DirectionStyle.DrawDirection)
         {
-            MainSceneComposer.AddBivector(
+            SceneComposer.AddBivector(
                 GrVisualBivector3D.CreateStatic(
-                    GetNewSceneObjectName("bivector"),
+                    AnimationComposer.GetNewSceneObjectName("bivector"),
                     DirectionStyle.GetVectorVisualStyle(
                         color.SetAlpha(DirectionStyle.AuxGeometryColorAlpha),
                         DirectionStyle.Thickness
@@ -774,9 +834,9 @@ public class CGaFloat64Visualizer :
 
         if (DirectionStyle.DrawNormalDirection)
         {
-            MainSceneComposer.AddVector(
+            SceneComposer.AddVector(
                 GrVisualVector3D.CreateStatic(
-                    GetNewSceneObjectName("vector"),
+                    AnimationComposer.GetNewSceneObjectName("vector"),
                     DirectionStyle.GetVectorVisualStyle(
                         color.SetAlpha(DirectionStyle.AuxGeometryColorAlpha),
                         DirectionStyle.Thickness
@@ -793,13 +853,13 @@ public class CGaFloat64Visualizer :
     public CGaFloat64Visualizer DrawDirectionPlane2D(Color color, IFloat64ParametricCurve2D position, IParametricBivector2D direction)
     {
         var animatedPosition =
-            AnimationSpecs.CreateXyAnimatedVector3D(position);
+            SamplingSpecs.CreateXyAnimatedVector3D(position);
 
         if (DirectionStyle.DrawPosition)
         {
-            MainSceneComposer.AddPoint(
+            SceneComposer.AddPoint(
                 GrVisualPoint3D.CreateAnimated(
-                    GetNewSceneObjectName("point"),
+                    AnimationComposer.GetNewSceneObjectName("point"),
                     DirectionStyle.GetPointVisualStyle(
                         color.SetAlpha(DirectionStyle.AuxGeometryColorAlpha),
                         DirectionStyle.Thickness * 1.5
@@ -810,7 +870,7 @@ public class CGaFloat64Visualizer :
         }
 
         var animatedNormal =
-            AnimationSpecs.CreateAnimatedVector3D(
+            SamplingSpecs.CreateAnimatedVector3D(
                 direction
                     .ToParametricCurve3D(b =>
                         b.ToXyBivector3D().DirectionToUnitNormal3D(LinFloat64Vector3D.UnitSymmetric)
@@ -819,9 +879,9 @@ public class CGaFloat64Visualizer :
 
         if (DirectionStyle.DrawDirection)
         {
-            MainSceneComposer.AddBivector(
+            SceneComposer.AddBivector(
                 GrVisualBivector3D.CreateAnimated(
-                    GetNewSceneObjectName("bivector"),
+                    AnimationComposer.GetNewSceneObjectName("bivector"),
                     DirectionStyle.GetVectorVisualStyle(
                         color.SetAlpha(DirectionStyle.AuxGeometryColorAlpha),
                         DirectionStyle.Thickness
@@ -835,9 +895,9 @@ public class CGaFloat64Visualizer :
 
         if (DirectionStyle.DrawNormalDirection)
         {
-            MainSceneComposer.AddVector(
+            SceneComposer.AddVector(
                 GrVisualVector3D.CreateAnimated(
-                    GetNewSceneObjectName("vector"),
+                    AnimationComposer.GetNewSceneObjectName("vector"),
                     DirectionStyle.GetVectorVisualStyle(
                         color.SetAlpha(DirectionStyle.AuxGeometryColorAlpha),
                         DirectionStyle.Thickness
@@ -854,12 +914,12 @@ public class CGaFloat64Visualizer :
     public CGaFloat64Visualizer DrawDirectionPlane2D(Color color, CGaFloat64ParametricElement element)
     {
         var animatedPosition =
-            AnimationSpecs.CreateXyAnimatedVector3D(
+            SamplingSpecs.CreateXyAnimatedVector3D(
                 element.PositionToParametricCurve2D()
             );
 
         var animatedNormal =
-            AnimationSpecs.CreateAnimatedVector3D(
+            SamplingSpecs.CreateAnimatedVector3D(
                 element
                     .DirectionToParametricBivector2D()
                     .XyDirectionToNormal3D(LinFloat64Vector3D.UnitSymmetric)
@@ -867,9 +927,9 @@ public class CGaFloat64Visualizer :
 
         if (DirectionStyle.DrawPosition)
         {
-            MainSceneComposer.AddPoint(
+            SceneComposer.AddPoint(
                 GrVisualPoint3D.CreateAnimated(
-                    GetNewSceneObjectName("point"),
+                    AnimationComposer.GetNewSceneObjectName("point"),
                     DirectionStyle.GetPointVisualStyle(
                         color.SetAlpha(DirectionStyle.AuxGeometryColorAlpha),
                         DirectionStyle.Thickness * 1.5
@@ -881,9 +941,9 @@ public class CGaFloat64Visualizer :
 
         if (DirectionStyle.DrawDirection)
         {
-            MainSceneComposer.AddBivector(
+            SceneComposer.AddBivector(
                 GrVisualBivector3D.CreateAnimated(
-                    GetNewSceneObjectName("bivector"),
+                    AnimationComposer.GetNewSceneObjectName("bivector"),
                     DirectionStyle.GetVectorVisualStyle(
                         color.SetAlpha(DirectionStyle.AuxGeometryColorAlpha),
                         DirectionStyle.Thickness
@@ -897,9 +957,9 @@ public class CGaFloat64Visualizer :
 
         if (DirectionStyle.DrawNormalDirection)
         {
-            MainSceneComposer.AddVector(
+            SceneComposer.AddVector(
                 GrVisualVector3D.CreateAnimated(
-                    GetNewSceneObjectName("vector"),
+                    AnimationComposer.GetNewSceneObjectName("vector"),
                     DirectionStyle.GetVectorVisualStyle(
                         color.SetAlpha(DirectionStyle.AuxGeometryColorAlpha),
                         DirectionStyle.Thickness
@@ -921,9 +981,9 @@ public class CGaFloat64Visualizer :
 
         if (DirectionStyle.DrawPosition)
         {
-            MainSceneComposer.AddPoint(
+            SceneComposer.AddPoint(
                 GrVisualPoint3D.CreateStatic(
-                    GetNewSceneObjectName("point"),
+                    AnimationComposer.GetNewSceneObjectName("point"),
                     DirectionStyle.GetPointVisualStyle(
                         color.SetAlpha(DirectionStyle.AuxGeometryColorAlpha),
                         DirectionStyle.Thickness * 1.5
@@ -935,9 +995,9 @@ public class CGaFloat64Visualizer :
 
         if (DirectionStyle.DrawDirection)
         {
-            MainSceneComposer.AddBivector(
+            SceneComposer.AddBivector(
                 GrVisualBivector3D.CreateStatic(
-                    GetNewSceneObjectName("bivector"),
+                    AnimationComposer.GetNewSceneObjectName("bivector"),
                     DirectionStyle.GetBivectorVisualStyle(
                         color.SetAlpha(DirectionStyle.AuxGeometryColorAlpha),
                         DirectionStyle.Thickness
@@ -951,9 +1011,9 @@ public class CGaFloat64Visualizer :
 
         if (DirectionStyle.DrawNormalDirection)
         {
-            MainSceneComposer.AddVector(
+            SceneComposer.AddVector(
                 GrVisualVector3D.CreateStatic(
-                    GetNewSceneObjectName("vector"),
+                    AnimationComposer.GetNewSceneObjectName("vector"),
                     DirectionStyle.GetVectorVisualStyle(
                         color.SetAlpha(DirectionStyle.AuxGeometryColorAlpha),
                         DirectionStyle.Thickness
@@ -970,18 +1030,18 @@ public class CGaFloat64Visualizer :
     public CGaFloat64Visualizer DrawDirectionPlane3D(Color color, IParametricCurve3D position, IParametricBivector3D direction)
     {
         var animatedPosition =
-            AnimationSpecs.CreateAnimatedVector3D(position);
+            SamplingSpecs.CreateAnimatedVector3D(position);
 
         var animatedNormal =
-            AnimationSpecs.CreateAnimatedVector3D(
+            SamplingSpecs.CreateAnimatedVector3D(
                 direction.GetNormalVectorCurve()
             );
 
         if (DirectionStyle.DrawPosition)
         {
-            MainSceneComposer.AddPoint(
+            SceneComposer.AddPoint(
                 GrVisualPoint3D.CreateAnimated(
-                    GetNewSceneObjectName("point"),
+                    AnimationComposer.GetNewSceneObjectName("point"),
                     DirectionStyle.GetPointVisualStyle(
                         color.SetAlpha(DirectionStyle.AuxGeometryColorAlpha),
                         DirectionStyle.Thickness * 1.5
@@ -993,9 +1053,9 @@ public class CGaFloat64Visualizer :
 
         if (DirectionStyle.DrawDirection)
         {
-            MainSceneComposer.AddBivector(
+            SceneComposer.AddBivector(
                 GrVisualBivector3D.CreateAnimated(
-                    GetNewSceneObjectName("bivector"),
+                    AnimationComposer.GetNewSceneObjectName("bivector"),
                     DirectionStyle.GetBivectorVisualStyle(
                         color.SetAlpha(DirectionStyle.AuxGeometryColorAlpha),
                         DirectionStyle.Thickness
@@ -1009,9 +1069,9 @@ public class CGaFloat64Visualizer :
 
         if (DirectionStyle.DrawNormalDirection)
         {
-            MainSceneComposer.AddVector(
+            SceneComposer.AddVector(
                 GrVisualVector3D.CreateAnimated(
-                    GetNewSceneObjectName("vector"),
+                    AnimationComposer.GetNewSceneObjectName("vector"),
                     DirectionStyle.GetVectorVisualStyle(
                         color.SetAlpha(DirectionStyle.AuxGeometryColorAlpha),
                         DirectionStyle.Thickness
@@ -1028,20 +1088,20 @@ public class CGaFloat64Visualizer :
     public CGaFloat64Visualizer DrawDirectionPlane3D(Color color, CGaFloat64ParametricElement element)
     {
         var animatedPosition =
-            AnimationSpecs.CreateAnimatedVector3D(
+            SamplingSpecs.CreateAnimatedVector3D(
                 element.PositionToParametricCurve3D()
             );
 
         var animatedNormal =
-            AnimationSpecs.CreateAnimatedVector3D(
+            SamplingSpecs.CreateAnimatedVector3D(
                 element.NormalDirectionToParametricCurve3D()
             );
 
         if (DirectionStyle.DrawPosition)
         {
-            MainSceneComposer.AddPoint(
+            SceneComposer.AddPoint(
                 GrVisualPoint3D.CreateAnimated(
-                    GetNewSceneObjectName("point"),
+                    AnimationComposer.GetNewSceneObjectName("point"),
                     DirectionStyle.GetPointVisualStyle(
                         color.SetAlpha(DirectionStyle.AuxGeometryColorAlpha),
                         DirectionStyle.Thickness * 1.5
@@ -1053,9 +1113,9 @@ public class CGaFloat64Visualizer :
 
         if (DirectionStyle.DrawDirection)
         {
-            MainSceneComposer.AddBivector(
+            SceneComposer.AddBivector(
                 GrVisualBivector3D.CreateAnimated(
-                    GetNewSceneObjectName("bivector"),
+                    AnimationComposer.GetNewSceneObjectName("bivector"),
                     DirectionStyle.GetVectorVisualStyle(
                         color.SetAlpha(DirectionStyle.AuxGeometryColorAlpha),
                         DirectionStyle.Thickness
@@ -1069,9 +1129,9 @@ public class CGaFloat64Visualizer :
 
         if (DirectionStyle.DrawNormalDirection)
         {
-            MainSceneComposer.AddVector(
+            SceneComposer.AddVector(
                 GrVisualVector3D.CreateAnimated(
-                    GetNewSceneObjectName("vector"),
+                    AnimationComposer.GetNewSceneObjectName("vector"),
                     DirectionStyle.GetVectorVisualStyle(
                         color.SetAlpha(DirectionStyle.AuxGeometryColorAlpha),
                         DirectionStyle.Thickness
@@ -1109,9 +1169,9 @@ public class CGaFloat64Visualizer :
 
     public CGaFloat64Visualizer DrawTangentPoint2D(Color color, LinFloat64Vector2D position)
     {
-        MainSceneComposer.AddPoint(
+        SceneComposer.AddPoint(
             GrVisualPoint3D.CreateStatic(
-                GetNewSceneObjectName("point"),
+                AnimationComposer.GetNewSceneObjectName("point"),
                 TangentStyle.GetPointVisualStyle(color),
                 position.ToXyLinVector3D()
             )
@@ -1122,11 +1182,11 @@ public class CGaFloat64Visualizer :
 
     public CGaFloat64Visualizer DrawTangentPoint2D(Color color, IFloat64ParametricCurve2D position)
     {
-        MainSceneComposer.AddPoint(
+        SceneComposer.AddPoint(
             GrVisualPoint3D.CreateAnimated(
-                GetNewSceneObjectName("point"),
+                AnimationComposer.GetNewSceneObjectName("point"),
                 TangentStyle.GetPointVisualStyle(color),
-                AnimationSpecs.CreateXyAnimatedVector3D(position)
+                SamplingSpecs.CreateXyAnimatedVector3D(position)
             )
         );
 
@@ -1136,13 +1196,13 @@ public class CGaFloat64Visualizer :
     public CGaFloat64Visualizer DrawTangentPoint2D(Color color, CGaFloat64ParametricElement element)
     {
         var animatedPosition =
-            AnimationSpecs.CreateXyAnimatedVector3D(
+            SamplingSpecs.CreateXyAnimatedVector3D(
                 element.PositionToParametricCurve2D()
             );
 
-        MainSceneComposer.AddPoint(
+        SceneComposer.AddPoint(
             GrVisualPoint3D.CreateAnimated(
-                GetNewSceneObjectName("point"),
+                AnimationComposer.GetNewSceneObjectName("point"),
                 TangentStyle.GetPointVisualStyle(color),
                 animatedPosition
             )
@@ -1154,9 +1214,9 @@ public class CGaFloat64Visualizer :
 
     public CGaFloat64Visualizer DrawTangentPoint3D(Color color, LinFloat64Vector3D position)
     {
-        MainSceneComposer.AddPoint(
+        SceneComposer.AddPoint(
             GrVisualPoint3D.CreateStatic(
-                GetNewSceneObjectName("point"),
+                AnimationComposer.GetNewSceneObjectName("point"),
                 TangentStyle.GetPointVisualStyle(color),
                 position
             )
@@ -1167,11 +1227,11 @@ public class CGaFloat64Visualizer :
 
     public CGaFloat64Visualizer DrawTangentPoint3D(Color color, IParametricCurve3D position)
     {
-        MainSceneComposer.AddPoint(
+        SceneComposer.AddPoint(
             GrVisualPoint3D.CreateAnimated(
-                GetNewSceneObjectName("point"),
+                AnimationComposer.GetNewSceneObjectName("point"),
                 TangentStyle.GetPointVisualStyle(color),
-                AnimationSpecs.CreateAnimatedVector3D(position)
+                SamplingSpecs.CreateAnimatedVector3D(position)
             )
         );
 
@@ -1181,13 +1241,13 @@ public class CGaFloat64Visualizer :
     public CGaFloat64Visualizer DrawTangentPoint3D(Color color, CGaFloat64ParametricElement element)
     {
         var animatedPosition =
-            AnimationSpecs.CreateAnimatedVector3D(
+            SamplingSpecs.CreateAnimatedVector3D(
                 element.PositionToParametricCurve3D()
             );
 
-        MainSceneComposer.AddPoint(
+        SceneComposer.AddPoint(
             GrVisualPoint3D.CreateAnimated(
-                GetNewSceneObjectName("point"),
+                AnimationComposer.GetNewSceneObjectName("point"),
                 TangentStyle.GetPointVisualStyle(color),
                 animatedPosition
             )
@@ -1201,9 +1261,9 @@ public class CGaFloat64Visualizer :
     {
         if (TangentStyle.DrawPosition)
         {
-            MainSceneComposer.AddPoint(
+            SceneComposer.AddPoint(
                 GrVisualPoint3D.CreateStatic(
-                    GetNewSceneObjectName("point"),
+                    AnimationComposer.GetNewSceneObjectName("point"),
                     TangentStyle.GetPointVisualStyle(
                         color.SetAlpha(TangentStyle.AuxGeometryColorAlpha),
                         TangentStyle.Thickness * 1.5
@@ -1215,9 +1275,9 @@ public class CGaFloat64Visualizer :
 
         if (TangentStyle.DrawDirection)
         {
-            MainSceneComposer.AddVector(
+            SceneComposer.AddVector(
                 GrVisualVector3D.CreateStatic(
-                    GetNewSceneObjectName("vector"),
+                    AnimationComposer.GetNewSceneObjectName("vector"),
                     TangentStyle.GetVectorVisualStyle(
                         color.SetAlpha(TangentStyle.AuxGeometryColorAlpha),
                         TangentStyle.Thickness
@@ -1230,9 +1290,9 @@ public class CGaFloat64Visualizer :
 
         if (TangentStyle.DrawNormalDirection)
         {
-            MainSceneComposer.AddBivector(
+            SceneComposer.AddBivector(
                 GrVisualBivector3D.CreateStatic(
-                    GetNewSceneObjectName("bivector"),
+                    AnimationComposer.GetNewSceneObjectName("bivector"),
                     TangentStyle.GetVectorVisualStyle(
                         color.SetAlpha(TangentStyle.AuxGeometryColorAlpha),
                         TangentStyle.Thickness
@@ -1250,16 +1310,16 @@ public class CGaFloat64Visualizer :
     public CGaFloat64Visualizer DrawTangentLine2D(Color color, IFloat64ParametricCurve2D position, IFloat64ParametricCurve2D direction)
     {
         var animatedPosition =
-            AnimationSpecs.CreateXyAnimatedVector3D(position);
+            SamplingSpecs.CreateXyAnimatedVector3D(position);
 
         var animatedDirection =
-            AnimationSpecs.CreateXyAnimatedVector3D(direction);
+            SamplingSpecs.CreateXyAnimatedVector3D(direction);
 
         if (TangentStyle.DrawPosition)
         {
-            MainSceneComposer.AddPoint(
+            SceneComposer.AddPoint(
                 GrVisualPoint3D.CreateAnimated(
-                    GetNewSceneObjectName("point"),
+                    AnimationComposer.GetNewSceneObjectName("point"),
                     TangentStyle.GetPointVisualStyle(
                         color.SetAlpha(TangentStyle.AuxGeometryColorAlpha),
                         TangentStyle.Thickness * 1.5
@@ -1272,13 +1332,13 @@ public class CGaFloat64Visualizer :
         if (TangentStyle.DrawDirection)
         {
             var animatedScaledVector =
-                AnimationSpecs.CreateAnimatedVector3D(t =>
+                SamplingSpecs.CreateAnimatedVector3D(t =>
                     direction.GetPoint(t).SetLength(TangentStyle.DirectionRadius).ToXyLinVector3D()
                 );
 
-            MainSceneComposer.AddVector(
+            SceneComposer.AddVector(
                 GrVisualVector3D.CreateAnimated(
-                    GetNewSceneObjectName("vector"),
+                    AnimationComposer.GetNewSceneObjectName("vector"),
                     TangentStyle.GetVectorVisualStyle(
                         color.SetAlpha(TangentStyle.AuxGeometryColorAlpha),
                         TangentStyle.Thickness
@@ -1291,9 +1351,9 @@ public class CGaFloat64Visualizer :
 
         if (TangentStyle.DrawNormalDirection)
         {
-            MainSceneComposer.AddBivector(
+            SceneComposer.AddBivector(
                 GrVisualBivector3D.CreateAnimated(
-                    GetNewSceneObjectName("bivector"),
+                    AnimationComposer.GetNewSceneObjectName("bivector"),
                     TangentStyle.GetVectorVisualStyle(
                         color.SetAlpha(TangentStyle.AuxGeometryColorAlpha),
                         TangentStyle.Thickness
@@ -1311,25 +1371,25 @@ public class CGaFloat64Visualizer :
     public CGaFloat64Visualizer DrawTangentLine2D(Color color, CGaFloat64ParametricElement element)
     {
         var animatedPosition =
-            AnimationSpecs.CreateXyAnimatedVector3D(
+            SamplingSpecs.CreateXyAnimatedVector3D(
                 element.PositionToParametricCurve2D()
             );
 
         var animatedDirection =
-            AnimationSpecs.CreateXyAnimatedVector3D(
+            SamplingSpecs.CreateXyAnimatedVector3D(
                 element.DirectionToParametricCurve2D()
             );
 
         var animatedNormal =
-            AnimationSpecs.CreateXyAnimatedVector3D(
+            SamplingSpecs.CreateXyAnimatedVector3D(
                 element.NormalDirectionToParametricCurve2D()
             );
 
         if (TangentStyle.DrawPosition)
         {
-            MainSceneComposer.AddPoint(
+            SceneComposer.AddPoint(
                 GrVisualPoint3D.CreateAnimated(
-                    GetNewSceneObjectName("point"),
+                    AnimationComposer.GetNewSceneObjectName("point"),
                     TangentStyle.GetPointVisualStyle(
                         color.SetAlpha(TangentStyle.AuxGeometryColorAlpha),
                         TangentStyle.Thickness * 1.5
@@ -1341,9 +1401,9 @@ public class CGaFloat64Visualizer :
 
         if (TangentStyle.DrawDirection)
         {
-            MainSceneComposer.AddVector(
+            SceneComposer.AddVector(
                 GrVisualVector3D.CreateAnimated(
-                    GetNewSceneObjectName("vector"),
+                    AnimationComposer.GetNewSceneObjectName("vector"),
                     TangentStyle.GetVectorVisualStyle(
                         color.SetAlpha(TangentStyle.AuxGeometryColorAlpha),
                         TangentStyle.Thickness
@@ -1356,9 +1416,9 @@ public class CGaFloat64Visualizer :
 
         if (TangentStyle.DrawNormalDirection)
         {
-            MainSceneComposer.AddVector(
+            SceneComposer.AddVector(
                 GrVisualVector3D.CreateAnimated(
-                    GetNewSceneObjectName("vector"),
+                    AnimationComposer.GetNewSceneObjectName("vector"),
                     TangentStyle.GetVectorVisualStyle(
                         color.SetAlpha(TangentStyle.AuxGeometryColorAlpha),
                         TangentStyle.Thickness
@@ -1377,9 +1437,9 @@ public class CGaFloat64Visualizer :
     {
         if (TangentStyle.DrawPosition)
         {
-            MainSceneComposer.AddPoint(
+            SceneComposer.AddPoint(
                 GrVisualPoint3D.CreateStatic(
-                    GetNewSceneObjectName("point"),
+                    AnimationComposer.GetNewSceneObjectName("point"),
                     TangentStyle.GetPointVisualStyle(
                         color.SetAlpha(TangentStyle.AuxGeometryColorAlpha),
                         TangentStyle.Thickness * 1.5
@@ -1391,9 +1451,9 @@ public class CGaFloat64Visualizer :
 
         if (TangentStyle.DrawDirection)
         {
-            MainSceneComposer.AddVector(
+            SceneComposer.AddVector(
                 GrVisualVector3D.CreateStatic(
-                    GetNewSceneObjectName("vector"),
+                    AnimationComposer.GetNewSceneObjectName("vector"),
                     TangentStyle.GetVectorVisualStyle(
                         color.SetAlpha(TangentStyle.AuxGeometryColorAlpha),
                         TangentStyle.Thickness
@@ -1406,9 +1466,9 @@ public class CGaFloat64Visualizer :
 
         if (TangentStyle.DrawNormalDirection)
         {
-            MainSceneComposer.AddBivector(
+            SceneComposer.AddBivector(
                 GrVisualBivector3D.CreateStatic(
-                    GetNewSceneObjectName("bivector"),
+                    AnimationComposer.GetNewSceneObjectName("bivector"),
                     TangentStyle.GetVectorVisualStyle(
                         color.SetAlpha(TangentStyle.AuxGeometryColorAlpha),
                         TangentStyle.Thickness
@@ -1426,16 +1486,16 @@ public class CGaFloat64Visualizer :
     public CGaFloat64Visualizer DrawTangentLine3D(Color color, IParametricCurve3D position, IParametricCurve3D direction)
     {
         var animatedPosition =
-            AnimationSpecs.CreateAnimatedVector3D(position);
+            SamplingSpecs.CreateAnimatedVector3D(position);
 
         var animatedDirection =
-            AnimationSpecs.CreateAnimatedVector3D(direction);
+            SamplingSpecs.CreateAnimatedVector3D(direction);
 
         if (TangentStyle.DrawPosition)
         {
-            MainSceneComposer.AddPoint(
+            SceneComposer.AddPoint(
                 GrVisualPoint3D.CreateAnimated(
-                    GetNewSceneObjectName("point"),
+                    AnimationComposer.GetNewSceneObjectName("point"),
                     TangentStyle.GetPointVisualStyle(
                         color.SetAlpha(TangentStyle.AuxGeometryColorAlpha),
                         TangentStyle.Thickness * 1.5
@@ -1448,13 +1508,13 @@ public class CGaFloat64Visualizer :
         if (TangentStyle.DrawDirection)
         {
             var animatedScaledVector =
-                AnimationSpecs.CreateAnimatedVector3D(t =>
+                SamplingSpecs.CreateAnimatedVector3D(t =>
                     direction.GetPoint(t).SetLength(TangentStyle.DirectionRadius)
                 );
 
-            MainSceneComposer.AddVector(
+            SceneComposer.AddVector(
                 GrVisualVector3D.CreateAnimated(
-                    GetNewSceneObjectName("vector"),
+                    AnimationComposer.GetNewSceneObjectName("vector"),
                     TangentStyle.GetVectorVisualStyle(
                         color.SetAlpha(TangentStyle.AuxGeometryColorAlpha),
                         TangentStyle.Thickness
@@ -1467,9 +1527,9 @@ public class CGaFloat64Visualizer :
 
         if (TangentStyle.DrawNormalDirection)
         {
-            MainSceneComposer.AddBivector(
+            SceneComposer.AddBivector(
                 GrVisualBivector3D.CreateAnimated(
-                    GetNewSceneObjectName("bivector"),
+                    AnimationComposer.GetNewSceneObjectName("bivector"),
                     TangentStyle.GetVectorVisualStyle(
                         color.SetAlpha(TangentStyle.AuxGeometryColorAlpha),
                         TangentStyle.Thickness
@@ -1487,20 +1547,20 @@ public class CGaFloat64Visualizer :
     public CGaFloat64Visualizer DrawTangentLine3D(Color color, CGaFloat64ParametricElement element)
     {
         var animatedPosition =
-            AnimationSpecs.CreateAnimatedVector3D(
+            SamplingSpecs.CreateAnimatedVector3D(
                 element.PositionToParametricCurve3D()
             );
 
         var animatedDirection =
-            AnimationSpecs.CreateAnimatedVector3D(
+            SamplingSpecs.CreateAnimatedVector3D(
                 element.DirectionToParametricCurve3D()
             );
 
         if (TangentStyle.DrawPosition)
         {
-            MainSceneComposer.AddPoint(
+            SceneComposer.AddPoint(
                 GrVisualPoint3D.CreateAnimated(
-                    GetNewSceneObjectName("point"),
+                    AnimationComposer.GetNewSceneObjectName("point"),
                     TangentStyle.GetPointVisualStyle(
                         color.SetAlpha(TangentStyle.AuxGeometryColorAlpha),
                         TangentStyle.Thickness * 1.5
@@ -1512,9 +1572,9 @@ public class CGaFloat64Visualizer :
 
         if (TangentStyle.DrawDirection)
         {
-            MainSceneComposer.AddVector(
+            SceneComposer.AddVector(
                 GrVisualVector3D.CreateAnimated(
-                    GetNewSceneObjectName("vector"),
+                    AnimationComposer.GetNewSceneObjectName("vector"),
                     TangentStyle.GetVectorVisualStyle(
                         color.SetAlpha(TangentStyle.AuxGeometryColorAlpha),
                         TangentStyle.Thickness
@@ -1527,9 +1587,9 @@ public class CGaFloat64Visualizer :
 
         if (TangentStyle.DrawNormalDirection)
         {
-            MainSceneComposer.AddBivector(
+            SceneComposer.AddBivector(
                 GrVisualBivector3D.CreateAnimated(
-                    GetNewSceneObjectName("bivector"),
+                    AnimationComposer.GetNewSceneObjectName("bivector"),
                     TangentStyle.GetVectorVisualStyle(
                         color.SetAlpha(TangentStyle.AuxGeometryColorAlpha),
                         TangentStyle.Thickness
@@ -1549,9 +1609,9 @@ public class CGaFloat64Visualizer :
     {
         if (TangentStyle.DrawPosition)
         {
-            MainSceneComposer.AddPoint(
+            SceneComposer.AddPoint(
                 GrVisualPoint3D.CreateStatic(
-                    GetNewSceneObjectName("point"),
+                    AnimationComposer.GetNewSceneObjectName("point"),
                     TangentStyle.GetPointVisualStyle(
                         color.SetAlpha(TangentStyle.AuxGeometryColorAlpha),
                         TangentStyle.Thickness * 1.5
@@ -1566,9 +1626,9 @@ public class CGaFloat64Visualizer :
 
         if (TangentStyle.DrawDirection)
         {
-            MainSceneComposer.AddBivector(
+            SceneComposer.AddBivector(
                 GrVisualBivector3D.CreateStatic(
-                    GetNewSceneObjectName("bivector"),
+                    AnimationComposer.GetNewSceneObjectName("bivector"),
                     TangentStyle.GetVectorVisualStyle(
                         color.SetAlpha(TangentStyle.AuxGeometryColorAlpha),
                         TangentStyle.Thickness
@@ -1582,9 +1642,9 @@ public class CGaFloat64Visualizer :
 
         if (TangentStyle.DrawNormalDirection)
         {
-            MainSceneComposer.AddVector(
+            SceneComposer.AddVector(
                 GrVisualVector3D.CreateStatic(
-                    GetNewSceneObjectName("vector"),
+                    AnimationComposer.GetNewSceneObjectName("vector"),
                     TangentStyle.GetVectorVisualStyle(
                         color.SetAlpha(TangentStyle.AuxGeometryColorAlpha),
                         TangentStyle.Thickness
@@ -1601,10 +1661,10 @@ public class CGaFloat64Visualizer :
     public CGaFloat64Visualizer DrawTangentPlane2D(Color color, IFloat64ParametricCurve2D position, IParametricBivector2D direction)
     {
         var animatedPosition =
-            AnimationSpecs.CreateXyAnimatedVector3D(position);
+            SamplingSpecs.CreateXyAnimatedVector3D(position);
 
         var animatedNormal =
-            AnimationSpecs.CreateAnimatedVector3D(
+            SamplingSpecs.CreateAnimatedVector3D(
                 direction
                     .ToParametricCurve3D(b =>
                         b.ToXyBivector3D().DirectionToUnitNormal3D(LinFloat64Vector3D.UnitSymmetric)
@@ -1613,9 +1673,9 @@ public class CGaFloat64Visualizer :
 
         if (TangentStyle.DrawPosition)
         {
-            MainSceneComposer.AddPoint(
+            SceneComposer.AddPoint(
                 GrVisualPoint3D.CreateAnimated(
-                    GetNewSceneObjectName("point"),
+                    AnimationComposer.GetNewSceneObjectName("point"),
                     TangentStyle.GetPointVisualStyle(
                         color.SetAlpha(TangentStyle.AuxGeometryColorAlpha),
                         TangentStyle.Thickness * 1.5
@@ -1627,9 +1687,9 @@ public class CGaFloat64Visualizer :
 
         if (TangentStyle.DrawDirection)
         {
-            MainSceneComposer.AddBivector(
+            SceneComposer.AddBivector(
                 GrVisualBivector3D.CreateAnimated(
-                    GetNewSceneObjectName("bivector"),
+                    AnimationComposer.GetNewSceneObjectName("bivector"),
                     TangentStyle.GetVectorVisualStyle(
                         color.SetAlpha(TangentStyle.AuxGeometryColorAlpha),
                         TangentStyle.Thickness
@@ -1643,9 +1703,9 @@ public class CGaFloat64Visualizer :
 
         if (TangentStyle.DrawNormalDirection)
         {
-            MainSceneComposer.AddVector(
+            SceneComposer.AddVector(
                 GrVisualVector3D.CreateAnimated(
-                    GetNewSceneObjectName("vector"),
+                    AnimationComposer.GetNewSceneObjectName("vector"),
                     TangentStyle.GetVectorVisualStyle(
                         color.SetAlpha(TangentStyle.AuxGeometryColorAlpha),
                         TangentStyle.Thickness
@@ -1662,12 +1722,12 @@ public class CGaFloat64Visualizer :
     public CGaFloat64Visualizer DrawTangentPlane2D(Color color, CGaFloat64ParametricElement element)
     {
         var animatedPosition =
-            AnimationSpecs.CreateXyAnimatedVector3D(
+            SamplingSpecs.CreateXyAnimatedVector3D(
                 element.PositionToParametricCurve2D()
             );
 
         var animatedNormal =
-            AnimationSpecs.CreateAnimatedVector3D(
+            SamplingSpecs.CreateAnimatedVector3D(
                 element
                     .DirectionToParametricBivector2D()
                     .XyDirectionToNormal3D(LinFloat64Vector3D.UnitSymmetric)
@@ -1675,9 +1735,9 @@ public class CGaFloat64Visualizer :
 
         if (TangentStyle.DrawPosition)
         {
-            MainSceneComposer.AddPoint(
+            SceneComposer.AddPoint(
                 GrVisualPoint3D.CreateAnimated(
-                    GetNewSceneObjectName("point"),
+                    AnimationComposer.GetNewSceneObjectName("point"),
                     TangentStyle.GetPointVisualStyle(
                         color.SetAlpha(TangentStyle.AuxGeometryColorAlpha),
                         TangentStyle.Thickness * 1.5
@@ -1689,9 +1749,9 @@ public class CGaFloat64Visualizer :
 
         if (TangentStyle.DrawDirection)
         {
-            MainSceneComposer.AddBivector(
+            SceneComposer.AddBivector(
                 GrVisualBivector3D.CreateAnimated(
-                    GetNewSceneObjectName("bivector"),
+                    AnimationComposer.GetNewSceneObjectName("bivector"),
                     TangentStyle.GetVectorVisualStyle(
                         color.SetAlpha(TangentStyle.AuxGeometryColorAlpha),
                         TangentStyle.Thickness
@@ -1705,9 +1765,9 @@ public class CGaFloat64Visualizer :
 
         if (TangentStyle.DrawNormalDirection)
         {
-            MainSceneComposer.AddVector(
+            SceneComposer.AddVector(
                 GrVisualVector3D.CreateAnimated(
-                    GetNewSceneObjectName("vector"),
+                    AnimationComposer.GetNewSceneObjectName("vector"),
                     TangentStyle.GetVectorVisualStyle(
                         color.SetAlpha(TangentStyle.AuxGeometryColorAlpha),
                         TangentStyle.Thickness
@@ -1729,9 +1789,9 @@ public class CGaFloat64Visualizer :
 
         if (TangentStyle.DrawPosition)
         {
-            MainSceneComposer.AddPoint(
+            SceneComposer.AddPoint(
                 GrVisualPoint3D.CreateStatic(
-                    GetNewSceneObjectName("point"),
+                    AnimationComposer.GetNewSceneObjectName("point"),
                     TangentStyle.GetPointVisualStyle(
                         color.SetAlpha(TangentStyle.AuxGeometryColorAlpha),
                         TangentStyle.Thickness * 1.5
@@ -1743,9 +1803,9 @@ public class CGaFloat64Visualizer :
 
         if (TangentStyle.DrawDirection)
         {
-            MainSceneComposer.AddBivector(
+            SceneComposer.AddBivector(
                 GrVisualBivector3D.CreateStatic(
-                    GetNewSceneObjectName("bivector"),
+                    AnimationComposer.GetNewSceneObjectName("bivector"),
                     TangentStyle.GetVectorVisualStyle(
                         color.SetAlpha(TangentStyle.AuxGeometryColorAlpha),
                         TangentStyle.Thickness
@@ -1759,9 +1819,9 @@ public class CGaFloat64Visualizer :
 
         if (TangentStyle.DrawNormalDirection)
         {
-            MainSceneComposer.AddVector(
+            SceneComposer.AddVector(
                 GrVisualVector3D.CreateStatic(
-                    GetNewSceneObjectName("vector"),
+                    AnimationComposer.GetNewSceneObjectName("vector"),
                     TangentStyle.GetVectorVisualStyle(
                         color.SetAlpha(TangentStyle.AuxGeometryColorAlpha),
                         TangentStyle.Thickness
@@ -1778,13 +1838,13 @@ public class CGaFloat64Visualizer :
     public CGaFloat64Visualizer DrawTangentPlane3D(Color color, IParametricCurve3D position, IParametricBivector3D direction)
     {
         var animatedPosition =
-            AnimationSpecs.CreateAnimatedVector3D(position);
+            SamplingSpecs.CreateAnimatedVector3D(position);
 
         if (TangentStyle.DrawPosition)
         {
-            MainSceneComposer.AddPoint(
+            SceneComposer.AddPoint(
                 GrVisualPoint3D.CreateAnimated(
-                    GetNewSceneObjectName("point"),
+                    AnimationComposer.GetNewSceneObjectName("point"),
                     TangentStyle.GetPointVisualStyle(
                         color.SetAlpha(TangentStyle.AuxGeometryColorAlpha),
                         TangentStyle.Thickness * 1.5
@@ -1795,15 +1855,15 @@ public class CGaFloat64Visualizer :
         }
 
         var animatedNormal =
-            AnimationSpecs.CreateAnimatedVector3D(
+            SamplingSpecs.CreateAnimatedVector3D(
                 direction.GetNormalVectorCurve()
             );
 
         if (TangentStyle.DrawDirection)
         {
-            MainSceneComposer.AddBivector(
+            SceneComposer.AddBivector(
                 GrVisualBivector3D.CreateAnimated(
-                    GetNewSceneObjectName("bivector"),
+                    AnimationComposer.GetNewSceneObjectName("bivector"),
                     TangentStyle.GetVectorVisualStyle(
                         color.SetAlpha(TangentStyle.AuxGeometryColorAlpha),
                         TangentStyle.Thickness
@@ -1817,9 +1877,9 @@ public class CGaFloat64Visualizer :
 
         if (TangentStyle.DrawNormalDirection)
         {
-            MainSceneComposer.AddVector(
+            SceneComposer.AddVector(
                 GrVisualVector3D.CreateAnimated(
-                    GetNewSceneObjectName("vector"),
+                    AnimationComposer.GetNewSceneObjectName("vector"),
                     TangentStyle.GetVectorVisualStyle(
                         color.SetAlpha(TangentStyle.AuxGeometryColorAlpha),
                         TangentStyle.Thickness
@@ -1836,20 +1896,20 @@ public class CGaFloat64Visualizer :
     public CGaFloat64Visualizer DrawTangentPlane3D(Color color, CGaFloat64ParametricElement element)
     {
         var animatedPosition =
-            AnimationSpecs.CreateAnimatedVector3D(
+            SamplingSpecs.CreateAnimatedVector3D(
                 element.PositionToParametricCurve3D()
             );
 
         var animatedNormal =
-            AnimationSpecs.CreateAnimatedVector3D(
+            SamplingSpecs.CreateAnimatedVector3D(
                 element.NormalDirectionToParametricCurve3D()
             );
 
         if (TangentStyle.DrawPosition)
         {
-            MainSceneComposer.AddPoint(
+            SceneComposer.AddPoint(
                 GrVisualPoint3D.CreateAnimated(
-                    GetNewSceneObjectName("point"),
+                    AnimationComposer.GetNewSceneObjectName("point"),
                     TangentStyle.GetPointVisualStyle(
                         color.SetAlpha(TangentStyle.AuxGeometryColorAlpha),
                         TangentStyle.Thickness * 1.5
@@ -1861,9 +1921,9 @@ public class CGaFloat64Visualizer :
 
         if (TangentStyle.DrawDirection)
         {
-            MainSceneComposer.AddBivector(
+            SceneComposer.AddBivector(
                 GrVisualBivector3D.CreateAnimated(
-                    GetNewSceneObjectName("bivector"),
+                    AnimationComposer.GetNewSceneObjectName("bivector"),
                     TangentStyle.GetVectorVisualStyle(
                         color.SetAlpha(TangentStyle.AuxGeometryColorAlpha),
                         TangentStyle.Thickness
@@ -1877,9 +1937,9 @@ public class CGaFloat64Visualizer :
 
         if (TangentStyle.DrawNormalDirection)
         {
-            MainSceneComposer.AddVector(
+            SceneComposer.AddVector(
                 GrVisualVector3D.CreateAnimated(
-                    GetNewSceneObjectName("vector"),
+                    AnimationComposer.GetNewSceneObjectName("vector"),
                     TangentStyle.GetVectorVisualStyle(
                         color.SetAlpha(TangentStyle.AuxGeometryColorAlpha),
                         TangentStyle.Thickness
@@ -1917,9 +1977,9 @@ public class CGaFloat64Visualizer :
 
     public CGaFloat64Visualizer DrawFlatPoint2D(Color color, LinFloat64Vector2D position)
     {
-        MainSceneComposer.AddPoint(
+        SceneComposer.AddPoint(
             GrVisualPoint3D.CreateStatic(
-                GetNewSceneObjectName("point"),
+                AnimationComposer.GetNewSceneObjectName("point"),
                 FlatStyle.GetPointVisualStyle(color),
                 position.ToXyLinVector3D()
             )
@@ -1930,11 +1990,11 @@ public class CGaFloat64Visualizer :
 
     public CGaFloat64Visualizer DrawFlatPoint2D(Color color, IFloat64ParametricCurve2D position)
     {
-        MainSceneComposer.AddPoint(
+        SceneComposer.AddPoint(
             GrVisualPoint3D.CreateAnimated(
-                GetNewSceneObjectName("point"),
+                AnimationComposer.GetNewSceneObjectName("point"),
                 FlatStyle.GetPointVisualStyle(color),
-                AnimationSpecs.CreateXyAnimatedVector3D(position)
+                SamplingSpecs.CreateXyAnimatedVector3D(position)
             )
         );
 
@@ -1944,13 +2004,13 @@ public class CGaFloat64Visualizer :
     public CGaFloat64Visualizer DrawFlatPoint2D(Color color, CGaFloat64ParametricElement element)
     {
         var animatedPosition =
-            AnimationSpecs.CreateXyAnimatedVector3D(
+            SamplingSpecs.CreateXyAnimatedVector3D(
                 element.PositionToParametricCurve2D()
             );
 
-        MainSceneComposer.AddPoint(
+        SceneComposer.AddPoint(
             GrVisualPoint3D.CreateAnimated(
-                GetNewSceneObjectName("point"),
+                AnimationComposer.GetNewSceneObjectName("point"),
                 FlatStyle.GetPointVisualStyle(color),
                 animatedPosition
             )
@@ -1962,9 +2022,9 @@ public class CGaFloat64Visualizer :
 
     public CGaFloat64Visualizer DrawFlatPoint3D(Color color, LinFloat64Vector3D position)
     {
-        MainSceneComposer.AddPoint(
+        SceneComposer.AddPoint(
             GrVisualPoint3D.CreateStatic(
-                GetNewSceneObjectName("point"),
+                AnimationComposer.GetNewSceneObjectName("point"),
                 FlatStyle.GetPointVisualStyle(color),
                 position
             )
@@ -1975,11 +2035,11 @@ public class CGaFloat64Visualizer :
 
     public CGaFloat64Visualizer DrawFlatPoint3D(Color color, IParametricCurve3D position)
     {
-        MainSceneComposer.AddPoint(
+        SceneComposer.AddPoint(
             GrVisualPoint3D.CreateAnimated(
-                GetNewSceneObjectName("point"),
+                AnimationComposer.GetNewSceneObjectName("point"),
                 FlatStyle.GetPointVisualStyle(color),
-                AnimationSpecs.CreateAnimatedVector3D(position)
+                SamplingSpecs.CreateAnimatedVector3D(position)
             )
         );
 
@@ -1989,13 +2049,13 @@ public class CGaFloat64Visualizer :
     public CGaFloat64Visualizer DrawFlatPoint3D(Color color, CGaFloat64ParametricElement element)
     {
         var animatedPosition =
-            AnimationSpecs.CreateAnimatedVector3D(
+            SamplingSpecs.CreateAnimatedVector3D(
                 element.PositionToParametricCurve3D()
             );
 
-        MainSceneComposer.AddPoint(
+        SceneComposer.AddPoint(
             GrVisualPoint3D.CreateAnimated(
-                GetNewSceneObjectName("point"),
+                AnimationComposer.GetNewSceneObjectName("point"),
                 FlatStyle.GetPointVisualStyle(color),
                 animatedPosition
             )
@@ -2007,9 +2067,9 @@ public class CGaFloat64Visualizer :
 
     public CGaFloat64Visualizer DrawFlatLine2D(Color color, LinFloat64Vector2D position, LinFloat64Vector2D direction)
     {
-        MainSceneComposer.AddLineSegment(
+        SceneComposer.AddLineSegment(
             GrVisualLineSegment3D.CreateStatic(
-                GetNewSceneObjectName("lineSegment"),
+                AnimationComposer.GetNewSceneObjectName("lineSegment"),
                 FlatStyle.GetLineVisualStyle(color),
                 (position - direction.SetLength(FlatStyle.Radius)).ToXyLinVector3D(),
                 (position + direction.SetLength(FlatStyle.Radius)).ToXyLinVector3D()
@@ -2018,9 +2078,9 @@ public class CGaFloat64Visualizer :
 
         if (FlatStyle.DrawPosition)
         {
-            MainSceneComposer.AddPoint(
+            SceneComposer.AddPoint(
                 GrVisualPoint3D.CreateStatic(
-                    GetNewSceneObjectName("point"),
+                    AnimationComposer.GetNewSceneObjectName("point"),
                     FlatStyle.GetPointVisualStyle(
                         color.SetAlpha(FlatStyle.AuxGeometryColorAlpha),
                         FlatStyle.Thickness * 1.5
@@ -2032,9 +2092,9 @@ public class CGaFloat64Visualizer :
 
         if (FlatStyle.DrawDirection)
         {
-            MainSceneComposer.AddVector(
+            SceneComposer.AddVector(
                 GrVisualVector3D.CreateStatic(
-                    GetNewSceneObjectName("vector"),
+                    AnimationComposer.GetNewSceneObjectName("vector"),
                     FlatStyle.GetVectorVisualStyle(
                         color.SetAlpha(FlatStyle.AuxGeometryColorAlpha),
                         FlatStyle.Thickness
@@ -2047,9 +2107,9 @@ public class CGaFloat64Visualizer :
 
         if (FlatStyle.DrawNormalDirection)
         {
-            MainSceneComposer.AddBivector(
+            SceneComposer.AddBivector(
                 GrVisualBivector3D.CreateStatic(
-                    GetNewSceneObjectName("bivector"),
+                    AnimationComposer.GetNewSceneObjectName("bivector"),
                     FlatStyle.GetVectorVisualStyle(
                         color.SetAlpha(FlatStyle.AuxGeometryColorAlpha),
                         FlatStyle.Thickness
@@ -2067,24 +2127,24 @@ public class CGaFloat64Visualizer :
     public CGaFloat64Visualizer DrawFlatLine2D(Color color, IFloat64ParametricCurve2D position, IFloat64ParametricCurve2D direction)
     {
         var animatedPosition =
-            AnimationSpecs.CreateXyAnimatedVector3D(position);
+            SamplingSpecs.CreateXyAnimatedVector3D(position);
 
         var animatedDirection =
-            AnimationSpecs.CreateXyAnimatedVector3D(direction);
+            SamplingSpecs.CreateXyAnimatedVector3D(direction);
 
         var animatedPoint1 =
-            AnimationSpecs.CreateAnimatedVector3D(t =>
+            SamplingSpecs.CreateAnimatedVector3D(t =>
                 (position.GetPoint(t) - direction.GetPoint(t).SetLength(FlatStyle.Radius)).ToXyLinVector3D()
             );
 
         var animatedPoint2 =
-            AnimationSpecs.CreateAnimatedVector3D(t =>
+            SamplingSpecs.CreateAnimatedVector3D(t =>
                 (position.GetPoint(t) + direction.GetPoint(t).SetLength(FlatStyle.Radius)).ToXyLinVector3D()
             );
 
-        MainSceneComposer.AddLineSegment(
+        SceneComposer.AddLineSegment(
             GrVisualLineSegment3D.CreateAnimated(
-                GetNewSceneObjectName("lineSegment"),
+                AnimationComposer.GetNewSceneObjectName("lineSegment"),
                 FlatStyle.GetLineVisualStyle(color),
                 animatedPoint1,
                 animatedPoint2
@@ -2093,9 +2153,9 @@ public class CGaFloat64Visualizer :
 
         if (FlatStyle.DrawPosition)
         {
-            MainSceneComposer.AddPoint(
+            SceneComposer.AddPoint(
                 GrVisualPoint3D.CreateAnimated(
-                    GetNewSceneObjectName("point"),
+                    AnimationComposer.GetNewSceneObjectName("point"),
                     FlatStyle.GetPointVisualStyle(
                         color.SetAlpha(FlatStyle.AuxGeometryColorAlpha),
                         FlatStyle.Thickness * 1.5
@@ -2108,13 +2168,13 @@ public class CGaFloat64Visualizer :
         if (FlatStyle.DrawDirection)
         {
             var animatedScaledVector =
-                AnimationSpecs.CreateAnimatedVector3D(t =>
+                SamplingSpecs.CreateAnimatedVector3D(t =>
                     direction.GetPoint(t).SetLength(FlatStyle.DirectionRadius).ToXyLinVector3D()
                 );
 
-            MainSceneComposer.AddVector(
+            SceneComposer.AddVector(
                 GrVisualVector3D.CreateAnimated(
-                    GetNewSceneObjectName("vector"),
+                    AnimationComposer.GetNewSceneObjectName("vector"),
                     FlatStyle.GetVectorVisualStyle(
                         color.SetAlpha(FlatStyle.AuxGeometryColorAlpha),
                         FlatStyle.Thickness
@@ -2127,9 +2187,9 @@ public class CGaFloat64Visualizer :
 
         if (FlatStyle.DrawNormalDirection)
         {
-            MainSceneComposer.AddBivector(
+            SceneComposer.AddBivector(
                 GrVisualBivector3D.CreateAnimated(
-                    GetNewSceneObjectName("bivector"),
+                    AnimationComposer.GetNewSceneObjectName("bivector"),
                     FlatStyle.GetVectorVisualStyle(
                         color.SetAlpha(FlatStyle.AuxGeometryColorAlpha),
                         FlatStyle.Thickness
@@ -2147,23 +2207,23 @@ public class CGaFloat64Visualizer :
     public CGaFloat64Visualizer DrawFlatLine2D(Color color, CGaFloat64ParametricElement element)
     {
         var animatedPosition =
-            AnimationSpecs.CreateXyAnimatedVector3D(
+            SamplingSpecs.CreateXyAnimatedVector3D(
                 element.PositionToParametricCurve2D()
             );
 
         var animatedDirection =
-            AnimationSpecs.CreateXyAnimatedVector3D(
+            SamplingSpecs.CreateXyAnimatedVector3D(
                 element.DirectionToParametricCurve2D()
             );
 
         var animatedNormal =
-            AnimationSpecs.CreateXyAnimatedVector3D(
+            SamplingSpecs.CreateXyAnimatedVector3D(
                 element.NormalDirectionToParametricCurve2D()
             //element.DirectionToParametricCurve2D().GetNormalCurve()
             );
 
         var animatedPoint1 =
-            AnimationSpecs.CreateAnimatedVector3D(
+            SamplingSpecs.CreateAnimatedVector3D(
                 t =>
                 {
                     var el =
@@ -2174,7 +2234,7 @@ public class CGaFloat64Visualizer :
             );
 
         var animatedPoint2 =
-            AnimationSpecs.CreateAnimatedVector3D(
+            SamplingSpecs.CreateAnimatedVector3D(
                 t =>
                 {
                     var el =
@@ -2184,9 +2244,9 @@ public class CGaFloat64Visualizer :
                 }
             );
 
-        MainSceneComposer.AddLineSegment(
+        SceneComposer.AddLineSegment(
             GrVisualLineSegment3D.CreateAnimated(
-                GetNewSceneObjectName("lineSegment"),
+                AnimationComposer.GetNewSceneObjectName("lineSegment"),
                 FlatStyle.GetLineVisualStyle(color),
                 animatedPoint1,
                 animatedPoint2
@@ -2195,9 +2255,9 @@ public class CGaFloat64Visualizer :
 
         if (FlatStyle.DrawPosition)
         {
-            MainSceneComposer.AddPoint(
+            SceneComposer.AddPoint(
                 GrVisualPoint3D.CreateAnimated(
-                    GetNewSceneObjectName("point"),
+                    AnimationComposer.GetNewSceneObjectName("point"),
                     FlatStyle.GetPointVisualStyle(
                         color.SetAlpha(FlatStyle.AuxGeometryColorAlpha),
                         FlatStyle.Thickness * 1.5
@@ -2209,9 +2269,9 @@ public class CGaFloat64Visualizer :
 
         if (FlatStyle.DrawDirection)
         {
-            MainSceneComposer.AddVector(
+            SceneComposer.AddVector(
                 GrVisualVector3D.CreateAnimated(
-                    GetNewSceneObjectName("vector"),
+                    AnimationComposer.GetNewSceneObjectName("vector"),
                     FlatStyle.GetVectorVisualStyle(
                         color.SetAlpha(FlatStyle.AuxGeometryColorAlpha),
                         FlatStyle.Thickness
@@ -2224,9 +2284,9 @@ public class CGaFloat64Visualizer :
 
         if (FlatStyle.DrawNormalDirection)
         {
-            MainSceneComposer.AddVector(
+            SceneComposer.AddVector(
                 GrVisualVector3D.CreateAnimated(
-                    GetNewSceneObjectName("vector"),
+                    AnimationComposer.GetNewSceneObjectName("vector"),
                     FlatStyle.GetVectorVisualStyle(
                         color.SetAlpha(FlatStyle.AuxGeometryColorAlpha),
                         FlatStyle.Thickness
@@ -2243,9 +2303,9 @@ public class CGaFloat64Visualizer :
 
     public CGaFloat64Visualizer DrawFlatLine3D(Color color, LinFloat64Vector3D position, LinFloat64Vector3D direction)
     {
-        MainSceneComposer.AddLineSegment(
+        SceneComposer.AddLineSegment(
             GrVisualLineSegment3D.CreateStatic(
-                GetNewSceneObjectName("lineSegment"),
+                AnimationComposer.GetNewSceneObjectName("lineSegment"),
                 FlatStyle.GetLineVisualStyle(color),
                 position - direction.SetLength(FlatStyle.Radius),
                 position + direction.SetLength(FlatStyle.Radius)
@@ -2254,9 +2314,9 @@ public class CGaFloat64Visualizer :
 
         if (FlatStyle.DrawPosition)
         {
-            MainSceneComposer.AddPoint(
+            SceneComposer.AddPoint(
                 GrVisualPoint3D.CreateStatic(
-                    GetNewSceneObjectName("point"),
+                    AnimationComposer.GetNewSceneObjectName("point"),
                     FlatStyle.GetPointVisualStyle(
                         color.SetAlpha(FlatStyle.AuxGeometryColorAlpha),
                         FlatStyle.Thickness * 1.5
@@ -2268,9 +2328,9 @@ public class CGaFloat64Visualizer :
 
         if (FlatStyle.DrawDirection)
         {
-            MainSceneComposer.AddVector(
+            SceneComposer.AddVector(
                 GrVisualVector3D.CreateStatic(
-                    GetNewSceneObjectName("vector"),
+                    AnimationComposer.GetNewSceneObjectName("vector"),
                     FlatStyle.GetVectorVisualStyle(
                         color.SetAlpha(FlatStyle.AuxGeometryColorAlpha),
                         FlatStyle.Thickness
@@ -2283,9 +2343,9 @@ public class CGaFloat64Visualizer :
 
         if (FlatStyle.DrawNormalDirection)
         {
-            MainSceneComposer.AddBivector(
+            SceneComposer.AddBivector(
                 GrVisualBivector3D.CreateStatic(
-                    GetNewSceneObjectName("bivector"),
+                    AnimationComposer.GetNewSceneObjectName("bivector"),
                     FlatStyle.GetVectorVisualStyle(
                         color.SetAlpha(FlatStyle.AuxGeometryColorAlpha),
                         FlatStyle.Thickness
@@ -2303,24 +2363,24 @@ public class CGaFloat64Visualizer :
     public CGaFloat64Visualizer DrawFlatLine3D(Color color, IParametricCurve3D position, IParametricCurve3D direction)
     {
         var animatedPosition =
-            AnimationSpecs.CreateAnimatedVector3D(position);
+            SamplingSpecs.CreateAnimatedVector3D(position);
 
         var animatedDirection =
-            AnimationSpecs.CreateAnimatedVector3D(direction);
+            SamplingSpecs.CreateAnimatedVector3D(direction);
 
         var animatedPoint1 =
-            AnimationSpecs.CreateAnimatedVector3D(t =>
+            SamplingSpecs.CreateAnimatedVector3D(t =>
                 position.GetPoint(t) - direction.GetPoint(t).SetLength(FlatStyle.Radius)
             );
 
         var animatedPoint2 =
-            AnimationSpecs.CreateAnimatedVector3D(t =>
+            SamplingSpecs.CreateAnimatedVector3D(t =>
                 position.GetPoint(t) + direction.GetPoint(t).SetLength(FlatStyle.Radius)
             );
 
-        MainSceneComposer.AddLineSegment(
+        SceneComposer.AddLineSegment(
             GrVisualLineSegment3D.CreateAnimated(
-                GetNewSceneObjectName("lineSegment"),
+                AnimationComposer.GetNewSceneObjectName("lineSegment"),
                 FlatStyle.GetLineVisualStyle(color),
                 animatedPoint1,
                 animatedPoint2
@@ -2329,9 +2389,9 @@ public class CGaFloat64Visualizer :
 
         if (FlatStyle.DrawPosition)
         {
-            MainSceneComposer.AddPoint(
+            SceneComposer.AddPoint(
                 GrVisualPoint3D.CreateAnimated(
-                    GetNewSceneObjectName("point"),
+                    AnimationComposer.GetNewSceneObjectName("point"),
                     FlatStyle.GetPointVisualStyle(
                         color.SetAlpha(FlatStyle.AuxGeometryColorAlpha),
                         FlatStyle.Thickness * 1.5
@@ -2344,13 +2404,13 @@ public class CGaFloat64Visualizer :
         if (FlatStyle.DrawDirection)
         {
             var animatedScaledVector =
-                AnimationSpecs.CreateAnimatedVector3D(t =>
+                SamplingSpecs.CreateAnimatedVector3D(t =>
                     direction.GetPoint(t).SetLength(FlatStyle.DirectionRadius)
                 );
 
-            MainSceneComposer.AddVector(
+            SceneComposer.AddVector(
                 GrVisualVector3D.CreateAnimated(
-                    GetNewSceneObjectName("vector"),
+                    AnimationComposer.GetNewSceneObjectName("vector"),
                     FlatStyle.GetVectorVisualStyle(
                         color.SetAlpha(FlatStyle.AuxGeometryColorAlpha),
                         FlatStyle.Thickness
@@ -2363,9 +2423,9 @@ public class CGaFloat64Visualizer :
 
         if (FlatStyle.DrawNormalDirection)
         {
-            MainSceneComposer.AddBivector(
+            SceneComposer.AddBivector(
                 GrVisualBivector3D.CreateAnimated(
-                    GetNewSceneObjectName("bivector"),
+                    AnimationComposer.GetNewSceneObjectName("bivector"),
                     FlatStyle.GetVectorVisualStyle(
                         color.SetAlpha(FlatStyle.AuxGeometryColorAlpha),
                         FlatStyle.Thickness
@@ -2383,17 +2443,17 @@ public class CGaFloat64Visualizer :
     public CGaFloat64Visualizer DrawFlatLine3D(Color color, CGaFloat64ParametricElement element)
     {
         var animatedPosition =
-            AnimationSpecs.CreateAnimatedVector3D(
+            SamplingSpecs.CreateAnimatedVector3D(
                 element.PositionToParametricCurve3D()
             );
 
         var animatedDirection =
-            AnimationSpecs.CreateAnimatedVector3D(
+            SamplingSpecs.CreateAnimatedVector3D(
                 element.DirectionToParametricCurve3D()
             );
 
         var animatedPoint1 =
-            AnimationSpecs.CreateAnimatedVector3D(
+            SamplingSpecs.CreateAnimatedVector3D(
                 t =>
                 {
                     var el =
@@ -2404,7 +2464,7 @@ public class CGaFloat64Visualizer :
             );
 
         var animatedPoint2 =
-            AnimationSpecs.CreateAnimatedVector3D(
+            SamplingSpecs.CreateAnimatedVector3D(
                 t =>
                 {
                     var el =
@@ -2414,9 +2474,9 @@ public class CGaFloat64Visualizer :
                 }
             );
 
-        MainSceneComposer.AddLineSegment(
+        SceneComposer.AddLineSegment(
             GrVisualLineSegment3D.CreateAnimated(
-                GetNewSceneObjectName("lineSegment"),
+                AnimationComposer.GetNewSceneObjectName("lineSegment"),
                 FlatStyle.GetLineVisualStyle(color),
                 animatedPoint1,
                 animatedPoint2
@@ -2425,9 +2485,9 @@ public class CGaFloat64Visualizer :
 
         if (FlatStyle.DrawPosition)
         {
-            MainSceneComposer.AddPoint(
+            SceneComposer.AddPoint(
                 GrVisualPoint3D.CreateAnimated(
-                    GetNewSceneObjectName("point"),
+                    AnimationComposer.GetNewSceneObjectName("point"),
                     FlatStyle.GetPointVisualStyle(
                         color.SetAlpha(FlatStyle.AuxGeometryColorAlpha),
                         FlatStyle.Thickness * 1.5
@@ -2439,9 +2499,9 @@ public class CGaFloat64Visualizer :
 
         if (FlatStyle.DrawDirection)
         {
-            MainSceneComposer.AddVector(
+            SceneComposer.AddVector(
                 GrVisualVector3D.CreateAnimated(
-                    GetNewSceneObjectName("vector"),
+                    AnimationComposer.GetNewSceneObjectName("vector"),
                     FlatStyle.GetVectorVisualStyle(
                         color.SetAlpha(FlatStyle.AuxGeometryColorAlpha),
                         FlatStyle.Thickness
@@ -2454,9 +2514,9 @@ public class CGaFloat64Visualizer :
 
         if (FlatStyle.DrawNormalDirection)
         {
-            MainSceneComposer.AddBivector(
+            SceneComposer.AddBivector(
                 GrVisualBivector3D.CreateAnimated(
-                    GetNewSceneObjectName("bivector"),
+                    AnimationComposer.GetNewSceneObjectName("bivector"),
                     FlatStyle.GetVectorVisualStyle(
                         color.SetAlpha(FlatStyle.AuxGeometryColorAlpha),
                         FlatStyle.Thickness
@@ -2479,9 +2539,9 @@ public class CGaFloat64Visualizer :
 
         if (FlatStyle.DrawPosition)
         {
-            MainSceneComposer.AddPoint(
+            SceneComposer.AddPoint(
                 GrVisualPoint3D.CreateStatic(
-                    GetNewSceneObjectName("point"),
+                    AnimationComposer.GetNewSceneObjectName("point"),
                     FlatStyle.GetPointVisualStyle(
                         color.SetAlpha(FlatStyle.AuxGeometryColorAlpha),
                         FlatStyle.Thickness * 1.5
@@ -2493,9 +2553,9 @@ public class CGaFloat64Visualizer :
 
         if (FlatStyle.DrawDirection)
         {
-            MainSceneComposer.AddBivector(
+            SceneComposer.AddBivector(
                 GrVisualBivector3D.CreateStatic(
-                    GetNewSceneObjectName("bivector"),
+                    AnimationComposer.GetNewSceneObjectName("bivector"),
                     FlatStyle.GetVectorVisualStyle(
                         color.SetAlpha(FlatStyle.AuxGeometryColorAlpha),
                         FlatStyle.Thickness
@@ -2509,9 +2569,9 @@ public class CGaFloat64Visualizer :
 
         if (FlatStyle.DrawNormalDirection)
         {
-            MainSceneComposer.AddVector(
+            SceneComposer.AddVector(
                 GrVisualVector3D.CreateStatic(
-                    GetNewSceneObjectName("vector"),
+                    AnimationComposer.GetNewSceneObjectName("vector"),
                     FlatStyle.GetVectorVisualStyle(
                         color.SetAlpha(FlatStyle.AuxGeometryColorAlpha),
                         FlatStyle.Thickness
@@ -2528,10 +2588,10 @@ public class CGaFloat64Visualizer :
     public CGaFloat64Visualizer DrawFlatPlane2D(Color color, IFloat64ParametricCurve2D position, IParametricBivector2D direction)
     {
         var animatedPosition =
-            AnimationSpecs.CreateXyAnimatedVector3D(position);
+            SamplingSpecs.CreateXyAnimatedVector3D(position);
 
         var animatedNormal =
-            AnimationSpecs.CreateAnimatedVector3D(
+            SamplingSpecs.CreateAnimatedVector3D(
                 direction
                     .ToParametricCurve3D(b =>
                         b.ToXyBivector3D().DirectionToUnitNormal3D(LinFloat64Vector3D.UnitSymmetric)
@@ -2540,9 +2600,9 @@ public class CGaFloat64Visualizer :
 
         if (FlatStyle.DrawPosition)
         {
-            MainSceneComposer.AddPoint(
+            SceneComposer.AddPoint(
                 GrVisualPoint3D.CreateAnimated(
-                    GetNewSceneObjectName("point"),
+                    AnimationComposer.GetNewSceneObjectName("point"),
                     FlatStyle.GetPointVisualStyle(
                         color.SetAlpha(FlatStyle.AuxGeometryColorAlpha),
                         FlatStyle.Thickness * 1.5
@@ -2554,9 +2614,9 @@ public class CGaFloat64Visualizer :
 
         if (FlatStyle.DrawDirection)
         {
-            MainSceneComposer.AddBivector(
+            SceneComposer.AddBivector(
                 GrVisualBivector3D.CreateAnimated(
-                    GetNewSceneObjectName("bivector"),
+                    AnimationComposer.GetNewSceneObjectName("bivector"),
                     FlatStyle.GetVectorVisualStyle(
                         color.SetAlpha(FlatStyle.AuxGeometryColorAlpha),
                         FlatStyle.Thickness
@@ -2570,9 +2630,9 @@ public class CGaFloat64Visualizer :
 
         if (FlatStyle.DrawNormalDirection)
         {
-            MainSceneComposer.AddVector(
+            SceneComposer.AddVector(
                 GrVisualVector3D.CreateAnimated(
-                    GetNewSceneObjectName("vector"),
+                    AnimationComposer.GetNewSceneObjectName("vector"),
                     FlatStyle.GetVectorVisualStyle(
                         color.SetAlpha(FlatStyle.AuxGeometryColorAlpha),
                         FlatStyle.Thickness
@@ -2589,12 +2649,12 @@ public class CGaFloat64Visualizer :
     public CGaFloat64Visualizer DrawFlatPlane2D(Color color, CGaFloat64ParametricElement element)
     {
         var animatedPosition =
-            AnimationSpecs.CreateXyAnimatedVector3D(
+            SamplingSpecs.CreateXyAnimatedVector3D(
                 element.PositionToParametricCurve2D()
             );
 
         var animatedNormal =
-            AnimationSpecs.CreateAnimatedVector3D(
+            SamplingSpecs.CreateAnimatedVector3D(
                 element
                     .DirectionToParametricBivector2D()
                     .XyDirectionToNormal3D(LinFloat64Vector3D.UnitSymmetric)
@@ -2602,9 +2662,9 @@ public class CGaFloat64Visualizer :
 
         if (FlatStyle.DrawPosition)
         {
-            MainSceneComposer.AddPoint(
+            SceneComposer.AddPoint(
                 GrVisualPoint3D.CreateAnimated(
-                    GetNewSceneObjectName("point"),
+                    AnimationComposer.GetNewSceneObjectName("point"),
                     FlatStyle.GetPointVisualStyle(
                         color.SetAlpha(FlatStyle.AuxGeometryColorAlpha),
                         FlatStyle.Thickness * 1.5
@@ -2616,9 +2676,9 @@ public class CGaFloat64Visualizer :
 
         if (FlatStyle.DrawDirection)
         {
-            MainSceneComposer.AddBivector(
+            SceneComposer.AddBivector(
                 GrVisualBivector3D.CreateAnimated(
-                    GetNewSceneObjectName("bivector"),
+                    AnimationComposer.GetNewSceneObjectName("bivector"),
                     FlatStyle.GetVectorVisualStyle(
                         color.SetAlpha(FlatStyle.AuxGeometryColorAlpha),
                         FlatStyle.Thickness
@@ -2632,9 +2692,9 @@ public class CGaFloat64Visualizer :
 
         if (FlatStyle.DrawNormalDirection)
         {
-            MainSceneComposer.AddVector(
+            SceneComposer.AddVector(
                 GrVisualVector3D.CreateAnimated(
-                    GetNewSceneObjectName("vector"),
+                    AnimationComposer.GetNewSceneObjectName("vector"),
                     FlatStyle.GetVectorVisualStyle(
                         color.SetAlpha(FlatStyle.AuxGeometryColorAlpha),
                         FlatStyle.Thickness
@@ -2654,9 +2714,9 @@ public class CGaFloat64Visualizer :
         var normal =
             direction.DirectionToUnitNormal3D(LinFloat64Vector3D.UnitSymmetric);
 
-        MainSceneComposer.AddCircleSurface(
+        SceneComposer.AddDisc(
             GrVisualCircleSurface3D.CreateStatic(
-                GetNewSceneObjectName("disc"),
+                AnimationComposer.GetNewSceneObjectName("disc"),
                 FlatStyle.GetPlaneVisualStyle(color),
                 position,
                 normal,
@@ -2667,9 +2727,9 @@ public class CGaFloat64Visualizer :
 
         if (FlatStyle.DrawPosition)
         {
-            MainSceneComposer.AddPoint(
+            SceneComposer.AddPoint(
                 GrVisualPoint3D.CreateStatic(
-                    GetNewSceneObjectName("point"),
+                    AnimationComposer.GetNewSceneObjectName("point"),
                     FlatStyle.GetPointVisualStyle(
                         color.SetAlpha(FlatStyle.AuxGeometryColorAlpha),
                         FlatStyle.Thickness * 1.5
@@ -2681,9 +2741,9 @@ public class CGaFloat64Visualizer :
 
         if (FlatStyle.DrawDirection)
         {
-            MainSceneComposer.AddBivector(
+            SceneComposer.AddBivector(
                 GrVisualBivector3D.CreateStatic(
-                    GetNewSceneObjectName("bivector"),
+                    AnimationComposer.GetNewSceneObjectName("bivector"),
                     FlatStyle.GetVectorVisualStyle(
                         color.SetAlpha(FlatStyle.AuxGeometryColorAlpha),
                         FlatStyle.Thickness
@@ -2697,9 +2757,9 @@ public class CGaFloat64Visualizer :
 
         if (FlatStyle.DrawNormalDirection)
         {
-            MainSceneComposer.AddVector(
+            SceneComposer.AddVector(
                 GrVisualVector3D.CreateStatic(
-                    GetNewSceneObjectName("vector"),
+                    AnimationComposer.GetNewSceneObjectName("vector"),
                     FlatStyle.GetVectorVisualStyle(
                         color.SetAlpha(FlatStyle.AuxGeometryColorAlpha),
                         FlatStyle.Thickness
@@ -2716,16 +2776,16 @@ public class CGaFloat64Visualizer :
     public CGaFloat64Visualizer DrawFlatPlane3D(Color color, IParametricCurve3D position, IParametricBivector3D direction)
     {
         var animatedPosition =
-            AnimationSpecs.CreateAnimatedVector3D(position);
+            SamplingSpecs.CreateAnimatedVector3D(position);
 
         var animatedNormal =
-            AnimationSpecs.CreateAnimatedVector3D(
+            SamplingSpecs.CreateAnimatedVector3D(
                 direction.GetNormalVectorCurve()
             );
 
-        MainSceneComposer.AddCircleSurface(
+        SceneComposer.AddDisc(
             GrVisualCircleSurface3D.CreateAnimated(
-                GetNewSceneObjectName("disc"),
+                AnimationComposer.GetNewSceneObjectName("disc"),
                 FlatStyle.GetPlaneVisualStyle(color),
                 animatedPosition,
                 animatedNormal,
@@ -2736,9 +2796,9 @@ public class CGaFloat64Visualizer :
 
         if (FlatStyle.DrawPosition)
         {
-            MainSceneComposer.AddPoint(
+            SceneComposer.AddPoint(
                 GrVisualPoint3D.CreateAnimated(
-                    GetNewSceneObjectName("point"),
+                    AnimationComposer.GetNewSceneObjectName("point"),
                     FlatStyle.GetPointVisualStyle(
                         color.SetAlpha(FlatStyle.AuxGeometryColorAlpha),
                         FlatStyle.Thickness * 1.5
@@ -2750,9 +2810,9 @@ public class CGaFloat64Visualizer :
 
         if (FlatStyle.DrawDirection)
         {
-            MainSceneComposer.AddBivector(
+            SceneComposer.AddBivector(
                 GrVisualBivector3D.CreateAnimated(
-                    GetNewSceneObjectName("bivector"),
+                    AnimationComposer.GetNewSceneObjectName("bivector"),
                     FlatStyle.GetVectorVisualStyle(
                         color.SetAlpha(FlatStyle.AuxGeometryColorAlpha),
                         FlatStyle.Thickness
@@ -2766,9 +2826,9 @@ public class CGaFloat64Visualizer :
 
         if (FlatStyle.DrawNormalDirection)
         {
-            MainSceneComposer.AddVector(
+            SceneComposer.AddVector(
                 GrVisualVector3D.CreateAnimated(
-                    GetNewSceneObjectName("vector"),
+                    AnimationComposer.GetNewSceneObjectName("vector"),
                     FlatStyle.GetVectorVisualStyle(
                         color.SetAlpha(FlatStyle.AuxGeometryColorAlpha),
                         FlatStyle.Thickness
@@ -2785,18 +2845,18 @@ public class CGaFloat64Visualizer :
     public CGaFloat64Visualizer DrawFlatPlane3D(Color color, CGaFloat64ParametricElement element)
     {
         var animatedPosition =
-            AnimationSpecs.CreateAnimatedVector3D(
+            SamplingSpecs.CreateAnimatedVector3D(
                 element.PositionToParametricCurve3D()
             );
 
         var animatedNormal =
-            AnimationSpecs.CreateAnimatedVector3D(
+            SamplingSpecs.CreateAnimatedVector3D(
                 element.NormalDirectionToParametricCurve3D()
             );
 
-        MainSceneComposer.AddCircleSurface(
+        SceneComposer.AddDisc(
             GrVisualCircleSurface3D.CreateAnimated(
-                GetNewSceneObjectName("disc"),
+                AnimationComposer.GetNewSceneObjectName("disc"),
                 FlatStyle.GetPlaneVisualStyle(color),
                 animatedPosition,
                 animatedNormal,
@@ -2807,9 +2867,9 @@ public class CGaFloat64Visualizer :
 
         if (FlatStyle.DrawPosition)
         {
-            MainSceneComposer.AddPoint(
+            SceneComposer.AddPoint(
                 GrVisualPoint3D.CreateAnimated(
-                    GetNewSceneObjectName("point"),
+                    AnimationComposer.GetNewSceneObjectName("point"),
                     FlatStyle.GetPointVisualStyle(
                         color.SetAlpha(FlatStyle.AuxGeometryColorAlpha),
                         FlatStyle.Thickness * 1.5
@@ -2821,9 +2881,9 @@ public class CGaFloat64Visualizer :
 
         if (FlatStyle.DrawDirection)
         {
-            MainSceneComposer.AddBivector(
+            SceneComposer.AddBivector(
                 GrVisualBivector3D.CreateAnimated(
-                    GetNewSceneObjectName("bivector"),
+                    AnimationComposer.GetNewSceneObjectName("bivector"),
                     FlatStyle.GetVectorVisualStyle(
                         color.SetAlpha(FlatStyle.AuxGeometryColorAlpha),
                         FlatStyle.Thickness
@@ -2837,9 +2897,9 @@ public class CGaFloat64Visualizer :
 
         if (FlatStyle.DrawNormalDirection)
         {
-            MainSceneComposer.AddVector(
+            SceneComposer.AddVector(
                 GrVisualVector3D.CreateAnimated(
-                    GetNewSceneObjectName("vector"),
+                    AnimationComposer.GetNewSceneObjectName("vector"),
                     FlatStyle.GetVectorVisualStyle(
                         color.SetAlpha(FlatStyle.AuxGeometryColorAlpha),
                         FlatStyle.Thickness
@@ -2877,9 +2937,9 @@ public class CGaFloat64Visualizer :
 
     public CGaFloat64Visualizer DrawRoundPoint2D(Color color, LinFloat64Vector2D center)
     {
-        MainSceneComposer.AddPoint(
+        SceneComposer.AddPoint(
             GrVisualPoint3D.CreateStatic(
-                GetNewSceneObjectName("point"),
+                AnimationComposer.GetNewSceneObjectName("point"),
                 RoundStyle.GetPointVisualStyle(color),
                 center.ToXyLinVector3D()
             )
@@ -2890,11 +2950,11 @@ public class CGaFloat64Visualizer :
 
     public CGaFloat64Visualizer DrawRoundPoint2D(Color color, IFloat64ParametricCurve2D center)
     {
-        MainSceneComposer.AddPoint(
+        SceneComposer.AddPoint(
             GrVisualPoint3D.CreateAnimated(
-                GetNewSceneObjectName("point"),
+                AnimationComposer.GetNewSceneObjectName("point"),
                 RoundStyle.GetPointVisualStyle(color),
-                AnimationSpecs.CreateAnimatedVector3D(center.ToXyParametricCurve3D())
+                SamplingSpecs.CreateAnimatedVector3D(center.ToXyParametricCurve3D())
             )
         );
 
@@ -2904,13 +2964,13 @@ public class CGaFloat64Visualizer :
     public CGaFloat64Visualizer DrawRoundPoint2D(Color color, CGaFloat64ParametricElement element)
     {
         var animatedPosition =
-            AnimationSpecs.CreateXyAnimatedVector3D(
+            SamplingSpecs.CreateXyAnimatedVector3D(
                 element.PositionToParametricCurve2D()
             );
 
-        MainSceneComposer.AddPoint(
+        SceneComposer.AddPoint(
             GrVisualPoint3D.CreateAnimated(
-                GetNewSceneObjectName("point"),
+                AnimationComposer.GetNewSceneObjectName("point"),
                 RoundStyle.GetPointVisualStyle(color),
                 animatedPosition
             )
@@ -2922,9 +2982,9 @@ public class CGaFloat64Visualizer :
 
     public CGaFloat64Visualizer DrawRoundPoint3D(Color color, LinFloat64Vector3D center)
     {
-        MainSceneComposer.AddPoint(
+        SceneComposer.AddPoint(
             GrVisualPoint3D.CreateStatic(
-                GetNewSceneObjectName("point"),
+                AnimationComposer.GetNewSceneObjectName("point"),
                 RoundStyle.GetPointVisualStyle(color),
                 center
             )
@@ -2935,11 +2995,11 @@ public class CGaFloat64Visualizer :
 
     public CGaFloat64Visualizer DrawRoundPoint3D(Color color, IParametricCurve3D center)
     {
-        MainSceneComposer.AddPoint(
+        SceneComposer.AddPoint(
             GrVisualPoint3D.CreateAnimated(
-                GetNewSceneObjectName("point"),
+                AnimationComposer.GetNewSceneObjectName("point"),
                 RoundStyle.GetPointVisualStyle(color),
-                AnimationSpecs.CreateAnimatedVector3D(center)
+                SamplingSpecs.CreateAnimatedVector3D(center)
             )
         );
 
@@ -2949,13 +3009,13 @@ public class CGaFloat64Visualizer :
     public CGaFloat64Visualizer DrawRoundPoint3D(Color color, CGaFloat64ParametricElement element)
     {
         var animatedPosition =
-            AnimationSpecs.CreateAnimatedVector3D(
+            SamplingSpecs.CreateAnimatedVector3D(
                 element.PositionToParametricCurve3D()
             );
 
-        MainSceneComposer.AddPoint(
+        SceneComposer.AddPoint(
             GrVisualPoint3D.CreateAnimated(
-                GetNewSceneObjectName("point"),
+                AnimationComposer.GetNewSceneObjectName("point"),
                 RoundStyle.GetPointVisualStyle(color),
                 animatedPosition
             )
@@ -2970,25 +3030,25 @@ public class CGaFloat64Visualizer :
         var point1 = (center - direction.SetLength(radius)).ToXyLinVector3D();
         var point2 = (center + direction.SetLength(radius)).ToXyLinVector3D();
 
-        MainSceneComposer.AddPoint(
+        SceneComposer.AddPoint(
             GrVisualPoint3D.CreateStatic(
-                GetNewSceneObjectName("point"),
+                AnimationComposer.GetNewSceneObjectName("point"),
                 RoundStyle.GetPointPairVisualStyle(color),
                 point1
             )
         );
 
-        MainSceneComposer.AddPoint(
+        SceneComposer.AddPoint(
             GrVisualPoint3D.CreateStatic(
-                GetNewSceneObjectName("point"),
+                AnimationComposer.GetNewSceneObjectName("point"),
                 RoundStyle.GetPointPairVisualStyle(color),
                 point2
             )
         );
 
-        MainSceneComposer.AddLineSegment(
+        SceneComposer.AddLineSegment(
             GrVisualLineSegment3D.CreateStatic(
-                GetNewSceneObjectName("line"),
+                AnimationComposer.GetNewSceneObjectName("line"),
                 color.SetAlpha(RoundStyle.AuxGeometryColorAlpha).CreateDashedLineCurveStyle(5, 3, 16),
                 point1,
                 point2
@@ -2997,9 +3057,9 @@ public class CGaFloat64Visualizer :
 
         if (RoundStyle.DrawSphere)
         {
-            MainSceneComposer.AddSphereSurface(
+            SceneComposer.AddSphere(
                 GrVisualSphereSurface3D.CreateStatic(
-                    GetNewSceneObjectName("sphere"),
+                    AnimationComposer.GetNewSceneObjectName("sphere"),
                     RoundStyle.GetSphereVisualStyle(
                         color.SetAlpha(RoundStyle.AuxGeometryColorAlpha)
                     ),
@@ -3011,9 +3071,9 @@ public class CGaFloat64Visualizer :
 
         if (RoundStyle.DrawPosition)
         {
-            MainSceneComposer.AddPoint(
+            SceneComposer.AddPoint(
                 GrVisualPoint3D.CreateStatic(
-                    GetNewSceneObjectName("point"),
+                    AnimationComposer.GetNewSceneObjectName("point"),
                     RoundStyle.GetPointVisualStyle(
                         color.SetAlpha(RoundStyle.AuxGeometryColorAlpha),
                         RoundStyle.Thickness * 1.5
@@ -3025,9 +3085,9 @@ public class CGaFloat64Visualizer :
 
         if (RoundStyle.DrawDirection)
         {
-            MainSceneComposer.AddVector(
+            SceneComposer.AddVector(
                 GrVisualVector3D.CreateStatic(
-                    GetNewSceneObjectName("vector"),
+                    AnimationComposer.GetNewSceneObjectName("vector"),
                     RoundStyle.GetVectorVisualStyle(
                         color.SetAlpha(RoundStyle.AuxGeometryColorAlpha),
                         RoundStyle.Thickness
@@ -3040,9 +3100,9 @@ public class CGaFloat64Visualizer :
 
         if (RoundStyle.DrawNormalDirection)
         {
-            MainSceneComposer.AddBivector(
+            SceneComposer.AddBivector(
                 GrVisualBivector3D.CreateStatic(
-                    GetNewSceneObjectName("bivector"),
+                    AnimationComposer.GetNewSceneObjectName("bivector"),
                     RoundStyle.GetVectorVisualStyle(
                         color.SetAlpha(RoundStyle.AuxGeometryColorAlpha),
                         RoundStyle.Thickness
@@ -3060,43 +3120,43 @@ public class CGaFloat64Visualizer :
     public CGaFloat64Visualizer DrawRoundPointPair2D(Color color, IFloat64ParametricCurve2D center, IFloat64ParametricCurve2D direction, IFloat64ParametricScalar radius)
     {
         var animatedCenter =
-            AnimationSpecs.CreateXyAnimatedVector3D(center);
+            SamplingSpecs.CreateXyAnimatedVector3D(center);
 
         var animatedDirection =
-            AnimationSpecs.CreateXyAnimatedVector3D(direction);
+            SamplingSpecs.CreateXyAnimatedVector3D(direction);
 
         var animatedRadius =
-            AnimationSpecs.CreateAnimatedScalar(radius);
+            SamplingSpecs.CreateAnimatedScalar(radius.ToTemporalScalar());
 
         var animatedPoint1 =
-            AnimationSpecs.CreateXyAnimatedVector3D(t =>
+            SamplingSpecs.CreateXyAnimatedVector3D(t =>
                 center.GetPoint(t) - direction.GetPoint(t).SetLength(radius.GetValue(t))
             );
 
         var animatedPoint2 =
-            AnimationSpecs.CreateXyAnimatedVector3D(t =>
+            SamplingSpecs.CreateXyAnimatedVector3D(t =>
                 center.GetPoint(t) + direction.GetPoint(t).SetLength(radius.GetValue(t))
             );
 
-        MainSceneComposer.AddPoint(
+        SceneComposer.AddPoint(
             GrVisualPoint3D.CreateAnimated(
-                GetNewSceneObjectName("point"),
+                AnimationComposer.GetNewSceneObjectName("point"),
                 RoundStyle.GetPointPairVisualStyle(color),
                 animatedPoint1
             )
         );
 
-        MainSceneComposer.AddPoint(
+        SceneComposer.AddPoint(
             GrVisualPoint3D.CreateAnimated(
-                GetNewSceneObjectName("point"),
+                AnimationComposer.GetNewSceneObjectName("point"),
                 RoundStyle.GetPointPairVisualStyle(color),
                 animatedPoint2
             )
         );
 
-        MainSceneComposer.AddLineSegment(
+        SceneComposer.AddLineSegment(
             GrVisualLineSegment3D.CreateAnimated(
-                GetNewSceneObjectName("line"),
+                AnimationComposer.GetNewSceneObjectName("line"),
                 color.SetAlpha(RoundStyle.AuxGeometryColorAlpha).CreateDashedLineCurveStyle(5, 3, 16),
                 animatedPoint1,
                 animatedPoint2
@@ -3105,9 +3165,9 @@ public class CGaFloat64Visualizer :
 
         if (RoundStyle.DrawSphere)
         {
-            MainSceneComposer.AddSphereSurface(
+            SceneComposer.AddSphere(
                 GrVisualSphereSurface3D.CreateAnimated(
-                    GetNewSceneObjectName("sphere"),
+                    AnimationComposer.GetNewSceneObjectName("sphere"),
                     RoundStyle.GetSphereVisualStyle(
                         color.SetAlpha(RoundStyle.AuxGeometryColorAlpha)
                     ),
@@ -3119,9 +3179,9 @@ public class CGaFloat64Visualizer :
 
         if (RoundStyle.DrawPosition)
         {
-            MainSceneComposer.AddPoint(
+            SceneComposer.AddPoint(
                 GrVisualPoint3D.CreateAnimated(
-                    GetNewSceneObjectName("point"),
+                    AnimationComposer.GetNewSceneObjectName("point"),
                     RoundStyle.GetPointVisualStyle(
                         color.SetAlpha(RoundStyle.AuxGeometryColorAlpha),
                         RoundStyle.Thickness * 1.5
@@ -3134,14 +3194,14 @@ public class CGaFloat64Visualizer :
         if (RoundStyle.DrawDirection)
         {
             var animatedScaledDirection =
-                AnimationSpecs.CreateXyAnimatedVector3D(
+                SamplingSpecs.CreateXyAnimatedVector3D(
                     t =>
                         direction.GetPoint(t).SetLength(RoundStyle.DirectionRadius)
                 );
 
-            MainSceneComposer.AddVector(
+            SceneComposer.AddVector(
                 GrVisualVector3D.CreateAnimated(
-                    GetNewSceneObjectName("vector"),
+                    AnimationComposer.GetNewSceneObjectName("vector"),
                     RoundStyle.GetVectorVisualStyle(
                         color.SetAlpha(RoundStyle.AuxGeometryColorAlpha),
                         RoundStyle.Thickness
@@ -3154,9 +3214,9 @@ public class CGaFloat64Visualizer :
 
         if (RoundStyle.DrawNormalDirection)
         {
-            MainSceneComposer.AddBivector(
+            SceneComposer.AddBivector(
                 GrVisualBivector3D.CreateAnimated(
-                    GetNewSceneObjectName("bivector"),
+                    AnimationComposer.GetNewSceneObjectName("bivector"),
                     RoundStyle.GetVectorVisualStyle(
                         color.SetAlpha(RoundStyle.AuxGeometryColorAlpha),
                         RoundStyle.Thickness
@@ -3174,27 +3234,27 @@ public class CGaFloat64Visualizer :
     public CGaFloat64Visualizer DrawRoundPointPair2D(Color color, CGaFloat64ParametricElement element)
     {
         var animatedPosition =
-            AnimationSpecs.CreateXyAnimatedVector3D(
+            SamplingSpecs.CreateXyAnimatedVector3D(
                 element.PositionToParametricCurve2D()
             );
 
         var animatedDirection =
-            AnimationSpecs.CreateXyAnimatedVector3D(
+            SamplingSpecs.CreateXyAnimatedVector3D(
                 element.DirectionToParametricCurve2D()
             );
 
         var animatedNormal =
-            AnimationSpecs.CreateXyAnimatedVector3D(
+            SamplingSpecs.CreateXyAnimatedVector3D(
                 element.NormalDirectionToParametricCurve2D()
             );
 
         var animatedRadius =
-            AnimationSpecs.CreateAnimatedScalar(
-                element.RealRadiusToParametricScalar()
+            SamplingSpecs.CreateAnimatedScalar(
+                element.RealRadiusToTemporalScalar()
             );
 
         var animatedPoint1 =
-            AnimationSpecs.CreateXyAnimatedVector3D(t =>
+            SamplingSpecs.CreateXyAnimatedVector3D(t =>
                 {
                     var el = element.GetElement(t);
 
@@ -3203,7 +3263,7 @@ public class CGaFloat64Visualizer :
             );
 
         var animatedPoint2 =
-            AnimationSpecs.CreateXyAnimatedVector3D(t =>
+            SamplingSpecs.CreateXyAnimatedVector3D(t =>
                 {
                     var el = element.GetElement(t);
 
@@ -3211,25 +3271,25 @@ public class CGaFloat64Visualizer :
                 }
             );
 
-        MainSceneComposer.AddPoint(
+        SceneComposer.AddPoint(
             GrVisualPoint3D.CreateAnimated(
-                GetNewSceneObjectName("point"),
+                AnimationComposer.GetNewSceneObjectName("point"),
                 RoundStyle.GetPointPairVisualStyle(color),
                 animatedPoint1
             )
         );
 
-        MainSceneComposer.AddPoint(
+        SceneComposer.AddPoint(
             GrVisualPoint3D.CreateAnimated(
-                GetNewSceneObjectName("point"),
+                AnimationComposer.GetNewSceneObjectName("point"),
                 RoundStyle.GetPointPairVisualStyle(color),
                 animatedPoint2
             )
         );
 
-        MainSceneComposer.AddLineSegment(
+        SceneComposer.AddLineSegment(
             GrVisualLineSegment3D.CreateAnimated(
-                GetNewSceneObjectName("line"),
+                AnimationComposer.GetNewSceneObjectName("line"),
                 color.SetAlpha(RoundStyle.AuxGeometryColorAlpha).CreateDashedLineCurveStyle(5, 3, 16),
                 animatedPoint1,
                 animatedPoint2
@@ -3238,9 +3298,9 @@ public class CGaFloat64Visualizer :
 
         if (RoundStyle.DrawSphere)
         {
-            MainSceneComposer.AddSphereSurface(
+            SceneComposer.AddSphere(
                 GrVisualSphereSurface3D.CreateAnimated(
-                    GetNewSceneObjectName("sphere"),
+                    AnimationComposer.GetNewSceneObjectName("sphere"),
                     RoundStyle.GetSphereVisualStyle(
                         color.SetAlpha(RoundStyle.AuxGeometryColorAlpha)
                     ),
@@ -3252,9 +3312,9 @@ public class CGaFloat64Visualizer :
 
         if (RoundStyle.DrawPosition)
         {
-            MainSceneComposer.AddPoint(
+            SceneComposer.AddPoint(
                 GrVisualPoint3D.CreateAnimated(
-                    GetNewSceneObjectName("point"),
+                    AnimationComposer.GetNewSceneObjectName("point"),
                     RoundStyle.GetPointVisualStyle(
                         color.SetAlpha(RoundStyle.AuxGeometryColorAlpha),
                         RoundStyle.Thickness * 1.5
@@ -3266,9 +3326,9 @@ public class CGaFloat64Visualizer :
 
         if (RoundStyle.DrawDirection)
         {
-            MainSceneComposer.AddVector(
+            SceneComposer.AddVector(
                 GrVisualVector3D.CreateAnimated(
-                    GetNewSceneObjectName("vector"),
+                    AnimationComposer.GetNewSceneObjectName("vector"),
                     RoundStyle.GetVectorVisualStyle(
                         color.SetAlpha(RoundStyle.AuxGeometryColorAlpha),
                         RoundStyle.Thickness
@@ -3281,9 +3341,9 @@ public class CGaFloat64Visualizer :
 
         if (RoundStyle.DrawNormalDirection)
         {
-            MainSceneComposer.AddVector(
+            SceneComposer.AddVector(
                 GrVisualVector3D.CreateAnimated(
-                    GetNewSceneObjectName("vector"),
+                    AnimationComposer.GetNewSceneObjectName("vector"),
                     RoundStyle.GetVectorVisualStyle(
                         color.SetAlpha(RoundStyle.AuxGeometryColorAlpha),
                         RoundStyle.Thickness
@@ -3303,25 +3363,25 @@ public class CGaFloat64Visualizer :
         var point1 = center - direction.SetLength(radius);
         var point2 = center + direction.SetLength(radius);
 
-        MainSceneComposer.AddPoint(
+        SceneComposer.AddPoint(
             GrVisualPoint3D.CreateStatic(
-                GetNewSceneObjectName("point"),
+                AnimationComposer.GetNewSceneObjectName("point"),
                 RoundStyle.GetPointPairVisualStyle(color),
                 point1
             )
         );
 
-        MainSceneComposer.AddPoint(
+        SceneComposer.AddPoint(
             GrVisualPoint3D.CreateStatic(
-                GetNewSceneObjectName("point"),
+                AnimationComposer.GetNewSceneObjectName("point"),
                 RoundStyle.GetPointPairVisualStyle(color),
                 point2
             )
         );
 
-        MainSceneComposer.AddLineSegment(
+        SceneComposer.AddLineSegment(
             GrVisualLineSegment3D.CreateStatic(
-                GetNewSceneObjectName("line"),
+                AnimationComposer.GetNewSceneObjectName("line"),
                 color.SetAlpha(RoundStyle.AuxGeometryColorAlpha).CreateDashedLineCurveStyle(5, 3, 16),
                 point1,
                 point2
@@ -3330,9 +3390,9 @@ public class CGaFloat64Visualizer :
 
         if (RoundStyle.DrawSphere)
         {
-            MainSceneComposer.AddSphereSurface(
+            SceneComposer.AddSphere(
                 GrVisualSphereSurface3D.CreateStatic(
-                    GetNewSceneObjectName("sphere"),
+                    AnimationComposer.GetNewSceneObjectName("sphere"),
                     RoundStyle.GetSphereVisualStyle(
                         color.SetAlpha(RoundStyle.AuxGeometryColorAlpha)
                     ),
@@ -3344,9 +3404,9 @@ public class CGaFloat64Visualizer :
 
         if (RoundStyle.DrawPosition)
         {
-            MainSceneComposer.AddPoint(
+            SceneComposer.AddPoint(
                 GrVisualPoint3D.CreateStatic(
-                    GetNewSceneObjectName("point"),
+                    AnimationComposer.GetNewSceneObjectName("point"),
                     RoundStyle.GetPointVisualStyle(
                         color.SetAlpha(RoundStyle.AuxGeometryColorAlpha),
                         RoundStyle.Thickness * 1.5
@@ -3358,9 +3418,9 @@ public class CGaFloat64Visualizer :
 
         if (RoundStyle.DrawDirection)
         {
-            MainSceneComposer.AddVector(
+            SceneComposer.AddVector(
                 GrVisualVector3D.CreateStatic(
-                    GetNewSceneObjectName("vector"),
+                    AnimationComposer.GetNewSceneObjectName("vector"),
                     RoundStyle.GetVectorVisualStyle(
                         color.SetAlpha(RoundStyle.AuxGeometryColorAlpha),
                         RoundStyle.Thickness
@@ -3373,9 +3433,9 @@ public class CGaFloat64Visualizer :
 
         if (RoundStyle.DrawNormalDirection)
         {
-            MainSceneComposer.AddBivector(
+            SceneComposer.AddBivector(
                 GrVisualBivector3D.CreateStatic(
-                    GetNewSceneObjectName("bivector"),
+                    AnimationComposer.GetNewSceneObjectName("bivector"),
                     RoundStyle.GetVectorVisualStyle(
                         color.SetAlpha(RoundStyle.AuxGeometryColorAlpha),
                         RoundStyle.Thickness
@@ -3393,43 +3453,43 @@ public class CGaFloat64Visualizer :
     public CGaFloat64Visualizer DrawRoundPointPair3D(Color color, IParametricCurve3D center, IParametricCurve3D direction, IFloat64ParametricScalar radius)
     {
         var animatedCenter =
-            AnimationSpecs.CreateAnimatedVector3D(center);
+            SamplingSpecs.CreateAnimatedVector3D(center);
 
         var animatedDirection =
-            AnimationSpecs.CreateAnimatedVector3D(direction);
+            SamplingSpecs.CreateAnimatedVector3D(direction);
 
         var animatedRadius =
-            AnimationSpecs.CreateAnimatedScalar(radius);
+            SamplingSpecs.CreateAnimatedScalar(radius);
 
         var animatedPoint1 =
-            AnimationSpecs.CreateAnimatedVector3D(t =>
+            SamplingSpecs.CreateAnimatedVector3D(t =>
                 center.GetPoint(t) - direction.GetPoint(t).SetLength(radius.GetValue(t))
             );
 
         var animatedPoint2 =
-            AnimationSpecs.CreateAnimatedVector3D(t =>
+            SamplingSpecs.CreateAnimatedVector3D(t =>
                 center.GetPoint(t) + direction.GetPoint(t).SetLength(radius.GetValue(t))
             );
 
-        MainSceneComposer.AddPoint(
+        SceneComposer.AddPoint(
             GrVisualPoint3D.CreateAnimated(
-                GetNewSceneObjectName("point"),
+                AnimationComposer.GetNewSceneObjectName("point"),
                 RoundStyle.GetPointPairVisualStyle(color),
                 animatedPoint1
             )
         );
 
-        MainSceneComposer.AddPoint(
+        SceneComposer.AddPoint(
             GrVisualPoint3D.CreateAnimated(
-                GetNewSceneObjectName("point"),
+                AnimationComposer.GetNewSceneObjectName("point"),
                 RoundStyle.GetPointPairVisualStyle(color),
                 animatedPoint2
             )
         );
 
-        MainSceneComposer.AddLineSegment(
+        SceneComposer.AddLineSegment(
             GrVisualLineSegment3D.CreateAnimated(
-                GetNewSceneObjectName("line"),
+                AnimationComposer.GetNewSceneObjectName("line"),
                 color.SetAlpha(RoundStyle.AuxGeometryColorAlpha).CreateDashedLineCurveStyle(5, 3, 16),
                 animatedPoint1,
                 animatedPoint2
@@ -3438,9 +3498,9 @@ public class CGaFloat64Visualizer :
 
         if (RoundStyle.DrawSphere)
         {
-            MainSceneComposer.AddSphereSurface(
+            SceneComposer.AddSphere(
                 GrVisualSphereSurface3D.CreateAnimated(
-                    GetNewSceneObjectName("sphere"),
+                    AnimationComposer.GetNewSceneObjectName("sphere"),
                     RoundStyle.GetSphereVisualStyle(
                         color.SetAlpha(RoundStyle.AuxGeometryColorAlpha)
                     ),
@@ -3452,9 +3512,9 @@ public class CGaFloat64Visualizer :
 
         if (RoundStyle.DrawPosition)
         {
-            MainSceneComposer.AddPoint(
+            SceneComposer.AddPoint(
                 GrVisualPoint3D.CreateAnimated(
-                    GetNewSceneObjectName("point"),
+                    AnimationComposer.GetNewSceneObjectName("point"),
                     RoundStyle.GetPointVisualStyle(
                         color.SetAlpha(RoundStyle.AuxGeometryColorAlpha),
                         RoundStyle.Thickness * 1.5
@@ -3467,14 +3527,14 @@ public class CGaFloat64Visualizer :
         if (RoundStyle.DrawDirection)
         {
             var animatedScaledDirection =
-                AnimationSpecs.CreateAnimatedVector3D(
+                SamplingSpecs.CreateAnimatedVector3D(
                     t =>
                         direction.GetPoint(t).SetLength(RoundStyle.DirectionRadius)
                 );
 
-            MainSceneComposer.AddVector(
+            SceneComposer.AddVector(
                 GrVisualVector3D.CreateAnimated(
-                    GetNewSceneObjectName("vector"),
+                    AnimationComposer.GetNewSceneObjectName("vector"),
                     RoundStyle.GetVectorVisualStyle(
                         color.SetAlpha(RoundStyle.AuxGeometryColorAlpha),
                         RoundStyle.Thickness
@@ -3487,9 +3547,9 @@ public class CGaFloat64Visualizer :
 
         if (RoundStyle.DrawNormalDirection)
         {
-            MainSceneComposer.AddBivector(
+            SceneComposer.AddBivector(
                 GrVisualBivector3D.CreateAnimated(
-                    GetNewSceneObjectName("bivector"),
+                    AnimationComposer.GetNewSceneObjectName("bivector"),
                     RoundStyle.GetVectorVisualStyle(
                         color.SetAlpha(RoundStyle.AuxGeometryColorAlpha),
                         RoundStyle.Thickness
@@ -3507,22 +3567,22 @@ public class CGaFloat64Visualizer :
     public CGaFloat64Visualizer DrawRoundPointPair3D(Color color, CGaFloat64ParametricElement element)
     {
         var animatedPosition =
-            AnimationSpecs.CreateAnimatedVector3D(
+            SamplingSpecs.CreateAnimatedVector3D(
                 element.PositionToParametricCurve3D()
             );
 
         var animatedDirection =
-            AnimationSpecs.CreateAnimatedVector3D(
+            SamplingSpecs.CreateAnimatedVector3D(
                 element.DirectionToParametricCurve3D()
             );
 
         var animatedRadius =
-            AnimationSpecs.CreateAnimatedScalar(
+            SamplingSpecs.CreateAnimatedScalar(
                 element.RealRadiusToParametricScalar()
             );
 
         var animatedPoint1 =
-            AnimationSpecs.CreateAnimatedVector3D(t =>
+            SamplingSpecs.CreateAnimatedVector3D(t =>
                 {
                     var el = element.GetElement(t);
 
@@ -3531,7 +3591,7 @@ public class CGaFloat64Visualizer :
             );
 
         var animatedPoint2 =
-            AnimationSpecs.CreateAnimatedVector3D(t =>
+            SamplingSpecs.CreateAnimatedVector3D(t =>
                 {
                     var el = element.GetElement(t);
 
@@ -3539,25 +3599,25 @@ public class CGaFloat64Visualizer :
                 }
             );
 
-        MainSceneComposer.AddPoint(
+        SceneComposer.AddPoint(
             GrVisualPoint3D.CreateAnimated(
-                GetNewSceneObjectName("point"),
+                AnimationComposer.GetNewSceneObjectName("point"),
                 RoundStyle.GetPointPairVisualStyle(color),
                 animatedPoint1
             )
         );
 
-        MainSceneComposer.AddPoint(
+        SceneComposer.AddPoint(
             GrVisualPoint3D.CreateAnimated(
-                GetNewSceneObjectName("point"),
+                AnimationComposer.GetNewSceneObjectName("point"),
                 RoundStyle.GetPointPairVisualStyle(color),
                 animatedPoint2
             )
         );
 
-        MainSceneComposer.AddLineSegment(
+        SceneComposer.AddLineSegment(
             GrVisualLineSegment3D.CreateAnimated(
-                GetNewSceneObjectName("line"),
+                AnimationComposer.GetNewSceneObjectName("line"),
                 color.SetAlpha(RoundStyle.AuxGeometryColorAlpha).CreateDashedLineCurveStyle(5, 3, 16),
                 animatedPoint1,
                 animatedPoint2
@@ -3566,9 +3626,9 @@ public class CGaFloat64Visualizer :
 
         if (RoundStyle.DrawSphere)
         {
-            MainSceneComposer.AddSphereSurface(
+            SceneComposer.AddSphere(
                 GrVisualSphereSurface3D.CreateAnimated(
-                    GetNewSceneObjectName("sphere"),
+                    AnimationComposer.GetNewSceneObjectName("sphere"),
                     RoundStyle.GetSphereVisualStyle(
                         color.SetAlpha(RoundStyle.AuxGeometryColorAlpha)
                     ),
@@ -3580,9 +3640,9 @@ public class CGaFloat64Visualizer :
 
         if (RoundStyle.DrawPosition)
         {
-            MainSceneComposer.AddPoint(
+            SceneComposer.AddPoint(
                 GrVisualPoint3D.CreateAnimated(
-                    GetNewSceneObjectName("point"),
+                    AnimationComposer.GetNewSceneObjectName("point"),
                     RoundStyle.GetPointVisualStyle(
                         color.SetAlpha(RoundStyle.AuxGeometryColorAlpha),
                         RoundStyle.Thickness * 1.5
@@ -3594,9 +3654,9 @@ public class CGaFloat64Visualizer :
 
         if (RoundStyle.DrawDirection)
         {
-            MainSceneComposer.AddVector(
+            SceneComposer.AddVector(
                 GrVisualVector3D.CreateAnimated(
-                    GetNewSceneObjectName("vector"),
+                    AnimationComposer.GetNewSceneObjectName("vector"),
                     RoundStyle.GetVectorVisualStyle(
                         color.SetAlpha(RoundStyle.AuxGeometryColorAlpha),
                         RoundStyle.Thickness
@@ -3609,9 +3669,9 @@ public class CGaFloat64Visualizer :
 
         if (RoundStyle.DrawNormalDirection)
         {
-            MainSceneComposer.AddBivector(
+            SceneComposer.AddBivector(
                 GrVisualBivector3D.CreateAnimated(
-                    GetNewSceneObjectName("bivector"),
+                    AnimationComposer.GetNewSceneObjectName("bivector"),
                     RoundStyle.GetVectorVisualStyle(
                         color.SetAlpha(RoundStyle.AuxGeometryColorAlpha),
                         RoundStyle.Thickness
@@ -3632,9 +3692,9 @@ public class CGaFloat64Visualizer :
         var normal =
             direction.ToXyBivector3D().DirectionToUnitNormal3D(LinFloat64Vector3D.UnitSymmetric);
 
-        MainSceneComposer.AddCircleCurve(
+        SceneComposer.AddCircleCurve(
             GrVisualCircleCurve3D.CreateStatic(
-                GetNewSceneObjectName("circle"),
+                AnimationComposer.GetNewSceneObjectName("circle"),
                 RoundStyle.GetCircleVisualStyle(color),
                 center.ToXyLinVector3D(),
                 normal,
@@ -3644,9 +3704,9 @@ public class CGaFloat64Visualizer :
 
         if (RoundStyle.DrawSphere)
         {
-            MainSceneComposer.AddSphereSurface(
+            SceneComposer.AddSphere(
                 GrVisualSphereSurface3D.CreateStatic(
-                    GetNewSceneObjectName("sphere"),
+                    AnimationComposer.GetNewSceneObjectName("sphere"),
                     RoundStyle.GetSphereVisualStyle(
                         color.SetAlpha(RoundStyle.AuxGeometryColorAlpha)
                     ),
@@ -3658,9 +3718,9 @@ public class CGaFloat64Visualizer :
 
         if (RoundStyle.DrawCenter)
         {
-            MainSceneComposer.AddPoint(
+            SceneComposer.AddPoint(
                 GrVisualPoint3D.CreateStatic(
-                    GetNewSceneObjectName("point"),
+                    AnimationComposer.GetNewSceneObjectName("point"),
                     RoundStyle.GetPointVisualStyle(
                         color.SetAlpha(RoundStyle.AuxGeometryColorAlpha)
                     ),
@@ -3671,9 +3731,9 @@ public class CGaFloat64Visualizer :
 
         if (RoundStyle.DrawPosition)
         {
-            MainSceneComposer.AddPoint(
+            SceneComposer.AddPoint(
                 GrVisualPoint3D.CreateStatic(
-                    GetNewSceneObjectName("point"),
+                    AnimationComposer.GetNewSceneObjectName("point"),
                     RoundStyle.GetPointVisualStyle(
                         color.SetAlpha(RoundStyle.AuxGeometryColorAlpha),
                         RoundStyle.Thickness * 1.5
@@ -3685,9 +3745,9 @@ public class CGaFloat64Visualizer :
 
         if (RoundStyle.DrawDirection)
         {
-            MainSceneComposer.AddBivector(
+            SceneComposer.AddBivector(
                 GrVisualBivector3D.CreateStatic(
-                    GetNewSceneObjectName("bivector"),
+                    AnimationComposer.GetNewSceneObjectName("bivector"),
                     RoundStyle.GetVectorVisualStyle(
                         color.SetAlpha(RoundStyle.AuxGeometryColorAlpha),
                         RoundStyle.Thickness
@@ -3701,9 +3761,9 @@ public class CGaFloat64Visualizer :
 
         if (RoundStyle.DrawNormalDirection)
         {
-            MainSceneComposer.AddVector(
+            SceneComposer.AddVector(
                 GrVisualVector3D.CreateStatic(
-                    GetNewSceneObjectName("vector"),
+                    AnimationComposer.GetNewSceneObjectName("vector"),
                     RoundStyle.GetVectorVisualStyle(
                         color.SetAlpha(RoundStyle.AuxGeometryColorAlpha),
                         RoundStyle.Thickness
@@ -3720,10 +3780,10 @@ public class CGaFloat64Visualizer :
     public CGaFloat64Visualizer DrawRoundCircle2D(Color color, IFloat64ParametricCurve2D center, IParametricBivector2D direction, IFloat64ParametricScalar radius)
     {
         var animatedCenter =
-            AnimationSpecs.CreateAnimatedVector3D(center.ToXyParametricCurve3D());
+            SamplingSpecs.CreateAnimatedVector3D(center.ToXyParametricCurve3D());
 
         var animatedNormal =
-            AnimationSpecs.CreateAnimatedVector3D(
+            SamplingSpecs.CreateAnimatedVector3D(
                 direction
                 .ToParametricCurve3D(b =>
                     b.ToXyBivector3D().DirectionToUnitNormal3D(LinFloat64Vector3D.UnitSymmetric)
@@ -3731,11 +3791,11 @@ public class CGaFloat64Visualizer :
             );
 
         var animatedRadius =
-            AnimationSpecs.CreateAnimatedScalar(radius);
+            SamplingSpecs.CreateAnimatedScalar(radius);
 
-        MainSceneComposer.AddCircleCurve(
+        SceneComposer.AddCircleCurve(
             GrVisualCircleCurve3D.CreateAnimated(
-                GetNewSceneObjectName("circle"),
+                AnimationComposer.GetNewSceneObjectName("circle"),
                 RoundStyle.GetCircleVisualStyle(color),
                 animatedCenter,
                 animatedNormal,
@@ -3745,9 +3805,9 @@ public class CGaFloat64Visualizer :
 
         if (RoundStyle.DrawSphere)
         {
-            MainSceneComposer.AddSphereSurface(
+            SceneComposer.AddSphere(
                 GrVisualSphereSurface3D.CreateAnimated(
-                    GetNewSceneObjectName("sphere"),
+                    AnimationComposer.GetNewSceneObjectName("sphere"),
                     RoundStyle.GetSphereVisualStyle(
                         color.SetAlpha(RoundStyle.AuxGeometryColorAlpha)
                     ),
@@ -3759,9 +3819,9 @@ public class CGaFloat64Visualizer :
 
         if (RoundStyle.DrawCenter)
         {
-            MainSceneComposer.AddPoint(
+            SceneComposer.AddPoint(
                 GrVisualPoint3D.CreateAnimated(
-                    GetNewSceneObjectName("point"),
+                    AnimationComposer.GetNewSceneObjectName("point"),
                     RoundStyle.GetPointVisualStyle(
                         color.SetAlpha(RoundStyle.AuxGeometryColorAlpha)
                     ),
@@ -3772,9 +3832,9 @@ public class CGaFloat64Visualizer :
 
         if (RoundStyle.DrawPosition)
         {
-            MainSceneComposer.AddPoint(
+            SceneComposer.AddPoint(
                 GrVisualPoint3D.CreateAnimated(
-                    GetNewSceneObjectName("point"),
+                    AnimationComposer.GetNewSceneObjectName("point"),
                     RoundStyle.GetPointVisualStyle(
                         color.SetAlpha(RoundStyle.AuxGeometryColorAlpha),
                         RoundStyle.Thickness * 1.5
@@ -3786,9 +3846,9 @@ public class CGaFloat64Visualizer :
 
         if (RoundStyle.DrawDirection)
         {
-            MainSceneComposer.AddBivector(
+            SceneComposer.AddBivector(
                 GrVisualBivector3D.CreateAnimated(
-                    GetNewSceneObjectName("bivector"),
+                    AnimationComposer.GetNewSceneObjectName("bivector"),
                     RoundStyle.GetVectorVisualStyle(
                         color.SetAlpha(RoundStyle.AuxGeometryColorAlpha),
                         RoundStyle.Thickness
@@ -3802,9 +3862,9 @@ public class CGaFloat64Visualizer :
 
         if (RoundStyle.DrawNormalDirection)
         {
-            MainSceneComposer.AddVector(
+            SceneComposer.AddVector(
                 GrVisualVector3D.CreateAnimated(
-                    GetNewSceneObjectName("vector"),
+                    AnimationComposer.GetNewSceneObjectName("vector"),
                     RoundStyle.GetVectorVisualStyle(
                         color.SetAlpha(RoundStyle.AuxGeometryColorAlpha),
                         RoundStyle.Thickness
@@ -3821,25 +3881,25 @@ public class CGaFloat64Visualizer :
     public CGaFloat64Visualizer DrawRoundCircle2D(Color color, CGaFloat64ParametricElement element)
     {
         var animatedPosition =
-            AnimationSpecs.CreateXyAnimatedVector3D(
+            SamplingSpecs.CreateXyAnimatedVector3D(
                 element.PositionToParametricCurve2D()
             );
 
         var animatedNormal =
-            AnimationSpecs.CreateAnimatedVector3D(
+            SamplingSpecs.CreateAnimatedVector3D(
                 element
                     .DirectionToParametricBivector2D()
                     .XyDirectionToNormal3D(LinFloat64Vector3D.UnitSymmetric)
             );
 
         var animatedRadius =
-            AnimationSpecs.CreateAnimatedScalar(
+            SamplingSpecs.CreateAnimatedScalar(
                 element.RealRadiusToParametricScalar()
             );
 
-        MainSceneComposer.AddCircleCurve(
+        SceneComposer.AddCircleCurve(
             GrVisualCircleCurve3D.CreateAnimated(
-                GetNewSceneObjectName("circle"),
+                AnimationComposer.GetNewSceneObjectName("circle"),
                 RoundStyle.GetCircleVisualStyle(color),
                 animatedPosition,
                 animatedNormal,
@@ -3849,9 +3909,9 @@ public class CGaFloat64Visualizer :
 
         if (RoundStyle.DrawSphere)
         {
-            MainSceneComposer.AddSphereSurface(
+            SceneComposer.AddSphere(
                 GrVisualSphereSurface3D.CreateAnimated(
-                    GetNewSceneObjectName("sphere"),
+                    AnimationComposer.GetNewSceneObjectName("sphere"),
                     RoundStyle.GetSphereVisualStyle(
                         color.SetAlpha(RoundStyle.AuxGeometryColorAlpha)
                     ),
@@ -3863,9 +3923,9 @@ public class CGaFloat64Visualizer :
 
         if (RoundStyle.DrawCenter)
         {
-            MainSceneComposer.AddPoint(
+            SceneComposer.AddPoint(
                 GrVisualPoint3D.CreateAnimated(
-                    GetNewSceneObjectName("point"),
+                    AnimationComposer.GetNewSceneObjectName("point"),
                     RoundStyle.GetPointVisualStyle(
                         color.SetAlpha(RoundStyle.AuxGeometryColorAlpha)
                     ),
@@ -3876,9 +3936,9 @@ public class CGaFloat64Visualizer :
 
         if (RoundStyle.DrawPosition)
         {
-            MainSceneComposer.AddPoint(
+            SceneComposer.AddPoint(
                 GrVisualPoint3D.CreateAnimated(
-                    GetNewSceneObjectName("point"),
+                    AnimationComposer.GetNewSceneObjectName("point"),
                     RoundStyle.GetPointVisualStyle(
                         color.SetAlpha(RoundStyle.AuxGeometryColorAlpha),
                         RoundStyle.Thickness * 1.5
@@ -3890,9 +3950,9 @@ public class CGaFloat64Visualizer :
 
         if (RoundStyle.DrawDirection)
         {
-            MainSceneComposer.AddBivector(
+            SceneComposer.AddBivector(
                 GrVisualBivector3D.CreateAnimated(
-                    GetNewSceneObjectName("bivector"),
+                    AnimationComposer.GetNewSceneObjectName("bivector"),
                     RoundStyle.GetVectorVisualStyle(
                         color.SetAlpha(RoundStyle.AuxGeometryColorAlpha),
                         RoundStyle.Thickness
@@ -3906,9 +3966,9 @@ public class CGaFloat64Visualizer :
 
         if (RoundStyle.DrawNormalDirection)
         {
-            MainSceneComposer.AddVector(
+            SceneComposer.AddVector(
                 GrVisualVector3D.CreateAnimated(
-                    GetNewSceneObjectName("vector"),
+                    AnimationComposer.GetNewSceneObjectName("vector"),
                     RoundStyle.GetVectorVisualStyle(
                         color.SetAlpha(RoundStyle.AuxGeometryColorAlpha),
                         RoundStyle.Thickness
@@ -3928,9 +3988,9 @@ public class CGaFloat64Visualizer :
         var normal =
             direction.DirectionToUnitNormal3D(LinFloat64Vector3D.UnitSymmetric);
 
-        MainSceneComposer.AddCircleCurve(
+        SceneComposer.AddCircleCurve(
             GrVisualCircleCurve3D.CreateStatic(
-                GetNewSceneObjectName("circle"),
+                AnimationComposer.GetNewSceneObjectName("circle"),
                 RoundStyle.GetCircleVisualStyle(color),
                 center,
                 normal,
@@ -3940,9 +4000,9 @@ public class CGaFloat64Visualizer :
 
         if (RoundStyle.DrawSphere)
         {
-            MainSceneComposer.AddSphereSurface(
+            SceneComposer.AddSphere(
                 GrVisualSphereSurface3D.CreateStatic(
-                    GetNewSceneObjectName("sphere"),
+                    AnimationComposer.GetNewSceneObjectName("sphere"),
                     RoundStyle.GetSphereVisualStyle(
                         color.SetAlpha(RoundStyle.AuxGeometryColorAlpha)
                     ),
@@ -3954,9 +4014,9 @@ public class CGaFloat64Visualizer :
 
         if (RoundStyle.DrawCenter)
         {
-            MainSceneComposer.AddPoint(
+            SceneComposer.AddPoint(
                 GrVisualPoint3D.CreateStatic(
-                    GetNewSceneObjectName("point"),
+                    AnimationComposer.GetNewSceneObjectName("point"),
                     RoundStyle.GetPointVisualStyle(
                         color.SetAlpha(RoundStyle.AuxGeometryColorAlpha)
                     ),
@@ -3967,9 +4027,9 @@ public class CGaFloat64Visualizer :
 
         if (RoundStyle.DrawPosition)
         {
-            MainSceneComposer.AddPoint(
+            SceneComposer.AddPoint(
                 GrVisualPoint3D.CreateStatic(
-                    GetNewSceneObjectName("point"),
+                    AnimationComposer.GetNewSceneObjectName("point"),
                     RoundStyle.GetPointVisualStyle(
                         color.SetAlpha(RoundStyle.AuxGeometryColorAlpha),
                         RoundStyle.Thickness * 1.5
@@ -3981,9 +4041,9 @@ public class CGaFloat64Visualizer :
 
         if (RoundStyle.DrawDirection)
         {
-            MainSceneComposer.AddBivector(
+            SceneComposer.AddBivector(
                 GrVisualBivector3D.CreateStatic(
-                    GetNewSceneObjectName("bivector"),
+                    AnimationComposer.GetNewSceneObjectName("bivector"),
                     RoundStyle.GetVectorVisualStyle(
                         color.SetAlpha(RoundStyle.AuxGeometryColorAlpha),
                         RoundStyle.Thickness
@@ -3997,9 +4057,9 @@ public class CGaFloat64Visualizer :
 
         if (RoundStyle.DrawNormalDirection)
         {
-            MainSceneComposer.AddVector(
+            SceneComposer.AddVector(
                 GrVisualVector3D.CreateStatic(
-                    GetNewSceneObjectName("vector"),
+                    AnimationComposer.GetNewSceneObjectName("vector"),
                     RoundStyle.GetVectorVisualStyle(
                         color.SetAlpha(RoundStyle.AuxGeometryColorAlpha),
                         RoundStyle.Thickness
@@ -4016,17 +4076,17 @@ public class CGaFloat64Visualizer :
     public CGaFloat64Visualizer DrawRoundCircle3D(Color color, IParametricCurve3D center, IParametricBivector3D direction, IFloat64ParametricScalar radius)
     {
         var animatedCenter =
-            AnimationSpecs.CreateAnimatedVector3D(center);
+            SamplingSpecs.CreateAnimatedVector3D(center);
 
         var animatedNormal =
-            AnimationSpecs.CreateAnimatedVector3D(direction.GetNormalVectorCurve());
+            SamplingSpecs.CreateAnimatedVector3D(direction.GetNormalVectorCurve());
 
         var animatedRadius =
-            AnimationSpecs.CreateAnimatedScalar(radius);
+            SamplingSpecs.CreateAnimatedScalar(radius);
 
-        MainSceneComposer.AddCircleCurve(
+        SceneComposer.AddCircleCurve(
             GrVisualCircleCurve3D.CreateAnimated(
-                GetNewSceneObjectName("circle"),
+                AnimationComposer.GetNewSceneObjectName("circle"),
                 RoundStyle.GetCircleVisualStyle(color),
                 animatedCenter,
                 animatedNormal,
@@ -4036,9 +4096,9 @@ public class CGaFloat64Visualizer :
 
         if (RoundStyle.DrawSphere)
         {
-            MainSceneComposer.AddSphereSurface(
+            SceneComposer.AddSphere(
                 GrVisualSphereSurface3D.CreateAnimated(
-                    GetNewSceneObjectName("sphere"),
+                    AnimationComposer.GetNewSceneObjectName("sphere"),
                     RoundStyle.GetSphereVisualStyle(
                         color.SetAlpha(RoundStyle.AuxGeometryColorAlpha)
                     ),
@@ -4050,9 +4110,9 @@ public class CGaFloat64Visualizer :
 
         if (RoundStyle.DrawCenter)
         {
-            MainSceneComposer.AddPoint(
+            SceneComposer.AddPoint(
                 GrVisualPoint3D.CreateAnimated(
-                    GetNewSceneObjectName("point"),
+                    AnimationComposer.GetNewSceneObjectName("point"),
                     RoundStyle.GetPointVisualStyle(
                         color.SetAlpha(RoundStyle.AuxGeometryColorAlpha)
                     ),
@@ -4063,9 +4123,9 @@ public class CGaFloat64Visualizer :
 
         if (RoundStyle.DrawPosition)
         {
-            MainSceneComposer.AddPoint(
+            SceneComposer.AddPoint(
                 GrVisualPoint3D.CreateAnimated(
-                    GetNewSceneObjectName("point"),
+                    AnimationComposer.GetNewSceneObjectName("point"),
                     RoundStyle.GetPointVisualStyle(
                         color.SetAlpha(RoundStyle.AuxGeometryColorAlpha),
                         RoundStyle.Thickness * 1.5
@@ -4077,9 +4137,9 @@ public class CGaFloat64Visualizer :
 
         if (RoundStyle.DrawDirection)
         {
-            MainSceneComposer.AddBivector(
+            SceneComposer.AddBivector(
                 GrVisualBivector3D.CreateAnimated(
-                    GetNewSceneObjectName("bivector"),
+                    AnimationComposer.GetNewSceneObjectName("bivector"),
                     RoundStyle.GetVectorVisualStyle(
                         color.SetAlpha(RoundStyle.AuxGeometryColorAlpha),
                         RoundStyle.Thickness
@@ -4093,9 +4153,9 @@ public class CGaFloat64Visualizer :
 
         if (RoundStyle.DrawNormalDirection)
         {
-            MainSceneComposer.AddVector(
+            SceneComposer.AddVector(
                 GrVisualVector3D.CreateAnimated(
-                    GetNewSceneObjectName("vector"),
+                    AnimationComposer.GetNewSceneObjectName("vector"),
                     RoundStyle.GetVectorVisualStyle(
                         color.SetAlpha(RoundStyle.AuxGeometryColorAlpha),
                         RoundStyle.Thickness
@@ -4112,23 +4172,23 @@ public class CGaFloat64Visualizer :
     public CGaFloat64Visualizer DrawRoundCircle3D(Color color, CGaFloat64ParametricElement element)
     {
         var animatedPosition =
-            AnimationSpecs.CreateAnimatedVector3D(
+            SamplingSpecs.CreateAnimatedVector3D(
                 element.PositionToParametricCurve3D()
             );
 
         var animatedNormal =
-            AnimationSpecs.CreateAnimatedVector3D(
+            SamplingSpecs.CreateAnimatedVector3D(
                 element.NormalDirectionToParametricCurve3D()
             );
 
         var animatedRadius =
-            AnimationSpecs.CreateAnimatedScalar(
+            SamplingSpecs.CreateAnimatedScalar(
                 element.RealRadiusToParametricScalar()
             );
 
-        MainSceneComposer.AddCircleCurve(
+        SceneComposer.AddCircleCurve(
             GrVisualCircleCurve3D.CreateAnimated(
-                GetNewSceneObjectName("circle"),
+                AnimationComposer.GetNewSceneObjectName("circle"),
                 RoundStyle.GetCircleVisualStyle(color),
                 animatedPosition,
                 animatedNormal,
@@ -4138,9 +4198,9 @@ public class CGaFloat64Visualizer :
 
         if (RoundStyle.DrawSphere)
         {
-            MainSceneComposer.AddSphereSurface(
+            SceneComposer.AddSphere(
                 GrVisualSphereSurface3D.CreateAnimated(
-                    GetNewSceneObjectName("sphere"),
+                    AnimationComposer.GetNewSceneObjectName("sphere"),
                     RoundStyle.GetSphereVisualStyle(
                         color.SetAlpha(RoundStyle.AuxGeometryColorAlpha)
                     ),
@@ -4152,9 +4212,9 @@ public class CGaFloat64Visualizer :
 
         if (RoundStyle.DrawCenter)
         {
-            MainSceneComposer.AddPoint(
+            SceneComposer.AddPoint(
                 GrVisualPoint3D.CreateAnimated(
-                    GetNewSceneObjectName("point"),
+                    AnimationComposer.GetNewSceneObjectName("point"),
                     RoundStyle.GetPointVisualStyle(
                         color.SetAlpha(RoundStyle.AuxGeometryColorAlpha)
                     ),
@@ -4165,9 +4225,9 @@ public class CGaFloat64Visualizer :
 
         if (RoundStyle.DrawPosition)
         {
-            MainSceneComposer.AddPoint(
+            SceneComposer.AddPoint(
                 GrVisualPoint3D.CreateAnimated(
-                    GetNewSceneObjectName("point"),
+                    AnimationComposer.GetNewSceneObjectName("point"),
                     RoundStyle.GetPointVisualStyle(
                         color.SetAlpha(RoundStyle.AuxGeometryColorAlpha),
                         RoundStyle.Thickness * 1.5
@@ -4179,9 +4239,9 @@ public class CGaFloat64Visualizer :
 
         if (RoundStyle.DrawDirection)
         {
-            MainSceneComposer.AddBivector(
+            SceneComposer.AddBivector(
                 GrVisualBivector3D.CreateAnimated(
-                    GetNewSceneObjectName("bivector"),
+                    AnimationComposer.GetNewSceneObjectName("bivector"),
                     RoundStyle.GetVectorVisualStyle(
                         color.SetAlpha(RoundStyle.AuxGeometryColorAlpha),
                         RoundStyle.Thickness
@@ -4195,9 +4255,9 @@ public class CGaFloat64Visualizer :
 
         if (RoundStyle.DrawNormalDirection)
         {
-            MainSceneComposer.AddVector(
+            SceneComposer.AddVector(
                 GrVisualVector3D.CreateAnimated(
-                    GetNewSceneObjectName("vector"),
+                    AnimationComposer.GetNewSceneObjectName("vector"),
                     RoundStyle.GetVectorVisualStyle(
                         color.SetAlpha(RoundStyle.AuxGeometryColorAlpha),
                         RoundStyle.Thickness
@@ -4214,9 +4274,9 @@ public class CGaFloat64Visualizer :
 
     public CGaFloat64Visualizer DrawRoundSphere3D(Color color, LinFloat64Vector3D center, LinFloat64Trivector3D direction, double radius)
     {
-        MainSceneComposer.AddSphereSurface(
+        SceneComposer.AddSphere(
             GrVisualSphereSurface3D.CreateStatic(
-                GetNewSceneObjectName("sphere"),
+                AnimationComposer.GetNewSceneObjectName("sphere"),
                 RoundStyle.GetSphereVisualStyle(color),
                 center,
                 radius
@@ -4225,9 +4285,9 @@ public class CGaFloat64Visualizer :
 
         if (RoundStyle.DrawCenter)
         {
-            MainSceneComposer.AddPoint(
+            SceneComposer.AddPoint(
                 GrVisualPoint3D.CreateStatic(
-                    GetNewSceneObjectName("point"),
+                    AnimationComposer.GetNewSceneObjectName("point"),
                     RoundStyle.GetPointVisualStyle(
                         color.SetAlpha(RoundStyle.AuxGeometryColorAlpha),
                         RoundStyle.Thickness * 1.5
@@ -4243,14 +4303,14 @@ public class CGaFloat64Visualizer :
     public CGaFloat64Visualizer DrawRoundSphere3D(Color color, IParametricCurve3D center, IParametricTrivector3D direction, IFloat64ParametricScalar radius)
     {
         var animatedCenter =
-            AnimationSpecs.CreateAnimatedVector3D(center);
+            SamplingSpecs.CreateAnimatedVector3D(center);
 
         var animatedRadius =
-            AnimationSpecs.CreateAnimatedScalar(radius);
+            SamplingSpecs.CreateAnimatedScalar(radius);
 
-        MainSceneComposer.AddSphereSurface(
+        SceneComposer.AddSphere(
             GrVisualSphereSurface3D.CreateAnimated(
-                GetNewSceneObjectName("sphere"),
+                AnimationComposer.GetNewSceneObjectName("sphere"),
                 RoundStyle.GetSphereVisualStyle(color),
                 animatedCenter,
                 animatedRadius
@@ -4259,9 +4319,9 @@ public class CGaFloat64Visualizer :
 
         if (RoundStyle.DrawCenter)
         {
-            MainSceneComposer.AddPoint(
+            SceneComposer.AddPoint(
                 GrVisualPoint3D.CreateAnimated(
-                    GetNewSceneObjectName("point"),
+                    AnimationComposer.GetNewSceneObjectName("point"),
                     RoundStyle.GetPointVisualStyle(
                         color.SetAlpha(RoundStyle.AuxGeometryColorAlpha),
                         RoundStyle.Thickness * 1.5
@@ -4277,18 +4337,18 @@ public class CGaFloat64Visualizer :
     public CGaFloat64Visualizer DrawRoundSphere3D(Color color, CGaFloat64ParametricElement element)
     {
         var animatedPosition =
-            AnimationSpecs.CreateAnimatedVector3D(
+            SamplingSpecs.CreateAnimatedVector3D(
                 element.PositionToParametricCurve3D()
             );
 
         var animatedRadius =
-            AnimationSpecs.CreateAnimatedScalar(
+            SamplingSpecs.CreateAnimatedScalar(
                 element.RealRadiusToParametricScalar()
             );
 
-        MainSceneComposer.AddSphereSurface(
+        SceneComposer.AddSphere(
             GrVisualSphereSurface3D.CreateAnimated(
-                GetNewSceneObjectName("sphere"),
+                AnimationComposer.GetNewSceneObjectName("sphere"),
                 RoundStyle.GetSphereVisualStyle(color),
                 animatedPosition,
                 animatedRadius
@@ -4297,9 +4357,9 @@ public class CGaFloat64Visualizer :
 
         if (RoundStyle.DrawCenter)
         {
-            MainSceneComposer.AddPoint(
+            SceneComposer.AddPoint(
                 GrVisualPoint3D.CreateAnimated(
-                    GetNewSceneObjectName("point"),
+                    AnimationComposer.GetNewSceneObjectName("point"),
                     RoundStyle.GetPointVisualStyle(
                         color.SetAlpha(RoundStyle.AuxGeometryColorAlpha),
                         RoundStyle.Thickness * 1.5

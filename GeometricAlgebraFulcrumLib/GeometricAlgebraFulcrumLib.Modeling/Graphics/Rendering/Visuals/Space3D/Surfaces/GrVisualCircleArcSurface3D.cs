@@ -6,6 +6,7 @@ using GeometricAlgebraFulcrumLib.Modeling.Graphics.Meshes.PointsPath;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Meshes.PointsPath.Space3D;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.Visuals.Space3D.Animations;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.Visuals.Space3D.Styles;
+using GeometricAlgebraFulcrumLib.Modeling.Signals;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Basic;
 
 namespace GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.Visuals.Space3D.Surfaces;
@@ -39,7 +40,9 @@ public sealed class GrVisualCircleArcSurface3D :
             direction2,
             angle,
             radius,
-            drawEdge, GrVisualAnimationSpecs.Static);
+            drawEdge, 
+            Float64SamplingSpecs.Static
+        );
     }
 
     public static GrVisualCircleArcSurface3D CreateStatic(string name, GrVisualSurfaceStyle3D style, ILinFloat64Vector3D center, ILinFloat64Vector3D direction1, ILinFloat64Vector3D direction2, double radius, bool innerArc, bool drawEdge)
@@ -56,7 +59,7 @@ public sealed class GrVisualCircleArcSurface3D :
                 direction2,
                 angle,
                 radius,
-                drawEdge, GrVisualAnimationSpecs.Static) 
+                drawEdge, Float64SamplingSpecs.Static) 
             : new GrVisualCircleArcSurface3D(
                 name,
                 style,
@@ -65,10 +68,10 @@ public sealed class GrVisualCircleArcSurface3D :
                 direction2.VectorNegative(),
                 LinFloat64PolarAngle.Angle360 - angle,
                 radius,
-                drawEdge, GrVisualAnimationSpecs.Static);
+                drawEdge, Float64SamplingSpecs.Static);
     }
 
-    public static GrVisualCircleArcSurface3D Create(string name, GrVisualSurfaceStyle3D style, ILinFloat64Vector3D direction1, ILinFloat64Vector3D direction2, LinFloat64PolarAngle angle, double radius, bool drawEdge, GrVisualAnimationSpecs animationSpecs)
+    public static GrVisualCircleArcSurface3D Create(string name, GrVisualSurfaceStyle3D style, ILinFloat64Vector3D direction1, ILinFloat64Vector3D direction2, LinFloat64PolarAngle angle, double radius, bool drawEdge, Float64SamplingSpecs samplingSpecs)
     {
         return new GrVisualCircleArcSurface3D(
             name,
@@ -79,11 +82,11 @@ public sealed class GrVisualCircleArcSurface3D :
             angle,
             radius,
             drawEdge, 
-            animationSpecs
+            samplingSpecs
         );
     }
         
-    public static GrVisualCircleArcSurface3D Create(string name, GrVisualSurfaceStyle3D style, ILinFloat64Vector3D center, ILinFloat64Vector3D direction1, ILinFloat64Vector3D direction2, LinFloat64PolarAngle angle, double radius, bool drawEdge, GrVisualAnimationSpecs animationSpecs)
+    public static GrVisualCircleArcSurface3D Create(string name, GrVisualSurfaceStyle3D style, ILinFloat64Vector3D center, ILinFloat64Vector3D direction1, ILinFloat64Vector3D direction2, LinFloat64PolarAngle angle, double radius, bool drawEdge, Float64SamplingSpecs samplingSpecs)
     {
         return new GrVisualCircleArcSurface3D(
             name,
@@ -94,7 +97,7 @@ public sealed class GrVisualCircleArcSurface3D :
             angle,
             radius,
             drawEdge, 
-            animationSpecs
+            samplingSpecs
         );
     }
         
@@ -109,7 +112,7 @@ public sealed class GrVisualCircleArcSurface3D :
                 LinFloat64PolarAngle.Angle360,
                 1,
                 drawEdge, 
-                direction1.AnimationSpecs
+                direction1.SamplingSpecs
             ).SetAnimatedDirection1(direction1)
             .SetAnimatedDirection2(direction2)
             .SetAnimatedAngle(angle)
@@ -127,7 +130,7 @@ public sealed class GrVisualCircleArcSurface3D :
                 LinFloat64PolarAngle.Angle360,
                 radius,
                 drawEdge, 
-                angle.AnimationSpecs
+                angle.SamplingSpecs
             ).SetAnimatedAngle(angle);
     }
 
@@ -142,7 +145,7 @@ public sealed class GrVisualCircleArcSurface3D :
                 LinFloat64PolarAngle.Angle360,
                 1,
                 drawEdge, 
-                center.AnimationSpecs
+                center.SamplingSpecs
             ).SetAnimatedCenter(center)
             .SetAnimatedDirection1(direction1)
             .SetAnimatedDirection2(direction2)
@@ -207,8 +210,8 @@ public sealed class GrVisualCircleArcSurface3D :
     public GrVisualAnimatedScalar? AnimatedRadius { get; set; }
 
 
-    private GrVisualCircleArcSurface3D(string name, GrVisualSurfaceStyle3D style, ILinFloat64Vector3D center, ILinFloat64Vector3D direction1, ILinFloat64Vector3D direction2, LinFloat64PolarAngle angle, double radius, bool drawEdge, GrVisualAnimationSpecs animationSpecs)
-        : base(name, style, animationSpecs)
+    private GrVisualCircleArcSurface3D(string name, GrVisualSurfaceStyle3D style, ILinFloat64Vector3D center, ILinFloat64Vector3D direction1, ILinFloat64Vector3D direction2, LinFloat64PolarAngle angle, double radius, bool drawEdge, Float64SamplingSpecs samplingSpecs)
+        : base(name, style, samplingSpecs)
     {
         Center = center;
         Direction1 = direction1.ToUnitLinVector3D();
@@ -232,7 +235,7 @@ public sealed class GrVisualCircleArcSurface3D :
                Angle.DegreesValue is >= 0 and <= 360 &&
                Direction1.IsNearUnitVector() &&
                Direction2.IsNearUnitVector() &&
-               Direction1.VectorESp(Direction2).IsNearZero() &&
+               Direction1.VectorESp(Direction2).IsNearZero(1e-7) &&
                GetAnimatedGeometries().All(g => g.IsValid());
     }
 
@@ -336,14 +339,14 @@ public sealed class GrVisualCircleArcSurface3D :
 
     public LinFloat64Vector3D GetCenter(double time)
     {
-        return AnimationSpecs.IsStatic || AnimatedCenter is null
+        return SamplingSpecs.IsStatic || AnimatedCenter is null
             ? Center.ToLinVector3D()
             : AnimatedCenter.GetPoint(time);
     }
         
     public LinFloat64Vector3D GetDirection1(double time)
     {
-        return AnimationSpecs.IsStatic || AnimatedDirection1 is null
+        return SamplingSpecs.IsStatic || AnimatedDirection1 is null
             ? Direction1
             : AnimatedDirection1.GetPoint(time).ToUnitLinVector3D(LinFloat64Vector3D.E1);
     }
@@ -354,7 +357,7 @@ public sealed class GrVisualCircleArcSurface3D :
             GetDirection1(time);
 
         var direction2 = 
-            AnimationSpecs.IsStatic || AnimatedDirection2 is null
+            SamplingSpecs.IsStatic || AnimatedDirection2 is null
                 ? Direction2
                 : AnimatedDirection2.GetPoint(time);
 
@@ -367,14 +370,14 @@ public sealed class GrVisualCircleArcSurface3D :
         
     public LinFloat64Angle GetAngle(double time)
     {
-        return AnimationSpecs.IsStatic || AnimatedAngle is null
+        return SamplingSpecs.IsStatic || AnimatedAngle is null
             ? Angle
             : AnimatedAngle.GetValue(time).RadiansToPolarAngle();
     }
 
     public double GetRadius(double time)
     {
-        return AnimationSpecs.IsStatic || AnimatedRadius is null
+        return SamplingSpecs.IsStatic || AnimatedRadius is null
             ? Radius
             : AnimatedRadius.GetValue(time);
     }
@@ -385,7 +388,7 @@ public sealed class GrVisualCircleArcSurface3D :
 
         foreach (var frameIndex in GetValidFrameIndexSet())
         {
-            var time = (double)frameIndex / AnimationSpecs.FrameRate;
+            var time = (double)frameIndex / SamplingSpecs.SamplingRate;
                 
             yield return new KeyFrameRecord(
                 frameIndex, 

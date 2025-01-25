@@ -11,7 +11,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.LinearMaps.Sp
 public sealed class LinFloat64AxisToVectorRotation4D :
     LinFloat64VectorToVectorRotationBase4D
 {
-    public LinUnitBasisVector4D SourceAxis { get; }
+    public LinBasisVector4D SourceAxis { get; }
 
     public override LinFloat64Vector4D SourceVector { get; }
 

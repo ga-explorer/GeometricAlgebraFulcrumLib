@@ -5,6 +5,7 @@ using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
 using GeometricAlgebraFulcrumLib.Modeling.Calculus.Functions.Float64;
 using GeometricAlgebraFulcrumLib.Modeling.Calculus.Functions.Float64.Polynomials;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.Parametric.Float64.Space3D.Quaternions;
+using GeometricAlgebraFulcrumLib.Modeling.Signals;
 
 namespace GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.Visuals.Space3D.Animations;
 
@@ -13,20 +14,20 @@ public class GrVisualAnimatedQuaternion :
     IParametricQuaternion
 {
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static GrVisualAnimatedQuaternion Create(GrVisualAnimationSpecs animationSpecs, IParametricQuaternion baseCurve)
+    public static GrVisualAnimatedQuaternion Create(Float64SamplingSpecs samplingSpecs, IParametricQuaternion baseCurve)
     {
         return new GrVisualAnimatedQuaternion(
-            animationSpecs,
+            samplingSpecs,
             baseCurve,
-            animationSpecs.FrameTimeRange
+            samplingSpecs.TimeRange
         );
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static GrVisualAnimatedQuaternion Create(GrVisualAnimationSpecs animationSpecs, IParametricQuaternion baseCurve, Float64ScalarRange baseParameterRange)
+    public static GrVisualAnimatedQuaternion Create(Float64SamplingSpecs samplingSpecs, IParametricQuaternion baseCurve, Float64ScalarRange baseParameterRange)
     {
         return new GrVisualAnimatedQuaternion(
-            animationSpecs,
+            samplingSpecs,
             baseCurve,
             baseParameterRange
         );
@@ -39,9 +40,9 @@ public class GrVisualAnimatedQuaternion :
             time => -p1.GetDerivative1Quaternion(time));
 
         return new GrVisualAnimatedQuaternion(
-            p1.AnimationSpecs,
+            p1.SamplingSpecs,
             baseCurve,
-            p1.FrameTimeRange
+            p1.TimeRange
         );
     }
     
@@ -53,9 +54,9 @@ public class GrVisualAnimatedQuaternion :
         );
 
         return new GrVisualAnimatedQuaternion(
-            p1.AnimationSpecs,
+            p1.SamplingSpecs,
             baseCurve,
-            p1.FrameTimeRange
+            p1.TimeRange
         );
     }
     
@@ -67,24 +68,24 @@ public class GrVisualAnimatedQuaternion :
         );
 
         return new GrVisualAnimatedQuaternion(
-            p2.AnimationSpecs,
+            p2.SamplingSpecs,
             baseCurve,
-            p2.FrameTimeRange
+            p2.TimeRange
         );
     }
 
     public static GrVisualAnimatedQuaternion operator +(GrVisualAnimatedQuaternion p1, GrVisualAnimatedQuaternion p2)
     {
-        if (p1.AnimationSpecs != p2.AnimationSpecs)
+        if (p1.SamplingSpecs != p2.SamplingSpecs)
             throw new InvalidOperationException();
 
         var baseCurve = ComputedParametricQuaternion.Create(time => p1.GetQuaternion(time) + p2.GetQuaternion(time),
             time => p1.GetDerivative1Quaternion(time) + p2.GetDerivative1Quaternion(time));
 
         return new GrVisualAnimatedQuaternion(
-            p1.AnimationSpecs,
+            p1.SamplingSpecs,
             baseCurve,
-            p1.FrameTimeRange
+            p1.TimeRange
         );
     }
     
@@ -96,9 +97,9 @@ public class GrVisualAnimatedQuaternion :
         );
 
         return new GrVisualAnimatedQuaternion(
-            p1.AnimationSpecs,
+            p1.SamplingSpecs,
             baseCurve,
-            p1.FrameTimeRange
+            p1.TimeRange
         );
     }
     
@@ -108,24 +109,24 @@ public class GrVisualAnimatedQuaternion :
             time => -p2.GetDerivative1Quaternion(time));
 
         return new GrVisualAnimatedQuaternion(
-            p2.AnimationSpecs,
+            p2.SamplingSpecs,
             baseCurve,
-            p2.FrameTimeRange
+            p2.TimeRange
         );
     }
 
     public static GrVisualAnimatedQuaternion operator -(GrVisualAnimatedQuaternion p1, GrVisualAnimatedQuaternion p2)
     {
-        if (p1.AnimationSpecs != p2.AnimationSpecs)
+        if (p1.SamplingSpecs != p2.SamplingSpecs)
             throw new InvalidOperationException();
 
         var baseCurve = ComputedParametricQuaternion.Create(time => p1.GetQuaternion(time) - p2.GetQuaternion(time),
             time => p1.GetDerivative1Quaternion(time) - p2.GetDerivative1Quaternion(time));
 
         return new GrVisualAnimatedQuaternion(
-            p1.AnimationSpecs,
+            p1.SamplingSpecs,
             baseCurve,
-            p1.FrameTimeRange
+            p1.TimeRange
         );
     }
 
@@ -135,9 +136,9 @@ public class GrVisualAnimatedQuaternion :
             time => p1 * p2.GetDerivative1Quaternion(time));
 
         return new GrVisualAnimatedQuaternion(
-            p2.AnimationSpecs,
+            p2.SamplingSpecs,
             baseCurve,
-            p2.FrameTimeRange
+            p2.TimeRange
         );
     }
     
@@ -147,39 +148,39 @@ public class GrVisualAnimatedQuaternion :
             time => p1.GetDerivative1Quaternion(time) * p2);
 
         return new GrVisualAnimatedQuaternion(
-            p1.AnimationSpecs,
+            p1.SamplingSpecs,
             baseCurve,
-            p1.FrameTimeRange
+            p1.TimeRange
         );
     }
     
     public static GrVisualAnimatedQuaternion operator *(GrVisualAnimatedScalar p1, GrVisualAnimatedQuaternion p2)
     {
-        if (p1.AnimationSpecs != p2.AnimationSpecs)
+        if (p1.SamplingSpecs != p2.SamplingSpecs)
             throw new InvalidOperationException();
 
         var baseCurve = ComputedParametricQuaternion.Create(time => p1.GetValue(time) * p2.GetQuaternion(time),
             time => p1.GetDerivative1Value(time) * p2.GetQuaternion(time) + p2.GetDerivative1Quaternion(time) * p1.GetValue(time));
 
         return new GrVisualAnimatedQuaternion(
-            p1.AnimationSpecs,
+            p1.SamplingSpecs,
             baseCurve,
-            p1.FrameTimeRange
+            p1.TimeRange
         );
     }
     
     public static GrVisualAnimatedQuaternion operator *(GrVisualAnimatedQuaternion p1, GrVisualAnimatedScalar p2)
     {
-        if (p1.AnimationSpecs != p2.AnimationSpecs)
+        if (p1.SamplingSpecs != p2.SamplingSpecs)
             throw new InvalidOperationException();
 
         var baseCurve = ComputedParametricQuaternion.Create(time => p1.GetQuaternion(time) * p2.GetValue(time),
             time => p1.GetDerivative1Quaternion(time) * p2.GetValue(time) + p2.GetDerivative1Value(time) * p1.GetQuaternion(time));
 
         return new GrVisualAnimatedQuaternion(
-            p1.AnimationSpecs,
+            p1.SamplingSpecs,
             baseCurve,
-            p1.FrameTimeRange
+            p1.TimeRange
         );
     }
 
@@ -191,9 +192,9 @@ public class GrVisualAnimatedQuaternion :
             time => p1.GetDerivative1Quaternion(time) * p2);
 
         return new GrVisualAnimatedQuaternion(
-            p1.AnimationSpecs,
+            p1.SamplingSpecs,
             baseCurve,
-            p1.FrameTimeRange
+            p1.TimeRange
         );
     }
     
@@ -213,11 +214,11 @@ public class GrVisualAnimatedQuaternion :
         => BaseParameterRange.MaxValue;
     
     public Float64ScalarRange ParameterRange 
-        => FrameTimeRange;
+        => TimeRange;
 
     
-    private GrVisualAnimatedQuaternion(GrVisualAnimationSpecs animationSpecs, IParametricQuaternion baseCurve, Float64ScalarRange baseParameterRange)
-        : base(animationSpecs)
+    private GrVisualAnimatedQuaternion(Float64SamplingSpecs samplingSpecs, IParametricQuaternion baseCurve, Float64ScalarRange baseParameterRange)
+        : base(samplingSpecs)
     {
         BaseCurve = baseCurve;
         BaseParameterRange = baseParameterRange;
@@ -225,13 +226,13 @@ public class GrVisualAnimatedQuaternion :
         BaseParameterToTimeMap = DfAffinePolynomial.Create(
             MinBaseParameter,
             MaxBaseParameter,
-            MinFrameTime,
-            MaxFrameTime
+            MinTime,
+            MaxTime
         );
             
         TimeToBaseParameterMap = DfAffinePolynomial.Create(
-            MinFrameTime,
-            MaxFrameTime,
+            MinTime,
+            MaxTime,
             MinBaseParameter,
             MaxBaseParameter
         );
@@ -252,7 +253,7 @@ public class GrVisualAnimatedQuaternion :
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public LinFloat64Quaternion GetQuaternion(double time)
     {
-        if (!FrameTimeRange.Contains(time))
+        if (!TimeRange.Contains(time))
             throw new ArgumentOutOfRangeException();
 
         return BaseCurve.GetQuaternion(
@@ -262,7 +263,7 @@ public class GrVisualAnimatedQuaternion :
 
     public LinFloat64Quaternion GetDerivative1Quaternion(double time)
     {
-        if (!FrameTimeRange.Contains(time))
+        if (!TimeRange.Contains(time))
             throw new ArgumentOutOfRangeException();
 
         return BaseCurve.GetDerivative1Quaternion(
@@ -283,7 +284,7 @@ public class GrVisualAnimatedQuaternion :
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public IEnumerable<KeyValuePair<int, LinFloat64Quaternion>> GetKeyFrameIndexPositionPairs()
     {
-        return FrameIndexTimePairs.Select(
+        return SampleIndexTimePairs.Select(
             indexTimePair =>
             {
                 var (frameIndex, time) = indexTimePair;
@@ -301,7 +302,7 @@ public class GrVisualAnimatedQuaternion :
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public IEnumerable<KeyValuePair<int, double>> GetKeyFrameIndexValuePairs(Func<LinFloat64Quaternion, double> positionToValueMap)
     {
-        return FrameIndexTimePairs.Select(
+        return SampleIndexTimePairs.Select(
             indexTimePair =>
             {
                 var (frameIndex, time) = indexTimePair;

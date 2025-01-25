@@ -2,7 +2,9 @@
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Generic.Multivectors;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Generic.Processors;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Generic.LinearMaps;
+using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Generic.Vectors.SpaceND;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Generic;
+using GeometricAlgebraFulcrumLib.Utilities.Structures.BitManipulation;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Generic.LinearMaps.Outermorphisms;
 
@@ -70,6 +72,21 @@ public abstract class RGaOutermorphismBase<T> :
     public abstract RGaMultivector<T> OmMap(RGaMultivector<T> multivector);
         
     public abstract IEnumerable<KeyValuePair<ulong, RGaVector<T>>> GetOmMappedBasisVectors(int vSpaceDimensions);
-        
-    public abstract LinUnilinearMap<T> GetVectorMapPart(int vSpaceDimensions);
+
+    public virtual LinUnilinearMap<T> GetVectorMapPart(int vSpaceDimensions)
+    {
+        var indexVectorDictionary = vSpaceDimensions.GetRange(
+                index =>
+                    new KeyValuePair<int, RGaVector<T>>(
+                        index, 
+                        OmMapBasisVector(index)
+                    )
+            ).Where(p => !p.Value.IsZero)
+            .ToDictionary(
+                p => p.Key,
+                p => p.Value.ToLinVector()
+            );
+
+        return indexVectorDictionary.ToLinUnilinearMap(ScalarProcessor);
+    }
 }

@@ -1,7 +1,6 @@
 ﻿using System.Runtime.CompilerServices;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.BitManipulation;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Generic.Multivectors;
-using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Generic.LinearMaps;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Generic;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Generic.LinearMaps.Versors;
@@ -105,10 +104,6 @@ public class RGaVersor<T> :
         return evenMv - oddMv;
     }
 
-    public override LinUnilinearMap<T> GetVectorMapPart(int vSpaceDimensions)
-    {
-        throw new NotImplementedException();
-    }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public override IRGaVersor<T> GetVersorInverse()

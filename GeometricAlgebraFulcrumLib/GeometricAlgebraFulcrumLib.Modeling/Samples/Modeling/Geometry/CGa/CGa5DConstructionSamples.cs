@@ -8,7 +8,7 @@ using GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Float64.Operations;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.Parametric.Float64.Space1D.Scalars;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.Parametric.Float64.Space3D.Curves;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.Parametric.Float64.Space3D.Curves.Spherical;
-using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.Visuals.Space3D.Animations;
+using GeometricAlgebraFulcrumLib.Modeling.Signals;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Extensions;
 
 namespace GeometricAlgebraFulcrumLib.Modeling.Samples.Modeling.Geometry.CGa;
@@ -99,8 +99,8 @@ public static class CGa5DConstructionSamples
         const double maxTime = 24d;
         const int frameRate = 50;
 
-        var animationSpecs =
-            GrVisualAnimationSpecs.Create(frameRate, maxTime);
+        var samplingSpecs =
+            Float64SamplingSpecs.Create(frameRate, maxTime);
 
         var curve1 = GetPositionCurve1(maxTime);
         var curve2 = GetPositionCurve2(maxTime);
@@ -114,7 +114,7 @@ public static class CGa5DConstructionSamples
             );
 
         var frameIndexTimePairs =
-            animationSpecs.FrameIndexTimePairs.ToImmutableArray();
+            samplingSpecs.SampleIndexTimePairs.ToImmutableArray();
 
         var circleList =
             frameIndexTimePairs.Select(p =>

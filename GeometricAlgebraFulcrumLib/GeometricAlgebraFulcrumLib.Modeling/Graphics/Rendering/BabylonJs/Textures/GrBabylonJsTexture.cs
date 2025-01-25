@@ -5,92 +5,16 @@ namespace GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.BabylonJs.Textu
 public sealed class GrBabylonJsTexture :
     GrBabylonJsBaseTexture
 {
-    public sealed class TextureOptions :
-        GrBabylonJsObjectOptions
-    {
-        public GrBabylonJsCodeValue? Buffer
-        {
-            get => GetAttributeValueOrNull<GrBabylonJsCodeValue>("buffer");
-            set => SetAttributeValue("buffer", value);
-        }
-
-        public GrBabylonJsBooleanValue? DeleteBuffer
-        {
-            get => GetAttributeValueOrNull<GrBabylonJsBooleanValue>("deleteBuffer");
-            set => SetAttributeValue("deleteBuffer", value);
-        }
-
-        public GrBabylonJsBooleanValue? UseSrgbBuffer
-        {
-            get => GetAttributeValueOrNull<GrBabylonJsBooleanValue>("useSrgbBuffer");
-            set => SetAttributeValue("useSrgbBuffer", value);
-        }
-
-        public GrBabylonJsTextureFormatValue? Format
-        {
-            get => GetAttributeValueOrNull<GrBabylonJsTextureFormatValue>("format");
-            set => SetAttributeValue("format", value);
-        }
-
-        public GrBabylonJsBooleanValue? InvertY
-        {
-            get => GetAttributeValueOrNull<GrBabylonJsBooleanValue>("invertY");
-            set => SetAttributeValue("invertY", value);
-        }
-
-        public GrBabylonJsStringValue? MimeType
-        {
-            get => GetAttributeValueOrNull<GrBabylonJsStringValue>("mimeType");
-            set => SetAttributeValue("mimeType", value);
-        }
-
-        public GrBabylonJsBooleanValue? NoMipmap
-        {
-            get => GetAttributeValueOrNull<GrBabylonJsBooleanValue>("noMipmap");
-            set => SetAttributeValue("noMipmap", value);
-        }
-
-        public GrBabylonJsTextureSamplingModeValue? SamplingMode
-        {
-            get => GetAttributeValueOrNull<GrBabylonJsTextureSamplingModeValue>("samplingMode");
-            set => SetAttributeValue("samplingMode", value);
-        }
-
-
-        public TextureOptions()
-        {
-        }
-
-        public TextureOptions(TextureOptions options)
-        {
-            SetAttributeValues(options);
-        }
-    }
-
-    public sealed class TextureProperties :
-        BaseTextureProperties
-    {
-        public TextureProperties()
-        {
-        }
-
-        public TextureProperties(TextureProperties properties)
-        {
-            SetAttributeValues(properties);
-        }
-    }
-
-
     protected override string ConstructorName
         => "new BABYLON.Texture";
 
     public GrBabylonJsStringValue Url { get; set; }
     
-    public TextureOptions Options { get; private set; }
-        = new TextureOptions();
+    public GrBabylonJsTextureOptions Options { get; private set; }
+        = new GrBabylonJsTextureOptions();
 
-    public TextureProperties Properties { get; private set; }
-        = new TextureProperties();
+    public GrBabylonJsTextureProperties Properties { get; private set; }
+        = new GrBabylonJsTextureProperties();
     
     public override GrBabylonJsObjectOptions ObjectOptions
         => Options;
@@ -110,28 +34,28 @@ public sealed class GrBabylonJsTexture :
     }
 
     
-    public GrBabylonJsTexture SetOptions(TextureOptions options)
+    public GrBabylonJsTexture SetOptions(GrBabylonJsTextureOptions options)
     {
-        Options = new TextureOptions(options);
+        Options = new GrBabylonJsTextureOptions(options);
 
         return this;
     }
 
-    public GrBabylonJsTexture SetProperties(TextureProperties properties)
+    public GrBabylonJsTexture SetProperties(GrBabylonJsTextureProperties properties)
     {
-        Properties = new TextureProperties(properties);
+        Properties = new GrBabylonJsTextureProperties(properties);
 
         return this;
     }
 
     protected override IEnumerable<string> GetConstructorArguments()
     {
-        yield return Url.GetCode();
+        yield return Url.GetAttributeValueCode();
         
         if (ParentScene is null || ParentScene.IsEmpty) yield break;
         yield return ParentScene.Value.ConstName;
 
         if (Options.Count == 0) yield break;
-        yield return Options.GetCode();
+        yield return Options.GetAttributeSetCode();
     }
 }

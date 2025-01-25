@@ -1,12 +1,11 @@
 ﻿using System.Collections;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.BasicShapes;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.Borders.Space2D.Immutable;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.Borders.Space2D.Mutable;
+using GeometricAlgebraFulcrumLib.Modeling.Geometry.Borders.Space2D.Float64;
 
 namespace GeometricAlgebraFulcrumLib.Modeling.Graphics.Accelerators.BIH.Space2D;
 
 public sealed class AccBihNodeLeaf2D<T> 
-    : IAccBihNode2D<T> where T : IFiniteGeometricShape2D
+    : IAccBihNode2D<T> where T : IFloat64FiniteGeometricShape2D
 {
     private readonly T[] _geometricObjectsArray;
 
@@ -62,7 +61,7 @@ public sealed class AccBihNodeLeaf2D<T>
 
     public double ClipValue1 => double.PositiveInfinity;
 
-    public IEnumerable<IFiniteGeometricShape2D> Contents
+    public IEnumerable<IFloat64FiniteGeometricShape2D> Contents
     {
         get
         {
@@ -88,7 +87,7 @@ public sealed class AccBihNodeLeaf2D<T>
         return null;
     }
 
-    public bool Contains(IFiniteGeometricShape2D shape)
+    public bool Contains(IFloat64FiniteGeometricShape2D shape)
     {
         for (var i = FirstObjectIndex; i <= LastObjectIndex; i++)
             if (ReferenceEquals(_geometricObjectsArray[i], shape))
@@ -97,14 +96,14 @@ public sealed class AccBihNodeLeaf2D<T>
         return false;
     }
 
-    public BoundingBox2D GetBoundingBox()
+    public Float64BoundingBox2D GetBoundingBox()
     {
-        return BoundingBox2D.Create((IEnumerable<T>)this);
+        return Float64BoundingBox2D.Create((IEnumerable<T>)this);
     }
 
-    public MutableBoundingBox2D GetMutableBoundingBox()
+    public Float64BoundingBoxComposer2D GetBoundingBoxComposer()
     {
-        return MutableBoundingBox2D.Create((IEnumerable<T>)this);
+        return Float64BoundingBoxComposer2D.Create((IEnumerable<T>)this);
     }
 
     public IEnumerator<T> GetEnumerator()

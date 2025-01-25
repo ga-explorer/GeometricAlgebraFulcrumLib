@@ -4,7 +4,6 @@ using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Generic.Lin
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Generic.Multivectors;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Generic.Multivectors.Composers;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Generic.Processors;
-using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Generic.LinearMaps;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Generic.LinearMaps.Projectors;
 
@@ -105,11 +104,6 @@ public sealed class RGaProjector<T> :
                     )
                 )
             ).Where(r => !r.Value.IsZero);
-    }
-
-    public override LinUnilinearMap<T> GetVectorMapPart(int vSpaceDimensions)
-    {
-        throw new NotImplementedException();
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]

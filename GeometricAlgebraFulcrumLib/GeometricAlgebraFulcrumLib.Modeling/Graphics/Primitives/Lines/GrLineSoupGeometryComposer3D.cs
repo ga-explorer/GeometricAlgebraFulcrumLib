@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space3D;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.BasicShapes.Lines;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.BasicShapes.Lines.Immutable;
+using GeometricAlgebraFulcrumLib.Modeling.Geometry.BasicShapes.Lines.Space3D.Float64;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Primitives.Vertices;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Basic;
 
@@ -20,13 +20,13 @@ public class GrLineSoupGeometryComposer3D :
     public bool AllowSmallLines { get; set; }
 
     public GraphicsPrimitiveType3D PrimitiveType 
-        => GraphicsPrimitiveType3D.Lines;
+        => GraphicsPrimitiveType3D.LineList;
 
     public int Count 
         => _verticesList.Count >> 1;
 
-    public ILineSegment3D this[int index] 
-        => LineSegment3D.Create(
+    public IFloat64LineSegment3D this[int index] 
+        => Float64LineSegment3D.Create(
             _verticesList[2 * index],
             _verticesList[2 * index + 1]
         );
@@ -134,7 +134,7 @@ public class GrLineSoupGeometryComposer3D :
         return _verticesList[index];
     }
 
-    public bool AddLine(ILineSegment3D lineSegment)
+    public bool AddLine(IFloat64LineSegment3D lineSegment)
     {
         return StoreLine(
             AddVertex(lineSegment.GetPoint1()), 
@@ -175,7 +175,7 @@ public class GrLineSoupGeometryComposer3D :
     }
 
 
-    public GrLineSoupGeometryComposer3D AddLines(IEnumerable<ILineSegment3D> linesList)
+    public GrLineSoupGeometryComposer3D AddLines(IEnumerable<IFloat64LineSegment3D> linesList)
     {
         foreach (var line in linesList)
         {
@@ -255,10 +255,10 @@ public class GrLineSoupGeometryComposer3D :
     //    return geometry;
     //}
 
-    public IEnumerator<ILineSegment3D> GetEnumerator()
+    public IEnumerator<IFloat64LineSegment3D> GetEnumerator()
     {
         for (var i = 0; i < _verticesList.Count; i += 2)
-            yield return LineSegment3D.Create(
+            yield return Float64LineSegment3D.Create(
                 _verticesList[i],
                 _verticesList[i + 1]
             );

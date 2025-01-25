@@ -6,7 +6,6 @@ using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Generic.Mul
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Generic.Multivectors.Composers;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Generic.Processors;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Generic.Angles;
-using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Generic.LinearMaps;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Generic;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Generic.LinearMaps.Rotors;
@@ -230,11 +229,6 @@ public class RGaScaledRotor<T>
     public override RGaMultivector<T> OmMap(RGaMultivector<T> mv)
     {
         return Multivector.Gp(mv).Gp(MultivectorReverse);
-    }
-
-    public override LinUnilinearMap<T> GetVectorMapPart(int vSpaceDimensions)
-    {
-        throw new NotImplementedException();
     }
 
 

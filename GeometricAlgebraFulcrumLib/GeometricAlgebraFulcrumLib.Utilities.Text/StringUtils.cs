@@ -12,7 +12,7 @@ public static class StringUtils
 {
     private static readonly string[] LineSplitArray = new[] {"\r\n", "\n"};
 
-    private static readonly SHA256Managed HashString = new SHA256Managed();
+    private static readonly SHA256 HashString = SHA256.Create();
 
     private static readonly char[] HexDigitLower = "0123456789abcdef".ToCharArray();
         
@@ -97,7 +97,7 @@ public static class StringUtils
         return (text.IndexOf('\n') < 0);
     }
 
-    public static bool IsNullOrEmpty(this string text)
+    public static bool IsNullOrEmpty(this string? text)
     {
         return string.IsNullOrEmpty(text);
     }

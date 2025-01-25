@@ -5,38 +5,11 @@ namespace GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.BabylonJs.Textu
 public sealed class GrBabylonJsCloudTexture :
     GrBabylonJsProceduralTexture
 {
-    public sealed class CloudTextureProperties :
-        BaseTextureProperties
-    {
-        public GrBabylonJsColor4Value? SkyColor
-        {
-            get => GetAttributeValueOrNull<GrBabylonJsColor4Value>("skyColor");
-            set => SetAttributeValue("skyColor", value);
-        }
-
-        public GrBabylonJsColor4Value? CloudColor
-        {
-            get => GetAttributeValueOrNull<GrBabylonJsColor4Value>("cloudColor");
-            set => SetAttributeValue("cloudColor", value);
-        }
-
-
-        public CloudTextureProperties()
-        {
-        }
-
-        public CloudTextureProperties(CloudTextureProperties properties)
-        {
-            SetAttributeValues(properties);
-        }
-    }
-
-
     protected override string ConstructorName
         => "new BABYLON.CloudProceduralTexture";
     
-    public CloudTextureProperties Properties { get; private set; }
-        = new CloudTextureProperties();
+    public GrBabylonJsCloudTextureProperties Properties { get; private set; }
+        = new GrBabylonJsCloudTextureProperties();
 
     public override GrBabylonJsObjectProperties ObjectProperties 
         => Properties;
@@ -53,9 +26,9 @@ public sealed class GrBabylonJsCloudTexture :
     }
 
     
-    public GrBabylonJsCloudTexture SetProperties(CloudTextureProperties properties)
+    public GrBabylonJsCloudTexture SetProperties(GrBabylonJsCloudTextureProperties properties)
     {
-        Properties = new CloudTextureProperties(properties);
+        Properties = new GrBabylonJsCloudTextureProperties(properties);
 
         return this;
     }

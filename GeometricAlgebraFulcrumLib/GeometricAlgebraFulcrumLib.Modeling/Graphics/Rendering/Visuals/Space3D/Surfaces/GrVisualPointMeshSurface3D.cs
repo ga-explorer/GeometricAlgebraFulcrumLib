@@ -2,6 +2,7 @@
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Meshes.PointsMesh;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.Visuals.Space3D.Animations;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.Visuals.Space3D.Styles;
+using GeometricAlgebraFulcrumLib.Modeling.Signals;
 
 namespace GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.Visuals.Space3D.Surfaces;
 
@@ -26,17 +27,17 @@ public sealed class GrVisualPointMeshSurface3D :
             name,
             style,
             positionMesh,
-            GrVisualAnimationSpecs.Static
+            Float64SamplingSpecs.Static
         );
     }
     
-    public static GrVisualPointMeshSurface3D Create(string name, GrVisualSurfaceStyle3D style, IPointsMesh3D positionMesh, GrVisualAnimationSpecs animationSpecs)
+    public static GrVisualPointMeshSurface3D Create(string name, GrVisualSurfaceStyle3D style, IPointsMesh3D positionMesh, Float64SamplingSpecs samplingSpecs)
     {
         return new GrVisualPointMeshSurface3D(
             name,
             style,
             positionMesh,
-            animationSpecs
+            samplingSpecs
         );
     }
 
@@ -45,8 +46,8 @@ public sealed class GrVisualPointMeshSurface3D :
         return new GrVisualPointMeshSurface3D(
             name,
             style,
-            positionMesh.GetPointsMesh(positionMesh.AnimationSpecs.MinFrameTime),
-            positionMesh.AnimationSpecs
+            positionMesh.GetPointsMesh(positionMesh.SamplingSpecs.MinTime),
+            positionMesh.SamplingSpecs
         ).SetAnimatedPositionMesh(positionMesh);
     }
 
@@ -56,8 +57,8 @@ public sealed class GrVisualPointMeshSurface3D :
     public GrVisualAnimatedVectorMesh3D? AnimatedPositionMesh { get; set; }
 
     
-    private GrVisualPointMeshSurface3D(string name, GrVisualSurfaceStyle3D style, IPointsMesh3D positionMesh, GrVisualAnimationSpecs animationSpecs)
-        : base(name, style, animationSpecs)
+    private GrVisualPointMeshSurface3D(string name, GrVisualSurfaceStyle3D style, IPointsMesh3D positionMesh, Float64SamplingSpecs samplingSpecs)
+        : base(name, style, samplingSpecs)
     {
         PositionMesh = positionMesh;
 
@@ -68,7 +69,7 @@ public sealed class GrVisualPointMeshSurface3D :
     public override bool IsValid()
     {
         return PositionMesh.IsValid() &&
-               AnimatedPositionMesh.IsNullOrValid(AnimationSpecs.FrameTimeRange);
+               AnimatedPositionMesh.IsNullOrValid(SamplingSpecs.TimeRange);
     }
     
     public GrVisualPointMeshSurface3D SetAnimatedVisibility(GrVisualAnimatedScalar visibility)
@@ -100,7 +101,7 @@ public sealed class GrVisualPointMeshSurface3D :
     
     public IPointsMesh3D GetPositionMesh(double time)
     {
-        return AnimationSpecs.IsStatic || AnimatedPositionMesh is null
+        return SamplingSpecs.IsStatic || AnimatedPositionMesh is null
             ? PositionMesh
             : AnimatedPositionMesh.GetPointsMesh(time);
     }
@@ -111,7 +112,7 @@ public sealed class GrVisualPointMeshSurface3D :
 
         foreach (var frameIndex in GetValidFrameIndexSet())
         {
-            var time = (double)frameIndex / AnimationSpecs.FrameRate;
+            var time = (double)frameIndex / SamplingSpecs.SamplingRate;
             
             yield return new KeyFrameRecord(
                 frameIndex, 

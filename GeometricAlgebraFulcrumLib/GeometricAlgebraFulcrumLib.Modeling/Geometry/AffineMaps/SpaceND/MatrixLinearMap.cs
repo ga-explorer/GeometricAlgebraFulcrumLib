@@ -97,19 +97,19 @@
 //            return true;
 //        }
 
-//        public bool IsNearIdentity(double epsilon = 1E-12)
+//        public bool IsNearIdentity(double zeroEpsilon = 1E-12)
 //        {
 //            for (var i = 0; i < VSpaceDimensions; i++)
 //            {
 //                for (var j = 0; j < i; j++)
-//                    if (!_mapArray[i, j].IsNearZero(epsilon))
+//                    if (!_mapArray[i, j].IsNearZero(zeroEpsilon))
 //                        return false;
 
-//                if (!_mapArray[i, i].IsNearOne(epsilon))
+//                if (!_mapArray[i, i].IsNearOne(zeroEpsilon))
 //                    return false;
 
 //                for (var j = i + 1; j < VSpaceDimensions; j++)
-//                    if (!_mapArray[i, j].IsNearZero(epsilon))
+//                    if (!_mapArray[i, j].IsNearZero(zeroEpsilon))
 //                        return false;
 //            }
 

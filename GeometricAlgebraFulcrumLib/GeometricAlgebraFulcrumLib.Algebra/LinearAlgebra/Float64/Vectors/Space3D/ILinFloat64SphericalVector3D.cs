@@ -14,5 +14,5 @@ public interface ILinFloat64SphericalVector3D :
 
     bool IsUnitVector();
 
-    bool IsNearUnitVector(double epsilon = 1e-12d);
+    bool IsNearUnitVector(double zeroEpsilon = 1e-12d);
 }

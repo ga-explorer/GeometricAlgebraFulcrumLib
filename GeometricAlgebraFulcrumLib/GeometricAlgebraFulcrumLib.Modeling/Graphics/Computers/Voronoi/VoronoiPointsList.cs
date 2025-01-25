@@ -1,6 +1,6 @@
 using System.Collections;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space2D;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.Borders.Space2D.Immutable;
+using GeometricAlgebraFulcrumLib.Modeling.Geometry.Borders.Space2D.Float64;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Basic;
 
 namespace GeometricAlgebraFulcrumLib.Modeling.Graphics.Computers.Voronoi;
@@ -23,7 +23,7 @@ public sealed class VoronoiPointsList : IReadOnlyList<LinFloat64Vector2D>
 
     public VoronoiTriangle2D BoundingTriangle { get; }
 
-    public BoundingSphere2D BoundingSphere { get; }
+    public Float64BoundingCircle2D BoundingSphere { get; }
 
     public IEnumerable<VoronoiEdge2D> BoundingTriangleEdges => BoundingTriangle.Edges;
 
@@ -34,7 +34,7 @@ public sealed class VoronoiPointsList : IReadOnlyList<LinFloat64Vector2D>
             pointsList.Select(p => p.ToLinVector2D())
         );
 
-        BoundingSphere = BoundingSphere2D.CreateFromPoints(
+        BoundingSphere = Float64BoundingCircle2D.CreateFromPoints(
             _pointsList.Cast<ILinFloat64Vector2D>(), 
             1
         );

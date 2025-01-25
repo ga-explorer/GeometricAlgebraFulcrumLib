@@ -2,8 +2,7 @@
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Frames.Space3D;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space2D;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space3D;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.BasicShapes.Triangles;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.BasicShapes.Triangles.Immutable;
+using GeometricAlgebraFulcrumLib.Modeling.Geometry.BasicShapes.Triangles.Space3D.Float64;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Primitives;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Primitives.Triangles;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Primitives.Vertices;
@@ -18,7 +17,7 @@ public sealed class GrLatticeSurfaceTriangleGeometry3D :
     public GrLatticeSurfaceList3D LatticeSurfaceList { get; }
 
     public GraphicsPrimitiveType3D PrimitiveType 
-        => GraphicsPrimitiveType3D.Triangles;
+        => GraphicsPrimitiveType3D.TriangleList;
 
     public int VertexCount 
         => LatticeSurfaceList.Count;
@@ -35,14 +34,14 @@ public sealed class GrLatticeSurfaceTriangleGeometry3D :
     public int Count 
         => LatticeSurfaceList.TriangleVerticesList.Count;
 
-    public ITriangle3D this[int index]
+    public IFloat64Triangle3D this[int index]
     {
         get
         {
             var (v1, v2, v3) = 
                 LatticeSurfaceList.TriangleVerticesList[index];
 
-            return Triangle3D.Create(v1.Point, v2.Point, v3.Point);
+            return Float64Triangle3D.Create(v1.Point, v2.Point, v3.Point);
         }
     }
 
@@ -96,10 +95,10 @@ public sealed class GrLatticeSurfaceTriangleGeometry3D :
     {
     }
         
-    public IEnumerator<ITriangle3D> GetEnumerator()
+    public IEnumerator<IFloat64Triangle3D> GetEnumerator()
     {
         return LatticeSurfaceList.TriangleVerticesList.Select(t => 
-            Triangle3D.Create(t.Item1, t.Item2, t.Item3)
+            Float64Triangle3D.Create(t.Item1, t.Item2, t.Item3)
         ).GetEnumerator();
     }
 

@@ -1,5 +1,5 @@
-﻿using GeometricAlgebraFulcrumLib.Modeling.Geometry.BasicShapes.Lines.Immutable;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.Borders.Space3D.Immutable;
+﻿using GeometricAlgebraFulcrumLib.Modeling.Geometry.BasicShapes.Lines.Space3D.Float64;
+using GeometricAlgebraFulcrumLib.Modeling.Geometry.Borders.Space3D.Float64;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.ParametricShapes.Volumes;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.ParametricShapes.Volumes.Sampled;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Primitives.Lines;
@@ -15,7 +15,7 @@ public static class Sample3
     {
         var edgeLineSegments =
             tree.GetEdgePointPairs().Select(p =>
-                LineSegment3D.Create(p.Item1, p.Item2)
+                Float64LineSegment3D.Create(p.Item1, p.Item2)
             );
 
 
@@ -41,7 +41,7 @@ public static class Sample3
     public static void Execute()
     {
         var parameterValueRange =
-            BoundingBox3D.Create(0, 0, 0, 1.2, 1.2, 1.2);
+            Float64BoundingBox3D.Create(0, 0, 0, 1.2, 1.2, 1.2);
 
         var options = new GrParametricVolumeTreeOptions3D(
             0.02d,

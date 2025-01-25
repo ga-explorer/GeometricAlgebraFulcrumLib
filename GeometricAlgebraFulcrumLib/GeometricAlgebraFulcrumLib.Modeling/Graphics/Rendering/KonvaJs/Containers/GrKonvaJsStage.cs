@@ -14,155 +14,12 @@ namespace GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.KonvaJs.Contain
 public class GrKonvaJsStage :
     GrKonvaJsContainer
 {
-    public class StageOptions :
-        GrKonvaJsObjectOptions
-    {
-        public GrKonvaJsCodeValue? Container
-        {
-            get => GetAttributeValueOrNull<GrKonvaJsCodeValue>("Container");
-            set => SetAttributeValue("Container", value);
-        }
-
-        public GrKonvaJsFloat32Value? X
-        {
-            get => GetAttributeValueOrNull<GrKonvaJsFloat32Value>("X");
-            set => SetAttributeValue("X", value);
-        }
-
-        public GrKonvaJsFloat32Value? Y
-        {
-            get => GetAttributeValueOrNull<GrKonvaJsFloat32Value>("Y");
-            set => SetAttributeValue("Y", value);
-        }
-
-        public GrKonvaJsFloat32Value? Width
-        {
-            get => GetAttributeValueOrNull<GrKonvaJsFloat32Value>("Width");
-            set => SetAttributeValue("Width", value);
-        }
-
-        public GrKonvaJsFloat32Value? Height
-        {
-            get => GetAttributeValueOrNull<GrKonvaJsFloat32Value>("Height");
-            set => SetAttributeValue("Height", value);
-        }
-
-        public GrKonvaJsBooleanValue? Visible
-        {
-            get => GetAttributeValueOrNull<GrKonvaJsBooleanValue>("Visible");
-            set => SetAttributeValue("Visible", value);
-        }
-
-        public GrKonvaJsBooleanValue? Listening
-        {
-            get => GetAttributeValueOrNull<GrKonvaJsBooleanValue>("Listening");
-            set => SetAttributeValue("Listening", value);
-        }
-
-        public GrKonvaJsStringValue? Id
-        {
-            get => GetAttributeValueOrNull<GrKonvaJsStringValue>("Id");
-            set => SetAttributeValue("Id", value);
-        }
-
-        public GrKonvaJsStringValue? Name
-        {
-            get => GetAttributeValueOrNull<GrKonvaJsStringValue>("Name");
-            set => SetAttributeValue("Name", value);
-        }
-
-        public GrKonvaJsFloat32Value? Opacity
-        {
-            get => GetAttributeValueOrNull<GrKonvaJsFloat32Value>("Opacity");
-            set => SetAttributeValue("Opacity", value);
-        }
-
-        public GrKonvaJsVector2Value? Scale
-        {
-            get => GetAttributeValueOrNull<GrKonvaJsVector2Value>("Scale");
-            set => SetAttributeValue("Scale", value);
-        }
-
-        public GrKonvaJsFloat32Value? ScaleX
-        {
-            get => GetAttributeValueOrNull<GrKonvaJsFloat32Value>("ScaleX");
-            set => SetAttributeValue("ScaleX", value);
-        }
-
-        public GrKonvaJsFloat32Value? ScaleY
-        {
-            get => GetAttributeValueOrNull<GrKonvaJsFloat32Value>("ScaleY");
-            set => SetAttributeValue("ScaleY", value);
-        }
-
-        public GrKonvaJsFloat32Value? Rotation
-        {
-            get => GetAttributeValueOrNull<GrKonvaJsFloat32Value>("Rotation");
-            set => SetAttributeValue("Rotation", value);
-        }
-
-        public GrKonvaJsVector2Value? Offset
-        {
-            get => GetAttributeValueOrNull<GrKonvaJsVector2Value>("Offset");
-            set => SetAttributeValue("Offset", value);
-        }
-
-        public GrKonvaJsFloat32Value? OffsetX
-        {
-            get => GetAttributeValueOrNull<GrKonvaJsFloat32Value>("OffsetX");
-            set => SetAttributeValue("OffsetX", value);
-        }
-
-        public GrKonvaJsFloat32Value? OffsetY
-        {
-            get => GetAttributeValueOrNull<GrKonvaJsFloat32Value>("OffsetY");
-            set => SetAttributeValue("OffsetY", value);
-        }
-
-        public GrKonvaJsBooleanValue? Draggable
-        {
-            get => GetAttributeValueOrNull<GrKonvaJsBooleanValue>("Draggable");
-            set => SetAttributeValue("Draggable", value);
-        }
-
-        public GrKonvaJsFloat32Value? DragDistance
-        {
-            get => GetAttributeValueOrNull<GrKonvaJsFloat32Value>("DragDistance");
-            set => SetAttributeValue("DragDistance", value);
-        }
-
-        public GrKonvaJsCodeValue? DragBoundFunc
-        {
-            get => GetAttributeValueOrNull<GrKonvaJsCodeValue>("DragBoundFunc");
-            set => SetAttributeValue("DragBoundFunc", value);
-        }
-
-
-        public StageOptions()
-        {
-            SetAttributeValue("Container", (GrKonvaJsCodeValue)"renderDiv");
-        }
-        
-        public StageOptions(StageOptions options)
-        {
-            SetAttributeValues(options);
-            SetAttributeValue("Container", (GrKonvaJsCodeValue)"renderDiv");
-        }
-    }
-
-    public class StageProperties :
-        GrKonvaJsContainerProperties
-    {
-
-    }
-
-
     protected override string ConstructorName
         => "new Konva.Stage";
 
-    public StageOptions Options { get; private set; }
+    public GrKonvaJsStageOptions Options { get; private set; }
 
-    public StageProperties Properties { get; private set; }
+    public GrKonvaJsStageProperties Properties { get; private set; }
 
     public override GrKonvaJsObjectOptions ObjectOptions
         => Options;
@@ -198,7 +55,7 @@ public class GrKonvaJsStage :
             new GrKonvaJsLayerComposer(this, i)
         ).ToImmutableArray();
         
-        Options = new StageOptions
+        Options = new GrKonvaJsStageOptions
         {
             Container = container,
             Id = NodeId.SingleQuote(),
@@ -210,18 +67,18 @@ public class GrKonvaJsStage :
             ScaleY = -1
         };
 
-        Properties = new StageProperties();
+        Properties = new GrKonvaJsStageProperties();
 
         DrawAfterCreation = true;
     }
 
 
-    public GrKonvaJsStage SetOptions(StageOptions options)
+    public GrKonvaJsStage SetOptions(GrKonvaJsStageOptions options)
     {
         var container = 
             Options.Container;
         
-        Options = new StageOptions(options)
+        Options = new GrKonvaJsStageOptions(options)
         {
             Container = container,
             Id = NodeId.SingleQuote(),
@@ -231,14 +88,14 @@ public class GrKonvaJsStage :
         return this;
     }
     
-    public GrKonvaJsStage UpdateOptions(StageOptions options)
+    public GrKonvaJsStage UpdateOptions(GrKonvaJsStageOptions options)
     {
         Options.SetAttributeValues(options);
 
         return this;
     }
 
-    public GrKonvaJsStage SetProperties(StageProperties properties)
+    public GrKonvaJsStage SetProperties(GrKonvaJsStageProperties properties)
     {
         Properties = properties;
 
@@ -277,7 +134,7 @@ public class GrKonvaJsStage :
     }
 
     
-    public override string GetCode()
+    public override string GetKonvaJsCode()
     {
         var composer = new LinearTextComposer();
 
@@ -302,7 +159,7 @@ public class GrKonvaJsStage :
 
         foreach (var item in stageObjects)
         {
-            composer.AppendLineAtNewLine(item.GetCode());
+            composer.AppendLineAtNewLine(item.GetKonvaJsCode());
         }
         
         var stageObjectNames =
@@ -366,13 +223,13 @@ public class GrKonvaJsStage :
 </html>
 ");
 
-        var stageCode = GetCode();
+        var stageCode = GetKonvaJsCode();
 
         return htmlCodeComposer.GenerateText(
             new Dictionary<string, string>
             {
-                {"width", Options.Width!.GetCode()},
-                {"height", Options.Height!.GetCode()},
+                {"width", Options.Width!.GetAttributeValueCode()},
+                {"height", Options.Height!.GetAttributeValueCode()},
                 {"stage-code", stageCode}
             }
         );

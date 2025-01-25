@@ -1,9 +1,8 @@
 ﻿using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space2D;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.BasicShapes.Lines;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.BasicShapes.Lines.Immutable;
+using GeometricAlgebraFulcrumLib.Modeling.Geometry.BasicShapes.Lines.Space2D.Float64;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.Borders;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.Borders.Space2D;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.Borders.Space2D.Immutable;
+using GeometricAlgebraFulcrumLib.Modeling.Geometry.Borders.Space2D.Float64;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.Svg.DrawingBoard;
 using Color = SixLabors.ImageSharp.Color;
 
@@ -14,7 +13,7 @@ namespace GeometricAlgebraFulcrumLib.Modeling.Samples.Modeling.Graphics.Accelera
 /// </summary>
 public static class Sample5
 {
-    private static SvgDrawingBoard DrawCase(string caseName, ILine2D line, IBoundingBox2D boundingBox, double t0, double t1, double s0, double s1)
+    private static SvgDrawingBoard DrawCase(string caseName, IFloat64Line2D line, IFloat64BoundingBox2D boundingBox, double t0, double t1, double s0, double s1)
     {
         var lineDirName =
             line.DirectionX > 0
@@ -49,7 +48,7 @@ public static class Sample5
             .DrawLineSegment(pt0, pt1);
 
         //Draw left and right child nodes regions
-        var boundingBoxLeft = BoundingBox2D.Create(
+        var boundingBoxLeft = Float64BoundingBox2D.Create(
             double.NegativeInfinity,
             double.NegativeInfinity,
             ps0.X,
@@ -62,7 +61,7 @@ public static class Sample5
             .SetFill(Color.Red, 0.5)
             .DrawBoundingBox(boundingBoxLeft);
 
-        var boundingBoxRight = BoundingBox2D.Create(
+        var boundingBoxRight = Float64BoundingBox2D.Create(
             ps1.X,
             double.NegativeInfinity,
             double.PositiveInfinity,
@@ -118,10 +117,10 @@ public static class Sample5
 
     public static void Execute()
     {
-        var boundingBox = BoundingBox2D.Create(-160, -120, 160, 120);
+        var boundingBox = Float64BoundingBox2D.Create(-160, -120, 160, 120);
 
         var line =
-            Line2D.Create(
+            Float64Line2D.Create(
                 LinFloat64Vector2D.Create(boundingBox.MinX, boundingBox.MinY),
                 LinFloat64Vector2D.Create(boundingBox.GetLengthX(), boundingBox.GetLengthY())
             );
@@ -178,7 +177,7 @@ public static class Sample5
 
 
         line =
-            Line2D.Create(
+            Float64Line2D.Create(
                 LinFloat64Vector2D.Create(boundingBox.MaxX, boundingBox.MinY),
                 LinFloat64Vector2D.Create(-boundingBox.GetLengthX(), boundingBox.GetLengthY())
             );

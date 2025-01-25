@@ -36,7 +36,7 @@ public sealed class GrPointGeometry3D
         => GeometryPoints.Select((p, i) => new GrVertex3D(i, p));
 
     public GraphicsPrimitiveType3D PrimitiveType
-        => GraphicsPrimitiveType3D.Points;
+        => GraphicsPrimitiveType3D.PointList;
 
     public int VertexCount 
         => _vertexPoints.Count;

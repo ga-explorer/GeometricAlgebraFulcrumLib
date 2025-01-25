@@ -6,7 +6,7 @@ namespace GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.KonvaJs;
 public abstract class GrKonvaJsObjectOptions :
     GrKonvaJsAttributeSet
 {
-    public override string GetCode()
+    public override string GetKonvaJsCode()
     {
         var keyValuePairs = 
             GetKeyValueCodePairs().Select(pair => 
@@ -24,6 +24,6 @@ public abstract class GrKonvaJsObjectOptions :
         
     public override string ToString()
     {
-        return GetCode();
+        return GetKonvaJsCode();
     }
 }

@@ -179,12 +179,12 @@ public sealed class LinFloat64OrthogonalLinearMapSequence3D :
         return true;
     }
 
-    public bool IsNearIdentity(double epsilon = 1E-12)
+    public bool IsNearIdentity(double zeroEpsilon = 1E-12)
     {
         for (var basisIndex = 0; basisIndex < VSpaceDimensions; basisIndex++)
         {
             var isSameVectorBasis =
-                MapBasisVector(basisIndex).IsNearVectorBasis(basisIndex, epsilon);
+                MapBasisVector(basisIndex).IsNearVectorBasis(basisIndex, zeroEpsilon);
 
             if (!isSameVectorBasis) return false;
         }
@@ -197,7 +197,7 @@ public sealed class LinFloat64OrthogonalLinearMapSequence3D :
     ///// are nearly pair-wise orthogonal
     ///// </summary>
     ///// <returns></returns>
-    //public bool IsNearOrthogonalMapsSequence(double epsilon = 1e-12)
+    //public bool IsNearOrthogonalMapsSequence(double zeroEpsilon = Float64Utils.ZeroEpsilon)
     //{
     //    if (ReflectionSequence.Count + 2 * RotationSequence.Count > VSpaceDimensions)
     //        return false;
@@ -211,9 +211,9 @@ public sealed class LinFloat64OrthogonalLinearMapSequence3D :
     //        {
     //            var u2 = reflection.ReflectionNormal;
 
-    //            if (!u1.IsNearOrthogonalTo(u2, epsilon)) 
+    //            if (!u1.IsNearOrthogonalTo(u2, zeroEpsilon)) 
     //                return false;
-    //            if (!v1.IsNearOrthogonalTo(u2, epsilon)) 
+    //            if (!v1.IsNearOrthogonalTo(u2, zeroEpsilon)) 
     //                return false;
     //        }
 
@@ -222,13 +222,13 @@ public sealed class LinFloat64OrthogonalLinearMapSequence3D :
     //            var u2 = RotationSequence[j].BasisVector1;
     //            var v2 = RotationSequence[j].GetRotatedBasisVector1();
 
-    //            if (!u1.IsNearOrthogonalTo(u2, epsilon)) 
+    //            if (!u1.IsNearOrthogonalTo(u2, zeroEpsilon)) 
     //                return false;
-    //            if (!u1.IsNearOrthogonalTo(v2, epsilon)) 
+    //            if (!u1.IsNearOrthogonalTo(v2, zeroEpsilon)) 
     //                return false;
-    //            if (!v1.IsNearOrthogonalTo(u2, epsilon)) 
+    //            if (!v1.IsNearOrthogonalTo(u2, zeroEpsilon)) 
     //                return false;
-    //            if (!v1.IsNearOrthogonalTo(v2, epsilon)) 
+    //            if (!v1.IsNearOrthogonalTo(v2, zeroEpsilon)) 
     //                return false;
     //        }
     //    }
@@ -241,7 +241,7 @@ public sealed class LinFloat64OrthogonalLinearMapSequence3D :
     //        {
     //            var u2 = ReflectionSequence[j].ReflectionNormal;
 
-    //            if (!u1.IsNearOrthogonalTo(u2, epsilon)) 
+    //            if (!u1.IsNearOrthogonalTo(u2, zeroEpsilon)) 
     //                return false;
     //        }
     //    }

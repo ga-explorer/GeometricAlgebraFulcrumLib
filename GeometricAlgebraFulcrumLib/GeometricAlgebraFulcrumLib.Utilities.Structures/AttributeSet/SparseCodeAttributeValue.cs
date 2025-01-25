@@ -14,11 +14,11 @@ public abstract class SparseCodeAttributeValue :
     }
 
 
-    public abstract string GetCode();
+    public abstract string GetAttributeValueCode();
 
     public override string ToString()
     {
-        return GetCode();
+        return GetAttributeValueCode();
     }
 }
 

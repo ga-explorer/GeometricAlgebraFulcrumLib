@@ -4,6 +4,7 @@ using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
 namespace GeometricAlgebraFulcrumLib.Modeling.Calculus.Functions.Float64;
 
 /// <summary>
+/// https://en.wikipedia.org/wiki/Non-analytic_smooth_function#Smooth_transition_functions
 /// https://www.youtube.com/watch?v=vD5g8aVscUI
 /// </summary>
 public sealed class DfSmoothBlend :

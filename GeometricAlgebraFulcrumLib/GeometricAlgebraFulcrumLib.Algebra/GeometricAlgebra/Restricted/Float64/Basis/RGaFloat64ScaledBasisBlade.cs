@@ -27,16 +27,15 @@ public sealed record RGaFloat64ScaledBasisBlade
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static RGaFloat64ScaledBasisBlade operator *(RGaFloat64ScaledBasisBlade b1, IntegerSign s2)
     {
-        return new RGaFloat64ScaledBasisBlade(b1.Processor, b1.Id, b1.Scalar * s2);
+        return new RGaFloat64ScaledBasisBlade(b1.Processor, b1.Id, b1.Scalar * s2.Value);
     }
         
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static RGaFloat64ScaledBasisBlade operator *(IntegerSign s1, RGaFloat64ScaledBasisBlade b2)
     {
-        return new RGaFloat64ScaledBasisBlade(b2.Processor, b2.Id, s1 * b2.Scalar);
+        return new RGaFloat64ScaledBasisBlade(b2.Processor, b2.Id, s1.Value * b2.Scalar);
     }
-
-
+    
 
     public RGaFloat64Processor Processor { get; }
 

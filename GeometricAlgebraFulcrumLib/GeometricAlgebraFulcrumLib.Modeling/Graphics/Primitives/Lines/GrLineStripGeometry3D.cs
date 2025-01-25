@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space3D;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.BasicShapes.Lines;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.BasicShapes.Lines.Immutable;
+using GeometricAlgebraFulcrumLib.Modeling.Geometry.BasicShapes.Lines.Space3D.Float64;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Primitives.Vertices;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Basic;
 
@@ -45,8 +44,8 @@ public sealed class GrLineStripGeometry3D
     public int Count
         => _vertexPoints.Count - 1;
 
-    public ILineSegment3D this[int index] 
-        => LineSegment3D.Create(
+    public IFloat64LineSegment3D this[int index] 
+        => Float64LineSegment3D.Create(
             _vertexPoints[index],
             _vertexPoints[index + 1]
         );
@@ -87,10 +86,10 @@ public sealed class GrLineStripGeometry3D
         return _vertexPoints[index];
     }
 
-    public IEnumerator<ILineSegment3D> GetEnumerator()
+    public IEnumerator<IFloat64LineSegment3D> GetEnumerator()
     {
         for (var i = 0; i < _vertexPoints.Count - 1; i++)
-            yield return LineSegment3D.Create(
+            yield return Float64LineSegment3D.Create(
                 _vertexPoints[i], 
                 _vertexPoints[i + 1]
             );

@@ -11,7 +11,7 @@ namespace GeometricAlgebraFulcrumLib.Modeling.Signals.Processors;
 
 public abstract class AngularVelocitySignalProcessor
 {
-    public Float64SignalSamplingSpecs SamplingSpecs { get; private set;}
+    public Float64SamplingSpecs SamplingSpecs { get; private set;}
 
     public double SamplingRate 
         => SamplingSpecs.SamplingRate;

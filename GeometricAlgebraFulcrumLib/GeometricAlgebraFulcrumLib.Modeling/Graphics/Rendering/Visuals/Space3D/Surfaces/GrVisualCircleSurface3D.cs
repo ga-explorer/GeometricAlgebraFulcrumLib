@@ -4,6 +4,7 @@ using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space3D;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.Visuals.Space3D.Animations;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.Visuals.Space3D.Styles;
+using GeometricAlgebraFulcrumLib.Modeling.Signals;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Basic;
 
 namespace GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.Visuals.Space3D.Surfaces;
@@ -34,11 +35,11 @@ public sealed class GrVisualCircleSurface3D :
             normal, 
             radius,
             drawEdge,
-            GrVisualAnimationSpecs.Static
+            Float64SamplingSpecs.Static
         );
     }
         
-    public static GrVisualCircleSurface3D Create(string name, GrVisualSurfaceStyle3D style, ILinFloat64Vector3D normal, double radius, bool drawEdge, GrVisualAnimationSpecs animationSpecs)
+    public static GrVisualCircleSurface3D Create(string name, GrVisualSurfaceStyle3D style, ILinFloat64Vector3D normal, double radius, bool drawEdge, Float64SamplingSpecs samplingSpecs)
     {
         return new GrVisualCircleSurface3D(
             name,
@@ -47,11 +48,11 @@ public sealed class GrVisualCircleSurface3D :
             normal, 
             radius,
             drawEdge,
-            animationSpecs
+            samplingSpecs
         );
     }
         
-    public static GrVisualCircleSurface3D Create(string name, GrVisualSurfaceStyle3D style, ILinFloat64Vector3D center, ILinFloat64Vector3D normal, double radius, bool drawEdge, GrVisualAnimationSpecs animationSpecs)
+    public static GrVisualCircleSurface3D Create(string name, GrVisualSurfaceStyle3D style, ILinFloat64Vector3D center, ILinFloat64Vector3D normal, double radius, bool drawEdge, Float64SamplingSpecs samplingSpecs)
     {
         return new GrVisualCircleSurface3D(
             name,
@@ -60,7 +61,7 @@ public sealed class GrVisualCircleSurface3D :
             normal, 
             radius,
             drawEdge,
-            animationSpecs
+            samplingSpecs
         );
     }
         
@@ -73,7 +74,7 @@ public sealed class GrVisualCircleSurface3D :
                 LinFloat64Vector3D.E1, 
                 1d,
                 drawEdge,
-                normal.AnimationSpecs
+                normal.SamplingSpecs
             ).SetAnimatedNormal(normal)
             .SetAnimatedRadius(radius);
     }
@@ -87,7 +88,7 @@ public sealed class GrVisualCircleSurface3D :
             LinFloat64Vector3D.E1, 
             radius,
             drawEdge,
-            center.AnimationSpecs
+            center.SamplingSpecs
         ).SetAnimatedCenterNormal(
             center,
             normal
@@ -103,7 +104,7 @@ public sealed class GrVisualCircleSurface3D :
             normal, 
             1d,
             drawEdge,
-            radius.AnimationSpecs
+            radius.SamplingSpecs
         ).SetAnimatedRadius(radius);
     }
         
@@ -116,7 +117,7 @@ public sealed class GrVisualCircleSurface3D :
             LinFloat64Vector3D.E1, 
             radius,
             drawEdge,
-            normal.AnimationSpecs
+            normal.SamplingSpecs
         ).SetAnimatedNormal(normal);
     }
 
@@ -129,7 +130,7 @@ public sealed class GrVisualCircleSurface3D :
                 LinFloat64Vector3D.E1, 
                 1d,
                 drawEdge,
-                normal.AnimationSpecs
+                normal.SamplingSpecs
             ).SetAnimatedNormal(normal)
             .SetAnimatedRadius(radius);
     }
@@ -143,7 +144,7 @@ public sealed class GrVisualCircleSurface3D :
             LinFloat64Vector3D.E1, 
             1d,
             drawEdge,
-            center.AnimationSpecs
+            center.SamplingSpecs
         ).SetAnimatedCenterNormalRadius(
             center,
             normal,
@@ -167,8 +168,8 @@ public sealed class GrVisualCircleSurface3D :
     public bool DrawEdge { get; } 
 
 
-    private GrVisualCircleSurface3D(string name, GrVisualSurfaceStyle3D style, ILinFloat64Vector3D center, ILinFloat64Vector3D normal, double radius, bool drawEdge, GrVisualAnimationSpecs animationSpecs) 
-        : base(name, style, animationSpecs)
+    private GrVisualCircleSurface3D(string name, GrVisualSurfaceStyle3D style, ILinFloat64Vector3D center, ILinFloat64Vector3D normal, double radius, bool drawEdge, Float64SamplingSpecs samplingSpecs) 
+        : base(name, style, samplingSpecs)
     {
         Center = center;
         Normal = normal.ToUnitLinVector3D();
@@ -196,7 +197,7 @@ public sealed class GrVisualCircleSurface3D :
 
     public Triplet<LinFloat64Vector3D> GetEdgePointsTriplet()
     {
-        var quaternion = LinUnitBasisVector3D.PositiveZ.CreateAxisToVectorRotationQuaternion(
+        var quaternion = LinBasisVector3D.Pz.VectorToVectorRotationQuaternion(
             Normal.ToUnitLinVector3D()
         );
 
@@ -278,21 +279,21 @@ public sealed class GrVisualCircleSurface3D :
         
     public LinFloat64Vector3D GetCenter(double time)
     {
-        return AnimationSpecs.IsStatic || AnimatedCenter is null
+        return SamplingSpecs.IsStatic || AnimatedCenter is null
             ? Center.ToLinVector3D()
             : AnimatedCenter.GetPoint(time);
     }
         
     public LinFloat64Vector3D GetNormal(double time)
     {
-        return AnimationSpecs.IsStatic || AnimatedNormal is null
+        return SamplingSpecs.IsStatic || AnimatedNormal is null
             ? Normal
             : AnimatedNormal.GetPoint(time).ToUnitLinVector3D();
     }
 
     public double GetRadius(double time)
     {
-        return AnimationSpecs.IsStatic || AnimatedRadius is null
+        return SamplingSpecs.IsStatic || AnimatedRadius is null
             ? Radius
             : AnimatedRadius.GetValue(time);
     }
@@ -303,7 +304,7 @@ public sealed class GrVisualCircleSurface3D :
 
         foreach (var frameIndex in GetValidFrameIndexSet())
         {
-            var time = (double)frameIndex / AnimationSpecs.FrameRate;
+            var time = (double)frameIndex / SamplingSpecs.SamplingRate;
                 
             yield return new KeyFrameRecord(
                 frameIndex, 

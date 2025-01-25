@@ -28,7 +28,7 @@ public sealed class GrBabylonJsColor4Value :
     }
 
 
-    public override string GetCode()
+    public override string GetAttributeValueCode()
     {
         return string.IsNullOrEmpty(ValueText) 
             ? Value.GetBabylonJsCode(true) 

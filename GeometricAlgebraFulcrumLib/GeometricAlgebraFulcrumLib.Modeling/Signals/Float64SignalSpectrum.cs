@@ -17,12 +17,12 @@ public sealed class Float64SignalSpectrum :
     {
     }
 
-    public Float64SignalSpectrum(Float64SignalSamplingSpecs samplingSpecs)
+    public Float64SignalSpectrum(Float64SamplingSpecs samplingSpecs)
         : base(samplingSpecs)
     {
     }
 
-    public Float64SignalSpectrum(Float64SignalSamplingSpecs samplingSpecs, Dictionary<int, SignalSpectrumSample> indexSampleDictionary)
+    public Float64SignalSpectrum(Float64SamplingSpecs samplingSpecs, Dictionary<int, SignalSpectrumSample> indexSampleDictionary)
         : base(samplingSpecs, indexSampleDictionary)
     {
     }
@@ -59,7 +59,7 @@ public sealed class Float64SignalSpectrum :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    protected override ScalarSignalSpectrum<double> CreateSignalSpectrum(Float64SignalSamplingSpecs samplingSpecs, Dictionary<int, SignalSpectrumSample> indexSampleDictionary)
+    protected override ScalarSignalSpectrum<double> CreateSignalSpectrum(Float64SamplingSpecs samplingSpecs, Dictionary<int, SignalSpectrumSample> indexSampleDictionary)
     {
         return new Float64SignalSpectrum(SamplingSpecs, indexSampleDictionary);
     }

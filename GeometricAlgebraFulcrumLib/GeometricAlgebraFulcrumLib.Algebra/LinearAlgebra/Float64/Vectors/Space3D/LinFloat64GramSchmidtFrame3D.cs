@@ -69,15 +69,15 @@ public class LinFloat64GramSchmidtFrame3D
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public LinFloat64GramSchmidtFrame3D CleanNorms(double epsilon = 1e-12)
+    public LinFloat64GramSchmidtFrame3D CleanNorms(double zeroEpsilon = Float64Utils.ZeroEpsilon)
     {
-        if (Direction1Norm.IsNearZero(epsilon))
+        if (Direction1Norm.IsNearZero(zeroEpsilon))
             Direction1Norm = 0d;
 
-        if (Direction2Norm.IsNearZero(epsilon))
+        if (Direction2Norm.IsNearZero(zeroEpsilon))
             Direction2Norm = 0d;
 
-        if (Direction3Norm.IsNearZero(epsilon))
+        if (Direction3Norm.IsNearZero(zeroEpsilon))
             Direction3Norm = 0d;
 
         return this;

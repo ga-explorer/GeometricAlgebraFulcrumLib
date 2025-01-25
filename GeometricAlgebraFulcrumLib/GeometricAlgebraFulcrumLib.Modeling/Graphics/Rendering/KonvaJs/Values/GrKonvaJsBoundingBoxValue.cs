@@ -1,12 +1,12 @@
-﻿using GeometricAlgebraFulcrumLib.Modeling.Geometry.Borders.Space2D.Immutable;
+﻿using GeometricAlgebraFulcrumLib.Modeling.Geometry.Borders.Space2D.Float64;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.AttributeSet;
 
 namespace GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.KonvaJs.Values;
 
 public sealed class GrKonvaJsBoundingBoxValue :
-    SparseCodeAttributeValue<BoundingBox2D>
+    SparseCodeAttributeValue<Float64BoundingBox2D>
 {
-    internal static GrKonvaJsBoundingBoxValue Create(BoundingBox2D value)
+    internal static GrKonvaJsBoundingBoxValue Create(Float64BoundingBox2D value)
     {
         return new GrKonvaJsBoundingBoxValue(value);
     }
@@ -23,13 +23,13 @@ public sealed class GrKonvaJsBoundingBoxValue :
     {
     }
 
-    private GrKonvaJsBoundingBoxValue(BoundingBox2D value)
+    private GrKonvaJsBoundingBoxValue(Float64BoundingBox2D value)
         : base(value)
     {
     }
 
 
-    public override string GetCode()
+    public override string GetAttributeValueCode()
     {
         return string.IsNullOrEmpty(ValueText) 
             ? Value.GetKonvaJsCode() 

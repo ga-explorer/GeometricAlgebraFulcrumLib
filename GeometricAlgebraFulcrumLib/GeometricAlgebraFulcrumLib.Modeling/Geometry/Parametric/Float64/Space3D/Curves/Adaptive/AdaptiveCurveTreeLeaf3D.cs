@@ -1,6 +1,5 @@
 ﻿using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space3D;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.BasicShapes.Lines;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.BasicShapes.Lines.Immutable;
+using GeometricAlgebraFulcrumLib.Modeling.Geometry.BasicShapes.Lines.Space3D.Float64;
 
 namespace GeometricAlgebraFulcrumLib.Modeling.Geometry.Parametric.Float64.Space3D.Curves.Adaptive;
 
@@ -29,9 +28,9 @@ public sealed class AdaptiveCurveTreeLeaf3D :
     }
 
 
-    public ILineSegment3D GetLineSegment()
+    public IFloat64LineSegment3D GetLineSegment()
     {
-        return LineSegment3D.Create(
+        return Float64LineSegment3D.Create(
             Frame0.Point,
             Frame1.Point
         );

@@ -126,14 +126,14 @@ public sealed class XeoglDrawingSpaceLayer
         return this;
     }
 
-    public XeoglDrawingSpaceLayer SetTransform(IAffineMap3D affineMap)
+    public XeoglDrawingSpaceLayer SetTransform(IFloat64AffineMap3D affineMap)
     {
         DefaultTransform = affineMap.GetSquareMatrix4().ToXeoglTransform();
 
         return this;
     }
 
-    public XeoglDrawingSpaceLayer SetTransform(RotateScaleTranslateMap3D affineMap)
+    public XeoglDrawingSpaceLayer SetTransform(Float64RotateScaleTranslateAffineMap3D affineMap)
     {
         DefaultTransform = affineMap.ToXeoglTransform();
 

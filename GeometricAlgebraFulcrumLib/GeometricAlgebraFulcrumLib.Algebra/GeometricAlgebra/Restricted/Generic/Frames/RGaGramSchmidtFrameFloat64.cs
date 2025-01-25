@@ -91,7 +91,7 @@ public class RGaGramSchmidtFrameFloat64
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public RGaGramSchmidtFrameFloat64 CleanNorms(double epsilon = 1e-12)
+    public RGaGramSchmidtFrameFloat64 CleanNorms(double zeroEpsilon = Float64Utils.ZeroEpsilon)
     {
         for (var i = 0; i < _directionNormsArray.Length; i++)
         {

@@ -64,6 +64,18 @@ public class ConstantParametricPolarAngle :
     {
         return Tangent;
     }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public Float64Scalar GetValue(double parameterValue)
+    {
+        return GetAngle(parameterValue).Radians;
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public Float64Scalar GetDerivative1Value(double parameterValue)
+    {
+        return GetDerivative1Angle(parameterValue).Radians;
+    }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public IFloat64ParametricScalar ToRadianParametricScalar()

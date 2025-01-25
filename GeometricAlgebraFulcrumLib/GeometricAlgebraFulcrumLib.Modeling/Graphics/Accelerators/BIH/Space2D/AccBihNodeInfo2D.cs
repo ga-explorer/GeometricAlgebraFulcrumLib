@@ -1,5 +1,5 @@
 ﻿using GeometricAlgebraFulcrumLib.Modeling.Geometry.BasicShapes;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.Borders.Space2D.Immutable;
+using GeometricAlgebraFulcrumLib.Modeling.Geometry.Borders.Space2D.Float64;
 using GeometricAlgebraFulcrumLib.Utilities.Structures;
 
 namespace GeometricAlgebraFulcrumLib.Modeling.Graphics.Accelerators.BIH.Space2D;
@@ -11,12 +11,12 @@ namespace GeometricAlgebraFulcrumLib.Modeling.Graphics.Accelerators.BIH.Space2D;
 public sealed class AccBihNodeInfo2D
 {
     public static AccBihNodeInfo2D Create<T>(IAccBih2D<T> bih)
-        where T : IFiniteGeometricShape2D
+        where T : IFloat64FiniteGeometricShape2D
     {
         //var maxTreeDepth = bih.RootNode.GetChildHierarchyDepth();
 
         var rootNodeInfo =
-            new AccBihNodeInfo2D(bih.RootNode, BoundingBox2D.CreateInfinite());
+            new AccBihNodeInfo2D(bih.RootNode, Float64BoundingBox2D.CreateInfinite());
         //{
         //    //NodeId = "".PadLeft(maxTreeDepth, '_'),
         //    //NodeDepth = 0,
@@ -85,7 +85,7 @@ public sealed class AccBihNodeInfo2D
 
     public int NodeDepth => Node.NodeDepth;
 
-    public BoundingBox2D BoundingBox { get; }
+    public Float64BoundingBox2D BoundingBox { get; }
 
     public bool IsLeaf => Node.IsLeaf;
 
@@ -114,17 +114,17 @@ public sealed class AccBihNodeInfo2D
     public double ClipValue1 => Node.ClipValue1;
 
 
-    internal AccBihNodeInfo2D(IAccBihNode2D node, BoundingBox2D boundingBox)
+    internal AccBihNodeInfo2D(IAccBihNode2D node, Float64BoundingBox2D boundingBox)
     {
         Node = node;
         BoundingBox = boundingBox;
     }
 
 
-    public BoundingBox2D GetBoundingBox()
+    public Float64BoundingBox2D GetBoundingBox()
     {
-        return BoundingBox2D.Create(
-            (IEnumerable<IFiniteGeometricShape2D>)Node
+        return Float64BoundingBox2D.Create(
+            (IEnumerable<IFloat64FiniteGeometricShape2D>)Node
         );
     }
 

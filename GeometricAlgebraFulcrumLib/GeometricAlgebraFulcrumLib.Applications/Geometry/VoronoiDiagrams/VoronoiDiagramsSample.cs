@@ -5,7 +5,7 @@ using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Float64.Mul
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Float64.Processors;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space2D;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.Borders;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.Borders.Space2D.Immutable;
+using GeometricAlgebraFulcrumLib.Modeling.Geometry.Borders.Space2D.Float64;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.Svg.DrawingBoard;
 
 namespace GeometricAlgebraFulcrumLib.Applications.Geometry.VoronoiDiagrams;
@@ -52,7 +52,7 @@ public static class VoronoiDiagramsSample
 
         // Initialization: Find a simplex containing all points:
         // Step 1: find bounding hyper-sphere, this is the inner sphere of the auxiliary simplex
-        var boundingSphere = BoundingSphere2D.CreateFromPoints(PointsArray);
+        var boundingSphere = Float64BoundingCircle2D.CreateFromPoints(PointsArray);
 
         // Step 4: compute coordinates of regular simplex vertices
         var simplexFrame =

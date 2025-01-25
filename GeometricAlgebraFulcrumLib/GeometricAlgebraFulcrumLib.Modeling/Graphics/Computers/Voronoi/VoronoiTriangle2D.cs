@@ -1,12 +1,11 @@
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space2D;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.BasicShapes.Triangles;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.Borders.Space2D.Immutable;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.Borders.Space2D.Mutable;
+using GeometricAlgebraFulcrumLib.Modeling.Geometry.BasicShapes.Triangles.Space2D.Float64;
+using GeometricAlgebraFulcrumLib.Modeling.Geometry.Borders.Space2D.Float64;
 
 namespace GeometricAlgebraFulcrumLib.Modeling.Graphics.Computers.Voronoi;
 
-public sealed class VoronoiTriangle2D : ITriangle2D
+public sealed class VoronoiTriangle2D : IFloat64Triangle2D
 {
     public int PointIndex1 { get; }
 
@@ -84,12 +83,12 @@ public sealed class VoronoiTriangle2D : ITriangle2D
     }
 
 
-    public BoundingBox2D GetBoundingBox()
+    public Float64BoundingBox2D GetBoundingBox()
     {
         throw new NotImplementedException();
     }
 
-    public MutableBoundingBox2D GetMutableBoundingBox()
+    public Float64BoundingBoxComposer2D GetBoundingBoxComposer()
     {
         throw new NotImplementedException();
     }

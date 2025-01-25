@@ -3,13 +3,12 @@ using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Tuples;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.BasicShapes;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.Borders;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.Borders.Space2D.Immutable;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.Borders.Space2D.Mutable;
+using GeometricAlgebraFulcrumLib.Modeling.Geometry.Borders.Space2D.Float64;
 
 namespace GeometricAlgebraFulcrumLib.Modeling.Graphics.Accelerators.Grids.Space2D;
 
 public class AccGrid2D<T> : IAccGrid2D<T>
-    where T : IFiniteGeometricShape2D
+    where T : IFloat64FiniteGeometricShape2D
 {
     private readonly IReadOnlyList<T> _geometricObjectsList;
     private readonly List<T>[,] _gridCells;
@@ -30,7 +29,7 @@ public class AccGrid2D<T> : IAccGrid2D<T>
 
     public IReadOnlyList<T> this[int ix, int iy] => _gridCells[ix, iy];
 
-    public BoundingBox2D BoundingBox { get; }
+    public Float64BoundingBox2D BoundingBox { get; }
 
     public int CellsCountX { get; }
 
@@ -88,8 +87,8 @@ public class AccGrid2D<T> : IAccGrid2D<T>
             return;
 
         //Compute bounding box for entire grid
-        BoundingBox = BoundingBox2D.Create(
-            (IEnumerable<IFiniteGeometricShape2D>)_geometricObjectsList
+        BoundingBox = Float64BoundingBox2D.Create(
+            (IEnumerable<IFloat64FiniteGeometricShape2D>)_geometricObjectsList
         );
 
         var minX = BoundingBox.MinX;
@@ -152,14 +151,14 @@ public class AccGrid2D<T> : IAccGrid2D<T>
         return ((y - BoundingBox.MinY) * _invCellLengthY).ClampToInt(CellsCountY - 1);
     }
 
-    public BoundingBox2D GetBoundingBox()
+    public Float64BoundingBox2D GetBoundingBox()
     {
         return BoundingBox;
     }
 
-    public MutableBoundingBox2D GetMutableBoundingBox()
+    public Float64BoundingBoxComposer2D GetBoundingBoxComposer()
     {
-        return MutableBoundingBox2D.Create(BoundingBox);
+        return Float64BoundingBoxComposer2D.Create(BoundingBox);
     }
 
     //public bool TestLineSegmentIntersection(ITuple2D point1, ITuple2D point2)

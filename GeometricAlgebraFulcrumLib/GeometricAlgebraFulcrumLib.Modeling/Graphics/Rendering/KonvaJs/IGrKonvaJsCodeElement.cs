@@ -2,5 +2,5 @@
 
 public interface IGrKonvaJsCodeElement
 {
-    string GetCode();
+    string GetKonvaJsCode();
 }

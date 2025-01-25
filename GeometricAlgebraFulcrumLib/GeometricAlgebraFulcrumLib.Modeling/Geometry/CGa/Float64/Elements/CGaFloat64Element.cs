@@ -580,76 +580,76 @@ public abstract class CGaFloat64Element :
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool IsDirectionNearParallelTo(LinFloat64Vector2D egaVector, double epsilon = 1e-12)
+    public bool IsDirectionNearParallelTo(LinFloat64Vector2D egaVector, double zeroEpsilon = Float64Utils.ZeroEpsilon)
     {
         return GeometricSpace
             .Encode.VGa.VectorAsRGaVector(egaVector)
             .Op(Direction.InternalKVector)
-            .IsNearZero(epsilon);
+            .IsNearZero(zeroEpsilon);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool IsDirectionNearParallelTo(LinFloat64Vector3D egaVector, double epsilon = 1e-12)
+    public bool IsDirectionNearParallelTo(LinFloat64Vector3D egaVector, double zeroEpsilon = Float64Utils.ZeroEpsilon)
     {
         return GeometricSpace
             .Encode.VGa.VectorAsRGaVector(egaVector)
             .Op(Direction.InternalKVector)
-            .IsNearZero(epsilon);
+            .IsNearZero(zeroEpsilon);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool IsDirectionNearParallelTo(LinFloat64Vector egaVector, double epsilon = 1e-12)
+    public bool IsDirectionNearParallelTo(LinFloat64Vector egaVector, double zeroEpsilon = Float64Utils.ZeroEpsilon)
     {
         return GeometricSpace
             .Encode.VGa.VectorAsRGaVector(egaVector)
             .Op(Direction.InternalKVector)
-            .IsNearZero(epsilon);
+            .IsNearZero(zeroEpsilon);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool IsDirectionNearParallelTo(RGaFloat64Vector egaVector, double epsilon = 1e-12)
+    public bool IsDirectionNearParallelTo(RGaFloat64Vector egaVector, double zeroEpsilon = Float64Utils.ZeroEpsilon)
     {
         return GeometricSpace
             .Encode.VGa.VectorAsRGaVector(egaVector)
             .Op(Direction.InternalKVector)
-            .IsNearZero(epsilon);
+            .IsNearZero(zeroEpsilon);
     }
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool IsDirectionNearOrthogonalTo(LinFloat64Vector2D egaVector, double epsilon = 1e-12)
+    public bool IsDirectionNearOrthogonalTo(LinFloat64Vector2D egaVector, double zeroEpsilon = Float64Utils.ZeroEpsilon)
     {
         return GeometricSpace
             .Encode.VGa.VectorAsRGaVector(egaVector)
             .Lcp(Direction.InternalKVector)
-            .IsNearZero(epsilon);
+            .IsNearZero(zeroEpsilon);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool IsDirectionNearOrthogonalTo(LinFloat64Vector3D egaVector, double epsilon = 1e-12)
+    public bool IsDirectionNearOrthogonalTo(LinFloat64Vector3D egaVector, double zeroEpsilon = Float64Utils.ZeroEpsilon)
     {
         return GeometricSpace
             .Encode.VGa.VectorAsRGaVector(egaVector)
             .Lcp(Direction.InternalKVector)
-            .IsNearZero(epsilon);
+            .IsNearZero(zeroEpsilon);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool IsDirectionNearOrthogonalTo(LinFloat64Vector egaVector, double epsilon = 1e-12)
+    public bool IsDirectionNearOrthogonalTo(LinFloat64Vector egaVector, double zeroEpsilon = Float64Utils.ZeroEpsilon)
     {
         return GeometricSpace
             .Encode.VGa.VectorAsRGaVector(egaVector)
             .Lcp(Direction.InternalKVector)
-            .IsNearZero(epsilon);
+            .IsNearZero(zeroEpsilon);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool IsDirectionNearOrthogonalTo(RGaFloat64Vector egaVector, double epsilon = 1e-12)
+    public bool IsDirectionNearOrthogonalTo(RGaFloat64Vector egaVector, double zeroEpsilon = Float64Utils.ZeroEpsilon)
     {
         return GeometricSpace
             .Encode.VGa.VectorAsRGaVector(egaVector)
             .Lcp(Direction.InternalKVector)
-            .IsNearZero(epsilon);
+            .IsNearZero(zeroEpsilon);
     }
 
 

@@ -28,28 +28,28 @@ public static class GrBabylonJsUtils
     {
         return value is null || value.IsEmpty
             ? null 
-            : value.GetCode();
+            : value.GetAttributeValueCode();
     }
 
     internal static Pair<string>? GetNameValueCodePair(this GrBabylonJsCodeValue? value, string name)
     {
         return value is null || value.IsEmpty
             ? null 
-            : new Pair<string>(name, value.GetCode());
+            : new Pair<string>(name, value.GetAttributeValueCode());
     }
 
     internal static Pair<string>? GetNameValueCodePair<T>(this SparseCodeAttributeValue<T>? value, string name)
     {
         return value is null || value.IsEmpty
             ? null 
-            : new Pair<string>(name, value.GetCode());
+            : new Pair<string>(name, value.GetAttributeValueCode());
     }
         
     internal static Pair<string>? GetNameValueCodePair<T>(this SparseCodeAttributeValue<T>? value, string name, SparseCodeAttributeValue<T>? defaultValue)
     {
         return value is null || value.IsEmpty
             ? defaultValue.GetNameValueCodePair(name) 
-            : new Pair<string>(name, value.GetCode());
+            : new Pair<string>(name, value.GetAttributeValueCode());
     }
 
     public static GrBabylonJsVector3Value ToBabylonJsVector3Value(this ILinFloat64Vector3D value)
@@ -76,7 +76,7 @@ public static class GrBabylonJsUtils
     {
         return new GrBabylonJsSimpleMaterial(materialName)
             .SetProperties(
-                new GrBabylonJsSimpleMaterial.SimpleMaterialProperties
+                new GrBabylonJsSimpleMaterialProperties
                 {
                     DiffuseColor = color
                 }
@@ -92,7 +92,7 @@ public static class GrBabylonJsUtils
     {
         return new GrBabylonJsStandardMaterial(materialName)
             .SetProperties(
-                new GrBabylonJsStandardMaterial.StandardMaterialProperties(color)
+                new GrBabylonJsStandardMaterialProperties(color)
             );
     }
 
@@ -292,15 +292,15 @@ public static class GrBabylonJsUtils
         }
     }
 
-    public static string GetBabylonJsCode(this LinUnitBasisVector3D axis)
+    public static string GetBabylonJsCode(this LinBasisVector3D axis)
     {
         return axis switch
         {
-            LinUnitBasisVector3D.PositiveX => "BABYLON.Axis.X",
-            LinUnitBasisVector3D.NegativeX => "(-BABYLON.Axis.X)",
-            LinUnitBasisVector3D.PositiveY => "BABYLON.Axis.Y",
-            LinUnitBasisVector3D.NegativeY => "(-BABYLON.Axis.Y)",
-            LinUnitBasisVector3D.PositiveZ => "BABYLON.Axis.Z",
+            LinBasisVector3D.Px => "BABYLON.Axis.X",
+            LinBasisVector3D.Nx => "(-BABYLON.Axis.X)",
+            LinBasisVector3D.Py => "BABYLON.Axis.Y",
+            LinBasisVector3D.Ny => "(-BABYLON.Axis.Y)",
+            LinBasisVector3D.Pz => "BABYLON.Axis.Z",
             _ => "(-BABYLON.Axis.Z)"
         };
     }
@@ -419,14 +419,14 @@ public static class GrBabylonJsUtils
         return $"BABYLON.Matrix.FromArray({affineMapArrayCode}, 0)";
     }
 
-    public static string GetBabylonJsArrayCode(this IAffineMap3D affineMap, bool isTransposed = false)
+    public static string GetBabylonJsArrayCode(this IFloat64AffineMap3D affineMap, bool isTransposed = false)
     {
         return affineMap
             .GetArray2D()
             .GetAffineMapBabylonJsArrayCode(isTransposed);
     }
 
-    public static string GetBabylonJsMatrixCode(this IAffineMap3D affineMap, bool isTransposed = false)
+    public static string GetBabylonJsMatrixCode(this IFloat64AffineMap3D affineMap, bool isTransposed = false)
     {
         return affineMap
             .GetArray2D()
@@ -436,7 +436,7 @@ public static class GrBabylonJsUtils
     public static string GetBabylonJsCode(this IEnumerable<SparseCodeAttributeValue> valueList)
     {
         return valueList.Select(
-            value => value.GetCode()
+            value => value.GetAttributeValueCode()
         ).GetBabylonJsArrayCode();
     }
 

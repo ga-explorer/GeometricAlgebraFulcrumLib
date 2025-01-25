@@ -198,21 +198,39 @@ public static class SymbolicRotorsSample
     /// </summary>
     public static void Example3()
     {
+        var assumeExpr = 
+            @"And[Element[{{Subscript[v,1], Subscript[v,2], Subscript[v,3]}}, Reals], Subscript[v,2] * Subscript[v,2] + Subscript[v,3] * Subscript[v,3] == 1 - Subscript[v,1] * Subscript[v,1]]".ToExpr();
+
+        //var assumeExpr = 
+        //    @"Element[{{Subscript[v,\[Theta]], Subscript[v,\[Phi]]}}, Reals]".ToExpr();
+
         var e1 = GeometricProcessor.VectorTerm(0);
         var e2 = GeometricProcessor.VectorTerm(1);
         var e3 = GeometricProcessor.VectorTerm(2);
         var pseudoScalar = e1.Gp(e2).Gp(e3).GetKVectorPart(3);
         var pseudoScalarInverse = pseudoScalar.Inverse();
 
-        var u =
-            "Subscript[u,1]".ToExpr() * e1 +
-            "Subscript[u,2]".ToExpr() * e2 +
-            "Subscript[u,3]".ToExpr() * e3;
+        //var u =
+        //    "Subscript[u,1]".ToExpr() * e1 +
+        //    "Subscript[u,2]".ToExpr() * e2 +
+        //    "Subscript[u,3]".ToExpr() * e3;
 
         var v =
             "Subscript[v,1]".ToExpr() * e1 +
             "Subscript[v,2]".ToExpr() * e2 +
             "Subscript[v,3]".ToExpr() * e3;
+        
+        var u = e1;
+
+        //var vTheta = @"Subscript[v,\[Theta]]".ScalarFromText(ScalarProcessor).CreatePolarAngleFromRadians();
+        //var vPhi = @"Subscript[v,\[Phi]]".ScalarFromText(ScalarProcessor).CreatePolarAngleFromRadians();
+
+        //var v =
+        //    vTheta.Sin() * vPhi.Cos() * e1 +
+        //    vTheta.Sin() * vPhi.Sin() * e2 +
+        //    vTheta.Cos() * e3;
+
+        //var u = v.ENorm() * e1;
 
         // Rotation angle
         var angle =
@@ -221,19 +239,24 @@ public static class SymbolicRotorsSample
         // Compute the rotor from the angle and 2-blade of rotation
         var rotor = u.CreatePureRotor(v, true);
 
+        var rotorMatrix = 
+            rotor.GetVectorMapPart(3)
+                .ToArray(3, 3)
+                .FullSimplifyScalars(assumeExpr);
+
         var rotationBlade =
-            rotor.Multivector.GetBivectorPart();
+            rotor.Multivector.GetBivectorPart().DivideByNorm();
 
         var rotationAxis =
-            rotationBlade.Gp(pseudoScalarInverse).GetVectorPart();
+            rotationBlade.Gp(pseudoScalarInverse).GetVectorPart().DivideByNorm();
 
         // Make sure v1 rotates into v2
         var diff1 =
-            (rotor.OmMap(u) - v).FullSimplifyScalars();
+            (rotor.OmMap(u) - v).FullSimplifyScalars(assumeExpr);
 
         // Make sure the eigen vector and eigen 2-blade of rotation are correct
-        var diff2 = rotor.OmMap(rotationAxis) - rotationAxis;
-        var diff3 = rotor.OmMap(rotationBlade) - rotationBlade;
+        var diff2 = (rotor.OmMap(rotationAxis) - rotationAxis).FullSimplifyScalars(assumeExpr);
+        var diff3 = (rotor.OmMap(rotationBlade) - rotationBlade).FullSimplifyScalars(assumeExpr);
 
         // Make sure the angle of rotation is correct
         // Create a general vector a and find its rotation b using rotor
@@ -251,24 +274,26 @@ public static class SymbolicRotorsSample
         // Compute angle between projected vectors, the result must equal
         // the original angle of rotation of the rotor
         var diff4 =
-            ((pa.ESp(pb) / (pa.ENorm() * pb.ENorm())).ArcCos() - angle).ScalarValue.FullSimplify();
+            ((pa.ESp(pb) / (pa.ENorm() * pb.ENorm())).ArcCos() - angle).ScalarValue.FullSimplify(assumeExpr);
 
-        // Make sure the projection of a on the rotation 2-blade is rotated
+        // Make sure the projection of vector 'a' on the rotation 2-blade is rotated
         // correctly into the projection of b on the rotation 2-blade
-        var diff5 = rotor.OmMap(pa) - pb;
+        var diff5 = (rotor.OmMap(pa) - pb).FullSimplifyScalars(assumeExpr);
 
-        Console.WriteLine($@"first vector  $v_1 = {LaTeXComposer.GetMultivectorText(u)}$");
-        Console.WriteLine($@"second vector $v_2 = {LaTeXComposer.GetMultivectorText(v)}$");
-        Console.WriteLine($@"Rotor $R = {LaTeXComposer.GetMultivectorText(rotor)}$");
-        Console.WriteLine($@"Rotation Axis $v = {LaTeXComposer.GetMultivectorText(rotationAxis)}$");
-        Console.WriteLine($@"Rotation Blade $B = {LaTeXComposer.GetMultivectorText(rotationBlade)}$");
-        Console.WriteLine($@"$R v_1 R^{{\sim}} - v_2= {LaTeXComposer.GetMultivectorText(diff1)}$");
-        Console.WriteLine($@"$R v R^{{\sim}} - v= {LaTeXComposer.GetMultivectorText(diff2)}$");
-        Console.WriteLine($@"$R B R^{{\sim}} - B= {LaTeXComposer.GetMultivectorText(diff3)}$");
-        Console.WriteLine($@"$a = {LaTeXComposer.GetMultivectorText(a)}$");
-        Console.WriteLine($@"$b = R a R^{{\sim}} = {LaTeXComposer.GetMultivectorText(b)}$");
-        Console.WriteLine($@"$a_{{\Vert}} = {LaTeXComposer.GetMultivectorText(pa)}$");
-        Console.WriteLine($@"$b_{{\Vert}} = {LaTeXComposer.GetMultivectorText(pb)}$");
+        Console.WriteLine($@"First vector  $\boldsymbol{{u}} = {LaTeXComposer.GetMultivectorText(u)}$");
+        Console.WriteLine($@"Second vector $\boldsymbol{{v}} = {LaTeXComposer.GetMultivectorText(v)}$");
+        Console.WriteLine($@"Rotor $\boldsymbol{{R}} = {LaTeXComposer.GetMultivectorText(rotor)}$");
+        Console.WriteLine($@"Rotor Matrix $\boldsymbol{{M_{{R}}}} = {LaTeXComposer.GetArrayDisplayEquationText(rotorMatrix)}$");
+        Console.WriteLine($@"Rotation Angle $\theta = {LaTeXComposer.GetScalarText(angle.Radians)}$");
+        Console.WriteLine($@"Rotation Axis $\boldsymbol{{v_{{R}}}} = {LaTeXComposer.GetMultivectorText(rotationAxis)}$");
+        Console.WriteLine($@"Rotation Blade $\boldsymbol{{B_{{R}}}} = {LaTeXComposer.GetMultivectorText(rotationBlade)}$");
+        Console.WriteLine($@"$\boldsymbol{{R}} \boldsymbol{{u}} \boldsymbol{{R}}^{{\sim}} - \boldsymbol{{v}}= {LaTeXComposer.GetMultivectorText(diff1)}$");
+        Console.WriteLine($@"$\boldsymbol{{R}} \boldsymbol{{v_{{R}}}} \boldsymbol{{R}}^{{\sim}} - \boldsymbol{{v_{{R}}}} = {LaTeXComposer.GetMultivectorText(diff2)}$");
+        Console.WriteLine($@"$\boldsymbol{{R}} \boldsymbol{{B_{{R}}}} \boldsymbol{{R}}^{{\sim}} - \boldsymbol{{B_{{R}}}} = {LaTeXComposer.GetMultivectorText(diff3)}$");
+        Console.WriteLine($@"$\boldsymbol{{a}} = {LaTeXComposer.GetMultivectorText(a)}$");
+        Console.WriteLine($@"$\boldsymbol{{b}} = \boldsymbol{{R}} \boldsymbol{{a}} \boldsymbol{{R}}^{{\sim}} = {LaTeXComposer.GetMultivectorText(b)}$");
+        Console.WriteLine($@"$\boldsymbol{{a}}_{{\Vert}} = {LaTeXComposer.GetMultivectorText(pa)}$");
+        Console.WriteLine($@"$\boldsymbol{{b}}_{{\Vert}} = {LaTeXComposer.GetMultivectorText(pb)}$");
         Console.WriteLine($@"$\angle \left( a_{{\Vert}},b_{{\Vert}} \right) - \theta = {LaTeXComposer.GetScalarText(diff4)}$");
         Console.WriteLine($@"$R a_{{\Vert}} R^{{\sim}} - b_{{\Vert}} = {LaTeXComposer.GetMultivectorText(diff5)}$");
         Console.WriteLine();
@@ -365,15 +390,23 @@ public static class SymbolicRotorsSample
         var pseudoScalarInverse = pseudoScalar.Inverse();
 
         // Define two unit vectors with angle phi between them
-        var anglePhi = @"\[Phi]".ToExpr();
+        var anglePhi = @"\[Phi]".RadiansToPolarAngle(ScalarProcessor);
+        var angleAlpha = @"\[Alpha]".RadiansToPolarAngle(ScalarProcessor);
+
         var v1 = e1;
-        var v2 = Mfs.Cos[anglePhi] * e1 + Mfs.Sin[anglePhi] * e2;
+        //var v2 =
+        //    anglePhi.Cos() * e1 +
+        //    anglePhi.Sin() * angleAlpha.Cos() * e2 +
+        //    anglePhi.Sin() * angleAlpha.Sin() * e3;
+
+        var v2 = "x".ToExpr() * e1 + "y".ToExpr() * e2 + "z".ToExpr() * e3;
+        
         var v1v2Dot = v1.ESp(v2);
 
         // The free angle parameter theta for rotor S
         var angleTheta = @"\[Theta]".RadiansToPolarAngle(ScalarProcessor);
 
-        var assumption = $"Element[{angleTheta} | {anglePhi}, Reals] && {angleTheta} >= -Pi/2 && {angleTheta} <= Pi/2 && {anglePhi} >= 0 && {anglePhi} <= Pi".ToExpr();
+        var assumeExpr = $@"Element[\[Theta] | \[Phi] | \[Alpha] | x | y | z, Reals] && \[Theta] >= -Pi/2 && \[Theta] <= Pi/2 && \[Phi] >= 0 && \[Phi] <= Pi && \[Alpha] >= 0 && \[Alpha] <= 2 * Pi && x >= 0 && x <= 1 && y >= 0 && y <= 1 && z >= 0 && z <= 1 && x == Sqrt[1 - y * y - z * z]".ToExpr();
 
         // Define parametric plane of rotation for rotor S
         var rotorSBlade = (v2 - v1).Gp(pseudoScalarInverse).GetBivectorPart();
@@ -381,67 +414,211 @@ public static class SymbolicRotorsSample
         // Define parametric rotor S
         var rotorS = rotorSBlade.CreatePureRotor(angleTheta);
 
+        var rotorSMatrix = rotorS.GetVectorMapPart(3).ToArray(3).FullSimplifyScalars(assumeExpr);
+
         // Create pure rotor that rotates v1 to v2 at theta = 0
         var rotor0 = v1.CreatePureRotor(v2, true);
 
+        var rotorBlade0 = v2.Op(v1).FullSimplifyScalars(assumeExpr);
 
         // Define parametric angle of rotation
         var rotorAngle =
-            (1 + 2 * (v1v2Dot - 1) / (2 - Mfs.Power[Mfs.Sin[angleTheta], 2] * (v1v2Dot + 1))).ArcCos();
+            (1 + 2 * (v1v2Dot - 1) / (2 - Mfs.Power[Mfs.Sin[angleTheta.RadiansValue], 2] * (v1v2Dot + 1))).ArcCos().FullSimplifyScalar(assumeExpr).RadiansToPolarAngle();
 
         // The actual plane of rotation is made by rotating the plane of v1,v2
         // by angle theta in the plane orthogonal to v2 - v1
         var rotorBlade =
             rotorS
-                .OmMap(v2.Op(v1))
-                .FullSimplifyScalars(assumption);
+                .OmMap(rotorBlade0)
+                .FullSimplifyScalars(assumeExpr);
 
-        var rotor = rotorBlade.CreatePureRotor(rotorAngle);
+        var rotor = rotorBlade.CreatePureRotor(rotorAngle).Multivector.FullSimplifyScalars(assumeExpr).CreatePureRotor();
 
-        var rotorAxis =
-            rotorBlade.Gp(pseudoScalarInverse).GetVectorPart().FullSimplifyScalars(assumption);
+        var rotorMatrix = rotor.GetVectorMapPart(3).ToArray(3).FullSimplifyScalars(assumeExpr);
+        
+        Console.WriteLine($@"$v_1 = {LaTeXComposer.GetMultivectorText(v1)}$");
+        Console.WriteLine($@"$v_2 = {LaTeXComposer.GetMultivectorText(v2)}$");
+        Console.WriteLine($@"Rotor Blade $N = {LaTeXComposer.GetMultivectorText(rotorBlade0)}$");
+        Console.WriteLine($@"Rotor $S = {LaTeXComposer.GetMultivectorText(rotorS)}$");
+        Console.WriteLine($@"Rotor Matrix $S_R \left( \theta \right) = {LaTeXComposer.GetArrayText(rotorSMatrix)}$");
+        Console.WriteLine($@"Rotor Blade $S_R N S_R^{{{{\sim}}}} = {LaTeXComposer.GetMultivectorText(rotorBlade)}$");
+        Console.WriteLine($@"Rotor $R \left( \theta \right) = {LaTeXComposer.GetMultivectorText(rotor)}$");
+        Console.WriteLine($@"Rotor Matrix $M_R \left( \theta \right) = {LaTeXComposer.GetArrayText(rotorMatrix)}$");
 
-        // Make sure v1 rotates into v2 using the pure rotor at theta = 0
-        var diff1 =
-            (rotor0.OmMap(v1) - v2).FullSimplifyScalars();
+        return;
 
-        // Make sure v1 rotates into v2 using the actual rotor
-        var diff2 =
-            (rotor.OmMap(v1) - v2).FullSimplifyScalars();
+        //var rotorAxis =
+        //    rotorBlade.Gp(pseudoScalarInverse).GetVectorPart().FullSimplifyScalars(assumeExpr);
 
-        var rotor0A =
-            v1.CreateParametricPureRotor3D(v2, LinPolarAngle<Expr>.Angle0(ScalarProcessor)).Multivector;
+        //// Make sure v1 rotates into v2 using the pure rotor at theta = 0
+        //var diff1 =
+        //    (rotor0.OmMap(v1) - v2).FullSimplifyScalars();
 
-        var rotorA =
-            v1.CreateParametricPureRotor3D(v2, angleTheta).Multivector;
+        //// Make sure v1 rotates into v2 using the actual rotor
+        //var diff2 =
+        //    (rotor.OmMap(v1) - v2).FullSimplifyScalars();
 
-        // This should be 0
-        var diff3 =
-            (rotor.Multivector - rotorA).FullSimplifyScalars(assumption);
+        //var rotor0A =
+        //    v1.CreateParametricPureRotor3D(v2, LinPolarAngle<Expr>.Angle0(ScalarProcessor)).Multivector;
 
-        // This should be 0
-        var diff4 =
-            (rotor0.Multivector - rotor0A).FullSimplifyScalars(assumption);
+        //var rotorA =
+        //    v1.CreateParametricPureRotor3D(v2, angleTheta).Multivector;
+
+        //// This should be 0
+        //var diff3 =
+        //    (rotor.Multivector - rotorA).FullSimplifyScalars(assumeExpr);
+
+        //// This should be 0
+        //var diff4 =
+        //    (rotor0.Multivector - rotor0A).FullSimplifyScalars(assumeExpr);
+
+        //Console.WriteLine($@"$v_1 = {LaTeXComposer.GetMultivectorText(v1)}$");
+        //Console.WriteLine($@"$v_2 = {LaTeXComposer.GetMultivectorText(v2)}$");
+        //Console.WriteLine($@"Rotor $S = {LaTeXComposer.GetMultivectorText(rotorS)}$");
+        //Console.WriteLine($@"$R \left( 0 \right) = {LaTeXComposer.GetMultivectorText(rotor0)}$");
+        //Console.WriteLine($@"Rotor $R \left( \theta \right) = {LaTeXComposer.GetMultivectorText(rotor)}$");
+        //Console.WriteLine($@"$\varphi \left( \theta \right) = {LaTeXComposer.GetScalarText(rotorAngle)}$");
+        //Console.WriteLine($@"Rotation Axis $v = {LaTeXComposer.GetMultivectorText(rotorAxis)}$");
+        //Console.WriteLine($@"Rotation Blade $B = {LaTeXComposer.GetMultivectorText(rotorBlade)}$");
+        //Console.WriteLine($@"$R \left( 0 \right) v_1 R^{{\sim}}\left( 0 \right) - v_2= {LaTeXComposer.GetMultivectorText(diff1)}$");
+        //Console.WriteLine($@"$R \left( \theta \right) v_1 R^{{\sim}}\left( \theta \right) - v_2= {LaTeXComposer.GetMultivectorText(diff2)}$");
+        //Console.WriteLine($@"Diff3 = ${LaTeXComposer.GetMultivectorText(diff3)}$");
+        //Console.WriteLine($@"Diff4 = ${LaTeXComposer.GetMultivectorText(diff4)}$");
+        //Console.WriteLine();
+    }
+    
+    /// <summary>
+    /// Algebraically define the family of one-parameter rotations
+    /// between two unit vectors in 3D
+    /// </summary>
+    public static void Example6()
+    {
+        var e1 = GeometricProcessor.VectorTerm(0);
+        var e2 = GeometricProcessor.VectorTerm(1);
+        var e3 = GeometricProcessor.VectorTerm(2);
+        var pseudoScalar = e1.Op(e2).Op(e3);
+        var pseudoScalarInverse = pseudoScalar.Inverse();
+
+        // Define two unit vectors with angle phi between them
+        var anglePhi = @"\[Phi]".RadiansToPolarAngle(ScalarProcessor);
+        var angleAlpha = @"\[Alpha]".RadiansToPolarAngle(ScalarProcessor);
+
+        var v1 = e1;
+        //var v2 =
+        //    anglePhi.Cos() * e1 +
+        //    anglePhi.Sin() * angleAlpha.Cos() * e2 +
+        //    anglePhi.Sin() * angleAlpha.Sin() * e3;
+
+        var v2 = "x".ToExpr() * e1 + "y".ToExpr() * e2 + "z".ToExpr() * e3;
+        
+        var v1v2Dot = v1.ESp(v2);
+
+        // The free angle parameter theta for rotor S
+        var angleTheta = @"\[Theta]".RadiansToPolarAngle(ScalarProcessor);
+
+        var assumeExpr = $@"Element[\[Theta] | \[Phi] | \[Alpha], Reals] && Element[{{x, y, z}}, Ball[]] && \[Theta] > 0 && \[Theta] < Pi/2 && \[Phi] > 0 && \[Phi] < Pi && \[Alpha] > 0 && \[Alpha] < 2 * Pi".ToExpr();
+
+        var scalarMap = new ScalarTransformer<Expr>();
+        scalarMap
+            .Append(expr => expr.FullSimplify(assumeExpr))
+            .Append(expr => expr.TrigExpand())
+            .Append(expr => expr.ReplaceAll(@"Cos[2 * \[Theta]]", @"2 * Cos[\[Theta]] * Cos[\[Theta]] - 1"))
+            .Append(expr => expr.ReplaceAll("y * y + z * z", "(1 - x) * (1 + x)"));
+            //.Append(expr => expr.FullSimplify(assumeExpr));
+
+        // Define parametric plane of rotation for rotor S
+        var rotorSBlade = (v2 - v1).Gp(pseudoScalarInverse).GetBivectorPart();
+
+        // Define parametric rotor S
+        var rotorS = rotorSBlade.CreatePureRotor(angleTheta);
+
+        //var rotorSMatrix = rotorS.GetVectorMapPart(3).ToArray(3).MapScalars(scalarMap);
+
+        // Create pure rotor that rotates v1 to v2 at theta = 0
+        //var rotor0 = v1.CreatePureRotor(v2, true);
+
+        var rotorBlade0 = v2.Op(v1).MapScalars(scalarMap);
+
+        // Define parametric angle of rotation
+        var rotorAngle =
+            (1 + 2 * (v1v2Dot - 1) / (2 - Mfs.Power[Mfs.Sin[angleTheta.RadiansValue], 2] * (v1v2Dot + 1))).ArcCos().MapAngleRadians(scalarMap);
+
+        var rotor0 = rotorBlade0.CreatePureRotor(rotorAngle).Multivector.MapScalars(scalarMap).CreatePureRotor();
+
+        //var rotor0Matrix = rotor0.GetVectorMapPart(3).ToArray(3).MapScalars(scalarMap);
+
+        var rotor = rotorS.OmMap(rotor0.Multivector).MapScalars(scalarMap).CreatePureRotor();
+
+        //// The actual plane of rotation is made by rotating the plane of v1,v2
+        //// by angle theta in the plane orthogonal to v2 - v1
+        //var rotorBlade =
+        //    rotorS
+        //        .OmMap(rotorBlade0)
+        //        .FullSimplifyScalars(assumeExpr);
+
+        //var rotor1 = rotorBlade.CreatePureRotor(rotorAngle).Multivector.FullSimplifyScalars(assumeExpr).CreatePureRotor();
+
+        //var diff1 = (rotor1.Multivector - rotor.Multivector).FullSimplifyScalars(assumeExpr);
+
+        //var rotorMatrix = rotor.GetVectorMapPart(3).ToArray(3).FullSimplifyScalars(assumeExpr);
 
         Console.WriteLine($@"$v_1 = {LaTeXComposer.GetMultivectorText(v1)}$");
         Console.WriteLine($@"$v_2 = {LaTeXComposer.GetMultivectorText(v2)}$");
+        Console.WriteLine($@"Rotor Blade $N = {LaTeXComposer.GetMultivectorText(rotorBlade0)}$");
         Console.WriteLine($@"Rotor $S = {LaTeXComposer.GetMultivectorText(rotorS)}$");
-        Console.WriteLine($@"$R \left( 0 \right) = {LaTeXComposer.GetMultivectorText(rotor0)}$");
+        //Console.WriteLine($@"Rotor Matrix $S_R \left( \theta \right) = {LaTeXComposer.GetArrayText(rotorSMatrix)}$");
+        //Console.WriteLine($@"Rotor Blade $S_R N S_R^{{{{\sim}}}} = {LaTeXComposer.GetMultivectorText(rotorBlade)}$");
+        Console.WriteLine($@"Rotor $R \left( 0 \right) = {LaTeXComposer.GetMultivectorText(rotor0)}$");
+        //Console.WriteLine($@"Rotor Matrix $M_R \left( 0 \right) = {LaTeXComposer.GetArrayText(rotor0Matrix)}$");
         Console.WriteLine($@"Rotor $R \left( \theta \right) = {LaTeXComposer.GetMultivectorText(rotor)}$");
-        Console.WriteLine($@"$\varphi \left( \theta \right) = {LaTeXComposer.GetScalarText(rotorAngle)}$");
-        Console.WriteLine($@"Rotation Axis $v = {LaTeXComposer.GetMultivectorText(rotorAxis)}$");
-        Console.WriteLine($@"Rotation Blade $B = {LaTeXComposer.GetMultivectorText(rotorBlade)}$");
-        Console.WriteLine($@"$R \left( 0 \right) v_1 R^{{\sim}}\left( 0 \right) - v_2= {LaTeXComposer.GetMultivectorText(diff1)}$");
-        Console.WriteLine($@"$R \left( \theta \right) v_1 R^{{\sim}}\left( \theta \right) - v_2= {LaTeXComposer.GetMultivectorText(diff2)}$");
-        Console.WriteLine($@"Diff3 = ${LaTeXComposer.GetMultivectorText(diff3)}$");
-        Console.WriteLine($@"Diff4 = ${LaTeXComposer.GetMultivectorText(diff4)}$");
-        Console.WriteLine();
+        //Console.WriteLine($@"Rotor Matrix $M_R \left( \theta \right) = {LaTeXComposer.GetArrayText(rotorMatrix)}$");
+
+        return;
+
+        //var rotorAxis =
+        //    rotorBlade.Gp(pseudoScalarInverse).GetVectorPart().FullSimplifyScalars(assumeExpr);
+
+        //// Make sure v1 rotates into v2 using the pure rotor at theta = 0
+        //var diff1 =
+        //    (rotor0.OmMap(v1) - v2).FullSimplifyScalars();
+
+        //// Make sure v1 rotates into v2 using the actual rotor
+        //var diff2 =
+        //    (rotor.OmMap(v1) - v2).FullSimplifyScalars();
+
+        //var rotor0A =
+        //    v1.CreateParametricPureRotor3D(v2, LinPolarAngle<Expr>.Angle0(ScalarProcessor)).Multivector;
+
+        //var rotorA =
+        //    v1.CreateParametricPureRotor3D(v2, angleTheta).Multivector;
+
+        //// This should be 0
+        //var diff3 =
+        //    (rotor.Multivector - rotorA).FullSimplifyScalars(assumeExpr);
+
+        //// This should be 0
+        //var diff4 =
+        //    (rotor0.Multivector - rotor0A).FullSimplifyScalars(assumeExpr);
+
+        //Console.WriteLine($@"$v_1 = {LaTeXComposer.GetMultivectorText(v1)}$");
+        //Console.WriteLine($@"$v_2 = {LaTeXComposer.GetMultivectorText(v2)}$");
+        //Console.WriteLine($@"Rotor $S = {LaTeXComposer.GetMultivectorText(rotorS)}$");
+        //Console.WriteLine($@"$R \left( 0 \right) = {LaTeXComposer.GetMultivectorText(rotor0)}$");
+        //Console.WriteLine($@"Rotor $R \left( \theta \right) = {LaTeXComposer.GetMultivectorText(rotor)}$");
+        //Console.WriteLine($@"$\varphi \left( \theta \right) = {LaTeXComposer.GetScalarText(rotorAngle)}$");
+        //Console.WriteLine($@"Rotation Axis $v = {LaTeXComposer.GetMultivectorText(rotorAxis)}$");
+        //Console.WriteLine($@"Rotation Blade $B = {LaTeXComposer.GetMultivectorText(rotorBlade)}$");
+        //Console.WriteLine($@"$R \left( 0 \right) v_1 R^{{\sim}}\left( 0 \right) - v_2= {LaTeXComposer.GetMultivectorText(diff1)}$");
+        //Console.WriteLine($@"$R \left( \theta \right) v_1 R^{{\sim}}\left( \theta \right) - v_2= {LaTeXComposer.GetMultivectorText(diff2)}$");
+        //Console.WriteLine($@"Diff3 = ${LaTeXComposer.GetMultivectorText(diff3)}$");
+        //Console.WriteLine($@"Diff4 = ${LaTeXComposer.GetMultivectorText(diff4)}$");
+        //Console.WriteLine();
     }
 
     /// <summary>
     /// Covariance of rotations on blades
     /// </summary>
-    public static void Example6()
+    public static void Example7()
     {
         var e1 = GeometricProcessor.VectorTerm(0);
         var e2 = GeometricProcessor.VectorTerm(1);
@@ -478,7 +655,7 @@ public static class SymbolicRotorsSample
     /// <summary>
     /// Create a scaled rotor
     /// </summary>
-    public static void Example7()
+    public static void Example8()
     {
         var rotorA =
             "Subscript[a,0]".ToExpr() +
@@ -521,7 +698,7 @@ public static class SymbolicRotorsSample
     /// <summary>
     /// Create a pure scaled rotor based on two general vectors
     /// </summary>
-    public static void Example8()
+    public static void Example9()
     {
         var u =
             GeometricProcessor.Vector(1, 0, 0);
@@ -553,9 +730,9 @@ public static class SymbolicRotorsSample
     /// <summary>
     /// Create pure rotors from and to basis vectors
     /// </summary>
-    public static void Example9()
+    public static void Example10()
     {
-        var axis = LinSignedBasisVector.NegativeZ;
+        var axis = LinSignedBasisVector.Nz;
         var u =
             GeometricProcessor.Vector(
                 "Subscript[u,1]",
@@ -577,7 +754,7 @@ public static class SymbolicRotorsSample
         Console.WriteLine();
     }
 
-    public static void Example10()
+    public static void Example11()
     {
         var e3 = GeometricProcessor.VectorTerm(2);
 
@@ -604,7 +781,7 @@ public static class SymbolicRotorsSample
     /// <summary>
     /// Define rotors in 3D that rotate unit basis vectors to a given unit vector
     /// </summary>
-    public static void Example11()
+    public static void Example12()
     {
         LaTeXComposer.BasisName = @"\boldsymbol{e}";
 

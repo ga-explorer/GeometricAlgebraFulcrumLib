@@ -291,7 +291,7 @@ public sealed class BSplineBasisPairProductSet :
         //        arrayX[h] = 0;
 
         //for (var h = 0; h < q; h++)
-        //    if (arrayX[h].IsNearZero(1e-12))
+        //    if (arrayX[h].IsNearZero())
         //        arrayX[h] = 0;
 
         var vectorX1 = Vector.Build.DenseOfArray(arrayX);
@@ -304,7 +304,7 @@ public sealed class BSplineBasisPairProductSet :
         //var vectorX2 = matrixAInv * vectorB;
 
         //for (var h = 0; h < q; h++)
-        //    if (vectorX2[h].IsNearZero(1e-12))
+        //    if (vectorX2[h].IsNearZero())
         //        vectorX2[h] = 0;
 
         //var vectorXDiff = vectorX2 - vectorX1;
@@ -362,7 +362,7 @@ public sealed class BSplineBasisPairProductSet :
                 //var vectorX = CreateVectorXFromMatrixL(lMatrix, i, j);
                 var vectorX = CreateVectorXFromMatrixAInv(matrixAInv, i, j);
 
-                vectorX.ClearNearZeroItems(1e-12);
+                vectorX.ClearNearZeroItems();
 
                 xVectorArray[i, j] = vectorX;
                 xVectorArray[j, i] = vectorX;

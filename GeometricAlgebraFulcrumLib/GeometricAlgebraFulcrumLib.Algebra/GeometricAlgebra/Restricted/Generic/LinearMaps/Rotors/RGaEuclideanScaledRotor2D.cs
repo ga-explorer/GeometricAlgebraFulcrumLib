@@ -2,7 +2,6 @@
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Generic.Multivectors;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Generic.Multivectors.Composers;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Generic.Processors;
-using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Generic.LinearMaps;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Generic;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Generic.LinearMaps.Rotors;
@@ -146,12 +145,6 @@ public sealed class RGaEuclideanScaledRotor2D<T>
             .SetTerm(3, v12.ScalarValue)
             .GetSimpleMultivector();
     }
-
-    public override LinUnilinearMap<T> GetVectorMapPart(int vSpaceDimensions)
-    {
-        throw new NotImplementedException();
-    }
-
 
     //[MethodImpl(MethodImplOptions.AggressiveInlining)]
     //public EuclideanScaledRotor2D<T> GpSquared()

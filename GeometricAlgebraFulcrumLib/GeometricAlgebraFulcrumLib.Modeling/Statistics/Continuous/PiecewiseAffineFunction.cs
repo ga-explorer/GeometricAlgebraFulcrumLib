@@ -143,12 +143,12 @@ namespace GeometricAlgebraFulcrumLib.Modeling.Statistics.Continuous
             }
 
 
-            public Breakpoint NegativeX()
+            public Breakpoint Nx()
             {
                 return new Breakpoint(-X, YPlus, Y, YMinus);
             }
             
-            public Breakpoint NegativeY()
+            public Breakpoint Ny()
             {
                 return new Breakpoint(X, -YMinus, -Y, -YPlus);
             }
@@ -673,7 +673,7 @@ namespace GeometricAlgebraFulcrumLib.Modeling.Statistics.Continuous
                 if (breakpoint.X.Equals(0d) && !breakpoint.IsSymmetric)
                     throw new InvalidOperationException();
 
-                pList.Add(breakpoint.NegativeX());
+                pList.Add(breakpoint.Nx());
             }
 
             InsertBreakpoints(pList);

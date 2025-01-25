@@ -1,4 +1,5 @@
 ﻿using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Frames.Space3D;
+using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space2D;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space3D;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Structures.Vertices;
@@ -23,8 +24,8 @@ public sealed class GrNormalVertex3D
         set => throw new InvalidOperationException();
     }
 
-    public Pair<Float64Scalar> ParameterValue 
-        => new Pair<Float64Scalar>(0, 0);
+    public LinFloat64Vector2D ParameterValue 
+        => LinFloat64Vector2D.Zero;
 
     public LinFloat64Normal3D Normal { get; }
         = new LinFloat64Normal3D();

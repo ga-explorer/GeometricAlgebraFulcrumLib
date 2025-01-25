@@ -10,7 +10,7 @@ using SixLabors.ImageSharp.PixelFormats;
 using SixLabors.ImageSharp.Processing;
 using GeometricAlgebraFulcrumLib.Utilities.Text.Text.Linear;
 using Configuration = AngleSharp.Configuration;
-using GeometricAlgebraFulcrumLib.Utilities.Web.ImageSharp.Processing.AutoCrop.Extensions;
+using GeometricAlgebraFulcrumLib.Utilities.Web.Images.ImageSharp.AutoCrop.Extensions;
 
 namespace GeometricAlgebraFulcrumLib.Utilities.Web.Samples.BabylonJs;
 

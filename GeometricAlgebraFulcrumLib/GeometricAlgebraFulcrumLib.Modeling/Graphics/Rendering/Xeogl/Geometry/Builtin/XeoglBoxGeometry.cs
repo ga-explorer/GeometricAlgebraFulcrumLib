@@ -1,6 +1,6 @@
 ﻿using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space3D;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.Borders;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.Borders.Space3D;
+using GeometricAlgebraFulcrumLib.Modeling.Geometry.Borders.Space3D.Float64;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Primitives;
 using GeometricAlgebraFulcrumLib.Utilities.Text.Code.JavaScript;
 
@@ -25,7 +25,7 @@ public sealed class XeoglBoxGeometry : XeoglBuiltinSolidGeometry
     public static XeoglBoxGeometry Create(ILinFloat64Vector3D center, ILinFloat64Vector3D halfSize)
         => new XeoglBoxGeometry(center, halfSize);
 
-    public static XeoglBoxGeometry Create(IBoundingBox3D box)
+    public static XeoglBoxGeometry Create(IFloat64BoundingBox3D box)
         => new XeoglBoxGeometry(box);
 
 
@@ -64,14 +64,14 @@ public sealed class XeoglBoxGeometry : XeoglBuiltinSolidGeometry
         HalfSize.SetVector(halfSize);
     }
 
-    public XeoglBoxGeometry(IBoundingBox3D box)
+    public XeoglBoxGeometry(IFloat64BoundingBox3D box)
     {
         Center.SetVector(box.GetMidPoint());
         HalfSize.SetVector(box.GetSideHalfLengths());
     }
 
 
-    public XeoglBoxGeometry SetTo(IBoundingBox3D box)
+    public XeoglBoxGeometry SetTo(IFloat64BoundingBox3D box)
     {
         Center.SetVector(box.GetMidPoint());
 
@@ -86,7 +86,7 @@ public sealed class XeoglBoxGeometry : XeoglBuiltinSolidGeometry
         base.UpdateConstructorAttributes(composer);
 
         composer
-            .SetValue("primitive", PrimitiveType, GraphicsPrimitiveType3D.Triangles)
+            .SetValue("primitive", PrimitiveType, GraphicsPrimitiveType3D.TriangleList)
             .SetNumbersArrayValue("center", Center, LinFloat64Vector3D.Zero)
             .SetValue("xSize", HalfSize.X, 1)
             .SetValue("ySize", HalfSize.Y, 1)

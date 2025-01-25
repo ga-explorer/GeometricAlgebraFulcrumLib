@@ -99,7 +99,7 @@ public class DfCatmullRomSplineSignalInterpolator :
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    private DfCatmullRomSplineSignalInterpolator(Float64SignalSamplingSpecs samplingSpecs, int sampleIndex1, int sampleIndex2, DfCatmullRomSplineSignalInterpolatorOptions options, CatmullRomSpline2D curve)
+    private DfCatmullRomSplineSignalInterpolator(Float64SamplingSpecs samplingSpecs, int sampleIndex1, int sampleIndex2, DfCatmullRomSplineSignalInterpolatorOptions options, CatmullRomSpline2D curve)
         : base(samplingSpecs, sampleIndex1, sampleIndex2)
     {
         Curve = curve;

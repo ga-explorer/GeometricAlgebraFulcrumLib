@@ -1,7 +1,7 @@
 ﻿using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space3D;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.BasicShapes.Lines;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.BasicShapes.Lines.Immutable;
+using GeometricAlgebraFulcrumLib.Modeling.Geometry.BasicShapes.Lines.Space3D.Float64;
 
 namespace GeometricAlgebraFulcrumLib.Modeling.Graphics.Computers;
 
@@ -38,7 +38,7 @@ public sealed class LineTraversalData3D
         => !double.IsInfinity(ParameterMinValue) &&
            !double.IsInfinity(ParameterMaxValue);
 
-    internal LineTraversalData3D(ILine3D line)
+    internal LineTraversalData3D(IFloat64Line3D line)
     {
         Origin = line.GetOrigin();
         Direction = line.GetDirection();
@@ -48,7 +48,7 @@ public sealed class LineTraversalData3D
         ParameterMaxValue = double.PositiveInfinity;
     }
 
-    internal LineTraversalData3D(ILine3D line, double paramMinValue, double paramMaxValue)
+    internal LineTraversalData3D(IFloat64Line3D line, double paramMinValue, double paramMaxValue)
     {
         Origin = line.GetOrigin();
         Direction = line.GetDirection();
@@ -90,9 +90,9 @@ public sealed class LineTraversalData3D
     }
 
 
-    public LineSegment3D GetLineSegment()
+    public Float64LineSegment3D GetLineSegment()
     {
-        return new LineSegment3D(
+        return new Float64LineSegment3D(
             Origin.X + ParameterMinValue * Direction.X,
             Origin.Y + ParameterMinValue * Direction.Y,
             Origin.Z + ParameterMinValue * Direction.Z,

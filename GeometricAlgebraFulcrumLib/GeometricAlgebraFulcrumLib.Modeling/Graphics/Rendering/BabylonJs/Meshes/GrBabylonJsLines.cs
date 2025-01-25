@@ -8,61 +8,11 @@ namespace GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.BabylonJs.Meshe
 public sealed class GrBabylonJsLines :
     GrBabylonJsLinesMesh
 {
-    public sealed class LinesOptions :
-        GrBabylonJsObjectOptions
-    {
-        public GrBabylonJsVector3ArrayValue? Points
-        {
-            get => GetAttributeValueOrNull<GrBabylonJsVector3ArrayValue>("points");
-            set => SetAttributeValue("points", value);
-        }
-
-        public GrBabylonJsColor4ArrayValue? Colors
-        {
-            get => GetAttributeValueOrNull<GrBabylonJsColor4ArrayValue>("colors");
-            set => SetAttributeValue("colors", value);
-        }
-
-        public GrBabylonJsMaterialValue? Material
-        {
-            get => GetAttributeValueOrNull<GrBabylonJsMaterialValue>("material");
-            set => SetAttributeValue("material", value);
-        }
-
-        public GrBabylonJsBooleanValue? UseVertexAlpha
-        {
-            get => GetAttributeValueOrNull<GrBabylonJsBooleanValue>("useVertexAlpha");
-            set => SetAttributeValue("useVertexAlpha", value);
-        }
-
-        public GrBabylonJsBooleanValue? Updatable
-        {
-            get => GetAttributeValueOrNull<GrBabylonJsBooleanValue>("updatable");
-            set => SetAttributeValue("updatable", value);
-        }
-
-        public GrBabylonJsLinesMeshValue? Instance
-        {
-            get => GetAttributeValueOrNull<GrBabylonJsLinesMeshValue>("instance");
-            set => SetAttributeValue("instance", value);
-        }
-
-
-        public LinesOptions()
-        {
-        }
-
-        public LinesOptions(LinesOptions options)
-        {
-            SetAttributeValues(options);
-        }
-    }
-    
     protected override string ConstructorName
         => "BABYLON.MeshBuilder.CreateLines";
 
-    public LinesOptions Options { get; private set; }
-        = new LinesOptions();
+    public GrBabylonJsLinesOptions Options { get; private set; }
+        = new GrBabylonJsLinesOptions();
 
     public override GrBabylonJsObjectOptions ObjectOptions 
         => Options;
@@ -79,16 +29,16 @@ public sealed class GrBabylonJsLines :
     }
 
 
-    public GrBabylonJsLines SetOptions(LinesOptions options)
+    public GrBabylonJsLines SetOptions(GrBabylonJsLinesOptions options)
     {
-        Options = new LinesOptions(options);
+        Options = new GrBabylonJsLinesOptions(options);
 
         return this;
     }
 
-    public GrBabylonJsLines SetProperties(LinesMeshProperties properties)
+    public GrBabylonJsLines SetProperties(GrBabylonJsLinesMeshProperties properties)
     {
-        Properties = new LinesMeshProperties(properties);
+        Properties = new GrBabylonJsLinesMeshProperties(properties);
 
         return this;
     }

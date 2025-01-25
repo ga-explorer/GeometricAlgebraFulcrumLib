@@ -2,7 +2,7 @@
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space3D;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.BasicShapes.Lines;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.BasicShapes.Lines.Immutable;
+using GeometricAlgebraFulcrumLib.Modeling.Geometry.BasicShapes.Lines.Space3D.Float64;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Primitives.Vertices;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Basic;
 
@@ -35,14 +35,14 @@ public class GrLineGeometryComposer3D :
     public bool GenerateColors { get; set; }
 
     public GraphicsPrimitiveType3D PrimitiveType 
-        => GraphicsPrimitiveType3D.Lines;
+        => GraphicsPrimitiveType3D.LineList;
 
 
     public int Count 
         => _indicesList.Count >> 1;
 
-    public ILineSegment3D this[int index] 
-        => LineSegment3D.Create(
+    public IFloat64LineSegment3D this[int index] 
+        => Float64LineSegment3D.Create(
             _verticesList[_indicesList[2 * index]].Point,
             _verticesList[_indicesList[2 * index + 1]].Point
         );
@@ -310,7 +310,7 @@ public class GrLineGeometryComposer3D :
     }
 
 
-    public GrLineGeometryComposer3D AddLines(IEnumerable<ILineSegment3D> linesList)
+    public GrLineGeometryComposer3D AddLines(IEnumerable<IFloat64LineSegment3D> linesList)
     {
         foreach (var lineSegment in linesList)
             AddLine(
@@ -496,10 +496,10 @@ public class GrLineGeometryComposer3D :
         return geometry;
     }
 
-    public IEnumerator<ILineSegment3D> GetEnumerator()
+    public IEnumerator<IFloat64LineSegment3D> GetEnumerator()
     {
         for (var i = 0; i < _indicesList.Count; i += 2)
-            yield return LineSegment3D.Create(
+            yield return Float64LineSegment3D.Create(
                 _verticesList[_indicesList[2 * i]].Point,
                 _verticesList[_indicesList[2 * i + 1]].Point
             );

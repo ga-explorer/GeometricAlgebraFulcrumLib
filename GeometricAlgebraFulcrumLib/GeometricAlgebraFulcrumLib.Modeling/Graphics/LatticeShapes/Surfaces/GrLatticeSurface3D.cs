@@ -51,7 +51,7 @@ public sealed class GrLatticeSurface3D :
     public IEnumerable<ILinFloat64Vector3D> VertexNormals 
         => Vertices.Select(v => v.Normal);
 
-    public IEnumerable<Pair<Float64Scalar>> VertexTextureUvs 
+    public IEnumerable<LinFloat64Vector2D> VertexTextureUvs 
         => Vertices.Select(v => v.ParameterValue);
 
     public IEnumerable<Color> VertexColors 

@@ -173,7 +173,7 @@ public sealed record LinFloat64Scalar2D :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool IsNearZero(double epsilon = 1E-12)
+    public bool IsNearZero(double zeroEpsilon = 1E-12)
     {
         return Scalar.IsNearZero();
     }

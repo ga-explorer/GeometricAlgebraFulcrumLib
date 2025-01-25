@@ -162,9 +162,9 @@ public sealed record LinFloat64Trivector3D :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool IsNearZero(double epsilon = 1e-12d)
+    public bool IsNearZero(double zeroEpsilon = 1e-12d)
     {
-        return Scalar123.IsNearZero(epsilon);
+        return Scalar123.IsNearZero(zeroEpsilon);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]

@@ -6,7 +6,7 @@ public interface ISparseCodeAttributeValue
 
     bool IsEmpty { get; }
 
-    string GetCode();
+    string GetAttributeValueCode();
 }
 
 public interface ISparseCodeAttributeValue<out T> :

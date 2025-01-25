@@ -6,71 +6,19 @@ namespace GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.BabylonJs.Textu
 public sealed class GrBabylonJsHtmlElementTexture :
     GrBabylonJsBaseTexture
 {
-    public sealed class HtmlElementTextureOptions :
-        GrBabylonJsObjectOptions
-    {
-        public GrBabylonJsSceneValue? Scene
-        {
-            get => GetAttributeValueOrNull<GrBabylonJsSceneValue>("scene");
-            set => SetAttributeValue("scene", value);
-        }
-        
-        public GrBabylonJsBooleanValue? GenerateMipMaps
-        {
-            get => GetAttributeValueOrNull<GrBabylonJsBooleanValue>("generateMipMaps");
-            set => SetAttributeValue("generateMipMaps", value);
-        }
-
-        public GrBabylonJsTextureSamplingModeValue? SamplingMode
-        {
-            get => GetAttributeValueOrNull<GrBabylonJsTextureSamplingModeValue>("samplingMode");
-            set => SetAttributeValue("samplingMode", value);
-        }
-
-        public GrBabylonJsTextureFormatValue? Format
-        {
-            get => GetAttributeValueOrNull<GrBabylonJsTextureFormatValue>("format");
-            set => SetAttributeValue("format", value);
-        }
-
-
-        public HtmlElementTextureOptions()
-        {
-        }
-
-        public HtmlElementTextureOptions(HtmlElementTextureOptions options)
-        {
-            SetAttributeValues(options);
-        }
-    }
-
-
-    public class HtmlElementTextureProperties :
-        BaseTextureProperties
-    {
-        public HtmlElementTextureProperties()
-        {
-        }
-
-        public HtmlElementTextureProperties(HtmlElementTextureProperties properties)
-        {
-            SetAttributeValues(properties);
-        }
-    }
-
     protected override string ConstructorName
         => "new BABYLON.HtmlElementTexture";
 
     public GrBabylonJsCodeValue Element { get; }
     
-    public HtmlElementTextureOptions Options { get; private set; }
-        = new HtmlElementTextureOptions();
+    public GrBabylonJsHtmlElementTextureOptions Options { get; private set; }
+        = new GrBabylonJsHtmlElementTextureOptions();
 
     public override GrBabylonJsObjectOptions ObjectOptions 
         => Options;
 
-    public HtmlElementTextureProperties Properties { get; private set; }
-        = new HtmlElementTextureProperties();
+    public GrBabylonJsHtmlElementTextureProperties Properties { get; private set; }
+        = new GrBabylonJsHtmlElementTextureProperties();
 
     public override GrBabylonJsObjectProperties ObjectProperties 
         => Properties;
@@ -83,16 +31,16 @@ public sealed class GrBabylonJsHtmlElementTexture :
     }
 
     
-    public GrBabylonJsHtmlElementTexture SetOptions(HtmlElementTextureOptions options)
+    public GrBabylonJsHtmlElementTexture SetOptions(GrBabylonJsHtmlElementTextureOptions options)
     {
-        Options = new HtmlElementTextureOptions(options);
+        Options = new GrBabylonJsHtmlElementTextureOptions(options);
 
         return this;
     }
 
-    public GrBabylonJsHtmlElementTexture SetProperties(HtmlElementTextureProperties properties)
+    public GrBabylonJsHtmlElementTexture SetProperties(GrBabylonJsHtmlElementTextureProperties properties)
     {
-        Properties = new HtmlElementTextureProperties(properties);
+        Properties = new GrBabylonJsHtmlElementTextureProperties(properties);
 
         return this;
     }
@@ -100,12 +48,12 @@ public sealed class GrBabylonJsHtmlElementTexture :
     protected override IEnumerable<string> GetConstructorArguments()
     {
         yield return ConstName.DoubleQuote();
-        yield return Element.GetCode();
+        yield return Element.GetAttributeValueCode();
 
         Options.Scene = ParentScene;
 
         var optionsCode = 
-            ObjectOptions.GetCode();
+            ObjectOptions.GetAttributeSetCode();
 
         yield return optionsCode;
     }

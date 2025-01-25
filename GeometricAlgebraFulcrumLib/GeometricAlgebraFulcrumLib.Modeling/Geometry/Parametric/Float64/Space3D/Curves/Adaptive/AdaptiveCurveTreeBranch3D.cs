@@ -60,7 +60,7 @@ public sealed class AdaptiveCurveTreeBranch3D :
             // Continue subdivision for the required initial number of levels
             Level < options.MinLevelCount ||
 
-            // Continue subdivision if not at at max level and frame normals are far from parallel
+            // Continue subdivision if not at max level and frame normals are far from parallel
             Level < options.MaxLevelCount && !HasNearEdgeFrames(options);
 
         if (continueSubdivision)

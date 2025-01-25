@@ -1,4 +1,4 @@
-﻿using System.Globalization;
+﻿using System.Collections;
 using AngleSharp.Html.Dom;
 using AngleSharp;
 using OpenQA.Selenium.Chrome;
@@ -9,11 +9,17 @@ using GeometricAlgebraFulcrumLib.Utilities.Structures.Files;
 using GeometricAlgebraFulcrumLib.Utilities.Text;
 using GeometricAlgebraFulcrumLib.Utilities.Text.Text;
 using GeometricAlgebraFulcrumLib.Utilities.Text.Text.Linear;
-using GeometricAlgebraFulcrumLib.Utilities.Web.ImageSharp.Processing.AutoCrop.Extensions;
 using System.Net;
+using AngleSharp.Html;
+using GeometricAlgebraFulcrumLib.Utilities.Web.Colors;
 using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.Formats.Png;
 using SixLabors.ImageSharp.PixelFormats;
 using SixLabors.ImageSharp.Processing;
+using GeometricAlgebraFulcrumLib.Utilities.Structures.Basic;
+using GeometricAlgebraFulcrumLib.Utilities.Web.Images;
+using GeometricAlgebraFulcrumLib.Utilities.Web.LaTeX.CodeComposer;
+using GeometricAlgebraFulcrumLib.Utilities.Web.Images.ImageSharp.AutoCrop.Extensions;
 
 namespace GeometricAlgebraFulcrumLib.Utilities.Web.LaTeX.KaTeX;
 
@@ -21,7 +27,8 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Web.LaTeX.KaTeX;
 /// https://github.com/KaTeX/KaTeX
 /// https://katex.org/docs/supported.html
 /// </summary>
-public class WclKaTeXComposer
+public class WclKaTeXComposer : 
+    IReadOnlyDictionary<string, WclKaTeXComposerItem>
 {
     //For Unicode Direct Input use these sites:
     //https://unicodelookup.com/
@@ -66,6 +73,7 @@ public class WclKaTeXComposer
                 {left: ""\\("", right: ""\\)"", display: false},
                 {left: ""\\begin{equation}"", right: ""\\end{equation}"", display: true},
                 {left: ""\\begin{align}"", right: ""\\end{align}"", display: true},
+                {left: ""\\begin{align*}"", right: ""\\end{align*}"", display: true},
                 {left: ""\\begin{alignat}"", right: ""\\end{alignat}"", display: true},
                 {left: ""\\begin{gather}"", right: ""\\end{gather}"", display: true},
                 {left: ""\\begin{CD}"", right: ""\\end{CD}"", display: true},
@@ -98,6 +106,12 @@ public class WclKaTeXComposer
                 padding: 0;
             }
 
+            html {
+                width:100%;
+                overflow-x:hidden;
+                overflow-y:hidden;
+            }
+
             .katex { font-size: #font-size#; }
         </style>
     </head>
@@ -108,33 +122,52 @@ public class WclKaTeXComposer
 ".Trim();
 
 
+    private readonly Dictionary<string, WclKaTeXComposerItem> _keyItemDictionary
+        = new Dictionary<string, WclKaTeXComposerItem>();
+    
+    
+    //public List<string> KaTeXCodeList { get; }
+    //    = new List<string>();
+
+    //public List<Image<Rgba32>> KaTeXPngImageList { get; }
+    //    = new List<Image<Rgba32>>();
+        
+    //public List<string> KaTeXImageFileName { get; }
+    //    = new List<string>();
+
+
+    public int Count 
+        => _keyItemDictionary.Count;
+
+    public IEnumerable<string> Keys 
+        => _keyItemDictionary.Keys;
+
+    public IEnumerable<WclKaTeXComposerItem> Values 
+        => _keyItemDictionary.Values;
+
+    public WclKaTeXComposerItem this[string key]
+        => _keyItemDictionary[key];
+
+    public IEnumerable<Image> Images 
+        => _keyItemDictionary.Values.Select(v => v.PngImage);
+
     public string WorkingFolder { get; }
 
-    public List<string> KaTeXCodeList { get; }
-        = new List<string>();
-
-    public List<Image<Rgba32>> KaTeXPngImageList { get; }
-        = new List<Image<Rgba32>>();
-        
-    public List<string> KaTeXImageFileName { get; }
-        = new List<string>();
-
-    public bool SaveImages { get; set; } 
-        = false;
+    public bool SaveImages { get; init; } 
 
     public bool DisplayMode { get; set; }
         = false;
 
-    public OutputKind Output { get; set; }
+    public OutputKind Output { get; init; }
         = OutputKind.HtmlAndMathMl;
 
-    public bool ThrowOnError { get; set; }
+    public bool ThrowOnError { get; init; }
         = true;
 
     public Color ErrorColor { get; set; }
-        = Color.DarkRed;
+        = Color.Black; //Color.DarkRed;
 
-    public float FontSizeEm { get; set; }
+    public float FontSizeEm { get; init; }
         = 1.21f;
 
         
@@ -149,32 +182,83 @@ public class WclKaTeXComposer
         WorkingFolder = workingFolder;
     }
 
-
-    /// <summary>
-    /// Converts the value of this instance to a hexadecimal string.
-    /// </summary>
-    /// <returns>A hexadecimal string representation of the value.</returns>
-    public static string RgbToHex(Color color)
+    
+    public WclKaTeXComposer Clear()
     {
-        var c = color.ToPixel<Rgb24>();
+        _keyItemDictionary.Clear();
 
-        var hexOrder = (uint)(c.B << 0 | c.G << 8 | c.R << 16);
-
-        return hexOrder.ToString("X6", CultureInfo.InvariantCulture);
+        return this;
     }
 
-    /// <summary>
-    /// Converts the value of this instance to a hexadecimal string.
-    /// </summary>
-    /// <returns>A hexadecimal string representation of the value.</returns>
-    public static string RgbaToHex(Color color)
+    public bool Remove(string key)
     {
-        var c = color.ToPixel<Rgba32>();
-
-        var hexOrder = (uint)(c.A << 0 | c.B << 8 | c.G << 16 | c.R << 24);
-
-        return hexOrder.ToString("X8", CultureInfo.InvariantCulture);
+        return _keyItemDictionary.Remove(key);
     }
+
+    public bool ContainsKey(string key)
+    {
+        return _keyItemDictionary.ContainsKey(key);
+    }
+
+    public bool TryGetValue(string key, out WclKaTeXComposerItem value)
+    {
+        return _keyItemDictionary.TryGetValue(key, out value);
+    }
+
+    public WclKaTeXComposer AddLaTeXCode(string key, string latexCode)
+    {
+        var item = new WclKaTeXComposerItem(key, latexCode);
+
+        if (_keyItemDictionary.ContainsKey(key))
+            _keyItemDictionary[key] = item;
+        else
+            _keyItemDictionary.Add(key, item);
+
+        return this;
+    }
+
+    public WclKaTeXComposer AddLaTeXCode(Dictionary<string, string> keyCodeDictionary)
+    {
+        foreach (var (key, latexCode) in keyCodeDictionary)
+            AddLaTeXCode(key, latexCode);
+
+        return this;
+    }
+
+    public WclKaTeXComposer AddLaTeXEquation(string key, string latexCode)
+    {
+        return AddLaTeXCode(
+            key, 
+            latexCode.GetLaTeXDisplayEquation()
+        );
+    }
+    
+    public WclKaTeXComposer AddLaTeXAlignedEquations(string key, string latexCode, params Pair<string>[] latexCodeArray)
+    {
+        return AddLaTeXCode(
+            key, 
+            latexCode.Trim() +
+            Environment.NewLine +
+            latexCodeArray.GetLaTeXAlignedEquations(false)
+        );
+    }
+
+    public WclKaTeXComposer AddLaTeXAlignedEquations(string key, params Pair<string>[] latexCodeArray)
+    {
+        return AddLaTeXCode(
+            key, 
+            latexCodeArray.GetLaTeXAlignedEquations(false)
+        );
+    }
+    
+    public WclKaTeXComposer AddLaTeXAlignedEquations(string key, IEnumerable<Pair<string>> latexCodeArray)
+    {
+        return AddLaTeXCode(
+            key, 
+            latexCodeArray.GetLaTeXAlignedEquations(false)
+        );
+    }
+    
 
     private string GetOptionsCode()
     {
@@ -192,7 +276,7 @@ public class WclKaTeXComposer
             ThrowOnError ? string.Empty : "throwOnError: false";
 
         var errorColor =
-            $"errorColor: '#{RgbToHex(ErrorColor)}'";
+            $"errorColor: '#{ErrorColor.RgbToHexString()}'";
 
         return new[]
             {
@@ -205,6 +289,58 @@ public class WclKaTeXComposer
             .Concatenate(", ", "{", "}");
     }
         
+    private async Task<string> CreateFullHtmlDocument(string key, string latexCode)
+    {
+        var htmlCode =
+            HtmlTemplateText.Replace(
+                "#font-size#",
+                FontSizeEm.ToString("N2") + "em"
+            );
+
+        //Create initial HTML document
+        var config =
+            AngleSharp.Configuration.Default
+                .WithCss();
+
+        // Create empty document
+        var document = await BrowsingContext.New(config).OpenAsync(
+            m => m.Content(htmlCode)
+        );
+
+        var documentBody =
+            document.Body ?? throw new InvalidOperationException();
+        
+        var codeComposer = new LinearTextComposer();
+
+        var divId = $"katex-div-{key}";
+
+        var divElement = document.CreateElement<IHtmlDivElement>();
+
+        divElement.SetAttribute("class", "katexDiv");
+        divElement.SetAttribute("id", divId);
+
+        documentBody.AppendChild(divElement);
+            
+        var optionsCode = GetOptionsCode();
+
+        var latexHtmlString =
+            WebUtility.HtmlEncode(
+                latexCode
+                    .Replace(@"\", @"\\")
+                    .Replace(@"`", @"\`")
+            ).Replace(@"&amp;", @"&");
+
+        codeComposer.AppendLineAtNewLine(
+            @$"katex.render(`{latexHtmlString}`, document.getElementById('{divId}'), {optionsCode});"
+        ).AppendLine();
+
+        var scriptElement = document.CreateElement<IHtmlScriptElement>();
+        scriptElement.TextContent = codeComposer.ToString();
+        documentBody.AppendChild(scriptElement);
+        
+        return document.ToHtml(new PrettyMarkupFormatter());
+    }
+
     private async Task<string> CreateFullHtmlDocument()
     {
         var htmlCode =
@@ -225,13 +361,27 @@ public class WclKaTeXComposer
 
         var documentBody =
             document.Body ?? throw new InvalidOperationException();
+        
+//        documentBody.AppendChild(
+//            document.CreateTextNode(@"
+//<style>
+//    html{
+//        width:100%;
+//        overflow-x:hidden;
+//        overflow-y:hidden;
+//    }
+//</style>
+//".Trim()
+//            )
+//        );
 
         var codeComposer = new LinearTextComposer();
 
-        var i = 0;
-        foreach (var latexCode in KaTeXCodeList)
+        //var i = 0;
+        foreach (var (key, item) in _keyItemDictionary)
         {
-            var divId = $"katex-div-{i}";
+            var latexCode = item.LaTeXCode;
+            var divId = $"katex-div-{key}";
 
             var divElement = document.CreateElement<IHtmlDivElement>();
 
@@ -239,33 +389,32 @@ public class WclKaTeXComposer
             divElement.SetAttribute("id", divId);
 
             documentBody.AppendChild(divElement);
-
+            
             var optionsCode = GetOptionsCode();
 
             var latexHtmlString =
                 WebUtility.HtmlEncode(
-                    latexCode.Replace(@"\", @"\\")
-                );
+                    latexCode
+                        .Replace(@"\", @"\\")
+                        .Replace(@"`", @"\`")
+                ).Replace(@"&amp;", @"&");
 
             codeComposer.AppendLineAtNewLine(
-                @$"katex.render('{latexHtmlString}', document.getElementById('{divId}'), {optionsCode});"
-            );
+                @$"katex.render(`{latexHtmlString}`, document.getElementById('{divId}'), {optionsCode});"
+            ).AppendLine();
 
-            i++;
+            //i++;
         }
 
         var scriptElement = document.CreateElement<IHtmlScriptElement>();
         scriptElement.TextContent = codeComposer.ToString();
         documentBody.AppendChild(scriptElement);
-
-        return document.ToHtml();
+        
+        return document.ToHtml(new PrettyMarkupFormatter());
     }
 
-    private void RenderKaTeX(string htmlCode)
+    private void RenderKaTeXFromHtml(string htmlCode)
     {
-        KaTeXPngImageList.Clear();
-        KaTeXImageFileName.Clear();
-
         //Save html document to local file
         var filePath =
             WorkingFolder.GetFilePath(
@@ -297,7 +446,7 @@ public class WclKaTeXComposer
 
         driver.Manage().Window.Position = new System.Drawing.Point(0, 0);
         driver.Manage().Window.Maximize();
-        driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromMilliseconds(2000);
+        driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(5);
 
         try
         {
@@ -328,14 +477,26 @@ public class WclKaTeXComposer
                 return ((IJavaScriptExecutor)driver).ExecuteScript("return document.readyState").Equals("complete");
             });
 
+            //Thread.Sleep(10000);
+
             var divElements =
                 driver.FindElements(By.TagName("div")).ToArray();
 
             var index = 0;
             foreach (var divElement in divElements)
             {
-                var screenShot = ((ITakesScreenshot)divElement).GetScreenshot();
+                //driver.SwitchTo().Frame(divElement);
 
+                //((IJavaScriptExecutor)driver).ExecuteScript(
+                //    $"window.scroll(0, {divElement.Location.Y});"
+                //);
+
+                //var div = wait.Until(
+                //    ExpectedConditions.ElementIsVisible(By.Id(divElement.))
+                //);
+                
+                var screenShot = ((ITakesScreenshot)divElement).GetScreenshot();
+                var key = divElement.GetDomAttribute("id")["katex-div-".Length..];
                 var image = Image.Load<Rgba32>(screenShot.AsByteArray);
 
                 // Crop white space around equation
@@ -369,17 +530,14 @@ public class WclKaTeXComposer
                         }
                     }
                 });
-                    
-                KaTeXPngImageList.Add(image);
-                    
+
+                var item = _keyItemDictionary[key];
+                item.PngImage = image;
+                
                 if (SaveImages)
                 {
-                    var imageFileName = $"KaTeX-{index:D6}";
-
-                    KaTeXImageFileName.Add(imageFileName);
-
                     image.SaveAsPng(
-                        WorkingFolder.GetPngFilePath(imageFileName)
+                        WorkingFolder.GetPngFilePath(item.ImageFileName)
                     );
                 }
 
@@ -397,24 +555,190 @@ public class WclKaTeXComposer
             driver.Quit();
         }
 
-        if (File.Exists(filePath))
-            File.Delete(filePath);
+        //if (File.Exists(filePath))
+        //    File.Delete(filePath);
+    }
+    
+    private void RenderKaTeXFromHtml()
+    {
+        // https://www.automatetheplanet.com/selenium-webdriver-csharp-cheat-sheet/
+        // Read document and execute javascript
+        var chromeOptions = new ChromeOptions
+        {
+            PageLoadStrategy = PageLoadStrategy.Normal,
+            UnhandledPromptBehavior = UnhandledPromptBehavior.Accept
+        };
+
+        chromeOptions.AddUserProfilePreference("download.default_directory", WorkingFolder);
+        chromeOptions.AddUserProfilePreference("download.prompt_for_download", false);
+        chromeOptions.AddUserProfilePreference("disable-popup-blocking", "true");
+
+        //chromeOptions.AddAdditionalChromeOption("window-size", "1920,1080");
+        chromeOptions.AddArgument("headless");
+
+        var driver = new ChromeDriver(chromeOptions);
+
+        driver.Manage().Window.Position = new System.Drawing.Point(0, 0);
+        driver.Manage().Window.Maximize();
+        driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(5);
+        
+        try
+        {
+            // Open a new tab
+            var tabHandleCollection = driver.WindowHandles;
+
+            if (tabHandleCollection.Count < 1)
+                driver.SwitchTo().NewWindow(WindowType.Tab);
+
+            driver.SwitchTo().Window(
+                tabHandleCollection.First()
+            );
+            
+            var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(30));
+
+            //var htmlCodeId = 0;
+            foreach (var (key, item) in _keyItemDictionary)
+            {
+                var htmlCode = item.HtmlCode;
+
+                //Save html document to local file
+                var filePath =
+                    WorkingFolder.GetFilePath(
+                        "KaTeX-" + key, //Path.GetFileNameWithoutExtension(Path.GetTempFileName()),
+                        "html"
+                    );
+
+                File.WriteAllText(
+                    filePath,
+                    htmlCode
+                );
+
+                var fileUri =
+                    new UriBuilder()
+                    {
+                        Scheme = Uri.UriSchemeFile,
+                        Host = "",
+                        Path = filePath
+                    }.Uri.AbsoluteUri;
+
+                driver.Navigate().GoToUrl(fileUri);
+
+                // Wait until a page is fully loaded via JavaScript
+                wait.Until((x) =>
+                {
+                    return ((IJavaScriptExecutor)driver).ExecuteScript("return document.readyState").Equals("complete");
+                });
+
+                var divElement =
+                    driver.FindElement(By.TagName("div"));
+
+                //driver.SwitchTo().Frame(divElement);
+
+                //((IJavaScriptExecutor)driver).ExecuteScript(
+                //    $"window.scroll(0, {divElement.Location.Y});"
+                //);
+
+                //var div = wait.Until(
+                //    ExpectedConditions.ElementIsVisible(By.Id(divElement.))
+                //);
+
+                var screenShot = ((ITakesScreenshot)divElement).GetScreenshot();
+
+                var image = Image.Load<Rgba32>(screenShot.AsByteArray);
+
+                // Crop white space around equation
+                image.Mutate(x => x.AutoCrop());
+
+                // Replace white background with transparent background
+                // https://github.com/SixLabors/ImageSharp.Drawing/issues/26
+                //image.Mutate(i => i.Clear(Color.Transparent));
+
+                // https://docs.sixlabors.com/articles/imagesharp/pixelbuffers.html
+                image.ProcessPixelRows(accessor =>
+                {
+                    // Color is pixel-agnostic, but it's implicitly convertible to the Rgba32 pixel type
+                    var transparent = Color.Transparent.ToPixel<Rgba32>();
+                    var black = Color.Black.FullAlpha().ToPixel<Rgba32>();
+
+                    for (var y = 0; y < accessor.Height; y++)
+                    {
+                        var pixelRow = accessor.GetRowSpan(y);
+
+                        // pixelRow.Length has the same value as accessor.Width,
+                        // but using pixelRow.Length allows the JIT to optimize away bounds checks:
+                        for (var x = 0; x < pixelRow.Length; x++)
+                        {
+                            // Get a reference to the pixel at position x
+                            ref var pixel = ref pixelRow[x];
+
+                            pixel.A = (byte)(255 - pixel.ToGrayscale());
+
+                            //// Overwrite the pixel referenced by 'ref Rgba32 pixel':
+                            //if (pixel.R > 128 && pixel.G > 128 && pixel.B > 128)
+                            //    pixel = transparent;
+                            //else
+                            //    pixel = black;
+                        }
+                    }
+                });
+
+                item.PngImage = image;
+
+                if (SaveImages)
+                {
+                    image.SaveAsPng(
+                        WorkingFolder.GetPngFilePath(item.ImageFileName),
+                        new PngEncoder()
+                        {
+                            ColorType = PngColorType.RgbWithAlpha
+                        }
+                    );
+                }
+
+                if (File.Exists(filePath))
+                    File.Delete(filePath);
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error: {ex.Message}");
+        }
+        finally
+        {
+            Thread.Sleep(200);
+
+            driver.Quit();
+        }
+
     }
 
+    //public async void RenderKaTeX()
+    //{
+    //    var htmlCode = await CreateFullHtmlDocument();
+
+    //    RenderKaTeXFromHtml(htmlCode);
+    //}
+    
     public async void RenderKaTeX()
     {
-        var htmlCode = await CreateFullHtmlDocument();
-
-        RenderKaTeX(htmlCode);
-    }
+        foreach (var (key, item) in _keyItemDictionary)
+        {
+            var latexCode = item.LaTeXCode;
+            var htmlCode = await CreateFullHtmlDocument(key, latexCode);
+            
+            item.HtmlCode = htmlCode;
+        }
         
-    public async void RenderKaTeX(IEnumerable<string> kaTeXCodeList)
+        RenderKaTeXFromHtml();
+    }
+
+    public IEnumerator<KeyValuePair<string, WclKaTeXComposerItem>> GetEnumerator()
     {
-        KaTeXCodeList.Clear();
-        KaTeXCodeList.AddRange(kaTeXCodeList);
+        return _keyItemDictionary.GetEnumerator();
+    }
 
-        var htmlCode = await CreateFullHtmlDocument();
-
-        RenderKaTeX(htmlCode);
+    IEnumerator IEnumerable.GetEnumerator()
+    {
+        return GetEnumerator();
     }
 }

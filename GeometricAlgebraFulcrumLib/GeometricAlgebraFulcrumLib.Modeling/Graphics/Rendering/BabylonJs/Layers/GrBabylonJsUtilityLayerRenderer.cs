@@ -5,62 +5,6 @@ namespace GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.BabylonJs.Layer
 public sealed class GrBabylonJsUtilityLayerRenderer :
     GrBabylonJsObject
 {
-    public sealed class UtilityLayerRendererProperties :
-        GrBabylonJsObjectProperties
-    {
-        public GrBabylonJsBooleanValue? OnlyCheckPointerDownEvents
-        {
-            get => GetAttributeValueOrNull<GrBabylonJsBooleanValue>("onlyCheckPointerDownEvents");
-            set => SetAttributeValue("onlyCheckPointerDownEvents", value);
-        }
-
-        public GrBabylonJsSceneValue? OriginalScene
-        {
-            get => GetAttributeValueOrNull<GrBabylonJsSceneValue>("originalScene");
-            set => SetAttributeValue("originalScene", value);
-        }
-
-        public GrBabylonJsSceneValue? UtilityLayerScene
-        {
-            get => GetAttributeValueOrNull<GrBabylonJsSceneValue>("utilityLayerScene");
-            set => SetAttributeValue("utilityLayerScene", value);
-        }
-
-        public GrBabylonJsBooleanValue? PickUtilitySceneFirst
-        {
-            get => GetAttributeValueOrNull<GrBabylonJsBooleanValue>("pickUtilitySceneFirst");
-            set => SetAttributeValue("pickUtilitySceneFirst", value);
-        }
-
-        public GrBabylonJsBooleanValue? PickingEnabled
-        {
-            get => GetAttributeValueOrNull<GrBabylonJsBooleanValue>("pickingEnabled");
-            set => SetAttributeValue("pickingEnabled", value);
-        }
-
-        public GrBabylonJsBooleanValue? ProcessAllEvents
-        {
-            get => GetAttributeValueOrNull<GrBabylonJsBooleanValue>("processAllEvents");
-            set => SetAttributeValue("processAllEvents", value);
-        }
-
-        public GrBabylonJsBooleanValue? ShouldRender
-        {
-            get => GetAttributeValueOrNull<GrBabylonJsBooleanValue>("shouldRender");
-            set => SetAttributeValue("shouldRender", value);
-        }
-
-
-        public UtilityLayerRendererProperties()
-        {
-        }
-
-        public UtilityLayerRendererProperties(UtilityLayerRendererProperties properties)
-        {
-            SetAttributeValues(properties);
-        }
-    }
-
     protected override string ConstructorName
         => "new BABYLON.UtilityLayerRenderer";
 
@@ -68,8 +12,8 @@ public sealed class GrBabylonJsUtilityLayerRenderer :
 
     public GrBabylonJsBooleanValue HandleEvents { get; set; }
     
-    public UtilityLayerRendererProperties Properties { get; private set; }
-        = new UtilityLayerRendererProperties();
+    public GrBabylonJsUtilityLayerRendererProperties Properties { get; private set; }
+        = new GrBabylonJsUtilityLayerRendererProperties();
 
     public override GrBabylonJsObjectOptions? ObjectOptions 
         => null;
@@ -84,9 +28,9 @@ public sealed class GrBabylonJsUtilityLayerRenderer :
     }
 
     
-    public GrBabylonJsUtilityLayerRenderer SetProperties(UtilityLayerRendererProperties properties)
+    public GrBabylonJsUtilityLayerRenderer SetProperties(GrBabylonJsUtilityLayerRendererProperties properties)
     {
-        Properties = new UtilityLayerRendererProperties(properties);
+        Properties = new GrBabylonJsUtilityLayerRendererProperties(properties);
 
         return this;
     }
@@ -94,9 +38,9 @@ public sealed class GrBabylonJsUtilityLayerRenderer :
 
     protected override IEnumerable<string> GetConstructorArguments()
     {
-        yield return ParentScene.GetCode();
+        yield return ParentScene.GetAttributeValueCode();
 
         if (HandleEvents.IsNullOrEmpty()) yield break;
-        yield return HandleEvents.GetCode();
+        yield return HandleEvents.GetAttributeValueCode();
     }
 }

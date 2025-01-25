@@ -3,6 +3,7 @@ using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space3D;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.Visuals.Space3D.Animations;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.Visuals.Space3D.Styles;
+using GeometricAlgebraFulcrumLib.Modeling.Signals;
 
 namespace GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.Visuals.Space3D.Basic;
 
@@ -31,7 +32,7 @@ public sealed class GrVisualArrowHead3D :
             style, 
             LinFloat64Vector3D.Zero, 
             direction,
-            GrVisualAnimationSpecs.Static
+            Float64SamplingSpecs.Static
         );
     }
 
@@ -42,18 +43,18 @@ public sealed class GrVisualArrowHead3D :
             style, 
             position, 
             direction,
-            GrVisualAnimationSpecs.Static
+            Float64SamplingSpecs.Static
         );
     }
         
-    public static GrVisualArrowHead3D Create(string name, GrVisualCurveTubeStyle3D style, ILinFloat64Vector3D position, ILinFloat64Vector3D direction, GrVisualAnimationSpecs animationSpecs) 
+    public static GrVisualArrowHead3D Create(string name, GrVisualCurveTubeStyle3D style, ILinFloat64Vector3D position, ILinFloat64Vector3D direction, Float64SamplingSpecs samplingSpecs) 
     {
         return new GrVisualArrowHead3D(
             name, 
             style, 
             position, 
             direction,
-            animationSpecs
+            samplingSpecs
         );
     }
         
@@ -64,7 +65,7 @@ public sealed class GrVisualArrowHead3D :
             style, 
             LinFloat64Vector3D.Zero, 
             LinFloat64Vector3D.E1,
-            direction.AnimationSpecs
+            direction.SamplingSpecs
         ).SetAnimatedDirection(direction);
     }
 
@@ -75,7 +76,7 @@ public sealed class GrVisualArrowHead3D :
             style, 
             position, 
             LinFloat64Vector3D.E1,
-            direction.AnimationSpecs
+            direction.SamplingSpecs
         ).SetAnimatedDirection(direction);
     }
 
@@ -86,7 +87,7 @@ public sealed class GrVisualArrowHead3D :
             style, 
             LinFloat64Vector3D.Zero, 
             LinFloat64Vector3D.E1,
-            position.AnimationSpecs
+            position.SamplingSpecs
         ).SetAnimatedOriginDirection(position, direction);
     }
 
@@ -125,8 +126,8 @@ public sealed class GrVisualArrowHead3D :
         => Direction.Z;
     
         
-    private GrVisualArrowHead3D(string name, GrVisualCurveTubeStyle3D style, ILinFloat64Vector3D position, ILinFloat64Vector3D direction, GrVisualAnimationSpecs animationSpecs) 
-        : base(name, animationSpecs)
+    private GrVisualArrowHead3D(string name, GrVisualCurveTubeStyle3D style, ILinFloat64Vector3D position, ILinFloat64Vector3D direction, Float64SamplingSpecs samplingSpecs) 
+        : base(name, samplingSpecs)
     {
         Position = position;
         MaxHeight = direction.VectorENorm();
@@ -194,21 +195,21 @@ public sealed class GrVisualArrowHead3D :
         
     public LinFloat64Vector3D GetOrigin(double time)
     {
-        return AnimationSpecs.IsStatic || AnimatedPosition is null
+        return SamplingSpecs.IsStatic || AnimatedPosition is null
             ? Position.ToLinVector3D()
             : AnimatedPosition.GetPoint(time);
     }
         
     public LinFloat64Vector3D GetDirection(double time)
     {
-        return AnimationSpecs.IsStatic || AnimatedDirection is null
+        return SamplingSpecs.IsStatic || AnimatedDirection is null
             ? Direction
             : AnimatedDirection.GetPoint(time).ToUnitLinVector3D();
     }
         
     public double GetMaxHeight(double time)
     {
-        return AnimationSpecs.IsStatic || AnimatedDirection is null
+        return SamplingSpecs.IsStatic || AnimatedDirection is null
             ? MaxHeight
             : AnimatedDirection.GetPoint(time).VectorENorm();
     }
@@ -219,7 +220,7 @@ public sealed class GrVisualArrowHead3D :
 
         foreach (var frameIndex in GetValidFrameIndexSet())
         {
-            var time = (double)frameIndex / AnimationSpecs.FrameRate;
+            var time = (double)frameIndex / SamplingSpecs.SamplingRate;
                 
             yield return new KeyFrameRecord(
                 frameIndex, 

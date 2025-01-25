@@ -8,10 +8,13 @@ using GeometricAlgebraFulcrumLib.Modeling.Geometry.Parametric.Float64.Space3D.Cu
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.Parametric.Float64.Space3D.Curves.Roulettes;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.BabylonJs;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.BabylonJs.Cameras;
+using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.BabylonJs.Composers;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.BabylonJs.Constants;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.Visuals.Space3D.Basic;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.Visuals.Space3D.Grids;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.Visuals.Space3D.Styles;
+using GeometricAlgebraFulcrumLib.Modeling.Signals;
+using GeometricAlgebraFulcrumLib.Modeling.Temporal.Float64.Scalars;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Extensions;
 using Color = SixLabors.ImageSharp.Color;
 
@@ -26,10 +29,10 @@ public static class CurveSamples
     {
         const int gridUnitCount = 20;
 
-        var htmlComposer = new GrBabylonJsHtmlComposer3D("scene");
+        var codeFilesComposer = new GrBabylonJsCodeFilesComposer("scene");
 
-        var sceneComposer = htmlComposer.GetSceneComposer("scene");
-        var scene = htmlComposer.GetScene("scene");
+        var sceneComposer = codeFilesComposer.GetSceneComposer("scene");
+        var scene = codeFilesComposer.GetScene("scene");
 
         scene.AddArcRotateCamera(
             "camera1",
@@ -37,7 +40,7 @@ public static class CurveSamples
             "2 * Math.PI / 5",
             15,
             "BABYLON.Vector3.Zero()",
-            new GrBabylonJsArcRotateCamera.ArcRotateCameraProperties
+            new GrBabylonJsArcRotateCameraProperties
             {
                 Mode = GrBabylonJsCameraMode.PerspectiveCamera,
                 //OrthoLeft = -8,
@@ -50,7 +53,7 @@ public static class CurveSamples
         scene.AddEnvironmentHelper(
             "environmentHelper",
 
-            new GrBabylonJsEnvironmentHelper.EnvironmentHelperOptions
+            new GrBabylonJsEnvironmentHelperOptions
             {
                 GroundYBias = 0.01,
                 SkyboxColor = Color.LightSkyBlue,
@@ -64,25 +67,14 @@ public static class CurveSamples
         // Add ground coordinates grid
         sceneComposer.GridMaterialKind =
             GrBabylonJsGridMaterialKind.TexturedMaterial;
-
+        
         sceneComposer.AddSquareGrid(
-            new GrVisualSquareGrid3D("grid", GrVisualSquareGridPlane3D.ZxPlane)
-            {
-                UnitCount1 = gridUnitCount,
-                UnitCount2 = gridUnitCount,
-                UnitSize = 1,
-                DistanceToOrigin = 0,
-                Opacity = 0.25,
-                BaseSquareColor = Color.LightYellow,
-                BaseLineColor = Color.BurlyWood,
-                MidLineColor = Color.SandyBrown,
-                BorderLineColor = Color.SaddleBrown,
-                BaseSquareCount = 4,
-                BaseSquareSize = 64,
-                BaseLineWidth = 2,
-                MidLineWidth = 4,
-                BorderLineWidth = 3
-            }
+            GrVisualSquareGrid3D.DefaultZx(
+                LinFloat64Vector3D.Zero, 
+                gridUnitCount,
+                1,
+                0.25
+            )
         );
 
         // Add reference unit axis frame
@@ -185,8 +177,8 @@ public static class CurveSamples
             0.05
         );
 
-        var sceneCode = htmlComposer.GetCreateScenesCode();
-        var htmlCode = htmlComposer.GetHtmlCode();
+        var sceneCode = codeFilesComposer.GetCreateScenesCode();
+        var htmlCode = codeFilesComposer.GetHtmlCode();
 
         File.WriteAllText(
             Path.Combine(WorkingPath, "CurveSamples_Example1.html"),
@@ -257,7 +249,7 @@ public static class CurveSamples
         var t2 = (1d / 3d).Lerp(movingCurve.ParameterRange);
         var t3 = (2d / 3d).Lerp(movingCurve.ParameterRange);
 
-        var generatorPointList = new List<RouletteTracerVisualizer3D.GeneratorPoint>
+        var generatorPointList = new List<GrBabylonJsRouletteTracerVisualizer.GeneratorPoint>
         {
             new(LinFloat64Vector3D.Create(0, -1, 0), Color.Red),
             new(LinFloat64Vector3D.Create(radius / 2, 0, 0), Color.Green),
@@ -267,22 +259,9 @@ public static class CurveSamples
             //new(movingCurve.GetPoint(t3), Color.Blue),
         };
 
-        var cameraAlphaValues =
-            30d.DegreesToRadians().GetCosRange(
-                150d.DegreesToRadians(),
-                frameCount,
-                1,
-                true
-            ).ToImmutableArray();
-
-        var cameraBetaValues =
-            Enumerable
-                .Repeat(2 * Math.PI / 6, frameCount)
-                .ToImmutableArray();
-
-        var visualizer = new RouletteTracerVisualizer3D(
-            cameraAlphaValues,
-            cameraBetaValues,
+        var visualizer = new GrBabylonJsRouletteTracerVisualizer(
+            @"D:\Projects\Study\Web\Babylon.js\",
+            Float64SamplingSpecs.CreateFromSamplingRate(frameCount, 50), 
             fixedCurve,
             movingCurve,
             generatorPointList,
@@ -292,20 +271,28 @@ public static class CurveSamples
         )
         {
             Title = "Roulette Curve in 3D",
-            WorkingFolder = @"D:\Projects\Study\Web\Babylon.js\",
             HostUrl = "http://localhost:5200/",
             //LiveReloadWebServer "D:/Projects/Study/Babylon.js/" --port 5200 --UseSsl False --LiveReloadEnabled False --OpenBrowser True
 
-            CameraDistance = 20,
-            CameraRotationCount = 2,
             ShowCopyright = true,
 
-            GenerateHtml = true,
-            GeneratePng = true,
-            GenerateMp4 = true,
+            ComposeSceneFilesEnabled = true,
+            RenderImageFilesEnabled = true,
+            RenderVideoFileEnabled = true,
         };
+        
+        var alpha = 
+            TemporalFloat64Scalar
+                .FullCos(30, 150)
+                .Repeat(2)
+                .DegreesToRadians();
 
-        visualizer.GenerateSnapshots();
+        var beta = 
+            60.DegreesToRadians();
+
+        visualizer.SetCameraAlphaBetaDistance(alpha, beta, 20);
+
+        visualizer.RenderFiles();
     }
 
     private static RouletteCurve3D GetParametricRouletteCurve(double parameterValue)
@@ -359,41 +346,36 @@ public static class CurveSamples
         const int movingCurveFactor = 3;
         const int frameCount = 500;
 
-        var cameraAlphaValues =
-            30d.DegreesToRadians().GetCosRange(
-                150d.DegreesToRadians(),
-                frameCount,
-                1,
-                true
-            ).ToImmutableArray();
-
-        var cameraBetaValues =
-            Enumerable
-                .Repeat(2 * Math.PI / 8, frameCount)
-                .ToImmutableArray();
-
-        var visualizer = new RouletteParametricVisualizer3D(
-            cameraAlphaValues,
-            cameraBetaValues,
+        var visualizer = new GrBabylonJsRouletteParametricVisualizer(
+            @"D:\Projects\Study\Web\Babylon.js\",
+            Float64SamplingSpecs.CreateFromSamplingRate(frameCount, 50), 
             GetParametricRouletteCurve,
             fixedCurveFactor * 32 + 1,
             movingCurveFactor * 32 + 1
         )
         {
             Title = "Parametric Roulette Curve in 3D-3",
-            WorkingFolder = @"D:\Projects\Study\Web\Babylon.js\",
             HostUrl = "http://localhost:5200/",
             //LiveReloadWebServer "D:/Projects/Study/Babylon.js/" --port 5200 --UseSsl False --LiveReloadEnabled False --OpenBrowser True
 
-            CameraDistance = 20,
-            CameraRotationCount = 2,
             ShowCopyright = true,
 
-            GenerateHtml = true,
-            GeneratePng = true,
-            GenerateMp4 = true,
+            ComposeSceneFilesEnabled = true,
+            RenderImageFilesEnabled = true,
+            RenderVideoFileEnabled = true,
         };
+        
+        var alpha = 
+            TemporalFloat64Scalar
+                .FullCos(30, 150)
+                .Repeat(2)
+                .DegreesToRadians();
 
-        visualizer.GenerateSnapshots();
+        var beta = 
+            45.DegreesToRadians();
+
+        visualizer.SetCameraAlphaBetaDistance(alpha, beta, 20);
+
+        visualizer.RenderFiles();
     }
 }

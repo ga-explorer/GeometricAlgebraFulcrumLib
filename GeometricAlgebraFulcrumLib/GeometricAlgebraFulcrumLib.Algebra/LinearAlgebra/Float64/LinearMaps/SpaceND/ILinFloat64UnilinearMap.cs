@@ -12,9 +12,9 @@ public interface ILinFloat64UnilinearMap :
 
     bool IsReflection();
 
-    bool IsNearIdentity(double epsilon = 1e-12d);
+    bool IsNearIdentity(double zeroEpsilon = 1e-12d);
 
-    bool IsNearReflection(double epsilon = 1e-12d);
+    bool IsNearReflection(double zeroEpsilon = 1e-12d);
 
     ILinFloat64UnilinearMap GetInverseMap();
 

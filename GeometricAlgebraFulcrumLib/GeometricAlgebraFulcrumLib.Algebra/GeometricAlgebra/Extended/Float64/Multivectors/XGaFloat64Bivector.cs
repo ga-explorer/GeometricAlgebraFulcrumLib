@@ -171,12 +171,12 @@ public sealed partial class XGaFloat64Bivector :
     }
         
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public XGaFloat64Bivector RemoveSmallTerms(double epsilon = 1e-12)
+    public XGaFloat64Bivector RemoveSmallTerms(double zeroEpsilon = Float64Utils.ZeroEpsilon)
     {
         if (Count <= 1) return this;
 
         var scalarThreshold = 
-            epsilon.Abs() * Scalars.Max(s => s.Abs());
+            zeroEpsilon.Abs() * Scalars.Max(s => s.Abs());
 
         return GetPart(s => 
             s <= -scalarThreshold || s >= scalarThreshold

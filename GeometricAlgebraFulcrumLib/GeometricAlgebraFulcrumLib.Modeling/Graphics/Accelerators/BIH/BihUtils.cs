@@ -3,14 +3,11 @@ using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space2D;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space3D;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.BasicShapes;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.BasicShapes.Lines;
+using GeometricAlgebraFulcrumLib.Modeling.Geometry.BasicShapes.Lines.Space2D.Float64;
+using GeometricAlgebraFulcrumLib.Modeling.Geometry.BasicShapes.Lines.Space3D.Float64;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.Borders;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.Borders.Space2D;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.Borders.Space2D.Immutable;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.Borders.Space2D.Mutable;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.Borders.Space3D;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.Borders.Space3D.Immutable;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.Borders.Space3D.Mutable;
+using GeometricAlgebraFulcrumLib.Modeling.Geometry.Borders.Space2D.Float64;
+using GeometricAlgebraFulcrumLib.Modeling.Geometry.Borders.Space3D.Float64;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Accelerators.BIH.Space2D;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Accelerators.BIH.Space2D.Traversal;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Accelerators.BIH.Space3D;
@@ -28,26 +25,26 @@ public static class BihUtils
     private static int _singleDepthLimit = 12;
 
 
-    private static MutableBoundingBox2D GetLeftChildBoundingBox2D(IBoundingBox2D boundingBox, int axisIndex, double axisMidSplitValue)
+    private static Float64BoundingBoxComposer2D GetLeftChildBoundingBox2D(IFloat64BoundingBox2D boundingBox, int axisIndex, double axisMidSplitValue)
     {
         var minCorner = boundingBox.GetMinCorner();
         var maxCorner = boundingBox.GetMaxCorner().ToMutableTuple2D();
         maxCorner[axisIndex] = axisMidSplitValue;
 
-        return MutableBoundingBox2D.CreateFromPoints(minCorner, maxCorner);
+        return Float64BoundingBoxComposer2D.CreateFromPoints(minCorner, maxCorner);
     }
 
-    private static MutableBoundingBox2D GetRightChildBoundingBox2D(IBoundingBox2D boundingBox, int axisIndex, double axisMidSplitValue)
+    private static Float64BoundingBoxComposer2D GetRightChildBoundingBox2D(IFloat64BoundingBox2D boundingBox, int axisIndex, double axisMidSplitValue)
     {
         var minCorner = boundingBox.GetMinCorner().ToMutableTuple2D();
         var maxCorner = boundingBox.GetMaxCorner();
         minCorner[axisIndex] = axisMidSplitValue;
 
-        return MutableBoundingBox2D.CreateFromPoints(minCorner, maxCorner);
+        return Float64BoundingBoxComposer2D.CreateFromPoints(minCorner, maxCorner);
     }
 
-    private static IAccBihNode2D<T> CreateNode2D<T>(string nodeId, T[] objectsArray, int firstArrayIndex, int lastArrayIndex, IBoundingBox2D boundingBox, int depth, int singleDepth)
-        where T : IFiniteGeometricShape2D
+    private static IAccBihNode2D<T> CreateNode2D<T>(string nodeId, T[] objectsArray, int firstArrayIndex, int lastArrayIndex, IFloat64BoundingBox2D boundingBox, int depth, int singleDepth)
+        where T : IFloat64FiniteGeometricShape2D
     {
         //Number of geometric objects must be more than zero
         var objectsCount = lastArrayIndex - firstArrayIndex + 1;
@@ -219,14 +216,14 @@ public static class BihUtils
         return internalNode;
     }
 
-    internal static Tuple<IAccBihNode2D<T>, BoundingBox2D> CreateBihRootNode2D<T>(this IReadOnlyList<T> geometricObjectsList, int depthLimit = 100, int singleDepthLimit = 10, int leafObjectsLimit = 1)
-        where T : IFiniteGeometricShape2D
+    internal static Tuple<IAccBihNode2D<T>, Float64BoundingBox2D> CreateBihRootNode2D<T>(this IReadOnlyList<T> geometricObjectsList, int depthLimit = 100, int singleDepthLimit = 10, int leafObjectsLimit = 1)
+        where T : IFloat64FiniteGeometricShape2D
     {
         _leafObjectsLimit = Math.Max(leafObjectsLimit, 1);
         _depthLimit = Math.Max(depthLimit, 2);
         _singleDepthLimit = Math.Max(singleDepthLimit, 2);
 
-        var boundingBox = BoundingBox2D.Create(
+        var boundingBox = Float64BoundingBox2D.Create(
             geometricObjectsList
         );
 
@@ -240,7 +237,7 @@ public static class BihUtils
             0
         );
 
-        return new Tuple<IAccBihNode2D<T>, BoundingBox2D>(
+        return new Tuple<IAccBihNode2D<T>, Float64BoundingBox2D>(
             bihRootNode, 
             boundingBox
         );
@@ -248,7 +245,7 @@ public static class BihUtils
 
 
     public static bool ValidateNode<T>(this IAccBihNode2D<T> node)
-        where T : IFiniteGeometricShape2D
+        where T : IFloat64FiniteGeometricShape2D
     {
         foreach (var shape in node.Contents)
         {
@@ -270,7 +267,7 @@ public static class BihUtils
         return true;
     }
 
-    public static BoundingBox2D GetLeftChildBoundingBox(this IAccBihNode2D node, IBoundingBox2D boundingBox)
+    public static Float64BoundingBox2D GetLeftChildBoundingBox(this IAccBihNode2D node, IFloat64BoundingBox2D boundingBox)
     {
         if (!node.HasLeftChild) return null;
 
@@ -289,10 +286,10 @@ public static class BihUtils
             maxCorner[node.SplitAxisIndex] = node.ClipValue1;
         }
 
-        return BoundingBox2D.Create(minCorner, maxCorner);
+        return Float64BoundingBox2D.Create(minCorner, maxCorner);
     }
 
-    public static BoundingBox2D GetRightChildBoundingBox(this IAccBihNode2D node, IBoundingBox2D boundingBox)
+    public static Float64BoundingBox2D GetRightChildBoundingBox(this IAccBihNode2D node, IFloat64BoundingBox2D boundingBox)
     {
         if (!node.HasRightChild) return null;
 
@@ -311,11 +308,11 @@ public static class BihUtils
             maxCorner[node.SplitAxisIndex] = node.ClipValue1;
         }
 
-        return BoundingBox2D.Create(minCorner, maxCorner);
+        return Float64BoundingBox2D.Create(minCorner, maxCorner);
     }
 
     public static IAccBihNode2D<T> GetNode<T>(this IAccBih2D<T> bih, string nodeId)
-        where T : IFiniteGeometricShape2D
+        where T : IFloat64FiniteGeometricShape2D
     {
         var node = bih.RootNode;
         foreach (var childChar in nodeId)
@@ -338,8 +335,8 @@ public static class BihUtils
         return node;
     }
 
-    public static BoundingBox2D GetNodeBoundingBox<T>(this IAccBih2D<T> bih, string nodeId)
-        where T : IFiniteGeometricShape2D
+    public static Float64BoundingBox2D GetNodeBoundingBox<T>(this IAccBih2D<T> bih, string nodeId)
+        where T : IFloat64FiniteGeometricShape2D
     {
         //Initial bounding box of root node
         var boundingBox = bih.BoundingBox;
@@ -368,16 +365,16 @@ public static class BihUtils
     }
 
     public static AccBihNodeInfo2D GetRootNodeInfo<T>(this IAccBih2D<T> bih)
-        where T : IFiniteGeometricShape2D
+        where T : IFloat64FiniteGeometricShape2D
     {
         return new AccBihNodeInfo2D(
             bih.RootNode,
-            BoundingBox2D.CreateInfinite()
+            Float64BoundingBox2D.CreateInfinite()
         );
     }
 
     public static AccBihNodeInfo2D GetNodeInfo<T>(this IAccBih2D<T> bih, string nodeId)
-        where T : IFiniteGeometricShape2D
+        where T : IFloat64FiniteGeometricShape2D
     {
         //Initial bounding box of root node
         var boundingBox = bih.BoundingBox;
@@ -406,7 +403,7 @@ public static class BihUtils
     }
 
     public static AccBih2D<T> ToBih2D<T>(this IReadOnlyList<T> geometricObjectsList, int depthLimit = 100, int singleDepthLimit = 10, int leafObjectsLimit = 1)
-        where T : IFiniteGeometricShape2D
+        where T : IFloat64FiniteGeometricShape2D
     {
         return new AccBih2D<T>(
             geometricObjectsList,
@@ -417,26 +414,26 @@ public static class BihUtils
     }
 
 
-    private static MutableBoundingBox3D GetLeftChildBoundingBox3D(IBoundingBox3D boundingBox, int axisIndex, double axisMidSplitValue)
+    private static Float64BoundingBoxComposer3D GetLeftChildBoundingBox3D(IFloat64BoundingBox3D boundingBox, int axisIndex, double axisMidSplitValue)
     {
         var minCorner = boundingBox.GetMinCorner();
         var maxCorner = boundingBox.GetMaxCorner().ToLinVector3DComposer();
         maxCorner[axisIndex] = axisMidSplitValue;
 
-        return MutableBoundingBox3D.CreateFromPoints(minCorner, maxCorner);
+        return Float64BoundingBoxComposer3D.CreateFromPoints(minCorner, maxCorner);
     }
 
-    private static MutableBoundingBox3D GetRightChildBoundingBox3D(IBoundingBox3D boundingBox, int axisIndex, double axisMidSplitValue)
+    private static Float64BoundingBoxComposer3D GetRightChildBoundingBox3D(IFloat64BoundingBox3D boundingBox, int axisIndex, double axisMidSplitValue)
     {
         var minCorner = boundingBox.GetMinCorner().ToLinVector3DComposer();
         var maxCorner = boundingBox.GetMaxCorner();
         minCorner[axisIndex] = axisMidSplitValue;
 
-        return MutableBoundingBox3D.CreateFromPoints(minCorner, maxCorner);
+        return Float64BoundingBoxComposer3D.CreateFromPoints(minCorner, maxCorner);
     }
 
-    private static IAccBihNode3D<T> CreateNode3D<T>(string nodeId, T[] objectsArray, int firstArrayIndex, int lastArrayIndex, IBoundingBox3D boundingBox, int depth, int singleDepth)
-        where T : IFiniteGeometricShape3D
+    private static IAccBihNode3D<T> CreateNode3D<T>(string nodeId, T[] objectsArray, int firstArrayIndex, int lastArrayIndex, IFloat64BoundingBox3D boundingBox, int depth, int singleDepth)
+        where T : IFloat64FiniteGeometricShape3D
     {
         //Number of geometric objects must be more than zero
         var objectsCount = lastArrayIndex - firstArrayIndex + 1;
@@ -608,14 +605,14 @@ public static class BihUtils
         return internalNode;
     }
 
-    internal static Tuple<IAccBihNode3D<T>, BoundingBox3D> CreateBihRootNode3D<T>(this IReadOnlyList<T> geometricObjectsList, int depthLimit = 100, int singleDepthLimit = 10, int leafObjectsLimit = 1)
-        where T : IFiniteGeometricShape3D
+    internal static Tuple<IAccBihNode3D<T>, Float64BoundingBox3D> CreateBihRootNode3D<T>(this IReadOnlyList<T> geometricObjectsList, int depthLimit = 100, int singleDepthLimit = 10, int leafObjectsLimit = 1)
+        where T : IFloat64FiniteGeometricShape3D
     {
         _leafObjectsLimit = Math.Max(leafObjectsLimit, 1);
         _depthLimit = Math.Max(depthLimit, 2);
         _singleDepthLimit = Math.Max(singleDepthLimit, 2);
 
-        var boundingBox = BoundingBox3D.Create(
+        var boundingBox = Float64BoundingBox3D.Create(
             geometricObjectsList
         );
 
@@ -629,7 +626,7 @@ public static class BihUtils
             0
         );
 
-        return new Tuple<IAccBihNode3D<T>, BoundingBox3D>(
+        return new Tuple<IAccBihNode3D<T>, Float64BoundingBox3D>(
             bihRootNode,
             boundingBox
         );
@@ -637,7 +634,7 @@ public static class BihUtils
 
 
     public static bool ValidateNode<T>(this IAccBihNode3D<T> node)
-        where T : IFiniteGeometricShape3D
+        where T : IFloat64FiniteGeometricShape3D
     {
         foreach (var shape in node.Contents)
         {
@@ -659,7 +656,7 @@ public static class BihUtils
         return true;
     }
 
-    public static BoundingBox3D GetLeftChildBoundingBox(this IAccBihNode3D node, IBoundingBox3D boundingBox)
+    public static Float64BoundingBox3D GetLeftChildBoundingBox(this IAccBihNode3D node, IFloat64BoundingBox3D boundingBox)
     {
         if (!node.HasLeftChild) return null;
 
@@ -678,10 +675,10 @@ public static class BihUtils
             maxCorner[node.SplitAxisIndex] = node.ClipValue1;
         }
 
-        return BoundingBox3D.CreateFromPoints(minCorner, maxCorner);
+        return Float64BoundingBox3D.CreateFromPoints(minCorner, maxCorner);
     }
 
-    public static BoundingBox3D GetRightChildBoundingBox(this IAccBihNode3D node, IBoundingBox3D boundingBox)
+    public static Float64BoundingBox3D GetRightChildBoundingBox(this IAccBihNode3D node, IFloat64BoundingBox3D boundingBox)
     {
         if (!node.HasRightChild) return null;
 
@@ -700,11 +697,11 @@ public static class BihUtils
             maxCorner[node.SplitAxisIndex] = node.ClipValue1;
         }
 
-        return BoundingBox3D.CreateFromPoints(minCorner, maxCorner);
+        return Float64BoundingBox3D.CreateFromPoints(minCorner, maxCorner);
     }
 
     public static IAccBihNode3D<T> GetNode<T>(this IAccBih3D<T> bih, string nodeId)
-        where T : IFiniteGeometricShape3D
+        where T : IFloat64FiniteGeometricShape3D
     {
         var node = bih.RootNode;
         foreach (var childChar in nodeId)
@@ -727,8 +724,8 @@ public static class BihUtils
         return node;
     }
 
-    public static BoundingBox3D GetNodeBoundingBox<T>(this IAccBih3D<T> bih, string nodeId)
-        where T : IFiniteGeometricShape3D
+    public static Float64BoundingBox3D GetNodeBoundingBox<T>(this IAccBih3D<T> bih, string nodeId)
+        where T : IFloat64FiniteGeometricShape3D
     {
         //Initial bounding box of root node
         var boundingBox = bih.BoundingBox;
@@ -757,16 +754,16 @@ public static class BihUtils
     }
 
     public static AccBihNodeInfo3D GetRootNodeInfo<T>(this IAccBih3D<T> bih)
-        where T : IFiniteGeometricShape3D
+        where T : IFloat64FiniteGeometricShape3D
     {
         return new AccBihNodeInfo3D(
             bih.RootNode,
-            BoundingBox3D.CreateInfinite()
+            Float64BoundingBox3D.CreateInfinite()
         );
     }
 
     public static AccBihNodeInfo3D GetNodeInfo<T>(this IAccBih3D<T> bih, string nodeId)
-        where T : IFiniteGeometricShape3D
+        where T : IFloat64FiniteGeometricShape3D
     {
         //Initial bounding box of root node
         var boundingBox = bih.BoundingBox;
@@ -795,7 +792,7 @@ public static class BihUtils
     }
 
     public static AccBih3D<T> ToBih3D<T>(this IReadOnlyList<T> geometricObjectsList, int depthLimit = 100, int singleDepthLimit = 10, int leafObjectsLimit = 1)
-        where T : IFiniteGeometricShape3D
+        where T : IFloat64FiniteGeometricShape3D
     {
         return new AccBih3D<T>(
             geometricObjectsList,
@@ -814,7 +811,7 @@ public static class BihUtils
     /// <param name="depthFirst"></param>
     /// <returns></returns>
     public static IEnumerable<IAccBihNode2D<T>> GetNodes<T>(this IAccBihNode2D<T> bihNode, bool depthFirst = false)
-        where T : IFiniteGeometricShape2D
+        where T : IFloat64FiniteGeometricShape2D
     {
         if (bihNode.IsLeaf)
         {
@@ -883,7 +880,7 @@ public static class BihUtils
     /// <param name="depthFirst"></param>
     /// <returns></returns>
     public static IEnumerable<AccBihNodeLeaf2D<T>> GetLeafNodes<T>(this IAccBihNode2D<T> bihNode, bool depthFirst = false)
-        where T : IFiniteGeometricShape2D
+        where T : IFloat64FiniteGeometricShape2D
     {
         if (bihNode.IsLeaf)
         {
@@ -966,14 +963,14 @@ public static class BihUtils
         return maxNodeDepth - bihNode.NodeDepth;
     }
 
-    public static AccBihLineTraverser2D<T> GetLineTraverser<T>(this IAccBih2D<T> bih, ILine2D line)
-        where T : IFiniteGeometricShape2D
+    public static AccBihLineTraverser2D<T> GetLineTraverser<T>(this IAccBih2D<T> bih, IFloat64Line2D line)
+        where T : IFloat64FiniteGeometricShape2D
     {
         return AccBihLineTraverser2D<T>.Create(bih, line);
     }
 
-    public static AccBihLineTraverser2D<T> GetLineTraverser<T>(this IAccBih2D<T> bih, ILine2D line, double lineParamValue1, double lineParamValue2)
-        where T : IFiniteGeometricShape2D
+    public static AccBihLineTraverser2D<T> GetLineTraverser<T>(this IAccBih2D<T> bih, IFloat64Line2D line, double lineParamValue1, double lineParamValue2)
+        where T : IFloat64FiniteGeometricShape2D
     {
         return AccBihLineTraverser2D<T>.Create(
             bih,
@@ -982,8 +979,8 @@ public static class BihUtils
         );
     }
 
-    public static AccBihLineTraverser2D<T> GetLineTraverser<T>(this IAccBih2D<T> bih, ILine2D line, Float64ScalarRange lineParamRange)
-        where T : IFiniteGeometricShape2D
+    public static AccBihLineTraverser2D<T> GetLineTraverser<T>(this IAccBih2D<T> bih, IFloat64Line2D line, Float64ScalarRange lineParamRange)
+        where T : IFloat64FiniteGeometricShape2D
     {
         return AccBihLineTraverser2D<T>.Create(
             bih,
@@ -1000,7 +997,7 @@ public static class BihUtils
     /// <param name="depthFirst"></param>
     /// <returns></returns>
     public static IEnumerable<IAccBihNode3D<T>> GetNodes<T>(this IAccBihNode3D<T> bihNode, bool depthFirst = false)
-        where T : IFiniteGeometricShape3D
+        where T : IFloat64FiniteGeometricShape3D
     {
         if (bihNode.IsLeaf)
         {
@@ -1069,7 +1066,7 @@ public static class BihUtils
     /// <param name="depthFirst"></param>
     /// <returns></returns>
     public static IEnumerable<AccBihNodeLeaf3D<T>> GetLeafNodes<T>(this IAccBihNode3D<T> bihNode, bool depthFirst = false)
-        where T : IFiniteGeometricShape3D
+        where T : IFloat64FiniteGeometricShape3D
     {
         if (bihNode.IsLeaf)
         {
@@ -1152,14 +1149,14 @@ public static class BihUtils
         return maxNodeDepth - bihNode.NodeDepth;
     }
 
-    public static AccBihLineTraverser3D<T> GetLineTraverser<T>(this IAccBih3D<T> bih, ILine3D line)
-        where T : IFiniteGeometricShape3D
+    public static AccBihLineTraverser3D<T> GetLineTraverser<T>(this IAccBih3D<T> bih, IFloat64Line3D line)
+        where T : IFloat64FiniteGeometricShape3D
     {
         return AccBihLineTraverser3D<T>.Create(bih, line);
     }
 
-    public static AccBihLineTraverser3D<T> GetLineTraverser<T>(this IAccBih3D<T> bih, ILine3D line, double lineParamValue1, double lineParamValue2)
-        where T : IFiniteGeometricShape3D
+    public static AccBihLineTraverser3D<T> GetLineTraverser<T>(this IAccBih3D<T> bih, IFloat64Line3D line, double lineParamValue1, double lineParamValue2)
+        where T : IFloat64FiniteGeometricShape3D
     {
         return AccBihLineTraverser3D<T>.Create(
             bih,
@@ -1168,8 +1165,8 @@ public static class BihUtils
         );
     }
 
-    public static AccBihLineTraverser3D<T> GetLineTraverser<T>(this IAccBih3D<T> bih, ILine3D line, Float64ScalarRange lineParamRange)
-        where T : IFiniteGeometricShape3D
+    public static AccBihLineTraverser3D<T> GetLineTraverser<T>(this IAccBih3D<T> bih, IFloat64Line3D line, Float64ScalarRange lineParamRange)
+        where T : IFloat64FiniteGeometricShape3D
     {
         return AccBihLineTraverser3D<T>.Create(
             bih,
@@ -1204,7 +1201,7 @@ public static class BihUtils
     }
 
     public static string Describe<T>(this IAccBihNode3D<T> bihNode)
-        where T : IFiniteGeometricShape3D
+        where T : IFloat64FiniteGeometricShape3D
     {
         var composer = new LinearTextComposer();
 

@@ -22,10 +22,10 @@ public abstract class LinFloat64ReflectionBase :
         return true;
     }
 
-    public abstract bool IsNearIdentity(double epsilon = 1e-12d);
+    public abstract bool IsNearIdentity(double zeroEpsilon = 1e-12d);
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool IsNearReflection(double epsilon = 1E-12)
+    public bool IsNearReflection(double zeroEpsilon = 1E-12)
     {
         return true;
     }

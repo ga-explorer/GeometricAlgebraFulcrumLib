@@ -28,7 +28,7 @@ public sealed class GrBabylonJsStringValue :
     }
     
 
-    public override string GetCode()
+    public override string GetAttributeValueCode()
     {
         return ValueText;
     }

@@ -1,5 +1,5 @@
 ﻿using GeometricAlgebraFulcrumLib.Modeling.Geometry.BasicShapes;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.Borders.Space3D.Immutable;
+using GeometricAlgebraFulcrumLib.Modeling.Geometry.Borders.Space3D.Float64;
 using GeometricAlgebraFulcrumLib.Utilities.Structures;
 
 namespace GeometricAlgebraFulcrumLib.Modeling.Graphics.Accelerators.BIH.Space3D;
@@ -11,11 +11,11 @@ namespace GeometricAlgebraFulcrumLib.Modeling.Graphics.Accelerators.BIH.Space3D;
 public sealed class AccBihNodeInfo3D
 {
     public static AccBihNodeInfo3D Create<T>(IAccBih3D<T> bih)
-        where T : IFiniteGeometricShape3D
+        where T : IFloat64FiniteGeometricShape3D
     {
         return new AccBihNodeInfo3D(
             bih.RootNode, 
-            BoundingBox3D.CreateInfinite()
+            Float64BoundingBox3D.CreateInfinite()
         );
     }
 
@@ -28,7 +28,7 @@ public sealed class AccBihNodeInfo3D
 
     public int NodeDepth => Node.NodeDepth;
 
-    public BoundingBox3D BoundingBox { get; }
+    public Float64BoundingBox3D BoundingBox { get; }
 
     public bool IsLeaf => Node.IsLeaf;
 
@@ -57,17 +57,17 @@ public sealed class AccBihNodeInfo3D
     public double ClipValue1 => Node.ClipValue1;
 
 
-    internal AccBihNodeInfo3D(IAccBihNode3D node, BoundingBox3D boundingBox)
+    internal AccBihNodeInfo3D(IAccBihNode3D node, Float64BoundingBox3D boundingBox)
     {
         Node = node;
         BoundingBox = boundingBox;
     }
 
 
-    public BoundingBox3D GetBoundingBox()
+    public Float64BoundingBox3D GetBoundingBox()
     {
-        return BoundingBox3D.Create(
-            (IEnumerable<IFiniteGeometricShape3D>)Node
+        return Float64BoundingBox3D.Create(
+            (IEnumerable<IFloat64FiniteGeometricShape3D>)Node
         );
     }
 

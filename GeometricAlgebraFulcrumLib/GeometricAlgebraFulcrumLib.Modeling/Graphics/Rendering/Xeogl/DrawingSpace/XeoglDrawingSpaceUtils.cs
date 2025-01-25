@@ -1,8 +1,7 @@
 ﻿using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space2D;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space3D;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.BasicShapes.Lines;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.BasicShapes.Lines.Immutable;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.Borders.Space3D;
+using GeometricAlgebraFulcrumLib.Modeling.Geometry.BasicShapes.Lines.Space3D.Float64;
+using GeometricAlgebraFulcrumLib.Modeling.Geometry.Borders.Space3D.Float64;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Primitives;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Primitives.Lines;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.Colors;
@@ -160,7 +159,7 @@ public static class XeoglDrawingSpaceUtils
         );
     }
 
-    public static XeoglDrawingSpaceLayer DrawBox(this XeoglDrawingSpaceLayer layer, IBoundingBox3D box)
+    public static XeoglDrawingSpaceLayer DrawBox(this XeoglDrawingSpaceLayer layer, IFloat64BoundingBox3D box)
     {
         return layer.DrawGeometry(
             XeoglBoxGeometry.Create(box)
@@ -588,7 +587,7 @@ public static class XeoglDrawingSpaceUtils
     }
 
 
-    public static XeoglDrawingSpaceLayer DrawLineSegment(this XeoglDrawingSpaceLayer layer, ILineSegment3D lineSegment)
+    public static XeoglDrawingSpaceLayer DrawLineSegment(this XeoglDrawingSpaceLayer layer, IFloat64LineSegment3D lineSegment)
     {
         return layer.DrawGeometry(
             new XeoglLinesGeometry(
@@ -597,7 +596,7 @@ public static class XeoglDrawingSpaceUtils
         );
     }
 
-    public static XeoglDrawingSpaceLayer DrawLineSegments(this XeoglDrawingSpaceLayer layer, IEnumerable<ILineSegment3D> lineSegmentsList)
+    public static XeoglDrawingSpaceLayer DrawLineSegments(this XeoglDrawingSpaceLayer layer, IEnumerable<IFloat64LineSegment3D> lineSegmentsList)
     {
         return layer.DrawGeometry(
             lineSegmentsList.ToGraphicsLinesListGeometry().ToXeoglGeometry()
@@ -888,7 +887,7 @@ public static class XeoglDrawingSpaceUtils
 
         var lineSegmentsGeometry =
             arrowsArray.Select(t =>
-                    LineSegment3D.CreateFromPointAndScaledVector(
+                    Float64LineSegment3D.CreateFromPointAndScaledVector(
                         t.Item1, 
                         t.Item2, 
                         scaleFactor

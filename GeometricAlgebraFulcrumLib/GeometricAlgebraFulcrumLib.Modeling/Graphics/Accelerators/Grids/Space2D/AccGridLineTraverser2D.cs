@@ -2,13 +2,13 @@
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space2D;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.BasicShapes;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.BasicShapes.Lines;
+using GeometricAlgebraFulcrumLib.Modeling.Geometry.BasicShapes.Lines.Space2D.Float64;
 
 namespace GeometricAlgebraFulcrumLib.Modeling.Graphics.Accelerators.Grids.Space2D;
 
 public sealed class AccGridLineTraverser2D
 {
-    public static AccGridLineTraverser2D Create(IAccGrid2D<IFiniteGeometricShape2D> grid, ILine2D line)
+    public static AccGridLineTraverser2D Create(IAccGrid2D<IFloat64FiniteGeometricShape2D> grid, IFloat64Line2D line)
     {
         return new AccGridLineTraverser2D(
             grid, 
@@ -17,15 +17,15 @@ public sealed class AccGridLineTraverser2D
         );
     }
 
-    public static AccGridLineTraverser2D Create(IAccGrid2D<IFiniteGeometricShape2D> grid, ILine2D line, Float64ScalarRange lineParamLimits)
+    public static AccGridLineTraverser2D Create(IAccGrid2D<IFloat64FiniteGeometricShape2D> grid, IFloat64Line2D line, Float64ScalarRange lineParamLimits)
     {
         return new AccGridLineTraverser2D(grid, line, lineParamLimits);
     }
 
 
-    public IAccGrid2D<IFiniteGeometricShape2D> Grid { get; }
+    public IAccGrid2D<IFloat64FiniteGeometricShape2D> Grid { get; }
 
-    public ILine2D Line { get; }
+    public IFloat64Line2D Line { get; }
 
     public Float64ScalarRange LineParameterLimits { get; }
 
@@ -65,7 +65,7 @@ public sealed class AccGridLineTraverser2D
     public IntTuple2D CellIndexStop { get; }
 
 
-    private AccGridLineTraverser2D(IAccGrid2D<IFiniteGeometricShape2D> grid, ILine2D line, Float64ScalarRange lineParamLimits)
+    private AccGridLineTraverser2D(IAccGrid2D<IFloat64FiniteGeometricShape2D> grid, IFloat64Line2D line, Float64ScalarRange lineParamLimits)
     {
         Grid = grid;
         Line = line;
@@ -253,7 +253,7 @@ public sealed class AccGridLineTraverser2D
         }
     }
 
-    public IEnumerable<IReadOnlyList<IFiniteGeometricShape2D>> GetCells()
+    public IEnumerable<IReadOnlyList<IFloat64FiniteGeometricShape2D>> GetCells()
     {
         var ix = CellIndexStart.X;
         var iy = CellIndexStart.Y;
@@ -293,7 +293,7 @@ public sealed class AccGridLineTraverser2D
         }
     }
 
-    public IEnumerable<IReadOnlyList<IFiniteGeometricShape2D>> GetActiveCells()
+    public IEnumerable<IReadOnlyList<IFloat64FiniteGeometricShape2D>> GetActiveCells()
     {
         var ix = CellIndexStart.X;
         var iy = CellIndexStart.Y;

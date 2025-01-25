@@ -69,9 +69,9 @@ public sealed class LinFloat64SphericalVector3D :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool IsNearUnitVector(double epsilon = 1E-12)
+    public bool IsNearUnitVector(double zeroEpsilon = 1E-12)
     {
-        return R.IsNearOne(epsilon);
+        return R.IsNearOne(zeroEpsilon);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]

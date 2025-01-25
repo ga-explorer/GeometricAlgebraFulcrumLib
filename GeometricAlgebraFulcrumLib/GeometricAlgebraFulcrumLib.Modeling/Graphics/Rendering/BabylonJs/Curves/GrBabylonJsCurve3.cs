@@ -19,6 +19,6 @@ public sealed class GrBabylonJsCurve3 :
 
     protected override IEnumerable<string> GetConstructorArguments()
     {
-        yield return Points.GetCode();
+        yield return Points.GetAttributeValueCode();
     }
 }

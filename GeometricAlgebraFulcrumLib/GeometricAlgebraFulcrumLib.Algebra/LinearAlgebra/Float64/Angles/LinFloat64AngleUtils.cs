@@ -1419,6 +1419,42 @@ public static class LinFloat64AngleUtils
 
         return (t1 / (t2 * t3).Sqrt()).Clamp(-1d, 1d);
     }
+    
+    /// <summary>
+    /// Find the angle between this vector and another
+    /// </summary>
+    /// <param name="v1"></param>
+    /// <param name="v2"></param>
+    /// <returns></returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static double GetAngleCos(this LinBasisVector3D v1, LinBasisVector3D v2)
+    {
+        return v1.GetComponent(v2);
+    }
+
+    /// <summary>
+    /// Find the angle between this vector and another
+    /// </summary>
+    /// <param name="v1"></param>
+    /// <param name="v2"></param>
+    /// <returns></returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static double GetAngleCos(this LinBasisVector3D v1, ITriplet<Float64Scalar> v2)
+    {
+        return (v2.GetComponent(v1) / v2.VectorENorm()).Clamp(-1d, 1d);
+    }
+
+    /// <summary>
+    /// Find the angle between this vector and another
+    /// </summary>
+    /// <param name="v1"></param>
+    /// <param name="v2"></param>
+    /// <returns></returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static double GetAngleCos(this ITriplet<Float64Scalar> v1, LinBasisVector3D v2)
+    {
+        return (v1.GetComponent(v2) / v1.VectorENorm()).Clamp(-1d, 1d);
+    }
 
     /// <summary>
     /// Find the angle between this vector and another
@@ -2161,7 +2197,7 @@ public static class LinFloat64AngleUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64Vector2D Rotate(this LinFloat64Angle angle, LinUnitBasisVector2D axis)
+    public static LinFloat64Vector2D Rotate(this LinFloat64Angle angle, LinBasisVector2D axis)
     {
         var cosValue = angle.CosValue;
         var sinValue = angle.SinValue;

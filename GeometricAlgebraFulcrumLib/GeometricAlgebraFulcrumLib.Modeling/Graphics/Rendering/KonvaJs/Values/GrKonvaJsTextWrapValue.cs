@@ -28,7 +28,7 @@ public sealed class GrKonvaJsTextWrapValue :
     }
 
 
-    public override string GetCode()
+    public override string GetAttributeValueCode()
     {
         return string.IsNullOrEmpty(ValueText) 
             ? Value.GetKonvaJsCode() 

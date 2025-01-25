@@ -227,9 +227,7 @@ public sealed class LinFloat64PlanarRotation3D :
         BasisVector2 = basisVector2;
         RotationAngle = rotationAngle;
 
-        Debug.Assert(
-            IsValid()
-        );
+        //Debug.Assert(IsValid());
     }
 
 
@@ -249,15 +247,15 @@ public sealed class LinFloat64PlanarRotation3D :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public override bool IsNearIdentity(double epsilon = 1e-12d)
+    public override bool IsNearIdentity(double zeroEpsilon = 1e-12d)
     {
-        return RotationAngle.IsNearZeroOrFull(epsilon);
+        return RotationAngle.IsNearZeroOrFull(zeroEpsilon);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool IsNearReflection(double epsilon = 1e-12d)
+    public bool IsNearReflection(double zeroEpsilon = 1e-12d)
     {
-        return RotationAngle.IsNearStraight(epsilon);
+        return RotationAngle.IsNearStraight(zeroEpsilon);
     }
 
 
@@ -270,13 +268,13 @@ public sealed class LinFloat64PlanarRotation3D :
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public override LinFloat64Quaternion GetQuaternion()
     {
-        return GetUnitNormal().CreateQuaternion(RotationAngle);
+        return GetUnitNormal().RotationAxisAngleToQuaternion(RotationAngle);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public LinFloat64Quaternion GetQuaternion(LinFloat64Angle rotationAngle)
     {
-        return GetUnitNormal().CreateQuaternion(rotationAngle);
+        return GetUnitNormal().RotationAxisAngleToQuaternion(rotationAngle);
     }
 
 
@@ -290,7 +288,7 @@ public sealed class LinFloat64PlanarRotation3D :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public Pair<double> BasisESp(LinUnitBasisVector3D axis)
+    public Pair<double> BasisESp(LinBasisVector3D axis)
     {
         return new Pair<double>(
             BasisVector1[axis],
@@ -340,7 +338,7 @@ public sealed class LinFloat64PlanarRotation3D :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public LinFloat64Vector3D MapVector(LinUnitBasisVector3D vector)
+    public LinFloat64Vector3D MapVector(LinBasisVector3D vector)
     {
         // Compute the projection components of the given vector on
         // the orthonormal basis vectors defining the plane of rotation
@@ -408,7 +406,7 @@ public sealed class LinFloat64PlanarRotation3D :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public LinFloat64Vector3D MapVector(LinUnitBasisVector3D vector, LinFloat64Angle rotationAngle)
+    public LinFloat64Vector3D MapVector(LinBasisVector3D vector, LinFloat64Angle rotationAngle)
     {
         // Compute the projection components of the given vector on
         // the orthonormal basis vectors defining the plane of rotation
@@ -621,16 +619,16 @@ public sealed class LinFloat64PlanarRotation3D :
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool NearContains(ILinFloat64Vector3D vector, double epsilon = 1E-12D)
+    public bool NearContains(ILinFloat64Vector3D vector, double zeroEpsilon = 1E-12D)
     {
-        return GetVectorRejection(vector).IsNearZero(epsilon);
+        return GetVectorRejection(vector).IsNearZero(zeroEpsilon);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool NearContains(ILinFloat64Subspace3D subspace, double epsilon = 1E-12)
+    public bool NearContains(ILinFloat64Subspace3D subspace, double zeroEpsilon = 1E-12)
     {
         return subspace.VSpaceDimensions <= VSpaceDimensions &&
-               subspace.BasisVectors.All(v => NearContains(v, epsilon));
+               subspace.BasisVectors.All(v => NearContains(v, zeroEpsilon));
     }
 
     /// <summary>

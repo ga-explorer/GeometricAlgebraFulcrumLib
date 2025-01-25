@@ -4,7 +4,7 @@ namespace GeometricAlgebraFulcrumLib.Modeling.Statistics.Continuous;
 
 public sealed class ProbabilityDistributionFunction
 {
-    public static ProbabilityDistributionFunction CreateNormal(double mean, double variance, double zeroEpsilon = 1e-12)
+    public static ProbabilityDistributionFunction CreateNormal(double mean, double variance, double zeroEpsilon = Float64Utils.ZeroEpsilon)
     {
         var sqrt2Pi = Math.Sqrt(2 * Math.PI);
         var s = Math.Sqrt(variance);

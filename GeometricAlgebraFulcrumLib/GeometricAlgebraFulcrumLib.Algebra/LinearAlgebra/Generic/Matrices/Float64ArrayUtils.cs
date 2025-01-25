@@ -14,7 +14,7 @@
 
 
 
-//    public static bool IsVectorNearOrthonormalWith(this IReadOnlyList<double> u, IReadOnlyList<double> v, double epsilon = 1e-12)
+//    public static bool IsVectorNearOrthonormalWith(this IReadOnlyList<double> u, IReadOnlyList<double> v, double zeroEpsilon = Float64Utils.ZeroEpsilon)
 //    {
 //        var uuDot = 0d;
 //        var vvDot = 0d;
@@ -27,12 +27,12 @@
 //            uvDot += u[i] * v[i];
 //        }
 
-//        return uvDot.IsNearZero(epsilon) &&
-//               uuDot.IsNearOne(epsilon) &&
-//               vvDot.IsNearOne(epsilon);
+//        return uvDot.IsNearZero(zeroEpsilon) &&
+//               uuDot.IsNearOne(zeroEpsilon) &&
+//               vvDot.IsNearOne(zeroEpsilon);
 //    }
 
-//    public static bool IsVectorNearOrthonormalWithUnit(this IReadOnlyList<double> u, IReadOnlyList<double> v, double epsilon = 1e-12)
+//    public static bool IsVectorNearOrthonormalWithUnit(this IReadOnlyList<double> u, IReadOnlyList<double> v, double zeroEpsilon = Float64Utils.ZeroEpsilon)
 //    {
 //        var uuDot = 0d;
 //        var uvDot = 0d;
@@ -43,11 +43,11 @@
 //            uvDot += u[i] * v[i];
 //        }
 
-//        return uvDot.IsNearZero(epsilon) &&
-//               uuDot.IsNearOne(epsilon);
+//        return uvDot.IsNearZero(zeroEpsilon) &&
+//               uuDot.IsNearOne(zeroEpsilon);
 //    }
 
-//    public static bool IsVectorNearParallelTo(this IReadOnlyList<double> u, IReadOnlyList<double> v, double epsilon = 1e-12)
+//    public static bool IsVectorNearParallelTo(this IReadOnlyList<double> u, IReadOnlyList<double> v, double zeroEpsilon = Float64Utils.ZeroEpsilon)
 //    {
 //        var uuDot = 0d;
 //        var vvDot = 0d;
@@ -63,28 +63,28 @@
 //        var cosAngle =
 //            uvDot / (uuDot * vvDot).Sqrt();
 
-//        return cosAngle.Abs().IsNearOne(epsilon);
+//        return cosAngle.Abs().IsNearOne(zeroEpsilon);
 //    }
 
 //    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-//    public static bool IsVectorNearParallelTo(this IReadOnlyList<double> u, IReadOnlyDictionary<int, double> v, double epsilon = 1e-12)
+//    public static bool IsVectorNearParallelTo(this IReadOnlyList<double> u, IReadOnlyDictionary<int, double> v, double zeroEpsilon = Float64Utils.ZeroEpsilon)
 //    {
-//        return u.VectorAngleCos(v).Abs().IsNearOne(epsilon);
+//        return u.VectorAngleCos(v).Abs().IsNearOne(zeroEpsilon);
 //    }
 
 //    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-//    public static bool IsVectorNearParallelTo(this IReadOnlyDictionary<int, double> u, IReadOnlyList<double> v, double epsilon = 1e-12)
+//    public static bool IsVectorNearParallelTo(this IReadOnlyDictionary<int, double> u, IReadOnlyList<double> v, double zeroEpsilon = Float64Utils.ZeroEpsilon)
 //    {
-//        return u.VectorAngleCos(v).Abs().IsNearOne(epsilon);
+//        return u.VectorAngleCos(v).Abs().IsNearOne(zeroEpsilon);
 //    }
 
 //    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-//    public static bool IsVectorNearParallelTo(this IReadOnlyDictionary<int, double> u, IReadOnlyDictionary<int, double> v, double epsilon = 1e-12)
+//    public static bool IsVectorNearParallelTo(this IReadOnlyDictionary<int, double> u, IReadOnlyDictionary<int, double> v, double zeroEpsilon = Float64Utils.ZeroEpsilon)
 //    {
-//        return u.VectorAngleCos(v).Abs().IsNearOne(epsilon);
+//        return u.VectorAngleCos(v).Abs().IsNearOne(zeroEpsilon);
 //    }
 
-//    public static bool IsVectorNearParallelToUnit(this IReadOnlyList<double> u, IReadOnlyList<double> v, double epsilon = 1e-12)
+//    public static bool IsVectorNearParallelToUnit(this IReadOnlyList<double> u, IReadOnlyList<double> v, double zeroEpsilon = Float64Utils.ZeroEpsilon)
 //    {
 //        var uuDot = 0d;
 //        var uvDot = 0d;
@@ -98,65 +98,65 @@
 //        var cosAngle =
 //            uvDot / uuDot.Sqrt();
 
-//        return cosAngle.Abs().IsNearOne(epsilon);
+//        return cosAngle.Abs().IsNearOne(zeroEpsilon);
 //    }
 
 //    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-//    public static bool IsVectorNearParallelToUnit(this IReadOnlyList<double> u, IReadOnlyDictionary<int, double> v, double epsilon = 1e-12)
+//    public static bool IsVectorNearParallelToUnit(this IReadOnlyList<double> u, IReadOnlyDictionary<int, double> v, double zeroEpsilon = Float64Utils.ZeroEpsilon)
 //    {
 //        var uuDot = u.GetVectorNormSquared();
 //        var uvDot = u.VectorDot(v);
 
 //        var cosAngle = uvDot / uuDot.Sqrt();
 
-//        return cosAngle.Abs().IsNearOne(epsilon);
+//        return cosAngle.Abs().IsNearOne(zeroEpsilon);
 //    }
 
 //    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-//    public static bool IsVectorNearParallelToUnit(this IReadOnlyDictionary<int, double> u, IReadOnlyList<double> v, double epsilon = 1e-12)
+//    public static bool IsVectorNearParallelToUnit(this IReadOnlyDictionary<int, double> u, IReadOnlyList<double> v, double zeroEpsilon = Float64Utils.ZeroEpsilon)
 //    {
 //        var uuDot = u.GetVectorNormSquared();
 //        var uvDot = u.VectorDot(v);
 
 //        var cosAngle = uvDot / uuDot.Sqrt();
 
-//        return cosAngle.Abs().IsNearOne(epsilon);
+//        return cosAngle.Abs().IsNearOne(zeroEpsilon);
 //    }
 
 //    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-//    public static bool IsVectorNearParallelToUnit(this IReadOnlyDictionary<int, double> u, IReadOnlyDictionary<int, double> v, double epsilon = 1e-12)
+//    public static bool IsVectorNearParallelToUnit(this IReadOnlyDictionary<int, double> u, IReadOnlyDictionary<int, double> v, double zeroEpsilon = Float64Utils.ZeroEpsilon)
 //    {
 //        var uuDot = u.GetVectorNormSquared();
 //        var uvDot = u.VectorDot(v);
 
 //        var cosAngle = uvDot / uuDot.Sqrt();
 
-//        return cosAngle.Abs().IsNearOne(epsilon);
+//        return cosAngle.Abs().IsNearOne(zeroEpsilon);
 //    }
 
 
 //    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-//    public static bool IsVectorNearOrthogonalTo(this IReadOnlyList<double> u, IReadOnlyList<double> v, double epsilon = 1e-12)
+//    public static bool IsVectorNearOrthogonalTo(this IReadOnlyList<double> u, IReadOnlyList<double> v, double zeroEpsilon = Float64Utils.ZeroEpsilon)
 //    {
-//        return u.VectorDot(v).IsNearZero(epsilon);
+//        return u.VectorDot(v).IsNearZero(zeroEpsilon);
 //    }
 
 //    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-//    public static bool IsVectorNearOrthogonalTo(this IReadOnlyList<double> u, IReadOnlyDictionary<int, double> v, double epsilon = 1e-12)
+//    public static bool IsVectorNearOrthogonalTo(this IReadOnlyList<double> u, IReadOnlyDictionary<int, double> v, double zeroEpsilon = Float64Utils.ZeroEpsilon)
 //    {
-//        return u.VectorDot(v).IsNearZero(epsilon);
+//        return u.VectorDot(v).IsNearZero(zeroEpsilon);
 //    }
 
 //    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-//    public static bool IsVectorNearOrthogonalTo(this IReadOnlyDictionary<int, double> u, IReadOnlyList<double> v, double epsilon = 1e-12)
+//    public static bool IsVectorNearOrthogonalTo(this IReadOnlyDictionary<int, double> u, IReadOnlyList<double> v, double zeroEpsilon = Float64Utils.ZeroEpsilon)
 //    {
-//        return u.VectorDot(v).IsNearZero(epsilon);
+//        return u.VectorDot(v).IsNearZero(zeroEpsilon);
 //    }
 
 //    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-//    public static bool IsVectorNearOrthogonalTo(this IReadOnlyDictionary<int, double> u, IReadOnlyDictionary<int, double> v, double epsilon = 1e-12)
+//    public static bool IsVectorNearOrthogonalTo(this IReadOnlyDictionary<int, double> u, IReadOnlyDictionary<int, double> v, double zeroEpsilon = Float64Utils.ZeroEpsilon)
 //    {
-//        return u.VectorDot(v).IsNearZero(epsilon);
+//        return u.VectorDot(v).IsNearZero(zeroEpsilon);
 //    }
 
 

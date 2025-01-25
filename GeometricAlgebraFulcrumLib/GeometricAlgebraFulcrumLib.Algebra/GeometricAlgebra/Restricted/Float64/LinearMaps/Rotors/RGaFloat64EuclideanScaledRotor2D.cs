@@ -2,7 +2,6 @@
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Float64.Multivectors;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Float64.Multivectors.Composers;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Float64.Processors;
-using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.LinearMaps.SpaceND;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Float64.LinearMaps.Rotors;
@@ -141,11 +140,6 @@ public sealed class RGaFloat64EuclideanScaledRotor2D
             .SetTerm(2, v2)
             .SetTerm(3, v12)
             .GetSimpleMultivector();
-    }
-
-    public override LinFloat64UnilinearMap GetVectorMapPart(int vSpaceDimensions)
-    {
-        throw new NotImplementedException();
     }
 
 

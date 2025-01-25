@@ -1,5 +1,4 @@
-﻿using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.BabylonJs.Values;
-using GeometricAlgebraFulcrumLib.Utilities.Text;
+﻿using GeometricAlgebraFulcrumLib.Utilities.Text;
 
 namespace GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.BabylonJs.GUI;
 
@@ -9,38 +8,11 @@ namespace GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.BabylonJs.GUI;
 public sealed class GrBabylonJsGuiMultiLine :
     GrBabylonJsGuiControl
 {
-    public sealed class GuiMultiLineProperties :
-        GuiControlProperties
-    {
-        public GrBabylonJsInt32ArrayValue? Dash
-        {
-            get => GetAttributeValueOrNull<GrBabylonJsInt32ArrayValue>("dash");
-            set => SetAttributeValue("dash", value);
-        }
-
-        public GrBabylonJsFloat32Value? LineWidth
-        {
-            get => GetAttributeValueOrNull<GrBabylonJsFloat32Value>("lineWidth");
-            set => SetAttributeValue("lineWidth", value);
-        }
-
-
-        public GuiMultiLineProperties()
-        {
-        }
-
-        public GuiMultiLineProperties(GuiMultiLineProperties properties)
-        {
-            SetAttributeValues(properties);
-        }
-    }
-
-
     protected override string ConstructorName 
         => "new BABYLON.GUI.MultiLine";
 
-    public GuiMultiLineProperties Properties { get; private set; }
-        = new GuiMultiLineProperties();
+    public GrBabylonJsGuiMultiLineProperties Properties { get; private set; }
+        = new GrBabylonJsGuiMultiLineProperties();
 
     public override GrBabylonJsObjectProperties ObjectProperties 
         => Properties;
@@ -57,9 +29,9 @@ public sealed class GrBabylonJsGuiMultiLine :
         yield return ConstName.DoubleQuote();
     }
     
-    public GrBabylonJsGuiMultiLine SetProperties(GuiMultiLineProperties properties)
+    public GrBabylonJsGuiMultiLine SetProperties(GrBabylonJsGuiMultiLineProperties properties)
     {
-        Properties = new GuiMultiLineProperties(properties);
+        Properties = new GrBabylonJsGuiMultiLineProperties(properties);
 
         return this;
     }

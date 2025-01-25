@@ -5,6 +5,7 @@ using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Extended.Float64.Proce
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space2D;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space3D;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space4D;
+using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Combinations;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.IndexSets;
 
@@ -116,16 +117,16 @@ public static class XGaFloat64MultivectorUtils
     }
         
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static XGaFloat64Multivector RemoveSmallTerms(this XGaFloat64Multivector mv, double epsilon = 1e-12)
+    public static XGaFloat64Multivector RemoveSmallTerms(this XGaFloat64Multivector mv, double zeroEpsilon = Float64Utils.ZeroEpsilon)
     {
         return mv switch
         {
             XGaFloat64Scalar s => s,
-            XGaFloat64Vector v => v.RemoveSmallTerms(epsilon),
-            XGaFloat64Bivector bv => bv.RemoveSmallTerms(epsilon),
-            XGaFloat64HigherKVector kv => kv.RemoveSmallTerms(epsilon),
-            XGaFloat64GradedMultivector mv1 => mv1.RemoveSmallTerms(epsilon),
-            XGaFloat64UniformMultivector mv1 => mv1.RemoveSmallTerms(epsilon),
+            XGaFloat64Vector v => v.RemoveSmallTerms(zeroEpsilon),
+            XGaFloat64Bivector bv => bv.RemoveSmallTerms(zeroEpsilon),
+            XGaFloat64HigherKVector kv => kv.RemoveSmallTerms(zeroEpsilon),
+            XGaFloat64GradedMultivector mv1 => mv1.RemoveSmallTerms(zeroEpsilon),
+            XGaFloat64UniformMultivector mv1 => mv1.RemoveSmallTerms(zeroEpsilon),
             _ => throw new InvalidOperationException()
         };
     }

@@ -5,7 +5,7 @@ namespace GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.BabylonJs;
 public abstract class GrBabylonJsObjectOptions :
     GrBabylonJsAttributeSet
 {
-    public override string GetCode()
+    public override string GetBabylonJsCode()
     {
         return GetKeyValueCodePairs()
             .Select(p => $"{p.Key}: {p.Value}")
@@ -18,6 +18,6 @@ public abstract class GrBabylonJsObjectOptions :
         
     public override string ToString()
     {
-        return GetCode();
+        return GetBabylonJsCode();
     }
 }

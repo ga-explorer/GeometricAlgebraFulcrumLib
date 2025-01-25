@@ -6,117 +6,75 @@ using GeometricAlgebraFulcrumLib.Modeling.Geometry.Parametric.Float64.Space1D.An
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.Parametric.Float64.Space1D.Scalars;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.Parametric.Float64.Space2D.Curves;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.Parametric.Float64.Space3D.Curves;
+using GeometricAlgebraFulcrumLib.Modeling.Signals;
+using GeometricAlgebraFulcrumLib.Modeling.Temporal.Float64.Scalars;
 
 namespace GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.Visuals.Space3D.Animations;
 
 public static class GrVisualAnimatedGeometryComposerUtils
 {
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static GrVisualAnimatedScalar CreateAnimatedScalar(this GrVisualAnimationSpecs animationSpecs, double baseCurveValue)
+    public static GrVisualAnimatedScalar CreateAnimatedScalar(this Float64SamplingSpecs samplingSpecs, double baseCurveValue)
     {
         return GrVisualAnimatedScalar.Create(
-            animationSpecs,
-            ConstantParametricScalar.Create(
-                animationSpecs.FrameTimeRange, 
-                baseCurveValue
-            )
+            TemporalFloat64Scalar.Constant(
+                baseCurveValue,
+                samplingSpecs.MinTime, 
+                samplingSpecs.MaxTime
+            ), 
+            samplingSpecs
         );
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static GrVisualAnimatedScalar CreateAnimatedScalar(this GrVisualAnimationSpecs animationSpecs, Float64ScalarRange baseParameterRange, double baseCurveValue)
+    public static GrVisualAnimatedScalar CreateAnimatedScalar(this Float64SamplingSpecs samplingSpecs, Func<double, double> baseCurveFunc)
     {
         return GrVisualAnimatedScalar.Create(
-            animationSpecs,
-            ConstantParametricScalar.Create(
-                baseParameterRange, 
-                baseCurveValue
-            ),
-            baseParameterRange
-        );
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static GrVisualAnimatedScalar CreateAnimatedScalar(this GrVisualAnimationSpecs animationSpecs, Func<double, double> baseCurveFunc)
-    {
-        return GrVisualAnimatedScalar.Create(
-            animationSpecs,
-            ComputedParametricScalar.Create(
-                animationSpecs.FrameTimeRange, 
-                baseCurveFunc
-            )
+            TemporalFloat64Scalar.Computed(
+                baseCurveFunc,
+                samplingSpecs.MinTime, 
+                samplingSpecs.MaxTime
+            ), 
+            samplingSpecs
         );
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static GrVisualAnimatedScalar CreateAnimatedScalar(this GrVisualAnimationSpecs animationSpecs, Float64ScalarRange baseParameterRange, Func<double, double> baseCurveFunc)
+    public static GrVisualAnimatedScalar CreateAnimatedScalar(this Float64SamplingSpecs samplingSpecs, TemporalFloat64Scalar baseCurve)
     {
-        return GrVisualAnimatedScalar.Create(
-            animationSpecs,
-            ComputedParametricScalar.Create(
-                baseParameterRange, 
-                baseCurveFunc
-            ),
-            baseParameterRange
-        );
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static GrVisualAnimatedScalar CreateAnimatedScalar(this GrVisualAnimationSpecs animationSpecs, IFloat64ParametricScalar baseCurve)
-    {
-        return GrVisualAnimatedScalar.Create(
-            animationSpecs,
-            baseCurve
-        );
+        return GrVisualAnimatedScalar.Create(baseCurve, samplingSpecs);
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static GrVisualAnimatedScalar CreateAnimatedScalar(this GrVisualAnimationSpecs animationSpecs, Float64ScalarRange baseParameterRange, IFloat64ParametricScalar baseCurve)
+    public static GrVisualAnimatedScalar CreateAnimatedScalar(this Float64SamplingSpecs samplingSpecs, IFloat64ParametricScalar baseCurve)
     {
-        return GrVisualAnimatedScalar.Create(
-            animationSpecs,
-            baseCurve,
-            baseParameterRange
-        );
+        return GrVisualAnimatedScalar.Create(baseCurve.ToTemporalScalar(), samplingSpecs);
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static GrVisualAnimatedScalar CreateAnimatedScalar(this GrVisualAnimationSpecs animationSpecs, IParametricPolarAngle baseCurve)
+    public static GrVisualAnimatedScalar CreateAnimatedScalar(this Float64SamplingSpecs samplingSpecs, IParametricPolarAngle baseCurve)
     {
-        return GrVisualAnimatedScalar.Create(
-            animationSpecs,
-            baseCurve.ToRadianParametricScalar()
-        );
-    }
-    
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static GrVisualAnimatedScalar CreateAnimatedScalar(this GrVisualAnimationSpecs animationSpecs, Float64ScalarRange baseParameterRange, IParametricPolarAngle baseCurve)
-    {
-        return GrVisualAnimatedScalar.Create(
-            animationSpecs,
-            baseCurve.ToRadianParametricScalar(),
-            baseParameterRange
-        );
+        return GrVisualAnimatedScalar.Create(baseCurve.ToTemporalScalar(), samplingSpecs);
     }
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static GrVisualAnimatedVector2D CreateAnimatedVector2D(this GrVisualAnimationSpecs animationSpecs, LinFloat64Vector2D baseCurveValue)
+    public static GrVisualAnimatedVector2D CreateAnimatedVector2D(this Float64SamplingSpecs samplingSpecs, LinFloat64Vector2D baseCurveValue)
     {
         return GrVisualAnimatedVector2D.Create(
-            animationSpecs,
+            samplingSpecs,
             ConstantParametricCurve2D.Create(
-                animationSpecs.FrameTimeRange, 
+                samplingSpecs.TimeRange, 
                 baseCurveValue
             )
         );
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static GrVisualAnimatedVector2D CreateAnimatedVector2D(this GrVisualAnimationSpecs animationSpecs, Float64ScalarRange baseParameterRange, LinFloat64Vector2D baseCurveValue)
+    public static GrVisualAnimatedVector2D CreateAnimatedVector2D(this Float64SamplingSpecs samplingSpecs, Float64ScalarRange baseParameterRange, LinFloat64Vector2D baseCurveValue)
     {
         return GrVisualAnimatedVector2D.Create(
-            animationSpecs,
+            samplingSpecs,
             ConstantParametricCurve2D.Create(
                 baseParameterRange, 
                 baseCurveValue
@@ -126,22 +84,22 @@ public static class GrVisualAnimatedGeometryComposerUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static GrVisualAnimatedVector2D CreateAnimatedVector2D(this GrVisualAnimationSpecs animationSpecs, Func<double, LinFloat64Vector2D> baseCurveFunc)
+    public static GrVisualAnimatedVector2D CreateAnimatedVector2D(this Float64SamplingSpecs samplingSpecs, Func<double, LinFloat64Vector2D> baseCurveFunc)
     {
         return GrVisualAnimatedVector2D.Create(
-            animationSpecs,
+            samplingSpecs,
             ComputedParametricCurve2D.Create(
-                animationSpecs.FrameTimeRange, 
+                samplingSpecs.TimeRange, 
                 baseCurveFunc
             )
         );
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static GrVisualAnimatedVector2D CreateAnimatedVector2D(this GrVisualAnimationSpecs animationSpecs, Float64ScalarRange baseParameterRange, Func<double, LinFloat64Vector2D> baseCurveFunc)
+    public static GrVisualAnimatedVector2D CreateAnimatedVector2D(this Float64SamplingSpecs samplingSpecs, Float64ScalarRange baseParameterRange, Func<double, LinFloat64Vector2D> baseCurveFunc)
     {
         return GrVisualAnimatedVector2D.Create(
-            animationSpecs,
+            samplingSpecs,
             ComputedParametricCurve2D.Create(
                 baseParameterRange, 
                 baseCurveFunc
@@ -151,19 +109,19 @@ public static class GrVisualAnimatedGeometryComposerUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static GrVisualAnimatedVector2D CreateAnimatedVector2D(this GrVisualAnimationSpecs animationSpecs, IFloat64ParametricCurve2D baseCurve)
+    public static GrVisualAnimatedVector2D CreateAnimatedVector2D(this Float64SamplingSpecs samplingSpecs, IFloat64ParametricCurve2D baseCurve)
     {
         return GrVisualAnimatedVector2D.Create(
-            animationSpecs,
+            samplingSpecs,
             baseCurve
         );
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static GrVisualAnimatedVector2D CreateAnimatedVector2D(this GrVisualAnimationSpecs animationSpecs, Float64ScalarRange baseParameterRange, IFloat64ParametricCurve2D baseCurve)
+    public static GrVisualAnimatedVector2D CreateAnimatedVector2D(this Float64SamplingSpecs samplingSpecs, Float64ScalarRange baseParameterRange, IFloat64ParametricCurve2D baseCurve)
     {
         return GrVisualAnimatedVector2D.Create(
-            animationSpecs,
+            samplingSpecs,
             baseCurve,
             baseParameterRange
         );
@@ -171,34 +129,34 @@ public static class GrVisualAnimatedGeometryComposerUtils
 
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static GrVisualAnimatedVector3D CreateXyAnimatedVector3D(this GrVisualAnimationSpecs animationSpecs, LinFloat64Vector2D baseCurveValue)
+    public static GrVisualAnimatedVector3D CreateXyAnimatedVector3D(this Float64SamplingSpecs samplingSpecs, LinFloat64Vector2D baseCurveValue)
     {
         return GrVisualAnimatedVector3D.Create(
-            animationSpecs,
+            samplingSpecs,
             ConstantParametricCurve3D.Create(
-                animationSpecs.FrameTimeRange, 
+                samplingSpecs.TimeRange, 
                 baseCurveValue.ToXyLinVector3D()
             )
         );
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static GrVisualAnimatedVector3D CreateAnimatedVector3D(this GrVisualAnimationSpecs animationSpecs, LinFloat64Vector3D baseCurveValue)
+    public static GrVisualAnimatedVector3D CreateAnimatedVector3D(this Float64SamplingSpecs samplingSpecs, LinFloat64Vector3D baseCurveValue)
     {
         return GrVisualAnimatedVector3D.Create(
-            animationSpecs,
+            samplingSpecs,
             ConstantParametricCurve3D.Create(
-                animationSpecs.FrameTimeRange, 
+                samplingSpecs.TimeRange, 
                 baseCurveValue
             )
         );
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static GrVisualAnimatedVector3D CreateXyAnimatedVector3D(this GrVisualAnimationSpecs animationSpecs, Float64ScalarRange baseParameterRange, LinFloat64Vector2D baseCurveValue)
+    public static GrVisualAnimatedVector3D CreateXyAnimatedVector3D(this Float64SamplingSpecs samplingSpecs, Float64ScalarRange baseParameterRange, LinFloat64Vector2D baseCurveValue)
     {
         return GrVisualAnimatedVector3D.Create(
-            animationSpecs,
+            samplingSpecs,
             ConstantParametricCurve3D.Create(
                 baseParameterRange, 
                 baseCurveValue.ToXyLinVector3D()
@@ -208,10 +166,10 @@ public static class GrVisualAnimatedGeometryComposerUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static GrVisualAnimatedVector3D CreateAnimatedVector3D(this GrVisualAnimationSpecs animationSpecs, Float64ScalarRange baseParameterRange, LinFloat64Vector3D baseCurveValue)
+    public static GrVisualAnimatedVector3D CreateAnimatedVector3D(this Float64SamplingSpecs samplingSpecs, Float64ScalarRange baseParameterRange, LinFloat64Vector3D baseCurveValue)
     {
         return GrVisualAnimatedVector3D.Create(
-            animationSpecs,
+            samplingSpecs,
             ConstantParametricCurve3D.Create(
                 baseParameterRange, 
                 baseCurveValue
@@ -221,36 +179,36 @@ public static class GrVisualAnimatedGeometryComposerUtils
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static GrVisualAnimatedVector3D CreateXyAnimatedVector3D(this GrVisualAnimationSpecs animationSpecs, Func<double, LinFloat64Vector2D> baseCurveFunc)
+    public static GrVisualAnimatedVector3D CreateXyAnimatedVector3D(this Float64SamplingSpecs samplingSpecs, Func<double, LinFloat64Vector2D> baseCurveFunc)
     {
         return GrVisualAnimatedVector3D.Create(
-            animationSpecs,
+            samplingSpecs,
             ComputedParametricCurve3D.Create(
-                animationSpecs.FrameTimeRange, 
+                samplingSpecs.TimeRange, 
                 t => baseCurveFunc(t).ToXyLinVector3D()
             )
         );
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static GrVisualAnimatedVector3D CreateAnimatedVector3D(this GrVisualAnimationSpecs animationSpecs, Func<double, LinFloat64Vector3D> baseCurveFunc)
+    public static GrVisualAnimatedVector3D CreateAnimatedVector3D(this Float64SamplingSpecs samplingSpecs, Func<double, LinFloat64Vector3D> baseCurveFunc)
     {
         return GrVisualAnimatedVector3D.Create(
-            animationSpecs,
+            samplingSpecs,
             ComputedParametricCurve3D.Create(
-                animationSpecs.FrameTimeRange, 
+                samplingSpecs.TimeRange, 
                 baseCurveFunc
             )
         );
     }
     
     //[MethodImpl(MethodImplOptions.AggressiveInlining)]
-    //public static GrVisualAnimatedVector3D CreateAnimatedVector3D(this GrVisualAnimationSpecs animationSpecs, Func<double, Float64Vector3D> baseCurveFunc)
+    //public static GrVisualAnimatedVector3D CreateAnimatedVector3D(this GrVisualAnimationSpecs samplingSpecs, Func<double, Float64Vector3D> baseCurveFunc)
     //{
     //    var vector = GrVisualAnimatedVector3D.Create(
-    //        animationSpecs,
+    //        samplingSpecs,
     //        ComputedParametricCurve3D.Create(
-    //            animationSpecs.FrameTimeRange, 
+    //            samplingSpecs.FrameTimeRange, 
     //            baseCurveFunc
     //        )
     //    );
@@ -261,10 +219,10 @@ public static class GrVisualAnimatedGeometryComposerUtils
     //}
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static GrVisualAnimatedVector3D CreateXyAnimatedVector3D(this GrVisualAnimationSpecs animationSpecs, Float64ScalarRange baseParameterRange, Func<double, LinFloat64Vector2D> baseCurveFunc)
+    public static GrVisualAnimatedVector3D CreateXyAnimatedVector3D(this Float64SamplingSpecs samplingSpecs, Float64ScalarRange baseParameterRange, Func<double, LinFloat64Vector2D> baseCurveFunc)
     {
         return GrVisualAnimatedVector3D.Create(
-            animationSpecs,
+            samplingSpecs,
             ComputedParametricCurve3D.Create(
                 baseParameterRange, 
                 t => baseCurveFunc(t).ToXyLinVector3D()
@@ -274,10 +232,10 @@ public static class GrVisualAnimatedGeometryComposerUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static GrVisualAnimatedVector3D CreateAnimatedVector3D(this GrVisualAnimationSpecs animationSpecs, Float64ScalarRange baseParameterRange, Func<double, LinFloat64Vector3D> baseCurveFunc)
+    public static GrVisualAnimatedVector3D CreateAnimatedVector3D(this Float64SamplingSpecs samplingSpecs, Float64ScalarRange baseParameterRange, Func<double, LinFloat64Vector3D> baseCurveFunc)
     {
         return GrVisualAnimatedVector3D.Create(
-            animationSpecs,
+            samplingSpecs,
             ComputedParametricCurve3D.Create(
                 baseParameterRange, 
                 baseCurveFunc
@@ -287,12 +245,12 @@ public static class GrVisualAnimatedGeometryComposerUtils
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static GrVisualAnimatedVector3D CreateXyAnimatedVector3D(this GrVisualAnimationSpecs animationSpecs, IFloat64ParametricCurve2D baseCurve)
+    public static GrVisualAnimatedVector3D CreateXyAnimatedVector3D(this Float64SamplingSpecs samplingSpecs, IFloat64ParametricCurve2D baseCurve)
     {
         return GrVisualAnimatedVector3D.Create(
-            animationSpecs,
+            samplingSpecs,
             ComputedParametricCurve3D.Create(
-                animationSpecs.FrameTimeRange, 
+                samplingSpecs.TimeRange, 
                 t => baseCurve.GetPoint(t).ToXyLinVector3D()
             )
         );
@@ -300,10 +258,10 @@ public static class GrVisualAnimatedGeometryComposerUtils
     
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static GrVisualAnimatedVector3D CreateXyAnimatedVector3D(this GrVisualAnimationSpecs animationSpecs, Float64ScalarRange baseParameterRange, IFloat64ParametricCurve2D baseCurve)
+    public static GrVisualAnimatedVector3D CreateXyAnimatedVector3D(this Float64SamplingSpecs samplingSpecs, Float64ScalarRange baseParameterRange, IFloat64ParametricCurve2D baseCurve)
     {
         return GrVisualAnimatedVector3D.Create(
-            animationSpecs,
+            samplingSpecs,
             ComputedParametricCurve3D.Create(
                 baseParameterRange, 
                 t => baseCurve.GetPoint(t).ToXyLinVector3D()
@@ -314,19 +272,19 @@ public static class GrVisualAnimatedGeometryComposerUtils
     
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static GrVisualAnimatedVector3D CreateAnimatedVector3D(this GrVisualAnimationSpecs animationSpecs, IParametricCurve3D baseCurve)
+    public static GrVisualAnimatedVector3D CreateAnimatedVector3D(this Float64SamplingSpecs samplingSpecs, IParametricCurve3D baseCurve)
     {
         return GrVisualAnimatedVector3D.Create(
-            animationSpecs,
+            samplingSpecs,
             baseCurve
         );
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static GrVisualAnimatedVector3D CreateAnimatedVector3D(this GrVisualAnimationSpecs animationSpecs, Float64ScalarRange baseParameterRange, IParametricCurve3D baseCurve)
+    public static GrVisualAnimatedVector3D CreateAnimatedVector3D(this Float64SamplingSpecs samplingSpecs, Float64ScalarRange baseParameterRange, IParametricCurve3D baseCurve)
     {
         return GrVisualAnimatedVector3D.Create(
-            animationSpecs,
+            samplingSpecs,
             baseCurve,
             baseParameterRange
         );
@@ -334,20 +292,20 @@ public static class GrVisualAnimatedGeometryComposerUtils
     
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static GrVisualAnimatedVectorMesh3D CreateAnimatedVectorMesh3D(this GrVisualAnimationSpecs animationSpecs, int count1, int count2)
+    public static GrVisualAnimatedVectorMesh3D CreateAnimatedVectorMesh3D(this Float64SamplingSpecs samplingSpecs, int count1, int count2)
     {
         return GrVisualAnimatedVectorMesh3D.Create(
-            animationSpecs, 
+            samplingSpecs, 
             count1, 
             count2
         );
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static GrVisualAnimatedVectorMesh3D CreateAnimatedVectorMesh3D(this GrVisualAnimationSpecs animationSpecs, GrVisualAnimatedVector3D[,] dataArray)
+    public static GrVisualAnimatedVectorMesh3D CreateAnimatedVectorMesh3D(this Float64SamplingSpecs samplingSpecs, GrVisualAnimatedVector3D[,] dataArray)
     {
         return GrVisualAnimatedVectorMesh3D.Create(
-            animationSpecs, 
+            samplingSpecs, 
             dataArray
         );
     }

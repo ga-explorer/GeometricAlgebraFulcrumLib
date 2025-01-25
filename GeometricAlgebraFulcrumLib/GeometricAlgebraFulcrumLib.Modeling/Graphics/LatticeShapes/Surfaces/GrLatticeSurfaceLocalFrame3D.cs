@@ -59,7 +59,7 @@ public sealed class GrLatticeSurfaceLocalFrame3D :
     public LinFloat64Normal3D Normal { get; }
         = new LinFloat64Normal3D();
         
-    public Pair<Float64Scalar> ParameterValue { get; set; }
+    public LinFloat64Vector2D ParameterValue { get; set; }
 
     public Color Color { get; set; }
 
@@ -119,7 +119,7 @@ public sealed class GrLatticeSurfaceLocalFrame3D :
             
         textureUv /= LatticeIndexSet.Count;
 
-        ParameterValue = new Pair<Float64Scalar>(textureUv.Item1, textureUv.Item2);
+        ParameterValue = textureUv;
 
         return textureUv;
     }

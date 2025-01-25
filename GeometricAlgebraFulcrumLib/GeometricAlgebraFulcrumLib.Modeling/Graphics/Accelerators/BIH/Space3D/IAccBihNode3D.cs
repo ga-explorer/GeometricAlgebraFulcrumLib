@@ -40,14 +40,14 @@ public interface IAccBihNode3D
 
     double ClipValue1 { get; }
 
-    IEnumerable<IFiniteGeometricShape3D> Contents { get; }
+    IEnumerable<IFloat64FiniteGeometricShape3D> Contents { get; }
 
-    bool Contains(IFiniteGeometricShape3D shape);
+    bool Contains(IFloat64FiniteGeometricShape3D shape);
 }
 
 public interface IAccBihNode3D<out T>
-    : IAccBihNode3D, IGeometricObjectsContainer3D<T>
-    where T : IFiniteGeometricShape3D
+    : IAccBihNode3D, IFloat64GeometricObjectsContainer3D<T>
+    where T : IFloat64FiniteGeometricShape3D
 {
     IAccBihNode3D<T> LeftChildNode { get; }
 

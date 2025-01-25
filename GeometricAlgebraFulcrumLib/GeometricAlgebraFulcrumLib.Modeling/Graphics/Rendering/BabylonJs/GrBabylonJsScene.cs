@@ -21,303 +21,14 @@ namespace GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.BabylonJs;
 public sealed class GrBabylonJsScene :
     GrBabylonJsObject
 {
-    public sealed class SceneOptions :
-        GrBabylonJsObjectOptions
-    {
-        public GrBabylonJsBooleanValue? UseClonedMeshMap
-        {
-            get => GetAttributeValueOrNull<GrBabylonJsBooleanValue>("useClonedMeshMap");
-            set => SetAttributeValue("useClonedMeshMap", value);
-        }
-
-        public GrBabylonJsBooleanValue? UseGeometryUniqueIdsMap
-        {
-            get => GetAttributeValueOrNull<GrBabylonJsBooleanValue>("useGeometryUniqueIdsMap");
-            set => SetAttributeValue("useGeometryUniqueIdsMap", value);
-        }
-            
-        public GrBabylonJsBooleanValue? UseMaterialMeshMap
-        {
-            get => GetAttributeValueOrNull<GrBabylonJsBooleanValue>("useMaterialMeshMap");
-            set => SetAttributeValue("useMaterialMeshMap", value);
-        }
-
-        public GrBabylonJsBooleanValue? Virtual
-        {
-            get => GetAttributeValueOrNull<GrBabylonJsBooleanValue>("virtual");
-            set => SetAttributeValue("virtual", value);
-        }
-            
-            
-        public SceneOptions()
-        {
-        }
-            
-        public SceneOptions(SceneOptions properties)
-        {
-            SetAttributeValues(properties);
-        }
-    }
-
-    public sealed class SceneProperties :
-        GrBabylonJsObjectProperties
-    {
-        public GrBabylonJsMaterialValue? DefaultMaterial
-        {
-            get => GetAttributeValueOrNull<GrBabylonJsMaterialValue>("defaultMaterial");
-            set => SetAttributeValue("defaultMaterial", value);
-        }
-
-        public GrBabylonJsColor3Value? AmbientColor
-        {
-            get => GetAttributeValueOrNull<GrBabylonJsColor3Value>("ambientColor");
-            set => SetAttributeValue("ambientColor", value);
-        }
-
-        public GrBabylonJsColor4Value? ClearColor
-        {
-            get => GetAttributeValueOrNull<GrBabylonJsColor4Value>("clearColor");
-            set => SetAttributeValue("clearColor", value);
-        }
-
-        public GrBabylonJsBooleanValue? FogEnabled
-        {
-            get => GetAttributeValueOrNull<GrBabylonJsBooleanValue>("fogEnabled");
-            set => SetAttributeValue("fogEnabled", value);
-        }
-
-        public GrBabylonJsFogModeValue? FogMode
-        {
-            get => GetAttributeValueOrNull<GrBabylonJsFogModeValue>("fogMode");
-            set => SetAttributeValue("fogMode", value);
-        }
-
-        public GrBabylonJsColor3Value? FogColor
-        {
-            get => GetAttributeValueOrNull<GrBabylonJsColor3Value>("fogColor");
-            set => SetAttributeValue("fogColor", value);
-        }
-
-        public GrBabylonJsFloat32Value? FogDensity
-        {
-            get => GetAttributeValueOrNull<GrBabylonJsFloat32Value>("fogDensity");
-            set => SetAttributeValue("fogDensity", value);
-        }
-
-        public GrBabylonJsFloat32Value? FogStart
-        {
-            get => GetAttributeValueOrNull<GrBabylonJsFloat32Value>("fogStart");
-            set => SetAttributeValue("fogStart", value);
-        }
-
-        public GrBabylonJsFloat32Value? FogEnd
-        {
-            get => GetAttributeValueOrNull<GrBabylonJsFloat32Value>("fogEnd");
-            set => SetAttributeValue("fogEnd", value);
-        }
-
-        public GrBabylonJsFloat32Value? AnimationTimeScale
-        {
-            get => GetAttributeValueOrNull<GrBabylonJsFloat32Value>("animationTimeScale");
-            set => SetAttributeValue("animationTimeScale", value);
-        }
-
-        public GrBabylonJsBooleanValue? AnimationsEnabled
-        {
-            get => GetAttributeValueOrNull<GrBabylonJsBooleanValue>("animationsEnabled");
-            set => SetAttributeValue("animationsEnabled", value);
-        }
-
-        public GrBabylonJsBooleanValue? AudioEnabled
-        {
-            get => GetAttributeValueOrNull<GrBabylonJsBooleanValue>("audioEnabled");
-            set => SetAttributeValue("audioEnabled", value);
-        }
-
-        public GrBabylonJsFloat32Value? AudioPositioningRefreshRate
-        {
-            get => GetAttributeValueOrNull<GrBabylonJsFloat32Value>("audioPositioningRefreshRate");
-            set => SetAttributeValue("audioPositioningRefreshRate", value);
-        }
-
-        public GrBabylonJsBooleanValue? Headphone
-        {
-            get => GetAttributeValueOrNull<GrBabylonJsBooleanValue>("headphone");
-            set => SetAttributeValue("headphone", value);
-        }
-
-        public GrBabylonJsFloat32Value? DeltaTime
-        {
-            get => GetAttributeValueOrNull<GrBabylonJsFloat32Value>("deltaTime");
-            set => SetAttributeValue("deltaTime", value);
-        }
-
-        public GrBabylonJsFloat32Value? MinDeltaTime
-        {
-            get => GetAttributeValueOrNull<GrBabylonJsFloat32Value>("minDeltaTime");
-            set => SetAttributeValue("minDeltaTime", value);
-        }
-
-        public GrBabylonJsFloat32Value? MaxDeltaTime
-        {
-            get => GetAttributeValueOrNull<GrBabylonJsFloat32Value>("maxDeltaTime");
-            set => SetAttributeValue("maxDeltaTime", value);
-        }
-
-        public GrBabylonJsBooleanValue? UseConstantAnimationDeltaTime
-        {
-            get => GetAttributeValueOrNull<GrBabylonJsBooleanValue>("useConstantAnimationDeltaTime");
-            set => SetAttributeValue("useConstantAnimationDeltaTime", value);
-        }
-
-        public GrBabylonJsFloat32Value? PointerX
-        {
-            get => GetAttributeValueOrNull<GrBabylonJsFloat32Value>("pointerX");
-            set => SetAttributeValue("pointerX", value);
-        }
-
-        public GrBabylonJsFloat32Value? PointerY
-        {
-            get => GetAttributeValueOrNull<GrBabylonJsFloat32Value>("pointerY");
-            set => SetAttributeValue("pointerY", value);
-        }
-
-        public GrBabylonJsBooleanValue? UseOrderIndependentTransparency
-        {
-            get => GetAttributeValueOrNull<GrBabylonJsBooleanValue>("useOrderIndependentTransparency");
-            set => SetAttributeValue("useOrderIndependentTransparency", value);
-        }
-
-        public GrBabylonJsBooleanValue? AutoClear
-        {
-            get => GetAttributeValueOrNull<GrBabylonJsBooleanValue>("autoClear");
-            set => SetAttributeValue("autoClear", value);
-        }
-
-        public GrBabylonJsBooleanValue? AutoClearDepthAndStencil
-        {
-            get => GetAttributeValueOrNull<GrBabylonJsBooleanValue>("autoClearDepthAndStencil");
-            set => SetAttributeValue("autoClearDepthAndStencil", value);
-        }
-
-        public GrBabylonJsBooleanValue? PhysicsEnabled
-        {
-            get => GetAttributeValueOrNull<GrBabylonJsBooleanValue>("physicsEnabled");
-            set => SetAttributeValue("physicsEnabled", value);
-        }
-
-        public GrBabylonJsBooleanValue? ParticlesEnabled
-        {
-            get => GetAttributeValueOrNull<GrBabylonJsBooleanValue>("particlesEnabled");
-            set => SetAttributeValue("particlesEnabled", value);
-        }
-
-        public GrBabylonJsBooleanValue? CollisionsEnabled
-        {
-            get => GetAttributeValueOrNull<GrBabylonJsBooleanValue>("collisionsEnabled");
-            set => SetAttributeValue("collisionsEnabled", value);
-        }
-
-        public GrBabylonJsVector3Value? Gravity
-        {
-            get => GetAttributeValueOrNull<GrBabylonJsVector3Value>("gravity");
-            set => SetAttributeValue("gravity", value);
-        }
-
-        public GrBabylonJsBooleanValue? ConstantlyUpdateMeshUnderPointer
-        {
-            get => GetAttributeValueOrNull<GrBabylonJsBooleanValue>("constantlyUpdateMeshUnderPointer");
-            set => SetAttributeValue("constantlyUpdateMeshUnderPointer", value);
-        }
-
-        public GrBabylonJsBooleanValue? ForceShowBoundingBoxes
-        {
-            get => GetAttributeValueOrNull<GrBabylonJsBooleanValue>("forceShowBoundingBoxes");
-            set => SetAttributeValue("forceShowBoundingBoxes", value);
-        }
-
-        public GrBabylonJsBooleanValue? ForcePointsCloud
-        {
-            get => GetAttributeValueOrNull<GrBabylonJsBooleanValue>("forcePointsCloud");
-            set => SetAttributeValue("forcePointsCloud", value);
-        }
-
-        public GrBabylonJsBooleanValue? ForceWireFrame
-        {
-            get => GetAttributeValueOrNull<GrBabylonJsBooleanValue>("forceWireFrame");
-            set => SetAttributeValue("forceWireFrame", value);
-        }
-
-        public GrBabylonJsBooleanValue? LightsEnabled
-        {
-            get => GetAttributeValueOrNull<GrBabylonJsBooleanValue>("lightsEnabled");
-            set => SetAttributeValue("lightsEnabled", value);
-        }
-
-        public GrBabylonJsBooleanValue? ShadowsEnabled
-        {
-            get => GetAttributeValueOrNull<GrBabylonJsBooleanValue>("shadowsEnabled");
-            set => SetAttributeValue("shadowsEnabled", value);
-        }
-
-        public GrBabylonJsBooleanValue? SkeletonsEnabled
-        {
-            get => GetAttributeValueOrNull<GrBabylonJsBooleanValue>("skeletonsEnabled");
-            set => SetAttributeValue("skeletonsEnabled", value);
-        }
-
-        public GrBabylonJsBooleanValue? SkipFrustumClipping
-        {
-            get => GetAttributeValueOrNull<GrBabylonJsBooleanValue>("skipFrustumClipping");
-            set => SetAttributeValue("skipFrustumClipping", value);
-        }
-
-        public GrBabylonJsBooleanValue? TexturesEnabled
-        {
-            get => GetAttributeValueOrNull<GrBabylonJsBooleanValue>("texturesEnabled");
-            set => SetAttributeValue("texturesEnabled", value);
-        }
-
-        public GrBabylonJsBooleanValue? UseRightHandedSystem
-        {
-            get => GetAttributeValueOrNull<GrBabylonJsBooleanValue>("useRightHandedSystem");
-            set => SetAttributeValue("useRightHandedSystem", value);
-        }
-
-        public GrBabylonJsBooleanValue? RequireLightSorting
-        {
-            get => GetAttributeValueOrNull<GrBabylonJsBooleanValue>("requireLightSorting");
-            set => SetAttributeValue("requireLightSorting", value);
-        }
-
-        public GrBabylonJsBooleanValue? SpritesEnabled
-        {
-            get => GetAttributeValueOrNull<GrBabylonJsBooleanValue>("spritesEnabled");
-            set => SetAttributeValue("spritesEnabled", value);
-        }
-
-            
-        public SceneProperties()
-        {
-            UseRightHandedSystem = true;
-        }
-            
-        public SceneProperties(SceneProperties properties)
-        {
-            UseRightHandedSystem = true;
-            SetAttributeValues(properties);
-        }
-    }
-
-
     protected override string ConstructorName 
         => "new BABYLON.Scene";
 
-    public SceneOptions Options { get; private set; }
-        = new SceneOptions();
+    public GrBabylonJsSceneOptions Options { get; private set; }
+        = new GrBabylonJsSceneOptions();
 
-    public SceneProperties Properties { get; private set; }
-        = new SceneProperties();
+    public GrBabylonJsSceneProperties Properties { get; private set; }
+        = new GrBabylonJsSceneProperties();
 
     public override GrBabylonJsObjectOptions ObjectOptions 
         => Options;
@@ -364,16 +75,16 @@ public sealed class GrBabylonJsScene :
     }
 
 
-    public GrBabylonJsScene SetOptions(SceneOptions options)
+    public GrBabylonJsScene SetOptions(GrBabylonJsSceneOptions options)
     {
-        Options = new SceneOptions(options);
+        Options = new GrBabylonJsSceneOptions(options);
 
         return this;
     }
 
-    public GrBabylonJsScene SetProperties(SceneProperties properties)
+    public GrBabylonJsScene SetProperties(GrBabylonJsSceneProperties properties)
     {
-        Properties = new SceneProperties(properties);
+        Properties = new GrBabylonJsSceneProperties(properties);
 
         return this;
     }
@@ -417,7 +128,7 @@ public sealed class GrBabylonJsScene :
         return AddFreeCode(codeLines.Concatenate(Environment.NewLine));
     }
 
-    public GrBabylonJsArcRotateCamera AddArcRotateCamera(string name, GrBabylonJsFloat32Value alpha, GrBabylonJsFloat32Value beta, GrBabylonJsFloat32Value radius, GrBabylonJsVector3Value target)
+    public GrBabylonJsArcRotateCamera AddArcRotateCamera(string name, GrBabylonJsAngleValue alpha, GrBabylonJsAngleValue beta, GrBabylonJsFloat32Value radius, GrBabylonJsVector3Value target)
     {
         var sceneObject = 
             new GrBabylonJsArcRotateCamera(name, this)
@@ -434,7 +145,7 @@ public sealed class GrBabylonJsScene :
         return sceneObject;
     }
         
-    public GrBabylonJsArcRotateCamera AddArcRotateCamera(string name, GrBabylonJsFloat32Value alpha, GrBabylonJsFloat32Value beta, GrBabylonJsFloat32Value radius, GrBabylonJsVector3Value target, GrBabylonJsArcRotateCamera.ArcRotateCameraProperties properties)
+    public GrBabylonJsArcRotateCamera AddArcRotateCamera(string name, GrBabylonJsAngleValue alpha, GrBabylonJsAngleValue beta, GrBabylonJsFloat32Value radius, GrBabylonJsVector3Value target, GrBabylonJsArcRotateCameraProperties properties)
     {
         var sceneObject = 
             new GrBabylonJsArcRotateCamera(name, this)
@@ -464,7 +175,7 @@ public sealed class GrBabylonJsScene :
         return sceneObject;
     }
 
-    public GrBabylonJsUniversalCamera AddUniversalCamera(string name, GrBabylonJsVector3Value position, GrBabylonJsUniversalCamera.UniversalCameraProperties properties)
+    public GrBabylonJsUniversalCamera AddUniversalCamera(string name, GrBabylonJsVector3Value position, GrBabylonJsUniversalCameraProperties properties)
     {
         var sceneObject = 
             new GrBabylonJsUniversalCamera(name, this)
@@ -487,7 +198,7 @@ public sealed class GrBabylonJsScene :
         return sceneObject;
     }
 
-    public GrBabylonJsEnvironmentHelper AddEnvironmentHelper(string name, GrBabylonJsEnvironmentHelper.EnvironmentHelperOptions options)
+    public GrBabylonJsEnvironmentHelper AddEnvironmentHelper(string name, GrBabylonJsEnvironmentHelperOptions options)
     {
         var sceneObject = 
             new GrBabylonJsEnvironmentHelper(name, this)
@@ -498,7 +209,7 @@ public sealed class GrBabylonJsScene :
         return sceneObject;
     }
 
-    public GrBabylonJsEnvironmentHelper AddEnvironmentHelper(string name, GrBabylonJsEnvironmentHelper.EnvironmentHelperProperties properties)
+    public GrBabylonJsEnvironmentHelper AddEnvironmentHelper(string name, GrBabylonJsEnvironmentHelperProperties properties)
     {
         var sceneObject = 
             new GrBabylonJsEnvironmentHelper(name, this)
@@ -509,7 +220,7 @@ public sealed class GrBabylonJsScene :
         return sceneObject;
     }
         
-    public GrBabylonJsEnvironmentHelper AddEnvironmentHelper(string name, GrBabylonJsEnvironmentHelper.EnvironmentHelperOptions options, GrBabylonJsEnvironmentHelper.EnvironmentHelperProperties properties)
+    public GrBabylonJsEnvironmentHelper AddEnvironmentHelper(string name, GrBabylonJsEnvironmentHelperOptions options, GrBabylonJsEnvironmentHelperProperties properties)
     {
         var sceneObject = 
             new GrBabylonJsEnvironmentHelper(name, this)
@@ -535,7 +246,7 @@ public sealed class GrBabylonJsScene :
         return sceneObject;
     }
         
-    public GrBabylonJsTexture AddTexture(string name, string url, GrBabylonJsTexture.TextureOptions options)
+    public GrBabylonJsTexture AddTexture(string name, string url, GrBabylonJsTextureOptions options)
     {
         var sceneObject = 
             new GrBabylonJsTexture(name, this)
@@ -549,7 +260,7 @@ public sealed class GrBabylonJsScene :
         return sceneObject;
     }
 
-    public GrBabylonJsTexture AddTexture(string name, string url, GrBabylonJsTexture.TextureProperties properties)
+    public GrBabylonJsTexture AddTexture(string name, string url, GrBabylonJsTextureProperties properties)
     {
         var sceneObject = 
             new GrBabylonJsTexture(name, this)
@@ -563,7 +274,7 @@ public sealed class GrBabylonJsScene :
         return sceneObject;
     }
 
-    public GrBabylonJsTexture AddTexture(string name, string url, GrBabylonJsTexture.TextureOptions options, GrBabylonJsTexture.TextureProperties properties)
+    public GrBabylonJsTexture AddTexture(string name, string url, GrBabylonJsTextureOptions options, GrBabylonJsTextureProperties properties)
     {
         var sceneObject = 
             new GrBabylonJsTexture(name, this)
@@ -589,7 +300,7 @@ public sealed class GrBabylonJsScene :
         return sceneObject;
     }
 
-    public GrBabylonJsHtmlElementTexture AddHtmlElementTexture(string name, GrBabylonJsCodeValue element, GrBabylonJsHtmlElementTexture.HtmlElementTextureOptions options)
+    public GrBabylonJsHtmlElementTexture AddHtmlElementTexture(string name, GrBabylonJsCodeValue element, GrBabylonJsHtmlElementTextureOptions options)
     {
         var sceneObject = 
             new GrBabylonJsHtmlElementTexture(name, this, element)
@@ -600,7 +311,7 @@ public sealed class GrBabylonJsScene :
         return sceneObject;
     }
 
-    public GrBabylonJsHtmlElementTexture AddHtmlElementTexture(string name, GrBabylonJsCodeValue element, GrBabylonJsHtmlElementTexture.HtmlElementTextureOptions options, GrBabylonJsHtmlElementTexture.HtmlElementTextureProperties properties)
+    public GrBabylonJsHtmlElementTexture AddHtmlElementTexture(string name, GrBabylonJsCodeValue element, GrBabylonJsHtmlElementTextureOptions options, GrBabylonJsHtmlElementTextureProperties properties)
     {
         var sceneObject = 
             new GrBabylonJsHtmlElementTexture(name, this, element)
@@ -613,7 +324,7 @@ public sealed class GrBabylonJsScene :
     }
 
 
-    public GrBabylonJsSimpleMaterial AddSimpleMaterial(string name, GrBabylonJsSimpleMaterial.SimpleMaterialProperties properties)
+    public GrBabylonJsSimpleMaterial AddSimpleMaterial(string name, GrBabylonJsSimpleMaterialProperties properties)
     {
         var sceneObject = 
             new GrBabylonJsSimpleMaterial(name, this)
@@ -631,7 +342,7 @@ public sealed class GrBabylonJsScene :
         if (alpha == 255)
             return AddSimpleMaterial(
                 name, 
-                new GrBabylonJsSimpleMaterial.SimpleMaterialProperties
+                new GrBabylonJsSimpleMaterialProperties
                 {
                     DiffuseColor = color
                 }
@@ -639,7 +350,7 @@ public sealed class GrBabylonJsScene :
 
         return AddSimpleMaterial(
             name, 
-            new GrBabylonJsSimpleMaterial.SimpleMaterialProperties
+            new GrBabylonJsSimpleMaterialProperties
             {
                 DiffuseColor = color,
                 Alpha = alpha / 255f,
@@ -649,7 +360,7 @@ public sealed class GrBabylonJsScene :
         );
     }
         
-    public GrBabylonJsStandardMaterial AddStandardMaterial(string name, GrBabylonJsStandardMaterial.StandardMaterialProperties properties)
+    public GrBabylonJsStandardMaterial AddStandardMaterial(string name, GrBabylonJsStandardMaterialProperties properties)
     {
         var sceneObject = 
             new GrBabylonJsStandardMaterial(name, this)
@@ -667,12 +378,12 @@ public sealed class GrBabylonJsScene :
         if (alpha == 255)
             return AddStandardMaterial(
                 name, 
-                new GrBabylonJsStandardMaterial.StandardMaterialProperties(color)
+                new GrBabylonJsStandardMaterialProperties(color)
             );
 
         return AddStandardMaterial(
             name, 
-            new GrBabylonJsStandardMaterial.StandardMaterialProperties(color)
+            new GrBabylonJsStandardMaterialProperties(color)
             {
                 Alpha = alpha / 255f,
                 TransparencyMode = GrBabylonJsMaterialTransparencyMode.AlphaBlend,
@@ -681,7 +392,7 @@ public sealed class GrBabylonJsScene :
         );
     }
         
-    public GrBabylonJsShadowOnlyMaterial AddShadowOnlyMaterial(string name, GrBabylonJsShadowOnlyMaterial.ShadowOnlyMaterialProperties properties)
+    public GrBabylonJsShadowOnlyMaterial AddShadowOnlyMaterial(string name, GrBabylonJsShadowOnlyMaterialProperties properties)
     {
         var sceneObject = 
             new GrBabylonJsShadowOnlyMaterial(name, this)
@@ -692,7 +403,7 @@ public sealed class GrBabylonJsScene :
         return sceneObject;
     }
         
-    public GrBabylonJsOcclusionMaterial AddOcclusionMaterial(string name, GrBabylonJsOcclusionMaterial.OcclusionMaterialProperties properties)
+    public GrBabylonJsOcclusionMaterial AddOcclusionMaterial(string name, GrBabylonJsOcclusionMaterialProperties properties)
     {
         var sceneObject = 
             new GrBabylonJsOcclusionMaterial(name, this)
@@ -703,7 +414,7 @@ public sealed class GrBabylonJsScene :
         return sceneObject;
     }
         
-    public GrBabylonJsNormalMaterial AddNormalMaterial(string name, GrBabylonJsNormalMaterial.NormalMaterialProperties properties)
+    public GrBabylonJsNormalMaterial AddNormalMaterial(string name, GrBabylonJsNormalMaterialProperties properties)
     {
         var sceneObject = 
             new GrBabylonJsNormalMaterial(name, this)
@@ -714,7 +425,7 @@ public sealed class GrBabylonJsScene :
         return sceneObject;
     }
         
-    public GrBabylonJsHandleMaterial AddHandleMaterial(string name, GrBabylonJsHandleMaterial.HandleMaterialProperties properties)
+    public GrBabylonJsHandleMaterial AddHandleMaterial(string name, GrBabylonJsHandleMaterialProperties properties)
     {
         var sceneObject = 
             new GrBabylonJsHandleMaterial(name, this)
@@ -725,7 +436,7 @@ public sealed class GrBabylonJsScene :
         return sceneObject;
     }
         
-    public GrBabylonJsGridMaterial AddGridMaterial(string name, GrBabylonJsGridMaterial.GridMaterialProperties properties)
+    public GrBabylonJsGridMaterial AddGridMaterial(string name, GrBabylonJsGridMaterialProperties properties)
     {
         var sceneObject = 
             new GrBabylonJsGridMaterial(name, this)
@@ -736,7 +447,7 @@ public sealed class GrBabylonJsScene :
         return sceneObject;
     }
         
-    public GrBabylonJsGradientMaterial AddGradientMaterial(string name, GrBabylonJsGradientMaterial.GradientMaterialProperties properties)
+    public GrBabylonJsGradientMaterial AddGradientMaterial(string name, GrBabylonJsGradientMaterialProperties properties)
     {
         var sceneObject = 
             new GrBabylonJsGradientMaterial(name, this)
@@ -747,7 +458,7 @@ public sealed class GrBabylonJsScene :
         return sceneObject;
     }
         
-    public GrBabylonJsBackgroundMaterial AddBackgroundMaterial(string name, GrBabylonJsBackgroundMaterial.BackgroundMaterialProperties properties)
+    public GrBabylonJsBackgroundMaterial AddBackgroundMaterial(string name, GrBabylonJsBackgroundMaterialProperties properties)
     {
         var sceneObject = 
             new GrBabylonJsBackgroundMaterial(name, this)
@@ -854,7 +565,7 @@ public sealed class GrBabylonJsScene :
         return sceneObject;
     }
         
-    public GrBabylonJsMeshClone AddClone(string name, string parentMeshConstName, GrBabylonJsMesh.MeshProperties properties)
+    public GrBabylonJsMeshClone AddClone(string name, string parentMeshConstName, GrBabylonJsMeshProperties properties)
     {
         var sceneObject =
             new GrBabylonJsMeshClone(name, parentMeshConstName)
@@ -865,7 +576,7 @@ public sealed class GrBabylonJsScene :
         return sceneObject;
     }
 
-    public GrBabylonJsMeshClone AddClone(string name, GrBabylonJsMesh parentMesh, GrBabylonJsMesh.MeshProperties properties)
+    public GrBabylonJsMeshClone AddClone(string name, GrBabylonJsMesh parentMesh, GrBabylonJsMeshProperties properties)
     {
         var sceneObject =
             new GrBabylonJsMeshClone(name, parentMesh.ConstName)
@@ -876,7 +587,7 @@ public sealed class GrBabylonJsScene :
         return sceneObject;
     }
 
-    public GrBabylonJsCapsule AddCapsule(string name, GrBabylonJsCapsule.CapsuleOptions options)
+    public GrBabylonJsCapsule AddCapsule(string name, GrBabylonJsCapsuleOptions options)
     {
         var sceneObject = 
             new GrBabylonJsCapsule(name, this)
@@ -887,7 +598,7 @@ public sealed class GrBabylonJsScene :
         return sceneObject;
     }
 
-    public GrBabylonJsCapsule AddCapsule(string name, GrBabylonJsCapsule.CapsuleOptions options, GrBabylonJsMesh.MeshProperties properties)
+    public GrBabylonJsCapsule AddCapsule(string name, GrBabylonJsCapsuleOptions options, GrBabylonJsMeshProperties properties)
     {
         var sceneObject = 
             new GrBabylonJsCapsule(name, this)
@@ -899,7 +610,7 @@ public sealed class GrBabylonJsScene :
         return sceneObject;
     }
         
-    public GrBabylonJsCylinder AddCylinder(string name, GrBabylonJsCylinder.CylinderOptions options)
+    public GrBabylonJsCylinder AddCylinder(string name, GrBabylonJsCylinderOptions options)
     {
         var sceneObject = 
             new GrBabylonJsCylinder(name, this)
@@ -910,7 +621,7 @@ public sealed class GrBabylonJsScene :
         return sceneObject;
     }
 
-    public GrBabylonJsCylinder AddCylinder(string name, GrBabylonJsCylinder.CylinderOptions options, GrBabylonJsMesh.MeshProperties properties)
+    public GrBabylonJsCylinder AddCylinder(string name, GrBabylonJsCylinderOptions options, GrBabylonJsMeshProperties properties)
     {
         var sceneObject = 
             new GrBabylonJsCylinder(name, this)
@@ -922,7 +633,7 @@ public sealed class GrBabylonJsScene :
         return sceneObject;
     }
         
-    public GrBabylonJsDisc AddDisc(string name, GrBabylonJsDisc.DiscOptions options)
+    public GrBabylonJsDisc AddDisc(string name, GrBabylonJsDiscOptions options)
     {
         var sceneObject = 
             new GrBabylonJsDisc(name, this)
@@ -933,7 +644,7 @@ public sealed class GrBabylonJsScene :
         return sceneObject;
     }
 
-    public GrBabylonJsDisc AddDisc(string name, GrBabylonJsDisc.DiscOptions options, GrBabylonJsMesh.MeshProperties properties)
+    public GrBabylonJsDisc AddDisc(string name, GrBabylonJsDiscOptions options, GrBabylonJsMeshProperties properties)
     {
         var sceneObject = 
             new GrBabylonJsDisc(name, this)
@@ -945,7 +656,7 @@ public sealed class GrBabylonJsScene :
         return sceneObject;
     }
         
-    public GrBabylonJsGround AddGround(string name, GrBabylonJsGround.GroundOptions options)
+    public GrBabylonJsGround AddGround(string name, GrBabylonJsGroundOptions options)
     {
         var sceneObject = 
             new GrBabylonJsGround(name, this)
@@ -956,7 +667,7 @@ public sealed class GrBabylonJsScene :
         return sceneObject;
     }
 
-    public GrBabylonJsGround AddGround(string name, GrBabylonJsGround.GroundOptions options, GrBabylonJsMesh.MeshProperties properties)
+    public GrBabylonJsGround AddGround(string name, GrBabylonJsGroundOptions options, GrBabylonJsMeshProperties properties)
     {
         var sceneObject = 
             new GrBabylonJsGround(name, this)
@@ -968,7 +679,7 @@ public sealed class GrBabylonJsScene :
         return sceneObject;
     }
         
-    public GrBabylonJsPlane AddPlane(string name, GrBabylonJsPlane.PlaneOptions options)
+    public GrBabylonJsPlane AddPlane(string name, GrBabylonJsPlaneOptions options)
     {
         var sceneObject = 
             new GrBabylonJsPlane(name, this)
@@ -979,7 +690,7 @@ public sealed class GrBabylonJsScene :
         return sceneObject;
     }
 
-    public GrBabylonJsPlane AddPlane(string name, GrBabylonJsPlane.PlaneOptions options, GrBabylonJsMesh.MeshProperties properties)
+    public GrBabylonJsPlane AddPlane(string name, GrBabylonJsPlaneOptions options, GrBabylonJsMeshProperties properties)
     {
         var sceneObject = 
             new GrBabylonJsPlane(name, this)
@@ -991,7 +702,7 @@ public sealed class GrBabylonJsScene :
         return sceneObject;
     }
 
-    public GrBabylonJsBox AddBox(string name, GrBabylonJsBox.BoxOptions options)
+    public GrBabylonJsBox AddBox(string name, GrBabylonJsBoxOptions options)
     {
         var sceneObject =
             new GrBabylonJsBox(name, this)
@@ -1002,7 +713,7 @@ public sealed class GrBabylonJsScene :
         return sceneObject;
     }
 
-    public GrBabylonJsBox AddBox(string name, GrBabylonJsBox.BoxOptions options, GrBabylonJsMesh.MeshProperties properties)
+    public GrBabylonJsBox AddBox(string name, GrBabylonJsBoxOptions options, GrBabylonJsMeshProperties properties)
     {
         var sceneObject =
             new GrBabylonJsBox(name, this)
@@ -1014,7 +725,7 @@ public sealed class GrBabylonJsScene :
         return sceneObject;
     }
 
-    public GrBabylonJsSphere AddSphere(string name, GrBabylonJsSphere.SphereOptions options)
+    public GrBabylonJsSphere AddSphere(string name, GrBabylonJsSphereOptions options)
     {
         var sceneObject = 
             new GrBabylonJsSphere(name, this)
@@ -1025,7 +736,7 @@ public sealed class GrBabylonJsScene :
         return sceneObject;
     }
 
-    public GrBabylonJsSphere AddSphere(string name, GrBabylonJsSphere.SphereOptions options, GrBabylonJsMesh.MeshProperties properties)
+    public GrBabylonJsSphere AddSphere(string name, GrBabylonJsSphereOptions options, GrBabylonJsMeshProperties properties)
     {
         var sceneObject = 
             new GrBabylonJsSphere(name, this)
@@ -1037,7 +748,7 @@ public sealed class GrBabylonJsScene :
         return sceneObject;
     }
         
-    public GrBabylonJsIcoSphere AddIcoSphere(string name, GrBabylonJsIcoSphere.IcoSphereOptions options)
+    public GrBabylonJsIcoSphere AddIcoSphere(string name, GrBabylonJsIcoSphereOptions options)
     {
         var sceneObject = 
             new GrBabylonJsIcoSphere(name, this)
@@ -1048,7 +759,7 @@ public sealed class GrBabylonJsScene :
         return sceneObject;
     }
 
-    public GrBabylonJsIcoSphere AddIcoSphere(string name, GrBabylonJsIcoSphere.IcoSphereOptions options, GrBabylonJsMesh.MeshProperties properties)
+    public GrBabylonJsIcoSphere AddIcoSphere(string name, GrBabylonJsIcoSphereOptions options, GrBabylonJsMeshProperties properties)
     {
         var sceneObject = 
             new GrBabylonJsIcoSphere(name, this)
@@ -1060,7 +771,7 @@ public sealed class GrBabylonJsScene :
         return sceneObject;
     }
 
-    public GrBabylonJsTorus AddTorus(string name, GrBabylonJsTorus.TorusOptions options)
+    public GrBabylonJsTorus AddTorus(string name, GrBabylonJsTorusOptions options)
     {
         var sceneObject = 
             new GrBabylonJsTorus(name, this)
@@ -1071,7 +782,7 @@ public sealed class GrBabylonJsScene :
         return sceneObject;
     }
 
-    public GrBabylonJsTorus AddTorus(string name, GrBabylonJsTorus.TorusOptions options, GrBabylonJsMesh.MeshProperties properties)
+    public GrBabylonJsTorus AddTorus(string name, GrBabylonJsTorusOptions options, GrBabylonJsMeshProperties properties)
     {
         var sceneObject = 
             new GrBabylonJsTorus(name, this)
@@ -1083,7 +794,7 @@ public sealed class GrBabylonJsScene :
         return sceneObject;
     }
         
-    public GrBabylonJsTube AddTube(string name, GrBabylonJsTube.TubeOptions options)
+    public GrBabylonJsTube AddTube(string name, GrBabylonJsTubeOptions options)
     {
         var sceneObject = 
             new GrBabylonJsTube(name, this)
@@ -1094,7 +805,7 @@ public sealed class GrBabylonJsScene :
         return sceneObject;
     }
 
-    public GrBabylonJsTube AddTube(string name, GrBabylonJsTube.TubeOptions options, GrBabylonJsMesh.MeshProperties properties)
+    public GrBabylonJsTube AddTube(string name, GrBabylonJsTubeOptions options, GrBabylonJsMeshProperties properties)
     {
         var sceneObject = 
             new GrBabylonJsTube(name, this)
@@ -1106,7 +817,7 @@ public sealed class GrBabylonJsScene :
         return sceneObject;
     }
         
-    public GrBabylonJsLines AddLines(string name, GrBabylonJsLines.LinesOptions options)
+    public GrBabylonJsLines AddLines(string name, GrBabylonJsLinesOptions options)
     {
         var sceneObject = 
             new GrBabylonJsLines(name, this)
@@ -1117,7 +828,7 @@ public sealed class GrBabylonJsScene :
         return sceneObject;
     }
 
-    public GrBabylonJsLines AddLines(string name, GrBabylonJsLines.LinesOptions options, GrBabylonJsLinesMesh.LinesMeshProperties properties)
+    public GrBabylonJsLines AddLines(string name, GrBabylonJsLinesOptions options, GrBabylonJsLinesMeshProperties properties)
     {
         var sceneObject = 
             new GrBabylonJsLines(name, this)
@@ -1129,7 +840,7 @@ public sealed class GrBabylonJsScene :
         return sceneObject;
     }
         
-    public GrBabylonJsDashedLines AddDashedLines(string name, GrBabylonJsDashedLines.DashedLinesOptions options)
+    public GrBabylonJsDashedLines AddDashedLines(string name, GrBabylonJsDashedLinesOptions options)
     {
         var sceneObject = 
             new GrBabylonJsDashedLines(name, this)
@@ -1140,7 +851,7 @@ public sealed class GrBabylonJsScene :
         return sceneObject;
     }
 
-    public GrBabylonJsDashedLines AddDashedLines(string name, GrBabylonJsDashedLines.DashedLinesOptions options, GrBabylonJsLinesMesh.LinesMeshProperties properties)
+    public GrBabylonJsDashedLines AddDashedLines(string name, GrBabylonJsDashedLinesOptions options, GrBabylonJsLinesMeshProperties properties)
     {
         var sceneObject = 
             new GrBabylonJsDashedLines(name, this)
@@ -1152,7 +863,7 @@ public sealed class GrBabylonJsScene :
         return sceneObject;
     }
         
-    public GrBabylonJsLineSystem AddLineSystem(string name, GrBabylonJsLineSystem.LineSystemOptions options)
+    public GrBabylonJsLineSystem AddLineSystem(string name, GrBabylonJsLinesSystemOptions options)
     {
         var sceneObject = 
             new GrBabylonJsLineSystem(name, this)
@@ -1163,7 +874,7 @@ public sealed class GrBabylonJsScene :
         return sceneObject;
     }
 
-    public GrBabylonJsLineSystem AddLineSystem(string name, GrBabylonJsLineSystem.LineSystemOptions options, GrBabylonJsLinesMesh.LinesMeshProperties properties)
+    public GrBabylonJsLineSystem AddLineSystem(string name, GrBabylonJsLinesSystemOptions options, GrBabylonJsLinesMeshProperties properties)
     {
         var sceneObject = 
             new GrBabylonJsLineSystem(name, this)
@@ -1175,7 +886,7 @@ public sealed class GrBabylonJsScene :
         return sceneObject;
     }
         
-    public GrBabylonJsLathe AddLathe(string name, GrBabylonJsLathe.LatheOptions options)
+    public GrBabylonJsLathe AddLathe(string name, GrBabylonJsLatheOptions options)
     {
         var sceneObject = 
             new GrBabylonJsLathe(name, this)
@@ -1186,7 +897,7 @@ public sealed class GrBabylonJsScene :
         return sceneObject;
     }
 
-    public GrBabylonJsLathe AddLathe(string name, GrBabylonJsLathe.LatheOptions options, GrBabylonJsMesh.MeshProperties properties)
+    public GrBabylonJsLathe AddLathe(string name, GrBabylonJsLatheOptions options, GrBabylonJsMeshProperties properties)
     {
         var sceneObject = 
             new GrBabylonJsLathe(name, this)
@@ -1198,7 +909,7 @@ public sealed class GrBabylonJsScene :
         return sceneObject;
     }
 
-    public GrBabylonJsRibbon AddRibbon(string name, GrBabylonJsRibbon.RibbonOptions options)
+    public GrBabylonJsRibbon AddRibbon(string name, GrBabylonJsRibbonOptions options)
     {
         var sceneObject = 
             new GrBabylonJsRibbon(name, this)
@@ -1209,7 +920,7 @@ public sealed class GrBabylonJsScene :
         return sceneObject;
     }
 
-    public GrBabylonJsRibbon AddRibbon(string name, GrBabylonJsRibbon.RibbonOptions options, GrBabylonJsMesh.MeshProperties properties)
+    public GrBabylonJsRibbon AddRibbon(string name, GrBabylonJsRibbonOptions options, GrBabylonJsMeshProperties properties)
     {
         var sceneObject = 
             new GrBabylonJsRibbon(name, this)
@@ -1221,7 +932,7 @@ public sealed class GrBabylonJsScene :
         return sceneObject;
     }
         
-    public GrBabylonJsExtrudeShape AddExtrudeShape(string name, GrBabylonJsExtrudeShape.ExtrudeShapeOptions options)
+    public GrBabylonJsExtrudeShape AddExtrudeShape(string name, GrBabylonJsExtrudeShapeOptions options)
     {
         var sceneObject = 
             new GrBabylonJsExtrudeShape(name, this)
@@ -1232,7 +943,7 @@ public sealed class GrBabylonJsScene :
         return sceneObject;
     }
 
-    public GrBabylonJsExtrudeShape AddExtrudeShape(string name, GrBabylonJsExtrudeShape.ExtrudeShapeOptions options, GrBabylonJsMesh.MeshProperties properties)
+    public GrBabylonJsExtrudeShape AddExtrudeShape(string name, GrBabylonJsExtrudeShapeOptions options, GrBabylonJsMeshProperties properties)
     {
         var sceneObject = 
             new GrBabylonJsExtrudeShape(name, this)
@@ -1244,10 +955,10 @@ public sealed class GrBabylonJsScene :
         return sceneObject;
     }
         
-    public GrBabylonJsExtrudeShapeCustom AddExtrudeShapeCustom(string name, GrBabylonJsExtrudeShapeCustom.ExtrudeShapeCustomOptions options)
+    public GrBabylonJsCustomExtrudeShape AddExtrudeShapeCustom(string name, GrBabylonJsCustomExtrudeShapeOptions options)
     {
         var sceneObject = 
-            new GrBabylonJsExtrudeShapeCustom(name, this)
+            new GrBabylonJsCustomExtrudeShape(name, this)
                 .SetOptions(options);
 
         ObjectList.Add(sceneObject);
@@ -1255,10 +966,10 @@ public sealed class GrBabylonJsScene :
         return sceneObject;
     }
 
-    public GrBabylonJsExtrudeShapeCustom AddExtrudeShapeCustom(string name, GrBabylonJsExtrudeShapeCustom.ExtrudeShapeCustomOptions options, GrBabylonJsMesh.MeshProperties properties)
+    public GrBabylonJsCustomExtrudeShape AddExtrudeShapeCustom(string name, GrBabylonJsCustomExtrudeShapeOptions options, GrBabylonJsMeshProperties properties)
     {
         var sceneObject = 
-            new GrBabylonJsExtrudeShapeCustom(name, this)
+            new GrBabylonJsCustomExtrudeShape(name, this)
                 .SetOptions(options)
                 .SetProperties(properties);
 
@@ -1283,7 +994,7 @@ public sealed class GrBabylonJsScene :
         return sceneObject;
     }
 
-    public GrBabylonJsGuiFullScreenUi AddGuiFullScreenUi(string name, GrBabylonJsBooleanValue isForeground, GrBabylonJsTextureSamplingMode samplingMode, GrBabylonJsBooleanValue adaptiveScaling, GrBabylonJsAdvancedDynamicTexture.AdvancedDynamicTextureProperties properties)
+    public GrBabylonJsGuiFullScreenUi AddGuiFullScreenUi(string name, GrBabylonJsBooleanValue isForeground, GrBabylonJsTextureSamplingMode samplingMode, GrBabylonJsBooleanValue adaptiveScaling, GrBabylonJsAdvancedDynamicTextureProperties properties)
     {
         var sceneObject = 
             new GrBabylonJsGuiFullScreenUi(name, this)
@@ -1301,7 +1012,7 @@ public sealed class GrBabylonJsScene :
     }
         
 
-    public GrBabylonJsAnimationOfFloat AddFloat32Animation(string name, string targetPropertyName, GrBabylonJsAnimationSpecs animationSpecs, GrBabylonJsKeyFrameDictionary<double> keyFrames)
+    public GrBabylonJsAnimationOfFloat AddFloat32Animation(string name, string targetPropertyName, GrBabylonJsAnimationSpecs samplingSpecs, GrBabylonJsKeyFrameDictionary<double> keyFrames)
     {
         var (keyFramesIndex, _) = 
             KeyFramesCache.AddOrGetFloatKeyFrames(keyFrames);
@@ -1310,7 +1021,7 @@ public sealed class GrBabylonJsScene :
             new GrBabylonJsAnimationOfFloat(
                 name, 
                 targetPropertyName, 
-                animationSpecs, 
+                samplingSpecs, 
                 KeyFramesCache,
                 keyFramesIndex
             );
@@ -1320,7 +1031,7 @@ public sealed class GrBabylonJsScene :
         return sceneObject;
     }
         
-    public GrBabylonJsAnimationOfVector2 AddVector2Animation(string name, string targetPropertyName, GrBabylonJsAnimationSpecs animationSpecs, GrBabylonJsKeyFrameDictionary<LinFloat64Vector2D> keyFrames)
+    public GrBabylonJsAnimationOfVector2 AddVector2Animation(string name, string targetPropertyName, GrBabylonJsAnimationSpecs samplingSpecs, GrBabylonJsKeyFrameDictionary<LinFloat64Vector2D> keyFrames)
     {
         var (keyFramesIndex, _) = 
             KeyFramesCache.AddOrGetVector2KeyFrames(keyFrames);
@@ -1329,7 +1040,7 @@ public sealed class GrBabylonJsScene :
             new GrBabylonJsAnimationOfVector2(
                 name, 
                 targetPropertyName, 
-                animationSpecs, 
+                samplingSpecs, 
                 KeyFramesCache,
                 keyFramesIndex
             );
@@ -1339,7 +1050,7 @@ public sealed class GrBabylonJsScene :
         return sceneObject;
     }
         
-    public GrBabylonJsAnimationOfVector3 AddVector3Animation(string name, string targetPropertyName, GrBabylonJsAnimationSpecs animationSpecs, GrBabylonJsKeyFrameDictionary<LinFloat64Vector3D> keyFrames)
+    public GrBabylonJsAnimationOfVector3 AddVector3Animation(string name, string targetPropertyName, GrBabylonJsAnimationSpecs samplingSpecs, GrBabylonJsKeyFrameDictionary<LinFloat64Vector3D> keyFrames)
     {
         var (keyFramesIndex, _) = 
             KeyFramesCache.AddOrGetVector3KeyFrames(keyFrames);
@@ -1348,7 +1059,7 @@ public sealed class GrBabylonJsScene :
             new GrBabylonJsAnimationOfVector3(
                 name, 
                 targetPropertyName, 
-                animationSpecs, 
+                samplingSpecs, 
                 KeyFramesCache,
                 keyFramesIndex
             );
@@ -1358,7 +1069,7 @@ public sealed class GrBabylonJsScene :
         return sceneObject;
     }
 
-    public GrBabylonJsAnimationOfQuaternion AddQuaternionAnimation(string name, string targetPropertyName, GrBabylonJsAnimationSpecs animationSpecs, GrBabylonJsKeyFrameDictionary<LinFloat64Quaternion> keyFrames)
+    public GrBabylonJsAnimationOfQuaternion AddQuaternionAnimation(string name, string targetPropertyName, GrBabylonJsAnimationSpecs samplingSpecs, GrBabylonJsKeyFrameDictionary<LinFloat64Quaternion> keyFrames)
     {
         var (keyFramesIndex, _) = 
             KeyFramesCache.AddOrGetQuaternionKeyFrames(keyFrames);
@@ -1367,7 +1078,7 @@ public sealed class GrBabylonJsScene :
             new GrBabylonJsAnimationOfQuaternion(
                 name, 
                 targetPropertyName, 
-                animationSpecs, 
+                samplingSpecs, 
                 KeyFramesCache,
                 keyFramesIndex
             );
@@ -1377,7 +1088,7 @@ public sealed class GrBabylonJsScene :
         return sceneObject;
     }
 
-    public Pair<GrBabylonJsAnimationOfFloat> AddVector2ComponentAnimations(string name, GrBabylonJsAnimationSpecs animationSpecs, GrBabylonJsKeyFrameDictionary<LinFloat64Vector2D> keyPositions, GrBabylonJsKeyFrameOptimizationKind optimizationKind = GrBabylonJsKeyFrameOptimizationKind.Separate)
+    public Pair<GrBabylonJsAnimationOfFloat> AddVector2ComponentAnimations(string name, GrBabylonJsAnimationSpecs samplingSpecs, GrBabylonJsKeyFrameDictionary<LinFloat64Vector2D> keyPositions, GrBabylonJsKeyFrameOptimizationKind optimizationKind = GrBabylonJsKeyFrameOptimizationKind.Separate)
     {
         var (keyXValues, keyYValues) = 
             keyPositions.SeparateComponents(optimizationKind);
@@ -1385,14 +1096,14 @@ public sealed class GrBabylonJsScene :
         var xAnimation = AddFloat32Animation(
             name + "XAnimation",
             "x",
-            animationSpecs,
+            samplingSpecs,
             keyXValues
         );
             
         var yAnimation = AddFloat32Animation(
             name + "YAnimation",
             "y",
-            animationSpecs,
+            samplingSpecs,
             keyYValues
         );
             
@@ -1402,7 +1113,7 @@ public sealed class GrBabylonJsScene :
         );
     }
 
-    public Triplet<GrBabylonJsAnimationOfFloat> AddVector3ComponentAnimations(string name, GrBabylonJsAnimationSpecs animationSpecs, IEnumerable<KeyValuePair<int, LinFloat64Vector3D>> frameIndexPositionPairs, GrBabylonJsKeyFrameOptimizationKind optimizationKind = GrBabylonJsKeyFrameOptimizationKind.Separate)
+    public Triplet<GrBabylonJsAnimationOfFloat> AddVector3ComponentAnimations(string name, GrBabylonJsAnimationSpecs samplingSpecs, IEnumerable<KeyValuePair<int, LinFloat64Vector3D>> frameIndexPositionPairs, GrBabylonJsKeyFrameOptimizationKind optimizationKind = GrBabylonJsKeyFrameOptimizationKind.Separate)
     {
         var keyPositions = new GrBabylonJsKeyFrameDictionary<LinFloat64Vector3D>();
 
@@ -1411,13 +1122,13 @@ public sealed class GrBabylonJsScene :
 
         return AddVector3ComponentAnimations(
             name,
-            animationSpecs,
+            samplingSpecs,
             keyPositions,
             optimizationKind
         );
     }
 
-    public Triplet<GrBabylonJsAnimationOfFloat> AddVector3ComponentAnimations(string name, GrBabylonJsAnimationSpecs animationSpecs, GrBabylonJsKeyFrameDictionary<LinFloat64Vector3D> keyPositions, GrBabylonJsKeyFrameOptimizationKind optimizationKind = GrBabylonJsKeyFrameOptimizationKind.Separate)
+    public Triplet<GrBabylonJsAnimationOfFloat> AddVector3ComponentAnimations(string name, GrBabylonJsAnimationSpecs samplingSpecs, GrBabylonJsKeyFrameDictionary<LinFloat64Vector3D> keyPositions, GrBabylonJsKeyFrameOptimizationKind optimizationKind = GrBabylonJsKeyFrameOptimizationKind.Separate)
     {
         var (keyXValues, keyYValues, keyZValues) = 
             keyPositions.SeparateComponents(optimizationKind);
@@ -1425,21 +1136,21 @@ public sealed class GrBabylonJsScene :
         var xAnimation = AddFloat32Animation(
             name + "XAnimation",
             "x",
-            animationSpecs,
+            samplingSpecs,
             keyXValues
         );
             
         var yAnimation = AddFloat32Animation(
             name + "YAnimation",
             "y",
-            animationSpecs,
+            samplingSpecs,
             keyYValues
         );
             
         var zAnimation = AddFloat32Animation(
             name + "ZAnimation",
             "z",
-            animationSpecs,
+            samplingSpecs,
             keyZValues
         );
 
@@ -1450,7 +1161,7 @@ public sealed class GrBabylonJsScene :
         );
     }
         
-    //public Quad<GrBabylonJsFloat32Animation> AddComponentAnimations(string name, GrBabylonJsAnimationSpecs animationSpecs, GrBabylonJsKeyFrameDictionary<Float64Tuple4D> keyPositions, GrBabylonJsKeyFrameOptimizationKind optimizationKind = GrBabylonJsKeyFrameOptimizationKind.Separate)
+    //public Quad<GrBabylonJsFloat32Animation> AddComponentAnimations(string name, GrBabylonJsAnimationSpecs samplingSpecs, GrBabylonJsKeyFrameDictionary<Float64Tuple4D> keyPositions, GrBabylonJsKeyFrameOptimizationKind optimizationKind = GrBabylonJsKeyFrameOptimizationKind.Separate)
     //{
     //    var (keyXValues, keyYValues, keyZValues, keyWValues) = 
     //        keyPositions.SeparateComponents(optimizationKind);
@@ -1458,28 +1169,28 @@ public sealed class GrBabylonJsScene :
     //    var xAnimation = AddFloat32Animation(
     //        name + "XAnimation",
     //        "x",
-    //        animationSpecs,
+    //        samplingSpecs,
     //        keyXValues
     //    );
             
     //    var yAnimation = AddFloat32Animation(
     //        name + "YAnimation",
     //        "y",
-    //        animationSpecs,
+    //        samplingSpecs,
     //        keyYValues
     //    );
             
     //    var zAnimation = AddFloat32Animation(
     //        name + "ZAnimation",
     //        "z",
-    //        animationSpecs,
+    //        samplingSpecs,
     //        keyZValues
     //    );
             
     //    var wAnimation = AddFloat32Animation(
     //        name + "WAnimation",
     //        "w",
-    //        animationSpecs,
+    //        samplingSpecs,
     //        keyWValues
     //    );
 
@@ -1501,7 +1212,7 @@ public sealed class GrBabylonJsScene :
         return sceneObject;
     }
 
-    public GrBabylonJsAnimationGroup AddAnimationGroup(string name, GrBabylonJsAnimationGroup.AnimationGroupProperties properties)
+    public GrBabylonJsAnimationGroup AddAnimationGroup(string name, GrBabylonJsAnimationGroupProperties properties)
     {
         var sceneObject = 
             new GrBabylonJsAnimationGroup(name, this)
@@ -1531,10 +1242,10 @@ public sealed class GrBabylonJsScene :
 
     protected override IEnumerable<string> GetConstructorArguments()
     {
-        yield return Engine.GetCode();
+        yield return Engine.GetAttributeValueCode();
 
         var optionsCode = 
-            ObjectOptions.GetCode();
+            ObjectOptions.GetAttributeSetCode();
 
         yield return optionsCode;
 

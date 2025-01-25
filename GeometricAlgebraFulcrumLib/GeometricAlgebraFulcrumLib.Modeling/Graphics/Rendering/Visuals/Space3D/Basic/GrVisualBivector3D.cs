@@ -8,6 +8,7 @@ using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.Visuals.Space3D.Ani
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.Visuals.Space3D.Curves;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.Visuals.Space3D.Styles;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.Visuals.Space3D.Surfaces;
+using GeometricAlgebraFulcrumLib.Modeling.Signals;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Basic;
 
 namespace GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.Visuals.Space3D.Basic;
@@ -38,7 +39,7 @@ public sealed class GrVisualBivector3D :
             LinFloat64Vector3D.Zero,
             normal,
             radius,
-            GrVisualAnimationSpecs.Static
+            Float64SamplingSpecs.Static
         );
     }
 
@@ -50,11 +51,11 @@ public sealed class GrVisualBivector3D :
             center,
             normal,
             radius,
-            GrVisualAnimationSpecs.Static
+            Float64SamplingSpecs.Static
         );
     }
 
-    public static GrVisualBivector3D Create(string name, GrVisualCurveTubeStyle3D style, ILinFloat64Vector3D normal, double radius, GrVisualAnimationSpecs animationSpecs)
+    public static GrVisualBivector3D Create(string name, GrVisualCurveTubeStyle3D style, ILinFloat64Vector3D normal, double radius, Float64SamplingSpecs samplingSpecs)
     {
         return new GrVisualBivector3D(
             name,
@@ -62,11 +63,11 @@ public sealed class GrVisualBivector3D :
             LinFloat64Vector3D.Zero,
             normal,
             radius,
-            animationSpecs
+            samplingSpecs
         );
     }
 
-    public static GrVisualBivector3D Create(string name, GrVisualCurveTubeStyle3D style, ILinFloat64Vector3D center, ILinFloat64Vector3D normal, double radius, GrVisualAnimationSpecs animationSpecs)
+    public static GrVisualBivector3D Create(string name, GrVisualCurveTubeStyle3D style, ILinFloat64Vector3D center, ILinFloat64Vector3D normal, double radius, Float64SamplingSpecs samplingSpecs)
     {
         return new GrVisualBivector3D(
             name,
@@ -74,7 +75,7 @@ public sealed class GrVisualBivector3D :
             center,
             normal,
             radius,
-            animationSpecs
+            samplingSpecs
         );
     }
 
@@ -86,7 +87,7 @@ public sealed class GrVisualBivector3D :
             LinFloat64Vector3D.Zero,
             LinFloat64Vector3D.E2,
             1d,
-            normal.AnimationSpecs
+            normal.SamplingSpecs
         ).SetAnimatedNormal(normal)
             .SetAnimatedRadius(radius);
     }
@@ -99,7 +100,7 @@ public sealed class GrVisualBivector3D :
                 LinFloat64Vector3D.Zero,
                 normal,
                 1d,
-                center.AnimationSpecs
+                center.SamplingSpecs
             ).SetAnimatedCenter(center)
             .SetAnimatedRadius(radius);
     }
@@ -112,7 +113,7 @@ public sealed class GrVisualBivector3D :
                 LinFloat64Vector3D.Zero,
                 LinFloat64Vector3D.E2,
                 radius,
-                center.AnimationSpecs
+                center.SamplingSpecs
             ).SetAnimatedCenter(center)
             .SetAnimatedNormal(normal);
     }
@@ -125,7 +126,7 @@ public sealed class GrVisualBivector3D :
             LinFloat64Vector3D.Zero,
             LinFloat64Vector3D.E2,
             1d,
-            center.AnimationSpecs
+            center.SamplingSpecs
         ).SetAnimatedCenter(center)
             .SetAnimatedNormal(normal)
             .SetAnimatedRadius(radius);
@@ -183,8 +184,8 @@ public sealed class GrVisualBivector3D :
     }
 
 
-    private GrVisualBivector3D(string name, GrVisualCurveTubeStyle3D style, ILinFloat64Vector3D center, ILinFloat64Vector3D normal, double radius, GrVisualAnimationSpecs animationSpecs)
-        : base(name, animationSpecs)
+    private GrVisualBivector3D(string name, GrVisualCurveTubeStyle3D style, ILinFloat64Vector3D center, ILinFloat64Vector3D normal, double radius, Float64SamplingSpecs samplingSpecs)
+        : base(name, samplingSpecs)
     {
         VectorStyle = style;
         CircleStyle = new GrVisualSurfaceThickStyle3D(style.Material, style.Thickness);
@@ -208,7 +209,7 @@ public sealed class GrVisualBivector3D :
 
     public Triplet<LinFloat64Vector3D> GetPointsTriplet()
     {
-        var quaternion = LinUnitBasisVector3D.PositiveZ.CreateAxisToVectorRotationQuaternion(
+        var quaternion = LinBasisVector3D.Pz.VectorToVectorRotationQuaternion(
             Normal.ToUnitLinVector3D()
         );
 
@@ -305,22 +306,22 @@ public sealed class GrVisualBivector3D :
             VectorStyle,
             point1,
             point2 - point1,
-            AnimationSpecs
+            SamplingSpecs
         );
 
         vector.Visibility = Visibility;
 
-        if (AnimationSpecs.IsStatic) return vector;
+        if (SamplingSpecs.IsStatic) return vector;
         
         vector.AnimatedVisibility = AnimatedVisibility;
 
         vector.AnimatedOrigin =
-            AnimationSpecs.CreateAnimatedVector3D(
+            SamplingSpecs.CreateAnimatedVector3D(
                 t => GetPosition(t, LinFloat64DirectedAngle.Angle240)
             );
 
         vector.AnimatedDirection =
-            AnimationSpecs.CreateAnimatedVector3D(
+            SamplingSpecs.CreateAnimatedVector3D(
                 t => GetDirection(t, LinFloat64DirectedAngle.Angle240, LinFloat64DirectedAngle.Angle300)
             );
         
@@ -344,22 +345,22 @@ public sealed class GrVisualBivector3D :
             VectorStyle,
             point1,
             point2 - point1,
-            AnimationSpecs
+            SamplingSpecs
         );
 
         vector.Visibility = Visibility;
         
-        if (AnimationSpecs.IsStatic) return vector;
+        if (SamplingSpecs.IsStatic) return vector;
         
         vector.AnimatedVisibility = AnimatedVisibility;
 
         vector.AnimatedOrigin =
-            AnimationSpecs.CreateAnimatedVector3D(
+            SamplingSpecs.CreateAnimatedVector3D(
                 t => GetPosition(t, LinFloat64DirectedAngle.Angle0)
             );
 
         vector.AnimatedDirection =
-            AnimationSpecs.CreateAnimatedVector3D(
+            SamplingSpecs.CreateAnimatedVector3D(
                 t => GetDirection(t, LinFloat64DirectedAngle.Angle0, LinFloat64DirectedAngle.Angle60)
             );
         
@@ -383,22 +384,22 @@ public sealed class GrVisualBivector3D :
             VectorStyle,
             point1,
             point2 - point1,
-            AnimationSpecs
+            SamplingSpecs
         );
         
         vector.Visibility = Visibility;
 
-        if (AnimationSpecs.IsStatic) return vector;
+        if (SamplingSpecs.IsStatic) return vector;
         
         vector.AnimatedVisibility = AnimatedVisibility;
 
         vector.AnimatedOrigin =
-            AnimationSpecs.CreateAnimatedVector3D(
+            SamplingSpecs.CreateAnimatedVector3D(
                 t => GetPosition(t, LinFloat64DirectedAngle.Angle120)
             );
 
         vector.AnimatedDirection =
-            AnimationSpecs.CreateAnimatedVector3D(
+            SamplingSpecs.CreateAnimatedVector3D(
                 t => GetDirection(t, LinFloat64DirectedAngle.Angle120, LinFloat64DirectedAngle.Angle180)
             );
         
@@ -418,12 +419,12 @@ public sealed class GrVisualBivector3D :
             Normal,
             Radius,
             false,
-            AnimationSpecs
+            SamplingSpecs
         );
         
         circle.Visibility = Visibility;
 
-        if (AnimationSpecs.IsStatic) return circle;
+        if (SamplingSpecs.IsStatic) return circle;
         
         circle.AnimatedVisibility = AnimatedVisibility;
 
@@ -446,19 +447,19 @@ public sealed class GrVisualBivector3D :
             VectorStyle,
             Center,
             point2,
-            AnimationSpecs
+            SamplingSpecs
         );
         
         lineSegment.Visibility = Visibility;
 
-        if (AnimationSpecs.IsStatic) return lineSegment;
+        if (SamplingSpecs.IsStatic) return lineSegment;
 
         lineSegment.AnimatedVisibility = AnimatedVisibility;
 
         lineSegment.AnimatedPosition1 = AnimatedCenter;
 
         lineSegment.AnimatedPosition2 =
-            AnimationSpecs.CreateAnimatedVector3D(
+            SamplingSpecs.CreateAnimatedVector3D(
                 t => GetPosition(t, LinFloat64DirectedAngle.Angle240)
             );
         
@@ -479,20 +480,20 @@ public sealed class GrVisualBivector3D :
             VectorStyle,
             Center,
             point2,
-            AnimationSpecs
+            SamplingSpecs
         );
 
         
         lineSegment.Visibility = Visibility;
 
-        if (AnimationSpecs.IsStatic) return lineSegment;
+        if (SamplingSpecs.IsStatic) return lineSegment;
 
         lineSegment.AnimatedVisibility = AnimatedVisibility;
 
         lineSegment.AnimatedPosition1 = AnimatedCenter;
 
         lineSegment.AnimatedPosition2 =
-            AnimationSpecs.CreateAnimatedVector3D(
+            SamplingSpecs.CreateAnimatedVector3D(
                 t => GetPosition(t, LinFloat64DirectedAngle.Angle0)
             );
         
@@ -513,20 +514,20 @@ public sealed class GrVisualBivector3D :
             VectorStyle,
             Center,
             point2,
-            AnimationSpecs
+            SamplingSpecs
         );
 
         
         lineSegment.Visibility = Visibility;
 
-        if (AnimationSpecs.IsStatic) return lineSegment;
+        if (SamplingSpecs.IsStatic) return lineSegment;
 
         lineSegment.AnimatedVisibility = AnimatedVisibility;
 
         lineSegment.AnimatedPosition1 = AnimatedCenter;
 
         lineSegment.AnimatedPosition2 =
-            AnimationSpecs.CreateAnimatedVector3D(
+            SamplingSpecs.CreateAnimatedVector3D(
                 t => GetPosition(t, LinFloat64DirectedAngle.Angle120)
             );
         
@@ -567,21 +568,21 @@ public sealed class GrVisualBivector3D :
 
     public LinFloat64Vector3D GetCenter(double time)
     {
-        return AnimationSpecs.IsStatic || AnimatedCenter is null
+        return SamplingSpecs.IsStatic || AnimatedCenter is null
             ? Center.ToLinVector3D()
             : AnimatedCenter.GetPoint(time);
     }
 
     public LinFloat64Vector3D GetNormal(double time)
     {
-        return AnimationSpecs.IsStatic || AnimatedNormal is null
+        return SamplingSpecs.IsStatic || AnimatedNormal is null
             ? Normal
             : AnimatedNormal.GetPoint(time).ToUnitLinVector3D();
     }
 
     public double GetRadius(double time)
     {
-        return AnimationSpecs.IsStatic || AnimatedRadius is null
+        return SamplingSpecs.IsStatic || AnimatedRadius is null
             ? Radius
             : AnimatedRadius.GetValue(time);
     }
@@ -592,7 +593,7 @@ public sealed class GrVisualBivector3D :
 
         foreach (var frameIndex in GetValidFrameIndexSet())
         {
-            var time = (double)frameIndex / AnimationSpecs.FrameRate;
+            var time = (double)frameIndex / SamplingSpecs.SamplingRate;
 
             yield return new KeyFrameRecord(
                 frameIndex,

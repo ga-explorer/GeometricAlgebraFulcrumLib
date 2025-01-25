@@ -8,15 +8,15 @@ namespace GeometricAlgebraFulcrumLib.Algebra.ComplexAlgebra;
 public static class Float64ComplexUtils
 {
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static bool IsNearReal(this Complex c, double epsilon = 1e-12d)
+    public static bool IsNearReal(this Complex c, double zeroEpsilon = Float64Utils.ZeroEpsilon)
     {
-        return c.Imaginary.IsNearZero(epsilon);
+        return c.Imaginary.IsNearZero(zeroEpsilon);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static bool IsNearImaginary(this Complex c, double epsilon = 1e-12d)
+    public static bool IsNearImaginary(this Complex c, double zeroEpsilon = Float64Utils.ZeroEpsilon)
     {
-        return c.Real.IsNearZero(epsilon);
+        return c.Real.IsNearZero(zeroEpsilon);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -27,35 +27,35 @@ public static class Float64ComplexUtils
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static bool IsNearZero(this Complex c, double epsilon = 1e-12d)
+    public static bool IsNearZero(this Complex c, double zeroEpsilon = Float64Utils.ZeroEpsilon)
     {
-        return (c.Real.Square() + c.Imaginary.Square()).IsNearZero(epsilon);
+        return (c.Real.Square() + c.Imaginary.Square()).IsNearZero(zeroEpsilon);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static bool IsNearOne(this Complex c, double epsilon = 1e-12d)
+    public static bool IsNearOne(this Complex c, double zeroEpsilon = Float64Utils.ZeroEpsilon)
     {
-        return ((c.Real - 1d).Square() + c.Imaginary.Square()).IsNearZero(epsilon);
+        return ((c.Real - 1d).Square() + c.Imaginary.Square()).IsNearZero(zeroEpsilon);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static bool IsNearMinusOne(this Complex c, double epsilon = 1e-12d)
+    public static bool IsNearMinusOne(this Complex c, double zeroEpsilon = Float64Utils.ZeroEpsilon)
     {
-        return ((c.Real + 1d).Square() + c.Imaginary.Square()).IsNearZero(epsilon);
+        return ((c.Real + 1d).Square() + c.Imaginary.Square()).IsNearZero(zeroEpsilon);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static bool IsNearConjugateTo(this Complex c1, Complex c2, double epsilon = 1e-12)
+    public static bool IsNearConjugateTo(this Complex c1, Complex c2, double zeroEpsilon = Float64Utils.ZeroEpsilon)
     {
-        return (c1.Real - c2.Real).IsNearZero(epsilon) &&
-               (c1.Imaginary + c2.Imaginary).IsNearZero(epsilon);
+        return (c1.Real - c2.Real).IsNearZero(zeroEpsilon) &&
+               (c1.Imaginary + c2.Imaginary).IsNearZero(zeroEpsilon);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static bool IsNearConjugateTo(this Complex c1, double c2Real, double c2Imaginary, double epsilon = 1e-12)
+    public static bool IsNearConjugateTo(this Complex c1, double c2Real, double c2Imaginary, double zeroEpsilon = Float64Utils.ZeroEpsilon)
     {
-        return (c1.Real - c2Real).IsNearZero(epsilon) &&
-               (c1.Imaginary + c2Imaginary).IsNearZero(epsilon);
+        return (c1.Real - c2Real).IsNearZero(zeroEpsilon) &&
+               (c1.Imaginary + c2Imaginary).IsNearZero(zeroEpsilon);
     }
 
 

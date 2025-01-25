@@ -1,5 +1,6 @@
 ﻿using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Angles;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space3D;
+using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.SubSpaces.Space3D;
 
@@ -16,7 +17,7 @@ public interface ILinFloat64Subspace3D :
 
     LinFloat64PolarAngle GetVectorProjectionPolarAngle(ILinFloat64Vector3D vector);
 
-    bool NearContains(ILinFloat64Vector3D vector, double epsilon = 1e-12);
+    bool NearContains(ILinFloat64Vector3D vector, double zeroEpsilon = Float64Utils.ZeroEpsilon);
 
-    bool NearContains(ILinFloat64Subspace3D subspace, double epsilon = 1e-12);
+    bool NearContains(ILinFloat64Subspace3D subspace, double zeroEpsilon = Float64Utils.ZeroEpsilon);
 }

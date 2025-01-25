@@ -1,9 +1,9 @@
 ﻿using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space2D;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.BasicShapes.Lines;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.BasicShapes.Lines.Immutable;
+using GeometricAlgebraFulcrumLib.Modeling.Geometry.BasicShapes.Lines.Space2D.Float64;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.Borders;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.Borders.Space2D.Immutable;
+using GeometricAlgebraFulcrumLib.Modeling.Geometry.Borders.Space2D.Float64;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Accelerators;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Accelerators.BIH;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Accelerators.BIH.Space2D.Traversal;
@@ -26,11 +26,11 @@ public static class Sample3
     {
         var randGen = new Random(10);
 
-        var boundingBox = BoundingBox2D.Create(-160, -120, 160, 120);
+        var boundingBox = Float64BoundingBox2D.Create(-160, -120, 160, 120);
         var divisions = boundingBox.GetSubdivisions(8, 8);
 
         //Generate one object per bounding box division
-        var objectsList = new List<LineSegment2D>();
+        var objectsList = new List<Float64LineSegment2D>();
         for (var ix = 0; ix < divisions.GetLength(0) - 1; ix++)
             for (var iy = 0; iy < divisions.GetLength(1) - 1; iy++)
             {
@@ -43,7 +43,7 @@ public static class Sample3
                 var p1 = randGen.GetPointInside(divisions[ix, iy]);
                 var p2 = randGen.GetPointInside(divisions[ix + 1, iy + 1]);
 
-                var lineSegment = LineSegment2D.Create(p1, p2);
+                var lineSegment = Float64LineSegment2D.Create(p1, p2);
 
                 objectsList.Add(lineSegment);
             }
@@ -58,7 +58,7 @@ public static class Sample3
 
         //Generate 5 random lines and intersect each with geometric objects
         var linesData =
-            new List<Tuple<Line2D, double[], AccBihLineTraversalState2D[]>>();
+            new List<Tuple<Float64Line2D, double[], AccBihLineTraversalState2D[]>>();
 
         for (var i = 0; i < 5; i++)
         {
@@ -67,7 +67,7 @@ public static class Sample3
 
             //if (i != 2) continue;
 
-            var line1 = Line2D.Create(lineOrigin, lineDirection);
+            var line1 = Float64Line2D.Create(lineOrigin, lineDirection);
 
             intersector.SetLine(lineOrigin, lineDirection);
 

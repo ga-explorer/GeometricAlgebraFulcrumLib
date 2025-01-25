@@ -64,7 +64,7 @@ public class DfChebyshevSignalInterpolator :
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    private DfChebyshevSignalInterpolator(Float64SignalSamplingSpecs samplingSpecs, int sampleIndex1, int sampleIndex2, DfChebyshevSignalInterpolatorOptions options, DfChebyshevPolynomial polynomial)
+    private DfChebyshevSignalInterpolator(Float64SamplingSpecs samplingSpecs, int sampleIndex1, int sampleIndex2, DfChebyshevSignalInterpolatorOptions options, DfChebyshevPolynomial polynomial)
         : base(samplingSpecs, sampleIndex1, sampleIndex2)
     {
         Options = options;

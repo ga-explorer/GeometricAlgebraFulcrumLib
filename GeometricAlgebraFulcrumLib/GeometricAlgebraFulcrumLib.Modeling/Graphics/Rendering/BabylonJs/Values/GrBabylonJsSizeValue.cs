@@ -38,7 +38,7 @@ public sealed class GrBabylonJsSizeValue :
     }
 
 
-    public override string GetCode()
+    public override string GetAttributeValueCode()
     {
         return string.IsNullOrEmpty(ValueText) 
             ? Value.GetBabylonJsCode() 

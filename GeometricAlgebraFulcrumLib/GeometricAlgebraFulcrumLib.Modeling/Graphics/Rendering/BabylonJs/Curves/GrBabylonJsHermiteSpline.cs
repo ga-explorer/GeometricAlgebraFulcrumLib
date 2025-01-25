@@ -21,11 +21,11 @@ public sealed class GrBabylonJsHermiteSpline :
 
     protected override IEnumerable<string> GetConstructorArguments()
     {
-        yield return Point1.GetCode();
-        yield return Tangent1.GetCode();
-        yield return Point2.GetCode();
-        yield return Tangent2.GetCode();
-        yield return PointNumber.GetCode();
+        yield return Point1.GetAttributeValueCode();
+        yield return Tangent1.GetAttributeValueCode();
+        yield return Point2.GetAttributeValueCode();
+        yield return Tangent2.GetAttributeValueCode();
+        yield return PointNumber.GetAttributeValueCode();
     }
 
 

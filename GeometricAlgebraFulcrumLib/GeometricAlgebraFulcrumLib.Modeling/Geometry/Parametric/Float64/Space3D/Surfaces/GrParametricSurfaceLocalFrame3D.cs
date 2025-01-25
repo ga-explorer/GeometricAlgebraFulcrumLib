@@ -1,9 +1,9 @@
 ﻿using System.Diagnostics;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Frames.Space3D;
+using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space2D;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space3D;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Primitives.Vertices;
-using GeometricAlgebraFulcrumLib.Utilities.Structures.Basic;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Structures.Vertices;
 using SixLabors.ImageSharp;
 
@@ -40,7 +40,7 @@ public sealed record GrParametricSurfaceLocalFrame3D :
 
     public Color Color { get; set; }
 
-    public Pair<Float64Scalar> ParameterValue { get; }
+    public LinFloat64Vector2D ParameterValue { get; }
 
     public LinFloat64Normal3D Normal { get; }
 
@@ -59,7 +59,7 @@ public sealed record GrParametricSurfaceLocalFrame3D :
 
     internal GrParametricSurfaceLocalFrame3D(double parameterValue1, double parameterValue2, ILinFloat64Vector3D point, ILinFloat64Vector3D normal)
     {
-        ParameterValue = new Pair<Float64Scalar>(parameterValue1, parameterValue2);
+        ParameterValue = LinFloat64Vector2D.Create(parameterValue1, parameterValue2);
         Point = point.ToLinVector3D();
         Normal = new LinFloat64Normal3D(normal);
 
@@ -68,7 +68,7 @@ public sealed record GrParametricSurfaceLocalFrame3D :
 
     internal GrParametricSurfaceLocalFrame3D(IGraphicsParametricSurface3D surface, double parameterValue1, double parameterValue2)
     {
-        ParameterValue = new Pair<Float64Scalar>(parameterValue1, parameterValue2);
+        ParameterValue = LinFloat64Vector2D.Create(parameterValue1, parameterValue2);
         Point = surface.GetPoint(parameterValue1, parameterValue2);
         Normal = new LinFloat64Normal3D(
             surface.GetNormal(parameterValue1, parameterValue2).ToUnitLinVector3D()

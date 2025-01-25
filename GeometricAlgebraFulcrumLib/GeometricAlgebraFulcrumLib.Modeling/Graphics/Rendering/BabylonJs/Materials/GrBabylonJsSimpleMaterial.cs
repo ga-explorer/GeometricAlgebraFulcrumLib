@@ -8,50 +8,11 @@ namespace GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.BabylonJs.Mater
 public sealed class GrBabylonJsSimpleMaterial :
     GrBabylonJsMaterial
 {
-    public sealed class SimpleMaterialProperties :
-        MaterialProperties
-    {
-        public GrBabylonJsColor3Value? DiffuseColor
-        {
-            get => GetAttributeValueOrNull<GrBabylonJsColor3Value>("diffuseColor");
-            set => SetAttributeValue("diffuseColor", value);
-        }
-            
-        public GrBabylonJsTextureValue? DiffuseTexture
-        {
-            get => GetAttributeValueOrNull<GrBabylonJsTextureValue>("diffuseTexture");
-            set => SetAttributeValue("diffuseTexture", value);
-        }
-
-        public GrBabylonJsInt32Value? MaxSimultaneousLights
-        {
-            get => GetAttributeValueOrNull<GrBabylonJsInt32Value>("maxSimultaneousLights");
-            set => SetAttributeValue("maxSimultaneousLights", value);
-        }
-
-        public GrBabylonJsBooleanValue? DisableLighting
-        {
-            get => GetAttributeValueOrNull<GrBabylonJsBooleanValue>("disableLighting");
-            set => SetAttributeValue("disableLighting", value);
-        }
-
-
-        public SimpleMaterialProperties()
-        {
-        }
-
-        public SimpleMaterialProperties(SimpleMaterialProperties properties)
-        {
-            SetAttributeValues(properties);
-        }
-    }
-
-
     protected override string ConstructorName
         => "new BABYLON.SimpleMaterial";
 
-    public SimpleMaterialProperties Properties { get; private set; }
-        = new SimpleMaterialProperties();
+    public GrBabylonJsSimpleMaterialProperties Properties { get; private set; }
+        = new GrBabylonJsSimpleMaterialProperties();
     
     public override GrBabylonJsObjectProperties ObjectProperties 
         => Properties;
@@ -68,9 +29,9 @@ public sealed class GrBabylonJsSimpleMaterial :
     }
 
 
-    public GrBabylonJsSimpleMaterial SetProperties(SimpleMaterialProperties properties)
+    public GrBabylonJsSimpleMaterial SetProperties(GrBabylonJsSimpleMaterialProperties properties)
     {
-        Properties = new SimpleMaterialProperties(properties);
+        Properties = new GrBabylonJsSimpleMaterialProperties(properties);
 
         return this;
     }

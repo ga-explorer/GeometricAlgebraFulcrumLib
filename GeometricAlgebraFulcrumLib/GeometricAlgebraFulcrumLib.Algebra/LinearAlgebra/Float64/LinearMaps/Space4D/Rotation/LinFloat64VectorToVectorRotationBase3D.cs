@@ -45,9 +45,9 @@ public abstract class LinFloat64VectorToVectorRotationBase4D :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public override bool IsNearIdentity(double epsilon = 1e-12d)
+    public override bool IsNearIdentity(double zeroEpsilon = 1e-12d)
     {
-        return (AngleCos - 1d).IsNearZero(epsilon);
+        return (AngleCos - 1d).IsNearZero(zeroEpsilon);
     }
 
 

@@ -27,7 +27,21 @@ public static class WclColorUtils
             alpha
         );
     }
-        
+    
+    public static Color ZeroAlpha(this Color color)
+    {
+        var c = color.ToPixel<Rgba32>();
+
+        return Color.FromRgba(c.R, c.G, c.B, 0);
+    }
+    
+    public static Color FullAlpha(this Color color)
+    {
+        var c = color.ToPixel<Rgba32>();
+
+        return Color.FromRgba(c.R, c.G, c.B, 255);
+    }
+
     public static Color WithAlpha(this Color color, double alpha)
     {
         var c = color.ToPixel<Rgba32>();
@@ -54,6 +68,7 @@ public static class WclColorUtils
         var c = color.ToPixel<Rgba32>();
 
         return Color.FromRgba(c.R, c.G, c.B, (byte) (255 * alpha));
+        //return Color.FromRgba(c.R, c.G, c.B, (byte) (255 * 1));
     }
 
     public static Color SetAlpha(this Color color, double alpha)
@@ -61,6 +76,18 @@ public static class WclColorUtils
         var c = color.ToPixel<Rgba32>();
 
         return Color.FromRgba(c.R, c.G, c.B, (byte) (255 * alpha));
+    }
+    
+    public static Color ScaleRgbBy(this Color color, double scalingFactor)
+    {
+        var c = color.ToPixel<Rgba32>();
+
+        var r = (byte)double.Clamp(Math.Round(c.R * scalingFactor), 0, 255);
+        var g = (byte)double.Clamp(Math.Round(c.G * scalingFactor), 0, 255);
+        var b = (byte)double.Clamp(Math.Round(c.B * scalingFactor), 0, 255);
+        var a = c.A;
+
+        return Color.FromRgba(r, g, b, a);
     }
 
     public static Color ToImageSharpColor(this SKColor color)

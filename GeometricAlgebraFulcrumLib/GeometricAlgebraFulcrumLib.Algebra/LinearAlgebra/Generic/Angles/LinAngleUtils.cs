@@ -1676,7 +1676,7 @@ public static class LinAngleUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinVector2D<T> Rotate<T>(this LinAngle<T> angle, LinUnitBasisVector2D axis)
+    public static LinVector2D<T> Rotate<T>(this LinAngle<T> angle, LinBasisVector2D axis)
     {
         var (x, y) = axis.ToVector2D(angle.ScalarProcessor);
 

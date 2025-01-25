@@ -10,9 +10,9 @@ namespace GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.LinearMaps.Sp
 public sealed class LinFloat64AxisToAxisRotation4D :
     LinFloat64VectorToVectorRotationBase4D
 {
-    public LinUnitBasisVector4D SourceAxis { get; }
+    public LinBasisVector4D SourceAxis { get; }
 
-    public LinUnitBasisVector4D TargetAxis { get; }
+    public LinBasisVector4D TargetAxis { get; }
 
     public override LinFloat64Vector4D SourceVector { get; }
 
@@ -57,7 +57,7 @@ public sealed class LinFloat64AxisToAxisRotation4D :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public override bool IsNearIdentity(double epsilon = 1e-12d)
+    public override bool IsNearIdentity(double zeroEpsilon = 1e-12d)
     {
         return SourceAxis.GetIndex() == TargetAxis.GetIndex() &&
                SourceAxis.IsNegative() == TargetAxis.IsNegative();

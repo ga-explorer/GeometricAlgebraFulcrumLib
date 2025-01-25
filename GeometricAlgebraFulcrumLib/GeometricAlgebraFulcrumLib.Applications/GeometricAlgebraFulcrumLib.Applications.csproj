@@ -19,7 +19,6 @@
     <Folder Include="Electromagnetics\ImageMethod\" />
     <Folder Include="Geometry\PhCurves\" />
     <Folder Include="Geometry\Rotations\" />
-    <Folder Include="Graphics\" />
   </ItemGroup>
 
   <ItemGroup>
@@ -28,11 +27,11 @@
     <PackageReference Include="CSharpMath.SkiaSharp" Version="0.5.1" />
     <PackageReference Include="GeneticSharp" Version="3.1.4" />
     <PackageReference Include="GeneticSharp.Extensions" Version="3.1.4" />
-    <PackageReference Include="Selenium.Support" Version="4.25.0" />
-    <PackageReference Include="Selenium.WebDriver" Version="4.25.0" />
-    <PackageReference Include="Selenium.WebDriver.ChromeDriver" Version="130.0.6723.6900" />
-    <PackageReference Include="Svg.Model" Version="2.0.0.1" />
-    <PackageReference Include="Svg.Skia" Version="2.0.0.1" />
+    <PackageReference Include="Selenium.Support" Version="4.28.0" />
+    <PackageReference Include="Selenium.WebDriver" Version="4.28.0" />
+    <PackageReference Include="Selenium.WebDriver.ChromeDriver" Version="132.0.6834.11000" />
+    <PackageReference Include="Svg.Model" Version="2.0.0.4" />
+    <PackageReference Include="Svg.Skia" Version="2.0.0.4" />
   </ItemGroup>
 
 </Project>

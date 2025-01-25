@@ -3,6 +3,7 @@ using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space3D;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.Visuals.Space3D.Animations;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.Visuals.Space3D.Styles;
+using GeometricAlgebraFulcrumLib.Modeling.Signals;
 
 namespace GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.Visuals.Space3D.Surfaces;
 
@@ -29,7 +30,7 @@ public sealed class GrVisualSphereSurface3D :
             style,
             LinFloat64Vector3D.Zero, 
             radius,
-            GrVisualAnimationSpecs.Static
+            Float64SamplingSpecs.Static
         );
     }
         
@@ -40,27 +41,27 @@ public sealed class GrVisualSphereSurface3D :
             style,
             center,
             radius,
-            GrVisualAnimationSpecs.Static
+            Float64SamplingSpecs.Static
         );
     }
         
-    public static GrVisualSphereSurface3D Create(string name, GrVisualSurfaceStyle3D style, double radius, GrVisualAnimationSpecs animationSpecs) {
+    public static GrVisualSphereSurface3D Create(string name, GrVisualSurfaceStyle3D style, double radius, Float64SamplingSpecs samplingSpecs) {
         return new GrVisualSphereSurface3D(
             name,
             style,
             LinFloat64Vector3D.Zero, 
             radius,
-            animationSpecs
+            samplingSpecs
         );
     }
 
-    public static GrVisualSphereSurface3D Create(string name, GrVisualSurfaceStyle3D style, ILinFloat64Vector3D center, double radius, GrVisualAnimationSpecs animationSpecs) {
+    public static GrVisualSphereSurface3D Create(string name, GrVisualSurfaceStyle3D style, ILinFloat64Vector3D center, double radius, Float64SamplingSpecs samplingSpecs) {
         return new GrVisualSphereSurface3D(
             name,
             style,
             center,
             radius,
-            animationSpecs
+            samplingSpecs
         );
     }
         
@@ -71,7 +72,7 @@ public sealed class GrVisualSphereSurface3D :
             style,
             LinFloat64Vector3D.Zero, 
             1d,
-            radius.AnimationSpecs
+            radius.SamplingSpecs
         ).SetAnimatedRadius(radius);
     }
 
@@ -82,7 +83,7 @@ public sealed class GrVisualSphereSurface3D :
                 style,
                 LinFloat64Vector3D.Zero, 
                 1d,
-                center.AnimationSpecs
+                center.SamplingSpecs
             ).SetAnimatedCenter(center)
             .SetAnimatedRadius(radius);
     }
@@ -97,8 +98,8 @@ public sealed class GrVisualSphereSurface3D :
     public GrVisualAnimatedScalar? AnimatedRadius { get; set; }
 
 
-    private GrVisualSphereSurface3D(string name, GrVisualSurfaceStyle3D style, ILinFloat64Vector3D center, double radius, GrVisualAnimationSpecs animationSpecs) 
-        : base(name, style, animationSpecs)
+    private GrVisualSphereSurface3D(string name, GrVisualSurfaceStyle3D style, ILinFloat64Vector3D center, double radius, Float64SamplingSpecs samplingSpecs) 
+        : base(name, style, samplingSpecs)
     {
         Center = center;
         Radius = radius;
@@ -154,14 +155,14 @@ public sealed class GrVisualSphereSurface3D :
         
     public LinFloat64Vector3D GetCenter(double time)
     {
-        return AnimationSpecs.IsStatic || AnimatedCenter is null
+        return SamplingSpecs.IsStatic || AnimatedCenter is null
             ? Center.ToLinVector3D()
             : AnimatedCenter.GetPoint(time);
     }
         
     public double GetRadius(double time)
     {
-        return AnimationSpecs.IsStatic || AnimatedRadius is null
+        return SamplingSpecs.IsStatic || AnimatedRadius is null
             ? Radius
             : AnimatedRadius.GetValue(time);
     }
@@ -172,7 +173,7 @@ public sealed class GrVisualSphereSurface3D :
 
         foreach (var frameIndex in GetValidFrameIndexSet())
         {
-            var time = (double)frameIndex / AnimationSpecs.FrameRate;
+            var time = (double)frameIndex / SamplingSpecs.SamplingRate;
                 
             yield return new KeyFrameRecord(
                 frameIndex, 

@@ -1175,12 +1175,12 @@ public static class RotationSamples
 
         var axisArray = new[]
         {
-            LinUnitBasisVector3D.PositiveX,
-            LinUnitBasisVector3D.PositiveY,
-            LinUnitBasisVector3D.PositiveZ,
-            LinUnitBasisVector3D.NegativeX,
-            LinUnitBasisVector3D.NegativeY,
-            LinUnitBasisVector3D.NegativeZ
+            LinBasisVector3D.Px,
+            LinBasisVector3D.Py,
+            LinBasisVector3D.Pz,
+            LinBasisVector3D.Nx,
+            LinBasisVector3D.Ny,
+            LinBasisVector3D.Nz
         };
 
         for (var j = 0; j < 10; j++)
@@ -1268,12 +1268,12 @@ public static class RotationSamples
 
         var axisArray = new[]
         {
-            LinUnitBasisVector3D.PositiveX,
-            LinUnitBasisVector3D.PositiveY,
-            LinUnitBasisVector3D.PositiveZ,
-            LinUnitBasisVector3D.NegativeX,
-            LinUnitBasisVector3D.NegativeY,
-            LinUnitBasisVector3D.NegativeZ
+            LinBasisVector3D.Px,
+            LinBasisVector3D.Py,
+            LinBasisVector3D.Pz,
+            LinBasisVector3D.Nx,
+            LinBasisVector3D.Ny,
+            LinBasisVector3D.Nz
         };
 
         for (var j = 0; j < 10; j++)
@@ -1283,9 +1283,9 @@ public static class RotationSamples
 
             var uAxis = uAxisIndex switch
             {
-                0 => uAxisNegative ? LinUnitBasisVector3D.NegativeX : LinUnitBasisVector3D.PositiveX,
-                1 => uAxisNegative ? LinUnitBasisVector3D.NegativeY : LinUnitBasisVector3D.PositiveY,
-                2 => uAxisNegative ? LinUnitBasisVector3D.NegativeZ : LinUnitBasisVector3D.PositiveZ,
+                0 => uAxisNegative ? LinBasisVector3D.Nx : LinBasisVector3D.Px,
+                1 => uAxisNegative ? LinBasisVector3D.Ny : LinBasisVector3D.Py,
+                2 => uAxisNegative ? LinBasisVector3D.Nz : LinBasisVector3D.Pz,
                 _ => throw new NotImplementedException()
             };
 
@@ -1375,12 +1375,12 @@ public static class RotationSamples
 
         var axisArray = new[]
         {
-            LinUnitBasisVector3D.PositiveX,
-            LinUnitBasisVector3D.PositiveY,
-            LinUnitBasisVector3D.PositiveZ,
-            LinUnitBasisVector3D.NegativeX,
-            LinUnitBasisVector3D.NegativeY,
-            LinUnitBasisVector3D.NegativeZ
+            LinBasisVector3D.Px,
+            LinBasisVector3D.Py,
+            LinBasisVector3D.Pz,
+            LinBasisVector3D.Nx,
+            LinBasisVector3D.Ny,
+            LinBasisVector3D.Nz
         };
 
         for (var j = 0; j < 10; j++)
@@ -1393,9 +1393,9 @@ public static class RotationSamples
 
             var vAxis = vAxisIndex switch
             {
-                0 => vAxisNegative ? LinUnitBasisVector3D.NegativeX : LinUnitBasisVector3D.PositiveX,
-                1 => vAxisNegative ? LinUnitBasisVector3D.NegativeY : LinUnitBasisVector3D.PositiveY,
-                2 => vAxisNegative ? LinUnitBasisVector3D.NegativeZ : LinUnitBasisVector3D.PositiveZ,
+                0 => vAxisNegative ? LinBasisVector3D.Nx : LinBasisVector3D.Px,
+                1 => vAxisNegative ? LinBasisVector3D.Ny : LinBasisVector3D.Py,
+                2 => vAxisNegative ? LinBasisVector3D.Nz : LinBasisVector3D.Pz,
                 _ => throw new NotImplementedException()
             };
 
@@ -1482,21 +1482,21 @@ public static class RotationSamples
 
         var axisArray = new[]
         {
-            LinUnitBasisVector3D.PositiveX,
-            LinUnitBasisVector3D.PositiveY,
-            LinUnitBasisVector3D.PositiveZ,
-            LinUnitBasisVector3D.NegativeX,
-            LinUnitBasisVector3D.NegativeY,
-            LinUnitBasisVector3D.NegativeZ
+            LinBasisVector3D.Px,
+            LinBasisVector3D.Py,
+            LinBasisVector3D.Pz,
+            LinBasisVector3D.Nx,
+            LinBasisVector3D.Ny,
+            LinBasisVector3D.Nz
         };
 
         for (var uAxisIndex = 0; uAxisIndex < n; uAxisIndex++)
         {
             var uAxis = uAxisIndex switch
             {
-                0 => uAxisNegative ? LinUnitBasisVector3D.NegativeX : LinUnitBasisVector3D.PositiveX,
-                1 => uAxisNegative ? LinUnitBasisVector3D.NegativeY : LinUnitBasisVector3D.PositiveY,
-                2 => uAxisNegative ? LinUnitBasisVector3D.NegativeZ : LinUnitBasisVector3D.PositiveZ,
+                0 => uAxisNegative ? LinBasisVector3D.Nx : LinBasisVector3D.Px,
+                1 => uAxisNegative ? LinBasisVector3D.Ny : LinBasisVector3D.Py,
+                2 => uAxisNegative ? LinBasisVector3D.Nz : LinBasisVector3D.Pz,
                 _ => throw new NotImplementedException()
             };
 
@@ -1512,9 +1512,9 @@ public static class RotationSamples
 
                 var vAxis = vAxisIndex switch
                 {
-                    0 => vAxisNegative ? LinUnitBasisVector3D.NegativeX : LinUnitBasisVector3D.PositiveX,
-                    1 => vAxisNegative ? LinUnitBasisVector3D.NegativeY : LinUnitBasisVector3D.PositiveY,
-                    2 => vAxisNegative ? LinUnitBasisVector3D.NegativeZ : LinUnitBasisVector3D.PositiveZ,
+                    0 => vAxisNegative ? LinBasisVector3D.Nx : LinBasisVector3D.Px,
+                    1 => vAxisNegative ? LinBasisVector3D.Ny : LinBasisVector3D.Py,
+                    2 => vAxisNegative ? LinBasisVector3D.Nz : LinBasisVector3D.Pz,
                     _ => throw new NotImplementedException()
                 };
 

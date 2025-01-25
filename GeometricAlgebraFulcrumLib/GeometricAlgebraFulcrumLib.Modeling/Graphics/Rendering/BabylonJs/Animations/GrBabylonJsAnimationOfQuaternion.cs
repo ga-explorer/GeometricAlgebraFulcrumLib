@@ -20,11 +20,11 @@ public sealed class GrBabylonJsAnimationOfQuaternion :
             .IsConstant();
 
     
-    internal GrBabylonJsAnimationOfQuaternion(string constName, string targetPropertyName, GrBabylonJsAnimationSpecs animationSpecs, GrBabylonJsKeyFrameDictionaryCache keyFramesCache, int keyFramesCacheIndex)
+    internal GrBabylonJsAnimationOfQuaternion(string constName, string targetPropertyName, GrBabylonJsAnimationSpecs samplingSpecs, GrBabylonJsKeyFrameDictionaryCache keyFramesCache, int keyFramesCacheIndex)
         : base(
             constName, 
             targetPropertyName, 
-            animationSpecs, 
+            samplingSpecs, 
             keyFramesCache, 
             keyFramesCacheIndex
         )
@@ -36,10 +36,10 @@ public sealed class GrBabylonJsAnimationOfQuaternion :
     {
         yield return ConstName.DoubleQuote();
         yield return TargetPropertyName.DoubleQuote();
-        yield return AnimationSpecs.FrameRate.GetBabylonJsCode();
+        yield return SamplingSpecs.FrameRate.GetBabylonJsCode();
         yield return TargetPropertyDataType.GetBabylonJsCode();
-        yield return AnimationSpecs.LoopMode.GetBabylonJsCode();
-        yield return AnimationSpecs.EnableBlending.GetBabylonJsCode();
+        yield return SamplingSpecs.LoopMode.GetBabylonJsCode();
+        yield return SamplingSpecs.EnableBlending.GetBabylonJsCode();
     }
 
     public override JArray GetKeyFramesJson()

@@ -30,7 +30,7 @@ public abstract class GrKonvaJsObject :
         if (ObjectOptions is null)
             yield return "{}";
         else
-            yield return ObjectOptions.GetCode();
+            yield return ObjectOptions.GetAttributeSetCode();
     }
 
     public string GetConstructorCode()
@@ -49,11 +49,11 @@ public abstract class GrKonvaJsObject :
             return string.Empty;
 
         return string.IsNullOrEmpty(ConstName)
-            ? ObjectProperties.GetCode()
+            ? ObjectProperties.GetAttributeSetCode()
             : ObjectProperties.GetCode(ConstName);
     }
 
-    public abstract string GetCode();
+    public abstract string GetKonvaJsCode();
     //public virtual string GetCode()
     //{
     //    var composer = new StringBuilder();
@@ -78,7 +78,7 @@ public abstract class GrKonvaJsObject :
     public override string ToString()
     {
         return string.IsNullOrEmpty(ConstName)
-            ? GetCode() 
+            ? GetKonvaJsCode() 
             : ConstName;
     }
 }

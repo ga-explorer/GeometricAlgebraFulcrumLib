@@ -20,7 +20,7 @@ public sealed class TjMatrix3 :
 
     }
 
-    public TjMatrix3(IAffineMap2D affineMap)
+    public TjMatrix3(IFloat64AffineMap2D affineMap)
     {
         MatrixValue = affineMap.GetArray2D();
     }
@@ -75,7 +75,7 @@ public sealed class TjMatrix4 :
         MatrixValue = matrixValue;
     }
 
-    public TjMatrix4(IAffineMap3D affineMap)
+    public TjMatrix4(IFloat64AffineMap3D affineMap)
     {
         MatrixValue = affineMap.GetMatrix4x4();
     }

@@ -9,21 +9,11 @@ namespace GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.BabylonJs.Mater
 public sealed class GrBabylonJsOcclusionMaterial :
     GrBabylonJsMaterial
 {
-    public sealed class OcclusionMaterialProperties :
-        MaterialProperties
-    {
-        
-        
-
-        
-    }
-
-
     protected override string ConstructorName
         => "new BABYLON.OcclusionMaterial";
 
-    public OcclusionMaterialProperties? Properties { get; private set; }
-        = new OcclusionMaterialProperties();
+    public GrBabylonJsOcclusionMaterialProperties? Properties { get; private set; }
+        = new GrBabylonJsOcclusionMaterialProperties();
     
     public override GrBabylonJsObjectProperties? ObjectProperties 
         => Properties;
@@ -40,7 +30,7 @@ public sealed class GrBabylonJsOcclusionMaterial :
     }
 
 
-    public GrBabylonJsOcclusionMaterial SetProperties([NotNull] OcclusionMaterialProperties? properties)
+    public GrBabylonJsOcclusionMaterial SetProperties([NotNull] GrBabylonJsOcclusionMaterialProperties? properties)
     {
         Properties = properties;
 

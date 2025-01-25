@@ -1,5 +1,4 @@
-﻿using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.KonvaJs.Values;
-using GeometricAlgebraFulcrumLib.Utilities.Text;
+﻿using GeometricAlgebraFulcrumLib.Utilities.Text;
 
 namespace GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.KonvaJs.Shapes;
 
@@ -9,46 +8,12 @@ namespace GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.KonvaJs.Shapes;
 public class GrKonvaJsPath :
     GrKonvaJsShapeBase
 {
-    public class PathOptions :
-        GrKonvaJsShapeBaseOptions
-    {
-        public GrKonvaJsPathDataValue? Data
-        {
-            get => GetAttributeValueOrNull<GrKonvaJsPathDataValue>("Data");
-            set => SetAttributeValue("Data", value);
-        }
-        
-
-        public PathOptions()
-        {
-        }
-
-        public PathOptions(PathOptions options)
-        {
-            SetAttributeValues(options);
-        }
-    }
-
-    public class PathProperties :
-        GrKonvaJsShapeBaseProperties
-    {
-        public GrKonvaJsPathDataValue? Data
-        {
-            get => GetAttributeValueOrNull<GrKonvaJsPathDataValue>("Data");
-            set => SetAttributeValue("Data", value);
-        }
-
-
-        
-    }
-
-    
     protected override string ConstructorName
         => "new Konva.Path";
 
-    public PathOptions Options { get; private set; }
+    public GrKonvaJsPathOptions Options { get; private set; }
 
-    public PathProperties Properties { get; private set; }
+    public GrKonvaJsPathProperties Properties { get; private set; }
 
     public override GrKonvaJsObjectOptions ObjectOptions
         => Options;
@@ -60,19 +25,19 @@ public class GrKonvaJsPath :
     public GrKonvaJsPath(string constName) 
         : base(constName)
     {
-        Options = new PathOptions
+        Options = new GrKonvaJsPathOptions
         {
             Id = NodeId.SingleQuote(),
             Name = ConstName.SingleQuote()
         };
 
-        Properties = new PathProperties();
+        Properties = new GrKonvaJsPathProperties();
     }
     
 
-    public GrKonvaJsPath SetOptions(PathOptions options)
+    public GrKonvaJsPath SetOptions(GrKonvaJsPathOptions options)
     {
-        Options = new PathOptions(options)
+        Options = new GrKonvaJsPathOptions(options)
         {
             Id = NodeId.SingleQuote(),
             Name = ConstName.SingleQuote()
@@ -81,7 +46,7 @@ public class GrKonvaJsPath :
         return this;
     }
 
-    public GrKonvaJsPath SetProperties(PathProperties properties)
+    public GrKonvaJsPath SetProperties(GrKonvaJsPathProperties properties)
     {
         Properties = properties;
 

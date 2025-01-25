@@ -88,12 +88,7 @@ public class RGaEuclideanGeometrySpace3D :
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public LinFloat64Quaternion DecodeQuaternion(RGaFloat64Multivector mv)
     {
-        return LinFloat64Quaternion.Create(
-            -mv[1, 2],
-            mv[0, 2],
-            -mv[0, 1],
-            mv.Scalar()
-        );
+        return LinFloat64Quaternion.Create(mv.Scalar(), -mv[1, 2], mv[0, 2], -mv[0, 1]);
     }
 
 

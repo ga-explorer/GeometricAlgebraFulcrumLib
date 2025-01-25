@@ -5,7 +5,7 @@ namespace GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.Xeogl.Geometry.
 public abstract class XeoglBuiltinSolidGeometry : XeoglGeometry
 {
     private GraphicsPrimitiveType3D _primitiveType 
-        = GraphicsPrimitiveType3D.Triangles;
+        = GraphicsPrimitiveType3D.TriangleList;
 
     public GraphicsPrimitiveType3D PrimitiveType
     {
@@ -14,9 +14,9 @@ public abstract class XeoglBuiltinSolidGeometry : XeoglGeometry
         {
             switch (_primitiveType)
             {
-                case GraphicsPrimitiveType3D.Points:
-                case GraphicsPrimitiveType3D.Lines:
-                case GraphicsPrimitiveType3D.Triangles:
+                case GraphicsPrimitiveType3D.PointList:
+                case GraphicsPrimitiveType3D.LineList:
+                case GraphicsPrimitiveType3D.TriangleList:
                     _primitiveType = value;
                     return;
             }

@@ -631,21 +631,21 @@ public static class Float64VectorSignalUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Float64SignalSamplingSpecs GetSamplingSpecs(this XGaVector<Float64Signal> vectorSignal)
+    public static Float64SamplingSpecs GetSamplingSpecs(this XGaVector<Float64Signal> vectorSignal)
     {
         var sampleCount = vectorSignal.GetSampleCount();
         var samplingRate = vectorSignal.GetSamplingRate();
 
-        return new Float64SignalSamplingSpecs(sampleCount, samplingRate);
+        return Float64SamplingSpecs.CreateFromSamplingRate(sampleCount, samplingRate);
     }
         
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Float64SignalSamplingSpecs GetSamplingSpecs(this RGaVector<Float64Signal> vectorSignal)
+    public static Float64SamplingSpecs GetSamplingSpecs(this RGaVector<Float64Signal> vectorSignal)
     {
         var sampleCount = vectorSignal.GetSampleCount();
         var samplingRate = vectorSignal.GetSamplingRate();
 
-        return new Float64SignalSamplingSpecs(sampleCount, samplingRate);
+        return Float64SamplingSpecs.CreateFromSamplingRate(sampleCount, samplingRate);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -1272,7 +1272,7 @@ public static class Float64VectorSignalUtils
         var samplingRate = vectorSignal.GetSamplingRate();
         var vSpaceDimensions = vectorSignal.VSpaceDimensions;
         var spectrumArray = new ComplexSignalSpectrum[vSpaceDimensions];
-        var samplingSpecs = new Float64SignalSamplingSpecs(sampleCount, samplingRate);
+        var samplingSpecs = Float64SamplingSpecs.CreateFromSamplingRate(sampleCount, samplingRate);
 
         for (var i = 0; i < vSpaceDimensions; i++)
             spectrumArray[i] = new ComplexSignalSpectrum(samplingSpecs);
@@ -1289,7 +1289,7 @@ public static class Float64VectorSignalUtils
         var samplingRate = vectorSignal.GetSamplingRate();
         var vSpaceDimensions = vectorSignal.VSpaceDimensions;
         var spectrumArray = new ComplexSignalSpectrum[vSpaceDimensions];
-        var samplingSpecs = new Float64SignalSamplingSpecs(sampleCount, samplingRate);
+        var samplingSpecs = Float64SamplingSpecs.CreateFromSamplingRate(sampleCount, samplingRate);
 
         for (var i = 0; i < vSpaceDimensions; i++)
             spectrumArray[i] = new ComplexSignalSpectrum(samplingSpecs);

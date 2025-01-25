@@ -148,7 +148,7 @@ public static class WclHtmlImageUtils
             _ => throw new NotImplementedException()
         };
     }
-    
+
     public static IImageEncoder GetImageSharpEncoder(this WclHtmlImageMediaType mediaType)
     {
         return mediaType switch
@@ -384,7 +384,7 @@ public static class WclHtmlImageUtils
 
         return Convert.ToBase64String(binaryData, 0, binaryData.Length);
     }
-    
+
     public static string SvgCodeToBase64String(this string svgCode)
     {
         using var stream = new MemoryStream();
@@ -393,7 +393,7 @@ public static class WclHtmlImageUtils
         writer.Flush();
 
         return Convert.ToBase64String(
-            stream.GetBuffer(), 
+            stream.GetBuffer(),
             Base64FormattingOptions.None
         );
     }
@@ -406,7 +406,12 @@ public static class WclHtmlImageUtils
 
     public static string PngToHtmlDataUrlBase64(this Image image)
     {
-        var imageString = image.ImageToBase64String(new PngEncoder());
+        var imageString = image.ImageToBase64String(
+            new PngEncoder()
+            {
+                ColorType = PngColorType.RgbWithAlpha
+            }
+        );
 
         return @$"'data:image/png;base64,{imageString}'";
     }
@@ -429,16 +434,16 @@ public static class WclHtmlImageUtils
             svgCode = svgCode[svgCode.IndexOf("<svg", StringComparison.Ordinal)..];
 
         // soft validate
-        if (!svgCode.StartsWith("<svg") || !svgCode.EndsWith("svg>")) 
+        if (!svgCode.StartsWith("<svg") || !svgCode.EndsWith("svg>"))
             return string.Empty;
 
         // add namespace if necessary
-        if (!svgCode.Contains("http://www.w3.org/2000/svg")) 
+        if (!svgCode.Contains("http://www.w3.org/2000/svg"))
             svgCode = svgCode.RegExReplaceAll(
-                @"<svg", 
+                @"<svg",
                 @"<svg xmlns=""http://www.w3.org/2000/svg"""
             );
-        
+
         // remove comments
         svgCode = svgCode.RegExRemoveAll(
             @"<!--.{1,}-->",
@@ -486,7 +491,7 @@ public static class WclHtmlImageUtils
         svgCode = svgCode.Trim();
 
         // soft validate again
-        if (!(svgCode.StartsWith("<svg")) || !(svgCode.EndsWith("svg>"))) 
+        if (!(svgCode.StartsWith("<svg")) || !(svgCode.EndsWith("svg>")))
             return string.Empty;
 
         // replace ampersand
@@ -495,7 +500,7 @@ public static class WclHtmlImageUtils
             "&amp;",
             RegexOptions.ECMAScript
         );
-        
+
         // encode only unsafe symbols
         if (toHtmlSafeString)
             svgCode = svgCode.RegExReplaceAll(
@@ -507,13 +512,13 @@ public static class WclHtmlImageUtils
         return svgCode;
     }
 
-    public static string  SvgCodeToHtmlDataUrl(this string svgCode)
+    public static string SvgCodeToHtmlDataUrl(this string svgCode)
     {
         var svgDataString = OptimizeSvgCode(svgCode);
 
         return @$"data:image/svg+xml,${svgDataString}";
     }
-    
+
     public static string SvgCodeToPngHtmlDataUrlBase64(this string svgCode)
     {
         return PngToHtmlDataUrlBase64(svgCode.SvgCodeToPngImage());
@@ -526,7 +531,7 @@ public static class WclHtmlImageUtils
 
         return @$"'data:image/svg+xml;base64,{base64String}'";
     }
-    
+
     public static string SvgFileToHtmlDataUrl(this string filePath, bool useBase64 = false)
     {
         if (useBase64)
@@ -551,7 +556,7 @@ public static class WclHtmlImageUtils
 
         image.BackgroundColor = MagickColors.Transparent;
         //image.Format = MagickFormat.Png32;
-            
+
         return image;
     }
 
@@ -567,7 +572,7 @@ public static class WclHtmlImageUtils
 
         image.BackgroundColor = MagickColors.Transparent;
         //image.Format = MagickFormat.Png32;
-            
+
         return image.ToImageSharpPng();
     }
 
@@ -583,24 +588,24 @@ public static class WclHtmlImageUtils
 
         image.BackgroundColor = MagickColors.Transparent;
         //image.Format = MagickFormat.Png32;
-            
+
         image.Write(pngFilePath, MagickFormat.Png32);
     }
 
     public static Image SvgFileToPngImage(this string svgFilePath)
     {
         var image = new MagickImage(svgFilePath, MagickFormat.Svg);
-            
+
         image.BackgroundColor = MagickColors.Transparent;
         //image.Format = MagickFormat.Png32;
-            
+
         return image.ToImageSharpPng();
     }
 
     public static void SvgFileToPngFile(this string svgFilePath, string pngFilePath)
     {
         var image = new MagickImage(svgFilePath, MagickFormat.Svg);
-            
+
         image.BackgroundColor = MagickColors.Transparent;
         //image.Format = MagickFormat.Png32;
 

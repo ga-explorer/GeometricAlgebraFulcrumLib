@@ -2,11 +2,10 @@
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space3D;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.BasicShapes;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.BasicShapes.Lines;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.BasicShapes.Lines.Immutable;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.BasicShapes.Triangles;
+using GeometricAlgebraFulcrumLib.Modeling.Geometry.BasicShapes.Lines.Space3D.Float64;
+using GeometricAlgebraFulcrumLib.Modeling.Geometry.BasicShapes.Triangles.Space3D.Float64;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.Borders;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.Borders.Space3D;
+using GeometricAlgebraFulcrumLib.Modeling.Geometry.Borders.Space3D.Float64;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Accelerators.BIH;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Accelerators.BIH.Space3D;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Accelerators.BIH.Space3D.Traversal;
@@ -32,7 +31,7 @@ public class GcLineIntersector3D
             (d1 >= 0 && d2 >= 0 && d3 >= 0 && dSum > 0);
     }
 
-    public static bool TestIntersection(LineTraversalData3D lineData, IBoundingBox3D boundingBox)
+    public static bool TestIntersection(LineTraversalData3D lineData, IFloat64BoundingBox3D boundingBox)
     {
         var corners = new[]
         {
@@ -58,7 +57,7 @@ public class GcLineIntersector3D
         return true;
     }
 
-    public static Tuple<bool, double, double> ComputeIntersections(LineTraversalData3D lineData, IBoundingBox3D boundingBox)
+    public static Tuple<bool, double, double> ComputeIntersections(LineTraversalData3D lineData, IFloat64BoundingBox3D boundingBox)
     {
         var corners = new[]
         {
@@ -92,7 +91,7 @@ public class GcLineIntersector3D
         = Enumerable.Empty<AccBihLineTraversalState3D>();
 
 
-    public Line3D Line { get; private set; }
+    public Float64Line3D Line { get; private set; }
 
 
     /// <summary>
@@ -103,9 +102,9 @@ public class GcLineIntersector3D
     /// </summary>
     /// <param name="lineSegment"></param>
     /// <returns></returns>
-    public GcLineIntersector3D SetLineAsLineSegment(ILineSegment3D lineSegment)
+    public GcLineIntersector3D SetLineAsLineSegment(IFloat64LineSegment3D lineSegment)
     {
-        Line = new Line3D(
+        Line = new Float64Line3D(
             lineSegment.Point1X,
             lineSegment.Point1Y,
             lineSegment.Point1Z,
@@ -119,7 +118,7 @@ public class GcLineIntersector3D
 
     public GcLineIntersector3D SetLineAsLineSegment(ILinFloat64Vector3D point1, ILinFloat64Vector3D point2)
     {
-        Line = new Line3D(
+        Line = new Float64Line3D(
             point1.X,
             point1.Y,
             point1.Z,
@@ -133,7 +132,7 @@ public class GcLineIntersector3D
 
     public GcLineIntersector3D SetLine(ILinFloat64Vector3D lineOrigin, ILinFloat64Vector3D lineDirection)
     {
-        Line = new Line3D(
+        Line = new Float64Line3D(
             lineOrigin.X,
             lineOrigin.Y,
             lineOrigin.Z,
@@ -145,7 +144,7 @@ public class GcLineIntersector3D
         return this;
     }
 
-    public GcLineIntersector3D SetLine(ILine3D line)
+    public GcLineIntersector3D SetLine(IFloat64Line3D line)
     {
         Line = line.ToLine();
 
@@ -159,7 +158,7 @@ public class GcLineIntersector3D
     /// </summary>
     /// <param name="triangle"></param>
     /// <returns></returns>
-    public bool TestIntersection(ITriangle3D triangle)
+    public bool TestIntersection(IFloat64Triangle3D triangle)
     {
         if (!triangle.IntersectionTestsEnabled)
             return false;
@@ -499,7 +498,7 @@ public class GcLineIntersector3D
         return true;
     }
 
-    public Tuple<bool, double> ComputeIntersection(ITriangle3D triangle)
+    public Tuple<bool, double> ComputeIntersection(IFloat64Triangle3D triangle)
     {
         if (!triangle.IntersectionTestsEnabled)
             return IntersectionUtils.NoIntersection;
@@ -943,7 +942,7 @@ public class GcLineIntersector3D
         return new Tuple<bool, double>(true, t);
     }
 
-    public Tuple<bool, double> ComputeIntersection(ITriangle3D triangle, double lineParamMinValue, double lineParamMaxValue)
+    public Tuple<bool, double> ComputeIntersection(IFloat64Triangle3D triangle, double lineParamMinValue, double lineParamMaxValue)
     {
         if (!triangle.IntersectionTestsEnabled)
             return IntersectionUtils.NoIntersection;
@@ -1400,29 +1399,29 @@ public class GcLineIntersector3D
     /// </summary>
     /// <param name="trianglesList"></param>
     /// <returns></returns>
-    public bool TestIntersection(IEnumerable<ITriangle3D> trianglesList)
+    public bool TestIntersection(IEnumerable<IFloat64Triangle3D> trianglesList)
     {
         return trianglesList.Any(TestIntersection);
     }
 
-    public IEnumerable<Tuple<double, ITriangle3D>> ComputeIntersections(IEnumerable<ITriangle3D> trianglesList)
+    public IEnumerable<Tuple<double, IFloat64Triangle3D>> ComputeIntersections(IEnumerable<IFloat64Triangle3D> trianglesList)
     {
         foreach (var triangle in trianglesList)
         {
             var result = ComputeIntersection(triangle);
 
             if (result.Item1)
-                yield return new Tuple<double, ITriangle3D>(
+                yield return new Tuple<double, IFloat64Triangle3D>(
                     result.Item2, triangle
                 );
         }
     }
 
-    public Tuple<bool, double, ITriangle3D> ComputeFirstIntersection(IEnumerable<ITriangle3D> trianglesList)
+    public Tuple<bool, double, IFloat64Triangle3D> ComputeFirstIntersection(IEnumerable<IFloat64Triangle3D> trianglesList)
     {
         var hasIntersection = false;
         var tValue = double.PositiveInfinity;
-        ITriangle3D hitLineSegment = null;
+        IFloat64Triangle3D hitLineSegment = null;
 
         foreach (var triangle in trianglesList)
         {
@@ -1436,18 +1435,18 @@ public class GcLineIntersector3D
             hitLineSegment = triangle;
         }
 
-        return new Tuple<bool, double, ITriangle3D>(
+        return new Tuple<bool, double, IFloat64Triangle3D>(
             hasIntersection,
             tValue,
             hitLineSegment
         );
     }
 
-    public Tuple<bool, double, ITriangle3D> ComputeLastIntersection(IEnumerable<ITriangle3D> trianglesList)
+    public Tuple<bool, double, IFloat64Triangle3D> ComputeLastIntersection(IEnumerable<IFloat64Triangle3D> trianglesList)
     {
         var hasIntersection = false;
         var tValue = double.NegativeInfinity;
-        ITriangle3D hitLineSegment = null;
+        IFloat64Triangle3D hitLineSegment = null;
 
         foreach (var triangle in trianglesList)
         {
@@ -1461,20 +1460,20 @@ public class GcLineIntersector3D
             hitLineSegment = triangle;
         }
 
-        return new Tuple<bool, double, ITriangle3D>(
+        return new Tuple<bool, double, IFloat64Triangle3D>(
             hasIntersection,
             tValue,
             hitLineSegment
         );
     }
 
-    public Tuple<bool, double, double, ITriangle3D, ITriangle3D> ComputeEdgeIntersections(IEnumerable<ITriangle3D> trianglesList)
+    public Tuple<bool, double, double, IFloat64Triangle3D, IFloat64Triangle3D> ComputeEdgeIntersections(IEnumerable<IFloat64Triangle3D> trianglesList)
     {
         var hasIntersection = false;
         var tValue1 = double.PositiveInfinity;
         var tValue2 = double.NegativeInfinity;
-        ITriangle3D hitLineSegment1 = null;
-        ITriangle3D hitLineSegment2 = null;
+        IFloat64Triangle3D hitLineSegment1 = null;
+        IFloat64Triangle3D hitLineSegment2 = null;
 
         foreach (var triangle in trianglesList)
         {
@@ -1510,7 +1509,7 @@ public class GcLineIntersector3D
 
 
     #region Line-Bounding Box Intersection
-    public bool TestIntersection(IBoundingBox3D boundingBox)
+    public bool TestIntersection(IFloat64BoundingBox3D boundingBox)
     {
         var tMin = double.NegativeInfinity;
         var tMax = double.PositiveInfinity;
@@ -1562,7 +1561,7 @@ public class GcLineIntersector3D
         return true;
     }
 
-    public Tuple<bool, double, double> ComputeIntersections(IBoundingBox3D boundingBox)
+    public Tuple<bool, double, double> ComputeIntersections(IFloat64BoundingBox3D boundingBox)
     {
         var tMin = double.NegativeInfinity;
         var tMax = double.PositiveInfinity;
@@ -1615,7 +1614,7 @@ public class GcLineIntersector3D
     }
 
 
-    public bool TestIntersection(IEnumerable<IBoundingBox3D> boundingBoxesList)
+    public bool TestIntersection(IEnumerable<IFloat64BoundingBox3D> boundingBoxesList)
     {
         var lineData = Line.GetLineTraversalData();
 
@@ -1626,49 +1625,49 @@ public class GcLineIntersector3D
 
 
     #region Line-Acceleration Grid Intersection
-    public bool TestIntersection(IAccGrid3D<ITriangle3D> grid)
+    public bool TestIntersection(IAccGrid3D<IFloat64Triangle3D> grid)
     {
         return grid
             .GetLineTraverser(Line)
             .GetCells()
             .Where(cell => !ReferenceEquals(cell, null))
-            .Select(cell => TestIntersection((IEnumerable<ITriangle3D>)cell))
+            .Select(cell => TestIntersection((IEnumerable<IFloat64Triangle3D>)cell))
             .Any(v => v);
     }
 
-    public IEnumerable<Tuple<double, ITriangle3D>> ComputeIntersections(IAccGrid3D<ITriangle3D> grid)
+    public IEnumerable<Tuple<double, IFloat64Triangle3D>> ComputeIntersections(IAccGrid3D<IFloat64Triangle3D> grid)
     {
         var lineTraverser = AccGridLineTraverser3D.Create(grid, Line);
 
         foreach (var cell in lineTraverser.GetActiveCells())
         {
-            var tList = ComputeIntersections(cell.Cast<ITriangle3D>());
+            var tList = ComputeIntersections(cell.Cast<IFloat64Triangle3D>());
 
             foreach (var t in tList.Where(t => t.Item1 < lineTraverser.TNext))
                 yield return t;
         }
     }
 
-    public Tuple<bool, double, ITriangle3D> ComputeFirstIntersection(IAccGrid3D<ITriangle3D> grid)
+    public Tuple<bool, double, IFloat64Triangle3D> ComputeFirstIntersection(IAccGrid3D<IFloat64Triangle3D> grid)
     {
         var lineTraverser = AccGridLineTraverser3D.Create(grid, Line);
 
         foreach (var cell in lineTraverser.GetActiveCells())
         {
-            var t = ComputeFirstIntersection(cell.Cast<ITriangle3D>());
+            var t = ComputeFirstIntersection(cell.Cast<IFloat64Triangle3D>());
 
             if (t.Item1 && t.Item2 < lineTraverser.TNext)
                 return t;
         }
 
-        return new Tuple<bool, double, ITriangle3D>(false, 0, null);
+        return new Tuple<bool, double, IFloat64Triangle3D>(false, 0, null);
     }
 
-    public Tuple<bool, double, ITriangle3D> ComputeLastIntersection(IAccGrid3D<ITriangle3D> grid)
+    public Tuple<bool, double, IFloat64Triangle3D> ComputeLastIntersection(IAccGrid3D<IFloat64Triangle3D> grid)
     {
         var oldLine = Line;
 
-        Line = new Line3D(
+        Line = new Float64Line3D(
             oldLine.OriginX + oldLine.DirectionX,
             oldLine.OriginY + oldLine.DirectionY,
             oldLine.OriginZ + oldLine.DirectionZ,
@@ -1683,16 +1682,16 @@ public class GcLineIntersector3D
 
         return result.Item1
             ? Tuple.Create(true, 1 - result.Item2, result.Item3)
-            : new Tuple<bool, double, ITriangle3D>(false, 0, null);
+            : new Tuple<bool, double, IFloat64Triangle3D>(false, 0, null);
     }
 
-    public Tuple<bool, double, double, ITriangle3D, ITriangle3D> ComputeEdgeIntersections(IAccGrid3D<ITriangle3D> grid)
+    public Tuple<bool, double, double, IFloat64Triangle3D, IFloat64Triangle3D> ComputeEdgeIntersections(IAccGrid3D<IFloat64Triangle3D> grid)
     {
         var first = ComputeFirstIntersection(grid);
         var last = ComputeLastIntersection(grid);
 
         if (first.Item1 && last.Item1)
-            return new Tuple<bool, double, double, ITriangle3D, ITriangle3D>(
+            return new Tuple<bool, double, double, IFloat64Triangle3D, IFloat64Triangle3D>(
                 true,
                 first.Item2,
                 last.Item2,
@@ -1701,7 +1700,7 @@ public class GcLineIntersector3D
             );
 
         if (first.Item1)
-            return new Tuple<bool, double, double, ITriangle3D, ITriangle3D>(
+            return new Tuple<bool, double, double, IFloat64Triangle3D, IFloat64Triangle3D>(
                 true,
                 first.Item2,
                 first.Item2,
@@ -1710,7 +1709,7 @@ public class GcLineIntersector3D
             );
 
         if (last.Item1)
-            return new Tuple<bool, double, double, ITriangle3D, ITriangle3D>(
+            return new Tuple<bool, double, double, IFloat64Triangle3D, IFloat64Triangle3D>(
                 true,
                 last.Item2,
                 last.Item2,
@@ -1718,7 +1717,7 @@ public class GcLineIntersector3D
                 last.Item3
             );
 
-        return new Tuple<bool, double, double, ITriangle3D, ITriangle3D>(
+        return new Tuple<bool, double, double, IFloat64Triangle3D, IFloat64Triangle3D>(
             false,
             0,
             0,
@@ -1730,7 +1729,7 @@ public class GcLineIntersector3D
 
 
     #region Line-Acceleration BIH Intersection
-    public bool TestIntersection(IAccBih3D<ITriangle3D> bih, bool storeTraversalStates = false)
+    public bool TestIntersection(IAccBih3D<IFloat64Triangle3D> bih, bool storeTraversalStates = false)
     {
         if (storeTraversalStates)
             BihLineTraversalStates =
@@ -1748,7 +1747,7 @@ public class GcLineIntersector3D
         var hasIntersection =
             lineTraverser
                 .GetLeafTraversalStates(storeTraversalStates)
-                .Any(state => TestIntersection((IEnumerable<ITriangle3D>)state.BihNode));
+                .Any(state => TestIntersection((IEnumerable<IFloat64Triangle3D>)state.BihNode));
 
         if (storeTraversalStates)
             BihLineTraversalStates =
@@ -1757,7 +1756,7 @@ public class GcLineIntersector3D
         return hasIntersection;
     }
 
-    public IEnumerable<Tuple<double, ITriangle3D>> ComputeIntersections(IAccBih3D<ITriangle3D> bih, bool storeTraversalStates = false)
+    public IEnumerable<Tuple<double, IFloat64Triangle3D>> ComputeIntersections(IAccBih3D<IFloat64Triangle3D> bih, bool storeTraversalStates = false)
     {
         if (storeTraversalStates)
             BihLineTraversalStates =
@@ -1775,7 +1774,7 @@ public class GcLineIntersector3D
 
         foreach (var state in lineTraverser.GetLeafTraversalStates(storeTraversalStates))
         {
-            var node = (IAccBihNode3D<ITriangle3D>)state.BihNode;
+            var node = (IAccBihNode3D<IFloat64Triangle3D>)state.BihNode;
             //var t0 = state.LineParameterMinValue;
             //var t1 = state.LineParameterMaxValue;
 
@@ -1786,7 +1785,7 @@ public class GcLineIntersector3D
                 var result = ComputeIntersection(triangle);//, t0, t1);
 
                 if (result.Item1)
-                    yield return new Tuple<double, ITriangle3D>(
+                    yield return new Tuple<double, IFloat64Triangle3D>(
                         result.Item2,
                         triangle
                     );
@@ -1798,7 +1797,7 @@ public class GcLineIntersector3D
                 lineTraverser.TraversalStates;
     }
 
-    public Tuple<bool, double, ITriangle3D> ComputeFirstIntersection(IAccBih3D<ITriangle3D> bih, bool storeTraversalStates = false)
+    public Tuple<bool, double, IFloat64Triangle3D> ComputeFirstIntersection(IAccBih3D<IFloat64Triangle3D> bih, bool storeTraversalStates = false)
     {
         if (storeTraversalStates)
             BihLineTraversalStates =
@@ -1808,18 +1807,18 @@ public class GcLineIntersector3D
         var lineLimits = ComputeIntersections(bih.BoundingBox);
 
         if (!lineLimits.Item1)
-            return new Tuple<bool, double, ITriangle3D>(false, 0, null);
+            return new Tuple<bool, double, IFloat64Triangle3D>(false, 0, null);
 
         //Traverse BIH nodes
         var lineTraverser =
             bih.GetLineTraverser(Line, lineLimits.Item2, lineLimits.Item3);
 
         var hasIntersection = false;
-        ITriangle3D hitLineSegment = null;
+        IFloat64Triangle3D hitLineSegment = null;
 
         foreach (var state in lineTraverser.GetLeafTraversalStates(storeTraversalStates))
         {
-            var node = (IAccBihNode3D<ITriangle3D>)state.BihNode;
+            var node = (IAccBihNode3D<IFloat64Triangle3D>)state.BihNode;
             //var t0 = state.LineParameterMinValue;
             //var t1 = state.LineParameterMaxValue;
 
@@ -1850,14 +1849,14 @@ public class GcLineIntersector3D
             BihLineTraversalStates =
                 lineTraverser.TraversalStates;
 
-        return new Tuple<bool, double, ITriangle3D>(
+        return new Tuple<bool, double, IFloat64Triangle3D>(
             hasIntersection,
             lineTraverser.LineParameterRange.MaxValue,
             hitLineSegment
         );
     }
 
-    public Tuple<bool, double, ITriangle3D> ComputeLastIntersection(IAccBih3D<ITriangle3D> bih, bool storeTraversalStates = false)
+    public Tuple<bool, double, IFloat64Triangle3D> ComputeLastIntersection(IAccBih3D<IFloat64Triangle3D> bih, bool storeTraversalStates = false)
     {
         if (storeTraversalStates)
             BihLineTraversalStates =
@@ -1867,18 +1866,18 @@ public class GcLineIntersector3D
         var lineLimits = ComputeIntersections(bih.BoundingBox);
 
         if (!lineLimits.Item1)
-            return new Tuple<bool, double, ITriangle3D>(false, 0, null);
+            return new Tuple<bool, double, IFloat64Triangle3D>(false, 0, null);
 
         //Traverse BIH nodes
         var lineTraverser =
             bih.GetLineTraverser(Line, lineLimits.Item2, lineLimits.Item3);
 
         var hasIntersection = false;
-        ITriangle3D hitLineSegment = null;
+        IFloat64Triangle3D hitLineSegment = null;
 
         foreach (var state in lineTraverser.GetLeafTraversalStates(storeTraversalStates))
         {
-            var node = (IAccBihNode3D<ITriangle3D>)state.BihNode;
+            var node = (IAccBihNode3D<IFloat64Triangle3D>)state.BihNode;
             //var t0 = state.LineParameterMinValue;
             //var t1 = state.LineParameterMaxValue;
 
@@ -1909,14 +1908,14 @@ public class GcLineIntersector3D
             BihLineTraversalStates =
                 lineTraverser.TraversalStates;
 
-        return new Tuple<bool, double, ITriangle3D>(
+        return new Tuple<bool, double, IFloat64Triangle3D>(
             hasIntersection,
             lineTraverser.LineParameterRange.MinValue,
             hitLineSegment
         );
     }
 
-    public Tuple<bool, double, double, ITriangle3D, ITriangle3D> ComputeEdgeIntersections(IAccBih3D<ITriangle3D> bih, bool storeTraversalStates = false)
+    public Tuple<bool, double, double, IFloat64Triangle3D, IFloat64Triangle3D> ComputeEdgeIntersections(IAccBih3D<IFloat64Triangle3D> bih, bool storeTraversalStates = false)
     {
         if (storeTraversalStates)
             BihLineTraversalStates =
@@ -1926,7 +1925,7 @@ public class GcLineIntersector3D
         var lineLimits = ComputeIntersections(bih.BoundingBox);
 
         if (!lineLimits.Item1)
-            return new Tuple<bool, double, double, ITriangle3D, ITriangle3D>(
+            return new Tuple<bool, double, double, IFloat64Triangle3D, IFloat64Triangle3D>(
                 false,
                 0, 0,
                 null, null
@@ -1935,8 +1934,8 @@ public class GcLineIntersector3D
         var hasIntersection = false;
         var tValue1 = double.PositiveInfinity;
         var tValue2 = double.NegativeInfinity;
-        ITriangle3D hitLineSegment1 = null;
-        ITriangle3D hitLineSegment2 = null;
+        IFloat64Triangle3D hitLineSegment1 = null;
+        IFloat64Triangle3D hitLineSegment2 = null;
 
         //Traverse BIH nodes
         var lineTraverser =
@@ -1944,7 +1943,7 @@ public class GcLineIntersector3D
 
         foreach (var state in lineTraverser.GetLeafTraversalStates(storeTraversalStates))
         {
-            var node = (IAccBihNode3D<ITriangle3D>)state.BihNode;
+            var node = (IAccBihNode3D<IFloat64Triangle3D>)state.BihNode;
             //var t0 = state.LineParameterMinValue;
             //var t1 = state.LineParameterMaxValue;
 
@@ -1976,7 +1975,7 @@ public class GcLineIntersector3D
             BihLineTraversalStates =
                 lineTraverser.TraversalStates;
 
-        return new Tuple<bool, double, double, ITriangle3D, ITriangle3D>(
+        return new Tuple<bool, double, double, IFloat64Triangle3D, IFloat64Triangle3D>(
             hasIntersection,
             tValue1,
             tValue2,
@@ -1987,78 +1986,78 @@ public class GcLineIntersector3D
     #endregion
 
 
-    public bool TestIntersection(IGeometricObjectsContainer3D<ITriangle3D> trianglesList)
+    public bool TestIntersection(IFloat64GeometricObjectsContainer3D<IFloat64Triangle3D> trianglesList)
     {
-        var grid = trianglesList as IAccGrid3D<ITriangle3D>;
+        var grid = trianglesList as IAccGrid3D<IFloat64Triangle3D>;
         if (!ReferenceEquals(grid, null))
             return TestIntersection(grid);
 
-        var bih = trianglesList as IAccBih3D<ITriangle3D>;
+        var bih = trianglesList as IAccBih3D<IFloat64Triangle3D>;
         if (!ReferenceEquals(bih, null))
             return TestIntersection(bih);
 
         return TestIntersection(
-            (IEnumerable<ITriangle3D>)trianglesList
+            (IEnumerable<IFloat64Triangle3D>)trianglesList
         );
     }
 
-    public IEnumerable<Tuple<double, ITriangle3D>> ComputeIntersections(IGeometricObjectsContainer3D<ITriangle3D> trianglesList)
+    public IEnumerable<Tuple<double, IFloat64Triangle3D>> ComputeIntersections(IFloat64GeometricObjectsContainer3D<IFloat64Triangle3D> trianglesList)
     {
-        var grid = trianglesList as IAccGrid3D<ITriangle3D>;
+        var grid = trianglesList as IAccGrid3D<IFloat64Triangle3D>;
         if (!ReferenceEquals(grid, null))
             return ComputeIntersections(grid);
 
-        var bih = trianglesList as IAccBih3D<ITriangle3D>;
+        var bih = trianglesList as IAccBih3D<IFloat64Triangle3D>;
         if (!ReferenceEquals(bih, null))
             return ComputeIntersections(bih);
 
         return ComputeIntersections(
-            (IEnumerable<ITriangle3D>)trianglesList
+            (IEnumerable<IFloat64Triangle3D>)trianglesList
         );
     }
 
-    public Tuple<bool, double, ITriangle3D> ComputeFirstIntersection(IGeometricObjectsContainer3D<ITriangle3D> trianglesList)
+    public Tuple<bool, double, IFloat64Triangle3D> ComputeFirstIntersection(IFloat64GeometricObjectsContainer3D<IFloat64Triangle3D> trianglesList)
     {
-        var grid = trianglesList as IAccGrid3D<ITriangle3D>;
+        var grid = trianglesList as IAccGrid3D<IFloat64Triangle3D>;
         if (!ReferenceEquals(grid, null))
             return ComputeFirstIntersection(grid);
 
-        var bih = trianglesList as IAccBih3D<ITriangle3D>;
+        var bih = trianglesList as IAccBih3D<IFloat64Triangle3D>;
         if (!ReferenceEquals(bih, null))
             return ComputeFirstIntersection(bih);
 
         return ComputeFirstIntersection(
-            (IEnumerable<ITriangle3D>)trianglesList
+            (IEnumerable<IFloat64Triangle3D>)trianglesList
         );
     }
 
-    public Tuple<bool, double, ITriangle3D> ComputeLastIntersection(IGeometricObjectsContainer3D<ITriangle3D> trianglesList)
+    public Tuple<bool, double, IFloat64Triangle3D> ComputeLastIntersection(IFloat64GeometricObjectsContainer3D<IFloat64Triangle3D> trianglesList)
     {
-        var grid = trianglesList as IAccGrid3D<ITriangle3D>;
+        var grid = trianglesList as IAccGrid3D<IFloat64Triangle3D>;
         if (!ReferenceEquals(grid, null))
             return ComputeLastIntersection(grid);
 
-        var bih = trianglesList as IAccBih3D<ITriangle3D>;
+        var bih = trianglesList as IAccBih3D<IFloat64Triangle3D>;
         if (!ReferenceEquals(bih, null))
             return ComputeLastIntersection(bih);
 
         return ComputeLastIntersection(
-            (IEnumerable<ITriangle3D>)trianglesList
+            (IEnumerable<IFloat64Triangle3D>)trianglesList
         );
     }
 
-    public Tuple<bool, double, double, ITriangle3D, ITriangle3D> ComputeEdgeIntersections(IGeometricObjectsContainer3D<ITriangle3D> trianglesList)
+    public Tuple<bool, double, double, IFloat64Triangle3D, IFloat64Triangle3D> ComputeEdgeIntersections(IFloat64GeometricObjectsContainer3D<IFloat64Triangle3D> trianglesList)
     {
-        var grid = trianglesList as IAccGrid3D<ITriangle3D>;
+        var grid = trianglesList as IAccGrid3D<IFloat64Triangle3D>;
         if (!ReferenceEquals(grid, null))
             return ComputeEdgeIntersections(grid);
 
-        var bih = trianglesList as IAccBih3D<ITriangle3D>;
+        var bih = trianglesList as IAccBih3D<IFloat64Triangle3D>;
         if (!ReferenceEquals(bih, null))
             return ComputeEdgeIntersections(bih);
 
         return ComputeEdgeIntersections(
-            (IEnumerable<ITriangle3D>)trianglesList
+            (IEnumerable<IFloat64Triangle3D>)trianglesList
         );
     }
 }

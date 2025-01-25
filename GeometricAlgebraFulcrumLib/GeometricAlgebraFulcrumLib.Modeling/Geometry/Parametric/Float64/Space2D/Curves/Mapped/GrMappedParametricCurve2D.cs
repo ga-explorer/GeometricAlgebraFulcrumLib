@@ -10,13 +10,13 @@ public class GrMappedParametricCurve2D :
 {
     public IFloat64ParametricCurve2D BaseCurve { get; }
 
-    public IAffineMap2D Map { get; }
+    public IFloat64AffineMap2D Map { get; }
 
     public Float64ScalarRange ParameterRange
         => BaseCurve.ParameterRange;
 
 
-    public GrMappedParametricCurve2D(IFloat64ParametricCurve2D baseCurve, IAffineMap2D map)
+    public GrMappedParametricCurve2D(IFloat64ParametricCurve2D baseCurve, IFloat64AffineMap2D map)
     {
         BaseCurve = baseCurve;
         Map = map;

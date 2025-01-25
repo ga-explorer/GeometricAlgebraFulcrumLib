@@ -1,127 +1,107 @@
 ﻿using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
-using GeometricAlgebraFulcrumLib.Modeling.Calculus.Functions.Float64;
-using GeometricAlgebraFulcrumLib.Modeling.Calculus.Functions.Float64.Polynomials;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.Parametric.Float64.Space1D.Scalars;
+using GeometricAlgebraFulcrumLib.Modeling.Signals;
+using GeometricAlgebraFulcrumLib.Modeling.Temporal.Float64.Scalars;
 
 namespace GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.Visuals.Space3D.Animations;
 
 public class GrVisualAnimatedScalar :
-    GrVisualAnimatedGeometry,
-    IFloat64ParametricScalar
+    GrVisualAnimatedGeometry
 {
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static GrVisualAnimatedScalar Create(GrVisualAnimationSpecs animationSpecs, IFloat64ParametricScalar baseCurve)
+    public static GrVisualAnimatedScalar Create(TemporalFloat64Scalar temporalScalar, Float64SamplingSpecs samplingSpecs)
     {
-        return new GrVisualAnimatedScalar(
-            animationSpecs,
-            baseCurve,
-            animationSpecs.FrameTimeRange
-        );
-    }
-    
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static GrVisualAnimatedScalar Create(GrVisualAnimationSpecs animationSpecs, IFloat64ParametricScalar baseCurve, Float64ScalarRange baseParameterRange)
-    {
-        return new GrVisualAnimatedScalar(
-            animationSpecs,
-            baseCurve,
-            baseParameterRange
-        );
+        return new GrVisualAnimatedScalar(temporalScalar, samplingSpecs);
     }
     
 
     public static GrVisualAnimatedScalar operator -(GrVisualAnimatedScalar p1)
     {
-        var baseCurve = ComputedParametricScalar.Create(
-            time => -p1.GetValue(time),
-            time => -p1.GetDerivative1Value(time)
-        );
-
         return new GrVisualAnimatedScalar(
-            p1.AnimationSpecs,
-            baseCurve,
-            p1.FrameTimeRange
+            p1.TemporalScalar.NegativeValue(), 
+            p1.SamplingSpecs
+        );
+    }
+    
+    public static GrVisualAnimatedScalar operator +(double p1, GrVisualAnimatedScalar p2)
+    {
+        return new GrVisualAnimatedScalar(
+            p1 + p2.TemporalScalar, 
+            p2.SamplingSpecs
+        );
+    }
+    
+    public static GrVisualAnimatedScalar operator +(GrVisualAnimatedScalar p1, double p2)
+    {
+        return new GrVisualAnimatedScalar(
+            p1.TemporalScalar + p2, 
+            p1.SamplingSpecs
         );
     }
 
     public static GrVisualAnimatedScalar operator +(GrVisualAnimatedScalar p1, GrVisualAnimatedScalar p2)
     {
-        if (p1.AnimationSpecs != p2.AnimationSpecs)
+        if (p1.SamplingSpecs != p2.SamplingSpecs)
             throw new InvalidOperationException();
 
-        var baseCurve = ComputedParametricScalar.Create(
-            time => p1.GetValue(time) + p2.GetValue(time),
-            time => p1.GetDerivative1Value(time) + p2.GetDerivative1Value(time)
-        );
-
         return new GrVisualAnimatedScalar(
-            p1.AnimationSpecs,
-            baseCurve,
-            p1.FrameTimeRange
+            p1.TemporalScalar + p2.TemporalScalar, 
+            p1.SamplingSpecs
+        );
+    }
+    
+    public static GrVisualAnimatedScalar operator -(double p1, GrVisualAnimatedScalar p2)
+    {
+        return new GrVisualAnimatedScalar(
+            p1 - p2.TemporalScalar, 
+            p2.SamplingSpecs
+        );
+    }
+    
+    public static GrVisualAnimatedScalar operator -(GrVisualAnimatedScalar p1, double p2)
+    {
+        return new GrVisualAnimatedScalar(
+            p1.TemporalScalar - p2, 
+            p1.SamplingSpecs
         );
     }
 
     public static GrVisualAnimatedScalar operator -(GrVisualAnimatedScalar p1, GrVisualAnimatedScalar p2)
     {
-        if (p1.AnimationSpecs != p2.AnimationSpecs)
+        if (p1.SamplingSpecs != p2.SamplingSpecs)
             throw new InvalidOperationException();
 
-        var baseCurve = ComputedParametricScalar.Create(
-            time => p1.GetValue(time) - p2.GetValue(time),
-            time => p1.GetDerivative1Value(time) - p2.GetDerivative1Value(time)
-        );
-
         return new GrVisualAnimatedScalar(
-            p1.AnimationSpecs,
-            baseCurve,
-            p1.FrameTimeRange
+            p1.TemporalScalar - p2.TemporalScalar, 
+            p1.SamplingSpecs
         );
     }
 
     public static GrVisualAnimatedScalar operator *(double p1, GrVisualAnimatedScalar p2)
     {
-        var baseCurve = ComputedParametricScalar.Create(
-            time => p1 * p2.GetValue(time),
-            time => p1 * p2.GetDerivative1Value(time)
-        );
-
         return new GrVisualAnimatedScalar(
-            p2.AnimationSpecs,
-            baseCurve,
-            p2.FrameTimeRange
+            p1 * p2.TemporalScalar, 
+            p2.SamplingSpecs
         );
     }
     
     public static GrVisualAnimatedScalar operator *(GrVisualAnimatedScalar p1, double p2)
     {
-        var baseCurve = ComputedParametricScalar.Create(
-            time => p1.GetValue(time) * p2,
-            time => p1.GetDerivative1Value(time) * p2
-        );
-
         return new GrVisualAnimatedScalar(
-            p1.AnimationSpecs,
-            baseCurve,
-            p1.FrameTimeRange
+            p1.TemporalScalar * p2, 
+            p1.SamplingSpecs
         );
     }
     
     public static GrVisualAnimatedScalar operator *(GrVisualAnimatedScalar p1, GrVisualAnimatedScalar p2)
     {
-        if (p1.AnimationSpecs != p2.AnimationSpecs)
+        if (p1.SamplingSpecs != p2.SamplingSpecs)
             throw new InvalidOperationException();
 
-        var baseCurve = ComputedParametricScalar.Create(
-            time => p1.GetValue(time) * p2.GetValue(time),
-            time => p1.GetDerivative1Value(time) * p2.GetValue(time) + p2.GetDerivative1Value(time) * p1.GetValue(time)
-        );
-
         return new GrVisualAnimatedScalar(
-            p1.AnimationSpecs,
-            baseCurve,
-            p1.FrameTimeRange
+            p1.TemporalScalar * p2.TemporalScalar, 
+            p1.SamplingSpecs
         );
     }
 
@@ -129,64 +109,20 @@ public class GrVisualAnimatedScalar :
     {
         p2 = 1d / p2;
 
-        var baseCurve = ComputedParametricScalar.Create(
-            time => p1.GetValue(time) * p2,
-            time => p1.GetDerivative1Value(time) * p2
-        );
-
         return new GrVisualAnimatedScalar(
-            p1.AnimationSpecs,
-            baseCurve,
-            p1.FrameTimeRange
+            p1.TemporalScalar * p2, 
+            p1.SamplingSpecs
         );
     }
     
 
-    public IFloat64ParametricScalar BaseCurve { get; }
+    public TemporalFloat64Scalar TemporalScalar { get; }
     
-    public Float64ScalarRange BaseParameterRange { get; }
-    
-    public DifferentialFunction BaseParameterToTimeMap { get; }
 
-    public DifferentialFunction TimeToBaseParameterMap { get; }
-    
-    public double MinBaseParameter 
-        => BaseParameterRange.MinValue;
-
-    public double MaxBaseParameter 
-        => BaseParameterRange.MaxValue;
-    
-    public Float64ScalarRange ParameterRange 
-        => FrameTimeRange;
-
-
-    private GrVisualAnimatedScalar(GrVisualAnimationSpecs animationSpecs, IFloat64ParametricScalar baseCurve, Float64ScalarRange baseParameterRange)
-        : base(animationSpecs)
+    private GrVisualAnimatedScalar(TemporalFloat64Scalar temporalScalar, Float64SamplingSpecs samplingSpecs)
+        : base(samplingSpecs)
     {
-        BaseCurve = baseCurve;
-        BaseParameterRange = baseParameterRange;
-
-        if (baseParameterRange == animationSpecs.FrameTimeRange)
-        {
-            BaseParameterToTimeMap = DfAffinePolynomial.Identity;
-            TimeToBaseParameterMap = DfAffinePolynomial.Identity;
-        }
-        else
-        {
-            BaseParameterToTimeMap = DfAffinePolynomial.Create(
-                MinBaseParameter,
-                MaxBaseParameter,
-                MinFrameTime,
-                MaxFrameTime
-            );
-
-            TimeToBaseParameterMap = DfAffinePolynomial.Create(
-                MinFrameTime,
-                MaxFrameTime,
-                MinBaseParameter,
-                MaxBaseParameter
-            );
-        }
+        TemporalScalar = temporalScalar.MapTimeRangeTo(samplingSpecs.MinTime, samplingSpecs.MaxTime);
         
         Debug.Assert(IsValid());
     }
@@ -195,49 +131,35 @@ public class GrVisualAnimatedScalar :
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public sealed override bool IsValid()
     {
-        return FrameTimeRange.IsValid() &&
-               FrameTimeRange.IsFinite &&
-               FrameTimeRange.MinValue >= 0 &&
-               BaseCurve.IsValid() &&
-               BaseParameterRange.IsValid() &&
-               BaseParameterRange.IsFinite;
+        return TimeRange.IsValid() &&
+               TimeRange.IsFinite &&
+               TimeRange.MinValue >= 0 &&
+               TemporalScalar.IsValid();
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public Float64Scalar GetValue(double time)
     {
-        if (!FrameTimeRange.Contains(time))
-            throw new ArgumentOutOfRangeException();
-
-        return BaseCurve.GetValue(
-            TimeToBaseParameterMap.GetValue(time)
-        );
+        return TemporalScalar.GetValue(time);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public Float64Scalar GetDerivative1Value(double time)
     {
-        if (!FrameTimeRange.Contains(time))
-            throw new ArgumentOutOfRangeException();
-
-        return BaseCurve.GetDerivative1Value(
-            TimeToBaseParameterMap.GetValue(time)
-        );
+        return TemporalScalar.GetDerivativeValue(time);
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public IEnumerable<KeyValuePair<int, double>> GetKeyFrameIndexPositionPairs(int frameRate)
     {
-        return FrameIndexTimePairs.Select(
+        return SampleIndexTimePairs.Select(
             indexTimePair =>
             {
                 var (frameIndex, time) = indexTimePair;
                 
                 return new KeyValuePair<int, double>(
                     frameIndex,
-                    BaseCurve.GetValue(
-                        TimeToBaseParameterMap.GetValue(time)
-                    )
+                    TemporalScalar.GetValue(time)
                 );
             }
         );
@@ -246,16 +168,14 @@ public class GrVisualAnimatedScalar :
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public IEnumerable<KeyValuePair<int, double>> GetKeyFrameIndexValuePairs(int frameRate, Func<double, double> positionToValueMap)
     {
-        return FrameIndexTimePairs.Select(
+        return SampleIndexTimePairs.Select(
             indexTimePair =>
             {
                 var (frameIndex, time) = indexTimePair;
 
-                var t = TimeToBaseParameterMap.GetValue(time);
-
                 return new KeyValuePair<int, double>(
                     frameIndex,
-                    positionToValueMap(BaseCurve.GetValue(t))
+                    positionToValueMap(TemporalScalar.GetValue(time))
                 );
             }
         );

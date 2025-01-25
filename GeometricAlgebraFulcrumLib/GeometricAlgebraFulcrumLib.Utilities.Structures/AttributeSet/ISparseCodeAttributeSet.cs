@@ -26,9 +26,9 @@ public interface ISparseCodeAttributeSet :
 
     bool TryGetAttributeValue<T>(string key, out ISparseCodeAttributeValue<T> value);
 
-    SparseCodeAttributeSet SetAttributeValue(string key, ISparseCodeAttributeValue value);
+    SparseCodeAttributeSet SetAttributeValue(string key, ISparseCodeAttributeValue? value);
 
-    SparseCodeAttributeSet SetAttributeValues(IEnumerable<KeyValuePair<string, ISparseCodeAttributeValue>> keyValuePairs);
+    SparseCodeAttributeSet SetAttributeValues(IEnumerable<KeyValuePair<string, ISparseCodeAttributeValue?>> keyValuePairs);
 
     IEnumerable<KeyValuePair<string, string>> GetKeyValueCodePairs();
 }

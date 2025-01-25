@@ -1,5 +1,4 @@
-﻿using System;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Maps;
+﻿using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Maps;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Float64.LinearMaps.Rotors;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Float64.Multivectors;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Float64.Multivectors.Composers;
@@ -9,7 +8,7 @@ using GeometricAlgebraFulcrumLib.Algebra.Polynomials.Generic.Basis;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Generic;
 using GeometricAlgebraFulcrumLib.Algebra.Utilities.Text;
 
-namespace GeometricAlgebraFulcrumLib.Samples.Algebra.Polynomials;
+namespace GeometricAlgebraFulcrumLib.Algebra.Samples.Algebra.Polynomials;
 
 public static class NumericPhConstructionSample
 {

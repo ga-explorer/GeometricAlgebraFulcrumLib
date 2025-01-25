@@ -8,7 +8,7 @@ namespace GeometricAlgebraFulcrumLib.Modeling.Signals.Processors;
 
 public abstract class XGaGeometricFrequencyProcessor
 {
-    public Float64SignalSamplingSpecs SamplingSpecs { get; protected set;}
+    public Float64SamplingSpecs SamplingSpecs { get; protected set;}
 
     public double SamplingRate 
         => SamplingSpecs.SamplingRate;

@@ -222,7 +222,7 @@ public static class LinFloat64UnilinearMapComposerUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static ILinFloat64DirectionalScalingLinearMap3D CreateDirectionalScaling(this LinUnitBasisVector3D scalingBasisVector, double scalingFactor)
+    public static ILinFloat64DirectionalScalingLinearMap3D CreateDirectionalScaling(this LinBasisVector3D scalingBasisVector, double scalingFactor)
     {
         if (scalingFactor.IsZero())
             throw new ArgumentException(nameof(scalingFactor));

@@ -5,50 +5,11 @@ namespace GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.BabylonJs.Textu
 public sealed class GrBabylonJsBrickTexture :
     GrBabylonJsProceduralTexture
 {
-    public sealed class BrickTextureProperties :
-        BaseTextureProperties
-    {
-        public GrBabylonJsColor4Value? JointColor
-        {
-            get => GetAttributeValueOrNull<GrBabylonJsColor4Value>("jointColor");
-            set => SetAttributeValue("jointColor", value);
-        }
-
-        public GrBabylonJsColor4Value? MarbleColor
-        {
-            get => GetAttributeValueOrNull<GrBabylonJsColor4Value>("marbleColor");
-            set => SetAttributeValue("marbleColor", value);
-        }
-
-        public GrBabylonJsInt32Value? NumberOfTilesWidth
-        {
-            get => GetAttributeValueOrNull<GrBabylonJsInt32Value>("numberOfTilesWidth");
-            set => SetAttributeValue("numberOfTilesWidth", value);
-        }
-
-        public GrBabylonJsInt32Value? NumberOfTilesHeight
-        {
-            get => GetAttributeValueOrNull<GrBabylonJsInt32Value>("numberOfTilesHeight");
-            set => SetAttributeValue("numberOfTilesHeight", value);
-        }
-
-
-        public BrickTextureProperties()
-        {
-        }
-
-        public BrickTextureProperties(BrickTextureProperties properties)
-        {
-            SetAttributeValues(properties);
-        }
-    }
-
-
     protected override string ConstructorName
         => "new BABYLON.BrickProceduralTexture";
     
-    public BrickTextureProperties Properties { get; private set; }
-        = new BrickTextureProperties();
+    public GrBabylonJsBrickTextureProperties Properties { get; private set; }
+        = new GrBabylonJsBrickTextureProperties();
 
     public override GrBabylonJsObjectProperties ObjectProperties 
         => Properties;
@@ -65,9 +26,9 @@ public sealed class GrBabylonJsBrickTexture :
     }
 
     
-    public GrBabylonJsBrickTexture SetProperties(BrickTextureProperties properties)
+    public GrBabylonJsBrickTexture SetProperties(GrBabylonJsBrickTextureProperties properties)
     {
-        Properties = new BrickTextureProperties(properties);
+        Properties = new GrBabylonJsBrickTextureProperties(properties);
 
         return this;
     }

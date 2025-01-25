@@ -1,13 +1,11 @@
-﻿using System;
-using System.Linq;
-using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Angles;
+﻿using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Angles;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space2D;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space3D;
+using GeometricAlgebraFulcrumLib.Algebra.Polynomials.Float64.PhCurves;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
 using GeometricAlgebraFulcrumLib.Algebra.Utilities.Text;
-using GeometricAlgebraFulcrumLib.Algebra.Polynomials.Float64.PhCurves;
 
-namespace GeometricAlgebraFulcrumLib.Samples.Algebra.Polynomials;
+namespace GeometricAlgebraFulcrumLib.Algebra.Samples.Algebra.Polynomials;
 
 public static class NumericPhCurveSamples
 {

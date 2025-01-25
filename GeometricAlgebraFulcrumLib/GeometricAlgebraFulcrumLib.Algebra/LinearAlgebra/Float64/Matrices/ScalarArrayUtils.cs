@@ -44,118 +44,6 @@ public static class ScalarArrayUtils
     }
 
     
-    //public static VectorStorage<T> ColumnToVectorStorage<T>(this T[,] scalarArray, int colIndex, IScalarProcessor<T> scalarProcessor)
-    //{
-    //    var rowsCount = scalarArray.GetLength(0);
-
-    //    var composer = scalarProcessor.CreateVectorStorageComposer(rowsCount);
-
-    //    for (var i = 0; i < rowsCount; i++)
-    //    {
-    //        var scalar = scalarArray[i, colIndex] ?? scalarProcessor.ScalarZero;
-
-    //        if (!scalarProcessor.IsZero(scalar))
-    //            composer.SetTerm((ulong)i, scalar);
-    //    }
-
-    //    return composer.CreateVectorStorage();
-    //}
-
-    //public static VectorStorage<T> RowToVectorStorage<T>(this T[,] scalarArray, int rowIndex, IScalarProcessor<T> scalarProcessor)
-    //{
-    //    var colsCount = scalarArray.GetLength(1);
-
-    //    var composer = scalarProcessor.CreateVectorStorageComposer(1);
-
-    //    for (var j = 0; j < colsCount; j++)
-    //    {
-    //        var scalar = scalarArray[rowIndex, j] ?? scalarProcessor.ScalarZero;
-
-    //        if (!scalarProcessor.IsZero(scalar))
-    //            composer.SetTerm((ulong)j, scalar);
-    //    }
-
-    //    return composer.CreateVectorStorage();
-    //}
-
-    //public static Dictionary<ulong, VectorStorage<T>> ColumnsToVectorStoragesDictionary<T>(this T[,] scalarArray, IScalarProcessor<T> scalarProcessor)
-    //{
-    //    var rowsCount = scalarArray.GetLength(0);
-    //    var colsCount = scalarArray.GetLength(1);
-
-    //    var vectorsDictionary =
-    //        new Dictionary<ulong, VectorStorage<T>>();
-
-    //    for (var j = 0; j < colsCount; j++)
-    //    {
-    //        var composer = scalarProcessor.CreateVectorStorageComposer(1);
-
-    //        for (var i = 0; i < rowsCount; i++)
-    //        {
-    //            var scalar = scalarArray[i, j] ?? scalarProcessor.ScalarZero;
-
-    //            if (!scalarProcessor.IsZero(scalar))
-    //                composer.SetTerm((ulong)i, scalar);
-    //        }
-
-    //        vectorsDictionary.Add((ulong)j, composer.CreateVectorStorage());
-    //    }
-
-    //    return vectorsDictionary;
-    //}
-
-    //public static VectorStorage<T>[] ColumnsToVectorStoragesArray<T>(this T[,] scalarArray, IScalarProcessor<T> scalarProcessor)
-    //{
-    //    var rowsCount = scalarArray.GetLength(0);
-    //    var colsCount = scalarArray.GetLength(1);
-
-    //    var vectorsArray =
-    //        new VectorStorage<T>[colsCount];
-
-    //    for (var j = 0; j < colsCount; j++)
-    //    {
-    //        var composer = scalarProcessor.CreateVectorStorageComposer(1);
-
-    //        for (var i = 0; i < rowsCount; i++)
-    //        {
-    //            var scalar = scalarArray[i, j] ?? scalarProcessor.ScalarZero;
-
-    //            if (!scalarProcessor.IsZero(scalar))
-    //                composer.SetTerm((ulong)i, scalar);
-    //        }
-
-    //        vectorsArray[j] = composer.CreateVectorStorage();
-    //    }
-
-    //    return vectorsArray;
-    //}
-
-    //public static GaVector<T>[] ColumnsToVectorsArray<T>(this T[,] scalarArray, IScalarProcessor<T> scalarProcessor)
-    //{
-    //    var rowsCount = scalarArray.GetLength(0);
-    //    var colsCount = scalarArray.GetLength(1);
-
-    //    var vectorsArray =
-    //        new GaVector<T>[colsCount];
-
-    //    for (var j = 0; j < colsCount; j++)
-    //    {
-    //        var composer = scalarProcessor.CreateVectorStorageComposer(1);
-
-    //        for (var i = 0; i < rowsCount; i++)
-    //        {
-    //            var scalar = scalarArray[i, j] ?? scalarProcessor.ScalarZero;
-
-    //            if (!scalarProcessor.IsZero(scalar))
-    //                composer.SetTerm((ulong)i, scalar);
-    //        }
-
-    //        vectorsArray[j] = composer.Vector();
-    //    }
-
-    //    return vectorsArray;
-    //}
-    
     public static IReadOnlyList<T> MapScalars<T1, T>(this IReadOnlyList<T1> matrix1, Func<T1, T> scalarMapping)
     {
         var count = matrix1.Count;
@@ -225,6 +113,19 @@ public static class ScalarArrayUtils
 
         return newMatrix;
     }
+    
+
+    public static T[] MapScalars<T1, T>(this T1[] matrix1, Func<T1, T> scalarMapping)
+    {
+        var count = matrix1.Length;
+        var newMatrix = new T[count];
+
+        for (var i = 0; i < count; i++)
+            newMatrix[i] = scalarMapping(matrix1[i]);
+
+        return newMatrix;
+    }
+
 
     public static T[,] MapScalars<T1, T>(this T1[,] matrix1, Func<T1, T> scalarMapping)
     {

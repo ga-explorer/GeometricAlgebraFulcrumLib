@@ -4,8 +4,7 @@ using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Basic;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Primitives.Triangles;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.Parametric.Float64.Space3D.Curves.Adaptive;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.Borders.Space2D;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.Borders.Space2D.Immutable;
+using GeometricAlgebraFulcrumLib.Modeling.Geometry.Borders.Space2D.Float64;
 
 namespace GeometricAlgebraFulcrumLib.Modeling.Geometry.Parametric.Float64.Space3D.Surfaces.Sampled;
 
@@ -125,7 +124,7 @@ public sealed class GrParametricSurfaceTree3D :
     public IReadOnlyList<GrParametricSurfaceTreeLeaf3D> LeafNodesList
         => _leafNodeList;
 
-    public IBoundingBox2D ParameterValueRange { get; }
+    public IFloat64BoundingBox2D ParameterValueRange { get; }
 
     public double MinParameterValue1
         => ParameterValueRange.MinX;
@@ -148,7 +147,7 @@ public sealed class GrParametricSurfaceTree3D :
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public GrParametricSurfaceTree3D(IGraphicsParametricSurface3D surface, IBoundingBox2D parameterValueRange)
+    public GrParametricSurfaceTree3D(IGraphicsParametricSurface3D surface, IFloat64BoundingBox2D parameterValueRange)
     {
         Surface = surface;
         ParameterValueRange = parameterValueRange;
@@ -159,7 +158,7 @@ public sealed class GrParametricSurfaceTree3D :
     public GrParametricSurfaceTree3D(IGraphicsParametricSurface3D surface)
     {
         Surface = surface;
-        ParameterValueRange = BoundingBox2D.Create(0, 0, 1, 1);
+        ParameterValueRange = Float64BoundingBox2D.Create(0, 0, 1, 1);
         RootNode = null;
     }
 

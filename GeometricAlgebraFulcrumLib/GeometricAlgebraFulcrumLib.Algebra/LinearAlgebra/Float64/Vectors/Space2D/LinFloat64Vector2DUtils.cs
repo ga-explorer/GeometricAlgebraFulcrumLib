@@ -55,64 +55,64 @@ public static class LinFloat64Vector2DUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static bool IsNearZero(this IPair<Float64Scalar> vector, double epsilon = 1e-12)
+    public static bool IsNearZero(this IPair<Float64Scalar> vector, double zeroEpsilon = Float64Utils.ZeroEpsilon)
     {
-        return vector.VectorENorm().IsNearZero(epsilon);
+        return vector.VectorENorm().IsNearZero(zeroEpsilon);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static bool IsNearUnit(this IPair<Float64Scalar> vector, double epsilon = 1e-12)
+    public static bool IsNearUnit(this IPair<Float64Scalar> vector, double zeroEpsilon = Float64Utils.ZeroEpsilon)
     {
-        return vector.VectorENormSquared().IsNearOne(epsilon);
+        return vector.VectorENormSquared().IsNearOne(zeroEpsilon);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static bool IsNearOrthonormalWith(this IPair<Float64Scalar> vector1, IPair<Float64Scalar> vector2, double epsilon = 1e-12)
+    public static bool IsNearOrthonormalWith(this IPair<Float64Scalar> vector1, IPair<Float64Scalar> vector2, double zeroEpsilon = Float64Utils.ZeroEpsilon)
     {
-        return vector1.IsNearUnit(epsilon) &&
-               vector2.IsNearUnit(epsilon) &&
-               vector1.VectorESp(vector2).IsNearZero(epsilon);
+        return vector1.IsNearUnit(zeroEpsilon) &&
+               vector2.IsNearUnit(zeroEpsilon) &&
+               vector1.VectorESp(vector2).IsNearZero(zeroEpsilon);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static bool IsNearOrthonormalWithUnit(this IPair<Float64Scalar> vector1, IPair<Float64Scalar> vector2, double epsilon = 1e-12)
+    public static bool IsNearOrthonormalWithUnit(this IPair<Float64Scalar> vector1, IPair<Float64Scalar> vector2, double zeroEpsilon = Float64Utils.ZeroEpsilon)
     {
         Debug.Assert(
-            vector2.IsNearUnit(epsilon)
+            vector2.IsNearUnit(zeroEpsilon)
         );
 
-        return vector1.IsNearUnit(epsilon) &&
-               vector1.VectorESp(vector2).IsNearZero(epsilon);
+        return vector1.IsNearUnit(zeroEpsilon) &&
+               vector1.VectorESp(vector2).IsNearZero(zeroEpsilon);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static bool IsNearParallelTo(this IPair<Float64Scalar> vector1, IPair<Float64Scalar> vector2, double epsilon = 1e-12)
+    public static bool IsNearParallelTo(this IPair<Float64Scalar> vector1, IPair<Float64Scalar> vector2, double zeroEpsilon = Float64Utils.ZeroEpsilon)
     {
-        return vector1.GetAngleCos(vector2).Abs().IsNearOne(epsilon);
+        return vector1.GetAngleCos(vector2).Abs().IsNearOne(zeroEpsilon);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static bool IsNearOppositeTo(this IPair<Float64Scalar> vector1, IPair<Float64Scalar> vector2, double epsilon = 1e-12)
+    public static bool IsNearOppositeTo(this IPair<Float64Scalar> vector1, IPair<Float64Scalar> vector2, double zeroEpsilon = Float64Utils.ZeroEpsilon)
     {
-        return vector1.GetAngleCos(vector2).IsNearMinusOne(epsilon);
+        return vector1.GetAngleCos(vector2).IsNearMinusOne(zeroEpsilon);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static bool IsNearParallelToUnit(this IPair<Float64Scalar> vector1, IPair<Float64Scalar> vector2, double epsilon = 1e-12)
+    public static bool IsNearParallelToUnit(this IPair<Float64Scalar> vector1, IPair<Float64Scalar> vector2, double zeroEpsilon = Float64Utils.ZeroEpsilon)
     {
-        return vector1.GetAngleCosWithUnit(vector2).Abs().IsNearOne(epsilon);
+        return vector1.GetAngleCosWithUnit(vector2).Abs().IsNearOne(zeroEpsilon);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static bool IsNearOppositeToUnit(this IPair<Float64Scalar> vector1, IPair<Float64Scalar> vector2, double epsilon = 1e-12)
+    public static bool IsNearOppositeToUnit(this IPair<Float64Scalar> vector1, IPair<Float64Scalar> vector2, double zeroEpsilon = Float64Utils.ZeroEpsilon)
     {
-        return vector1.GetAngleCosWithUnit(vector2).IsNearNegativeOne(epsilon);
+        return vector1.GetAngleCosWithUnit(vector2).IsNearNegativeOne(zeroEpsilon);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static bool IsNearOrthogonalTo(this IPair<Float64Scalar> vector1, IPair<Float64Scalar> vector2, double epsilon = 1e-12)
+    public static bool IsNearOrthogonalTo(this IPair<Float64Scalar> vector1, IPair<Float64Scalar> vector2, double zeroEpsilon = Float64Utils.ZeroEpsilon)
     {
-        return vector1.VectorESp(vector2).IsNearZero(epsilon);
+        return vector1.VectorESp(vector2).IsNearZero(zeroEpsilon);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -127,7 +127,7 @@ public static class LinFloat64Vector2DUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static bool IsNearVectorBasis(this IPair<Float64Scalar> vector, int basisIndex, double epsilon = 1e-12d)
+    public static bool IsNearVectorBasis(this IPair<Float64Scalar> vector, int basisIndex, double zeroEpsilon = 1e-12d)
     {
         var vector2 = basisIndex switch
         {
@@ -136,7 +136,7 @@ public static class LinFloat64Vector2DUtils
             _ => throw new InvalidOperationException()
         };
 
-        return vector.VectorSubtract(vector2).IsNearZero(epsilon);
+        return vector.VectorSubtract(vector2).IsNearZero(zeroEpsilon);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -240,11 +240,11 @@ public static class LinFloat64Vector2DUtils
     /// True of the Euclidean squared length of this vector is near unity
     /// </summary>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static bool IsNearUnitVector(this IPair<Float64Scalar> vector, double epsilon = 1e-12)
+    public static bool IsNearUnitVector(this IPair<Float64Scalar> vector, double zeroEpsilon = Float64Utils.ZeroEpsilon)
     {
         return vector
             .VectorENormSquared()
-            .IsNearEqual(1.0d, epsilon);
+            .IsNearEqual(1.0d, zeroEpsilon);
     }
 
 

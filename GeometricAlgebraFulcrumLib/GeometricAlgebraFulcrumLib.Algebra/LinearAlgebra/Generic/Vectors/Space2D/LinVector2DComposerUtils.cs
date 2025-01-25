@@ -10,37 +10,37 @@ namespace GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Generic.Vectors.Space
 public static class LinVector2DComposerUtils
 {
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinVector2D<T> CreateLinVector2DZero<T>(this IScalarProcessor<T> scalarProcessor)
+    public static LinVector2D<T> ZeroVector2D<T>(this IScalarProcessor<T> scalarProcessor)
     {
         return LinVector2D<T>.Zero(scalarProcessor);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinVector2D<T> CreateLinVector2De1<T>(this IScalarProcessor<T> scalarProcessor)
+    public static LinVector2D<T> E1Vector2D<T>(this IScalarProcessor<T> scalarProcessor)
     {
         return LinVector2D<T>.E1(scalarProcessor);
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinVector2D<T> CreateLinVector2De2<T>(this IScalarProcessor<T> scalarProcessor)
+    public static LinVector2D<T> E2Vector2D<T>(this IScalarProcessor<T> scalarProcessor)
     {
         return LinVector2D<T>.E2(scalarProcessor);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinVector2D<T> CreateLinVector2D<T>(this IScalarProcessor<T> scalarProcessor, int x, int y)
+    public static LinVector2D<T> Vector2D<T>(this IScalarProcessor<T> scalarProcessor, int x, int y)
     {
         return LinVector2D<T>.Create(scalarProcessor, x, y);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinVector2D<T> CreateLinVector2D<T>(this IScalarProcessor<T> scalarProcessor, double x, double y)
+    public static LinVector2D<T> Vector2D<T>(this IScalarProcessor<T> scalarProcessor, double x, double y)
     {
         return LinVector2D<T>.Create(scalarProcessor, x, y);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinVector2D<T> CreateLinVector2D<T>(this IScalarProcessor<T> scalarProcessor, T x, T y)
+    public static LinVector2D<T> Vector2D<T>(this IScalarProcessor<T> scalarProcessor, T x, T y)
     {
         return LinVector2D<T>.Create(scalarProcessor, x, y);
     }
@@ -173,13 +173,13 @@ public static class LinVector2DComposerUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinVector2D<T> ToVector2D<T>(this LinUnitBasisVector2D axis, IScalarProcessor<T> scalarProcessor)
+    public static LinVector2D<T> ToVector2D<T>(this LinBasisVector2D axis, IScalarProcessor<T> scalarProcessor)
     {
         return axis switch
         {
-            LinUnitBasisVector2D.PositiveX => LinVector2D<T>.E1(scalarProcessor),
-            LinUnitBasisVector2D.NegativeX => LinVector2D<T>.NegativeE1(scalarProcessor),
-            LinUnitBasisVector2D.PositiveY => LinVector2D<T>.E2(scalarProcessor),
+            LinBasisVector2D.Px => LinVector2D<T>.E1(scalarProcessor),
+            LinBasisVector2D.Nx => LinVector2D<T>.NegativeE1(scalarProcessor),
+            LinBasisVector2D.Py => LinVector2D<T>.E2(scalarProcessor),
             _ => LinVector2D<T>.NegativeE2(scalarProcessor)
         };
     }

@@ -14,7 +14,7 @@ public abstract class GrKonvaJsAttributeSet :
         {
             yield return new KeyValuePair<string, string>(
                 key.Camelize(),
-                attributeValue.GetCode()
+                attributeValue.GetAttributeValueCode()
             );
         }
     }
@@ -59,6 +59,12 @@ public abstract class GrKonvaJsAttributeSet :
     {
         return GetAttributeValueOrNull<GrKonvaJsEmbossDirectionValue>(key);
     }
-    
 
+
+    public override string GetAttributeSetCode()
+    {
+        return GetKonvaJsCode();
+    }
+
+    public abstract string GetKonvaJsCode();
 }

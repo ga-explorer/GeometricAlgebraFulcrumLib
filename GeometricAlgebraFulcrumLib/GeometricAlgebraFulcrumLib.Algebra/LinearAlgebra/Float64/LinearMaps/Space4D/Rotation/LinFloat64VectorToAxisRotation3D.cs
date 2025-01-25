@@ -11,7 +11,7 @@ public sealed class LinFloat64VectorToAxisRotation4D :
     LinFloat64VectorToVectorRotationBase4D
 {
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64VectorToAxisRotation4D Create(ILinFloat64Vector4D u, LinUnitBasisVector4D vAxis)
+    public static LinFloat64VectorToAxisRotation4D Create(ILinFloat64Vector4D u, LinBasisVector4D vAxis)
     {
         return new LinFloat64VectorToAxisRotation4D(
             LinFloat64Vector4DUtils.ToLinVector4D(u),
@@ -51,7 +51,7 @@ public sealed class LinFloat64VectorToAxisRotation4D :
     }
 
 
-    public LinUnitBasisVector4D TargetAxis { get; }
+    public LinBasisVector4D TargetAxis { get; }
 
     public override LinFloat64Vector4D SourceVector { get; }
 

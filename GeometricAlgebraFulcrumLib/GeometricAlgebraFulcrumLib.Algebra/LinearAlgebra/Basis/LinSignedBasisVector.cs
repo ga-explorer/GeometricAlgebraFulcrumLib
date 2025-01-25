@@ -42,28 +42,28 @@ public sealed record LinSignedBasisVector :
     }
 
 
-    public static LinSignedBasisVector PositiveX { get; }
+    public static LinSignedBasisVector Px { get; }
         = new LinSignedBasisVector(0, false);
 
-    public static LinSignedBasisVector PositiveY { get; }
+    public static LinSignedBasisVector Py { get; }
         = new LinSignedBasisVector(1, false);
 
-    public static LinSignedBasisVector PositiveZ { get; }
+    public static LinSignedBasisVector Pz { get; }
         = new LinSignedBasisVector(2, false);
 
-    public static LinSignedBasisVector PositiveW { get; }
+    public static LinSignedBasisVector Pw { get; }
         = new LinSignedBasisVector(3, false);
 
-    public static LinSignedBasisVector NegativeX { get; }
+    public static LinSignedBasisVector Nx { get; }
         = new LinSignedBasisVector(0, true);
 
-    public static LinSignedBasisVector NegativeY { get; }
+    public static LinSignedBasisVector Ny { get; }
         = new LinSignedBasisVector(1, true);
 
-    public static LinSignedBasisVector NegativeZ { get; }
+    public static LinSignedBasisVector Nz { get; }
         = new LinSignedBasisVector(2, true);
 
-    public static LinSignedBasisVector NegativeW { get; }
+    public static LinSignedBasisVector Nw { get; }
         = new LinSignedBasisVector(3, true);
         
         
@@ -157,14 +157,14 @@ public sealed record LinSignedBasisVector :
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     private LinSignedBasisVector(int basisVectorIndex, IntegerSign sign)
     {
-        _basisVector = new LinBasisVector(basisVectorIndex);
+        _basisVector = LinBasisVector.Create(basisVectorIndex);
         Sign = sign;
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     internal LinSignedBasisVector(int basisVectorIndex, bool isNegative)
     {
-        _basisVector = new LinBasisVector(basisVectorIndex);
+        _basisVector = LinBasisVector.Create(basisVectorIndex);
         Sign = isNegative ? IntegerSign.Negative : IntegerSign.Positive;
     }
 

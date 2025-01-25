@@ -2,19 +2,20 @@
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Float64.Multivectors.Composers;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Float64.Processors;
+using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Float64.Multivectors;
 
 public static class RGaFloat64KVectorUtils
 {
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static bool IsNearBlade(this RGaFloat64KVector kv, double epsilon = 1e-12)
+    public static bool IsNearBlade(this RGaFloat64KVector kv, double zeroEpsilon = Float64Utils.ZeroEpsilon)
     {
         return kv
             .Gp(kv.Reverse())
             .GetKVectorParts()
             .All(kv1 => 
-                kv1.Grade == 0 || kv1.IsNearZero(epsilon)
+                kv1.Grade == 0 || kv1.IsNearZero(zeroEpsilon)
             );
     }
 
@@ -59,14 +60,14 @@ public static class RGaFloat64KVectorUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static RGaFloat64KVector RemoveSmallTerms(this RGaFloat64KVector mv, double epsilon = 1e-12)
+    public static RGaFloat64KVector RemoveSmallTerms(this RGaFloat64KVector mv, double zeroEpsilon = Float64Utils.ZeroEpsilon)
     {
         return mv switch
         {
             RGaFloat64Scalar s => s,
-            RGaFloat64Vector v => v.RemoveSmallTerms(epsilon),
-            RGaFloat64Bivector bv => bv.RemoveSmallTerms(epsilon),
-            RGaFloat64HigherKVector kv => kv.RemoveSmallTerms(epsilon),
+            RGaFloat64Vector v => v.RemoveSmallTerms(zeroEpsilon),
+            RGaFloat64Bivector bv => bv.RemoveSmallTerms(zeroEpsilon),
+            RGaFloat64HigherKVector kv => kv.RemoveSmallTerms(zeroEpsilon),
             _ => throw new InvalidOperationException()
         };
     }

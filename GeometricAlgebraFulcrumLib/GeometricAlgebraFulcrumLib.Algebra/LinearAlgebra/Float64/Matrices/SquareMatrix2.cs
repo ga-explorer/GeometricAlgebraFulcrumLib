@@ -86,14 +86,14 @@ public sealed class SquareMatrix2 //: IAffineMap2D
         return m;
     }
 
-    public static SquareMatrix2 CreateAxisToVectorRotationMatrix2D(LinUnitBasisVector2D axis, ILinFloat64Vector2D unitVector)
+    public static SquareMatrix2 CreateAxisToVectorRotationMatrix2D(LinBasisVector2D axis, ILinFloat64Vector2D unitVector)
     {
         //Debug.Assert(unitVector.IsNearUnitVector());
 
         var x = unitVector.X;
         var y = unitVector.Y;
 
-        if (axis == LinUnitBasisVector2D.PositiveX)
+        if (axis == LinBasisVector2D.Px)
         {
             var x1 = 1d / (x + 1d);
 
@@ -111,7 +111,7 @@ public sealed class SquareMatrix2 //: IAffineMap2D
             return matrix;
         }
 
-        if (axis == LinUnitBasisVector2D.NegativeX)
+        if (axis == LinBasisVector2D.Nx)
         {
             var x1 = 1d / (x - 1d);
 
@@ -129,7 +129,7 @@ public sealed class SquareMatrix2 //: IAffineMap2D
             return matrix;
         }
 
-        if (axis == LinUnitBasisVector2D.PositiveY)
+        if (axis == LinBasisVector2D.Py)
         {
             var y1 = 1d / (y + 1d);
 
@@ -147,7 +147,7 @@ public sealed class SquareMatrix2 //: IAffineMap2D
             return matrix;
         }
 
-        if (axis == LinUnitBasisVector2D.NegativeY)
+        if (axis == LinBasisVector2D.Ny)
         {
             var y1 = 1d / (y - 1d);
 
@@ -168,14 +168,14 @@ public sealed class SquareMatrix2 //: IAffineMap2D
         throw new InvalidOperationException();
     }
 
-    public static SquareMatrix2 CreateVectorToAxisRotationMatrix2D(ILinFloat64Vector2D unitVector, LinUnitBasisVector2D axis)
+    public static SquareMatrix2 CreateVectorToAxisRotationMatrix2D(ILinFloat64Vector2D unitVector, LinBasisVector2D axis)
     {
         //Debug.Assert(unitVector.IsValid() && unitVector.IsNearUnitVector());
 
         var x = unitVector.X;
         var y = unitVector.Y;
 
-        if (axis == LinUnitBasisVector2D.PositiveX)
+        if (axis == LinBasisVector2D.Px)
         {
             var x1 = 1d / (x + 1d);
 
@@ -193,7 +193,7 @@ public sealed class SquareMatrix2 //: IAffineMap2D
             return matrix;
         }
 
-        if (axis == LinUnitBasisVector2D.NegativeX)
+        if (axis == LinBasisVector2D.Nx)
         {
             var x1 = 1d / (x - 1d);
 
@@ -211,7 +211,7 @@ public sealed class SquareMatrix2 //: IAffineMap2D
             return matrix;
         }
 
-        if (axis == LinUnitBasisVector2D.PositiveY)
+        if (axis == LinBasisVector2D.Py)
         {
             var y1 = 1d / (y + 1d);
 
@@ -229,7 +229,7 @@ public sealed class SquareMatrix2 //: IAffineMap2D
             return matrix;
         }
 
-        if (axis == LinUnitBasisVector2D.NegativeY)
+        if (axis == LinBasisVector2D.Ny)
         {
             var y1 = 1d / (y - 1d);
 
@@ -278,12 +278,12 @@ public sealed class SquareMatrix2 //: IAffineMap2D
             var axis = sumVector.GetMaxAbsComponentIndex() switch
             {
                 0 => sumVector.X.IsPositive()
-                    ? LinUnitBasisVector2D.PositiveX
-                    : LinUnitBasisVector2D.NegativeX,
+                    ? LinBasisVector2D.Px
+                    : LinBasisVector2D.Nx,
 
                 _ => sumVector.Y.IsPositive()
-                    ? LinUnitBasisVector2D.PositiveY
-                    : LinUnitBasisVector2D.NegativeY
+                    ? LinBasisVector2D.Py
+                    : LinBasisVector2D.Ny
             };
 
             var m1 = CreateVectorToAxisRotationMatrix2D(unitVector1, axis);
@@ -543,6 +543,28 @@ public sealed class SquareMatrix2 //: IAffineMap2D
     public bool IsAffine2D()
     {
         return IsValid();
+    }
+    
+    public bool IsIdentity()
+    {
+        if (!Scalar00.IsOne()) return false;
+        if (!Scalar10.IsZero()) return false;
+
+        if (!Scalar01.IsZero()) return false;
+        if (!Scalar11.IsOne()) return false;
+
+        return true;
+    }
+
+    public bool IsNearIdentity(double zeroEpsilon = Float64Utils.ZeroEpsilon)
+    {
+        if (!Scalar00.IsNearOne(zeroEpsilon)) return false;
+        if (!Scalar10.IsNearZero(zeroEpsilon)) return false;
+
+        if (!Scalar01.IsNearZero(zeroEpsilon)) return false;
+        if (!Scalar11.IsNearOne(zeroEpsilon)) return false;
+
+        return true;
     }
 
     public SquareMatrix2 NearestOrthogonalMatrix()

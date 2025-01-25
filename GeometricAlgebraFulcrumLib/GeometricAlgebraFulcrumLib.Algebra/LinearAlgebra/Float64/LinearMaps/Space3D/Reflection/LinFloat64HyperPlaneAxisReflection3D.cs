@@ -24,7 +24,7 @@ public sealed class LinFloat64HyperPlaneAxisReflection3D :
     }
 
 
-    public LinUnitBasisVector3D ReflectionNormalAxis { get; }
+    public LinBasisVector3D ReflectionNormalAxis { get; }
 
     public int ReflectionNormalAxisIndex { get; }
 
@@ -46,9 +46,9 @@ public sealed class LinFloat64HyperPlaneAxisReflection3D :
     {
         ReflectionNormalAxis = basisIndex switch
         {
-            0 => LinUnitBasisVector3D.PositiveX,
-            1 => LinUnitBasisVector3D.PositiveY,
-            2 => LinUnitBasisVector3D.PositiveZ,
+            0 => LinBasisVector3D.Px,
+            1 => LinBasisVector3D.Py,
+            2 => LinBasisVector3D.Pz,
             _ => throw new IndexOutOfRangeException()
         };
 
@@ -69,7 +69,7 @@ public sealed class LinFloat64HyperPlaneAxisReflection3D :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public override bool IsNearIdentity(double epsilon = 1E-12)
+    public override bool IsNearIdentity(double zeroEpsilon = 1E-12)
     {
         return false;
     }

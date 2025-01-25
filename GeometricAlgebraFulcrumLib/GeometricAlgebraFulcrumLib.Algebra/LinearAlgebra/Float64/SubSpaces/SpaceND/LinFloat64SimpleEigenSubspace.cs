@@ -88,16 +88,16 @@ public sealed class LinFloat64SimpleEigenSubspace :
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool NearContains(LinFloat64Vector vector, double epsilon = 1E-12D)
+    public bool NearContains(LinFloat64Vector vector, double zeroEpsilon = 1E-12D)
     {
-        return Subspace.NearContains(vector, epsilon);
+        return Subspace.NearContains(vector, zeroEpsilon);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool NearContains(ILinFloat64Subspace subspace, double epsilon = 1E-12)
+    public bool NearContains(ILinFloat64Subspace subspace, double zeroEpsilon = 1E-12)
     {
         return subspace.VSpaceDimensions <= VSpaceDimensions &&
-               subspace.BasisVectors.All(v => NearContains(v, epsilon));
+               subspace.BasisVectors.All(v => NearContains(v, zeroEpsilon));
     }
 
 

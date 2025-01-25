@@ -2,13 +2,13 @@
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space3D;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.BasicShapes;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.BasicShapes.Lines;
+using GeometricAlgebraFulcrumLib.Modeling.Geometry.BasicShapes.Lines.Space3D.Float64;
 
 namespace GeometricAlgebraFulcrumLib.Modeling.Graphics.Accelerators.Grids.Space3D;
 
 public sealed class AccGridLineTraverser3D
 {
-    public static AccGridLineTraverser3D Create(IAccGrid3D<IFiniteGeometricShape3D> grid, ILine3D line)
+    public static AccGridLineTraverser3D Create(IAccGrid3D<IFloat64FiniteGeometricShape3D> grid, IFloat64Line3D line)
     {
         return new AccGridLineTraverser3D(
             grid,
@@ -17,15 +17,15 @@ public sealed class AccGridLineTraverser3D
         );
     }
 
-    public static AccGridLineTraverser3D Create(IAccGrid3D<IFiniteGeometricShape3D> grid, ILine3D line, Float64ScalarRange lineParamLimits)
+    public static AccGridLineTraverser3D Create(IAccGrid3D<IFloat64FiniteGeometricShape3D> grid, IFloat64Line3D line, Float64ScalarRange lineParamLimits)
     {
         return new AccGridLineTraverser3D(grid, line, lineParamLimits);
     }
 
 
-    public IAccGrid3D<IFiniteGeometricShape3D> Grid { get; }
+    public IAccGrid3D<IFloat64FiniteGeometricShape3D> Grid { get; }
 
-    public ILine3D Line { get; }
+    public IFloat64Line3D Line { get; }
 
     public Float64ScalarRange LineParameterLimits { get; }
 
@@ -65,7 +65,7 @@ public sealed class AccGridLineTraverser3D
     public IntTuple3D CellIndexStop { get; }
 
 
-    private AccGridLineTraverser3D(IAccGrid3D<IFiniteGeometricShape3D> grid, ILine3D line, Float64ScalarRange lineParamLimits)
+    private AccGridLineTraverser3D(IAccGrid3D<IFloat64FiniteGeometricShape3D> grid, IFloat64Line3D line, Float64ScalarRange lineParamLimits)
     {
         Grid = grid;
         Line = line;
@@ -277,7 +277,7 @@ public sealed class AccGridLineTraverser3D
         }
     }
 
-    public IEnumerable<IReadOnlyList<IFiniteGeometricShape3D>> GetCells()
+    public IEnumerable<IReadOnlyList<IFloat64FiniteGeometricShape3D>> GetCells()
     {
         var ix = CellIndexStart.ItemX;
         var iy = CellIndexStart.ItemY;
@@ -331,7 +331,7 @@ public sealed class AccGridLineTraverser3D
         }
     }
 
-    public IEnumerable<IReadOnlyList<IFiniteGeometricShape3D>> GetActiveCells()
+    public IEnumerable<IReadOnlyList<IFloat64FiniteGeometricShape3D>> GetActiveCells()
     {
         var ix = CellIndexStart.ItemX;
         var iy = CellIndexStart.ItemY;

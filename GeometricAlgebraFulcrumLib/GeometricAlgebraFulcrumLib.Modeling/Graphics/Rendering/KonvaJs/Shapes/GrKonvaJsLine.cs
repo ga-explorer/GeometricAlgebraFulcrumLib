@@ -1,5 +1,4 @@
-﻿using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.KonvaJs.Values;
-using GeometricAlgebraFulcrumLib.Utilities.Text;
+﻿using GeometricAlgebraFulcrumLib.Utilities.Text;
 
 namespace GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.KonvaJs.Shapes;
 
@@ -9,82 +8,12 @@ namespace GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.KonvaJs.Shapes;
 public class GrKonvaJsLine :
     GrKonvaJsShapeBase
 {
-    public class LineOptions :
-        GrKonvaJsShapeBaseOptions
-    {
-        public GrKonvaJsVector2ArrayValue? Points
-        {
-            get => GetAttributeValueOrNull<GrKonvaJsVector2ArrayValue>("Points");
-            init => SetAttributeValue("Points", value);
-        }
-        
-        public GrKonvaJsBooleanValue? Closed
-        {
-            get => GetAttributeValueOrNull<GrKonvaJsBooleanValue>("Closed");
-            init => SetAttributeValue("Closed", value);
-        }
-
-        public GrKonvaJsBooleanValue? Bezier
-        {
-            get => GetAttributeValueOrNull<GrKonvaJsBooleanValue>("Bezier");
-            init => SetAttributeValue("Bezier", value);
-        }
-        
-        public GrKonvaJsFloat32Value? Tension
-        {
-            get => GetAttributeValueOrNull<GrKonvaJsFloat32Value>("Tension");
-            init => SetAttributeValue("Tension", value);
-        }
-        
-
-        public LineOptions()
-        {
-        }
-
-        public LineOptions(LineOptions options)
-        {
-            SetAttributeValues(options);
-        }
-    }
-
-    public class LineProperties :
-        GrKonvaJsShapeBaseProperties
-    {
-        public GrKonvaJsVector2ArrayValue? Points
-        {
-            get => GetAttributeValueOrNull<GrKonvaJsVector2ArrayValue>("Points");
-            init => SetAttributeValue("Points", value);
-        }
-        
-        public GrKonvaJsBooleanValue? Closed
-        {
-            get => GetAttributeValueOrNull<GrKonvaJsBooleanValue>("Closed");
-            init => SetAttributeValue("Closed", value);
-        }
-
-        public GrKonvaJsBooleanValue? Bezier
-        {
-            get => GetAttributeValueOrNull<GrKonvaJsBooleanValue>("Bezier");
-            init => SetAttributeValue("Bezier", value);
-        }
-        
-        public GrKonvaJsFloat32Value? Tension
-        {
-            get => GetAttributeValueOrNull<GrKonvaJsFloat32Value>("Tension");
-            init => SetAttributeValue("Tension", value);
-        }
-
-
-        
-    }
-
-    
     protected override string ConstructorName
         => "new Konva.Line";
 
-    public LineOptions Options { get; private set; }
+    public GrKonvaJsLineOptions Options { get; private set; }
 
-    public LineProperties Properties { get; private set; }
+    public GrKonvaJsLineProperties Properties { get; private set; }
 
     public override GrKonvaJsObjectOptions ObjectOptions
         => Options;
@@ -96,19 +25,19 @@ public class GrKonvaJsLine :
     public GrKonvaJsLine(string constName) 
         : base(constName)
     {
-        Options = new LineOptions()
+        Options = new GrKonvaJsLineOptions()
         {
             Id = NodeId.SingleQuote(),
             Name = ConstName.SingleQuote()
         };
 
-        Properties = new LineProperties();
+        Properties = new GrKonvaJsLineProperties();
     }
     
 
-    public GrKonvaJsLine SetOptions(LineOptions options)
+    public GrKonvaJsLine SetOptions(GrKonvaJsLineOptions options)
     {
-        Options = new LineOptions(options)
+        Options = new GrKonvaJsLineOptions(options)
         {
             Id = NodeId.SingleQuote(),
             Name = ConstName.SingleQuote()
@@ -117,7 +46,7 @@ public class GrKonvaJsLine :
         return this;
     }
 
-    public GrKonvaJsLine SetProperties(LineProperties properties)
+    public GrKonvaJsLine SetProperties(GrKonvaJsLineProperties properties)
     {
         Properties = properties;
 

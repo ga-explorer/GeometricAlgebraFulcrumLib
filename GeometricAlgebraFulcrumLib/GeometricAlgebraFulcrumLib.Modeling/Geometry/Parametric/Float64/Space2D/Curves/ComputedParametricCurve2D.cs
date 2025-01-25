@@ -111,12 +111,12 @@ public class ComputedParametricCurve2D :
         GetTangentFunc =
             t =>
             {
-                const double epsilon = 1e-7;
+                const double zeroEpsilon = 1e-7;
 
-                var p1 = getPointFunc(t - epsilon);
-                var p2 = getPointFunc(t + epsilon);
+                var p1 = getPointFunc(t - zeroEpsilon);
+                var p2 = getPointFunc(t + zeroEpsilon);
 
-                return (p2 - p1) / (2 * epsilon);
+                return (p2 - p1) / (2 * zeroEpsilon);
             };
     }
 

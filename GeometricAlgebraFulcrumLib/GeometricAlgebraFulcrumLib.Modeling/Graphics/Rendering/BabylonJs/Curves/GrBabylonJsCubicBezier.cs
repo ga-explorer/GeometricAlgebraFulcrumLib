@@ -27,10 +27,10 @@ public sealed class GrBabylonJsCubicBezier :
 
     protected override IEnumerable<string> GetConstructorArguments()
     {
-        yield return Point1.GetCode();
-        yield return Point2.GetCode();
-        yield return Point3.GetCode();
-        yield return Point4.GetCode();
-        yield return PointNumber.GetCode();
+        yield return Point1.GetAttributeValueCode();
+        yield return Point2.GetAttributeValueCode();
+        yield return Point3.GetAttributeValueCode();
+        yield return Point4.GetAttributeValueCode();
+        yield return PointNumber.GetAttributeValueCode();
     }
 }

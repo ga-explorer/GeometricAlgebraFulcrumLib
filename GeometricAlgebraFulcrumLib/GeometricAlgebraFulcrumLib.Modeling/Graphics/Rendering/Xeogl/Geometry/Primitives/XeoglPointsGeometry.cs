@@ -27,7 +27,7 @@ public sealed class XeoglPointsGeometry : XeoglPrimitivesGeometry
         base.UpdateConstructorAttributes(composer);
 
         composer
-            .SetValue("primitive", PrimitiveType, GraphicsPrimitiveType3D.Triangles)
+            .SetValue("primitive", PrimitiveType, GraphicsPrimitiveType3D.TriangleList)
             .SetTextValue("positions", VertexPoints.ToJavaScriptNumbersArrayText(" // Vertex Position "), "[]")
             .SetTextValue("indices", VertexIndices.ToJavaScriptNumbersArrayText(), "[]");
     }

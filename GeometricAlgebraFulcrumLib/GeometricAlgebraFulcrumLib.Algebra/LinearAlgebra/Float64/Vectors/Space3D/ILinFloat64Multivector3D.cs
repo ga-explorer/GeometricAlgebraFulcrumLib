@@ -24,7 +24,7 @@ public interface ILinFloat64Multivector3D :
 
     bool IsZero();
 
-    bool IsNearZero(double epsilon = 1e-12d);
+    bool IsNearZero(double zeroEpsilon = 1e-12d);
 
     Float64Scalar Norm();
 

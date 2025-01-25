@@ -20,7 +20,7 @@ public class GrBabylonJsCodeValue :
     public override bool IsEmpty 
         => string.IsNullOrEmpty(ValueText);
 
-    public override string GetCode()
+    public override string GetAttributeValueCode()
     {
         return ValueText;
     }

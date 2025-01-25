@@ -9,7 +9,7 @@ public interface ILinFloat64UnilinearMap4D :
 
     bool IsIdentity();
 
-    bool IsNearIdentity(double epsilon = 1e-12d);
+    bool IsNearIdentity(double zeroEpsilon = 1e-12d);
 
     ILinFloat64UnilinearMap4D GetInverseMap();
 

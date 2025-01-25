@@ -1,7 +1,7 @@
 ﻿using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space3D;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.BasicShapes.Planes;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.BasicShapes.Planes.Immutable;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.BasicShapes.Triangles;
+using GeometricAlgebraFulcrumLib.Modeling.Geometry.BasicShapes.Planes.Space3D.Float64;
+using GeometricAlgebraFulcrumLib.Modeling.Geometry.BasicShapes.Triangles.Space2D.Float64;
+using GeometricAlgebraFulcrumLib.Modeling.Geometry.BasicShapes.Triangles.Space3D.Float64;
 
 namespace GeometricAlgebraFulcrumLib.Modeling.Graphics.Computers.Projections;
 
@@ -11,12 +11,12 @@ namespace GeometricAlgebraFulcrumLib.Modeling.Graphics.Computers.Projections;
 /// </summary>
 public class GcPlaneProjector3D
 {
-    public Plane3D Plane { get; private set; }
+    public Float64Plane3D Plane { get; private set; }
 
 
     public GcPlaneProjector3D SetPlaneFromPoints(ILinFloat64Vector3D p1, ILinFloat64Vector3D p2, ILinFloat64Vector3D p3)
     {
-        Plane = new Plane3D(
+        Plane = new Float64Plane3D(
             p1,
             p1.GetDirectionTo(p2),
             p2.GetDirectionTo(p3)
@@ -25,7 +25,7 @@ public class GcPlaneProjector3D
         return this;
     }
 
-    public GcPlaneProjector3D SetPlaneFromTriangle(ITriangle3D triangle)
+    public GcPlaneProjector3D SetPlaneFromTriangle(IFloat64Triangle3D triangle)
     {
         Plane = triangle.ToPlane();
 
@@ -34,12 +34,12 @@ public class GcPlaneProjector3D
 
     public GcPlaneProjector3D SetPlane(ILinFloat64Vector3D origin, ILinFloat64Vector3D direction1, ILinFloat64Vector3D direction2)
     {
-        Plane = new Plane3D(origin, direction1, direction2);
+        Plane = new Float64Plane3D(origin, direction1, direction2);
 
         return this;
     }
 
-    public GcPlaneProjector3D SetPlane(IPlane3D plane)
+    public GcPlaneProjector3D SetPlane(IFloat64Plane3D plane)
     {
         Plane = plane.ToPlane();
 

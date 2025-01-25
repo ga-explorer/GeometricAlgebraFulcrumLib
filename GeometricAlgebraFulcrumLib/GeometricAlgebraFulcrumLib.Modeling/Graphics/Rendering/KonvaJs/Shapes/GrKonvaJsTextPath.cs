@@ -1,5 +1,4 @@
-﻿using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.KonvaJs.Values;
-using GeometricAlgebraFulcrumLib.Utilities.Text;
+﻿using GeometricAlgebraFulcrumLib.Utilities.Text;
 
 namespace GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.KonvaJs.Shapes;
 
@@ -9,81 +8,12 @@ namespace GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.KonvaJs.Shapes;
 public class GrKonvaJsTextPath :
     GrKonvaJsShapeBase
 {
-    public class TextPathOptions :
-        GrKonvaJsShapeBaseOptions
-    {
-        public GrKonvaJsStringValue? Text
-        {
-            get => GetAttributeValueOrNull<GrKonvaJsStringValue>("Text");
-            set => SetAttributeValue("Text", value);
-        }
-
-        public GrKonvaJsStringValue? FontFamily
-        {
-            get => GetAttributeValueOrNull<GrKonvaJsStringValue>("fontFamily");
-            set => SetAttributeValue("fontFamily", value);
-        }
-        
-        public GrKonvaJsFloat32Value? FontSize
-        {
-            get => GetAttributeValueOrNull<GrKonvaJsFloat32Value>("fontSize");
-            set => SetAttributeValue("fontSize", value);
-        }
-        
-        public GrKonvaJsTextFontStyleValue? FontStyle
-        {
-            get => GetAttributeValueOrNull<GrKonvaJsTextFontStyleValue>("fontStyle");
-            set => SetAttributeValue("fontStyle", value);
-        }
-        
-        public GrKonvaJsTextFontVariantValue? FontVariant
-        {
-            get => GetAttributeValueOrNull<GrKonvaJsTextFontVariantValue>("FontVariant");
-            set => SetAttributeValue("FontVariant", value);
-        }
-
-        public GrKonvaJsPathDataValue? Data
-        {
-            get => GetAttributeValueOrNull<GrKonvaJsPathDataValue>("Data");
-            set => SetAttributeValue("Data", value);
-        }
-        
-        public GrKonvaJsCodeValue? KerningFunc
-        {
-            get => GetAttributeValueOrNull<GrKonvaJsCodeValue>("kerningFunc");
-            set => SetAttributeValue("kerningFunc", value);
-        }
-
-
-        public TextPathOptions()
-        {
-        }
-
-        public TextPathOptions(TextPathOptions options)
-        {
-            SetAttributeValues(options);
-        }
-    }
-
-    public class TextPathProperties :
-        GrKonvaJsShapeBaseProperties
-    {
-        public GrKonvaJsFloat32Value? Radius
-        {
-            get => GetAttributeValueOrNull<GrKonvaJsFloat32Value>("Radius");
-            set => SetAttributeValue("Radius", value);
-        }
-
-        
-    }
-
-    
     protected override string ConstructorName
         => "new Konva.TextPath";
 
-    public TextPathOptions Options { get; private set; }
+    public GrKonvaJsTextPathOptions Options { get; private set; }
 
-    public TextPathProperties Properties { get; private set; }
+    public GrKonvaJsTextPathProperties Properties { get; private set; }
 
     public override GrKonvaJsObjectOptions ObjectOptions
         => Options;
@@ -95,19 +25,19 @@ public class GrKonvaJsTextPath :
     public GrKonvaJsTextPath(string constName) 
         : base(constName)
     {
-        Options = new TextPathOptions
+        Options = new GrKonvaJsTextPathOptions
         {
             Id = NodeId.SingleQuote(),
             Name = ConstName.SingleQuote()
         };
 
-        Properties = new TextPathProperties();
+        Properties = new GrKonvaJsTextPathProperties();
     }
     
 
-    public GrKonvaJsTextPath SetOptions(TextPathOptions options)
+    public GrKonvaJsTextPath SetOptions(GrKonvaJsTextPathOptions options)
     {
-        Options = new TextPathOptions(options)
+        Options = new GrKonvaJsTextPathOptions(options)
         {
             Id = NodeId.SingleQuote(),
             Name = ConstName.SingleQuote()
@@ -116,7 +46,7 @@ public class GrKonvaJsTextPath :
         return this;
     }
 
-    public GrKonvaJsTextPath SetProperties(TextPathProperties properties)
+    public GrKonvaJsTextPath SetProperties(GrKonvaJsTextPathProperties properties)
     {
         Properties = properties;
 

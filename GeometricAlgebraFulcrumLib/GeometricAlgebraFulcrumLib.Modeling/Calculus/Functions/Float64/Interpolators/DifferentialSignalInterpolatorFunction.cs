@@ -10,7 +10,7 @@ public abstract class DifferentialSignalInterpolatorFunction :
 
     public int SampleIndex2 { get; }
 
-    public Float64SignalSamplingSpecs SamplingSpecs { get; }
+    public Float64SamplingSpecs SamplingSpecs { get; }
 
     public double MinVarValue
         => SamplingSpecs.SamplingRate * SampleIndex1;
@@ -20,7 +20,7 @@ public abstract class DifferentialSignalInterpolatorFunction :
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    protected DifferentialSignalInterpolatorFunction(Float64SignalSamplingSpecs samplingSpecs, int sampleIndex1, int sampleIndex2)
+    protected DifferentialSignalInterpolatorFunction(Float64SamplingSpecs samplingSpecs, int sampleIndex1, int sampleIndex2)
     {
         SamplingSpecs = samplingSpecs;
         SampleIndex1 = sampleIndex1;

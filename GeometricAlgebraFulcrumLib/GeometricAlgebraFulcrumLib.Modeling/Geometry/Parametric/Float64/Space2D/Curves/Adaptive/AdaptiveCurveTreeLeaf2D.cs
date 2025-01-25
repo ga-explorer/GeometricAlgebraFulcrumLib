@@ -1,6 +1,5 @@
 ﻿using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space2D;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.BasicShapes.Lines;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.BasicShapes.Lines.Immutable;
+using GeometricAlgebraFulcrumLib.Modeling.Geometry.BasicShapes.Lines.Space2D.Float64;
 
 namespace GeometricAlgebraFulcrumLib.Modeling.Geometry.Parametric.Float64.Space2D.Curves.Adaptive;
 
@@ -29,9 +28,9 @@ public sealed class AdaptiveCurveTreeLeaf2D :
     }
 
 
-    public ILineSegment2D GetLineSegment()
+    public IFloat64LineSegment2D GetLineSegment()
     {
-        return LineSegment2D.Create(
+        return Float64LineSegment2D.Create(
             Frame0.Point,
             Frame1.Point
         );

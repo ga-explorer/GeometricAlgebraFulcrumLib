@@ -1,7 +1,6 @@
-﻿using System;
-using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Matrices;
+﻿using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Matrices;
 
-namespace GeometricAlgebraFulcrumLib.Samples.Algebra.LinearAlgebra
+namespace GeometricAlgebraFulcrumLib.Algebra.Samples.Algebra.LinearAlgebra
 {
     public static class ArraySamples
     {

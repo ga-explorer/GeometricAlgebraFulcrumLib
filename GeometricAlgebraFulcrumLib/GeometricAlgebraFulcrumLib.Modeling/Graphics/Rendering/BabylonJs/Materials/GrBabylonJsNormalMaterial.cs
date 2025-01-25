@@ -8,50 +8,11 @@ namespace GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.BabylonJs.Mater
 public sealed class GrBabylonJsNormalMaterial :
     GrBabylonJsMaterial
 {
-    public sealed class NormalMaterialProperties :
-        MaterialProperties
-    {
-        public GrBabylonJsColor3Value? DiffuseColor
-        {
-            get => GetAttributeValueOrNull<GrBabylonJsColor3Value>("diffuseColor");
-            set => SetAttributeValue("diffuseColor", value);
-        }
-        
-        public GrBabylonJsTextureValue? DiffuseTexture
-        {
-            get => GetAttributeValueOrNull<GrBabylonJsTextureValue>("diffuseTexture");
-            set => SetAttributeValue("diffuseTexture", value);
-        }
-        
-        public GrBabylonJsInt32Value? MaxSimultaneousLights
-        {
-            get => GetAttributeValueOrNull<GrBabylonJsInt32Value>("disableLighting");
-            set => SetAttributeValue("disableLighting", value);
-        }
-
-        public GrBabylonJsBooleanValue? DisableLighting
-        {
-            get => GetAttributeValueOrNull<GrBabylonJsBooleanValue>("maxSimultaneousLights");
-            set => SetAttributeValue("maxSimultaneousLights", value);
-        }
-
-
-        public NormalMaterialProperties()
-        {
-        }
-
-        public NormalMaterialProperties(NormalMaterialProperties properties)
-        {
-            SetAttributeValues(properties);
-        }
-    }
-
-
     protected override string ConstructorName
         => "new BABYLON.NormalMaterial";
 
-    public NormalMaterialProperties Properties { get; private set; }
-        = new NormalMaterialProperties();
+    public GrBabylonJsNormalMaterialProperties Properties { get; private set; }
+        = new GrBabylonJsNormalMaterialProperties();
     
     public override GrBabylonJsObjectProperties ObjectProperties 
         => Properties;
@@ -68,9 +29,9 @@ public sealed class GrBabylonJsNormalMaterial :
     }
 
 
-    public GrBabylonJsNormalMaterial SetProperties(NormalMaterialProperties properties)
+    public GrBabylonJsNormalMaterial SetProperties(GrBabylonJsNormalMaterialProperties properties)
     {
-        Properties = new NormalMaterialProperties(properties);
+        Properties = new GrBabylonJsNormalMaterialProperties(properties);
 
         return this;
     }

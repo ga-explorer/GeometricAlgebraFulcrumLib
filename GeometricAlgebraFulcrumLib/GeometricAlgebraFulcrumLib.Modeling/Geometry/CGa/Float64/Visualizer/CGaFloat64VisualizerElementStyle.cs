@@ -6,10 +6,9 @@ using SixLabors.ImageSharp;
 namespace GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Float64.Visualizer;
 
 public abstract record CGaFloat64VisualizerElementStyle :
-    GeometryVisualizerElementStyle
+    GrBabylonJsGeometryVisualizerElementStyle
 {
-    public CGaFloat64Visualizer ConformalVisualizer
-        => (CGaFloat64Visualizer)Visualizer;
+    public CGaFloat64Visualizer ConformalVisualizer { get; }
 
     public bool DrawPosition { get; protected set; }
 
@@ -60,8 +59,9 @@ public abstract record CGaFloat64VisualizerElementStyle :
 
 
     protected CGaFloat64VisualizerElementStyle(CGaFloat64Visualizer visualizer, double thickness, bool drawPosition = false, double directionRadius = 0, double normalDirectionRadius = 0, double auxGeometryColorAlpha = 0.4)
-        : base(visualizer, thickness)
+        : base(visualizer.AnimationComposer, thickness)
     {
+        ConformalVisualizer = visualizer;
         DrawPosition = drawPosition;
         DirectionRadius = directionRadius;
         NormalDirectionRadius = normalDirectionRadius;
@@ -72,7 +72,7 @@ public abstract record CGaFloat64VisualizerElementStyle :
     public GrVisualCurveTubeStyle3D GetVectorVisualStyle(Color color)
     {
         return new GrVisualCurveTubeStyle3D(
-            Visualizer.MainSceneComposer.AddOrGetColorMaterial(color),
+            AnimationComposer.SceneComposer.AddOrGetColorMaterial(color),
             Thickness
         );
     }
@@ -80,7 +80,7 @@ public abstract record CGaFloat64VisualizerElementStyle :
     public GrVisualCurveTubeStyle3D GetVectorVisualStyle(Color color, double thickness)
     {
         return new GrVisualCurveTubeStyle3D(
-            Visualizer.MainSceneComposer.AddOrGetColorMaterial(color),
+            AnimationComposer.SceneComposer.AddOrGetColorMaterial(color),
             thickness
         );
     }
@@ -88,7 +88,7 @@ public abstract record CGaFloat64VisualizerElementStyle :
     public GrVisualCurveTubeStyle3D GetBivectorVisualStyle(Color color, double thickness)
     {
         return new GrVisualCurveTubeStyle3D(
-            Visualizer.MainSceneComposer.AddOrGetColorMaterial(color),
+            AnimationComposer.SceneComposer.AddOrGetColorMaterial(color),
             thickness
         );
     }
@@ -96,7 +96,7 @@ public abstract record CGaFloat64VisualizerElementStyle :
     public GrVisualSurfaceThickStyle3D GetPointVisualStyle(Color color)
     {
         return new GrVisualSurfaceThickStyle3D(
-            Visualizer.MainSceneComposer.AddOrGetColorMaterial(color),
+            AnimationComposer.SceneComposer.AddOrGetColorMaterial(color),
             Thickness
         );
     }
@@ -104,7 +104,7 @@ public abstract record CGaFloat64VisualizerElementStyle :
     public GrVisualSurfaceThickStyle3D GetPointVisualStyle(Color color, double thickness)
     {
         return new GrVisualSurfaceThickStyle3D(
-            Visualizer.MainSceneComposer.AddOrGetColorMaterial(color),
+            AnimationComposer.SceneComposer.AddOrGetColorMaterial(color),
             thickness
         );
     }
@@ -112,7 +112,7 @@ public abstract record CGaFloat64VisualizerElementStyle :
     public GrVisualCurveTubeStyle3D GetLineVisualStyle(Color color)
     {
         return new GrVisualCurveTubeStyle3D(
-            Visualizer.MainSceneComposer.AddOrGetColorMaterial(color),
+            AnimationComposer.SceneComposer.AddOrGetColorMaterial(color),
             Thickness
         );
     }
@@ -120,7 +120,7 @@ public abstract record CGaFloat64VisualizerElementStyle :
     public GrVisualCurveTubeStyle3D GetLineVisualStyle(Color color, double thickness)
     {
         return new GrVisualCurveTubeStyle3D(
-            Visualizer.MainSceneComposer.AddOrGetColorMaterial(color),
+            AnimationComposer.SceneComposer.AddOrGetColorMaterial(color),
             thickness
         );
     }
@@ -128,7 +128,7 @@ public abstract record CGaFloat64VisualizerElementStyle :
     public GrVisualSurfaceThinStyle3D GetPlaneVisualStyle(Color color)
     {
         return new GrVisualSurfaceThinStyle3D(
-            Visualizer.MainSceneComposer.AddOrGetColorMaterial(color)
+            AnimationComposer.SceneComposer.AddOrGetColorMaterial(color)
         );
     }
 }

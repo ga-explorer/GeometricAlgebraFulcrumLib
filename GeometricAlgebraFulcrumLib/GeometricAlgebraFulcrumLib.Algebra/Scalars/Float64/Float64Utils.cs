@@ -13,6 +13,8 @@ namespace GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
 /// </summary>
 public static class Float64Utils
 {
+    public const double ZeroEpsilon = 1e-12;
+
     //public static double MachineEpsilon { get; }
     //    = Precision.PositiveMachineEpsilon;
 
@@ -106,9 +108,9 @@ public static class Float64Utils
 
 
     ///// <summary>
-    ///// use of machine epsilon to compare floating-point values for
+    ///// use of machine zeroEpsilon to compare floating-point values for
     ///// equality
-    ///// http://en.cppreference.com/w/cpp/types/numeric_limits/epsilon
+    ///// http://en.cppreference.com/w/cpp/types/numeric_limits/zeroEpsilon
     ///// </summary>
     ///// <param name="a"></param>
     ///// <param name="b"></param>
@@ -124,7 +126,7 @@ public static class Float64Utils
 
     //    var absDiff = Math.Abs(a - b);
 
-    //    // the machine epsilon has to be scaled to the magnitude of the
+    //    // the machine zeroEpsilon has to be scaled to the magnitude of the
     //    // values used and multiplied by the desired precision in ULPs
     //    // (units in the last place) unless the result is subnormal
     //    return absDiff <= Precision.PositiveMachineEpsilon * Math.Abs(a + b) * ulp ||
@@ -132,7 +134,7 @@ public static class Float64Utils
     //}
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static bool IsNearEqual(this double a, double b, double epsilon = 1e-7)
+    public static bool IsNearEqual(this double a, double b, double zeroEpsilon = Float64Utils.ZeroEpsilon)
     {
         Debug.Assert(!double.IsNaN(a) && !double.IsNaN(b));
 
@@ -141,7 +143,7 @@ public static class Float64Utils
 
         var x = a - b;
 
-        return x >= -epsilon && x <= epsilon;
+        return x >= -zeroEpsilon && x <= zeroEpsilon;
     }
 
     //[MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -184,6 +186,12 @@ public static class Float64Utils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static bool IsFinite(this double value)
+    {
+        return double.IsFinite(value);
+    }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static bool IsInteger(this double value)
     {
         return Math.Truncate(value) == value;
@@ -214,7 +222,7 @@ public static class Float64Utils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static bool IsNearInRange(this double x, double value1, double value2, double epsilon = 1e-12d)
+    public static bool IsNearInRange(this double x, double value1, double value2, double zeroEpsilon = Float64Utils.ZeroEpsilon)
     {
         Debug.Assert(
             !double.IsNaN(x) &&
@@ -223,7 +231,7 @@ public static class Float64Utils
             value1 < value2
         );
 
-        return !(double.IsInfinity(x) || x < value1 - epsilon || x > value2 + epsilon);
+        return !(double.IsInfinity(x) || x < value1 - zeroEpsilon || x > value2 + zeroEpsilon);
     }
 
     //[MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -314,28 +322,28 @@ public static class Float64Utils
     //}
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static bool IsNearZero(this double x, double epsilon = 1e-12d)
+    public static bool IsNearZero(this double x, double zeroEpsilon = Float64Utils.ZeroEpsilon)
     {
         Debug.Assert(
             !double.IsNaN(x) && 
-            !double.IsNaN(epsilon) && 
-            double.IsFinite(epsilon) && 
-            epsilon >= 0
+            !double.IsNaN(zeroEpsilon) && 
+            double.IsFinite(zeroEpsilon) && 
+            zeroEpsilon >= 0
         );
 
-        return !(double.IsInfinity(x) || x < -epsilon || x > epsilon);
+        return !(double.IsInfinity(x) || x < -zeroEpsilon || x > zeroEpsilon);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static bool IsNearOne(this double x, double epsilon = 1e-12d)
+    public static bool IsNearOne(this double x, double zeroEpsilon = Float64Utils.ZeroEpsilon)
     {
-        return (x - 1d).IsNearZero(epsilon);
+        return (x - 1d).IsNearZero(zeroEpsilon);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static bool IsNearMinusOne(this double x, double epsilon = 1e-12d)
+    public static bool IsNearMinusOne(this double x, double zeroEpsilon = Float64Utils.ZeroEpsilon)
     {
-        return (x + 1d).IsNearZero(epsilon);
+        return (x + 1d).IsNearZero(zeroEpsilon);
     }
 
     ///// <summary>
@@ -490,6 +498,30 @@ public static class Float64Utils
     {
         return Math.Round(number, decimalPlaces, mode);
     }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static int CeilingToInt32(this double number)
+    {
+        return (int)Math.Ceiling(number);
+    }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static long CeilingToInt64(this double number)
+    {
+        return (long)Math.Ceiling(number);
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static int FloorToInt32(this double number)
+    {
+        return (int)Math.Floor(number);
+    }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static long FloorToInt64(this double number)
+    {
+        return (long)Math.Floor(number);
+    }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static int RoundToInt32(this double number)
@@ -502,13 +534,19 @@ public static class Float64Utils
     {
         return (long)Math.Round(number);
     }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static double ClampToUnit(this double scalar)
     {
-        if (scalar < 0.0d) return 0.0d;
-        if (scalar > 1.0d) return 1.0d;
-        return scalar;
+        return scalar switch
+        {
+            < 0.0d => 0.0d,
+            > 1.0d => 1.0d,
+            _ => scalar
+        };
     }
-
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static double ClampTo(this double scalar, double maxValue)
     {
         if (scalar < 0.0d) return 0.0d;
@@ -831,9 +869,9 @@ public static class Float64Utils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static double NearZeroToZero(this double number, double epsilon = 1e-12)
+    public static double NearZeroToZero(this double number, double zeroEpsilon = Float64Utils.ZeroEpsilon)
     {
-        return number.IsNearZero(epsilon) ? 0d : number;
+        return number.IsNearZero(zeroEpsilon) ? 0d : number;
     }
 
     
@@ -862,6 +900,17 @@ public static class Float64Utils
         
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static double Lerp(this double t, IPair<double> valuePair)
+    {
+        var v1 = valuePair.Item1;
+        var v2 = valuePair.Item2;
+
+        Debug.Assert(!double.IsNaN(v1) && !double.IsNaN(v2) && !double.IsNaN(t));
+
+        return (1.0d - t) * v1 + t * v2;
+    }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static double Lerp(this double t, IPair<Float64Scalar> valuePair)
     {
         var v1 = valuePair.Item1;
         var v2 = valuePair.Item2;
@@ -994,6 +1043,17 @@ public static class Float64Utils
 
         return value1 + 0.5d * (1d - Math.Cos(2d * Math.PI * t)) * (value2 - value1);
     }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static double CosWave(this double t, IPair<Float64Scalar> valuePair, int cycleCount = 1)
+    {
+        var value1 = valuePair.Item1;
+        var value2 = valuePair.Item2;
+            
+        t = (cycleCount * t).ClampPeriodic(1);
+
+        return value1 + 0.5d * (1d - Math.Cos(2d * Math.PI * t)) * (value2 - value1);
+    }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static double TriangleWave(this double t, double value1, double value2, int cycleCount = 1)
@@ -1007,6 +1067,19 @@ public static class Float64Utils
         
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static double TriangleWave(this double t, IPair<double> valuePair, int cycleCount = 1)
+    {
+        var value1 = valuePair.Item1;
+        var value2 = valuePair.Item2;
+            
+        t = (cycleCount * t).ClampPeriodic(1);
+
+        return t <= 0.5d
+            ? value1 + 2 * t * (value2 - value1)
+            : value1 + 2 * (1d - t) * (value2 - value1);
+    }
+     
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static double TriangleWave(this double t, IPair<Float64Scalar> valuePair, int cycleCount = 1)
     {
         var value1 = valuePair.Item1;
         var value2 = valuePair.Item2;
@@ -1065,7 +1138,7 @@ public static class Float64Utils
         };
     }
     
-
+    
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static double ClampPeriodic(this double value, double minValue, double maxValue)
     {
@@ -1089,6 +1162,25 @@ public static class Float64Utils
         //value > maxValue
         if (value > maxValue)
             return value - Math.Truncate(value / maxValue) * maxValue;
+
+        //0 <= value <= maxValue
+        return value;
+    }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static double ClampPeriodicToUnit(this double value)
+    {
+        //value < -maxValue
+        if (value < -1)
+            return value + Math.Ceiling(-value);
+
+        //-maxValue <= value < 0
+        if (value < 0)
+            return value + 1;
+
+        //value > maxValue
+        if (value > 1)
+            return value - Math.Truncate(value);
 
         //0 <= value <= maxValue
         return value;

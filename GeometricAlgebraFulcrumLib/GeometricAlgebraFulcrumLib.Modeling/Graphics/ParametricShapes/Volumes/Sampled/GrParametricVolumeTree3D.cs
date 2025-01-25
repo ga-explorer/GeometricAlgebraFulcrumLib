@@ -1,8 +1,7 @@
 ﻿using System.Runtime.CompilerServices;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space3D;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.Borders.Space3D;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.Borders.Space3D.Immutable;
+using GeometricAlgebraFulcrumLib.Modeling.Geometry.Borders.Space3D.Float64;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.Parametric.Float64.Space3D.Curves.Adaptive;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Basic;
 
@@ -144,7 +143,7 @@ public sealed class GrParametricVolumeTree3D :
     public IReadOnlyList<GrParametricVolumeTreeLeaf3D> LeafNodesList 
         => _leafNodeList;
         
-    public IBoundingBox3D ParameterValueRange { get; }
+    public IFloat64BoundingBox3D ParameterValueRange { get; }
 
     public double MinParameterValue1 
         => ParameterValueRange.MinX;
@@ -173,7 +172,7 @@ public sealed class GrParametricVolumeTree3D :
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public GrParametricVolumeTree3D(IGraphicsParametricVolume3D surface, IBoundingBox3D parameterValueRange)
+    public GrParametricVolumeTree3D(IGraphicsParametricVolume3D surface, IFloat64BoundingBox3D parameterValueRange)
     {
         Volume = surface;
         ParameterValueRange = parameterValueRange;
@@ -184,7 +183,7 @@ public sealed class GrParametricVolumeTree3D :
     public GrParametricVolumeTree3D(IGraphicsParametricVolume3D surface)
     {
         Volume = surface;
-        ParameterValueRange = BoundingBox3D.Create(0, 0, 0, 1, 1, 1);
+        ParameterValueRange = Float64BoundingBox3D.Create(0, 0, 0, 1, 1, 1);
         RootNode = null;
     }
 

@@ -4,8 +4,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space3D;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.Borders.Space3D;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.Borders.Space3D.Immutable;
+using GeometricAlgebraFulcrumLib.Modeling.Geometry.Borders.Space3D.Float64;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Basic;
 using LinFloat64Vector3DAffineUtils = GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space3D.LinFloat64Vector3DAffineUtils;
 
@@ -291,8 +290,8 @@ public abstract class GrParametricVolumeTreeNode3D:
     public double MaxParameterValue3
         => Frame111.ParameterValue.Item3;
 
-    public IBoundingBox3D ParameterValueRange 
-        => BoundingBox3D.Create(
+    public IFloat64BoundingBox3D ParameterValueRange 
+        => Float64BoundingBox3D.Create(
             MinParameterValue1,
             MinParameterValue2,
             MinParameterValue3,

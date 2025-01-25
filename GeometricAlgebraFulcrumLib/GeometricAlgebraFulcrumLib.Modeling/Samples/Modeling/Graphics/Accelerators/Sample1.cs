@@ -1,8 +1,7 @@
 ﻿using GeometricAlgebraFulcrumLib.Modeling.Geometry;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.BasicShapes.Lines;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.BasicShapes.Lines.Immutable;
+using GeometricAlgebraFulcrumLib.Modeling.Geometry.BasicShapes.Lines.Space2D.Float64;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.Borders;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.Borders.Space2D.Immutable;
+using GeometricAlgebraFulcrumLib.Modeling.Geometry.Borders.Space2D.Float64;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Accelerators;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Accelerators.BIH;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.Svg.DrawingBoard;
@@ -23,11 +22,11 @@ public static class Sample1
     {
         var randGen = new Random(10);
 
-        var boundingBox = BoundingBox2D.Create(-160, -160, 120, 120);
+        var boundingBox = Float64BoundingBox2D.Create(-160, -160, 120, 120);
         var divisions = boundingBox.GetSubdivisions(8, 8);
 
         //Generate one object per bounding box division
-        var objectsList = new List<ILineSegment2D>();
+        var objectsList = new List<IFloat64LineSegment2D>();
         for (var ix = 0; ix < divisions.GetLength(0) - 1; ix++)
             for (var iy = 0; iy < divisions.GetLength(1) - 1; iy++)
             {
@@ -40,7 +39,7 @@ public static class Sample1
                 var p1 = randGen.GetPointInside(divisions[ix, iy]);
                 var p2 = randGen.GetPointInside(divisions[ix + 1, iy + 1]);
 
-                var lineSegment = LineSegment2D.Create(p1, p2);
+                var lineSegment = Float64LineSegment2D.Create(p1, p2);
 
                 objectsList.Add(lineSegment);
             }

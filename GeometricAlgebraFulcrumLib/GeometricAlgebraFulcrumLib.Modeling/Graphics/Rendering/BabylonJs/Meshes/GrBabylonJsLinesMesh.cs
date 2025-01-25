@@ -6,40 +6,13 @@ namespace GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.BabylonJs.Meshe
 public abstract class GrBabylonJsLinesMesh :
     GrBabylonJsObject
 {
-    public sealed class LinesMeshProperties :
-        GrBabylonJsMesh.MeshProperties
-    {
-        public GrBabylonJsColor3Value? Color
-        {
-            get => GetAttributeValueOrNull<GrBabylonJsColor3Value>("color");
-            set => SetAttributeValue("color", value);
-        }
-
-        public GrBabylonJsFloat32Value? Alpha
-        {
-            get => GetAttributeValueOrNull<GrBabylonJsFloat32Value>("alpha");
-            set => SetAttributeValue("alpha", value);
-        }
-
-
-        public LinesMeshProperties()
-        {
-        }
-
-        public LinesMeshProperties(LinesMeshProperties properties)
-        {
-            SetAttributeValues(properties);
-        }
-    }
-
-
     public GrBabylonJsSceneValue ParentScene { get; set; }
 
     public string SceneVariableName 
         => ParentScene.Value.ConstName;
 
-    public LinesMeshProperties Properties { get; protected set; }
-        = new LinesMeshProperties();
+    public GrBabylonJsLinesMeshProperties Properties { get; protected set; }
+        = new GrBabylonJsLinesMeshProperties();
 
     public override GrBabylonJsObjectProperties ObjectProperties 
         => Properties;
@@ -66,7 +39,7 @@ public abstract class GrBabylonJsLinesMesh :
         var optionsCode = 
             ObjectOptions is null 
                 ? "{}" 
-                : ObjectOptions.GetCode();
+                : ObjectOptions.GetAttributeSetCode();
 
         yield return optionsCode;
 

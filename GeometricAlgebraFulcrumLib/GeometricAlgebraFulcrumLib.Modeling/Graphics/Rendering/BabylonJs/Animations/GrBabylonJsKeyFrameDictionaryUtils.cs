@@ -16,7 +16,7 @@ public static class GrBabylonJsKeyFrameDictionaryUtils
         var (x2, y2) = pointList[index2];
         var dx = x2 - x1;
         var dy = y2 - y1;
-        var epsilon = dx * yEpsilon;
+        var zeroEpsilon = dx * yEpsilon;
 
         for (var i = index1 + 1; i < index2; i++)
         {
@@ -24,7 +24,7 @@ public static class GrBabylonJsKeyFrameDictionaryUtils
 
             var yh = dx * (y - y1) - dy * (x - x1);
 
-            if (Math.Abs(yh) > epsilon) 
+            if (Math.Abs(yh) > zeroEpsilon) 
                 return false;
         }
 
@@ -37,7 +37,7 @@ public static class GrBabylonJsKeyFrameDictionaryUtils
         var (x2, y2) = pointList[index2];
         var dx = x2 - x1;
         var dy = y2 - y1;
-        var epsilon = dx * yEpsilon;
+        var zeroEpsilon = dx * yEpsilon;
 
         for (var i = index1 + 1; i < index2; i++)
         {
@@ -45,7 +45,7 @@ public static class GrBabylonJsKeyFrameDictionaryUtils
 
             var yh = dx * (y - y1) - dy * (x - x1);
 
-            if (yh.VectorENorm() > epsilon) 
+            if (yh.VectorENorm() > zeroEpsilon) 
                 return false;
         }
 
@@ -58,7 +58,7 @@ public static class GrBabylonJsKeyFrameDictionaryUtils
         var (x2, y2) = pointList[index2];
         var dx = x2 - x1;
         var dy = y2 - y1;
-        var epsilon = dx * yEpsilon;
+        var zeroEpsilon = dx * yEpsilon;
 
         for (var i = index1 + 1; i < index2; i++)
         {
@@ -66,7 +66,7 @@ public static class GrBabylonJsKeyFrameDictionaryUtils
 
             var yh = dx * (y - y1) - dy * (x - x1);
 
-            if (yh.VectorENorm() > epsilon) 
+            if (yh.VectorENorm() > zeroEpsilon) 
                 return false;
         }
 
@@ -79,7 +79,7 @@ public static class GrBabylonJsKeyFrameDictionaryUtils
         var (x2, y2) = pointList[index2];
         var dx = x2 - x1;
         var dy = y2 - y1;
-        var epsilon = dx * yEpsilon;
+        var zeroEpsilon = dx * yEpsilon;
 
         for (var i = index1 + 1; i < index2; i++)
         {
@@ -87,7 +87,7 @@ public static class GrBabylonJsKeyFrameDictionaryUtils
 
             var yh = dx * (y - y1) - dy * (x - x1);
 
-            if (yh.Norm() > epsilon) 
+            if (yh.Norm() > zeroEpsilon) 
                 return false;
         }
 

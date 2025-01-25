@@ -244,57 +244,44 @@ public static class LinFloat64Vector3DAffineUtils
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static LinFloat64Vector3D GetTriangleInverseUnitNormal(ITriplet<Float64Scalar> p1, ITriplet<Float64Scalar> p2, ITriplet<Float64Scalar> p3)
     {
-        //TODO: Test this for numerical stability, maybe select two sides with largest lengths
+        //TODO: Test this for numerical stability, maybe select two sides with the largest lengths
         var v12 = LinFloat64Vector3D.Create(p2.Item1 - p1.Item1, p2.Item2 - p1.Item2, p2.Item3 - p1.Item3);
         var v23 = LinFloat64Vector3D.Create(p3.Item1 - p2.Item1, p3.Item2 - p2.Item2, p3.Item3 - p2.Item3);
 
         return v12.VectorUnitCross(v23);
     }
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinUnitBasisVector3D GetNormal(this LinUnitBasisVector3D vector)
-    {
-        return vector switch
-        {
-            LinUnitBasisVector3D.PositiveX => LinUnitBasisVector3D.PositiveY,
-            LinUnitBasisVector3D.PositiveY => LinUnitBasisVector3D.PositiveZ,
-            LinUnitBasisVector3D.PositiveZ => LinUnitBasisVector3D.PositiveX,
-            LinUnitBasisVector3D.NegativeX => LinUnitBasisVector3D.NegativeY,
-            LinUnitBasisVector3D.NegativeY => LinUnitBasisVector3D.NegativeZ,
-            _ => LinUnitBasisVector3D.NegativeX
-        };
-    }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinUnitBasisVector3D GetUnitNormal(this LinUnitBasisVector3D vector)
+    public static LinBasisVector3D GetNormal(this LinBasisVector3D vector)
     {
-        return vector switch
-        {
-            LinUnitBasisVector3D.PositiveX => LinUnitBasisVector3D.PositiveY,
-            LinUnitBasisVector3D.PositiveY => LinUnitBasisVector3D.PositiveZ,
-            LinUnitBasisVector3D.PositiveZ => LinUnitBasisVector3D.PositiveX,
-            LinUnitBasisVector3D.NegativeX => LinUnitBasisVector3D.NegativeY,
-            LinUnitBasisVector3D.NegativeY => LinUnitBasisVector3D.NegativeZ,
-            _ => LinUnitBasisVector3D.NegativeX
-        };
+        return vector.NextBasisVector();
     }
-
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static LinBasisVector3D GetUnitNormal(this LinBasisVector3D vector)
+    {
+        return vector.NextBasisVector();
+    }
+    
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static LinFloat64Vector3D GetNormal(this ITriplet<Float64Scalar> vector)
     {
-        if (vector.Item2.IsZero() && vector.Item3.IsZero())
-        {
-            var s = Math.Sign(vector.Item1);
-
-            return LinFloat64Vector3D.Create(0d, s, 0d);
-        }
+        if (vector.IsZeroVector())
+            return LinFloat64Vector3D.E1;
 
         // For smoother motions, find the quaternion q that
-        // rotates e1 to vector, then use q to rotate e2
-        return LinUnitBasisVector3D
-            .PositiveX
-            .CreateAxisToVectorRotationQuaternion(vector.ToUnitLinVector3D())
-            .RotateVector(LinUnitBasisVector3D.PositiveY);
+        // rotates nearest basis vector e1 to vector, then use q to
+        // rotate e2; the basis vector following e1
+        var e1 = vector.SelectNearestBasisVector();
+        var e2 = e1.NextBasisVector();
+
+        if (vector.GetAngleCos(e1).IsNearOne())
+            return e2.ToLinVector3D();
+
+        return e1
+            .VectorToVectorRotationQuaternion(vector.ToUnitLinVector3D())
+            .RotateVector(e2);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -304,31 +291,61 @@ public static class LinFloat64Vector3DAffineUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static LinFloat64Vector3D GetUnitNormal(this ITriplet<Float64Scalar> vector)
+    {
+        return vector.GetNormal();
+    }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static Pair<LinBasisVector3D> GetNormalPair(this LinBasisVector3D vector)
+    {
+        var e1 = vector.NextBasisVector();
+        var e2 = e1.NextBasisVector();
+
+        return new Pair<LinBasisVector3D>(e1, e2);
+    }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static Pair<LinBasisVector3D> GetUnitNormalPair(this LinBasisVector3D vector)
+    {
+        return vector.GetNormalPair();
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Pair<LinFloat64Vector3D> GetNormalPair(this ITriplet<Float64Scalar> vector)
     {
-        if (vector.Item2.IsZero() && vector.Item3.IsZero())
-        {
-            var s = Math.Sign(vector.Item1);
-
-            if (s == 0)
-                s = 1;
-
+        if (vector.IsZeroVector())
             return new Pair<LinFloat64Vector3D>(
-                LinFloat64Vector3D.Create(0d, s, 0d),
-                LinFloat64Vector3D.Create(0d, 0d, s)
+                LinFloat64Vector3D.E1,
+                LinFloat64Vector3D.E2
             );
-        }
+
+        // For smoother motions, find the quaternion q that
+        // rotates nearest basis vector e1 to vector, then use q to
+        // rotate e2; the basis vector following e1
+        var e1 = vector.SelectNearestBasisVector();
+        var e2 = e1.NextBasisVector();
+        var e3 = e2.NextBasisVector();
+        
+        if (vector.GetAngleCos(e1).IsNearOne())
+            return new Pair<LinFloat64Vector3D>(
+                e2.ToLinVector3D(), 
+                e3.ToLinVector3D()
+            );
 
         // For smoother motions, find the quaternion q that
         // rotates e1 to vector, then use q to rotate e2, e3
-        return LinUnitBasisVector3D
-            .PositiveX
-            .CreateAxisToVectorRotationQuaternion(vector.ToUnitLinVector3D())
-            .RotateVectors(
-                LinUnitBasisVector3D.PositiveY,
-                LinUnitBasisVector3D.PositiveZ
-            );
+        return e1
+            .VectorToVectorRotationQuaternion(vector.ToUnitLinVector3D())
+            .RotateVectors(e2, e3);
     }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static Pair<LinFloat64Vector3D> GetUnitNormalPair(this ITriplet<Float64Scalar> vector)
+    {
+        return vector.GetNormalPair();
+    }
+
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static LinFloat64Vector3D ProjectOnVector(this ITriplet<Float64Scalar> v, ITriplet<Float64Scalar> u)
@@ -337,9 +354,11 @@ public static class LinFloat64Vector3DAffineUtils
         var s2 = u.Item1 * u.Item1 + u.Item2 * u.Item2 + u.Item3 * u.Item3;
         var s = s1 / s2;
 
-        return LinFloat64Vector3D.Create(u.Item1 * s,
+        return LinFloat64Vector3D.Create(
+            u.Item1 * s,
             u.Item2 * s,
-            u.Item3 * s);
+            u.Item3 * s
+        );
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -349,9 +368,11 @@ public static class LinFloat64Vector3DAffineUtils
         var s2 = u.Item1 * u.Item1 + u.Item2 * u.Item2 + u.Item3 * u.Item3;
         var s = s1 / s2;
 
-        return LinFloat64Vector3D.Create(v.Item1 - u.Item1 * s,
+        return LinFloat64Vector3D.Create(
+            v.Item1 - u.Item1 * s,
             v.Item2 - u.Item2 * s,
-            v.Item3 - u.Item3 * s);
+            v.Item3 - u.Item3 * s
+        );
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -367,7 +388,7 @@ public static class LinFloat64Vector3DAffineUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64Vector3D RejectOnAxis(this ITriplet<Float64Scalar> v, LinUnitBasisVector3D axis)
+    public static LinFloat64Vector3D RejectOnAxis(this ITriplet<Float64Scalar> v, LinBasisVector3D axis)
     {
         return axis.GetIndex() switch
         {
@@ -405,18 +426,6 @@ public static class LinFloat64Vector3DAffineUtils
             (vector.Item1 * directionVector.Item1 + vector.Item2 * directionVector.Item2 + vector.Item3 * directionVector.Item3).IsNegative()
                 ? LinFloat64Vector3D.Create(-vector.Item1, -vector.Item2, -vector.Item3)
                 : LinFloat64Vector3D.Create(vector.Item1, vector.Item2, vector.Item3);
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64Vector3D GetUnitNormal(this ITriplet<Float64Scalar> vector)
-    {
-        return vector.GetNormal();
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Pair<LinFloat64Vector3D> GetUnitNormalPair(this ITriplet<Float64Scalar> vector)
-    {
-        return vector.GetNormalPair();
     }
 
     public static LinFloat64Vector3D GetCenterOfMassPoint(this IEnumerable<ITriplet<Float64Scalar>> pointsList)

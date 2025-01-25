@@ -54,7 +54,7 @@ public class DfLinearSplineSignalInterpolator :
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    private DfLinearSplineSignalInterpolator(Float64SignalSamplingSpecs samplingSpecs, int sampleIndex1, int sampleIndex2, DfLinearSplineSignalInterpolatorOptions options, LinearSpline spline)
+    private DfLinearSplineSignalInterpolator(Float64SamplingSpecs samplingSpecs, int sampleIndex1, int sampleIndex2, DfLinearSplineSignalInterpolatorOptions options, LinearSpline spline)
         : base(samplingSpecs, sampleIndex1, sampleIndex2)
     {
         Options = options;

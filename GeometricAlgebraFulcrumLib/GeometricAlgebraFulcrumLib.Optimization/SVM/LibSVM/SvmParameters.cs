@@ -49,7 +49,7 @@ namespace GeometricAlgebraFulcrumLib.Optimization.SVM.LibSVM
         /// [C_SVC] C-Support Vector Classification. n-class classification (n >= 2), allows imperfect separation of classes with penalty multiplier C for outliers. 
         /// [NU_SVC] nu-Support Vector Classification. n-class classification with possible imperfect separation. Parameter Nu (in the range 0..1, the larger the value, the smoother the decision boundary) is used instead of C. 
         /// [ONE_CLASS] Distribution Estimation (One-class SVM). All the training data are from the same class, SVM builds a boundary that separates the class from the rest of the feature space. 
-        /// [EPS_SVR] epsilon-Support Vector Regression. The distance between feature vectors from the training set and the fitting hyper-plane must be less than P. For outliers the penalty multiplier C is used.
+        /// [EPS_SVR] zeroEpsilon-Support Vector Regression. The distance between feature vectors from the training set and the fitting hyper-plane must be less than P. For outliers the penalty multiplier C is used.
         /// [NU_SVR] nu-Support Vector Regression. Nu is used instead of p.
         /// </summary>
         public SvmTaskType Type { get; init; } = SvmTaskType.CSvc;
@@ -109,7 +109,7 @@ namespace GeometricAlgebraFulcrumLib.Optimization.SVM.LibSVM
         public double Nu { get; init; } = 0.5;
 
         /// <summary>
-        /// Parameter epsilon of a SVM optimization problem (EPS_SVR).
+        /// Parameter zeroEpsilon of a SVM optimization problem (EPS_SVR).
         /// </summary>
         public double P { get; init; } = 0.1;
 

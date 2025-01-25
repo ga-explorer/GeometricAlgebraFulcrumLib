@@ -5,32 +5,11 @@ namespace GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.BabylonJs.Textu
 public sealed class GrBabylonJsRoadTexture :
     GrBabylonJsProceduralTexture
 {
-    public sealed class RoadTextureProperties :
-        BaseTextureProperties
-    {
-        public GrBabylonJsColor4Value? RoadColor
-        {
-            get => GetAttributeValueOrNull<GrBabylonJsColor4Value>("roadColor");
-            set => SetAttributeValue("isEnabled", value);
-        }
-
-
-        public RoadTextureProperties()
-        {
-        }
-
-        public RoadTextureProperties(RoadTextureProperties properties)
-        {
-            SetAttributeValues(properties);
-        }
-    }
-
-
     protected override string ConstructorName
         => "new BABYLON.RoadProceduralTexture";
 
-    public RoadTextureProperties Properties { get; private set; }
-        = new RoadTextureProperties();
+    public GrBabylonJsRoadTextureProperties Properties { get; private set; }
+        = new GrBabylonJsRoadTextureProperties();
 
     public override GrBabylonJsObjectProperties ObjectProperties 
         => Properties;
@@ -47,9 +26,9 @@ public sealed class GrBabylonJsRoadTexture :
     }
 
     
-    public GrBabylonJsRoadTexture SetProperties(RoadTextureProperties properties)
+    public GrBabylonJsRoadTexture SetProperties(GrBabylonJsRoadTextureProperties properties)
     {
-        Properties = new RoadTextureProperties(properties);
+        Properties = new GrBabylonJsRoadTextureProperties(properties);
 
         return this;
     }

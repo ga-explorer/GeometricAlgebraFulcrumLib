@@ -57,7 +57,7 @@ public static class LaTeXMathUtils
     }
 
         
-    public static string? GetLaTeXDisplayEquation(this string latexMathText)
+    public static string GetLaTeXDisplayEquation(this string latexMathText)
     {
         var textComposer = new StringBuilder();
 
@@ -79,7 +79,7 @@ public static class LaTeXMathUtils
         return textComposer.ToString();
     }
 
-    public static string? GetLaTeXAlignedEquations(this IEnumerable<Pair<string>> equationArray, bool addEquationNumber = true)
+    public static string GetLaTeXAlignedEquations(this IEnumerable<Pair<string>> equationArray, bool addEquationNumber = true)
     {
         var textComposer = new LinearTextComposer();
 

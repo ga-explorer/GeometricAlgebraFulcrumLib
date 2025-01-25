@@ -12,5 +12,5 @@ public interface ILinFloat64PolarVector2D :
 
     bool IsUnitVector();
 
-    bool IsNearUnitVector(double epsilon = 1e-12d);
+    bool IsNearUnitVector(double zeroEpsilon = 1e-12d);
 }

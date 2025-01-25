@@ -57,16 +57,8 @@ public class ComputedParametricQuaternion :
 
         return new ComputedParametricQuaternion(
             Float64ScalarRange.Infinite,
-            t => LinFloat64Quaternion.Create(xFunc.GetValue(t),
-                yFunc.GetValue(t),
-                zFunc.GetValue(t),
-                wFunc.GetValue(t)
-            ),
-            t => LinFloat64Quaternion.Create(xDtFunc.GetValue(t),
-                yDtFunc.GetValue(t),
-                zDtFunc.GetValue(t),
-                wDtFunc.GetValue(t)
-            )
+            t => LinFloat64Quaternion.Create(wFunc.GetValue(t), xFunc.GetValue(t), yFunc.GetValue(t), zFunc.GetValue(t)),
+            t => LinFloat64Quaternion.Create(wDtFunc.GetValue(t), xDtFunc.GetValue(t), yDtFunc.GetValue(t), zDtFunc.GetValue(t))
         );
     }
 
@@ -75,16 +67,8 @@ public class ComputedParametricQuaternion :
     {
         return new ComputedParametricQuaternion(
             Float64ScalarRange.Infinite,
-            t => LinFloat64Quaternion.Create(xFunc(t),
-                yFunc(t),
-                zFunc(t),
-                wFunc(t)
-            ),
-            t => LinFloat64Quaternion.Create(Differentiate.FirstDerivative(xFunc, t),
-                Differentiate.FirstDerivative(yFunc, t),
-                Differentiate.FirstDerivative(zFunc, t),
-                Differentiate.FirstDerivative(wFunc, t)
-            )
+            t => LinFloat64Quaternion.Create(wFunc(t), xFunc(t), yFunc(t), zFunc(t)),
+            t => LinFloat64Quaternion.Create(Differentiate.FirstDerivative(wFunc, t), Differentiate.FirstDerivative(xFunc, t), Differentiate.FirstDerivative(yFunc, t), Differentiate.FirstDerivative(zFunc, t))
         );
     }
 
@@ -132,12 +116,12 @@ public class ComputedParametricQuaternion :
         if (GetTangentFunc is not null)
             return GetTangentFunc(parameterValue);
 
-        const double epsilon = 1e-7;
+        const double zeroEpsilon = 1e-7;
 
-        var p1 = GetPointFunc(parameterValue - epsilon);
-        var p2 = GetPointFunc(parameterValue + epsilon);
+        var p1 = GetPointFunc(parameterValue - zeroEpsilon);
+        var p2 = GetPointFunc(parameterValue + zeroEpsilon);
 
-        return (p2 - p1) / (2 * epsilon);
+        return (p2 - p1) / (2 * zeroEpsilon);
     }
 
     //[MethodImpl(MethodImplOptions.AggressiveInlining)]

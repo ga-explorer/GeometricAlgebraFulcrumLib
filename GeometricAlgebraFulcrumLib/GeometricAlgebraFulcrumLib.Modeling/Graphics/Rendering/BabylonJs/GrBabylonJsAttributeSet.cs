@@ -15,7 +15,7 @@ public abstract class GrBabylonJsAttributeSet :
         {
             yield return new KeyValuePair<string, string>(
                 key,
-                attributeValue.GetCode()
+                attributeValue.GetAttributeValueCode()
             );
         }
     }
@@ -40,6 +40,11 @@ public abstract class GrBabylonJsAttributeSet :
     //{
     //    return GetAttributeValueOrNull<GrBabylonJsColor4Value>(key);
     //}
-    
 
+    public override string GetAttributeSetCode()
+    {
+        return GetBabylonJsCode();
+    }
+
+    public abstract string GetBabylonJsCode();
 }

@@ -12,7 +12,7 @@
     
 //        bool IsIdentity();
 
-//        bool IsNearIdentity(double epsilon = 1e-12d);
+//        bool IsNearIdentity(double zeroEpsilon = 1e-12d);
 
 //        Float64Tuple MapBasisVector(int basisIndex);
 

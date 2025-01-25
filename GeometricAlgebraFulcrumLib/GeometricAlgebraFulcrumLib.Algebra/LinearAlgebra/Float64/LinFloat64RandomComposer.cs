@@ -78,7 +78,7 @@ public class LinFloat64RandomComposer :
     {
         var id = GetBasisVectorIndex();
 
-        return new LinBasisVector(id);
+        return LinBasisVector.Create(id);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]

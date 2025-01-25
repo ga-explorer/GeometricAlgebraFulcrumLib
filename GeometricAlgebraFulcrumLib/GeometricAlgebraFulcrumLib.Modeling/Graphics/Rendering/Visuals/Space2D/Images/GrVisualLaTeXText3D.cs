@@ -1,6 +1,6 @@
 ﻿using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space2D;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Basic;
-using GeometricAlgebraFulcrumLib.Utilities.Web.Html.Media;
+using GeometricAlgebraFulcrumLib.Utilities.Web.Images;
 using SixLabors.ImageSharp;
 
 namespace GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.Visuals.Space2D.Images;
@@ -8,60 +8,41 @@ namespace GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.Visuals.Space2D
 public sealed class GrVisualLaTeXText2D :
     GrVisualImage2D
 {
-    public static GrVisualLaTeXText2D Create(string name, WclHtmlImageDataUrlCache pngCache, ILinFloat64Vector2D position, double scalingFactor)
+    public static GrVisualLaTeXText2D Create(string name, IGrVisualTexture texture, ILinFloat64Vector2D position, double scalingFactor)
     {
         return new GrVisualLaTeXText2D(
             name, 
-            pngCache, 
+            texture, 
             position, 
             scalingFactor
         );
     }
-        
 
-    public WclHtmlImageDataUrlCache ImageCache { get; }
 
-    public string Key { get; }
+    public IGrVisualTexture Texture { get; }
 
     public double ScalingFactor { get; }
 
     public ILinFloat64Vector2D Position { get; }
         
 
-    private GrVisualLaTeXText2D(string name, WclHtmlImageDataUrlCache pngCache, ILinFloat64Vector2D position, double scalingFactor) 
+    private GrVisualLaTeXText2D(string name, IGrVisualTexture texture, ILinFloat64Vector2D position, double scalingFactor) 
         : base(name)
     {
-        ImageCache = pngCache;
-        Key = name;
+        Texture = texture;
         Position = position;
         ScalingFactor = scalingFactor;
     }
-
-    private GrVisualLaTeXText2D(string name, WclHtmlImageDataUrlCache pngCache, string key, ILinFloat64Vector2D position, double scalingFactor) 
-        : base(name)
-    {
-        ImageCache = pngCache;
-        Key = key;
-        Position = position;
-        ScalingFactor = scalingFactor;
-    }
-
+    
 
     public override Pair<int> GetSize()
     {
-        var image = ImageCache[Key];
-
-        return new Pair<int>(image.Width, image.Height);
-    }
-
-    public WclHtmlImageUrl GetImageData()
-    {
-        return ImageCache[Key];
+        return new Pair<int>(Texture.ImageWidth, Texture.ImageHeight);
     }
     
     public override Image GetImage()
     {
-        throw new NotImplementedException();
+        return Texture.GetImage();
     }
         
     public override bool IsValid()

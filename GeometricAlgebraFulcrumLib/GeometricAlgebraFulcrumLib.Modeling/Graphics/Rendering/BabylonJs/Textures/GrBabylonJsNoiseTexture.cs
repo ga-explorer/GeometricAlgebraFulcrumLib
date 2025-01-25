@@ -5,56 +5,11 @@ namespace GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.BabylonJs.Textu
 public sealed class GrBabylonJsNoiseTexture :
     GrBabylonJsProceduralTexture
 {
-    public sealed class NoiseTextureProperties :
-        BaseTextureProperties
-    {
-        public GrBabylonJsFloat32Value? AnimationSpeedFactor
-        {
-            get => GetAttributeValueOrNull<GrBabylonJsFloat32Value>("animationSpeedFactor");
-            set => SetAttributeValue("animationSpeedFactor", value);
-        }
-
-        public GrBabylonJsFloat32Value? Brightness
-        {
-            get => GetAttributeValueOrNull<GrBabylonJsFloat32Value>("brightness");
-            set => SetAttributeValue("brightness", value);
-        }
-
-        public GrBabylonJsFloat32Value? Octaves
-        {
-            get => GetAttributeValueOrNull<GrBabylonJsFloat32Value>("octaves");
-            set => SetAttributeValue("octaves", value);
-        }
-
-        public GrBabylonJsFloat32Value? Persistence
-        {
-            get => GetAttributeValueOrNull<GrBabylonJsFloat32Value>("persistence");
-            set => SetAttributeValue("persistence", value);
-        }
-
-        public GrBabylonJsFloat32Value? Time
-        {
-            get => GetAttributeValueOrNull<GrBabylonJsFloat32Value>("time");
-            set => SetAttributeValue("time", value);
-        }
-
-
-        public NoiseTextureProperties()
-        {
-        }
-
-        public NoiseTextureProperties(NoiseTextureProperties properties)
-        {
-            SetAttributeValues(properties);
-        }
-    }
-
-
     protected override string ConstructorName
         => "new BABYLON.NoiseProceduralTexture";
     
-    public NoiseTextureProperties Properties { get; private set; }
-        = new NoiseTextureProperties();
+    public GrBabylonJsNoiseTextureProperties Properties { get; private set; }
+        = new GrBabylonJsNoiseTextureProperties();
 
     public override GrBabylonJsObjectProperties ObjectProperties 
         => Properties;
@@ -71,9 +26,9 @@ public sealed class GrBabylonJsNoiseTexture :
     }
 
     
-    public GrBabylonJsNoiseTexture SetProperties(NoiseTextureProperties properties)
+    public GrBabylonJsNoiseTexture SetProperties(GrBabylonJsNoiseTextureProperties properties)
     {
-        Properties = new NoiseTextureProperties(properties);
+        Properties = new GrBabylonJsNoiseTextureProperties(properties);
 
         return this;
     }

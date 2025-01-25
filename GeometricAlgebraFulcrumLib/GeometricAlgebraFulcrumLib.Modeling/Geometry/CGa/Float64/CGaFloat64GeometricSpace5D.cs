@@ -1,6 +1,9 @@
 ﻿using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Float64.Multivectors.Composers;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Float64.Blades;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Float64.Visualizer;
+using GeometricAlgebraFulcrumLib.Modeling.Geometry.Visualizer;
+using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.BabylonJs.Composers;
+using GeometricAlgebraFulcrumLib.Utilities.Web.LaTeX.KaTeX;
 
 namespace GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Float64;
 
@@ -21,6 +24,15 @@ public sealed class CGaFloat64GeometricSpace5D :
     public CGaFloat64Blade E23 { get; }
 
     public CGaFloat64Visualizer Visualizer { get; }
+
+    public GrBabylonJsGeometryAnimationComposer VisualizerAnimationComposer 
+        => Visualizer.AnimationComposer;
+    
+    public WclKaTeXComposer VisualizerKaTeXComposer 
+        => Visualizer.AnimationComposer.KaTeXComposer;
+
+    public GrBabylonJsSceneComposer VisualizerSceneComposer 
+        => Visualizer.AnimationComposer.SceneComposer;
 
 
     private CGaFloat64GeometricSpace5D()

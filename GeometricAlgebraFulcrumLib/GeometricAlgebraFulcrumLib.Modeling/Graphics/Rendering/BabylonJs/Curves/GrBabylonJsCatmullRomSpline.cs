@@ -23,10 +23,10 @@ public sealed class GrBabylonJsCatmullRomSpline :
 
     protected override IEnumerable<string> GetConstructorArguments()
     {
-        yield return Points.GetCode();
-        yield return PointNumber.GetCode();
+        yield return Points.GetAttributeValueCode();
+        yield return PointNumber.GetAttributeValueCode();
 
         if (Closed.IsNullOrEmpty()) yield break;
-        yield return Closed.GetCode();
+        yield return Closed.GetAttributeValueCode();
     }
 }

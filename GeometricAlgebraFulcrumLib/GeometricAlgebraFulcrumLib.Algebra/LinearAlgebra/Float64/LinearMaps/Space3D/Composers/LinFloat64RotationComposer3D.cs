@@ -98,12 +98,12 @@ public sealed class LinFloat64RotationComposer3D :
         return true;
     }
 
-    public override bool IsNearIdentity(double epsilon = 1E-12)
+    public override bool IsNearIdentity(double zeroEpsilon = 1E-12)
     {
         for (var basisIndex = 0; basisIndex < VSpaceDimensions; basisIndex++)
         {
             var isSameVectorBasis =
-                MapBasisVector(basisIndex).IsNearVectorBasis(basisIndex, epsilon);
+                MapBasisVector(basisIndex).IsNearVectorBasis(basisIndex, zeroEpsilon);
 
             if (!isSameVectorBasis) return false;
         }
@@ -171,17 +171,17 @@ public sealed class LinFloat64RotationComposer3D :
         // TODO: This needs handling of case where vector1 = -e1
         var rotation1 = LinFloat64PlanarRotation3D.CreateFromRotatedVector(
             vector1,
-            LinUnitBasisVector3D.PositiveX.ToLinVector3D()
+            LinBasisVector3D.Px.ToLinVector3D()
         );
 
         vector2 =
             rotation1
                 .MapVector(vector2)
-                .RejectOnAxis(LinUnitBasisVector3D.PositiveX);
+                .RejectOnAxis(LinBasisVector3D.Px);
 
         var rotation2 = LinFloat64PlanarRotation3D.CreateFromRotatedVector(
             vector2,
-            LinUnitBasisVector3D.PositiveY.ToLinVector3D()
+            LinBasisVector3D.Py.ToLinVector3D()
         );
 
         AppendRotation(rotation1);

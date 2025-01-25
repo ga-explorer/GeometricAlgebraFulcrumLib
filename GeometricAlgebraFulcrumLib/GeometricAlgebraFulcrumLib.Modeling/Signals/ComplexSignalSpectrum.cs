@@ -64,12 +64,12 @@ public sealed class ComplexSignalSpectrum :
     {
     }
 
-    public ComplexSignalSpectrum(Float64SignalSamplingSpecs samplingSpecs)
+    public ComplexSignalSpectrum(Float64SamplingSpecs samplingSpecs)
         : base(samplingSpecs)
     {
     }
 
-    internal ComplexSignalSpectrum(Float64SignalSamplingSpecs samplingSpecs, Dictionary<int, SignalSpectrumSample> indexSampleDictionary)
+    internal ComplexSignalSpectrum(Float64SamplingSpecs samplingSpecs, Dictionary<int, SignalSpectrumSample> indexSampleDictionary)
         : base(samplingSpecs, indexSampleDictionary)
     {
     }
@@ -122,7 +122,7 @@ public sealed class ComplexSignalSpectrum :
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    protected override ScalarSignalSpectrum<Complex> CreateSignalSpectrum(Float64SignalSamplingSpecs samplingSpecs, Dictionary<int, SignalSpectrumSample> indexSampleDictionary)
+    protected override ScalarSignalSpectrum<Complex> CreateSignalSpectrum(Float64SamplingSpecs samplingSpecs, Dictionary<int, SignalSpectrumSample> indexSampleDictionary)
     {
         return new ComplexSignalSpectrum(SamplingSpecs, indexSampleDictionary);
     }

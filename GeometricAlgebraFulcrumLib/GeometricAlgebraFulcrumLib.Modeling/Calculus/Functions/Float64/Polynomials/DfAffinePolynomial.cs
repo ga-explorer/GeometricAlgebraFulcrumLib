@@ -8,7 +8,7 @@ namespace GeometricAlgebraFulcrumLib.Modeling.Calculus.Functions.Float64.Polynom
 
 public class DfAffinePolynomial :
     DifferentialCustomFunction,
-    IAffineMap1D
+    IFloat64AffineMap1D
 {
     public static DfAffinePolynomial Zero { get; }
         = new DfAffinePolynomial(0d, 0d);
@@ -341,11 +341,11 @@ public class DfAffinePolynomial :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool IsNearSame(DfAffinePolynomial p2, double epsilon = 1e-12)
+    public bool IsNearSame(DfAffinePolynomial p2, double zeroEpsilon = Float64Utils.ZeroEpsilon)
     {
         return
-            (ScalarFactor / p2.ScalarFactor - 1).IsNearZero(epsilon) &&
-            (ScalarConstant - p2.ScalarConstant).IsNearZero(epsilon);
+            (ScalarFactor / p2.ScalarFactor - 1).IsNearZero(zeroEpsilon) &&
+            (ScalarConstant - p2.ScalarConstant).IsNearZero(zeroEpsilon);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -399,13 +399,13 @@ public class DfAffinePolynomial :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public double MapPoint(double point)
+    public Float64Scalar MapPoint(Float64Scalar point)
     {
         return ScalarFactor * point + ScalarConstant;
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public double MapVector(double vector)
+    public Float64Scalar MapVector(Float64Scalar vector)
     {
         return ScalarFactor * vector;
     }
@@ -432,7 +432,7 @@ public class DfAffinePolynomial :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public IAffineMap1D GetInverseAffineMap()
+    public IFloat64AffineMap1D GetInverseAffineMap()
     {
         return InverseAffinePolynomial();
     }

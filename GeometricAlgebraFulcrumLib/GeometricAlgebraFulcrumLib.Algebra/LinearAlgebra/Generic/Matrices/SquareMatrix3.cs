@@ -118,7 +118,7 @@ public sealed class SquareMatrix3<T> :
         return m;
     }
 
-    public static SquareMatrix3<T> CreateAxisToVectorRotationMatrix3D(LinUnitBasisVector3D axis, ILinVector3D<T> unitVector)
+    public static SquareMatrix3<T> CreateAxisToVectorRotationMatrix3D(LinBasisVector3D axis, ILinVector3D<T> unitVector)
     {
         //Debug.Assert(unitVector.IsNearUnitVector());
 
@@ -128,7 +128,7 @@ public sealed class SquareMatrix3<T> :
         var y = unitVector.Y;
         var z = unitVector.Z;
 
-        if (axis == LinUnitBasisVector3D.PositiveX)
+        if (axis == LinBasisVector3D.Px)
         {
             var x1 = 1d / (x + 1d);
             var yz = -y * z * x1;
@@ -153,7 +153,7 @@ public sealed class SquareMatrix3<T> :
             return matrix;
         }
 
-        if (axis == LinUnitBasisVector3D.NegativeX)
+        if (axis == LinBasisVector3D.Nx)
         {
             var x1 = 1d / (x - 1d);
             var yz = y * z * x1;
@@ -178,7 +178,7 @@ public sealed class SquareMatrix3<T> :
             return matrix;
         }
 
-        if (axis == LinUnitBasisVector3D.PositiveY)
+        if (axis == LinBasisVector3D.Py)
         {
             var y1 = 1d / (y + 1d);
             var xz = -x * z * y1;
@@ -203,7 +203,7 @@ public sealed class SquareMatrix3<T> :
             return matrix;
         }
 
-        if (axis == LinUnitBasisVector3D.NegativeY)
+        if (axis == LinBasisVector3D.Ny)
         {
             var y1 = 1d / (y - 1d);
             var xz = x * z * y1;
@@ -228,7 +228,7 @@ public sealed class SquareMatrix3<T> :
             return matrix;
         }
 
-        if (axis == LinUnitBasisVector3D.PositiveZ)
+        if (axis == LinBasisVector3D.Pz)
         {
             var z1 = 1d / (z + 1d);
             var xy = -x * y * z1;
@@ -253,7 +253,7 @@ public sealed class SquareMatrix3<T> :
             return matrix;
         }
 
-        if (axis == LinUnitBasisVector3D.NegativeZ)
+        if (axis == LinBasisVector3D.Nz)
         {
             var z1 = 1d / (z - 1d);
             var xy = x * y * z1;
@@ -281,7 +281,7 @@ public sealed class SquareMatrix3<T> :
         throw new InvalidOperationException();
     }
 
-    public static SquareMatrix3<T> CreateVectorToAxisRotationMatrix3D(ILinVector3D<T> unitVector, LinUnitBasisVector3D axis)
+    public static SquareMatrix3<T> CreateVectorToAxisRotationMatrix3D(ILinVector3D<T> unitVector, LinBasisVector3D axis)
     {
         //Debug.Assert(unitVector.IsValid() && unitVector.IsNearUnitVector());
         
@@ -291,7 +291,7 @@ public sealed class SquareMatrix3<T> :
         var y = unitVector.Y;
         var z = unitVector.Z;
 
-        if (axis == LinUnitBasisVector3D.PositiveX)
+        if (axis == LinBasisVector3D.Px)
         {
             var x1 = 1d / (x + 1d);
             var yz = -y * z * x1;
@@ -316,7 +316,7 @@ public sealed class SquareMatrix3<T> :
             return matrix;
         }
 
-        if (axis == LinUnitBasisVector3D.NegativeX)
+        if (axis == LinBasisVector3D.Nx)
         {
             var x1 = 1d / (x - 1d);
             var yz = y * z * x1;
@@ -341,7 +341,7 @@ public sealed class SquareMatrix3<T> :
             return matrix;
         }
 
-        if (axis == LinUnitBasisVector3D.PositiveY)
+        if (axis == LinBasisVector3D.Py)
         {
             var y1 = 1d / (y + 1d);
             var xz = -x * z * y1;
@@ -366,7 +366,7 @@ public sealed class SquareMatrix3<T> :
             return matrix;
         }
 
-        if (axis == LinUnitBasisVector3D.NegativeY)
+        if (axis == LinBasisVector3D.Ny)
         {
             var y1 = 1d / (y - 1d);
             var xz = x * z * y1;
@@ -391,7 +391,7 @@ public sealed class SquareMatrix3<T> :
             return matrix;
         }
 
-        if (axis == LinUnitBasisVector3D.PositiveZ)
+        if (axis == LinBasisVector3D.Pz)
         {
             var z1 = 1d / (z + 1d);
             var xy = -x * y * z1;
@@ -416,7 +416,7 @@ public sealed class SquareMatrix3<T> :
             return matrix;
         }
 
-        if (axis == LinUnitBasisVector3D.NegativeZ)
+        if (axis == LinBasisVector3D.Nz)
         {
             var z1 = 1d / (z - 1d);
             var xy = x * y * z1;
@@ -475,16 +475,16 @@ public sealed class SquareMatrix3<T> :
             var axis = sumVector.GetMaxAbsComponentIndex() switch
             {
                 0 => sumVector.X.IsPositive()
-                    ? LinUnitBasisVector3D.PositiveX
-                    : LinUnitBasisVector3D.NegativeX,
+                    ? LinBasisVector3D.Px
+                    : LinBasisVector3D.Nx,
 
                 1 => sumVector.Y.IsPositive()
-                    ? LinUnitBasisVector3D.PositiveY
-                    : LinUnitBasisVector3D.NegativeY,
+                    ? LinBasisVector3D.Py
+                    : LinBasisVector3D.Ny,
 
                 _ => sumVector.Z.IsPositive()
-                    ? LinUnitBasisVector3D.PositiveZ
-                    : LinUnitBasisVector3D.NegativeZ
+                    ? LinBasisVector3D.Pz
+                    : LinBasisVector3D.Nz
             };
 
             var m1 = CreateVectorToAxisRotationMatrix3D(unitVector1, axis);

@@ -212,12 +212,12 @@ public sealed partial class RGaFloat64Vector :
     }
         
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public RGaFloat64Vector RemoveSmallTerms(double epsilon = 1e-12)
+    public RGaFloat64Vector RemoveSmallTerms(double zeroEpsilon = Float64Utils.ZeroEpsilon)
     {
         if (Count <= 1) return this;
 
         var scalarThreshold = 
-            epsilon.Abs() * Scalars.Max(s => s.Abs());
+            zeroEpsilon.Abs() * Scalars.Max(s => s.Abs());
 
         return GetPart((double s) => 
             s <= -scalarThreshold || s >= scalarThreshold

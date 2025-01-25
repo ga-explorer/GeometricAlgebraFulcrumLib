@@ -12,10 +12,10 @@ public abstract class GrBabylonJsObjectProperties :
     {
         ObjectName = objectName;
 
-        return GetCode();
+        return GetAttributeSetCode();
     }
 
-    public override string GetCode()
+    public override string GetBabylonJsCode()
     {
         if (string.IsNullOrEmpty(ObjectName))
             throw new InvalidOperationException();
@@ -27,6 +27,6 @@ public abstract class GrBabylonJsObjectProperties :
     
     public override string ToString()
     {
-        return GetCode();
+        return GetAttributeSetCode();
     }
 }

@@ -1,4 +1,4 @@
-﻿using GeometricAlgebraFulcrumLib.Modeling.Geometry.Borders.Space3D.Mutable;
+﻿using GeometricAlgebraFulcrumLib.Modeling.Geometry.Borders.Space3D.Float64;
 using GeometricAlgebraFulcrumLib.Utilities.Text.Code.JavaScript;
 
 namespace GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.Xeogl.Geometry.Builtin;
@@ -13,8 +13,8 @@ public sealed class XeoglAaBbGeometry
 {
     public string Target { get; set; }
 
-    public MutableBoundingBox3D TargetAaBb { get; }
-        = MutableBoundingBox3D.Create();
+    public Float64BoundingBoxComposer3D TargetAaBb { get; }
+        = Float64BoundingBoxComposer3D.Create();
 
     public override string JavaScriptClassName => "AABBGeometry";
 

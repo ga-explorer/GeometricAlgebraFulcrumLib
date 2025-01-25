@@ -2,5 +2,5 @@
 
 public interface IGrBabylonJsCodeElement
 {
-    string GetCode();
+    string GetBabylonJsCode();
 }

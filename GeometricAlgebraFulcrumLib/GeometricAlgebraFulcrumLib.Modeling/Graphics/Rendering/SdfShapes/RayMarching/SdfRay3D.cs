@@ -2,7 +2,7 @@
 using System.Runtime.CompilerServices;
 using GeometricAlgebraFulcrumLib.Algebra;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space3D;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.Borders.Space3D;
+using GeometricAlgebraFulcrumLib.Modeling.Geometry.Borders.Space3D.Float64;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Basic;
 
 namespace GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.SdfShapes.RayMarching;
@@ -55,7 +55,7 @@ public sealed class SdfRay3D :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool Intersect(IBoundingBox3D box, out double tMin, out double tMax)
+    public bool Intersect(IFloat64BoundingBox3D box, out double tMin, out double tMax)
     {
         var bounds = new LinFloat64Vector3D[]
         {

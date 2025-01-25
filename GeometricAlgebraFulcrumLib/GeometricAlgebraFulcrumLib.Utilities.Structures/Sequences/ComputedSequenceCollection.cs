@@ -16,7 +16,7 @@ public class ComputedSequenceCollection<T> :
         => _keyIndexDictionary.Count;
 
     public int this[string key] 
-        => _keyIndexDictionary.TryGetValue(key, out var index) ? index : 0;
+        => _keyIndexDictionary.GetValueOrDefault(key, 0);
 
     public IEnumerable<string> Keys 
         => _keyIndexDictionary.Keys;

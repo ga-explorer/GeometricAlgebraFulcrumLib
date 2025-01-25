@@ -2,7 +2,7 @@
 using System.Collections.Immutable;
 using System.Diagnostics;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.Borders;
+using GeometricAlgebraFulcrumLib.Modeling.Geometry.Borders.Space1D;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Basic;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.BitManipulation;
 using GeometricAlgebraFulcrumLib.Utilities.Text.Text;
@@ -111,7 +111,7 @@ public sealed class SparseRegularHistogram :
         return hist;
     }
 
-    public static SparseRegularHistogram CreateNormal(double mean, double standardDeviation, int binCount, double zeroEpsilon = 1e-12)
+    public static SparseRegularHistogram CreateNormal(double mean, double standardDeviation, int binCount, double zeroEpsilon = Float64Utils.ZeroEpsilon)
     {
         var variance =
             standardDeviation * standardDeviation;
@@ -155,7 +155,7 @@ public sealed class SparseRegularHistogram :
         }
     }
 
-    public static SparseRegularHistogram CreateExponential(double rate, int binCount, double zeroEpsilon = 1e-12)
+    public static SparseRegularHistogram CreateExponential(double rate, int binCount, double zeroEpsilon = Float64Utils.ZeroEpsilon)
     {
         var domainLastValue = -Math.Log(zeroEpsilon / rate) / rate;
 
@@ -179,7 +179,7 @@ public sealed class SparseRegularHistogram :
         return hist.NormalizeHeights();
     }
 
-    //public static SparseHistogram CreateBinomial(int trialCount, double successHeight, double zeroEpsilon = 1e-12)
+    //public static SparseHistogram CreateBinomial(int trialCount, double successHeight, double zeroEpsilon = Float64Utils.ZeroEpsilon)
     //{
     //    var indexHeightDictionary = new SortedDictionary<int, double>();
 
@@ -242,7 +242,7 @@ public sealed class SparseRegularHistogram :
     //    );
     //}
 
-    //public static SparseHistogram CreatePoisson(double mean, double zeroEpsilon = 1e-12)
+    //public static SparseHistogram CreatePoisson(double mean, double zeroEpsilon = Float64Utils.ZeroEpsilon)
     //{
     //    var indexHeightDictionary = new SortedDictionary<int, double>();
 

@@ -31,7 +31,7 @@ public sealed class XeoglTrianglesGeometry
         base.UpdateConstructorAttributes(composer);
 
         composer
-            .SetValue("primitive", GraphicsTrianglesGeometry.PrimitiveType, GraphicsPrimitiveType3D.Triangles)
+            .SetValue("primitive", GraphicsTrianglesGeometry.PrimitiveType, GraphicsPrimitiveType3D.TriangleList)
             .SetNumbersArrayValue("positions", GraphicsTrianglesGeometry.GeometryPoints, " // Vertex Position ", "[]")
             .SetNumbersArrayValue("normals", GraphicsTrianglesGeometry.VertexNormals, " // Vertex Normal ", "[]")
             .SetNumbersArrayValue("uv", GraphicsTrianglesGeometry.VertexTextureUVs, " // Vertex UV ", "[]")

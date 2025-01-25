@@ -8,5 +8,5 @@ namespace GeometricAlgebraFulcrumLib.Modeling.Geometry.Parametric.Float64.Space1
 public interface IParametricC2PolarAngle :
     IParametricPolarAngle
 {
-    LinFloat64PolarAngle GetDerivative2Point(double parameterValue);
+    LinFloat64PolarAngle GetDerivative2Angle(double parameterValue);
 }

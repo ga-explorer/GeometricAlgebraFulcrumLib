@@ -530,9 +530,9 @@ public sealed record LinFloat64Multivector3D :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool IsNearZero(double epsilon = 1e-12d)
+    public bool IsNearZero(double zeroEpsilon = 1e-12d)
     {
-        return Norm().IsNearZero(epsilon);
+        return Norm().IsNearZero(zeroEpsilon);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]

@@ -16,7 +16,7 @@
 
 //        public abstract bool IsIdentity();
 
-//        public abstract bool IsNearIdentity(double epsilon = 1e-12d);
+//        public abstract bool IsNearIdentity(double zeroEpsilon = 1e-12d);
 
 //        public abstract Float64Tuple MapBasisVector(int basisIndex);
 

@@ -6,6 +6,7 @@ using GeometricAlgebraFulcrumLib.Modeling.Graphics.Meshes.PointsPath;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Meshes.PointsPath.Space3D;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.Visuals.Space3D.Animations;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.Visuals.Space3D.Styles;
+using GeometricAlgebraFulcrumLib.Modeling.Signals;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Basic;
 
 namespace GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.Visuals.Space3D.Curves;
@@ -38,7 +39,7 @@ public sealed class GrVisualCircleArcCurve3D :
             direction2,
             angle,
             radius, 
-            GrVisualAnimationSpecs.Static
+            Float64SamplingSpecs.Static
         );
     }
 
@@ -55,7 +56,7 @@ public sealed class GrVisualCircleArcCurve3D :
                 direction1,
                 direction2,
                 angle,
-                radius, GrVisualAnimationSpecs.Static) 
+                radius, Float64SamplingSpecs.Static) 
             : new GrVisualCircleArcCurve3D(
                 name,
                 style,
@@ -63,10 +64,10 @@ public sealed class GrVisualCircleArcCurve3D :
                 direction1,
                 direction2.VectorNegative(),
                 (2d * Math.PI - angle.RadiansValue).RadiansToPolarAngle(),
-                radius, GrVisualAnimationSpecs.Static);
+                radius, Float64SamplingSpecs.Static);
     }
 
-    public static GrVisualCircleArcCurve3D Create(string name, GrVisualCurveStyle3D style, ILinFloat64Vector3D center, ILinFloat64Vector3D direction1, ILinFloat64Vector3D direction2, LinFloat64Angle angle, double radius, GrVisualAnimationSpecs animationSpecs)
+    public static GrVisualCircleArcCurve3D Create(string name, GrVisualCurveStyle3D style, ILinFloat64Vector3D center, ILinFloat64Vector3D direction1, ILinFloat64Vector3D direction2, LinFloat64Angle angle, double radius, Float64SamplingSpecs samplingSpecs)
     {
         return new GrVisualCircleArcCurve3D(
             name,
@@ -75,7 +76,7 @@ public sealed class GrVisualCircleArcCurve3D :
             direction1,
             direction2,
             angle,
-            radius, animationSpecs);
+            radius, samplingSpecs);
     }
         
     public static GrVisualCircleArcCurve3D CreateAnimated(string name, GrVisualCurveStyle3D style, GrVisualAnimatedVector3D direction1, GrVisualAnimatedVector3D direction2, GrVisualAnimatedScalar angle, GrVisualAnimatedScalar radius)
@@ -88,7 +89,7 @@ public sealed class GrVisualCircleArcCurve3D :
                 LinFloat64Vector3D.E2,
                 LinFloat64DirectedAngle.Angle360, 
                 1, 
-                direction1.AnimationSpecs
+                direction1.SamplingSpecs
             ).SetAnimatedDirection1(direction1)
             .SetAnimatedDirection2(direction2)
             .SetAnimatedAngle(angle)
@@ -105,7 +106,7 @@ public sealed class GrVisualCircleArcCurve3D :
                 LinFloat64Vector3D.E2,
                 LinFloat64DirectedAngle.Angle360,
                 1, 
-                center.AnimationSpecs
+                center.SamplingSpecs
             ).SetAnimatedCenter(center)
             .SetAnimatedDirection1(direction1)
             .SetAnimatedDirection2(direction2)
@@ -171,8 +172,8 @@ public sealed class GrVisualCircleArcCurve3D :
     public GrVisualAnimatedScalar? AnimatedRadius { get; set; }
 
 
-    private GrVisualCircleArcCurve3D(string name, GrVisualCurveStyle3D style, ILinFloat64Vector3D center, ILinFloat64Vector3D direction1, ILinFloat64Vector3D direction2, LinFloat64Angle angle, double radius, GrVisualAnimationSpecs animationSpecs)
-        : base(name, style, animationSpecs)
+    private GrVisualCircleArcCurve3D(string name, GrVisualCurveStyle3D style, ILinFloat64Vector3D center, ILinFloat64Vector3D direction1, ILinFloat64Vector3D direction2, LinFloat64Angle angle, double radius, Float64SamplingSpecs samplingSpecs)
+        : base(name, style, samplingSpecs)
     {
         Center = center;
         Direction1 = direction1.ToUnitLinVector3D();
@@ -282,14 +283,14 @@ public sealed class GrVisualCircleArcCurve3D :
 
     public LinFloat64Vector3D GetCenter(double time)
     {
-        return AnimationSpecs.IsStatic || AnimatedCenter is null
+        return SamplingSpecs.IsStatic || AnimatedCenter is null
             ? Center.ToLinVector3D()
             : AnimatedCenter.GetPoint(time);
     }
         
     public LinFloat64Vector3D GetDirection1(double time)
     {
-        return AnimationSpecs.IsStatic || AnimatedDirection1 is null
+        return SamplingSpecs.IsStatic || AnimatedDirection1 is null
             ? Direction1
             : AnimatedDirection1.GetPoint(time).ToUnitLinVector3D();
     }
@@ -300,7 +301,7 @@ public sealed class GrVisualCircleArcCurve3D :
             GetDirection1(time);
 
         var direction2 = 
-            AnimationSpecs.IsStatic || AnimatedDirection2 is null
+            SamplingSpecs.IsStatic || AnimatedDirection2 is null
                 ? Direction2
                 : AnimatedDirection2.GetPoint(time);
 
@@ -309,14 +310,14 @@ public sealed class GrVisualCircleArcCurve3D :
         
     public LinFloat64Angle GetAngle(double time)
     {
-        return AnimationSpecs.IsStatic || AnimatedAngle is null
+        return SamplingSpecs.IsStatic || AnimatedAngle is null
             ? Angle
             : AnimatedAngle.GetValue(time).RadiansToPolarAngle();
     }
 
     public double GetRadius(double time)
     {
-        return AnimationSpecs.IsStatic || AnimatedRadius is null
+        return SamplingSpecs.IsStatic || AnimatedRadius is null
             ? Radius
             : AnimatedRadius.GetValue(time);
     }
@@ -359,7 +360,7 @@ public sealed class GrVisualCircleArcCurve3D :
 
         foreach (var frameIndex in GetValidFrameIndexSet())
         {
-            var time = (double)frameIndex / AnimationSpecs.FrameRate;
+            var time = (double)frameIndex / SamplingSpecs.SamplingRate;
                 
             yield return new KeyFrameRecord(
                 frameIndex, 

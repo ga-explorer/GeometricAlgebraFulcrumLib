@@ -1,5 +1,4 @@
-﻿using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.KonvaJs.Values;
-using GeometricAlgebraFulcrumLib.Utilities.Text;
+﻿using GeometricAlgebraFulcrumLib.Utilities.Text;
 
 namespace GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.KonvaJs.Shapes;
 
@@ -9,45 +8,12 @@ namespace GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.KonvaJs.Shapes;
 public class GrKonvaJsCircle :
     GrKonvaJsShapeBase
 {
-    public class CircleOptions :
-        GrKonvaJsShapeBaseOptions
-    {
-        public GrKonvaJsFloat32Value? Radius
-        {
-            get => GetAttributeValueOrNull<GrKonvaJsFloat32Value>("Radius");
-            set => SetAttributeValue("Radius", value);
-        }
-        
-
-        public CircleOptions()
-        {
-        }
-
-        public CircleOptions(CircleOptions options)
-        {
-            SetAttributeValues(options);
-        }
-    }
-
-    public class CircleProperties :
-        GrKonvaJsShapeBaseProperties
-    {
-        public GrKonvaJsFloat32Value? Radius
-        {
-            get => GetAttributeValueOrNull<GrKonvaJsFloat32Value>("Radius");
-            set => SetAttributeValue("Radius", value);
-        }
-
-        
-    }
-
-    
     protected override string ConstructorName
         => "new Konva.Circle";
 
-    public CircleOptions Options { get; private set; }
+    public GrKonvaJsCircleOptions Options { get; private set; }
 
-    public CircleProperties Properties { get; private set; }
+    public GrKonvaJsCircleProperties Properties { get; private set; }
 
     public override GrKonvaJsObjectOptions ObjectOptions
         => Options;
@@ -59,19 +25,19 @@ public class GrKonvaJsCircle :
     public GrKonvaJsCircle(string constName) 
         : base(constName)
     {
-        Options = new CircleOptions
+        Options = new GrKonvaJsCircleOptions
         {
             Id = NodeId.SingleQuote(),
             Name = ConstName.SingleQuote()
         };
 
-        Properties = new CircleProperties();
+        Properties = new GrKonvaJsCircleProperties();
     }
     
 
-    public GrKonvaJsCircle SetOptions(CircleOptions options)
+    public GrKonvaJsCircle SetOptions(GrKonvaJsCircleOptions options)
     {
-        Options = new CircleOptions(options)
+        Options = new GrKonvaJsCircleOptions(options)
         {
             Id = NodeId.SingleQuote(),
             Name = ConstName.SingleQuote()
@@ -80,7 +46,7 @@ public class GrKonvaJsCircle :
         return this;
     }
 
-    public GrKonvaJsCircle SetProperties(CircleProperties properties)
+    public GrKonvaJsCircle SetProperties(GrKonvaJsCircleProperties properties)
     {
         Properties = properties;
 

@@ -19,7 +19,7 @@ using GeometricAlgebraFulcrumLib.Mathematica.Utilities.Text;
 using GeometricAlgebraFulcrumLib.Modeling.Calculus.Curves;
 using GeometricAlgebraFulcrumLib.Modeling.Calculus.Functions.Float64;
 using GeometricAlgebraFulcrumLib.Modeling.Calculus.Functions.Float64.Interpolators;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.Borders.Space2D.Mutable;
+using GeometricAlgebraFulcrumLib.Modeling.Geometry.Borders.Space2D.Float64;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.Parametric.Float64;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.Svg.DrawingBoard;
 using GeometricAlgebraFulcrumLib.Modeling.Signals;
@@ -3793,7 +3793,7 @@ public static class NumericGeometricFrequencySample
                 var (yMin, yMax) = yValues.GetMinMaxValues();
 
                 var drawingBoard =
-                    MutableBoundingBox2D.CreateFromPoints(
+                    Float64BoundingBoxComposer2D.CreateFromPoints(
                         xMin,
                         yMin,
                         xMax,
@@ -3809,8 +3809,8 @@ public static class NumericGeometricFrequencySample
                 var normList =
                     pointList.Select(p => p.VectorENorm()).ToArray();
 
-                var minNorm = normList.Min();
-                var maxNorm = normList.Max();
+                var minNorm = normList.GetMin();
+                var maxNorm = normList.GetMax();
 
                 Console.WriteLine($"Signal norm range: {minNorm}, {maxNorm}");
                 Console.WriteLine();
@@ -4002,7 +4002,7 @@ public static class NumericGeometricFrequencySample
         var phi = 2d * Math.PI / 3d;
         var sampleCount = 1000;
         var samplingRate = sampleCount / cycleTime;
-        var samplingSpecs = new Float64SignalSamplingSpecs(sampleCount, samplingRate);
+        var samplingSpecs = Float64SamplingSpecs.CreateFromSamplingRate(sampleCount, samplingRate);
 
         // Define signal processors
         VSpaceDimensions = 3;

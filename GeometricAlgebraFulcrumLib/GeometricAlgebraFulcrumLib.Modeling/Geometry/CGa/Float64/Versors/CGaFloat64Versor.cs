@@ -125,14 +125,14 @@ public sealed record CGaFloat64Versor
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool IsNearZero(double epsilon = 1e-12)
+    public bool IsNearZero(double zeroEpsilon = Float64Utils.ZeroEpsilon)
     {
-        return InternalMultivector.IsNearZero(epsilon);
+        return InternalMultivector.IsNearZero(zeroEpsilon);
     }
 
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public CGaFloat64Versor RemoveNearZeroTerms(double zeroEpsilon = 1e-12)
+    public CGaFloat64Versor RemoveNearZeroTerms(double zeroEpsilon = Float64Utils.ZeroEpsilon)
     {
         return new CGaFloat64Versor(
             GeometricSpace,

@@ -1,6 +1,4 @@
-﻿using System;
-using System.Diagnostics;
-using System.Linq;
+﻿using System.Diagnostics;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.LinearMaps.SpaceND;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.LinearMaps.SpaceND.Scaling;
@@ -11,7 +9,7 @@ using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Random;
 using MathNet.Numerics.LinearAlgebra;
 
-namespace GeometricAlgebraFulcrumLib.Samples.Algebra.LinearAlgebra;
+namespace GeometricAlgebraFulcrumLib.Algebra.Samples.Algebra.LinearAlgebra;
 
 public static class OrthogonalLinearMapSequenceSamples
 {

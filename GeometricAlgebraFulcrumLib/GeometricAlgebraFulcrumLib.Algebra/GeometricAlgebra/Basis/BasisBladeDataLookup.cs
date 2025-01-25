@@ -78,7 +78,7 @@ public static class BasisBladeDataLookup
 
     static BasisBladeDataLookup()
     {
-        Console.WriteLine("Initializing GA lookup tables ..");
+        Console.WriteLine($"Initializing GA lookup tables (max. of {MaxVSpaceDimension} dimensions) ..");
 
         var dataSize = 0L;
 

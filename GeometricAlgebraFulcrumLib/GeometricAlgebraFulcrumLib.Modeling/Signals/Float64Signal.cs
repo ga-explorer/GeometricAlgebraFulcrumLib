@@ -249,8 +249,8 @@ public sealed class Float64Signal :
     public int Count
         => _sampleList.Count;
 
-    public Float64SignalSamplingSpecs SamplingSpecs
-        => new Float64SignalSamplingSpecs(Count, SamplingRate);
+    public Float64SamplingSpecs SamplingSpecs
+        => Float64SamplingSpecs.CreateFromSamplingRate(Count, SamplingRate);
 
     public bool IsReadOnly { get; }
 
@@ -320,9 +320,9 @@ public sealed class Float64Signal :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool IsNearZero(double epsilon = 1e-7d)
+    public bool IsNearZero(double zeroEpsilon = Float64Utils.ZeroEpsilon)
     {
-        return _sampleList.All(s => s.IsNearZero(epsilon));
+        return _sampleList.All(s => s.IsNearZero(zeroEpsilon));
     }
 
 
@@ -899,8 +899,8 @@ public sealed class Float64Signal :
 
         var energy2 = EnergyDcFft();
         Debug.Assert(
-            (energy1 - energy2).IsNearZero(1e-7) ||
-            ((energy1 - energy2) / energy1).IsNearZero(1e-7)
+            (energy1 - energy2).IsNearZero() ||
+            ((energy1 - energy2) / energy1).IsNearZero()
         );
 
         return energy1;

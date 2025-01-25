@@ -32,8 +32,8 @@ public static class Model3Samples
     public static LaTeXComposerFloat64 LaTeXComposer { get; }
         = LaTeXComposerFloat64.DefaultComposer;
 
-    public static Float64SignalSamplingSpecs SamplingSpecs { get; }
-        = new Float64SignalSamplingSpecs(100002, 1000000);
+    public static Float64SamplingSpecs SamplingSpecs { get; }
+        = Float64SamplingSpecs.CreateFromSamplingRate(100002, 1000000);
 
     public static int SampleStep
         => 1;

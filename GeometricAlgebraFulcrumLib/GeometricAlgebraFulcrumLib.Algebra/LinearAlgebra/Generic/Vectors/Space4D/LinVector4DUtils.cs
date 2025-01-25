@@ -164,27 +164,27 @@ public static class LinVector4DUtils
     //}
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinVector4D<T> ToVector4D<T>(this LinUnitBasisVector2D axis, IScalarProcessor<T> scalarProcessor)
+    public static LinVector4D<T> ToVector4D<T>(this LinBasisVector2D axis, IScalarProcessor<T> scalarProcessor)
     {
         return axis switch
         {
-            LinUnitBasisVector2D.PositiveX => LinVector4D<T>.E1(scalarProcessor),
-            LinUnitBasisVector2D.NegativeX => LinVector4D<T>.NegativeE1(scalarProcessor),
-            LinUnitBasisVector2D.PositiveY => LinVector4D<T>.E2(scalarProcessor),
+            LinBasisVector2D.Px => LinVector4D<T>.E1(scalarProcessor),
+            LinBasisVector2D.Nx => LinVector4D<T>.NegativeE1(scalarProcessor),
+            LinBasisVector2D.Py => LinVector4D<T>.E2(scalarProcessor),
             _ => LinVector4D<T>.NegativeE2(scalarProcessor)
         };
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinVector4D<T> ToVector4D<T>(this LinUnitBasisVector3D axis, IScalarProcessor<T> scalarProcessor)
+    public static LinVector4D<T> ToVector4D<T>(this LinBasisVector3D axis, IScalarProcessor<T> scalarProcessor)
     {
         return axis switch
         {
-            LinUnitBasisVector3D.PositiveX => LinVector4D<T>.E1(scalarProcessor),
-            LinUnitBasisVector3D.NegativeX => LinVector4D<T>.NegativeE1(scalarProcessor),
-            LinUnitBasisVector3D.PositiveY => LinVector4D<T>.E2(scalarProcessor),
-            LinUnitBasisVector3D.NegativeY => LinVector4D<T>.NegativeE2(scalarProcessor),
-            LinUnitBasisVector3D.PositiveZ => LinVector4D<T>.E3(scalarProcessor),
+            LinBasisVector3D.Px => LinVector4D<T>.E1(scalarProcessor),
+            LinBasisVector3D.Nx => LinVector4D<T>.NegativeE1(scalarProcessor),
+            LinBasisVector3D.Py => LinVector4D<T>.E2(scalarProcessor),
+            LinBasisVector3D.Ny => LinVector4D<T>.NegativeE2(scalarProcessor),
+            LinBasisVector3D.Pz => LinVector4D<T>.E3(scalarProcessor),
             _ => LinVector4D<T>.NegativeE3(scalarProcessor)
         };
     }
@@ -192,35 +192,35 @@ public static class LinVector4DUtils
     //[MethodImpl(MethodImplOptions.AggressiveInlining)]
     //public static bool IsXAxis(this LinUnitBasisVector4D axis)
     //{
-    //    return axis is LinUnitBasisVector4D.PositiveX or LinUnitBasisVector4D.NegativeX;
+    //    return axis is LinUnitBasisVector4D.Px or LinUnitBasisVector4D.Nx;
     //}
 
     //[MethodImpl(MethodImplOptions.AggressiveInlining)]
     //public static bool IsYAxis(this LinUnitBasisVector4D axis)
     //{
-    //    return axis is LinUnitBasisVector4D.PositiveY or LinUnitBasisVector4D.NegativeY;
+    //    return axis is LinUnitBasisVector4D.Py or LinUnitBasisVector4D.Ny;
     //}
 
     //[MethodImpl(MethodImplOptions.AggressiveInlining)]
     //public static bool IsZAxis(this LinUnitBasisVector4D axis)
     //{
-    //    return axis is LinUnitBasisVector4D.PositiveZ or LinUnitBasisVector4D.NegativeZ;
+    //    return axis is LinUnitBasisVector4D.Pz or LinUnitBasisVector4D.Nz;
     //}
 
     //[MethodImpl(MethodImplOptions.AggressiveInlining)]
     //public static bool IsWAxis<T>(this LinUnitBasisVector4D axis)
     //{
-    //    return axis is LinUnitBasisVector4D.PositiveW or LinUnitBasisVector4D.NegativeW;
+    //    return axis is LinUnitBasisVector4D.Pw or LinUnitBasisVector4D.Nw;
     //}
 
     //[MethodImpl(MethodImplOptions.AggressiveInlining)]
     //public static bool IsNegative<T>(this LinUnitBasisVector4D axis)
     //{
     //    return axis is
-    //        LinUnitBasisVector4D.NegativeX or
-    //        LinUnitBasisVector4D.NegativeY or
-    //        LinUnitBasisVector4D.NegativeZ or
-    //        LinUnitBasisVector4D.NegativeW;
+    //        LinUnitBasisVector4D.Nx or
+    //        LinUnitBasisVector4D.Ny or
+    //        LinUnitBasisVector4D.Nz or
+    //        LinUnitBasisVector4D.Nw;
     //}
 
     //[MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -228,37 +228,37 @@ public static class LinVector4DUtils
     //{
     //    return axis1 switch
     //    {
-    //        LinUnitBasisVector4D.PositiveX => axis2 == LinUnitBasisVector4D.NegativeX,
-    //        LinUnitBasisVector4D.PositiveY => axis2 == LinUnitBasisVector4D.NegativeY,
-    //        LinUnitBasisVector4D.PositiveZ => axis2 == LinUnitBasisVector4D.NegativeZ,
-    //        LinUnitBasisVector4D.PositiveW => axis2 == LinUnitBasisVector4D.NegativeW,
-    //        LinUnitBasisVector4D.NegativeX => axis2 == LinUnitBasisVector4D.PositiveX,
-    //        LinUnitBasisVector4D.NegativeY => axis2 == LinUnitBasisVector4D.PositiveY,
-    //        LinUnitBasisVector4D.NegativeZ => axis2 == LinUnitBasisVector4D.PositiveZ,
-    //        _ => axis2 == LinUnitBasisVector4D.PositiveW
+    //        LinUnitBasisVector4D.Px => axis2 == LinUnitBasisVector4D.Nx,
+    //        LinUnitBasisVector4D.Py => axis2 == LinUnitBasisVector4D.Ny,
+    //        LinUnitBasisVector4D.Pz => axis2 == LinUnitBasisVector4D.Nz,
+    //        LinUnitBasisVector4D.Pw => axis2 == LinUnitBasisVector4D.Nw,
+    //        LinUnitBasisVector4D.Nx => axis2 == LinUnitBasisVector4D.Px,
+    //        LinUnitBasisVector4D.Ny => axis2 == LinUnitBasisVector4D.Py,
+    //        LinUnitBasisVector4D.Nz => axis2 == LinUnitBasisVector4D.Pz,
+    //        _ => axis2 == LinUnitBasisVector4D.Pw
     //    };
     //}
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinUnitBasisVector4D SelectNearestAxis<T>(this IQuad<Scalar<T>> unitVector)
+    public static LinBasisVector4D SelectNearestAxis<T>(this IQuad<Scalar<T>> unitVector)
     {
         return unitVector.GetMaxAbsComponentIndex() switch
         {
             0 => unitVector.Item1.IsPositive()
-                ? LinUnitBasisVector4D.PositiveX
-                : LinUnitBasisVector4D.NegativeX,
+                ? LinBasisVector4D.Px
+                : LinBasisVector4D.Nx,
 
             1 => unitVector.Item2.IsPositive()
-                ? LinUnitBasisVector4D.PositiveY
-                : LinUnitBasisVector4D.NegativeY,
+                ? LinBasisVector4D.Py
+                : LinBasisVector4D.Ny,
 
             2 => unitVector.Item3.IsPositive()
-                ? LinUnitBasisVector4D.PositiveZ
-                : LinUnitBasisVector4D.NegativeZ,
+                ? LinBasisVector4D.Pz
+                : LinBasisVector4D.Nz,
 
             _ => unitVector.Item3.IsPositive()
-                ? LinUnitBasisVector4D.PositiveZ
-                : LinUnitBasisVector4D.NegativeW
+                ? LinBasisVector4D.Pz
+                : LinBasisVector4D.Nw
         };
     }
 
@@ -267,14 +267,14 @@ public static class LinVector4DUtils
     //{
     //    return axis switch
     //    {
-    //        LinUnitBasisVector4D.PositiveX => 0,
-    //        LinUnitBasisVector4D.NegativeX => 0,
-    //        LinUnitBasisVector4D.PositiveY => 1,
-    //        LinUnitBasisVector4D.NegativeY => 1,
-    //        LinUnitBasisVector4D.PositiveZ => 2,
-    //        LinUnitBasisVector4D.NegativeZ => 2,
-    //        LinUnitBasisVector4D.PositiveW => 3,
-    //        LinUnitBasisVector4D.NegativeW => 3,
+    //        LinUnitBasisVector4D.Px => 0,
+    //        LinUnitBasisVector4D.Nx => 0,
+    //        LinUnitBasisVector4D.Py => 1,
+    //        LinUnitBasisVector4D.Ny => 1,
+    //        LinUnitBasisVector4D.Pz => 2,
+    //        LinUnitBasisVector4D.Nz => 2,
+    //        LinUnitBasisVector4D.Pw => 3,
+    //        LinUnitBasisVector4D.Nw => 3,
     //        _ => throw new InvalidOperationException()
     //    };
     //}
@@ -284,14 +284,14 @@ public static class LinVector4DUtils
     //{
     //    return axis switch
     //    {
-    //        LinUnitBasisVector4D.PositiveX => IntegerSign.Positive,
-    //        LinUnitBasisVector4D.NegativeX => IntegerSign.Negative,
-    //        LinUnitBasisVector4D.PositiveY => IntegerSign.Positive,
-    //        LinUnitBasisVector4D.NegativeY => IntegerSign.Negative,
-    //        LinUnitBasisVector4D.PositiveZ => IntegerSign.Positive,
-    //        LinUnitBasisVector4D.NegativeZ => IntegerSign.Negative,
-    //        LinUnitBasisVector4D.PositiveW => IntegerSign.Positive,
-    //        LinUnitBasisVector4D.NegativeW => IntegerSign.Negative,
+    //        LinUnitBasisVector4D.Px => IntegerSign.Positive,
+    //        LinUnitBasisVector4D.Nx => IntegerSign.Negative,
+    //        LinUnitBasisVector4D.Py => IntegerSign.Positive,
+    //        LinUnitBasisVector4D.Ny => IntegerSign.Negative,
+    //        LinUnitBasisVector4D.Pz => IntegerSign.Positive,
+    //        LinUnitBasisVector4D.Nz => IntegerSign.Negative,
+    //        LinUnitBasisVector4D.Pw => IntegerSign.Positive,
+    //        LinUnitBasisVector4D.Nw => IntegerSign.Negative,
     //        _ => throw new InvalidOperationException()
     //    };
     //}
@@ -302,35 +302,35 @@ public static class LinVector4DUtils
     //    if (isNegative)
     //        return axisIndex switch
     //        {
-    //            0 => LinUnitBasisVector4D.NegativeX,
-    //            1 => LinUnitBasisVector4D.NegativeY,
-    //            2 => LinUnitBasisVector4D.NegativeZ,
-    //            3 => LinUnitBasisVector4D.PositiveW,
+    //            0 => LinUnitBasisVector4D.Nx,
+    //            1 => LinUnitBasisVector4D.Ny,
+    //            2 => LinUnitBasisVector4D.Nz,
+    //            3 => LinUnitBasisVector4D.Pw,
     //            _ => throw new IndexOutOfRangeException()
     //        };
 
     //    return axisIndex switch
     //    {
-    //        0 => LinUnitBasisVector4D.PositiveX,
-    //        1 => LinUnitBasisVector4D.PositiveY,
-    //        2 => LinUnitBasisVector4D.PositiveZ,
-    //        3 => LinUnitBasisVector4D.PositiveW,
+    //        0 => LinUnitBasisVector4D.Px,
+    //        1 => LinUnitBasisVector4D.Py,
+    //        2 => LinUnitBasisVector4D.Pz,
+    //        3 => LinUnitBasisVector4D.Pw,
     //        _ => throw new IndexOutOfRangeException()
     //    };
     //}
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinVector4D<T> ToTuple4D<T>(this LinUnitBasisVector4D axis, IScalarProcessor<T> scalarProcessor)
+    public static LinVector4D<T> ToTuple4D<T>(this LinBasisVector4D axis, IScalarProcessor<T> scalarProcessor)
     {
         return axis switch
         {
-            LinUnitBasisVector4D.PositiveX => LinVector4D<T>.E1(scalarProcessor),
-            LinUnitBasisVector4D.NegativeX => LinVector4D<T>.NegativeE1(scalarProcessor),
-            LinUnitBasisVector4D.PositiveY => LinVector4D<T>.E2(scalarProcessor),
-            LinUnitBasisVector4D.NegativeY => LinVector4D<T>.NegativeE2(scalarProcessor),
-            LinUnitBasisVector4D.PositiveZ => LinVector4D<T>.E3(scalarProcessor),
-            LinUnitBasisVector4D.NegativeZ => LinVector4D<T>.NegativeE3(scalarProcessor),
-            LinUnitBasisVector4D.PositiveW => LinVector4D<T>.E4(scalarProcessor),
+            LinBasisVector4D.Px => LinVector4D<T>.E1(scalarProcessor),
+            LinBasisVector4D.Nx => LinVector4D<T>.NegativeE1(scalarProcessor),
+            LinBasisVector4D.Py => LinVector4D<T>.E2(scalarProcessor),
+            LinBasisVector4D.Ny => LinVector4D<T>.NegativeE2(scalarProcessor),
+            LinBasisVector4D.Pz => LinVector4D<T>.E3(scalarProcessor),
+            LinBasisVector4D.Nz => LinVector4D<T>.NegativeE3(scalarProcessor),
+            LinBasisVector4D.Pw => LinVector4D<T>.E4(scalarProcessor),
             _ => LinVector4D<T>.NegativeE4(scalarProcessor)
         };
     }
@@ -474,17 +474,17 @@ public static class LinVector4DUtils
     /// <param name="v2"></param>
     /// <returns></returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Scalar<T> ESp<T>(this IQuad<Scalar<T>> v1, LinUnitBasisVector4D v2)
+    public static Scalar<T> ESp<T>(this IQuad<Scalar<T>> v1, LinBasisVector4D v2)
     {
         return v2 switch
         {
-            LinUnitBasisVector4D.PositiveX => v1.Item1,
-            LinUnitBasisVector4D.PositiveY => v1.Item2,
-            LinUnitBasisVector4D.PositiveZ => v1.Item3,
-            LinUnitBasisVector4D.PositiveW => v1.Item4,
-            LinUnitBasisVector4D.NegativeX => -v1.Item1,
-            LinUnitBasisVector4D.NegativeY => -v1.Item2,
-            LinUnitBasisVector4D.NegativeZ => -v1.Item3,
+            LinBasisVector4D.Px => v1.Item1,
+            LinBasisVector4D.Py => v1.Item2,
+            LinBasisVector4D.Pz => v1.Item3,
+            LinBasisVector4D.Pw => v1.Item4,
+            LinBasisVector4D.Nx => -v1.Item1,
+            LinBasisVector4D.Ny => -v1.Item2,
+            LinBasisVector4D.Nz => -v1.Item3,
             _ => -v1.Item4,
         };
     }
@@ -753,7 +753,7 @@ public static class LinVector4DUtils
         return vector.VectorSubtract(vector2).IsNearZero();
     }
 
-    public static Tuple<bool, Scalar<T>, LinUnitBasisVector4D> TryVectorToAxis<T>(this LinVector4D<T> vector)
+    public static Tuple<bool, Scalar<T>, LinBasisVector4D> TryVectorToAxis<T>(this LinVector4D<T> vector)
     {
         var scalarProcessor = vector.ScalarProcessor;
 
@@ -773,22 +773,22 @@ public static class LinVector4DUtils
         }
 
         if (basisIndex < 0)
-            return new Tuple<bool, Scalar<T>, LinUnitBasisVector4D>(
+            return new Tuple<bool, Scalar<T>, LinBasisVector4D>(
                 false,
                 scalarProcessor.Zero,
-                LinUnitBasisVector4D.PositiveX
+                LinBasisVector4D.Px
             );
 
         var scalar = vector.GetItem(basisIndex);
 
-        return new Tuple<bool, Scalar<T>, LinUnitBasisVector4D>(
+        return new Tuple<bool, Scalar<T>, LinBasisVector4D>(
             true,
             scalar.Abs(),
             basisIndex.ToAxis4D(scalar < 0)
         );
     }
 
-    public static Tuple<bool, Scalar<T>, LinUnitBasisVector4D> TryVectorToAxis<T>(this IQuad<Scalar<T>> vector)
+    public static Tuple<bool, Scalar<T>, LinBasisVector4D> TryVectorToAxis<T>(this IQuad<Scalar<T>> vector)
     {
         var scalarProcessor = vector.GetScalarProcessor();
 
@@ -808,15 +808,15 @@ public static class LinVector4DUtils
         }
 
         if (basisIndex < 0)
-            return new Tuple<bool, Scalar<T>, LinUnitBasisVector4D>(
+            return new Tuple<bool, Scalar<T>, LinBasisVector4D>(
                 false,
                 scalarProcessor.Zero,
-                LinUnitBasisVector4D.PositiveX
+                LinBasisVector4D.Px
             );
 
         var scalar = vector.GetItem(basisIndex);
 
-        return new Tuple<bool, Scalar<T>, LinUnitBasisVector4D>(
+        return new Tuple<bool, Scalar<T>, LinBasisVector4D>(
             true,
             scalar.Abs(),
             basisIndex.ToAxis4D(scalar < 0)

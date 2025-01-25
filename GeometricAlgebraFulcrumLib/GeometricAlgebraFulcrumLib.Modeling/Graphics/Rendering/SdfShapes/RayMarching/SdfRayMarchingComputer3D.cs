@@ -1,5 +1,5 @@
 ﻿using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space3D;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.BasicShapes.Lines.Immutable;
+using GeometricAlgebraFulcrumLib.Modeling.Geometry.BasicShapes.Lines.Space3D.Float64;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.SdfGeometry;
 
 namespace GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.SdfShapes.RayMarching;
@@ -49,7 +49,7 @@ public sealed class SdfRayMarchingComputer3D
         return NoIntersection;
     }
 
-    public Tuple<bool, double> ComputeIntersection(ISdfGeometry3D surface, Line3D ray)
+    public Tuple<bool, double> ComputeIntersection(ISdfGeometry3D surface, Float64Line3D ray)
     {
         var t0 = MinDistance;
         var i = 0;

@@ -4,7 +4,9 @@
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello, World!");
+            //Samples.Algebra.LinearAlgebra.BasisVectorSamples.ValidateVectorPairsNormals();
+            Samples.Algebra.LinearAlgebra.RotationSamples.ValidateVectorToVectorRotationAxisAngle();
+            //Samples.Algebra.LinearAlgebra.RotationSamples.ValidateVectorToVectorRotationQuaternion();
         }
     }
 }

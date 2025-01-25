@@ -19,7 +19,7 @@ public abstract class ScalarSignalSpectrum<T> :
     public int Count
         => SamplingSpecs.SampleCount;
 
-    public Float64SignalSamplingSpecs SamplingSpecs { get; }
+    public Float64SamplingSpecs SamplingSpecs { get; }
 
     public int SampleCount
         => SamplingSpecs.SampleCount;
@@ -118,19 +118,19 @@ public abstract class ScalarSignalSpectrum<T> :
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     protected ScalarSignalSpectrum(int sampleCount, double samplingRate)
     {
-        SamplingSpecs = new Float64SignalSamplingSpecs(sampleCount, samplingRate);
+        SamplingSpecs = Float64SamplingSpecs.CreateFromSamplingRate(sampleCount, samplingRate);
         IndexSampleDictionary = new Dictionary<int, SignalSpectrumSample>();
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    protected ScalarSignalSpectrum(Float64SignalSamplingSpecs samplingSpecs)
+    protected ScalarSignalSpectrum(Float64SamplingSpecs samplingSpecs)
     {
         SamplingSpecs = samplingSpecs;
         IndexSampleDictionary = new Dictionary<int, SignalSpectrumSample>();
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    protected ScalarSignalSpectrum(Float64SignalSamplingSpecs samplingSpecs, Dictionary<int, SignalSpectrumSample> indexSampleDictionary)
+    protected ScalarSignalSpectrum(Float64SamplingSpecs samplingSpecs, Dictionary<int, SignalSpectrumSample> indexSampleDictionary)
     {
         Debug.Assert(
             indexSampleDictionary.Keys.All(
@@ -392,7 +392,7 @@ public abstract class ScalarSignalSpectrum<T> :
         return CreateSignalSpectrum(SamplingSpecs, indexSampleDictionary);
     }
 
-    protected abstract ScalarSignalSpectrum<T> CreateSignalSpectrum(Float64SignalSamplingSpecs samplingSpecs, Dictionary<int, SignalSpectrumSample> indexSampleDictionary);
+    protected abstract ScalarSignalSpectrum<T> CreateSignalSpectrum(Float64SamplingSpecs samplingSpecs, Dictionary<int, SignalSpectrumSample> indexSampleDictionary);
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]

@@ -29,17 +29,17 @@ public sealed class GrBabylonJsArcThru3Points :
 
     protected override IEnumerable<string> GetConstructorArguments()
     {
-        yield return Point1.GetCode();
-        yield return Point2.GetCode();
-        yield return Point3.GetCode();
+        yield return Point1.GetAttributeValueCode();
+        yield return Point2.GetAttributeValueCode();
+        yield return Point3.GetAttributeValueCode();
 
         if (Steps.IsNullOrEmpty()) yield break;
-        yield return Steps.GetCode();
+        yield return Steps.GetAttributeValueCode();
 
         if (Closed.IsNullOrEmpty()) yield break;
-        yield return Closed.GetCode();
+        yield return Closed.GetAttributeValueCode();
 
         if (FullCircle.IsNullOrEmpty()) yield break;
-        yield return FullCircle.GetCode();
+        yield return FullCircle.GetAttributeValueCode();
     }
 }

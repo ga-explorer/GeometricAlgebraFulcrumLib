@@ -9,10 +9,10 @@ public class GrMappedParametricSurface3D :
 {
     public IGraphicsParametricSurface3D BaseSurface { get; }
 
-    public IAffineMap3D Map { get; }
+    public IFloat64AffineMap3D Map { get; }
 
 
-    public GrMappedParametricSurface3D(IGraphicsParametricSurface3D baseSurface, IAffineMap3D map)
+    public GrMappedParametricSurface3D(IGraphicsParametricSurface3D baseSurface, IFloat64AffineMap3D map)
     {
         BaseSurface = baseSurface;
         Map = map;

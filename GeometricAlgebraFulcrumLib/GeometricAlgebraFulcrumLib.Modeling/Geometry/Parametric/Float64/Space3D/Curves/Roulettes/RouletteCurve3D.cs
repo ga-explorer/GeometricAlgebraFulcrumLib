@@ -44,7 +44,7 @@ public class RouletteCurve3D :
                MovingCurve.IsValid();
     }
 
-    public RouletteMap3D GetRouletteMap(double parameterValue)
+    public Float64RouletteAffineMap3D GetRouletteMap(double parameterValue)
     {
         var t1 = MovingCurve.LengthToParameter(parameterValue);
         var movingFrame = MovingCurve.GetFrame(t1);
@@ -55,7 +55,7 @@ public class RouletteCurve3D :
         var quaternion =
             movingFrame.CreateFrameToFrameRotationQuaternion(fixedFrame);
 
-        return new RouletteMap3D(
+        return new Float64RouletteAffineMap3D(
             fixedFrame.Point,
             movingFrame.Point,
             quaternion

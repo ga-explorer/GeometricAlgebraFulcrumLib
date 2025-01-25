@@ -31,9 +31,9 @@ public abstract class LinFloat64DirectionalScalingLinearMap3D :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool IsNearIdentity(double epsilon = 1E-12)
+    public bool IsNearIdentity(double zeroEpsilon = 1E-12)
     {
-        return ScalingFactor.IsNearOne(epsilon);
+        return ScalingFactor.IsNearOne(zeroEpsilon);
     }
 
     public abstract LinFloat64Vector3D MapBasisVector(int basisIndex);

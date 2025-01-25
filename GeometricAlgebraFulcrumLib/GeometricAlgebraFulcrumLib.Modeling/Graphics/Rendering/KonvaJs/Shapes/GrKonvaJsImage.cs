@@ -1,5 +1,4 @@
-﻿using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.KonvaJs.Values;
-using GeometricAlgebraFulcrumLib.Utilities.Text;
+﻿using GeometricAlgebraFulcrumLib.Utilities.Text;
 
 namespace GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.KonvaJs.Shapes;
 
@@ -9,53 +8,12 @@ namespace GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.KonvaJs.Shapes;
 public class GrKonvaJsImage :
     GrKonvaJsShapeBase
 {
-    public class ImageOptions :
-        GrKonvaJsShapeBaseOptions
-    {
-        public GrKonvaJsCodeValue? Image
-        {
-            get => GetAttributeValueOrNull<GrKonvaJsCodeValue>("Image");
-            init => SetAttributeValue("Image", value);
-        }
-        
-        public GrKonvaJsVector2Value? Clip
-        {
-            get => GetAttributeValueOrNull<GrKonvaJsVector2Value>("Clip");
-            init => SetAttributeValue("Clip", value);
-        }
-
-
-        public ImageOptions()
-        {
-
-        }
-        
-        public ImageOptions(ImageOptions options)
-        {
-            SetAttributeValues(options);
-        }
-    }
-
-    public class ImageProperties :
-        GrKonvaJsShapeBaseProperties
-    {
-        public GrKonvaJsCodeValue? Image
-        {
-            get => GetAttributeValueOrNull<GrKonvaJsCodeValue>("Image");
-            set => SetAttributeValue("Image", value);
-        }
-
-
-        
-    }
-
-    
     protected override string ConstructorName
         => "new Konva.Image";
 
-    public ImageOptions Options { get; private set; }
+    public GrKonvaJsImageOptions Options { get; private set; }
 
-    public ImageProperties Properties { get; private set; }
+    public GrKonvaJsImageProperties Properties { get; private set; }
 
     public override GrKonvaJsObjectOptions ObjectOptions
         => Options;
@@ -67,19 +25,19 @@ public class GrKonvaJsImage :
     public GrKonvaJsImage(string constName) 
         : base(constName)
     {
-        Options = new ImageOptions()
+        Options = new GrKonvaJsImageOptions()
         {
             Id = NodeId.SingleQuote(),
             Name = ConstName.SingleQuote(),
         };
 
-        Properties = new ImageProperties();
+        Properties = new GrKonvaJsImageProperties();
     }
     
 
-    public GrKonvaJsImage SetOptions(ImageOptions options)
+    public GrKonvaJsImage SetOptions(GrKonvaJsImageOptions options)
     {
-        Options = new ImageOptions(options)
+        Options = new GrKonvaJsImageOptions(options)
         {
             Id = NodeId.SingleQuote(),
             Name = ConstName.SingleQuote(),
@@ -88,7 +46,7 @@ public class GrKonvaJsImage :
         return this;
     }
 
-    public GrKonvaJsImage SetProperties(ImageProperties properties)
+    public GrKonvaJsImage SetProperties(GrKonvaJsImageProperties properties)
     {
         Properties = properties;
 

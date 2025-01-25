@@ -2,6 +2,7 @@
 using GeometricAlgebraFulcrumLib.Algebra.Polynomials.Float64.BSplineCurveBasis;
 using GeometricAlgebraFulcrumLib.Modeling.Calculus.Functions.Float64;
 using GeometricAlgebraFulcrumLib.Modeling.Signals;
+using GeometricAlgebraFulcrumLib.Modeling.Temporal.Float64.Scalars;
 using OxyPlot;
 using OxyPlot.Axes;
 using OxyPlot.Series;
@@ -13,7 +14,23 @@ namespace GeometricAlgebraFulcrumLib.Modeling.Graphics;
 
 public static class PlottingUtils
 {
-        
+    public static Image Plot(this TemporalFloat64Scalar scalarSignal)
+    {
+        var func = (double t) => scalarSignal.GetValue(t);
+
+        var (xMin, xMax) = scalarSignal.TimeRange.ExpandByFactor(0.1);
+        var (yMin, yMax) = scalarSignal.ValueRange.ExpandByFactor(0.1);
+
+        return func.Plot(xMin, xMax, yMin, yMax);
+    }
+
+    public static Image Plot(this TemporalFloat64Scalar scalarSignal, double xMin, double xMax, double yMin, double yMax)
+    {
+        var func = (double t) => scalarSignal.GetValue(t);
+
+        return func.Plot(xMin, xMax, yMin, yMax);
+    }
+
     public static Image Plot(this Float64Signal scalarSignal, double xMin, double xMax, double yMin, double yMax)
     {
         var func = scalarSignal.LinearInterpolation;

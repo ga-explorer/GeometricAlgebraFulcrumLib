@@ -118,12 +118,24 @@ public class ComputedParametricPolarAngle :
         if (GetTangentFunc is not null)
             return GetTangentFunc(parameterValue);
 
-        const double epsilon = 1e-7;
+        const double zeroEpsilon = 1e-7;
 
-        var p1 = GetAngleFunc(parameterValue - epsilon);
-        var p2 = GetAngleFunc(parameterValue + epsilon);
+        var p1 = GetAngleFunc(parameterValue - zeroEpsilon);
+        var p2 = GetAngleFunc(parameterValue + zeroEpsilon);
 
-        return p2.AngleSubtract(p1.ScalarValue).AngleDivide(2 * epsilon).ToPolarAngle();
+        return p2.AngleSubtract(p1.ScalarValue).AngleDivide(2 * zeroEpsilon).ToPolarAngle();
+    }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public Float64Scalar GetValue(double parameterValue)
+    {
+        return GetAngle(parameterValue).Radians;
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public Float64Scalar GetDerivative1Value(double parameterValue)
+    {
+        return GetDerivative1Angle(parameterValue).Radians;
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]

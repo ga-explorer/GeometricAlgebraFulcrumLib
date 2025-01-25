@@ -176,7 +176,7 @@ public static class ParametricCurve2DComposerUtils
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static GrMappedParametricCurve2D CreateMappedCurve2D(this IFloat64ParametricCurve2D surface, IAffineMap2D map)
+    public static GrMappedParametricCurve2D CreateMappedCurve2D(this IFloat64ParametricCurve2D surface, IFloat64AffineMap2D map)
     {
         return new GrMappedParametricCurve2D(surface, map);
     }

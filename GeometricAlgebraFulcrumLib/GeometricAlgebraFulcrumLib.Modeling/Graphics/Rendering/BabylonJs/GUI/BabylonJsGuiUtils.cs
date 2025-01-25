@@ -5,7 +5,7 @@ namespace GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.BabylonJs.GUI;
 public static class BabylonJsGuiUtils
 {
     
-    public static GrBabylonJsGuiTextBlock AddGuiTextBlock(this IGrBabylonJsGuiControlContainer container, string name, GrBabylonJsStringValue text, GrBabylonJsGuiTextBlock.GuiTextBlockProperties? properties)
+    public static GrBabylonJsGuiTextBlock AddGuiTextBlock(this IGrBabylonJsGuiControlContainer container, string name, GrBabylonJsStringValue text, GrBabylonJsGuiTextBlockProperties? properties)
     {
         var sceneObject = 
             new GrBabylonJsGuiTextBlock(name, container)
@@ -18,7 +18,7 @@ public static class BabylonJsGuiUtils
         return sceneObject;
     }
 
-    public static GrBabylonJsGuiImage AddGuiImage(this IGrBabylonJsGuiControlContainer container, string name, GrBabylonJsStringValue url, GrBabylonJsGuiImage.GuiImageProperties? properties)
+    public static GrBabylonJsGuiImage AddGuiImage(this IGrBabylonJsGuiControlContainer container, string name, GrBabylonJsStringValue url, GrBabylonJsGuiImageProperties? properties)
     {
         var sceneObject = 
             new GrBabylonJsGuiImage(name, container)
@@ -31,7 +31,7 @@ public static class BabylonJsGuiUtils
         return sceneObject;
     }
 
-    public static GrBabylonJsGuiLine AddGuiLine(this IGrBabylonJsGuiControlContainer container, string name, GrBabylonJsGuiLine.GuiLineProperties? properties)
+    public static GrBabylonJsGuiLine AddGuiLine(this IGrBabylonJsGuiControlContainer container, string name, GrBabylonJsGuiLineProperties? properties)
     {
         var sceneObject = 
             new GrBabylonJsGuiLine(name, container)
@@ -42,7 +42,7 @@ public static class BabylonJsGuiUtils
         return sceneObject;
     }
 
-    public static GrBabylonJsGuiMultiLine AddGuiMultiLine(this IGrBabylonJsGuiControlContainer container, string name, GrBabylonJsGuiMultiLine.GuiMultiLineProperties? properties)
+    public static GrBabylonJsGuiMultiLine AddGuiMultiLine(this IGrBabylonJsGuiControlContainer container, string name, GrBabylonJsGuiMultiLineProperties? properties)
     {
         var sceneObject = 
             new GrBabylonJsGuiMultiLine(name, container)
@@ -53,7 +53,7 @@ public static class BabylonJsGuiUtils
         return sceneObject;
     }
     
-    public static GrBabylonJsGuiStackPanel AddGuiStackPanel(this IGrBabylonJsGuiControlContainer container, string name, GrBabylonJsGuiStackPanel.GuiStackPanelProperties? properties)
+    public static GrBabylonJsGuiStackPanel AddGuiStackPanel(this IGrBabylonJsGuiControlContainer container, string name, GrBabylonJsGuiStackPanelProperties? properties)
     {
         var sceneObject = 
             new GrBabylonJsGuiStackPanel(name, container)

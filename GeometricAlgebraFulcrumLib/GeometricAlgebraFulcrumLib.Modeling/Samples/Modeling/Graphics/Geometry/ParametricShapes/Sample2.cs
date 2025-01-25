@@ -1,8 +1,8 @@
 ﻿using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Angles;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space2D;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.BasicShapes.Triangles.Immutable;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.Borders.Space2D.Immutable;
+using GeometricAlgebraFulcrumLib.Modeling.Geometry.BasicShapes.Triangles.Space2D.Float64;
+using GeometricAlgebraFulcrumLib.Modeling.Geometry.Borders.Space2D.Float64;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.Parametric.Float64.Space3D.Surfaces;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.Parametric.Float64.Space3D.Surfaces.Sampled;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Primitives;
@@ -114,7 +114,7 @@ public static class Sample2
                 gridIndex3.Item2 * gridSegmentLength
             );
 
-            drawingLayer.DrawTriangle(Triangle2D.Create(p1, p2, p3));
+            drawingLayer.DrawTriangle(Float64Triangle2D.Create(p1, p2, p3));
 
             //drawingLayer.DrawLineSegment(p1, p2);
             //drawingLayer.DrawLineSegment(p2, p3);
@@ -183,7 +183,7 @@ public static class Sample2
     public static void Execute()
     {
         var parameterValueRange =
-            BoundingBox2D.Create(0, 0, 1, 1);
+            Float64BoundingBox2D.Create(0, 0, 1, 1);
 
         var options = new GrParametricSurfaceTreeOptions3D(
             6.DegreesToDirectedAngle(),

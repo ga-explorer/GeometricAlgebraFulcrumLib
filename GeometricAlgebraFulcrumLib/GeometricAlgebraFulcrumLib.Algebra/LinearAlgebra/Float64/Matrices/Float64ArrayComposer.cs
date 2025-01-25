@@ -36,7 +36,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Matrices
         }
 
 
-        public bool IsValid(double zeroEpsilon = 1e-12)
+        public bool IsValid(double zeroEpsilon = Float64Utils.ZeroEpsilon)
         {
             var array = Array.MatrixProduct(ArrayInverse);
 

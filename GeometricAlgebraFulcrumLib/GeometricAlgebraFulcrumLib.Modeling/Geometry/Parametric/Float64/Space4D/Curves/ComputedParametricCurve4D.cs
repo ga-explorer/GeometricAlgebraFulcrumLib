@@ -94,12 +94,12 @@ public class ComputedParametricCurve4D :
         if (GetTangentFunc is not null)
             return GetTangentFunc(parameterValue);
 
-        const double epsilon = 1e-7;
+        const double zeroEpsilon = 1e-7;
 
-        var p1 = GetPointFunc(parameterValue - epsilon);
-        var p2 = GetPointFunc(parameterValue + epsilon);
+        var p1 = GetPointFunc(parameterValue - zeroEpsilon);
+        var p2 = GetPointFunc(parameterValue + zeroEpsilon);
 
-        return (p2 - p1) / (2 * epsilon);
+        return (p2 - p1) / (2 * zeroEpsilon);
     }
 
     //[MethodImpl(MethodImplOptions.AggressiveInlining)]

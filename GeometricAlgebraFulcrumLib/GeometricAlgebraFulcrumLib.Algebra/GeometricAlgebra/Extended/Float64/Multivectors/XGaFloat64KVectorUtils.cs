@@ -2,6 +2,7 @@
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Extended.Float64.Multivectors.Composers;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Extended.Float64.Processors;
+using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.IndexSets;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Extended.Float64.Multivectors;
@@ -9,13 +10,13 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Extended.Float64.M
 public static class XGaFloat64KVectorUtils
 {
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static bool IsNearBlade(this XGaFloat64KVector kv, double epsilon = 1e-12)
+    public static bool IsNearBlade(this XGaFloat64KVector kv, double zeroEpsilon = Float64Utils.ZeroEpsilon)
     {
         return kv
             .Gp(kv.Reverse())
             .GetKVectorParts()
             .All(kv1 => 
-                kv1.Grade == 0 || kv1.IsNearZero(epsilon)
+                kv1.Grade == 0 || kv1.IsNearZero(zeroEpsilon)
             );
     }
 
@@ -60,14 +61,14 @@ public static class XGaFloat64KVectorUtils
     }
         
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static XGaFloat64KVector RemoveSmallTerms(this XGaFloat64KVector mv, double epsilon = 1e-12)
+    public static XGaFloat64KVector RemoveSmallTerms(this XGaFloat64KVector mv, double zeroEpsilon = Float64Utils.ZeroEpsilon)
     {
         return mv switch
         {
             XGaFloat64Scalar s => s,
-            XGaFloat64Vector v => v.RemoveSmallTerms(epsilon),
-            XGaFloat64Bivector bv => bv.RemoveSmallTerms(epsilon),
-            XGaFloat64HigherKVector kv => kv.RemoveSmallTerms(epsilon),
+            XGaFloat64Vector v => v.RemoveSmallTerms(zeroEpsilon),
+            XGaFloat64Bivector bv => bv.RemoveSmallTerms(zeroEpsilon),
+            XGaFloat64HigherKVector kv => kv.RemoveSmallTerms(zeroEpsilon),
             _ => throw new InvalidOperationException()
         };
     }

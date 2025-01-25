@@ -30,7 +30,7 @@ public abstract class GrBabylonJsAnimation :
             TargetPropertyDataType
         );
 
-    public GrBabylonJsAnimationSpecs AnimationSpecs { get; }
+    public GrBabylonJsAnimationSpecs SamplingSpecs { get; }
     
     public override GrBabylonJsObjectProperties? ObjectProperties
         => null;
@@ -38,11 +38,11 @@ public abstract class GrBabylonJsAnimation :
     public abstract bool IsConstant { get; }
 
     
-    protected GrBabylonJsAnimation(string constName, string targetPropertyName, GrBabylonJsAnimationSpecs animationSpecs, GrBabylonJsKeyFrameDictionaryCache keyFramesCache, int keyFramesCacheIndex)
+    protected GrBabylonJsAnimation(string constName, string targetPropertyName, GrBabylonJsAnimationSpecs samplingSpecs, GrBabylonJsKeyFrameDictionaryCache keyFramesCache, int keyFramesCacheIndex)
         : base(constName)
     {
         TargetPropertyName = targetPropertyName;
-        AnimationSpecs = animationSpecs;
+        SamplingSpecs = samplingSpecs;
         KeyFramesCache = keyFramesCache;
         KeyFramesIndex = keyFramesCacheIndex;
     }
@@ -52,7 +52,7 @@ public abstract class GrBabylonJsAnimation :
 
     public abstract string GetConstantValueCode();
 
-    public override string GetCode()
+    public override string GetBabylonJsCode()
     {
         if (IsConstant)
             return string.Empty;

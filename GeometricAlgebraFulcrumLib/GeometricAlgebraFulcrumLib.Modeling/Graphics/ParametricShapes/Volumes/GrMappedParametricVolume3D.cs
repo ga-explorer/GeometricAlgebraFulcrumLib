@@ -9,10 +9,10 @@ public class GrMappedParametricVolume3D :
 {
     public IGraphicsParametricVolume3D BaseVolume { get; }
 
-    public IAffineMap3D Map { get; }
+    public IFloat64AffineMap3D Map { get; }
 
 
-    public GrMappedParametricVolume3D(IGraphicsParametricVolume3D baseVolume, IAffineMap3D map)
+    public GrMappedParametricVolume3D(IGraphicsParametricVolume3D baseVolume, IFloat64AffineMap3D map)
     {
         BaseVolume = baseVolume;
         Map = map;

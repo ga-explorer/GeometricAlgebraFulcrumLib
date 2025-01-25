@@ -1,9 +1,11 @@
 ﻿using System.Globalization;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Angles;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
+using GeometricAlgebraFulcrumLib.Modeling.Calculus.Curves;
 using GeometricAlgebraFulcrumLib.Modeling.Calculus.Functions.Float64;
 using GeometricAlgebraFulcrumLib.Modeling.Calculus.Functions.Float64.Phasors;
 using GeometricAlgebraFulcrumLib.Modeling.Signals.Composers;
+using GeometricAlgebraFulcrumLib.Modeling.Temporal.Float64.Scalars;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.BitManipulation;
 using GeometricAlgebraFulcrumLib.Utilities.Web.LaTeX.CodeComposer;
 
@@ -294,28 +296,16 @@ public static class PowerSignalVisualizationSample1
         Console.WriteLine($"Mean omega norm / frequency: {omegaMeanNorm / Frequency}");
         Console.WriteLine();
 
-        var cameraAlphaValues =
-            30d.DegreesToRadians().GetCosRange(
-                150d.DegreesToRadians(),
-                powerSignal.SampleCount,
-                1,
-                true
-            ).CreateSignal(powerSignal.SamplingRate);
-
-        var cameraBetaValues =
-            Enumerable
-                .Repeat(2 * Math.PI / 5, powerSignal.SampleCount)
-                .CreateSignal(powerSignal.SamplingRate);
-
-        var visualizer = new PowerSignalVisualizer3D(cameraAlphaValues, cameraBetaValues, powerSignal)
+        var visualizer = new GrBabylonJsPowerSignalVisualizer(
+            @"D:\Projects\Study\Web\Babylon.js\", 
+            powerSignal.SamplingSpecs, 
+            powerSignal
+        )
         {
             Title = "Unbalanced 3-phase sinusoidal signal",
-            WorkingFolder = @"D:\Projects\Study\Web\Babylon.js\",
             HostUrl = "http://localhost:5200/",
             //LiveReloadWebServer "D:/Projects/Study/Babylon.js/" --port 5200 --UseSsl False --LiveReloadEnabled False --OpenBrowser True
 
-            CameraDistance = 11,
-            CameraRotationCount = 1,
             TrailSampleCount = powerSignal.SampleCount / 2,
             PlotSampleCount = powerSignal.SampleCount / 2,
             FrameSeparationCount = 20,
@@ -323,11 +313,21 @@ public static class PowerSignalVisualizationSample1
             ShowLeftPanel = false,
             ShowRightPanel = true,
 
-            GeneratePng = renderAnimations,
-            GenerateAnimatedGif = false,
-            GenerateMp4 = renderAnimations
+            RenderImageFilesEnabled = renderAnimations,
+            RenderGifFileEnabled = false,
+            RenderVideoFileEnabled = renderAnimations
         };
+        
+        var alpha = 
+            TemporalFloat64Scalar
+                .FullCos(30, 150)
+                .DegreesToRadians();
 
-        visualizer.GenerateSnapshots();
+        var beta = 
+            72.DegreesToRadians();
+
+        visualizer.SetCameraAlphaBetaDistance(alpha, beta, 11);
+
+        visualizer.RenderFiles();
     }
 }

@@ -85,43 +85,43 @@ public static class LinVector3DComposerUtils
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinVector3D<T> ToVector3D<T>(this LinUnitBasisVector2D axis, IScalarProcessor<T> scalarProcessor)
+    public static LinVector3D<T> ToVector3D<T>(this LinBasisVector2D axis, IScalarProcessor<T> scalarProcessor)
     {
         return axis switch
         {
-            LinUnitBasisVector2D.PositiveX => LinVector3D<T>.E1(scalarProcessor),
-            LinUnitBasisVector2D.NegativeX => LinVector3D<T>.NegativeE1(scalarProcessor),
-            LinUnitBasisVector2D.PositiveY => LinVector3D<T>.E2(scalarProcessor),
+            LinBasisVector2D.Px => LinVector3D<T>.E1(scalarProcessor),
+            LinBasisVector2D.Nx => LinVector3D<T>.NegativeE1(scalarProcessor),
+            LinBasisVector2D.Py => LinVector3D<T>.E2(scalarProcessor),
             _ => LinVector3D<T>.NegativeE2(scalarProcessor)
         };
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinVector3D<T> ToVector3D<T>(this LinUnitBasisVector3D axis, IScalarProcessor<T> scalarProcessor)
+    public static LinVector3D<T> ToVector3D<T>(this LinBasisVector3D axis, IScalarProcessor<T> scalarProcessor)
     {
         return axis switch
         {
-            LinUnitBasisVector3D.PositiveX => LinVector3D<T>.E1(scalarProcessor),
-            LinUnitBasisVector3D.NegativeX => LinVector3D<T>.NegativeE1(scalarProcessor),
-            LinUnitBasisVector3D.PositiveY => LinVector3D<T>.E2(scalarProcessor),
-            LinUnitBasisVector3D.NegativeY => LinVector3D<T>.NegativeE2(scalarProcessor),
-            LinUnitBasisVector3D.PositiveZ => LinVector3D<T>.E3(scalarProcessor),
+            LinBasisVector3D.Px => LinVector3D<T>.E1(scalarProcessor),
+            LinBasisVector3D.Nx => LinVector3D<T>.NegativeE1(scalarProcessor),
+            LinBasisVector3D.Py => LinVector3D<T>.E2(scalarProcessor),
+            LinBasisVector3D.Ny => LinVector3D<T>.NegativeE2(scalarProcessor),
+            LinBasisVector3D.Pz => LinVector3D<T>.E3(scalarProcessor),
             _ => LinVector3D<T>.NegativeE3(scalarProcessor)
         };
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinVector3D<T> ToVector3D<T>(this LinUnitBasisVector3D axis, Scalar<T> scalingFactor)
+    public static LinVector3D<T> ToVector3D<T>(this LinBasisVector3D axis, Scalar<T> scalingFactor)
     {
         var zero = scalingFactor.ScalarProcessor.Zero;
 
         return axis switch
         {
-            LinUnitBasisVector3D.PositiveX => LinVector3D<T>.Create(scalingFactor, zero, zero),
-            LinUnitBasisVector3D.NegativeX => LinVector3D<T>.Create(-scalingFactor, zero, zero),
-            LinUnitBasisVector3D.PositiveY => LinVector3D<T>.Create(zero, scalingFactor, zero),
-            LinUnitBasisVector3D.NegativeY => LinVector3D<T>.Create(zero, -scalingFactor, zero),
-            LinUnitBasisVector3D.PositiveZ => LinVector3D<T>.Create(zero, zero, scalingFactor),
+            LinBasisVector3D.Px => LinVector3D<T>.Create(scalingFactor, zero, zero),
+            LinBasisVector3D.Nx => LinVector3D<T>.Create(-scalingFactor, zero, zero),
+            LinBasisVector3D.Py => LinVector3D<T>.Create(zero, scalingFactor, zero),
+            LinBasisVector3D.Ny => LinVector3D<T>.Create(zero, -scalingFactor, zero),
+            LinBasisVector3D.Pz => LinVector3D<T>.Create(zero, zero, scalingFactor),
             _ => LinVector3D<T>.Create(zero, zero, -scalingFactor)
         };
     }

@@ -4,13 +4,14 @@ using GeometricAlgebraFulcrumLib.Modeling.Geometry.Parametric.Float64;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.Parametric.Float64.Space3D.Curves;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.Parametric.Float64.Space3D.Curves.Adaptive;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.BabylonJs;
+using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.BabylonJs.Composers;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.BabylonJs.Materials;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.BabylonJs.Textures;
-using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.Visuals.Space3D.Animations;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.Visuals.Space3D.Basic;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.Visuals.Space3D.Curves;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.Visuals.Space3D.Styles;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.Visuals.Space3D.Surfaces;
+using GeometricAlgebraFulcrumLib.Modeling.Signals;
 using GeometricAlgebraFulcrumLib.Utilities.Text;
 using SixLabors.ImageSharp;
 
@@ -25,10 +26,10 @@ public static class Sample1
     {
         const double thickness = 0.05d;
 
-        var htmlComposer = new GrBabylonJsHtmlComposer3D("scene");
+        var codeFilesComposer = new GrBabylonJsCodeFilesComposer("scene");
 
-        var composer = htmlComposer.GetSceneComposer("scene");
-        var scene = htmlComposer.GetScene("scene");
+        var composer = codeFilesComposer.GetSceneComposer("scene");
+        var scene = codeFilesComposer.GetScene("scene");
 
         scene.AddArcRotateCamera(
             "camera",
@@ -116,7 +117,7 @@ public static class Sample1
             yellowMaterial.CreateTubeCurveStyle(thickness * 1.5d),
             LinFloat64Vector3D.Create(1, 1, 1),
             LinFloat64Vector3D.Create(4, 4, 4),
-            GrVisualAnimationSpecs.Static
+            Float64SamplingSpecs.Static
         );
 
         var lineSegmentX = GrVisualLineSegment3D.Create(
@@ -124,7 +125,7 @@ public static class Sample1
             Color.Red.CreateDashedLineCurveStyle(3, 1, 16),
             LinFloat64Vector3D.Create(4, 4, 4),
             LinFloat64Vector3D.Create(0, 4, 4),
-            GrVisualAnimationSpecs.Static
+            Float64SamplingSpecs.Static
         );
 
         var lineSegmentY = GrVisualLineSegment3D.Create(
@@ -132,7 +133,7 @@ public static class Sample1
             Color.Green.CreateDashedLineCurveStyle(3, 1, 16),
             LinFloat64Vector3D.Create(4, 4, 4),
             LinFloat64Vector3D.Create(4, 0, 4),
-            GrVisualAnimationSpecs.Static
+            Float64SamplingSpecs.Static
         );
 
         var lineSegmentZ = GrVisualLineSegment3D.Create(
@@ -140,7 +141,7 @@ public static class Sample1
             Color.Blue.CreateDashedLineCurveStyle(3, 1, 16),
             LinFloat64Vector3D.Create(4, 4, 4),
             LinFloat64Vector3D.Create(4, 4, 0),
-            GrVisualAnimationSpecs.Static
+            Float64SamplingSpecs.Static
         );
 
         var rightAngleX = GrVisualRightAngle3D.CreateStatic(
@@ -210,8 +211,8 @@ public static class Sample1
             circleDiskArc
         );
 
-        var sceneCode = htmlComposer.GetCreateScenesCode();
-        var htmlCode = htmlComposer.GetHtmlCode();
+        var sceneCode = codeFilesComposer.GetCreateScenesCode();
+        var htmlCode = codeFilesComposer.GetHtmlCode();
 
         File.WriteAllText(
             Path.Combine(WorkingPath, "Sample1.html"),
@@ -226,10 +227,10 @@ public static class Sample1
     {
         const double thickness = 0.05d;
 
-        var htmlComposer = new GrBabylonJsHtmlComposer3D("scene");
+        var codeFilesComposer = new GrBabylonJsCodeFilesComposer("scene");
 
-        var composer = htmlComposer.GetSceneComposer("scene");
-        var scene = htmlComposer.GetScene("scene");
+        var composer = codeFilesComposer.GetSceneComposer("scene");
+        var scene = codeFilesComposer.GetScene("scene");
 
         //scene.Properties.UseOrderIndependentTransparency = true;
 
@@ -281,7 +282,7 @@ public static class Sample1
 
             @"./Textures/opacityTexture2.png".ValueToQuotedLiteral(),
 
-            new GrBabylonJsTexture.TextureProperties
+            new GrBabylonJsTextureProperties
             {
                 HasAlpha = true,
                 UScale = 1,
@@ -293,7 +294,7 @@ public static class Sample1
         scene.AddStandardMaterial(
             curveMaterialName,
 
-            new GrBabylonJsStandardMaterial.StandardMaterialProperties()
+            new GrBabylonJsStandardMaterialProperties()
             {
                 DiffuseColor = Color.RosyBrown,
                 SpecularColor = Color.RosyBrown,
@@ -332,8 +333,8 @@ public static class Sample1
             curve
         );
 
-        var sceneCode = htmlComposer.GetCreateScenesCode();
-        var htmlCode = htmlComposer.GetHtmlCode();
+        var sceneCode = codeFilesComposer.GetCreateScenesCode();
+        var htmlCode = codeFilesComposer.GetHtmlCode();
 
         File.WriteAllText(
             Path.Combine(WorkingPath, "Frame.html"),

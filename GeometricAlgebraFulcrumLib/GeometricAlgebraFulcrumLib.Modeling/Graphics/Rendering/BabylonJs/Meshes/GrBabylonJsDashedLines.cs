@@ -8,74 +8,11 @@ namespace GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.BabylonJs.Meshe
 public sealed class GrBabylonJsDashedLines :
     GrBabylonJsLinesMesh
 {
-    public sealed class DashedLinesOptions :
-        GrBabylonJsObjectOptions
-    {
-        public GrBabylonJsVector3ArrayValue? Points
-        {
-            get => GetAttributeValueOrNull<GrBabylonJsVector3ArrayValue>("points");
-            set => SetAttributeValue("points", value);
-        }
-
-        public GrBabylonJsMaterialValue? Material
-        {
-            get => GetAttributeValueOrNull<GrBabylonJsMaterialValue>("material");
-            set => SetAttributeValue("material", value);
-        }
-
-        public GrBabylonJsInt32Value? DashSize
-        {
-            get => GetAttributeValueOrNull<GrBabylonJsInt32Value>("dashSize");
-            set => SetAttributeValue("dashSize", value);
-        }
-
-        public GrBabylonJsInt32Value? GapSize
-        {
-            get => GetAttributeValueOrNull<GrBabylonJsInt32Value>("gapSize");
-            set => SetAttributeValue("gapSize", value);
-        }
-
-        public GrBabylonJsInt32Value? DashNumber
-        {
-            get => GetAttributeValueOrNull<GrBabylonJsInt32Value>("dashNb");
-            set => SetAttributeValue("dashNb", value);
-        }
-
-        public GrBabylonJsBooleanValue? UseVertexAlpha
-        {
-            get => GetAttributeValueOrNull<GrBabylonJsBooleanValue>("useVertexAlpha");
-            set => SetAttributeValue("useVertexAlpha", value);
-        }
-
-        public GrBabylonJsLinesMeshValue? Instance
-        {
-            get => GetAttributeValueOrNull<GrBabylonJsLinesMeshValue>("instance");
-            set => SetAttributeValue("instance", value);
-        }
-
-        public GrBabylonJsBooleanValue? Updatable
-        {
-            get => GetAttributeValueOrNull<GrBabylonJsBooleanValue>("updatable");
-            set => SetAttributeValue("updatable", value);
-        }
-
-
-        public DashedLinesOptions()
-        {
-        }
-
-        public DashedLinesOptions(DashedLinesOptions options)
-        {
-            SetAttributeValues(options);
-        }
-    }
-
-
     protected override string ConstructorName
         => "BABYLON.MeshBuilder.CreateDashedLines";
 
-    public DashedLinesOptions Options { get; private set; }
-        = new DashedLinesOptions();
+    public GrBabylonJsDashedLinesOptions Options { get; private set; }
+        = new GrBabylonJsDashedLinesOptions();
 
     public override GrBabylonJsObjectOptions ObjectOptions 
         => Options;
@@ -92,16 +29,16 @@ public sealed class GrBabylonJsDashedLines :
     }
 
 
-    public GrBabylonJsDashedLines SetOptions(DashedLinesOptions options)
+    public GrBabylonJsDashedLines SetOptions(GrBabylonJsDashedLinesOptions options)
     {
-        Options = new DashedLinesOptions(options);
+        Options = new GrBabylonJsDashedLinesOptions(options);
 
         return this;
     }
 
-    public GrBabylonJsDashedLines SetProperties(LinesMeshProperties properties)
+    public GrBabylonJsDashedLines SetProperties(GrBabylonJsLinesMeshProperties properties)
     {
-        Properties = new LinesMeshProperties(properties);
+        Properties = new GrBabylonJsLinesMeshProperties(properties);
 
         return this;
     }

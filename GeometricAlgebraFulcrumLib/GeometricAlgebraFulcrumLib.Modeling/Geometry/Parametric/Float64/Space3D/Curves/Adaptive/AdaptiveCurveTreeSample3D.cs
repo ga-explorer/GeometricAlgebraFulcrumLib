@@ -60,8 +60,7 @@ public sealed record AdaptiveCurveTreeSample3D
             ).ToUnitLinVector3D();
 
         var (axis, angle) =
-            LinFloat64QuaternionUtils.GetRotationNormalAndAngle(
-                LeafNode.Frame0.Tangent,
+            LeafNode.Frame0.Tangent.VectorToVectorRotationAxisAngle(
                 LeafNode.Frame1.Tangent
             );
 
@@ -101,8 +100,7 @@ public sealed record AdaptiveCurveTreeSample3D
         {
             // Use spherical linear interpolation on the whole frame
             var (axis, angle) =
-                LinFloat64QuaternionUtils.GetRotationNormalAndAngle(
-                    LeafNode.Frame0.Tangent,
+                LeafNode.Frame0.Tangent.VectorToVectorRotationAxisAngle(
                     LeafNode.Frame1.Tangent
                 );
 

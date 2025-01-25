@@ -1,6 +1,7 @@
 ﻿using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space2D;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.BasicShapes.Lines;
+using GeometricAlgebraFulcrumLib.Modeling.Geometry.BasicShapes.Lines.Space2D.Float64;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Statistics;
 
 namespace GeometricAlgebraFulcrumLib.Modeling.Graphics.Computers.Reflections;
@@ -21,7 +22,7 @@ public sealed class GcLineSegmentReflector2D
     /// <summary>
     /// The line of reflection
     /// </summary>
-    public ILineSegment2D LineSegment { get; set; }
+    public IFloat64LineSegment2D LineSegment { get; set; }
 
 
     public GcLineSegmentReflector2D()

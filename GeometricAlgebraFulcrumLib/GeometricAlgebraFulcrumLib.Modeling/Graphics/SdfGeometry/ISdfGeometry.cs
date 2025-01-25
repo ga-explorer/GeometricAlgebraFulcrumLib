@@ -1,5 +1,5 @@
 ﻿using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space3D;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.BasicShapes.Lines.Immutable;
+using GeometricAlgebraFulcrumLib.Modeling.Geometry.BasicShapes.Lines.Space3D.Float64;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.ParametricShapes.Volumes;
 
 namespace GeometricAlgebraFulcrumLib.Modeling.Graphics.SdfGeometry;
@@ -19,7 +19,7 @@ public interface ISdfGeometry3D :
 
     double SdfDelta { get; }
 
-    double ComputeSdfRayStep(Line3D ray, double t0);
+    double ComputeSdfRayStep(Float64Line3D ray, double t0);
 
     LinFloat64Vector3D ComputeSdfNormal(ILinFloat64Vector3D point);
 }

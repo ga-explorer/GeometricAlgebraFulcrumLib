@@ -1,5 +1,6 @@
 ﻿using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space3D;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.BasicShapes.Triangles;
+using GeometricAlgebraFulcrumLib.Modeling.Geometry.BasicShapes.Triangles.Space2D.Float64;
+using GeometricAlgebraFulcrumLib.Modeling.Geometry.BasicShapes.Triangles.Space3D.Float64;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Statistics;
 
 namespace GeometricAlgebraFulcrumLib.Modeling.Graphics.Computers.Reflections;
@@ -20,7 +21,7 @@ public sealed class GcTriangleReflector3D
     /// <summary>
     /// The line of reflection
     /// </summary>
-    public ITriangle3D Triangle { get; set; }
+    public IFloat64Triangle3D Triangle { get; set; }
 
 
     public LinFloat64Vector3D ReflectPointVa(ILinFloat64Vector3D point)

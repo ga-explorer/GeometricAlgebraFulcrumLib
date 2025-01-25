@@ -5,7 +5,7 @@ using System.Text;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Angles;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space3D;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Basic;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.Borders.Space2D.Immutable;
+using GeometricAlgebraFulcrumLib.Modeling.Geometry.Borders.Space2D.Float64;
 
 // ReSharper disable InconsistentNaming
 
@@ -129,8 +129,8 @@ public abstract class GrParametricSurfaceTreeNode3D :
     public double MaxParameterValue2
         => Frame11.ParameterValue.Item2;
 
-    public BoundingBox2D ParameterValueRange
-        => BoundingBox2D.Create(
+    public Float64BoundingBox2D ParameterValueRange
+        => Float64BoundingBox2D.Create(
             MinParameterValue1,
             MinParameterValue2,
             MaxParameterValue1,

@@ -10,13 +10,13 @@ public class GrMappedParametricCurve3D :
 {
     public IParametricCurve3D BaseCurve { get; }
 
-    public IAffineMap3D AffineMap { get; }
+    public IFloat64AffineMap3D AffineMap { get; }
 
     public Float64ScalarRange ParameterRange
         => BaseCurve.ParameterRange;
 
 
-    public GrMappedParametricCurve3D(IParametricCurve3D baseCurve, IAffineMap3D map)
+    public GrMappedParametricCurve3D(IParametricCurve3D baseCurve, IFloat64AffineMap3D map)
     {
         BaseCurve = baseCurve;
         AffineMap = map;

@@ -578,7 +578,7 @@ public static class ExcelUtils
     }
 
 
-    public static DifferentialSignalInterpolatorFunction GetDifferentialInterpolatorOfColumn(this ExcelWorksheet workSheet, int firstRow, int columnIndex, Float64SignalSamplingSpecs samplingSpecs, int sampleStep, DfSignalInterpolatorOptions interpolatorOptions)
+    public static DifferentialSignalInterpolatorFunction GetDifferentialInterpolatorOfColumn(this ExcelWorksheet workSheet, int firstRow, int columnIndex, Float64SamplingSpecs samplingSpecs, int sampleStep, DfSignalInterpolatorOptions interpolatorOptions)
     {
         var signal =
             workSheet

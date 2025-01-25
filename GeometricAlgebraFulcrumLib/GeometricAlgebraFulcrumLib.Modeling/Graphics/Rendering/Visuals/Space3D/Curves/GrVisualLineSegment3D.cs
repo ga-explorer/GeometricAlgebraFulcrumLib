@@ -4,6 +4,7 @@ using GeometricAlgebraFulcrumLib.Modeling.Graphics.Meshes.PointsPath;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Meshes.PointsPath.Space3D;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.Visuals.Space3D.Animations;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.Visuals.Space3D.Styles;
+using GeometricAlgebraFulcrumLib.Modeling.Signals;
 
 namespace GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.Visuals.Space3D.Curves;
 
@@ -30,7 +31,7 @@ public sealed class GrVisualLineSegment3D :
             style, 
             LinFloat64Vector3D.Zero, 
             position2,
-            GrVisualAnimationSpecs.Static
+            Float64SamplingSpecs.Static
         );
     }
 
@@ -41,29 +42,29 @@ public sealed class GrVisualLineSegment3D :
             style, 
             position1, 
             position2,
-            GrVisualAnimationSpecs.Static
+            Float64SamplingSpecs.Static
         );
     }
         
-    public static GrVisualLineSegment3D Create(string name, GrVisualCurveStyle3D style, ILinFloat64Vector3D position2, GrVisualAnimationSpecs animationSpecs)
+    public static GrVisualLineSegment3D Create(string name, GrVisualCurveStyle3D style, ILinFloat64Vector3D position2, Float64SamplingSpecs samplingSpecs)
     {
         return new GrVisualLineSegment3D(
             name,
             style, 
             LinFloat64Vector3D.Zero, 
             position2,
-            animationSpecs
+            samplingSpecs
         );
     }
 
-    public static GrVisualLineSegment3D Create(string name, GrVisualCurveStyle3D style, ILinFloat64Vector3D position1, ILinFloat64Vector3D position2, GrVisualAnimationSpecs animationSpecs)
+    public static GrVisualLineSegment3D Create(string name, GrVisualCurveStyle3D style, ILinFloat64Vector3D position1, ILinFloat64Vector3D position2, Float64SamplingSpecs samplingSpecs)
     {
         return new GrVisualLineSegment3D(
             name,
             style, 
             position1, 
             position2,
-            animationSpecs
+            samplingSpecs
         );
     }
         
@@ -74,7 +75,7 @@ public sealed class GrVisualLineSegment3D :
             style, 
             LinFloat64Vector3D.Zero, 
             LinFloat64Vector3D.E1, 
-            position1.AnimationSpecs
+            position1.SamplingSpecs
         ).SetAnimatedPositions(position1, position2);
     }
 
@@ -100,8 +101,8 @@ public sealed class GrVisualLineSegment3D :
     public GrVisualAnimatedVector3D? AnimatedPosition2 { get; set; }
 
 
-    private GrVisualLineSegment3D(string name, GrVisualCurveStyle3D style, ILinFloat64Vector3D position1, ILinFloat64Vector3D position2, GrVisualAnimationSpecs animationSpecs) 
-        : base(name, style, animationSpecs)
+    private GrVisualLineSegment3D(string name, GrVisualCurveStyle3D style, ILinFloat64Vector3D position1, ILinFloat64Vector3D position2, Float64SamplingSpecs samplingSpecs) 
+        : base(name, style, samplingSpecs)
     {
         //if (position1.Subtract(position2).IsZeroVector())
         //    throw new InvalidOperationException();
@@ -195,14 +196,14 @@ public sealed class GrVisualLineSegment3D :
         
     public LinFloat64Vector3D GetPosition1(double time)
     {
-        return AnimationSpecs.IsStatic || AnimatedPosition1 is null
+        return SamplingSpecs.IsStatic || AnimatedPosition1 is null
             ? Position1.ToLinVector3D()
             : AnimatedPosition1.GetPoint(time);
     }
         
     public LinFloat64Vector3D GetPosition2(double time)
     {
-        return AnimationSpecs.IsStatic || AnimatedPosition2 is null
+        return SamplingSpecs.IsStatic || AnimatedPosition2 is null
             ? Position2.ToLinVector3D()
             : AnimatedPosition2.GetPoint(time);
     }
@@ -218,7 +219,7 @@ public sealed class GrVisualLineSegment3D :
 
         foreach (var frameIndex in GetValidFrameIndexSet())
         {
-            var time = (double)frameIndex / AnimationSpecs.FrameRate;
+            var time = (double)frameIndex / SamplingSpecs.SamplingRate;
                 
             yield return new KeyFrameRecord(
                 frameIndex, 

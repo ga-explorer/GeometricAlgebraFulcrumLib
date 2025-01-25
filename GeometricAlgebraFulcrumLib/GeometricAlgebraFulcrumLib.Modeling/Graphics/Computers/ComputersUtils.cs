@@ -1,5 +1,6 @@
 ﻿using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.BasicShapes.Lines;
+using GeometricAlgebraFulcrumLib.Modeling.Geometry.BasicShapes.Lines.Space2D.Float64;
+using GeometricAlgebraFulcrumLib.Modeling.Geometry.BasicShapes.Lines.Space3D.Float64;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Statistics;
 
 namespace GeometricAlgebraFulcrumLib.Modeling.Graphics.Computers;
@@ -10,12 +11,12 @@ public static class GeometryComputersUtils
         = new EventSummaryCollection();
 
 
-    public static LineTraversalData2D GetLineTraversalData(this ILine2D line)
+    public static LineTraversalData2D GetLineTraversalData(this IFloat64Line2D line)
     {
         return new LineTraversalData2D(line);
     }
 
-    public static LineTraversalData2D GetLineTraversalData(this ILine2D line, double lineParamMinValue, double lineParamMaxValue)
+    public static LineTraversalData2D GetLineTraversalData(this IFloat64Line2D line, double lineParamMinValue, double lineParamMaxValue)
     {
         return new LineTraversalData2D(
             line,
@@ -24,7 +25,7 @@ public static class GeometryComputersUtils
         );
     }
 
-    public static LineTraversalData2D GetLineTraversalData(this ILine2D line, Float64ScalarRange lineParamRange)
+    public static LineTraversalData2D GetLineTraversalData(this IFloat64Line2D line, Float64ScalarRange lineParamRange)
     {
         return new LineTraversalData2D(
             line,
@@ -34,12 +35,12 @@ public static class GeometryComputersUtils
     }
 
 
-    public static LineTraversalData3D GetLineTraversalData(this ILine3D line)
+    public static LineTraversalData3D GetLineTraversalData(this IFloat64Line3D line)
     {
         return new LineTraversalData3D(line);
     }
 
-    public static LineTraversalData3D GetLineTraversalData(this ILine3D line, double lineParamMinValue, double lineParamMaxValue)
+    public static LineTraversalData3D GetLineTraversalData(this IFloat64Line3D line, double lineParamMinValue, double lineParamMaxValue)
     {
         return new LineTraversalData3D(
             line,
@@ -48,7 +49,7 @@ public static class GeometryComputersUtils
         );
     }
 
-    public static LineTraversalData3D GetLineTraversalData(this ILine3D line, Float64ScalarRange lineParamRange)
+    public static LineTraversalData3D GetLineTraversalData(this IFloat64Line3D line, Float64ScalarRange lineParamRange)
     {
         return new LineTraversalData3D(
             line,

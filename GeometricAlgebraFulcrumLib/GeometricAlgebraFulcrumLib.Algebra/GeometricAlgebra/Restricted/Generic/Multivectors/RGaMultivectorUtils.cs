@@ -626,14 +626,14 @@ public static class RGaMultivectorUtils
         
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64Vector2D GetVectorPartAsTuple2D(this RGaMultivector<double> mv)
+    public static LinFloat64Vector2D GetVectorPartAsVector2D(this RGaMultivector<double> mv)
     {
         return LinFloat64Vector2D.Create((Float64Scalar)mv.GetBasisBladeScalar(1).ScalarValue,
             (Float64Scalar)mv.GetBasisBladeScalar(2).ScalarValue);
     }
         
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64Vector3D GetVectorPartAsTuple3D(this RGaMultivector<double> mv)
+    public static LinFloat64Vector3D GetVectorPartAsVector3D(this RGaMultivector<double> mv)
     {
         return LinFloat64Vector3D.Create(mv.GetBasisBladeScalar(1).ScalarValue,
             mv.GetBasisBladeScalar(2).ScalarValue,
@@ -641,7 +641,7 @@ public static class RGaMultivectorUtils
     }
         
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64Vector4D GetVectorPartAsTuple4D(this RGaMultivector<double> mv)
+    public static LinFloat64Vector4D GetVectorPartAsVector4D(this RGaMultivector<double> mv)
     {
         return LinFloat64Vector4D.Create(mv.GetBasisBladeScalar(1).ScalarValue,
             mv.GetBasisBladeScalar(2).ScalarValue,

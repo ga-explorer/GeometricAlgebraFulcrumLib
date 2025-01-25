@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics;
 using System.Numerics;
 using System.Runtime.CompilerServices;
+using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Basis;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Angles;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space3D;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space4D;
@@ -25,10 +26,10 @@ public sealed class SquareMatrix4 //: IAffineMap3D
     {
         return new SquareMatrix4
         {
-            Scalar00 = 1.0d,
-            Scalar11 = 1.0d,
-            Scalar22 = 1.0d,
-            Scalar33 = 1.0d
+            Scalar00 = Float64Scalar.One,
+            Scalar11 = Float64Scalar.One,
+            Scalar22 = Float64Scalar.One,
+            Scalar33 = Float64Scalar.One
         };
     }
 
@@ -46,7 +47,7 @@ public sealed class SquareMatrix4 //: IAffineMap3D
             Scalar02 = m.Scalar02,
             Scalar12 = m.Scalar12,
             Scalar22 = m.Scalar22,
-            Scalar33 = 1d
+            Scalar33 = Float64Scalar.One
         };
     }
 
@@ -55,10 +56,10 @@ public sealed class SquareMatrix4 //: IAffineMap3D
     {
         return new SquareMatrix4
         {
-            Scalar00 = 1.0d,
-            Scalar11 = 1.0d,
-            Scalar22 = 1.0d,
-            Scalar33 = 1.0d,
+            Scalar00 = Float64Scalar.One,
+            Scalar11 = Float64Scalar.One,
+            Scalar22 = Float64Scalar.One,
+            Scalar33 = Float64Scalar.One,
             Scalar03 = dx,
             Scalar13 = dy,
             Scalar23 = dz
@@ -66,17 +67,17 @@ public sealed class SquareMatrix4 //: IAffineMap3D
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static SquareMatrix4 CreateTranslationMatrix3D(ILinFloat64Vector3D translationVector)
+    public static SquareMatrix4 CreateTranslationMatrix3D(ITriplet<Float64Scalar> translationVector)
     {
         return new SquareMatrix4
         {
-            Scalar00 = 1.0d,
-            Scalar11 = 1.0d,
-            Scalar22 = 1.0d,
-            Scalar33 = 1.0d,
-            Scalar03 = translationVector.X,
-            Scalar13 = translationVector.Y,
-            Scalar23 = translationVector.Z
+            Scalar00 = Float64Scalar.One,
+            Scalar11 = Float64Scalar.One,
+            Scalar22 = Float64Scalar.One,
+            Scalar33 = Float64Scalar.One,
+            Scalar03 = translationVector.Item1,
+            Scalar13 = translationVector.Item2,
+            Scalar23 = translationVector.Item3
         };
     }
 
@@ -88,7 +89,7 @@ public sealed class SquareMatrix4 //: IAffineMap3D
             Scalar00 = sx,
             Scalar11 = sy,
             Scalar22 = sz,
-            Scalar33 = 1.0d
+            Scalar33 = Float64Scalar.One
         };
     }
 
@@ -100,7 +101,7 @@ public sealed class SquareMatrix4 //: IAffineMap3D
             Scalar00 = s,
             Scalar11 = s,
             Scalar22 = s,
-            Scalar33 = 1.0d
+            Scalar33 = Float64Scalar.One
         };
     }
 
@@ -109,10 +110,10 @@ public sealed class SquareMatrix4 //: IAffineMap3D
     {
         return new SquareMatrix4
         {
-            Scalar00 = 1.0d,
-            Scalar11 = 1.0d,
-            Scalar22 = -1.0d,
-            Scalar33 = 1.0d
+            Scalar00 = Float64Scalar.One,
+            Scalar11 = Float64Scalar.One,
+            Scalar22 = -Float64Scalar.One,
+            Scalar33 = Float64Scalar.One
         };
     }
 
@@ -121,10 +122,10 @@ public sealed class SquareMatrix4 //: IAffineMap3D
     {
         return new SquareMatrix4
         {
-            Scalar00 = -1.0d,
-            Scalar11 = 1.0d,
-            Scalar22 = 1.0d,
-            Scalar33 = 1.0d
+            Scalar00 = -Float64Scalar.One,
+            Scalar11 = Float64Scalar.One,
+            Scalar22 = Float64Scalar.One,
+            Scalar33 = Float64Scalar.One
         };
     }
 
@@ -133,10 +134,10 @@ public sealed class SquareMatrix4 //: IAffineMap3D
     {
         return new SquareMatrix4
         {
-            Scalar00 = 1.0d,
-            Scalar11 = -1.0d,
-            Scalar22 = 1.0d,
-            Scalar33 = 1.0d
+            Scalar00 = Float64Scalar.One,
+            Scalar11 = -Float64Scalar.One,
+            Scalar22 = Float64Scalar.One,
+            Scalar33 = Float64Scalar.One
         };
     }
 
@@ -145,10 +146,10 @@ public sealed class SquareMatrix4 //: IAffineMap3D
     {
         return new SquareMatrix4
         {
-            Scalar00 = 1.0d,
-            Scalar11 = -1.0d,
-            Scalar22 = -1.0d,
-            Scalar33 = 1.0d
+            Scalar00 = Float64Scalar.One,
+            Scalar11 = -Float64Scalar.One,
+            Scalar22 = -Float64Scalar.One,
+            Scalar33 = Float64Scalar.One
         };
     }
 
@@ -157,10 +158,10 @@ public sealed class SquareMatrix4 //: IAffineMap3D
     {
         return new SquareMatrix4
         {
-            Scalar00 = -1.0d,
-            Scalar11 = 1.0d,
-            Scalar22 = -1.0d,
-            Scalar33 = 1.0d
+            Scalar00 = -Float64Scalar.One,
+            Scalar11 = Float64Scalar.One,
+            Scalar22 = -Float64Scalar.One,
+            Scalar33 = Float64Scalar.One
         };
     }
 
@@ -169,10 +170,10 @@ public sealed class SquareMatrix4 //: IAffineMap3D
     {
         return new SquareMatrix4
         {
-            Scalar00 = -1.0d,
-            Scalar11 = -1.0d,
-            Scalar22 = 1.0d,
-            Scalar33 = 1.0d
+            Scalar00 = -Float64Scalar.One,
+            Scalar11 = -Float64Scalar.One,
+            Scalar22 = Float64Scalar.One,
+            Scalar33 = Float64Scalar.One
         };
     }
 
@@ -181,26 +182,26 @@ public sealed class SquareMatrix4 //: IAffineMap3D
     {
         return new SquareMatrix4
         {
-            Scalar00 = -1.0d,
-            Scalar11 = -1.0d,
-            Scalar22 = -1.0d,
-            Scalar33 = 1.0d
+            Scalar00 = -Float64Scalar.One,
+            Scalar11 = -Float64Scalar.One,
+            Scalar22 = -Float64Scalar.One,
+            Scalar33 = Float64Scalar.One
         };
     }
 
-    public static SquareMatrix4 CreateXRotationMatrix3D(LinFloat64Angle radianAngle)
+    public static SquareMatrix4 CreateXRotationMatrix3D(LinFloat64Angle angle)
     {
-        Debug.Assert(radianAngle.IsValid());
+        Debug.Assert(angle.IsValid());
 
-        if (radianAngle.IsZero())
+        if (angle.IsZero())
             return CreateIdentityMatrix();
 
         var m = new SquareMatrix4();
 
-        var cosAngle = radianAngle.CosValue;
-        var sinAngle = radianAngle.SinValue;
+        var cosAngle = angle.CosValue;
+        var sinAngle = angle.SinValue;
 
-        m.Scalar00 = 1.0d;
+        m.Scalar00 = Float64Scalar.One;
 
         m.Scalar11 = cosAngle;
         m.Scalar21 = sinAngle;
@@ -208,47 +209,47 @@ public sealed class SquareMatrix4 //: IAffineMap3D
         m.Scalar12 = -sinAngle;
         m.Scalar22 = cosAngle;
 
-        m.Scalar33 = 1.0d;
+        m.Scalar33 = Float64Scalar.One;
 
         return m;
     }
 
-    public static SquareMatrix4 CreateYRotationMatrix3D(LinFloat64Angle radianAngle)
+    public static SquareMatrix4 CreateYRotationMatrix3D(LinFloat64Angle angle)
     {
-        Debug.Assert(radianAngle.IsValid());
+        Debug.Assert(angle.IsValid());
 
-        if (radianAngle.IsZero())
+        if (angle.IsZero())
             return CreateIdentityMatrix();
 
         var m = new SquareMatrix4();
 
-        var cosAngle = radianAngle.CosValue;
-        var sinAngle = radianAngle.SinValue;
+        var cosAngle = angle.CosValue;
+        var sinAngle = angle.SinValue;
 
         m.Scalar00 = cosAngle;
         m.Scalar20 = -sinAngle;
 
-        m.Scalar11 = 1.0d;
+        m.Scalar11 = Float64Scalar.One;
 
         m.Scalar02 = sinAngle;
         m.Scalar22 = cosAngle;
 
-        m.Scalar33 = 1.0d;
+        m.Scalar33 = Float64Scalar.One;
 
         return m;
     }
 
-    public static SquareMatrix4 CreateZRotationMatrix3D(LinFloat64Angle radianAngle)
+    public static SquareMatrix4 CreateZRotationMatrix3D(LinFloat64Angle angle)
     {
-        Debug.Assert(radianAngle.IsValid());
+        Debug.Assert(angle.IsValid());
 
-        if (radianAngle.IsZero())
+        if (angle.IsZero())
             return CreateIdentityMatrix();
 
         var m = new SquareMatrix4();
 
-        var cosAngle = radianAngle.CosValue;
-        var sinAngle = radianAngle.SinValue;
+        var cosAngle = angle.Cos();
+        var sinAngle = angle.Sin();
 
         m.Scalar00 = cosAngle;
         m.Scalar10 = sinAngle;
@@ -256,16 +257,21 @@ public sealed class SquareMatrix4 //: IAffineMap3D
         m.Scalar01 = -sinAngle;
         m.Scalar11 = cosAngle;
 
-        m.Scalar22 = 1.0d;
+        m.Scalar22 = Float64Scalar.One;
 
-        m.Scalar33 = 1.0d;
+        m.Scalar33 = Float64Scalar.One;
 
         return m;
     }
 
-    public static SquareMatrix4 CreateRotationMatrix3D(ILinFloat64Vector3D unitAxis, LinFloat64Angle radianAngle)
+    public static SquareMatrix4 CreateRotationMatrix3D(LinFloat64Quaternion quaternion)
     {
-        if (radianAngle.IsZero())
+        return quaternion.ToSquareMatrix4();
+    }
+
+    public static SquareMatrix4 CreateRotationMatrix3D(ILinFloat64Vector3D unitAxis, LinFloat64Angle angle)
+    {
+        if (angle.IsZero())
             return CreateIdentityMatrix();
 
         Debug.Assert(unitAxis.IsUnitVector());
@@ -275,9 +281,9 @@ public sealed class SquareMatrix4 //: IAffineMap3D
         var x = unitAxis.X;
         var y = unitAxis.Y;
         var z = unitAxis.Z;
-        var cosAngle = radianAngle.Cos();
-        var sinAngle = radianAngle.Sin();
-        var oneMinusCosAngle = 1.0d - cosAngle;
+        var cosAngle = angle.Cos();
+        var sinAngle = angle.Sin();
+        var oneMinusCosAngle = Float64Scalar.One - cosAngle;
         var xx = x * x;
         var yy = y * y;
         var zz = z * z;
@@ -285,19 +291,19 @@ public sealed class SquareMatrix4 //: IAffineMap3D
         var xz = x * z;
         var yz = y * z;
 
-        m.Scalar00 = xx + (1d - xx) * cosAngle;
+        m.Scalar00 = xx + (Float64Scalar.One - xx) * cosAngle;
         m.Scalar10 = xy * oneMinusCosAngle + z * sinAngle;
         m.Scalar20 = xz * oneMinusCosAngle - y * sinAngle;
 
         m.Scalar01 = xy * oneMinusCosAngle - z * sinAngle;
-        m.Scalar11 = yy + (1d - yy) * cosAngle;
+        m.Scalar11 = yy + (Float64Scalar.One - yy) * cosAngle;
         m.Scalar21 = yz * oneMinusCosAngle + x * sinAngle;
 
         m.Scalar02 = xz * oneMinusCosAngle + y * sinAngle;
         m.Scalar12 = yz * oneMinusCosAngle - x * sinAngle;
-        m.Scalar22 = zz + (1d - zz) * cosAngle;
+        m.Scalar22 = zz + (Float64Scalar.One - zz) * cosAngle;
 
-        m.Scalar33 = 1d;
+        m.Scalar33 = Float64Scalar.One;
 
         //m.Scalar00 = cosAngle + unitAxis.X * unitAxis.X * oneMinusCosAngle;
         //m.Scalar10 = unitAxis.Y * unitAxis.X * oneMinusCosAngle + unitAxis.Z * sinAngle;
@@ -340,6 +346,24 @@ public sealed class SquareMatrix4 //: IAffineMap3D
             );
     }
 
+    /// <summary>
+    /// Create a rotation matrix that rotates the unit vectors <see cref="basisVectors"/>
+    /// into the unit vectors <see cref="unitVector1"/>, <see cref="unitVector1"/>
+    /// </summary>
+    /// <param name="basisVectors"></param>
+    /// <param name="unitVector1"></param>
+    /// <param name="unitVector2"></param>
+    /// <returns></returns>
+    public static SquareMatrix4 CreateRotationMatrix3D(LinBasisVectorPair3D basisVectors, ILinFloat64Vector3D unitVector1, ILinFloat64Vector3D unitVector2)
+    {
+        var q = 
+            basisVectors.VectorPairToVectorPairRotationQuaternion(
+                unitVector1, 
+                unitVector2
+            );
+
+        return q.ToSquareMatrix4();
+    }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static SquareMatrix4 operator -(SquareMatrix4 m1)
@@ -783,60 +807,54 @@ public sealed class SquareMatrix4 //: IAffineMap3D
     public Float64Scalar FNorm
         => Math.Sqrt(FNormSquared);
 
-    public bool IsExactIdentity
+    public bool IsIdentity()
     {
-        get
-        {
-            if (!Scalar00.IsOne()) return false;
-            if (!Scalar10.IsZero()) return false;
-            if (!Scalar20.IsZero()) return false;
-            if (!Scalar30.IsZero()) return false;
+        if (!Scalar00.IsOne()) return false;
+        if (!Scalar10.IsZero()) return false;
+        if (!Scalar20.IsZero()) return false;
+        if (!Scalar30.IsZero()) return false;
 
-            if (!Scalar01.IsZero()) return false;
-            if (!Scalar11.IsOne()) return false;
-            if (!Scalar21.IsZero()) return false;
-            if (!Scalar31.IsZero()) return false;
+        if (!Scalar01.IsZero()) return false;
+        if (!Scalar11.IsOne()) return false;
+        if (!Scalar21.IsZero()) return false;
+        if (!Scalar31.IsZero()) return false;
 
-            if (!Scalar02.IsZero()) return false;
-            if (!Scalar12.IsZero()) return false;
-            if (!Scalar22.IsOne()) return false;
-            if (!Scalar32.IsZero()) return false;
+        if (!Scalar02.IsZero()) return false;
+        if (!Scalar12.IsZero()) return false;
+        if (!Scalar22.IsOne()) return false;
+        if (!Scalar32.IsZero()) return false;
 
-            if (!Scalar03.IsZero()) return false;
-            if (!Scalar13.IsZero()) return false;
-            if (!Scalar23.IsZero()) return false;
-            if (!Scalar33.IsOne()) return false;
+        if (!Scalar03.IsZero()) return false;
+        if (!Scalar13.IsZero()) return false;
+        if (!Scalar23.IsZero()) return false;
+        if (!Scalar33.IsOne()) return false;
 
-            return true;
-        }
+        return true;
     }
 
-    public bool IsIdentity
+    public bool IsNearIdentity(double zeroEpsilon = Float64Utils.ZeroEpsilon)
     {
-        get
-        {
-            if (!Scalar00.IsOne()) return false;
-            if (!Scalar10.IsZero()) return false;
-            if (!Scalar20.IsZero()) return false;
-            if (!Scalar30.IsZero()) return false;
+        if (!Scalar00.IsNearOne(zeroEpsilon)) return false;
+        if (!Scalar10.IsNearZero(zeroEpsilon)) return false;
+        if (!Scalar20.IsNearZero(zeroEpsilon)) return false;
+        if (!Scalar30.IsNearZero(zeroEpsilon)) return false;
 
-            if (!Scalar01.IsZero()) return false;
-            if (!Scalar11.IsOne()) return false;
-            if (!Scalar21.IsZero()) return false;
-            if (!Scalar31.IsZero()) return false;
+        if (!Scalar01.IsNearZero(zeroEpsilon)) return false;
+        if (!Scalar11.IsNearOne(zeroEpsilon)) return false;
+        if (!Scalar21.IsNearZero(zeroEpsilon)) return false;
+        if (!Scalar31.IsNearZero(zeroEpsilon)) return false;
 
-            if (!Scalar02.IsZero()) return false;
-            if (!Scalar12.IsZero()) return false;
-            if (!Scalar22.IsOne()) return false;
-            if (!Scalar32.IsZero()) return false;
+        if (!Scalar02.IsNearZero(zeroEpsilon)) return false;
+        if (!Scalar12.IsNearZero(zeroEpsilon)) return false;
+        if (!Scalar22.IsNearOne(zeroEpsilon)) return false;
+        if (!Scalar32.IsNearZero(zeroEpsilon)) return false;
 
-            if (!Scalar03.IsZero()) return false;
-            if (!Scalar13.IsZero()) return false;
-            if (!Scalar23.IsZero()) return false;
-            if (!Scalar33.IsOne()) return false;
+        if (!Scalar03.IsNearZero(zeroEpsilon)) return false;
+        if (!Scalar13.IsNearZero(zeroEpsilon)) return false;
+        if (!Scalar23.IsNearZero(zeroEpsilon)) return false;
+        if (!Scalar33.IsNearOne(zeroEpsilon)) return false;
 
-            return true;
-        }
+        return true;
     }
 
     public bool ContainsScaling
@@ -936,7 +954,25 @@ public sealed class SquareMatrix4 //: IAffineMap3D
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public SquareMatrix4()
     {
+        Scalar00 = Float64Scalar.Zero;
+        Scalar10 = Float64Scalar.Zero;
+        Scalar20 = Float64Scalar.Zero;
+        Scalar30 = Float64Scalar.Zero;
 
+        Scalar01 = Float64Scalar.Zero;
+        Scalar11 = Float64Scalar.Zero;
+        Scalar21 = Float64Scalar.Zero;
+        Scalar31 = Float64Scalar.Zero;
+
+        Scalar02 = Float64Scalar.Zero;
+        Scalar12 = Float64Scalar.Zero;
+        Scalar22 = Float64Scalar.Zero;
+        Scalar32 = Float64Scalar.Zero;
+
+        Scalar03 = Float64Scalar.Zero;
+        Scalar13 = Float64Scalar.Zero;
+        Scalar23 = Float64Scalar.Zero;
+        Scalar33 = Float64Scalar.Zero;
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]

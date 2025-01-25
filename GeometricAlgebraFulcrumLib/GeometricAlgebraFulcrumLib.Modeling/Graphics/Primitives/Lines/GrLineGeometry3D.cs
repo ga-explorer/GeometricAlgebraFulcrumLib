@@ -2,7 +2,7 @@
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Tuples;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space3D;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.BasicShapes.Lines;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.BasicShapes.Lines.Immutable;
+using GeometricAlgebraFulcrumLib.Modeling.Geometry.BasicShapes.Lines.Space3D.Float64;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Primitives.Vertices;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Basic;
 
@@ -58,7 +58,7 @@ public sealed class GrLineGeometry3D
         return new GrLineGeometry3D(pointsArray, indicesList.ToList());
     }
         
-    public static GrLineGeometry3D Create(params ILineSegment3D[] lineSegmentsList)
+    public static GrLineGeometry3D Create(params IFloat64LineSegment3D[] lineSegmentsList)
     {
         var pointsList = new DistinctTuplesList3D();
         var vertexIndicesList = new List<int>();
@@ -80,7 +80,7 @@ public sealed class GrLineGeometry3D
         return new GrLineGeometry3D(pointsList, vertexIndicesList);
     }
 
-    public static GrLineGeometry3D Create(IEnumerable<ILineSegment3D> lineSegmentsList)
+    public static GrLineGeometry3D Create(IEnumerable<IFloat64LineSegment3D> lineSegmentsList)
     {
         var pointsList = new DistinctTuplesList3D();
         var vertexIndicesList = new List<int>();
@@ -104,7 +104,7 @@ public sealed class GrLineGeometry3D
 
 
     public GraphicsPrimitiveType3D PrimitiveType
-        => GraphicsPrimitiveType3D.Lines;
+        => GraphicsPrimitiveType3D.LineList;
 
     public int VertexCount 
         => _vertexPoints.Count;
@@ -123,8 +123,8 @@ public sealed class GrLineGeometry3D
     public int Count
         => _vertexIndicesList.Count >> 1;
 
-    public ILineSegment3D this[int index] 
-        => LineSegment3D.Create(
+    public IFloat64LineSegment3D this[int index] 
+        => Float64LineSegment3D.Create(
             _vertexPoints[_vertexIndicesList[2 * index]],
             _vertexPoints[_vertexIndicesList[2 * index + 1]]
         );
@@ -603,14 +603,14 @@ public sealed class GrLineGeometry3D
     }
 
 
-    public IEnumerator<ILineSegment3D> GetEnumerator()
+    public IEnumerator<IFloat64LineSegment3D> GetEnumerator()
     {
         for (var i = 0; i < _vertexPoints.Count; i += 2)
         {
             var point1 = _vertexPoints[_vertexIndicesList[i]];
             var point2 = _vertexPoints[_vertexIndicesList[i + 1]];
 
-            yield return LineSegment3D.Create(point1, point2);
+            yield return Float64LineSegment3D.Create(point1, point2);
         }
     }
 

@@ -3,7 +3,7 @@
 namespace GeometricAlgebraFulcrumLib.Modeling.Graphics.Accelerators;
 
 public interface IAccelerator3D<out T>
-    : IGeometricObjectsContainer3D<T>, IIntersectable
-    where T : IFiniteGeometricShape3D
+    : IFloat64GeometricObjectsContainer3D<T>, IIntersectable
+    where T : IFloat64FiniteGeometricShape3D
 {
 }

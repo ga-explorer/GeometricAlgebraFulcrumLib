@@ -224,11 +224,23 @@ public sealed record LinFloat64Vector3D :
     {
         return new LinFloat64Vector3D(-v1.X, -v1.Y, -v1.Z);
     }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static LinFloat64Vector3D operator +(LinFloat64Vector3D v1, LinBasisVector3D v2)
+    {
+        return v1 + v2.ToLinVector3D();
+    }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static LinFloat64Vector3D operator +(LinFloat64Vector3D v1, ILinFloat64Vector3D v2)
     {
         return new LinFloat64Vector3D(v1.X + v2.X, v1.Y + v2.Y, v1.Z + v2.Z);
+    }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static LinFloat64Vector3D operator +(LinBasisVector3D v1, LinFloat64Vector3D v2)
+    {
+        return v1.ToLinVector3D() + v2;
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -242,11 +254,23 @@ public sealed record LinFloat64Vector3D :
     {
         return new LinFloat64Vector3D(v1.X + v2.X, v1.Y + v2.Y, v1.Z + v2.Z);
     }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static LinFloat64Vector3D operator -(LinFloat64Vector3D v1, LinBasisVector3D v2)
+    {
+        return v1 - v2.ToLinVector3D();
+    }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static LinFloat64Vector3D operator -(LinFloat64Vector3D v1, ILinFloat64Vector3D v2)
     {
         return new LinFloat64Vector3D(v1.X - v2.X, v1.Y - v2.Y, v1.Z - v2.Z);
+    }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static LinFloat64Vector3D operator -(LinBasisVector3D v1, LinFloat64Vector3D v2)
+    {
+        return v1.ToLinVector3D() - v2;
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -466,18 +490,18 @@ public sealed record LinFloat64Vector3D :
         }
     }
 
-    public double this[LinUnitBasisVector3D axis]
+    public double this[LinBasisVector3D axis]
     {
         get
         {
             return axis switch
             {
-                LinUnitBasisVector3D.PositiveX => X.ScalarValue,
-                LinUnitBasisVector3D.PositiveY => Y.ScalarValue,
-                LinUnitBasisVector3D.PositiveZ => Z.ScalarValue,
-                LinUnitBasisVector3D.NegativeX => -X.ScalarValue,
-                LinUnitBasisVector3D.NegativeY => -Y.ScalarValue,
-                LinUnitBasisVector3D.NegativeZ => -Z.ScalarValue,
+                LinBasisVector3D.Px => X.ScalarValue,
+                LinBasisVector3D.Py => Y.ScalarValue,
+                LinBasisVector3D.Pz => Z.ScalarValue,
+                LinBasisVector3D.Nx => -X.ScalarValue,
+                LinBasisVector3D.Ny => -Y.ScalarValue,
+                LinBasisVector3D.Nz => -Z.ScalarValue,
                 _ => 0.0d
             };
         }
@@ -526,9 +550,9 @@ public sealed record LinFloat64Vector3D :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool IsNearZero(double epsilon = 1E-12)
+    public bool IsNearZero(double zeroEpsilon = 1E-12)
     {
-        return Norm().IsNearZero(epsilon);
+        return Norm().IsNearZero(zeroEpsilon);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]

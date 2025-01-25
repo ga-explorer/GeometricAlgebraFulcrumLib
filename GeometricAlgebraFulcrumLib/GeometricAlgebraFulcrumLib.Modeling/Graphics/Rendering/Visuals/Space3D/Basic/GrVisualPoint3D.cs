@@ -3,6 +3,7 @@ using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space3D;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.Visuals.Space3D.Animations;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.Visuals.Space3D.Styles;
+using GeometricAlgebraFulcrumLib.Modeling.Signals;
 
 namespace GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.Visuals.Space3D.Basic;
 
@@ -28,17 +29,17 @@ public sealed class GrVisualPoint3D :
             name, 
             style, 
             position, 
-            GrVisualAnimationSpecs.Static
+            Float64SamplingSpecs.Static
         );
     }
         
-    public static GrVisualPoint3D Create(string name, GrVisualSurfaceThickStyle3D style, ILinFloat64Vector3D position, GrVisualAnimationSpecs animationSpecs)
+    public static GrVisualPoint3D Create(string name, GrVisualSurfaceThickStyle3D style, ILinFloat64Vector3D position, Float64SamplingSpecs samplingSpecs)
     {
         return new GrVisualPoint3D(
             name, 
             style, 
             position,
-            animationSpecs
+            samplingSpecs
         );
     }
         
@@ -48,7 +49,7 @@ public sealed class GrVisualPoint3D :
             name, 
             style, 
             LinFloat64Vector3D.Zero,
-            position.AnimationSpecs
+            position.SamplingSpecs
         ).SetAnimatedPosition(position);
     }
 
@@ -81,8 +82,8 @@ public sealed class GrVisualPoint3D :
         => Position.Z;
 
 
-    private GrVisualPoint3D(string name, GrVisualSurfaceThickStyle3D style, ILinFloat64Vector3D position, GrVisualAnimationSpecs animationSpecs) 
-        : base(name, animationSpecs)
+    private GrVisualPoint3D(string name, GrVisualSurfaceThickStyle3D style, ILinFloat64Vector3D position, Float64SamplingSpecs samplingSpecs) 
+        : base(name, samplingSpecs)
     {
         Position = position;
         Style = style;
@@ -94,7 +95,7 @@ public sealed class GrVisualPoint3D :
     public override bool IsValid()
     {
         return Position.IsValid() &&
-               AnimatedPosition.IsNullOrValid(AnimationSpecs.FrameTimeRange);
+               AnimatedPosition.IsNullOrValid(SamplingSpecs.TimeRange);
     }
 
     public override IReadOnlyList<GrVisualAnimatedGeometry> GetAnimatedGeometries()
@@ -126,7 +127,7 @@ public sealed class GrVisualPoint3D :
         
     public LinFloat64Vector3D GetPosition(double time)
     {
-        return AnimationSpecs.IsStatic || AnimatedPosition is null
+        return SamplingSpecs.IsStatic || AnimatedPosition is null
             ? Position.ToLinVector3D()
             : AnimatedPosition.GetPoint(time);
     }
@@ -137,7 +138,7 @@ public sealed class GrVisualPoint3D :
 
         foreach (var frameIndex in GetValidFrameIndexSet())
         {
-            var time = (double)frameIndex / AnimationSpecs.FrameRate;
+            var time = (double)frameIndex / SamplingSpecs.SamplingRate;
 
             yield return new KeyFrameRecord(
                 frameIndex, 

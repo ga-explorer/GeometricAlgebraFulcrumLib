@@ -142,13 +142,13 @@ public static class LinFloat64Vector2DComposerUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64Vector2D ToLinVector2D(this LinUnitBasisVector2D axis)
+    public static LinFloat64Vector2D ToLinVector2D(this LinBasisVector2D axis)
     {
         return axis switch
         {
-            LinUnitBasisVector2D.PositiveX => LinFloat64Vector2D.E1,
-            LinUnitBasisVector2D.NegativeX => LinFloat64Vector2D.NegativeE1,
-            LinUnitBasisVector2D.PositiveY => LinFloat64Vector2D.E2,
+            LinBasisVector2D.Px => LinFloat64Vector2D.E1,
+            LinBasisVector2D.Nx => LinFloat64Vector2D.NegativeE1,
+            LinBasisVector2D.Py => LinFloat64Vector2D.E2,
             _ => LinFloat64Vector2D.NegativeE2
         };
     }
@@ -203,6 +203,15 @@ public static class LinFloat64Vector2DComposerUtils
         return LinFloat64Vector2D.Create(
             polarPosition.R * polarPosition.Theta.CosValue,
             polarPosition.R * polarPosition.Theta.SinValue
+        );
+    }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static LinFloat64Vector2D ToLinVector2D(this ILinFloat64PolarVector2D polarPosition, Float64Scalar scalingFactor)
+    {
+        return LinFloat64Vector2D.Create(
+            scalingFactor * polarPosition.R * polarPosition.Theta.CosValue,
+            scalingFactor * polarPosition.R * polarPosition.Theta.SinValue
         );
     }
 

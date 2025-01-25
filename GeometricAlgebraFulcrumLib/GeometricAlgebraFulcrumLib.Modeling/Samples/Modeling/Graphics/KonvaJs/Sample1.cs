@@ -42,7 +42,7 @@ public static class Sample1
             .AddPoint("point0", 0, 0, 5)
             .AddPoint("point1", 100, 150, 5);
 
-        Console.WriteLine(stage.GetCode());
+        Console.WriteLine(stage.GetKonvaJsCode());
 
         stage.SaveHtmlCode(@"D:\Projects\Study\Web\Konva\Example1.html");
     }
@@ -78,7 +78,7 @@ public static class Sample1
             .SetColorStyle(2, Color.Black, Color.Beige)
             .AddPoints("linePoint", pointArray, 5);
 
-        Console.WriteLine(stage.GetCode());
+        Console.WriteLine(stage.GetKonvaJsCode());
 
         stage.SaveHtmlCode(@"D:\Projects\Study\Web\Konva\Example2.html");
     }

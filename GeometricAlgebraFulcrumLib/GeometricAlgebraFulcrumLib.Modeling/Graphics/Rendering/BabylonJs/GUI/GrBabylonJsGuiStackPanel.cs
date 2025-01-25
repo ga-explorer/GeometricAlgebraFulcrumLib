@@ -1,6 +1,4 @@
-﻿using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.BabylonJs.Values;
-
-namespace GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.BabylonJs.GUI;
+﻿namespace GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.BabylonJs.GUI;
 
 /// <summary>
 /// https://doc.babylonjs.com/typedoc/classes/BABYLON.GUI.StackPanel
@@ -8,43 +6,10 @@ namespace GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.BabylonJs.GUI;
 public sealed class GrBabylonJsGuiStackPanel : 
     GrBabylonJsGuiContainer
 {
-    public class GuiStackPanelProperties :
-        GuiContainerProperties
-    {
-        public GrBabylonJsBooleanValue? IgnoreLayoutWarnings
-        {
-            get => GetAttributeValueOrNull<GrBabylonJsBooleanValue>("ignoreLayoutWarnings");
-            set => SetAttributeValue("ignoreLayoutWarnings", value);
-        }
-
-        public GrBabylonJsBooleanValue? IsVertical
-        {
-            get => GetAttributeValueOrNull<GrBabylonJsBooleanValue>("isVertical");
-            set => SetAttributeValue("isVertical", value);
-        }
-
-        public GrBabylonJsFloat32Value? Spacing
-        {
-            get => GetAttributeValueOrNull<GrBabylonJsFloat32Value>("spacing");
-            set => SetAttributeValue("spacing", value);
-        }
-
-
-        public GuiStackPanelProperties()
-        {
-        }
-
-        public GuiStackPanelProperties(GuiStackPanelProperties properties)
-        {
-            SetAttributeValues(properties);
-        }
-    }
-
-
     protected override string ConstructorName
         => "new BABYLON.GUI.StackPanel";
 
-    public GuiStackPanelProperties Properties { get; private set; }
+    public GrBabylonJsGuiStackPanelProperties Properties { get; private set; }
 
     public override GrBabylonJsObjectProperties ObjectProperties 
         => Properties;
@@ -56,9 +21,9 @@ public sealed class GrBabylonJsGuiStackPanel :
     }
 
 
-    public GrBabylonJsGuiStackPanel SetProperties(GuiStackPanelProperties properties)
+    public GrBabylonJsGuiStackPanel SetProperties(GrBabylonJsGuiStackPanelProperties properties)
     {
-        Properties = new GuiStackPanelProperties(properties);
+        Properties = new GrBabylonJsGuiStackPanelProperties(properties);
 
         return this;
     }

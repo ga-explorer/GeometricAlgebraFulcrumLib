@@ -1,8 +1,8 @@
 ﻿using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Angles;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space3D;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.BasicShapes.Lines.Immutable;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.BasicShapes.Triangles.Immutable;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.Borders.Space2D;
+using GeometricAlgebraFulcrumLib.Modeling.Geometry.BasicShapes.Lines.Space2D.Float64;
+using GeometricAlgebraFulcrumLib.Modeling.Geometry.BasicShapes.Triangles.Space2D.Float64;
+using GeometricAlgebraFulcrumLib.Modeling.Geometry.Borders.Space2D.Float64;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Random;
 
 namespace GeometricAlgebraFulcrumLib.Modeling.Statistics;
@@ -37,9 +37,9 @@ public static class RandomUtils
     }
 
 
-    public static LineSegment2D GetLineSegmentInside(this Random randomGenerator, IBoundingBox2D limitsBoundingBox)
+    public static Float64LineSegment2D GetLineSegmentInside(this Random randomGenerator, IFloat64BoundingBox2D limitsBoundingBox)
     {
-        return new LineSegment2D(
+        return new Float64LineSegment2D(
             randomGenerator.GetLinearMappedNumber(limitsBoundingBox.MinX, limitsBoundingBox.MaxX),
             randomGenerator.GetLinearMappedNumber(limitsBoundingBox.MinY, limitsBoundingBox.MaxY),
             randomGenerator.GetLinearMappedNumber(limitsBoundingBox.MinX, limitsBoundingBox.MaxX),
@@ -47,9 +47,9 @@ public static class RandomUtils
         );
     }
 
-    public static Triangle2D GetTriangleInside(this Random randomGenerator, IBoundingBox2D limitsBoundingBox)
+    public static Float64Triangle2D GetTriangleInside(this Random randomGenerator, IFloat64BoundingBox2D limitsBoundingBox)
     {
-        return new Triangle2D(
+        return new Float64Triangle2D(
             randomGenerator.GetLinearMappedNumber(limitsBoundingBox.MinX, limitsBoundingBox.MaxX),
             randomGenerator.GetLinearMappedNumber(limitsBoundingBox.MinY, limitsBoundingBox.MaxY),
             randomGenerator.GetLinearMappedNumber(limitsBoundingBox.MinX, limitsBoundingBox.MaxX),
@@ -59,13 +59,13 @@ public static class RandomUtils
         );
     }
 
-    public static List<Triangle2D> GetTrianglesInside(this Random randomGenerator, int trianglesCount, IBoundingBox2D limitsBoundingBox)
+    public static List<Float64Triangle2D> GetTrianglesInside(this Random randomGenerator, int trianglesCount, IFloat64BoundingBox2D limitsBoundingBox)
     {
-        var result = new List<Triangle2D>(trianglesCount);
+        var result = new List<Float64Triangle2D>(trianglesCount);
 
         for (var i = 0; i < trianglesCount; i++)
             result.Add(
-                new Triangle2D(
+                new Float64Triangle2D(
                     randomGenerator.GetLinearMappedNumber(limitsBoundingBox.MinX, limitsBoundingBox.MaxX),
                     randomGenerator.GetLinearMappedNumber(limitsBoundingBox.MinY, limitsBoundingBox.MaxY),
                     randomGenerator.GetLinearMappedNumber(limitsBoundingBox.MinX, limitsBoundingBox.MaxX),

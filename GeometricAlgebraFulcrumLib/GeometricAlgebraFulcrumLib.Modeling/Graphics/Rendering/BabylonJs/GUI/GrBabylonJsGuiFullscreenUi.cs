@@ -39,20 +39,20 @@ public class GrBabylonJsGuiFullScreenUi :
         yield return ConstName.DoubleQuote();
 
         if (IsForeground.IsNullOrEmpty()) yield break;
-        yield return IsForeground.GetCode();
+        yield return IsForeground.GetAttributeValueCode();
 
         if (ParentScene.IsNullOrEmpty()) yield break;
-        yield return ParentScene.GetCode();
+        yield return ParentScene.GetAttributeValueCode();
 
         if (SamplingMode.IsNullOrEmpty()) yield break;
-        yield return SamplingMode.GetCode();
+        yield return SamplingMode.GetAttributeValueCode();
         
         if (AdaptiveScaling.IsNullOrEmpty()) yield break;
-        yield return AdaptiveScaling.GetCode();
+        yield return AdaptiveScaling.GetAttributeValueCode();
     }
 
 
-    public override string GetCode()
+    public override string GetBabylonJsCode()
     {
         var composer = new LinearTextComposer();
         
@@ -76,7 +76,7 @@ public class GrBabylonJsGuiFullScreenUi :
 
             foreach (var control in ControlList)
                 composer
-                    .AppendAtNewLine(control.GetCode())
+                    .AppendAtNewLine(control.GetBabylonJsCode())
                     .AppendLineAtNewLine($"{ConstName}.addControl({control.ConstName});")
                     .AppendLine();
         }

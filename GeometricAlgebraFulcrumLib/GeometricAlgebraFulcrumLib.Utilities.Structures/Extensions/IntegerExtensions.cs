@@ -382,7 +382,7 @@ public static class IntegerExtensions
     /// <param name="n"></param>
     /// <param name="exp"></param>
     /// <returns></returns>
-    public static long Power(this int n, int exp)
+    public static long IntegerPower(this int n, int exp)
     {
         if (exp < 0)
             throw new ArgumentException(nameof(exp));

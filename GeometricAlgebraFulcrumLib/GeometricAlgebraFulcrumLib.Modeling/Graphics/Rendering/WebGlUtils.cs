@@ -3,7 +3,7 @@ using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Matrices;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space2D;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space3D;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space4D;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.Borders.Space3D;
+using GeometricAlgebraFulcrumLib.Modeling.Geometry.Borders.Space3D.Float64;
 using GeometricAlgebraFulcrumLib.Utilities.Text.Code.JavaScript;
 using GeometricAlgebraFulcrumLib.Utilities.Text.Text.Columns;
 using GeometricAlgebraFulcrumLib.Utilities.Text.Text.Linear;
@@ -55,7 +55,7 @@ public static class WebGlUtils
         return composer;
     }
 
-    public static JavaScriptAttributesDictionary SetNumbersArrayValue(this JavaScriptAttributesDictionary composer, string key, IBoundingBox3D value, ILinFloat64Vector3D valueDefault)
+    public static JavaScriptAttributesDictionary SetNumbersArrayValue(this JavaScriptAttributesDictionary composer, string key, IFloat64BoundingBox3D value, ILinFloat64Vector3D valueDefault)
     {
         composer.SetTextValue(
             key,
@@ -408,7 +408,7 @@ public static class WebGlUtils
             .ToString();
     }
         
-    public static string ToJavaScriptNumbersArrayText(this IBoundingBox3D boundingBox)
+    public static string ToJavaScriptNumbersArrayText(this IFloat64BoundingBox3D boundingBox)
     {
         return new StringBuilder()
             .Append('[')

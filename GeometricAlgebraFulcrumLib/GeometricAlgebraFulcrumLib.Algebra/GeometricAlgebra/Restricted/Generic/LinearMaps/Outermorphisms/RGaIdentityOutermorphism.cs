@@ -141,8 +141,9 @@ public sealed class RGaIdentityOutermorphism<T> :
             );
     }
 
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public LinUnilinearMap<T> GetVectorMapPart(int vSpaceDimensions)
     {
-        throw new NotImplementedException();
+        return ScalarProcessor.CreateIdentityLinUnilinearMap(vSpaceDimensions);
     }
 }

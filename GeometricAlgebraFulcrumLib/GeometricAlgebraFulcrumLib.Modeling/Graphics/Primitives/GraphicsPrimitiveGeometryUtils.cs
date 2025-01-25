@@ -1,9 +1,7 @@
 ﻿using System.Runtime.CompilerServices;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space3D;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.BasicShapes.Lines;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.BasicShapes.Lines.Immutable;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.BasicShapes.Triangles;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.BasicShapes.Triangles.Immutable;
+using GeometricAlgebraFulcrumLib.Modeling.Geometry.BasicShapes.Lines.Space3D.Float64;
+using GeometricAlgebraFulcrumLib.Modeling.Geometry.BasicShapes.Triangles.Space3D.Float64;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.Parametric.Float64.Space3D.Curves.Adaptive;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Primitives.Lines;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Primitives.Points;
@@ -172,7 +170,7 @@ public static class GraphicsPrimitiveGeometryUtils
         return GrLineGeometry3D.Create(pointsList);
     }
 
-    public static GrLineGeometry3D ToGraphicsLinesGeometry(this IEnumerable<ILineSegment3D> lineSegmentsList)
+    public static GrLineGeometry3D ToGraphicsLinesGeometry(this IEnumerable<IFloat64LineSegment3D> lineSegmentsList)
     {
         return GrLineGeometry3D.Create(lineSegmentsList);
     }
@@ -187,7 +185,7 @@ public static class GraphicsPrimitiveGeometryUtils
         return GrLineSoupGeometry3D.Create(pointsList);
     }
 
-    public static GrLineSoupGeometry3D ToGraphicsLinesListGeometry(this IEnumerable<ILineSegment3D> lineSegmentsList)
+    public static GrLineSoupGeometry3D ToGraphicsLinesListGeometry(this IEnumerable<IFloat64LineSegment3D> lineSegmentsList)
     {
         return GrLineSoupGeometry3D.Create(lineSegmentsList);
     }
@@ -222,7 +220,7 @@ public static class GraphicsPrimitiveGeometryUtils
         return GrTriangleGeometry3D.Create(pointsList);
     }
 
-    public static GrTriangleGeometry3D ToGraphicsTrianglesGeometry(this IEnumerable<ITriangle3D> trianglesList, bool reversePoints)
+    public static GrTriangleGeometry3D ToGraphicsTrianglesGeometry(this IEnumerable<IFloat64Triangle3D> trianglesList, bool reversePoints)
     {
         return GrTriangleGeometry3D.Create(trianglesList, reversePoints);
     }
@@ -232,7 +230,7 @@ public static class GraphicsPrimitiveGeometryUtils
         return GrTriangleSoupGeometry3D.Create(pointsList);
     }
 
-    public static GrTriangleSoupGeometry3D ToGraphicsTrianglesListGeometry(this IEnumerable<ITriangle3D> trianglesList, bool reversePoints)
+    public static GrTriangleSoupGeometry3D ToGraphicsTrianglesListGeometry(this IEnumerable<IFloat64Triangle3D> trianglesList, bool reversePoints)
     {
         return GrTriangleSoupGeometry3D.Create(trianglesList, reversePoints);
     }
@@ -245,9 +243,9 @@ public static class GraphicsPrimitiveGeometryUtils
             vertex.Point.Z + t * vertex.Normal.Z);
     }
         
-    public static LineSegment3D GetDisplacedLineSegment(this IGraphicsSurfaceLocalFrame3D vertex, double t1, double t2)
+    public static Float64LineSegment3D GetDisplacedLineSegment(this IGraphicsSurfaceLocalFrame3D vertex, double t1, double t2)
     {
-        return LineSegment3D.Create(
+        return Float64LineSegment3D.Create(
             LinFloat64Vector3D.Create(vertex.Point.X + t1 * vertex.Normal.X,
                 vertex.Point.Y + t1 * vertex.Normal.Y,
                 vertex.Point.Z + t1 * vertex.Normal.Z),
@@ -257,7 +255,7 @@ public static class GraphicsPrimitiveGeometryUtils
         );
     }
 
-    public static IEnumerable<ILineSegment3D> GetNormalLines(this IGraphicsTriangleGeometry3D geometry, double t2)
+    public static IEnumerable<IFloat64LineSegment3D> GetNormalLines(this IGraphicsTriangleGeometry3D geometry, double t2)
     {
         for (var i = 0; i < geometry.VertexCount; i++)
         {
@@ -266,11 +264,11 @@ public static class GraphicsPrimitiveGeometryUtils
 
             var p2 = point.GetPointInDirection(normal, t2);
 
-            yield return LineSegment3D.Create(point, p2);
+            yield return Float64LineSegment3D.Create(point, p2);
         }
     }
 
-    public static IEnumerable<ILineSegment3D> GetNormalLines(this IGraphicsTriangleGeometry3D geometry, double t1, double t2)
+    public static IEnumerable<IFloat64LineSegment3D> GetNormalLines(this IGraphicsTriangleGeometry3D geometry, double t1, double t2)
     {
         for (var i = 0; i < geometry.VertexCount; i++)
         {
@@ -280,11 +278,11 @@ public static class GraphicsPrimitiveGeometryUtils
             var p1 = point.GetPointInDirection(normal, t1);
             var p2 = point.GetPointInDirection(normal, t2);
 
-            yield return LineSegment3D.Create(p1, p2);
+            yield return Float64LineSegment3D.Create(p1, p2);
         }
     }
 
-    public static IEnumerable<ITriangle3D> GetDisplacedTriangles(this IGraphicsTriangleGeometry3D geometry, double t)
+    public static IEnumerable<IFloat64Triangle3D> GetDisplacedTriangles(this IGraphicsTriangleGeometry3D geometry, double t)
     {
         foreach (var triangleIndices in geometry.TriangleVertexIndices)
         {
@@ -302,11 +300,11 @@ public static class GraphicsPrimitiveGeometryUtils
                 .GetGeometryPoint(i3)
                 .GetPointInDirection(geometry.GetVertexNormal(i3), t);
 
-            yield return Triangle3D.Create(p1, p2, p3);
+            yield return Float64Triangle3D.Create(p1, p2, p3);
         }
     }
 
-    public static IEnumerable<ILineSegment3D> GetDisplacedTriangleEdges(this IGraphicsTriangleGeometry3D geometry, double t)
+    public static IEnumerable<IFloat64LineSegment3D> GetDisplacedTriangleEdges(this IGraphicsTriangleGeometry3D geometry, double t)
     {
         foreach (var triangleIndices in geometry.TriangleVertexIndices)
         {
@@ -324,13 +322,13 @@ public static class GraphicsPrimitiveGeometryUtils
                 .GetGeometryPoint(i3)
                 .GetPointInDirection(geometry.GetVertexNormal(i3), t);
 
-            yield return LineSegment3D.Create(p1, p2);
-            yield return LineSegment3D.Create(p2, p3);
-            yield return LineSegment3D.Create(p3, p1);
+            yield return Float64LineSegment3D.Create(p1, p2);
+            yield return Float64LineSegment3D.Create(p2, p3);
+            yield return Float64LineSegment3D.Create(p3, p1);
         }
     }
 
-    public static IEnumerable<ILineSegment3D> GetTriangleEdges(this IGraphicsTriangleGeometry3D geometry)
+    public static IEnumerable<IFloat64LineSegment3D> GetTriangleEdges(this IGraphicsTriangleGeometry3D geometry)
     {
         foreach (var triangleIndices in geometry.TriangleVertexIndices)
         {
@@ -340,9 +338,9 @@ public static class GraphicsPrimitiveGeometryUtils
             var p2 = geometry.GetGeometryPoint(i2);
             var p3 = geometry.GetGeometryPoint(i3);
 
-            yield return LineSegment3D.Create(p1, p2);
-            yield return LineSegment3D.Create(p2, p3);
-            yield return LineSegment3D.Create(p3, p1);
+            yield return Float64LineSegment3D.Create(p1, p2);
+            yield return Float64LineSegment3D.Create(p2, p3);
+            yield return Float64LineSegment3D.Create(p3, p1);
         }
     }
         
