@@ -480,7 +480,7 @@ public class DfChebyshevPolynomial :
         //    unitToVarMap.IsNearSame(varToUnitMap.InverseAffinePolynomial())
         //);
 
-        if (varToUnitMap.IsIdentity || unitToVarMap.IsIdentity)
+        if (varToUnitMap.IsIdentity() || unitToVarMap.IsIdentity())
         {
             HasVarMap = false;
             VarToUnitMap = DfAffinePolynomial.Identity;

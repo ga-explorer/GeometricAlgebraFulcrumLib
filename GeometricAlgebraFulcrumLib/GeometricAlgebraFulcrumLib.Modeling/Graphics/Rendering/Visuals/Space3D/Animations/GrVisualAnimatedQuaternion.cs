@@ -4,8 +4,9 @@ using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space3D;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
 using GeometricAlgebraFulcrumLib.Modeling.Calculus.Functions.Float64;
 using GeometricAlgebraFulcrumLib.Modeling.Calculus.Functions.Float64.Polynomials;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.Parametric.Float64.Space3D.Quaternions;
 using GeometricAlgebraFulcrumLib.Modeling.Signals;
+using GeometricAlgebraFulcrumLib.Modeling.Trajectories;
+using GeometricAlgebraFulcrumLib.Modeling.Trajectories.Quaternions.Float64;
 
 namespace GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.Visuals.Space3D.Animations;
 
@@ -42,7 +43,7 @@ public class GrVisualAnimatedQuaternion :
         return new GrVisualAnimatedQuaternion(
             p1.SamplingSpecs,
             baseCurve,
-            p1.TimeRange
+            ((GrVisualAnimatedGeometry)p1).TimeRange
         );
     }
     
@@ -56,7 +57,7 @@ public class GrVisualAnimatedQuaternion :
         return new GrVisualAnimatedQuaternion(
             p1.SamplingSpecs,
             baseCurve,
-            p1.TimeRange
+            ((GrVisualAnimatedGeometry)p1).TimeRange
         );
     }
     
@@ -70,7 +71,7 @@ public class GrVisualAnimatedQuaternion :
         return new GrVisualAnimatedQuaternion(
             p2.SamplingSpecs,
             baseCurve,
-            p2.TimeRange
+            ((GrVisualAnimatedGeometry)p2).TimeRange
         );
     }
 
@@ -85,7 +86,7 @@ public class GrVisualAnimatedQuaternion :
         return new GrVisualAnimatedQuaternion(
             p1.SamplingSpecs,
             baseCurve,
-            p1.TimeRange
+            ((GrVisualAnimatedGeometry)p1).TimeRange
         );
     }
     
@@ -99,7 +100,7 @@ public class GrVisualAnimatedQuaternion :
         return new GrVisualAnimatedQuaternion(
             p1.SamplingSpecs,
             baseCurve,
-            p1.TimeRange
+            ((GrVisualAnimatedGeometry)p1).TimeRange
         );
     }
     
@@ -111,7 +112,7 @@ public class GrVisualAnimatedQuaternion :
         return new GrVisualAnimatedQuaternion(
             p2.SamplingSpecs,
             baseCurve,
-            p2.TimeRange
+            ((GrVisualAnimatedGeometry)p2).TimeRange
         );
     }
 
@@ -126,7 +127,7 @@ public class GrVisualAnimatedQuaternion :
         return new GrVisualAnimatedQuaternion(
             p1.SamplingSpecs,
             baseCurve,
-            p1.TimeRange
+            ((GrVisualAnimatedGeometry)p1).TimeRange
         );
     }
 
@@ -138,7 +139,7 @@ public class GrVisualAnimatedQuaternion :
         return new GrVisualAnimatedQuaternion(
             p2.SamplingSpecs,
             baseCurve,
-            p2.TimeRange
+            ((GrVisualAnimatedGeometry)p2).TimeRange
         );
     }
     
@@ -150,7 +151,7 @@ public class GrVisualAnimatedQuaternion :
         return new GrVisualAnimatedQuaternion(
             p1.SamplingSpecs,
             baseCurve,
-            p1.TimeRange
+            ((GrVisualAnimatedGeometry)p1).TimeRange
         );
     }
     
@@ -180,7 +181,7 @@ public class GrVisualAnimatedQuaternion :
         return new GrVisualAnimatedQuaternion(
             p1.SamplingSpecs,
             baseCurve,
-            p1.TimeRange
+            ((GrVisualAnimatedGeometry)p1).TimeRange
         );
     }
 
@@ -194,7 +195,7 @@ public class GrVisualAnimatedQuaternion :
         return new GrVisualAnimatedQuaternion(
             p1.SamplingSpecs,
             baseCurve,
-            p1.TimeRange
+            ((GrVisualAnimatedGeometry)p1).TimeRange
         );
     }
     
@@ -213,8 +214,8 @@ public class GrVisualAnimatedQuaternion :
     public double MaxBaseParameter 
         => BaseParameterRange.MaxValue;
     
-    public Float64ScalarRange ParameterRange 
-        => TimeRange;
+    public Float64ScalarRange TimeRange 
+        => base.TimeRange;
 
     
     private GrVisualAnimatedQuaternion(Float64SamplingSpecs samplingSpecs, IParametricQuaternion baseCurve, Float64ScalarRange baseParameterRange)
@@ -249,11 +250,21 @@ public class GrVisualAnimatedQuaternion :
                BaseParameterRange.IsFinite;
     }
 
+    public override IFloat64Trajectory ToFinite()
+    {
+        throw new NotImplementedException();
+    }
+
+    public override IFloat64Trajectory ToPeriodic()
+    {
+        throw new NotImplementedException();
+    }
+
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public LinFloat64Quaternion GetQuaternion(double time)
     {
-        if (!TimeRange.Contains(time))
+        if (!base.TimeRange.Contains(time))
             throw new ArgumentOutOfRangeException();
 
         return BaseCurve.GetQuaternion(
@@ -263,7 +274,7 @@ public class GrVisualAnimatedQuaternion :
 
     public LinFloat64Quaternion GetDerivative1Quaternion(double time)
     {
-        if (!TimeRange.Contains(time))
+        if (!base.TimeRange.Contains(time))
             throw new ArgumentOutOfRangeException();
 
         return BaseCurve.GetDerivative1Quaternion(

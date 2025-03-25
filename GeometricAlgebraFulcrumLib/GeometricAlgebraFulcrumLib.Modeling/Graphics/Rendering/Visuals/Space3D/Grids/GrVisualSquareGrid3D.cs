@@ -14,8 +14,8 @@ public sealed class GrVisualSquareGrid3D :
         return new GrVisualSquareGrid3D(
             "defaultXy",
             center.ToLinVector3D(), 
-            GrVisualSquareGridPlane3D.XyPlane, 
-            GrVisualGridImageComposer.Default(opacity).GetImageAsTexture()
+            LinFloat64Quaternion.Identity, 
+            GrVisualGridImageComposer.Default(opacity).GetImage().ToStoredImageTexture()
         )
         {
             UnitSize = unitSize,
@@ -25,12 +25,12 @@ public sealed class GrVisualSquareGrid3D :
         };
     }
 
-    public static GrVisualSquareGrid3D DefaultXy(ITriplet<Float64Scalar> center, IGrVisualTexture texture, int unitCount, double unitSize = 1, double opacity = 1)
+    public static GrVisualSquareGrid3D DefaultXy(ITriplet<Float64Scalar> center, IGrVisualImageSource texture, int unitCount, double unitSize = 1, double opacity = 1)
     {
         return new GrVisualSquareGrid3D(
             "defaultXy",
             center.ToLinVector3D(), 
-            GrVisualSquareGridPlane3D.XyPlane, 
+            LinFloat64Quaternion.Identity, 
             texture
         )
         {
@@ -46,7 +46,7 @@ public sealed class GrVisualSquareGrid3D :
         return new GrVisualSquareGrid3D(
             "defaultXy",
             center.ToLinVector3D(), 
-            GrVisualSquareGridPlane3D.XyPlane, 
+            LinFloat64Quaternion.Identity, 
             image.ToStoredImageTexture()
         )
         {
@@ -57,21 +57,21 @@ public sealed class GrVisualSquareGrid3D :
         };
     }
 
-    public static GrVisualSquareGrid3D DefaultXy(ITriplet<Float64Scalar> center, IGrVisualImageComposer imageComposer, int unitCount, double unitSize = 1, double opacity = 1)
-    {
-        return new GrVisualSquareGrid3D(
-            "defaultXy",
-            center.ToLinVector3D(), 
-            GrVisualSquareGridPlane3D.XyPlane, 
-            imageComposer.GetImageAsTexture()
-        )
-        {
-            UnitSize = unitSize,
-            UnitCount1 = unitCount,
-            UnitCount2 = unitCount,
-            Opacity = opacity
-        };
-    }
+    //public static GrVisualSquareGrid3D DefaultXy(ITriplet<Float64Scalar> center, IGrVisualImageSource imageComposer, int unitCount, double unitSize = 1, double opacity = 1)
+    //{
+    //    return new GrVisualSquareGrid3D(
+    //        "defaultXy",
+    //        center.ToLinVector3D(), 
+    //        LinFloat64Quaternion.Identity, 
+    //        imageComposer.GetImageAsTexture()
+    //    )
+    //    {
+    //        UnitSize = unitSize,
+    //        UnitCount1 = unitCount,
+    //        UnitCount2 = unitCount,
+    //        Opacity = opacity
+    //    };
+    //}
 
     
     public static GrVisualSquareGrid3D DefaultYz(ITriplet<Float64Scalar> center, int unitCount, double unitSize = 1, double opacity = 1)
@@ -79,8 +79,8 @@ public sealed class GrVisualSquareGrid3D :
         return new GrVisualSquareGrid3D(
             "defaultYz",
             center.ToLinVector3D(), 
-            GrVisualSquareGridPlane3D.YzPlane, 
-            GrVisualGridImageComposer.Default(opacity).GetImageAsTexture()
+            LinFloat64Quaternion.XyToYz, 
+            GrVisualGridImageComposer.Default(opacity).GetImage().ToStoredImageTexture()
         )
         {
             UnitSize = unitSize,
@@ -90,12 +90,12 @@ public sealed class GrVisualSquareGrid3D :
         };
     }
 
-    public static GrVisualSquareGrid3D DefaultYz(ITriplet<Float64Scalar> center, IGrVisualTexture texture, int unitCount, double unitSize = 1, double opacity = 1)
+    public static GrVisualSquareGrid3D DefaultYz(ITriplet<Float64Scalar> center, IGrVisualImageSource texture, int unitCount, double unitSize = 1, double opacity = 1)
     {
         return new GrVisualSquareGrid3D(
             "defaultYz",
             center.ToLinVector3D(), 
-            GrVisualSquareGridPlane3D.YzPlane, 
+            LinFloat64Quaternion.XyToYz, 
             texture
         )
         {
@@ -111,7 +111,7 @@ public sealed class GrVisualSquareGrid3D :
         return new GrVisualSquareGrid3D(
             "defaultYz",
             center.ToLinVector3D(), 
-            GrVisualSquareGridPlane3D.YzPlane, 
+            LinFloat64Quaternion.XyToYz, 
             image.ToStoredImageTexture()
         )
         {
@@ -122,21 +122,21 @@ public sealed class GrVisualSquareGrid3D :
         };
     }
 
-    public static GrVisualSquareGrid3D DefaultYz(ITriplet<Float64Scalar> center, IGrVisualImageComposer imageComposer, int unitCount, double unitSize = 1, double opacity = 1)
-    {
-        return new GrVisualSquareGrid3D(
-            "defaultYz",
-            center.ToLinVector3D(), 
-            GrVisualSquareGridPlane3D.YzPlane, 
-            imageComposer.GetImageAsTexture()
-        )
-        {
-            UnitSize = unitSize,
-            UnitCount1 = unitCount,
-            UnitCount2 = unitCount,
-            Opacity = opacity
-        };
-    }
+    //public static GrVisualSquareGrid3D DefaultYz(ITriplet<Float64Scalar> center, IGrVisualImageComposer imageComposer, int unitCount, double unitSize = 1, double opacity = 1)
+    //{
+    //    return new GrVisualSquareGrid3D(
+    //        "defaultYz",
+    //        center.ToLinVector3D(), 
+    //        LinFloat64Quaternion.XyToYz, 
+    //        imageComposer.GetImageAsTexture()
+    //    )
+    //    {
+    //        UnitSize = unitSize,
+    //        UnitCount1 = unitCount,
+    //        UnitCount2 = unitCount,
+    //        Opacity = opacity
+    //    };
+    //}
 
     
     public static GrVisualSquareGrid3D DefaultZx(ITriplet<Float64Scalar> center, int unitCount, double unitSize = 1, double opacity = 1)
@@ -144,8 +144,8 @@ public sealed class GrVisualSquareGrid3D :
         return new GrVisualSquareGrid3D(
             "defaultZx",
             center.ToLinVector3D(), 
-            GrVisualSquareGridPlane3D.ZxPlane, 
-            GrVisualGridImageComposer.Default(opacity).GetImageAsTexture()
+            LinFloat64Quaternion.XyToZx, 
+            GrVisualGridImageComposer.Default(opacity).GetImage().ToStoredImageTexture()
         )
         {
             UnitSize = unitSize,
@@ -155,12 +155,12 @@ public sealed class GrVisualSquareGrid3D :
         };
     }
 
-    public static GrVisualSquareGrid3D DefaultZx(ITriplet<Float64Scalar> center, IGrVisualTexture texture, int unitCount, double unitSize = 1, double opacity = 1)
+    public static GrVisualSquareGrid3D DefaultZx(ITriplet<Float64Scalar> center, IGrVisualImageSource texture, int unitCount, double unitSize = 1, double opacity = 1)
     {
         return new GrVisualSquareGrid3D(
             "defaultZx",
             center.ToLinVector3D(), 
-            GrVisualSquareGridPlane3D.ZxPlane, 
+            LinFloat64Quaternion.XyToZx, 
             texture
         )
         {
@@ -176,7 +176,7 @@ public sealed class GrVisualSquareGrid3D :
         return new GrVisualSquareGrid3D(
             "defaultZx",
             center.ToLinVector3D(), 
-            GrVisualSquareGridPlane3D.ZxPlane, 
+            LinFloat64Quaternion.XyToZx, 
             image.ToStoredImageTexture()
         )
         {
@@ -187,26 +187,43 @@ public sealed class GrVisualSquareGrid3D :
         };
     }
 
-    public static GrVisualSquareGrid3D DefaultZx(ITriplet<Float64Scalar> center, IGrVisualImageComposer imageComposer, int unitCount, double unitSize = 1, double opacity = 1)
+    //public static GrVisualSquareGrid3D DefaultZx(ITriplet<Float64Scalar> center, IGrVisualImageComposer imageComposer, int unitCount, double unitSize = 1, double opacity = 1)
+    //{
+    //    return new GrVisualSquareGrid3D(
+    //        "defaultZx",
+    //        center.ToLinVector3D(), 
+    //        LinFloat64Quaternion.XyToZx, 
+    //        imageComposer.GetImageAsTexture()
+    //    )
+    //    {
+    //        UnitSize = unitSize,
+    //        UnitCount1 = unitCount,
+    //        UnitCount2 = unitCount,
+    //        Opacity = opacity
+    //    };
+    //}
+
+
+    public static GrVisualSquareGrid3D Default(string name, ITriplet<Float64Scalar> center, LinFloat64Quaternion orientation, int unitCount, double unitSize = 1, double opacity = 1)
     {
         return new GrVisualSquareGrid3D(
-            "defaultZx",
-            center.ToLinVector3D(), 
-            GrVisualSquareGridPlane3D.ZxPlane, 
-            imageComposer.GetImageAsTexture()
+            name,
+            center.ToLinVector3D(),
+            orientation,
+            GrVisualGridImageComposer.Default(opacity).GetImage().ToStoredImageTexture()
         )
         {
-            UnitSize = unitSize,
             UnitCount1 = unitCount,
             UnitCount2 = unitCount,
+            UnitSize = unitSize,
             Opacity = opacity
         };
     }
 
 
-    public IGrVisualTexture Texture { get; }
+    public IGrVisualImageSource Texture { get; }
 
-    public GrVisualSquareGridPlane3D GridPlane { get; }
+    public LinFloat64Quaternion Orientation { get; }
 
     public LinFloat64Vector3D Center { get; }
 
@@ -228,39 +245,12 @@ public sealed class GrVisualSquareGrid3D :
     public double Opacity { get; init; } 
         = 0.2;
 
-    //public LinFloat64Vector3D Origin
-    //    => GridPlane switch
-    //    {
-    //        GrVisualSquareGridPlane3D.XyPlane => 
-    //            LinFloat64Vector3D.Create(
-    //                Offset1 - 0.5 * Size1, 
-    //                Offset2 - 0.5 * Size2,
-    //                DistanceToOrigin
-    //            ),
-            
-    //        GrVisualSquareGridPlane3D.YzPlane => 
-    //            LinFloat64Vector3D.Create(
-    //                DistanceToOrigin, 
-    //                Offset1 - 0.5 * Size1, 
-    //                Offset2 - 0.5 * Size2
-    //            ),
-            
-    //        GrVisualSquareGridPlane3D.ZxPlane => 
-    //            LinFloat64Vector3D.Create(
-    //                Offset2 - 0.5 * Size2,
-    //                DistanceToOrigin, 
-    //                Offset1 - 0.5 * Size1
-    //            ),
 
-    //        _ => throw new NotSupportedException()
-    //    };
-    
-
-    private GrVisualSquareGrid3D(string name, LinFloat64Vector3D center, GrVisualSquareGridPlane3D gridPlane, IGrVisualTexture texture) 
+    private GrVisualSquareGrid3D(string name, LinFloat64Vector3D center, LinFloat64Quaternion orientation, IGrVisualImageSource texture) 
         : base(name)
     {
         Texture = texture;
-        GridPlane = gridPlane;
+        Orientation = orientation;
         Center = center;
     }
     

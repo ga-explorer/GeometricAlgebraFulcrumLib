@@ -5,7 +5,7 @@ using GeometricAlgebraFulcrumLib.Utilities.Text.Text;
 namespace GeometricAlgebraFulcrumLib.Modeling.Signals;
 
 public sealed class ScalarProcessorOfFloat64Signal :
-    INumericScalarProcessor<Float64Signal>
+    INumericScalarProcessor<Float64SampledTimeSignal>
 {
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static ScalarProcessorOfFloat64Signal Create(double samplingRate, int sampleCount)
@@ -33,69 +33,69 @@ public sealed class ScalarProcessorOfFloat64Signal :
     public bool IsSymbolic
         => ScalarProcessor.IsSymbolic;
 
-    public Scalar<Float64Signal> Zero { get; }
+    public Scalar<Float64SampledTimeSignal> Zero { get; }
 
-    public Scalar<Float64Signal> PositiveInfinity { get; }
+    public Scalar<Float64SampledTimeSignal> PositiveInfinity { get; }
 
-    public Scalar<Float64Signal> NegativeInfinity { get; }
+    public Scalar<Float64SampledTimeSignal> NegativeInfinity { get; }
 
-    public Scalar<Float64Signal> One { get; }
+    public Scalar<Float64SampledTimeSignal> One { get; }
 
-    public Scalar<Float64Signal> MinusOne { get; }
+    public Scalar<Float64SampledTimeSignal> MinusOne { get; }
 
-    public Scalar<Float64Signal> Two { get; }
+    public Scalar<Float64SampledTimeSignal> Two { get; }
 
-    public Scalar<Float64Signal> MinusTwo { get; }
+    public Scalar<Float64SampledTimeSignal> MinusTwo { get; }
 
-    public Scalar<Float64Signal> Ten { get; }
+    public Scalar<Float64SampledTimeSignal> Ten { get; }
 
-    public Scalar<Float64Signal> MinusTen { get; }
+    public Scalar<Float64SampledTimeSignal> MinusTen { get; }
 
-    public Scalar<Float64Signal> Pi { get; }
+    public Scalar<Float64SampledTimeSignal> Pi { get; }
 
-    public Scalar<Float64Signal> PiTimes2 { get; }
+    public Scalar<Float64SampledTimeSignal> PiTimes2 { get; }
 
-    public Scalar<Float64Signal> PiTimes4 { get; }
+    public Scalar<Float64SampledTimeSignal> PiTimes4 { get; }
 
-    public Scalar<Float64Signal> PiOver2 { get; }
+    public Scalar<Float64SampledTimeSignal> PiOver2 { get; }
 
-    public Scalar<Float64Signal> E { get; }
+    public Scalar<Float64SampledTimeSignal> E { get; }
 
-    public Scalar<Float64Signal> DegreeToRadianFactor { get; }
+    public Scalar<Float64SampledTimeSignal> DegreeToRadianFactor { get; }
 
-    public Scalar<Float64Signal> RadianToDegreeFactor { get; }
+    public Scalar<Float64SampledTimeSignal> RadianToDegreeFactor { get; }
 
-    public Float64Signal ZeroValue { get; }
+    public Float64SampledTimeSignal ZeroValue { get; }
 
-    public Float64Signal PositiveInfinityValue { get; }
+    public Float64SampledTimeSignal PositiveInfinityValue { get; }
 
-    public Float64Signal NegativeInfinityValue { get; }
+    public Float64SampledTimeSignal NegativeInfinityValue { get; }
 
-    public Float64Signal OneValue { get; }
+    public Float64SampledTimeSignal OneValue { get; }
 
-    public Float64Signal MinusOneValue { get; }
+    public Float64SampledTimeSignal MinusOneValue { get; }
 
-    public Float64Signal TwoValue { get; }
+    public Float64SampledTimeSignal TwoValue { get; }
 
-    public Float64Signal MinusTwoValue { get; }
+    public Float64SampledTimeSignal MinusTwoValue { get; }
 
-    public Float64Signal TenValue { get; }
+    public Float64SampledTimeSignal TenValue { get; }
 
-    public Float64Signal MinusTenValue { get; }
+    public Float64SampledTimeSignal MinusTenValue { get; }
 
-    public Float64Signal PiValue { get; }
+    public Float64SampledTimeSignal PiValue { get; }
 
-    public Float64Signal PiTimes2Value { get; }
+    public Float64SampledTimeSignal PiTimes2Value { get; }
 
-    public Float64Signal PiTimes4Value { get; }
+    public Float64SampledTimeSignal PiTimes4Value { get; }
 
-    public Float64Signal PiOver2Value { get; }
+    public Float64SampledTimeSignal PiOver2Value { get; }
 
-    public Float64Signal EValue { get; }
+    public Float64SampledTimeSignal EValue { get; }
 
-    public Float64Signal DegreeToRadianFactorValue { get; }
+    public Float64SampledTimeSignal DegreeToRadianFactorValue { get; }
 
-    public Float64Signal RadianToDegreeFactorValue { get; }
+    public Float64SampledTimeSignal RadianToDegreeFactorValue { get; }
 
 
     public ScalarProcessorOfFloat64Signal(double samplingRate, int signalSamplesCount)
@@ -145,94 +145,86 @@ public sealed class ScalarProcessorOfFloat64Signal :
     }
 
 
-    public Float64Signal GetReadOnlyScalarFromNumber(double value)
+    public Float64SampledTimeSignal GetReadOnlyScalarFromNumber(double value)
     {
-        return Float64Signal.CreateConstant(
+        return Float64SampledTimeSignal.FiniteConstant(
             SamplingRate,
             SampleCount,
-            value,
-            true
+            value
         );
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public Scalar<Float64Signal> ScalarFromNumber(int value)
+    public Scalar<Float64SampledTimeSignal> ScalarFromNumber(int value)
     {
-        return Float64Signal.CreateConstant(
+        return Float64SampledTimeSignal.FiniteConstant(
             SamplingRate,
             SampleCount,
-            value,
-            false
+            value
         ).ScalarFromValue(this);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public Scalar<Float64Signal> ScalarFromNumber(uint value)
+    public Scalar<Float64SampledTimeSignal> ScalarFromNumber(uint value)
     {
-        return Float64Signal.CreateConstant(
+        return Float64SampledTimeSignal.FiniteConstant(
             SamplingRate,
             SampleCount,
-            value,
-            false
+            value
         ).ScalarFromValue(this);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public Scalar<Float64Signal> ScalarFromNumber(long value)
+    public Scalar<Float64SampledTimeSignal> ScalarFromNumber(long value)
     {
-        return Float64Signal.CreateConstant(
+        return Float64SampledTimeSignal.FiniteConstant(
             SamplingRate,
             SampleCount,
-            value,
-            false
+            value
         ).ScalarFromValue(this);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public Scalar<Float64Signal> ScalarFromNumber(ulong value)
+    public Scalar<Float64SampledTimeSignal> ScalarFromNumber(ulong value)
     {
-        return Float64Signal.CreateConstant(
+        return Float64SampledTimeSignal.FiniteConstant(
             SamplingRate,
             SampleCount,
-            value,
-            false
+            value
         ).ScalarFromValue(this);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public Scalar<Float64Signal> ScalarFromNumber(float value)
+    public Scalar<Float64SampledTimeSignal> ScalarFromNumber(float value)
     {
-        return Float64Signal.CreateConstant(
+        return Float64SampledTimeSignal.FiniteConstant(
             SamplingRate,
             SampleCount,
-            value,
-            false
+            value
         ).ScalarFromValue(this);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public Scalar<Float64Signal> ScalarFromNumber(double value)
+    public Scalar<Float64SampledTimeSignal> ScalarFromNumber(double value)
     {
-        return Float64Signal.CreateConstant(
+        return Float64SampledTimeSignal.FiniteConstant(
             SamplingRate,
             SampleCount,
-            value,
-            false
+            value
         ).ScalarFromValue(this);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public Scalar<Float64Signal> ScalarFromRational(long numerator, long denominator)
+    public Scalar<Float64SampledTimeSignal> ScalarFromRational(long numerator, long denominator)
     {
-        return Float64Signal.CreateConstant(
+        return Float64SampledTimeSignal.FiniteConstant(
             SamplingRate,
             SampleCount,
-            numerator / (double)denominator,
-            false
+            numerator / (double)denominator
         ).ScalarFromValue(this);
     }
 
-    public Scalar<Float64Signal> ScalarFromRandom(Random randomGenerator, double minValue, double maxValue)
+    public Scalar<Float64SampledTimeSignal> ScalarFromRandom(Random randomGenerator, double minValue, double maxValue)
     {
         var scalarArray = new double[SampleCount];
 
@@ -245,17 +237,17 @@ public sealed class ScalarProcessorOfFloat64Signal :
             ).ScalarValue;
         }
 
-        return Float64Signal.Create(SamplingRate, scalarArray, false).ScalarFromValue(this);
+        return Float64SampledTimeSignal.Create(SamplingRate, scalarArray, false).ScalarFromValue(this);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public Scalar<Float64Signal> ScalarFromText(string text)
+    public Scalar<Float64SampledTimeSignal> ScalarFromText(string text)
     {
         throw new NotImplementedException();
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public Scalar<Float64Signal> Add(Float64Signal scalar1, Float64Signal scalar2)
+    public Scalar<Float64SampledTimeSignal> Add(Float64SampledTimeSignal scalar1, Float64SampledTimeSignal scalar2)
     {
         return scalar1.MapSamples(
             scalar2,
@@ -264,13 +256,13 @@ public sealed class ScalarProcessorOfFloat64Signal :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public Scalar<Float64Signal> Subtract(Float64Signal scalar1, Float64Signal scalar2)
+    public Scalar<Float64SampledTimeSignal> Subtract(Float64SampledTimeSignal scalar1, Float64SampledTimeSignal scalar2)
     {
         return scalar1.MapSamples(scalar2, (a, b) => a - b).ScalarFromValue(this);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public Scalar<Float64Signal> Times(Float64Signal scalar1, Float64Signal scalar2)
+    public Scalar<Float64SampledTimeSignal> Times(Float64SampledTimeSignal scalar1, Float64SampledTimeSignal scalar2)
     {
         return scalar1.MapSamples(
             scalar2,
@@ -279,37 +271,37 @@ public sealed class ScalarProcessorOfFloat64Signal :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public Scalar<Float64Signal> Divide(Float64Signal scalar1, Float64Signal scalar2)
+    public Scalar<Float64SampledTimeSignal> Divide(Float64SampledTimeSignal scalar1, Float64SampledTimeSignal scalar2)
     {
         return scalar1.MapSamples(scalar2, (a, b) => a / b).ScalarFromValue(this);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public Scalar<Float64Signal> VectorToRadians(Float64Signal scalarX, Float64Signal scalarY)
+    public Scalar<Float64SampledTimeSignal> VectorToRadians(Float64SampledTimeSignal scalarX, Float64SampledTimeSignal scalarY)
     {
         return scalarX.MapSamples(scalarY, (a, b) => ScalarProcessor.VectorToRadians(a, b).ScalarValue).ScalarFromValue(this);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public Scalar<Float64Signal> Positive(Float64Signal scalar)
+    public Scalar<Float64SampledTimeSignal> Positive(Float64SampledTimeSignal scalar)
     {
         return scalar.ScalarFromValue(this);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public Scalar<Float64Signal> Negative(Float64Signal scalar)
+    public Scalar<Float64SampledTimeSignal> Negative(Float64SampledTimeSignal scalar)
     {
         return scalar.MapSamples(scalar1 => -scalar1).ScalarFromValue(this);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public Scalar<Float64Signal> Inverse(Float64Signal scalar)
+    public Scalar<Float64SampledTimeSignal> Inverse(Float64SampledTimeSignal scalar)
     {
         return scalar.MapSamples(scalar1 => 1 / scalar1).ScalarFromValue(this);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public Scalar<Float64Signal> Sign(Float64Signal scalar)
+    public Scalar<Float64SampledTimeSignal> Sign(Float64SampledTimeSignal scalar)
     {
         return scalar.MapSamples(
             s => ScalarProcessor.Sign(s).ScalarValue
@@ -317,103 +309,103 @@ public sealed class ScalarProcessorOfFloat64Signal :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public Scalar<Float64Signal> UnitStep(Float64Signal scalar)
+    public Scalar<Float64SampledTimeSignal> UnitStep(Float64SampledTimeSignal scalar)
     {
         return scalar.MapSamples(scalar1 => ScalarProcessor.UnitStep(scalar1).ScalarValue).ScalarFromValue(this);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public Scalar<Float64Signal> Abs(Float64Signal scalar)
+    public Scalar<Float64SampledTimeSignal> Abs(Float64SampledTimeSignal scalar)
     {
         return scalar.MapSamples(scalar1 => ScalarProcessor.Abs(scalar1).ScalarValue).ScalarFromValue(this);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public Scalar<Float64Signal> Power(Float64Signal baseScalar, Float64Signal scalar)
+    public Scalar<Float64SampledTimeSignal> Power(Float64SampledTimeSignal baseScalar, Float64SampledTimeSignal scalar)
     {
         return baseScalar.MapSamples(scalar, (baseScalar1, scalar1) => ScalarProcessor.Power(baseScalar1, scalar1).ScalarValue).ScalarFromValue(this);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public Scalar<Float64Signal> Sqrt(Float64Signal scalar)
+    public Scalar<Float64SampledTimeSignal> Sqrt(Float64SampledTimeSignal scalar)
     {
         return scalar.MapSamples(scalar1 => ScalarProcessor.Sqrt(scalar1).ScalarValue).ScalarFromValue(this);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public Scalar<Float64Signal> SqrtOfAbs(Float64Signal scalar)
+    public Scalar<Float64SampledTimeSignal> SqrtOfAbs(Float64SampledTimeSignal scalar)
     {
         return scalar.MapSamples(scalar1 => ScalarProcessor.SqrtOfAbs(scalar1).ScalarValue).ScalarFromValue(this);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public Scalar<Float64Signal> Exp(Float64Signal scalar)
+    public Scalar<Float64SampledTimeSignal> Exp(Float64SampledTimeSignal scalar)
     {
         return scalar.MapSamples(scalar1 => ScalarProcessor.Exp(scalar1).ScalarValue).ScalarFromValue(this);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public Scalar<Float64Signal> LogE(Float64Signal scalar)
+    public Scalar<Float64SampledTimeSignal> LogE(Float64SampledTimeSignal scalar)
     {
         return scalar.MapSamples(scalar1 => ScalarProcessor.LogE(scalar1).ScalarValue).ScalarFromValue(this);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public Scalar<Float64Signal> Log2(Float64Signal scalar)
+    public Scalar<Float64SampledTimeSignal> Log2(Float64SampledTimeSignal scalar)
     {
         return scalar.MapSamples(scalar1 => ScalarProcessor.Log2(scalar1).ScalarValue).ScalarFromValue(this);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public Scalar<Float64Signal> Log10(Float64Signal scalar)
+    public Scalar<Float64SampledTimeSignal> Log10(Float64SampledTimeSignal scalar)
     {
         return scalar.MapSamples(scalar1 => ScalarProcessor.Log10(scalar1).ScalarValue).ScalarFromValue(this);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public Scalar<Float64Signal> Log(Float64Signal baseScalar, Float64Signal scalar)
+    public Scalar<Float64SampledTimeSignal> Log(Float64SampledTimeSignal baseScalar, Float64SampledTimeSignal scalar)
     {
         return baseScalar.MapSamples(scalar, (baseScalar1, scalar1) => ScalarProcessor.Log(baseScalar1, scalar1).ScalarValue).ScalarFromValue(this);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public Scalar<Float64Signal> Cos(Float64Signal scalar)
+    public Scalar<Float64SampledTimeSignal> Cos(Float64SampledTimeSignal scalar)
     {
         return scalar.MapSamples(scalar1 => ScalarProcessor.Cos(scalar1).ScalarValue).ScalarFromValue(this);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public Scalar<Float64Signal> Sin(Float64Signal scalar)
+    public Scalar<Float64SampledTimeSignal> Sin(Float64SampledTimeSignal scalar)
     {
         return scalar.MapSamples(scalar1 => ScalarProcessor.Sin(scalar1).ScalarValue).ScalarFromValue(this);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public Scalar<Float64Signal> Tan(Float64Signal scalar)
+    public Scalar<Float64SampledTimeSignal> Tan(Float64SampledTimeSignal scalar)
     {
         return scalar.MapSamples(scalar1 => ScalarProcessor.Tan(scalar1).ScalarValue).ScalarFromValue(this);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public Scalar<Float64Signal> Cosh(Float64Signal scalar)
+    public Scalar<Float64SampledTimeSignal> Cosh(Float64SampledTimeSignal scalar)
     {
         return scalar.MapSamples(scalar1 => ScalarProcessor.Cosh(scalar1).ScalarValue).ScalarFromValue(this);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public Scalar<Float64Signal> Sinh(Float64Signal scalar)
+    public Scalar<Float64SampledTimeSignal> Sinh(Float64SampledTimeSignal scalar)
     {
         return scalar.MapSamples(scalar1 => ScalarProcessor.Sinh(scalar1).ScalarValue).ScalarFromValue(this);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public Scalar<Float64Signal> Tanh(Float64Signal scalar)
+    public Scalar<Float64SampledTimeSignal> Tanh(Float64SampledTimeSignal scalar)
     {
         return scalar.MapSamples(scalar1 => ScalarProcessor.Tanh(scalar1).ScalarValue).ScalarFromValue(this);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool IsValid(Float64Signal scalar)
+    public bool IsValid(Float64SampledTimeSignal scalar)
     {
         return scalar.All(ScalarProcessor.IsValid);
     }
@@ -501,13 +493,13 @@ public sealed class ScalarProcessorOfFloat64Signal :
     //}
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public double ToFloat64(Float64Signal scalar)
+    public double ToFloat64(Float64SampledTimeSignal scalar)
     {
         return double.NaN;
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public string ToText(Float64Signal scalar)
+    public string ToText(Float64SampledTimeSignal scalar)
     {
         return scalar
             .Select(s => s.ToString("G"))

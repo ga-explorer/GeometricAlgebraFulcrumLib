@@ -57,7 +57,7 @@ public sealed class ScalarProcessorOfComplex
         = Math.PI;
 
     public Complex PiTimes2Value { get; }
-        = 2d * Math.PI;
+        = Math.Tau;
     
     public Complex PiTimes4Value { get; }
         = 4d * Math.PI;
@@ -420,7 +420,7 @@ public sealed class ScalarProcessorOfComplex
             minValue + (maxValue - minValue) * randomGenerator.NextDouble();
 
         var angle =
-            2d * Math.PI * randomGenerator.NextDouble();
+            Math.Tau * randomGenerator.NextDouble();
 
         return this.ScalarFromValue(Complex.FromPolarCoordinates(magnitude, angle));
     }

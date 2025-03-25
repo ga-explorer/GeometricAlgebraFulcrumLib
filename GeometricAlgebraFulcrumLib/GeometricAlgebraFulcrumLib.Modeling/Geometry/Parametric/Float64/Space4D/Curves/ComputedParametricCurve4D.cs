@@ -57,7 +57,7 @@ public class ComputedParametricCurve4D :
 
     public Func<double, LinFloat64Vector4D>? GetTangentFunc { get; }
 
-    public Float64ScalarRange ParameterRange
+    public Float64ScalarRange TimeRange
         => Float64ScalarRange.Infinite;
 
 

@@ -232,7 +232,7 @@ namespace GeometricAlgebraFulcrumLib.Modeling.Statistics.Discrete
 
             var halfSize = Math.Sqrt(
                 -2 * variance * Math.Log(
-                    Math.Sqrt(2 * Math.PI) * standardDeviation * zeroEpsilon
+                    Math.Sqrt(Math.Tau) * standardDeviation * zeroEpsilon
                 )
             );
 
@@ -265,7 +265,7 @@ namespace GeometricAlgebraFulcrumLib.Modeling.Statistics.Discrete
             {
                 var z = (x - mean) / standardDeviation;
 
-                return Math.Exp(-z * z) / (Math.Sqrt(2d * Math.PI) * standardDeviation);
+                return Math.Exp(-z * z) / (Math.Sqrt(Math.Tau) * standardDeviation);
             }
         }
 

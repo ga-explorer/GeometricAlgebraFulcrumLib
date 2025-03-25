@@ -9,7 +9,6 @@ using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.Visuals.Space3D.Sty
 using GeometricAlgebraFulcrumLib.Modeling.Signals;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Basic;
 using GeometricAlgebraFulcrumLib.Utilities.Web.Colors;
-using GeometricAlgebraFulcrumLib.Utilities.Web.LaTeX.KaTeX;
 using OxyPlot;
 using OxyPlot.Axes;
 using OxyPlot.Series;
@@ -199,64 +198,54 @@ public class GrBabylonJsRotorFamilyVisualizer :
     }
 
 
-    private WclKaTeXComposer RenderLaTeXTextures()
+    protected override void AddLaTeXTextures()
     {
-        Console.Write("Generating LaTeX images .. ");
-
-        var katexComposer = new WclKaTeXComposer(WorkingFolder)
-        {
-            FontSizeEm = 2,
-            Output = WclKaTeXComposer.OutputKind.Html,
-            ThrowOnError = false,
-            SaveImages = false
-        };
-        
-        katexComposer.AddLaTeXEquation(
+        KaTeXComposer.AddLaTeXEquation(
             "sourceVectorText",
             @"\boldsymbol{u}"
         );
             
-        katexComposer.AddLaTeXEquation(
+        KaTeXComposer.AddLaTeXEquation(
             "targetVectorText",
             @"\boldsymbol{v}"
         );
         
-        katexComposer.AddLaTeXEquation(
+        KaTeXComposer.AddLaTeXEquation(
             "sourceVector1Text",
             @"\boldsymbol{u}\left(\theta\right)"
         );
             
-        katexComposer.AddLaTeXEquation(
+        KaTeXComposer.AddLaTeXEquation(
             "targetVector1Text",
             @"\boldsymbol{v}\left(\theta\right)"
         );
         
-        katexComposer.AddLaTeXEquation(
+        KaTeXComposer.AddLaTeXEquation(
             "phiMinRotorText",
             @"\boldsymbol{R}\left(0\right)"
         );
 
-        katexComposer.AddLaTeXEquation(
+        KaTeXComposer.AddLaTeXEquation(
             "thetaRotorText",
             @"\boldsymbol{S}\left(\theta\right)"
         );
         
-        katexComposer.AddLaTeXEquation(
+        KaTeXComposer.AddLaTeXEquation(
             "phiRotorText",
             @"\boldsymbol{R}\left(\theta\right)"
         );
         
-        katexComposer.AddLaTeXEquation(
+        KaTeXComposer.AddLaTeXEquation(
             "phiRotorCopyText",
             @"\boldsymbol{R}\left(\theta\right)"
         );
         
-        katexComposer.AddLaTeXEquation(
+        KaTeXComposer.AddLaTeXEquation(
             "thetaRotorPlaneText",
             @"\boldsymbol{B}"
         );
         
-        katexComposer.AddLaTeXEquation(
+        KaTeXComposer.AddLaTeXEquation(
             "phiRotorPlaneText",
             @"\boldsymbol{N}\left(\theta\right)"
         );
@@ -265,7 +254,7 @@ public class GrBabylonJsRotorFamilyVisualizer :
         var vuDiff = (TargetVector - SourceVector).ToUnitLinVector3D();
         var uvNormal = SourceVector.VectorUnitCross(TargetVector);
         
-        katexComposer.AddLaTeXAlignedEquations(
+        KaTeXComposer.AddLaTeXAlignedEquations(
             "modelText",
             new Pair<string>[]
             {
@@ -286,7 +275,7 @@ public class GrBabylonJsRotorFamilyVisualizer :
             }
         );
 
-        for (var i = 0; i < FrameCount; i++)
+        for (var i = 0; i < ImageCount; i++)
         {
             var theta = ThetaValues[i];
             var phi = ThetaToPhi(theta);
@@ -294,7 +283,7 @@ public class GrBabylonJsRotorFamilyVisualizer :
             var u1 = SourceVector.RejectOnVector(uvNormal1);
             var v1 = TargetVector.RejectOnVector(uvNormal1);
 
-            katexComposer.AddLaTeXAlignedEquations(
+            KaTeXComposer.AddLaTeXAlignedEquations(
                 $"dataText-{i:D6}",
                 new Pair<string>[]
                 {
@@ -306,45 +295,18 @@ public class GrBabylonJsRotorFamilyVisualizer :
                 }
             );
         }
-
-        katexComposer.RenderKaTeX();
-        
-        Console.WriteLine("done.");
-        Console.WriteLine();
-
-        return katexComposer;
     }
 
-    protected override void InitializeTextureSet()
+    protected override void AddImageTextures()
     {
-        Console.Write("Generating images cache .. ");
-
-        if (ShowCopyright)
+        for (var i = 0; i < ImageCount; i++)
         {
-            TextureSet.AddTextureFromPngFile(
-                "gui",
-                "Copyright"
-            );
-        }
-        
-        for (var i = 0; i < FrameCount; i++)
-        {
-            TextureSet.AddTexture(
+            ImageSet.AddImage(
                 "gui",
                 $"ThetaPhiPlot-{i:D6}", 
                 GetThetaPhiPlotImage(i)
             );
         }
-        
-        TextureSet.AddTextures(
-            "latex", 
-            RenderLaTeXTextures()
-        );
-
-        TextureSet.FinalizeTextures();
-
-        Console.WriteLine("done.");
-        Console.WriteLine();
     }
 
     protected override void InitializeSceneComposers(int frameIndex)
@@ -354,12 +316,12 @@ public class GrBabylonJsRotorFamilyVisualizer :
             new GrBabylonJsSnapshotSpecs
             {
                 Enabled = true,
-                Width = CanvasWidth,
-                Height = CanvasHeight,
+                Width = ImageWidth,
+                Height = ImageHeight,
                 Precision = 1,
                 UsePrecision = true,
-                Delay = frameIndex == 0 ? 2000 : 1000,
-                FileName = $"Frame-{frameIndex:D6}.png"
+                Delay = 2000,
+                FileName = GetFrameName(frameIndex) + ".png"
             }
         )
         {
@@ -371,16 +333,12 @@ public class GrBabylonJsRotorFamilyVisualizer :
 
         CodeFilesComposer = new GrBabylonJsCodeFilesComposer(mainSceneComposer)
         {
-            CanvasWidth = CanvasWidth,
-            CanvasHeight = CanvasHeight,
+            CanvasWidth = ImageWidth,
+            CanvasHeight = ImageHeight,
             CanvasFullScreen = false
         };
     }
 
-    //protected override void AddGrid()
-    //{
-    //}
-    
     protected override void AddGuiLayer(int frameIndex)
     {
         var scene = MainSceneComposer.SceneObject;
@@ -390,13 +348,13 @@ public class GrBabylonJsRotorFamilyVisualizer :
         
         if (ShowCopyright)
         {
-            var copyrightImage = TextureSet["gui", "Copyright"];
+            var copyrightImage = ImageSet["gui", "Copyright"];
             var copyrightImageWidth = 0.4d * CodeFilesComposer.CanvasWidth;
             var copyrightImageHeight = 0.4d * CodeFilesComposer.CanvasWidth * copyrightImage.ImageHeightToWidth;
 
             uiTexture.AddGuiImage(
                 "copyrightImage",
-                copyrightImage.GetImageUrl(),
+                copyrightImage.GetImageDataUrlBase64(),
                 new GrBabylonJsGuiImageProperties
                 {
                     Stretch = GrBabylonJsImageStretch.Uniform,
@@ -432,7 +390,7 @@ public class GrBabylonJsRotorFamilyVisualizer :
             
         uiPanel1.AddGuiTextBlock(
             "uiTextTitle",
-            $"'{Title}'",
+            $"'{SceneTitle}'",
             new GrBabylonJsGuiTextBlockProperties
             {
                 WidthInPixels = uiPanel1Width - 20,
@@ -465,10 +423,10 @@ public class GrBabylonJsRotorFamilyVisualizer :
             }
         );
 
-        var latexPngData1 = TextureSet["latex", "modelText"];
+        var latexPngData1 = ImageSet["latex", "modelText"];
         uiPanel1.AddGuiImage(
             "latexGuiImage1",
-            latexPngData1.GetImageUrl(),
+            latexPngData1.GetImageDataUrlBase64(),
             new GrBabylonJsGuiImageProperties
             {
                 //Alpha = 0.5d,
@@ -503,10 +461,10 @@ public class GrBabylonJsRotorFamilyVisualizer :
             }
         );
 
-        var thetaPhiPlotData = TextureSet["gui", $"ThetaPhiPlot-{frameIndex:D6}"];
+        var thetaPhiPlotData = ImageSet["gui", $"ThetaPhiPlot-{frameIndex:D6}"];
         uiPanel2.AddGuiImage(
             "thetaPhiPlotGuiImage",
-            thetaPhiPlotData.GetImageUrl(),
+            thetaPhiPlotData.GetImageDataUrlBase64(),
             new GrBabylonJsGuiImageProperties
             {
                 Stretch = GrBabylonJsImageStretch.Uniform,
@@ -522,12 +480,12 @@ public class GrBabylonJsRotorFamilyVisualizer :
             }
         );
 
-        var dataTextImageData = TextureSet["latex", $"dataText-{frameIndex:D6}"];
+        var dataTextImageData = ImageSet["latex", $"dataText-{frameIndex:D6}"];
         var dataTextImageWidth = uiPanel2Width * dataTextImageData.ImageWidth / DataTextImageMaxWidth;
 
         uiPanel2.AddGuiImage(
             "latexGuiImage2",
-            dataTextImageData.GetImageUrl(),
+            dataTextImageData.GetImageDataUrlBase64(),
             new GrBabylonJsGuiImageProperties
             {
                 //Alpha = 0.5d,
@@ -552,7 +510,7 @@ public class GrBabylonJsRotorFamilyVisualizer :
             0.075
         ).AddLaTeXText(
             "sourceVectorText", 
-            TextureSet["latex", "sourceVectorText"], 
+            ImageSet["latex", "sourceVectorText"], 
             SourceVector * 4.35d, 
             LaTeXScalingFactor
         );
@@ -564,7 +522,7 @@ public class GrBabylonJsRotorFamilyVisualizer :
             0.075
         ).AddLaTeXText(
             "targetVectorText",
-            TextureSet["latex", "targetVectorText"],
+            ImageSet["latex", "targetVectorText"],
             TargetVector * 4.35d,
             LaTeXScalingFactor
         );
@@ -611,7 +569,7 @@ public class GrBabylonJsRotorFamilyVisualizer :
                 0.075
             ).AddLaTeXText(
                 "sourceVector1Text", 
-                TextureSet["latex", "sourceVector1Text"], 
+                ImageSet["latex", "sourceVector1Text"], 
                 u1 + u1.ToUnitLinVector3D() * 0.35d, 
                 LaTeXScalingFactor
             );
@@ -624,7 +582,7 @@ public class GrBabylonJsRotorFamilyVisualizer :
                 0.075
             ).AddLaTeXText(
                 "targetVector1Text", 
-                TextureSet["latex", "targetVector1Text"], 
+                ImageSet["latex", "targetVector1Text"], 
                 v1 + v1.ToUnitLinVector3D() * 0.35d, 
                 LaTeXScalingFactor
             );
@@ -657,7 +615,7 @@ public class GrBabylonJsRotorFamilyVisualizer :
             System.Drawing.Color.IndianRed.ToImageSharpColor(128)
         ).AddLaTeXText(
             "phiMinRotorText",
-            TextureSet["latex", "phiMinRotorText"],
+            ImageSet["latex", "phiMinRotorText"],
             0.5d.Lerp(u, v).SetLength(u1.VectorENorm() + 0.35d),
             LaTeXScalingFactor
         );
@@ -676,7 +634,7 @@ public class GrBabylonJsRotorFamilyVisualizer :
                 System.Drawing.Color.LightGreen.ToImageSharpColor(128)
             ).AddLaTeXText(
                 "thetaRotorText",
-                TextureSet["latex", "thetaRotorText"],
+                ImageSet["latex", "thetaRotorText"],
                 0.5d.Lerp(vuSum, vuSum1).SetLength(u1.VectorENorm() + 0.35d),
                 LaTeXScalingFactor
             );
@@ -694,7 +652,7 @@ public class GrBabylonJsRotorFamilyVisualizer :
             System.Drawing.Color.DarkSlateBlue.ToImageSharpColor(128)
         ).AddLaTeXText(
             "phiRotorText",
-            TextureSet["latex", "phiRotorText"],
+            ImageSet["latex", "phiRotorText"],
             0.5d.Lerp(u1, v1).SetLength(u1.VectorENorm() + 0.35d),
             LaTeXScalingFactor
         );
@@ -711,7 +669,7 @@ public class GrBabylonJsRotorFamilyVisualizer :
             System.Drawing.Color.DarkSlateBlue.ToImageSharpColor(128)
         ).AddLaTeXText(
             "phiRotorCopyText",
-            TextureSet["latex", "phiRotorCopyText"],
+            ImageSet["latex", "phiRotorCopyText"],
             u - u1 + 0.5d.Lerp(u1, v1).SetLength(u1.VectorENorm() + 0.35d),
             LaTeXScalingFactor
         );
@@ -726,7 +684,7 @@ public class GrBabylonJsRotorFamilyVisualizer :
             System.Drawing.Color.YellowGreen.ToImageSharpColor(64)
         ).AddLaTeXText(
             "thetaRotorPlaneText",
-            TextureSet["latex", "thetaRotorPlaneText"],
+            ImageSet["latex", "thetaRotorPlaneText"],
             vuSum.SetLength(-4d),
             LaTeXScalingFactor
         );
@@ -741,7 +699,7 @@ public class GrBabylonJsRotorFamilyVisualizer :
             System.Drawing.Color.BurlyWood.ToImageSharpColor(64)
         ).AddLaTeXText(
             "phiRotorPlaneText",
-            TextureSet["latex", "phiRotorPlaneText"],
+            ImageSet["latex", "phiRotorPlaneText"],
             vuSum1.SetLength(-4d),
             LaTeXScalingFactor
         );
@@ -867,9 +825,26 @@ public class GrBabylonJsRotorFamilyVisualizer :
         }
     }
 
-    protected override void ComposeFrame(int frameIndex)
+    protected override void ComposeScene(int frameIndex)
     {
-        base.ComposeFrame(frameIndex);
+        if (ShowGrid)
+            MainSceneComposer.AddGrid(
+                "defaultZx",
+                LinFloat64Vector3D.Zero, 
+                LinFloat64Quaternion.XyToZx, 
+                GridUnitCount,
+                1,
+                0.25
+            );
+
+        if (ShowAxes)
+            MainSceneComposer.AddAxes(
+                "defaultAxes",
+                AxesOrigin,
+                LinFloat64Quaternion.Identity,
+                1,
+                1
+            );
 
         if (DrawRotorTrace) AddRotorTrace();
 

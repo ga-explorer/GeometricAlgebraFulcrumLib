@@ -8,7 +8,7 @@ public class DfLinearSplineSignalInterpolator :
     DifferentialSignalInterpolatorFunction
 {
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static DfLinearSplineSignalInterpolator Create(Float64Signal signal, DfLinearSplineSignalInterpolatorOptions options)
+    public static DfLinearSplineSignalInterpolator Create(Float64SampledTimeSignal signal, DfLinearSplineSignalInterpolatorOptions options)
     {
         signal = signal.GetSmoothedSignal(options);
 
@@ -27,7 +27,7 @@ public class DfLinearSplineSignalInterpolator :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static DfLinearSplineSignalInterpolator Create(Float64Signal signal, int sampleIndex1, int sampleIndex2, DfLinearSplineSignalInterpolatorOptions options)
+    public static DfLinearSplineSignalInterpolator Create(Float64SampledTimeSignal signal, int sampleIndex1, int sampleIndex2, DfLinearSplineSignalInterpolatorOptions options)
     {
         // Smooth the given signal, if specified in options
         signal = signal.GetSmoothedSignal(options);

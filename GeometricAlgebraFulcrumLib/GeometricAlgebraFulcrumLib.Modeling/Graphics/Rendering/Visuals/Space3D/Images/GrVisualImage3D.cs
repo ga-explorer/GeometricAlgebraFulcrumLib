@@ -24,7 +24,7 @@ public sealed class GrVisualImage3D :
     );
         
     
-    public static GrVisualImage3D CreateStatic(string name, IGrVisualTexture texture, ILinFloat64Vector3D position, double scalingFactor)
+    public static GrVisualImage3D CreateStatic(string name, IGrVisualImageSource texture, ILinFloat64Vector3D position, double scalingFactor)
     {
         return new GrVisualImage3D(
             name, 
@@ -35,7 +35,7 @@ public sealed class GrVisualImage3D :
         );
     }
 
-    public static GrVisualImage3D Create(string name, IGrVisualTexture texture, ILinFloat64Vector3D position, double scalingFactor, Float64SamplingSpecs samplingSpecs)
+    public static GrVisualImage3D Create(string name, IGrVisualImageSource texture, ILinFloat64Vector3D position, double scalingFactor, Float64SamplingSpecs samplingSpecs)
     {
         return new GrVisualImage3D(
             name, 
@@ -46,7 +46,7 @@ public sealed class GrVisualImage3D :
         );
     }
         
-    public static GrVisualImage3D CreateAnimated(string name, IGrVisualTexture texture, GrVisualAnimatedVector3D position, double scalingFactor)
+    public static GrVisualImage3D CreateAnimated(string name, IGrVisualImageSource texture, GrVisualAnimatedVector3D position, double scalingFactor)
     {
         return new GrVisualImage3D(
             name, 
@@ -58,7 +58,7 @@ public sealed class GrVisualImage3D :
     }
         
 
-    public IGrVisualTexture Texture { get; }
+    public IGrVisualImageSource Texture { get; }
 
     public double ScalingFactor { get; }
 
@@ -67,7 +67,7 @@ public sealed class GrVisualImage3D :
     public GrVisualAnimatedVector3D? AnimatedPosition { get; set; }
 
 
-    private GrVisualImage3D(string name, IGrVisualTexture texture, ILinFloat64Vector3D position, double scalingFactor, Float64SamplingSpecs samplingSpecs) 
+    private GrVisualImage3D(string name, IGrVisualImageSource texture, ILinFloat64Vector3D position, double scalingFactor, Float64SamplingSpecs samplingSpecs) 
         : base(name, samplingSpecs)
     {
         Texture = texture;
@@ -123,7 +123,7 @@ public sealed class GrVisualImage3D :
     {
         return SamplingSpecs.IsStatic || AnimatedPosition is null
             ? Position.ToLinVector3D()
-            : AnimatedPosition.GetPoint(time);
+            : AnimatedPosition.GetValue(time);
     }
 
     public IEnumerable<KeyFrameRecord> GetKeyFrameRecords()

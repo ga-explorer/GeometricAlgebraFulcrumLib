@@ -11,6 +11,7 @@ public class AutoCropProcessor : CloningImageProcessor
     private readonly IAutoCropSettings _settings;
 
     public ICropAnalysis CropAnalysis { get; internal set; }
+
     public IWeightAnalysis WeightAnalysis { get; internal set; }
 
     public AutoCropProcessor(IAutoCropSettings settings)

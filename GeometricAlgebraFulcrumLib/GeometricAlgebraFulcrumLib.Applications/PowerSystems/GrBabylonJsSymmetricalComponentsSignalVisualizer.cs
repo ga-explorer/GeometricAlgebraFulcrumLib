@@ -1,34 +1,29 @@
 ﻿using System.Collections.Immutable;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space3D;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
-using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.BabylonJs;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.BabylonJs.Cameras;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.BabylonJs.Constants;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.BabylonJs.GUI;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.BabylonJs.Materials;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.BabylonJs.Meshes;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.BabylonJs.Textures;
-using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.Visuals.Space3D.Animations;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.Visuals.Space3D.Basic;
-using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.Visuals.Space3D.Grids;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.Visuals.Space3D.Styles;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.Visuals.Space3D.Surfaces;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Basic;
-using GeometricAlgebraFulcrumLib.Utilities.Structures.Files;
 using SixLabors.ImageSharp;
 using GeometricAlgebraFulcrumLib.Utilities.Web.Colors;
 using GeometricAlgebraFulcrumLib.Utilities.Web.Html.Media;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.BabylonJs.Composers;
 using GeometricAlgebraFulcrumLib.Utilities.Web.Images;
 using GeometricAlgebraFulcrumLib.Modeling.Signals;
-using GeometricAlgebraFulcrumLib.Utilities.Web.LaTeX.KaTeX;
 
 namespace GeometricAlgebraFulcrumLib.Applications.PowerSystems;
 
 public class GrBabylonJsSymmetricalComponentsSignalVisualizer :
     GrBabylonJsSceneSequenceComposer
 {
-    public SymmetricalComponentsSignal3D Signal { get; }
+    public Float64SymmetricalComponentsSignal3D Signal { get; }
  
     public int TrailSampleCount { get; set; }
 
@@ -42,114 +37,104 @@ public class GrBabylonJsSymmetricalComponentsSignalVisualizer :
     
     public LinFloat64Vector3D OmegaFrameOrigin { get; set; } = LinFloat64Vector3D.Create(-6, 2, 1);
     
-    public int SignalTextImageMaxWidth { get; private set; }
+    //public int SignalTextImageMaxWidth { get; private set; }
 
-    public int SignalTextImageMaxHeight { get; private set; }
+    //public int SignalTextImageMaxHeight { get; private set; }
     
     public GrBabylonJsSceneComposer OmegaSceneComposer 
         => CodeFilesComposer.GetSceneComposer("omegaScene");
 
 
-    public GrBabylonJsSymmetricalComponentsSignalVisualizer(string workingFolder, Float64SamplingSpecs samplingSpecs, SymmetricalComponentsSignal3D powerSignal)
+    public GrBabylonJsSymmetricalComponentsSignalVisualizer(string workingFolder, Float64SamplingSpecs samplingSpecs, Float64SymmetricalComponentsSignal3D powerSignal)
         : base(workingFolder, samplingSpecs)
     {
         Signal = powerSignal;
     }
 
 
-    private WclKaTeXComposer RenderLaTeXTextures()
+    protected override void AddLaTeXTextures()
     {
-        Console.Write("Generating LaTeX images .. ");
-
-        var katexComposer = new WclKaTeXComposer(WorkingFolder)
-        {
-            FontSizeEm = 2,
-            Output = WclKaTeXComposer.OutputKind.Html,
-            ThrowOnError = false,
-            SaveImages = false
-        };
-        
-        katexComposer.AddLaTeXEquation(
+        KaTeXComposer.AddLaTeXEquation(
             "basis1VectorText",
             @"\boldsymbol{\sigma}_{1}"
         );
             
-        katexComposer.AddLaTeXEquation(
+        KaTeXComposer.AddLaTeXEquation(
             "basis2VectorText",
             @"\boldsymbol{\sigma}_{2}"
         );
             
-        katexComposer.AddLaTeXEquation(
+        KaTeXComposer.AddLaTeXEquation(
             "basis3VectorText",
             @"\boldsymbol{\sigma}_{3}"
         );
 
-        katexComposer.AddLaTeXEquation(
+        KaTeXComposer.AddLaTeXEquation(
             "v1VectorText",
             @"\boldsymbol{w}_{r1}"
         );
 
-        katexComposer.AddLaTeXEquation(
+        KaTeXComposer.AddLaTeXEquation(
             "v2VectorText",
             @"\boldsymbol{w}_{r2}"
         );
 
-        katexComposer.AddLaTeXEquation(
+        KaTeXComposer.AddLaTeXEquation(
             "v3VectorText",
             @"\boldsymbol{w}_{r3}"
         );
 
-        katexComposer.AddLaTeXEquation(
+        KaTeXComposer.AddLaTeXEquation(
             "vVectorText",
             @"\boldsymbol{w}_{r}"
         );
             
-        katexComposer.AddLaTeXEquation(
+        KaTeXComposer.AddLaTeXEquation(
             "e1VectorText",
             @"\boldsymbol{e}_{1}"
         );
 
-        katexComposer.AddLaTeXEquation(
+        KaTeXComposer.AddLaTeXEquation(
             "e2VectorText",
             @"\boldsymbol{e}_{2}"
         );
 
-        katexComposer.AddLaTeXEquation(
+        KaTeXComposer.AddLaTeXEquation(
             "e3VectorText",
             @"\boldsymbol{e}_{3}"
         );
 
-        katexComposer.AddLaTeXEquation(
+        KaTeXComposer.AddLaTeXEquation(
             "kVectorText",
             @"\hat{\boldsymbol{k}}"
         );
 
-        katexComposer.AddLaTeXEquation(
+        KaTeXComposer.AddLaTeXEquation(
             "e1DsVectorText",
             @"\dot{\boldsymbol{e}}_{1}"
         );
 
-        katexComposer.AddLaTeXEquation(
+        KaTeXComposer.AddLaTeXEquation(
             "e2DsVectorText",
             @"\dot{\boldsymbol{e}}_{2}"
         );
 
-        katexComposer.AddLaTeXEquation(
+        KaTeXComposer.AddLaTeXEquation(
             "e3DsVectorText",
             @"\dot{\boldsymbol{e}}_{3}"
         );
 
-        katexComposer.AddLaTeXEquation(
+        KaTeXComposer.AddLaTeXEquation(
             "omega1BivectorText",
             @"\boldsymbol{\Omega}_{1}"
         );
 
-        katexComposer.AddLaTeXEquation(
+        KaTeXComposer.AddLaTeXEquation(
             "omega2BivectorText",
             @"\boldsymbol{\Omega}_{2}"
         );
 
-        katexComposer.AddLaTeXEquation(
+        KaTeXComposer.AddLaTeXEquation(
             "omega3BivectorText",
             @"\boldsymbol{\Omega}_{3}"
         );
@@ -158,7 +143,7 @@ public class GrBabylonJsSymmetricalComponentsSignalVisualizer :
         //ImageCache.MarginSize = 20;
         ////ImageCache.BackgroundColor = Color.FromRgba(32, 32, 255, 16);
         
-        katexComposer.AddLaTeXCode("symbolicSignalText", Signal.LaTeXCode);
+        KaTeXComposer.AddLaTeXCode("symbolicSignalText", Signal.LaTeXCode);
 
         for (var i = 0; i < Signal.TimeValues.Count; i++)
         {
@@ -182,8 +167,8 @@ public class GrBabylonJsSymmetricalComponentsSignalVisualizer :
             var omegaMean = Signal.GetDarbouxBivectorMean(i);
             var omegaMeanNorm = omegaMean.Norm();
 
-            var frequencyHz = omegaNorm / (2d * Math.PI);
-            var frequencyHzMean = omegaMeanNorm / (2 * Math.PI);
+            var frequencyHz = omegaNorm / (Math.Tau);
+            var frequencyHzMean = omegaMeanNorm / (Math.Tau);
 
             var e1Ds = kappa1 * e2;
             var e2Ds = kappa2 * e3 - kappa1 * e1;
@@ -192,7 +177,7 @@ public class GrBabylonJsSymmetricalComponentsSignalVisualizer :
             var kVector = omega.NormalToUnitDirection3D();
             var kVectorMean = omegaMean.NormalToUnitDirection3D();
 
-            katexComposer.AddLaTeXAlignedEquations(
+            KaTeXComposer.AddLaTeXAlignedEquations(
                 $"signalText-{i:D6}",
                 new Pair<string>[]
                 {
@@ -212,87 +197,32 @@ public class GrBabylonJsSymmetricalComponentsSignalVisualizer :
                 }
             );
         }
-
-        katexComposer.RenderKaTeX();
-        
-        Console.WriteLine("done.");
-        Console.WriteLine();
-
-        return katexComposer;
     }
 
-    protected override void InitializeTextureSet()
+    protected override void AddImageTextures()
     {
-        var workingPath = Path.Combine(WorkingFolder, "images");
+        var signalAnalyzer = Signal.CreateAnalyzer();
 
-        Console.Write("Generating images cache .. ");
-
-        //ImageCache.MarginSize = 0;
-        //ImageCache.BackgroundColor = Color.FromRgba(255, 255, 255, 0);
-
-        if (ShowCopyright)
-        {
-            TextureSet.AddTextureFromPngFile(
-                "gui",
-                "Copyright"
-            );
-        }
-            
         for (var i = 0; i < Signal.TimeValues.Count; i++)
         {
-            TextureSet.AddTexture(
+            ImageSet.AddImage(
                 "gui",
                 $"SignalPlot-{i:D6}", 
-                Signal.GetSignalPlotImage(i, PlotSampleCount)
+                signalAnalyzer.GetSignalPlotImage(i, PlotSampleCount)
             );
 
-            TextureSet.AddTexture(
+            ImageSet.AddImage(
                 "gui",
                 $"CurvaturePlot-{i:D6}", 
-                Signal.GetCurvaturesPlotImage(i, PlotSampleCount)
+                signalAnalyzer.GetCurvaturesPlotImage(i, PlotSampleCount)
             );
 
-            TextureSet.AddTexture(
+            ImageSet.AddImage(
                 "gui",
                 $"FrequencyHzPlot-{i:D6}",
-                Signal.GetFrequencyHzPlotImage(i, PlotSampleCount)
+                signalAnalyzer.GetFrequencyHzPlotImage("Frequency", i, PlotSampleCount)
             );
         }
-
-        
-        TextureSet.AddTextures(
-            "latex", 
-            RenderLaTeXTextures()
-        );
-
-        TextureSet.FinalizeTextures();
-
-
-        ////var latexImageComposer = new GrLaTeXImageComposer
-        ////{
-        ////    LaTeXBinFolder = @"D:\texlive\2021\bin\win32\",
-        ////    Resolution = 150
-        ////};
-
-        ////ImageCache.GeneratePngBase64Strings(latexImageComposer);
-
-        //ImageCache.GeneratePngDataUrlStrings(WorkingFolder);
-
-        //var maxWidth = 0;
-        //var maxHeight = 0;
-        //for (var i = 0; i < Signal.TimeValues.Count; i++)
-        //{
-        //    var imageData = ImageCache[$"signalText-{i:D6}"];
-
-        //    if (maxWidth < imageData.ImageWidth) maxWidth = imageData.ImageWidth;
-        //    if (maxHeight < imageData.ImageHeight) maxHeight = imageData.ImageHeight;
-        //}
-
-        //SignalTextImageMaxWidth = maxWidth;
-        //SignalTextImageMaxHeight = maxHeight;
-
-        Console.WriteLine("done.");
-        Console.WriteLine();
     }
 
     protected override void InitializeSceneComposers(int index)
@@ -302,12 +232,12 @@ public class GrBabylonJsSymmetricalComponentsSignalVisualizer :
             new GrBabylonJsSnapshotSpecs
             {
                 Enabled = true,
-                Width = CanvasWidth,
-                Height = CanvasHeight,
+                Width = ImageWidth,
+                Height = ImageHeight,
                 Precision = 1,
                 UsePrecision = true,
-                Delay = index == 0 ? 2000 : 1000,
-                FileName = $"Frame-{index:D6}.png"
+                Delay = 2000,
+                FileName = GetFrameName(index) + "png"
             }
         )
         {
@@ -327,8 +257,8 @@ public class GrBabylonJsSymmetricalComponentsSignalVisualizer :
 
         CodeFilesComposer = new GrBabylonJsCodeFilesComposer(mainSceneComposer)
         {
-            CanvasWidth = CanvasWidth,
-            CanvasHeight = CanvasHeight,
+            CanvasWidth = ImageWidth,
+            CanvasHeight = ImageHeight,
             CanvasFullScreen = false
         };
 
@@ -344,8 +274,8 @@ public class GrBabylonJsSymmetricalComponentsSignalVisualizer :
         // Add omega scene camera
         var omegaSceneCamera = OmegaSceneComposer.SceneObject.AddArcRotateCamera(
             "camera2",
-            "2 * Math.PI / 6",  //alpha,
-            "2 * Math.PI / 8",  // beta,
+            "Math.Tau / 6",  //alpha,
+            "Math.Tau / 8",  // beta,
             11,
             "BABYLON.Vector3.Zero()",
             new GrBabylonJsArcRotateCameraProperties
@@ -360,40 +290,7 @@ public class GrBabylonJsSymmetricalComponentsSignalVisualizer :
 
         //omegaSceneCamera.AttachControl = false;
     }
-     
-    protected override void AddGrid()
-    {
-        base.AddGrid();
-        
-        // Add ground coordinates grid
-        OmegaSceneComposer.GridMaterialKind =
-            GrBabylonJsGridMaterialKind.TexturedMaterial;
-        
-        var imageComposer = new GrVisualGridImageComposer()
-        {
-            BaseSquareColor = System.Drawing.Color.LightYellow.ToImageSharpColor(),
-            BaseLineColor = System.Drawing.Color.BurlyWood.ToImageSharpColor(),
-            MidLineColor = System.Drawing.Color.SandyBrown.ToImageSharpColor(),
-            BorderLineColor = System.Drawing.Color.Black.ToImageSharpColor(),
-            BaseSquareCount = 4,
-            BaseSquareSize = 64,
-            BaseLineWidth = 2,
-            MidLineWidth = 4,
-            BorderLineWidth = 3
-        };
-
-        imageComposer.SetGridColorsOpacity(0.2);
-
-        OmegaSceneComposer.AddSquareGrid(
-            GrVisualSquareGrid3D.DefaultZx(
-                LinFloat64Vector3D.Zero, 
-                4,
-                1,
-                0.2
-            )
-        );
-    }
-
+    
     protected override void AddGuiLayer(int frameIndex)
     {
         var scene = MainSceneComposer.SceneObject;
@@ -424,7 +321,7 @@ public class GrBabylonJsSymmetricalComponentsSignalVisualizer :
             
             uiPanel1.AddGuiTextBlock(
                 "uiTextTitle",
-                $"'{Title}'",
+                $"'{SceneTitle}'",
                 new GrBabylonJsGuiTextBlockProperties
                 {
                     WidthInPixels = uiPanel1Width - 20,
@@ -457,10 +354,10 @@ public class GrBabylonJsSymmetricalComponentsSignalVisualizer :
                 }
             );
 
-            var latexPngData1 = TextureSet["latex", "symbolicSignalText"];
+            var latexPngData1 = ImageSet["latex", "symbolicSignalText"];
             uiPanel1.AddGuiImage(
                 "latexGuiImage1",
-                latexPngData1.GetImageUrl(),
+                latexPngData1.GetImageDataUrlBase64(),
                 new GrBabylonJsGuiImageProperties
                 {
                     //Alpha = 0.5d,
@@ -498,10 +395,10 @@ public class GrBabylonJsSymmetricalComponentsSignalVisualizer :
                 }
             );
 
-            var signalPlotData = TextureSet["gui", $"SignalPlot-{frameIndex:D6}"];
+            var signalPlotData = ImageSet["gui", $"SignalPlot-{frameIndex:D6}"];
             uiPanel2.AddGuiImage(
                 "signalPlotGuiImage",
-                signalPlotData.GetImageUrl(),
+                signalPlotData.GetImageDataUrlBase64(),
                 new GrBabylonJsGuiImageProperties
                 {
                     Stretch = GrBabylonJsImageStretch.Uniform,
@@ -517,10 +414,10 @@ public class GrBabylonJsSymmetricalComponentsSignalVisualizer :
                 }
             );
                 
-            var curvaturePlotData = TextureSet["gui", $"CurvaturePlot-{frameIndex:D6}"];
+            var curvaturePlotData = ImageSet["gui", $"CurvaturePlot-{frameIndex:D6}"];
             uiPanel2.AddGuiImage(
                 "curvaturePlotGuiImage",
-                curvaturePlotData.GetImageUrl(),
+                curvaturePlotData.GetImageDataUrlBase64(),
                 new GrBabylonJsGuiImageProperties
                 {
                     Stretch = GrBabylonJsImageStretch.Uniform,
@@ -536,10 +433,10 @@ public class GrBabylonJsSymmetricalComponentsSignalVisualizer :
                 }
             );
 
-            var frequencyHzPlotData = TextureSet["gui", $"FrequencyHzPlot-{frameIndex:D6}"];
+            var frequencyHzPlotData = ImageSet["gui", $"FrequencyHzPlot-{frameIndex:D6}"];
             uiPanel2.AddGuiImage(
                 "frequencyHzPlotGuiImage",
-                frequencyHzPlotData.GetImageUrl(),
+                frequencyHzPlotData.GetImageDataUrlBase64(),
                 new GrBabylonJsGuiImageProperties
                 {
                     Stretch = GrBabylonJsImageStretch.Uniform,
@@ -555,12 +452,12 @@ public class GrBabylonJsSymmetricalComponentsSignalVisualizer :
                 }
             );
 
-            var signalTextImageData = TextureSet["latex", $"signalText-{frameIndex:D6}"];
-            var signalTextImageWidth = uiPanel2Width * signalTextImageData.ImageWidth / SignalTextImageMaxWidth;
+            var signalTextImageData = ImageSet["latex", $"signalText-{frameIndex:D6}"];
+            var signalTextImageWidth = uiPanel2Width; // * signalTextImageData.ImageWidth / SignalTextImageMaxWidth;
 
             uiPanel2.AddGuiImage(
                 "latexGuiImage2",
-                signalTextImageData.GetImageUrl(),
+                signalTextImageData.GetImageDataUrlBase64(),
                 new GrBabylonJsGuiImageProperties
                 {
                     //Alpha = 0.5d,
@@ -578,13 +475,13 @@ public class GrBabylonJsSymmetricalComponentsSignalVisualizer :
 
         if (ShowCopyright)
         {
-            var copyrightImage = TextureSet["gui", "Copyright"];
+            var copyrightImage = ImageSet["gui", "Copyright"];
             var copyrightImageWidth = 0.4d * CodeFilesComposer.CanvasWidth;
             var copyrightImageHeight = 0.4d * CodeFilesComposer.CanvasWidth * copyrightImage.ImageHeightToWidth;
 
             uiTexture.AddGuiImage(
                 "copyrightImage",
-                copyrightImage.GetImageUrl(),
+                copyrightImage.GetImageDataUrlBase64(),
                 new GrBabylonJsGuiImageProperties
                 {
                     Stretch = GrBabylonJsImageStretch.Uniform,
@@ -610,7 +507,7 @@ public class GrBabylonJsSymmetricalComponentsSignalVisualizer :
             0.05
         ).AddLaTeXText(
             "v1VectorText",
-            TextureSet["latex", "v1VectorText"],
+            ImageSet["latex", "v1VectorText"],
             x + x.ToUnitLinVector3D() * 0.25d,
             LaTeXScalingFactor
         );
@@ -636,7 +533,7 @@ public class GrBabylonJsSymmetricalComponentsSignalVisualizer :
             0.05
         ).AddLaTeXText(
             "v2VectorText",
-            TextureSet["latex", "v2VectorText"],
+            ImageSet["latex", "v2VectorText"],
             y + y.ToUnitLinVector3D() * 0.25d,
             LaTeXScalingFactor
         );
@@ -661,7 +558,7 @@ public class GrBabylonJsSymmetricalComponentsSignalVisualizer :
             0.05
         ).AddLaTeXText(
             "v3VectorText",
-            TextureSet["latex", "v3VectorText"],
+            ImageSet["latex", "v3VectorText"],
             z + z.ToUnitLinVector3D() * 0.25d,
             LaTeXScalingFactor
         );
@@ -688,7 +585,7 @@ public class GrBabylonJsSymmetricalComponentsSignalVisualizer :
             0.05
         ).AddLaTeXText(
             "vVectorText",
-            TextureSet["latex", "vVectorText"],
+            ImageSet["latex", "vVectorText"],
             v + v.ToUnitLinVector3D() * 0.25d,
             LaTeXScalingFactor
         );
@@ -999,7 +896,7 @@ public class GrBabylonJsSymmetricalComponentsSignalVisualizer :
 
         MainSceneComposer.AddLaTeXText(
             "e1VectorText",
-            TextureSet["latex", "e1VectorText"],
+            ImageSet["latex", "e1VectorText"],
             curveFrame.Origin + 
             curveFrame.Direction1 + 
             curveFrame.Direction1.ToUnitLinVector3D() * 0.25d,
@@ -1008,7 +905,7 @@ public class GrBabylonJsSymmetricalComponentsSignalVisualizer :
         
         MainSceneComposer.AddLaTeXText(
             "e2VectorText",
-            TextureSet["latex", "e2VectorText"],
+            ImageSet["latex", "e2VectorText"],
             curveFrame.Origin + 
             curveFrame.Direction2 + 
             curveFrame.Direction2.ToUnitLinVector3D() * 0.25d,
@@ -1017,7 +914,7 @@ public class GrBabylonJsSymmetricalComponentsSignalVisualizer :
         
         MainSceneComposer.AddLaTeXText(
             "e3VectorText",
-            TextureSet["latex", "e3VectorText"],
+            ImageSet["latex", "e3VectorText"],
             curveFrame.Origin + 
             curveFrame.Direction3 + 
             curveFrame.Direction3.ToUnitLinVector3D() * 0.25d,
@@ -1058,7 +955,7 @@ public class GrBabylonJsSymmetricalComponentsSignalVisualizer :
 
         MainSceneComposer.AddLaTeXText(
             "kVectorText",
-            TextureSet["latex", "kVectorText"],
+            ImageSet["latex", "kVectorText"],
             center + normal * 1.25d,
             LaTeXScalingFactor
         );
@@ -1131,17 +1028,17 @@ public class GrBabylonJsSymmetricalComponentsSignalVisualizer :
 
         OmegaSceneComposer.AddLaTeXText(
             "e1VectorText",
-            TextureSet["latex", "e1VectorText"],
+            ImageSet["latex", "e1VectorText"],
             OmegaFrameOrigin + e1 * 1.25d,
             LaTeXScalingFactor
         ).AddLaTeXText(
             "e2VectorText",
-            TextureSet["latex", "e2VectorText"],
+            ImageSet["latex", "e2VectorText"],
             OmegaFrameOrigin + e2 * 1.25d,
             LaTeXScalingFactor
         ).AddLaTeXText(
             "e3VectorText",
-            TextureSet["latex", "e3VectorText"],
+            ImageSet["latex", "e3VectorText"],
             OmegaFrameOrigin + e3 * 1.25d,
             LaTeXScalingFactor
         );
@@ -1158,7 +1055,7 @@ public class GrBabylonJsSymmetricalComponentsSignalVisualizer :
 
             OmegaSceneComposer.AddLaTeXText(
                 "e1DsVectorText",
-                TextureSet["latex", "e1DsVectorText"],
+                ImageSet["latex", "e1DsVectorText"],
                 OmegaFrameOrigin + e1Ds + e1Ds.ToUnitLinVector3D() * 0.25d,
                 LaTeXScalingFactor
             );
@@ -1183,7 +1080,7 @@ public class GrBabylonJsSymmetricalComponentsSignalVisualizer :
             
             OmegaSceneComposer.AddLaTeXText(
                 "omega1BivectorText",
-                TextureSet["latex", "omega1BivectorText"],
+                ImageSet["latex", "omega1BivectorText"],
                 OmegaFrameOrigin + 0.75d * (e1 + e1Ds),
                 LaTeXScalingFactor
             );
@@ -1201,7 +1098,7 @@ public class GrBabylonJsSymmetricalComponentsSignalVisualizer :
             
             OmegaSceneComposer.AddLaTeXText(
                 "e2DsVectorText",
-                TextureSet["latex", "e2DsVectorText"],
+                ImageSet["latex", "e2DsVectorText"],
                 OmegaFrameOrigin + e2Ds + e2Ds.ToUnitLinVector3D() * 0.25d,
                 LaTeXScalingFactor
             );
@@ -1226,7 +1123,7 @@ public class GrBabylonJsSymmetricalComponentsSignalVisualizer :
             
             OmegaSceneComposer.AddLaTeXText(
                 "omega2BivectorText",
-                TextureSet["latex", "omega2BivectorText"],
+                ImageSet["latex", "omega2BivectorText"],
                 OmegaFrameOrigin + 0.75 * (e2 + e2Ds),
                 LaTeXScalingFactor
             );
@@ -1249,7 +1146,7 @@ public class GrBabylonJsSymmetricalComponentsSignalVisualizer :
             
             OmegaSceneComposer.AddLaTeXText(
                 "e3DsVectorText",
-                TextureSet["latex", "e3DsVectorText"],
+                ImageSet["latex", "e3DsVectorText"],
                 OmegaFrameOrigin + e3Ds + e3Ds.ToUnitLinVector3D() * 0.25d,
                 LaTeXScalingFactor
             );
@@ -1274,16 +1171,33 @@ public class GrBabylonJsSymmetricalComponentsSignalVisualizer :
             
             OmegaSceneComposer.AddLaTeXText(
                 "omega3BivectorText",
-                TextureSet["latex", "omega3BivectorText"],
+                ImageSet["latex", "omega3BivectorText"],
                 OmegaFrameOrigin + 0.75d * (e3 + e3Ds),
                 LaTeXScalingFactor
             );
         }
     }
 
-    protected override void ComposeFrame(int frameIndex)
+    protected override void ComposeScene(int frameIndex)
     {
-        base.ComposeFrame(frameIndex);
+        if (ShowGrid)
+            MainSceneComposer.AddGrid(
+                "defaultZx",
+                LinFloat64Vector3D.Zero, 
+                LinFloat64Quaternion.XyToZx, 
+                GridUnitCount,
+                1,
+                0.25
+            );
+
+        if (ShowAxes)
+            MainSceneComposer.AddAxes(
+                "defaultAxes",
+                AxesOrigin,
+                LinFloat64Quaternion.Identity,
+                1,
+                1
+            );
 
         var t = Signal.TimeValues[frameIndex];
         var (x, y, z) = Signal.GetComponentVectors(t);

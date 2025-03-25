@@ -2,10 +2,10 @@
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.BasicShapes.Lines.Space3D.Float64;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.BasicShapes.Triangles.Space3D.Float64;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.Parametric.Float64.Space3D.Curves;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.LatticeShapes.Curves;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.LatticeShapes.Surfaces;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Primitives;
+using GeometricAlgebraFulcrumLib.Modeling.Trajectories.Vectors3D.Float64;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Basic;
 
 namespace GeometricAlgebraFulcrumLib.Modeling.Graphics.LatticeShapes;
@@ -16,7 +16,7 @@ public static class GrLatticeShapesUtils
     {
         var curve = curveList.AddCurve(samplesCount, true);
 
-        var thetaRange = 0d.GetLinearRange(2 * Math.PI, samplesCount, true).ToArray();
+        var thetaRange = 0d.GetLinearRange(Math.Tau, samplesCount, true).ToArray();
 
         for (var indexU = 0; indexU < samplesCount; indexU++)
         {
@@ -59,7 +59,7 @@ public static class GrLatticeShapesUtils
 
         //surface.ReverseNormals = true;
 
-        var thetaRange = 0d.GetLinearRange(2 * Math.PI, baseSamplesCount, true).ToArray();
+        var thetaRange = 0d.GetLinearRange(Math.Tau, baseSamplesCount, true).ToArray();
         var zRange = (-0.5d).GetLinearRange(0.5d, heightSamplesCount, false).ToArray();
         var rRange = (0.5).GetLinearRange(0d, heightSamplesCount, false).ToArray();
 
@@ -94,7 +94,7 @@ public static class GrLatticeShapesUtils
 
         //surface.ReverseNormals = true;
 
-        var thetaRange = 0d.GetLinearRange(2 * Math.PI, baseSamplesCount, true).ToArray();
+        var thetaRange = 0d.GetLinearRange(Math.Tau, baseSamplesCount, true).ToArray();
         var zRange = (-0.5d).GetLinearRange(0.5d, heightSamplesCount, false).ToArray();
         var rRange = (0.5).GetLinearRange(0d, heightSamplesCount, false).ToArray();
 
@@ -131,7 +131,7 @@ public static class GrLatticeShapesUtils
 
         //surface.ReverseNormals = true;
 
-        var thetaRange = 0d.GetLinearRange(2 * Math.PI, baseSamplesCount, true).ToArray();
+        var thetaRange = 0d.GetLinearRange(Math.Tau, baseSamplesCount, true).ToArray();
         var zRange = (-0.5d).GetLinearRange(0.5d, heightSamplesCount, false).ToArray();
 
         for (var indexV = 0; indexV < heightSamplesCount; indexV++)
@@ -164,7 +164,7 @@ public static class GrLatticeShapesUtils
 
         surface.SetLatticeVerticesAtIndexV(0, new Triplet<Float64Scalar>(0, 0, -0.5d));
 
-        var thetaRange = 0d.GetLinearRange(2 * Math.PI, baseSamplesCount, true).ToArray();
+        var thetaRange = 0d.GetLinearRange(Math.Tau, baseSamplesCount, true).ToArray();
         var zRange = (-0.5d).GetLinearRange(0.5d, heightSamplesCount, false).ToArray();
 
         for (var indexV = 1; indexV <= heightSamplesCount; indexV++)
@@ -199,7 +199,7 @@ public static class GrLatticeShapesUtils
 
         surface.SetLatticeVerticesAtIndexV(0, new Triplet<Float64Scalar>(0, 0, -0.5d));
 
-        var thetaRange = 0d.GetLinearRange(2 * Math.PI, thetaSamplesCount, true).ToArray();
+        var thetaRange = 0d.GetLinearRange(Math.Tau, thetaSamplesCount, true).ToArray();
         var phiRange = Math.PI.GetLinearRange(0, phiSamplesCount, false).ToArray();
 
         //var evenSlice = false;
@@ -235,7 +235,7 @@ public static class GrLatticeShapesUtils
         return surface;
     }
 
-    public static GrLatticeSurface3D AddTubeSurface(this GrLatticeSurfaceList3D surfaceList, IReadOnlyList<ParametricCurveLocalFrame3D> sampledCurve, double tubeRadius, int baseSamplesCount, bool closedTube)
+    public static GrLatticeSurface3D AddTubeSurface(this GrLatticeSurfaceList3D surfaceList, IReadOnlyList<Float64Path3DLocalFrame> sampledCurve, double tubeRadius, int baseSamplesCount, bool closedTube)
     {
         var tubeSamples = sampledCurve.Count;
 
@@ -248,7 +248,7 @@ public static class GrLatticeShapesUtils
 
         //surface.ReverseNormals = true;
 
-        var thetaRange = 0d.GetLinearRange(2 * Math.PI, baseSamplesCount, true).ToArray();
+        var thetaRange = 0d.GetLinearRange(Math.Tau, baseSamplesCount, true).ToArray();
 
         for (var indexV = 0; indexV < tubeSamples; indexV++)
         {

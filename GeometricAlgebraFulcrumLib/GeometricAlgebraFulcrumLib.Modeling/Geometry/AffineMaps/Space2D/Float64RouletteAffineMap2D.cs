@@ -49,6 +49,11 @@ public sealed record Float64RouletteAffineMap2D :
         };
     }
 
+    public bool IsIdentity()
+    {
+        throw new NotImplementedException();
+    }
+
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public LinFloat64Vector2D MapPoint(ILinFloat64Vector2D point)
     {

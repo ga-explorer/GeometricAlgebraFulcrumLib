@@ -10,7 +10,7 @@ public static partial class ClarkeMapUtils
 
         //Begin GA-FuL MetaContext Code Generation, 2022-11-01T17:20:46.7768751+02:00
         //MetaContext: Clarke Transformation
-        var temp0 = 2 * Math.PI;
+        var temp0 = Math.Tau;
         temp0 = 0.125 * temp0;
         var temp1 = Math.Cos(temp0);
         temp1 = 0.5 * temp1;

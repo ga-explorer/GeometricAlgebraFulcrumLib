@@ -43,7 +43,7 @@ public static class Float64BasicShapesUtils
         if (sidesCount < 3)
             throw new InvalidOperationException();
 
-        var angleStep = 2 * Math.PI / sidesCount;
+        var angleStep = Math.Tau / sidesCount;
 
         var result = Enumerable
             .Range(0, sidesCount)
@@ -59,7 +59,7 @@ public static class Float64BasicShapesUtils
         if (sidesCount < 3)
             throw new InvalidOperationException();
 
-        var angleStep = 2 * Math.PI / sidesCount;
+        var angleStep = Math.Tau / sidesCount;
 
         var result = Enumerable
             .Range(0, sidesCount)

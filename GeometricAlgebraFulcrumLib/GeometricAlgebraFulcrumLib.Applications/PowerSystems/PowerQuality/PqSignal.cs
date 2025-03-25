@@ -26,7 +26,7 @@ public class PqSignal :
     public int SamplingRate { get; }
 
     public double Frequency 
-        => 2 * Math.PI * FrequencyHz;
+        => Math.Tau * FrequencyHz;
 
     public double NormalizationFactor 
         => 3 * NominalVoltage * NominalVoltage * FrequencyHz;

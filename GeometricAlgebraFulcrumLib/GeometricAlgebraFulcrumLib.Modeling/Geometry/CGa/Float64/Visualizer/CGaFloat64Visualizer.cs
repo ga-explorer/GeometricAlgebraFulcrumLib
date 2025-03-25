@@ -2,12 +2,6 @@
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space2D;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space3D;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Float64.Elements;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.Parametric.Float64.Space1D.Scalars;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.Parametric.Float64.Space2D.Bivectors;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.Parametric.Float64.Space2D.Curves;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.Parametric.Float64.Space3D.Bivectors;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.Parametric.Float64.Space3D.Curves;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.Parametric.Float64.Space3D.Trivectors;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.Visualizer;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.BabylonJs.Composers;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.Visuals.Space3D.Animations;
@@ -16,7 +10,13 @@ using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.Visuals.Space3D.Cur
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.Visuals.Space3D.Styles;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.Visuals.Space3D.Surfaces;
 using GeometricAlgebraFulcrumLib.Modeling.Signals;
-using GeometricAlgebraFulcrumLib.Modeling.Temporal.Float64.Scalars;
+using GeometricAlgebraFulcrumLib.Modeling.Trajectories.Bivectors2D.Float64;
+using GeometricAlgebraFulcrumLib.Modeling.Trajectories.Bivectors3D;
+using GeometricAlgebraFulcrumLib.Modeling.Trajectories.Scalars.Float64;
+using GeometricAlgebraFulcrumLib.Modeling.Trajectories.Trivectors3D.Float64;
+using GeometricAlgebraFulcrumLib.Modeling.Trajectories.Vectors2D.Float64;
+using GeometricAlgebraFulcrumLib.Modeling.Trajectories.Vectors3D.Float64;
+using GeometricAlgebraFulcrumLib.Modeling.Trajectories.Vectors3D.Float64.Composers;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Extensions;
 using GeometricAlgebraFulcrumLib.Utilities.Web.Colors;
 using GeometricAlgebraFulcrumLib.Utilities.Web.LaTeX.KaTeX;
@@ -39,7 +39,7 @@ public class CGaFloat64Visualizer
     public GrBabylonJsGeometryAnimationComposer AnimationComposer { get; set; }
 
     public Float64SamplingSpecs SamplingSpecs 
-        => AnimationComposer.SamplingSpecs;
+        => AnimationComposer.SceneSamplingSpecs;
 
     public GrBabylonJsSceneComposer SceneComposer 
         => AnimationComposer.SceneComposer;
@@ -372,7 +372,7 @@ public class CGaFloat64Visualizer
         return this;
     }
 
-    public CGaFloat64Visualizer DrawDirectionPoint2D(Color color, IFloat64ParametricCurve2D position)
+    public CGaFloat64Visualizer DrawDirectionPoint2D(Color color, Float64Path2D position)
     {
         SceneComposer.AddPoint(
             GrVisualPoint3D.CreateAnimated(
@@ -417,7 +417,7 @@ public class CGaFloat64Visualizer
         return this;
     }
 
-    public CGaFloat64Visualizer DrawDirectionPoint3D(Color color, IParametricCurve3D position)
+    public CGaFloat64Visualizer DrawDirectionPoint3D(Color color, Float64Path3D position)
     {
         SceneComposer.AddPoint(
             GrVisualPoint3D.CreateAnimated(
@@ -499,7 +499,7 @@ public class CGaFloat64Visualizer
         return this;
     }
 
-    public CGaFloat64Visualizer DrawDirectionLine2D(Color color, IFloat64ParametricCurve2D position, IFloat64ParametricCurve2D direction)
+    public CGaFloat64Visualizer DrawDirectionLine2D(Color color, Float64Path2D position, Float64Path2D direction)
     {
         var animatedPosition =
             SamplingSpecs.CreateXyAnimatedVector3D(position);
@@ -525,7 +525,7 @@ public class CGaFloat64Visualizer
         {
             var animatedScaledVector =
                 SamplingSpecs.CreateAnimatedVector3D(t =>
-                    direction.GetPoint(t).SetLength(DirectionStyle.DirectionRadius).ToXyLinVector3D()
+                    direction.GetValue(t).SetLength(DirectionStyle.DirectionRadius).ToXyLinVector3D()
                 );
 
             SceneComposer.AddVector(
@@ -675,7 +675,7 @@ public class CGaFloat64Visualizer
         return this;
     }
 
-    public CGaFloat64Visualizer DrawDirectionLine3D(Color color, IParametricCurve3D position, IParametricCurve3D direction)
+    public CGaFloat64Visualizer DrawDirectionLine3D(Color color, Float64Path3D position, Float64Path3D direction)
     {
         var animatedPosition =
             SamplingSpecs.CreateAnimatedVector3D(position);
@@ -701,7 +701,7 @@ public class CGaFloat64Visualizer
         {
             var animatedScaledVector =
                 SamplingSpecs.CreateAnimatedVector3D(t =>
-                    direction.GetPoint(t).SetLength(DirectionStyle.DirectionRadius)
+                    direction.GetValue(t).SetLength(DirectionStyle.DirectionRadius)
                 );
 
             SceneComposer.AddVector(
@@ -850,7 +850,7 @@ public class CGaFloat64Visualizer
         return this;
     }
 
-    public CGaFloat64Visualizer DrawDirectionPlane2D(Color color, IFloat64ParametricCurve2D position, IParametricBivector2D direction)
+    public CGaFloat64Visualizer DrawDirectionPlane2D(Color color, Float64Path2D position, IParametricBivector2D direction)
     {
         var animatedPosition =
             SamplingSpecs.CreateXyAnimatedVector3D(position);
@@ -1027,7 +1027,7 @@ public class CGaFloat64Visualizer
         return this;
     }
 
-    public CGaFloat64Visualizer DrawDirectionPlane3D(Color color, IParametricCurve3D position, IParametricBivector3D direction)
+    public CGaFloat64Visualizer DrawDirectionPlane3D(Color color, Float64Path3D position, IParametricBivector3D direction)
     {
         var animatedPosition =
             SamplingSpecs.CreateAnimatedVector3D(position);
@@ -1180,7 +1180,7 @@ public class CGaFloat64Visualizer
         return this;
     }
 
-    public CGaFloat64Visualizer DrawTangentPoint2D(Color color, IFloat64ParametricCurve2D position)
+    public CGaFloat64Visualizer DrawTangentPoint2D(Color color, Float64Path2D position)
     {
         SceneComposer.AddPoint(
             GrVisualPoint3D.CreateAnimated(
@@ -1225,7 +1225,7 @@ public class CGaFloat64Visualizer
         return this;
     }
 
-    public CGaFloat64Visualizer DrawTangentPoint3D(Color color, IParametricCurve3D position)
+    public CGaFloat64Visualizer DrawTangentPoint3D(Color color, Float64Path3D position)
     {
         SceneComposer.AddPoint(
             GrVisualPoint3D.CreateAnimated(
@@ -1307,7 +1307,7 @@ public class CGaFloat64Visualizer
         return this;
     }
 
-    public CGaFloat64Visualizer DrawTangentLine2D(Color color, IFloat64ParametricCurve2D position, IFloat64ParametricCurve2D direction)
+    public CGaFloat64Visualizer DrawTangentLine2D(Color color, Float64Path2D position, Float64Path2D direction)
     {
         var animatedPosition =
             SamplingSpecs.CreateXyAnimatedVector3D(position);
@@ -1333,7 +1333,7 @@ public class CGaFloat64Visualizer
         {
             var animatedScaledVector =
                 SamplingSpecs.CreateAnimatedVector3D(t =>
-                    direction.GetPoint(t).SetLength(TangentStyle.DirectionRadius).ToXyLinVector3D()
+                    direction.GetValue(t).SetLength(TangentStyle.DirectionRadius).ToXyLinVector3D()
                 );
 
             SceneComposer.AddVector(
@@ -1483,7 +1483,7 @@ public class CGaFloat64Visualizer
         return this;
     }
 
-    public CGaFloat64Visualizer DrawTangentLine3D(Color color, IParametricCurve3D position, IParametricCurve3D direction)
+    public CGaFloat64Visualizer DrawTangentLine3D(Color color, Float64Path3D position, Float64Path3D direction)
     {
         var animatedPosition =
             SamplingSpecs.CreateAnimatedVector3D(position);
@@ -1509,7 +1509,7 @@ public class CGaFloat64Visualizer
         {
             var animatedScaledVector =
                 SamplingSpecs.CreateAnimatedVector3D(t =>
-                    direction.GetPoint(t).SetLength(TangentStyle.DirectionRadius)
+                    direction.GetValue(t).SetLength(TangentStyle.DirectionRadius)
                 );
 
             SceneComposer.AddVector(
@@ -1658,7 +1658,7 @@ public class CGaFloat64Visualizer
         return this;
     }
 
-    public CGaFloat64Visualizer DrawTangentPlane2D(Color color, IFloat64ParametricCurve2D position, IParametricBivector2D direction)
+    public CGaFloat64Visualizer DrawTangentPlane2D(Color color, Float64Path2D position, IParametricBivector2D direction)
     {
         var animatedPosition =
             SamplingSpecs.CreateXyAnimatedVector3D(position);
@@ -1835,7 +1835,7 @@ public class CGaFloat64Visualizer
         return this;
     }
 
-    public CGaFloat64Visualizer DrawTangentPlane3D(Color color, IParametricCurve3D position, IParametricBivector3D direction)
+    public CGaFloat64Visualizer DrawTangentPlane3D(Color color, Float64Path3D position, IParametricBivector3D direction)
     {
         var animatedPosition =
             SamplingSpecs.CreateAnimatedVector3D(position);
@@ -1988,7 +1988,7 @@ public class CGaFloat64Visualizer
         return this;
     }
 
-    public CGaFloat64Visualizer DrawFlatPoint2D(Color color, IFloat64ParametricCurve2D position)
+    public CGaFloat64Visualizer DrawFlatPoint2D(Color color, Float64Path2D position)
     {
         SceneComposer.AddPoint(
             GrVisualPoint3D.CreateAnimated(
@@ -2033,7 +2033,7 @@ public class CGaFloat64Visualizer
         return this;
     }
 
-    public CGaFloat64Visualizer DrawFlatPoint3D(Color color, IParametricCurve3D position)
+    public CGaFloat64Visualizer DrawFlatPoint3D(Color color, Float64Path3D position)
     {
         SceneComposer.AddPoint(
             GrVisualPoint3D.CreateAnimated(
@@ -2124,7 +2124,7 @@ public class CGaFloat64Visualizer
         return this;
     }
 
-    public CGaFloat64Visualizer DrawFlatLine2D(Color color, IFloat64ParametricCurve2D position, IFloat64ParametricCurve2D direction)
+    public CGaFloat64Visualizer DrawFlatLine2D(Color color, Float64Path2D position, Float64Path2D direction)
     {
         var animatedPosition =
             SamplingSpecs.CreateXyAnimatedVector3D(position);
@@ -2134,12 +2134,12 @@ public class CGaFloat64Visualizer
 
         var animatedPoint1 =
             SamplingSpecs.CreateAnimatedVector3D(t =>
-                (position.GetPoint(t) - direction.GetPoint(t).SetLength(FlatStyle.Radius)).ToXyLinVector3D()
+                (position.GetValue(t) - direction.GetValue(t).SetLength(FlatStyle.Radius)).ToXyLinVector3D()
             );
 
         var animatedPoint2 =
             SamplingSpecs.CreateAnimatedVector3D(t =>
-                (position.GetPoint(t) + direction.GetPoint(t).SetLength(FlatStyle.Radius)).ToXyLinVector3D()
+                (position.GetValue(t) + direction.GetValue(t).SetLength(FlatStyle.Radius)).ToXyLinVector3D()
             );
 
         SceneComposer.AddLineSegment(
@@ -2169,7 +2169,7 @@ public class CGaFloat64Visualizer
         {
             var animatedScaledVector =
                 SamplingSpecs.CreateAnimatedVector3D(t =>
-                    direction.GetPoint(t).SetLength(FlatStyle.DirectionRadius).ToXyLinVector3D()
+                    direction.GetValue(t).SetLength(FlatStyle.DirectionRadius).ToXyLinVector3D()
                 );
 
             SceneComposer.AddVector(
@@ -2360,7 +2360,7 @@ public class CGaFloat64Visualizer
         return this;
     }
 
-    public CGaFloat64Visualizer DrawFlatLine3D(Color color, IParametricCurve3D position, IParametricCurve3D direction)
+    public CGaFloat64Visualizer DrawFlatLine3D(Color color, Float64Path3D position, Float64Path3D direction)
     {
         var animatedPosition =
             SamplingSpecs.CreateAnimatedVector3D(position);
@@ -2370,12 +2370,12 @@ public class CGaFloat64Visualizer
 
         var animatedPoint1 =
             SamplingSpecs.CreateAnimatedVector3D(t =>
-                position.GetPoint(t) - direction.GetPoint(t).SetLength(FlatStyle.Radius)
+                position.GetValue(t) - direction.GetValue(t).SetLength(FlatStyle.Radius)
             );
 
         var animatedPoint2 =
             SamplingSpecs.CreateAnimatedVector3D(t =>
-                position.GetPoint(t) + direction.GetPoint(t).SetLength(FlatStyle.Radius)
+                position.GetValue(t) + direction.GetValue(t).SetLength(FlatStyle.Radius)
             );
 
         SceneComposer.AddLineSegment(
@@ -2405,7 +2405,7 @@ public class CGaFloat64Visualizer
         {
             var animatedScaledVector =
                 SamplingSpecs.CreateAnimatedVector3D(t =>
-                    direction.GetPoint(t).SetLength(FlatStyle.DirectionRadius)
+                    direction.GetValue(t).SetLength(FlatStyle.DirectionRadius)
                 );
 
             SceneComposer.AddVector(
@@ -2585,7 +2585,7 @@ public class CGaFloat64Visualizer
         return this;
     }
 
-    public CGaFloat64Visualizer DrawFlatPlane2D(Color color, IFloat64ParametricCurve2D position, IParametricBivector2D direction)
+    public CGaFloat64Visualizer DrawFlatPlane2D(Color color, Float64Path2D position, IParametricBivector2D direction)
     {
         var animatedPosition =
             SamplingSpecs.CreateXyAnimatedVector3D(position);
@@ -2773,7 +2773,7 @@ public class CGaFloat64Visualizer
         return this;
     }
 
-    public CGaFloat64Visualizer DrawFlatPlane3D(Color color, IParametricCurve3D position, IParametricBivector3D direction)
+    public CGaFloat64Visualizer DrawFlatPlane3D(Color color, Float64Path3D position, IParametricBivector3D direction)
     {
         var animatedPosition =
             SamplingSpecs.CreateAnimatedVector3D(position);
@@ -2948,7 +2948,7 @@ public class CGaFloat64Visualizer
         return this;
     }
 
-    public CGaFloat64Visualizer DrawRoundPoint2D(Color color, IFloat64ParametricCurve2D center)
+    public CGaFloat64Visualizer DrawRoundPoint2D(Color color, Float64Path2D center)
     {
         SceneComposer.AddPoint(
             GrVisualPoint3D.CreateAnimated(
@@ -2993,7 +2993,7 @@ public class CGaFloat64Visualizer
         return this;
     }
 
-    public CGaFloat64Visualizer DrawRoundPoint3D(Color color, IParametricCurve3D center)
+    public CGaFloat64Visualizer DrawRoundPoint3D(Color color, Float64Path3D center)
     {
         SceneComposer.AddPoint(
             GrVisualPoint3D.CreateAnimated(
@@ -3117,7 +3117,7 @@ public class CGaFloat64Visualizer
         return this;
     }
 
-    public CGaFloat64Visualizer DrawRoundPointPair2D(Color color, IFloat64ParametricCurve2D center, IFloat64ParametricCurve2D direction, IFloat64ParametricScalar radius)
+    public CGaFloat64Visualizer DrawRoundPointPair2D(Color color, Float64Path2D center, Float64Path2D direction, Float64ScalarSignal radius)
     {
         var animatedCenter =
             SamplingSpecs.CreateXyAnimatedVector3D(center);
@@ -3126,16 +3126,16 @@ public class CGaFloat64Visualizer
             SamplingSpecs.CreateXyAnimatedVector3D(direction);
 
         var animatedRadius =
-            SamplingSpecs.CreateAnimatedScalar(radius.ToTemporalScalar());
+            SamplingSpecs.CreateAnimatedScalar(radius);
 
         var animatedPoint1 =
             SamplingSpecs.CreateXyAnimatedVector3D(t =>
-                center.GetPoint(t) - direction.GetPoint(t).SetLength(radius.GetValue(t))
+                center.GetValue(t) - direction.GetValue(t).SetLength(radius.GetValue(t))
             );
 
         var animatedPoint2 =
             SamplingSpecs.CreateXyAnimatedVector3D(t =>
-                center.GetPoint(t) + direction.GetPoint(t).SetLength(radius.GetValue(t))
+                center.GetValue(t) + direction.GetValue(t).SetLength(radius.GetValue(t))
             );
 
         SceneComposer.AddPoint(
@@ -3196,7 +3196,7 @@ public class CGaFloat64Visualizer
             var animatedScaledDirection =
                 SamplingSpecs.CreateXyAnimatedVector3D(
                     t =>
-                        direction.GetPoint(t).SetLength(RoundStyle.DirectionRadius)
+                        direction.GetValue(t).SetLength(RoundStyle.DirectionRadius)
                 );
 
             SceneComposer.AddVector(
@@ -3450,7 +3450,7 @@ public class CGaFloat64Visualizer
         return this;
     }
 
-    public CGaFloat64Visualizer DrawRoundPointPair3D(Color color, IParametricCurve3D center, IParametricCurve3D direction, IFloat64ParametricScalar radius)
+    public CGaFloat64Visualizer DrawRoundPointPair3D(Color color, Float64Path3D center, Float64Path3D direction, Float64ScalarSignal radius)
     {
         var animatedCenter =
             SamplingSpecs.CreateAnimatedVector3D(center);
@@ -3463,12 +3463,12 @@ public class CGaFloat64Visualizer
 
         var animatedPoint1 =
             SamplingSpecs.CreateAnimatedVector3D(t =>
-                center.GetPoint(t) - direction.GetPoint(t).SetLength(radius.GetValue(t))
+                center.GetValue(t) - direction.GetValue(t).SetLength(radius.GetValue(t))
             );
 
         var animatedPoint2 =
             SamplingSpecs.CreateAnimatedVector3D(t =>
-                center.GetPoint(t) + direction.GetPoint(t).SetLength(radius.GetValue(t))
+                center.GetValue(t) + direction.GetValue(t).SetLength(radius.GetValue(t))
             );
 
         SceneComposer.AddPoint(
@@ -3529,7 +3529,7 @@ public class CGaFloat64Visualizer
             var animatedScaledDirection =
                 SamplingSpecs.CreateAnimatedVector3D(
                     t =>
-                        direction.GetPoint(t).SetLength(RoundStyle.DirectionRadius)
+                        direction.GetValue(t).SetLength(RoundStyle.DirectionRadius)
                 );
 
             SceneComposer.AddVector(
@@ -3777,7 +3777,7 @@ public class CGaFloat64Visualizer
         return this;
     }
 
-    public CGaFloat64Visualizer DrawRoundCircle2D(Color color, IFloat64ParametricCurve2D center, IParametricBivector2D direction, IFloat64ParametricScalar radius)
+    public CGaFloat64Visualizer DrawRoundCircle2D(Color color, Float64Path2D center, IParametricBivector2D direction, Float64ScalarSignal radius)
     {
         var animatedCenter =
             SamplingSpecs.CreateAnimatedVector3D(center.ToXyParametricCurve3D());
@@ -4073,7 +4073,7 @@ public class CGaFloat64Visualizer
         return this;
     }
 
-    public CGaFloat64Visualizer DrawRoundCircle3D(Color color, IParametricCurve3D center, IParametricBivector3D direction, IFloat64ParametricScalar radius)
+    public CGaFloat64Visualizer DrawRoundCircle3D(Color color, Float64Path3D center, IParametricBivector3D direction, Float64ScalarSignal radius)
     {
         var animatedCenter =
             SamplingSpecs.CreateAnimatedVector3D(center);
@@ -4300,7 +4300,7 @@ public class CGaFloat64Visualizer
         return this;
     }
 
-    public CGaFloat64Visualizer DrawRoundSphere3D(Color color, IParametricCurve3D center, IParametricTrivector3D direction, IFloat64ParametricScalar radius)
+    public CGaFloat64Visualizer DrawRoundSphere3D(Color color, Float64Path3D center, ILinFloat64Trivector3DTrajectory direction, Float64ScalarSignal radius)
     {
         var animatedCenter =
             SamplingSpecs.CreateAnimatedVector3D(center);

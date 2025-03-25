@@ -1,14 +1,14 @@
-﻿using GeometricAlgebraFulcrumLib.Modeling.Geometry.Parametric.Float64.Space3D.Curves;
-using GeometricAlgebraFulcrumLib.Modeling.Graphics.Meshes.PointsPath;
+﻿using GeometricAlgebraFulcrumLib.Modeling.Graphics.Meshes.PointsPath;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Meshes.PointsPath.Space3D;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.Visuals.Space3D.Styles;
+using GeometricAlgebraFulcrumLib.Modeling.Trajectories.Vectors3D.Float64;
 
 namespace GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.Visuals.Space3D.Curves;
 
 public sealed class GrVisualParametricCurve3D :
     GrVisualCurve3D
 {
-    public static GrVisualParametricCurve3D Create(string name, GrVisualCurveStyle3D style, IParametricCurve3D curve, IReadOnlyList<double> parameterValues, IReadOnlyList<double> frameParameterValues)
+    public static GrVisualParametricCurve3D Create(string name, GrVisualCurveStyle3D style, Float64Path3D curve, IReadOnlyList<double> parameterValues, IReadOnlyList<double> frameParameterValues)
     {
         return new GrVisualParametricCurve3D(
             name,
@@ -20,7 +20,7 @@ public sealed class GrVisualParametricCurve3D :
     }
 
 
-    public IParametricCurve3D Curve { get; }
+    public Float64Path3D Curve { get; }
 
     public IReadOnlyList<double> ParameterValues { get; }
 
@@ -39,7 +39,7 @@ public sealed class GrVisualParametricCurve3D :
         => throw new NotImplementedException();
 
 
-    private GrVisualParametricCurve3D(string name, GrVisualCurveStyle3D style, IParametricCurve3D curve, IReadOnlyList<double> parameterValues, IReadOnlyList<double> frameParameterValues)
+    private GrVisualParametricCurve3D(string name, GrVisualCurveStyle3D style, Float64Path3D curve, IReadOnlyList<double> parameterValues, IReadOnlyList<double> frameParameterValues)
         : base(name, style)
     {
         Curve = curve;
@@ -52,7 +52,7 @@ public sealed class GrVisualParametricCurve3D :
     {
         return new ParametricPointsPath3D(
             ParameterValues,
-            Curve.GetPoint
+            Curve.GetValue
         );
     }
 

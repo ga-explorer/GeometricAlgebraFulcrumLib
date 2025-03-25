@@ -9,6 +9,8 @@ public interface IFloat64AffineMap2D :
 {
     bool SwapsHandedness { get; }
 
+    bool IsIdentity();
+
     LinFloat64Vector2D MapPoint(ILinFloat64Vector2D point);
 
     LinFloat64Vector2D MapVector(ILinFloat64Vector2D vector);

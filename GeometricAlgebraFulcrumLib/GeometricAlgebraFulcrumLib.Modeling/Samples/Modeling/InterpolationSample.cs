@@ -30,7 +30,7 @@ public static class InterpolationSample
         => 1000;
 
 
-    private static void PlotSignals(this string plotFileName, Float64Signal scalarSignal1, Float64Signal scalarSignal2, double tMin, double tMax)
+    private static void PlotSignals(this string plotFileName, Float64SampledTimeSignal scalarSignal1, Float64SampledTimeSignal scalarSignal2, double tMin, double tMax)
     {
         var pm = new PlotModel
         {
@@ -72,7 +72,7 @@ public static class InterpolationSample
         OxyPlot.SkiaSharp.PngExporter.Export(pm, $"{plotFileName}.png", scalarSignal1.Count * 2, 750, 200);
     }
 
-    private static void PlotSignal(this Float64Signal signalSamples, string title, string filePath)
+    private static void PlotSignal(this Float64SampledTimeSignal signalSamples, string title, string filePath)
     {
         var tMin = 0;
         var tMax = (signalSamples.Count - 1) / signalSamples.SamplingRate;
@@ -80,7 +80,7 @@ public static class InterpolationSample
         signalSamples.PlotSignal(tMin, tMax, title, filePath);
     }
 
-    private static void PlotSignal(this Float64Signal signalSamples, double tMin, double tMax, string title, string filePath)
+    private static void PlotSignal(this Float64SampledTimeSignal signalSamples, double tMin, double tMax, string title, string filePath)
     {
         filePath = Path.Combine(WorkingPath, filePath);
 
@@ -581,9 +581,9 @@ public static class InterpolationSample
             Enumerable.Range(0, sampleCount).Select(i => i / samplingRate).CreateSignal(samplingRate);
 
         var signal1 = tValues.MapSamples(t =>
-            -4 * Math.Cos(2 * Math.PI * t) + 6 * Math.Sin(2 * Math.PI * t)
-                                           + 2 * Math.Cos(2 * Math.PI * 2 * t) - 5 * Math.Sin(2 * Math.PI * 2 * t)
-            + 2.5 * Math.Cos(2 * Math.PI * 3 * t) + 1.25 * Math.Sin(2 * Math.PI * 3 * t)
+            -4 * Math.Cos(Math.Tau * t) + 6 * Math.Sin(Math.Tau * t)
+                                           + 2 * Math.Cos(Math.Tau * 2 * t) - 5 * Math.Sin(Math.Tau * 2 * t)
+            + 2.5 * Math.Cos(Math.Tau * 3 * t) + 1.25 * Math.Sin(Math.Tau * 3 * t)
         );
 
         //var signal1 = tValues.MapSamples(t => t * t);
@@ -645,9 +645,9 @@ public static class InterpolationSample
             Enumerable.Range(0, sampleCount).Select(i => i / samplingRate).CreateSignal(samplingRate);
 
         //var signal1 = tValues.MapSamples(t =>
-        //    -4 * Math.Cos(2 * Math.PI * t) + 6 * Math.Sin(2 * Math.PI * t)
-        //    + 2 * Math.Cos(2 * Math.PI * 2 * t) - 5 * Math.Sin(2 * Math.PI * 2 * t)
-        //    + 2.5 * Math.Cos(2 * Math.PI * 3 * t) + 1.25 * Math.Sin(2 * Math.PI * 3 * t)
+        //    -4 * Math.Cos(Math.Tau * t) + 6 * Math.Sin(Math.Tau * t)
+        //    + 2 * Math.Cos(Math.Tau * 2 * t) - 5 * Math.Sin(Math.Tau * 2 * t)
+        //    + 2.5 * Math.Cos(Math.Tau * 3 * t) + 1.25 * Math.Sin(Math.Tau * 3 * t)
         //);
 
         var signal1 =
@@ -1042,7 +1042,7 @@ public static class InterpolationSample
     {
         const string workingPath = @"D:\Projects\Study\Interpolation";
         const double frequencyHz = 1d / 5d;
-        const double frequency = 2d * Math.PI * frequencyHz;
+        const double frequency = Math.Tau * frequencyHz;
         const double samplesPerCycle = 2000;
         const double cycleCount = 3;
         const double sampleCount = cycleCount * samplesPerCycle + 1;
@@ -1162,7 +1162,7 @@ public static class InterpolationSample
     {
         const string workingPath = @"D:\Projects\Study\Interpolation";
         const double frequencyHz = 1d / 5d;
-        const double frequency = 2d * Math.PI * frequencyHz;
+        const double frequency = Math.Tau * frequencyHz;
         const double samplesPerCycle = 2000;
         const double cycleCount = 3;
         const double sampleCount = cycleCount * samplesPerCycle + 1;
@@ -1306,7 +1306,7 @@ public static class InterpolationSample
     {
         const string workingPath = @"D:\Projects\Study\Interpolation";
         const double frequencyHz = 1d / 5d;
-        const double frequency = 2d * Math.PI * frequencyHz;
+        const double frequency = Math.Tau * frequencyHz;
         const double samplesPerCycle = 2000;
         const double cycleCount = 3;
         const double sampleCount = cycleCount * samplesPerCycle + 1;
@@ -1426,7 +1426,7 @@ public static class InterpolationSample
         package.SaveAs(outputFilePath);
     }
 
-    private static Float64Signal MakePeriodic(Float64Signal signal, int sampleCount)
+    private static Float64SampledTimeSignal MakePeriodic(Float64SampledTimeSignal signal, int sampleCount)
     {
         var signalArray = new double[signal.Count];
 
@@ -1450,7 +1450,7 @@ public static class InterpolationSample
         //    signalArray[i] = t * signal[i] + s * signal[signal.Count - i - 1];
         //}
 
-        return Float64Signal.Create(
+        return Float64SampledTimeSignal.Create(
             signal.SamplingRate,
             signalArray,
             false
@@ -1461,7 +1461,7 @@ public static class InterpolationSample
     {
         const string workingPath = @"D:\Projects\Study\Interpolation";
         const double frequencyHz = 1d / 5d;
-        const double frequency = 2d * Math.PI * frequencyHz;
+        const double frequency = Math.Tau * frequencyHz;
         const double samplesPerCycle = 2000;
         const double cycleCount = 3;
         const double sampleCount = cycleCount * samplesPerCycle + 1;
@@ -1485,7 +1485,7 @@ public static class InterpolationSample
         var d21 = s1[0] - s2[^1];
 
         var s3 =
-            (s2 + d21).Concat(s1.Concat(s2 + d12)).CreateSignal(samplingRate);
+            (s2 + d21).Concat(s1.Concat(s2 + d12)).CreateSignalComposer(samplingRate);
 
         var c12 = s3[^1] - s1[0];
         var c21 = s3[0] - s1[^1];
@@ -1500,7 +1500,7 @@ public static class InterpolationSample
         }
 
         var s4 =
-            MakePeriodic(s3, (int)(sampleCount / 2));
+            MakePeriodic(s3.GetFiniteSignal(), (int)(sampleCount / 2));
 
         var s5 =
             s4.MapSamples(
@@ -1533,7 +1533,7 @@ public static class InterpolationSample
 
         s1.PlotScalarSignal("s1", workingPath.GetFilePath("s1"));
         s2.PlotScalarSignal("s2", workingPath.GetFilePath("s2"));
-        s3.PlotScalarSignal("s3", workingPath.GetFilePath("s3"));
+        s3.GetFiniteSignal().PlotScalarSignal("s3", workingPath.GetFilePath("s3"));
         s4.PlotScalarSignal("s4", workingPath.GetFilePath("s4"));
         s5.PlotScalarSignal("s5", workingPath.GetFilePath("s5"));
 

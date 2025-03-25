@@ -1,36 +1,36 @@
-﻿using System.Collections.Immutable;
-using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space3D;
+﻿using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space3D;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
 using GeometricAlgebraFulcrumLib.Modeling.Calculus.Curves;
-using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.BabylonJs;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.BabylonJs.Cameras;
+using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.BabylonJs.Composers;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.BabylonJs.Constants;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.BabylonJs.GUI;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.BabylonJs.Materials;
-using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.BabylonJs.Meshes;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.BabylonJs.Textures;
-using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.Visuals.Space3D.Animations;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.Visuals.Space3D.Basic;
-using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.Visuals.Space3D.Grids;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.Visuals.Space3D.Styles;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.Visuals.Space3D.Surfaces;
+using GeometricAlgebraFulcrumLib.Modeling.Signals;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Basic;
-using GeometricAlgebraFulcrumLib.Utilities.Structures.Files;
-using SixLabors.ImageSharp;
 using GeometricAlgebraFulcrumLib.Utilities.Web.Colors;
 using GeometricAlgebraFulcrumLib.Utilities.Web.Html.Media;
-using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.BabylonJs.Composers;
 using GeometricAlgebraFulcrumLib.Utilities.Web.Images;
-using GeometricAlgebraFulcrumLib.Modeling.Signals;
 using GeometricAlgebraFulcrumLib.Utilities.Web.LaTeX.KaTeX;
+using SixLabors.ImageSharp;
+using System.Collections.Immutable;
+using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Basis;
 
 namespace GeometricAlgebraFulcrumLib.Applications.PowerSystems;
 
 public class GrBabylonJsPowerSignalVisualizer :
     GrBabylonJsSceneSequenceComposer
 {
-    public PowerSignal3D Signal { get; }
+    public Float64PowerSignal3D Signal { get; }
  
+    public double TimeScaling { get; set; } = 1;
+
+    public double ValueScaling { get; set; } = 1;
+
     public int TrailSampleCount { get; set; }
 
     public int PlotSampleCount { get; set; }
@@ -43,25 +43,19 @@ public class GrBabylonJsPowerSignalVisualizer :
     
     public LinFloat64Vector3D OmegaFrameOrigin { get; set; } = LinFloat64Vector3D.Create(-6, 2, 1);
     
-    public int SignalTextImageMaxWidth { get; private set; }
-
-    public int SignalTextImageMaxHeight { get; private set; }
-    
     public GrBabylonJsSceneComposer OmegaSceneComposer 
         => CodeFilesComposer.GetSceneComposer("omegaScene");
 
 
-    public GrBabylonJsPowerSignalVisualizer(string workingFolder, Float64SamplingSpecs samplingSpecs, PowerSignal3D powerSignal)
+    public GrBabylonJsPowerSignalVisualizer(string workingFolder, Float64SamplingSpecs samplingSpecs, Float64PowerSignal3D powerSignal)
         : base(workingFolder, samplingSpecs)
     {
         Signal = powerSignal;
     }
 
 
-    private WclKaTeXComposer RenderLaTeXTextures()
+    private Image RenderSignalTextLaTeXImage(int frameIndex)
     {
-        Console.Write("Generating LaTeX images .. ");
-
         var katexComposer = new WclKaTeXComposer(WorkingFolder)
         {
             FontSizeEm = 2,
@@ -69,205 +63,207 @@ public class GrBabylonJsPowerSignalVisualizer :
             ThrowOnError = false,
             SaveImages = false
         };
+
+        var t = Signal.TimeValues[frameIndex];
+        var (x, y, z) = Signal.GetComponentVectors(t);
+        var v = x + y + z;
+
+        var frame = Signal.FrameList[frameIndex]; //GetSignalFrame(t);
+
+        var e1 = frame.Direction1.ToUnitLinVector3D();
+        var e2 = frame.Direction2.ToUnitLinVector3D();
+        var e3 = frame.Direction3.ToUnitLinVector3D();
         
-        katexComposer.AddLaTeXEquation(
+        var sDt = Signal.GetTangentNormValue(t);
+
+        var (kappa1, kappa2) = Signal.CurvatureList[frameIndex];
+
+        var omega = Signal.DarbouxBivectorList[frameIndex];
+        var omegaNorm = omega.Norm();
+
+        var omegaMean = Signal.GetDarbouxBivectorMean(frameIndex);
+        var omegaMeanNorm = omegaMean.Norm();
+
+        var frequencyHz = omegaNorm / (Math.Tau);
+        var frequencyHzMean = omegaMeanNorm / (Math.Tau);
+
+        var e1Ds = kappa1 * e2;
+        var e2Ds = kappa2 * e3 - kappa1 * e1;
+        var e3Ds = -kappa2 * e2;
+
+        var kVector = omega.NormalToUnitDirection3D();
+        var kVectorMean = omegaMean.NormalToUnitDirection3D();
+
+        var imageKey = $"signalText-{frameIndex:D6}";
+
+        katexComposer.AddLaTeXAlignedEquations(
+            imageKey,
+            new Pair<string>[]
+            {
+                new (@"t", @$"{t:F4}"),
+                new (@"\boldsymbol{v}\left( t \right)", @$"\left( {v.X:F4}, {v.Y:F4}, {v.Z:F4} \right)"),
+                new (@"\left\Vert \boldsymbol{v}^{\prime}\left(t\right)\right\Vert", @$"s^{{\prime}} \left( t \right) = {sDt:F4}"),
+                new (@"\boldsymbol{e}_{1}\left( t \right)", @$"\left( {e1.X:F4}, {e1.Y:F4}, {e1.Z:F4} \right)"),
+                new (@"\boldsymbol{e}_{2}\left( t \right)", @$"\left( {e2.X:F4}, {e2.Y:F4}, {e2.Z:F4} \right)"),
+                new (@"\boldsymbol{e}_{3}\left( t \right)", @$"\left( {e3.X:F4}, {e3.Y:F4}, {e3.Z:F4} \right)"),
+                new (@"\left\Vert \boldsymbol{\Omega}_{1}\left(t\right)\right\Vert", @$"\left| s^{{\prime}} \kappa_{{1}} \right| = {kappa1:F4}"),
+                new (@"\left\Vert \boldsymbol{\Omega}_{2}\left(t\right)\right\Vert", @$"\left| s^{{\prime}} \right| \sqrt{{\kappa_{{1}}^{{2}}+\kappa_{{2}}^{{2}}}} = {omegaNorm:F4}"),
+                new (@"\left\Vert \boldsymbol{\Omega}_{3}\left(t\right)\right\Vert", @$"\left| s^{{\prime}} \kappa_{{2}} \right| = {kappa2:F4}"),
+                new (@"f \left( t \right)", $@"{frequencyHz:F4} \textrm{{ Hz}}"),
+                new (@"\hat{\boldsymbol{k}}\left( t \right)", @$"\left( {kVector.X:F4}, {kVector.Y:F4}, {kVector.Z:F4} \right)"),
+                new (@"\overline{f}", $@"{frequencyHzMean:F4} \textrm{{ Hz}}"),
+                new (@"\overline{\boldsymbol{k}}", @$"\left( {kVectorMean.X:F4}, {kVectorMean.Y:F4}, {kVectorMean.Z:F4} \right)")
+            }
+        );
+
+        katexComposer.RenderKaTeX();
+
+        return katexComposer[imageKey].PngImage;
+    }
+
+    protected override void AddLaTeXTextures()
+    {
+        KaTeXComposer.AddLaTeXEquation(
             "basis1VectorText",
             @"\boldsymbol{\sigma}_{1}"
         );
             
-        katexComposer.AddLaTeXEquation(
+        KaTeXComposer.AddLaTeXEquation(
             "basis2VectorText",
             @"\boldsymbol{\sigma}_{2}"
         );
             
-        katexComposer.AddLaTeXEquation(
+        KaTeXComposer.AddLaTeXEquation(
             "basis3VectorText",
             @"\boldsymbol{\sigma}_{3}"
         );
 
-        katexComposer.AddLaTeXEquation(
+        KaTeXComposer.AddLaTeXEquation(
             "v1VectorText",
             @"\boldsymbol{v}_{1}"
         );
 
-        katexComposer.AddLaTeXEquation(
+        KaTeXComposer.AddLaTeXEquation(
             "v2VectorText",
             @"\boldsymbol{v}_{2}"
         );
 
-        katexComposer.AddLaTeXEquation(
+        KaTeXComposer.AddLaTeXEquation(
             "v3VectorText",
             @"\boldsymbol{v}_{3}"
         );
 
-        katexComposer.AddLaTeXEquation(
+        KaTeXComposer.AddLaTeXEquation(
             "vVectorText",
             @"\boldsymbol{v}"
         );
             
-        katexComposer.AddLaTeXEquation(
+        KaTeXComposer.AddLaTeXEquation(
             "e1VectorText",
             @"\boldsymbol{e}_{1}"
         );
 
-        katexComposer.AddLaTeXEquation(
+        KaTeXComposer.AddLaTeXEquation(
             "e2VectorText",
             @"\boldsymbol{e}_{2}"
         );
 
-        katexComposer.AddLaTeXEquation(
+        KaTeXComposer.AddLaTeXEquation(
             "e3VectorText",
             @"\boldsymbol{e}_{3}"
         );
 
-        katexComposer.AddLaTeXEquation(
+        KaTeXComposer.AddLaTeXEquation(
             "kVectorText",
             @"\hat{\boldsymbol{k}}"
         );
 
-        katexComposer.AddLaTeXEquation(
+        KaTeXComposer.AddLaTeXEquation(
             "e1DsVectorText",
             @"\dot{\boldsymbol{e}}_{1}"
         );
 
-        katexComposer.AddLaTeXEquation(
+        KaTeXComposer.AddLaTeXEquation(
             "e2DsVectorText",
             @"\dot{\boldsymbol{e}}_{2}"
         );
 
-        katexComposer.AddLaTeXEquation(
+        KaTeXComposer.AddLaTeXEquation(
             "e3DsVectorText",
             @"\dot{\boldsymbol{e}}_{3}"
         );
 
-        katexComposer.AddLaTeXEquation(
+        KaTeXComposer.AddLaTeXEquation(
             "omega1BivectorText",
             @"\boldsymbol{\Omega}_{1}"
         );
 
-        katexComposer.AddLaTeXEquation(
+        KaTeXComposer.AddLaTeXEquation(
             "omega2BivectorText",
             @"\boldsymbol{\Omega}_{2}"
         );
 
-        katexComposer.AddLaTeXEquation(
+        KaTeXComposer.AddLaTeXEquation(
             "omega3BivectorText",
             @"\boldsymbol{\Omega}_{3}"
         );
 
 
-        //ImageCache.MarginSize = 20;
-        ////ImageCache.BackgroundColor = Color.FromRgba(32, 32, 255, 16);
-        
-        katexComposer.AddLaTeXCode("symbolicSignalText", Signal.LaTeXCode);
+        KaTeXComposer.AddLaTeXCode("symbolicSignalText", Signal.LaTeXCode);
 
-        for (var i = 0; i < Signal.TimeValues.Count; i++)
-        {
-            var t = Signal.TimeValues[i];
-            var (x, y, z) = Signal.GetComponentVectors(t);
-            var v = x + y + z;
+        //for (var i = 0; i < Signal.TimeValues.Count; i++)
+        //{
+        //    var t = Signal.TimeValues[i];
+        //    var (x, y, z) = Signal.GetComponentVectors(t);
+        //    var v = x + y + z;
 
-            var frame = Signal.FrameList[i]; //GetSignalFrame(t);
+        //    var frame = Signal.FrameList[i]; //GetSignalFrame(t);
 
-            var e1 = frame.Direction1.ToUnitLinVector3D();
-            var e2 = frame.Direction2.ToUnitLinVector3D();
-            var e3 = frame.Direction3.ToUnitLinVector3D();
+        //    var e1 = frame.Direction1.ToUnitLinVector3D();
+        //    var e2 = frame.Direction2.ToUnitLinVector3D();
+        //    var e3 = frame.Direction3.ToUnitLinVector3D();
             
-            var sDt = Signal.GetTangentNormValue(t);
+        //    var sDt = Signal.GetTangentNormValue(t);
 
-            var (kappa1, kappa2) = Signal.CurvatureList[i];
+        //    var (kappa1, kappa2) = Signal.CurvatureList[i];
 
-            var omega = Signal.DarbouxBivectorList[i];
-            var omegaNorm = omega.Norm();
+        //    var omega = Signal.DarbouxBivectorList[i];
+        //    var omegaNorm = omega.Norm();
 
-            var omegaMean = Signal.GetDarbouxBivectorMean(i);
-            var omegaMeanNorm = omegaMean.Norm();
+        //    var omegaMean = Signal.GetDarbouxBivectorMean(i);
+        //    var omegaMeanNorm = omegaMean.Norm();
 
-            var frequencyHz = omegaNorm / (2d * Math.PI);
-            var frequencyHzMean = omegaMeanNorm / (2 * Math.PI);
+        //    var frequencyHz = omegaNorm / (Math.Tau);
+        //    var frequencyHzMean = omegaMeanNorm / (Math.Tau);
 
-            var e1Ds = kappa1 * e2;
-            var e2Ds = kappa2 * e3 - kappa1 * e1;
-            var e3Ds = -kappa2 * e2;
+        //    var e1Ds = kappa1 * e2;
+        //    var e2Ds = kappa2 * e3 - kappa1 * e1;
+        //    var e3Ds = -kappa2 * e2;
 
-            var kVector = omega.NormalToUnitDirection3D();
-            var kVectorMean = omegaMean.NormalToUnitDirection3D();
+        //    var kVector = omega.NormalToUnitDirection3D();
+        //    var kVectorMean = omegaMean.NormalToUnitDirection3D();
 
-            katexComposer.AddLaTeXAlignedEquations(
-                $"signalText-{i:D6}",
-                new Pair<string>[]
-                {
-                    new (@"t", @$"{t:F4}"),
-                    new (@"\boldsymbol{v}\left( t \right)", @$"\left( {v.X:F4}, {v.Y:F4}, {v.Z:F4} \right)"),
-                    new (@"\left\Vert \boldsymbol{v}^{\prime}\left(t\right)\right\Vert", @$"s^{{\prime}} \left( t \right) = {sDt:F4}"),
-                    new (@"\boldsymbol{e}_{1}\left( t \right)", @$"\left( {e1.X:F4}, {e1.Y:F4}, {e1.Z:F4} \right)"),
-                    new (@"\boldsymbol{e}_{2}\left( t \right)", @$"\left( {e2.X:F4}, {e2.Y:F4}, {e2.Z:F4} \right)"),
-                    new (@"\boldsymbol{e}_{3}\left( t \right)", @$"\left( {e3.X:F4}, {e3.Y:F4}, {e3.Z:F4} \right)"),
-                    new (@"\left\Vert \boldsymbol{\Omega}_{1}\left(t\right)\right\Vert", @$"\left| s^{{\prime}} \kappa_{{1}} \right| = {kappa1:F4}"),
-                    new (@"\left\Vert \boldsymbol{\Omega}_{2}\left(t\right)\right\Vert", @$"\left| s^{{\prime}} \right| \sqrt{{\kappa_{{1}}^{{2}}+\kappa_{{2}}^{{2}}}} = {omegaNorm:F4}"),
-                    new (@"\left\Vert \boldsymbol{\Omega}_{3}\left(t\right)\right\Vert", @$"\left| s^{{\prime}} \kappa_{{2}} \right| = {kappa2:F4}"),
-                    new (@"f \left( t \right)", $@"{frequencyHz:F4} \textrm{{ Hz}}"),
-                    new (@"\hat{\boldsymbol{k}}\left( t \right)", @$"\left( {kVector.X:F4}, {kVector.Y:F4}, {kVector.Z:F4} \right)"),
-                    new (@"\overline{f}", $@"{frequencyHzMean:F4} \textrm{{ Hz}}"),
-                    new (@"\overline{\boldsymbol{k}}", @$"\left( {kVectorMean.X:F4}, {kVectorMean.Y:F4}, {kVectorMean.Z:F4} \right)")
-                }
-            );
-        }
-        
-        katexComposer.RenderKaTeX();
-        
-        Console.WriteLine("done.");
-        Console.WriteLine();
-
-        return katexComposer;
+        //    KaTeXComposer.AddLaTeXAlignedEquations(
+        //        $"signalText-{i:D6}",
+        //        new Pair<string>[]
+        //        {
+        //            new (@"t", @$"{t:F4}"),
+        //            new (@"\boldsymbol{v}\left( t \right)", @$"\left( {v.X:F4}, {v.Y:F4}, {v.Z:F4} \right)"),
+        //            new (@"\left\Vert \boldsymbol{v}^{\prime}\left(t\right)\right\Vert", @$"s^{{\prime}} \left( t \right) = {sDt:F4}"),
+        //            new (@"\boldsymbol{e}_{1}\left( t \right)", @$"\left( {e1.X:F4}, {e1.Y:F4}, {e1.Z:F4} \right)"),
+        //            new (@"\boldsymbol{e}_{2}\left( t \right)", @$"\left( {e2.X:F4}, {e2.Y:F4}, {e2.Z:F4} \right)"),
+        //            new (@"\boldsymbol{e}_{3}\left( t \right)", @$"\left( {e3.X:F4}, {e3.Y:F4}, {e3.Z:F4} \right)"),
+        //            new (@"\left\Vert \boldsymbol{\Omega}_{1}\left(t\right)\right\Vert", @$"\left| s^{{\prime}} \kappa_{{1}} \right| = {kappa1:F4}"),
+        //            new (@"\left\Vert \boldsymbol{\Omega}_{2}\left(t\right)\right\Vert", @$"\left| s^{{\prime}} \right| \sqrt{{\kappa_{{1}}^{{2}}+\kappa_{{2}}^{{2}}}} = {omegaNorm:F4}"),
+        //            new (@"\left\Vert \boldsymbol{\Omega}_{3}\left(t\right)\right\Vert", @$"\left| s^{{\prime}} \kappa_{{2}} \right| = {kappa2:F4}"),
+        //            new (@"f \left( t \right)", $@"{frequencyHz:F4} \textrm{{ Hz}}"),
+        //            new (@"\hat{\boldsymbol{k}}\left( t \right)", @$"\left( {kVector.X:F4}, {kVector.Y:F4}, {kVector.Z:F4} \right)"),
+        //            new (@"\overline{f}", $@"{frequencyHzMean:F4} \textrm{{ Hz}}"),
+        //            new (@"\overline{\boldsymbol{k}}", @$"\left( {kVectorMean.X:F4}, {kVectorMean.Y:F4}, {kVectorMean.Z:F4} \right)")
+        //        }
+        //    );
+        //}
     } 
-
-    protected override void InitializeTextureSet()
-    {
-        Console.Write("Generating images cache .. ");
-
-        //ImageCache.MarginSize = 0;
-        //ImageCache.BackgroundColor = Color.FromRgba(255, 255, 255, 0);
-
-        if (ShowCopyright)
-        {
-            TextureSet.AddTextureFromPngFile(
-                "gui",
-                "Copyright"
-            );
-        }
-        
-        for (var i = 0; i < Signal.TimeValues.Count; i++)
-        {
-            TextureSet.AddTexture(
-                "gui",
-                $"SignalPlot-{i:D6}", 
-                Signal.GetSignalPlotImage(i, PlotSampleCount)
-            );
-
-            TextureSet.AddTexture(
-                "gui",
-                $"CurvaturePlot-{i:D6}", 
-                Signal.GetCurvaturesPlotImage(i, PlotSampleCount)
-            );
-
-            TextureSet.AddTexture(
-                "gui",
-                $"FrequencyHzPlot-{i:D6}",
-                Signal.GetFrequencyHzPlotImage(i, PlotSampleCount)
-            );
-        }
-
-        TextureSet.AddTextures(
-            "latex", 
-            RenderLaTeXTextures()
-        );
-        
-        TextureSet.FinalizeTextures();
-
-        Console.WriteLine("done.");
-        Console.WriteLine();
-    }
 
     protected override void InitializeSceneComposers(int index)
     {
@@ -276,12 +272,12 @@ public class GrBabylonJsPowerSignalVisualizer :
             new GrBabylonJsSnapshotSpecs
             {
                 Enabled = true,
-                Width = CanvasWidth,
-                Height = CanvasHeight,
+                Width = ImageWidth,
+                Height = ImageHeight,
                 Precision = 1,
                 UsePrecision = true,
-                Delay = index == 0 ? 2000 : 1000,
-                FileName = $"Frame-{index:D6}.png"
+                Delay = 2000,
+                FileName = GetFrameName(index) + ".png"
             }
         )
         {
@@ -301,8 +297,8 @@ public class GrBabylonJsPowerSignalVisualizer :
 
         CodeFilesComposer = new GrBabylonJsCodeFilesComposer(mainSceneComposer)
         {
-            CanvasWidth = CanvasWidth,
-            CanvasHeight = CanvasHeight,
+            CanvasWidth = ImageWidth,
+            CanvasHeight = ImageHeight,
             CanvasFullScreen = false
         };
 
@@ -318,8 +314,8 @@ public class GrBabylonJsPowerSignalVisualizer :
         // Add omega scene camera
         var omegaSceneCamera = OmegaSceneComposer.SceneObject.AddArcRotateCamera(
             "camera2",
-            "2 * Math.PI / 6",  //alpha,
-            "2 * Math.PI / 8",  // beta,
+            "Math.Tau / 6",  //alpha,
+            "Math.Tau / 8",  // beta,
             11,
             "BABYLON.Vector3.Zero()",
             new GrBabylonJsArcRotateCameraProperties
@@ -334,41 +330,7 @@ public class GrBabylonJsPowerSignalVisualizer :
 
         //omegaSceneCamera.AttachControl = false;
     }
-     
-    protected override void AddGrid()
-    {
-        base.AddGrid();
-        
-        // Add ground coordinates grid
-        OmegaSceneComposer.GridMaterialKind =
-            GrBabylonJsGridMaterialKind.TexturedMaterial;
-        
-        var imageComposer = new GrVisualGridImageComposer()
-        {
-            BaseSquareColor = System.Drawing.Color.LightYellow.ToImageSharpColor(),
-            BaseLineColor = System.Drawing.Color.BurlyWood.ToImageSharpColor(),
-            MidLineColor = System.Drawing.Color.SandyBrown.ToImageSharpColor(),
-            BorderLineColor = System.Drawing.Color.Black.ToImageSharpColor(),
-            BaseSquareCount = 4,
-            BaseSquareSize = 64,
-            BaseLineWidth = 2,
-            MidLineWidth = 4,
-            BorderLineWidth = 3
-        };
-
-        imageComposer.SetGridColorsOpacity(0.2);
-
-        OmegaSceneComposer.AddSquareGrid(
-            GrVisualSquareGrid3D.DefaultZx(
-                OmegaFrameOrigin, 
-                imageComposer, 
-                4, 
-                1, 
-                0.2
-            )
-        );
-    }
-
+    
     protected override void AddGuiLayer(int frameIndex)
     {
         var scene = MainSceneComposer.SceneObject;
@@ -399,7 +361,7 @@ public class GrBabylonJsPowerSignalVisualizer :
             
             uiPanel1.AddGuiTextBlock(
                 "uiTextTitle",
-                $"'{Title}'",
+                $"'{SceneTitle}'",
                 new GrBabylonJsGuiTextBlockProperties
                 {
                     WidthInPixels = uiPanel1Width - 20,
@@ -432,10 +394,10 @@ public class GrBabylonJsPowerSignalVisualizer :
                 }
             );
 
-            var latexPngData1 = TextureSet["latex", "symbolicSignalText"];
+            var latexPngData1 = ImageSet["latex", "symbolicSignalText"];
             uiPanel1.AddGuiImage(
                 "latexGuiImage1",
-                latexPngData1.GetImageUrl(),
+                latexPngData1.GetImageDataUrlBase64(),
                 new GrBabylonJsGuiImageProperties
                 {
                     //Alpha = 0.5d,
@@ -473,16 +435,21 @@ public class GrBabylonJsPowerSignalVisualizer :
                 }
             );
 
-            var signalPlotData = TextureSet["gui", $"SignalPlot-{frameIndex:D6}"];
+            var signalAnalyzer = Signal.CreateAnalyzer();
+
+            var signalPlotImage = 
+                signalAnalyzer.GetSignalPlotImage(frameIndex, PlotSampleCount); 
+                //ImageSet["gui", $"SignalPlot-{frameIndex:D6}"];
+
             uiPanel2.AddGuiImage(
                 "signalPlotGuiImage",
-                signalPlotData.GetImageUrl(),
+                signalPlotImage.PngToHtmlDataUrlBase64(),
                 new GrBabylonJsGuiImageProperties
                 {
                     Stretch = GrBabylonJsImageStretch.Uniform,
                     //Alpha = 0.5d,
                     WidthInPixels = uiPanel2Width - 20,
-                    HeightInPixels = (uiPanel2Width - 20) * signalPlotData.ImageHeightToWidth,
+                    HeightInPixels = (uiPanel2Width - 20) * signalPlotImage.HeightToWidth(),
                     PaddingLeftInPixels = 0,
                     PaddingTopInPixels = 0,
                     PaddingBottomInPixels = 0,
@@ -492,16 +459,19 @@ public class GrBabylonJsPowerSignalVisualizer :
                 }
             );
                 
-            var curvaturePlotData = TextureSet["gui", $"CurvaturePlot-{frameIndex:D6}"];
+            var curvaturePlotImage = 
+                signalAnalyzer.GetCurvaturesPlotImage(frameIndex, PlotSampleCount); 
+                //ImageSet["gui", $"CurvaturePlot-{frameIndex:D6}"];
+
             uiPanel2.AddGuiImage(
                 "curvaturePlotGuiImage",
-                curvaturePlotData.GetImageUrl(),
+                curvaturePlotImage.PngToHtmlDataUrlBase64(),
                 new GrBabylonJsGuiImageProperties
                 {
                     Stretch = GrBabylonJsImageStretch.Uniform,
                     //Alpha = 0.5d,
                     WidthInPixels = uiPanel2Width - 20,
-                    HeightInPixels = (uiPanel2Width - 20) * curvaturePlotData.ImageHeightToWidth,
+                    HeightInPixels = (uiPanel2Width - 20) * curvaturePlotImage.HeightToWidth(),
                     PaddingLeftInPixels = 0,
                     PaddingTopInPixels = 0,
                     PaddingBottomInPixels = 0,
@@ -511,16 +481,19 @@ public class GrBabylonJsPowerSignalVisualizer :
                 }
             );
 
-            var frequencyHzPlotData = TextureSet["gui", $"FrequencyHzPlot-{frameIndex:D6}"];
+            var frequencyHzPlotImage = 
+                signalAnalyzer.GetFrequencyHzPlotImage("Frequency", frameIndex, PlotSampleCount);
+                //ImageSet["gui", $"FrequencyHzPlot-{frameIndex:D6}"];
+            
             uiPanel2.AddGuiImage(
                 "frequencyHzPlotGuiImage",
-                frequencyHzPlotData.GetImageUrl(),
+                frequencyHzPlotImage.PngToHtmlDataUrlBase64(),
                 new GrBabylonJsGuiImageProperties
                 {
                     Stretch = GrBabylonJsImageStretch.Uniform,
                     //Alpha = 0.5d,
                     WidthInPixels = uiPanel2Width - 20,
-                    HeightInPixels = (uiPanel2Width - 20) * frequencyHzPlotData.ImageHeightToWidth,
+                    HeightInPixels = (uiPanel2Width - 20) * frequencyHzPlotImage.HeightToWidth(),
                     PaddingLeftInPixels = 0,
                     PaddingTopInPixels = 0,
                     PaddingBottomInPixels = 0,
@@ -530,17 +503,17 @@ public class GrBabylonJsPowerSignalVisualizer :
                 }
             );
 
-            var signalTextImageData = TextureSet["latex", $"signalText-{frameIndex:D6}"];
-            var signalTextImageWidth = uiPanel2Width * signalTextImageData.ImageWidth / SignalTextImageMaxWidth;
+            var signalTextImage = RenderSignalTextLaTeXImage(frameIndex); // ImageSet["latex", $"signalText-{frameIndex:D6}"];
+            var signalTextImageWidth = uiPanel2Width; // * signalTextImageData.ImageWidth / SignalTextImageMaxWidth;
 
             uiPanel2.AddGuiImage(
                 "latexGuiImage2",
-                signalTextImageData.GetImageUrl(),
+                signalTextImage.PngToHtmlDataUrlBase64(),
                 new GrBabylonJsGuiImageProperties
                 {
                     //Alpha = 0.5d,
                     WidthInPixels = signalTextImageWidth,
-                    HeightInPixels = signalTextImageWidth * signalTextImageData.ImageHeightToWidth,
+                    HeightInPixels = signalTextImageWidth * signalTextImage.HeightToWidth(),
                     PaddingLeftInPixels = 5,
                     PaddingTopInPixels = 0,
                     PaddingBottomInPixels = 0,
@@ -553,13 +526,13 @@ public class GrBabylonJsPowerSignalVisualizer :
 
         if (ShowCopyright)
         {
-            var copyrightImage = TextureSet["gui", "Copyright"];
+            var copyrightImage = ImageSet["gui", "Copyright"];
             var copyrightImageWidth = 0.4d * CodeFilesComposer.CanvasWidth;
             var copyrightImageHeight = 0.4d * CodeFilesComposer.CanvasWidth * copyrightImage.ImageHeightToWidth;
 
             uiTexture.AddGuiImage(
                 "copyrightImage",
-                copyrightImage.GetImageUrl(),
+                copyrightImage.GetImageDataUrlBase64(),
                 new GrBabylonJsGuiImageProperties
                 {
                     Stretch = GrBabylonJsImageStretch.Uniform,
@@ -585,7 +558,7 @@ public class GrBabylonJsPowerSignalVisualizer :
             0.05
         ).AddLaTeXText(
             "v1VectorText",
-            TextureSet["latex", "v1VectorText"],
+            ImageSet["latex", "v1VectorText"],
             x + x.ToUnitLinVector3D() * 0.25d + (LinFloat64Vector3D.E2 + LinFloat64Vector3D.E3) * 0.25d / 2d.Sqrt(),
             LaTeXScalingFactor
         );
@@ -609,7 +582,7 @@ public class GrBabylonJsPowerSignalVisualizer :
             0.05
         ).AddLaTeXText(
             "v2VectorText",
-            TextureSet["latex", "v2VectorText"],
+            ImageSet["latex", "v2VectorText"],
             y + y.ToUnitLinVector3D() * 0.25d + (LinFloat64Vector3D.E1 + LinFloat64Vector3D.E3) * 0.25d / 2d.Sqrt(),
             LaTeXScalingFactor
         );
@@ -633,7 +606,7 @@ public class GrBabylonJsPowerSignalVisualizer :
             0.05
         ).AddLaTeXText(
             "v3VectorText",
-            TextureSet["latex", "v3VectorText"],
+            ImageSet["latex", "v3VectorText"],
             z + z.ToUnitLinVector3D() * 0.25d + (LinFloat64Vector3D.E1 + LinFloat64Vector3D.E2) * 0.25d / 2d.Sqrt(),
             LaTeXScalingFactor
         );
@@ -651,7 +624,7 @@ public class GrBabylonJsPowerSignalVisualizer :
             0.05
         ).AddLaTeXText(
             "vVectorText",
-            TextureSet["latex", "vVectorText"],
+            ImageSet["latex", "vVectorText"],
             v + v.ToUnitLinVector3D() * 0.25d,
             LaTeXScalingFactor
         );
@@ -868,8 +841,6 @@ public class GrBabylonJsPowerSignalVisualizer :
         if (Signal.FrameList is null || Signal.CurvatureList is null || Signal.SampledCurve is null)
             return;
 
-        var scene = MainSceneComposer.SceneObject;
-
         var lineArrayList = new List<LinFloat64Vector3D[]>(Signal.SampledCurve.CornerCount);
         var colorArrayList = new List<Color[]>(Signal.SampledCurve.CornerCount);
 
@@ -897,31 +868,44 @@ public class GrBabylonJsPowerSignalVisualizer :
         {
             if (i % FrameSeparationCount == 0)
             {
-                var origin = frame.Origin;
-                var xPoint = origin + length * frame.Direction1.ToUnitLinVector3D();
-                var yPoint = origin + length * frame.Direction2.ToUnitLinVector3D();
-                var zPoint = origin + length * frame.Direction3.ToUnitLinVector3D();
+                MainSceneComposer.AddAxes(
+                    $"curveFrameLines{i}",
+                    frame.Origin,
+                    LinBasisVectorPair3D.PxPy.VectorPairToVectorPairRotationQuaternion(
+                        frame.Direction1.ToUnitLinVector3D(),
+                        frame.Direction2.RejectOnVector(frame.Direction1).ToUnitLinVector3D()
+                    ),
+                    0.5
+                );
 
-                lineArrayList.Add(new[] { origin, xPoint });
-                lineArrayList.Add(new[] { origin, yPoint });
-                lineArrayList.Add(new[] { origin, zPoint });
 
-                colorArrayList.Add(new[] { xColor1, xColor2 });
-                colorArrayList.Add(new[] { yColor1, yColor2 });
-                colorArrayList.Add(new[] { zColor1, zColor2 });
+                //var origin = frame.Origin;
+                //var xPoint = origin + length * frame.Direction1.SetLength(0.6);
+                //var yPoint = origin + length * frame.Direction2.SetLength(0.6);
+                //var zPoint = origin + length * frame.Direction3.SetLength(0.6);
+
+                //lineArrayList.Add(new[] { origin, xPoint });
+                //lineArrayList.Add(new[] { origin, yPoint });
+                //lineArrayList.Add(new[] { origin, zPoint });
+
+                //colorArrayList.Add(new[] { xColor1, xColor2 });
+                //colorArrayList.Add(new[] { yColor1, yColor2 });
+                //colorArrayList.Add(new[] { zColor1, zColor2 });
             }
 
             i++;
         }
+        
+        
 
-        scene.AddLineSystem(
-            "curveFrameLines",
-            new GrBabylonJsLinesSystemOptions
-            {
-                Lines = lineArrayList.ToArray(),
-                Colors = colorArrayList.ToArray()
-            }
-        );
+        //MainScene.AddLineSystem(
+        //    "curveFrameLines",
+        //    new GrBabylonJsLinesSystemOptions
+        //    {
+        //        Lines = lineArrayList.ToArray(),
+        //        Colors = colorArrayList.ToArray()
+        //    }
+        //);
 
         var curveFrame = Signal.FrameList[frameIndex];
         MainSceneComposer.AddElement(
@@ -930,22 +914,22 @@ public class GrBabylonJsPowerSignalVisualizer :
                 new GrVisualFrameStyle3D
                 {
                     OriginStyle = 
-                        scene
+                        MainScene
                             .AddStandardMaterial("curveFrameOriginMaterial", Color.DarkGray)
                             .CreateThickSurfaceStyle(0.075),
 
                     Direction1Style = 
-                        scene
+                        MainScene
                             .AddStandardMaterial("curveFrameDirectionMaterial1", Color.DarkRed)
                             .CreateTubeCurveStyle(0.035),
 
                     Direction2Style = 
-                        scene
+                        MainScene
                             .AddStandardMaterial("curveFrameDirectionMaterial2", Color.DarkGreen)
                             .CreateTubeCurveStyle(0.035),
 
                     Direction3Style = 
-                        scene
+                        MainScene
                             .AddStandardMaterial("curveFrameDirectionMaterial3", Color.DarkBlue)
                             .CreateTubeCurveStyle(0.035)
                 },
@@ -959,7 +943,7 @@ public class GrBabylonJsPowerSignalVisualizer :
 
         MainSceneComposer.AddLaTeXText(
             "e1VectorText",
-            TextureSet["latex", "e1VectorText"],
+            ImageSet["latex", "e1VectorText"],
             curveFrame.Origin + 
             curveFrame.Direction1 + 
             curveFrame.Direction1.ToUnitLinVector3D() * 0.25d,
@@ -968,7 +952,7 @@ public class GrBabylonJsPowerSignalVisualizer :
         
         MainSceneComposer.AddLaTeXText(
             "e2VectorText",
-            TextureSet["latex", "e2VectorText"],
+            ImageSet["latex", "e2VectorText"],
             curveFrame.Origin + 
             curveFrame.Direction2 + 
             curveFrame.Direction2.ToUnitLinVector3D() * 0.25d,
@@ -977,7 +961,7 @@ public class GrBabylonJsPowerSignalVisualizer :
         
         MainSceneComposer.AddLaTeXText(
             "e3VectorText",
-            TextureSet["latex", "e3VectorText"],
+            ImageSet["latex", "e3VectorText"],
             curveFrame.Origin + 
             curveFrame.Direction3 + 
             curveFrame.Direction3.ToUnitLinVector3D() * 0.25d,
@@ -1018,12 +1002,12 @@ public class GrBabylonJsPowerSignalVisualizer :
 
         MainSceneComposer.AddLaTeXText(
             "kVectorText",
-            TextureSet["latex", "kVectorText"],
+            ImageSet["latex", "kVectorText"],
             center + normal * 1.25d,
             LaTeXScalingFactor
         );
 
-        var material = scene.AddStandardMaterial(
+        var material = MainScene.AddStandardMaterial(
             "curveFrameCircleMaterial",
             Color.Yellow
         );
@@ -1091,17 +1075,17 @@ public class GrBabylonJsPowerSignalVisualizer :
 
         OmegaSceneComposer.AddLaTeXText(
             "e1VectorText",
-            TextureSet["latex", "e1VectorText"],
+            ImageSet["latex", "e1VectorText"],
             OmegaFrameOrigin + e1 * 1.25d,
             LaTeXScalingFactor
         ).AddLaTeXText(
             "e2VectorText",
-            TextureSet["latex", "e2VectorText"],
+            ImageSet["latex", "e2VectorText"],
             OmegaFrameOrigin + e2 * 1.25d,
             LaTeXScalingFactor
         ).AddLaTeXText(
             "e3VectorText",
-            TextureSet["latex", "e3VectorText"],
+            ImageSet["latex", "e3VectorText"],
             OmegaFrameOrigin + e3 * 1.25d,
             LaTeXScalingFactor
         );
@@ -1118,7 +1102,7 @@ public class GrBabylonJsPowerSignalVisualizer :
 
             OmegaSceneComposer.AddLaTeXText(
                 "e1DsVectorText",
-                TextureSet["latex", "e1DsVectorText"],
+                ImageSet["latex", "e1DsVectorText"],
                 OmegaFrameOrigin + e1Ds + e1Ds.ToUnitLinVector3D() * 0.25d,
                 LaTeXScalingFactor
             );
@@ -1143,7 +1127,7 @@ public class GrBabylonJsPowerSignalVisualizer :
             
             OmegaSceneComposer.AddLaTeXText(
                 "omega1BivectorText",
-                TextureSet["latex", "omega1BivectorText"],
+                ImageSet["latex", "omega1BivectorText"],
                 OmegaFrameOrigin + 0.75d * (e1 + e1Ds),
                 LaTeXScalingFactor
             );
@@ -1161,7 +1145,7 @@ public class GrBabylonJsPowerSignalVisualizer :
             
             OmegaSceneComposer.AddLaTeXText(
                 "e2DsVectorText",
-                TextureSet["latex", "e2DsVectorText"],
+                ImageSet["latex", "e2DsVectorText"],
                 OmegaFrameOrigin + e2Ds + e2Ds.ToUnitLinVector3D() * 0.25d,
                 LaTeXScalingFactor
             );
@@ -1186,7 +1170,7 @@ public class GrBabylonJsPowerSignalVisualizer :
             
             OmegaSceneComposer.AddLaTeXText(
                 "omega2BivectorText",
-                TextureSet["latex", "omega2BivectorText"],
+                ImageSet["latex", "omega2BivectorText"],
                 OmegaFrameOrigin + 0.75 * (e2 + e2Ds),
                 LaTeXScalingFactor
             );
@@ -1209,7 +1193,7 @@ public class GrBabylonJsPowerSignalVisualizer :
             
             OmegaSceneComposer.AddLaTeXText(
                 "e3DsVectorText",
-                TextureSet["latex", "e3DsVectorText"],
+                ImageSet["latex", "e3DsVectorText"],
                 OmegaFrameOrigin + e3Ds + e3Ds.ToUnitLinVector3D() * 0.25d,
                 LaTeXScalingFactor
             );
@@ -1234,16 +1218,33 @@ public class GrBabylonJsPowerSignalVisualizer :
             
             OmegaSceneComposer.AddLaTeXText(
                 "omega3BivectorText",
-                TextureSet["latex", "omega3BivectorText"],
+                ImageSet["latex", "omega3BivectorText"],
                 OmegaFrameOrigin + 0.75d * (e3 + e3Ds),
                 LaTeXScalingFactor
             );
         }
     }
 
-    protected override void ComposeFrame(int frameIndex)
+    protected override void ComposeScene(int frameIndex)
     {
-        base.ComposeFrame(frameIndex);
+        if (ShowGrid)
+            MainSceneComposer.AddGrid(
+                "defaultZx",
+                LinFloat64Vector3D.Zero, 
+                LinFloat64Quaternion.XyToZx, 
+                GridUnitCount,
+                1,
+                0.25
+            );
+
+        if (ShowAxes)
+            MainSceneComposer.AddAxes(
+                "defaultAxes",
+                AxesOrigin,
+                LinFloat64Quaternion.Identity,
+                1,
+                1
+            );
 
         var t = Signal.TimeValues[frameIndex];
         var (x, y, z) = Signal.GetComponentVectors(t);

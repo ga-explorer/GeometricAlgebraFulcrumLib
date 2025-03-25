@@ -3,8 +3,8 @@ using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Angles;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space3D;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.Parametric.Float64;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.Parametric.Float64.Space3D.Curves;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.Parametric.Float64.Space3D.Curves.Adaptive;
+using GeometricAlgebraFulcrumLib.Modeling.Trajectories.Vectors3D.Float64.Adaptive;
+using GeometricAlgebraFulcrumLib.Modeling.Trajectories.Vectors3D.Float64.Composers;
 using SixLabors.ImageSharp;
 
 namespace GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.Colors;
@@ -21,7 +21,7 @@ public class GrColorCurve
                     false
                 )
                 .CreateAdaptiveCurve3D(
-                    new AdaptiveCurveSamplingOptions3D(
+                    new Float64AdaptivePath3DSamplingOptions(
                         LinFloat64PolarAngle.CreateFromDegrees(5), 
                         3, 
                         16
@@ -34,7 +34,7 @@ public class GrColorCurve
                 256, 
                 false
             ).Select(k => 
-                curve.GetPoint(curve.LengthToParameter(k)).ToRgbColor()
+                curve.GetValue(curve.LengthToTime(k)).ToRgbColor()
             ).ToImmutableArray();
 
         return new GrColorCurve(colorList);

@@ -61,7 +61,7 @@ public class GrVisualAnimatedVectorMesh3D :
         {
             var (index1, index2) = this.GetItemIndexPair(index);
 
-            if (value.TimeRange != TimeRange)
+            if (((GrVisualAnimatedGeometry)value).TimeRange != TimeRange)
                 throw new InvalidOperationException();
 
             _dataArray[index1, index2] = value;
@@ -107,7 +107,7 @@ public class GrVisualAnimatedVectorMesh3D :
     {
         return _dataArray.GetItems(
             p => p
-        ).All(p => p.IsValid() && p.TimeRange == TimeRange);
+        ).All(p => p.IsValid() && ((GrVisualAnimatedGeometry)p).TimeRange == TimeRange);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -129,7 +129,7 @@ public class GrVisualAnimatedVectorMesh3D :
     public IPointsMesh3D GetPointsMesh(double time)
     {
         var pointArray = _dataArray.MapItems(
-            p => (ILinFloat64Vector3D) p.GetPoint(time)
+            p => (ILinFloat64Vector3D) p.GetValue(time)
         );
 
         return new ArrayPointsMesh3D(pointArray);

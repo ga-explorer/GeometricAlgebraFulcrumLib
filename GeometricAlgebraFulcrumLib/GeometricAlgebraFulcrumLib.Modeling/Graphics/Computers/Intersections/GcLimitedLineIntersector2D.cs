@@ -1121,7 +1121,7 @@ public class GcLimitedLineIntersector2D
                 return IntersectionUtils.NoIntersectionPair;
         }
 
-        return new Tuple<bool, double, double>(true, tMin.ScalarValue, tMax.ScalarValue);
+        return new Tuple<bool, double, double>(true, tMin, tMax);
     }
 
 

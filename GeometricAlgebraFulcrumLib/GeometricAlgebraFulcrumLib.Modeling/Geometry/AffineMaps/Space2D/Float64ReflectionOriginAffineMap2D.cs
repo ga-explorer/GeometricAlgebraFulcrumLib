@@ -19,6 +19,11 @@ public sealed class Float64ReflectionOriginAffineMap2D :
     public bool SwapsHandedness
         => false;
 
+    public bool IsIdentity()
+    {
+        throw new NotImplementedException();
+    }
+
     public LinFloat64Vector2D MapPoint(ILinFloat64Vector2D point)
     {
         throw new NotImplementedException();

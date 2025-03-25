@@ -1,4 +1,4 @@
-﻿using GeometricAlgebraFulcrumLib.Applications.Symbolic.Robotics;
+﻿using GeometricAlgebraFulcrumLib.Applications.Symbolic.LibraryGenerators.Matlab;
 
 namespace GeometricAlgebraFulcrumLib.Applications.Symbolic;
 
@@ -20,8 +20,10 @@ internal class Program
         //HansenProblemSample.GenerateComplexCode();
         //HansenProblemSample.GenerateVGaCode();
         //HansenProblemSample.GenerateCGaCode();
-        HansenProblemSample.GenerateCGaCodeOpt();
+        //HansenProblemSample.GenerateCGaCodeOpt();
 
         //InverseKinematics6RSamples.MetaprogrammingExample2();
+
+        GradedMultivectorLibSample.GenerateCode();
     }
 }

@@ -67,8 +67,6 @@ public static class HexagonGridGenerator
                 Quality = 9
             },
 
-            BackgroundColor = Color.BlanchedAlmond,
-
             SceneObject =
             {
                 Camera = GrPovRayCamera.ArcRotateOrthographic(
@@ -80,7 +78,7 @@ public static class HexagonGridGenerator
                     GridHeight
                 )
             }
-        };
+        }.AddBackground(Color.BlanchedAlmond);
 
         
     private static void InitializeComposer()

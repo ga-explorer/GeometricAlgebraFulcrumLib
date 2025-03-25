@@ -120,19 +120,19 @@ public static class Sample2
         scene.Add(jsObject);
         composer.EmptyLine();
 
-        // object = new THREE.Mesh( new THREE.CircleGeometry( 50, 20, 0, Math.PI * 2 ), material );
+        // object = new THREE.Mesh( new THREE.CircleGeometry( 50, 20, 0, Math.Tau ), material );
         // object.position.set( 100, 0, 0 );
         // scene.add( object );
-        jsGeometry = new JsCircleGeometry(50, 20, 0, Math.PI * 2);
+        jsGeometry = new JsCircleGeometry(50, 20, 0, Math.Tau);
         jsObject = "object".JsSet(new JsMesh(jsGeometry, material));
         jsObject.Position.Set(100, 0, 0);
         scene.Add(jsObject);
         composer.EmptyLine();
 
-        // object = new THREE.Mesh( new THREE.RingGeometry( 10, 50, 20, 5, 0, Math.PI * 2 ), material );
+        // object = new THREE.Mesh( new THREE.RingGeometry( 10, 50, 20, 5, 0, Math.Tau ), material );
         // object.position.set( 300, 0, 0 );
         // scene.add( object );
-        jsGeometry = new JsRingGeometry(10, 50, 20, 5, 0, Math.PI * 2);
+        jsGeometry = new JsRingGeometry(10, 50, 20, 5, 0, Math.Tau);
         jsObject = "object".JsSet(new JsMesh(jsGeometry, material));
         jsObject.Position.Set(300, 0, 0);
         scene.Add(jsObject);

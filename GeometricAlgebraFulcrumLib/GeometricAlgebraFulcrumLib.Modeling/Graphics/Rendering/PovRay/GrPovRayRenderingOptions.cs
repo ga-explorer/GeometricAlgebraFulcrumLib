@@ -41,6 +41,12 @@ namespace GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.PovRay
             set => SetAttributeValue("Display", value);
         }
         
+        public GrPovRayBooleanValue? OutputAlpha
+        {
+            get => GetAttributeValueOrNull<GrPovRayBooleanValue>("Output_Alpha");
+            set => SetAttributeValue("Output_Alpha", value);
+        }
+
         public GrPovRayInt32Value? WorkThreads
         {
             get => GetAttributeValueOrNull<GrPovRayInt32Value>("Work_Threads");
@@ -115,6 +121,7 @@ namespace GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.PovRay
             MaxImageBufferMemory = 1024;
             OutputFileType = GrPovRayOutputFileTypeValue.Png;
             Display = true;
+            OutputAlpha = true;
             Quality = 9;
             AntiAlias = true;
             SamplingMethod = GrPovRaySamplingMethod.Method2;
@@ -129,6 +136,7 @@ namespace GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.PovRay
             MaxImageBufferMemory = options.MaxImageBufferMemory;
             OutputFileType = options.OutputFileType;
             Display = options.Display;
+            OutputAlpha = options.OutputAlpha;
             WorkThreads = options.WorkThreads;
             Quality = options.Quality;
             AntiAlias = options.AntiAlias;

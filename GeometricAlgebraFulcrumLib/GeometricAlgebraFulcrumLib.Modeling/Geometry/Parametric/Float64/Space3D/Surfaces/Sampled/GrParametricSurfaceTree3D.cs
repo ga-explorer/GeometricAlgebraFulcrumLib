@@ -3,19 +3,19 @@ using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space3D;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Basic;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Primitives.Triangles;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.Parametric.Float64.Space3D.Curves.Adaptive;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.Borders.Space2D.Float64;
+using GeometricAlgebraFulcrumLib.Modeling.Trajectories.Vectors3D.Float64.Adaptive;
 
 namespace GeometricAlgebraFulcrumLib.Modeling.Geometry.Parametric.Float64.Space3D.Surfaces.Sampled;
 
 public sealed class GrParametricSurfaceTree3D :
     IGraphicsParametricSurface3D
 {
-    private readonly HashSet<AdaptiveCurveTreeCornerPosition3D> _cornerPositionSet
-        = new HashSet<AdaptiveCurveTreeCornerPosition3D>();
+    private readonly HashSet<Float64AdaptivePath3DCornerPosition> _cornerPositionSet
+        = new HashSet<Float64AdaptivePath3DCornerPosition>();
 
-    private readonly Dictionary<Pair<AdaptiveCurveTreeCornerPosition3D>, int> _cornerDictionary
-        = new Dictionary<Pair<AdaptiveCurveTreeCornerPosition3D>, int>();
+    private readonly Dictionary<Pair<Float64AdaptivePath3DCornerPosition>, int> _cornerDictionary
+        = new Dictionary<Pair<Float64AdaptivePath3DCornerPosition>, int>();
 
     private readonly List<GrParametricSurfaceTreeCorner3D> _cornerList
         = new List<GrParametricSurfaceTreeCorner3D>();
@@ -176,7 +176,7 @@ public sealed class GrParametricSurfaceTree3D :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public Pair<double> GetParameterValue(Pair<AdaptiveCurveTreeCornerPosition3D> cornerPosition)
+    public Pair<double> GetParameterValue(Pair<Float64AdaptivePath3DCornerPosition> cornerPosition)
     {
         var t1 = cornerPosition.Item1.GetInterpolationValue();
         var t2 = cornerPosition.Item2.GetInterpolationValue();
@@ -255,7 +255,7 @@ public sealed class GrParametricSurfaceTree3D :
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool ContainsCorner(Pair<AdaptiveCurveTreeCornerPosition3D> cornerPosition)
+    public bool ContainsCorner(Pair<Float64AdaptivePath3DCornerPosition> cornerPosition)
     {
         return _cornerDictionary.ContainsKey(cornerPosition);
     }
@@ -273,7 +273,7 @@ public sealed class GrParametricSurfaceTree3D :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public GrParametricSurfaceTreeCorner3D GetCorner(Pair<AdaptiveCurveTreeCornerPosition3D> cornerPosition)
+    public GrParametricSurfaceTreeCorner3D GetCorner(Pair<Float64AdaptivePath3DCornerPosition> cornerPosition)
     {
         var cornerIndex = _cornerDictionary[cornerPosition];
 
@@ -281,13 +281,13 @@ public sealed class GrParametricSurfaceTree3D :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public int GetCornerIndex(Pair<AdaptiveCurveTreeCornerPosition3D> cornerPosition)
+    public int GetCornerIndex(Pair<Float64AdaptivePath3DCornerPosition> cornerPosition)
     {
         return _cornerDictionary[cornerPosition];
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool TryGetCorner(Pair<AdaptiveCurveTreeCornerPosition3D> cornerPosition, out GrParametricSurfaceTreeCorner3D corner)
+    public bool TryGetCorner(Pair<Float64AdaptivePath3DCornerPosition> cornerPosition, out GrParametricSurfaceTreeCorner3D corner)
     {
         if (_cornerDictionary.TryGetValue(cornerPosition, out var cornerIndex))
         {
@@ -300,15 +300,15 @@ public sealed class GrParametricSurfaceTree3D :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool TryGetCornerIndex(Pair<AdaptiveCurveTreeCornerPosition3D> cornerPosition, out int cornerIndex)
+    public bool TryGetCornerIndex(Pair<Float64AdaptivePath3DCornerPosition> cornerPosition, out int cornerIndex)
     {
         return _cornerDictionary.TryGetValue(cornerPosition, out cornerIndex);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    internal AdaptiveCurveTreeCornerPosition3D GetOrAddCornerPosition(int level, int segmentCount)
+    internal Float64AdaptivePath3DCornerPosition GetOrAddCornerPosition(int level, int segmentCount)
     {
-        var newPosition = new AdaptiveCurveTreeCornerPosition3D(level, segmentCount);
+        var newPosition = new Float64AdaptivePath3DCornerPosition(level, segmentCount);
 
         if (_cornerPositionSet.TryGetValue(newPosition, out var position))
             return position;
@@ -318,10 +318,10 @@ public sealed class GrParametricSurfaceTree3D :
         return newPosition;
     }
 
-    internal GrParametricSurfaceTreeCorner3D GetOrAddCorner(AdaptiveCurveTreeCornerPosition3D position1, AdaptiveCurveTreeCornerPosition3D position2)
+    internal GrParametricSurfaceTreeCorner3D GetOrAddCorner(Float64AdaptivePath3DCornerPosition position1, Float64AdaptivePath3DCornerPosition position2)
     {
         var cornerPosition =
-            new Pair<AdaptiveCurveTreeCornerPosition3D>(position1, position2);
+            new Pair<Float64AdaptivePath3DCornerPosition>(position1, position2);
 
         if (_cornerDictionary.TryGetValue(cornerPosition, out var index))
             return _cornerList[index];

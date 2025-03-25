@@ -1,196 +1,196 @@
 ﻿using System.Runtime.CompilerServices;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Float64.Multivectors.Composers;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.Parametric.Float64.Space3D.Bivectors;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.Parametric.Float64.Space3D.Curves;
+using GeometricAlgebraFulcrumLib.Modeling.Trajectories.Bivectors3D;
+using GeometricAlgebraFulcrumLib.Modeling.Trajectories.Vectors3D.Float64;
 
 namespace GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Float64.Elements;
 
 public static class CGaFloat64ParametricTangentComposerUtils
 {
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static CGaFloat64ParametricElement DefineTangentPoint(this CGaFloat64GeometricSpace cgaGeometricSpace, IParametricCurve3D centerCurve)
+    public static CGaFloat64ParametricElement DefineTangentPoint(this CGaFloat64GeometricSpace cgaGeometricSpace, Float64Path3D centerCurve)
     {
         return CGaFloat64ParametricElement.Create(
             cgaGeometricSpace,
-            centerCurve.ParameterRange,
+            centerCurve.TimeRange,
             t => cgaGeometricSpace.DefineTangentPoint(
-                centerCurve.GetPoint(t)
+                centerCurve.GetValue(t)
             )
         );
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static CGaFloat64ParametricElement DefineTangentPoint(this CGaFloat64GeometricSpace cgaGeometricSpace, Float64ScalarRange parameterRange, IParametricCurve3D centerCurve)
+    public static CGaFloat64ParametricElement DefineTangentPoint(this CGaFloat64GeometricSpace cgaGeometricSpace, Float64ScalarRange parameterRange, Float64Path3D centerCurve)
     {
         return CGaFloat64ParametricElement.Create(
             cgaGeometricSpace,
             parameterRange,
             t => cgaGeometricSpace.DefineTangentPoint(
-                centerCurve.GetPoint(t)
+                centerCurve.GetValue(t)
             )
         );
     }
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static CGaFloat64ParametricElement DefineTangentLine(this CGaFloat64GeometricSpace cgaGeometricSpace, IParametricCurve3D centerCurve, IParametricCurve3D vectorCurve)
+    public static CGaFloat64ParametricElement DefineTangentLine(this CGaFloat64GeometricSpace cgaGeometricSpace, Float64Path3D centerCurve, Float64Path3D vectorCurve)
     {
         return CGaFloat64ParametricElement.Create(
             cgaGeometricSpace,
-            centerCurve.ParameterRange,
+            centerCurve.TimeRange,
             t => cgaGeometricSpace.DefineTangentLine(
-                centerCurve.GetPoint(t).ToRGaFloat64Vector(),
-                vectorCurve.GetPoint(t).ToRGaFloat64Vector()
+                centerCurve.GetValue(t).ToRGaFloat64Vector(),
+                vectorCurve.GetValue(t).ToRGaFloat64Vector()
             )
         );
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static CGaFloat64ParametricElement DefineTangentLine(this CGaFloat64GeometricSpace cgaGeometricSpace, Float64ScalarRange parameterRange, IParametricCurve3D centerCurve, IParametricCurve3D vectorCurve)
+    public static CGaFloat64ParametricElement DefineTangentLine(this CGaFloat64GeometricSpace cgaGeometricSpace, Float64ScalarRange parameterRange, Float64Path3D centerCurve, Float64Path3D vectorCurve)
     {
         return CGaFloat64ParametricElement.Create(
             cgaGeometricSpace,
             parameterRange,
             t => cgaGeometricSpace.DefineTangentLine(
-                centerCurve.GetPoint(t).ToRGaFloat64Vector(),
-                vectorCurve.GetPoint(t).ToRGaFloat64Vector()
+                centerCurve.GetValue(t).ToRGaFloat64Vector(),
+                vectorCurve.GetValue(t).ToRGaFloat64Vector()
             )
         );
     }
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static CGaFloat64ParametricElement DefineTangentLineFromPoints(this CGaFloat64GeometricSpace cgaGeometricSpace, IParametricCurve3D point1Curve, IParametricCurve3D point2Curve)
+    public static CGaFloat64ParametricElement DefineTangentLineFromPoints(this CGaFloat64GeometricSpace cgaGeometricSpace, Float64Path3D point1Curve, Float64Path3D point2Curve)
     {
         return CGaFloat64ParametricElement.Create(
             cgaGeometricSpace,
-            point1Curve.ParameterRange,
+            point1Curve.TimeRange,
             t => cgaGeometricSpace.DefineTangentLineFromPoints(
-                point1Curve.GetPoint(t),
-                point2Curve.GetPoint(t)
+                point1Curve.GetValue(t),
+                point2Curve.GetValue(t)
             )
         );
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static CGaFloat64ParametricElement DefineTangentLineFromPoints(this CGaFloat64GeometricSpace cgaGeometricSpace, Float64ScalarRange parameterRange, IParametricCurve3D point1Curve, IParametricCurve3D point2Curve)
+    public static CGaFloat64ParametricElement DefineTangentLineFromPoints(this CGaFloat64GeometricSpace cgaGeometricSpace, Float64ScalarRange parameterRange, Float64Path3D point1Curve, Float64Path3D point2Curve)
     {
         return CGaFloat64ParametricElement.Create(
             cgaGeometricSpace,
             parameterRange,
             t => cgaGeometricSpace.DefineTangentLineFromPoints(
-                point1Curve.GetPoint(t),
-                point2Curve.GetPoint(t)
+                point1Curve.GetValue(t),
+                point2Curve.GetValue(t)
             )
         );
     }
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static CGaFloat64ParametricElement DefineTangentPlane(this CGaFloat64GeometricSpace cgaGeometricSpace, IParametricCurve3D centerCurve, IParametricBivector3D bivectorCurve)
+    public static CGaFloat64ParametricElement DefineTangentPlane(this CGaFloat64GeometricSpace cgaGeometricSpace, Float64Path3D centerCurve, IParametricBivector3D bivectorCurve)
     {
         return CGaFloat64ParametricElement.Create(
             cgaGeometricSpace,
-            centerCurve.ParameterRange,
+            centerCurve.TimeRange,
             t => cgaGeometricSpace.DefineTangentPlane(
-                centerCurve.GetPoint(t),
-                bivectorCurve.GetBivector(t)
+                centerCurve.GetValue(t),
+                bivectorCurve.GetValue(t)
             )
         );
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static CGaFloat64ParametricElement DefineTangentPlane(this CGaFloat64GeometricSpace cgaGeometricSpace, Float64ScalarRange parameterRange, IParametricCurve3D centerCurve, IParametricBivector3D bivectorCurve)
+    public static CGaFloat64ParametricElement DefineTangentPlane(this CGaFloat64GeometricSpace cgaGeometricSpace, Float64ScalarRange parameterRange, Float64Path3D centerCurve, IParametricBivector3D bivectorCurve)
     {
         return CGaFloat64ParametricElement.Create(
             cgaGeometricSpace,
             parameterRange,
             t => cgaGeometricSpace.DefineTangentPlane(
-                centerCurve.GetPoint(t),
-                bivectorCurve.GetBivector(t)
+                centerCurve.GetValue(t),
+                bivectorCurve.GetValue(t)
             )
         );
     }
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static CGaFloat64ParametricElement DefineTangentPlaneFromNormal(this CGaFloat64GeometricSpace cgaGeometricSpace, IParametricCurve3D positionNormalCurve)
+    public static CGaFloat64ParametricElement DefineTangentPlaneFromNormal(this CGaFloat64GeometricSpace cgaGeometricSpace, Float64Path3D positionNormalCurve)
     {
         return CGaFloat64ParametricElement.Create(
             cgaGeometricSpace,
-            positionNormalCurve.ParameterRange,
+            positionNormalCurve.TimeRange,
             t => cgaGeometricSpace.DefineTangentPlane(
-                positionNormalCurve.GetPoint(t),
-                positionNormalCurve.GetDerivative1Point(t).NormalToUnitDirection3D()
+                positionNormalCurve.GetValue(t),
+                positionNormalCurve.GetDerivative1Value(t).NormalToUnitDirection3D()
             )
         );
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static CGaFloat64ParametricElement DefineTangentPlaneFromNormal(this CGaFloat64GeometricSpace cgaGeometricSpace, Float64ScalarRange parameterRange, IParametricCurve3D positionNormalCurve)
+    public static CGaFloat64ParametricElement DefineTangentPlaneFromNormal(this CGaFloat64GeometricSpace cgaGeometricSpace, Float64ScalarRange parameterRange, Float64Path3D positionNormalCurve)
     {
         return CGaFloat64ParametricElement.Create(
             cgaGeometricSpace,
             parameterRange,
             t => cgaGeometricSpace.DefineTangentPlane(
-                positionNormalCurve.GetPoint(t),
-                positionNormalCurve.GetDerivative1Point(t).NormalToUnitDirection3D()
+                positionNormalCurve.GetValue(t),
+                positionNormalCurve.GetDerivative1Value(t).NormalToUnitDirection3D()
             )
         );
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static CGaFloat64ParametricElement DefineTangentPlaneFromNormal(this CGaFloat64GeometricSpace cgaGeometricSpace, IParametricCurve3D centerCurve, IParametricCurve3D normalCurve)
+    public static CGaFloat64ParametricElement DefineTangentPlaneFromNormal(this CGaFloat64GeometricSpace cgaGeometricSpace, Float64Path3D centerCurve, Float64Path3D normalCurve)
     {
         return CGaFloat64ParametricElement.Create(
             cgaGeometricSpace,
-            centerCurve.ParameterRange,
+            centerCurve.TimeRange,
             t => cgaGeometricSpace.DefineTangentPlane(
-                centerCurve.GetPoint(t),
-                normalCurve.GetPoint(t).NormalToUnitDirection3D()
+                centerCurve.GetValue(t),
+                normalCurve.GetValue(t).NormalToUnitDirection3D()
             )
         );
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static CGaFloat64ParametricElement DefineTangentPlaneFromNormal(this CGaFloat64GeometricSpace cgaGeometricSpace, Float64ScalarRange parameterRange, IParametricCurve3D centerCurve, IParametricCurve3D normalCurve)
+    public static CGaFloat64ParametricElement DefineTangentPlaneFromNormal(this CGaFloat64GeometricSpace cgaGeometricSpace, Float64ScalarRange parameterRange, Float64Path3D centerCurve, Float64Path3D normalCurve)
     {
         return CGaFloat64ParametricElement.Create(
             cgaGeometricSpace,
             parameterRange,
             t => cgaGeometricSpace.DefineTangentPlane(
-                centerCurve.GetPoint(t),
-                normalCurve.GetPoint(t).NormalToUnitDirection3D()
+                centerCurve.GetValue(t),
+                normalCurve.GetValue(t).NormalToUnitDirection3D()
             )
         );
     }
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static CGaFloat64ParametricElement DefineTangentPlaneFromPoints(this CGaFloat64GeometricSpace cgaGeometricSpace, IParametricCurve3D point1Curve, IParametricCurve3D point2Curve, IParametricCurve3D point3Curve)
+    public static CGaFloat64ParametricElement DefineTangentPlaneFromPoints(this CGaFloat64GeometricSpace cgaGeometricSpace, Float64Path3D point1Curve, Float64Path3D point2Curve, Float64Path3D point3Curve)
     {
         return CGaFloat64ParametricElement.Create(
             cgaGeometricSpace,
-            point1Curve.ParameterRange,
+            point1Curve.TimeRange,
             t => cgaGeometricSpace.DefineTangentPlaneFromPoints(
-                point1Curve.GetPoint(t),
-                point2Curve.GetPoint(t),
-                point3Curve.GetPoint(t)
+                point1Curve.GetValue(t),
+                point2Curve.GetValue(t),
+                point3Curve.GetValue(t)
             )
         );
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static CGaFloat64ParametricElement DefineTangentPlaneFromPoints(this CGaFloat64GeometricSpace cgaGeometricSpace, Float64ScalarRange parameterRange, IParametricCurve3D point1Curve, IParametricCurve3D point2Curve, IParametricCurve3D point3Curve)
+    public static CGaFloat64ParametricElement DefineTangentPlaneFromPoints(this CGaFloat64GeometricSpace cgaGeometricSpace, Float64ScalarRange parameterRange, Float64Path3D point1Curve, Float64Path3D point2Curve, Float64Path3D point3Curve)
     {
         return CGaFloat64ParametricElement.Create(
             cgaGeometricSpace,
             parameterRange,
             t => cgaGeometricSpace.DefineTangentPlaneFromPoints(
-                point1Curve.GetPoint(t),
-                point2Curve.GetPoint(t),
-                point3Curve.GetPoint(t)
+                point1Curve.GetValue(t),
+                point2Curve.GetValue(t),
+                point3Curve.GetValue(t)
             )
         );
     }

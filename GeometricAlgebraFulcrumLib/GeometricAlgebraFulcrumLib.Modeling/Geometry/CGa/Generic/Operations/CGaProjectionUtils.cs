@@ -80,7 +80,7 @@ public static class CGaProjectionUtils
     //[MethodImpl(MethodImplOptions.AggressiveInlining)]
     //public static IFloat64ParametricCurve2D ProjectPositionOnFlat2D<T>(this XGaConformalElement<T> element, XGaConformalParametricElement<T> flat)
     //{
-    //    return ComputedParametricCurve2D.Create(
+    //    return LinFloat64Vector2DTimeSignalComputed.Create(
     //        flat.ParameterRange,
     //        t =>
     //        {
@@ -96,7 +96,7 @@ public static class CGaProjectionUtils
     //[MethodImpl(MethodImplOptions.AggressiveInlining)]
     //public static IParametricCurve3D ProjectPositionOnFlat3D<T>(this XGaConformalElement<T> element, XGaConformalParametricElement<T> flat)
     //{
-    //    return ComputedParametricCurve3D.Create(
+    //    return Float64ComputedPointPath3D.Finite(
     //        flat.ParameterRange,
     //        t =>
     //        {
@@ -112,7 +112,7 @@ public static class CGaProjectionUtils
     //[MethodImpl(MethodImplOptions.AggressiveInlining)]
     //public static IFloat64ParametricCurve2D ProjectPositionOnFlat2D<T>(this XGaConformalParametricElement<T> element, XGaConformalFlat<T> flat)
     //{
-    //    return ComputedParametricCurve2D.Create(
+    //    return LinFloat64Vector2DTimeSignalComputed.Create(
     //        element.ParameterRange,
     //        t => 
     //            element.GetElement(t).ProjectPositionOnFlat2D(flat)
@@ -122,7 +122,7 @@ public static class CGaProjectionUtils
     //[MethodImpl(MethodImplOptions.AggressiveInlining)]
     //public static IFloat64ParametricCurve2D ProjectPositionOnFlat2D<T>(this XGaConformalParametricElement<T> element, XGaConformalParametricElement<T> flat)
     //{
-    //    return ComputedParametricCurve2D.Create(
+    //    return LinFloat64Vector2DTimeSignalComputed.Create(
     //        element.ParameterRange.Intersect(flat.ParameterRange),
     //        t =>
     //        {
@@ -138,7 +138,7 @@ public static class CGaProjectionUtils
     //[MethodImpl(MethodImplOptions.AggressiveInlining)]
     //public static IParametricCurve3D ProjectPositionOnFlat3D<T>(this XGaConformalParametricElement<T> element, XGaConformalFlat<T> flat)
     //{
-    //    return ComputedParametricCurve3D.Create(
+    //    return Float64ComputedPointPath3D.Finite(
     //        element.ParameterRange,
     //        t => 
     //            element.GetElement(t).ProjectPositionOnFlat3D(flat)
@@ -148,7 +148,7 @@ public static class CGaProjectionUtils
     //[MethodImpl(MethodImplOptions.AggressiveInlining)]
     //public static IParametricCurve3D ProjectPositionOnFlat3D<T>(this XGaConformalParametricElement<T> element, XGaConformalParametricElement<T> flat)
     //{
-    //    return ComputedParametricCurve3D.Create(
+    //    return Float64ComputedPointPath3D.Finite(
     //        element.ParameterRange.Intersect(flat.ParameterRange),
     //        t =>
     //        {

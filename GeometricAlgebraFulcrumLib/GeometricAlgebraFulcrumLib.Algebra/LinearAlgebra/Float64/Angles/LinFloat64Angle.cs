@@ -14,7 +14,7 @@ public abstract record LinFloat64Angle :
 {
     public const double Pi = Math.PI;
 
-    public const double PiTimes2 = Math.PI * 2;
+    public const double PiTimes2 = Math.Tau;
     
     public const double PiTimes4 = Math.PI * 4;
 

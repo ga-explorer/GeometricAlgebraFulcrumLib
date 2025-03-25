@@ -200,18 +200,18 @@
 //    }
 
 //    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-//    public ComputedParametricCurve2D GetParametricCurve2D(Func<XGaConformalElement<T>, LinVector2D<T>> elementMapping)
+//    public LinFloat64Vector2DTimeSignalComputed GetParametricCurve2D(Func<XGaConformalElement<T>, LinVector2D<T>> elementMapping)
 //    {
-//        return ComputedParametricCurve2D.Create(
+//        return LinFloat64Vector2DTimeSignalComputed.Create(
 //            ParameterRange,
 //            t => elementMapping(GetElementFunc(t))
 //        );
 //    }
     
 //    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-//    public ComputedParametricCurve3D GetParametricCurve3D(Func<XGaConformalElement<T>, LinVector3D<T>> elementMapping)
+//    public Float64ComputedPointPath3D GetParametricCurve3D(Func<XGaConformalElement<T>, LinVector3D<T>> elementMapping)
 //    {
-//        return ComputedParametricCurve3D.Create(
+//        return Float64ComputedPointPath3D.Finite(
 //            ParameterRange,
 //            t => elementMapping(GetElementFunc(t))
 //        );
@@ -280,7 +280,7 @@
 
 
 //    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-//    public ComputedParametricCurve2D PositionToParametricCurve2D()
+//    public LinFloat64Vector2DTimeSignalComputed PositionToParametricCurve2D()
 //    {
 //        return GetParametricCurve2D(
 //            element => element.PositionToVector2D()
@@ -288,7 +288,7 @@
 //    }
     
 //    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-//    public ComputedParametricCurve3D PositionToParametricCurve3D()
+//    public Float64ComputedPointPath3D PositionToParametricCurve3D()
 //    {
 //        return GetParametricCurve3D(
 //            element => element.PositionToVector3D()
@@ -297,7 +297,7 @@
     
 
 //    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-//    public ComputedParametricCurve2D DirectionToParametricCurve2D()
+//    public LinFloat64Vector2DTimeSignalComputed DirectionToParametricCurve2D()
 //    {
 //        return GetParametricCurve2D(
 //            element => element.DirectionToVector2D()
@@ -305,7 +305,7 @@
 //    }
     
 //    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-//    public ComputedParametricCurve2D DirectionToParametricCurve2D(Scalar<T> length)
+//    public LinFloat64Vector2DTimeSignalComputed DirectionToParametricCurve2D(Scalar<T> length)
 //    {
 //        return GetParametricCurve2D(
 //            element => element.DirectionToVector2D(length)
@@ -313,16 +313,16 @@
 //    }
     
 //    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-//    public ComputedParametricCurve2D DirectionToParametricCurve2D(IParametricScalar<T> length)
+//    public LinFloat64Vector2DTimeSignalComputed DirectionToParametricCurve2D(IParametricScalar<T> length)
 //    {
-//        return ComputedParametricCurve2D.Create(
+//        return LinFloat64Vector2DTimeSignalComputed.Create(
 //            ParameterRange,
 //            t => GetElement(t).DirectionToVector2D(length.GetValue(t))
 //        );
 //    }
 
 //    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-//    public ComputedParametricCurve3D DirectionToParametricCurve3D()
+//    public Float64ComputedPointPath3D DirectionToParametricCurve3D()
 //    {
 //        return GetParametricCurve3D(
 //            element => element.DirectionToVector3D()
@@ -330,7 +330,7 @@
 //    }
     
 //    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-//    public ComputedParametricCurve3D DirectionToParametricCurve3D(Scalar<T> length)
+//    public Float64ComputedPointPath3D DirectionToParametricCurve3D(Scalar<T> length)
 //    {
 //        return GetParametricCurve3D(
 //            element => element.DirectionToVector3D(length)
@@ -338,9 +338,9 @@
 //    }
     
 //    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-//    public ComputedParametricCurve3D DirectionToParametricCurve3D(IParametricScalar<T> length)
+//    public Float64ComputedPointPath3D DirectionToParametricCurve3D(IParametricScalar<T> length)
 //    {
-//        return ComputedParametricCurve3D.Create(
+//        return Float64ComputedPointPath3D.Finite(
 //            ParameterRange,
 //            t => GetElement(t).DirectionToVector3D(length.GetValue(t))
 //        );
@@ -372,7 +372,7 @@
 
 
 //    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-//    public ComputedParametricCurve2D NormalDirectionToParametricCurve2D()
+//    public LinFloat64Vector2DTimeSignalComputed NormalDirectionToParametricCurve2D()
 //    {
 //        return GetParametricCurve2D(
 //            element => element.NormalDirectionToVector2D()
@@ -380,7 +380,7 @@
 //    }
     
 //    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-//    public ComputedParametricCurve2D NormalDirectionToParametricCurve2D(Scalar<T> length)
+//    public LinFloat64Vector2DTimeSignalComputed NormalDirectionToParametricCurve2D(Scalar<T> length)
 //    {
 //        return GetParametricCurve2D(
 //            element => element.NormalDirectionToVector2D(length)
@@ -388,16 +388,16 @@
 //    }
     
 //    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-//    public ComputedParametricCurve2D NormalDirectionToParametricCurve2D(IParametricScalar<T> length)
+//    public LinFloat64Vector2DTimeSignalComputed NormalDirectionToParametricCurve2D(IParametricScalar<T> length)
 //    {
-//        return ComputedParametricCurve2D.Create(
+//        return LinFloat64Vector2DTimeSignalComputed.Create(
 //            ParameterRange,
 //            t => GetElement(t).NormalDirectionToVector2D(length.GetValue(t))
 //        );
 //    }
 
 //    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-//    public ComputedParametricCurve3D NormalDirectionToParametricCurve3D()
+//    public Float64ComputedPointPath3D NormalDirectionToParametricCurve3D()
 //    {
 //        return GetParametricCurve3D(
 //            element => element.NormalDirectionToVector3D()
@@ -405,7 +405,7 @@
 //    }
     
 //    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-//    public ComputedParametricCurve3D NormalDirectionToParametricCurve3D(Scalar<T> length)
+//    public Float64ComputedPointPath3D NormalDirectionToParametricCurve3D(Scalar<T> length)
 //    {
 //        return GetParametricCurve3D(
 //            element => element.NormalDirectionToVector3D(length)
@@ -413,9 +413,9 @@
 //    }
     
 //    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-//    public ComputedParametricCurve3D NormalDirectionToParametricCurve3D(IParametricScalar<T> length)
+//    public Float64ComputedPointPath3D NormalDirectionToParametricCurve3D(IParametricScalar<T> length)
 //    {
-//        return ComputedParametricCurve3D.Create(
+//        return Float64ComputedPointPath3D.Finite(
 //            ParameterRange,
 //            t => GetElement(t).NormalDirectionToVector3D(length.GetValue(t))
 //        );
@@ -447,7 +447,7 @@
 
     
 //    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-//    public ComputedParametricCurve2D GetRoundCenterCurve2D()
+//    public LinFloat64Vector2DTimeSignalComputed GetRoundCenterCurve2D()
 //    {
 //        return GetParametricCurve2D(element => 
 //            element is XGaConformalRound<T> round
@@ -457,7 +457,7 @@
 //    }
 
 //    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-//    public ComputedParametricCurve3D GetRoundCenterCurve3D()
+//    public Float64ComputedPointPath3D GetRoundCenterCurve3D()
 //    {
 //        return GetParametricCurve3D(element => 
 //            element is XGaConformalRound<T> round
@@ -467,7 +467,7 @@
 //    }
     
 //    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-//    public Pair<ComputedParametricCurve2D> GetRoundPointPairCurves2D()
+//    public Pair<LinFloat64Vector2DTimeSignalComputed> GetRoundPointPairCurves2D()
 //    {
 //        var point1Curve = GetParametricCurve2D(element => 
 //            element is XGaConformalRound<T> { IsRoundPointPair: true } round
@@ -481,11 +481,11 @@
 //                : LinVector2D<T>.Zero
 //        );
 
-//        return new Pair<ComputedParametricCurve2D>(point1Curve, point2Curve);
+//        return new Pair<LinFloat64Vector2DTimeSignalComputed>(point1Curve, point2Curve);
 //    }
 
 //    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-//    public Pair<ComputedParametricCurve3D> GetRoundPointPairCurves3D()
+//    public Pair<Float64ComputedPointPath3D> GetRoundPointPairCurves3D()
 //    {
 //        var point1Curve = GetParametricCurve3D(element => 
 //            element is XGaConformalRound<T> { IsRoundPointPair: true } round
@@ -499,14 +499,14 @@
 //                : LinVector3D<T>.Zero
 //        );
 
-//        return new Pair<ComputedParametricCurve3D>(point1Curve, point2Curve);
+//        return new Pair<Float64ComputedPointPath3D>(point1Curve, point2Curve);
 //    }
     
     
 //    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-//    public ComputedParametricCurve2D GetRoundSurfacePointCurve2D(LinVector2D<T> egaProbeDirection, Scalar<T> distanceFromSurface)
+//    public LinFloat64Vector2DTimeSignalComputed GetRoundSurfacePointCurve2D(LinVector2D<T> egaProbeDirection, Scalar<T> distanceFromSurface)
 //    {
-//        return ComputedParametricCurve2D.Create(t =>
+//        return LinFloat64Vector2DTimeSignalComputed.Create(t =>
 //            {
 //                var el = GetElement(t);
                 
@@ -525,9 +525,9 @@
 //    }
     
 //    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-//    public ComputedParametricCurve2D GetRoundSurfacePointCurve2D(IFloat64ParametricCurve2D egaProbeDirection, IParametricScalar<T> distanceFromSurface)
+//    public LinFloat64Vector2DTimeSignalComputed GetRoundSurfacePointCurve2D(IFloat64ParametricCurve2D egaProbeDirection, IParametricScalar<T> distanceFromSurface)
 //    {
-//        return ComputedParametricCurve2D.Create(t =>
+//        return LinFloat64Vector2DTimeSignalComputed.Create(t =>
 //            {
 //                var el = GetElement(t);
                 
@@ -546,9 +546,9 @@
 //    }
 
 //    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-//    public ComputedParametricCurve3D GetRoundSurfacePointCurve3D(LinVector3D<T> egaProbeDirection, Scalar<T> distanceFromSurface)
+//    public Float64ComputedPointPath3D GetRoundSurfacePointCurve3D(LinVector3D<T> egaProbeDirection, Scalar<T> distanceFromSurface)
 //    {
-//        return ComputedParametricCurve3D.Create(t => 
+//        return Float64ComputedPointPath3D.Finite(t => 
 //            {
 //                var el = GetElement(t);
                 
@@ -567,9 +567,9 @@
 //    }
     
 //    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-//    public ComputedParametricCurve3D GetRoundSurfacePointCurve3D(IParametricCurve3D egaProbeDirection, IParametricScalar<T> distanceFromSurface)
+//    public Float64ComputedPointPath3D GetRoundSurfacePointCurve3D(IParametricCurve3D egaProbeDirection, IParametricScalar<T> distanceFromSurface)
 //    {
-//        return ComputedParametricCurve3D.Create(t =>
+//        return Float64ComputedPointPath3D.Finite(t =>
 //            {
 //                var el = GetElement(t);
                 
@@ -589,9 +589,9 @@
 
 
 //    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-//    public ComputedParametricCurve2D GetSurfacePointCurve2D(LinVector2D<T> egaProbeDirection, Scalar<T> distanceFromPosition, Scalar<T> distanceFromSurface)
+//    public LinFloat64Vector2DTimeSignalComputed GetSurfacePointCurve2D(LinVector2D<T> egaProbeDirection, Scalar<T> distanceFromPosition, Scalar<T> distanceFromSurface)
 //    {
-//        return ComputedParametricCurve2D.Create(t => 
+//        return LinFloat64Vector2DTimeSignalComputed.Create(t => 
 //            GetElement(t).SurfacePointToVector2D(
 //                    egaProbeDirection, 
 //                    distanceFromPosition,
@@ -601,9 +601,9 @@
 //    }
     
 //    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-//    public ComputedParametricCurve2D GetSurfacePointCurve2D(IFloat64ParametricCurve2D egaProbeDirection, IParametricScalar<T> distanceFromPosition, IParametricScalar<T> distanceFromSurface)
+//    public LinFloat64Vector2DTimeSignalComputed GetSurfacePointCurve2D(IFloat64ParametricCurve2D egaProbeDirection, IParametricScalar<T> distanceFromPosition, IParametricScalar<T> distanceFromSurface)
 //    {
-//        return ComputedParametricCurve2D.Create(t => 
+//        return LinFloat64Vector2DTimeSignalComputed.Create(t => 
 //            GetElement(t).SurfacePointToVector2D(
 //                    egaProbeDirection.GetPoint(t), 
 //                    distanceFromPosition.GetValue(t),
@@ -613,9 +613,9 @@
 //    }
 
 //    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-//    public ComputedParametricCurve3D GetSurfacePointCurve3D(LinVector3D<T> egaProbeDirection, Scalar<T> distanceFromPosition, Scalar<T> distanceFromSurface)
+//    public Float64ComputedPointPath3D GetSurfacePointCurve3D(LinVector3D<T> egaProbeDirection, Scalar<T> distanceFromPosition, Scalar<T> distanceFromSurface)
 //    {
-//        return ComputedParametricCurve3D.Create(t => 
+//        return Float64ComputedPointPath3D.Finite(t => 
 //                GetElement(t).SurfacePointToVector3D(
 //                    egaProbeDirection, 
 //                    distanceFromPosition,
@@ -625,9 +625,9 @@
 //    }
     
 //    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-//    public ComputedParametricCurve3D GetSurfacePointCurve3D(IParametricCurve3D egaProbeDirection, IParametricScalar<T> distanceFromPosition, IParametricScalar<T> distanceFromSurface)
+//    public Float64ComputedPointPath3D GetSurfacePointCurve3D(IParametricCurve3D egaProbeDirection, IParametricScalar<T> distanceFromPosition, IParametricScalar<T> distanceFromSurface)
 //    {
-//        return ComputedParametricCurve3D.Create(t => 
+//        return Float64ComputedPointPath3D.Finite(t => 
 //                GetElement(t).SurfacePointToVector3D(
 //                    egaProbeDirection.GetPoint(t), 
 //                    distanceFromPosition.GetValue(t),

@@ -12,11 +12,11 @@ using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.PovRay.Materials.Fi
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.PovRay.Materials.Pigments;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.PovRay.Objects.FPP;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.PovRay.Values;
-using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.Visuals.Textures;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.AttributeSet;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Basic;
 using GeometricAlgebraFulcrumLib.Utilities.Text.Text;
 using GeometricAlgebraFulcrumLib.Utilities.Text.Text.Linear;
+using GeometricAlgebraFulcrumLib.Utilities.Web.Images;
 using Newtonsoft.Json.Linq;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.PixelFormats;
@@ -33,12 +33,12 @@ public static class GrPovRayUtils
 
 
     
-    public static GrPovRayPolygon CreateImageRectangleZx(this GrVisualTexture textureItem, double rectHeightRatio)
+    public static GrPovRayPolygon CreateImageRectangleZx(this GrVisualImageSetItem textureItem, double rectHeightRatio)
     {
         var rect = GrPovRayPolygon.CreateRectangleZx(1, 1);
 
         var pigment = new GrPovRayImageMapPigment(
-            textureItem.PngImageFilePath,
+            textureItem.GetPngImageFilePath(),
             GrPovRayImageMapBitmapType.Png
         )
         {
@@ -62,7 +62,7 @@ public static class GrPovRayUtils
         return rect;
     }
     
-    public static GrPovRayPolygon CreateImageRectangleZx(this GrVisualTextureSet textureSet, string groupName, string imageName, double rectHeight)
+    public static GrPovRayPolygon CreateImageRectangleZx(this GrVisualImageSet textureSet, string groupName, string imageName, double rectHeight)
     {
         var group = textureSet.GetGroup(groupName);
         var item = group[imageName];
@@ -563,6 +563,40 @@ public static class GrPovRayUtils
         ).GetPovRayArrayCode();
     }
     
+    public static string GetPovRayMatrixCode(ITriplet<Float64Scalar> affineMapColumn1, ITriplet<Float64Scalar> affineMapColumn2, ITriplet<Float64Scalar> affineMapColumn3)
+    {
+        var composer = new LinearTextComposer();
+
+        composer
+            .AppendLine("matrix <")
+            .IncreaseIndentation()
+            .AppendAtNewLine($"{affineMapColumn1.Item1.GetPovRayCode()}, {affineMapColumn1.Item2.GetPovRayCode()}, {affineMapColumn1.Item3.GetPovRayCode()},")
+            .AppendAtNewLine($"{affineMapColumn2.Item1.GetPovRayCode()}, {affineMapColumn2.Item2.GetPovRayCode()}, {affineMapColumn2.Item3.GetPovRayCode()},")
+            .AppendAtNewLine($"{affineMapColumn3.Item1.GetPovRayCode()}, {affineMapColumn3.Item2.GetPovRayCode()}, {affineMapColumn3.Item3.GetPovRayCode()},")
+            .AppendAtNewLine($"{Float64Scalar.Zero.GetPovRayCode()}, {Float64Scalar.Zero.GetPovRayCode()}, {Float64Scalar.Zero.GetPovRayCode()}")
+            .DecreaseIndentation()
+            .AppendAtNewLine(">");
+
+        return composer.ToString();
+    }
+
+    public static string GetPovRayMatrixCode(ITriplet<Float64Scalar> affineMapColumn1, ITriplet<Float64Scalar> affineMapColumn2, ITriplet<Float64Scalar> affineMapColumn3, ITriplet<Float64Scalar> affineMapColumn4)
+    {
+        var composer = new LinearTextComposer();
+
+        composer
+            .AppendLine("matrix <")
+            .IncreaseIndentation()
+            .AppendAtNewLine($"{affineMapColumn1.Item1.GetPovRayCode()}, {affineMapColumn1.Item2.GetPovRayCode()}, {affineMapColumn1.Item3.GetPovRayCode()},")
+            .AppendAtNewLine($"{affineMapColumn2.Item1.GetPovRayCode()}, {affineMapColumn2.Item2.GetPovRayCode()}, {affineMapColumn2.Item3.GetPovRayCode()},")
+            .AppendAtNewLine($"{affineMapColumn3.Item1.GetPovRayCode()}, {affineMapColumn3.Item2.GetPovRayCode()}, {affineMapColumn3.Item3.GetPovRayCode()},")
+            .AppendAtNewLine($"{affineMapColumn4.Item1.GetPovRayCode()}, {affineMapColumn4.Item2.GetPovRayCode()}, {affineMapColumn4.Item3.GetPovRayCode()}")
+            .DecreaseIndentation()
+            .AppendAtNewLine(">");
+
+        return composer.ToString();
+    }
+
     public static string GetPovRayMatrixCode(this IFloat64AffineMap3D affineMap)
     {
         var m = affineMap.GetSquareMatrix4();

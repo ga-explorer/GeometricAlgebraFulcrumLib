@@ -1,44 +1,74 @@
 ﻿using System.Runtime.CompilerServices;
 using GeometricAlgebraFulcrumLib.Algebra.Polynomials.Float64.BSplineCurveBasis;
+using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
 using GeometricAlgebraFulcrumLib.Modeling.Calculus.Functions.Float64;
 using GeometricAlgebraFulcrumLib.Modeling.Signals;
-using GeometricAlgebraFulcrumLib.Modeling.Temporal.Float64.Scalars;
+using GeometricAlgebraFulcrumLib.Modeling.Trajectories.Scalars.Float64;
 using OxyPlot;
 using OxyPlot.Axes;
 using OxyPlot.Series;
 using OxyPlot.SkiaSharp;
 using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.Formats.Png;
 using PdfExporter = OxyPlot.SkiaSharp.PdfExporter;
+using PngEncoder = SixLabors.ImageSharp.Formats.Png.PngEncoder;
 
 namespace GeometricAlgebraFulcrumLib.Modeling.Graphics;
 
 public static class PlottingUtils
 {
-    public static Image Plot(this TemporalFloat64Scalar scalarSignal)
+    public static void SavePlot(this Float64ScalarSignal scalarSignal, string filePath)
+    {
+        var plotImage = scalarSignal.Plot();
+
+        plotImage.SaveAsPng(
+            filePath,
+            new PngEncoder()
+            {
+                ColorType = PngColorType.RgbWithAlpha
+            }
+        );
+    }
+
+    public static Image Plot(this Float64ScalarSignal scalarSignal)
     {
         var func = (double t) => scalarSignal.GetValue(t);
 
-        var (xMin, xMax) = scalarSignal.TimeRange.ExpandByFactor(0.1);
-        var (yMin, yMax) = scalarSignal.ValueRange.ExpandByFactor(0.1);
+        var timeExpandFactor = scalarSignal.IsPeriodic ? 2.1 : 0.6;
+
+        var (xMin, xMax) = scalarSignal.TimeRange.ExpandByFactor(timeExpandFactor);
+        var (yMin, yMax) = scalarSignal.GetValueRange().ExpandByFactor(0.1);
+        
+        if (yMin.IsZero() && yMax.IsZero())
+        {
+            yMin = -0.1;
+            yMax = 0.1;
+        }
+
+        if (yMin.IsNearEqual(yMax, 0))
+        {
+            yMin -= 0.1 * yMin;
+            yMax += 0.1 * yMax;
+        }
 
         return func.Plot(xMin, xMax, yMin, yMax);
     }
 
-    public static Image Plot(this TemporalFloat64Scalar scalarSignal, double xMin, double xMax, double yMin, double yMax)
+    public static Image Plot(this Float64ScalarSignal scalarSignal, double xMin, double xMax, double yMin, double yMax)
     {
         var func = (double t) => scalarSignal.GetValue(t);
 
         return func.Plot(xMin, xMax, yMin, yMax);
     }
 
-    public static Image Plot(this Float64Signal scalarSignal, double xMin, double xMax, double yMin, double yMax)
+    public static Image Plot(this Float64SampledTimeSignal scalarSignal, double xMin, double xMax, double yMin, double yMax)
     {
         var func = scalarSignal.LinearInterpolation;
 
         return func.Plot(xMin, xMax, yMin, yMax);
     }
 
-    public static Image Plot(this Float64Signal scalarSignal, double xMin, double xMax)
+    public static Image Plot(this Float64SampledTimeSignal scalarSignal, double xMin, double xMax)
     {
         return ((Func<double, double>)scalarSignal.LinearInterpolation).Plot(xMin, xMax);
     }
@@ -51,13 +81,21 @@ public static class PlottingUtils
         };
 
         var dx = (xMax - xMin) / 1024;
-
+        
         model.Axes.Add(
             new LinearAxis
             {
                 Minimum = xMin - (xMax - xMin) / 20,
                 Maximum = xMax + (xMax - xMin) / 20,
-                Position = AxisPosition.Bottom
+                Position = AxisPosition.Bottom,
+                
+                MajorGridlineColor = OxyColors.Gray,
+                MajorGridlineThickness = 1,
+                MajorGridlineStyle = LineStyle.Solid,
+                
+                MinorGridlineColor = OxyColors.LightGray,
+                MinorGridlineThickness = 1,
+                MinorGridlineStyle = LineStyle.Dot,
             }
         );
 
@@ -73,8 +111,8 @@ public static class PlottingUtils
         var renderer = new PngExporter
         {
             //Dpi = 120,
-            Width = 1200,
-            Height = 600
+            Width = 1280,
+            Height = 720
         };
 
         using var stream = new MemoryStream();
@@ -99,7 +137,15 @@ public static class PlottingUtils
             {
                 Minimum = xMin - (xMax - xMin) / 20,
                 Maximum = xMax + (xMax - xMin) / 20,
-                Position = AxisPosition.Bottom
+                Position = AxisPosition.Bottom,
+                
+                MajorGridlineColor = OxyColors.Gray,
+                MajorGridlineThickness = 1,
+                MajorGridlineStyle = LineStyle.Solid,
+                
+                MinorGridlineColor = OxyColors.LightGray,
+                MinorGridlineThickness = 1,
+                MinorGridlineStyle = LineStyle.Dot,
             }
         );
 
@@ -108,7 +154,15 @@ public static class PlottingUtils
             {
                 Minimum = yMin - (yMax - yMin) / 20,
                 Maximum = yMax + (yMax - yMin) / 20,
-                Position = AxisPosition.Left
+                Position = AxisPosition.Left,
+                
+                MajorGridlineColor = OxyColors.Gray,
+                MajorGridlineThickness = 1,
+                MajorGridlineStyle = LineStyle.Solid,
+                
+                MinorGridlineColor = OxyColors.LightGray,
+                MinorGridlineThickness = 1,
+                MinorGridlineStyle = LineStyle.Dot,
             }
         );
 
@@ -124,8 +178,8 @@ public static class PlottingUtils
         var renderer = new PngExporter
         {
             //Dpi = 120,
-            Width = 1200,
-            Height = 600
+            Width = 1280,
+            Height = 720
         };
 
         using var stream = new MemoryStream();
@@ -175,8 +229,8 @@ public static class PlottingUtils
         var renderer = new PngExporter
         {
             Dpi = 300,
-            Width = 1200,
-            Height = 600
+            Width = 1280,
+            Height = 720
         };
 
         using var stream = new MemoryStream();

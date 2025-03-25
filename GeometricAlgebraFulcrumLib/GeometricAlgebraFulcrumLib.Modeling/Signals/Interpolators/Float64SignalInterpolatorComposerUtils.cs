@@ -6,7 +6,7 @@ namespace GeometricAlgebraFulcrumLib.Modeling.Signals.Interpolators;
 public static class Float64SignalInterpolatorComposerUtils
 {
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static ScalarPolynomialInterpolator CreateScalarPolynomialInterpolator(this Float64Signal scalarSignal)
+    public static ScalarPolynomialInterpolator CreateScalarPolynomialInterpolator(this Float64SampledTimeSignal scalarSignal)
     {
         return ScalarPolynomialInterpolator.Create(scalarSignal, scalarSignal.SamplingRate);
     }

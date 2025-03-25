@@ -3,9 +3,10 @@ using System.Runtime.CompilerServices;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space2D;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.Parametric.Float64;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.Parametric.Float64.Space2D.Curves;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.Parametric.Float64.Space2D.Curves.CatmullRom;
 using GeometricAlgebraFulcrumLib.Modeling.Signals;
+using GeometricAlgebraFulcrumLib.Modeling.Trajectories.Vectors2D.Float64;
+using GeometricAlgebraFulcrumLib.Modeling.Trajectories.Vectors2D.Float64.Basic;
+using GeometricAlgebraFulcrumLib.Modeling.Trajectories.Vectors2D.Float64.Composers;
 
 namespace GeometricAlgebraFulcrumLib.Modeling.Calculus.Functions.Float64.Interpolators;
 
@@ -24,7 +25,7 @@ public class DfCatmullRomSplineInterpolator :
             bsSignalPointList[i] = LinFloat64Vector2D.Create((Float64Scalar)xValues[i], (Float64Scalar)yValues[i]);
 
         var curve =
-            bsSignalPointList.CreateCatmullRomSpline2D(
+            bsSignalPointList.FiniteCatmullRomSpline2D(
                 splineType,
                 false
             );
@@ -33,7 +34,7 @@ public class DfCatmullRomSplineInterpolator :
         return new DfCatmullRomSplineInterpolator(curve);
     }
 
-    public static DfCatmullRomSplineInterpolator Create(Float64Signal signal, DfCatmullRomSplineSignalInterpolatorOptions options)
+    public static DfCatmullRomSplineInterpolator Create(Float64SampledTimeSignal signal, DfCatmullRomSplineSignalInterpolatorOptions options)
     {
         if (options.BezierDegree is < 2 or > 63)
             throw new ArgumentOutOfRangeException(
@@ -57,7 +58,7 @@ public class DfCatmullRomSplineInterpolator :
             ).ToArray();
 
         var bsSignalCurve =
-            bsSignalPointList.CreateCatmullRomSpline2D(
+            bsSignalPointList.FiniteCatmullRomSpline2D(
                 options.SplineType,
                 false
             );
@@ -70,11 +71,11 @@ public class DfCatmullRomSplineInterpolator :
     public CatmullRomSplineType SplineType
         => Curve.SplineType;
 
-    public CatmullRomSpline2D Curve { get; }
+    public Float64CatmullRomSplinePath2D Curve { get; }
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    private DfCatmullRomSplineInterpolator(CatmullRomSpline2D curve)
+    private DfCatmullRomSplineInterpolator(Float64CatmullRomSplinePath2D curve)
     {
         Curve = curve;
     }

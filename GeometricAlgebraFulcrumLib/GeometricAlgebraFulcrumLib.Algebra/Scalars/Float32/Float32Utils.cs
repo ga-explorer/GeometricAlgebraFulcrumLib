@@ -744,7 +744,7 @@ public static class Float32Utils
 
         var angle = Math.Acos(number);
 
-        //if (angle < 0) angle += 2 * Math.PI;
+        //if (angle < 0) angle += Math.Tau;
 
         return (float)angle;
     }
@@ -756,7 +756,7 @@ public static class Float32Utils
 
         var angle = Math.Asin(number);
 
-        if (angle < 0) angle += 2 * Math.PI;
+        if (angle < 0) angle += Math.Tau;
 
         return (float)angle;
     }
@@ -766,7 +766,7 @@ public static class Float32Utils
     {
         var angle = Math.Atan(number);
 
-        if (angle < 0) angle += 2 * Math.PI;
+        if (angle < 0) angle += Math.Tau;
 
         return (float)angle;
     }
@@ -776,7 +776,7 @@ public static class Float32Utils
     {
         var angle = Math.Atan2(numberY, numberX);
 
-        if (angle < 0) angle += 2 * Math.PI;
+        if (angle < 0) angle += Math.Tau;
 
         return (float)angle;
     }
@@ -954,7 +954,7 @@ public static class Float32Utils
     {
         t = (cycleCount * t).ClampPeriodic(1);
 
-        return (float)(value1 + 0.5d * (1d - Math.Cos(2d * Math.PI * t)) * (value2 - value1));
+        return (float)(value1 + 0.5d * (1d - Math.Cos(Math.Tau * t)) * (value2 - value1));
     }
         
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -965,7 +965,7 @@ public static class Float32Utils
             
         t = (cycleCount * t).ClampPeriodic(1);
 
-        return (float)(value1 + 0.5d * (1d - Math.Cos(2d * Math.PI * t)) * (value2 - value1));
+        return (float)(value1 + 0.5d * (1d - Math.Cos(Math.Tau * t)) * (value2 - value1));
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -1005,8 +1005,8 @@ public static class Float32Utils
     {
         var length = finish - start;
         var n = isPeriodicRange
-            ? 2d * Math.PI * cycleCount / sampleCount
-            : 2d * Math.PI * cycleCount / (sampleCount - 1);
+            ? Math.Tau * cycleCount / sampleCount
+            : Math.Tau * cycleCount / (sampleCount - 1);
 
         return Enumerable
             .Range(0, sampleCount)
@@ -1075,13 +1075,13 @@ public static class Float32Utils
         return value > maxValue ? maxValue : value;
     }
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static float ClampInt(this int value, int maxValue)
-    {
-        if (value < 0) return 0;
+    //[MethodImpl(MethodImplOptions.AggressiveInlining)]
+    //public static float ClampInt(this int value, int maxValue)
+    //{
+    //    if (value < 0) return 0;
 
-        return value > maxValue ? maxValue : value;
-    }
+    //    return value > maxValue ? maxValue : value;
+    //}
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static int ClampToInt(this float value, int maxValue)

@@ -16,7 +16,6 @@ using GeometricAlgebraFulcrumLib.Utilities.Structures.Basic;
 using OfficeOpenXml;
 using OxyPlot;
 using OxyPlot.Series;
-using Float64SignalComposerUtils = GeometricAlgebraFulcrumLib.Modeling.Signals.Float64SignalComposerUtils;
 
 // ReSharper disable InconsistentNaming
 
@@ -63,7 +62,7 @@ public static class NumericValidationSample
 
     // Create a 3-dimensional Euclidean geometric algebra processor based on the
     // selected tuple scalar processor
-    public static XGaProcessor<Float64Signal> GeometricSignalProcessor { get; }
+    public static XGaProcessor<Float64SampledTimeSignal> GeometricSignalProcessor { get; }
         = ScalarSignalProcessor.CreateEuclideanXGaProcessor();
 
     public static VectorFourierInterpolator FourierInterpolator { get; private set; }
@@ -75,7 +74,7 @@ public static class NumericValidationSample
     /// EMTP_transient signal using Fourier interpolator
     /// </summary>
     /// <returns></returns>
-    private static Quint<XGaVector<Float64Signal>> DefineCurve1()
+    private static Quint<XGaVector<Float64SampledTimeSignal>> DefineCurve1()
     {
         var inputFilePath =
             Path.Combine(WorkingPath, @"EMTP_transient_ahmad.xlsx");
@@ -148,14 +147,14 @@ public static class NumericValidationSample
         var vDt4 =
             FourierInterpolator.GetVectorsDt(t, 4).CreateVectorSignal(GeometricSignalProcessor, SamplingRate);
 
-        return new Quint<XGaVector<Float64Signal>>(v, vDt1, vDt2, vDt3, vDt4);
+        return new Quint<XGaVector<Float64SampledTimeSignal>>(v, vDt1, vDt2, vDt3, vDt4);
     }
 
     /// <summary>
     /// Aulario3 signal using Fourier interpolator 
     /// </summary>
     /// <returns></returns>
-    private static Quint<XGaVector<Float64Signal>> DefineCurve2()
+    private static Quint<XGaVector<Float64SampledTimeSignal>> DefineCurve2()
     {
         var inputFilePath =
             Path.Combine(WorkingPath, @"Aulario3_derivatives.xlsx");
@@ -233,14 +232,14 @@ public static class NumericValidationSample
         var vDt4 =
             FourierInterpolator.GetVectorsDt(t, 4).CreateVectorSignal(GeometricSignalProcessor, SamplingRate);
 
-        return new Quint<XGaVector<Float64Signal>>(v, vDt1, vDt2, vDt3, vDt4);
+        return new Quint<XGaVector<Float64SampledTimeSignal>>(v, vDt1, vDt2, vDt3, vDt4);
     }
 
     /// <summary>
     /// EMTP_transient signal using Neville polynomial interpolator and Wiener filter
     /// </summary>
     /// <returns></returns>
-    private static Quint<XGaVector<Float64Signal>> DefineCurve3()
+    private static Quint<XGaVector<Float64SampledTimeSignal>> DefineCurve3()
     {
         var inputFilePath =
             Path.Combine(WorkingPath, @"EMTP_transient_ahmad.xlsx");
@@ -283,14 +282,14 @@ public static class NumericValidationSample
         var vDt3 = nevilleInterpolator.GetVectorsDt1(vDt2, SignalSamplesCount).NormWienerFilter(WienerFilterOrder);
         var vDt4 = nevilleInterpolator.GetVectorsDt1(vDt3, SignalSamplesCount).NormWienerFilter(WienerFilterOrder);
 
-        return new Quint<XGaVector<Float64Signal>>(v, vDt1, vDt2, vDt3, vDt4);
+        return new Quint<XGaVector<Float64SampledTimeSignal>>(v, vDt1, vDt2, vDt3, vDt4);
     }
 
     /// <summary>
     /// Aulario3 signal using Neville polynomial interpolator and Wiener filter
     /// </summary>
     /// <returns></returns>
-    private static Quint<XGaVector<Float64Signal>> DefineCurve4()
+    private static Quint<XGaVector<Float64SampledTimeSignal>> DefineCurve4()
     {
         var inputFilePath =
             Path.Combine(WorkingPath, @"Aulario3_derivatives.xlsx");
@@ -337,11 +336,11 @@ public static class NumericValidationSample
         var vDt3 = nevilleInterpolator.GetVectorsDt1(vDt2, SignalSamplesCount).NormWienerFilter(WienerFilterOrder);
         var vDt4 = nevilleInterpolator.GetVectorsDt1(vDt3, SignalSamplesCount).NormWienerFilter(WienerFilterOrder);
 
-        return new Quint<XGaVector<Float64Signal>>(v, vDt1, vDt2, vDt3, vDt4);
+        return new Quint<XGaVector<Float64SampledTimeSignal>>(v, vDt1, vDt2, vDt3, vDt4);
     }
 
 
-    private static Quad<XGaVector<Float64Signal>> GetArcLengthGramSchmidtFrame(XGaVector<Float64Signal> vDs1, XGaVector<Float64Signal> vDs2, XGaVector<Float64Signal> vDs3, XGaVector<Float64Signal> vDs4)
+    private static Quad<XGaVector<Float64SampledTimeSignal>> GetArcLengthGramSchmidtFrame(XGaVector<Float64SampledTimeSignal> vDs1, XGaVector<Float64SampledTimeSignal> vDs2, XGaVector<Float64SampledTimeSignal> vDs3, XGaVector<Float64SampledTimeSignal> vDs4)
     {
         var (u1s, u2s, u3s, u4s) =
             vDs1.ApplyGramSchmidt(vDs2, vDs3, vDs4, false);
@@ -361,7 +360,7 @@ public static class NumericValidationSample
         //    e3s.Sp(e4s).IsZero()
         //);
 
-        return new Quad<XGaVector<Float64Signal>>(e1s, e2s, e3s, e4s);
+        return new Quad<XGaVector<Float64SampledTimeSignal>>(e1s, e2s, e3s, e4s);
     }
 
     private static double LinearInterpolation(this IReadOnlyList<double> scalarList, double t)
@@ -379,7 +378,7 @@ public static class NumericValidationSample
         return (1 - t) * v1 + t * v2;
     }
 
-    private static void PlotCurveComponents(this XGaVector<Float64Signal> curve, string title, string filePath)
+    private static void PlotCurveComponents(this XGaVector<Float64SampledTimeSignal> curve, string title, string filePath)
     {
         filePath = Path.Combine(WorkingPath, filePath);
 
@@ -412,7 +411,7 @@ public static class NumericValidationSample
         OxyPlot.SkiaSharp.PngExporter.Export(pm, filePath + ".png", SignalSamplesCount * 2, 750, 200);
     }
 
-    private static void PlotCurve(this Scalar<Float64Signal> curve, string title, string filePath)
+    private static void PlotCurve(this Scalar<Float64SampledTimeSignal> curve, string title, string filePath)
     {
         curve.ScalarValue.PlotCurve(title, filePath);
     }

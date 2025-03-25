@@ -16,7 +16,6 @@ using GeometricAlgebraFulcrumLib.Utilities.Text.Text;
 using OfficeOpenXml;
 using OxyPlot;
 using OxyPlot.Series;
-using Float64SignalComposerUtils = GeometricAlgebraFulcrumLib.Modeling.Signals.Float64SignalComposerUtils;
 
 namespace GeometricAlgebraFulcrumLib.Applications.PowerSystems.SystemIdentification;
 
@@ -71,7 +70,7 @@ public static class DFIGTest1OpenLoopSample
 
     // Create a 3-dimensional Euclidean geometric algebra processor based on the
     // selected tuple scalar processor
-    public static RGaEuclideanProcessor<Float64Signal> GeometricSignalProcessor { get; }
+    public static RGaEuclideanProcessor<Float64SampledTimeSignal> GeometricSignalProcessor { get; }
         = ScalarSignalProcessor.CreateEuclideanRGaProcessor();
 
     private static string CombineWorkingPath(this string fileName)
@@ -94,7 +93,7 @@ public static class DFIGTest1OpenLoopSample
         return (1 - t) * v1 + t * v2;
     }
 
-    private static void PlotCurve(this Scalar<Float64Signal> curve, string title, string filePath)
+    private static void PlotCurve(this Scalar<Float64SampledTimeSignal> curve, string title, string filePath)
     {
         curve.ScalarValue.PlotCurve(title, filePath);
     }
@@ -307,7 +306,7 @@ public static class DFIGTest1OpenLoopSample
     //    package.SaveAs(outputFilePath);
     //}
     
-    private static void ComputeValues(string phaseName, Float64Signal tData, DifferentialFunction vFunc, DifferentialFunction iFunc, DifferentialFunction wFunc)
+    private static void ComputeValues(string phaseName, Float64SampledTimeSignal tData, DifferentialFunction vFunc, DifferentialFunction iFunc, DifferentialFunction wFunc)
     {
         var (vDt0, vDt1, vDt2) = 
             tData.SampleFunctionDerivatives2(vFunc);
@@ -400,7 +399,7 @@ public static class DFIGTest1OpenLoopSample
         package.SaveAs(outputFilePath);
     }
     
-    private static void ComputeValues1(string phaseName, Float64Signal tData, DifferentialFunction vFunc, DifferentialFunction iFunc, DifferentialFunction wFunc)
+    private static void ComputeValues1(string phaseName, Float64SampledTimeSignal tData, DifferentialFunction vFunc, DifferentialFunction iFunc, DifferentialFunction wFunc)
     {
         var (vDt0, vDt1, vDt2, vDt3) = 
             tData.SampleFunctionDerivatives3(vFunc);
@@ -514,7 +513,7 @@ public static class DFIGTest1OpenLoopSample
         return new Triplet<double>(d, q, z);
     }
 
-    private static Triplet<Float64Signal> Dqz(Float64Signal aSignal, Float64Signal bSignal, Float64Signal cSignal)
+    private static Triplet<Float64SampledTimeSignal> Dqz(Float64SampledTimeSignal aSignal, Float64SampledTimeSignal bSignal, Float64SampledTimeSignal cSignal)
     {
         const double f = 50d;
 
@@ -529,7 +528,7 @@ public static class DFIGTest1OpenLoopSample
 
         for (var i = 0; i < sampleCount; i++)
         {
-            var theta = 2d * Math.PI * f * tSignal[i];
+            var theta = Math.Tau * f * tSignal[i];
 
             var (d, q, z) = theta.Dqz(
                 aSignal[i],
@@ -542,7 +541,7 @@ public static class DFIGTest1OpenLoopSample
             zSignalArray[i] = z;
         }
 
-        return new Triplet<Float64Signal>(
+        return new Triplet<Float64SampledTimeSignal>(
             dSignalArray.CreateSignal(samplingRate),
             qSignalArray.CreateSignal(samplingRate),
             zSignalArray.CreateSignal(samplingRate)
@@ -588,9 +587,9 @@ public static class DFIGTest1OpenLoopSample
         );
     }
 
-    private static void ComputeValuesDq(string phaseName, Float64Signal tData, Triplet<DifferentialFunction> vsFunc, Triplet<DifferentialFunction> isFunc, Triplet<DifferentialFunction> irFunc)
+    private static void ComputeValuesDq(string phaseName, Float64SampledTimeSignal tData, Triplet<DifferentialFunction> vsFunc, Triplet<DifferentialFunction> isFunc, Triplet<DifferentialFunction> irFunc)
     {
-        const double freq = 2d * Math.PI * 0.005d;//50;
+        const double freq = Math.Tau * 0.005d;//50;
 
         var (vsdFunc, vsqFunc, vszFunc) = Dqz(vsFunc, freq);
         var (isdFunc, isqFunc, iszFunc) = Dqz(isFunc, freq);
@@ -922,7 +921,7 @@ public static class DFIGTest1OpenLoopSample
     public static void ValidationExample()
     {
         const double freqHz = 1;
-        const double freq = 2d * Math.PI * freqHz;
+        const double freq = Math.Tau * freqHz;
         const int cycleCount = 5;
         const int samplesPerCycle = 1000;
         const int sampleCount = samplesPerCycle * cycleCount + 1;

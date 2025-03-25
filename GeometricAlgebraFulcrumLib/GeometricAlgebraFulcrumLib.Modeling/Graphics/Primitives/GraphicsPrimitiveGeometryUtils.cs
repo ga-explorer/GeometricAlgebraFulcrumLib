@@ -2,10 +2,10 @@
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space3D;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.BasicShapes.Lines.Space3D.Float64;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.BasicShapes.Triangles.Space3D.Float64;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.Parametric.Float64.Space3D.Curves.Adaptive;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Primitives.Lines;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Primitives.Points;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Primitives.Triangles;
+using GeometricAlgebraFulcrumLib.Modeling.Trajectories.Vectors3D.Float64.Adaptive;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Basic;
 
 namespace GeometricAlgebraFulcrumLib.Modeling.Graphics.Primitives;
@@ -345,7 +345,7 @@ public static class GraphicsPrimitiveGeometryUtils
     }
         
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static GrLineStripGeometry3D GenerateGeometry(this AdaptiveCurve3D curve)
+    public static GrLineStripGeometry3D GenerateGeometry(this Float64AdaptivePath3D curve)
     {
         return GrLineStripGeometry3D.Create(curve);
     }

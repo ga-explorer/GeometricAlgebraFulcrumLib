@@ -650,38 +650,10 @@ public class WclKaTeXComposer :
                 image.Mutate(x => x.AutoCrop());
 
                 // Replace white background with transparent background
-                // https://github.com/SixLabors/ImageSharp.Drawing/issues/26
-                //image.Mutate(i => i.Clear(Color.Transparent));
-
-                // https://docs.sixlabors.com/articles/imagesharp/pixelbuffers.html
-                image.ProcessPixelRows(accessor =>
-                {
-                    // Color is pixel-agnostic, but it's implicitly convertible to the Rgba32 pixel type
-                    var transparent = Color.Transparent.ToPixel<Rgba32>();
-                    var black = Color.Black.FullAlpha().ToPixel<Rgba32>();
-
-                    for (var y = 0; y < accessor.Height; y++)
-                    {
-                        var pixelRow = accessor.GetRowSpan(y);
-
-                        // pixelRow.Length has the same value as accessor.Width,
-                        // but using pixelRow.Length allows the JIT to optimize away bounds checks:
-                        for (var x = 0; x < pixelRow.Length; x++)
-                        {
-                            // Get a reference to the pixel at position x
-                            ref var pixel = ref pixelRow[x];
-
-                            pixel.A = (byte)(255 - pixel.ToGrayscale());
-
-                            //// Overwrite the pixel referenced by 'ref Rgba32 pixel':
-                            //if (pixel.R > 128 && pixel.G > 128 && pixel.B > 128)
-                            //    pixel = transparent;
-                            //else
-                            //    pixel = black;
-                        }
-                    }
-                });
-
+                image.MutateSetPixelsAlpha(
+                    pixel => (byte)(255 - pixel.RgbMinComponent())
+                );
+                
                 item.PngImage = image;
 
                 if (SaveImages)

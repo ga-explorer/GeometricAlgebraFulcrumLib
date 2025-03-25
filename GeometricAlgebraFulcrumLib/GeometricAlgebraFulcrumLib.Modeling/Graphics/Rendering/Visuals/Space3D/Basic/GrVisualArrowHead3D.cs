@@ -197,21 +197,21 @@ public sealed class GrVisualArrowHead3D :
     {
         return SamplingSpecs.IsStatic || AnimatedPosition is null
             ? Position.ToLinVector3D()
-            : AnimatedPosition.GetPoint(time);
+            : AnimatedPosition.GetValue(time);
     }
         
     public LinFloat64Vector3D GetDirection(double time)
     {
         return SamplingSpecs.IsStatic || AnimatedDirection is null
             ? Direction
-            : AnimatedDirection.GetPoint(time).ToUnitLinVector3D();
+            : AnimatedDirection.GetValue(time).ToUnitLinVector3D();
     }
         
     public double GetMaxHeight(double time)
     {
         return SamplingSpecs.IsStatic || AnimatedDirection is null
             ? MaxHeight
-            : AnimatedDirection.GetPoint(time).VectorENorm();
+            : AnimatedDirection.GetValue(time).VectorENorm();
     }
 
     public IEnumerable<KeyFrameRecord> GetKeyFrameRecords()

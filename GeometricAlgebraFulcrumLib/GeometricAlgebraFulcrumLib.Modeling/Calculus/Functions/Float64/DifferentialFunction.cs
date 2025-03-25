@@ -4,6 +4,7 @@ using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
 using GeometricAlgebraFulcrumLib.Utilities.Structures;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Basic;
 using GeometricAlgebraFulcrumLib.Modeling.Calculus.Functions.Float64.Visitors;
+using GeometricAlgebraFulcrumLib.Modeling.Trajectories.Scalars.Float64;
 
 namespace GeometricAlgebraFulcrumLib.Modeling.Calculus.Functions.Float64;
 
@@ -247,6 +248,13 @@ public abstract class DifferentialFunction
         if (ArgumentCount != f.ArgumentCount) return false;
 
         return ToString() == f.ToString();
+    }
+    
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public virtual Float64ScalarRange FindValueRange(double t1, double t2)
+    {
+        return ((Func<double, double>)GetValue).FindValueRange(t1, t2);
     }
 
 

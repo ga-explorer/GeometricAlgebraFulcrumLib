@@ -64,8 +64,6 @@ public static class PolarGridGenerator
                 Quality = 9
             },
 
-            BackgroundColor = Color.BlanchedAlmond,
-
             SceneObject =
             {
                 Camera = GrPovRayCamera.ArcRotateOrthographic(
@@ -77,7 +75,7 @@ public static class PolarGridGenerator
                     GridHeight
                 )
             }
-        };
+        }.AddBackground(Color.BlanchedAlmond);
 
         
     private static void InitializeComposer()

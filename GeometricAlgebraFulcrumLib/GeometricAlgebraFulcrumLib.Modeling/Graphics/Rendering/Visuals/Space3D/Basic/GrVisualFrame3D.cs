@@ -40,6 +40,19 @@ public sealed class GrVisualFrame3D :
         );
     }
 
+    public static GrVisualFrame3D CreateStatic(string name, GrVisualFrameStyle3D style, ILinFloat64Vector3D origin, LinFloat64Quaternion orientation, double scalingFactor = 1)
+    {
+        return new GrVisualFrame3D(
+            name,
+            style,
+            origin,
+            LinFloat64Vector3D.Create(scalingFactor, 0, 0).RotateVectorUsingQuaternion(orientation),
+            LinFloat64Vector3D.Create(0, scalingFactor, 0).RotateVectorUsingQuaternion(orientation),
+            LinFloat64Vector3D.Create(0, 0, scalingFactor).RotateVectorUsingQuaternion(orientation),
+            Float64SamplingSpecs.Static
+        );
+    }
+
     public static GrVisualFrame3D CreateStatic(string name, GrVisualFrameStyle3D style, ILinFloat64Vector3D origin, ILinFloat64Vector3D direction1, ILinFloat64Vector3D direction2, ILinFloat64Vector3D direction3)
     {
         return new GrVisualFrame3D(
@@ -561,28 +574,28 @@ public sealed class GrVisualFrame3D :
     {
         return SamplingSpecs.IsStatic || AnimatedOrigin is null
             ? Origin.ToLinVector3D()
-            : AnimatedOrigin.GetPoint(time);
+            : AnimatedOrigin.GetValue(time);
     }
 
     public LinFloat64Vector3D GetDirection1(double time)
     {
         return SamplingSpecs.IsStatic || AnimatedDirection1 is null
             ? Direction1.ToLinVector3D()
-            : AnimatedDirection1.GetPoint(time);
+            : AnimatedDirection1.GetValue(time);
     }
 
     public LinFloat64Vector3D GetDirection2(double time)
     {
         return SamplingSpecs.IsStatic || AnimatedDirection2 is null
             ? Direction2.ToLinVector3D()
-            : AnimatedDirection2.GetPoint(time);
+            : AnimatedDirection2.GetValue(time);
     }
 
     public LinFloat64Vector3D GetDirection3(double time)
     {
         return SamplingSpecs.IsStatic || AnimatedDirection3 is null
             ? Direction3.ToLinVector3D()
-            : AnimatedDirection3.GetPoint(time);
+            : AnimatedDirection3.GetValue(time);
     }
 
     public LinFloat64Vector3D GetPosition1(double time)

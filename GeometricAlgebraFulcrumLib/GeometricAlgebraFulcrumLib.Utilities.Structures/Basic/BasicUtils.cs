@@ -213,7 +213,7 @@ public static class BasicUtils
     {
         return new Pair<T>(pair.Item2, pair.Item1);
     }
-
+    
         
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static T GetItem<T>(this ITriplet<T> triplet, int index)
@@ -824,15 +824,24 @@ public static class BasicUtils
 
         
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static double Min(this IPair<double> triplet)
+    public static Pair<double> SortItems(this IPair<double> pair)
     {
-        return Math.Min(triplet.Item1, triplet.Item2);
+        return pair.Item1 > pair.Item2
+            ? new Pair<double>(pair.Item1, pair.Item2)
+            : new Pair<double>(pair.Item2, pair.Item1);
+    }
+
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static double Min(this IPair<double> pair)
+    {
+        return Math.Min(pair.Item1, pair.Item2);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static double Max(this IPair<double> triplet)
+    public static double Max(this IPair<double> pair)
     {
-        return Math.Max(triplet.Item1, triplet.Item2);
+        return Math.Max(pair.Item1, pair.Item2);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -854,20 +863,20 @@ public static class BasicUtils
     }
         
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static double Min(this IQuad<double> triplet)
+    public static double Min(this IQuad<double> quad)
     {
         return Math.Min(
-            Math.Min(triplet.Item1, triplet.Item2), 
-            Math.Min(triplet.Item3, triplet.Item4)
+            Math.Min(quad.Item1, quad.Item2), 
+            Math.Min(quad.Item3, quad.Item4)
         );
     }
         
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static double Max(this IQuad<double> triplet)
+    public static double Max(this IQuad<double> quad)
     {
         return Math.Max(
-            Math.Max(triplet.Item1, triplet.Item2), 
-            Math.Max(triplet.Item3, triplet.Item4)
+            Math.Max(quad.Item1, quad.Item2), 
+            Math.Max(quad.Item3, quad.Item4)
         );
     }
 

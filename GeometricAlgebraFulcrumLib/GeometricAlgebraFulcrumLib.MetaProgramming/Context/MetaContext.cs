@@ -224,7 +224,7 @@ public sealed class MetaContext :
         TenValue = GetOrDefineLiteralNumber(10);
         MinusTenValue = GetOrDefineLiteralNumber(-10);
         PiValue = GetOrDefineSymbolicNumber(MetaExpressionNumberNames.Pi, Math.PI);
-        PiTimes2Value = GetOrDefineLiteralNumber(2 * Math.PI);
+        PiTimes2Value = GetOrDefineLiteralNumber(Math.Tau);
         PiTimes4Value = GetOrDefineLiteralNumber(4 * Math.PI);
         PiOver2Value = GetOrDefineLiteralNumber(0.5d * Math.PI);
         EValue = GetOrDefineSymbolicNumber(MetaExpressionNumberNames.E, Math.E);
@@ -1517,7 +1517,7 @@ public sealed class MetaContext :
                         s2.NumberHeadSpecs.NumberFloat64Value
                     );
                 
-                if (number < 0) number += 2 * Math.PI;
+                if (number < 0) number += Math.Tau;
 
                 return GetOrDefineLiteralNumber(
                     number, 

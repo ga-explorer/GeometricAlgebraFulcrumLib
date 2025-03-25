@@ -5,10 +5,10 @@ using GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Float64;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Float64.Elements;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Float64.Interpolation;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Float64.Operations;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.Parametric.Float64.Space1D.Scalars;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.Parametric.Float64.Space3D.Curves;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.Parametric.Float64.Space3D.Curves.Spherical;
 using GeometricAlgebraFulcrumLib.Modeling.Signals;
+using GeometricAlgebraFulcrumLib.Modeling.Trajectories.Scalars.Float64;
+using GeometricAlgebraFulcrumLib.Modeling.Trajectories.Vectors3D.Float64;
+using GeometricAlgebraFulcrumLib.Modeling.Trajectories.Vectors3D.Float64.Basic;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Extensions;
 
 namespace GeometricAlgebraFulcrumLib.Modeling.Samples.Modeling.Geometry.CGa;
@@ -52,19 +52,19 @@ public static class CGa5DConstructionSamples
     }
 
 
-    private static IParametricCurve3D GetPositionCurve1(double maxTime)
+    private static Float64Path3D GetPositionCurve1(double maxTime)
     {
         var freqHz = 1 / maxTime;
-        var freq = 2 * Math.PI * freqHz;
+        var freq = Math.Tau * freqHz;
 
-        var parameterRange = Float64ScalarRange.Create(0, maxTime);
+        var timeRange = Float64ScalarRange.Create(0, maxTime);
 
-        var rCurve = ConstantParametricScalar.Create(5);
-        var thetaCurve = LinearParametricScalar.Create(freq);
-        var phiCurve = ConstantParametricScalar.Create(0);
+        var rCurve = Float64ScalarSignal.FiniteConstant(timeRange, 5);
+        var thetaCurve = Float64ScalarSignal.FiniteRamp(timeRange, 0, freq);
+        var phiCurve = Float64ScalarSignal.FiniteZero(timeRange);
 
-        var curve = SphericalCurve3D.Create(
-            parameterRange,
+        var curve = Float64SphericalPath3D.Finite(
+            timeRange,
             rCurve,
             thetaCurve,
             phiCurve
@@ -73,19 +73,19 @@ public static class CGa5DConstructionSamples
         return curve;
     }
 
-    private static IParametricCurve3D GetPositionCurve2(double maxTime)
+    private static Float64Path3D GetPositionCurve2(double maxTime)
     {
         var freqHz = 1 / maxTime;
-        var freq = 2 * Math.PI * freqHz;
+        var freq = Math.Tau * freqHz;
 
-        var parameterRange = Float64ScalarRange.Create(0, maxTime);
+        var timeRange = Float64ScalarRange.Create(0, maxTime);
 
-        var rCurve = ConstantParametricScalar.Create(5);
-        var thetaCurve = LinearParametricScalar.Create(-freq);
-        var phiCurve = ConstantParametricScalar.Create(0);
+        var rCurve = Float64ScalarSignal.FiniteConstant(timeRange, 5);
+        var thetaCurve = Float64ScalarSignal.FiniteRamp(timeRange, 0, -freq);
+        var phiCurve = Float64ScalarSignal.FiniteZero(timeRange);
 
-        var curve = SphericalCurve3D.Create(
-            parameterRange,
+        var curve = Float64SphericalPath3D.Finite(
+            timeRange,
             rCurve,
             thetaCurve,
             phiCurve
@@ -104,7 +104,7 @@ public static class CGa5DConstructionSamples
 
         var curve1 = GetPositionCurve1(maxTime);
         var curve2 = GetPositionCurve2(maxTime);
-        var curve3 = ConstantParametricCurve3D.Create(0, 0, 0);
+        var curve3 = Float64ConstantPath3D.Finite(0, 0, 0);
 
         var circle1 =
             Ga.DefineRoundCircleFromPoints(

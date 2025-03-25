@@ -245,6 +245,19 @@ public static class LinFloat64VectorUtils
             ? new LinFloat64Vector()
             : vector.Times(1d / length);
     }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static IEnumerable<LinFloat64Vector> GetComponentVectors(this LinFloat64Vector vector)
+    {
+        foreach (var (index, scalar) in vector)
+        {
+            yield return LinFloat64Vector.CreateScaledBasis(
+                vector.VSpaceDimensions, 
+                index, 
+                scalar
+            );
+        }
+    }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static LinFloat64Vector VectorNegativeUnit(this LinFloat64Vector vector)

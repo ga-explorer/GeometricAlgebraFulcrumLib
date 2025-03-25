@@ -8,13 +8,13 @@ public static class Float64SignalInterpolatorComposerUtils
 {
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static XGaVectorPolynomialInterpolator CreatePolynomialInterpolator(this XGaVector<Float64Signal> vectorSamples, double samplingRate)
+    public static XGaVectorPolynomialInterpolator CreatePolynomialInterpolator(this XGaVector<Float64SampledTimeSignal> vectorSamples, double samplingRate)
     {
         return XGaVectorPolynomialInterpolator.Create(vectorSamples);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static VectorFourierInterpolator CreateFourierInterpolator(this XGaVector<Float64Signal> signalSamples, IEnumerable<int> frequencyIndexSet)
+    public static VectorFourierInterpolator CreateFourierInterpolator(this XGaVector<Float64SampledTimeSignal> signalSamples, IEnumerable<int> frequencyIndexSet)
     {
         return VectorFourierInterpolator.Create(
             signalSamples,
@@ -23,7 +23,7 @@ public static class Float64SignalInterpolatorComposerUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static VectorFourierInterpolator CreateFourierInterpolator(this XGaVector<Float64Signal> scalarSignal, double energyThreshold = 0.998d)
+    public static VectorFourierInterpolator CreateFourierInterpolator(this XGaVector<Float64SampledTimeSignal> scalarSignal, double energyThreshold = 0.998d)
     {
         return VectorFourierInterpolator.Create(
             scalarSignal,

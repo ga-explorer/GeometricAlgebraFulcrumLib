@@ -333,14 +333,14 @@ public sealed class GrVisualParallelogramSurface3D :
     {
         return SamplingSpecs.IsStatic || AnimatedDirection1 is null
             ? Direction1.ToLinVector3D()
-            : AnimatedDirection1.GetPoint(time);
+            : AnimatedDirection1.GetValue(time);
     }
         
     public LinFloat64Vector3D GetDirection2(double time)
     {
         return SamplingSpecs.IsStatic || AnimatedDirection2 is null
             ? Direction2.ToLinVector3D()
-            : AnimatedDirection2.GetPoint(time);
+            : AnimatedDirection2.GetValue(time);
     }
         
     public LinFloat64Vector3D GetDirection12(double time)
@@ -353,7 +353,7 @@ public sealed class GrVisualParallelogramSurface3D :
     {
         return SamplingSpecs.IsStatic || AnimatedPosition is null
             ? Position.ToLinVector3D()
-            : AnimatedPosition.GetPoint(time);
+            : AnimatedPosition.GetValue(time);
     }
 
     public LinFloat64Vector3D GetPosition1(double time)

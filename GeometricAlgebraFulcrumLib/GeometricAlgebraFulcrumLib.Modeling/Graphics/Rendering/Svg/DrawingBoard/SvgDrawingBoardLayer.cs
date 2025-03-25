@@ -449,7 +449,7 @@ public class SvgDrawingBoardLayer
             return DrawLineSegment(-x, -y, x, y);
         }
 
-        var angleFactor = 2 * Math.PI / sidesCount;
+        var angleFactor = Math.Tau / sidesCount;
         var pointsList = Enumerable
             .Range(0, sidesCount)
             .Select(i => offsetAngle + i * angleFactor)

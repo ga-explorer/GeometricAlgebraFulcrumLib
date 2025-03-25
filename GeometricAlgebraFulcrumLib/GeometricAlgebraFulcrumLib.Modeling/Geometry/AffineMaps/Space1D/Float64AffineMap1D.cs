@@ -2,6 +2,7 @@
 using System.Runtime.CompilerServices;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Matrices;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
+using GeometricAlgebraFulcrumLib.Utilities.Structures.Basic;
 
 namespace GeometricAlgebraFulcrumLib.Modeling.Geometry.AffineMaps.Space1D;
 
@@ -16,7 +17,7 @@ public sealed record Float64AffineMap1D :
 
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Float64AffineMap1D Create(Float64Scalar scaling)
+    public static Float64AffineMap1D CreateScale(double scaling)
     {
         if (scaling.IsOne())
             return Identity;
@@ -26,6 +27,100 @@ public sealed record Float64AffineMap1D :
 
         return new Float64AffineMap1D(scaling, Float64Scalar.Zero);
     }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static Float64AffineMap1D CreateScale(Float64Scalar scaling)
+    {
+        if (scaling.IsOne())
+            return Identity;
+
+        if (scaling.IsMinusOne())
+            return Reflection;
+
+        return new Float64AffineMap1D(scaling, Float64Scalar.Zero);
+    }
+    
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static Float64AffineMap1D CreateTranslate(double offset)
+    {
+        return offset.IsZero() 
+            ? Identity 
+            : new Float64AffineMap1D(Float64Scalar.One, offset);
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static Float64AffineMap1D CreateTranslate(Float64Scalar offset)
+    {
+        return offset.IsZero() 
+            ? Identity 
+            : new Float64AffineMap1D(Float64Scalar.One, offset);
+    }
+
+    
+    public static Float64AffineMap1D CreateFromRanges(double inputValue1, double inputValue2, double outputValue1, double outputValue2)
+    {
+        var dtInv = 1d / (inputValue2 - inputValue1);
+
+        var scaling = (outputValue2 - outputValue1) * dtInv;
+        var offset = (inputValue2 * outputValue1 - inputValue1 * outputValue2) * dtInv;
+
+        var affineMap = new Float64AffineMap1D(scaling, offset);
+
+        Debug.Assert(
+            affineMap.MapPoint(inputValue1).IsNearEqual(outputValue1)
+        );
+        
+        Debug.Assert(
+            affineMap.MapPoint(inputValue2).IsNearEqual(outputValue2)
+        );
+
+        return affineMap;
+    }
+
+    public static Float64AffineMap1D CreateFromRanges(Float64Scalar inputValue1, Float64Scalar inputValue2, Float64Scalar outputValue1, Float64Scalar outputValue2)
+    {
+        var dtInv = 1d / (inputValue2 - inputValue1);
+
+        var scaling = (outputValue2 - outputValue1) * dtInv;
+        var offset = (inputValue2 * outputValue1 - inputValue1 * outputValue2) * dtInv;
+
+        var affineMap = new Float64AffineMap1D(scaling, offset);
+
+        Debug.Assert(
+            affineMap.MapPoint(inputValue1).IsNearEqual(outputValue1)
+        );
+        
+        Debug.Assert(
+            affineMap.MapPoint(inputValue2).IsNearEqual(outputValue2)
+        );
+
+        return affineMap;
+    }
+    
+    public static Float64AffineMap1D CreateFromRanges(IPair<Float64Scalar> inputRange, IPair<Float64Scalar> outputRange)
+    {
+        var (inputValue1, inputValue2) = inputRange.ToPair();
+        var (outputValue1, outputValue2) = outputRange.ToPair();
+
+        var dtInv = 1d / (inputValue2 - inputValue1);
+
+        var scaling = (outputValue2 - outputValue1) * dtInv;
+        var offset = (inputValue2 * outputValue1 - inputValue1 * outputValue2) * dtInv;
+
+        var affineMap = new Float64AffineMap1D(scaling, offset);
+
+        Debug.Assert(
+            affineMap.MapPoint(inputValue1).IsNearEqual(outputValue1)
+        );
+        
+        Debug.Assert(
+            affineMap.MapPoint(inputValue2).IsNearEqual(outputValue2)
+        );
+
+        return affineMap;
+    }
+
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Float64AffineMap1D Create(Float64Scalar scaling, Float64Scalar offset)
@@ -41,27 +136,6 @@ public sealed record Float64AffineMap1D :
                 : new Float64AffineMap1D(scaling, offset);
 
         return new Float64AffineMap1D(scaling, offset);
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Float64AffineMap1D Create(Float64Scalar inputValue1, Float64Scalar inputValue2, Float64Scalar outputValue1, Float64Scalar outputValue2)
-    {
-        var dtInv = 1d / (inputValue2 - inputValue1);
-
-        var scaling = (outputValue2 - outputValue1) * dtInv;
-        var offset = (inputValue2 * outputValue1 - inputValue1 * outputValue2) * dtInv;
-
-        var affineMap = Create(scaling, offset);
-
-        Debug.Assert(
-            affineMap.MapPoint(inputValue1).IsNearEqual(outputValue1)
-        );
-        
-        Debug.Assert(
-            affineMap.MapPoint(inputValue2).IsNearEqual(outputValue2)
-        );
-
-        return affineMap;
     }
 
 
@@ -94,10 +168,6 @@ public sealed record Float64AffineMap1D :
     public Float64Scalar this[Float64Scalar t] 
         => Scaling * t + Offset;
 
-    public bool IsIdentity
-        => Offset.IsZero() &&
-           Scaling.IsOne();
-
     public bool IsReflection
         => Offset.IsZero() &&
            Scaling.IsMinusOne();
@@ -109,10 +179,10 @@ public sealed record Float64AffineMap1D :
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     private Float64AffineMap1D(Float64Scalar scaling, Float64Scalar offset)
     {
-        if (offset.IsInfinite())
+        if (!offset.IsFinite())
             throw new ArgumentOutOfRangeException(nameof(offset));
 
-        if (scaling.IsNearZero() || scaling.IsInfinite())
+        if (scaling.IsNearZero() || !scaling.IsFinite())
             throw new ArgumentOutOfRangeException(nameof(scaling));
 
         Offset = offset;
@@ -135,6 +205,20 @@ public sealed record Float64AffineMap1D :
                Scaling.IsValid() &&
                !Scaling.IsInfinite() &&
                !Scaling.IsZero();
+    }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public bool IsIdentity()
+    {
+        return Offset.IsZero() &&
+               Scaling.IsOne();
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public bool IsNearIdentity(double zeroEpsilon = Float64Utils.ZeroEpsilon)
+    {
+        return Scaling.IsNearOne(zeroEpsilon) &&
+               Offset.IsNearZero(zeroEpsilon);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]

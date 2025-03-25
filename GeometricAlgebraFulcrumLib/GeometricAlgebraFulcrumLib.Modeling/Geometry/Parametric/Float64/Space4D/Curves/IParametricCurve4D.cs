@@ -10,7 +10,7 @@ namespace GeometricAlgebraFulcrumLib.Modeling.Geometry.Parametric.Float64.Space4
 public interface IParametricCurve4D :
     IAlgebraicElement
 {
-    Float64ScalarRange ParameterRange { get; }
+    Float64ScalarRange TimeRange { get; }
 
     LinFloat64Vector4D GetPoint(double parameterValue);
 

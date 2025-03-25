@@ -2236,7 +2236,7 @@ public readonly struct Float64Scalar :
         var t = (cycleCount * ScalarValue).ClampPeriodic(1);
 
         return new Float64Scalar(
-            value1 + 0.5d * (1d - Math.Cos(2d * Math.PI * t)) * (value2 - value1)
+            value1 + 0.5d * (1d - Math.Cos(Math.Tau * t)) * (value2 - value1)
         );
     }
     
@@ -2249,7 +2249,7 @@ public readonly struct Float64Scalar :
         var t = (cycleCount * ScalarValue).ClampPeriodic(1);
 
         return new Float64Scalar(
-            value1 + 0.5d * (1d - Math.Cos(2d * Math.PI * t)) * (value2 - value1)
+            value1 + 0.5d * (1d - Math.Cos(Math.Tau * t)) * (value2 - value1)
         );
     }
 
@@ -2294,8 +2294,8 @@ public readonly struct Float64Scalar :
         var start = ScalarValue;
         var length = finish - start;
         var n = isPeriodicRange
-            ? 2d * Math.PI * cycleCount / sampleCount
-            : 2d * Math.PI * cycleCount / (sampleCount - 1);
+            ? Math.Tau * cycleCount / sampleCount
+            : Math.Tau * cycleCount / (sampleCount - 1);
 
         return Enumerable
             .Range(0, sampleCount)

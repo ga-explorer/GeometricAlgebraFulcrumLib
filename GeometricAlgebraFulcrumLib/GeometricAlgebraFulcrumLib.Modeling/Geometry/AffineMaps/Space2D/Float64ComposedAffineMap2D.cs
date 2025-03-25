@@ -100,6 +100,11 @@ public sealed class Float64ComposedAffineMap2D :
 
     public bool SwapsHandedness { get; }
 
+    public bool IsIdentity()
+    {
+        return GetSquareMatrix3().IsIdentity();
+    }
+
     public LinFloat64Vector2D MapPoint(ILinFloat64Vector2D point)
     {
         return _affineMapsList.Aggregate(

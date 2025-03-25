@@ -22,34 +22,34 @@ public abstract class RGaGeometricFrequencyProcessor
     public IScalarProcessor<double> ScalarProcessor 
         => ScalarProcessorOfFloat64.Instance;
 
-    public RGaProcessor<Float64Signal> ScalarSignalProcessor 
+    public RGaProcessor<Float64SampledTimeSignal> ScalarSignalProcessor 
         => VectorSignal.Processor;
 
     public int VSpaceDimensions { get; }
 
-    public Float64Signal TimeValuesSignal { get; protected set; }
+    public Float64SampledTimeSignal TimeValuesSignal { get; protected set; }
 
-    public RGaVector<Float64Signal> VectorSignal { get; protected set;}
+    public RGaVector<Float64SampledTimeSignal> VectorSignal { get; protected set;}
 
-    public RGaVector<Float64Signal> VectorSignalInterpolated { get; protected set;}
+    public RGaVector<Float64SampledTimeSignal> VectorSignalInterpolated { get; protected set;}
 
-    public IReadOnlyList<RGaVector<Float64Signal>> VectorSignalTimeDerivatives { get; protected set; }
+    public IReadOnlyList<RGaVector<Float64SampledTimeSignal>> VectorSignalTimeDerivatives { get; protected set; }
 
-    public IReadOnlyList<RGaVector<Float64Signal>> VectorSignalArcLengthDerivatives { get; protected set; }
+    public IReadOnlyList<RGaVector<Float64SampledTimeSignal>> VectorSignalArcLengthDerivatives { get; protected set; }
         
-    public IReadOnlyList<Float64Signal> ArcLengthTimeDerivatives { get; protected set; }
+    public IReadOnlyList<Float64SampledTimeSignal> ArcLengthTimeDerivatives { get; protected set; }
 
-    public IReadOnlyList<RGaVector<Float64Signal>> ArcLengthFramesOrthogonal { get; protected set; }
+    public IReadOnlyList<RGaVector<Float64SampledTimeSignal>> ArcLengthFramesOrthogonal { get; protected set; }
 
-    public IReadOnlyList<RGaVector<Float64Signal>> ArcLengthFramesOrthonormal { get; protected set; }
+    public IReadOnlyList<RGaVector<Float64SampledTimeSignal>> ArcLengthFramesOrthonormal { get; protected set; }
 
-    public IReadOnlyList<RGaVector<Float64Signal>> ArcLengthFramesOrthonormalDerivatives { get; protected set; }
+    public IReadOnlyList<RGaVector<Float64SampledTimeSignal>> ArcLengthFramesOrthonormalDerivatives { get; protected set; }
 
-    public IReadOnlyList<Float64Signal> Curvatures { get; protected set; }
+    public IReadOnlyList<Float64SampledTimeSignal> Curvatures { get; protected set; }
 
-    public IReadOnlyList<RGaBivector<Float64Signal>> AngularVelocityBlades { get; protected set; }
+    public IReadOnlyList<RGaBivector<Float64SampledTimeSignal>> AngularVelocityBlades { get; protected set; }
     
-    public IReadOnlyList<RGaBivector<Float64Signal>> AngularVelocityAverageBlades { get; protected set; }
+    public IReadOnlyList<RGaBivector<Float64SampledTimeSignal>> AngularVelocityAverageBlades { get; protected set; }
 
     //public RGaBivector<ScalarSignalFloat64> DarbouxBivectors { get; protected set; }
 
@@ -83,7 +83,7 @@ public abstract class RGaGeometricFrequencyProcessor
 
     protected void ComputeArcLengthTimeDerivatives()
     {
-        var sDt = new Float64Signal[VSpaceDimensions];
+        var sDt = new Float64SampledTimeSignal[VSpaceDimensions];
 
         var vDt = 
             VectorSignalTimeDerivatives;
@@ -113,7 +113,7 @@ public abstract class RGaGeometricFrequencyProcessor
         var vDt = VectorSignalTimeDerivatives;
         var sDt = ArcLengthTimeDerivatives;
 
-        var vDs = new RGaVector<Float64Signal>[VSpaceDimensions];
+        var vDs = new RGaVector<Float64SampledTimeSignal>[VSpaceDimensions];
 
         vDs[0] = vDt[0] / sDt[0];
 
@@ -146,8 +146,8 @@ public abstract class RGaGeometricFrequencyProcessor
                     )
                 ).ToArray();
 
-        var framesOrthogonal = new RGaVector<Float64Signal>[VSpaceDimensions];
-        var framesOrthonormal = new RGaVector<Float64Signal>[VSpaceDimensions];
+        var framesOrthogonal = new RGaVector<Float64SampledTimeSignal>[VSpaceDimensions];
+        var framesOrthonormal = new RGaVector<Float64SampledTimeSignal>[VSpaceDimensions];
 
         for (var i = 0; i < VSpaceDimensions; i++)
         {
@@ -166,7 +166,7 @@ public abstract class RGaGeometricFrequencyProcessor
                 .Select(v => v.NormSquared())
                 .ToArray();
 
-        var curvatureArray = new Float64Signal[VSpaceDimensions - 1];
+        var curvatureArray = new Float64SampledTimeSignal[VSpaceDimensions - 1];
 
         for (var i = 1; i < VSpaceDimensions; i++)
         {
@@ -184,8 +184,8 @@ public abstract class RGaGeometricFrequencyProcessor
 
         var k = VSpaceDimensions - 1;
 
-        var avBladeArray = new RGaBivector<Float64Signal>[k];
-        var avBladeAvgArray = new RGaBivector<Float64Signal>[k];
+        var avBladeArray = new RGaBivector<Float64SampledTimeSignal>[k];
+        var avBladeAvgArray = new RGaBivector<Float64SampledTimeSignal>[k];
         //var sDt1 = ArcLengthTimeDerivatives[0];
 
         for (var i = 0; i < k; i++)

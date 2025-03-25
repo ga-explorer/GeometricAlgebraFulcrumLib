@@ -1,6 +1,6 @@
 ﻿using System.Runtime.CompilerServices;
+using GeometricAlgebraFulcrumLib.Modeling.Trajectories.Vectors3D.Float64.Adaptive;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Basic;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.Parametric.Float64.Space3D.Curves.Adaptive;
 
 namespace GeometricAlgebraFulcrumLib.Modeling.Geometry.Parametric.Float64.Space3D.Surfaces.Sampled;
 
@@ -8,7 +8,7 @@ public sealed record GrParametricSurfaceTreeCorner3D
 {
     public GrParametricSurfaceTree3D ParentTree { get; }
 
-    public Pair<AdaptiveCurveTreeCornerPosition3D> Position { get; }
+    public Pair<Float64AdaptivePath3DCornerPosition> Position { get; }
 
     public int Index { get; }
 
@@ -35,7 +35,7 @@ public sealed record GrParametricSurfaceTreeCorner3D
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    internal GrParametricSurfaceTreeCorner3D(GrParametricSurfaceTree3D parentTree, int index, GrParametricSurfaceLocalFrame3D frame, Pair<AdaptiveCurveTreeCornerPosition3D> position)
+    internal GrParametricSurfaceTreeCorner3D(GrParametricSurfaceTree3D parentTree, int index, GrParametricSurfaceLocalFrame3D frame, Pair<Float64AdaptivePath3DCornerPosition> position)
     {
         ParentTree = parentTree;
         Index = index;

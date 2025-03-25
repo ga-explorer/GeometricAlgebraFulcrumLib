@@ -365,6 +365,15 @@ public static class LinFloat64Vector3DUtils
         };
     }
 
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static Triplet<LinFloat64Vector3D> GetComponentVectors(this ITriplet<Float64Scalar> vector)
+    {
+        return new Triplet<LinFloat64Vector3D>(
+            LinFloat64Vector3D.Create(vector.Item1, Float64Scalar.Zero, Float64Scalar.Zero),
+            LinFloat64Vector3D.Create(Float64Scalar.Zero, vector.Item2, Float64Scalar.Zero),
+            LinFloat64Vector3D.Create(Float64Scalar.Zero, Float64Scalar.Zero, vector.Item3)
+        );
+    }
 
     public static Float64Scalar VectorENormNormSquared(this ITriplet<Complex> vector)
     {
@@ -468,7 +477,9 @@ public static class LinFloat64Vector3DUtils
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static bool IsZeroVector(this ITriplet<Float64Scalar> vector)
     {
-        return vector.VectorENormSquared().IsZero();
+        return vector.Item1.IsZero() &&
+               vector.Item2.IsZero() &&
+               vector.Item3.IsZero();
     }
 
     /// <summary>
@@ -640,9 +651,11 @@ public static class LinFloat64Vector3DUtils
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static LinFloat64Vector3D VectorCross(this ITriplet<Float64Scalar> v1, ITriplet<Float64Scalar> v2)
     {
-        return LinFloat64Vector3D.Create(v1.Item2 * v2.Item3 - v1.Item3 * v2.Item2,
+        return LinFloat64Vector3D.Create(
+            v1.Item2 * v2.Item3 - v1.Item3 * v2.Item2,
             v1.Item3 * v2.Item1 - v1.Item1 * v2.Item3,
-            v1.Item1 * v2.Item2 - v1.Item2 * v2.Item1);
+            v1.Item1 * v2.Item2 - v1.Item2 * v2.Item1
+        );
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -700,17 +713,31 @@ public static class LinFloat64Vector3DUtils
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static LinFloat64Vector3D VectorTimes(this ITriplet<Float64Scalar> v1, double v2)
     {
-        return LinFloat64Vector3D.Create(v1.Item1 * v2,
+        return LinFloat64Vector3D.Create(
+            v1.Item1 * v2,
             v1.Item2 * v2,
-            v1.Item3 * v2);
+            v1.Item3 * v2
+        );
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static LinFloat64Vector3D VectorTimes(this double v1, ITriplet<Float64Scalar> v2)
     {
-        return LinFloat64Vector3D.Create(v1 * v2.Item1,
+        return LinFloat64Vector3D.Create(
+            v1 * v2.Item1,
             v1 * v2.Item2,
-            v1 * v2.Item3);
+            v1 * v2.Item3
+        );
+    }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static LinFloat64Vector3D VectorComponentTimes(this ITriplet<Float64Scalar> v1, ITriplet<Float64Scalar> v2)
+    {
+        return LinFloat64Vector3D.Create(
+            v1.Item1 * v2.Item1,
+            v1.Item2 * v2.Item2,
+            v1.Item3 * v2.Item3
+        );
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]

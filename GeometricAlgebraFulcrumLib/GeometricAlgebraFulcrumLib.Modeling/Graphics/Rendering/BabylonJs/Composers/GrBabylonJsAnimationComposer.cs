@@ -1,46 +1,62 @@
 ﻿using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Angles;
-using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space3D;
-using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.BabylonJs.Animations;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.BabylonJs.Cameras;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.BabylonJs.Constants;
-using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.Visuals.Space3D.Basic;
-using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.Visuals.Space3D.Grids;
-using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.Visuals.Space3D.Styles;
-using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.Visuals.Textures;
+using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.Visuals.Space3D.Animations;
 using GeometricAlgebraFulcrumLib.Modeling.Signals;
-using GeometricAlgebraFulcrumLib.Modeling.Temporal.Float64.Scalars;
+using GeometricAlgebraFulcrumLib.Modeling.Trajectories.Scalars.Float64;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Basic;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Files;
+using GeometricAlgebraFulcrumLib.Utilities.Web.Images;
 using GeometricAlgebraFulcrumLib.Utilities.Web.LaTeX.KaTeX;
 using Humanizer;
 using SixLabors.ImageSharp;
+// ReSharper disable InconsistentNaming
 
 namespace GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.BabylonJs.Composers;
 
 public abstract class GrBabylonJsAnimationComposer
 {
-    public Float64SamplingSpecs SamplingSpecs { get; }
+    public Float64SamplingSpecs SceneSamplingSpecs { get; }
+
+    public int SceneSamplingRate
+        => (int)SceneSamplingSpecs.SamplingRate;
+
+    public double SceneMaxTime
+        => SceneSamplingSpecs.MaxTime;
     
-    public int SamplingRate
-        => (int)SamplingSpecs.SamplingRate;
-
-    public double MaxTime
-        => SamplingSpecs.MaxTime;
-
     public string WorkingFolder { get; }
+
+    public string SceneTitle { get; protected set; }
+
+    public string SceneFileName 
+        => SceneTitle.Pascalize();
+
+    public Float64ScalarSignalSet TemporalScalars { get; }
     
-    public string SceneTitle { get; protected set; } = "Scene";
-
-    public string SceneFileName { get; protected set; } = "Scene";
-
-    public TemporalFloat64ScalarSet TemporalScalars { get; }
-
     public WclKaTeXComposer KaTeXComposer { get; }
 
-    public GrBabylonJsAnimationCameraSpecs CameraSpecs { get; }
+    public GrVisualAnimatedCameraSpecs CameraSpecs { get; }
+    
+    public int ImageCount
+        => SceneSamplingSpecs.SampleCount;
 
-    public GrVisualTextureSet TextureSet { get; }
+    public int ImageWidth 
+        => CameraSpecs.CanvasWidth;
+
+    public int ImageHeight 
+        => CameraSpecs.CanvasHeight;
+
+    public double ImageWidthToHeight
+        => CameraSpecs.CanvasWidthToHeight;
+    
+    public double ImageHeightToWidth
+        => CameraSpecs.CanvasWidthToHeight;
+    
+    public Pair<int> ImageSize
+        => CameraSpecs.CanvasSize;
+
+    public GrVisualImageSet ImageSet { get; }
     
     public GrBabylonJsCodeFilesComposer CodeFilesComposer { get; protected set; }
 
@@ -50,11 +66,14 @@ public abstract class GrBabylonJsAnimationComposer
     public GrBabylonJsScene Scene
         => CodeFilesComposer.FirstScene;
     
-    public double LaTeXScalingFactor { get; init; } = 1 / 72d;
+    public double LaTeXScalingFactor { get; init; } 
+        = 1 / 96d;
 
-    public bool ShowCopyright { get; init; } = true;
+    public bool ShowCopyright { get; init; } 
+        = true;
 
-    public bool ShowGuiLayer { get; init; } = false;
+    public bool ShowGuiLayer { get; init; } 
+        = true;
     
 
     protected GrBabylonJsAnimationComposer(string workingFolder, int samplingRate, double maxTime)
@@ -72,7 +91,7 @@ public abstract class GrBabylonJsAnimationComposer
         if (!samplingSpecs.IsValidForBabylonJs())
             throw new ArgumentException(nameof(samplingSpecs));
 
-        SamplingSpecs = samplingSpecs;
+        SceneSamplingSpecs = samplingSpecs;
 
         KaTeXComposer = new WclKaTeXComposer(WorkingFolder)
         {
@@ -81,10 +100,11 @@ public abstract class GrBabylonJsAnimationComposer
             ThrowOnError = false,
             SaveImages = false
         };
-        
-        TemporalScalars = new TemporalFloat64ScalarSet(SamplingSpecs);
-        TextureSet = new GrVisualTextureSet(WorkingFolder);
-        CameraSpecs = new GrBabylonJsAnimationCameraSpecs(SamplingSpecs);
+
+        SceneTitle = "Scene";
+        TemporalScalars = new Float64ScalarSignalSet(SceneSamplingSpecs);
+        ImageSet = new GrVisualImageSet(WorkingFolder);
+        CameraSpecs = new GrVisualAnimatedCameraSpecs(SceneSamplingSpecs);
 
         var mainSceneComposer = new GrBabylonJsSceneComposer("mainScene")
         {
@@ -102,22 +122,44 @@ public abstract class GrBabylonJsAnimationComposer
     }
 
     
-    public GrBabylonJsAnimationComposer SetFileNameAndTitle(string sceneFileName)
+    public GrBabylonJsAnimationComposer SetTitle(string sceneTitle)
     {
-        SceneFileName = sceneFileName;
-        SceneTitle = sceneFileName;
-
-        return this;
-    }
-
-    public GrBabylonJsAnimationComposer SetFileNameAndTitle(string sceneFileName, string sceneTitle)
-    {
-        SceneFileName = sceneFileName;
         SceneTitle = sceneTitle;
 
         return this;
     }
+
+
+    public GrBabylonJsAnimationComposer SetCanvas480p()
+    {
+        return SetCanvas(720, 480);
+    }
     
+    public GrBabylonJsAnimationComposer SetCanvas720p()
+    {
+        return SetCanvas(1280, 720);
+    }
+    
+    public GrBabylonJsAnimationComposer SetCanvas1080p()
+    {
+        return SetCanvas(1920, 1080);
+    }
+    
+    public GrBabylonJsAnimationComposer SetCanvas1440p()
+    {
+        return SetCanvas(2560, 1440);
+    }
+    
+    public GrBabylonJsAnimationComposer SetCanvas2160p()
+    {
+        return SetCanvas(3840, 2160);
+    }
+    
+    public GrBabylonJsAnimationComposer SetCanvas4320p()
+    {
+        return SetCanvas(7680, 4320);
+    }
+
     public GrBabylonJsAnimationComposer SetCanvas(int width, int height)
     {
         CameraSpecs.SetCanvas(width, height);
@@ -125,22 +167,20 @@ public abstract class GrBabylonJsAnimationComposer
         return this;
     }
 
-    public virtual GrBabylonJsAnimationComposer SetCamera(TemporalFloat64Scalar alpha, TemporalFloat64Scalar beta, TemporalFloat64Scalar distance)
+    public virtual GrBabylonJsAnimationComposer SetCamera(Float64ScalarSignal alpha, Float64ScalarSignal beta, Float64ScalarSignal distance)
     {
         CameraSpecs.SetCamera(alpha, beta, distance);
 
         return this;
     }
     
-    public virtual GrBabylonJsAnimationComposer SetCamera(LinFloat64PolarAngle alpha, LinFloat64PolarAngle beta, double distance)
+    public GrBabylonJsAnimationComposer SetCamera(LinFloat64PolarAngle alpha, LinFloat64PolarAngle beta, double distance)
     {
-        CameraSpecs.SetCamera(
-            alpha.RadiansValue, 
-            beta.RadiansValue, 
-            distance
+        return SetCamera(
+            alpha.RadiansValue.ToTimeSignal(CameraSpecs.TimeRange), 
+            beta.RadiansValue.ToTimeSignal(CameraSpecs.TimeRange), 
+            distance.ToTimeSignal(CameraSpecs.TimeRange)
         );
-
-        return this;
     }
 
     public Tuple<LinFloat64PolarAngle, LinFloat64PolarAngle, double> GetCameraAlphaBetaDistanceAtFrame(int frameIndex)
@@ -153,9 +193,13 @@ public abstract class GrBabylonJsAnimationComposer
     {
     }
 
-    protected abstract void AddImageTextures();
+    protected virtual void AddImageTextures()
+    {
+    }
 
-    protected abstract void AddLaTeXTextures();
+    protected virtual void AddLaTeXTextures()
+    {
+    }
 
     protected virtual void InitializeSceneComposers()
     {
@@ -218,35 +262,6 @@ public abstract class GrBabylonJsAnimationComposer
         );
     }
 
-    protected virtual void AddGrid(GrVisualSquareGrid3D grid)
-    {
-        // Add ground coordinates grid
-        SceneComposer.GridMaterialKind =
-            GrBabylonJsGridMaterialKind.TexturedMaterial;
-
-        SceneComposer.AddSquareGrid(grid);
-    }
-
-    protected virtual void AddAxes(ITriplet<Float64Scalar> origin)
-    {
-        var scene = SceneComposer.SceneObject;
-
-        // Add reference unit axis frame
-        SceneComposer.AddElement(
-            GrVisualFrame3D.CreateStatic(
-                "axisFrame",
-                new GrVisualFrameStyle3D
-                {
-                    OriginStyle = scene.AddSimpleMaterial("axisFrameOriginMaterial", Color.DarkGray).CreateThickSurfaceStyle(0.075),
-                    Direction1Style = scene.AddSimpleMaterial("axisFrameXMaterial", Color.DarkRed).CreateTubeCurveStyle(0.035),
-                    Direction2Style = scene.AddSimpleMaterial("axisFrameYMaterial", Color.DarkGreen).CreateTubeCurveStyle(0.035),
-                    Direction3Style = scene.AddSimpleMaterial("axisFrameZMaterial", Color.DarkBlue).CreateTubeCurveStyle(0.035)
-                },
-                origin.ToLinVector3D()
-            )
-        );
-    }
-    
     protected abstract void AddGuiLayer();
 
     protected abstract void ComposeScene();
@@ -264,19 +279,19 @@ public abstract class GrBabylonJsAnimationComposer
         
         Console.WriteLine("Adding image textures ..");
         
-        TextureSet.Clear();
+        ImageSet.Clear();
         AddImageTextures();
 
         KaTeXComposer.Clear();
         AddLaTeXTextures();
         KaTeXComposer.RenderKaTeX();
 
-        TextureSet.AddTextures(
+        ImageSet.AddImages(
             "latex", 
             KaTeXComposer
         );
         
-        TextureSet.FinalizeTextures();
+        ImageSet.FinalizeGroups();
 
         Console.WriteLine("Adding image textures done.");
         Console.WriteLine();

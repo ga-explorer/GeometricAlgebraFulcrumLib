@@ -41,6 +41,7 @@ public static class Sample2
         };
 
         composer
+            .AddDefaultSkySphere()
             .AddDefaultAxes(LinFloat64Vector3D.Zero)
             .AddDefaultGridZx(gridWidth, 1, 0, 1);
 

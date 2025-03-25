@@ -1,17 +1,18 @@
 ﻿using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Basis;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Angles;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space3D;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.Parametric.Float64.Space3D.Curves;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.Parametric.Float64.Space3D.Curves.Adaptive;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.BabylonJs.Constants;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.BabylonJs.GUI;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.Visuals.Space3D.Animations;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.Visuals.Space3D.Basic;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.Visuals.Space3D.Curves;
-using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.Visuals.Space3D.Grids;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.Visuals.Space3D.Styles;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.Visuals.Space3D.Surfaces;
 using GeometricAlgebraFulcrumLib.Modeling.Signals;
+using GeometricAlgebraFulcrumLib.Modeling.Trajectories.Vectors3D.Float64;
+using GeometricAlgebraFulcrumLib.Modeling.Trajectories.Vectors3D.Float64.Adaptive;
+using GeometricAlgebraFulcrumLib.Modeling.Trajectories.Vectors3D.Float64.Basic;
+using GeometricAlgebraFulcrumLib.Modeling.Trajectories.Vectors3D.Float64.Composers;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Basic;
 using SixLabors.ImageSharp;
 
@@ -20,41 +21,45 @@ namespace GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.BabylonJs.Compo
 public sealed class GrBabylonJsDifferentialCurveAnimationComposer :
     GrBabylonJsAnimationComposer
 {
-    public IParametricC2Curve3D Curve { get; }
+    public Float64Path3D Curve { get; }
+    
+    public double TimeScaling { get; set; } = 1;
 
-    public ComputedParametricCurve3D CurveDerivative1 { get; }
+    public double ValueScaling { get; set; } = 1;
 
-    public ComputedParametricCurve3D CurveDerivative2 { get; }
+    public Float64ComputedPath3D CurveDerivative1 { get; }
 
-    public ComputedParametricCurve3D CurveDerivative3 { get; }
+    public Float64ComputedPath3D CurveDerivative2 { get; }
+
+    public Float64ComputedPath3D CurveDerivative3 { get; }
 
 
-    public GrBabylonJsDifferentialCurveAnimationComposer(string workingFolder, int frameRate, double maxTime, IParametricC2Curve3D curve)
+    public GrBabylonJsDifferentialCurveAnimationComposer(string workingFolder, int frameRate, double maxTime, Float64Path3D curve)
         : this(workingFolder, Float64SamplingSpecs.Create(frameRate, maxTime), curve)
     {
 
     }
 
-    public GrBabylonJsDifferentialCurveAnimationComposer(string workingFolder, Float64SamplingSpecs samplingSpecs, IParametricC2Curve3D curve)
+    public GrBabylonJsDifferentialCurveAnimationComposer(string workingFolder, Float64SamplingSpecs samplingSpecs, Float64Path3D curve)
         : base(workingFolder, samplingSpecs)
     {
         Curve = curve;
 
-        CurveDerivative1 = ComputedParametricCurve3D.Create(
+        CurveDerivative1 = Float64ComputedPath3D.Finite(
             time =>
                 Curve
                     .GetArcLengthDerivative1Point(time)
                     .ToUnitLinVector3D(false)
         );
 
-        CurveDerivative2 = ComputedParametricCurve3D.Create(
+        CurveDerivative2 = Float64ComputedPath3D.Finite(
             time =>
                 Curve
                     .GetArcLengthDerivative2Point(time)
                     .ToUnitLinVector3D(false)
         );
 
-        CurveDerivative3 = ComputedParametricCurve3D.Create(
+        CurveDerivative3 = Float64ComputedPath3D.Finite(
             time =>
                 Curve
                     .GetArcLengthDerivative3Point(time)
@@ -72,7 +77,7 @@ public sealed class GrBabylonJsDifferentialCurveAnimationComposer :
     {
         if (ShowCopyright)
         {
-            TextureSet.AddTextureFromPngFile(
+            ImageSet.AddImageFromPngFile(
                 "gui",
                 "Copyright"
             );
@@ -189,13 +194,13 @@ public sealed class GrBabylonJsDifferentialCurveAnimationComposer :
             // Add GUI layer
             var uiTexture = Scene.AddGuiFullScreenUi("uiTexture");
 
-            var copyrightImage = TextureSet["gui", "Copyright"];
+            var copyrightImage = ImageSet["gui", "Copyright"];
             var copyrightImageWidth = 0.5d * CodeFilesComposer.CanvasWidth;
             var copyrightImageHeight = 0.5d * CodeFilesComposer.CanvasWidth * copyrightImage.ImageHeightToWidth;
 
             uiTexture.AddGuiImage(
                 "copyrightImage",
-                copyrightImage.GetImageUrl(),
+                copyrightImage.GetImageDataUrlBase64(),
                 new GrBabylonJsGuiImageProperties
                 {
                     Stretch = GrBabylonJsImageStretch.Uniform,
@@ -232,24 +237,27 @@ public sealed class GrBabylonJsDifferentialCurveAnimationComposer :
             orangeMaterial
         );
 
-        AddGrid(
-            GrVisualSquareGrid3D.DefaultZx(
-                LinFloat64Vector3D.Zero,
-                16,
-                1,
-                0.5
-            )
+        SceneComposer.AddGrid(
+            "defaultZxGrid",
+            LinFloat64Vector3D.Zero,
+            LinFloat64Quaternion.XyToZx, 
+            16,
+            1,
+            0.5
         );
 
-        AddAxes(
-            LinFloat64Vector3D.Create(-6, 0, -6)
+        SceneComposer.AddAxes(
+            "defaultAxes",
+            LinFloat64Vector3D.Create(-6, 0, -6),
+            LinFloat64Quaternion.Identity,
+            1
         );
 
         var (v1AnimatedVector, v2AnimatedVector, v3AnimatedVector) =
             Curve
-                .GetComponentCurves()
+                .GetComponents()
                 .MapItems(curve =>
-                    SamplingSpecs.CreateAnimatedVector3D(curve)
+                    SceneSamplingSpecs.CreateAnimatedVector3D(curve)
                 );
 
         var v12AnimatedVector =
@@ -262,16 +270,16 @@ public sealed class GrBabylonJsDifferentialCurveAnimationComposer :
             v3AnimatedVector + v1AnimatedVector;
 
         var vAnimatedVector =
-            SamplingSpecs.CreateAnimatedVector3D(Curve);
+            SceneSamplingSpecs.CreateAnimatedVector3D(Curve);
 
         var u1AnimatedVector =
-            SamplingSpecs.CreateAnimatedVector3D(CurveDerivative1);
+            SceneSamplingSpecs.CreateAnimatedVector3D(CurveDerivative1);
 
         var u2AnimatedVector =
-            SamplingSpecs.CreateAnimatedVector3D(CurveDerivative2);
+            SceneSamplingSpecs.CreateAnimatedVector3D(CurveDerivative2);
 
         var u3AnimatedVector =
-            SamplingSpecs.CreateAnimatedVector3D(CurveDerivative3);
+            SceneSamplingSpecs.CreateAnimatedVector3D(CurveDerivative3);
 
 
         SceneComposer.AddVector(
@@ -284,7 +292,7 @@ public sealed class GrBabylonJsDifferentialCurveAnimationComposer :
 
         SceneComposer.AddLaTeXText(
             "vVectorText",
-            TextureSet["latex", "vVectorText"],
+            ImageSet["latex", "vVectorText"],
             vAnimatedVector.AddLength(0.25),
             CodeFilesComposer.LaTeXScalingFactor
         );
@@ -300,7 +308,7 @@ public sealed class GrBabylonJsDifferentialCurveAnimationComposer :
 
         SceneComposer.AddLaTeXText(
             "v1VectorText",
-            TextureSet["latex", "v1VectorText"],
+            ImageSet["latex", "v1VectorText"],
             v1AnimatedVector.AddLength(0.25),
             CodeFilesComposer.LaTeXScalingFactor
         );
@@ -316,7 +324,7 @@ public sealed class GrBabylonJsDifferentialCurveAnimationComposer :
 
         SceneComposer.AddLaTeXText(
             "v2VectorText",
-            TextureSet["latex", "v2VectorText"],
+            ImageSet["latex", "v2VectorText"],
             v2AnimatedVector.AddLength(0.25),
             CodeFilesComposer.LaTeXScalingFactor
         );
@@ -332,7 +340,7 @@ public sealed class GrBabylonJsDifferentialCurveAnimationComposer :
 
         SceneComposer.AddLaTeXText(
             "v3VectorText",
-            TextureSet["latex", "v3VectorText"],
+            ImageSet["latex", "v3VectorText"],
             v3AnimatedVector.AddLength(0.25),
             CodeFilesComposer.LaTeXScalingFactor
         );
@@ -426,10 +434,10 @@ public sealed class GrBabylonJsDifferentialCurveAnimationComposer :
         SceneComposer.AddLinePath(
             GrVisualPointPathCurve3D.CreateStatic(
                 "curvePath",
-                orangeMaterial.CreateTubeCurveStyle(0.025),
+                SceneComposer.AddOrGetColorMaterial(Color.DarkOrange.WithAlpha(0.25f)).CreateTubeCurveStyle(0.025),
                 Curve.CreateAdaptiveCurve3D(
-                    SamplingSpecs.TimeRange,
-                    new AdaptiveCurveSamplingOptions3D(
+                    SceneSamplingSpecs.TimeRange,
+                    new Float64AdaptivePath3DSamplingOptions(
                         3.DegreesToDirectedAngle(),
                         1,
                         12
@@ -458,7 +466,7 @@ public sealed class GrBabylonJsDifferentialCurveAnimationComposer :
 
         SceneComposer.AddLaTeXText(
             "u1VectorText",
-            TextureSet["latex", "u1VectorText"],
+            ImageSet["latex", "u1VectorText"],
             curveFrame.AnimatedOrigin +
             curveFrame.AnimatedDirection1.AddLength(0.25),
             CodeFilesComposer.LaTeXScalingFactor
@@ -466,7 +474,7 @@ public sealed class GrBabylonJsDifferentialCurveAnimationComposer :
 
         SceneComposer.AddLaTeXText(
             "u2VectorText",
-            TextureSet["latex", "u2VectorText"],
+            ImageSet["latex", "u2VectorText"],
             curveFrame.AnimatedOrigin +
             curveFrame.AnimatedDirection2.AddLength(0.25),
             CodeFilesComposer.LaTeXScalingFactor
@@ -474,7 +482,7 @@ public sealed class GrBabylonJsDifferentialCurveAnimationComposer :
 
         SceneComposer.AddLaTeXText(
             "u3VectorText",
-            TextureSet["latex", "u3VectorText"],
+            ImageSet["latex", "u3VectorText"],
             curveFrame.AnimatedOrigin +
             curveFrame.AnimatedDirection3.AddLength(0.25),
             CodeFilesComposer.LaTeXScalingFactor
@@ -501,17 +509,17 @@ public sealed class GrBabylonJsDifferentialCurveAnimationComposer :
             Curve.GetFrenetFrameRotationQuaternionsCurve();
 
         var e1AnimatedVector =
-            SamplingSpecs.CreateAnimatedVector3D(ComputedParametricCurve3D.Create(
+            SceneSamplingSpecs.CreateAnimatedVector3D(Float64ComputedPath3D.Finite(
                 time => quaternionCurve.GetQuaternion(time).RotateVector(LinBasisVector3D.Px)
             ));
 
         var e2AnimatedVector =
-            SamplingSpecs.CreateAnimatedVector3D(ComputedParametricCurve3D.Create(
+            SceneSamplingSpecs.CreateAnimatedVector3D(Float64ComputedPath3D.Finite(
                 time => quaternionCurve.GetQuaternion(time).RotateVector(LinBasisVector3D.Py)
             ));
 
         var e3AnimatedVector =
-            SamplingSpecs.CreateAnimatedVector3D(ComputedParametricCurve3D.Create(
+            SceneSamplingSpecs.CreateAnimatedVector3D(Float64ComputedPath3D.Finite(
                 time => quaternionCurve.GetQuaternion(time).RotateVector(LinBasisVector3D.Pz)
             ));
 

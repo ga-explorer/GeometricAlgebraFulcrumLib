@@ -49,7 +49,7 @@ public static class Sample2
         = 60d;
 
     public static double Freq { get; }
-        = 2 * Math.PI * FreqHz;
+        = Math.Tau * FreqHz;
 
     public static double ConstA { get; }
         = -2 * Va * Va + Vb * Vb + Vc * Vc;

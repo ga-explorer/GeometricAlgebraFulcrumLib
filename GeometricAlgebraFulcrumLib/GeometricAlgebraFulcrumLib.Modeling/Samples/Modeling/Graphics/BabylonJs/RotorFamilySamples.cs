@@ -2,6 +2,7 @@
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Angles;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space3D;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
+using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.Visuals;
 using GeometricAlgebraFulcrumLib.Modeling.Signals;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.PixelFormats;
@@ -33,13 +34,11 @@ public static class RotorFamilySamples
             thetaValues
         )
         {
-            CanvasWidth = 1024, // 3840 - 1080,
-            CanvasHeight = 768, //2160,
             ShowCopyright = true,
             ShowGuiLayer = true,
 
-            Title = "Rotor Family of Two Vectors",
-            HostUrl = "http://127.0.0.1:5500/",//"http://localhost:5200/",
+            SceneTitle = "Rotor Family of Two Vectors",
+            HostUrl = "http://127.0.0.1:5500/", //"http://localhost:5200/",
             //LiveReloadWebServer "D:/Projects/Study/Babylon.js/" --port 5200 --UseSsl False --LiveReloadEnabled False --OpenBrowser True
 
             GridUnitCount = 20,
@@ -47,18 +46,23 @@ public static class RotorFamilySamples
             DrawRotorTrace = true,
 
             ComposeSceneFilesEnabled = true,
-            RenderImageFilesEnabled = true,
+            SceneRenderMethod = GrVisualSceneSequenceComposer.RenderImageFilesMethod.PerScene,
             RenderGifFileEnabled = false,
             RenderVideoFileEnabled = false
         };
 
-        visualizer.SetCameraAlphaBetaDistance(
+        visualizer.SetCanvas(
+            1280, // 3840 - 1080,
+            720 //2160,
+        );
+
+        visualizer.SetCamera(
             120d.DegreesToRadians(),
             75d.DegreesToRadians(),
             20
         );
 
-        visualizer.RenderFiles();
+        visualizer.ComposeSceneSequence();
     }
     
     public static void Example2()

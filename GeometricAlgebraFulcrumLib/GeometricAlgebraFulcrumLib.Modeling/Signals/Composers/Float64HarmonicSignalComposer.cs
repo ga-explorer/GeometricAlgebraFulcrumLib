@@ -27,7 +27,7 @@ public class Float64HarmonicSignalComposer
     public double BaseCycleFrequencyHz { get; set; } = 50;
 
     public double BaseCycleFrequency
-        => 2 * Math.PI * BaseCycleFrequencyHz;
+        => Math.Tau * BaseCycleFrequencyHz;
 
     public double BaseCycleTime
         => 1d / BaseCycleFrequencyHz;
@@ -49,84 +49,80 @@ public class Float64HarmonicSignalComposer
         return Float64SamplingSpecs.CreateFromSamplingRate(SampleCount, SamplingRate);
     }
 
-    public Float64Signal[] GenerateEvenSignalComponents(double magnitude, double harmonicFactor, int phaseCount)
+    public Float64SampledTimeSignal[] GenerateEvenSignalComponents(double magnitude, double harmonicFactor, int phaseCount)
     {
-        var phi = 2d * Math.PI / phaseCount;
-        var scalarSignalArray = new Float64Signal[phaseCount];
+        var phi = Math.Tau / phaseCount;
+        var scalarSignalArray = new Float64SampledTimeSignal[phaseCount];
 
         for (var phaseIndex = 0; phaseIndex < phaseCount; phaseIndex++)
         {
             var k = phaseIndex;
 
-            scalarSignalArray[phaseIndex] = Float64Signal.CreatePeriodic(
+            scalarSignalArray[phaseIndex] = Float64SampledTimeSignal.CreatePeriodic(
                 BaseCycleSampleCount,
                 BaseCycleTime,
                 t =>
-                    magnitude * (harmonicFactor * (BaseCycleFrequency * t - k * phi)).Cos(),
-                false
+                    magnitude * (harmonicFactor * (BaseCycleFrequency * t - k * phi)).Cos()
             ).Repeat(BaseCycleCount);
         }
 
         return scalarSignalArray;
     }
 
-    public Float64Signal[] GenerateEvenSignalComponents(IReadOnlyList<double> magnitudeList, double harmonicFactor, int phaseCount)
+    public Float64SampledTimeSignal[] GenerateEvenSignalComponents(IReadOnlyList<double> magnitudeList, double harmonicFactor, int phaseCount)
     {
-        var phi = 2d * Math.PI / phaseCount;
-        var scalarSignalArray = new Float64Signal[phaseCount];
+        var phi = Math.Tau / phaseCount;
+        var scalarSignalArray = new Float64SampledTimeSignal[phaseCount];
 
         for (var phaseIndex = 0; phaseIndex < phaseCount; phaseIndex++)
         {
             var k = phaseIndex;
 
-            scalarSignalArray[phaseIndex] = Float64Signal.CreatePeriodic(
+            scalarSignalArray[phaseIndex] = Float64SampledTimeSignal.CreatePeriodic(
                 BaseCycleSampleCount,
                 BaseCycleTime,
                 t =>
-                    magnitudeList[k] * (harmonicFactor * (BaseCycleFrequency * t - k * phi)).Cos(),
-                false
+                    magnitudeList[k] * (harmonicFactor * (BaseCycleFrequency * t - k * phi)).Cos()
             ).Repeat(BaseCycleCount);
         }
 
         return scalarSignalArray;
     }
 
-    public Float64Signal[] GenerateOddSignalComponents(double magnitude, double harmonicFactor, int phaseCount)
+    public Float64SampledTimeSignal[] GenerateOddSignalComponents(double magnitude, double harmonicFactor, int phaseCount)
     {
-        var phi = 2d * Math.PI / phaseCount;
-        var scalarSignalArray = new Float64Signal[phaseCount];
+        var phi = Math.Tau / phaseCount;
+        var scalarSignalArray = new Float64SampledTimeSignal[phaseCount];
 
         for (var phaseIndex = 0; phaseIndex < phaseCount; phaseIndex++)
         {
             var k = phaseIndex;
 
-            scalarSignalArray[phaseIndex] = Float64Signal.CreatePeriodic(
+            scalarSignalArray[phaseIndex] = Float64SampledTimeSignal.CreatePeriodic(
                 BaseCycleSampleCount,
                 BaseCycleTime,
                 t =>
-                    magnitude * (harmonicFactor * (BaseCycleFrequency * t - k * phi)).Sin(),
-                false
+                    magnitude * (harmonicFactor * (BaseCycleFrequency * t - k * phi)).Sin()
             ).Repeat(BaseCycleCount);
         }
 
         return scalarSignalArray;
     }
 
-    public Float64Signal[] GenerateOddSignalComponents(IReadOnlyList<double> magnitudeList, double harmonicFactor, int phaseCount)
+    public Float64SampledTimeSignal[] GenerateOddSignalComponents(IReadOnlyList<double> magnitudeList, double harmonicFactor, int phaseCount)
     {
-        var phi = 2d * Math.PI / phaseCount;
-        var scalarSignalArray = new Float64Signal[phaseCount];
+        var phi = Math.Tau / phaseCount;
+        var scalarSignalArray = new Float64SampledTimeSignal[phaseCount];
 
         for (var phaseIndex = 0; phaseIndex < phaseCount; phaseIndex++)
         {
             var k = phaseIndex;
 
-            scalarSignalArray[phaseIndex] = Float64Signal.CreatePeriodic(
+            scalarSignalArray[phaseIndex] = Float64SampledTimeSignal.CreatePeriodic(
                 BaseCycleSampleCount,
                 BaseCycleTime,
                 t =>
-                    magnitudeList[k] * (harmonicFactor * (BaseCycleFrequency * t - k * phi)).Sin(),
-                false
+                    magnitudeList[k] * (harmonicFactor * (BaseCycleFrequency * t - k * phi)).Sin()
             ).Repeat(BaseCycleCount);
         }
 

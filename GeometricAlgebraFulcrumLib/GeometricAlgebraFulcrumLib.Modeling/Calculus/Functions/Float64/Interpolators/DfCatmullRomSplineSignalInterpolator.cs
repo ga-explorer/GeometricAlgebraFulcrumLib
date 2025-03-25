@@ -1,14 +1,15 @@
 ﻿using System.Runtime.CompilerServices;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.Parametric.Float64.Space2D.Curves;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.Parametric.Float64.Space2D.Curves.CatmullRom;
 using GeometricAlgebraFulcrumLib.Modeling.Signals;
+using GeometricAlgebraFulcrumLib.Modeling.Trajectories.Vectors2D.Float64;
+using GeometricAlgebraFulcrumLib.Modeling.Trajectories.Vectors2D.Float64.Basic;
+using GeometricAlgebraFulcrumLib.Modeling.Trajectories.Vectors2D.Float64.Composers;
 
 namespace GeometricAlgebraFulcrumLib.Modeling.Calculus.Functions.Float64.Interpolators;
 
 public class DfCatmullRomSplineSignalInterpolator :
     DifferentialSignalInterpolatorFunction
 {
-    public static DfCatmullRomSplineSignalInterpolator Create(Float64Signal signal, int sampleIndex1, int sampleIndex2, DfCatmullRomSplineSignalInterpolatorOptions options)
+    public static DfCatmullRomSplineSignalInterpolator Create(Float64SampledTimeSignal signal, int sampleIndex1, int sampleIndex2, DfCatmullRomSplineSignalInterpolatorOptions options)
     {
         if (options.BezierDegree is < 2 or > 63)
             throw new ArgumentOutOfRangeException(
@@ -30,13 +31,13 @@ public class DfCatmullRomSplineSignalInterpolator :
         // Spline curve that interpolates signal
         var bsSignalPointList =
             signal.GetBezierSmoothingPoints(
-                samplingSpecs.GetSampledTimeSignal(),
+                samplingSpecs.GetSampleTimeSignal(),
                 options.BezierDegree,
                 true
             ).Skip(sampleIndex1).Take(sampleCount).ToArray();
 
         var bsSignalCurve =
-            bsSignalPointList.CreateCatmullRomSpline2D(
+            bsSignalPointList.FiniteCatmullRomSpline2D(
                 options.SplineType,
                 false
             );
@@ -51,7 +52,7 @@ public class DfCatmullRomSplineSignalInterpolator :
         );
     }
 
-    public static DfCatmullRomSplineSignalInterpolator Create(Float64Signal signal, DfCatmullRomSplineSignalInterpolatorOptions options)
+    public static DfCatmullRomSplineSignalInterpolator Create(Float64SampledTimeSignal signal, DfCatmullRomSplineSignalInterpolatorOptions options)
     {
         if (options.BezierDegree is < 2 or > 63)
             throw new ArgumentOutOfRangeException(
@@ -71,13 +72,13 @@ public class DfCatmullRomSplineSignalInterpolator :
         // Spline curve that interpolates signal
         var bsSignalPointList =
             signal.GetBezierSmoothingPoints(
-                samplingSpecs.GetSampledTimeSignal(),
+                samplingSpecs.GetSampleTimeSignal(),
                 options.BezierDegree,
                 true
             ).ToArray();
 
         var bsSignalCurve =
-            bsSignalPointList.CreateCatmullRomSpline2D(
+            bsSignalPointList.FiniteCatmullRomSpline2D(
                 options.SplineType,
                 false
             );
@@ -95,11 +96,11 @@ public class DfCatmullRomSplineSignalInterpolator :
 
     public DfCatmullRomSplineSignalInterpolatorOptions Options { get; }
 
-    public CatmullRomSpline2D Curve { get; }
+    public Float64CatmullRomSplinePath2D Curve { get; }
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    private DfCatmullRomSplineSignalInterpolator(Float64SamplingSpecs samplingSpecs, int sampleIndex1, int sampleIndex2, DfCatmullRomSplineSignalInterpolatorOptions options, CatmullRomSpline2D curve)
+    private DfCatmullRomSplineSignalInterpolator(Float64SamplingSpecs samplingSpecs, int sampleIndex1, int sampleIndex2, DfCatmullRomSplineSignalInterpolatorOptions options, Float64CatmullRomSplinePath2D curve)
         : base(samplingSpecs, sampleIndex1, sampleIndex2)
     {
         Curve = curve;

@@ -11,6 +11,7 @@ using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.Visuals.Space3D.Sty
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.Visuals.Space3D.Surfaces;
 using SixLabors.ImageSharp;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Angles;
+using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Matrices;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.PovRay.Cameras;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.PovRay.Lists;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.PovRay.Materials.Finishes;
@@ -22,7 +23,8 @@ using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Files;
 using GeometricAlgebraFulcrumLib.Utilities.Web.Colors;
 using Instances;
-using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.Visuals.Textures;
+using GeometricAlgebraFulcrumLib.Utilities.Structures.Basic;
+using GeometricAlgebraFulcrumLib.Utilities.Web.Images;
 
 namespace GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.PovRay.Composers;
 
@@ -45,8 +47,8 @@ public class GrPovRaySceneComposer :
     public GrPovRayFullCamera SceneCamera 
         => SceneObject.Camera;
 
-    public GrPovRayColorValue BackgroundColor { get; set; }
-        = Color.Teal;
+    //public GrPovRayColorValue BackgroundColor { get; set; }
+    //    = Color.Teal;
 
     public GrPovRayGridMaterialKind GridMaterialKind { get; set; }
         = GrPovRayGridMaterialKind.GridMaterial;
@@ -83,6 +85,35 @@ public class GrPovRaySceneComposer :
         AddInitialObjects();
     }
 
+
+    public GrPovRaySceneComposer AddBackground(GrPovRayColorValue color)
+    {
+        SceneObject.AtmosphericBackground(color);
+
+        return this;
+    }
+
+    public GrPovRaySceneComposer AddDefaultSkySphere()
+    {
+        SceneStatements.FreeCode(@"
+sky_sphere {
+    pigment {
+        gradient <0,1,0>
+        color_map {
+            [ 0   color rgb<1,1,1>          ] //White
+            [ 0.4 color rgb<0.24,0.34,0.56> ] //~Navy
+            [ 0.6 color rgb<0.24,0.34,0.56> ] //~Navy
+            [ 1.0 color rgb<1,1,1>          ] //White
+        }
+        scale 2
+    }
+    emission rgb <0.8, 0.8, 1.0>
+}
+".Trim()
+        );
+
+        return this;
+    }
 
     public GrPovRaySceneComposer AddStatement(IGrPovRayStatement statement)
     {
@@ -121,22 +152,6 @@ public class GrPovRaySceneComposer :
                 }
             )
         );
-
-        SceneStatements.FreeCode(@"
-sky_sphere {
-    pigment {
-        gradient <0,1,0>
-        color_map {
-            [ 0   color rgb<1,1,1>          ] //White
-            [ 0.4 color rgb<0.24,0.34,0.56> ] //~Navy
-            [ 0.6 color rgb<0.24,0.34,0.56> ] //~Navy
-            [ 1.0 color rgb<1,1,1>          ] //White
-        }
-        scale 2
-    }
-    emission rgb <0.8, 0.8, 1.0>
-}
-".Trim());
     }
 
     public override IGrVisualElementMaterial3D AddOrGetColorMaterial(Color color)
@@ -166,16 +181,11 @@ sky_sphere {
 
     public override GrVisualImage3D AddImage(GrVisualImage3D visualElement)
     {
-        var imageData = (GrVisualTexture) visualElement.Texture;
+        var imageData = (GrVisualImageSetItem) visualElement.Texture;
 
         //var imageData = visualElement.GetImageData();
 
-        var rect = imageData.CreateImageRectangleZx(0.4 / 32);
-
-        //var rect = SceneObject.RectanglePolygonZx(
-        //    visualElement.ScalingFactor * imageData.Width,
-        //    visualElement.ScalingFactor * imageData.Height
-        //);
+        var rect = imageData.CreateImageRectangleZx(visualElement.ScalingFactor);
 
         rect.AffineMap
             .Transform(SceneObject.Camera.RigidMap.GetRotationPart())
@@ -297,11 +307,7 @@ sky_sphere {
             visualElement.Size2
         );
 
-        if (visualElement.GridPlane == GrVisualSquareGridPlane3D.ZxPlane)
-            rect.AffineMap.RotateX(LinFloat64PolarAngle.Angle90);
-
-        else if (visualElement.GridPlane == GrVisualSquareGridPlane3D.YzPlane)
-            rect.AffineMap.RotateY(LinFloat64PolarAngle.Angle90);
+        rect.AffineMap.Rotate(visualElement.Orientation);
 
         rect.AffineMap.Translate(visualElement.Center);
 
@@ -340,6 +346,42 @@ sky_sphere {
         AddStatement(rect);
 
         return visualElement;
+    }
+    
+    public override void AddGrid(string name, ITriplet<Float64Scalar> center, LinFloat64Quaternion orientation, int unitCount, double unitSize = 1, double opacity = 1)
+    {
+        GridMaterialKind = 
+            GrPovRayGridMaterialKind.TexturedMaterial;
+
+        AddSquareGrid(
+            GrVisualSquareGrid3D.Default(
+                name,
+                center, 
+                orientation, 
+                unitCount, 
+                unitSize, 
+                opacity
+            )
+        );
+    }
+
+    public override void AddAxes(string name, ITriplet<Float64Scalar> origin, LinFloat64Quaternion orientation, double scalingFactor = 1, double opacity = 1)
+    {
+        AddElement(
+            GrVisualFrame3D.CreateStatic(
+                name,
+                new GrVisualFrameStyle3D
+                {
+                    OriginStyle = AddOrGetColorMaterial(Color.DarkGray.WithAlpha(opacity)).CreateThickSurfaceStyle(0.075),
+                    Direction1Style = AddOrGetColorMaterial(Color.DarkRed.WithAlpha(opacity)).CreateTubeCurveStyle(0.035),
+                    Direction2Style = AddOrGetColorMaterial(Color.DarkGreen.WithAlpha(opacity)).CreateTubeCurveStyle(0.035),
+                    Direction3Style = AddOrGetColorMaterial(Color.DarkBlue.WithAlpha(opacity)).CreateTubeCurveStyle(0.035)
+                },
+                origin.ToLinVector3D(),
+                orientation,
+                scalingFactor
+            )
+        );
     }
 
     public override IGrVisualImage3D AddImage(IGrVisualImage3D visualElement)
@@ -474,7 +516,7 @@ sky_sphere {
         var pointPath =
             visualElement
                 .ParameterValues
-                .Select(visualElement.Curve.GetPoint);
+                .Select(visualElement.Curve.GetValue);
 
         var sphereSweep = 
             GrPovRayObject.SphereSweep(
@@ -876,46 +918,46 @@ sky_sphere {
 
     private GrVisualParallelogramSurface3D AddParallelogramSurface(GrVisualParallelogramSurface3D visualElement, GrVisualSurfaceThickStyle3D thickStyle)
     {
-        throw new NotImplementedException();
+        var matrix = SquareMatrix4.CreateAffineFromColumns(
+            visualElement.Direction1,
+            visualElement.Direction2,
+            visualElement.UnitNormal.SetLength(thickStyle.Thickness),
+            visualElement.Position
+        );
+
+        var surface = 
+            GrPovRayObject
+                .Box(LinFloat64Vector3D.Zero, LinFloat64Vector3D.Symmetric)
+                .SetMaterial((GrPovRayMaterial) thickStyle.Material);
+
+        surface.AffineMap.Reset(matrix);
+        
+        SceneObject.Statements.Add(surface);
+
+        return visualElement;
     }
 
     private GrVisualParallelogramSurface3D AddParallelogramSurface(GrVisualParallelogramSurface3D visualElement, GrVisualSurfaceThinStyle3D thinStyle)
     {
-        throw new NotImplementedException();
+        var matrix = SquareMatrix4.CreateAffineFromColumns(
+            visualElement.Direction1,
+            visualElement.Direction2,
+            visualElement.UnitNormal,
+            visualElement.Position + visualElement.Direction12.ScaleBy(0.5)
+        );
 
-        //var path0Point0 = visualElement.Position.GetPovRayCode();
-        //var path0Point1 = visualElement.Position.VectorAdd(visualElement.Direction1).GetPovRayCode();
+        var surface = 
+            GrPovRayObject
+                .SquarePolygon(1)
+                .SetMaterial((GrPovRayMaterial) thinStyle.Material);
+        
+        surface.Properties.DoubleIlluminate = true;
 
-        //var path1Point0 = visualElement.Position.VectorAdd(visualElement.Direction2).GetPovRayCode();
-        //var path1Point1 = visualElement.Position.VectorAdd(visualElement.Direction2, visualElement.Direction1).GetPovRayCode();
+        surface.AffineMap.Reset(matrix);
+        
+        SceneObject.Statements.Add(surface);
 
-        //SceneObject.AddFreeCode(
-        //    $"const {visualElement.Name}RibbonPathArray = [[{path0Point0}, {path0Point1}], [{path1Point0}, {path1Point1}]];"
-        //);
-
-        //SceneObject.AddRibbon(
-        //    $"{visualElement.Name}Ribbon",
-
-        //    new GrPovRayRibbonOptions
-        //    {
-        //        CloseArray = false,
-        //        ClosePath = false,
-        //        PathArray = $"{visualElement.Name}RibbonPathArray",
-        //        SideOrientation = GrPovRayMeshOrientation.FrontAndBack,
-        //        Updatable = visualElement.IsAnimated
-        //    },
-
-        //    new GrPovRayMeshProperties
-        //    {
-        //        Material = visualElement.Style.Material.MaterialName,
-        //        Visibility = visualElement.Visibility
-        //    }
-        //);
-
-        //if (visualElement.IsAnimated)
-        //    AddParallelogramSurfaceAnimation(visualElement, thinStyle);
-
-        //return visualElement;
+        return visualElement;
     }
 
 

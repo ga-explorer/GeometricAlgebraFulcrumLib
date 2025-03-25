@@ -5,12 +5,11 @@ using GeometricAlgebraFulcrumLib.Modeling.Calculus.Curves;
 using GeometricAlgebraFulcrumLib.Modeling.Calculus.Functions.Float64.Interpolators;
 using GeometricAlgebraFulcrumLib.Modeling.Calculus.Functions.Float64.Phasors;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.Parametric.Float64;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.Parametric.Float64.Space1D.Scalars;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.Parametric.Float64.Space1D.Scalars.Harmonic;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.Parametric.Float64.Space3D.Curves;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.Parametric.Float64.Space3D.Curves.Spherical;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.BabylonJs.Composers;
 using GeometricAlgebraFulcrumLib.Modeling.Signals.Composers;
+using GeometricAlgebraFulcrumLib.Modeling.Trajectories.Scalars.Float64;
+using GeometricAlgebraFulcrumLib.Modeling.Trajectories.Vectors3D.Float64;
+using GeometricAlgebraFulcrumLib.Modeling.Trajectories.Vectors3D.Float64.Basic;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Basic;
 using GeometricAlgebraFulcrumLib.Utilities.Text.Code.Matlab;
 
@@ -19,27 +18,29 @@ namespace GeometricAlgebraFulcrumLib.Modeling.Samples.Modeling.Graphics.BabylonJ
 public static class DifferentialCurveAnimationSample
 {
     
-    public static Tuple<double, IParametricC2Curve3D> GetCurve1()
+    public static Tuple<double, Float64Path3D> GetCurve1()
     {
         const double freqHz = 0.1d;
-        const double freq = 2d * Math.PI * freqHz;
+        const double freq = Math.Tau * freqHz;
         const double magnitude = 4d;
 
         var maxTime = 1d / freqHz;
 
-        var curve = DifferentialCurve3D.Create(
+        var curve = Float64DifferentialPath3D.Create(
+            Float64ScalarRange.Create(maxTime), 
+            true,
             DfCosPhasor.Create(magnitude, freq),
             DfCosPhasor.Create(magnitude, freq, LinFloat64DirectedAngle.Angle120),
             DfCosPhasor.Create(magnitude, freq, LinFloat64DirectedAngle.Angle240)
         );
 
-        return new Tuple<double, IParametricC2Curve3D>(maxTime, curve);
+        return new Tuple<double, Float64Path3D>(maxTime, curve);
     }
 
-    public static Tuple<double, IParametricC2Curve3D> GetCurve2()
+    public static Tuple<double, Float64Path3D> GetCurve2()
     {
         const double freqHz = 0.04d;
-        const double freq = 2d * Math.PI * freqHz;
+        const double freq = Math.Tau * freqHz;
 
         var maxTime = 1d / freqHz;
 
@@ -61,109 +62,115 @@ public static class DifferentialCurveAnimationSample
             DfCosPhasor.Create(0.45, 3 * freq, 3 * zAngle) +
             DfCosPhasor.Create(0.075, 7 * freq, 7 * zAngle);
 
-        var curve = DifferentialCurve3D.Create(
+        var curve = Float64DifferentialPath3D.Create(
+            Float64ScalarRange.Create(maxTime), 
+            true,
             xFunction,
             yFunction,
             zFunction
         );
 
-        return new Tuple<double, IParametricC2Curve3D>(maxTime, curve);
+        return new Tuple<double, Float64Path3D>(maxTime, curve);
     }
 
-    public static Tuple<double, IParametricC2Curve3D> GetCurve3()
+    public static Tuple<double, Float64Path3D> GetCurve3()
     {
         const double freqHz = 0.05d;
-        //const double freq = 2 * Math.PI * freqHz;
+        //const double freq = Math.Tau * freqHz;
 
         var maxTime = 1d / freqHz;
 
-        var parameterRange = Float64ScalarRange.Create(0, maxTime);
+        var timeRange = Float64ScalarRange.Create(0, maxTime);
 
-        var rCurve = CosWaveParametricScalar.Create(parameterRange, 3, 5, 2);
-        var thetaCurve = ConstantParametricScalar.Create(0);
-        var phiCurve = ConstantParametricScalar.Create(0);
+        var rCurve = Float64ScalarSignal.FiniteCosWave(timeRange, 3, 5, 2);
+        var thetaCurve = Float64ScalarSignal.FiniteZero(timeRange);
+        var phiCurve = Float64ScalarSignal.FiniteZero(timeRange);
 
-        var curve = SphericalCurve3D.Create(
-            parameterRange,
+        var curve = Float64SphericalPath3D.Finite(
+            timeRange,
             rCurve,
             thetaCurve,
             phiCurve
         );
 
-        return new Tuple<double, IParametricC2Curve3D>(maxTime, curve);
+        return new Tuple<double, Float64Path3D>(maxTime, curve);
     }
 
-    public static Tuple<double, IParametricC2Curve3D> GetCurve4()
+    public static Tuple<double, Float64Path3D> GetCurve4()
     {
         const double freqHz = 0.05d;
-        const double freq = 2 * Math.PI * freqHz;
+        const double freq = Math.Tau * freqHz;
 
         var maxTime = 1d / freqHz;
 
-        var rCurve = ConstantParametricScalar.Create(5);
-        var thetaCurve = LinearParametricScalar.Create(1 * freq);
-        var phiCurve = LinearParametricScalar.Create(Math.PI, 2 * freq);
+        var timeRange = Float64ScalarRange.Create(0, maxTime);
 
-        var curve = SphericalCurve3D.Create(
-            Float64ScalarRange.Create(0, maxTime),
+        var rCurve = Float64ScalarSignal.FiniteConstant(timeRange, 5);
+        var thetaCurve = Float64ScalarSignal.FiniteRamp(timeRange, 0, 1 * freq);
+        var phiCurve = Float64ScalarSignal.FiniteRamp(timeRange, Math.PI, 2 * freq);
+
+        var curve = Float64SphericalPath3D.Finite(
+            timeRange,
             rCurve,
             thetaCurve,
             phiCurve
         );
 
-        return new Tuple<double, IParametricC2Curve3D>(maxTime, curve);
+        return new Tuple<double, Float64Path3D>(maxTime, curve);
     }
 
-    public static Tuple<double, IParametricC2Curve3D> GetCurve5()
+    public static Tuple<double, Float64Path3D> GetCurve5()
     {
         const double freqHz = 0.05d;
-        const double freq = 2 * Math.PI * freqHz;
+        const double freq = Math.Tau * freqHz;
 
         var maxTime = 1d / freqHz;
 
-        var parameterRange = Float64ScalarRange.Create(0, maxTime);
+        var timeRange = Float64ScalarRange.Create(0, maxTime);
 
-        var rCurve = CosWaveParametricScalar.Create(parameterRange, 3, 5, 3);
-        var thetaCurve = LinearParametricScalar.Create(2 * freq);
-        var phiCurve = LinearParametricScalar.Create(1 * freq);
+        var rCurve = Float64ScalarSignal.FiniteCosWave(timeRange, 3, 5, 3);
+        var thetaCurve = Float64ScalarSignal.FiniteRamp(timeRange, 0, 2 * freq);
+        var phiCurve = Float64ScalarSignal.FiniteRamp(timeRange, 0, 1 * freq);
 
-        var curve = SphericalCurve3D.Create(
-            parameterRange,
+        var curve = Float64SphericalPath3D.Finite(
+            timeRange,
             rCurve,
             thetaCurve,
             phiCurve
         );
 
-        return new Tuple<double, IParametricC2Curve3D>(maxTime, curve);
+        return new Tuple<double, Float64Path3D>(maxTime, curve);
     }
 
-    public static Tuple<double, IParametricC2Curve3D> GetCurve6()
+    public static Tuple<double, Float64Path3D> GetCurve6()
     {
         const double freqHz = 0.05d;
-        const double freq = 2 * Math.PI * freqHz;
+        const double freq = Math.Tau * freqHz;
 
         var maxTime = 1d / freqHz;
 
-        var rCurve = ConstantParametricScalar.Create(4);
-        var thetaCurve = LinearParametricScalar.Create(2 * freq);
-        var phiCurve = ConstantParametricScalar.Create(0);
+        var timeRange = Float64ScalarRange.Create(0, maxTime);
 
-        var curve = SphericalCurve3D.Create(
-            Float64ScalarRange.Create(0, maxTime),
+        var rCurve = Float64ScalarSignal.FiniteConstant(timeRange, 4);
+        var thetaCurve = Float64ScalarSignal.FiniteRamp(timeRange, 0, 2 * freq);
+        var phiCurve = Float64ScalarSignal.FiniteZero(timeRange);
+
+        var curve = Float64SphericalPath3D.Finite(
+            timeRange,
             rCurve,
             thetaCurve,
             phiCurve
         );
 
-        return new Tuple<double, IParametricC2Curve3D>(maxTime, curve);
+        return new Tuple<double, Float64Path3D>(maxTime, curve);
     }
     
-    public static Tuple<double, IParametricC2Curve3D> GetCurve7()
+    public static Tuple<double, Float64Path3D> GetCurve7()
     {
         const int cycleCount = 3;
         const int sampleCount = 59997;//;850 * cycleCount + 1;
         const int downSampleFactor = 1;
-        const double timeDilation = 1000;
+        const double timeDilation = 400;
         const double samplingRate = 100000 / timeDilation; //50000;
         const double tMin = 0;
         const double tMax = (sampleCount - 1) / samplingRate;
@@ -206,10 +213,23 @@ public static class DifferentialCurveAnimationSample
                 false
             ).CreateSignal(samplingRate);
 
+        //var (phaseFunction1, phaseFunction2, phaseFunction3) =
+        //    data.MapItems(p =>
+        //        p.CreateSignal(
+        //            samplingRate, 
+        //            d => d * magnitudeFactor
+        //        ).GetLinearInterpolator(
+        //            new DfLinearSplineSignalInterpolatorOptions()
+        //            {
+        //                SmoothingFactors = smoothingFactors,
+        //            }
+        //        )
+        //    );
+
         var (phaseFunction1, phaseFunction2, phaseFunction3) =
             data.MapItems(p =>
                 p.CreateSignal(
-                    samplingRate, 
+                    samplingRate,
                     d => d * magnitudeFactor
                 ).GetCatmullRomInterpolator(
                     new DfCatmullRomSplineSignalInterpolatorOptions
@@ -221,7 +241,7 @@ public static class DifferentialCurveAnimationSample
                 )
             );
 
-        var powerSignal = PowerSignal3D.Create(
+        var powerSignal = Float64PowerSignal3D.Create(
             tValues,
             phaseFunction1,
             phaseFunction2,
@@ -232,7 +252,7 @@ public static class DifferentialCurveAnimationSample
 
         powerSignal.InitializeComponents();
 
-        return new Tuple<double, IParametricC2Curve3D>(tMax, powerSignal);
+        return new Tuple<double, Float64Path3D>(tMax, powerSignal);
     }
 
 
@@ -242,7 +262,7 @@ public static class DifferentialCurveAnimationSample
 
         var composer = new GrBabylonJsDifferentialCurveAnimationComposer(
             @"D:\Projects\Study\Web\Babylon.js",
-            15,
+            25,
             maxTime, 
             curve
         )
@@ -251,9 +271,9 @@ public static class DifferentialCurveAnimationSample
             ShowGuiLayer = true
         };
 
-        composer.SetFileNameAndTitle("R004V_R23");
+        composer.SetTitle("R004V_R23");
 
-        composer.SetCanvas(1024, 768);
+        composer.SetCanvas720p();
 
         composer.SetCamera(
             LinFloat64PolarAngle.Angle330, 

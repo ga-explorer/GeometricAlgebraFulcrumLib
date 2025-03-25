@@ -5,12 +5,13 @@ using GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Float64.Elements;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Float64.Interpolation;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Float64.Operations;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Float64.Visualizer;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.Parametric.Float64.Space1D.Angles;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.Parametric.Float64.Space1D.Scalars;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.Parametric.Float64.Space1D.Scalars.Harmonic;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.Parametric.Float64.Space3D.Curves;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.Parametric.Float64.Space3D.Curves.Spherical;
 using GeometricAlgebraFulcrumLib.Modeling.Signals;
+using GeometricAlgebraFulcrumLib.Modeling.Trajectories.Scalars.Float64;
+using GeometricAlgebraFulcrumLib.Modeling.Trajectories.Scalars.Float64.Angles;
+using GeometricAlgebraFulcrumLib.Modeling.Trajectories.Scalars.Float64.Parametric;
+using GeometricAlgebraFulcrumLib.Modeling.Trajectories.Vectors3D.Float64;
+using GeometricAlgebraFulcrumLib.Modeling.Trajectories.Vectors3D.Float64.Basic;
+using GeometricAlgebraFulcrumLib.Modeling.Trajectories.Vectors3D.Float64.Composers;
 using GeometricAlgebraFulcrumLib.Utilities.Web.Colors;
 using SixLabors.ImageSharp;
 
@@ -21,28 +22,28 @@ public static class CGa5DVisualizationSamples
     public static CGaFloat64GeometricSpace5D CGa
         => CGaFloat64GeometricSpace5D.Instance;
 
-    public static IFloat64ParametricScalar GetRadiusCurve1(double maxTime)
+    public static Float64ScalarSignal GetRadiusCurve1(double maxTime)
     {
-        var parameterRange = Float64ScalarRange.Create(0, maxTime);
+        var timeRange = Float64ScalarRange.Create(0, maxTime);
 
-        var rCurve = CosWaveParametricScalar.Create(parameterRange, 1, 5, 6);
+        var rCurve = Float64ScalarSignal.FiniteCosWave(timeRange, 1, 5, 6);
 
         return rCurve;
     }
 
-    public static IParametricCurve3D GetPositionCurve1(double maxTime)
+    public static Float64Path3D GetPositionCurve1(double maxTime)
     {
         var freqHz = 1 / maxTime;
-        var freq = 2 * Math.PI * freqHz;
+        var freq = Math.Tau * freqHz;
 
-        var parameterRange = Float64ScalarRange.Create(0, maxTime);
+        var timeRange = Float64ScalarRange.Create(0, maxTime);
 
-        var rCurve = CosWaveParametricScalar.Create(parameterRange, 3, 5, 3);
-        var thetaCurve = LinearParametricScalar.Create(2 * freq);
-        var phiCurve = LinearParametricScalar.Create(1 * freq);
+        var rCurve = Float64ScalarSignal.FiniteCosWave(timeRange, 3, 5, 3);
+        var thetaCurve = Float64ScalarSignal.FiniteRamp(timeRange, 0, 2 * freq);
+        var phiCurve = Float64ScalarSignal.FiniteRamp(timeRange, 0, 1 * freq);
 
-        var curve = SphericalCurve3D.Create(
-            parameterRange,
+        var curve = Float64SphericalPath3D.Finite(
+            timeRange,
             rCurve,
             thetaCurve,
             phiCurve
@@ -51,19 +52,19 @@ public static class CGa5DVisualizationSamples
         return curve;
     }
 
-    public static IParametricCurve3D GetPositionCurve2(double maxTime)
+    public static Float64Path3D GetPositionCurve2(double maxTime)
     {
         var freqHz = 1 / maxTime;
-        var freq = 2 * Math.PI * freqHz;
+        var freq = Math.Tau * freqHz;
 
-        var parameterRange = Float64ScalarRange.Create(0, maxTime);
+        var timeRange = Float64ScalarRange.Create(0, maxTime);
 
-        var rCurve = CosWaveParametricScalar.Create(parameterRange, 3, 5, 1);
-        var thetaCurve = LinearParametricScalar.Create(1 * freq);
-        var phiCurve = LinearParametricScalar.Create(3 * freq);
+        var rCurve = Float64ScalarSignal.FiniteCosWave(timeRange, 3, 5, 1);
+        var thetaCurve = Float64ScalarSignal.FiniteRamp(timeRange, 0, 1 * freq);
+        var phiCurve = Float64ScalarSignal.FiniteRamp(timeRange, 0, 3 * freq);
 
-        var curve = SphericalCurve3D.Create(
-            parameterRange,
+        var curve = Float64SphericalPath3D.Finite(
+            timeRange,
             rCurve,
             thetaCurve,
             phiCurve
@@ -96,7 +97,7 @@ public static class CGa5DVisualizationSamples
             @"D:\Projects\Study\Web\Babylon.js"
         );
         
-        CGa.VisualizerAnimationComposer.SetFileNameAndTitle(
+        CGa.VisualizerAnimationComposer.SetTitle(
             "Static Flats"
         );
 
@@ -147,7 +148,7 @@ public static class CGa5DVisualizationSamples
             @"D:\Projects\Study\Web\Babylon.js"
         );
         
-        CGa.VisualizerAnimationComposer.SetFileNameAndTitle(
+        CGa.VisualizerAnimationComposer.SetTitle(
             "Static Rounds"
         );
 
@@ -203,7 +204,7 @@ public static class CGa5DVisualizationSamples
             samplingSpecs
         );
         
-        CGa.VisualizerAnimationComposer.SetFileNameAndTitle(
+        CGa.VisualizerAnimationComposer.SetTitle(
             "Parametric 3D Line 1"
         );
 
@@ -296,7 +297,7 @@ public static class CGa5DVisualizationSamples
             samplingSpecs
         );
         
-        CGa.VisualizerAnimationComposer.SetFileNameAndTitle(
+        CGa.VisualizerAnimationComposer.SetTitle(
             "Parametric 3D Line 2"
         );
 
@@ -370,7 +371,7 @@ public static class CGa5DVisualizationSamples
 
         // This constant curve defines the fixed position of the 3rd point
         var point3Curve =
-            ConstantParametricCurve3D.Create(1, 2, 1);
+            Float64ConstantPath3D.Finite(1, 2, 1);
 
         // Define the plane element
         var flatPlane =
@@ -386,7 +387,7 @@ public static class CGa5DVisualizationSamples
             samplingSpecs
         );
         
-        CGa.VisualizerAnimationComposer.SetFileNameAndTitle(
+        CGa.VisualizerAnimationComposer.SetTitle(
             "Parametric 3D Plane 1"
         );
 
@@ -486,7 +487,7 @@ public static class CGa5DVisualizationSamples
             samplingSpecs
         );
         
-        CGa.VisualizerAnimationComposer.SetFileNameAndTitle(
+        CGa.VisualizerAnimationComposer.SetTitle(
             "Parametric 3D Plane 2"
         );
 
@@ -563,7 +564,7 @@ public static class CGa5DVisualizationSamples
             samplingSpecs
         );
         
-        CGa.VisualizerAnimationComposer.SetFileNameAndTitle(
+        CGa.VisualizerAnimationComposer.SetTitle(
             "Parametric 3D Point-Pair 1"
         );
 
@@ -657,7 +658,7 @@ public static class CGa5DVisualizationSamples
             }
         );
 
-        CGa.VisualizerAnimationComposer.SetFileNameAndTitle(
+        CGa.VisualizerAnimationComposer.SetTitle(
             "Parametric 3D Point-Pair 2"
         );
 
@@ -717,7 +718,7 @@ public static class CGa5DVisualizationSamples
 
         // This constant curve defines the position of the third point
         var point3Curve =
-            ConstantParametricCurve3D.Create(2, 2, -2);
+            Float64ConstantPath3D.Finite(2, 2, -2);
 
         // Define the circle element
         var roundCircle =
@@ -742,7 +743,7 @@ public static class CGa5DVisualizationSamples
             }
         );
 
-        CGa.VisualizerAnimationComposer.SetFileNameAndTitle(
+        CGa.VisualizerAnimationComposer.SetTitle(
             "Parametric 3D Circle 1"
         );
 
@@ -836,7 +837,7 @@ public static class CGa5DVisualizationSamples
             }
         );
 
-        CGa.VisualizerAnimationComposer.SetFileNameAndTitle(
+        CGa.VisualizerAnimationComposer.SetTitle(
             "Parametric 3D Circle 2"
         );
 
@@ -896,11 +897,11 @@ public static class CGa5DVisualizationSamples
 
         // This constant curve defines the position of the third point
         var point3Curve =
-            ConstantParametricCurve3D.Create(2, 2, -2);
+            Float64ConstantPath3D.Finite(2, 2, -2);
 
         // This constant curve defines the position of the 4th point
         var point4Curve =
-            ConstantParametricCurve3D.Create(-2, -2, 1);
+            Float64ConstantPath3D.Finite(-2, -2, 1);
 
         // Define the sphere element
         var roundSphere =
@@ -956,7 +957,7 @@ public static class CGa5DVisualizationSamples
             }
         );
 
-        CGa.VisualizerAnimationComposer.SetFileNameAndTitle(
+        CGa.VisualizerAnimationComposer.SetTitle(
             "Parametric 3D Sphere 1"
         );
 
@@ -1051,7 +1052,7 @@ public static class CGa5DVisualizationSamples
             }
         );
 
-        CGa.VisualizerAnimationComposer.SetFileNameAndTitle(
+        CGa.VisualizerAnimationComposer.SetTitle(
             "Parametric 3D Sphere 2"
         );
 
@@ -1149,7 +1150,7 @@ public static class CGa5DVisualizationSamples
             }
         );
 
-        CGa.VisualizerAnimationComposer.SetFileNameAndTitle(
+        CGa.VisualizerAnimationComposer.SetTitle(
             "Parametric 3D Sphere-Sphere Intersection"
         );
 
@@ -1274,7 +1275,7 @@ public static class CGa5DVisualizationSamples
             }
         );
 
-        CGa.VisualizerAnimationComposer.SetFileNameAndTitle(
+        CGa.VisualizerAnimationComposer.SetTitle(
             "Parametric 3D Sphere-Plane Intersection"
         );
 
@@ -1422,7 +1423,7 @@ public static class CGa5DVisualizationSamples
             }
         );
 
-        CGa.VisualizerAnimationComposer.SetFileNameAndTitle(
+        CGa.VisualizerAnimationComposer.SetTitle(
             "Parametric 3D Sphere-Line Intersection"
         );
 
@@ -1593,7 +1594,7 @@ public static class CGa5DVisualizationSamples
             }
         );
 
-        CGa.VisualizerAnimationComposer.SetFileNameAndTitle(
+        CGa.VisualizerAnimationComposer.SetTitle(
             "Parametric 3D Sphere-Circle Intersection"
         );
 
@@ -1744,7 +1745,7 @@ public static class CGa5DVisualizationSamples
             }
         );
 
-        CGa.VisualizerAnimationComposer.SetFileNameAndTitle(
+        CGa.VisualizerAnimationComposer.SetTitle(
             "Parametric 3D Circle On Sphere Reflection"
         );
 
@@ -1826,7 +1827,7 @@ public static class CGa5DVisualizationSamples
         // Encode a parametric real plane
         // This curve defines the parametric position and normal of the plane
         var positionCurve1 =
-            ConstantParametricCurve3D.Create(
+            Float64ConstantPath3D.Finite(
                 samplingSpecs.TimeRange,
                 LinFloat64Vector3D.Create(0, 0, 2),
                 LinFloat64Vector3D.Create(0, 1, 0)
@@ -1878,7 +1879,7 @@ public static class CGa5DVisualizationSamples
             }
         );
 
-        CGa.VisualizerAnimationComposer.SetFileNameAndTitle(
+        CGa.VisualizerAnimationComposer.SetTitle(
             "Parametric 3D Circle On Plane Reflection"
         );
 
@@ -1985,7 +1986,7 @@ public static class CGa5DVisualizationSamples
             samplingSpecs
         );
 
-        CGa.VisualizerAnimationComposer.SetFileNameAndTitle(
+        CGa.VisualizerAnimationComposer.SetTitle(
             "Parametric 3D Circle Interpolation"
         );
 
@@ -2041,7 +2042,7 @@ public static class CGa5DVisualizationSamples
 
         // Define a parametric angle that cycles from 0 to 2 Pi
         var rotationAngle =
-            ComputedParametricPolarAngle.CreateCosWaveCycles(maxTime, 1);
+            LinFloat64PolarAngleTimeSignal.CreateCosWaveCycles(maxTime, 1);
         //ComputedParametricAngle.CreateLinearCycles(maxTime, 1);
 
         // Define the rotation axis flat line element
@@ -2102,7 +2103,7 @@ public static class CGa5DVisualizationSamples
             }
         );
 
-        CGa.VisualizerAnimationComposer.SetFileNameAndTitle(
+        CGa.VisualizerAnimationComposer.SetTitle(
             "Parametric 3D Circle Rotation 1"
         );
 
@@ -2156,10 +2157,10 @@ public static class CGa5DVisualizationSamples
 
         var alphaPosition =
             rotationAngle
-                .MapAngles(a => a.HalfPolarAngle())
+                .HalfPolarAngles()
                 .CreatePolarCurve(1, center, direction1, direction2);
 
-        //ComputedParametricCurve3D.Create(
+        //Float64ComputedPointPath3D.Finite(
         //    rotationAngle.ParameterRange,
         //    t =>
         //        {

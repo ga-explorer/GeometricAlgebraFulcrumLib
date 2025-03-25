@@ -645,7 +645,7 @@ public static class XGaMathematicaUtils
         return LaTeXComposer.GetMultivectorText(mv);
     }
 
-    public static XGaVector<Float64Signal> GetSampledSignal(this XGaVector<Expr> vector, XGaProcessor<Float64Signal> processor, Expr t, double samplingRate, int sampleCount)
+    public static XGaVector<Float64SampledTimeSignal> GetSampledSignal(this XGaVector<Expr> vector, XGaProcessor<Float64SampledTimeSignal> processor, Expr t, double samplingRate, int sampleCount)
     {
         var composer = processor.CreateComposer();
 
@@ -660,7 +660,7 @@ public static class XGaMathematicaUtils
         return composer.GetVector();
     }
 
-    public static XGaBivector<Float64Signal> GetSampledSignal(this XGaBivector<Expr> vector, XGaProcessor<Float64Signal> processor, Expr t, double samplingRate, int sampleCount)
+    public static XGaBivector<Float64SampledTimeSignal> GetSampledSignal(this XGaBivector<Expr> vector, XGaProcessor<Float64SampledTimeSignal> processor, Expr t, double samplingRate, int sampleCount)
     {
         var composer = processor.CreateComposer();
 

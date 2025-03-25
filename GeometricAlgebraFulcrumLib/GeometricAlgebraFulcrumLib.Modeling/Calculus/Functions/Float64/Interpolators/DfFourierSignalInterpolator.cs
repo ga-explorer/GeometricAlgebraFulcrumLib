@@ -141,7 +141,7 @@ public class DfFourierSignalInterpolator :
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static DfFourierSignalInterpolator Create(Float64Signal signal, DfFourierSignalInterpolatorOptions options)
+    public static DfFourierSignalInterpolator Create(Float64SampledTimeSignal signal, DfFourierSignalInterpolatorOptions options)
     {
         signal = signal.GetSmoothedSignal(options);
 
@@ -163,7 +163,7 @@ public class DfFourierSignalInterpolator :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static DfFourierSignalInterpolator Create(Float64Signal signal, int sampleIndex1, int sampleIndex2, DfFourierSignalInterpolatorOptions options)
+    public static DfFourierSignalInterpolator Create(Float64SampledTimeSignal signal, int sampleIndex1, int sampleIndex2, DfFourierSignalInterpolatorOptions options)
     {
         var sampleCount = sampleIndex2 - sampleIndex2 + 1;
         signal = signal.GetSubSignal(sampleIndex1, sampleCount).GetSmoothedSignal(options);
@@ -188,11 +188,11 @@ public class DfFourierSignalInterpolator :
 
     public DfFourierSignalInterpolatorOptions Options { get; }
 
-    public ComplexSignalSpectrum VectorSignalSpectrum { get; }
+    public Float64ComplexSignalSpectrum VectorSignalSpectrum { get; }
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    private DfFourierSignalInterpolator(Float64SamplingSpecs samplingSpecs, int sampleIndex1, int sampleIndex2, DfFourierSignalInterpolatorOptions options, ComplexSignalSpectrum signalSpectrum)
+    private DfFourierSignalInterpolator(Float64SamplingSpecs samplingSpecs, int sampleIndex1, int sampleIndex2, DfFourierSignalInterpolatorOptions options, Float64ComplexSignalSpectrum signalSpectrum)
         : base(samplingSpecs, sampleIndex1, sampleIndex2)
     {
         Options = options;

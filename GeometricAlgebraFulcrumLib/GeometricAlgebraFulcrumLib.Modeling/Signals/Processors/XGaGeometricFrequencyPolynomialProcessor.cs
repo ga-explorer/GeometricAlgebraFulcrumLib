@@ -29,7 +29,7 @@ public sealed class XGaGeometricFrequencyPolynomialProcessor :
 
         VectorSignalInterpolated = vectorInterpolator.GetVectors();
 
-        var vDtArray = new XGaVector<Float64Signal>[VSpaceDimensions];
+        var vDtArray = new XGaVector<Float64SampledTimeSignal>[VSpaceDimensions];
 
         for (var degree = 1; degree <= VSpaceDimensions; degree++)
         {
@@ -40,7 +40,7 @@ public sealed class XGaGeometricFrequencyPolynomialProcessor :
     }
 
 
-    public void ProcessVectorSignal(XGaVector<Float64Signal> vectorSignal)
+    public void ProcessVectorSignal(XGaVector<Float64SampledTimeSignal> vectorSignal)
     {
         ClearData();
 

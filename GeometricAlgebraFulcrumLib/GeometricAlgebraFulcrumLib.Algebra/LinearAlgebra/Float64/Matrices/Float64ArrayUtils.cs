@@ -662,7 +662,7 @@ public static class Float64ArrayUtils
 
             for (var colIndex = 1; colIndex < size; colIndex++)
             {
-                var angle = 2d * Math.PI * (k + 1) * colIndex / size;
+                var angle = Math.Tau * (k + 1) * colIndex / size;
                 // $"2 * Pi * {k + 1} * {i} / {m}";
 
                 var cosAngle = s * Math.Cos(angle); // $"{s} * Cos[{angle}]";
@@ -707,7 +707,7 @@ public static class Float64ArrayUtils
 
             for (var colIndex = 1; colIndex < size; colIndex++)
             {
-                var angle = 2d * Math.PI * (k + 1) * colIndex / size;
+                var angle = Math.Tau * (k + 1) * colIndex / size;
                 // $"2 * Pi * {k + 1} * {i} / {m}";
 
                 var cosAngle = s * Math.Cos(angle); // $"{s} * Cos[{angle}]";

@@ -8,13 +8,13 @@ namespace GeometricAlgebraFulcrumLib.Modeling.Signals;
 public static class Float64SignalValidatorUtils
 {
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static bool ValidateEqualZero(this Float64SignalValidator validator, IScalar<Float64Signal> scalarSignal1)
+    public static bool ValidateEqualZero(this Float64SignalValidator validator, IScalar<Float64SampledTimeSignal> scalarSignal1)
     {
         return validator.ValidateEqualZero(scalarSignal1.ScalarValue);
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static bool ValidateEqual(this Float64SignalValidator validator, Scalar<Float64Signal> scalarSignal1, Scalar<Float64Signal> scalarSignal2)
+    public static bool ValidateEqual(this Float64SignalValidator validator, Scalar<Float64SampledTimeSignal> scalarSignal1, Scalar<Float64SampledTimeSignal> scalarSignal2)
     {
         return validator.ValidateEqual(
             scalarSignal1.ScalarValue,
@@ -23,7 +23,7 @@ public static class Float64SignalValidatorUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static bool ValidateEqual(this Float64SignalValidator validator, IScalar<Float64Signal> scalarSignal1, Scalar<Float64Signal> scalarSignal2)
+    public static bool ValidateEqual(this Float64SignalValidator validator, IScalar<Float64SampledTimeSignal> scalarSignal1, Scalar<Float64SampledTimeSignal> scalarSignal2)
     {
         return validator.ValidateEqual(
             scalarSignal1.ScalarValue,
@@ -32,7 +32,7 @@ public static class Float64SignalValidatorUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static bool ValidateEqual(this Float64SignalValidator validator, Scalar<Float64Signal> scalarSignal1, IScalar<Float64Signal> scalarSignal2)
+    public static bool ValidateEqual(this Float64SignalValidator validator, Scalar<Float64SampledTimeSignal> scalarSignal1, IScalar<Float64SampledTimeSignal> scalarSignal2)
     {
         return validator.ValidateEqual(
             scalarSignal1.ScalarValue,
@@ -41,7 +41,7 @@ public static class Float64SignalValidatorUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static bool ValidateEqual(this Float64SignalValidator validator, IScalar<Float64Signal> scalarSignal1, IScalar<Float64Signal> scalarSignal2)
+    public static bool ValidateEqual(this Float64SignalValidator validator, IScalar<Float64SampledTimeSignal> scalarSignal1, IScalar<Float64SampledTimeSignal> scalarSignal2)
     {
         return validator.ValidateEqual(
             scalarSignal1.ScalarValue,
@@ -50,7 +50,7 @@ public static class Float64SignalValidatorUtils
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static bool ValidateEqual(this Float64SignalValidator validator, Float64Signal scalarSignal1, IScalar<Float64Signal> scalarSignal2)
+    public static bool ValidateEqual(this Float64SignalValidator validator, Float64SampledTimeSignal scalarSignal1, IScalar<Float64SampledTimeSignal> scalarSignal2)
     {
         return validator.ValidateEqual(
             scalarSignal1,
@@ -59,7 +59,7 @@ public static class Float64SignalValidatorUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static bool ValidateEqual(this Float64SignalValidator validator, IScalar<Float64Signal> scalarSignal1, Float64Signal scalarSignal2)
+    public static bool ValidateEqual(this Float64SignalValidator validator, IScalar<Float64SampledTimeSignal> scalarSignal1, Float64SampledTimeSignal scalarSignal2)
     {
         return validator.ValidateEqual(
             scalarSignal1.ScalarValue,
@@ -68,7 +68,7 @@ public static class Float64SignalValidatorUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static bool ValidateEqual(this Float64SignalValidator validator, RGaVector<Float64Signal> scalarSignal1, RGaVector<Float64Signal> scalarSignal2)
+    public static bool ValidateEqual(this Float64SignalValidator validator, RGaVector<Float64SampledTimeSignal> scalarSignal1, RGaVector<Float64SampledTimeSignal> scalarSignal2)
     {
         return validator.ValidateZeroNorm(
             scalarSignal1 - scalarSignal2
@@ -76,7 +76,7 @@ public static class Float64SignalValidatorUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static bool ValidateEqual(this Float64SignalValidator validator, XGaVector<Float64Signal> scalarSignal1, XGaVector<Float64Signal> scalarSignal2)
+    public static bool ValidateEqual(this Float64SignalValidator validator, XGaVector<Float64SampledTimeSignal> scalarSignal1, XGaVector<Float64SampledTimeSignal> scalarSignal2)
     {
         return validator.ValidateZeroNorm(
             scalarSignal1 - scalarSignal2
@@ -84,7 +84,7 @@ public static class Float64SignalValidatorUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static bool ValidateEqual(this Float64SignalValidator validator, XGaBivector<Float64Signal> scalarSignal1, XGaBivector<Float64Signal> scalarSignal2)
+    public static bool ValidateEqual(this Float64SignalValidator validator, XGaBivector<Float64SampledTimeSignal> scalarSignal1, XGaBivector<Float64SampledTimeSignal> scalarSignal2)
     {
         return validator.ValidateZeroNormSquared(
             scalarSignal1 - scalarSignal2
@@ -92,7 +92,7 @@ public static class Float64SignalValidatorUtils
     }
         
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static bool ValidateZeroNorm(this Float64SignalValidator validator, RGaVector<Float64Signal> scalarSignal1)
+    public static bool ValidateZeroNorm(this Float64SignalValidator validator, RGaVector<Float64SampledTimeSignal> scalarSignal1)
     {
         return validator.ValidateEqualZero(
             scalarSignal1.Norm().ScalarValue
@@ -100,7 +100,7 @@ public static class Float64SignalValidatorUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static bool ValidateZeroNorm(this Float64SignalValidator validator, XGaVector<Float64Signal> scalarSignal1)
+    public static bool ValidateZeroNorm(this Float64SignalValidator validator, XGaVector<Float64SampledTimeSignal> scalarSignal1)
     {
         return validator.ValidateEqualZero(
             scalarSignal1.Norm().ScalarValue
@@ -108,7 +108,7 @@ public static class Float64SignalValidatorUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static bool ValidateZeroNormSquared(this Float64SignalValidator validator, XGaVector<Float64Signal> scalarSignal1)
+    public static bool ValidateZeroNormSquared(this Float64SignalValidator validator, XGaVector<Float64SampledTimeSignal> scalarSignal1)
     {
         return validator.ValidateEqualZero(
             scalarSignal1.NormSquared().ScalarValue
@@ -116,7 +116,7 @@ public static class Float64SignalValidatorUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static bool ValidateZeroNormSquared(this Float64SignalValidator validator, XGaBivector<Float64Signal> scalarSignal1)
+    public static bool ValidateZeroNormSquared(this Float64SignalValidator validator, XGaBivector<Float64SampledTimeSignal> scalarSignal1)
     {
         return validator.ValidateEqualZero(
             scalarSignal1.NormSquared().ScalarValue
@@ -124,7 +124,7 @@ public static class Float64SignalValidatorUtils
     }
         
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static bool ValidateUnitNormSquared(this Float64SignalValidator validator, RGaVector<Float64Signal> scalarSignal1)
+    public static bool ValidateUnitNormSquared(this Float64SignalValidator validator, RGaVector<Float64SampledTimeSignal> scalarSignal1)
     {
         return validator.ValidateEqual(
             scalarSignal1.NormSquared().ScalarValue,
@@ -133,7 +133,7 @@ public static class Float64SignalValidatorUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static bool ValidateUnitNormSquared(this Float64SignalValidator validator, XGaVector<Float64Signal> scalarSignal1)
+    public static bool ValidateUnitNormSquared(this Float64SignalValidator validator, XGaVector<Float64SampledTimeSignal> scalarSignal1)
     {
         return validator.ValidateEqual(
             scalarSignal1.NormSquared().ScalarValue,
@@ -142,19 +142,19 @@ public static class Float64SignalValidatorUtils
     }
         
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static bool ValidateOrthogonal(this Float64SignalValidator validator, RGaVector<Float64Signal> vectorSignal1, RGaVector<Float64Signal> vectorSignal2)
+    public static bool ValidateOrthogonal(this Float64SignalValidator validator, RGaVector<Float64SampledTimeSignal> vectorSignal1, RGaVector<Float64SampledTimeSignal> vectorSignal2)
     {
         return validator.ValidateEqualZero(vectorSignal1.Sp(vectorSignal2).ScalarValue);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static bool ValidateOrthogonal(this Float64SignalValidator validator, XGaVector<Float64Signal> vectorSignal1, XGaVector<Float64Signal> vectorSignal2)
+    public static bool ValidateOrthogonal(this Float64SignalValidator validator, XGaVector<Float64SampledTimeSignal> vectorSignal1, XGaVector<Float64SampledTimeSignal> vectorSignal2)
     {
         return validator.ValidateEqualZero(vectorSignal1.Sp(vectorSignal2).ScalarValue);
     }
         
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static bool ValidateOrthogonal(this Float64SignalValidator validator, IReadOnlyList<RGaVector<Float64Signal>> vectorSignalList)
+    public static bool ValidateOrthogonal(this Float64SignalValidator validator, IReadOnlyList<RGaVector<Float64SampledTimeSignal>> vectorSignalList)
     {
         var validatedFlag = true;
         for (var i = 0; i < vectorSignalList.Count; i++)
@@ -175,7 +175,7 @@ public static class Float64SignalValidatorUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static bool ValidateOrthogonal(this Float64SignalValidator validator, IReadOnlyList<XGaVector<Float64Signal>> vectorSignalList)
+    public static bool ValidateOrthogonal(this Float64SignalValidator validator, IReadOnlyList<XGaVector<Float64SampledTimeSignal>> vectorSignalList)
     {
         var validatedFlag = true;
         for (var i = 0; i < vectorSignalList.Count; i++)

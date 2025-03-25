@@ -274,9 +274,9 @@ public static class ExcelUtils
     }
 
 
-    public static RGaVector<Float64Signal> ReadVectorSignal(this RGaProcessor<Float64Signal> geometricProcessor, double samplingRate, ExcelWorksheet workSheet, int firstRowIndex, int rowCount, int firstColIndex, int colCount)
+    public static RGaVector<Float64SampledTimeSignal> ReadVectorSignal(this RGaProcessor<Float64SampledTimeSignal> geometricProcessor, double samplingRate, ExcelWorksheet workSheet, int firstRowIndex, int rowCount, int firstColIndex, int colCount)
     {
-        var vectorArray = new Float64Signal[colCount];
+        var vectorArray = new Float64SampledTimeSignal[colCount];
 
         for (var j = 0; j < colCount; j++)
         {
@@ -327,9 +327,9 @@ public static class ExcelUtils
     }
 
 
-    public static XGaVector<Float64Signal> ReadVectorSignal(this XGaProcessor<Float64Signal> geometricProcessor, double samplingRate, ExcelWorksheet workSheet, int firstRowIndex, int rowCount, int firstColIndex, int colCount)
+    public static XGaVector<Float64SampledTimeSignal> ReadVectorSignal(this XGaProcessor<Float64SampledTimeSignal> geometricProcessor, double samplingRate, ExcelWorksheet workSheet, int firstRowIndex, int rowCount, int firstColIndex, int colCount)
     {
-        var vectorArray = new Float64Signal[colCount];
+        var vectorArray = new Float64SampledTimeSignal[colCount];
 
         for (var j = 0; j < colCount; j++)
         {
@@ -472,22 +472,22 @@ public static class ExcelUtils
         return worksheet;
     }
 
-    public static ExcelWorksheet WriteScalarSignal(this ExcelWorksheet worksheet, int rowIndex, int columnIndex, Float64Signal scalarSignal, string columnName)
+    public static ExcelWorksheet WriteScalarSignal(this ExcelWorksheet worksheet, int rowIndex, int columnIndex, Float64SampledTimeSignal scalarSignal, string columnName)
     {
         return worksheet.WriteScalars(rowIndex, columnIndex, scalarSignal, columnName);
     }
 
-    public static ExcelWorksheet WriteScalarSignal(this ExcelWorksheet worksheet, int rowIndex, int columnIndex, Scalar<Float64Signal> scalarSignal, string columnName)
+    public static ExcelWorksheet WriteScalarSignal(this ExcelWorksheet worksheet, int rowIndex, int columnIndex, Scalar<Float64SampledTimeSignal> scalarSignal, string columnName)
     {
         return worksheet.WriteScalars(rowIndex, columnIndex, scalarSignal.ScalarValue, columnName);
     }
 
-    public static ExcelWorksheet WriteScalarSignal(this ExcelWorksheet worksheet, int rowIndex, int columnIndex, IScalar<Float64Signal> scalarSignal, string columnName)
+    public static ExcelWorksheet WriteScalarSignal(this ExcelWorksheet worksheet, int rowIndex, int columnIndex, IScalar<Float64SampledTimeSignal> scalarSignal, string columnName)
     {
         return worksheet.WriteScalars(rowIndex, columnIndex, scalarSignal.ScalarValue, columnName);
     }
 
-    public static ExcelWorksheet WriteVectorSignal(this ExcelWorksheet worksheet, int rowIndex, int columnIndex, RGaVector<Float64Signal> vectorSignal, string vectorName, params string[] columnNames)
+    public static ExcelWorksheet WriteVectorSignal(this ExcelWorksheet worksheet, int rowIndex, int columnIndex, RGaVector<Float64SampledTimeSignal> vectorSignal, string vectorName, params string[] columnNames)
     {
         var columnCount = columnNames.Length;
 
@@ -509,7 +509,7 @@ public static class ExcelUtils
         return worksheet;
     }
 
-    public static ExcelWorksheet WriteVectorSignal(this ExcelWorksheet worksheet, int rowIndex, int columnIndex, XGaVector<Float64Signal> vectorSignal, string vectorName, params string[] columnNames)
+    public static ExcelWorksheet WriteVectorSignal(this ExcelWorksheet worksheet, int rowIndex, int columnIndex, XGaVector<Float64SampledTimeSignal> vectorSignal, string vectorName, params string[] columnNames)
     {
         var columnCount = columnNames.Length;
 
@@ -531,7 +531,7 @@ public static class ExcelUtils
         return worksheet;
     }
 
-    public static ExcelWorksheet WriteBivectorSignal(this ExcelWorksheet worksheet, int rowIndex, int columnIndex, RGaBivector<Float64Signal> bivectorSignal, string bivectorName, params string[] columnNames)
+    public static ExcelWorksheet WriteBivectorSignal(this ExcelWorksheet worksheet, int rowIndex, int columnIndex, RGaBivector<Float64SampledTimeSignal> bivectorSignal, string bivectorName, params string[] columnNames)
     {
         var columnCount = columnNames.Length;
 
@@ -553,7 +553,7 @@ public static class ExcelUtils
         return worksheet;
     }
 
-    public static ExcelWorksheet WriteBivectorSignal(this ExcelWorksheet worksheet, int rowIndex, int columnIndex, XGaBivector<Float64Signal> bivectorSignal, string bivectorName, params string[] columnNames)
+    public static ExcelWorksheet WriteBivectorSignal(this ExcelWorksheet worksheet, int rowIndex, int columnIndex, XGaBivector<Float64SampledTimeSignal> bivectorSignal, string bivectorName, params string[] columnNames)
     {
         var columnCount = columnNames.Length;
 

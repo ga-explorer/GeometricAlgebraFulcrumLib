@@ -65,8 +65,6 @@ public static class SquareGridGenerator
                 Quality = 9
             },
 
-            BackgroundColor = Color.BlanchedAlmond,
-
             SceneObject =
             {
                 Camera = GrPovRayCamera.ArcRotateOrthographic(
@@ -78,7 +76,7 @@ public static class SquareGridGenerator
                     GridHeight
                 )
             }
-        };
+        }.AddBackground(Color.BlanchedAlmond);
 
         
     private static void InitializeComposer()

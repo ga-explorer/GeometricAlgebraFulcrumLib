@@ -99,7 +99,7 @@ public class VectorFourierInterpolator
     /// </summary>
     /// <param name="signalSamples"></param>
     /// <returns></returns>
-    private static List<Complex[]> GetFourierArrays(XGaVector<Float64Signal> signalSamples)
+    private static List<Complex[]> GetFourierArrays(XGaVector<Float64SampledTimeSignal> signalSamples)
     {
         var vSpaceDimensions = signalSamples.VSpaceDimensions;
         var complexSamples = new List<Complex[]>(vSpaceDimensions);
@@ -155,7 +155,7 @@ public class VectorFourierInterpolator
         //foreach (var freqIndex in frequencyIndexList)
         //{
         //    var freqHz = freqIndex * df;
-        //    var freqRad = 2 * Math.PI * freqHz;
+        //    var freqRad = Math.Tau * freqHz;
         //    var freqRatio = freqHz / 50d;
 
         //    Console.WriteLine(
@@ -216,7 +216,7 @@ public class VectorFourierInterpolator
 
             // The positive frequency value
             var freqHz = i * df;
-            var freqRad = 2 * Math.PI * freqHz;
+            var freqRad = Math.Tau * freqHz;
 
             var cosVectorScalars = new double[vSpaceDimensions];
             var sinVectorScalars = new double[vSpaceDimensions];
@@ -263,7 +263,7 @@ public class VectorFourierInterpolator
     }
         
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    internal static VectorFourierInterpolator Create(XGaVector<Float64Signal> signalSamples, IEnumerable<int> frequencyIndexList)
+    internal static VectorFourierInterpolator Create(XGaVector<Float64SampledTimeSignal> signalSamples, IEnumerable<int> frequencyIndexList)
     {
         var vSpaceDimensions = 
             signalSamples.VSpaceDimensions;
@@ -302,7 +302,7 @@ public class VectorFourierInterpolator
         );
     }
 
-    internal static VectorFourierInterpolator Create(XGaVector<Float64Signal> signalSamples, double energyThreshold = 0.998d)
+    internal static VectorFourierInterpolator Create(XGaVector<Float64SampledTimeSignal> signalSamples, double energyThreshold = 0.998d)
     {
         var frequencyIndexSet = GetDominantFrequencyIndexSet(
             signalSamples.Norm().ScalarValue,

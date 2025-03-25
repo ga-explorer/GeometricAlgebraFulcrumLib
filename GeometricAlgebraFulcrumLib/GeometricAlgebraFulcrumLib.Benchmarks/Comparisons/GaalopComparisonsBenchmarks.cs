@@ -2408,8 +2408,8 @@ namespace GeometricAlgebraFulcrumLib.Benchmarks.Comparisons
                 D24[i] = randGen.GetNumber(1, 10);
                 D34[i] = randGen.GetNumber(1, 10);
 
-                alpha[i] = randGen.GetNumber(0, 2 * Math.PI);
-                beta[i] = randGen.GetNumber(0, 2 * Math.PI);
+                alpha[i] = randGen.GetNumber(0, Math.Tau);
+                beta[i] = randGen.GetNumber(0, Math.Tau);
             }
         }
 

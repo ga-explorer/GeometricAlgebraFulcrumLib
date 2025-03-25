@@ -14,7 +14,7 @@ public sealed class ScalarFourierSeriesTerm
     public double Frequency { get; }
 
     public double FrequencyHz
-        => Frequency / (2 * Math.PI);
+        => Frequency / (Math.Tau);
 
 
 
@@ -92,7 +92,7 @@ public sealed class ScalarFourierSeriesTerm
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public Float64Signal GetSignal(Float64Signal tValuesSignal)
+    public Float64SampledTimeSignal GetSignal(Float64SampledTimeSignal tValuesSignal)
     {
         return tValuesSignal.Select(GetScalar).CreateSignal(tValuesSignal.SamplingRate);
     }
@@ -104,7 +104,7 @@ public sealed class ScalarFourierSeriesTerm
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public Float64Signal GetSignalDt(Float64Signal tValuesSignal)
+    public Float64SampledTimeSignal GetSignalDt(Float64SampledTimeSignal tValuesSignal)
     {
         return tValuesSignal.Select(GetScalarDt).CreateSignal(tValuesSignal.SamplingRate);
     }
@@ -128,7 +128,7 @@ public sealed class ScalarFourierSeriesTerm
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public double GetEnergyAc(Float64Signal tValues)
+    public double GetEnergyAc(Float64SampledTimeSignal tValues)
     {
         return Frequency != 0
             ? tValues.Select(GetScalar).CreateSignal(tValues.SamplingRate).EnergyAc()

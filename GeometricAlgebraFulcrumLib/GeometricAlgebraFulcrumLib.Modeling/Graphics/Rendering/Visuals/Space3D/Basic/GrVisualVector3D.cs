@@ -316,14 +316,14 @@ public sealed class GrVisualVector3D :
     {
         return SamplingSpecs.IsStatic || AnimatedOrigin is null
             ? Origin.ToLinVector3D()
-            : AnimatedOrigin.GetPoint(time);
+            : AnimatedOrigin.GetValue(time);
     }
 
     public LinFloat64Vector3D GetDirection(double time)
     {
         return SamplingSpecs.IsStatic || AnimatedDirection is null
             ? Direction.ToLinVector3D()
-            : AnimatedDirection.GetPoint(time);
+            : AnimatedDirection.GetValue(time);
     }
 
     public LinFloat64Vector3D GetPosition(double time)

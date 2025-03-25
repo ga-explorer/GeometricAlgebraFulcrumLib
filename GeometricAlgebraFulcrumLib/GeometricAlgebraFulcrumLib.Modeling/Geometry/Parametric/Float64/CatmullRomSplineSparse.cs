@@ -4,10 +4,9 @@ using System.Runtime.CompilerServices;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Matrices;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.SpaceND;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
+using GeometricAlgebraFulcrumLib.Modeling.Trajectories.Scalars.Float64;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Basic;
 using MathNet.Numerics;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.Parametric.Float64.Space1D.Scalars.CatmullRom;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.Parametric.Float64.SpaceND.Curves.CatmullRom;
 
 namespace GeometricAlgebraFulcrumLib.Modeling.Geometry.Parametric.Float64;
 

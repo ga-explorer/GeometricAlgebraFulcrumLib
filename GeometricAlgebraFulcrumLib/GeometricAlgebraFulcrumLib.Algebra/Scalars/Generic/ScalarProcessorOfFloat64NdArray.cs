@@ -139,7 +139,7 @@ public sealed class ScalarProcessorOfFloat64NdArray :
         MinusTwoValue = np.full(ScalarShape, -2d, np.Float64);
         EValue = np.full(ScalarShape, Math.E, np.Float64);
         PiValue = np.full(ScalarShape, Math.PI, np.Float64);
-        PiTimes2Value = np.full(ScalarShape, Math.PI * 2, np.Float64);
+        PiTimes2Value = np.full(ScalarShape, Math.Tau, np.Float64);
         PiTimes4Value = np.full(ScalarShape, Math.PI * 4, np.Float64);
         PiOver2Value = np.full(ScalarShape, Math.PI / 2, np.Float64);
         NegativeInfinityValue = np.full(ScalarShape, double.NegativeInfinity, np.Float64);

@@ -47,7 +47,7 @@ public sealed class GrLatticeCurve3D :
         => Vertices.Select(v => v.Normal1);
 
     public IEnumerable<double> VertexTextureUvs 
-        => Vertices.Select(v => v.ParameterValue.ScalarValue);
+        => Vertices.Select(v => v.TimeValue);
 
     public IEnumerable<Color> VertexColors 
         => Vertices.Select(v => v.Color);
@@ -63,7 +63,7 @@ public sealed class GrLatticeCurve3D :
     public GrLatticeCurveLocalFrame3D this[double x, double y, double z] 
         => this[new Triplet<Float64Scalar>(x, y, z)];
 
-    public GrLatticeCurveLocalFrame3D this[ITriplet<double> triplet] 
+    public GrLatticeCurveLocalFrame3D this[ITriplet<Float64Scalar> triplet] 
         => this[triplet.ToTriplet()];
 
     public GrLatticeCurveLocalFrame3D this[Triplet<Float64Scalar> key] 
@@ -485,12 +485,7 @@ public sealed class GrLatticeCurve3D :
             vertexPair = new Pair<GrLatticeCurveLocalFrame3D>(vertex2, vertex1);
         }
             
-        if (linesSet.ContainsKey(indexPair))
-            return false;
-
-        linesSet.Add(indexPair, vertexPair);
-
-        return true;
+        return linesSet.TryAdd(indexPair, vertexPair);
     }
 
     public IEnumerable<Pair<GrLatticeCurveLocalFrame3D>> GetVertexLines()

@@ -68,8 +68,6 @@ public static class TriangleGridGenerator
                 Quality = 9
             },
 
-            BackgroundColor = Color.BlanchedAlmond,
-
             SceneObject =
             {
                 Camera = GrPovRayCamera.ArcRotateOrthographic(
@@ -81,7 +79,7 @@ public static class TriangleGridGenerator
                     GridHeight
                 )
             }
-        };
+        }.AddBackground(Color.BlanchedAlmond);
 
         
     private static void InitializeComposer()

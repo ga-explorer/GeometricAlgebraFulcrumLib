@@ -1,5 +1,5 @@
 ﻿using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space3D;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.Parametric.Float64.Space3D.Curves;
+using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.Visuals.Space3D.Animations;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.Visuals.Space3D.Basic;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.Visuals.Space3D.Curves;
@@ -7,6 +7,8 @@ using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.Visuals.Space3D.Gri
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.Visuals.Space3D.Images;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.Visuals.Space3D.Styles;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.Visuals.Space3D.Surfaces;
+using GeometricAlgebraFulcrumLib.Modeling.Trajectories.Vectors3D.Float64;
+using GeometricAlgebraFulcrumLib.Utilities.Structures.Basic;
 using GeometricAlgebraFulcrumLib.Utilities.Web.Images;
 using SixLabors.ImageSharp;
 
@@ -448,7 +450,7 @@ public abstract class GrVisualSceneComposer3D
         return this;
     }
     
-    public GrVisualSceneComposer3D AddParametricCurve(string name, IParametricCurve3D curve, IReadOnlyList<double> parameterValues, IReadOnlyList<double> frameParameterValues, IGrVisualElementMaterial3D material, double thickness)
+    public GrVisualSceneComposer3D AddParametricCurve(string name, Float64Path3D curve, IReadOnlyList<double> parameterValues, IReadOnlyList<double> frameParameterValues, IGrVisualElementMaterial3D material, double thickness)
     {
         AddParametricCurve(
             GrVisualParametricCurve3D.Create(
@@ -463,7 +465,7 @@ public abstract class GrVisualSceneComposer3D
         return this;
     }
 
-    public GrVisualSceneComposer3D AddParametricCurve(string name, IParametricCurve3D curve, IReadOnlyList<double> parameterValues, IReadOnlyList<double> frameParameterValues, Color color, double thickness)
+    public GrVisualSceneComposer3D AddParametricCurve(string name, Float64Path3D curve, IReadOnlyList<double> parameterValues, IReadOnlyList<double> frameParameterValues, Color color, double thickness)
     {
         AddParametricCurve(
             GrVisualParametricCurve3D.Create(
@@ -478,7 +480,7 @@ public abstract class GrVisualSceneComposer3D
         return this;
     }
     
-    public GrVisualSceneComposer3D AddParametricCurve(string name, IParametricCurve3D curve, IReadOnlyList<double> parameterValues, IReadOnlyList<double> frameParameterValues, Color color)
+    public GrVisualSceneComposer3D AddParametricCurve(string name, Float64Path3D curve, IReadOnlyList<double> parameterValues, IReadOnlyList<double> frameParameterValues, Color color)
     {
         AddParametricCurve(
             GrVisualParametricCurve3D.Create(
@@ -493,7 +495,7 @@ public abstract class GrVisualSceneComposer3D
         return this;
     }
 
-    public GrVisualSceneComposer3D AddParametricCurve(string name, IParametricCurve3D curve, IReadOnlyList<double> parameterValues, IReadOnlyList<double> frameParameterValues, Color color, GrVisualDashedLineSpecs dashSpecs)
+    public GrVisualSceneComposer3D AddParametricCurve(string name, Float64Path3D curve, IReadOnlyList<double> parameterValues, IReadOnlyList<double> frameParameterValues, Color color, GrVisualDashedLineSpecs dashSpecs)
     {
         AddParametricCurve(
             GrVisualParametricCurve3D.Create(
@@ -1137,7 +1139,7 @@ public abstract class GrVisualSceneComposer3D
 
         return this;
     }
-        
+    
     public GrVisualSceneComposer3D AddParallelogram(string name, ILinFloat64Vector3D position, ILinFloat64Vector3D direction1, ILinFloat64Vector3D direction2, GrVisualSurfaceThinStyle3D style)
     {
         AddParallelogramSurface(
@@ -1265,7 +1267,7 @@ public abstract class GrVisualSceneComposer3D
         return this;
     }
     
-    public GrVisualSceneComposer3D AddLaTeXText(string name, IGrVisualTexture texture, ILinFloat64Vector3D origin, double scalingFactor)
+    public GrVisualSceneComposer3D AddLaTeXText(string name, IGrVisualImageSource texture, ILinFloat64Vector3D origin, double scalingFactor)
     {
         AddImage(
             GrVisualImage3D.CreateStatic(
@@ -1280,7 +1282,7 @@ public abstract class GrVisualSceneComposer3D
     }
 
         
-    public GrVisualSceneComposer3D AddLaTeXText(string name, IGrVisualTexture texture, GrVisualAnimatedVector3D origin, double scalingFactor)
+    public GrVisualSceneComposer3D AddLaTeXText(string name, IGrVisualImageSource texture, GrVisualAnimatedVector3D origin, double scalingFactor)
     {
         AddImage(
             GrVisualImage3D.CreateAnimated(
@@ -1405,11 +1407,15 @@ public abstract class GrVisualSceneComposer3D
 
         return visualElement;
     }
-
+    
 
     public abstract GrVisualImage3D AddImage(GrVisualImage3D visualElement);
     
     public abstract GrVisualSquareGrid3D AddSquareGrid(GrVisualSquareGrid3D visualElement);
+    
+    public abstract void AddGrid(string name, ITriplet<Float64Scalar> center, LinFloat64Quaternion orientation, int unitCount, double unitSize = 1, double opacity = 1);
+
+    public abstract void AddAxes(string name, ITriplet<Float64Scalar> origin, LinFloat64Quaternion orientation, double scalingFactor = 1, double opacity = 1);
 
     public abstract IGrVisualImage3D AddImage(IGrVisualImage3D visualElement);
 

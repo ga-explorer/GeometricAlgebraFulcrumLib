@@ -36,6 +36,6 @@ public class AngularVelocityPolynomialSignalProcessor :
         var vDt2 = 
             vectorInterpolator.GetVectorsDt(2);
         
-        VectorSignalTimeDerivatives = new Pair<XGaVector<Float64Signal>>(vDt1, vDt2);
+        VectorSignalTimeDerivatives = new Pair<XGaVector<Float64SampledTimeSignal>>(vDt1, vDt2);
     }
 }

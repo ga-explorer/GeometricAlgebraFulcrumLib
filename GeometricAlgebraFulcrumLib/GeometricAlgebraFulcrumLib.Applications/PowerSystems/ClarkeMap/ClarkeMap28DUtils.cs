@@ -17,7 +17,7 @@ public static partial class ClarkeMapUtils
         temp1 *= temp2;
         var temp3 = temp1 * uVector[2];
         var temp4 = temp2 * uVector[0];
-        var temp5 = 2 * Math.PI;
+        var temp5 = Math.Tau;
         temp5 = 0.03571428571428571 * temp5;
         var temp6 = Math.Cos(temp5);
         temp6 = temp2 * temp6;

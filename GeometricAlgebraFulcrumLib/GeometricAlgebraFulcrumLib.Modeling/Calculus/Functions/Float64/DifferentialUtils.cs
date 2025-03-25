@@ -17,7 +17,7 @@ namespace GeometricAlgebraFulcrumLib.Modeling.Calculus.Functions.Float64;
 public static class DifferentialUtils
 {
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Float64Signal GetSmoothedSignal(this Float64Signal signal, int smoothingFactorsCount)
+    public static Float64SampledTimeSignal GetSmoothedSignal(this Float64SampledTimeSignal signal, int smoothingFactorsCount)
     {
         if (smoothingFactorsCount < 1) return signal;
 
@@ -34,7 +34,7 @@ public static class DifferentialUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Float64Signal GetSmoothedSignal(this Float64Signal signal, IReadOnlyList<int> smoothingFactors)
+    public static Float64SampledTimeSignal GetSmoothedSignal(this Float64SampledTimeSignal signal, IReadOnlyList<int> smoothingFactors)
     {
         if (smoothingFactors.Count == 0) return signal;
 
@@ -48,7 +48,7 @@ public static class DifferentialUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Float64Signal GetSmoothedSignal(this Float64Signal signal, DfSignalInterpolatorOptions options)
+    public static Float64SampledTimeSignal GetSmoothedSignal(this Float64SampledTimeSignal signal, DfSignalInterpolatorOptions options)
     {
         if (options.SmoothingFactors.Count == 0) return signal;
 

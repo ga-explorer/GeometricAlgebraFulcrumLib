@@ -129,7 +129,7 @@ public sealed class GrVisualPoint3D :
     {
         return SamplingSpecs.IsStatic || AnimatedPosition is null
             ? Position.ToLinVector3D()
-            : AnimatedPosition.GetPoint(time);
+            : AnimatedPosition.GetValue(time);
     }
 
     public IEnumerable<KeyFrameRecord> GetKeyFrameRecords()

@@ -157,7 +157,7 @@ public sealed class GrVisualSphereSurface3D :
     {
         return SamplingSpecs.IsStatic || AnimatedCenter is null
             ? Center.ToLinVector3D()
-            : AnimatedCenter.GetPoint(time);
+            : AnimatedCenter.GetValue(time);
     }
         
     public double GetRadius(double time)

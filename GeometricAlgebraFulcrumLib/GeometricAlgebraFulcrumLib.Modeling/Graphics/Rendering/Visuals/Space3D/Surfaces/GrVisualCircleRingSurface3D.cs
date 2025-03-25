@@ -154,12 +154,12 @@ public sealed class GrVisualCircleRingSurface3D :
         
     public double GetInnerEdgeLength()
     {
-        return 2d * Math.PI * MinRadius;
+        return Math.Tau * MinRadius;
     }
         
     public double GetOuterEdgeLength()
     {
-        return 2d * Math.PI * MaxRadius;
+        return Math.Tau * MaxRadius;
     }
 
     public Triplet<LinFloat64Vector3D> GetInnerEdgePointsTriplet()
@@ -168,7 +168,7 @@ public sealed class GrVisualCircleRingSurface3D :
             Normal.ToUnitLinVector3D()
         );
 
-        const double angle = 2d * Math.PI / 3d;
+        const double angle = Math.Tau / 3d;
 
         var a = MinRadius * Math.Cos(angle);
         var b = MinRadius * Math.Sin(angle);
@@ -186,7 +186,7 @@ public sealed class GrVisualCircleRingSurface3D :
             Normal.ToUnitLinVector3D()
         );
 
-        const double angle = 2d * Math.PI / 3d;
+        const double angle = Math.Tau / 3d;
 
         var a = MaxRadius * Math.Cos(angle);
         var b = MaxRadius * Math.Sin(angle);
@@ -269,14 +269,14 @@ public sealed class GrVisualCircleRingSurface3D :
     {
         return SamplingSpecs.IsStatic || AnimatedCenter is null
             ? Center.ToLinVector3D()
-            : AnimatedCenter.GetPoint(time);
+            : AnimatedCenter.GetValue(time);
     }
         
     public LinFloat64Vector3D GetNormal(double time)
     {
         return SamplingSpecs.IsStatic || AnimatedNormal is null
             ? Normal
-            : AnimatedNormal.GetPoint(time).ToUnitLinVector3D();
+            : AnimatedNormal.GetValue(time).ToUnitLinVector3D();
     }
 
     public double GetMinRadius(double time)

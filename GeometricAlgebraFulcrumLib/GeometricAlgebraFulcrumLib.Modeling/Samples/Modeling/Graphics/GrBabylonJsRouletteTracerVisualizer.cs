@@ -3,15 +3,16 @@ using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Angles;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space3D;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.AffineMaps.Space3D;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.Parametric.Float64.Space3D.Curves;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.Parametric.Float64.Space3D.Curves.Adaptive;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.Parametric.Float64.Space3D.Curves.Roulettes;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.BabylonJs.Composers;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.BabylonJs.Constants;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.BabylonJs.GUI;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.Visuals.Space3D.Basic;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.Visuals.Space3D.Styles;
 using GeometricAlgebraFulcrumLib.Modeling.Signals;
+using GeometricAlgebraFulcrumLib.Modeling.Trajectories.Vectors3D.Float64;
+using GeometricAlgebraFulcrumLib.Modeling.Trajectories.Vectors3D.Float64.Adaptive;
+using GeometricAlgebraFulcrumLib.Modeling.Trajectories.Vectors3D.Float64.Basic;
+using GeometricAlgebraFulcrumLib.Modeling.Trajectories.Vectors3D.Float64.Composers;
 using GeometricAlgebraFulcrumLib.Utilities.Web.Colors;
 using SixLabors.ImageSharp;
 
@@ -23,9 +24,9 @@ public class GrBabylonJsRouletteTracerVisualizer :
     public sealed record GeneratorPoint(LinFloat64Vector3D Point, Color PointColor);
 
     
-    public IArcLengthCurve3D FixedCurve { get; }
+    public Float64ArcLengthPath3D FixedCurve { get; }
 
-    public IArcLengthCurve3D MovingCurve { get; }
+    public Float64ArcLengthPath3D MovingCurve { get; }
     
     public IReadOnlyList<GeneratorPoint> GeneratorPointList { get; }
     
@@ -35,16 +36,16 @@ public class GrBabylonJsRouletteTracerVisualizer :
 
     public double RouletteDistance { get; }
 
-    private readonly List<RouletteCurve3D> _rouletteCurveList = new List<RouletteCurve3D>();
-    public IReadOnlyList<RouletteCurve3D> RouletteCurveList 
+    private readonly List<Float64RoulettePath3D> _rouletteCurveList = new List<Float64RoulettePath3D>();
+    public IReadOnlyList<Float64RoulettePath3D> RouletteCurveList 
         => _rouletteCurveList;
 
-    private readonly List<AdaptiveCurve3D> _sampledCurveList = new List<AdaptiveCurve3D>();
-    public IReadOnlyList<AdaptiveCurve3D> SampledCurveList 
+    private readonly List<Float64AdaptivePath3D> _sampledCurveList = new List<Float64AdaptivePath3D>();
+    public IReadOnlyList<Float64AdaptivePath3D> SampledCurveList 
         => _sampledCurveList;
 
 
-    public GrBabylonJsRouletteTracerVisualizer(string workingFolder, Float64SamplingSpecs samplingSpecs, IArcLengthCurve3D fixedCurve, IArcLengthCurve3D movingCurve, IReadOnlyList<GeneratorPoint> generatorPointList, double rouletteDistance, int fixedCurveFrameCount, int movingCurveFrameCount)
+    public GrBabylonJsRouletteTracerVisualizer(string workingFolder, Float64SamplingSpecs samplingSpecs, Float64ArcLengthPath3D fixedCurve, Float64ArcLengthPath3D movingCurve, IReadOnlyList<GeneratorPoint> generatorPointList, double rouletteDistance, int fixedCurveFrameCount, int movingCurveFrameCount)
         : base(workingFolder, samplingSpecs)
     {
         FixedCurve = fixedCurve;
@@ -56,7 +57,13 @@ public class GrBabylonJsRouletteTracerVisualizer :
 
         _rouletteCurveList.AddRange(
             GeneratorPointList.Select(p => 
-                new RouletteCurve3D(FixedCurve, MovingCurve, p.Point, RouletteDistance)
+                new Float64RoulettePath3D(
+                    FixedCurve.IsPeriodic, 
+                    FixedCurve, 
+                    MovingCurve, 
+                    p.Point, 
+                    RouletteDistance
+                )
             )
         );
 
@@ -64,7 +71,7 @@ public class GrBabylonJsRouletteTracerVisualizer :
             _rouletteCurveList.Select(curve =>
                 curve.CreateAdaptiveCurve3D(
                     Float64ScalarRange.Create(0, rouletteDistance),
-                    new AdaptiveCurveSamplingOptions3D(3.DegreesToDirectedAngle(), 3, 16)
+                    new Float64AdaptivePath3DSamplingOptions(3.DegreesToDirectedAngle(), 3, 16)
                 )
             )
         );
@@ -79,7 +86,7 @@ public class GrBabylonJsRouletteTracerVisualizer :
 
         //CameraBetaValues =
         //    Enumerable
-        //        .Repeat(2 * Math.PI / 6, FrameCount)
+        //        .Repeat(Math.Tau / 6, FrameCount)
         //        .CreateSignal(samplingRate);
     }
 
@@ -91,12 +98,12 @@ public class GrBabylonJsRouletteTracerVisualizer :
             new GrBabylonJsSnapshotSpecs
             {
                 Enabled = true,
-                Width = CanvasWidth,
-                Height = CanvasHeight,
+                Width = ImageWidth,
+                Height = ImageHeight,
                 Precision = 1,
                 UsePrecision = true,
-                Delay = frameIndex == 0 ? 2000 : 1000,
-                FileName = $"Frame-{frameIndex:D6}.png"
+                Delay = 2000,
+                FileName = GetFrameName(frameIndex) + ".png"
             }
         )
         {
@@ -108,31 +115,15 @@ public class GrBabylonJsRouletteTracerVisualizer :
 
         CodeFilesComposer = new GrBabylonJsCodeFilesComposer(mainSceneComposer)
         {
-            CanvasWidth = CanvasWidth,
-            CanvasHeight = CanvasHeight,
+            CanvasWidth = ImageWidth,
+            CanvasHeight = ImageHeight,
             CanvasFullScreen = false
         };
     }
 
-    protected override void InitializeTextureSet()
+    protected override void AddImageTextures()
     {
-        var workingPath = Path.Combine(WorkingFolder, "images");
-
-        Console.Write("Generating images cache .. ");
-
-        //ImageCache.MarginSize = 0;
-        //ImageCache.BackgroundColor = Color.FromRgba(255, 255, 255, 0);
-
-        if (ShowCopyright)
-        {
-            TextureSet.AddTextureFromPngFile(
-                "gui",
-                "Copyright"
-            );
-        }
         
-        Console.WriteLine("done.");
-        Console.WriteLine();
     }
     
     protected override void AddGuiLayer(int index)
@@ -144,13 +135,13 @@ public class GrBabylonJsRouletteTracerVisualizer :
         
         if (ShowCopyright)
         {
-            var copyrightImage = TextureSet["gui", "Copyright"];
+            var copyrightImage = ImageSet["gui", "Copyright"];
             var copyrightImageWidth = 0.4d * CodeFilesComposer.CanvasWidth;
             var copyrightImageHeight = 0.4d * CodeFilesComposer.CanvasWidth * copyrightImage.ImageHeightToWidth;
 
             uiTexture.AddGuiImage(
                 "copyrightImage",
-                copyrightImage.GetImageUrl(),
+                copyrightImage.GetImageDataUrlBase64(),
                 new GrBabylonJsGuiImageProperties
                 {
                     Stretch = GrBabylonJsImageStretch.Uniform,
@@ -169,13 +160,13 @@ public class GrBabylonJsRouletteTracerVisualizer :
     private void AddFixedCurve()
     {
         var (tMin, tMax) = 
-            FixedCurve.ParameterRange;
+            FixedCurve.TimeRange;
 
         var tValues =
-            tMin.ScalarValue.GetLinearRange(tMax, 501, false).ToImmutableArray();
+            tMin.GetLinearRange(tMax, 501, false).ToImmutableArray();
 
         var tValuesFrames = 
-            tMin.ScalarValue.GetLinearRange(tMax, FixedCurveFrameCount, false).ToImmutableArray();
+            tMin.GetLinearRange(tMax, FixedCurveFrameCount, false).ToImmutableArray();
         
         MainSceneComposer.AddParametricCurve(
             "fixedCurve",
@@ -189,14 +180,14 @@ public class GrBabylonJsRouletteTracerVisualizer :
     
     private Float64RouletteAffineMap3D GetRouletteMap(double parameterValue)
     {
-        var t1 = MovingCurve.LengthToParameter(parameterValue);
+        var t1 = MovingCurve.LengthToTime(parameterValue);
         var movingFrame = MovingCurve.GetFrame(t1);
 
-        var t2 = FixedCurve.LengthToParameter(parameterValue);
+        var t2 = FixedCurve.LengthToTime(parameterValue);
         var fixedFrame = FixedCurve.GetFrame(t2);
 
         var quaternion =
-            movingFrame.CreateFrameToFrameRotationQuaternion(fixedFrame);
+            movingFrame.FrameToFrameRotationQuaternion(fixedFrame);
 
         return new Float64RouletteAffineMap3D(
             fixedFrame.Point,
@@ -208,15 +199,15 @@ public class GrBabylonJsRouletteTracerVisualizer :
     private void AddMovingCurve(int frameIndex)
     {
         var (tMin, tMax) = 
-            MovingCurve.ParameterRange;
+            MovingCurve.TimeRange;
 
         var tValues =
-            tMin.ScalarValue.GetLinearRange(tMax, 501, false).ToImmutableArray();
+            tMin.GetLinearRange(tMax, 501, false).ToImmutableArray();
         
         var tValuesFrames = 
-            tMin.ScalarValue.GetLinearRange(tMax, MovingCurveFrameCount, false).ToImmutableArray();
+            tMin.GetLinearRange(tMax, MovingCurveFrameCount, false).ToImmutableArray();
 
-        var t = RouletteDistance * frameIndex / (FrameCount - 1);
+        var t = RouletteDistance * frameIndex / (ImageCount - 1);
         var rouletteMap = GetRouletteMap(t);
         var movingCurve = MovingCurve.GetRouletteMappedCurve(rouletteMap);
 
@@ -231,7 +222,7 @@ public class GrBabylonJsRouletteTracerVisualizer :
             0.035
         );
 
-        var frame = FixedCurve.GetFrame(FixedCurve.LengthToParameter(t));
+        var frame = FixedCurve.GetFrame(FixedCurve.LengthToTime(t));
         MainSceneComposer.AddElement(
             GrVisualFrame3D.Create(
                 "frame",
@@ -268,7 +259,7 @@ public class GrBabylonJsRouletteTracerVisualizer :
 
     private void AddGeneratorPoints(int frameIndex)
     {
-        var t = RouletteDistance * frameIndex / (FrameCount - 1);
+        var t = RouletteDistance * frameIndex / (ImageCount - 1);
         var rouletteMap = GetRouletteMap(t);
 
         var scene = MainSceneComposer.SceneObject;
@@ -295,7 +286,7 @@ public class GrBabylonJsRouletteTracerVisualizer :
     {
         if (frameIndex < 1) return;
         
-        var t = frameIndex / (double)(FrameCount - 1) * RouletteDistance;
+        var t = frameIndex / (double)(ImageCount - 1) * RouletteDistance;
 
         for (var i = 0; i < GeneratorPointList.Count; i++)
         {
@@ -311,9 +302,28 @@ public class GrBabylonJsRouletteTracerVisualizer :
         }
     }
 
-    protected override void ComposeFrame(int frameIndex)
+    protected override void ComposeScene(int frameIndex)
     {
-        base.ComposeFrame(frameIndex);
+        if (ShowGrid)
+            MainSceneComposer.AddGrid(
+                "defaultZx",
+                LinFloat64Vector3D.Zero, 
+                LinFloat64Quaternion.XyToZx, 
+                GridUnitCount,
+                1,
+                0.25
+            );
+
+        if (ShowAxes)
+            MainSceneComposer.AddAxes(
+                "defaultAxes",
+                AxesOrigin,
+                LinFloat64Quaternion.Identity,
+                1,
+                1
+            );
+
+
 
         AddFixedCurve();
         AddMovingCurve(frameIndex);

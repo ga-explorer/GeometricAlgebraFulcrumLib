@@ -3,8 +3,9 @@ using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
 using GeometricAlgebraFulcrumLib.Modeling.Calculus.Curves;
 using GeometricAlgebraFulcrumLib.Modeling.Calculus.Functions.Float64.Interpolators;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.Parametric.Float64;
+using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.Visuals;
 using GeometricAlgebraFulcrumLib.Modeling.Signals.Composers;
-using GeometricAlgebraFulcrumLib.Modeling.Temporal.Float64.Scalars;
+using GeometricAlgebraFulcrumLib.Modeling.Trajectories.Scalars.Float64;
 using GeometricAlgebraFulcrumLib.Modeling.Utilities;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Basic;
 using OfficeOpenXml;
@@ -97,7 +98,7 @@ public static class PowerSignalVisualizationSample2
         return new Triplet<double[]>(phase1, phase2, phase3);
     }
 
-    private static PowerSignal3D GetPowerSignal_Aulario3()
+    private static Float64PowerSignal3D GetPowerSignal_Aulario3()
     {
         const int cycleCount = 2;
         const int sampleCount = 480 * cycleCount + 1;
@@ -145,7 +146,7 @@ public static class PowerSignalVisualizationSample2
                         )
                 );
 
-        var powerSignal = PowerSignal3D.Create(
+        var powerSignal = Float64PowerSignal3D.Create(
             tValues,
             phaseFunction1,
             phaseFunction2,
@@ -159,7 +160,7 @@ public static class PowerSignalVisualizationSample2
         return powerSignal;
     }
 
-    private static PowerSignal3D GetPowerSignal_EMTP()
+    private static Float64PowerSignal3D GetPowerSignal_EMTP()
     {
         const int cycleCount = 3;
         const int sampleCount = 2400;//;850 * cycleCount + 1;
@@ -207,7 +208,7 @@ public static class PowerSignalVisualizationSample2
                         )
                 );
 
-        var powerSignal = PowerSignal3D.Create(
+        var powerSignal = Float64PowerSignal3D.Create(
             tValues,
             phaseFunction1,
             phaseFunction2,
@@ -233,7 +234,7 @@ public static class PowerSignalVisualizationSample2
             powerSignal
         )
         {
-            Title = "EMTP Phase Voltages",
+            SceneTitle = "EMTP Phase Voltages",
             HostUrl = "http://localhost:5200/",
             //LiveReloadWebServer "D:/Projects/Study/Babylon.js/" --port 5200 --UseSsl False --LiveReloadEnabled False --OpenBrowser True
 
@@ -245,22 +246,25 @@ public static class PowerSignalVisualizationSample2
             ShowRightPanel = true,
 
             //Mp4FrameRate = 50,
-            RenderImageFilesEnabled = renderAnimations,
+            SceneRenderMethod = renderAnimations 
+                ? GrVisualSceneSequenceComposer.RenderImageFilesMethod.PerScene 
+                : GrVisualSceneSequenceComposer.RenderImageFilesMethod.Disabled,
+
             RenderGifFileEnabled = false,
             RenderVideoFileEnabled = renderAnimations
         };
         
         var alpha = 
-            TemporalFloat64Scalar
-                .FullCos(30, 150)
+            Float64ScalarSignal
+                .FiniteCos(30, 150)
                 .Repeat(2)
                 .DegreesToRadians();
 
         var beta = 
             72.DegreesToRadians();
 
-        visualizer.SetCameraAlphaBetaDistance(alpha, beta, 11);
+        visualizer.SetCamera(alpha, beta, 11);
 
-        visualizer.RenderFiles();
+        visualizer.ComposeSceneSequence();
     }
 }

@@ -96,7 +96,7 @@ public static class LinFloat64AngleUtils
     //[MethodImpl(MethodImplOptions.AggressiveInlining)]
     //public static LinFloat64PolarAngle ClampAngleInRadians(this double value)
     //{
-    //    const double maxValue = 2 * Math.PI;
+    //    const double maxValue = Math.Tau;
 
     //    var radians = value switch
     //    {
@@ -125,7 +125,7 @@ public static class LinFloat64AngleUtils
     //[MethodImpl(MethodImplOptions.AggressiveInlining)]
     //public static LinFloat64Angle ClampNegativeAngle(this double angleInRadian)
     //{
-    //    const double maxValue = 2 * Math.PI;
+    //    const double maxValue = Math.Tau;
 
     //    angleInRadian += Math.PI;
 
@@ -891,7 +891,7 @@ public static class LinFloat64AngleUtils
     {
         Debug.Assert(maxAngleRatio <= 1);
 
-        return (randomGenerator.GetNumber(0, maxAngleRatio) * Math.PI * 2).RadiansToPolarAngle();
+        return (randomGenerator.GetNumber(0, maxAngleRatio) * Math.Tau).RadiansToPolarAngle();
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -899,7 +899,7 @@ public static class LinFloat64AngleUtils
     {
         Debug.Assert(minAngleRatio >= -1 && maxAngleRatio <= 1);
 
-        return (randomGenerator.GetNumber(minAngleRatio, maxAngleRatio) * Math.PI * 2).RadiansToPolarAngle();
+        return (randomGenerator.GetNumber(minAngleRatio, maxAngleRatio) * Math.Tau).RadiansToPolarAngle();
     }
 
 
@@ -920,7 +920,7 @@ public static class LinFloat64AngleUtils
     {
         Debug.Assert(maxAngleRatio <= 1);
 
-        return (randomGenerator.GetNumber(0, maxAngleRatio) * Math.PI * 2).RadiansToDirectedAngle();
+        return (randomGenerator.GetNumber(0, maxAngleRatio) * Math.Tau).RadiansToDirectedAngle();
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -928,7 +928,7 @@ public static class LinFloat64AngleUtils
     {
         Debug.Assert(minAngleRatio >= -1 && maxAngleRatio <= 1);
 
-        return (randomGenerator.GetNumber(minAngleRatio, maxAngleRatio) * Math.PI * 2).RadiansToDirectedAngle();
+        return (randomGenerator.GetNumber(minAngleRatio, maxAngleRatio) * Math.Tau).RadiansToDirectedAngle();
     }
     
     

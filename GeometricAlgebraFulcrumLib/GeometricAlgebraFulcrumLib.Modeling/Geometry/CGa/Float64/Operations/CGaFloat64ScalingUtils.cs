@@ -3,7 +3,7 @@ using System.Runtime.CompilerServices;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Float64.Blades;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Float64.Elements;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.Parametric.Float64.Space1D.Scalars;
+using GeometricAlgebraFulcrumLib.Modeling.Trajectories.Scalars.Float64;
 
 namespace GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Float64.Operations;
 
@@ -16,12 +16,12 @@ public static class CGaFloat64ScalingUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static CGaFloat64ParametricElement ScaleBy(this CGaFloat64Element element, IFloat64ParametricScalar scalingFactor)
+    public static CGaFloat64ParametricElement ScaleBy(this CGaFloat64Element element, Float64ScalarSignal scalingFactor)
     {
         return CGaFloat64ParametricElement.Create(
             element.GeometricSpace,
-            scalingFactor.ParameterRange,
-            t => element.ScaleBy(scalingFactor.GetValue(t).ScalarValue)
+            scalingFactor.TimeRange,
+            t => element.ScaleBy(scalingFactor.GetValue(t))
         );
     }
 
@@ -36,12 +36,12 @@ public static class CGaFloat64ScalingUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static CGaFloat64ParametricElement ScaleBy(this CGaFloat64ParametricElement element, IFloat64ParametricScalar scalingFactor)
+    public static CGaFloat64ParametricElement ScaleBy(this CGaFloat64ParametricElement element, Float64ScalarSignal scalingFactor)
     {
         return CGaFloat64ParametricElement.Create(
             element.GeometricSpace,
-            element.ParameterRange.Intersect(scalingFactor.ParameterRange),
-            t => element.GetElement(t).ScaleBy(scalingFactor.GetValue(t).ScalarValue)
+            element.ParameterRange.Intersect(scalingFactor.TimeRange),
+            t => element.GetElement(t).ScaleBy(scalingFactor.GetValue(t))
         );
     }
 

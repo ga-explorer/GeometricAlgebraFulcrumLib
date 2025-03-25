@@ -1,13 +1,15 @@
 ﻿using System.Collections.Immutable;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Angles;
+using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space3D;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.Parametric.Float64.Space3D.Curves;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.Parametric.Float64.Space3D.Curves.Adaptive;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.Parametric.Float64.Space3D.Curves.Roulettes;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.BabylonJs.Composers;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.BabylonJs.Constants;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.BabylonJs.GUI;
 using GeometricAlgebraFulcrumLib.Modeling.Signals;
+using GeometricAlgebraFulcrumLib.Modeling.Trajectories.Vectors3D.Float64;
+using GeometricAlgebraFulcrumLib.Modeling.Trajectories.Vectors3D.Float64.Adaptive;
+using GeometricAlgebraFulcrumLib.Modeling.Trajectories.Vectors3D.Float64.Basic;
+using GeometricAlgebraFulcrumLib.Modeling.Trajectories.Vectors3D.Float64.Composers;
 using SixLabors.ImageSharp;
 
 namespace GeometricAlgebraFulcrumLib.Modeling.Samples.Modeling.Graphics;
@@ -15,17 +17,17 @@ namespace GeometricAlgebraFulcrumLib.Modeling.Samples.Modeling.Graphics;
 public class GrBabylonJsRouletteParametricVisualizer :
     GrBabylonJsSceneSequenceComposer
 {
-    private RouletteCurve3D? _activeCurve;
+    private Float64RoulettePath3D? _activeCurve;
 
 
-    public Func<double, RouletteCurve3D> CurveFunction { get; }
+    public Func<double, Float64RoulettePath3D> CurveFunction { get; }
     
     public int FixedCurveFrameCount { get; }
     
     public int MovingCurveFrameCount { get; }
 
 
-    public GrBabylonJsRouletteParametricVisualizer(string workingFolder, Float64SamplingSpecs samplingSpecs, Func<double, RouletteCurve3D> curveFunction, int fixedCurveFrameCount, int movingCurveFrameCount)
+    public GrBabylonJsRouletteParametricVisualizer(string workingFolder, Float64SamplingSpecs samplingSpecs, Func<double, Float64RoulettePath3D> curveFunction, int fixedCurveFrameCount, int movingCurveFrameCount)
         : base(workingFolder, samplingSpecs)
     {
         CurveFunction = curveFunction;
@@ -41,12 +43,12 @@ public class GrBabylonJsRouletteParametricVisualizer :
             new GrBabylonJsSnapshotSpecs
             {
                 Enabled = true,
-                Width = CanvasWidth,
-                Height = CanvasHeight,
+                Width = ImageWidth,
+                Height = ImageHeight,
                 Precision = 1,
                 UsePrecision = true,
-                Delay = index == 0 ? 2000 : 1000,
-                FileName = $"Frame-{index:D6}.png"
+                Delay = 2000,
+                FileName = GetFrameName(index) + ".png"
             }
         )
         {
@@ -58,46 +60,15 @@ public class GrBabylonJsRouletteParametricVisualizer :
 
         CodeFilesComposer = new GrBabylonJsCodeFilesComposer(mainSceneComposer)
         {
-            CanvasWidth = CanvasWidth,
-            CanvasHeight = CanvasHeight,
+            CanvasWidth = ImageWidth,
+            CanvasHeight = ImageHeight,
             CanvasFullScreen = false
         };
     }
 
-    protected override void InitializeTextureSet()
+    protected override void AddImageTextures()
     {
-        var workingPath = Path.Combine(WorkingFolder, "images");
-
-        Console.Write("Generating images cache .. ");
-
-        //ImageCache.MarginSize = 0;
-        //ImageCache.BackgroundColor = Color.FromRgba(255, 255, 255, 0);
-
-        if (ShowCopyright)
-        {
-            TextureSet.AddTextureFromPngFile(
-                "gui",
-                "Copyright"
-            );
-        }
         
-        Console.WriteLine("done.");
-        Console.WriteLine();
-    }
-
-    protected override void SetCameraAndLights(int frameIndex)
-    {
-        base.SetCameraAndLights(frameIndex);
-    }
-
-    protected override void AddEnvironment()
-    {
-        base.AddEnvironment();
-    }
-
-    protected override void AddGrid()
-    {
-        base.AddGrid();
     }
 
     protected override void AddGuiLayer(int frameIndex)
@@ -109,13 +80,13 @@ public class GrBabylonJsRouletteParametricVisualizer :
         
         if (ShowCopyright)
         {
-            var copyrightImage = TextureSet["gui", "Copyright"];
+            var copyrightImage = ImageSet["gui", "Copyright"];
             var copyrightImageWidth = 0.4d * CodeFilesComposer.CanvasWidth;
             var copyrightImageHeight = 0.4d * CodeFilesComposer.CanvasWidth * copyrightImage.ImageHeightToWidth;
 
             uiTexture.AddGuiImage(
                 "copyrightImage",
-                copyrightImage.GetImageUrl(),
+                copyrightImage.GetImageDataUrlBase64(),
                 new GrBabylonJsGuiImageProperties
                 {
                     Stretch = GrBabylonJsImageStretch.Uniform,
@@ -137,13 +108,13 @@ public class GrBabylonJsRouletteParametricVisualizer :
             throw new NullReferenceException();
 
         var (tMin, tMax) = 
-            _activeCurve.FixedCurve.ParameterRange;
+            _activeCurve.FixedCurve.TimeRange;
             
         var tValues =
-            tMin.ScalarValue.GetLinearRange(tMax, 501, false).ToImmutableArray();
+            tMin.GetLinearRange(tMax, 501, false).ToImmutableArray();
 
         var tValuesFrames = 
-            tMin.ScalarValue.GetLinearRange(tMax, FixedCurveFrameCount, false).ToImmutableArray();
+            tMin.GetLinearRange(tMax, FixedCurveFrameCount, false).ToImmutableArray();
         
         MainSceneComposer.AddParametricCurve(
             "fixedCurve", 
@@ -161,13 +132,13 @@ public class GrBabylonJsRouletteParametricVisualizer :
             throw new NullReferenceException();
 
         var (tMin, tMax) = 
-            _activeCurve.MovingCurve.ParameterRange;
+            _activeCurve.MovingCurve.TimeRange;
             
         var tValues =
-            tMin.ScalarValue.GetLinearRange(tMax, 501, false).ToImmutableArray();
+            tMin.GetLinearRange(tMax, 501, false).ToImmutableArray();
             
         var tValuesFrames = 
-            tMin.ScalarValue.GetLinearRange(tMax, MovingCurveFrameCount, false).ToImmutableArray();
+            tMin.GetLinearRange(tMax, MovingCurveFrameCount, false).ToImmutableArray();
             
         MainSceneComposer.AddParametricCurve(
             "movingCurve",
@@ -178,7 +149,7 @@ public class GrBabylonJsRouletteParametricVisualizer :
             0.035
         );
 
-        //var frame = _activeCurve.FixedCurve.GetFrame(_activeCurve.FixedCurve.LengthToParameter(t));
+        //var frame = _activeCurve.FixedCurve.GetFrame(_activeCurve.FixedCurve.LengthToTime(t));
         //MainSceneComposer.AddElement(
         //    new GrVisualFrame3D("frame")
         //    {
@@ -227,12 +198,12 @@ public class GrBabylonJsRouletteParametricVisualizer :
             throw new NullReferenceException();
         
         var sampledCurve = _activeCurve.CreateAdaptiveCurve3D(
-            _activeCurve.ParameterRange, 
-            new AdaptiveCurveSamplingOptions3D(5.DegreesToDirectedAngle(), 3, 16)
+            _activeCurve.TimeRange, 
+            new Float64AdaptivePath3DSamplingOptions(5.DegreesToDirectedAngle(), 3, 16)
         );
 
         var pointList =
-            sampledCurve.GetPoints().ToImmutableArray();
+            sampledCurve.Curve.GetPoints().ToImmutableArray();
 
         MainSceneComposer.AddLinePath(
             "rouletteCurve",
@@ -242,11 +213,28 @@ public class GrBabylonJsRouletteParametricVisualizer :
         );
     }
 
-    protected override void ComposeFrame(int frameIndex)
+    protected override void ComposeScene(int frameIndex)
     {
-        base.ComposeFrame(frameIndex);
+        if (ShowGrid)
+            MainSceneComposer.AddGrid(
+                "defaultZx",
+                LinFloat64Vector3D.Zero, 
+                LinFloat64Quaternion.XyToZx, 
+                GridUnitCount,
+                1,
+                0.25
+            );
 
-        _activeCurve = CurveFunction(frameIndex / (FrameCount - 1d));
+        if (ShowAxes)
+            MainSceneComposer.AddAxes(
+                "defaultAxes",
+                AxesOrigin,
+                LinFloat64Quaternion.Identity,
+                1,
+                1
+            );
+
+        _activeCurve = CurveFunction(frameIndex / (ImageCount - 1d));
 
         AddFixedCurve();
         AddMovingCurve();

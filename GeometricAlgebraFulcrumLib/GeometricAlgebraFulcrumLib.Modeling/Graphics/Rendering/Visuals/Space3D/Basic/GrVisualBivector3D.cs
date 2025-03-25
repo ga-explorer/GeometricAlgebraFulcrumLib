@@ -213,7 +213,7 @@ public sealed class GrVisualBivector3D :
             Normal.ToUnitLinVector3D()
         );
 
-        const double angle = 2d * Math.PI / 3d;
+        const double angle = Math.Tau / 3d;
 
         var a = Radius * Math.Cos(angle);
         var b = Radius * Math.Sin(angle);
@@ -570,14 +570,14 @@ public sealed class GrVisualBivector3D :
     {
         return SamplingSpecs.IsStatic || AnimatedCenter is null
             ? Center.ToLinVector3D()
-            : AnimatedCenter.GetPoint(time);
+            : AnimatedCenter.GetValue(time);
     }
 
     public LinFloat64Vector3D GetNormal(double time)
     {
         return SamplingSpecs.IsStatic || AnimatedNormal is null
             ? Normal
-            : AnimatedNormal.GetPoint(time).ToUnitLinVector3D();
+            : AnimatedNormal.GetValue(time).ToUnitLinVector3D();
     }
 
     public double GetRadius(double time)

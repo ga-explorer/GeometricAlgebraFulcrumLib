@@ -434,7 +434,7 @@ public sealed class ScalarProcessorOfFloat32
     {
         var value = Math.Atan2(scalarY, scalarX);
 
-        if (value < 0) value += 2 * Math.PI;
+        if (value < 0) value += Math.Tau;
 
         return ScalarFromNumber(value);
     }

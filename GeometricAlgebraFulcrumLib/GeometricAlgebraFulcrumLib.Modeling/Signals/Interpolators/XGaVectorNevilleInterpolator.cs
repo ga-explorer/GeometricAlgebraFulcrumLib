@@ -4,6 +4,7 @@ using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Extended.Float64.Multi
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Extended.Float64.Processors;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Extended.Generic.Multivectors;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Extended.Generic.Multivectors.Composers;
+using GeometricAlgebraFulcrumLib.Modeling.Signals.Composers;
 using MathNet.Numerics.Interpolation;
 
 namespace GeometricAlgebraFulcrumLib.Modeling.Signals.Interpolators;
@@ -68,7 +69,7 @@ public class XGaVectorNevilleInterpolator
         }
     }
         
-    private IEnumerable<NevillePolynomialInterpolation> GetInterpolatorList(XGaVector<Float64Signal> samples, int sampleCount, double t)
+    private IEnumerable<NevillePolynomialInterpolation> GetInterpolatorList(XGaVector<Float64SampledTimeSignal> samples, int sampleCount, double t)
     {
         var indexList = GetInterpolationSampleIndexList(sampleCount, t);
 
@@ -104,7 +105,7 @@ public class XGaVectorNevilleInterpolator
     }
         
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public XGaFloat64Vector GetVector(XGaVector<Float64Signal> samples, int sampleCount, double t)
+    public XGaFloat64Vector GetVector(XGaVector<Float64SampledTimeSignal> samples, int sampleCount, double t)
     {
         var signalTime = (sampleCount - 1) / SamplingRate;
         if (t < 0 || t > signalTime)
@@ -132,7 +133,7 @@ public class XGaVectorNevilleInterpolator
     }
         
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public XGaFloat64Vector GetVectorDt1(XGaVector<Float64Signal> samples, int sampleCount, double t)
+    public XGaFloat64Vector GetVectorDt1(XGaVector<Float64SampledTimeSignal> samples, int sampleCount, double t)
     {
         var signalTime = (sampleCount - 1) / SamplingRate;
         if (t < 0 || t > signalTime)
@@ -160,7 +161,7 @@ public class XGaVectorNevilleInterpolator
     }
         
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public XGaFloat64Vector GetVectorDt2(XGaVector<Float64Signal> samples, int sampleCount, double t)
+    public XGaFloat64Vector GetVectorDt2(XGaVector<Float64SampledTimeSignal> samples, int sampleCount, double t)
     {
         var signalTime = (sampleCount - 1) / SamplingRate;
         if (t < 0 || t > signalTime)
@@ -183,7 +184,7 @@ public class XGaVectorNevilleInterpolator
             .ToArray();
     }
         
-    public XGaVector<Float64Signal> GetVectorsDt1(XGaVector<Float64Signal> samples, int sampleCount)
+    public XGaVector<Float64SampledTimeSignal> GetVectorsDt1(XGaVector<Float64SampledTimeSignal> samples, int sampleCount)
     {
         var processor = samples.Processor;
 
@@ -194,16 +195,16 @@ public class XGaVectorNevilleInterpolator
 
         var vSpaceDimensions = samples.VSpaceDimensions;
 
-        var columnVectorArray = new Float64Signal[vSpaceDimensions];
+        var columnVectorArray = new Float64SampledTimeSignal[vSpaceDimensions];
 
         for (var j = 0; j < vSpaceDimensions; j++)
         {
-            var columnVector = Float64Signal.Create(SamplingRate, sampleCount);
+            var columnVector = Float64SampledTimeSignalComposer.Create(SamplingRate, sampleCount);
 
             for (var i = 0; i < sampleCount; i++)
                 columnVector[i] = vectorList[i].Scalar(j);
 
-            columnVectorArray[j] = columnVector;
+            columnVectorArray[j] = columnVector.GetFiniteSignal();
         }
 
         return processor.Vector(columnVectorArray);
@@ -218,7 +219,7 @@ public class XGaVectorNevilleInterpolator
             .ToArray();
     }
         
-    public XGaVector<Float64Signal> GetVectorsDt2(XGaVector<Float64Signal> samples, int sampleCount)
+    public XGaVector<Float64SampledTimeSignal> GetVectorsDt2(XGaVector<Float64SampledTimeSignal> samples, int sampleCount)
     {
         var processor = samples.Processor;
 
@@ -229,16 +230,16 @@ public class XGaVectorNevilleInterpolator
 
         var vSpaceDimensions = samples.VSpaceDimensions;
 
-        var columnVectorArray = new Float64Signal[vSpaceDimensions];
+        var columnVectorArray = new Float64SampledTimeSignal[vSpaceDimensions];
 
         for (var j = 0; j < vSpaceDimensions; j++)
         {
-            var columnVector = Float64Signal.Create(SamplingRate, sampleCount);
+            var columnVector = Float64SampledTimeSignalComposer.Create(SamplingRate, sampleCount);
 
             for (var i = 0; i < sampleCount; i++)
                 columnVector[i] = vectorList[i].Scalar(j);
 
-            columnVectorArray[j] = columnVector;
+            columnVectorArray[j] = columnVector.GetFiniteSignal();
         }
 
         return processor.Vector(columnVectorArray);

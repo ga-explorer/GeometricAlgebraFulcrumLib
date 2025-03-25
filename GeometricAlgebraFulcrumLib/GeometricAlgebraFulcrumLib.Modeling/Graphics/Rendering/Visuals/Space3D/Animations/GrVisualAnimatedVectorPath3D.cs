@@ -45,7 +45,7 @@ public class GrVisualAnimatedVectorPath3D :
         get => _dataArray[index.Mod(Count)];
         set
         {
-            if (value.TimeRange != TimeRange || !value.IsValid())
+            if (((GrVisualAnimatedGeometry)value).TimeRange != TimeRange || !value.IsValid())
                 throw new InvalidOperationException();
 
             _dataArray[index.Mod(Count)] = value;
@@ -88,7 +88,7 @@ public class GrVisualAnimatedVectorPath3D :
                TimeRange.MinValue >= 0 &&
                _dataArray.All(p => 
                    p.IsValid() && 
-                   p.TimeRange == TimeRange
+                   ((GrVisualAnimatedGeometry)p).TimeRange == TimeRange
                );
     }
     
@@ -96,7 +96,7 @@ public class GrVisualAnimatedVectorPath3D :
     public IPointsPath3D GetPointsPath(double time)
     {
         var pointArray = _dataArray.MapItems(
-            p => (ILinFloat64Vector3D) p.GetPoint(time)
+            p => (ILinFloat64Vector3D) p.GetValue(time)
         );
 
         return new ArrayPointsPath3D(pointArray);

@@ -9,8 +9,9 @@ using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.PovRay.Lights;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.PovRay.Materials.Finishes;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.PovRay.Objects;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.PovRay.Values;
+using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.Visuals;
 using GeometricAlgebraFulcrumLib.Modeling.Signals;
-using GeometricAlgebraFulcrumLib.Modeling.Temporal.Float64.Scalars;
+using GeometricAlgebraFulcrumLib.Modeling.Trajectories.Scalars.Float64;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.BitManipulation;
 using Instances;
 using SixLabors.ImageSharp;
@@ -24,7 +25,7 @@ namespace GeometricAlgebraFulcrumLib.Modeling.Samples.Modeling.Graphics.PovRay
         {
             var angleList = 
                 0d.GetLinearPeriodicRange(
-                    2 * Math.PI, 72
+                    Math.Tau, 72
                 ).ToImmutableArray();
 
             var frameCount = angleList.Length;
@@ -214,12 +215,12 @@ namespace GeometricAlgebraFulcrumLib.Modeling.Samples.Modeling.Graphics.PovRay
             {
             }
 
-            protected override void InitializeTextureSet()
+            protected override void AddImageTextures()
             {
                 
             }
             
-            protected override void InitializeTemporalValues()
+            protected override void AddTemporalValues()
             {
 
             }
@@ -234,24 +235,25 @@ namespace GeometricAlgebraFulcrumLib.Modeling.Samples.Modeling.Graphics.PovRay
                 
             }
 
-            protected override void ComposeFrame(int frameIndex)
+            protected override void ComposeScene(int frameIndex)
             {
-                base.ComposeFrame(frameIndex);
+                if (ShowGrid)
+                    ActiveSceneComposer.AddGrid(
+                        "defaultZx",
+                        -5 * LinFloat64Vector3D.E2, 
+                        LinFloat64Quaternion.XyToZx, 
+                        GridUnitCount,
+                        1,
+                        1
+                    );
 
-                // Sunlight
-                ActiveSceneObject.AddStatement(
-                    GrPovRayLightSource.PointLight(
-                        LinFloat64Vector3D.Create(-1500, 2500, -2500),
-                        GrPovRayColorValue.Rgb(0.9)
-                    )
-                );
-
-                if (ActiveSceneObject.Camera.FlashLightColor is not null)
-                    ActiveSceneObject.AddStatement(
-                        GrPovRayLightSource.PointLight(
-                            ActiveSceneObject.Camera.Position,
-                            ActiveSceneObject.Camera.FlashLightColor
-                        )
+                if (ShowAxes)
+                    ActiveSceneComposer.AddAxes(
+                        "defaultAxes",
+                        -5 * LinFloat64Vector3D.E2,
+                        LinFloat64Quaternion.Identity,
+                        1, 
+                        1
                     );
 
                 //scene.Plane(
@@ -323,7 +325,7 @@ namespace GeometricAlgebraFulcrumLib.Modeling.Samples.Modeling.Graphics.PovRay
                 ShowGuiLayer = false,
                 
                 ComposeSceneFilesEnabled = true,
-                RenderImageFilesEnabled = true,
+                SceneRenderMethod = GrVisualSceneSequenceComposer.RenderImageFilesMethod.PerScene,
                 RenderGifFileEnabled = false,
                 RenderVideoFileEnabled = true
                 
@@ -331,16 +333,16 @@ namespace GeometricAlgebraFulcrumLib.Modeling.Samples.Modeling.Graphics.PovRay
             
 
             var alpha = 
-                TemporalFloat64Scalar
-                    .FullCos(-120, 120)
+                Float64ScalarSignal
+                    .FiniteCos(-120, 120)
                     .DegreesToRadians();
 
             var beta = 
-                60.DegreesToRadians();
+                60.DegreesToRadians().ToTimeSignal(composer.SceneTimeRange);;
 
-            composer.SetCameraAlphaBetaDistance(alpha, beta, 15);
+            composer.SetCamera(alpha, beta, 15.ToTimeSignal(composer.SceneTimeRange));
 
-            composer.RenderFiles();
+            composer.ComposeSceneSequence();
         }
     }
 }

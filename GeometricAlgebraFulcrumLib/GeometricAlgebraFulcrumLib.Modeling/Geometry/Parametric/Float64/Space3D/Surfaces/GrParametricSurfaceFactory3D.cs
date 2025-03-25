@@ -3,8 +3,8 @@ using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Basis;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space3D;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.AffineMaps.Space3D;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.Borders.Space2D.Float64;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.Parametric.Float64.Space3D.Curves;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.Parametric.Float64.Space3D.Surfaces.Sampled;
+using GeometricAlgebraFulcrumLib.Modeling.Trajectories.Vectors3D.Float64;
 
 namespace GeometricAlgebraFulcrumLib.Modeling.Geometry.Parametric.Float64.Space3D.Surfaces;
 
@@ -13,7 +13,7 @@ public static class GrParametricSurfaceFactory3D
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static LinFloat64Vector3D GetPointOnYzSphereSurface(double radius, double t1, double t2)
     {
-        var theta = t1 * 2 * Math.PI;
+        var theta = t1 * Math.Tau;
         var phi = (t2 - 0.5d) * Math.PI;
 
         return LinFloat64Vector3D.Create(
@@ -26,7 +26,7 @@ public static class GrParametricSurfaceFactory3D
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static LinFloat64Vector3D GetPointOnZySphereSurface(double radius, double t1, double t2)
     {
-        var theta = t1 * -2 * Math.PI;
+        var theta = t1 * -Math.Tau;
         var phi = (t2 - 0.5d) * Math.PI;
 
         return LinFloat64Vector3D.Create(
@@ -39,7 +39,7 @@ public static class GrParametricSurfaceFactory3D
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static LinFloat64Vector3D GetPointOnZxSphereSurface(double radius, double t1, double t2)
     {
-        var theta = t1 * 2 * Math.PI;
+        var theta = t1 * Math.Tau;
         var phi = (t2 - 0.5d) * Math.PI;
 
         return LinFloat64Vector3D.Create(
@@ -52,7 +52,7 @@ public static class GrParametricSurfaceFactory3D
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static LinFloat64Vector3D GetPointOnXzSphereSurface(double radius, double t1, double t2)
     {
-        var theta = t1 * -2 * Math.PI;
+        var theta = t1 * -Math.Tau;
         var phi = (t2 - 0.5d) * Math.PI;
 
         return LinFloat64Vector3D.Create(
@@ -65,7 +65,7 @@ public static class GrParametricSurfaceFactory3D
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static LinFloat64Vector3D GetPointOnXySphereSurface(double radius, double t1, double t2)
     {
-        var theta = t1 * 2 * Math.PI;
+        var theta = t1 * Math.Tau;
         var phi = (t2 - 0.5d) * Math.PI;
 
         return LinFloat64Vector3D.Create(
@@ -78,7 +78,7 @@ public static class GrParametricSurfaceFactory3D
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static LinFloat64Vector3D GetPointOnYxSphereSurface(double radius, double t1, double t2)
     {
-        var theta = t1 * -2 * Math.PI;
+        var theta = t1 * -Math.Tau;
         var phi = (t2 - 0.5d) * Math.PI;
 
         return LinFloat64Vector3D.Create(
@@ -92,7 +92,7 @@ public static class GrParametricSurfaceFactory3D
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static LinFloat64Vector3D GetNormalOnYzSphereSurface(double t1, double t2)
     {
-        var theta = t1 * 2 * Math.PI;
+        var theta = t1 * Math.Tau;
         var phi = (t2 - 0.5d) * Math.PI;
 
         return LinFloat64Vector3D.Create(
@@ -105,7 +105,7 @@ public static class GrParametricSurfaceFactory3D
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static LinFloat64Vector3D GetNormalOnZySphereSurface(double t1, double t2)
     {
-        var theta = t1 * -2 * Math.PI;
+        var theta = t1 * -Math.Tau;
         var phi = (t2 - 0.5d) * Math.PI;
 
         return LinFloat64Vector3D.Create(
@@ -118,7 +118,7 @@ public static class GrParametricSurfaceFactory3D
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static LinFloat64Vector3D GetNormalOnZxSphereSurface(double t1, double t2)
     {
-        var theta = t1 * 2 * Math.PI;
+        var theta = t1 * Math.Tau;
         var phi = (t2 - 0.5d) * Math.PI;
 
         return LinFloat64Vector3D.Create(
@@ -131,7 +131,7 @@ public static class GrParametricSurfaceFactory3D
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static LinFloat64Vector3D GetNormalOnXzSphereSurface(double t1, double t2)
     {
-        var theta = t1 * -2 * Math.PI;
+        var theta = t1 * -Math.Tau;
         var phi = (t2 - 0.5d) * Math.PI;
 
         return LinFloat64Vector3D.Create(
@@ -144,7 +144,7 @@ public static class GrParametricSurfaceFactory3D
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static LinFloat64Vector3D GetNormalOnXySphereSurface(double t1, double t2)
     {
-        var theta = t1 * 2 * Math.PI;
+        var theta = t1 * Math.Tau;
         var phi = (t2 - 0.5d) * Math.PI;
 
         return LinFloat64Vector3D.Create(
@@ -157,7 +157,7 @@ public static class GrParametricSurfaceFactory3D
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static LinFloat64Vector3D GetNormalOnYxSphereSurface(double t1, double t2)
     {
-        var theta = t1 * -2 * Math.PI;
+        var theta = t1 * -Math.Tau;
         var phi = (t2 - 0.5d) * Math.PI;
 
         return LinFloat64Vector3D.Create(
@@ -247,7 +247,7 @@ public static class GrParametricSurfaceFactory3D
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static GrCurveTubeParametricSurface3D CreateTube3D(this IParametricCurve3D curve, double radius)
+    public static GrCurveTubeParametricSurface3D CreateTube3D(this Float64Path3D curve, double radius)
     {
         return new GrCurveTubeParametricSurface3D(curve, radius);
     }

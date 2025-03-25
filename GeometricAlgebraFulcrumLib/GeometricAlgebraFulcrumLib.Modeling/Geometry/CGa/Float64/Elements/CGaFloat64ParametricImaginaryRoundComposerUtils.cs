@@ -1,346 +1,346 @@
 ﻿using System.Runtime.CompilerServices;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Float64.Multivectors.Composers;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.Parametric.Float64.Space1D.Scalars;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.Parametric.Float64.Space3D.Bivectors;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.Parametric.Float64.Space3D.Curves;
+using GeometricAlgebraFulcrumLib.Modeling.Trajectories.Bivectors3D;
+using GeometricAlgebraFulcrumLib.Modeling.Trajectories.Scalars.Float64;
+using GeometricAlgebraFulcrumLib.Modeling.Trajectories.Vectors3D.Float64;
 
 namespace GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Float64.Elements;
 
 public static class CGaFloat64ParametricImaginaryRoundComposerUtils
 {
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static CGaFloat64ParametricElement DefineImaginaryRoundPointPairFromPoints(this CGaFloat64GeometricSpace cgaGeometricSpace, IParametricCurve3D point1Curve, IParametricCurve3D point2Curve)
+    public static CGaFloat64ParametricElement DefineImaginaryRoundPointPairFromPoints(this CGaFloat64GeometricSpace cgaGeometricSpace, Float64Path3D point1Curve, Float64Path3D point2Curve)
     {
         return CGaFloat64ParametricElement.Create(
             cgaGeometricSpace,
-            point1Curve.ParameterRange,
+            point1Curve.TimeRange,
             t => cgaGeometricSpace.DefineImaginaryRoundPointPairFromPoints(
-                point1Curve.GetPoint(t),
-                point2Curve.GetPoint(t)
+                point1Curve.GetValue(t),
+                point2Curve.GetValue(t)
             )
         );
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static CGaFloat64ParametricElement DefineImaginaryRoundPointPairFromPoints(this CGaFloat64GeometricSpace cgaGeometricSpace, Float64ScalarRange parameterRange, IParametricCurve3D point1Curve, IParametricCurve3D point2Curve)
+    public static CGaFloat64ParametricElement DefineImaginaryRoundPointPairFromPoints(this CGaFloat64GeometricSpace cgaGeometricSpace, Float64ScalarRange parameterRange, Float64Path3D point1Curve, Float64Path3D point2Curve)
     {
         return CGaFloat64ParametricElement.Create(
             cgaGeometricSpace,
             parameterRange,
             t => cgaGeometricSpace.DefineImaginaryRoundPointPairFromPoints(
-                point1Curve.GetPoint(t),
-                point2Curve.GetPoint(t)
+                point1Curve.GetValue(t),
+                point2Curve.GetValue(t)
             )
         );
     }
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static CGaFloat64ParametricElement DefineImaginaryRoundPointPair(this CGaFloat64GeometricSpace cgaGeometricSpace, double squaredRadius, IParametricCurve3D centerCurve, IParametricCurve3D vectorCurve)
+    public static CGaFloat64ParametricElement DefineImaginaryRoundPointPair(this CGaFloat64GeometricSpace cgaGeometricSpace, double squaredRadius, Float64Path3D centerCurve, Float64Path3D vectorCurve)
     {
         return CGaFloat64ParametricElement.Create(
             cgaGeometricSpace,
-            centerCurve.ParameterRange,
+            centerCurve.TimeRange,
             t => cgaGeometricSpace.DefineImaginaryRoundPointPair(
                 squaredRadius,
-                centerCurve.GetPoint(t).ToRGaFloat64Vector(),
-                vectorCurve.GetPoint(t).ToRGaFloat64Vector()
+                centerCurve.GetValue(t).ToRGaFloat64Vector(),
+                vectorCurve.GetValue(t).ToRGaFloat64Vector()
             )
         );
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static CGaFloat64ParametricElement DefineImaginaryRoundPointPair(this CGaFloat64GeometricSpace cgaGeometricSpace, Float64ScalarRange parameterRange, double squaredRadius, IParametricCurve3D centerCurve, IParametricCurve3D vectorCurve)
+    public static CGaFloat64ParametricElement DefineImaginaryRoundPointPair(this CGaFloat64GeometricSpace cgaGeometricSpace, Float64ScalarRange parameterRange, double squaredRadius, Float64Path3D centerCurve, Float64Path3D vectorCurve)
     {
         return CGaFloat64ParametricElement.Create(
             cgaGeometricSpace,
             parameterRange,
             t => cgaGeometricSpace.DefineImaginaryRoundPointPair(
                 squaredRadius,
-                centerCurve.GetPoint(t).ToRGaFloat64Vector(),
-                vectorCurve.GetPoint(t).ToRGaFloat64Vector()
+                centerCurve.GetValue(t).ToRGaFloat64Vector(),
+                vectorCurve.GetValue(t).ToRGaFloat64Vector()
             )
         );
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static CGaFloat64ParametricElement DefineImaginaryRoundPointPair(this CGaFloat64GeometricSpace cgaGeometricSpace, IFloat64ParametricScalar squaredRadius, IParametricCurve3D centerCurve, IParametricCurve3D vectorCurve)
+    public static CGaFloat64ParametricElement DefineImaginaryRoundPointPair(this CGaFloat64GeometricSpace cgaGeometricSpace, Float64ScalarSignal squaredRadius, Float64Path3D centerCurve, Float64Path3D vectorCurve)
     {
         return CGaFloat64ParametricElement.Create(
             cgaGeometricSpace,
-            centerCurve.ParameterRange,
+            centerCurve.TimeRange,
             t => cgaGeometricSpace.DefineImaginaryRoundPointPair(
                 squaredRadius.GetValue(t),
-                centerCurve.GetPoint(t).ToRGaFloat64Vector(),
-                vectorCurve.GetPoint(t).ToRGaFloat64Vector()
+                centerCurve.GetValue(t).ToRGaFloat64Vector(),
+                vectorCurve.GetValue(t).ToRGaFloat64Vector()
             )
         );
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static CGaFloat64ParametricElement DefineImaginaryRoundPointPair(this CGaFloat64GeometricSpace cgaGeometricSpace, Float64ScalarRange parameterRange, IFloat64ParametricScalar squaredRadius, IParametricCurve3D centerCurve, IParametricCurve3D vectorCurve)
+    public static CGaFloat64ParametricElement DefineImaginaryRoundPointPair(this CGaFloat64GeometricSpace cgaGeometricSpace, Float64ScalarRange parameterRange, Float64ScalarSignal squaredRadius, Float64Path3D centerCurve, Float64Path3D vectorCurve)
     {
         return CGaFloat64ParametricElement.Create(
             cgaGeometricSpace,
             parameterRange,
             t => cgaGeometricSpace.DefineImaginaryRoundPointPair(
                 squaredRadius.GetValue(t),
-                centerCurve.GetPoint(t).ToRGaFloat64Vector(),
-                vectorCurve.GetPoint(t).ToRGaFloat64Vector()
+                centerCurve.GetValue(t).ToRGaFloat64Vector(),
+                vectorCurve.GetValue(t).ToRGaFloat64Vector()
             )
         );
     }
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static CGaFloat64ParametricElement DefineImaginaryRoundCircle(this CGaFloat64GeometricSpace cgaGeometricSpace, double radius, IParametricCurve3D centerCurve)
+    public static CGaFloat64ParametricElement DefineImaginaryRoundCircle(this CGaFloat64GeometricSpace cgaGeometricSpace, double radius, Float64Path3D centerCurve)
     {
         return CGaFloat64ParametricElement.Create(
             cgaGeometricSpace,
-            centerCurve.ParameterRange,
+            centerCurve.TimeRange,
             t => cgaGeometricSpace.DefineImaginaryRoundCircle(
                 radius,
-                centerCurve.GetPoint(t),
-                centerCurve.GetDerivative1Point(t).NormalToUnitDirection3D()
+                centerCurve.GetValue(t),
+                centerCurve.GetDerivative1Value(t).NormalToUnitDirection3D()
             )
         );
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static CGaFloat64ParametricElement DefineImaginaryRoundCircle(this CGaFloat64GeometricSpace cgaGeometricSpace, Float64ScalarRange parameterRange, double radius, IParametricCurve3D centerCurve)
+    public static CGaFloat64ParametricElement DefineImaginaryRoundCircle(this CGaFloat64GeometricSpace cgaGeometricSpace, Float64ScalarRange parameterRange, double radius, Float64Path3D centerCurve)
     {
         return CGaFloat64ParametricElement.Create(
             cgaGeometricSpace,
             parameterRange,
             t => cgaGeometricSpace.DefineImaginaryRoundCircle(
                 radius,
-                centerCurve.GetPoint(t),
-                centerCurve.GetDerivative1Point(t).NormalToUnitDirection3D()
+                centerCurve.GetValue(t),
+                centerCurve.GetDerivative1Value(t).NormalToUnitDirection3D()
             )
         );
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static CGaFloat64ParametricElement DefineImaginaryRoundCircle(this CGaFloat64GeometricSpace cgaGeometricSpace, IFloat64ParametricScalar radius, IParametricCurve3D centerCurve)
+    public static CGaFloat64ParametricElement DefineImaginaryRoundCircle(this CGaFloat64GeometricSpace cgaGeometricSpace, Float64ScalarSignal radius, Float64Path3D centerCurve)
     {
         return CGaFloat64ParametricElement.Create(
             cgaGeometricSpace,
-            centerCurve.ParameterRange,
+            centerCurve.TimeRange,
             t => cgaGeometricSpace.DefineImaginaryRoundCircle(
                 radius.GetValue(t),
-                centerCurve.GetPoint(t),
-                centerCurve.GetDerivative1Point(t).NormalToUnitDirection3D()
+                centerCurve.GetValue(t),
+                centerCurve.GetDerivative1Value(t).NormalToUnitDirection3D()
             )
         );
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static CGaFloat64ParametricElement DefineImaginaryRoundCircle(this CGaFloat64GeometricSpace cgaGeometricSpace, Float64ScalarRange parameterRange, IFloat64ParametricScalar radius, IParametricCurve3D centerCurve)
+    public static CGaFloat64ParametricElement DefineImaginaryRoundCircle(this CGaFloat64GeometricSpace cgaGeometricSpace, Float64ScalarRange parameterRange, Float64ScalarSignal radius, Float64Path3D centerCurve)
     {
         return CGaFloat64ParametricElement.Create(
             cgaGeometricSpace,
             parameterRange,
             t => cgaGeometricSpace.DefineImaginaryRoundCircle(
                 radius.GetValue(t),
-                centerCurve.GetPoint(t),
-                centerCurve.GetDerivative1Point(t).NormalToUnitDirection3D()
+                centerCurve.GetValue(t),
+                centerCurve.GetDerivative1Value(t).NormalToUnitDirection3D()
             )
         );
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static CGaFloat64ParametricElement DefineImaginaryRoundCircle(this CGaFloat64GeometricSpace cgaGeometricSpace, double radius, IParametricCurve3D centerCurve, IParametricCurve3D normalCurve)
+    public static CGaFloat64ParametricElement DefineImaginaryRoundCircle(this CGaFloat64GeometricSpace cgaGeometricSpace, double radius, Float64Path3D centerCurve, Float64Path3D normalCurve)
     {
         return CGaFloat64ParametricElement.Create(
             cgaGeometricSpace,
-            centerCurve.ParameterRange,
+            centerCurve.TimeRange,
             t => cgaGeometricSpace.DefineImaginaryRoundCircle(
                 radius,
-                centerCurve.GetPoint(t),
-                normalCurve.GetPoint(t).NormalToUnitDirection3D()
+                centerCurve.GetValue(t),
+                normalCurve.GetValue(t).NormalToUnitDirection3D()
             )
         );
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static CGaFloat64ParametricElement DefineImaginaryRoundCircle(this CGaFloat64GeometricSpace cgaGeometricSpace, Float64ScalarRange parameterRange, double radius, IParametricCurve3D centerCurve, IParametricCurve3D normalCurve)
-    {
-        return CGaFloat64ParametricElement.Create(
-            cgaGeometricSpace,
-            parameterRange,
-            t => cgaGeometricSpace.DefineImaginaryRoundCircle(
-                radius,
-                centerCurve.GetPoint(t),
-                normalCurve.GetPoint(t).NormalToUnitDirection3D()
-            )
-        );
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static CGaFloat64ParametricElement DefineImaginaryRoundCircle(this CGaFloat64GeometricSpace cgaGeometricSpace, IFloat64ParametricScalar radius, IParametricCurve3D centerCurve, IParametricCurve3D normalCurve)
-    {
-        return CGaFloat64ParametricElement.Create(
-            cgaGeometricSpace,
-            centerCurve.ParameterRange,
-            t => cgaGeometricSpace.DefineImaginaryRoundCircle(
-                radius.GetValue(t),
-                centerCurve.GetPoint(t),
-                normalCurve.GetPoint(t).NormalToUnitDirection3D()
-            )
-        );
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static CGaFloat64ParametricElement DefineImaginaryRoundCircle(this CGaFloat64GeometricSpace cgaGeometricSpace, Float64ScalarRange parameterRange, IFloat64ParametricScalar radius, IParametricCurve3D centerCurve, IParametricCurve3D normalCurve)
-    {
-        return CGaFloat64ParametricElement.Create(
-            cgaGeometricSpace,
-            parameterRange,
-            t => cgaGeometricSpace.DefineImaginaryRoundCircle(
-                radius.GetValue(t),
-                centerCurve.GetPoint(t),
-                normalCurve.GetPoint(t).NormalToUnitDirection3D()
-            )
-        );
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static CGaFloat64ParametricElement DefineImaginaryRoundCircle(this CGaFloat64GeometricSpace cgaGeometricSpace, double radius, IParametricCurve3D centerCurve, IParametricBivector3D bivectorCurve)
-    {
-        return CGaFloat64ParametricElement.Create(
-            cgaGeometricSpace,
-            centerCurve.ParameterRange,
-            t => cgaGeometricSpace.DefineImaginaryRoundCircle(
-                radius,
-                centerCurve.GetPoint(t),
-                bivectorCurve.GetBivector(t)
-            )
-        );
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static CGaFloat64ParametricElement DefineImaginaryRoundCircle(this CGaFloat64GeometricSpace cgaGeometricSpace, Float64ScalarRange parameterRange, double radius, IParametricCurve3D centerCurve, IParametricBivector3D bivectorCurve)
+    public static CGaFloat64ParametricElement DefineImaginaryRoundCircle(this CGaFloat64GeometricSpace cgaGeometricSpace, Float64ScalarRange parameterRange, double radius, Float64Path3D centerCurve, Float64Path3D normalCurve)
     {
         return CGaFloat64ParametricElement.Create(
             cgaGeometricSpace,
             parameterRange,
             t => cgaGeometricSpace.DefineImaginaryRoundCircle(
                 radius,
-                centerCurve.GetPoint(t),
-                bivectorCurve.GetBivector(t)
+                centerCurve.GetValue(t),
+                normalCurve.GetValue(t).NormalToUnitDirection3D()
             )
         );
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static CGaFloat64ParametricElement DefineImaginaryRoundCircle(this CGaFloat64GeometricSpace cgaGeometricSpace, IFloat64ParametricScalar radius, IParametricCurve3D centerCurve, IParametricBivector3D bivectorCurve)
+    public static CGaFloat64ParametricElement DefineImaginaryRoundCircle(this CGaFloat64GeometricSpace cgaGeometricSpace, Float64ScalarSignal radius, Float64Path3D centerCurve, Float64Path3D normalCurve)
     {
         return CGaFloat64ParametricElement.Create(
             cgaGeometricSpace,
-            centerCurve.ParameterRange,
+            centerCurve.TimeRange,
             t => cgaGeometricSpace.DefineImaginaryRoundCircle(
                 radius.GetValue(t),
-                centerCurve.GetPoint(t),
-                bivectorCurve.GetBivector(t)
+                centerCurve.GetValue(t),
+                normalCurve.GetValue(t).NormalToUnitDirection3D()
             )
         );
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static CGaFloat64ParametricElement DefineImaginaryRoundCircle(this CGaFloat64GeometricSpace cgaGeometricSpace, Float64ScalarRange parameterRange, IFloat64ParametricScalar radius, IParametricCurve3D centerCurve, IParametricBivector3D bivectorCurve)
+    public static CGaFloat64ParametricElement DefineImaginaryRoundCircle(this CGaFloat64GeometricSpace cgaGeometricSpace, Float64ScalarRange parameterRange, Float64ScalarSignal radius, Float64Path3D centerCurve, Float64Path3D normalCurve)
     {
         return CGaFloat64ParametricElement.Create(
             cgaGeometricSpace,
             parameterRange,
             t => cgaGeometricSpace.DefineImaginaryRoundCircle(
                 radius.GetValue(t),
-                centerCurve.GetPoint(t),
-                bivectorCurve.GetBivector(t)
+                centerCurve.GetValue(t),
+                normalCurve.GetValue(t).NormalToUnitDirection3D()
+            )
+        );
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static CGaFloat64ParametricElement DefineImaginaryRoundCircle(this CGaFloat64GeometricSpace cgaGeometricSpace, double radius, Float64Path3D centerCurve, IParametricBivector3D bivectorCurve)
+    {
+        return CGaFloat64ParametricElement.Create(
+            cgaGeometricSpace,
+            centerCurve.TimeRange,
+            t => cgaGeometricSpace.DefineImaginaryRoundCircle(
+                radius,
+                centerCurve.GetValue(t),
+                bivectorCurve.GetValue(t)
+            )
+        );
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static CGaFloat64ParametricElement DefineImaginaryRoundCircle(this CGaFloat64GeometricSpace cgaGeometricSpace, Float64ScalarRange parameterRange, double radius, Float64Path3D centerCurve, IParametricBivector3D bivectorCurve)
+    {
+        return CGaFloat64ParametricElement.Create(
+            cgaGeometricSpace,
+            parameterRange,
+            t => cgaGeometricSpace.DefineImaginaryRoundCircle(
+                radius,
+                centerCurve.GetValue(t),
+                bivectorCurve.GetValue(t)
+            )
+        );
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static CGaFloat64ParametricElement DefineImaginaryRoundCircle(this CGaFloat64GeometricSpace cgaGeometricSpace, Float64ScalarSignal radius, Float64Path3D centerCurve, IParametricBivector3D bivectorCurve)
+    {
+        return CGaFloat64ParametricElement.Create(
+            cgaGeometricSpace,
+            centerCurve.TimeRange,
+            t => cgaGeometricSpace.DefineImaginaryRoundCircle(
+                radius.GetValue(t),
+                centerCurve.GetValue(t),
+                bivectorCurve.GetValue(t)
+            )
+        );
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static CGaFloat64ParametricElement DefineImaginaryRoundCircle(this CGaFloat64GeometricSpace cgaGeometricSpace, Float64ScalarRange parameterRange, Float64ScalarSignal radius, Float64Path3D centerCurve, IParametricBivector3D bivectorCurve)
+    {
+        return CGaFloat64ParametricElement.Create(
+            cgaGeometricSpace,
+            parameterRange,
+            t => cgaGeometricSpace.DefineImaginaryRoundCircle(
+                radius.GetValue(t),
+                centerCurve.GetValue(t),
+                bivectorCurve.GetValue(t)
             )
         );
     }
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static CGaFloat64ParametricElement DefineImaginaryRoundSphereFromPoints(this CGaFloat64GeometricSpace cgaGeometricSpace, IParametricCurve3D point1Curve, IParametricCurve3D point2Curve, IParametricCurve3D point3Curve, IParametricCurve3D point4Curve)
+    public static CGaFloat64ParametricElement DefineImaginaryRoundSphereFromPoints(this CGaFloat64GeometricSpace cgaGeometricSpace, Float64Path3D point1Curve, Float64Path3D point2Curve, Float64Path3D point3Curve, Float64Path3D point4Curve)
     {
         return CGaFloat64ParametricElement.Create(
             cgaGeometricSpace,
-            point1Curve.ParameterRange,
+            point1Curve.TimeRange,
             t => cgaGeometricSpace.DefineImaginaryRoundSphereFromPoints(
-                point1Curve.GetPoint(t),
-                point2Curve.GetPoint(t),
-                point3Curve.GetPoint(t),
-                point4Curve.GetPoint(t)
+                point1Curve.GetValue(t),
+                point2Curve.GetValue(t),
+                point3Curve.GetValue(t),
+                point4Curve.GetValue(t)
             )
         );
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static CGaFloat64ParametricElement DefineImaginaryRoundSphereFromPoints(this CGaFloat64GeometricSpace cgaGeometricSpace, Float64ScalarRange parameterRange, IParametricCurve3D point1Curve, IParametricCurve3D point2Curve, IParametricCurve3D point3Curve, IParametricCurve3D point4Curve)
+    public static CGaFloat64ParametricElement DefineImaginaryRoundSphereFromPoints(this CGaFloat64GeometricSpace cgaGeometricSpace, Float64ScalarRange parameterRange, Float64Path3D point1Curve, Float64Path3D point2Curve, Float64Path3D point3Curve, Float64Path3D point4Curve)
     {
         return CGaFloat64ParametricElement.Create(
             cgaGeometricSpace,
             parameterRange,
             t => cgaGeometricSpace.DefineImaginaryRoundSphereFromPoints(
-                point1Curve.GetPoint(t),
-                point2Curve.GetPoint(t),
-                point3Curve.GetPoint(t),
-                point4Curve.GetPoint(t)
+                point1Curve.GetValue(t),
+                point2Curve.GetValue(t),
+                point3Curve.GetValue(t),
+                point4Curve.GetValue(t)
             )
         );
     }
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static CGaFloat64ParametricElement DefineImaginaryRoundSphere(this CGaFloat64GeometricSpace cgaGeometricSpace, double radius, IParametricCurve3D centerCurve)
+    public static CGaFloat64ParametricElement DefineImaginaryRoundSphere(this CGaFloat64GeometricSpace cgaGeometricSpace, double radius, Float64Path3D centerCurve)
     {
         return CGaFloat64ParametricElement.Create(
             cgaGeometricSpace,
-            centerCurve.ParameterRange,
+            centerCurve.TimeRange,
             t => cgaGeometricSpace.DefineImaginaryRoundSphere(
                 radius,
-                centerCurve.GetPoint(t)
+                centerCurve.GetValue(t)
             )
         );
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static CGaFloat64ParametricElement DefineImaginaryRoundSphere(this CGaFloat64GeometricSpace cgaGeometricSpace, Float64ScalarRange parameterRange, double radius, IParametricCurve3D centerCurve)
+    public static CGaFloat64ParametricElement DefineImaginaryRoundSphere(this CGaFloat64GeometricSpace cgaGeometricSpace, Float64ScalarRange parameterRange, double radius, Float64Path3D centerCurve)
     {
         return CGaFloat64ParametricElement.Create(
             cgaGeometricSpace,
             parameterRange,
             t => cgaGeometricSpace.DefineImaginaryRoundSphere(
                 radius,
-                centerCurve.GetPoint(t)
+                centerCurve.GetValue(t)
             )
         );
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static CGaFloat64ParametricElement DefineImaginaryRoundSphere(this CGaFloat64GeometricSpace cgaGeometricSpace, IFloat64ParametricScalar radius, IParametricCurve3D centerCurve)
+    public static CGaFloat64ParametricElement DefineImaginaryRoundSphere(this CGaFloat64GeometricSpace cgaGeometricSpace, Float64ScalarSignal radius, Float64Path3D centerCurve)
     {
         return CGaFloat64ParametricElement.Create(
             cgaGeometricSpace,
-            centerCurve.ParameterRange,
+            centerCurve.TimeRange,
             t => cgaGeometricSpace.DefineImaginaryRoundSphere(
                 radius.GetValue(t),
-                centerCurve.GetPoint(t)
+                centerCurve.GetValue(t)
             )
         );
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static CGaFloat64ParametricElement DefineImaginaryRoundSphere(this CGaFloat64GeometricSpace cgaGeometricSpace, Float64ScalarRange parameterRange, IFloat64ParametricScalar radius, IParametricCurve3D centerCurve)
+    public static CGaFloat64ParametricElement DefineImaginaryRoundSphere(this CGaFloat64GeometricSpace cgaGeometricSpace, Float64ScalarRange parameterRange, Float64ScalarSignal radius, Float64Path3D centerCurve)
     {
         return CGaFloat64ParametricElement.Create(
             cgaGeometricSpace,
             parameterRange,
             t => cgaGeometricSpace.DefineImaginaryRoundSphere(
                 radius.GetValue(t),
-                centerCurve.GetPoint(t)
+                centerCurve.GetValue(t)
             )
         );
     }

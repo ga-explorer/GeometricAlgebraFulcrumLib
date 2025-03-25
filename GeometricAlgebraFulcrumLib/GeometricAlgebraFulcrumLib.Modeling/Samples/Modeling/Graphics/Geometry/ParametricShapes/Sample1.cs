@@ -1,20 +1,21 @@
 ﻿using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Angles;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space3D;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.Parametric.Float64;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.Parametric.Float64.Space3D.Curves;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.Parametric.Float64.Space3D.Curves.Adaptive;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.LatticeShapes;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.LatticeShapes.Surfaces;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Primitives;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Primitives.Lines;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.Xeogl;
+using GeometricAlgebraFulcrumLib.Modeling.Trajectories.Vectors3D.Float64;
+using GeometricAlgebraFulcrumLib.Modeling.Trajectories.Vectors3D.Float64.Adaptive;
+using GeometricAlgebraFulcrumLib.Modeling.Trajectories.Vectors3D.Float64.Basic;
 using GeometricAlgebraFulcrumLib.Utilities.Structures;
 
 namespace GeometricAlgebraFulcrumLib.Modeling.Samples.Modeling.Graphics.Geometry.ParametricShapes;
 
 public static class Sample1
 {
-    private static string Generate(IReadOnlyList<ParametricCurveLocalFrame3D> sampledCurve, string htmlFilePath = "")
+    private static string Generate(IReadOnlyList<Float64Path3DLocalFrame> sampledCurve, string htmlFilePath = "")
     {
         var composer1 = new GrLineGeometryComposer3D();
         var composer2 = new GrLineGeometryComposer3D();
@@ -80,28 +81,30 @@ public static class Sample1
 
     public static void Execute()
     {
-        var options = new AdaptiveCurveSamplingOptions3D(
+        var options = new Float64AdaptivePath3DSamplingOptions(
             3.DegreesToDirectedAngle(),
             0,
             30
         );
 
-        var curve = ComputedParametricCurve3D.Create(
-            t =>
-                LinFloat64Vector3D.Create(
-                    Math.Exp(-0.1 * t) * Math.Cos(t),
-                    Math.Exp(-0.1 * t) * Math.Sin(t),
-                    0.5 * t
-                )
-        );
+        var curve = 
+            Float64ComputedPath3D.Finite(
+                0, 
+                8 * Math.PI,
+                t =>
+                    LinFloat64Vector3D.Create(
+                        Math.Exp(-0.1 * t) * Math.Cos(t),
+                        Math.Exp(-0.1 * t) * Math.Sin(t),
+                        0.5 * t
+                    )
+            );
 
-        var composer = new AdaptiveCurve3D(curve, 0, 8 * Math.PI)
-        {
-            FrameSamplingMethod = ParametricCurveLocalFrameSamplingMethod.SimpleRotation,
-            FrameInterpolationMethod = ParametricCurveLocalFrameInterpolationMethod.SphericalLinearInterpolation
-        };
-
-
+        var composer = 
+            Float64AdaptivePath3D.Periodic(curve);
+        
+        composer.FrameSamplingMethod = ParametricCurveLocalFrameSamplingMethod.SimpleRotation;
+        composer.FrameInterpolationMethod = ParametricCurveLocalFrameInterpolationMethod.SphericalLinearInterpolation;
+        
         var time1 = DateTime.Now;
 
         var sampledCurve1 =

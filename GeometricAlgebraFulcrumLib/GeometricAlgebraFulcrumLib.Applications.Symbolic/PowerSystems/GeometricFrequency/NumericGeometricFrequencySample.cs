@@ -31,7 +31,6 @@ using GeometricAlgebraFulcrumLib.Utilities.Structures.Basic;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Extensions;
 using GeometricAlgebraFulcrumLib.Utilities.Text.Text;
 using OfficeOpenXml;
-using Float64SignalComposerUtils = GeometricAlgebraFulcrumLib.Modeling.Signals.Float64SignalComposerUtils;
 
 namespace GeometricAlgebraFulcrumLib.Applications.Symbolic.PowerSystems.GeometricFrequency;
 
@@ -94,10 +93,10 @@ public static class NumericGeometricFrequencySample
 
     // Create a 3-dimensional Euclidean geometric algebra processor based on the
     // selected tuple scalar processor
-    public static XGaProcessor<Float64Signal> GeometricSignalProcessor { get; private set; }
+    public static XGaProcessor<Float64SampledTimeSignal> GeometricSignalProcessor { get; private set; }
 
 
-    private static XGaVector<Float64Signal> ReadExcelVectorSignal(string fileName, int firstRowIndex, int rowCount, int firstColIndex, int colCount)
+    private static XGaVector<Float64SampledTimeSignal> ReadExcelVectorSignal(string fileName, int firstRowIndex, int rowCount, int firstColIndex, int colCount)
     {
         ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
 
@@ -158,7 +157,7 @@ public static class NumericGeometricFrequencySample
         return recordList;
     }
 
-    private static void WriteData(XGaVector<Float64Signal> vectorSignal, string fileName)
+    private static void WriteData(XGaVector<Float64SampledTimeSignal> vectorSignal, string fileName)
     {
         var dataArray =
             vectorSignal.ToArray2D();
@@ -188,9 +187,9 @@ public static class NumericGeometricFrequencySample
     }
 
 
-    private static XGaVector<Float64Signal> GetSignal(this IReadOnlyList<double[]> recordList, int index1, int index2)
+    private static XGaVector<Float64SampledTimeSignal> GetSignal(this IReadOnlyList<double[]> recordList, int index1, int index2)
     {
-        var scalarArray = new Float64Signal[VSpaceDimensions];
+        var scalarArray = new Float64SampledTimeSignal[VSpaceDimensions];
 
         var sampleCount = index2 - index1 + 1;
         for (var j = 0; j < VSpaceDimensions; j++)
@@ -207,7 +206,7 @@ public static class NumericGeometricFrequencySample
     }
 
 
-    private static XGaVector<Float64Signal>[] GetSignalDerivatives1(this IReadOnlyList<double[]> recordList, int index1, int index2)
+    private static XGaVector<Float64SampledTimeSignal>[] GetSignalDerivatives1(this IReadOnlyList<double[]> recordList, int index1, int index2)
     {
         var tValues = 0d.GetLinearRange(
             (SampleCount - 1) / SamplingRate,
@@ -285,7 +284,7 @@ public static class NumericGeometricFrequencySample
         };
     }
 
-    private static XGaVector<Float64Signal>[] GetSignalDerivatives2(this IReadOnlyList<double[]> recordList, int index1, int index2)
+    private static XGaVector<Float64SampledTimeSignal>[] GetSignalDerivatives2(this IReadOnlyList<double[]> recordList, int index1, int index2)
     {
         const int wienerFilterOrder = 7;
 
@@ -306,7 +305,7 @@ public static class NumericGeometricFrequencySample
         };
     }
 
-    private static XGaVector<Float64Signal>[] GetSignalDerivatives3(this IReadOnlyList<double[]> recordList, int index1, int index2)
+    private static XGaVector<Float64SampledTimeSignal>[] GetSignalDerivatives3(this IReadOnlyList<double[]> recordList, int index1, int index2)
     {
         var vData = recordList.GetSignal(index1, index2);
         var vDataNorm1 = vData.Norm();
@@ -342,7 +341,7 @@ public static class NumericGeometricFrequencySample
         };
     }
 
-    private static XGaVector<Float64Signal>[] GetSignalDerivatives4(this XGaVector<Float64Signal> vectorSignal, int index1, int index2)
+    private static XGaVector<Float64SampledTimeSignal>[] GetSignalDerivatives4(this XGaVector<Float64SampledTimeSignal> vectorSignal, int index1, int index2)
     {
         const double energyThreshold = 0.975d;
 
@@ -391,7 +390,7 @@ public static class NumericGeometricFrequencySample
         Console.WriteLine($"Polynomial interpolation Signal-to-noise ratio: {vSnr:G}");
         Console.WriteLine();
 
-        var signalArray = new XGaVector<Float64Signal>[7];
+        var signalArray = new XGaVector<Float64SampledTimeSignal>[7];
         signalArray[0] = vectorSignal2;
 
         for (var degree = 1; degree <= 6; degree++)
@@ -479,7 +478,7 @@ public static class NumericGeometricFrequencySample
             );
 
         GeometricSignalProcessor =
-            XGaProcessor<Float64Signal>.CreateEuclidean(ScalarSignalProcessor);
+            XGaProcessor<Float64SampledTimeSignal>.CreateEuclidean(ScalarSignalProcessor);
 
         var vectorSignal =
             dataList.GetSignal(0, dataList.Count - 1);
@@ -551,7 +550,7 @@ public static class NumericGeometricFrequencySample
             );
 
         GeometricSignalProcessor =
-            XGaProcessor<Float64Signal>.CreateEuclidean(ScalarSignalProcessor);
+            XGaProcessor<Float64SampledTimeSignal>.CreateEuclidean(ScalarSignalProcessor);
 
         var vectorSignal1 = ReadExcelVectorSignal(
             fileName1,
@@ -580,7 +579,7 @@ public static class NumericGeometricFrequencySample
         return Path.Combine(WorkingPath, $"Section{SectionIndex:000}", fileName);
     }
 
-    private static XGaVector<Float64Signal>[] GetSignalDerivatives5(this XGaVector<Float64Signal> vectorSignal, int index1, int index2)
+    private static XGaVector<Float64SampledTimeSignal>[] GetSignalDerivatives5(this XGaVector<Float64SampledTimeSignal> vectorSignal, int index1, int index2)
     {
         const double energyThreshold = 0.9998d;
         const double snrThreshold = 200d;
@@ -639,7 +638,7 @@ public static class NumericGeometricFrequencySample
 
         //var vectorSignal2 = (normSignal2 / normSignal1) * vectorSignal1;
 
-        var scalarSignalArray = new Float64Signal[VSpaceDimensions];
+        var scalarSignalArray = new Float64SampledTimeSignal[VSpaceDimensions];
         var scalarInterpolatorArray = new ScalarFourierSeries[VSpaceDimensions];
 
         for (var i = 0; i < VSpaceDimensions; i++)
@@ -733,12 +732,12 @@ public static class NumericGeometricFrequencySample
             "Signal".CombineFolderPath()
         );
 
-        var signalArray = new XGaVector<Float64Signal>[7];
+        var signalArray = new XGaVector<Float64SampledTimeSignal>[7];
         signalArray[0] = vectorSignal2;
 
         for (var degree = 1; degree <= 6; degree++)
         {
-            scalarSignalArray = new Float64Signal[VSpaceDimensions];
+            scalarSignalArray = new Float64SampledTimeSignal[VSpaceDimensions];
 
             for (var i = 0; i < VSpaceDimensions; i++)
             {
@@ -762,7 +761,7 @@ public static class NumericGeometricFrequencySample
         return signalArray;
     }
 
-    private static XGaVector<Float64Signal>[] GetSignalDerivatives6(this XGaVector<Float64Signal> vectorSignal, int index1, int index2)
+    private static XGaVector<Float64SampledTimeSignal>[] GetSignalDerivatives6(this XGaVector<Float64SampledTimeSignal> vectorSignal, int index1, int index2)
     {
         const double energyThreshold = 0.998d;
         const double snrThreshold = 100d;
@@ -826,7 +825,7 @@ public static class NumericGeometricFrequencySample
 
         //vectorSignal1 = (normSignal2 / normSignal1) * vectorSignal1;
 
-        var scalarSignalArray = new Float64Signal[VSpaceDimensions];
+        var scalarSignalArray = new Float64SampledTimeSignal[VSpaceDimensions];
         var scalarInterpolatorArray = new ScalarFourierSeries[VSpaceDimensions];
 
         for (var i = 0; i < VSpaceDimensions; i++)
@@ -899,14 +898,14 @@ public static class NumericGeometricFrequencySample
             "Signal".CombineFolderPath()
         );
 
-        var signalArray = new XGaVector<Float64Signal>[7];
+        var signalArray = new XGaVector<Float64SampledTimeSignal>[7];
         signalArray[0] = vectorSignal2;
 
         for (var degree = 1; degree <= 6; degree++)
         {
             Console.WriteLine($"   Computing signal derivative {degree}");
 
-            scalarSignalArray = new Float64Signal[VSpaceDimensions];
+            scalarSignalArray = new Float64SampledTimeSignal[VSpaceDimensions];
 
             for (var i = 0; i < VSpaceDimensions; i++)
             {
@@ -925,14 +924,14 @@ public static class NumericGeometricFrequencySample
     }
 
 
-    private static XGaVector<Float64Signal>[] GetSignalDerivatives(this XGaVector<Float64Signal> vectorSignal, int index1, int index2)
+    private static XGaVector<Float64SampledTimeSignal>[] GetSignalDerivatives(this XGaVector<Float64SampledTimeSignal> vectorSignal, int index1, int index2)
     {
         var interpolatorOptions = new DfFourierSignalInterpolatorOptions()
         {
             EnergyAcThreshold = 1000d,
             EnergyAcPercentThreshold = 0.9998d,
             SignalToNoiseRatioThreshold = 3000d,
-            FrequencyThreshold = 200 * 2 * Math.PI,
+            FrequencyThreshold = 200 * Math.Tau,
             FrequencyCountThreshold = 3500,
             PaddingTrendSampleCount = 50,
             PaddingPolynomialDegree = 6
@@ -1007,7 +1006,7 @@ public static class NumericGeometricFrequencySample
             "Signal".CombineFolderPath()
         );
 
-        var signalArray = new XGaVector<Float64Signal>[7];
+        var signalArray = new XGaVector<Float64SampledTimeSignal>[7];
         signalArray[0] = vectorSignal2;
 
         for (var degree = 1; degree <= 6; degree++)
@@ -1023,13 +1022,13 @@ public static class NumericGeometricFrequencySample
         return signalArray;
     }
 
-    private static XGaVector<Float64Signal>[] GetSignalDerivatives(this XGaVector<Float64Signal> vectorSignal)
+    private static XGaVector<Float64SampledTimeSignal>[] GetSignalDerivatives(this XGaVector<Float64SampledTimeSignal> vectorSignal)
     {
         return vectorSignal.GetSignalDerivatives(0, SampleCount - 1);
     }
 
 
-    private static XGaVector<Float64Signal> InitializeSignal(int vSpaceDimensions, int sampleCount, double samplingRate, string filePath, int firstRow, int firstCol)
+    private static XGaVector<Float64SampledTimeSignal> InitializeSignal(int vSpaceDimensions, int sampleCount, double samplingRate, string filePath, int firstRow, int firstCol)
     {
         VSpaceDimensions = vSpaceDimensions;
 
@@ -1055,7 +1054,7 @@ public static class NumericGeometricFrequencySample
         );
     }
 
-    private static XGaVector<Float64Signal> InitializeAulario3PhaseVoltageSignal()
+    private static XGaVector<Float64SampledTimeSignal> InitializeAulario3PhaseVoltageSignal()
     {
         //OutputFilePath = "Aulario3_PhaseVoltage.xlsx".CombineFolderPath();
 
@@ -1071,7 +1070,7 @@ public static class NumericGeometricFrequencySample
         );
     }
 
-    private static XGaVector<Float64Signal> InitializeAulario3LineVoltageSignal()
+    private static XGaVector<Float64SampledTimeSignal> InitializeAulario3LineVoltageSignal()
     {
         //OutputFilePath = "Aulario3_LineVoltage.xlsx".CombineFolderPath();
 
@@ -1087,7 +1086,7 @@ public static class NumericGeometricFrequencySample
         );
     }
 
-    private static XGaVector<Float64Signal> InitializeAulario3PhaseNeutralVoltageSignal()
+    private static XGaVector<Float64SampledTimeSignal> InitializeAulario3PhaseNeutralVoltageSignal()
     {
         //OutputFilePath = "Aulario3_PhaseNeutralVoltage.xlsx".CombineFolderPath();
 
@@ -1103,7 +1102,7 @@ public static class NumericGeometricFrequencySample
         );
     }
 
-    private static XGaVector<Float64Signal> InitializeAulario3LineCurrentSignal()
+    private static XGaVector<Float64SampledTimeSignal> InitializeAulario3LineCurrentSignal()
     {
         //OutputFilePath = "Aulario3_LineCurrent.xlsx".CombineFolderPath();
 
@@ -1119,7 +1118,7 @@ public static class NumericGeometricFrequencySample
         );
     }
 
-    private static XGaVector<Float64Signal> InitializeEMTPPhaseVoltageSignal()
+    private static XGaVector<Float64SampledTimeSignal> InitializeEMTPPhaseVoltageSignal()
     {
         //OutputFilePath = "EMTP_PhaseVoltage.xlsx".CombineFolderPath();
 
@@ -1135,7 +1134,7 @@ public static class NumericGeometricFrequencySample
         );
     }
 
-    private static XGaVector<Float64Signal> InitializeEMTPLineVoltageSignal()
+    private static XGaVector<Float64SampledTimeSignal> InitializeEMTPLineVoltageSignal()
     {
         //OutputFilePath = "EMTP_LineVoltage.xlsx".CombineFolderPath();
 
@@ -1151,7 +1150,7 @@ public static class NumericGeometricFrequencySample
         );
     }
 
-    private static XGaVector<Float64Signal> InitializeEMTPPhaseNeutralVoltageSignal()
+    private static XGaVector<Float64SampledTimeSignal> InitializeEMTPPhaseNeutralVoltageSignal()
     {
         //OutputFilePath = "EMTP_PhaseNeutralVoltage.xlsx".CombineFolderPath();
 
@@ -1167,7 +1166,7 @@ public static class NumericGeometricFrequencySample
         );
     }
 
-    private static XGaVector<Float64Signal> InitializeCorrientesMalagaLineCurrentSignal(int firstIndex, int sampleCount)
+    private static XGaVector<Float64SampledTimeSignal> InitializeCorrientesMalagaLineCurrentSignal(int firstIndex, int sampleCount)
     {
         //OutputFilePath = "CorrientesMalaga_LineCurrent.xlsx".CombineFolderPath();
 
@@ -1181,7 +1180,7 @@ public static class NumericGeometricFrequencySample
         );
     }
 
-    private static XGaVector<Float64Signal> InitializeSyntheticSignal1()
+    private static XGaVector<Float64SampledTimeSignal> InitializeSyntheticSignal1()
     {
         //OutputFilePath = "Synthetic1.xlsx".CombineFolderPath();
 
@@ -1221,7 +1220,7 @@ public static class NumericGeometricFrequencySample
         return v1 + v2 + v3;
     }
 
-    private static XGaVector<Float64Signal> InitializeSyntheticSignal2()
+    private static XGaVector<Float64SampledTimeSignal> InitializeSyntheticSignal2()
     {
         //OutputFilePath = "Synthetic2.xlsx".CombineFolderPath();
 
@@ -1264,7 +1263,7 @@ public static class NumericGeometricFrequencySample
         return v1 + v2;
     }
 
-    private static XGaVector<Float64Signal> InitializeSyntheticSignal3()
+    private static XGaVector<Float64SampledTimeSignal> InitializeSyntheticSignal3()
     {
         //OutputFilePath = "Synthetic2.xlsx".CombineFolderPath();
 
@@ -1302,9 +1301,9 @@ public static class NumericGeometricFrequencySample
 
 
         var freqHz = 50d;
-        var freq = 2d * Math.PI * freqHz;
+        var freq = Math.Tau * freqHz;
         var period = 1d / freqHz;
-        var phi = 2d * Math.PI / 3d;
+        var phi = Math.Tau / 3d;
         var samplingRate = 50000;
         var sampleCountPerCycle = 1000;
         var cycleCount = 10;
@@ -1322,51 +1321,48 @@ public static class NumericGeometricFrequencySample
         return s1.GetSampledSignal(GeometricSignalProcessor, t.ScalarValue, samplingRate, sampleCount);
     }
 
-    private static XGaVector<Float64Signal> InitializeSyntheticSignal4()
+    private static XGaVector<Float64SampledTimeSignal> InitializeSyntheticSignal4()
     {
         //OutputFilePath = "Synthetic3.xlsx".CombineFolderPath();
 
         var freqHz = 50d;
-        var freq = 2d * Math.PI * freqHz;
+        var freq = Math.Tau * freqHz;
         var period = 1d / freqHz;
-        var phi = 2d * Math.PI / 3d;
+        var phi = Math.Tau / 3d;
         var samplingRate = 50000;
         var sampleCountPerCycle = 1000;
         var cycleCount = 10;
         var sqrt2 = Math.Sqrt(2d);
         var sampleCount = sampleCountPerCycle * cycleCount;
 
-        var v1 = Float64Signal.CreatePeriodic(
+        var v1 = Float64SampledTimeSignal.CreatePeriodic(
             samplingRate,
             sampleCountPerCycle,
             period,
             t =>
                 210 * sqrt2 * (freq * t).Sin() +
                 22 * sqrt2 * (2 * (freq * t)).Sin() +
-                -29 * sqrt2 * (7 * (freq * t)).Sin(),
-            false
+                -29 * sqrt2 * (7 * (freq * t)).Sin()
         ).Repeat(cycleCount);
 
-        var v2 = Float64Signal.CreatePeriodic(
+        var v2 = Float64SampledTimeSignal.CreatePeriodic(
             samplingRate,
             sampleCountPerCycle,
             period,
             t =>
                 200 * sqrt2 * (freq * t - phi).Sin() +
                 20 * sqrt2 * (2 * (freq * t - phi)).Sin() +
-                -30 * sqrt2 * (7 * (freq * t - phi)).Sin(),
-            false
+                -30 * sqrt2 * (7 * (freq * t - phi)).Sin()
         ).Repeat(cycleCount);
 
-        var v3 = Float64Signal.CreatePeriodic(
+        var v3 = Float64SampledTimeSignal.CreatePeriodic(
             samplingRate,
             sampleCountPerCycle,
             period,
             t =>
                 192 * sqrt2 * (freq * t + phi).Sin() +
                 15 * sqrt2 * (2 * (freq * t + phi)).Sin() +
-                -35 * sqrt2 * (7 * (freq * t + phi)).Sin(),
-            false
+                -35 * sqrt2 * (7 * (freq * t + phi)).Sin()
         ).Repeat(cycleCount);
 
         VSpaceDimensions = 3;
@@ -1377,7 +1373,7 @@ public static class NumericGeometricFrequencySample
         return GeometricSignalProcessor.Vector(v1, v2, v3);
     }
 
-    private static void ProcessSignalSection3D1(XGaVector<Float64Signal> vectorSignal, ExcelWorksheet workSheet, int sectionFirstIndex)
+    private static void ProcessSignalSection3D1(XGaVector<Float64SampledTimeSignal> vectorSignal, ExcelWorksheet workSheet, int sectionFirstIndex)
     {
         var sectionLastIndex = SampleCount - 1;
 
@@ -1399,12 +1395,14 @@ public static class NumericGeometricFrequencySample
             PolynomialDegree = 39,
             SmoothingFactors = Array.Empty<int>()
         };
-
+        
         var xFunction = vectorSignal.Scalar(0).ScalarValue.CreateChebyshevInterpolator(options);
         var yFunction = vectorSignal.Scalar(1).ScalarValue.CreateChebyshevInterpolator(options);
         var zFunction = vectorSignal.Scalar(2).ScalarValue.CreateChebyshevInterpolator(options);
 
-        var curve = DifferentialCurve3D.Create(
+        var curve = Float64DifferentialPath3D.Create(
+            tValues.TimeRange,
+            false,
             xFunction,
             yFunction,
             zFunction
@@ -1588,7 +1586,7 @@ public static class NumericGeometricFrequencySample
         {
             var omegaMean = omega.Mean();
             var omegaMeanNorm = omegaMean.Norm().ScalarValue;
-            var omegaMeanNormHz = omegaMeanNorm / (2 * Math.PI);
+            var omegaMeanNormHz = omegaMeanNorm / (Math.Tau);
 
             Console.WriteLine($"Omega {omegaIndex}");
             Console.WriteLine($"   Mean Bivector: {LaTeXComposer.GetMultivectorText(omegaMean)}");
@@ -1678,7 +1676,7 @@ public static class NumericGeometricFrequencySample
 
         for (var i = 0; i < omegaAverageList.Length; i++)
         {
-            var omegaNorm = omegaAverageList[i].Norm() / (2 * Math.PI);
+            var omegaNorm = omegaAverageList[i].Norm() / (Math.Tau);
 
             omegaNorm.PlotScalarSignal($"Darboux Blade Average Norm {i + 1}", $"DBANorm{i + 1}".CombineFolderPath());
             omegaNorm.Log10().PlotScalarSignal($"Darboux Blade Average Norm {i + 1} Log10", $"DBANorm{i + 1}Log10".CombineFolderPath());
@@ -1812,7 +1810,7 @@ public static class NumericGeometricFrequencySample
         Console.WriteLine();
     }
 
-    private static void ProcessSignalSection3D(XGaVector<Float64Signal> vectorSignal, DfSignalInterpolatorOptions interpolatorOptions, ExcelWorksheet workSheet, int sectionFirstIndex)
+    private static void ProcessSignalSection3D(XGaVector<Float64SampledTimeSignal> vectorSignal, DfSignalInterpolatorOptions interpolatorOptions, ExcelWorksheet workSheet, int sectionFirstIndex)
     {
         ScalarProcessor.ZeroEpsilon = 1e-7d;
 
@@ -1833,7 +1831,7 @@ public static class NumericGeometricFrequencySample
         //    EnergyAcThreshold = 100000d,
         //    EnergyAcPercentThreshold = 0.99999998d,
         //    SignalToNoiseRatioThreshold = 300000d,
-        //    FrequencyThreshold = 1000 * 2 * Math.PI,
+        //    FrequencyThreshold = 1000 * Math.Tau,
         //    FrequencyCountThreshold = 750,
         //    PaddingTrendSampleCount = 1000,
         //    PaddingPolynomialDegree = 5,
@@ -1846,7 +1844,7 @@ public static class NumericGeometricFrequencySample
         ////    EnergyAcThreshold = 1000d,
         ////    EnergyAcPercentThreshold = 0.9998d,
         ////    SignalToNoiseRatioThreshold = 3000d,
-        ////    FrequencyThreshold = 750 * 2 * Math.PI,
+        ////    FrequencyThreshold = 750 * Math.Tau,
         ////    FrequencyCountThreshold = 750,
         ////    PaddingPolynomialSampleCount = 50,
         ////    PaddingPolynomialDegree = 6
@@ -1970,7 +1968,7 @@ public static class NumericGeometricFrequencySample
         {
             var omegaMean = omega.Mean();
             var omegaMeanNorm = omegaMean.Norm().ScalarValue;
-            var omegaMeanNormHz = omegaMeanNorm / (2 * Math.PI);
+            var omegaMeanNormHz = omegaMeanNorm / (Math.Tau);
 
             Console.WriteLine($"Omega {omegaIndex}");
             Console.WriteLine($"   Mean Bivector: {LaTeXComposer.GetMultivectorText(omegaMean)}");
@@ -1982,7 +1980,7 @@ public static class NumericGeometricFrequencySample
 
         var dbSignalsMean = db.Mean();
         var dbSignalsMeanNorm = dbSignalsMean.Norm().ScalarValue;
-        var dbSignalsMeanNormHz = dbSignalsMeanNorm / (2 * Math.PI);
+        var dbSignalsMeanNormHz = dbSignalsMeanNorm / (Math.Tau);
 
         Console.WriteLine($"Darboux Bivector");
         Console.WriteLine($"   Mean Bivector: {LaTeXComposer.GetMultivectorText(dbSignalsMean)}");
@@ -2017,13 +2015,13 @@ public static class NumericGeometricFrequencySample
 
         //for (var i = 0; i < omegaMeanList.Count; i++)
         //{
-        //    var omegaNorm = omegaMeanList[i].Norm() / (2 * Math.PI);
+        //    var omegaNorm = omegaMeanList[i].Norm() / (Math.Tau);
 
         //    omegaNorm.Scalar.PlotScalarSignal($"Darboux Blade Average Norm {i + 1}", $"DBANorm{i + 1}".CombineFolderPath());
         //    omegaNorm.Scalar.Log10().PlotScalarSignal($"Darboux Blade Average Norm {i + 1} Log10", $"DBANorm{i + 1}Log10".CombineFolderPath());
         //}
 
-        //var dbNorm = dbMean.Norm() / (2 * Math.PI);
+        //var dbNorm = dbMean.Norm() / (Math.Tau);
 
         //dbNorm.Scalar.PlotScalarSignal($"Darboux Bivector Average Norm", $"DBNorm".CombineFolderPath());
         //dbNorm.Scalar.Log10().PlotScalarSignal($"Darboux Bivector Average Norm Log10", $"DBNormLog10".CombineFolderPath());
@@ -2147,7 +2145,7 @@ public static class NumericGeometricFrequencySample
         Console.WriteLine();
     }
 
-    private static void ProcessSignalSection4D(XGaVector<Float64Signal> vectorSignal, DfSignalInterpolatorOptions interpolatorOptions, ExcelWorksheet workSheet, int sectionFirstIndex)
+    private static void ProcessSignalSection4D(XGaVector<Float64SampledTimeSignal> vectorSignal, DfSignalInterpolatorOptions interpolatorOptions, ExcelWorksheet workSheet, int sectionFirstIndex)
     {
         ScalarProcessor.ZeroEpsilon = 1e-7d;
 
@@ -2168,7 +2166,7 @@ public static class NumericGeometricFrequencySample
         //    EnergyAcThreshold = 100000d,
         //    EnergyAcPercentThreshold = 0.99999998d,
         //    SignalToNoiseRatioThreshold = 300000d,
-        //    FrequencyThreshold = 1000 * 2 * Math.PI,
+        //    FrequencyThreshold = 1000 * Math.Tau,
         //    FrequencyCountThreshold = 750,
         //    PaddingTrendSampleCount = 1000,
         //    PaddingPolynomialDegree = 5,
@@ -2181,7 +2179,7 @@ public static class NumericGeometricFrequencySample
         ////    EnergyAcThreshold = 1000d,
         ////    EnergyAcPercentThreshold = 0.9998d,
         ////    SignalToNoiseRatioThreshold = 3000d,
-        ////    FrequencyThreshold = 750 * 2 * Math.PI,
+        ////    FrequencyThreshold = 750 * Math.Tau,
         ////    FrequencyCountThreshold = 750,
         ////    PaddingPolynomialSampleCount = 50,
         ////    PaddingPolynomialDegree = 6
@@ -2315,7 +2313,7 @@ public static class NumericGeometricFrequencySample
         {
             var omegaMean = omega.Mean();
             var omegaMeanNorm = omegaMean.Norm().ScalarValue;
-            var omegaMeanNormHz = omegaMeanNorm / (2 * Math.PI);
+            var omegaMeanNormHz = omegaMeanNorm / (Math.Tau);
 
             Console.WriteLine($"Omega {omegaIndex}");
             Console.WriteLine($"   Mean Bivector: {LaTeXComposer.GetMultivectorText(omegaMean)}");
@@ -2327,7 +2325,7 @@ public static class NumericGeometricFrequencySample
 
         var dbSignalsMean = db.Mean();
         var dbSignalsMeanNorm = dbSignalsMean.Norm().ScalarValue;
-        var dbSignalsMeanNormHz = dbSignalsMeanNorm / (2 * Math.PI);
+        var dbSignalsMeanNormHz = dbSignalsMeanNorm / (Math.Tau);
 
         Console.WriteLine($"Darboux Bivector");
         Console.WriteLine($"   Mean Bivector: {LaTeXComposer.GetMultivectorText(dbSignalsMean)}");
@@ -2400,13 +2398,13 @@ public static class NumericGeometricFrequencySample
 
         //for (var i = 0; i < omegaAverageList.Count; i++)
         //{
-        //    var omegaNorm = omegaAverageList[i].Norm() / (2 * Math.PI);
+        //    var omegaNorm = omegaAverageList[i].Norm() / (Math.Tau);
 
         //    omegaNorm.Scalar.PlotScalarSignal($"Darboux Blade Average Norm {i + 1}", $"DBANorm{i + 1}".CombineFolderPath());
         //    omegaNorm.Scalar.Log10().PlotScalarSignal($"Darboux Blade Average Norm {i + 1} Log10", $"DBANorm{i + 1}Log10".CombineFolderPath());
         //}
 
-        //var dbNorm = dbMean.Norm() / (2 * Math.PI);
+        //var dbNorm = dbMean.Norm() / (Math.Tau);
 
         //dbNorm.Scalar.PlotScalarSignal($"Darboux Bivector Average Norm", $"DBNorm".CombineFolderPath());
         //dbNorm.Scalar.Log10().PlotScalarSignal($"Darboux Bivector Average Norm Log10", $"DBNormLog10".CombineFolderPath());
@@ -2551,7 +2549,7 @@ public static class NumericGeometricFrequencySample
         Console.WriteLine();
     }
 
-    private static void ProcessSignalSection6D(XGaVector<Float64Signal> vectorSignal, DfSignalInterpolatorOptions interpolatorOptions, ExcelWorksheet workSheet, int sectionFirstIndex)
+    private static void ProcessSignalSection6D(XGaVector<Float64SampledTimeSignal> vectorSignal, DfSignalInterpolatorOptions interpolatorOptions, ExcelWorksheet workSheet, int sectionFirstIndex)
     {
         ScalarProcessor.ZeroEpsilon = 1e-7d;
 
@@ -2572,7 +2570,7 @@ public static class NumericGeometricFrequencySample
         //    EnergyAcThreshold = 100000d,
         //    EnergyAcPercentThreshold = 0.99999998d,
         //    SignalToNoiseRatioThreshold = 300000d,
-        //    FrequencyThreshold = 1000 * 2 * Math.PI,
+        //    FrequencyThreshold = 1000 * Math.Tau,
         //    FrequencyCountThreshold = 750,
         //    PaddingTrendSampleCount = 1000,
         //    PaddingPolynomialDegree = 5,
@@ -2585,7 +2583,7 @@ public static class NumericGeometricFrequencySample
         //    EnergyAcThreshold = 1000d,
         //    EnergyAcPercentThreshold = 0.9998d,
         //    SignalToNoiseRatioThreshold = 3000d,
-        //    FrequencyThreshold = 750 * 2 * Math.PI,
+        //    FrequencyThreshold = 750 * Math.Tau,
         //    FrequencyCountThreshold = 750,
         //    PaddingPolynomialSampleCount = 50,
         //    PaddingPolynomialDegree = 6
@@ -2670,7 +2668,7 @@ public static class NumericGeometricFrequencySample
         //    EnergyAcThreshold = 1000d,
         //    EnergyAcPercentThreshold = 0.9998d,
         //    SignalToNoiseRatioThreshold = 3000d,
-        //    FrequencyThreshold = 900 * 2 * Math.PI,
+        //    FrequencyThreshold = 900 * Math.Tau,
         //    FrequencyCountThreshold = 3500,
         //    PaddingPolynomialSampleCount = 50,
         //    PaddingPolynomialDegree = 6
@@ -2743,7 +2741,7 @@ public static class NumericGeometricFrequencySample
         {
             var omegaMean = omega.Mean();
             var omegaMeanNorm = omegaMean.Norm().ScalarValue;
-            var omegaMeanNormHz = omegaMeanNorm / (2 * Math.PI);
+            var omegaMeanNormHz = omegaMeanNorm / (Math.Tau);
 
             Console.WriteLine($"Omega {omegaIndex}");
             Console.WriteLine($"   Mean Bivector: {LaTeXComposer.GetMultivectorText(omegaMean)}");
@@ -2832,7 +2830,7 @@ public static class NumericGeometricFrequencySample
 
         //for (var i = 0; i < omegaAverageList.Count; i++)
         //{
-        //    var omegaNorm = omegaAverageList[i].Norm() / (2 * Math.PI);
+        //    var omegaNorm = omegaAverageList[i].Norm() / (Math.Tau);
 
         //    omegaNorm.Scalar.PlotScalarSignal($"Darboux Blade Average Norm {i + 1}", $"DBANorm{i + 1}".CombineFolderPath());
         //    omegaNorm.Scalar.Log10().PlotScalarSignal($"Darboux Blade Average Norm {i + 1} Log10", $"DBANorm{i + 1}Log10".CombineFolderPath());
@@ -3492,7 +3490,7 @@ public static class NumericGeometricFrequencySample
             EnergyAcThreshold = 100000d,
             EnergyAcPercentThreshold = 0.99999998d,
             SignalToNoiseRatioThreshold = 300000d,
-            FrequencyThreshold = 1000 * 2 * Math.PI,
+            FrequencyThreshold = 1000 * Math.Tau,
             FrequencyCountThreshold = 750,
             PaddingTrendSampleCount = 1000,
             PaddingPolynomialDegree = 5,
@@ -3505,7 +3503,7 @@ public static class NumericGeometricFrequencySample
         ////    EnergyAcThreshold = 1000d,
         ////    EnergyAcPercentThreshold = 0.9998d,
         ////    SignalToNoiseRatioThreshold = 3000d,
-        ////    FrequencyThreshold = 750 * 2 * Math.PI,
+        ////    FrequencyThreshold = 750 * Math.Tau,
         ////    FrequencyCountThreshold = 750,
         ////    PaddingPolynomialSampleCount = 50,
         ////    PaddingPolynomialDegree = 6
@@ -3532,13 +3530,13 @@ public static class NumericGeometricFrequencySample
 
         var signalsArray = new[]
         {
-            new Tuple<string, string, Func<XGaVector<Float64Signal>>>("Aulario3", "LineCurrent", InitializeAulario3LineCurrentSignal),
-            new Tuple<string, string, Func<XGaVector<Float64Signal>>>("Aulario3", "PhaseNeutralVoltage", InitializeAulario3PhaseNeutralVoltageSignal),
-            new Tuple<string, string, Func<XGaVector<Float64Signal>>>("Aulario3", "LineVoltage", InitializeAulario3LineVoltageSignal),
-            new Tuple<string, string, Func<XGaVector<Float64Signal>>>("Aulario3", "PhaseVoltage", InitializeAulario3PhaseVoltageSignal),
-            new Tuple<string, string, Func<XGaVector<Float64Signal>>>("EMTP", "LineVoltage", InitializeEMTPLineVoltageSignal),
-            new Tuple<string, string, Func<XGaVector<Float64Signal>>>("EMTP", "PhaseVoltage", InitializeEMTPPhaseVoltageSignal),
-            new Tuple<string, string, Func<XGaVector<Float64Signal>>>("EMTP", "PhaseNeutralVoltage", InitializeEMTPPhaseNeutralVoltageSignal)
+            new Tuple<string, string, Func<XGaVector<Float64SampledTimeSignal>>>("Aulario3", "LineCurrent", InitializeAulario3LineCurrentSignal),
+            new Tuple<string, string, Func<XGaVector<Float64SampledTimeSignal>>>("Aulario3", "PhaseNeutralVoltage", InitializeAulario3PhaseNeutralVoltageSignal),
+            new Tuple<string, string, Func<XGaVector<Float64SampledTimeSignal>>>("Aulario3", "LineVoltage", InitializeAulario3LineVoltageSignal),
+            new Tuple<string, string, Func<XGaVector<Float64SampledTimeSignal>>>("Aulario3", "PhaseVoltage", InitializeAulario3PhaseVoltageSignal),
+            new Tuple<string, string, Func<XGaVector<Float64SampledTimeSignal>>>("EMTP", "LineVoltage", InitializeEMTPLineVoltageSignal),
+            new Tuple<string, string, Func<XGaVector<Float64SampledTimeSignal>>>("EMTP", "PhaseVoltage", InitializeEMTPPhaseVoltageSignal),
+            new Tuple<string, string, Func<XGaVector<Float64SampledTimeSignal>>>("EMTP", "PhaseNeutralVoltage", InitializeEMTPPhaseNeutralVoltageSignal)
         };
 
         var optionsArray = new[]
@@ -3576,7 +3574,7 @@ public static class NumericGeometricFrequencySample
     /// <summary>
     /// Read the data set and split it into multiple files
     /// </summary>
-    public static void ProcessSignal(XGaVector<Float64Signal> vectorSignal, DfSignalInterpolatorOptions interpolatorOptions, string outputFilePath)
+    public static void ProcessSignal(XGaVector<Float64SampledTimeSignal> vectorSignal, DfSignalInterpolatorOptions interpolatorOptions, string outputFilePath)
     {
         ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
 
@@ -3701,7 +3699,7 @@ public static class NumericGeometricFrequencySample
                     EnergyAcThreshold = 1000d,
                     EnergyAcPercentThreshold = 0.9998d,
                     SignalToNoiseRatioThreshold = 3000d,
-                    FrequencyThreshold = 1000 * 2 * Math.PI,
+                    FrequencyThreshold = 1000 * Math.Tau,
                     FrequencyCountThreshold = 750,
                     PaddingTrendSampleCount = 1,
                     PaddingPolynomialDegree = 6,
@@ -3727,7 +3725,7 @@ public static class NumericGeometricFrequencySample
                 var omega = vectorSignalProcessor.AngularVelocityBlades;
                 var omegaMean = omega.Mean();
                 var omegaMeanNorm = omegaMean.Norm().ScalarValue;
-                var omegaMeanNormHz = (omegaMeanNorm / (2 * Math.PI)).Round(4);
+                var omegaMeanNormHz = (omegaMeanNorm / (Math.Tau)).Round(4);
                 var omegaMeanNormRatioHz = (omegaMeanNormHz / 50).Round(4);
 
                 Console.WriteLine($"Omega1 Mean Bivector Norm: {omegaMeanNorm:G} rad/sec = {omegaMeanNormHz:G} Hz = {omegaMeanNormRatioHz:G} * 50 Hz");
@@ -3892,7 +3890,7 @@ public static class NumericGeometricFrequencySample
                     EnergyAcThreshold = 1000d,
                     EnergyAcPercentThreshold = 0.9998d,
                     SignalToNoiseRatioThreshold = 3000d,
-                    FrequencyThreshold = 1000 * 2 * Math.PI,
+                    FrequencyThreshold = 1000 * Math.Tau,
                     FrequencyCountThreshold = 750,
                     PaddingTrendSampleCount = 1,
                     PaddingPolynomialDegree = 6,
@@ -3923,7 +3921,7 @@ public static class NumericGeometricFrequencySample
                     var omega = vectorSignalProcessor.AngularVelocityBlades[omegaIndex];
                     var omegaMean = omega.Mean();
                     var omegaMeanNorm = omegaMean.Norm().ScalarValue;
-                    var omegaMeanNormHz = (omegaMeanNorm / (2 * Math.PI)).Round(4);
+                    var omegaMeanNormHz = (omegaMeanNorm / (Math.Tau)).Round(4);
                     var omegaMeanNormRatioHz = (omegaMeanNormHz / w).Round(4);
 
                     Console.WriteLine($"Mean Omega {omegaIndex + 1}:");
@@ -3960,12 +3958,11 @@ public static class NumericGeometricFrequencySample
             tMaxSym.ScalarValue
         );
 
-        var signalNum = Float64Signal.CreateNonPeriodic(
+        var signalNum = Float64SampledTimeSignal.CreateNonPeriodic(
             50001,
             tMinNum,
             tMaxNum,
-            d => 3 * d.Square(),
-            false
+            d => 3 * d.Square()
         );
 
         var signalNumMean = signalNum.Sum() * signalNum.SamplingSpecs.TimeResolution;
@@ -3997,9 +3994,9 @@ public static class NumericGeometricFrequencySample
         // Define signal parameters
         var sqrt2 = Math.Sqrt(2);
         var freqHz = 50d;
-        var freq = 2d * Math.PI * freqHz;
+        var freq = Math.Tau * freqHz;
         var cycleTime = 1d / freqHz;
-        var phi = 2d * Math.PI / 3d;
+        var phi = Math.Tau / 3d;
         var sampleCount = 1000;
         var samplingRate = sampleCount / cycleTime;
         var samplingSpecs = Float64SamplingSpecs.CreateFromSamplingRate(sampleCount, samplingRate);
@@ -4059,37 +4056,34 @@ public static class NumericGeometricFrequencySample
 
 
         // Define numeric signal
-        var numV1 = Float64Signal.CreatePeriodic(
+        var numV1 = Float64SampledTimeSignal.CreatePeriodic(
             samplingRate,
             sampleCount,
             cycleTime,
             t =>
                 200 * sqrt2 * (freq * t).Sin() +
                 20 * sqrt2 * (2 * (freq * t)).Sin() +
-                -30 * sqrt2 * (7 * (freq * t)).Sin(),
-            false
+                -30 * sqrt2 * (7 * (freq * t)).Sin()
         );
 
-        var numV2 = Float64Signal.CreatePeriodic(
+        var numV2 = Float64SampledTimeSignal.CreatePeriodic(
             samplingRate,
             sampleCount,
             cycleTime,
             t =>
                 200 * sqrt2 * (freq * t - phi).Sin() +
                 20 * sqrt2 * (2 * (freq * t - phi)).Sin() +
-                -30 * sqrt2 * (7 * (freq * t - phi)).Sin(),
-            false
+                -30 * sqrt2 * (7 * (freq * t - phi)).Sin()
         );
 
-        var numV3 = Float64Signal.CreatePeriodic(
+        var numV3 = Float64SampledTimeSignal.CreatePeriodic(
             samplingRate,
             sampleCount,
             cycleTime,
             t =>
                 200 * sqrt2 * (freq * t + phi).Sin() +
                 20 * sqrt2 * (2 * (freq * t + phi)).Sin() +
-                -30 * sqrt2 * (7 * (freq * t + phi)).Sin(),
-            false
+                -30 * sqrt2 * (7 * (freq * t + phi)).Sin()
         );
 
         var numericVectorSignal =
@@ -4110,7 +4104,7 @@ public static class NumericGeometricFrequencySample
             EnergyAcThreshold = 1000d,
             EnergyAcPercentThreshold = 0.9998d,
             SignalToNoiseRatioThreshold = 3000d,
-            FrequencyThreshold = 1000 * 2 * Math.PI,
+            FrequencyThreshold = 1000 * Math.Tau,
             FrequencyCountThreshold = 750,
             PaddingTrendSampleCount = 1,
             PaddingPolynomialDegree = 6,

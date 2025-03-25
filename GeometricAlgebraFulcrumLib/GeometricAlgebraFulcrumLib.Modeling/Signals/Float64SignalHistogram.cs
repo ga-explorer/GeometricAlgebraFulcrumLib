@@ -168,7 +168,7 @@ public sealed class Float64SignalHistogram
         return (hist1 * pin1 + hist2 * pin2) / (hist1 + hist2);
     }
 
-    public Float64Signal FilterSignal(Float64Signal signal)
+    public Float64SampledTimeSignal FilterSignal(Float64SampledTimeSignal signal)
     {
         return signal.MapSamples(
             s => this[s].IsNearZero() ? InterpolateNearestPinValue(s) : s

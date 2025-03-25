@@ -148,6 +148,15 @@ public static class LinFloat64Vector2DUtils
         );
     }
 
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static Pair<LinFloat64Vector2D> GetComponentVectors(this IPair<Float64Scalar> vector)
+    {
+        return new Pair<LinFloat64Vector2D>(
+            LinFloat64Vector2D.Create(vector.Item1, Float64Scalar.Zero),
+            LinFloat64Vector2D.Create(Float64Scalar.Zero, vector.Item2)
+        );
+    }
 
     /// <summary>
     /// Returns a negative unit vector from the given one. If the length of the given vector is near 
@@ -195,15 +204,28 @@ public static class LinFloat64Vector2DUtils
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static LinFloat64Vector2D VectorTimes(this IPair<Float64Scalar> v1, double v2)
     {
-        return LinFloat64Vector2D.Create(v1.Item1 * v2,
-            v1.Item2 * v2);
+        return LinFloat64Vector2D.Create(
+            v1.Item1 * v2,
+            v1.Item2 * v2
+        );
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static LinFloat64Vector2D VectorTimes(this double v1, IPair<Float64Scalar> v2)
     {
-        return LinFloat64Vector2D.Create(v1 * v2.Item1,
-            v1 * v2.Item2);
+        return LinFloat64Vector2D.Create(
+            v1 * v2.Item1,
+            v1 * v2.Item2
+        );
+    }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static LinFloat64Vector2D VectorComponentTimes(this IPair<Float64Scalar> v1, IPair<Float64Scalar> v2)
+    {
+        return LinFloat64Vector2D.Create(
+            v1.Item1 * v2.Item1,
+            v1.Item2 * v2.Item2
+        );
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -362,6 +384,30 @@ public static class LinFloat64Vector2DUtils
                 vector.Item1.ScalarValue / norm,
                 vector.Item2.ScalarValue / norm
             );
+    }
+    
+    /// <summary>
+    /// The GA Euclidean cross product between the given vectors
+    /// </summary>
+    /// <param name="v1"></param>
+    /// <param name="v2"></param>
+    /// <returns></returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static Float64Scalar VectorCross(this IPair<Float64Scalar> v1, IPair<Float64Scalar> v2)
+    {
+        return v1.Item1 * v2.Item2 - v1.Item2 * v2.Item1;
+    }
+    
+    /// <summary>
+    /// The GA Euclidean cross product between the given vectors
+    /// </summary>
+    /// <param name="v1"></param>
+    /// <param name="v2"></param>
+    /// <returns></returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static IntegerSign VectorCrossSign(this IPair<Float64Scalar> v1, IPair<Float64Scalar> v2)
+    {
+        return (v1.Item1 * v2.Item2 - v1.Item2 * v2.Item1).Sign();
     }
 
 }

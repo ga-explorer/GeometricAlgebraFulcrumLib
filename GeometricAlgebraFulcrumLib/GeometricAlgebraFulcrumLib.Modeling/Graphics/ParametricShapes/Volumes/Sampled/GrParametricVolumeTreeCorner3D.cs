@@ -1,5 +1,5 @@
 ﻿using System.Runtime.CompilerServices;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.Parametric.Float64.Space3D.Curves.Adaptive;
+using GeometricAlgebraFulcrumLib.Modeling.Trajectories.Vectors3D.Float64.Adaptive;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Basic;
 
 namespace GeometricAlgebraFulcrumLib.Modeling.Graphics.ParametricShapes.Volumes.Sampled;
@@ -8,7 +8,7 @@ public sealed record GrParametricVolumeTreeCorner3D
 {
     public GrParametricVolumeTree3D ParentTree { get; }
 
-    public Triplet<AdaptiveCurveTreeCornerPosition3D> Position { get; }
+    public Triplet<Float64AdaptivePath3DCornerPosition> Position { get; }
         
     public int Index { get; }
 
@@ -37,7 +37,7 @@ public sealed record GrParametricVolumeTreeCorner3D
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    internal GrParametricVolumeTreeCorner3D(GrParametricVolumeTree3D parentTree, int index, GrParametricVolumeLocalFrame3D frame, Triplet<AdaptiveCurveTreeCornerPosition3D> position)
+    internal GrParametricVolumeTreeCorner3D(GrParametricVolumeTree3D parentTree, int index, GrParametricVolumeLocalFrame3D frame, Triplet<Float64AdaptivePath3DCornerPosition> position)
     {
         ParentTree = parentTree;
         Index = index;

@@ -355,5 +355,34 @@ public static class LinFloat64VectorComposerUtils
 
         return composer;
     }
+    
+    public static LinFloat64VectorComposer AddComponentTimesTerms(this LinFloat64VectorComposer composer, IReadOnlyDictionary<int, double> mv1, IReadOnlyDictionary<int, double> mv2)
+    {
+        if (mv1.Count == 0 || mv2.Count == 0)
+            return composer;
+
+        if (mv1.Count <= mv2.Count)
+        {
+            foreach (var (id, scalar1) in mv1)
+            {
+                if (!mv2.TryGetValue(id, out var scalar2))
+                    continue;
+
+                composer.AddTerm(id, scalar1 * scalar2);
+            }
+        }
+        else
+        {
+            foreach (var (id, scalar2) in mv2)
+            {
+                if (!mv1.TryGetValue(id, out var scalar1))
+                    continue;
+
+                composer.AddTerm(id, scalar1 * scalar2);
+            }
+        }
+
+        return composer;
+    }
 
 }

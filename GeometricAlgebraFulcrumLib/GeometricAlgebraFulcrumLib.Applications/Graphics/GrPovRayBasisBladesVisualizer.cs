@@ -1,11 +1,8 @@
 ﻿using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Angles;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space3D;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.PovRay.Composers;
-using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.Visuals.Space3D.Grids;
 using GeometricAlgebraFulcrumLib.Modeling.Signals;
-using GeometricAlgebraFulcrumLib.Modeling.Temporal.Float64.Scalars;
-using GeometricAlgebraFulcrumLib.Utilities.Web.Images;
-using SixLabors.ImageSharp;
+using GeometricAlgebraFulcrumLib.Modeling.Trajectories.Scalars.Float64;
 
 namespace GeometricAlgebraFulcrumLib.Applications.Graphics
 {
@@ -19,15 +16,15 @@ namespace GeometricAlgebraFulcrumLib.Applications.Graphics
         }
 
 
-        protected override void InitializeTemporalValues()
+        protected override void AddTemporalValues()
         {
             Console.Write("Generating temporal values .. ");
 
             var thetaLimit = 90d.DegreesToRadians() - 5e-5d;
-            TemporalScalarSet.SetScalar(
+            TemporalScalars.SetScalar(
                 "theta", 
-                TemporalFloat64Scalar
-                    .FullCos()
+                Float64ScalarSignal
+                    .FiniteCos()
                     .Repeat(
                         1,
                         0, 
@@ -37,17 +34,17 @@ namespace GeometricAlgebraFulcrumLib.Applications.Graphics
                     )
             );
 
-            TemporalScalarSet.SetScalar(
+            TemporalScalars.SetScalar(
                 "sourceVector.color.alpha",
-                TemporalFloat64Scalar
-                    .SmoothRectangle()
+                Float64ScalarSignal
+                    .FiniteSmoothRectangle()
                     .Repeat(10, 0, 1, 0, 1)
             );
         
-            TemporalScalarSet.SetScalar(
+            TemporalScalars.SetScalar(
                 "targetVector.color.alpha",
-                TemporalFloat64Scalar
-                    .SmoothRectangle()
+                Float64ScalarSignal
+                    .FiniteSmoothRectangle()
                     .Repeat(10, 0, 1, 0, 1)
             );
 
@@ -55,45 +52,28 @@ namespace GeometricAlgebraFulcrumLib.Applications.Graphics
             Console.WriteLine();
         }
         
-        protected override void InitializeTextureSet()
+        protected override void ComposeScene(int frameIndex)
         {
-            
-        }
-
-        protected override void AddGrid()
-        {
-            // Add ground coordinates grid
-            ActiveSceneComposer.GridMaterialKind =
-                GrPovRayGridMaterialKind.TexturedMaterial;
-            
-            var imageComposer = new GrVisualGridImageComposer()
-            {
-                BaseSquareColor = Color.LightYellow,
-                BaseLineColor = Color.BurlyWood,
-                MidLineColor = Color.SandyBrown,
-                BorderLineColor = Color.SaddleBrown,
-                BaseSquareCount = 4,
-                BaseSquareSize = 64,
-                BaseLineWidth = 2,
-                MidLineWidth = 4,
-                BorderLineWidth = 3
-            };
-
-            imageComposer.SetGridColorsOpacity(1);
-
-            ActiveSceneComposer.AddSquareGrid(
-                GrVisualSquareGrid3D.DefaultZx(
-                    LinFloat64Vector3D.Zero, 
+            if (ShowGrid)
+                ActiveSceneComposer.AddGrid(
+                    "defaultZx",
+                    -5 * LinFloat64Vector3D.E2, 
+                    LinFloat64Quaternion.XyToZx, 
                     GridUnitCount,
                     1,
                     1
-                )
-            );
-        }
+                );
 
-        protected override void ComposeFrame(int frameIndex)
-        {
-            base.ComposeFrame(frameIndex);
+            if (ShowAxes)
+                ActiveSceneComposer.AddAxes(
+                    "defaultAxes",
+                    -5 * LinFloat64Vector3D.E2,
+                    LinFloat64Quaternion.Identity,
+                    1, 
+                    1
+                );
+
+
 
             //if (DrawRotorTrace) AddRotorTrace();
 

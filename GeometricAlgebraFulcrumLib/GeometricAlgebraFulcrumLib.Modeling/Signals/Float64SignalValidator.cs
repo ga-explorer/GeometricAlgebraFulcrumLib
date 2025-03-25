@@ -7,7 +7,7 @@ public class Float64SignalValidator
     public double ZeroEpsilon { get; set; } = 1e-7;
 
 
-    public bool ValidateEqualZero(Float64Signal scalarSignal1)
+    public bool ValidateEqualZero(Float64SampledTimeSignal scalarSignal1)
     {
         if (scalarSignal1.IsNearZero(ZeroEpsilon))
             return true;
@@ -24,7 +24,7 @@ public class Float64SignalValidator
         return false;
     }
 
-    public bool ValidateEqual(Float64Signal scalarSignal1, Float64Signal scalarSignal2)
+    public bool ValidateEqual(Float64SampledTimeSignal scalarSignal1, Float64SampledTimeSignal scalarSignal2)
     {
         var errorSignal =
             scalarSignal1 - scalarSignal2;

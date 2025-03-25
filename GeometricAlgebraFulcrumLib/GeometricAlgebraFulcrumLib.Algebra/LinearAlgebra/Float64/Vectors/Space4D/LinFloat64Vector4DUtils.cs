@@ -4,6 +4,7 @@ using System.Runtime.CompilerServices;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Basis;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Angles;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Tuples;
+using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space3D;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Basic;
 
@@ -218,6 +219,17 @@ public static class LinFloat64Vector4DUtils
         };
     }
 
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static Quad<LinFloat64Vector4D> GetComponentVectors(this IQuad<Float64Scalar> vector)
+    {
+        return new Quad<LinFloat64Vector4D>(
+            LinFloat64Vector4D.Create(vector.Item1, Float64Scalar.Zero, Float64Scalar.Zero, Float64Scalar.Zero),
+            LinFloat64Vector4D.Create(Float64Scalar.Zero, vector.Item2, Float64Scalar.Zero, Float64Scalar.Zero),
+            LinFloat64Vector4D.Create(Float64Scalar.Zero, Float64Scalar.Zero, vector.Item3, Float64Scalar.Zero),
+            LinFloat64Vector4D.Create(Float64Scalar.Zero, Float64Scalar.Zero, Float64Scalar.Zero, vector.Item4)
+        );
+    }
 
     /// <summary>
     /// Returns a negative unit vector from the given one. If the length of the given vector is near 
@@ -436,6 +448,17 @@ public static class LinFloat64Vector4DUtils
             v1.Item2 * v2,
             v1.Item3 * v2,
             v1.Item4 * v2
+        );
+    }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static LinFloat64Vector4D VectorComponentTimes(this IQuad<Float64Scalar> v1, IQuad<Float64Scalar> v2)
+    {
+        return LinFloat64Vector4D.Create(
+            v1.Item1 * v2.Item1,
+            v1.Item2 * v2.Item2,
+            v1.Item3 * v2.Item3,
+            v1.Item4 * v2.Item4
         );
     }
 

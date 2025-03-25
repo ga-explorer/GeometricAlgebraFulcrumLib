@@ -83,7 +83,7 @@ public sealed class Float64SignalSpectrum :
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public double GetEnergy(int index)
     {
-        return this[index].Value.Square() * SampleCount / (2 * Math.PI);
+        return this[index].Value.Square() * SampleCount / (Math.Tau);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]

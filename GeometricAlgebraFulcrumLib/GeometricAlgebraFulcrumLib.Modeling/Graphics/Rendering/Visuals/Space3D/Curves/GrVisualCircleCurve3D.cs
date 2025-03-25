@@ -177,7 +177,7 @@ public sealed class GrVisualCircleCurve3D :
         => 361;
 
     public override double Length 
-        => 2d * Math.PI * Radius;
+        => Math.Tau * Radius;
 
     public GrVisualAnimatedVector3D? AnimatedCenter { get; set; }
 
@@ -233,7 +233,7 @@ public sealed class GrVisualCircleCurve3D :
             Normal.GetUnitNormalPair();
 
         var angles = 
-            0d.GetLinearRange(2d * Math.PI, PathPointCount, false);
+            0d.GetLinearRange(Math.Tau, PathPointCount, false);
 
         var points =
             angles.Select(angle => 
@@ -253,7 +253,7 @@ public sealed class GrVisualCircleCurve3D :
             normal.GetUnitNormalPair();
 
         var angles = 
-            0d.GetLinearRange(2d * Math.PI, PathPointCount, false);
+            0d.GetLinearRange(Math.Tau, PathPointCount, false);
 
         var points =
             angles.Select(angle => 
@@ -295,14 +295,14 @@ public sealed class GrVisualCircleCurve3D :
     {
         return SamplingSpecs.IsStatic || AnimatedCenter is null
             ? Center.ToLinVector3D()
-            : AnimatedCenter.GetPoint(time);
+            : AnimatedCenter.GetValue(time);
     }
         
     public LinFloat64Vector3D GetNormal(double time)
     {
         return SamplingSpecs.IsStatic || AnimatedNormal is null
             ? Normal
-            : AnimatedNormal.GetPoint(time).ToUnitLinVector3D();
+            : AnimatedNormal.GetValue(time).ToUnitLinVector3D();
     }
         
     public double GetRadius(double time)

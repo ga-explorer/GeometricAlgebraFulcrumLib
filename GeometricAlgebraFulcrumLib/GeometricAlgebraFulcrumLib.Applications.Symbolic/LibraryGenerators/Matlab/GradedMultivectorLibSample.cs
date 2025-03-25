@@ -42,6 +42,10 @@ public static class GradedMultivectorLibSample
 
         // Conic GA(5,3)
         yield return new Triplet<int>(5, 3, 0);
+
+        // VGA
+        for (var p = maxVSpaceDimensions + 1; p <= 12; p++)
+            yield return new Triplet<int>(p, 0, 0);
     }
 
     private static IEnumerable<Triplet<int>> GetFullSignatures(int maxVSpaceDimensions)
@@ -58,16 +62,35 @@ public static class GradedMultivectorLibSample
                 }
     }
 
+    private static string GetSpaceName(int p, int q, int r)
+    {
+        if (p > 9 || q > 9 || r > 9)
+        {
+            if (r != 0)
+                return $"GaP{p}Q{q}R{r}";
+
+            if (q != 0)
+                return $"GaP{p}Q{q}";
+
+            return $"GaP{p}";
+        }
+
+        if (r != 0)
+            return $"Ga{p}{q}{r}";
+
+        if (q != 0)
+            return $"Ga{p}{q}";
+
+        return $"Ga{p}";
+    }
+
     private static IEnumerable<LibCodeComposerSpecs> GetCodeComposerSpecs(int maxVSpaceDimensions)
     {
         foreach (var (p, q, r) in GetMainSignatures(maxVSpaceDimensions))
         {
             var vSpaceDimensions = p + q + r;
             var metric = RGaFloat64Processor.Create(q, r);
-            var spaceName =
-                r != 0
-                    ? $"Ga{p}{q}{r}"
-                    : q != 0 ? $"Ga{p}{q}" : $"Ga{p}";
+            var spaceName = GetSpaceName(p, q, r);
 
             yield return new LibCodeComposerSpecs(
                 vSpaceDimensions,

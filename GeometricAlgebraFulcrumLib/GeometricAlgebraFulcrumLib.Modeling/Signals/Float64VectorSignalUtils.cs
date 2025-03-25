@@ -31,7 +31,7 @@ namespace GeometricAlgebraFulcrumLib.Modeling.Signals;
 
 public static class Float64VectorSignalUtils
 {
-    public static IReadOnlyList<RGaVector<Float64Signal>> ApplyGramSchmidtByProjections(this IReadOnlyList<RGaVector<Float64Signal>> vectorsList, bool makeUnitVectors)
+    public static IReadOnlyList<RGaVector<Float64SampledTimeSignal>> ApplyGramSchmidtByProjections(this IReadOnlyList<RGaVector<Float64SampledTimeSignal>> vectorsList, bool makeUnitVectors)
     {
         var vectorMatrixList =
             vectorsList
@@ -111,7 +111,7 @@ public static class Float64VectorSignalUtils
             : orthogonalVectors.ToArray();
     }
 
-    public static IReadOnlyList<XGaVector<Float64Signal>> ApplyGramSchmidtByProjections(this IReadOnlyList<XGaVector<Float64Signal>> vectorsList, bool makeUnitVectors)
+    public static IReadOnlyList<XGaVector<Float64SampledTimeSignal>> ApplyGramSchmidtByProjections(this IReadOnlyList<XGaVector<Float64SampledTimeSignal>> vectorsList, bool makeUnitVectors)
     {
         var vectorMatrixList =
             vectorsList
@@ -245,13 +245,13 @@ public static class Float64VectorSignalUtils
     //}
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Scalar<double> Mean(this IScalarProcessor<double> scalarProcessor, Scalar<Float64Signal> vectorSignal)
+    public static Scalar<double> Mean(this IScalarProcessor<double> scalarProcessor, Scalar<Float64SampledTimeSignal> vectorSignal)
     {
         return vectorSignal.ScalarValue.Mean().ScalarFromNumber(scalarProcessor);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Scalar<Float64Signal> GetRunningAverageSignal(this Scalar<Float64Signal> scalarSignal, int averageSampleCount)
+    public static Scalar<Float64SampledTimeSignal> GetRunningAverageSignal(this Scalar<Float64SampledTimeSignal> scalarSignal, int averageSampleCount)
     {
         return scalarSignal
             .ScalarValue
@@ -261,7 +261,7 @@ public static class Float64VectorSignalUtils
 
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Scalar<Float64Signal> WienerFilter(this Scalar<Float64Signal> scalarSamples, int order)
+    public static Scalar<Float64SampledTimeSignal> WienerFilter(this Scalar<Float64SampledTimeSignal> scalarSamples, int order)
     {
         return scalarSamples
             .ScalarValue
@@ -270,14 +270,14 @@ public static class Float64VectorSignalUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static double SignalToNoiseRatio(this Scalar<Float64Signal> scalarSignal, Scalar<Float64Signal> noiseSignal)
+    public static double SignalToNoiseRatio(this Scalar<Float64SampledTimeSignal> scalarSignal, Scalar<Float64SampledTimeSignal> noiseSignal)
     {
         return scalarSignal.Square().ScalarValue.Average() /
                noiseSignal.Square().ScalarValue.Average();
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static double SignalToNoiseRatioDb(this Scalar<Float64Signal> scalarSignal, Scalar<Float64Signal> noiseSignal)
+    public static double SignalToNoiseRatioDb(this Scalar<Float64SampledTimeSignal> scalarSignal, Scalar<Float64SampledTimeSignal> noiseSignal)
     {
         return (scalarSignal.Square().ScalarValue.Average() /
                 noiseSignal.Square().ScalarValue.Average()).Log10() * 10d;
@@ -327,11 +327,11 @@ public static class Float64VectorSignalUtils
     }
 
 
-    public static RGaVector<Float64Signal> CreateVectorSignal(this RGaProcessor<Float64Signal> geometricProcessor, IEnumerable<RGaFloat64Vector> vectorList, double samplingRate)
+    public static RGaVector<Float64SampledTimeSignal> CreateVectorSignal(this RGaProcessor<Float64SampledTimeSignal> geometricProcessor, IEnumerable<RGaFloat64Vector> vectorList, double samplingRate)
     {
         var vectorArray = vectorList.ToArray();
         var vSpaceDimensions = vectorArray.GetVSpaceDimensions();
-        var scalarArray = new Float64Signal[vSpaceDimensions];
+        var scalarArray = new Float64SampledTimeSignal[vSpaceDimensions];
 
         for (var i = 0; i < vSpaceDimensions; i++)
         {
@@ -346,7 +346,7 @@ public static class Float64VectorSignalUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static RGaVector<Float64Signal> CreateVectorSignal(this IEnumerable<RGaFloat64Vector> vectorList, RGaProcessor<Float64Signal> geometricProcessor, double samplingRate)
+    public static RGaVector<Float64SampledTimeSignal> CreateVectorSignal(this IEnumerable<RGaFloat64Vector> vectorList, RGaProcessor<Float64SampledTimeSignal> geometricProcessor, double samplingRate)
     {
         return geometricProcessor.CreateVectorSignal(vectorList, samplingRate);
     }
@@ -369,7 +369,7 @@ public static class Float64VectorSignalUtils
     }
 
 
-    public static IReadOnlyList<RGaVector<Float64Signal>> ApplyGramSchmidtByProjections(this IReadOnlyList<RGaVector<Float64Signal>> vectorsList, int vSpaceDimensions, bool makeUnitVectors)
+    public static IReadOnlyList<RGaVector<Float64SampledTimeSignal>> ApplyGramSchmidtByProjections(this IReadOnlyList<RGaVector<Float64SampledTimeSignal>> vectorsList, int vSpaceDimensions, bool makeUnitVectors)
     {
         var vectorMatrixList =
             vectorsList
@@ -445,7 +445,7 @@ public static class Float64VectorSignalUtils
             : orthogonalVectors.ToArray();
     }
         
-    public static IReadOnlyList<XGaVector<Float64Signal>> ApplyGramSchmidtByProjections(this IReadOnlyList<XGaVector<Float64Signal>> vectorsList, int vSpaceDimensions, bool makeUnitVectors)
+    public static IReadOnlyList<XGaVector<Float64SampledTimeSignal>> ApplyGramSchmidtByProjections(this IReadOnlyList<XGaVector<Float64SampledTimeSignal>> vectorsList, int vSpaceDimensions, bool makeUnitVectors)
     {
         var vectorMatrixList =
             vectorsList
@@ -521,52 +521,52 @@ public static class Float64VectorSignalUtils
             : orthogonalVectors.ToArray();
     }
         
-    public static RGaVector<Float64Signal> ToVectorSignal(this RGaProcessor<Float64Signal> geometricProcessor, int vSpaceDimensions, Matrix vectorMatrix, double samplingRate)
+    public static RGaVector<Float64SampledTimeSignal> ToVectorSignal(this RGaProcessor<Float64SampledTimeSignal> geometricProcessor, int vSpaceDimensions, Matrix vectorMatrix, double samplingRate)
     {
         var sampleCount = vectorMatrix.RowCount;
-        var scalarArray = new Float64Signal[vSpaceDimensions];
+        var scalarArray = new Float64SampledTimeSignal[vSpaceDimensions];
 
         for (var j = 0; j < vSpaceDimensions; j++)
         {
-            var scalarSignal = Float64Signal.CreateConstant(samplingRate, sampleCount, 0d, false);
+            var scalarSignal = Float64SampledTimeSignalComposer.CreateConstant(samplingRate, sampleCount, 0d);
 
             for (var i = 0; i < sampleCount; i++)
             {
                 scalarSignal[i] = vectorMatrix[i, j];
             }
 
-            scalarArray[j] = scalarSignal;
+            scalarArray[j] = scalarSignal.GetFiniteSignal();
         }
 
         return geometricProcessor.Vector(scalarArray);
     }
 
-    public static XGaVector<Float64Signal> ToVectorSignal(this XGaProcessor<Float64Signal> geometricProcessor, int vSpaceDimensions, Matrix vectorMatrix, double samplingRate)
+    public static XGaVector<Float64SampledTimeSignal> ToVectorSignal(this XGaProcessor<Float64SampledTimeSignal> geometricProcessor, int vSpaceDimensions, Matrix vectorMatrix, double samplingRate)
     {
         var sampleCount = vectorMatrix.RowCount;
-        var scalarArray = new Float64Signal[vSpaceDimensions];
+        var scalarArray = new Float64SampledTimeSignal[vSpaceDimensions];
 
         for (var j = 0; j < vSpaceDimensions; j++)
         {
-            var scalarSignal = Float64Signal.CreateConstant(samplingRate, sampleCount, 0d, false);
+            var scalarSignal = Float64SampledTimeSignalComposer.CreateConstant(samplingRate, sampleCount, 0d);
 
             for (var i = 0; i < sampleCount; i++)
             {
                 scalarSignal[i] = vectorMatrix[i, j];
             }
 
-            scalarArray[j] = scalarSignal;
+            scalarArray[j] = scalarSignal.GetFiniteSignal();
         }
 
         return geometricProcessor.Vector(scalarArray);
     }
         
 
-    public static XGaVector<Float64Signal> CreateVectorSignal(this XGaProcessor<Float64Signal> geometricProcessor, IEnumerable<XGaFloat64Vector> vectorList, double samplingRate)
+    public static XGaVector<Float64SampledTimeSignal> CreateVectorSignal(this XGaProcessor<Float64SampledTimeSignal> geometricProcessor, IEnumerable<XGaFloat64Vector> vectorList, double samplingRate)
     {
         var vectorArray = vectorList.ToArray();
         var vSpaceDimensions = vectorArray.GetVSpaceDimensions();
-        var scalarArray = new Float64Signal[vSpaceDimensions];
+        var scalarArray = new Float64SampledTimeSignal[vSpaceDimensions];
 
         for (var i = 0; i < vSpaceDimensions; i++)
         {
@@ -582,7 +582,7 @@ public static class Float64VectorSignalUtils
     }
         
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static XGaVector<Float64Signal> CreateVectorSignal(this IEnumerable<XGaFloat64Vector> vectorList, XGaProcessor<Float64Signal> geometricProcessor, double samplingRate)
+    public static XGaVector<Float64SampledTimeSignal> CreateVectorSignal(this IEnumerable<XGaFloat64Vector> vectorList, XGaProcessor<Float64SampledTimeSignal> geometricProcessor, double samplingRate)
     {
         return geometricProcessor.CreateVectorSignal(vectorList, samplingRate);
     }
@@ -607,31 +607,31 @@ public static class Float64VectorSignalUtils
         
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static double GetSamplingRate(this XGaVector<Float64Signal> vectorSignal)
+    public static double GetSamplingRate(this XGaVector<Float64SampledTimeSignal> vectorSignal)
     {
         return vectorSignal.Scalars.First().SamplingRate;
     }
         
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static double GetSamplingRate(this RGaVector<Float64Signal> vectorSignal)
+    public static double GetSamplingRate(this RGaVector<Float64SampledTimeSignal> vectorSignal)
     {
         return vectorSignal.Scalars.First().SamplingRate;
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static int GetSampleCount(this XGaVector<Float64Signal> vectorSignal)
+    public static int GetSampleCount(this XGaVector<Float64SampledTimeSignal> vectorSignal)
     {
         return vectorSignal.Scalars.Max(s => s.Count);
     }
         
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static int GetSampleCount(this RGaVector<Float64Signal> vectorSignal)
+    public static int GetSampleCount(this RGaVector<Float64SampledTimeSignal> vectorSignal)
     {
         return vectorSignal.Scalars.Max(s => s.Count);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Float64SamplingSpecs GetSamplingSpecs(this XGaVector<Float64Signal> vectorSignal)
+    public static Float64SamplingSpecs GetSamplingSpecs(this XGaVector<Float64SampledTimeSignal> vectorSignal)
     {
         var sampleCount = vectorSignal.GetSampleCount();
         var samplingRate = vectorSignal.GetSamplingRate();
@@ -640,7 +640,7 @@ public static class Float64VectorSignalUtils
     }
         
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Float64SamplingSpecs GetSamplingSpecs(this RGaVector<Float64Signal> vectorSignal)
+    public static Float64SamplingSpecs GetSamplingSpecs(this RGaVector<Float64SampledTimeSignal> vectorSignal)
     {
         var sampleCount = vectorSignal.GetSampleCount();
         var samplingRate = vectorSignal.GetSamplingRate();
@@ -649,7 +649,7 @@ public static class Float64VectorSignalUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static XGaVector<Float64Signal> GetSubSignal(this XGaVector<Float64Signal> vectorSignal, int index, int count)
+    public static XGaVector<Float64SampledTimeSignal> GetSubSignal(this XGaVector<Float64SampledTimeSignal> vectorSignal, int index, int count)
     {
         return vectorSignal
             .MapScalars(
@@ -658,7 +658,7 @@ public static class Float64VectorSignalUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static XGaBivector<Float64Signal> GetSubSignal(this XGaBivector<Float64Signal> bivectorSignal, int index, int count)
+    public static XGaBivector<Float64SampledTimeSignal> GetSubSignal(this XGaBivector<Float64SampledTimeSignal> bivectorSignal, int index, int count)
     {
         return bivectorSignal
             .MapScalars(
@@ -666,7 +666,7 @@ public static class Float64VectorSignalUtils
             );
     }
         
-    public static double[,] ToArray2D(this XGaVector<Float64Signal> vectorSignal)
+    public static double[,] ToArray2D(this XGaVector<Float64SampledTimeSignal> vectorSignal)
     {
         var colCount = vectorSignal.VSpaceDimensions;
         var rowCount = vectorSignal.Scalars.Max(s => s.Count);
@@ -680,7 +680,7 @@ public static class Float64VectorSignalUtils
         return array;
     }
         
-    public static double[,] ToArray2D(this XGaVector<Float64Signal> vectorSignal, int rowCount, int colCount)
+    public static double[,] ToArray2D(this XGaVector<Float64SampledTimeSignal> vectorSignal, int rowCount, int colCount)
     {
         var array = new double[rowCount, colCount];
 
@@ -691,7 +691,7 @@ public static class Float64VectorSignalUtils
         return array;
     }
 
-    public static double[,] ToArray2D(this RGaVector<Float64Signal> vectorSignal)
+    public static double[,] ToArray2D(this RGaVector<Float64SampledTimeSignal> vectorSignal)
     {
         var colCount = vectorSignal.VSpaceDimensions;
         var rowCount = vectorSignal.Scalars.Max(s => s.Count);
@@ -705,7 +705,7 @@ public static class Float64VectorSignalUtils
         return array;
     }
         
-    public static double[,] ToArray2D(this RGaVector<Float64Signal> vectorSignal, int rowCount, int colCount)
+    public static double[,] ToArray2D(this RGaVector<Float64SampledTimeSignal> vectorSignal, int rowCount, int colCount)
     {
         var array = new double[rowCount, colCount];
 
@@ -716,7 +716,7 @@ public static class Float64VectorSignalUtils
         return array;
     }
         
-    public static IReadOnlyList<Matrix> ComputeAffineFrameMatrices(this IEnumerable<XGaVector<Float64Signal>> vectorSignalList, int sampleCount, int vSpaceDimensions)
+    public static IReadOnlyList<Matrix> ComputeAffineFrameMatrices(this IEnumerable<XGaVector<Float64SampledTimeSignal>> vectorSignalList, int sampleCount, int vSpaceDimensions)
     {
         var matrixList = new Matrix[sampleCount];
 
@@ -785,52 +785,52 @@ public static class Float64VectorSignalUtils
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Matrix ToMatrix(this XGaVector<Float64Signal> vectorSignal)
+    public static Matrix ToMatrix(this XGaVector<Float64SampledTimeSignal> vectorSignal)
     {
         return (Matrix)Matrix.Build.DenseOfArray(vectorSignal.ToArray2D());
     }
         
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Matrix ToMatrix(this RGaVector<Float64Signal> vectorSignal)
+    public static Matrix ToMatrix(this RGaVector<Float64SampledTimeSignal> vectorSignal)
     {
         return (Matrix)Matrix.Build.DenseOfArray(vectorSignal.ToArray2D());
     }
 
-    public static XGaVector<Float64Signal> ToXGaVectorSignal(this XGaProcessor<Float64Signal> processor, Matrix vectorMatrix, int vSpaceDimensions, double samplingRate)
+    public static XGaVector<Float64SampledTimeSignal> ToXGaVectorSignal(this XGaProcessor<Float64SampledTimeSignal> processor, Matrix vectorMatrix, int vSpaceDimensions, double samplingRate)
     {
         var sampleCount = vectorMatrix.RowCount;
-        var scalarArray = new Float64Signal[vSpaceDimensions];
+        var scalarArray = new Float64SampledTimeSignal[vSpaceDimensions];
 
         for (var j = 0; j < vSpaceDimensions; j++)
         {
-            var scalarSignal = Float64Signal.CreateConstant(samplingRate, sampleCount, 0d, false);
+            var scalarSignal = Float64SampledTimeSignalComposer.CreateConstant(samplingRate, sampleCount, 0d);
 
             for (var i = 0; i < sampleCount; i++)
             {
                 scalarSignal[i] = vectorMatrix[i, j];
             }
 
-            scalarArray[j] = scalarSignal;
+            scalarArray[j] = scalarSignal.GetFiniteSignal();
         }
 
         return processor.Vector(scalarArray);
     }
         
-    public static RGaVector<Float64Signal> ToRGaVectorSignal(this RGaProcessor<Float64Signal> processor, Matrix vectorMatrix, int vSpaceDimensions, double samplingRate)
+    public static RGaVector<Float64SampledTimeSignal> ToRGaVectorSignal(this RGaProcessor<Float64SampledTimeSignal> processor, Matrix vectorMatrix, int vSpaceDimensions, double samplingRate)
     {
         var sampleCount = vectorMatrix.RowCount;
-        var scalarArray = new Float64Signal[vSpaceDimensions];
+        var scalarArray = new Float64SampledTimeSignal[vSpaceDimensions];
 
         for (var j = 0; j < vSpaceDimensions; j++)
         {
-            var scalarSignal = Float64Signal.CreateConstant(samplingRate, sampleCount, 0d, false);
+            var scalarSignal = Float64SampledTimeSignalComposer.CreateConstant(samplingRate, sampleCount, 0d);
 
             for (var i = 0; i < sampleCount; i++)
             {
                 scalarSignal[i] = vectorMatrix[i, j];
             }
 
-            scalarArray[j] = scalarSignal;
+            scalarArray[j] = scalarSignal.GetFiniteSignal();
         }
 
         return processor.Vector(scalarArray);
@@ -854,7 +854,7 @@ public static class Float64VectorSignalUtils
     }
         
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static XGaFloat64Vector Mean(this XGaVector<Float64Signal> vectorSignal, XGaFloat64Processor processor)
+    public static XGaFloat64Vector Mean(this XGaVector<Float64SampledTimeSignal> vectorSignal, XGaFloat64Processor processor)
     {
         var composer = processor.CreateComposer();
 
@@ -880,7 +880,7 @@ public static class Float64VectorSignalUtils
     //    return processor.Vector(indexScalarDictionary);
     //}
         
-    public static XGaFloat64Bivector Sum(this XGaBivector<Float64Signal> bivectorSignal)
+    public static XGaFloat64Bivector Sum(this XGaBivector<Float64SampledTimeSignal> bivectorSignal)
     {
         if (bivectorSignal.IsZero)
             return XGaFloat64Processor.Euclidean.BivectorZero;
@@ -896,7 +896,7 @@ public static class Float64VectorSignalUtils
         return composer.GetBivector();
     }
 
-    public static XGaFloat64Bivector Mean(this XGaBivector<Float64Signal> bivectorSignal)
+    public static XGaFloat64Bivector Mean(this XGaBivector<Float64SampledTimeSignal> bivectorSignal)
     {
         if (bivectorSignal.IsZero)
             return XGaFloat64Processor.Euclidean.BivectorZero;
@@ -916,7 +916,7 @@ public static class Float64VectorSignalUtils
     }
         
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static RGaVector<Float64Signal> GetRunningAverageSignal(this RGaVector<Float64Signal> vectorSignal, int averageSampleCount)
+    public static RGaVector<Float64SampledTimeSignal> GetRunningAverageSignal(this RGaVector<Float64SampledTimeSignal> vectorSignal, int averageSampleCount)
     {
         return vectorSignal.MapScalars(s =>
             s.GetRunningAverageSignal(averageSampleCount)
@@ -924,7 +924,7 @@ public static class Float64VectorSignalUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static XGaVector<Float64Signal> GetRunningAverageSignal(this XGaVector<Float64Signal> vectorSignal, int averageSampleCount)
+    public static XGaVector<Float64SampledTimeSignal> GetRunningAverageSignal(this XGaVector<Float64SampledTimeSignal> vectorSignal, int averageSampleCount)
     {
         return vectorSignal.MapScalars(s =>
             s.GetRunningAverageSignal(averageSampleCount)
@@ -932,7 +932,7 @@ public static class Float64VectorSignalUtils
     }
         
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static RGaBivector<Float64Signal> GetRunningAverageSignal(this RGaBivector<Float64Signal> bivectorSignal, int averageSampleCount)
+    public static RGaBivector<Float64SampledTimeSignal> GetRunningAverageSignal(this RGaBivector<Float64SampledTimeSignal> bivectorSignal, int averageSampleCount)
     {
         return bivectorSignal.MapScalars(s =>
             s.GetRunningAverageSignal(averageSampleCount)
@@ -940,7 +940,7 @@ public static class Float64VectorSignalUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static XGaBivector<Float64Signal> GetRunningAverageSignal(this XGaBivector<Float64Signal> bivectorSignal, int averageSampleCount)
+    public static XGaBivector<Float64SampledTimeSignal> GetRunningAverageSignal(this XGaBivector<Float64SampledTimeSignal> bivectorSignal, int averageSampleCount)
     {
         return bivectorSignal.MapScalars(s =>
             s.GetRunningAverageSignal(averageSampleCount)
@@ -984,7 +984,7 @@ public static class Float64VectorSignalUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static XGaVector<Float64Signal> NormWienerFilter(this XGaVector<Float64Signal> vectorSamples, int order)
+    public static XGaVector<Float64SampledTimeSignal> NormWienerFilter(this XGaVector<Float64SampledTimeSignal> vectorSamples, int order)
     {
         var norm1 = vectorSamples.Norm();
         var norm2 = norm1.ScalarValue.WienerFilter(order);
@@ -993,14 +993,14 @@ public static class Float64VectorSignalUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static double SignalToNoiseRatioDb(this XGaVector<Float64Signal> vectorSignal, XGaVector<Float64Signal> noiseSignal)
+    public static double SignalToNoiseRatioDb(this XGaVector<Float64SampledTimeSignal> vectorSignal, XGaVector<Float64SampledTimeSignal> noiseSignal)
     {
         return (vectorSignal.NormSquared().ScalarValue.Average() /
                 noiseSignal.NormSquared().ScalarValue.Average()).Log10() * 10d;
     }
 
         
-    public static Pair<XGaFloat64Vector> Pca2(this XGaVector<Float64Signal> vectorSignal)
+    public static Pair<XGaFloat64Vector> Pca2(this XGaVector<Float64SampledTimeSignal> vectorSignal)
     {
         var vSpaceDimensions = vectorSignal.VSpaceDimensions;
         var colCount = vSpaceDimensions;
@@ -1041,7 +1041,7 @@ public static class Float64VectorSignalUtils
 
 
 
-    public static XGaVector<Float64Signal> GetSmoothedNormSignal(this XGaVector<Float64Signal> vectorSignal, int interpolationSampleCount = 128, int polynomialOrder = 7)
+    public static XGaVector<Float64SampledTimeSignal> GetSmoothedNormSignal(this XGaVector<Float64SampledTimeSignal> vectorSignal, int interpolationSampleCount = 128, int polynomialOrder = 7)
     {
         var vDataNorm1 =
             vectorSignal.Norm();
@@ -1059,7 +1059,7 @@ public static class Float64VectorSignalUtils
         return vectorSignal * (vDataNorm2 / vDataNorm1);
     }
 
-    public static XGaVector<Float64Signal> GetSmoothedSignal(this XGaVector<Float64Signal> vectorSignal, int interpolationSampleCount = 128, int polynomialOrder = 7)
+    public static XGaVector<Float64SampledTimeSignal> GetSmoothedSignal(this XGaVector<Float64SampledTimeSignal> vectorSignal, int interpolationSampleCount = 128, int polynomialOrder = 7)
     {
         var vectorInterpolator =
             vectorSignal.CreatePolynomialInterpolator(vectorSignal.GetSamplingRate());
@@ -1070,7 +1070,7 @@ public static class Float64VectorSignalUtils
         return vectorInterpolator.GetVectors();
     }
 
-    public static void PlotSignal(this XGaVector<Float64Signal> vectorSignal1, XGaVector<Float64Signal> vectorSignal2, double tMin, double tMax, string plotFileName)
+    public static void PlotSignal(this XGaVector<Float64SampledTimeSignal> vectorSignal1, XGaVector<Float64SampledTimeSignal> vectorSignal2, double tMin, double tMax, string plotFileName)
     {
         var vSpaceDimensions = vectorSignal1.VSpaceDimensions;
         var samplingSpecs = vectorSignal1.GetSamplingSpecs();
@@ -1122,7 +1122,7 @@ public static class Float64VectorSignalUtils
         }
     }
 
-    public static void PlotVectorSignalComponents(this XGaVector<Float64Signal> vectorSignal, string title, string filePath)
+    public static void PlotVectorSignalComponents(this XGaVector<Float64SampledTimeSignal> vectorSignal, string title, string filePath)
     {
         var samplingRate = vectorSignal.GetSamplingRate();
         var sampleCount = vectorSignal.GetSampleCount();
@@ -1155,7 +1155,7 @@ public static class Float64VectorSignalUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static double Energy(this RGaVector<Float64Signal> vectorSignal)
+    public static double Energy(this RGaVector<Float64SampledTimeSignal> vectorSignal)
     {
         return vectorSignal
             .Scalars
@@ -1164,7 +1164,7 @@ public static class Float64VectorSignalUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static double Energy(this XGaVector<Float64Signal> vectorSignal)
+    public static double Energy(this XGaVector<Float64SampledTimeSignal> vectorSignal)
     {
         return vectorSignal
             .Scalars
@@ -1173,7 +1173,7 @@ public static class Float64VectorSignalUtils
     }
         
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static double EnergyDc(this RGaVector<Float64Signal> vectorSignal)
+    public static double EnergyDc(this RGaVector<Float64SampledTimeSignal> vectorSignal)
     {
         return vectorSignal
             .Scalars
@@ -1182,7 +1182,7 @@ public static class Float64VectorSignalUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static double EnergyDc(this XGaVector<Float64Signal> vectorSignal)
+    public static double EnergyDc(this XGaVector<Float64SampledTimeSignal> vectorSignal)
     {
         return vectorSignal
             .Scalars
@@ -1191,7 +1191,7 @@ public static class Float64VectorSignalUtils
     }
         
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static double EnergyAc(this RGaVector<Float64Signal> vectorSignal)
+    public static double EnergyAc(this RGaVector<Float64SampledTimeSignal> vectorSignal)
     {
         return vectorSignal
             .Scalars
@@ -1200,7 +1200,7 @@ public static class Float64VectorSignalUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static double EnergyAc(this XGaVector<Float64Signal> vectorSignal)
+    public static double EnergyAc(this XGaVector<Float64SampledTimeSignal> vectorSignal)
     {
         return vectorSignal
             .Scalars
@@ -1209,7 +1209,7 @@ public static class Float64VectorSignalUtils
     }
         
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static double SumOfSquares(this RGaVector<Float64Signal> vectorSignal)
+    public static double SumOfSquares(this RGaVector<Float64SampledTimeSignal> vectorSignal)
     {
         return vectorSignal
             .Scalars
@@ -1218,7 +1218,7 @@ public static class Float64VectorSignalUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static double SumOfSquares(this XGaVector<Float64Signal> vectorSignal)
+    public static double SumOfSquares(this XGaVector<Float64SampledTimeSignal> vectorSignal)
     {
         return vectorSignal
             .Scalars
@@ -1227,20 +1227,20 @@ public static class Float64VectorSignalUtils
     }
         
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static double SignalToNoiseRatio(this RGaVector<Float64Signal> vectorSignal, RGaVector<Float64Signal> noiseSignal)
+    public static double SignalToNoiseRatio(this RGaVector<Float64SampledTimeSignal> vectorSignal, RGaVector<Float64SampledTimeSignal> noiseSignal)
     {
         return vectorSignal.SumOfSquares() / noiseSignal.SumOfSquares();
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static double SignalToNoiseRatio(this XGaVector<Float64Signal> vectorSignal, XGaVector<Float64Signal> noiseSignal)
+    public static double SignalToNoiseRatio(this XGaVector<Float64SampledTimeSignal> vectorSignal, XGaVector<Float64SampledTimeSignal> noiseSignal)
     {
         return vectorSignal.SumOfSquares() / noiseSignal.SumOfSquares();
     }
 
         
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static RGaVector<Float64Signal> GetPeriodicPaddedSignal(this RGaVector<Float64Signal> vectorSignal, int trendSampleCount, int paddingSampleCount = -1, bool useCatmullRomInterpolator = true)
+    public static RGaVector<Float64SampledTimeSignal> GetPeriodicPaddedSignal(this RGaVector<Float64SampledTimeSignal> vectorSignal, int trendSampleCount, int paddingSampleCount = -1, bool useCatmullRomInterpolator = true)
     {
         return vectorSignal
             .MapScalars(s =>
@@ -1253,7 +1253,7 @@ public static class Float64VectorSignalUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static XGaVector<Float64Signal> GetPeriodicPaddedSignal(this XGaVector<Float64Signal> vectorSignal, int trendSampleCount, int paddingSampleCount = -1, bool useCatmullRomInterpolator = true)
+    public static XGaVector<Float64SampledTimeSignal> GetPeriodicPaddedSignal(this XGaVector<Float64SampledTimeSignal> vectorSignal, int trendSampleCount, int paddingSampleCount = -1, bool useCatmullRomInterpolator = true)
     {
         return vectorSignal
             .MapScalars(s =>
@@ -1266,16 +1266,16 @@ public static class Float64VectorSignalUtils
     }
 
         
-    public static IReadOnlyList<ComplexSignalSpectrum> GetFourierSpectrum(this RGaVector<Float64Signal> vectorSignal)
+    public static IReadOnlyList<Float64ComplexSignalSpectrum> GetFourierSpectrum(this RGaVector<Float64SampledTimeSignal> vectorSignal)
     {
         var sampleCount = vectorSignal.GetSampleCount();
         var samplingRate = vectorSignal.GetSamplingRate();
         var vSpaceDimensions = vectorSignal.VSpaceDimensions;
-        var spectrumArray = new ComplexSignalSpectrum[vSpaceDimensions];
+        var spectrumArray = new Float64ComplexSignalSpectrum[vSpaceDimensions];
         var samplingSpecs = Float64SamplingSpecs.CreateFromSamplingRate(sampleCount, samplingRate);
 
         for (var i = 0; i < vSpaceDimensions; i++)
-            spectrumArray[i] = new ComplexSignalSpectrum(samplingSpecs);
+            spectrumArray[i] = new Float64ComplexSignalSpectrum(samplingSpecs);
 
         foreach (var (index, scalarSignal) in vectorSignal.IndexScalarPairs)
             spectrumArray[index] = scalarSignal.GetFourierSpectrum();
@@ -1283,16 +1283,16 @@ public static class Float64VectorSignalUtils
         return spectrumArray;
     }
 
-    public static IReadOnlyList<ComplexSignalSpectrum> GetFourierSpectrum(this XGaVector<Float64Signal> vectorSignal)
+    public static IReadOnlyList<Float64ComplexSignalSpectrum> GetFourierSpectrum(this XGaVector<Float64SampledTimeSignal> vectorSignal)
     {
         var sampleCount = vectorSignal.GetSampleCount();
         var samplingRate = vectorSignal.GetSamplingRate();
         var vSpaceDimensions = vectorSignal.VSpaceDimensions;
-        var spectrumArray = new ComplexSignalSpectrum[vSpaceDimensions];
+        var spectrumArray = new Float64ComplexSignalSpectrum[vSpaceDimensions];
         var samplingSpecs = Float64SamplingSpecs.CreateFromSamplingRate(sampleCount, samplingRate);
 
         for (var i = 0; i < vSpaceDimensions; i++)
-            spectrumArray[i] = new ComplexSignalSpectrum(samplingSpecs);
+            spectrumArray[i] = new Float64ComplexSignalSpectrum(samplingSpecs);
 
         foreach (var (index, scalarSignal) in vectorSignal.IndexScalarPairs)
             spectrumArray[index] = scalarSignal.GetFourierSpectrum();
@@ -1301,7 +1301,7 @@ public static class Float64VectorSignalUtils
     }
 
         
-    public static Float64SignalSpectrum GetEnergySpectrum(this RGaVector<Float64Signal> vectorSignal)
+    public static Float64SignalSpectrum GetEnergySpectrum(this RGaVector<Float64SampledTimeSignal> vectorSignal)
     {
         var energySpectrum = vectorSignal
             .Norm().ScalarValue
@@ -1317,7 +1317,7 @@ public static class Float64VectorSignalUtils
         return energySpectrum;
     }
 
-    public static Float64SignalSpectrum GetEnergySpectrum(this XGaVector<Float64Signal> vectorSignal)
+    public static Float64SignalSpectrum GetEnergySpectrum(this XGaVector<Float64SampledTimeSignal> vectorSignal)
     {
         var energySpectrum = vectorSignal
             .Norm().ScalarValue
@@ -1333,7 +1333,7 @@ public static class Float64VectorSignalUtils
         return energySpectrum;
     }
         
-    public static IReadOnlyList<ComplexSignalSpectrum> GetFourierSpectrum(this RGaVector<Float64Signal> vectorSignal, DfFourierSignalInterpolatorOptions spectrumThresholdSpecs)
+    public static IReadOnlyList<Float64ComplexSignalSpectrum> GetFourierSpectrum(this RGaVector<Float64SampledTimeSignal> vectorSignal, DfFourierSignalInterpolatorOptions spectrumThresholdSpecs)
     {
         if (spectrumThresholdSpecs.EnergyAcPercentThreshold is <= 0 or > 1d)
             throw new ArgumentOutOfRangeException();
@@ -1359,12 +1359,12 @@ public static class Float64VectorSignalUtils
 
         // Define time axis values
         var tValues =
-            samplingSpecs.GetSampledTimeSignal();
+            samplingSpecs.GetSampleTimeSignal();
 
         // Add DC components to final vector spectrum
         var vectorSpectrum =
             vectorSpectrumFull.Select(s =>
-                new ComplexSignalSpectrum(samplingSpecs) { s.SamplesDc }
+                new Float64ComplexSignalSpectrum(samplingSpecs) { s.SamplesDc }
             ).ToImmutableArray();
 
         // Test total AC energy threshold
@@ -1488,7 +1488,7 @@ public static class Float64VectorSignalUtils
         return vectorSpectrum;
     }
 
-    public static IReadOnlyList<ComplexSignalSpectrum> GetFourierSpectrum(this XGaVector<Float64Signal> vectorSignal, DfFourierSignalInterpolatorOptions spectrumThresholdSpecs)
+    public static IReadOnlyList<Float64ComplexSignalSpectrum> GetFourierSpectrum(this XGaVector<Float64SampledTimeSignal> vectorSignal, DfFourierSignalInterpolatorOptions spectrumThresholdSpecs)
     {
         if (spectrumThresholdSpecs.EnergyAcPercentThreshold is <= 0 or > 1d)
             throw new ArgumentOutOfRangeException();
@@ -1514,12 +1514,12 @@ public static class Float64VectorSignalUtils
 
         // Define time axis values
         var tValues =
-            samplingSpecs.GetSampledTimeSignal();
+            samplingSpecs.GetSampleTimeSignal();
 
         // Add DC components to final vector spectrum
         var vectorSpectrum =
             vectorSpectrumFull.Select(s =>
-                new ComplexSignalSpectrum(samplingSpecs) { s.SamplesDc }
+                new Float64ComplexSignalSpectrum(samplingSpecs) { s.SamplesDc }
             ).ToImmutableArray();
 
         // Test total AC energy threshold
@@ -1644,14 +1644,14 @@ public static class Float64VectorSignalUtils
     }
 
         
-    public static string GetTextDescription(this IReadOnlyList<ComplexSignalSpectrum> vectorSpectrum, RGaVector<Float64Signal> vectorSignal1)
+    public static string GetTextDescription(this IReadOnlyList<Float64ComplexSignalSpectrum> vectorSpectrum, RGaVector<Float64SampledTimeSignal> vectorSignal1)
     {
         var composer = new LinearTextComposer();
 
         var geometricProcessor = vectorSignal1.Processor;
             
         var samplingSpecs = vectorSignal1.GetSamplingSpecs();
-        var tValues = samplingSpecs.GetSampledTimeSignal();
+        var tValues = samplingSpecs.GetSampleTimeSignal();
 
         //for (var i = 0; i < vSpaceDimensions; i++)
         //{
@@ -1736,14 +1736,14 @@ public static class Float64VectorSignalUtils
         return composer.ToString();
     }
 
-    public static string GetTextDescription(this IReadOnlyList<ComplexSignalSpectrum> vectorSpectrum, XGaVector<Float64Signal> vectorSignal1)
+    public static string GetTextDescription(this IReadOnlyList<Float64ComplexSignalSpectrum> vectorSpectrum, XGaVector<Float64SampledTimeSignal> vectorSignal1)
     {
         var composer = new LinearTextComposer();
 
         var geometricProcessor = vectorSignal1.Processor;
             
         var samplingSpecs = vectorSignal1.GetSamplingSpecs();
-        var tValues = samplingSpecs.GetSampledTimeSignal();
+        var tValues = samplingSpecs.GetSampleTimeSignal();
 
         //for (var i = 0; i < vSpaceDimensions; i++)
         //{
@@ -1828,22 +1828,22 @@ public static class Float64VectorSignalUtils
         return composer.ToString();
     }
     
-    public static void PlotSignal(this Scalar<Float64Signal> scalarSignal1, Scalar<Float64Signal> scalarSignal2, double tMin, double tMax, string plotFileName)
+    public static void PlotSignal(this Scalar<Float64SampledTimeSignal> scalarSignal1, Scalar<Float64SampledTimeSignal> scalarSignal2, double tMin, double tMax, string plotFileName)
     {
         scalarSignal1.ScalarValue.PlotSignal(scalarSignal2.ScalarValue, tMin, tMax, plotFileName);
     }
     
-    public static void PlotSignal(this IScalar<Float64Signal> scalarSignal1, Scalar<Float64Signal> scalarSignal2, double tMin, double tMax, string plotFileName)
+    public static void PlotSignal(this IScalar<Float64SampledTimeSignal> scalarSignal1, Scalar<Float64SampledTimeSignal> scalarSignal2, double tMin, double tMax, string plotFileName)
     {
         scalarSignal1.ScalarValue.PlotSignal(scalarSignal2.ScalarValue, tMin, tMax, plotFileName);
     }
 
-    public static void PlotScalarSignal(this Scalar<Float64Signal> scalarSignal, string title, string filePath)
+    public static void PlotScalarSignal(this Scalar<Float64SampledTimeSignal> scalarSignal, string title, string filePath)
     {
         scalarSignal.ScalarValue.PlotScalarSignal(title, filePath);
     }
     
-    public static void PlotScalarSignal(this IScalar<Float64Signal> scalarSignal, string title, string filePath)
+    public static void PlotScalarSignal(this IScalar<Float64SampledTimeSignal> scalarSignal, string title, string filePath)
     {
         scalarSignal.ScalarValue.PlotScalarSignal(title, filePath);
     }

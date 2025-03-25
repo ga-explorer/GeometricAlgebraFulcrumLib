@@ -17,7 +17,6 @@ using Newtonsoft.Json.Linq;
 using OfficeOpenXml;
 using OxyPlot;
 using OxyPlot.Series;
-using Float64SignalComposerUtils = GeometricAlgebraFulcrumLib.Modeling.Signals.Float64SignalComposerUtils;
 
 namespace GeometricAlgebraFulcrumLib.Applications.PowerSystems.SystemIdentification;
 
@@ -61,7 +60,7 @@ public static class RlCircuitPaperSample
 
     // Create a 3-dimensional Euclidean geometric algebra processor based on the
     // selected tuple scalar processor
-    public static RGaProcessor<Float64Signal> GeometricSignalProcessor { get; }
+    public static RGaProcessor<Float64SampledTimeSignal> GeometricSignalProcessor { get; }
         = ScalarSignalProcessor.CreateEuclideanRGaProcessor();
 
     private static string CombineWorkingPath(this string fileName)
@@ -84,7 +83,7 @@ public static class RlCircuitPaperSample
         return (1 - t) * v1 + t * v2;
     }
 
-    private static void PlotCurve(this Scalar<Float64Signal> curve, string title, string filePath)
+    private static void PlotCurve(this Scalar<Float64SampledTimeSignal> curve, string title, string filePath)
     {
         curve.ScalarValue.PlotCurve(title, filePath);
     }
@@ -162,7 +161,7 @@ public static class RlCircuitPaperSample
     }
 
 
-    private static Quint<Scalar<Float64Signal>> GetCurveWithDt4(this RGaVector<Float64Signal> signalSamples, IEnumerable<double> tData, RGaVectorNevilleInterpolator interpolator)
+    private static Quint<Scalar<Float64SampledTimeSignal>> GetCurveWithDt4(this RGaVector<Float64SampledTimeSignal> signalSamples, IEnumerable<double> tData, RGaVectorNevilleInterpolator interpolator)
     {
         var u = 
             tData.Select(t => 
@@ -193,10 +192,10 @@ public static class RlCircuitPaperSample
         //var sDt3 = uDt3.WienerFilter1D(SignalSamplesCount, 5)[0];
         //var sDt4 = uDt4.WienerFilter1D(SignalSamplesCount, 5)[0];
 
-        return new Quint<Scalar<Float64Signal>>(s, sDt1, sDt2, sDt3, sDt4);
+        return new Quint<Scalar<Float64SampledTimeSignal>>(s, sDt1, sDt2, sDt3, sDt4);
     }
 
-    private static Triplet<Scalar<Float64Signal>> GetCurveWithDt2(this IReadOnlyList<double> tData, PolynomialFunction<double> interpolator)
+    private static Triplet<Scalar<Float64SampledTimeSignal>> GetCurveWithDt2(this IReadOnlyList<double> tData, PolynomialFunction<double> interpolator)
     {
         var u =
             interpolator.GetValues(tData).CreateSignal(SamplingRate).ScalarFromValue(ScalarSignalProcessor);
@@ -209,10 +208,10 @@ public static class RlCircuitPaperSample
         var uDt2 =
             i2.GetValues(tData).CreateSignal(SamplingRate).ScalarFromValue(ScalarSignalProcessor);
 
-        return new Triplet<Scalar<Float64Signal>>(u, uDt1, uDt2);
+        return new Triplet<Scalar<Float64SampledTimeSignal>>(u, uDt1, uDt2);
     }
 
-    private static Quad<Scalar<Float64Signal>> GetCurveWithDt3(this IReadOnlyList<double> tData, PolynomialFunction<double> interpolator)
+    private static Quad<Scalar<Float64SampledTimeSignal>> GetCurveWithDt3(this IReadOnlyList<double> tData, PolynomialFunction<double> interpolator)
     {
         var u =
             interpolator.GetValues(tData).CreateSignal(SamplingRate).ScalarFromValue(ScalarSignalProcessor);
@@ -229,10 +228,10 @@ public static class RlCircuitPaperSample
         var uDt3 =
             i3.GetValues(tData).CreateSignal(SamplingRate).ScalarFromValue(ScalarSignalProcessor);
 
-        return new Quad<Scalar<Float64Signal>>(u, uDt1, uDt2, uDt3);
+        return new Quad<Scalar<Float64SampledTimeSignal>>(u, uDt1, uDt2, uDt3);
     }
 
-    private static Quint<Scalar<Float64Signal>> GetCurveWithDt4(this IReadOnlyList<double> tData, PolynomialFunction<double> interpolator)
+    private static Quint<Scalar<Float64SampledTimeSignal>> GetCurveWithDt4(this IReadOnlyList<double> tData, PolynomialFunction<double> interpolator)
     {
         var u =
             interpolator.GetValues(tData).CreateSignal(SamplingRate).ScalarFromValue(ScalarSignalProcessor);
@@ -253,7 +252,7 @@ public static class RlCircuitPaperSample
         var uDt4 =
             i4.GetValues(tData).CreateSignal(SamplingRate).ScalarFromValue(ScalarSignalProcessor);
 
-        return new Quint<Scalar<Float64Signal>>(u, uDt1, uDt2, uDt3, uDt4);
+        return new Quint<Scalar<Float64SampledTimeSignal>>(u, uDt1, uDt2, uDt3, uDt4);
     }
 
     //public static void Example1()
@@ -534,7 +533,7 @@ public static class RlCircuitPaperSample
             EnergyAcThreshold = 10d,
             EnergyAcPercentThreshold = 1d,
             SignalToNoiseRatioThreshold = 600000d,
-            FrequencyThreshold = double.PositiveInfinity,//400 * 2 * Math.PI,
+            FrequencyThreshold = double.PositiveInfinity,//400 * Math.Tau,
             FrequencyCountThreshold = 5000,
             PaddingTrendSampleCount = 50,
             PaddingPolynomialDegree = 6
@@ -932,7 +931,7 @@ public static class RlCircuitPaperSample
         //    EnergyAcThreshold = 10d,
         //    EnergyAcPercentThreshold = 1d,
         //    SignalToNoiseRatioThreshold = 600000d,
-        //    FrequencyThreshold = double.PositiveInfinity,//400 * 2 * Math.PI,
+        //    FrequencyThreshold = double.PositiveInfinity,//400 * Math.Tau,
         //    FrequencyCountThreshold = 5000,
         //    PaddingPolynomialSampleCount = 50,
         //    PaddingPolynomialDegree = 6
@@ -1210,7 +1209,7 @@ public static class RlCircuitPaperSample
             EnergyAcThreshold = 10d,
             EnergyAcPercentThreshold = 0.99995d,
             SignalToNoiseRatioThreshold = 100000d,
-            FrequencyThreshold = double.PositiveInfinity, //200 * 2 * Math.PI,
+            FrequencyThreshold = double.PositiveInfinity, //200 * Math.Tau,
             FrequencyCountThreshold = 500,
             PaddingTrendSampleCount = 50,
             PaddingPolynomialDegree = 6

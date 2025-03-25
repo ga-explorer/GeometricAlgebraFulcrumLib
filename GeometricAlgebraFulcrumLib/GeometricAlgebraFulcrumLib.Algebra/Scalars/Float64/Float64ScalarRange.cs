@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Basic;
+// ReSharper disable CompareOfFloatsByEqualityOperator
 
 namespace GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
 
@@ -27,9 +28,6 @@ public readonly struct Float64ScalarRange :
             0d
         );
     
-    public static Float64ScalarRange MinusOneToOne { get; }
-        = new Float64ScalarRange(-1d, 1d);
-
     public static Float64ScalarRange ZeroToOne { get; }
         = new Float64ScalarRange(0d, 1d);
 
@@ -37,17 +35,34 @@ public readonly struct Float64ScalarRange :
         = new Float64ScalarRange(0d, Math.PI);
 
     public static Float64ScalarRange ZeroToTwoPi { get; }
-        = new Float64ScalarRange(0d, 2d * Math.PI);
+        = new Float64ScalarRange(0d, Math.Tau);
 
     public static Float64ScalarRange NegativeOneToZero { get; }
         = new Float64ScalarRange(-1d, 0d);
 
-    public static Float64ScalarRange NegativeOneToOne { get; }
-        = new Float64ScalarRange(-1d, 1d);
+    public static Float64ScalarRange SymmetricOne { get; }
+        = new Float64ScalarRange(-1, 1);
+    
+    public static Float64ScalarRange SymmetricHalfPi { get; }
+        = new Float64ScalarRange(-Math.PI / 2, Math.PI / 2);
+
+    public static Float64ScalarRange SymmetricPi { get; }
+        = new Float64ScalarRange(-Math.PI, Math.PI);
+    
+    public static Float64ScalarRange SymmetricTwoPi { get; }
+        = new Float64ScalarRange(-Math.Tau, Math.Tau);
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Float64ScalarRange CreateAround(Float64Scalar center, Float64Scalar delta)
+    public static Float64ScalarRange CreateAroundZero(double delta)
+    {
+        return delta >= 0
+            ? new Float64ScalarRange(-delta, delta)
+            : new Float64ScalarRange(delta, -delta);
+    }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static Float64ScalarRange CreateAround(double center, double delta)
     {
         return delta >= 0
             ? new Float64ScalarRange(center - delta, center + delta)
@@ -55,7 +70,7 @@ public readonly struct Float64ScalarRange :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Float64ScalarRange Create(Float64Scalar value)
+    public static Float64ScalarRange Create(double value)
     {
         return value > 0d
             ? new Float64ScalarRange(Float64Scalar.Zero, value)
@@ -77,14 +92,6 @@ public readonly struct Float64ScalarRange :
             ? new Float64ScalarRange(value1, value2)
             : new Float64ScalarRange(value2, value1);
     }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Float64ScalarRange Create(Float64Scalar value1, Float64Scalar value2)
-    {
-        return value1 <= value2
-            ? new Float64ScalarRange(value1, value2)
-            : new Float64ScalarRange(value2, value1);
-    }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Float64ScalarRange Create(IPair<Float64Scalar> range)
@@ -98,7 +105,7 @@ public readonly struct Float64ScalarRange :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Float64ScalarRange Create(Float64Scalar value1, Float64Scalar value2, Float64Scalar value3)
+    public static Float64ScalarRange Create(double value1, double value2, double value3)
     {
         var minValue = value1;
         var maxValue = value1;
@@ -112,7 +119,7 @@ public readonly struct Float64ScalarRange :
         return new Float64ScalarRange(minValue, maxValue);
     }
 
-    public static Float64ScalarRange Create(params Float64Scalar[] valuesList)
+    public static Float64ScalarRange Create(params double[] valuesList)
     {
         var minValue = 0.0d;
         var maxValue = 0.0d;
@@ -159,7 +166,7 @@ public readonly struct Float64ScalarRange :
 
         return new Float64ScalarRange(minValue, maxValue);
     }
-
+    
     public static Float64ScalarRange Create(IEnumerable<Float64Scalar> valuesList)
     {
         var minValue = 0.0d;
@@ -363,21 +370,37 @@ public readonly struct Float64ScalarRange :
     }
 
 
-    public Float64Scalar MinValue { get; }
+    public double MinValue { get; }
 
-    public Float64Scalar MaxValue { get; }
+    public double MaxValue { get; }
 
-    public Float64Scalar MidValue
-        => 0.5 * (MinValue + MaxValue);
+    public double MidValue
+    {
+        get
+        {
+            if (MinValue.IsFinite() && MaxValue.IsFinite())
+                return 0.5 * (MinValue + MaxValue);
 
-    public Float64Scalar Length
-        => MaxValue - MinValue;
+            if (MinValue.IsInfinite() && MaxValue.IsInfinite())
+                return 0d;
+
+            if (MinValue.IsFinite())
+                return double.PositiveInfinity;
+
+            return double.NegativeInfinity;
+        }
+    }
+
+    public double Length
+        => MinValue.IsFinite() && MaxValue.IsFinite() 
+            ? MaxValue - MinValue 
+            : double.PositiveInfinity;
 
     public Float64Scalar Item1
-        => MinValue.ScalarValue;
+        => MinValue;
 
     public Float64Scalar Item2
-        => MaxValue.ScalarValue;
+        => MaxValue;
 
     public bool IsZeroLength 
         => MinValue == MaxValue;
@@ -392,7 +415,7 @@ public readonly struct Float64ScalarRange :
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    private Float64ScalarRange(Float64Scalar minValue, Float64Scalar maxValue)
+    private Float64ScalarRange(double minValue, double maxValue)
     {
         MinValue = minValue;
         MaxValue = maxValue;
@@ -404,27 +427,54 @@ public readonly struct Float64ScalarRange :
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public bool IsValid()
     {
+        if (MinValue.IsInfinite() && MaxValue.IsInfinite() && MinValue == MaxValue)
+            return false;
+
         return MinValue.IsValid() &&
                MaxValue.IsValid() &&
                MinValue <= MaxValue;
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public void Deconstruct(out Float64Scalar minValue, out Float64Scalar maxValue)
+    public void Deconstruct(out double minValue, out double maxValue)
     {
         minValue = MinValue;
         maxValue = MaxValue;
     }
 
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public Float64ScalarRange OuterBoundsUnion(Float64ScalarRange range2)
+    {
+        return CreateFromOuterBounds(this, range2);
+    }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public Float64ScalarRange OuterBoundsUnion(Float64ScalarRange range2, Float64ScalarRange range3)
+    {
+        return CreateFromOuterBounds(
+            CreateFromOuterBounds(this, range2), 
+            range3
+        );
+    }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public Float64ScalarRange Intersect(Float64ScalarRange range2)
     {
         return CreateFromIntersection(this, range2);
     }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public Float64ScalarRange Intersect(Float64ScalarRange range2, Float64ScalarRange range3)
+    {
+        return CreateFromIntersection(
+            CreateFromIntersection(this, range2), 
+            range3
+        );
+    }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public Float64Scalar AffineMapToZeroOneRange(Float64Scalar value)
+    public Float64Scalar AffineMapToZeroOneRange(double value)
     {
         if (!IsFinite)
             throw new InvalidOperationException();
@@ -433,13 +483,13 @@ public readonly struct Float64ScalarRange :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public Float64Scalar AffineMapToRange(Float64Scalar value, Float64Scalar value1, Float64Scalar value2)
+    public double AffineMapToRange(double value, double value1, double value2)
     {
         return AffineMapToZeroOneRange(value) * (value2 - value1) + value1;
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public Float64Scalar AffineMapToRange(Float64Scalar value, IPair<Float64Scalar> valuePair, bool reverseLimits = false)
+    public double AffineMapToRange(double value, IPair<Float64Scalar> valuePair, bool reverseLimits = false)
     {
         return reverseLimits
             ? AffineMapToZeroOneRange(value) * (valuePair.Item1 - valuePair.Item2) + valuePair.Item2
@@ -447,7 +497,7 @@ public readonly struct Float64ScalarRange :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public Float64Scalar AffineMapToRange(Float64Scalar value, Float64ScalarRange range, bool reverseLimits = false)
+    public double AffineMapToRange(double value, Float64ScalarRange range, bool reverseLimits = false)
     {
         if (!range.IsFinite)
             throw new InvalidOperationException();
@@ -464,13 +514,13 @@ public readonly struct Float64ScalarRange :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public Float64ScalarRange Plus(Float64Scalar value)
+    public Float64ScalarRange Plus(double value)
     {
         return new Float64ScalarRange(MinValue + value, MaxValue + value);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public Float64ScalarRange Times(Float64Scalar value)
+    public Float64ScalarRange Times(double value)
     {
         return value > 0
             ? new Float64ScalarRange(MinValue * value, MaxValue * value)
@@ -478,7 +528,7 @@ public readonly struct Float64ScalarRange :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public Float64ScalarRange Divide(Float64Scalar value)
+    public Float64ScalarRange Divide(double value)
     {
         return value > 0
             ? new Float64ScalarRange(MinValue / value, MaxValue / value)
@@ -486,19 +536,19 @@ public readonly struct Float64ScalarRange :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public Float64ScalarRange ResetMinValue(Float64Scalar minValue)
+    public Float64ScalarRange ResetMinValue(double minValue)
     {
         return Create(minValue, MaxValue);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public Float64ScalarRange ResetMaxValue(Float64Scalar maxValue)
+    public Float64ScalarRange ResetMaxValue(double maxValue)
     {
         return Create(MinValue, maxValue);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public Float64ScalarRange ExpandBy(Float64Scalar delta)
+    public Float64ScalarRange ExpandBy(double delta)
     {
         return Create(
             MinValue - delta,
@@ -507,7 +557,7 @@ public readonly struct Float64ScalarRange :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public Float64ScalarRange ExpandByFactor(Float64Scalar deltaPercent)
+    public Float64ScalarRange ExpandByFactor(double deltaPercent)
     {
         var delta = deltaPercent * (MaxValue - MinValue);
 
@@ -518,7 +568,7 @@ public readonly struct Float64ScalarRange :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public Float64ScalarRange ExpandToInclude(Float64Scalar value)
+    public Float64ScalarRange ExpandToInclude(double value)
     {
         if (value < MinValue)
             return new Float64ScalarRange(value, MaxValue);
@@ -530,7 +580,7 @@ public readonly struct Float64ScalarRange :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public Float64ScalarRange ExpandToInclude(Float64Scalar value1, Float64Scalar value2)
+    public Float64ScalarRange ExpandToInclude(double value1, double value2)
     {
         var minValue = MinValue;
         var maxValue = MaxValue;
@@ -550,7 +600,7 @@ public readonly struct Float64ScalarRange :
         return new Float64ScalarRange(minValue, maxValue);
     }
 
-    public Float64ScalarRange ExpandToInclude(params Float64Scalar[] valuesList)
+    public Float64ScalarRange ExpandToInclude(params double[] valuesList)
     {
         var minValue = MinValue;
         var maxValue = MaxValue;
@@ -567,7 +617,7 @@ public readonly struct Float64ScalarRange :
         return new Float64ScalarRange(minValue, maxValue);
     }
 
-    public Float64ScalarRange ExpandToInclude(IEnumerable<Float64Scalar> valuesList)
+    public Float64ScalarRange ExpandToInclude(IEnumerable<double> valuesList)
     {
         var minValue = MinValue;
         var maxValue = MaxValue;
@@ -641,37 +691,37 @@ public readonly struct Float64ScalarRange :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public Float64Scalar GetOffsetFromMin(Float64Scalar value)
+    public double GetOffsetFromMin(double value)
     {
         return value - MinValue;
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public Float64Scalar GetOffsetToMin(Float64Scalar value)
+    public double GetOffsetToMin(double value)
     {
         return MinValue - value;
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public Float64Scalar GetOffsetFromMax(Float64Scalar value)
+    public double GetOffsetFromMax(double value)
     {
         return value - MaxValue;
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public Float64Scalar GetOffsetToMax(Float64Scalar value)
+    public double GetOffsetToMax(double value)
     {
         return MaxValue - value;
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public Float64Scalar GetRelativeOffset(Float64Scalar value)
+    public double GetRelativeOffset(double value)
     {
         return (value - MinValue) / (MaxValue - MinValue);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public IEnumerable<Float64Scalar> GetLinearSamples(int count, bool assumePeriodic)
+    public IEnumerable<double> GetLinearSamples(int count, bool assumePeriodic)
     {
         if (assumePeriodic && count < 1 || !assumePeriodic && count < 2)
             throw new ArgumentOutOfRangeException(nameof(count));
@@ -680,7 +730,7 @@ public readonly struct Float64ScalarRange :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public IEnumerable<Float64Scalar> GetLinearPeriodicSamples(int count)
+    public IEnumerable<double> GetLinearPeriodicSamples(int count)
     {
         if (count < 1)
             throw new ArgumentOutOfRangeException(nameof(count));
@@ -724,52 +774,33 @@ public readonly struct Float64ScalarRange :
         return value >= MinValue - zeroEpsilon &&
                value <= MaxValue + zeroEpsilon;
     }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool Contains(Float64Scalar value, double zeroEpsilon = Float64Utils.ZeroEpsilon)
-    {
-        Debug.Assert(zeroEpsilon >= 0);
-
-        return value >= MinValue - zeroEpsilon &&
-               value <= MaxValue + zeroEpsilon;
-    }
     
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public double Clamp(double value, bool isPeriodic)
+    {
+        return isPeriodic
+            ? value.ClampPeriodic(MinValue, MaxValue)
+            : value.Clamp(MinValue, MaxValue);
+    }
+
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public double Clamp(double value, double zeroEpsilon = 0)
     {
         return value.Clamp(
-            MinValue.ScalarValue - zeroEpsilon, 
-            MaxValue.ScalarValue + zeroEpsilon
+            MinValue - zeroEpsilon, 
+            MaxValue + zeroEpsilon
         );
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public Float64Scalar Clamp(Float64Scalar value, double zeroEpsilon = 0)
-    {
-        return value.Clamp(
-            MinValue.ScalarValue - zeroEpsilon, 
-            MaxValue.ScalarValue + zeroEpsilon
-        );
-    }
-    
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public double ClampPeriodic(double value)
-    {
-        return value.ClampPeriodic(
-            MinValue.ScalarValue, 
-            MaxValue.ScalarValue
-        );
-    }
-    
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public Float64Scalar ClampPeriodic(Float64Scalar value)
     {
         if (!IsFinite)
             throw new InvalidOperationException();
 
         return value.ClampPeriodic(
-            MinValue.ScalarValue, 
-            MaxValue.ScalarValue
+            MinValue, 
+            MaxValue
         );
     }
 
@@ -783,7 +814,7 @@ public readonly struct Float64ScalarRange :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool ContainsUpperExclusive(Float64Scalar value, double zeroEpsilon = Float64Utils.ZeroEpsilon)
+    public bool ContainsUpperExclusive(double value, double zeroEpsilon = Float64Utils.ZeroEpsilon)
     {
         Debug.Assert(zeroEpsilon >= 0);
 
@@ -806,6 +837,13 @@ public readonly struct Float64ScalarRange :
     {
         return MinValue.Equals(other.MinValue) &&
                MaxValue.Equals(other.MaxValue);
+    }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public bool Equals(double minValue, double maxValue)
+    {
+        return MinValue.Equals(minValue) &&
+               MaxValue.Equals(maxValue);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]

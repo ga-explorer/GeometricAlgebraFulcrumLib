@@ -1980,20 +1980,19 @@ public static class MathematicaUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Float64Signal GetSampledSignal(this Expr scalar1, Expr t, double samplingRate, int sampleCount)
+    public static Float64SampledTimeSignal GetSampledSignal(this Expr scalar1, Expr t, double samplingRate, int sampleCount)
     {
-        return Float64Signal.CreatePeriodic(
+        return Float64SampledTimeSignal.CreatePeriodic(
             sampleCount,
             sampleCount / samplingRate,
             d =>
                 scalar1
                     .ReplaceAll(t, d.ToExpr())
-                    .EvaluateToDouble(),
-            false
+                    .EvaluateToDouble()
         );
     }
 
-    public static XGaVector<Float64Signal> GetSampledSignal(this XGaProcessor<Float64Signal> processor, XGaVector<Expr> vector, Expr t, double samplingRate, int sampleCount)
+    public static XGaVector<Float64SampledTimeSignal> GetSampledSignal(this XGaProcessor<Float64SampledTimeSignal> processor, XGaVector<Expr> vector, Expr t, double samplingRate, int sampleCount)
     {
         var composer = processor.CreateComposer();
 
@@ -2008,7 +2007,7 @@ public static class MathematicaUtils
         return composer.GetVector();
     }
 
-    public static XGaBivector<Float64Signal> GetSampledSignal(this XGaProcessor<Float64Signal> processor, XGaBivector<Expr> bivector, Expr t, double samplingRate, int sampleCount)
+    public static XGaBivector<Float64SampledTimeSignal> GetSampledSignal(this XGaProcessor<Float64SampledTimeSignal> processor, XGaBivector<Expr> bivector, Expr t, double samplingRate, int sampleCount)
     {
         var composer = processor.CreateComposer();
 

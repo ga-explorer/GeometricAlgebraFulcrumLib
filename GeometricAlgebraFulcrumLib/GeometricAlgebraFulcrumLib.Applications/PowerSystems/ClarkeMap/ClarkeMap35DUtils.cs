@@ -12,7 +12,7 @@ public static partial class ClarkeMapUtils
         //MetaContext: Clarke Transformation
         var temp0 = Math.Sqrt(0.05714285714285714);
         var temp1 = temp0 * uVector[0];
-        var temp2 = 2 * Math.PI;
+        var temp2 = Math.Tau;
         temp2 = 0.02857142857142857 * temp2;
         var temp3 = Math.Cos(temp2);
         temp3 = temp0 * temp3;

@@ -2,20 +2,20 @@
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space3D;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.Parametric.Float64;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.Parametric.Float64.Space3D.Curves;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.Parametric.Float64.Space3D.Curves.Adaptive;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.Parametric.Float64.Space3D.Curves.Bezier;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.LatticeShapes;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.LatticeShapes.Surfaces;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Primitives;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Primitives.Lines;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.Xeogl;
+using GeometricAlgebraFulcrumLib.Modeling.Trajectories.Vectors3D.Float64;
+using GeometricAlgebraFulcrumLib.Modeling.Trajectories.Vectors3D.Float64.Adaptive;
+using GeometricAlgebraFulcrumLib.Modeling.Trajectories.Vectors3D.Float64.Bezier;
 
 namespace GeometricAlgebraFulcrumLib.Modeling.Samples.Modeling.Graphics.Geometry.BezierShapes;
 
 public static class Sample1
 {
-    private static string Generate(IReadOnlyList<ParametricCurveLocalFrame3D> sampledCurve, string htmlFilePath = "")
+    private static string Generate(IReadOnlyList<Float64Path3DLocalFrame> sampledCurve, string htmlFilePath = "")
     {
         var composer1 = new GrLineGeometryComposer3D();
         var composer2 = new GrLineGeometryComposer3D();
@@ -83,21 +83,22 @@ public static class Sample1
     {
         var parameterValueRange = Float64ScalarRange.Create(0, 1);
 
-        var options = new AdaptiveCurveSamplingOptions3D(
+        var options = new Float64AdaptivePath3DSamplingOptions(
             3.DegreesToDirectedAngle(),
             3,
             30
         );
 
         // Create a bezier curve
-        //var curve = new BezierCurve3Degree3D(
+        //var curve = new Float64Bezier3Path3D(
         //    Float64Vector3D.Create(10, 0, 0),
         //    Float64Vector3D.Create(10, 30, 0),
         //    Float64Vector3D.Create(5, 1, 1),
         //    Float64Vector3D.Create(0, 0, 10)
         //);
 
-        var curve = new BezierCurve3Degree3D(
+        var curve = new Float64Bezier3Path3D(
+            false,
             LinFloat64Vector3D.Create(0, 0, 0),
             LinFloat64Vector3D.Create(10, 0, 0),
             LinFloat64Vector3D.Create(5, 20, 20),
@@ -105,11 +106,13 @@ public static class Sample1
         );
 
         var sampledCurve =
-            new AdaptiveCurve3D(curve, parameterValueRange)
-            {
-                FrameSamplingMethod = ParametricCurveLocalFrameSamplingMethod.SimpleRotation,
-                FrameInterpolationMethod = ParametricCurveLocalFrameInterpolationMethod.SphericalLinearInterpolation
-            };
+            Float64AdaptivePath3D.Create(curve);
+
+        sampledCurve.FrameSamplingMethod = 
+            ParametricCurveLocalFrameSamplingMethod.SimpleRotation;
+
+        sampledCurve.FrameInterpolationMethod =
+            ParametricCurveLocalFrameInterpolationMethod.SphericalLinearInterpolation;
 
         sampledCurve.GenerateTree(options);
 

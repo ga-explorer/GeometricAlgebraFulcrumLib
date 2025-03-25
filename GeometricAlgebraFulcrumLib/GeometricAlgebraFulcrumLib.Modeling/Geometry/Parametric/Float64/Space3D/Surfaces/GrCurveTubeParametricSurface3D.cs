@@ -1,18 +1,18 @@
 ﻿using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space3D;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.Parametric.Float64.Space3D.Curves;
+using GeometricAlgebraFulcrumLib.Modeling.Trajectories.Vectors3D.Float64;
 
 namespace GeometricAlgebraFulcrumLib.Modeling.Geometry.Parametric.Float64.Space3D.Surfaces;
 
 public class GrCurveTubeParametricSurface3D :
     IGraphicsParametricSurface3D
 {
-    public IParametricCurve3D Curve { get; }
+    public Float64Path3D Curve { get; }
 
     public double Radius { get; }
 
 
-    public GrCurveTubeParametricSurface3D(IParametricCurve3D curve, double radius)
+    public GrCurveTubeParametricSurface3D(Float64Path3D curve, double radius)
     {
         if (radius < 0)
             throw new ArgumentException(nameof(radius));
@@ -31,7 +31,7 @@ public class GrCurveTubeParametricSurface3D :
     {
         var curveFrame = Curve.GetFrame(parameterValue2);
 
-        var angle = parameterValue1 * 2 * Math.PI;
+        var angle = parameterValue1 * Math.Tau;
 
         return
             curveFrame.Point +
@@ -43,7 +43,7 @@ public class GrCurveTubeParametricSurface3D :
     {
         var curveFrame = Curve.GetFrame(parameterValue2);
 
-        var angle = parameterValue1 * 2 * Math.PI;
+        var angle = parameterValue1 * Math.Tau;
 
         return
             Radius * Math.Cos(angle) * curveFrame.Normal1.ToLinVector3D() -
@@ -59,7 +59,7 @@ public class GrCurveTubeParametricSurface3D :
     {
         var curveFrame = Curve.GetFrame(parameterValue2);
 
-        var angle = parameterValue1 * 2 * Math.PI;
+        var angle = parameterValue1 * Math.Tau;
 
         var normal =
             Radius * Math.Cos(angle) * curveFrame.Normal1.ToLinVector3D() -

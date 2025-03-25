@@ -792,6 +792,21 @@ public sealed class LinFloat64Vector :
             .SubtractVector(vector2)
             .GetVector();
     }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public LinFloat64Vector ComponentTimes(LinFloat64Vector vector2)
+    {
+        if (IsZero)
+            return VectorZero;
+
+        if (vector2.IsZero)
+            return VectorZero;
+
+        return LinFloat64VectorComposer
+            .Create()
+            .AddComponentTimesTerms(this, vector2)
+            .GetVector();
+    }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public double ESp(ILinSignedBasisVector axis)

@@ -6,10 +6,10 @@ namespace GeometricAlgebraFulcrumLib.Modeling.Signals.Processors;
 public sealed class XGaGeometricFrequencyDifferentialProcessor :
     XGaGeometricFrequencyProcessor
 {
-    public Func<XGaVector<Float64Signal>, VectorDifferentialInterpolator> InterpolatorFactory { get; }
+    public Func<XGaVector<Float64SampledTimeSignal>, VectorDifferentialInterpolator> InterpolatorFactory { get; }
 
 
-    public XGaGeometricFrequencyDifferentialProcessor(int vSpaceDimensions, Func<XGaVector<Float64Signal>, VectorDifferentialInterpolator> interpolatorFactory) 
+    public XGaGeometricFrequencyDifferentialProcessor(int vSpaceDimensions, Func<XGaVector<Float64SampledTimeSignal>, VectorDifferentialInterpolator> interpolatorFactory) 
         : base(vSpaceDimensions)
     {
         InterpolatorFactory = interpolatorFactory;
@@ -22,7 +22,7 @@ public sealed class XGaGeometricFrequencyDifferentialProcessor :
         
         VectorSignalInterpolated = vectorInterpolator.GetVectors();
 
-        var vDtArray = new XGaVector<Float64Signal>[VSpaceDimensions];
+        var vDtArray = new XGaVector<Float64SampledTimeSignal>[VSpaceDimensions];
 
         if (AssumeVectorSignalIsDerivative)
         {
@@ -44,7 +44,7 @@ public sealed class XGaGeometricFrequencyDifferentialProcessor :
     }
 
 
-    public void ProcessVectorSignal(XGaVector<Float64Signal> vectorSignal)
+    public void ProcessVectorSignal(XGaVector<Float64SampledTimeSignal> vectorSignal)
     {
         ClearData();
 

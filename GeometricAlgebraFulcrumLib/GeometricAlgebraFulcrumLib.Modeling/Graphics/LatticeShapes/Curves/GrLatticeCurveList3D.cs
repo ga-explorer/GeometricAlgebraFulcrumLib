@@ -43,7 +43,7 @@ public sealed class GrLatticeCurveList3D :
         => Vertices.Select(v => v.Normal1);
 
     public IEnumerable<double> VertexTextureUs 
-        => Vertices.Select(v => v.ParameterValue.ScalarValue);
+        => Vertices.Select(v => v.TimeValue);
 
     public IEnumerable<Color> VertexColors 
         => Vertices.Select(v => v.Color);
@@ -76,7 +76,7 @@ public sealed class GrLatticeCurveList3D :
     public int CurveCount 
         => _gridsList.Count;
 
-    public IEnumerable<GrLatticeCurve3D> Curvees 
+    public IEnumerable<GrLatticeCurve3D> Curves 
         => _gridsList;
 
     public GrVertexNormalComputationMethod NormalComputationMethod { get; set; }
@@ -341,7 +341,7 @@ public sealed class GrLatticeCurveList3D :
     {
         var composer = new LinearTextComposer();
 
-        foreach (var curve in Curvees)
+        foreach (var curve in Curves)
         {
             composer
                 .AppendLine($"Curve <{curve.CurveIndex.ToString().PadLeft(3)}>:")
@@ -355,7 +355,7 @@ public sealed class GrLatticeCurveList3D :
                     .AppendAtNewLine($"Vertex <{vertex.Index,4}>:")
                     .Append($" Point({vertex.X:F5}, {vertex.Y:F5}, {vertex.Z:F5})")
                     .Append($" Normal({vertex.Normal1.X:F5}, {vertex.Normal1.Y:F5}, {vertex.Normal1.Z:F5})")
-                    .Append($" TextureU({vertex.ParameterValue:F5})")
+                    .Append($" TextureU({vertex.TimeValue:F5})")
                     .Append($" Color({c.R}, {c.G}, {c.B})");
             }
 

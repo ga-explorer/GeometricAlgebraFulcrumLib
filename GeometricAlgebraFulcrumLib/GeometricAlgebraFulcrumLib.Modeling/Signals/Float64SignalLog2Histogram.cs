@@ -167,7 +167,7 @@ public sealed class Float64SignalLog2Histogram
         return (hist1 * pinDataValue1 + hist2 * pinDataValue2) / (hist1 + hist2);
     }
 
-    public Float64Signal FilterSignal(Float64Signal signal)
+    public Float64SampledTimeSignal FilterSignal(Float64SampledTimeSignal signal)
     {
         return signal.MapSamples(InterpolateNearestDataValue);
     }

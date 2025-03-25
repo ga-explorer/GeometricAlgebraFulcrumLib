@@ -262,7 +262,7 @@ public sealed class LibCodeComposerSpecs
 %
 % The Geometric Algebra Fulcrum (GA-FuL) MATLAB Toolbox
 % 
-% Copyright (c) 2023 Ahmad Hosny Eid
+% Copyright (c) 2025 Ahmad Hosny Eid
 %
 % MIT License
 %

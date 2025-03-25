@@ -98,7 +98,7 @@ public class GrPovRayPolygon :
         var polygon = new GrPovRayPolygon();
 
         var vertexList = 
-            0d.GetLinearRange(2 * Math.PI, sideCount, true)
+            0d.GetLinearRange(Math.Tau, sideCount, true)
                 .Select(a => a.RadiansToPolarAngle().ToLinVector2D(radius))
                 .Cast<IPair<Float64Scalar>>()
                 .ToArray();

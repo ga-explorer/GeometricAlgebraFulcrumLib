@@ -522,6 +522,12 @@ public static class Float64Utils
     {
         return (long)Math.Floor(number);
     }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static byte RoundToByte(this double number)
+    {
+        return (byte)Math.Round(number);
+    }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static int RoundToInt32(this double number)
@@ -782,7 +788,7 @@ public static class Float64Utils
 
         var angle = Math.Acos(number);
 
-        //if (angle < 0) angle += 2 * Math.PI;
+        //if (angle < 0) angle += Math.Tau;
 
         return angle;
     }
@@ -794,7 +800,7 @@ public static class Float64Utils
 
         var angle = Math.Asin(number);
 
-        if (angle < 0) angle += 2 * Math.PI;
+        if (angle < 0) angle += Math.Tau;
 
         return angle;
     }
@@ -804,7 +810,7 @@ public static class Float64Utils
     {
         var angle = Math.Atan(number);
 
-        if (angle < 0) angle += 2 * Math.PI;
+        if (angle < 0) angle += Math.Tau;
 
         return angle;
     }
@@ -814,7 +820,7 @@ public static class Float64Utils
     {
         var angle = Math.Atan2(numberY, numberX);
 
-        if (angle < 0) angle += 2 * Math.PI;
+        if (angle < 0) angle += Math.Tau;
 
         return angle;
     }
@@ -1030,7 +1036,7 @@ public static class Float64Utils
     {
         t = (cycleCount * t).ClampPeriodic(1);
 
-        return value1 + 0.5d * (1d - Math.Cos(2d * Math.PI * t)) * (value2 - value1);
+        return value1 + 0.5d * (1d - Math.Cos(Math.Tau * t)) * (value2 - value1);
     }
         
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -1041,7 +1047,7 @@ public static class Float64Utils
             
         t = (cycleCount * t).ClampPeriodic(1);
 
-        return value1 + 0.5d * (1d - Math.Cos(2d * Math.PI * t)) * (value2 - value1);
+        return value1 + 0.5d * (1d - Math.Cos(Math.Tau * t)) * (value2 - value1);
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -1052,7 +1058,7 @@ public static class Float64Utils
             
         t = (cycleCount * t).ClampPeriodic(1);
 
-        return value1 + 0.5d * (1d - Math.Cos(2d * Math.PI * t)) * (value2 - value1);
+        return value1 + 0.5d * (1d - Math.Cos(Math.Tau * t)) * (value2 - value1);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -1105,8 +1111,8 @@ public static class Float64Utils
     {
         var length = finish - start;
         var n = isPeriodicRange
-            ? 2d * Math.PI * cycleCount / sampleCount
-            : 2d * Math.PI * cycleCount / (sampleCount - 1);
+            ? Math.Tau * cycleCount / sampleCount
+            : Math.Tau * cycleCount / (sampleCount - 1);
 
         return Enumerable
             .Range(0, sampleCount)
@@ -1195,7 +1201,7 @@ public static class Float64Utils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static double ClampInt(this int value, int maxValue)
+    public static int ClampInt(this int value, int maxValue)
     {
         if (value < 0) return 0;
 

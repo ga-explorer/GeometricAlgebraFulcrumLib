@@ -9,16 +9,16 @@ using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.Visuals.Space3D.Cur
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.Visuals.Space3D.Images;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.Visuals.Space3D.Surfaces;
 using SixLabors.ImageSharp;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.Parametric.Float64.Space1D.Angles;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.Parametric.Float64.Space1D.Scalars;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.Parametric.Float64.Space2D.Curves;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.Parametric.Float64.Space3D.Curves;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.Parametric.Float64.Space3D.Curves.Adaptive;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.BabylonJs.Composers;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.Borders.Space2D.Float64;
 using GeometricAlgebraFulcrumLib.Modeling.Signals;
-using GeometricAlgebraFulcrumLib.Modeling.Temporal.Float64.Scalars;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.Visuals.Space3D.Grids;
+using GeometricAlgebraFulcrumLib.Modeling.Trajectories.Scalars.Float64;
+using GeometricAlgebraFulcrumLib.Modeling.Trajectories.Scalars.Float64.Angles;
+using GeometricAlgebraFulcrumLib.Modeling.Trajectories.Vectors2D.Float64;
+using GeometricAlgebraFulcrumLib.Modeling.Trajectories.Vectors3D.Float64;
+using GeometricAlgebraFulcrumLib.Modeling.Trajectories.Vectors3D.Float64.Adaptive;
+using GeometricAlgebraFulcrumLib.Modeling.Trajectories.Vectors3D.Float64.Composers;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Basic;
 
 namespace GeometricAlgebraFulcrumLib.Modeling.Geometry.Visualizer;
@@ -74,7 +74,7 @@ public sealed class GrBabylonJsGeometryAnimationComposer :
     {
         if (ShowCopyright)
         {
-            TextureSet.AddTextureFromPngFile(
+            ImageSet.AddImageFromPngFile(
                 "gui",
                 "Copyright"
             );
@@ -96,16 +96,11 @@ public sealed class GrBabylonJsGeometryAnimationComposer :
         throw new InvalidOperationException();
     }
 
-    public override GrBabylonJsAnimationComposer SetCamera(TemporalFloat64Scalar alpha, TemporalFloat64Scalar beta, TemporalFloat64Scalar distance)
+    public override GrBabylonJsAnimationComposer SetCamera(Float64ScalarSignal alpha, Float64ScalarSignal beta, Float64ScalarSignal distance)
     {
         throw new InvalidOperationException();
     }
     
-    public override GrBabylonJsAnimationComposer SetCamera(LinFloat64PolarAngle alpha, LinFloat64PolarAngle beta, double distance)
-    {
-        throw new InvalidOperationException();
-    }
-
     public GrBabylonJsGeometryAnimationComposer SetGrid(ITriplet<Float64Scalar> center, int unitCount, double unitSize = 1, double opacity = 1)
     {
         GridCenter = center.ToLinVector3D();
@@ -195,8 +190,8 @@ public sealed class GrBabylonJsGeometryAnimationComposer :
             .AddDefaultEnvironment(GridUnitCount)
             .AddDefaultPerspectiveCamera(
                 CameraDistance,
-                "2 * Math.PI / 20",
-                "2 * Math.PI / 5"
+                "Math.Tau / 20",
+                "Math.Tau / 5"
             );
 
         return this;
@@ -269,7 +264,7 @@ public sealed class GrBabylonJsGeometryAnimationComposer :
         SceneComposer.AddImage(
             GrVisualImage3D.CreateStatic(
                 name,
-                TextureSet["latex", key],
+                ImageSet["latex", key],
                 origin,
                 CodeFilesComposer.LaTeXScalingFactor
             )
@@ -278,18 +273,18 @@ public sealed class GrBabylonJsGeometryAnimationComposer :
         return this;
     }
 
-    public GrBabylonJsGeometryAnimationComposer DrawLaTeX(string key, IFloat64ParametricCurve2D originCurve)
+    public GrBabylonJsGeometryAnimationComposer DrawLaTeX(string key, Float64Path2D originCurve)
     {
         return DrawLaTeX(key, originCurve.ToXyParametricCurve3D());
     }
 
-    public GrBabylonJsGeometryAnimationComposer DrawLaTeX(string key, IParametricCurve3D originCurve)
+    public GrBabylonJsGeometryAnimationComposer DrawLaTeX(string key, Float64Path3D originCurve)
     {
         SceneComposer.AddImage(
             GrVisualImage3D.CreateAnimated(
                 GetNewSceneObjectName("laTeX"),
-                TextureSet["latex", key],
-                SamplingSpecs.CreateAnimatedVector3D(originCurve),
+                ImageSet["latex", key],
+                SceneSamplingSpecs.CreateAnimatedVector3D(originCurve),
                 CodeFilesComposer.LaTeXScalingFactor
             )
         );
@@ -415,28 +410,28 @@ public sealed class GrBabylonJsGeometryAnimationComposer :
     }
 
 
-    public GrBabylonJsGeometryAnimationComposer DrawPoint(Color color, IFloat64ParametricCurve2D pointCurve)
+    public GrBabylonJsGeometryAnimationComposer DrawPoint(Color color, Float64Path2D pointCurve)
     {
         return DrawPoint(color, pointCurve.ToXyParametricCurve3D());
     }
 
-    public GrBabylonJsGeometryAnimationComposer DrawPoint(Color color, IParametricCurve3D pointCurve)
+    public GrBabylonJsGeometryAnimationComposer DrawPoint(Color color, Float64Path3D pointCurve)
     {
-        if (SamplingSpecs.IsStatic)
+        if (SceneSamplingSpecs.IsStatic)
             throw new InvalidOperationException();
 
         SceneComposer.AddPoint(
             GrVisualPoint3D.CreateAnimated(
                 GetNewSceneObjectName("point"),
                 PointStyle.GetVisualStyle(color),
-                SamplingSpecs.CreateAnimatedVector3D(pointCurve)
+                SceneSamplingSpecs.CreateAnimatedVector3D(pointCurve)
             )
         );
 
         return this;
     }
 
-    public GrBabylonJsGeometryAnimationComposer DrawPoints(Color color, params IFloat64ParametricCurve2D[] mvList)
+    public GrBabylonJsGeometryAnimationComposer DrawPoints(Color color, params Float64Path2D[] mvList)
     {
         foreach (var mv in mvList)
             DrawPoint(color, mv.ToXyParametricCurve3D());
@@ -444,7 +439,7 @@ public sealed class GrBabylonJsGeometryAnimationComposer :
         return this;
     }
 
-    public GrBabylonJsGeometryAnimationComposer DrawPoints(Color color, params IParametricCurve3D[] mvList)
+    public GrBabylonJsGeometryAnimationComposer DrawPoints(Color color, params Float64Path3D[] mvList)
     {
         foreach (var mv in mvList)
             DrawPoint(color, mv);
@@ -452,7 +447,7 @@ public sealed class GrBabylonJsGeometryAnimationComposer :
         return this;
     }
 
-    public GrBabylonJsGeometryAnimationComposer DrawPoints(Color color, IEnumerable<IFloat64ParametricCurve2D> mvList)
+    public GrBabylonJsGeometryAnimationComposer DrawPoints(Color color, IEnumerable<Float64Path2D> mvList)
     {
         foreach (var mv in mvList)
             DrawPoint(color, mv.ToXyParametricCurve3D());
@@ -460,7 +455,7 @@ public sealed class GrBabylonJsGeometryAnimationComposer :
         return this;
     }
 
-    public GrBabylonJsGeometryAnimationComposer DrawPoints(Color color, IEnumerable<IParametricCurve3D> mvList)
+    public GrBabylonJsGeometryAnimationComposer DrawPoints(Color color, IEnumerable<Float64Path3D> mvList)
     {
         foreach (var mv in mvList)
             DrawPoint(color, mv);
@@ -564,12 +559,12 @@ public sealed class GrBabylonJsGeometryAnimationComposer :
         return this;
     }
 
-    public GrBabylonJsGeometryAnimationComposer DrawVector(Color color, LinFloat64Vector2D origin, IFloat64ParametricCurve2D vectorCurve)
+    public GrBabylonJsGeometryAnimationComposer DrawVector(Color color, LinFloat64Vector2D origin, Float64Path2D vectorCurve)
     {
         return DrawVector(color, origin.ToXyLinVector3D(), vectorCurve.ToXyParametricCurve3D());
     }
 
-    public GrBabylonJsGeometryAnimationComposer DrawVector(Color color, LinFloat64Vector3D origin, IParametricCurve3D vectorCurve)
+    public GrBabylonJsGeometryAnimationComposer DrawVector(Color color, LinFloat64Vector3D origin, Float64Path3D vectorCurve)
     {
         var name = GetNewSceneObjectName("vector");
 
@@ -577,7 +572,7 @@ public sealed class GrBabylonJsGeometryAnimationComposer :
             name,
             VectorStyle.GetVisualStyle(color),
             origin,
-            SamplingSpecs.CreateAnimatedVector3D(vectorCurve)
+            SceneSamplingSpecs.CreateAnimatedVector3D(vectorCurve)
         );
 
         SceneComposer.AddVector(visualVector);
@@ -585,20 +580,20 @@ public sealed class GrBabylonJsGeometryAnimationComposer :
         return this;
     }
 
-    public GrBabylonJsGeometryAnimationComposer DrawVector(Color color, IFloat64ParametricCurve2D originCurve, IFloat64ParametricCurve2D vectorCurve)
+    public GrBabylonJsGeometryAnimationComposer DrawVector(Color color, Float64Path2D originCurve, Float64Path2D vectorCurve)
     {
         return DrawVector(color, originCurve.ToXyParametricCurve3D(), vectorCurve.ToXyParametricCurve3D());
     }
 
-    public GrBabylonJsGeometryAnimationComposer DrawVector(Color color, IParametricCurve3D originCurve, IParametricCurve3D vectorCurve)
+    public GrBabylonJsGeometryAnimationComposer DrawVector(Color color, Float64Path3D originCurve, Float64Path3D vectorCurve)
     {
         var name = GetNewSceneObjectName("vector");
 
         var visualVector = GrVisualVector3D.CreateAnimated(
             name,
             VectorStyle.GetVisualStyle(color),
-            SamplingSpecs.CreateAnimatedVector3D(originCurve),
-            SamplingSpecs.CreateAnimatedVector3D(vectorCurve)
+            SceneSamplingSpecs.CreateAnimatedVector3D(originCurve),
+            SceneSamplingSpecs.CreateAnimatedVector3D(vectorCurve)
         );
 
         SceneComposer.AddVector(visualVector);
@@ -628,52 +623,52 @@ public sealed class GrBabylonJsGeometryAnimationComposer :
         return this;
     }
 
-    public GrBabylonJsGeometryAnimationComposer DrawLineCurve(Color color, LinFloat64Vector2D point1, IFloat64ParametricCurve2D point2)
+    public GrBabylonJsGeometryAnimationComposer DrawLineCurve(Color color, LinFloat64Vector2D point1, Float64Path2D point2)
     {
         return DrawLineCurve(color, point1.ToXyLinVector3D(), point2.ToXyParametricCurve3D());
     }
 
-    public GrBabylonJsGeometryAnimationComposer DrawLineCurve(Color color, LinFloat64Vector3D point1, IParametricCurve3D point2)
+    public GrBabylonJsGeometryAnimationComposer DrawLineCurve(Color color, LinFloat64Vector3D point1, Float64Path3D point2)
     {
         SceneComposer.AddLineSegment(
             GrVisualLineSegment3D.CreateAnimated(
                 GetNewSceneObjectName("curve"),
                 CurveStyle.GetVisualStyle(color),
-                SamplingSpecs.CreateAnimatedVector3D(point1),
-                SamplingSpecs.CreateAnimatedVector3D(point2)
+                SceneSamplingSpecs.CreateAnimatedVector3D(point1),
+                SceneSamplingSpecs.CreateAnimatedVector3D(point2)
             )
         );
 
         return this;
     }
 
-    public GrBabylonJsGeometryAnimationComposer DrawLineCurve(Color color, IParametricCurve3D point1, LinFloat64Vector3D point2)
+    public GrBabylonJsGeometryAnimationComposer DrawLineCurve(Color color, Float64Path3D point1, LinFloat64Vector3D point2)
     {
         SceneComposer.AddLineSegment(
             GrVisualLineSegment3D.CreateAnimated(
                 GetNewSceneObjectName("curve"),
                 CurveStyle.GetVisualStyle(color),
-                SamplingSpecs.CreateAnimatedVector3D(point1),
-                SamplingSpecs.CreateAnimatedVector3D(point2)
+                SceneSamplingSpecs.CreateAnimatedVector3D(point1),
+                SceneSamplingSpecs.CreateAnimatedVector3D(point2)
             )
         );
 
         return this;
     }
 
-    public GrBabylonJsGeometryAnimationComposer DrawLineCurve(Color color, IFloat64ParametricCurve2D point1, IFloat64ParametricCurve2D point2)
+    public GrBabylonJsGeometryAnimationComposer DrawLineCurve(Color color, Float64Path2D point1, Float64Path2D point2)
     {
         return DrawLineCurve(color, point1.ToXyParametricCurve3D(), point2.ToXyParametricCurve3D());
     }
 
-    public GrBabylonJsGeometryAnimationComposer DrawLineCurve(Color color, IParametricCurve3D point1, IParametricCurve3D point2)
+    public GrBabylonJsGeometryAnimationComposer DrawLineCurve(Color color, Float64Path3D point1, Float64Path3D point2)
     {
         SceneComposer.AddLineSegment(
             GrVisualLineSegment3D.CreateAnimated(
                 GetNewSceneObjectName("curve"),
                 CurveStyle.GetVisualStyle(color),
-                SamplingSpecs.CreateAnimatedVector3D(point1),
-                SamplingSpecs.CreateAnimatedVector3D(point2)
+                SceneSamplingSpecs.CreateAnimatedVector3D(point1),
+                SceneSamplingSpecs.CreateAnimatedVector3D(point2)
             )
         );
 
@@ -762,14 +757,14 @@ public sealed class GrBabylonJsGeometryAnimationComposer :
         return this;
     }
 
-    public GrBabylonJsGeometryAnimationComposer DrawCircleCurve(Color color, LinFloat64Vector3D center, IParametricCurve3D normal, double radius)
+    public GrBabylonJsGeometryAnimationComposer DrawCircleCurve(Color color, LinFloat64Vector3D center, Float64Path3D normal, double radius)
     {
         SceneComposer.AddCircleCurve(
             GrVisualCircleCurve3D.CreateAnimated(
                 GetNewSceneObjectName("circle"),
                 CurveStyle.GetVisualStyle(color),
                 center,
-                SamplingSpecs.CreateAnimatedVector3D(normal),
+                SceneSamplingSpecs.CreateAnimatedVector3D(normal),
                 radius
             )
         );
@@ -777,7 +772,7 @@ public sealed class GrBabylonJsGeometryAnimationComposer :
         return this;
     }
 
-    public GrBabylonJsGeometryAnimationComposer DrawCircleCurve(Color color, LinFloat64Vector3D center, LinFloat64Vector3D normal, IFloat64ParametricScalar radius)
+    public GrBabylonJsGeometryAnimationComposer DrawCircleCurve(Color color, LinFloat64Vector3D center, LinFloat64Vector3D normal, Float64ScalarSignal radius)
     {
         SceneComposer.AddCircleCurve(
             GrVisualCircleCurve3D.CreateAnimated(
@@ -785,36 +780,36 @@ public sealed class GrBabylonJsGeometryAnimationComposer :
                 CurveStyle.GetVisualStyle(color),
                 center,
                 normal,
-                SamplingSpecs.CreateAnimatedScalar(radius)
+                SceneSamplingSpecs.CreateAnimatedScalar(radius)
             )
         );
 
         return this;
     }
 
-    public GrBabylonJsGeometryAnimationComposer DrawCircleCurve(Color color, LinFloat64Vector3D center, IParametricCurve3D normal, IFloat64ParametricScalar radius)
+    public GrBabylonJsGeometryAnimationComposer DrawCircleCurve(Color color, LinFloat64Vector3D center, Float64Path3D normal, Float64ScalarSignal radius)
     {
         SceneComposer.AddCircleCurve(
             GrVisualCircleCurve3D.CreateAnimated(
                 GetNewSceneObjectName("circle"),
                 CurveStyle.GetVisualStyle(color),
                 center,
-                SamplingSpecs.CreateAnimatedVector3D(normal),
-                SamplingSpecs.CreateAnimatedScalar(radius)
+                SceneSamplingSpecs.CreateAnimatedVector3D(normal),
+                SceneSamplingSpecs.CreateAnimatedScalar(radius)
             )
         );
 
         return this;
     }
 
-    public GrBabylonJsGeometryAnimationComposer DrawCircleCurve(Color color, IParametricCurve3D center, IParametricCurve3D normal, double radius)
+    public GrBabylonJsGeometryAnimationComposer DrawCircleCurve(Color color, Float64Path3D center, Float64Path3D normal, double radius)
     {
         SceneComposer.AddCircleCurve(
             GrVisualCircleCurve3D.CreateAnimated(
                 GetNewSceneObjectName("circle"),
                 CurveStyle.GetVisualStyle(color),
-                SamplingSpecs.CreateAnimatedVector3D(center),
-                SamplingSpecs.CreateAnimatedVector3D(normal),
+                SceneSamplingSpecs.CreateAnimatedVector3D(center),
+                SceneSamplingSpecs.CreateAnimatedVector3D(normal),
                 radius
             )
         );
@@ -822,15 +817,15 @@ public sealed class GrBabylonJsGeometryAnimationComposer :
         return this;
     }
 
-    public GrBabylonJsGeometryAnimationComposer DrawCircleCurve(Color color, IParametricCurve3D center, IParametricCurve3D normal, IFloat64ParametricScalar radius)
+    public GrBabylonJsGeometryAnimationComposer DrawCircleCurve(Color color, Float64Path3D center, Float64Path3D normal, Float64ScalarSignal radius)
     {
         SceneComposer.AddCircleCurve(
             GrVisualCircleCurve3D.CreateAnimated(
                 GetNewSceneObjectName("circle"),
                 CurveStyle.GetVisualStyle(color),
-                SamplingSpecs.CreateAnimatedVector3D(center),
-                SamplingSpecs.CreateAnimatedVector3D(normal),
-                SamplingSpecs.CreateAnimatedScalar(radius)
+                SceneSamplingSpecs.CreateAnimatedVector3D(center),
+                SceneSamplingSpecs.CreateAnimatedVector3D(normal),
+                SceneSamplingSpecs.CreateAnimatedScalar(radius)
             )
         );
 
@@ -838,19 +833,19 @@ public sealed class GrBabylonJsGeometryAnimationComposer :
     }
 
 
-    public GrBabylonJsGeometryAnimationComposer DrawCurve(Color color, IFloat64ParametricCurve2D curve, Float64ScalarRange parameterRange)
+    public GrBabylonJsGeometryAnimationComposer DrawCurve(Color color, Float64Path2D curve, Float64ScalarRange timeRange)
     {
         return DrawCurve(
             color,
             curve.ToXyParametricCurve3D(),
-            parameterRange
+            timeRange
         );
     }
 
-    public GrBabylonJsGeometryAnimationComposer DrawCurve(Color color, IParametricCurve3D curve, Float64ScalarRange parameterRange)
+    public GrBabylonJsGeometryAnimationComposer DrawCurve(Color color, Float64Path3D curve, Float64ScalarRange timeRange)
     {
         var samplingSpecs =
-            new AdaptiveCurveSamplingOptions3D(
+            new Float64AdaptivePath3DSamplingOptions(
                 5d.DegreesToDirectedAngle(),
                 3,
                 10
@@ -859,24 +854,24 @@ public sealed class GrBabylonJsGeometryAnimationComposer :
         return DrawCurve(
             color,
             curve,
-            parameterRange,
+            timeRange,
             samplingSpecs
         );
     }
 
-    public GrBabylonJsGeometryAnimationComposer DrawCurve(Color color, IFloat64ParametricCurve2D curve, Float64ScalarRange parameterRange, AdaptiveCurveSamplingOptions3D samplingSpecs)
+    public GrBabylonJsGeometryAnimationComposer DrawCurve(Color color, Float64Path2D curve, Float64ScalarRange timeRange, Float64AdaptivePath3DSamplingOptions samplingSpecs)
     {
-        return DrawCurve(color, curve.ToXyParametricCurve3D(), parameterRange, samplingSpecs);
+        return DrawCurve(color, curve.ToXyParametricCurve3D(), timeRange, samplingSpecs);
     }
 
-    public GrBabylonJsGeometryAnimationComposer DrawCurve(Color color, IParametricCurve3D curve, Float64ScalarRange parameterRange, AdaptiveCurveSamplingOptions3D samplingSpecs)
+    public GrBabylonJsGeometryAnimationComposer DrawCurve(Color color, Float64Path3D curve, Float64ScalarRange timeRange, Float64AdaptivePath3DSamplingOptions samplingSpecs)
     {
         SceneComposer.AddLinePath(
             GrVisualPointPathCurve3D.CreateStatic(
                 GetNewSceneObjectName("curve"),
                 CurveStyle.GetVisualStyle(color),
                 curve.CreateAdaptiveCurve3D(
-                    parameterRange,
+                    timeRange,
                     samplingSpecs
                 )
             )
@@ -902,14 +897,14 @@ public sealed class GrBabylonJsGeometryAnimationComposer :
         return this;
     }
 
-    public GrBabylonJsGeometryAnimationComposer DrawCircleSurface(Color color, LinFloat64Vector3D center, IParametricCurve3D normal, double radius)
+    public GrBabylonJsGeometryAnimationComposer DrawCircleSurface(Color color, LinFloat64Vector3D center, Float64Path3D normal, double radius)
     {
         SceneComposer.AddDisc(
             GrVisualCircleSurface3D.CreateAnimated(
                 GetNewSceneObjectName("circle"),
                 SurfaceStyle.GetVisualStyle(color),
                 center,
-                SamplingSpecs.CreateAnimatedVector3D(normal),
+                SceneSamplingSpecs.CreateAnimatedVector3D(normal),
                 radius,
                 false
             )
@@ -918,7 +913,7 @@ public sealed class GrBabylonJsGeometryAnimationComposer :
         return this;
     }
 
-    public GrBabylonJsGeometryAnimationComposer DrawCircleSurface(Color color, LinFloat64Vector3D center, LinFloat64Vector3D normal, IFloat64ParametricScalar radius)
+    public GrBabylonJsGeometryAnimationComposer DrawCircleSurface(Color color, LinFloat64Vector3D center, LinFloat64Vector3D normal, Float64ScalarSignal radius)
     {
         SceneComposer.AddDisc(
             GrVisualCircleSurface3D.CreateAnimated(
@@ -926,7 +921,7 @@ public sealed class GrBabylonJsGeometryAnimationComposer :
                 SurfaceStyle.GetVisualStyle(color),
                 center,
                 normal,
-                SamplingSpecs.CreateAnimatedScalar(radius),
+                SceneSamplingSpecs.CreateAnimatedScalar(radius),
                 false
             )
         );
@@ -934,15 +929,15 @@ public sealed class GrBabylonJsGeometryAnimationComposer :
         return this;
     }
 
-    public GrBabylonJsGeometryAnimationComposer DrawCircleSurface(Color color, LinFloat64Vector3D center, IParametricCurve3D normal, IFloat64ParametricScalar radius)
+    public GrBabylonJsGeometryAnimationComposer DrawCircleSurface(Color color, LinFloat64Vector3D center, Float64Path3D normal, Float64ScalarSignal radius)
     {
         SceneComposer.AddDisc(
             GrVisualCircleSurface3D.CreateAnimated(
                 GetNewSceneObjectName("circle"),
                 SurfaceStyle.GetVisualStyle(color),
                 center,
-                SamplingSpecs.CreateAnimatedVector3D(normal),
-                SamplingSpecs.CreateAnimatedScalar(radius),
+                SceneSamplingSpecs.CreateAnimatedVector3D(normal),
+                SceneSamplingSpecs.CreateAnimatedScalar(radius),
                 false
             )
         );
@@ -950,14 +945,14 @@ public sealed class GrBabylonJsGeometryAnimationComposer :
         return this;
     }
 
-    public GrBabylonJsGeometryAnimationComposer DrawCircleSurface(Color color, IParametricCurve3D center, IParametricCurve3D normal, double radius)
+    public GrBabylonJsGeometryAnimationComposer DrawCircleSurface(Color color, Float64Path3D center, Float64Path3D normal, double radius)
     {
         SceneComposer.AddDisc(
             GrVisualCircleSurface3D.CreateAnimated(
                 GetNewSceneObjectName("circle"),
                 SurfaceStyle.GetVisualStyle(color),
-                SamplingSpecs.CreateAnimatedVector3D(center),
-                SamplingSpecs.CreateAnimatedVector3D(normal),
+                SceneSamplingSpecs.CreateAnimatedVector3D(center),
+                SceneSamplingSpecs.CreateAnimatedVector3D(normal),
                 radius,
                 false
             )
@@ -966,15 +961,15 @@ public sealed class GrBabylonJsGeometryAnimationComposer :
         return this;
     }
 
-    public GrBabylonJsGeometryAnimationComposer DrawCircleSurface(Color color, IParametricCurve3D center, IParametricCurve3D normal, IFloat64ParametricScalar radius)
+    public GrBabylonJsGeometryAnimationComposer DrawCircleSurface(Color color, Float64Path3D center, Float64Path3D normal, Float64ScalarSignal radius)
     {
         SceneComposer.AddDisc(
             GrVisualCircleSurface3D.CreateAnimated(
                 GetNewSceneObjectName("circle"),
                 SurfaceStyle.GetVisualStyle(color),
-                SamplingSpecs.CreateAnimatedVector3D(center),
-                SamplingSpecs.CreateAnimatedVector3D(normal),
-                SamplingSpecs.CreateAnimatedScalar(radius),
+                SceneSamplingSpecs.CreateAnimatedVector3D(center),
+                SceneSamplingSpecs.CreateAnimatedVector3D(normal),
+                SceneSamplingSpecs.CreateAnimatedScalar(radius),
                 false
             )
         );
@@ -983,7 +978,7 @@ public sealed class GrBabylonJsGeometryAnimationComposer :
     }
 
 
-    public GrBabylonJsGeometryAnimationComposer DrawCircleSector(Color color, LinFloat64Vector3D center, LinFloat64Vector3D direction1, LinFloat64Vector3D direction2, double radius, IParametricPolarAngle angle)
+    public GrBabylonJsGeometryAnimationComposer DrawCircleSector(Color color, LinFloat64Vector3D center, LinFloat64Vector3D direction1, LinFloat64Vector3D direction2, double radius, LinFloat64PolarAngleTimeSignal angle)
     {
         SceneComposer.AddDiscSector(
             GrVisualCircleArcSurface3D.CreateAnimated(
@@ -992,7 +987,7 @@ public sealed class GrBabylonJsGeometryAnimationComposer :
                 center,
                 direction1,
                 direction2,
-                SamplingSpecs.CreateAnimatedScalar(angle),
+                SceneSamplingSpecs.CreateAnimatedScalar(angle),
                 radius,
                 false
             )
@@ -1001,17 +996,17 @@ public sealed class GrBabylonJsGeometryAnimationComposer :
         return this;
     }
 
-    public GrBabylonJsGeometryAnimationComposer DrawCircleSector(Color color, IParametricCurve3D center, IParametricCurve3D direction1, IParametricCurve3D direction2, IFloat64ParametricScalar radius, IParametricPolarAngle angle)
+    public GrBabylonJsGeometryAnimationComposer DrawCircleSector(Color color, Float64Path3D center, Float64Path3D direction1, Float64Path3D direction2, Float64ScalarSignal radius, LinFloat64PolarAngleTimeSignal angle)
     {
         SceneComposer.AddDiscSector(
             GrVisualCircleArcSurface3D.CreateAnimated(
                 GetNewSceneObjectName("circleArc"),
                 SurfaceStyle.GetVisualStyle(color),
-                SamplingSpecs.CreateAnimatedVector3D(center),
-                SamplingSpecs.CreateAnimatedVector3D(direction1),
-                SamplingSpecs.CreateAnimatedVector3D(direction2),
-                SamplingSpecs.CreateAnimatedScalar(angle),
-                SamplingSpecs.CreateAnimatedScalar(radius),
+                SceneSamplingSpecs.CreateAnimatedVector3D(center),
+                SceneSamplingSpecs.CreateAnimatedVector3D(direction1),
+                SceneSamplingSpecs.CreateAnimatedVector3D(direction2),
+                SceneSamplingSpecs.CreateAnimatedScalar(angle),
+                SceneSamplingSpecs.CreateAnimatedScalar(radius),
                 false
             )
         );

@@ -1,19 +1,10 @@
-﻿using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space3D;
-using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.BabylonJs.Cameras;
+﻿using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.BabylonJs.Cameras;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.BabylonJs.Constants;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.Visuals;
-using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.Visuals.Space3D.Basic;
-using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.Visuals.Space3D.Grids;
-using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.Visuals.Space3D.Styles;
 using GeometricAlgebraFulcrumLib.Modeling.Signals;
-using GeometricAlgebraFulcrumLib.Utilities.Structures.BitManipulation;
-using GeometricAlgebraFulcrumLib.Utilities.Structures.Files;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using SixLabors.ImageSharp;
-using SixLabors.ImageSharp.Formats.Gif;
-using SixLabors.ImageSharp.PixelFormats;
-using Xabe.FFmpeg;
 
 namespace GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.BabylonJs.Composers;
 
@@ -21,13 +12,6 @@ public abstract class GrBabylonJsSceneSequenceComposer :
     GrVisualSceneSequenceComposer
 {
     public string HostUrl { get; init; }
-
-    //public WclHtmlImageDataUrlCache ImageCache
-    //    => CodeFilesComposer.ImageCache;
-
-    public int CanvasWidth { get; set; } = 1280;
-
-    public int CanvasHeight { get; set; } = 720;
 
     public GrBabylonJsCodeFilesComposer CodeFilesComposer { get; protected set; }
 
@@ -44,18 +28,18 @@ public abstract class GrBabylonJsSceneSequenceComposer :
     }
 
     
-    protected override void InitializeTemporalValues()
+    protected override void CleanSceneFiles()
     {
-    }
-
-    protected override void InitializeTextureSet()
-    {
+        CleanOutputFiles("*.html");
+        CleanOutputFiles("*.png");
+        CleanOutputFiles("*.gif");
+        CleanOutputFiles("*.mp4");
     }
 
     protected override void SetCameraAndLights(int frameIndex)
     {
         var (alpha, beta, distance) =
-            GetCameraAlphaBetaDistanceAtFrame(frameIndex);
+            CameraSpecs.GetCameraAlphaBetaDistanceAtFrame(frameIndex);
 
         // Add main scene camera
         MainSceneComposer.SceneObject.AddArcRotateCamera(
@@ -75,7 +59,7 @@ public abstract class GrBabylonJsSceneSequenceComposer :
         );
     }
 
-    protected virtual void AddEnvironment()
+    protected override void AddEnvironment(int frameIndex)
     {
         //var scene = MainSceneComposer.SceneObject;
         //scene.SceneProperties.AmbientColor = Color.AliceBlue;
@@ -95,84 +79,72 @@ public abstract class GrBabylonJsSceneSequenceComposer :
             }
         );
     }
-
-    protected virtual void AddGrid()
+    
+    protected override void SaveSceneFiles(int frameIndex)
     {
-        // Add ground coordinates grid
-        MainSceneComposer.GridMaterialKind =
-            GrBabylonJsGridMaterialKind.TexturedMaterial;
+        var htmlCode = 
+            CodeFilesComposer.GetHtmlCode();
 
-        MainSceneComposer.AddSquareGrid(
-            GrVisualSquareGrid3D.DefaultZx(
-                LinFloat64Vector3D.Zero,
-                GridUnitCount,
-                1,
-                0.25
-            )
+        var htmlFilePath = 
+            GetOutputFilePath(GetFrameName(frameIndex), "html");
+
+        File.WriteAllText(
+            htmlFilePath, 
+            htmlCode
         );
     }
-
-    protected void AddAxes()
+    
+    protected string GetOutputHtmlFileUrl(int frameIndex)
     {
-        var scene = MainSceneComposer.SceneObject;
-
-        // Add reference unit axis frame
-        MainSceneComposer.AddElement(
-            GrVisualFrame3D.CreateStatic(
-                "axisFrame",
-                new GrVisualFrameStyle3D
-                {
-                    OriginStyle = scene.AddSimpleMaterial("axisFrameOriginMaterial", Color.DarkGray).CreateThickSurfaceStyle(0.075),
-                    Direction1Style = scene.AddSimpleMaterial("axisFrameXMaterial", Color.DarkRed).CreateTubeCurveStyle(0.035),
-                    Direction2Style = scene.AddSimpleMaterial("axisFrameYMaterial", Color.DarkGreen).CreateTubeCurveStyle(0.035),
-                    Direction3Style = scene.AddSimpleMaterial("axisFrameZMaterial", Color.DarkBlue).CreateTubeCurveStyle(0.035)
-                },
-                AxesOrigin
-            )
-        );
+        return @$"{HostUrl}Output/{GetFrameName(frameIndex)}.html";
     }
 
-    protected abstract void AddGuiLayer(int frameIndex);
-
-    protected override void ComposeFrame(int frameIndex)
+    protected override void RenderImageFile(int frameIndex)
     {
-        InitializeSceneComposers(frameIndex);
-
-        SetCameraAndLights(frameIndex);
-        AddEnvironment();
-        if (ShowGrid) AddGrid();
-        if (ShowAxes) AddAxes();
-        if (ShowGuiLayer) AddGuiLayer(frameIndex);
-    }
-
-    protected override void ComposeSceneFiles()
-    {
-        InitializeTextureSet();
-
-        Console.Write("Composing scene files .. ");
-
-        for (var index = 0; index < FrameCount; index++)
+        const int delay1 = 2000;
+        const int delay2 = 1000;
+        
+        var chromeOptions = new ChromeOptions
         {
-            FrameIndex = index;
-            
-            ComposeFrame(index);
+            PageLoadStrategy = PageLoadStrategy.Normal,
+            UnhandledPromptBehavior = UnhandledPromptBehavior.Accept
+        };
 
-            var htmlCode = CodeFilesComposer.GetHtmlCode();
+        chromeOptions.AddUserProfilePreference("download.default_directory", GetOutputPath());
+        chromeOptions.AddUserProfilePreference("download.prompt_for_download", false);
+        chromeOptions.AddUserProfilePreference("disable-popup-blocking", "true");
 
-            var htmlFilePath = WorkingFolder.GetFilePath(
-                @$"Frame-{index:D6}",
-                "html"
-            );
+        //chromeOptions.AddAdditionalChromeOption("window-size", "1920,1080");
+        //chromeOptions.AddArgument("headless");
 
-            File.WriteAllText(htmlFilePath, htmlCode);
+        var driver = new ChromeDriver(chromeOptions);
+
+        try
+        {
+            driver.Manage().Window.Position = new System.Drawing.Point(0, 0);
+            driver.Manage().Window.Maximize();
+            driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromMilliseconds(delay1);
+
+            driver.Navigate().GoToUrl(GetOutputHtmlFileUrl(frameIndex));
+            Thread.Sleep(1000);
+
+            while (!File.Exists(GetImageFilePath(frameIndex)))
+            {
+            }
         }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error: {ex.Message}");
+        }
+        finally
+        {
+            Thread.Sleep(delay1);
 
-        FrameIndex = -1;
-
-        Console.WriteLine("done.");
+            driver.Quit();
+        }
     }
 
-    protected override void RenderImageFiles()
+    protected override void BatchRenderImageFiles()
     {
         const int delay1 = 2000;
         const int delay2 = 1000;
@@ -188,7 +160,7 @@ public abstract class GrBabylonJsSceneSequenceComposer :
             UnhandledPromptBehavior = UnhandledPromptBehavior.Accept
         };
 
-        chromeOptions.AddUserProfilePreference("download.default_directory", WorkingFolder);
+        chromeOptions.AddUserProfilePreference("download.default_directory", GetOutputPath());
         chromeOptions.AddUserProfilePreference("download.prompt_for_download", false);
         chromeOptions.AddUserProfilePreference("disable-popup-blocking", "true");
 
@@ -199,7 +171,7 @@ public abstract class GrBabylonJsSceneSequenceComposer :
 
         try
         {
-            //var htmlFilePath = WorkingPath.GetFilePath(@$"Frame-{0:D6}", "html");
+            //var htmlFilePath = GetOutputFilePath(GetFrameName(frameIndex), "html");
             //var htmlFileUri = new Uri(htmlFilePath).AbsoluteUri;
 
             driver.Manage().Window.Position = new System.Drawing.Point(0, 0);
@@ -221,27 +193,27 @@ public abstract class GrBabylonJsSceneSequenceComposer :
             startTime = DateTime.Now;
 
             FrameIndex = 0;
-            while (FrameIndex < FrameCount)
+            while (FrameIndex < ImageCount)
             {
                 var frameIndexList = new List<int>(tabHandles.Count);
 
                 foreach (var tabHandle in tabHandles)
                 {
-                    if (FrameIndex >= FrameCount) continue;
+                    if (FrameIndex >= ImageCount) continue;
 
                     frameIndexList.Add(FrameIndex);
 
-                    //htmlFilePath = WorkingPath.GetFilePath(@$"Frame-{index:D6}", "html");
+                    //htmlFilePath = GetOutputFilePath(GetFrameName(FrameIndex), "html");
                     //htmlFileUri = new Uri(htmlFilePath).AbsoluteUri;
 
                     driver.SwitchTo().Window(tabHandle);
-                    driver.Navigate().GoToUrl(@$"{HostUrl}Frame-{FrameIndex:D6}.html");
+                    driver.Navigate().GoToUrl(GetOutputHtmlFileUrl(FrameIndex));
 
                     //var canvas = driver.FindElement(By.Id("renderCanvas"));
                     //var screenShot = ((ITakesScreenshot) canvas).GetScreenshot();
 
                     //screenShot.SaveAsFile(
-                    //    WorkingPath.GetFilePath($"Frame-{index:D6}", "png"),
+                    //    GetOutputImagePath(FrameIndex),
                     //    ScreenshotImageFormat.Png
                     //);
 
@@ -254,13 +226,13 @@ public abstract class GrBabylonJsSceneSequenceComposer :
                     Thread.Sleep(200);
                 }
 
-                //var flag = false;
-                //while (!flag)
-                //{
-                //    flag = frameIndexList.All(i =>
-                //        File.Exists(WorkingFolder.GetFilePath(@$"Frame-{i:D6}", "png"))
-                //    );
-                //}
+                var flag = false;
+                while (!flag)
+                {
+                    flag = frameIndexList.All(i =>
+                        File.Exists(GetImageFilePath(i))
+                    );
+                }
 
                 //Thread.Sleep(delay1);
                 //Thread.Sleep(FrameIndex == 0 ? delay1 : delay2);
@@ -285,149 +257,5 @@ public abstract class GrBabylonJsSceneSequenceComposer :
         Console.WriteLine($"Rendering image files done in {timeSpan.Minutes} minutes.");
     }
 
-    protected override void RenderGifFile()
-    {
-        Console.Write("Rendering animated GIF file .. ");
 
-        // Image dimensions of the gif.
-        using var firstImageStream = File.OpenRead(
-            WorkingFolder.GetFilePath(@$"Frame-{0:D6}", "png")
-        );
-
-        var firstImageInfo = Image.Identify(firstImageStream);
-
-        var width = firstImageInfo.Width;
-        var height = firstImageInfo.Height;
-
-        firstImageStream.Close();
-
-        //// For demonstration: use images with different colors.
-        //Color[] colors = {
-        //    Color.Green,
-        //    Color.Red
-        //};
-
-        // Create empty image.
-        using var animatedGif = new Image<Rgba32>(width, height, Color.Blue);
-
-        // Set animation loop repeat count to 10.
-        var gifMetaData = animatedGif.Metadata.GetGifMetadata();
-        gifMetaData.RepeatCount = 10;
-        gifMetaData.ColorTableMode = GifColorTableMode.Global;
-
-        // Set the delay until the next image is displayed.
-        var metadata = animatedGif.Frames.RootFrame.Metadata.GetGifMetadata();
-        metadata.FrameDelay = GifFrameDelay;
-
-        for (var i = 0; i < FrameCount; i++)
-        {
-            using var imageStream = File.OpenRead(
-                WorkingFolder.GetFilePath(@$"Frame-{i:D6}", "png")
-            );
-
-            // Create a color image, which will be added to the gif.
-            using var image = Image.Load(imageStream);
-
-            // Set the delay until the next image is displayed.
-            metadata = image.Frames.RootFrame.Metadata.GetGifMetadata();
-            metadata.FrameDelay = GifFrameDelay;
-
-            // Add the color image to the gif.
-            animatedGif.Frames.AddFrame(image.Frames.RootFrame);
-        }
-
-        // Save the final result.
-        animatedGif.SaveAsGif(
-            WorkingFolder.GetFilePath(Title, "gif")
-        );
-
-        Console.WriteLine("done.");
-        Console.WriteLine();
-    }
-
-    protected override void RenderVideoFile()
-    {
-        Console.Write("Rendering video file .. ");
-
-        var imageFileList = new List<string>(
-            FrameCount.MapRange(i => 
-                WorkingFolder.GetFilePath(
-                    @$"Frame-{i:D6}",
-                    "png"
-                )
-            )
-        );
-
-        FFmpeg.SetExecutablesPath(@"D:\ffmpeg\bin");
-
-        var videoFilePath = WorkingFolder.GetFilePath("Scene.mp4");
-
-        if (File.Exists(videoFilePath))
-            File.Delete(videoFilePath);
-
-        new Conversion()
-            .SetInputFrameRate(VideoFrameRate)
-            .BuildVideoFromImages(imageFileList)
-            //.SetFrameRate(1)
-            .SetPixelFormat(PixelFormat.yuv420p)
-            .SetOutput(videoFilePath)
-            .Start();
-
-        Console.WriteLine("done.");
-        Console.WriteLine();
-    }
-
-    public override void RenderFiles()
-    {
-        // Delete any old html\png files
-        Array.ForEach(
-            Directory.GetFiles(
-                WorkingFolder,
-                @"Frame-*.html",
-                SearchOption.TopDirectoryOnly
-            ),
-            File.Delete
-        );
-
-        Array.ForEach(
-            Directory.GetFiles(
-                WorkingFolder,
-                @"Frame-*.png",
-                SearchOption.TopDirectoryOnly
-            ),
-            File.Delete
-        );
-
-        bool htmlFilesExist;
-        bool pngFilesExist;
-        do
-        {
-            htmlFilesExist =
-                Directory.GetFiles(
-                    WorkingFolder,
-                    @"Frame-*.html",
-                    SearchOption.TopDirectoryOnly
-                ).Length > 0;
-
-            pngFilesExist =
-                Directory.GetFiles(
-                    WorkingFolder,
-                    @"Frame-*.png",
-                    SearchOption.TopDirectoryOnly
-                ).Length > 0;
-        } while (htmlFilesExist || pngFilesExist);
-
-        ComposeSceneFiles();
-
-        if (!RenderImageFilesEnabled && !RenderGifFileEnabled && !RenderVideoFileEnabled)
-            return;
-
-        RenderImageFiles();
-
-        if (RenderGifFileEnabled)
-            RenderGifFile();
-
-        if (RenderVideoFileEnabled)
-            RenderVideoFile();
-    }
 }

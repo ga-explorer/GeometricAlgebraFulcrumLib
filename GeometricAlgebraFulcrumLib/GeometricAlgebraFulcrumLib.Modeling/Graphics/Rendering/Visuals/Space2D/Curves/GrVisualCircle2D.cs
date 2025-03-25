@@ -18,7 +18,7 @@ public sealed class GrVisualCircle2D :
         => 360;
 
     public override double Length 
-        => 2d * Math.PI * Radius;
+        => Math.Tau * Radius;
 
 
     public GrVisualCircle2D(string name, IGrVisualCurveStyle2D style, ILinFloat64Vector2D center, double radius)
@@ -38,7 +38,7 @@ public sealed class GrVisualCircle2D :
         
     public Triplet<LinFloat64Vector2D> GetPointsTriplet()
     {
-        const double angle = 2d * Math.PI / 3d;
+        const double angle = Math.Tau / 3d;
 
         var a = Radius * Math.Cos(angle);
         var b = Radius * Math.Sin(angle);
@@ -53,7 +53,7 @@ public sealed class GrVisualCircle2D :
     public override IPointsPath2D GetPositionsPath()
     {
         var angles = 
-            0d.GetLinearRange(2d * Math.PI, PathPointCount, false);
+            0d.GetLinearRange(Math.Tau, PathPointCount, false);
 
         var points =
             angles.Select(angle => 

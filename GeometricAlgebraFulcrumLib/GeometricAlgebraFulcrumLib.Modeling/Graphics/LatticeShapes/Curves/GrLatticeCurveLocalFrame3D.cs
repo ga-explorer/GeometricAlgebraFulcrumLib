@@ -2,7 +2,7 @@
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Frames.Space3D;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space3D;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.Parametric.Float64.Space3D.Curves;
+using GeometricAlgebraFulcrumLib.Modeling.Trajectories.Vectors3D.Float64;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Basic;
 using SixLabors.ImageSharp;
 
@@ -11,7 +11,7 @@ using SixLabors.ImageSharp;
 namespace GeometricAlgebraFulcrumLib.Modeling.Graphics.LatticeShapes.Curves;
 
 public sealed class GrLatticeCurveLocalFrame3D : 
-    IParametricCurveLocalFrame3D
+    IFloat64Path3DLocalFrame
 {
     public GrLatticeCurve3D ParentCurve { get; }
 
@@ -73,7 +73,7 @@ public sealed class GrLatticeCurveLocalFrame3D :
 
     public LinFloat64Vector3D Tangent { get; }
 
-    public Float64Scalar ParameterValue { get; private set; }
+    public double TimeValue { get; private set; }
 
     public Color Color { get; set; }
 

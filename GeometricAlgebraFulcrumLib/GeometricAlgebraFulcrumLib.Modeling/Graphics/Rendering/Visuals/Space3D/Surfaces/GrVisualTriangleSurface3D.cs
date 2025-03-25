@@ -233,21 +233,21 @@ public sealed class GrVisualTriangleSurface3D :
     {
         return SamplingSpecs.IsStatic || AnimatedPosition1 is null
             ? Position1.ToLinVector3D()
-            : AnimatedPosition1.GetPoint(time);
+            : AnimatedPosition1.GetValue(time);
     }
         
     public LinFloat64Vector3D GetPosition2(double time)
     {
         return SamplingSpecs.IsStatic || AnimatedPosition2 is null
             ? Position2.ToLinVector3D()
-            : AnimatedPosition2.GetPoint(time);
+            : AnimatedPosition2.GetValue(time);
     }
         
     public LinFloat64Vector3D GetPosition3(double time)
     {
         return SamplingSpecs.IsStatic || AnimatedPosition3 is null
             ? Position3.ToLinVector3D()
-            : AnimatedPosition3.GetPoint(time);
+            : AnimatedPosition3.GetValue(time);
     }
     
     public LinFloat64Vector3D GetDirection1(double time)

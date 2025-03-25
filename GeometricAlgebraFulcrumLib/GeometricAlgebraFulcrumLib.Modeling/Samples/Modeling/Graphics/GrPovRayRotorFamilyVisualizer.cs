@@ -8,14 +8,11 @@ using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.PovRay.Materials.Fi
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.PovRay.Materials.Patterns;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.PovRay.Materials.Pigments;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.PovRay.Objects;
-using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.Visuals.Space3D.Grids;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.Visuals.Space3D.Styles;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.Visuals.Space3D.Surfaces;
 using GeometricAlgebraFulcrumLib.Modeling.Signals;
-using GeometricAlgebraFulcrumLib.Modeling.Temporal.Float64.Scalars;
+using GeometricAlgebraFulcrumLib.Modeling.Trajectories.Scalars.Float64;
 using GeometricAlgebraFulcrumLib.Utilities.Web.Colors;
-using GeometricAlgebraFulcrumLib.Utilities.Web.Images;
-using GeometricAlgebraFulcrumLib.Utilities.Web.LaTeX.KaTeX;
 using OxyPlot;
 using OxyPlot.Axes;
 using OxyPlot.Series;
@@ -31,8 +28,8 @@ public class GrPovRayRotorFamilyVisualizer :
 
     public LinFloat64Vector3D TargetVector { get; }
 
-    public TemporalFloat64Scalar ThetaValues 
-        => TemporalScalarSet["theta"];
+    public Float64ScalarSignal ThetaValues 
+        => TemporalScalars["theta"];
     
     public bool DrawRotorTrace { get; init; }
 
@@ -123,7 +120,7 @@ public class GrPovRayRotorFamilyVisualizer :
 
     public LinFloat64Angle GetThetaAtFrame(int frameIndex)
     {
-        return TemporalScalarSet
+        return TemporalScalars
             .GetScalarAtFrame("theta", frameIndex)
             .RadiansToDirectedAngle();
     }
@@ -203,15 +200,13 @@ public class GrPovRayRotorFamilyVisualizer :
     }
     
 
-    protected override void InitializeTemporalValues()
+    protected override void AddTemporalValues()
     {
-        Console.Write("Generating temporal values .. ");
-
         var thetaLimit = 90d.DegreesToRadians() - 5e-5d;
-        TemporalScalarSet.SetScalar(
+        TemporalScalars.SetScalar(
             "theta", 
-            TemporalFloat64Scalar
-                .FullCos()
+            Float64ScalarSignal
+                .FiniteCos()
                 .Repeat(
                     1,
                     0, 
@@ -221,82 +216,69 @@ public class GrPovRayRotorFamilyVisualizer :
                 )
         );
 
-        TemporalScalarSet.SetScalar(
+        TemporalScalars.SetScalar(
             "sourceVector.color.alpha",
-            TemporalFloat64Scalar
-                .SmoothRectangle()
+            Float64ScalarSignal
+                .FiniteSmoothRectangle()
                 .Repeat(10, 0, 1, 0, 1)
         );
         
-        TemporalScalarSet.SetScalar(
+        TemporalScalars.SetScalar(
             "targetVector.color.alpha",
-            TemporalFloat64Scalar
-                .SmoothRectangle()
+            Float64ScalarSignal
+                .FiniteSmoothRectangle()
                 .Repeat(10, 0, 1, 0, 1)
         );
-
-        Console.WriteLine("done.");
-        Console.WriteLine();
     }
 
-    private WclKaTeXComposer RenderLaTeXTextures()
+    protected override void AddLaTeXTextures()
     {
-        Console.Write("Generating LaTeX images .. ");
-
-        var katexComposer = new WclKaTeXComposer(WorkingFolder)
-        {
-            FontSizeEm = 2,
-            Output = WclKaTeXComposer.OutputKind.Html,
-            ThrowOnError = false,
-            SaveImages = false
-        };
-
-        katexComposer.AddLaTeXEquation(
+        KaTeXComposer.AddLaTeXEquation(
             "sourceVectorText",
             @"\boldsymbol{u}"
         );
 
-        katexComposer.AddLaTeXEquation(
+        KaTeXComposer.AddLaTeXEquation(
             "targetVectorText",
             @"\boldsymbol{v}"
         );
 
-        katexComposer.AddLaTeXEquation(
+        KaTeXComposer.AddLaTeXEquation(
             "sourceVector1Text",
             @"\boldsymbol{u}\left(\theta\right)"
         );
 
-        katexComposer.AddLaTeXEquation(
+        KaTeXComposer.AddLaTeXEquation(
             "targetVector1Text",
             @"\boldsymbol{v}\left(\theta\right)"
         );
 
-        katexComposer.AddLaTeXEquation(
+        KaTeXComposer.AddLaTeXEquation(
             "phiMinRotorText",
             @"\boldsymbol{R}\left(0\right)"
         );
 
-        katexComposer.AddLaTeXEquation(
+        KaTeXComposer.AddLaTeXEquation(
             "thetaRotorText",
             @"\boldsymbol{S}\left(\theta\right)"
         );
 
-        katexComposer.AddLaTeXEquation(
+        KaTeXComposer.AddLaTeXEquation(
             "phiRotorText",
             @"\boldsymbol{R}\left(\theta\right)"
         );
 
-        katexComposer.AddLaTeXEquation(
+        KaTeXComposer.AddLaTeXEquation(
             "phiRotorCopyText",
             @"\boldsymbol{R}\left(\theta\right)"
         );
 
-        katexComposer.AddLaTeXEquation(
+        KaTeXComposer.AddLaTeXEquation(
             "thetaRotorPlaneText",
             @"\boldsymbol{B}"
         );
 
-        katexComposer.AddLaTeXEquation(
+        KaTeXComposer.AddLaTeXEquation(
             "phiRotorPlaneText",
             @"\boldsymbol{N}\left(\theta\right)"
         );
@@ -308,7 +290,7 @@ public class GrPovRayRotorFamilyVisualizer :
         var vuDiff = (TargetVector - SourceVector).ToUnitLinVector3D();
         var uvNormal = SourceVector.VectorUnitCross(TargetVector);
 
-        //katexComposer.AddLaTeXAlignedEquations(
+        //KaTeXComposer.AddLaTeXAlignedEquations(
         //    "modelText",
         //    new Pair<string>[]
         //    {
@@ -337,7 +319,7 @@ public class GrPovRayRotorFamilyVisualizer :
         //    var u1 = SourceVector.RejectOnVector(uvNormal1);
         //    var v1 = TargetVector.RejectOnVector(uvNormal1);
 
-        //    katexComposer.AddLaTeXAlignedEquations(
+        //    KaTeXComposer.AddLaTeXAlignedEquations(
         //        $"dataText-{frameIndex:D6}",
         //        new Pair<string>[]
         //        {
@@ -349,287 +331,16 @@ public class GrPovRayRotorFamilyVisualizer :
         //        }
         //    );
         //}
-
-        katexComposer.RenderKaTeX();
-        
-        Console.WriteLine("done.");
-        Console.WriteLine();
-
-        return katexComposer;
     }
 
-    protected override void InitializeTextureSet()
-    {
-        Console.Write("Generating images cache .. ");
-
-        //ImageCache.MarginSize = 0;
-        //ImageCache.BackgroundColor = Color.FromRgba(255, 255, 255, 0);
-
-        //if (ShowCopyright)
-        //{
-        //    ImageSet.AddImageFromPngFile("images", "Copyright");
-
-        //    //ImageCache.AddPngFromFile(
-        //    //    "copyright",
-        //    //    workingPath.GetFilePath("Copyright.png")
-        //    //);
-        //}
-
-        //ImageSet.AddImages(
-        //    "ThetaPhiPlot",
-        //    FrameCount.MapRange(i => 
-        //        new KeyValuePair<string, Image>(
-        //            $"ThetaPhiPlot-{i:D6}", 
-        //            GetThetaPhiPlotImage(i)
-        //        )
-        //    )
-        //);
-
-        ////for (var i = 0; i < FrameCount; i++)
-        ////{
-        ////    ImageCache.AddPng(
-        ////        $"ThetaPhiPlot-{i:D6}",
-        ////        GetThetaPhiPlotImage(i)
-        ////    );
-        ////}
-
-        TextureSet.AddTextures(
-            "latex", 
-            RenderLaTeXTextures()
-        );
-
-        TextureSet.FinalizeTextures();
-
-        Console.WriteLine("done.");
-        Console.WriteLine();
-    }
-
-    protected override void InitializeSceneComposers(int frameIndex)
-    {
-        //ActiveSceneComposer = new GrPovRaySceneComposer(
-        //    "mainScene",
-        //    new GrPovRaySnapshotSpecs
-        //    {
-        //        Enabled = true,
-        //        DefaultSceneOptions = new GrPovRayRenderingOptions()
-        //        {
-        //            Width = CanvasWidth,
-        //            Height = CanvasHeight,
-                    
-        //        }
-        //        Precision = 1,
-        //        UsePrecision = true,
-        //        Delay = index == 0 ? 2000 : 1000,
-        //        FileName = $"Frame-{index:D6}.png"
-        //    }
-        //)
-        //{
-        //    BackgroundColor = Color.AliceBlue,
-        //    ShowDebugLayer = false
-        //};
-    }
-    
-
-    protected override void AddGrid()
-    {
-        // Add ground coordinates grid
-        ActiveSceneComposer.GridMaterialKind =
-            GrPovRayGridMaterialKind.TexturedMaterial;
-        
-        var imageComposer = new GrVisualGridImageComposer()
-        {
-            BaseSquareColor = Color.LightYellow,
-            BaseLineColor = Color.BurlyWood,
-            MidLineColor = Color.SandyBrown,
-            BorderLineColor = Color.SaddleBrown,
-            BaseSquareCount = 4,
-            BaseSquareSize = 64,
-            BaseLineWidth = 2,
-            MidLineWidth = 4,
-            BorderLineWidth = 3
-        };
-
-        imageComposer.SetGridColorsOpacity(1);
-
-        ActiveSceneComposer.AddSquareGrid(
-            GrVisualSquareGrid3D.DefaultZx(
-                -5 * LinFloat64Vector3D.E2, 
-                GridUnitCount,
-                1,
-                1
-            )
-        );
-    }
-
-    protected override void AddGuiLayer(int frameIndex)
-    {
-        //var scene = ActiveSceneComposer.SceneObject;
-
-        //// Add GUI layer
-        //var uiTexture = scene.AddGuiFullScreenUi("uiTexture");
-        
-        //if (ShowCopyright)
-        //{
-        //    var copyrightImage = ImageCache["copyright"];
-        //    var copyrightImageWidth = 0.4d * CodeFilesComposer.CanvasWidth;
-        //    var copyrightImageHeight = 0.4d * CodeFilesComposer.CanvasWidth * copyrightImage.HeightToWidthRatio;
-
-        //    uiTexture.AddGuiImage(
-        //        "copyrightImage",
-        //        copyrightImage.GetUrl(),
-        //        new GrPovRayGuiImageProperties
-        //        {
-        //            Stretch = GrPovRayImageStretch.Uniform,
-        //            //Alpha = 0.75d,
-        //            WidthInPixels = copyrightImageWidth,
-        //            HeightInPixels = copyrightImageHeight,
-        //            PaddingLeftInPixels = 10,
-        //            PaddingBottomInPixels = 10,
-        //            HorizontalAlignment = GrPovRayHorizontalAlignment.Left,
-        //            VerticalAlignment = GrPovRayVerticalAlignment.Bottom,
-        //        }
-        //    );
-        //}
-
-        //var uiPanel1Width = CodeFilesComposer.CanvasWidth * 0.275;
-        //var uiPanel1 = uiTexture.AddGuiStackPanel(
-        //    "uiPanel1",
-        //    new GrPovRayGuiStackPanelProperties
-        //    {
-        //        IsVertical = true,
-        //        Spacing = 10,
-        //        //Color = Color.Blue,
-        //        BackgroundColor = Color.FromRgba(208, 206, 226, 24),
-        //        PaddingLeftInPixels = 10,
-        //        PaddingTopInPixels = 10,
-        //        PaddingBottomInPixels = 10,
-        //        PaddingRightInPixels = 10,
-        //        WidthInPixels = uiPanel1Width,
-        //        HorizontalAlignment = GrPovRayHorizontalAlignment.Left,
-        //        VerticalAlignment = GrPovRayVerticalAlignment.Top
-        //    }
-        //);
-            
-        //uiPanel1.AddGuiTextBlock(
-        //    "uiTextTitle",
-        //    $"'{Title}'",
-        //    new GrPovRayGuiTextBlockProperties
-        //    {
-        //        WidthInPixels = uiPanel1Width - 20,
-        //        HeightInPixels = 50,
-        //        ResizeToFit = true,
-        //        FontSize = 36,
-        //        FontWeight = "'750'",
-        //        FontFamily = "'Georgia,Times,Times New Roman,serif'",
-        //        TextHorizontalAlignment = GrPovRayHorizontalAlignment.Left,
-        //        Color = Color.Black,
-        //        PaddingLeftInPixels = 10,
-        //        PaddingTopInPixels = 10,
-        //        PaddingBottomInPixels = 10,
-        //        PaddingRightInPixels = 10,
-        //        HorizontalAlignment = GrPovRayHorizontalAlignment.Left,
-        //        VerticalAlignment = GrPovRayVerticalAlignment.Center,
-        //    }
-        //);
-            
-        //uiPanel1.AddGuiLine(
-        //    "uiLine",
-        //    new GrPovRayGuiLineProperties
-        //    {
-        //        X1 = 10,
-        //        X2 = uiPanel1Width - 10,
-        //        Y1 = 70,
-        //        Y2 = 70,
-        //        Color = Color.Black,
-        //        LineWidth = 3
-        //    }
-        //);
-
-        //var latexPngData1 = ImageCache["modelText"];
-        //uiPanel1.AddGuiImage(
-        //    "latexGuiImage1",
-        //    latexPngData1.GetUrl(),
-        //    new GrPovRayGuiImageProperties
-        //    {
-        //        //Alpha = 0.5d,
-        //        WidthInPixels = uiPanel1Width - 20,
-        //        HeightInPixels = (uiPanel1Width - 20) * latexPngData1.HeightToWidthRatio,
-        //        PaddingLeftInPixels = 0,
-        //        PaddingTopInPixels = 0,
-        //        PaddingBottomInPixels = 0,
-        //        PaddingRightInPixels = 0,
-        //        HorizontalAlignment = GrPovRayHorizontalAlignment.Left,
-        //        VerticalAlignment = GrPovRayVerticalAlignment.Center,
-        //        Stretch = GrPovRayImageStretch.Uniform
-        //    }
-        //);
-
-        //var uiPanel2Width = CodeFilesComposer.CanvasWidth * 0.25;
-        //var uiPanel2 = uiTexture.AddGuiStackPanel(
-        //    "uiPanel2",
-        //    new GrPovRayGuiStackPanelProperties
-        //    {
-        //        IsVertical = true,
-        //        Spacing = 10,
-        //        //Color = Color.Blue,
-        //        BackgroundColor = Color.FromRgba(208, 206, 226, 24),
-        //        PaddingLeftInPixels = 10,
-        //        PaddingTopInPixels = 10,
-        //        PaddingBottomInPixels = 10,
-        //        PaddingRightInPixels = 10,
-        //        WidthInPixels = uiPanel2Width,
-        //        HorizontalAlignment = GrPovRayHorizontalAlignment.Right,
-        //        VerticalAlignment = GrPovRayVerticalAlignment.Top
-        //    }
-        //);
-
-        //var thetaPhiPlotData = ImageCache[$"ThetaPhiPlot-{index:D6}"];
-        //uiPanel2.AddGuiImage(
-        //    "thetaPhiPlotGuiImage",
-        //    thetaPhiPlotData.GetUrl(),
-        //    new GrPovRayGuiImageProperties
-        //    {
-        //        Stretch = GrPovRayImageStretch.Uniform,
-        //        //Alpha = 0.5d,
-        //        WidthInPixels = uiPanel2Width - 20,
-        //        HeightInPixels = (uiPanel2Width - 20) * thetaPhiPlotData.HeightToWidthRatio,
-        //        PaddingLeftInPixels = 0,
-        //        PaddingTopInPixels = 0,
-        //        PaddingBottomInPixels = 0,
-        //        PaddingRightInPixels = 0,
-        //        HorizontalAlignment = GrPovRayHorizontalAlignment.Center,
-        //        VerticalAlignment = GrPovRayVerticalAlignment.Center,
-        //    }
-        //);
-
-        //var dataTextImageData = ImageCache[$"dataText-{index:D6}"];
-        //var dataTextImageWidth = uiPanel2Width * dataTextImageData.Width / DataTextImageMaxWidth;
-
-        //uiPanel2.AddGuiImage(
-        //    "latexGuiImage2",
-        //    dataTextImageData.GetUrl(),
-        //    new GrPovRayGuiImageProperties
-        //    {
-        //        //Alpha = 0.5d,
-        //        WidthInPixels = dataTextImageWidth,
-        //        HeightInPixels = dataTextImageWidth * dataTextImageData.HeightToWidthRatio,
-        //        PaddingLeftInPixels = 5,
-        //        PaddingTopInPixels = 0,
-        //        PaddingBottomInPixels = 0,
-        //        PaddingRightInPixels = 5,
-        //        HorizontalAlignment = GrPovRayHorizontalAlignment.Left,
-        //        VerticalAlignment = GrPovRayVerticalAlignment.Top
-        //    }
-        //);
-    }
 
     private void AddInputVectors(int frameIndex)
     {
         var sourceVectorColorAlpha = 
-            TemporalScalarSet.GetScalarAtFrame("sourceVector.color.alpha", frameIndex);
+            TemporalScalars.GetScalarAtFrame("sourceVector.color.alpha", frameIndex);
 
         var targetVectorColorAlpha = 
-            TemporalScalarSet.GetScalarAtFrame("targetVector.color.alpha", frameIndex);
+            TemporalScalars.GetScalarAtFrame("targetVector.color.alpha", frameIndex);
 
         ActiveSceneComposer.AddVector(
             "sourceVector",
@@ -640,7 +351,7 @@ public class GrPovRayRotorFamilyVisualizer :
             0.075
         ).AddLaTeXText(
             "sourceVectorText", 
-            TextureSet["latex", "sourceVectorText"], 
+            ImageSet["latex", "sourceVectorText"], 
             SourceVector * 4.35d, 
             LaTeXScalingFactor
         );
@@ -654,7 +365,7 @@ public class GrPovRayRotorFamilyVisualizer :
             0.075
         ).AddLaTeXText(
             "targetVectorText",
-            TextureSet["latex", "targetVectorText"],
+            ImageSet["latex", "targetVectorText"],
             TargetVector * 4.35d,
             LaTeXScalingFactor
         );
@@ -701,7 +412,7 @@ public class GrPovRayRotorFamilyVisualizer :
                 0.075
             ).AddLaTeXText(
                 "sourceVector1Text", 
-                TextureSet["latex", "sourceVector1Text"], 
+                ImageSet["latex", "sourceVector1Text"], 
                 u1 + u1.ToUnitLinVector3D() * 0.35d, 
                 LaTeXScalingFactor
             );
@@ -714,7 +425,7 @@ public class GrPovRayRotorFamilyVisualizer :
                 0.075
             ).AddLaTeXText(
                 "targetVector1Text", 
-                TextureSet["latex", "targetVector1Text"], 
+                ImageSet["latex", "targetVector1Text"], 
                 v1 + v1.ToUnitLinVector3D() * 0.35d, 
                 LaTeXScalingFactor
             );
@@ -747,7 +458,7 @@ public class GrPovRayRotorFamilyVisualizer :
             System.Drawing.Color.IndianRed.ToImageSharpColor(128).ToPovRayMaterial(DefaultMaterialFinish)
         ).AddLaTeXText(
             "phiMinRotorText",
-            TextureSet["latex", "phiMinRotorText"],
+            ImageSet["latex", "phiMinRotorText"],
             0.5d.Lerp(u, v).SetLength(u1.VectorENorm() + 0.35d),
             LaTeXScalingFactor
         );
@@ -766,7 +477,7 @@ public class GrPovRayRotorFamilyVisualizer :
                 System.Drawing.Color.LightGreen.ToImageSharpColor(128).ToPovRayMaterial(DefaultMaterialFinish)
             ).AddLaTeXText(
                 "thetaRotorText",
-                TextureSet["latex", "thetaRotorText"],
+                ImageSet["latex", "thetaRotorText"],
                 0.5d.Lerp(vuSum, vuSum1).SetLength(u1.VectorENorm() + 0.35d),
                 LaTeXScalingFactor
             );
@@ -784,7 +495,7 @@ public class GrPovRayRotorFamilyVisualizer :
             System.Drawing.Color.DarkSlateBlue.ToImageSharpColor(128).ToPovRayMaterial(DefaultMaterialFinish)
         ).AddLaTeXText(
             "phiRotorText",
-            TextureSet["latex", "phiRotorText"],
+            ImageSet["latex", "phiRotorText"],
             0.5d.Lerp(u1, v1).SetLength(u1.VectorENorm() + 0.35d),
             LaTeXScalingFactor
         );
@@ -801,7 +512,7 @@ public class GrPovRayRotorFamilyVisualizer :
             System.Drawing.Color.DarkSlateBlue.ToImageSharpColor(128).ToPovRayMaterial(DefaultMaterialFinish)
         ).AddLaTeXText(
             "phiRotorCopyText",
-            TextureSet["latex", "phiRotorCopyText"],
+            ImageSet["latex", "phiRotorCopyText"],
             u - u1 + 0.5d.Lerp(u1, v1).SetLength(u1.VectorENorm() + 0.35d),
             LaTeXScalingFactor
         );
@@ -816,7 +527,7 @@ public class GrPovRayRotorFamilyVisualizer :
             System.Drawing.Color.YellowGreen.ToImageSharpColor(64)
         ).AddLaTeXText(
             "thetaRotorPlaneText",
-            TextureSet["latex", "thetaRotorPlaneText"],
+            ImageSet["latex", "thetaRotorPlaneText"],
             vuSum.SetLength(-4d),
             LaTeXScalingFactor
         );
@@ -831,7 +542,7 @@ public class GrPovRayRotorFamilyVisualizer :
             System.Drawing.Color.BurlyWood.ToImageSharpColor(64)
         ).AddLaTeXText(
             "phiRotorPlaneText",
-            TextureSet["latex", "phiRotorPlaneText"],
+            ImageSet["latex", "phiRotorPlaneText"],
             vuSum1.SetLength(-4d),
             LaTeXScalingFactor
         );
@@ -842,8 +553,7 @@ public class GrPovRayRotorFamilyVisualizer :
         var scene = ActiveSceneComposer.SceneObject;
 
         var thetaDegrees = 
-            ThetaValues
-                .GetSampledSignal(FrameCount)
+            Float64ScalarSignalUtils.GetSampledSignal(ThetaValues, ImageCount)
                 .Select(t => t.RadiansToDegrees())
                 .ToImmutableArray();
 
@@ -1007,9 +717,17 @@ public class GrPovRayRotorFamilyVisualizer :
         //);
     }
 
-    protected override void ComposeFrame(int frameIndex)
+    protected override void ComposeScene(int frameIndex)
     {
-        base.ComposeFrame(frameIndex);
+        if (ShowGrid)
+            ActiveSceneComposer.AddGrid(
+                "defaultZx",
+                -5 * LinFloat64Vector3D.E2, 
+                LinFloat64Quaternion.XyToZx, 
+                GridUnitCount,
+                1,
+                1
+            );
 
         if (DrawRotorTrace) AddRotorTrace();
 

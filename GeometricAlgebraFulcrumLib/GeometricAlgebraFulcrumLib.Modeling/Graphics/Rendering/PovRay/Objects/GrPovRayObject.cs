@@ -430,8 +430,8 @@ public abstract class GrPovRayObject :
 
     public GrPovRayMaterial? Material { get; set; }
 
-    public Float64AffineMap3D AffineMap { get; private set; } 
-        = Float64AffineMap3D.Create();
+    public Float64InvertibleAffineMap3D AffineMap { get; private set; } 
+        = Float64InvertibleAffineMap3D.Create();
 
     public IFloat64AffineMap3D Transform 
         => AffineMap;
@@ -658,13 +658,13 @@ public abstract class GrPovRayObject :
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public GrPovRayObject ResetAffineMap()
     {
-        AffineMap = Float64AffineMap3D.Create();
+        AffineMap = Float64InvertibleAffineMap3D.Create();
 
         return this;
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public GrPovRayObject SetAffineMap(Float64AffineMap3D affineMap)
+    public GrPovRayObject SetAffineMap(Float64InvertibleAffineMap3D affineMap)
     {
         AffineMap = affineMap;
 
@@ -788,7 +788,7 @@ public abstract class GrPovRayObject :
 
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public GrPovRayObject MapUsing(Float64AffineMap3D map)
+    public GrPovRayObject MapUsing(Float64InvertibleAffineMap3D map)
     {
         AffineMap.Transform(map);
 

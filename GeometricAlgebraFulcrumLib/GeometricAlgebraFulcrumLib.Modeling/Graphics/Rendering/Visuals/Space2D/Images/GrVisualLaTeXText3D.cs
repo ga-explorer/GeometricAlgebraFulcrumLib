@@ -8,7 +8,7 @@ namespace GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.Visuals.Space2D
 public sealed class GrVisualLaTeXText2D :
     GrVisualImage2D
 {
-    public static GrVisualLaTeXText2D Create(string name, IGrVisualTexture texture, ILinFloat64Vector2D position, double scalingFactor)
+    public static GrVisualLaTeXText2D Create(string name, IGrVisualImageSource texture, ILinFloat64Vector2D position, double scalingFactor)
     {
         return new GrVisualLaTeXText2D(
             name, 
@@ -19,14 +19,14 @@ public sealed class GrVisualLaTeXText2D :
     }
 
 
-    public IGrVisualTexture Texture { get; }
+    public IGrVisualImageSource Texture { get; }
 
     public double ScalingFactor { get; }
 
     public ILinFloat64Vector2D Position { get; }
         
 
-    private GrVisualLaTeXText2D(string name, IGrVisualTexture texture, ILinFloat64Vector2D position, double scalingFactor) 
+    private GrVisualLaTeXText2D(string name, IGrVisualImageSource texture, ILinFloat64Vector2D position, double scalingFactor) 
         : base(name)
     {
         Texture = texture;

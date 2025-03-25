@@ -32,7 +32,7 @@ public sealed class CircularPointsPath2D :
 
     protected override ILinFloat64Vector2D MappingFunction(double t)
     {
-        var angle = 2 * Math.PI * t;
+        var angle = Math.Tau * t;
         var cosAngle = Math.Cos(angle);
         var sinAngle = Math.Sin(angle);
 

@@ -1,12 +1,21 @@
 ﻿using System.Globalization;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Angles;
+using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Matrices;
+using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space3D;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
 using GeometricAlgebraFulcrumLib.Modeling.Calculus.Curves;
 using GeometricAlgebraFulcrumLib.Modeling.Calculus.Functions.Float64;
+using GeometricAlgebraFulcrumLib.Modeling.Calculus.Functions.Float64.Interpolators;
 using GeometricAlgebraFulcrumLib.Modeling.Calculus.Functions.Float64.Phasors;
+using GeometricAlgebraFulcrumLib.Modeling.Geometry.Parametric.Float64;
+using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.PovRay.Values;
+using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.Visuals;
+using GeometricAlgebraFulcrumLib.Modeling.Signals;
 using GeometricAlgebraFulcrumLib.Modeling.Signals.Composers;
-using GeometricAlgebraFulcrumLib.Modeling.Temporal.Float64.Scalars;
+using GeometricAlgebraFulcrumLib.Modeling.Trajectories.Scalars.Float64;
+using GeometricAlgebraFulcrumLib.Utilities.Structures.Basic;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.BitManipulation;
+using GeometricAlgebraFulcrumLib.Utilities.Text.Code.Matlab;
 using GeometricAlgebraFulcrumLib.Utilities.Web.LaTeX.CodeComposer;
 
 // ReSharper disable CompareOfFloatsByEqualityOperator
@@ -19,7 +28,7 @@ public static class PowerSignalVisualizationSample1
         => 0.1;
 
     public static double Frequency
-        => 2d * Math.PI * FrequencyHz;
+        => Math.Tau * FrequencyHz;
 
     public static double[] HarmonicFactors { get; }
         = { 1, 2, 7 };
@@ -186,7 +195,7 @@ public static class PowerSignalVisualizationSample1
         return latexComposer.ToString();
     }
 
-    private static PowerSignal3D GetPowerSignal1()
+    private static Float64PowerSignal3D GetPowerSignal1()
     {
         const int cycleCount = 2;
         const int sampleCount = 500 * cycleCount;
@@ -213,7 +222,7 @@ public static class PowerSignalVisualizationSample1
             HarmonicCount.GetRange().Select(i => DfSinPhasor.Create(
                 Magnitudes[1, i],
                 Frequency * HarmonicFactors[i],
-                (-2d * Math.PI / 3 * HarmonicFactors[i]).RadiansToDirectedAngle()
+                (-Math.Tau / 3 * HarmonicFactors[i]).RadiansToDirectedAngle()
             ))
         );
 
@@ -221,11 +230,11 @@ public static class PowerSignalVisualizationSample1
             HarmonicCount.GetRange().Select(i => DfSinPhasor.Create(
                 Magnitudes[2, i],
                 Frequency * HarmonicFactors[i],
-                (2d * Math.PI / 3 * HarmonicFactors[i]).RadiansToDirectedAngle()
+                (Math.Tau / 3 * HarmonicFactors[i]).RadiansToDirectedAngle()
             ))
         );
 
-        var powerSignal = PowerSignal3D.Create(
+        var powerSignal = Float64PowerSignal3D.Create(
             tValues,
             phase1,
             phase2,
@@ -239,10 +248,10 @@ public static class PowerSignalVisualizationSample1
         return powerSignal;
     }
 
-    private static PowerSignal3D GetPowerSignal()
+    private static Float64PowerSignal3D GetPowerSignal2()
     {
         const int cycleCount = 2;
-        const int sampleCount = 500 * cycleCount;
+        const int sampleCount = 1000 * cycleCount;
         const double tMin = 0;
 
         var tMax = cycleCount / FrequencyHz;
@@ -267,7 +276,7 @@ public static class PowerSignalVisualizationSample1
         //var phase2 = CosFunction.Create(4, Frequency, 230.DegreesToAngle());
         //var phase3 = CosFunction.Create(1, Frequency, 135.DegreesToAngle());
 
-        var powerSignal = PowerSignal3D.Create(
+        var powerSignal = Float64PowerSignal3D.Create(
             tValues,
             phase1,
             phase2,
@@ -280,8 +289,100 @@ public static class PowerSignalVisualizationSample1
 
         return powerSignal;
     }
+    
+    private static Float64PowerSignal3D GetPowerSignal()
+    {
+        const double signalFrequencyHz = 50;
+        //const int cycleCount = 10;
+        const int sampleOffset = 0; //59997;
+        const int sampleCount = 20001; //59997;
+        const int downSampleFactor = 1;
+        const double timeDilation = 400;
+        const double samplingRate = 100000 / timeDilation; //50000;
+        const double tMin = 0;
+        const double tMax = (sampleCount - 1) / samplingRate;
+        const double tDelta = 1d / samplingRate;
+        const double magnitudeFactor = 1.75; // 1 / 80d;
+        const int bezierDegree = 4;
+        const CatmullRomSplineType curveType = CatmullRomSplineType.Centripetal;
 
-    public static void Execute()
+        var downSampleCount =
+            (int)Math.Ceiling(sampleCount / (double)downSampleFactor);
+
+        var smoothingFactors = new[] { 3, 5, 7, 9 };
+
+        var matFilePath = @"D:\Projects\Study\POV-Ray\GeometricFrequency\caseR004_a.mat";
+
+        Triplet<double[]> data;
+
+        using (var fileStream = new FileStream(matFilePath, FileMode.Open))
+        {
+            var reader = new MatFileReader(fileStream);
+            
+            var matFile = reader.Read();
+
+            var i12 = matFile["R004I_R32"].Value.ConvertTo2dDoubleArray();
+
+            if (i12 is null)
+                throw new InvalidOperationException();
+
+            data = new Triplet<double[]>(
+                i12.GetRow(0).Skip(sampleOffset).Take(sampleCount).ToArray(),
+                i12.GetRow(1).Skip(sampleOffset).Take(sampleCount).ToArray(),
+                i12.GetRow(2).Skip(sampleOffset).Take(sampleCount).ToArray()
+            );
+        }
+
+        var tValues =
+            tMin.GetLinearRange(
+                tMax,
+                sampleCount,
+                false
+            ).CreateSignal(samplingRate);
+
+        var (phaseFunction1, phaseFunction2, phaseFunction3) =
+            data.MapItems(p =>
+                p.CreateSignal(
+                    samplingRate,
+                    d => d * magnitudeFactor
+                ).GetCatmullRomInterpolator(
+                    new DfCatmullRomSplineSignalInterpolatorOptions
+                    {
+                        BezierDegree = bezierDegree,
+                        SmoothingFactors = smoothingFactors,
+                        SplineType = curveType
+                    }
+                )
+            );
+
+        //var (phaseFunction1, phaseFunction2, phaseFunction3) =
+        //    data.MapItems(p =>
+        //        p.CreateSignal(
+        //            samplingRate, 
+        //            d => d * magnitudeFactor
+        //        ).GetLinearInterpolator(
+        //            new DfLinearSplineSignalInterpolatorOptions
+        //            {
+        //                SmoothingFactors = smoothingFactors
+        //            }
+        //        )
+        //    );
+
+        var powerSignal = Float64PowerSignal3D.Create(
+            tValues,
+            phaseFunction1,
+            phaseFunction2,
+            phaseFunction3
+        );
+
+        powerSignal.LaTeXCode = "";  //GetSignalLaTeXCode();
+
+        powerSignal.InitializeComponents();
+
+        return powerSignal;
+    }
+
+    public static void ExecuteBabylonJs()
     {
         const bool renderAnimations = true;
 
@@ -292,7 +393,7 @@ public static class PowerSignalVisualizationSample1
 
         Console.WriteLine($"Mean omega: {omegaMean}");
         Console.WriteLine($"Mean omega norm: {omegaMeanNorm}");
-        Console.WriteLine($"Mean omega norm Hz: {omegaMeanNorm / (2 * Math.PI)}");
+        Console.WriteLine($"Mean omega norm Hz: {omegaMeanNorm / (Math.Tau)}");
         Console.WriteLine($"Mean omega norm / frequency: {omegaMeanNorm / Frequency}");
         Console.WriteLine();
 
@@ -302,8 +403,8 @@ public static class PowerSignalVisualizationSample1
             powerSignal
         )
         {
-            Title = "Unbalanced 3-phase sinusoidal signal",
-            HostUrl = "http://localhost:5200/",
+            SceneTitle = "Unbalanced 3-phase sinusoidal signal",
+            HostUrl = "http://localhost:5500/",
             //LiveReloadWebServer "D:/Projects/Study/Babylon.js/" --port 5200 --UseSsl False --LiveReloadEnabled False --OpenBrowser True
 
             TrailSampleCount = powerSignal.SampleCount / 2,
@@ -312,22 +413,105 @@ public static class PowerSignalVisualizationSample1
             ShowCopyright = true,
             ShowLeftPanel = false,
             ShowRightPanel = true,
+            LaTeXScalingFactor = 1d / 96,
+            SceneRenderMethod = renderAnimations 
+                ? GrVisualSceneSequenceComposer.RenderImageFilesMethod.PerScene 
+                : GrVisualSceneSequenceComposer.RenderImageFilesMethod.Disabled,
 
-            RenderImageFilesEnabled = renderAnimations,
             RenderGifFileEnabled = false,
             RenderVideoFileEnabled = renderAnimations
         };
         
         var alpha = 
-            TemporalFloat64Scalar
-                .FullCos(30, 150)
+            Float64ScalarSignal
+                .FiniteRamp()
+                .MapValueRangeTo(0, Math.Tau);
+
+        var beta = 
+            72.DegreesToRadians();
+
+        visualizer.SetCamera(alpha, beta, 11);
+        visualizer.SetCanvas720p();
+
+        visualizer.ComposeSceneSequence();
+    }
+    
+    public static void ExecutePovRay()
+    {
+        const bool renderAnimations = true;
+
+        var powerSignal = GetPowerSignal();
+
+        var omegaMean = powerSignal.GetDarbouxBivectorMean();
+        var omegaMeanNorm = omegaMean.Norm();
+
+        Console.WriteLine($"Mean omega: {omegaMean}");
+        Console.WriteLine($"Mean omega norm: {omegaMeanNorm}");
+        Console.WriteLine($"Mean omega norm Hz: {omegaMeanNorm / (Math.Tau)}");
+        Console.WriteLine($"Mean omega norm / frequency: {omegaMeanNorm / Frequency}");
+        Console.WriteLine();
+
+        var visualizer = new GrPovRayPowerSignalVisualizer(
+            @"D:\Projects\Study\POV-Ray\GeometricFrequency\", 
+            Float64SamplingSpecs.Create(16, powerSignal.MaxTime), 
+            powerSignal
+        )
+        {
+            SceneTitle = "R004I_R32",
+
+            TimeScaling = 1d / 400,
+            SignalScaling = 1/1.75d, //80,
+
+            DefaultRenderingOptions =
+            {
+                Display = false,
+                AntiAlias = true,
+                AntiAliasDepth = 2,
+                MaxImageBufferMemory = 10240,
+                Quality = 9,
+                OutputFileType = GrPovRayOutputFileTypeValue.Png,
+                //WorkThreads = 2
+            },
+
+            ShowGrid = true,
+            ShowCopyright = true,
+            ShowGuiLayer = true,
+            ShowLeftPanel = false,
+            ShowRightPanel = true,
+
+            AxesOrigin = LinFloat64Vector3D.Create(0, -3, 0),
+            GridUnitCount = 20,
+            LaTeXScalingFactor = 1d / 96d,
+
+            ClearOutputFilesEnabled = true,
+            ComposeSceneFilesEnabled = true,
+
+            MeanSampleCount = 2000,
+            TrailSampleCount = 2000,
+            PlotSampleCount = 2000,
+            FrameSeparationCount = 100,
+
+            SceneRenderMethod = renderAnimations 
+                ? GrVisualSceneSequenceComposer.RenderImageFilesMethod.PerScene 
+                : GrVisualSceneSequenceComposer.RenderImageFilesMethod.Disabled,
+
+            RenderGifFileEnabled = false,
+            RenderVideoFileEnabled = renderAnimations
+        };
+        
+        var alpha = 
+            Float64ScalarSignal
+                .FiniteRamp()
+                .MapValueRangeTo(90, 360 + 90)
                 .DegreesToRadians();
 
         var beta = 
             72.DegreesToRadians();
 
-        visualizer.SetCameraAlphaBetaDistance(alpha, beta, 11);
-
-        visualizer.RenderFiles();
+        visualizer.SetCamera(alpha, beta, 15);
+        visualizer.SetCanvas720p();
+        //visualizer.SetFrameRange(601, 605);
+        visualizer.ComposeSceneSequence();
+        //visualizer.RenderVideoFile();
     }
 }

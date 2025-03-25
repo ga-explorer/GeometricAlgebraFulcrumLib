@@ -1,7 +1,7 @@
 ﻿using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space3D;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.Parametric.Float64.Space1D.Scalars.Harmonic;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.Visualizer;
 using GeometricAlgebraFulcrumLib.Modeling.Signals;
+using GeometricAlgebraFulcrumLib.Modeling.Trajectories.Scalars.Float64;
 using GeometricAlgebraFulcrumLib.Utilities.Web.Colors;
 using SixLabors.ImageSharp;
 
@@ -20,7 +20,7 @@ public static class AnimatedCirclesSample
         var normal =
             LinFloat64Vector3D.E2;
 
-        var radius = CosWaveParametricScalar.Create(
+        var radius = Float64ScalarSignal.FiniteCosWave(
             samplingSpecs.TimeRange,
             1,
             5,
@@ -32,8 +32,7 @@ public static class AnimatedCirclesSample
             samplingSpecs
         );
 
-        animationComposer.SetFileNameAndTitle(
-            "AnimatedCircleScene",
+        animationComposer.SetTitle(
             "Animated Circle Curve"
         );
         
@@ -55,7 +54,7 @@ public static class AnimatedCirclesSample
         var normal =
             LinFloat64Vector3D.E2;
 
-        var radius = CosWaveParametricScalar.Create(
+        var radius = Float64ScalarSignal.FiniteCosWave(
             samplingSpecs.TimeRange,
             1,
             5,
@@ -67,8 +66,7 @@ public static class AnimatedCirclesSample
             samplingSpecs
         );
 
-        animationComposer.SetFileNameAndTitle(
-            "CircleSurfaceScene",
+        animationComposer.SetTitle(
             "Circle Surface Scene"
         );
 

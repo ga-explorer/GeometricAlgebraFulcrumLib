@@ -6,6 +6,7 @@ using OfficeOpenXml;
 using GeometricAlgebraFulcrumLib.Modeling.Calculus.Functions.Float64;
 using GeometricAlgebraFulcrumLib.Modeling.Calculus.Functions.Float64.Interpolators;
 using GeometricAlgebraFulcrumLib.Modeling.Signals;
+using GeometricAlgebraFulcrumLib.Modeling.Signals.Composers;
 using GeometricAlgebraFulcrumLib.Modeling.Utilities;
 
 namespace GeometricAlgebraFulcrumLib.Applications.PowerSystems.SystemIdentification;
@@ -51,7 +52,7 @@ public static class Model3Samples
             SignalSamplesCount
         );
 
-    public static RGaEuclideanProcessor<Float64Signal> GeometricSignalProcessor { get; }
+    public static RGaEuclideanProcessor<Float64SampledTimeSignal> GeometricSignalProcessor { get; }
         = ScalarSignalProcessor.CreateEuclideanRGaProcessor();
     
 
@@ -76,7 +77,7 @@ public static class Model3Samples
     }
     
     
-    private static void ParallelRL0(Float64Signal tData, DifferentialFunction iFunc, DifferentialFunction vFunc, Float64Signal vIt1)
+    private static void ParallelRL0(Float64SampledTimeSignal tData, DifferentialFunction iFunc, DifferentialFunction vFunc, Float64SampledTimeSignal vIt1)
     {
         const string modelName = "Parallel - RL 0";
         
@@ -138,7 +139,7 @@ public static class Model3Samples
         package.SaveAs(outputFilePath);
     }
     
-    private static void ParallelRL1(Float64Signal tData, DifferentialFunction iFunc, DifferentialFunction vFunc)
+    private static void ParallelRL1(Float64SampledTimeSignal tData, DifferentialFunction iFunc, DifferentialFunction vFunc)
     {
         const string modelName = "Parallel - RL 1";
         
@@ -207,7 +208,7 @@ public static class Model3Samples
     }
     
 
-    private static void ParallelRC0(Float64Signal tData, DifferentialFunction iFunc, DifferentialFunction vFunc)
+    private static void ParallelRC0(Float64SampledTimeSignal tData, DifferentialFunction iFunc, DifferentialFunction vFunc)
     {
         const string modelName = "Parallel - RC 0";
         
@@ -275,7 +276,7 @@ public static class Model3Samples
         package.SaveAs(outputFilePath);
     }
     
-    private static void ParallelRC1(Float64Signal tData, DifferentialFunction iFunc, DifferentialFunction vFunc)
+    private static void ParallelRC1(Float64SampledTimeSignal tData, DifferentialFunction iFunc, DifferentialFunction vFunc)
     {
         const string modelName = "Parallel - RC 1";
         
@@ -344,7 +345,7 @@ public static class Model3Samples
     }
     
     
-    private static void ParallelRLC0(Float64Signal tData, DifferentialFunction iFunc, DifferentialFunction vFunc, Float64Signal vIt1)
+    private static void ParallelRLC0(Float64SampledTimeSignal tData, DifferentialFunction iFunc, DifferentialFunction vFunc, Float64SampledTimeSignal vIt1)
     {
         const string modelName = "Parallel - RLC 0";
         
@@ -432,7 +433,7 @@ public static class Model3Samples
         package.SaveAs(outputFilePath);
     }
     
-    private static void ParallelRLC1(Float64Signal tData, DifferentialFunction iFunc, DifferentialFunction vFunc)
+    private static void ParallelRLC1(Float64SampledTimeSignal tData, DifferentialFunction iFunc, DifferentialFunction vFunc)
     {
         const string modelName = "Parallel - RLC 1";
         
@@ -523,7 +524,7 @@ public static class Model3Samples
     }
     
 
-    private static void SeriesRL0(Float64Signal tData, DifferentialFunction iFunc, DifferentialFunction vFunc)
+    private static void SeriesRL0(Float64SampledTimeSignal tData, DifferentialFunction iFunc, DifferentialFunction vFunc)
     {
         const string modelName = "Series - RL 0";
         
@@ -591,7 +592,7 @@ public static class Model3Samples
         package.SaveAs(outputFilePath);
     }
     
-    private static void SeriesRL1(Float64Signal tData, DifferentialFunction iFunc, DifferentialFunction vFunc)
+    private static void SeriesRL1(Float64SampledTimeSignal tData, DifferentialFunction iFunc, DifferentialFunction vFunc)
     {
         const string modelName = "Series - RL 1";
         
@@ -660,7 +661,7 @@ public static class Model3Samples
     }
     
 
-    private static void SeriesRC0(Float64Signal tData, DifferentialFunction iFunc, DifferentialFunction vFunc, Float64Signal iIt1)
+    private static void SeriesRC0(Float64SampledTimeSignal tData, DifferentialFunction iFunc, DifferentialFunction vFunc, Float64SampledTimeSignal iIt1)
     {
         const string modelName = "Series - RC 0";
         
@@ -723,7 +724,7 @@ public static class Model3Samples
         package.SaveAs(outputFilePath);
     }
     
-    private static void SeriesRC1(Float64Signal tData, DifferentialFunction iFunc, DifferentialFunction vFunc)
+    private static void SeriesRC1(Float64SampledTimeSignal tData, DifferentialFunction iFunc, DifferentialFunction vFunc)
     {
         const string modelName = "Series - RC 1";
         
@@ -792,7 +793,7 @@ public static class Model3Samples
     }
     
     
-    private static void SeriesRLC0(Float64Signal tData, DifferentialFunction iFunc, DifferentialFunction vFunc, Float64Signal iIt1)
+    private static void SeriesRLC0(Float64SampledTimeSignal tData, DifferentialFunction iFunc, DifferentialFunction vFunc, Float64SampledTimeSignal iIt1)
     {
         const string modelName = "Series - RLC 0";
         
@@ -882,7 +883,7 @@ public static class Model3Samples
         package.SaveAs(outputFilePath);
     }
     
-    private static void SeriesRLC1(Float64Signal tData, DifferentialFunction iFunc, DifferentialFunction vFunc)
+    private static void SeriesRLC1(Float64SampledTimeSignal tData, DifferentialFunction iFunc, DifferentialFunction vFunc)
     {
         const string modelName = "Series - RLC 1";
         
@@ -990,7 +991,7 @@ public static class Model3Samples
         ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
         
         var tData =
-            SamplingSpecs.GetSampledTimeSignal();
+            SamplingSpecs.GetSampleTimeSignal();
 
         var interpolatorOptions =
             new DfLinearSplineSignalInterpolatorOptions
@@ -1113,7 +1114,7 @@ public static class Model3Samples
         ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
         
         var tData =
-            SamplingSpecs.GetSampledTimeSignal();
+            SamplingSpecs.GetSampleTimeSignal();
 
         var interpolatorOptions =
             new DfLinearSplineSignalInterpolatorOptions

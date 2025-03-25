@@ -1,16 +1,16 @@
 ﻿using System.Collections;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
+using GeometricAlgebraFulcrumLib.Modeling.Trajectories.Vectors3D.Float64.Adaptive;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Basic;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.Parametric.Float64.Space3D.Curves.Adaptive;
 
 namespace GeometricAlgebraFulcrumLib.Modeling.Geometry.Parametric.Float64.Space3D.Surfaces.Sampled;
 
 public sealed class GrParametricSurfaceTreeLeafEdge3D :
     IReadOnlyCollection<GrParametricSurfaceTreeCorner3D>
 {
-    private readonly Dictionary<Pair<AdaptiveCurveTreeCornerPosition3D>, GrParametricSurfaceTreeCorner3D> _cornerDictionary
-        = new Dictionary<Pair<AdaptiveCurveTreeCornerPosition3D>, GrParametricSurfaceTreeCorner3D>();
+    private readonly Dictionary<Pair<Float64AdaptivePath3DCornerPosition>, GrParametricSurfaceTreeCorner3D> _cornerDictionary
+        = new Dictionary<Pair<Float64AdaptivePath3DCornerPosition>, GrParametricSurfaceTreeCorner3D>();
 
 
     public int Count

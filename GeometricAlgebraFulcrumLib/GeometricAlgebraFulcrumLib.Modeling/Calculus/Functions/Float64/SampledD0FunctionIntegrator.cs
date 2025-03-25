@@ -7,9 +7,9 @@ namespace GeometricAlgebraFulcrumLib.Modeling.Calculus.Functions.Float64;
 public class SampledD0FunctionIntegrator
     : DifferentialBasicFunction
 {
-    public Float64Signal TimeSignal { get; }
+    public Float64SampledTimeSignal TimeSignal { get; }
 
-    public Float64Signal ValueSignal { get; }
+    public Float64SampledTimeSignal ValueSignal { get; }
 
     public DifferentialFunction DerivativeFunction { get; }
 
@@ -22,7 +22,7 @@ public class SampledD0FunctionIntegrator
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public SampledD0FunctionIntegrator(Float64Signal valueSignal, DifferentialFunction derivativeFunction)
+    public SampledD0FunctionIntegrator(Float64SampledTimeSignal valueSignal, DifferentialFunction derivativeFunction)
     {
         ValueSignal = valueSignal;
         DerivativeFunction = derivativeFunction;

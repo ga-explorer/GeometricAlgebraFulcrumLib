@@ -52,9 +52,13 @@
             //PowerSystems.SystemIdentification.DFIGTest1OpenLoopSample.Example2();
             //PowerSignalVisualizationSample1.Execute();
 
+            //Samples.Modeling.Geometry.Parametric.Path3DSamples.SignalScalingExample();
+            //Samples.Modeling.Temporal.Float64ScalarSignalSamples.BasicSignalsExample();
+
             //Graphics.KonvaJs.Sample1.Example1();
             //Graphics.KonvaJs.Sample1.Example2();
-            Samples.Modeling.Graphics.BabylonJs.DifferentialCurveAnimationSample.Example1();
+            //Samples.Modeling.Geometry.Parametric.ParametricCurve3DSamples.Example1();
+            //Samples.Modeling.Graphics.BabylonJs.DifferentialCurveAnimationSample.Example1();
             //Graphics.BabylonJs.AnimationSamples.Example1();
             //Graphics.BabylonJs.AnimationSamples.Example2();
             //Graphics.BabylonJs.AnimationSamples.Example3();
@@ -140,7 +144,8 @@
             //Samples.Modeling.Graphics.PovRay.Sample1.Example3();
             //Samples.Modeling.Graphics.PovRay.Sample2.Example1();
             //Samples.Modeling.Graphics.BabylonJs.RotorFamilySamples.BabylonJsExample();
-            //Samples.Modeling.Graphics.PovRay.RotorFamilySamples.PovRayExample();
+            Samples.Modeling.Graphics.PovRay.VisualizationSamples.ParametricCurveExample();
+            //Samples.Modeling.Graphics.PovRay.VisualizationSamples.RotorFamilyExample();
             //Samples.Modeling.Temporal.Sample1.Example2();
             //Samples.Modeling.Graphics.PovRay.PolarGridGenerator.GenerateImage();
             

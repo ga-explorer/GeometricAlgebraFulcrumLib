@@ -17,7 +17,7 @@ public static class RandomGeneratorUtils
 {
     //private static double ClampAngle(double value)
     //{
-    //    const double maxValue = 2 * Math.PI;
+    //    const double maxValue = Math.Tau;
 
     //    //value < -maxValue
     //    if (value < -maxValue)
@@ -477,14 +477,14 @@ public static class RandomGeneratorUtils
 
     public static double GaussianPdf(this double x, double mean = 0, double standardDeviation = 1)
     {
-        var d = 1d / (Math.Sqrt(2 * Math.PI) * standardDeviation);
+        var d = 1d / (Math.Sqrt(Math.Tau) * standardDeviation);
 
         return d * Math.Exp(-0.5d * Math.Pow((x - mean) / standardDeviation, 2));
     }
 
     public static IEnumerable<double> GaussianPdf(this IEnumerable<double> xValues, double mean = 0, double standardDeviation = 1)
     {
-        var d = 1d / (Math.Sqrt(2 * Math.PI) * standardDeviation);
+        var d = 1d / (Math.Sqrt(Math.Tau) * standardDeviation);
 
         return xValues.Select(x => d * Math.Exp(-0.5d * Math.Pow((x - mean) / standardDeviation, 2)));
     }

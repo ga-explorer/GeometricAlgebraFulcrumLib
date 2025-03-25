@@ -62,7 +62,7 @@ public static class Float64ComplexUtils
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Complex NthRootOfOne(this int n, int k)
     {
-        var angle = 2d * Math.PI * k.Mod(n) / n;
+        var angle = Math.Tau * k.Mod(n) / n;
 
         return new Complex(
             Math.Cos(angle),
@@ -73,7 +73,7 @@ public static class Float64ComplexUtils
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Complex NthRootOfOne(this int n)
     {
-        var angle = 2d * Math.PI / n;
+        var angle = Math.Tau / n;
 
         return new Complex(
             Math.Cos(angle),

@@ -41,6 +41,26 @@ internal static class PixelExtensions
         var v = bucket.ToColorValue();
         return new Rgb24(v, v, v);
     }
+    
+    public static byte RgbMinComponent(this Rgb24 color)
+    {
+        return Math.Min(color.R, Math.Min(color.G, color.B));
+    }
+    
+    public static byte RgbMaxComponent(this Rgb24 color)
+    {
+        return Math.Max(color.R, Math.Max(color.G, color.B));
+    }
+
+    public static byte RgbMinComponent(this Rgba32 color)
+    {
+        return Math.Min(color.R, Math.Min(color.G, color.B));
+    }
+
+    public static byte RgbMaxComponent(this Rgba32 color)
+    {
+        return Math.Max(color.R, Math.Max(color.G, color.B));
+    }
 
     public static byte ToGrayscale(this Rgb24 color)
     {

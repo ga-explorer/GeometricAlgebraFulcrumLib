@@ -4,11 +4,11 @@ using GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Float64;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Float64.Elements;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Float64.Interpolation;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Float64.Operations;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.Parametric.Float64.Space1D.Scalars;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.Parametric.Float64.Space1D.Scalars.Harmonic;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.Parametric.Float64.Space2D.Curves;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.Parametric.Float64.Space2D.Curves.Polar;
 using GeometricAlgebraFulcrumLib.Modeling.Signals;
+using GeometricAlgebraFulcrumLib.Modeling.Trajectories.Scalars.Float64;
+using GeometricAlgebraFulcrumLib.Modeling.Trajectories.Vectors2D.Float64;
+using GeometricAlgebraFulcrumLib.Modeling.Trajectories.Vectors2D.Float64.Basic;
+using GeometricAlgebraFulcrumLib.Modeling.Trajectories.Vectors2D.Float64.Composers;
 using GeometricAlgebraFulcrumLib.Utilities.Web.Colors;
 using SixLabors.ImageSharp;
 
@@ -19,27 +19,27 @@ public static class CGa4DVisualizationSamples
     public static CGaFloat64GeometricSpace4D CGa
         => CGaFloat64GeometricSpace4D.Instance;
 
-    public static IFloat64ParametricScalar GetRadiusCurve1(double maxTime)
+    public static Float64ScalarSignal GetRadiusCurve1(double maxTime)
     {
-        var parameterRange = Float64ScalarRange.Create(0, maxTime);
+        var timeRange = Float64ScalarRange.Create(0, maxTime);
 
-        var rCurve = CosWaveParametricScalar.Create(parameterRange, 1, 5, 6);
+        var rCurve = Float64ScalarSignal.FiniteCosWave(timeRange, 1, 5, 6);
 
         return rCurve;
     }
 
-    public static IFloat64ParametricCurve2D GetPositionCurve1(double maxTime)
+    public static Float64Path2D GetPositionCurve1(double maxTime)
     {
         var freqHz = 1 / maxTime;
-        var freq = 2 * Math.PI * freqHz;
+        var freq = Math.Tau * freqHz;
 
-        var parameterRange = Float64ScalarRange.Create(0, maxTime);
+        var timeRange = Float64ScalarRange.Create(0, maxTime);
 
-        var rCurve = CosWaveParametricScalar.Create(parameterRange, 3, 5, 3);
-        var thetaCurve = LinearParametricScalar.Create(2 * freq);
+        var rCurve = Float64ScalarSignal.FiniteCosWave(timeRange, 3, 5, 3);
+        var thetaCurve = Float64ScalarSignal.FiniteRamp(timeRange, 0, 2 * freq);
 
-        var curve = PolarCurve2D.Create(
-            parameterRange,
+        var curve = Float64PolarPath2D.Finite(
+            timeRange,
             rCurve,
             thetaCurve
         );
@@ -47,18 +47,18 @@ public static class CGa4DVisualizationSamples
         return curve;
     }
 
-    public static IFloat64ParametricCurve2D GetPositionCurve2(double maxTime)
+    public static Float64Path2D GetPositionCurve2(double maxTime)
     {
         var freqHz = 1 / maxTime;
-        var freq = 2 * Math.PI * freqHz;
+        var freq = Math.Tau * freqHz;
 
-        var parameterRange = Float64ScalarRange.Create(0, maxTime);
+        var timeRange = Float64ScalarRange.Create(0, maxTime);
 
-        var rCurve = CosWaveParametricScalar.Create(parameterRange, 3, 5, 1);
-        var thetaCurve = LinearParametricScalar.Create(1 * freq);
+        var rCurve = Float64ScalarSignal.FiniteCosWave(timeRange, 3, 5, 1);
+        var thetaCurve = Float64ScalarSignal.FiniteRamp(timeRange, 0, 1 * freq);
 
-        var curve = PolarCurve2D.Create(
-            parameterRange,
+        var curve = Float64PolarPath2D.Finite(
+            timeRange,
             rCurve,
             thetaCurve
         );
@@ -101,7 +101,7 @@ public static class CGa4DVisualizationSamples
             samplingSpecs
         );
         
-        CGa.VisualizerAnimationComposer.SetFileNameAndTitle(
+        CGa.VisualizerAnimationComposer.SetTitle(
             "Parametric 2D Line 1"
         );
 
@@ -194,7 +194,7 @@ public static class CGa4DVisualizationSamples
             samplingSpecs
         );
         
-        CGa.VisualizerAnimationComposer.SetFileNameAndTitle(
+        CGa.VisualizerAnimationComposer.SetTitle(
             "Parametric 2D Line 2"
         );
 
@@ -271,7 +271,7 @@ public static class CGa4DVisualizationSamples
             samplingSpecs
         );
         
-        CGa.VisualizerAnimationComposer.SetFileNameAndTitle(
+        CGa.VisualizerAnimationComposer.SetTitle(
             "Parametric 2D Point-Pair 1"
         );
 
@@ -358,7 +358,7 @@ public static class CGa4DVisualizationSamples
             samplingSpecs
         );
         
-        CGa.VisualizerAnimationComposer.SetFileNameAndTitle(
+        CGa.VisualizerAnimationComposer.SetTitle(
             "Parametric 2D Point-Pair 2"
         );
 
@@ -425,7 +425,7 @@ public static class CGa4DVisualizationSamples
 
         // This constant curve defines the position of the third point
         var point3Curve =
-            ConstantParametricCurve2D.Create(2, 2);
+            Float64ConstantPath2D.Finite(2, 2);
 
         // Define the circle element
         var roundCircle =
@@ -441,7 +441,7 @@ public static class CGa4DVisualizationSamples
             samplingSpecs
         );
         
-        CGa.VisualizerAnimationComposer.SetFileNameAndTitle(
+        CGa.VisualizerAnimationComposer.SetTitle(
             "Parametric 2D Circle 1"
         );
 
@@ -532,7 +532,7 @@ public static class CGa4DVisualizationSamples
             samplingSpecs
         );
         
-        CGa.VisualizerAnimationComposer.SetFileNameAndTitle(
+        CGa.VisualizerAnimationComposer.SetTitle(
             "Parametric 2D Circle 2"
         );
 
@@ -624,7 +624,7 @@ public static class CGa4DVisualizationSamples
             samplingSpecs
         );
         
-        CGa.VisualizerAnimationComposer.SetFileNameAndTitle(
+        CGa.VisualizerAnimationComposer.SetTitle(
             "Parametric 2D Circle-Circle Intersection"
         );
 
@@ -756,7 +756,7 @@ public static class CGa4DVisualizationSamples
             samplingSpecs
         );
         
-        CGa.VisualizerAnimationComposer.SetFileNameAndTitle(
+        CGa.VisualizerAnimationComposer.SetTitle(
             "Parametric 2D Circle-Line Intersection"
         );
 
@@ -901,7 +901,7 @@ public static class CGa4DVisualizationSamples
             samplingSpecs
         );
         
-        CGa.VisualizerAnimationComposer.SetFileNameAndTitle(
+        CGa.VisualizerAnimationComposer.SetTitle(
             "Parametric 2D Circle On Circle Reflection"
         );
 
@@ -985,7 +985,7 @@ public static class CGa4DVisualizationSamples
         // Encode a parametric real line
         // This curve defines the parametric position and normal of the line
         var positionCurve1 =
-            ConstantParametricCurve2D.Create(
+            Float64ConstantPath2D.Finite(
                 samplingSpecs.TimeRange,
                 LinFloat64Vector2D.Create(0, 0),
                 LinFloat64Vector2D.Create(0, 1)
@@ -1022,7 +1022,7 @@ public static class CGa4DVisualizationSamples
             samplingSpecs
         );
         
-        CGa.VisualizerAnimationComposer.SetFileNameAndTitle(
+        CGa.VisualizerAnimationComposer.SetTitle(
             "Parametric 2D Circle On Line Reflection"
         );
 
@@ -1114,7 +1114,7 @@ public static class CGa4DVisualizationSamples
         // Encode a parametric real line
         // This curve defines the parametric position and normal of the line
         var positionCurve1 =
-            ConstantParametricCurve2D.Create(
+            Float64ConstantPath2D.Finite(
                 samplingSpecs.TimeRange,
                 LinFloat64Vector2D.Create(0, 0),
                 LinFloat64Vector2D.Create(0, 1)
@@ -1156,7 +1156,7 @@ public static class CGa4DVisualizationSamples
             samplingSpecs
         );
         
-        CGa.VisualizerAnimationComposer.SetFileNameAndTitle(
+        CGa.VisualizerAnimationComposer.SetTitle(
             "Parametric 2D Point-Pair On Line Reflection"
         );
 
@@ -1268,7 +1268,7 @@ public static class CGa4DVisualizationSamples
             samplingSpecs
         );
         
-        CGa.VisualizerAnimationComposer.SetFileNameAndTitle(
+        CGa.VisualizerAnimationComposer.SetTitle(
             "Parametric 2D Circle Interpolation"
         );
 

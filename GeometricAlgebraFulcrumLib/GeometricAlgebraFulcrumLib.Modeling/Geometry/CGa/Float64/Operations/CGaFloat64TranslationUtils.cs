@@ -8,7 +8,7 @@ using GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Float64.Blades;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Float64.Elements;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Float64.Encoding;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Float64.Versors;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.Parametric.Float64.Space3D.Curves;
+using GeometricAlgebraFulcrumLib.Modeling.Trajectories.Vectors3D.Float64;
 
 namespace GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Float64.Operations;
 
@@ -80,12 +80,12 @@ public static class CGaFloat64TranslationUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static CGaFloat64ParametricElement TranslateBy(this CGaFloat64Element element, IParametricCurve3D egaVector)
+    public static CGaFloat64ParametricElement TranslateBy(this CGaFloat64Element element, Float64Path3D egaVector)
     {
         return CGaFloat64ParametricElement.Create(
             element.GeometricSpace,
-            egaVector.ParameterRange,
-            t => element.TranslateBy(egaVector.GetPoint(t))
+            egaVector.TimeRange,
+            t => element.TranslateBy(egaVector.GetValue(t))
         );
     }
 
@@ -131,12 +131,12 @@ public static class CGaFloat64TranslationUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static CGaFloat64ParametricElement TranslateBy(this CGaFloat64ParametricElement element, IParametricCurve3D egaVector)
+    public static CGaFloat64ParametricElement TranslateBy(this CGaFloat64ParametricElement element, Float64Path3D egaVector)
     {
         return CGaFloat64ParametricElement.Create(
             element.GeometricSpace,
-            element.ParameterRange.Intersect(egaVector.ParameterRange),
-            t => element.GetElement(t).TranslateBy(egaVector.GetPoint(t))
+            element.ParameterRange.Intersect(egaVector.TimeRange),
+            t => element.GetElement(t).TranslateBy(egaVector.GetValue(t))
         );
     }
 

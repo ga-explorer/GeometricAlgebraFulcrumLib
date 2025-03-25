@@ -92,7 +92,7 @@ public class ScalarProcessorOfFloat64
         => Math.PI;
 
     public double PiTimes2Value
-        => 2d * Math.PI;
+        => Math.Tau;
     
     public double PiTimes4Value
         => 4d * Math.PI;
@@ -470,7 +470,7 @@ public class ScalarProcessorOfFloat64
     {
         var value = Math.Atan2(scalarY, scalarX);
 
-        if (value < 0) value += 2 * Math.PI;
+        if (value < 0) value += Math.Tau;
 
         return value.ScalarFromValue(this);
     }

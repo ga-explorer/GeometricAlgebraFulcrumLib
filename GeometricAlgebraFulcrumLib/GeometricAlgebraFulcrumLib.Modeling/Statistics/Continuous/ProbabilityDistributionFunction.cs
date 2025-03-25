@@ -6,7 +6,7 @@ public sealed class ProbabilityDistributionFunction
 {
     public static ProbabilityDistributionFunction CreateNormal(double mean, double variance, double zeroEpsilon = Float64Utils.ZeroEpsilon)
     {
-        var sqrt2Pi = Math.Sqrt(2 * Math.PI);
+        var sqrt2Pi = Math.Sqrt(Math.Tau);
         var s = Math.Sqrt(variance);
 
         var deltaX = s * Math.Sqrt(

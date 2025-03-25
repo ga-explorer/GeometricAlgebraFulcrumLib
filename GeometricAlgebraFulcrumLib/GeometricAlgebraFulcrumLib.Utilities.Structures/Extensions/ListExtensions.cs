@@ -80,6 +80,12 @@ public static class ListExtensions
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static IEnumerable<T> GetItemsBetween<T>(this IReadOnlyList<T> list, int index1, int index2)
+    {
+        return list.GetItems(index1, index2 - index1 + 1);
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static T GetFirstItem<T>(this IList<T> list)
     {
         return list[0];

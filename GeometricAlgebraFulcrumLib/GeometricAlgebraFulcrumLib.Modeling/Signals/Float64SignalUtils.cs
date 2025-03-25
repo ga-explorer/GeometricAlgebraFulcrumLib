@@ -18,7 +18,7 @@ namespace GeometricAlgebraFulcrumLib.Modeling.Signals;
 
 public static class Float64SignalUtils
 {
-    public static Float64Signal GetPeriodicPaddedSignal_NoInterpolator(this Float64Signal signal, int trendSampleCount, int paddingSampleCount = -1)
+    public static Float64SampledTimeSignal GetPeriodicPaddedSignal_NoInterpolator(this Float64SampledTimeSignal signal, int trendSampleCount, int paddingSampleCount = -1)
     {
         if (paddingSampleCount < 0)
             paddingSampleCount = signal.Count;
@@ -64,7 +64,7 @@ public static class Float64SignalUtils
         return uSignal;
     }
 
-    public static Float64Signal GetPeriodicPaddedSignal_CatmullRom(this Float64Signal signal, int trendSampleCount, int paddingSampleCount = -1)
+    public static Float64SampledTimeSignal GetPeriodicPaddedSignal_CatmullRom(this Float64SampledTimeSignal signal, int trendSampleCount, int paddingSampleCount = -1)
     {
         if (paddingSampleCount < 0)
             paddingSampleCount = signal.Count;
@@ -85,7 +85,7 @@ public static class Float64SignalUtils
         var uValues = new List<double>();
 
         var tList =
-            samplingSpecs.GetSampledTimeSignal(
+            samplingSpecs.GetSampleTimeSignal(
                 n - k - 1,
                 k + 1
             );
@@ -97,7 +97,7 @@ public static class Float64SignalUtils
         }
 
         tList =
-            samplingSpecs.GetSampledTimeSignal(
+            samplingSpecs.GetSampleTimeSignal(
                 n - 1,
                 k + 1
             );
@@ -109,7 +109,7 @@ public static class Float64SignalUtils
         }
 
         tList =
-            samplingSpecs.GetSampledTimeSignal(
+            samplingSpecs.GetSampleTimeSignal(
                 n + k,
                 m
             );
@@ -124,7 +124,7 @@ public static class Float64SignalUtils
         }
 
         tList =
-            samplingSpecs.GetSampledTimeSignal(
+            samplingSpecs.GetSampleTimeSignal(
                 n + m + k,
                 k + 1
             );
@@ -136,7 +136,7 @@ public static class Float64SignalUtils
         }
 
         tList =
-            samplingSpecs.GetSampledTimeSignal(
+            samplingSpecs.GetSampleTimeSignal(
                 n + m + 2 * k,
                 k + 1
             );
@@ -190,14 +190,14 @@ public static class Float64SignalUtils
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Float64Signal GetPeriodicPaddedSignal(this Float64Signal signal, int trendSampleCount, int paddingSampleCount = -1, bool useCatmullRomInterpolator = true)
+    public static Float64SampledTimeSignal GetPeriodicPaddedSignal(this Float64SampledTimeSignal signal, int trendSampleCount, int paddingSampleCount = -1, bool useCatmullRomInterpolator = true)
     {
         return useCatmullRomInterpolator
             ? signal.GetPeriodicPaddedSignal_CatmullRom(trendSampleCount, paddingSampleCount)
             : signal.GetPeriodicPaddedSignal_NoInterpolator(trendSampleCount, paddingSampleCount);
     }
 
-    public static ComplexSignalSpectrum GetFourierSpectrum(this Float64Signal signal, DfFourierSignalInterpolatorOptions options)
+    public static Float64ComplexSignalSpectrum GetFourierSpectrum(this Float64SampledTimeSignal signal, DfFourierSignalInterpolatorOptions options)
     {
         if (options.EnergyAcPercentThreshold is <= 0 or > 1d)
             throw new ArgumentOutOfRangeException();
@@ -207,7 +207,7 @@ public static class Float64SignalUtils
 
         // Compute complete Fourier spectrum of vector component signals
         var vectorSpectrumFull =
-            (ComplexSignalSpectrum)signal
+            (Float64ComplexSignalSpectrum)signal
                 .GetFourierSpectrum()
                 .RemoveHighFrequencySamples(options.FrequencyThreshold);
 
@@ -221,11 +221,11 @@ public static class Float64SignalUtils
 
         // Define time axis values
         var tValues =
-            samplingSpecs.GetSampledTimeSignal();
+            samplingSpecs.GetSampleTimeSignal();
 
         // Add DC components to final vector spectrum
         var vectorSpectrum =
-            new ComplexSignalSpectrum(samplingSpecs)
+            new Float64ComplexSignalSpectrum(samplingSpecs)
             {
                 vectorSpectrumFull.SamplesDc
             };
@@ -367,7 +367,7 @@ public static class Float64SignalUtils
         return outVector;
     }
 
-    public static Float64Signal WienerFilter(this IReadOnlyList<double> scalarSignal, double samplingRate, int order)
+    public static Float64SampledTimeSignal WienerFilter(this IReadOnlyList<double> scalarSignal, double samplingRate, int order)
     {
         var newOrder = 2 * order + 1;
 
@@ -400,7 +400,7 @@ public static class Float64SignalUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Float64Signal WienerFilter(this Float64Signal scalarSignal, int order)
+    public static Float64SampledTimeSignal WienerFilter(this Float64SampledTimeSignal scalarSignal, int order)
     {
         return scalarSignal.WienerFilter(scalarSignal.SamplingRate, order);
     }
@@ -421,7 +421,7 @@ public static class Float64SignalUtils
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Float64Signal FourierInterpolate(this Float64Signal scalarSignal, double samplingRate, double energyThreshold = 0.998)
+    public static Float64SampledTimeSignal FourierInterpolate(this Float64SampledTimeSignal scalarSignal, double samplingRate, double energyThreshold = 0.998)
     {
         var normSignal = scalarSignal.CreateSignal(samplingRate);
 
@@ -439,14 +439,14 @@ public static class Float64SignalUtils
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static DfChebyshevSignalInterpolator CreateChebyshevInterpolator(this Float64Signal signal, DfChebyshevSignalInterpolatorOptions options)
+    public static DfChebyshevSignalInterpolator CreateChebyshevInterpolator(this Float64SampledTimeSignal signal, DfChebyshevSignalInterpolatorOptions options)
     {
         return DfChebyshevSignalInterpolator.Create(signal, options);
     }
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Float64Signal ReSampleForBezierSmoothing(this Float64Signal signal, int bezierDegree)
+    public static Float64SampledTimeSignal ReSampleForBezierSmoothing(this Float64SampledTimeSignal signal, int bezierDegree)
     {
         var sampleCount =
             (int)(Math.Ceiling((signal.Count - 1) / (double)bezierDegree) * bezierDegree) + 1;
@@ -457,7 +457,7 @@ public static class Float64SignalUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static DfAkimaSplineInterpolator CreateSmoothedAkimaSplineFunction(this Float64Signal signal, int bezierDegree)
+    public static DfAkimaSplineInterpolator CreateSmoothedAkimaSplineFunction(this Float64SampledTimeSignal signal, int bezierDegree)
     {
         var reSampledSignal =
             signal.ReSampleForBezierSmoothing(bezierDegree);
@@ -479,7 +479,7 @@ public static class Float64SignalUtils
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static IReadOnlyList<Complex> GetValue(this IReadOnlyList<ComplexSignalSpectrum> vectorSpectrum, IReadOnlyList<ScalarSignalSpectrum<Complex>.SignalSpectrumSample> vectorSpectrumSample, double t)
+    public static IReadOnlyList<Complex> GetValue(this IReadOnlyList<Float64ComplexSignalSpectrum> vectorSpectrum, IReadOnlyList<ScalarSignalSpectrum<Complex>.SignalSpectrumSample> vectorSpectrumSample, double t)
     {
         var valueArray = new Complex[vectorSpectrumSample.Count];
 
@@ -492,7 +492,7 @@ public static class Float64SignalUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static IReadOnlyList<Float64Signal> GetRealSignal(this IReadOnlyList<ComplexSignalSpectrum> vectorSpectrum, Float64Signal tValues)
+    public static IReadOnlyList<Float64SampledTimeSignal> GetRealSignal(this IReadOnlyList<Float64ComplexSignalSpectrum> vectorSpectrum, Float64SampledTimeSignal tValues)
     {
         return vectorSpectrum
             .Select(spectrum => spectrum.GetRealSignal(tValues))
@@ -500,7 +500,7 @@ public static class Float64SignalUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static IReadOnlyList<Float64Signal> GetRealSignalDt(this IReadOnlyList<ComplexSignalSpectrum> vectorSpectrum, int degree, Float64Signal tValues)
+    public static IReadOnlyList<Float64SampledTimeSignal> GetRealSignalDt(this IReadOnlyList<Float64ComplexSignalSpectrum> vectorSpectrum, int degree, Float64SampledTimeSignal tValues)
     {
         return vectorSpectrum
             .Select(spectrum => spectrum.GetRealSignalDt(degree, tValues))
@@ -508,7 +508,7 @@ public static class Float64SignalUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static IReadOnlyList<Float64Signal> GetRealSignal(this IReadOnlyList<ComplexSignalSpectrum> vectorSpectrum, IReadOnlyList<ScalarSignalSpectrum<Complex>.SignalSpectrumSample> vectorSpectrumSample, IEnumerable<double> tValues)
+    public static IReadOnlyList<Float64SampledTimeSignal> GetRealSignal(this IReadOnlyList<Float64ComplexSignalSpectrum> vectorSpectrum, IReadOnlyList<ScalarSignalSpectrum<Complex>.SignalSpectrumSample> vectorSpectrumSample, IEnumerable<double> tValues)
     {
         return vectorSpectrum
             .Select((spectrum, i) => spectrum.GetRealSignal(vectorSpectrumSample[i], tValues))
@@ -517,14 +517,14 @@ public static class Float64SignalUtils
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static IReadOnlyList<ScalarSignalSpectrum<Complex>.SignalSpectrumSample> GetSample(this IReadOnlyList<ComplexSignalSpectrum> vectorSpectrum, int index)
+    public static IReadOnlyList<ScalarSignalSpectrum<Complex>.SignalSpectrumSample> GetSample(this IReadOnlyList<Float64ComplexSignalSpectrum> vectorSpectrum, int index)
     {
         return vectorSpectrum
             .Select(s => s.GetSample(index))
             .ToImmutableArray();
     }
 
-    public static IReadOnlyList<ComplexSignalSpectrum> Add(this IReadOnlyList<ComplexSignalSpectrum> vectorSpectrum, IEnumerable<ScalarSignalSpectrum<Complex>.SignalSpectrumSample> vectorSpectrumSample)
+    public static IReadOnlyList<Float64ComplexSignalSpectrum> Add(this IReadOnlyList<Float64ComplexSignalSpectrum> vectorSpectrum, IEnumerable<ScalarSignalSpectrum<Complex>.SignalSpectrumSample> vectorSpectrumSample)
     {
         var i = 0;
         foreach (var sample in vectorSpectrumSample)
@@ -546,15 +546,15 @@ public static class Float64SignalUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static IReadOnlyList<ComplexSignalSpectrum> RemoveHighFrequencySamples(this IReadOnlyList<ComplexSignalSpectrum> vectorSpectrum, double cutoffFrequency)
+    public static IReadOnlyList<Float64ComplexSignalSpectrum> RemoveHighFrequencySamples(this IReadOnlyList<Float64ComplexSignalSpectrum> vectorSpectrum, double cutoffFrequency)
     {
         return vectorSpectrum
-            .Select(s => (ComplexSignalSpectrum)s.RemoveHighFrequencySamples(cutoffFrequency))
+            .Select(s => (Float64ComplexSignalSpectrum)s.RemoveHighFrequencySamples(cutoffFrequency))
             .ToArray();
     }
 
 
-    public static Float64Signal GetPeriodicPaddedSignal1(this Float64Signal signal, int trendSampleCount, int polynomialDegree)
+    public static Float64SampledTimeSignal GetPeriodicPaddedSignal1(this Float64SampledTimeSignal signal, int trendSampleCount, int polynomialDegree)
     {
         var scalarProcessor = ScalarProcessorOfFloat64.Instance;
 
@@ -615,7 +615,7 @@ public static class Float64SignalUtils
         return paddedSignalSamples.CreateSignal(signal.SamplingRate);
     }
         
-    public static Float64Signal GetPeriodicPaddedSignal2(this Float64Signal signal, int trendSampleCount, int polynomialDegree, int paddingSampleCount = -1)
+    public static Float64SampledTimeSignal GetPeriodicPaddedSignal2(this Float64SampledTimeSignal signal, int trendSampleCount, int polynomialDegree, int paddingSampleCount = -1)
     {
         if (paddingSampleCount == 0)
             return signal.Concat(signal.Reverse()).CreateSignal(signal.SamplingRate);
@@ -638,8 +638,8 @@ public static class Float64SignalUtils
         var tValues = new List<double>(trendSampleCount * 2);
         var uValues = new List<double>(trendSampleCount * 2);
 
-        var t1Signal = samplingSpecs.GetSampledTimeSignal(n - k, k);
-        var t2Signal = samplingSpecs.GetSampledTimeSignal(m + n, k);
+        var t1Signal = samplingSpecs.GetSampleTimeSignal(n - k, k);
+        var t2Signal = samplingSpecs.GetSampleTimeSignal(m + n, k);
 
         for (var i = 0; i < k; i++)
         {
@@ -693,8 +693,8 @@ public static class Float64SignalUtils
         tValues.Clear();
         uValues.Clear();
 
-        t1Signal = samplingSpecs.GetSampledTimeSignal(m + 2 * n - k, k);
-        t2Signal = samplingSpecs.GetSampledTimeSignal(2 * m + 2 * n, k);
+        t1Signal = samplingSpecs.GetSampleTimeSignal(m + 2 * n - k, k);
+        t2Signal = samplingSpecs.GetSampleTimeSignal(2 * m + 2 * n, k);
 
         for (var i = 0; i < k; i++)
         {
@@ -759,7 +759,7 @@ public static class Float64SignalUtils
         return paddedSignal;
     }
         
-    public static void PlotSignal(this Float64Signal scalarSignal, double tMin, double tMax, string plotFileName)
+    public static void PlotSignal(this Float64SampledTimeSignal scalarSignal, double tMin, double tMax, string plotFileName)
     {
         var samplingSpecs = scalarSignal.SamplingSpecs;
 
@@ -786,7 +786,7 @@ public static class Float64SignalUtils
         PngExporter.Export(pm, $"{plotFileName}.png", samplingSpecs.SampleCount * 2, 750, 200);
     }
 
-    public static void PlotSignal(this Float64Signal scalarSignal1, Float64Signal scalarSignal2, double tMin, double tMax, string plotFileName)
+    public static void PlotSignal(this Float64SampledTimeSignal scalarSignal1, Float64SampledTimeSignal scalarSignal2, double tMin, double tMax, string plotFileName)
     {
         var samplingSpecs = scalarSignal1.SamplingSpecs;
 
@@ -830,7 +830,7 @@ public static class Float64SignalUtils
         PngExporter.Export(pm, $"{plotFileName}.png", samplingSpecs.SampleCount * 2, 750, 200);
     }
 
-    public static void PlotScalarSignal(this Float64Signal scalarSignal, string title, string filePath)
+    public static void PlotScalarSignal(this Float64SampledTimeSignal scalarSignal, string title, string filePath)
     {
         filePath = Path.Combine(filePath);
 
@@ -864,7 +864,7 @@ public static class Float64SignalUtils
     }
 
         
-    public static Image Plot(this Func<double, double> scalarFunction, Float64Signal scalarSignal, double xMin, double xMax)
+    public static Image Plot(this Func<double, double> scalarFunction, Float64SampledTimeSignal scalarSignal, double xMin, double xMax)
     {
         var model = new PlotModel
         {
@@ -935,26 +935,26 @@ public static class Float64SignalUtils
         return Image.Load(stream);
     }
 
-    public static Image PlotValue(this DifferentialFunction scalarFunction, Float64Signal scalarSignal, double xMin, double xMax)
+    public static Image PlotValue(this DifferentialFunction scalarFunction, Float64SampledTimeSignal scalarSignal, double xMin, double xMax)
     {
         return ((Func<double, double>)scalarFunction.GetValue).Plot(scalarSignal, xMin, xMax);
     }
 
-    public static Image PlotFirstDerivative(this DifferentialFunction scalarFunction, Float64Signal scalarSignal, double xMin, double xMax)
+    public static Image PlotFirstDerivative(this DifferentialFunction scalarFunction, Float64SampledTimeSignal scalarSignal, double xMin, double xMax)
     {
         var func = scalarFunction.GetDerivative1().GetValue;
 
         return func.Plot(scalarSignal, xMin, xMax);
     }
 
-    public static Image PlotSecondDerivative(this DifferentialFunction scalarFunction, Float64Signal scalarSignal, double xMin, double xMax)
+    public static Image PlotSecondDerivative(this DifferentialFunction scalarFunction, Float64SampledTimeSignal scalarSignal, double xMin, double xMax)
     {
         var func = scalarFunction.GetDerivative2().GetValue;
 
         return func.Plot(scalarSignal, xMin, xMax);
     }
 
-    public static Image Plot(this Func<double, double> scalarFunction, Float64Signal scalarSignal, double xMin, double xMax, double yMin, double yMax)
+    public static Image Plot(this Func<double, double> scalarFunction, Float64SampledTimeSignal scalarSignal, double xMin, double xMax, double yMin, double yMax)
     {
         var model = new PlotModel
         {
@@ -1034,21 +1034,21 @@ public static class Float64SignalUtils
         return Image.Load(stream);
     }
 
-    public static Image PlotValue(this DifferentialFunction scalarFunction, Float64Signal scalarSignal, double xMin, double xMax, double yMin, double yMax)
+    public static Image PlotValue(this DifferentialFunction scalarFunction, Float64SampledTimeSignal scalarSignal, double xMin, double xMax, double yMin, double yMax)
     {
         var func = scalarFunction.GetValue;
 
         return func.Plot(scalarSignal, xMin, xMax, yMin, yMax);
     }
 
-    public static Image PlotFirstDerivative(this DifferentialFunction scalarFunction, Float64Signal scalarSignal, double xMin, double xMax, double yMin, double yMax)
+    public static Image PlotFirstDerivative(this DifferentialFunction scalarFunction, Float64SampledTimeSignal scalarSignal, double xMin, double xMax, double yMin, double yMax)
     {
         var func = scalarFunction.GetDerivative1().GetValue;
 
         return func.Plot(scalarSignal, xMin, xMax, yMin, yMax);
     }
 
-    public static Image PlotSecondDerivative(this DifferentialFunction scalarFunction, Float64Signal scalarSignal, double xMin, double xMax, double yMin, double yMax)
+    public static Image PlotSecondDerivative(this DifferentialFunction scalarFunction, Float64SampledTimeSignal scalarSignal, double xMin, double xMax, double yMin, double yMax)
     {
         var func = scalarFunction.GetDerivative2().GetValue;
 

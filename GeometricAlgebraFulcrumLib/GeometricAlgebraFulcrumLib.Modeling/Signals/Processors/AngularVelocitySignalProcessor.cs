@@ -31,30 +31,30 @@ public abstract class AngularVelocitySignalProcessor
     public IScalarProcessor<double> ScalarProcessor 
         => Processor.ScalarProcessor;
 
-    public XGaProcessor<Float64Signal> ScalarSignalProcessor 
+    public XGaProcessor<Float64SampledTimeSignal> ScalarSignalProcessor 
         => VectorSignal.Processor;
         
-    public Float64Signal TimeValuesSignal { get; protected set; }
+    public Float64SampledTimeSignal TimeValuesSignal { get; protected set; }
 
-    public XGaVector<Float64Signal> VectorSignal { get; private set;}
+    public XGaVector<Float64SampledTimeSignal> VectorSignal { get; private set;}
 
-    public XGaVector<Float64Signal> VectorSignalInterpolated { get; protected set;}
+    public XGaVector<Float64SampledTimeSignal> VectorSignalInterpolated { get; protected set;}
 
-    public Pair<XGaVector<Float64Signal>> VectorSignalTimeDerivatives { get; protected set; }
+    public Pair<XGaVector<Float64SampledTimeSignal>> VectorSignalTimeDerivatives { get; protected set; }
 
-    public Pair<XGaVector<Float64Signal>> VectorSignalArcLengthDerivatives { get; protected set; }
+    public Pair<XGaVector<Float64SampledTimeSignal>> VectorSignalArcLengthDerivatives { get; protected set; }
         
-    public Pair<Float64Signal> ArcLengthTimeDerivatives { get; protected set; }
+    public Pair<Float64SampledTimeSignal> ArcLengthTimeDerivatives { get; protected set; }
 
-    public Pair<XGaVector<Float64Signal>> ArcLengthFramesOrthogonal { get; protected set; }
+    public Pair<XGaVector<Float64SampledTimeSignal>> ArcLengthFramesOrthogonal { get; protected set; }
 
-    public Pair<XGaVector<Float64Signal>> ArcLengthFramesOrthonormal { get; protected set; }
+    public Pair<XGaVector<Float64SampledTimeSignal>> ArcLengthFramesOrthonormal { get; protected set; }
 
-    public Float64Signal Curvatures { get; protected set; }
+    public Float64SampledTimeSignal Curvatures { get; protected set; }
 
-    public XGaBivector<Float64Signal> AngularVelocityBlades { get; private set; }
+    public XGaBivector<Float64SampledTimeSignal> AngularVelocityBlades { get; private set; }
     
-    public XGaBivector<Float64Signal> AngularVelocityAverageBlades { get; protected set; }
+    public XGaBivector<Float64SampledTimeSignal> AngularVelocityAverageBlades { get; protected set; }
 
         
     protected virtual void ClearData()
@@ -83,7 +83,7 @@ public abstract class AngularVelocitySignalProcessor
         var sDt2 = vDt1.Sp(vDt2) / sDt1;
 
         ArcLengthTimeDerivatives = 
-            new Pair<Float64Signal>(sDt1.ScalarValue, sDt2.ScalarValue);
+            new Pair<Float64SampledTimeSignal>(sDt1.ScalarValue, sDt2.ScalarValue);
     }
 
     private void ComputeVectorSignalArcLengthDerivatives()
@@ -97,7 +97,7 @@ public abstract class AngularVelocitySignalProcessor
         var vDs1 = vDt1 / sDt1;
         var vDs2 = (sDt1 * vDt2 - sDt2 * vDt1) / sDt1.Cube();
 
-        VectorSignalArcLengthDerivatives = new Pair<XGaVector<Float64Signal>>(vDs1, vDs2);
+        VectorSignalArcLengthDerivatives = new Pair<XGaVector<Float64SampledTimeSignal>>(vDs1, vDs2);
     }
 
     private void ComputeArcLengthFrames()
@@ -111,8 +111,8 @@ public abstract class AngularVelocitySignalProcessor
         var e1 = u1.DivideByNorm();
         var e2 = u2.DivideByNorm();
 
-        ArcLengthFramesOrthogonal = new Pair<XGaVector<Float64Signal>>(u1, u2);
-        ArcLengthFramesOrthonormal = new Pair<XGaVector<Float64Signal>>(e1, e2);
+        ArcLengthFramesOrthogonal = new Pair<XGaVector<Float64SampledTimeSignal>>(u1, u2);
+        ArcLengthFramesOrthonormal = new Pair<XGaVector<Float64SampledTimeSignal>>(e1, e2);
     }
 
     private void ComputeCurvatures()
@@ -183,7 +183,7 @@ public abstract class AngularVelocitySignalProcessor
         );
     }
     
-    public void ProcessVectorSignal(XGaVector<Float64Signal> vectorSignal)
+    public void ProcessVectorSignal(XGaVector<Float64SampledTimeSignal> vectorSignal)
     {
         ClearData();
 

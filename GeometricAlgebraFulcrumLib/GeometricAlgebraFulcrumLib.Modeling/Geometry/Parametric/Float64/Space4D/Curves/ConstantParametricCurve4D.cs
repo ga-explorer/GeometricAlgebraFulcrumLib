@@ -31,7 +31,7 @@ public class ConstantParametricCurve4D :
 
     public LinFloat64Vector4D Tangent { get; }
 
-    public Float64ScalarRange ParameterRange
+    public Float64ScalarRange TimeRange
         => Float64ScalarRange.Infinite;
 
 

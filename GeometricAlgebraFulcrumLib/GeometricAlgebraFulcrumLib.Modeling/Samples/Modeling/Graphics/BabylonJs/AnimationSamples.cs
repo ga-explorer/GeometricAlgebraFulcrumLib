@@ -224,8 +224,8 @@
 //        //    var omegaMean = Signal.GetDarbouxBivectorMean(i);
 //        //    var omegaMeanNorm = omegaMean.Norm();
 
-//        //    var frequencyHz = omegaNorm / (2d * Math.PI);
-//        //    var frequencyHzMean = omegaMeanNorm / (2 * Math.PI);
+//        //    var frequencyHz = omegaNorm / (Math.Tau);
+//        //    var frequencyHzMean = omegaMeanNorm / (Math.Tau);
 
 //        //    var e1Ds = kappa1 * e2;
 //        //    var e2Ds = kappa2 * e3 - kappa1 * e1;
@@ -315,8 +315,8 @@
 //            .AddDefaultEnvironment(GridUnitCount)
 //            .AddDefaultPerspectiveCamera(
 //                CameraDistance,
-//                "2 * Math.PI / 20",
-//                "2 * Math.PI / 5"
+//                "Math.Tau / 20",
+//                "Math.Tau / 5"
 //            );
 
 //        var material1 =
@@ -548,8 +548,8 @@
 //            .AddDefaultEnvironment(GridUnitCount)
 //            .AddDefaultPerspectiveCamera(
 //                CameraDistance,
-//                "2 * Math.PI / 20",
-//                "2 * Math.PI / 5"
+//                "Math.Tau / 20",
+//                "Math.Tau / 5"
 //            );
 
 //        MainSceneComposer.AddCircleCurve(
@@ -608,7 +608,7 @@
 //            1
 //        );
 
-//        var curve3 = ComputedParametricCurve3D.Create(t => curve2.GetPoint(t) - curve1.GetPoint(t));
+//        var curve3 = Float64ComputedPointPath3D.Finite(t => curve2.GetPoint(t) - curve1.GetPoint(t));
 
 //        var path1 = samplingSpecs.CreateAnimatedVector3D(Float64ScalarRange.ZeroToOne, curve1);
 //        var path2 = samplingSpecs.CreateAnimatedVector3D(Float64ScalarRange.ZeroToOne, curve2);
@@ -655,7 +655,7 @@
 //        const int frameRate = 10;
 //        const double magnitude = 4d;
 //        const double frequencyHz = 0.1d;
-//        const double frequency = 2d * Math.PI * frequencyHz;
+//        const double frequency = Math.Tau * frequencyHz;
 //        const double thickness = 0.05;
 
 //        var timeRange = Float64ScalarRange.Create(1d / frequencyHz);
@@ -691,16 +691,16 @@
 //            zPhasorFunction.GetDerivative1();
 
 
-//        var xPhasorCurve = ComputedParametricCurve3D.Create(t => xPhasorFunction.GetValue(t) * LinFloat64Vector3D.E1,
+//        var xPhasorCurve = Float64ComputedPointPath3D.Finite(t => xPhasorFunction.GetValue(t) * LinFloat64Vector3D.E1,
 //            t => xPhasorTangentFunction.GetValue(t) * LinFloat64Vector3D.E1);
 
-//        var yPhasorCurve = ComputedParametricCurve3D.Create(t => yPhasorFunction.GetValue(t) * LinFloat64Vector3D.E2,
+//        var yPhasorCurve = Float64ComputedPointPath3D.Finite(t => yPhasorFunction.GetValue(t) * LinFloat64Vector3D.E2,
 //            t => yPhasorTangentFunction.GetValue(t) * LinFloat64Vector3D.E2);
 
-//        var zPhasorCurve = ComputedParametricCurve3D.Create(t => zPhasorFunction.GetValue(t) * LinFloat64Vector3D.E3,
+//        var zPhasorCurve = Float64ComputedPointPath3D.Finite(t => zPhasorFunction.GetValue(t) * LinFloat64Vector3D.E3,
 //            t => zPhasorTangentFunction.GetValue(t) * LinFloat64Vector3D.E3);
 
-//        var uPhasorCurve = ComputedParametricCurve3D.Create(t => LinFloat64Vector3D.Create(xPhasorFunction.GetValue(t),
+//        var uPhasorCurve = Float64ComputedPointPath3D.Finite(t => LinFloat64Vector3D.Create(xPhasorFunction.GetValue(t),
 //                yPhasorFunction.GetValue(t),
 //                zPhasorFunction.GetValue(t)),
 //            t => LinFloat64Vector3D.Create(xPhasorTangentFunction.GetValue(t),
@@ -708,12 +708,12 @@
 //                zPhasorTangentFunction.GetValue(t)));
 
 
-//        var originCurve = ConstantParametricCurve3D.Create(
+//        var originCurve = Float64ConstantPointPath3D.Finite(
 //            LinFloat64Vector3D.Zero,
 //            LinFloat64Vector3D.UnitSymmetric
 //        );
 
-//        var uDiscRadiusCurve = ConstantParametricScalar.Create(
+//        var uDiscRadiusCurve = Float64ScalarSignalConstant.Create(
 //            magnitude * Math.Sqrt(3d / 2d) / 4,
 //            1d
 //        );
@@ -759,8 +759,8 @@
 //            .AddDefaultEnvironment(GridUnitCount)
 //            .AddDefaultPerspectiveCamera(
 //                CameraDistance,
-//                "2 * Math.PI / 20",
-//                "2 * Math.PI / 5"
+//                "Math.Tau / 20",
+//                "Math.Tau / 5"
 //            );
 
 //        var redMaterial =
@@ -1027,8 +1027,8 @@
 //            .AddDefaultEnvironment(GridUnitCount)
 //            .AddDefaultPerspectiveCamera(
 //                8,
-//                "2 * Math.PI / 20",
-//                "2 * Math.PI / 5"
+//                "Math.Tau / 20",
+//                "Math.Tau / 5"
 //            );
 
 

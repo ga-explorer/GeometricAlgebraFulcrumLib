@@ -192,7 +192,7 @@ public sealed class GrVisualCircleArcSurface3D :
         => Direction1.VectorUnitCross(Direction2);
 
     public double ArcRatio 
-        => Angle.RadiansValue / (2d * Math.PI);
+        => Angle.RadiansValue / (Math.Tau);
         
     public double ArcLength 
         => Angle.RadiansValue * Radius;
@@ -341,14 +341,14 @@ public sealed class GrVisualCircleArcSurface3D :
     {
         return SamplingSpecs.IsStatic || AnimatedCenter is null
             ? Center.ToLinVector3D()
-            : AnimatedCenter.GetPoint(time);
+            : AnimatedCenter.GetValue(time);
     }
         
     public LinFloat64Vector3D GetDirection1(double time)
     {
         return SamplingSpecs.IsStatic || AnimatedDirection1 is null
             ? Direction1
-            : AnimatedDirection1.GetPoint(time).ToUnitLinVector3D(LinFloat64Vector3D.E1);
+            : AnimatedDirection1.GetValue(time).ToUnitLinVector3D(LinFloat64Vector3D.E1);
     }
         
     public LinFloat64Vector3D GetDirection2(double time)
@@ -359,7 +359,7 @@ public sealed class GrVisualCircleArcSurface3D :
         var direction2 = 
             SamplingSpecs.IsStatic || AnimatedDirection2 is null
                 ? Direction2
-                : AnimatedDirection2.GetPoint(time);
+                : AnimatedDirection2.GetValue(time);
 
         direction2 = direction2.RejectOnUnitVector(direction1).ToUnitLinVector3D();
 

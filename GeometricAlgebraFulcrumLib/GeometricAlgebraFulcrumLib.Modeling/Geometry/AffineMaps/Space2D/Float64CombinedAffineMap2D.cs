@@ -9,6 +9,9 @@ public sealed class Float64CombinedAffineMap2D :
     private readonly List<Tuple<double, IFloat64AffineMap2D>> _affineMapsList
         = new List<Tuple<double, IFloat64AffineMap2D>>();
 
+    
+    public bool SwapsHandedness { get; }
+
 
     public SquareMatrix3 GetSquareMatrix3()
     {
@@ -20,7 +23,10 @@ public sealed class Float64CombinedAffineMap2D :
         throw new NotImplementedException();
     }
 
-    public bool SwapsHandedness { get; }
+    public bool IsIdentity()
+    {
+        throw new NotImplementedException();
+    }
 
     public LinFloat64Vector2D MapPoint(ILinFloat64Vector2D point)
     {

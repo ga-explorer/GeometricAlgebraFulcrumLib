@@ -2,9 +2,9 @@
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space2D;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space3D;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.Parametric.Float64.Space2D.Curves;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.Parametric.Float64.Space3D.Curves;
-using GeometricAlgebraFulcrumLib.Modeling.Temporal.Float64.Scalars;
+using GeometricAlgebraFulcrumLib.Modeling.Trajectories.Scalars.Float64;
+using GeometricAlgebraFulcrumLib.Modeling.Trajectories.Vectors2D.Float64.Basic;
+using GeometricAlgebraFulcrumLib.Modeling.Trajectories.Vectors3D.Float64.Basic;
 
 namespace GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.Visuals.Space3D.Animations;
 
@@ -34,16 +34,15 @@ public static class GrVisualAnimatedGeometryUtils
     {
         if (animatedVector is null) return null;
 
-        var baseCurve = ComputedParametricCurve2D.Create(
-            animatedVector.BaseParameterRange,
-            t => -animatedVector.BaseCurve.GetPoint(t),
-            t => -animatedVector.BaseCurve.GetDerivative1Point(t)
+        var baseCurve = Float64ComputedPath2D.Finite(
+            animatedVector.TimeRange,
+            t => -animatedVector.GetValue(t),
+            t => -animatedVector.GetDerivative1Value(t)
         );
 
         return GrVisualAnimatedVector2D.Create(
-            animatedVector.SamplingSpecs,
             baseCurve,
-            animatedVector.BaseParameterRange
+            animatedVector.SamplingSpecs
         );
     }
 
@@ -52,16 +51,15 @@ public static class GrVisualAnimatedGeometryUtils
     {
         if (animatedVector is null) return null;
 
-        var baseCurve = ComputedParametricCurve3D.Create(
-            animatedVector.BaseParameterRange,
-            t => -animatedVector.BaseCurve.GetPoint(t),
-            t => -animatedVector.BaseCurve.GetDerivative1Point(t)
+        var baseCurve = Float64ComputedPath3D.Finite(
+            animatedVector.TimeRange,
+            t => -animatedVector.BasePath.GetValue(t),
+            t => -animatedVector.BasePath.GetDerivative1Value(t)
         );
 
         return GrVisualAnimatedVector3D.Create(
-            animatedVector.SamplingSpecs,
             baseCurve,
-            animatedVector.BaseParameterRange
+            animatedVector.SamplingSpecs
         );
     }
     
@@ -72,7 +70,7 @@ public static class GrVisualAnimatedGeometryUtils
         if (animatedScalar is null) return null;
 
         return GrVisualAnimatedScalar.Create(
-            animatedScalar.TemporalScalar.MapValueUsing(scalarMapping),
+            animatedScalar.BaseScalar.ToFloat64ScalarSignal(scalarMapping),
             animatedScalar.SamplingSpecs
         );
     }
@@ -82,15 +80,14 @@ public static class GrVisualAnimatedGeometryUtils
     {
         if (animatedVector is null) return null;
 
-        var baseCurve = ComputedParametricCurve2D.Create(
-            animatedVector.BaseParameterRange,
-            t => vectorMapping(animatedVector.BaseCurve.GetPoint(t))
+        var baseCurve = Float64ComputedPath2D.Finite(
+            animatedVector.TimeRange,
+            t => vectorMapping(animatedVector.GetValue(t))
         );
 
         return GrVisualAnimatedVector2D.Create(
-            animatedVector.SamplingSpecs,
             baseCurve,
-            animatedVector.BaseParameterRange
+            animatedVector.SamplingSpecs
         );
     }
 
@@ -99,15 +96,14 @@ public static class GrVisualAnimatedGeometryUtils
     {
         if (animatedVector is null) return null;
 
-        var baseCurve = ComputedParametricCurve3D.Create(
-            animatedVector.BaseParameterRange,
-            t => vectorMapping(animatedVector.BaseCurve.GetPoint(t))
+        var baseCurve = Float64ComputedPath3D.Finite(
+            animatedVector.TimeRange,
+            t => vectorMapping(animatedVector.BasePath.GetValue(t))
         );
 
         return GrVisualAnimatedVector3D.Create(
-            animatedVector.SamplingSpecs,
             baseCurve,
-            animatedVector.BaseParameterRange
+            animatedVector.SamplingSpecs
         );
     }
 

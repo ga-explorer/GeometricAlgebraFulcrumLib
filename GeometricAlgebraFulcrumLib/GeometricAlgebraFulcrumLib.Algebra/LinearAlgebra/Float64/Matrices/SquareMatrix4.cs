@@ -364,6 +364,74 @@ public sealed class SquareMatrix4 //: IAffineMap3D
 
         return q.ToSquareMatrix4();
     }
+    
+    /// <summary>
+    /// Create an affine homogeneous transformation matrix given the columns
+    /// </summary>
+    /// <param name="c1"></param>
+    /// <param name="c2"></param>
+    /// <param name="c3"></param>
+    /// <returns></returns>
+    public static SquareMatrix4 CreateAffineFromColumns(ITriplet<Float64Scalar> c1, ITriplet<Float64Scalar> c2, ITriplet<Float64Scalar> c3)
+    {
+        return new SquareMatrix4()
+        {
+            Scalar00 = c1.Item1,
+            Scalar10 = c1.Item2,
+            Scalar20 = c1.Item3,
+            Scalar30 = Float64Scalar.Zero,
+
+            Scalar01 = c2.Item1,
+            Scalar11 = c2.Item2,
+            Scalar21 = c2.Item3,
+            Scalar31 = Float64Scalar.Zero,
+
+            Scalar02 = c3.Item1,
+            Scalar12 = c3.Item2,
+            Scalar22 = c3.Item3,
+            Scalar32 = Float64Scalar.Zero,
+
+            Scalar03 = Float64Scalar.Zero,
+            Scalar13 = Float64Scalar.Zero,
+            Scalar23 = Float64Scalar.Zero,
+            Scalar33 = Float64Scalar.One
+        };
+    }
+
+    /// <summary>
+    /// Create an affine homogeneous transformation matrix given the columns
+    /// </summary>
+    /// <param name="c1"></param>
+    /// <param name="c2"></param>
+    /// <param name="c3"></param>
+    /// <param name="c4"></param>
+    /// <returns></returns>
+    public static SquareMatrix4 CreateAffineFromColumns(ITriplet<Float64Scalar> c1, ITriplet<Float64Scalar> c2, ITriplet<Float64Scalar> c3, ITriplet<Float64Scalar> c4)
+    {
+        return new SquareMatrix4()
+        {
+            Scalar00 = c1.Item1,
+            Scalar10 = c1.Item2,
+            Scalar20 = c1.Item3,
+            Scalar30 = Float64Scalar.Zero,
+
+            Scalar01 = c2.Item1,
+            Scalar11 = c2.Item2,
+            Scalar21 = c2.Item3,
+            Scalar31 = Float64Scalar.Zero,
+
+            Scalar02 = c3.Item1,
+            Scalar12 = c3.Item2,
+            Scalar22 = c3.Item3,
+            Scalar32 = Float64Scalar.Zero,
+
+            Scalar03 = c4.Item1,
+            Scalar13 = c4.Item2,
+            Scalar23 = c4.Item3,
+            Scalar33 = Float64Scalar.One
+        };
+    }
+
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static SquareMatrix4 operator -(SquareMatrix4 m1)

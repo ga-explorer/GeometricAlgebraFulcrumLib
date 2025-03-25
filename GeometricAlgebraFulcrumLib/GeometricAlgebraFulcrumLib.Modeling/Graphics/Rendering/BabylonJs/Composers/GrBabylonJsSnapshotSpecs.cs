@@ -7,7 +7,7 @@ public sealed class GrBabylonJsSnapshotSpecs
 {
     public bool Enabled { get; set; }
 
-    public GrBabylonJsInt32Value Delay { get; set; } = 750;
+    public GrBabylonJsInt32Value Delay { get; set; } = 2000;
 
     public GrBabylonJsInt32Value Width { get; set; } = 1280;
 

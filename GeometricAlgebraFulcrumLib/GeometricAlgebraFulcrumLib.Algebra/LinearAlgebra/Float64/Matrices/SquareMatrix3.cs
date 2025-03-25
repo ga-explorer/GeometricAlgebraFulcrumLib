@@ -41,6 +41,21 @@ public sealed class SquareMatrix3 //: IAffineMap2D
 
         return m;
     }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static SquareMatrix3 CreateTranslationMatrix2D(IPair<Float64Scalar> dv)
+    {
+        var m = new SquareMatrix3
+        {
+            Scalar00 = 1d,
+            Scalar11 = 1d,
+            Scalar02 = dv.Item1,
+            Scalar12 = dv.Item2,
+            Scalar22 = 1d
+        };
+
+        return m;
+    }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static SquareMatrix3 CreateScalingMatrix2D(double sx, double sy)
@@ -49,6 +64,17 @@ public sealed class SquareMatrix3 //: IAffineMap2D
         {
             Scalar00 = sx,
             Scalar11 = sy,
+            Scalar22 = 1d
+        };
+    }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static SquareMatrix3 CreateScalingMatrix2D(IPair<Float64Scalar> sv)
+    {
+        return new SquareMatrix3
+        {
+            Scalar00 = sv.Item1,
+            Scalar11 = sv.Item2,
             Scalar22 = 1d
         };
     }
@@ -112,6 +138,23 @@ public sealed class SquareMatrix3 //: IAffineMap2D
         m.Scalar22 = 1d;
 
         return m;
+    }
+    
+    /// <summary>
+    /// Create a rotation matrix that rotates the unit vector <see cref="srcUnitVector"/>
+    /// into the unit vector <see cref="dstUnitVector"/>
+    /// </summary>
+    /// <param name="srcUnitVector"></param>
+    /// <param name="dstUnitVector"></param>
+    /// <returns></returns>
+    public static SquareMatrix3 CreateRotationMatrix2D(ILinFloat64Vector2D srcUnitVector, ILinFloat64Vector2D dstUnitVector)
+    {
+        var angle =
+            srcUnitVector.GetDirectedAngle(dstUnitVector);
+
+        return angle.RadiansValue.IsZero()
+            ? CreateIdentityMatrix()
+            : CreateRotationMatrix2D(angle);
     }
 
     public static SquareMatrix3 CreateAxisToVectorRotationMatrix3D(LinBasisVector3D axis, ILinFloat64Vector3D unitVector)
@@ -487,6 +530,55 @@ public sealed class SquareMatrix3 //: IAffineMap2D
             return m2 * m1;
         }
     }
+    
+    /// <summary>
+    /// Create an affine homogeneous transformation matrix given the columns
+    /// </summary>
+    /// <param name="c1"></param>
+    /// <param name="c2"></param>
+    /// <returns></returns>
+    public static SquareMatrix3 CreateAffineFromColumns(IPair<Float64Scalar> c1, IPair<Float64Scalar> c2)
+    {
+        return new SquareMatrix3()
+        {
+            Scalar00 = c1.Item1,
+            Scalar10 = c1.Item2,
+            Scalar20 = Float64Scalar.Zero,
+
+            Scalar01 = c2.Item1,
+            Scalar11 = c2.Item2,
+            Scalar21 = Float64Scalar.Zero,
+
+            Scalar02 = Float64Scalar.Zero,
+            Scalar12 = Float64Scalar.Zero,
+            Scalar22 = Float64Scalar.One
+        };
+    }
+
+    /// <summary>
+    /// Create an affine homogeneous transformation matrix given the columns
+    /// </summary>
+    /// <param name="c1"></param>
+    /// <param name="c2"></param>
+    /// <param name="c3"></param>
+    /// <returns></returns>
+    public static SquareMatrix3 CreateAffineFromColumns(IPair<Float64Scalar> c1, IPair<Float64Scalar> c2, IPair<Float64Scalar> c3)
+    {
+        return new SquareMatrix3()
+        {
+            Scalar00 = c1.Item1,
+            Scalar10 = c1.Item2,
+            Scalar20 = Float64Scalar.Zero,
+
+            Scalar01 = c2.Item1,
+            Scalar11 = c2.Item2,
+            Scalar21 = Float64Scalar.Zero,
+
+            Scalar02 = c3.Item1,
+            Scalar12 = c3.Item2,
+            Scalar22 = Float64Scalar.One
+        };
+    }
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -797,6 +889,20 @@ public sealed class SquareMatrix3 //: IAffineMap2D
     /// </summary>
     public Float64Scalar FNorm
         => Math.Sqrt(FNormSquared);
+    
+    public bool ContainsScaling
+    {
+        get
+        {
+            var x = Scalar00 * Scalar00 + Scalar01 * Scalar01;
+            if (!(x - 1.0d).IsZero()) return false;
+
+            x = Scalar10 * Scalar10 + Scalar11 * Scalar11;
+            if (!(x - 1.0d).IsZero()) return false;
+
+            return true;
+        }
+    }
 
     public Float64Scalar Determinant
         => Scalar00 * (Scalar11 * Scalar22 - Scalar12 * Scalar21) +

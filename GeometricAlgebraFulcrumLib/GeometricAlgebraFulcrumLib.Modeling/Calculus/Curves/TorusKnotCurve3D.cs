@@ -1,4 +1,5 @@
-﻿using GeometricAlgebraFulcrumLib.Modeling.Calculus.Functions.Float64;
+﻿using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
+using GeometricAlgebraFulcrumLib.Modeling.Calculus.Functions.Float64;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Basic;
 
 namespace GeometricAlgebraFulcrumLib.Modeling.Calculus.Curves;
@@ -8,7 +9,7 @@ namespace GeometricAlgebraFulcrumLib.Modeling.Calculus.Curves;
 /// and https://en.wikipedia.org/wiki/Torus_knot
 /// </summary>
 public class TorusKnotCurve3D :
-    DifferentialCurve3D
+    Float64DifferentialPath3D
 {
     public int PValue { get; }
 
@@ -20,12 +21,12 @@ public class TorusKnotCurve3D :
 
 
     protected TorusKnotCurve3D(ITriplet<DifferentialFunction> components) 
-        : base(components)
+        : base(Float64ScalarRange.ZeroToTwoPi, true, components)
     {
     }
 
     protected TorusKnotCurve3D(ITriplet<DifferentialFunction> components, DifferentialFunction tangentNorm) 
-        : base(components, tangentNorm)
+        : base(Float64ScalarRange.ZeroToTwoPi, true, components, tangentNorm)
     {
     }
 }

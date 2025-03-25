@@ -1,7 +1,7 @@
-﻿using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.Colors;
-using GeometricAlgebraFulcrumLib.Utilities.Text.Code.JavaScript;
+﻿using GeometricAlgebraFulcrumLib.Utilities.Text.Code.JavaScript;
 using GeometricAlgebraFulcrumLib.Utilities.Web.Colors;
 using SixLabors.ImageSharp;
+using GrColorUtils = GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.Colors.GrColorUtils;
 
 namespace GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.Xeogl.Lights;
 

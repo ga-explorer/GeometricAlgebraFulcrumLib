@@ -22,6 +22,25 @@ public sealed record LinFloat64Quaternion :
 {
     public static LinFloat64Quaternion Identity { get; }
         = new LinFloat64Quaternion(1, 0, 0, 0);
+    
+    public static LinFloat64Quaternion XyToXz { get; }
+        = LinBasisVectorPair3D.PxPy.VectorPairToVectorPairRotationQuaternion(LinBasisVectorPair3D.PxPz);
+
+    public static LinFloat64Quaternion XyToYx { get; }
+        = LinBasisVectorPair3D.PxPy.VectorPairToVectorPairRotationQuaternion(LinBasisVectorPair3D.PyPx);
+    
+    public static LinFloat64Quaternion XyToYz { get; }
+        = LinBasisVectorPair3D.PxPy.VectorPairToVectorPairRotationQuaternion(LinBasisVectorPair3D.PyPz);
+    
+    public static LinFloat64Quaternion XyToZx { get; }
+        = LinBasisVectorPair3D.PxPy.VectorPairToVectorPairRotationQuaternion(LinBasisVectorPair3D.PzPx);
+
+    public static LinFloat64Quaternion XyToZy { get; }
+        = LinBasisVectorPair3D.PxPy.VectorPairToVectorPairRotationQuaternion(LinBasisVectorPair3D.PzPy);
+
+    
+    public static LinFloat64Quaternion ZxToXy { get; }
+        = LinBasisVectorPair3D.PzPx.VectorPairToVectorPairRotationQuaternion(LinBasisVectorPair3D.PxPy);
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -658,7 +677,12 @@ public sealed record LinFloat64Quaternion :
             q2.ScalarJ * ScalarJ +
             q2.ScalarK * ScalarK;
 
-        return new LinFloat64Quaternion(q2.Scalar * Scalar - dot, q2.ScalarI * Scalar + ScalarI * q2.Scalar + cx, q2.ScalarJ * Scalar + ScalarJ * q2.Scalar + cy, q2.ScalarK * Scalar + ScalarK * q2.Scalar + cz);
+        return new LinFloat64Quaternion(
+            q2.Scalar * Scalar - dot, 
+            q2.ScalarI * Scalar + ScalarI * q2.Scalar + cx, 
+            q2.ScalarJ * Scalar + ScalarJ * q2.Scalar + cy, 
+            q2.ScalarK * Scalar + ScalarK * q2.Scalar + cz
+        );
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -732,7 +756,7 @@ public sealed record LinFloat64Quaternion :
         var (angle, normal) = GetAngleAndNormal(assumeNormalized);
 
         var length =
-            angle.RadiansValue / (2d * Math.PI);
+            angle.RadiansValue / (Math.Tau);
 
         return normal.SetLength(length);
     }

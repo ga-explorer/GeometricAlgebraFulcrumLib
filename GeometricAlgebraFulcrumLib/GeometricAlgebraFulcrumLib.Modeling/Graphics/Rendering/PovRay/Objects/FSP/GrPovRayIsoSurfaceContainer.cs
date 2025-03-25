@@ -17,8 +17,8 @@ public abstract class GrPovRayIsoSurfaceContainer :
     }
 
 
-    public Float64AffineMap3D AffineMap { get; } 
-        = Float64AffineMap3D.Create();
+    public Float64InvertibleAffineMap3D AffineMap { get; } 
+        = Float64InvertibleAffineMap3D.Create();
 
     public IFloat64AffineMap3D Transform 
         => AffineMap;

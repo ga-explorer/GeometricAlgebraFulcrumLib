@@ -1,13 +1,14 @@
 ﻿using GeometricAlgebraFulcrumLib.Utilities.Structures.Basic;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.BitManipulation;
 using GeometricAlgebraFulcrumLib.Utilities.Web.Colors;
+using GeometricAlgebraFulcrumLib.Utilities.Web.Html.Media;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.PixelFormats;
 
 namespace GeometricAlgebraFulcrumLib.Utilities.Web.Images;
 
 public sealed class GrVisualGridImageComposer :
-    IGrVisualImageComposer
+    IGrVisualImageSource
 {
     public static GrVisualGridImageComposer Default(double opacity)
     {
@@ -78,17 +79,28 @@ public sealed class GrVisualGridImageComposer :
     public int ImageHeight
         => (BaseSquareSize + BaseLineWidth) * BaseSquareCount + BaseLineWidth;
 
+    public double ImageWidthToHeight 
+        => ImageWidth / (double)ImageHeight;
+
+    public double ImageHeightToWidth 
+        => ImageHeight / (double)ImageWidth;
+    
+    public Pair<int> ImageSize 
+        => new Pair<int>(
+            (BaseSquareSize + BaseLineWidth) * BaseSquareCount + BaseLineWidth,
+            (BaseSquareSize + BaseLineWidth) * BaseSquareCount + BaseLineWidth
+        );
 
 
     public bool IsValid()
     {
-        throw new NotImplementedException();
+        return true;
     }
 
 
     public Image GetImage()
     {
-        var (width, height) = GetImageSize();
+        var (width, height) = ImageSize;
         var bitmap = new Image<Rgba32>(width, height);
 
         AddBaseColor(bitmap);
@@ -102,18 +114,20 @@ public sealed class GrVisualGridImageComposer :
         return bitmap;
     }
 
-    public Pair<int> GetImageSize()
+    public string GetImageDataUrlBase64()
     {
-        return new Pair<int>(
-            (BaseSquareSize + BaseLineWidth) * BaseSquareCount + BaseLineWidth,
-            (BaseSquareSize + BaseLineWidth) * BaseSquareCount + BaseLineWidth
-        );
+        return GetImage().PngToHtmlDataUrlBase64();
+    }
+    
+    public string GetPngImageFilePath()
+    {
+        return string.Empty;
     }
 
 
     private void AddBaseColor(Image<Rgba32> bitmap)
     {
-        var (width, height) = GetImageSize();
+        var (width, height) = ImageSize;
 
         for (var i = 0; i < width; i++)
             for (var j = 0; j < height; j++)
@@ -125,7 +139,7 @@ public sealed class GrVisualGridImageComposer :
         if (!BaseLineEnabled)
             return;
 
-        var (width, height) = GetImageSize();
+        var (width, height) = ImageSize;
 
         for (var i1 = 0; i1 < width; i1 += TotalSquareSize)
         {
@@ -147,7 +161,7 @@ public sealed class GrVisualGridImageComposer :
         if (!MidLineEnabled)
             return;
 
-        var (width, height) = GetImageSize();
+        var (width, height) = ImageSize;
 
         if ((width - MidLineWidth).IsOdd())
             throw new InvalidOperationException("(Grid width - Mid line width) must be an even number");
@@ -168,7 +182,7 @@ public sealed class GrVisualGridImageComposer :
         if (!BorderLineEnabled)
             return;
 
-        var (width, height) = GetImageSize();
+        var (width, height) = ImageSize;
 
         for (var i = 0; i < width; i++)
             for (var j = 0; j < BorderLineWidth; j++)

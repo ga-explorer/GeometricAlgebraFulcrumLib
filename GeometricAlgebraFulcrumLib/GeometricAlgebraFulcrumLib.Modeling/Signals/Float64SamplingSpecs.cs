@@ -1,4 +1,5 @@
-﻿using System.Runtime.CompilerServices;
+﻿using System.Diagnostics;
+using System.Runtime.CompilerServices;
 using GeometricAlgebraFulcrumLib.Algebra;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
 using GeometricAlgebraFulcrumLib.Modeling.Calculus.Functions.Float64;
@@ -71,7 +72,7 @@ public sealed record Float64SamplingSpecs :
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Float64SamplingSpecs CreateFromFrequencyResolution(int sampleCount, double freqResolution)
     {
-        var samplingRate = freqResolution * (sampleCount - 1) / TwoPi;
+        var samplingRate = freqResolution * (sampleCount - 1) / Math.Tau;
 
         return new Float64SamplingSpecs(
             sampleCount, 
@@ -90,22 +91,21 @@ public sealed record Float64SamplingSpecs :
         );
     }
 
-
-    private const double TwoPi = Math.Tau;
-
-
+    
     public int SampleCount { get; }
 
     public double SamplingRate { get; }
+    
+    public Float64ScalarRange TimeRange { get; }
 
     public double MinTime
-        => 0;
+        => TimeRange.MinValue;
 
     public double MaxTime
-        => (SampleCount - 1) / SamplingRate;
+        => TimeRange.MaxValue;
 
     public double TimeLength
-        => MaxTime - MinTime;
+        => TimeRange.Length;
 
     public double TimeResolution
         => 1d / SamplingRate;
@@ -119,10 +119,10 @@ public sealed record Float64SamplingSpecs :
            (SampleCount.IsOdd() ? SampleCount - 1 >> 1 : (SampleCount >> 1) - 1);
 
     public double MaxFrequencyHz
-        => MaxFrequency / TwoPi;
+        => MaxFrequency / Math.Tau;
 
     public double MinFrequencyHz
-        => MinFrequency / TwoPi;
+        => MinFrequency / Math.Tau;
 
     public double FrequencyLength
         => MaxFrequency - MinFrequency;
@@ -131,19 +131,16 @@ public sealed record Float64SamplingSpecs :
         => MaxFrequencyHz - MinFrequencyHz;
 
     public double FrequencyResolution
-        => TwoPi * FrequencyResolutionHz;
+        => Math.Tau * FrequencyResolutionHz;
 
     public double FrequencyResolutionHz
         => SamplingRate / (SampleCount - 1);
     
     public bool IsStatic 
-        => SamplingRate < 1;
+        => SampleCount == 0 && SamplingRate == 0;
     
-    public bool IsAnimated 
-        => SamplingRate >= 1;
-
-    public Float64ScalarRange TimeRange 
-        => Float64ScalarRange.Create(0, MaxTime);
+    //public bool IsAnimated 
+    //    => SampleCount > 0 && SamplingRate > 0;
 
     public Int32Range1D SampleIndexRange 
         => Int32Range1D.Create(0, SampleCount - 1);
@@ -156,7 +153,7 @@ public sealed record Float64SamplingSpecs :
     
     public IEnumerable<double> SampleTimes
         => SampleCount.MapRange(
-            sampleIndex => sampleIndex * TimeResolution
+            sampleIndex => MinTime + sampleIndex * TimeResolution
         );
     
     public IEnumerable<int> SampleIndices
@@ -166,7 +163,7 @@ public sealed record Float64SamplingSpecs :
         => SampleCount.MapRange(sampleIndex => 
             new KeyValuePair<int, double>(
                 sampleIndex,
-                sampleIndex / SamplingRate
+                MinTime + sampleIndex * TimeResolution
             )
         );
 
@@ -176,6 +173,9 @@ public sealed record Float64SamplingSpecs :
     {
         SampleCount = 0;
         SamplingRate = 0;
+        TimeRange = Float64ScalarRange.Create(0, 0);
+
+        Debug.Assert(IsValid());
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -189,12 +189,18 @@ public sealed record Float64SamplingSpecs :
 
         SampleCount = sampleCount;
         SamplingRate = samplingRate;
+        TimeRange = Float64ScalarRange.Create(0, (sampleCount - 1) / samplingRate);
+
+        Debug.Assert(IsValid());
     }
 
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public bool IsValid()
     {
+        if (!MinTime.IsFinite())
+            return false;
+
         return (SampleCount == 0 && SamplingRate == 0) ||
                (SampleCount > 0 && SamplingRate > 0);
     }
@@ -235,33 +241,39 @@ public sealed record Float64SamplingSpecs :
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public double GetFrequencyHz(int index)
     {
-        return GetFrequency(index) / (2 * Math.PI);
+        return GetFrequency(index) / (Math.Tau);
     }
 
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public double GetSampledTimeValue(int sampleIndex)
-    {
-        return sampleIndex / SamplingRate;
-    }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public double GetSampleIndex(double sampleTime)
     {
-        return sampleTime * SamplingRate;
+        return (sampleTime - MinTime) * SamplingRate;
+    }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public double GetSampleTimeRelative(int sampleIndex)
+    {
+        return sampleIndex / (SampleCount - 1d);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public Pair<double> GetSampledTimeValues(int sampleIndex1, int sampleIndex2)
+    public double GetSampleTime(int sampleIndex)
+    {
+        return MinTime + sampleIndex * TimeResolution;
+    }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public Pair<double> GetSampleTimePair(int sampleIndex1, int sampleIndex2)
     {
         return new Pair<double>(
-            sampleIndex1 / SamplingRate,
-            sampleIndex2 / SamplingRate
+            MinTime + sampleIndex1 * TimeResolution,
+            MinTime + sampleIndex2 * TimeResolution
         );
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public Float64Signal GetSampledTimeSignal()
+    public Float64SampledTimeSignal GetSampleTimeSignal()
     {
         return MinTime
             .GetLinearRange(MaxTime, SampleCount)
@@ -269,30 +281,30 @@ public sealed record Float64SamplingSpecs :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public Float64Signal GetSampledTimeSignal(int sampleCount)
+    public Float64SampledTimeSignal GetSampleTimeSignal(int sampleCount)
     {
         if (sampleCount < 1)
             throw new ArgumentOutOfRangeException(nameof(sampleCount));
 
-        return 0d
-            .GetLinearRange((sampleCount - 1) / SamplingRate, sampleCount)
+        return MinTime
+            .GetLinearRange(MinTime + (sampleCount - 1) * TimeResolution, sampleCount)
             .CreateSignal(SamplingRate);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public Float64Signal GetSampledTimeSignal(int firstSampleIndex, int sampleCount)
+    public Float64SampledTimeSignal GetSampleTimeSignal(int firstSampleIndex, int sampleCount)
     {
         if (sampleCount < 1)
             throw new ArgumentOutOfRangeException(nameof(sampleCount));
 
-        return (firstSampleIndex / SamplingRate)
-            .GetLinearRange((firstSampleIndex + sampleCount - 1) / SamplingRate, sampleCount)
+        return (MinTime + firstSampleIndex * TimeResolution)
+            .GetLinearRange(MinTime + (firstSampleIndex + sampleCount - 1) * TimeResolution, sampleCount)
             .CreateSignal(SamplingRate);
     }
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public double[] GetSampledTimeArray()
+    public double[] GetSampleTimeArray()
     {
         return MinTime
             .GetLinearRange(MaxTime, SampleCount)
@@ -300,30 +312,30 @@ public sealed record Float64SamplingSpecs :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public double[] GetSampledTimeArray(int sampleCount)
+    public double[] GetSampleTimeArray(int sampleCount)
     {
         if (sampleCount < 1)
             throw new ArgumentOutOfRangeException(nameof(sampleCount));
 
-        return 0d
-            .GetLinearRange((sampleCount - 1) / SamplingRate, sampleCount)
+        return MinTime
+            .GetLinearRange(MinTime + (sampleCount - 1) * TimeResolution, sampleCount)
             .ToArray();
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public double[] GetSampledTimeArray(int firstSampleIndex, int sampleCount)
+    public double[] GetSampleTimeArray(int firstSampleIndex, int sampleCount)
     {
         if (sampleCount < 1)
             throw new ArgumentOutOfRangeException(nameof(sampleCount));
 
-        return (firstSampleIndex / SamplingRate)
-            .GetLinearRange((firstSampleIndex + sampleCount - 1) / SamplingRate, sampleCount)
+        return (MinTime + firstSampleIndex * TimeResolution)
+            .GetLinearRange(MinTime + (firstSampleIndex + sampleCount - 1) * TimeResolution, sampleCount)
             .ToArray();
     }
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public Float64Signal GetSampledFunctionSignal(Func<double, double> func)
+    public Float64SampledTimeSignal GetSampledFunctionSignal(Func<double, double> func)
     {
         return MinTime
             .GetLinearRange(MaxTime, SampleCount)
@@ -332,31 +344,31 @@ public sealed record Float64SamplingSpecs :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public Float64Signal GetSampledFunctionSignal(Func<double, double> func, int sampleCount)
+    public Float64SampledTimeSignal GetSampledFunctionSignal(Func<double, double> func, int sampleCount)
     {
         if (sampleCount < 1)
             throw new ArgumentOutOfRangeException(nameof(sampleCount));
 
-        return 0d
-            .GetLinearRange((sampleCount - 1) / SamplingRate, sampleCount)
+        return MinTime
+            .GetLinearRange(MinTime + (sampleCount - 1) * TimeResolution, sampleCount)
             .Select(func)
             .CreateSignal(SamplingRate);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public Float64Signal GetSampledFunctionSignal(Func<double, double> func, int firstSampleIndex, int sampleCount)
+    public Float64SampledTimeSignal GetSampledFunctionSignal(Func<double, double> func, int firstSampleIndex, int sampleCount)
     {
         if (sampleCount < 1)
             throw new ArgumentOutOfRangeException(nameof(sampleCount));
 
-        return (firstSampleIndex / SamplingRate)
-            .GetLinearRange((firstSampleIndex + sampleCount - 1) / SamplingRate, sampleCount)
+        return (MinTime + firstSampleIndex * TimeResolution)
+            .GetLinearRange(MinTime + (firstSampleIndex + sampleCount - 1) * TimeResolution, sampleCount)
             .Select(func)
             .CreateSignal(SamplingRate);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public Float64Signal GetSampledFunctionSignal(DifferentialFunction func)
+    public Float64SampledTimeSignal GetSampledFunctionSignal(DifferentialFunction func)
     {
         return MinTime
             .GetLinearRange(MaxTime, SampleCount)
@@ -365,27 +377,37 @@ public sealed record Float64SamplingSpecs :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public Float64Signal GetSampledFunctionSignal(DifferentialFunction func, int sampleCount)
+    public Float64SampledTimeSignal GetSampledFunctionSignal(DifferentialFunction func, int sampleCount)
     {
         if (sampleCount < 1)
             throw new ArgumentOutOfRangeException(nameof(sampleCount));
 
-        return 0d
-            .GetLinearRange((sampleCount - 1) / SamplingRate, sampleCount)
+        return MinTime
+            .GetLinearRange(MinTime + (sampleCount - 1) * TimeResolution, sampleCount)
             .Select(func.GetValue)
             .CreateSignal(SamplingRate);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public Float64Signal GetSampledFunctionSignal(DifferentialFunction func, int firstSampleIndex, int sampleCount)
+    public Float64SampledTimeSignal GetSampledFunctionSignal(DifferentialFunction func, int firstSampleIndex, int sampleCount)
     {
         if (sampleCount < 1)
             throw new ArgumentOutOfRangeException(nameof(sampleCount));
 
-        return (firstSampleIndex / SamplingRate)
-            .GetLinearRange((firstSampleIndex + sampleCount - 1) / SamplingRate, sampleCount)
+        return (MinTime + firstSampleIndex * TimeResolution)
+            .GetLinearRange(MinTime + (firstSampleIndex + sampleCount - 1) * TimeResolution, sampleCount)
             .Select(func.GetValue)
             .CreateSignal(SamplingRate);
+    }
+
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public int AffineMapSampleIndex(Float64SamplingSpecs targetSamplingSpecs, int sampleIndex)
+    {
+        return targetSamplingSpecs.GetSampleIndex(
+            targetSamplingSpecs.MinTime + 
+            targetSamplingSpecs.TimeLength * GetSampleTimeRelative(sampleIndex)
+        ).RoundToInt32().ClampInt(targetSamplingSpecs.MaxSampleIndex);
     }
 
 

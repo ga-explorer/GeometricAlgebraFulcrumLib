@@ -113,7 +113,7 @@ function createXyCirclePathPoints(arcRatio) {
     const n = path.length;
 
     for (let i = 0; i < n; i++) {
-        const a = 2 * Math.PI * arcRatio * i / (n - 1);
+        const a = Math.Tau * arcRatio * i / (n - 1);
         
         path[i] = new BABYLON.Vector3(Math.cos(a), Math.sin(a), 0);
     }
@@ -125,7 +125,7 @@ function updateXyCirclePathPoints(path, radius, arcRatio) {
     const n = path.length;
 
     for (let i = 0; i < n; i++) {
-        const a = 2 * Math.PI * arcRatio * i / (n - 1);
+        const a = Math.Tau * arcRatio * i / (n - 1);
         
         path[i].x = radius * Math.cos(a);
         path[i].y = radius * Math.sin(a);
@@ -264,7 +264,7 @@ function updateXyCirclePathPoints(path, radius, arcRatio) {
             visualElement.Texture;
 
         var latexImageString =
-            latexImage.GetImageUrl();
+            latexImage.GetImageDataUrlBase64();
 
         SceneObject.AddTexture(
             $"{visualElement.Name}Texture",
@@ -421,6 +421,9 @@ function updateXyCirclePathPoints(path, radius, arcRatio) {
             //);
         }
 
+        var q = 
+            LinFloat64Quaternion.ZxToXy.Concatenate(visualElement.Orientation);
+
         SceneObject.AddGround(
             $"{visualElement.Name}Ground",
 
@@ -434,31 +437,47 @@ function updateXyCirclePathPoints(path, radius, arcRatio) {
             {
                 Material = $"{visualElement.Name}Material",
                 Position = visualElement.Center,
-                RotationQuaternion = visualElement.GridPlane switch
-                {
-                    GrVisualSquareGridPlane3D.XyPlane =>
-                        LinBasisVector3D
-                            .Py
-                            .VectorToVectorRotationQuaternion(
-                                LinBasisVector3D.Nz
-                            ),
-
-                    GrVisualSquareGridPlane3D.YzPlane =>
-                        LinBasisVector3D
-                            .Py
-                            .VectorToVectorRotationQuaternion(
-                                LinBasisVector3D.Nx
-                            ),
-
-                    GrVisualSquareGridPlane3D.ZxPlane =>
-                        LinFloat64Quaternion.Identity,
-
-                    _ => throw new InvalidOperationException()
-                }
+                RotationQuaternion = q
             }
         );
 
         return visualElement;
+    }
+
+    public override void AddGrid(string name, ITriplet<Float64Scalar> center, LinFloat64Quaternion orientation, int unitCount, double unitSize = 1, double opacity = 1)
+    {
+        GridMaterialKind =
+            GrBabylonJsGridMaterialKind.TexturedMaterial;
+
+        AddSquareGrid(
+            GrVisualSquareGrid3D.Default(
+                name,
+                center, 
+                orientation, 
+                unitCount, 
+                unitSize, 
+                opacity
+            )
+        );
+    }
+
+    public override void AddAxes(string name, ITriplet<Float64Scalar> origin, LinFloat64Quaternion orientation, double scalingFactor = 1, double opacity = 1)
+    {
+        AddElement(
+            GrVisualFrame3D.CreateStatic(
+                name,
+                new GrVisualFrameStyle3D
+                {
+                    OriginStyle = AddOrGetColorMaterial(Color.DarkGray.WithAlpha(opacity)).CreateThickSurfaceStyle(0.075),
+                    Direction1Style = AddOrGetColorMaterial(Color.DarkRed.WithAlpha(opacity)).CreateTubeCurveStyle(0.035),
+                    Direction2Style = AddOrGetColorMaterial(Color.DarkGreen.WithAlpha(opacity)).CreateTubeCurveStyle(0.035),
+                    Direction3Style = AddOrGetColorMaterial(Color.DarkBlue.WithAlpha(opacity)).CreateTubeCurveStyle(0.035)
+                },
+                origin.ToLinVector3D(),
+                orientation,
+                scalingFactor
+            )
+        );
     }
 
     public override IGrVisualImage3D AddImage(IGrVisualImage3D visualElement)
@@ -761,7 +780,7 @@ function updateXyCirclePathPoints(path, radius, arcRatio) {
         var pointListCode =
             visualElement
                 .ParameterValues
-                .Select(visualElement.Curve.GetPoint)
+                .Select(visualElement.Curve.GetValue)
                 .GetBabylonJsCode();
 
         SceneObject.AddFreeCode(
@@ -3418,7 +3437,7 @@ updateXyCirclePathPoints({visualElement.Name}Points, {visualElement.Name}Tube.ci
 
             keyVisibility.SetKeyFrameValue(frameIndex, visibility);
             keyRadius.SetKeyFrameValue(frameIndex, radius);
-            keyArcRatio.SetKeyFrameValue(frameIndex, angle.RadiansValue / (2 * Math.PI));
+            keyArcRatio.SetKeyFrameValue(frameIndex, angle.RadiansValue / (Math.Tau));
             keyPositions.SetKeyFrameValue(frameIndex, center);
             keyQuaternions.SetKeyFrameValue(frameIndex, quaternion);
         }
@@ -3574,7 +3593,7 @@ updateXyCirclePathPoints({visualElement.Name}Points1, {visualElement.Name}Ribbon
     }
 
 
-    public GrBabylonJsSceneComposer AddDefaultGridXy(IGrVisualTexture texture, int gridUnitCount, double unitSize = 1, double zValue = 0, double opacity = 0.25)
+    public GrBabylonJsSceneComposer AddDefaultGridXy(IGrVisualImageSource texture, int gridUnitCount, double unitSize = 1, double zValue = 0, double opacity = 0.25)
     {
         AddSquareGrid(
             GrVisualSquareGrid3D.DefaultXy(
@@ -3589,7 +3608,7 @@ updateXyCirclePathPoints({visualElement.Name}Points1, {visualElement.Name}Ribbon
         return this;
     }
 
-    public GrBabylonJsSceneComposer AddDefaultGridYz(IGrVisualTexture texture, int gridUnitCount, double unitSize = 1, double xValue = 0, double opacity = 0.25)
+    public GrBabylonJsSceneComposer AddDefaultGridYz(IGrVisualImageSource texture, int gridUnitCount, double unitSize = 1, double xValue = 0, double opacity = 0.25)
     {
         AddSquareGrid(
             GrVisualSquareGrid3D.DefaultYz(
@@ -3604,7 +3623,7 @@ updateXyCirclePathPoints({visualElement.Name}Points1, {visualElement.Name}Ribbon
         return this;
     }
 
-    public GrBabylonJsSceneComposer AddDefaultGridZx(IGrVisualTexture texture, int gridUnitCount, double unitSize = 1, double yValue = 0, double opacity = 0.25)
+    public GrBabylonJsSceneComposer AddDefaultGridZx(IGrVisualImageSource texture, int gridUnitCount, double unitSize = 1, double yValue = 0, double opacity = 0.25)
     {
         AddSquareGrid(
             GrVisualSquareGrid3D.DefaultZx(
@@ -3619,7 +3638,7 @@ updateXyCirclePathPoints({visualElement.Name}Points1, {visualElement.Name}Ribbon
         return this;
     }
 
-    public GrBabylonJsSceneComposer AddDefaultGridXyz(IGrVisualTexture texture, int gridUnitCount, double unitSize = 1, double opacity = 0.25)
+    public GrBabylonJsSceneComposer AddDefaultGridXyz(IGrVisualImageSource texture, int gridUnitCount, double unitSize = 1, double opacity = 0.25)
     {
         AddSquareGrid(
             GrVisualSquareGrid3D.DefaultXy(

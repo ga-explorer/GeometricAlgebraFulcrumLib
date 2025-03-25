@@ -118,7 +118,7 @@ public sealed class SparseRegularHistogram :
 
         var halfSize = Math.Sqrt(
             -2 * variance * Math.Log(
-                Math.Sqrt(2 * Math.PI) * standardDeviation * zeroEpsilon
+                Math.Sqrt(Math.Tau) * standardDeviation * zeroEpsilon
             )
         );
 
@@ -151,7 +151,7 @@ public sealed class SparseRegularHistogram :
         {
             var z = (x - mean) / standardDeviation;
 
-            return Math.Exp(-z * z) / (Math.Sqrt(2d * Math.PI) * standardDeviation);
+            return Math.Exp(-z * z) / (Math.Sqrt(Math.Tau) * standardDeviation);
         }
     }
 

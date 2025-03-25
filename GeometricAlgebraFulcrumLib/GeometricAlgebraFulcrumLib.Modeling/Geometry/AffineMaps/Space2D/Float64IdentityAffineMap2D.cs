@@ -22,6 +22,13 @@ public sealed class Float64IdentityAffineMap2D :
     public bool SwapsHandedness
         => false;
 
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public bool IsIdentity()
+    {
+        return true;
+    }
+
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public LinFloat64Vector2D MapPoint(ILinFloat64Vector2D point)
     {

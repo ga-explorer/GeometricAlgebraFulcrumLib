@@ -1,8 +1,9 @@
 ﻿using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Angles;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space2D;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
+using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.Visuals;
 using GeometricAlgebraFulcrumLib.Modeling.Signals.Composers;
-using GeometricAlgebraFulcrumLib.Modeling.Temporal.Float64.Scalars;
+using GeometricAlgebraFulcrumLib.Modeling.Trajectories.Scalars.Float64;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Basic;
 using GeometricAlgebraFulcrumLib.Utilities.Web.LaTeX.CodeComposer;
 
@@ -14,7 +15,7 @@ public static class PowerSignalVisualizationSample3
         => 0.1;
 
     public static double Frequency
-        => 2d * Math.PI * FrequencyHz;
+        => Math.Tau * FrequencyHz;
 
     public static Triplet<LinFloat64PolarVector2D> Phasors { get; }
     //= new Triplet<PolarPosition2D>(
@@ -76,7 +77,7 @@ public static class PowerSignalVisualizationSample3
         return latexComposer.ToString();
     }
 
-    private static SymmetricalComponentsSignal3D GetPowerSignal()
+    private static Float64SymmetricalComponentsSignal3D GetPowerSignal()
     {
         const int cycleCount = 2;
         const int sampleCount = 500 * cycleCount;
@@ -94,7 +95,7 @@ public static class PowerSignalVisualizationSample3
 
         var (phasor1, phasor2, phasor3) = Phasors;
 
-        var powerSignal = SymmetricalComponentsSignal3D.Create(
+        var powerSignal = Float64SymmetricalComponentsSignal3D.Create(
             tValues,
             Frequency,
             phasor1,
@@ -115,14 +116,14 @@ public static class PowerSignalVisualizationSample3
 
         var powerSignal = GetPowerSignal();
 
-        //const double frequency = 2 * Math.PI * 0.1d;
+        //const double frequency = Math.Tau * 0.1d;
 
         var omegaMean = powerSignal.GetDarbouxBivectorMean();
         var omegaMeanNorm = omegaMean.Norm();
 
         Console.WriteLine($"Mean omega: {omegaMean}");
         Console.WriteLine($"Mean omega norm: {omegaMeanNorm}");
-        Console.WriteLine($"Mean omega norm Hz: {omegaMeanNorm / (2 * Math.PI)}");
+        Console.WriteLine($"Mean omega norm Hz: {omegaMeanNorm / (Math.Tau)}");
         Console.WriteLine($"Mean omega norm / frequency: {omegaMeanNorm / Frequency}");
         Console.WriteLine();
 
@@ -132,7 +133,7 @@ public static class PowerSignalVisualizationSample3
             powerSignal
         )
         {
-            Title = "Rotated sinusoidal symmetrical components",
+            SceneTitle = "Rotated sinusoidal symmetrical components",
             HostUrl = "http://localhost:5200/",
             //LiveReloadWebServer "D:/Projects/Study/Babylon.js/" --port 5200 --UseSsl False --LiveReloadEnabled False --OpenBrowser True
 
@@ -144,21 +145,24 @@ public static class PowerSignalVisualizationSample3
             ShowLeftPanel = false,
             ShowRightPanel = true,
 
-            RenderImageFilesEnabled = renderAnimations,
+            SceneRenderMethod = renderAnimations 
+                ? GrVisualSceneSequenceComposer.RenderImageFilesMethod.PerScene
+                : GrVisualSceneSequenceComposer.RenderImageFilesMethod.Disabled,
+
             RenderGifFileEnabled = false,
             RenderVideoFileEnabled = renderAnimations
         };
         
         var alpha = 
-            TemporalFloat64Scalar
-                .FullCos(30, 150)
+            Float64ScalarSignal
+                .FiniteCos(30, 150)
                 .DegreesToRadians();
 
         var beta = 
             72.DegreesToRadians();
 
-        visualizer.SetCameraAlphaBetaDistance(alpha, beta, 11);
+        visualizer.SetCamera(alpha, beta, 11);
 
-        visualizer.RenderFiles();
+        visualizer.ComposeSceneSequence();
     }
 }

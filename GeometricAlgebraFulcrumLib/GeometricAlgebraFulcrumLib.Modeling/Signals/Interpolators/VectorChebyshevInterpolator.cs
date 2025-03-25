@@ -6,12 +6,13 @@ using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Extended.Generic.Multi
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Extended.Generic.Multivectors.Composers;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Extended.Generic.Processors;
 using GeometricAlgebraFulcrumLib.Modeling.Calculus.Functions.Float64.Interpolators;
+using GeometricAlgebraFulcrumLib.Modeling.Signals.Composers;
 
 namespace GeometricAlgebraFulcrumLib.Modeling.Signals.Interpolators;
 
 public class VectorChebyshevInterpolator
 {
-    public static VectorChebyshevInterpolator Create(XGaVector<Float64Signal> vectorSignal, Float64SamplingSpecs samplingSpecs, DfChebyshevSignalInterpolatorOptions options)
+    public static VectorChebyshevInterpolator Create(XGaVector<Float64SampledTimeSignal> vectorSignal, Float64SamplingSpecs samplingSpecs, DfChebyshevSignalInterpolatorOptions options)
     {
         var n = vectorSignal.VSpaceDimensions;
 
@@ -44,7 +45,7 @@ public class VectorChebyshevInterpolator
     }
 
         
-    public XGaProcessor<Float64Signal> SignalProcessor 
+    public XGaProcessor<Float64SampledTimeSignal> SignalProcessor 
         => VectorSamples.Processor;
 
     public XGaFloat64Processor SampleProcessor { get; }
@@ -60,13 +61,13 @@ public class VectorChebyshevInterpolator
     public int SampleCount 
         => SamplingSpecs.SampleCount;
 
-    public XGaVector<Float64Signal> VectorSamples { get; }
+    public XGaVector<Float64SampledTimeSignal> VectorSamples { get; }
 
     public IReadOnlyList<DfChebyshevSignalInterpolator[]> InterpolatorList { get; }
 
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    private VectorChebyshevInterpolator(XGaVector<Float64Signal> scalarSamples, Float64SamplingSpecs samplingSpecs, IReadOnlyList<DfChebyshevSignalInterpolator[]> interpolatorList)
+    private VectorChebyshevInterpolator(XGaVector<Float64SampledTimeSignal> scalarSamples, Float64SamplingSpecs samplingSpecs, IReadOnlyList<DfChebyshevSignalInterpolator[]> interpolatorList)
     {
         SamplingSpecs = samplingSpecs;
         VectorSamples = scalarSamples;
@@ -132,7 +133,7 @@ public class VectorChebyshevInterpolator
     }
 
         
-    public XGaVector<Float64Signal> GetVectors()
+    public XGaVector<Float64SampledTimeSignal> GetVectors()
     {
         var processor = VectorSamples.Processor;
 
@@ -141,22 +142,22 @@ public class VectorChebyshevInterpolator
             .Select(i => GetVector(i / SamplingRate))
             .ToArray();
 
-        var columnVectorArray = new Float64Signal[VSpaceDimensions];
+        var columnVectorArray = new Float64SampledTimeSignal[VSpaceDimensions];
 
         for (var j = 0; j < VSpaceDimensions; j++)
         {
-            var columnVector = Float64Signal.Create(SamplingRate, SampleCount);
+            var columnVector = Float64SampledTimeSignalComposer.Create(SamplingRate, SampleCount);
 
             for (var i = 0; i < SampleCount; i++)
                 columnVector[i] = vectorList[i].Scalar(j);
 
-            columnVectorArray[j] = columnVector;
+            columnVectorArray[j] = columnVector.GetFiniteSignal();
         }
 
         return processor.Vector(columnVectorArray);
     }
         
-    public XGaVector<Float64Signal> GetVectorsDt1()
+    public XGaVector<Float64SampledTimeSignal> GetVectorsDt1()
     {
         var processor = VectorSamples.Processor;
 
@@ -165,22 +166,22 @@ public class VectorChebyshevInterpolator
             .Select(i => GetVectorDt1(i / SamplingRate))
             .ToArray();
 
-        var columnVectorArray = new Float64Signal[VSpaceDimensions];
+        var columnVectorArray = new Float64SampledTimeSignal[VSpaceDimensions];
 
         for (var j = 0; j < VSpaceDimensions; j++)
         {
-            var columnVector = Float64Signal.Create(SamplingRate, SampleCount);
+            var columnVector = Float64SampledTimeSignalComposer.Create(SamplingRate, SampleCount);
 
             for (var i = 0; i < SampleCount; i++)
                 columnVector[i] = vectorList[i].Scalar(j);
 
-            columnVectorArray[j] = columnVector;
+            columnVectorArray[j] = columnVector.GetFiniteSignal();
         }
 
         return processor.Vector(columnVectorArray);
     }
         
-    public XGaVector<Float64Signal> GetVectorsDt2()
+    public XGaVector<Float64SampledTimeSignal> GetVectorsDt2()
     {
         var processor = VectorSamples.Processor;
 
@@ -189,22 +190,22 @@ public class VectorChebyshevInterpolator
             .Select(i => GetVectorDt2(i / SamplingRate))
             .ToArray();
 
-        var columnVectorArray = new Float64Signal[VSpaceDimensions];
+        var columnVectorArray = new Float64SampledTimeSignal[VSpaceDimensions];
 
         for (var j = 0; j < VSpaceDimensions; j++)
         {
-            var columnVector = Float64Signal.Create(SamplingRate, SampleCount);
+            var columnVector = Float64SampledTimeSignalComposer.Create(SamplingRate, SampleCount);
 
             for (var i = 0; i < SampleCount; i++)
                 columnVector[i] = vectorList[i].Scalar(j);
 
-            columnVectorArray[j] = columnVector;
+            columnVectorArray[j] = columnVector.GetFiniteSignal();
         }
 
         return processor.Vector(columnVectorArray);
     }
         
-    public XGaVector<Float64Signal> GetVectorsDt(int degree = 1)
+    public XGaVector<Float64SampledTimeSignal> GetVectorsDt(int degree = 1)
     {
         var processor = VectorSamples.Processor;
 
@@ -213,16 +214,16 @@ public class VectorChebyshevInterpolator
             .Select(i => GetVectorDt(i / SamplingRate, degree))
             .ToArray();
 
-        var columnVectorArray = new Float64Signal[VSpaceDimensions];
+        var columnVectorArray = new Float64SampledTimeSignal[VSpaceDimensions];
 
         for (var j = 0; j < VSpaceDimensions; j++)
         {
-            var columnVector = Float64Signal.Create(SamplingRate, SampleCount);
+            var columnVector = Float64SampledTimeSignalComposer.Create(SamplingRate, SampleCount);
 
             for (var i = 0; i < SampleCount; i++)
                 columnVector[i] = vectorList[i].Scalar(j);
 
-            columnVectorArray[j] = columnVector;
+            columnVectorArray[j] = columnVector.GetFiniteSignal();
         }
 
         return processor.Vector(columnVectorArray);

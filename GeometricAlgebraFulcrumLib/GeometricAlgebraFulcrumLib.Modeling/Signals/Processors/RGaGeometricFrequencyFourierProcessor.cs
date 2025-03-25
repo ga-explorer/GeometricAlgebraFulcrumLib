@@ -9,7 +9,7 @@ public sealed class RGaGeometricFrequencyFourierProcessor :
 {
     public DfFourierSignalInterpolatorOptions InterpolatorOptions { get; }
 
-    public IReadOnlyList<ComplexSignalSpectrum> VectorSignalSpectrum { get; private set; }
+    public IReadOnlyList<Float64ComplexSignalSpectrum> VectorSignalSpectrum { get; private set; }
 
         
     public RGaGeometricFrequencyFourierProcessor(int vSpaceDimensions, DfFourierSignalInterpolatorOptions interpolationOptions) 
@@ -29,7 +29,7 @@ public sealed class RGaGeometricFrequencyFourierProcessor :
     private void ComputeVectorSignalSpectrum()
     {
         TimeValuesSignal = 
-            SamplingSpecs.GetSampledTimeSignal();
+            SamplingSpecs.GetSampleTimeSignal();
 
         if (InterpolatorOptions.AssumePeriodic)
         {
@@ -69,7 +69,7 @@ public sealed class RGaGeometricFrequencyFourierProcessor :
             ).ToArray();
     }
 
-    public void ProcessVectorSignal(RGaVector<Float64Signal> vectorSignal)
+    public void ProcessVectorSignal(RGaVector<Float64SampledTimeSignal> vectorSignal)
     {
         ClearData();
 

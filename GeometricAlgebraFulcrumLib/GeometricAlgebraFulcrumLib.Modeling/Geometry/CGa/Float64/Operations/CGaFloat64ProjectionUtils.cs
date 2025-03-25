@@ -5,8 +5,10 @@ using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space2D;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space3D;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Float64.Blades;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Float64.Elements;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.Parametric.Float64.Space2D.Curves;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.Parametric.Float64.Space3D.Curves;
+using GeometricAlgebraFulcrumLib.Modeling.Trajectories.Vectors2D.Float64;
+using GeometricAlgebraFulcrumLib.Modeling.Trajectories.Vectors2D.Float64.Basic;
+using GeometricAlgebraFulcrumLib.Modeling.Trajectories.Vectors3D.Float64;
+using GeometricAlgebraFulcrumLib.Modeling.Trajectories.Vectors3D.Float64.Basic;
 
 namespace GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Float64.Operations;
 
@@ -79,9 +81,9 @@ public static class CGaFloat64ProjectionUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static IFloat64ParametricCurve2D ProjectPositionOnFlat2D(this CGaFloat64Element element, CGaFloat64ParametricElement flat)
+    public static Float64Path2D ProjectPositionOnFlat2D(this CGaFloat64Element element, CGaFloat64ParametricElement flat)
     {
-        return ComputedParametricCurve2D.Create(
+        return Float64ComputedPath2D.Finite(
             flat.ParameterRange,
             t =>
             {
@@ -95,9 +97,9 @@ public static class CGaFloat64ProjectionUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static IParametricCurve3D ProjectPositionOnFlat3D(this CGaFloat64Element element, CGaFloat64ParametricElement flat)
+    public static Float64Path3D ProjectPositionOnFlat3D(this CGaFloat64Element element, CGaFloat64ParametricElement flat)
     {
-        return ComputedParametricCurve3D.Create(
+        return Float64ComputedPath3D.Finite(
             flat.ParameterRange,
             t =>
             {
@@ -111,9 +113,9 @@ public static class CGaFloat64ProjectionUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static IFloat64ParametricCurve2D ProjectPositionOnFlat2D(this CGaFloat64ParametricElement element, CGaFloat64Flat flat)
+    public static Float64Path2D ProjectPositionOnFlat2D(this CGaFloat64ParametricElement element, CGaFloat64Flat flat)
     {
-        return ComputedParametricCurve2D.Create(
+        return Float64ComputedPath2D.Finite(
             element.ParameterRange,
             t =>
                 element.GetElement(t).ProjectPositionOnFlat2D(flat)
@@ -121,9 +123,9 @@ public static class CGaFloat64ProjectionUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static IFloat64ParametricCurve2D ProjectPositionOnFlat2D(this CGaFloat64ParametricElement element, CGaFloat64ParametricElement flat)
+    public static Float64Path2D ProjectPositionOnFlat2D(this CGaFloat64ParametricElement element, CGaFloat64ParametricElement flat)
     {
-        return ComputedParametricCurve2D.Create(
+        return Float64ComputedPath2D.Finite(
             element.ParameterRange.Intersect(flat.ParameterRange),
             t =>
             {
@@ -137,9 +139,9 @@ public static class CGaFloat64ProjectionUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static IParametricCurve3D ProjectPositionOnFlat3D(this CGaFloat64ParametricElement element, CGaFloat64Flat flat)
+    public static Float64Path3D ProjectPositionOnFlat3D(this CGaFloat64ParametricElement element, CGaFloat64Flat flat)
     {
-        return ComputedParametricCurve3D.Create(
+        return Float64ComputedPath3D.Finite(
             element.ParameterRange,
             t =>
                 element.GetElement(t).ProjectPositionOnFlat3D(flat)
@@ -147,9 +149,9 @@ public static class CGaFloat64ProjectionUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static IParametricCurve3D ProjectPositionOnFlat3D(this CGaFloat64ParametricElement element, CGaFloat64ParametricElement flat)
+    public static Float64Path3D ProjectPositionOnFlat3D(this CGaFloat64ParametricElement element, CGaFloat64ParametricElement flat)
     {
-        return ComputedParametricCurve3D.Create(
+        return Float64ComputedPath3D.Finite(
             element.ParameterRange.Intersect(flat.ParameterRange),
             t =>
             {

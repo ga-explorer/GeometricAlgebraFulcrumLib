@@ -10,7 +10,7 @@ public class AngularVelocityFourierSignalProcessor :
 {
     public DfFourierSignalInterpolatorOptions InterpolationOptions { get; }
 
-    public IReadOnlyList<ComplexSignalSpectrum> VectorSignalSpectrum { get; private set; }
+    public IReadOnlyList<Float64ComplexSignalSpectrum> VectorSignalSpectrum { get; private set; }
 
 
     public AngularVelocityFourierSignalProcessor(DfFourierSignalInterpolatorOptions interpolationOptions) 
@@ -29,7 +29,7 @@ public class AngularVelocityFourierSignalProcessor :
     private void ComputeVectorSignalSpectrum()
     {
         TimeValuesSignal = 
-            SamplingSpecs.GetSampledTimeSignal();
+            SamplingSpecs.GetSampleTimeSignal();
 
         if (InterpolationOptions.AssumePeriodic)
         {
@@ -72,7 +72,7 @@ public class AngularVelocityFourierSignalProcessor :
                 .GetRealSignalDt(2, TimeValuesSignal)
                 .CreateXGaVector(ScalarSignalProcessor);
 
-        VectorSignalTimeDerivatives = new Pair<XGaVector<Float64Signal>>(vDt1, vDt2);
+        VectorSignalTimeDerivatives = new Pair<XGaVector<Float64SampledTimeSignal>>(vDt1, vDt2);
     }
 
 

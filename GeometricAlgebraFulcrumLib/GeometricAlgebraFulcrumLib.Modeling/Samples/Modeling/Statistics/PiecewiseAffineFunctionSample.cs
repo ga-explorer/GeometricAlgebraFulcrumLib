@@ -27,7 +27,7 @@ namespace GeometricAlgebraFulcrumLib.Modeling.Samples.Modeling.Statistics
 
             var func1 =
                 PiecewiseAffineFunction.CreateContinuous(
-                    x => Math.Exp(-x * x / 2) / Math.Sqrt(2 * Math.PI),
+                    x => Math.Exp(-x * x / 2) / Math.Sqrt(Math.Tau),
                     -6,
                     6,
                     sampleCount
@@ -35,7 +35,7 @@ namespace GeometricAlgebraFulcrumLib.Modeling.Samples.Modeling.Statistics
 
             var func2 =
                 PiecewiseAffineFunction.CreateContinuous(
-                    x => Math.Exp(-x * x / 2) / Math.Sqrt(2 * Math.PI),
+                    x => Math.Exp(-x * x / 2) / Math.Sqrt(Math.Tau),
                     -6,
                     6,
                     sampleCount,

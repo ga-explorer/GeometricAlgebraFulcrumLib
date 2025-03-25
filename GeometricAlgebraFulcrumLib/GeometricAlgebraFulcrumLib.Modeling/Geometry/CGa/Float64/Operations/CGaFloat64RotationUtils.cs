@@ -4,9 +4,9 @@ using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space2D;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space3D;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Float64.Blades;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Float64.Elements;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.Parametric.Float64.Space1D.Angles;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.Parametric.Float64.Space2D.Curves;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.Parametric.Float64.Space3D.Curves;
+using GeometricAlgebraFulcrumLib.Modeling.Trajectories.Scalars.Float64.Angles;
+using GeometricAlgebraFulcrumLib.Modeling.Trajectories.Vectors2D.Float64;
+using GeometricAlgebraFulcrumLib.Modeling.Trajectories.Vectors3D.Float64;
 
 namespace GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Float64.Operations;
 
@@ -31,11 +31,11 @@ public static class CGaFloat64RotationUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static CGaFloat64ParametricElement RotateUsing(this CGaFloat64Element element, IParametricPolarAngle angle, LinFloat64Vector2D egaAxisPoint)
+    public static CGaFloat64ParametricElement RotateUsing(this CGaFloat64Element element, LinFloat64PolarAngleTimeSignal angle, LinFloat64Vector2D egaAxisPoint)
     {
         return CGaFloat64ParametricElement.Create(
             element.GeometricSpace,
-            angle.ParameterRange,
+            angle.TimeRange,
             t => element.RotateUsing(
                 angle.GetAngle(t),
                 egaAxisPoint
@@ -44,25 +44,25 @@ public static class CGaFloat64RotationUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static CGaFloat64ParametricElement RotateUsing(this CGaFloat64Element element, IParametricPolarAngle angle, IFloat64ParametricCurve2D egaAxisPoint)
+    public static CGaFloat64ParametricElement RotateUsing(this CGaFloat64Element element, LinFloat64PolarAngleTimeSignal angle, Float64Path2D egaAxisPoint)
     {
         return CGaFloat64ParametricElement.Create(
             element.GeometricSpace,
-            angle.ParameterRange
-                .Intersect(egaAxisPoint.ParameterRange),
+            angle.TimeRange
+                .Intersect(egaAxisPoint.TimeRange),
             t => element.RotateUsing(
                 angle.GetAngle(t),
-                egaAxisPoint.GetPoint(t)
+                egaAxisPoint.GetValue(t)
             )
         );
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static CGaFloat64ParametricElement RotateUsing(this CGaFloat64Element element, IParametricPolarAngle angle, LinFloat64Vector3D egaAxisPoint, LinFloat64Vector3D egaAxisVector)
+    public static CGaFloat64ParametricElement RotateUsing(this CGaFloat64Element element, LinFloat64PolarAngleTimeSignal angle, LinFloat64Vector3D egaAxisPoint, LinFloat64Vector3D egaAxisVector)
     {
         return CGaFloat64ParametricElement.Create(
             element.GeometricSpace,
-            angle.ParameterRange,
+            angle.TimeRange,
             t => element.RotateUsing(
                 angle.GetAngle(t),
                 egaAxisPoint,
@@ -72,17 +72,17 @@ public static class CGaFloat64RotationUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static CGaFloat64ParametricElement RotateUsing(this CGaFloat64Element element, IParametricPolarAngle angle, IParametricCurve3D egaAxisPoint, IParametricCurve3D egaAxisVector)
+    public static CGaFloat64ParametricElement RotateUsing(this CGaFloat64Element element, LinFloat64PolarAngleTimeSignal angle, Float64Path3D egaAxisPoint, Float64Path3D egaAxisVector)
     {
         return CGaFloat64ParametricElement.Create(
             element.GeometricSpace,
-            angle.ParameterRange
-                .Intersect(egaAxisPoint.ParameterRange)
-                .Intersect(egaAxisVector.ParameterRange),
+            angle.TimeRange
+                .Intersect(egaAxisPoint.TimeRange)
+                .Intersect(egaAxisVector.TimeRange),
             t => element.RotateUsing(
                 angle.GetAngle(t),
-                egaAxisPoint.GetPoint(t),
-                egaAxisVector.GetPoint(t)
+                egaAxisPoint.GetValue(t),
+                egaAxisVector.GetValue(t)
             )
         );
     }
@@ -117,12 +117,12 @@ public static class CGaFloat64RotationUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static CGaFloat64ParametricElement RotateUsing(this CGaFloat64ParametricElement element, IParametricPolarAngle angle, LinFloat64Vector2D egaAxisPoint)
+    public static CGaFloat64ParametricElement RotateUsing(this CGaFloat64ParametricElement element, LinFloat64PolarAngleTimeSignal angle, LinFloat64Vector2D egaAxisPoint)
     {
         return CGaFloat64ParametricElement.Create(
             element.GeometricSpace,
             element.ParameterRange
-                .Intersect(angle.ParameterRange),
+                .Intersect(angle.TimeRange),
             t =>
                 element.GetElement(t).RotateUsing(
                     angle.GetAngle(t),
@@ -132,12 +132,12 @@ public static class CGaFloat64RotationUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static CGaFloat64ParametricElement RotateUsing(this CGaFloat64ParametricElement element, IParametricPolarAngle angle, LinFloat64Vector3D egaAxisPoint, LinFloat64Vector3D egaAxisVector)
+    public static CGaFloat64ParametricElement RotateUsing(this CGaFloat64ParametricElement element, LinFloat64PolarAngleTimeSignal angle, LinFloat64Vector3D egaAxisPoint, LinFloat64Vector3D egaAxisVector)
     {
         return CGaFloat64ParametricElement.Create(
             element.GeometricSpace,
             element.ParameterRange
-                .Intersect(angle.ParameterRange),
+                .Intersect(angle.TimeRange),
             t =>
                 element.GetElement(t).RotateUsing(
                     angle.GetAngle(t),
@@ -148,35 +148,35 @@ public static class CGaFloat64RotationUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static CGaFloat64ParametricElement RotateUsing(this CGaFloat64ParametricElement element, IParametricPolarAngle angle, IFloat64ParametricCurve2D egaAxisPoint)
+    public static CGaFloat64ParametricElement RotateUsing(this CGaFloat64ParametricElement element, LinFloat64PolarAngleTimeSignal angle, Float64Path2D egaAxisPoint)
     {
         return CGaFloat64ParametricElement.Create(
             element.GeometricSpace,
             element.ParameterRange
-                .Intersect(angle.ParameterRange)
-                .Intersect(egaAxisPoint.ParameterRange),
+                .Intersect(angle.TimeRange)
+                .Intersect(egaAxisPoint.TimeRange),
             t =>
                 element.GetElement(t).RotateUsing(
                     angle.GetAngle(t),
-                    egaAxisPoint.GetPoint(t)
+                    egaAxisPoint.GetValue(t)
                 )
         );
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static CGaFloat64ParametricElement RotateUsing(this CGaFloat64ParametricElement element, IParametricPolarAngle angle, IParametricCurve3D egaAxisPoint, IParametricCurve3D egaAxisVector)
+    public static CGaFloat64ParametricElement RotateUsing(this CGaFloat64ParametricElement element, LinFloat64PolarAngleTimeSignal angle, Float64Path3D egaAxisPoint, Float64Path3D egaAxisVector)
     {
         return CGaFloat64ParametricElement.Create(
             element.GeometricSpace,
             element.ParameterRange
-                .Intersect(angle.ParameterRange)
-                .Intersect(egaAxisPoint.ParameterRange)
-                .Intersect(egaAxisVector.ParameterRange),
+                .Intersect(angle.TimeRange)
+                .Intersect(egaAxisPoint.TimeRange)
+                .Intersect(egaAxisVector.TimeRange),
             t =>
                 element.GetElement(t).RotateUsing(
                     angle.GetAngle(t),
-                    egaAxisPoint.GetPoint(t),
-                    egaAxisVector.GetPoint(t)
+                    egaAxisPoint.GetValue(t),
+                    egaAxisVector.GetValue(t)
                 )
         );
     }

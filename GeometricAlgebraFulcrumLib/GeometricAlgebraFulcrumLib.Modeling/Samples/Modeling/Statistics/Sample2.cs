@@ -1,4 +1,4 @@
-﻿using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.Images;
+﻿using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.Visuals;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Random;
 using MathNet.Numerics.Statistics;
 

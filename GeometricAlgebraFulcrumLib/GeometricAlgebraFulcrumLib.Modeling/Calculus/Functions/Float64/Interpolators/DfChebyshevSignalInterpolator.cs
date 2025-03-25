@@ -8,14 +8,14 @@ public class DfChebyshevSignalInterpolator :
     DifferentialSignalInterpolatorFunction
 {
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static DfChebyshevSignalInterpolator Create(Float64Signal signal, int sampleIndex1, int sampleIndex2, DfChebyshevSignalInterpolatorOptions options)
+    public static DfChebyshevSignalInterpolator Create(Float64SampledTimeSignal signal, int sampleIndex1, int sampleIndex2, DfChebyshevSignalInterpolatorOptions options)
     {
         signal = signal.GetSmoothedSignal(options);
         var samplingSpecs = signal.SamplingSpecs;
 
         var sampleCount = sampleIndex2 - sampleIndex1 + 1;
         var (minVarValue, maxVarValue) =
-            samplingSpecs.GetSampledTimeValues(sampleIndex1, sampleIndex2);
+            samplingSpecs.GetSampleTimePair(sampleIndex1, sampleIndex2);
 
         var polynomial = DfChebyshevPolynomial.CreateApproximating(
             options.PolynomialDegree,
@@ -35,7 +35,7 @@ public class DfChebyshevSignalInterpolator :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static DfChebyshevSignalInterpolator Create(Float64Signal signal, DfChebyshevSignalInterpolatorOptions options)
+    public static DfChebyshevSignalInterpolator Create(Float64SampledTimeSignal signal, DfChebyshevSignalInterpolatorOptions options)
     {
         signal = signal.GetSmoothedSignal(options);
         var samplingSpecs = signal.SamplingSpecs;

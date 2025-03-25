@@ -1,220 +1,220 @@
 ﻿using System.Runtime.CompilerServices;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Float64.Multivectors.Composers;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.Parametric.Float64.Space2D.Curves;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.Parametric.Float64.Space3D.Bivectors;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.Parametric.Float64.Space3D.Curves;
+using GeometricAlgebraFulcrumLib.Modeling.Trajectories.Bivectors3D;
+using GeometricAlgebraFulcrumLib.Modeling.Trajectories.Vectors2D.Float64;
+using GeometricAlgebraFulcrumLib.Modeling.Trajectories.Vectors3D.Float64;
 
 namespace GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Float64.Elements;
 
 public static class CGaFloat64ParametricFlatComposerUtils
 {
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static CGaFloat64ParametricElement DefineFlatPoint(this CGaFloat64GeometricSpace cgaGeometricSpace, IParametricCurve3D positionCurve)
+    public static CGaFloat64ParametricElement DefineFlatPoint(this CGaFloat64GeometricSpace cgaGeometricSpace, Float64Path3D positionCurve)
     {
         return CGaFloat64ParametricElement.Create(
             cgaGeometricSpace,
-            positionCurve.ParameterRange,
+            positionCurve.TimeRange,
             t => cgaGeometricSpace.DefineFlatPoint(
-                positionCurve.GetPoint(t)
+                positionCurve.GetValue(t)
             )
         );
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static CGaFloat64ParametricElement DefineFlatPoint(this CGaFloat64GeometricSpace cgaGeometricSpace, Float64ScalarRange parameterRange, IParametricCurve3D positionCurve)
+    public static CGaFloat64ParametricElement DefineFlatPoint(this CGaFloat64GeometricSpace cgaGeometricSpace, Float64ScalarRange timeRange, Float64Path3D positionCurve)
     {
         return CGaFloat64ParametricElement.Create(
             cgaGeometricSpace,
-            parameterRange,
+            timeRange,
             t => cgaGeometricSpace.DefineFlatPoint(
-                positionCurve.GetPoint(t)
+                positionCurve.GetValue(t)
             )
         );
     }
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static CGaFloat64ParametricElement DefineFlatLineFromPoints(this CGaFloat64GeometricSpace cgaGeometricSpace, IFloat64ParametricCurve2D point1Curve, IFloat64ParametricCurve2D point2Curve)
+    public static CGaFloat64ParametricElement DefineFlatLineFromPoints(this CGaFloat64GeometricSpace cgaGeometricSpace, Float64Path2D point1Curve, Float64Path2D point2Curve)
     {
         return CGaFloat64ParametricElement.Create(
             cgaGeometricSpace,
-            point1Curve.ParameterRange,
+            point1Curve.TimeRange,
             t => cgaGeometricSpace.DefineFlatLineFromPoints(
-                point1Curve.GetPoint(t),
-                point2Curve.GetPoint(t)
+                point1Curve.GetValue(t),
+                point2Curve.GetValue(t)
             )
         );
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static CGaFloat64ParametricElement DefineFlatLineFromPoints(this CGaFloat64GeometricSpace cgaGeometricSpace, IParametricCurve3D point1Curve, IParametricCurve3D point2Curve)
+    public static CGaFloat64ParametricElement DefineFlatLineFromPoints(this CGaFloat64GeometricSpace cgaGeometricSpace, Float64Path3D point1Curve, Float64Path3D point2Curve)
     {
         return CGaFloat64ParametricElement.Create(
             cgaGeometricSpace,
-            point1Curve.ParameterRange,
+            point1Curve.TimeRange,
             t => cgaGeometricSpace.DefineFlatLineFromPoints(
-                point1Curve.GetPoint(t),
-                point2Curve.GetPoint(t)
+                point1Curve.GetValue(t),
+                point2Curve.GetValue(t)
             )
         );
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static CGaFloat64ParametricElement DefineFlatLineFromPoints(this CGaFloat64GeometricSpace cgaGeometricSpace, Float64ScalarRange parameterRange, IParametricCurve3D point1Curve, IParametricCurve3D point2Curve)
+    public static CGaFloat64ParametricElement DefineFlatLineFromPoints(this CGaFloat64GeometricSpace cgaGeometricSpace, Float64ScalarRange timeRange, Float64Path3D point1Curve, Float64Path3D point2Curve)
     {
         return CGaFloat64ParametricElement.Create(
             cgaGeometricSpace,
-            parameterRange,
+            timeRange,
             t => cgaGeometricSpace.DefineFlatLineFromPoints(
-                point1Curve.GetPoint(t),
-                point2Curve.GetPoint(t)
+                point1Curve.GetValue(t),
+                point2Curve.GetValue(t)
             )
         );
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static CGaFloat64ParametricElement DefineFlatLine(this CGaFloat64GeometricSpace cgaGeometricSpace, IFloat64ParametricCurve2D positionCurve, IFloat64ParametricCurve2D vectorCurve)
+    public static CGaFloat64ParametricElement DefineFlatLine(this CGaFloat64GeometricSpace cgaGeometricSpace, Float64Path2D positionCurve, Float64Path2D vectorCurve)
     {
         return CGaFloat64ParametricElement.Create(
             cgaGeometricSpace,
-            positionCurve.ParameterRange,
+            positionCurve.TimeRange,
             t => cgaGeometricSpace.DefineFlatLine(
-                positionCurve.GetPoint(t).ToRGaFloat64Vector(),
-                vectorCurve.GetPoint(t).ToRGaFloat64Vector()
+                positionCurve.GetValue(t).ToRGaFloat64Vector(),
+                vectorCurve.GetValue(t).ToRGaFloat64Vector()
             )
         );
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static CGaFloat64ParametricElement DefineFlatLine(this CGaFloat64GeometricSpace cgaGeometricSpace, IParametricCurve3D positionCurve, IParametricCurve3D vectorCurve)
+    public static CGaFloat64ParametricElement DefineFlatLine(this CGaFloat64GeometricSpace cgaGeometricSpace, Float64Path3D positionCurve, Float64Path3D vectorCurve)
     {
         return CGaFloat64ParametricElement.Create(
             cgaGeometricSpace,
-            positionCurve.ParameterRange,
+            positionCurve.TimeRange,
             t => cgaGeometricSpace.DefineFlatLine(
-                positionCurve.GetPoint(t).ToRGaFloat64Vector(),
-                vectorCurve.GetPoint(t).ToRGaFloat64Vector()
+                positionCurve.GetValue(t).ToRGaFloat64Vector(),
+                vectorCurve.GetValue(t).ToRGaFloat64Vector()
             )
         );
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static CGaFloat64ParametricElement DefineFlatLine(this CGaFloat64GeometricSpace cgaGeometricSpace, Float64ScalarRange parameterRange, IParametricCurve3D positionCurve, IParametricCurve3D vectorCurve)
+    public static CGaFloat64ParametricElement DefineFlatLine(this CGaFloat64GeometricSpace cgaGeometricSpace, Float64ScalarRange timeRange, Float64Path3D positionCurve, Float64Path3D vectorCurve)
     {
         return CGaFloat64ParametricElement.Create(
             cgaGeometricSpace,
-            parameterRange,
+            timeRange,
             t => cgaGeometricSpace.DefineFlatLine(
-                positionCurve.GetPoint(t).ToRGaFloat64Vector(),
-                vectorCurve.GetPoint(t).ToRGaFloat64Vector()
+                positionCurve.GetValue(t).ToRGaFloat64Vector(),
+                vectorCurve.GetValue(t).ToRGaFloat64Vector()
             )
         );
     }
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static CGaFloat64ParametricElement DefineFlatPlaneFromPoints(this CGaFloat64GeometricSpace cgaGeometricSpace, IParametricCurve3D point1Curve, IParametricCurve3D point2Curve, IParametricCurve3D point3Curve)
+    public static CGaFloat64ParametricElement DefineFlatPlaneFromPoints(this CGaFloat64GeometricSpace cgaGeometricSpace, Float64Path3D point1Curve, Float64Path3D point2Curve, Float64Path3D point3Curve)
     {
         return CGaFloat64ParametricElement.Create(
             cgaGeometricSpace,
-            point1Curve.ParameterRange,
+            point1Curve.TimeRange,
             t => cgaGeometricSpace.DefineFlatPlaneFromPoints(
-                point1Curve.GetPoint(t),
-                point2Curve.GetPoint(t),
-                point3Curve.GetPoint(t)
+                point1Curve.GetValue(t),
+                point2Curve.GetValue(t),
+                point3Curve.GetValue(t)
             )
         );
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static CGaFloat64ParametricElement DefineFlatPlaneFromPoints(this CGaFloat64GeometricSpace cgaGeometricSpace, Float64ScalarRange parameterRange, IParametricCurve3D point1Curve, IParametricCurve3D point2Curve, IParametricCurve3D point3Curve)
+    public static CGaFloat64ParametricElement DefineFlatPlaneFromPoints(this CGaFloat64GeometricSpace cgaGeometricSpace, Float64ScalarRange timeRange, Float64Path3D point1Curve, Float64Path3D point2Curve, Float64Path3D point3Curve)
     {
         return CGaFloat64ParametricElement.Create(
             cgaGeometricSpace,
-            parameterRange,
+            timeRange,
             t => cgaGeometricSpace.DefineFlatPlaneFromPoints(
-                point1Curve.GetPoint(t),
-                point2Curve.GetPoint(t),
-                point3Curve.GetPoint(t)
+                point1Curve.GetValue(t),
+                point2Curve.GetValue(t),
+                point3Curve.GetValue(t)
             )
         );
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static CGaFloat64ParametricElement DefineFlatPlane(this CGaFloat64GeometricSpace cgaGeometricSpace, IParametricCurve3D positionCurve)
+    public static CGaFloat64ParametricElement DefineFlatPlane(this CGaFloat64GeometricSpace cgaGeometricSpace, Float64Path3D positionCurve)
     {
         return CGaFloat64ParametricElement.Create(
             cgaGeometricSpace,
-            positionCurve.ParameterRange,
+            positionCurve.TimeRange,
             t => cgaGeometricSpace.DefineFlatPlane(
-                positionCurve.GetPoint(t),
-                positionCurve.GetDerivative1Point(t).NormalToUnitDirection3D()
+                positionCurve.GetValue(t),
+                positionCurve.GetDerivative1Value(t).NormalToUnitDirection3D()
             )
         );
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static CGaFloat64ParametricElement DefineFlatPlane(this CGaFloat64GeometricSpace cgaGeometricSpace, Float64ScalarRange parameterRange, IParametricCurve3D positionCurve)
+    public static CGaFloat64ParametricElement DefineFlatPlane(this CGaFloat64GeometricSpace cgaGeometricSpace, Float64ScalarRange timeRange, Float64Path3D positionCurve)
     {
         return CGaFloat64ParametricElement.Create(
             cgaGeometricSpace,
-            parameterRange,
+            timeRange,
             t => cgaGeometricSpace.DefineFlatPlane(
-                positionCurve.GetPoint(t),
-                positionCurve.GetDerivative1Point(t).NormalToUnitDirection3D()
+                positionCurve.GetValue(t),
+                positionCurve.GetDerivative1Value(t).NormalToUnitDirection3D()
             )
         );
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static CGaFloat64ParametricElement DefineFlatPlane(this CGaFloat64GeometricSpace cgaGeometricSpace, IParametricCurve3D positionCurve, IParametricCurve3D normalCurve)
+    public static CGaFloat64ParametricElement DefineFlatPlane(this CGaFloat64GeometricSpace cgaGeometricSpace, Float64Path3D positionCurve, Float64Path3D normalCurve)
     {
         return CGaFloat64ParametricElement.Create(
             cgaGeometricSpace,
-            positionCurve.ParameterRange,
+            positionCurve.TimeRange,
             t => cgaGeometricSpace.DefineFlatPlane(
-                positionCurve.GetPoint(t),
-                normalCurve.GetPoint(t).NormalToUnitDirection3D()
+                positionCurve.GetValue(t),
+                normalCurve.GetValue(t).NormalToUnitDirection3D()
             )
         );
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static CGaFloat64ParametricElement DefineFlatPlane(this CGaFloat64GeometricSpace cgaGeometricSpace, Float64ScalarRange parameterRange, IParametricCurve3D positionCurve, IParametricCurve3D normalCurve)
+    public static CGaFloat64ParametricElement DefineFlatPlane(this CGaFloat64GeometricSpace cgaGeometricSpace, Float64ScalarRange timeRange, Float64Path3D positionCurve, Float64Path3D normalCurve)
     {
         return CGaFloat64ParametricElement.Create(
             cgaGeometricSpace,
-            parameterRange,
+            timeRange,
             t => cgaGeometricSpace.DefineFlatPlane(
-                positionCurve.GetPoint(t),
-                normalCurve.GetPoint(t).NormalToUnitDirection3D()
+                positionCurve.GetValue(t),
+                normalCurve.GetValue(t).NormalToUnitDirection3D()
             )
         );
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static CGaFloat64ParametricElement DefineFlatPlane(this CGaFloat64GeometricSpace cgaGeometricSpace, IParametricCurve3D positionCurve, IParametricBivector3D bivectorCurve)
+    public static CGaFloat64ParametricElement DefineFlatPlane(this CGaFloat64GeometricSpace cgaGeometricSpace, Float64Path3D positionCurve, IParametricBivector3D bivectorCurve)
     {
         return CGaFloat64ParametricElement.Create(
             cgaGeometricSpace,
-            positionCurve.ParameterRange,
+            positionCurve.TimeRange,
             t => cgaGeometricSpace.DefineFlatPlane(
-                positionCurve.GetPoint(t),
-                bivectorCurve.GetBivector(t)
+                positionCurve.GetValue(t),
+                bivectorCurve.GetValue(t)
             )
         );
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static CGaFloat64ParametricElement DefineFlatPlane(this CGaFloat64GeometricSpace cgaGeometricSpace, Float64ScalarRange parameterRange, IParametricCurve3D positionCurve, IParametricBivector3D bivectorCurve)
+    public static CGaFloat64ParametricElement DefineFlatPlane(this CGaFloat64GeometricSpace cgaGeometricSpace, Float64ScalarRange timeRange, Float64Path3D positionCurve, IParametricBivector3D bivectorCurve)
     {
         return CGaFloat64ParametricElement.Create(
             cgaGeometricSpace,
-            parameterRange,
+            timeRange,
             t => cgaGeometricSpace.DefineFlatPlane(
-                positionCurve.GetPoint(t),
-                bivectorCurve.GetBivector(t)
+                positionCurve.GetValue(t),
+                bivectorCurve.GetValue(t)
             )
         );
     }

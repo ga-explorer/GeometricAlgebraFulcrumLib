@@ -1,21 +1,18 @@
-﻿using GeometricAlgebraFulcrumLib.Algebra;
-using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
+﻿using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.Borders.Space1D;
 using GeometricAlgebraFulcrumLib.Modeling.Signals;
+using GeometricAlgebraFulcrumLib.Modeling.Trajectories;
 
 namespace GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.Visuals.Space3D.Animations;
 
 public abstract class GrVisualAnimatedGeometry :
-    IAlgebraicElement
+    Float64Trajectory
 {
     public Float64SamplingSpecs SamplingSpecs { get; }
 
     //public IReadOnlyList<int> InvalidFrameIndexList { get; private set; }
     //    = ImmutableArray<int>.Empty;
 
-    public Float64ScalarRange TimeRange 
-        => SamplingSpecs.TimeRange;
-    
     public Int32Range1D SampleIndexRange 
         => SamplingSpecs.SampleIndexRange;
 
@@ -25,12 +22,6 @@ public abstract class GrVisualAnimatedGeometry :
     public double TimeResolution
         => SamplingSpecs.TimeResolution;
 
-    public double MinTime 
-        => SamplingSpecs.MinTime;
-
-    public double MaxTime 
-        => SamplingSpecs.MaxTime;
-    
     public int MinSampleIndex 
         => SamplingSpecs.MinSampleIndex;
     
@@ -42,6 +33,7 @@ public abstract class GrVisualAnimatedGeometry :
 
     
     protected GrVisualAnimatedGeometry(Float64SamplingSpecs samplingSpecs)
+        : base(samplingSpecs.TimeRange, false)
     {
         if (samplingSpecs.IsStatic || !samplingSpecs.SamplingRate.IsInteger())
             throw new InvalidOperationException();
@@ -57,8 +49,16 @@ public abstract class GrVisualAnimatedGeometry :
     }
 
 
-    public abstract bool IsValid();
+    public override IFloat64Trajectory ToFinite()
+    {
+        return this;
+    }
     
+    public override IFloat64Trajectory ToPeriodic()
+    {
+        throw new NotImplementedException();
+    }
+
     //public void RemoveInvalidFrameIndices()
     //{
     //    InvalidFrameIndexList = ImmutableArray<int>.Empty;

@@ -8,15 +8,18 @@ using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Float64.Blades;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Float64.Encoding;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Float64.Visualizer;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.Parametric.Float64.Space1D.Angles;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.Parametric.Float64.Space1D.Scalars;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.Parametric.Float64.Space2D.Bivectors;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.Parametric.Float64.Space2D.Curves;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.Parametric.Float64.Space3D.Bivectors;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.Parametric.Float64.Space3D.Curves;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.Parametric.Float64.Space3D.Quaternions;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.Parametric.Float64.Space3D.Trivectors;
-using GeometricAlgebraFulcrumLib.Modeling.Temporal.Float64.Scalars;
+using GeometricAlgebraFulcrumLib.Modeling.Trajectories.Bivectors2D.Float64;
+using GeometricAlgebraFulcrumLib.Modeling.Trajectories.Bivectors3D;
+using GeometricAlgebraFulcrumLib.Modeling.Trajectories.Quaternions.Float64;
+using GeometricAlgebraFulcrumLib.Modeling.Trajectories.Scalars.Float64;
+using GeometricAlgebraFulcrumLib.Modeling.Trajectories.Scalars.Float64.Angles;
+using GeometricAlgebraFulcrumLib.Modeling.Trajectories.Scalars.Float64.Basic;
+using GeometricAlgebraFulcrumLib.Modeling.Trajectories.Scalars.Float64.Parametric;
+using GeometricAlgebraFulcrumLib.Modeling.Trajectories.Trivectors3D.Float64;
+using GeometricAlgebraFulcrumLib.Modeling.Trajectories.Vectors2D.Float64;
+using GeometricAlgebraFulcrumLib.Modeling.Trajectories.Vectors2D.Float64.Basic;
+using GeometricAlgebraFulcrumLib.Modeling.Trajectories.Vectors3D.Float64;
+using GeometricAlgebraFulcrumLib.Modeling.Trajectories.Vectors3D.Float64.Basic;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Basic;
 
 namespace GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Float64.Elements;
@@ -25,24 +28,24 @@ public sealed class CGaFloat64ParametricElement :
     IAlgebraicElement
 {
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static CGaFloat64ParametricElement Create(CGaFloat64GeometricSpace cgaGeometricSpace, Float64ScalarRange parameterRange, Func<double, CGaFloat64Element> getElementFunc)
+    public static CGaFloat64ParametricElement Create(CGaFloat64GeometricSpace cgaGeometricSpace, Float64ScalarRange timeRange, Func<double, CGaFloat64Element> getElementFunc)
     {
         return new CGaFloat64ParametricElement(
             cgaGeometricSpace,
-            parameterRange,
+            timeRange,
             getElementFunc
         );
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static CGaFloat64ParametricElement Create(CGaFloat64ElementSpecs specs, Float64ScalarRange parameterRange, Func<double, CGaFloat64Blade> getBladeFunc, ILinFloat64Vector2D egaProbePoint)
+    public static CGaFloat64ParametricElement Create(CGaFloat64ElementSpecs specs, Float64ScalarRange timeRange, Func<double, CGaFloat64Blade> getBladeFunc, ILinFloat64Vector2D egaProbePoint)
     {
         var egaProbePointBlade =
             egaProbePoint.EncodeVGaVector(specs.GeometricSpace);
 
         return new CGaFloat64ParametricElement(
             specs.GeometricSpace,
-            parameterRange,
+            timeRange,
             t =>
                 getBladeFunc(t).Decode.Element(
                     egaProbePointBlade,
@@ -52,14 +55,14 @@ public sealed class CGaFloat64ParametricElement :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static CGaFloat64ParametricElement Create(CGaFloat64ElementSpecs specs, Float64ScalarRange parameterRange, Func<double, CGaFloat64Blade> getBladeFunc, ILinFloat64Vector3D egaProbePoint)
+    public static CGaFloat64ParametricElement Create(CGaFloat64ElementSpecs specs, Float64ScalarRange timeRange, Func<double, CGaFloat64Blade> getBladeFunc, ILinFloat64Vector3D egaProbePoint)
     {
         var egaProbePointBlade =
             egaProbePoint.EncodeVGaVector(specs.GeometricSpace);
 
         return new CGaFloat64ParametricElement(
             specs.GeometricSpace,
-            parameterRange,
+            timeRange,
             t =>
                 getBladeFunc(t).Decode.Element(
                     egaProbePointBlade,
@@ -69,15 +72,15 @@ public sealed class CGaFloat64ParametricElement :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static CGaFloat64ParametricElement Create(CGaFloat64ElementSpecs specs, Float64ScalarRange parameterRange, Func<double, CGaFloat64Blade> getBladeFunc, IFloat64ParametricCurve2D egaProbePointCurve)
+    public static CGaFloat64ParametricElement Create(CGaFloat64ElementSpecs specs, Float64ScalarRange timeRange, Func<double, CGaFloat64Blade> getBladeFunc, Float64Path2D egaProbePointCurve)
     {
         return new CGaFloat64ParametricElement(
             specs.GeometricSpace,
-            parameterRange,
+            timeRange,
             t =>
                 getBladeFunc(t).Decode.Element(
                     egaProbePointCurve
-                        .GetPoint(t)
+                        .GetValue(t)
                         .EncodeVGaVector(specs.GeometricSpace),
                     specs
                 )
@@ -85,15 +88,15 @@ public sealed class CGaFloat64ParametricElement :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static CGaFloat64ParametricElement Create(CGaFloat64ElementSpecs specs, Float64ScalarRange parameterRange, Func<double, CGaFloat64Blade> getBladeFunc, IParametricCurve3D egaProbePointCurve)
+    public static CGaFloat64ParametricElement Create(CGaFloat64ElementSpecs specs, Float64ScalarRange timeRange, Func<double, CGaFloat64Blade> getBladeFunc, Float64Path3D egaProbePointCurve)
     {
         return new CGaFloat64ParametricElement(
             specs.GeometricSpace,
-            parameterRange,
+            timeRange,
             t =>
                 getBladeFunc(t).Decode.Element(
                     egaProbePointCurve
-                        .GetPoint(t)
+                        .GetValue(t)
                         .EncodeVGaVector(specs.GeometricSpace),
                     specs
                 )
@@ -125,9 +128,9 @@ public sealed class CGaFloat64ParametricElement :
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    private CGaFloat64ParametricElement(CGaFloat64GeometricSpace cgaGeometricSpace, Float64ScalarRange parameterRange, Func<double, CGaFloat64Element> getBladeFunc)
+    private CGaFloat64ParametricElement(CGaFloat64GeometricSpace cgaGeometricSpace, Float64ScalarRange timeRange, Func<double, CGaFloat64Element> getBladeFunc)
     {
-        if (parameterRange.IsInfinite)
+        if (timeRange.IsInfinite)
             throw new ArgumentException();
 
         //if (specs.Encoding == CGaFloat64ElementEncoding.OpnsOrIpns)
@@ -137,7 +140,7 @@ public sealed class CGaFloat64ParametricElement :
         //    throw new ArgumentOutOfRangeException();
 
         GeometricSpace = cgaGeometricSpace;
-        ParameterRange = parameterRange;
+        ParameterRange = timeRange;
         GetElementFunc = getBladeFunc;
     }
 
@@ -188,54 +191,48 @@ public sealed class CGaFloat64ParametricElement :
 
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public TemporalFloat64Scalar GetTemporalScalar(Func<CGaFloat64Element, double> elementMapping)
+    public Float64ScalarSignal GetTemporalScalar(Func<CGaFloat64Element, double> elementMapping)
     {
-        return TemporalFloat64Scalar.Computed(
-            t => elementMapping(GetElementFunc(t)),
-            ParameterRange
-        );
+        return Float64ScalarSignal.FiniteComputed(ParameterRange, t => elementMapping(GetElementFunc(t)));
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public TemporalFloat64Scalar GetTemporalScalar(Func<CGaFloat64Element, LinFloat64PolarAngle> elementMapping)
+    public Float64ScalarSignal GetTemporalScalar(Func<CGaFloat64Element, LinFloat64PolarAngle> elementMapping)
     {
-        return TemporalFloat64Scalar.Computed(
-            t => elementMapping(GetElementFunc(t)).RadiansValue,
-            ParameterRange
-        );
+        return Float64ScalarSignal.FiniteComputed(ParameterRange, t => elementMapping(GetElementFunc(t)).RadiansValue);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public ComputedParametricScalar GetParametricScalar(Func<CGaFloat64Element, double> elementMapping)
+    public Float64ScalarComputedSignal GetParametricScalar(Func<CGaFloat64Element, double> elementMapping)
     {
-        return ComputedParametricScalar.Create(
+        return Float64ScalarComputedSignal.Finite(
             ParameterRange,
             t => elementMapping(GetElementFunc(t))
         );
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public ComputedParametricPolarAngle GetParametricAngle(Func<CGaFloat64Element, LinFloat64PolarAngle> elementMapping)
+    public LinFloat64PolarAngleTimeSignal GetParametricAngle(Func<CGaFloat64Element, double> elementMapping)
     {
-        return ComputedParametricPolarAngle.Create(
+        return Float64ScalarSignal.FiniteComputed(
+            ParameterRange,
+            t => elementMapping(GetElementFunc(t))
+        ).ToPolarAngle();
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public Float64ComputedPath2D GetParametricCurve2D(Func<CGaFloat64Element, LinFloat64Vector2D> elementMapping)
+    {
+        return Float64ComputedPath2D.Finite(
             ParameterRange,
             t => elementMapping(GetElementFunc(t))
         );
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public ComputedParametricCurve2D GetParametricCurve2D(Func<CGaFloat64Element, LinFloat64Vector2D> elementMapping)
+    public Float64ComputedPath3D GetParametricCurve3D(Func<CGaFloat64Element, LinFloat64Vector3D> elementMapping)
     {
-        return ComputedParametricCurve2D.Create(
-            ParameterRange,
-            t => elementMapping(GetElementFunc(t))
-        );
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public ComputedParametricCurve3D GetParametricCurve3D(Func<CGaFloat64Element, LinFloat64Vector3D> elementMapping)
-    {
-        return ComputedParametricCurve3D.Create(
+        return Float64ComputedPath3D.Finite(
             ParameterRange,
             t => elementMapping(GetElementFunc(t))
         );
@@ -260,9 +257,9 @@ public sealed class CGaFloat64ParametricElement :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public ComputedParametricTrivector3D GetParametricTrivector3D(Func<CGaFloat64Element, LinFloat64Trivector3D> elementMapping)
+    public LinFloat64Trivector3DComputedTrajectory GetParametricTrivector3D(Func<CGaFloat64Element, LinFloat64Trivector3D> elementMapping)
     {
-        return ComputedParametricTrivector3D.Create(
+        return LinFloat64Trivector3DComputedTrajectory.Finite(
             ParameterRange,
             t => elementMapping(GetElementFunc(t))
         );
@@ -279,7 +276,7 @@ public sealed class CGaFloat64ParametricElement :
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public ComputedParametricScalar RadiusSquaredToParametricScalar()
+    public Float64ScalarComputedSignal RadiusSquaredToParametricScalar()
     {
         return GetParametricScalar(
             element => element.RadiusSquared
@@ -287,7 +284,7 @@ public sealed class CGaFloat64ParametricElement :
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public TemporalFloat64Scalar RealRadiusToTemporalScalar()
+    public Float64ScalarSignal RealRadiusToTemporalScalar()
     {
         return GetTemporalScalar(
             element => element.RealRadius
@@ -295,7 +292,7 @@ public sealed class CGaFloat64ParametricElement :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public ComputedParametricScalar RealRadiusToParametricScalar()
+    public Float64ScalarComputedSignal RealRadiusToParametricScalar()
     {
         return GetParametricScalar(
             element => element.RealRadius
@@ -303,7 +300,7 @@ public sealed class CGaFloat64ParametricElement :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public ComputedParametricScalar RealRadiusSquaredToParametricScalar()
+    public Float64ScalarComputedSignal RealRadiusSquaredToParametricScalar()
     {
         return GetParametricScalar(
             element => element.RealRadiusSquared
@@ -312,7 +309,7 @@ public sealed class CGaFloat64ParametricElement :
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public ComputedParametricCurve2D PositionToParametricCurve2D()
+    public Float64ComputedPath2D PositionToParametricCurve2D()
     {
         return GetParametricCurve2D(
             element => element.PositionToVector2D()
@@ -320,7 +317,7 @@ public sealed class CGaFloat64ParametricElement :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public ComputedParametricCurve3D PositionToParametricCurve3D()
+    public Float64ComputedPath3D PositionToParametricCurve3D()
     {
         return GetParametricCurve3D(
             element => element.PositionToVector3D()
@@ -329,7 +326,7 @@ public sealed class CGaFloat64ParametricElement :
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public ComputedParametricCurve2D DirectionToParametricCurve2D()
+    public Float64ComputedPath2D DirectionToParametricCurve2D()
     {
         return GetParametricCurve2D(
             element => element.DirectionToVector2D()
@@ -337,7 +334,7 @@ public sealed class CGaFloat64ParametricElement :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public ComputedParametricCurve2D DirectionToParametricCurve2D(double length)
+    public Float64ComputedPath2D DirectionToParametricCurve2D(double length)
     {
         return GetParametricCurve2D(
             element => element.DirectionToVector2D(length)
@@ -345,16 +342,16 @@ public sealed class CGaFloat64ParametricElement :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public ComputedParametricCurve2D DirectionToParametricCurve2D(IFloat64ParametricScalar length)
+    public Float64ComputedPath2D DirectionToParametricCurve2D(Float64ScalarSignal length)
     {
-        return ComputedParametricCurve2D.Create(
+        return Float64ComputedPath2D.Finite(
             ParameterRange,
             t => GetElement(t).DirectionToVector2D(length.GetValue(t))
         );
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public ComputedParametricCurve3D DirectionToParametricCurve3D()
+    public Float64ComputedPath3D DirectionToParametricCurve3D()
     {
         return GetParametricCurve3D(
             element => element.DirectionToVector3D()
@@ -362,7 +359,7 @@ public sealed class CGaFloat64ParametricElement :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public ComputedParametricCurve3D DirectionToParametricCurve3D(double length)
+    public Float64ComputedPath3D DirectionToParametricCurve3D(double length)
     {
         return GetParametricCurve3D(
             element => element.DirectionToVector3D(length)
@@ -370,9 +367,9 @@ public sealed class CGaFloat64ParametricElement :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public ComputedParametricCurve3D DirectionToParametricCurve3D(IFloat64ParametricScalar length)
+    public Float64ComputedPath3D DirectionToParametricCurve3D(Float64ScalarSignal length)
     {
-        return ComputedParametricCurve3D.Create(
+        return Float64ComputedPath3D.Finite(
             ParameterRange,
             t => GetElement(t).DirectionToVector3D(length.GetValue(t))
         );
@@ -395,7 +392,7 @@ public sealed class CGaFloat64ParametricElement :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public ComputedParametricTrivector3D DirectionToParametricTrivector3D()
+    public LinFloat64Trivector3DComputedTrajectory DirectionToParametricTrivector3D()
     {
         return GetParametricTrivector3D(
             element => element.DirectionToTrivector3D()
@@ -404,7 +401,7 @@ public sealed class CGaFloat64ParametricElement :
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public ComputedParametricCurve2D NormalDirectionToParametricCurve2D()
+    public Float64ComputedPath2D NormalDirectionToParametricCurve2D()
     {
         return GetParametricCurve2D(
             element => element.NormalDirectionToVector2D()
@@ -412,7 +409,7 @@ public sealed class CGaFloat64ParametricElement :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public ComputedParametricCurve2D NormalDirectionToParametricCurve2D(double length)
+    public Float64ComputedPath2D NormalDirectionToParametricCurve2D(double length)
     {
         return GetParametricCurve2D(
             element => element.NormalDirectionToVector2D(length)
@@ -420,16 +417,16 @@ public sealed class CGaFloat64ParametricElement :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public ComputedParametricCurve2D NormalDirectionToParametricCurve2D(IFloat64ParametricScalar length)
+    public Float64ComputedPath2D NormalDirectionToParametricCurve2D(Float64ScalarSignal length)
     {
-        return ComputedParametricCurve2D.Create(
+        return Float64ComputedPath2D.Finite(
             ParameterRange,
             t => GetElement(t).NormalDirectionToVector2D(length.GetValue(t))
         );
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public ComputedParametricCurve3D NormalDirectionToParametricCurve3D()
+    public Float64ComputedPath3D NormalDirectionToParametricCurve3D()
     {
         return GetParametricCurve3D(
             element => element.NormalDirectionToVector3D()
@@ -437,7 +434,7 @@ public sealed class CGaFloat64ParametricElement :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public ComputedParametricCurve3D NormalDirectionToParametricCurve3D(double length)
+    public Float64ComputedPath3D NormalDirectionToParametricCurve3D(double length)
     {
         return GetParametricCurve3D(
             element => element.NormalDirectionToVector3D(length)
@@ -445,9 +442,9 @@ public sealed class CGaFloat64ParametricElement :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public ComputedParametricCurve3D NormalDirectionToParametricCurve3D(IFloat64ParametricScalar length)
+    public Float64ComputedPath3D NormalDirectionToParametricCurve3D(Float64ScalarSignal length)
     {
-        return ComputedParametricCurve3D.Create(
+        return Float64ComputedPath3D.Finite(
             ParameterRange,
             t => GetElement(t).NormalDirectionToVector3D(length.GetValue(t))
         );
@@ -470,7 +467,7 @@ public sealed class CGaFloat64ParametricElement :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public ComputedParametricTrivector3D NormalDirectionToParametricTrivector3D()
+    public LinFloat64Trivector3DComputedTrajectory NormalDirectionToParametricTrivector3D()
     {
         return GetParametricTrivector3D(
             element => element.NormalDirectionToTrivector3D()
@@ -479,7 +476,7 @@ public sealed class CGaFloat64ParametricElement :
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public ComputedParametricCurve2D GetRoundCenterCurve2D()
+    public Float64ComputedPath2D GetRoundCenterCurve2D()
     {
         return GetParametricCurve2D(element =>
             element is CGaFloat64Round round
@@ -489,7 +486,7 @@ public sealed class CGaFloat64ParametricElement :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public ComputedParametricCurve3D GetRoundCenterCurve3D()
+    public Float64ComputedPath3D GetRoundCenterCurve3D()
     {
         return GetParametricCurve3D(element =>
             element is CGaFloat64Round round
@@ -499,7 +496,7 @@ public sealed class CGaFloat64ParametricElement :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public Pair<ComputedParametricCurve2D> GetRoundPointPairCurves2D()
+    public Pair<Float64ComputedPath2D> GetRoundPointPairCurves2D()
     {
         var point1Curve = GetParametricCurve2D(element =>
             element is CGaFloat64Round { IsRoundPointPair: true } round
@@ -513,11 +510,11 @@ public sealed class CGaFloat64ParametricElement :
                 : LinFloat64Vector2D.Zero
         );
 
-        return new Pair<ComputedParametricCurve2D>(point1Curve, point2Curve);
+        return new Pair<Float64ComputedPath2D>(point1Curve, point2Curve);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public Pair<ComputedParametricCurve3D> GetRoundPointPairCurves3D()
+    public Pair<Float64ComputedPath3D> GetRoundPointPairCurves3D()
     {
         var point1Curve = GetParametricCurve3D(element =>
             element is CGaFloat64Round { IsRoundPointPair: true } round
@@ -531,14 +528,14 @@ public sealed class CGaFloat64ParametricElement :
                 : LinFloat64Vector3D.Zero
         );
 
-        return new Pair<ComputedParametricCurve3D>(point1Curve, point2Curve);
+        return new Pair<Float64ComputedPath3D>(point1Curve, point2Curve);
     }
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public ComputedParametricCurve2D GetRoundSurfacePointCurve2D(LinFloat64Vector2D egaProbeDirection, double distanceFromSurface)
+    public Float64ComputedPath2D GetRoundSurfacePointCurve2D(LinFloat64Vector2D egaProbeDirection, double distanceFromSurface)
     {
-        return ComputedParametricCurve2D.Create(t =>
+        return Float64ComputedPath2D.Finite(t =>
             {
                 var el = GetElement(t);
 
@@ -557,19 +554,19 @@ public sealed class CGaFloat64ParametricElement :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public ComputedParametricCurve2D GetRoundSurfacePointCurve2D(IFloat64ParametricCurve2D egaProbeDirection, IFloat64ParametricScalar distanceFromSurface)
+    public Float64ComputedPath2D GetRoundSurfacePointCurve2D(Float64Path2D egaProbeDirection, Float64ScalarSignal distanceFromSurface)
     {
-        return ComputedParametricCurve2D.Create(t =>
+        return Float64ComputedPath2D.Finite(t =>
             {
                 var el = GetElement(t);
 
                 return el is CGaFloat64Round round
                     ? round.RoundSurfacePointToVector2D(
-                        egaProbeDirection.GetPoint(t),
+                        egaProbeDirection.GetValue(t),
                         distanceFromSurface.GetValue(t)
                     )
                     : el.SurfacePointToVector2D(
-                        egaProbeDirection.GetPoint(t),
+                        egaProbeDirection.GetValue(t),
                         0,
                         distanceFromSurface.GetValue(t)
                     );
@@ -578,9 +575,9 @@ public sealed class CGaFloat64ParametricElement :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public ComputedParametricCurve3D GetRoundSurfacePointCurve3D(LinFloat64Vector3D egaProbeDirection, double distanceFromSurface)
+    public Float64ComputedPath3D GetRoundSurfacePointCurve3D(LinFloat64Vector3D egaProbeDirection, double distanceFromSurface)
     {
-        return ComputedParametricCurve3D.Create(t =>
+        return Float64ComputedPath3D.Finite(t =>
             {
                 var el = GetElement(t);
 
@@ -599,19 +596,19 @@ public sealed class CGaFloat64ParametricElement :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public ComputedParametricCurve3D GetRoundSurfacePointCurve3D(IParametricCurve3D egaProbeDirection, IFloat64ParametricScalar distanceFromSurface)
+    public Float64ComputedPath3D GetRoundSurfacePointCurve3D(Float64Path3D egaProbeDirection, Float64ScalarSignal distanceFromSurface)
     {
-        return ComputedParametricCurve3D.Create(t =>
+        return Float64ComputedPath3D.Finite(t =>
             {
                 var el = GetElement(t);
 
                 return el is CGaFloat64Round round
                     ? round.RoundSurfacePointToVector3D(
-                        egaProbeDirection.GetPoint(t),
+                        egaProbeDirection.GetValue(t),
                         distanceFromSurface.GetValue(t)
                     )
                     : el.SurfacePointToVector3D(
-                        egaProbeDirection.GetPoint(t),
+                        egaProbeDirection.GetValue(t),
                         0,
                         distanceFromSurface.GetValue(t)
                     );
@@ -621,9 +618,9 @@ public sealed class CGaFloat64ParametricElement :
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public ComputedParametricCurve2D GetSurfacePointCurve2D(LinFloat64Vector2D egaProbeDirection, double distanceFromPosition, double distanceFromSurface)
+    public Float64ComputedPath2D GetSurfacePointCurve2D(LinFloat64Vector2D egaProbeDirection, double distanceFromPosition, double distanceFromSurface)
     {
-        return ComputedParametricCurve2D.Create(t =>
+        return Float64ComputedPath2D.Finite(t =>
             GetElement(t).SurfacePointToVector2D(
                     egaProbeDirection,
                     distanceFromPosition,
@@ -633,11 +630,11 @@ public sealed class CGaFloat64ParametricElement :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public ComputedParametricCurve2D GetSurfacePointCurve2D(IFloat64ParametricCurve2D egaProbeDirection, IFloat64ParametricScalar distanceFromPosition, IFloat64ParametricScalar distanceFromSurface)
+    public Float64ComputedPath2D GetSurfacePointCurve2D(Float64Path2D egaProbeDirection, Float64ScalarSignal distanceFromPosition, Float64ScalarSignal distanceFromSurface)
     {
-        return ComputedParametricCurve2D.Create(t =>
+        return Float64ComputedPath2D.Finite(t =>
             GetElement(t).SurfacePointToVector2D(
-                    egaProbeDirection.GetPoint(t),
+                    egaProbeDirection.GetValue(t),
                     distanceFromPosition.GetValue(t),
                     distanceFromSurface.GetValue(t)
                 )
@@ -645,9 +642,9 @@ public sealed class CGaFloat64ParametricElement :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public ComputedParametricCurve3D GetSurfacePointCurve3D(LinFloat64Vector3D egaProbeDirection, double distanceFromPosition, double distanceFromSurface)
+    public Float64ComputedPath3D GetSurfacePointCurve3D(LinFloat64Vector3D egaProbeDirection, double distanceFromPosition, double distanceFromSurface)
     {
-        return ComputedParametricCurve3D.Create(t =>
+        return Float64ComputedPath3D.Finite(t =>
                 GetElement(t).SurfacePointToVector3D(
                     egaProbeDirection,
                     distanceFromPosition,
@@ -657,11 +654,11 @@ public sealed class CGaFloat64ParametricElement :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public ComputedParametricCurve3D GetSurfacePointCurve3D(IParametricCurve3D egaProbeDirection, IFloat64ParametricScalar distanceFromPosition, IFloat64ParametricScalar distanceFromSurface)
+    public Float64ComputedPath3D GetSurfacePointCurve3D(Float64Path3D egaProbeDirection, Float64ScalarSignal distanceFromPosition, Float64ScalarSignal distanceFromSurface)
     {
-        return ComputedParametricCurve3D.Create(t =>
+        return Float64ComputedPath3D.Finite(t =>
                 GetElement(t).SurfacePointToVector3D(
-                    egaProbeDirection.GetPoint(t),
+                    egaProbeDirection.GetValue(t),
                     distanceFromPosition.GetValue(t),
                     distanceFromSurface.GetValue(t)
             )

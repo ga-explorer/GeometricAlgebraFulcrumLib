@@ -74,7 +74,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space
 
             return LinFloat64Quaternion.CreateFromAxisAngle(
                 unitVector,
-                (length * 2d * Math.PI).RadiansToPolarAngle()
+                (length * Math.Tau).RadiansToPolarAngle()
             );
         }
 
@@ -181,7 +181,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space
             var (u, a) =
                 srcVector.VectorToVectorRotationAxisAngle(dstVector);
 
-            return u.VectorTimes(a.RadiansValue / (2d * Math.PI));
+            return u.VectorTimes(a.RadiansValue / (Math.Tau));
         }
 
         public static LinFloat64Vector3D VectorToVectorRotationVector(this ILinFloat64Vector3D srcVector, ILinFloat64Vector3D dstVector)
@@ -189,7 +189,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space
             var (u, a) =
                 srcVector.VectorToVectorRotationAxisAngle(dstVector);
 
-            return u.VectorTimes(a.RadiansValue / (2d * Math.PI));
+            return u.VectorTimes(a.RadiansValue / (Math.Tau));
         }
 
 

@@ -296,6 +296,41 @@ public sealed class SquareMatrix2 //: IAffineMap2D
             return m2 * m1;
         }
     }
+    
+    /// <summary>
+    /// Create an affine homogeneous transformation matrix given the columns
+    /// </summary>
+    /// <param name="c1"></param>
+    /// <returns></returns>
+    public static SquareMatrix2 CreateAffineFromColumns(Float64Scalar c1)
+    {
+        return new SquareMatrix2()
+        {
+            Scalar00 = c1,
+            Scalar10 = Float64Scalar.Zero,
+
+            Scalar01 = Float64Scalar.Zero,
+            Scalar11 = Float64Scalar.One
+        };
+    }
+
+    /// <summary>
+    /// Create an affine homogeneous transformation matrix given the columns
+    /// </summary>
+    /// <param name="c1"></param>
+    /// <param name="c2"></param>
+    /// <returns></returns>
+    public static SquareMatrix2 CreateAffineFromColumns(Float64Scalar c1, Float64Scalar c2)
+    {
+        return new SquareMatrix2()
+        {
+            Scalar00 = c1,
+            Scalar10 = Float64Scalar.Zero,
+
+            Scalar01 = c2,
+            Scalar11 = Float64Scalar.One
+        };
+    }
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]

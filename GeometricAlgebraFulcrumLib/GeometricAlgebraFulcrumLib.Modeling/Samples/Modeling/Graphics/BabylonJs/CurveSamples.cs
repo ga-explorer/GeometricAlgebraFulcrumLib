@@ -2,19 +2,19 @@
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Angles;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space3D;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.Parametric.Float64.Space3D.Curves;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.Parametric.Float64.Space3D.Curves.Circles;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.Parametric.Float64.Space3D.Curves.Lines;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.Parametric.Float64.Space3D.Curves.Roulettes;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.BabylonJs;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.BabylonJs.Cameras;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.BabylonJs.Composers;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.BabylonJs.Constants;
+using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.Visuals;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.Visuals.Space3D.Basic;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.Visuals.Space3D.Grids;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.Visuals.Space3D.Styles;
 using GeometricAlgebraFulcrumLib.Modeling.Signals;
-using GeometricAlgebraFulcrumLib.Modeling.Temporal.Float64.Scalars;
+using GeometricAlgebraFulcrumLib.Modeling.Trajectories.Scalars.Float64;
+using GeometricAlgebraFulcrumLib.Modeling.Trajectories.Vectors3D.Float64;
+using GeometricAlgebraFulcrumLib.Modeling.Trajectories.Vectors3D.Float64.Basic;
+using GeometricAlgebraFulcrumLib.Modeling.Trajectories.Vectors3D.Float64.Circles;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Extensions;
 using Color = SixLabors.ImageSharp.Color;
 
@@ -36,8 +36,8 @@ public static class CurveSamples
 
         scene.AddArcRotateCamera(
             "camera1",
-            "2 * Math.PI / 20",
-            "2 * Math.PI / 5",
+            "Math.Tau / 20",
+            "Math.Tau / 5",
             15,
             "BABYLON.Vector3.Zero()",
             new GrBabylonJsArcRotateCameraProperties
@@ -114,24 +114,25 @@ public static class CurveSamples
         const int movingCurveFactor = 3;
 
         var fixedCurve =
-            new ParametricCircleZx3D(fixedCurveFactor, 1).GetRotatedNormalsCurve(
-                t => LinFloat64PolarAngle.Angle45
-                //t => t.CosWave(0, 1 * Math.PI, 3) //-0.25 * Math.PI //t * 2 * Math.PI
+            new Float64ZxCirclePath3D(fixedCurveFactor, 1).GetRotatedNormalsCurve(
+                LinFloat64PolarAngle.Angle45
+                //t => t.CosWave(0, 1 * Math.PI, 3) //-0.25 * Math.PI //t * Math.Tau
             );
 
         var movingCurve =
-            new ParametricCircleZx3D(movingCurveFactor, 1).GetRotatedNormalsCurve(
-                t => LinFloat64PolarAngle.Angle0
-                //t => t.CosWave(-0.75 * Math.PI, 0.25 * Math.PI, 3) //-0.25 * Math.PI //t * 2 * Math.PI
+            new Float64ZxCirclePath3D(movingCurveFactor, 1).GetRotatedNormalsCurve(
+                LinFloat64PolarAngle.Angle0
+                //t => t.CosWave(-0.75 * Math.PI, 0.25 * Math.PI, 3) //-0.25 * Math.PI //t * Math.Tau
             );
 
         var maxLength =
             movingCurve.GetLength() * movingCurveFactor.Lcm(fixedCurveFactor) / movingCurveFactor;
 
-        var curve = new RouletteCurve3D(
+        var curve = new Float64RoulettePath3D(
+            fixedCurve.IsPeriodic,
             fixedCurve,
             movingCurve,
-            movingCurve.GetPoint(movingCurve.ParameterRange.MinValue),
+            movingCurve.GetValue(movingCurve.TimeRange.MinValue),
             maxLength
         );
 
@@ -196,8 +197,8 @@ public static class CurveSamples
         const int movingCurveFactor = 3;
 
         var fixedCurve =
-            new ParametricCircleZx3D(fixedCurveFactor, 1).GetRotatedNormalsCurve(
-                t => 45.DegreesToDirectedAngle()
+            new Float64ZxCirclePath3D(fixedCurveFactor, 1).GetRotatedNormalsCurve(
+                45.DegreesToPolarAngle()
             );
 
         //var harmonicCurve = new GrHarmonicCurve3D();
@@ -228,9 +229,9 @@ public static class CurveSamples
         //        //t => t.CosWave(0, 360, 5).DegreesToAngle()
         //    );
 
-        var radius = movingCurveLength / (2 * Math.PI);
+        var radius = movingCurveLength / (Math.Tau);
         var movingCurve =
-            new ParametricCircleZx3D(
+            new Float64ZxCirclePath3D(
                 radius,
                 1
             ).GetRotatedNormalsCurve(
@@ -245,9 +246,9 @@ public static class CurveSamples
             movingCurveFactor.Lcm(fixedCurveFactor) /
             movingCurveFactor;
 
-        var t1 = 0d.Lerp(movingCurve.ParameterRange);
-        var t2 = (1d / 3d).Lerp(movingCurve.ParameterRange);
-        var t3 = (2d / 3d).Lerp(movingCurve.ParameterRange);
+        var t1 = 0d.Lerp(movingCurve.TimeRange);
+        var t2 = (1d / 3d).Lerp(movingCurve.TimeRange);
+        var t3 = (2d / 3d).Lerp(movingCurve.TimeRange);
 
         var generatorPointList = new List<GrBabylonJsRouletteTracerVisualizer.GeneratorPoint>
         {
@@ -270,52 +271,51 @@ public static class CurveSamples
             movingCurveFactor * 32 + 1
         )
         {
-            Title = "Roulette Curve in 3D",
+            SceneTitle = "Roulette Curve in 3D",
             HostUrl = "http://localhost:5200/",
             //LiveReloadWebServer "D:/Projects/Study/Babylon.js/" --port 5200 --UseSsl False --LiveReloadEnabled False --OpenBrowser True
 
             ShowCopyright = true,
 
             ComposeSceneFilesEnabled = true,
-            RenderImageFilesEnabled = true,
+            SceneRenderMethod = GrVisualSceneSequenceComposer.RenderImageFilesMethod.PerScene,
             RenderVideoFileEnabled = true,
         };
         
         var alpha = 
-            TemporalFloat64Scalar
-                .FullCos(30, 150)
+            Float64ScalarSignal
+                .FiniteCos(30, 150)
                 .Repeat(2)
                 .DegreesToRadians();
 
         var beta = 
             60.DegreesToRadians();
 
-        visualizer.SetCameraAlphaBetaDistance(alpha, beta, 20);
+        visualizer.SetCamera(alpha, beta, 20);
 
-        visualizer.RenderFiles();
+        visualizer.ComposeSceneSequence();
     }
 
-    private static RouletteCurve3D GetParametricRouletteCurve(double parameterValue)
+    private static Float64RoulettePath3D GetParametricRouletteCurve(double parameterValue)
     {
         const int fixedCurveFactor = 5;
         const int movingCurveFactor = 3;
 
         var fixedCurve =
-            new ParametricCircleZx3D(fixedCurveFactor, 1).GetRotatedNormalsCurve(
-                t => 0d.DegreesToDirectedAngle()
+            new Float64ZxCirclePath3D(fixedCurveFactor, 1).GetRotatedNormalsCurve(
+                0d.DegreesToPolarAngle()
             );
 
         var movingCurveLength =
             fixedCurve.GetLength() * movingCurveFactor / fixedCurveFactor;
 
-        var radius = movingCurveLength / (2 * Math.PI);
+        var radius = movingCurveLength / (Math.Tau);
         var movingCurve =
-            new ParametricCircleZx3D(
+            new Float64ZxCirclePath3D(
                 radius,
                 1
             ).GetRotatedNormalsCurve(
-                t =>
-                    -45.DegreesToDirectedAngle()
+                -45.DegreesToPolarAngle()
                 //(parameterValue * 360).DegreesToAngle()
             );
 
@@ -324,15 +324,17 @@ public static class CurveSamples
             movingCurveFactor.Lcm(fixedCurveFactor) /
             movingCurveFactor;
 
-        var generatorPointCurve = new ArcLengthLineSegment3D(
+        var generatorPointCurve = new Float64LineSegmentPath3D(
+            false,
             LinFloat64Vector3D.Create(-radius, -radius, -radius),
             LinFloat64Vector3D.Create(radius, radius, radius)
-        ).GetMappedParameterCurveCosWave(2);
+        ); //.GetMappedParameterCurveCosWave(2);
 
         var generatorPoint =
-            generatorPointCurve.GetPoint(parameterValue);
+            generatorPointCurve.GetValue(parameterValue);
 
-        return new RouletteCurve3D(
+        return new Float64RoulettePath3D(
+            false,
             fixedCurve,
             movingCurve,
             generatorPoint,
@@ -354,28 +356,28 @@ public static class CurveSamples
             movingCurveFactor * 32 + 1
         )
         {
-            Title = "Parametric Roulette Curve in 3D-3",
+            SceneTitle = "Parametric Roulette Curve in 3D-3",
             HostUrl = "http://localhost:5200/",
             //LiveReloadWebServer "D:/Projects/Study/Babylon.js/" --port 5200 --UseSsl False --LiveReloadEnabled False --OpenBrowser True
 
             ShowCopyright = true,
 
             ComposeSceneFilesEnabled = true,
-            RenderImageFilesEnabled = true,
+            SceneRenderMethod = GrVisualSceneSequenceComposer.RenderImageFilesMethod.PerScene,
             RenderVideoFileEnabled = true,
         };
         
         var alpha = 
-            TemporalFloat64Scalar
-                .FullCos(30, 150)
+            Float64ScalarSignal
+                .FiniteCos(30, 150)
                 .Repeat(2)
                 .DegreesToRadians();
 
         var beta = 
             45.DegreesToRadians();
 
-        visualizer.SetCameraAlphaBetaDistance(alpha, beta, 20);
+        visualizer.SetCamera(alpha, beta, 20);
 
-        visualizer.RenderFiles();
+        visualizer.ComposeSceneSequence();
     }
 }

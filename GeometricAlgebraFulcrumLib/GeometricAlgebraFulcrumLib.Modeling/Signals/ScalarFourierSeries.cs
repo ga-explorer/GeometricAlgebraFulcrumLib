@@ -111,7 +111,7 @@ public class ScalarFourierSeries :
 
             // The positive frequency value
             var freqHz = i * df;
-            var freqRad = 2 * Math.PI * freqHz;
+            var freqRad = Math.Tau * freqHz;
 
             var complexSample1 = complexSamples[freqIndex1];
             var complexSample2 = complexSamples[freqIndex2];
@@ -132,7 +132,7 @@ public class ScalarFourierSeries :
         return interpolator;
     }
 
-    private static ScalarFourierSeries Create(IReadOnlyList<Complex> complexSamples, Float64Signal scalarSignal, double snrThreshold, IEnumerable<int> frequencyIndexList)
+    private static ScalarFourierSeries Create(IReadOnlyList<Complex> complexSamples, Float64SampledTimeSignal scalarSignal, double snrThreshold, IEnumerable<int> frequencyIndexList)
     {
         var sampleCount = complexSamples.Count;
         var scalingFactor = Math.Sqrt(sampleCount);
@@ -198,7 +198,7 @@ public class ScalarFourierSeries :
 
             // The positive frequency value
             var freqHz = i * df;
-            var freqRad = 2 * Math.PI * freqHz;
+            var freqRad = Math.Tau * freqHz;
 
             var complexSample1 = complexSamples[freqIndex1];
             var complexSample2 = complexSamples[freqIndex2];
@@ -259,7 +259,7 @@ public class ScalarFourierSeries :
         for (var freqIndex = 1; freqIndex <= freqIndexMax; freqIndex++)
         {
             var energy =
-                (real[freqIndex].Square() + imaginary[freqIndex].Square()) * sampleCount / (2 * Math.PI);
+                (real[freqIndex].Square() + imaginary[freqIndex].Square()) * sampleCount / (Math.Tau);
 
             energyDictionary.Add(energy, freqIndex);
 
@@ -304,7 +304,7 @@ public class ScalarFourierSeries :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static ScalarFourierSeries Create(Float64Signal signalSamples, double snrThreshold, IEnumerable<int> frequencyIndexList)
+    public static ScalarFourierSeries Create(Float64SampledTimeSignal signalSamples, double snrThreshold, IEnumerable<int> frequencyIndexList)
     {
         var complexSamples =
             GetFourierArray(signalSamples);
@@ -570,13 +570,13 @@ public class ScalarFourierSeries :
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public Float64Signal GetSignal(Float64Signal tValuesSignal)
+    public Float64SampledTimeSignal GetSignal(Float64SampledTimeSignal tValuesSignal)
     {
         return tValuesSignal.Select(GetValue).CreateSignal(tValuesSignal.SamplingRate);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public Float64Signal GetSignalDt(Float64Signal tValuesSignal)
+    public Float64SampledTimeSignal GetSignalDt(Float64SampledTimeSignal tValuesSignal)
     {
         return tValuesSignal.Select(GetDerivativeNValue).CreateSignal(tValuesSignal.SamplingRate);
     }
@@ -616,7 +616,7 @@ public class ScalarFourierSeries :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public double GetEnergyAc(Float64Signal tValues)
+    public double GetEnergyAc(Float64SampledTimeSignal tValues)
     {
         return _termsDictionary
             .Values
@@ -639,7 +639,7 @@ public class ScalarFourierSeries :
         return composer.ToString();
     }
 
-    public string GetTextDescription(string signalName, double totalEnergyAc, Float64Signal tValues)
+    public string GetTextDescription(string signalName, double totalEnergyAc, Float64SampledTimeSignal tValues)
     {
         var sampleCount = tValues.Count;
 

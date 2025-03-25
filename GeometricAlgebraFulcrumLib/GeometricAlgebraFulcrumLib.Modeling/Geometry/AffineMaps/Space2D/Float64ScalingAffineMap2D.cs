@@ -18,6 +18,11 @@ public sealed class Float64ScalingAffineMap2D :
 
     public bool SwapsHandedness { get; }
 
+    public bool IsIdentity()
+    {
+        throw new NotImplementedException();
+    }
+
     public LinFloat64Vector2D MapPoint(ILinFloat64Vector2D point)
     {
         throw new NotImplementedException();

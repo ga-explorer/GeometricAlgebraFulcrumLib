@@ -289,10 +289,6 @@ public class DfAffinePolynomial :
         => ScalarConstant.IsMinusOne() &&
            ScalarFactor.IsZero();
 
-    public bool IsIdentity
-        => ScalarConstant.IsZero() &&
-           ScalarFactor.IsOne();
-
     public bool IsOnePlusIdentity
         => ScalarConstant.IsOne() &&
            ScalarFactor.IsOne();
@@ -331,6 +327,20 @@ public class DfAffinePolynomial :
         ScalarFactor = scalarFactor;
     }
 
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public bool IsIdentity()
+    {
+        return ScalarConstant.IsZero() &&
+               ScalarFactor.IsOne();
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public bool IsNearIdentity(double zeroEpsilon = Float64Utils.ZeroEpsilon)
+    {
+        return ScalarConstant.IsNearZero(zeroEpsilon) &&
+               ScalarFactor.IsNearOne(zeroEpsilon);
+    }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public bool IsSame(DfAffinePolynomial p2)

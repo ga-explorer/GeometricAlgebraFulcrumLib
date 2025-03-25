@@ -10,6 +10,7 @@ using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Matrices;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space3D;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.SpaceND;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
+using GeometricAlgebraFulcrumLib.Modeling.Geometry.AffineMaps.Space2D;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.AffineMaps.Space3D;
 
 namespace GeometricAlgebraFulcrumLib.Modeling.Geometry.AffineMaps;
@@ -374,4 +375,38 @@ public static class Float64AffineMapUtils
     //        targetVector.CreateUnitLinVector()
     //    );
     //}
+
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static IFloat64AffineMap2D Transform(this IFloat64AffineMap2D affineMap, IFloat64AffineMap2D affineMap2)
+    {
+        return Float64AffineMap2D.Create(
+            affineMap.GetSquareMatrix3() * affineMap2.GetSquareMatrix3()
+        );
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static IFloat64AffineMap2D TransformUsing(this IFloat64AffineMap2D affineMap, IFloat64AffineMap2D affineMap2)
+    {
+        return Float64AffineMap2D.Create(
+            affineMap2.GetSquareMatrix3() * affineMap.GetSquareMatrix3()
+        );
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static IFloat64AffineMap3D Transform(this IFloat64AffineMap3D affineMap, IFloat64AffineMap3D affineMap2)
+    {
+        return Float64AffineMap3D.Create(
+            affineMap.GetSquareMatrix4() * affineMap2.GetSquareMatrix4()
+        );
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static IFloat64AffineMap3D TransformUsing(this IFloat64AffineMap3D affineMap, IFloat64AffineMap3D affineMap2)
+    {
+        return Float64AffineMap3D.Create(
+            affineMap2.GetSquareMatrix4() * affineMap.GetSquareMatrix4()
+        );
+    }
+
 }
