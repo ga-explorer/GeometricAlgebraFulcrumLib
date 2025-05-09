@@ -74,7 +74,7 @@ public static class XGaMultivectorComposerUtils
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static ScalarComposer<T> AddEGpTerm<T>(this ScalarComposer<T> composer, XGaProcessor<T> processor, IIndexSet id, T scalar1, T scalar2)
+    public static ScalarComposer<T> AddEGpTerm<T>(this ScalarComposer<T> composer, XGaProcessor<T> processor, IndexSet id, T scalar1, T scalar2)
     {
         var term = processor.EGpSign(id, id);
         var scalar = term.IsPositive
@@ -203,7 +203,7 @@ public static class XGaMultivectorComposerUtils
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static ScalarComposer<T> AddGpTerm<T>(this ScalarComposer<T> composer, XGaProcessor<T> processor, IIndexSet id, T scalar1, T scalar2)
+    public static ScalarComposer<T> AddGpTerm<T>(this ScalarComposer<T> composer, XGaProcessor<T> processor, IndexSet id, T scalar1, T scalar2)
     {
         var term = processor.GpSign(id, id);
 
@@ -354,25 +354,25 @@ public static class XGaMultivectorComposerUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static XGaHigherKVector<T> GetXGaHigherKVector<T>(this ScalarComposer<T> composer, XGaProcessor<T> processor, IIndexSet id)
+    public static XGaHigherKVector<T> GetXGaHigherKVector<T>(this ScalarComposer<T> composer, XGaProcessor<T> processor, IndexSet id)
     {
         return processor.HigherKVectorTerm(id, composer.Scalar);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static XGaKVector<T> GetXGaKVector<T>(this ScalarComposer<T> composer, XGaProcessor<T> processor, IIndexSet id)
+    public static XGaKVector<T> GetXGaKVector<T>(this ScalarComposer<T> composer, XGaProcessor<T> processor, IndexSet id)
     {
         return processor.KVectorTerm(id, composer.Scalar);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static XGaGradedMultivector<T> GetXGaGradedMultivector<T>(this ScalarComposer<T> composer, XGaProcessor<T> processor, IIndexSet id)
+    public static XGaGradedMultivector<T> GetXGaGradedMultivector<T>(this ScalarComposer<T> composer, XGaProcessor<T> processor, IndexSet id)
     {
         return processor.Multivector(id, composer.Scalar);
     }
 
 
-    private static XGaMultivectorComposer<T> AddEuclideanProductTerms<T>(this XGaMultivectorComposer<T> composer, XGaMultivector<T> mv1, XGaMultivector<T> mv2, Func<IIndexSet, IIndexSet, bool> filterFunc)
+    private static XGaMultivectorComposer<T> AddEuclideanProductTerms<T>(this XGaMultivectorComposer<T> composer, XGaMultivector<T> mv1, XGaMultivector<T> mv2, Func<IndexSet, IndexSet, bool> filterFunc)
     {
         if (mv1.IsZero || mv2.IsZero)
             return composer;
@@ -385,7 +385,7 @@ public static class XGaMultivectorComposerUtils
         return composer;
     }
 
-    private static XGaMultivectorComposer<T> AddMetricProductTerms<T>(this XGaMultivectorComposer<T> composer, XGaMultivector<T> mv1, XGaMultivector<T> mv2, Func<IIndexSet, IIndexSet, bool> filterFunc)
+    private static XGaMultivectorComposer<T> AddMetricProductTerms<T>(this XGaMultivectorComposer<T> composer, XGaMultivector<T> mv1, XGaMultivector<T> mv2, Func<IndexSet, IndexSet, bool> filterFunc)
     {
         Debug.Assert(
             composer.Processor.HasSameSignature(mv1.Processor) &&
@@ -1195,7 +1195,7 @@ public static class XGaMultivectorComposerUtils
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static XGaGradedMultivector<T> Multivector<T>(this XGaProcessor<T> processor, IReadOnlyDictionary<IIndexSet, T> termList)
+    public static XGaGradedMultivector<T> Multivector<T>(this XGaProcessor<T> processor, IReadOnlyDictionary<IndexSet, T> termList)
     {
         return processor
             .CreateComposer()
@@ -1216,7 +1216,7 @@ public static class XGaMultivectorComposerUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static XGaGradedMultivector<T> Multivector<T>(this XGaProcessor<T> processor, IEnumerable<KeyValuePair<IIndexSet, T>> termList)
+    public static XGaGradedMultivector<T> Multivector<T>(this XGaProcessor<T> processor, IEnumerable<KeyValuePair<IndexSet, T>> termList)
     {
         return processor
             .CreateComposer()
@@ -1225,7 +1225,7 @@ public static class XGaMultivectorComposerUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static XGaGradedMultivector<T> Multivector<T>(this XGaProcessor<T> processor, IIndexSet id)
+    public static XGaGradedMultivector<T> Multivector<T>(this XGaProcessor<T> processor, IndexSet id)
     {
         var grade = id.Count;
 
@@ -1241,7 +1241,7 @@ public static class XGaMultivectorComposerUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static XGaGradedMultivector<T> Multivector<T>(this XGaProcessor<T> processor, IIndexSet id, T scalar)
+    public static XGaGradedMultivector<T> Multivector<T>(this XGaProcessor<T> processor, IndexSet id, T scalar)
     {
         var grade = id.Count;
 
@@ -1260,13 +1260,13 @@ public static class XGaMultivectorComposerUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static XGaGradedMultivector<T> Multivector<T>(this XGaProcessor<T> processor, IIndexSet id, IScalar<T> scalar)
+    public static XGaGradedMultivector<T> Multivector<T>(this XGaProcessor<T> processor, IndexSet id, IScalar<T> scalar)
     {
         return processor.Multivector(id, scalar.ScalarValue);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static XGaGradedMultivector<T> Multivector<T>(this XGaProcessor<T> processor, KeyValuePair<IIndexSet, T> basisScalarPair)
+    public static XGaGradedMultivector<T> Multivector<T>(this XGaProcessor<T> processor, KeyValuePair<IndexSet, T> basisScalarPair)
     {
         var (id, scalar) = basisScalarPair;
         var grade = id.Count;
@@ -1454,12 +1454,12 @@ public static class XGaMultivectorComposerUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static XGaUniformMultivector<T> UniformMultivector<T>(this XGaProcessor<T> processor, IReadOnlyDictionary<IIndexSet, T> basisScalarDictionary)
+    public static XGaUniformMultivector<T> UniformMultivector<T>(this XGaProcessor<T> processor, IReadOnlyDictionary<IndexSet, T> basisScalarDictionary)
     {
-        if (basisScalarDictionary.Count == 0 && basisScalarDictionary is not EmptyDictionary<IIndexSet, T>)
+        if (basisScalarDictionary.Count == 0 && basisScalarDictionary is not EmptyDictionary<IndexSet, T>)
             return processor.UniformMultivectorZero;
 
-        if (basisScalarDictionary.Count == 1 && basisScalarDictionary is not SingleItemDictionary<IIndexSet, T>)
+        if (basisScalarDictionary.Count == 1 && basisScalarDictionary is not SingleItemDictionary<IndexSet, T>)
             return processor.UniformMultivector(basisScalarDictionary.First());
 
         return new XGaUniformMultivector<T>(
@@ -1469,30 +1469,30 @@ public static class XGaMultivectorComposerUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static XGaUniformMultivector<T> UniformMultivector<T>(this XGaProcessor<T> processor, IIndexSet basisBlade)
+    public static XGaUniformMultivector<T> UniformMultivector<T>(this XGaProcessor<T> processor, IndexSet basisBlade)
     {
         return new XGaUniformMultivector<T>(processor,
-            new SingleItemDictionary<IIndexSet, T>(
+            new SingleItemDictionary<IndexSet, T>(
                 basisBlade,
                 processor.ScalarProcessor.OneValue
             ));
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static XGaUniformMultivector<T> UniformMultivector<T>(this XGaProcessor<T> processor, IIndexSet basisBlade, T scalar)
+    public static XGaUniformMultivector<T> UniformMultivector<T>(this XGaProcessor<T> processor, IndexSet basisBlade, T scalar)
     {
         if (processor.ScalarProcessor.IsZero(scalar))
             return new XGaUniformMultivector<T>(processor);
 
         return new XGaUniformMultivector<T>(processor,
-            new SingleItemDictionary<IIndexSet, T>(
+            new SingleItemDictionary<IndexSet, T>(
                 basisBlade,
                 scalar
             ));
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static XGaUniformMultivector<T> UniformMultivector<T>(this XGaProcessor<T> processor, KeyValuePair<IIndexSet, T> basisScalarPair)
+    public static XGaUniformMultivector<T> UniformMultivector<T>(this XGaProcessor<T> processor, KeyValuePair<IndexSet, T> basisScalarPair)
     {
         return processor.UniformMultivector(
             basisScalarPair.Key,
@@ -1501,7 +1501,7 @@ public static class XGaMultivectorComposerUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static XGaUniformMultivector<T> UniformMultivector<T>(this XGaProcessor<T> processor, IIndexSet basisBlade, Scalar<T> scalar)
+    public static XGaUniformMultivector<T> UniformMultivector<T>(this XGaProcessor<T> processor, IndexSet basisBlade, Scalar<T> scalar)
     {
         var scalarProcessor = scalar.ScalarProcessor;
 
@@ -1510,7 +1510,7 @@ public static class XGaMultivectorComposerUtils
 
         return new XGaUniformMultivector<T>(
             processor,
-            new SingleItemDictionary<IIndexSet, T>(
+            new SingleItemDictionary<IndexSet, T>(
                 basisBlade,
                 scalar.ScalarValue
             ));

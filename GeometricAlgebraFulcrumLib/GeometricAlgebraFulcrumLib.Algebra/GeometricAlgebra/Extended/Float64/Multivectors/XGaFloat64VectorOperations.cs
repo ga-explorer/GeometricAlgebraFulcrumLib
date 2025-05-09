@@ -1,8 +1,8 @@
 ﻿using System.Runtime.CompilerServices;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Extended.Float64.Multivectors.Composers;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
-using GeometricAlgebraFulcrumLib.Utilities.Structures.Basic;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.IndexSets;
+using GeometricAlgebraFulcrumLib.Utilities.Structures.Tuples;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Extended.Float64.Multivectors;
 
@@ -222,7 +222,7 @@ public sealed partial class XGaFloat64Vector
 
         var termList =
             IdScalarPairs.Select(
-                term => new KeyValuePair<IIndexSet, double>(
+                term => new KeyValuePair<IndexSet, double>(
                     term.Key,
                     scalarMapping(term.Value)
                 )
@@ -235,13 +235,13 @@ public sealed partial class XGaFloat64Vector
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public XGaFloat64Vector MapScalars(Func<IIndexSet, double, double> scalarMapping)
+    public XGaFloat64Vector MapScalars(Func<IndexSet, double, double> scalarMapping)
     {
         if (IsZero) return this;
 
         var termList =
             IdScalarPairs.Select(
-                term => new KeyValuePair<IIndexSet, double>(
+                term => new KeyValuePair<IndexSet, double>(
                     term.Key,
                     scalarMapping(term.Key, term.Value)
                 )
@@ -262,7 +262,7 @@ public sealed partial class XGaFloat64Vector
             IdScalarPairs
                 .Where(term => term.Key.Count == 1)
                 .Select(
-                    term => new KeyValuePair<IIndexSet, double>(
+                    term => new KeyValuePair<IndexSet, double>(
                         term.Key,
                         scalarMapping(term.Key.FirstIndex, term.Value)
                     )
@@ -281,7 +281,7 @@ public sealed partial class XGaFloat64Vector
 
         var termList =
             IdScalarPairs.Select(
-                term => new KeyValuePair<IIndexSet, double>(
+                term => new KeyValuePair<IndexSet, double>(
                     basisMapping(term.Key.FirstIndex).IndexToIndexSet(),
                     term.Value
                 )
@@ -300,7 +300,7 @@ public sealed partial class XGaFloat64Vector
 
         var termList =
             IdScalarPairs.Select(
-                term => new KeyValuePair<IIndexSet, double>(
+                term => new KeyValuePair<IndexSet, double>(
                     basisMapping(term.Key.FirstIndex, term.Value).IndexToIndexSet(),
                     term.Value
                 )
@@ -323,7 +323,7 @@ public sealed partial class XGaFloat64Vector
                 {
                     var (index, scalar) = termMapping(term.Key.FirstIndex, term.Value);
 
-                    return new KeyValuePair<IIndexSet, double>(
+                    return new KeyValuePair<IndexSet, double>(
                         index.IndexToIndexSet(),
                         scalar
                     );
@@ -344,7 +344,7 @@ public sealed partial class XGaFloat64Vector
             
         var termList =
             IdScalarPairs.Select(
-                term => new KeyValuePair<IIndexSet, double>(
+                term => new KeyValuePair<IndexSet, double>(
                     term.Key,
                     -(term.Value)
                 )
@@ -366,7 +366,7 @@ public sealed partial class XGaFloat64Vector
 
         var termList =
             IdScalarPairs.Select(
-                term => new KeyValuePair<IIndexSet, double>(
+                term => new KeyValuePair<IndexSet, double>(
                     term.Key,
                     term.Value * scalarValue
                 )
@@ -388,7 +388,7 @@ public sealed partial class XGaFloat64Vector
 
         var termList =
             IdScalarPairs.Select(
-                term => new KeyValuePair<IIndexSet, double>(
+                term => new KeyValuePair<IndexSet, double>(
                     term.Key,
                     term.Value / scalarValue
                 )

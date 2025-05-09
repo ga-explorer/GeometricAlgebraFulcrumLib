@@ -74,7 +74,7 @@ public static class XGaConformalComposerUtils
         // Euclidean part
         composer.SetTerms(
             positionVector.Select(p => 
-                new KeyValuePair<IIndexSet, T>(
+                new KeyValuePair<IndexSet, T>(
                     p.Key.ShiftIndices(2), 
                     p.Value
                 )
@@ -131,7 +131,7 @@ public static class XGaConformalComposerUtils
         // Euclidean part
         composer.SetTerms(
             centerPoint.Select(p => 
-                new KeyValuePair<IIndexSet, T>(
+                new KeyValuePair<IndexSet, T>(
                     p.Key.ShiftIndices(2), 
                     p.Value
                 )
@@ -179,7 +179,7 @@ public static class XGaConformalComposerUtils
         // Euclidean part
         composer.SetTerms(
             normal.Select(p => 
-                new KeyValuePair<IIndexSet, T>(
+                new KeyValuePair<IndexSet, T>(
                     p.Key.ShiftIndices(2), 
                     p.Value
                 )

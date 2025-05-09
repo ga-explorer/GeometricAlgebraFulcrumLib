@@ -23,7 +23,7 @@ public static class GaBasisConverterUtils
     {
         return new XGaBasisBlade(
             metric,
-            basisBlade.Id.BitPatternToUInt64IndexSet()
+            basisBlade.Id.BitPatternToIndexSet()
         );
     }
 
@@ -43,7 +43,7 @@ public static class GaBasisConverterUtils
     {
         return new XGaSignedBasisBlade(
             metric,
-            basisBlade.Id.BitPatternToUInt64IndexSet(),
+            basisBlade.Id.BitPatternToIndexSet(),
             basisBlade.Sign
         );
     }
@@ -70,11 +70,11 @@ public static class GaBasisConverterUtils
         return basisBlade.IsPositive
             ? new XGaBasisBlade(
                 metric,
-                basisBlade.Id.BitPatternToUInt64IndexSet()
+                basisBlade.Id.BitPatternToIndexSet()
             )
             : new XGaSignedBasisBlade(
                 metric,
-                basisBlade.Id.BitPatternToUInt64IndexSet(),
+                basisBlade.Id.BitPatternToIndexSet(),
                 basisBlade.Sign
             );
     }

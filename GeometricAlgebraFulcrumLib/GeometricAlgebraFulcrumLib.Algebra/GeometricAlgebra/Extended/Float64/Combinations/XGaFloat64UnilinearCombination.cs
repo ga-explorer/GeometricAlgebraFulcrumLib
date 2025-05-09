@@ -7,8 +7,8 @@ using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Extended.Float64.Proce
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.LinearMaps.SpaceND;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.SpaceND;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
-using GeometricAlgebraFulcrumLib.Utilities.Structures.Basic;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.IndexSets;
+using GeometricAlgebraFulcrumLib.Utilities.Structures.Tuples;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Extended.Float64.Combinations;
 
@@ -16,7 +16,7 @@ public class XGaFloat64UnilinearCombination :
     IReadOnlyCollection<XGaFloat64UnilinearCombinationTerm>,
     IXGaLinearCombination
 {
-    private readonly Dictionary<Pair<IIndexSet>, XGaFloat64UnilinearCombinationTerm> _termList;
+    private readonly Dictionary<Pair<IndexSet>, XGaFloat64UnilinearCombinationTerm> _termList;
 
 
     public int Count
@@ -28,10 +28,10 @@ public class XGaFloat64UnilinearCombination :
 
     public XGaFloat64UnilinearCombination()
     {
-        _termList = new Dictionary<Pair<IIndexSet>, XGaFloat64UnilinearCombinationTerm>();
+        _termList = new Dictionary<Pair<IndexSet>, XGaFloat64UnilinearCombinationTerm>();
     }
 
-    public XGaFloat64UnilinearCombination(Dictionary<Pair<IIndexSet>, XGaFloat64UnilinearCombinationTerm> termList)
+    public XGaFloat64UnilinearCombination(Dictionary<Pair<IndexSet>, XGaFloat64UnilinearCombinationTerm> termList)
     {
         _termList = termList;
     }
@@ -83,7 +83,7 @@ public class XGaFloat64UnilinearCombination :
 
     public XGaFloat64UnilinearCombination Set(XGaFloat64UnilinearCombinationTerm term)
     {
-        var key = new Pair<IIndexSet>(
+        var key = new Pair<IndexSet>(
             term.InputBasisBladeId,
             term.OutputBasisBladeId
         );
@@ -105,7 +105,7 @@ public class XGaFloat64UnilinearCombination :
         if (term.IsInputScalarZero)
             return this;
 
-        var key = new Pair<IIndexSet>(
+        var key = new Pair<IndexSet>(
             term.InputBasisBladeId,
             term.OutputBasisBladeId
         );
@@ -133,7 +133,7 @@ public class XGaFloat64UnilinearCombination :
         return this;
     }
 
-    public XGaFloat64UnilinearCombination Add(Float64Scalar inputScalar, XGaMetric metric, IIndexSet inputBasisBladeId, IIndexSet outputBasisBladeId)
+    public XGaFloat64UnilinearCombination Add(Float64Scalar inputScalar, XGaMetric metric, IndexSet inputBasisBladeId, IndexSet outputBasisBladeId)
     {
         var term = XGaFloat64UnilinearCombinationTerm.Create(
             inputScalar,
@@ -166,7 +166,7 @@ public class XGaFloat64UnilinearCombination :
         return Add(term);
     }
     
-    public XGaFloat64UnilinearCombination Add(IIndexSet inputBasisBladeId, XGaFloat64Multivector outputMultivector)
+    public XGaFloat64UnilinearCombination Add(IndexSet inputBasisBladeId, XGaFloat64Multivector outputMultivector)
     {
         var metric = outputMultivector.Processor;
 
@@ -249,7 +249,7 @@ public class XGaFloat64UnilinearCombination :
     }
 
 
-    public IReadOnlyList<IIndexSet> GetInputBasisBladeIDs()
+    public IReadOnlyList<IndexSet> GetInputBasisBladeIDs()
     {
         return _termList
             .Values
@@ -257,7 +257,7 @@ public class XGaFloat64UnilinearCombination :
             .ToImmutableSortedSet();
     }
 
-    public IReadOnlyList<IIndexSet> GetOutputBasisBladeIDs()
+    public IReadOnlyList<IndexSet> GetOutputBasisBladeIDs()
     {
         return _termList
             .Values
@@ -281,7 +281,7 @@ public class XGaFloat64UnilinearCombination :
             .ToImmutableSortedSet();
     }
 
-    public XGaFloat64UnilinearCombination GetSubCombinationWithOutputId(IIndexSet outputBasisBladeId)
+    public XGaFloat64UnilinearCombination GetSubCombinationWithOutputId(IndexSet outputBasisBladeId)
     {
         var termList =
             _termList

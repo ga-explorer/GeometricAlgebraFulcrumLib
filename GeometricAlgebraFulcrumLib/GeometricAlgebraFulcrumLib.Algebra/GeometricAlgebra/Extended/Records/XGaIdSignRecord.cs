@@ -1,7 +1,7 @@
-﻿using GeometricAlgebraFulcrumLib.Utilities.Structures.Basic;
-using GeometricAlgebraFulcrumLib.Utilities.Structures.IndexSets;
+﻿using GeometricAlgebraFulcrumLib.Utilities.Structures.IndexSets;
+using GeometricAlgebraFulcrumLib.Utilities.Structures.Tuples;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Extended.Records;
 
-public sealed record XGaIdSignRecord(IIndexSet Id, IntegerSign Sign) :
+public sealed record XGaIdSignRecord(IndexSet Id, IntegerSign Sign) :
     IXGaIdSignRecord;

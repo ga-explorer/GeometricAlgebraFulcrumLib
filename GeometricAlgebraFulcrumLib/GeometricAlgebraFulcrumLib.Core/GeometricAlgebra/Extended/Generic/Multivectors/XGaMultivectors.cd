@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Extended.Generic.Multivectors.XGaMultivector&lt;T&gt;" Collapsed="true">
+    <Position X="2.5" Y="1.25" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>qgUCAIAQQgBEIRASCggQAASBoHRBAZQmBAAgABLEJCQ=</HashCode>
+      <FileName>GeometricAlgebra\Extended\Generic\Multivectors\XGaMultivector.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

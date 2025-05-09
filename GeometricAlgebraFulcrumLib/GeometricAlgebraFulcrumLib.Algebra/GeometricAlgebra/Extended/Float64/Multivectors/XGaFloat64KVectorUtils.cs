@@ -22,7 +22,7 @@ public static class XGaFloat64KVectorUtils
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static XGaFloat64KVector GetPart(this XGaFloat64KVector mv, Func<IIndexSet, bool> filterFunc)
+    public static XGaFloat64KVector GetPart(this XGaFloat64KVector mv, Func<IndexSet, bool> filterFunc)
     {
         return mv switch
         {
@@ -48,7 +48,7 @@ public static class XGaFloat64KVectorUtils
     }
         
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static XGaFloat64KVector GetPart(this XGaFloat64KVector mv, Func<IIndexSet, double, bool> filterFunc)
+    public static XGaFloat64KVector GetPart(this XGaFloat64KVector mv, Func<IndexSet, double, bool> filterFunc)
     {
         return mv switch
         {
@@ -88,7 +88,7 @@ public static class XGaFloat64KVectorUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static XGaFloat64KVector MapScalars(this XGaFloat64KVector mv, Func<IIndexSet, double, double> scalarMapping)
+    public static XGaFloat64KVector MapScalars(this XGaFloat64KVector mv, Func<IndexSet, double, double> scalarMapping)
     {
         return mv switch
         {

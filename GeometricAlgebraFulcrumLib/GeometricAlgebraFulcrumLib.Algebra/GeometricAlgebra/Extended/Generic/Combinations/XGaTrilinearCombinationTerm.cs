@@ -1,9 +1,9 @@
 ﻿using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Extended.Basis;
-using GeometricAlgebraFulcrumLib.Utilities.Structures.Basic;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.IndexSets;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Extended.Generic.Processors;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Generic;
+using GeometricAlgebraFulcrumLib.Utilities.Structures.Tuples;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Extended.Generic.Combinations;
 
@@ -42,7 +42,7 @@ public sealed class XGaTrilinearCombinationTerm<T>
         );
     }
 
-    public static XGaTrilinearCombinationTerm<T> Create(Scalar<T> inputScalar, XGaMetric metric, IIndexSet input1BasisBladeId, IIndexSet input2BasisBladeId, IIndexSet input3BasisBladeId, IIndexSet outputBasisBladeId)
+    public static XGaTrilinearCombinationTerm<T> Create(Scalar<T> inputScalar, XGaMetric metric, IndexSet input1BasisBladeId, IndexSet input2BasisBladeId, IndexSet input3BasisBladeId, IndexSet outputBasisBladeId)
     {
         return new XGaTrilinearCombinationTerm<T>(
             inputScalar,
@@ -57,13 +57,13 @@ public sealed class XGaTrilinearCombinationTerm<T>
 
     public XGaMetric Metric { get; }
 
-    public IIndexSet Input1BasisBladeId { get; }
+    public IndexSet Input1BasisBladeId { get; }
 
-    public IIndexSet Input2BasisBladeId { get; }
+    public IndexSet Input2BasisBladeId { get; }
     
-    public IIndexSet Input3BasisBladeId { get; }
+    public IndexSet Input3BasisBladeId { get; }
 
-    public IIndexSet OutputBasisBladeId { get; }
+    public IndexSet OutputBasisBladeId { get; }
 
     public Scalar<T> InputScalar { get; internal set; }
 
@@ -125,7 +125,7 @@ public sealed class XGaTrilinearCombinationTerm<T>
         => InputScalar.IsNegative();
 
 
-    private XGaTrilinearCombinationTerm(Scalar<T> inputScalar, XGaMetric metric, IIndexSet input1BasisBladeId, IIndexSet input2BasisBladeId, IIndexSet input3BasisBladeId, IIndexSet outputBasisBladeId)
+    private XGaTrilinearCombinationTerm(Scalar<T> inputScalar, XGaMetric metric, IndexSet input1BasisBladeId, IndexSet input2BasisBladeId, IndexSet input3BasisBladeId, IndexSet outputBasisBladeId)
     {
         Metric = metric;
         InputScalar = inputScalar;
@@ -136,7 +136,7 @@ public sealed class XGaTrilinearCombinationTerm<T>
     }
 
     
-    public Quad<IIndexSet> GetUniqueKey(InputsKind inputsKind)
+    public Quad<IndexSet> GetUniqueKey(InputsKind inputsKind)
     {
         if (inputsKind == InputsKind.Equal)
         {
@@ -146,7 +146,7 @@ public sealed class XGaTrilinearCombinationTerm<T>
                 Input3BasisBladeId
             );
 
-            return new Quad<IIndexSet>(
+            return new Quad<IndexSet>(
                 id1, 
                 id2, 
                 id3,
@@ -161,7 +161,7 @@ public sealed class XGaTrilinearCombinationTerm<T>
                 Input2BasisBladeId
             );
 
-            return new Quad<IIndexSet>(
+            return new Quad<IndexSet>(
                 id1,
                 id2,
                 Input3BasisBladeId, 
@@ -176,7 +176,7 @@ public sealed class XGaTrilinearCombinationTerm<T>
                 Input3BasisBladeId
             );
 
-            return new Quad<IIndexSet>(
+            return new Quad<IndexSet>(
                 id1,
                 Input2BasisBladeId, 
                 id3,
@@ -191,7 +191,7 @@ public sealed class XGaTrilinearCombinationTerm<T>
                 Input3BasisBladeId
             );
 
-            return new Quad<IIndexSet>(
+            return new Quad<IndexSet>(
                 Input1BasisBladeId, 
                 id2, 
                 id3,
@@ -199,7 +199,7 @@ public sealed class XGaTrilinearCombinationTerm<T>
             );
         }
 
-        return new Quad<IIndexSet>(
+        return new Quad<IndexSet>(
             Input1BasisBladeId, 
             Input2BasisBladeId, 
             Input3BasisBladeId,

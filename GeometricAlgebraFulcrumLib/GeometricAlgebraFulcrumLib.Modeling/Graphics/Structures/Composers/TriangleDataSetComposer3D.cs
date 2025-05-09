@@ -9,7 +9,7 @@ using GeometricAlgebraFulcrumLib.Modeling.Graphics.Primitives.Triangles;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Structures.Data;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Structures.Faces;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Structures.Vertices;
-using GeometricAlgebraFulcrumLib.Utilities.Structures.Basic;
+using GeometricAlgebraFulcrumLib.Utilities.Structures.Tuples;
 using SixLabors.ImageSharp;
 
 namespace GeometricAlgebraFulcrumLib.Modeling.Graphics.Structures.Composers;

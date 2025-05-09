@@ -22,8 +22,8 @@ using GeometricAlgebraFulcrumLib.Modeling.Signals.Composers;
 using GeometricAlgebraFulcrumLib.Modeling.Signals.Interpolators;
 using GeometricAlgebraFulcrumLib.Modeling.Signals.Processors;
 using GeometricAlgebraFulcrumLib.Modeling.Utilities;
-using GeometricAlgebraFulcrumLib.Utilities.Structures.Basic;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Extensions;
+using GeometricAlgebraFulcrumLib.Utilities.Structures.Tuples;
 using GeometricAlgebraFulcrumLib.Utilities.Text.Text;
 using OfficeOpenXml;
 

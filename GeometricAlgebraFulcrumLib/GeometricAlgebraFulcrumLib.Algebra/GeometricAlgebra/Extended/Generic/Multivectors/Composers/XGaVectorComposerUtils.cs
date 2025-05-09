@@ -20,7 +20,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Extended.Generic.M
 public static class XGaVectorComposerUtils
 {
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    internal static Dictionary<IIndexSet, T> CreateVectorDictionary<T>(this IReadOnlyDictionary<int, T> inputDictionary)
+    internal static Dictionary<IndexSet, T> CreateVectorDictionary<T>(this IReadOnlyDictionary<int, T> inputDictionary)
     {
         var basisScalarDictionary = IndexSetUtils.CreateIndexSetDictionary<T>();
 
@@ -31,7 +31,7 @@ public static class XGaVectorComposerUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    internal static Dictionary<IIndexSet, T> CreateValidVectorDictionary<T>(XGaProcessor<T> processor, IEnumerable<T> scalarList)
+    internal static Dictionary<IndexSet, T> CreateValidVectorDictionary<T>(XGaProcessor<T> processor, IEnumerable<T> scalarList)
     {
         var basisScalarDictionary = IndexSetUtils.CreateIndexSetDictionary<T>();
 
@@ -51,7 +51,7 @@ public static class XGaVectorComposerUtils
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    internal static Dictionary<IIndexSet, T> CreateValidVectorDictionary<T>(XGaProcessor<T> processor, IEnumerable<Scalar<T>> scalarList)
+    internal static Dictionary<IndexSet, T> CreateValidVectorDictionary<T>(XGaProcessor<T> processor, IEnumerable<Scalar<T>> scalarList)
     {
         var basisScalarDictionary = IndexSetUtils.CreateIndexSetDictionary<T>();
 
@@ -71,7 +71,7 @@ public static class XGaVectorComposerUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    internal static Dictionary<IIndexSet, T> CreateValidVectorDictionary<T>(XGaProcessor<T> processor, IEnumerable<IScalar<T>> scalarList)
+    internal static Dictionary<IndexSet, T> CreateValidVectorDictionary<T>(XGaProcessor<T> processor, IEnumerable<IScalar<T>> scalarList)
     {
         var basisScalarDictionary = IndexSetUtils.CreateIndexSetDictionary<T>();
 
@@ -92,12 +92,12 @@ public static class XGaVectorComposerUtils
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static XGaVector<T> Vector<T>(this XGaProcessor<T> processor, IReadOnlyDictionary<IIndexSet, T> basisScalarDictionary)
+    public static XGaVector<T> Vector<T>(this XGaProcessor<T> processor, IReadOnlyDictionary<IndexSet, T> basisScalarDictionary)
     {
-        if (basisScalarDictionary.Count == 0 && basisScalarDictionary is not EmptyDictionary<IIndexSet, T>)
+        if (basisScalarDictionary.Count == 0 && basisScalarDictionary is not EmptyDictionary<IndexSet, T>)
             return processor.VectorZero;
 
-        if (basisScalarDictionary.Count == 1 && basisScalarDictionary is not SingleItemDictionary<IIndexSet, T>)
+        if (basisScalarDictionary.Count == 1 && basisScalarDictionary is not SingleItemDictionary<IndexSet, T>)
             return processor.VectorTerm(basisScalarDictionary.First());
 
         return new XGaVector<T>(processor, basisScalarDictionary);
@@ -208,7 +208,7 @@ public static class XGaVectorComposerUtils
     public static XGaVector<T> VectorTerm<T>(this XGaProcessor<T> processor, int index)
     {
         var basisScalarDictionary =
-            new SingleItemDictionary<IIndexSet, T>(
+            new SingleItemDictionary<IndexSet, T>(
                 index.IndexToIndexSet(),
                 processor.ScalarProcessor.OneValue
             );
@@ -223,7 +223,7 @@ public static class XGaVectorComposerUtils
             return new XGaVector<T>(processor);
 
         var basisScalarDictionary =
-            new SingleItemDictionary<IIndexSet, T>(
+            new SingleItemDictionary<IndexSet, T>(
                 index.IndexToIndexSet(),
                 scalar
             );
@@ -238,7 +238,7 @@ public static class XGaVectorComposerUtils
             return new XGaVector<T>(processor);
 
         var basisScalarDictionary =
-            new SingleItemDictionary<IIndexSet, T>(
+            new SingleItemDictionary<IndexSet, T>(
                 index.IndexToIndexSet(),
                 scalar.ScalarValue
             );
@@ -256,7 +256,7 @@ public static class XGaVectorComposerUtils
     public static XGaVector<T> VectorTerm<T>(this XGaProcessor<T> processor, ulong basisVectorId)
     {
         var basisScalarDictionary =
-            new SingleItemDictionary<IIndexSet, T>(basisVectorId.BitPatternToIndexSet(), processor.ScalarProcessor.OneValue);
+            new SingleItemDictionary<IndexSet, T>(basisVectorId.BitPatternToIndexSet(), processor.ScalarProcessor.OneValue);
 
         return new XGaVector<T>(processor, basisScalarDictionary);
     }
@@ -268,7 +268,7 @@ public static class XGaVectorComposerUtils
             return new XGaVector<T>(processor);
 
         var basisScalarDictionary =
-            new SingleItemDictionary<IIndexSet, T>(basisVectorId.BitPatternToIndexSet(), scalar);
+            new SingleItemDictionary<IndexSet, T>(basisVectorId.BitPatternToIndexSet(), scalar);
 
         return new XGaVector<T>(processor, basisScalarDictionary);
     }
@@ -280,7 +280,7 @@ public static class XGaVectorComposerUtils
             return new XGaVector<T>(processor);
 
         var basisScalarDictionary =
-            new SingleItemDictionary<IIndexSet, T>(
+            new SingleItemDictionary<IndexSet, T>(
                 basisVectorId.BitPatternToIndexSet(),
                 scalar.ScalarValue
             );
@@ -295,34 +295,34 @@ public static class XGaVectorComposerUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static XGaVector<T> VectorTerm<T>(this XGaProcessor<T> processor, IIndexSet basisVectorId)
+    public static XGaVector<T> VectorTerm<T>(this XGaProcessor<T> processor, IndexSet basisVectorId)
     {
         var basisScalarDictionary =
-            new SingleItemDictionary<IIndexSet, T>(basisVectorId, processor.ScalarProcessor.OneValue);
+            new SingleItemDictionary<IndexSet, T>(basisVectorId, processor.ScalarProcessor.OneValue);
 
         return new XGaVector<T>(processor, basisScalarDictionary);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static XGaVector<T> VectorTerm<T>(this XGaProcessor<T> processor, IIndexSet basisVectorId, T scalar)
+    public static XGaVector<T> VectorTerm<T>(this XGaProcessor<T> processor, IndexSet basisVectorId, T scalar)
     {
         if (processor.ScalarProcessor.IsZero(scalar))
             return new XGaVector<T>(processor);
 
         var basisScalarDictionary =
-            new SingleItemDictionary<IIndexSet, T>(basisVectorId, scalar);
+            new SingleItemDictionary<IndexSet, T>(basisVectorId, scalar);
 
         return new XGaVector<T>(processor, basisScalarDictionary);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static XGaVector<T> VectorTerm<T>(this XGaProcessor<T> processor, IIndexSet basisVectorId, Scalar<T> scalar)
+    public static XGaVector<T> VectorTerm<T>(this XGaProcessor<T> processor, IndexSet basisVectorId, Scalar<T> scalar)
     {
         if (scalar.IsZero())
             return new XGaVector<T>(processor);
 
         var basisScalarDictionary =
-            new SingleItemDictionary<IIndexSet, T>(
+            new SingleItemDictionary<IndexSet, T>(
                 basisVectorId,
                 scalar.ScalarValue
             );
@@ -331,7 +331,7 @@ public static class XGaVectorComposerUtils
     }
         
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static XGaVector<T> VectorTerm<T>(this XGaProcessor<T> processor, KeyValuePair<IIndexSet, T> idScalarPair)
+    public static XGaVector<T> VectorTerm<T>(this XGaProcessor<T> processor, KeyValuePair<IndexSet, T> idScalarPair)
     {
         return processor.VectorTerm(idScalarPair.Key, idScalarPair.Value);
     }
@@ -356,12 +356,12 @@ public static class XGaVectorComposerUtils
 
             0 => new XGaVector<T>(
                 processor,
-                new EmptyDictionary<IIndexSet, T>()
+                new EmptyDictionary<IndexSet, T>()
             ),
 
             1 => new XGaVector<T>(
                 processor,
-                new SingleItemDictionary<IIndexSet, T>(0.IndexToUInt64IndexSet(), scalarValue)
+                new SingleItemDictionary<IndexSet, T>(0.IndexToIndexSet(), scalarValue)
             ),
 
             _ => new XGaVector<T>(
@@ -447,7 +447,7 @@ public static class XGaVectorComposerUtils
     {
         var idScalarDictionary =
             vector.GetIndexScalarDictionary().ToDictionary(
-                p => (IIndexSet) p.Key.IndexToSingleIndexSet(),
+                p => p.Key.IndexToIndexSet(),
                 p => p.Value
             );
 
@@ -493,7 +493,7 @@ public static class XGaVectorComposerUtils
     {
         var idScalarDictionary =
             vector.GetIndexScalarDictionary().ToDictionary(
-                p => (IIndexSet) p.Key.IndexToSingleIndexSet(),
+                p => p.Key.IndexToIndexSet(),
                 p => p.Value
             );
 

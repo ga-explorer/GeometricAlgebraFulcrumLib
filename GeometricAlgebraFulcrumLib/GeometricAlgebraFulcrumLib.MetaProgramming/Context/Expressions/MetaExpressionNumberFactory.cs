@@ -48,7 +48,7 @@ public sealed class MetaExpressionNumberFactory :
     public XGaKVector<IMetaExpressionAtomic> CreateBasisBlade(ulong id)
     {
         return Context.XGaProcessor.KVectorTerm(
-            id.BitPatternToUInt64IndexSet(),
+            id.BitPatternToIndexSet(),
             Context.GetOrDefineLiteralNumber(1)
         );
     }

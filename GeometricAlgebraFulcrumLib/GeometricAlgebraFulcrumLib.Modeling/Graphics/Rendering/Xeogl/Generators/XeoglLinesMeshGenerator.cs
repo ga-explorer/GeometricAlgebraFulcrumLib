@@ -1,5 +1,5 @@
 ﻿using GeometricAlgebraFulcrumLib.Modeling.Graphics.Primitives.Lines;
-using GeometricAlgebraFulcrumLib.Utilities.Structures.Basic;
+using GeometricAlgebraFulcrumLib.Utilities.Structures.Tuples;
 using GeometricAlgebraFulcrumLib.Utilities.Text.Text;
 
 namespace GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.Xeogl.Generators;

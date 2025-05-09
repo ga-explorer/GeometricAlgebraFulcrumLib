@@ -1,9 +1,9 @@
 ﻿using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Extended.Basis;
-using GeometricAlgebraFulcrumLib.Utilities.Structures.Basic;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.IndexSets;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Extended.Generic.Processors;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Generic;
+using GeometricAlgebraFulcrumLib.Utilities.Structures.Tuples;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Extended.Generic.Combinations;
 
@@ -31,7 +31,7 @@ public sealed class XGaBilinearCombinationTerm<T>
         );
     }
 
-    public static XGaBilinearCombinationTerm<T> Create(Scalar<T> inputScalar, XGaProcessor<T> metric, IIndexSet input1BasisBladeId, IIndexSet input2BasisBladeId, IIndexSet outputBasisBladeId)
+    public static XGaBilinearCombinationTerm<T> Create(Scalar<T> inputScalar, XGaProcessor<T> metric, IndexSet input1BasisBladeId, IndexSet input2BasisBladeId, IndexSet outputBasisBladeId)
     {
         return new XGaBilinearCombinationTerm<T>(
             inputScalar,
@@ -45,11 +45,11 @@ public sealed class XGaBilinearCombinationTerm<T>
 
     public XGaProcessor<T> Metric { get; }
 
-    public IIndexSet Input1BasisBladeId { get; }
+    public IndexSet Input1BasisBladeId { get; }
 
-    public IIndexSet Input2BasisBladeId { get; }
+    public IndexSet Input2BasisBladeId { get; }
 
-    public IIndexSet OutputBasisBladeId { get; }
+    public IndexSet OutputBasisBladeId { get; }
 
     public Scalar<T> InputScalar { get; internal set; }
     
@@ -96,7 +96,7 @@ public sealed class XGaBilinearCombinationTerm<T>
         => InputScalar.IsNegative();
 
 
-    private XGaBilinearCombinationTerm(Scalar<T> inputScalar, XGaProcessor<T> metric, IIndexSet input1BasisBladeId, IIndexSet input2BasisBladeId, IIndexSet outputBasisBladeId)
+    private XGaBilinearCombinationTerm(Scalar<T> inputScalar, XGaProcessor<T> metric, IndexSet input1BasisBladeId, IndexSet input2BasisBladeId, IndexSet outputBasisBladeId)
     {
         Metric = metric;
         InputScalar = inputScalar;
@@ -106,7 +106,7 @@ public sealed class XGaBilinearCombinationTerm<T>
     }
 
     
-    public Triplet<IIndexSet> GetUniqueKey(bool assumeEqualInputs)
+    public Triplet<IndexSet> GetUniqueKey(bool assumeEqualInputs)
     {
         if (assumeEqualInputs)
         {
@@ -115,14 +115,14 @@ public sealed class XGaBilinearCombinationTerm<T>
                 Input2BasisBladeId
             );
 
-            return new Triplet<IIndexSet>(
+            return new Triplet<IndexSet>(
                 id1, 
                 id2, 
                 OutputBasisBladeId
             );
         }
 
-        return new Triplet<IIndexSet>(
+        return new Triplet<IndexSet>(
             Input1BasisBladeId, 
             Input2BasisBladeId, 
             OutputBasisBladeId

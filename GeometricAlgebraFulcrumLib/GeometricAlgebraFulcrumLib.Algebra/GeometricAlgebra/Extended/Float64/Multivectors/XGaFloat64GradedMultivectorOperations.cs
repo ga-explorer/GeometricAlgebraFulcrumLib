@@ -147,7 +147,7 @@ public sealed partial class XGaFloat64GradedMultivector
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public XGaFloat64Multivector MapScalars(Func<IIndexSet, double, double> scalarMapping)
+    public XGaFloat64Multivector MapScalars(Func<IndexSet, double, double> scalarMapping)
     {
         if (_gradeKVectorDictionary.Count == 1)
             return _gradeKVectorDictionary

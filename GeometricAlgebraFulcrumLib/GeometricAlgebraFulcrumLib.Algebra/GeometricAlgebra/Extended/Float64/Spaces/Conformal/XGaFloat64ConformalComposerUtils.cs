@@ -56,7 +56,7 @@ public static class XGaFloat64ConformalComposerUtils
         // Euclidean part
         composer.SetTerms(
             positionVector.Select(p => 
-                new KeyValuePair<IIndexSet, double>(
+                new KeyValuePair<IndexSet, double>(
                     p.Key.ShiftIndices(2), 
                     p.Value
                 )
@@ -88,7 +88,7 @@ public static class XGaFloat64ConformalComposerUtils
         // Euclidean part
         composer.SetTerms(
             centerPoint.Select(p => 
-                new KeyValuePair<IIndexSet, double>(
+                new KeyValuePair<IndexSet, double>(
                     p.Key.ShiftIndices(2), 
                     p.Value
                 )
@@ -118,7 +118,7 @@ public static class XGaFloat64ConformalComposerUtils
         // Euclidean part
         composer.SetTerms(
             normal.Select(p => 
-                new KeyValuePair<IIndexSet, double>(
+                new KeyValuePair<IndexSet, double>(
                     p.Key.ShiftIndices(2), 
                     p.Value
                 )

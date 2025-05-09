@@ -62,7 +62,7 @@ public sealed class RGaLinearMapOutermorphism<T>
 
         return id.IsBasisVector() 
             ? OmMapBasisVector(id.FirstOneBitPosition())
-            : id.PatternToPositions().Select(OmMapBasisVector).Op(Processor);
+            : id.GetSetBitPositions().Select(OmMapBasisVector).Op(Processor);
     }
         
 

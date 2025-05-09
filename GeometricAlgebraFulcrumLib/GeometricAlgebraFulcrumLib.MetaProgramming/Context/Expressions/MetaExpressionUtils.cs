@@ -1,7 +1,6 @@
 ﻿using System.Collections.Immutable;
 using System.Runtime.CompilerServices;
 using GeometricAlgebraFulcrumLib.Utilities.Structures;
-using GeometricAlgebraFulcrumLib.Utilities.Structures.Basic;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.IndexSets;
 using GeometricAlgebraFulcrumLib.Algebra.ComplexAlgebra;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
@@ -14,6 +13,7 @@ using GeometricAlgebraFulcrumLib.MetaProgramming.Context.Expressions.Numbers;
 using GeometricAlgebraFulcrumLib.MetaProgramming.Context.Expressions.Variables;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Generic.Blades;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.Euclidean.Space3D.Objects;
+using GeometricAlgebraFulcrumLib.Utilities.Structures.Tuples;
 
 namespace GeometricAlgebraFulcrumLib.MetaProgramming.Context.Expressions;
 

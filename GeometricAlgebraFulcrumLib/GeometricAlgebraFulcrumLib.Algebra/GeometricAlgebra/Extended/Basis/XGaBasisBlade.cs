@@ -1,8 +1,8 @@
 ﻿using System.Runtime.CompilerServices;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
 using GeometricAlgebraFulcrumLib.Utilities.Structures;
-using GeometricAlgebraFulcrumLib.Utilities.Structures.Basic;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.IndexSets;
+using GeometricAlgebraFulcrumLib.Utilities.Structures.Tuples;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Extended.Basis;
 
@@ -14,7 +14,7 @@ public sealed record XGaBasisBlade :
 {
     public XGaMetric Metric { get; }
 
-    public IIndexSet Id { get; }
+    public IndexSet Id { get; }
 
     public IntegerSign Sign 
         => IntegerSign.Positive;
@@ -43,10 +43,10 @@ public sealed record XGaBasisBlade :
         => Id.IsEmptySet;
 
     public bool IsVector 
-        => Id.IsSingleIndexSet;
+        => Id.IsUnitSet;
 
     public bool IsBivector 
-        => Id.IsIndexPairSet;
+        => Id.IsPairSet;
 
     public int VSpaceDimensions 
         => Id.IsEmptySet 
@@ -61,7 +61,7 @@ public sealed record XGaBasisBlade :
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public XGaBasisBlade(XGaMetric metric, IIndexSet basisBladeId)
+    public XGaBasisBlade(XGaMetric metric, IndexSet basisBladeId)
     {
         Metric = metric;
         Id = basisBladeId;
@@ -204,7 +204,7 @@ public sealed record XGaBasisBlade :
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public IXGaSignedBasisBlade EGp(IIndexSet id2)
+    public IXGaSignedBasisBlade EGp(IndexSet id2)
     {
         var (isNegative, id) = 
             Id.EGpIsNegativeId(id2);
@@ -217,13 +217,13 @@ public sealed record XGaBasisBlade :
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool EGpIsNegative(IIndexSet id2)
+    public bool EGpIsNegative(IndexSet id2)
     {
         return Id.EGpIsNegative(id2);
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public IntegerSign EGpSign(IIndexSet id2)
+    public IntegerSign EGpSign(IndexSet id2)
     {
         return Id.EGpSign(id2);
     }
@@ -238,7 +238,7 @@ public sealed record XGaBasisBlade :
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public IXGaSignedBasisBlade Op(IIndexSet id2)
+    public IXGaSignedBasisBlade Op(IndexSet id2)
     {
         return Id.OpIsNonZero(id2)
             ? EGp(id2)
@@ -246,7 +246,7 @@ public sealed record XGaBasisBlade :
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public IXGaSignedBasisBlade ESp(IIndexSet id2)
+    public IXGaSignedBasisBlade ESp(IndexSet id2)
     {
         return Id.ESpIsNonZero(id2)
             ? EGp(id2)
@@ -254,7 +254,7 @@ public sealed record XGaBasisBlade :
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public IXGaSignedBasisBlade ELcp(IIndexSet id2)
+    public IXGaSignedBasisBlade ELcp(IndexSet id2)
     {
         return Id.ELcpIsNonZero(id2)
             ? EGp(id2)
@@ -262,7 +262,7 @@ public sealed record XGaBasisBlade :
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public IXGaSignedBasisBlade ERcp(IIndexSet id2)
+    public IXGaSignedBasisBlade ERcp(IndexSet id2)
     {
         return Id.ERcpIsNonZero(id2)
             ? EGp(id2)
@@ -270,7 +270,7 @@ public sealed record XGaBasisBlade :
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public IXGaSignedBasisBlade EFdp(IIndexSet id2)
+    public IXGaSignedBasisBlade EFdp(IndexSet id2)
     {
         return Id.EFdpIsNonZero(id2)
             ? EGp(id2)
@@ -278,7 +278,7 @@ public sealed record XGaBasisBlade :
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public IXGaSignedBasisBlade EHip(IIndexSet id2)
+    public IXGaSignedBasisBlade EHip(IndexSet id2)
     {
         return Id.EHipIsNonZero(id2)
             ? EGp(id2)
@@ -286,7 +286,7 @@ public sealed record XGaBasisBlade :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public IXGaSignedBasisBlade EAcp(IIndexSet id2)
+    public IXGaSignedBasisBlade EAcp(IndexSet id2)
     {
         return Id.EAcpIsNonZero(id2)
             ? EGp(id2)
@@ -294,7 +294,7 @@ public sealed record XGaBasisBlade :
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public IXGaSignedBasisBlade ECp(IIndexSet id2)
+    public IXGaSignedBasisBlade ECp(IndexSet id2)
     {
         return Id.ECpIsNonZero(id2)
             ? EGp(id2)
@@ -302,14 +302,14 @@ public sealed record XGaBasisBlade :
     }
 
 
-    public IXGaSignedBasisBlade Gp(IIndexSet id2)
+    public IXGaSignedBasisBlade Gp(IndexSet id2)
     {
         if (Metric.IsEuclidean) 
             return EGp(id2);
         
         var meetBasisBladeSignature = 
             Metric.Signature(
-                Id.Intersect(id2)
+                Id.SetIntersect(id2)
             );
 
         if (meetBasisBladeSignature.IsZero)
@@ -323,7 +323,7 @@ public sealed record XGaBasisBlade :
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public IXGaSignedBasisBlade Sp(IIndexSet id2)
+    public IXGaSignedBasisBlade Sp(IndexSet id2)
     {
         return Id.ESpIsNonZero(id2)
             ? Gp(id2)
@@ -331,7 +331,7 @@ public sealed record XGaBasisBlade :
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public IXGaSignedBasisBlade Lcp(IIndexSet id2)
+    public IXGaSignedBasisBlade Lcp(IndexSet id2)
     {
         return Id.ELcpIsNonZero(id2)
             ? Gp(id2)
@@ -339,7 +339,7 @@ public sealed record XGaBasisBlade :
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public IXGaSignedBasisBlade Rcp(IIndexSet id2)
+    public IXGaSignedBasisBlade Rcp(IndexSet id2)
     {
         return Id.ERcpIsNonZero(id2)
             ? Gp(id2)
@@ -347,7 +347,7 @@ public sealed record XGaBasisBlade :
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public IXGaSignedBasisBlade Fdp(IIndexSet id2)
+    public IXGaSignedBasisBlade Fdp(IndexSet id2)
     {
         return Id.EFdpIsNonZero(id2)
             ? Gp(id2)
@@ -355,7 +355,7 @@ public sealed record XGaBasisBlade :
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public IXGaSignedBasisBlade Hip(IIndexSet id2)
+    public IXGaSignedBasisBlade Hip(IndexSet id2)
     {
         return Id.EHipIsNonZero(id2)
             ? Gp(id2)
@@ -363,7 +363,7 @@ public sealed record XGaBasisBlade :
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public IXGaSignedBasisBlade Acp(IIndexSet id2)
+    public IXGaSignedBasisBlade Acp(IndexSet id2)
     {
         return Id.EAcpIsNonZero(id2)
             ? Gp(id2)
@@ -371,7 +371,7 @@ public sealed record XGaBasisBlade :
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public IXGaSignedBasisBlade Cp(IIndexSet id2)
+    public IXGaSignedBasisBlade Cp(IndexSet id2)
     {
         return Id.ECpIsNonZero(id2)
             ? Gp(id2)
@@ -484,7 +484,7 @@ public sealed record XGaBasisBlade :
 
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public IntegerSign EGpReverseSign(IIndexSet id2)
+    public IntegerSign EGpReverseSign(IndexSet id2)
     {
         var reverseSign = id2.ReverseSignOfBasisBladeId();
 
@@ -505,7 +505,7 @@ public sealed record XGaBasisBlade :
 
         var meetSignature = 
             Metric.Signature(
-                Id.Intersect(id2)
+                Id.SetIntersect(id2)
             );
 
         return meetSignature.IsZero
@@ -517,7 +517,7 @@ public sealed record XGaBasisBlade :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public IntegerSign OpSign(IIndexSet id2)
+    public IntegerSign OpSign(IndexSet id2)
     {
         return Id.OpIsNonZero(id2) 
             ? EGpSign(id2) 
@@ -536,7 +536,7 @@ public sealed record XGaBasisBlade :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public IntegerSign ESpSign(IIndexSet id2)
+    public IntegerSign ESpSign(IndexSet id2)
     {
         return Id.ESpIsNonZero(id2) 
             ? EGpSign(id2) 
@@ -566,7 +566,7 @@ public sealed record XGaBasisBlade :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public IntegerSign ELcpSign(IIndexSet id2)
+    public IntegerSign ELcpSign(IndexSet id2)
     {
         return Id.ELcpIsNonZero(id2) 
             ? EGpSign(id2) 
@@ -596,7 +596,7 @@ public sealed record XGaBasisBlade :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public IntegerSign ERcpSign(IIndexSet id2)
+    public IntegerSign ERcpSign(IndexSet id2)
     {
         return Id.ERcpIsNonZero(id2) 
             ? EGpSign(id2) 
@@ -626,7 +626,7 @@ public sealed record XGaBasisBlade :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public IntegerSign EFdpSign(IIndexSet id2)
+    public IntegerSign EFdpSign(IndexSet id2)
     {
         return Id.EFdpIsNonZero(id2) 
             ? EGpSign(id2) 
@@ -656,7 +656,7 @@ public sealed record XGaBasisBlade :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public IntegerSign EHipSign(IIndexSet id2)
+    public IntegerSign EHipSign(IndexSet id2)
     {
         return Id.EHipIsNonZero(id2) 
             ? EGpSign(id2) 
@@ -686,7 +686,7 @@ public sealed record XGaBasisBlade :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public IntegerSign EAcpSign(IIndexSet id2)
+    public IntegerSign EAcpSign(IndexSet id2)
     {
         return Id.EAcpIsNonZero(id2) 
             ? EGpSign(id2) 
@@ -716,7 +716,7 @@ public sealed record XGaBasisBlade :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public IntegerSign ECpSign(IIndexSet id2)
+    public IntegerSign ECpSign(IndexSet id2)
     {
         return Id.ECpIsNonZero(id2) 
             ? EGpSign(id2) 
@@ -747,7 +747,7 @@ public sealed record XGaBasisBlade :
     
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public IntegerSign GpSign(IIndexSet id2)
+    public IntegerSign GpSign(IndexSet id2)
     {
         if (Metric.IsEuclidean) return EGpSign(id2);
         
@@ -760,7 +760,7 @@ public sealed record XGaBasisBlade :
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public IntegerSign SpSign(IIndexSet id2)
+    public IntegerSign SpSign(IndexSet id2)
     {
         return Id.ESpIsNonZero(id2) 
             ? GpSign(id2) 
@@ -768,7 +768,7 @@ public sealed record XGaBasisBlade :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public IntegerSign LcpSign(IIndexSet id2)
+    public IntegerSign LcpSign(IndexSet id2)
     {
         return Id.ELcpIsNonZero(id2) 
             ? GpSign(id2) 
@@ -776,7 +776,7 @@ public sealed record XGaBasisBlade :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public IntegerSign RcpSign(IIndexSet id2)
+    public IntegerSign RcpSign(IndexSet id2)
     {
         return Id.ERcpIsNonZero(id2) 
             ? GpSign(id2) 
@@ -784,7 +784,7 @@ public sealed record XGaBasisBlade :
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public IntegerSign FdpSign(IIndexSet id2)
+    public IntegerSign FdpSign(IndexSet id2)
     {
         return Id.EFdpIsNonZero(id2) 
             ? GpSign(id2) 
@@ -792,7 +792,7 @@ public sealed record XGaBasisBlade :
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public IntegerSign HipSign(IIndexSet id2)
+    public IntegerSign HipSign(IndexSet id2)
     {
         return Id.EHipIsNonZero(id2) 
             ? GpSign(id2) 
@@ -800,7 +800,7 @@ public sealed record XGaBasisBlade :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public IntegerSign AcpSign(IIndexSet id2)
+    public IntegerSign AcpSign(IndexSet id2)
     {
         return Id.EAcpIsNonZero(id2) 
             ? GpSign(id2) 
@@ -808,7 +808,7 @@ public sealed record XGaBasisBlade :
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public IntegerSign CpSign(IIndexSet id2)
+    public IntegerSign CpSign(IndexSet id2)
     {
         return Id.ECpIsNonZero(id2) 
             ? GpSign(id2) 
@@ -817,37 +817,37 @@ public sealed record XGaBasisBlade :
 
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public IntegerSign GetMeetBladeSignature(IIndexSet id2)
+    public IntegerSign GetMeetBladeSignature(IndexSet id2)
     {
         return Metric.Signature(
-            Id.Intersect(id2)
+            Id.SetIntersect(id2)
         );
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public XGaBasisBlade GetMeetBlade(IIndexSet id2)
+    public XGaBasisBlade GetMeetBlade(IndexSet id2)
     {
         return new XGaBasisBlade(
             Metric,
-            Id.Intersect(id2)
+            Id.SetIntersect(id2)
         );
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public XGaBasisBlade GetJoinBlade(IIndexSet id2)
+    public XGaBasisBlade GetJoinBlade(IndexSet id2)
     {
         return new XGaBasisBlade(
             Metric,
-            Id.Join(id2)
+            Id.SetUnion(id2)
         );
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public XGaBasisBlade GetEGpBlade(IIndexSet id2)
+    public XGaBasisBlade GetEGpBlade(IndexSet id2)
     {
         return new XGaBasisBlade(
             Metric,
-            Id.SymmetricDifference(id2)
+            Id.SetMerge(id2)
         );
     }
 

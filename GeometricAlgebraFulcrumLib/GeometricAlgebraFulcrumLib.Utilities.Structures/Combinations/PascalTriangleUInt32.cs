@@ -41,10 +41,10 @@ public sealed class PascalTriangleUInt32
     private void ComputePascalTriangleRows(int maxRowIndex)
     {
         //First row of Pascal triangle
-        _rows[0] = new[] {1U};
+        _rows[0] = [1U];
             
         //Second row of Pascal triangle
-        _rows[1] = new[] {1U};
+        _rows[1] = [1U];
 
         //Remaining rows of Pascal triangle
         var prevRow = _rows[1];

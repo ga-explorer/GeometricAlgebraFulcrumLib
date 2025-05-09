@@ -11,7 +11,7 @@ public static class XGaFloat64LinearMapUtils
             
         for (var colIndex = 0; colIndex < colCount; colIndex++)
         {
-            var colId = ((ulong)colIndex).BitPatternToUInt64IndexSet();
+            var colId = ((ulong)colIndex).BitPatternToIndexSet();
             var mv = map.MapBasisBlade(colId);
 
             if (mv.IsZero)

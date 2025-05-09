@@ -238,7 +238,7 @@ public abstract partial class RGaFloat64KVector :
 
         var probeVectors = 
             maxId
-                .PatternToMappedPositions(Processor.VectorTerm)
+                .GetSetBitMappedPositions(Processor.VectorTerm)
                 .ToImmutableArray();
 
         return BladeToVectors(probeVectors);

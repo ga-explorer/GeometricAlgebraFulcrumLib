@@ -16,9 +16,9 @@ public interface IXGaLinearCombination
 
     bool IsOutputKVector(int grade);
 
-    IReadOnlyList<IIndexSet> GetInputBasisBladeIDs();
+    IReadOnlyList<IndexSet> GetInputBasisBladeIDs();
 
-    IReadOnlyList<IIndexSet> GetOutputBasisBladeIDs();
+    IReadOnlyList<IndexSet> GetOutputBasisBladeIDs();
 
     IReadOnlyList<int> GetInputBasisBladeGrades();
 

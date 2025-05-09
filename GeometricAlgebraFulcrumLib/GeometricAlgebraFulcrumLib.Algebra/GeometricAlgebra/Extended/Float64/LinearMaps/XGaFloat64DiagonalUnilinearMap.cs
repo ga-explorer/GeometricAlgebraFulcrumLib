@@ -10,7 +10,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Extended.Float64.L
 
 public sealed class XGaFloat64DiagonalUnilinearMap :
     IXGaFloat64UnilinearMap,
-    IReadOnlyDictionary<IIndexSet, double>
+    IReadOnlyDictionary<IndexSet, double>
 {
     public XGaFloat64Multivector DiagonalMultivector { get; }
         
@@ -23,13 +23,13 @@ public sealed class XGaFloat64DiagonalUnilinearMap :
     public int Count 
         => DiagonalMultivector.Count;
 
-    public IEnumerable<IIndexSet> Keys 
+    public IEnumerable<IndexSet> Keys 
         => DiagonalMultivector.Ids;
 
     public IEnumerable<double> Values 
         => DiagonalMultivector.Scalars;
 
-    public double this[IIndexSet key] 
+    public double this[IndexSet key] 
         => DiagonalMultivector[key];
 
 
@@ -47,13 +47,13 @@ public sealed class XGaFloat64DiagonalUnilinearMap :
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool ContainsKey(IIndexSet key)
+    public bool ContainsKey(IndexSet key)
     {
         return DiagonalMultivector.ContainsKey(key);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool TryGetValue(IIndexSet key, out double value)
+    public bool TryGetValue(IndexSet key, out double value)
     {
         return DiagonalMultivector.TryGetValue(key, out value);
     }
@@ -65,7 +65,7 @@ public sealed class XGaFloat64DiagonalUnilinearMap :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public XGaFloat64Multivector MapBasisBlade(IIndexSet id)
+    public XGaFloat64Multivector MapBasisBlade(IndexSet id)
     {
         return DiagonalMultivector.TryGetValue(id, out var scalar)
             ? Processor.KVectorTerm(id, scalar)
@@ -101,12 +101,12 @@ public sealed class XGaFloat64DiagonalUnilinearMap :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public IEnumerable<KeyValuePair<IIndexSet, XGaFloat64Multivector>> GetMappedBasisBlades(int vSpaceDimensions)
+    public IEnumerable<KeyValuePair<IndexSet, XGaFloat64Multivector>> GetMappedBasisBlades(int vSpaceDimensions)
     {
         return DiagonalMultivector
             .Where(p => p.Key.VSpaceDimensions() <= vSpaceDimensions)
             .Select(p => 
-                new KeyValuePair<IIndexSet, XGaFloat64Multivector>(
+                new KeyValuePair<IndexSet, XGaFloat64Multivector>(
                     p.Key, 
                     Processor.KVectorTerm(p.Key, p.Value)
                 )
@@ -133,7 +133,7 @@ public sealed class XGaFloat64DiagonalUnilinearMap :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public IEnumerator<KeyValuePair<IIndexSet, double>> GetEnumerator()
+    public IEnumerator<KeyValuePair<IndexSet, double>> GetEnumerator()
     {
         return DiagonalMultivector.GetEnumerator();
     }

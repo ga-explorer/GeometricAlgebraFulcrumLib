@@ -1,4 +1,4 @@
-﻿using GeometricAlgebraFulcrumLib.Utilities.Structures.Basic;
+﻿using GeometricAlgebraFulcrumLib.Utilities.Structures.Tuples;
 using GeometricAlgebraFulcrumLib.Utilities.Web.Svg.Attributes;
 using GeometricAlgebraFulcrumLib.Utilities.Web.Svg.Elements.Categories;
 using GeometricAlgebraFulcrumLib.Utilities.Web.Svg.Transforms;

@@ -170,7 +170,7 @@ public sealed class BitVector :
 
             var positionList =
                 _wordArray[i]
-                    .PatternToPositions()
+                    .GetSetBitPositions()
                     .Select(p => p + firstPosition);
 
             foreach (var position in positionList)
@@ -186,7 +186,7 @@ public sealed class BitVector :
 
             var positionList =
                 (~_wordArray[i])
-                    .PatternToPositions()
+                    .GetSetBitPositions()
                     .Select(p => p + firstPosition);
 
             foreach (var position in positionList)

@@ -21,7 +21,7 @@ public static class CombinatorialUtils
             length - 1
         ).SelectMany(
             _ => list, 
-            (t1, t2) => t1.Concat(new[] { t2 })
+            (t1, t2) => t1.Concat([t2])
         );
     }
 
@@ -44,7 +44,7 @@ public static class CombinatorialUtils
             length - 1
         ).SelectMany(
             t => list.Where(o => !t.Contains(o)),
-            (t1, t2) => t1.Concat(new[] { t2 })
+            (t1, t2) => t1.Concat([t2])
         );
     }
 
@@ -67,7 +67,7 @@ public static class CombinatorialUtils
             length - 1
         ).SelectMany(
             t => list.Where(o => o.CompareTo(t.Last()) >= 0), 
-            (t1, t2) => t1.Concat(new[] { t2 })
+            (t1, t2) => t1.Concat([t2])
         );
     }
 
@@ -90,7 +90,7 @@ public static class CombinatorialUtils
             length - 1
         ).SelectMany(
             t => list.Where(o => o.CompareTo(t.Last()) > 0), 
-            (t1, t2) => t1.Concat(new[] { t2 })
+            (t1, t2) => t1.Concat([t2])
         );
     }
 }

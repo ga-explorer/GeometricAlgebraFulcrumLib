@@ -532,7 +532,7 @@ public class XGaConformalProcessor<T> :
             if (index is 0 or 1) continue;
 
             composer.SetTerm(
-                (index - 2).IndexToSingleIndexSet(), 
+                (index - 2).IndexToIndexSet(), 
                 scalar
             );
         }
@@ -551,7 +551,7 @@ public class XGaConformalProcessor<T> :
             if (index is 0 or 1) continue;
 
             composer.SetTerm(
-            (index - 2).IndexToSingleIndexSet(), 
+            (index - 2).IndexToIndexSet(), 
                 ScalarProcessor.Times(scalar, scalingFactor)
             );
         }

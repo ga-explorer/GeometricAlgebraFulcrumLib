@@ -702,7 +702,7 @@ public sealed partial class XGaFloat64Scalar
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public XGaFloat64Scalar MapScalar(Func<IIndexSet, double, double> scalarMapping)
+    public XGaFloat64Scalar MapScalar(Func<IndexSet, double, double> scalarMapping)
     {
         return IsZero
             ? this

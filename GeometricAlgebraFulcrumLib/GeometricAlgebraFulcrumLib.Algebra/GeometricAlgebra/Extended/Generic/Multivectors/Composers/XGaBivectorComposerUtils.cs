@@ -1,5 +1,4 @@
 ﻿using System.Runtime.CompilerServices;
-using GeometricAlgebraFulcrumLib.Utilities.Structures.Basic;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Dictionary;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.IndexSets;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Extended.Generic.Processors;
@@ -8,13 +7,14 @@ using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space3D;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Generic.Vectors.Space2D;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Generic.Vectors.Space3D;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Generic;
+using GeometricAlgebraFulcrumLib.Utilities.Structures.Tuples;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Extended.Generic.Multivectors.Composers;
 
 public static class XGaBivectorComposerUtils
 {
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    internal static Dictionary<IIndexSet, T> CreateBivectorDictionary<T>(this IReadOnlyDictionary<IndexPair, T> inputDictionary)
+    internal static Dictionary<IndexSet, T> CreateBivectorDictionary<T>(this IReadOnlyDictionary<IndexPair, T> inputDictionary)
     {
         var basisScalarDictionary = IndexSetUtils.CreateIndexSetDictionary<T>();
 
@@ -25,7 +25,7 @@ public static class XGaBivectorComposerUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    internal static Dictionary<IIndexSet, T> CreateBivectorDictionary<T>(this IReadOnlyDictionary<Int32Pair, T> inputDictionary)
+    internal static Dictionary<IndexSet, T> CreateBivectorDictionary<T>(this IReadOnlyDictionary<Int32Pair, T> inputDictionary)
     {
         var basisScalarDictionary = IndexSetUtils.CreateIndexSetDictionary<T>();
 
@@ -55,12 +55,12 @@ public static class XGaBivectorComposerUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static XGaBivector<T> Bivector<T>(this XGaProcessor<T> processor, IReadOnlyDictionary<IIndexSet, T> basisScalarDictionary)
+    public static XGaBivector<T> Bivector<T>(this XGaProcessor<T> processor, IReadOnlyDictionary<IndexSet, T> basisScalarDictionary)
     {
-        if (basisScalarDictionary.Count == 0 && basisScalarDictionary is not EmptyDictionary<IIndexSet, T>)
+        if (basisScalarDictionary.Count == 0 && basisScalarDictionary is not EmptyDictionary<IndexSet, T>)
             return processor.BivectorZero;
 
-        if (basisScalarDictionary.Count == 1 && basisScalarDictionary is not SingleItemDictionary<IIndexSet, T>)
+        if (basisScalarDictionary.Count == 1 && basisScalarDictionary is not SingleItemDictionary<IndexSet, T>)
             return processor.BivectorTerm(basisScalarDictionary.First());
 
         return new XGaBivector<T>(
@@ -82,7 +82,7 @@ public static class XGaBivectorComposerUtils
         return new XGaBivector<T>(
             processor,
 
-            new SingleItemDictionary<IIndexSet, T>(
+            new SingleItemDictionary<IndexSet, T>(
                 indexPair.IndexPairToIndexSet(),
                 processor.ScalarProcessor.OneValue
             )
@@ -104,7 +104,7 @@ public static class XGaBivectorComposerUtils
         return new XGaBivector<T>(
             processor,
 
-            new SingleItemDictionary<IIndexSet, T>(
+            new SingleItemDictionary<IndexSet, T>(
                 indexPair.IndexPairToIndexSet(),
                 scalar
             )
@@ -120,7 +120,7 @@ public static class XGaBivectorComposerUtils
         return new XGaBivector<T>(
             processor,
 
-            new SingleItemDictionary<IIndexSet, T>(
+            new SingleItemDictionary<IndexSet, T>(
                 IndexSetUtils.IndexPairToIndexSet(index1, index2),
                 processor.ScalarProcessor.OneValue
             )
@@ -139,7 +139,7 @@ public static class XGaBivectorComposerUtils
         return new XGaBivector<T>(
             processor,
 
-            new SingleItemDictionary<IIndexSet, T>(
+            new SingleItemDictionary<IndexSet, T>(
                 IndexSetUtils.IndexPairToIndexSet(index1, index2),
                 scalar
             )
@@ -163,23 +163,23 @@ public static class XGaBivectorComposerUtils
     }
         
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static XGaBivector<T> BivectorTerm<T>(this XGaProcessor<T> processor, KeyValuePair<IIndexSet, T> indexScalarPair)
+    public static XGaBivector<T> BivectorTerm<T>(this XGaProcessor<T> processor, KeyValuePair<IndexSet, T> indexScalarPair)
     {
         return processor.BivectorTerm(indexScalarPair.Key, indexScalarPair.Value);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static XGaBivector<T> BivectorTerm<T>(this XGaProcessor<T> processor, IIndexSet basisBlade)
+    public static XGaBivector<T> BivectorTerm<T>(this XGaProcessor<T> processor, IndexSet basisBlade)
     {
         return new XGaBivector<T>(
             processor,
 
-            new SingleItemDictionary<IIndexSet, T>(basisBlade, processor.ScalarProcessor.OneValue)
+            new SingleItemDictionary<IndexSet, T>(basisBlade, processor.ScalarProcessor.OneValue)
         );
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static XGaBivector<T> BivectorTerm<T>(this XGaProcessor<T> processor, IIndexSet basisBlade, T scalar)
+    public static XGaBivector<T> BivectorTerm<T>(this XGaProcessor<T> processor, IndexSet basisBlade, T scalar)
     {
         if (processor.ScalarProcessor.IsZero(scalar))
             return new XGaBivector<T>(processor);
@@ -187,19 +187,19 @@ public static class XGaBivectorComposerUtils
         return new XGaBivector<T>(
             processor,
 
-            new SingleItemDictionary<IIndexSet, T>(basisBlade, scalar)
+            new SingleItemDictionary<IndexSet, T>(basisBlade, scalar)
         );
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static XGaBivector<T> BivectorTerm<T>(this XGaProcessor<T> processor, IIndexSet basisBlade, Scalar<T> scalar)
+    public static XGaBivector<T> BivectorTerm<T>(this XGaProcessor<T> processor, IndexSet basisBlade, Scalar<T> scalar)
     {
         if (scalar.IsZero())
             return new XGaBivector<T>(processor);
 
         return new XGaBivector<T>(
             processor,
-            new SingleItemDictionary<IIndexSet, T>(basisBlade, scalar.ScalarValue)
+            new SingleItemDictionary<IndexSet, T>(basisBlade, scalar.ScalarValue)
         );
     }
 

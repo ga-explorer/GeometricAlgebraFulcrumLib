@@ -12,10 +12,10 @@ public sealed class EmptyReadOnlyDictionary<TU, TV>
         => throw new KeyNotFoundException();
 
     public IEnumerable<TU> Keys
-        => Enumerable.Empty<TU>();
+        => [];
 
     public IEnumerable<TV> Values
-        => Enumerable.Empty<TV>();
+        => [];
 
 
     public bool ContainsKey(TU key)

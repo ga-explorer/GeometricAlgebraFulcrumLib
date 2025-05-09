@@ -8,8 +8,8 @@ using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Generic.Pro
 using GeometricAlgebraFulcrumLib.Mathematica.Algebra;
 using GeometricAlgebraFulcrumLib.Mathematica.Utilities.Structures;
 using GeometricAlgebraFulcrumLib.Mathematica.Utilities.Text;
-using GeometricAlgebraFulcrumLib.Utilities.Structures.Basic;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.BitManipulation;
+using GeometricAlgebraFulcrumLib.Utilities.Structures.Tuples;
 using GeometricAlgebraFulcrumLib.Utilities.Text.Text;
 using GeometricAlgebraFulcrumLib.Utilities.Text.Text.Markdown;
 using GeometricAlgebraFulcrumLib.Utilities.Text.Text.Markdown.Tables;
@@ -195,7 +195,7 @@ public static class EuclideanMultivectorOperations3D
                 {
                     var idText =
                         id
-                            .PatternToPositions()
+                            .GetSetBitPositions()
                             .Select(n => (n + 1).ToString())
                             .Concatenate();
 

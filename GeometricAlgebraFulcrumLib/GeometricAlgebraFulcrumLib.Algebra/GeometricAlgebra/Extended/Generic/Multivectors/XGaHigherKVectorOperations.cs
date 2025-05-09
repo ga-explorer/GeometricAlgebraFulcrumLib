@@ -3,11 +3,11 @@ using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Extended.Float64.Multivectors;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Extended.Float64.Multivectors.Composers;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Extended.Float64.Processors;
-using GeometricAlgebraFulcrumLib.Utilities.Structures.Basic;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.IndexSets;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Extended.Generic.Multivectors.Composers;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Extended.Generic.Processors;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Generic;
+using GeometricAlgebraFulcrumLib.Utilities.Structures.Tuples;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Extended.Generic.Multivectors;
 
@@ -233,7 +233,7 @@ public sealed partial class XGaHigherKVector<T>
 
         var termList =
             IdScalarPairs.Select(
-                term => new KeyValuePair<IIndexSet, T>(
+                term => new KeyValuePair<IndexSet, T>(
                     term.Key,
                     scalarMapping(term.Value)
                 )
@@ -253,7 +253,7 @@ public sealed partial class XGaHigherKVector<T>
 
         var termList =
             IdScalarPairs.Select(
-                term => new KeyValuePair<IIndexSet, double>(
+                term => new KeyValuePair<IndexSet, double>(
                     term.Key,
                     scalarMapping(term.Value)
                 )
@@ -273,7 +273,7 @@ public sealed partial class XGaHigherKVector<T>
 
         var termList =
             IdScalarPairs.Select(
-                term => new KeyValuePair<IIndexSet, T1>(
+                term => new KeyValuePair<IndexSet, T1>(
                     term.Key,
                     scalarMapping(term.Value)
                 )
@@ -286,13 +286,13 @@ public sealed partial class XGaHigherKVector<T>
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public XGaHigherKVector<T> MapScalars(Func<IIndexSet, T, T> scalarMapping)
+    public XGaHigherKVector<T> MapScalars(Func<IndexSet, T, T> scalarMapping)
     {
         if (IsZero) return this;
 
         var termList =
             IdScalarPairs.Select(
-                term => new KeyValuePair<IIndexSet, T>(
+                term => new KeyValuePair<IndexSet, T>(
                     term.Key,
                     scalarMapping(term.Key, term.Value)
                 )
@@ -305,14 +305,14 @@ public sealed partial class XGaHigherKVector<T>
     }
         
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public XGaFloat64HigherKVector MapScalars(XGaFloat64Processor processor, Func<IIndexSet, T, double> scalarMapping)
+    public XGaFloat64HigherKVector MapScalars(XGaFloat64Processor processor, Func<IndexSet, T, double> scalarMapping)
     {
         if (IsZero) 
             return processor.HigherKVectorZero(Grade);
 
         var termList =
             IdScalarPairs.Select(
-                term => new KeyValuePair<IIndexSet, double>(
+                term => new KeyValuePair<IndexSet, double>(
                     term.Key,
                     scalarMapping(term.Key, term.Value)
                 )
@@ -325,14 +325,14 @@ public sealed partial class XGaHigherKVector<T>
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public XGaHigherKVector<T1> MapScalars<T1>(XGaProcessor<T1> processor, Func<IIndexSet, T, T1> scalarMapping)
+    public XGaHigherKVector<T1> MapScalars<T1>(XGaProcessor<T1> processor, Func<IndexSet, T, T1> scalarMapping)
     {
         if (IsZero) 
             return processor.HigherKVectorZero(Grade);
 
         var termList =
             IdScalarPairs.Select(
-                term => new KeyValuePair<IIndexSet, T1>(
+                term => new KeyValuePair<IndexSet, T1>(
                     term.Key,
                     scalarMapping(term.Key, term.Value)
                 )
@@ -352,7 +352,7 @@ public sealed partial class XGaHigherKVector<T>
             
         var termList =
             IdScalarPairs.Select(
-                term => new KeyValuePair<IIndexSet, T>(
+                term => new KeyValuePair<IndexSet, T>(
                     term.Key,
                     ScalarProcessor.Negative(term.Value).ScalarValue
                 )
@@ -374,7 +374,7 @@ public sealed partial class XGaHigherKVector<T>
 
         var termList =
             IdScalarPairs.Select(
-                term => new KeyValuePair<IIndexSet, T>(
+                term => new KeyValuePair<IndexSet, T>(
                     term.Key,
                     ScalarProcessor.Times(term.Value, scalarValue).ScalarValue
                 )
@@ -408,7 +408,7 @@ public sealed partial class XGaHigherKVector<T>
 
         var termList =
             IdScalarPairs.Select(
-                term => new KeyValuePair<IIndexSet, T>(
+                term => new KeyValuePair<IndexSet, T>(
                     term.Key,
                     ScalarProcessor.Divide(term.Value, scalarValue).ScalarValue
                 )

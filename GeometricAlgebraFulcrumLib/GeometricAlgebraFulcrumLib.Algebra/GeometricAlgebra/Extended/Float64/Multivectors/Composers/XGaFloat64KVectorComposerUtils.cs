@@ -18,29 +18,29 @@ public static class XGaFloat64KVectorComposerUtils
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static XGaFloat64HigherKVector HigherKVectorTerm(this XGaFloat64Processor processor, IIndexSet id)
+    public static XGaFloat64HigherKVector HigherKVectorTerm(this XGaFloat64Processor processor, IndexSet id)
     {
         var grade = id.Count;
 
         return new XGaFloat64HigherKVector(
             processor,
             grade,
-            new SingleItemDictionary<IIndexSet, double>(id, 1d)
+            new SingleItemDictionary<IndexSet, double>(id, 1d)
         );
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static XGaFloat64HigherKVector HigherKVectorTerm(this XGaFloat64Processor processor, IIndexSet id, double scalar)
+    public static XGaFloat64HigherKVector HigherKVectorTerm(this XGaFloat64Processor processor, IndexSet id, double scalar)
     {
         var grade = id.Count;
 
         return scalar.IsZero()
             ? new XGaFloat64HigherKVector(processor, grade)
-            : new XGaFloat64HigherKVector(processor, grade, new SingleItemDictionary<IIndexSet, double>(id, scalar));
+            : new XGaFloat64HigherKVector(processor, grade, new SingleItemDictionary<IndexSet, double>(id, scalar));
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static XGaFloat64HigherKVector HigherKVectorTerm(this XGaFloat64Processor processor, KeyValuePair<IIndexSet, double> term)
+    public static XGaFloat64HigherKVector HigherKVectorTerm(this XGaFloat64Processor processor, KeyValuePair<IndexSet, double> term)
     {
         var (id, scalar) = term;
 
@@ -48,17 +48,17 @@ public static class XGaFloat64KVectorComposerUtils
 
         return scalar.IsZero()
             ? new XGaFloat64HigherKVector(processor, grade)
-            : new XGaFloat64HigherKVector(processor, grade, new SingleItemDictionary<IIndexSet, double>(id, scalar));
+            : new XGaFloat64HigherKVector(processor, grade, new SingleItemDictionary<IndexSet, double>(id, scalar));
     }
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static XGaFloat64HigherKVector HigherKVector(this XGaFloat64Processor processor, int grade, IReadOnlyDictionary<IIndexSet, double> basisScalarDictionary)
+    public static XGaFloat64HigherKVector HigherKVector(this XGaFloat64Processor processor, int grade, IReadOnlyDictionary<IndexSet, double> basisScalarDictionary)
     {
-        if (basisScalarDictionary.Count == 0 && basisScalarDictionary is not EmptyDictionary<IIndexSet, double>)
+        if (basisScalarDictionary.Count == 0 && basisScalarDictionary is not EmptyDictionary<IndexSet, double>)
             return processor.HigherKVectorZero(grade);
 
-        if (basisScalarDictionary.Count == 1 && basisScalarDictionary is not SingleItemDictionary<IIndexSet, double>)
+        if (basisScalarDictionary.Count == 1 && basisScalarDictionary is not SingleItemDictionary<IndexSet, double>)
             return processor.HigherKVectorTerm(basisScalarDictionary.First());
 
         return new XGaFloat64HigherKVector(
@@ -86,7 +86,7 @@ public static class XGaFloat64KVectorComposerUtils
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static XGaFloat64KVector KVectorTerm(this XGaFloat64Processor processor, KeyValuePair<IIndexSet, double> term)
+    public static XGaFloat64KVector KVectorTerm(this XGaFloat64Processor processor, KeyValuePair<IndexSet, double> term)
     {
         var grade = term.Key.Count;
 
@@ -100,15 +100,15 @@ public static class XGaFloat64KVectorComposerUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static XGaFloat64KVector KVectorTerm(this XGaFloat64Processor processor, IIndexSet basisBlade)
+    public static XGaFloat64KVector KVectorTerm(this XGaFloat64Processor processor, IndexSet basisBlade)
     {
         return processor.KVectorTerm(
-            new KeyValuePair<IIndexSet, double>(basisBlade, 1d)
+            new KeyValuePair<IndexSet, double>(basisBlade, 1d)
         );
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static XGaFloat64KVector KVectorTerm(this XGaFloat64Processor processor, IIndexSet basisBlade, double scalar)
+    public static XGaFloat64KVector KVectorTerm(this XGaFloat64Processor processor, IndexSet basisBlade, double scalar)
     {
         var grade = basisBlade.Count;
 
@@ -116,7 +116,7 @@ public static class XGaFloat64KVectorComposerUtils
             return processor.KVectorZero(grade);
 
         return processor.KVectorTerm(
-            new KeyValuePair<IIndexSet, double>(basisBlade, scalar)
+            new KeyValuePair<IndexSet, double>(basisBlade, scalar)
         );
     }
 
@@ -124,7 +124,7 @@ public static class XGaFloat64KVectorComposerUtils
     public static XGaFloat64KVector KVectorTerm(this XGaFloat64Processor processor, ulong basisBlade)
     {
         return processor.KVectorTerm(
-            new KeyValuePair<IIndexSet, double>(basisBlade.BitPatternToUInt64IndexSet(), 1d)
+            new KeyValuePair<IndexSet, double>(basisBlade.BitPatternToIndexSet(), 1d)
         );
     }
 
@@ -137,18 +137,18 @@ public static class XGaFloat64KVectorComposerUtils
             return processor.KVectorZero(grade);
 
         return processor.KVectorTerm(
-            new KeyValuePair<IIndexSet, double>(basisBlade.BitPatternToUInt64IndexSet(), scalar)
+            new KeyValuePair<IndexSet, double>(basisBlade.BitPatternToIndexSet(), scalar)
         );
     }
 
         
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static XGaFloat64KVector KVector(this XGaFloat64Processor processor, int grade, IReadOnlyDictionary<IIndexSet, double> basisScalarDictionary)
+    public static XGaFloat64KVector KVector(this XGaFloat64Processor processor, int grade, IReadOnlyDictionary<IndexSet, double> basisScalarDictionary)
     {
-        if (basisScalarDictionary.Count == 0 && basisScalarDictionary is not EmptyDictionary<IIndexSet, double>)
+        if (basisScalarDictionary.Count == 0 && basisScalarDictionary is not EmptyDictionary<IndexSet, double>)
             return processor.KVectorZero(grade);
 
-        if (basisScalarDictionary.Count == 1 && basisScalarDictionary is not SingleItemDictionary<IIndexSet, double>)
+        if (basisScalarDictionary.Count == 1 && basisScalarDictionary is not SingleItemDictionary<IndexSet, double>)
             return processor.KVectorTerm(basisScalarDictionary.First());
 
         return grade switch
@@ -167,7 +167,7 @@ public static class XGaFloat64KVectorComposerUtils
         var id = processor.GetBasisPseudoScalarId(vSpaceDimensions);
 
         return processor.KVectorTerm(
-            new KeyValuePair<IIndexSet, double>(id, 1d)
+            new KeyValuePair<IndexSet, double>(id, 1d)
         );
     }
 
@@ -177,7 +177,7 @@ public static class XGaFloat64KVectorComposerUtils
         var id = processor.GetBasisPseudoScalarId(vSpaceDimensions);
 
         return processor.KVectorTerm(
-            new KeyValuePair<IIndexSet, double>(id, scalarValue)
+            new KeyValuePair<IndexSet, double>(id, scalarValue)
         );
     }
 
@@ -191,7 +191,7 @@ public static class XGaFloat64KVectorComposerUtils
                 ? -1d : 1d;
 
         return processor.KVectorTerm(
-            new KeyValuePair<IIndexSet, double>(id, scalar)
+            new KeyValuePair<IndexSet, double>(id, scalar)
         );
     }
 
@@ -209,7 +209,7 @@ public static class XGaFloat64KVectorComposerUtils
         var scalar = sign.ToFloat64();
 
         return processor.KVectorTerm(
-            new KeyValuePair<IIndexSet, double>(id, scalar)
+            new KeyValuePair<IndexSet, double>(id, scalar)
         );
     }
 
@@ -224,7 +224,7 @@ public static class XGaFloat64KVectorComposerUtils
         var scalar = sign.ToFloat64();
 
         return processor.KVectorTerm(
-            new KeyValuePair<IIndexSet, double>(id, scalar)
+            new KeyValuePair<IndexSet, double>(id, scalar)
         );
     }
 
@@ -242,7 +242,7 @@ public static class XGaFloat64KVectorComposerUtils
         var scalar = sign.ToFloat64();
 
         return processor.KVectorTerm(
-            new KeyValuePair<IIndexSet, double>(id, scalar)
+            new KeyValuePair<IndexSet, double>(id, scalar)
         );
     }
 

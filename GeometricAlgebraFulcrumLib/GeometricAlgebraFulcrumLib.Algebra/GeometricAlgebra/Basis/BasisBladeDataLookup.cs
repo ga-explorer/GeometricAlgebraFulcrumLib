@@ -2,9 +2,9 @@
 using System.Runtime.CompilerServices;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Records;
 using GeometricAlgebraFulcrumLib.Utilities.Structures;
-using GeometricAlgebraFulcrumLib.Utilities.Structures.Basic;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.BitManipulation;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Combinations;
+using GeometricAlgebraFulcrumLib.Utilities.Structures.Tuples;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
 
@@ -16,60 +16,14 @@ public static class BasisBladeDataLookup
 
 
     public static uint MaxVSpaceDimension { get; } 
-        = 12;
+        = 13;
 
     public static ulong MaxGaSpaceDimension { get; } 
         = 1U << (int) MaxVSpaceDimension;
 
     public static ulong MaxBasisBladeId { get; } 
         = (1U << (int) MaxVSpaceDimension) - 1;
-
-
-    ///// <summary>
-    ///// ID to grade lookup table
-    ///// </summary>
-    //internal static uint[] IdToGradeTable;
-
-    ///// <summary>
-    ///// ID to index lookup table
-    ///// </summary>
-    //internal static ulong[] IdToIndexTable;
-
-    ///// <summary>
-    ///// ID to 'is reverse sign = -1' lookup table
-    ///// </summary>
-    //internal static BitArray IsNegativeReverseTable;
-
-    ///// <summary>
-    ///// ID to 'is grade inverse sign = -1' lookup table
-    ///// </summary>
-    //internal static BitArray IsNegativeGradeInvTable;
-
-    ///// <summary>
-    ///// ID to 'is clifford conjugate sign = -1' lookup table
-    ///// </summary>
-    //internal static BitArray IsNegativeCliffConjTable;
-
-    ///// <summary>
-    ///// (grade, index) to ID lookup table
-    ///// </summary>
-    //internal static List<ulong[]> GradeIndexToIdTable;
-
-    ///// <summary>
-    ///// (grade, index) to largest one-bit position ID lookup table
-    ///// </summary>
-    //internal static List<uint[]> GradeIndexToMaxBasisVectorIndexTable;
-
-    ///// <summary>
-    ///// Is basis blades EGP Negative lookup tables
-    ///// </summary>
-    //internal static BitArray[] IsNegativeEgpLookupTables;
-
-    ///// <summary>
-    ///// Is (basis blade by basis blade) EGP Negative lookup tables
-    ///// </summary>
-    //internal static BitArray[] IsNegativeVectorEgpLookupTables;
-
+    
     /// <summary>
     /// An index lookup table used to compute the outer product of a vector with a k-vector
     /// </summary>
@@ -79,7 +33,8 @@ public static class BasisBladeDataLookup
     static BasisBladeDataLookup()
     {
         Console.WriteLine($"Initializing GA lookup tables (max. of {MaxVSpaceDimension} dimensions) ..");
-
+        var t1 = DateTime.Now;
+        
         var dataSize = 0L;
 
         BasisBladeDataArray = new BasisBladeData[MaxGaSpaceDimension];
@@ -95,6 +50,8 @@ public static class BasisBladeDataLookup
 
         dataSize += VectorKVectorOpIndexLookupTables.SizeInBytes();
 
+        var t2 = DateTime.Now;
+        Console.WriteLine($"GA lookup tables finished in: {(t2 - t1).TotalSeconds:G} seconds");
         Console.WriteLine($"GA lookup tables size: {dataSize:N0} bytes");
         Console.WriteLine();
     }
@@ -129,12 +86,17 @@ public static class BasisBladeDataLookup
     private static void GenerateVectorKVectorOpIndexLookupTables()
     {
         const uint maxDim = 15U;
-        const uint minVSpaceDim = 12U;
+        const uint minDim = 12U;
 
         var maxVSpaceDim =
             MaxVSpaceDimension < maxDim
                 ? MaxVSpaceDimension
                 : maxDim;
+        
+        var minVSpaceDim =
+            MaxVSpaceDimension < minDim
+                ? MaxVSpaceDimension
+                : minDim;
 
         //var maxGeoSpaceDim = (1 << maxVSpaceDim);
 
@@ -159,7 +121,7 @@ public static class BasisBladeDataLookup
                 var lookupTableIndex = 0;
                 foreach (var id in resultIdsList)
                 {
-                    var indexList1 = id.PatternToPositions().ToArray();
+                    var indexList1 = id.GetSetBitPositions().ToArray();
                     var lookupTableItems = new List<int>(2 * indexList1.Length);
 
                     foreach (var index1 in indexList1)
@@ -330,7 +292,7 @@ public static class BasisBladeDataLookup
     {
         return ContainsBasisBladeData(id1) 
             ? BasisBladeDataArray[id1].EGpIsPositive(id2) 
-            : BasisBladeDataComputer.EGpIsPositive(id1, id2);
+            : !BasisBladeDataComputer.EGpIsNegative(id1, id2);
     }
         
     [MethodImpl(MethodImplOptions.AggressiveInlining)]

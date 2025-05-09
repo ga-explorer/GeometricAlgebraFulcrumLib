@@ -6,11 +6,11 @@ using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Float64.Lin
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Float64.Processors;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Records;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
-using GeometricAlgebraFulcrumLib.Utilities.Structures.Basic;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.BitManipulation;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Combinations;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.IndexSets;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Random;
+using GeometricAlgebraFulcrumLib.Utilities.Structures.Tuples;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Float64.Multivectors.Composers;
 
@@ -233,7 +233,7 @@ public class RGaFloat64RandomComposer :
             RandomGenerator
                 .GetUniqueIndices(grade, VSpaceDimensions)
                 .ToImmutableSortedSet()
-                .ToUInt64IndexSetBitPattern();
+                .IndexSetToUInt64BitPattern();
 
         return new RGaBasisBlade(Processor, id);
     }

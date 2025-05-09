@@ -65,7 +65,7 @@ public abstract class XGaVersorBase<T> :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public override XGaKVector<T> OmMapBasisBlade(IIndexSet id)
+    public override XGaKVector<T> OmMapBasisBlade(IndexSet id)
     {
         return OmMap(
             Processor.KVectorTerm(
@@ -77,13 +77,13 @@ public abstract class XGaVersorBase<T> :
         
         
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public override IEnumerable<KeyValuePair<IIndexSet, XGaMultivector<T>>> GetMappedBasisBlades(
+    public override IEnumerable<KeyValuePair<IndexSet, XGaMultivector<T>>> GetMappedBasisBlades(
         int vSpaceDimensions)
     {
         return Processor
             .GetBasisBladeIds(vSpaceDimensions)
             .Select(id => 
-                new KeyValuePair<IIndexSet, XGaMultivector<T>>(
+                new KeyValuePair<IndexSet, XGaMultivector<T>>(
                     id, 
                     OmMapBasisBlade(id)
                 )
@@ -91,12 +91,12 @@ public abstract class XGaVersorBase<T> :
     }
         
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public override IEnumerable<KeyValuePair<IIndexSet, XGaVector<T>>> GetOmMappedBasisVectors(int vSpaceDimensions)
+    public override IEnumerable<KeyValuePair<IndexSet, XGaVector<T>>> GetOmMappedBasisVectors(int vSpaceDimensions)
     {
         return vSpaceDimensions
             .GetRange()
             .Select(index => 
-                new KeyValuePair<IIndexSet, XGaVector<T>>(
+                new KeyValuePair<IndexSet, XGaVector<T>>(
                     index.IndexToIndexSet(), 
                     OmMapBasisVector(index)
                 )

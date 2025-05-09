@@ -24,8 +24,8 @@ public static class XGaMultivectorValidationSamples
     {
         var metric = XGaFloat64Processor.Euclidean;
 
-        var set1 = ImmutableSortedSet.Create(3, 7, 9).ToSparseIndexSet();
-        var set2 = (IIndexSet)ImmutableSortedSet.Create(3, 6, 9).ToUInt64IndexSet();
+        var set1 = IndexSet.Create(3, 7, 9);
+        var set2 = IndexSet.Create(3, 6, 9);
 
         var kv1 = metric.CreateBasisBlade(set1);
         var kv2 = metric.CreateBasisBlade(set2);
@@ -49,7 +49,7 @@ public static class XGaMultivectorValidationSamples
 
         var basisBladeIdList1 =
             m.GetRange().Select(
-                id => id.BitPatternToNonUInt64IndexSet()
+                id => id.BitPatternToIndexSet()
             ).ToImmutableArray();
 
         foreach (var basisBlade1 in basisBladeIdList1)
@@ -124,11 +124,11 @@ public static class XGaMultivectorValidationSamples
 
         var metric1 = XGaFloat64Processor.Euclidean;
         IXGaSignedBasisBlade egpTableItem1 =
-            metric1.EGp(EmptyIndexSet.Instance, EmptyIndexSet.Instance); // For initializing internal lookup tables
+            metric1.EGp(IndexSet.EmptySet, IndexSet.EmptySet); // For initializing internal lookup tables
 
         var basisBladeIdList1 =
             m.GetRange().Select(
-                id => id.BitPatternToUInt64IndexSet()
+                id => id.BitPatternToIndexSet()
             ).ToImmutableArray();
 
         time1 = DateTime.Now;

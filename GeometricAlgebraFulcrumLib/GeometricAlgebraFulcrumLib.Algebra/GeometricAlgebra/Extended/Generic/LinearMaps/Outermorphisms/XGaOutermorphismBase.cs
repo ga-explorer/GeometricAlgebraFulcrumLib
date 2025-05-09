@@ -30,7 +30,7 @@ public abstract class XGaOutermorphismBase<T> :
     }
         
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public XGaMultivector<T> MapBasisBlade(IIndexSet id)
+    public XGaMultivector<T> MapBasisBlade(IndexSet id)
     {
         return OmMapBasisBlade(id);
     }
@@ -41,7 +41,7 @@ public abstract class XGaOutermorphismBase<T> :
         return OmMap(multivector);
     }
         
-    public abstract IEnumerable<KeyValuePair<IIndexSet, XGaMultivector<T>>> GetMappedBasisBlades(
+    public abstract IEnumerable<KeyValuePair<IndexSet, XGaMultivector<T>>> GetMappedBasisBlades(
         int vSpaceDimensions);
         
     public abstract IXGaOutermorphism<T> GetOmAdjoint();
@@ -50,7 +50,7 @@ public abstract class XGaOutermorphismBase<T> :
         
     public abstract XGaBivector<T> OmMapBasisBivector(int index1, int index2);
         
-    public abstract XGaKVector<T> OmMapBasisBlade(IIndexSet id);
+    public abstract XGaKVector<T> OmMapBasisBlade(IndexSet id);
         
     public abstract XGaVector<T> OmMap(XGaVector<T> vector);
         
@@ -73,7 +73,7 @@ public abstract class XGaOutermorphismBase<T> :
 
     public abstract XGaMultivector<T> OmMap(XGaMultivector<T> multivector);
         
-    public abstract IEnumerable<KeyValuePair<IIndexSet, XGaVector<T>>> GetOmMappedBasisVectors(int vSpaceDimensions);
+    public abstract IEnumerable<KeyValuePair<IndexSet, XGaVector<T>>> GetOmMappedBasisVectors(int vSpaceDimensions);
 
     public virtual LinUnilinearMap<T> GetVectorMapPart(int vSpaceDimensions)
     {

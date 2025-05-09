@@ -1,5 +1,5 @@
-﻿using GeometricAlgebraFulcrumLib.Utilities.Structures.Basic;
-using GeometricAlgebraFulcrumLib.Utilities.Structures.Files;
+﻿using GeometricAlgebraFulcrumLib.Utilities.Structures.Files;
+using GeometricAlgebraFulcrumLib.Utilities.Structures.Tuples;
 using GeometricAlgebraFulcrumLib.Utilities.Web.Html.Media;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Formats.Png;

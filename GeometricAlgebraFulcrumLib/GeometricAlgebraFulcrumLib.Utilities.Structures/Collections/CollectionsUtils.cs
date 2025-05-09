@@ -1,8 +1,8 @@
 ﻿using System.Collections.Immutable;
 using System.Runtime.CompilerServices;
-using GeometricAlgebraFulcrumLib.Utilities.Structures.Basic;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Collections.Lists;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Collections.PeriodicLists2D;
+using GeometricAlgebraFulcrumLib.Utilities.Structures.Tuples;
 
 namespace GeometricAlgebraFulcrumLib.Utilities.Structures.Collections;
 

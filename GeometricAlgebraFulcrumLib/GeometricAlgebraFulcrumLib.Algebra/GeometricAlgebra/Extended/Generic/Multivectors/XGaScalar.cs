@@ -52,11 +52,11 @@ public sealed partial class XGaScalar<T> :
         }
     }
 
-    public override IEnumerable<IIndexSet> Ids
+    public override IEnumerable<IndexSet> Ids
     {
         get
         {
-            if (!IsZero) yield return EmptyIndexSet.Instance;
+            if (!IsZero) yield return IndexSet.EmptySet;
         }
     }
 
@@ -81,13 +81,13 @@ public sealed partial class XGaScalar<T> :
         }
     }
 
-    public override IEnumerable<KeyValuePair<IIndexSet, T>> IdScalarPairs
+    public override IEnumerable<KeyValuePair<IndexSet, T>> IdScalarPairs
     {
         get
         {
             if (!IsZero)
-                yield return new KeyValuePair<IIndexSet, T>(
-                    EmptyIndexSet.Instance,
+                yield return new KeyValuePair<IndexSet, T>(
+                    IndexSet.EmptySet,
                     ScalarValue
                 );
         }
@@ -121,11 +121,11 @@ public sealed partial class XGaScalar<T> :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    internal XGaScalar(XGaProcessor<T> processor, IReadOnlyDictionary<IIndexSet, T> idScalarDictionary)
+    internal XGaScalar(XGaProcessor<T> processor, IReadOnlyDictionary<IndexSet, T> idScalarDictionary)
         : base(processor)
     {
         _scalar = processor.ScalarProcessor.ScalarFromValue(
-            idScalarDictionary.TryGetValue(EmptyIndexSet.Instance, out var scalar)
+            idScalarDictionary.TryGetValue(IndexSet.EmptySet, out var scalar)
                 ? scalar
                 : processor.ScalarProcessor.ZeroValue
         );
@@ -146,15 +146,15 @@ public sealed partial class XGaScalar<T> :
 
         
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public override IReadOnlyDictionary<IIndexSet, T> GetIdScalarDictionary()
+    public override IReadOnlyDictionary<IndexSet, T> GetIdScalarDictionary()
     {
         return IsZero
-            ? new EmptyDictionary<IIndexSet, T>()
-            : new SingleItemDictionary<IIndexSet, T>(EmptyIndexSet.Instance, _scalar.ScalarValue);
+            ? new EmptyDictionary<IndexSet, T>()
+            : new SingleItemDictionary<IndexSet, T>(IndexSet.EmptySet, _scalar.ScalarValue);
     }
         
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public override bool ContainsKey(IIndexSet key)
+    public override bool ContainsKey(IndexSet key)
     {
         return key.IsEmptySet && !IsZero;
     }
@@ -191,9 +191,9 @@ public sealed partial class XGaScalar<T> :
     }
         
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public XGaScalar<T> GetPart(Func<IIndexSet, bool> filterFunc)
+    public XGaScalar<T> GetPart(Func<IndexSet, bool> filterFunc)
     {
-        return IsZero || filterFunc(EmptyIndexSet.Instance) 
+        return IsZero || filterFunc(IndexSet.EmptySet) 
             ? this 
             : Processor.ScalarZero;
     }
@@ -207,9 +207,9 @@ public sealed partial class XGaScalar<T> :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public XGaScalar<T> GetPart(Func<IIndexSet, T, bool> filterFunc)
+    public XGaScalar<T> GetPart(Func<IndexSet, T, bool> filterFunc)
     {
-        return IsZero || filterFunc(EmptyIndexSet.Instance, ScalarValue) 
+        return IsZero || filterFunc(IndexSet.EmptySet, ScalarValue) 
             ? this 
             : Processor.ScalarZero;
     }
@@ -222,7 +222,7 @@ public sealed partial class XGaScalar<T> :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public override Scalar<T> GetBasisBladeScalar(IIndexSet basisBladeId)
+    public override Scalar<T> GetBasisBladeScalar(IndexSet basisBladeId)
     {
         return basisBladeId.IsEmptySet
             ? _scalar
@@ -243,7 +243,7 @@ public sealed partial class XGaScalar<T> :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public override bool TryGetBasisBladeScalarValue(IIndexSet basisBlade, out T scalar)
+    public override bool TryGetBasisBladeScalarValue(IndexSet basisBlade, out T scalar)
     {
         if (basisBlade.IsEmptySet)
         {

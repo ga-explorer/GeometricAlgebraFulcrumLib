@@ -1,5 +1,5 @@
-﻿using GeometricAlgebraFulcrumLib.Utilities.Structures.Basic;
-using GeometricAlgebraFulcrumLib.Utilities.Structures.BitManipulation;
+﻿using GeometricAlgebraFulcrumLib.Utilities.Structures.BitManipulation;
+using GeometricAlgebraFulcrumLib.Utilities.Structures.Tuples;
 using GeometricAlgebraFulcrumLib.Utilities.Web.Colors;
 using GeometricAlgebraFulcrumLib.Utilities.Web.Html.Media;
 using SixLabors.ImageSharp;

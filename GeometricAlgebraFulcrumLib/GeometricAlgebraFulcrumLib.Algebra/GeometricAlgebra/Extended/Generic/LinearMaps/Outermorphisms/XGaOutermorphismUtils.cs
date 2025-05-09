@@ -66,7 +66,7 @@ public static class XGaOutermorphismUtils
     }
         
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static XGaKVector<T> OmMapBasisBlade<T>(this IReadOnlyList<IXGaOutermorphism<T>> omList, IIndexSet id)
+    public static XGaKVector<T> OmMapBasisBlade<T>(this IReadOnlyList<IXGaOutermorphism<T>> omList, IndexSet id)
     {
         var kVector = omList[0].OmMapBasisBlade(id);
 

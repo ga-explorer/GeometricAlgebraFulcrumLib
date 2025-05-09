@@ -9,7 +9,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Structures.SimpleTree;
 [Serializable]
 public sealed class SimpleTreeNodeList<TLeaf> : SimpleTreeNode<TLeaf>, IList<SimpleTreeNode<TLeaf>>
 {
-    private readonly List<SimpleTreeNode<TLeaf>> _nodes = new List<SimpleTreeNode<TLeaf>>();
+    private readonly List<SimpleTreeNode<TLeaf>> _nodes = [];
 
 
     public int IndexOf(SimpleTreeNode<TLeaf> item)
@@ -75,7 +75,7 @@ public sealed class SimpleTreeNodeList<TLeaf> : SimpleTreeNode<TLeaf>, IList<Sim
 
     public override IEnumerable<SimpleTreeNode<TLeaf>> ChildNodes => _nodes;
 
-    public override IEnumerable<SimpleTreeBranch<TLeaf>> ChildBranches => Enumerable.Empty<SimpleTreeBranch<TLeaf>>();
+    public override IEnumerable<SimpleTreeBranch<TLeaf>> ChildBranches => [];
 
     //public override void ToString(LinearTextComposer textBuilder)
     //{

@@ -107,7 +107,7 @@ public sealed class MetaExpressionParameterVariableFactory :
             vSpaceDimensions
                 .GetRange()
                 .Select(index =>
-                    new KeyValuePair<IIndexSet, IMetaExpressionAtomic>(
+                    new KeyValuePair<IndexSet, IMetaExpressionAtomic>(
                         index.IndexToIndexSet(),
                         Context.GetOrDefineParameterVariable(
                             namingFunction(index)
@@ -133,8 +133,8 @@ public sealed class MetaExpressionParameterVariableFactory :
             Enumerable
                 .Range(0, (int)kvSpaceDimensions)
                 .Select(index =>
-                    new KeyValuePair<IIndexSet, IMetaExpressionAtomic>(
-                        BasisBladeUtils.BasisBladeGradeIndexToId(grade, (ulong)index).BitPatternToUInt64IndexSet(),
+                    new KeyValuePair<IndexSet, IMetaExpressionAtomic>(
+                        BasisBladeUtils.BasisBladeGradeIndexToId(grade, (ulong)index).BitPatternToIndexSet(),
                         Context.GetOrDefineParameterVariable(
                             namingFunction((ulong)index)
                         )
@@ -154,8 +154,8 @@ public sealed class MetaExpressionParameterVariableFactory :
             (1UL << vSpaceDimensions)
             .GetRange()
             .Select(id =>
-                new KeyValuePair<IIndexSet, IMetaExpressionAtomic>(
-                    id.BitPatternToUInt64IndexSet(),
+                new KeyValuePair<IndexSet, IMetaExpressionAtomic>(
+                    id.BitPatternToIndexSet(),
                     Context.GetOrDefineParameterVariable(
                         namingFunction(id)
                     )

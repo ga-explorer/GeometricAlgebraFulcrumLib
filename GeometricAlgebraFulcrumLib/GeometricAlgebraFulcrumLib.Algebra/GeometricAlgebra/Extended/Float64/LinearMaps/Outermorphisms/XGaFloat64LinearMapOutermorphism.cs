@@ -53,12 +53,12 @@ public sealed class XGaFloat64LinearMapOutermorphism
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public override XGaFloat64KVector OmMapBasisBlade(IIndexSet id)
+    public override XGaFloat64KVector OmMapBasisBlade(IndexSet id)
     {
         if (id.IsEmptySet)
             return Processor.ScalarOne;
 
-        return id.IsSingleIndexSet 
+        return id.IsUnitSet 
             ? OmMapBasisVector(id.FirstIndex)
             : id.Select(OmMapBasisVector).Op(Processor);
     }
@@ -124,13 +124,13 @@ public sealed class XGaFloat64LinearMapOutermorphism
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public override IEnumerable<KeyValuePair<IIndexSet, XGaFloat64Vector>> GetOmMappedBasisVectors(
+    public override IEnumerable<KeyValuePair<IndexSet, XGaFloat64Vector>> GetOmMappedBasisVectors(
         int vSpaceDimensions)
     {
         return LinearMap
             .GetMappedBasisVectors(vSpaceDimensions)
             .Select(r => 
-                new KeyValuePair<IIndexSet, XGaFloat64Vector>(
+                new KeyValuePair<IndexSet, XGaFloat64Vector>(
                     r.Key.IndexToIndexSet(), 
                     r.Value.ToXGaFloat64Vector(Processor)
                 )
@@ -138,13 +138,13 @@ public sealed class XGaFloat64LinearMapOutermorphism
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public override IEnumerable<KeyValuePair<IIndexSet, XGaFloat64Multivector>> GetMappedBasisBlades(
+    public override IEnumerable<KeyValuePair<IndexSet, XGaFloat64Multivector>> GetMappedBasisBlades(
         int vSpaceDimensions)
     {
         return Processor
             .GetBasisBladeIds(vSpaceDimensions)
             .Select(id => 
-                new KeyValuePair<IIndexSet, XGaFloat64Multivector>(
+                new KeyValuePair<IndexSet, XGaFloat64Multivector>(
                     id, 
                     OmMapBasisBlade(id)
                 )

@@ -7,7 +7,7 @@ using GeometricAlgebraFulcrumLib.Modeling.Geometry.AffineMaps.Space1D;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.AffineMaps.Space2D;
 using GeometricAlgebraFulcrumLib.Modeling.Trajectories.Vectors2D.Float64.Adaptive;
 using GeometricAlgebraFulcrumLib.Modeling.Trajectories.Vectors2D.Float64.Mapped;
-using GeometricAlgebraFulcrumLib.Utilities.Structures.Basic;
+using GeometricAlgebraFulcrumLib.Utilities.Structures.Tuples;
 
 namespace GeometricAlgebraFulcrumLib.Modeling.Trajectories.Vectors2D.Float64;
 

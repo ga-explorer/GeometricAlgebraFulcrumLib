@@ -22,7 +22,7 @@ public class XGaFloat64BasisMultivectorFrame :
             gaSpaceDimensions
                 .GetRange()
                 .Select(id => metric.KVectorTerm(
-                    id.BitPatternToUInt64IndexSet()
+                    id.BitPatternToIndexSet()
                 )).ToArray();
 
         return new XGaFloat64BasisMultivectorFrame(multivectorArray);

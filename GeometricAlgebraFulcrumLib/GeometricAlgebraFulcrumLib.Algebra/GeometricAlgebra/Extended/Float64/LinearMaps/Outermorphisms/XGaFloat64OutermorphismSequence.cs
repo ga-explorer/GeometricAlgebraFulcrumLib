@@ -143,7 +143,7 @@ public class XGaFloat64OutermorphismSequence :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public override XGaFloat64KVector OmMapBasisBlade(IIndexSet id)
+    public override XGaFloat64KVector OmMapBasisBlade(IndexSet id)
     {
         var kVector = _outermorphismList[0].OmMapBasisBlade(id);
 
@@ -181,7 +181,7 @@ public class XGaFloat64OutermorphismSequence :
         return _outermorphismList.OmMap(multivector);
     }
         
-    public override IEnumerable<KeyValuePair<IIndexSet, XGaFloat64Vector>> GetOmMappedBasisVectors(
+    public override IEnumerable<KeyValuePair<IndexSet, XGaFloat64Vector>> GetOmMappedBasisVectors(
         int vSpaceDimensions)
     {
         if (_outermorphismList.Count == 0)
@@ -193,14 +193,14 @@ public class XGaFloat64OutermorphismSequence :
         return om1
             .GetOmMappedBasisVectors(vSpaceDimensions)
             .Select(r => 
-                new KeyValuePair<IIndexSet, XGaFloat64Vector>(
+                new KeyValuePair<IndexSet, XGaFloat64Vector>(
                     r.Key,
                     omList.OmMap(r.Value)
                 )
             ).Where(r => !r.Value.IsZero);
     }
         
-    public override IEnumerable<KeyValuePair<IIndexSet, XGaFloat64Multivector>> GetMappedBasisBlades(
+    public override IEnumerable<KeyValuePair<IndexSet, XGaFloat64Multivector>> GetMappedBasisBlades(
         int vSpaceDimensions)
     {
         if (_outermorphismList.Count == 0)
@@ -212,7 +212,7 @@ public class XGaFloat64OutermorphismSequence :
         return om1
             .GetMappedBasisBlades(vSpaceDimensions)
             .Select(r => 
-                new KeyValuePair<IIndexSet, XGaFloat64Multivector>(
+                new KeyValuePair<IndexSet, XGaFloat64Multivector>(
                     r.Key, 
                     omList.OmMap(r.Value)
                 )

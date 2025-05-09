@@ -3,7 +3,7 @@ using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.Colors;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.KonvaJs.Shapes;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.KonvaJs.Styles;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.KonvaJs.Values;
-using GeometricAlgebraFulcrumLib.Utilities.Structures.Basic;
+using GeometricAlgebraFulcrumLib.Utilities.Structures.Tuples;
 using SixLabors.ImageSharp;
 
 namespace GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.KonvaJs.Containers;

@@ -1,5 +1,5 @@
 ﻿using GeometricAlgebraFulcrumLib.Optimization.GeneticProgramming.Cartesian.Functions;
-using GeometricAlgebraFulcrumLib.Utilities.Structures.Basic;
+using GeometricAlgebraFulcrumLib.Utilities.Structures.Tuples;
 
 namespace GeometricAlgebraFulcrumLib.Optimization.GeneticProgramming.Cartesian;
 

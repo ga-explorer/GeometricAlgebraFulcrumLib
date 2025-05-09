@@ -385,7 +385,7 @@ public class CGaGeometricSpace<T> :
         const int epIndex = 1;
 
         return mv.IsZero ||
-               mv.Ids.All(id => !id.Contains(enIndex) && !id.Contains(epIndex));
+               mv.Ids.All(id => !id.SetContains(enIndex) && !id.SetContains(epIndex));
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -397,7 +397,7 @@ public class CGaGeometricSpace<T> :
         var eiIndex = VSpaceDimensions - 1;
 
         return mv.IsZero ||
-               BasisSpecs.BasisMap.OmMap(mv).Ids.All(id => !id.Contains(eiIndex));
+               BasisSpecs.BasisMap.OmMap(mv).Ids.All(id => !id.SetContains(eiIndex));
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -409,7 +409,7 @@ public class CGaGeometricSpace<T> :
         const int eoIndex = 0;
 
         return mv.IsZero ||
-               BasisSpecs.BasisMap.OmMap(mv).Ids.All(id => !id.Contains(eoIndex));
+               BasisSpecs.BasisMap.OmMap(mv).Ids.All(id => !id.SetContains(eoIndex));
     }
 
     
@@ -425,9 +425,9 @@ public class CGaGeometricSpace<T> :
                 .OmMap(kVector)
                 .IdScalarPairs
                 .Where(term => 
-                    term.Key.Contains(eiIndex)
+                    term.Key.SetContains(eiIndex)
                 ).Select(term => 
-                    new KeyValuePair<IIndexSet, T>(
+                    new KeyValuePair<IndexSet, T>(
                         term.Key.Remove(eiIndex), 
                         term.Value
                     )

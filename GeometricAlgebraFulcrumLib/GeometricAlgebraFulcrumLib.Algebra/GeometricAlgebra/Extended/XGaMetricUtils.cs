@@ -9,13 +9,13 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Extended;
 public static class XGaMetricUtils
 {
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static bool IsValidVectorDictionary(this IReadOnlyDictionary<IIndexSet, double> basisScalarDictionary)
+    public static bool IsValidVectorDictionary(this IReadOnlyDictionary<IndexSet, double> basisScalarDictionary)
     {
         return basisScalarDictionary.Count switch
         {
-            0 => basisScalarDictionary is EmptyDictionary<IIndexSet, double>,
+            0 => basisScalarDictionary is EmptyDictionary<IndexSet, double>,
 
-            1 => basisScalarDictionary is SingleItemDictionary<IIndexSet, double> dict &&
+            1 => basisScalarDictionary is SingleItemDictionary<IndexSet, double> dict &&
                  dict.Key.Count == 1 &&
                  dict.Value.IsValid() &&
                  !dict.Value.IsZero(),
@@ -29,13 +29,13 @@ public static class XGaMetricUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static bool IsValidBivectorDictionary(this IReadOnlyDictionary<IIndexSet, double> basisScalarDictionary)
+    public static bool IsValidBivectorDictionary(this IReadOnlyDictionary<IndexSet, double> basisScalarDictionary)
     {
         return basisScalarDictionary.Count switch
         {
-            0 => basisScalarDictionary is EmptyDictionary<IIndexSet, double>,
+            0 => basisScalarDictionary is EmptyDictionary<IndexSet, double>,
 
-            1 => basisScalarDictionary is SingleItemDictionary<IIndexSet, double> dict &&
+            1 => basisScalarDictionary is SingleItemDictionary<IndexSet, double> dict &&
                  dict.Key.Count == 2 &&
                  dict.Value.IsValid() &&
                  !dict.Value.IsZero(),
@@ -49,16 +49,16 @@ public static class XGaMetricUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static bool IsValidKVectorDictionary(this IReadOnlyDictionary<IIndexSet, double> basisScalarDictionary, int grade)
+    public static bool IsValidKVectorDictionary(this IReadOnlyDictionary<IndexSet, double> basisScalarDictionary, int grade)
     {
         if (grade < 3)
             throw new ArgumentOutOfRangeException(nameof(grade));
 
         return basisScalarDictionary.Count switch
         {
-            0 => basisScalarDictionary is EmptyDictionary<IIndexSet, double>,
+            0 => basisScalarDictionary is EmptyDictionary<IndexSet, double>,
 
-            1 => basisScalarDictionary is SingleItemDictionary<IIndexSet, double> dict &&
+            1 => basisScalarDictionary is SingleItemDictionary<IndexSet, double> dict &&
                  dict.Key.Count == grade &&
                  dict.Value.IsValid() &&
                  !dict.Value.IsZero(),
@@ -72,13 +72,13 @@ public static class XGaMetricUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static bool IsValidMultivectorDictionary(this IReadOnlyDictionary<IIndexSet, double> basisScalarDictionary)
+    public static bool IsValidMultivectorDictionary(this IReadOnlyDictionary<IndexSet, double> basisScalarDictionary)
     {
         return basisScalarDictionary.Count switch
         {
-            0 => basisScalarDictionary is EmptyDictionary<IIndexSet, double>,
+            0 => basisScalarDictionary is EmptyDictionary<IndexSet, double>,
 
-            1 => basisScalarDictionary is SingleItemDictionary<IIndexSet, double> dict &&
+            1 => basisScalarDictionary is SingleItemDictionary<IndexSet, double> dict &&
                  dict.Value.IsValid() &&
                  !dict.Value.IsZero(),
 

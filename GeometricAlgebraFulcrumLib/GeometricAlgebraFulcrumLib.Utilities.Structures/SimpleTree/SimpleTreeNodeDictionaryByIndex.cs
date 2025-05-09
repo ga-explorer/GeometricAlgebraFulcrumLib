@@ -94,7 +94,7 @@ public sealed class SimpleTreeNodeDictionaryByIndex<TLeaf>
         get { return _nodes.Select(pair => pair.Value); }
     }
 
-    public override IEnumerable<SimpleTreeBranch<TLeaf>> ChildBranches => Enumerable.Empty<SimpleTreeBranch<TLeaf>>();
+    public override IEnumerable<SimpleTreeBranch<TLeaf>> ChildBranches => [];
 
     //public override void ToString(LinearTextComposer textBuilder)
     //{

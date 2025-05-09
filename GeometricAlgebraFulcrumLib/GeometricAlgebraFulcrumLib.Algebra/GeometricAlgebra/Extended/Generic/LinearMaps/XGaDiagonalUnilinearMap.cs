@@ -11,7 +11,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Extended.Generic.L
 
 public sealed class XGaDiagonalUnilinearMap<T> :
     IXGaUnilinearMap<T>,
-    IReadOnlyDictionary<IIndexSet, T>
+    IReadOnlyDictionary<IndexSet, T>
 {
     public XGaMultivector<T> DiagonalMultivector { get; }
         
@@ -27,13 +27,13 @@ public sealed class XGaDiagonalUnilinearMap<T> :
     public int Count 
         => DiagonalMultivector.Count;
 
-    public IEnumerable<IIndexSet> Keys 
+    public IEnumerable<IndexSet> Keys 
         => DiagonalMultivector.Ids;
 
     public IEnumerable<T> Values 
         => DiagonalMultivector.Scalars;
 
-    public T this[IIndexSet key] 
+    public T this[IndexSet key] 
         => DiagonalMultivector[key].ScalarValue;
 
 
@@ -51,13 +51,13 @@ public sealed class XGaDiagonalUnilinearMap<T> :
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool ContainsKey(IIndexSet key)
+    public bool ContainsKey(IndexSet key)
     {
         return DiagonalMultivector.ContainsKey(key);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool TryGetValue(IIndexSet key, out T value)
+    public bool TryGetValue(IndexSet key, out T value)
     {
         return DiagonalMultivector.TryGetValue(key, out value);
     }
@@ -69,7 +69,7 @@ public sealed class XGaDiagonalUnilinearMap<T> :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public XGaMultivector<T> MapBasisBlade(IIndexSet id)
+    public XGaMultivector<T> MapBasisBlade(IndexSet id)
     {
         return DiagonalMultivector.TryGetValue(id, out var scalar)
             ? Processor.KVectorTerm(id, scalar)
@@ -105,12 +105,12 @@ public sealed class XGaDiagonalUnilinearMap<T> :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public IEnumerable<KeyValuePair<IIndexSet, XGaMultivector<T>>> GetMappedBasisBlades(int vSpaceDimensions)
+    public IEnumerable<KeyValuePair<IndexSet, XGaMultivector<T>>> GetMappedBasisBlades(int vSpaceDimensions)
     {
         return DiagonalMultivector
             .Where(p => p.Key.VSpaceDimensions() <= vSpaceDimensions)
             .Select(p => 
-                new KeyValuePair<IIndexSet, XGaMultivector<T>>(
+                new KeyValuePair<IndexSet, XGaMultivector<T>>(
                     p.Key, 
                     Processor.KVectorTerm(p.Key, p.Value)
                 )
@@ -138,7 +138,7 @@ public sealed class XGaDiagonalUnilinearMap<T> :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public IEnumerator<KeyValuePair<IIndexSet, T>> GetEnumerator()
+    public IEnumerator<KeyValuePair<IndexSet, T>> GetEnumerator()
     {
         return DiagonalMultivector.GetEnumerator();
     }

@@ -72,7 +72,7 @@ public static class XGaFloat64MultivectorUtils
 
         
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static XGaFloat64Multivector GetPart(this XGaFloat64Multivector mv, Func<IIndexSet, bool> filterFunc)
+    public static XGaFloat64Multivector GetPart(this XGaFloat64Multivector mv, Func<IndexSet, bool> filterFunc)
     {
         return mv switch
         {
@@ -102,7 +102,7 @@ public static class XGaFloat64MultivectorUtils
     }
         
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static XGaFloat64Multivector GetPart(this XGaFloat64Multivector mv, Func<IIndexSet, double, bool> filterFunc)
+    public static XGaFloat64Multivector GetPart(this XGaFloat64Multivector mv, Func<IndexSet, double, bool> filterFunc)
     {
         return mv switch
         {
@@ -175,7 +175,7 @@ public static class XGaFloat64MultivectorUtils
                 .CreateComposer()
                 .AddTerms(
                     mv.IdScalarPairs.Select(
-                        term => new KeyValuePair<IIndexSet, double>(
+                        term => new KeyValuePair<IndexSet, double>(
                             term.Key,
                             scalarMapping(term.Value)
                         )
@@ -185,7 +185,7 @@ public static class XGaFloat64MultivectorUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static XGaFloat64Multivector MapScalars(this XGaFloat64Multivector mv, Func<IIndexSet, double, double> scalarMapping)
+    public static XGaFloat64Multivector MapScalars(this XGaFloat64Multivector mv, Func<IndexSet, double, double> scalarMapping)
     {
         return mv switch
         {
@@ -199,7 +199,7 @@ public static class XGaFloat64MultivectorUtils
                 .CreateComposer()
                 .AddTerms(
                     mv.IdScalarPairs.Select(
-                        term => new KeyValuePair<IIndexSet, double>(
+                        term => new KeyValuePair<IndexSet, double>(
                             term.Key,
                             scalarMapping(term.Key, term.Value)
                         )
@@ -209,11 +209,11 @@ public static class XGaFloat64MultivectorUtils
     }
         
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static XGaFloat64Multivector MapBasisBlades(this XGaFloat64Multivector mv, Func<IIndexSet, IIndexSet> basisMapping)
+    public static XGaFloat64Multivector MapBasisBlades(this XGaFloat64Multivector mv, Func<IndexSet, IndexSet> basisMapping)
     {
         var termList =
             mv.IdScalarPairs.Select(
-                term => new KeyValuePair<IIndexSet, double>(
+                term => new KeyValuePair<IndexSet, double>(
                     basisMapping(term.Key),
                     term.Value
                 )
@@ -226,11 +226,11 @@ public static class XGaFloat64MultivectorUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static XGaFloat64Multivector MapBasisBlades(this XGaFloat64Multivector mv, Func<IIndexSet, double, IIndexSet> basisMapping)
+    public static XGaFloat64Multivector MapBasisBlades(this XGaFloat64Multivector mv, Func<IndexSet, double, IndexSet> basisMapping)
     {
         var termList =
             mv.IdScalarPairs.Select(
-                term => new KeyValuePair<IIndexSet, double>(
+                term => new KeyValuePair<IndexSet, double>(
                     basisMapping(term.Key, term.Value),
                     term.Value
                 )
@@ -243,7 +243,7 @@ public static class XGaFloat64MultivectorUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static XGaFloat64Multivector MapTerms(this XGaFloat64Multivector mv, Func<IIndexSet, double, KeyValuePair<IIndexSet, double>> termMapping)
+    public static XGaFloat64Multivector MapTerms(this XGaFloat64Multivector mv, Func<IndexSet, double, KeyValuePair<IndexSet, double>> termMapping)
     {
         var termList =
             mv.IdScalarPairs.Select(

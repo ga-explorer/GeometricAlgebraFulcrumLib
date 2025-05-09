@@ -11,9 +11,9 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Extended.Float64.L
 
 public class XGaFloat64StoredUnilinearMap :
     IXGaFloat64UnilinearMap,
-    IReadOnlyDictionary<IIndexSet, XGaFloat64Multivector>
+    IReadOnlyDictionary<IndexSet, XGaFloat64Multivector>
 {
-    private readonly IReadOnlyDictionary<IIndexSet, XGaFloat64Multivector> _basisMapDictionary;
+    private readonly IReadOnlyDictionary<IndexSet, XGaFloat64Multivector> _basisMapDictionary;
 
     public XGaFloat64Processor Processor { get; }
         
@@ -23,19 +23,19 @@ public class XGaFloat64StoredUnilinearMap :
     public int Count 
         => _basisMapDictionary.Count;
     
-    public IEnumerable<IIndexSet> Keys 
+    public IEnumerable<IndexSet> Keys 
         => _basisMapDictionary.Keys;
 
     public IEnumerable<XGaFloat64Multivector> Values 
         => _basisMapDictionary.Values;
     
-    public XGaFloat64Multivector this[IIndexSet key] 
+    public XGaFloat64Multivector this[IndexSet key] 
         => _basisMapDictionary.TryGetValue(key, out var mv)
             ? mv : Processor.ScalarZero;
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    internal XGaFloat64StoredUnilinearMap(XGaFloat64Processor processor, IReadOnlyDictionary<IIndexSet, XGaFloat64Multivector> idMultivectorDictionary)
+    internal XGaFloat64StoredUnilinearMap(XGaFloat64Processor processor, IReadOnlyDictionary<IndexSet, XGaFloat64Multivector> idMultivectorDictionary)
     {
         Processor = processor;
         _basisMapDictionary = idMultivectorDictionary;
@@ -55,13 +55,13 @@ public class XGaFloat64StoredUnilinearMap :
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool ContainsKey(IIndexSet key)
+    public bool ContainsKey(IndexSet key)
     {
         return _basisMapDictionary.ContainsKey(key);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool TryGetValue(IIndexSet key, out XGaFloat64Multivector value)
+    public bool TryGetValue(IndexSet key, out XGaFloat64Multivector value)
     {
         return _basisMapDictionary.TryGetValue(key, out value);
     }
@@ -72,7 +72,7 @@ public class XGaFloat64StoredUnilinearMap :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public XGaFloat64Multivector MapBasisBlade(IIndexSet id)
+    public XGaFloat64Multivector MapBasisBlade(IndexSet id)
     {
         return _basisMapDictionary.TryGetValue(id, out var mv)
             ? mv
@@ -108,12 +108,12 @@ public class XGaFloat64StoredUnilinearMap :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public IEnumerable<KeyValuePair<IIndexSet, XGaFloat64Multivector>> GetMappedBasisBlades(int vSpaceDimensions)
+    public IEnumerable<KeyValuePair<IndexSet, XGaFloat64Multivector>> GetMappedBasisBlades(int vSpaceDimensions)
     {
         return _basisMapDictionary
             .Where(p => p.Key.VSpaceDimensions() <= vSpaceDimensions)
             .Select(p => 
-                new KeyValuePair<IIndexSet, XGaFloat64Multivector>(p.Key, p.Value)
+                new KeyValuePair<IndexSet, XGaFloat64Multivector>(p.Key, p.Value)
             );
     }
         
@@ -131,10 +131,9 @@ public class XGaFloat64StoredUnilinearMap :
         if (rowCount < minRowCount)
             throw new InvalidOperationException();
 
-        var maxId = _basisMapDictionary.Keys.Max() ?? EmptyIndexSet.Instance;
+        var maxId = _basisMapDictionary.Keys.Max();
 
-        if (!maxId.TryGetUInt64BitPattern(out var minColCount))
-            throw new InvalidOperationException();
+        var minColCount = maxId.ToUInt64();
 
         if ((ulong) colCount < minColCount)
             throw new InvalidOperationException();
@@ -155,7 +154,7 @@ public class XGaFloat64StoredUnilinearMap :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public IEnumerator<KeyValuePair<IIndexSet, XGaFloat64Multivector>> GetEnumerator()
+    public IEnumerator<KeyValuePair<IndexSet, XGaFloat64Multivector>> GetEnumerator()
     {
         return _basisMapDictionary.GetEnumerator();
     }

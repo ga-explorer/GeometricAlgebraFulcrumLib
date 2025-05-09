@@ -8,9 +8,9 @@ public interface IXGaUnilinearMap<T> :
 {
     IXGaUnilinearMap<T> GetAdjoint();
     
-    XGaMultivector<T> MapBasisBlade(IIndexSet id);
+    XGaMultivector<T> MapBasisBlade(IndexSet id);
     
     XGaMultivector<T> Map(XGaMultivector<T> multivector);
     
-    IEnumerable<KeyValuePair<IIndexSet, XGaMultivector<T>>> GetMappedBasisBlades(int vSpaceDimensions);
+    IEnumerable<KeyValuePair<IndexSet, XGaMultivector<T>>> GetMappedBasisBlades(int vSpaceDimensions);
 }

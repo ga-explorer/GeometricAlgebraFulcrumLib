@@ -1,8 +1,8 @@
 ﻿using System.Runtime.CompilerServices;
 using GeometricAlgebraFulcrumLib.Modeling.Calculus.Functions.Float64.Polynomials;
-using GeometricAlgebraFulcrumLib.Utilities.Structures.Basic;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Collections;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Extensions;
+using GeometricAlgebraFulcrumLib.Utilities.Structures.Tuples;
 using MathNet.Numerics;
 
 namespace GeometricAlgebraFulcrumLib.Modeling.Signals.Interpolators;

@@ -6,8 +6,8 @@ using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Float64.Pro
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Float64.Decoding;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Float64.Visualizer;
-using GeometricAlgebraFulcrumLib.Utilities.Structures.Basic;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.BitManipulation;
+using GeometricAlgebraFulcrumLib.Utilities.Structures.Tuples;
 
 namespace GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Float64.Blades;
 

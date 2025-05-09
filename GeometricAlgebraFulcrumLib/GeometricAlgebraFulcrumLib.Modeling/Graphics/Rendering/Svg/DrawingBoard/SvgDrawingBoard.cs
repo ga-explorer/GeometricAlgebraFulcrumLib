@@ -1,8 +1,8 @@
 ﻿using System.Collections;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.Borders;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.Borders.Space2D.Float64;
-using GeometricAlgebraFulcrumLib.Utilities.Structures.Basic;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Extensions;
+using GeometricAlgebraFulcrumLib.Utilities.Structures.Tuples;
 using GeometricAlgebraFulcrumLib.Utilities.Web.Html.Media;
 using GeometricAlgebraFulcrumLib.Utilities.Web.Svg;
 using GeometricAlgebraFulcrumLib.Utilities.Web.Svg.Elements.Containers;

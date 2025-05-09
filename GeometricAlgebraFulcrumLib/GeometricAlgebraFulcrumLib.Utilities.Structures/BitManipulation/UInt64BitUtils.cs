@@ -2,7 +2,7 @@
 using System.Numerics;
 using System.Runtime.CompilerServices;
 using System.Text;
-using GeometricAlgebraFulcrumLib.Utilities.Structures.Basic;
+using GeometricAlgebraFulcrumLib.Utilities.Structures.Tuples;
 
 namespace GeometricAlgebraFulcrumLib.Utilities.Structures.BitManipulation;
 
@@ -82,15 +82,15 @@ public static class UInt64BitUtils
     public static int MaxBitPatternSize => 64;
 
 
-    private static readonly ulong[] Log2CeilingArray = new[]
-    {
+    private static readonly ulong[] Log2CeilingArray =
+    [
         0xFFFFFFFF00000000UL,
         0x00000000FFFF0000UL,
         0x000000000000FF00UL,
         0x00000000000000F0UL,
         0x000000000000000CUL,
         0x0000000000000002UL
-    };
+    ];
 
     /// <summary>
     /// https://stackoverflow.com/questions/3272424/compute-fast-log-base-2-ceiling
@@ -1323,43 +1323,90 @@ public static class UInt64BitUtils
     /// </summary>
     /// <param name="bitPattern"></param>
     /// <returns></returns>
-    public static IEnumerable<int> PatternToPositions(this ulong bitPattern)
+    public static IEnumerable<int> GetSetBitPositions(this ulong bitPattern)
     {
-        if (bitPattern == 0) yield break;
+        while (bitPattern != 0)
+        {
+            yield return BitOperations.TrailingZeroCount(bitPattern);
+
+            bitPattern &= bitPattern - 1; // Clear the least significant bit
+        }
+
+        //if (bitPattern == 0) yield break;
             
-        var bitPosition1 = BitOperations.TrailingZeroCount(bitPattern);
-        var bitPosition2 = 63 - BitOperations.LeadingZeroCount(bitPattern);
+        //var bitPosition1 = BitOperations.TrailingZeroCount(bitPattern);
+        //var bitPosition2 = 63 - BitOperations.LeadingZeroCount(bitPattern);
 
-        if (bitPosition1 == bitPosition2)
-        {
-            if ((bitPattern & (1UL << bitPosition1)) != 0ul)
-                yield return bitPosition1;
-        }
-        else
-        {
-            for (var bitPosition = bitPosition1; bitPosition <= bitPosition2; bitPosition++)
-            {
-                if ((bitPattern & (1UL << bitPosition)) != 0ul)
-                    yield return bitPosition;
-            }
-        }
-
-        //var bitPosition = bitPattern.FirstOneBitPosition();
-
-        //while (bitPattern > 0)
+        //if (bitPosition1 == bitPosition2)
         //{
-        //    if ((bitPattern & 1ul) != 0ul)
-        //        yield return bitPosition;
-
-        //    bitPosition++;
-        //    bitPattern >>= 1;
+        //    if ((bitPattern & (1UL << bitPosition1)) != 0ul)
+        //        yield return bitPosition1;
         //}
+        //else
+        //{
+        //    for (var bitPosition = bitPosition1; bitPosition <= bitPosition2; bitPosition++)
+        //    {
+        //        if ((bitPattern & (1UL << bitPosition)) != 0ul)
+        //            yield return bitPosition;
+        //    }
+        //}
+
+        ////var bitPosition = bitPattern.FirstOneBitPosition();
+
+        ////while (bitPattern > 0)
+        ////{
+        ////    if ((bitPattern & 1ul) != 0ul)
+        ////        yield return bitPosition;
+
+        ////    bitPosition++;
+        ////    bitPattern >>= 1;
+        ////}
+    }
+    
+    /// <summary>
+    /// Converts an ulong bit pattern into an array containing the positions of set bits (1s),
+    /// ordered from the least significant bit (0 min) to most (63 max).
+    /// </summary>
+    public static int[] GetSetBitPositionsAsArray(this ulong value)
+    {
+        var n = BitOperations.PopCount(value);
+        var indexArray = new int[n];
+        var count = 0;
+
+        while (value != 0)
+        {
+            var position = BitOperations.TrailingZeroCount(value);
+            indexArray[count++] = position;
+            value &= value - 1; // Clear the least significant bit
+        }
+
+        return indexArray;
+    }
+
+    /// <summary>
+    /// Converts an ulong bit pattern into a ReadOnlySpan containing the positions of set bits (1s),
+    /// ordered from the least significant bit (0 min) to most (63 max).
+    /// </summary>
+    public static ReadOnlySpan<int> GetSetBitPositionsAsSpan(this ulong value)
+    {
+        var n = BitOperations.PopCount(value);
+        Span<int> buffer = new int[n];
+        var count = 0;
+
+        while (value != 0)
+        {
+            var position = BitOperations.TrailingZeroCount(value);
+            buffer[count++] = position;
+            value &= value - 1; // Clear the least significant bit
+        }
+
+        return buffer;
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static IEnumerable<T> PatternToMappedPositions<T>(this ulong bitPattern, Func<int, T> indexMapping)
+    public static IEnumerable<T> GetSetBitMappedPositions<T>(this ulong bitPattern, Func<int, T> indexMapping)
     {
-        return bitPattern.PatternToPositions().Select(indexMapping);
+        return bitPattern.GetSetBitPositions().Select(indexMapping);
     }
 
     /// <summary>
@@ -1367,7 +1414,7 @@ public static class UInt64BitUtils
     /// </summary>
     /// <param name="bitPattern"></param>
     /// <returns></returns>
-    public static IEnumerable<int> PatternToPositionsReversed(this ulong bitPattern)
+    public static IEnumerable<int> GetSetBitPositionsReversed(this ulong bitPattern)
     {
         if (bitPattern == 0) yield break;
             
@@ -1791,7 +1838,7 @@ public static class UInt64BitUtils
             yield break;
 
         //Find proper sub patterns that are not zero and nor equal to the original pattern
-        var bitPositions = PatternToPositions(bitPattern).ToArray();
+        var bitPositions = GetSetBitPositions(bitPattern).ToArray();
         var count = (1ul << bitPositions.Length) - 1ul;
 
         for (var p = 1ul; p < count; p++)
@@ -1816,7 +1863,7 @@ public static class UInt64BitUtils
             yield break;
 
         //Find proper sub patterns that are not zero and not equal to the original pattern
-        var bitPositions = PatternToPositions(bitPattern).ToArray();
+        var bitPositions = GetSetBitPositions(bitPattern).ToArray();
         var count = (1ul << bitPositions.Length) - 1ul;
 
         for (var p = 1ul; p < count; p++)
@@ -2233,4 +2280,54 @@ public static class UInt64BitUtils
             ? new Triplet<ulong>(b, c, a)
             : new Triplet<ulong>(c, b, a);
     }
+
+    
+    /// <summary>
+    /// Gets the position of the k-th set bit (1) in the bit pattern,
+    /// scanning from LSB (bit 0) to MSB (bit 63).
+    /// </summary>
+    /// <param name="bits">The ulong bit pattern</param>
+    /// <param name="index">The zero-based index of the bit to find</param>
+    /// <returns>The position of the k-th set bit, or null if not enough bits are set.</returns>
+    public static int GetNthSetBitPosition(this ulong bits, int index)
+    {
+        var count = 0;
+
+        while (bits != 0 && count <= index)
+        {
+            var trailingZeros = BitOperations.TrailingZeroCount(bits);
+            if (count == index)
+                return trailingZeros;
+
+            bits >>= trailingZeros + 1;
+            count++;
+        }
+
+        throw new IndexOutOfRangeException(); // Not enough set bits
+    }
+
+    /// <summary>
+    /// Gets the position of the k-th set bit (1) in the bit pattern,
+    /// scanning from LSB (bit 0) to MSB (bit 63).
+    /// </summary>
+    /// <param name="bits">The ulong bit pattern</param>
+    /// <param name="index">The zero-based index of the bit to find</param>
+    /// <returns>The position of the k-th set bit, or null if not enough bits are set.</returns>
+    public static int TryGetNthSetBitPosition(this ulong bits, int index)
+    {
+        var count = 0;
+
+        while (bits != 0 && count <= index)
+        {
+            var trailingZeros = BitOperations.TrailingZeroCount(bits);
+            if (count == index)
+                return trailingZeros;
+
+            bits >>= trailingZeros + 1;
+            count++;
+        }
+
+        return -1; // Not enough set bits
+    }
+    
 }

@@ -3,8 +3,8 @@ using System.Collections.Immutable;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Extended.Basis;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Extended.Float64.Multivectors;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
-using GeometricAlgebraFulcrumLib.Utilities.Structures.Basic;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.IndexSets;
+using GeometricAlgebraFulcrumLib.Utilities.Structures.Tuples;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Extended.Float64.Combinations;
 
@@ -12,7 +12,7 @@ public class XGaFloat64TrilinearCombination :
     IReadOnlyCollection<XGaFloat64TrilinearCombinationTerm>, 
     IXGaLinearCombination
 {
-    private readonly Dictionary<Quad<IIndexSet>, XGaFloat64TrilinearCombinationTerm> _termList;
+    private readonly Dictionary<Quad<IndexSet>, XGaFloat64TrilinearCombinationTerm> _termList;
 
 
     public XGaFloat64TrilinearCombinationTerm.InputsKind InputsKind { get; }
@@ -27,10 +27,10 @@ public class XGaFloat64TrilinearCombination :
     public XGaFloat64TrilinearCombination(XGaFloat64TrilinearCombinationTerm.InputsKind inputsKind)
     {
         InputsKind = inputsKind;
-        _termList = new Dictionary<Quad<IIndexSet>, XGaFloat64TrilinearCombinationTerm>();
+        _termList = new Dictionary<Quad<IndexSet>, XGaFloat64TrilinearCombinationTerm>();
     }
 
-    public XGaFloat64TrilinearCombination(XGaFloat64TrilinearCombinationTerm.InputsKind inputsKind, Dictionary<Quad<IIndexSet>, XGaFloat64TrilinearCombinationTerm> termList)
+    public XGaFloat64TrilinearCombination(XGaFloat64TrilinearCombinationTerm.InputsKind inputsKind, Dictionary<Quad<IndexSet>, XGaFloat64TrilinearCombinationTerm> termList)
     {
         InputsKind = inputsKind;
         _termList = termList;
@@ -129,7 +129,7 @@ public class XGaFloat64TrilinearCombination :
         return this;
     }
 
-    public XGaFloat64TrilinearCombination Add(Float64Scalar inputScalar, XGaMetric metric, IIndexSet input1BasisBladeId, IIndexSet input2BasisBladeId, IIndexSet input3BasisBladeId, IIndexSet outputBasisBladeId)
+    public XGaFloat64TrilinearCombination Add(Float64Scalar inputScalar, XGaMetric metric, IndexSet input1BasisBladeId, IndexSet input2BasisBladeId, IndexSet input3BasisBladeId, IndexSet outputBasisBladeId)
     {
         var term = XGaFloat64TrilinearCombinationTerm.Create(
             inputScalar,
@@ -233,7 +233,7 @@ public class XGaFloat64TrilinearCombination :
         return this;
     }
 
-    public IReadOnlyList<IIndexSet> GetInputBasisBladeIDs()
+    public IReadOnlyList<IndexSet> GetInputBasisBladeIDs()
     {
         return _termList
             .Values
@@ -243,7 +243,7 @@ public class XGaFloat64TrilinearCombination :
             .ToImmutableSortedSet();
     }
     
-    public IReadOnlyList<IIndexSet> GetInput12BasisBladeIDs()
+    public IReadOnlyList<IndexSet> GetInput12BasisBladeIDs()
     {
         return InputsKind switch
         {
@@ -264,7 +264,7 @@ public class XGaFloat64TrilinearCombination :
         };
     }
     
-    public IReadOnlyList<IIndexSet> GetInput13BasisBladeIDs()
+    public IReadOnlyList<IndexSet> GetInput13BasisBladeIDs()
     {
         return InputsKind switch
         {
@@ -285,7 +285,7 @@ public class XGaFloat64TrilinearCombination :
         };
     }
     
-    public IReadOnlyList<IIndexSet> GetInput23BasisBladeIDs()
+    public IReadOnlyList<IndexSet> GetInput23BasisBladeIDs()
     {
         return InputsKind switch
         {
@@ -306,7 +306,7 @@ public class XGaFloat64TrilinearCombination :
         };
     }
 
-    public IReadOnlyList<IIndexSet> GetInput1BasisBladeIDs()
+    public IReadOnlyList<IndexSet> GetInput1BasisBladeIDs()
     {
         return InputsKind switch
         {
@@ -326,7 +326,7 @@ public class XGaFloat64TrilinearCombination :
         };
     }
     
-    public IReadOnlyList<IIndexSet> GetInput2BasisBladeIDs()
+    public IReadOnlyList<IndexSet> GetInput2BasisBladeIDs()
     {
         return InputsKind switch
         {
@@ -346,7 +346,7 @@ public class XGaFloat64TrilinearCombination :
         };
     }
     
-    public IReadOnlyList<IIndexSet> GetInput3BasisBladeIDs()
+    public IReadOnlyList<IndexSet> GetInput3BasisBladeIDs()
     {
         return InputsKind switch
         {
@@ -366,7 +366,7 @@ public class XGaFloat64TrilinearCombination :
         };
     }
 
-    public IReadOnlyList<IIndexSet> GetOutputBasisBladeIDs()
+    public IReadOnlyList<IndexSet> GetOutputBasisBladeIDs()
     {
         return _termList
             .Values
@@ -515,7 +515,7 @@ public class XGaFloat64TrilinearCombination :
             .ToImmutableSortedSet();
     }
 
-    public XGaFloat64TrilinearCombination GetSubCombinationWithOutputId(IIndexSet outputBasisBladeId)
+    public XGaFloat64TrilinearCombination GetSubCombinationWithOutputId(IndexSet outputBasisBladeId)
     {
         var termList =
             _termList

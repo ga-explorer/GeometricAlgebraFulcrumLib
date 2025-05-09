@@ -22,7 +22,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Extended.Float64.M
 public sealed partial class XGaFloat64UniformMultivector :
     XGaFloat64Multivector
 {
-    private readonly IReadOnlyDictionary<IIndexSet, double> _idScalarDictionary;
+    private readonly IReadOnlyDictionary<IndexSet, double> _idScalarDictionary;
 
 
     public override string MultivectorClassName
@@ -43,13 +43,13 @@ public sealed partial class XGaFloat64UniformMultivector :
     public override IEnumerable<XGaBasisBlade> BasisBlades
         => _idScalarDictionary.Keys.Select(Metric.CreateBasisBlade);
 
-    public override IEnumerable<IIndexSet> Ids
+    public override IEnumerable<IndexSet> Ids
         => _idScalarDictionary.Keys;
 
     public override IEnumerable<double> Scalars
         => _idScalarDictionary.Values;
 
-    public override IEnumerable<KeyValuePair<IIndexSet, double>> IdScalarPairs
+    public override IEnumerable<KeyValuePair<IndexSet, double>> IdScalarPairs
         => _idScalarDictionary;
 
     public override IEnumerable<KeyValuePair<XGaBasisBlade, double>> BasisScalarPairs
@@ -67,15 +67,15 @@ public sealed partial class XGaFloat64UniformMultivector :
         : base(processor)
     {
         _idScalarDictionary =
-            new EmptyDictionary<IIndexSet, double>();
+            new EmptyDictionary<IndexSet, double>();
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    internal XGaFloat64UniformMultivector(XGaFloat64Processor processor, KeyValuePair<IIndexSet, double> basisScalarPair)
+    internal XGaFloat64UniformMultivector(XGaFloat64Processor processor, KeyValuePair<IndexSet, double> basisScalarPair)
         : base(processor)
     {
         _idScalarDictionary =
-            new SingleItemDictionary<IIndexSet, double>(basisScalarPair);
+            new SingleItemDictionary<IndexSet, double>(basisScalarPair);
 
         Debug.Assert(
             _idScalarDictionary.IsValidMultivectorDictionary()
@@ -83,7 +83,7 @@ public sealed partial class XGaFloat64UniformMultivector :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    internal XGaFloat64UniformMultivector(XGaFloat64Processor processor, IReadOnlyDictionary<IIndexSet, double> idScalarDictionary)
+    internal XGaFloat64UniformMultivector(XGaFloat64Processor processor, IReadOnlyDictionary<IndexSet, double> idScalarDictionary)
         : base(processor)
     {
         _idScalarDictionary =
@@ -216,7 +216,7 @@ public sealed partial class XGaFloat64UniformMultivector :
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public IReadOnlyDictionary<IIndexSet, double> GetIdScalarDictionary()
+    public IReadOnlyDictionary<IndexSet, double> GetIdScalarDictionary()
     {
         return _idScalarDictionary;
     }
@@ -234,7 +234,7 @@ public sealed partial class XGaFloat64UniformMultivector :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public override bool ContainsKey(IIndexSet key)
+    public override bool ContainsKey(IndexSet key)
     {
         return !IsZero && _idScalarDictionary.ContainsKey(key);
     }
@@ -303,11 +303,11 @@ public sealed partial class XGaFloat64UniformMultivector :
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public override double Scalar()
     {
-        return _idScalarDictionary.GetValueOrDefault(EmptyIndexSet.Instance, 0d);
+        return _idScalarDictionary.GetValueOrDefault(IndexSet.EmptySet, 0d);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public override double GetBasisBladeScalar(IIndexSet basisBladeId)
+    public override double GetBasisBladeScalar(IndexSet basisBladeId)
     {
         return _idScalarDictionary.GetValueOrDefault(basisBladeId, 0d);
     }
@@ -316,7 +316,7 @@ public sealed partial class XGaFloat64UniformMultivector :
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public override bool TryGetScalarValue(out double scalar)
     {
-        if (_idScalarDictionary.TryGetValue(EmptyIndexSet.Instance, out scalar))
+        if (_idScalarDictionary.TryGetValue(IndexSet.EmptySet, out scalar))
             return true;
 
         scalar = 0d;
@@ -324,7 +324,7 @@ public sealed partial class XGaFloat64UniformMultivector :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public override bool TryGetBasisBladeScalarValue(IIndexSet basisBlade, out double scalar)
+    public override bool TryGetBasisBladeScalarValue(IndexSet basisBlade, out double scalar)
     {
         if (_idScalarDictionary.TryGetValue(basisBlade, out scalar))
             return true;
@@ -337,7 +337,7 @@ public sealed partial class XGaFloat64UniformMultivector :
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public override XGaFloat64Scalar GetScalarPart()
     {
-        return _idScalarDictionary.TryGetValue(EmptyIndexSet.Instance, out var scalarValue)
+        return _idScalarDictionary.TryGetValue(IndexSet.EmptySet, out var scalarValue)
             ? Processor.Scalar(scalarValue)
             : Processor.ScalarZero;
     }
@@ -373,7 +373,7 @@ public sealed partial class XGaFloat64UniformMultivector :
     }
         
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public XGaFloat64UniformMultivector GetPart(Func<IIndexSet, bool> filterFunc)
+    public XGaFloat64UniformMultivector GetPart(Func<IndexSet, bool> filterFunc)
     {
         if (IsZero) return this;
 
@@ -405,7 +405,7 @@ public sealed partial class XGaFloat64UniformMultivector :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public XGaFloat64UniformMultivector GetPart(Func<IIndexSet, double, bool> filterFunc)
+    public XGaFloat64UniformMultivector GetPart(Func<IndexSet, double, bool> filterFunc)
     {
         if (IsZero) return this;
 

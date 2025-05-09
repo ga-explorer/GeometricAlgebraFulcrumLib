@@ -5,7 +5,7 @@ using System.Text;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space3D;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.Borders.Space3D.Float64;
-using GeometricAlgebraFulcrumLib.Utilities.Structures.Basic;
+using GeometricAlgebraFulcrumLib.Utilities.Structures.Tuples;
 using LinFloat64Vector3DAffineUtils = GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space3D.LinFloat64Vector3DAffineUtils;
 
 // ReSharper disable InconsistentNaming

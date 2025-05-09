@@ -13,10 +13,10 @@ public sealed record EmptyDictionary<TKey, TValue> :
         => throw new KeyNotFoundException();
 
     public IEnumerable<TKey> Keys
-        => Enumerable.Empty<TKey>();
+        => [];
 
     public IEnumerable<TValue> Values 
-        => Enumerable.Empty<TValue>();
+        => [];
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]

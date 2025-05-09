@@ -13,7 +13,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Extended.Generic.M
 public sealed partial class XGaHigherKVector<T> :
     XGaKVector<T>
 {
-    private readonly IReadOnlyDictionary<IIndexSet, T> _idScalarDictionary;
+    private readonly IReadOnlyDictionary<IndexSet, T> _idScalarDictionary;
 
 
     public override string MultivectorClassName
@@ -38,13 +38,13 @@ public sealed partial class XGaHigherKVector<T> :
     public override IEnumerable<XGaBasisBlade> BasisBlades
         => _idScalarDictionary.Keys.Select(Processor.CreateBasisBlade);
 
-    public override IEnumerable<IIndexSet> Ids 
+    public override IEnumerable<IndexSet> Ids 
         => _idScalarDictionary.Keys;
 
     public override IEnumerable<T> Scalars
         => _idScalarDictionary.Values;
 
-    public override IEnumerable<KeyValuePair<IIndexSet, T>> IdScalarPairs
+    public override IEnumerable<KeyValuePair<IndexSet, T>> IdScalarPairs
         => _idScalarDictionary;
 
 
@@ -55,13 +55,13 @@ public sealed partial class XGaHigherKVector<T> :
         if (grade < 3)
             throw new ArgumentOutOfRangeException(nameof(grade));
 
-        _idScalarDictionary = new EmptyDictionary<IIndexSet, T>();
+        _idScalarDictionary = new EmptyDictionary<IndexSet, T>();
 
         Grade = grade;
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    internal XGaHigherKVector(XGaProcessor<T> processor, KeyValuePair<IIndexSet, T> basisScalarPair)
+    internal XGaHigherKVector(XGaProcessor<T> processor, KeyValuePair<IndexSet, T> basisScalarPair)
         : base(processor)
     {
         var grade = basisScalarPair.Key.Count;
@@ -70,7 +70,7 @@ public sealed partial class XGaHigherKVector<T> :
             throw new ArgumentOutOfRangeException(nameof(grade));
 
         _idScalarDictionary =
-            new SingleItemDictionary<IIndexSet, T>(basisScalarPair);
+            new SingleItemDictionary<IndexSet, T>(basisScalarPair);
 
         Grade = grade;
 
@@ -78,7 +78,7 @@ public sealed partial class XGaHigherKVector<T> :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    internal XGaHigherKVector(XGaProcessor<T> processor, int grade, IReadOnlyDictionary<IIndexSet, T> indexScalarDictionary)
+    internal XGaHigherKVector(XGaProcessor<T> processor, int grade, IReadOnlyDictionary<IndexSet, T> indexScalarDictionary)
         : base(processor)
     {
         if (grade < 3)
@@ -99,13 +99,13 @@ public sealed partial class XGaHigherKVector<T> :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public override IReadOnlyDictionary<IIndexSet, T> GetIdScalarDictionary()
+    public override IReadOnlyDictionary<IndexSet, T> GetIdScalarDictionary()
     {
         return _idScalarDictionary;
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public override bool ContainsKey(IIndexSet key)
+    public override bool ContainsKey(IndexSet key)
     {
         return !IsZero && _idScalarDictionary.ContainsKey(key);
     }
@@ -137,7 +137,7 @@ public sealed partial class XGaHigherKVector<T> :
     }
         
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public XGaHigherKVector<T> GetPart(Func<IIndexSet, bool> filterFunc)
+    public XGaHigherKVector<T> GetPart(Func<IndexSet, bool> filterFunc)
     {
         if (IsZero) return this;
 
@@ -163,7 +163,7 @@ public sealed partial class XGaHigherKVector<T> :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public XGaHigherKVector<T> GetPart(Func<IIndexSet, T, bool> filterFunc)
+    public XGaHigherKVector<T> GetPart(Func<IndexSet, T, bool> filterFunc)
     {
         if (IsZero) return this;
 
@@ -183,7 +183,7 @@ public sealed partial class XGaHigherKVector<T> :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public override Scalar<T> GetBasisBladeScalar(IIndexSet basisBlade)
+    public override Scalar<T> GetBasisBladeScalar(IndexSet basisBlade)
     {
         return _idScalarDictionary.TryGetValue(basisBlade, out var scalar)
             ? ScalarProcessor.ScalarFromValue(scalar)
@@ -199,7 +199,7 @@ public sealed partial class XGaHigherKVector<T> :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public override bool TryGetBasisBladeScalarValue(IIndexSet basisBlade, out T scalar)
+    public override bool TryGetBasisBladeScalarValue(IndexSet basisBlade, out T scalar)
     {
         if (basisBlade.Count == Grade && _idScalarDictionary.TryGetValue(basisBlade, out scalar))
             return true;

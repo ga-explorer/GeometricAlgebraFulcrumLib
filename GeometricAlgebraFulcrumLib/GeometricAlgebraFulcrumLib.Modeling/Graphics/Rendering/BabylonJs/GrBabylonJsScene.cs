@@ -9,7 +9,7 @@ using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.BabylonJs.Materials
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.BabylonJs.Meshes;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.BabylonJs.Textures;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.BabylonJs.Values;
-using GeometricAlgebraFulcrumLib.Utilities.Structures.Basic;
+using GeometricAlgebraFulcrumLib.Utilities.Structures.Tuples;
 using GeometricAlgebraFulcrumLib.Utilities.Text.Text;
 using SixLabors.ImageSharp.PixelFormats;
 

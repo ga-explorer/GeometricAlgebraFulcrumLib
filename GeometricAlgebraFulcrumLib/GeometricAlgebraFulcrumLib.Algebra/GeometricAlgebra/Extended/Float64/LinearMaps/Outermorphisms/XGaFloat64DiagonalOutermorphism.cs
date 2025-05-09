@@ -74,17 +74,17 @@ public sealed class XGaFloat64DiagonalOutermorphism :
     }
         
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public XGaFloat64KVector OmMapBasisBlade(IIndexSet id)
+    public XGaFloat64KVector OmMapBasisBlade(IndexSet id)
     {
         var scalar = 1d;
 
         if (id.IsEmptySet)
             return Processor.Scalar(scalar);
 
-        if (id.IsSingleIndexSet)
+        if (id.IsUnitSet)
             return OmMapBasisVector(id.FirstIndex);
 
-        if (id.IsIndexPairSet)
+        if (id.IsPairSet)
             return OmMapBasisBivector(
                 id.FirstIndex,
                 id.LastIndex
@@ -211,7 +211,7 @@ public sealed class XGaFloat64DiagonalOutermorphism :
     }
         
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public XGaFloat64Multivector MapBasisBlade(IIndexSet id)
+    public XGaFloat64Multivector MapBasisBlade(IndexSet id)
     {
         return OmMapBasisBlade(id);
     }
@@ -224,13 +224,13 @@ public sealed class XGaFloat64DiagonalOutermorphism :
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public IEnumerable<KeyValuePair<IIndexSet, XGaFloat64Multivector>> GetMappedBasisBlades(int vSpaceDimensions)
+    public IEnumerable<KeyValuePair<IndexSet, XGaFloat64Multivector>> GetMappedBasisBlades(int vSpaceDimensions)
     {
         return DiagonalVector
             .Ids
             .Where(id => id.VSpaceDimensions() <= vSpaceDimensions)
             .Select(id => 
-                new KeyValuePair<IIndexSet, XGaFloat64Multivector>(
+                new KeyValuePair<IndexSet, XGaFloat64Multivector>(
                     id, 
                     OmMapBasisBlade(id)
                 )
@@ -238,13 +238,13 @@ public sealed class XGaFloat64DiagonalOutermorphism :
     }
         
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public IEnumerable<KeyValuePair<IIndexSet, XGaFloat64Vector>> GetOmMappedBasisVectors(int vSpaceDimensions)
+    public IEnumerable<KeyValuePair<IndexSet, XGaFloat64Vector>> GetOmMappedBasisVectors(int vSpaceDimensions)
     {
         return DiagonalVector
             .Ids
             .Where(id => id.VSpaceDimensions() <= vSpaceDimensions)
             .Select(id => 
-                new KeyValuePair<IIndexSet, XGaFloat64Vector>(
+                new KeyValuePair<IndexSet, XGaFloat64Vector>(
                     id, 
                     OmMapBasisVector(id.FirstIndex)
                 )

@@ -12,7 +12,7 @@ public static class XGaLinearMapUtils
             
         for (var colIndex = 0; colIndex < colCount; colIndex++)
         {
-            var id = ((ulong)colIndex).BitPatternToUInt64IndexSet();
+            var id = ((ulong)colIndex).BitPatternToIndexSet();
             var mv = map.MapBasisBlade(id);
 
             if (mv.IsZero)

@@ -13,7 +13,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Extended.Generic.M
 public sealed partial class XGaVector<T> :
     XGaKVector<T>
 {
-    private readonly IReadOnlyDictionary<IIndexSet, T> _idScalarDictionary;
+    private readonly IReadOnlyDictionary<IndexSet, T> _idScalarDictionary;
 
 
     public override string MultivectorClassName
@@ -36,7 +36,7 @@ public sealed partial class XGaVector<T> :
     public override bool IsZero
         => _idScalarDictionary.Count == 0;
 
-    public override IEnumerable<IIndexSet> Ids
+    public override IEnumerable<IndexSet> Ids
         => _idScalarDictionary.Keys;
 
     public override IEnumerable<T> Scalars
@@ -50,7 +50,7 @@ public sealed partial class XGaVector<T> :
             new KeyValuePair<int, T>(p.Key.FirstIndex, p.Value)
         );
 
-    public override IEnumerable<KeyValuePair<IIndexSet, T>> IdScalarPairs
+    public override IEnumerable<KeyValuePair<IndexSet, T>> IdScalarPairs
         => _idScalarDictionary;
 
 
@@ -58,21 +58,21 @@ public sealed partial class XGaVector<T> :
     internal XGaVector(XGaProcessor<T> processor)
         : base(processor)
     {
-        _idScalarDictionary = new EmptyDictionary<IIndexSet, T>();
+        _idScalarDictionary = new EmptyDictionary<IndexSet, T>();
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    internal XGaVector(XGaProcessor<T> processor, KeyValuePair<IIndexSet, T> basisScalarPair)
+    internal XGaVector(XGaProcessor<T> processor, KeyValuePair<IndexSet, T> basisScalarPair)
         : base(processor)
     {
         _idScalarDictionary =
-            new SingleItemDictionary<IIndexSet, T>(basisScalarPair);
+            new SingleItemDictionary<IndexSet, T>(basisScalarPair);
 
         Debug.Assert(IsValid());
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    internal XGaVector(XGaProcessor<T> processor, IReadOnlyDictionary<IIndexSet, T> idScalarDictionary)
+    internal XGaVector(XGaProcessor<T> processor, IReadOnlyDictionary<IndexSet, T> idScalarDictionary)
         : base(processor)
     {
         _idScalarDictionary = idScalarDictionary;
@@ -88,13 +88,13 @@ public sealed partial class XGaVector<T> :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public override IReadOnlyDictionary<IIndexSet, T> GetIdScalarDictionary()
+    public override IReadOnlyDictionary<IndexSet, T> GetIdScalarDictionary()
     {
         return _idScalarDictionary;
     }
         
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public override bool ContainsKey(IIndexSet key)
+    public override bool ContainsKey(IndexSet key)
     {
         return !IsZero && _idScalarDictionary.ContainsKey(key);
     }
@@ -145,7 +145,7 @@ public sealed partial class XGaVector<T> :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public XGaVector<T> GetPart(Func<IIndexSet, bool> filterFunc)
+    public XGaVector<T> GetPart(Func<IndexSet, bool> filterFunc)
     {
         if (IsZero) return this;
 
@@ -171,7 +171,7 @@ public sealed partial class XGaVector<T> :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public XGaVector<T> GetPart(Func<IIndexSet, T, bool> filterFunc)
+    public XGaVector<T> GetPart(Func<IndexSet, T, bool> filterFunc)
     {
         if (IsZero) return this;
 
@@ -194,7 +194,7 @@ public sealed partial class XGaVector<T> :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public override Scalar<T> GetBasisBladeScalar(IIndexSet basisBladeId)
+    public override Scalar<T> GetBasisBladeScalar(IndexSet basisBladeId)
     {
         return _idScalarDictionary.TryGetValue(basisBladeId, out var scalar)
             ? ScalarProcessor.ScalarFromValue(scalar)
@@ -210,9 +210,9 @@ public sealed partial class XGaVector<T> :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public override bool TryGetBasisBladeScalarValue(IIndexSet basisBladeId, out T scalar)
+    public override bool TryGetBasisBladeScalarValue(IndexSet basisBladeId, out T scalar)
     {
-        if (basisBladeId.IsSingleIndexSet && _idScalarDictionary.TryGetValue(basisBladeId, out scalar))
+        if (basisBladeId.IsUnitSet && _idScalarDictionary.TryGetValue(basisBladeId, out scalar))
             return true;
 
         scalar = ScalarProcessor.ZeroValue;

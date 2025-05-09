@@ -11,13 +11,13 @@ public static class XGaMetricUtils
 {
         
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static bool IsValidVectorDictionary<T>(this IReadOnlyDictionary<IIndexSet, T> basisScalarDictionary, XGaProcessor<T> processor)
+    public static bool IsValidVectorDictionary<T>(this IReadOnlyDictionary<IndexSet, T> basisScalarDictionary, XGaProcessor<T> processor)
     {
         return basisScalarDictionary.Count switch
         {
-            0 => basisScalarDictionary is EmptyDictionary<IIndexSet, T>,
+            0 => basisScalarDictionary is EmptyDictionary<IndexSet, T>,
 
-            1 => basisScalarDictionary is SingleItemDictionary<IIndexSet, T> dict &&
+            1 => basisScalarDictionary is SingleItemDictionary<IndexSet, T> dict &&
                  dict.Key.Count == 1 &&
                  processor.ScalarProcessor.IsValid(dict.Value) &&
                  !processor.ScalarProcessor.IsZero(dict.Value),
@@ -31,13 +31,13 @@ public static class XGaMetricUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static bool IsValidBivectorDictionary<T>(this IReadOnlyDictionary<IIndexSet, T> basisScalarDictionary, XGaProcessor<T> processor)
+    public static bool IsValidBivectorDictionary<T>(this IReadOnlyDictionary<IndexSet, T> basisScalarDictionary, XGaProcessor<T> processor)
     {
         return basisScalarDictionary.Count switch
         {
-            0 => basisScalarDictionary is EmptyDictionary<IIndexSet, T>,
+            0 => basisScalarDictionary is EmptyDictionary<IndexSet, T>,
 
-            1 => basisScalarDictionary is SingleItemDictionary<IIndexSet, T> dict &&
+            1 => basisScalarDictionary is SingleItemDictionary<IndexSet, T> dict &&
                  dict.Key.Count == 2 &&
                  processor.ScalarProcessor.IsValid(dict.Value) &&
                  !processor.ScalarProcessor.IsZero(dict.Value),
@@ -51,16 +51,16 @@ public static class XGaMetricUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static bool IsValidKVectorDictionary<T>(this IReadOnlyDictionary<IIndexSet, T> basisScalarDictionary, XGaProcessor<T> processor, int grade)
+    public static bool IsValidKVectorDictionary<T>(this IReadOnlyDictionary<IndexSet, T> basisScalarDictionary, XGaProcessor<T> processor, int grade)
     {
         if (grade < 3)
             throw new ArgumentOutOfRangeException(nameof(grade));
 
         return basisScalarDictionary.Count switch
         {
-            0 => basisScalarDictionary is EmptyDictionary<IIndexSet, T>,
+            0 => basisScalarDictionary is EmptyDictionary<IndexSet, T>,
 
-            1 => basisScalarDictionary is SingleItemDictionary<IIndexSet, T> dict &&
+            1 => basisScalarDictionary is SingleItemDictionary<IndexSet, T> dict &&
                  dict.Key.Count == grade &&
                  processor.ScalarProcessor.IsValid(dict.Value) &&
                  !processor.ScalarProcessor.IsZero(dict.Value),
@@ -74,13 +74,13 @@ public static class XGaMetricUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static bool IsValidMultivectorDictionary<T>(this IReadOnlyDictionary<IIndexSet, T> basisScalarDictionary, XGaProcessor<T> processor)
+    public static bool IsValidMultivectorDictionary<T>(this IReadOnlyDictionary<IndexSet, T> basisScalarDictionary, XGaProcessor<T> processor)
     {
         return basisScalarDictionary.Count switch
         {
-            0 => basisScalarDictionary is EmptyDictionary<IIndexSet, T>,
+            0 => basisScalarDictionary is EmptyDictionary<IndexSet, T>,
 
-            1 => basisScalarDictionary is SingleItemDictionary<IIndexSet, T> dict &&
+            1 => basisScalarDictionary is SingleItemDictionary<IndexSet, T> dict &&
                  processor.ScalarProcessor.IsValid(dict.Value) &&
                  !processor.ScalarProcessor.IsZero(dict.Value),
 

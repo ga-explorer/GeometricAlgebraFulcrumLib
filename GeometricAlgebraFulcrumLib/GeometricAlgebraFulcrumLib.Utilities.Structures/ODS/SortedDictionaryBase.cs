@@ -1,6 +1,6 @@
 ﻿namespace GeometricAlgebraFulcrumLib.Utilities.Structures.ODS;
 
-abstract public class SortedDictionaryBase<T> : ISortedDictionary<uint, T>
+public abstract class SortedDictionaryBase<T> : ISortedDictionary<uint, T>
 {
     #region contract
 

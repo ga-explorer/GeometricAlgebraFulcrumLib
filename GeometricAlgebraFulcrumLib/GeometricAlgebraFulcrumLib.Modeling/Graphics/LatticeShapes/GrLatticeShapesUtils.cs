@@ -6,7 +6,7 @@ using GeometricAlgebraFulcrumLib.Modeling.Graphics.LatticeShapes.Curves;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.LatticeShapes.Surfaces;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Primitives;
 using GeometricAlgebraFulcrumLib.Modeling.Trajectories.Vectors3D.Float64;
-using GeometricAlgebraFulcrumLib.Utilities.Structures.Basic;
+using GeometricAlgebraFulcrumLib.Utilities.Structures.Tuples;
 
 namespace GeometricAlgebraFulcrumLib.Modeling.Graphics.LatticeShapes;
 

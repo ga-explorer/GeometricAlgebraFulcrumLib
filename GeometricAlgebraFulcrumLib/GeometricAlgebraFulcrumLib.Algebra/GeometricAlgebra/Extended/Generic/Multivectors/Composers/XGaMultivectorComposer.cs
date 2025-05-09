@@ -2,10 +2,10 @@
 using System.Runtime.CompilerServices;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Extended.Basis;
-using GeometricAlgebraFulcrumLib.Utilities.Structures.Basic;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.IndexSets;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Extended.Generic.Processors;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Generic;
+using GeometricAlgebraFulcrumLib.Utilities.Structures.Tuples;
 using Open.Collections;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Extended.Generic.Multivectors.Composers;
@@ -13,7 +13,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Extended.Generic.M
 public sealed class XGaMultivectorComposer<T> :
     IXGaElement<T>
 {
-    private Dictionary<IIndexSet, T> _idScalarDictionary
+    private Dictionary<IndexSet, T> _idScalarDictionary
         = IndexSetUtils.CreateIndexSetDictionary<T>();
 
 
@@ -30,17 +30,17 @@ public sealed class XGaMultivectorComposer<T> :
 
     public T this[ulong id]
     {
-        get => GetTermScalarValue(id.BitPatternToUInt64IndexSet());
-        set => SetTerm(id.BitPatternToUInt64IndexSet(), value);
+        get => GetTermScalarValue(id.BitPatternToIndexSet());
+        set => SetTerm(id.BitPatternToIndexSet(), value);
     }
 
-    public T this[IIndexSet id]
+    public T this[IndexSet id]
     {
         get => GetTermScalarValue(id);
         set => SetTerm(id, value);
     }
 
-    public IEnumerable<KeyValuePair<IIndexSet, T>> IdScalarPairs
+    public IEnumerable<KeyValuePair<IndexSet, T>> IdScalarPairs
         => _idScalarDictionary;
 
     public IEnumerable<KeyValuePair<XGaBasisBlade, T>> BasisBladeScalarPairs
@@ -76,7 +76,7 @@ public sealed class XGaMultivectorComposer<T> :
     public XGaMultivectorComposer<T> ClearScalarTerm()
     {
         _idScalarDictionary.Remove(
-            EmptyIndexSet.Instance
+            IndexSet.EmptySet
         );
 
         return this;
@@ -113,7 +113,7 @@ public sealed class XGaMultivectorComposer<T> :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public XGaMultivectorComposer<T> ClearTerm(IIndexSet basisBladeId)
+    public XGaMultivectorComposer<T> ClearTerm(IndexSet basisBladeId)
     {
         _idScalarDictionary.Remove(basisBladeId);
 
@@ -124,7 +124,7 @@ public sealed class XGaMultivectorComposer<T> :
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public T GetScalarTermScalarValue()
     {
-        var key = EmptyIndexSet.Instance;
+        var key = IndexSet.EmptySet;
 
         return _idScalarDictionary.TryGetValue(key, out var scalarValue)
             ? scalarValue
@@ -162,7 +162,7 @@ public sealed class XGaMultivectorComposer<T> :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public T GetTermScalarValue(IIndexSet basisBlade)
+    public T GetTermScalarValue(IndexSet basisBlade)
     {
         return _idScalarDictionary.TryGetValue(basisBlade, out var scalarValue)
             ? scalarValue
@@ -203,7 +203,7 @@ public sealed class XGaMultivectorComposer<T> :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public Scalar<T> GetTermScalar(IIndexSet basisBlade)
+    public Scalar<T> GetTermScalar(IndexSet basisBlade)
     {
         return ScalarProcessor.ScalarFromValue(
             GetTermScalarValue(basisBlade)
@@ -211,7 +211,7 @@ public sealed class XGaMultivectorComposer<T> :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public XGaMultivectorComposer<T> RemoveTerm(IIndexSet basisBlade)
+    public XGaMultivectorComposer<T> RemoveTerm(IndexSet basisBlade)
     {
         _idScalarDictionary.Remove(basisBlade);
 
@@ -223,7 +223,7 @@ public sealed class XGaMultivectorComposer<T> :
     public XGaMultivectorComposer<T> SetScalarTerm(T scalar)
     {
         SetTerm(
-            EmptyIndexSet.Instance,
+            IndexSet.EmptySet,
             scalar
         );
 
@@ -234,7 +234,7 @@ public sealed class XGaMultivectorComposer<T> :
     public XGaMultivectorComposer<T> SetScalarTerm(Scalar<T> scalar)
     {
         SetTerm(
-            EmptyIndexSet.Instance,
+            IndexSet.EmptySet,
             scalar
         );
 
@@ -245,7 +245,7 @@ public sealed class XGaMultivectorComposer<T> :
     public XGaMultivectorComposer<T> SetScalarTerm(IScalar<T> scalar)
     {
         SetTerm(
-            EmptyIndexSet.Instance,
+            IndexSet.EmptySet,
             scalar
         );
 
@@ -413,7 +413,7 @@ public sealed class XGaMultivectorComposer<T> :
     public XGaMultivectorComposer<T> SetTerm(ulong basisBladeId, float scalar)
     {
         return SetTerm(
-            basisBladeId.BitPatternToUInt64IndexSet(),
+            basisBladeId.BitPatternToIndexSet(),
             ScalarProcessor.ScalarFromNumber(scalar)
         );
     }
@@ -422,7 +422,7 @@ public sealed class XGaMultivectorComposer<T> :
     public XGaMultivectorComposer<T> SetTerm(ulong basisBladeId, double scalar)
     {
         return SetTerm(
-            basisBladeId.BitPatternToUInt64IndexSet(),
+            basisBladeId.BitPatternToIndexSet(),
             ScalarProcessor.ScalarFromNumber(scalar)
         );
     }
@@ -431,7 +431,7 @@ public sealed class XGaMultivectorComposer<T> :
     public XGaMultivectorComposer<T> SetTerm(ulong basisBladeId, string scalar)
     {
         return SetTerm(
-            basisBladeId.BitPatternToUInt64IndexSet(),
+            basisBladeId.BitPatternToIndexSet(),
             ScalarProcessor.ScalarFromText(scalar)
         );
     }
@@ -440,7 +440,7 @@ public sealed class XGaMultivectorComposer<T> :
     public XGaMultivectorComposer<T> SetTerm(ulong basisBladeId, T scalar)
     {
         return SetTerm(
-            basisBladeId.BitPatternToUInt64IndexSet(),
+            basisBladeId.BitPatternToIndexSet(),
             scalar
         );
     }
@@ -449,7 +449,7 @@ public sealed class XGaMultivectorComposer<T> :
     public XGaMultivectorComposer<T> SetTerm(ulong basisBladeId, Scalar<T> scalar)
     {
         return SetTerm(
-            basisBladeId.BitPatternToUInt64IndexSet(),
+            basisBladeId.BitPatternToIndexSet(),
             scalar.ScalarValue
         );
     }
@@ -458,13 +458,13 @@ public sealed class XGaMultivectorComposer<T> :
     public XGaMultivectorComposer<T> SetTerm(ulong basisBladeId, IScalar<T> scalar)
     {
         return SetTerm(
-            basisBladeId.BitPatternToUInt64IndexSet(),
+            basisBladeId.BitPatternToIndexSet(),
             scalar.ScalarValue
         );
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public XGaMultivectorComposer<T> SetTerm(IIndexSet basisBlade, T scalar)
+    public XGaMultivectorComposer<T> SetTerm(IndexSet basisBlade, T scalar)
     {
         Debug.Assert(ScalarProcessor.IsValid(scalar));
 
@@ -483,13 +483,13 @@ public sealed class XGaMultivectorComposer<T> :
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public XGaMultivectorComposer<T> SetTerm(IIndexSet basisBlade, Scalar<T> scalar)
+    public XGaMultivectorComposer<T> SetTerm(IndexSet basisBlade, Scalar<T> scalar)
     {
         return SetTerm(basisBlade, scalar.ScalarValue);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public XGaMultivectorComposer<T> SetTerm(IIndexSet basisBlade, IScalar<T> scalar)
+    public XGaMultivectorComposer<T> SetTerm(IndexSet basisBlade, IScalar<T> scalar)
     {
         return SetTerm(basisBlade, scalar.ScalarValue);
     }
@@ -574,7 +574,7 @@ public sealed class XGaMultivectorComposer<T> :
     public XGaMultivectorComposer<T> AddScalarTerm(T scalar)
     {
         AddTerm(
-            EmptyIndexSet.Instance,
+            IndexSet.EmptySet,
             scalar
         );
 
@@ -614,7 +614,7 @@ public sealed class XGaMultivectorComposer<T> :
         return this;
     }
 
-    public XGaMultivectorComposer<T> AddTerm(IIndexSet basisBlade, T scalar)
+    public XGaMultivectorComposer<T> AddTerm(IndexSet basisBlade, T scalar)
     {
         Debug.Assert(ScalarProcessor.IsValid(scalar));
 
@@ -639,7 +639,7 @@ public sealed class XGaMultivectorComposer<T> :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public XGaMultivectorComposer<T> AddTerm(IIndexSet basisBlade, IScalar<T> scalar)
+    public XGaMultivectorComposer<T> AddTerm(IndexSet basisBlade, IScalar<T> scalar)
     {
         return AddTerm(basisBlade, scalar.ScalarValue);
     }
@@ -665,7 +665,7 @@ public sealed class XGaMultivectorComposer<T> :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public XGaMultivectorComposer<T> AddTerms(IEnumerable<KeyValuePair<IIndexSet, T>> termList)
+    public XGaMultivectorComposer<T> AddTerms(IEnumerable<KeyValuePair<IndexSet, T>> termList)
     {
         foreach (var (basisBlade, scalar) in termList)
             AddTerm(basisBlade, scalar);
@@ -681,7 +681,7 @@ public sealed class XGaMultivectorComposer<T> :
             return this;
 
         AddTerm(
-            EmptyIndexSet.Instance,
+            IndexSet.EmptySet,
             scalar.ScalarValue
         );
 
@@ -692,7 +692,7 @@ public sealed class XGaMultivectorComposer<T> :
     public XGaMultivectorComposer<T> AddScalar(XGaScalar<T> scalar, T scalingFactor)
     {
         AddTerm(
-            EmptyIndexSet.Instance,
+            IndexSet.EmptySet,
             ScalarProcessor.Times(scalar.ScalarValue, scalingFactor)
         );
 
@@ -725,7 +725,7 @@ public sealed class XGaMultivectorComposer<T> :
     public XGaMultivectorComposer<T> SubtractScalarTerm(T scalar)
     {
         SubtractTerm(
-            EmptyIndexSet.Instance,
+            IndexSet.EmptySet,
             scalar
         );
 
@@ -765,7 +765,7 @@ public sealed class XGaMultivectorComposer<T> :
         return this;
     }
 
-    public XGaMultivectorComposer<T> SubtractTerm(IIndexSet basisBlade, T scalar)
+    public XGaMultivectorComposer<T> SubtractTerm(IndexSet basisBlade, T scalar)
     {
         Debug.Assert(ScalarProcessor.IsValid(scalar));
 
@@ -790,7 +790,7 @@ public sealed class XGaMultivectorComposer<T> :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public XGaMultivectorComposer<T> SubtractTerm(IIndexSet basisBlade, IScalar<T> scalar)
+    public XGaMultivectorComposer<T> SubtractTerm(IndexSet basisBlade, IScalar<T> scalar)
     {
         return SubtractTerm(basisBlade, scalar.ScalarValue);
     }
@@ -816,7 +816,7 @@ public sealed class XGaMultivectorComposer<T> :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public XGaMultivectorComposer<T> SubtractTerms(IEnumerable<KeyValuePair<IIndexSet, T>> termList)
+    public XGaMultivectorComposer<T> SubtractTerms(IEnumerable<KeyValuePair<IndexSet, T>> termList)
     {
         foreach (var (basisBlade, scalar) in termList)
             SubtractTerm(basisBlade, scalar);
@@ -832,7 +832,7 @@ public sealed class XGaMultivectorComposer<T> :
             return this;
 
         SubtractTerm(
-            EmptyIndexSet.Instance,
+            IndexSet.EmptySet,
             scalar.ScalarValue
         );
 
@@ -843,7 +843,7 @@ public sealed class XGaMultivectorComposer<T> :
     public XGaMultivectorComposer<T> SubtractScalar(XGaScalar<T> scalar, T scalingFactor)
     {
         SubtractTerm(
-            EmptyIndexSet.Instance,
+            IndexSet.EmptySet,
             ScalarProcessor.Times(scalar.ScalarValue, scalingFactor)
         );
 
@@ -904,7 +904,7 @@ public sealed class XGaMultivectorComposer<T> :
         );
     }
 
-    public XGaMultivectorComposer<T> SetTerms(IEnumerable<KeyValuePair<IIndexSet, T>> termList)
+    public XGaMultivectorComposer<T> SetTerms(IEnumerable<KeyValuePair<IndexSet, T>> termList)
     {
         foreach (var (basis, scalar) in termList)
             SetTerm(basis, scalar);
@@ -922,7 +922,7 @@ public sealed class XGaMultivectorComposer<T> :
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public XGaMultivectorComposer<T> AddTerm(IIndexSet basisBlade, T scalar1, T scalar2)
+    public XGaMultivectorComposer<T> AddTerm(IndexSet basisBlade, T scalar1, T scalar2)
     {
         var scalar = ScalarProcessor.Times(scalar1, scalar2).ScalarValue;
 
@@ -991,7 +991,7 @@ public sealed class XGaMultivectorComposer<T> :
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public XGaMultivectorComposer<T> AddEGpTerm(IIndexSet id, T scalar1, T scalar2)
+    public XGaMultivectorComposer<T> AddEGpTerm(IndexSet id, T scalar1, T scalar2)
     {
         var term = Processor.EGp(id, id);
         var scalar = term.IsPositive
@@ -1002,7 +1002,7 @@ public sealed class XGaMultivectorComposer<T> :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public XGaMultivectorComposer<T> AddEGpTerm(KeyValuePair<IIndexSet, T> term1, KeyValuePair<IIndexSet, T> term2)
+    public XGaMultivectorComposer<T> AddEGpTerm(KeyValuePair<IndexSet, T> term1, KeyValuePair<IndexSet, T> term2)
     {
         var term = Processor.EGp(term1.Key, term2.Key);
         var scalar = term.IsPositive
@@ -1014,7 +1014,7 @@ public sealed class XGaMultivectorComposer<T> :
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public XGaMultivectorComposer<T> AddGpTerm(IIndexSet id, T scalar1, T scalar2)
+    public XGaMultivectorComposer<T> AddGpTerm(IndexSet id, T scalar1, T scalar2)
     {
         var term = Processor.Gp(id, id);
 
@@ -1028,7 +1028,7 @@ public sealed class XGaMultivectorComposer<T> :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public XGaMultivectorComposer<T> AddGpTerm(KeyValuePair<IIndexSet, T> term1, KeyValuePair<IIndexSet, T> term2)
+    public XGaMultivectorComposer<T> AddGpTerm(KeyValuePair<IndexSet, T> term1, KeyValuePair<IndexSet, T> term2)
     {
         var term = Processor.Gp(term1.Key, term2.Key);
 
@@ -1043,7 +1043,7 @@ public sealed class XGaMultivectorComposer<T> :
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public XGaMultivectorComposer<T> SubtractTerm(IIndexSet basisBlade, T scalar1, T scalar2)
+    public XGaMultivectorComposer<T> SubtractTerm(IndexSet basisBlade, T scalar1, T scalar2)
     {
         var scalar = ScalarProcessor.Times(scalar1, scalar2).ScalarValue;
 
@@ -1137,7 +1137,7 @@ public sealed class XGaMultivectorComposer<T> :
         return this;
     }
 
-    public XGaMultivectorComposer<T> MapScalars(Func<IIndexSet, T, T> mappingFunction)
+    public XGaMultivectorComposer<T> MapScalars(Func<IndexSet, T, T> mappingFunction)
     {
         if (_idScalarDictionary.Count == 0) return this;
 
@@ -1160,7 +1160,7 @@ public sealed class XGaMultivectorComposer<T> :
         return this;
     }
 
-    public XGaMultivectorComposer<T> MapBasisBlades(Func<IIndexSet, IIndexSet> mappingFunction)
+    public XGaMultivectorComposer<T> MapBasisBlades(Func<IndexSet, IndexSet> mappingFunction)
     {
         if (_idScalarDictionary.Count == 0) return this;
 
@@ -1193,7 +1193,7 @@ public sealed class XGaMultivectorComposer<T> :
         return this;
     }
 
-    public XGaMultivectorComposer<T> MapBasisBlades(Func<IIndexSet, T, IIndexSet> mappingFunction)
+    public XGaMultivectorComposer<T> MapBasisBlades(Func<IndexSet, T, IndexSet> mappingFunction)
     {
         if (_idScalarDictionary.Count == 0) return this;
 
@@ -1226,7 +1226,7 @@ public sealed class XGaMultivectorComposer<T> :
         return this;
     }
 
-    public XGaMultivectorComposer<T> MapTerms(Func<IIndexSet, T, KeyValuePair<IIndexSet, T>> mappingFunction)
+    public XGaMultivectorComposer<T> MapTerms(Func<IndexSet, T, KeyValuePair<IndexSet, T>> mappingFunction)
     {
         if (_idScalarDictionary.Count == 0) return this;
 
@@ -1430,7 +1430,7 @@ public sealed class XGaMultivectorComposer<T> :
             _idScalarDictionary.Count == 1 && _idScalarDictionary.First().Key.Count == 0
         );
 
-        return _idScalarDictionary.TryGetValue(EmptyIndexSet.Instance, out var scalar)
+        return _idScalarDictionary.TryGetValue(IndexSet.EmptySet, out var scalar)
             ? Processor.Scalar(scalar)
             : Processor.ScalarZero;
     }

@@ -35,6 +35,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeometricAlgebraFulcrumLib.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeometricAlgebraFulcrumLib.MonoGame", "GeometricAlgebraFulcrumLib.MonoGame\GeometricAlgebraFulcrumLib.MonoGame.csproj", "{91931E46-CD24-443A-B6EA-AD78822C8D2C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeometricAlgebraFulcrumLib.Core", "GeometricAlgebraFulcrumLib.Core\GeometricAlgebraFulcrumLib.Core.csproj", "{739CF64F-451A-4D59-B089-15258D8786AD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -237,6 +239,18 @@ Global
 		{91931E46-CD24-443A-B6EA-AD78822C8D2C}.Release|ARM32.Build.0 = Release|Any CPU
 		{91931E46-CD24-443A-B6EA-AD78822C8D2C}.Release|x64.ActiveCfg = Release|Any CPU
 		{91931E46-CD24-443A-B6EA-AD78822C8D2C}.Release|x64.Build.0 = Release|Any CPU
+		{739CF64F-451A-4D59-B089-15258D8786AD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{739CF64F-451A-4D59-B089-15258D8786AD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{739CF64F-451A-4D59-B089-15258D8786AD}.Debug|ARM32.ActiveCfg = Debug|Any CPU
+		{739CF64F-451A-4D59-B089-15258D8786AD}.Debug|ARM32.Build.0 = Debug|Any CPU
+		{739CF64F-451A-4D59-B089-15258D8786AD}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{739CF64F-451A-4D59-B089-15258D8786AD}.Debug|x64.Build.0 = Debug|Any CPU
+		{739CF64F-451A-4D59-B089-15258D8786AD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{739CF64F-451A-4D59-B089-15258D8786AD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{739CF64F-451A-4D59-B089-15258D8786AD}.Release|ARM32.ActiveCfg = Release|Any CPU
+		{739CF64F-451A-4D59-B089-15258D8786AD}.Release|ARM32.Build.0 = Release|Any CPU
+		{739CF64F-451A-4D59-B089-15258D8786AD}.Release|x64.ActiveCfg = Release|Any CPU
+		{739CF64F-451A-4D59-B089-15258D8786AD}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -12,7 +12,7 @@ using GeometricAlgebraFulcrumLib.Modeling.Signals;
 using GeometricAlgebraFulcrumLib.Modeling.Signals.Composers;
 using GeometricAlgebraFulcrumLib.Modeling.Signals.Interpolators;
 using GeometricAlgebraFulcrumLib.Modeling.Utilities;
-using GeometricAlgebraFulcrumLib.Utilities.Structures.Basic;
+using GeometricAlgebraFulcrumLib.Utilities.Structures.Tuples;
 using OfficeOpenXml;
 using OxyPlot;
 using OxyPlot.Series;

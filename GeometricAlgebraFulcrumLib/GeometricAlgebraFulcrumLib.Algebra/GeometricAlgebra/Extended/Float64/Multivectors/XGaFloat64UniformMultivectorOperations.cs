@@ -73,7 +73,7 @@ public sealed partial class XGaFloat64UniformMultivector
 
         var idScalarPairs =
             IdScalarPairs.Select(
-                term => new KeyValuePair<IIndexSet, double>(
+                term => new KeyValuePair<IndexSet, double>(
                     term.Key,
                     scalarMapping(term.Value)
                 )
@@ -86,14 +86,14 @@ public sealed partial class XGaFloat64UniformMultivector
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public XGaFloat64UniformMultivector MapScalars(Func<IIndexSet, double, double> scalarMapping)
+    public XGaFloat64UniformMultivector MapScalars(Func<IndexSet, double, double> scalarMapping)
     {
         if (IsZero)
             return this;
 
         var idScalarPairs =
             IdScalarPairs.Select(
-                term => new KeyValuePair<IIndexSet, double>(
+                term => new KeyValuePair<IndexSet, double>(
                     term.Key,
                     scalarMapping(term.Key, term.Value)
                 )
@@ -106,14 +106,14 @@ public sealed partial class XGaFloat64UniformMultivector
     }
         
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public XGaFloat64UniformMultivector MapBasisBlades(Func<IIndexSet, IIndexSet> basisMapping)
+    public XGaFloat64UniformMultivector MapBasisBlades(Func<IndexSet, IndexSet> basisMapping)
     {
         if (IsZero)
             return this;
 
         var termList =
             IdScalarPairs.Select(
-                term => new KeyValuePair<IIndexSet, double>(
+                term => new KeyValuePair<IndexSet, double>(
                     basisMapping(term.Key),
                     term.Value
                 )
@@ -126,14 +126,14 @@ public sealed partial class XGaFloat64UniformMultivector
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public XGaFloat64UniformMultivector MapBasisBlades(Func<IIndexSet, double, IIndexSet> basisMapping)
+    public XGaFloat64UniformMultivector MapBasisBlades(Func<IndexSet, double, IndexSet> basisMapping)
     {
         if (IsZero)
             return this;
 
         var termList =
             IdScalarPairs.Select(
-                term => new KeyValuePair<IIndexSet, double>(
+                term => new KeyValuePair<IndexSet, double>(
                     basisMapping(term.Key, term.Value),
                     term.Value
                 )
@@ -146,7 +146,7 @@ public sealed partial class XGaFloat64UniformMultivector
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public XGaFloat64UniformMultivector MapTerms(Func<IIndexSet, double, KeyValuePair<IIndexSet, double>> termMapping)
+    public XGaFloat64UniformMultivector MapTerms(Func<IndexSet, double, KeyValuePair<IndexSet, double>> termMapping)
     {
         if (IsZero)
             return this;

@@ -1,8 +1,8 @@
 ﻿using System.Collections.Immutable;
 using System.Runtime.CompilerServices;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
-using GeometricAlgebraFulcrumLib.Utilities.Structures.Basic;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.IndexSets;
+using GeometricAlgebraFulcrumLib.Utilities.Structures.Tuples;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Extended.Basis;
 
@@ -49,12 +49,12 @@ public static class XGaBasisBladeComposerUtils
 
         return new XGaBasisBlade(
             metric, 
-            ImmutableSortedSet.Create(index1, index2, index3).ToIndexSet()
+            IndexSet.Create(index1, index2, index3)
         );
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static XGaBasisBlade CreateBasisBlade(this XGaMetric metric, IIndexSet basisVectorIndexSet)
+    public static XGaBasisBlade CreateBasisBlade(this XGaMetric metric, IndexSet basisVectorIndexSet)
     {
         return new XGaBasisBlade(
             metric, 
@@ -67,14 +67,14 @@ public static class XGaBasisBladeComposerUtils
     {
         return new XGaBasisBlade(
             metric, 
-            basisVectorIndexSet.ToIndexSet()
+            basisVectorIndexSet.ToIndexSet(true)
         );
     }
         
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static XGaBasisBlade CreateBasisBlade(this XGaMetric metric, ulong basisBladeId)
     {
-        var indexSet = basisBladeId.BitPatternToUInt64IndexSet();
+        var indexSet = basisBladeId.BitPatternToIndexSet();
 
         return new XGaBasisBlade(metric, indexSet);
     }
@@ -85,7 +85,7 @@ public static class XGaBasisBladeComposerUtils
         var indexSet = 
             BasisBladeUtils
                 .BasisBladeGradeIndexToId((uint) grade, (ulong) index)
-                .BitPatternToUInt64IndexSet();
+                .BitPatternToIndexSet();
 
         return new XGaBasisBlade(metric, indexSet);
     }
@@ -96,7 +96,7 @@ public static class XGaBasisBladeComposerUtils
         var indexSet = 
             BasisBladeUtils
                 .BasisBladeGradeIndexToId((uint) grade, index)
-                .BitPatternToUInt64IndexSet();
+                .BitPatternToIndexSet();
 
         return new XGaBasisBlade(metric, indexSet);
     }
@@ -107,7 +107,7 @@ public static class XGaBasisBladeComposerUtils
         var indexSet = 
             BasisBladeUtils
                 .BasisBladeGradeIndexToId(grade, index)
-                .BitPatternToUInt64IndexSet();
+                .BitPatternToIndexSet();
 
         return new XGaBasisBlade(metric, indexSet);
     }

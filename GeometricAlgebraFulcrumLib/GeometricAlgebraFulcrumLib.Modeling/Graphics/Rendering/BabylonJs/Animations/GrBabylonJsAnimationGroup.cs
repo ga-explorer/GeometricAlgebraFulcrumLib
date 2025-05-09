@@ -2,7 +2,7 @@
 using System.Collections.Immutable;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.Borders.Space1D;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.BabylonJs.Values;
-using GeometricAlgebraFulcrumLib.Utilities.Structures.Basic;
+using GeometricAlgebraFulcrumLib.Utilities.Structures.Tuples;
 using GeometricAlgebraFulcrumLib.Utilities.Text;
 using GeometricAlgebraFulcrumLib.Utilities.Text.Text;
 using GeometricAlgebraFulcrumLib.Utilities.Text.Text.Linear;

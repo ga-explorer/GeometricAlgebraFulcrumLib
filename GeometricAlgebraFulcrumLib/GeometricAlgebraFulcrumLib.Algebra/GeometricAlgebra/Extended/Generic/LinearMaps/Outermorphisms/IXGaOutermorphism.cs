@@ -14,7 +14,7 @@ public interface IXGaOutermorphism<T> :
         
     XGaBivector<T> OmMapBasisBivector(int index1, int index2);
 
-    XGaKVector<T> OmMapBasisBlade(IIndexSet id);
+    XGaKVector<T> OmMapBasisBlade(IndexSet id);
         
 
     XGaVector<T> OmMap(XGaVector<T> vector);
@@ -28,7 +28,7 @@ public interface IXGaOutermorphism<T> :
     XGaMultivector<T> OmMap(XGaMultivector<T> multivector);
 
         
-    IEnumerable<KeyValuePair<IIndexSet, XGaVector<T>>> GetOmMappedBasisVectors(int vSpaceDimensions);
+    IEnumerable<KeyValuePair<IndexSet, XGaVector<T>>> GetOmMappedBasisVectors(int vSpaceDimensions);
 
     //IEnumerable<IndexBivectorStorageRecord<T>> GetOmMappedBasisBivectors();
 

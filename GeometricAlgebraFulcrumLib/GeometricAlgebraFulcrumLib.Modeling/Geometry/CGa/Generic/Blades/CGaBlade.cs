@@ -5,7 +5,7 @@ using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Extended.Generic.Multi
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Extended.Generic.Processors;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Generic;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Generic.Decoding;
-using GeometricAlgebraFulcrumLib.Utilities.Structures.Basic;
+using GeometricAlgebraFulcrumLib.Utilities.Structures.Tuples;
 
 namespace GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Generic.Blades;
 
@@ -330,8 +330,8 @@ public sealed record CGaBlade<T>
         var termList =
             kVector1.IdScalarPairs.Where(
                 term =>
-                    !term.Key.Contains(0) && 
-                    !term.Key.Contains(1)
+                    !term.Key.SetContains(0) && 
+                    !term.Key.SetContains(1)
             );
 
         return ConformalProcessor

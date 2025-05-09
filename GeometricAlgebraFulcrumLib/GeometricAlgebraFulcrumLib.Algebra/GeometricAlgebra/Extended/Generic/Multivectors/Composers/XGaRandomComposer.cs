@@ -2,7 +2,6 @@
 using System.Runtime.CompilerServices;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Extended.Basis;
-using GeometricAlgebraFulcrumLib.Utilities.Structures.Basic;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.BitManipulation;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Combinations;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.IndexSets;
@@ -10,6 +9,7 @@ using GeometricAlgebraFulcrumLib.Utilities.Structures.Random;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Extended.Generic.Processors;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Records;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Generic;
+using GeometricAlgebraFulcrumLib.Utilities.Structures.Tuples;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Extended.Generic.Multivectors.Composers;
 
@@ -215,8 +215,7 @@ public class XGaRandomComposer<T> :
         var id =
             RandomGenerator
                 .GetUniqueIndices(grade, VSpaceDimensions)
-                .ToImmutableSortedSet()
-                .ToIndexSet();
+                .ToIndexSet(false);
 
         return new XGaBasisBlade(Processor, id);
     }
@@ -324,7 +323,7 @@ public class XGaRandomComposer<T> :
                     .Shuffled(RandomGenerator)
                     .Take(termsCount)
                     .Select(p => 
-                        new KeyValuePair<IIndexSet, T>(
+                        new KeyValuePair<IndexSet, T>(
                             p.IndexToIndexSet(),
                             GetScalar().ScalarValue
                         )
@@ -358,7 +357,7 @@ public class XGaRandomComposer<T> :
                 .Shuffled(RandomGenerator)
                 .Take(termsCount)
                 .Select(p => 
-                    new KeyValuePair<IIndexSet, T>(
+                    new KeyValuePair<IndexSet, T>(
                         p.IndexToIndexSet(),
                         GetScalar().ScalarValue
                     )
@@ -380,7 +379,7 @@ public class XGaRandomComposer<T> :
             Enumerable
                 .Range(0, (int)kvSpaceDimensions)
                 .Select(index => 
-                    new KeyValuePair<IIndexSet, T>(
+                    new KeyValuePair<IndexSet, T>(
                         index.BasisBivectorIndexToVectorIndexInt32Pair().IndexPairToIndexSet(),
                         GetScalar().ScalarValue
                     )
@@ -402,7 +401,7 @@ public class XGaRandomComposer<T> :
             Enumerable
                 .Range(0, (int)kvSpaceDimensions)
                 .Select(index => 
-                    new KeyValuePair<IIndexSet, T>(
+                    new KeyValuePair<IndexSet, T>(
                         index.BasisBivectorIndexToVectorIndexInt32Pair().IndexPairToIndexSet(),
                         GetScalar(minValue, maxValue).ScalarValue
                     )
@@ -429,7 +428,7 @@ public class XGaRandomComposer<T> :
                 .Shuffled(RandomGenerator)
                 .Take(termsCount)
                 .Select(index => 
-                    new KeyValuePair<IIndexSet, T>(
+                    new KeyValuePair<IndexSet, T>(
                         index.BasisBivectorIndexToVectorIndexInt32Pair().IndexPairToIndexSet(),
                         GetScalar().ScalarValue
                     )
@@ -456,7 +455,7 @@ public class XGaRandomComposer<T> :
                 .Shuffled(RandomGenerator)
                 .Take(termsCount)
                 .Select(index => 
-                    new KeyValuePair<IIndexSet, T>(
+                    new KeyValuePair<IndexSet, T>(
                         index.BasisBivectorIndexToVectorIndexInt32Pair().IndexPairToIndexSet(),
                         GetScalar(minValue, maxValue).ScalarValue
                     )
@@ -490,7 +489,7 @@ public class XGaRandomComposer<T> :
             Enumerable
                 .Range(0, (int)kvSpaceDimensions)
                 .Select(index => 
-                    new KeyValuePair<IIndexSet, T>(
+                    new KeyValuePair<IndexSet, T>(
                         BasisBladeUtils.BasisBladeGradeIndexToId((uint)grade, (ulong)index).BitPatternToIndexSet(),
                         GetScalar().ScalarValue
                     )
@@ -512,7 +511,7 @@ public class XGaRandomComposer<T> :
             Enumerable
                 .Range(0, (int)kvSpaceDimensions)
                 .Select(index => 
-                    new KeyValuePair<IIndexSet, T>(
+                    new KeyValuePair<IndexSet, T>(
                         BasisBladeUtils.BasisBladeGradeIndexToId((uint)grade, (ulong)index).BitPatternToIndexSet(),
                         GetScalar(minValue, maxValue).ScalarValue
                     )
@@ -539,7 +538,7 @@ public class XGaRandomComposer<T> :
                 .Shuffled(RandomGenerator)
                 .Take(termsCount)
                 .Select(index => 
-                    new KeyValuePair<IIndexSet, T>(
+                    new KeyValuePair<IndexSet, T>(
                         BasisBladeUtils.BasisBladeGradeIndexToId((uint)grade, (ulong)index).BitPatternToIndexSet(),
                         GetScalar().ScalarValue
                     )
@@ -566,7 +565,7 @@ public class XGaRandomComposer<T> :
                 .Shuffled(RandomGenerator)
                 .Take(termsCount)
                 .Select(index => 
-                    new KeyValuePair<IIndexSet, T>(
+                    new KeyValuePair<IndexSet, T>(
                         BasisBladeUtils.BasisBladeGradeIndexToId((uint)grade, (ulong)index).BitPatternToIndexSet(),
                         GetScalar(minValue, maxValue).ScalarValue
                     )
@@ -587,7 +586,7 @@ public class XGaRandomComposer<T> :
             Enumerable
                 .Range(0, gaSpaceDimensions)
                 .Select(index => 
-                    new KeyValuePair<IIndexSet, T>(
+                    new KeyValuePair<IndexSet, T>(
                         ((ulong)index).BitPatternToIndexSet(),
                         GetScalar().ScalarValue
                     )
@@ -608,7 +607,7 @@ public class XGaRandomComposer<T> :
             Enumerable
                 .Range(0, gaSpaceDimensions)
                 .Select(index => 
-                    new KeyValuePair<IIndexSet, T>(
+                    new KeyValuePair<IndexSet, T>(
                         ((ulong)index).BitPatternToIndexSet(),
                         GetScalar(minValue, maxValue).ScalarValue
                     )
@@ -634,7 +633,7 @@ public class XGaRandomComposer<T> :
                 .Shuffled(RandomGenerator)
                 .Take(termsCount)
                 .Select(index => 
-                    new KeyValuePair<IIndexSet, T>(
+                    new KeyValuePair<IndexSet, T>(
                         ((ulong)index).BitPatternToIndexSet(),
                         GetScalar().ScalarValue
                     )
@@ -660,7 +659,7 @@ public class XGaRandomComposer<T> :
                 .Shuffled(RandomGenerator)
                 .Take(termsCount)
                 .Select(index => 
-                    new KeyValuePair<IIndexSet, T>(
+                    new KeyValuePair<IndexSet, T>(
                         ((ulong)index).BitPatternToIndexSet(),
                         GetScalar(minValue, maxValue).ScalarValue
                     )

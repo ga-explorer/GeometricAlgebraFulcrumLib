@@ -35,7 +35,6 @@
 using System.Collections;
 using System.Diagnostics;
 using System.Runtime.Serialization;
-using System.Security.Permissions;
 
 namespace GeometricAlgebraFulcrumLib.Utilities.Structures.ODS;
 
@@ -240,7 +239,7 @@ public class SortedDictionary<TKey, TValue> : ISortedDictionary<TKey, TValue>, I
         return n != null;
     }
 
-    [SecurityPermission(SecurityAction.LinkDemand, Flags = SecurityPermissionFlag.SerializationFormatter)]
+    //[SecurityPermission(SecurityAction.LinkDemand, Flags = SecurityPermissionFlag.SerializationFormatter)]
     public virtual void GetObjectData(SerializationInfo info, StreamingContext context)
     {
         if (info == null)

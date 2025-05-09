@@ -50,7 +50,7 @@ public sealed class XGaIdentityOutermorphism<T> :
     }
         
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public XGaKVector<T> OmMapBasisBlade(IIndexSet id)
+    public XGaKVector<T> OmMapBasisBlade(IndexSet id)
     {
         return Processor.KVectorTerm(
             id, 
@@ -103,7 +103,7 @@ public sealed class XGaIdentityOutermorphism<T> :
     }
         
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public XGaMultivector<T> MapBasisBlade(IIndexSet id)
+    public XGaMultivector<T> MapBasisBlade(IndexSet id)
     {
         return OmMapBasisBlade(id);
     }
@@ -116,12 +116,12 @@ public sealed class XGaIdentityOutermorphism<T> :
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public IEnumerable<KeyValuePair<IIndexSet, XGaMultivector<T>>> GetMappedBasisBlades(int vSpaceDimensions)
+    public IEnumerable<KeyValuePair<IndexSet, XGaMultivector<T>>> GetMappedBasisBlades(int vSpaceDimensions)
     {
         return Processor
             .GetBasisBladeIds(vSpaceDimensions)
             .Select(id => 
-                new KeyValuePair<IIndexSet, XGaMultivector<T>>(
+                new KeyValuePair<IndexSet, XGaMultivector<T>>(
                     id, 
                     Processor.KVectorTerm(id, ScalarProcessor.OneValue)
                 )
@@ -129,12 +129,12 @@ public sealed class XGaIdentityOutermorphism<T> :
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public IEnumerable<KeyValuePair<IIndexSet, XGaVector<T>>> GetOmMappedBasisVectors(int vSpaceDimensions)
+    public IEnumerable<KeyValuePair<IndexSet, XGaVector<T>>> GetOmMappedBasisVectors(int vSpaceDimensions)
     {
         return Processor
             .GetBasisVectorIds(vSpaceDimensions)
             .Select(id => 
-                new KeyValuePair<IIndexSet, XGaVector<T>>(
+                new KeyValuePair<IndexSet, XGaVector<T>>(
                     id, 
                     Processor.VectorTerm(id.FirstIndex)
                 )

@@ -3,8 +3,8 @@ using GeometricAlgebraFulcrumLib.Optimization.GeneticProgramming.Cartesian.Funct
 using GeometricAlgebraFulcrumLib.Optimization.GeneticProgramming.Cartesian.Mutation;
 using GeometricAlgebraFulcrumLib.Optimization.GeneticProgramming.Cartesian.Reproduction;
 using GeometricAlgebraFulcrumLib.Optimization.GeneticProgramming.Cartesian.Selection;
-using GeometricAlgebraFulcrumLib.Utilities.Structures.Basic;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Random;
+using GeometricAlgebraFulcrumLib.Utilities.Structures.Tuples;
 
 namespace GeometricAlgebraFulcrumLib.Optimization.GeneticProgramming.Cartesian;
 

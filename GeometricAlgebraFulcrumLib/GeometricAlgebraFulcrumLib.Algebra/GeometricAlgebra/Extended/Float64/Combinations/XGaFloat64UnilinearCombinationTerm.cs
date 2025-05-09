@@ -1,8 +1,8 @@
 ﻿using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Extended.Basis;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
-using GeometricAlgebraFulcrumLib.Utilities.Structures.Basic;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.IndexSets;
+using GeometricAlgebraFulcrumLib.Utilities.Structures.Tuples;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Extended.Float64.Combinations;
 
@@ -28,7 +28,7 @@ public sealed class XGaFloat64UnilinearCombinationTerm
         );
     }
 
-    public static XGaFloat64UnilinearCombinationTerm Create(Float64Scalar inputScalar, XGaMetric metric, IIndexSet inputBasisBladeId, IIndexSet outputBasisBladeId)
+    public static XGaFloat64UnilinearCombinationTerm Create(Float64Scalar inputScalar, XGaMetric metric, IndexSet inputBasisBladeId, IndexSet outputBasisBladeId)
     {
         return new XGaFloat64UnilinearCombinationTerm(
             inputScalar,
@@ -41,9 +41,9 @@ public sealed class XGaFloat64UnilinearCombinationTerm
 
     public XGaMetric Metric { get; }
 
-    public IIndexSet InputBasisBladeId { get; }
+    public IndexSet InputBasisBladeId { get; }
 
-    public IIndexSet OutputBasisBladeId { get; }
+    public IndexSet OutputBasisBladeId { get; }
 
     public Float64Scalar InputScalar { get; internal set; }
 
@@ -87,7 +87,7 @@ public sealed class XGaFloat64UnilinearCombinationTerm
         => InputScalar.IsNegative();
 
 
-    private XGaFloat64UnilinearCombinationTerm(Float64Scalar inputScalar, XGaMetric metric, IIndexSet inputBasisBladeId, IIndexSet outputBasisBladeId)
+    private XGaFloat64UnilinearCombinationTerm(Float64Scalar inputScalar, XGaMetric metric, IndexSet inputBasisBladeId, IndexSet outputBasisBladeId)
     {
         Metric = metric;
         InputScalar = inputScalar;

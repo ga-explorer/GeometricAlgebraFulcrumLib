@@ -69,7 +69,7 @@ public static class XGaMultivectorUtils
 
         
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static XGaMultivector<T> GetPart<T>(this XGaMultivector<T> mv, Func<IIndexSet, bool> filterFunc)
+    public static XGaMultivector<T> GetPart<T>(this XGaMultivector<T> mv, Func<IndexSet, bool> filterFunc)
     {
         return mv switch
         {
@@ -99,7 +99,7 @@ public static class XGaMultivectorUtils
     }
         
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static XGaMultivector<T> GetPart<T>(this XGaMultivector<T> mv, Func<IIndexSet, T, bool> filterFunc)
+    public static XGaMultivector<T> GetPart<T>(this XGaMultivector<T> mv, Func<IndexSet, T, bool> filterFunc)
     {
         return mv switch
         {
@@ -188,7 +188,7 @@ public static class XGaMultivectorUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static XGaMultivector<T> MapScalars<T>(this XGaMultivector<T> mv, Func<IIndexSet, T, T> scalarMapping)
+    public static XGaMultivector<T> MapScalars<T>(this XGaMultivector<T> mv, Func<IndexSet, T, T> scalarMapping)
     {
         return mv switch
         {
@@ -203,7 +203,7 @@ public static class XGaMultivectorUtils
     }
         
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static XGaFloat64Multivector MapScalars<T>(this XGaMultivector<T> mv, XGaFloat64Processor processor, Func<IIndexSet, T, double> scalarMapping)
+    public static XGaFloat64Multivector MapScalars<T>(this XGaMultivector<T> mv, XGaFloat64Processor processor, Func<IndexSet, T, double> scalarMapping)
     {
         return mv switch
         {
@@ -218,7 +218,7 @@ public static class XGaMultivectorUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static XGaMultivector<T2> MapScalars<T1, T2>(this XGaMultivector<T1> mv, XGaProcessor<T2> processor, Func<IIndexSet, T1, T2> scalarMapping)
+    public static XGaMultivector<T2> MapScalars<T1, T2>(this XGaMultivector<T1> mv, XGaProcessor<T2> processor, Func<IndexSet, T1, T2> scalarMapping)
     {
         return mv switch
         {
@@ -233,11 +233,11 @@ public static class XGaMultivectorUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static XGaMultivector<T> MapBasisBlades<T>(this XGaMultivector<T> mv, Func<IIndexSet, IIndexSet> basisMapping)
+    public static XGaMultivector<T> MapBasisBlades<T>(this XGaMultivector<T> mv, Func<IndexSet, IndexSet> basisMapping)
     {
         var termList =
             mv.IdScalarPairs.Select(
-                term => new KeyValuePair<IIndexSet, T>(
+                term => new KeyValuePair<IndexSet, T>(
                     basisMapping(term.Key),
                     term.Value
                 )
@@ -250,11 +250,11 @@ public static class XGaMultivectorUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static XGaMultivector<T> MapBasisBlades<T>(this XGaMultivector<T> mv, Func<IIndexSet, T, IIndexSet> basisMapping)
+    public static XGaMultivector<T> MapBasisBlades<T>(this XGaMultivector<T> mv, Func<IndexSet, T, IndexSet> basisMapping)
     {
         var termList =
             mv.IdScalarPairs.Select(
-                term => new KeyValuePair<IIndexSet, T>(
+                term => new KeyValuePair<IndexSet, T>(
                     basisMapping(term.Key, term.Value),
                     term.Value
                 )
@@ -267,7 +267,7 @@ public static class XGaMultivectorUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static XGaMultivector<T> MapTerms<T>(this XGaMultivector<T> mv, Func<IIndexSet, T, KeyValuePair<IIndexSet, T>> termMapping)
+    public static XGaMultivector<T> MapTerms<T>(this XGaMultivector<T> mv, Func<IndexSet, T, KeyValuePair<IndexSet, T>> termMapping)
     {
         var termList =
             mv.IdScalarPairs.Select(

@@ -227,7 +227,7 @@ public sealed partial class XGaGradedMultivector<T>
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public XGaMultivector<T> MapScalars(Func<IIndexSet, T, T> scalarMapping)
+    public XGaMultivector<T> MapScalars(Func<IndexSet, T, T> scalarMapping)
     {
         if (_gradeKVectorDictionary.Count == 1)
             return _gradeKVectorDictionary
@@ -241,7 +241,7 @@ public sealed partial class XGaGradedMultivector<T>
     }
         
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public XGaFloat64Multivector MapScalars(XGaFloat64Processor processor, Func<IIndexSet, T, double> scalarMapping)
+    public XGaFloat64Multivector MapScalars(XGaFloat64Processor processor, Func<IndexSet, T, double> scalarMapping)
     {
         if (_gradeKVectorDictionary.Count == 1)
             return _gradeKVectorDictionary
@@ -258,7 +258,7 @@ public sealed partial class XGaGradedMultivector<T>
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public XGaMultivector<T1> MapScalars<T1>(XGaProcessor<T1> processor, Func<IIndexSet, T, T1> scalarMapping)
+    public XGaMultivector<T1> MapScalars<T1>(XGaProcessor<T1> processor, Func<IndexSet, T, T1> scalarMapping)
     {
         if (_gradeKVectorDictionary.Count == 1)
             return _gradeKVectorDictionary

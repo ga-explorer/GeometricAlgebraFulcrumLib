@@ -23,7 +23,7 @@ public class XGaBasisMultivectorFrame<T> :
             gaSpaceDimensions
                 .GetRange()
                 .Select(id => processor.KVectorTerm(
-                    id.BitPatternToUInt64IndexSet(), 
+                    id.BitPatternToIndexSet(), 
                     processor.ScalarProcessor.OneValue
                 )).ToArray();
 

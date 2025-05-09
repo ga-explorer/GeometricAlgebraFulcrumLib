@@ -6,17 +6,19 @@
     <IsPackable>false</IsPackable>
 
     <Platforms>AnyCPU;x64</Platforms>
+
+    <LangVersion>latest</LangVersion>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="AngouriMath" Version="1.3.0" />
     <PackageReference Include="CSharpMath.Evaluation" Version="0.5.1" />
     <PackageReference Include="CsvHelper" Version="33.0.1" />
-    <PackageReference Include="ILGPU" Version="1.5.1" />
-    <PackageReference Include="ILGPU.Algorithms" Version="1.5.1" />
+    <PackageReference Include="ILGPU" Version="1.5.2" />
+    <PackageReference Include="ILGPU.Algorithms" Version="1.5.2" />
     <PackageReference Include="ILGPU.Lightning" Version="0.3.0" />
     <PackageReference Include="MathNet.Numerics" Version="5.0.0" />
-    <PackageReference Include="NumpyDotNet" Version="0.9.86.6" />
+    <PackageReference Include="NumpyDotNet" Version="0.9.87.1" />
     <PackageReference Include="NUnit" Version="4.3.2" />
     <PackageReference Include="NUnit3TestAdapter" Version="5.0.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.13.0" />

@@ -5,11 +5,11 @@ using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Extended.Basis;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Extended.Float64.Processors;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Records;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
-using GeometricAlgebraFulcrumLib.Utilities.Structures.Basic;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.BitManipulation;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Combinations;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.IndexSets;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Random;
+using GeometricAlgebraFulcrumLib.Utilities.Structures.Tuples;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Extended.Float64.Multivectors.Composers;
 
@@ -234,8 +234,7 @@ public class XGaFloat64RandomComposer :
         var id =
             RandomGenerator
                 .GetUniqueIndices(grade, VSpaceDimensions)
-                .ToImmutableSortedSet()
-                .ToIndexSet();
+                .ToIndexSet(false);
 
         return new XGaBasisBlade(Processor, id);
     }
@@ -343,7 +342,7 @@ public class XGaFloat64RandomComposer :
                     .Shuffled(RandomGenerator)
                     .Take(termsCount)
                     .Select(p => 
-                        new KeyValuePair<IIndexSet, double>(
+                        new KeyValuePair<IndexSet, double>(
                             p.IndexToIndexSet(),
                             GetScalarValue(minValue, maxValue)
                         )
@@ -378,7 +377,7 @@ public class XGaFloat64RandomComposer :
                     .Shuffled(RandomGenerator)
                     .Take(termsCount)
                     .Select(p => 
-                        new KeyValuePair<IIndexSet, double>(
+                        new KeyValuePair<IndexSet, double>(
                             p.IndexToIndexSet(),
                             GetScalarValue()
                         )
@@ -412,7 +411,7 @@ public class XGaFloat64RandomComposer :
                 .Shuffled(RandomGenerator)
                 .Take(termsCount)
                 .Select(p => 
-                    new KeyValuePair<IIndexSet, double>(
+                    new KeyValuePair<IndexSet, double>(
                         p.IndexToIndexSet(),
                         GetScalarValue()
                     )
@@ -434,7 +433,7 @@ public class XGaFloat64RandomComposer :
             Enumerable
                 .Range(0, (int)kvSpaceDimensions)
                 .Select(index => 
-                    new KeyValuePair<IIndexSet, double>(
+                    new KeyValuePair<IndexSet, double>(
                         index.BasisBivectorIndexToVectorIndexInt32Pair().IndexPairToIndexSet(),
                         GetScalarValue()
                     )
@@ -456,7 +455,7 @@ public class XGaFloat64RandomComposer :
             Enumerable
                 .Range(0, (int)kvSpaceDimensions)
                 .Select(index => 
-                    new KeyValuePair<IIndexSet, double>(
+                    new KeyValuePair<IndexSet, double>(
                         index.BasisBivectorIndexToVectorIndexInt32Pair().IndexPairToIndexSet(),
                         GetScalarValue(minValue, maxValue)
                     )
@@ -483,7 +482,7 @@ public class XGaFloat64RandomComposer :
                 .Shuffled(RandomGenerator)
                 .Take(termsCount)
                 .Select(index => 
-                    new KeyValuePair<IIndexSet, double>(
+                    new KeyValuePair<IndexSet, double>(
                         index.BasisBivectorIndexToVectorIndexInt32Pair().IndexPairToIndexSet(), 
                         GetScalarValue()
                     )
@@ -510,7 +509,7 @@ public class XGaFloat64RandomComposer :
                 .Shuffled(RandomGenerator)
                 .Take(termsCount)
                 .Select(index => 
-                    new KeyValuePair<IIndexSet, double>(
+                    new KeyValuePair<IndexSet, double>(
                         index.BasisBivectorIndexToVectorIndexInt32Pair().IndexPairToIndexSet(), 
                         GetScalarValue(minValue, maxValue)
                     )
@@ -621,7 +620,7 @@ public class XGaFloat64RandomComposer :
             Enumerable
                 .Range(0, gaSpaceDimensions)
                 .Select(index => 
-                    new KeyValuePair<IIndexSet, double>(
+                    new KeyValuePair<IndexSet, double>(
                         ((ulong)index).BitPatternToIndexSet(),
                         GetScalarValue()
                     )
@@ -642,7 +641,7 @@ public class XGaFloat64RandomComposer :
             Enumerable
                 .Range(0, gaSpaceDimensions)
                 .Select(index => 
-                    new KeyValuePair<IIndexSet, double>(
+                    new KeyValuePair<IndexSet, double>(
                         ((ulong)index).BitPatternToIndexSet(),
                         GetScalarValue(minValue, maxValue)
                     )
@@ -668,7 +667,7 @@ public class XGaFloat64RandomComposer :
                 .Shuffled(RandomGenerator)
                 .Take(termsCount)
                 .Select(index => 
-                    new KeyValuePair<IIndexSet, double>(
+                    new KeyValuePair<IndexSet, double>(
                         ((ulong)index).BitPatternToIndexSet(),
                         GetScalarValue()
                     )
@@ -694,7 +693,7 @@ public class XGaFloat64RandomComposer :
                 .Shuffled(RandomGenerator)
                 .Take(termsCount)
                 .Select(index => 
-                    new KeyValuePair<IIndexSet, double>(
+                    new KeyValuePair<IndexSet, double>(
                         ((ulong)index).BitPatternToIndexSet(),
                         GetScalarValue(minValue, maxValue)
                     )

@@ -11,7 +11,6 @@ using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.Visuals.Space3D.Bas
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.Visuals.Space3D.Styles;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.Visuals.Space3D.Surfaces;
 using GeometricAlgebraFulcrumLib.Modeling.Signals;
-using GeometricAlgebraFulcrumLib.Utilities.Structures.Basic;
 using GeometricAlgebraFulcrumLib.Utilities.Web.Colors;
 using GeometricAlgebraFulcrumLib.Utilities.Web.Html.Media;
 using GeometricAlgebraFulcrumLib.Utilities.Web.Images;
@@ -19,6 +18,7 @@ using GeometricAlgebraFulcrumLib.Utilities.Web.LaTeX.KaTeX;
 using SixLabors.ImageSharp;
 using System.Collections.Immutable;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Basis;
+using GeometricAlgebraFulcrumLib.Utilities.Structures.Tuples;
 
 namespace GeometricAlgebraFulcrumLib.Applications.PowerSystems;
 

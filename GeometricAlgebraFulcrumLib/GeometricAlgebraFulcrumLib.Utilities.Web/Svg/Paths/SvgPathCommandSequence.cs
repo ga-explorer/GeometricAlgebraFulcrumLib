@@ -1,5 +1,5 @@
 ﻿using System.Collections;
-using GeometricAlgebraFulcrumLib.Utilities.Structures.Basic;
+using GeometricAlgebraFulcrumLib.Utilities.Structures.Tuples;
 using GeometricAlgebraFulcrumLib.Utilities.Text.Text;
 
 namespace GeometricAlgebraFulcrumLib.Utilities.Web.Svg.Paths;

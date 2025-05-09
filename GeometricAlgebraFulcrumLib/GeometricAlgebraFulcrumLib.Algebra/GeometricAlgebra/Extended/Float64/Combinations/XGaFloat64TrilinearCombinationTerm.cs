@@ -1,8 +1,8 @@
 ﻿using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Extended.Basis;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
-using GeometricAlgebraFulcrumLib.Utilities.Structures.Basic;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.IndexSets;
+using GeometricAlgebraFulcrumLib.Utilities.Structures.Tuples;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Extended.Float64.Combinations;
 
@@ -41,7 +41,7 @@ public sealed class XGaFloat64TrilinearCombinationTerm
         );
     }
 
-    public static XGaFloat64TrilinearCombinationTerm Create(Float64Scalar inputScalar, XGaMetric metric, IIndexSet input1BasisBladeId, IIndexSet input2BasisBladeId, IIndexSet input3BasisBladeId, IIndexSet outputBasisBladeId)
+    public static XGaFloat64TrilinearCombinationTerm Create(Float64Scalar inputScalar, XGaMetric metric, IndexSet input1BasisBladeId, IndexSet input2BasisBladeId, IndexSet input3BasisBladeId, IndexSet outputBasisBladeId)
     {
         return new XGaFloat64TrilinearCombinationTerm(
             inputScalar,
@@ -56,13 +56,13 @@ public sealed class XGaFloat64TrilinearCombinationTerm
 
     public XGaMetric Metric { get; }
 
-    public IIndexSet Input1BasisBladeId { get; }
+    public IndexSet Input1BasisBladeId { get; }
 
-    public IIndexSet Input2BasisBladeId { get; }
+    public IndexSet Input2BasisBladeId { get; }
     
-    public IIndexSet Input3BasisBladeId { get; }
+    public IndexSet Input3BasisBladeId { get; }
 
-    public IIndexSet OutputBasisBladeId { get; }
+    public IndexSet OutputBasisBladeId { get; }
 
     public Float64Scalar InputScalar { get; internal set; }
 
@@ -124,7 +124,7 @@ public sealed class XGaFloat64TrilinearCombinationTerm
         => InputScalar.IsNegative();
 
 
-    private XGaFloat64TrilinearCombinationTerm(Float64Scalar inputScalar, XGaMetric metric, IIndexSet input1BasisBladeId, IIndexSet input2BasisBladeId, IIndexSet input3BasisBladeId, IIndexSet outputBasisBladeId)
+    private XGaFloat64TrilinearCombinationTerm(Float64Scalar inputScalar, XGaMetric metric, IndexSet input1BasisBladeId, IndexSet input2BasisBladeId, IndexSet input3BasisBladeId, IndexSet outputBasisBladeId)
     {
         Metric = metric;
         InputScalar = inputScalar;
@@ -135,7 +135,7 @@ public sealed class XGaFloat64TrilinearCombinationTerm
     }
 
     
-    public Quad<IIndexSet> GetUniqueKey(InputsKind inputsKind)
+    public Quad<IndexSet> GetUniqueKey(InputsKind inputsKind)
     {
         if (inputsKind == InputsKind.Equal)
         {
@@ -145,7 +145,7 @@ public sealed class XGaFloat64TrilinearCombinationTerm
                 Input3BasisBladeId
             );
 
-            return new Quad<IIndexSet>(
+            return new Quad<IndexSet>(
                 id1, 
                 id2, 
                 id3,
@@ -160,7 +160,7 @@ public sealed class XGaFloat64TrilinearCombinationTerm
                 Input2BasisBladeId
             );
 
-            return new Quad<IIndexSet>(
+            return new Quad<IndexSet>(
                 id1,
                 id2,
                 Input3BasisBladeId, 
@@ -175,7 +175,7 @@ public sealed class XGaFloat64TrilinearCombinationTerm
                 Input3BasisBladeId
             );
 
-            return new Quad<IIndexSet>(
+            return new Quad<IndexSet>(
                 id1,
                 Input2BasisBladeId, 
                 id3,
@@ -190,7 +190,7 @@ public sealed class XGaFloat64TrilinearCombinationTerm
                 Input3BasisBladeId
             );
 
-            return new Quad<IIndexSet>(
+            return new Quad<IndexSet>(
                 Input1BasisBladeId, 
                 id2, 
                 id3,
@@ -198,7 +198,7 @@ public sealed class XGaFloat64TrilinearCombinationTerm
             );
         }
 
-        return new Quad<IIndexSet>(
+        return new Quad<IndexSet>(
             Input1BasisBladeId, 
             Input2BasisBladeId, 
             Input3BasisBladeId,

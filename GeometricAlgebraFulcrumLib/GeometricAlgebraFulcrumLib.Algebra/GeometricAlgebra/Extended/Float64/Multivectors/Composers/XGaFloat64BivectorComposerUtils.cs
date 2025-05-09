@@ -2,16 +2,16 @@
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Extended.Float64.Processors;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space3D;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
-using GeometricAlgebraFulcrumLib.Utilities.Structures.Basic;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Dictionary;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.IndexSets;
+using GeometricAlgebraFulcrumLib.Utilities.Structures.Tuples;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Extended.Float64.Multivectors.Composers;
 
 public static class XGaFloat64BivectorComposerUtils
 {
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    internal static Dictionary<IIndexSet, double> CreateBivectorDictionary(this IReadOnlyDictionary<IndexPair, double> inputDictionary)
+    internal static Dictionary<IndexSet, double> CreateBivectorDictionary(this IReadOnlyDictionary<IndexPair, double> inputDictionary)
     {
         var basisScalarDictionary = IndexSetUtils.CreateIndexSetDictionary<double>();
 
@@ -22,7 +22,7 @@ public static class XGaFloat64BivectorComposerUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    internal static Dictionary<IIndexSet, double> CreateBivectorDictionary(this IReadOnlyDictionary<Int32Pair, double> inputDictionary)
+    internal static Dictionary<IndexSet, double> CreateBivectorDictionary(this IReadOnlyDictionary<Int32Pair, double> inputDictionary)
     {
         var basisScalarDictionary = IndexSetUtils.CreateIndexSetDictionary<double>();
 
@@ -52,12 +52,12 @@ public static class XGaFloat64BivectorComposerUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static XGaFloat64Bivector Bivector(this XGaFloat64Processor processor, IReadOnlyDictionary<IIndexSet, double> basisScalarDictionary)
+    public static XGaFloat64Bivector Bivector(this XGaFloat64Processor processor, IReadOnlyDictionary<IndexSet, double> basisScalarDictionary)
     {
-        if (basisScalarDictionary.Count == 0 && basisScalarDictionary is not EmptyDictionary<IIndexSet, double>)
+        if (basisScalarDictionary.Count == 0 && basisScalarDictionary is not EmptyDictionary<IndexSet, double>)
             return processor.BivectorZero;
 
-        if (basisScalarDictionary.Count == 1 && basisScalarDictionary is not SingleItemDictionary<IIndexSet, double>)
+        if (basisScalarDictionary.Count == 1 && basisScalarDictionary is not SingleItemDictionary<IndexSet, double>)
             return processor.BivectorTerm(basisScalarDictionary.First());
 
         return new XGaFloat64Bivector(
@@ -75,7 +75,7 @@ public static class XGaFloat64BivectorComposerUtils
 
         return new XGaFloat64Bivector(
             processor,
-            new SingleItemDictionary<IIndexSet, double>(
+            new SingleItemDictionary<IndexSet, double>(
                 IndexSetUtils.IndexPairToIndexSet(index1, index2),
                 1d
             )
@@ -93,7 +93,7 @@ public static class XGaFloat64BivectorComposerUtils
 
         return new XGaFloat64Bivector(
             processor,
-            new SingleItemDictionary<IIndexSet, double>(
+            new SingleItemDictionary<IndexSet, double>(
                 IndexSetUtils.IndexPairToIndexSet(index1, index2),
                 scalar
             )
@@ -106,7 +106,7 @@ public static class XGaFloat64BivectorComposerUtils
         return new XGaFloat64Bivector(
             processor,
 
-            new SingleItemDictionary<IIndexSet, double>(
+            new SingleItemDictionary<IndexSet, double>(
                 indexPair.IndexPairToIndexSet(),
                 1d
             )
@@ -122,7 +122,7 @@ public static class XGaFloat64BivectorComposerUtils
         return new XGaFloat64Bivector(
             processor,
 
-            new SingleItemDictionary<IIndexSet, double>(
+            new SingleItemDictionary<IndexSet, double>(
                 indexPair.IndexPairToIndexSet(),
                 scalar
             )
@@ -137,29 +137,29 @@ public static class XGaFloat64BivectorComposerUtils
     }
         
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static XGaFloat64Bivector BivectorTerm(this XGaFloat64Processor processor, KeyValuePair<IIndexSet, double> indexScalarPair)
+    public static XGaFloat64Bivector BivectorTerm(this XGaFloat64Processor processor, KeyValuePair<IndexSet, double> indexScalarPair)
     {
         return processor.BivectorTerm(indexScalarPair.Key, indexScalarPair.Value);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static XGaFloat64Bivector BivectorTerm(this XGaFloat64Processor processor, IIndexSet basisBlade)
+    public static XGaFloat64Bivector BivectorTerm(this XGaFloat64Processor processor, IndexSet basisBlade)
     {
         return new XGaFloat64Bivector(
             processor,
-            new SingleItemDictionary<IIndexSet, double>(basisBlade, 1d)
+            new SingleItemDictionary<IndexSet, double>(basisBlade, 1d)
         );
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static XGaFloat64Bivector BivectorTerm(this XGaFloat64Processor processor, IIndexSet basisBlade, double scalar)
+    public static XGaFloat64Bivector BivectorTerm(this XGaFloat64Processor processor, IndexSet basisBlade, double scalar)
     {
         if (scalar.IsZero())
             return new XGaFloat64Bivector(processor);
 
         return new XGaFloat64Bivector(
             processor,
-            new SingleItemDictionary<IIndexSet, double>(basisBlade, scalar)
+            new SingleItemDictionary<IndexSet, double>(basisBlade, scalar)
         );
     }
 

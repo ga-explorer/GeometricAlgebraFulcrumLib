@@ -233,7 +233,7 @@ public abstract partial class RGaKVector<T> :
 
         var probeVectors = 
             maxId
-                .PatternToMappedPositions(Processor.VectorTerm)
+                .GetSetBitMappedPositions(Processor.VectorTerm)
                 .ToImmutableArray();
 
         return BladeToVectors(probeVectors);

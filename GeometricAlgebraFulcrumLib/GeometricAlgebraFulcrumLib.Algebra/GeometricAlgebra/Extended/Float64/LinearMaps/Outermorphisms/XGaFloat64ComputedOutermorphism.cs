@@ -11,13 +11,13 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Extended.Float64.L
 public sealed class XGaFloat64ComputedOutermorphism :
     XGaFloat64OutermorphismBase
 {
-    public Func<IIndexSet, XGaFloat64KVector> BasisMapFunc { get; }
+    public Func<IndexSet, XGaFloat64KVector> BasisMapFunc { get; }
 
     public override XGaFloat64Processor Processor { get; }
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    internal XGaFloat64ComputedOutermorphism(Func<IIndexSet, XGaFloat64KVector> basisMapFunc, XGaFloat64Processor processor)
+    internal XGaFloat64ComputedOutermorphism(Func<IndexSet, XGaFloat64KVector> basisMapFunc, XGaFloat64Processor processor)
     {
         BasisMapFunc = basisMapFunc;
         Processor = processor;
@@ -31,13 +31,13 @@ public sealed class XGaFloat64ComputedOutermorphism :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public override IEnumerable<KeyValuePair<IIndexSet, XGaFloat64Multivector>> GetMappedBasisBlades(int vSpaceDimensions)
+    public override IEnumerable<KeyValuePair<IndexSet, XGaFloat64Multivector>> GetMappedBasisBlades(int vSpaceDimensions)
     {
         return Processor
             .GetBasisBladeIds(vSpaceDimensions)
             .Where(id => id.VSpaceDimensions() <= vSpaceDimensions)
             .Select(id => 
-                new KeyValuePair<IIndexSet, XGaFloat64Multivector>(id, BasisMapFunc(id))
+                new KeyValuePair<IndexSet, XGaFloat64Multivector>(id, BasisMapFunc(id))
             ).Where(p => !p.Value.IsZero);
     }
 
@@ -63,7 +63,7 @@ public sealed class XGaFloat64ComputedOutermorphism :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public override XGaFloat64KVector OmMapBasisBlade(IIndexSet id)
+    public override XGaFloat64KVector OmMapBasisBlade(IndexSet id)
     {
         return BasisMapFunc(id).GetVectorPart();
     }
@@ -113,7 +113,7 @@ public sealed class XGaFloat64ComputedOutermorphism :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public override IEnumerable<KeyValuePair<IIndexSet, XGaFloat64Vector>> GetOmMappedBasisVectors(int vSpaceDimensions)
+    public override IEnumerable<KeyValuePair<IndexSet, XGaFloat64Vector>> GetOmMappedBasisVectors(int vSpaceDimensions)
     {
         return vSpaceDimensions.GetRange(
                 index =>
@@ -123,7 +123,7 @@ public sealed class XGaFloat64ComputedOutermorphism :
                     )
             ).Where(p => !p.Value.IsZero)
             .Select(p => 
-                new KeyValuePair<IIndexSet, XGaFloat64Vector>(
+                new KeyValuePair<IndexSet, XGaFloat64Vector>(
                     p.Key.IndexToIndexSet(),
                     p.Value
                 )

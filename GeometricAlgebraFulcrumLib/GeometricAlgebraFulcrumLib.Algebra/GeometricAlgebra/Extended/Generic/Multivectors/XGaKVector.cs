@@ -194,7 +194,7 @@ public abstract partial class XGaKVector<T> :
         if (!IsZero) yield return this;
     }
 
-    public abstract IReadOnlyDictionary<IIndexSet, T> GetIdScalarDictionary();
+    public abstract IReadOnlyDictionary<IndexSet, T> GetIdScalarDictionary();
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public IEnumerable<KeyValuePair<ulong, T>> GetKVectorArrayItems()
@@ -218,7 +218,7 @@ public abstract partial class XGaKVector<T> :
     public IReadOnlyList<XGaVector<T>> BladeToVectors()
     {
         // Find basis blade with the largest scalar magnitude in the current blade
-        IIndexSet maxId = EmptyIndexSet.Instance;
+        IndexSet maxId = IndexSet.EmptySet;
         var maxScalar = ScalarProcessor.ZeroValue;
 
         foreach (var (id, scalar) in IdScalarPairs)

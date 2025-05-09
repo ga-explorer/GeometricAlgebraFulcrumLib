@@ -50,7 +50,7 @@ public sealed class XGaFloat64MusicalAutomorphism :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public XGaFloat64Multivector MapBasisBlade(IIndexSet id)
+    public XGaFloat64Multivector MapBasisBlade(IndexSet id)
     {
         return OmMapBasisBlade(id);
     }
@@ -62,12 +62,12 @@ public sealed class XGaFloat64MusicalAutomorphism :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public IEnumerable<KeyValuePair<IIndexSet, XGaFloat64Multivector>> GetMappedBasisBlades(int vSpaceDimensions)
+    public IEnumerable<KeyValuePair<IndexSet, XGaFloat64Multivector>> GetMappedBasisBlades(int vSpaceDimensions)
     {
         return Processor
             .GetBasisBladeIds(vSpaceDimensions)
             .Select(id => 
-                new KeyValuePair<IIndexSet, XGaFloat64Multivector>(
+                new KeyValuePair<IndexSet, XGaFloat64Multivector>(
                     id, 
                     OmMapBasisBlade(id)
                 )
@@ -101,7 +101,7 @@ public sealed class XGaFloat64MusicalAutomorphism :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public XGaFloat64KVector OmMapBasisBlade(IIndexSet id)
+    public XGaFloat64KVector OmMapBasisBlade(IndexSet id)
     {
         if (id.IsEmptySet)
             return Processor.ScalarOne;
@@ -177,12 +177,12 @@ public sealed class XGaFloat64MusicalAutomorphism :
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public IEnumerable<KeyValuePair<IIndexSet, XGaFloat64Vector>> GetOmMappedBasisVectors(int vSpaceDimensions)
+    public IEnumerable<KeyValuePair<IndexSet, XGaFloat64Vector>> GetOmMappedBasisVectors(int vSpaceDimensions)
     {
         return vSpaceDimensions
             .GetRange(index => 
-                new KeyValuePair<IIndexSet, XGaFloat64Vector>(
-                    index.IndexToSingleIndexSet(), 
+                new KeyValuePair<IndexSet, XGaFloat64Vector>(
+                    index.IndexToIndexSet(), 
                     OmMapBasisVector(index)
                 )
             );

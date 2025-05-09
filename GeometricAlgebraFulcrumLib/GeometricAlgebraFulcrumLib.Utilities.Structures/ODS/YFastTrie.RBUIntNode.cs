@@ -25,15 +25,11 @@ partial class YFastTrie<T>
         public override void SwapValue(RbTree.Node other)
         {
             var node = (RbuIntNode)other;
-            var tempKey = Key;
-            Key = node.Key;
-            node.Key = tempKey;
-            var tempValue = Value;
-            Value = node.Value;
-            node.Value = tempValue;
+            (Key, node.Key) = (node.Key, Key);
+            (Value, node.Value) = (node.Value, Value);
         }
 
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
             var node = obj as RbuIntNode;
             return (node != null) && (node.Key == Key) && (Equals(node.Value, Value));

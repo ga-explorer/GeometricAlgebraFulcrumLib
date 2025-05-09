@@ -7,10 +7,10 @@ public interface IXGaIdPairRecord
     /// <summary>
     /// The First Basis Blade ID
     /// </summary>
-    IIndexSet Id1 { get; }
+    IndexSet Id1 { get; }
 
     /// <summary>
     /// The Second Basis Blade ID
     /// </summary>
-    IIndexSet Id2 { get; }
+    IndexSet Id2 { get; }
 }

@@ -1,11 +1,11 @@
 ﻿using System.Collections;
 using System.Collections.Immutable;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Extended.Basis;
-using GeometricAlgebraFulcrumLib.Utilities.Structures.Basic;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.IndexSets;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Extended.Generic.Multivectors;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Extended.Generic.Processors;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Generic;
+using GeometricAlgebraFulcrumLib.Utilities.Structures.Tuples;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Extended.Generic.Combinations;
 
@@ -13,7 +13,7 @@ public class XGaBilinearCombination<T> :
     IReadOnlyCollection<XGaBilinearCombinationTerm<T>>, 
     IXGaLinearCombination
 {
-    private readonly Dictionary<Triplet<IIndexSet>, XGaBilinearCombinationTerm<T>> _termList;
+    private readonly Dictionary<Triplet<IndexSet>, XGaBilinearCombinationTerm<T>> _termList;
 
 
     public bool AssumeEqualInputs { get; }
@@ -28,10 +28,10 @@ public class XGaBilinearCombination<T> :
     public XGaBilinearCombination(bool assumeEqualInputs)
     {
         AssumeEqualInputs = assumeEqualInputs;
-        _termList = new Dictionary<Triplet<IIndexSet>, XGaBilinearCombinationTerm<T>>();
+        _termList = new Dictionary<Triplet<IndexSet>, XGaBilinearCombinationTerm<T>>();
     }
 
-    public XGaBilinearCombination(bool assumeEqualInputs, Dictionary<Triplet<IIndexSet>, XGaBilinearCombinationTerm<T>> termList)
+    public XGaBilinearCombination(bool assumeEqualInputs, Dictionary<Triplet<IndexSet>, XGaBilinearCombinationTerm<T>> termList)
     {
         AssumeEqualInputs = assumeEqualInputs;
         _termList = termList;
@@ -130,7 +130,7 @@ public class XGaBilinearCombination<T> :
         return this;
     }
 
-    public XGaBilinearCombination<T> Add(Scalar<T> inputScalar, XGaProcessor<T> metric, IIndexSet input1BasisBladeId, IIndexSet input2BasisBladeId, IIndexSet outputBasisBladeId)
+    public XGaBilinearCombination<T> Add(Scalar<T> inputScalar, XGaProcessor<T> metric, IndexSet input1BasisBladeId, IndexSet input2BasisBladeId, IndexSet outputBasisBladeId)
     {
         var term = XGaBilinearCombinationTerm<T>.Create(
             inputScalar,
@@ -218,7 +218,7 @@ public class XGaBilinearCombination<T> :
         return this;
     }
 
-    public IReadOnlyList<IIndexSet> GetInputBasisBladeIDs()
+    public IReadOnlyList<IndexSet> GetInputBasisBladeIDs()
     {
         return _termList
             .Values
@@ -227,7 +227,7 @@ public class XGaBilinearCombination<T> :
             .ToImmutableSortedSet();
     }
 
-    public IReadOnlyList<IIndexSet> GetInput1BasisBladeIDs()
+    public IReadOnlyList<IndexSet> GetInput1BasisBladeIDs()
     {
         if (AssumeEqualInputs)
             return GetInputBasisBladeIDs();
@@ -238,7 +238,7 @@ public class XGaBilinearCombination<T> :
             .ToImmutableSortedSet();
     }
 
-    public IReadOnlyList<IIndexSet> GetInput2BasisBladeIDs()
+    public IReadOnlyList<IndexSet> GetInput2BasisBladeIDs()
     {
         if (AssumeEqualInputs)
             return GetInputBasisBladeIDs();
@@ -249,7 +249,7 @@ public class XGaBilinearCombination<T> :
             .ToImmutableSortedSet();
     }
 
-    public IReadOnlyList<IIndexSet> GetOutputBasisBladeIDs()
+    public IReadOnlyList<IndexSet> GetOutputBasisBladeIDs()
     {
         return _termList
             .Values
@@ -296,7 +296,7 @@ public class XGaBilinearCombination<T> :
             .ToImmutableSortedSet();
     }
 
-    public XGaBilinearCombination<T> GetSubCombinationWithOutputId(IIndexSet outputBasisBladeId)
+    public XGaBilinearCombination<T> GetSubCombinationWithOutputId(IndexSet outputBasisBladeId)
     {
         var termList =
             _termList

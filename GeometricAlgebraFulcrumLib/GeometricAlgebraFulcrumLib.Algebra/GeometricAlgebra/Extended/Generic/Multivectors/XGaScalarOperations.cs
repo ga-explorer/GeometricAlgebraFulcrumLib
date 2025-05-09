@@ -1205,7 +1205,7 @@ public sealed partial class XGaScalar<T>
     }
         
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public XGaFloat64Scalar MapScalar(XGaFloat64Processor processor, Func<IIndexSet, T, double> scalarMapping)
+    public XGaFloat64Scalar MapScalar(XGaFloat64Processor processor, Func<IndexSet, T, double> scalarMapping)
     {
         return IsZero
             ? processor.ScalarZero
@@ -1215,7 +1215,7 @@ public sealed partial class XGaScalar<T>
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public XGaScalar<T> MapScalar(Func<IIndexSet, T, T> scalarMapping)
+    public XGaScalar<T> MapScalar(Func<IndexSet, T, T> scalarMapping)
     {
         return IsZero
             ? this
@@ -1229,7 +1229,7 @@ public sealed partial class XGaScalar<T>
     }
         
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public XGaScalar<T1> MapScalar<T1>(XGaProcessor<T1> processor, Func<IIndexSet, T, T1> scalarMapping)
+    public XGaScalar<T1> MapScalar<T1>(XGaProcessor<T1> processor, Func<IndexSet, T, T1> scalarMapping)
     {
         return IsZero
             ? processor.ScalarZero

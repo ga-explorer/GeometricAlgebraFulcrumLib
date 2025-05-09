@@ -1,5 +1,5 @@
-﻿using GeometricAlgebraFulcrumLib.Utilities.Structures.Basic;
-using GeometricAlgebraFulcrumLib.Utilities.Structures.Collections.Generative.Finite;
+﻿using GeometricAlgebraFulcrumLib.Utilities.Structures.Collections.Generative.Finite;
+using GeometricAlgebraFulcrumLib.Utilities.Structures.Tuples;
 
 namespace GeometricAlgebraFulcrumLib.Utilities.Structures.Collections.Generative;
 

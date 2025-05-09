@@ -9,7 +9,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Structures.SimpleTree;
 [Serializable]
 public sealed class SimpleTreeBranchList<TLeaf> : SimpleTreeNode<TLeaf>, IList<SimpleTreeBranch<TLeaf>>
 {
-    private readonly List<SimpleTreeBranch<TLeaf>> _branches = new List<SimpleTreeBranch<TLeaf>>();
+    private readonly List<SimpleTreeBranch<TLeaf>> _branches = [];
 
 
     public int IndexOf(SimpleTreeBranch<TLeaf> item)
@@ -92,7 +92,7 @@ public sealed class SimpleTreeBranchList<TLeaf> : SimpleTreeNode<TLeaf>, IList<S
         get { return _branches.Select(item => ReferenceEquals(item, null) ? null : item.BranchNode); }
     }
 
-    public override IEnumerable<SimpleTreeBranch<TLeaf>> ChildBranches => Enumerable.Empty<SimpleTreeBranch<TLeaf>>();
+    public override IEnumerable<SimpleTreeBranch<TLeaf>> ChildBranches => [];
 
     //public override void ToString(LinearTextComposer textBuilder)
     //{

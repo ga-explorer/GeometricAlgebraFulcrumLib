@@ -10,7 +10,7 @@ using GeometricAlgebraFulcrumLib.Mathematica.Algebra;
 using GeometricAlgebraFulcrumLib.Mathematica.Utilities.Structures;
 using GeometricAlgebraFulcrumLib.Mathematica.Utilities.Structures.ExprFactory;
 using GeometricAlgebraFulcrumLib.Mathematica.Utilities.Text;
-using GeometricAlgebraFulcrumLib.Utilities.Structures.Basic;
+using GeometricAlgebraFulcrumLib.Utilities.Structures.Tuples;
 using OxyPlot;
 using OxyPlot.Series;
 using Wolfram.NETLink;

@@ -3,10 +3,10 @@ using System.Numerics;
 using System.Runtime.CompilerServices;
 using System.Text;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Records;
-using GeometricAlgebraFulcrumLib.Utilities.Structures.Basic;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.BitManipulation;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Combinations;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.IndexSets;
+using GeometricAlgebraFulcrumLib.Utilities.Structures.Tuples;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
 
@@ -56,7 +56,7 @@ public static class BasisBladeUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static int Grade(this IIndexSet id)
+    public static int Grade(this IndexSet id)
     {
         return id.Count;
     }
@@ -70,14 +70,14 @@ public static class BasisBladeUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static int VSpaceDimensions(this IIndexSet id)
+    public static int VSpaceDimensions(this IndexSet id)
     {
         return id.IsEmptySet 
             ? 0 : id.LastIndex + 1;
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static ulong KvSpaceDimensions(this IIndexSet id)
+    public static ulong KvSpaceDimensions(this IndexSet id)
     {
         return id.IsEmptySet
             ? 1UL 
@@ -91,7 +91,7 @@ public static class BasisBladeUtils
     }
         
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static bool IsBasisScalar(this IIndexSet id)
+    public static bool IsBasisScalar(this IndexSet id)
     {
         return id.IsEmptySet;
     }
@@ -103,7 +103,7 @@ public static class BasisBladeUtils
     }
         
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static bool IsBasisVector(this IIndexSet id)
+    public static bool IsBasisVector(this IndexSet id)
     {
         return id.Count == 1;
     }
@@ -115,7 +115,7 @@ public static class BasisBladeUtils
     }
         
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static bool IsBasisBivector(this IIndexSet id)
+    public static bool IsBasisBivector(this IndexSet id)
     {
         return id.Count == 2;
     }
@@ -127,7 +127,7 @@ public static class BasisBladeUtils
     }
         
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static bool IsBasisKVector(this IIndexSet id, int grade)
+    public static bool IsBasisKVector(this IndexSet id, int grade)
     {
         return id.Count == grade;
     }
@@ -422,19 +422,19 @@ public static class BasisBladeUtils
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static IEnumerable<ulong> BasisBladeIdToBasisVectorIndices(this ulong basisBladeId)
     {
-        return basisBladeId.PatternToPositions().Select(i => (ulong) i);
+        return basisBladeId.GetSetBitPositions().Select(i => (ulong) i);
     }
         
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static IEnumerable<int> BasisBladeGradeIndexToInt32BasisVectorIndices(uint grade, ulong basisBladeIndex)
     {
-        return basisBladeIndex.BasisBladeIndexToId(grade).PatternToPositions();
+        return basisBladeIndex.BasisBladeIndexToId(grade).GetSetBitPositions();
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static IEnumerable<ulong> BasisBladeGradeIndexToBasisVectorIndices(uint grade, ulong basisBladeIndex)
     {
-        return basisBladeIndex.BasisBladeIndexToId(grade).PatternToPositions().Select(i => (ulong)i);
+        return basisBladeIndex.BasisBladeIndexToId(grade).GetSetBitPositions().Select(i => (ulong)i);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -529,7 +529,7 @@ public static class BasisBladeUtils
     public static ulong ComposeGeoSubspaceBasisBladeId(List<ulong> basisVectorsIds, ulong idIndex)
     {
         return idIndex
-            .PatternToPositions()
+            .GetSetBitPositions()
             .Aggregate(
                 0UL, 
                 (current, pos) => current | basisVectorsIds[pos]
@@ -997,7 +997,7 @@ public static class BasisBladeUtils
     /// <param name="basisBladeId"></param>
     /// <returns></returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static IntegerSign GradeInvolutionSignOfBasisBladeId(this IIndexSet basisBladeId)
+    public static IntegerSign GradeInvolutionSignOfBasisBladeId(this IndexSet basisBladeId)
     {
         return basisBladeId.Count.GradeInvolutionSignOfGrade();
     }
@@ -1041,7 +1041,7 @@ public static class BasisBladeUtils
     /// <param name="basisBladeId"></param>
     /// <returns></returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static IntegerSign ReverseSignOfBasisBladeId(this IIndexSet basisBladeId)
+    public static IntegerSign ReverseSignOfBasisBladeId(this IndexSet basisBladeId)
     {
         return basisBladeId.Count.ReverseSignOfGrade();
     }
@@ -1085,7 +1085,7 @@ public static class BasisBladeUtils
     /// <param name="basisBladeId"></param>
     /// <returns></returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static IntegerSign CliffordConjugateSignOfBasisBladeId(this IIndexSet basisBladeId)
+    public static IntegerSign CliffordConjugateSignOfBasisBladeId(this IndexSet basisBladeId)
     {
         return basisBladeId.Count.CliffordConjugateSignOfGrade();
     }

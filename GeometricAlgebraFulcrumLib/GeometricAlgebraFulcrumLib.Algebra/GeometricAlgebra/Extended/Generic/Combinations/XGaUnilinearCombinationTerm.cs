@@ -28,7 +28,7 @@ public sealed class XGaUnilinearCombinationTerm<T>
         );
     }
 
-    public static XGaUnilinearCombinationTerm<T> Create(Scalar<T> inputScalar, XGaProcessor<T> metric, IIndexSet inputBasisBladeId, IIndexSet outputBasisBladeId)
+    public static XGaUnilinearCombinationTerm<T> Create(Scalar<T> inputScalar, XGaProcessor<T> metric, IndexSet inputBasisBladeId, IndexSet outputBasisBladeId)
     {
         return new XGaUnilinearCombinationTerm<T>(
             inputScalar,
@@ -41,9 +41,9 @@ public sealed class XGaUnilinearCombinationTerm<T>
 
     public XGaProcessor<T> Processor { get; }
 
-    public IIndexSet InputBasisBladeId { get; }
+    public IndexSet InputBasisBladeId { get; }
 
-    public IIndexSet OutputBasisBladeId { get; }
+    public IndexSet OutputBasisBladeId { get; }
 
     public Scalar<T> InputScalar { get; internal set; }
     
@@ -81,7 +81,7 @@ public sealed class XGaUnilinearCombinationTerm<T>
         => InputScalar.IsNegative();
 
 
-    private XGaUnilinearCombinationTerm(Scalar<T> inputScalar, XGaProcessor<T> metric, IIndexSet inputBasisBladeId, IIndexSet outputBasisBladeId)
+    private XGaUnilinearCombinationTerm(Scalar<T> inputScalar, XGaProcessor<T> metric, IndexSet inputBasisBladeId, IndexSet outputBasisBladeId)
     {
         Processor = metric;
         InputScalar = inputScalar;

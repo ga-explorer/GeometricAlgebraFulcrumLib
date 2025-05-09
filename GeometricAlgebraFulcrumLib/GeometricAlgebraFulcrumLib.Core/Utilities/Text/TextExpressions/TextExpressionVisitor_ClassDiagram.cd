@@ -1,0 +1,44 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1" GroupingSetting="Access" MembersFormat="FullSignature">
+  <Class Name="GeometricAlgebraFulcrumLib.Utilities.Text.TextExpression.TextExpressionVisitor">
+    <Position X="0.5" Y="3.5" Width="3.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>TextExpression\TextExpressionVisitor.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="GeometricAlgebraFulcrumLib.Utilities.Text.TextExpression.TextExpressionVisitor&lt;T&gt;" BaseTypeListCollapsed="true">
+    <Position X="4.25" Y="3.5" Width="3" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>TextExpression\TextExpressionVisitor.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="GeometricAlgebraFulcrumLib.Utilities.Text.TextExpression.TextExpressionComposer">
+    <Position X="0.75" Y="6.75" Width="3" />
+    <Compartments>
+      <Compartment Name="Private" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAgQAAAAAAAAAAAAAAAAAAAAAAEAAAAA=</HashCode>
+      <FileName>TextExpression\TextExpressionComposer.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Interface Name="GeometricAlgebraFulcrumLib.Utilities.Text.TextExpression.ITextExpressionVisitor">
+    <Position X="0.5" Y="0.5" Width="3.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>TextExpression\ITextExpressionVisitor.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="GeometricAlgebraFulcrumLib.Utilities.Text.TextExpression.ITextExpressionVisitor&lt;T&gt;">
+    <Position X="4.25" Y="0.5" Width="3" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>TextExpression\ITextExpressionVisitor.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

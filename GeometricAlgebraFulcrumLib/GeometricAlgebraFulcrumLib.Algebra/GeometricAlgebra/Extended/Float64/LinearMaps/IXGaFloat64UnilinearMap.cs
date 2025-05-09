@@ -8,9 +8,9 @@ public interface IXGaFloat64UnilinearMap :
 {
     IXGaFloat64UnilinearMap GetAdjoint();
     
-    XGaFloat64Multivector MapBasisBlade(IIndexSet id);
+    XGaFloat64Multivector MapBasisBlade(IndexSet id);
     
     XGaFloat64Multivector Map(XGaFloat64Multivector multivector);
     
-    IEnumerable<KeyValuePair<IIndexSet, XGaFloat64Multivector>> GetMappedBasisBlades(int vSpaceDimensions);
+    IEnumerable<KeyValuePair<IndexSet, XGaFloat64Multivector>> GetMappedBasisBlades(int vSpaceDimensions);
 }

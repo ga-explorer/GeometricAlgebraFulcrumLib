@@ -81,7 +81,7 @@ public abstract class TextComposerCSharpBase<T>
         throw new NotImplementedException();
     }
 
-    public string GetBasisBladeText(IIndexSet id)
+    public string GetBasisBladeText(IndexSet id)
     {
         throw new NotImplementedException();
     }
@@ -147,12 +147,12 @@ public abstract class TextComposerCSharpBase<T>
         throw new NotImplementedException();
     }
 
-    public string GetTermText(IIndexSet id, double scalar)
+    public string GetTermText(IndexSet id, double scalar)
     {
         throw new NotImplementedException();
     }
 
-    public string GetTermText(IIndexSet id, T scalar)
+    public string GetTermText(IndexSet id, T scalar)
     {
         throw new NotImplementedException();
     }

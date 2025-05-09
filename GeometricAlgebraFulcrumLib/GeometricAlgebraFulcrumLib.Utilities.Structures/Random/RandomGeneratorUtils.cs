@@ -2,7 +2,7 @@
 using System.Numerics;
 using System.Runtime.CompilerServices;
 using System.Security.Cryptography;
-using GeometricAlgebraFulcrumLib.Utilities.Structures.Basic;
+using GeometricAlgebraFulcrumLib.Utilities.Structures.Tuples;
 using MathNet.Numerics;
 using MathNet.Numerics.Statistics;
 // ReSharper disable CompareOfFloatsByEqualityOperator

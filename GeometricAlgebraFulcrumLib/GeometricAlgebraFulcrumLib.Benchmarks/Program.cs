@@ -1,5 +1,6 @@
 ﻿using BenchmarkDotNet.Running;
 using GeometricAlgebraFulcrumLib.Benchmarks.Comparisons;
+using GeometricAlgebraFulcrumLib.Benchmarks.Structures;
 
 namespace GeometricAlgebraFulcrumLib.Benchmarks;
 
@@ -22,6 +23,9 @@ class Program
         //BenchmarkRunner.Run<HansenProblemBenchmarks>();
         //BenchmarkRunner.Run<SnelliusPothenotProblemBenchmarks>();
         //BenchmarkRunner.Run<ScalarOperationsBenchmarks>();
-        BenchmarkRunner.Run<GaalopComparisonsBenchmarks>();
+        //BenchmarkRunner.Run<GaalopComparisonsBenchmarks>();
+        //BenchmarkRunner.Run<IndexSetBenchmarks>();
+        IndexSetBenchmarks.Validate();
+        
     }
 }

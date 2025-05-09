@@ -61,7 +61,7 @@ public static class XGaFloat64MultivectorComposerUtils
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Float64ScalarComposer AddEGpTerm(this Float64ScalarComposer composer, XGaFloat64Processor processor, IIndexSet id, double scalar1, double scalar2)
+    public static Float64ScalarComposer AddEGpTerm(this Float64ScalarComposer composer, XGaFloat64Processor processor, IndexSet id, double scalar1, double scalar2)
     {
         var term = processor.EGpSign(id, id);
         var scalar = term.IsPositive
@@ -190,7 +190,7 @@ public static class XGaFloat64MultivectorComposerUtils
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Float64ScalarComposer AddGpTerm(this Float64ScalarComposer composer, XGaFloat64Processor processor, IIndexSet id, double scalar1, double scalar2)
+    public static Float64ScalarComposer AddGpTerm(this Float64ScalarComposer composer, XGaFloat64Processor processor, IndexSet id, double scalar1, double scalar2)
     {
         var term = processor.GpSign(id, id);
 
@@ -341,25 +341,25 @@ public static class XGaFloat64MultivectorComposerUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static XGaFloat64HigherKVector GetXGaFloat64HigherKVector(this Float64ScalarComposer composer, XGaFloat64Processor processor, IIndexSet id)
+    public static XGaFloat64HigherKVector GetXGaFloat64HigherKVector(this Float64ScalarComposer composer, XGaFloat64Processor processor, IndexSet id)
     {
         return processor.HigherKVectorTerm(id, composer.ScalarValue);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static XGaFloat64KVector GetXGaFloat64KVector(this Float64ScalarComposer composer, XGaFloat64Processor processor, IIndexSet id)
+    public static XGaFloat64KVector GetXGaFloat64KVector(this Float64ScalarComposer composer, XGaFloat64Processor processor, IndexSet id)
     {
         return processor.KVectorTerm(id, composer.ScalarValue);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static XGaFloat64GradedMultivector GetXGaFloat64GradedMultivector(this Float64ScalarComposer composer, XGaFloat64Processor processor, IIndexSet id)
+    public static XGaFloat64GradedMultivector GetXGaFloat64GradedMultivector(this Float64ScalarComposer composer, XGaFloat64Processor processor, IndexSet id)
     {
         return processor.Multivector(id, composer.ScalarValue);
     }
 
 
-    private static XGaFloat64MultivectorComposer AddEuclideanProductTerms(this XGaFloat64MultivectorComposer composer, XGaFloat64Multivector mv1, XGaFloat64Multivector mv2, Func<IIndexSet, IIndexSet, bool> filterFunc)
+    private static XGaFloat64MultivectorComposer AddEuclideanProductTerms(this XGaFloat64MultivectorComposer composer, XGaFloat64Multivector mv1, XGaFloat64Multivector mv2, Func<IndexSet, IndexSet, bool> filterFunc)
     {
         if (mv1.IsZero || mv2.IsZero)
             return composer;
@@ -372,7 +372,7 @@ public static class XGaFloat64MultivectorComposerUtils
         return composer;
     }
 
-    private static XGaFloat64MultivectorComposer AddMetricProductTerms(this XGaFloat64MultivectorComposer composer, XGaFloat64Multivector mv1, XGaFloat64Multivector mv2, Func<IIndexSet, IIndexSet, bool> filterFunc)
+    private static XGaFloat64MultivectorComposer AddMetricProductTerms(this XGaFloat64MultivectorComposer composer, XGaFloat64Multivector mv1, XGaFloat64Multivector mv2, Func<IndexSet, IndexSet, bool> filterFunc)
     {
         Debug.Assert(
             composer.Metric.HasSameSignature(mv1.Metric) &&
@@ -1182,7 +1182,7 @@ public static class XGaFloat64MultivectorComposerUtils
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static XGaFloat64GradedMultivector Multivector(this XGaFloat64Processor processor, IReadOnlyDictionary<IIndexSet, double> termList)
+    public static XGaFloat64GradedMultivector Multivector(this XGaFloat64Processor processor, IReadOnlyDictionary<IndexSet, double> termList)
     {
         return processor
             .CreateComposer()
@@ -1203,7 +1203,7 @@ public static class XGaFloat64MultivectorComposerUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static XGaFloat64GradedMultivector Multivector(this XGaFloat64Processor processor, IEnumerable<KeyValuePair<IIndexSet, double>> termList)
+    public static XGaFloat64GradedMultivector Multivector(this XGaFloat64Processor processor, IEnumerable<KeyValuePair<IndexSet, double>> termList)
     {
         return processor
             .CreateComposer()
@@ -1226,7 +1226,7 @@ public static class XGaFloat64MultivectorComposerUtils
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static XGaFloat64GradedMultivector Multivector(this XGaFloat64Processor processor, IIndexSet id)
+    public static XGaFloat64GradedMultivector Multivector(this XGaFloat64Processor processor, IndexSet id)
     {
         var grade = id.Count;
 
@@ -1242,7 +1242,7 @@ public static class XGaFloat64MultivectorComposerUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static XGaFloat64GradedMultivector Multivector(this XGaFloat64Processor processor, IIndexSet id, double scalar)
+    public static XGaFloat64GradedMultivector Multivector(this XGaFloat64Processor processor, IndexSet id, double scalar)
     {
         var grade = id.Count;
 
@@ -1262,7 +1262,7 @@ public static class XGaFloat64MultivectorComposerUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static XGaFloat64GradedMultivector Multivector(this XGaFloat64Processor processor, KeyValuePair<IIndexSet, double> basisScalarPair)
+    public static XGaFloat64GradedMultivector Multivector(this XGaFloat64Processor processor, KeyValuePair<IndexSet, double> basisScalarPair)
     {
         var (id, scalar) = basisScalarPair;
         var grade = id.Count;
@@ -1416,12 +1416,12 @@ public static class XGaFloat64MultivectorComposerUtils
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static XGaFloat64UniformMultivector UniformMultivector(this XGaFloat64Processor processor, IReadOnlyDictionary<IIndexSet, double> basisScalarDictionary)
+    public static XGaFloat64UniformMultivector UniformMultivector(this XGaFloat64Processor processor, IReadOnlyDictionary<IndexSet, double> basisScalarDictionary)
     {
-        if (basisScalarDictionary.Count == 0 && basisScalarDictionary is not EmptyDictionary<IIndexSet, double>)
+        if (basisScalarDictionary.Count == 0 && basisScalarDictionary is not EmptyDictionary<IndexSet, double>)
             return processor.UniformMultivectorZero;
 
-        if (basisScalarDictionary.Count == 1 && basisScalarDictionary is not SingleItemDictionary<IIndexSet, double>)
+        if (basisScalarDictionary.Count == 1 && basisScalarDictionary is not SingleItemDictionary<IndexSet, double>)
             return processor.UniformMultivector(basisScalarDictionary.First());
 
         return new XGaFloat64UniformMultivector(
@@ -1432,32 +1432,32 @@ public static class XGaFloat64MultivectorComposerUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static XGaFloat64UniformMultivector UniformMultivector(this XGaFloat64Processor processor, IIndexSet basisBlade)
+    public static XGaFloat64UniformMultivector UniformMultivector(this XGaFloat64Processor processor, IndexSet basisBlade)
     {
         return new XGaFloat64UniformMultivector(processor,
 
-            new SingleItemDictionary<IIndexSet, double>(
+            new SingleItemDictionary<IndexSet, double>(
                 basisBlade,
                 1d
             ));
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static XGaFloat64UniformMultivector UniformMultivector(this XGaFloat64Processor processor, IIndexSet basisBlade, double scalar)
+    public static XGaFloat64UniformMultivector UniformMultivector(this XGaFloat64Processor processor, IndexSet basisBlade, double scalar)
     {
         if (scalar.IsZero())
             return new XGaFloat64UniformMultivector(processor);
 
         return new XGaFloat64UniformMultivector(processor,
 
-            new SingleItemDictionary<IIndexSet, double>(
+            new SingleItemDictionary<IndexSet, double>(
                 basisBlade,
                 scalar
             ));
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static XGaFloat64UniformMultivector UniformMultivector(this XGaFloat64Processor processor, KeyValuePair<IIndexSet, double> basisScalarPair)
+    public static XGaFloat64UniformMultivector UniformMultivector(this XGaFloat64Processor processor, KeyValuePair<IndexSet, double> basisScalarPair)
     {
         return processor.UniformMultivector(
 

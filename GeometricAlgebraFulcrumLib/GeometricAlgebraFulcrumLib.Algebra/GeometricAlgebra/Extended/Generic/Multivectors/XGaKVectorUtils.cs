@@ -24,7 +24,7 @@ public static class XGaKVectorUtils
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static XGaKVector<T> GetPart<T>(this XGaKVector<T> mv, Func<IIndexSet, bool> filterFunc)
+    public static XGaKVector<T> GetPart<T>(this XGaKVector<T> mv, Func<IndexSet, bool> filterFunc)
     {
         return mv switch
         {
@@ -50,7 +50,7 @@ public static class XGaKVectorUtils
     }
         
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static XGaKVector<T> GetPart<T>(this XGaKVector<T> mv, Func<IIndexSet, T, bool> filterFunc)
+    public static XGaKVector<T> GetPart<T>(this XGaKVector<T> mv, Func<IndexSet, T, bool> filterFunc)
     {
         return mv switch
         {
@@ -103,7 +103,7 @@ public static class XGaKVectorUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static XGaKVector<T> MapScalars<T>(this XGaKVector<T> mv, Func<IIndexSet, T, T> scalarMapping)
+    public static XGaKVector<T> MapScalars<T>(this XGaKVector<T> mv, Func<IndexSet, T, T> scalarMapping)
     {
         return mv switch
         {
@@ -116,7 +116,7 @@ public static class XGaKVectorUtils
     }
         
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static XGaKVector<T2> MapScalars<T1, T2>(this XGaKVector<T1> mv, XGaProcessor<T2> processor, Func<IIndexSet, T1, T2> scalarMapping)
+    public static XGaKVector<T2> MapScalars<T1, T2>(this XGaKVector<T1> mv, XGaProcessor<T2> processor, Func<IndexSet, T1, T2> scalarMapping)
     {
         return mv switch
         {
@@ -128,7 +128,7 @@ public static class XGaKVectorUtils
         };
     }
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static XGaFloat64KVector MapScalars<T>(this XGaKVector<T> mv, XGaFloat64Processor processor, Func<IIndexSet, T, double> scalarMapping)
+    public static XGaFloat64KVector MapScalars<T>(this XGaKVector<T> mv, XGaFloat64Processor processor, Func<IndexSet, T, double> scalarMapping)
     {
         return mv switch
         {

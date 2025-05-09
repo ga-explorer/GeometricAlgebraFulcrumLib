@@ -65,7 +65,7 @@ public abstract class XGaFloat64VersorBase :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public override XGaFloat64KVector OmMapBasisBlade(IIndexSet id)
+    public override XGaFloat64KVector OmMapBasisBlade(IndexSet id)
     {
         return OmMap(
             Processor.KVectorTerm(id, 1d)
@@ -83,13 +83,13 @@ public abstract class XGaFloat64VersorBase :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public override IEnumerable<KeyValuePair<IIndexSet, XGaFloat64Multivector>> GetMappedBasisBlades(
+    public override IEnumerable<KeyValuePair<IndexSet, XGaFloat64Multivector>> GetMappedBasisBlades(
         int vSpaceDimensions)
     {
         return Processor
             .GetBasisBladeIds(vSpaceDimensions)
             .Select(id => 
-                new KeyValuePair<IIndexSet, XGaFloat64Multivector>(
+                new KeyValuePair<IndexSet, XGaFloat64Multivector>(
                     id, 
                     OmMapBasisBlade(id)
                 )
@@ -97,13 +97,13 @@ public abstract class XGaFloat64VersorBase :
     }
         
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public override IEnumerable<KeyValuePair<IIndexSet, XGaFloat64Vector>> GetOmMappedBasisVectors(
+    public override IEnumerable<KeyValuePair<IndexSet, XGaFloat64Vector>> GetOmMappedBasisVectors(
         int vSpaceDimensions)
     {
         return vSpaceDimensions
             .GetRange()
             .Select(index => 
-                new KeyValuePair<IIndexSet, XGaFloat64Vector>(
+                new KeyValuePair<IndexSet, XGaFloat64Vector>(
                     index.IndexToIndexSet(), 
                     OmMapBasisVector(index)
                 )

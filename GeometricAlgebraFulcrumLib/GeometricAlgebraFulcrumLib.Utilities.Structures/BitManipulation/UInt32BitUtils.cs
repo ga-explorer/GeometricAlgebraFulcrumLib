@@ -81,14 +81,14 @@ public static class UInt32BitUtils
     public static int MaxBitPatternSize => 32;
 
 
-    private static readonly uint[] Log2CeilingArray = new uint[]
-    {
+    private static readonly uint[] Log2CeilingArray =
+    [
         0xFFFF0000U,
         0x0000FF00U,
         0x000000F0U,
         0x0000000CU,
         0x00000002U
-    };
+    ];
 
     /// <summary>
     /// https://stackoverflow.com/questions/3272424/compute-fast-log-base-2-ceiling

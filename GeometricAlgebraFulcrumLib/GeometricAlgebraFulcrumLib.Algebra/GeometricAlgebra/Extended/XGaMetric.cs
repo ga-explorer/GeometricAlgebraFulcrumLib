@@ -3,10 +3,10 @@ using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Extended.Basis;
-using GeometricAlgebraFulcrumLib.Utilities.Structures.Basic;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.BitManipulation;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Combinations;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.IndexSets;
+using GeometricAlgebraFulcrumLib.Utilities.Structures.Tuples;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Extended;
 
@@ -91,7 +91,7 @@ public abstract class XGaMetric
         IsEuclidean = NonEuclideanBasisCount == 0;
         IsNonEuclidean = !IsEuclidean;
 
-        BasisScalar = new XGaBasisBlade(this, EmptyIndexSet.Instance);
+        BasisScalar = new XGaBasisBlade(this, IndexSet.EmptySet);
         ZeroBasisScalar = new XGaSignedBasisBlade(BasisScalar, IntegerSign.Zero);
         NegativeBasisScalar = new XGaSignedBasisBlade(BasisScalar, IntegerSign.Negative);
     }
@@ -130,12 +130,12 @@ public abstract class XGaMetric
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public IIndexSet GetBasisScalarId()
+    public IndexSet GetBasisScalarId()
     {
-        return EmptyIndexSet.Instance;
+        return IndexSet.EmptySet;
     }
 
-    public IEnumerable<IIndexSet> GetBasisVectorIds(int vSpaceDimensions)
+    public IEnumerable<IndexSet> GetBasisVectorIds(int vSpaceDimensions)
     {
         if (vSpaceDimensions < 1)
             throw new ArgumentOutOfRangeException(nameof(vSpaceDimensions));
@@ -144,7 +144,7 @@ public abstract class XGaMetric
             yield return index.IndexToIndexSet();
     }
         
-    public IEnumerable<IIndexSet> GetBasisBivectorIds(int vSpaceDimensions)
+    public IEnumerable<IndexSet> GetBasisBivectorIds(int vSpaceDimensions)
     {
         if (vSpaceDimensions < 2)
             throw new ArgumentOutOfRangeException(nameof(vSpaceDimensions));
@@ -154,7 +154,7 @@ public abstract class XGaMetric
             yield return IndexSetUtils.IndexPairToIndexSet(index1, index2);
     }
         
-    public IEnumerable<IIndexSet> GetBasisKVectorIds(int vSpaceDimensions, int grade)
+    public IEnumerable<IndexSet> GetBasisKVectorIds(int vSpaceDimensions, int grade)
     {
         if (grade < 0)
             throw new ArgumentOutOfRangeException(nameof(grade));
@@ -163,23 +163,23 @@ public abstract class XGaMetric
             throw new ArgumentOutOfRangeException(nameof(vSpaceDimensions));
 
         if (grade == vSpaceDimensions)
-            return new [] { GetBasisPseudoScalarId(vSpaceDimensions) };
+            return [GetBasisPseudoScalarId(vSpaceDimensions)];
 
         return grade switch
         {
-            0 => new IIndexSet[] { EmptyIndexSet.Instance },
+            0 => [IndexSet.EmptySet],
             1 => GetBasisVectorIds(vSpaceDimensions),
             2 => GetBasisBivectorIds(vSpaceDimensions),
             _ => vSpaceDimensions <= 64
                 ? vSpaceDimensions
                     .GetBinomialCoefficient(grade)
                     .GetRange()
-                    .Select(index => (IIndexSet) BasisBladeUtils.BasisBladeGradeIndexToId((uint) grade, index).BitPatternToUInt64IndexSet())
+                    .Select(index => BasisBladeUtils.BasisBladeGradeIndexToId((uint) grade, index).BitPatternToIndexSet())
                 : vSpaceDimensions
                     .GetRange()
                     .ToArray()
                     .GetCombinationsDistinct(grade)
-                    .Select(c => c.ToImmutableSortedSet().ToIndexSet())
+                    .Select(c => c.ToIndexSet(false))
         };
 
         //var indexList = 
@@ -194,22 +194,21 @@ public abstract class XGaMetric
     }
         
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public IIndexSet GetBasisPseudoScalarId(int vSpaceDimensions)
+    public IndexSet GetBasisPseudoScalarId(int vSpaceDimensions)
     {
         return vSpaceDimensions switch
         {
-            64 => ulong.MaxValue.BitPatternToUInt64IndexSet(),
+            64 => ulong.MaxValue.BitPatternToIndexSet(),
 
-            < 64 => ((1UL << vSpaceDimensions) - 1UL).BitPatternToUInt64IndexSet(),
+            < 64 => ((1UL << vSpaceDimensions) - 1UL).BitPatternToIndexSet(),
 
             _ => vSpaceDimensions
                 .GetRange()
-                .ToImmutableSortedSet()
-                .ToSparseIndexSet()
+                .ToIndexSet(true)
         };
     }
 
-    public IEnumerable<IIndexSet> GetBasisBladeIds(int vSpaceDimensions)
+    public IEnumerable<IndexSet> GetBasisBladeIds(int vSpaceDimensions)
     {
         if (vSpaceDimensions < 0)
             throw new ArgumentOutOfRangeException(nameof(vSpaceDimensions));
@@ -232,7 +231,7 @@ public abstract class XGaMetric
         return index >= NonEuclideanBasisCount;
     }
 
-    public bool SignatureIsPositive(IIndexSet indexSet)
+    public bool SignatureIsPositive(IndexSet indexSet)
     {
         if (IsEuclidean) return true;
 
@@ -257,7 +256,7 @@ public abstract class XGaMetric
         return index < NegativeSignatureBasisCount;
     }
 
-    public bool SignatureIsNegative(IIndexSet indexSet)
+    public bool SignatureIsNegative(IndexSet indexSet)
     {
         if (IsEuclidean) return false;
 
@@ -284,7 +283,7 @@ public abstract class XGaMetric
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool SignatureIsZero(IIndexSet indexSet)
+    public bool SignatureIsZero(IndexSet indexSet)
     {
         if (IsEuclidean) return false;
 
@@ -316,7 +315,7 @@ public abstract class XGaMetric
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public IntegerSign Signature(IIndexSet indexSet)
+    public IntegerSign Signature(IndexSet indexSet)
     {
         if (IsEuclidean)
             return IntegerSign.Positive;
@@ -340,30 +339,30 @@ public abstract class XGaMetric
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public IntegerSign MeetSignature(IIndexSet basisBlade1, IIndexSet basisBlade2)
+    public IntegerSign MeetSignature(IndexSet basisBlade1, IndexSet basisBlade2)
     {
         if (IsEuclidean) return IntegerSign.Positive;
 
         return Signature(
-            basisBlade1.Intersect(basisBlade2)
+            basisBlade1.SetIntersect(basisBlade2)
         );
     }
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public IntegerSign GradeInvolutionSign(IIndexSet basisBlade)
+    public IntegerSign GradeInvolutionSign(IndexSet basisBlade)
     {
         return basisBlade.Count.GradeInvolutionSignOfGrade();
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public IntegerSign ReverseSign(IIndexSet basisBlade)
+    public IntegerSign ReverseSign(IndexSet basisBlade)
     {
         return basisBlade.Count.ReverseSignOfGrade();
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public IntegerSign CliffordConjugateSign(IIndexSet basisBlade)
+    public IntegerSign CliffordConjugateSign(IndexSet basisBlade)
     {
         return basisBlade.Count.CliffordConjugateSignOfGrade();
     }
@@ -374,7 +373,7 @@ public abstract class XGaMetric
     /// <param name="basisBlade"></param>
     /// <returns></returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public IntegerSign HermitianConjugateSign(IIndexSet basisBlade)
+    public IntegerSign HermitianConjugateSign(IndexSet basisBlade)
     {
         var signature = Signature(basisBlade);
 
@@ -386,7 +385,7 @@ public abstract class XGaMetric
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public IntegerSign EGpSquaredSign(IIndexSet basisBlade)
+    public IntegerSign EGpSquaredSign(IndexSet basisBlade)
     {
         return basisBlade.EGpIsNegative(basisBlade)
             ? IntegerSign.Negative
@@ -394,13 +393,13 @@ public abstract class XGaMetric
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public IntegerSign EGpReverseSign(IIndexSet basisBlade)
+    public IntegerSign EGpReverseSign(IndexSet basisBlade)
     {
         return IntegerSign.Positive;
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public IntegerSign GpSquaredSign(IIndexSet basisBlade)
+    public IntegerSign GpSquaredSign(IndexSet basisBlade)
     {
         if (IsEuclidean) return EGpSquaredSign(basisBlade);
 
@@ -419,51 +418,51 @@ public abstract class XGaMetric
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public IntegerSign GpReverseSign(IIndexSet basisBlade)
+    public IntegerSign GpReverseSign(IndexSet basisBlade)
     {
         return Signature(basisBlade);
     }
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public IntegerSign ESpSquaredSign(IIndexSet basisBlade)
+    public IntegerSign ESpSquaredSign(IndexSet basisBlade)
     {
         return EGpSquaredSign(basisBlade);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public IntegerSign ENormSquaredSign(IIndexSet basisBlade)
+    public IntegerSign ENormSquaredSign(IndexSet basisBlade)
     {
         return IntegerSign.Positive;
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public IntegerSign SpSquaredSign(IIndexSet basisBlade)
+    public IntegerSign SpSquaredSign(IndexSet basisBlade)
     {
         return GpSquaredSign(basisBlade);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public IntegerSign NormSquaredSign(IIndexSet basisBlade)
+    public IntegerSign NormSquaredSign(IndexSet basisBlade)
     {
         return Signature(basisBlade);
     }
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public IntegerSign EGpSign(IIndexSet basisBlade1, IIndexSet basisBlade2)
+    public IntegerSign EGpSign(IndexSet basisBlade1, IndexSet basisBlade2)
     {
         return basisBlade1.EGpSign(basisBlade2);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public IntegerSign EGpReverseSign(IIndexSet basisBlade1, IIndexSet basisBlade2)
+    public IntegerSign EGpReverseSign(IndexSet basisBlade1, IndexSet basisBlade2)
     {
         return basisBlade1.EGpReverseSign(basisBlade2);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public IntegerSign GpSign(IIndexSet basisBlade1, IIndexSet basisBlade2)
+    public IntegerSign GpSign(IndexSet basisBlade1, IndexSet basisBlade2)
     {
         if (IsEuclidean) return basisBlade1.EGpSign(basisBlade2);
 
@@ -477,7 +476,7 @@ public abstract class XGaMetric
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public IntegerSign GpReverseSign(IIndexSet basisBlade1, IIndexSet basisBlade2)
+    public IntegerSign GpReverseSign(IndexSet basisBlade1, IndexSet basisBlade2)
     {
         if (IsEuclidean) return basisBlade1.EGpReverseSign(basisBlade2);
 
@@ -491,13 +490,13 @@ public abstract class XGaMetric
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public IntegerSign OpSign(IIndexSet basisBlade1, IIndexSet basisBlade2)
+    public IntegerSign OpSign(IndexSet basisBlade1, IndexSet basisBlade2)
     {
         return basisBlade1.OpSign(basisBlade2);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public IntegerSign SpSign(IIndexSet basisBlade1, IIndexSet basisBlade2)
+    public IntegerSign SpSign(IndexSet basisBlade1, IndexSet basisBlade2)
     {
         return basisBlade1.ESpIsNonZero(basisBlade2)
             ? GpSquaredSign(basisBlade1)
@@ -505,13 +504,13 @@ public abstract class XGaMetric
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public IntegerSign ELcpSign(IIndexSet basisBlade1, IIndexSet basisBlade2)
+    public IntegerSign ELcpSign(IndexSet basisBlade1, IndexSet basisBlade2)
     {
         return basisBlade1.ELcpSign(basisBlade2);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public IntegerSign LcpSign(IIndexSet basisBlade1, IIndexSet basisBlade2)
+    public IntegerSign LcpSign(IndexSet basisBlade1, IndexSet basisBlade2)
     {
         return basisBlade1.ELcpIsNonZero(basisBlade2)
             ? GpSign(basisBlade1, basisBlade2)
@@ -519,13 +518,13 @@ public abstract class XGaMetric
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public IntegerSign ERcpSign(IIndexSet basisBlade1, IIndexSet basisBlade2)
+    public IntegerSign ERcpSign(IndexSet basisBlade1, IndexSet basisBlade2)
     {
         return basisBlade1.ERcpSign(basisBlade2);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public IntegerSign RcpSign(IIndexSet basisBlade1, IIndexSet basisBlade2)
+    public IntegerSign RcpSign(IndexSet basisBlade1, IndexSet basisBlade2)
     {
         return basisBlade1.ERcpIsNonZero(basisBlade2)
             ? GpSign(basisBlade1, basisBlade2)
@@ -533,13 +532,13 @@ public abstract class XGaMetric
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public IntegerSign EFdpSign(IIndexSet basisBlade1, IIndexSet basisBlade2)
+    public IntegerSign EFdpSign(IndexSet basisBlade1, IndexSet basisBlade2)
     {
         return basisBlade1.EFdpSign(basisBlade2);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public IntegerSign FdpSign(IIndexSet basisBlade1, IIndexSet basisBlade2)
+    public IntegerSign FdpSign(IndexSet basisBlade1, IndexSet basisBlade2)
     {
         return basisBlade1.EFdpIsNonZero(basisBlade2)
             ? GpSign(basisBlade1, basisBlade2)
@@ -547,13 +546,13 @@ public abstract class XGaMetric
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public IntegerSign EHipSign(IIndexSet basisBlade1, IIndexSet basisBlade2)
+    public IntegerSign EHipSign(IndexSet basisBlade1, IndexSet basisBlade2)
     {
         return basisBlade1.EHipSign(basisBlade2);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public IntegerSign HipSign(IIndexSet basisBlade1, IIndexSet basisBlade2)
+    public IntegerSign HipSign(IndexSet basisBlade1, IndexSet basisBlade2)
     {
         return basisBlade1.EHipIsNonZero(basisBlade2)
             ? GpSign(basisBlade1, basisBlade2)
@@ -561,13 +560,13 @@ public abstract class XGaMetric
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public IntegerSign EAcpSign(IIndexSet basisBlade1, IIndexSet basisBlade2)
+    public IntegerSign EAcpSign(IndexSet basisBlade1, IndexSet basisBlade2)
     {
         return basisBlade1.EAcpSign(basisBlade2);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public IntegerSign AcpSign(IIndexSet basisBlade1, IIndexSet basisBlade2)
+    public IntegerSign AcpSign(IndexSet basisBlade1, IndexSet basisBlade2)
     {
         return basisBlade1.EAcpIsNonZero(basisBlade2)
             ? GpSign(basisBlade1, basisBlade2)
@@ -575,13 +574,13 @@ public abstract class XGaMetric
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public IntegerSign ECpSign(IIndexSet basisBlade1, IIndexSet basisBlade2)
+    public IntegerSign ECpSign(IndexSet basisBlade1, IndexSet basisBlade2)
     {
         return basisBlade1.ECpSign(basisBlade2);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public IntegerSign CpSign(IIndexSet basisBlade1, IIndexSet basisBlade2)
+    public IntegerSign CpSign(IndexSet basisBlade1, IndexSet basisBlade2)
     {
         return basisBlade1.ECpIsNonZero(basisBlade2)
             ? GpSign(basisBlade1, basisBlade2)
@@ -590,7 +589,7 @@ public abstract class XGaMetric
     
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public IXGaSignedBasisBlade EDual(IIndexSet basisBladeId, int vSpaceDimensions)
+    public IXGaSignedBasisBlade EDual(IndexSet basisBladeId, int vSpaceDimensions)
     {
         Debug.Assert(
             basisBladeId.IsEmptySet || 
@@ -606,13 +605,13 @@ public abstract class XGaMetric
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public IXGaSignedBasisBlade EDual(IIndexSet basisBladeId, uint vSpaceDimensions)
+    public IXGaSignedBasisBlade EDual(IndexSet basisBladeId, uint vSpaceDimensions)
     {
         return EDual(basisBladeId, (int)vSpaceDimensions);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public IXGaSignedBasisBlade Dual(IIndexSet basisBladeId, int vSpaceDimensions)
+    public IXGaSignedBasisBlade Dual(IndexSet basisBladeId, int vSpaceDimensions)
     {
         Debug.Assert(
             basisBladeId.IsEmptySet || 
@@ -633,13 +632,13 @@ public abstract class XGaMetric
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public IXGaSignedBasisBlade Dual(IIndexSet basisBladeId, uint vSpaceDimensions)
+    public IXGaSignedBasisBlade Dual(IndexSet basisBladeId, uint vSpaceDimensions)
     {
         return Dual(basisBladeId, (int)vSpaceDimensions);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public IXGaSignedBasisBlade EUnDual(IIndexSet basisBladeId, int vSpaceDimensions)
+    public IXGaSignedBasisBlade EUnDual(IndexSet basisBladeId, int vSpaceDimensions)
     {
         Debug.Assert(
             basisBladeId.IsEmptySet || 
@@ -652,13 +651,13 @@ public abstract class XGaMetric
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public IXGaSignedBasisBlade EUnDual(IIndexSet basisBladeId, uint vSpaceDimensions)
+    public IXGaSignedBasisBlade EUnDual(IndexSet basisBladeId, uint vSpaceDimensions)
     {
         return EUnDual(basisBladeId, (int)vSpaceDimensions);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public IXGaSignedBasisBlade UnDual(IIndexSet basisBladeId, int vSpaceDimensions)
+    public IXGaSignedBasisBlade UnDual(IndexSet basisBladeId, int vSpaceDimensions)
     {
         Debug.Assert(
             basisBladeId.IsEmptySet || 
@@ -671,14 +670,14 @@ public abstract class XGaMetric
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public IXGaSignedBasisBlade UnDual(IIndexSet basisBladeId, uint vSpaceDimensions)
+    public IXGaSignedBasisBlade UnDual(IndexSet basisBladeId, uint vSpaceDimensions)
     {
         return UnDual(basisBladeId, (int)vSpaceDimensions);
     }
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public IXGaSignedBasisBlade EGp(UInt64IndexSet basisBladeId1, UInt64IndexSet basisBladeId2)
+    public IXGaSignedBasisBlade EGp(IndexSet basisBladeId1, IndexSet basisBladeId2)
     {
         var (isNegative, id) =
             basisBladeId1.EGpIsNegativeId(basisBladeId2);
@@ -691,20 +690,7 @@ public abstract class XGaMetric
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public IXGaSignedBasisBlade EGp(IIndexSet basisBladeId1, IIndexSet basisBladeId2)
-    {
-        var (isNegative, id) =
-            basisBladeId1.EGpIsNegativeId(basisBladeId2);
-
-        var basisBlade = new XGaBasisBlade(this, id);
-
-        return isNegative
-            ? new XGaSignedBasisBlade(basisBlade, IntegerSign.Negative)
-            : basisBlade;
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public IXGaSignedBasisBlade Gp(IIndexSet basisBladeId1, IIndexSet basisBladeId2)
+    public IXGaSignedBasisBlade Gp(IndexSet basisBladeId1, IndexSet basisBladeId2)
     {
         if (IsEuclidean)
             return EGp(basisBladeId1, basisBladeId2);
@@ -726,7 +712,7 @@ public abstract class XGaMetric
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public IXGaSignedBasisBlade Op(IIndexSet basisBladeId1, IIndexSet basisBladeId2)
+    public IXGaSignedBasisBlade Op(IndexSet basisBladeId1, IndexSet basisBladeId2)
     {
         return basisBladeId1.OpIsNonZero(basisBladeId2)
             ? EGp(basisBladeId1, basisBladeId2)
@@ -734,7 +720,7 @@ public abstract class XGaMetric
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public IXGaSignedBasisBlade ESp(IIndexSet basisBladeId1, IIndexSet basisBladeId2)
+    public IXGaSignedBasisBlade ESp(IndexSet basisBladeId1, IndexSet basisBladeId2)
     {
         return basisBladeId1.ESpIsNonZero(basisBladeId2)
             ? EGp(basisBladeId1, basisBladeId2)
@@ -742,7 +728,7 @@ public abstract class XGaMetric
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public IXGaSignedBasisBlade Sp(IIndexSet basisBladeId1, IIndexSet basisBladeId2)
+    public IXGaSignedBasisBlade Sp(IndexSet basisBladeId1, IndexSet basisBladeId2)
     {
         return basisBladeId1.ESpIsNonZero(basisBladeId2)
             ? Gp(basisBladeId1, basisBladeId2)
@@ -757,7 +743,7 @@ public abstract class XGaMetric
     /// <param name="basisBladeId2"></param>
     /// <returns></returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public IXGaSignedBasisBlade HSp(IIndexSet basisBladeId1, IIndexSet basisBladeId2)
+    public IXGaSignedBasisBlade HSp(IndexSet basisBladeId1, IndexSet basisBladeId2)
     {
         return basisBladeId1.ESpIsNonZero(basisBladeId2)
             ? Gp(basisBladeId1, basisBladeId2).Conjugate()
@@ -765,7 +751,7 @@ public abstract class XGaMetric
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public IXGaSignedBasisBlade ELcp(IIndexSet basisBladeId1, IIndexSet basisBladeId2)
+    public IXGaSignedBasisBlade ELcp(IndexSet basisBladeId1, IndexSet basisBladeId2)
     {
         return basisBladeId1.ELcpIsNonZero(basisBladeId2)
             ? EGp(basisBladeId1, basisBladeId2)
@@ -773,7 +759,7 @@ public abstract class XGaMetric
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public IXGaSignedBasisBlade Lcp(IIndexSet basisBladeId1, IIndexSet basisBladeId2)
+    public IXGaSignedBasisBlade Lcp(IndexSet basisBladeId1, IndexSet basisBladeId2)
     {
         return basisBladeId1.ELcpIsNonZero(basisBladeId2)
             ? Gp(basisBladeId1, basisBladeId2)
@@ -781,7 +767,7 @@ public abstract class XGaMetric
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public IXGaSignedBasisBlade ERcp(IIndexSet basisBladeId1, IIndexSet basisBladeId2)
+    public IXGaSignedBasisBlade ERcp(IndexSet basisBladeId1, IndexSet basisBladeId2)
     {
         return basisBladeId1.ERcpIsNonZero(basisBladeId2)
             ? EGp(basisBladeId1, basisBladeId2)
@@ -789,7 +775,7 @@ public abstract class XGaMetric
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public IXGaSignedBasisBlade Rcp(IIndexSet basisBladeId1, IIndexSet basisBladeId2)
+    public IXGaSignedBasisBlade Rcp(IndexSet basisBladeId1, IndexSet basisBladeId2)
     {
         return basisBladeId1.ERcpIsNonZero(basisBladeId2)
             ? Gp(basisBladeId1, basisBladeId2)
@@ -797,7 +783,7 @@ public abstract class XGaMetric
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public IXGaSignedBasisBlade EFdp(IIndexSet basisBladeId1, IIndexSet basisBladeId2)
+    public IXGaSignedBasisBlade EFdp(IndexSet basisBladeId1, IndexSet basisBladeId2)
     {
         return basisBladeId1.EFdpIsNonZero(basisBladeId2)
             ? EGp(basisBladeId1, basisBladeId2)
@@ -805,7 +791,7 @@ public abstract class XGaMetric
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public IXGaSignedBasisBlade Fdp(IIndexSet basisBladeId1, IIndexSet basisBladeId2)
+    public IXGaSignedBasisBlade Fdp(IndexSet basisBladeId1, IndexSet basisBladeId2)
     {
         return basisBladeId1.EFdpIsNonZero(basisBladeId2)
             ? Gp(basisBladeId1, basisBladeId2)
@@ -813,7 +799,7 @@ public abstract class XGaMetric
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public IXGaSignedBasisBlade EHip(IIndexSet basisBladeId1, IIndexSet basisBladeId2)
+    public IXGaSignedBasisBlade EHip(IndexSet basisBladeId1, IndexSet basisBladeId2)
     {
         return basisBladeId1.EHipIsNonZero(basisBladeId2)
             ? EGp(basisBladeId1, basisBladeId2)
@@ -821,7 +807,7 @@ public abstract class XGaMetric
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public IXGaSignedBasisBlade Hip(IIndexSet basisBladeId1, IIndexSet basisBladeId2)
+    public IXGaSignedBasisBlade Hip(IndexSet basisBladeId1, IndexSet basisBladeId2)
     {
         return basisBladeId1.EHipIsNonZero(basisBladeId2)
             ? Gp(basisBladeId1, basisBladeId2)
@@ -829,7 +815,7 @@ public abstract class XGaMetric
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public IXGaSignedBasisBlade EAcp(IIndexSet basisBladeId1, IIndexSet basisBladeId2)
+    public IXGaSignedBasisBlade EAcp(IndexSet basisBladeId1, IndexSet basisBladeId2)
     {
         return basisBladeId1.EAcpIsNonZero(basisBladeId2)
             ? EGp(basisBladeId1, basisBladeId2)
@@ -837,7 +823,7 @@ public abstract class XGaMetric
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public IXGaSignedBasisBlade Acp(IIndexSet basisBladeId1, IIndexSet basisBladeId2)
+    public IXGaSignedBasisBlade Acp(IndexSet basisBladeId1, IndexSet basisBladeId2)
     {
         return basisBladeId1.EAcpIsNonZero(basisBladeId2)
             ? Gp(basisBladeId1, basisBladeId2)
@@ -845,7 +831,7 @@ public abstract class XGaMetric
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public IXGaSignedBasisBlade ECp(IIndexSet basisBladeId1, IIndexSet basisBladeId2)
+    public IXGaSignedBasisBlade ECp(IndexSet basisBladeId1, IndexSet basisBladeId2)
     {
         return basisBladeId1.ECpIsNonZero(basisBladeId2)
             ? EGp(basisBladeId1, basisBladeId2)
@@ -853,7 +839,7 @@ public abstract class XGaMetric
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public IXGaSignedBasisBlade Cp(IIndexSet basisBladeId1, IIndexSet basisBladeId2)
+    public IXGaSignedBasisBlade Cp(IndexSet basisBladeId1, IndexSet basisBladeId2)
     {
         return basisBladeId1.ECpIsNonZero(basisBladeId2)
             ? Gp(basisBladeId1, basisBladeId2)

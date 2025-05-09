@@ -404,7 +404,7 @@ public abstract partial class RGaFloat64Multivector :
     {
         return id == 0UL 
             ? "<>" 
-            : id.PatternToPositions()
+            : id.GetSetBitPositions()
                 .Select(i => i.ToString())
                 .ConcatenateText(",", "<", ">");
     }

@@ -14,7 +14,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Extended.Float64.M
 public sealed partial class XGaFloat64Vector :
     XGaFloat64KVector
 {
-    private readonly IReadOnlyDictionary<IIndexSet, double> _idScalarDictionary;
+    private readonly IReadOnlyDictionary<IndexSet, double> _idScalarDictionary;
 
 
     public override string MultivectorClassName
@@ -37,7 +37,7 @@ public sealed partial class XGaFloat64Vector :
     public override bool IsZero
         => _idScalarDictionary.Count == 0;
 
-    public override IEnumerable<IIndexSet> Ids
+    public override IEnumerable<IndexSet> Ids
         => _idScalarDictionary.Keys;
 
     public override IEnumerable<double> Scalars
@@ -51,7 +51,7 @@ public sealed partial class XGaFloat64Vector :
             new KeyValuePair<int, double>(p.Key.FirstIndex, p.Value)
         );
 
-    public override IEnumerable<KeyValuePair<IIndexSet, double>> IdScalarPairs
+    public override IEnumerable<KeyValuePair<IndexSet, double>> IdScalarPairs
         => _idScalarDictionary;
         
     public override IEnumerable<KeyValuePair<XGaBasisBlade, double>> BasisScalarPairs
@@ -72,21 +72,21 @@ public sealed partial class XGaFloat64Vector :
     internal XGaFloat64Vector(XGaFloat64Processor metric)
         : base(metric)
     {
-        _idScalarDictionary = new EmptyDictionary<IIndexSet, double>();
+        _idScalarDictionary = new EmptyDictionary<IndexSet, double>();
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    internal XGaFloat64Vector(XGaFloat64Processor metric, KeyValuePair<IIndexSet, double> basisScalarPair)
+    internal XGaFloat64Vector(XGaFloat64Processor metric, KeyValuePair<IndexSet, double> basisScalarPair)
         : base(metric)
     {
         _idScalarDictionary =
-            new SingleItemDictionary<IIndexSet, double>(basisScalarPair);
+            new SingleItemDictionary<IndexSet, double>(basisScalarPair);
 
         Debug.Assert(IsValid());
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    internal XGaFloat64Vector(XGaFloat64Processor metric, IReadOnlyDictionary<IIndexSet, double> idScalarDictionary)
+    internal XGaFloat64Vector(XGaFloat64Processor metric, IReadOnlyDictionary<IndexSet, double> idScalarDictionary)
         : base(metric)
     {
         _idScalarDictionary = idScalarDictionary;
@@ -102,13 +102,13 @@ public sealed partial class XGaFloat64Vector :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public override IReadOnlyDictionary<IIndexSet, double> GetIdScalarDictionary()
+    public override IReadOnlyDictionary<IndexSet, double> GetIdScalarDictionary()
     {
         return _idScalarDictionary;
     }
         
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public override bool ContainsKey(IIndexSet key)
+    public override bool ContainsKey(IndexSet key)
     {
         return !IsZero && _idScalarDictionary.ContainsKey(key);
     }
@@ -159,7 +159,7 @@ public sealed partial class XGaFloat64Vector :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public XGaFloat64Vector GetPart(Func<IIndexSet, bool> filterFunc)
+    public XGaFloat64Vector GetPart(Func<IndexSet, bool> filterFunc)
     {
         if (IsZero) return this;
 
@@ -185,7 +185,7 @@ public sealed partial class XGaFloat64Vector :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public XGaFloat64Vector GetPart(Func<IIndexSet, double, bool> filterFunc)
+    public XGaFloat64Vector GetPart(Func<IndexSet, double, bool> filterFunc)
     {
         if (IsZero) return this;
 
@@ -221,7 +221,7 @@ public sealed partial class XGaFloat64Vector :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public override double GetBasisBladeScalar(IIndexSet basisBladeId)
+    public override double GetBasisBladeScalar(IndexSet basisBladeId)
     {
         return _idScalarDictionary.TryGetValue(basisBladeId, out var scalar)
             ? scalar
@@ -237,9 +237,9 @@ public sealed partial class XGaFloat64Vector :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public override bool TryGetBasisBladeScalarValue(IIndexSet basisBladeId, out double scalar)
+    public override bool TryGetBasisBladeScalarValue(IndexSet basisBladeId, out double scalar)
     {
-        if (basisBladeId.IsSingleIndexSet && _idScalarDictionary.TryGetValue(basisBladeId, out scalar))
+        if (basisBladeId.IsUnitSet && _idScalarDictionary.TryGetValue(basisBladeId, out scalar))
             return true;
 
         scalar = 0d;
@@ -249,9 +249,9 @@ public sealed partial class XGaFloat64Vector :
     public IXGaSignedBasisBlade GetDominantBasisBlade()
     {
         if (_idScalarDictionary.Count == 0)
-            return new XGaBasisBlade(Metric, EmptyIndexSet.Instance);
+            return new XGaBasisBlade(Metric, IndexSet.EmptySet);
 
-        IIndexSet dominantId = EmptyIndexSet.Instance;
+        IndexSet dominantId = IndexSet.EmptySet;
         var dominantScalar = 0d;
 
         foreach (var (id, scalar) in _idScalarDictionary)

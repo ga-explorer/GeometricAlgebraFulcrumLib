@@ -5,8 +5,8 @@ using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.BabylonJs.Constants
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.Visuals.Space3D.Animations;
 using GeometricAlgebraFulcrumLib.Modeling.Signals;
 using GeometricAlgebraFulcrumLib.Modeling.Trajectories.Scalars.Float64;
-using GeometricAlgebraFulcrumLib.Utilities.Structures.Basic;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Files;
+using GeometricAlgebraFulcrumLib.Utilities.Structures.Tuples;
 using GeometricAlgebraFulcrumLib.Utilities.Web.Images;
 using GeometricAlgebraFulcrumLib.Utilities.Web.LaTeX.KaTeX;
 using Humanizer;

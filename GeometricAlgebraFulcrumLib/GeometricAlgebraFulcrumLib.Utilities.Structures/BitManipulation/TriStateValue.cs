@@ -411,7 +411,7 @@ public readonly struct TriStateValue :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public override bool Equals(object obj)
+    public override bool Equals(object? obj)
     {
         return obj is TriStateValue other && Equals(other);
     }

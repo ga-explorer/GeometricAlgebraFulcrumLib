@@ -233,7 +233,7 @@ public sealed class GaGeometricSpaceBasisSpecs<T>
         return $" + '{scalar}'";
     }
 
-    private string BasisBladeToLaTeX(IIndexSet id)
+    private string BasisBladeToLaTeX(IndexSet id)
     {
         Debug.Assert(id.Max() < VSpaceDimensions);
 
@@ -246,7 +246,7 @@ public sealed class GaGeometricSpaceBasisSpecs<T>
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    private string TermToLaTeX(IIndexSet id, T scalar)
+    private string TermToLaTeX(IndexSet id, T scalar)
     {
         return id.IsEmptySet
             ? ScalarTermToLaTeX(scalar) 

@@ -6,15 +6,16 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <Platforms>AnyCPU;x64</Platforms>
+    <LangVersion>latest</LangVersion>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="AngleSharp" Version="1.2.0" />
-    <PackageReference Include="CS-Script" Version="4.8.27" />
+    <PackageReference Include="AngleSharp" Version="1.3.0" />
+    <PackageReference Include="CS-Script" Version="4.9.6" />
     <PackageReference Include="Irony.Interpreter.NetCore" Version="1.1.11" />
     <PackageReference Include="Irony.NetCore" Version="1.1.11" />
-    <PackageReference Include="Magick.NET-Q16-x64" Version="14.4.0" />
-    <PackageReference Include="System.Drawing.Common" Version="9.0.2" />
+    <PackageReference Include="Magick.NET-Q16-x64" Version="14.6.0" />
+    <PackageReference Include="System.Drawing.Common" Version="9.0.4" />
     <PackageReference Include="System.Drawing.Primitives" Version="4.3.0" />
   </ItemGroup>
 

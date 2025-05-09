@@ -28,7 +28,7 @@ public class XGaProjectiveProcessor<T> :
                 {
                     var signedBasisBlade = EUnDual(term.Key, vSpaceDimensions);
 
-                    return new KeyValuePair<IIndexSet, T>(
+                    return new KeyValuePair<IndexSet, T>(
                         signedBasisBlade.Id,
                         ScalarProcessor.Times(
                             term.Value, 
@@ -57,7 +57,7 @@ public class XGaProjectiveProcessor<T> :
                 {
                     var signedBasisBlade = EUnDual(term.Key, vSpaceDimensions);
 
-                    return new KeyValuePair<IIndexSet, T>(
+                    return new KeyValuePair<IndexSet, T>(
                         signedBasisBlade.Id,
                         ScalarProcessor.Times(
                             term.Value, 
@@ -87,7 +87,7 @@ public class XGaProjectiveProcessor<T> :
                 {
                     var signedBasisBlade = EUnDual(term.Key, vSpaceDimensions);
 
-                    return new KeyValuePair<IIndexSet, T>(
+                    return new KeyValuePair<IndexSet, T>(
                         signedBasisBlade.Id,
                         ScalarProcessor.Times(
                             term.Value, 
@@ -116,7 +116,7 @@ public class XGaProjectiveProcessor<T> :
                 {
                     var signedBasisBlade = EUnDual(term.Key, vSpaceDimensions);
 
-                    return new KeyValuePair<IIndexSet, T>(
+                    return new KeyValuePair<IndexSet, T>(
                         signedBasisBlade.Id,
                         ScalarProcessor.Times(
                             term.Value, 
@@ -144,7 +144,7 @@ public class XGaProjectiveProcessor<T> :
                 {
                     var signedBasisBlade = UnDual(term.Key, vSpaceDimensions);
 
-                    return new KeyValuePair<IIndexSet, T>(
+                    return new KeyValuePair<IndexSet, T>(
                         signedBasisBlade.Id,
                         ScalarProcessor.Times(
                             term.Value, 
@@ -171,7 +171,7 @@ public class XGaProjectiveProcessor<T> :
                 {
                     var signedBasisBlade = UnDual(term.Key, vSpaceDimensions);
 
-                    return new KeyValuePair<IIndexSet, T>(
+                    return new KeyValuePair<IndexSet, T>(
                         signedBasisBlade.Id,
                         ScalarProcessor.Times(
                             term.Value, 

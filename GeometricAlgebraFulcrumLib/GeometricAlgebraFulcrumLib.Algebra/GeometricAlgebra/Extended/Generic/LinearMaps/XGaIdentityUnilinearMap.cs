@@ -39,7 +39,7 @@ public sealed class XGaIdentityUnilinearMap<T> :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public XGaMultivector<T> MapBasisBlade(IIndexSet id)
+    public XGaMultivector<T> MapBasisBlade(IndexSet id)
     {
         return Processor.KVectorTerm(id, ScalarProcessor.OneValue);
     }
@@ -51,12 +51,12 @@ public sealed class XGaIdentityUnilinearMap<T> :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public IEnumerable<KeyValuePair<IIndexSet, XGaMultivector<T>>> GetMappedBasisBlades(int vSpaceDimensions)
+    public IEnumerable<KeyValuePair<IndexSet, XGaMultivector<T>>> GetMappedBasisBlades(int vSpaceDimensions)
     {
         return Processor
             .GetBasisBladeIds(vSpaceDimensions)
             .Select(id => 
-                new KeyValuePair<IIndexSet, XGaMultivector<T>>(
+                new KeyValuePair<IndexSet, XGaMultivector<T>>(
                     id, 
                     Processor.KVectorTerm(id, ScalarProcessor.OneValue)
                 )

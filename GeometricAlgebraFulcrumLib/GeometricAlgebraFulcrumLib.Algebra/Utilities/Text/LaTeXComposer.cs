@@ -144,7 +144,7 @@ public class LaTeXComposer<T>
         );
     }
 
-    public string GetTermText(IIndexSet id, double scalar)
+    public string GetTermText(IndexSet id, double scalar)
     {
         return GetTermText(
             id,
@@ -152,7 +152,7 @@ public class LaTeXComposer<T>
         );
     }
 
-    public string GetTermText(IIndexSet id, T scalar)
+    public string GetTermText(IndexSet id, T scalar)
     {
         var valueText = GetScalarText(scalar);
 
@@ -193,12 +193,12 @@ public class LaTeXComposer<T>
         return GetTermText(term.Key, term.Value);
     }
 
-    public string GetTermText(KeyValuePair<IIndexSet, double> term)
+    public string GetTermText(KeyValuePair<IndexSet, double> term)
     {
         return GetTermText(term.Key, term.Value);
     }
 
-    public string GetTermText(KeyValuePair<IIndexSet, T> term)
+    public string GetTermText(KeyValuePair<IndexSet, T> term)
     {
         return GetTermText(term.Key, term.Value);
     }
@@ -254,14 +254,14 @@ public class LaTeXComposer<T>
             .ConcatenateText(" + ");
     }
 
-    public string GetTermsText(IEnumerable<KeyValuePair<IIndexSet, double>> idScalarTuples)
+    public string GetTermsText(IEnumerable<KeyValuePair<IndexSet, double>> idScalarTuples)
     {
         return idScalarTuples
             .Select(GetTermText)
             .ConcatenateText(" + ");
     }
 
-    public string GetTermsText(IEnumerable<KeyValuePair<IIndexSet, T>> idScalarTuples)
+    public string GetTermsText(IEnumerable<KeyValuePair<IndexSet, T>> idScalarTuples)
     {
         return idScalarTuples
             .Select(GetTermText)
@@ -470,7 +470,7 @@ public class LaTeXComposer<T>
     public string GetBasisBladeText(ulong id)
     {
         return GetBasisBladeText(
-            id.PatternToPositions()
+            id.GetSetBitPositions()
         );
     }
 
@@ -481,7 +481,7 @@ public class LaTeXComposer<T>
         );
     }
 
-    public string GetBasisBladeText(IIndexSet id)
+    public string GetBasisBladeText(IndexSet id)
     {
         return GetBasisBladeText((IEnumerable<int>)id);
     }

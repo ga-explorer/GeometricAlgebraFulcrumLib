@@ -1,4 +1,4 @@
-﻿using GeometricAlgebraFulcrumLib.Utilities.Structures.Basic;
+﻿using GeometricAlgebraFulcrumLib.Utilities.Structures.Tuples;
 using SixLabors.ImageSharp;
 
 namespace GeometricAlgebraFulcrumLib.Utilities.Web.Images;

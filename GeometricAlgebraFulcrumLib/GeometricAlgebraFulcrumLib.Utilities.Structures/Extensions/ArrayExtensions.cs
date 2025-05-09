@@ -69,20 +69,20 @@ public static class ArrayExtensions
         if (columnMajorOrder)
         {
             for (var j = 0; j < cols; j++)
-            for (var i = 0; i < rows; i++)
-            {
-                result[k] = array[i, j];
-                k++;
-            }
+                for (var i = 0; i < rows; i++)
+                {
+                    result[k] = array[i, j];
+                    k++;
+                }
         }
         else
         {
             for (var i = 0; i < rows; i++)
-            for (var j = 0; j < cols; j++)
-            {
-                result[k] = array[i, j];
-                k++;
-            }
+                for (var j = 0; j < cols; j++)
+                {
+                    result[k] = array[i, j];
+                    k++;
+                }
         }
 
         return result;
@@ -120,14 +120,14 @@ public static class ArrayExtensions
         if (columnMajorOrder)
         {
             for (var j = 0; j < cols; j++)
-            for (var i = 0; i < rows; i++)
-                result.Add(array[i, j]);
+                for (var i = 0; i < rows; i++)
+                    result.Add(array[i, j]);
         }
         else
         {
             for (var i = 0; i < rows; i++)
-            for (var j = 0; j < cols; j++)
-                result.Add(array[i, j]);
+                for (var j = 0; j < cols; j++)
+                    result.Add(array[i, j]);
         }
 
         return result;
@@ -142,17 +142,17 @@ public static class ArrayExtensions
         if (columnMajorOrder)
         {
             for (var j = 0; j < cols; j++)
-            for (var i = 0; i < rows; i++)
-                yield return array[i, j];
+                for (var i = 0; i < rows; i++)
+                    yield return array[i, j];
         }
         else
         {
             for (var i = 0; i < rows; i++)
-            for (var j = 0; j < cols; j++)
-                yield return array[i, j];
+                for (var j = 0; j < cols; j++)
+                    yield return array[i, j];
         }
     }
-        
+
     public static IEnumerable<T1> GetItems<T, T1>(this T[,] array, Func<T, T1> mappingFunc, bool columnMajorOrder = true)
     {
         var rows = array.GetLength(0);
@@ -161,14 +161,14 @@ public static class ArrayExtensions
         if (columnMajorOrder)
         {
             for (var j = 0; j < cols; j++)
-            for (var i = 0; i < rows; i++)
-                yield return mappingFunc(array[i, j]);
+                for (var i = 0; i < rows; i++)
+                    yield return mappingFunc(array[i, j]);
         }
         else
         {
             for (var i = 0; i < rows; i++)
-            for (var j = 0; j < cols; j++)
-                yield return mappingFunc(array[i, j]);
+                for (var j = 0; j < cols; j++)
+                    yield return mappingFunc(array[i, j]);
         }
     }
 
@@ -178,7 +178,7 @@ public static class ArrayExtensions
             .Range(0, array.GetLength(1))
             .Select(i => array[rowIndex, i]);
     }
-        
+
     public static IEnumerable<T1> GetRowItems<T, T1>(this T[,] array, Func<T, T1> mappingFunc, int rowIndex)
     {
         return Enumerable
@@ -192,7 +192,7 @@ public static class ArrayExtensions
             .Range(0, array.GetLength(0))
             .Select(i => array[i, columnIndex]);
     }
-        
+
     public static IEnumerable<T1> GetColumnItems<T, T1>(this T[,] array, Func<T, T1> mappingFunc, int columnIndex)
     {
         return Enumerable
@@ -208,7 +208,7 @@ public static class ArrayExtensions
         for (var i = 0; i < n1; i++)
             yield return Tuple.Create(i, array[i]);
     }
-        
+
     public static IEnumerable<Tuple<int, T1>> GetIndexItemTuples<T, T1>(this T[] array, Func<T, T1> mappingFunc)
     {
         var n1 = array.Length;
@@ -229,7 +229,7 @@ public static class ArrayExtensions
                 yield return Tuple.Create(i, item);
         }
     }
-        
+
     public static IEnumerable<Tuple<int, T1>> GetIndexItemTuples<T, T1>(this T[] array, Func<T, T1> mappingFunc, Func<T, bool> selectionFunc)
     {
         var n1 = array.Length;
@@ -255,7 +255,7 @@ public static class ArrayExtensions
                 yield return Tuple.Create(i, item);
         }
     }
-        
+
     public static IEnumerable<Tuple<int, T1>> GetIndexItemTuples<T, T1>(this T[] array, Func<T, T1> mappingFunc, Func<int, T, bool> selectionFunc)
     {
         var n1 = array.Length;
@@ -276,18 +276,18 @@ public static class ArrayExtensions
         var n2 = array.GetLength(1);
 
         for (var i = 0; i < n1; i++)
-        for (var j = 0; j < n2; j++)
-            yield return Tuple.Create(i, j, array[i, j]);
+            for (var j = 0; j < n2; j++)
+                yield return Tuple.Create(i, j, array[i, j]);
     }
-        
+
     public static IEnumerable<Tuple<int, int, T1>> GetIndexItemTuples<T, T1>(this T[,] array, Func<T, T1> mappingFunc)
     {
         var n1 = array.GetLength(0);
         var n2 = array.GetLength(1);
 
         for (var i = 0; i < n1; i++)
-        for (var j = 0; j < n2; j++)
-            yield return Tuple.Create(i, j, mappingFunc(array[i, j]));
+            for (var j = 0; j < n2; j++)
+                yield return Tuple.Create(i, j, mappingFunc(array[i, j]));
     }
 
     public static IEnumerable<Tuple<int, int, T>> GetIndexItemTuples<T>(this T[,] array, Func<T, bool> selectionFunc)
@@ -296,28 +296,28 @@ public static class ArrayExtensions
         var n2 = array.GetLength(1);
 
         for (var i = 0; i < n1; i++)
-        for (var j = 0; j < n2; j++)
-        {
-            var item = array[i, j];
+            for (var j = 0; j < n2; j++)
+            {
+                var item = array[i, j];
 
-            if (selectionFunc(item))
-                yield return Tuple.Create(i, j, item);
-        }
+                if (selectionFunc(item))
+                    yield return Tuple.Create(i, j, item);
+            }
     }
-        
+
     public static IEnumerable<Tuple<int, int, T1>> GetIndexItemTuples<T, T1>(this T[,] array, Func<T, T1> mappingFunc, Func<T, bool> selectionFunc)
     {
         var n1 = array.GetLength(0);
         var n2 = array.GetLength(1);
 
         for (var i = 0; i < n1; i++)
-        for (var j = 0; j < n2; j++)
-        {
-            var item = array[i, j];
+            for (var j = 0; j < n2; j++)
+            {
+                var item = array[i, j];
 
-            if (selectionFunc(item))
-                yield return Tuple.Create(i, j, mappingFunc(item));
-        }
+                if (selectionFunc(item))
+                    yield return Tuple.Create(i, j, mappingFunc(item));
+            }
     }
 
     public static IEnumerable<Tuple<int, int, T>> GetIndexItemTuples<T>(this T[,] array, Func<int, int, T, bool> selectionFunc)
@@ -326,28 +326,28 @@ public static class ArrayExtensions
         var n2 = array.GetLength(1);
 
         for (var i = 0; i < n1; i++)
-        for (var j = 0; j < n2; j++)
-        {
-            var item = array[i, j];
+            for (var j = 0; j < n2; j++)
+            {
+                var item = array[i, j];
 
-            if (selectionFunc(i, j, item))
-                yield return Tuple.Create(i, j, item);
-        }
+                if (selectionFunc(i, j, item))
+                    yield return Tuple.Create(i, j, item);
+            }
     }
-        
+
     public static IEnumerable<Tuple<int, int, T1>> GetIndexItemTuples<T, T1>(this T[,] array, Func<T, T1> mappingFunc, Func<int, int, T, bool> selectionFunc)
     {
         var n1 = array.GetLength(0);
         var n2 = array.GetLength(1);
 
         for (var i = 0; i < n1; i++)
-        for (var j = 0; j < n2; j++)
-        {
-            var item = array[i, j];
+            for (var j = 0; j < n2; j++)
+            {
+                var item = array[i, j];
 
-            if (selectionFunc(i, j, item))
-                yield return Tuple.Create(i, j, mappingFunc(item));
-        }
+                if (selectionFunc(i, j, item))
+                    yield return Tuple.Create(i, j, mappingFunc(item));
+            }
     }
 
 
@@ -358,11 +358,11 @@ public static class ArrayExtensions
         var n3 = array.GetLength(2);
 
         for (var i = 0; i < n1; i++)
-        for (var j = 0; j < n2; j++)
-        for (var k = 0; k < n3; k++)
-            yield return Tuple.Create(i, j, k, array[i, j, k]);
+            for (var j = 0; j < n2; j++)
+                for (var k = 0; k < n3; k++)
+                    yield return Tuple.Create(i, j, k, array[i, j, k]);
     }
-        
+
     public static IEnumerable<Tuple<int, int, int, T1>> GetIndexItemTuples<T, T1>(this T[,,] array, Func<T, T1> mappingFunc)
     {
         var n1 = array.GetLength(0);
@@ -370,9 +370,9 @@ public static class ArrayExtensions
         var n3 = array.GetLength(2);
 
         for (var i = 0; i < n1; i++)
-        for (var j = 0; j < n2; j++)
-        for (var k = 0; k < n3; k++)
-            yield return Tuple.Create(i, j, k, mappingFunc(array[i, j, k]));
+            for (var j = 0; j < n2; j++)
+                for (var k = 0; k < n3; k++)
+                    yield return Tuple.Create(i, j, k, mappingFunc(array[i, j, k]));
     }
 
     public static IEnumerable<Tuple<int, int, int, T>> GetIndexItemTuples<T>(this T[,,] array, Func<T, bool> selectionFunc)
@@ -382,16 +382,16 @@ public static class ArrayExtensions
         var n3 = array.GetLength(2);
 
         for (var i = 0; i < n1; i++)
-        for (var j = 0; j < n2; j++)
-        for (var k = 0; k < n3; k++)
-        {
-            var item = array[i, j, k];
+            for (var j = 0; j < n2; j++)
+                for (var k = 0; k < n3; k++)
+                {
+                    var item = array[i, j, k];
 
-            if (selectionFunc(item))
-                yield return Tuple.Create(i, j, k, item);
-        }
+                    if (selectionFunc(item))
+                        yield return Tuple.Create(i, j, k, item);
+                }
     }
-        
+
     public static IEnumerable<Tuple<int, int, int, T1>> GetIndexItemTuples<T, T1>(this T[,,] array, Func<T, T1> mappingFunc, Func<T, bool> selectionFunc)
     {
         var n1 = array.GetLength(0);
@@ -399,14 +399,14 @@ public static class ArrayExtensions
         var n3 = array.GetLength(2);
 
         for (var i = 0; i < n1; i++)
-        for (var j = 0; j < n2; j++)
-        for (var k = 0; k < n3; k++)
-        {
-            var item = array[i, j, k];
+            for (var j = 0; j < n2; j++)
+                for (var k = 0; k < n3; k++)
+                {
+                    var item = array[i, j, k];
 
-            if (selectionFunc(item))
-                yield return Tuple.Create(i, j, k, mappingFunc(item));
-        }
+                    if (selectionFunc(item))
+                        yield return Tuple.Create(i, j, k, mappingFunc(item));
+                }
     }
 
     public static IEnumerable<Tuple<int, int, int, T>> GetIndexItemTuples<T>(this T[,,] array, Func<int, int, int, T, bool> selectionFunc)
@@ -416,16 +416,16 @@ public static class ArrayExtensions
         var n3 = array.GetLength(2);
 
         for (var i = 0; i < n1; i++)
-        for (var j = 0; j < n2; j++)
-        for (var k = 0; k < n3; k++)
-        {
-            var item = array[i, j, k];
+            for (var j = 0; j < n2; j++)
+                for (var k = 0; k < n3; k++)
+                {
+                    var item = array[i, j, k];
 
-            if (selectionFunc(i, j, k, item))
-                yield return Tuple.Create(i, j, k, item);
-        }
+                    if (selectionFunc(i, j, k, item))
+                        yield return Tuple.Create(i, j, k, item);
+                }
     }
-        
+
     public static IEnumerable<Tuple<int, int, int, T1>> GetIndexItemTuples<T, T1>(this T[,,] array, Func<T, T1> mappingFunc, Func<int, int, int, T, bool> selectionFunc)
     {
         var n1 = array.GetLength(0);
@@ -433,14 +433,14 @@ public static class ArrayExtensions
         var n3 = array.GetLength(2);
 
         for (var i = 0; i < n1; i++)
-        for (var j = 0; j < n2; j++)
-        for (var k = 0; k < n3; k++)
-        {
-            var item = array[i, j, k];
+            for (var j = 0; j < n2; j++)
+                for (var k = 0; k < n3; k++)
+                {
+                    var item = array[i, j, k];
 
-            if (selectionFunc(i, j, k, item))
-                yield return Tuple.Create(i, j, k, mappingFunc(item));
-        }
+                    if (selectionFunc(i, j, k, item))
+                        yield return Tuple.Create(i, j, k, mappingFunc(item));
+                }
     }
 
 
@@ -462,8 +462,8 @@ public static class ArrayExtensions
         var arrayOut = new TOut[n1, n2];
 
         for (var i = 0; i < n1; i++)
-        for (var j = 0; j < n2; j++)
-            arrayOut[i, j] = mapFunc(arrayIn[i, j]);
+            for (var j = 0; j < n2; j++)
+                arrayOut[i, j] = mapFunc(arrayIn[i, j]);
 
         return arrayOut;
     }
@@ -476,9 +476,9 @@ public static class ArrayExtensions
         var arrayOut = new TOut[n1, n2, n3];
 
         for (var i = 0; i < n1; i++)
-        for (var j = 0; j < n2; j++)
-        for (var k = 0; k < n3; k++)
-            arrayOut[i, j, k] = mapFunc(arrayIn[i, j, k]);
+            for (var j = 0; j < n2; j++)
+                for (var k = 0; k < n3; k++)
+                    arrayOut[i, j, k] = mapFunc(arrayIn[i, j, k]);
 
         return arrayOut;
     }
@@ -491,19 +491,19 @@ public static class ArrayExtensions
         var arrayOut = new T[n2, n1];
 
         for (var i = 0; i < n1; i++)
-        for (var j = 0; j < n2; j++)
-            arrayOut[i, j] = array[i, j];
+            for (var j = 0; j < n2; j++)
+                arrayOut[i, j] = array[i, j];
 
         return arrayOut;
     }
-        
+
     public static T[,] GetSubArray<T>(this T[,] array, int row1, int col1, int rowCount, int colCount)
     {
         var arrayOut = new T[rowCount, colCount];
 
         for (var i = 0; i < rowCount; i++)
-        for (var j = 0; j < colCount; j++)
-            arrayOut[i, j] = array[i + row1, j + col1];
+            for (var j = 0; j < colCount; j++)
+                arrayOut[i, j] = array[i + row1, j + col1];
 
         return arrayOut;
     }
@@ -512,7 +512,7 @@ public static class ArrayExtensions
     {
         return array1.MapItems(array2, (a, b) => a + b);
     }
-        
+
     public static double[,] Subtract(this double[,] array1, double[,] array2)
     {
         return array1.MapItems(array2, (a, b) => a - b);
@@ -525,8 +525,8 @@ public static class ArrayExtensions
         var arrayOut = new T[n1, n2];
 
         for (var i = 0; i < n1; i++)
-        for (var j = 0; j < n2; j++)
-            arrayOut[i, j] = itemMapping(array1[i, j], array2[i, j]);
+            for (var j = 0; j < n2; j++)
+                arrayOut[i, j] = itemMapping(array1[i, j], array2[i, j]);
 
         return arrayOut;
     }
@@ -538,8 +538,8 @@ public static class ArrayExtensions
         var arrayOut = new T[n2, n1];
 
         for (var i = 0; i < n1; i++)
-        for (var j = 0; j < n2; j++)
-            arrayOut[j, i] = array[i, j];
+            for (var j = 0; j < n2; j++)
+                arrayOut[j, i] = array[i, j];
 
         return arrayOut;
     }
@@ -559,8 +559,8 @@ public static class ArrayExtensions
         var n2 = array.GetLength(1);
 
         for (var i = 0; i < n1; i++)
-        for (var j = 0; j < n2; j++)
-            array[i, j] = mapFunc(array[i, j]);
+            for (var j = 0; j < n2; j++)
+                array[i, j] = mapFunc(array[i, j]);
     }
 
     public static void SetItems<T>(this T[,,] array, Func<T, T> mapFunc)
@@ -570,9 +570,9 @@ public static class ArrayExtensions
         var n3 = array.GetLength(2);
 
         for (var i = 0; i < n1; i++)
-        for (var j = 0; j < n2; j++)
-        for (var k = 0; k < n3; k++)
-            array[i, j, k] = mapFunc(array[i, j, k]);
+            for (var j = 0; j < n2; j++)
+                for (var k = 0; k < n3; k++)
+                    array[i, j, k] = mapFunc(array[i, j, k]);
     }
 
 
@@ -619,8 +619,8 @@ public static class ArrayExtensions
         var arrayOut = new T[n1, n2];
 
         for (var i = 0; i < n1; i++)
-        for (var j = 0; j < n2; j++)
-            arrayOut[i, j] = arrayIn[i + i1, j + j1];
+            for (var j = 0; j < n2; j++)
+                arrayOut[i, j] = arrayIn[i + i1, j + j1];
 
         return arrayOut;
     }
@@ -654,12 +654,20 @@ public static class ArrayExtensions
         var arrayOut = new T[n1, n2, n3];
 
         for (var i = 0; i < n1; i++)
-        for (var j = 0; j < n2; j++)
-        for (var k = 0; k < n3; k++)
-            arrayOut[i, j, k] = arrayIn[i + i1, j + j1, k + k1];
+            for (var j = 0; j < n2; j++)
+                for (var k = 0; k < n3; k++)
+                    arrayOut[i, j, k] = arrayIn[i + i1, j + j1, k + k1];
 
         return arrayOut;
     }
 
     //TODO: Complete this: GetRow, SetRow, GetColumn, SetColumn, SwapRows, SwapColumns, etc.
+
+    //a
+
+    
+
+
+
+
 }

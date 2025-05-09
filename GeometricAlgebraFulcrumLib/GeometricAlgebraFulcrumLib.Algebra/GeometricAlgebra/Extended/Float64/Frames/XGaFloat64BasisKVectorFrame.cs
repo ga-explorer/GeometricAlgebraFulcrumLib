@@ -21,7 +21,7 @@ public class XGaFloat64BasisKVectorFrame :
         var kVectorArray =
             gaSpaceDimensions
                 .GetRange()
-                .Select(id => metric.KVectorTerm(id.BitPatternToUInt64IndexSet())
+                .Select(id => metric.KVectorTerm(id.BitPatternToIndexSet())
                 ).ToArray();
 
         return new XGaFloat64BasisKVectorFrame(kVectorArray);

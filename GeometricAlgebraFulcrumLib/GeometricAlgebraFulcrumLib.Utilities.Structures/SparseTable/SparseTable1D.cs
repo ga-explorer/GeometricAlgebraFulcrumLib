@@ -3,7 +3,7 @@
 namespace GeometricAlgebraFulcrumLib.Utilities.Structures.SparseTable;
 
 public class SparseTable1D<TKey, TValue> 
-    : IEnumerable<KeyValuePair<TKey, TValue>>
+    : IEnumerable<KeyValuePair<TKey, TValue>> where TKey : notnull
 {
     private readonly Dictionary<TKey, TValue> _dictionary =
         new Dictionary<TKey, TValue>();
@@ -14,8 +14,7 @@ public class SparseTable1D<TKey, TValue>
     public TValue this[TKey key]
     {
         get =>
-            _dictionary.TryGetValue(key, out var value) 
-                ? value : DefaultValue;
+            _dictionary.GetValueOrDefault(key, DefaultValue);
         set
         {
             if (IsDefaultValue(value))

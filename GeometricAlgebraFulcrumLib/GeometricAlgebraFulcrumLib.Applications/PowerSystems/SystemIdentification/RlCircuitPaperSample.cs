@@ -11,7 +11,7 @@ using GeometricAlgebraFulcrumLib.Modeling.Signals.Composers;
 using GeometricAlgebraFulcrumLib.Modeling.Signals.Interpolators;
 using GeometricAlgebraFulcrumLib.Modeling.Signals.Processors;
 using GeometricAlgebraFulcrumLib.Modeling.Utilities;
-using GeometricAlgebraFulcrumLib.Utilities.Structures.Basic;
+using GeometricAlgebraFulcrumLib.Utilities.Structures.Tuples;
 using MathNet.Numerics;
 using Newtonsoft.Json.Linq;
 using OfficeOpenXml;

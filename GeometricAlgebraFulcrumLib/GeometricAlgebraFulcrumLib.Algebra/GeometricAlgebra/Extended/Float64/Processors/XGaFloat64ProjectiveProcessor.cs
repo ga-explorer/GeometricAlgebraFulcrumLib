@@ -31,7 +31,7 @@ public class XGaFloat64ProjectiveProcessor :
                 {
                     var signedBasisBlade = EDual(term.Key, vSpaceDimensions);
 
-                    return new KeyValuePair<IIndexSet, double>(
+                    return new KeyValuePair<IndexSet, double>(
                         signedBasisBlade.Id,
                         term.Value * (sign * signedBasisBlade.Sign)
                     );
@@ -57,7 +57,7 @@ public class XGaFloat64ProjectiveProcessor :
                 {
                     var signedBasisBlade = EDual(term.Key, vSpaceDimensions);
 
-                    return new KeyValuePair<IIndexSet, double>(
+                    return new KeyValuePair<IndexSet, double>(
                         signedBasisBlade.Id,
                         term.Value * (sign * signedBasisBlade.Sign)
                     );

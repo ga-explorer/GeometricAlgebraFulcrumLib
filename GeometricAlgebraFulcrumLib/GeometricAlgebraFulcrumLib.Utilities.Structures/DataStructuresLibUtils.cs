@@ -26,7 +26,7 @@ public static class DataStructuresLibUtils
         public Size(TT obj)
         {
             _obj = obj;
-            _references = new HashSet<object>() { _obj };
+            _references = [_obj];
         }
 
         public long GetSizeInBytes()

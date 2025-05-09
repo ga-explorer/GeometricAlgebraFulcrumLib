@@ -29,7 +29,7 @@ public static class XGaSubspaceComposerUtils
     public static XGaSubspace<T> CreateBivectorSubspace<T>(this XGaProcessor<T> processor, ulong index)
     {
         var id = 
-            index.BasisBivectorIndexToId().BitPatternToUInt64IndexSet();
+            index.BasisBivectorIndexToId().BitPatternToIndexSet();
 
         return new XGaSubspace<T>(
             processor.KVectorTerm(
@@ -58,7 +58,7 @@ public static class XGaSubspaceComposerUtils
     {
         return new XGaSubspace<T>(
             processor.KVectorTerm(
-                id.BitPatternToUInt64IndexSet(),
+                id.BitPatternToIndexSet(),
                 processor.ScalarProcessor.OneValue
             )
         );
@@ -68,7 +68,7 @@ public static class XGaSubspaceComposerUtils
     public static XGaSubspace<T> CreateSubspace<T>(this XGaProcessor<T> processor, int grade, ulong index)
     {
         var id = 
-            BasisBladeUtils.BasisBladeGradeIndexToId((uint) grade, index).BitPatternToUInt64IndexSet();
+            BasisBladeUtils.BasisBladeGradeIndexToId((uint) grade, index).BitPatternToIndexSet();
 
         return new XGaSubspace<T>(
             processor.KVectorTerm(
@@ -79,7 +79,7 @@ public static class XGaSubspaceComposerUtils
     }
         
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static XGaSubspace<T> CreateSubspace<T>(this XGaProcessor<T> processor, IIndexSet id)
+    public static XGaSubspace<T> CreateSubspace<T>(this XGaProcessor<T> processor, IndexSet id)
     {
         return new XGaSubspace<T>(
             processor.KVectorTerm(

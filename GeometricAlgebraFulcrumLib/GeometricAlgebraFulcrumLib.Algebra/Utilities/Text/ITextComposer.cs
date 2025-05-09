@@ -23,7 +23,7 @@ public interface ITextComposer<T>
 
     string GetBasisBladeText(uint grade, ulong index);
 
-    string GetBasisBladeText(IIndexSet id);
+    string GetBasisBladeText(IndexSet id);
 
     string GetBasisBladeText(IEnumerable<int> indexList);
 
@@ -51,9 +51,9 @@ public interface ITextComposer<T>
 
     string GetTermText(uint grade, int index, T scalar);
 
-    string GetTermText(IIndexSet id, double scalar);
+    string GetTermText(IndexSet id, double scalar);
 
-    string GetTermText(IIndexSet id, T scalar);
+    string GetTermText(IndexSet id, T scalar);
 
     string GetTermText(RGaBasisBlade basisBlade, double scalar);
 

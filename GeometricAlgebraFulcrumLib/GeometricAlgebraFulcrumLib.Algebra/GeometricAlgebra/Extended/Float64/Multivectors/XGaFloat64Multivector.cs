@@ -13,7 +13,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Extended.Float64.M
 /// precision scalars
 /// </summary>
 public abstract partial class XGaFloat64Multivector :
-    IReadOnlyCollection<KeyValuePair<IIndexSet, double>>,
+    IReadOnlyCollection<KeyValuePair<IndexSet, double>>,
     IXGaFloat64Element
 {
     public abstract string MultivectorClassName { get; }
@@ -60,7 +60,7 @@ public abstract partial class XGaFloat64Multivector :
     /// <summary>
     /// Get basis blade IDs of all stored terms
     /// </summary>
-    public abstract IEnumerable<IIndexSet> Ids { get; }
+    public abstract IEnumerable<IndexSet> Ids { get; }
 
     /// <summary>
     /// Get scalars of all stored terms
@@ -72,7 +72,7 @@ public abstract partial class XGaFloat64Multivector :
     /// Get all stored terms as pairs of (BasisBlade ID, Scalar)
     /// </summary>
     /// <value></value>
-    public abstract IEnumerable<KeyValuePair<IIndexSet, double>> IdScalarPairs { get; }
+    public abstract IEnumerable<KeyValuePair<IndexSet, double>> IdScalarPairs { get; }
 
     /// <summary>
     /// Get all stored terms as pairs of (BasisBlade, Scalar)
@@ -201,10 +201,10 @@ public abstract partial class XGaFloat64Multivector :
 
     public abstract int GetMaxGrade();
 
-    public abstract bool ContainsKey(IIndexSet key);
+    public abstract bool ContainsKey(IndexSet key);
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool TryGetValue(IIndexSet key, out double value)
+    public bool TryGetValue(IndexSet key, out double value)
     {
         return TryGetBasisBladeScalarValue(key, out value);
     }
@@ -242,7 +242,7 @@ public abstract partial class XGaFloat64Multivector :
     /// </summary>
     /// <param name="basisBladeId"></param>
     /// <returns></returns>
-    public abstract double GetBasisBladeScalar(IIndexSet basisBladeId);
+    public abstract double GetBasisBladeScalar(IndexSet basisBladeId);
 
     /// <summary>
     /// Get the scalar coefficient associated with the basis scalar term
@@ -301,7 +301,7 @@ public abstract partial class XGaFloat64Multivector :
     }
         
 
-    public abstract bool TryGetBasisBladeScalarValue(IIndexSet basisBlade, out double scalar);
+    public abstract bool TryGetBasisBladeScalarValue(IndexSet basisBlade, out double scalar);
         
     public abstract bool TryGetScalarValue(out double scalar);
         
@@ -391,7 +391,7 @@ public abstract partial class XGaFloat64Multivector :
         
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public IEnumerator<KeyValuePair<IIndexSet, double>> GetEnumerator()
+    public IEnumerator<KeyValuePair<IndexSet, double>> GetEnumerator()
     {
         return IdScalarPairs.GetEnumerator();
     }

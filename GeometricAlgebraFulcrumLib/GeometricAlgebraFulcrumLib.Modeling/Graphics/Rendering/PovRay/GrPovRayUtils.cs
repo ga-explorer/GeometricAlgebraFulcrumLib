@@ -13,7 +13,7 @@ using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.PovRay.Materials.Pi
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.PovRay.Objects.FPP;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.PovRay.Values;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.AttributeSet;
-using GeometricAlgebraFulcrumLib.Utilities.Structures.Basic;
+using GeometricAlgebraFulcrumLib.Utilities.Structures.Tuples;
 using GeometricAlgebraFulcrumLib.Utilities.Text.Text;
 using GeometricAlgebraFulcrumLib.Utilities.Text.Text.Linear;
 using GeometricAlgebraFulcrumLib.Utilities.Web.Images;

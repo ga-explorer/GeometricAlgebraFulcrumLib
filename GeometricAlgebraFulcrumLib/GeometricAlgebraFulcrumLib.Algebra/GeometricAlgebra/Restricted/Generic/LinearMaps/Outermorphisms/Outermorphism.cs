@@ -164,12 +164,12 @@
 
         
 //        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-//        public override IEnumerable<KeyValuePair<IIndexSet, XGaMultivector<T>>> GetMappedBasisBlades()
+//        public override IEnumerable<KeyValuePair<IndexSet, XGaMultivector<T>>> GetMappedBasisBlades()
 //        {
 //            return OmStorage
 //                .GetMappedBasisBladesById()
 //                .Select(r => 
-//                    new KeyValuePair<IIndexSet, XGaMultivector<T>>(
+//                    new KeyValuePair<IndexSet, XGaMultivector<T>>(
 //                        r.Id, 
 //                        r.Storage.Multivector(GeometricProcessor)
 //                    )

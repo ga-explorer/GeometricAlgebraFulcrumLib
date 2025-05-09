@@ -1,5 +1,5 @@
-﻿using GeometricAlgebraFulcrumLib.Utilities.Structures.Basic;
-using GeometricAlgebraFulcrumLib.Utilities.Structures.IndexSets;
+﻿using GeometricAlgebraFulcrumLib.Utilities.Structures.IndexSets;
+using GeometricAlgebraFulcrumLib.Utilities.Structures.Tuples;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Extended.Basis;
 
@@ -14,7 +14,7 @@ public interface IXGaSignedBasisBlade :
     /// <summary>
     /// The basis blade identifier (basis vectors set)
     /// </summary>
-    IIndexSet Id { get; }
+    IndexSet Id { get; }
     
     /// <summary>
     /// The sign, can only be -1, 0, 1
@@ -76,87 +76,87 @@ public interface IXGaSignedBasisBlade :
     IntegerSign TimesSign(IntegerSign sign);
     
 
-    IntegerSign EGpSign(IIndexSet basisBlade);
+    IntegerSign EGpSign(IndexSet basisBlade);
 
     IntegerSign EGpSign(IXGaSignedBasisBlade basisBlade);
 
     
-    IntegerSign GpSign(IIndexSet basisBlade);
+    IntegerSign GpSign(IndexSet basisBlade);
 
     IntegerSign GpSign(IXGaSignedBasisBlade basisBlade);
 
 
-    IntegerSign OpSign(IIndexSet basisBlade);
+    IntegerSign OpSign(IndexSet basisBlade);
     
     IntegerSign OpSign(IXGaSignedBasisBlade basisBlade);
     
 
-    IntegerSign ESpSign(IIndexSet basisBlade);
+    IntegerSign ESpSign(IndexSet basisBlade);
     
     IntegerSign ESpSign(IXGaSignedBasisBlade basisBlade);
     
 
-    IntegerSign SpSign(IIndexSet basisBlade);
+    IntegerSign SpSign(IndexSet basisBlade);
     
     IntegerSign SpSign(IXGaSignedBasisBlade basisBlade);
     
 
-    IntegerSign ELcpSign(IIndexSet basisBlade);
+    IntegerSign ELcpSign(IndexSet basisBlade);
     
     IntegerSign ELcpSign(IXGaSignedBasisBlade basisBlade);
     
 
-    IntegerSign LcpSign(IIndexSet basisBlade);
+    IntegerSign LcpSign(IndexSet basisBlade);
     
     IntegerSign LcpSign(IXGaSignedBasisBlade basisBlade);
     
 
-    IntegerSign ERcpSign(IIndexSet basisBlade);
+    IntegerSign ERcpSign(IndexSet basisBlade);
     
     IntegerSign ERcpSign(IXGaSignedBasisBlade basisBlade);
     
 
-    IntegerSign RcpSign(IIndexSet basisBlade);
+    IntegerSign RcpSign(IndexSet basisBlade);
     
     IntegerSign RcpSign(IXGaSignedBasisBlade basisBlade);
     
 
-    IntegerSign EFdpSign(IIndexSet basisBlade);
+    IntegerSign EFdpSign(IndexSet basisBlade);
     
     IntegerSign EFdpSign(IXGaSignedBasisBlade basisBlade);
     
 
-    IntegerSign FdpSign(IIndexSet basisBlade);
+    IntegerSign FdpSign(IndexSet basisBlade);
     
     IntegerSign FdpSign(IXGaSignedBasisBlade basisBlade);
     
 
-    IntegerSign EHipSign(IIndexSet basisBlade);
+    IntegerSign EHipSign(IndexSet basisBlade);
     
     IntegerSign EHipSign(IXGaSignedBasisBlade basisBlade);
     
 
-    IntegerSign HipSign(IIndexSet basisBlade);
+    IntegerSign HipSign(IndexSet basisBlade);
     
     IntegerSign HipSign(IXGaSignedBasisBlade basisBlade);
 
 
-    IntegerSign EAcpSign(IIndexSet basisBlade);
+    IntegerSign EAcpSign(IndexSet basisBlade);
     
     IntegerSign EAcpSign(IXGaSignedBasisBlade basisBlade);
     
 
-    IntegerSign AcpSign(IIndexSet basisBlade);
+    IntegerSign AcpSign(IndexSet basisBlade);
     
     IntegerSign AcpSign(IXGaSignedBasisBlade basisBlade);
     
 
-    IntegerSign ECpSign(IIndexSet basisBlade);
+    IntegerSign ECpSign(IndexSet basisBlade);
     
     IntegerSign ECpSign(IXGaSignedBasisBlade basisBlade);
     
 
-    IntegerSign CpSign(IIndexSet basisBlade);
+    IntegerSign CpSign(IndexSet basisBlade);
     
     IntegerSign CpSign(IXGaSignedBasisBlade basisBlade);
 
@@ -183,7 +183,7 @@ public interface IXGaSignedBasisBlade :
     /// </summary>
     /// <param name="basisBlade"></param>
     /// <returns></returns>
-    IXGaSignedBasisBlade EGp(IIndexSet basisBlade);
+    IXGaSignedBasisBlade EGp(IndexSet basisBlade);
     
     /// <summary>
     /// The Euclidean geometric product
@@ -198,7 +198,7 @@ public interface IXGaSignedBasisBlade :
     /// </summary>
     /// <param name="basisBlade"></param>
     /// <returns></returns>
-    IXGaSignedBasisBlade Gp(IIndexSet basisBlade);
+    IXGaSignedBasisBlade Gp(IndexSet basisBlade);
     
     /// <summary>
     /// The geometric product
@@ -213,7 +213,7 @@ public interface IXGaSignedBasisBlade :
     /// </summary>
     /// <param name="basisBlade"></param>
     /// <returns></returns>
-    IXGaSignedBasisBlade Op(IIndexSet basisBlade);
+    IXGaSignedBasisBlade Op(IndexSet basisBlade);
     
     /// <summary>
     /// The outer product
@@ -228,7 +228,7 @@ public interface IXGaSignedBasisBlade :
     /// </summary>
     /// <param name="basisBlade"></param>
     /// <returns></returns>
-    IXGaSignedBasisBlade ESp(IIndexSet basisBlade);
+    IXGaSignedBasisBlade ESp(IndexSet basisBlade);
     
     /// <summary>
     /// The Euclidean scalar product
@@ -243,7 +243,7 @@ public interface IXGaSignedBasisBlade :
     /// </summary>
     /// <param name="basisBlade"></param>
     /// <returns></returns>
-    IXGaSignedBasisBlade Sp(IIndexSet basisBlade);
+    IXGaSignedBasisBlade Sp(IndexSet basisBlade);
     
     /// <summary>
     /// The scalar product
@@ -258,7 +258,7 @@ public interface IXGaSignedBasisBlade :
     /// </summary>
     /// <param name="basisBlade"></param>
     /// <returns></returns>
-    IXGaSignedBasisBlade ELcp(IIndexSet basisBlade);
+    IXGaSignedBasisBlade ELcp(IndexSet basisBlade);
     
     /// <summary>
     /// The Euclidean left-contraction product
@@ -273,7 +273,7 @@ public interface IXGaSignedBasisBlade :
     /// </summary>
     /// <param name="basisBlade"></param>
     /// <returns></returns>
-    IXGaSignedBasisBlade Lcp(IIndexSet basisBlade);
+    IXGaSignedBasisBlade Lcp(IndexSet basisBlade);
     
     /// <summary>
     /// The left-contraction product
@@ -288,7 +288,7 @@ public interface IXGaSignedBasisBlade :
     /// </summary>
     /// <param name="basisBlade"></param>
     /// <returns></returns>
-    IXGaSignedBasisBlade ERcp(IIndexSet basisBlade);
+    IXGaSignedBasisBlade ERcp(IndexSet basisBlade);
     
     /// <summary>
     /// The Euclidean right-contraction product
@@ -303,7 +303,7 @@ public interface IXGaSignedBasisBlade :
     /// </summary>
     /// <param name="basisBlade"></param>
     /// <returns></returns>
-    IXGaSignedBasisBlade Rcp(IIndexSet basisBlade);
+    IXGaSignedBasisBlade Rcp(IndexSet basisBlade);
     
     /// <summary>
     /// The right-contraction product
@@ -318,7 +318,7 @@ public interface IXGaSignedBasisBlade :
     /// </summary>
     /// <param name="basisBlade"></param>
     /// <returns></returns>
-    IXGaSignedBasisBlade EFdp(IIndexSet basisBlade);
+    IXGaSignedBasisBlade EFdp(IndexSet basisBlade);
     
     /// <summary>
     /// The Euclidean fat-dot product
@@ -333,7 +333,7 @@ public interface IXGaSignedBasisBlade :
     /// </summary>
     /// <param name="basisBlade"></param>
     /// <returns></returns>
-    IXGaSignedBasisBlade Fdp(IIndexSet basisBlade);
+    IXGaSignedBasisBlade Fdp(IndexSet basisBlade);
     
     /// <summary>
     /// The fat-dot product
@@ -348,7 +348,7 @@ public interface IXGaSignedBasisBlade :
     /// </summary>
     /// <param name="basisBlade"></param>
     /// <returns></returns>
-    IXGaSignedBasisBlade EHip(IIndexSet basisBlade);
+    IXGaSignedBasisBlade EHip(IndexSet basisBlade);
     
     /// <summary>
     /// The Euclidean Hestenes inner product
@@ -363,7 +363,7 @@ public interface IXGaSignedBasisBlade :
     /// </summary>
     /// <param name="basisBlade"></param>
     /// <returns></returns>
-    IXGaSignedBasisBlade Hip(IIndexSet basisBlade);
+    IXGaSignedBasisBlade Hip(IndexSet basisBlade);
     
     /// <summary>
     /// The Hestenes inner product
@@ -378,7 +378,7 @@ public interface IXGaSignedBasisBlade :
     /// </summary>
     /// <param name="basisBlade"></param>
     /// <returns></returns>
-    IXGaSignedBasisBlade EAcp(IIndexSet basisBlade);
+    IXGaSignedBasisBlade EAcp(IndexSet basisBlade);
     
     /// <summary>
     /// The Euclidean anti-commutator product
@@ -393,7 +393,7 @@ public interface IXGaSignedBasisBlade :
     /// </summary>
     /// <param name="basisBlade"></param>
     /// <returns></returns>
-    IXGaSignedBasisBlade Acp(IIndexSet basisBlade);
+    IXGaSignedBasisBlade Acp(IndexSet basisBlade);
     
     /// <summary>
     /// The anti-commutator product
@@ -408,7 +408,7 @@ public interface IXGaSignedBasisBlade :
     /// </summary>
     /// <param name="basisBlade"></param>
     /// <returns></returns>
-    IXGaSignedBasisBlade ECp(IIndexSet basisBlade);
+    IXGaSignedBasisBlade ECp(IndexSet basisBlade);
     
     /// <summary>
     /// The Euclidean commutator product
@@ -423,7 +423,7 @@ public interface IXGaSignedBasisBlade :
     /// </summary>
     /// <param name="basisBlade"></param>
     /// <returns></returns>
-    IXGaSignedBasisBlade Cp(IIndexSet basisBlade);
+    IXGaSignedBasisBlade Cp(IndexSet basisBlade);
     
     /// <summary>
     /// The commutator product

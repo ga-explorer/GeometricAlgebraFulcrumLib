@@ -6,7 +6,7 @@ using GeometricAlgebraFulcrumLib.Modeling.Geometry.BasicShapes.Triangles.Space3D
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Primitives;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Primitives.Triangles;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Primitives.Vertices;
-using GeometricAlgebraFulcrumLib.Utilities.Structures.Basic;
+using GeometricAlgebraFulcrumLib.Utilities.Structures.Tuples;
 using SixLabors.ImageSharp;
 
 namespace GeometricAlgebraFulcrumLib.Modeling.Graphics.LatticeShapes.Surfaces;

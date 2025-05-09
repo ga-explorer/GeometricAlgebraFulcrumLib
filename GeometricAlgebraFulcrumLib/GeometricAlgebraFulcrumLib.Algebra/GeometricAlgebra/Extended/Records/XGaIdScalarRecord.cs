@@ -2,8 +2,8 @@
 
 namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Extended.Records;
 
-public sealed record XGaIdScalarRecord(IIndexSet Id, double Scalar) :
+public sealed record XGaIdScalarRecord(IndexSet Id, double Scalar) :
     IXGaIdScalarRecord<double>;
 
-public sealed record XGaIdScalarRecord<T>(IIndexSet Id, T Scalar) :
+public sealed record XGaIdScalarRecord<T>(IndexSet Id, T Scalar) :
     IXGaIdScalarRecord<T>;

@@ -1,5 +1,4 @@
-﻿using System.Collections.Immutable;
-using System.Runtime.CompilerServices;
+﻿using System.Runtime.CompilerServices;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Extended.Basis;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Dictionary;
@@ -22,35 +21,35 @@ public static class XGaKVectorComposerUtils
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static XGaHigherKVector<T> HigherKVectorTerm<T>(this XGaProcessor<T> processor, IIndexSet id)
+    public static XGaHigherKVector<T> HigherKVectorTerm<T>(this XGaProcessor<T> processor, IndexSet id)
     {
         var grade = id.Count;
 
         return new XGaHigherKVector<T>(
             processor,
             grade,
-            new SingleItemDictionary<IIndexSet, T>(id, processor.ScalarProcessor.OneValue)
+            new SingleItemDictionary<IndexSet, T>(id, processor.ScalarProcessor.OneValue)
         );
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static XGaHigherKVector<T> HigherKVectorTerm<T>(this XGaProcessor<T> processor, IIndexSet id, T scalar)
+    public static XGaHigherKVector<T> HigherKVectorTerm<T>(this XGaProcessor<T> processor, IndexSet id, T scalar)
     {
         var grade = id.Count;
 
         return processor.ScalarProcessor.IsZero(scalar)
             ? new XGaHigherKVector<T>(processor, grade)
-            : new XGaHigherKVector<T>(processor, grade, new SingleItemDictionary<IIndexSet, T>(id, scalar));
+            : new XGaHigherKVector<T>(processor, grade, new SingleItemDictionary<IndexSet, T>(id, scalar));
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static XGaHigherKVector<T> HigherKVectorTerm<T>(this XGaProcessor<T> processor, IIndexSet id, IScalar<T> scalar)
+    public static XGaHigherKVector<T> HigherKVectorTerm<T>(this XGaProcessor<T> processor, IndexSet id, IScalar<T> scalar)
     {
         return HigherKVectorTerm(processor, id, scalar.ScalarValue);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static XGaHigherKVector<T> HigherKVectorTerm<T>(this XGaProcessor<T> processor, KeyValuePair<IIndexSet, T> term)
+    public static XGaHigherKVector<T> HigherKVectorTerm<T>(this XGaProcessor<T> processor, KeyValuePair<IndexSet, T> term)
     {
         var (id, scalar) = term;
 
@@ -58,17 +57,17 @@ public static class XGaKVectorComposerUtils
 
         return processor.ScalarProcessor.IsZero(scalar)
             ? new XGaHigherKVector<T>(processor, grade)
-            : new XGaHigherKVector<T>(processor, grade, new SingleItemDictionary<IIndexSet, T>(id, scalar));
+            : new XGaHigherKVector<T>(processor, grade, new SingleItemDictionary<IndexSet, T>(id, scalar));
     }
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static XGaHigherKVector<T> HigherKVector<T>(this XGaProcessor<T> processor, int grade, IReadOnlyDictionary<IIndexSet, T> basisScalarDictionary)
+    public static XGaHigherKVector<T> HigherKVector<T>(this XGaProcessor<T> processor, int grade, IReadOnlyDictionary<IndexSet, T> basisScalarDictionary)
     {
-        if (basisScalarDictionary.Count == 0 && basisScalarDictionary is not EmptyDictionary<IIndexSet, T>)
+        if (basisScalarDictionary.Count == 0 && basisScalarDictionary is not EmptyDictionary<IndexSet, T>)
             return processor.HigherKVectorZero(grade);
 
-        if (basisScalarDictionary.Count == 1 && basisScalarDictionary is not SingleItemDictionary<IIndexSet, T>)
+        if (basisScalarDictionary.Count == 1 && basisScalarDictionary is not SingleItemDictionary<IndexSet, T>)
             return processor.HigherKVectorTerm(basisScalarDictionary.First());
 
         return new XGaHigherKVector<T>(
@@ -97,7 +96,7 @@ public static class XGaKVectorComposerUtils
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static XGaKVector<T> KVectorTerm<T>(this XGaProcessor<T> processor, KeyValuePair<IIndexSet, T> term)
+    public static XGaKVector<T> KVectorTerm<T>(this XGaProcessor<T> processor, KeyValuePair<IndexSet, T> term)
     {
         var grade = term.Key.Count;
 
@@ -111,16 +110,16 @@ public static class XGaKVectorComposerUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static XGaKVector<T> KVectorTerm<T>(this XGaProcessor<T> processor, IIndexSet basisBlade)
+    public static XGaKVector<T> KVectorTerm<T>(this XGaProcessor<T> processor, IndexSet basisBlade)
     {
         return processor.KVectorTerm(
 
-            new KeyValuePair<IIndexSet, T>(basisBlade, processor.ScalarProcessor.OneValue)
+            new KeyValuePair<IndexSet, T>(basisBlade, processor.ScalarProcessor.OneValue)
         );
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static XGaKVector<T> KVectorTerm<T>(this XGaProcessor<T> processor, IIndexSet basisBlade, T scalar)
+    public static XGaKVector<T> KVectorTerm<T>(this XGaProcessor<T> processor, IndexSet basisBlade, T scalar)
     {
         var grade = basisBlade.Count;
 
@@ -129,24 +128,24 @@ public static class XGaKVectorComposerUtils
 
         return processor.KVectorTerm(
 
-            new KeyValuePair<IIndexSet, T>(basisBlade, scalar)
+            new KeyValuePair<IndexSet, T>(basisBlade, scalar)
         );
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static XGaKVector<T> KVectorTerm<T>(this XGaProcessor<T> processor, IIndexSet basisBlade, IScalar<T> scalar)
+    public static XGaKVector<T> KVectorTerm<T>(this XGaProcessor<T> processor, IndexSet basisBlade, IScalar<T> scalar)
     {
         return KVectorTerm(processor, basisBlade, scalar.ScalarValue);
     }
         
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static XGaKVector<T> KVector<T>(this XGaProcessor<T> processor, int grade, IReadOnlyDictionary<IIndexSet, T> basisScalarDictionary)
+    public static XGaKVector<T> KVector<T>(this XGaProcessor<T> processor, int grade, IReadOnlyDictionary<IndexSet, T> basisScalarDictionary)
     {
-        if (basisScalarDictionary.Count == 0 && basisScalarDictionary is not EmptyDictionary<IIndexSet, T>)
+        if (basisScalarDictionary.Count == 0 && basisScalarDictionary is not EmptyDictionary<IndexSet, T>)
             return processor.KVectorZero(grade);
 
-        if (basisScalarDictionary.Count == 1 && basisScalarDictionary is not SingleItemDictionary<IIndexSet, T>)
+        if (basisScalarDictionary.Count == 1 && basisScalarDictionary is not SingleItemDictionary<IndexSet, T>)
             return processor.KVectorTerm(basisScalarDictionary.First());
 
         return grade switch
@@ -160,14 +159,14 @@ public static class XGaKVectorComposerUtils
     
     public static XGaKVector<T> KVectorTerm<T>(this XGaProcessor<T> processor, IReadOnlyList<int> basisVectorIndexList)
     {
-        var id = basisVectorIndexList.ToImmutableSortedSet().ToIndexSet();
+        var id = basisVectorIndexList.ToIndexSet(false);
         var grade = id.Grade();
 
         if (grade == 0)
             return processor.ScalarOne;
 
         var idScalarDictionary =
-            new SingleItemDictionary<IIndexSet, T>(id, processor.ScalarProcessor.OneValue);
+            new SingleItemDictionary<IndexSet, T>(id, processor.ScalarProcessor.OneValue);
 
         if (grade == 1)
             return processor.Vector(idScalarDictionary);
@@ -184,7 +183,7 @@ public static class XGaKVectorComposerUtils
 
     public static XGaKVector<T> KVectorTerm<T>(this XGaProcessor<T> metric, IReadOnlyList<int> basisVectorIndexList, T scalar)
     {
-        var id = basisVectorIndexList.ToImmutableSortedSet().ToIndexSet();
+        var id = basisVectorIndexList.ToIndexSet(false);
         var grade = id.Grade();
 
         if (metric.ScalarProcessor.IsZero(scalar))
@@ -194,7 +193,7 @@ public static class XGaKVectorComposerUtils
             return metric.Scalar(scalar);
 
         var idScalarDictionary =
-            new SingleItemDictionary<IIndexSet, T>(id, scalar);
+            new SingleItemDictionary<IndexSet, T>(id, scalar);
 
         if (grade == 1)
             return metric.Vector(idScalarDictionary);
@@ -217,7 +216,7 @@ public static class XGaKVectorComposerUtils
 
         return processor.KVectorTerm(
 
-            new KeyValuePair<IIndexSet, T>(id, processor.ScalarProcessor.OneValue)
+            new KeyValuePair<IndexSet, T>(id, processor.ScalarProcessor.OneValue)
         );
     }
 
@@ -228,7 +227,7 @@ public static class XGaKVectorComposerUtils
 
         return processor.KVectorTerm(
 
-            new KeyValuePair<IIndexSet, T>(id, scalarValue)
+            new KeyValuePair<IndexSet, T>(id, scalarValue)
         );
     }
 
@@ -244,7 +243,7 @@ public static class XGaKVectorComposerUtils
 
         return processor.KVectorTerm(
 
-            new KeyValuePair<IIndexSet, T>(id, scalar)
+            new KeyValuePair<IndexSet, T>(id, scalar)
         );
     }
 
@@ -262,7 +261,7 @@ public static class XGaKVectorComposerUtils
         var scalar = sign.ValueFromNumber(processor.ScalarProcessor);
 
         return processor.KVectorTerm(
-            new KeyValuePair<IIndexSet, T>(id, scalar)
+            new KeyValuePair<IndexSet, T>(id, scalar)
         );
     }
 
@@ -278,7 +277,7 @@ public static class XGaKVectorComposerUtils
 
         return processor.KVectorTerm(
 
-            new KeyValuePair<IIndexSet, T>(id, scalar)
+            new KeyValuePair<IndexSet, T>(id, scalar)
         );
     }
 
@@ -297,7 +296,7 @@ public static class XGaKVectorComposerUtils
 
         return processor.KVectorTerm(
 
-            new KeyValuePair<IIndexSet, T>(id, scalar)
+            new KeyValuePair<IndexSet, T>(id, scalar)
         );
     }
 

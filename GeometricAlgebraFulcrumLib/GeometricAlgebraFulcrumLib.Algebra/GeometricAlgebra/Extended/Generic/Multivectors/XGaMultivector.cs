@@ -13,7 +13,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Extended.Generic.M
 /// precision scalars
 /// </summary>
 public abstract partial class XGaMultivector<T> :
-    IReadOnlyCollection<KeyValuePair<IIndexSet, T>>,
+    IReadOnlyCollection<KeyValuePair<IndexSet, T>>,
     IXGaElement<T>
 {
     public abstract string MultivectorClassName { get; }
@@ -63,7 +63,7 @@ public abstract partial class XGaMultivector<T> :
     /// <summary>
     /// Get basis blade IDs of all stored terms
     /// </summary>
-    public abstract IEnumerable<IIndexSet> Ids { get; }
+    public abstract IEnumerable<IndexSet> Ids { get; }
 
     /// <summary>
     /// Get scalars of all stored terms
@@ -75,7 +75,7 @@ public abstract partial class XGaMultivector<T> :
     /// Get all stored terms as pairs of (BasisBlade ID, Scalar)
     /// </summary>
     /// <value></value>
-    public abstract IEnumerable<KeyValuePair<IIndexSet, T>> IdScalarPairs { get; }
+    public abstract IEnumerable<KeyValuePair<IndexSet, T>> IdScalarPairs { get; }
 
     /// <summary>
     /// Get all stored terms as pairs of (BasisBlade, Scalar)
@@ -204,10 +204,10 @@ public abstract partial class XGaMultivector<T> :
 
     public abstract int GetMaxGrade();
 
-    public abstract bool ContainsKey(IIndexSet key);
+    public abstract bool ContainsKey(IndexSet key);
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool TryGetValue(IIndexSet key, out T value)
+    public bool TryGetValue(IndexSet key, out T value)
     {
         return TryGetBasisBladeScalarValue(key, out value);
     }
@@ -245,7 +245,7 @@ public abstract partial class XGaMultivector<T> :
     /// </summary>
     /// <param name="basisBladeId"></param>
     /// <returns></returns>
-    public abstract Scalar<T> GetBasisBladeScalar(IIndexSet basisBladeId);
+    public abstract Scalar<T> GetBasisBladeScalar(IndexSet basisBladeId);
         
     /// <summary>
     /// Get the scalar coefficient associated with the basis scalar term
@@ -304,7 +304,7 @@ public abstract partial class XGaMultivector<T> :
     }
 
 
-    public abstract bool TryGetBasisBladeScalarValue(IIndexSet basisBlade, out T scalar);
+    public abstract bool TryGetBasisBladeScalarValue(IndexSet basisBlade, out T scalar);
         
     public abstract bool TryGetScalarValue(out T scalar);
         
@@ -394,7 +394,7 @@ public abstract partial class XGaMultivector<T> :
         
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public IEnumerator<KeyValuePair<IIndexSet, T>> GetEnumerator()
+    public IEnumerator<KeyValuePair<IndexSet, T>> GetEnumerator()
     {
         return IdScalarPairs.GetEnumerator();
     }

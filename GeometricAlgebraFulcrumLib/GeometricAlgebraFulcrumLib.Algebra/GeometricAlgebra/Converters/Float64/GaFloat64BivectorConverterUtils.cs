@@ -42,8 +42,8 @@ public static class GaFloat64BivectorConverterUtils
 
         var termList =
             mv.IdScalarPairs.Select(
-                term => new KeyValuePair<IIndexSet, double>(
-                    term.Key.BitPatternToUInt64IndexSet(),
+                term => new KeyValuePair<IndexSet, double>(
+                    term.Key.BitPatternToIndexSet(),
                     term.Value
                 )
             );
@@ -81,8 +81,8 @@ public static class GaFloat64BivectorConverterUtils
 
         var termList =
             mv.IdScalarPairs.Select(
-                term => new KeyValuePair<IIndexSet, double>(
-                    term.Key.BitPatternToUInt64IndexSet(),
+                term => new KeyValuePair<IndexSet, double>(
+                    term.Key.BitPatternToIndexSet(),
                     scalarMapping(term.Value)
                 )
             );
@@ -120,8 +120,8 @@ public static class GaFloat64BivectorConverterUtils
 
         var termList =
             mv.IdScalarPairs.Select(
-                term => new KeyValuePair<IIndexSet, T2>(
-                    term.Key.BitPatternToUInt64IndexSet(),
+                term => new KeyValuePair<IndexSet, T2>(
+                    term.Key.BitPatternToIndexSet(),
                     scalarMapping(term.Value)
                 )
             );
@@ -159,7 +159,7 @@ public static class GaFloat64BivectorConverterUtils
 
         var termList =
             mv.IdScalarPairs.Select(
-                term => new KeyValuePair<IIndexSet, T2>(
+                term => new KeyValuePair<IndexSet, T2>(
                     term.Key,
                     scalarMapping(term.Value)
                 )

@@ -70,7 +70,7 @@ public static class XGaFloat64OutermorphismUtils
     }
         
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static XGaFloat64KVector OmMapBasisBlade(this IReadOnlyList<IXGaFloat64Outermorphism> omList, IIndexSet id)
+    public static XGaFloat64KVector OmMapBasisBlade(this IReadOnlyList<IXGaFloat64Outermorphism> omList, IndexSet id)
     {
         var kVector = omList[0].OmMapBasisBlade(id);
 
@@ -411,7 +411,7 @@ public static class XGaFloat64OutermorphismUtils
             var vectorList = 
                 BasisBladeUtils
                     .BasisBladeGradeIndexToId((uint) grade, index)
-                    .PatternToPositions()
+                    .GetSetBitPositions()
                     .Select(i => metric.Vector(columnList[i]))
                     .ToArray();
 

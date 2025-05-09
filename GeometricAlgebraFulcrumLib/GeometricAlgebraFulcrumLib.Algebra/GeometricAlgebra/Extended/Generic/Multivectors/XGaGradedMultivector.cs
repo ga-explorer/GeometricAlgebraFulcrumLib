@@ -37,7 +37,7 @@ public sealed partial class XGaGradedMultivector<T> :
     public IEnumerable<XGaKVector<T>> KVectors
         => _gradeKVectorDictionary.Values;
 
-    public override IEnumerable<KeyValuePair<IIndexSet, T>> IdScalarPairs
+    public override IEnumerable<KeyValuePair<IndexSet, T>> IdScalarPairs
         => _gradeKVectorDictionary.Values.SelectMany(
             kv => kv.IdScalarPairs
         );
@@ -141,7 +141,7 @@ public sealed partial class XGaGradedMultivector<T> :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public override bool ContainsKey(IIndexSet id)
+    public override bool ContainsKey(IndexSet id)
     {
         if (IsZero) return false;
 
@@ -236,7 +236,7 @@ public sealed partial class XGaGradedMultivector<T> :
         return ScalarProcessor.Zero;
     }
 
-    public override Scalar<T> GetBasisBladeScalar(IIndexSet basisBladeId)
+    public override Scalar<T> GetBasisBladeScalar(IndexSet basisBladeId)
     {
         var grade = basisBladeId.Count;
 
@@ -260,7 +260,7 @@ public sealed partial class XGaGradedMultivector<T> :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public override bool TryGetBasisBladeScalarValue(IIndexSet basisBlade, out T scalar)
+    public override bool TryGetBasisBladeScalarValue(IndexSet basisBlade, out T scalar)
     {
         if (_gradeKVectorDictionary.TryGetValue(basisBlade.Count, out var kVector))
             return kVector.TryGetBasisBladeScalarValue(basisBlade, out scalar);
@@ -287,7 +287,7 @@ public sealed partial class XGaGradedMultivector<T> :
         }
     }
 
-    public override IEnumerable<IIndexSet> Ids
+    public override IEnumerable<IndexSet> Ids
         => _gradeKVectorDictionary.Values.SelectMany(kv => kv.Ids);
 
     public override IEnumerable<T> Scalars
@@ -353,7 +353,7 @@ public sealed partial class XGaGradedMultivector<T> :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public XGaGradedMultivector<T> GetPart(Func<IIndexSet, bool> filterFunc)
+    public XGaGradedMultivector<T> GetPart(Func<IndexSet, bool> filterFunc)
     {
         if (IsZero) return this;
 
@@ -385,7 +385,7 @@ public sealed partial class XGaGradedMultivector<T> :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public XGaGradedMultivector<T> GetPart(Func<IIndexSet, T, bool> filterFunc)
+    public XGaGradedMultivector<T> GetPart(Func<IndexSet, T, bool> filterFunc)
     {
         if (IsZero) return this;
 

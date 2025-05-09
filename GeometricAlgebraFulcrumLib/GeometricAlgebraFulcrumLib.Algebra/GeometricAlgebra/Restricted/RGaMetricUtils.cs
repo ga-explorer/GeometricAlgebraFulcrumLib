@@ -139,7 +139,7 @@ public static class RGaMetricUtils
             .ThenByDescending(t => t.Key.ReverseBits(bitsCount));
     }
 
-    public static IEnumerable<KeyValuePair<IIndexSet, T>> OrderByGradeIndex<T>(this IEnumerable<KeyValuePair<IIndexSet, T>> termsList)
+    public static IEnumerable<KeyValuePair<IndexSet, T>> OrderByGradeIndex<T>(this IEnumerable<KeyValuePair<IndexSet, T>> termsList)
     {
         var termsArray = 
             termsList.ToImmutableArray();
@@ -157,7 +157,7 @@ public static class RGaMetricUtils
 
         return termsArray
             .OrderBy(t => t.Key.Grade())
-            .ThenByDescending(t => t.Key.MapIndices(i => maxIndex - i));
+            .ThenByDescending(t => t.Key.MapIndicesByValue(i => maxIndex - i));
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -169,7 +169,7 @@ public static class RGaMetricUtils
     }
         
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static IEnumerable<KeyValuePair<IIndexSet, T>> OrderById<T>(this IEnumerable<KeyValuePair<IIndexSet, T>> termsList)
+    public static IEnumerable<KeyValuePair<IndexSet, T>> OrderById<T>(this IEnumerable<KeyValuePair<IndexSet, T>> termsList)
     {
         return termsList.OrderBy(
             t => t.Key

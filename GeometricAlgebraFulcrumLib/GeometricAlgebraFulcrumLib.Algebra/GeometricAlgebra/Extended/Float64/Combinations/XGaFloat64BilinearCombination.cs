@@ -3,8 +3,8 @@ using System.Collections.Immutable;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Extended.Basis;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Extended.Float64.Multivectors;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
-using GeometricAlgebraFulcrumLib.Utilities.Structures.Basic;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.IndexSets;
+using GeometricAlgebraFulcrumLib.Utilities.Structures.Tuples;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Extended.Float64.Combinations;
 
@@ -12,7 +12,7 @@ public class XGaFloat64BilinearCombination :
     IReadOnlyCollection<XGaFloat64BilinearCombinationTerm>, 
     IXGaLinearCombination
 {
-    private readonly Dictionary<Triplet<IIndexSet>, XGaFloat64BilinearCombinationTerm> _termList;
+    private readonly Dictionary<Triplet<IndexSet>, XGaFloat64BilinearCombinationTerm> _termList;
 
 
     public bool AssumeEqualInputs { get; }
@@ -27,10 +27,10 @@ public class XGaFloat64BilinearCombination :
     public XGaFloat64BilinearCombination(bool assumeEqualInputs)
     {
         AssumeEqualInputs = assumeEqualInputs;
-        _termList = new Dictionary<Triplet<IIndexSet>, XGaFloat64BilinearCombinationTerm>();
+        _termList = new Dictionary<Triplet<IndexSet>, XGaFloat64BilinearCombinationTerm>();
     }
 
-    public XGaFloat64BilinearCombination(bool assumeEqualInputs, Dictionary<Triplet<IIndexSet>, XGaFloat64BilinearCombinationTerm> termList)
+    public XGaFloat64BilinearCombination(bool assumeEqualInputs, Dictionary<Triplet<IndexSet>, XGaFloat64BilinearCombinationTerm> termList)
     {
         AssumeEqualInputs = assumeEqualInputs;
         _termList = termList;
@@ -129,7 +129,7 @@ public class XGaFloat64BilinearCombination :
         return this;
     }
 
-    public XGaFloat64BilinearCombination Add(Float64Scalar inputScalar, XGaMetric metric, IIndexSet input1BasisBladeId, IIndexSet input2BasisBladeId, IIndexSet outputBasisBladeId)
+    public XGaFloat64BilinearCombination Add(Float64Scalar inputScalar, XGaMetric metric, IndexSet input1BasisBladeId, IndexSet input2BasisBladeId, IndexSet outputBasisBladeId)
     {
         var term = XGaFloat64BilinearCombinationTerm.Create(
             inputScalar,
@@ -213,7 +213,7 @@ public class XGaFloat64BilinearCombination :
         return this;
     }
 
-    public IReadOnlyList<IIndexSet> GetInputBasisBladeIDs()
+    public IReadOnlyList<IndexSet> GetInputBasisBladeIDs()
     {
         return _termList
             .Values
@@ -222,7 +222,7 @@ public class XGaFloat64BilinearCombination :
             .ToImmutableSortedSet();
     }
 
-    public IReadOnlyList<IIndexSet> GetInput1BasisBladeIDs()
+    public IReadOnlyList<IndexSet> GetInput1BasisBladeIDs()
     {
         if (AssumeEqualInputs)
             return GetInputBasisBladeIDs();
@@ -233,7 +233,7 @@ public class XGaFloat64BilinearCombination :
             .ToImmutableSortedSet();
     }
 
-    public IReadOnlyList<IIndexSet> GetInput2BasisBladeIDs()
+    public IReadOnlyList<IndexSet> GetInput2BasisBladeIDs()
     {
         if (AssumeEqualInputs)
             return GetInputBasisBladeIDs();
@@ -244,7 +244,7 @@ public class XGaFloat64BilinearCombination :
             .ToImmutableSortedSet();
     }
 
-    public IReadOnlyList<IIndexSet> GetOutputBasisBladeIDs()
+    public IReadOnlyList<IndexSet> GetOutputBasisBladeIDs()
     {
         return _termList
             .Values
@@ -291,7 +291,7 @@ public class XGaFloat64BilinearCombination :
             .ToImmutableSortedSet();
     }
 
-    public XGaFloat64BilinearCombination GetSubCombinationWithOutputId(IIndexSet outputBasisBladeId)
+    public XGaFloat64BilinearCombination GetSubCombinationWithOutputId(IndexSet outputBasisBladeId)
     {
         var termList =
             _termList

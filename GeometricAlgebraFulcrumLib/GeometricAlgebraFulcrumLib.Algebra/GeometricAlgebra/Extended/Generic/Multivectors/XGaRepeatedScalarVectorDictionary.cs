@@ -7,13 +7,13 @@ using GeometricAlgebraFulcrumLib.Utilities.Structures.IndexSets;
 namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Extended.Generic.Multivectors;
 
 public sealed record XGaRepeatedScalarVectorDictionary<TValue> :
-    IReadOnlyDictionary<IIndexSet, TValue>
+    IReadOnlyDictionary<IndexSet, TValue>
 {
     public int Count { get; }
         
     public TValue Value { get; }
     
-    public TValue this[IIndexSet key]
+    public TValue this[IndexSet key]
     {
         get
         {
@@ -27,7 +27,7 @@ public sealed record XGaRepeatedScalarVectorDictionary<TValue> :
         }
     }
 
-    public IEnumerable<IIndexSet> Keys 
+    public IEnumerable<IndexSet> Keys 
         => Count.GetRange().Select(index => index.IndexToIndexSet());
 
     public IEnumerable<TValue> Values
@@ -50,7 +50,7 @@ public sealed record XGaRepeatedScalarVectorDictionary<TValue> :
 
         
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool ContainsKey(IIndexSet key)
+    public bool ContainsKey(IndexSet key)
     {
         if (key.Count != 1) return false;
 
@@ -60,7 +60,7 @@ public sealed record XGaRepeatedScalarVectorDictionary<TValue> :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool TryGetValue(IIndexSet key, out TValue value)
+    public bool TryGetValue(IndexSet key, out TValue value)
     {
         if (ContainsKey(key))
         {
@@ -74,11 +74,11 @@ public sealed record XGaRepeatedScalarVectorDictionary<TValue> :
 
         
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public IEnumerator<KeyValuePair<IIndexSet, TValue>> GetEnumerator()
+    public IEnumerator<KeyValuePair<IndexSet, TValue>> GetEnumerator()
     {
         return Count
             .GetRange()
-            .Select(index => new KeyValuePair<IIndexSet,TValue>(
+            .Select(index => new KeyValuePair<IndexSet,TValue>(
                     index.IndexToIndexSet(), 
                     Value
                 )

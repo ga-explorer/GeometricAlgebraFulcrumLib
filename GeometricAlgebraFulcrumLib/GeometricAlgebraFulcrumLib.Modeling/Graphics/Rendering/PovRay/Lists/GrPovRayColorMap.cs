@@ -1,6 +1,6 @@
 ﻿using System.Collections;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.PovRay.Values;
-using GeometricAlgebraFulcrumLib.Utilities.Structures.Basic;
+using GeometricAlgebraFulcrumLib.Utilities.Structures.Tuples;
 using GeometricAlgebraFulcrumLib.Utilities.Text.Text.Linear;
 
 namespace GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.PovRay.Lists;

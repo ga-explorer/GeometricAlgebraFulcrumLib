@@ -123,7 +123,7 @@ public sealed class RGaMusicalAutomorphism<T> :
 
         return id.IsBasisVector() 
             ? OmMapBasisVector(id.FirstOneBitPosition())
-            : id.PatternToPositions().Select(OmMapBasisVector).Op(Processor);
+            : id.GetSetBitPositions().Select(OmMapBasisVector).Op(Processor);
     }
 
     public RGaVector<T> OmMap(RGaVector<T> vector)

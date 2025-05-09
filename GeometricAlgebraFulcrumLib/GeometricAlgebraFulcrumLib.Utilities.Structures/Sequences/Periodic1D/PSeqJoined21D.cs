@@ -1,5 +1,5 @@
 ﻿using System.Collections;
-using GeometricAlgebraFulcrumLib.Utilities.Structures.Basic;
+using GeometricAlgebraFulcrumLib.Utilities.Structures.Tuples;
 
 namespace GeometricAlgebraFulcrumLib.Utilities.Structures.Sequences.Periodic1D;
 
@@ -11,11 +11,11 @@ public class PSeqJoined21D<T>
     public IPeriodicSequence1D<T> BaseSequence2 { get; }
 
     public IReadOnlyList<IPeriodicSequence1D<T>> BaseSequences 
-        => new []
-        {
+        =>
+        [
             BaseSequence1, 
             BaseSequence2
-        };
+        ];
 
 
     public int Count

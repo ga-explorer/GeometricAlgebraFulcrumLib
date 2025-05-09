@@ -269,7 +269,7 @@ public sealed class GaFloat64GeometricSpaceBasisSpecs
 
         var subscriptText =
             id
-                .PatternToPositions()
+                .GetSetBitPositions()
                 .Select(i => LaTeXVectorSubscripts[i])
                 .ConcatenateText(",");
 

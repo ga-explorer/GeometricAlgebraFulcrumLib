@@ -54,7 +54,7 @@ public class TextComposer<T>
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public string GetBasisBladeText(IIndexSet id)
+    public string GetBasisBladeText(IndexSet id)
     {
         return id.GetBasisBladeText();
     }
@@ -197,7 +197,7 @@ public class TextComposer<T>
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public string GetTermText(IIndexSet id, double scalar)
+    public string GetTermText(IndexSet id, double scalar)
     {
         return new StringBuilder()
             .Append($"'{GetScalarText(scalar)}'")
@@ -206,7 +206,7 @@ public class TextComposer<T>
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public string GetTermText(IIndexSet id, T scalar)
+    public string GetTermText(IndexSet id, T scalar)
     {
         return new StringBuilder()
             .Append($"'{GetScalarText(scalar)}'")
@@ -257,13 +257,13 @@ public class TextComposer<T>
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public string GetTermText(KeyValuePair<IIndexSet, double> term)
+    public string GetTermText(KeyValuePair<IndexSet, double> term)
     {
         return GetTermText(term.Key, term.Value);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public string GetTermText(KeyValuePair<IIndexSet, T> term)
+    public string GetTermText(KeyValuePair<IndexSet, T> term)
     {
         return GetTermText(term.Key, term.Value);
     }
@@ -337,7 +337,7 @@ public class TextComposer<T>
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public string GetTermsText(IEnumerable<KeyValuePair<IIndexSet, double>> gradeIndexScalarTuples)
+    public string GetTermsText(IEnumerable<KeyValuePair<IndexSet, double>> gradeIndexScalarTuples)
     {
         return gradeIndexScalarTuples
             .Select(GetTermText)
@@ -345,7 +345,7 @@ public class TextComposer<T>
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public string GetTermsText(IEnumerable<KeyValuePair<IIndexSet, T>> gradeIndexScalarTuples)
+    public string GetTermsText(IEnumerable<KeyValuePair<IndexSet, T>> gradeIndexScalarTuples)
     {
         return gradeIndexScalarTuples
             .Select(GetTermText)

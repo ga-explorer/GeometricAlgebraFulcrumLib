@@ -3,9 +3,9 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Records;
-using GeometricAlgebraFulcrumLib.Utilities.Structures.Basic;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.BitManipulation;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Combinations;
+using GeometricAlgebraFulcrumLib.Utilities.Structures.Tuples;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra;
 
@@ -881,7 +881,7 @@ public static class GeometricAlgebraSpaceUtils
     public static IEnumerable<ulong> BasisVectorIndexesInside(this IGeometricAlgebraSpace space, ulong basisBladeId)
     {
         return basisBladeId
-            .PatternToPositions()
+            .GetSetBitPositions()
             .Select(i => (ulong)i);
     }
         
@@ -890,7 +890,7 @@ public static class GeometricAlgebraSpaceUtils
     {
         return space
             .BasisBladeId(grade, index)
-            .PatternToPositions()
+            .GetSetBitPositions()
             .Select(i => (ulong)i);
     }
         

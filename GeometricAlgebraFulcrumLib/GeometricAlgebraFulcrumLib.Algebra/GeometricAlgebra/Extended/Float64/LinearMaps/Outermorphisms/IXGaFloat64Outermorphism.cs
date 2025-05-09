@@ -14,7 +14,7 @@ public interface IXGaFloat64Outermorphism :
         
     XGaFloat64Bivector OmMapBasisBivector(int index1, int index2);
 
-    XGaFloat64KVector OmMapBasisBlade(IIndexSet id);
+    XGaFloat64KVector OmMapBasisBlade(IndexSet id);
         
 
     XGaFloat64Vector OmMap(XGaFloat64Vector vector);
@@ -28,7 +28,7 @@ public interface IXGaFloat64Outermorphism :
     XGaFloat64Multivector OmMap(XGaFloat64Multivector multivector);
 
         
-    IEnumerable<KeyValuePair<IIndexSet, XGaFloat64Vector>> GetOmMappedBasisVectors(int vSpaceDimensions);
+    IEnumerable<KeyValuePair<IndexSet, XGaFloat64Vector>> GetOmMappedBasisVectors(int vSpaceDimensions);
 
     //IEnumerable<IndexBivectorStorageRecord> GetOmMappedBasisBivectors();
 

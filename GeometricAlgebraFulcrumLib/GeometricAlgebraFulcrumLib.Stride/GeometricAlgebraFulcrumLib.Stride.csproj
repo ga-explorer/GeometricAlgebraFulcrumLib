@@ -5,47 +5,48 @@
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <LangVersion>latest</LangVersion>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Stride" Version="4.2.0.2371" />
-    <PackageReference Include="Stride.Assets" Version="4.2.0.2371" />
-    <PackageReference Include="Stride.Assets.Models" Version="4.2.0.2371" />
-    <PackageReference Include="Stride.Audio" Version="4.2.0.2371" />
-    <PackageReference Include="Stride.Core" Version="4.2.0.2371" />
-    <PackageReference Include="Stride.Core.Assets" Version="4.2.0.2371" />
-    <PackageReference Include="Stride.Core.Assets.CompilerApp" Version="4.2.0.2371" />
-    <PackageReference Include="Stride.Core.BuildEngine.Common" Version="4.2.0.2371" />
-    <PackageReference Include="Stride.Core.Design" Version="4.2.0.2371" />
-    <PackageReference Include="Stride.Core.IO" Version="4.2.0.2371" />
-    <PackageReference Include="Stride.Core.Mathematics" Version="4.2.0.2371" />
-    <PackageReference Include="Stride.Core.MicroThreading" Version="4.2.0.2371" />
-    <PackageReference Include="Stride.Core.Packages" Version="4.2.0.2371" />
-    <PackageReference Include="Stride.Core.Presentation" Version="4.2.0.2371" />
-    <PackageReference Include="Stride.Core.Presentation.Quantum" Version="4.2.0.2371" />
-    <PackageReference Include="Stride.Core.ProjectTemplating" Version="4.2.0.2371" />
-    <PackageReference Include="Stride.Core.Reflection" Version="4.2.0.2371" />
-    <PackageReference Include="Stride.Core.Serialization" Version="4.2.0.2371" />
-    <PackageReference Include="Stride.Core.Shaders" Version="4.2.0.2371" />
-    <PackageReference Include="Stride.Core.Yaml" Version="4.2.0.2371" />
-    <PackageReference Include="Stride.Engine" Version="4.2.0.2371" />
-    <PackageReference Include="Stride.Games" Version="4.2.0.2371" />
-    <PackageReference Include="Stride.Graphics" Version="4.2.0.2371" />
-    <PackageReference Include="Stride.Graphics.RenderDocPlugin" Version="4.2.0.2371" />
-    <PackageReference Include="Stride.Importer.3D" Version="4.2.0.2371" />
-    <PackageReference Include="Stride.Input" Version="4.2.0.2371" />
-    <PackageReference Include="Stride.Irony" Version="4.2.0.2371" />
-    <PackageReference Include="Stride.Native" Version="4.2.0.2371" />
-    <PackageReference Include="Stride.Particles" Version="4.2.0.2371" />
-    <PackageReference Include="Stride.Physics" Version="4.2.0.2371" />
-    <PackageReference Include="Stride.Rendering" Version="4.2.0.2371" />
-    <PackageReference Include="Stride.Shaders" Version="4.2.0.2371" />
-    <PackageReference Include="Stride.Shaders.Compiler" Version="4.2.0.2371" />
-    <PackageReference Include="Stride.Shaders.Parser" Version="4.2.0.2371" />
-    <PackageReference Include="Stride.TextureConverter" Version="4.2.0.2371" />
-    <PackageReference Include="Stride.UI" Version="4.2.0.2371" />
-    <PackageReference Include="Stride.Video" Version="4.2.0.2371" />
-    <PackageReference Include="Stride.Voxels" Version="4.2.0.2371" />
+    <PackageReference Include="Stride" Version="4.2.0.2381" />
+    <PackageReference Include="Stride.Assets" Version="4.2.0.2381" />
+    <PackageReference Include="Stride.Assets.Models" Version="4.2.0.2381" />
+    <PackageReference Include="Stride.Audio" Version="4.2.0.2381" />
+    <PackageReference Include="Stride.Core" Version="4.2.0.2381" />
+    <PackageReference Include="Stride.Core.Assets" Version="4.2.0.2381" />
+    <PackageReference Include="Stride.Core.Assets.CompilerApp" Version="4.2.0.2381" />
+    <PackageReference Include="Stride.Core.BuildEngine.Common" Version="4.2.0.2381" />
+    <PackageReference Include="Stride.Core.Design" Version="4.2.0.2381" />
+    <PackageReference Include="Stride.Core.IO" Version="4.2.0.2381" />
+    <PackageReference Include="Stride.Core.Mathematics" Version="4.2.0.2381" />
+    <PackageReference Include="Stride.Core.MicroThreading" Version="4.2.0.2381" />
+    <PackageReference Include="Stride.Core.Packages" Version="4.2.0.2381" />
+    <PackageReference Include="Stride.Core.Presentation" Version="4.2.0.2381" />
+    <PackageReference Include="Stride.Core.Presentation.Quantum" Version="4.2.0.2381" />
+    <PackageReference Include="Stride.Core.ProjectTemplating" Version="4.2.0.2381" />
+    <PackageReference Include="Stride.Core.Reflection" Version="4.2.0.2381" />
+    <PackageReference Include="Stride.Core.Serialization" Version="4.2.0.2381" />
+    <PackageReference Include="Stride.Core.Shaders" Version="4.2.0.2381" />
+    <PackageReference Include="Stride.Core.Yaml" Version="4.2.0.2381" />
+    <PackageReference Include="Stride.Engine" Version="4.2.0.2381" />
+    <PackageReference Include="Stride.Games" Version="4.2.0.2381" />
+    <PackageReference Include="Stride.Graphics" Version="4.2.0.2381" />
+    <PackageReference Include="Stride.Graphics.RenderDocPlugin" Version="4.2.0.2381" />
+    <PackageReference Include="Stride.Importer.3D" Version="4.2.0.2381" />
+    <PackageReference Include="Stride.Input" Version="4.2.0.2381" />
+    <PackageReference Include="Stride.Irony" Version="4.2.0.2381" />
+    <PackageReference Include="Stride.Native" Version="4.2.0.2381" />
+    <PackageReference Include="Stride.Particles" Version="4.2.0.2381" />
+    <PackageReference Include="Stride.Physics" Version="4.2.0.2381" />
+    <PackageReference Include="Stride.Rendering" Version="4.2.0.2381" />
+    <PackageReference Include="Stride.Shaders" Version="4.2.0.2381" />
+    <PackageReference Include="Stride.Shaders.Compiler" Version="4.2.0.2381" />
+    <PackageReference Include="Stride.Shaders.Parser" Version="4.2.0.2381" />
+    <PackageReference Include="Stride.TextureConverter" Version="4.2.0.2381" />
+    <PackageReference Include="Stride.UI" Version="4.2.0.2381" />
+    <PackageReference Include="Stride.Video" Version="4.2.0.2381" />
+    <PackageReference Include="Stride.Voxels" Version="4.2.0.2381" />
   </ItemGroup>
 
 </Project>

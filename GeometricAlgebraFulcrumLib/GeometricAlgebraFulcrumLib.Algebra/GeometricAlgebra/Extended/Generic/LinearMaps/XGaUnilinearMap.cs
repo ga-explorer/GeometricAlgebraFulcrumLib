@@ -12,9 +12,9 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Extended.Generic.L
 
 public class XGaUnilinearMap<T> :
     IXGaUnilinearMap<T>,
-    IReadOnlyDictionary<IIndexSet, XGaMultivector<T>>
+    IReadOnlyDictionary<IndexSet, XGaMultivector<T>>
 {
-    private readonly IReadOnlyDictionary<IIndexSet, XGaMultivector<T>> _idMultivectorDictionary;
+    private readonly IReadOnlyDictionary<IndexSet, XGaMultivector<T>> _idMultivectorDictionary;
 
     public XGaProcessor<T> Processor { get; }
 
@@ -27,19 +27,19 @@ public class XGaUnilinearMap<T> :
     public int Count 
         => _idMultivectorDictionary.Count;
     
-    public IEnumerable<IIndexSet> Keys 
+    public IEnumerable<IndexSet> Keys 
         => _idMultivectorDictionary.Keys;
 
     public IEnumerable<XGaMultivector<T>> Values 
         => _idMultivectorDictionary.Values;
     
-    public XGaMultivector<T> this[IIndexSet key] 
+    public XGaMultivector<T> this[IndexSet key] 
         => _idMultivectorDictionary.TryGetValue(key, out var mv)
             ? mv : Processor.ScalarZero;
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    internal XGaUnilinearMap(XGaProcessor<T> processor, IReadOnlyDictionary<IIndexSet, XGaMultivector<T>> idMultivectorDictionary)
+    internal XGaUnilinearMap(XGaProcessor<T> processor, IReadOnlyDictionary<IndexSet, XGaMultivector<T>> idMultivectorDictionary)
     {
         Processor = processor;
         _idMultivectorDictionary = idMultivectorDictionary;
@@ -59,13 +59,13 @@ public class XGaUnilinearMap<T> :
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool ContainsKey(IIndexSet key)
+    public bool ContainsKey(IndexSet key)
     {
         return _idMultivectorDictionary.ContainsKey(key);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool TryGetValue(IIndexSet key, out XGaMultivector<T> value)
+    public bool TryGetValue(IndexSet key, out XGaMultivector<T> value)
     {
         return _idMultivectorDictionary.TryGetValue(key, out value);
     }
@@ -76,7 +76,7 @@ public class XGaUnilinearMap<T> :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public XGaMultivector<T> MapBasisBlade(IIndexSet id)
+    public XGaMultivector<T> MapBasisBlade(IndexSet id)
     {
         return _idMultivectorDictionary.TryGetValue(id, out var mv)
             ? mv
@@ -112,12 +112,12 @@ public class XGaUnilinearMap<T> :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public IEnumerable<KeyValuePair<IIndexSet, XGaMultivector<T>>> GetMappedBasisBlades(int vSpaceDimensions)
+    public IEnumerable<KeyValuePair<IndexSet, XGaMultivector<T>>> GetMappedBasisBlades(int vSpaceDimensions)
     {
         return _idMultivectorDictionary
             .Where(p => p.Key.VSpaceDimensions() <= vSpaceDimensions)
             .Select(p => 
-                new KeyValuePair<IIndexSet, XGaMultivector<T>>(p.Key, p.Value)
+                new KeyValuePair<IndexSet, XGaMultivector<T>>(p.Key, p.Value)
             );
     }
         
@@ -135,10 +135,9 @@ public class XGaUnilinearMap<T> :
         if (rowCount < minRowCount)
             throw new InvalidOperationException();
 
-        var maxId = _idMultivectorDictionary.Keys.Max() ?? EmptyIndexSet.Instance;
+        var maxId = _idMultivectorDictionary.Keys.Max();
 
-        if (!maxId.TryGetUInt64BitPattern(out var minColCount))
-            throw new InvalidOperationException();
+        var minColCount = maxId.ToUInt64();
 
         if ((ulong) colCount < minColCount)
             throw new InvalidOperationException();
@@ -159,7 +158,7 @@ public class XGaUnilinearMap<T> :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public IEnumerator<KeyValuePair<IIndexSet, XGaMultivector<T>>> GetEnumerator()
+    public IEnumerator<KeyValuePair<IndexSet, XGaMultivector<T>>> GetEnumerator()
     {
         return _idMultivectorDictionary.GetEnumerator();
     }

@@ -189,7 +189,7 @@ public class PGaGeometricSpace<T> :
         const int eoIndex = 0;
 
         return mv.IsZero ||
-               mv.Ids.All(id => !id.Contains(eoIndex));
+               mv.Ids.All(id => !id.SetContains(eoIndex));
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]

@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Immutable;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Extended.Basis;
-using GeometricAlgebraFulcrumLib.Utilities.Structures.Basic;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.IndexSets;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Extended.Generic.LinearMaps.Outermorphisms;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Extended.Generic.Multivectors;
@@ -9,6 +8,7 @@ using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Extended.Generic.Proce
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Generic.LinearMaps;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Generic.Vectors.SpaceND;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Generic;
+using GeometricAlgebraFulcrumLib.Utilities.Structures.Tuples;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Extended.Generic.Combinations;
 
@@ -16,7 +16,7 @@ public class XGaUnilinearCombination<T> :
     IReadOnlyCollection<XGaUnilinearCombinationTerm<T>>,
     IXGaLinearCombination
 {
-    private readonly Dictionary<Pair<IIndexSet>, XGaUnilinearCombinationTerm<T>> _termList;
+    private readonly Dictionary<Pair<IndexSet>, XGaUnilinearCombinationTerm<T>> _termList;
 
 
     public int Count
@@ -28,10 +28,10 @@ public class XGaUnilinearCombination<T> :
 
     public XGaUnilinearCombination()
     {
-        _termList = new Dictionary<Pair<IIndexSet>, XGaUnilinearCombinationTerm<T>>();
+        _termList = new Dictionary<Pair<IndexSet>, XGaUnilinearCombinationTerm<T>>();
     }
 
-    public XGaUnilinearCombination(Dictionary<Pair<IIndexSet>, XGaUnilinearCombinationTerm<T>> termList)
+    public XGaUnilinearCombination(Dictionary<Pair<IndexSet>, XGaUnilinearCombinationTerm<T>> termList)
     {
         _termList = termList;
     }
@@ -84,7 +84,7 @@ public class XGaUnilinearCombination<T> :
 
     public XGaUnilinearCombination<T> Set(XGaUnilinearCombinationTerm<T> term)
     {
-        var key = new Pair<IIndexSet>(
+        var key = new Pair<IndexSet>(
             term.InputBasisBladeId,
             term.OutputBasisBladeId
         );
@@ -106,7 +106,7 @@ public class XGaUnilinearCombination<T> :
         if (term.IsInputScalarZero)
             return this;
 
-        var key = new Pair<IIndexSet>(
+        var key = new Pair<IndexSet>(
             term.InputBasisBladeId,
             term.OutputBasisBladeId
         );
@@ -134,7 +134,7 @@ public class XGaUnilinearCombination<T> :
         return this;
     }
 
-    public XGaUnilinearCombination<T> Add(Scalar<T> inputScalar, XGaProcessor<T> metric, IIndexSet inputBasisBladeId, IIndexSet outputBasisBladeId)
+    public XGaUnilinearCombination<T> Add(Scalar<T> inputScalar, XGaProcessor<T> metric, IndexSet inputBasisBladeId, IndexSet outputBasisBladeId)
     {
         var term = XGaUnilinearCombinationTerm<T>.Create(
             inputScalar,
@@ -169,7 +169,7 @@ public class XGaUnilinearCombination<T> :
         return Add(term);
     }
     
-    public XGaUnilinearCombination<T> Add(IIndexSet inputBasisBladeId, XGaMultivector<T> outputMultivector)
+    public XGaUnilinearCombination<T> Add(IndexSet inputBasisBladeId, XGaMultivector<T> outputMultivector)
     {
         var metric = outputMultivector.Processor;
 
@@ -254,7 +254,7 @@ public class XGaUnilinearCombination<T> :
     }
 
 
-    public IReadOnlyList<IIndexSet> GetInputBasisBladeIDs()
+    public IReadOnlyList<IndexSet> GetInputBasisBladeIDs()
     {
         return _termList
             .Values
@@ -262,7 +262,7 @@ public class XGaUnilinearCombination<T> :
             .ToImmutableSortedSet();
     }
 
-    public IReadOnlyList<IIndexSet> GetOutputBasisBladeIDs()
+    public IReadOnlyList<IndexSet> GetOutputBasisBladeIDs()
     {
         return _termList
             .Values
@@ -286,7 +286,7 @@ public class XGaUnilinearCombination<T> :
             .ToImmutableSortedSet();
     }
 
-    public XGaUnilinearCombination<T> GetSubCombinationWithOutputId(IIndexSet outputBasisBladeId)
+    public XGaUnilinearCombination<T> GetSubCombinationWithOutputId(IndexSet outputBasisBladeId)
     {
         var termList =
             _termList

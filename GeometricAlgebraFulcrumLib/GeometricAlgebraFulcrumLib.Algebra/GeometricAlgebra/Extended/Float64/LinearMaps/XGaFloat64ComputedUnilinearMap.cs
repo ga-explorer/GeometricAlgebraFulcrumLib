@@ -10,19 +10,19 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Extended.Float64.L
 public class XGaFloat64ComputedUnilinearMap :
     IXGaFloat64UnilinearMap
 {
-    public Func<IIndexSet, XGaFloat64Multivector> BasisMapFunc { get; }
+    public Func<IndexSet, XGaFloat64Multivector> BasisMapFunc { get; }
 
     public XGaFloat64Processor Processor { get; }
         
     public XGaMetric Metric 
         => Processor;
         
-    public XGaFloat64Multivector this[IIndexSet key] 
+    public XGaFloat64Multivector this[IndexSet key] 
         => BasisMapFunc(key);
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    internal XGaFloat64ComputedUnilinearMap(XGaFloat64Processor processor, Func<IIndexSet, XGaFloat64Multivector> basisMapFunc)
+    internal XGaFloat64ComputedUnilinearMap(XGaFloat64Processor processor, Func<IndexSet, XGaFloat64Multivector> basisMapFunc)
     {
         Processor = processor;
         BasisMapFunc = basisMapFunc;
@@ -45,7 +45,7 @@ public class XGaFloat64ComputedUnilinearMap :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public XGaFloat64Multivector MapBasisBlade(IIndexSet id)
+    public XGaFloat64Multivector MapBasisBlade(IndexSet id)
     {
         return BasisMapFunc(id);
     }
@@ -68,12 +68,12 @@ public class XGaFloat64ComputedUnilinearMap :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public IEnumerable<KeyValuePair<IIndexSet, XGaFloat64Multivector>> GetMappedBasisBlades(int vSpaceDimensions)
+    public IEnumerable<KeyValuePair<IndexSet, XGaFloat64Multivector>> GetMappedBasisBlades(int vSpaceDimensions)
     {
         return Processor
             .GetBasisBladeIds(vSpaceDimensions)
             .Select(id => 
-                new KeyValuePair<IIndexSet, XGaFloat64Multivector>(id, BasisMapFunc(id))
+                new KeyValuePair<IndexSet, XGaFloat64Multivector>(id, BasisMapFunc(id))
             ).Where(p => !p.Value.IsZero);
     }
         
@@ -91,7 +91,7 @@ public class XGaFloat64ComputedUnilinearMap :
     //    if (rowCount < minRowCount)
     //        throw new InvalidOperationException();
 
-    //    var maxId = _basisMapDictionary.Keys.Max() ?? EmptyIndexSet.Instance;
+    //    var maxId = _basisMapDictionary.Keys.Max() ?? IndexSet.EmptySet;
 
     //    if (!maxId.TryGetUInt64BitPattern(out var minColCount))
     //        throw new InvalidOperationException();

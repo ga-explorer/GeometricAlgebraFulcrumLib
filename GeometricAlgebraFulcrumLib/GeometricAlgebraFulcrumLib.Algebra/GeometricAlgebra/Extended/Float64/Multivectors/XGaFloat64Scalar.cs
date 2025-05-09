@@ -52,11 +52,11 @@ public sealed partial class XGaFloat64Scalar :
         }
     }
 
-    public override IEnumerable<IIndexSet> Ids
+    public override IEnumerable<IndexSet> Ids
     {
         get
         {
-            if (!IsZero) yield return EmptyIndexSet.Instance;
+            if (!IsZero) yield return IndexSet.EmptySet;
         }
     }
 
@@ -81,13 +81,13 @@ public sealed partial class XGaFloat64Scalar :
         }
     }
 
-    public override IEnumerable<KeyValuePair<IIndexSet, double>> IdScalarPairs
+    public override IEnumerable<KeyValuePair<IndexSet, double>> IdScalarPairs
     {
         get
         {
             if (!IsZero)
-                yield return new KeyValuePair<IIndexSet, double>(
-                    EmptyIndexSet.Instance,
+                yield return new KeyValuePair<IndexSet, double>(
+                    IndexSet.EmptySet,
                     ScalarValue
                 );
         }
@@ -127,10 +127,10 @@ public sealed partial class XGaFloat64Scalar :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    internal XGaFloat64Scalar(XGaFloat64Processor metric, IReadOnlyDictionary<IIndexSet, double> idScalarDictionary)
+    internal XGaFloat64Scalar(XGaFloat64Processor metric, IReadOnlyDictionary<IndexSet, double> idScalarDictionary)
         : base(metric)
     {
-        _scalar = idScalarDictionary.TryGetValue(EmptyIndexSet.Instance, out var scalar)
+        _scalar = idScalarDictionary.TryGetValue(IndexSet.EmptySet, out var scalar)
             ? scalar : 0d;
 
         Debug.Assert(
@@ -155,15 +155,15 @@ public sealed partial class XGaFloat64Scalar :
 
         
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public override IReadOnlyDictionary<IIndexSet, double> GetIdScalarDictionary()
+    public override IReadOnlyDictionary<IndexSet, double> GetIdScalarDictionary()
     {
         return IsZero
-            ? new EmptyDictionary<IIndexSet, double>()
-            : new SingleItemDictionary<IIndexSet, double>(EmptyIndexSet.Instance, _scalar);
+            ? new EmptyDictionary<IndexSet, double>()
+            : new SingleItemDictionary<IndexSet, double>(IndexSet.EmptySet, _scalar);
     }
         
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public override bool ContainsKey(IIndexSet key)
+    public override bool ContainsKey(IndexSet key)
     {
         return key.IsEmptySet && !IsZero;
     }
@@ -194,9 +194,9 @@ public sealed partial class XGaFloat64Scalar :
     }
         
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public XGaFloat64Scalar GetPart(Func<IIndexSet, bool> filterFunc)
+    public XGaFloat64Scalar GetPart(Func<IndexSet, bool> filterFunc)
     {
-        return IsZero || filterFunc(EmptyIndexSet.Instance) 
+        return IsZero || filterFunc(IndexSet.EmptySet) 
             ? this 
             : Processor.ScalarZero;
     }
@@ -210,9 +210,9 @@ public sealed partial class XGaFloat64Scalar :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public XGaFloat64Scalar GetPart(Func<IIndexSet, double, bool> filterFunc)
+    public XGaFloat64Scalar GetPart(Func<IndexSet, double, bool> filterFunc)
     {
-        return IsZero || filterFunc(EmptyIndexSet.Instance, ScalarValue) 
+        return IsZero || filterFunc(IndexSet.EmptySet, ScalarValue) 
             ? this 
             : Processor.ScalarZero;
     }
@@ -225,7 +225,7 @@ public sealed partial class XGaFloat64Scalar :
     }
         
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public override double GetBasisBladeScalar(IIndexSet basisBladeId)
+    public override double GetBasisBladeScalar(IndexSet basisBladeId)
     {
         return basisBladeId.IsEmptySet
             ? _scalar
@@ -246,7 +246,7 @@ public sealed partial class XGaFloat64Scalar :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public override bool TryGetBasisBladeScalarValue(IIndexSet basisBlade, out double scalar)
+    public override bool TryGetBasisBladeScalarValue(IndexSet basisBlade, out double scalar)
     {
         if (basisBlade.IsEmptySet)
         {

@@ -1,5 +1,5 @@
 ﻿using System.Text;
-using GeometricAlgebraFulcrumLib.Utilities.Structures.Basic;
+using GeometricAlgebraFulcrumLib.Utilities.Structures.Tuples;
 using GeometricAlgebraFulcrumLib.Utilities.Text.Text.Linear;
 
 namespace GeometricAlgebraFulcrumLib.Utilities.Web.LaTeX.CodeComposer;

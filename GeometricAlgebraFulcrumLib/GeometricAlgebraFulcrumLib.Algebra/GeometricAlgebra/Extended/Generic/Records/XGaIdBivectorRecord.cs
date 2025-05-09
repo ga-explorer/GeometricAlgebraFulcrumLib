@@ -3,5 +3,5 @@ using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Extended.Generic.Multi
 
 namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Extended.Generic.Records;
 
-public sealed record XGaIdBivectorRecord<T>(IIndexSet Id, XGaBivector<T> Bivector) :
+public sealed record XGaIdBivectorRecord<T>(IndexSet Id, XGaBivector<T> Bivector) :
     IXGaIdBivectorRecord<T>;

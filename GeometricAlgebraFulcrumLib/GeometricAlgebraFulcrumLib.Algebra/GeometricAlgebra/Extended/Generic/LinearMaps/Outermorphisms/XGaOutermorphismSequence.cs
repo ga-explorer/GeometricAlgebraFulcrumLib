@@ -145,7 +145,7 @@ public class XGaOutermorphismSequence<T> :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public override XGaKVector<T> OmMapBasisBlade(IIndexSet id)
+    public override XGaKVector<T> OmMapBasisBlade(IndexSet id)
     {
         var kVector = _outermorphismList[0].OmMapBasisBlade(id);
 
@@ -183,7 +183,7 @@ public class XGaOutermorphismSequence<T> :
         return _outermorphismList.OmMap(multivector);
     }
         
-    public override IEnumerable<KeyValuePair<IIndexSet, XGaVector<T>>> GetOmMappedBasisVectors(int vSpaceDimensions)
+    public override IEnumerable<KeyValuePair<IndexSet, XGaVector<T>>> GetOmMappedBasisVectors(int vSpaceDimensions)
     {
         if (_outermorphismList.Count == 0)
             throw new InvalidOperationException();
@@ -194,7 +194,7 @@ public class XGaOutermorphismSequence<T> :
         return om1
             .GetOmMappedBasisVectors(vSpaceDimensions)
             .Select(r => 
-                new KeyValuePair<IIndexSet, XGaVector<T>>(
+                new KeyValuePair<IndexSet, XGaVector<T>>(
                     r.Key,
                     omList.OmMap(r.Value)
                 )
@@ -210,7 +210,7 @@ public class XGaOutermorphismSequence<T> :
         );
     }
 
-    public override IEnumerable<KeyValuePair<IIndexSet, XGaMultivector<T>>> GetMappedBasisBlades(
+    public override IEnumerable<KeyValuePair<IndexSet, XGaMultivector<T>>> GetMappedBasisBlades(
         int vSpaceDimensions)
     {
         if (_outermorphismList.Count == 0)
@@ -222,7 +222,7 @@ public class XGaOutermorphismSequence<T> :
         return om1
             .GetMappedBasisBlades(vSpaceDimensions)
             .Select(r => 
-                new KeyValuePair<IIndexSet, XGaMultivector<T>>(
+                new KeyValuePair<IndexSet, XGaMultivector<T>>(
                     r.Key, 
                     omList.OmMap(r.Value)
                 )

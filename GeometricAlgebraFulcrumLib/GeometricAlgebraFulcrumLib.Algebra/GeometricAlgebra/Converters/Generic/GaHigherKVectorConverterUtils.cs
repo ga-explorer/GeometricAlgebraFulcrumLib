@@ -40,8 +40,8 @@ public static class GaHigherKVectorConverterUtils
 
         var termList =
             mv.IdScalarPairs.Select(
-                term => new KeyValuePair<IIndexSet, T>(
-                    term.Key.BitPatternToUInt64IndexSet(),
+                term => new KeyValuePair<IndexSet, T>(
+                    term.Key.BitPatternToIndexSet(),
                     term.Value
                 )
             );
@@ -83,8 +83,8 @@ public static class GaHigherKVectorConverterUtils
 
         var termList =
             mv.IdScalarPairs.Select(
-                term => new KeyValuePair<IIndexSet, T>(
-                    term.Key.BitPatternToUInt64IndexSet(),
+                term => new KeyValuePair<IndexSet, T>(
+                    term.Key.BitPatternToIndexSet(),
                     scalarMapping(term.Value)
                 )
             );
@@ -126,8 +126,8 @@ public static class GaHigherKVectorConverterUtils
 
         var termList =
             mv.IdScalarPairs.Select(
-                term => new KeyValuePair<IIndexSet, T2>(
-                    term.Key.BitPatternToUInt64IndexSet(),
+                term => new KeyValuePair<IndexSet, T2>(
+                    term.Key.BitPatternToIndexSet(),
                     scalarMapping(term.Value)
                 )
             );
@@ -169,7 +169,7 @@ public static class GaHigherKVectorConverterUtils
 
         var termList =
             mv.IdScalarPairs.Select(
-                term => new KeyValuePair<IIndexSet, T2>(
+                term => new KeyValuePair<IndexSet, T2>(
                     term.Key,
                     scalarMapping(term.Value)
                 )

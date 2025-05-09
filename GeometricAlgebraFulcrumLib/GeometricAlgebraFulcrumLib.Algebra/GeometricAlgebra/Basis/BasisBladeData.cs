@@ -2,7 +2,7 @@
 using System.Collections.Specialized;
 using System.Runtime.CompilerServices;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Records;
-using GeometricAlgebraFulcrumLib.Utilities.Structures.Basic;
+using GeometricAlgebraFulcrumLib.Utilities.Structures.Tuples;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
 
@@ -80,6 +80,7 @@ internal sealed record BasisBladeData
         for (var id2 = 0UL; id2 < gaSpaceDimensions; id2++)
             egpIsNegativeBitArray[(int) id2] = BasisBladeDataComputer.EGpIsNegative(id, id2);
 
+        // This will not work because it has to be done gradually be increasing grade not by id
         //Parallel.For(
         //    0, 
         //    (int) gaSpaceDimensions,
@@ -114,7 +115,7 @@ internal sealed record BasisBladeData
     {
         return id2 < (ulong) _egpIsNegativeBitArray.Length
             ? !_egpIsNegativeBitArray[(int) id2]
-            : BasisBladeDataComputer.EGpIsPositive(Id, id2);
+            : !BasisBladeDataComputer.EGpIsNegative(Id, id2);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]

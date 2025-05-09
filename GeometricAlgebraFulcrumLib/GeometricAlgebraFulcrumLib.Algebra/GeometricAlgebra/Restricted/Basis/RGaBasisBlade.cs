@@ -2,8 +2,8 @@
 using System.Runtime.CompilerServices;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
 using GeometricAlgebraFulcrumLib.Utilities.Structures;
-using GeometricAlgebraFulcrumLib.Utilities.Structures.Basic;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.BitManipulation;
+using GeometricAlgebraFulcrumLib.Utilities.Structures.Tuples;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Basis;
 
@@ -860,7 +860,7 @@ public sealed record RGaBasisBlade :
     public override string ToString()
     {
         return Id
-            .PatternToPositions()
+            .GetSetBitPositions()
             .Select(i => (i + 1).ToString())
             .ConcatenateText(", ", "<", ">");
     }

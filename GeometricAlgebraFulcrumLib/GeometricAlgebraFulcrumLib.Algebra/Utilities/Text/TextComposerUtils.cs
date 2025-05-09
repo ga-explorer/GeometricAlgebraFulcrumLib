@@ -50,13 +50,13 @@ public static class TextComposerUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static string GetTermText<T>(ITextComposer<T> textComposer, IIndexSet id, IScalar<double> scalar)
+    public static string GetTermText<T>(ITextComposer<T> textComposer, IndexSet id, IScalar<double> scalar)
     {
         return textComposer.GetTermText(id, scalar.ScalarValue);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static string GetTermText<T>(ITextComposer<T> textComposer, IIndexSet id, IScalar<T> scalar)
+    public static string GetTermText<T>(ITextComposer<T> textComposer, IndexSet id, IScalar<T> scalar)
     {
         return textComposer.GetTermText(id, scalar.ScalarValue);
     }
@@ -97,7 +97,7 @@ public static class TextComposerUtils
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static string GetBasisBladeText(this ulong id)
     {
-        return id.PatternToPositions().Select(i => i + 1)
+        return id.GetSetBitPositions().Select(i => i + 1)
 .GetBasisBladeText(
         );
     }
@@ -112,7 +112,7 @@ public static class TextComposerUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static string GetBasisBladeText(this IIndexSet id)
+    public static string GetBasisBladeText(this IndexSet id)
     {
         return id.Select(i => i + 1)
 .GetBasisBladeText(
@@ -168,7 +168,7 @@ public static class TextComposerUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static string GetTermText<T>(IIndexSet id, T scalar)
+    public static string GetTermText<T>(IndexSet id, T scalar)
     {
         return new StringBuilder()
             .Append($"'{scalar}'")
@@ -186,7 +186,7 @@ public static class TextComposerUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static string GetTermText<T>(this KeyValuePair<IIndexSet, T> idScalarPair)
+    public static string GetTermText<T>(this KeyValuePair<IndexSet, T> idScalarPair)
     {
         return GetTermText(
             idScalarPair.Key,
@@ -240,7 +240,7 @@ public static class TextComposerUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static string GetTermsText<T>(this IEnumerable<KeyValuePair<IIndexSet, T>> idScalarPairs)
+    public static string GetTermsText<T>(this IEnumerable<KeyValuePair<IndexSet, T>> idScalarPairs)
     {
         return idScalarPairs
             .Select(GetTermText)

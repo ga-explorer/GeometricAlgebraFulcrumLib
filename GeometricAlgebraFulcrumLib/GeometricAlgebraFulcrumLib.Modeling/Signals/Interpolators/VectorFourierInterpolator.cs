@@ -6,8 +6,8 @@ using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Extended.Float64.Proce
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Extended.Float64.Subspaces;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Extended.Generic.Multivectors;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
-using GeometricAlgebraFulcrumLib.Utilities.Structures.Basic;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.BitManipulation;
+using GeometricAlgebraFulcrumLib.Utilities.Structures.Tuples;
 using MathNet.Numerics.IntegralTransforms;
 
 namespace GeometricAlgebraFulcrumLib.Modeling.Signals.Interpolators;

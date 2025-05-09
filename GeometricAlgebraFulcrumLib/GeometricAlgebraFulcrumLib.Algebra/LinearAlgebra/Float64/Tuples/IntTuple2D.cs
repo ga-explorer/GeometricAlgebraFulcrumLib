@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Diagnostics;
 using System.Text;
-using GeometricAlgebraFulcrumLib.Utilities.Structures.Basic;
+using GeometricAlgebraFulcrumLib.Utilities.Structures.Tuples;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Tuples;
 

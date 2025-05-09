@@ -3,5 +3,5 @@ using GeometricAlgebraFulcrumLib.Utilities.Structures.IndexSets;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Extended.Records;
 
-public sealed record XGaIdVectorRecord(IIndexSet Id, XGaFloat64Vector Vector) :
+public sealed record XGaIdVectorRecord(IndexSet Id, XGaFloat64Vector Vector) :
     IXGaIdVectorRecord;

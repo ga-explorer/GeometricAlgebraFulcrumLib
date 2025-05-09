@@ -2,7 +2,7 @@
 
 namespace GeometricAlgebraFulcrumLib.Utilities.Structures;
 
-public sealed class SparseTable<TKey, TValue> : IDictionary<TKey, TValue>
+public sealed class SparseTable<TKey, TValue> : IDictionary<TKey, TValue> where TKey : notnull
 {
     private readonly Dictionary<TKey, TValue> _dictionary = 
         new Dictionary<TKey, TValue>();

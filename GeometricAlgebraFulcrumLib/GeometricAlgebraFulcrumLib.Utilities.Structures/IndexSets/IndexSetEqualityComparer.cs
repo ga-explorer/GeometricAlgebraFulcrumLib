@@ -3,7 +3,7 @@
 namespace GeometricAlgebraFulcrumLib.Utilities.Structures.IndexSets;
 
 public sealed class IndexSetEqualityComparer : 
-    IEqualityComparer<IIndexSet>
+    IEqualityComparer<IndexSet>
 {
     public static IndexSetEqualityComparer Instance { get; }
         = new IndexSetEqualityComparer();
@@ -15,13 +15,13 @@ public sealed class IndexSetEqualityComparer :
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool Equals(IIndexSet indexSet1, IIndexSet indexSet2)
+    public bool Equals(IndexSet indexSet1, IndexSet indexSet2)
     {
-        if (ReferenceEquals(indexSet1, null) || ReferenceEquals(indexSet2, null))
-            return false;
+        //if (ReferenceEquals(indexSet1, null) || ReferenceEquals(indexSet2, null))
+        //    return false;
 
-        if (ReferenceEquals(indexSet1, indexSet2))
-            return true;
+        //if (ReferenceEquals(indexSet1, indexSet2))
+        //    return true;
             
         return indexSet1.Equals(indexSet2);
 
@@ -44,7 +44,7 @@ public sealed class IndexSetEqualityComparer :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public int GetHashCode(IIndexSet indexSet)
+    public int GetHashCode(IndexSet indexSet)
     {
         return indexSet.GetHashCode();
     }

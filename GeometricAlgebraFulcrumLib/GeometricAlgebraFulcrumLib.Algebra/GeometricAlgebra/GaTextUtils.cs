@@ -21,7 +21,7 @@ public static class GaTextUtils
     public static string GetBasisBladeText(this ulong id)
     {
         return GetBasisBladeText(
-            id.PatternToPositions().Select(i => (ulong) (i + 1))
+            id.GetSetBitPositions().Select(i => (ulong) (i + 1))
         );
     }
 

@@ -7,5 +7,5 @@ public interface IXGaIdRecord
     /// <summary>
     /// The Basis Blade ID
     /// </summary>
-    IIndexSet Id { get; }
+    IndexSet Id { get; }
 }

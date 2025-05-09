@@ -42,8 +42,8 @@ public static class GaFloat64UniformMultivectorConverterUtils
 
         var termList =
             mv.IdScalarPairs.Select(
-                term => new KeyValuePair<IIndexSet, double>(
-                    term.Key.BitPatternToUInt64IndexSet(),
+                term => new KeyValuePair<IndexSet, double>(
+                    term.Key.BitPatternToIndexSet(),
                     term.Value
                 )
             );
@@ -81,8 +81,8 @@ public static class GaFloat64UniformMultivectorConverterUtils
 
         var termList =
             mv.IdScalarPairs.Select(
-                term => new KeyValuePair<IIndexSet, double>(
-                    term.Key.BitPatternToUInt64IndexSet(),
+                term => new KeyValuePair<IndexSet, double>(
+                    term.Key.BitPatternToIndexSet(),
                     scalarMapping(term.Value)
                 )
             );
@@ -120,8 +120,8 @@ public static class GaFloat64UniformMultivectorConverterUtils
 
         var termList =
             mv.IdScalarPairs.Select(
-                term => new KeyValuePair<IIndexSet, T>(
-                    term.Key.BitPatternToUInt64IndexSet(),
+                term => new KeyValuePair<IndexSet, T>(
+                    term.Key.BitPatternToIndexSet(),
                     scalarMapping(term.Value)
                 )
             );
@@ -159,7 +159,7 @@ public static class GaFloat64UniformMultivectorConverterUtils
 
         var termList =
             mv.IdScalarPairs.Select(
-                term => new KeyValuePair<IIndexSet, T>(
+                term => new KeyValuePair<IndexSet, T>(
                     term.Key,
                     scalarMapping(term.Value)
                 )

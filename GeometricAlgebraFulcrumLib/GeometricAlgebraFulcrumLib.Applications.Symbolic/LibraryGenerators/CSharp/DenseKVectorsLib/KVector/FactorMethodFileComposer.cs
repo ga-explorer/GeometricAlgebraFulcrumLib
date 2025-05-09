@@ -38,7 +38,7 @@ internal sealed class FactorMethodFileComposer :
 
         _inputBasisVectorsArray = 
             _inputId
-                .PatternToPositions()
+                .GetSetBitPositions()
                 .Select(index => 
                     context
                         .NumbersFactory

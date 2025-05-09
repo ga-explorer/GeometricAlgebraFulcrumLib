@@ -1,5 +1,5 @@
-﻿using GeometricAlgebraFulcrumLib.Utilities.Structures.Basic;
-using System.Text;
+﻿using System.Text;
+using GeometricAlgebraFulcrumLib.Utilities.Structures.Tuples;
 using GeometricAlgebraFulcrumLib.Utilities.Web.Svg.Values;
 
 namespace GeometricAlgebraFulcrumLib.Utilities.Web.Svg.Paths;

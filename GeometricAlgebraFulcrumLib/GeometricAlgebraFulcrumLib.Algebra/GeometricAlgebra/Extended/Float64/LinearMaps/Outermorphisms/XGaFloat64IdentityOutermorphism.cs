@@ -46,7 +46,7 @@ public sealed class XGaFloat64IdentityOutermorphism :
     }
         
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public XGaFloat64KVector OmMapBasisBlade(IIndexSet id)
+    public XGaFloat64KVector OmMapBasisBlade(IndexSet id)
     {
         return Processor.KVectorTerm(id, 1d);
     }
@@ -96,7 +96,7 @@ public sealed class XGaFloat64IdentityOutermorphism :
     }
         
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public XGaFloat64Multivector MapBasisBlade(IIndexSet id)
+    public XGaFloat64Multivector MapBasisBlade(IndexSet id)
     {
         return OmMapBasisBlade(id);
     }
@@ -109,12 +109,12 @@ public sealed class XGaFloat64IdentityOutermorphism :
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public IEnumerable<KeyValuePair<IIndexSet, XGaFloat64Multivector>> GetMappedBasisBlades(int vSpaceDimensions)
+    public IEnumerable<KeyValuePair<IndexSet, XGaFloat64Multivector>> GetMappedBasisBlades(int vSpaceDimensions)
     {
         return Processor
             .GetBasisBladeIds(vSpaceDimensions)
             .Select(id => 
-                new KeyValuePair<IIndexSet, XGaFloat64Multivector>(
+                new KeyValuePair<IndexSet, XGaFloat64Multivector>(
                     id, 
                     Processor.KVectorTerm(id, 1d)
                 )
@@ -122,12 +122,12 @@ public sealed class XGaFloat64IdentityOutermorphism :
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public IEnumerable<KeyValuePair<IIndexSet, XGaFloat64Vector>> GetOmMappedBasisVectors(int vSpaceDimensions)
+    public IEnumerable<KeyValuePair<IndexSet, XGaFloat64Vector>> GetOmMappedBasisVectors(int vSpaceDimensions)
     {
         return Processor
             .GetBasisVectorIds(vSpaceDimensions)
             .Select(id => 
-                new KeyValuePair<IIndexSet, XGaFloat64Vector>(
+                new KeyValuePair<IndexSet, XGaFloat64Vector>(
                     id, 
                     Processor.VectorTerm(id.FirstIndex)
                 )

@@ -26,7 +26,7 @@ public static class ListExtensions
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static ImmutableArray<T2> SelectToImmutableArray<T1, T2>(this IEnumerable<T1> list, Func<T1, T2> itemMapping)
     {
-        return list.Select(itemMapping).ToImmutableArray();
+        return [..list.Select(itemMapping)];
     }
         
     [MethodImpl(MethodImplOptions.AggressiveInlining)]

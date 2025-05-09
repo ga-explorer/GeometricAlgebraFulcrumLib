@@ -92,7 +92,7 @@ public sealed class RGaDiagonalOutermorphism<T> :
                 id.LastOneBitPosition()
             );
 
-        foreach (var index in id.PatternToPositions())
+        foreach (var index in id.GetSetBitPositions())
         {
             if (!DiagonalVector.TryGetBasisBladeScalarValue(index.BasisVectorIndexToId(), out var s))
                 return Processor.ScalarZero;

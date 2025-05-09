@@ -57,7 +57,7 @@ public sealed class XGaMusicalAutomorphism<T> :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public XGaMultivector<T> MapBasisBlade(IIndexSet id)
+    public XGaMultivector<T> MapBasisBlade(IndexSet id)
     {
         return OmMapBasisBlade(id);
     }
@@ -69,12 +69,12 @@ public sealed class XGaMusicalAutomorphism<T> :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public IEnumerable<KeyValuePair<IIndexSet, XGaMultivector<T>>> GetMappedBasisBlades(int vSpaceDimensions)
+    public IEnumerable<KeyValuePair<IndexSet, XGaMultivector<T>>> GetMappedBasisBlades(int vSpaceDimensions)
     {
         return Processor
             .GetBasisBladeIds(vSpaceDimensions)
             .Select(id => 
-                new KeyValuePair<IIndexSet, XGaMultivector<T>>(
+                new KeyValuePair<IndexSet, XGaMultivector<T>>(
                     id, 
                     OmMapBasisBlade(id)
                 )
@@ -117,7 +117,7 @@ public sealed class XGaMusicalAutomorphism<T> :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public XGaKVector<T> OmMapBasisBlade(IIndexSet id)
+    public XGaKVector<T> OmMapBasisBlade(IndexSet id)
     {
         if (id.IsEmptySet)
             return Processor.ScalarOne;
@@ -193,12 +193,12 @@ public sealed class XGaMusicalAutomorphism<T> :
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public IEnumerable<KeyValuePair<IIndexSet, XGaVector<T>>> GetOmMappedBasisVectors(int vSpaceDimensions)
+    public IEnumerable<KeyValuePair<IndexSet, XGaVector<T>>> GetOmMappedBasisVectors(int vSpaceDimensions)
     {
         return vSpaceDimensions
             .GetRange(index => 
-                new KeyValuePair<IIndexSet, XGaVector<T>>(
-                    index.IndexToSingleIndexSet(), 
+                new KeyValuePair<IndexSet, XGaVector<T>>(
+                    index.IndexToIndexSet(), 
                     OmMapBasisVector(index)
                 )
             );
