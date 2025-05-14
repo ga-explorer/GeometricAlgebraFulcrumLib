@@ -1,5 +1,5 @@
-﻿using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Extended.Generic.Multivectors;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Extended.Generic.Multivectors.Composers;
+﻿using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Multivectors;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Multivectors.Composers;
 using GeometricAlgebraFulcrumLib.Modeling.Calculus.Functions.Float64.Interpolators;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Tuples;
 
@@ -50,7 +50,7 @@ public class AngularVelocityFourierSignalProcessor :
         }
         
         VectorSignalInterpolated = 
-            VectorSignalSpectrum.GetRealSignal(TimeValuesSignal).CreateXGaVector(ScalarSignalProcessor);
+            VectorSignalSpectrum.GetRealSignal(TimeValuesSignal).Vector(ScalarSignalProcessor);
 
         //Console.WriteLine(
         //    VectorSignalSpectrum.GetTextDescription(VectorSignal)
@@ -65,12 +65,12 @@ public class AngularVelocityFourierSignalProcessor :
         var vDt1 = 
             VectorSignalSpectrum
                 .GetRealSignalDt(1, TimeValuesSignal)
-                .CreateXGaVector(ScalarSignalProcessor);
+                .Vector(ScalarSignalProcessor);
 
         var vDt2 = 
             VectorSignalSpectrum
                 .GetRealSignalDt(2, TimeValuesSignal)
-                .CreateXGaVector(ScalarSignalProcessor);
+                .Vector(ScalarSignalProcessor);
 
         VectorSignalTimeDerivatives = new Pair<XGaVector<Float64SampledTimeSignal>>(vDt1, vDt2);
     }

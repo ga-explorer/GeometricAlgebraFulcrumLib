@@ -3,7 +3,7 @@ using System.Diagnostics;
 using System.Numerics;
 using System.Runtime.CompilerServices;
 using GeometricAlgebraFulcrumLib.Core.GeometricAlgebra.Basis;
-using GeometricAlgebraFulcrumLib.Core.GeometricAlgebra.Restricted.Records;
+
 using GeometricAlgebraFulcrumLib.Core.Scalars.Float64;
 
 namespace GeometricAlgebraFulcrumLib.Core.GeometricAlgebra.Structures;
@@ -147,16 +147,16 @@ public sealed class GaMultivectorSparseList :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public IEnumerable<RGaIdScalarRecord> GetIdScalarRecords()
+    public IEnumerable<Tuple<ulong, double>> GetIdScalarRecords()
     {
         return _numbersDictionary.Select(
-            p => new RGaIdScalarRecord(p.Key, p.Value)
+            p => new Tuple<ulong, double>(p.Key, p.Value)
         );
     }
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public GaMultivectorSparseList AddTerm(RGaIdScalarRecord idScalarRecord)
+    public GaMultivectorSparseList AddTerm(Tuple<ulong, double> idScalarRecord)
     {
         var (id, scalar) = idScalarRecord;
 
@@ -180,7 +180,7 @@ public sealed class GaMultivectorSparseList :
     }
         
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public GaMultivectorSparseList SubtractTerm(RGaIdScalarRecord idScalarRecord)
+    public GaMultivectorSparseList SubtractTerm(Tuple<ulong, double> idScalarRecord)
     {
         var (id, scalar) = idScalarRecord;
 
@@ -204,7 +204,7 @@ public sealed class GaMultivectorSparseList :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public GaMultivectorSparseList AddTerms(IEnumerable<RGaIdScalarRecord> idScalarRecords)
+    public GaMultivectorSparseList AddTerms(IEnumerable<Tuple<ulong, double>> idScalarRecords)
     {
         foreach (var (id, scalar) in idScalarRecords)
         {
@@ -229,7 +229,7 @@ public sealed class GaMultivectorSparseList :
     }
         
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public GaMultivectorSparseList SubtractTerms(IEnumerable<RGaIdScalarRecord> idScalarRecords)
+    public GaMultivectorSparseList SubtractTerms(IEnumerable<Tuple<ulong, double>> idScalarRecords)
     {
         foreach (var (id, scalar) in idScalarRecords)
         {

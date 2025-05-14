@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Float64.LinearMaps.Rotors;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Float64.Multivectors;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Float64.Multivectors.Composers;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Float64.Processors;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.LinearMaps.Rotors;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivectors;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivectors.Composers;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Processors;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
 using NUnit.Framework;
 
@@ -12,13 +12,13 @@ namespace GeometricAlgebraFulcrumLib.UnitTests.Geometry;
 [TestFixture]
 public sealed class GeoSimpleRotorsEuclideanTests
 {
-    private readonly RGaFloat64RandomComposer _randomGenerator;
-    private readonly List<RGaFloat64Vector> _vectorsList;
-    private readonly List<RGaFloat64PureRotor> _rotorsList;
+    private readonly XGaFloat64RandomComposer _randomGenerator;
+    private readonly List<XGaFloat64Vector> _vectorsList;
+    private readonly List<XGaFloat64PureRotor> _rotorsList;
 
 
-    public RGaFloat64Processor GeometricProcessor { get; }
-        = RGaFloat64Processor.Euclidean;
+    public XGaFloat64Processor GeometricProcessor { get; }
+        = XGaFloat64Processor.Euclidean;
         
     public int VSpaceDimensions 
         => 8;
@@ -26,9 +26,9 @@ public sealed class GeoSimpleRotorsEuclideanTests
 
     public GeoSimpleRotorsEuclideanTests()
     {
-        _randomGenerator = GeometricProcessor.CreateRGaRandomComposer(VSpaceDimensions, 10);
-        _vectorsList = new List<RGaFloat64Vector>();
-        _rotorsList = new List<RGaFloat64PureRotor>();
+        _randomGenerator = GeometricProcessor.CreateXGaRandomComposer(VSpaceDimensions, 10);
+        _vectorsList = new List<XGaFloat64Vector>();
+        _rotorsList = new List<XGaFloat64PureRotor>();
     }
 
         

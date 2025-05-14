@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Globalization;
 using System.Runtime.InteropServices;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Collections.Lists;
+using GeometricAlgebraFulcrumLib.Utilities.Structures.IndexSets;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Tuples;
 
 namespace GeometricAlgebraFulcrumLib.Optimization.SVM.LibSVM
@@ -346,11 +347,11 @@ namespace GeometricAlgebraFulcrumLib.Optimization.SVM.LibSVM
             return dic;
         }
         
-        public ImmutableSortedSet<int> GetFeatureIndexSet()
+        public IndexSet GetFeatureIndexSet()
         {
             return InputFeatureList.SelectMany(
                 featureList => featureList.Select(f => f.Index)
-            ).ToImmutableSortedSet();
+            ).ToIndexSet(false);
         }
 
         public Pair<int> GetFeatureIndexRange()

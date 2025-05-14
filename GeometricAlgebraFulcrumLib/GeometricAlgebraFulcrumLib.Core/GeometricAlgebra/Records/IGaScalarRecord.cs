@@ -1,6 +1,6 @@
 ﻿namespace GeometricAlgebraFulcrumLib.Core.GeometricAlgebra.Records;
 
-public interface IGaScalarRecord<out T>
+public interface IXGaScalarRecord<out T>
 {
     /// <summary>
     /// The Scalar Value

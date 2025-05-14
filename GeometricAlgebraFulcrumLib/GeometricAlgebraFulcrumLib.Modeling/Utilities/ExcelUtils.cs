@@ -1,19 +1,14 @@
 ﻿using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Extended.Float64.Multivectors;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Extended.Float64.Multivectors.Composers;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Extended.Float64.Processors;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Extended.Generic.Multivectors;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Extended.Generic.Multivectors.Composers;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Extended.Generic.Processors;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Float64.Multivectors;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Generic.Multivectors;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Generic.Multivectors.Composers;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Generic.Processors;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivectors;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivectors.Composers;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Processors;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Multivectors;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Multivectors.Composers;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Processors;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Generic;
 using GeometricAlgebraFulcrumLib.Modeling.Calculus.Functions.Float64.Interpolators;
 using GeometricAlgebraFulcrumLib.Modeling.Signals;
 using GeometricAlgebraFulcrumLib.Modeling.Signals.Composers;
-using GeometricAlgebraFulcrumLib.Utilities.Structures.IndexSets;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Tuples;
 using OfficeOpenXml;
 
@@ -274,26 +269,9 @@ public static class ExcelUtils
     }
 
 
-    public static RGaVector<Float64SampledTimeSignal> ReadVectorSignal(this RGaProcessor<Float64SampledTimeSignal> geometricProcessor, double samplingRate, ExcelWorksheet workSheet, int firstRowIndex, int rowCount, int firstColIndex, int colCount)
+    public static XGaVector<double>[] ReadVectors(this XGaProcessor<double> geometricProcessor, ExcelWorksheet workSheet, int rowIndex, int rowCount, int columnIndex, int columnCount)
     {
-        var vectorArray = new Float64SampledTimeSignal[colCount];
-
-        for (var j = 0; j < colCount; j++)
-        {
-            var columnVector = new double[rowCount];
-
-            for (var i = 0; i < rowCount; i++)
-                columnVector[i] = workSheet.Cells[firstRowIndex + i, firstColIndex + j].GetValue<double>();
-
-            vectorArray[j] = columnVector.CreateSignal(samplingRate);
-        }
-
-        return geometricProcessor.Vector(vectorArray);
-    }
-
-    public static RGaVector<double>[] ReadVectors(this RGaProcessor<double> geometricProcessor, ExcelWorksheet workSheet, int rowIndex, int rowCount, int columnIndex, int columnCount)
-    {
-        var vectorArray = new RGaVector<double>[rowCount];
+        var vectorArray = new XGaVector<double>[rowCount];
 
         for (var i = 0; i < rowCount; i++)
         {
@@ -308,10 +286,10 @@ public static class ExcelUtils
         return vectorArray;
     }
 
-    public static RGaVector<double>[] ReadVectors(this RGaProcessor<double> geometricProcessor, ExcelWorksheet workSheet, int rowIndex, int rowCount, params int[] columnIndexArray)
+    public static XGaVector<double>[] ReadVectors(this XGaProcessor<double> geometricProcessor, ExcelWorksheet workSheet, int rowIndex, int rowCount, params int[] columnIndexArray)
     {
         var columnCount = columnIndexArray.Length;
-        var vectorArray = new RGaVector<double>[rowCount];
+        var vectorArray = new XGaVector<double>[rowCount];
 
         for (var i = 0; i < rowCount; i++)
         {
@@ -426,7 +404,7 @@ public static class ExcelUtils
         return worksheet;
     }
 
-    public static ExcelWorksheet WriteVectors(this ExcelWorksheet worksheet, int rowIndex, int columnIndex, IEnumerable<RGaVector<double>> vectorData, string vectorName, params string[] columnNames)
+    public static ExcelWorksheet WriteVectors(this ExcelWorksheet worksheet, int rowIndex, int columnIndex, IEnumerable<XGaVector<double>> vectorData, string vectorName, params string[] columnNames)
     {
         var columnCount = columnNames.Length;
 
@@ -448,7 +426,7 @@ public static class ExcelUtils
         return worksheet;
     }
 
-    public static ExcelWorksheet WriteBivectors(this ExcelWorksheet worksheet, int rowIndex, int columnIndex, IEnumerable<RGaFloat64Bivector> bivectorData, string bivectorName, params string[] columnNames)
+    public static ExcelWorksheet WriteBivectors(this ExcelWorksheet worksheet, int rowIndex, int columnIndex, IEnumerable<XGaFloat64Bivector> bivectorData, string bivectorName, params string[] columnNames)
     {
         var columnCount = columnNames.Length;
 
@@ -487,28 +465,6 @@ public static class ExcelUtils
         return worksheet.WriteScalars(rowIndex, columnIndex, scalarSignal.ScalarValue, columnName);
     }
 
-    public static ExcelWorksheet WriteVectorSignal(this ExcelWorksheet worksheet, int rowIndex, int columnIndex, RGaVector<Float64SampledTimeSignal> vectorSignal, string vectorName, params string[] columnNames)
-    {
-        var columnCount = columnNames.Length;
-
-        var headCell = worksheet.Cells[1, columnIndex, 1, columnIndex + columnCount - 1];
-        headCell.Value = vectorName;
-        headCell.Merge = true;
-
-        for (var i = 0; i < columnCount; i++)
-            worksheet.Cells[2, columnIndex + i].Value = columnNames[i];
-
-        for (var i = 0; i < columnCount; i++)
-        {
-            var v = vectorSignal.Scalar(i).ScalarValue;
-
-            for (var r = 0; r < v.Count; r++)
-                worksheet.Cells[rowIndex + r, columnIndex + i].Value = v[r];
-        }
-
-        return worksheet;
-    }
-
     public static ExcelWorksheet WriteVectorSignal(this ExcelWorksheet worksheet, int rowIndex, int columnIndex, XGaVector<Float64SampledTimeSignal> vectorSignal, string vectorName, params string[] columnNames)
     {
         var columnCount = columnNames.Length;
@@ -531,28 +487,6 @@ public static class ExcelUtils
         return worksheet;
     }
 
-    public static ExcelWorksheet WriteBivectorSignal(this ExcelWorksheet worksheet, int rowIndex, int columnIndex, RGaBivector<Float64SampledTimeSignal> bivectorSignal, string bivectorName, params string[] columnNames)
-    {
-        var columnCount = columnNames.Length;
-
-        var headCell = worksheet.Cells[1, columnIndex, 1, columnIndex + columnCount - 1];
-        headCell.Value = bivectorName;
-        headCell.Merge = true;
-
-        for (var i = 0; i < columnNames.Length; i++)
-            worksheet.Cells[2, columnIndex + i].Value = columnNames[i];
-
-        for (var i = 0; i < columnNames.Length; i++)
-        {
-            var v = bivectorSignal.Scalar(i).ScalarValue;
-
-            for (var r = 0; r < v.Count; r++)
-                worksheet.Cells[rowIndex + r, columnIndex + i].Value = v[r];
-        }
-
-        return worksheet;
-    }
-
     public static ExcelWorksheet WriteBivectorSignal(this ExcelWorksheet worksheet, int rowIndex, int columnIndex, XGaBivector<Float64SampledTimeSignal> bivectorSignal, string bivectorName, params string[] columnNames)
     {
         var columnCount = columnNames.Length;
@@ -566,7 +500,7 @@ public static class ExcelUtils
 
         for (var i = 0; i < columnNames.Length; i++)
         {
-            var id = i.BasisBivectorIndexToId().BitPatternToIndexSet();
+            var id = i.BasisBivectorIndexToId();
 
             var v = bivectorSignal.GetBasisBladeScalar(id).ScalarValue;
 

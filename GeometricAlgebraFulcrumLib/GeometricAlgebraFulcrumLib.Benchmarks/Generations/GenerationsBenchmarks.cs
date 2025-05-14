@@ -2,14 +2,15 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Float64.Multivectors;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Float64.Multivectors.Composers;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Float64.Processors;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivectors;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.BitManipulation;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Random;
 using GeometricAlgebraFulcrumLib.Samples.Generations.Algebra.Ga31;
 using GeometricAlgebraFulcrumLib.Samples.Generations.Algebra.Ga41;
 using GeometricAlgebraFulcrumLib.Samples.Generations.Algebra.Ga51;
+using GeometricAlgebraFulcrumLib.Utilities.Structures.IndexSets;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Processors;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivectors.Composers;
 
 namespace GeometricAlgebraFulcrumLib.Benchmarks.Generations;
 
@@ -18,10 +19,10 @@ public class GenerationsBenchmarks
 {
     private List<Ga31Multivector> _multivectorList1;
     private List<Ga51SparseMultivector> _multivectorList2;
-    private List<RGaFloat64Multivector> _multivectorList3;
+    private List<XGaFloat64Multivector> _multivectorList3;
         
-    public RGaFloat64ConformalProcessor Processor { get; }
-        = RGaFloat64ConformalProcessor.Instance;
+    public XGaFloat64ConformalProcessor Processor { get; }
+        = XGaFloat64ConformalProcessor.Instance;
 
 
     private double GetScalar(Random randomGen)
@@ -288,38 +289,38 @@ public class GenerationsBenchmarks
         return composer;
     }
     
-    private RGaFloat64Multivector ToRGaFloat64Multivector(Ga31Multivector mv)
+    private XGaFloat64Multivector ToXGaFloat64Multivector(Ga31Multivector mv)
     {
         var scalarArray = mv.GetMultivectorArray();
 
         var composer = Processor.CreateComposer();
 
         for (var i = 0; i < scalarArray.Length; i++)
-            composer.AddTerm((ulong)i, scalarArray[i]);
+            composer.AddTerm((IndexSet)i, scalarArray[i]);
 
         return composer.GetSimpleMultivector();
     }
 
-    private RGaFloat64Multivector ToRGaFloat64Multivector(Ga41Multivector mv)
+    private XGaFloat64Multivector ToXGaFloat64Multivector(Ga41Multivector mv)
     {
         var scalarArray = mv.GetMultivectorArray();
 
         var composer = Processor.CreateComposer();
 
         for (var i = 0; i < scalarArray.Length; i++)
-            composer.AddTerm((ulong)i, scalarArray[i]);
+            composer.AddTerm((IndexSet)i, scalarArray[i]);
 
         return composer.GetSimpleMultivector();
     }
 
-    private RGaFloat64Multivector ToRGaFloat64Multivector(Ga51Multivector mv)
+    private XGaFloat64Multivector ToXGaFloat64Multivector(Ga51Multivector mv)
     {
         var scalarArray = mv.GetMultivectorArray();
 
         var composer = Processor.CreateComposer();
 
         for (var i = 0; i < scalarArray.Length; i++)
-            composer.AddTerm((ulong)i, scalarArray[i]);
+            composer.AddTerm((IndexSet)i, scalarArray[i]);
 
         return composer.GetSimpleMultivector();
     }
@@ -339,7 +340,7 @@ public class GenerationsBenchmarks
         ).ToList();
 
         _multivectorList3 = _multivectorList1.Select(
-            ToRGaFloat64Multivector
+            ToXGaFloat64Multivector
         ).ToList();
     }
 

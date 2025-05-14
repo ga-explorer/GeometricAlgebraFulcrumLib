@@ -1,6 +1,6 @@
 ﻿using System.Runtime.CompilerServices;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Float64.Multivectors;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Float64.Multivectors.Composers;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivectors;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivectors.Composers;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space2D;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space3D;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.SpaceND;
@@ -45,7 +45,7 @@ public static class CGaFloat64TangentComposerUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static CGaFloat64Tangent DefineTangentPoint(this CGaFloat64GeometricSpace cgaGeometricSpace, RGaFloat64Vector position)
+    public static CGaFloat64Tangent DefineTangentPoint(this CGaFloat64GeometricSpace cgaGeometricSpace, XGaFloat64Vector position)
     {
         return new CGaFloat64Tangent(
             cgaGeometricSpace,
@@ -90,7 +90,7 @@ public static class CGaFloat64TangentComposerUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static CGaFloat64Tangent DefineTangentPoint(this CGaFloat64GeometricSpace cgaGeometricSpace, double weight, RGaFloat64Vector position)
+    public static CGaFloat64Tangent DefineTangentPoint(this CGaFloat64GeometricSpace cgaGeometricSpace, double weight, XGaFloat64Vector position)
     {
         return new CGaFloat64Tangent(
             cgaGeometricSpace,
@@ -135,7 +135,7 @@ public static class CGaFloat64TangentComposerUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static CGaFloat64Tangent DefineTangentLine(this CGaFloat64GeometricSpace cgaGeometricSpace, RGaFloat64Vector position, RGaFloat64Vector direction)
+    public static CGaFloat64Tangent DefineTangentLine(this CGaFloat64GeometricSpace cgaGeometricSpace, XGaFloat64Vector position, XGaFloat64Vector direction)
     {
         return new CGaFloat64Tangent(
             cgaGeometricSpace,
@@ -180,7 +180,7 @@ public static class CGaFloat64TangentComposerUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static CGaFloat64Tangent DefineTangentLine(this CGaFloat64GeometricSpace cgaGeometricSpace, double weight, RGaFloat64Vector position, RGaFloat64Vector direction)
+    public static CGaFloat64Tangent DefineTangentLine(this CGaFloat64GeometricSpace cgaGeometricSpace, double weight, XGaFloat64Vector position, XGaFloat64Vector direction)
     {
         return new CGaFloat64Tangent(
             cgaGeometricSpace,
@@ -234,7 +234,7 @@ public static class CGaFloat64TangentComposerUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static CGaFloat64Tangent DefineTangentLineFromPoints(this CGaFloat64GeometricSpace cgaGeometricSpace, RGaFloat64Vector point1, RGaFloat64Vector point2)
+    public static CGaFloat64Tangent DefineTangentLineFromPoints(this CGaFloat64GeometricSpace cgaGeometricSpace, XGaFloat64Vector point1, XGaFloat64Vector point2)
     {
         var position = (point1 + point2) / 2;
         var direction = point2 - point1;
@@ -291,7 +291,7 @@ public static class CGaFloat64TangentComposerUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static CGaFloat64Tangent DefineTangentLineFromPoints(this CGaFloat64GeometricSpace cgaGeometricSpace, double weight, RGaFloat64Vector point1, RGaFloat64Vector point2)
+    public static CGaFloat64Tangent DefineTangentLineFromPoints(this CGaFloat64GeometricSpace cgaGeometricSpace, double weight, XGaFloat64Vector point1, XGaFloat64Vector point2)
     {
         var position = (point1 + point2) / 2;
         var direction = point2 - point1;
@@ -328,7 +328,7 @@ public static class CGaFloat64TangentComposerUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static CGaFloat64Tangent DefineTangentPlane(this CGaFloat64GeometricSpace cgaGeometricSpace, RGaFloat64Vector position, RGaFloat64Bivector direction)
+    public static CGaFloat64Tangent DefineTangentPlane(this CGaFloat64GeometricSpace cgaGeometricSpace, XGaFloat64Vector position, XGaFloat64Bivector direction)
     {
         return new CGaFloat64Tangent(
             cgaGeometricSpace,
@@ -362,7 +362,7 @@ public static class CGaFloat64TangentComposerUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static CGaFloat64Tangent DefineTangentPlane(this CGaFloat64GeometricSpace cgaGeometricSpace, double weight, RGaFloat64Vector position, RGaFloat64Bivector direction)
+    public static CGaFloat64Tangent DefineTangentPlane(this CGaFloat64GeometricSpace cgaGeometricSpace, double weight, XGaFloat64Vector position, XGaFloat64Bivector direction)
     {
         return new CGaFloat64Tangent(
             cgaGeometricSpace,
@@ -419,7 +419,7 @@ public static class CGaFloat64TangentComposerUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static CGaFloat64Tangent DefineTangentPlaneFromPoints(this CGaFloat64GeometricSpace cgaGeometricSpace, RGaFloat64Vector point1, RGaFloat64Vector point2, RGaFloat64Vector point3)
+    public static CGaFloat64Tangent DefineTangentPlaneFromPoints(this CGaFloat64GeometricSpace cgaGeometricSpace, XGaFloat64Vector point1, XGaFloat64Vector point2, XGaFloat64Vector point3)
     {
         var position = (point1 + point2 + point3) / 3;
         var direction = (point2 - point1).Op(point3 - point2);
@@ -479,7 +479,7 @@ public static class CGaFloat64TangentComposerUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static CGaFloat64Tangent DefineTangentPlaneFromPoints(this CGaFloat64GeometricSpace cgaGeometricSpace, double weight, RGaFloat64Vector point1, RGaFloat64Vector point2, RGaFloat64Vector point3)
+    public static CGaFloat64Tangent DefineTangentPlaneFromPoints(this CGaFloat64GeometricSpace cgaGeometricSpace, double weight, XGaFloat64Vector point1, XGaFloat64Vector point2, XGaFloat64Vector point3)
     {
         var position = (point1 + point2 + point3) / 3;
         var direction = (point2 - point1).Op(point3 - point2);
@@ -506,7 +506,7 @@ public static class CGaFloat64TangentComposerUtils
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static CGaFloat64Tangent DefineTangent(this CGaFloat64GeometricSpace cgaGeometricSpace, RGaFloat64Vector position, RGaFloat64KVector direction)
+    public static CGaFloat64Tangent DefineTangent(this CGaFloat64GeometricSpace cgaGeometricSpace, XGaFloat64Vector position, XGaFloat64KVector direction)
     {
         return new CGaFloat64Tangent(
             cgaGeometricSpace,
@@ -529,7 +529,7 @@ public static class CGaFloat64TangentComposerUtils
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static CGaFloat64Tangent DefineTangent(this CGaFloat64GeometricSpace cgaGeometricSpace, double weight, RGaFloat64Vector position, RGaFloat64KVector direction)
+    public static CGaFloat64Tangent DefineTangent(this CGaFloat64GeometricSpace cgaGeometricSpace, double weight, XGaFloat64Vector position, XGaFloat64KVector direction)
     {
         return new CGaFloat64Tangent(
             cgaGeometricSpace,
@@ -558,7 +558,7 @@ public static class CGaFloat64TangentComposerUtils
             1,
             cgaGeometricSpace.Encode.VGa.Vector(position),
             directionVectors
-                .Select(v => v.ToRGaFloat64Vector())
+                .Select(v => v.ToXGaFloat64Vector())
                 .Op(cgaGeometricSpace.Processor)
                 .EncodeVGaBlade(cgaGeometricSpace)
         );
@@ -571,7 +571,7 @@ public static class CGaFloat64TangentComposerUtils
             1,
             cgaGeometricSpace.Encode.VGa.Vector(position),
             directionVectors
-                .Select(v => v.ToRGaFloat64Vector())
+                .Select(v => v.ToXGaFloat64Vector())
                 .Op(cgaGeometricSpace.Processor)
                 .EncodeVGaBlade(cgaGeometricSpace)
         );
@@ -584,14 +584,14 @@ public static class CGaFloat64TangentComposerUtils
             1,
             cgaGeometricSpace.Encode.VGa.Vector(position),
             directionVectors
-                .Select(v => v.ToRGaFloat64Vector())
+                .Select(v => v.ToXGaFloat64Vector())
                 .Op(cgaGeometricSpace.Processor)
                 .EncodeVGaBlade(cgaGeometricSpace)
         );
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static CGaFloat64Tangent DefineTangentFromVectors(this CGaFloat64GeometricSpace cgaGeometricSpace, RGaFloat64Vector position, params RGaFloat64Vector[] directionVectors)
+    public static CGaFloat64Tangent DefineTangentFromVectors(this CGaFloat64GeometricSpace cgaGeometricSpace, XGaFloat64Vector position, params XGaFloat64Vector[] directionVectors)
     {
         return cgaGeometricSpace.DefineTangent(
             1,
@@ -601,7 +601,7 @@ public static class CGaFloat64TangentComposerUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static CGaFloat64Tangent DefineTangentFromVectors(this CGaFloat64GeometricSpace cgaGeometricSpace, RGaFloat64Vector position, IEnumerable<RGaFloat64Vector> directionVectors)
+    public static CGaFloat64Tangent DefineTangentFromVectors(this CGaFloat64GeometricSpace cgaGeometricSpace, XGaFloat64Vector position, IEnumerable<XGaFloat64Vector> directionVectors)
     {
         return cgaGeometricSpace.DefineTangent(
             1,
@@ -618,7 +618,7 @@ public static class CGaFloat64TangentComposerUtils
             weight,
             cgaGeometricSpace.Encode.VGa.Vector(position),
             directionVectors
-                .Select(v => v.ToRGaFloat64Vector())
+                .Select(v => v.ToXGaFloat64Vector())
                 .Op(cgaGeometricSpace.Processor)
                 .EncodeVGaBlade(cgaGeometricSpace)
         );
@@ -631,7 +631,7 @@ public static class CGaFloat64TangentComposerUtils
             weight,
             cgaGeometricSpace.Encode.VGa.Vector(position),
             directionVectors
-                .Select(v => v.ToRGaFloat64Vector())
+                .Select(v => v.ToXGaFloat64Vector())
                 .Op(cgaGeometricSpace.Processor)
                 .EncodeVGaBlade(cgaGeometricSpace)
         );
@@ -644,14 +644,14 @@ public static class CGaFloat64TangentComposerUtils
             weight,
             cgaGeometricSpace.Encode.VGa.Vector(position),
             directionVectors
-                .Select(v => v.ToRGaFloat64Vector())
+                .Select(v => v.ToXGaFloat64Vector())
                 .Op(cgaGeometricSpace.Processor)
                 .EncodeVGaBlade(cgaGeometricSpace)
         );
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static CGaFloat64Tangent DefineTangentFromVectors(this CGaFloat64GeometricSpace cgaGeometricSpace, double weight, RGaFloat64Vector position, params RGaFloat64Vector[] directionVectors)
+    public static CGaFloat64Tangent DefineTangentFromVectors(this CGaFloat64GeometricSpace cgaGeometricSpace, double weight, XGaFloat64Vector position, params XGaFloat64Vector[] directionVectors)
     {
         return cgaGeometricSpace.DefineTangent(
             weight,
@@ -661,7 +661,7 @@ public static class CGaFloat64TangentComposerUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static CGaFloat64Tangent DefineTangentFromVectors(this CGaFloat64GeometricSpace cgaGeometricSpace, double weight, RGaFloat64Vector position, IEnumerable<RGaFloat64Vector> directionVectors)
+    public static CGaFloat64Tangent DefineTangentFromVectors(this CGaFloat64GeometricSpace cgaGeometricSpace, double weight, XGaFloat64Vector position, IEnumerable<XGaFloat64Vector> directionVectors)
     {
         return cgaGeometricSpace.DefineTangent(
             weight,

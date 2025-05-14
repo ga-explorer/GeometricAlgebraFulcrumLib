@@ -1,9 +1,6 @@
-﻿using GeometricAlgebraFulcrumLib.Core.GeometricAlgebra.Extended.Basis;
-using GeometricAlgebraFulcrumLib.Core.GeometricAlgebra.Extended.Float64.Multivectors;
-using GeometricAlgebraFulcrumLib.Core.GeometricAlgebra.Extended.Generic.Multivectors;
-using GeometricAlgebraFulcrumLib.Core.GeometricAlgebra.Restricted.Basis;
-using GeometricAlgebraFulcrumLib.Core.GeometricAlgebra.Restricted.Float64.Multivectors;
-using GeometricAlgebraFulcrumLib.Core.GeometricAlgebra.Restricted.Generic.Multivectors;
+﻿using GeometricAlgebraFulcrumLib.Core.GeometricAlgebra.Basis;
+using GeometricAlgebraFulcrumLib.Core.GeometricAlgebra.Float64.Multivectors;
+using GeometricAlgebraFulcrumLib.Core.GeometricAlgebra.Generic.Multivectors;
 using GeometricAlgebraFulcrumLib.Core.LinearAlgebra.Float64.Angles;
 using GeometricAlgebraFulcrumLib.Core.LinearAlgebra.Float64.Vectors.SpaceND;
 using GeometricAlgebraFulcrumLib.Core.LinearAlgebra.Generic.Angles;
@@ -19,15 +16,11 @@ public interface ITextComposer<T>
 
     string GetBasisVectorText(int index);
 
-    string GetBasisBladeText(ulong id);
-
     string GetBasisBladeText(uint grade, ulong index);
 
     string GetBasisBladeText(IndexSet id);
 
     string GetBasisBladeText(IEnumerable<int> indexList);
-
-    string GetBasisBladeText(RGaBasisBlade basisBlade);
 
     string GetBasisBladeText(XGaBasisBlade basisBlade);
 
@@ -43,10 +36,6 @@ public interface ITextComposer<T>
 
     string GetScalarText(T scalar);
 
-    string GetTermText(ulong id, double scalar);
-
-    string GetTermText(ulong id, T scalar);
-
     string GetTermText(uint grade, int index, double scalar);
 
     string GetTermText(uint grade, int index, T scalar);
@@ -54,10 +43,6 @@ public interface ITextComposer<T>
     string GetTermText(IndexSet id, double scalar);
 
     string GetTermText(IndexSet id, T scalar);
-
-    string GetTermText(RGaBasisBlade basisBlade, double scalar);
-
-    string GetTermText(RGaBasisBlade basisBlade, T scalar);
 
     string GetTermText(XGaBasisBlade basisBlade, double scalar);
 
@@ -74,10 +59,6 @@ public interface ITextComposer<T>
     string GetVectorText(LinFloat64Vector v);
 
     string GetVectorText(LinVector<T> v);
-
-    string GetMultivectorText(RGaFloat64Multivector mv);
-
-    string GetMultivectorText(RGaMultivector<T> mv);
 
     string GetMultivectorText(XGaFloat64Multivector mv);
 

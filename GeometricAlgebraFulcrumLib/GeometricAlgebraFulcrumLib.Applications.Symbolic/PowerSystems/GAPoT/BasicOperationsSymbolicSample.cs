@@ -6,11 +6,11 @@ public static class BasicOperationsSymbolicSample
 {
     public static void Execute()
     {
-        var v1 = RGaMathematicaUtils.Vector(
+        var v1 = XGaMathematicaUtils.Vector(
             "a1", "b1", "c1", "d1"
         );
 
-        var v2 = RGaMathematicaUtils.Vector(
+        var v2 = XGaMathematicaUtils.Vector(
             "a2", "b2", "c2", "d2"
         );
 

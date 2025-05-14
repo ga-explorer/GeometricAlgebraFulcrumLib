@@ -1,10 +1,7 @@
-﻿using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Extended.Float64.Frames;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Extended.Float64.Multivectors.Composers;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Extended.Float64.Processors;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Float64.Frames;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Float64.Multivectors;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Float64.Multivectors.Composers;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Float64.Processors;
+﻿using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Frames;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivectors;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivectors.Composers;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Processors;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space3D;
 using MathNet.Numerics.LinearAlgebra;
 
@@ -270,7 +267,7 @@ public static class GramSchmidtSamples
     public static void Example4()
     {
         var processor =
-            RGaFloat64Processor.Euclidean;
+            XGaFloat64Processor.Euclidean;
 
         // 3 Orthogonal vectors
         //var v1 = new Float64Tuple3D(1, -1, 2);
@@ -325,7 +322,7 @@ public static class GramSchmidtSamples
         Console.WriteLine();
 
         var gsFrame =
-            RGaFloat64GramSchmidtFrame.Create(v1, v2, v3);
+            XGaFloat64GramSchmidtFrame.Create(v1, v2, v3);
 
         Console.WriteLine($"u1 = {gsFrame.GetDirection(0)}");
         Console.WriteLine($"u2 = {gsFrame.GetDirection(1)}");

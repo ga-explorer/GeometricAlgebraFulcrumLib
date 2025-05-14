@@ -1,6 +1,6 @@
-﻿using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Generic.Frames;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Generic.Multivectors.Composers;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Generic.Processors;
+﻿using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Frames;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Multivectors.Composers;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Processors;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Generic;
 using GeometricAlgebraFulcrumLib.Mathematica.Algebra;
 using GeometricAlgebraFulcrumLib.Mathematica.Utilities.Structures;
@@ -21,8 +21,8 @@ public static class SymbolicAngularVelocitySample
 
     // Create a 6-dimensional Euclidean geometric algebra processor based on the
     // selected scalar processor
-    public static RGaProcessor<Expr> GeometricProcessor { get; }
-        = ScalarProcessor.CreateEuclideanRGaProcessor();
+    public static XGaProcessor<Expr> GeometricProcessor { get; }
+        = ScalarProcessor.CreateEuclideanXGaProcessor();
 
     // This is a pre-defined text generator for displaying multivectors
     // with symbolic Wolfram Mathematica scalars using Expr objects

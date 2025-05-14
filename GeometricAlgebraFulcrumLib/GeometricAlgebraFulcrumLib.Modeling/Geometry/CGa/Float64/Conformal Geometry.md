@@ -6,7 +6,7 @@ The first thing to do is to create a conformal space object of desired dimension
 
 ```c#
 // Create a 5-dimensional CGA space
-var cga = RGaConformalSpace.Create(5);
+var cga = XGaConformalSpace.Create(5);
 ```
 
 Internally, this code defines 5 orthonormal basis blades $e_{-},e_{+},e_{1},e_{2},e_{3}$ with $e_{-}^2=-1$, $e_{+}^2=e_{i}^2=1$ for $i \in \{ 1,2,3 \}$, and $e_{r} \cdot e_{s}=0$ for $r,s \in \{-,+,1,2,3\}$ and $r \neq s$. All computations on multivectors are made using this basis set, while the final results are displayed using the more common basis $e_{o},e_{1},e_{2},e_{3},e_{\infty}$ with $e_{o} = \frac{1}{2}e_{-}+\frac{1}{2}e_{+}$, $e_{\infty}=e_{-}-e_{+}$.
@@ -23,7 +23,7 @@ A direction $\{w,D\}$ is the simplest CGA element with position at the Euclidean
 
 ```c#
 // Create a 5-dimensional CGA space
-var cga = RGaConformalSpace.Create(5);
+var cga = XGaConformalSpace.Create(5);
 
 // Define a weighted direction from a scalar, 
 // only the sign of the scalar is used
@@ -136,7 +136,7 @@ For this purpose, all CGA elements contain the two methods `EncodeOpnsBlade()` a
 For example, we can use this simple code to intersect a sphere with a plane and get the final element:
 
 ```c#
-var cga = RGaConformalSpace.Create(5);
+var cga = XGaConformalSpace.Create(5);
 
 // Define a plane in 3-dimensions using distance from origin and normal vector
 var plane = cga.DefineFlatPlane(
@@ -170,7 +170,7 @@ var intersectionElement = plane.Intersect(sphere);
 It is also possible to encode CGA blades directly from Eucludean components without defining elements using code similar to:
 
 ```c#
-var cga = RGaConformalSpace.Create(5);
+var cga = XGaConformalSpace.Create(5);
 
 // Encode a plane in 3-dimensions as a IPNS blade
 var planeBlade = cga.EncodeIpnsFlatPlane(

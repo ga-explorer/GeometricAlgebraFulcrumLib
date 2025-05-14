@@ -1,5 +1,5 @@
 ﻿using System.Runtime.CompilerServices;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Float64.Multivectors;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivectors;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space2D;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space3D;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.SpaceND;
@@ -29,7 +29,7 @@ namespace GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Float64.Encoding
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static CGaFloat64Blade EncodeVGaVector(this RGaFloat64Vector egaKVector, CGaFloat64GeometricSpace cgaGeometricSpace)
+        public static CGaFloat64Blade EncodeVGaVector(this XGaFloat64Vector egaKVector, CGaFloat64GeometricSpace cgaGeometricSpace)
         {
             return cgaGeometricSpace.Encode.VGa.Vector(egaKVector);
         }
@@ -48,7 +48,7 @@ namespace GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Float64.Encoding
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static CGaFloat64Blade EncodeVGaBivector(this RGaFloat64Bivector egaKVector, CGaFloat64GeometricSpace cgaGeometricSpace)
+        public static CGaFloat64Blade EncodeVGaBivector(this XGaFloat64Bivector egaKVector, CGaFloat64GeometricSpace cgaGeometricSpace)
         {
             return cgaGeometricSpace.Encode.VGa.Bivector(egaKVector);
         }
@@ -62,7 +62,7 @@ namespace GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Float64.Encoding
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static CGaFloat64Blade EncodeVGaBlade(this RGaFloat64KVector egaKVector, CGaFloat64GeometricSpace cgaGeometricSpace)
+        public static CGaFloat64Blade EncodeVGaBlade(this XGaFloat64KVector egaKVector, CGaFloat64GeometricSpace cgaGeometricSpace)
         {
             return cgaGeometricSpace.Encode.VGa.Blade(egaKVector);
         }

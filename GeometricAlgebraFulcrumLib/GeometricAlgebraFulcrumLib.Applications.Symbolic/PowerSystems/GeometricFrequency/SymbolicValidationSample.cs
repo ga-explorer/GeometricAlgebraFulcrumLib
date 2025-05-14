@@ -1,8 +1,8 @@
 ﻿using System.Diagnostics;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Generic.Frames;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Generic.Multivectors;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Generic.Multivectors.Composers;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Generic.Processors;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Frames;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Multivectors;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Multivectors.Composers;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Processors;
 using GeometricAlgebraFulcrumLib.Algebra.Polynomials.Generic;
 using GeometricAlgebraFulcrumLib.Algebra.Polynomials.Generic.Basis;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Generic;
@@ -35,8 +35,8 @@ public static class SymbolicValidationSample
 
     // Create a 6-dimensional Euclidean geometric algebra processor based on the
     // selected scalar processor
-    public static RGaProcessor<Expr> GeometricProcessor { get; }
-        = ScalarProcessor.CreateEuclideanRGaProcessor();
+    public static XGaProcessor<Expr> GeometricProcessor { get; }
+        = ScalarProcessor.CreateEuclideanXGaProcessor();
 
     // This is a pre-defined text generator for displaying multivectors
     // with symbolic Wolfram Mathematica scalars using Expr objects
@@ -53,7 +53,7 @@ public static class SymbolicValidationSample
     /// Simple harmonic curve in 3D
     /// </summary>
     /// <returns></returns>
-    private static RGaVector<Expr> DefineCurve1(Expr tExpr)
+    private static XGaVector<Expr> DefineCurve1(Expr tExpr)
     {
         var t = tExpr.ScalarFromValue(ScalarProcessor);
 
@@ -75,7 +75,7 @@ public static class SymbolicValidationSample
     /// Simple harmonic curve in 4D
     /// </summary>
     /// <returns></returns>
-    private static RGaVector<Expr> DefineCurve2(Expr tExpr)
+    private static XGaVector<Expr> DefineCurve2(Expr tExpr)
     {
         var t = tExpr.ScalarFromValue(ScalarProcessor);
 
@@ -98,7 +98,7 @@ public static class SymbolicValidationSample
     /// </summary>
     /// <param name="tExpr"></param>
     /// <returns></returns>
-    private static RGaVector<Expr> DefineCurve3(Expr tExpr)
+    private static XGaVector<Expr> DefineCurve3(Expr tExpr)
     {
         var a0 = GeometricProcessor.Vector(1, 2, -1);
         var a1 = GeometricProcessor.Vector(-1, -1, 2);
@@ -120,7 +120,7 @@ public static class SymbolicValidationSample
     /// </summary>
     /// <param name="tExpr"></param>
     /// <returns></returns>
-    private static RGaVector<Expr> DefineCurve4(Expr tExpr)
+    private static XGaVector<Expr> DefineCurve4(Expr tExpr)
     {
         var a0 = GeometricProcessor.Vector(1, 2, -1, 1);
         var a1 = GeometricProcessor.Vector(-1, -1, 2, 1);
@@ -141,7 +141,7 @@ public static class SymbolicValidationSample
     /// Simple monomial curve in 3D
     /// </summary>
     /// <returns></returns>
-    private static RGaVector<Expr> DefineCurve5(Expr tExpr)
+    private static XGaVector<Expr> DefineCurve5(Expr tExpr)
     {
         var a0 = GeometricProcessor.Vector(0, 0, 0);
         var a1 = GeometricProcessor.Vector(1, 0, 0);
@@ -160,7 +160,7 @@ public static class SymbolicValidationSample
     /// Simple monomial curve in 4D
     /// </summary>
     /// <returns></returns>
-    private static RGaVector<Expr> DefineCurve6(Expr tExpr)
+    private static XGaVector<Expr> DefineCurve6(Expr tExpr)
     {
         var a0 = GeometricProcessor.Vector(0, 0, 0, 0);
         var a1 = GeometricProcessor.Vector(1, 0, 0, 0);
@@ -180,7 +180,7 @@ public static class SymbolicValidationSample
     /// Simple monomial curve in 6D
     /// </summary>
     /// <returns></returns>
-    private static RGaVector<Expr> DefineCurve7(Expr tExpr)
+    private static XGaVector<Expr> DefineCurve7(Expr tExpr)
     {
         var aArray = new[]
         {
@@ -207,7 +207,7 @@ public static class SymbolicValidationSample
     /// Simple elliptic curve in 3D
     /// </summary>
     /// <returns></returns>
-    private static RGaVector<Expr> DefineCurve8(Expr tExpr)
+    private static XGaVector<Expr> DefineCurve8(Expr tExpr)
     {
         var t = tExpr.ScalarFromValue(ScalarProcessor);
 
@@ -221,7 +221,7 @@ public static class SymbolicValidationSample
     /// Simple elliptic curve in 4D
     /// </summary>
     /// <returns></returns>
-    private static RGaVector<Expr> DefineCurve9(Expr tExpr)
+    private static XGaVector<Expr> DefineCurve9(Expr tExpr)
     {
         var t = tExpr.ScalarFromValue(ScalarProcessor);
 
@@ -236,7 +236,7 @@ public static class SymbolicValidationSample
     /// </summary>
     /// <param name="tExpr"></param>
     /// <returns></returns>
-    private static RGaVector<Expr> DefineCurve10(Expr tExpr)
+    private static XGaVector<Expr> DefineCurve10(Expr tExpr)
     {
         var assumeExpr =
             $@"And[{tExpr} >= 0, {tExpr} <= 1, Element[{tExpr}, Reals]]".ToExpr();
@@ -264,7 +264,7 @@ public static class SymbolicValidationSample
     }
 
 
-    private static RGaVector<Expr> DefineCurve()
+    private static XGaVector<Expr> DefineCurve()
     {
         var t = "t".ToSymbolExpr();
 
@@ -334,7 +334,7 @@ public static class SymbolicValidationSample
         return new Hexad<Scalar<Expr>>(sDt1, sDt2, sDt3, sDt4, sDt5, sDt6);
     }
 
-    private static Triplet<RGaVector<Expr>> GetTimeDerivatives3D(this RGaVector<Expr> v)
+    private static Triplet<XGaVector<Expr>> GetTimeDerivatives3D(this XGaVector<Expr> v)
     {
         var t = "t".ToSymbolExpr();
 
@@ -355,10 +355,10 @@ public static class SymbolicValidationSample
 
         PlotCurveNorm(vDt1, Path.Combine(WorkingPath, "vDt1Norm"));
 
-        return new Triplet<RGaVector<Expr>>(vDt1, vDt2, vDt3);
+        return new Triplet<XGaVector<Expr>>(vDt1, vDt2, vDt3);
     }
 
-    private static Quad<RGaVector<Expr>> GetTimeDerivatives4D(this RGaVector<Expr> v)
+    private static Quad<XGaVector<Expr>> GetTimeDerivatives4D(this XGaVector<Expr> v)
     {
         var t = "t".ToSymbolExpr();
 
@@ -382,10 +382,10 @@ public static class SymbolicValidationSample
 
         PlotCurveNorm(vDt1, Path.Combine(WorkingPath, "vDt1Norm"));
 
-        return new Quad<RGaVector<Expr>>(vDt1, vDt2, vDt3, vDt4);
+        return new Quad<XGaVector<Expr>>(vDt1, vDt2, vDt3, vDt4);
     }
 
-    private static Hexad<RGaVector<Expr>> GetTimeDerivatives6D(this RGaVector<Expr> v)
+    private static Hexad<XGaVector<Expr>> GetTimeDerivatives6D(this XGaVector<Expr> v)
     {
         var t = "t".ToSymbolExpr();
 
@@ -415,10 +415,10 @@ public static class SymbolicValidationSample
 
         PlotCurveNorm(vDt1, Path.Combine(WorkingPath, "vDt1Norm"));
 
-        return new Hexad<RGaVector<Expr>>(vDt1, vDt2, vDt3, vDt4, vDt5, vDt6);
+        return new Hexad<XGaVector<Expr>>(vDt1, vDt2, vDt3, vDt4, vDt5, vDt6);
     }
 
-    private static Triplet<RGaVector<Expr>> GetArcLengthDerivatives3D(this RGaVector<Expr> v)
+    private static Triplet<XGaVector<Expr>> GetArcLengthDerivatives3D(this XGaVector<Expr> v)
     {
         var t = "t".ToSymbolExpr();
 
@@ -444,10 +444,10 @@ public static class SymbolicValidationSample
 
         PlotCurveNorm(vDs1, Path.Combine(WorkingPath, "vDs1Norm"));
 
-        return new Triplet<RGaVector<Expr>>(vDs1, vDs2, vDs3);
+        return new Triplet<XGaVector<Expr>>(vDs1, vDs2, vDs3);
     }
 
-    private static Quad<RGaVector<Expr>> GetArcLengthDerivatives4D(this RGaVector<Expr> v)
+    private static Quad<XGaVector<Expr>> GetArcLengthDerivatives4D(this XGaVector<Expr> v)
     {
         var t = "t".ToSymbolExpr();
 
@@ -476,10 +476,10 @@ public static class SymbolicValidationSample
 
         PlotCurveNorm(vDs1, Path.Combine(WorkingPath, "vDs1Norm"));
 
-        return new Quad<RGaVector<Expr>>(vDs1, vDs2, vDs3, vDs4);
+        return new Quad<XGaVector<Expr>>(vDs1, vDs2, vDs3, vDs4);
     }
 
-    private static Hexad<RGaVector<Expr>> GetArcLengthDerivatives6D(this RGaVector<Expr> v)
+    private static Hexad<XGaVector<Expr>> GetArcLengthDerivatives6D(this XGaVector<Expr> v)
     {
         var t = "t".ToSymbolExpr();
 
@@ -514,10 +514,10 @@ public static class SymbolicValidationSample
 
         PlotCurveNorm(vDs1, Path.Combine(WorkingPath, "vDs1Norm"));
 
-        return new Hexad<RGaVector<Expr>>(vDs1, vDs2, vDs3, vDs4, vDs5, vDs6);
+        return new Hexad<XGaVector<Expr>>(vDs1, vDs2, vDs3, vDs4, vDs5, vDs6);
     }
 
-    private static Triplet<RGaVector<Expr>> GetTimeGramSchmidtFrame3D(RGaVector<Expr> vDt1, RGaVector<Expr> vDt2, RGaVector<Expr> vDt3)
+    private static Triplet<XGaVector<Expr>> GetTimeGramSchmidtFrame3D(XGaVector<Expr> vDt1, XGaVector<Expr> vDt2, XGaVector<Expr> vDt3)
     {
         var t = "t".ToSymbolExpr();
 
@@ -554,10 +554,10 @@ public static class SymbolicValidationSample
             .ConsoleWriteLine(e3t, @"\boldsymbol{e}_{3} \left( t \right)")
             .ConsoleWriteLine();
 
-        return new Triplet<RGaVector<Expr>>(e1t, e2t, e3t);
+        return new Triplet<XGaVector<Expr>>(e1t, e2t, e3t);
     }
 
-    private static Quad<RGaVector<Expr>> GetTimeGramSchmidtFrame4D(RGaVector<Expr> vDt1, RGaVector<Expr> vDt2, RGaVector<Expr> vDt3, RGaVector<Expr> vDt4)
+    private static Quad<XGaVector<Expr>> GetTimeGramSchmidtFrame4D(XGaVector<Expr> vDt1, XGaVector<Expr> vDt2, XGaVector<Expr> vDt3, XGaVector<Expr> vDt4)
     {
         var t = "t".ToSymbolExpr();
 
@@ -600,10 +600,10 @@ public static class SymbolicValidationSample
             .ConsoleWriteLine(e4t, @"\boldsymbol{e}_{4} \left( t \right)")
             .ConsoleWriteLine();
 
-        return new Quad<RGaVector<Expr>>(e1t, e2t, e3t, e4t);
+        return new Quad<XGaVector<Expr>>(e1t, e2t, e3t, e4t);
     }
 
-    private static Hexad<RGaVector<Expr>> GetTimeGramSchmidtFrame6D(RGaVector<Expr> vDt1, RGaVector<Expr> vDt2, RGaVector<Expr> vDt3, RGaVector<Expr> vDt4, RGaVector<Expr> vDt5, RGaVector<Expr> vDt6)
+    private static Hexad<XGaVector<Expr>> GetTimeGramSchmidtFrame6D(XGaVector<Expr> vDt1, XGaVector<Expr> vDt2, XGaVector<Expr> vDt3, XGaVector<Expr> vDt4, XGaVector<Expr> vDt5, XGaVector<Expr> vDt6)
     {
         var t = "t".ToSymbolExpr();
 
@@ -661,10 +661,10 @@ public static class SymbolicValidationSample
             .ConsoleWriteLine(e6t, @"\boldsymbol{e}_{6} \left( t \right)")
             .ConsoleWriteLine();
 
-        return new Hexad<RGaVector<Expr>>(e1t, e2t, e3t, e4t, e5t, e6t);
+        return new Hexad<XGaVector<Expr>>(e1t, e2t, e3t, e4t, e5t, e6t);
     }
 
-    private static Triplet<RGaVector<Expr>> GetArcLengthGramSchmidtFrame3D(RGaVector<Expr> vDs1, RGaVector<Expr> vDs2, RGaVector<Expr> vDs3)
+    private static Triplet<XGaVector<Expr>> GetArcLengthGramSchmidtFrame3D(XGaVector<Expr> vDs1, XGaVector<Expr> vDs2, XGaVector<Expr> vDs3)
     {
         var t = "t".ToSymbolExpr();
 
@@ -701,10 +701,10 @@ public static class SymbolicValidationSample
             .ConsoleWriteLine(e3s, @"\boldsymbol{e}_{3} \left( s \right)")
             .ConsoleWriteLine();
 
-        return new Triplet<RGaVector<Expr>>(e1s, e2s, e3s);
+        return new Triplet<XGaVector<Expr>>(e1s, e2s, e3s);
     }
 
-    private static Quad<RGaVector<Expr>> GetArcLengthGramSchmidtFrame4D(RGaVector<Expr> vDs1, RGaVector<Expr> vDs2, RGaVector<Expr> vDs3, RGaVector<Expr> vDs4)
+    private static Quad<XGaVector<Expr>> GetArcLengthGramSchmidtFrame4D(XGaVector<Expr> vDs1, XGaVector<Expr> vDs2, XGaVector<Expr> vDs3, XGaVector<Expr> vDs4)
     {
         var t = "t".ToSymbolExpr();
 
@@ -747,10 +747,10 @@ public static class SymbolicValidationSample
             .ConsoleWriteLine(e4s, @"\boldsymbol{e}_{4} \left( s \right)")
             .ConsoleWriteLine();
 
-        return new Quad<RGaVector<Expr>>(e1s, e2s, e3s, e4s);
+        return new Quad<XGaVector<Expr>>(e1s, e2s, e3s, e4s);
     }
 
-    private static Hexad<RGaVector<Expr>> GetArcLengthGramSchmidtFrame6D(RGaVector<Expr> vDs1, RGaVector<Expr> vDs2, RGaVector<Expr> vDs3, RGaVector<Expr> vDs4, RGaVector<Expr> vDs5, RGaVector<Expr> vDs6)
+    private static Hexad<XGaVector<Expr>> GetArcLengthGramSchmidtFrame6D(XGaVector<Expr> vDs1, XGaVector<Expr> vDs2, XGaVector<Expr> vDs3, XGaVector<Expr> vDs4, XGaVector<Expr> vDs5, XGaVector<Expr> vDs6)
     {
         var t = "t".ToSymbolExpr();
 
@@ -808,10 +808,10 @@ public static class SymbolicValidationSample
             .ConsoleWriteLine(e6s, @"\boldsymbol{e}_{6} \left( s \right)")
             .ConsoleWriteLine();
 
-        return new Hexad<RGaVector<Expr>>(e1s, e2s, e3s, e4s, e5s, e6s);
+        return new Hexad<XGaVector<Expr>>(e1s, e2s, e3s, e4s, e5s, e6s);
     }
 
-    private static Triplet<RGaVector<Expr>> GetFrameTimeDerivative3D(RGaVector<Expr> e1t, RGaVector<Expr> e2t, RGaVector<Expr> e3t)
+    private static Triplet<XGaVector<Expr>> GetFrameTimeDerivative3D(XGaVector<Expr> e1t, XGaVector<Expr> e2t, XGaVector<Expr> e3t)
     {
         var t = "t".ToSymbolExpr();
 
@@ -826,10 +826,10 @@ public static class SymbolicValidationSample
             .ConsoleWriteLine(e3tDt, @"\boldsymbol{e}^{\prime}_{3}\left(t\right)")
             .ConsoleWriteLine();
 
-        return new Triplet<RGaVector<Expr>>(e1tDt, e2tDt, e3tDt);
+        return new Triplet<XGaVector<Expr>>(e1tDt, e2tDt, e3tDt);
     }
 
-    private static Quad<RGaVector<Expr>> GetFrameTimeDerivative4D(RGaVector<Expr> e1t, RGaVector<Expr> e2t, RGaVector<Expr> e3t, RGaVector<Expr> e4t)
+    private static Quad<XGaVector<Expr>> GetFrameTimeDerivative4D(XGaVector<Expr> e1t, XGaVector<Expr> e2t, XGaVector<Expr> e3t, XGaVector<Expr> e4t)
     {
         var t = "t".ToSymbolExpr();
 
@@ -846,10 +846,10 @@ public static class SymbolicValidationSample
             .ConsoleWriteLine(e4tDt, @"\boldsymbol{e}^{\prime}_{4}\left(t\right)")
             .ConsoleWriteLine();
 
-        return new Quad<RGaVector<Expr>>(e1tDt, e2tDt, e3tDt, e4tDt);
+        return new Quad<XGaVector<Expr>>(e1tDt, e2tDt, e3tDt, e4tDt);
     }
 
-    private static Hexad<RGaVector<Expr>> GetFrameTimeDerivative6D(RGaVector<Expr> e1t, RGaVector<Expr> e2t, RGaVector<Expr> e3t, RGaVector<Expr> e4t, RGaVector<Expr> e5t, RGaVector<Expr> e6t)
+    private static Hexad<XGaVector<Expr>> GetFrameTimeDerivative6D(XGaVector<Expr> e1t, XGaVector<Expr> e2t, XGaVector<Expr> e3t, XGaVector<Expr> e4t, XGaVector<Expr> e5t, XGaVector<Expr> e6t)
     {
         var t = "t".ToSymbolExpr();
 
@@ -870,10 +870,10 @@ public static class SymbolicValidationSample
             .ConsoleWriteLine(e6tDt, @"\boldsymbol{e}^{\prime}_{6}\left(t\right)")
             .ConsoleWriteLine();
 
-        return new Hexad<RGaVector<Expr>>(e1tDt, e2tDt, e3tDt, e4tDt, e5tDt, e6tDt);
+        return new Hexad<XGaVector<Expr>>(e1tDt, e2tDt, e3tDt, e4tDt, e5tDt, e6tDt);
     }
 
-    private static Triplet<RGaVector<Expr>> GetFrameArcLengthDerivative3D(RGaVector<Expr> e1s, RGaVector<Expr> e2s, RGaVector<Expr> e3s, Expr sDt)
+    private static Triplet<XGaVector<Expr>> GetFrameArcLengthDerivative3D(XGaVector<Expr> e1s, XGaVector<Expr> e2s, XGaVector<Expr> e3s, Expr sDt)
     {
         var t = "t".ToSymbolExpr();
 
@@ -888,10 +888,10 @@ public static class SymbolicValidationSample
             .ConsoleWriteLine(e3sDs, @"\dot{\boldsymbol{e}}_{3}\left(s\right)")
             .ConsoleWriteLine();
 
-        return new Triplet<RGaVector<Expr>>(e1sDs, e2sDs, e3sDs);
+        return new Triplet<XGaVector<Expr>>(e1sDs, e2sDs, e3sDs);
     }
 
-    private static Quad<RGaVector<Expr>> GetFrameArcLengthDerivative4D(RGaVector<Expr> e1s, RGaVector<Expr> e2s, RGaVector<Expr> e3s, RGaVector<Expr> e4s, Expr sDt)
+    private static Quad<XGaVector<Expr>> GetFrameArcLengthDerivative4D(XGaVector<Expr> e1s, XGaVector<Expr> e2s, XGaVector<Expr> e3s, XGaVector<Expr> e4s, Expr sDt)
     {
         var t = "t".ToSymbolExpr();
 
@@ -908,10 +908,10 @@ public static class SymbolicValidationSample
             .ConsoleWriteLine(e4sDs, @"\dot{\boldsymbol{e}}_{4}\left(s\right)")
             .ConsoleWriteLine();
 
-        return new Quad<RGaVector<Expr>>(e1sDs, e2sDs, e3sDs, e4sDs);
+        return new Quad<XGaVector<Expr>>(e1sDs, e2sDs, e3sDs, e4sDs);
     }
 
-    private static Hexad<RGaVector<Expr>> GetFrameArcLengthDerivative6D(RGaVector<Expr> e1s, RGaVector<Expr> e2s, RGaVector<Expr> e3s, RGaVector<Expr> e4s, RGaVector<Expr> e5s, RGaVector<Expr> e6s, Expr sDt)
+    private static Hexad<XGaVector<Expr>> GetFrameArcLengthDerivative6D(XGaVector<Expr> e1s, XGaVector<Expr> e2s, XGaVector<Expr> e3s, XGaVector<Expr> e4s, XGaVector<Expr> e5s, XGaVector<Expr> e6s, Expr sDt)
     {
         var t = "t".ToSymbolExpr();
 
@@ -932,11 +932,11 @@ public static class SymbolicValidationSample
             .ConsoleWriteLine(e6sDs, @"\dot{\boldsymbol{e}}_{6}\left(s\right)")
             .ConsoleWriteLine();
 
-        return new Hexad<RGaVector<Expr>>(e1sDs, e2sDs, e3sDs, e4sDs, e5sDs, e6sDs);
+        return new Hexad<XGaVector<Expr>>(e1sDs, e2sDs, e3sDs, e4sDs, e5sDs, e6sDs);
     }
 
 
-    private static void PlotCurveArcLength(RGaVector<Expr> curve, string filePath)
+    private static void PlotCurveArcLength(XGaVector<Expr> curve, string filePath)
     {
         var t = "t".ToSymbolExpr();
         var x = "x".ToSymbolExpr();
@@ -997,7 +997,7 @@ public static class SymbolicValidationSample
         //OxyPlot.SkiaSharp.PngExporter.Export(pm, filePath + "png", 1024, 768, 300);
     }
 
-    private static void PlotCurveNorm(RGaVector<Expr> curve, string filePath)
+    private static void PlotCurveNorm(XGaVector<Expr> curve, string filePath)
     {
         var t = "t".ToSymbolExpr();
 
@@ -1022,7 +1022,7 @@ public static class SymbolicValidationSample
         //OxyPlot.SkiaSharp.PngExporter.Export(pm, filePath + "png", 1024, 768, 300);
     }
 
-    private static void PlotCurveComponents(RGaVector<Expr> curve, string filePath)
+    private static void PlotCurveComponents(XGaVector<Expr> curve, string filePath)
     {
         var t = "t".ToSymbolExpr();
 
@@ -1071,7 +1071,7 @@ public static class SymbolicValidationSample
         Console.WriteLine();
     }
 
-    private static void ValidateEqual(RGaVector<Expr> v1, RGaVector<Expr> v2, string v1Text, string v2Text)
+    private static void ValidateEqual(XGaVector<Expr> v1, XGaVector<Expr> v2, string v1Text, string v2Text)
     {
         var t = "t".ToExpr();
 
@@ -1091,7 +1091,7 @@ public static class SymbolicValidationSample
         Console.WriteLine();
     }
 
-    private static void ValidateEqual(RGaMultivector<Expr> v1, RGaMultivector<Expr> v2, string v1Text, string v2Text)
+    private static void ValidateEqual(XGaMultivector<Expr> v1, XGaMultivector<Expr> v2, string v1Text, string v2Text)
     {
         var t = "t".ToExpr();
 
@@ -1111,7 +1111,7 @@ public static class SymbolicValidationSample
         Console.WriteLine();
     }
 
-    private static void ValidateOrthogonal(RGaVector<Expr> v1, RGaVector<Expr> v2, string v1Text, string v2Text)
+    private static void ValidateOrthogonal(XGaVector<Expr> v1, XGaVector<Expr> v2, string v1Text, string v2Text)
     {
         var t = "t".ToExpr();
 

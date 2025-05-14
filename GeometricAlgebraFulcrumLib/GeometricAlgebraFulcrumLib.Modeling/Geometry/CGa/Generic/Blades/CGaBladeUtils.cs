@@ -1,7 +1,7 @@
 ﻿using System.Runtime.CompilerServices;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Extended.Generic.Multivectors;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Extended.Generic.Multivectors.Composers;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Multivectors;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Multivectors.Composers;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Generic;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Generic.Elements;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.BitManipulation;
@@ -301,7 +301,7 @@ public static class CGaBladeUtils
             .Select(id =>
                 cgaGeometricSpace
                     .ConformalProcessor
-                    .KVectorTerm((id << 2).BitPatternToIndexSet())
+                    .KVectorTerm((id << 2).ToUInt64IndexSet())
                     .ToConformalBlade(cgaGeometricSpace)
             );
     }
@@ -317,7 +317,7 @@ public static class CGaBladeUtils
                 cgaGeometricSpace
                     .BasisSpecs
                     .BasisMapInverse
-                    .OmMapBasisBlade(id.BitPatternToIndexSet())
+                    .OmMapBasisBlade(id.ToUInt64IndexSet())
                     .ToConformalBlade(cgaGeometricSpace)
             );
     }
@@ -334,7 +334,7 @@ public static class CGaBladeUtils
                 cgaGeometricSpace
                     .BasisSpecs
                     .BasisMapInverse
-                    .OmMapBasisBlade(id.BitPatternToIndexSet())
+                    .OmMapBasisBlade(id.ToUInt64IndexSet())
                     .ToConformalBlade(cgaGeometricSpace)
             );
     }
@@ -350,7 +350,7 @@ public static class CGaBladeUtils
                 cgaGeometricSpace
                     .BasisSpecs
                     .BasisMapInverse
-                    .OmMapBasisBlade(id.BitPatternToIndexSet())
+                    .OmMapBasisBlade(id.ToUInt64IndexSet())
                     .ToConformalBlade(cgaGeometricSpace)
             );
     }

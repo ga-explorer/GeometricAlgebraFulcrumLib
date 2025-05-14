@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Specialized;
 using System.Runtime.CompilerServices;
-using GeometricAlgebraFulcrumLib.Core.GeometricAlgebra.Restricted.Records;
 using GeometricAlgebraFulcrumLib.Core.Structures.Tuples;
 
 namespace GeometricAlgebraFulcrumLib.Core.GeometricAlgebra.Basis;
@@ -18,8 +17,8 @@ internal sealed record BasisBladeData
 
     public ulong Index { get; }
 
-    public RGaGradeKvIndexRecord GradeIndex 
-        => new RGaGradeKvIndexRecord(Grade, Index);
+    public Tuple<uint, ulong> GradeIndex 
+        => new Tuple<uint, ulong>(Grade, Index);
 
     public bool GradeInvolutionIsNegative 
         => _unaryOperationsIsNegativeBitVector[1];

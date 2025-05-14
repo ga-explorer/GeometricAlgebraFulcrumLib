@@ -1,6 +1,5 @@
-﻿using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Extended.Generic.Multivectors;
+﻿using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Multivectors;
 using GeometricAlgebraFulcrumLib.MetaProgramming.Composers;
 using GeometricAlgebraFulcrumLib.MetaProgramming.Context;
 using GeometricAlgebraFulcrumLib.MetaProgramming.Context.Expressions;
@@ -83,7 +82,7 @@ internal sealed class MiscMethodsFileComposer :
             Templates["edual"],
             "double", GeoLanguage.ScalarTypeName,
             "grade", inGrade,
-            "num", VSpaceDimensions.KVectorSpaceDimension(inGrade),
+            "num", VSpaceDimensions.KVectorSpaceDimensions(inGrade),
             "computations", computationsText
         );
     }
@@ -276,7 +275,7 @@ internal sealed class MiscMethodsFileComposer :
             miscCasesText.AddTextItems(miscCasesTemplates,
                 "signature", CurrentNamespace,
                 "grade", grade,
-                "num", VSpaceDimensions.KVectorSpaceDimension(grade),
+                "num", VSpaceDimensions.KVectorSpaceDimensions(grade),
                 "sign", grade.ReverseIsNegativeOfGrade() ? "-" : "",
                 "invgrade", VSpaceDimensions - grade
             );
@@ -304,7 +303,7 @@ internal sealed class MiscMethodsFileComposer :
         var kvSpaceDimList =
             VSpaceDimensions
                 .GetRange()
-                .Select(grade => VSpaceDimensions.KVectorSpaceDimension(grade))
+                .Select(grade => VSpaceDimensions.KVectorSpaceDimensions(grade))
                 .Distinct();
 
         foreach (var kvSpaceDim in kvSpaceDimList)

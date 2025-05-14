@@ -31,12 +31,12 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Structures.Samples.IndexSets
 
         public static void CreationExample()
         {
-            Console.WriteLine(IndexSet.Create(3));
-            Console.WriteLine(IndexSet.Create(65));
-            Console.WriteLine(IndexSet.Create(3, 29));
-            Console.WriteLine(IndexSet.Create(9, 98));
-            Console.WriteLine(IndexSet.Create(3, 5, 18));
-            Console.WriteLine(IndexSet.Create(13, 22, 70));
+            Console.WriteLine(IndexSet.CreateUnit(3));
+            Console.WriteLine(IndexSet.CreateUnit(65));
+            Console.WriteLine(IndexSet.CreatePair(3, 29));
+            Console.WriteLine(IndexSet.CreatePair(9, 98));
+            Console.WriteLine(IndexSet.CreateTriplet(3, 5, 18));
+            Console.WriteLine(IndexSet.CreateTriplet(13, 22, 70));
             Console.WriteLine(IndexSet.CreateDense(13, 5));
             Console.WriteLine(IndexSet.CreateDense(58, 5));
         }

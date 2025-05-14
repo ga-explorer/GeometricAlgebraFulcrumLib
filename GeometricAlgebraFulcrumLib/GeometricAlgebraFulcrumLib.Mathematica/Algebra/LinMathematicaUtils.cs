@@ -1,14 +1,14 @@
 ﻿using System.Linq;
 using System.Runtime.CompilerServices;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Generic.Processors;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Processors;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.SpaceND;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Generic.LinearMaps;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Generic.Vectors.SpaceND;
-using Wolfram.NETLink;
 using GeometricAlgebraFulcrumLib.Mathematica.Utilities.Structures;
 using GeometricAlgebraFulcrumLib.Mathematica.Utilities.Text;
+using Wolfram.NETLink;
 
-namespace GeometricAlgebraFulcrumLib.Mathematica.Algebra.LinearAlgebra;
+namespace GeometricAlgebraFulcrumLib.Mathematica.Algebra;
 
 public static class LinMathematicaUtils
 {
@@ -18,8 +18,8 @@ public static class LinMathematicaUtils
     //public static MatrixAlgebraMathematicaProcessor MatrixProcessor
     //    => MatrixAlgebraMathematicaProcessor.Instance;
 
-    public static RGaProcessor<Expr> EuclideanProcessor { get; }
-        = RGaProcessor<Expr>.CreateEuclidean(ScalarProcessor);
+    public static XGaProcessor<Expr> EuclideanProcessor { get; }
+        = XGaProcessor<Expr>.CreateEuclidean(ScalarProcessor);
 
     public static LaTeXComposerOfWolframExpr LaTeXComposer
         => LaTeXComposerOfWolframExpr.DefaultComposer;

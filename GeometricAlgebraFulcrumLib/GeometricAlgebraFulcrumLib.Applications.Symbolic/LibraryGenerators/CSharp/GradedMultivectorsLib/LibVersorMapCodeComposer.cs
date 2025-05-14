@@ -1,10 +1,10 @@
 ﻿using System.Collections.Immutable;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Basis;
 using GeometricAlgebraFulcrumLib.Applications.Symbolic.LibraryGenerators.CSharp.GradedMultivectorsLib.Combinations;
 using GeometricAlgebraFulcrumLib.Applications.Symbolic.LibraryGenerators.CSharp.GradedMultivectorsLib.Storage;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.BitManipulation;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Combinations;
+using GeometricAlgebraFulcrumLib.Utilities.Structures.IndexSets;
 using GeometricAlgebraFulcrumLib.Utilities.Text;
 using GeometricAlgebraFulcrumLib.Utilities.Text.Files;
 using GeometricAlgebraFulcrumLib.Utilities.Text.Text;
@@ -21,7 +21,7 @@ public class LibVersorMapCodeComposer :
     }
     
     
-    private static IRGaSignedBasisBlade VersorMap(RGaBasisBlade b1, RGaBasisBlade b2, RGaBasisBlade b3)
+    private static IXGaSignedBasisBlade VersorMap(XGaBasisBlade b1, XGaBasisBlade b2, XGaBasisBlade b3)
     {
         var outputGrade = b2.Grade;
         var metric = b2.Metric;
@@ -40,7 +40,7 @@ public class LibVersorMapCodeComposer :
         return b4;
     }
     
-    private static IRGaSignedBasisBlade EvenVersorMap(RGaBasisBlade b1, RGaBasisBlade b2, RGaBasisBlade b3)
+    private static IXGaSignedBasisBlade EvenVersorMap(XGaBasisBlade b1, XGaBasisBlade b2, XGaBasisBlade b3)
     {
         var outputGrade = b2.Grade;
         var metric = b2.Metric;
@@ -57,7 +57,7 @@ public class LibVersorMapCodeComposer :
         return b4;
     }
     
-    private static IRGaSignedBasisBlade OddVersorMap(RGaBasisBlade b1, RGaBasisBlade b2, RGaBasisBlade b3)
+    private static IXGaSignedBasisBlade OddVersorMap(XGaBasisBlade b1, XGaBasisBlade b2, XGaBasisBlade b3)
     {
         var outputGrade = b2.Grade;
         var metric = b2.Metric;
@@ -176,7 +176,7 @@ public class LibVersorMapCodeComposer :
                 termList.Select(term =>
                     {
                         var lhsCode = tempStorage[
-                            (int)((ulong)term.Key).BasisBladeIdToIndex()
+                            (int)((IndexSet)term.Key).BasisBladeIdToIndex()
                         ];
 
                         var rhsCode = term.Value.GetRhsCode(
@@ -277,7 +277,7 @@ public class LibVersorMapCodeComposer :
                 termList.Select(term =>
                     {
                         var lhsCode = tempStorage[
-                            (int)((ulong)term.Key).BasisBladeIdToIndex()
+                            (int)((IndexSet)term.Key).BasisBladeIdToIndex()
                         ];
 
                         var rhsCode = term.Value.GetRhsCode(
@@ -379,7 +379,7 @@ public class LibVersorMapCodeComposer :
                     termList.Select(term =>
                         {
                             var lhsCode = tempStorage[
-                                (int)((ulong)term.Key).BasisBladeIdToIndex()
+                                (int)((IndexSet)term.Key).BasisBladeIdToIndex()
                             ];
 
                             var rhsCode = term.Value.GetRhsCode(

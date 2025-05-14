@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics;
 using System.Runtime.CompilerServices;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Float64.Multivectors;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Float64.Multivectors.Composers;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivectors;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivectors.Composers;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space2D;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space3D;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.SpaceND;
@@ -49,7 +49,7 @@ public class CGaFloat64OpnsRoundEncoder :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public CGaFloat64Blade Point(RGaFloat64Vector egaPoint)
+    public CGaFloat64Blade Point(XGaFloat64Vector egaPoint)
     {
         return GeometricSpace.Encode.IpnsRound.Point(egaPoint).CGaUnDual();
     }
@@ -61,8 +61,8 @@ public class CGaFloat64OpnsRoundEncoder :
         Debug.Assert(GeometricSpace.Is4D);
 
         return PointPair(
-            egaPoint1.ToRGaFloat64Vector(),
-            egaPoint2.ToRGaFloat64Vector()
+            egaPoint1.ToXGaFloat64Vector(),
+            egaPoint2.ToXGaFloat64Vector()
         );
     }
 
@@ -72,9 +72,9 @@ public class CGaFloat64OpnsRoundEncoder :
         Debug.Assert(GeometricSpace.Is4D);
 
         return Circle(
-            egaPoint1.ToRGaFloat64Vector(),
-            egaPoint2.ToRGaFloat64Vector(),
-            egaPoint3.ToRGaFloat64Vector()
+            egaPoint1.ToXGaFloat64Vector(),
+            egaPoint2.ToXGaFloat64Vector(),
+            egaPoint3.ToXGaFloat64Vector()
         );
     }
 
@@ -84,10 +84,10 @@ public class CGaFloat64OpnsRoundEncoder :
         Debug.Assert(GeometricSpace.Is4D);
 
         return BladeFromPoints(
-            egaPoint1.ToRGaFloat64Vector(),
-            egaPoint2.ToRGaFloat64Vector(),
-            egaPoint3.ToRGaFloat64Vector(),
-            egaPoint4.ToRGaFloat64Vector()
+            egaPoint1.ToXGaFloat64Vector(),
+            egaPoint2.ToXGaFloat64Vector(),
+            egaPoint3.ToXGaFloat64Vector(),
+            egaPoint4.ToXGaFloat64Vector()
         );
     }
 
@@ -98,8 +98,8 @@ public class CGaFloat64OpnsRoundEncoder :
         Debug.Assert(GeometricSpace.Is5D);
 
         return PointPair(
-            egaPoint1.ToRGaFloat64Vector(),
-            egaPoint2.ToRGaFloat64Vector()
+            egaPoint1.ToXGaFloat64Vector(),
+            egaPoint2.ToXGaFloat64Vector()
         );
     }
 
@@ -109,9 +109,9 @@ public class CGaFloat64OpnsRoundEncoder :
         Debug.Assert(GeometricSpace.Is5D);
 
         return Circle(
-            egaPoint1.ToRGaFloat64Vector(),
-            egaPoint2.ToRGaFloat64Vector(),
-            egaPoint3.ToRGaFloat64Vector()
+            egaPoint1.ToXGaFloat64Vector(),
+            egaPoint2.ToXGaFloat64Vector(),
+            egaPoint3.ToXGaFloat64Vector()
         );
     }
 
@@ -121,15 +121,15 @@ public class CGaFloat64OpnsRoundEncoder :
         Debug.Assert(GeometricSpace.Is5D);
 
         return BladeFromPoints(
-            egaPoint1.ToRGaFloat64Vector(),
-            egaPoint2.ToRGaFloat64Vector(),
-            egaPoint3.ToRGaFloat64Vector(),
-            egaPoint4.ToRGaFloat64Vector()
+            egaPoint1.ToXGaFloat64Vector(),
+            egaPoint2.ToXGaFloat64Vector(),
+            egaPoint3.ToXGaFloat64Vector(),
+            egaPoint4.ToXGaFloat64Vector()
         );
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public CGaFloat64Blade Sphere(RGaFloat64Vector egaPoint1, RGaFloat64Vector egaPoint2, RGaFloat64Vector egaPoint3, RGaFloat64Vector egaPoint4)
+    public CGaFloat64Blade Sphere(XGaFloat64Vector egaPoint1, XGaFloat64Vector egaPoint2, XGaFloat64Vector egaPoint3, XGaFloat64Vector egaPoint4)
     {
         Debug.Assert(GeometricSpace.Is5D);
 
@@ -143,7 +143,7 @@ public class CGaFloat64OpnsRoundEncoder :
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public CGaFloat64Blade PointPair(RGaFloat64Vector egaPoint1, RGaFloat64Vector egaPoint2)
+    public CGaFloat64Blade PointPair(XGaFloat64Vector egaPoint1, XGaFloat64Vector egaPoint2)
     {
         var p1 = GeometricSpace.Encode.IpnsRound.Point(egaPoint1);
         var p2 = GeometricSpace.Encode.IpnsRound.Point(egaPoint2);
@@ -152,7 +152,7 @@ public class CGaFloat64OpnsRoundEncoder :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public CGaFloat64Blade Circle(RGaFloat64Vector egaPoint1, RGaFloat64Vector egaPoint2, RGaFloat64Vector egaPoint3)
+    public CGaFloat64Blade Circle(XGaFloat64Vector egaPoint1, XGaFloat64Vector egaPoint2, XGaFloat64Vector egaPoint3)
     {
         var p1 = GeometricSpace.Encode.IpnsRound.Point(egaPoint1);
         var p2 = GeometricSpace.Encode.IpnsRound.Point(egaPoint2);
@@ -162,13 +162,13 @@ public class CGaFloat64OpnsRoundEncoder :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public CGaFloat64Blade BladeFromPoint(RGaFloat64Vector egaPoint)
+    public CGaFloat64Blade BladeFromPoint(XGaFloat64Vector egaPoint)
     {
         return GeometricSpace.Encode.IpnsRound.Point(egaPoint);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public CGaFloat64Blade BladeFromPoints(RGaFloat64Vector egaPoint1, RGaFloat64Vector egaPoint2)
+    public CGaFloat64Blade BladeFromPoints(XGaFloat64Vector egaPoint1, XGaFloat64Vector egaPoint2)
     {
         var p1 = GeometricSpace.Encode.IpnsRound.Point(egaPoint1);
         var p2 = GeometricSpace.Encode.IpnsRound.Point(egaPoint2);
@@ -177,7 +177,7 @@ public class CGaFloat64OpnsRoundEncoder :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public CGaFloat64Blade BladeFromPoints(RGaFloat64Vector egaPoint1, RGaFloat64Vector egaPoint2, RGaFloat64Vector egaPoint3)
+    public CGaFloat64Blade BladeFromPoints(XGaFloat64Vector egaPoint1, XGaFloat64Vector egaPoint2, XGaFloat64Vector egaPoint3)
     {
         var p1 = GeometricSpace.Encode.IpnsRound.Point(egaPoint1);
         var p2 = GeometricSpace.Encode.IpnsRound.Point(egaPoint2);
@@ -187,7 +187,7 @@ public class CGaFloat64OpnsRoundEncoder :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public CGaFloat64Blade BladeFromPoints(RGaFloat64Vector egaPoint1, RGaFloat64Vector egaPoint2, RGaFloat64Vector egaPoint3, RGaFloat64Vector egaPoint4)
+    public CGaFloat64Blade BladeFromPoints(XGaFloat64Vector egaPoint1, XGaFloat64Vector egaPoint2, XGaFloat64Vector egaPoint3, XGaFloat64Vector egaPoint4)
     {
         var p1 = GeometricSpace.Encode.IpnsRound.Point(egaPoint1);
         var p2 = GeometricSpace.Encode.IpnsRound.Point(egaPoint2);
@@ -198,13 +198,13 @@ public class CGaFloat64OpnsRoundEncoder :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public CGaFloat64Blade BladeFromPoints(params RGaFloat64Vector[] egaPointArray)
+    public CGaFloat64Blade BladeFromPoints(params XGaFloat64Vector[] egaPointArray)
     {
         return egaPointArray.Select(GeometricSpace.Encode.IpnsRound.Point).Op();
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public CGaFloat64Blade BladeFromPoints(IEnumerable<RGaFloat64Vector> egaPointList)
+    public CGaFloat64Blade BladeFromPoints(IEnumerable<XGaFloat64Vector> egaPointList)
     {
         return egaPointList.Select(GeometricSpace.Encode.IpnsRound.Point).Op();
     }

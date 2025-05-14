@@ -1,22 +1,22 @@
-﻿using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Generic.Multivectors;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Generic.Processors;
+﻿using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Multivectors;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Processors;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Generic;
 
 namespace GeometricAlgebraFulcrumLib.Modeling.Calculus.Fourier;
 
 public class MultivectorFourierCurveTerm<T>
 {
-    public RGaProcessor<T> Processor 
+    public XGaProcessor<T> Processor 
         => CosMultivector.Processor;
 
-    public RGaMultivector<T> CosMultivector { get; private set; }
+    public XGaMultivector<T> CosMultivector { get; private set; }
 
-    public RGaMultivector<T> SinMultivector { get; private set; }
+    public XGaMultivector<T> SinMultivector { get; private set; }
 
     public Scalar<T> Frequency { get; }
 
 
-    internal MultivectorFourierCurveTerm(RGaMultivector<T> cosMultivector, RGaMultivector<T> sinMultivector, Scalar<T> frequency)
+    internal MultivectorFourierCurveTerm(XGaMultivector<T> cosMultivector, XGaMultivector<T> sinMultivector, Scalar<T> frequency)
     {
         CosMultivector = cosMultivector;
         SinMultivector = sinMultivector;
@@ -24,7 +24,7 @@ public class MultivectorFourierCurveTerm<T>
     }
 
 
-    public MultivectorFourierCurveTerm<T> AddMultivectors(RGaMultivector<T> cosMultivector, RGaMultivector<T> sinMultivector)
+    public MultivectorFourierCurveTerm<T> AddMultivectors(XGaMultivector<T> cosMultivector, XGaMultivector<T> sinMultivector)
     {
         CosMultivector += cosMultivector;
         SinMultivector += sinMultivector;
@@ -32,14 +32,14 @@ public class MultivectorFourierCurveTerm<T>
         return this;
     }
 
-    public RGaMultivector<T> GetValue(Scalar<T> parameterValue)
+    public XGaMultivector<T> GetValue(Scalar<T> parameterValue)
     {
         var angle = Frequency * parameterValue;
 
         return CosMultivector * angle.Cos() + SinMultivector * angle.Sin();
     }
         
-    public RGaMultivector<T> GetValue(T parameterValue)
+    public XGaMultivector<T> GetValue(T parameterValue)
     {
         var angle = Frequency * parameterValue;
 

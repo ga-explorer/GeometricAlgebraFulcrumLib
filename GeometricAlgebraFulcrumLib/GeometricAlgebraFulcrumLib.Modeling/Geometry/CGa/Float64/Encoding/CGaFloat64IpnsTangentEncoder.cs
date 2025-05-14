@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics;
 using System.Runtime.CompilerServices;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Float64.Multivectors;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Float64.Multivectors.Composers;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivectors;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivectors.Composers;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space2D;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space3D;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.SpaceND;
@@ -30,7 +30,7 @@ public class CGaFloat64IpnsTangentEncoder :
     public CGaFloat64Blade Point(double pointX, double pointY)
     {
         return Point(
-            LinFloat64Vector2D.Create(pointX, pointY).ToRGaFloat64Vector()
+            LinFloat64Vector2D.Create(pointX, pointY).ToXGaFloat64Vector()
         );
     }
 
@@ -44,7 +44,7 @@ public class CGaFloat64IpnsTangentEncoder :
     public CGaFloat64Blade Point(LinFloat64Vector2D egaPoint)
     {
         return Point(
-            egaPoint.ToRGaFloat64Vector()
+            egaPoint.ToXGaFloat64Vector()
         );
     }
 
@@ -60,7 +60,7 @@ public class CGaFloat64IpnsTangentEncoder :
     public CGaFloat64Blade Point(double pointX, double pointY, double pointZ)
     {
         return Point(
-            LinFloat64Vector3D.Create(pointX, pointY, pointZ).ToRGaFloat64Vector()
+            LinFloat64Vector3D.Create(pointX, pointY, pointZ).ToXGaFloat64Vector()
         );
     }
 
@@ -74,7 +74,7 @@ public class CGaFloat64IpnsTangentEncoder :
     public CGaFloat64Blade Point(LinFloat64Vector3D egaPoint)
     {
         return Point(
-            egaPoint.ToRGaFloat64Vector()
+            egaPoint.ToXGaFloat64Vector()
         );
     }
 
@@ -88,7 +88,7 @@ public class CGaFloat64IpnsTangentEncoder :
     public CGaFloat64Blade Point(LinFloat64Vector egaPoint)
     {
         return Point(
-            egaPoint.ToRGaFloat64Vector()
+            egaPoint.ToXGaFloat64Vector()
         );
     }
 
@@ -99,7 +99,7 @@ public class CGaFloat64IpnsTangentEncoder :
     /// <param name="egaPoint"></param>
     /// <returns></returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public CGaFloat64Blade Point(RGaFloat64Vector egaPoint)
+    public CGaFloat64Blade Point(XGaFloat64Vector egaPoint)
     {
         return GeometricSpace.Eo
             .Op(GeometricSpace.IeInv.GradeInvolution())
@@ -120,7 +120,7 @@ public class CGaFloat64IpnsTangentEncoder :
     {
         return HyperPlane(
             distance,
-            LinFloat64Vector2D.Create(normalX, normalY).ToRGaFloat64Vector()
+            LinFloat64Vector2D.Create(normalX, normalY).ToXGaFloat64Vector()
         );
     }
 
@@ -136,7 +136,7 @@ public class CGaFloat64IpnsTangentEncoder :
     {
         return HyperPlane(
             distance,
-            egaNormalVector.ToRGaFloat64Vector()
+            egaNormalVector.ToXGaFloat64Vector()
         );
     }
 
@@ -151,8 +151,8 @@ public class CGaFloat64IpnsTangentEncoder :
     public CGaFloat64Blade Line(LinFloat64Vector2D point, LinFloat64Vector2D vector)
     {
         return Line(
-            point.ToRGaFloat64Vector(),
-            vector.ToRGaFloat64Vector()
+            point.ToXGaFloat64Vector(),
+            vector.ToXGaFloat64Vector()
         );
     }
 
@@ -167,8 +167,8 @@ public class CGaFloat64IpnsTangentEncoder :
     public CGaFloat64Blade LineFromPoints(LinFloat64Vector2D point1, LinFloat64Vector2D point2)
     {
         return Line(
-            point1.ToRGaFloat64Vector(),
-            (point2 - point1).ToRGaFloat64Vector()
+            point1.ToXGaFloat64Vector(),
+            (point2 - point1).ToXGaFloat64Vector()
         );
     }
 
@@ -183,8 +183,8 @@ public class CGaFloat64IpnsTangentEncoder :
     public CGaFloat64Blade Line(LinFloat64Vector3D egaPoint, LinFloat64Vector3D egaVector)
     {
         return Line(
-            egaPoint.ToRGaFloat64Vector(),
-            egaVector.ToRGaFloat64Vector()
+            egaPoint.ToXGaFloat64Vector(),
+            egaVector.ToXGaFloat64Vector()
         );
     }
 
@@ -199,8 +199,8 @@ public class CGaFloat64IpnsTangentEncoder :
     public CGaFloat64Blade LineFromPoints(LinFloat64Vector3D egaPoint1, LinFloat64Vector3D egaPoint2)
     {
         return LineFromPoints(
-            egaPoint1.ToRGaFloat64Vector(),
-            egaPoint2.ToRGaFloat64Vector()
+            egaPoint1.ToXGaFloat64Vector(),
+            egaPoint2.ToXGaFloat64Vector()
         );
     }
 
@@ -212,7 +212,7 @@ public class CGaFloat64IpnsTangentEncoder :
     /// <param name="egaDirection"></param>
     /// <returns></returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public CGaFloat64Blade Line(RGaFloat64Vector egaPoint, RGaFloat64Vector egaDirection)
+    public CGaFloat64Blade Line(XGaFloat64Vector egaPoint, XGaFloat64Vector egaDirection)
     {
         var direction =
             egaDirection
@@ -232,7 +232,7 @@ public class CGaFloat64IpnsTangentEncoder :
     /// <param name="egaPoint2"></param>
     /// <returns></returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public CGaFloat64Blade LineFromPoints(RGaFloat64Vector egaPoint1, RGaFloat64Vector egaPoint2)
+    public CGaFloat64Blade LineFromPoints(XGaFloat64Vector egaPoint1, XGaFloat64Vector egaPoint2)
     {
         var egaDirection =
             egaPoint2 - egaPoint1;
@@ -258,7 +258,7 @@ public class CGaFloat64IpnsTangentEncoder :
     {
         return HyperPlane(
             distance,
-            LinFloat64Vector3D.Create(normalX, normalY, normalZ).ToRGaFloat64Vector()
+            LinFloat64Vector3D.Create(normalX, normalY, normalZ).ToXGaFloat64Vector()
         );
     }
 
@@ -274,7 +274,7 @@ public class CGaFloat64IpnsTangentEncoder :
     {
         return HyperPlane(
             distance,
-            egaNormalVector.ToRGaFloat64Vector()
+            egaNormalVector.ToXGaFloat64Vector()
         );
     }
 
@@ -328,8 +328,8 @@ public class CGaFloat64IpnsTangentEncoder :
     public CGaFloat64Blade Plane(LinFloat64Vector3D egaPoint, LinFloat64Bivector3D egaBivector)
     {
         return Plane(
-            egaPoint.ToRGaFloat64Vector(),
-            egaBivector.ToRGaFloat64Bivector()
+            egaPoint.ToXGaFloat64Vector(),
+            egaBivector.ToXGaFloat64Bivector()
         );
     }
 
@@ -359,7 +359,7 @@ public class CGaFloat64IpnsTangentEncoder :
     /// <param name="egaDirection"></param>
     /// <returns></returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public CGaFloat64Blade Plane(RGaFloat64Vector egaPoint, RGaFloat64Bivector egaDirection)
+    public CGaFloat64Blade Plane(XGaFloat64Vector egaPoint, XGaFloat64Bivector egaDirection)
     {
         var direction =
             egaDirection
@@ -380,7 +380,7 @@ public class CGaFloat64IpnsTangentEncoder :
     /// <param name="egaPoint3"></param>
     /// <returns></returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public CGaFloat64Blade PlaneFromPoints(RGaFloat64Vector egaPoint1, RGaFloat64Vector egaPoint2, RGaFloat64Vector egaPoint3)
+    public CGaFloat64Blade PlaneFromPoints(XGaFloat64Vector egaPoint1, XGaFloat64Vector egaPoint2, XGaFloat64Vector egaPoint3)
     {
         var egaDirection =
             (egaPoint2 - egaPoint1).Op(egaPoint3 - egaPoint1);
@@ -400,7 +400,7 @@ public class CGaFloat64IpnsTangentEncoder :
     /// <param name="egaNormalVector"></param>
     /// <returns></returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public CGaFloat64Blade HyperPlane(double distance, RGaFloat64Vector egaNormalVector)
+    public CGaFloat64Blade HyperPlane(double distance, XGaFloat64Vector egaNormalVector)
     {
         Debug.Assert(GeometricSpace.IsValidVGaElement(egaNormalVector));
 
@@ -418,7 +418,7 @@ public class CGaFloat64IpnsTangentEncoder :
     /// <param name="egaDirection"></param>
     /// <returns></returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public CGaFloat64Blade Blade(RGaFloat64Vector egaPoint, RGaFloat64KVector egaDirection)
+    public CGaFloat64Blade Blade(XGaFloat64Vector egaPoint, XGaFloat64KVector egaDirection)
     {
         var direction =
             egaDirection
@@ -435,7 +435,7 @@ public class CGaFloat64IpnsTangentEncoder :
     /// <param name="egaPointArray"></param>
     /// <returns></returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public CGaFloat64Blade BladeFromPoints(params RGaFloat64Vector[] egaPointArray)
+    public CGaFloat64Blade BladeFromPoints(params XGaFloat64Vector[] egaPointArray)
     {
         var egaPoint1 =
             egaPointArray[0];
@@ -459,7 +459,7 @@ public class CGaFloat64IpnsTangentEncoder :
     /// <param name="egaPointList"></param>
     /// <returns></returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public CGaFloat64Blade BladeFromPoints(IReadOnlyList<RGaFloat64Vector> egaPointList)
+    public CGaFloat64Blade BladeFromPoints(IReadOnlyList<XGaFloat64Vector> egaPointList)
     {
         var egaPoint1 =
             egaPointList[0];

@@ -1,5 +1,5 @@
 ﻿using System.Runtime.CompilerServices;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Float64.Multivectors;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivectors;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space2D;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space3D;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.SpaceND;
@@ -854,7 +854,7 @@ public sealed class CGaFloat64ElementSpecs :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public CGaFloat64ParametricElement CreateParametricElement(Float64ScalarRange timeRange, Func<double, CGaFloat64Blade> getBladeFunc, RGaFloat64Vector egaProbePoint)
+    public CGaFloat64ParametricElement CreateParametricElement(Float64ScalarRange timeRange, Func<double, CGaFloat64Blade> getBladeFunc, XGaFloat64Vector egaProbePoint)
     {
         var egaProbePointBlade =
             egaProbePoint.EncodeVGaVector(GeometricSpace);

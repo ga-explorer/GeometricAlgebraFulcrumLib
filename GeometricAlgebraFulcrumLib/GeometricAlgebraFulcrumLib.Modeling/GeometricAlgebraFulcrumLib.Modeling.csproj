@@ -51,7 +51,7 @@
     <PackageReference Include="Raylib-CsLo" Version="4.2.0.9" />
     <PackageReference Include="Selenium.Support" Version="4.32.0" />
     <PackageReference Include="Selenium.WebDriver" Version="4.32.0" />
-    <PackageReference Include="Selenium.WebDriver.ChromeDriver" Version="136.0.7103.4900" />
+    <PackageReference Include="Selenium.WebDriver.ChromeDriver" Version="136.0.7103.9200" />
     <PackageReference Include="Selenium.WebDriver.Extensions" Version="4.1.0" />
     <PackageReference Include="SFML.Net" Version="2.6.1" />
     <PackageReference Include="SixLabors.ImageSharp" Version="3.1.8" />
@@ -61,13 +61,14 @@
     <PackageReference Include="Stride.GNU.Gettext" Version="2.0.0" />
     <PackageReference Include="Svg.Model" Version="3.0.2" />
     <PackageReference Include="Svg.Skia" Version="3.0.2" />
-    <PackageReference Include="System.Management" Version="9.0.4" />
+    <PackageReference Include="System.Management" Version="9.0.5" />
     <PackageReference Include="Xabe.FFmpeg" Version="6.0.1" />
     <PackageReference Include="Xabe.FFmpeg.Downloader" Version="6.0.1" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\GeometricAlgebraFulcrumLib.Algebra\GeometricAlgebraFulcrumLib.Algebra.csproj" />
+    <ProjectReference Include="..\GeometricAlgebraFulcrumLib.Utilities.Web\GeometricAlgebraFulcrumLib.Utilities.Web.csproj" />
   </ItemGroup>
 
 </Project>

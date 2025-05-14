@@ -184,7 +184,7 @@ namespace GeometricAlgebraFulcrumLib.Core.Structures.IndexSets
             var indexArray1 = indexSet1.GetInternalIndexArray();
             
             if (indexArray1.Length == 0)
-                return IndexSet.Create(index2);
+                return IndexSet.CreateUnit(index2);
 
             var count1 = indexArray1.Length;
             
@@ -306,7 +306,7 @@ namespace GeometricAlgebraFulcrumLib.Core.Structures.IndexSets
             var indexArray1 = indexSet1.GetInternalIndexArray();
             
             if (indexArray1.Length == 0)
-                return IndexSet.Create(index2);
+                return IndexSet.CreateUnit(index2);
 
             var count1 = indexArray1.Length;
             
@@ -473,6 +473,27 @@ namespace GeometricAlgebraFulcrumLib.Core.Structures.IndexSets
             return IndexSet.Create(mergedBuffer[..mergedBufferIndex]);
         }
 
+        
+        public static int CountSwapsWithSelf(IndexSet indexSet1)
+        {
+            var indexArray1 = indexSet1.GetInternalIndexArray();
+            
+            if (indexArray1.Length == 0)
+                return 0;
+
+            var swapCount = 0;
+            var count1 = indexArray1.Length;
+            var index1Order = 0;
+            
+            while (index1Order < count1)
+            {
+                 index1Order++;
+                 
+                 swapCount += count1 - index1Order;
+            }
+
+            return swapCount;
+        }
 
         public static int CountSwaps(IndexSet indexSet1, int index2)
         {
@@ -580,7 +601,7 @@ namespace GeometricAlgebraFulcrumLib.Core.Structures.IndexSets
             if (indexArray1.Length == 0)
                 return (
                     0, 
-                    IndexSet.Create(index2)
+                    IndexSet.CreateUnit(index2)
                 );
 
             var swapCount = 0;
@@ -715,7 +736,7 @@ namespace GeometricAlgebraFulcrumLib.Core.Structures.IndexSets
             if (indexArray1.Length == 0)
                 return (
                     0, 
-                    IndexSet.Create(index2), 
+                    IndexSet.CreateUnit(index2), 
                     IndexSet.EmptySet
                 );
 
@@ -771,7 +792,7 @@ namespace GeometricAlgebraFulcrumLib.Core.Structures.IndexSets
                 mergedBuffer[mergedBufferIndex++] = index2;
 
             var mergedIndexSet = IndexSet.Create(mergedBuffer[..mergedBufferIndex]);
-            var commonIndexSet = common ? IndexSet.Create(index2) : IndexSet.EmptySet;
+            var commonIndexSet = common ? IndexSet.CreateUnit(index2) : IndexSet.EmptySet;
 
             return (swapCount, mergedIndexSet, commonIndexSet);
         }

@@ -2,7 +2,9 @@
 using System.Linq;
 using System.Runtime.CompilerServices;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Float64.Processors;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Processors;
+using GeometricAlgebraFulcrumLib.Utilities.Structures.IndexSets;
+
 
 namespace GeometricAlgebraFulcrumLib.Benchmarks.Generations;
 
@@ -11,8 +13,8 @@ public sealed class Ga51SparseMultivector
     private readonly Dictionary<int, Ga51SparseKVector> _gradeKVectorDictionary;
 
 
-    public RGaFloat64ConformalProcessor Processor { get; }
-        = RGaFloat64ConformalProcessor.Instance;
+    public XGaFloat64ConformalProcessor Processor { get; }
+        = XGaFloat64ConformalProcessor.Instance;
 
     public int VSpaceDimensions 
         => 6;
@@ -61,13 +63,13 @@ public sealed class Ga51SparseMultivector
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         get => _gradeKVectorDictionary.TryGetValue(grade, out var kVector)
-                ? kVector[BasisBladeUtils.BasisBladeGradeIndexToId(grade, index)]
+                ? kVector[(ulong)BasisBladeUtils.BasisBladeGradeIndexToId(grade, index)]
                 : 0d;
         set
         {
             if (_gradeKVectorDictionary.TryGetValue(grade, out var kVector))
             {
-                kVector[BasisBladeUtils.BasisBladeGradeIndexToId(grade, index)] = value;
+                kVector[(ulong)BasisBladeUtils.BasisBladeGradeIndexToId(grade, index)] = value;
 
                 return;
             }
@@ -76,7 +78,7 @@ public sealed class Ga51SparseMultivector
             {
                 var idScalarDictionary = new Dictionary<ulong, double>()
                 {
-                    {BasisBladeUtils.BasisBladeGradeIndexToId(grade, index), value}
+                    {(ulong)BasisBladeUtils.BasisBladeGradeIndexToId(grade, index), value}
                 };
 
                 _gradeKVectorDictionary.Add(
@@ -110,7 +112,7 @@ public sealed class Ga51SparseMultivector
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public double GetScalarByGradeIndex(int grade, ulong index)
     {
-        var id = BasisBladeUtils.BasisBladeGradeIndexToId(grade, index);
+        var id = (ulong)BasisBladeUtils.BasisBladeGradeIndexToId(grade, index);
 
         return _gradeKVectorDictionary.TryGetValue(grade, out var kVector)
             ? kVector.GetScalarById(id) : 0d;
@@ -147,7 +149,7 @@ public sealed class Ga51SparseMultivector
         foreach (var (id1, scalar1) in GetIdScalarPairs())
         foreach (var (id2, scalar2) in mv2.GetIdScalarPairs())
         {
-            var basisBlade = Processor.Gp(id1, id2);
+            var basisBlade = Processor.Gp((IndexSet)id1, (IndexSet)id2);
 
             if (basisBlade.IsZero) continue;
             
@@ -155,7 +157,7 @@ public sealed class Ga51SparseMultivector
                 ? scalar1 * scalar2
                 : -(scalar1 * scalar2);
 
-            composer.AddTerm(basisBlade.Id, scalar);
+            composer.AddTerm((ulong)basisBlade.Id, scalar);
         }
 
         return composer.ToMultivector();
@@ -175,11 +177,11 @@ public sealed class Ga51SparseMultivector
                 foreach (var (id1, scalar1) in kVector1.GetIdScalarPairs())
                 foreach (var (id2, scalar2) in kVector2.GetIdScalarPairs())
                 {
-                    var basisBlade = Processor.Op(id1, id2);
+                    var basisBlade = Processor.Op((IndexSet)id1, (IndexSet)id2);
 
                     if (basisBlade.IsZero) continue;
 
-                    mv[basisBlade.Id] += basisBlade.Sign * scalar1 * scalar2;
+                    mv[(ulong)basisBlade.Id] += basisBlade.Sign * scalar1 * scalar2;
                 }
             }
         }

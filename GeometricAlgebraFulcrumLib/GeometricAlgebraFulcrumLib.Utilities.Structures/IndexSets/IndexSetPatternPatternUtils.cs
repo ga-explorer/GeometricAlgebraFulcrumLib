@@ -5,18 +5,18 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Structures.IndexSets;
 
 internal static class IndexSetPatternPatternUtils
 {
-    
+
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static bool Contains(IndexSet indexSet1, IndexSet indexSet2)
     {
         var indexPattern1 = indexSet1.ToUInt64();
         var indexPattern2 = indexSet2.ToUInt64();
 
-        return indexPattern1 != 0UL && 
-               indexPattern2 != 0UL && 
+        return indexPattern1 != 0UL &&
+               indexPattern2 != 0UL &&
                (indexPattern1 & indexPattern2) == indexPattern2;
     }
-    
+
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static bool Overlaps(IndexSet indexSet1, IndexSet indexSet2)
     {
@@ -31,9 +31,9 @@ internal static class IndexSetPatternPatternUtils
     public static IndexSet Intersect(IndexSet indexSet1, int index2)
     {
         var indexPattern1 = indexSet1.ToUInt64();
-        
-        return indexPattern1 == 0UL 
-            ? IndexSet.EmptySet 
+
+        return indexPattern1 == 0UL
+            ? IndexSet.EmptySet
             : IndexSet.CreateFromUInt64Pattern(indexPattern1 & (1UL << index2));
     }
 
@@ -55,8 +55,8 @@ internal static class IndexSetPatternPatternUtils
         var indexPattern1 = indexSet1.ToUInt64();
         var indexPattern2 = 1UL << index2;
 
-        return indexPattern1 == 0UL 
-            ? IndexSet.CreateFromUInt64Pattern(indexPattern2) 
+        return indexPattern1 == 0UL
+            ? IndexSet.CreateFromUInt64Pattern(indexPattern2)
             : IndexSet.CreateFromUInt64Pattern(indexPattern1 | indexPattern2);
     }
 
@@ -82,8 +82,8 @@ internal static class IndexSetPatternPatternUtils
         var indexPattern1 = indexSet1.ToUInt64();
         var indexPattern2 = 1UL << index2;
 
-        return indexPattern1 == 0UL 
-            ? IndexSet.CreateFromUInt64Pattern(indexPattern2) 
+        return indexPattern1 == 0UL
+            ? IndexSet.CreateFromUInt64Pattern(indexPattern2)
             : IndexSet.CreateFromUInt64Pattern(indexPattern1 ^ indexPattern2);
     }
 
@@ -102,7 +102,7 @@ internal static class IndexSetPatternPatternUtils
         return IndexSet.CreateFromUInt64Pattern(indexPattern1 ^ indexPattern2);
     }
 
-    
+
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static IndexSet Difference(IndexSet indexSet1, IndexSet indexSet2)
     {
@@ -119,20 +119,42 @@ internal static class IndexSetPatternPatternUtils
     }
 
 
+    public static int CountSwapsWithSelf(IndexSet indexSet1)
+    {
+        var indexPattern1 = indexSet1.ToUInt64();
+
+        if (indexPattern1 == 0UL)
+            return 0;
+
+        var swapCount = 0;
+        var count1 = BitOperations.PopCount(indexPattern1);
+        var index1Order = 0;
+
+        while (indexPattern1 != 0UL)
+        {
+            index1Order++;
+            indexPattern1 &= indexPattern1 - 1;
+
+            swapCount += count1 - index1Order;
+        }
+
+        return swapCount;
+    }
+
     public static int CountSwaps(IndexSet indexSet1, int index2)
     {
         var indexPattern1 = indexSet1.ToUInt64();
-        
+
         if (indexPattern1 == 0UL) return 0;
 
         var swapCount = 0;
 
         var count1 = BitOperations.PopCount(indexPattern1);
-        
+
         var indexOrder1 = 0;
-        
+
         var index1 = BitOperations.TrailingZeroCount(indexPattern1);
-        
+
         while (indexPattern1 != 0UL)
         {
             if (index1 < index2) // Take value from first array, no swaps needed
@@ -156,7 +178,7 @@ internal static class IndexSetPatternPatternUtils
                 break;
             }
         }
-        
+
         return swapCount;
     }
 
@@ -177,7 +199,7 @@ internal static class IndexSetPatternPatternUtils
 
         var index1 = BitOperations.TrailingZeroCount(indexPattern1);
         var index2 = BitOperations.TrailingZeroCount(indexPattern2);
-        
+
         while (indexPattern1 != 0UL && indexPattern2 != 0UL)
         {
             if (index1 < index2) // Take value from first array, no swaps needed
@@ -210,11 +232,11 @@ internal static class IndexSetPatternPatternUtils
                 if (indexOrder2 < count2) index2 = BitOperations.TrailingZeroCount(indexPattern2);
             }
         }
-        
+
         return swapCount;
     }
 
-    
+
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static (int swapCount, IndexSet mergedIndexSet) MergeCountSwaps(IndexSet indexSet1, int index2)
     {
@@ -223,7 +245,7 @@ internal static class IndexSetPatternPatternUtils
 
         if (indexPattern1 == 0UL)
             return (
-                0, 
+                0,
                 IndexSet.CreateFromUInt64Pattern(indexPattern2)
             );
 
@@ -232,7 +254,7 @@ internal static class IndexSetPatternPatternUtils
 
         var swapCount = CountSwaps(indexSet1, index2);
 
-        var mergedIndexSet = 
+        var mergedIndexSet =
             IndexSet.CreateFromUInt64Pattern(
                 indexPattern1 ^ indexPattern2
             );
@@ -254,7 +276,7 @@ internal static class IndexSetPatternPatternUtils
 
         var swapCount = CountSwaps(indexSet1, indexSet2);
 
-        var mergedIndexSet = 
+        var mergedIndexSet =
             IndexSet.CreateFromUInt64Pattern(
                 indexPattern1 ^ indexPattern2
             );
@@ -271,8 +293,8 @@ internal static class IndexSetPatternPatternUtils
 
         if (indexPattern1 == 0UL)
             return (
-                0, 
-                IndexSet.CreateFromUInt64Pattern(indexPattern2), 
+                0,
+                IndexSet.CreateFromUInt64Pattern(indexPattern2),
                 IndexSet.EmptySet
             );
 
@@ -281,14 +303,14 @@ internal static class IndexSetPatternPatternUtils
 
         var swapCount = CountSwaps(indexSet1, index2);
 
-        var mergedIndexSet = 
+        var mergedIndexSet =
             IndexSet.CreateFromUInt64Pattern(
                 indexPattern1 ^ indexPattern2
             );
 
-        var commonIndexSet = 
-            (indexPattern1 & indexPattern2) != 0UL 
-                ? IndexSet.CreateFromUInt64Pattern(indexPattern2) 
+        var commonIndexSet =
+            (indexPattern1 & indexPattern2) != 0UL
+                ? IndexSet.CreateFromUInt64Pattern(indexPattern2)
                 : IndexSet.EmptySet;
 
         return (swapCount, mergedIndexSet, commonIndexSet);
@@ -308,18 +330,17 @@ internal static class IndexSetPatternPatternUtils
 
         var swapCount = CountSwaps(indexSet1, indexSet2);
 
-        var mergedIndexSet = 
+        var mergedIndexSet =
             IndexSet.CreateFromUInt64Pattern(
                 indexPattern1 ^ indexPattern2
             );
 
-        var commonIndexSet = 
+        var commonIndexSet =
             IndexSet.CreateFromUInt64Pattern(
                 indexPattern1 & indexPattern2
             );
 
         return (swapCount, mergedIndexSet, commonIndexSet);
     }
-
 
 }

@@ -3,6 +3,7 @@ using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
 using GeometricAlgebraFulcrumLib.Applications.Symbolic.LibraryGenerators.CSharp.GradedMultivectorsLib.Combinations;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.BitManipulation;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Combinations;
+using GeometricAlgebraFulcrumLib.Utilities.Structures.IndexSets;
 using GeometricAlgebraFulcrumLib.Utilities.Text;
 using GeometricAlgebraFulcrumLib.Utilities.Text.Files;
 using GeometricAlgebraFulcrumLib.Utilities.Text.Text;
@@ -102,7 +103,7 @@ public class LibLaTeXCodeComposer :
             .GetIdTermListPairs()
             .Select(p =>
                 {
-                    var index = (int)((ulong)p.Key).BasisBladeIdToIndex();
+                    var index = (int)((IndexSet)p.Key).BasisBladeIdToIndex();
 
                     var lhsCode = $"scalarArray[{index}]";
 

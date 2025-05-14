@@ -1,5 +1,5 @@
-﻿using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Float64.Processors;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Generic.Processors;
+﻿using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Processors;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Processors;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Angles;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Generic;
@@ -33,8 +33,8 @@ public static class DFIGTest1OpenLoopSample
 
     // Create a 3-dimensional Euclidean geometric algebra processor based on the
     // selected scalar processor
-    public static RGaFloat64Processor GeometricProcessor { get; }
-        = RGaFloat64Processor.Euclidean;
+    public static XGaFloat64Processor GeometricProcessor { get; }
+        = XGaFloat64Processor.Euclidean;
 
     // This is a pre-defined text generator for displaying multivectors
     public static TextComposerFloat64 TextComposer { get; }
@@ -70,8 +70,8 @@ public static class DFIGTest1OpenLoopSample
 
     // Create a 3-dimensional Euclidean geometric algebra processor based on the
     // selected tuple scalar processor
-    public static RGaEuclideanProcessor<Float64SampledTimeSignal> GeometricSignalProcessor { get; }
-        = ScalarSignalProcessor.CreateEuclideanRGaProcessor();
+    public static XGaEuclideanProcessor<Float64SampledTimeSignal> GeometricSignalProcessor { get; }
+        = ScalarSignalProcessor.CreateEuclideanXGaProcessor();
 
     private static string CombineWorkingPath(this string fileName)
     {

@@ -1,7 +1,8 @@
 ﻿using System.Collections.Immutable;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Basis;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Float64.Processors;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Processors;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.BitManipulation;
+using GeometricAlgebraFulcrumLib.Utilities.Structures.IndexSets;
 
 namespace GeometricAlgebraFulcrumLib.Applications.Symbolic.LibraryGenerators.CSharp.GradedMultivectorsLib.Types;
 
@@ -18,17 +19,17 @@ public sealed class LibTypeMultivector :
         => true;
 
 
-    internal LibTypeMultivector(RGaFloat64Processor metric, int vSpaceDimensions, string className)
+    internal LibTypeMultivector(XGaFloat64Processor metric, int vSpaceDimensions, string className)
         : base(metric, vSpaceDimensions, className)
     {
     }
 
 
-    public override IReadOnlyList<RGaBasisBlade> GetBasisBlades()
+    public override IReadOnlyList<XGaBasisBlade> GetBasisBlades()
     {
         return GaSpaceDimensions
             .GetRange(id =>
-                Metric.CreateBasisBlade((ulong)id)
+                Metric.CreateBasisBlade((IndexSet)id)
             ).ToImmutableArray();
     }
 

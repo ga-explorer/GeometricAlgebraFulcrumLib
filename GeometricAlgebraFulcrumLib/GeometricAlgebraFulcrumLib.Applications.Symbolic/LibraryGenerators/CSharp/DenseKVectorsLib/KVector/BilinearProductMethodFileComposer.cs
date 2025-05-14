@@ -1,5 +1,5 @@
-﻿using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Extended.Generic.Multivectors;
+﻿using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Multivectors;
 using GeometricAlgebraFulcrumLib.MetaProgramming.Context;
 using GeometricAlgebraFulcrumLib.MetaProgramming.Context.Expressions;
 using GeometricAlgebraFulcrumLib.MetaProgramming.Utilities.Code;
@@ -141,7 +141,7 @@ internal sealed class BilinearProductMethodFileComposer :
             GenerateCode();
 
         var kvSpaceDimensions = 
-            VSpaceDimensions.KVectorSpaceDimension(_outputGrade);
+            VSpaceDimensions.KVectorSpaceDimensions(_outputGrade);
 
         var methodName = _operationSpecs.GetName(
             _inputGrade1, _inputGrade2, _outputGrade

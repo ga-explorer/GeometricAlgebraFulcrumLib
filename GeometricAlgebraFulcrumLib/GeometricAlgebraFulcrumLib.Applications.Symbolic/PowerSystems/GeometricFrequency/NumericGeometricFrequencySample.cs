@@ -1,13 +1,13 @@
 ﻿using System.Collections.Immutable;
 using System.Diagnostics;
 using System.Drawing;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Extended.Float64.LinearMaps.Rotors;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Extended.Float64.Multivectors.Composers;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Extended.Float64.Processors;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Extended.Generic.Frames;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Extended.Generic.Multivectors;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Extended.Generic.Multivectors.Composers;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Extended.Generic.Processors;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.LinearMaps.Rotors;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivectors.Composers;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Processors;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Frames;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Multivectors;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Multivectors.Composers;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Processors;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Matrices;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space2D;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
@@ -707,7 +707,7 @@ public static class NumericGeometricFrequencySample
         }
 
         var vectorSignal2 =
-            scalarSignalArray.CreateXGaVector(GeometricSignalProcessor);
+            scalarSignalArray.Vector(GeometricSignalProcessor);
 
         var normSignal2 =
             vectorSignal2.Norm();
@@ -755,7 +755,7 @@ public static class NumericGeometricFrequencySample
                 }
             }
 
-            signalArray[degree] = scalarSignalArray.CreateXGaVector(GeometricSignalProcessor);
+            signalArray[degree] = scalarSignalArray.Vector(GeometricSignalProcessor);
         }
 
         return signalArray;
@@ -879,7 +879,7 @@ public static class NumericGeometricFrequencySample
         }
 
         var vectorSignal2 =
-            scalarSignalArray.CreateXGaVector(GeometricSignalProcessor);
+            scalarSignalArray.Vector(GeometricSignalProcessor);
 
         var normSignal2 =
             vectorSignal2.Norm();
@@ -915,7 +915,7 @@ public static class NumericGeometricFrequencySample
                         .CreateSignal(SamplingRate);
             }
 
-            signalArray[degree] = scalarSignalArray.CreateXGaVector(GeometricSignalProcessor);
+            signalArray[degree] = scalarSignalArray.Vector(GeometricSignalProcessor);
         }
 
         Console.WriteLine();
@@ -979,7 +979,7 @@ public static class NumericGeometricFrequencySample
         Console.WriteLine($" Found {frequencyList.Length} frequencies.");
 
         var vectorSignal2 =
-            vectorSpectrum.GetRealSignal(tValues).CreateXGaVector(GeometricSignalProcessor);
+            vectorSpectrum.GetRealSignal(tValues).Vector(GeometricSignalProcessor);
 
         var vectorSignalError = vectorSignal1 - vectorSignal2;
         var vectorSignalSnr = vectorSignal1.SignalToNoiseRatio(vectorSignalError);
@@ -1014,7 +1014,7 @@ public static class NumericGeometricFrequencySample
             Console.WriteLine($"   Computing signal derivative {degree}");
 
             signalArray[degree] =
-                vectorSpectrum.GetRealSignalDt(degree, tValues).CreateXGaVector(GeometricSignalProcessor);
+                vectorSpectrum.GetRealSignalDt(degree, tValues).Vector(GeometricSignalProcessor);
         }
 
         Console.WriteLine();
@@ -1205,17 +1205,17 @@ public static class NumericGeometricFrequencySample
         var v1 =
             signalComposer
                 .GenerateOddSignalComponents(200 * sqrt2, 1, 3)
-                .CreateXGaVector(GeometricSignalProcessor);
+                .Vector(GeometricSignalProcessor);
 
         var v2 =
             signalComposer
                 .GenerateOddSignalComponents(20 * sqrt2, 2, 3)
-                .CreateXGaVector(GeometricSignalProcessor);
+                .Vector(GeometricSignalProcessor);
 
         var v3 =
             signalComposer
                 .GenerateOddSignalComponents(-30 * sqrt2, 7, 3)
-                .CreateXGaVector(GeometricSignalProcessor);
+                .Vector(GeometricSignalProcessor);
 
         return v1 + v2 + v3;
     }
@@ -1255,10 +1255,10 @@ public static class NumericGeometricFrequencySample
         v2Scalars[VSpaceDimensions - 1] /= 2d;
 
         var v1 =
-            v1Scalars.CreateXGaVector(GeometricSignalProcessor);
+            v1Scalars.Vector(GeometricSignalProcessor);
 
         var v2 =
-            v2Scalars.CreateXGaVector(GeometricSignalProcessor);
+            v2Scalars.Vector(GeometricSignalProcessor);
 
         return v1 + v2;
     }
@@ -3691,7 +3691,7 @@ public static class NumericGeometricFrequencySample
                         magnitude,
                         harmonicFactor,
                         n
-                    ).CreateXGaVector(GeometricSignalProcessor);
+                    ).Vector(GeometricSignalProcessor);
                 }
 
                 var interpolatorOptions = new DfFourierSignalInterpolatorOptions()
@@ -3882,7 +3882,7 @@ public static class NumericGeometricFrequencySample
                         magnitude,
                         harmonicFactor,
                         n
-                    ).CreateXGaVector(GeometricSignalProcessor);
+                    ).Vector(GeometricSignalProcessor);
                 }
 
                 var interpolatorOptions = new DfFourierSignalInterpolatorOptions()

@@ -1,5 +1,5 @@
-﻿using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Extended.Generic.Multivectors;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Extended.Generic.Multivectors.Composers;
+﻿using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Multivectors;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Multivectors.Composers;
 using GeometricAlgebraFulcrumLib.Modeling.Calculus.Functions.Float64.Interpolators;
 
 namespace GeometricAlgebraFulcrumLib.Modeling.Signals.Processors;
@@ -50,7 +50,7 @@ public sealed class XGaGeometricFrequencyFourierProcessor :
         }
             
         VectorSignalInterpolated = 
-            VectorSignalSpectrum.GetRealSignal(TimeValuesSignal).CreateXGaVector(ScalarSignalProcessor);
+            VectorSignalSpectrum.GetRealSignal(TimeValuesSignal).Vector(ScalarSignalProcessor);
 
         Console.WriteLine(
             VectorSignalSpectrum.GetTextDescription(VectorSignal)
@@ -65,7 +65,7 @@ public sealed class XGaGeometricFrequencyFourierProcessor :
             .Select(degree => 
                 VectorSignalSpectrum
                     .GetRealSignalDt(degree, TimeValuesSignal)
-                    .CreateXGaVector(ScalarSignalProcessor)
+                    .Vector(ScalarSignalProcessor)
             ).ToArray();
     }
 

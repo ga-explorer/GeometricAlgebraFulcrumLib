@@ -1,20 +1,15 @@
 ﻿using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Extended.Basis;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Extended.Float64.Multivectors;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivectors;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Multivectors;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Dictionary;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.IndexSets;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Extended.Generic.Multivectors;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Extended.Generic.Multivectors.Composers;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Extended.Generic.Processors;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Basis;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Float64.Multivectors;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Generic.Multivectors;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Records;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Angles;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.SpaceND;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Generic.Angles;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Generic.Vectors.SpaceND;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Generic;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Processors;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Multivectors.Composers;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.Utilities.Text;
 
@@ -29,9 +24,9 @@ public abstract class TextComposerCSharpBase<T>
     public IScalarProcessor<T> ScalarProcessor
         => Processor.ScalarProcessor;
 
-    public Func<string, ulong, string> GetMultivectorScalarSymbolicNameFunc { get; set; }
+    public Func<string, IndexSet, string> GetMultivectorScalarSymbolicNameFunc { get; set; }
 
-    public Func<string, ulong, string> GetMultivectorScalarCodeNameFunc { get; set; }
+    public Func<string, IndexSet, string> GetMultivectorScalarCodeNameFunc { get; set; }
 
 
     protected TextComposerCSharpBase(XGaProcessor<T> metric)
@@ -71,22 +66,12 @@ public abstract class TextComposerCSharpBase<T>
         throw new NotImplementedException();
     }
 
-    public string GetBasisBladeText(ulong id)
-    {
-        throw new NotImplementedException();
-    }
-
     public string GetBasisBladeText(uint grade, ulong index)
     {
         throw new NotImplementedException();
     }
 
     public string GetBasisBladeText(IndexSet id)
-    {
-        throw new NotImplementedException();
-    }
-
-    public string GetBasisBladeText(RGaBasisBlade basisBlade)
     {
         throw new NotImplementedException();
     }
@@ -127,15 +112,6 @@ public abstract class TextComposerCSharpBase<T>
     }
 
     public abstract string GetScalarText(T scalar);
-    public string GetTermText(ulong id, double scalar)
-    {
-        throw new NotImplementedException();
-    }
-
-    public string GetTermText(ulong id, T scalar)
-    {
-        throw new NotImplementedException();
-    }
 
     public string GetTermText(uint grade, int index, double scalar)
     {
@@ -157,27 +133,7 @@ public abstract class TextComposerCSharpBase<T>
         throw new NotImplementedException();
     }
 
-    public string GetTermText(RGaBasisBlade basisBlade, double scalar)
-    {
-        throw new NotImplementedException();
-    }
-
     public string GetTermText(uint grade, ulong index, T scalar)
-    {
-        throw new NotImplementedException();
-    }
-
-    public string GetTermText(RGaKvIndexScalarRecord<T> idScalarPair)
-    {
-        throw new NotImplementedException();
-    }
-
-    public string GetTermText(RGaGradeKvIndexScalarRecord<T> idScalarPair)
-    {
-        throw new NotImplementedException();
-    }
-
-    public string GetTermText(RGaBasisBlade basisBlade, T scalar)
     {
         throw new NotImplementedException();
     }
@@ -197,17 +153,17 @@ public abstract class TextComposerCSharpBase<T>
         throw new NotImplementedException();
     }
 
-    public string GetTermsText(IEnumerable<RGaKvIndexScalarRecord<T>> idScalarTuples)
+    public string GetTermsText(IEnumerable<Tuple<ulong, T>> idScalarTuples)
     {
         throw new NotImplementedException();
     }
 
-    public string GetTermsText(IEnumerable<RGaGradeKvIndexScalarRecord<T>> idScalarTuples)
+    public string GetTermsText(IEnumerable<Tuple<uint, ulong, T>> idScalarTuples)
     {
         throw new NotImplementedException();
     }
 
-    public string GetTermsText(uint grade, IEnumerable<RGaKvIndexScalarRecord<T>> indexScalarTuples)
+    public string GetTermsText(uint grade, IEnumerable<Tuple<ulong, T>> indexScalarTuples)
     {
         throw new NotImplementedException();
     }
@@ -233,16 +189,6 @@ public abstract class TextComposerCSharpBase<T>
     }
 
     public string GetVectorText(LinVector<T> v)
-    {
-        throw new NotImplementedException();
-    }
-
-    public string GetMultivectorText(RGaFloat64Multivector mv)
-    {
-        throw new NotImplementedException();
-    }
-
-    public string GetMultivectorText(RGaMultivector<T> mv)
     {
         throw new NotImplementedException();
     }

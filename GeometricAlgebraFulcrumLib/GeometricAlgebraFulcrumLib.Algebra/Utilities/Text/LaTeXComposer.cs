@@ -1,18 +1,10 @@
 ﻿using System.Runtime.CompilerServices;
 using System.Text;
 using GeometricAlgebraFulcrumLib.Utilities.Structures;
-using GeometricAlgebraFulcrumLib.Utilities.Structures.BitManipulation;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Combinations;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.IndexSets;
 using GeometricAlgebraFulcrumLib.Algebra.ComplexAlgebra;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Extended.Basis;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Extended.Float64.Multivectors;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Extended.Generic.Multivectors;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Basis;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Float64.Multivectors;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Generic.Multivectors;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Angles;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.SpaceND;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Generic.Angles;
@@ -20,6 +12,9 @@ using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Generic.Vectors.SpaceND;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Generic;
 using GeometricAlgebraFulcrumLib.Utilities.Text.Text;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivectors;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Multivectors;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.Utilities.Text;
 
@@ -46,12 +41,6 @@ public class LaTeXComposer<T>
         ScalarProcessor = scalarProcessor;
     }
 
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public string GetBasisBladeText(RGaBasisBlade basisBlade)
-    {
-        return GetBasisBladeText(basisBlade.Id);
-    }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public string GetBasisBladeText(XGaBasisBlade basisBlade)
@@ -180,19 +169,6 @@ public class LaTeXComposer<T>
         );
     }
 
-    public string GetTermText(KeyValuePair<ulong, double> term)
-    {
-        return GetTermText(
-            term.Key,
-            ScalarProcessor.ScalarFromNumber(term.Value).ScalarValue
-        );
-    }
-
-    public string GetTermText(KeyValuePair<ulong, T> term)
-    {
-        return GetTermText(term.Key, term.Value);
-    }
-
     public string GetTermText(KeyValuePair<IndexSet, double> term)
     {
         return GetTermText(term.Key, term.Value);
@@ -201,19 +177,6 @@ public class LaTeXComposer<T>
     public string GetTermText(KeyValuePair<IndexSet, T> term)
     {
         return GetTermText(term.Key, term.Value);
-    }
-
-    public string GetTermText(RGaBasisBlade basisBlade, double scalar)
-    {
-        return GetTermText(
-            basisBlade.Id,
-            ScalarProcessor.ScalarFromNumber(scalar).ScalarValue
-        );
-    }
-
-    public string GetTermText(RGaBasisBlade basisBlade, T scalar)
-    {
-        return GetTermText(basisBlade.Id, scalar);
     }
 
     public string GetTermText(XGaBasisBlade basisBlade, double scalar)
@@ -237,20 +200,6 @@ public class LaTeXComposer<T>
     {
         return idScalarTuples
             .Select(GetVectorTermText)
-            .ConcatenateText(" + ");
-    }
-
-    public string GetTermsText(IEnumerable<KeyValuePair<ulong, double>> idScalarTuples)
-    {
-        return idScalarTuples
-            .Select(GetTermText)
-            .ConcatenateText(" + ");
-    }
-
-    public string GetTermsText(IEnumerable<KeyValuePair<ulong, T>> idScalarTuples)
-    {
-        return idScalarTuples
-            .Select(GetTermText)
             .ConcatenateText(" + ");
     }
 
@@ -414,30 +363,6 @@ public class LaTeXComposer<T>
         );
     }
 
-    public string GetMultivectorText(RGaFloat64Multivector mv)
-    {
-        if (mv.IsZero)
-            return "0";
-
-        return GetTermsText(
-            mv
-                .IdScalarPairs
-                .OrderByGradeIndex()
-        );
-    }
-
-    public string GetMultivectorText(RGaMultivector<T> mv)
-    {
-        if (mv.IsZero)
-            return "0";
-
-        return GetTermsText(
-            mv
-                .IdScalarPairs
-                .OrderByGradeIndex()
-        );
-    }
-
     public string GetMultivectorText(XGaFloat64Multivector mv)
     {
         if (mv.IsZero)
@@ -465,13 +390,6 @@ public class LaTeXComposer<T>
     public string GetBasisVectorText(int index)
     {
         return GetBasisBladeText(new[] { index });
-    }
-
-    public string GetBasisBladeText(ulong id)
-    {
-        return GetBasisBladeText(
-            id.GetSetBitPositions()
-        );
     }
 
     public string GetBasisBladeText(uint grade, ulong index)
@@ -533,30 +451,6 @@ public class LaTeXComposer<T>
     {
         var valueText = GetScalarText(value);
         var basisText = GetBasisVectorText(index);
-
-        return $@"\left( {valueText} \right) {basisText}";
-    }
-
-    public string GetTermText(ulong id, double value)
-    {
-        var valueText = GetScalarText(value);
-
-        if (id == 0)
-            return $@"\left( {valueText} \right)";
-
-        var basisText = GetBasisBladeText(id);
-
-        return $@"\left( {valueText} \right) {basisText}";
-    }
-
-    public string GetTermText(ulong id, T value)
-    {
-        var valueText = GetScalarText(value);
-
-        if (id == 0)
-            return $@"\left( {valueText} \right)";
-
-        var basisText = GetBasisBladeText(id);
 
         return $@"\left( {valueText} \right) {basisText}";
     }
@@ -684,23 +578,7 @@ public class LaTeXComposer<T>
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public LaTeXComposer<T> ConsoleWriteLine(RGaFloat64Multivector v, string vText)
-    {
-        Console.WriteLine(@$"${vText} = {GetMultivectorText(v)}$");
-
-        return this;
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public LaTeXComposer<T> ConsoleWriteLine(RGaScalar<T> v, string vText)
-    {
-        Console.WriteLine(@$"${vText} = {GetMultivectorText(v)}$");
-
-        return this;
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public LaTeXComposer<T> ConsoleWriteLine(RGaMultivector<T> v, string vText)
+    public LaTeXComposer<T> ConsoleWriteLine(XGaScalar<T> v, string vText)
     {
         Console.WriteLine(@$"${vText} = {GetMultivectorText(v)}$");
 

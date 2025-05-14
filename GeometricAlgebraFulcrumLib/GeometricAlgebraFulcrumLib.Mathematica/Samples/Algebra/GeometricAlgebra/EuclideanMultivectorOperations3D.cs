@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Basis;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Generic.Multivectors;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Generic.Multivectors.Composers;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Generic.Processors;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Multivectors;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Multivectors.Composers;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Processors;
 using GeometricAlgebraFulcrumLib.Mathematica.Algebra;
 using GeometricAlgebraFulcrumLib.Mathematica.Utilities.Structures;
 using GeometricAlgebraFulcrumLib.Mathematica.Utilities.Text;
-using GeometricAlgebraFulcrumLib.Utilities.Structures.BitManipulation;
+using GeometricAlgebraFulcrumLib.Utilities.Structures.IndexSets;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Tuples;
 using GeometricAlgebraFulcrumLib.Utilities.Text.Text;
 using GeometricAlgebraFulcrumLib.Utilities.Text.Text.Markdown;
@@ -29,8 +29,8 @@ public static class EuclideanMultivectorOperations3D
 
     // Create a 3-dimensional Euclidean geometric algebra processor based on the
     // selected scalar processor
-    public static RGaProcessor<Expr> GeometricProcessor { get; }
-        = ScalarProcessor.CreateEuclideanRGaProcessor();
+    public static XGaProcessor<Expr> GeometricProcessor { get; }
+        = ScalarProcessor.CreateEuclideanXGaProcessor();
 
     // This is a pre-defined text generator for displaying multivectors
     // with symbolic Wolfram Mathematica scalars using Expr objects
@@ -46,12 +46,12 @@ public static class EuclideanMultivectorOperations3D
         = new MarkdownComposer();
 
 
-    private static RGaMultivector<Expr> CreateScalar(string name)
+    private static XGaMultivector<Expr> CreateScalar(string name)
     {
         return GeometricProcessor.Scalar(name);
     }
 
-    private static RGaMultivector<Expr> Vector(string name)
+    private static XGaMultivector<Expr> Vector(string name)
     {
         name = name.ToLower();
 
@@ -62,7 +62,7 @@ public static class EuclideanMultivectorOperations3D
         );
     }
 
-    private static RGaMultivector<Expr> Bivector(string name)
+    private static XGaMultivector<Expr> Bivector(string name)
     {
         name = name.ToLower();
 
@@ -73,31 +73,31 @@ public static class EuclideanMultivectorOperations3D
         );
     }
 
-    private static RGaMultivector<Expr> CreateTrivector(string name)
+    private static XGaMultivector<Expr> CreateTrivector(string name)
     {
         name = name.ToLower();
 
         return GeometricProcessor.KVectorTerm(
-            3,
+            (IndexSet)3,
             $"Subscript[{name},123]".ToExpr()
         );
     }
 
-    private static RGaMultivector<Expr> CreateEvenMultivector(string name)
+    private static XGaMultivector<Expr> CreateEvenMultivector(string name)
     {
         name = name.ToLower();
 
         return CreateScalar($"Subscript[{name},0]") + Bivector(name);
     }
 
-    private static RGaMultivector<Expr> CreateOddMultivector(string name)
+    private static XGaMultivector<Expr> CreateOddMultivector(string name)
     {
         name = name.ToLower();
 
         return Vector(name) + CreateTrivector(name);
     }
 
-    private static RGaMultivector<Expr> Multivector(string name)
+    private static XGaMultivector<Expr> Multivector(string name)
     {
         name = name.ToLower();
 
@@ -107,9 +107,9 @@ public static class EuclideanMultivectorOperations3D
                CreateTrivector(name);
     }
 
-    private static IReadOnlyList<RGaBasisBlade> GetBasisBlades()
+    private static IReadOnlyList<XGaBasisBlade> GetBasisBlades()
     {
-        var basisBladesArray = new RGaBasisBlade[8];
+        var basisBladesArray = new XGaBasisBlade[8];
 
         basisBladesArray[0] = GeometricProcessor.BasisScalar;
 
@@ -159,7 +159,7 @@ public static class EuclideanMultivectorOperations3D
         return mdTable;
     }
 
-    private static MarkdownTable CreateProductTable(Func<ulong, ulong, IntegerSign> productSignatureFunc)
+    private static MarkdownTable CreateProductTable(Func<IndexSet, IndexSet, IntegerSign> productSignatureFunc)
     {
         var basisBladesList = GetBasisBlades();
         var mdTable = CreateEmptyProductTable();
@@ -173,14 +173,14 @@ public static class EuclideanMultivectorOperations3D
             {
                 var basisBlade1 = basisBladesList[rowIndex];
 
-                var id = basisBlade1.Id ^ basisBlade2.Id;
+                var id = basisBlade1.Id.SetMerge(basisBlade2.Id);
                 var signature = productSignatureFunc(basisBlade1.Id, basisBlade2.Id);
 
-                if (id == 0)
+                if (id.IsEmptySet)
                 {
                     mdTableColumn.Add(signature.IsZero ? "" : $"${signature}$");
                 }
-                else if (id == 7)
+                else if (id == IndexSet.CreateFromUInt32Pattern(7))
                 {
                     var text = signature.Value switch
                     {
@@ -195,7 +195,6 @@ public static class EuclideanMultivectorOperations3D
                 {
                     var idText =
                         id
-                            .GetSetBitPositions()
                             .Select(n => (n + 1).ToString())
                             .Concatenate();
 
@@ -220,8 +219,8 @@ public static class EuclideanMultivectorOperations3D
         var invI =
             GeometricProcessor.PseudoScalarInverse(VSpaceDimensions);
 
-        var mvList1 = new Dictionary<string, RGaMultivector<Expr>>();
-        var mvList2 = new Dictionary<string, RGaMultivector<Expr>>();
+        var mvList1 = new Dictionary<string, XGaMultivector<Expr>>();
+        var mvList2 = new Dictionary<string, XGaMultivector<Expr>>();
 
         mvList1.Add("a", CreateScalar("a"));
         mvList2.Add("b", CreateScalar("b"));

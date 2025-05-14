@@ -1,7 +1,8 @@
 ﻿using System.Diagnostics;
 using System.Runtime.CompilerServices;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Float64.Processors;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Processors;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Structures;
+using GeometricAlgebraFulcrumLib.Utilities.Structures.IndexSets;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Tuples;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.GuidedBinaryTraversal;
@@ -64,32 +65,32 @@ public sealed class GaGbtMultivectorBinaryTrieStack
     /// <summary>
     /// Array containing node ID information in this stack
     /// </summary>
-    private ulong[] IdArray { get; }
+    private IndexSet[] IdArray { get; }
 
     /// <summary>
     /// Top-of-stack node ID
     /// </summary>
-    public ulong TosId { get; private set; }
+    public IndexSet TosId { get; private set; }
         
     public double TosScalar { get; private set; }
 
     /// <summary>
     /// Top-of-stack node child 0 ID
     /// </summary>
-    public ulong TosChildId0
+    public IndexSet TosChildId0
         => TosId;
 
     /// <summary>
     /// Top-of-stack node child 1 ID
     /// </summary>
-    public ulong TosChildId1
+    public IndexSet TosChildId1
         => TosId | (1ul << (TosTreeDepth - 1));
 
-    public ulong RootId { get; }
+    public IndexSet RootId { get; }
 
     private int[] BinaryTreeNodeIndexArray { get; }
 
-    public RGaFloat64Processor BasisSet { get; }
+    public XGaFloat64Processor BasisSet { get; }
         
     public Pair<int> TosBinaryTreeNode { get; private set; }
         
@@ -97,7 +98,7 @@ public sealed class GaGbtMultivectorBinaryTrieStack
 
         
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    internal GaGbtMultivectorBinaryTrieStack(RGaFloat64Processor basisSet, int capacity, GaMultivectorBinaryTrie binaryTrie)
+    internal GaGbtMultivectorBinaryTrieStack(XGaFloat64Processor basisSet, int capacity, GaMultivectorBinaryTrie binaryTrie)
     {
         Debug.Assert(binaryTrie.TreeDepth > 0);
 
@@ -108,9 +109,9 @@ public sealed class GaGbtMultivectorBinaryTrieStack
         TosIndex = -1;
         RootTreeDepth = binaryTrie.TreeDepth;
 
-        IdArray = new ulong[Capacity];
+        IdArray = new IndexSet[Capacity];
 
-        RootId = 0UL;
+        RootId = IndexSet.EmptySet;
 
         BasisSet = basisSet;
         BinaryTreeNodeIndexArray = new int[capacity];

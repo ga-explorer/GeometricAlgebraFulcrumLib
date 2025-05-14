@@ -2330,4 +2330,312 @@ public static class UInt64BitUtils
         return -1; // Not enough set bits
     }
     
+
+    public static IEnumerable<ulong> GetSubBitPatterns(this ulong bitPattern)
+    {
+        // Step 1: Extract positions of set bits
+        var bitPositions = bitPattern.GetSetBitPositionsAsArray();
+
+        var k = bitPositions.Length;
+        var totalSubsets = 1UL << k;
+
+        // Step 2: Iterate over all masks of size k
+        for (var mask = 0UL; mask < totalSubsets; mask++)
+        {
+            var subMask = 0UL;
+            for (var j = 0; j < k; j++)
+            {
+                if ((mask & (1UL << j)) != 0)
+                    subMask |= 1UL << bitPositions[j];
+            }
+
+            yield return subMask;
+        }
+    }
+
+    public static IEnumerable<ulong> GetSubBitPatternsOfSize(this ulong bitPattern, int k)
+    {
+        // Step 1: Extract the positions of all set bits
+        var bitPositions = bitPattern.GetSetBitPositionsAsArray();
+        var n = bitPositions.Length;
+
+        if (k < 0 || k > n)
+            yield break; // Invalid k
+
+        // Step 2: Use combination generator to get all k-length subsets of bit positions
+        var indices = new int[k];
+        for (var i = 0; i < k; i++)
+            indices[i] = i;
+
+        while (true)
+        {
+            // Build sub-mask
+            var subMask = 0UL;
+            for (var i = 0; i < k; i++)
+                subMask |= (1UL << bitPositions[indices[i]]);
+            yield return subMask;
+
+            // Move to next combination
+            var iPos = k - 1;
+            while (iPos >= 0 && indices[iPos] == n - k + iPos)
+                iPos--;
+
+            if (iPos < 0) break;
+
+            indices[iPos]++;
+            for (var j = iPos + 1; j < k; j++)
+                indices[j] = indices[j - 1] + 1;
+        }
+    }
+    
+    public static IEnumerable<ulong> GetSubBitPatternsOfSizeInRange(this ulong bitPattern, int minSize, int maxSize)
+    {
+        // Step 1: Extract positions of set bits
+        var bitPositions = bitPattern.GetSetBitPositionsAsArray();
+
+        var n = bitPositions.Length;
+
+        // Clamp min and max size
+        minSize = Math.Max(0, minSize);
+        maxSize = Math.Min(n, maxSize);
+
+        for (var k = minSize; k <= maxSize; k++)
+        {
+            if (k == 0)
+            {
+                yield return 0UL;
+                continue;
+            }
+
+            // Generate all combinations of size k
+            var indices = new int[k];
+            for (var i = 0; i < k; i++) indices[i] = i;
+
+            while (true)
+            {
+                // Build sub-mask
+                var subMask = 0UL;
+                for (var i = 0; i < k; i++)
+                    subMask |= 1UL << bitPositions[indices[i]];
+                yield return subMask;
+
+                // Move to next combination
+                var iPos = k - 1;
+                while (iPos >= 0 && indices[iPos] == n - k + iPos)
+                    iPos--;
+
+                if (iPos < 0) break;
+
+                indices[iPos]++;
+                for (var j = iPos + 1; j < k; j++)
+                    indices[j] = indices[j - 1] + 1;
+            }
+        }
+    }
+
+
+    public static IEnumerable<ulong> GetSubBitPatternsInGrayOrder(this ulong bitPattern)
+    {
+        // Step 1: Extract positions of set bits
+        var bitPositions = bitPattern.GetSetBitPositionsAsArray();
+        
+        var k = bitPositions.Length;
+        if (k == 0)
+        {
+            yield return 0UL;
+            yield break;
+        }
+
+        // Step 2: Generate all Gray codes of length k
+        var totalSubsets = 1UL << k;
+        for (var i = 0UL; i < totalSubsets; i++)
+        {
+            // Binary-reflected Gray code: g = i ^ (i >> 1)
+            var gray = i ^ (i >> 1);
+
+            // Build bit pattern from Gray code bits
+            var subMask = 0UL;
+            for (var j = 0; j < k; j++)
+            {
+                if ((gray & (1UL << j)) != 0)
+                    subMask |= 1UL << bitPositions[j];
+            }
+
+            yield return subMask;
+        }
+    }
+
+    public static IEnumerable<ulong> GetSubBitPatternsOfSizeInGrayOrder(this ulong bitPattern, int k)
+    {
+        // Step 1: Extract positions of set bits
+        var bitPositions = bitPattern.GetSetBitPositionsAsArray();
+        var n = bitPositions.Length;
+
+        if (k <= 0 || k > n)
+        {
+            if (k == 0) yield return 0UL;
+            yield break;
+        }
+
+        // Step 2: Use Gray code-based combination generator
+        var indices = new int[k];
+        for (var i = 0; i < k; i++)
+            indices[i] = i;
+
+        var forward = true;
+        var first = true;
+
+        while (true)
+        {
+            if (first)
+            {
+                first = false;
+            }
+            else
+            {
+                // Move to next combination using combinatorial Gray code algorithm
+                int i;
+                if (forward)
+                {
+                    if (indices[k - 1] < n - 1)
+                    {
+                        indices[k - 1]++;
+                    }
+                    else
+                    {
+                        forward = false;
+                        i = k - 2;
+                        while (i >= 0 && indices[i + 1] - indices[i] <= 1)
+                            i--;
+
+                        if (i < 0) break;
+
+                        indices[i]++;
+                        for (var j = i + 1; j < k; j++)
+                            indices[j] = indices[j - 1] + 1;
+                    }
+                }
+                else
+                {
+                    if (indices[0] > 0)
+                    {
+                        indices[0]--;
+                    }
+                    else
+                    {
+                        forward = true;
+                        i = 1;
+                        while (i < k && indices[i] - indices[i - 1] <= 1)
+                            i++;
+
+                        if (i >= k) break;
+
+                        indices[i]--;
+                        for (var j = i - 1; j >= 0; j--)
+                            indices[j] = indices[j + 1] - 1;
+                    }
+                }
+            }
+
+            // Build sub-mask
+            var subMask = 0UL;
+            for (var j = 0; j < k; j++)
+                subMask |= 1UL << bitPositions[indices[j]];
+
+            yield return subMask;
+        }
+
+    }
+    
+    public static IEnumerable<ulong> GetSubBitPatternsOfSizeInRangeInGrayOrder(this ulong bitPattern, int minSize, int maxSize)
+    {
+        // Step 1: Extract positions of set bits
+        var bitPositions = bitPattern.GetSetBitPositionsAsArray();
+        var n = bitPositions.Length;
+
+        // Clamp min/max size
+        minSize = Math.Max(0, minSize);
+        maxSize = Math.Min(n, maxSize);
+
+        // Handle empty pattern
+        if (n == 0)
+        {
+            if (minSize <= 0 && maxSize >= 0)
+                yield return 0UL;
+            yield break;
+        }
+
+        // Step 2: For each size k in [minSize, maxSize], generate Gray-coded subsets
+        for (var k = minSize; k <= maxSize; k++)
+        {
+            if (k == 0)
+            {
+                yield return 0UL;
+                continue;
+            }
+
+            var indices = new int[k];
+            for (var i = 0; i < k; i++) indices[i] = i;
+
+            var forward = true;
+            var first = true;
+
+            while (true)
+            {
+                if (!first)
+                {
+                    // Move to next combination using combinatorial Gray code logic
+                    int i;
+                    if (forward)
+                    {
+                        if (indices[k - 1] < n - 1)
+                        {
+                            indices[k - 1]++;
+                        }
+                        else
+                        {
+                            forward = false;
+                            i = k - 2;
+                            while (i >= 0 && indices[i + 1] - indices[i] <= 1)
+                                i--;
+
+                            if (i < 0) break;
+
+                            indices[i]++;
+                            for (var j = i + 1; j < k; j++)
+                                indices[j] = indices[j - 1] + 1;
+                        }
+                    }
+                    else
+                    {
+                        if (indices[0] > 0)
+                        {
+                            indices[0]--;
+                        }
+                        else
+                        {
+                            forward = true;
+                            i = 1;
+                            while (i < k && indices[i] - indices[i - 1] <= 1)
+                                i++;
+
+                            if (i >= k) break;
+
+                            indices[i]--;
+                            for (var j = i - 1; j >= 0; j--)
+                                indices[j] = indices[j + 1] - 1;
+                        }
+                    }
+                }
+
+                // Build sub-mask
+                var subMask = 0UL;
+                for (var j = 0; j < k; j++)
+                    subMask |= 1UL << bitPositions[indices[j]];
+
+                yield return subMask;
+                first = false;
+            }
+        }
+    }
 }

@@ -166,7 +166,7 @@
 //        InputIndices =
 //            _index1Array
 //                .Concat(_index2Array)
-//                .ToImmutableSortedSet();
+//                .ToIndexSet(false);
 
 //        Debug.Assert(IsValid());
 //    }

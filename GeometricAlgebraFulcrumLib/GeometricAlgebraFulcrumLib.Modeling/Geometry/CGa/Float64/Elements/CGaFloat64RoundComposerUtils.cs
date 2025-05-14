@@ -1,6 +1,6 @@
 ﻿using System.Runtime.CompilerServices;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Float64.Multivectors;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Float64.Multivectors.Composers;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivectors;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivectors.Composers;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space2D;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space3D;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.SpaceND;
@@ -170,7 +170,7 @@ public static class CGaFloat64RoundComposerUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static CGaFloat64Round DefineRoundPointPair(this CGaFloat64GeometricSpace cgaGeometricSpace, double radiusSquared, RGaFloat64Vector center, RGaFloat64Vector direction)
+    public static CGaFloat64Round DefineRoundPointPair(this CGaFloat64GeometricSpace cgaGeometricSpace, double radiusSquared, XGaFloat64Vector center, XGaFloat64Vector direction)
     {
         return new CGaFloat64Round(
             cgaGeometricSpace,
@@ -219,7 +219,7 @@ public static class CGaFloat64RoundComposerUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static CGaFloat64Round DefineRoundPointPair(this CGaFloat64GeometricSpace cgaGeometricSpace, double weight, double radiusSquared, RGaFloat64Vector center, RGaFloat64Vector direction)
+    public static CGaFloat64Round DefineRoundPointPair(this CGaFloat64GeometricSpace cgaGeometricSpace, double weight, double radiusSquared, XGaFloat64Vector center, XGaFloat64Vector direction)
     {
         return new CGaFloat64Round(
             cgaGeometricSpace,
@@ -318,7 +318,7 @@ public static class CGaFloat64RoundComposerUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static CGaFloat64Round DefineRoundCircle(this CGaFloat64GeometricSpace cgaGeometricSpace, double radiusSquared, RGaFloat64Vector center, RGaFloat64Bivector direction)
+    public static CGaFloat64Round DefineRoundCircle(this CGaFloat64GeometricSpace cgaGeometricSpace, double radiusSquared, XGaFloat64Vector center, XGaFloat64Bivector direction)
     {
         return new CGaFloat64Round(
             cgaGeometricSpace,
@@ -343,7 +343,7 @@ public static class CGaFloat64RoundComposerUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static CGaFloat64Round DefineRoundCircle(this CGaFloat64GeometricSpace cgaGeometricSpace, double weight, double radiusSquared, RGaFloat64Vector center, RGaFloat64Bivector direction)
+    public static CGaFloat64Round DefineRoundCircle(this CGaFloat64GeometricSpace cgaGeometricSpace, double weight, double radiusSquared, XGaFloat64Vector center, XGaFloat64Bivector direction)
     {
         return new CGaFloat64Round(
             cgaGeometricSpace,
@@ -406,7 +406,7 @@ public static class CGaFloat64RoundComposerUtils
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static CGaFloat64Round DefineRound(this CGaFloat64GeometricSpace cgaGeometricSpace, double radiusSquared, RGaFloat64Vector center, RGaFloat64KVector direction)
+    public static CGaFloat64Round DefineRound(this CGaFloat64GeometricSpace cgaGeometricSpace, double radiusSquared, XGaFloat64Vector center, XGaFloat64KVector direction)
     {
         return new CGaFloat64Round(
             cgaGeometricSpace,
@@ -431,7 +431,7 @@ public static class CGaFloat64RoundComposerUtils
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static CGaFloat64Round DefineRound(this CGaFloat64GeometricSpace cgaGeometricSpace, double weight, double radiusSquared, RGaFloat64Vector center, RGaFloat64KVector direction)
+    public static CGaFloat64Round DefineRound(this CGaFloat64GeometricSpace cgaGeometricSpace, double weight, double radiusSquared, XGaFloat64Vector center, XGaFloat64KVector direction)
     {
         return new CGaFloat64Round(
             cgaGeometricSpace,
@@ -463,7 +463,7 @@ public static class CGaFloat64RoundComposerUtils
             radiusSquared,
             cgaGeometricSpace.Encode.VGa.Vector(center),
             directionVectors
-                .Select(v => v.ToRGaFloat64Vector())
+                .Select(v => v.ToXGaFloat64Vector())
                 .Op(cgaGeometricSpace.Processor)
                 .EncodeVGaBlade(cgaGeometricSpace)
         );
@@ -477,7 +477,7 @@ public static class CGaFloat64RoundComposerUtils
             radiusSquared,
             cgaGeometricSpace.Encode.VGa.Vector(center),
             directionVectors
-                .Select(v => v.ToRGaFloat64Vector())
+                .Select(v => v.ToXGaFloat64Vector())
                 .Op(cgaGeometricSpace.Processor)
                 .EncodeVGaBlade(cgaGeometricSpace)
         );
@@ -491,14 +491,14 @@ public static class CGaFloat64RoundComposerUtils
             radiusSquared,
             cgaGeometricSpace.Encode.VGa.Vector(center),
             directionVectors
-                .Select(v => v.ToRGaFloat64Vector())
+                .Select(v => v.ToXGaFloat64Vector())
                 .Op(cgaGeometricSpace.Processor)
                 .EncodeVGaBlade(cgaGeometricSpace)
         );
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static CGaFloat64Round DefineRoundFromVectors(this CGaFloat64GeometricSpace cgaGeometricSpace, double radiusSquared, RGaFloat64Vector center, params RGaFloat64Vector[] directionVectors)
+    public static CGaFloat64Round DefineRoundFromVectors(this CGaFloat64GeometricSpace cgaGeometricSpace, double radiusSquared, XGaFloat64Vector center, params XGaFloat64Vector[] directionVectors)
     {
         return cgaGeometricSpace.DefineRound(
             1,
@@ -509,7 +509,7 @@ public static class CGaFloat64RoundComposerUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static CGaFloat64Round DefineRoundFromVectors(this CGaFloat64GeometricSpace cgaGeometricSpace, double radiusSquared, RGaFloat64Vector center, IEnumerable<RGaFloat64Vector> directionVectors)
+    public static CGaFloat64Round DefineRoundFromVectors(this CGaFloat64GeometricSpace cgaGeometricSpace, double radiusSquared, XGaFloat64Vector center, IEnumerable<XGaFloat64Vector> directionVectors)
     {
         return cgaGeometricSpace.DefineRound(
             1,
@@ -528,7 +528,7 @@ public static class CGaFloat64RoundComposerUtils
             radiusSquared,
             cgaGeometricSpace.Encode.VGa.Vector(center),
             directionVectors
-                .Select(v => v.ToRGaFloat64Vector())
+                .Select(v => v.ToXGaFloat64Vector())
                 .Op(cgaGeometricSpace.Processor)
                 .EncodeVGaBlade(cgaGeometricSpace)
         );
@@ -542,7 +542,7 @@ public static class CGaFloat64RoundComposerUtils
             radiusSquared,
             cgaGeometricSpace.Encode.VGa.Vector(center),
             directionVectors
-                .Select(v => v.ToRGaFloat64Vector())
+                .Select(v => v.ToXGaFloat64Vector())
                 .Op(cgaGeometricSpace.Processor)
                 .EncodeVGaBlade(cgaGeometricSpace)
         );
@@ -556,14 +556,14 @@ public static class CGaFloat64RoundComposerUtils
             radiusSquared,
             cgaGeometricSpace.Encode.VGa.Vector(center),
             directionVectors
-                .Select(v => v.ToRGaFloat64Vector())
+                .Select(v => v.ToXGaFloat64Vector())
                 .Op(cgaGeometricSpace.Processor)
                 .EncodeVGaBlade(cgaGeometricSpace)
         );
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static CGaFloat64Round DefineRoundFromVectors(this CGaFloat64GeometricSpace cgaGeometricSpace, double weight, double radiusSquared, RGaFloat64Vector center, params RGaFloat64Vector[] directionVectors)
+    public static CGaFloat64Round DefineRoundFromVectors(this CGaFloat64GeometricSpace cgaGeometricSpace, double weight, double radiusSquared, XGaFloat64Vector center, params XGaFloat64Vector[] directionVectors)
     {
         return cgaGeometricSpace.DefineRound(
             weight,
@@ -574,7 +574,7 @@ public static class CGaFloat64RoundComposerUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static CGaFloat64Round DefineRoundFromVectors(this CGaFloat64GeometricSpace cgaGeometricSpace, double weight, double radiusSquared, RGaFloat64Vector center, IEnumerable<RGaFloat64Vector> directionVectors)
+    public static CGaFloat64Round DefineRoundFromVectors(this CGaFloat64GeometricSpace cgaGeometricSpace, double weight, double radiusSquared, XGaFloat64Vector center, IEnumerable<XGaFloat64Vector> directionVectors)
     {
         return cgaGeometricSpace.DefineRound(
             weight,
@@ -619,7 +619,7 @@ public static class CGaFloat64RoundComposerUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static CGaFloat64Round DefineRoundFromPoints(this CGaFloat64GeometricSpace cgaGeometricSpace, params RGaFloat64Vector[] egaPoints)
+    public static CGaFloat64Round DefineRoundFromPoints(this CGaFloat64GeometricSpace cgaGeometricSpace, params XGaFloat64Vector[] egaPoints)
     {
         var kVector =
             egaPoints.Select(p =>
@@ -630,7 +630,7 @@ public static class CGaFloat64RoundComposerUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static CGaFloat64Round DefineRoundFromPoints(this CGaFloat64GeometricSpace cgaGeometricSpace, IEnumerable<RGaFloat64Vector> egaPoints)
+    public static CGaFloat64Round DefineRoundFromPoints(this CGaFloat64GeometricSpace cgaGeometricSpace, IEnumerable<XGaFloat64Vector> egaPoints)
     {
         var kVector =
             egaPoints.Select(p =>
@@ -675,7 +675,7 @@ public static class CGaFloat64RoundComposerUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static CGaFloat64Round DefineRoundFromPoints(this CGaFloat64GeometricSpace cgaGeometricSpace, double weight, params RGaFloat64Vector[] egaPoints)
+    public static CGaFloat64Round DefineRoundFromPoints(this CGaFloat64GeometricSpace cgaGeometricSpace, double weight, params XGaFloat64Vector[] egaPoints)
     {
         var kVector =
             weight * egaPoints.Select(p =>
@@ -686,7 +686,7 @@ public static class CGaFloat64RoundComposerUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static CGaFloat64Round DefineRoundFromPoints(this CGaFloat64GeometricSpace cgaGeometricSpace, double weight, IEnumerable<RGaFloat64Vector> egaPoints)
+    public static CGaFloat64Round DefineRoundFromPoints(this CGaFloat64GeometricSpace cgaGeometricSpace, double weight, IEnumerable<XGaFloat64Vector> egaPoints)
     {
         var kVector =
             weight * egaPoints.Select(p =>

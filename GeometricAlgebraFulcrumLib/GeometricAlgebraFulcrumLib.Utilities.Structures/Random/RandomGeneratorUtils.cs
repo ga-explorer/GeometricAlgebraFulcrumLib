@@ -435,21 +435,47 @@ public static class RandomGeneratorUtils
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static IEnumerable<int> GetUniqueIndices(this System.Random randomGenerator, int totalSize)
+    public static int[] GetUniqueIndices(this System.Random randomGenerator, int totalSize)
     {
-        return Enumerable
-            .Range(0, totalSize)
-            .Shuffled(randomGenerator);
+        return GetUniqueIndices(randomGenerator, totalSize, totalSize);
     }
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static IEnumerable<int> GetUniqueIndices(this System.Random randomGenerator, int selectionSize, int totalSize)
+    /// <summary>
+    /// Returns k unique random indices from 0 to n-1 using Fisher-Yates shuffle.
+    /// </summary>
+    public static int[] GetUniqueIndices(this System.Random randomGenerator, int selectionSize, int totalSize)
     {
-        return Enumerable
-            .Range(0, totalSize)
-            .Shuffled(randomGenerator)
-            .Take(selectionSize);
+        if (selectionSize < 0 || selectionSize > totalSize)
+            throw new ArgumentOutOfRangeException(nameof(selectionSize));
+
+        // Use stackalloc if n is small enough
+        const int maxStackSize = 1024;
+        
+        var indices = 
+            totalSize <= maxStackSize ? stackalloc int[totalSize] : new int[totalSize];
+
+        // Initialize indices: [0, 1, ..., n - 1]
+        for (var i = 0; i < totalSize; i++)
+            indices[i] = i;
+
+        // Fisher-Yates shuffle up to k
+        for (var i = 0; i < selectionSize; i++)
+        {
+            var j = randomGenerator.Next(i, totalSize);
+            (indices[i], indices[j]) = (indices[j], indices[i]);
+        }
+
+        return indices[..selectionSize].ToArray();
     }
+
+    //[MethodImpl(MethodImplOptions.AggressiveInlining)]
+    //public static IEnumerable<int> GetUniqueIndices(this System.Random randomGenerator, int selectionSize, int totalSize)
+    //{
+    //    return Enumerable
+    //        .Range(0, totalSize)
+    //        .Shuffled(randomGenerator)
+    //        .Take(selectionSize);
+    //}
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static IEnumerable<T> GetUniqueItems<T>(this System.Random randomGenerator, int indicesCount, IEnumerable<T> itemsList)

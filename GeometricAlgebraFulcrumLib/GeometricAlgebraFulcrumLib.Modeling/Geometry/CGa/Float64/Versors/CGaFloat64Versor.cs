@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics;
 using System.Runtime.CompilerServices;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Float64.Multivectors;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Float64.Processors;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivectors;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Processors;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Float64.Blades;
 
@@ -57,11 +57,11 @@ public sealed record CGaFloat64Versor
     public GaFloat64GeometricSpaceBasisSpecs BasisSpecs
         => GeometricSpace.BasisSpecs;
 
-    public RGaFloat64Multivector InternalMultivector { get; }
+    public XGaFloat64Multivector InternalMultivector { get; }
 
-    public RGaFloat64Multivector InternalMultivectorInverse { get; }
+    public XGaFloat64Multivector InternalMultivectorInverse { get; }
 
-    public RGaFloat64ConformalProcessor ConformalProcessor
+    public XGaFloat64ConformalProcessor ConformalProcessor
         => GeometricSpace.ConformalProcessor;
 
     public int VSpaceDimensions
@@ -81,7 +81,7 @@ public sealed record CGaFloat64Versor
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    internal CGaFloat64Versor(CGaFloat64GeometricSpace cgaGeometricSpace, RGaFloat64Multivector multivector)
+    internal CGaFloat64Versor(CGaFloat64GeometricSpace cgaGeometricSpace, XGaFloat64Multivector multivector)
         : this(cgaGeometricSpace, multivector, multivector.Inverse())
     {
         //Debug.Assert(
@@ -95,7 +95,7 @@ public sealed record CGaFloat64Versor
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    internal CGaFloat64Versor(CGaFloat64GeometricSpace cgaGeometricSpace, RGaFloat64Multivector multivector, RGaFloat64Multivector multivectorInverse)
+    internal CGaFloat64Versor(CGaFloat64GeometricSpace cgaGeometricSpace, XGaFloat64Multivector multivector, XGaFloat64Multivector multivectorInverse)
     {
         Debug.Assert(
             multivector.Processor.HasSameSignature(cgaGeometricSpace.ConformalProcessor) &&
@@ -110,7 +110,7 @@ public sealed record CGaFloat64Versor
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public void Deconstruct(out CGaFloat64GeometricSpace cgaGeometricSpace, out RGaFloat64Multivector multivector, out RGaFloat64Multivector multivectorInverse)
+    public void Deconstruct(out CGaFloat64GeometricSpace cgaGeometricSpace, out XGaFloat64Multivector multivector, out XGaFloat64Multivector multivectorInverse)
     {
         cgaGeometricSpace = GeometricSpace;
         multivector = InternalMultivector;
@@ -246,7 +246,7 @@ public sealed record CGaFloat64Versor
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public RGaFloat64Multivector VGaDualMultivector()
+    public XGaFloat64Multivector VGaDualMultivector()
     {
         Debug.Assert(
             GeometricSpace.IsValidVGaElement(InternalMultivector)
@@ -269,7 +269,7 @@ public sealed record CGaFloat64Versor
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public RGaFloat64Multivector VGaUnDualMultivector()
+    public XGaFloat64Multivector VGaUnDualMultivector()
     {
         Debug.Assert(
             GeometricSpace.IsValidVGaElement(InternalMultivector)
@@ -288,7 +288,7 @@ public sealed record CGaFloat64Versor
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public RGaFloat64Multivector PGaDualMultivector()
+    public XGaFloat64Multivector PGaDualMultivector()
     {
         Debug.Assert(
             GeometricSpace.IsValidPGaElement(InternalMultivector)
@@ -310,7 +310,7 @@ public sealed record CGaFloat64Versor
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public RGaFloat64Multivector PGaUnDualMultivector()
+    public XGaFloat64Multivector PGaUnDualMultivector()
     {
         Debug.Assert(
             GeometricSpace.IsValidPGaElement(InternalMultivector)
@@ -368,7 +368,7 @@ public sealed record CGaFloat64Versor
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public CGaFloat64Versor Sp(RGaFloat64KVector blade2)
+    public CGaFloat64Versor Sp(XGaFloat64KVector blade2)
     {
         return new CGaFloat64Versor(
             GeometricSpace,
@@ -386,7 +386,7 @@ public sealed record CGaFloat64Versor
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public CGaFloat64Versor Op(RGaFloat64KVector blade2)
+    public CGaFloat64Versor Op(XGaFloat64KVector blade2)
     {
         return new CGaFloat64Versor(
             GeometricSpace,
@@ -404,7 +404,7 @@ public sealed record CGaFloat64Versor
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public CGaFloat64Versor Lcp(RGaFloat64KVector blade2)
+    public CGaFloat64Versor Lcp(XGaFloat64KVector blade2)
     {
         return new CGaFloat64Versor(
             GeometricSpace,
@@ -422,7 +422,7 @@ public sealed record CGaFloat64Versor
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public CGaFloat64Versor Rcp(RGaFloat64KVector blade2)
+    public CGaFloat64Versor Rcp(XGaFloat64KVector blade2)
     {
         return new CGaFloat64Versor(
             GeometricSpace,
@@ -440,7 +440,7 @@ public sealed record CGaFloat64Versor
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public CGaFloat64Versor Fdp(RGaFloat64KVector blade2)
+    public CGaFloat64Versor Fdp(XGaFloat64KVector blade2)
     {
         return new CGaFloat64Versor(
             GeometricSpace,
@@ -449,13 +449,13 @@ public sealed record CGaFloat64Versor
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public RGaFloat64Multivector Gp(CGaFloat64Versor mv2)
+    public XGaFloat64Multivector Gp(CGaFloat64Versor mv2)
     {
         return InternalMultivector.Gp(mv2.InternalMultivector);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public RGaFloat64Multivector Gp(RGaFloat64Multivector mv2)
+    public XGaFloat64Multivector Gp(XGaFloat64Multivector mv2)
     {
         return InternalMultivector.Gp(mv2);
     }
@@ -481,7 +481,7 @@ public sealed record CGaFloat64Versor
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    internal CGaFloat64Blade MapBlade(RGaFloat64KVector blade)
+    internal CGaFloat64Blade MapBlade(XGaFloat64KVector blade)
     {
         var mappedBlade =
             InternalMultivector
@@ -499,7 +499,7 @@ public sealed record CGaFloat64Versor
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    internal CGaFloat64Versor MapVersor(RGaFloat64Multivector versor)
+    internal CGaFloat64Versor MapVersor(XGaFloat64Multivector versor)
     {
         var mappedBlade =
             InternalMultivector
@@ -517,7 +517,7 @@ public sealed record CGaFloat64Versor
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    internal CGaFloat64Blade InverseMapBlade(RGaFloat64KVector blade)
+    internal CGaFloat64Blade InverseMapBlade(XGaFloat64KVector blade)
     {
         var mappedBlade =
             InternalMultivectorInverse
@@ -535,7 +535,7 @@ public sealed record CGaFloat64Versor
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    internal CGaFloat64Versor InverseMapVersor(RGaFloat64Multivector versor)
+    internal CGaFloat64Versor InverseMapVersor(XGaFloat64Multivector versor)
     {
         var mappedBlade =
             InternalMultivectorInverse

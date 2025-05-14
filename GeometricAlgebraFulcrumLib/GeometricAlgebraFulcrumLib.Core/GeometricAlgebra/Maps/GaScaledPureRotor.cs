@@ -1,7 +1,7 @@
 ﻿using System.Runtime.CompilerServices;
-using GeometricAlgebraFulcrumLib.Core.GeometricAlgebra.Restricted.Float64.Multivectors;
-using GeometricAlgebraFulcrumLib.Core.GeometricAlgebra.Restricted.Float64.Multivectors.Composers;
-using GeometricAlgebraFulcrumLib.Core.GeometricAlgebra.Restricted.Float64.Processors;
+using GeometricAlgebraFulcrumLib.Core.GeometricAlgebra.Float64.Multivectors;
+using GeometricAlgebraFulcrumLib.Core.GeometricAlgebra.Float64.Multivectors.Composers;
+using GeometricAlgebraFulcrumLib.Core.GeometricAlgebra.Float64.Processors;
 using GeometricAlgebraFulcrumLib.Core.LinearAlgebra.Float64.Vectors.Space2D;
 using GeometricAlgebraFulcrumLib.Core.LinearAlgebra.Float64.Vectors.Space3D;
 using GeometricAlgebraFulcrumLib.Core.Scalars.Float64;
@@ -11,18 +11,18 @@ namespace GeometricAlgebraFulcrumLib.Core.GeometricAlgebra.Maps;
 public class GaScaledPureRotor :
     IAlgebraicElement
 {
-    public RGaFloat64Processor Processor 
+    public XGaFloat64Processor Processor 
         => Multivector.Processor;
 
     public double ScalingFactor { get; }
 
-    public RGaFloat64Multivector Multivector { get; }
+    public XGaFloat64Multivector Multivector { get; }
 
-    public RGaFloat64Multivector MultivectorReverse { get; }
+    public XGaFloat64Multivector MultivectorReverse { get; }
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    internal GaScaledPureRotor(RGaFloat64Multivector multivector)
+    internal GaScaledPureRotor(XGaFloat64Multivector multivector)
     {
         Multivector = multivector;
         MultivectorReverse = multivector.Reverse();
@@ -30,7 +30,7 @@ public class GaScaledPureRotor :
     }
         
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    internal GaScaledPureRotor(RGaFloat64Multivector multivector, RGaFloat64Multivector multivectorReverse)
+    internal GaScaledPureRotor(XGaFloat64Multivector multivector, XGaFloat64Multivector multivectorReverse)
     {
         Multivector = multivector;
         MultivectorReverse = multivectorReverse;
@@ -38,7 +38,7 @@ public class GaScaledPureRotor :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    internal GaScaledPureRotor(RGaFloat64Multivector multivector, RGaFloat64Multivector multivectorReverse, double scalingFactor)
+    internal GaScaledPureRotor(XGaFloat64Multivector multivector, XGaFloat64Multivector multivectorReverse, double scalingFactor)
     {
         Multivector = multivector;
         MultivectorReverse = multivectorReverse;
@@ -86,17 +86,17 @@ public class GaScaledPureRotor :
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public LinFloat64Vector2D OmMap(ILinFloat64Vector2D vector)
     {
-        return Multivector.Gp(vector.ToRGaFloat64Vector(Processor)).Gp(MultivectorReverse).GetVectorPartAsVector2D();
+        return Multivector.Gp(vector.ToXGaFloat64Vector(Processor)).Gp(MultivectorReverse).VectorPartToVector2D();
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public LinFloat64Vector3D OmMap(ILinFloat64Vector3D vector)
     {
-        return Multivector.Gp(vector.ToRGaFloat64Vector(Processor)).Gp(MultivectorReverse).GetVectorPartAsVector3D();
+        return Multivector.Gp(vector.ToXGaFloat64Vector(Processor)).Gp(MultivectorReverse).VectorPartToVector3D();
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public RGaFloat64Multivector OmMap(RGaFloat64Multivector multivector)
+    public XGaFloat64Multivector OmMap(XGaFloat64Multivector multivector)
     {
         return Multivector.Gp(multivector).Gp(MultivectorReverse);
     }

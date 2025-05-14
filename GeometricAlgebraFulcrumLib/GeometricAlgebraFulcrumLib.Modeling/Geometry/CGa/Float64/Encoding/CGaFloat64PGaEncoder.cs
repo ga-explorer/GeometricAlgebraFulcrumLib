@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics;
 using System.Runtime.CompilerServices;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Float64.Multivectors;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivectors;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Angles;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space2D;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space3D;
@@ -24,7 +24,7 @@ public class CGaFloat64PGaEncoder :
         Debug.Assert(GeometricSpace.Is4D);
 
         return Point(
-            GeometricSpace.Encode.VGa.VectorAsRGaVector(pointX, pointY)
+            GeometricSpace.Encode.VGa.VectorAsXGaVector(pointX, pointY)
         );
     }
 
@@ -34,7 +34,7 @@ public class CGaFloat64PGaEncoder :
         Debug.Assert(GeometricSpace.Is4D);
 
         return Point(
-            GeometricSpace.Encode.VGa.VectorAsRGaVector(point)
+            GeometricSpace.Encode.VGa.VectorAsXGaVector(point)
         );
     }
 
@@ -44,8 +44,8 @@ public class CGaFloat64PGaEncoder :
         Debug.Assert(GeometricSpace.Is4D);
 
         return LineFromPoints(
-            GeometricSpace.Encode.VGa.VectorAsRGaVector(point1),
-            GeometricSpace.Encode.VGa.VectorAsRGaVector(point2)
+            GeometricSpace.Encode.VGa.VectorAsXGaVector(point1),
+            GeometricSpace.Encode.VGa.VectorAsXGaVector(point2)
         );
     }
 
@@ -55,9 +55,9 @@ public class CGaFloat64PGaEncoder :
         Debug.Assert(GeometricSpace.Is4D);
 
         return PlaneFromPoints(
-            GeometricSpace.Encode.VGa.VectorAsRGaVector(point1),
-            GeometricSpace.Encode.VGa.VectorAsRGaVector(point2),
-            GeometricSpace.Encode.VGa.VectorAsRGaVector(point3)
+            GeometricSpace.Encode.VGa.VectorAsXGaVector(point1),
+            GeometricSpace.Encode.VGa.VectorAsXGaVector(point2),
+            GeometricSpace.Encode.VGa.VectorAsXGaVector(point3)
         );
     }
 
@@ -68,7 +68,7 @@ public class CGaFloat64PGaEncoder :
         Debug.Assert(GeometricSpace.Is5D);
 
         return Point(
-            GeometricSpace.Encode.VGa.VectorAsRGaVector(pointX, pointY, pointZ)
+            GeometricSpace.Encode.VGa.VectorAsXGaVector(pointX, pointY, pointZ)
         );
     }
 
@@ -78,7 +78,7 @@ public class CGaFloat64PGaEncoder :
         Debug.Assert(GeometricSpace.Is5D);
 
         return Point(
-            GeometricSpace.Encode.VGa.VectorAsRGaVector(point)
+            GeometricSpace.Encode.VGa.VectorAsXGaVector(point)
         );
     }
 
@@ -88,8 +88,8 @@ public class CGaFloat64PGaEncoder :
         Debug.Assert(GeometricSpace.Is4D);
 
         return Line(
-            GeometricSpace.Encode.VGa.VectorAsRGaVector(egaPoint),
-            GeometricSpace.Encode.VGa.VectorAsRGaVector(egaDirection)
+            GeometricSpace.Encode.VGa.VectorAsXGaVector(egaPoint),
+            GeometricSpace.Encode.VGa.VectorAsXGaVector(egaDirection)
         );
     }
 
@@ -99,8 +99,8 @@ public class CGaFloat64PGaEncoder :
         Debug.Assert(GeometricSpace.Is5D);
 
         return Line(
-            GeometricSpace.Encode.VGa.VectorAsRGaVector(egaPoint),
-            GeometricSpace.Encode.VGa.VectorAsRGaVector(egaDirection)
+            GeometricSpace.Encode.VGa.VectorAsXGaVector(egaPoint),
+            GeometricSpace.Encode.VGa.VectorAsXGaVector(egaDirection)
         );
     }
 
@@ -110,8 +110,8 @@ public class CGaFloat64PGaEncoder :
         Debug.Assert(GeometricSpace.Is5D);
 
         return LineFromPoints(
-            GeometricSpace.Encode.VGa.VectorAsRGaVector(point1),
-            GeometricSpace.Encode.VGa.VectorAsRGaVector(point2)
+            GeometricSpace.Encode.VGa.VectorAsXGaVector(point1),
+            GeometricSpace.Encode.VGa.VectorAsXGaVector(point2)
         );
     }
 
@@ -121,15 +121,15 @@ public class CGaFloat64PGaEncoder :
         Debug.Assert(GeometricSpace.Is5D);
 
         return PlaneFromPoints(
-            GeometricSpace.Encode.VGa.VectorAsRGaVector(point1),
-            GeometricSpace.Encode.VGa.VectorAsRGaVector(point2),
-            GeometricSpace.Encode.VGa.VectorAsRGaVector(point3)
+            GeometricSpace.Encode.VGa.VectorAsXGaVector(point1),
+            GeometricSpace.Encode.VGa.VectorAsXGaVector(point2),
+            GeometricSpace.Encode.VGa.VectorAsXGaVector(point3)
         );
     }
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public CGaFloat64Blade Point(RGaFloat64Vector egaPoint)
+    public CGaFloat64Blade Point(XGaFloat64Vector egaPoint)
     {
         Debug.Assert(GeometricSpace.IsValidVGaElement(egaPoint));
 
@@ -138,7 +138,7 @@ public class CGaFloat64PGaEncoder :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public CGaFloat64Blade Line(RGaFloat64Vector egaPoint, RGaFloat64Vector egaDirection)
+    public CGaFloat64Blade Line(XGaFloat64Vector egaPoint, XGaFloat64Vector egaDirection)
     {
         Debug.Assert(
             GeometricSpace.IsValidVGaElement(egaPoint) &&
@@ -152,7 +152,7 @@ public class CGaFloat64PGaEncoder :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public CGaFloat64Blade LineFromPoints(RGaFloat64Vector egaPoint1, RGaFloat64Vector egaPoint2)
+    public CGaFloat64Blade LineFromPoints(XGaFloat64Vector egaPoint1, XGaFloat64Vector egaPoint2)
     {
         Debug.Assert(
             GeometricSpace.IsValidVGaElement(egaPoint1) &&
@@ -171,13 +171,13 @@ public class CGaFloat64PGaEncoder :
         Debug.Assert(GeometricSpace.Is4D);
 
         return BisectorLine(
-            GeometricSpace.Encode.VGa.VectorAsRGaVector(point1),
-            GeometricSpace.Encode.VGa.VectorAsRGaVector(point2)
+            GeometricSpace.Encode.VGa.VectorAsXGaVector(point1),
+            GeometricSpace.Encode.VGa.VectorAsXGaVector(point2)
         );
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public CGaFloat64Blade BisectorLine(RGaFloat64Vector egaPoint1, RGaFloat64Vector egaPoint2)
+    public CGaFloat64Blade BisectorLine(XGaFloat64Vector egaPoint1, XGaFloat64Vector egaPoint2)
     {
         Debug.Assert(
             GeometricSpace.IsValidVGaElement(egaPoint1) &&
@@ -196,7 +196,7 @@ public class CGaFloat64PGaEncoder :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public CGaFloat64Blade PlaneFromPoints(RGaFloat64Vector egaPoint1, RGaFloat64Vector egaPoint2, RGaFloat64Vector egaPoint3)
+    public CGaFloat64Blade PlaneFromPoints(XGaFloat64Vector egaPoint1, XGaFloat64Vector egaPoint2, XGaFloat64Vector egaPoint3)
     {
         Debug.Assert(
             GeometricSpace.IsValidVGaElement(egaPoint1) &&
@@ -212,7 +212,7 @@ public class CGaFloat64PGaEncoder :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public CGaFloat64Blade BladeFromPoints(params RGaFloat64Vector[] egaPointArray)
+    public CGaFloat64Blade BladeFromPoints(params XGaFloat64Vector[] egaPointArray)
     {
         Debug.Assert(
             egaPointArray.All(GeometricSpace.IsValidVGaElement)
@@ -225,7 +225,7 @@ public class CGaFloat64PGaEncoder :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public CGaFloat64Blade BladeFromPoints(IEnumerable<RGaFloat64Vector> egaPointArray)
+    public CGaFloat64Blade BladeFromPoints(IEnumerable<XGaFloat64Vector> egaPointArray)
     {
         Debug.Assert(
             egaPointArray.All(GeometricSpace.IsValidVGaElement)
@@ -239,7 +239,7 @@ public class CGaFloat64PGaEncoder :
 
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public CGaFloat64Versor Translation(RGaFloat64Vector egaVector)
+    public CGaFloat64Versor Translation(XGaFloat64Vector egaVector)
     {
         Debug.Assert(GeometricSpace.IsValidVGaElement(egaVector));
 

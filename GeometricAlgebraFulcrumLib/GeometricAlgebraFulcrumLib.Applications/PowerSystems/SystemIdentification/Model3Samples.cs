@@ -1,6 +1,4 @@
-﻿using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Float64.Processors;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Generic.Processors;
-using GeometricAlgebraFulcrumLib.Algebra.Scalars.Generic;
+﻿using GeometricAlgebraFulcrumLib.Algebra.Scalars.Generic;
 using GeometricAlgebraFulcrumLib.Algebra.Utilities.Text;
 using OfficeOpenXml;
 using GeometricAlgebraFulcrumLib.Modeling.Calculus.Functions.Float64;
@@ -8,6 +6,8 @@ using GeometricAlgebraFulcrumLib.Modeling.Calculus.Functions.Float64.Interpolato
 using GeometricAlgebraFulcrumLib.Modeling.Signals;
 using GeometricAlgebraFulcrumLib.Modeling.Signals.Composers;
 using GeometricAlgebraFulcrumLib.Modeling.Utilities;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Processors;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Processors;
 
 namespace GeometricAlgebraFulcrumLib.Applications.PowerSystems.SystemIdentification;
 
@@ -24,8 +24,8 @@ public static class Model3Samples
     public static int VSpaceDimensions
         => 5;
 
-    public static RGaFloat64Processor GeometricProcessor { get; }
-        = RGaFloat64Processor.Euclidean;
+    public static XGaFloat64Processor GeometricProcessor { get; }
+        = XGaFloat64Processor.Euclidean;
 
     public static TextComposerFloat64 TextComposer { get; }
         = TextComposerFloat64.DefaultComposer;
@@ -52,8 +52,8 @@ public static class Model3Samples
             SignalSamplesCount
         );
 
-    public static RGaEuclideanProcessor<Float64SampledTimeSignal> GeometricSignalProcessor { get; }
-        = ScalarSignalProcessor.CreateEuclideanRGaProcessor();
+    public static XGaEuclideanProcessor<Float64SampledTimeSignal> GeometricSignalProcessor { get; }
+        = ScalarSignalProcessor.CreateEuclideanXGaProcessor();
     
 
     private static string CombineWorkingPath(this string fileName)

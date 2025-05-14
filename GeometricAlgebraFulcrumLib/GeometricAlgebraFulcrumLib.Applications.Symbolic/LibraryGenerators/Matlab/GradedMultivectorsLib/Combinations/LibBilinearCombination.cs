@@ -1,17 +1,18 @@
 ﻿using System.Collections.Immutable;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Basis;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Float64.Combinations;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Float64.Multivectors;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Combinations;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivectors;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
 using GeometricAlgebraFulcrumLib.Applications.Symbolic.LibraryGenerators.Matlab.GradedMultivectorsLib.Types;
+using GeometricAlgebraFulcrumLib.Utilities.Structures.IndexSets;
 
 namespace GeometricAlgebraFulcrumLib.Applications.Symbolic.LibraryGenerators.Matlab.GradedMultivectorsLib.Combinations;
 
 public class LibBilinearCombination :
     ILibLinearCombination
 {
-    public static LibBilinearCombination Create(LibType in1Type, LibType in2Type, IEnumerable<RGaFloat64BilinearCombinationTerm> termList)
+    public static LibBilinearCombination Create(LibType in1Type, LibType in2Type, IEnumerable<XGaFloat64BilinearCombinationTerm> termList)
     {
         var termTable = new LibBilinearCombination(in1Type, in2Type, false);
 
@@ -20,7 +21,7 @@ public class LibBilinearCombination :
         return termTable;
     }
 
-    public static LibBilinearCombination Create(LibType in1Type, LibType in2Type, Func<RGaBasisBlade, RGaBasisBlade, IRGaSignedBasisBlade> basisMapFunc)
+    public static LibBilinearCombination Create(LibType in1Type, LibType in2Type, Func<XGaBasisBlade, XGaBasisBlade, IXGaSignedBasisBlade> basisMapFunc)
     {
         var termTable = new LibBilinearCombination(in1Type, in2Type, false);
 
@@ -44,7 +45,7 @@ public class LibBilinearCombination :
         return termTable;
     }
 
-    public static LibBilinearCombination Create(LibType in1Type, LibType in2Type, Func<RGaBasisBlade, RGaBasisBlade, RGaFloat64Multivector> basisMapFunc)
+    public static LibBilinearCombination Create(LibType in1Type, LibType in2Type, Func<XGaBasisBlade, XGaBasisBlade, XGaFloat64Multivector> basisMapFunc)
     {
         var termTable = new LibBilinearCombination(in1Type, in2Type, false);
 
@@ -69,7 +70,7 @@ public class LibBilinearCombination :
     }
 
 
-    public static LibBilinearCombination CreateFromEqualInputs(LibType inType, IEnumerable<RGaFloat64BilinearCombinationTerm> termList)
+    public static LibBilinearCombination CreateFromEqualInputs(LibType inType, IEnumerable<XGaFloat64BilinearCombinationTerm> termList)
     {
         var termTable = new LibBilinearCombination(inType);
 
@@ -78,7 +79,7 @@ public class LibBilinearCombination :
         return termTable;
     }
 
-    public static LibBilinearCombination CreateFromEqualInputs(LibType inType, Func<RGaBasisBlade, RGaBasisBlade, IRGaSignedBasisBlade> basisMapFunc)
+    public static LibBilinearCombination CreateFromEqualInputs(LibType inType, Func<XGaBasisBlade, XGaBasisBlade, IXGaSignedBasisBlade> basisMapFunc)
     {
         var termTable = new LibBilinearCombination(inType);
 
@@ -101,7 +102,7 @@ public class LibBilinearCombination :
         return termTable;
     }
 
-    public static LibBilinearCombination CreateFromEqualInputs(LibType inType, Func<RGaBasisBlade, RGaBasisBlade, RGaFloat64Multivector> basisMapFunc)
+    public static LibBilinearCombination CreateFromEqualInputs(LibType inType, Func<XGaBasisBlade, XGaBasisBlade, XGaFloat64Multivector> basisMapFunc)
     {
         var termTable = new LibBilinearCombination(inType);
 
@@ -125,13 +126,13 @@ public class LibBilinearCombination :
     }
 
 
-    private readonly RGaFloat64BilinearCombination _bilinearCombination;
+    private readonly XGaFloat64BilinearCombination _bilinearCombination;
 
 
     public bool AssumeEqualInputs
         => _bilinearCombination.AssumeEqualInputs;
     
-    public IRGaLinearCombination InnerLinearCombination 
+    public IXGaLinearCombination InnerLinearCombination 
         => _bilinearCombination;
 
     public LibType Input1Type { get; }
@@ -149,20 +150,20 @@ public class LibBilinearCombination :
     public int GaSpaceDimensions
         => Input1Type.GaSpaceDimensions;
 
-    public IEnumerable<RGaFloat64BilinearCombinationTerm> Terms
+    public IEnumerable<XGaFloat64BilinearCombinationTerm> Terms
         => _bilinearCombination;
 
 
     private LibBilinearCombination(LibType in1Type, LibType in2Type, bool assumeEqualInputs)
     {
-        _bilinearCombination = new RGaFloat64BilinearCombination(assumeEqualInputs);
+        _bilinearCombination = new XGaFloat64BilinearCombination(assumeEqualInputs);
         Input1Type = in1Type;
         Input2Type = in2Type;
     }
 
     private LibBilinearCombination(LibType inType)
     {
-        _bilinearCombination = new RGaFloat64BilinearCombination(true);
+        _bilinearCombination = new XGaFloat64BilinearCombination(true);
         Input1Type = inType;
         Input2Type = inType;
     }
@@ -193,56 +194,44 @@ public class LibBilinearCombination :
         return _bilinearCombination.IsOutputKVector(grade);
     }
 
-    public IReadOnlyList<int> GetOutputBasisBladeGrades()
+    public IndexSet GetOutputBasisBladeGrades()
     {
         return _bilinearCombination.GetOutputBasisBladeGrades();
     }
 
-    public IReadOnlyList<int> GetInputBasisBladeGrades()
+    public IndexSet GetInputBasisBladeGrades()
     {
         return _bilinearCombination.GetInputBasisBladeGrades();
     }
 
-    public IReadOnlyList<int> GetInput1BasisBladeGrades()
+    public IndexSet GetInput1BasisBladeGrades()
     {
         return _bilinearCombination.GetInput1BasisBladeGrades();
     }
 
-    public IReadOnlyList<int> GetInput2BasisBladeGrades()
+    public IndexSet GetInput2BasisBladeGrades()
     {
         return _bilinearCombination.GetInput2BasisBladeGrades();
     }
 
-    public IReadOnlyList<int> GetInputBasisBladeIDs()
+    public ImmutableSortedSet<IndexSet> GetInputBasisBladeIDs()
     {
-        return _bilinearCombination
-            .GetInputBasisBladeIDs()
-            .Select(id => (int)id)
-            .ToImmutableSortedSet();
+        return _bilinearCombination.GetInputBasisBladeIDs();
     }
 
-    public IReadOnlyList<int> GetInput1BasisBladeIDs()
+    public ImmutableSortedSet<IndexSet> GetInput1BasisBladeIDs()
     {
-        return _bilinearCombination
-            .GetInput1BasisBladeIDs()
-            .Select(id => (int)id)
-            .ToImmutableSortedSet();
+        return _bilinearCombination.GetInput1BasisBladeIDs();
     }
 
-    public IReadOnlyList<int> GetInput2BasisBladeIDs()
+    public ImmutableSortedSet<IndexSet> GetInput2BasisBladeIDs()
     {
-        return _bilinearCombination
-            .GetInput2BasisBladeIDs()
-            .Select(id => (int)id)
-            .ToImmutableSortedSet();
+        return _bilinearCombination.GetInput2BasisBladeIDs();
     }
     
-    public IReadOnlyList<int> GetOutputBasisBladeIDs()
+    public ImmutableSortedSet<IndexSet> GetOutputBasisBladeIDs()
     {
-        return _bilinearCombination
-            .GetOutputBasisBladeIDs()
-            .Select(id => (int)id)
-            .ToImmutableSortedSet();
+        return _bilinearCombination.GetOutputBasisBladeIDs();
     }
 
 
@@ -268,14 +257,14 @@ public class LibBilinearCombination :
     }
 
 
-    public LibBilinearCombination Add(RGaFloat64BilinearCombinationTerm term)
+    public LibBilinearCombination Add(XGaFloat64BilinearCombinationTerm term)
     {
         _bilinearCombination.Add(term);
 
         return this;
     }
 
-    public LibBilinearCombination Add(RGaBasisBlade input1BasisBlade, RGaBasisBlade input2BasisBlade, IRGaSignedBasisBlade outputBasisBlade)
+    public LibBilinearCombination Add(XGaBasisBlade input1BasisBlade, XGaBasisBlade input2BasisBlade, IXGaSignedBasisBlade outputBasisBlade)
     {
         _bilinearCombination.Add(
             input1BasisBlade,
@@ -286,7 +275,7 @@ public class LibBilinearCombination :
         return this;
     }
 
-    public LibBilinearCombination Add(Float64Scalar inputScalar, RGaBasisBlade input1BasisBlade, RGaBasisBlade input2BasisBlade, RGaBasisBlade outputBasisBlade)
+    public LibBilinearCombination Add(Float64Scalar inputScalar, XGaBasisBlade input1BasisBlade, XGaBasisBlade input2BasisBlade, XGaBasisBlade outputBasisBlade)
     {
         _bilinearCombination.Add(
             inputScalar,
@@ -298,7 +287,7 @@ public class LibBilinearCombination :
         return this;
     }
 
-    public LibBilinearCombination Add(RGaBasisBlade input1BasisBlade, RGaBasisBlade input2BasisBlade, RGaFloat64Multivector outputMultivector)
+    public LibBilinearCombination Add(XGaBasisBlade input1BasisBlade, XGaBasisBlade input2BasisBlade, XGaFloat64Multivector outputMultivector)
     {
         _bilinearCombination.Add(
             input1BasisBlade,
@@ -309,7 +298,7 @@ public class LibBilinearCombination :
         return this;
     }
     
-    public LibBilinearCombination Add(IEnumerable<RGaFloat64BilinearCombinationTerm> termList)
+    public LibBilinearCombination Add(IEnumerable<XGaFloat64BilinearCombinationTerm> termList)
     {
         _bilinearCombination.Add(termList);
 
@@ -317,7 +306,7 @@ public class LibBilinearCombination :
     }
 
     
-    public LibBilinearCombination FilterTerms(LibType input1Type, LibType input2Type, LibType outputType, Func<RGaFloat64BilinearCombinationTerm, bool> termFilter)
+    public LibBilinearCombination FilterTerms(LibType input1Type, LibType input2Type, LibType outputType, Func<XGaFloat64BilinearCombinationTerm, bool> termFilter)
     {
         return Create(
             input1Type,
@@ -327,9 +316,9 @@ public class LibBilinearCombination :
     }
 
 
-    public SortedDictionary<int, RGaFloat64BilinearCombination> GetIdTermListPairs()
+    public SortedDictionary<int, XGaFloat64BilinearCombination> GetIdTermListPairs()
     {
-        var idList = new SortedDictionary<int, RGaFloat64BilinearCombination>();
+        var idList = new SortedDictionary<int, XGaFloat64BilinearCombination>();
 
         var groupList =
             _bilinearCombination
@@ -339,7 +328,7 @@ public class LibBilinearCombination :
         {
             var key = (int)group.Key;
             var value =
-                new RGaFloat64BilinearCombination(AssumeEqualInputs).Add(group);
+                new XGaFloat64BilinearCombination(AssumeEqualInputs).Add(group);
 
             idList.Add(key, value);
         }
@@ -347,9 +336,9 @@ public class LibBilinearCombination :
         return idList;
     }
     
-    public SortedDictionary<int, RGaFloat64BilinearCombination> GetIdTermListPairs(Func<RGaFloat64BilinearCombinationTerm, bool> termFilter)
+    public SortedDictionary<int, XGaFloat64BilinearCombination> GetIdTermListPairs(Func<XGaFloat64BilinearCombinationTerm, bool> termFilter)
     {
-        var idList = new SortedDictionary<int, RGaFloat64BilinearCombination>();
+        var idList = new SortedDictionary<int, XGaFloat64BilinearCombination>();
 
         var groupList =
             _bilinearCombination
@@ -360,7 +349,7 @@ public class LibBilinearCombination :
         {
             var key = (int)group.Key;
             var value =
-                new RGaFloat64BilinearCombination(AssumeEqualInputs).Add(group);
+                new XGaFloat64BilinearCombination(AssumeEqualInputs).Add(group);
 
             idList.Add(key, value);
         }
@@ -368,9 +357,9 @@ public class LibBilinearCombination :
         return idList;
     }
 
-    public SortedDictionary<int, RGaFloat64BilinearCombination> GetIdTermListPairsForOutGrade(int grade)
+    public SortedDictionary<int, XGaFloat64BilinearCombination> GetIdTermListPairsForOutGrade(int grade)
     {
-        var idList = new SortedDictionary<int, RGaFloat64BilinearCombination>();
+        var idList = new SortedDictionary<int, XGaFloat64BilinearCombination>();
 
         var groupList =
             _bilinearCombination
@@ -381,7 +370,7 @@ public class LibBilinearCombination :
         {
             var key = (int)group.Key;
             var value =
-                new RGaFloat64BilinearCombination(AssumeEqualInputs).Add(group);
+                new XGaFloat64BilinearCombination(AssumeEqualInputs).Add(group);
 
             idList.Add(key, value);
         }

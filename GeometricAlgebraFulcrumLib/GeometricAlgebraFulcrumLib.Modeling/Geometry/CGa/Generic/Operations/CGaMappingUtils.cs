@@ -1,5 +1,5 @@
 ﻿using System.Runtime.CompilerServices;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Extended.Generic.LinearMaps.Outermorphisms;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.LinearMaps.Outermorphisms;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Generic.Blades;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Generic.Elements;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Generic.Versors;

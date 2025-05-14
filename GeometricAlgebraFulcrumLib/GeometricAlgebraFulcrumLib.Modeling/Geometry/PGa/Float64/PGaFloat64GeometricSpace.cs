@@ -44,17 +44,17 @@
 //    }
 
 
-//    public RGaFloat64EuclideanProcessor EuclideanProcessor
-//        => RGaFloat64EuclideanProcessor.Instance;
+//    public XGaFloat64EuclideanProcessor EuclideanProcessor
+//        => XGaFloat64EuclideanProcessor.Instance;
 
-//    public RGaFloat64ConformalProcessor ConformalProcessor
-//        => RGaFloat64ConformalProcessor.Instance;
+//    public XGaFloat64ConformalProcessor ConformalProcessor
+//        => XGaFloat64ConformalProcessor.Instance;
 
 //    /// <summary>
 //    /// This isomorphism is used for converting CGA multivectors to and from PGA subspace
 //    /// </summary>
-//    public RGaFloat64MusicalAutomorphism MusicalIsomorphism
-//        => RGaFloat64MusicalAutomorphism.Instance;
+//    public XGaFloat64MusicalAutomorphism MusicalIsomorphism
+//        => XGaFloat64MusicalAutomorphism.Instance;
 
 //    public bool Is4D 
 //        => VSpaceDimensions == 4;
@@ -80,7 +80,7 @@
 //    /// <summary>
 //    /// The CGA Negative Basis 1-Blade e_{-} internal vector
 //    /// </summary>
-//    public RGaFloat64Vector EnVector 
+//    public XGaFloat64Vector EnVector 
 //        => En.InternalVector;
 
 //    /// <summary>
@@ -91,7 +91,7 @@
 //    /// <summary>
 //    /// The CGA Positive Basis 1-Blade  e_{+} internal vector
 //    /// </summary>
-//    public RGaFloat64Vector EpVector 
+//    public XGaFloat64Vector EpVector 
 //        => Ep.InternalVector;
 
 //    /// <summary>
@@ -99,7 +99,7 @@
 //    /// </summary>
 //    public PGaFloat64Blade E1 { get; }
     
-//    public RGaFloat64Vector E1Vector 
+//    public XGaFloat64Vector E1Vector 
 //        => E1.InternalVector;
 
 //    /// <summary>
@@ -107,7 +107,7 @@
 //    /// </summary>
 //    public PGaFloat64Blade E2 { get; }
     
-//    public RGaFloat64Vector E2Vector 
+//    public XGaFloat64Vector E2Vector 
 //        => E2.InternalVector;
 
 //    /// <summary>
@@ -118,7 +118,7 @@
 //    /// <summary>
 //    /// The CGA Origin Basis 1-Blade e_{o} internal vector
 //    /// </summary>
-//    public RGaFloat64Vector EoVector 
+//    public XGaFloat64Vector EoVector 
 //        => Eo.InternalVector;
 
 //    /// <summary>
@@ -129,7 +129,7 @@
 //    /// <summary>
 //    /// The CGA Infinity Basis 1-Blade e_{\infty} internal vector
 //    /// </summary>
-//    public RGaFloat64Vector EiVector 
+//    public XGaFloat64Vector EiVector 
 //        => Ei.InternalVector;
 
 //    /// <summary>
@@ -137,7 +137,7 @@
 //    /// </summary>
 //    public PGaFloat64Blade Eoi { get; }
     
-//    public RGaFloat64Bivector EoiBivector 
+//    public XGaFloat64Bivector EoiBivector 
 //        => Eoi.InternalBivector;
 
 //    /// <summary>
@@ -145,7 +145,7 @@
 //    /// </summary>
 //    public PGaFloat64Blade E12 { get; }
     
-//    public RGaFloat64Bivector E12Bivector 
+//    public XGaFloat64Bivector E12Bivector 
 //        => E12.InternalBivector;
 
 //    /// <summary>
@@ -153,7 +153,7 @@
 //    /// </summary>
 //    public PGaFloat64Blade Ie { get; }
     
-//    public RGaFloat64KVector IeKVector 
+//    public XGaFloat64KVector IeKVector 
 //        => Ie.InternalKVector;
 
 //    /// <summary>
@@ -161,7 +161,7 @@
 //    /// </summary>
 //    public PGaFloat64Blade IeInv { get; }
     
-//    public RGaFloat64KVector IeInvKVector 
+//    public XGaFloat64KVector IeInvKVector 
 //        => IeInv.InternalKVector;
 
 //    /// <summary>
@@ -169,7 +169,7 @@
 //    /// </summary>
 //    public PGaFloat64Blade IeRev { get; }
     
-//    public RGaFloat64KVector IeRevKVector 
+//    public XGaFloat64KVector IeRevKVector 
 //        => IeRev.InternalKVector;
 
 //    /// <summary>
@@ -177,7 +177,7 @@
 //    /// </summary>
 //    public PGaFloat64Blade EoIe { get; }
     
-//    public RGaFloat64KVector EoIeKVector 
+//    public XGaFloat64KVector EoIeKVector 
 //        => EoIe.InternalKVector;
 
 //    /// <summary>
@@ -185,7 +185,7 @@
 //    /// </summary>
 //    public PGaFloat64Blade IeEi { get; }
     
-//    public RGaFloat64KVector IeEiKVector 
+//    public XGaFloat64KVector IeEiKVector 
 //        => IeEi.InternalKVector;
 
 //    /// <summary>
@@ -193,7 +193,7 @@
 //    /// </summary>
 //    public PGaFloat64Blade Ic { get; }
     
-//    public RGaFloat64KVector IcKVector 
+//    public XGaFloat64KVector IcKVector 
 //        => Ic.InternalKVector;
 
 //    /// <summary>
@@ -201,7 +201,7 @@
 //    /// </summary>
 //    public PGaFloat64Blade IcInv { get; }
     
-//    public RGaFloat64KVector IcInvKVector 
+//    public XGaFloat64KVector IcInvKVector 
 //        => IcInv.InternalKVector;
 
 //    /// <summary>
@@ -209,7 +209,7 @@
 //    /// </summary>
 //    public PGaFloat64Blade IcRev { get; }
     
-//    public RGaFloat64KVector IcRevKVector 
+//    public XGaFloat64KVector IcRevKVector 
 //        => IcRev.InternalKVector;
     
 
@@ -268,7 +268,7 @@
 //        }
 //    }
 
-//    protected RGaFloat64LinearMapOutermorphism GetPGaBasisMap()
+//    protected XGaFloat64LinearMapOutermorphism GetPGaBasisMap()
 //    {
 //        // If linearly independent basis F = <f1, f2, f3> is related to
 //        // orthonormal basis E = <e1, e2, e3> via matrix M (F = M E), then
@@ -295,7 +295,7 @@
 //            .ToOutermorphism(Processor);
 //    }
 
-//    protected RGaFloat64LinearMapOutermorphism GetPGaBasisMapInverse()
+//    protected XGaFloat64LinearMapOutermorphism GetPGaBasisMapInverse()
 //    {
 //        // If linearly independent basis F = <f1, f2, f3> is related to
 //        // orthonormal basis E = <e1, e2, e3> via matrix M (F = M E), then
@@ -324,7 +324,7 @@
 
     
 //    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-//    public bool IsValidVGaElement(RGaFloat64Multivector mv)
+//    public bool IsValidVGaElement(XGaFloat64Multivector mv)
 //    {
 //        if (!IsValidElement(mv)) return false;
 
@@ -336,7 +336,7 @@
 //    }
     
 //    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-//    public bool IsValidPGaElement(RGaFloat64Multivector mv)
+//    public bool IsValidPGaElement(XGaFloat64Multivector mv)
 //    {
 //        if (!IsValidElement(mv)) return false;
 
@@ -348,7 +348,7 @@
 //    }
     
 //    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-//    public bool IsValidPGaInfElement(RGaFloat64Multivector mv)
+//    public bool IsValidPGaInfElement(XGaFloat64Multivector mv)
 //    {
 //        if (!IsValidElement(mv)) return false;
 
@@ -395,7 +395,7 @@
 //    public string ToLaTeX(LinFloat64Vector vector)
 //    {
 //        return BasisSpecs.ToLaTeX(
-//            vector.ToRGaFloat64Vector()
+//            vector.ToXGaFloat64Vector()
 //        );
 //    }
     

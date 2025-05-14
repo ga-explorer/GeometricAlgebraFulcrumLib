@@ -1,11 +1,6 @@
 ﻿using System;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Extended.Generic.LinearMaps.Outermorphisms;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Extended.Generic.LinearMaps.Rotors;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Extended.Generic.Multivectors;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Extended.Generic.Multivectors.Composers;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Extended.Generic.Processors;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Generic.LinearMaps;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Generic.Vectors.SpaceND;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Generic;
@@ -16,11 +11,63 @@ using GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Generic.Blades;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.PGa.Generic.Blades;
 using GeometricAlgebraFulcrumLib.Modeling.Signals;
 using GeometricAlgebraFulcrumLib.Mathematica.Utilities.Text;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Multivectors;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Processors;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.LinearMaps.Outermorphisms;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.LinearMaps.Rotors;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Multivectors.Composers;
 
 namespace GeometricAlgebraFulcrumLib.Mathematica.Algebra;
 
 public static class XGaMathematicaUtils
 {
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static XGaScalar<Expr> SimplifyCollectScalar(this XGaScalar<Expr> vector, Expr t)
+    {
+        return vector.MapScalar(scalar =>
+            Mfs.Collect[Mfs.Simplify[scalar], t].Evaluate()
+        );
+    }
+
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static XGaScalar<Expr> FullSimplifyScalar(this XGaScalar<Expr> mv)
+    {
+        return mv.MapScalar(scalar => scalar.FullSimplify());
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static XGaScalar<Expr> FullSimplifyScalars(this XGaScalar<Expr> mv, Expr assumptionsExpr)
+    {
+        return mv.MapScalar(scalar => scalar.FullSimplify(assumptionsExpr));
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static XGaVector<Expr> FullSimplifyScalars(this XGaVector<Expr> mv, Expr assumptionsExpr)
+    {
+        return mv.MapScalars(scalar => scalar.FullSimplify(assumptionsExpr));
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static XGaBivector<Expr> FullSimplifyScalars(this XGaBivector<Expr> mv, Expr assumptionsExpr)
+    {
+        return mv.MapScalars(scalar => scalar.FullSimplify(assumptionsExpr));
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static XGaScalar<Expr> DifferentiateScalar(this XGaScalar<Expr> mv, Scalar<Expr> variableExpr, int degree = 1)
+    {
+        return mv.MapScalar(scalar => scalar.DifferentiateScalar(variableExpr.ScalarValue, degree));
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static XGaScalar<Expr> DifferentiateScalar(this XGaScalar<Expr> mv, IScalar<Expr> variableExpr, int degree = 1)
+    {
+        return mv.MapScalar(scalar => scalar.DifferentiateScalar(variableExpr.ScalarValue, degree));
+    }
+
+
+
     public static ScalarProcessorOfWolframExpr ScalarProcessor
         => ScalarProcessorOfWolframExpr.Instance;
 

@@ -1,5 +1,4 @@
-﻿using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
+﻿using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
 using GeometricAlgebraFulcrumLib.MetaProgramming.Utilities.Code;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.BitManipulation;
 using GeometricAlgebraFulcrumLib.Utilities.Text.Text.Linear;
@@ -45,7 +44,7 @@ internal sealed class InvolutionMethodsFileComposer :
                 casesText.Add(caseTemplate1,
                     "signature", CurrentNamespace,
                     "grade", grade,
-                    "num", VSpaceDimensions.KVectorSpaceDimension(grade)
+                    "num", VSpaceDimensions.KVectorSpaceDimensions(grade)
                 );
             else
                 casesText.Add(caseTemplate2,
@@ -67,7 +66,7 @@ internal sealed class InvolutionMethodsFileComposer :
         var kvSpaceDimList =
             VSpaceDimensions
                 .GetRange()
-                .Select(grade => VSpaceDimensions.KVectorSpaceDimension(grade))
+                .Select(grade => VSpaceDimensions.KVectorSpaceDimensions(grade))
                 .Distinct();
 
         foreach (var kvSpaceDim in kvSpaceDimList)

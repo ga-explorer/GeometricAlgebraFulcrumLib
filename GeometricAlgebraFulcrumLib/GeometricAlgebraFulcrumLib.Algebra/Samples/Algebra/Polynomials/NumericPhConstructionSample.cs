@@ -1,12 +1,11 @@
-﻿using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Maps;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Float64.LinearMaps.Rotors;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Float64.Multivectors;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Float64.Multivectors.Composers;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Float64.Processors;
-using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Angles;
+﻿using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Angles;
 using GeometricAlgebraFulcrumLib.Algebra.Polynomials.Generic.Basis;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Generic;
 using GeometricAlgebraFulcrumLib.Algebra.Utilities.Text;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivectors;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Processors;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.LinearMaps.Rotors;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivectors.Composers;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.Samples.Algebra.Polynomials;
 
@@ -18,8 +17,8 @@ public static class NumericPhConstructionSample
 
     // Create a 3-dimensional Euclidean geometric algebra processor based on the
     // selected scalar processor
-    public static RGaFloat64Processor GeometricProcessor { get; }
-        = RGaFloat64Processor.Euclidean;
+    public static XGaFloat64Processor GeometricProcessor { get; }
+        = XGaFloat64Processor.Euclidean;
 
     public static int VSpaceDimensions
         => 3;

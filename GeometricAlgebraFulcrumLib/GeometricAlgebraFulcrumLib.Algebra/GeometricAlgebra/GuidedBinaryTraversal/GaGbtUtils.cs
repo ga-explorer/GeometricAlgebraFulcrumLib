@@ -1,5 +1,5 @@
 ﻿using System.Runtime.CompilerServices;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Float64.Processors;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Processors;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Structures;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.GuidedBinaryTraversal;
@@ -7,13 +7,13 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.GuidedBinaryTraver
 public static class GaGbtUtils
 {
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static GaGbtMultivectorBinaryTrieStack CreateGbtMultivectorStack(this RGaFloat64Processor basisSet, int capacity, GaMultivectorBinaryTrie binaryTrie)
+    public static GaGbtMultivectorBinaryTrieStack CreateGbtMultivectorStack(this XGaFloat64Processor basisSet, int capacity, GaMultivectorBinaryTrie binaryTrie)
     {
         return new GaGbtMultivectorBinaryTrieStack(basisSet, capacity, binaryTrie);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static GaGbtMultivectorProductsBinaryTrieStack CreateGbtProductsStack(this RGaFloat64Processor basisSet, int treeDepth, GaMultivectorBinaryTrie mvBinaryTrie1, GaMultivectorBinaryTrie mvBinaryTrie2)
+    public static GaGbtMultivectorProductsBinaryTrieStack CreateGbtProductsStack(this XGaFloat64Processor basisSet, int treeDepth, GaMultivectorBinaryTrie mvBinaryTrie1, GaMultivectorBinaryTrie mvBinaryTrie2)
     {
         //var treeDepth = (int) basisSet.VSpaceDimensions;
 

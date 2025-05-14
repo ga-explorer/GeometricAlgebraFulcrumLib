@@ -1,5 +1,5 @@
 ﻿using System.Runtime.CompilerServices;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Extended.Float64.Multivectors;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivectors;
 
 namespace GeometricAlgebraFulcrumLib.Modeling.Signals.Interpolators;
 
@@ -11,12 +11,6 @@ public static class Float64SignalInterpolatorComposerUtils
         return ScalarPolynomialInterpolator.Create(scalarSignal, scalarSignal.SamplingRate);
     }
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static RGaVectorNevilleInterpolator CreateRGaNevillePolynomialInterpolator(this double samplingRate)
-    {
-        return RGaVectorNevilleInterpolator.Create(samplingRate);
-    }
-        
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static XGaVectorNevilleInterpolator CreateXGaNevillePolynomialInterpolator(this double samplingRate)
     {

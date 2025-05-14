@@ -1,4 +1,4 @@
-﻿using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Float64.Multivectors.Composers;
+﻿using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivectors.Composers;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space3D;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Float64;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Float64.Operations;
@@ -56,8 +56,8 @@ public static class CGa5DProjectionSamples
         var ipnsRoundPointPairBlade =
             CGa.Encode.IpnsRound.PointPair(
                 4,
-                LinFloat64Vector3D.Create(3, 3, 3).ToRGaFloat64Vector(),
-                LinFloat64Vector3D.Create(1, 2, -1).ToRGaFloat64Vector()
+                LinFloat64Vector3D.Create(3, 3, 3).ToXGaFloat64Vector(),
+                LinFloat64Vector3D.Create(1, 2, -1).ToXGaFloat64Vector()
             );
 
         // Encode a, IPNS round circle

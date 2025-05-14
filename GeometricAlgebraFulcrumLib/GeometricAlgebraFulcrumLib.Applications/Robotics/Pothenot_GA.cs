@@ -1,6 +1,6 @@
-﻿using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Float64.Multivectors;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Float64.Multivectors.Composers;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Float64.Processors;
+﻿using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivectors;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivectors.Composers;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Processors;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float32;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Generic;
 using GeometricAlgebraFulcrumLib.Algebra.Utilities.Text;
@@ -14,7 +14,7 @@ public static class PothenotGa
 
     //public static int VSpaceDimensions => 2;
 
-    public static RGaFloat64Processor GeometricProcessor { get; } = RGaFloat64Processor.Euclidean;
+    public static XGaFloat64Processor GeometricProcessor { get; } = XGaFloat64Processor.Euclidean;
 
     public static TextComposerFloat64 TextComposer { get; } = TextComposerFloat64.DefaultComposer;
 
@@ -55,7 +55,7 @@ public static class PothenotGa
 
         //// Create a 2-dimensional Euclidean geometric algebra processor based on the
         //// selected scalar processor
-        //var geometricProcessor = RGaFloat64Processor.Euclidean;
+        //var geometricProcessor = XGaFloat64Processor.Euclidean;
 
         //// This is a pre-defined text generator for displaying multivectors
         //// with 64-bit floating point scalars

@@ -3,7 +3,6 @@ using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using GeometricAlgebraFulcrumLib.Core.Structures.BitManipulation;
 using GeometricAlgebraFulcrumLib.Core.Structures.Tuples;
-using Open.Collections;
 
 namespace GeometricAlgebraFulcrumLib.Core.Structures.IndexSets;
 
@@ -43,64 +42,52 @@ public static class IndexSetUtils
             : throw new InvalidOperationException();
     }
     
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static ulong IndexSetToUInt64BitPattern(this ImmutableSortedSet<int> sortedIndexSet)
-    {
-        return !sortedIndexSet.IsEmpty && sortedIndexSet[^1] >= 64
-            ? throw new InvalidOperationException()
-            : sortedIndexSet.Aggregate(0UL, (a, b) => a | (1UL << b));
-    }
-
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static IndexSet IndexToIndexSet(this int index)
+    public static IndexSet ToUnitIndexSet(this int index)
     {
-        return IndexSet.Create(index);
+        return IndexSet.CreateUnit(index);
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static IndexSet IndexPairToIndexSet(int index1, int index2)
-    {
-        return IndexSet.Create(index1, index2);
-    }
-    
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static IndexSet IndexPairToIndexSet(this IPair<int> indexPair)
+    public static IndexSet ToPairIndexSet(this IPair<int> indexPair)
     {
         var index1 = indexPair.Item1;
         var index2 = indexPair.Item2;
 
-        return IndexSet.Create(index1, index2);
+        return IndexSet.CreatePair(index1, index2);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static IndexSet IndexTripletToIndexSet(int index1, int index2, int index3)
-    {
-        return IndexSet.Create(index1, index2, index3);
-    }
-    
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static IndexSet IndexTripletToIndexSet(ITriplet<int> indexTriplet)
+    public static IndexSet ToTripletIndexSet(ITriplet<int> indexTriplet)
     {
         var index1 = indexTriplet.Item1;
         var index2 = indexTriplet.Item2;
         var index3 = indexTriplet.Item3;
 
-        return IndexSet.Create(index1, index2, index3);
+        return IndexSet.CreateTriplet(index1, index2, index3);
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static IndexSet IndexRangeToIndexSet(this int firstIndex, int count)
+    public static IndexSet ToDenseIndexSet(this int count)
+    {
+        Debug.Assert(count >= 0);
+
+        return IndexSet.CreateDense(count);
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static IndexSet ToDenseIndexSet(this int firstIndex, int count)
     {
         Debug.Assert(
-            firstIndex >= 0 && count > 0
+            firstIndex >= 0 && count >= 0
         );
 
         return IndexSet.CreateDense(firstIndex, count);
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static IndexSet BitPatternToIndexSet(this ulong bitPattern)
+    public static IndexSet ToUInt64IndexSet(this ulong bitPattern)
     {
         return bitPattern.GetSetBitPositions().ToArray().ToIndexSet(true);
     }
@@ -110,7 +97,7 @@ public static class IndexSetUtils
     public static IndexSet ToIndexSet(this IPair<int> indexList, bool assumeDistinctSorted)
     {
         return assumeDistinctSorted 
-            ? IndexSet.Create(
+            ? IndexSet.CreatePair(
                 indexList.Item1, 
                 indexList.Item2
             ) 
@@ -121,7 +108,7 @@ public static class IndexSetUtils
     public static IndexSet ToIndexSet(this ITriplet<int> indexList, bool assumeDistinctSorted)
     {
         return assumeDistinctSorted 
-            ? IndexSet.Create(
+            ? IndexSet.CreateTriplet(
                 indexList.Item1, 
                 indexList.Item2, 
                 indexList.Item3
@@ -197,25 +184,6 @@ public static class IndexSetUtils
     }
 
     
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static ImmutableSortedSet<int> ToSortedSet(this IndexSet indexSet)
-    {
-        return indexSet.ToImmutableSortedSet();
-    }
-    
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static ImmutableSortedSet<int>.Builder ToSortedSetBuilder(this IndexSet indexSet)
-    {
-        var builder = ImmutableSortedSet.CreateBuilder<int>();
-
-        if (!indexSet.IsEmptySet)
-            builder.AddRange(indexSet);
-
-        return builder;
-    }
-
-
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static IEnumerable<T> GetItems<T>(this IReadOnlyList<T> itemList, IndexSet indexSet)
     {

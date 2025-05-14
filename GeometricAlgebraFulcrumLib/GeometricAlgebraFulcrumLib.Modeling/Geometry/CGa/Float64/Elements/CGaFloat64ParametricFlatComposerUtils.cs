@@ -1,5 +1,5 @@
 ﻿using System.Runtime.CompilerServices;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Float64.Multivectors.Composers;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivectors.Composers;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
 using GeometricAlgebraFulcrumLib.Modeling.Trajectories.Bivectors3D;
 using GeometricAlgebraFulcrumLib.Modeling.Trajectories.Vectors2D.Float64;
@@ -80,8 +80,8 @@ public static class CGaFloat64ParametricFlatComposerUtils
             cgaGeometricSpace,
             positionCurve.TimeRange,
             t => cgaGeometricSpace.DefineFlatLine(
-                positionCurve.GetValue(t).ToRGaFloat64Vector(),
-                vectorCurve.GetValue(t).ToRGaFloat64Vector()
+                positionCurve.GetValue(t).ToXGaFloat64Vector(),
+                vectorCurve.GetValue(t).ToXGaFloat64Vector()
             )
         );
     }
@@ -93,8 +93,8 @@ public static class CGaFloat64ParametricFlatComposerUtils
             cgaGeometricSpace,
             positionCurve.TimeRange,
             t => cgaGeometricSpace.DefineFlatLine(
-                positionCurve.GetValue(t).ToRGaFloat64Vector(),
-                vectorCurve.GetValue(t).ToRGaFloat64Vector()
+                positionCurve.GetValue(t).ToXGaFloat64Vector(),
+                vectorCurve.GetValue(t).ToXGaFloat64Vector()
             )
         );
     }
@@ -106,8 +106,8 @@ public static class CGaFloat64ParametricFlatComposerUtils
             cgaGeometricSpace,
             timeRange,
             t => cgaGeometricSpace.DefineFlatLine(
-                positionCurve.GetValue(t).ToRGaFloat64Vector(),
-                vectorCurve.GetValue(t).ToRGaFloat64Vector()
+                positionCurve.GetValue(t).ToXGaFloat64Vector(),
+                vectorCurve.GetValue(t).ToXGaFloat64Vector()
             )
         );
     }

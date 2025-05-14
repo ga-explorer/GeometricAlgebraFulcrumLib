@@ -1,5 +1,5 @@
 ﻿using System.Runtime.CompilerServices;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Float64.Multivectors.Composers;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivectors.Composers;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
 using GeometricAlgebraFulcrumLib.Modeling.Trajectories.Bivectors3D;
 using GeometricAlgebraFulcrumLib.Modeling.Trajectories.Scalars.Float64;
@@ -68,8 +68,8 @@ public static class CGaFloat64ParametricRoundComposerUtils
             centerCurve.TimeRange,
             t => cgaGeometricSpace.DefineRoundPointPair(
                 squaredRadius,
-                centerCurve.GetValue(t).ToRGaFloat64Vector(),
-                vectorCurve.GetValue(t).ToRGaFloat64Vector()
+                centerCurve.GetValue(t).ToXGaFloat64Vector(),
+                vectorCurve.GetValue(t).ToXGaFloat64Vector()
             )
         );
     }
@@ -82,8 +82,8 @@ public static class CGaFloat64ParametricRoundComposerUtils
             timeRange,
             t => cgaGeometricSpace.DefineRoundPointPair(
                 squaredRadius,
-                centerCurve.GetValue(t).ToRGaFloat64Vector(),
-                vectorCurve.GetValue(t).ToRGaFloat64Vector()
+                centerCurve.GetValue(t).ToXGaFloat64Vector(),
+                vectorCurve.GetValue(t).ToXGaFloat64Vector()
             )
         );
     }
@@ -96,8 +96,8 @@ public static class CGaFloat64ParametricRoundComposerUtils
             centerCurve.TimeRange,
             t => cgaGeometricSpace.DefineRoundPointPair(
                 squaredRadius.GetValue(t),
-                centerCurve.GetValue(t).ToRGaFloat64Vector(),
-                vectorCurve.GetValue(t).ToRGaFloat64Vector()
+                centerCurve.GetValue(t).ToXGaFloat64Vector(),
+                vectorCurve.GetValue(t).ToXGaFloat64Vector()
             )
         );
     }
@@ -110,8 +110,8 @@ public static class CGaFloat64ParametricRoundComposerUtils
             timeRange,
             t => cgaGeometricSpace.DefineRoundPointPair(
                 squaredRadius.GetValue(t),
-                centerCurve.GetValue(t).ToRGaFloat64Vector(),
-                vectorCurve.GetValue(t).ToRGaFloat64Vector()
+                centerCurve.GetValue(t).ToXGaFloat64Vector(),
+                vectorCurve.GetValue(t).ToXGaFloat64Vector()
             )
         );
     }
@@ -125,8 +125,8 @@ public static class CGaFloat64ParametricRoundComposerUtils
             centerCurve.TimeRange,
             t => cgaGeometricSpace.DefineRoundPointPair(
                 squaredRadius,
-                centerCurve.GetValue(t).ToRGaFloat64Vector(),
-                vectorCurve.GetValue(t).ToRGaFloat64Vector()
+                centerCurve.GetValue(t).ToXGaFloat64Vector(),
+                vectorCurve.GetValue(t).ToXGaFloat64Vector()
             )
         );
     }
@@ -139,8 +139,8 @@ public static class CGaFloat64ParametricRoundComposerUtils
             timeRange,
             t => cgaGeometricSpace.DefineRoundPointPair(
                 squaredRadius,
-                centerCurve.GetValue(t).ToRGaFloat64Vector(),
-                vectorCurve.GetValue(t).ToRGaFloat64Vector()
+                centerCurve.GetValue(t).ToXGaFloat64Vector(),
+                vectorCurve.GetValue(t).ToXGaFloat64Vector()
             )
         );
     }
@@ -153,8 +153,8 @@ public static class CGaFloat64ParametricRoundComposerUtils
             centerCurve.TimeRange,
             t => cgaGeometricSpace.DefineRoundPointPair(
                 squaredRadius.GetValue(t),
-                centerCurve.GetValue(t).ToRGaFloat64Vector(),
-                vectorCurve.GetValue(t).ToRGaFloat64Vector()
+                centerCurve.GetValue(t).ToXGaFloat64Vector(),
+                vectorCurve.GetValue(t).ToXGaFloat64Vector()
             )
         );
     }
@@ -167,8 +167,8 @@ public static class CGaFloat64ParametricRoundComposerUtils
             timeRange,
             t => cgaGeometricSpace.DefineRoundPointPair(
                 squaredRadius.GetValue(t),
-                centerCurve.GetValue(t).ToRGaFloat64Vector(),
-                vectorCurve.GetValue(t).ToRGaFloat64Vector()
+                centerCurve.GetValue(t).ToXGaFloat64Vector(),
+                vectorCurve.GetValue(t).ToXGaFloat64Vector()
             )
         );
     }

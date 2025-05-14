@@ -1,6 +1,6 @@
-﻿using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Extended.Generic.LinearMaps.Outermorphisms;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Extended.Generic.Multivectors;
+﻿using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.LinearMaps.Outermorphisms;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Multivectors;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Generic.LinearMaps;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Generic.Vectors.SpaceND;
 using GeometricAlgebraFulcrumLib.MetaProgramming.Context;
@@ -81,7 +81,7 @@ internal class MapMethodFileComposer :
             Templates["om_apply"],
             "double", GeoLanguage.ScalarTypeName,
             "grade", _inputGrade,
-            "num", VSpaceDimensions.KVectorSpaceDimension(_inputGrade),
+            "num", VSpaceDimensions.KVectorSpaceDimensions(_inputGrade),
             "computations", computationsText
         );
 

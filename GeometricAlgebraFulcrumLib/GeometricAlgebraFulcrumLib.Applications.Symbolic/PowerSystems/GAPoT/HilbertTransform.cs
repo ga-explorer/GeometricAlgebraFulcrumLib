@@ -23,11 +23,11 @@ public static class HilbertTransform
         var hdvb = dvb.HilbertTransformScalar("t", @"\[Omega]");
         var hdvc = dvc.HilbertTransformScalar("t", @"\[Omega]");
 
-        var v = RGaMathematicaUtils.Vector(
+        var v = XGaMathematicaUtils.Vector(
             va, hva, vb, hvb, vc, hvc
         );
 
-        var dv = RGaMathematicaUtils.Vector(
+        var dv = XGaMathematicaUtils.Vector(
             dva, hdva, dvb, hdvb, dvc, hdvc
         );
 

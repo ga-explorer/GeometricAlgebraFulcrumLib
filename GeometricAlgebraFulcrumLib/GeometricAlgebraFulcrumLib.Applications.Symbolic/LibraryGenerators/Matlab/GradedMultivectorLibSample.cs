@@ -1,5 +1,5 @@
 ﻿using System.Text;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Float64.Processors;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Processors;
 using GeometricAlgebraFulcrumLib.Applications.Symbolic.LibraryGenerators.Matlab.GradedMultivectorsLib;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Tuples;
 
@@ -89,7 +89,7 @@ public static class GradedMultivectorLibSample
         foreach (var (p, q, r) in GetMainSignatures(maxVSpaceDimensions))
         {
             var vSpaceDimensions = p + q + r;
-            var metric = RGaFloat64Processor.Create(q, r);
+            var metric = XGaFloat64Processor.Create(q, r);
             var spaceName = GetSpaceName(p, q, r);
 
             yield return new LibCodeComposerSpecs(
@@ -206,11 +206,11 @@ public static class GradedMultivectorLibSample
     //        "CGa"
     //    };
 
-    //    var metricArray = new RGaFloat64Processor[]
+    //    var metricArray = new XGaFloat64Processor[]
     //    {
-    //        RGaFloat64Processor.Euclidean,
-    //        RGaFloat64Processor.Projective,
-    //        RGaFloat64Processor.Conformal
+    //        XGaFloat64Processor.Euclidean,
+    //        XGaFloat64Processor.Projective,
+    //        XGaFloat64Processor.Conformal
     //    };
 
     //    var vSpaceDimensionsRangeArray = new Int32Range1D[]

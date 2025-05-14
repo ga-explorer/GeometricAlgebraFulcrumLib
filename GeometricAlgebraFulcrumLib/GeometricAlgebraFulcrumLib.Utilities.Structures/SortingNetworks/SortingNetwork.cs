@@ -1,9 +1,9 @@
 ﻿using System.Collections;
-using System.Collections.Immutable;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Text;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.BitManipulation;
+using GeometricAlgebraFulcrumLib.Utilities.Structures.IndexSets;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Tuples;
 
 // ReSharper disable CompareOfFloatsByEqualityOperator
@@ -292,7 +292,7 @@ public sealed class SortingNetwork
     private readonly int[] _index1Array;
     private readonly int[] _index2Array;
 
-    public ImmutableSortedSet<int> InputIndices { get; }
+    public IndexSet InputIndices { get; }
 
     public int Count
         => _index1Array.Length;
@@ -336,10 +336,9 @@ public sealed class SortingNetwork
         _index2Array = index2Array;
         _layerIndices = layerIndices;
 
-        InputIndices =
-            _index1Array
-                .Concat(_index2Array)
-                .ToImmutableSortedSet();
+        InputIndices = _index1Array
+            .Concat(_index2Array)
+            .ToIndexSet(false);
 
         Debug.Assert(IsValid());
     }

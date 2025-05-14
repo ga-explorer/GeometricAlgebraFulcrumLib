@@ -1,16 +1,10 @@
 ﻿using System.Collections.Immutable;
 using System.Diagnostics;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Converters.Float64;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Extended.Basis;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Extended.Float64.Multivectors;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Extended.Float64.Multivectors.Composers;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Extended.Float64.Processors;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Extended.Generic.Multivectors;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Basis;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Float64.Multivectors;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Float64.Multivectors.Composers;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Float64.Processors;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivectors;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivectors.Composers;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Processors;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Multivectors;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.BitManipulation;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Combinations;
@@ -24,8 +18,8 @@ public static class XGaMultivectorValidationSamples
     {
         var metric = XGaFloat64Processor.Euclidean;
 
-        var set1 = IndexSet.Create(3, 7, 9);
-        var set2 = IndexSet.Create(3, 6, 9);
+        var set1 = IndexSet.CreateTriplet(3, 7, 9);
+        var set2 = IndexSet.CreateTriplet(3, 6, 9);
 
         var kv1 = metric.CreateBasisBlade(set1);
         var kv2 = metric.CreateBasisBlade(set2);
@@ -49,24 +43,20 @@ public static class XGaMultivectorValidationSamples
 
         var basisBladeIdList1 =
             m.GetRange().Select(
-                id => id.BitPatternToIndexSet()
+                id => id.ToUInt64IndexSet()
             ).ToImmutableArray();
 
         foreach (var basisBlade1 in basisBladeIdList1)
         {
-            var id1 = basisBlade1.ToUInt64();
-
             foreach (var basisBlade2 in basisBladeIdList1)
             {
-                var id2 = basisBlade2.ToUInt64();
-
-                var idA = id1 ^ id2;
-                var signA = id1.EGpSign(id2);
+                var idA = basisBlade1 ^ basisBlade2;
+                var signA = basisBlade1.EGpSign(basisBlade2);
 
                 var egp =
                     metric.EGp(basisBlade1, basisBlade2);
 
-                var idB = egp.Id.ToUInt64();
+                var idB = egp.Id;
                 var signB = egp.Sign;
 
                 if (idA != idB || signA != signB)
@@ -99,12 +89,12 @@ public static class XGaMultivectorValidationSamples
         var n = 12;
         var m = 1UL << n;
 
-        var metric2 = RGaFloat64Processor.Euclidean;
-        IRGaSignedBasisBlade egpTableItem2 =
-            metric2.EGp(0UL, 0UL); // For initializing internal lookup tables
+        var metric2 = XGaFloat64Processor.Euclidean;
+        IXGaSignedBasisBlade egpTableItem2 =
+            metric2.EGp(IndexSet.EmptySet, IndexSet.EmptySet); // For initializing internal lookup tables
 
         var basisBladeIdList2 =
-            m.GetRange().ToImmutableArray();
+            m.GetRange().Select(IndexSet.CreateFromUInt64Pattern).ToImmutableArray();
 
         var time1 = DateTime.Now;
 
@@ -128,7 +118,7 @@ public static class XGaMultivectorValidationSamples
 
         var basisBladeIdList1 =
             m.GetRange().Select(
-                id => id.BitPatternToIndexSet()
+                id => id.ToUInt64IndexSet()
             ).ToImmutableArray();
 
         time1 = DateTime.Now;
@@ -156,115 +146,115 @@ public static class XGaMultivectorValidationSamples
         Console.WriteLine($"Time 2: {time2 - time1}");
     }
 
-    public static void Example4()
-    {
-        var n = 10;
-        var m = 1UL << n;
+    //public static void Example4()
+    //{
+    //    var n = 10;
+    //    var m = 1UL << n;
 
-        var rgaProcessor =
-            RGaFloat64Processor.Euclidean;
+    //    var rgaProcessor =
+    //        XGaFloat64Processor.Euclidean;
 
-        var xgaProcessor =
-            XGaFloat64Processor.Euclidean;
+    //    var xgaProcessor =
+    //        XGaFloat64Processor.Euclidean;
 
-        var randomComposer = rgaProcessor.CreateRGaRandomComposer(n);
+    //    var randomComposer = rgaProcessor.CreateXGaRandomComposer(n);
 
-        var mvList1 = new List<RGaFloat64Multivector>
-        {
-            randomComposer.GetScalar(),
-            randomComposer.GetSparseVector(n / 2),
-            randomComposer.GetSparseBivector(n * (n - 1) / 2)
-        };
+    //    var mvList1 = new List<XGaFloat64Multivector>
+    //    {
+    //        randomComposer.GetScalar(),
+    //        randomComposer.GetSparseVector(n / 2),
+    //        randomComposer.GetSparseBivector(n * (n - 1) / 2)
+    //    };
 
-        for (var grade = 3; grade <= n; grade++)
-        {
-            var k = (int)Math.Max(1, grade.GetBinomialCoefficient(grade) / 2);
+    //    for (var grade = 3; grade <= n; grade++)
+    //    {
+    //        var k = (int)Math.Max(1, grade.GetBinomialCoefficient(grade) / 2);
 
-            mvList1.Add(
-                randomComposer.GetSparseKVectorOfGrade(grade, k)
-            );
-        }
+    //        mvList1.Add(
+    //            randomComposer.GetSparseKVectorOfGrade(grade, k)
+    //        );
+    //    }
 
-        mvList1.Add(
-            randomComposer.GetMultivector((int)m / 2)
-        );
+    //    mvList1.Add(
+    //        randomComposer.GetMultivector((int)m / 2)
+    //    );
 
-        var mvList2 = mvList1.Select(
-            mv => xgaProcessor.Convert(mv)
-        ).ToList();
+    //    var mvList2 = mvList1.Select(
+    //        mv => xgaProcessor.Convert(mv)
+    //    ).ToList();
 
 
-        for (var i1 = 0; i1 < mvList1.Count; i1++)
-        {
-            var mv11 = mvList1[i1];
-            var mv12 = mvList2[i1];
+    //    for (var i1 = 0; i1 < mvList1.Count; i1++)
+    //    {
+    //        var mv11 = mvList1[i1];
+    //        var mv12 = mvList2[i1];
 
-            for (var i2 = 0; i2 < mvList1.Count; i2++)
-            {
-                var mv21 = mvList1[i2];
-                var mv22 = mvList2[i2];
+    //        for (var i2 = 0; i2 < mvList1.Count; i2++)
+    //        {
+    //            var mv21 = mvList1[i2];
+    //            var mv22 = mvList2[i2];
 
-                var mv1 = mv11.EGp(mv21);
-                var mv2 = mv12.EGp(mv22);
+    //            var mv1 = mv11.EGp(mv21);
+    //            var mv2 = mv12.EGp(mv22);
 
-                var mvDiff =
-                    mv2.Subtract(xgaProcessor.Convert(mv1)).GetPart(s => !s.IsNearZero());
+    //            var mvDiff =
+    //                mv2.Subtract(xgaProcessor.Convert(mv1)).GetPart(s => !s.IsNearZero());
 
-                Debug.Assert(
-                    mvDiff.IsZero
-                );
+    //            Debug.Assert(
+    //                mvDiff.IsZero
+    //            );
 
-                mv1 = mv11.Op(mv21);
-                mv2 = mv12.Op(mv22);
+    //            mv1 = mv11.Op(mv21);
+    //            mv2 = mv12.Op(mv22);
 
-                mvDiff =
-                    mv2.Subtract(xgaProcessor.Convert(mv1)).GetPart(s => !s.IsNearZero());
+    //            mvDiff =
+    //                mv2.Subtract(xgaProcessor.Convert(mv1)).GetPart(s => !s.IsNearZero());
 
-                Debug.Assert(
-                    mvDiff.IsZero
-                );
+    //            Debug.Assert(
+    //                mvDiff.IsZero
+    //            );
 
-                mv1 = mv11.ELcp(mv21);
-                mv2 = mv12.ELcp(mv22);
+    //            mv1 = mv11.ELcp(mv21);
+    //            mv2 = mv12.ELcp(mv22);
 
-                mvDiff =
-                    mv2.Subtract(xgaProcessor.Convert(mv1)).GetPart(s => !s.IsNearZero());
+    //            mvDiff =
+    //                mv2.Subtract(xgaProcessor.Convert(mv1)).GetPart(s => !s.IsNearZero());
 
-                Debug.Assert(
-                    mvDiff.IsZero
-                );
+    //            Debug.Assert(
+    //                mvDiff.IsZero
+    //            );
 
-                mv1 = mv11.ERcp(mv21);
-                mv2 = mv12.ERcp(mv22);
+    //            mv1 = mv11.ERcp(mv21);
+    //            mv2 = mv12.ERcp(mv22);
 
-                mvDiff =
-                    mv2.Subtract(xgaProcessor.Convert(mv1)).GetPart(s => !s.IsNearZero());
+    //            mvDiff =
+    //                mv2.Subtract(xgaProcessor.Convert(mv1)).GetPart(s => !s.IsNearZero());
 
-                Debug.Assert(
-                    mvDiff.IsZero
-                );
+    //            Debug.Assert(
+    //                mvDiff.IsZero
+    //            );
 
-                var esp1 = mv11.ESp(mv21).ScalarValue;
-                var esp2 = mv12.ESp(mv22).ScalarValue;
+    //            var esp1 = mv11.ESp(mv21).ScalarValue;
+    //            var esp2 = mv12.ESp(mv22).ScalarValue;
 
-                var espDiff =
-                    esp2 - esp1;
+    //            var espDiff =
+    //                esp2 - esp1;
 
-                Debug.Assert(
-                    espDiff.IsNearZero()
-                );
-            }
-        }
-    }
+    //            Debug.Assert(
+    //                espDiff.IsNearZero()
+    //            );
+    //        }
+    //    }
+    //}
 
     public static void Example5()
     {
         var n = 10;
         var m = 1UL << n;
 
-        var processor = RGaFloat64Processor.Euclidean;
+        var processor = XGaFloat64Processor.Euclidean;
 
-        var randomComposer = processor.CreateRGaRandomComposer(n, 10);
+        var randomComposer = processor.CreateXGaRandomComposer(n, 10);
 
         var scalar1 = randomComposer.GetScalar();
         var vector1 = randomComposer.GetSparseVector(n / 2);
@@ -435,9 +425,9 @@ public static class XGaMultivectorValidationSamples
         var n = 10;
         var m = 1UL << n;
 
-        var processor = RGaFloat64Processor.Euclidean;
+        var processor = XGaFloat64Processor.Euclidean;
 
-        var randomComposer = processor.CreateRGaRandomComposer(n, 10);
+        var randomComposer = processor.CreateXGaRandomComposer(n, 10);
 
         var scalar1 = randomComposer.GetScalar();
         var vector1 = randomComposer.GetSparseVector(n / 2);
@@ -608,9 +598,9 @@ public static class XGaMultivectorValidationSamples
         var n = 10;
         var m = 1UL << n;
 
-        var processor = RGaFloat64Processor.Euclidean;
+        var processor = XGaFloat64Processor.Euclidean;
 
-        var randomComposer = processor.CreateRGaRandomComposer(n, 10);
+        var randomComposer = processor.CreateXGaRandomComposer(n, 10);
 
         var scalar1 = randomComposer.GetScalar();
         var vector1 = randomComposer.GetSparseVector(n / 2);
@@ -626,7 +616,7 @@ public static class XGaMultivectorValidationSamples
         var kVector82 = randomComposer.GetSparseKVectorOfGrade(8, (int)n.GetBinomialCoefficient(8) / 2);
         var mv2 = randomComposer.GetUniformMultivector((int)m / 2);
 
-        RGaFloat64Multivector diff =
+        XGaFloat64Multivector diff =
             scalar1.ELcp(scalar2).Subtract(
                 scalar1.ELcp(scalar2)
             );
@@ -909,9 +899,9 @@ public static class XGaMultivectorValidationSamples
         var n = 10;
         var m = 1UL << n;
 
-        var processor = RGaFloat64Processor.Euclidean;
+        var processor = XGaFloat64Processor.Euclidean;
 
-        var randomComposer = processor.CreateRGaRandomComposer(n, 10);
+        var randomComposer = processor.CreateXGaRandomComposer(n, 10);
 
         var scalar1 = randomComposer.GetScalar();
         var vector1 = randomComposer.GetSparseVector(n / 2);
@@ -927,7 +917,7 @@ public static class XGaMultivectorValidationSamples
         var kVector82 = randomComposer.GetSparseKVectorOfGrade(8, (int)n.GetBinomialCoefficient(8) / 2);
         var mv2 = randomComposer.GetUniformMultivector((int)m / 2);
 
-        RGaFloat64Multivector diff =
+        XGaFloat64Multivector diff =
             scalar1.ERcp(scalar2).Subtract(
                 scalar1.ERcp(scalar2)
             );
@@ -1209,9 +1199,9 @@ public static class XGaMultivectorValidationSamples
         var n = 10;
         var m = 1UL << n;
 
-        var processor = RGaFloat64Processor.Euclidean;
+        var processor = XGaFloat64Processor.Euclidean;
 
-        var randomComposer = processor.CreateRGaRandomComposer(n, 10);
+        var randomComposer = processor.CreateXGaRandomComposer(n, 10);
 
         var scalar1 = randomComposer.GetScalar();
         var vector1 = randomComposer.GetSparseVector(n / 2);
@@ -1469,16 +1459,6 @@ public static class XGaMultivectorValidationSamples
         );
     }
 
-    private static void ValidateDifference(RGaFloat64Multivector mv1, RGaFloat64Multivector mv2)
-    {
-        var mvDiff =
-            mv2.Subtract(mv1).MapScalars(s => s.IsNearZero() ? 0 : s);
-
-        Debug.Assert(
-            mvDiff.IsZero
-        );
-    }
-
     private static void ValidateDifference(XGaFloat64Multivector mv1, XGaFloat64Multivector mv2)
     {
         var mvDiff =
@@ -1493,18 +1473,6 @@ public static class XGaMultivectorValidationSamples
     {
         var mvDiff =
             mv2.Subtract(mv1).MapScalars(s => s.IsNearZero() ? 0 : s);
-
-        Debug.Assert(
-            mvDiff.IsZero
-        );
-    }
-
-    private static void ValidateDifference(RGaFloat64Multivector mv1, XGaFloat64Multivector mv2)
-    {
-        var mv3 = mv2.Processor.Convert(mv1);
-
-        var mvDiff =
-            mv2.Subtract(mv3).GetPart(s => !s.IsNearZero());
 
         Debug.Assert(
             mvDiff.IsZero
@@ -1716,7 +1684,7 @@ public static class XGaMultivectorValidationSamples
         var n = 10;
         var m = 1UL << n;
 
-        var metric = RGaFloat64Processor.Euclidean;
+        var metric = XGaFloat64Processor.Euclidean;
 
         var basisBlades =
             metric.GetBasisBlades(n).ToImmutableArray();
@@ -1741,9 +1709,9 @@ public static class XGaMultivectorValidationSamples
             }
         }
 
-        var randomComposer = metric.CreateRGaRandomComposer(n, 10);
+        var randomComposer = metric.CreateXGaRandomComposer(n, 10);
 
-        var mvList1 = new List<RGaFloat64Multivector>
+        var mvList1 = new List<XGaFloat64Multivector>
         {
             randomComposer.GetScalar(),
             randomComposer.GetScalar(),
@@ -1913,7 +1881,7 @@ public static class XGaMultivectorValidationSamples
         var m = 1UL << n;
 
         var metric = XGaFloat64Processor.Euclidean;
-        var geometricProcessor = RGaFloat64Processor.Euclidean;
+        var geometricProcessor = XGaFloat64Processor.Euclidean;
 
         var basisBlades =
             metric.GetBasisBlades(n).ToImmutableArray();
@@ -1936,7 +1904,7 @@ public static class XGaMultivectorValidationSamples
                 var egpSign1 = egp1.Sign;
 
                 var egpId2 = id1 ^ id2;
-                var egpSign2 = id1.EGpSign(id2);
+                var egpSign2 = basisBlade1.EGpSign(basisBlade2);
 
                 Debug.Assert(
                     egpId1 == egpId2 &&
@@ -1945,9 +1913,9 @@ public static class XGaMultivectorValidationSamples
             }
         }
 
-        var randomComposer = geometricProcessor.CreateRGaRandomComposer(n, 10);
+        var randomComposer = geometricProcessor.CreateXGaRandomComposer(n, 10);
 
-        var mvList1 = new List<RGaFloat64Multivector>
+        var mvList1 = new List<XGaFloat64Multivector>
         {
             randomComposer.GetMultivector(),
             randomComposer.GetMultivector(),

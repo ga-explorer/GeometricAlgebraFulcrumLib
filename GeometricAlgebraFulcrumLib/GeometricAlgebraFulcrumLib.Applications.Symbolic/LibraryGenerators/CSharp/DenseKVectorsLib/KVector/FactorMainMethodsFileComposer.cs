@@ -1,5 +1,4 @@
-﻿using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
+﻿using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
 using GeometricAlgebraFulcrumLib.MetaProgramming.Utilities.Code;
 using GeometricAlgebraFulcrumLib.Utilities.Text.Text.Linear;
 using GeometricAlgebraFulcrumLib.Utilities.Text.Text.Structured;
@@ -19,7 +18,7 @@ internal sealed class FactorMainMethodsFileComposer :
     {
         var casesText = new ListTextComposer(Environment.NewLine);
 
-        var maxIndex = VSpaceDimensions.KVectorSpaceDimension(grade) - 1;
+        var maxIndex = VSpaceDimensions.KVectorSpaceDimensions(grade) - 1;
 
         for (var index = 1UL; index < maxIndex; index++)
             casesText.Add(
@@ -43,7 +42,7 @@ internal sealed class FactorMainMethodsFileComposer :
     {
         var casesText = new ListTextComposer(Environment.NewLine);
 
-        for (var index = 1UL; index < VSpaceDimensions.KVectorSpaceDimension(grade); index++)
+        for (var index = 1UL; index < VSpaceDimensions.KVectorSpaceDimensions(grade); index++)
             casesText.Add(
                 Templates["factorgrade_case"].GenerateUsing(
                     BasisBladeUtils.BasisBladeGradeIndexToId(grade, index)

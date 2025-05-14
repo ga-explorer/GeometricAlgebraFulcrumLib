@@ -1,5 +1,4 @@
-﻿using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
+﻿using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
 using GeometricAlgebraFulcrumLib.MetaProgramming.Utilities.Code;
 using GeometricAlgebraFulcrumLib.Utilities.Text.Text.Linear;
 using GeometricAlgebraFulcrumLib.Utilities.Text.Text.Structured;
@@ -37,7 +36,7 @@ internal sealed class DpMethodsFileComposer :
 
             gpCaseText.Add(Templates["dp_case"],
                 "name", funcName,
-                "num", VSpaceDimensions.KVectorSpaceDimension(outGrade),
+                "num", VSpaceDimensions.KVectorSpaceDimensions(outGrade),
                 "signature", CurrentNamespace,
                 "grade", outGrade
             );

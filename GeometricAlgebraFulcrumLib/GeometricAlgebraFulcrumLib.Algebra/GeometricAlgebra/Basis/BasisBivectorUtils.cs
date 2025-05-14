@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics;
 using System.Runtime.CompilerServices;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Records;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Combinations;
+using GeometricAlgebraFulcrumLib.Utilities.Structures.IndexSets;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Tuples;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
@@ -13,114 +13,82 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
 public static class BasisBivectorUtils
 {
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static IEnumerable<ulong> GetBasisBivectorIds(this ulong maxBasisBladeId)
+    public static IEnumerable<IndexSet> GetBasisBivectorIds(this int vSpaceDimensions)
     {
-        var index = 0UL;
-        var id = 3UL;
+        if (vSpaceDimensions < 2)
+            throw new ArgumentOutOfRangeException(nameof(vSpaceDimensions));
 
-        while (id <= maxBasisBladeId)
-        {
-            yield return id;
-
-            index++;
-            id = index.BasisBivectorIndexToId();
-        }
+        for (var i1 = 0; i1 < vSpaceDimensions - 1; i1++)
+        for (var i2 = i1 + 1; i2 < vSpaceDimensions; i2++)
+            yield return IndexSet.CreatePair(i1, i2);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static IEnumerable<ulong> GetBasisBivectorIndices(this ulong maxBasisBladeId)
+    public static IEnumerable<ulong> GetBasisBivectorIndices(this int vSpaceDimensions)
     {
-        var index = 0UL;
-        var id = 3UL;
+        if (vSpaceDimensions < 2)
+            throw new ArgumentOutOfRangeException(nameof(vSpaceDimensions));
 
-        while (id <= maxBasisBladeId)
-        {
-            yield return index;
-
-            index++;
-            id = index.BasisBivectorIndexToId();
-        }
+        return Enumerable.Range(0, vSpaceDimensions * (vSpaceDimensions - 1)).Select(i => (ulong) i);
     }
         
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static IEnumerable<RGaKvIndexPairRecord> GetBasisBivectorVectorIndices(this ulong maxBasisBladeId)
+    public static IEnumerable<Pair<ulong>> GetBasisBivectorVectorIndices(this int vSpaceDimensions)
     {
-        var index = 0UL;
-        var id = 3UL;
+        if (vSpaceDimensions < 2)
+            throw new ArgumentOutOfRangeException(nameof(vSpaceDimensions));
 
-        while (id <= maxBasisBladeId)
-        {
-            yield return index.BasisBivectorIndexToVectorIndices();
-
-            index++;
-            id = index.BasisBivectorIndexToId();
-        }
+        for (var i1 = 0; i1 < vSpaceDimensions - 1; i1++)
+        for (var i2 = i1 + 1; i2 < vSpaceDimensions; i2++)
+            yield return new Pair<ulong>((ulong)i1, (ulong)i2);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static uint BasisBivectorIndexToMinVSpaceDimension(this ulong index)
+    public static int BasisBivectorIndexToMinVSpaceDimension(this ulong index)
     {
-        return 1U + (uint) (0.5d * (1d + Math.Sqrt(1UL + 8UL * index)));
+        return 1 + (int) (0.5d * (1d + Math.Sqrt(1UL + 8UL * index)));
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static bool IsBasisBivectorId(this ulong basisBladeId)
+    public static bool IsBasisBivectorId(this IndexSet basisBladeId)
     {
-        return basisBladeId.IsBasisBladeOfGrade(2);
+        return basisBladeId.IsPairSet;
     }
-        
+    
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static ulong IndexPairToBivectorId(this IPair<int> indexPair)
+    public static IndexSet IndexPairToBivectorId(this IPair<int> indexPair)
     {
         var index1 = indexPair.Item1;
         var index2 = indexPair.Item2;
 
         Debug.Assert(index1 >= 0 && index2 >= 0 && index1 != index2);
 
-        return (1UL << index1) | (1UL << index2);
+        return IndexSet.CreatePair(index1, index2);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static ulong IndexPairToBivectorId(int index1, int index2)
+    public static IndexSet IndexPairToBivectorId(int index1, int index2)
     {
         Debug.Assert(index1 >= 0 && index2 >= 0 && index1 != index2);
 
-        return (1UL << index1) | (1UL << index2);
+        return IndexSet.CreatePair(index1, index2);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static ulong IndexPairToBivectorId(ulong index1, ulong index2)
+    public static IndexSet IndexPairToBivectorId(ulong index1, ulong index2)
     {
         Debug.Assert(index1 != index2);
 
-        return (1UL << (int) index1) | (1UL << (int) index2);
+        return IndexSet.CreatePair((int) index1, (int) index2);
     }
-        
+    
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Int32Pair BasisBivectorIndexToVectorIndexInt32Pair(this int index)
-    {
-        var n2 = (ulong)(0.5d * (1d + Math.Sqrt(1UL + 8UL * (ulong) index)));
-        var n1 = (ulong) index - ((n2 * (n2 - 1UL)) >> 1);
-
-        return new Int32Pair((int) n1, (int) n2);
-    }
-        
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Int32Pair BasisBivectorIndexToVectorIndexInt32Pair(this ulong index)
+    public static Pair<ulong> BasisBivectorIndexToVectorIndices(this ulong index)
     {
         var n2 = (ulong)(0.5d * (1d + Math.Sqrt(1UL + 8UL * index)));
         var n1 = index - ((n2 * (n2 - 1UL)) >> 1);
 
-        return new Int32Pair((int) n1, (int) n2);
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static RGaKvIndexPairRecord BasisBivectorIndexToVectorIndices(this ulong index)
-    {
-        var n2 = (ulong)(0.5d * (1d + Math.Sqrt(1UL + 8UL * index)));
-        var n1 = index - ((n2 * (n2 - 1UL)) >> 1);
-
-        return new RGaKvIndexPairRecord(n1, n2);
+        return new Pair<ulong>(n1, n2);
     }
         
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -142,25 +110,25 @@ public static class BasisBivectorUtils
     }
         
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static ulong BasisBivectorIndexToId(this int index)
+    public static IndexSet BasisBivectorIndexToId(this int index)
     {
         var n2 = (ulong)(0.5d * (1d + Math.Sqrt(1UL + 8UL * (ulong)index)));
         var n1 = (ulong)index - ((n2 * (n2 - 1UL)) >> 1);
 
-        return (1UL << (int) n1) | (1UL << (int) n2);
+        return IndexSet.CreatePair((int) n1, (int) n2);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static ulong BasisBivectorIndexToId(this ulong index)
+    public static IndexSet BasisBivectorIndexToId(this ulong index)
     {
         var n2 = (ulong)(0.5d * (1d + Math.Sqrt(1UL + 8UL * index)));
         var n1 = index - ((n2 * (n2 - 1UL)) >> 1);
 
-        return (1UL << (int) n1) | (1UL << (int) n2);
+        return IndexSet.CreatePair((int) n1, (int) n2);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static ulong BasisVectorIndicesToBivectorIndex(this RGaKvIndexPairRecord basisVectorIndexPair)
+    public static ulong BasisVectorIndicesToBivectorIndex(this Pair<ulong> basisVectorIndexPair)
     {
         var (n1, n2) = basisVectorIndexPair;
 
@@ -195,49 +163,31 @@ public static class BasisBivectorUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static ulong BasisBivectorIdToIndex(this ulong basisBladeId)
+    public static ulong BasisBivectorIdToIndex(this IndexSet basisBladeId)
     {
-        var n2 = (ulong) Math.Log(basisBladeId, 2);
-        var n1 = (ulong) Math.Log(basisBladeId - (1UL << (int)n2), 2);
+        //var n2 = (ulong) Math.Log(basisBladeId, 2);
+        //var n1 = (ulong) Math.Log(basisBladeId - (1UL << (int)n2), 2);
             
-        return n1 + ((n2 * (n2 - 1UL)) >> 1);
+        //return n1 + ((n2 * (n2 - 1UL)) >> 1);
+        
+        return basisBladeId.DecodeCombinadicToUInt64();
     }
 
 
         
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static bool IsValidBasisBivectorId(this ulong basisBivectorId)
+    public static bool IsValidBasisBivectorId(this IndexSet basisBivectorId)
     {
-        return basisBivectorId <= BasisBladeDataLookup.MaxBasisBladeId && 
-               basisBivectorId.IsBasisBladeOfGrade(2);
+        return basisBivectorId.IsPairSet;
     }
         
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static bool IsValidBasisBivectorId(this ulong basisBivectorId, uint vSpaceDimensions)
+    public static bool IsValidBasisBivectorId(this IndexSet basisBivectorId, uint vSpaceDimensions)
     {
-        return basisBivectorId < 1UL << (int) vSpaceDimensions && 
-               basisBivectorId.IsBasisBladeOfGrade(2);
+        return basisBivectorId.IsPairSet &&
+               basisBivectorId.LastIndex < (int)vSpaceDimensions;
     }
-        
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static bool IsValidBasisBivectorIndex(this ulong basisBivectorIndex)
-    {
-        var kvDim = BasisBladeDataLookup.MaxVSpaceDimension.GetBinomialCoefficient(2);
-
-        return basisBivectorIndex < kvDim;
-    }
-        
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static bool IsValidBasisBivectorGradeIndex(uint grade, ulong basisBivectorIndex)
-    {
-        if (grade > BasisBladeDataLookup.MaxVSpaceDimension) 
-            return false;
-
-        var kvDim = BasisBladeDataLookup.MaxVSpaceDimension.GetBinomialCoefficient(2);
-
-        return basisBivectorIndex < kvDim;
-    }
-
+    
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static bool IsValidBasisBivectorIndex(ulong basisBivectorIndex, uint vSpaceDimensions)
     {

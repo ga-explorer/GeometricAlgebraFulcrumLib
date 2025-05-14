@@ -103,12 +103,12 @@ public sealed class CGaFloat64OpnsRoundBladeDecoder :
 
 
     //[MethodImpl(MethodImplOptions.AggressiveInlining)]
-    //public RGaConformalParametricElement Element(this RGaConformalParametricBlade2D blade)
+    //public XGaConformalParametricElement Element(this XGaConformalParametricBlade2D blade)
     //{
     //    if (!blade.Specs.IsOpnsRound)
     //        throw new InvalidOperationException();
 
-    //    return RGaConformalParametricElement.Create(
+    //    return XGaConformalParametricElement.Create(
     //        blade.Specs,
     //        blade.ParameterRange,
     //        t => blade.GetBlade(t).Element()
@@ -116,12 +116,12 @@ public sealed class CGaFloat64OpnsRoundBladeDecoder :
     //}
 
     //[MethodImpl(MethodImplOptions.AggressiveInlining)]
-    //public RGaConformalParametricElement Element(this RGaConformalParametricBlade3D blade)
+    //public XGaConformalParametricElement Element(this XGaConformalParametricBlade3D blade)
     //{
     //    if (!blade.Specs.IsOpnsRound)
     //        throw new InvalidOperationException();
 
-    //    return RGaConformalParametricElement.Create(
+    //    return XGaConformalParametricElement.Create(
     //        blade.Specs,
     //        blade.ParameterRange,
     //        t => blade.GetBlade(t).Element()
@@ -129,12 +129,12 @@ public sealed class CGaFloat64OpnsRoundBladeDecoder :
     //}
 
     //[MethodImpl(MethodImplOptions.AggressiveInlining)]
-    //public RGaConformalParametricElement Element(this RGaConformalParametricBlade2D blade, IParametricCurve2D egaProbePoint)
+    //public XGaConformalParametricElement Element(this XGaConformalParametricBlade2D blade, IParametricCurve2D egaProbePoint)
     //{
     //    if (!blade.Specs.IsOpnsRound)
     //        throw new InvalidOperationException();
 
-    //    return RGaConformalParametricElement.Create(
+    //    return XGaConformalParametricElement.Create(
     //        blade.Specs,
     //        blade.ParameterRange,
     //        t => blade.GetBlade(t).Element(
@@ -144,12 +144,12 @@ public sealed class CGaFloat64OpnsRoundBladeDecoder :
     //}
 
     //[MethodImpl(MethodImplOptions.AggressiveInlining)]
-    //public RGaConformalParametricElement Element(this RGaConformalParametricBlade3D blade, IParametricCurve3D egaProbePoint)
+    //public XGaConformalParametricElement Element(this XGaConformalParametricBlade3D blade, IParametricCurve3D egaProbePoint)
     //{
     //    if (!blade.Specs.IsOpnsRound)
     //        throw new InvalidOperationException();
 
-    //    return RGaConformalParametricElement.Create(
+    //    return XGaConformalParametricElement.Create(
     //        blade.Specs,
     //        blade.ParameterRange,
     //        t => blade.GetBlade(t).Element(
@@ -160,7 +160,7 @@ public sealed class CGaFloat64OpnsRoundBladeDecoder :
 
 
     //[MethodImpl(MethodImplOptions.AggressiveInlining)]
-    //internal static CGaFloat64Blade HyperSphereVGaCenter(this RGaFloat64Vector vector, RGaConformalSpace cgaGeometricSpace)
+    //internal static CGaFloat64Blade HyperSphereVGaCenter(this XGaFloat64Vector vector, XGaConformalSpace cgaGeometricSpace)
     //{
     //    var weight = vector[0] + vector[1];
 
@@ -174,7 +174,7 @@ public sealed class CGaFloat64OpnsRoundBladeDecoder :
     //}
 
     //[MethodImpl(MethodImplOptions.AggressiveInlining)]
-    //internal static CGaFloat64Blade HyperSphereVGaCenter(this RGaFloat64Multivector vector, RGaConformalSpace cgaGeometricSpace)
+    //internal static CGaFloat64Blade HyperSphereVGaCenter(this XGaFloat64Multivector vector, XGaConformalSpace cgaGeometricSpace)
     //{
     //    return vector.GetVectorPart().HyperSphereVGaCenter(
     //        cgaGeometricSpace
@@ -214,7 +214,7 @@ public sealed class CGaFloat64OpnsRoundBladeDecoder :
     }
 
 
-    //internal static Tuple<double, CGaFloat64Blade> HyperSphereWeightVGaCenter(this RGaFloat64Vector vector, RGaConformalSpace cgaGeometricSpace)
+    //internal static Tuple<double, CGaFloat64Blade> HyperSphereWeightVGaCenter(this XGaFloat64Vector vector, XGaConformalSpace cgaGeometricSpace)
     //{
     //    var weight = vector[0] + vector[1];
 
@@ -236,7 +236,7 @@ public sealed class CGaFloat64OpnsRoundBladeDecoder :
     //}
 
     //[MethodImpl(MethodImplOptions.AggressiveInlining)]
-    //internal static Tuple<double, CGaFloat64Blade> HyperSphereWeightVGaCenter(this RGaFloat64Multivector vector, RGaConformalSpace cgaGeometricSpace)
+    //internal static Tuple<double, CGaFloat64Blade> HyperSphereWeightVGaCenter(this XGaFloat64Multivector vector, XGaConformalSpace cgaGeometricSpace)
     //{
     //    return vector.GetVectorPart().HyperSphereWeightVGaCenter(
     //        cgaGeometricSpace
@@ -274,7 +274,7 @@ public sealed class CGaFloat64OpnsRoundBladeDecoder :
 
         return new CGaFloat64Blade(
             Blade.GeometricSpace,
-            pointPair.CenterToRGaVector() - pointPair.RealRadius * pointPair.DirectionToRGaVector()
+            pointPair.CenterToXGaVector() - pointPair.RealRadius * pointPair.DirectionToXGaVector()
         );
     }
 
@@ -289,7 +289,7 @@ public sealed class CGaFloat64OpnsRoundBladeDecoder :
 
         return new CGaFloat64Blade(
             Blade.GeometricSpace,
-            pointPair.CenterToRGaVector() + pointPair.RealRadius * pointPair.DirectionToRGaVector()
+            pointPair.CenterToXGaVector() + pointPair.RealRadius * pointPair.DirectionToXGaVector()
         );
     }
 
@@ -306,12 +306,12 @@ public sealed class CGaFloat64OpnsRoundBladeDecoder :
 
         var point1 = new CGaFloat64Blade(
             Blade.GeometricSpace,
-            pointPair.CenterToRGaVector() - pointPair.RealRadius * pointPair.DirectionToRGaVector()
+            pointPair.CenterToXGaVector() - pointPair.RealRadius * pointPair.DirectionToXGaVector()
         );
 
         var point2 = new CGaFloat64Blade(
             Blade.GeometricSpace,
-            pointPair.CenterToRGaVector() + pointPair.RealRadius * pointPair.DirectionToRGaVector()
+            pointPair.CenterToXGaVector() + pointPair.RealRadius * pointPair.DirectionToXGaVector()
         );
 
         return new Pair<CGaFloat64Blade>(point1, point2);

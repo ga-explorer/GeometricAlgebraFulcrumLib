@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Immutable;
-using System.Diagnostics;
 using System.Linq;
 using BenchmarkDotNet.Attributes;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
@@ -39,28 +38,28 @@ public class IndexSetBenchmarks
 
         benchmark.Setup();
 
-        for (var id1 = 0ul; id1 < benchmark.GaSpaceDimension; id1++)
-        {
-            var indexSet1 = id1.BitPatternToIndexSet();
+        //for (var id1 = 0ul; id1 < benchmark.GaSpaceDimension; id1++)
+        //{
+        //    var indexSet1 = id1.ToUInt64IndexSet();
 
-            for (var id2 = 0ul; id2 < benchmark.GaSpaceDimension; id2++)
-            {
-                var indexSet2 = id2.BitPatternToIndexSet();
+        //    for (var id2 = 0ul; id2 < benchmark.GaSpaceDimension; id2++)
+        //    {
+        //        var indexSet2 = id2.ToUInt64IndexSet();
 
-                var (f1, m1) = id1.EGpIsNegativeId(id2);
-                var (f2, m2) = indexSet1.EGpIsNegativeId(indexSet2);
+        //        var (f1, m1) = id1.EGpIsNegativeId(id2);
+        //        var (f2, m2) = indexSet1.EGpIsNegativeId(indexSet2);
 
-                Debug.Assert(f1 == f2);
-                Debug.Assert(m1 == m2.ToUInt64());
-                Debug.Assert(m1.BitPatternToIndexSet() == m2);
-            }
-        }
+        //        Debug.Assert(f1 == f2);
+        //        Debug.Assert(m1 == m2.ToUInt64());
+        //        Debug.Assert(m1.ToUInt64IndexSet() == m2);
+        //    }
+        //}
 
         Console.WriteLine("Start timing ..");
 
-        var time1 = GetTime(() => benchmark.EGp1(), 20);
-        Console.WriteLine($"Time1: {time1}");
-        Console.WriteLine();
+        //var time1 = GetTime(() => benchmark.EGp1(), 20);
+        //Console.WriteLine($"Time1: {time1}");
+        //Console.WriteLine();
 
         var time2 = GetTime(() => benchmark.EGp2(), 20);
         Console.WriteLine($"Time2: {time2}");
@@ -87,19 +86,19 @@ public class IndexSetBenchmarks
         }
     }
 
-    [Benchmark]
-    public ulong EGp1()
-    {
-        var result = 0UL;
+    //[Benchmark]
+    //public ulong EGp1()
+    //{
+    //    var result = 0UL;
 
-        foreach (var indexSet1 in IndexSetArray1)
-            foreach (var indexSet2 in IndexSetArray1)
-            {
-                (_, result) = indexSet1.EGpIsNegativeId(indexSet2);
-            }
+    //    foreach (var indexSet1 in IndexSetArray1)
+    //        foreach (var indexSet2 in IndexSetArray1)
+    //        {
+    //            (_, result) = indexSet1.EGpIsNegativeId(indexSet2);
+    //        }
 
-        return result;
-    }
+    //    return result;
+    //}
 
     [Benchmark]
     public IndexSet EGp2()

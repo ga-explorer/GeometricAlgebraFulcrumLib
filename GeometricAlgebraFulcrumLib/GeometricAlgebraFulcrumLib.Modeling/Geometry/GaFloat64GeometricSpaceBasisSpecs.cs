@@ -2,12 +2,14 @@
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Float64.LinearMaps.Outermorphisms;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Float64.Multivectors;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Float64.Multivectors.Composers;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Float64.Processors;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.LinearMaps.Outermorphisms;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivectors;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivectors.Composers;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Processors;
 using GeometricAlgebraFulcrumLib.Utilities.Structures;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.BitManipulation;
+using GeometricAlgebraFulcrumLib.Utilities.Structures.Extensions;
+using GeometricAlgebraFulcrumLib.Utilities.Structures.IndexSets;
 using GeometricAlgebraFulcrumLib.Utilities.Text.Text.Markdown;
 using GeometricAlgebraFulcrumLib.Utilities.Text.Text.Markdown.Tables;
 
@@ -38,7 +40,7 @@ public sealed class GaFloat64GeometricSpaceBasisSpecs
         }
     }
 
-    private static RGaFloat64LinearMapOutermorphism GetCGaBasisMap(int vSpaceDimensions)
+    private static XGaFloat64LinearMapOutermorphism GetCGaBasisMap(int vSpaceDimensions)
     {
         // If linearly independent basis F = <f1, f2, f3> is related to
         // orthonormal basis E = <e1, e2, e3> via matrix M (F = M E), then
@@ -48,7 +50,7 @@ public sealed class GaFloat64GeometricSpaceBasisSpecs
         // Thus if M is an orthogonal matrix (or as a special case, a permutation)
         // they are related using M itself: Af = M Ae.
 
-        var processor = RGaFloat64ConformalProcessor.Instance;
+        var processor = XGaFloat64ConformalProcessor.Instance;
 
         var vectorMapArray = new double[vSpaceDimensions, vSpaceDimensions];
 
@@ -64,7 +66,7 @@ public sealed class GaFloat64GeometricSpaceBasisSpecs
         return vectorMapArray.ColumnsToOutermorphism(processor);
     }
 
-    private static RGaFloat64LinearMapOutermorphism GetCGaBasisMapInverse(int vSpaceDimensions)
+    private static XGaFloat64LinearMapOutermorphism GetCGaBasisMapInverse(int vSpaceDimensions)
     {
         // If linearly independent basis F = <f1, f2, f3> is related to
         // orthonormal basis E = <e1, e2, e3> via matrix M (F = M E), then
@@ -74,7 +76,7 @@ public sealed class GaFloat64GeometricSpaceBasisSpecs
         // Thus if M is an orthogonal matrix (or as a special case, a permutation)
         // they are related using M itself: Af = M Ae.
 
-        var processor = RGaFloat64ConformalProcessor.Instance;
+        var processor = XGaFloat64ConformalProcessor.Instance;
 
         var vectorMapArray = new double[vSpaceDimensions, vSpaceDimensions];
 
@@ -102,7 +104,7 @@ public sealed class GaFloat64GeometricSpaceBasisSpecs
                 .ToImmutableArray();
 
         return new GaFloat64GeometricSpaceBasisSpecs(
-            RGaFloat64EuclideanProcessor.Instance,
+            XGaFloat64EuclideanProcessor.Instance,
             laTeXVectorSubscripts
         );
     }
@@ -119,7 +121,7 @@ public sealed class GaFloat64GeometricSpaceBasisSpecs
         var basisMapInverse = GetCGaBasisMapInverse(vSpaceDimensions);
 
         return new GaFloat64GeometricSpaceBasisSpecs(
-            RGaFloat64ConformalProcessor.Instance,
+            XGaFloat64ConformalProcessor.Instance,
             laTeXVectorSubscripts,
             basisMap,
             basisMapInverse
@@ -138,22 +140,22 @@ public sealed class GaFloat64GeometricSpaceBasisSpecs
             ).ToImmutableArray();
 
         return new GaFloat64GeometricSpaceBasisSpecs(
-            RGaFloat64ConformalProcessor.Instance,
+            XGaFloat64ConformalProcessor.Instance,
             laTeXVectorSubscripts
         );
     }
 
 
-    public RGaFloat64Processor Processor { get; }
+    public XGaFloat64Processor Processor { get; }
 
-    public RGaFloat64EuclideanProcessor EuclideanProcessor
-        => RGaFloat64EuclideanProcessor.Instance;
+    public XGaFloat64EuclideanProcessor EuclideanProcessor
+        => XGaFloat64EuclideanProcessor.Instance;
 
     public IReadOnlyList<string> LaTeXVectorSubscripts { get; }
 
-    public IRGaFloat64Outermorphism BasisMap { get; }
+    public IXGaFloat64Outermorphism BasisMap { get; }
 
-    public IRGaFloat64Outermorphism BasisMapInverse { get; }
+    public IXGaFloat64Outermorphism BasisMapInverse { get; }
 
     public int VSpaceDimensions
         => LaTeXVectorSubscripts.Count;
@@ -162,15 +164,15 @@ public sealed class GaFloat64GeometricSpaceBasisSpecs
         => 1ul << VSpaceDimensions;
 
 
-    private GaFloat64GeometricSpaceBasisSpecs(RGaFloat64Processor processor, IReadOnlyList<string> laTeXVectorSubscripts)
+    private GaFloat64GeometricSpaceBasisSpecs(XGaFloat64Processor processor, IReadOnlyList<string> laTeXVectorSubscripts)
     {
         Processor = processor;
         LaTeXVectorSubscripts = laTeXVectorSubscripts;
-        BasisMap = new RGaFloat64IdentityOutermorphism(processor);
+        BasisMap = new XGaFloat64IdentityOutermorphism(processor);
         BasisMapInverse = BasisMap;
     }
 
-    private GaFloat64GeometricSpaceBasisSpecs(RGaFloat64Processor processor, IReadOnlyList<string> laTeXVectorSubscripts, IRGaFloat64Outermorphism basisMap, IRGaFloat64Outermorphism basisMapInverse)
+    private GaFloat64GeometricSpaceBasisSpecs(XGaFloat64Processor processor, IReadOnlyList<string> laTeXVectorSubscripts, IXGaFloat64Outermorphism basisMap, IXGaFloat64Outermorphism basisMapInverse)
     {
         Processor = processor;
         LaTeXVectorSubscripts = laTeXVectorSubscripts;
@@ -180,18 +182,18 @@ public sealed class GaFloat64GeometricSpaceBasisSpecs
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public IEnumerable<RGaFloat64KVector> GetBasisBlades(bool orderByGrade = true)
+    public IEnumerable<XGaFloat64KVector> GetBasisBlades(bool orderByGrade = true)
     {
         if (orderByGrade)
             return GaSpaceDimensions
                 .GetRange()
                 .OrderBy(id => id.Grade())
                 .ThenBy(id => id)
-                .Select(BasisMapInverse.OmMapBasisBlade);
+                .Select(id => BasisMapInverse.OmMapBasisBlade((IndexSet)id));
 
         return GaSpaceDimensions
             .GetRange()
-            .Select(BasisMapInverse.OmMapBasisBlade);
+            .Select(id => BasisMapInverse.OmMapBasisBlade((IndexSet)id));
     }
 
 
@@ -263,13 +265,12 @@ public sealed class GaFloat64GeometricSpaceBasisSpecs
             : " - " + scalarText;
     }
 
-    private string BasisBladeToLaTeX(ulong id)
+    private string BasisBladeToLaTeX(IndexSet id)
     {
-        Debug.Assert(id > 0 && id < GaSpaceDimensions);
+        Debug.Assert(!id.IsEmptySet && id.ToUInt64() < GaSpaceDimensions);
 
         var subscriptText =
             id
-                .GetSetBitPositions()
                 .Select(i => LaTeXVectorSubscripts[i])
                 .ConcatenateText(",");
 
@@ -277,9 +278,9 @@ public sealed class GaFloat64GeometricSpaceBasisSpecs
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    private string TermToLaTeX(ulong id, double scalar)
+    private string TermToLaTeX(IndexSet id, double scalar)
     {
-        return id == 0
+        return id.IsEmptySet
             ? ScalarTermToLaTeX(scalar)
             : $"{ScalarToLaTeX(scalar)} {BasisBladeToLaTeX(id)}";
     }
@@ -289,19 +290,19 @@ public sealed class GaFloat64GeometricSpaceBasisSpecs
     public string ToLaTeX(double mv)
     {
         return ToLaTeX(
-            (RGaFloat64Multivector)Processor.Scalar(mv)
+            (XGaFloat64Multivector)Processor.Scalar(mv)
         );
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public string ToLaTeX(RGaFloat64Scalar mv)
+    public string ToLaTeX(XGaFloat64Scalar mv)
     {
         return ToLaTeX(
-            (RGaFloat64Multivector)mv
+            (XGaFloat64Multivector)mv
         );
     }
 
-    public string ToLaTeX(RGaFloat64Multivector mv)
+    public string ToLaTeX(XGaFloat64Multivector mv)
     {
         if (mv.IsZero)
             return "0";
@@ -323,7 +324,7 @@ public sealed class GaFloat64GeometricSpaceBasisSpecs
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public Tuple<IReadOnlyList<RGaFloat64KVector>, RGaFloat64Multivector[,]> GetBasisMapTable(Func<RGaFloat64Multivector, RGaFloat64Multivector, RGaFloat64Multivector> basisMap)
+    public Tuple<IReadOnlyList<XGaFloat64KVector>, XGaFloat64Multivector[,]> GetBasisMapTable(Func<XGaFloat64Multivector, XGaFloat64Multivector, XGaFloat64Multivector> basisMap)
     {
         var basisBladeList = 
             GetBasisBlades().ToImmutableArray();
@@ -333,13 +334,13 @@ public sealed class GaFloat64GeometricSpaceBasisSpecs
             basisMap
         );
 
-        return new Tuple<IReadOnlyList<RGaFloat64KVector>, RGaFloat64Multivector[,]>(
+        return new Tuple<IReadOnlyList<XGaFloat64KVector>, XGaFloat64Multivector[,]>(
             basisBladeList,
             mapArray
         );
     }
 
-    public MarkdownTable GetBasisMapMarkdownTable(Func<RGaFloat64Multivector, RGaFloat64Multivector, RGaFloat64Multivector> basisMap)
+    public MarkdownTable GetBasisMapMarkdownTable(Func<XGaFloat64Multivector, XGaFloat64Multivector, XGaFloat64Multivector> basisMap)
     {
         var (basisBladeList, tableArray) = 
             GetBasisMapTable(basisMap);
@@ -401,11 +402,11 @@ public sealed class GaFloat64GeometricSpaceBasisSpecs
                 .GetRange()
                 .OrderBy(id => id.Grade())
                 .ThenBy(id => id)
-                .ToImmutableArray();
+                .SelectToImmutableArray(i => (IndexSet)i);
 
         var basisBladeList = 
             basisBladeIdList
-                .Select(BasisMapInverse.OmMapBasisBlade)
+                .Select(id => BasisMapInverse.OmMapBasisBlade((IndexSet)id))
                 .ToImmutableArray();
 
         var n = basisBladeList.Length;
@@ -424,7 +425,7 @@ public sealed class GaFloat64GeometricSpaceBasisSpecs
             i => $@"${ToLaTeX(basisBladeList[i])}$",
             i => basisBladeIdList[i].Grade().ToString(),
             i => basisBladeIdList[i].BasisBladeIdToIndex().ToString(),
-            i => $@"${basisBladeIdList[i].PatternToString(VSpaceDimensions)}_{{2}}={basisBladeIdList[i]}$",
+            i => $@"${basisBladeIdList[i].ToUInt64().PatternToString(VSpaceDimensions)}_{{2}}={basisBladeIdList[i]}$",
             i => basisBladeIdList[i].ReverseIsPositiveOfBasisBladeId() ? "+" : "-"
         };
 

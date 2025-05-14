@@ -1,7 +1,7 @@
-﻿using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Float64.Multivectors;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Float64.Multivectors.Composers;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Float64.Processors;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Float64.Subspaces;
+﻿using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivectors;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivectors.Composers;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Processors;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Subspaces;
 using GeometricAlgebraFulcrumLib.Algebra.Utilities.Text;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.BitManipulation;
 
@@ -34,7 +34,7 @@ public static class RegularSimplexSample
             // Create a Euclidean geometric algebra processor based on the selected
             // scalar processor
             var processor =
-                RGaFloat64Processor.Euclidean;
+                XGaFloat64Processor.Euclidean;
 
             // The ones vector is the core of this geometric construction
             var onesVector = processor

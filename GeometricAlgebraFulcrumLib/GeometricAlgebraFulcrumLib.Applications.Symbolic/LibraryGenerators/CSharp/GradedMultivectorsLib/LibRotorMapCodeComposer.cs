@@ -1,11 +1,11 @@
 ﻿using System.Collections.Immutable;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Basis;
 using GeometricAlgebraFulcrumLib.Applications.Symbolic.LibraryGenerators.CSharp.GradedMultivectorsLib.Combinations;
 using GeometricAlgebraFulcrumLib.Applications.Symbolic.LibraryGenerators.CSharp.GradedMultivectorsLib.Storage;
 using GeometricAlgebraFulcrumLib.Applications.Symbolic.LibraryGenerators.CSharp.GradedMultivectorsLib.Types;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.BitManipulation;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Combinations;
+using GeometricAlgebraFulcrumLib.Utilities.Structures.IndexSets;
 using GeometricAlgebraFulcrumLib.Utilities.Text;
 using GeometricAlgebraFulcrumLib.Utilities.Text.Files;
 using GeometricAlgebraFulcrumLib.Utilities.Text.Text;
@@ -22,7 +22,7 @@ public class LibRotorMapCodeComposer :
     }
     
     
-    private static IRGaSignedBasisBlade Rotate(RGaBasisBlade b1, RGaBasisBlade b2, RGaBasisBlade b3)
+    private static IXGaSignedBasisBlade Rotate(XGaBasisBlade b1, XGaBasisBlade b2, XGaBasisBlade b3)
     {
         var outputGrade = b2.Grade;
         var metric = b2.Metric;
@@ -136,7 +136,7 @@ public class LibRotorMapCodeComposer :
                 termList.Select(term =>
                     {
                         var lhsCode = tempStorage[
-                            (int)((ulong)term.Key).BasisBladeIdToIndex()
+                            (int)((IndexSet)term.Key).BasisBladeIdToIndex()
                         ];
 
                         var rhsCode = term.Value.GetRhsCode(
@@ -235,7 +235,7 @@ public class LibRotorMapCodeComposer :
                 termList.Select(term =>
                     {
                         var lhsCode = tempStorage[
-                            (int)((ulong)term.Key).BasisBladeIdToIndex()
+                            (int)((IndexSet)term.Key).BasisBladeIdToIndex()
                         ];
 
                         var rhsCode = term.Value.GetRhsCode(
@@ -335,7 +335,7 @@ public class LibRotorMapCodeComposer :
                     termList.Select(term =>
                         {
                             var lhsCode = tempStorage[
-                                (int)((ulong)term.Key).BasisBladeIdToIndex()
+                                (int)((IndexSet)term.Key).BasisBladeIdToIndex()
                             ];
 
                             var rhsCode = term.Value.GetRhsCode(

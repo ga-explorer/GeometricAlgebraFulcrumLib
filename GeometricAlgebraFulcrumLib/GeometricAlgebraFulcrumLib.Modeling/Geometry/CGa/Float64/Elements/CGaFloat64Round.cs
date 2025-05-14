@@ -2,7 +2,7 @@
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Text;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Float64.Multivectors;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivectors;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space2D;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space3D;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.SpaceND;
@@ -106,9 +106,9 @@ public class CGaFloat64Round :
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public RGaFloat64Vector CenterToRGaVector()
+    public XGaFloat64Vector CenterToXGaVector()
     {
-        return PositionToRGaVector();
+        return PositionToXGaVector();
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -220,10 +220,10 @@ public class CGaFloat64Round :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public IReadOnlyList<RGaFloat64Vector> GetSurfacePointRGaVectors()
+    public IReadOnlyList<XGaFloat64Vector> GetSurfacePointXGaVectors()
     {
         var directionVectors =
-            DirectionToRGaVectors().ToList();
+            DirectionToXGaVectors().ToList();
 
         directionVectors.Add(
             -directionVectors.Aggregate(
@@ -233,14 +233,14 @@ public class CGaFloat64Round :
         );
 
         return directionVectors
-            .Select(v => PositionToRGaVector() + v * RealRadius)
+            .Select(v => PositionToXGaVector() + v * RealRadius)
             .ToImmutableArray();
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public IReadOnlyList<CGaFloat64Blade> GetSurfacePointVGaVectorBlades()
     {
-        return GetSurfacePointRGaVectors()
+        return GetSurfacePointXGaVectors()
             .Select(GeometricSpace.Encode.VGa.Vector)
             .ToImmutableArray();
     }
@@ -248,7 +248,7 @@ public class CGaFloat64Round :
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public IReadOnlyList<CGaFloat64Blade> GetSurfacePointPGaVectorBlades()
     {
-        return GetSurfacePointRGaVectors()
+        return GetSurfacePointXGaVectors()
             .Select(GeometricSpace.Encode.PGa.Point)
             .ToImmutableArray();
     }
@@ -256,7 +256,7 @@ public class CGaFloat64Round :
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public IReadOnlyList<CGaFloat64Blade> GetSurfacePointIpnsBlades()
     {
-        return GetSurfacePointRGaVectors()
+        return GetSurfacePointXGaVectors()
             .Select(GeometricSpace.Encode.IpnsRound.Point)
             .ToImmutableArray();
     }
@@ -264,7 +264,7 @@ public class CGaFloat64Round :
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public IReadOnlyList<CGaFloat64Blade> GetSurfacePointOpnsFlatBlades()
     {
-        return GetSurfacePointRGaVectors()
+        return GetSurfacePointXGaVectors()
             .Select(GeometricSpace.Encode.OpnsFlat.Point)
             .ToImmutableArray();
     }
@@ -289,9 +289,9 @@ public class CGaFloat64Round :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool SurfaceContainsVGaPoint(RGaFloat64Vector egaPoint)
+    public bool SurfaceContainsVGaPoint(XGaFloat64Vector egaPoint)
     {
-        var v = egaPoint - PositionToRGaVector();
+        var v = egaPoint - PositionToXGaVector();
 
         return IsDirectionParallelTo(v) &&
                v.NormSquared() == RealRadiusSquared;
@@ -317,9 +317,9 @@ public class CGaFloat64Round :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool SurfaceNearContainsVGaPoint(RGaFloat64Vector egaPoint, double zeroEpsilon = Float64Utils.ZeroEpsilon)
+    public bool SurfaceNearContainsVGaPoint(XGaFloat64Vector egaPoint, double zeroEpsilon = Float64Utils.ZeroEpsilon)
     {
-        var v = egaPoint - PositionToRGaVector();
+        var v = egaPoint - PositionToXGaVector();
 
         return IsDirectionNearParallelTo(v, zeroEpsilon) &&
                (v.Norm() - RealRadius).IsNearZero(zeroEpsilon);

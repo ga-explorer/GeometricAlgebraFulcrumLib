@@ -1,7 +1,7 @@
-﻿using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Float64.Processors;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Generic.Multivectors;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Generic.Multivectors.Composers;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Generic.Processors;
+﻿using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Processors;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Multivectors;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Multivectors.Composers;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Processors;
 using GeometricAlgebraFulcrumLib.Algebra.Polynomials.Generic;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Generic;
 using GeometricAlgebraFulcrumLib.Algebra.Utilities.Text;
@@ -34,8 +34,8 @@ public static class RlCircuitPaperSample
 
     // Create a 3-dimensional Euclidean geometric algebra processor based on the
     // selected scalar processor
-    public static RGaFloat64Processor GeometricProcessor { get; }
-        = RGaFloat64Processor.Euclidean;
+    public static XGaFloat64Processor GeometricProcessor { get; }
+        = XGaFloat64Processor.Euclidean;
 
     // This is a pre-defined text generator for displaying multivectors
     public static TextComposerFloat64 TextComposer { get; }
@@ -60,8 +60,8 @@ public static class RlCircuitPaperSample
 
     // Create a 3-dimensional Euclidean geometric algebra processor based on the
     // selected tuple scalar processor
-    public static RGaProcessor<Float64SampledTimeSignal> GeometricSignalProcessor { get; }
-        = ScalarSignalProcessor.CreateEuclideanRGaProcessor();
+    public static XGaProcessor<Float64SampledTimeSignal> GeometricSignalProcessor { get; }
+        = ScalarSignalProcessor.CreateEuclideanXGaProcessor();
 
     private static string CombineWorkingPath(this string fileName)
     {
@@ -161,7 +161,7 @@ public static class RlCircuitPaperSample
     }
 
 
-    private static Quint<Scalar<Float64SampledTimeSignal>> GetCurveWithDt4(this RGaVector<Float64SampledTimeSignal> signalSamples, IEnumerable<double> tData, RGaVectorNevilleInterpolator interpolator)
+    private static Quint<Scalar<Float64SampledTimeSignal>> GetCurveWithDt4(this XGaVector<Float64SampledTimeSignal> signalSamples, IEnumerable<double> tData, XGaVectorNevilleInterpolator interpolator)
     {
         var u = 
             tData.Select(t => 
@@ -539,7 +539,7 @@ public static class RlCircuitPaperSample
             PaddingPolynomialDegree = 6
         };
 
-        var vectorSignalProcessor = new RGaGeometricFrequencyFourierProcessor(
+        var vectorSignalProcessor = new XGaGeometricFrequencyFourierProcessor(
             VSpaceDimensions,
             interpolationOptions
         );
@@ -942,7 +942,7 @@ public static class RlCircuitPaperSample
         //    interpolationOptions
         //);
 
-        var vectorSignalProcessor = new RGaGeometricFrequencyPolynomialProcessor(
+        var vectorSignalProcessor = new XGaGeometricFrequencyPolynomialProcessor(
             VSpaceDimensions,
             7,
             51
@@ -966,7 +966,7 @@ public static class RlCircuitPaperSample
         //    interpolationOptions
         //);
 
-        vectorSignalProcessor = new RGaGeometricFrequencyPolynomialProcessor(
+        vectorSignalProcessor = new XGaGeometricFrequencyPolynomialProcessor(
             VSpaceDimensions,
             7,
             51
@@ -990,7 +990,7 @@ public static class RlCircuitPaperSample
         //    interpolationOptions
         //);
 
-        vectorSignalProcessor = new RGaGeometricFrequencyPolynomialProcessor(
+        vectorSignalProcessor = new XGaGeometricFrequencyPolynomialProcessor(
             VSpaceDimensions,
             7,
             51
@@ -1215,7 +1215,7 @@ public static class RlCircuitPaperSample
             PaddingPolynomialDegree = 6
         };
 
-        var vectorSignalProcessor = new RGaGeometricFrequencyFourierProcessor(
+        var vectorSignalProcessor = new XGaGeometricFrequencyFourierProcessor(
             VSpaceDimensions,
             interpolationOptions
         );

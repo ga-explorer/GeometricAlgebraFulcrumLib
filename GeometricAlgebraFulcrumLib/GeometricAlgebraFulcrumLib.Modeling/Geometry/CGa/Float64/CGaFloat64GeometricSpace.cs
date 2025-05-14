@@ -1,16 +1,16 @@
 ﻿using System.Collections.Immutable;
 using System.Runtime.CompilerServices;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Float64.LinearMaps.Outermorphisms;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Float64.Multivectors;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Float64.Multivectors.Composers;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Float64.Processors;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.LinearMaps.Outermorphisms;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivectors;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivectors.Composers;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Processors;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.LinearMaps.SpaceND;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space2D;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space3D;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.SpaceND;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Float64.Blades;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Float64.Encoding;
-using GeometricAlgebraFulcrumLib.Utilities.Structures.BitManipulation;
+using GeometricAlgebraFulcrumLib.Utilities.Structures.IndexSets;
 using GeometricAlgebraFulcrumLib.Utilities.Text.Text.Markdown.Tables;
 
 namespace GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Float64;
@@ -46,14 +46,14 @@ public class CGaFloat64GeometricSpace :
     }
 
 
-    public RGaFloat64ConformalProcessor ConformalProcessor
-        => RGaFloat64ConformalProcessor.Instance;
+    public XGaFloat64ConformalProcessor ConformalProcessor
+        => XGaFloat64ConformalProcessor.Instance;
 
     /// <summary>
     /// This isomorphism is used for converting CGA multivectors to and from PGA subspace
     /// </summary>
-    public RGaFloat64MusicalAutomorphism MusicalIsomorphism
-        => RGaFloat64MusicalAutomorphism.Instance;
+    public XGaFloat64MusicalAutomorphism MusicalIsomorphism
+        => XGaFloat64MusicalAutomorphism.Instance;
 
     public bool Is4D
         => VSpaceDimensions == 4;
@@ -79,7 +79,7 @@ public class CGaFloat64GeometricSpace :
     /// <summary>
     /// The CGA Negative Basis 1-Blade e_{-} internal vector
     /// </summary>
-    public RGaFloat64Vector EnVector
+    public XGaFloat64Vector EnVector
         => En.InternalVector;
 
     /// <summary>
@@ -90,7 +90,7 @@ public class CGaFloat64GeometricSpace :
     /// <summary>
     /// The CGA Positive Basis 1-Blade  e_{+} internal vector
     /// </summary>
-    public RGaFloat64Vector EpVector
+    public XGaFloat64Vector EpVector
         => Ep.InternalVector;
 
     /// <summary>
@@ -98,7 +98,7 @@ public class CGaFloat64GeometricSpace :
     /// </summary>
     public CGaFloat64Blade E1 { get; }
 
-    public RGaFloat64Vector E1Vector
+    public XGaFloat64Vector E1Vector
         => E1.InternalVector;
 
     /// <summary>
@@ -106,7 +106,7 @@ public class CGaFloat64GeometricSpace :
     /// </summary>
     public CGaFloat64Blade E2 { get; }
 
-    public RGaFloat64Vector E2Vector
+    public XGaFloat64Vector E2Vector
         => E2.InternalVector;
 
     /// <summary>
@@ -117,7 +117,7 @@ public class CGaFloat64GeometricSpace :
     /// <summary>
     /// The CGA Origin Basis 1-Blade e_{o} internal vector
     /// </summary>
-    public RGaFloat64Vector EoVector
+    public XGaFloat64Vector EoVector
         => Eo.InternalVector;
 
     /// <summary>
@@ -128,7 +128,7 @@ public class CGaFloat64GeometricSpace :
     /// <summary>
     /// The CGA Infinity Basis 1-Blade e_{\infty} internal vector
     /// </summary>
-    public RGaFloat64Vector EiVector
+    public XGaFloat64Vector EiVector
         => Ei.InternalVector;
 
     /// <summary>
@@ -136,7 +136,7 @@ public class CGaFloat64GeometricSpace :
     /// </summary>
     public CGaFloat64Blade Eoi { get; }
 
-    public RGaFloat64Bivector EoiBivector
+    public XGaFloat64Bivector EoiBivector
         => Eoi.InternalBivector;
 
     /// <summary>
@@ -144,7 +144,7 @@ public class CGaFloat64GeometricSpace :
     /// </summary>
     public CGaFloat64Blade E12 { get; }
 
-    public RGaFloat64Bivector E12Bivector
+    public XGaFloat64Bivector E12Bivector
         => E12.InternalBivector;
 
     /// <summary>
@@ -152,7 +152,7 @@ public class CGaFloat64GeometricSpace :
     /// </summary>
     public CGaFloat64Blade Ie { get; }
 
-    public RGaFloat64KVector IeKVector
+    public XGaFloat64KVector IeKVector
         => Ie.InternalKVector;
 
     /// <summary>
@@ -160,7 +160,7 @@ public class CGaFloat64GeometricSpace :
     /// </summary>
     public CGaFloat64Blade IeInv { get; }
 
-    public RGaFloat64KVector IeInvKVector
+    public XGaFloat64KVector IeInvKVector
         => IeInv.InternalKVector;
 
     /// <summary>
@@ -168,7 +168,7 @@ public class CGaFloat64GeometricSpace :
     /// </summary>
     public CGaFloat64Blade IeRev { get; }
 
-    public RGaFloat64KVector IeRevKVector
+    public XGaFloat64KVector IeRevKVector
         => IeRev.InternalKVector;
 
     /// <summary>
@@ -176,7 +176,7 @@ public class CGaFloat64GeometricSpace :
     /// </summary>
     public CGaFloat64Blade EoIe { get; }
 
-    public RGaFloat64KVector EoIeKVector
+    public XGaFloat64KVector EoIeKVector
         => EoIe.InternalKVector;
 
     /// <summary>
@@ -184,7 +184,7 @@ public class CGaFloat64GeometricSpace :
     /// </summary>
     public CGaFloat64Blade IeEi { get; }
 
-    public RGaFloat64KVector IeEiKVector
+    public XGaFloat64KVector IeEiKVector
         => IeEi.InternalKVector;
 
     /// <summary>
@@ -192,7 +192,7 @@ public class CGaFloat64GeometricSpace :
     /// </summary>
     public CGaFloat64Blade Ic { get; }
 
-    public RGaFloat64KVector IcKVector
+    public XGaFloat64KVector IcKVector
         => Ic.InternalKVector;
 
     /// <summary>
@@ -200,7 +200,7 @@ public class CGaFloat64GeometricSpace :
     /// </summary>
     public CGaFloat64Blade IcInv { get; }
 
-    public RGaFloat64KVector IcInvKVector
+    public XGaFloat64KVector IcInvKVector
         => IcInv.InternalKVector;
 
     /// <summary>
@@ -208,7 +208,7 @@ public class CGaFloat64GeometricSpace :
     /// </summary>
     public CGaFloat64Blade IcRev { get; }
 
-    public RGaFloat64KVector IcRevKVector
+    public XGaFloat64KVector IcRevKVector
         => IcRev.InternalKVector;
 
 
@@ -268,14 +268,24 @@ public class CGaFloat64GeometricSpace :
 
         E12 = new CGaFloat64Blade(this, ConformalProcessor.BivectorTerm(2, 3));
 
-        Ie = new CGaFloat64Blade(this, ConformalProcessor.KVectorTerm((VSpaceDimensions - 2).GetRange(2).ToImmutableArray()));
+        Ie = new CGaFloat64Blade(
+            this, 
+            ConformalProcessor.KVectorTerm(
+                IndexSet.CreateDense(VSpaceDimensions - 2)
+            )
+        );
         IeInv = Ie.Inverse();
         IeRev = Ie.Reverse();
 
         EoIe = Eo.Op(Ie);
         IeEi = Ie.Op(Ei);
 
-        Ic = new CGaFloat64Blade(this, ConformalProcessor.KVectorTerm(VSpaceDimensions.GetRange().ToImmutableArray()));
+        Ic = new CGaFloat64Blade(
+            this, 
+            ConformalProcessor.KVectorTerm(
+                IndexSet.CreateDense(VSpaceDimensions)
+            )
+        );
         IcInv = Ic.Inverse();
         IcRev = Ic.Reverse();
 
@@ -305,7 +315,7 @@ public class CGaFloat64GeometricSpace :
         }
     }
 
-    protected RGaFloat64LinearMapOutermorphism GetCGaBasisMap()
+    protected XGaFloat64LinearMapOutermorphism GetCGaBasisMap()
     {
         // If linearly independent basis F = <f1, f2, f3> is related to
         // orthonormal basis E = <e1, e2, e3> via matrix M (F = M E), then
@@ -332,7 +342,7 @@ public class CGaFloat64GeometricSpace :
             .ToOutermorphism(Processor);
     }
 
-    protected RGaFloat64LinearMapOutermorphism GetCGaBasisMapInverse()
+    protected XGaFloat64LinearMapOutermorphism GetCGaBasisMapInverse()
     {
         // If linearly independent basis F = <f1, f2, f3> is related to
         // orthonormal basis E = <e1, e2, e3> via matrix M (F = M E), then
@@ -361,7 +371,7 @@ public class CGaFloat64GeometricSpace :
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool IsValidVGaElement(RGaFloat64Multivector mv)
+    public bool IsValidVGaElement(XGaFloat64Multivector mv)
     {
         if (!IsValidElement(mv)) return false;
 
@@ -369,11 +379,11 @@ public class CGaFloat64GeometricSpace :
         const ulong maskEnp = 3UL;
 
         return mv.IsZero ||
-               mv.Ids.All(id => (id & maskEnp) == 0);
+               mv.Ids.All(id => (id & maskEnp).IsEmptySet);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool IsValidPGaElement(RGaFloat64Multivector mv)
+    public bool IsValidPGaElement(XGaFloat64Multivector mv)
     {
         if (!IsValidElement(mv)) return false;
 
@@ -381,11 +391,11 @@ public class CGaFloat64GeometricSpace :
         var maskEi = 1UL << VSpaceDimensions - 1;
 
         return mv.IsZero ||
-               BasisSpecs.BasisMap.OmMap(mv).Ids.All(id => (id & maskEi) == 0);
+               BasisSpecs.BasisMap.OmMap(mv).Ids.All(id => (id & maskEi).IsEmptySet);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool IsValidCGaInfElement(RGaFloat64Multivector mv)
+    public bool IsValidCGaInfElement(XGaFloat64Multivector mv)
     {
         if (!IsValidElement(mv)) return false;
 
@@ -393,12 +403,12 @@ public class CGaFloat64GeometricSpace :
         const ulong maskEo = 1UL;
 
         return mv.IsZero ||
-               BasisSpecs.BasisMap.OmMap(mv).Ids.All(id => (id & maskEo) == 0);
+               BasisSpecs.BasisMap.OmMap(mv).Ids.All(id => (id & maskEo).IsEmptySet);
     }
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    internal RGaFloat64KVector RemoveEi(RGaFloat64KVector kVector)
+    internal XGaFloat64KVector RemoveEi(XGaFloat64KVector kVector)
     {
         var eiIndex = VSpaceDimensions - 1;
         var eiIdMask = (1UL << VSpaceDimensions - 1) - 1UL;
@@ -409,9 +419,9 @@ public class CGaFloat64GeometricSpace :
                 .OmMap(kVector)
                 .IdScalarPairs
                 .Where(term => 
-                    term.Key.IsOneAt(eiIndex)
+                    term.Key.Contains(eiIndex)
                 ).Select(term => 
-                    new KeyValuePair<ulong, double>(
+                    new KeyValuePair<IndexSet, double>(
                         term.Key & eiIdMask, 
                         term.Value
                     )
@@ -449,7 +459,7 @@ public class CGaFloat64GeometricSpace :
     //}
     
     //[MethodImpl(MethodImplOptions.AggressiveInlining)]
-    //public CGaFloat64Blade EncodeBlade(RGaFloat64KVector kVector)
+    //public CGaFloat64Blade EncodeBlade(XGaFloat64KVector kVector)
     //{
     //    Debug.Assert(IsValidElement(kVector));
 
@@ -477,7 +487,7 @@ public class CGaFloat64GeometricSpace :
     public string ToLaTeX(LinFloat64Vector vector)
     {
         return BasisSpecs.ToLaTeX(
-            vector.ToRGaFloat64Vector()
+            vector.ToXGaFloat64Vector()
         );
     }
 
@@ -505,14 +515,14 @@ public class CGaFloat64GeometricSpace :
         );
     }
 
-    public string GetBilinearMapMarkdownTable(Func<CGaFloat64Blade, CGaFloat64Blade, RGaFloat64Multivector> basisMap)
+    public string GetBilinearMapMarkdownTable(Func<CGaFloat64Blade, CGaFloat64Blade, XGaFloat64Multivector> basisMap)
     {
         var n = 1 << VSpaceDimensions;
 
         var basisBladeList = 
             this.GetBasisBladesCGa().ToImmutableArray();
 
-        var tableArray = new RGaFloat64Multivector[n, n];
+        var tableArray = new XGaFloat64Multivector[n, n];
 
         for (var i = 0; i < n; i++)
         {

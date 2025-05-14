@@ -1,5 +1,6 @@
-﻿using GeometricAlgebraFulcrumLib.Core.GeometricAlgebra.Maps;
-using GeometricAlgebraFulcrumLib.Core.GeometricAlgebra.Restricted.Float64.Processors;
+﻿using GeometricAlgebraFulcrumLib.Core.GeometricAlgebra.Float64.Processors;
+using GeometricAlgebraFulcrumLib.Core.GeometricAlgebra.Maps;
+
 using GeometricAlgebraFulcrumLib.Core.LinearAlgebra.Float64.Angles;
 using GeometricAlgebraFulcrumLib.Core.LinearAlgebra.Float64.Vectors.Space3D;
 
@@ -27,7 +28,7 @@ public sealed class PhCurve3DDegree5
     }
 
 
-    public RGaFloat64Processor BasisBladeSet { get; }
+    public XGaFloat64Processor BasisBladeSet { get; }
 
     public LinFloat64Vector3D Point0 { get; }
 
@@ -52,7 +53,7 @@ public sealed class PhCurve3DDegree5
 
     private PhCurve3DDegree5(ILinFloat64Vector3D point0, ILinFloat64Vector3D tangent0, ILinFloat64Vector3D point1, ILinFloat64Vector3D tangent1, LinFloat64Angle theta1, LinFloat64Angle theta2)
     {
-        BasisBladeSet = RGaFloat64Processor.Euclidean;
+        BasisBladeSet = XGaFloat64Processor.Euclidean;
         Point0 = point0.ToLinVector3D();
         Point1 = point1.ToLinVector3D();
         Tangent0 = tangent0.ToLinVector3D();

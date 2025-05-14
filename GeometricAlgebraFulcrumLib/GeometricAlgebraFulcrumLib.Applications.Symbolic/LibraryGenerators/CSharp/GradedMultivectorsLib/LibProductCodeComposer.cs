@@ -1,10 +1,10 @@
 ﻿using System.Collections.Immutable;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Basis;
 using GeometricAlgebraFulcrumLib.Applications.Symbolic.LibraryGenerators.CSharp.GradedMultivectorsLib.Combinations;
 using GeometricAlgebraFulcrumLib.Applications.Symbolic.LibraryGenerators.CSharp.GradedMultivectorsLib.Storage;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.BitManipulation;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Combinations;
+using GeometricAlgebraFulcrumLib.Utilities.Structures.IndexSets;
 using GeometricAlgebraFulcrumLib.Utilities.Text;
 using GeometricAlgebraFulcrumLib.Utilities.Text.Files;
 using GeometricAlgebraFulcrumLib.Utilities.Text.Text;
@@ -20,7 +20,7 @@ public class LibProductCodeComposer :
         TextFilesComposer codeFilesComposer,
         string productClassName,
         string productFunctionName,
-        Func<RGaBasisBlade, RGaBasisBlade, IRGaSignedBasisBlade> basisMapFunc
+        Func<XGaBasisBlade, XGaBasisBlade, IXGaSignedBasisBlade> basisMapFunc
     )
     {
         return new LibProductCodeComposer(specs, codeFilesComposer)
@@ -36,7 +36,7 @@ public class LibProductCodeComposer :
 
     public string ProductFunctionName { get; init; }
 
-    public Func<RGaBasisBlade, RGaBasisBlade, IRGaSignedBasisBlade> BasisMapFunc { get; init; }
+    public Func<XGaBasisBlade, XGaBasisBlade, IXGaSignedBasisBlade> BasisMapFunc { get; init; }
 
 
     private LibProductCodeComposer(LibCodeComposerSpecs specs, TextFilesComposer codeFilesComposer)
@@ -133,7 +133,7 @@ public class LibProductCodeComposer :
                 termList.Select(term =>
                     {
                         var lhsCode = tempStorage[
-                            (int)((ulong)term.Key).BasisBladeIdToIndex()
+                            (int)((IndexSet)term.Key).BasisBladeIdToIndex()
                         ];
 
                         var rhsCode = term.Value.GetRhsCode(
@@ -226,7 +226,7 @@ public class LibProductCodeComposer :
                 termList.Select(term =>
                     {
                         var lhsCode = tempStorage[
-                            (int)((ulong)term.Key).BasisBladeIdToIndex()
+                            (int)((IndexSet)term.Key).BasisBladeIdToIndex()
                         ];
 
                         var rhsCode = term.Value.GetRhsCode(
@@ -323,7 +323,7 @@ public class LibProductCodeComposer :
                     termList.Select(term =>
                         {
                             var lhsCode = tempStorage[
-                                (int)((ulong)term.Key).BasisBladeIdToIndex()
+                                (int)((IndexSet)term.Key).BasisBladeIdToIndex()
                             ];
 
                             var rhsCode = term.Value.GetRhsCode(

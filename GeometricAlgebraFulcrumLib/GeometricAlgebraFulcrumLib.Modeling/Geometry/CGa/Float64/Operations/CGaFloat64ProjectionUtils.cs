@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics;
 using System.Runtime.CompilerServices;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Float64.Multivectors;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivectors;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space2D;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space3D;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Float64.Blades;
@@ -166,7 +166,7 @@ public static class CGaFloat64ProjectionUtils
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    internal static CGaFloat64Blade ProjectOn(this CGaFloat64Blade blade, RGaFloat64KVector subspace)
+    internal static CGaFloat64Blade ProjectOn(this CGaFloat64Blade blade, XGaFloat64KVector subspace)
     {
         var projectedBlade =
             blade.InternalKVector

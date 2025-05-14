@@ -1,10 +1,10 @@
 ﻿using System.Collections.Immutable;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Basis;
 using GeometricAlgebraFulcrumLib.Applications.Symbolic.LibraryGenerators.CSharp.GradedMultivectorsLib.Combinations;
 using GeometricAlgebraFulcrumLib.Applications.Symbolic.LibraryGenerators.CSharp.GradedMultivectorsLib.Storage;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.BitManipulation;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Combinations;
+using GeometricAlgebraFulcrumLib.Utilities.Structures.IndexSets;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Tuples;
 using GeometricAlgebraFulcrumLib.Utilities.Text;
 using GeometricAlgebraFulcrumLib.Utilities.Text.Files;
@@ -22,7 +22,7 @@ public class LibReflectionCodeComposer :
     }
 
 
-    private static IRGaSignedBasisBlade ReflectDirectOnDirect(RGaBasisBlade b1, RGaBasisBlade b2, RGaBasisBlade b3)
+    private static IXGaSignedBasisBlade ReflectDirectOnDirect(XGaBasisBlade b1, XGaBasisBlade b2, XGaBasisBlade b3)
     {
         var b4 = b1.Gp(b2).Gp(b3.Reverse());
 
@@ -36,7 +36,7 @@ public class LibReflectionCodeComposer :
         return b4.Times(sign);
     }
     
-    private static IRGaSignedBasisBlade ReflectDirectOnDual(RGaBasisBlade b1, RGaBasisBlade b2, RGaBasisBlade b3)
+    private static IXGaSignedBasisBlade ReflectDirectOnDual(XGaBasisBlade b1, XGaBasisBlade b2, XGaBasisBlade b3)
     {
         var b4 = b1.Gp(b2).Gp(b3.Reverse());
 
@@ -50,7 +50,7 @@ public class LibReflectionCodeComposer :
         return b4.Times(sign);
     }
 
-    private IRGaSignedBasisBlade ReflectDualOnDirect(RGaBasisBlade b1, RGaBasisBlade b2, RGaBasisBlade b3)
+    private IXGaSignedBasisBlade ReflectDualOnDirect(XGaBasisBlade b1, XGaBasisBlade b2, XGaBasisBlade b3)
     {
         var b4 = b1.Gp(b2).Gp(b3.Reverse());
 
@@ -64,7 +64,7 @@ public class LibReflectionCodeComposer :
         return b4.Times(sign);
     }
 
-    private static IRGaSignedBasisBlade ReflectDualOnDual(RGaBasisBlade b1, RGaBasisBlade b2, RGaBasisBlade b3)
+    private static IXGaSignedBasisBlade ReflectDualOnDual(XGaBasisBlade b1, XGaBasisBlade b2, XGaBasisBlade b3)
     {
         var b4 = b1.Gp(b2).Gp(b3.Reverse());
 
@@ -179,7 +179,7 @@ public class LibReflectionCodeComposer :
                 termList.Select(term =>
                     {
                         var lhsCode = tempStorage[
-                            (int)((ulong)term.Key).BasisBladeIdToIndex()
+                            (int)((IndexSet)term.Key).BasisBladeIdToIndex()
                         ];
 
                         var rhsCode = term.Value.GetRhsCode(

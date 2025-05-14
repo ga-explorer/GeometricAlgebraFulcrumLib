@@ -1,95 +1,95 @@
-﻿using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Generic.Multivectors;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Generic.Multivectors.Composers;
-using GeometricAlgebraFulcrumLib.Modeling.Calculus.Functions.Float64.Interpolators;
+﻿
 
-namespace GeometricAlgebraFulcrumLib.Modeling.Signals.Processors;
+//using GeometricAlgebraFulcrumLib.Modeling.Calculus.Functions.Float64.Interpolators;
 
-public sealed class RGaGeometricFrequencyFourierProcessor : 
-    RGaGeometricFrequencyProcessor
-{
-    public DfFourierSignalInterpolatorOptions InterpolatorOptions { get; }
+//namespace GeometricAlgebraFulcrumLib.Modeling.Signals.Processors;
 
-    public IReadOnlyList<Float64ComplexSignalSpectrum> VectorSignalSpectrum { get; private set; }
+//public sealed class XGaGeometricFrequencyFourierProcessor : 
+//    XGaGeometricFrequencyProcessor
+//{
+//    public DfFourierSignalInterpolatorOptions InterpolatorOptions { get; }
+
+//    public IReadOnlyList<Float64ComplexSignalSpectrum> VectorSignalSpectrum { get; private set; }
 
         
-    public RGaGeometricFrequencyFourierProcessor(int vSpaceDimensions, DfFourierSignalInterpolatorOptions interpolationOptions) 
-        : base(vSpaceDimensions)
-    {
-        InterpolatorOptions = interpolationOptions;
-    }
+//    public XGaGeometricFrequencyFourierProcessor(int vSpaceDimensions, DfFourierSignalInterpolatorOptions interpolationOptions) 
+//        : base(vSpaceDimensions)
+//    {
+//        InterpolatorOptions = interpolationOptions;
+//    }
 
 
-    protected override void ClearData()
-    {
-        base.ClearData();
+//    protected override void ClearData()
+//    {
+//        base.ClearData();
 
-        VectorSignalSpectrum = null;
-    }
+//        VectorSignalSpectrum = null;
+//    }
         
-    private void ComputeVectorSignalSpectrum()
-    {
-        TimeValuesSignal = 
-            SamplingSpecs.GetSampleTimeSignal();
+//    private void ComputeVectorSignalSpectrum()
+//    {
+//        TimeValuesSignal = 
+//            SamplingSpecs.GetSampleTimeSignal();
 
-        if (InterpolatorOptions.AssumePeriodic)
-        {
-            VectorSignalSpectrum =
-                VectorSignal.GetFourierSpectrum(InterpolatorOptions);
-        }
-        else
-        {
-            var vectorSignal1Padded =
-                VectorSignal.GetPeriodicPaddedSignal(
-                    InterpolatorOptions.PaddingTrendSampleCount, 
-                    //InterpolatorOptions.PaddingPolynomialDegree,
-                    InterpolatorOptions.PaddingSampleCount
-                );
+//        if (InterpolatorOptions.AssumePeriodic)
+//        {
+//            VectorSignalSpectrum =
+//                VectorSignal.GetFourierSpectrum(InterpolatorOptions);
+//        }
+//        else
+//        {
+//            var vectorSignal1Padded =
+//                VectorSignal.GetPeriodicPaddedSignal(
+//                    InterpolatorOptions.PaddingTrendSampleCount, 
+//                    //InterpolatorOptions.PaddingPolynomialDegree,
+//                    InterpolatorOptions.PaddingSampleCount
+//                );
 
-            VectorSignalSpectrum =
-                vectorSignal1Padded.GetFourierSpectrum(InterpolatorOptions);
-        }
+//            VectorSignalSpectrum =
+//                vectorSignal1Padded.GetFourierSpectrum(InterpolatorOptions);
+//        }
             
-        VectorSignalInterpolated = 
-            VectorSignalSpectrum.GetRealSignal(TimeValuesSignal).CreateRGaVector(ScalarSignalProcessor);
+//        VectorSignalInterpolated = 
+//            VectorSignalSpectrum.GetRealSignal(TimeValuesSignal).CreateXGaVector(ScalarSignalProcessor);
 
-        Console.WriteLine(
-            VectorSignalSpectrum.GetTextDescription(VectorSignal)
-        );
-        Console.WriteLine();
-    }
+//        Console.WriteLine(
+//            VectorSignalSpectrum.GetTextDescription(VectorSignal)
+//        );
+//        Console.WriteLine();
+//    }
 
-    protected override void ComputeVectorSignalTimeDerivatives()
-    {
-        VectorSignalTimeDerivatives = Enumerable
-            .Range(1, VSpaceDimensions)
-            .Select(degree => 
-                VectorSignalSpectrum
-                    .GetRealSignalDt(degree, TimeValuesSignal)
-                    .CreateRGaVector(ScalarSignalProcessor)
-            ).ToArray();
-    }
+//    protected override void ComputeVectorSignalTimeDerivatives()
+//    {
+//        VectorSignalTimeDerivatives = Enumerable
+//            .Range(1, VSpaceDimensions)
+//            .Select(degree => 
+//                VectorSignalSpectrum
+//                    .GetRealSignalDt(degree, TimeValuesSignal)
+//                    .CreateXGaVector(ScalarSignalProcessor)
+//            ).ToArray();
+//    }
 
-    public void ProcessVectorSignal(RGaVector<Float64SampledTimeSignal> vectorSignal)
-    {
-        ClearData();
+//    public void ProcessVectorSignal(XGaVector<Float64SampledTimeSignal> vectorSignal)
+//    {
+//        ClearData();
 
-        VectorSignal = vectorSignal;
-        SamplingSpecs = vectorSignal.GetSamplingSpecs();
+//        VectorSignal = vectorSignal;
+//        SamplingSpecs = vectorSignal.GetSamplingSpecs();
             
-        ComputeVectorSignalSpectrum();
+//        ComputeVectorSignalSpectrum();
 
-        ComputeVectorSignalTimeDerivatives();
+//        ComputeVectorSignalTimeDerivatives();
 
-        ComputeArcLengthTimeDerivatives();
+//        ComputeArcLengthTimeDerivatives();
 
-        ComputeVectorSignalArcLengthDerivatives();
+//        ComputeVectorSignalArcLengthDerivatives();
 
-        ComputeArcLengthFrames();
+//        ComputeArcLengthFrames();
 
-        ComputeCurvatures();
+//        ComputeCurvatures();
 
-        //ComputeArcLengthFrameDerivatives();
+//        //ComputeArcLengthFrameDerivatives();
 
-        ValidateData();
-    }
-}
+//        ValidateData();
+//    }
+//}

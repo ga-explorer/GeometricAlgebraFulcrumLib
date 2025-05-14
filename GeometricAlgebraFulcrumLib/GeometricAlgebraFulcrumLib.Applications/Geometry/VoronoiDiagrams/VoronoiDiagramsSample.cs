@@ -1,8 +1,8 @@
 ﻿using System.Drawing;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Float64.Frames;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Float64.Multivectors;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Float64.Multivectors.Composers;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Float64.Processors;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Frames;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivectors;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivectors.Composers;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Processors;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space2D;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.Borders;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.Borders.Space2D.Float64;
@@ -17,12 +17,12 @@ namespace GeometricAlgebraFulcrumLib.Applications.Geometry.VoronoiDiagrams;
 /// </summary>
 public static class VoronoiDiagramsSample
 {
-    private static RGaFloat64RandomComposer _randomComposer;
+    private static XGaFloat64RandomComposer _randomComposer;
 
     public static LinFloat64Vector2D[] PointsArray { get; private set; }
 
-    public static RGaFloat64Processor ConformalProcessor { get; }
-        = RGaFloat64Processor.Conformal;
+    public static XGaFloat64Processor ConformalProcessor { get; }
+        = XGaFloat64Processor.Conformal;
 
     public static int VSpaceDimensions 
         => 4;
@@ -32,7 +32,7 @@ public static class VoronoiDiagramsSample
     {
         var n = VSpaceDimensions - 2;
 
-        _randomComposer = ConformalProcessor.CreateRGaRandomComposer(VSpaceDimensions, 10);
+        _randomComposer = ConformalProcessor.CreateXGaRandomComposer(VSpaceDimensions, 10);
 
         // Fill random points array
         PointsArray = new LinFloat64Vector2D[8];
@@ -56,7 +56,7 @@ public static class VoronoiDiagramsSample
 
         // Step 4: compute coordinates of regular simplex vertices
         var simplexFrame =
-            boundingSphere.Center.ToRGaFloat64Vector()
+            boundingSphere.Center.ToXGaFloat64Vector()
                 .CreateFixedFrameOfSimplex(
                     n,
                     boundingSphere.Radius * Math.Sqrt(n * (n + 1))

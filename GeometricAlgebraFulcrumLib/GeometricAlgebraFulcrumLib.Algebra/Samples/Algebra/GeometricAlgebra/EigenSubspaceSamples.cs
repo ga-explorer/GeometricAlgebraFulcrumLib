@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Float64.Multivectors;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Float64.Processors;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivectors;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Processors;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.LinearMaps.SpaceND.Scaling;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Matrices;
@@ -23,7 +23,7 @@ public static class EigenSubspaceSamples
         //    MatrixProcessorOfFloat64.Instance;
 
         var geometricProcessor =
-            RGaFloat64Processor.Euclidean;
+            XGaFloat64Processor.Euclidean;
 
         var textComposer =
             TextComposerFloat64.DefaultComposer;
@@ -32,7 +32,7 @@ public static class EigenSubspaceSamples
             LaTeXComposerFloat64.DefaultComposer;
 
         var randomComposer =
-            geometricProcessor.CreateRGaRandomComposer(n, 10);
+            geometricProcessor.CreateXGaRandomComposer(n, 10);
 
         var random = randomComposer.RandomGenerator;
 

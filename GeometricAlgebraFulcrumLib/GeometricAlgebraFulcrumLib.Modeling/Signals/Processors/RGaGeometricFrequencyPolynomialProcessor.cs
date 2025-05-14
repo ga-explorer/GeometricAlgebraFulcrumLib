@@ -1,64 +1,64 @@
-﻿using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Generic.Multivectors;
-using GeometricAlgebraFulcrumLib.Modeling.Signals.Interpolators;
+﻿
+//using GeometricAlgebraFulcrumLib.Modeling.Signals.Interpolators;
 
-namespace GeometricAlgebraFulcrumLib.Modeling.Signals.Processors;
+//namespace GeometricAlgebraFulcrumLib.Modeling.Signals.Processors;
 
-public sealed class RGaGeometricFrequencyPolynomialProcessor :
-    RGaGeometricFrequencyProcessor
-{
-    public int PolynomialOrder { get; }
+//public sealed class XGaGeometricFrequencyPolynomialProcessor :
+//    XGaGeometricFrequencyProcessor
+//{
+//    public int PolynomialOrder { get; }
 
-    public int InterpolationSamples { get; }
-
-
-    public RGaGeometricFrequencyPolynomialProcessor(int vSpaceDimensions, int polynomialOrder, int interpolationSamples) 
-        : base(vSpaceDimensions)
-    {
-        PolynomialOrder = polynomialOrder;
-        InterpolationSamples = interpolationSamples;
-    }
+//    public int InterpolationSamples { get; }
 
 
-    protected override void ComputeVectorSignalTimeDerivatives()
-    {
-        var vectorInterpolator = 
-            RGaVectorPolynomialInterpolator.Create(VectorSignal);
-
-        vectorInterpolator.PolynomialOrder = PolynomialOrder;
-        vectorInterpolator.InterpolationSamples = InterpolationSamples;
-
-        VectorSignalInterpolated = vectorInterpolator.GetVectors();
-
-        var vDtArray = new RGaVector<Float64SampledTimeSignal>[VSpaceDimensions];
-
-        for (var degree = 1; degree <= VSpaceDimensions; degree++)
-        {
-            vDtArray[degree - 1] = vectorInterpolator.GetVectorsDt(degree);
-        }
-
-        VectorSignalTimeDerivatives = vDtArray;
-    }
+//    public XGaGeometricFrequencyPolynomialProcessor(int vSpaceDimensions, int polynomialOrder, int interpolationSamples) 
+//        : base(vSpaceDimensions)
+//    {
+//        PolynomialOrder = polynomialOrder;
+//        InterpolationSamples = interpolationSamples;
+//    }
 
 
-    public void ProcessVectorSignal(RGaVector<Float64SampledTimeSignal> vectorSignal)
-    {
-        ClearData();
+//    protected override void ComputeVectorSignalTimeDerivatives()
+//    {
+//        var vectorInterpolator = 
+//            XGaVectorPolynomialInterpolator.Create(VectorSignal);
 
-        VectorSignal = vectorSignal;
-        SamplingSpecs = vectorSignal.GetSamplingSpecs();
+//        vectorInterpolator.PolynomialOrder = PolynomialOrder;
+//        vectorInterpolator.InterpolationSamples = InterpolationSamples;
 
-        ComputeVectorSignalTimeDerivatives();
+//        VectorSignalInterpolated = vectorInterpolator.GetVectors();
 
-        ComputeArcLengthTimeDerivatives();
+//        var vDtArray = new XGaVector<Float64SampledTimeSignal>[VSpaceDimensions];
 
-        ComputeVectorSignalArcLengthDerivatives();
+//        for (var degree = 1; degree <= VSpaceDimensions; degree++)
+//        {
+//            vDtArray[degree - 1] = vectorInterpolator.GetVectorsDt(degree);
+//        }
 
-        ComputeArcLengthFrames();
+//        VectorSignalTimeDerivatives = vDtArray;
+//    }
 
-        ComputeCurvatures();
 
-        //ComputeArcLengthFrameDerivatives();
+//    public void ProcessVectorSignal(XGaVector<Float64SampledTimeSignal> vectorSignal)
+//    {
+//        ClearData();
 
-        ValidateData();
-    }
-}
+//        VectorSignal = vectorSignal;
+//        SamplingSpecs = vectorSignal.GetSamplingSpecs();
+
+//        ComputeVectorSignalTimeDerivatives();
+
+//        ComputeArcLengthTimeDerivatives();
+
+//        ComputeVectorSignalArcLengthDerivatives();
+
+//        ComputeArcLengthFrames();
+
+//        ComputeCurvatures();
+
+//        //ComputeArcLengthFrameDerivatives();
+
+//        ValidateData();
+//    }
+//}

@@ -1,11 +1,8 @@
 ﻿using System.Runtime.CompilerServices;
 using System.Text;
-using GeometricAlgebraFulcrumLib.Core.GeometricAlgebra.Extended.Basis;
-using GeometricAlgebraFulcrumLib.Core.GeometricAlgebra.Extended.Generic.Multivectors;
-using GeometricAlgebraFulcrumLib.Core.GeometricAlgebra.Restricted;
-using GeometricAlgebraFulcrumLib.Core.GeometricAlgebra.Restricted.Basis;
-using GeometricAlgebraFulcrumLib.Core.GeometricAlgebra.Restricted.Generic.Multivectors;
-using GeometricAlgebraFulcrumLib.Core.GeometricAlgebra.Restricted.Records;
+using GeometricAlgebraFulcrumLib.Core.GeometricAlgebra;
+using GeometricAlgebraFulcrumLib.Core.GeometricAlgebra.Basis;
+using GeometricAlgebraFulcrumLib.Core.GeometricAlgebra.Generic.Multivectors;
 using GeometricAlgebraFulcrumLib.Core.LinearAlgebra.Generic.Vectors.SpaceND;
 using GeometricAlgebraFulcrumLib.Core.Scalars.Generic;
 using GeometricAlgebraFulcrumLib.Core.Structures.BitManipulation;
@@ -30,12 +27,6 @@ public static class TextComposerUtils
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static string GetTermText<T>(ITextComposer<T> textComposer, ulong id, IScalar<T> scalar)
-    {
-        return textComposer.GetTermText(id, scalar.ScalarValue);
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static string GetTermText<T>(ITextComposer<T> textComposer, uint grade, int index, IScalar<double> scalar)
     {
         return textComposer.GetTermText(grade, index, scalar.ScalarValue);
@@ -57,18 +48,6 @@ public static class TextComposerUtils
     public static string GetTermText<T>(ITextComposer<T> textComposer, IndexSet id, IScalar<T> scalar)
     {
         return textComposer.GetTermText(id, scalar.ScalarValue);
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static string GetTermText<T>(ITextComposer<T> textComposer, RGaBasisBlade basisBlade, IScalar<double> scalar)
-    {
-        return textComposer.GetTermText(basisBlade, scalar.ScalarValue);
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static string GetTermText<T>(ITextComposer<T> textComposer, RGaBasisBlade basisBlade, IScalar<T> scalar)
-    {
-        return textComposer.GetTermText(basisBlade, scalar.ScalarValue);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -112,15 +91,7 @@ public static class TextComposerUtils
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static string GetBasisBladeText(this IndexSet id)
     {
-        return id.Select(i => i + 1)
-.GetBasisBladeText(
-        );
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static string GetBasisBladeText(this RGaBasisBlade basisBlade)
-    {
-        return basisBlade.Id.GetBasisBladeText();
+        return id.Select(i => i + 1).GetBasisBladeText();
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -138,7 +109,7 @@ public static class TextComposerUtils
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static string GetScalarText<T>(this T scalar)
     {
-        return scalar.ToString();
+        return scalar?.ToString() ?? string.Empty;
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -193,30 +164,21 @@ public static class TextComposerUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static string GetTermText<T>(this RGaKvIndexScalarRecord<T> idScalarTuple)
+    public static string GetTermText<T>(this Tuple<ulong, T> idScalarTuple)
     {
         return GetTermText(
-            idScalarTuple.KvIndex,
-            idScalarTuple.Scalar
+            idScalarTuple.Item1,
+            idScalarTuple.Item2
         );
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static string GetTermText<T>(this RGaGradeKvIndexScalarRecord<T> gradeIndexScalarTuple)
+    public static string GetTermText<T>(this Tuple<uint, ulong, T> gradeIndexScalarTuple)
     {
         return GetTermText(
-            gradeIndexScalarTuple.Grade,
-            gradeIndexScalarTuple.KvIndex,
-            gradeIndexScalarTuple.Scalar
-        );
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static string GetTermText<T>(RGaBasisBlade basisBlade, T scalar)
-    {
-        return GetTermText(
-            basisBlade.Id,
-            scalar
+            gradeIndexScalarTuple.Item1,
+            gradeIndexScalarTuple.Item2,
+            gradeIndexScalarTuple.Item3
         );
     }
 
@@ -246,7 +208,7 @@ public static class TextComposerUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static string GetTermsText<T>(this IEnumerable<RGaKvIndexScalarRecord<T>> idScalarTuples)
+    public static string GetTermsText<T>(this IEnumerable<Tuple<ulong, T>> idScalarTuples)
     {
         return idScalarTuples
             .Select(GetTermText)
@@ -254,7 +216,7 @@ public static class TextComposerUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static string GetTermsText<T>(this IEnumerable<RGaGradeKvIndexScalarRecord<T>> gradeIndexScalarTuples)
+    public static string GetTermsText<T>(this IEnumerable<Tuple<uint, ulong, T>> gradeIndexScalarTuples)
     {
         return gradeIndexScalarTuples
             .Select(GetTermText)
@@ -270,10 +232,10 @@ public static class TextComposerUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static string GetTermsText<T>(uint grade, IEnumerable<RGaKvIndexScalarRecord<T>> indexScalarTuples)
+    public static string GetTermsText<T>(uint grade, IEnumerable<Tuple<ulong, T>> indexScalarTuples)
     {
         return indexScalarTuples
-            .Select(indexScalarPair => GetTermText(grade, indexScalarPair.KvIndex, indexScalarPair.Scalar))
+            .Select(indexScalarPair => GetTermText(grade, indexScalarPair.Item1, indexScalarPair.Item2))
             .ConcatenateText(", ");
     }
 
@@ -331,23 +293,12 @@ public static class TextComposerUtils
     //}
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static string GetMultivectorText<T>(this RGaMultivector<T> mv)
-    {
-        return mv
-                .IdScalarPairs
-                .OrderByGradeIndex()
-.GetTermsText(
-        );
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static string GetMultivectorText<T>(this XGaMultivector<T> mv)
     {
         return mv
                 .IdScalarPairs
                 .OrderByGradeIndex()
-.GetTermsText(
-        );
+                .GetTermsText();
     }
 
     //[MethodImpl(MethodImplOptions.AggressiveInlining)]

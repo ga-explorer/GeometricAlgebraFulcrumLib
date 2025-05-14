@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Float64.Multivectors;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Float64.Multivectors.Composers;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Float64.Processors;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivectors;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivectors.Composers;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Processors;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
 using NUnit.Framework;
 
@@ -12,14 +12,14 @@ namespace GeometricAlgebraFulcrumLib.UnitTests.Processing;
 [TestFixture]
 public sealed class MultivectorConsistencyTests
 {
-    private readonly RGaFloat64RandomComposer _randomGenerator;
-    private readonly List<RGaFloat64Multivector> _mvListTested;
-    private readonly List<RGaFloat64Multivector> _mvListRef;
+    private readonly XGaFloat64RandomComposer _randomGenerator;
+    private readonly List<XGaFloat64Multivector> _mvListTested;
+    private readonly List<XGaFloat64Multivector> _mvListRef;
     private readonly double _scalar;
 
 
-    public RGaFloat64Processor GeometricProcessor { get; }
-        = RGaFloat64Processor.Euclidean;
+    public XGaFloat64Processor GeometricProcessor { get; }
+        = XGaFloat64Processor.Euclidean;
 
     public int VSpaceDimensions 
         => 5;
@@ -30,9 +30,9 @@ public sealed class MultivectorConsistencyTests
 
     public MultivectorConsistencyTests()
     {
-        _randomGenerator = GeometricProcessor.CreateRGaRandomComposer(VSpaceDimensions, 10);
-        _mvListTested = new List<RGaFloat64Multivector>();
-        _mvListRef = new List<RGaFloat64Multivector>();
+        _randomGenerator = GeometricProcessor.CreateXGaRandomComposer(VSpaceDimensions, 10);
+        _mvListTested = new List<XGaFloat64Multivector>();
+        _mvListRef = new List<XGaFloat64Multivector>();
         _scalar = _randomGenerator.GetScalarValue();
     }
         
@@ -52,7 +52,7 @@ public sealed class MultivectorConsistencyTests
             );
 
         //Create a set of bivector terms storages
-        var kvSpaceDimension2 = (int) VSpaceDimensions.KVectorSpaceDimension(2);
+        var kvSpaceDimension2 = (int) VSpaceDimensions.KVectorSpaceDimensions(2);
         for (var index = 0; index < kvSpaceDimension2; index++)
             _mvListTested.Add(
                 _randomGenerator.GetBivector(index)
@@ -111,7 +111,7 @@ public sealed class MultivectorConsistencyTests
         }
     }
 
-    private bool TestDiffIsZero(int i, Func<RGaFloat64Multivector, RGaFloat64Multivector> opFunction)
+    private bool TestDiffIsZero(int i, Func<XGaFloat64Multivector, XGaFloat64Multivector> opFunction)
     {
         var tstMv = 
             opFunction(_mvListTested[i]);
@@ -122,7 +122,7 @@ public sealed class MultivectorConsistencyTests
         return (tstMv - refMv).IsZero;
     }
 
-    private bool TestDiffIsZero(int i, int j, Func<RGaFloat64Multivector, RGaFloat64Multivector, RGaFloat64Multivector> opFunction)
+    private bool TestDiffIsZero(int i, int j, Func<XGaFloat64Multivector, XGaFloat64Multivector, XGaFloat64Multivector> opFunction)
     {
         var tstMv = 
             opFunction(_mvListTested[i], _mvListTested[j]);
@@ -133,7 +133,7 @@ public sealed class MultivectorConsistencyTests
         return (tstMv - refMv).IsZero;
     }
         
-    private bool TestDiffIsZero(int i, Func<RGaFloat64Multivector, double> opFunction)
+    private bool TestDiffIsZero(int i, Func<XGaFloat64Multivector, double> opFunction)
     {
         var tstMv = 
             opFunction(_mvListTested[i]);
@@ -144,7 +144,7 @@ public sealed class MultivectorConsistencyTests
         return (tstMv - refMv).IsZero();
     }
         
-    private bool TestDiffIsZero(int i, int j, Func<RGaFloat64Multivector, RGaFloat64Multivector, double> opFunction)
+    private bool TestDiffIsZero(int i, int j, Func<XGaFloat64Multivector, XGaFloat64Multivector, double> opFunction)
     {
         var tstMv = 
             opFunction(_mvListTested[i], _mvListTested[j]);

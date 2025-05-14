@@ -46,7 +46,7 @@
 
     
 //    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-//    public IEnumerable<KeyValuePair<int, RGaConformalRound>> GetKeyFrameIndexCirclePairs(int frameRate)
+//    public IEnumerable<KeyValuePair<int, XGaConformalRound>> GetKeyFrameIndexCirclePairs(int frameRate)
 //    {
 //        var indexElementPairs = 
 //            GetKeyFrameIndexTimePairs(frameRate).ToImmutableArray(
@@ -65,7 +65,7 @@
         
 //        var nonCircleIndexList =
 //            indexElementPairs.ToImmutableArray(p =>
-//                    p.Value is RGaConformalRound round &&
+//                    p.Value is XGaConformalRound round &&
 //                    round.IsCircle() &&
 //                    round.Weight > 0
 //                ).Select((b, i) => Tuple.Create(i, b))

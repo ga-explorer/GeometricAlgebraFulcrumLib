@@ -3,7 +3,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Float64.Processors;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Processors;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
 
 namespace GeometricAlgebraFulcrumLib.Benchmarks.Generations;
@@ -19,8 +19,8 @@ public sealed class Ga51SparseMultivectorComposer
     private readonly Dictionary<ulong, double> _idScalarDictionary;
 
     
-    public RGaFloat64ConformalProcessor Processor { get; }
-        = RGaFloat64ConformalProcessor.Instance;
+    public XGaFloat64ConformalProcessor Processor { get; }
+        = XGaFloat64ConformalProcessor.Instance;
 
     public int VSpaceDimensions 
         => 6;
@@ -67,7 +67,7 @@ public sealed class Ga51SparseMultivectorComposer
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public double GetScalarByGradeIndex(int grade, ulong index)
     {
-        var id = BasisBladeUtils.BasisBladeGradeIndexToId(grade, index);
+        var id = (ulong)BasisBladeUtils.BasisBladeGradeIndexToId(grade, index);
 
         return _idScalarDictionary.TryGetValue(id, out var scalar)
             ? scalar : 0d;

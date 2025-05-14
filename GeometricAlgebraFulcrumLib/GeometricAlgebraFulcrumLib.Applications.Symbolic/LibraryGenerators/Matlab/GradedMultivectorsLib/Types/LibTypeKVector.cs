@@ -1,9 +1,9 @@
 ﻿using System.Collections.Immutable;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Basis;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Float64.Processors;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Processors;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.BitManipulation;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Combinations;
+using GeometricAlgebraFulcrumLib.Utilities.Structures.IndexSets;
 
 namespace GeometricAlgebraFulcrumLib.Applications.Symbolic.LibraryGenerators.Matlab.GradedMultivectorsLib.Types;
 
@@ -30,7 +30,7 @@ public sealed class LibTypeKVector :
     public int KvSpaceDimensions { get; }
 
 
-    internal LibTypeKVector(RGaFloat64Processor metric, int vSpaceDimensions, string className, int grade)
+    internal LibTypeKVector(XGaFloat64Processor metric, int vSpaceDimensions, string className, int grade)
         : base(metric, vSpaceDimensions, className)
     {
         if (grade < 0 || grade > VSpaceDimensions)
@@ -41,7 +41,7 @@ public sealed class LibTypeKVector :
     }
 
 
-    public override IReadOnlyList<RGaBasisBlade> GetBasisBlades()
+    public override IReadOnlyList<XGaBasisBlade> GetBasisBlades()
     {
         return KvSpaceDimensions
             .GetRange(index =>
@@ -59,7 +59,7 @@ public sealed class LibTypeKVector :
 
     public override int GetScalarIndex(int id)
     {
-        return (int) ((ulong) id).BasisBladeIdToIndex();
+        return (int) ((IndexSet) id).BasisBladeIdToIndex();
     }
 
     public override string ToString()

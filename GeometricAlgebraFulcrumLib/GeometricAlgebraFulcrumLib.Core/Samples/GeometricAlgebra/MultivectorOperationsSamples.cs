@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics;
-using GeometricAlgebraFulcrumLib.Core.GeometricAlgebra.Extended.Float64.Multivectors;
-using GeometricAlgebraFulcrumLib.Core.GeometricAlgebra.Extended.Float64.Multivectors.Composers;
-using GeometricAlgebraFulcrumLib.Core.GeometricAlgebra.Extended.Float64.Processors;
+using GeometricAlgebraFulcrumLib.Core.GeometricAlgebra.Float64.Multivectors;
+using GeometricAlgebraFulcrumLib.Core.GeometricAlgebra.Float64.Multivectors.Composers;
+using GeometricAlgebraFulcrumLib.Core.GeometricAlgebra.Float64.Processors;
 using GeometricAlgebraFulcrumLib.Core.LinearAlgebra.Float64;
 using GeometricAlgebraFulcrumLib.Core.Utilities.Text;
 

@@ -1,27 +1,28 @@
 ﻿using System.Runtime.CompilerServices;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Float64.Multivectors;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Float64.Multivectors.Composers;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivectors;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivectors.Composers;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space3D;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Dictionary;
+using GeometricAlgebraFulcrumLib.Utilities.Structures.IndexSets;
 
 namespace GeometricAlgebraFulcrumLib.Modeling.Geometry.VGa.Float64;
 
-public class RGaEuclideanGeometrySpace3D :
-    RGaEuclideanGeometrySpace
+public class XGaEuclideanGeometrySpace3D :
+    XGaEuclideanGeometrySpace
 {
-    public static RGaEuclideanGeometrySpace3D Instance { get; }
-        = new RGaEuclideanGeometrySpace3D();
+    public static XGaEuclideanGeometrySpace3D Instance { get; }
+        = new XGaEuclideanGeometrySpace3D();
 
 
-    public RGaFloat64Vector E3 { get; }
+    public XGaFloat64Vector E3 { get; }
 
-    public RGaFloat64Bivector E13 { get; }
+    public XGaFloat64Bivector E13 { get; }
 
-    public RGaFloat64Bivector E23 { get; }
+    public XGaFloat64Bivector E23 { get; }
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    private RGaEuclideanGeometrySpace3D() : base(3)
+    private XGaEuclideanGeometrySpace3D() : base(3)
     {
         E3 = EuclideanProcessor.VectorTerm(2);
 
@@ -32,48 +33,48 @@ public class RGaEuclideanGeometrySpace3D :
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public RGaFloat64Vector EncodeVector(double x, double y, double z)
+    public XGaFloat64Vector EncodeVector(double x, double y, double z)
     {
         return Processor.Vector(x, y, z);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public RGaFloat64Bivector EncodeBivector(double xy, double xz, double yz)
+    public XGaFloat64Bivector EncodeBivector(double xy, double xz, double yz)
     {
         return Processor.Bivector(
-            new Dictionary<ulong, double>
+            new Dictionary<IndexSet, double>
             {
-                {3UL, xy},
-                {5UL, xz},
-                {6UL, yz}
+                {(IndexSet)3UL, xy},
+                {(IndexSet)5UL, xz},
+                {(IndexSet)6UL, yz}
             }
         );
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public RGaFloat64Bivector EncodeBivector(LinFloat64Bivector3D bivector)
+    public XGaFloat64Bivector EncodeBivector(LinFloat64Bivector3D bivector)
     {
         return Processor.Bivector(
-            new Dictionary<ulong, double>
+            new Dictionary<IndexSet, double>
             {
-                {3UL, bivector.Xy},
-                {5UL, bivector.Xz},
-                {6UL, bivector.Yz}
+                {(IndexSet) 3UL, bivector.Xy},
+                {(IndexSet) 5UL, bivector.Xz},
+                {(IndexSet) 6UL, bivector.Yz}
             }
         );
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public RGaFloat64HigherKVector EncodeTrivector(double s)
+    public XGaFloat64HigherKVector EncodeTrivector(double s)
     {
         return Processor.HigherKVector(
             3,
-            new SingleItemDictionary<ulong, double>(7UL, s)
+            new SingleItemDictionary<IndexSet, double>((IndexSet)7UL, s)
         );
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public RGaFloat64Multivector EncodeQuaternion(double scalar, double iScalar, double jScalar, double kScalar)
+    public XGaFloat64Multivector EncodeQuaternion(double scalar, double iScalar, double jScalar, double kScalar)
     {
         return Processor
             .CreateComposer()
@@ -86,7 +87,7 @@ public class RGaEuclideanGeometrySpace3D :
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public LinFloat64Quaternion DecodeQuaternion(RGaFloat64Multivector mv)
+    public LinFloat64Quaternion DecodeQuaternion(XGaFloat64Multivector mv)
     {
         return LinFloat64Quaternion.Create(mv.Scalar(), -mv[1, 2], mv[0, 2], -mv[0, 1]);
     }

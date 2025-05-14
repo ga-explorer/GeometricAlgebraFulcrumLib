@@ -1,9 +1,9 @@
 ﻿using System.Diagnostics;
 using System.Numerics;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Float64.Processors;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Processors;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Combinations;
+using GeometricAlgebraFulcrumLib.Utilities.Structures.IndexSets;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Tuples;
 using NUnit.Framework;
 
@@ -16,10 +16,10 @@ public sealed class BasisBladeTests
         => 6;
 
     public ulong GaSpaceDimensions 
-        => VSpaceDimensions.ToGaSpaceDimension();
+        => 1UL << VSpaceDimensions;
 
-    public RGaFloat64Processor BasisSet { get; }
-        = RGaFloat64Processor.Create(2, 2);
+    public XGaFloat64Processor BasisSet { get; }
+        = XGaFloat64Processor.Create(2, 2);
 
         
     [Test]
@@ -27,10 +27,10 @@ public sealed class BasisBladeTests
     {
         for (var id = 0UL; id < GaSpaceDimensions; id++)
         {
-            var (grade, index) = id.BasisBladeIdToGradeIndex();
+            var (grade, index) = id.ToUInt64IndexSet().BasisBladeIdToGradeIndex();
             var kvSpaceDimensions = VSpaceDimensions.GetBinomialCoefficient((int) grade);
             var id2 = BasisBladeUtils.BasisBladeGradeIndexToId(grade, index);
-            var kvSpaceDimension2 = VSpaceDimensions.KVectorSpaceDimension((int) grade);
+            var kvSpaceDimension2 = VSpaceDimensions.KVectorSpaceDimensions((int) grade);
 
             Debug.Assert(kvSpaceDimensions == kvSpaceDimension2);
             Assert.That(kvSpaceDimensions == kvSpaceDimension2);
@@ -44,13 +44,13 @@ public sealed class BasisBladeTests
             Debug.Assert(index < kvSpaceDimensions);
             Assert.That(index < kvSpaceDimensions);
 
-            Debug.Assert(id == id2);
-            Assert.That(id == id2);
+            Debug.Assert(id == id2.ToUInt64());
+            Assert.That(id == id2.ToUInt64());
         }
 
         for (var grade = 0U; grade <= VSpaceDimensions; grade++)
         {
-            var kvSpaceDimensions = VSpaceDimensions.KVectorSpaceDimension((int) grade);
+            var kvSpaceDimensions = VSpaceDimensions.KVectorSpaceDimensions((int) grade);
 
             for (var index = 0UL; index < kvSpaceDimensions; index++)
             {
@@ -63,8 +63,8 @@ public sealed class BasisBladeTests
                 Debug.Assert(index == index2);
                 Assert.That(index == index2);
                     
-                Debug.Assert(id < GaSpaceDimensions);
-                Assert.That(id < GaSpaceDimensions);
+                Debug.Assert(id.ToUInt64() < GaSpaceDimensions);
+                Assert.That(id.ToUInt64() < GaSpaceDimensions);
             }
         }
     }
@@ -74,7 +74,7 @@ public sealed class BasisBladeTests
     {
         for (var id = 0UL; id < GaSpaceDimensions; id++)
         {
-            var grade = id.BasisBladeIdToGrade();
+            var grade = id.ToUInt64IndexSet().BasisBladeIdToGrade();
             var sign = IntegerSign.Negative.Power((int) grade);
                 
 
@@ -87,7 +87,7 @@ public sealed class BasisBladeTests
 
 
             equalFlag =
-                id.GradeInvolutionSignOfBasisBladeId() == 
+                id.ToUInt64IndexSet().GradeInvolutionSignOfBasisBladeId() == 
                 grade.GradeInvolutionSignOfGrade();
 
             Debug.Assert(equalFlag);
@@ -95,7 +95,7 @@ public sealed class BasisBladeTests
 
 
             equalFlag =
-                id.GradeInvolutionIsNegativeOfBasisBladeId() == 
+                id.ToUInt64IndexSet().GradeInvolutionIsNegativeOfBasisBladeId() == 
                 grade.GradeInvolutionIsNegativeOfGrade();
 
             Debug.Assert(equalFlag);
@@ -103,7 +103,7 @@ public sealed class BasisBladeTests
 
 
             equalFlag =
-                id.GradeInvolutionIsPositiveOfBasisBladeId() == 
+                id.ToUInt64IndexSet().GradeInvolutionIsPositiveOfBasisBladeId() == 
                 grade.GradeInvolutionIsPositiveOfGrade();
 
             Debug.Assert(equalFlag);
@@ -111,24 +111,24 @@ public sealed class BasisBladeTests
                 
 
             equalFlag =
-                id.GradeInvolutionIsNegativeOfBasisBladeId() == 
-                !id.GradeInvolutionIsPositiveOfBasisBladeId();
+                id.ToUInt64IndexSet().GradeInvolutionIsNegativeOfBasisBladeId() == 
+                !id.ToUInt64IndexSet().GradeInvolutionIsPositiveOfBasisBladeId();
 
             Debug.Assert(equalFlag);
             Assert.That(equalFlag);
                 
 
             equalFlag =
-                id.GradeInvolutionIsNegativeOfBasisBladeId() == 
-                (id.GradeInvolutionSignOfBasisBladeId().IsNegative);
+                id.ToUInt64IndexSet().GradeInvolutionIsNegativeOfBasisBladeId() == 
+                (id.ToUInt64IndexSet().GradeInvolutionSignOfBasisBladeId().IsNegative);
 
             Debug.Assert(equalFlag);
             Assert.That(equalFlag);
                 
 
             equalFlag =
-                id.GradeInvolutionIsPositiveOfBasisBladeId() == 
-                (id.GradeInvolutionSignOfBasisBladeId().IsPositive);
+                id.ToUInt64IndexSet().GradeInvolutionIsPositiveOfBasisBladeId() == 
+                (id.ToUInt64IndexSet().GradeInvolutionSignOfBasisBladeId().IsPositive);
 
             Debug.Assert(equalFlag);
             Assert.That(equalFlag);
@@ -140,7 +140,7 @@ public sealed class BasisBladeTests
     {
         for (var id = 0UL; id < GaSpaceDimensions; id++)
         {
-            var grade = id.BasisBladeIdToGrade();
+            var grade = id.ToUInt64IndexSet().BasisBladeIdToGrade();
             var sign = IntegerSign.Negative.Power((int) (grade * (grade - 1) / 2));
                 
 
@@ -153,7 +153,7 @@ public sealed class BasisBladeTests
 
 
             equalFlag =
-                id.ReverseSignOfBasisBladeId() == 
+                id.ToUInt64IndexSet().ReverseSignOfBasisBladeId() == 
                 grade.ReverseSignOfGrade();
 
             Debug.Assert(equalFlag);
@@ -161,7 +161,7 @@ public sealed class BasisBladeTests
 
 
             equalFlag =
-                id.ReverseIsNegativeOfBasisBladeId() == 
+                id.ToUInt64IndexSet().ReverseIsNegativeOfBasisBladeId() == 
                 grade.ReverseIsNegativeOfGrade();
 
             Debug.Assert(equalFlag);
@@ -169,7 +169,7 @@ public sealed class BasisBladeTests
 
 
             equalFlag =
-                id.ReverseIsPositiveOfBasisBladeId() == 
+                id.ToUInt64IndexSet().ReverseIsPositiveOfBasisBladeId() == 
                 grade.ReverseIsPositiveOfGrade();
 
             Debug.Assert(equalFlag);
@@ -177,24 +177,24 @@ public sealed class BasisBladeTests
                 
 
             equalFlag =
-                id.ReverseIsNegativeOfBasisBladeId() == 
-                !id.ReverseIsPositiveOfBasisBladeId();
+                id.ToUInt64IndexSet().ReverseIsNegativeOfBasisBladeId() == 
+                !id.ToUInt64IndexSet().ReverseIsPositiveOfBasisBladeId();
 
             Debug.Assert(equalFlag);
             Assert.That(equalFlag);
                 
 
             equalFlag =
-                id.ReverseIsNegativeOfBasisBladeId() == 
-                (id.ReverseSignOfBasisBladeId().IsNegative);
+                id.ToUInt64IndexSet().ReverseIsNegativeOfBasisBladeId() == 
+                (id.ToUInt64IndexSet().ReverseSignOfBasisBladeId().IsNegative);
 
             Debug.Assert(equalFlag);
             Assert.That(equalFlag);
                 
 
             equalFlag =
-                id.ReverseIsPositiveOfBasisBladeId() == 
-                (id.ReverseSignOfBasisBladeId().IsPositive);
+                id.ToUInt64IndexSet().ReverseIsPositiveOfBasisBladeId() == 
+                (id.ToUInt64IndexSet().ReverseSignOfBasisBladeId().IsPositive);
 
             Debug.Assert(equalFlag);
             Assert.That(equalFlag);
@@ -206,7 +206,7 @@ public sealed class BasisBladeTests
     {
         for (var id = 0UL; id < GaSpaceDimensions; id++)
         {
-            var grade = id.BasisBladeIdToGrade();
+            var grade = id.ToUInt64IndexSet().BasisBladeIdToGrade();
             var sign = IntegerSign.Negative.Power((int)(grade * (grade + 1) / 2));
 
             var equalFlag =
@@ -218,7 +218,7 @@ public sealed class BasisBladeTests
 
 
             equalFlag =
-                id.CliffordConjugateSignOfBasisBladeId() == 
+                id.ToUInt64IndexSet().CliffordConjugateSignOfBasisBladeId() == 
                 grade.CliffordConjugateSignOfGrade();
 
             Debug.Assert(equalFlag);
@@ -226,7 +226,7 @@ public sealed class BasisBladeTests
 
 
             equalFlag =
-                id.CliffordConjugateIsNegativeOfBasisBladeId() == 
+                id.ToUInt64IndexSet().CliffordConjugateIsNegativeOfBasisBladeId() == 
                 grade.CliffordConjugateIsNegativeOfGrade();
 
             Debug.Assert(equalFlag);
@@ -234,7 +234,7 @@ public sealed class BasisBladeTests
 
 
             equalFlag =
-                id.CliffordConjugateIsPositiveOfBasisBladeId() == 
+                id.ToUInt64IndexSet().CliffordConjugateIsPositiveOfBasisBladeId() == 
                 grade.CliffordConjugateIsPositiveOfGrade();
 
             Debug.Assert(equalFlag);
@@ -242,24 +242,24 @@ public sealed class BasisBladeTests
                 
 
             equalFlag =
-                id.CliffordConjugateIsNegativeOfBasisBladeId() == 
-                !id.CliffordConjugateIsPositiveOfBasisBladeId();
+                id.ToUInt64IndexSet().CliffordConjugateIsNegativeOfBasisBladeId() == 
+                !id.ToUInt64IndexSet().CliffordConjugateIsPositiveOfBasisBladeId();
 
             Debug.Assert(equalFlag);
             Assert.That(equalFlag);
                 
 
             equalFlag =
-                id.CliffordConjugateIsNegativeOfBasisBladeId() == 
-                (id.CliffordConjugateSignOfBasisBladeId().IsNegative);
+                id.ToUInt64IndexSet().CliffordConjugateIsNegativeOfBasisBladeId() == 
+                (id.ToUInt64IndexSet().CliffordConjugateSignOfBasisBladeId().IsNegative);
 
             Debug.Assert(equalFlag);
             Assert.That(equalFlag);
                 
 
             equalFlag =
-                id.CliffordConjugateIsPositiveOfBasisBladeId() == 
-                (id.CliffordConjugateSignOfBasisBladeId().IsPositive);
+                id.ToUInt64IndexSet().CliffordConjugateIsPositiveOfBasisBladeId() == 
+                (id.ToUInt64IndexSet().CliffordConjugateSignOfBasisBladeId().IsPositive);
 
             Debug.Assert(equalFlag);
             Assert.That(equalFlag);
@@ -271,11 +271,13 @@ public sealed class BasisBladeTests
     {
         for (var id1 = 0UL; id1 < GaSpaceDimensions; id1++)
         {
-            var gpSign1 = BasisSet.GpSign(id1, id1);
-            var gpSign2 = BasisSet.GpSquaredSign(id1);
+            var is1 = (IndexSet)id1;
+
+            var gpSign1 = BasisSet.GpSign(is1, is1);
+            var gpSign2 = BasisSet.GpSquaredSign(is1);
                 
-            var egpSign1 = BasisSet.EGpSign(id1, id1);
-            var egpSign2 = BasisSet.EGpSquaredSign(id1);
+            var egpSign1 = BasisSet.EGpSign(is1, is1);
+            var egpSign2 = BasisSet.EGpSquaredSign(is1);
 
             Debug.Assert(gpSign1 == gpSign2);
             Assert.That(gpSign1 == gpSign2);
@@ -290,13 +292,15 @@ public sealed class BasisBladeTests
     {
         for (var id1 = 0UL; id1 < GaSpaceDimensions; id1++)
         {
-            var gpSign1 = BasisSet.GpSign(id1, id1) * id1.ReverseSignOfBasisBladeId();
-            var gpSign2 = BasisSet.GpReverseSign(id1, id1);
-            var gpSign3 = BasisSet.GpReverseSign(id1);
+            var is1 = (IndexSet)id1;
+
+            var gpSign1 = BasisSet.GpSign(is1, is1) * is1.ReverseSignOfBasisBladeId();
+            var gpSign2 = BasisSet.GpReverseSign(is1, is1);
+            var gpSign3 = BasisSet.GpReverseSign(is1);
                 
-            var egpSign1 = BasisSet.EGpSign(id1, id1) * id1.ReverseSignOfBasisBladeId();
-            var egpSign2 = BasisSet.EGpReverseSign(id1, id1);
-            var egpSign3 = BasisSet.EGpReverseSign(id1);
+            var egpSign1 = BasisSet.EGpSign(is1, is1) * is1.ReverseSignOfBasisBladeId();
+            var egpSign2 = BasisSet.EGpReverseSign(is1, is1);
+            var egpSign3 = BasisSet.EGpReverseSign(is1);
 
             Debug.Assert(gpSign1 == gpSign2);
             Assert.That(gpSign1 == gpSign2);
@@ -318,11 +322,13 @@ public sealed class BasisBladeTests
 
             for (var id2 = 0UL; id2 < GaSpaceDimensions; id2++)
             {
-                gpSign1 = BasisSet.GpSign(id1, id2) * id2.ReverseSignOfBasisBladeId();
-                gpSign2 = BasisSet.GpReverseSign(id1, id2);
+                var is2 = (IndexSet)id2;
+
+                gpSign1 = BasisSet.GpSign(is1, is2) * is2.ReverseSignOfBasisBladeId();
+                gpSign2 = BasisSet.GpReverseSign(is1, is2);
                     
-                egpSign1 = BasisSet.EGpSign(id1, id2) * id2.ReverseSignOfBasisBladeId();
-                egpSign2 = BasisSet.EGpReverseSign(id1, id2);
+                egpSign1 = BasisSet.EGpSign(is1, is2) * is2.ReverseSignOfBasisBladeId();
+                egpSign2 = BasisSet.EGpReverseSign(is1, is2);
 
                 Debug.Assert(gpSign1 == gpSign2);
                 Assert.That(gpSign1 == gpSign2);

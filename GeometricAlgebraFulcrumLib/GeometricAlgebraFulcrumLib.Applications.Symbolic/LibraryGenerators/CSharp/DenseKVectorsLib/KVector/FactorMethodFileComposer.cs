@@ -1,7 +1,7 @@
-﻿using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Extended.Generic.Multivectors;
+﻿using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Multivectors;
 using GeometricAlgebraFulcrumLib.MetaProgramming.Context;
 using GeometricAlgebraFulcrumLib.MetaProgramming.Context.Expressions;
-using GeometricAlgebraFulcrumLib.Utilities.Structures.BitManipulation;
+using GeometricAlgebraFulcrumLib.Utilities.Structures.IndexSets;
 using GeometricAlgebraFulcrumLib.Utilities.Text.Text.Linear;
 using GeometricAlgebraFulcrumLib.Utilities.Text.Text.Structured;
 
@@ -11,13 +11,13 @@ internal sealed class FactorMethodFileComposer :
     GaFuLLibraryMetaContextFileComposerBase
 {
     private readonly int _inputGrade;
-    private readonly ulong _inputId;
+    private readonly IndexSet _inputId;
     private XGaKVector<IMetaExpressionAtomic> _inputBlade;
     private XGaVector<IMetaExpressionAtomic>[] _inputBasisVectorsArray;
     private XGaVector<IMetaExpressionAtomic>[] _outputVectorsArray;
 
 
-    internal FactorMethodFileComposer(GaFuLLibraryComposer libGen, int inGrade, ulong inId)
+    internal FactorMethodFileComposer(GaFuLLibraryComposer libGen, int inGrade, IndexSet inId)
         : base(libGen)
     {
         _inputGrade = inGrade;
@@ -38,7 +38,6 @@ internal sealed class FactorMethodFileComposer :
 
         _inputBasisVectorsArray = 
             _inputId
-                .GetSetBitPositions()
                 .Select(index => 
                     context
                         .NumbersFactory

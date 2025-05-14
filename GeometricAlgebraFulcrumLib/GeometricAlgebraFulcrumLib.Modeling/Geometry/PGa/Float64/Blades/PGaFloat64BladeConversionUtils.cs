@@ -7,7 +7,7 @@
 //public static class PGaFloat64BladeConversionUtils
 //{
 //    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-//    public static PGaFloat64Blade ToConformalBlade(this RGaFloat64KVector cgaKVector, PGaFloat64GeometricSpace cgaGeometricSpace)
+//    public static PGaFloat64Blade ToConformalBlade(this XGaFloat64KVector cgaKVector, PGaFloat64GeometricSpace cgaGeometricSpace)
 //    {
 //        return new PGaFloat64Blade(
 //            cgaGeometricSpace, 
@@ -16,7 +16,7 @@
 //    }
     
 //    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-//    public static PGaFloat64Blade ScalarPartToConformalBlade(this RGaFloat64Multivector cgaMultivector, PGaFloat64GeometricSpace cgaGeometricSpace)
+//    public static PGaFloat64Blade ScalarPartToConformalBlade(this XGaFloat64Multivector cgaMultivector, PGaFloat64GeometricSpace cgaGeometricSpace)
 //    {
 //        return new PGaFloat64Blade(
 //            cgaGeometricSpace, 
@@ -25,7 +25,7 @@
 //    }
 
 //    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-//    public static PGaFloat64Blade VectorPartToConformalBlade(this RGaFloat64Multivector cgaMultivector, PGaFloat64GeometricSpace cgaGeometricSpace)
+//    public static PGaFloat64Blade VectorPartToConformalBlade(this XGaFloat64Multivector cgaMultivector, PGaFloat64GeometricSpace cgaGeometricSpace)
 //    {
 //        return new PGaFloat64Blade(
 //            cgaGeometricSpace, 
@@ -34,7 +34,7 @@
 //    }
     
 //    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-//    public static PGaFloat64Blade VectorPartToConformalVGaBlade(this RGaFloat64Multivector cgaMultivector, PGaFloat64GeometricSpace cgaGeometricSpace)
+//    public static PGaFloat64Blade VectorPartToConformalVGaBlade(this XGaFloat64Multivector cgaMultivector, PGaFloat64GeometricSpace cgaGeometricSpace)
 //    {
 //        return new PGaFloat64Blade(
 //            cgaGeometricSpace, 
@@ -43,7 +43,7 @@
 //    }
 
 //    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-//    public static PGaFloat64Blade BivectorPartToConformalBlade(this RGaFloat64Multivector cgaMultivector, PGaFloat64GeometricSpace cgaGeometricSpace)
+//    public static PGaFloat64Blade BivectorPartToConformalBlade(this XGaFloat64Multivector cgaMultivector, PGaFloat64GeometricSpace cgaGeometricSpace)
 //    {
 //        return new PGaFloat64Blade(
 //            cgaGeometricSpace, 
@@ -52,7 +52,7 @@
 //    }
     
 //    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-//    public static PGaFloat64Blade KVectorPartToConformalBlade(this RGaFloat64Multivector cgaMultivector, int grade, PGaFloat64GeometricSpace cgaGeometricSpace)
+//    public static PGaFloat64Blade KVectorPartToConformalBlade(this XGaFloat64Multivector cgaMultivector, int grade, PGaFloat64GeometricSpace cgaGeometricSpace)
 //    {
 //        return new PGaFloat64Blade(
 //            cgaGeometricSpace, 
@@ -61,7 +61,7 @@
 //    }
     
 //    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-//    public static PGaFloat64Blade FirstKVectorPartToConformalBlade(this RGaFloat64Multivector cgaMultivector, PGaFloat64GeometricSpace cgaGeometricSpace)
+//    public static PGaFloat64Blade FirstKVectorPartToConformalBlade(this XGaFloat64Multivector cgaMultivector, PGaFloat64GeometricSpace cgaGeometricSpace)
 //    {
 //        return new PGaFloat64Blade(
 //            cgaGeometricSpace, 

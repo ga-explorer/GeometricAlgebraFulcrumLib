@@ -3,7 +3,7 @@ using System.Data;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Text;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Float64.Multivectors;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivectors;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space2D;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space3D;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.SpaceND;
@@ -30,7 +30,7 @@ public class CGaFloat64Flat :
         {
             Debug.Assert(Direction.Grade == VSpaceDimensions - 3);
 
-            return Position.Lcp(NormalDirectionToRGaVector()).InternalScalarValue;
+            return Position.Lcp(NormalDirectionToXGaVector()).InternalScalarValue;
         }
     }
 
@@ -138,17 +138,17 @@ public class CGaFloat64Flat :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public IReadOnlyList<RGaFloat64Vector> GetSurfacePointVectors()
+    public IReadOnlyList<XGaFloat64Vector> GetSurfacePointVectors()
     {
-        var pointList = new List<RGaFloat64Vector>(Direction.Grade + 1)
+        var pointList = new List<XGaFloat64Vector>(Direction.Grade + 1)
         {
-            PositionToRGaVector()
+            PositionToXGaVector()
         };
 
         pointList.AddRange(
-            DirectionToRGaVectors()
+            DirectionToXGaVectors()
                 .Select(v =>
-                    PositionToRGaVector() + v
+                    PositionToXGaVector() + v
                 )
         );
 
@@ -207,9 +207,9 @@ public class CGaFloat64Flat :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool SurfaceContainsPoint(RGaFloat64Vector egaPoint)
+    public bool SurfaceContainsPoint(XGaFloat64Vector egaPoint)
     {
-        return IsDirectionParallelTo(egaPoint - PositionToRGaVector());
+        return IsDirectionParallelTo(egaPoint - PositionToXGaVector());
     }
 
 
@@ -248,16 +248,16 @@ public class CGaFloat64Flat :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool SurfaceNearContainsPoint(RGaFloat64Vector egaPoint, double zeroEpsilon = Float64Utils.ZeroEpsilon)
+    public bool SurfaceNearContainsPoint(XGaFloat64Vector egaPoint, double zeroEpsilon = Float64Utils.ZeroEpsilon)
     {
-        return IsDirectionNearParallelTo(egaPoint - PositionToRGaVector(), zeroEpsilon);
+        return IsDirectionNearParallelTo(egaPoint - PositionToXGaVector(), zeroEpsilon);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public bool SurfaceNearContainsPoint(CGaFloat64Blade egaPoint, double zeroEpsilon = Float64Utils.ZeroEpsilon)
     {
         return IsDirectionNearParallelTo(
-            (egaPoint - Position).DecodeVGaDirection.RGaVector(),
+            (egaPoint - Position).DecodeVGaDirection.XGaVector(),
             zeroEpsilon
         );
     }

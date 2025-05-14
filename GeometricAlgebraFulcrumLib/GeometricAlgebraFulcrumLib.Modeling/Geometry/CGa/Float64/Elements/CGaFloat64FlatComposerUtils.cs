@@ -1,6 +1,6 @@
 ﻿using System.Runtime.CompilerServices;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Float64.Multivectors;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Float64.Multivectors.Composers;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivectors;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivectors.Composers;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space2D;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space3D;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.SpaceND;
@@ -46,7 +46,7 @@ public static class CGaFloat64FlatComposerUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static CGaFloat64Flat DefineFlatPoint(this CGaFloat64GeometricSpace cgaGeometricSpace, RGaFloat64Vector position)
+    public static CGaFloat64Flat DefineFlatPoint(this CGaFloat64GeometricSpace cgaGeometricSpace, XGaFloat64Vector position)
     {
         return new CGaFloat64Flat(
             cgaGeometricSpace,
@@ -91,7 +91,7 @@ public static class CGaFloat64FlatComposerUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static CGaFloat64Flat DefineFlatPoint(this CGaFloat64GeometricSpace cgaGeometricSpace, double weight, RGaFloat64Vector position)
+    public static CGaFloat64Flat DefineFlatPoint(this CGaFloat64GeometricSpace cgaGeometricSpace, double weight, XGaFloat64Vector position)
     {
         return new CGaFloat64Flat(
             cgaGeometricSpace,
@@ -136,7 +136,7 @@ public static class CGaFloat64FlatComposerUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static CGaFloat64Flat DefineFlatLine(this CGaFloat64GeometricSpace cgaGeometricSpace, RGaFloat64Vector position, RGaFloat64Vector direction)
+    public static CGaFloat64Flat DefineFlatLine(this CGaFloat64GeometricSpace cgaGeometricSpace, XGaFloat64Vector position, XGaFloat64Vector direction)
     {
         return new CGaFloat64Flat(
             cgaGeometricSpace,
@@ -181,7 +181,7 @@ public static class CGaFloat64FlatComposerUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static CGaFloat64Flat DefineFlatLine(this CGaFloat64GeometricSpace cgaGeometricSpace, double weight, RGaFloat64Vector position, RGaFloat64Vector direction)
+    public static CGaFloat64Flat DefineFlatLine(this CGaFloat64GeometricSpace cgaGeometricSpace, double weight, XGaFloat64Vector position, XGaFloat64Vector direction)
     {
         return new CGaFloat64Flat(
             cgaGeometricSpace,
@@ -235,7 +235,7 @@ public static class CGaFloat64FlatComposerUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static CGaFloat64Flat DefineFlatLineFromPoints(this CGaFloat64GeometricSpace cgaGeometricSpace, RGaFloat64Vector point1, RGaFloat64Vector point2)
+    public static CGaFloat64Flat DefineFlatLineFromPoints(this CGaFloat64GeometricSpace cgaGeometricSpace, XGaFloat64Vector point1, XGaFloat64Vector point2)
     {
         var position = (point1 + point2) / 2;
         var direction = point2 - point1;
@@ -292,7 +292,7 @@ public static class CGaFloat64FlatComposerUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static CGaFloat64Flat DefineFlatLineFromPoints(this CGaFloat64GeometricSpace cgaGeometricSpace, double weight, RGaFloat64Vector point1, RGaFloat64Vector point2)
+    public static CGaFloat64Flat DefineFlatLineFromPoints(this CGaFloat64GeometricSpace cgaGeometricSpace, double weight, XGaFloat64Vector point1, XGaFloat64Vector point2)
     {
         var position = (point1 + point2) / 2;
         var direction = point2 - point1;
@@ -341,7 +341,7 @@ public static class CGaFloat64FlatComposerUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static CGaFloat64Flat DefineFlatPlane(this CGaFloat64GeometricSpace cgaGeometricSpace, RGaFloat64Vector position, RGaFloat64Bivector direction)
+    public static CGaFloat64Flat DefineFlatPlane(this CGaFloat64GeometricSpace cgaGeometricSpace, XGaFloat64Vector position, XGaFloat64Bivector direction)
     {
         return new CGaFloat64Flat(
             cgaGeometricSpace,
@@ -411,7 +411,7 @@ public static class CGaFloat64FlatComposerUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static CGaFloat64Flat DefineFlatPlaneFromPoints(this CGaFloat64GeometricSpace cgaGeometricSpace, RGaFloat64Vector point1, RGaFloat64Vector point2, RGaFloat64Vector point3)
+    public static CGaFloat64Flat DefineFlatPlaneFromPoints(this CGaFloat64GeometricSpace cgaGeometricSpace, XGaFloat64Vector point1, XGaFloat64Vector point2, XGaFloat64Vector point3)
     {
         var position = (point1 + point2 + point3) / 3;
         var direction = (point2 - point1).Op(point3 - point2);
@@ -454,7 +454,7 @@ public static class CGaFloat64FlatComposerUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static CGaFloat64Flat DefineFlatPlaneFromPoints(this CGaFloat64GeometricSpace cgaGeometricSpace, double weight, RGaFloat64Vector point1, RGaFloat64Vector point2, RGaFloat64Vector point3)
+    public static CGaFloat64Flat DefineFlatPlaneFromPoints(this CGaFloat64GeometricSpace cgaGeometricSpace, double weight, XGaFloat64Vector point1, XGaFloat64Vector point2, XGaFloat64Vector point3)
     {
         var position = (point1 + point2 + point3) / 3;
         var direction = (point2 - point1).Op(point3 - point2);
@@ -514,7 +514,7 @@ public static class CGaFloat64FlatComposerUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static CGaFloat64Flat DefineFlatPlane(this CGaFloat64GeometricSpace cgaGeometricSpace, double weight, RGaFloat64Vector position, RGaFloat64Bivector direction)
+    public static CGaFloat64Flat DefineFlatPlane(this CGaFloat64GeometricSpace cgaGeometricSpace, double weight, XGaFloat64Vector position, XGaFloat64Bivector direction)
     {
         return new CGaFloat64Flat(
             cgaGeometricSpace,
@@ -538,7 +538,7 @@ public static class CGaFloat64FlatComposerUtils
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static CGaFloat64Flat DefineFlat(this CGaFloat64GeometricSpace cgaGeometricSpace, RGaFloat64Vector position, RGaFloat64KVector direction)
+    public static CGaFloat64Flat DefineFlat(this CGaFloat64GeometricSpace cgaGeometricSpace, XGaFloat64Vector position, XGaFloat64KVector direction)
     {
         return new CGaFloat64Flat(
             cgaGeometricSpace,
@@ -561,7 +561,7 @@ public static class CGaFloat64FlatComposerUtils
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static CGaFloat64Flat DefineFlat(this CGaFloat64GeometricSpace cgaGeometricSpace, double weight, RGaFloat64Vector position, RGaFloat64KVector direction)
+    public static CGaFloat64Flat DefineFlat(this CGaFloat64GeometricSpace cgaGeometricSpace, double weight, XGaFloat64Vector position, XGaFloat64KVector direction)
     {
         return new CGaFloat64Flat(
             cgaGeometricSpace,
@@ -590,7 +590,7 @@ public static class CGaFloat64FlatComposerUtils
             1,
             cgaGeometricSpace.Encode.VGa.Vector(position),
             directionVectors
-                .Select(v => v.ToRGaFloat64Vector())
+                .Select(v => v.ToXGaFloat64Vector())
                 .Op(cgaGeometricSpace.Processor)
                 .EncodeVGaBlade(cgaGeometricSpace)
         );
@@ -603,7 +603,7 @@ public static class CGaFloat64FlatComposerUtils
             1,
             cgaGeometricSpace.Encode.VGa.Vector(position),
             directionVectors
-                .Select(v => v.ToRGaFloat64Vector())
+                .Select(v => v.ToXGaFloat64Vector())
                 .Op(cgaGeometricSpace.Processor)
                 .EncodeVGaBlade(cgaGeometricSpace)
         );
@@ -616,14 +616,14 @@ public static class CGaFloat64FlatComposerUtils
             1,
             cgaGeometricSpace.Encode.VGa.Vector(position),
             directionVectors
-                .Select(v => v.ToRGaFloat64Vector())
+                .Select(v => v.ToXGaFloat64Vector())
                 .Op(cgaGeometricSpace.Processor)
                 .EncodeVGaBlade(cgaGeometricSpace)
         );
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static CGaFloat64Flat DefineFlatFromVectors(this CGaFloat64GeometricSpace cgaGeometricSpace, RGaFloat64Vector position, params RGaFloat64Vector[] directionVectors)
+    public static CGaFloat64Flat DefineFlatFromVectors(this CGaFloat64GeometricSpace cgaGeometricSpace, XGaFloat64Vector position, params XGaFloat64Vector[] directionVectors)
     {
         return cgaGeometricSpace.DefineFlat(
             1,
@@ -633,7 +633,7 @@ public static class CGaFloat64FlatComposerUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static CGaFloat64Flat DefineFlatFromVectors(this CGaFloat64GeometricSpace cgaGeometricSpace, RGaFloat64Vector position, IEnumerable<RGaFloat64Vector> directionVectors)
+    public static CGaFloat64Flat DefineFlatFromVectors(this CGaFloat64GeometricSpace cgaGeometricSpace, XGaFloat64Vector position, IEnumerable<XGaFloat64Vector> directionVectors)
     {
         return cgaGeometricSpace.DefineFlat(
             1,
@@ -650,7 +650,7 @@ public static class CGaFloat64FlatComposerUtils
             weight,
             cgaGeometricSpace.Encode.VGa.Vector(position),
             directionVectors
-                .Select(v => v.ToRGaFloat64Vector())
+                .Select(v => v.ToXGaFloat64Vector())
                 .Op(cgaGeometricSpace.Processor)
                 .EncodeVGaBlade(cgaGeometricSpace)
         );
@@ -663,7 +663,7 @@ public static class CGaFloat64FlatComposerUtils
             weight,
             cgaGeometricSpace.Encode.VGa.Vector(position),
             directionVectors
-                .Select(v => v.ToRGaFloat64Vector())
+                .Select(v => v.ToXGaFloat64Vector())
                 .Op(cgaGeometricSpace.Processor)
                 .EncodeVGaBlade(cgaGeometricSpace)
         );
@@ -676,14 +676,14 @@ public static class CGaFloat64FlatComposerUtils
             weight,
             cgaGeometricSpace.Encode.VGa.Vector(position),
             directionVectors
-                .Select(v => v.ToRGaFloat64Vector())
+                .Select(v => v.ToXGaFloat64Vector())
                 .Op(cgaGeometricSpace.Processor)
                 .EncodeVGaBlade(cgaGeometricSpace)
         );
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static CGaFloat64Flat DefineFlatFromVectors(this CGaFloat64GeometricSpace cgaGeometricSpace, double weight, RGaFloat64Vector position, params RGaFloat64Vector[] directionVectors)
+    public static CGaFloat64Flat DefineFlatFromVectors(this CGaFloat64GeometricSpace cgaGeometricSpace, double weight, XGaFloat64Vector position, params XGaFloat64Vector[] directionVectors)
     {
         return cgaGeometricSpace.DefineFlat(
             weight,
@@ -693,7 +693,7 @@ public static class CGaFloat64FlatComposerUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static CGaFloat64Flat DefineFlatFromVectors(this CGaFloat64GeometricSpace cgaGeometricSpace, double weight, RGaFloat64Vector position, IEnumerable<RGaFloat64Vector> directionVectors)
+    public static CGaFloat64Flat DefineFlatFromVectors(this CGaFloat64GeometricSpace cgaGeometricSpace, double weight, XGaFloat64Vector position, IEnumerable<XGaFloat64Vector> directionVectors)
     {
         return cgaGeometricSpace.DefineFlat(
             weight,
@@ -708,7 +708,7 @@ public static class CGaFloat64FlatComposerUtils
     {
         return cgaGeometricSpace
             .Encode.OpnsFlat.BladeFromPoints(
-                (IReadOnlyList<RGaFloat64Vector>)egaPoints.SelectToArray(p => p.ToRGaFloat64Vector())
+                (IReadOnlyList<XGaFloat64Vector>)egaPoints.SelectToArray(p => p.ToXGaFloat64Vector())
             ).DecodeOpnsFlat.Element();
     }
 
@@ -717,7 +717,7 @@ public static class CGaFloat64FlatComposerUtils
     {
         return cgaGeometricSpace
             .Encode.OpnsFlat.BladeFromPoints(
-                (IReadOnlyList<RGaFloat64Vector>)egaPoints.SelectToArray(p => p.ToRGaFloat64Vector())
+                (IReadOnlyList<XGaFloat64Vector>)egaPoints.SelectToArray(p => p.ToXGaFloat64Vector())
             ).DecodeOpnsFlat.Element();
     }
 
@@ -726,21 +726,21 @@ public static class CGaFloat64FlatComposerUtils
     {
         return cgaGeometricSpace
             .Encode.OpnsFlat.BladeFromPoints(
-                (IReadOnlyList<RGaFloat64Vector>)egaPoints.SelectToArray(p => p.ToRGaFloat64Vector())
+                (IReadOnlyList<XGaFloat64Vector>)egaPoints.SelectToArray(p => p.ToXGaFloat64Vector())
             )
             .DecodeOpnsFlat.Element();
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static CGaFloat64Flat DefineFlatFromPoints(this CGaFloat64GeometricSpace cgaGeometricSpace, double weight, params RGaFloat64Vector[] egaPoints)
+    public static CGaFloat64Flat DefineFlatFromPoints(this CGaFloat64GeometricSpace cgaGeometricSpace, double weight, params XGaFloat64Vector[] egaPoints)
     {
         return cgaGeometricSpace
-            .Encode.OpnsFlat.BladeFromPoints((IReadOnlyList<RGaFloat64Vector>)egaPoints)
+            .Encode.OpnsFlat.BladeFromPoints((IReadOnlyList<XGaFloat64Vector>)egaPoints)
             .DecodeOpnsFlat.Element();
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static CGaFloat64Flat DefineFlatFromPoints(this CGaFloat64GeometricSpace cgaGeometricSpace, double weight, IReadOnlyList<RGaFloat64Vector> egaPoints)
+    public static CGaFloat64Flat DefineFlatFromPoints(this CGaFloat64GeometricSpace cgaGeometricSpace, double weight, IReadOnlyList<XGaFloat64Vector> egaPoints)
     {
         return cgaGeometricSpace
             .Encode.OpnsFlat.BladeFromPoints(egaPoints)

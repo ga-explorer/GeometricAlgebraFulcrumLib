@@ -1,6 +1,5 @@
 ﻿using System.Numerics;
 using System.Runtime.CompilerServices;
-using GeometricAlgebraFulcrumLib.Core.GeometricAlgebra.Restricted.Records;
 using GeometricAlgebraFulcrumLib.Core.Structures;
 using GeometricAlgebraFulcrumLib.Core.Structures.BitManipulation;
 using GeometricAlgebraFulcrumLib.Core.Structures.Combinations;
@@ -255,11 +254,11 @@ public static class BasisBladeDataLookup
     }
         
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static RGaGradeKvIndexRecord BasisBladeGradeIndex(ulong id)
+    public static Tuple<uint, ulong> BasisBladeGradeIndex(ulong id)
     {
         return id < (ulong) BasisBladeDataArray.Length
             ? BasisBladeDataArray[id].GradeIndex
-            : new RGaGradeKvIndexRecord(
+            : new Tuple<uint, ulong>(
                 (uint) BitOperations.PopCount(id), 
                 id.CombinadicPatternToIndex()
             );

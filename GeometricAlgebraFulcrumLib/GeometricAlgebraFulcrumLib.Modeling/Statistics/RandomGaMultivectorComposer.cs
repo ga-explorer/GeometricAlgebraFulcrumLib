@@ -9,24 +9,24 @@
 //{
 //    public class RandomGaMultivectorComposer
 //    {
-//        public RGaMetric BasisSet { get; }
+//        public XGaMetric BasisSet { get; }
 
 //        public System.Random RandomGenerator { get; }
 
 
-//        public RandomGaMultivectorComposer([NotNull] RGaMetric basisSet)
+//        public RandomGaMultivectorComposer([NotNull] XGaMetric basisSet)
 //        {
 //            BasisSet = basisSet;
 //            RandomGenerator = new System.Random();
 //        }
 
-//        public RandomGaMultivectorComposer([NotNull] RGaMetric basisSet, int seed) 
+//        public RandomGaMultivectorComposer([NotNull] XGaMetric basisSet, int seed) 
 //        {
 //            BasisSet = basisSet;
 //            RandomGenerator = new System.Random(seed);
 //        }
 
-//        public RandomGaMultivectorComposer([NotNull] RGaMetric basisSet, [NotNull] System.Random randomGenerator)
+//        public RandomGaMultivectorComposer([NotNull] XGaMetric basisSet, [NotNull] System.Random randomGenerator)
 //        {
 //            BasisSet = basisSet;
 //            RandomGenerator = randomGenerator;

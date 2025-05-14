@@ -1,5 +1,5 @@
-﻿using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Generic.Multivectors.Composers;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Generic.Processors;
+﻿using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Multivectors.Composers;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Processors;
 using GeometricAlgebraFulcrumLib.Mathematica.Algebra;
 using GeometricAlgebraFulcrumLib.Mathematica.Utilities.Structures;
 
@@ -11,7 +11,7 @@ public static class MultiDerivativeSample
     {
         var processor = ScalarProcessorOfWolframExpr
             .Instance
-            .CreateEuclideanRGaProcessor();
+            .CreateEuclideanXGaProcessor();
 
         var v1 = @"V Cos[\[Omega] t]".ToExpr();
         var v2 = @"V Cos[\[Omega] t + 2 Pi / 3]".ToExpr();

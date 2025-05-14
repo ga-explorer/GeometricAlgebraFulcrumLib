@@ -118,6 +118,28 @@ internal static class IndexSetPatternPatternUtils
         return IndexSet.CreateFromUInt64Pattern(indexPattern1 & ~indexPattern2);
     }
 
+    
+    public static int CountSwapsWithSelf(IndexSet indexSet1)
+    {
+        var indexPattern1 = indexSet1.ToUInt64();
+            
+        if (indexPattern1 == 0UL)
+            return 0;
+
+        var swapCount = 0;
+        var count1 = BitOperations.PopCount(indexPattern1);
+        var index1Order = 0;
+        
+        while (indexPattern1 != 0UL)
+        {
+            index1Order++;
+            indexPattern1 &= indexPattern1 - 1;
+            
+            swapCount += count1 - index1Order;
+        }
+
+        return swapCount;
+    }
 
     public static int CountSwaps(IndexSet indexSet1, int index2)
     {

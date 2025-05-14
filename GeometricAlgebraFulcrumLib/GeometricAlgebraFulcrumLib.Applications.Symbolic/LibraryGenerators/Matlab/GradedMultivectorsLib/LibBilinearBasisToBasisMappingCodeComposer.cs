@@ -1,4 +1,5 @@
-﻿using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Basis;
+﻿
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
 using GeometricAlgebraFulcrumLib.Applications.Symbolic.LibraryGenerators.Matlab.GradedMultivectorsLib.Combinations;
 using GeometricAlgebraFulcrumLib.Utilities.Text;
 using GeometricAlgebraFulcrumLib.Utilities.Text.Files;
@@ -14,7 +15,7 @@ public class LibBilinearBasisToBasisMappingCodeComposer :
         TextFilesComposer codeFilesComposer,
         string productFunctionName,
         bool isSingleInputFunction,
-        Func<RGaBasisBlade, RGaBasisBlade, IRGaSignedBasisBlade> basisMapFunc
+        Func<XGaBasisBlade, XGaBasisBlade, IXGaSignedBasisBlade> basisMapFunc
     )
     {
         return new LibBilinearBasisToBasisMappingCodeComposer(specs, codeFilesComposer)
@@ -30,7 +31,7 @@ public class LibBilinearBasisToBasisMappingCodeComposer :
 
     public bool IsSingleInputFunction { get; init; }
 
-    public Func<RGaBasisBlade, RGaBasisBlade, IRGaSignedBasisBlade> BasisMapFunc { get; init; }
+    public Func<XGaBasisBlade, XGaBasisBlade, IXGaSignedBasisBlade> BasisMapFunc { get; init; }
 
 
     private LibBilinearBasisToBasisMappingCodeComposer(LibCodeComposerSpecs specs, TextFilesComposer codeFilesComposer)

@@ -1,13 +1,13 @@
 ﻿using System;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Generic.LinearMaps.Rotors;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Generic.Multivectors;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Generic.Multivectors.Composers;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Generic.Processors;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Generic;
 using GeometricAlgebraFulcrumLib.Mathematica.Algebra;
 using GeometricAlgebraFulcrumLib.Mathematica.Utilities.Structures;
 using GeometricAlgebraFulcrumLib.Mathematica.Utilities.Text;
 using Wolfram.NETLink;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Multivectors;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Processors;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.LinearMaps.Rotors;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Multivectors.Composers;
 
 namespace GeometricAlgebraFulcrumLib.Mathematica.Samples.Algebra.GeometricAlgebra;
 
@@ -20,8 +20,8 @@ public static class SymbolicScaledRotors2DSample
 
     // Create a 6-dimensional Euclidean geometric algebra processor based on the
     // selected scalar processor
-    public static RGaProcessor<Expr> GeometricProcessor { get; }
-        = ScalarProcessor.CreateEuclideanRGaProcessor();
+    public static XGaProcessor<Expr> GeometricProcessor { get; }
+        = ScalarProcessor.CreateEuclideanXGaProcessor();
 
     // This is a pre-defined text generator for displaying multivectors
     // with symbolic Wolfram Mathematica scalars using Expr objects

@@ -1,7 +1,7 @@
-﻿using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Generic.LinearMaps.Rotors;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Generic.Multivectors;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Generic.Multivectors.Composers;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Generic.Processors;
+﻿using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.LinearMaps.Rotors;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Multivectors;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Multivectors.Composers;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Processors;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Generic.Angles;
 using GeometricAlgebraFulcrumLib.Algebra.Polynomials.Generic.Basis;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Generic;
@@ -14,7 +14,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.Polynomials.Generic.PhCurves;
 /// <typeparam name="T"></typeparam>
 public sealed class PhCurve3DDegree5Canonical<T>
 {
-    public static PhCurve3DDegree5Canonical<T> Create(RGaProcessor<T> processor, RGaVector<T> p, RGaVector<T> d)
+    public static PhCurve3DDegree5Canonical<T> Create(XGaProcessor<T> processor, XGaVector<T> p, XGaVector<T> d)
     {
         var angle0 = processor.ScalarProcessor.DegreesToPolarAngle(0);
 
@@ -27,7 +27,7 @@ public sealed class PhCurve3DDegree5Canonical<T>
         );
     }
     
-    public static PhCurve3DDegree5Canonical<T> Create(RGaProcessor<T> processor, RGaVector<T> p, RGaVector<T> d, LinAngle<T> theta1, LinAngle<T> theta2)
+    public static PhCurve3DDegree5Canonical<T> Create(XGaProcessor<T> processor, XGaVector<T> p, XGaVector<T> d, LinAngle<T> theta1, LinAngle<T> theta2)
     {
         return new PhCurve3DDegree5Canonical<T>(
             processor, 
@@ -38,7 +38,7 @@ public sealed class PhCurve3DDegree5Canonical<T>
         );
     }
         
-    public static PhCurve3DDegree5Canonical<T> Create(RGaProcessor<T> processor, T p1, T p2, T p3, T d1, T d2, T d3)
+    public static PhCurve3DDegree5Canonical<T> Create(XGaProcessor<T> processor, T p1, T p2, T p3, T d1, T d2, T d3)
     {
         var angle0 = processor.ScalarProcessor.DegreesToPolarAngle(0);
 
@@ -69,36 +69,36 @@ public sealed class PhCurve3DDegree5Canonical<T>
         
     public IScalar<T> Scalar22 { get; }
 
-    public RGaVector<T> Vector00 { get; }
+    public XGaVector<T> Vector00 { get; }
         
-    public RGaVector<T> Vector01 { get; }
+    public XGaVector<T> Vector01 { get; }
         
-    public RGaVector<T> Vector02 { get; }
+    public XGaVector<T> Vector02 { get; }
         
-    public RGaVector<T> Vector11 { get; }
+    public XGaVector<T> Vector11 { get; }
         
-    public RGaVector<T> Vector12 { get; }
+    public XGaVector<T> Vector12 { get; }
         
-    public RGaVector<T> Vector22 { get; }
+    public XGaVector<T> Vector22 { get; }
 
-    public RGaVector<T> VectorU { get; }
+    public XGaVector<T> VectorU { get; }
 
-    public RGaScaledPureRotor<T> ScaledRotor0 { get; }
+    public XGaScaledPureRotor<T> ScaledRotor0 { get; }
 
-    public RGaScaledPureRotor<T> ScaledRotor1 { get; }
+    public XGaScaledPureRotor<T> ScaledRotor1 { get; }
         
-    public RGaScaledPureRotor<T> ScaledRotor2 { get; }
+    public XGaScaledPureRotor<T> ScaledRotor2 { get; }
         
-    public RGaScaledPureRotor<T> ScaledRotorV { get; }
+    public XGaScaledPureRotor<T> ScaledRotorV { get; }
 
     public LinPolarAngle<T> Theta1 { get; }
 
     public LinPolarAngle<T> Theta2 { get; }
 
-    public RGaProcessor<T> GeometricProcessor { get; }
+    public XGaProcessor<T> GeometricProcessor { get; }
 
 
-    private PhCurve3DDegree5Canonical(RGaProcessor<T> processor, RGaVector<T> p, RGaVector<T> d, LinAngle<T> theta1, LinAngle<T> theta2)
+    private PhCurve3DDegree5Canonical(XGaProcessor<T> processor, XGaVector<T> p, XGaVector<T> d, LinAngle<T> theta1, LinAngle<T> theta2)
     {
         GeometricProcessor = processor;
         Theta1 = theta1.ToPolarAngle();
@@ -121,7 +121,7 @@ public sealed class PhCurve3DDegree5Canonical<T>
             
         ScaledRotor2 = e1.CreateScaledParametricPureRotor3D(
             dUnit,
-            theta2,
+            Theta2,
             dNorm.ScalarValue
         );
 
@@ -139,7 +139,7 @@ public sealed class PhCurve3DDegree5Canonical<T>
             
         var v = e1.CreateScaledParametricPureRotor3D(
             uUnit,
-            theta1,
+            Theta1,
             uNorm.ScalarValue
         ).Multivector;
 
@@ -180,7 +180,7 @@ public sealed class PhCurve3DDegree5Canonical<T>
     }
 
 
-    public RGaVector<T> GetHodographPoint(T parameterValue)
+    public XGaVector<T> GetHodographPoint(T parameterValue)
     {
         var f00 = _basisPairProductSet.GetValue(0, 0, parameterValue);
         var f01 = _basisPairProductSet.GetValue(0, 1, parameterValue);
@@ -198,7 +198,7 @@ public sealed class PhCurve3DDegree5Canonical<T>
             f22 * Vector22;
     }
 
-    public RGaVector<T> GetCurvePoint(T parameterValue)
+    public XGaVector<T> GetCurvePoint(T parameterValue)
     {
         var f00 = _basisPairProductIntegralSet.GetValue(0, 0, parameterValue);
         var f01 = _basisPairProductIntegralSet.GetValue(0, 1, parameterValue);

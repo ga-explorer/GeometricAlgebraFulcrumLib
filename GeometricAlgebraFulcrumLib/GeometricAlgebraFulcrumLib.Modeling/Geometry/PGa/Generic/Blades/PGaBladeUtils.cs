@@ -1,7 +1,7 @@
 ﻿using System.Runtime.CompilerServices;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Extended.Generic.Multivectors;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Extended.Generic.Multivectors.Composers;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Multivectors;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Multivectors.Composers;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Generic;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.PGa.Generic.Elements;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.BitManipulation;
@@ -92,7 +92,7 @@ public static class PGaBladeUtils
             .Select(id =>
                 pgaGeometricSpace
                     .ProjectiveProcessor
-                    .KVectorTerm((id << 1).BitPatternToIndexSet())
+                    .KVectorTerm((id << 1).ToUInt64IndexSet())
                     .ToProjectiveBlade(pgaGeometricSpace)
             );
     }
@@ -108,7 +108,7 @@ public static class PGaBladeUtils
             .Select(id =>
                 pgaGeometricSpace
                     .ProjectiveProcessor
-                    .KVectorTerm(id.BitPatternToIndexSet())
+                    .KVectorTerm(id.ToUInt64IndexSet())
                     .ToProjectiveBlade(pgaGeometricSpace)
             );
     }

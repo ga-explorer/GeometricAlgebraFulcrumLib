@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.Numerics;
 using System.Runtime.CompilerServices;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.BitManipulation;
+using GeometricAlgebraFulcrumLib.Utilities.Structures.Combinations;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Tuples;
 using PeterO.Numbers;
 
@@ -92,6 +93,43 @@ public readonly struct IndexSet :
 
         return ~low; // Not found, return bitwise complement of insertion point
     }
+    
+    /// <summary>
+    /// Generates all combinations of size k from input index array
+    /// </summary>
+    /// <param name="indexArray"></param>
+    /// <param name="k"></param>
+    /// <returns></returns>
+    private static IEnumerable<int[]> GenerateCombinations(int[] indexArray, int k)
+    {
+        var n = indexArray.Length;
+
+        Debug.Assert(k >= 0 && k <= n);
+            
+        var indices = new int[k];
+        for (var i = 0; i < k; i++) 
+            indices[i] = i;
+
+        while (true)
+        {
+            // Yield current combination
+            var subset = new int[k];
+            for (var i = 0; i < k; i++)
+                subset[i] = indexArray[indices[i]];
+            yield return subset;
+
+            // Move to next combination
+            var iPos = k - 1;
+            while (iPos >= 0 && indices[iPos] == n - k + iPos)
+                iPos--;
+
+            if (iPos < 0) break;
+
+            indices[iPos]++;
+            for (var j = iPos + 1; j < k; j++)
+                indices[j] = indices[j - 1] + 1;
+        }
+    }
 
 
     private static int _emptySetCount;
@@ -100,7 +138,7 @@ public readonly struct IndexSet :
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static IndexSet Create(int index)
+    public static IndexSet CreateUnit(int index)
     {
         Debug.Assert(index >= 0);
 
@@ -113,7 +151,7 @@ public readonly struct IndexSet :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static IndexSet Create(int index1, int index2)
+    public static IndexSet CreatePair(int index1, int index2)
     {
         Debug.Assert(index1 >= 0 && index2 > index1);
 
@@ -129,7 +167,7 @@ public readonly struct IndexSet :
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static IndexSet Create(int index1, int index2, int index3)
+    public static IndexSet CreateTriplet(int index1, int index2, int index3)
     {
         Debug.Assert(index1 >= 0 && index2 > index1 && index3 > index2);
 
@@ -203,6 +241,16 @@ public readonly struct IndexSet :
 
         return new IndexSet(bitPattern);
     }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static IndexSet Create(IReadOnlyList<int> indexArray, bool assumeOrderedDistinct)
+    {
+        return Create(
+            assumeOrderedDistinct 
+                ? indexArray.ToArray() 
+                : indexArray.Distinct().OrderBy(i => i).ToArray()
+        );
+    }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static IndexSet Create(IEnumerable<int> indexArray, bool assumeOrderedDistinct)
@@ -211,6 +259,23 @@ public readonly struct IndexSet :
             assumeOrderedDistinct 
                 ? indexArray.ToArray() 
                 : indexArray.Distinct().OrderBy(i => i).ToArray()
+        );
+    }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static IndexSet CreateDense(int count)
+    {
+        if (count == 0) return EmptySet;
+
+        var lastIndex = count - 1;
+        
+        if (lastIndex >= 64)
+            return new IndexSet(
+                count.GetRange().ToArray()
+            );
+
+        return new IndexSet(
+            count.CreateMaskUInt64()
         );
     }
 
@@ -248,6 +313,150 @@ public readonly struct IndexSet :
         return bitPattern == 0
             ? EmptySet
             : new IndexSet(bitPattern);
+    }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static IndexSet EncodeUInt64AsCombinadic(int intValue, int digitsCount)
+    {
+        return Create(
+            ((ulong)intValue).IndexToCombinadic(digitsCount), 
+            false
+        );
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static IndexSet EncodeUInt64AsCombinadic(ulong intValue, int digitsCount)
+    {
+        return Create(
+            intValue.IndexToCombinadic(digitsCount), 
+            false
+        );
+    }
+
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static explicit operator int(IndexSet indexSet)
+    {
+        return indexSet.ToInt32();
+    }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static explicit operator uint(IndexSet indexSet)
+    {
+        return indexSet.ToUInt32();
+    }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static explicit operator long(IndexSet indexSet)
+    {
+        return indexSet.ToInt64();
+    }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static explicit operator ulong(IndexSet indexSet)
+    {
+        return indexSet.ToUInt64();
+    }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static explicit operator IndexSet(int indexSet)
+    {
+        return indexSet == 0 ? EmptySet : new IndexSet();
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static explicit operator IndexSet(ulong indexSet)
+    {
+        return indexSet == 0UL ? EmptySet : new IndexSet();
+    }
+    
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static IndexSet operator <<(IndexSet operand1, int shift)
+    {
+        return operand1.ShiftIndices(shift);
+    }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static IndexSet operator >>(IndexSet operand1, int shift)
+    {
+        return operand1.ShiftIndices(-shift);
+    }
+
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static IndexSet operator ^(ulong operand1, IndexSet operand2)
+    {
+        return CreateFromUInt64Pattern(operand1).SetMerge(operand2);
+    }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static IndexSet operator ^(IndexSet operand1, ulong operand2)
+    {
+        return operand1.SetMerge(CreateFromUInt64Pattern(operand2));
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static IndexSet operator ^(IndexSet operand1, IndexSet operand2)
+    {
+        return operand1.SetMerge(operand2);
+    }
+    
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static IndexSet operator &(ulong operand1, IndexSet operand2)
+    {
+        return CreateFromUInt64Pattern(operand1).SetIntersect(operand2);
+    }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static IndexSet operator &(IndexSet operand1, ulong operand2)
+    {
+        return operand1.SetIntersect(CreateFromUInt64Pattern(operand2));
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static IndexSet operator &(IndexSet operand1, IndexSet operand2)
+    {
+        return operand1.SetIntersect(operand2);
+    }
+    
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static IndexSet operator |(ulong operand1, IndexSet operand2)
+    {
+        return CreateFromUInt64Pattern(operand1).SetUnion(operand2);
+    }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static IndexSet operator |(IndexSet operand1, ulong operand2)
+    {
+        return operand1.SetUnion(CreateFromUInt64Pattern(operand2));
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static IndexSet operator |(IndexSet operand1, IndexSet operand2)
+    {
+        return operand1.SetUnion(operand2);
+    }
+    
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static IndexSet operator -(ulong operand1, IndexSet operand2)
+    {
+        return CreateFromUInt64Pattern(operand1).SetDifference(operand2);
+    }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static IndexSet operator -(IndexSet operand1, ulong operand2)
+    {
+        return operand1.SetDifference(CreateFromUInt64Pattern(operand2));
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static IndexSet operator -(IndexSet operand1, IndexSet operand2)
+    {
+        return operand1.SetDifference(operand2);
     }
 
 
@@ -315,6 +524,16 @@ public readonly struct IndexSet :
         => _bitPattern == 0UL 
             ? _indexArray[0] 
             : _bitPattern.FirstOneBitPosition();
+    
+    public Pair<int> FirstIndexPair
+        => _bitPattern == 0UL 
+            ? new Pair<int>(_indexArray[0], _indexArray[1]) 
+            : new Pair<int>(_bitPattern.GetNthSetBitPosition(0), _bitPattern.GetNthSetBitPosition(1));
+    
+    public Triplet<int> FirstIndexTriplet
+        => _bitPattern == 0UL 
+            ? new Triplet<int>(_indexArray[0], _indexArray[1], _indexArray[2]) 
+            : new Triplet<int>(_bitPattern.GetNthSetBitPosition(0), _bitPattern.GetNthSetBitPosition(1), _bitPattern.GetNthSetBitPosition(2));
 
     public int LastIndex
         => _bitPattern == 0UL 
@@ -516,6 +735,14 @@ public readonly struct IndexSet :
             ? _bitPattern.GetSetBitPositions() 
             : _indexArray;
     }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public IEnumerable<T> GetIndices<T>(Func<int, T> indexMapFunc)
+    {
+        return IsUInt64Set 
+            ? _bitPattern.GetSetBitPositions().Select(indexMapFunc)
+            : _indexArray.Select(indexMapFunc);
+    }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public IEnumerable<int> GetReversedIndices()
@@ -529,6 +756,149 @@ public readonly struct IndexSet :
         {
             for (var i = _indexArray.Length - 1; i >= 0; i--)
                 yield return _indexArray[i];
+        }
+    }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public IEnumerable<T> GetReversedIndices<T>(Func<int, T> indexMapFunc)
+    {
+        if (IsUInt64Set)
+        {
+            foreach (var i in _bitPattern.GetSetBitPositionsReversed())
+                yield return indexMapFunc(i);
+        }
+        else
+        {
+            for (var i = _indexArray.Length - 1; i >= 0; i--)
+                yield return indexMapFunc(_indexArray[i]);
+        }
+    }
+
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public IEnumerable<IndexSet> GetUnitSubsets()
+    {
+        return IsUInt64Set 
+            ? _bitPattern.GetSetBitPositions().Select(i => new IndexSet(1UL << i))
+            : _indexArray.Select(i => i < 64 ? new IndexSet(1UL << i) : new IndexSet([i]));
+    }
+    
+    public IEnumerable<IndexSet> GetSubsets()
+    {
+        if (IsUInt64Set)
+        {
+            foreach (var i in _bitPattern.GetSubBitPatterns()) 
+                yield return new IndexSet(i);
+        }
+        else
+        {
+            var n = _indexArray.Length;
+
+            yield return EmptySet;
+
+            for (var k = 1; k < n; k++)
+            {
+                var subSets = 
+                    GenerateCombinations(_indexArray, k);
+
+                foreach (var subset in subSets)
+                    yield return Create(subset);
+            }
+
+            yield return this;
+        }
+    }
+    
+    public IEnumerable<IndexSet> GetSubsetsOfSize(int size)
+    {
+        if (IsUInt64Set)
+        {
+            foreach (var i in _bitPattern.GetSubBitPatternsOfSize(size)) 
+                yield return new IndexSet(i);
+        }
+        else
+        {
+            if (size < 0 || size > _indexArray.Length) yield break;
+
+            if (size == 0)
+            {
+                yield return EmptySet;
+                yield break;
+            }
+
+            if (size == _indexArray.Length)
+            {
+                yield return this;
+                yield break;
+            }
+
+            foreach (var subset in GenerateCombinations(_indexArray, size))
+                yield return Create(subset);
+        }
+    }
+    
+    public IEnumerable<IndexSet> GetSubsetsOfSizeInRange(int maxSize)
+    {
+        if (IsUInt64Set)
+        {
+            foreach (var i in _bitPattern.GetSubBitPatternsOfSizeInRange(0, maxSize)) 
+                yield return new IndexSet(i);
+        }
+        else
+        {
+            var k2 = int.Min(maxSize, _indexArray.Length);
+
+            yield return EmptySet;
+
+            for (var k = 1; k < k2; k++)
+            {
+                foreach (var subset in GenerateCombinations(_indexArray, k))
+                    yield return Create(subset);
+            }
+
+            if (k2 == _indexArray.Length)
+                yield return this;
+            else
+            {
+                foreach (var subset in GenerateCombinations(_indexArray, k2))
+                    yield return Create(subset);
+            }
+        }
+    }
+
+    public IEnumerable<IndexSet> GetSubsetsOfSizeInRange(int minSize, int maxSize)
+    {
+        if (IsUInt64Set)
+        {
+            foreach (var i in _bitPattern.GetSubBitPatternsOfSizeInRange(minSize, maxSize)) 
+                yield return new IndexSet(i);
+        }
+        else
+        {
+            var k1 = int.Max(minSize, 0);
+            var k2 = int.Min(maxSize, _indexArray.Length);
+
+            if (k1 == 0)
+                yield return EmptySet;
+            else
+            {
+                foreach (var subset in GenerateCombinations(_indexArray, k1))
+                    yield return Create(subset);
+            }
+
+            for (var k = k1 + 1; k < k2; k++)
+            {
+                foreach (var subset in GenerateCombinations(_indexArray, k))
+                    yield return Create(subset);
+            }
+
+            if (k2 == _indexArray.Length)
+                yield return this;
+            else
+            {
+                foreach (var subset in GenerateCombinations(_indexArray, k2))
+                    yield return Create(subset);
+            }
         }
     }
 
@@ -587,6 +957,55 @@ public readonly struct IndexSet :
         );
     }
     
+
+    /// <summary>
+    /// https://en.wikipedia.org/wiki/Combinatorial_number_system
+    /// </summary>
+    /// <returns></returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public int DecodeCombinadicToInt32()
+    {
+        return (int)DecodeCombinadicToUInt64();
+    }
+
+    /// <summary>
+    /// https://en.wikipedia.org/wiki/Combinatorial_number_system
+    /// </summary>
+    /// <returns></returns>
+    public ulong DecodeCombinadicToUInt64()
+    {
+        if (IsEmptySet) return 0;
+        if (IsUnitSet) return (ulong) FirstIndex;
+        
+        var intValue = 0UL;
+
+        if (IsUInt64Set)
+        {
+            var bitPattern = _bitPattern;
+            var k = 0;
+            var n = 0;
+
+            while (bitPattern > 0)
+            {
+                if ((bitPattern & 1UL) != 0)
+                {
+                    k++; // binomial lower index: 1-based index
+                    intValue += n.GetBinomialCoefficient(k);
+                }
+
+                n++; // binomial upper index
+                bitPattern >>= 1;
+            }
+        }
+        else
+        {
+            for (var i = 0; i < _indexArray.Length; i++) 
+                intValue += _indexArray[i].GetBinomialCoefficient(i + 1);
+        }
+
+        return intValue;
+    }
+
 
     public bool SetContains(int index)
     {
@@ -843,7 +1262,7 @@ public readonly struct IndexSet :
     {
         Debug.Assert(index2 >= 0);
 
-        return SetContains(index2) ? Create(index2) : EmptySet;
+        return SetContains(index2) ? CreateUnit(index2) : EmptySet;
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -973,6 +1392,14 @@ public readonly struct IndexSet :
             ? IndexSetArrayPatternUtils.CountSwaps(this, indexSet2)
             : IndexSetArrayArrayUtils.CountSwaps(this, indexSet2);
     }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public int SetCountSwapsWithSelf()
+    {
+        return IsUInt64Set 
+            ? IndexSetPatternPatternUtils.CountSwapsWithSelf(this) 
+            : IndexSetArrayArrayUtils.CountSwapsWithSelf(this);
+    }
 
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -1030,6 +1457,39 @@ public readonly struct IndexSet :
         return indexSet2.IsUInt64Set
             ? IndexSetArrayPatternUtils.MergeCountSwapsTrackCommon(this, indexSet2)
             : IndexSetArrayArrayUtils.MergeCountSwapsTrackCommon(this, indexSet2);
+    }
+
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public (IndexSet unitIndexSet, IndexSet remainingIndexSet) SplitByFirstIndex()
+    {
+        if (IsEmptySet)
+            throw new InvalidOperationException();
+
+        if (IsUnitSet)
+            return (this, EmptySet);
+
+        var firstIndex = FirstIndex;
+        var unitIndexSet = CreateUnit(firstIndex);
+        var remainingIndexSet = Remove(firstIndex);
+
+        return (unitIndexSet, remainingIndexSet);
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public (IndexSet unitIndexSet, IndexSet remainingIndexSet) SplitByLastIndex()
+    {
+        if (IsEmptySet)
+            throw new InvalidOperationException();
+
+        if (IsUnitSet)
+            return (this, EmptySet);
+
+        var lastIndex = LastIndex;
+        var unitIndexSet = CreateUnit(lastIndex);
+        var remainingIndexSet = Remove(lastIndex);
+
+        return (unitIndexSet, remainingIndexSet);
     }
 
 

@@ -1,13 +1,14 @@
 ﻿using System.Diagnostics;
 using System.Runtime.CompilerServices;
-using GeometricAlgebraFulcrumLib.Core.GeometricAlgebra.Restricted.Basis;
-using GeometricAlgebraFulcrumLib.Core.GeometricAlgebra.Restricted.Float64.Multivectors;
-using GeometricAlgebraFulcrumLib.Core.GeometricAlgebra.Restricted.Float64.Multivectors.Composers;
-using GeometricAlgebraFulcrumLib.Core.GeometricAlgebra.Restricted.Float64.Processors;
+using GeometricAlgebraFulcrumLib.Core.GeometricAlgebra.Basis;
+using GeometricAlgebraFulcrumLib.Core.GeometricAlgebra.Float64.Multivectors;
+using GeometricAlgebraFulcrumLib.Core.GeometricAlgebra.Float64.Multivectors.Composers;
+using GeometricAlgebraFulcrumLib.Core.GeometricAlgebra.Float64.Processors;
 using GeometricAlgebraFulcrumLib.Core.LinearAlgebra.Float64.Angles;
 using GeometricAlgebraFulcrumLib.Core.LinearAlgebra.Float64.Vectors.Space2D;
 using GeometricAlgebraFulcrumLib.Core.LinearAlgebra.Float64.Vectors.Space3D;
 using GeometricAlgebraFulcrumLib.Core.Scalars.Float64;
+using GeometricAlgebraFulcrumLib.Core.Structures.IndexSets;
 using GeometricAlgebraFulcrumLib.Core.Structures.Tuples;
 
 // ReSharper disable CompareOfFloatsByEqualityOperator
@@ -22,7 +23,7 @@ public static class GaMapFactory
     /// <param name="basisSet"></param>
     /// <returns></returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static GaScaledPureRotor CreateIdentityRotor(this RGaFloat64Processor basisSet)
+    public static GaScaledPureRotor CreateIdentityRotor(this XGaFloat64Processor basisSet)
     {
         var multivector = 
             basisSet.Scalar(1);
@@ -35,7 +36,7 @@ public static class GaMapFactory
     }
         
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static GaScaledPureRotor CreateScaledIdentityRotor(this RGaFloat64Processor basisSet, double scalingFactor)
+    public static GaScaledPureRotor CreateScaledIdentityRotor(this XGaFloat64Processor basisSet, double scalingFactor)
     {
         if (scalingFactor <= 0)
             throw new ArgumentOutOfRangeException(nameof(scalingFactor));
@@ -57,7 +58,7 @@ public static class GaMapFactory
     /// <param name="blade"></param>
     /// <returns></returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static GaScaledPureRotor CreatePureRotor(this RGaFloat64Multivector blade)
+    public static GaScaledPureRotor CreatePureRotor(this XGaFloat64Multivector blade)
     {
         var sign = blade.SpSquared().Sign();
 
@@ -76,7 +77,7 @@ public static class GaMapFactory
     /// <param name="blade"></param>
     /// <param name="bladeSignature"></param>
     /// <returns></returns>
-    public static GaScaledPureRotor CreatePureRotor(this RGaFloat64Multivector blade, IntegerSign bladeSignature)
+    public static GaScaledPureRotor CreatePureRotor(this XGaFloat64Multivector blade, IntegerSign bladeSignature)
     {
         var basisSet = blade.Processor;
 
@@ -108,7 +109,7 @@ public static class GaMapFactory
     /// </summary>
     /// <returns></returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static GaScaledPureRotor CreateScaledPureRotor(this RGaFloat64Multivector multivector)
+    public static GaScaledPureRotor CreateScaledPureRotor(this XGaFloat64Multivector multivector)
     {
         return new GaScaledPureRotor(multivector);
     }
@@ -120,7 +121,7 @@ public static class GaMapFactory
     /// <param name="targetVector"></param>
     /// <param name="assumeUnitVectors"></param>
     /// <returns></returns>
-    public static GaScaledPureRotor CreateEuclideanPureRotor(this RGaFloat64Vector sourceVector, RGaFloat64Vector targetVector, bool assumeUnitVectors = false)
+    public static GaScaledPureRotor CreateEuclideanPureRotor(this XGaFloat64Vector sourceVector, XGaFloat64Vector targetVector, bool assumeUnitVectors = false)
     {
         var basisSet = sourceVector.Processor;
 
@@ -162,7 +163,7 @@ public static class GaMapFactory
     /// <returns></returns>
     public static GaScaledPureRotor CreateEuclideanPureRotor(this ILinFloat64Vector2D sourceVector, ILinFloat64Vector2D targetVector, bool assumeUnitVectors = false)
     {
-        var basisSet = RGaFloat64Processor.Euclidean;
+        var basisSet = XGaFloat64Processor.Euclidean;
 
         var cosAngle = 
             assumeUnitVectors
@@ -178,8 +179,8 @@ public static class GaMapFactory
 
         var rotationBlade = 
             cosAngle.IsNegativeOne()
-                ? sourceVector.GetUnitNormal().ToRGaFloat64Vector().Op(sourceVector.ToRGaFloat64Vector())
-                : targetVector.ToRGaFloat64Vector().Op(sourceVector.ToRGaFloat64Vector());
+                ? sourceVector.GetUnitNormal().ToXGaFloat64Vector().Op(sourceVector.ToXGaFloat64Vector())
+                : targetVector.ToXGaFloat64Vector().Op(sourceVector.ToXGaFloat64Vector());
 
         var unitRotationBlade = 
             rotationBlade / (-rotationBlade.ESpSquared()).Sqrt();
@@ -201,7 +202,7 @@ public static class GaMapFactory
     /// <returns></returns>
     public static GaScaledPureRotor CreateEuclideanPureRotor(this ILinFloat64Vector3D sourceVector, ILinFloat64Vector3D targetVector, bool assumeUnitVectors = false)
     {
-        var basisSet = RGaFloat64Processor.Euclidean;
+        var basisSet = XGaFloat64Processor.Euclidean;
 
         var cosAngle = 
             assumeUnitVectors
@@ -217,8 +218,8 @@ public static class GaMapFactory
 
         var rotationBlade = 
             cosAngle == -1
-                ? sourceVector.GetUnitNormal().ToRGaFloat64Vector().Op(sourceVector.ToRGaFloat64Vector())
-                : targetVector.ToRGaFloat64Vector().Op(sourceVector.ToRGaFloat64Vector());
+                ? sourceVector.GetUnitNormal().ToXGaFloat64Vector().Op(sourceVector.ToXGaFloat64Vector())
+                : targetVector.ToXGaFloat64Vector().Op(sourceVector.ToXGaFloat64Vector());
 
         var unitRotationBlade = 
             rotationBlade / (-rotationBlade.ESpSquared()).Sqrt();
@@ -238,7 +239,7 @@ public static class GaMapFactory
     /// <param name="sourceVector"></param>
     /// <param name="targetVector"></param>
     /// <returns></returns>
-    public static GaScaledPureRotor CreateEuclideanScaledPureRotor(this RGaFloat64Vector sourceVector, RGaFloat64Vector targetVector)
+    public static GaScaledPureRotor CreateEuclideanScaledPureRotor(this XGaFloat64Vector sourceVector, XGaFloat64Vector targetVector)
     {
         var basisSet = sourceVector.Processor;
 
@@ -281,7 +282,7 @@ public static class GaMapFactory
     /// <returns></returns>
     public static GaScaledPureRotor CreateEuclideanScaledPureRotor(this ILinFloat64Vector2D sourceVector, ILinFloat64Vector2D targetVector)
     {
-        var basisSet = RGaFloat64Processor.Euclidean;
+        var basisSet = XGaFloat64Processor.Euclidean;
 
         var uNorm = sourceVector.VectorENorm();
         var vNorm = targetVector.VectorENorm();
@@ -296,8 +297,8 @@ public static class GaMapFactory
 
         var rotationBlade = 
             cosAngle == -1d
-                ? sourceVector.GetUnitNormal().ToRGaFloat64Vector().Op(sourceVector.ToRGaFloat64Vector())
-                : targetVector.ToRGaFloat64Vector().Op(sourceVector.ToRGaFloat64Vector());
+                ? sourceVector.GetUnitNormal().ToXGaFloat64Vector().Op(sourceVector.ToXGaFloat64Vector())
+                : targetVector.ToXGaFloat64Vector().Op(sourceVector.ToXGaFloat64Vector());
 
         var unitRotationBlade = 
             rotationBlade / (-rotationBlade.ESpSquared()).Sqrt();
@@ -322,7 +323,7 @@ public static class GaMapFactory
     /// <returns></returns>
     public static GaScaledPureRotor CreateEuclideanScaledPureRotor(this ILinFloat64Vector3D sourceVector, ILinFloat64Vector3D targetVector)
     {
-        var basisSet = RGaFloat64Processor.Euclidean;
+        var basisSet = XGaFloat64Processor.Euclidean;
 
         var uNorm = sourceVector.VectorENorm();
         var vNorm = targetVector.VectorENorm();
@@ -337,8 +338,8 @@ public static class GaMapFactory
 
         var rotationBlade = 
             cosAngle == -1d
-                ? sourceVector.GetUnitNormal().ToRGaFloat64Vector().Op(sourceVector.ToRGaFloat64Vector())
-                : targetVector.ToRGaFloat64Vector().Op(sourceVector.ToRGaFloat64Vector());
+                ? sourceVector.GetUnitNormal().ToXGaFloat64Vector().Op(sourceVector.ToXGaFloat64Vector())
+                : targetVector.ToXGaFloat64Vector().Op(sourceVector.ToXGaFloat64Vector());
 
         var unitRotationBlade = 
             rotationBlade / (-rotationBlade.ESpSquared()).Sqrt();
@@ -360,7 +361,7 @@ public static class GaMapFactory
     /// <param name="rotationAngle"></param>
     /// <param name="rotationBlade"></param>
     /// <returns></returns>
-    public static GaScaledPureRotor CreateEuclideanPureRotor(this RGaFloat64Bivector rotationBlade, LinFloat64Angle rotationAngle)
+    public static GaScaledPureRotor CreateEuclideanPureRotor(this XGaFloat64Bivector rotationBlade, LinFloat64Angle rotationAngle)
     {
         var (sinHalfAngle, cosHalfAngle) = 
             (0.5d * rotationAngle.RadiansValue).SinCos();
@@ -383,13 +384,13 @@ public static class GaMapFactory
     /// <param name="targetVector"></param>
     /// <param name="angleTheta"></param>
     /// <returns></returns>
-    public static GaScaledPureRotor CreateEuclideanParametricPureRotor3D(this RGaFloat64Processor basisSet, ILinFloat64Vector3D sourceVector, ILinFloat64Vector3D targetVector, LinFloat64Angle angleTheta)
+    public static GaScaledPureRotor CreateEuclideanParametricPureRotor3D(this XGaFloat64Processor basisSet, ILinFloat64Vector3D sourceVector, ILinFloat64Vector3D targetVector, LinFloat64Angle angleTheta)
     {
         //var basisSet = BasisBladeSet.CreateEuclidean(3);
 
         // Compute inverse of 3D pseudo-scalar = -e123
         var pseudoScalarInverse =
-            basisSet.CreateBasisBlade(7).ToKVector().EInverse();
+            basisSet.CreateBasisBlade((IndexSet)7).ToKVector().EInverse();
 
         // Compute the smallest angle between source and target vectors
         var cosAngle0 = 
@@ -397,7 +398,7 @@ public static class GaMapFactory
 
         // Define a rotor S with angle theta in the plane orthogonal to targetVector - sourceVector
         var rotorSBlade = 
-            targetVector.VectorSubtract(sourceVector).ToRGaFloat64Vector().EGp(pseudoScalarInverse).GetBivectorPart();
+            targetVector.VectorSubtract(sourceVector).ToXGaFloat64Vector().EGp(pseudoScalarInverse).GetBivectorPart();
 
         var rotorS = 
             rotorSBlade.CreateEuclideanPureRotor(angleTheta);
@@ -407,7 +408,7 @@ public static class GaMapFactory
         // sourceVector and targetVector by angle theta in the plane orthogonal to
         // targetVector - sourceVector using rotor S
         var rotorBlade =
-            rotorS.OmMap(targetVector.ToRGaFloat64Vector().Op(sourceVector.ToRGaFloat64Vector())).GetBivectorPart();
+            rotorS.OmMap(targetVector.ToXGaFloat64Vector().Op(sourceVector.ToXGaFloat64Vector())).GetBivectorPart();
             
         // Define parametric angle of rotation
         var rotorAngle =
@@ -420,7 +421,7 @@ public static class GaMapFactory
     }
         
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static GaScaledPureRotor CreateEuclideanScaledParametricPureRotor3D(this RGaFloat64Processor basisSet, ILinFloat64Vector3D sourceVector, ILinFloat64Vector3D targetVector, LinFloat64Angle angleTheta, bool assumeUnitVectors = false)
+    public static GaScaledPureRotor CreateEuclideanScaledParametricPureRotor3D(this XGaFloat64Processor basisSet, ILinFloat64Vector3D sourceVector, ILinFloat64Vector3D targetVector, LinFloat64Angle angleTheta, bool assumeUnitVectors = false)
     {
         if (assumeUnitVectors)
             basisSet.CreateEuclideanParametricPureRotor3D(sourceVector, targetVector, angleTheta);
@@ -439,7 +440,7 @@ public static class GaMapFactory
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static GaScaledPureRotor CreateEuclideanScaledParametricPureRotor3D(this RGaFloat64Processor basisSet, ILinFloat64Vector3D sourceVector, ILinFloat64Vector3D targetVector, LinFloat64Angle angleTheta, double scalingFactor)
+    public static GaScaledPureRotor CreateEuclideanScaledParametricPureRotor3D(this XGaFloat64Processor basisSet, ILinFloat64Vector3D sourceVector, ILinFloat64Vector3D targetVector, LinFloat64Angle angleTheta, double scalingFactor)
     {
         return basisSet
             .CreateEuclideanParametricPureRotor3D(sourceVector, targetVector, angleTheta)
@@ -456,7 +457,7 @@ public static class GaMapFactory
     /// <param name="targetVector"></param>
     /// <param name="assumeUnitVector"></param>
     /// <returns></returns>
-    public static GaScaledPureRotor CreateEuclideanPureRotor(this RGaFloat64Processor basisSet, int sourceBasisVectorIndex, RGaFloat64Vector targetVector, bool assumeUnitVector = false)
+    public static GaScaledPureRotor CreateEuclideanPureRotor(this XGaFloat64Processor basisSet, int sourceBasisVectorIndex, XGaFloat64Vector targetVector, bool assumeUnitVector = false)
     {
         var ek = basisSet.CreateBasisVector(sourceBasisVectorIndex).ToKVector();
         var vk = targetVector.GetTermScalarByIndex(sourceBasisVectorIndex);
@@ -471,7 +472,7 @@ public static class GaMapFactory
         );
     }
 
-    public static GaScaledPureRotor CreateEuclideanPureRotor(this RGaFloat64Vector sourceVector1, RGaFloat64Vector sourceVector2, RGaFloat64Vector targetVector1, RGaFloat64Vector targetVector2, bool assumeUnitVectors = false)
+    public static GaScaledPureRotor CreateEuclideanPureRotor(this XGaFloat64Vector sourceVector1, XGaFloat64Vector sourceVector2, XGaFloat64Vector targetVector1, XGaFloat64Vector targetVector2, bool assumeUnitVectors = false)
     {
         var rotor1 = 
             sourceVector1.CreateEuclideanPureRotor(
@@ -493,7 +494,7 @@ public static class GaMapFactory
         return new GaScaledPureRotor(multivector);
     }
 
-    //public static GaScaledPureRotor CreateEuclideanPureRotor(this GaBasisSet basisSet, uint baseSpaceDimensions, IRGaMultivector inputVector1, IRGaMultivector inputVector2, IRGaMultivector rotatedVector1, IRGaMultivector rotatedVector2)
+    //public static GaScaledPureRotor CreateEuclideanPureRotor(this GaBasisSet basisSet, uint baseSpaceDimensions, IXGaMultivector inputVector1, IXGaMultivector inputVector2, IXGaMultivector rotatedVector1, IXGaMultivector rotatedVector2)
     //{
     //    var inputFrame = basisSet.CreateFreeFrame(
     //        GeoFreeFrameSpecs.CreateLinearlyIndependentSpecs(),
@@ -527,7 +528,7 @@ public static class GaMapFactory
     /// <param name="j"></param>
     /// <param name="rotationAngle"></param>
     /// <returns></returns>
-    public static GaScaledPureRotor CreateGivensRotor(this RGaFloat64Processor basisSet, int i, int j, LinFloat64Angle rotationAngle)
+    public static GaScaledPureRotor CreateGivensRotor(this XGaFloat64Processor basisSet, int i, int j, LinFloat64Angle rotationAngle)
     {
         Debug.Assert(j != i);
 
@@ -568,7 +569,7 @@ public static class GaMapFactory
     /// <param name="r12"></param>
     /// <returns></returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static GaScaledPureRotor CreateScaledPureRotor2D(this RGaFloat64Processor basisSet, double r0, double r12)
+    public static GaScaledPureRotor CreateScaledPureRotor2D(this XGaFloat64Processor basisSet, double r0, double r12)
     {
         var multivector = basisSet.CreateComposer();
 
@@ -590,7 +591,7 @@ public static class GaMapFactory
     /// <param name="r23"></param>
     /// <returns></returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static GaScaledPureRotor CreateScaledPureRotor3D(this RGaFloat64Processor basisSet, double r0, double r12, double r13, double r23)
+    public static GaScaledPureRotor CreateScaledPureRotor3D(this XGaFloat64Processor basisSet, double r0, double r12, double r13, double r23)
     {
         var multivector = basisSet.CreateComposer();
             
@@ -613,7 +614,7 @@ public static class GaMapFactory
     /// <param name="targetVector"></param>
     /// <param name="assumeUnitVector"></param>
     /// <returns></returns>
-    public static GaScaledPureRotor CreatePureRotorFromBasisVector(this RGaFloat64Multivector targetVector, int sourceBasisVectorIndex, bool assumeUnitVector = false)
+    public static GaScaledPureRotor CreatePureRotorFromBasisVector(this XGaFloat64Multivector targetVector, int sourceBasisVectorIndex, bool assumeUnitVector = false)
     {
         var processor = targetVector.Metric;
         var k = sourceBasisVectorIndex;
@@ -641,7 +642,7 @@ public static class GaMapFactory
     /// <param name="targetVector"></param>
     /// <param name="assumeUnitVector"></param>
     /// <returns></returns>
-    public static GaScaledPureRotor CreateScaledPureRotorFromBasisVector(this RGaFloat64Multivector targetVector, int sourceBasisVectorIndex, bool assumeUnitVector = false)
+    public static GaScaledPureRotor CreateScaledPureRotorFromBasisVector(this XGaFloat64Multivector targetVector, int sourceBasisVectorIndex, bool assumeUnitVector = false)
     {
         var processor = targetVector.Metric;
         var k = sourceBasisVectorIndex;
@@ -673,7 +674,7 @@ public static class GaMapFactory
     /// <param name="assumeUnitVector"></param>
     /// <param name="sourceVector"></param>
     /// <returns></returns>
-    public static GaScaledPureRotor CreateScaledPureRotorToBasisVector(this RGaFloat64Vector sourceVector, int targetBasisVectorIndex, bool assumeUnitVector = false)
+    public static GaScaledPureRotor CreateScaledPureRotorToBasisVector(this XGaFloat64Vector sourceVector, int targetBasisVectorIndex, bool assumeUnitVector = false)
     {
         var processor = sourceVector.Metric;
         var k = targetBasisVectorIndex;
@@ -705,7 +706,7 @@ public static class GaMapFactory
     /// <param name="assumeUnitVector"></param>
     /// <param name="sourceVector"></param>
     /// <returns></returns>
-    public static GaScaledPureRotor CreatePureRotorToBasisVector(this RGaFloat64Vector sourceVector, int targetBasisVectorIndex, bool assumeUnitVector = false)
+    public static GaScaledPureRotor CreatePureRotorToBasisVector(this XGaFloat64Vector sourceVector, int targetBasisVectorIndex, bool assumeUnitVector = false)
     {
         var processor = sourceVector.Metric;
         var k = targetBasisVectorIndex;

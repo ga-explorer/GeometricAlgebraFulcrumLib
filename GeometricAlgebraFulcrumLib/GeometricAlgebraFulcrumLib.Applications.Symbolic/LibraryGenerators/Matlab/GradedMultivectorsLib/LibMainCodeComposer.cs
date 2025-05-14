@@ -1,5 +1,5 @@
 ﻿using System.Text;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Basis;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
 using GeometricAlgebraFulcrumLib.Utilities.Text.Files;
 using GeometricAlgebraFulcrumLib.Utilities.Text.Text;
 using GeometricAlgebraFulcrumLib.Utilities.Text.Text.Linear;

@@ -15,7 +15,7 @@ public class SnelliusPothenotProblemBenchmarks
     public void Setup()
     {
         // Just for initializing GA lookup tables before computations start
-        //var cga = RGaConformalSpace4D.Instance;
+        //var cga = XGaConformalSpace4D.Instance;
 
         var random = new Random(10);
 

@@ -1,5 +1,5 @@
 ﻿using System.Runtime.CompilerServices;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Float64.LinearMaps.Outermorphisms;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.LinearMaps.Outermorphisms;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Float64.Blades;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Float64.Elements;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Float64.Versors;
@@ -9,7 +9,7 @@ namespace GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Float64.Operations;
 public static class CGaFloat64MappingUtils
 {
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static CGaFloat64Element MapUsing(this CGaFloat64Element element, IRGaFloat64Outermorphism outerMorphism)
+    public static CGaFloat64Element MapUsing(this CGaFloat64Element element, IXGaFloat64Outermorphism outerMorphism)
     {
         return element
             .EncodeOpnsBlade()
@@ -37,7 +37,7 @@ public static class CGaFloat64MappingUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static CGaFloat64Blade MapUsing(this CGaFloat64Blade blade, IRGaFloat64Outermorphism outerMorphism)
+    public static CGaFloat64Blade MapUsing(this CGaFloat64Blade blade, IXGaFloat64Outermorphism outerMorphism)
     {
         return new CGaFloat64Blade(
             blade.GeometricSpace,

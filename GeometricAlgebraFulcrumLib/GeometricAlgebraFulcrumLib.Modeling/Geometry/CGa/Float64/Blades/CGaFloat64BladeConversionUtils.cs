@@ -1,13 +1,14 @@
 ﻿using System.Diagnostics;
 using System.Runtime.CompilerServices;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Float64.Multivectors;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivectors;
+
 
 namespace GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Float64.Blades;
 
 public static class CGaFloat64BladeConversionUtils
 {
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static CGaFloat64Blade ToConformalBlade(this RGaFloat64KVector cgaKVector, CGaFloat64GeometricSpace cgaGeometricSpace)
+    public static CGaFloat64Blade ToConformalBlade(this XGaFloat64KVector cgaKVector, CGaFloat64GeometricSpace cgaGeometricSpace)
     {
         return new CGaFloat64Blade(
             cgaGeometricSpace,
@@ -16,7 +17,7 @@ public static class CGaFloat64BladeConversionUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static CGaFloat64Blade ScalarPartToConformalBlade(this RGaFloat64Multivector cgaMultivector, CGaFloat64GeometricSpace cgaGeometricSpace)
+    public static CGaFloat64Blade ScalarPartToConformalBlade(this XGaFloat64Multivector cgaMultivector, CGaFloat64GeometricSpace cgaGeometricSpace)
     {
         return new CGaFloat64Blade(
             cgaGeometricSpace,
@@ -25,7 +26,7 @@ public static class CGaFloat64BladeConversionUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static CGaFloat64Blade VectorPartToConformalBlade(this RGaFloat64Multivector cgaMultivector, CGaFloat64GeometricSpace cgaGeometricSpace)
+    public static CGaFloat64Blade VectorPartToConformalBlade(this XGaFloat64Multivector cgaMultivector, CGaFloat64GeometricSpace cgaGeometricSpace)
     {
         return new CGaFloat64Blade(
             cgaGeometricSpace,
@@ -34,7 +35,7 @@ public static class CGaFloat64BladeConversionUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static CGaFloat64Blade VectorPartToConformalVGaBlade(this RGaFloat64Multivector cgaMultivector, CGaFloat64GeometricSpace cgaGeometricSpace)
+    public static CGaFloat64Blade VectorPartToConformalVGaBlade(this XGaFloat64Multivector cgaMultivector, CGaFloat64GeometricSpace cgaGeometricSpace)
     {
         return new CGaFloat64Blade(
             cgaGeometricSpace,
@@ -43,7 +44,7 @@ public static class CGaFloat64BladeConversionUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static CGaFloat64Blade BivectorPartToConformalBlade(this RGaFloat64Multivector cgaMultivector, CGaFloat64GeometricSpace cgaGeometricSpace)
+    public static CGaFloat64Blade BivectorPartToConformalBlade(this XGaFloat64Multivector cgaMultivector, CGaFloat64GeometricSpace cgaGeometricSpace)
     {
         return new CGaFloat64Blade(
             cgaGeometricSpace,
@@ -52,7 +53,7 @@ public static class CGaFloat64BladeConversionUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static CGaFloat64Blade KVectorPartToConformalBlade(this RGaFloat64Multivector cgaMultivector, int grade, CGaFloat64GeometricSpace cgaGeometricSpace)
+    public static CGaFloat64Blade KVectorPartToConformalBlade(this XGaFloat64Multivector cgaMultivector, int grade, CGaFloat64GeometricSpace cgaGeometricSpace)
     {
         return new CGaFloat64Blade(
             cgaGeometricSpace,
@@ -61,7 +62,7 @@ public static class CGaFloat64BladeConversionUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static CGaFloat64Blade FirstKVectorPartToConformalBlade(this RGaFloat64Multivector cgaMultivector, CGaFloat64GeometricSpace cgaGeometricSpace)
+    public static CGaFloat64Blade FirstKVectorPartToConformalBlade(this XGaFloat64Multivector cgaMultivector, CGaFloat64GeometricSpace cgaGeometricSpace)
     {
         return new CGaFloat64Blade(
             cgaGeometricSpace,

@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics;
 using System.Runtime.CompilerServices;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Float64.Multivectors;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Float64.Multivectors.Composers;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivectors;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivectors.Composers;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.SpaceND;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Float64.Blades;
@@ -12,7 +12,7 @@ public static class CGaFloat64DecoderUtils
 {
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static RGaFloat64Scalar DecodeVGaBladeToRGaScalar(this RGaFloat64Scalar cgaKVector, CGaFloat64GeometricSpace cgaGeometricSpace)
+    public static XGaFloat64Scalar DecodeVGaBladeToXGaScalar(this XGaFloat64Scalar cgaKVector, CGaFloat64GeometricSpace cgaGeometricSpace)
     {
         return cgaGeometricSpace.EuclideanProcessor.Scalar(
             cgaKVector.ScalarValue
@@ -20,7 +20,7 @@ public static class CGaFloat64DecoderUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64Vector DecodeVGaBladeToLinVector(this RGaFloat64Vector cgaKVector, CGaFloat64GeometricSpace cgaGeometricSpace)
+    public static LinFloat64Vector DecodeVGaBladeToLinVector(this XGaFloat64Vector cgaKVector, CGaFloat64GeometricSpace cgaGeometricSpace)
     {
         Debug.Assert(
             cgaGeometricSpace.IsValidVGaElement(cgaKVector)
@@ -36,7 +36,7 @@ public static class CGaFloat64DecoderUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static RGaFloat64Vector DecodeVGaBladeToRGaVector(this RGaFloat64Vector cgaKVector, CGaFloat64GeometricSpace cgaGeometricSpace)
+    public static XGaFloat64Vector DecodeVGaBladeToXGaVector(this XGaFloat64Vector cgaKVector, CGaFloat64GeometricSpace cgaGeometricSpace)
     {
         Debug.Assert(
             cgaGeometricSpace.IsValidVGaElement(cgaKVector)
@@ -52,7 +52,7 @@ public static class CGaFloat64DecoderUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static RGaFloat64Bivector DecodeVGaBladeToRGaBivector(this RGaFloat64Bivector cgaKVector, CGaFloat64GeometricSpace cgaGeometricSpace)
+    public static XGaFloat64Bivector DecodeVGaBladeToXGaBivector(this XGaFloat64Bivector cgaKVector, CGaFloat64GeometricSpace cgaGeometricSpace)
     {
         Debug.Assert(
             cgaGeometricSpace.IsValidVGaElement(cgaKVector)
@@ -62,13 +62,13 @@ public static class CGaFloat64DecoderUtils
             cgaGeometricSpace.EuclideanProcessor.CreateComposer();
 
         foreach (var (id, scalar) in cgaKVector.IdScalarPairs)
-            composer.SetTerm(id >> 2, scalar);
+            composer.SetTerm(id.ShiftIndices(-2), scalar);
 
         return composer.GetBivector();
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static RGaFloat64KVector DecodeVGaBladeToRGaKVector(this RGaFloat64KVector cgaKVector, CGaFloat64GeometricSpace cgaGeometricSpace)
+    public static XGaFloat64KVector DecodeVGaBladeToXGaKVector(this XGaFloat64KVector cgaKVector, CGaFloat64GeometricSpace cgaGeometricSpace)
     {
         Debug.Assert(
             cgaGeometricSpace.IsValidVGaElement(cgaKVector)
@@ -78,7 +78,7 @@ public static class CGaFloat64DecoderUtils
             cgaGeometricSpace.EuclideanProcessor.CreateComposer();
 
         foreach (var (id, scalar) in cgaKVector.IdScalarPairs)
-            composer.SetTerm(id >> 2, scalar);
+            composer.SetTerm(id.ShiftIndices(-2), scalar);
 
         return composer.GetKVector(cgaKVector.Grade);
     }
@@ -86,7 +86,7 @@ public static class CGaFloat64DecoderUtils
 
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static CGaFloat64Blade DecodeIpnsHyperSphereVGaCenter(this RGaFloat64Vector vector, CGaFloat64GeometricSpace cgaGeometricSpace)
+    public static CGaFloat64Blade DecodeIpnsHyperSphereVGaCenter(this XGaFloat64Vector vector, CGaFloat64GeometricSpace cgaGeometricSpace)
     {
         var weight = vector[0] + vector[1];
 
@@ -100,14 +100,14 @@ public static class CGaFloat64DecoderUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static CGaFloat64Blade DecodeIpnsHyperSphereVGaCenter(this RGaFloat64Multivector vector, CGaFloat64GeometricSpace cgaGeometricSpace)
+    public static CGaFloat64Blade DecodeIpnsHyperSphereVGaCenter(this XGaFloat64Multivector vector, CGaFloat64GeometricSpace cgaGeometricSpace)
     {
         return vector.GetVectorPart().DecodeIpnsHyperSphereVGaCenter(
             cgaGeometricSpace
         );
     }
 
-    public static Tuple<double, CGaFloat64Blade> DecodeIpnsHyperSphereWeightVGaCenter(this RGaFloat64Vector vector, CGaFloat64GeometricSpace cgaGeometricSpace)
+    public static Tuple<double, CGaFloat64Blade> DecodeIpnsHyperSphereWeightVGaCenter(this XGaFloat64Vector vector, CGaFloat64GeometricSpace cgaGeometricSpace)
     {
         var weight = vector[0] + vector[1];
 
@@ -129,7 +129,7 @@ public static class CGaFloat64DecoderUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Tuple<double, CGaFloat64Blade> DecodeIpnsHyperSphereWeightVGaCenter(this RGaFloat64Multivector vector, CGaFloat64GeometricSpace cgaGeometricSpace)
+    public static Tuple<double, CGaFloat64Blade> DecodeIpnsHyperSphereWeightVGaCenter(this XGaFloat64Multivector vector, CGaFloat64GeometricSpace cgaGeometricSpace)
     {
         return vector.GetVectorPart().DecodeIpnsHyperSphereWeightVGaCenter(
             cgaGeometricSpace

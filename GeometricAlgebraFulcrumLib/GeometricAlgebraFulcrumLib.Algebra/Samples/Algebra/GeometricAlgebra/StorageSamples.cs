@@ -1,14 +1,16 @@
 ﻿using System.Diagnostics;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Float64.Multivectors;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Float64.Multivectors.Composers;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Float64.Processors;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Generic.Multivectors.Composers;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Generic.Multivectors.GuidedBinaryTraversal.Products;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Generic.Processors;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivectors;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivectors.Composers;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Processors;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Multivectors.Composers;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Multivectors.GuidedBinaryTraversal.Products;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Processors;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Generic;
 using GeometricAlgebraFulcrumLib.Algebra.Utilities.Text;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.BitManipulation;
+using GeometricAlgebraFulcrumLib.Utilities.Structures.Combinations;
+using GeometricAlgebraFulcrumLib.Utilities.Structures.IndexSets;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.Samples.Algebra.GeometricAlgebra;
 
@@ -17,13 +19,13 @@ public static class StorageSamples
     private static readonly Random RandomGenerator
         = new(10);
 
-    private static readonly RGaFloat64Processor Processor
-        = RGaFloat64Processor.Euclidean;
+    private static readonly XGaFloat64Processor Processor
+        = XGaFloat64Processor.Euclidean;
 
-    private static readonly List<RGaFloat64Multivector> sList1
+    private static readonly List<XGaFloat64Multivector> sList1
         = new();
 
-    private static readonly List<RGaFloat64Multivector> sList2
+    private static readonly List<XGaFloat64Multivector> sList2
         = new();
 
     private static double _scalar
@@ -37,13 +39,13 @@ public static class StorageSamples
         => 1UL << VSpaceDimensions;
 
 
-    private static Dictionary<ulong, double> GetRandomKVectorDictionary(int grade)
+    private static Dictionary<IndexSet, double> GetRandomKVectorDictionary(int grade)
     {
         return VSpaceDimensions
-            .KVectorSpaceDimension(grade)
+            .GetBinomialCoefficient(grade)
             .GetRange()
             .ToDictionary(
-                index => index,
+                index => BasisBladeUtils.BasisBladeGradeIndexToId(grade, index),
                 _ => RandomGenerator.NextDouble()
             );
     }
@@ -87,7 +89,7 @@ public static class StorageSamples
 
         //Create graded multivector storage
         var gradeIndexScalarDictionary =
-            new Dictionary<int, RGaFloat64KVector>();
+            new Dictionary<int, XGaFloat64KVector>();
 
         for (var grade = 0; grade <= VSpaceDimensions; grade++)
             gradeIndexScalarDictionary.Add(
@@ -115,7 +117,7 @@ public static class StorageSamples
         }
     }
 
-    private static Func<RGaFloat64Multivector, RGaFloat64Multivector, RGaFloat64Multivector> GetBinaryOperationFunction(string funcName)
+    private static Func<XGaFloat64Multivector, XGaFloat64Multivector, XGaFloat64Multivector> GetBinaryOperationFunction(string funcName)
     {
         return funcName switch
         {
@@ -186,7 +188,7 @@ public static class StorageSamples
     {
         var vSpaceDimensions = 5;
         var scalarProcessor = ScalarProcessorOfFloat64.Instance;
-        var processor = scalarProcessor.CreateEuclideanRGaProcessor();
+        var processor = scalarProcessor.CreateEuclideanXGaProcessor();
         var textComposer = TextComposerFloat64.DefaultComposer;
 
         var randomGenerator = new Random(10);
@@ -195,7 +197,7 @@ public static class StorageSamples
             Enumerable
                 .Range(0, vSpaceDimensions)
                 .ToDictionary(
-                    i => (ulong)i,
+                    i => (IndexSet)i,
                     _ => randomGenerator.NextDouble()
                 )
         );
@@ -204,7 +206,7 @@ public static class StorageSamples
             Enumerable
                 .Range(0, vSpaceDimensions - 2)
                 .ToDictionary(
-                    i => (ulong)i,
+                    i => (IndexSet)i,
                     _ => randomGenerator.NextDouble()
                 )
         );
@@ -213,7 +215,7 @@ public static class StorageSamples
         Console.WriteLine($"vSpaceDimension2: {vectorStorage2.VSpaceDimensions}");
 
         var gbtStack =
-            RGaGbtProductsStack2<double>.Create(
+            XGaGbtProductsStack2<double>.Create(
                 vectorStorage1,
                 vectorStorage2
             );

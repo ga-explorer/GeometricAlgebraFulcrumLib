@@ -1,38 +1,38 @@
-﻿using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Generic.Multivectors;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Generic.Processors;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Generic.Subspaces;
+﻿using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Multivectors;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Processors;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Subspaces;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Generic;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Tuples;
 
 namespace GeometricAlgebraFulcrumLib.Modeling.Calculus.Fourier;
 
-public class RGaMultivectorFourierCurve<T>
+public class XGaMultivectorFourierCurve<T>
 {
-    public static RGaMultivectorFourierCurve<T> Create(RGaProcessor<T> processor)
+    public static XGaMultivectorFourierCurve<T> Create(XGaProcessor<T> processor)
     {
-        return new RGaMultivectorFourierCurve<T>(processor);
+        return new XGaMultivectorFourierCurve<T>(processor);
     }
 
 
     private readonly SortedDictionary<int, MultivectorFourierCurveTerm<T>> _termsDictionary;
 
-    public RGaProcessor<T> GeometricProcessor { get; }
+    public XGaProcessor<T> GeometricProcessor { get; }
 
 
-    private RGaMultivectorFourierCurve(RGaProcessor<T> processor, SortedDictionary<int, MultivectorFourierCurveTerm<T>> termsDictionary)
+    private XGaMultivectorFourierCurve(XGaProcessor<T> processor, SortedDictionary<int, MultivectorFourierCurveTerm<T>> termsDictionary)
     {
         GeometricProcessor = processor;
         _termsDictionary = termsDictionary;
     }
 
-    private RGaMultivectorFourierCurve(RGaProcessor<T> processor)
+    private XGaMultivectorFourierCurve(XGaProcessor<T> processor)
     {
         GeometricProcessor = processor;
         _termsDictionary = new SortedDictionary<int, MultivectorFourierCurveTerm<T>>();
     }
 
 
-    public RGaMultivectorFourierCurve<T> AddTermMultivectors(int key, RGaMultivector<T> cosMultivector, RGaMultivector<T> sinMultivector)
+    public XGaMultivectorFourierCurve<T> AddTermMultivectors(int key, XGaMultivector<T> cosMultivector, XGaMultivector<T> sinMultivector)
     {
         if (!_termsDictionary.TryGetValue(key, out var term))
             throw new InvalidOperationException();
@@ -42,7 +42,7 @@ public class RGaMultivectorFourierCurve<T>
         return this;
     }
 
-    public RGaMultivectorFourierCurve<T> AddTermMultivectors(int key, Scalar<T> frequency, RGaMultivector<T> cosMultivector, RGaMultivector<T> sinMultivector)
+    public XGaMultivectorFourierCurve<T> AddTermMultivectors(int key, Scalar<T> frequency, XGaMultivector<T> cosMultivector, XGaMultivector<T> sinMultivector)
     {
         if (_termsDictionary.TryGetValue(key, out var term))
         {
@@ -61,7 +61,7 @@ public class RGaMultivectorFourierCurve<T>
         return this;
     }
 
-    public RGaMultivectorFourierCurve<T> SetTerm(int key, Scalar<T> frequency, RGaMultivector<T> cosMultivector, RGaMultivector<T> sinMultivector)
+    public XGaMultivectorFourierCurve<T> SetTerm(int key, Scalar<T> frequency, XGaMultivector<T> cosMultivector, XGaMultivector<T> sinMultivector)
     {
         var term = new MultivectorFourierCurveTerm<T>(cosMultivector, sinMultivector, frequency);
 
@@ -73,7 +73,7 @@ public class RGaMultivectorFourierCurve<T>
         return this;
     }
         
-    public RGaMultivectorFourierCurve<T> SetTerm(int key, T frequency, RGaMultivector<T> cosMultivector, RGaMultivector<T> sinMultivector)
+    public XGaMultivectorFourierCurve<T> SetTerm(int key, T frequency, XGaMultivector<T> cosMultivector, XGaMultivector<T> sinMultivector)
     {
         var term = new MultivectorFourierCurveTerm<T>(
             cosMultivector, 
@@ -89,7 +89,7 @@ public class RGaMultivectorFourierCurve<T>
         return this;
     }
 
-    public RGaMultivectorFourierCurve<T> GetDerivative(int degree = 1)
+    public XGaMultivectorFourierCurve<T> GetDerivative(int degree = 1)
     {
         var termsDictionary = new SortedDictionary<int, MultivectorFourierCurveTerm<T>>();
 
@@ -99,29 +99,29 @@ public class RGaMultivectorFourierCurve<T>
                 term.GetDerivative(degree)
             );
 
-        return new RGaMultivectorFourierCurve<T>(GeometricProcessor, termsDictionary);
+        return new XGaMultivectorFourierCurve<T>(GeometricProcessor, termsDictionary);
     }
 
         
-    public RGaMultivector<T> GetValue(Scalar<T> parameterValue)
+    public XGaMultivector<T> GetValue(Scalar<T> parameterValue)
     {
         return _termsDictionary.Values.Aggregate(
-            (RGaMultivector<T>) GeometricProcessor.MultivectorZero, 
+            (XGaMultivector<T>) GeometricProcessor.MultivectorZero, 
             (current, term) => 
                 current + term.GetValue(parameterValue)
         );
     }
         
-    public RGaMultivector<T> GetValue(T parameterValue)
+    public XGaMultivector<T> GetValue(T parameterValue)
     {
         return _termsDictionary.Values.Aggregate(
-            (RGaMultivector<T>) GeometricProcessor.MultivectorZero, 
+            (XGaMultivector<T>) GeometricProcessor.MultivectorZero, 
             (current, term) => 
                 current + term.GetValue(parameterValue)
         );
     }
         
-    public Pair<RGaVector<T>> GetLocalFrame2D(T parameterValue)
+    public Pair<XGaVector<T>> GetLocalFrame2D(T parameterValue)
     {
         var vDt1 = GetDerivative(1).GetValue(parameterValue).GetVectorPart();
         var vDt2 = GetDerivative(2).GetValue(parameterValue).GetVectorPart();
@@ -135,10 +135,10 @@ public class RGaMultivectorFourierCurve<T>
         var e2 = u2.DivideByNorm();
         //var e2d = (e2.DifferentiateScalars("t") / vDt1Norm);
 
-        return new Pair<RGaVector<T>>(e1, e2);
+        return new Pair<XGaVector<T>>(e1, e2);
     }
 
-    public Triplet<RGaVector<T>> GetLocalFrame3D(T parameterValue)
+    public Triplet<XGaVector<T>> GetLocalFrame3D(T parameterValue)
     {
         var vDt1 = GetDerivative(1).GetValue(parameterValue).GetVectorPart();
         var vDt2 = GetDerivative(2).GetValue(parameterValue).GetVectorPart();
@@ -157,10 +157,10 @@ public class RGaMultivectorFourierCurve<T>
         var e3 = u3.DivideByNorm();
         //var e3d = (e3.DifferentiateScalars("t") / vDt1Norm);
 
-        return new Triplet<RGaVector<T>>(e1, e2, e3);
+        return new Triplet<XGaVector<T>>(e1, e2, e3);
     }
         
-    public Quad<RGaVector<T>> GetLocalFrame4D(T parameterValue)
+    public Quad<XGaVector<T>> GetLocalFrame4D(T parameterValue)
     {
         var vDt1 = GetDerivative(1).GetValue(parameterValue).GetVectorPart();
         var vDt2 = GetDerivative(2).GetValue(parameterValue).GetVectorPart();
@@ -184,6 +184,6 @@ public class RGaMultivectorFourierCurve<T>
         var e4 = u4.DivideByNorm();
         //var e4d = (e4.DifferentiateScalars("t") / vDt1Norm);
 
-        return new Quad<RGaVector<T>>(e1, e2, e3, e4);
+        return new Quad<XGaVector<T>>(e1, e2, e3, e4);
     }
 }

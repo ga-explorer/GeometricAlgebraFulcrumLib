@@ -1,9 +1,8 @@
-﻿using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Float64.Multivectors;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Float64.Multivectors.Composers;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Float64.Processors;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Float64.Spaces;
+﻿using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivectors;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivectors.Composers;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Processors;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Spaces;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Generic;
 using GeometricAlgebraFulcrumLib.Utilities.Code.MathML;
 using GeometricAlgebraFulcrumLib.Utilities.Code.MathML.Composers;
@@ -12,6 +11,7 @@ using GeometricAlgebraFulcrumLib.Utilities.Code.MathML.Elements.Layout.Elementar
 using GeometricAlgebraFulcrumLib.Utilities.Code.MathML.Elements.Layout.Tabular;
 using GeometricAlgebraFulcrumLib.Utilities.Code.MathML.Elements.Tokens;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.BitManipulation;
+using GeometricAlgebraFulcrumLib.Utilities.Structures.IndexSets;
 using GeometricAlgebraFulcrumLib.Utilities.Text.Text.Linear;
 
 // ReSharper disable CompareOfFloatsByEqualityOperator
@@ -40,19 +40,19 @@ public sealed class GaFuLProductTablesComposer
     public static string ComposeHga4D()
     {
         var composer = 
-            RGaFloat64Processor.Euclidean.CreateSpace(4);
+            XGaFloat64Processor.Euclidean.CreateSpace(4);
 
         var basisBladeNames = 
             CreateBasisBladeNames("x", "y", "z", "w");
 
         return ComposeMathMlTableColumns(
             composer, 
-            id => basisBladeNames[id]
+            id => basisBladeNames[(int) id]
         );
     }
 
 
-    private static MathMlRow ToMathMlRow(RGaFloat64Multivector mv, Func<ulong, IMathMlElement> getBasisBladeNameFunc)
+    private static MathMlRow ToMathMlRow(XGaFloat64Multivector mv, Func<IndexSet, IMathMlElement> getBasisBladeNameFunc)
     {
         var scalarProcessor = ScalarProcessorOfFloat64.Instance;
 
@@ -60,7 +60,7 @@ public sealed class GaFuLProductTablesComposer
 
         var termsList =
             mv
-                .OrderBy(t => t.Key.BasisBladeIdToGrade())
+                .OrderBy(t => t.Key.Grade())
                 .ThenBy(t => t.Key);
 
         var firstItemFlag = true;
@@ -120,9 +120,9 @@ public sealed class GaFuLProductTablesComposer
         return rowElement;
     }
 
-    public static MathMlTable ComposeMathMlTable(RGaFloat64Space space, Func<ulong, IMathMlElement> getBasisBladeNameFunc)
+    public static MathMlTable ComposeMathMlTable(XGaFloat64Space space, Func<IndexSet, IMathMlElement> getBasisBladeNameFunc)
     {
-        var idsList = space.VSpaceDimensions.BasisBladeIDsSortedByGrade().ToArray();
+        var idsList = space.VSpaceDimensions.ToDenseIndexSet().GetSubsets().ToArray();
         var gaDim = idsList.Length;
 
         var table = MathMlTable.Create(
@@ -133,7 +133,7 @@ public sealed class GaFuLProductTablesComposer
         for (var i = 0; i < gaDim; i++)
         {
             var id1 = idsList[i];
-            var grade1 = id1.BasisBladeIdToGrade().ToMathMlNumber();
+            var grade1 = id1.Grade().ToMathMlNumber();
             var name1 = getBasisBladeNameFunc(id1);
 
             table[i + 2, 0].Append(grade1);
@@ -160,11 +160,11 @@ public sealed class GaFuLProductTablesComposer
         return table;
     }
 
-    public static string ComposeMathMlTableColumns(RGaFloat64Space space, Func<ulong, IMathMlElement> getBasisBladeNameFunc)
+    public static string ComposeMathMlTableColumns(XGaFloat64Space space, Func<IndexSet, IMathMlElement> getBasisBladeNameFunc)
     {
         var textComposer = new LinearTextComposer();
 
-        var idsList = space.VSpaceDimensions.BasisBladeIDsSortedByGrade().ToArray();
+        var idsList = space.VSpaceDimensions.ToDenseIndexSet().GetSubsets().ToArray();
         var gaDim = idsList.Length;
 
         for (var i = 0; i < gaDim; i++)

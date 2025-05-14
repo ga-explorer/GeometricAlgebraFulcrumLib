@@ -1,9 +1,8 @@
 ﻿using System.Runtime.CompilerServices;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Float64.LinearMaps.Reflectors;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Float64.Multivectors;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Float64.Processors;
-
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.LinearMaps.Reflectors;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivectors;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Processors;
 
 // ReSharper disable CompareOfFloatsByEqualityOperator
 
@@ -13,13 +12,13 @@ public abstract class GaFloat64GeometricSpace
 {
     public GaFloat64GeometricSpaceBasisSpecs BasisSpecs { get; }
 
-    public RGaFloat64Processor Processor
+    public XGaFloat64Processor Processor
         => BasisSpecs.Processor;
 
-    public RGaFloat64EuclideanProcessor EuclideanProcessor
+    public XGaFloat64EuclideanProcessor EuclideanProcessor
         => BasisSpecs.EuclideanProcessor;
 
-    public RGaMetric Metric
+    public XGaMetric Metric
         => Processor;
 
     public int VSpaceDimensions
@@ -37,7 +36,7 @@ public abstract class GaFloat64GeometricSpace
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool IsValidElement(RGaFloat64Multivector mv)
+    public bool IsValidElement(XGaFloat64Multivector mv)
     {
         return mv.Metric.HasSameSignature(Processor) &&
                mv.VSpaceDimensions <= VSpaceDimensions;
@@ -137,19 +136,19 @@ public abstract class GaFloat64GeometricSpace
     //public string ToLaTeX(double mv)
     //{
     //    return ToLaTeX(
-    //        (RGaFloat64Multivector) Processor.CreateScalar(mv)
+    //        (XGaFloat64Multivector) Processor.CreateScalar(mv)
     //    );
     //}
 
     //[MethodImpl(MethodImplOptions.AggressiveInlining)]
-    //public string ToLaTeX(RGaFloat64Scalar mv)
+    //public string ToLaTeX(XGaFloat64Scalar mv)
     //{
     //    return ToLaTeX(
-    //        (RGaFloat64Multivector) mv
+    //        (XGaFloat64Multivector) mv
     //    );
     //}
 
-    //public string ToLaTeX(RGaFloat64Multivector mv)
+    //public string ToLaTeX(XGaFloat64Multivector mv)
     //{
     //    if (mv.IsZero)
     //        return "0";
@@ -171,205 +170,205 @@ public abstract class GaFloat64GeometricSpace
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public RGaFloat64Scalar ReflectOn(RGaFloat64Scalar mv, RGaFloat64KVector subspace)
+    public XGaFloat64Scalar ReflectOn(XGaFloat64Scalar mv, XGaFloat64KVector subspace)
     {
         return mv.ReflectOn(subspace);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public RGaFloat64Vector ReflectOn(RGaFloat64Vector mv, RGaFloat64KVector subspace)
+    public XGaFloat64Vector ReflectOn(XGaFloat64Vector mv, XGaFloat64KVector subspace)
     {
         return mv.ReflectOn(subspace);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public RGaFloat64Bivector ReflectOn(RGaFloat64Bivector mv, RGaFloat64KVector subspace)
+    public XGaFloat64Bivector ReflectOn(XGaFloat64Bivector mv, XGaFloat64KVector subspace)
     {
         return mv.ReflectOn(subspace);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public RGaFloat64HigherKVector ReflectOn(RGaFloat64HigherKVector mv, RGaFloat64KVector subspace)
+    public XGaFloat64HigherKVector ReflectOn(XGaFloat64HigherKVector mv, XGaFloat64KVector subspace)
     {
         return mv.ReflectOn(subspace);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public RGaFloat64KVector ReflectOn(RGaFloat64KVector mv, RGaFloat64KVector subspace)
+    public XGaFloat64KVector ReflectOn(XGaFloat64KVector mv, XGaFloat64KVector subspace)
     {
         return mv.ReflectOn(subspace);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public RGaFloat64Multivector ReflectOn(RGaFloat64Multivector mv, RGaFloat64KVector subspace)
+    public XGaFloat64Multivector ReflectOn(XGaFloat64Multivector mv, XGaFloat64KVector subspace)
     {
         return mv.ReflectOn(subspace);
     }
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public RGaFloat64Scalar ReflectOpnsOnOpns(RGaFloat64Scalar mv, RGaFloat64KVector subspace)
+    public XGaFloat64Scalar ReflectOpnsOnOpns(XGaFloat64Scalar mv, XGaFloat64KVector subspace)
     {
         return mv.ReflectDirectOnDirect(subspace);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public RGaFloat64Vector ReflectOpnsOnOpns(RGaFloat64Vector mv, RGaFloat64KVector subspace)
+    public XGaFloat64Vector ReflectOpnsOnOpns(XGaFloat64Vector mv, XGaFloat64KVector subspace)
     {
         return mv.ReflectDirectOnDirect(subspace);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public RGaFloat64Bivector ReflectOpnsOnOpns(RGaFloat64Bivector mv, RGaFloat64KVector subspace)
+    public XGaFloat64Bivector ReflectOpnsOnOpns(XGaFloat64Bivector mv, XGaFloat64KVector subspace)
     {
         return mv.ReflectDirectOnDirect(subspace);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public RGaFloat64HigherKVector ReflectOpnsOnOpns(RGaFloat64HigherKVector mv, RGaFloat64KVector subspace)
+    public XGaFloat64HigherKVector ReflectOpnsOnOpns(XGaFloat64HigherKVector mv, XGaFloat64KVector subspace)
     {
         return mv.ReflectDirectOnDirect(subspace);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public RGaFloat64KVector ReflectOpnsOnOpns(RGaFloat64KVector mv, RGaFloat64KVector subspace)
+    public XGaFloat64KVector ReflectOpnsOnOpns(XGaFloat64KVector mv, XGaFloat64KVector subspace)
     {
         return mv.ReflectDirectOnDirect(subspace);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public RGaFloat64Multivector ReflectOpnsOnOpns(RGaFloat64Multivector mv, RGaFloat64KVector subspace)
+    public XGaFloat64Multivector ReflectOpnsOnOpns(XGaFloat64Multivector mv, XGaFloat64KVector subspace)
     {
         return mv.ReflectDirectOnDirect(subspace);
     }
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public RGaFloat64Scalar ReflectOpnsOnIpns(RGaFloat64Scalar mv, RGaFloat64KVector subspace)
+    public XGaFloat64Scalar ReflectOpnsOnIpns(XGaFloat64Scalar mv, XGaFloat64KVector subspace)
     {
         return mv.ReflectDirectOnDual(subspace);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public RGaFloat64Vector ReflectOpnsOnIpns(RGaFloat64Vector mv, RGaFloat64KVector subspace)
+    public XGaFloat64Vector ReflectOpnsOnIpns(XGaFloat64Vector mv, XGaFloat64KVector subspace)
     {
         return mv.ReflectDirectOnDual(subspace);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public RGaFloat64Bivector ReflectOpnsOnIpns(RGaFloat64Bivector mv, RGaFloat64KVector subspace)
+    public XGaFloat64Bivector ReflectOpnsOnIpns(XGaFloat64Bivector mv, XGaFloat64KVector subspace)
     {
         return mv.ReflectDirectOnDual(subspace);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public RGaFloat64HigherKVector ReflectOpnsOnIpns(RGaFloat64HigherKVector mv, RGaFloat64KVector subspace)
+    public XGaFloat64HigherKVector ReflectOpnsOnIpns(XGaFloat64HigherKVector mv, XGaFloat64KVector subspace)
     {
         return mv.ReflectDirectOnDual(subspace);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public RGaFloat64KVector ReflectOpnsOnIpns(RGaFloat64KVector mv, RGaFloat64KVector subspace)
+    public XGaFloat64KVector ReflectOpnsOnIpns(XGaFloat64KVector mv, XGaFloat64KVector subspace)
     {
         return mv.ReflectDirectOnDual(subspace);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public RGaFloat64Multivector ReflectOpnsOnIpns(RGaFloat64Multivector mv, RGaFloat64KVector subspace)
+    public XGaFloat64Multivector ReflectOpnsOnIpns(XGaFloat64Multivector mv, XGaFloat64KVector subspace)
     {
         return mv.ReflectDirectOnDual(subspace);
     }
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public RGaFloat64Scalar ReflectIpnsOnOpns(RGaFloat64Scalar mv, RGaFloat64KVector subspace)
+    public XGaFloat64Scalar ReflectIpnsOnOpns(XGaFloat64Scalar mv, XGaFloat64KVector subspace)
     {
         return mv.ReflectDualOnDirect(subspace, VSpaceDimensions);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public RGaFloat64Vector ReflectIpnsOnOpns(RGaFloat64Vector mv, RGaFloat64KVector subspace)
+    public XGaFloat64Vector ReflectIpnsOnOpns(XGaFloat64Vector mv, XGaFloat64KVector subspace)
     {
         return mv.ReflectDualOnDirect(subspace, VSpaceDimensions);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public RGaFloat64Bivector ReflectIpnsOnOpns(RGaFloat64Bivector mv, RGaFloat64KVector subspace)
+    public XGaFloat64Bivector ReflectIpnsOnOpns(XGaFloat64Bivector mv, XGaFloat64KVector subspace)
     {
         return mv.ReflectDualOnDirect(subspace, VSpaceDimensions);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public RGaFloat64HigherKVector ReflectIpnsOnOpns(RGaFloat64HigherKVector mv, RGaFloat64KVector subspace)
+    public XGaFloat64HigherKVector ReflectIpnsOnOpns(XGaFloat64HigherKVector mv, XGaFloat64KVector subspace)
     {
         return mv.ReflectDualOnDirect(subspace, VSpaceDimensions);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public RGaFloat64KVector ReflectIpnsOnOpns(RGaFloat64KVector mv, RGaFloat64KVector subspace)
+    public XGaFloat64KVector ReflectIpnsOnOpns(XGaFloat64KVector mv, XGaFloat64KVector subspace)
     {
         return mv.ReflectDualOnDirect(subspace, VSpaceDimensions);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public RGaFloat64Multivector ReflectIpnsOnOpns(RGaFloat64Multivector mv, RGaFloat64KVector subspace)
+    public XGaFloat64Multivector ReflectIpnsOnOpns(XGaFloat64Multivector mv, XGaFloat64KVector subspace)
     {
         return mv.ReflectDualOnDirect(subspace, VSpaceDimensions);
     }
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public RGaFloat64Scalar ReflectIpnsOnIpns(RGaFloat64Scalar mv, RGaFloat64KVector subspace)
+    public XGaFloat64Scalar ReflectIpnsOnIpns(XGaFloat64Scalar mv, XGaFloat64KVector subspace)
     {
         return mv.ReflectDualOnDual(subspace);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public RGaFloat64Vector ReflectIpnsOnIpns(RGaFloat64Vector mv, RGaFloat64KVector subspace)
+    public XGaFloat64Vector ReflectIpnsOnIpns(XGaFloat64Vector mv, XGaFloat64KVector subspace)
     {
         return mv.ReflectDualOnDual(subspace);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public RGaFloat64Bivector ReflectIpnsOnIpns(RGaFloat64Bivector mv, RGaFloat64KVector subspace)
+    public XGaFloat64Bivector ReflectIpnsOnIpns(XGaFloat64Bivector mv, XGaFloat64KVector subspace)
     {
         return mv.ReflectDualOnDual(subspace);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public RGaFloat64HigherKVector ReflectIpnsOnIpns(RGaFloat64HigherKVector mv, RGaFloat64KVector subspace)
+    public XGaFloat64HigherKVector ReflectIpnsOnIpns(XGaFloat64HigherKVector mv, XGaFloat64KVector subspace)
     {
         return mv.ReflectDualOnDual(subspace);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public RGaFloat64KVector ReflectIpnsOnIpns(RGaFloat64KVector mv, RGaFloat64KVector subspace)
+    public XGaFloat64KVector ReflectIpnsOnIpns(XGaFloat64KVector mv, XGaFloat64KVector subspace)
     {
         return mv.ReflectDualOnDual(subspace);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public RGaFloat64Multivector ReflectIpnsOnIpns(RGaFloat64Multivector mv, RGaFloat64KVector subspace)
+    public XGaFloat64Multivector ReflectIpnsOnIpns(XGaFloat64Multivector mv, XGaFloat64KVector subspace)
     {
         return mv.ReflectDualOnDual(subspace);
     }
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public RGaFloat64KVector Intersect(RGaFloat64KVector blade1, RGaFloat64KVector blade2)
+    public XGaFloat64KVector Intersect(XGaFloat64KVector blade1, XGaFloat64KVector blade2)
     {
         return blade1.Op(blade2);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public RGaFloat64KVector Intersect(RGaFloat64KVector blade1, RGaFloat64KVector blade2, RGaFloat64KVector blade3)
+    public XGaFloat64KVector Intersect(XGaFloat64KVector blade1, XGaFloat64KVector blade2, XGaFloat64KVector blade3)
     {
         return blade1.Op(blade2).Op(blade3);
     }
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public RGaFloat64Scalar Project(RGaFloat64Scalar blade, RGaFloat64KVector subspace)
+    public XGaFloat64Scalar Project(XGaFloat64Scalar blade, XGaFloat64KVector subspace)
     {
         var projectedBlade =
             blade
@@ -385,7 +384,7 @@ public abstract class GaFloat64GeometricSpace
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public RGaFloat64Vector Project(RGaFloat64Vector blade, RGaFloat64KVector subspace)
+    public XGaFloat64Vector Project(XGaFloat64Vector blade, XGaFloat64KVector subspace)
     {
         var projectedBlade =
             blade
@@ -401,7 +400,7 @@ public abstract class GaFloat64GeometricSpace
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public RGaFloat64Bivector Project(RGaFloat64Bivector blade, RGaFloat64KVector subspace)
+    public XGaFloat64Bivector Project(XGaFloat64Bivector blade, XGaFloat64KVector subspace)
     {
         var projectedBlade =
             blade
@@ -417,7 +416,7 @@ public abstract class GaFloat64GeometricSpace
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public RGaFloat64HigherKVector Project(RGaFloat64HigherKVector blade, RGaFloat64KVector subspace)
+    public XGaFloat64HigherKVector Project(XGaFloat64HigherKVector blade, XGaFloat64KVector subspace)
     {
         var projectedBlade =
             blade
@@ -433,7 +432,7 @@ public abstract class GaFloat64GeometricSpace
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public RGaFloat64KVector Project(RGaFloat64KVector blade, RGaFloat64KVector subspace)
+    public XGaFloat64KVector Project(XGaFloat64KVector blade, XGaFloat64KVector subspace)
     {
         var projectedBlade =
             blade
@@ -449,7 +448,7 @@ public abstract class GaFloat64GeometricSpace
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public RGaFloat64Multivector Project(RGaFloat64Multivector blade, RGaFloat64KVector subspace)
+    public XGaFloat64Multivector Project(XGaFloat64Multivector blade, XGaFloat64KVector subspace)
     {
         var projectedBlade =
             blade

@@ -64,7 +64,7 @@ public static class CGaFloat64VisualizerUtils
     }
 
     //[MethodImpl(MethodImplOptions.AggressiveInlining)]
-    //public static CGaFloat64Visualizer DrawPGaFlat(this CGaFloat64Visualizer visualizer, RGaConformalParametricBlade3D blade, Color color)
+    //public static CGaFloat64Visualizer DrawPGaFlat(this CGaFloat64Visualizer visualizer, XGaConformalParametricBlade3D blade, Color color)
     //{
     //    return visualizer.DrawFlat(
     //        color,
@@ -82,7 +82,7 @@ public static class CGaFloat64VisualizerUtils
     }
 
     //[MethodImpl(MethodImplOptions.AggressiveInlining)]
-    //public static CGaFloat64Visualizer DrawPGaFlat(this RGaConformalParametricBlade2D blade, Color color)
+    //public static CGaFloat64Visualizer DrawPGaFlat(this XGaConformalParametricBlade2D blade, Color color)
     //{
     //    return blade.Visualizer.DrawFlat(
     //        color,
@@ -91,7 +91,7 @@ public static class CGaFloat64VisualizerUtils
     //}
 
     //[MethodImpl(MethodImplOptions.AggressiveInlining)]
-    //public static CGaFloat64Visualizer DrawPGaFlat(this RGaConformalParametricBlade3D blade, Color color)
+    //public static CGaFloat64Visualizer DrawPGaFlat(this XGaConformalParametricBlade3D blade, Color color)
     //{
     //    return blade.Visualizer.DrawFlat(
     //        color,
@@ -163,7 +163,7 @@ public static class CGaFloat64VisualizerUtils
     }
 
     //[MethodImpl(MethodImplOptions.AggressiveInlining)]
-    //public static CGaFloat64Visualizer DrawOpnsDirection(this CGaFloat64Visualizer visualizer, RGaConformalParametricBlade2D blade, Color color)
+    //public static CGaFloat64Visualizer DrawOpnsDirection(this CGaFloat64Visualizer visualizer, XGaConformalParametricBlade2D blade, Color color)
     //{
     //    return visualizer.DrawDirection(
     //        color,
@@ -172,7 +172,7 @@ public static class CGaFloat64VisualizerUtils
     //}
 
     //[MethodImpl(MethodImplOptions.AggressiveInlining)]
-    //public static CGaFloat64Visualizer DrawOpnsDirection(this CGaFloat64Visualizer visualizer, RGaConformalParametricBlade3D blade, Color color)
+    //public static CGaFloat64Visualizer DrawOpnsDirection(this CGaFloat64Visualizer visualizer, XGaConformalParametricBlade3D blade, Color color)
     //{
     //    return visualizer.DrawDirection(
     //        color,
@@ -190,7 +190,7 @@ public static class CGaFloat64VisualizerUtils
     }
 
     //[MethodImpl(MethodImplOptions.AggressiveInlining)]
-    //public static CGaFloat64Visualizer DrawOpnsDirection(this RGaConformalParametricBlade2D blade, Color color)
+    //public static CGaFloat64Visualizer DrawOpnsDirection(this XGaConformalParametricBlade2D blade, Color color)
     //{
     //    return blade.Visualizer.DrawDirection(
     //        color,
@@ -199,7 +199,7 @@ public static class CGaFloat64VisualizerUtils
     //}
 
     //[MethodImpl(MethodImplOptions.AggressiveInlining)]
-    //public static CGaFloat64Visualizer DrawOpnsDirection(this RGaConformalParametricBlade3D blade, Color color)
+    //public static CGaFloat64Visualizer DrawOpnsDirection(this XGaConformalParametricBlade3D blade, Color color)
     //{
     //    return blade.Visualizer.DrawDirection(
     //        color,
@@ -218,7 +218,7 @@ public static class CGaFloat64VisualizerUtils
     }
 
     //[MethodImpl(MethodImplOptions.AggressiveInlining)]
-    //public static CGaFloat64Visualizer DrawOpnsTangent(this CGaFloat64Visualizer visualizer, RGaConformalParametricBlade2D blade, Color color)
+    //public static CGaFloat64Visualizer DrawOpnsTangent(this CGaFloat64Visualizer visualizer, XGaConformalParametricBlade2D blade, Color color)
     //{
     //    return visualizer.DrawTangent(
     //        color,
@@ -227,7 +227,7 @@ public static class CGaFloat64VisualizerUtils
     //}
 
     //[MethodImpl(MethodImplOptions.AggressiveInlining)]
-    //public static CGaFloat64Visualizer DrawOpnsTangent(this CGaFloat64Visualizer visualizer, RGaConformalParametricBlade3D blade, Color color)
+    //public static CGaFloat64Visualizer DrawOpnsTangent(this CGaFloat64Visualizer visualizer, XGaConformalParametricBlade3D blade, Color color)
     //{
     //    return visualizer.DrawTangent(
     //        color,
@@ -245,7 +245,7 @@ public static class CGaFloat64VisualizerUtils
     }
 
     //[MethodImpl(MethodImplOptions.AggressiveInlining)]
-    //public static CGaFloat64Visualizer DrawOpnsTangent(this RGaConformalParametricBlade2D blade, Color color)
+    //public static CGaFloat64Visualizer DrawOpnsTangent(this XGaConformalParametricBlade2D blade, Color color)
     //{
     //    return blade.Visualizer.DrawTangent(
     //        color,
@@ -254,7 +254,7 @@ public static class CGaFloat64VisualizerUtils
     //}
 
     //[MethodImpl(MethodImplOptions.AggressiveInlining)]
-    //public static CGaFloat64Visualizer DrawOpnsTangent(this RGaConformalParametricBlade3D blade, Color color)
+    //public static CGaFloat64Visualizer DrawOpnsTangent(this XGaConformalParametricBlade3D blade, Color color)
     //{
     //    return blade.Visualizer.DrawTangent(
     //        color,
@@ -273,7 +273,7 @@ public static class CGaFloat64VisualizerUtils
     }
 
     //[MethodImpl(MethodImplOptions.AggressiveInlining)]
-    //public static CGaFloat64Visualizer DrawOpnsFlat(this CGaFloat64Visualizer visualizer, RGaConformalParametricBlade2D blade, Color color)
+    //public static CGaFloat64Visualizer DrawOpnsFlat(this CGaFloat64Visualizer visualizer, XGaConformalParametricBlade2D blade, Color color)
     //{
     //    return visualizer.DrawFlat(
     //        color,
@@ -282,7 +282,7 @@ public static class CGaFloat64VisualizerUtils
     //}
 
     //[MethodImpl(MethodImplOptions.AggressiveInlining)]
-    //public static CGaFloat64Visualizer DrawOpnsFlat(this CGaFloat64Visualizer visualizer, RGaConformalParametricBlade3D blade, Color color)
+    //public static CGaFloat64Visualizer DrawOpnsFlat(this CGaFloat64Visualizer visualizer, XGaConformalParametricBlade3D blade, Color color)
     //{
     //    return visualizer.DrawFlat(
     //        color,
@@ -300,7 +300,7 @@ public static class CGaFloat64VisualizerUtils
     }
 
     //[MethodImpl(MethodImplOptions.AggressiveInlining)]
-    //public static CGaFloat64Visualizer DrawOpnsFlat(this RGaConformalParametricBlade2D blade, Color color)
+    //public static CGaFloat64Visualizer DrawOpnsFlat(this XGaConformalParametricBlade2D blade, Color color)
     //{
     //    return blade.Visualizer.DrawFlat(
     //        color,
@@ -309,7 +309,7 @@ public static class CGaFloat64VisualizerUtils
     //}
 
     //[MethodImpl(MethodImplOptions.AggressiveInlining)]
-    //public static CGaFloat64Visualizer DrawOpnsFlat(this RGaConformalParametricBlade3D blade, Color color)
+    //public static CGaFloat64Visualizer DrawOpnsFlat(this XGaConformalParametricBlade3D blade, Color color)
     //{
     //    return blade.Visualizer.DrawFlat(
     //        color,
@@ -328,7 +328,7 @@ public static class CGaFloat64VisualizerUtils
     }
 
     //[MethodImpl(MethodImplOptions.AggressiveInlining)]
-    //public static CGaFloat64Visualizer DrawOpnsRound(this CGaFloat64Visualizer visualizer, RGaConformalParametricBlade2D blade, Color color)
+    //public static CGaFloat64Visualizer DrawOpnsRound(this CGaFloat64Visualizer visualizer, XGaConformalParametricBlade2D blade, Color color)
     //{
     //    return visualizer.DrawRound(
     //        color,
@@ -337,7 +337,7 @@ public static class CGaFloat64VisualizerUtils
     //}
 
     //[MethodImpl(MethodImplOptions.AggressiveInlining)]
-    //public static CGaFloat64Visualizer DrawOpnsRound(this CGaFloat64Visualizer visualizer, RGaConformalParametricBlade3D blade, Color color)
+    //public static CGaFloat64Visualizer DrawOpnsRound(this CGaFloat64Visualizer visualizer, XGaConformalParametricBlade3D blade, Color color)
     //{
     //    return visualizer.DrawRound(
     //        color,
@@ -355,7 +355,7 @@ public static class CGaFloat64VisualizerUtils
     }
 
     //[MethodImpl(MethodImplOptions.AggressiveInlining)]
-    //public static CGaFloat64Visualizer DrawOpnsRound(this RGaConformalParametricBlade2D blade, Color color)
+    //public static CGaFloat64Visualizer DrawOpnsRound(this XGaConformalParametricBlade2D blade, Color color)
     //{
     //    return blade.Visualizer.DrawRound(
     //        color,
@@ -364,7 +364,7 @@ public static class CGaFloat64VisualizerUtils
     //}
 
     //[MethodImpl(MethodImplOptions.AggressiveInlining)]
-    //public static CGaFloat64Visualizer DrawOpnsRound(this RGaConformalParametricBlade3D blade, Color color)
+    //public static CGaFloat64Visualizer DrawOpnsRound(this XGaConformalParametricBlade3D blade, Color color)
     //{
     //    return blade.Visualizer.DrawRound(
     //        color,
@@ -427,7 +427,7 @@ public static class CGaFloat64VisualizerUtils
 
 
     //[MethodImpl(MethodImplOptions.AggressiveInlining)]
-    //public static CGaFloat64Visualizer DrawBlade(this RGaConformalParametricBlade2D blade, Color color)
+    //public static CGaFloat64Visualizer DrawBlade(this XGaConformalParametricBlade2D blade, Color color)
     //{
     //    if (blade.Specs.Encoding == CGaFloat64ElementEncoding.PGa)
     //    {
@@ -484,7 +484,7 @@ public static class CGaFloat64VisualizerUtils
     //}
 
     //[MethodImpl(MethodImplOptions.AggressiveInlining)]
-    //public static CGaFloat64Visualizer DrawBlade(this RGaConformalParametricBlade3D blade, Color color)
+    //public static CGaFloat64Visualizer DrawBlade(this XGaConformalParametricBlade3D blade, Color color)
     //{
     //    if (blade.Specs.Encoding == CGaFloat64ElementEncoding.PGa)
     //    {
@@ -551,7 +551,7 @@ public static class CGaFloat64VisualizerUtils
     }
 
     //[MethodImpl(MethodImplOptions.AggressiveInlining)]
-    //public static CGaFloat64Visualizer DrawIpnsDirection(this CGaFloat64Visualizer visualizer, RGaConformalParametricBlade2D blade, Color color)
+    //public static CGaFloat64Visualizer DrawIpnsDirection(this CGaFloat64Visualizer visualizer, XGaConformalParametricBlade2D blade, Color color)
     //{
     //    return visualizer.DrawDirection(
     //        color,
@@ -560,7 +560,7 @@ public static class CGaFloat64VisualizerUtils
     //}
 
     //[MethodImpl(MethodImplOptions.AggressiveInlining)]
-    //public static CGaFloat64Visualizer DrawIpnsDirection(this CGaFloat64Visualizer visualizer, RGaConformalParametricBlade3D blade, Color color)
+    //public static CGaFloat64Visualizer DrawIpnsDirection(this CGaFloat64Visualizer visualizer, XGaConformalParametricBlade3D blade, Color color)
     //{
     //    return visualizer.DrawDirection(
     //        color,
@@ -578,7 +578,7 @@ public static class CGaFloat64VisualizerUtils
     }
 
     //[MethodImpl(MethodImplOptions.AggressiveInlining)]
-    //public static CGaFloat64Visualizer DrawIpnsDirection(this RGaConformalParametricBlade2D blade, Color color)
+    //public static CGaFloat64Visualizer DrawIpnsDirection(this XGaConformalParametricBlade2D blade, Color color)
     //{
     //    return blade.Visualizer.DrawDirection(
     //        color,
@@ -587,7 +587,7 @@ public static class CGaFloat64VisualizerUtils
     //}
 
     //[MethodImpl(MethodImplOptions.AggressiveInlining)]
-    //public static CGaFloat64Visualizer DrawIpnsDirection(this RGaConformalParametricBlade3D blade, Color color)
+    //public static CGaFloat64Visualizer DrawIpnsDirection(this XGaConformalParametricBlade3D blade, Color color)
     //{
     //    return blade.Visualizer.DrawDirection(
     //        color,
@@ -606,7 +606,7 @@ public static class CGaFloat64VisualizerUtils
     }
 
     //[MethodImpl(MethodImplOptions.AggressiveInlining)]
-    //public static CGaFloat64Visualizer DrawIpnsTangent(this CGaFloat64Visualizer visualizer, RGaConformalParametricBlade2D blade, Color color)
+    //public static CGaFloat64Visualizer DrawIpnsTangent(this CGaFloat64Visualizer visualizer, XGaConformalParametricBlade2D blade, Color color)
     //{
     //    return visualizer.DrawTangent(
     //        color,
@@ -615,7 +615,7 @@ public static class CGaFloat64VisualizerUtils
     //}
 
     //[MethodImpl(MethodImplOptions.AggressiveInlining)]
-    //public static CGaFloat64Visualizer DrawIpnsTangent(this CGaFloat64Visualizer visualizer, RGaConformalParametricBlade3D blade, Color color)
+    //public static CGaFloat64Visualizer DrawIpnsTangent(this CGaFloat64Visualizer visualizer, XGaConformalParametricBlade3D blade, Color color)
     //{
     //    return visualizer.DrawTangent(
     //        color,
@@ -633,7 +633,7 @@ public static class CGaFloat64VisualizerUtils
     }
 
     //[MethodImpl(MethodImplOptions.AggressiveInlining)]
-    //public static CGaFloat64Visualizer DrawIpnsTangent(this RGaConformalParametricBlade2D blade, Color color)
+    //public static CGaFloat64Visualizer DrawIpnsTangent(this XGaConformalParametricBlade2D blade, Color color)
     //{
     //    return blade.Visualizer.DrawTangent(
     //        color,
@@ -642,7 +642,7 @@ public static class CGaFloat64VisualizerUtils
     //}
 
     //[MethodImpl(MethodImplOptions.AggressiveInlining)]
-    //public static CGaFloat64Visualizer DrawIpnsTangent(this RGaConformalParametricBlade3D blade, Color color)
+    //public static CGaFloat64Visualizer DrawIpnsTangent(this XGaConformalParametricBlade3D blade, Color color)
     //{
     //    return blade.Visualizer.DrawTangent(
     //        color,
@@ -661,7 +661,7 @@ public static class CGaFloat64VisualizerUtils
     }
 
     //[MethodImpl(MethodImplOptions.AggressiveInlining)]
-    //public static CGaFloat64Visualizer DrawIpnsFlat(this CGaFloat64Visualizer visualizer, RGaConformalParametricBlade2D blade, Color color)
+    //public static CGaFloat64Visualizer DrawIpnsFlat(this CGaFloat64Visualizer visualizer, XGaConformalParametricBlade2D blade, Color color)
     //{
     //    return visualizer.DrawFlat(
     //        color,
@@ -670,7 +670,7 @@ public static class CGaFloat64VisualizerUtils
     //}
 
     //[MethodImpl(MethodImplOptions.AggressiveInlining)]
-    //public static CGaFloat64Visualizer DrawIpnsFlat(this CGaFloat64Visualizer visualizer, RGaConformalParametricBlade3D blade, Color color)
+    //public static CGaFloat64Visualizer DrawIpnsFlat(this CGaFloat64Visualizer visualizer, XGaConformalParametricBlade3D blade, Color color)
     //{
     //    return visualizer.DrawFlat(
     //        color,
@@ -688,7 +688,7 @@ public static class CGaFloat64VisualizerUtils
     }
 
     //[MethodImpl(MethodImplOptions.AggressiveInlining)]
-    //public static CGaFloat64Visualizer DrawIpnsFlat(this RGaConformalParametricBlade2D blade, Color color)
+    //public static CGaFloat64Visualizer DrawIpnsFlat(this XGaConformalParametricBlade2D blade, Color color)
     //{
     //    return blade.Visualizer.DrawFlat(
     //        color,
@@ -697,7 +697,7 @@ public static class CGaFloat64VisualizerUtils
     //}
 
     //[MethodImpl(MethodImplOptions.AggressiveInlining)]
-    //public static CGaFloat64Visualizer DrawIpnsFlat(this RGaConformalParametricBlade3D blade, Color color)
+    //public static CGaFloat64Visualizer DrawIpnsFlat(this XGaConformalParametricBlade3D blade, Color color)
     //{
     //    return blade.Visualizer.DrawFlat(
     //        color,
@@ -716,7 +716,7 @@ public static class CGaFloat64VisualizerUtils
     }
 
     //[MethodImpl(MethodImplOptions.AggressiveInlining)]
-    //public static CGaFloat64Visualizer DrawIpnsRound(this CGaFloat64Visualizer visualizer, RGaConformalParametricBlade2D blade, Color color)
+    //public static CGaFloat64Visualizer DrawIpnsRound(this CGaFloat64Visualizer visualizer, XGaConformalParametricBlade2D blade, Color color)
     //{
     //    return visualizer.DrawRound(
     //        color,
@@ -725,7 +725,7 @@ public static class CGaFloat64VisualizerUtils
     //}
 
     //[MethodImpl(MethodImplOptions.AggressiveInlining)]
-    //public static CGaFloat64Visualizer DrawIpnsRound(this CGaFloat64Visualizer visualizer, RGaConformalParametricBlade3D blade, Color color)
+    //public static CGaFloat64Visualizer DrawIpnsRound(this CGaFloat64Visualizer visualizer, XGaConformalParametricBlade3D blade, Color color)
     //{
     //    return visualizer.DrawRound(
     //        color,
@@ -743,7 +743,7 @@ public static class CGaFloat64VisualizerUtils
     }
 
     //[MethodImpl(MethodImplOptions.AggressiveInlining)]
-    //public static CGaFloat64Visualizer DrawIpnsRound(this RGaConformalParametricBlade2D blade, Color color)
+    //public static CGaFloat64Visualizer DrawIpnsRound(this XGaConformalParametricBlade2D blade, Color color)
     //{
     //    return blade.Visualizer.DrawRound(
     //        color,
@@ -752,7 +752,7 @@ public static class CGaFloat64VisualizerUtils
     //}
 
     //[MethodImpl(MethodImplOptions.AggressiveInlining)]
-    //public static CGaFloat64Visualizer DrawIpnsRound(this RGaConformalParametricBlade3D blade, Color color)
+    //public static CGaFloat64Visualizer DrawIpnsRound(this XGaConformalParametricBlade3D blade, Color color)
     //{
     //    return blade.Visualizer.DrawRound(
     //        color,

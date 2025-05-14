@@ -1,14 +1,15 @@
 ﻿using AngouriMath;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Generic.LinearMaps.Rotors;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Generic.Multivectors.Composers;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Generic.Processors;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.LinearMaps.Rotors;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Multivectors.Composers;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Processors;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Generic.LinearMaps;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Generic.Vectors.SpaceND;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Generic;
 using GeometricAlgebraFulcrumLib.MetaProgramming.Context.Processors;
 using GeometricAlgebraFulcrumLib.MetaProgramming.Utilities.Text;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Extensions;
+using GeometricAlgebraFulcrumLib.Utilities.Structures.IndexSets;
 
 //using GeometricAlgebraFulcrumLib.Text;
 
@@ -25,8 +26,8 @@ public static class Sample3
     public static IScalarProcessor<Entity> ScalarProcessor
         => ScalarProcessorOfAngouriMathEntity.Instance;
 
-    public static RGaProcessor<Entity> GeometricProcessor { get; }
-        = ScalarProcessor.CreateEuclideanRGaProcessor();
+    public static XGaProcessor<Entity> GeometricProcessor { get; }
+        = ScalarProcessor.CreateEuclideanXGaProcessor();
 
     public static TextComposerEntity TextComposer { get; }
         = TextComposerEntity.DefaultComposer;
@@ -166,13 +167,13 @@ public static class Sample3
 
         var indicesArray1 =
             VSpaceDimensions
-                .BasisBladeIDsOfGrades(1, 3)
+                .GetBasisBladeIDsOfGrades(1, 3)
                 .Select(i => (int)i)
                 .ToArray();
 
         var indicesArray2 =
             VSpaceDimensions
-                .BasisBladeIDsOfGrade(1)
+                .GetBasisBladeIDsOfGrade(1)
                 .Select(i => (int)i)
                 .ToArray();
 
@@ -181,7 +182,7 @@ public static class Sample3
                     VSpaceDimensions,
                     i =>
                         rotorMv.EGp(
-                            GeometricProcessor.KVectorTerm((ulong)i)
+                            GeometricProcessor.KVectorTerm((IndexSet)i)
                         ).MultivectorToLinVector()
                 )
                 .ToArray((int)GaSpaceDimensions)
@@ -190,7 +191,7 @@ public static class Sample3
         var matrix2 =
             ScalarProcessor.CreateLinUnilinearMap(
                     VSpaceDimensions,
-                    i => GeometricProcessor.KVectorTerm((ulong)i).EGp(rotorMvReverse).MultivectorToLinVector()
+                    i => GeometricProcessor.KVectorTerm((IndexSet)i).EGp(rotorMvReverse).MultivectorToLinVector()
                 )
                 .ToArray((int)GaSpaceDimensions)
                 .GetShallowCopy(indicesArray1, indicesArray1);

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Immutable;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Basis;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Float64.Processors;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Processors;
 using GeometricAlgebraFulcrumLib.Applications.Symbolic.LibraryGenerators.Matlab.GradedMultivectorsLib.Combinations;
 using GeometricAlgebraFulcrumLib.Applications.Symbolic.LibraryGenerators.Matlab.GradedMultivectorsLib.Types;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.BitManipulation;
@@ -44,7 +44,7 @@ public sealed class LibCodeComposerSpecs
     public int VSpaceDimensions 
         => MultivectorType.VSpaceDimensions;
 
-    public RGaFloat64Processor Metric 
+    public XGaFloat64Processor Metric 
         => MultivectorType.Metric;
 
     public int GradeCount
@@ -57,7 +57,7 @@ public sealed class LibCodeComposerSpecs
         => GaSpaceDimensions - 1;
 
 
-    public LibCodeComposerSpecs(int vSpaceDimensions, RGaFloat64Processor metric, string gaClassPrefix, string gaClassPostfix)
+    public LibCodeComposerSpecs(int vSpaceDimensions, XGaFloat64Processor metric, string gaClassPrefix, string gaClassPostfix)
         : this(
             vSpaceDimensions, 
             metric, 
@@ -69,7 +69,7 @@ public sealed class LibCodeComposerSpecs
 
     }
 
-    public LibCodeComposerSpecs(int vSpaceDimensions, RGaFloat64Processor metric, string spaceName)
+    public LibCodeComposerSpecs(int vSpaceDimensions, XGaFloat64Processor metric, string spaceName)
         : this(
             vSpaceDimensions,
             metric,
@@ -81,7 +81,7 @@ public sealed class LibCodeComposerSpecs
 
     }
 
-    public LibCodeComposerSpecs(int vSpaceDimensions, RGaFloat64Processor metric, string spaceName, string gaClassPrefix, string gaClassPostfix)
+    public LibCodeComposerSpecs(int vSpaceDimensions, XGaFloat64Processor metric, string spaceName, string gaClassPrefix, string gaClassPostfix)
     {
         GaClassPrefix = gaClassPrefix;
         GaClassPostfix = gaClassPostfix;
@@ -134,17 +134,17 @@ public sealed class LibCodeComposerSpecs
             .ToImmutableArray();
     }
 
-    public IRGaSignedBasisBlade GetBasisPseudoScalar()
+    public IXGaSignedBasisBlade GetBasisPseudoScalar()
     {
         return Metric.CreateBasisPseudoScalar(VSpaceDimensions);
     }
     
-    public IRGaSignedBasisBlade GetBasisPseudoScalarReverse()
+    public IXGaSignedBasisBlade GetBasisPseudoScalarReverse()
     {
         return Metric.CreateBasisPseudoScalarReverse(VSpaceDimensions);
     }
 
-    public IRGaSignedBasisBlade GetBasisPseudoScalarInverse()
+    public IXGaSignedBasisBlade GetBasisPseudoScalarInverse()
     {
         return Metric.CreateBasisPseudoScalarInverse(VSpaceDimensions);
     }
@@ -217,7 +217,7 @@ public sealed class LibCodeComposerSpecs
         return new Pair<int>(index1, index2);
     }
 
-    public LibType GetOutType(LibType in1Type, LibType in2Type, Func<RGaBasisBlade, RGaBasisBlade, IRGaSignedBasisBlade> basisMapFunc)
+    public LibType GetOutType(LibType in1Type, LibType in2Type, Func<XGaBasisBlade, XGaBasisBlade, IXGaSignedBasisBlade> basisMapFunc)
     {
         var termTable = LibBilinearCombination.Create(
             in1Type,
@@ -228,7 +228,7 @@ public sealed class LibCodeComposerSpecs
         return termTable.OutputType;
     }
 
-    public LibType GetOutType(int in1Grade, int in2Grade, Func<RGaBasisBlade, RGaBasisBlade, IRGaSignedBasisBlade> basisMapFunc)
+    public LibType GetOutType(int in1Grade, int in2Grade, Func<XGaBasisBlade, XGaBasisBlade, IXGaSignedBasisBlade> basisMapFunc)
     {
         return GetOutType(
             KVectorTypes[in1Grade], 

@@ -1,6 +1,5 @@
 ﻿using System.Runtime.CompilerServices;
-using GeometricAlgebraFulcrumLib.Core.GeometricAlgebra.Extended.Generic.Multivectors;
-using GeometricAlgebraFulcrumLib.Core.GeometricAlgebra.Restricted.Generic.Multivectors;
+using GeometricAlgebraFulcrumLib.Core.GeometricAlgebra.Generic.Multivectors;
 using GeometricAlgebraFulcrumLib.Core.Scalars.Generic;
 using GeometricAlgebraFulcrumLib.Core.Structures.BitManipulation;
 using GeometricAlgebraFulcrumLib.Core.Structures.Dictionary;
@@ -201,17 +200,6 @@ public static class LinVectorComposerUtils
     {
         var indexScalarDictionary = mv.IdScalarPairs.ToDictionary(
             p => p.Key.FirstIndex,
-            p => p.Value
-        );
-
-        return mv.ScalarProcessor.CreateLinVector(indexScalarDictionary);
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinVector<T> ToLinVector<T>(this RGaVector<T> mv)
-    {
-        var indexScalarDictionary = mv.IdScalarPairs.ToDictionary(
-            p => p.Key.FirstOneBitPosition(),
             p => p.Value
         );
 

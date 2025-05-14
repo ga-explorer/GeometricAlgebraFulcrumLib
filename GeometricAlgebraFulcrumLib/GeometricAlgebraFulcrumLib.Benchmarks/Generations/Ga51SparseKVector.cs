@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Float64.Processors;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Processors;
+using GeometricAlgebraFulcrumLib.Utilities.Structures.Combinations;
+
 
 namespace GeometricAlgebraFulcrumLib.Benchmarks.Generations;
 
@@ -18,8 +20,8 @@ public sealed class Ga51SparseKVector
     private readonly Dictionary<ulong, double> _idScalarDictionary;
 
     
-    public RGaFloat64ConformalProcessor Processor { get; }
-        = RGaFloat64ConformalProcessor.Instance;
+    public XGaFloat64ConformalProcessor Processor { get; }
+        = XGaFloat64ConformalProcessor.Instance;
 
     public int VSpaceDimensions 
         => 6;
@@ -76,7 +78,7 @@ public sealed class Ga51SparseKVector
         var id = BasisBladeUtils.BasisBladeGradeIndexToId(
             Grade, 
             (ulong) index
-        );
+        ).ToUInt64();
 
         return _idScalarDictionary.TryGetValue(id, out var scalar)
             ? scalar : 0d;
@@ -94,7 +96,7 @@ public sealed class Ga51SparseKVector
     {
         return _idScalarDictionary.Select(p =>
             new KeyValuePair<int, double>(
-                (int) p.Key.BasisBladeIdToIndex(),
+                (int) p.Key.CombinadicPatternToIndex(),
                 p.Value
             )
         );

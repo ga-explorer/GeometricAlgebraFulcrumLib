@@ -1,8 +1,8 @@
-﻿using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Float64.LinearMaps.Rotors;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Float64.Multivectors;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Float64.Multivectors.Composers;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Float64.Processors;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Float64.Subspaces;
+﻿using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.LinearMaps.Rotors;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivectors;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivectors.Composers;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Processors;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Subspaces;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Angles;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Generic;
@@ -21,8 +21,8 @@ public static class Sample2
 
     // Create a 3-dimensional Euclidean geometric algebra processor based on the
     // selected scalar processor
-    public static RGaFloat64Processor GeometricProcessor { get; }
-        = RGaFloat64Processor.Euclidean;
+    public static XGaFloat64Processor GeometricProcessor { get; }
+        = XGaFloat64Processor.Euclidean;
 
     public static int VSpaceDimensions 
         => 3;
@@ -63,20 +63,20 @@ public static class Sample2
     public static double ConstD { get; }
         = Math.Sqrt(ConstA * ConstA + ConstB * ConstB);
 
-    public static RGaFloat64Vector K { get; }
+    public static XGaFloat64Vector K { get; }
         = GeometricProcessor.Vector(Vb * Vc, Va * Vc, Va * Vb);
 
     public static double KNorm { get; }
         = K.Norm();
 
-    public static RGaFloat64Vector KUnit { get; }
+    public static XGaFloat64Vector KUnit { get; }
         = K.DivideByNorm();
 
-    public static RGaFloat64Bivector KDual { get; }
+    public static XGaFloat64Bivector KDual { get; }
         = K.Dual(VSpaceDimensions).GetBivectorPart();
 
 
-    public static RGaFloat64Vector Curve(double t)
+    public static XGaFloat64Vector Curve(double t)
     {
         const double pi = Math.PI;
         var sqrt2 = Math.Sqrt(2);
@@ -88,7 +88,7 @@ public static class Sample2
         );
     }
 
-    public static RGaFloat64Vector CurveDt1(double t)
+    public static XGaFloat64Vector CurveDt1(double t)
     {
         var sqrt2 = Math.Sqrt(2);
         var sqrt3 = Math.Sqrt(3);
@@ -102,7 +102,7 @@ public static class Sample2
         );
     }
 
-    public static RGaFloat64Vector CurveDt2(double t)
+    public static XGaFloat64Vector CurveDt2(double t)
     {
         var sqrt2 = Math.Sqrt(2);
         var sqrt3 = Math.Sqrt(3);
@@ -116,7 +116,7 @@ public static class Sample2
         );
     }
 
-    public static RGaFloat64Vector CurveDt3(double t)
+    public static XGaFloat64Vector CurveDt3(double t)
     {
         var sqrt2 = Math.Sqrt(2);
         var sqrt3 = Math.Sqrt(3);
@@ -150,26 +150,26 @@ public static class Sample2
         return Math.Sqrt(CurveDt1NormSquared(t));
     }
 
-    public static RGaFloat64Bivector Omega(double t)
+    public static XGaFloat64Bivector Omega(double t)
     {
         return -2 * Math.Sqrt(3) * Freq / G(t) * KDual;
     }
 
-    public static RGaFloat64Bivector OmegaDt(double t)
+    public static XGaFloat64Bivector OmegaDt(double t)
     {
         return 2 * Math.Sqrt(3) * Freq * GDt(t) / G(t).Square() * KDual;
     }
 
-    public static Triplet<RGaFloat64Vector> CurveFrame(double t)
+    public static Triplet<XGaFloat64Vector> CurveFrame(double t)
     {
-        return new Triplet<RGaFloat64Vector>(
+        return new Triplet<XGaFloat64Vector>(
             CurveDt1(t),
             CurveDt2(t),
             CurveDt3(t)
         );
     }
 
-    public static Triplet<RGaFloat64Vector> CurveFrameDt(double t)
+    public static Triplet<XGaFloat64Vector> CurveFrameDt(double t)
     {
         var vDt1 = CurveDt1(t);
         var vDt2 = CurveDt2(t);
@@ -185,10 +185,10 @@ public static class Sample2
         var u3 = vDt3 - vDt3.ProjectOn(u1.ToSubspace()) - vDt3.ProjectOn(u2.ToSubspace());
         var e3 = u3.DivideByNorm();
 
-        return new Triplet<RGaFloat64Vector>(e1, e2, e3);
+        return new Triplet<XGaFloat64Vector>(e1, e2, e3);
     }
 
-    public static Triplet<RGaFloat64Vector> CurveFrameDs(double t)
+    public static Triplet<XGaFloat64Vector> CurveFrameDs(double t)
     {
         var va2 = Va * Va;
         var vb2 = Vb * Vb;
@@ -215,7 +215,7 @@ public static class Sample2
 
         var e3d = GeometricProcessor.VectorZero;
 
-        return new Triplet<RGaFloat64Vector>(e1d, e2d, e3d);
+        return new Triplet<XGaFloat64Vector>(e1d, e2d, e3d);
     }
 
     public static double CurveCurvature1(double t)

@@ -92,7 +92,7 @@ public sealed class BernsteinBasisSet<T> :
             )
         );
     }
-
+    
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public IReadOnlyList<T> GetValues(T parameterValue)
     {

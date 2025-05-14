@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics;
 using System.Runtime.CompilerServices;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Float64.Multivectors;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Float64.Multivectors.Composers;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivectors;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivectors.Composers;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space2D;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space3D;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.SpaceND;
@@ -26,7 +26,7 @@ public class CGaFloat64IpnsRoundEncoder :
 
         return HyperSphere(
             radiusSquared,
-            LinFloat64Vector2D.Create(centerX, centerY).ToRGaFloat64Vector()
+            LinFloat64Vector2D.Create(centerX, centerY).ToXGaFloat64Vector()
         );
     }
 
@@ -38,7 +38,7 @@ public class CGaFloat64IpnsRoundEncoder :
 
         return HyperSphere(
             radiusSquared,
-            center.ToRGaFloat64Vector()
+            center.ToXGaFloat64Vector()
         );
     }
 
@@ -49,7 +49,7 @@ public class CGaFloat64IpnsRoundEncoder :
 
         return RealHyperSphere(
             radius,
-            LinFloat64Vector2D.Create(centerX, centerY).ToRGaFloat64Vector()
+            LinFloat64Vector2D.Create(centerX, centerY).ToXGaFloat64Vector()
         );
     }
 
@@ -60,7 +60,7 @@ public class CGaFloat64IpnsRoundEncoder :
 
         return RealHyperSphere(
             radius,
-            center.ToRGaFloat64Vector()
+            center.ToXGaFloat64Vector()
         );
     }
 
@@ -71,7 +71,7 @@ public class CGaFloat64IpnsRoundEncoder :
 
         return ImaginaryHyperSphere(
             radius,
-            LinFloat64Vector2D.Create(centerX, centerY).ToRGaFloat64Vector()
+            LinFloat64Vector2D.Create(centerX, centerY).ToXGaFloat64Vector()
         );
     }
 
@@ -82,7 +82,7 @@ public class CGaFloat64IpnsRoundEncoder :
 
         return ImaginaryHyperSphere(
             radius,
-            center.ToRGaFloat64Vector()
+            center.ToXGaFloat64Vector()
         );
     }
 
@@ -92,8 +92,8 @@ public class CGaFloat64IpnsRoundEncoder :
     {
         return Circle(
             radiusSquared,
-            egaCenter.ToRGaFloat64Vector(),
-            egaBivector.ToRGaFloat64Bivector()
+            egaCenter.ToXGaFloat64Vector(),
+            egaBivector.ToXGaFloat64Bivector()
         );
     }
 
@@ -102,8 +102,8 @@ public class CGaFloat64IpnsRoundEncoder :
     {
         return Circle(
             radiusSquared,
-            egaCenter.ToRGaFloat64Vector(),
-            egaBivector.ToRGaFloat64Bivector()
+            egaCenter.ToXGaFloat64Vector(),
+            egaBivector.ToXGaFloat64Bivector()
         );
     }
 
@@ -112,8 +112,8 @@ public class CGaFloat64IpnsRoundEncoder :
     {
         return RealCircle(
             radius,
-            egaCenter.ToRGaFloat64Vector(),
-            egaBivector.ToRGaFloat64Bivector()
+            egaCenter.ToXGaFloat64Vector(),
+            egaBivector.ToXGaFloat64Bivector()
         );
     }
 
@@ -122,8 +122,8 @@ public class CGaFloat64IpnsRoundEncoder :
     {
         return ImaginaryCircle(
             radius,
-            egaCenter.ToRGaFloat64Vector(),
-            egaBivector.ToRGaFloat64Bivector()
+            egaCenter.ToXGaFloat64Vector(),
+            egaBivector.ToXGaFloat64Bivector()
         );
     }
 
@@ -132,8 +132,8 @@ public class CGaFloat64IpnsRoundEncoder :
     {
         return Circle(
             radiusSquared,
-            egaCenter.ToRGaFloat64Vector(),
-            egaNormalVector.NormalToUnitDirection3D().ToRGaFloat64Bivector()
+            egaCenter.ToXGaFloat64Vector(),
+            egaNormalVector.NormalToUnitDirection3D().ToXGaFloat64Bivector()
         );
     }
 
@@ -142,8 +142,8 @@ public class CGaFloat64IpnsRoundEncoder :
     {
         return RealCircle(
             radius,
-            egaCenter.ToRGaFloat64Vector(),
-            egaNormalVector.NormalToUnitDirection3D().ToRGaFloat64Bivector()
+            egaCenter.ToXGaFloat64Vector(),
+            egaNormalVector.NormalToUnitDirection3D().ToXGaFloat64Bivector()
         );
     }
 
@@ -152,8 +152,8 @@ public class CGaFloat64IpnsRoundEncoder :
     {
         return ImaginaryCircle(
             radius,
-            egaCenter.ToRGaFloat64Vector(),
-            egaNormalVector.NormalToUnitDirection3D().ToRGaFloat64Bivector()
+            egaCenter.ToXGaFloat64Vector(),
+            egaNormalVector.NormalToUnitDirection3D().ToXGaFloat64Bivector()
         );
     }
 
@@ -162,7 +162,7 @@ public class CGaFloat64IpnsRoundEncoder :
     {
         return HyperSphere(
             radiusSquared,
-            LinFloat64Vector3D.Create(centerX, centerY, centerZ).ToRGaFloat64Vector()
+            LinFloat64Vector3D.Create(centerX, centerY, centerZ).ToXGaFloat64Vector()
         );
     }
 
@@ -173,7 +173,7 @@ public class CGaFloat64IpnsRoundEncoder :
 
         return HyperSphere(
             radiusSquared,
-            center.ToRGaFloat64Vector()
+            center.ToXGaFloat64Vector()
         );
     }
 
@@ -184,7 +184,7 @@ public class CGaFloat64IpnsRoundEncoder :
 
         return RealHyperSphere(
             radius,
-            LinFloat64Vector3D.Create(centerX, centerY, centerZ).ToRGaFloat64Vector()
+            LinFloat64Vector3D.Create(centerX, centerY, centerZ).ToXGaFloat64Vector()
         );
     }
 
@@ -195,7 +195,7 @@ public class CGaFloat64IpnsRoundEncoder :
 
         return RealHyperSphere(
             radius,
-            center.ToRGaFloat64Vector()
+            center.ToXGaFloat64Vector()
         );
     }
 
@@ -206,7 +206,7 @@ public class CGaFloat64IpnsRoundEncoder :
 
         return ImaginaryHyperSphere(
             radius,
-            LinFloat64Vector3D.Create(centerX, centerY, centerZ).ToRGaFloat64Vector()
+            LinFloat64Vector3D.Create(centerX, centerY, centerZ).ToXGaFloat64Vector()
         );
     }
 
@@ -217,7 +217,7 @@ public class CGaFloat64IpnsRoundEncoder :
 
         return ImaginaryHyperSphere(
             radius,
-            center.ToRGaFloat64Vector()
+            center.ToXGaFloat64Vector()
         );
     }
 
@@ -226,7 +226,7 @@ public class CGaFloat64IpnsRoundEncoder :
     public CGaFloat64Blade Point(double pointX, double pointY)
     {
         var p =
-            GeometricSpace.Encode.VGa.VectorAsRGaVector(pointX, pointY);
+            GeometricSpace.Encode.VGa.VectorAsXGaVector(pointX, pointY);
 
         var pNormSquared =
             pointX * pointX +
@@ -244,7 +244,7 @@ public class CGaFloat64IpnsRoundEncoder :
     public CGaFloat64Blade Point(LinFloat64Vector2D egaPoint)
     {
         var p =
-            GeometricSpace.Encode.VGa.VectorAsRGaVector(egaPoint);
+            GeometricSpace.Encode.VGa.VectorAsXGaVector(egaPoint);
 
         var kVector =
             GeometricSpace.EoVector +
@@ -258,7 +258,7 @@ public class CGaFloat64IpnsRoundEncoder :
     public CGaFloat64Blade Point(double pointX, double pointY, double pointZ)
     {
         var p =
-            GeometricSpace.Encode.VGa.VectorAsRGaVector(pointX, pointY, pointZ);
+            GeometricSpace.Encode.VGa.VectorAsXGaVector(pointX, pointY, pointZ);
 
         var pNormSquared =
             pointX * pointX +
@@ -277,7 +277,7 @@ public class CGaFloat64IpnsRoundEncoder :
     public CGaFloat64Blade Point(LinFloat64Vector3D egaPoint)
     {
         var p =
-            GeometricSpace.Encode.VGa.VectorAsRGaVector(egaPoint);
+            GeometricSpace.Encode.VGa.VectorAsXGaVector(egaPoint);
 
         var kVector =
             GeometricSpace.EoVector +
@@ -291,7 +291,7 @@ public class CGaFloat64IpnsRoundEncoder :
     public CGaFloat64Blade Point(LinFloat64Vector egaPoint)
     {
         var p =
-            GeometricSpace.Encode.VGa.VectorAsRGaVector(egaPoint);
+            GeometricSpace.Encode.VGa.VectorAsXGaVector(egaPoint);
 
         var kVector =
             GeometricSpace.EoVector +
@@ -302,10 +302,10 @@ public class CGaFloat64IpnsRoundEncoder :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public CGaFloat64Blade Point(RGaFloat64Vector egaPoint)
+    public CGaFloat64Blade Point(XGaFloat64Vector egaPoint)
     {
         var p =
-            GeometricSpace.Encode.VGa.VectorAsRGaVector(egaPoint);
+            GeometricSpace.Encode.VGa.VectorAsXGaVector(egaPoint);
 
         var kVector =
             GeometricSpace.EoVector +
@@ -317,7 +317,7 @@ public class CGaFloat64IpnsRoundEncoder :
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public CGaFloat64Blade PointPair(double radiusSquared, RGaFloat64Vector egaCenter, RGaFloat64Vector egaDirection)
+    public CGaFloat64Blade PointPair(double radiusSquared, XGaFloat64Vector egaCenter, XGaFloat64Vector egaDirection)
     {
         var direction =
             egaDirection
@@ -331,7 +331,7 @@ public class CGaFloat64IpnsRoundEncoder :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public CGaFloat64Blade RealPointPair(double radius, RGaFloat64Vector egaCenter, RGaFloat64Vector egaDirection)
+    public CGaFloat64Blade RealPointPair(double radius, XGaFloat64Vector egaCenter, XGaFloat64Vector egaDirection)
     {
         return PointPair(
             radius * radius,
@@ -341,7 +341,7 @@ public class CGaFloat64IpnsRoundEncoder :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public CGaFloat64Blade ImaginaryPointPair(double radius, RGaFloat64Vector egaCenter, RGaFloat64Vector egaDirection)
+    public CGaFloat64Blade ImaginaryPointPair(double radius, XGaFloat64Vector egaCenter, XGaFloat64Vector egaDirection)
     {
         return PointPair(
             -radius * radius,
@@ -351,7 +351,7 @@ public class CGaFloat64IpnsRoundEncoder :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public CGaFloat64Blade Circle(double radiusSquared, RGaFloat64Vector egaCenter, RGaFloat64Bivector egaDirection)
+    public CGaFloat64Blade Circle(double radiusSquared, XGaFloat64Vector egaCenter, XGaFloat64Bivector egaDirection)
     {
         var direction =
             egaDirection
@@ -365,7 +365,7 @@ public class CGaFloat64IpnsRoundEncoder :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public CGaFloat64Blade RealCircle(double radius, RGaFloat64Vector egaCenter, RGaFloat64Bivector egaDirection)
+    public CGaFloat64Blade RealCircle(double radius, XGaFloat64Vector egaCenter, XGaFloat64Bivector egaDirection)
     {
         return Circle(
             radius * radius,
@@ -375,7 +375,7 @@ public class CGaFloat64IpnsRoundEncoder :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public CGaFloat64Blade ImaginaryCircle(double radius, RGaFloat64Vector egaCenter, RGaFloat64Bivector egaDirection)
+    public CGaFloat64Blade ImaginaryCircle(double radius, XGaFloat64Vector egaCenter, XGaFloat64Bivector egaDirection)
     {
         return Circle(
             -radius * radius,
@@ -403,7 +403,7 @@ public class CGaFloat64IpnsRoundEncoder :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public CGaFloat64Blade HyperSphere(double radiusSquared, RGaFloat64Vector egaCenter)
+    public CGaFloat64Blade HyperSphere(double radiusSquared, XGaFloat64Vector egaCenter)
     {
         var c = Point(egaCenter);
 
@@ -417,7 +417,7 @@ public class CGaFloat64IpnsRoundEncoder :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public CGaFloat64Blade RealHyperSphere(double radius, RGaFloat64Vector egaCenter)
+    public CGaFloat64Blade RealHyperSphere(double radius, XGaFloat64Vector egaCenter)
     {
         var c = Point(egaCenter);
 
@@ -431,7 +431,7 @@ public class CGaFloat64IpnsRoundEncoder :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public CGaFloat64Blade ImaginaryHyperSphere(double radius, RGaFloat64Vector egaCenter)
+    public CGaFloat64Blade ImaginaryHyperSphere(double radius, XGaFloat64Vector egaCenter)
     {
         var c = Point(egaCenter);
 

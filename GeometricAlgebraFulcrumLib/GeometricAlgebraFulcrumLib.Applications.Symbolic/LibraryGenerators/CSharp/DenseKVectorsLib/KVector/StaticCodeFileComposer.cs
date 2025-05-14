@@ -1,5 +1,4 @@
-﻿using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
+﻿using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
 using GeometricAlgebraFulcrumLib.Utilities.Text.Text.Linear;
 using GeometricAlgebraFulcrumLib.Utilities.Text.Text.Parametric;
 using GeometricAlgebraFulcrumLib.Utilities.Text.Text.Structured;
@@ -20,7 +19,7 @@ internal sealed class StaticCodeFileComposer :
 
     private string GenerateDeclarations(int grade)
     {
-        var kvDim = VSpaceDimensions.KVectorSpaceDimension(grade);
+        var kvDim = VSpaceDimensions.KVectorSpaceDimensions(grade);
 
         var template = Templates["static_basisblade_declare"];
 
@@ -53,7 +52,7 @@ internal sealed class StaticCodeFileComposer :
     {
         var namesText = new ListTextComposer(", ") { ActiveItemSuffix = "\"", ActiveItemPrefix = "\"" };
 
-        for (var index = 0UL; index < VSpaceDimensions.KVectorSpaceDimension(grade); index++)
+        for (var index = 0UL; index < VSpaceDimensions.KVectorSpaceDimensions(grade); index++)
         {
             var id = BasisBladeUtils.BasisBladeGradeIndexToId(grade, index);
 
@@ -75,7 +74,7 @@ internal sealed class StaticCodeFileComposer :
 
         foreach (var grade in Grades)
         {
-            kvdimsText.Add(VSpaceDimensions.KVectorSpaceDimension(grade));
+            kvdimsText.Add(VSpaceDimensions.KVectorSpaceDimensions(grade));
 
             basisnamesText.Add(GenerateBasisBladesNames(grade));
 

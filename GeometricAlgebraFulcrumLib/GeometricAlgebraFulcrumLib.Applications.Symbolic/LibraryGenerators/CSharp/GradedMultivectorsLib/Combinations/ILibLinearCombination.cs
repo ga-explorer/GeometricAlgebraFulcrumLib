@@ -1,5 +1,6 @@
-﻿using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted;
+﻿using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra;
 using GeometricAlgebraFulcrumLib.Applications.Symbolic.LibraryGenerators.CSharp.GradedMultivectorsLib.Types;
+using GeometricAlgebraFulcrumLib.Utilities.Structures.IndexSets;
 
 namespace GeometricAlgebraFulcrumLib.Applications.Symbolic.LibraryGenerators.CSharp.GradedMultivectorsLib.Combinations;
 
@@ -11,7 +12,7 @@ public interface ILibLinearCombination
 
     LibType OutputType { get; }
 
-    IRGaLinearCombination InnerLinearCombination { get; }
+    IXGaLinearCombination InnerLinearCombination { get; }
 
     bool IsEmpty { get; }
 
@@ -25,11 +26,11 @@ public interface ILibLinearCombination
 
     bool IsOutputKVector(int grade);
 
-    IReadOnlyList<int> GetInputBasisBladeIDs();
+    IReadOnlyList<IndexSet> GetInputBasisBladeIDs();
 
-    IReadOnlyList<int> GetOutputBasisBladeIDs();
+    IReadOnlyList<IndexSet> GetOutputBasisBladeIDs();
 
-    IReadOnlyList<int> GetInputBasisBladeGrades();
+    IndexSet GetInputBasisBladeGrades();
 
-    IReadOnlyList<int> GetOutputBasisBladeGrades();
+    IndexSet GetOutputBasisBladeGrades();
 }

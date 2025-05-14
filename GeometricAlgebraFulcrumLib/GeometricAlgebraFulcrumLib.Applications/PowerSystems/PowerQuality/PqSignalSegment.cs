@@ -1,4 +1,4 @@
-﻿using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Generic.Processors;
+﻿using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Processors;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Angles;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Generic;
 
@@ -9,8 +9,8 @@ namespace GeometricAlgebraFulcrumLib.Applications.PowerSystems.PowerQuality
         public static ScalarProcessorOfFloat64 ScalarProcessor { get; }
             = ScalarProcessorOfFloat64.Instance;
 
-        public static RGaProcessor<double> GeometricProcessor { get; }
-            = ScalarProcessor.CreateEuclideanRGaProcessor();
+        public static XGaProcessor<double> GeometricProcessor { get; }
+            = ScalarProcessor.CreateEuclideanXGaProcessor();
 
         public static int VSpaceDimensions
             => 3;

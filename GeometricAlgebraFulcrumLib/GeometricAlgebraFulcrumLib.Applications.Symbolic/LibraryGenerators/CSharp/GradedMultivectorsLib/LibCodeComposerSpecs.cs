@@ -1,6 +1,6 @@
 ﻿using System.Collections.Immutable;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Basis;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Float64.Processors;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Processors;
 using GeometricAlgebraFulcrumLib.Applications.Symbolic.LibraryGenerators.CSharp.GradedMultivectorsLib.Combinations;
 using GeometricAlgebraFulcrumLib.Applications.Symbolic.LibraryGenerators.CSharp.GradedMultivectorsLib.Types;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.BitManipulation;
@@ -43,7 +43,7 @@ public sealed class LibCodeComposerSpecs
     public int VSpaceDimensions 
         => MultivectorType.VSpaceDimensions;
 
-    public RGaFloat64Processor Metric 
+    public XGaFloat64Processor Metric 
         => MultivectorType.Metric;
 
     public int GradeCount
@@ -56,7 +56,7 @@ public sealed class LibCodeComposerSpecs
         => GaSpaceDimensions - 1;
 
 
-    public LibCodeComposerSpecs(int vSpaceDimensions, RGaFloat64Processor metric, string gaClassPrefix, string gaClassPostfix)
+    public LibCodeComposerSpecs(int vSpaceDimensions, XGaFloat64Processor metric, string gaClassPrefix, string gaClassPostfix)
     {
         GaClassPrefix = gaClassPrefix;
         GaClassPostfix = gaClassPostfix;
@@ -153,7 +153,7 @@ public sealed class LibCodeComposerSpecs
             .Select(id => GradedMultivectorLibUtils.GetBasisBladeScalarName(id));
     }
         
-    public LibType GetOutType(LibType in1Type, LibType in2Type, Func<RGaBasisBlade, RGaBasisBlade, IRGaSignedBasisBlade> basisMapFunc)
+    public LibType GetOutType(LibType in1Type, LibType in2Type, Func<XGaBasisBlade, XGaBasisBlade, IXGaSignedBasisBlade> basisMapFunc)
     {
         var termTable = LibBilinearCombination.Create(
             in1Type,
@@ -164,7 +164,7 @@ public sealed class LibCodeComposerSpecs
         return termTable.OutputType;
     }
 
-    public LibType GetOutType(int in1Grade, int in2Grade, Func<RGaBasisBlade, RGaBasisBlade, IRGaSignedBasisBlade> basisMapFunc)
+    public LibType GetOutType(int in1Grade, int in2Grade, Func<XGaBasisBlade, XGaBasisBlade, IXGaSignedBasisBlade> basisMapFunc)
     {
         return GetOutType(
             KVectorTypes[in1Grade], 

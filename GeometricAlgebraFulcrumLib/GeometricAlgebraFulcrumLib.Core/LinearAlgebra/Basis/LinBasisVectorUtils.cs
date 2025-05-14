@@ -1,7 +1,7 @@
-﻿using System.Collections.Immutable;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using GeometricAlgebraFulcrumLib.Core.LinearAlgebra.Float64.Vectors.SpaceND;
+using GeometricAlgebraFulcrumLib.Core.Structures.IndexSets;
 using GeometricAlgebraFulcrumLib.Core.Structures.Tuples;
 
 namespace GeometricAlgebraFulcrumLib.Core.LinearAlgebra.Basis;
@@ -79,17 +79,10 @@ public static class LinBasisVectorUtils
                basisBivectorIndex1 < basisBivectorIndex2;
     }
     
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static bool IsValidBasisBladeIndexSet(ImmutableSortedSet<int> basisBladeIndexSet)
-    {
-        return basisBladeIndexSet.Count == 0 || 
-               basisBladeIndexSet.First() >= 0;
-    }
-
     public static bool IsValidBasisBladeIndexSet(IEnumerable<int> basisBladeIndexSet)
     {
-        if (basisBladeIndexSet is ImmutableSortedSet<int> set)
-            return IsValidBasisBladeIndexSet(set);
+        if (basisBladeIndexSet is IndexSet set)
+            return set.IsValid();
 
         var i = -1;
         foreach (var index in basisBladeIndexSet)

@@ -1,6 +1,4 @@
-﻿using BenchmarkDotNet.Running;
-using GeometricAlgebraFulcrumLib.Benchmarks.Comparisons;
-using GeometricAlgebraFulcrumLib.Benchmarks.Structures;
+﻿using GeometricAlgebraFulcrumLib.Benchmarks.Structures;
 
 namespace GeometricAlgebraFulcrumLib.Benchmarks;
 

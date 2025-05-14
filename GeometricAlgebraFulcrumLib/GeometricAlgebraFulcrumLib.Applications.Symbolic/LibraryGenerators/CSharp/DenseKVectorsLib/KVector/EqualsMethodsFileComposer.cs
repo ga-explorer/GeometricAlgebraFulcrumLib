@@ -1,4 +1,4 @@
-﻿using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra;
+﻿using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.BitManipulation;
 using GeometricAlgebraFulcrumLib.Utilities.Text.Text.Linear;
 using GeometricAlgebraFulcrumLib.Utilities.Text.Text.Structured;
@@ -40,7 +40,7 @@ internal sealed class EqualsMethodsFileComposer :
         foreach (var grade in Grades)
             casesText.Add(caseTemplate,
                 "grade", grade,
-                "num", VSpaceDimensions.KVectorSpaceDimension(grade)
+                "num", VSpaceDimensions.KVectorSpaceDimensions(grade)
             );
 
         TextComposer.AppendAtNewLine(
@@ -57,7 +57,7 @@ internal sealed class EqualsMethodsFileComposer :
         var kvSpaceDimList =
             VSpaceDimensions
                 .GetRange()
-                .Select(grade => VSpaceDimensions.KVectorSpaceDimension(grade))
+                .Select(grade => VSpaceDimensions.KVectorSpaceDimensions(grade))
                 .Distinct();
 
         foreach (var kvSpaceDim in kvSpaceDimList)

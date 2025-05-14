@@ -1,6 +1,5 @@
 ﻿using System.Runtime.CompilerServices;
-using GeometricAlgebraFulcrumLib.Core.GeometricAlgebra.Extended.Float64.Multivectors;
-using GeometricAlgebraFulcrumLib.Core.GeometricAlgebra.Restricted.Float64.Multivectors;
+using GeometricAlgebraFulcrumLib.Core.GeometricAlgebra.Float64.Multivectors;
 using GeometricAlgebraFulcrumLib.Core.LinearAlgebra.Basis;
 using GeometricAlgebraFulcrumLib.Core.LinearAlgebra.Float64.Matrices;
 using GeometricAlgebraFulcrumLib.Core.Scalars.Float64;
@@ -169,17 +168,6 @@ public static class LinFloat64VectorComposerUtils
     {
         var indexScalarDictionary = mv.ToDictionary(
             p => p.Key.FirstIndex,
-            p => p.Value
-        );
-
-        return indexScalarDictionary.CreateLinVector();
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64Vector ToLinVector(this RGaFloat64Vector mv)
-    {
-        var indexScalarDictionary = mv.ToDictionary(
-            p => p.Key.FirstOneBitPosition(),
             p => p.Value
         );
 

@@ -1,23 +1,23 @@
-﻿using System.Collections.Immutable;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Basis;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Float64.Combinations;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Float64.Multivectors;
+﻿using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Combinations;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivectors;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
 using GeometricAlgebraFulcrumLib.Applications.Symbolic.LibraryGenerators.CSharp.GradedMultivectorsLib.Types;
+using GeometricAlgebraFulcrumLib.Utilities.Structures.IndexSets;
 
 namespace GeometricAlgebraFulcrumLib.Applications.Symbolic.LibraryGenerators.CSharp.GradedMultivectorsLib.Combinations;
 
 public class LibTrilinearCombination :
     ILibLinearCombination
 {
-    public static LibTrilinearCombination Create(LibType in1Type, LibType in2Type, LibType in3Type, IEnumerable<RGaFloat64TrilinearCombinationTerm> termList)
+    public static LibTrilinearCombination Create(LibType in1Type, LibType in2Type, LibType in3Type, IEnumerable<XGaFloat64TrilinearCombinationTerm> termList)
     {
         var termTable = new LibTrilinearCombination(
             in1Type, 
             in2Type, 
             in3Type, 
-            RGaFloat64TrilinearCombinationTerm.InputsKind.Distinct
+            XGaFloat64TrilinearCombinationTerm.InputsKind.Distinct
         );
 
         termTable.Add(termList);
@@ -25,13 +25,13 @@ public class LibTrilinearCombination :
         return termTable;
     }
     
-    public static LibTrilinearCombination Create(LibType in1Type, LibType in2Type, LibType in3Type, Func<RGaBasisBlade, RGaBasisBlade, RGaBasisBlade, IRGaSignedBasisBlade> basisMapFunc)
+    public static LibTrilinearCombination Create(LibType in1Type, LibType in2Type, LibType in3Type, Func<XGaBasisBlade, XGaBasisBlade, XGaBasisBlade, IXGaSignedBasisBlade> basisMapFunc)
     {
         var termTable = new LibTrilinearCombination(
             in1Type, 
             in2Type, 
             in3Type,
-            RGaFloat64TrilinearCombinationTerm.InputsKind.Distinct
+            XGaFloat64TrilinearCombinationTerm.InputsKind.Distinct
         );
 
         var inBasisBladeList1 = in1Type.GetBasisBlades();
@@ -61,13 +61,13 @@ public class LibTrilinearCombination :
         return termTable;
     }
 
-    public static LibTrilinearCombination Create(LibType in1Type, LibType in2Type, LibType in3Type, Func<RGaBasisBlade, RGaBasisBlade, RGaBasisBlade, RGaFloat64Multivector> basisMapFunc)
+    public static LibTrilinearCombination Create(LibType in1Type, LibType in2Type, LibType in3Type, Func<XGaBasisBlade, XGaBasisBlade, XGaBasisBlade, XGaFloat64Multivector> basisMapFunc)
     {
         var termTable = new LibTrilinearCombination(
             in1Type, 
             in2Type, 
             in3Type,
-            RGaFloat64TrilinearCombinationTerm.InputsKind.Distinct
+            XGaFloat64TrilinearCombinationTerm.InputsKind.Distinct
         );
 
         var inBasisBladeList1 = in1Type.GetBasisBlades();
@@ -98,13 +98,13 @@ public class LibTrilinearCombination :
     }
 
     
-    public static LibTrilinearCombination CreateFromEqualFirstSecondInputs(LibType inType12, LibType inType3, IEnumerable<RGaFloat64TrilinearCombinationTerm> termList)
+    public static LibTrilinearCombination CreateFromEqualFirstSecondInputs(LibType inType12, LibType inType3, IEnumerable<XGaFloat64TrilinearCombinationTerm> termList)
     {
         var termTable = new LibTrilinearCombination(
             inType12, 
             inType12, 
             inType3, 
-            RGaFloat64TrilinearCombinationTerm.InputsKind.EqualFirstSecond
+            XGaFloat64TrilinearCombinationTerm.InputsKind.EqualFirstSecond
         );
         
         termTable.Add(termList);
@@ -112,13 +112,13 @@ public class LibTrilinearCombination :
         return termTable;
     }
 
-    public static LibTrilinearCombination CreateFromEqualFirstSecondInputs(LibType inType12, LibType inType3, Func<RGaBasisBlade, RGaBasisBlade, RGaBasisBlade, IRGaSignedBasisBlade> basisMapFunc)
+    public static LibTrilinearCombination CreateFromEqualFirstSecondInputs(LibType inType12, LibType inType3, Func<XGaBasisBlade, XGaBasisBlade, XGaBasisBlade, IXGaSignedBasisBlade> basisMapFunc)
     {
         var termTable = new LibTrilinearCombination(
             inType12, 
             inType12, 
             inType3, 
-            RGaFloat64TrilinearCombinationTerm.InputsKind.EqualFirstSecond
+            XGaFloat64TrilinearCombinationTerm.InputsKind.EqualFirstSecond
         );
 
         var inBasisBladeList12 = inType12.GetBasisBlades();
@@ -147,13 +147,13 @@ public class LibTrilinearCombination :
         return termTable;
     }
     
-    public static LibTrilinearCombination CreateFromEqualFirstSecondInputs(LibType inType12, LibType inType3, Func<RGaBasisBlade, RGaBasisBlade, RGaBasisBlade, RGaFloat64Multivector> basisMapFunc)
+    public static LibTrilinearCombination CreateFromEqualFirstSecondInputs(LibType inType12, LibType inType3, Func<XGaBasisBlade, XGaBasisBlade, XGaBasisBlade, XGaFloat64Multivector> basisMapFunc)
     {
         var termTable = new LibTrilinearCombination(
             inType12, 
             inType12, 
             inType3, 
-            RGaFloat64TrilinearCombinationTerm.InputsKind.EqualFirstSecond
+            XGaFloat64TrilinearCombinationTerm.InputsKind.EqualFirstSecond
         );
 
         var inBasisBladeList12 = inType12.GetBasisBlades();
@@ -183,13 +183,13 @@ public class LibTrilinearCombination :
     }
 
     
-    public static LibTrilinearCombination CreateFromEqualFirstThirdInputs(LibType inType13, LibType inType2, IEnumerable<RGaFloat64TrilinearCombinationTerm> termList)
+    public static LibTrilinearCombination CreateFromEqualFirstThirdInputs(LibType inType13, LibType inType2, IEnumerable<XGaFloat64TrilinearCombinationTerm> termList)
     {
         var termTable = new LibTrilinearCombination(
             inType13, 
             inType2, 
             inType13, 
-            RGaFloat64TrilinearCombinationTerm.InputsKind.EqualFirstThird
+            XGaFloat64TrilinearCombinationTerm.InputsKind.EqualFirstThird
         );
         
         termTable.Add(termList);
@@ -197,13 +197,13 @@ public class LibTrilinearCombination :
         return termTable;
     }
 
-    public static LibTrilinearCombination CreateFromEqualFirstThirdInputs(LibType inType13, LibType inType2, Func<RGaBasisBlade, RGaBasisBlade, RGaBasisBlade, IRGaSignedBasisBlade> basisMapFunc)
+    public static LibTrilinearCombination CreateFromEqualFirstThirdInputs(LibType inType13, LibType inType2, Func<XGaBasisBlade, XGaBasisBlade, XGaBasisBlade, IXGaSignedBasisBlade> basisMapFunc)
     {
         var termTable = new LibTrilinearCombination(
             inType13, 
             inType2, 
             inType13, 
-            RGaFloat64TrilinearCombinationTerm.InputsKind.EqualFirstThird
+            XGaFloat64TrilinearCombinationTerm.InputsKind.EqualFirstThird
         );
 
         var inBasisBladeList13 = inType13.GetBasisBlades();
@@ -232,13 +232,13 @@ public class LibTrilinearCombination :
         return termTable;
     }
 
-    public static LibTrilinearCombination CreateFromEqualFirstThirdInputs(LibType inType13, LibType inType2, Func<RGaBasisBlade, RGaBasisBlade, RGaBasisBlade, RGaFloat64Multivector> basisMapFunc)
+    public static LibTrilinearCombination CreateFromEqualFirstThirdInputs(LibType inType13, LibType inType2, Func<XGaBasisBlade, XGaBasisBlade, XGaBasisBlade, XGaFloat64Multivector> basisMapFunc)
     {
         var termTable = new LibTrilinearCombination(
             inType13, 
             inType2, 
             inType13, 
-            RGaFloat64TrilinearCombinationTerm.InputsKind.EqualFirstThird
+            XGaFloat64TrilinearCombinationTerm.InputsKind.EqualFirstThird
         );
 
         var inBasisBladeList13 = inType13.GetBasisBlades();
@@ -268,13 +268,13 @@ public class LibTrilinearCombination :
     }
     
     
-    public static LibTrilinearCombination CreateFromEqualSecondThirdInputs(LibType inType1, LibType inType23, IEnumerable<RGaFloat64TrilinearCombinationTerm> termList)
+    public static LibTrilinearCombination CreateFromEqualSecondThirdInputs(LibType inType1, LibType inType23, IEnumerable<XGaFloat64TrilinearCombinationTerm> termList)
     {
         var termTable = new LibTrilinearCombination(
             inType1, 
             inType23, 
             inType23, 
-            RGaFloat64TrilinearCombinationTerm.InputsKind.EqualSecondThird
+            XGaFloat64TrilinearCombinationTerm.InputsKind.EqualSecondThird
         );
         
         termTable.Add(termList);
@@ -282,13 +282,13 @@ public class LibTrilinearCombination :
         return termTable;
     }
 
-    public static LibTrilinearCombination CreateFromEqualSecondThirdInputs(LibType inType1, LibType inType23, Func<RGaBasisBlade, RGaBasisBlade, RGaBasisBlade, IRGaSignedBasisBlade> basisMapFunc)
+    public static LibTrilinearCombination CreateFromEqualSecondThirdInputs(LibType inType1, LibType inType23, Func<XGaBasisBlade, XGaBasisBlade, XGaBasisBlade, IXGaSignedBasisBlade> basisMapFunc)
     {
         var termTable = new LibTrilinearCombination(
             inType1, 
             inType23, 
             inType23, 
-            RGaFloat64TrilinearCombinationTerm.InputsKind.EqualSecondThird
+            XGaFloat64TrilinearCombinationTerm.InputsKind.EqualSecondThird
         );
 
         var inBasisBladeList1 = inType1.GetBasisBlades();
@@ -317,13 +317,13 @@ public class LibTrilinearCombination :
         return termTable;
     }
 
-    public static LibTrilinearCombination CreateFromEqualSecondThirdInputs(LibType inType1, LibType inType23, Func<RGaBasisBlade, RGaBasisBlade, RGaBasisBlade, RGaFloat64Multivector> basisMapFunc)
+    public static LibTrilinearCombination CreateFromEqualSecondThirdInputs(LibType inType1, LibType inType23, Func<XGaBasisBlade, XGaBasisBlade, XGaBasisBlade, XGaFloat64Multivector> basisMapFunc)
     {
         var termTable = new LibTrilinearCombination(
             inType1, 
             inType23, 
             inType23, 
-            RGaFloat64TrilinearCombinationTerm.InputsKind.EqualSecondThird
+            XGaFloat64TrilinearCombinationTerm.InputsKind.EqualSecondThird
         );
 
         var inBasisBladeList1 = inType1.GetBasisBlades();
@@ -353,13 +353,13 @@ public class LibTrilinearCombination :
     }
     
 
-    public static LibTrilinearCombination CreateFromEqualInputs(LibType inType, IEnumerable<RGaFloat64TrilinearCombinationTerm> termList)
+    public static LibTrilinearCombination CreateFromEqualInputs(LibType inType, IEnumerable<XGaFloat64TrilinearCombinationTerm> termList)
     {
         var termTable = new LibTrilinearCombination(
             inType,
             inType,
             inType,
-            RGaFloat64TrilinearCombinationTerm.InputsKind.Equal
+            XGaFloat64TrilinearCombinationTerm.InputsKind.Equal
         );
 
         termTable.Add(termList);
@@ -367,13 +367,13 @@ public class LibTrilinearCombination :
         return termTable;
     }
 
-    public static LibTrilinearCombination CreateFromEqualInputs(LibType inType, Func<RGaBasisBlade, RGaBasisBlade, RGaBasisBlade, IRGaSignedBasisBlade> basisMapFunc)
+    public static LibTrilinearCombination CreateFromEqualInputs(LibType inType, Func<XGaBasisBlade, XGaBasisBlade, XGaBasisBlade, IXGaSignedBasisBlade> basisMapFunc)
     {
         var termTable = new LibTrilinearCombination(
             inType,
             inType,
             inType,
-            RGaFloat64TrilinearCombinationTerm.InputsKind.Equal
+            XGaFloat64TrilinearCombinationTerm.InputsKind.Equal
         );
 
         var inBasisBladeList = inType.GetBasisBlades();
@@ -401,13 +401,13 @@ public class LibTrilinearCombination :
         return termTable;
     }
 
-    public static LibTrilinearCombination CreateFromEqualInputs(LibType inType, Func<RGaBasisBlade, RGaBasisBlade, RGaBasisBlade, RGaFloat64Multivector> basisMapFunc)
+    public static LibTrilinearCombination CreateFromEqualInputs(LibType inType, Func<XGaBasisBlade, XGaBasisBlade, XGaBasisBlade, XGaFloat64Multivector> basisMapFunc)
     {
         var termTable = new LibTrilinearCombination(
             inType, 
             inType, 
             inType, 
-            RGaFloat64TrilinearCombinationTerm.InputsKind.Equal
+            XGaFloat64TrilinearCombinationTerm.InputsKind.Equal
         );
 
         var inBasisBladeList = inType.GetBasisBlades();
@@ -436,13 +436,13 @@ public class LibTrilinearCombination :
     }
 
 
-    private readonly RGaFloat64TrilinearCombination _trilinearCombination;
+    private readonly XGaFloat64TrilinearCombination _trilinearCombination;
 
 
-    public RGaFloat64TrilinearCombinationTerm.InputsKind InputsKind
+    public XGaFloat64TrilinearCombinationTerm.InputsKind InputsKind
         => _trilinearCombination.InputsKind;
     
-    public IRGaLinearCombination InnerLinearCombination 
+    public IXGaLinearCombination InnerLinearCombination 
         => _trilinearCombination;
 
     public LibType Input1Type { get; }
@@ -462,13 +462,13 @@ public class LibTrilinearCombination :
     public int GaSpaceDimensions
         => Input1Type.GaSpaceDimensions;
 
-    public IEnumerable<RGaFloat64TrilinearCombinationTerm> Terms
+    public IEnumerable<XGaFloat64TrilinearCombinationTerm> Terms
         => _trilinearCombination;
 
 
-    private LibTrilinearCombination(LibType in1Type, LibType in2Type, LibType in3Type, RGaFloat64TrilinearCombinationTerm.InputsKind inputsKind)
+    private LibTrilinearCombination(LibType in1Type, LibType in2Type, LibType in3Type, XGaFloat64TrilinearCombinationTerm.InputsKind inputsKind)
     {
-        _trilinearCombination = new RGaFloat64TrilinearCombination(inputsKind);
+        _trilinearCombination = new XGaFloat64TrilinearCombination(inputsKind);
         Input1Type = in1Type;
         Input2Type = in2Type;
         Input3Type = in3Type;
@@ -500,12 +500,12 @@ public class LibTrilinearCombination :
         return _trilinearCombination.IsOutputKVector(grade);
     }
 
-    public IReadOnlyList<int> GetOutputBasisBladeGrades()
+    public IndexSet GetOutputBasisBladeGrades()
     {
         return _trilinearCombination.GetOutputBasisBladeGrades();
     }
 
-    public IReadOnlyList<int> GetInputBasisBladeGrades()
+    public IndexSet GetInputBasisBladeGrades()
     {
         return _trilinearCombination.GetInputBasisBladeGrades();
     }
@@ -540,68 +540,44 @@ public class LibTrilinearCombination :
         return _trilinearCombination.GetInput23BasisBladeGrades();
     }
 
-    public IReadOnlyList<int> GetInputBasisBladeIDs()
+    public IReadOnlyList<IndexSet> GetInputBasisBladeIDs()
     {
-        return _trilinearCombination
-            .GetInputBasisBladeIDs()
-            .Select(id => (int)id)
-            .ToImmutableSortedSet();
+        return _trilinearCombination.GetInputBasisBladeIDs();
     }
 
-    public IReadOnlyList<int> GetInput1BasisBladeIDs()
+    public IReadOnlyList<IndexSet> GetInput1BasisBladeIDs()
     {
-        return _trilinearCombination
-            .GetInput1BasisBladeIDs()
-            .Select(id => (int)id)
-            .ToImmutableSortedSet();
+        return _trilinearCombination.GetInput1BasisBladeIDs();
     }
 
-    public IReadOnlyList<int> GetInput2BasisBladeIDs()
+    public IReadOnlyList<IndexSet> GetInput2BasisBladeIDs()
     {
-        return _trilinearCombination
-            .GetInput2BasisBladeIDs()
-            .Select(id => (int)id)
-            .ToImmutableSortedSet();
+        return _trilinearCombination.GetInput2BasisBladeIDs();
     }
     
-    public IReadOnlyList<int> GetInput3BasisBladeIDs()
+    public IReadOnlyList<IndexSet> GetInput3BasisBladeIDs()
     {
-        return _trilinearCombination
-            .GetInput3BasisBladeIDs()
-            .Select(id => (int)id)
-            .ToImmutableSortedSet();
+        return _trilinearCombination.GetInput3BasisBladeIDs();
     }
     
-    public IReadOnlyList<int> GetInput12BasisBladeIDs()
+    public IReadOnlyList<IndexSet> GetInput12BasisBladeIDs()
     {
-        return _trilinearCombination
-            .GetInput12BasisBladeIDs()
-            .Select(id => (int)id)
-            .ToImmutableSortedSet();
+        return _trilinearCombination.GetInput12BasisBladeIDs();
     }
     
-    public IReadOnlyList<int> GetInput13BasisBladeIDs()
+    public IReadOnlyList<IndexSet> GetInput13BasisBladeIDs()
     {
-        return _trilinearCombination
-            .GetInput13BasisBladeIDs()
-            .Select(id => (int)id)
-            .ToImmutableSortedSet();
+        return _trilinearCombination.GetInput13BasisBladeIDs();
     }
     
-    public IReadOnlyList<int> GetInput23BasisBladeIDs()
+    public IReadOnlyList<IndexSet> GetInput23BasisBladeIDs()
     {
-        return _trilinearCombination
-            .GetInput23BasisBladeIDs()
-            .Select(id => (int)id)
-            .ToImmutableSortedSet();
+        return _trilinearCombination.GetInput23BasisBladeIDs();
     }
 
-    public IReadOnlyList<int> GetOutputBasisBladeIDs()
+    public IReadOnlyList<IndexSet> GetOutputBasisBladeIDs()
     {
-        return _trilinearCombination
-            .GetOutputBasisBladeIDs()
-            .Select(id => (int)id)
-            .ToImmutableSortedSet();
+        return _trilinearCombination.GetOutputBasisBladeIDs();
     }
 
 
@@ -627,14 +603,14 @@ public class LibTrilinearCombination :
     }
 
 
-    public LibTrilinearCombination Add(RGaFloat64TrilinearCombinationTerm term)
+    public LibTrilinearCombination Add(XGaFloat64TrilinearCombinationTerm term)
     {
         _trilinearCombination.Add(term);
 
         return this;
     }
 
-    public LibTrilinearCombination Add(RGaBasisBlade input1BasisBlade, RGaBasisBlade input2BasisBlade, RGaBasisBlade input3BasisBlade, IRGaSignedBasisBlade outputBasisBlade)
+    public LibTrilinearCombination Add(XGaBasisBlade input1BasisBlade, XGaBasisBlade input2BasisBlade, XGaBasisBlade input3BasisBlade, IXGaSignedBasisBlade outputBasisBlade)
     {
         _trilinearCombination.Add(
             input1BasisBlade,
@@ -646,7 +622,7 @@ public class LibTrilinearCombination :
         return this;
     }
 
-    public LibTrilinearCombination Add(Float64Scalar inputScalar, RGaBasisBlade input1BasisBlade, RGaBasisBlade input2BasisBlade, RGaBasisBlade input3BasisBlade, RGaBasisBlade outputBasisBlade)
+    public LibTrilinearCombination Add(Float64Scalar inputScalar, XGaBasisBlade input1BasisBlade, XGaBasisBlade input2BasisBlade, XGaBasisBlade input3BasisBlade, XGaBasisBlade outputBasisBlade)
     {
         _trilinearCombination.Add(
             inputScalar,
@@ -659,7 +635,7 @@ public class LibTrilinearCombination :
         return this;
     }
 
-    public LibTrilinearCombination Add(RGaBasisBlade input1BasisBlade, RGaBasisBlade input2BasisBlade, RGaBasisBlade input3BasisBlade, RGaFloat64Multivector outputMultivector)
+    public LibTrilinearCombination Add(XGaBasisBlade input1BasisBlade, XGaBasisBlade input2BasisBlade, XGaBasisBlade input3BasisBlade, XGaFloat64Multivector outputMultivector)
     {
         _trilinearCombination.Add(
             input1BasisBlade,
@@ -671,7 +647,7 @@ public class LibTrilinearCombination :
         return this;
     }
 
-    public LibTrilinearCombination Add(IEnumerable<RGaFloat64TrilinearCombinationTerm> termList)
+    public LibTrilinearCombination Add(IEnumerable<XGaFloat64TrilinearCombinationTerm> termList)
     {
         _trilinearCombination.Add(termList);
 
@@ -679,7 +655,7 @@ public class LibTrilinearCombination :
     }
     
     
-    public LibTrilinearCombination FilterTerms(LibType input1Type, LibType input2Type, LibType input3Type, LibType outputType, Func<RGaFloat64TrilinearCombinationTerm, bool> termFilter)
+    public LibTrilinearCombination FilterTerms(LibType input1Type, LibType input2Type, LibType input3Type, LibType outputType, Func<XGaFloat64TrilinearCombinationTerm, bool> termFilter)
     {
         return Create(
             input1Type,
@@ -690,9 +666,9 @@ public class LibTrilinearCombination :
     }
 
 
-    public SortedDictionary<int, RGaFloat64TrilinearCombination> GetIdTermListPairs()
+    public SortedDictionary<int, XGaFloat64TrilinearCombination> GetIdTermListPairs()
     {
-        var idList = new SortedDictionary<int, RGaFloat64TrilinearCombination>();
+        var idList = new SortedDictionary<int, XGaFloat64TrilinearCombination>();
 
         var groupList =
             _trilinearCombination
@@ -702,7 +678,7 @@ public class LibTrilinearCombination :
         {
             var key = (int)group.Key;
             var value =
-                new RGaFloat64TrilinearCombination(InputsKind).Add(group);
+                new XGaFloat64TrilinearCombination(InputsKind).Add(group);
 
             idList.Add(key, value);
         }
@@ -710,9 +686,9 @@ public class LibTrilinearCombination :
         return idList;
     }
     
-    public SortedDictionary<int, RGaFloat64TrilinearCombination> GetIdTermListPairs(Func<RGaFloat64TrilinearCombinationTerm, bool> termFilter)
+    public SortedDictionary<int, XGaFloat64TrilinearCombination> GetIdTermListPairs(Func<XGaFloat64TrilinearCombinationTerm, bool> termFilter)
     {
-        var idList = new SortedDictionary<int, RGaFloat64TrilinearCombination>();
+        var idList = new SortedDictionary<int, XGaFloat64TrilinearCombination>();
 
         var groupList =
             _trilinearCombination
@@ -723,7 +699,7 @@ public class LibTrilinearCombination :
         {
             var key = (int)group.Key;
             var value =
-                new RGaFloat64TrilinearCombination(InputsKind).Add(group);
+                new XGaFloat64TrilinearCombination(InputsKind).Add(group);
 
             idList.Add(key, value);
         }
@@ -731,9 +707,9 @@ public class LibTrilinearCombination :
         return idList;
     }
 
-    public SortedDictionary<int, RGaFloat64TrilinearCombination> GetIdTermListPairsForOutGrade(int grade)
+    public SortedDictionary<int, XGaFloat64TrilinearCombination> GetIdTermListPairsForOutGrade(int grade)
     {
-        var idList = new SortedDictionary<int, RGaFloat64TrilinearCombination>();
+        var idList = new SortedDictionary<int, XGaFloat64TrilinearCombination>();
 
         var groupList =
             _trilinearCombination
@@ -744,7 +720,7 @@ public class LibTrilinearCombination :
         {
             var key = (int)group.Key;
             var value =
-                new RGaFloat64TrilinearCombination(InputsKind).Add(group);
+                new XGaFloat64TrilinearCombination(InputsKind).Add(group);
 
             idList.Add(key, value);
         }

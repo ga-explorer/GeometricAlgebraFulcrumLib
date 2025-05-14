@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics;
 using System.Runtime.CompilerServices;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Float64.Multivectors;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivectors;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space2D;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space3D;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.SpaceND;
@@ -73,12 +73,12 @@ public sealed class CGaFloat64PGaFlatBladeDecoder :
 
 
     //[MethodImpl(MethodImplOptions.AggressiveInlining)]
-    //public RGaConformalParametricElement Element(this RGaConformalParametricBlade2D blade)
+    //public XGaConformalParametricElement Element(this XGaConformalParametricBlade2D blade)
     //{
     //    if (!blade.Specs.IsPGaFlat)
     //        throw new InvalidOperationException();
 
-    //    return RGaConformalParametricElement.Create(
+    //    return XGaConformalParametricElement.Create(
     //        blade.Specs,
     //        blade.ParameterRange,
     //        t => blade.GetBlade(t).Element()
@@ -86,12 +86,12 @@ public sealed class CGaFloat64PGaFlatBladeDecoder :
     //}
 
     //[MethodImpl(MethodImplOptions.AggressiveInlining)]
-    //public RGaConformalParametricElement Element(this RGaConformalParametricBlade3D blade)
+    //public XGaConformalParametricElement Element(this XGaConformalParametricBlade3D blade)
     //{
     //    if (!blade.Specs.IsPGaFlat)
     //        throw new InvalidOperationException();
 
-    //    return RGaConformalParametricElement.Create(
+    //    return XGaConformalParametricElement.Create(
     //        blade.Specs,
     //        blade.ParameterRange,
     //        t => blade.GetBlade(t).Element()
@@ -99,12 +99,12 @@ public sealed class CGaFloat64PGaFlatBladeDecoder :
     //}
 
     //[MethodImpl(MethodImplOptions.AggressiveInlining)]
-    //public RGaConformalParametricElement Element(this RGaConformalParametricBlade2D blade, IParametricCurve3D egaProbePoint)
+    //public XGaConformalParametricElement Element(this XGaConformalParametricBlade2D blade, IParametricCurve3D egaProbePoint)
     //{
     //    if (!blade.Specs.IsPGaFlat)
     //        throw new InvalidOperationException();
 
-    //    return RGaConformalParametricElement.Create(
+    //    return XGaConformalParametricElement.Create(
     //        blade.Specs,
     //        blade.ParameterRange,
     //        t => blade.GetBlade(t).Element(
@@ -114,12 +114,12 @@ public sealed class CGaFloat64PGaFlatBladeDecoder :
     //}
 
     //[MethodImpl(MethodImplOptions.AggressiveInlining)]
-    //public RGaConformalParametricElement Element(this RGaConformalParametricBlade3D blade, IParametricCurve3D egaProbePoint)
+    //public XGaConformalParametricElement Element(this XGaConformalParametricBlade3D blade, IParametricCurve3D egaProbePoint)
     //{
     //    if (!blade.Specs.IsPGaFlat)
     //        throw new InvalidOperationException();
 
-    //    return RGaConformalParametricElement.Create(
+    //    return XGaConformalParametricElement.Create(
     //        blade.Specs,
     //        blade.ParameterRange,
     //        t => blade.GetBlade(t).Element(
@@ -154,7 +154,7 @@ public sealed class CGaFloat64PGaFlatBladeDecoder :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public double Weight(RGaFloat64Vector egaProbePoint)
+    public double Weight(XGaFloat64Vector egaProbePoint)
     {
         return Blade.PGaToIpns().Decode.IpnsFlat.Weight(egaProbePoint);
     }
@@ -205,7 +205,7 @@ public sealed class CGaFloat64PGaFlatBladeDecoder :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public CGaFloat64Blade VGaPosition(RGaFloat64Vector egaProbePoint)
+    public CGaFloat64Blade VGaPosition(XGaFloat64Vector egaProbePoint)
     {
         return Blade.PGaToIpns().Decode.IpnsFlat.VGaPosition(egaProbePoint);
     }

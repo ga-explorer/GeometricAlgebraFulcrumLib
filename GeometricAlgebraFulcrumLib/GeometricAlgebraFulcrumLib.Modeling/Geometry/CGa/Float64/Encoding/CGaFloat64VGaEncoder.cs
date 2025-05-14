@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics;
 using System.Runtime.CompilerServices;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Float64.Multivectors;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Float64.Multivectors.Composers;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivectors;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivectors.Composers;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Angles;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space2D;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space3D;
@@ -22,7 +22,7 @@ public class CGaFloat64VGaEncoder :
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public RGaFloat64Vector VectorAsRGaVector(double x, double y)
+    public XGaFloat64Vector VectorAsXGaVector(double x, double y)
     {
         Debug.Assert(GeometricSpace.Is4D);
 
@@ -30,7 +30,7 @@ public class CGaFloat64VGaEncoder :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public RGaFloat64Vector VectorAsRGaVector(ILinFloat64Vector2D mv)
+    public XGaFloat64Vector VectorAsXGaVector(ILinFloat64Vector2D mv)
     {
         Debug.Assert(GeometricSpace.Is4D);
 
@@ -38,7 +38,7 @@ public class CGaFloat64VGaEncoder :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public RGaFloat64Vector VectorAsRGaVector(double x, double y, double z)
+    public XGaFloat64Vector VectorAsXGaVector(double x, double y, double z)
     {
         Debug.Assert(GeometricSpace.Is5D);
 
@@ -46,7 +46,7 @@ public class CGaFloat64VGaEncoder :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public RGaFloat64Vector VectorAsRGaVector(ILinFloat64Vector3D mv)
+    public XGaFloat64Vector VectorAsXGaVector(ILinFloat64Vector3D mv)
     {
         Debug.Assert(GeometricSpace.Is5D);
 
@@ -54,7 +54,7 @@ public class CGaFloat64VGaEncoder :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public RGaFloat64Vector VectorAsRGaVector(LinFloat64Vector mv)
+    public XGaFloat64Vector VectorAsXGaVector(LinFloat64Vector mv)
     {
         var composer = GeometricSpace.ConformalProcessor.CreateComposer();
 
@@ -65,7 +65,7 @@ public class CGaFloat64VGaEncoder :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public RGaFloat64Vector VectorAsRGaVector(RGaFloat64Vector mv)
+    public XGaFloat64Vector VectorAsXGaVector(XGaFloat64Vector mv)
     {
         Debug.Assert(mv.Processor.IsEuclidean);
 
@@ -79,7 +79,7 @@ public class CGaFloat64VGaEncoder :
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public RGaFloat64Bivector BivectorAsRGaBivector(double xy)
+    public XGaFloat64Bivector BivectorAsXGaBivector(double xy)
     {
         Debug.Assert(GeometricSpace.Is4D);
 
@@ -90,7 +90,7 @@ public class CGaFloat64VGaEncoder :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public RGaFloat64Bivector BivectorAsRGaBivector(LinFloat64Bivector2D bivector)
+    public XGaFloat64Bivector BivectorAsXGaBivector(LinFloat64Bivector2D bivector)
     {
         Debug.Assert(GeometricSpace.Is4D);
 
@@ -101,7 +101,7 @@ public class CGaFloat64VGaEncoder :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public RGaFloat64Bivector BivectorAsRGaBivector(double xy, double xz, double yz)
+    public XGaFloat64Bivector BivectorAsXGaBivector(double xy, double xz, double yz)
     {
         Debug.Assert(GeometricSpace.Is5D);
 
@@ -114,7 +114,7 @@ public class CGaFloat64VGaEncoder :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public RGaFloat64Bivector BivectorAsRGaBivector(LinFloat64Bivector3D bivector)
+    public XGaFloat64Bivector BivectorAsXGaBivector(LinFloat64Bivector3D bivector)
     {
         Debug.Assert(GeometricSpace.Is5D);
 
@@ -127,21 +127,21 @@ public class CGaFloat64VGaEncoder :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public RGaFloat64Bivector BivectorAsRGaBivector(RGaFloat64Bivector mv)
+    public XGaFloat64Bivector BivectorAsXGaBivector(XGaFloat64Bivector mv)
     {
         Debug.Assert(mv.Processor.IsEuclidean);
 
         var composer = GeometricSpace.ConformalProcessor.CreateComposer();
 
         foreach (var (id, scalar) in mv.IdScalarPairs)
-            composer.SetTerm(id << 2, scalar);
+            composer.SetTerm(id.ShiftIndices(2), scalar);
 
         return composer.GetBivector();
     }
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public RGaFloat64KVector TrivectorAsRGaKVector(double xyzScalar)
+    public XGaFloat64KVector TrivectorAsXGaKVector(double xyzScalar)
     {
         Debug.Assert(GeometricSpace.Is5D);
 
@@ -149,7 +149,7 @@ public class CGaFloat64VGaEncoder :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public RGaFloat64KVector TrivectorAsRGaKVector(LinFloat64Trivector3D trivector)
+    public XGaFloat64KVector TrivectorAsXGaKVector(LinFloat64Trivector3D trivector)
     {
         Debug.Assert(GeometricSpace.Is5D);
 
@@ -157,14 +157,14 @@ public class CGaFloat64VGaEncoder :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public RGaFloat64KVector KVectorAsRGaKVector(RGaFloat64KVector mv)
+    public XGaFloat64KVector KVectorAsXGaKVector(XGaFloat64KVector mv)
     {
         Debug.Assert(mv.Processor.IsEuclidean);
 
         var composer = GeometricSpace.ConformalProcessor.CreateComposer();
 
         foreach (var (id, scalar) in mv.IdScalarPairs)
-            composer.SetTerm(id << 2, scalar);
+            composer.SetTerm(id.ShiftIndices(2), scalar);
 
         return composer.GetKVector(mv.Grade);
     }
@@ -176,7 +176,7 @@ public class CGaFloat64VGaEncoder :
     {
         return new CGaFloat64Blade(
             GeometricSpace,
-            VectorAsRGaVector(x, y)
+            VectorAsXGaVector(x, y)
         );
     }
 
@@ -185,7 +185,7 @@ public class CGaFloat64VGaEncoder :
     {
         return new CGaFloat64Blade(
             GeometricSpace,
-            VectorAsRGaVector(mv)
+            VectorAsXGaVector(mv)
         );
     }
 
@@ -194,7 +194,7 @@ public class CGaFloat64VGaEncoder :
     {
         return new CGaFloat64Blade(
             GeometricSpace,
-            VectorAsRGaVector(x, y, z)
+            VectorAsXGaVector(x, y, z)
         );
     }
 
@@ -203,7 +203,7 @@ public class CGaFloat64VGaEncoder :
     {
         return new CGaFloat64Blade(
             GeometricSpace,
-            VectorAsRGaVector(mv)
+            VectorAsXGaVector(mv)
         );
     }
 
@@ -212,16 +212,16 @@ public class CGaFloat64VGaEncoder :
     {
         return new CGaFloat64Blade(
             GeometricSpace,
-            VectorAsRGaVector(mv)
+            VectorAsXGaVector(mv)
         );
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public CGaFloat64Blade Vector(RGaFloat64Vector mv)
+    public CGaFloat64Blade Vector(XGaFloat64Vector mv)
     {
         return new CGaFloat64Blade(
             GeometricSpace,
-            VectorAsRGaVector(mv)
+            VectorAsXGaVector(mv)
         );
     }
 
@@ -231,7 +231,7 @@ public class CGaFloat64VGaEncoder :
     {
         return new CGaFloat64Blade(
             GeometricSpace,
-            BivectorAsRGaBivector(xy)
+            BivectorAsXGaBivector(xy)
         );
     }
 
@@ -240,7 +240,7 @@ public class CGaFloat64VGaEncoder :
     {
         return new CGaFloat64Blade(
             GeometricSpace,
-            BivectorAsRGaBivector(bivector)
+            BivectorAsXGaBivector(bivector)
         );
     }
 
@@ -249,7 +249,7 @@ public class CGaFloat64VGaEncoder :
     {
         return new CGaFloat64Blade(
             GeometricSpace,
-            BivectorAsRGaBivector(xy, xz, yz)
+            BivectorAsXGaBivector(xy, xz, yz)
         );
     }
 
@@ -258,16 +258,16 @@ public class CGaFloat64VGaEncoder :
     {
         return new CGaFloat64Blade(
             GeometricSpace,
-            BivectorAsRGaBivector(bivector)
+            BivectorAsXGaBivector(bivector)
         );
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public CGaFloat64Blade Bivector(RGaFloat64Bivector mv)
+    public CGaFloat64Blade Bivector(XGaFloat64Bivector mv)
     {
         return new CGaFloat64Blade(
             GeometricSpace,
-            BivectorAsRGaBivector(mv)
+            BivectorAsXGaBivector(mv)
         );
     }
 
@@ -277,7 +277,7 @@ public class CGaFloat64VGaEncoder :
     {
         return new CGaFloat64Blade(
             GeometricSpace,
-            TrivectorAsRGaKVector(xyzScalar)
+            TrivectorAsXGaKVector(xyzScalar)
         );
     }
 
@@ -286,16 +286,16 @@ public class CGaFloat64VGaEncoder :
     {
         return new CGaFloat64Blade(
             GeometricSpace,
-            TrivectorAsRGaKVector(trivector)
+            TrivectorAsXGaKVector(trivector)
         );
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public CGaFloat64Blade Blade(RGaFloat64KVector mv)
+    public CGaFloat64Blade Blade(XGaFloat64KVector mv)
     {
         return new CGaFloat64Blade(
             GeometricSpace,
-            KVectorAsRGaKVector(mv)
+            KVectorAsXGaKVector(mv)
         );
     }
 

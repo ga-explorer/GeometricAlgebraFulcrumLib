@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics;
 using System.Runtime.CompilerServices;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Float64.Multivectors;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivectors;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space2D;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space3D;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.SpaceND;
@@ -54,7 +54,7 @@ public static class CGaFloat64TranslationUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static CGaFloat64Element TranslateBy(this CGaFloat64Element element, RGaFloat64Vector egaVector)
+    public static CGaFloat64Element TranslateBy(this CGaFloat64Element element, XGaFloat64Vector egaVector)
     {
         return element switch
         {
@@ -121,7 +121,7 @@ public static class CGaFloat64TranslationUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static CGaFloat64ParametricElement TranslateBy(this CGaFloat64ParametricElement element, RGaFloat64Vector egaVector)
+    public static CGaFloat64ParametricElement TranslateBy(this CGaFloat64ParametricElement element, XGaFloat64Vector egaVector)
     {
         return CGaFloat64ParametricElement.Create(
             element.GeometricSpace,
@@ -175,7 +175,7 @@ public static class CGaFloat64TranslationUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static CGaFloat64Tangent TranslateBy(this CGaFloat64Tangent element, RGaFloat64Vector egaVector)
+    public static CGaFloat64Tangent TranslateBy(this CGaFloat64Tangent element, XGaFloat64Vector egaVector)
     {
         return new CGaFloat64Tangent(
             element.GeometricSpace,
@@ -233,7 +233,7 @@ public static class CGaFloat64TranslationUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static CGaFloat64Flat TranslateBy(this CGaFloat64Flat element, RGaFloat64Vector egaVector)
+    public static CGaFloat64Flat TranslateBy(this CGaFloat64Flat element, XGaFloat64Vector egaVector)
     {
         return new CGaFloat64Flat(
             element.GeometricSpace,
@@ -294,7 +294,7 @@ public static class CGaFloat64TranslationUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static CGaFloat64Round TranslateBy(this CGaFloat64Round element, RGaFloat64Vector egaVector)
+    public static CGaFloat64Round TranslateBy(this CGaFloat64Round element, XGaFloat64Vector egaVector)
     {
         return new CGaFloat64Round(
             element.GeometricSpace,
@@ -407,7 +407,7 @@ public static class CGaFloat64TranslationUtils
     /// <param name="egaTranslationVector"></param>
     /// <returns></returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static CGaFloat64Blade TranslateBy(this CGaFloat64Blade blade, RGaFloat64Vector egaTranslationVector)
+    public static CGaFloat64Blade TranslateBy(this CGaFloat64Blade blade, XGaFloat64Vector egaTranslationVector)
     {
         return blade.TranslateBy(
             blade.GeometricSpace.EncodeVGa.Vector(egaTranslationVector)
@@ -485,7 +485,7 @@ public static class CGaFloat64TranslationUtils
     /// <param name="egaTranslationVector"></param>
     /// <returns></returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static CGaFloat64Blade TranslatePGaBy(this CGaFloat64Blade blade, RGaFloat64Vector egaTranslationVector)
+    public static CGaFloat64Blade TranslatePGaBy(this CGaFloat64Blade blade, XGaFloat64Vector egaTranslationVector)
     {
         return blade.TranslatePGaBy(
             blade.GeometricSpace.EncodeVGa.Vector(egaTranslationVector)

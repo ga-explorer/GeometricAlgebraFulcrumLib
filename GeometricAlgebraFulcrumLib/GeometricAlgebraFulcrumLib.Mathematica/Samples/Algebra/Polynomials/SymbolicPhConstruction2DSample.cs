@@ -1,7 +1,7 @@
 ﻿using System;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Generic.LinearMaps.Rotors;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Generic.Multivectors.Composers;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Generic.Processors;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.LinearMaps.Rotors;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Multivectors.Composers;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Processors;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Generic.Angles;
 using GeometricAlgebraFulcrumLib.Algebra.Polynomials.Generic.Basis;
 using GeometricAlgebraFulcrumLib.Algebra.Polynomials.Generic.PhCurves;
@@ -9,6 +9,7 @@ using GeometricAlgebraFulcrumLib.Algebra.Scalars.Generic;
 using GeometricAlgebraFulcrumLib.Mathematica.Algebra;
 using GeometricAlgebraFulcrumLib.Mathematica.Utilities.Structures;
 using GeometricAlgebraFulcrumLib.Mathematica.Utilities.Text;
+using GeometricAlgebraFulcrumLib.Utilities.Structures.IndexSets;
 using Wolfram.NETLink;
 
 namespace GeometricAlgebraFulcrumLib.Mathematica.Samples.Algebra.Polynomials;
@@ -22,8 +23,8 @@ public static class SymbolicPhConstruction2DSample
 
     // Create a 3-dimensional Euclidean geometric algebra processor based on the
     // selected scalar processor
-    public static RGaProcessor<Expr> GeometricProcessor { get; }
-        = ScalarProcessor.CreateEuclideanRGaProcessor();
+    public static XGaProcessor<Expr> GeometricProcessor { get; }
+        = ScalarProcessor.CreateEuclideanXGaProcessor();
 
     // This is a pre-defined text generator for displaying multivectors
     // with symbolic Wolfram Mathematica scalars using Expr objects
@@ -46,7 +47,7 @@ public static class SymbolicPhConstruction2DSample
 
         //var e1 = GeometricProcessor.Vector(0);
         var e2 = GeometricProcessor.VectorTerm(1);
-        var e12 = GeometricProcessor.BivectorTerm(0);
+        var e12 = GeometricProcessor.BivectorTerm((IndexSet)3);
 
         var p =
             GeometricProcessor.Vector(1, 1);
@@ -172,7 +173,7 @@ public static class SymbolicPhConstruction2DSample
 
         //var e1 = GeometricProcessor.Vector(0);
         var e2 = processor.VectorTerm(1);
-        var e12 = processor.BivectorTerm(0);
+        var e12 = processor.BivectorTerm((IndexSet)3);
 
         var p =
             GeometricProcessor.Vector(1d, 1d);
@@ -233,7 +234,7 @@ public static class SymbolicPhConstruction2DSample
 
         var e1 = GeometricProcessor.VectorTerm(0);
         var e2 = GeometricProcessor.VectorTerm(1);
-        var e12 = GeometricProcessor.BivectorTerm(0);
+        var e12 = GeometricProcessor.BivectorTerm((IndexSet)3);
 
         var p =
             GeometricProcessor.Vector(1, 1);

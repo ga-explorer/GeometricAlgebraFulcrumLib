@@ -1,4 +1,4 @@
-﻿using GeometricAlgebraFulcrumLib.Core.GeometricAlgebra.Restricted.Float64.Processors;
+﻿using GeometricAlgebraFulcrumLib.Core.GeometricAlgebra.Float64.Processors;
 using GeometricAlgebraFulcrumLib.Core.LinearAlgebra.Float64.Vectors.Space2D;
 using GeometricAlgebraFulcrumLib.Core.Polynomials.Float64.BSplineCurveBasis;
 
@@ -20,7 +20,7 @@ public class PhBSplineCurve2DDegree5
     private readonly BSplineBasisPairProductSet _basisPairProductSet;
     private readonly BSplineBasisPairProductIntegralSet _basisPairProductIntegralSet;
 
-    public RGaFloat64Processor BasisBladeSet { get; }
+    public XGaFloat64Processor BasisBladeSet { get; }
 
     public BSplineBasisSet BasisSet { get; }
 

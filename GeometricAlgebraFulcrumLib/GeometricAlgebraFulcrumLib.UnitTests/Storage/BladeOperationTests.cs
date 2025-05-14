@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Float64.Multivectors;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Float64.Multivectors.Composers;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Float64.Processors;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivectors;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivectors.Composers;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Processors;
 using NUnit.Framework;
 
 namespace GeometricAlgebraFulcrumLib.UnitTests.Storage;
@@ -10,30 +10,30 @@ namespace GeometricAlgebraFulcrumLib.UnitTests.Storage;
 [TestFixture]
 public sealed class BladeOperationTests
 {
-    private readonly RGaFloat64RandomComposer _randomGenerator;
+    private readonly XGaFloat64RandomComposer _randomGenerator;
 
-    private readonly List<RGaFloat64KVector> _bladesList;
+    private readonly List<XGaFloat64KVector> _bladesList;
 
-    private readonly RGaFloat64Scalar _scalar;
+    private readonly XGaFloat64Scalar _scalar;
 
     //private GeoScalarStorage<double> _scalarStorage;
 
 
-    public RGaFloat64Processor GeometricProcessor
-        => RGaFloat64Processor.Euclidean;
+    public XGaFloat64Processor GeometricProcessor
+        => XGaFloat64Processor.Euclidean;
 
     public int VSpaceDimensions 
         => 8;
 
     public ulong GaSpaceDimensions
-        => VSpaceDimensions.ToGaSpaceDimension();
+        => VSpaceDimensions.GaSpaceDimensions();
 
 
     public BladeOperationTests()
     {
-        _randomGenerator = GeometricProcessor.CreateRGaRandomComposer(VSpaceDimensions, 10);
+        _randomGenerator = GeometricProcessor.CreateXGaRandomComposer(VSpaceDimensions, 10);
         _scalar = _randomGenerator.GetScalar();
-        _bladesList = new List<RGaFloat64KVector>();
+        _bladesList = new List<XGaFloat64KVector>();
     }
 
         
@@ -50,8 +50,8 @@ public sealed class BladeOperationTests
     [Test]
     public void AssertScaling()
     {
-        RGaFloat64Multivector blade2;
-        RGaFloat64Multivector diff;
+        XGaFloat64Multivector blade2;
+        XGaFloat64Multivector diff;
 
         foreach (var blade1 in _bladesList)
         {

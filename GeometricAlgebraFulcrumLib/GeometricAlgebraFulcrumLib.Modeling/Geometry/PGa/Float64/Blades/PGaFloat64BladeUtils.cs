@@ -355,7 +355,7 @@
 
 
 //    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-//    public static RGaFloat64Multivector Gp(this RGaFloat64Multivector mv, PGaFloat64Blade blade)
+//    public static XGaFloat64Multivector Gp(this XGaFloat64Multivector mv, PGaFloat64Blade blade)
 //    {
 //        return mv.Gp(blade.InternalKVector);
 //    }

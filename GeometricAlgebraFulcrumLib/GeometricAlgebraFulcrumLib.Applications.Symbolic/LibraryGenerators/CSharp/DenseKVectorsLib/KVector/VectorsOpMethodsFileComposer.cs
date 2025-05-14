@@ -1,5 +1,5 @@
-﻿using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Extended.Generic.Multivectors;
+﻿using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Multivectors;
 using GeometricAlgebraFulcrumLib.MetaProgramming.Context;
 using GeometricAlgebraFulcrumLib.MetaProgramming.Context.Expressions;
 using GeometricAlgebraFulcrumLib.Utilities.Text.Text.Linear;
@@ -83,7 +83,7 @@ internal sealed class VectorsOpMethodsFileComposer :
             "signature", CurrentNamespace,
             "double", GeoLanguage.ScalarTypeName,
             "grade", _outGrade,
-            "num", VSpaceDimensions.KVectorSpaceDimension(_outGrade),
+            "num", VSpaceDimensions.KVectorSpaceDimensions(_outGrade),
             "computations", computationsText
         );
     }

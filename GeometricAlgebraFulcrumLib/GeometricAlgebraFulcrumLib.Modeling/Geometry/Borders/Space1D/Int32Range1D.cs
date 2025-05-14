@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using GeometricAlgebraFulcrumLib.Algebra;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.BitManipulation;
+using GeometricAlgebraFulcrumLib.Utilities.Structures.IndexSets;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Tuples;
 
 namespace GeometricAlgebraFulcrumLib.Modeling.Geometry.Borders.Space1D;
@@ -448,6 +449,12 @@ public readonly struct Int32Range1D :
         return new Int32Range1D(minValue, maxValue);
     }
 
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public IndexSet ToDenseIndexSet()
+    {
+        return IndexSet.CreateDense(MinValue, Count);
+    }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public Int32Range1D ExpandToInclude(IPair<int> range)

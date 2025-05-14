@@ -1,6 +1,6 @@
 ﻿using System.Runtime.CompilerServices;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Float64.Multivectors;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Float64.Multivectors.Composers;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivectors;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivectors.Composers;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space2D;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space3D;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.SpaceND;
@@ -63,7 +63,7 @@ public static class CGaFloat64DirectionComposerUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static CGaFloat64Direction DefineDirectionLine(this CGaFloat64GeometricSpace cgaGeometricSpace, RGaFloat64Vector direction)
+    public static CGaFloat64Direction DefineDirectionLine(this CGaFloat64GeometricSpace cgaGeometricSpace, XGaFloat64Vector direction)
     {
         return new CGaFloat64Direction(
             cgaGeometricSpace,
@@ -104,7 +104,7 @@ public static class CGaFloat64DirectionComposerUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static CGaFloat64Direction DefineDirectionLine(this CGaFloat64GeometricSpace cgaGeometricSpace, double weight, RGaFloat64Vector direction)
+    public static CGaFloat64Direction DefineDirectionLine(this CGaFloat64GeometricSpace cgaGeometricSpace, double weight, XGaFloat64Vector direction)
     {
         return new CGaFloat64Direction(
             cgaGeometricSpace,
@@ -135,7 +135,7 @@ public static class CGaFloat64DirectionComposerUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static CGaFloat64Direction DefineDirectionPlane(this CGaFloat64GeometricSpace cgaGeometricSpace, RGaFloat64Bivector direction)
+    public static CGaFloat64Direction DefineDirectionPlane(this CGaFloat64GeometricSpace cgaGeometricSpace, XGaFloat64Bivector direction)
     {
         return new CGaFloat64Direction(
             cgaGeometricSpace,
@@ -166,7 +166,7 @@ public static class CGaFloat64DirectionComposerUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static CGaFloat64Direction DefineDirectionPlane(this CGaFloat64GeometricSpace cgaGeometricSpace, double weight, RGaFloat64Bivector direction)
+    public static CGaFloat64Direction DefineDirectionPlane(this CGaFloat64GeometricSpace cgaGeometricSpace, double weight, XGaFloat64Bivector direction)
     {
         return new CGaFloat64Direction(
             cgaGeometricSpace,
@@ -187,7 +187,7 @@ public static class CGaFloat64DirectionComposerUtils
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static CGaFloat64Direction DefineDirection(this CGaFloat64GeometricSpace cgaGeometricSpace, RGaFloat64KVector direction)
+    public static CGaFloat64Direction DefineDirection(this CGaFloat64GeometricSpace cgaGeometricSpace, XGaFloat64KVector direction)
     {
         return new CGaFloat64Direction(
             cgaGeometricSpace,
@@ -208,7 +208,7 @@ public static class CGaFloat64DirectionComposerUtils
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static CGaFloat64Direction DefineDirection(this CGaFloat64GeometricSpace cgaGeometricSpace, double weight, RGaFloat64KVector direction)
+    public static CGaFloat64Direction DefineDirection(this CGaFloat64GeometricSpace cgaGeometricSpace, double weight, XGaFloat64KVector direction)
     {
         return new CGaFloat64Direction(
             cgaGeometricSpace,
@@ -233,7 +233,7 @@ public static class CGaFloat64DirectionComposerUtils
     {
         return cgaGeometricSpace.DefineDirection(
             1,
-            directionVectors.Select(v => v.ToRGaFloat64Vector()).Op(cgaGeometricSpace.Processor)
+            directionVectors.Select(v => v.ToXGaFloat64Vector()).Op(cgaGeometricSpace.Processor)
         );
     }
 
@@ -242,7 +242,7 @@ public static class CGaFloat64DirectionComposerUtils
     {
         return cgaGeometricSpace.DefineDirection(
             1,
-            directionVectors.Select(v => v.ToRGaFloat64Vector()).Op(cgaGeometricSpace.Processor)
+            directionVectors.Select(v => v.ToXGaFloat64Vector()).Op(cgaGeometricSpace.Processor)
         );
     }
 
@@ -251,12 +251,12 @@ public static class CGaFloat64DirectionComposerUtils
     {
         return cgaGeometricSpace.DefineDirection(
             1,
-            directionVectors.Select(v => v.ToRGaFloat64Vector()).Op(cgaGeometricSpace.Processor)
+            directionVectors.Select(v => v.ToXGaFloat64Vector()).Op(cgaGeometricSpace.Processor)
         );
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static CGaFloat64Direction DefineDirectionFromVectors(this CGaFloat64GeometricSpace cgaGeometricSpace, params RGaFloat64Vector[] directionVectors)
+    public static CGaFloat64Direction DefineDirectionFromVectors(this CGaFloat64GeometricSpace cgaGeometricSpace, params XGaFloat64Vector[] directionVectors)
     {
         return cgaGeometricSpace.DefineDirection(
             1,
@@ -265,7 +265,7 @@ public static class CGaFloat64DirectionComposerUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static CGaFloat64Direction DefineDirectionFromVectors(this CGaFloat64GeometricSpace cgaGeometricSpace, IEnumerable<RGaFloat64Vector> directionVectors)
+    public static CGaFloat64Direction DefineDirectionFromVectors(this CGaFloat64GeometricSpace cgaGeometricSpace, IEnumerable<XGaFloat64Vector> directionVectors)
     {
         return cgaGeometricSpace.DefineDirection(
             1,
@@ -279,7 +279,7 @@ public static class CGaFloat64DirectionComposerUtils
     {
         return cgaGeometricSpace.DefineDirection(
             weight,
-            directionVectors.Select(v => v.ToRGaFloat64Vector()).Op(cgaGeometricSpace.Processor)
+            directionVectors.Select(v => v.ToXGaFloat64Vector()).Op(cgaGeometricSpace.Processor)
         );
     }
 
@@ -288,7 +288,7 @@ public static class CGaFloat64DirectionComposerUtils
     {
         return cgaGeometricSpace.DefineDirection(
             weight,
-            directionVectors.Select(v => v.ToRGaFloat64Vector()).Op(cgaGeometricSpace.Processor)
+            directionVectors.Select(v => v.ToXGaFloat64Vector()).Op(cgaGeometricSpace.Processor)
         );
     }
 
@@ -297,12 +297,12 @@ public static class CGaFloat64DirectionComposerUtils
     {
         return cgaGeometricSpace.DefineDirection(
             weight,
-            directionVectors.Select(v => v.ToRGaFloat64Vector()).Op(cgaGeometricSpace.Processor)
+            directionVectors.Select(v => v.ToXGaFloat64Vector()).Op(cgaGeometricSpace.Processor)
         );
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static CGaFloat64Direction DefineDirectionFromVectors(this CGaFloat64GeometricSpace cgaGeometricSpace, double weight, params RGaFloat64Vector[] directionVectors)
+    public static CGaFloat64Direction DefineDirectionFromVectors(this CGaFloat64GeometricSpace cgaGeometricSpace, double weight, params XGaFloat64Vector[] directionVectors)
     {
         return cgaGeometricSpace.DefineDirection(
             weight,
@@ -311,7 +311,7 @@ public static class CGaFloat64DirectionComposerUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static CGaFloat64Direction DefineDirectionFromVectors(this CGaFloat64GeometricSpace cgaGeometricSpace, double weight, IEnumerable<RGaFloat64Vector> directionVectors)
+    public static CGaFloat64Direction DefineDirectionFromVectors(this CGaFloat64GeometricSpace cgaGeometricSpace, double weight, IEnumerable<XGaFloat64Vector> directionVectors)
     {
         return cgaGeometricSpace.DefineDirection(
             weight,

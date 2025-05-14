@@ -1,10 +1,10 @@
 ﻿using System;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Generic.LinearMaps.Outermorphisms;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Generic.LinearMaps.Rotors;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Generic.Multivectors;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Generic.Multivectors.Composers;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Generic.Processors;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Generic.Subspaces;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.LinearMaps.Outermorphisms;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.LinearMaps.Rotors;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Multivectors;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Multivectors.Composers;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Processors;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Subspaces;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Basis;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Generic.Angles;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Generic;
@@ -25,8 +25,8 @@ public static class SymbolicRotorsSample
 
     // Create a 6-dimensional Euclidean geometric algebra processor based on the
     // selected scalar processor
-    public static RGaProcessor<Expr> GeometricProcessor { get; }
-        = ScalarProcessor.CreateEuclideanRGaProcessor();
+    public static XGaProcessor<Expr> GeometricProcessor { get; }
+        = ScalarProcessor.CreateEuclideanXGaProcessor();
 
     // This is a pre-defined text generator for displaying multivectors
     // with symbolic Wolfram Mathematica scalars using Expr objects
@@ -39,17 +39,17 @@ public static class SymbolicRotorsSample
         = LaTeXComposerOfWolframExpr.DefaultComposer;
 
 
-    private static RGaVector<Expr> CreateVector3D(string name, string subscript)
+    private static XGaVector<Expr> CreateVector3D(string name, string subscript)
     {
         return Vector(name, subscript, 3);
     }
 
-    private static RGaVector<Expr> CreateVector3D(string name)
+    private static XGaVector<Expr> CreateVector3D(string name)
     {
         return Vector(name, 3);
     }
 
-    private static RGaVector<Expr> Vector(string name, string subscript, int termsCount)
+    private static XGaVector<Expr> Vector(string name, string subscript, int termsCount)
     {
         var vector =
             $"Subscript[{name},{subscript}1]".ToExpr() * GeometricProcessor.VectorTerm(0);
@@ -60,7 +60,7 @@ public static class SymbolicRotorsSample
         return vector;
     }
 
-    private static RGaVector<Expr> Vector(string name, int termsCount)
+    private static XGaVector<Expr> Vector(string name, int termsCount)
     {
         var vector =
             $"Subscript[{name},1]".ToExpr() * GeometricProcessor.VectorTerm(0);

@@ -1,22 +1,22 @@
-﻿using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Generic.Multivectors;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Generic.Processors;
+﻿using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Multivectors;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Processors;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Generic;
 
 namespace GeometricAlgebraFulcrumLib.Modeling.Calculus.Fourier;
 
 public sealed class VectorFourierCurveTerm<T>
 {
-    public RGaProcessor<T> Processor 
+    public XGaProcessor<T> Processor 
         => CosVector.Processor;
 
-    public RGaVector<T> CosVector { get; private set; }
+    public XGaVector<T> CosVector { get; private set; }
 
-    public RGaVector<T> SinVector { get; private set; }
+    public XGaVector<T> SinVector { get; private set; }
 
     public Scalar<T> Frequency { get; }
 
 
-    internal VectorFourierCurveTerm(RGaVector<T> cosVector, RGaVector<T> sinVector, Scalar<T> frequency)
+    internal VectorFourierCurveTerm(XGaVector<T> cosVector, XGaVector<T> sinVector, Scalar<T> frequency)
     {
         CosVector = cosVector;
         SinVector = sinVector;
@@ -24,7 +24,7 @@ public sealed class VectorFourierCurveTerm<T>
     }
 
 
-    public VectorFourierCurveTerm<T> AddVectors(RGaVector<T> cosVector, RGaVector<T> sinVector)
+    public VectorFourierCurveTerm<T> AddVectors(XGaVector<T> cosVector, XGaVector<T> sinVector)
     {
         CosVector += cosVector;
         SinVector += sinVector;
@@ -32,14 +32,14 @@ public sealed class VectorFourierCurveTerm<T>
         return this;
     }
 
-    public RGaVector<T> GetValue(Scalar<T> parameterValue)
+    public XGaVector<T> GetValue(Scalar<T> parameterValue)
     {
         var angle = Frequency * parameterValue;
 
         return CosVector * angle.Cos() + SinVector * angle.Sin();
     }
         
-    public RGaVector<T> GetValue(T parameterValue)
+    public XGaVector<T> GetValue(T parameterValue)
     {
         var angle = Frequency * parameterValue;
 

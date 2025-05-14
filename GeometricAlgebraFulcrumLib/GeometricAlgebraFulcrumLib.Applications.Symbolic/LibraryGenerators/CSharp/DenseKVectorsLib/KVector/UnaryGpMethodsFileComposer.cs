@@ -1,6 +1,5 @@
-﻿using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Extended.Generic.Multivectors;
+﻿using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Multivectors;
 using GeometricAlgebraFulcrumLib.MetaProgramming.Context;
 using GeometricAlgebraFulcrumLib.MetaProgramming.Context.Expressions;
 using GeometricAlgebraFulcrumLib.MetaProgramming.Utilities.Code;
@@ -83,7 +82,7 @@ internal sealed class UnaryGpMethodsFileComposer
         var computationsText = GenerateCode();
 
         var kvSpaceDim = 
-            VSpaceDimensions.KVectorSpaceDimension(_outGrade);
+            VSpaceDimensions.KVectorSpaceDimensions(_outGrade);
 
         TextComposer.AppendAtNewLine(
             Templates["self_bilinearproduct"],

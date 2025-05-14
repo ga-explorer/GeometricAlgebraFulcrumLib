@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics;
 using System.Runtime.CompilerServices;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Float64.Multivectors;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Float64.Multivectors.Composers;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivectors;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivectors.Composers;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Angles;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space2D;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space3D;
@@ -113,7 +113,7 @@ public sealed class CGaFloat64Encoder :
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public CGaFloat64Blade Blade(RGaFloat64KVector kVector)
+    public CGaFloat64Blade Blade(XGaFloat64KVector kVector)
     {
         Debug.Assert(GeometricSpace.IsValidElement(kVector));
 
@@ -164,7 +164,7 @@ public sealed class CGaFloat64Encoder :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public CGaFloat64Blade Point(RGaFloat64Vector egaPoint)
+    public CGaFloat64Blade Point(XGaFloat64Vector egaPoint)
     {
         return IpnsRound.Point(egaPoint);
     }
@@ -178,7 +178,7 @@ public sealed class CGaFloat64Encoder :
         var vector = LinFloat64Vector2D.Create(vectorX, vectorY);
 
         return Translation(
-            GeometricSpace.Encode.VGa.VectorAsRGaVector(vector)
+            GeometricSpace.Encode.VGa.VectorAsXGaVector(vector)
         );
     }
 
@@ -190,7 +190,7 @@ public sealed class CGaFloat64Encoder :
         var vector = LinFloat64Vector2D.Create(vectorX, vectorY);
 
         return Translation(
-            GeometricSpace.Encode.VGa.VectorAsRGaVector(vector)
+            GeometricSpace.Encode.VGa.VectorAsXGaVector(vector)
         );
     }
 
@@ -200,7 +200,7 @@ public sealed class CGaFloat64Encoder :
         Debug.Assert(GeometricSpace.Is4D);
 
         return Translation(
-            GeometricSpace.Encode.VGa.VectorAsRGaVector(vector)
+            GeometricSpace.Encode.VGa.VectorAsXGaVector(vector)
         );
     }
     
@@ -212,7 +212,7 @@ public sealed class CGaFloat64Encoder :
         var vector = LinFloat64Vector3D.Create(vectorX, vectorY, vectorZ);
 
         return Translation(
-            GeometricSpace.Encode.VGa.VectorAsRGaVector(vector)
+            GeometricSpace.Encode.VGa.VectorAsXGaVector(vector)
         );
     }
 
@@ -224,7 +224,7 @@ public sealed class CGaFloat64Encoder :
         var vector = LinFloat64Vector3D.Create(vectorX, vectorY, vectorZ);
 
         return Translation(
-            GeometricSpace.EncodeVGa.VectorAsRGaVector(vector)
+            GeometricSpace.EncodeVGa.VectorAsXGaVector(vector)
         );
     }
 
@@ -234,12 +234,12 @@ public sealed class CGaFloat64Encoder :
         Debug.Assert(GeometricSpace.Is5D);
 
         return Translation(
-            GeometricSpace.Encode.VGa.VectorAsRGaVector(vector)
+            GeometricSpace.Encode.VGa.VectorAsXGaVector(vector)
         );
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public CGaFloat64Versor Translation(RGaFloat64Vector egaVector)
+    public CGaFloat64Versor Translation(XGaFloat64Vector egaVector)
     {
         Debug.Assert(GeometricSpace.IsValidVGaElement(egaVector));
 
@@ -288,7 +288,7 @@ public sealed class CGaFloat64Encoder :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public CGaFloat64Versor Rotation(LinFloat64Angle angle, RGaFloat64Bivector bivector)
+    public CGaFloat64Versor Rotation(LinFloat64Angle angle, XGaFloat64Bivector bivector)
     {
         //var halfAngle = angle.HalfPolarAngle();
 

@@ -1,20 +1,20 @@
 ﻿using System;
 using System.Linq;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Generic.LinearMaps.Rotors;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Generic.Multivectors;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Generic.Multivectors.Composers;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Generic.Processors;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.LinearMaps.Rotors;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Multivectors;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Multivectors.Composers;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Processors;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Generic.LinearMaps;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Generic.Matrices;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Generic.Vectors.SpaceND;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Generic;
 using GeometricAlgebraFulcrumLib.Mathematica.Algebra;
-using GeometricAlgebraFulcrumLib.Mathematica.Algebra.LinearAlgebra;
 using GeometricAlgebraFulcrumLib.Mathematica.Utilities.Structures;
 using GeometricAlgebraFulcrumLib.Mathematica.Utilities.Structures.ExprFactory;
 using GeometricAlgebraFulcrumLib.Mathematica.Utilities.Text;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Extensions;
+using GeometricAlgebraFulcrumLib.Utilities.Structures.IndexSets;
 using Wolfram.NETLink;
 
 namespace GeometricAlgebraFulcrumLib.Mathematica.Samples.Mathematica;
@@ -30,8 +30,8 @@ public static class Sample2
     public static IScalarProcessor<Expr> ScalarProcessor
         => ScalarProcessorOfWolframExpr.Instance;
 
-    public static RGaProcessor<Expr> GeometricProcessor { get; }
-        = ScalarProcessor.CreateEuclideanRGaProcessor();
+    public static XGaProcessor<Expr> GeometricProcessor { get; }
+        = ScalarProcessor.CreateEuclideanXGaProcessor();
 
     public static TextComposerExpr TextComposer { get; }
         = TextComposerExpr.DefaultComposer;
@@ -209,13 +209,13 @@ public static class Sample2
 
         var indicesArray1 =
             VSpaceDimensions
-                .BasisBladeIDsOfGrades(1, 3)
+                .GetBasisBladeIDsOfGrades(1, 3)
                 .Select(i => (int)i)
                 .ToArray();
 
         var indicesArray2 =
             VSpaceDimensions
-                .BasisBladeIDsOfGrade(1)
+                .GetBasisBladeIDsOfGrade(1)
                 .Select(i => (int)i)
                 .ToArray();
 
@@ -223,7 +223,7 @@ public static class Sample2
             ScalarProcessor
                 .CreateLinUnilinearMap(
                     VSpaceDimensions,
-                    i => rotorMv.EGp(GeometricProcessor.KVectorTerm((ulong) i)).MultivectorToLinVector()
+                    i => rotorMv.EGp(GeometricProcessor.KVectorTerm((IndexSet) i)).MultivectorToLinVector()
                 )
                 .ToArray((int)GaSpaceDimensions)
                 .GetShallowCopy(indicesArray1, indicesArray1)
@@ -233,7 +233,7 @@ public static class Sample2
             ScalarProcessor
                 .CreateLinUnilinearMap(
                     VSpaceDimensions,
-                    i => GeometricProcessor.KVectorTerm((ulong)i).EGp(rotorMvReverse).MultivectorToLinVector()
+                    i => GeometricProcessor.KVectorTerm((IndexSet)i).EGp(rotorMvReverse).MultivectorToLinVector()
                 )
                 .ToArray((int)GaSpaceDimensions)
                 .GetShallowCopy(indicesArray1, indicesArray1)

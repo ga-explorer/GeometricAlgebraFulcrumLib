@@ -1,6 +1,6 @@
-﻿using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Extended.Generic.Multivectors;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Extended.Generic.Subspaces;
+﻿using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Multivectors;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Subspaces;
 using GeometricAlgebraFulcrumLib.MetaProgramming.Context;
 using GeometricAlgebraFulcrumLib.MetaProgramming.Context.Expressions;
 using GeometricAlgebraFulcrumLib.MetaProgramming.Utilities.Code;
@@ -100,7 +100,7 @@ internal sealed class ApplyVersorMethodFileComposer :
             GenerateCode();
 
         var kvSpaceDimensions = 
-            VSpaceDimensions.KVectorSpaceDimension(_inputGrade2);
+            VSpaceDimensions.KVectorSpaceDimensions(_inputGrade2);
 
         var methodName =
             _operationSpecs.GetName(_inputGrade1, _inputGrade2, _inputGrade2);

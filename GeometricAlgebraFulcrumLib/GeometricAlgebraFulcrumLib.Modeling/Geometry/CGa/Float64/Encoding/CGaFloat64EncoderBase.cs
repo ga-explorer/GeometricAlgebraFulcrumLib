@@ -1,4 +1,4 @@
-﻿using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Float64.Processors;
+﻿using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Processors;
 
 namespace GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Float64.Encoding;
 
@@ -6,7 +6,7 @@ public abstract class CGaFloat64EncoderBase
 {
     public CGaFloat64GeometricSpace GeometricSpace { get; }
 
-    public RGaFloat64ConformalProcessor ConformalProcessor 
+    public XGaFloat64ConformalProcessor ConformalProcessor 
         => GeometricSpace.ConformalProcessor;
 
 

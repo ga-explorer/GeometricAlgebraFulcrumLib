@@ -1,8 +1,8 @@
 ﻿using System.Diagnostics;
 using System.Runtime.CompilerServices;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Generic.Multivectors;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Generic.Multivectors.Composers;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Generic.Processors;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Multivectors;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Multivectors.Composers;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Processors;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Generic;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.Euclidean.Space2D.Objects;
 
@@ -13,7 +13,7 @@ public sealed class HGaGeometricSpace3D<T>
     public IScalarProcessor<T> ScalarProcessor
         => GeometricProcessor.ScalarProcessor;
 
-    public RGaEuclideanProcessor<T> GeometricProcessor { get; }
+    public XGaEuclideanProcessor<T> GeometricProcessor { get; }
 
     public int VSpaceDimensions
         => 3;
@@ -22,12 +22,12 @@ public sealed class HGaGeometricSpace3D<T>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public HGaGeometricSpace3D(IScalarProcessor<T> scalarProcessor)
     {
-        GeometricProcessor = scalarProcessor.CreateEuclideanRGaProcessor();
+        GeometricProcessor = scalarProcessor.CreateEuclideanXGaProcessor();
     }
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public E2DPoint<T> GetE2DPoint(RGaVector<T> vector)
+    public E2DPoint<T> GetE2DPoint(XGaVector<T> vector)
     {
         return new E2DPoint<T>(
             vector.Scalar(0),
@@ -36,7 +36,7 @@ public sealed class HGaGeometricSpace3D<T>
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public RGaVector<T> GetDirectionMultivector(float x, float y)
+    public XGaVector<T> GetDirectionMultivector(float x, float y)
     {
         return GeometricProcessor.Vector(
             ScalarProcessor.ValueFromNumber(x),
@@ -45,7 +45,7 @@ public sealed class HGaGeometricSpace3D<T>
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public RGaVector<T> GetDirectionMultivector(double x, double y)
+    public XGaVector<T> GetDirectionMultivector(double x, double y)
     {
         return GeometricProcessor.Vector(
             ScalarProcessor.ValueFromNumber(x),
@@ -54,13 +54,13 @@ public sealed class HGaGeometricSpace3D<T>
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public RGaVector<T> GetDirectionMultivector(T x, T y)
+    public XGaVector<T> GetDirectionMultivector(T x, T y)
     {
         return GeometricProcessor.Vector(x, y);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public RGaVector<T> GetDirectionMultivector(E2DVector<T> vector)
+    public XGaVector<T> GetDirectionMultivector(E2DVector<T> vector)
     {
         return GeometricProcessor.Vector(
             vector.X,
@@ -69,7 +69,7 @@ public sealed class HGaGeometricSpace3D<T>
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public RGaVector<T> GetPointMultivector(float x, float y)
+    public XGaVector<T> GetPointMultivector(float x, float y)
     {
         return GeometricProcessor.Vector(
             ScalarProcessor.ValueFromNumber(x),
@@ -79,7 +79,7 @@ public sealed class HGaGeometricSpace3D<T>
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public RGaVector<T> GetPointMultivector(double x, double y)
+    public XGaVector<T> GetPointMultivector(double x, double y)
     {
         return GeometricProcessor.Vector(
             ScalarProcessor.ValueFromNumber(x),
@@ -89,7 +89,7 @@ public sealed class HGaGeometricSpace3D<T>
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public RGaVector<T> GetPointMultivector(T x, T y)
+    public XGaVector<T> GetPointMultivector(T x, T y)
     {
         return GeometricProcessor.Vector(
             x,
@@ -99,7 +99,7 @@ public sealed class HGaGeometricSpace3D<T>
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public RGaVector<T> GetPointMultivector(E2DPoint<T> point)
+    public XGaVector<T> GetPointMultivector(E2DPoint<T> point)
     {
         return GeometricProcessor.Vector(
             point.X,
@@ -109,7 +109,7 @@ public sealed class HGaGeometricSpace3D<T>
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public RGaBivector<T> GetLineMultivector(E2DPoint<T> point1, E2DPoint<T> point2)
+    public XGaBivector<T> GetLineMultivector(E2DPoint<T> point1, E2DPoint<T> point2)
     {
         var pointMv1 = GetPointMultivector(point1);
         var pointMv2 = GetPointMultivector(point2);
@@ -118,7 +118,7 @@ public sealed class HGaGeometricSpace3D<T>
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public RGaBivector<T> GetLineMultivector(E2DPoint<T> origin, E2DVector<T> direction)
+    public XGaBivector<T> GetLineMultivector(E2DPoint<T> origin, E2DVector<T> direction)
     {
         var originMv = GetPointMultivector(origin);
         var directionMv = GetDirectionMultivector(direction);
@@ -127,7 +127,7 @@ public sealed class HGaGeometricSpace3D<T>
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public RGaBivector<T> GetLineMultivector(E2DLine<T> line)
+    public XGaBivector<T> GetLineMultivector(E2DLine<T> line)
     {
         var pointMv1 = GetPointMultivector(line.Point1);
         var pointMv2 = GetPointMultivector(line.Point2);

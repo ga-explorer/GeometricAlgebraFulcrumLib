@@ -133,7 +133,7 @@ public static class HansenProblemSamples
         }
 
         // Just for initializing GA lookup tables before computations start
-        //var ga = RGaConformalSpace4D.Instance;
+        //var ga = XGaConformalSpace4D.Instance;
 
         //var data = HansenData2D.Create(
         //    Float64Vector2D.Create(-1, 5),

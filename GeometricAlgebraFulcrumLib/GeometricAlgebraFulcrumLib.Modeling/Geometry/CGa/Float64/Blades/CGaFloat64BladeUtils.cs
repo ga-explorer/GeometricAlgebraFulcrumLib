@@ -1,10 +1,11 @@
 ﻿using System.Runtime.CompilerServices;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Float64.Multivectors;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Float64.Multivectors.Composers;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivectors;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivectors.Composers;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Float64.Elements;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.BitManipulation;
+using GeometricAlgebraFulcrumLib.Utilities.Structures.IndexSets;
 
 namespace GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Float64.Blades;
 
@@ -316,7 +317,7 @@ public static class CGaFloat64BladeUtils
                 cgaGeometricSpace
                     .BasisSpecs
                     .BasisMapInverse
-                    .OmMapBasisBlade(id)
+                    .OmMapBasisBlade((IndexSet)id)
                     .ToConformalBlade(cgaGeometricSpace)
             );
     }
@@ -333,7 +334,7 @@ public static class CGaFloat64BladeUtils
                 cgaGeometricSpace
                     .BasisSpecs
                     .BasisMapInverse
-                    .OmMapBasisBlade(id)
+                    .OmMapBasisBlade((IndexSet)id)
                     .ToConformalBlade(cgaGeometricSpace)
             );
     }
@@ -349,14 +350,14 @@ public static class CGaFloat64BladeUtils
                 cgaGeometricSpace
                     .BasisSpecs
                     .BasisMapInverse
-                    .OmMapBasisBlade(id)
+                    .OmMapBasisBlade((IndexSet)id)
                     .ToConformalBlade(cgaGeometricSpace)
             );
     }
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static RGaFloat64Multivector Gp(this RGaFloat64Multivector mv, CGaFloat64Blade blade)
+    public static XGaFloat64Multivector Gp(this XGaFloat64Multivector mv, CGaFloat64Blade blade)
     {
         return mv.Gp(blade.InternalKVector);
     }

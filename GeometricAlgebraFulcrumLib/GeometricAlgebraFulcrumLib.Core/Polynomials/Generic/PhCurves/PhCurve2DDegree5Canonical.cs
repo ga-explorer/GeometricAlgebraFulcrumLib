@@ -1,7 +1,7 @@
-﻿using GeometricAlgebraFulcrumLib.Core.GeometricAlgebra.Restricted.Generic.LinearMaps.Rotors;
-using GeometricAlgebraFulcrumLib.Core.GeometricAlgebra.Restricted.Generic.Multivectors;
-using GeometricAlgebraFulcrumLib.Core.GeometricAlgebra.Restricted.Generic.Multivectors.Composers;
-using GeometricAlgebraFulcrumLib.Core.GeometricAlgebra.Restricted.Generic.Processors;
+﻿using GeometricAlgebraFulcrumLib.Core.GeometricAlgebra.Generic.LinearMaps.Rotors;
+using GeometricAlgebraFulcrumLib.Core.GeometricAlgebra.Generic.Multivectors;
+using GeometricAlgebraFulcrumLib.Core.GeometricAlgebra.Generic.Multivectors.Composers;
+using GeometricAlgebraFulcrumLib.Core.GeometricAlgebra.Generic.Processors;
 using GeometricAlgebraFulcrumLib.Core.Polynomials.Generic.Basis;
 using GeometricAlgebraFulcrumLib.Core.Scalars.Generic;
 
@@ -13,12 +13,12 @@ namespace GeometricAlgebraFulcrumLib.Core.Polynomials.Generic.PhCurves;
 /// <typeparam name="T"></typeparam>
 public sealed class PhCurve2DDegree5Canonical<T>
 {
-    public static PhCurve2DDegree5Canonical<T> Create(RGaProcessor<T> processor, RGaVector<T> p, RGaVector<T> d)
+    public static PhCurve2DDegree5Canonical<T> Create(XGaProcessor<T> processor, XGaVector<T> p, XGaVector<T> d)
     {
         return new PhCurve2DDegree5Canonical<T>(processor, p, d);
     }
 
-    public static PhCurve2DDegree5Canonical<T> Create(RGaProcessor<T> processor, T p1, T p2, T d1, T d2)
+    public static PhCurve2DDegree5Canonical<T> Create(XGaProcessor<T> processor, T p1, T p2, T d1, T d2)
     {
         return new PhCurve2DDegree5Canonical<T>(
             processor,
@@ -45,32 +45,32 @@ public sealed class PhCurve2DDegree5Canonical<T>
 
     public IScalar<T> Scalar22 { get; }
 
-    public RGaVector<T> VectorU { get; }
+    public XGaVector<T> VectorU { get; }
 
-    public RGaVector<T> Vector00 { get; }
+    public XGaVector<T> Vector00 { get; }
 
-    public RGaVector<T> Vector01 { get; }
+    public XGaVector<T> Vector01 { get; }
 
-    public RGaVector<T> Vector02 { get; }
+    public XGaVector<T> Vector02 { get; }
 
-    public RGaVector<T> Vector11 { get; }
+    public XGaVector<T> Vector11 { get; }
 
-    public RGaVector<T> Vector12 { get; }
+    public XGaVector<T> Vector12 { get; }
 
-    public RGaVector<T> Vector22 { get; }
+    public XGaVector<T> Vector22 { get; }
 
-    public RGaScaledPureRotor<T> ScaledRotor0 { get; }
+    public XGaScaledPureRotor<T> ScaledRotor0 { get; }
 
-    public RGaScaledPureRotor<T> ScaledRotor1 { get; }
+    public XGaScaledPureRotor<T> ScaledRotor1 { get; }
 
-    public RGaScaledPureRotor<T> ScaledRotor2 { get; }
+    public XGaScaledPureRotor<T> ScaledRotor2 { get; }
 
-    public RGaScaledPureRotor<T> ScaledRotorV { get; }
+    public XGaScaledPureRotor<T> ScaledRotorV { get; }
 
-    public RGaProcessor<T> GeometricProcessor { get; }
+    public XGaProcessor<T> GeometricProcessor { get; }
 
 
-    private PhCurve2DDegree5Canonical(RGaProcessor<T> processor, RGaVector<T> p, RGaVector<T> d)
+    private PhCurve2DDegree5Canonical(XGaProcessor<T> processor, XGaVector<T> p, XGaVector<T> d)
     {
         GeometricProcessor = processor;
 
@@ -136,7 +136,7 @@ public sealed class PhCurve2DDegree5Canonical<T>
     }
 
 
-    public RGaVector<T> GetHodographPoint(T parameterValue)
+    public XGaVector<T> GetHodographPoint(T parameterValue)
     {
         var f00 = _basisPairProductSet.GetValue(0, 0, parameterValue);
         var f01 = _basisPairProductSet.GetValue(0, 1, parameterValue);
@@ -154,7 +154,7 @@ public sealed class PhCurve2DDegree5Canonical<T>
             f22 * Vector22;
     }
 
-    public RGaVector<T> GetCurvePoint(T parameterValue)
+    public XGaVector<T> GetCurvePoint(T parameterValue)
     {
         var f00 = _basisPairProductIntegralSet.GetValue(0, 0, parameterValue);
         var f01 = _basisPairProductIntegralSet.GetValue(0, 1, parameterValue);

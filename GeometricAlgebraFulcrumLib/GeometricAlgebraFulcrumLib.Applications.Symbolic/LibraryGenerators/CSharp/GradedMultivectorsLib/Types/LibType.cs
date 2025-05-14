@@ -1,22 +1,25 @@
-﻿using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Basis;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Float64.Processors;
+﻿
+
+
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Processors;
 
 namespace GeometricAlgebraFulcrumLib.Applications.Symbolic.LibraryGenerators.CSharp.GradedMultivectorsLib.Types;
 
 public abstract class LibType
 {
-    public static LibTypeMultivector Multivector(RGaFloat64Processor metric, int vSpaceDimensions, string className)
+    public static LibTypeMultivector Multivector(XGaFloat64Processor metric, int vSpaceDimensions, string className)
     {
         return new LibTypeMultivector(metric, vSpaceDimensions, className);
     }
 
-    public static LibTypeKVector KVector(RGaFloat64Processor metric, int vSpaceDimensions, string className, int grade)
+    public static LibTypeKVector KVector(XGaFloat64Processor metric, int vSpaceDimensions, string className, int grade)
     {
         return new LibTypeKVector(metric, vSpaceDimensions, className, grade);
     }
 
 
-    public RGaFloat64Processor Metric { get; }
+    public XGaFloat64Processor Metric { get; }
 
     public int VSpaceDimensions { get; }
     
@@ -32,7 +35,7 @@ public abstract class LibType
     public abstract bool IsMultivector { get; }
 
 
-    protected LibType(RGaFloat64Processor metric, int vSpaceDimensions, string className)
+    protected LibType(XGaFloat64Processor metric, int vSpaceDimensions, string className)
     {
         Metric = metric;
         VSpaceDimensions = vSpaceDimensions;
@@ -41,7 +44,7 @@ public abstract class LibType
 
 
 
-    public abstract IReadOnlyList<RGaBasisBlade> GetBasisBlades();
+    public abstract IReadOnlyList<XGaBasisBlade> GetBasisBlades();
 
     public abstract IReadOnlyList<int> GetBasisBladeIDs();
 }

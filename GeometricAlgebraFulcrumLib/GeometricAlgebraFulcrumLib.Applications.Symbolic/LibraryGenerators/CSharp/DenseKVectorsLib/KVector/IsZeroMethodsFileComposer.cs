@@ -1,4 +1,4 @@
-﻿using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra;
+﻿using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.BitManipulation;
 using GeometricAlgebraFulcrumLib.Utilities.Text.Text.Linear;
 using GeometricAlgebraFulcrumLib.Utilities.Text.Text.Structured;
@@ -51,13 +51,13 @@ internal sealed class IsZeroMethodsFileComposer :
         {
             iszeroCasesText.Add(t2,
                 "grade", grade,
-                "num", VSpaceDimensions.KVectorSpaceDimension(grade)
+                "num", VSpaceDimensions.KVectorSpaceDimensions(grade)
             );
 
             trimcoefsCasesText.Add(t3,
                 "signature", CurrentNamespace,
                 "grade", grade,
-                "num", VSpaceDimensions.KVectorSpaceDimension(grade)
+                "num", VSpaceDimensions.KVectorSpaceDimensions(grade)
             );
         }
 
@@ -75,7 +75,7 @@ internal sealed class IsZeroMethodsFileComposer :
         var kvSpaceDimList =
             VSpaceDimensions
                 .GetRange()
-                .Select(grade => VSpaceDimensions.KVectorSpaceDimension(grade))
+                .Select(grade => VSpaceDimensions.KVectorSpaceDimensions(grade))
                 .Distinct();
 
         foreach (var kvSpaceDim in kvSpaceDimList)

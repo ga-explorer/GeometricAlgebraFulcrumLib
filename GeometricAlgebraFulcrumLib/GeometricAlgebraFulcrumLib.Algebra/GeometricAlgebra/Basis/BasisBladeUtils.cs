@@ -2,8 +2,7 @@
 using System.Numerics;
 using System.Runtime.CompilerServices;
 using System.Text;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Records;
-using GeometricAlgebraFulcrumLib.Utilities.Structures.BitManipulation;
+using GeometricAlgebraFulcrumLib.Utilities.Structures;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Combinations;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.IndexSets;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Tuples;
@@ -26,21 +25,47 @@ public static class BasisBladeUtils
     //}
         
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static int VSpaceDimensions(this int id)
+    public static ulong GaSpaceDimensions(this int vSpaceDimensions)
     {
-        Debug.Assert(id >= 0);
+        Debug.Assert(
+            vSpaceDimensions is >= 0 and < 64
+        );
 
-        return id == 0 
-            ? 0 : BitOperations.TrailingZeroCount(id) + 1;
+        return 1UL << vSpaceDimensions;
+    }
+       
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static ulong GaSpaceDimensions(this uint vSpaceDimensions)
+    {
+        Debug.Assert(
+            vSpaceDimensions < 64
+        );
+
+        return 1UL << (int) vSpaceDimensions;
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static int VSpaceDimensions(this ulong id)
+    public static ulong KVectorSpaceDimensions(this int vSpaceDimensions, int grade)
     {
-        return id == 0UL 
-            ? 0 : BitOperations.TrailingZeroCount(id) + 1;
+        Debug.Assert(
+            vSpaceDimensions >= 0 && 
+            grade >= 0 && grade <= vSpaceDimensions
+        );
+
+        return vSpaceDimensions.GetBinomialCoefficient(grade);
     }
-        
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static ulong KVectorSpaceDimensions(this uint vSpaceDimensions, uint grade)
+    {
+        Debug.Assert(
+            vSpaceDimensions > 0 && 
+            grade <= vSpaceDimensions
+        );
+
+        return vSpaceDimensions.GetBinomialCoefficient(grade);
+    }
+
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static int Grade(this int id)
     {
@@ -134,39 +159,71 @@ public static class BasisBladeUtils
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static IEnumerable<ulong> GetBasisBladeIds(this ulong maxBasisBladeId, uint grade)
+    public static IEnumerable<IndexSet> GetBasisBladeIDsOfGrade(this int vSpaceDimensions, uint grade)
     {
-        var index = 0UL;
-        var id = index.BasisBladeIndexToId(grade);
+        return vSpaceDimensions.ToDenseIndexSet().GetSubsetsOfSize((int) grade);
+    }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static IEnumerable<IndexSet> GetBasisBladeIDsOfGrades(this int vSpaceDimensions, params int[] gradeList)
+    {
+        var indexSet = vSpaceDimensions.ToDenseIndexSet();
 
-        while (id <= maxBasisBladeId)
-        {
-            yield return id;
-
-            index++;
-            id = index.BasisBladeIndexToId(grade);
-        }
+        return gradeList.SelectMany(
+            grade => indexSet.GetSubsetsOfSize((int) grade)
+        );
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static IEnumerable<ulong> GetBasisBladeIndices(this ulong maxBasisBladeId, uint grade)
+    public static IEnumerable<IndexSet> GetBasisBladeIDsOfGrades(this int vSpaceDimensions, params uint[] gradeList)
     {
+        var indexSet = vSpaceDimensions.ToDenseIndexSet();
+
+        return gradeList.SelectMany(
+            grade => indexSet.GetSubsetsOfSize((int) grade)
+        );
+    }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static IEnumerable<IndexSet> GetBasisBladeIDsOfGrades(this int vSpaceDimensions, IEnumerable<int> gradeList)
+    {
+        var indexSet = vSpaceDimensions.ToDenseIndexSet();
+
+        return gradeList.SelectMany(
+            grade => indexSet.GetSubsetsOfSize((int) grade)
+        );
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static IEnumerable<IndexSet> GetBasisBladeIDsOfGrades(this int vSpaceDimensions, IEnumerable<uint> gradeList)
+    {
+        var indexSet = vSpaceDimensions.ToDenseIndexSet();
+
+        return gradeList.SelectMany(
+            grade => indexSet.GetSubsetsOfSize((int) grade)
+        );
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static IEnumerable<ulong> GetBasisBladeIndices(this int vSpaceDimensions, uint grade)
+    {
+        var maxBasisBladeId = 1UL << vSpaceDimensions;
         var index = 0UL;
-        var id = index.BasisBladeIndexToId(grade);
+        var id = index.BasisBladeIndexToId(grade).ToUInt64();
 
         while (id <= maxBasisBladeId)
         {
             yield return index;
 
             index++;
-            id = index.BasisBladeIndexToId(grade);
+            id = index.BasisBladeIndexToId(grade).ToUInt64();
         }
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static uint BasisBladeIdToMinVSpaceDimension(this ulong basisBladeId)
+    public static uint BasisBladeIdToMinVSpaceDimension(this IndexSet basisBladeId)
     {
-        return (uint) (1 + basisBladeId.LastOneBitPosition());
+        return (uint) (1 + basisBladeId.LastIndex);
     }
         
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -177,7 +234,7 @@ public static class BasisBladeUtils
             0U => basisBladeIndex == 0UL ? 0U : throw new InvalidOperationException(),
             1U => 1U + (uint) basisBladeIndex,
             2U => 1U + (uint) (0.5d * (1d + Math.Sqrt(1UL + 8UL * basisBladeIndex))),
-            _ => (uint) (1 + basisBladeIndex.BasisBladeIndexToId(grade).LastOneBitPosition())
+            _ => (uint) (1 + basisBladeIndex.BasisBladeIndexToId(grade).LastIndex)
         };
     }
         
@@ -188,15 +245,15 @@ public static class BasisBladeUtils
     /// <param name="index"></param>
     /// <returns></returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static ulong BasisBladeGradeIndexToId(int grade, ulong index)
+    public static IndexSet BasisBladeGradeIndexToId(int grade, ulong index)
     {
         return grade switch
         {
             < 0 => throw new InvalidOperationException(),
-            0 => index == 0 ? 0UL : throw new ArgumentOutOfRangeException(nameof(index)),
+            0 => index == 0 ? IndexSet.EmptySet : throw new ArgumentOutOfRangeException(nameof(index)),
             1 => index.BasisVectorIndexToId(),
             2 => index.BasisBivectorIndexToId(),
-            _ => BasisBladeDataLookup.BasisBladeId((uint) grade, index)
+            _ => (IndexSet)BasisBladeDataLookup.BasisBladeId((uint) grade, index)
         };
     }
 
@@ -207,14 +264,14 @@ public static class BasisBladeUtils
     /// <param name="index"></param>
     /// <returns></returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static ulong BasisBladeGradeIndexToId(uint grade, ulong index)
+    public static IndexSet BasisBladeGradeIndexToId(uint grade, ulong index)
     {
         return grade switch
         {
-            0U => index == 0 ? 0UL : throw new ArgumentOutOfRangeException(nameof(index)),
+            0U => index == 0 ? IndexSet.EmptySet : throw new ArgumentOutOfRangeException(nameof(index)),
             1U => index.BasisVectorIndexToId(),
             2U => index.BasisBivectorIndexToId(),
-            _ => BasisBladeDataLookup.BasisBladeId(grade, index)
+            _ => (IndexSet)BasisBladeDataLookup.BasisBladeId(grade, index)
         };
     }
 
@@ -225,19 +282,19 @@ public static class BasisBladeUtils
     /// <param name="index"></param>
     /// <returns></returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static ulong BasisBladeIndexToId(this ulong index, uint grade)
+    public static IndexSet BasisBladeIndexToId(this ulong index, uint grade)
     {
         return grade switch
         {
-            0U => index == 0 ? 0UL : throw new ArgumentOutOfRangeException(nameof(index)),
+            0U => index == 0 ? IndexSet.EmptySet : throw new ArgumentOutOfRangeException(nameof(index)),
             1U => index.BasisVectorIndexToId(),
             2U => index.BasisBivectorIndexToId(),
-            _ => BasisBladeDataLookup.BasisBladeId(grade, index)
+            _ => (IndexSet)BasisBladeDataLookup.BasisBladeId(grade, index)
         };
     }
         
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static ulong IndexTripletToTrivectorId(this ITriplet<int> indexTriplet)
+    public static IndexSet IndexTripletToTrivectorId(this ITriplet<int> indexTriplet)
     {
         var index1 = indexTriplet.Item1;
         var index2 = indexTriplet.Item2;
@@ -247,46 +304,43 @@ public static class BasisBladeUtils
             index1 >= 0 && index2 > index1 && index3 > index2
         );
 
-        return (1UL << index1) | (1UL << index2) | (1UL << index3);
+        return IndexSet.CreateTriplet(index1, index2, index3);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static ulong IndexTripletToTrivectorId(int index1, int index2, int index3)
+    public static IndexSet IndexTripletToTrivectorId(int index1, int index2, int index3)
     {
         Debug.Assert(
             index1 >= 0 && index2 > index1 && index3 > index2
         );
 
-        return (1UL << index1) | (1UL << index2) | (1UL << index3);
+        return IndexSet.CreateTriplet(index1, index2, index3);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static ulong IndexTripletToTrivectorId(ulong index1, ulong index2, ulong index3)
+    public static IndexSet IndexTripletToTrivectorId(ulong index1, ulong index2, ulong index3)
     {
         Debug.Assert(index2 > index1 && index3 > index2);
 
-        return (1UL << (int) index1) | (1UL << (int) index2) | (1UL << (int) index3);
+        return IndexSet.CreateTriplet((int)index1, (int)index2, (int)index3);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static ulong BasisVectorIndicesToBasisBladeId(params int[] basisVectorIndices)
+    public static IndexSet BasisVectorIndicesToBasisBladeId(params int[] basisVectorIndices)
     {
-        return basisVectorIndices
-            .Aggregate(0UL, (acc, item) => acc | item.BasisVectorIndexToId());
+        return IndexSet.Create(basisVectorIndices, false);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static ulong BasisVectorIndicesToBasisBladeId(this IEnumerable<int> basisVectorIndices)
+    public static IndexSet BasisVectorIndicesToBasisBladeId(this IEnumerable<int> basisVectorIndices)
     {
-        return basisVectorIndices
-            .Aggregate(0UL, (acc, item) => acc | item.BasisVectorIndexToId());
+        return IndexSet.Create(basisVectorIndices, false);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static ulong BasisVectorIndicesToBasisBladeId(this IEnumerable<ulong> basisVectorIndices)
+    public static IndexSet BasisVectorIndicesToBasisBladeId(this IEnumerable<IndexSet> basisVectorIndices)
     {
-        return basisVectorIndices
-            .Aggregate(0UL, (acc, item) => acc | item.BasisVectorIndexToId());
+        return IndexSet.Create(basisVectorIndices.Select(i => (int)i), false);
     }
         
 
@@ -299,7 +353,7 @@ public static class BasisBladeUtils
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static ulong BasisBladeMaxVectorIndex(uint grade, ulong index)
     {
-        return (ulong) BasisBladeGradeIndexToId(grade, index).LastOneBitPosition();
+        return (ulong) BasisBladeGradeIndexToId(grade, index).LastIndex;
     }
         
     /// <summary>
@@ -308,20 +362,20 @@ public static class BasisBladeUtils
     /// <param name="basisBladeId"></param>
     /// <returns></returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static uint BasisBladeIdToGrade(this ulong basisBladeId)
+    public static uint BasisBladeIdToGrade(this IndexSet basisBladeId)
     {
-        return BasisBladeDataLookup.BasisBladeGrade(basisBladeId);
+        return (uint) basisBladeId.Count;
     }
-        
+    
     /// <summary>
     /// Find the basisBladeIndex of a basis blade given its ID
     /// </summary>
     /// <param name="basisBladeId"></param>
     /// <returns></returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static ulong BasisBladeIdToIndex(this ulong basisBladeId)
+    public static ulong BasisBladeIdToIndex(this IndexSet basisBladeId)
     {
-        return BasisBladeDataLookup.BasisBladeIndex(basisBladeId);
+        return basisBladeId.DecodeCombinadicToUInt64();
     }
 
     /// <summary>
@@ -331,40 +385,43 @@ public static class BasisBladeUtils
     /// <param name="grade"></param>
     /// <param name="index"></param>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static void BasisBladeIdToGradeIndex(this ulong basisBladeId, out uint grade, out ulong index)
+    public static void BasisBladeIdToGradeIndex(this IndexSet basisBladeId, out uint grade, out ulong index)
     {
-        (grade, index) = BasisBladeDataLookup.BasisBladeGradeIndex(basisBladeId);
+        grade = (uint) basisBladeId.Count;
+        index = basisBladeId.DecodeCombinadicToUInt64();
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static RGaGradeKvIndexRecord BasisBladeIdToGradeIndex(this ulong basisBladeId)
+    public static (uint grade, ulong index) BasisBladeIdToGradeIndex(this IndexSet basisBladeId)
     {
-        return BasisBladeDataLookup.BasisBladeGradeIndex(basisBladeId);
+        var grade = (uint) basisBladeId.Count;
+        var index = basisBladeId.DecodeCombinadicToUInt64();
+
+        return (grade, index);
     }
         
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static string BasisBladeIdToName(this ulong basisBladeId, params string[] basisVectorNames)
+    public static string BasisBladeIdToName(this IndexSet basisBladeId, params string[] basisVectorNames)
     {
-        return basisVectorNames.ConcatenateUsingPattern(basisBladeId, "E0", "^");
+        return basisBladeId.IsEmptySet
+            ? "E0"
+            : basisVectorNames
+                .GetItems(basisBladeId)
+                .ConcatenateText("^");
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static string BasisBladeGradeIndexToName(uint grade, ulong basisBladeIndex, params string[] basisVectorNames)
     {
-        return basisVectorNames
-            .ConcatenateUsingPattern(
-                basisBladeIndex.BasisBladeIndexToId(grade), 
-                "E0", 
-                "^"
-            );
+        var basisBladeId = basisBladeIndex.BasisBladeIndexToId(grade);
+
+        return basisBladeId.IsEmptySet
+            ? "E0"
+            : basisVectorNames
+                .GetItems(basisBladeId)
+                .ConcatenateText("^");
     }
-        
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static string BasisBladeIdToIndexedName(this ulong basisBladeId)
-    {
-        return "E" + basisBladeId;
-    }
-        
+    
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static string BasisBladeGradeIndexToIndexedName(uint grade, ulong basisBladeIndex)
     {
@@ -372,19 +429,7 @@ public static class BasisBladeUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static string BasisBladeIdToBinaryIndexedName(ulong basisBladeId, uint vSpaceDimensions)
-    {
-        return "B" + basisBladeId.PatternToString((int) vSpaceDimensions);
-    }
-        
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static string BasisBladeGradeIndexToBinaryIndexedName(uint grade, ulong basisBladeIndex, uint vSpaceDimensions)
-    {
-        return "B" + basisBladeIndex.BasisBladeIndexToId(grade).PatternToString((int) vSpaceDimensions);
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static string BasisBladeIdToGradeIndexName(this ulong basisBladeId)
+    public static string BasisBladeIdToGradeIndexName(this IndexSet basisBladeId)
     {
         return
             new StringBuilder(32)
@@ -408,67 +453,67 @@ public static class BasisBladeUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static IEnumerable<ulong> BasisBladeIdToBasisVectorIds(this ulong basisBladeId)
+    public static IEnumerable<IndexSet> BasisBladeIdToBasisVectorIds(this IndexSet basisBladeId)
     {
-        return basisBladeId.GetBasicPatterns();
+        return basisBladeId.GetUnitSubsets();
     }
-        
+    
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static IEnumerable<ulong> BasisBladeGradeIndexToBasisVectorIds(uint grade, ulong basisBladeIndex)
+    public static IEnumerable<IndexSet> BasisBladeGradeIndexToBasisVectorIds(uint grade, ulong basisBladeIndex)
     {
-        return basisBladeIndex.BasisBladeIndexToId(grade).GetBasicPatterns();
+        return basisBladeIndex.BasisBladeIndexToId(grade).GetUnitSubsets();
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static IEnumerable<ulong> BasisBladeIdToBasisVectorIndices(this ulong basisBladeId)
+    public static IEnumerable<ulong> BasisBladeIdToBasisVectorIndices(this IndexSet basisBladeId)
     {
-        return basisBladeId.GetSetBitPositions().Select(i => (ulong) i);
+        return basisBladeId.GetIndices().Select(i => (ulong) i);
     }
         
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static IEnumerable<int> BasisBladeGradeIndexToInt32BasisVectorIndices(uint grade, ulong basisBladeIndex)
     {
-        return basisBladeIndex.BasisBladeIndexToId(grade).GetSetBitPositions();
+        return basisBladeIndex.BasisBladeIndexToId(grade).GetIndices();
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static IEnumerable<ulong> BasisBladeGradeIndexToBasisVectorIndices(uint grade, ulong basisBladeIndex)
     {
-        return basisBladeIndex.BasisBladeIndexToId(grade).GetSetBitPositions().Select(i => (ulong)i);
+        return basisBladeIndex.BasisBladeIndexToId(grade).GetIndices(i => (ulong)i);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static IEnumerable<ulong> BasisBladeIDsInside(this ulong basisBladeId)
+    public static IEnumerable<IndexSet> BasisBladeIDsInside(this IndexSet basisBladeId)
     {
-        return basisBladeId.GetSubPatterns();
+        return basisBladeId.GetSubsets();
     }
-        
+    
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static IEnumerable<ulong> BasisBladeIDsInside(uint grade, ulong basisBladeIndex)
+    public static IEnumerable<IndexSet> BasisBladeIDsInside(uint grade, ulong basisBladeIndex)
     {
-        return basisBladeIndex.BasisBladeIndexToId(grade).GetSubPatterns();
+        return basisBladeIndex.BasisBladeIndexToId(grade).GetSubsets();
     }
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static IEnumerable<ulong> BasisBladeIDsContaining(ulong basisBladeId, uint vSpaceDimensions)
-    {
-        return basisBladeId.GetSuperPatterns((int) vSpaceDimensions);
-    }
+    //[MethodImpl(MethodImplOptions.AggressiveInlining)]
+    //public static IEnumerable<ulong> BasisBladeIDsContaining(IndexSet basisBladeId, uint vSpaceDimensions)
+    //{
+    //    return basisBladeId.GetSuperPatterns((int) vSpaceDimensions);
+    //}
+    
+    //[MethodImpl(MethodImplOptions.AggressiveInlining)]
+    //public static IEnumerable<ulong> BasisBladeIDsContaining(uint grade, ulong basisBladeIndex, uint vSpaceDimensions)
+    //{
+    //    return basisBladeIndex.BasisBladeIndexToId(grade).GetSuperPatterns((int) vSpaceDimensions);
+    //}
         
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static IEnumerable<ulong> BasisBladeIDsContaining(uint grade, ulong basisBladeIndex, uint vSpaceDimensions)
-    {
-        return basisBladeIndex.BasisBladeIndexToId(grade).GetSuperPatterns((int) vSpaceDimensions);
-    }
-        
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static IEnumerable<ulong> SortBasisBladeIDsByGrade(this IEnumerable<ulong> basisBladeIdsList)
+    public static IEnumerable<IndexSet> SortBasisBladeIDsByGrade(this IEnumerable<IndexSet> basisBladeIdsList)
     {
         return basisBladeIdsList.OrderBy(BasisBladeIdToGrade).ThenBy(BasisBladeIdToIndex);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static IEnumerable<IGrouping<uint, ulong>> GroupBasisBladeIDsByGrade(this IEnumerable<ulong> basisBladeIdsList)
+    public static IEnumerable<IGrouping<uint, IndexSet>> GroupBasisBladeIDsByGrade(this IEnumerable<IndexSet> basisBladeIdsList)
     {
         return basisBladeIdsList.GroupBy(BasisBladeIdToGrade);
     }
@@ -482,58 +527,29 @@ public static class BasisBladeUtils
     /// <param name="subId"></param>
     /// <returns></returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static bool BasisBladeIdContains(this ulong basisBladeId, ulong subId)
+    public static bool BasisBladeIdContains(this IndexSet basisBladeId, IndexSet subId)
     {
-        return (basisBladeId | subId) == basisBladeId;
+        return basisBladeId.SetContains(subId);
     }
 
     /// <summary>
     /// 
     /// </summary>
     /// <param name="basisBladeId"></param>
-    /// <param name="basisVectorId"></param>
-    /// <param name="subBasisBladeId"></param>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static void SplitBySmallestBasisVectorId(this ulong basisBladeId, out ulong basisVectorId, out ulong subBasisBladeId)
+    public static (IndexSet basisVectorId, IndexSet subBasisBladeId) SplitBySmallestBasisVectorId(this IndexSet basisBladeId)
     {
-        basisBladeId.SplitBySmallestBasicPattern(out basisVectorId, out subBasisBladeId);
-    }
-        
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Pair<ulong> SplitByLargestBasisVectorId(this ulong basisBladeId)
-    {
-        basisBladeId.SplitByLargestBasicPattern(out var basisVectorId, out var subBasisBladeId);
-
-        return new Pair<ulong>(basisVectorId, subBasisBladeId);
+        return basisBladeId.SplitByFirstIndex();
     }
 
     /// <summary>
     /// 
     /// </summary>
     /// <param name="basisBladeId"></param>
-    /// <param name="basisVectorId"></param>
-    /// <param name="subBasisBladeId"></param>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static void SplitByLargestBasisVectorId(this ulong basisBladeId, out ulong basisVectorId, out ulong subBasisBladeId)
+    public static (IndexSet basisVectorId, IndexSet subBasisBladeId) SplitByLargestBasisVectorId(this IndexSet basisBladeId)
     {
-        basisBladeId.SplitByLargestBasicPattern(out basisVectorId, out subBasisBladeId);
-    }
-
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <param name="basisVectorsIds"></param>
-    /// <param name="idIndex"></param>
-    /// <returns></returns>
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static ulong ComposeGeoSubspaceBasisBladeId(List<ulong> basisVectorsIds, ulong idIndex)
-    {
-        return idIndex
-            .GetSetBitPositions()
-            .Aggregate(
-                0UL, 
-                (current, pos) => current | basisVectorsIds[pos]
-            );
+        return basisBladeId.SplitByLastIndex();
     }
 
     /// <summary>
@@ -543,7 +559,7 @@ public static class BasisBladeUtils
     /// <param name="indexSeq"></param>
     /// <returns></returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static IEnumerable<ulong> BasisBladeIDsOfGradeIndex(uint grade, IEnumerable<ulong> indexSeq)
+    public static IEnumerable<IndexSet> BasisBladeIDsOfGradeIndex(uint grade, IEnumerable<ulong> indexSeq)
     {
         return indexSeq.Select(index => index.BasisBladeIndexToId(grade));
     }
@@ -555,34 +571,28 @@ public static class BasisBladeUtils
     /// <param name="indexSeq"></param>
     /// <returns></returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static IEnumerable<ulong> BasisBladeIDsOfGradeIndex(uint grade, params ulong[] indexSeq)
+    public static IEnumerable<IndexSet> BasisBladeIDsOfGradeIndex(uint grade, params ulong[] indexSeq)
     {
         return indexSeq.Select(index => index.BasisBladeIndexToId(grade));
     }
 
         
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static bool IsBasisBladeOfGrade(this ulong basisBladeId, uint grade)
+    public static bool IsBasisBladeOfGrade(this IndexSet basisBladeId, uint grade)
     {
-        return grade == BasisBladeDataLookup.BasisBladeGrade(basisBladeId);
+        return basisBladeId.Count == grade;
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static bool IsValidBasisBladeId(this ulong basisBladeId)
+    public static bool IsValidBasisBladeId(this IndexSet basisBladeId, int vSpaceDimensions)
     {
-        return basisBladeId <= BasisBladeDataLookup.MaxBasisBladeId;
-    }
-        
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static bool IsValidBasisBladeId(this ulong basisBladeId, int vSpaceDimensions)
-    {
-        return basisBladeId < 1UL << vSpaceDimensions;
+        return basisBladeId.Count <= vSpaceDimensions;
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static bool IsValidBasisBladeId(this ulong basisBladeId, uint vSpaceDimensions)
+    public static bool IsValidBasisBladeId(this IndexSet basisBladeId, uint vSpaceDimensions)
     {
-        return basisBladeId < 1UL << (int) vSpaceDimensions;
+        return basisBladeId.Count < (int) vSpaceDimensions;
     }
         
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -947,13 +957,13 @@ public static class BasisBladeUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static bool BasisBladeHasEvenGrade(this ulong basisBladeId)
+    public static bool BasisBladeHasEvenGrade(this IndexSet basisBladeId)
     {
         return (basisBladeId.BasisBladeIdToGrade() & 1) == 0;
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static bool BasisBladeHasOddGrade(this ulong basisBladeId)
+    public static bool BasisBladeHasOddGrade(this IndexSet basisBladeId)
     {
         return (basisBladeId.BasisBladeIdToGrade() & 1) != 0;
     }
@@ -964,9 +974,9 @@ public static class BasisBladeUtils
     /// <param name="basisBladeId"></param>
     /// <returns></returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static bool GradeInvolutionIsPositiveOfBasisBladeId(this ulong basisBladeId)
+    public static bool GradeInvolutionIsPositiveOfBasisBladeId(this IndexSet basisBladeId)
     {
-        return BasisBladeDataLookup.GradeInvolutionIsPositive(basisBladeId);
+        return basisBladeId.Count.GradeInvolutionIsPositiveOfGrade();
     }
 
     /// <summary>
@@ -975,22 +985,11 @@ public static class BasisBladeUtils
     /// <param name="basisBladeId"></param>
     /// <returns></returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static bool GradeInvolutionIsNegativeOfBasisBladeId(this ulong basisBladeId)
+    public static bool GradeInvolutionIsNegativeOfBasisBladeId(this IndexSet basisBladeId)
     {
-        return BasisBladeDataLookup.GradeInvolutionIsNegative(basisBladeId);
+        return basisBladeId.Count.GradeInvolutionIsNegativeOfGrade();
     }
-        
-    /// <summary>
-    /// Test if the grade inverse of a given basis blade is -1 the original basis blade
-    /// </summary>
-    /// <param name="basisBladeId"></param>
-    /// <returns></returns>
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static IntegerSign GradeInvolutionSignOfBasisBladeId(this ulong basisBladeId)
-    {
-        return BasisBladeDataLookup.GradeInvolutionSign(basisBladeId);
-    }
-        
+    
     /// <summary>
     /// Test if the grade inverse of a given basis blade is -1 the original basis blade
     /// </summary>
@@ -1008,9 +1007,9 @@ public static class BasisBladeUtils
     /// <param name="basisBladeId"></param>
     /// <returns></returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static bool ReverseIsPositiveOfBasisBladeId(this ulong basisBladeId)
+    public static bool ReverseIsPositiveOfBasisBladeId(this IndexSet basisBladeId)
     {
-        return BasisBladeDataLookup.ReverseIsPositive(basisBladeId);
+        return basisBladeId.Count.ReverseIsPositiveOfGrade();
     }
 
     /// <summary>
@@ -1019,22 +1018,11 @@ public static class BasisBladeUtils
     /// <param name="basisBladeId"></param>
     /// <returns></returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static bool ReverseIsNegativeOfBasisBladeId(this ulong basisBladeId)
+    public static bool ReverseIsNegativeOfBasisBladeId(this IndexSet basisBladeId)
     {
-        return BasisBladeDataLookup.ReverseIsNegative(basisBladeId);
+        return basisBladeId.Count.ReverseIsNegativeOfGrade();
     }
-        
-    /// <summary>
-    /// Test if the reverse of a given basis blade is -1 the original basis blade
-    /// </summary>
-    /// <param name="basisBladeId"></param>
-    /// <returns></returns>
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static IntegerSign ReverseSignOfBasisBladeId(this ulong basisBladeId)
-    {
-        return BasisBladeDataLookup.ReverseSign(basisBladeId);
-    }
-        
+    
     /// <summary>
     /// Test if the reverse of a given basis blade is -1 the original basis blade
     /// </summary>
@@ -1052,9 +1040,9 @@ public static class BasisBladeUtils
     /// <param name="basisBladeId"></param>
     /// <returns></returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static bool CliffordConjugateIsPositiveOfBasisBladeId(this ulong basisBladeId)
+    public static bool CliffordConjugateIsPositiveOfBasisBladeId(this IndexSet basisBladeId)
     {
-        return BasisBladeDataLookup.CliffordConjugateIsPositive(basisBladeId);
+        return basisBladeId.Count.CliffordConjugateIsPositiveOfGrade();
     }
 
     /// <summary>
@@ -1063,20 +1051,9 @@ public static class BasisBladeUtils
     /// <param name="basisBladeId"></param>
     /// <returns></returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static bool CliffordConjugateIsNegativeOfBasisBladeId(this ulong basisBladeId)
+    public static bool CliffordConjugateIsNegativeOfBasisBladeId(this IndexSet basisBladeId)
     {
-        return BasisBladeDataLookup.CliffordConjugateIsNegative(basisBladeId);
-    }
-        
-    /// <summary>
-    /// Test if the clifford conjugate of a given basis blade is -1 the original basis blade 
-    /// </summary>
-    /// <param name="basisBladeId"></param>
-    /// <returns></returns>
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static IntegerSign CliffordConjugateSignOfBasisBladeId(this ulong basisBladeId)
-    {
-        return BasisBladeDataLookup.CliffordConjugateSign(basisBladeId);
+        return basisBladeId.Count.CliffordConjugateIsNegativeOfGrade();
     }
         
     /// <summary>
@@ -1092,72 +1069,40 @@ public static class BasisBladeUtils
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static ulong GetMaxBasisBladeId(this IEnumerable<ulong> basisBladeIdList)
+    public static IndexSet GetMaxBasisBladeId(this IEnumerable<IndexSet> basisBladeIdList)
     {
-        return basisBladeIdList.Aggregate(
-            0UL, 
-            (maxValue, item) => 
-                maxValue < item ? item : maxValue
-        );
+        return basisBladeIdList.Max();
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static ulong GetMaxBasisBladeId(this IEnumerable<ulong> indexList, uint grade)
+    public static IndexSet GetMaxBasisBladeId(this IEnumerable<ulong> indexList, uint grade)
     {
-        var maxIndex = 
-            indexList.Aggregate(
-                -1L, 
-                (maxValue, item) => 
-                    maxValue < (long)item ? (long)item : maxValue
-            );
-                
-        return maxIndex < 0
-            ? 0UL
-            : ((ulong) maxIndex).BasisBladeIndexToId(grade);
+        return indexList.Max().BasisBladeIndexToId(grade);
     }
-        
-    public static ulong GetMaxBasisBladeId<T>(this IReadOnlyDictionary<uint, Dictionary<ulong, T>> gradeIndexScalarDictionary)
-    {
-        var maxBasisBladeId = 0UL;
-
-        foreach (var (grade, indexScalarDictionary) in gradeIndexScalarDictionary)
-        {
-            if (indexScalarDictionary.Count == 0)
-                continue;
-
-            var id = 
-                indexScalarDictionary.Keys.Max().BasisBladeIndexToId(grade);
-
-            if (id > maxBasisBladeId)
-                maxBasisBladeId = id;
-        }
-
-        return maxBasisBladeId;
-    }
-
+    
     /// <summary>
     /// The max basis blade ID in a GA space with a given dimension
     /// </summary>
     /// <param name="vSpaceDimensions"></param>
     /// <returns></returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static ulong GetMaxBasisBladeId(this uint vSpaceDimensions)
+    public static IndexSet GetMaxBasisBladeId(this uint vSpaceDimensions)
     {
-        return (1ul << (int) vSpaceDimensions) - 1ul;
+        return ((int)vSpaceDimensions).ToDenseIndexSet();
     }
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static uint GetMinVSpaceDimension(this IEnumerable<ulong> basisBladeIdList)
+    public static uint GetMinVSpaceDimension(this IEnumerable<IndexSet> basisBladeIdList)
     {
         return basisBladeIdList
-            .GetMaxBasisBladeId()
+            .Max()
             .BasisBladeIdToMinVSpaceDimension();
     }
         
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static uint GetMinVSpaceDimension(this IEnumerable<ulong> basisBladeIdList, uint grade)
+    public static uint GetMinVSpaceDimension(this IEnumerable<ulong> indexList, uint grade)
     {
-        return basisBladeIdList.GetMaxBasisBladeId(grade).BasisBladeIdToMinVSpaceDimension();
+        return indexList.GetMaxBasisBladeId(grade).BasisBladeIdToMinVSpaceDimension();
     }
 }

@@ -1,7 +1,6 @@
-﻿using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Extended.Generic.Multivectors;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Extended.Generic.Processors;
+﻿using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Multivectors;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Processors;
 using GeometricAlgebraFulcrumLib.Applications.Symbolic.LibraryGenerators.CSharp.DenseKVectorsLib.FactoredBlade;
 using GeometricAlgebraFulcrumLib.Applications.Symbolic.LibraryGenerators.CSharp.DenseKVectorsLib.FrameUtils;
 using GeometricAlgebraFulcrumLib.Applications.Symbolic.LibraryGenerators.CSharp.DenseKVectorsLib.KVector;
@@ -12,6 +11,7 @@ using GeometricAlgebraFulcrumLib.MetaProgramming.Context;
 using GeometricAlgebraFulcrumLib.MetaProgramming.Context.Expressions;
 using GeometricAlgebraFulcrumLib.MetaProgramming.Utilities.Code;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.BitManipulation;
+using GeometricAlgebraFulcrumLib.Utilities.Structures.IndexSets;
 using GeometricAlgebraFulcrumLib.Utilities.Text.Loggers.Progress;
 using GeometricAlgebraFulcrumLib.Utilities.Text.Text.Parametric;
 
@@ -619,7 +619,7 @@ public sealed partial class GaFuLLibraryComposer
         }
     }
 
-    private void GenerateFactorMethod(int inGrade, ulong inId)
+    private void GenerateFactorMethod(int inGrade, IndexSet inId)
     {
         CodeFilesComposer.DownFolder("Factor");
 
@@ -647,7 +647,7 @@ public sealed partial class GaFuLLibraryComposer
         for (var inGrade = 2; inGrade <= VSpaceDimensions; inGrade++)
         {
             var kvSpaceDimensions = 
-                VSpaceDimensions.KVectorSpaceDimension(inGrade);
+                VSpaceDimensions.KVectorSpaceDimensions(inGrade);
 
             for (var inIndex = 0UL; inIndex < kvSpaceDimensions; inIndex++)
             {

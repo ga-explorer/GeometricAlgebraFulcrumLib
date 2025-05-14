@@ -1,7 +1,7 @@
 ﻿using System.Collections.Immutable;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Float64.Multivectors;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivectors;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space2D;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space3D;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space4D;
@@ -96,9 +96,9 @@ public sealed class CGaFloat64VGaDirectionBladeDecoder :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public RGaFloat64Vector RGaVector()
+    public XGaFloat64Vector XGaVector()
     {
-        return Blade.InternalVector.DecodeVGaBladeToRGaVector(
+        return Blade.InternalVector.DecodeVGaBladeToXGaVector(
             Blade.GeometricSpace
         );
     }
@@ -132,9 +132,9 @@ public sealed class CGaFloat64VGaDirectionBladeDecoder :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public RGaFloat64Bivector Bivector()
+    public XGaFloat64Bivector Bivector()
     {
-        return Blade.InternalBivector.DecodeVGaBladeToRGaBivector(
+        return Blade.InternalBivector.DecodeVGaBladeToXGaBivector(
             Blade.GeometricSpace
         );
     }
@@ -153,9 +153,9 @@ public sealed class CGaFloat64VGaDirectionBladeDecoder :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public RGaFloat64KVector KVector()
+    public XGaFloat64KVector KVector()
     {
-        return Blade.InternalKVector.DecodeVGaBladeToRGaKVector(
+        return Blade.InternalKVector.DecodeVGaBladeToXGaKVector(
             Blade.GeometricSpace
         );
     }
@@ -185,7 +185,7 @@ public sealed class CGaFloat64VGaDirectionBladeDecoder :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public IReadOnlyList<RGaFloat64Vector> BladeToVectors()
+    public IReadOnlyList<XGaFloat64Vector> BladeToVectors()
     {
         return KVector()
             .BladeToVectors();

@@ -1,13 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Extended.Float64.Multivectors;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Extended.Float64.Multivectors.Composers;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Extended.Float64.Processors;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Float64.Multivectors;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Float64.Multivectors.Composers;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Float64.Processors;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivectors;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivectors.Composers;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Processors;
 using NUnit.Framework;
 
 namespace GeometricAlgebraFulcrumLib.UnitTests.Processing;
@@ -15,8 +12,8 @@ namespace GeometricAlgebraFulcrumLib.UnitTests.Processing;
 [TestFixture]
 public sealed class MultivectorStoragesTests
 {
-    private readonly RGaFloat64RandomComposer _randomGenerator;
-    private readonly List<RGaFloat64Multivector> _mvList1;
+    private readonly XGaFloat64RandomComposer _randomGenerator;
+    private readonly List<XGaFloat64Multivector> _mvList1;
     private readonly List<XGaFloat64Multivector> _mvList2;
     private readonly double _scalar;
 
@@ -24,26 +21,26 @@ public sealed class MultivectorStoragesTests
     public XGaFloat64Processor BasisSet { get; }
         = XGaFloat64Processor.Euclidean;
 
-    public RGaFloat64Processor GeometricProcessor { get; }
-        = RGaFloat64Processor.Euclidean;
+    public XGaFloat64Processor GeometricProcessor { get; }
+        = XGaFloat64Processor.Euclidean;
 
     public int VSpaceDimensions 
         => 5;
 
     public ulong GaSpaceDimensions
-        => VSpaceDimensions.ToGaSpaceDimension();
+        => 1UL << VSpaceDimensions;
 
 
     public MultivectorStoragesTests()
     {
-        _randomGenerator = GeometricProcessor.CreateRGaRandomComposer(VSpaceDimensions, 10);
-        _mvList1 = new List<RGaFloat64Multivector>();
+        _randomGenerator = GeometricProcessor.CreateXGaRandomComposer(VSpaceDimensions, 10);
+        _mvList1 = new List<XGaFloat64Multivector>();
         _mvList2 = new List<XGaFloat64Multivector>();
         _scalar = _randomGenerator.GetScalarValue();
     }
 
 
-    private XGaFloat64Multivector CreateGeoPoTMultivector(RGaFloat64Multivector mvStorage)
+    private XGaFloat64Multivector CreateGeoPoTMultivector(XGaFloat64Multivector mvStorage)
     {
         var gapotMv = BasisSet.CreateComposer();
 
@@ -53,20 +50,7 @@ public sealed class MultivectorStoragesTests
         return gapotMv.GetSimpleMultivector();
     }
 
-    private XGaFloat64Multivector Subtract(RGaFloat64Multivector mv1, XGaFloat64Multivector mv2)
-    {
-        var mvDiff = BasisSet.CreateComposer();
-
-        foreach (var (id, scalar) in mv1.IdScalarPairs)
-            mvDiff[id] = scalar;
-
-        foreach (var (id, scalar) in mv2.IdScalarPairs)
-            mvDiff[id] -= scalar;
-
-        return mvDiff.GetSimpleMultivector();
-    }
-
-    private XGaFloat64Multivector Subtract(XGaFloat64Multivector mv1, RGaFloat64Multivector mv2)
+    private XGaFloat64Multivector Subtract(XGaFloat64Multivector mv1, XGaFloat64Multivector mv2)
     {
         var mvDiff = BasisSet.CreateComposer();
 
@@ -79,7 +63,7 @@ public sealed class MultivectorStoragesTests
         return mvDiff.GetSimpleMultivector();
     }
         
-    private Func<RGaFloat64Multivector, RGaFloat64Multivector, RGaFloat64Multivector> GetBinaryOperationFunction1(string funcName)
+    private Func<XGaFloat64Multivector, XGaFloat64Multivector, XGaFloat64Multivector> GetBinaryOperationFunction1(string funcName)
     {
         return funcName switch
         {
@@ -115,7 +99,7 @@ public sealed class MultivectorStoragesTests
         };
     }
 
-    private Func<RGaFloat64Multivector, RGaFloat64Multivector, double> GetBinaryOperationFunctionWithScalarOutput1(string funcName)
+    private Func<XGaFloat64Multivector, XGaFloat64Multivector, double> GetBinaryOperationFunctionWithScalarOutput1(string funcName)
     {
         return funcName switch
         {
@@ -133,19 +117,9 @@ public sealed class MultivectorStoragesTests
         };
     }
 
-    private RGaFloat64Multivector LeftTimesScalar(RGaFloat64Multivector storage)
-    {
-        return storage * _scalar;
-    }
-
     private XGaFloat64Multivector LeftTimesScalar(XGaFloat64Multivector storage)
     {
         return storage * _scalar;
-    }
-
-    private RGaFloat64Multivector RightTimesScalar(RGaFloat64Multivector storage)
-    {
-        return _scalar * storage;
     }
 
     private XGaFloat64Multivector RightTimesScalar(XGaFloat64Multivector storage)
@@ -153,17 +127,12 @@ public sealed class MultivectorStoragesTests
         return storage * _scalar;
     }
 
-    private RGaFloat64Multivector DivideByScalar(RGaFloat64Multivector storage)
-    {
-        return storage / _scalar;
-    }
-
     private XGaFloat64Multivector DivideByScalar(XGaFloat64Multivector storage)
     {
         return storage / _scalar;
     }
 
-    private Func<RGaFloat64Multivector, RGaFloat64Multivector> GetUnaryOperationFunction1(string funcName)
+    private Func<XGaFloat64Multivector, XGaFloat64Multivector> GetUnaryOperationFunction1(string funcName)
     {
         return funcName switch
         {
@@ -189,7 +158,7 @@ public sealed class MultivectorStoragesTests
         };
     }
 
-    private Func<RGaFloat64Multivector, double> GetUnaryOperationFunctionWithScalarOutput1(string funcName)
+    private Func<XGaFloat64Multivector, double> GetUnaryOperationFunctionWithScalarOutput1(string funcName)
     {
         return funcName switch
         {
@@ -225,7 +194,7 @@ public sealed class MultivectorStoragesTests
             );
 
         //Create a set of bivector terms storages
-        var kvSpaceDimension2 = (int)VSpaceDimensions.KVectorSpaceDimension(2);
+        var kvSpaceDimension2 = (int)VSpaceDimensions.KVectorSpaceDimensions(2);
         for (var index = 0; index < kvSpaceDimension2; index++)
             _mvList1.Add(
                 _randomGenerator.GetBivector(index)

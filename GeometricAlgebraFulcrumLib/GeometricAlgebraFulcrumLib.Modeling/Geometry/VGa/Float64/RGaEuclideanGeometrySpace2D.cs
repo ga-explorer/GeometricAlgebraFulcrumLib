@@ -1,38 +1,39 @@
 ﻿using System.Numerics;
 using System.Runtime.CompilerServices;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Float64.Multivectors;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Float64.Multivectors.Composers;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivectors;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivectors.Composers;
+
 
 namespace GeometricAlgebraFulcrumLib.Modeling.Geometry.VGa.Float64;
 
-public class RGaEuclideanGeometrySpace2D :
-    RGaEuclideanGeometrySpace
+public class XGaEuclideanGeometrySpace2D :
+    XGaEuclideanGeometrySpace
 {
-    public static RGaEuclideanGeometrySpace2D Instance { get; }
-        = new RGaEuclideanGeometrySpace2D();
+    public static XGaEuclideanGeometrySpace2D Instance { get; }
+        = new XGaEuclideanGeometrySpace2D();
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    private RGaEuclideanGeometrySpace2D()
+    private XGaEuclideanGeometrySpace2D()
         : base(2)
     {
     }
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public RGaFloat64Vector EncodeVector(double x, double y)
+    public XGaFloat64Vector EncodeVector(double x, double y)
     {
         return EuclideanProcessor.Vector(x, y);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public RGaFloat64Bivector EncodeBivector(double xyScalar)
+    public XGaFloat64Bivector EncodeBivector(double xyScalar)
     {
         return Processor.BivectorTerm(0, 1, xyScalar);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public RGaFloat64Multivector EncodeComplex(double scalar, double iScalar)
+    public XGaFloat64Multivector EncodeComplex(double scalar, double iScalar)
     {
         return Processor
             .CreateComposer()
@@ -43,7 +44,7 @@ public class RGaEuclideanGeometrySpace2D :
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public Complex DecodeComplex(RGaFloat64Multivector mv)
+    public Complex DecodeComplex(XGaFloat64Multivector mv)
     {
         return new Complex(
             mv.Scalar(),

@@ -1,7 +1,7 @@
-﻿using GeometricAlgebraFulcrumLib.Core.GeometricAlgebra.Maps;
-using GeometricAlgebraFulcrumLib.Core.GeometricAlgebra.Restricted.Float64.Multivectors;
-using GeometricAlgebraFulcrumLib.Core.GeometricAlgebra.Restricted.Float64.Multivectors.Composers;
-using GeometricAlgebraFulcrumLib.Core.GeometricAlgebra.Restricted.Float64.Processors;
+﻿using GeometricAlgebraFulcrumLib.Core.GeometricAlgebra.Float64.Multivectors;
+using GeometricAlgebraFulcrumLib.Core.GeometricAlgebra.Float64.Multivectors.Composers;
+using GeometricAlgebraFulcrumLib.Core.GeometricAlgebra.Float64.Processors;
+using GeometricAlgebraFulcrumLib.Core.GeometricAlgebra.Maps;
 using GeometricAlgebraFulcrumLib.Core.LinearAlgebra.Float64.Angles;
 using GeometricAlgebraFulcrumLib.Core.LinearAlgebra.Float64.Vectors.Space3D;
 using GeometricAlgebraFulcrumLib.Core.Polynomials.Float64.CurveBasis;
@@ -34,7 +34,7 @@ public sealed class PhCurve3DDegree5Canonical
     private readonly BernsteinBasisPairProductIntegralSet _basisPairProductIntegralSet;
 
 
-    public RGaFloat64Processor BasisBladeSet { get; }
+    public XGaFloat64Processor BasisBladeSet { get; }
 
     public BernsteinBasisSet BasisPolynomialSet { get; }
 
@@ -75,7 +75,7 @@ public sealed class PhCurve3DDegree5Canonical
 
     private PhCurve3DDegree5Canonical(ILinFloat64Vector3D p, ILinFloat64Vector3D d, LinFloat64Angle theta1, LinFloat64Angle theta2)
     {
-        BasisBladeSet = RGaFloat64Processor.Euclidean;
+        BasisBladeSet = XGaFloat64Processor.Euclidean;
 
         Theta1 = theta1;
         Theta2 = theta2;
@@ -103,7 +103,7 @@ public sealed class PhCurve3DDegree5Canonical
 
         Vector00 = e1;
         Vector22 = d.ToLinVector3D();
-        Vector02 = (e1Multivector.Gp(ScaledRotor2.MultivectorReverse) + ScaledRotor2.Multivector.Gp(e1Multivector)).GetVectorPartAsVector3D();
+        Vector02 = (e1Multivector.Gp(ScaledRotor2.MultivectorReverse) + ScaledRotor2.Multivector.Gp(e1Multivector)).VectorPartToVector3D();
 
         var u = p - (e1 + d) / 8 + Vector02 / 24;
         //var (uUnit, uNorm) = u.GetUnitVectorLengthTuple();
@@ -127,9 +127,9 @@ public sealed class PhCurve3DDegree5Canonical
             a1[1, 2]
         );
 
-        Vector01 = (e1Multivector.Gp(ScaledRotor1.MultivectorReverse) + ScaledRotor1.Multivector.Gp(e1Multivector)).GetVectorPartAsVector3D();
-        Vector12 = (ScaledRotor1.Multivector.Gp(e1Multivector).Gp(ScaledRotor2.MultivectorReverse) + ScaledRotor2.Multivector.Gp(e1Multivector).Gp(ScaledRotor1.MultivectorReverse)).GetVectorPartAsVector3D();
-        Vector11 = ScaledRotor1.Multivector.Gp(e1Multivector).Gp(ScaledRotor1.MultivectorReverse).GetVectorPartAsVector3D();
+        Vector01 = (e1Multivector.Gp(ScaledRotor1.MultivectorReverse) + ScaledRotor1.Multivector.Gp(e1Multivector)).VectorPartToVector3D();
+        Vector12 = (ScaledRotor1.Multivector.Gp(e1Multivector).Gp(ScaledRotor2.MultivectorReverse) + ScaledRotor2.Multivector.Gp(e1Multivector).Gp(ScaledRotor1.MultivectorReverse)).VectorPartToVector3D();
+        Vector11 = ScaledRotor1.Multivector.Gp(e1Multivector).Gp(ScaledRotor1.MultivectorReverse).VectorPartToVector3D();
 
         Scalar00 = ScaledRotor0.Multivector.ESp(ScaledRotor0.MultivectorReverse).ScalarValue;
         Scalar11 = ScaledRotor1.Multivector.ESp(ScaledRotor1.MultivectorReverse).ScalarValue;

@@ -1,10 +1,9 @@
 ﻿using System.Diagnostics;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Extended.Generic.LinearMaps.Outermorphisms;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Extended.Generic.Processors;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Generic.LinearMaps.Rotors;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Generic.Multivectors;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Generic.Multivectors.Composers;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Generic.Processors;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.LinearMaps.Outermorphisms;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.LinearMaps.Rotors;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Multivectors;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Multivectors.Composers;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Processors;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Angles;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Generic;
 using GeometricAlgebraFulcrumLib.Mathematica.Algebra;
@@ -214,7 +213,7 @@ namespace GeometricAlgebraFulcrumLib.Applications.PowerSystems
                 ScalarProcessorOfWolframExpr.Instance;
 
             var geometricProcessor =
-                scalarProcessor.CreateEuclideanRGaProcessor();
+                scalarProcessor.CreateEuclideanXGaProcessor();
 
             var u =
                 geometricProcessor.VectorTerm(n - 1);
@@ -287,7 +286,7 @@ namespace GeometricAlgebraFulcrumLib.Applications.PowerSystems
                 ScalarProcessorOfWolframExpr.Instance;
 
             var geometricProcessor =
-                scalarProcessor.CreateEuclideanRGaProcessor();
+                scalarProcessor.CreateEuclideanXGaProcessor();
 
             var u =
                 geometricProcessor.VectorTerm(n - 1);
@@ -360,7 +359,7 @@ namespace GeometricAlgebraFulcrumLib.Applications.PowerSystems
             ScalarProcessorOfWolframExpr.Instance;
 
         var geometricProcessor =
-            scalarProcessor.CreateEuclideanRGaProcessor();
+            scalarProcessor.CreateEuclideanXGaProcessor();
 
         var assumeExpr1 =
             n.GetRange(1)
@@ -453,7 +452,7 @@ namespace GeometricAlgebraFulcrumLib.Applications.PowerSystems
             ScalarProcessorOfWolframExpr.Instance;
 
         var geometricProcessor =
-            scalarProcessor.CreateEuclideanRGaProcessor();
+            scalarProcessor.CreateEuclideanXGaProcessor();
 
         var assumeExpr1 =
             n.GetRange(1)

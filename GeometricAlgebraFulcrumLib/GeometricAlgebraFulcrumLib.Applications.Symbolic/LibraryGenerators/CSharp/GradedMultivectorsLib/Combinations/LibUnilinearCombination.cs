@@ -1,19 +1,18 @@
-﻿using System.Collections.Immutable;
+﻿using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Basis;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Float64.Combinations;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Float64.Multivectors;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Combinations;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivectors;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
 using GeometricAlgebraFulcrumLib.Applications.Symbolic.LibraryGenerators.CSharp.GradedMultivectorsLib.Types;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Combinations;
+using GeometricAlgebraFulcrumLib.Utilities.Structures.IndexSets;
 
 namespace GeometricAlgebraFulcrumLib.Applications.Symbolic.LibraryGenerators.CSharp.GradedMultivectorsLib.Combinations;
 
 public class LibUnilinearCombination :
     ILibLinearCombination
 {
-    public static LibUnilinearCombination Create(LibType inputType, IEnumerable<RGaFloat64UnilinearCombinationTerm> termList)
+    public static LibUnilinearCombination Create(LibType inputType, IEnumerable<XGaFloat64UnilinearCombinationTerm> termList)
     {
         var termTable = new LibUnilinearCombination(inputType);
 
@@ -22,7 +21,7 @@ public class LibUnilinearCombination :
         return termTable;
     }
 
-    public static LibUnilinearCombination Create(LibType inputType, Func<RGaBasisBlade, IRGaSignedBasisBlade> basisMapFunc)
+    public static LibUnilinearCombination Create(LibType inputType, Func<XGaBasisBlade, IXGaSignedBasisBlade> basisMapFunc)
     {
         var termTable = new LibUnilinearCombination(inputType);
 
@@ -43,7 +42,7 @@ public class LibUnilinearCombination :
         return termTable;
     }
 
-    public static LibUnilinearCombination Create(LibType inputType, Func<RGaBasisBlade, RGaFloat64Multivector> basisMapFunc)
+    public static LibUnilinearCombination Create(LibType inputType, Func<XGaBasisBlade, XGaFloat64Multivector> basisMapFunc)
     {
         var termTable = new LibUnilinearCombination(inputType);
 
@@ -74,9 +73,9 @@ public class LibUnilinearCombination :
     }
 
 
-    private readonly RGaFloat64UnilinearCombination _unilinearCombination;
+    private readonly XGaFloat64UnilinearCombination _unilinearCombination;
 
-    public IRGaLinearCombination InnerLinearCombination 
+    public IXGaLinearCombination InnerLinearCombination 
         => _unilinearCombination;
 
     public LibType InputType { get; }
@@ -92,13 +91,13 @@ public class LibUnilinearCombination :
     public int GaSpaceDimensions
         => InputType.GaSpaceDimensions;
 
-    public IEnumerable<RGaFloat64UnilinearCombinationTerm> Terms
+    public IEnumerable<XGaFloat64UnilinearCombinationTerm> Terms
         => _unilinearCombination;
 
     
     private LibUnilinearCombination(LibType inputType)
     {
-        _unilinearCombination = new RGaFloat64UnilinearCombination();
+        _unilinearCombination = new XGaFloat64UnilinearCombination();
         InputType = inputType;
     }
     
@@ -147,7 +146,7 @@ public class LibUnilinearCombination :
         var i = 0;
         foreach (var (id, termList) in idTermListPairs)
         {
-            var index = (int)((ulong)id).BasisBladeIdToIndex();
+            var index = (int)((IndexSet)id).BasisBladeIdToIndex();
             if (i != index || termList.Count != 1 || !termList.First().IsPositiveIdentity)
                 return false;
 
@@ -176,7 +175,7 @@ public class LibUnilinearCombination :
         var i = 0;
         foreach (var (id, termList) in idTermListPairs)
         {
-            var index = (int)((ulong)id).BasisBladeIdToIndex();
+            var index = (int)((IndexSet)id).BasisBladeIdToIndex();
             if (i != index || termList.Count != 1 || !termList.First().IsNegativeIdentity)
                 return false;
 
@@ -231,30 +230,24 @@ public class LibUnilinearCombination :
         return true;
     }
 
-    public IReadOnlyList<int> GetOutputBasisBladeGrades()
+    public IndexSet GetOutputBasisBladeGrades()
     {
         return _unilinearCombination.GetOutputBasisBladeGrades();
     }
 
-    public IReadOnlyList<int> GetInputBasisBladeGrades()
+    public IndexSet GetInputBasisBladeGrades()
     {
         return _unilinearCombination.GetInputBasisBladeGrades();
     }
     
-    public IReadOnlyList<int> GetInputBasisBladeIDs()
+    public IReadOnlyList<IndexSet> GetInputBasisBladeIDs()
     {
-        return _unilinearCombination
-            .GetInputBasisBladeIDs()
-            .Select(id => (int)id)
-            .ToImmutableSortedSet();
+        return _unilinearCombination.GetInputBasisBladeIDs();
     }
     
-    public IReadOnlyList<int> GetOutputBasisBladeIDs()
+    public IReadOnlyList<IndexSet> GetOutputBasisBladeIDs()
     {
-        return _unilinearCombination
-            .GetOutputBasisBladeIDs()
-            .Select(id => (int)id)
-            .ToImmutableSortedSet();
+        return _unilinearCombination.GetOutputBasisBladeIDs();
     }
 
 
@@ -280,14 +273,14 @@ public class LibUnilinearCombination :
     }
 
 
-    public LibUnilinearCombination Add(RGaFloat64UnilinearCombinationTerm term)
+    public LibUnilinearCombination Add(XGaFloat64UnilinearCombinationTerm term)
     {
         _unilinearCombination.Add(term);
 
         return this;
     }
 
-    public LibUnilinearCombination Add(RGaBasisBlade inputBasisBlade, IRGaSignedBasisBlade outputBasisBlade)
+    public LibUnilinearCombination Add(XGaBasisBlade inputBasisBlade, IXGaSignedBasisBlade outputBasisBlade)
     {
         _unilinearCombination.Add(
             inputBasisBlade,
@@ -297,7 +290,7 @@ public class LibUnilinearCombination :
         return this;
     }
 
-    public LibUnilinearCombination Add(Float64Scalar inputScalar, RGaBasisBlade inputBasisBlade, RGaBasisBlade outputBasisBlade)
+    public LibUnilinearCombination Add(Float64Scalar inputScalar, XGaBasisBlade inputBasisBlade, XGaBasisBlade outputBasisBlade)
     {
         _unilinearCombination.Add(
             inputScalar,
@@ -308,7 +301,7 @@ public class LibUnilinearCombination :
         return this;
     }
     
-    public LibUnilinearCombination Add(RGaBasisBlade inputBasisBlade, RGaFloat64Multivector outputMultivector)
+    public LibUnilinearCombination Add(XGaBasisBlade inputBasisBlade, XGaFloat64Multivector outputMultivector)
     {
         _unilinearCombination.Add(
             inputBasisBlade,
@@ -318,7 +311,7 @@ public class LibUnilinearCombination :
         return this;
     }
     
-    public LibUnilinearCombination Add(IEnumerable<RGaFloat64UnilinearCombinationTerm> termList)
+    public LibUnilinearCombination Add(IEnumerable<XGaFloat64UnilinearCombinationTerm> termList)
     {
         _unilinearCombination.Add(termList);
 
@@ -336,7 +329,7 @@ public class LibUnilinearCombination :
     }
 
 
-    public LibUnilinearCombination FilterTerms(LibType inputType, LibType outputType, Func<RGaFloat64UnilinearCombinationTerm, bool> termFilter)
+    public LibUnilinearCombination FilterTerms(LibType inputType, LibType outputType, Func<XGaFloat64UnilinearCombinationTerm, bool> termFilter)
     {
         return Create(
             inputType,
@@ -345,9 +338,9 @@ public class LibUnilinearCombination :
     }
 
 
-    public SortedDictionary<int, RGaFloat64UnilinearCombination> GetIdTermListPairs()
+    public SortedDictionary<int, XGaFloat64UnilinearCombination> GetIdTermListPairs()
     {
-        var idList = new SortedDictionary<int, RGaFloat64UnilinearCombination>();
+        var idList = new SortedDictionary<int, XGaFloat64UnilinearCombination>();
 
         var groupList =
             _unilinearCombination
@@ -357,7 +350,7 @@ public class LibUnilinearCombination :
         {
             var key = (int)group.Key;
             var value =
-                new RGaFloat64UnilinearCombination().Add(group);
+                new XGaFloat64UnilinearCombination().Add(group);
 
             idList.Add(key, value);
         }
@@ -365,9 +358,9 @@ public class LibUnilinearCombination :
         return idList;
     }
     
-    public SortedDictionary<int, RGaFloat64UnilinearCombination> GetIdTermListPairs(Func<RGaFloat64UnilinearCombinationTerm, bool> termFilter)
+    public SortedDictionary<int, XGaFloat64UnilinearCombination> GetIdTermListPairs(Func<XGaFloat64UnilinearCombinationTerm, bool> termFilter)
     {
-        var idList = new SortedDictionary<int, RGaFloat64UnilinearCombination>();
+        var idList = new SortedDictionary<int, XGaFloat64UnilinearCombination>();
 
         var groupList =
             _unilinearCombination
@@ -378,7 +371,7 @@ public class LibUnilinearCombination :
         {
             var key = (int)group.Key;
             var value =
-                new RGaFloat64UnilinearCombination().Add(group);
+                new XGaFloat64UnilinearCombination().Add(group);
 
             idList.Add(key, value);
         }
@@ -386,9 +379,9 @@ public class LibUnilinearCombination :
         return idList;
     }
 
-    public SortedDictionary<int, RGaFloat64UnilinearCombination> GetIdTermListPairsForOutGrade(int grade)
+    public SortedDictionary<int, XGaFloat64UnilinearCombination> GetIdTermListPairsForOutGrade(int grade)
     {
-        var idList = new SortedDictionary<int, RGaFloat64UnilinearCombination>();
+        var idList = new SortedDictionary<int, XGaFloat64UnilinearCombination>();
 
         var groupList =
             _unilinearCombination
@@ -399,7 +392,7 @@ public class LibUnilinearCombination :
         {
             var key = (int)group.Key;
             var value =
-                new RGaFloat64UnilinearCombination().Add(group);
+                new XGaFloat64UnilinearCombination().Add(group);
 
             idList.Add(key, value);
         }

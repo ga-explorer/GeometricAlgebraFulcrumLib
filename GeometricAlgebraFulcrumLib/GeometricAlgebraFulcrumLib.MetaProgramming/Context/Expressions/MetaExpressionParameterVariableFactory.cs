@@ -1,12 +1,11 @@
 ﻿using System.Diagnostics;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Multivectors;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.BitManipulation;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.IndexSets;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Extended.Generic.Multivectors;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Extended.Generic.Multivectors.Composers;
 using GeometricAlgebraFulcrumLib.MetaProgramming.Context.Expressions.Variables;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.Euclidean.Space3D.Objects;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Multivectors.Composers;
 
 namespace GeometricAlgebraFulcrumLib.MetaProgramming.Context.Expressions;
 
@@ -108,7 +107,7 @@ public sealed class MetaExpressionParameterVariableFactory :
                 .GetRange()
                 .Select(index =>
                     new KeyValuePair<IndexSet, IMetaExpressionAtomic>(
-                        index.IndexToIndexSet(),
+                        index.ToUnitIndexSet(),
                         Context.GetOrDefineParameterVariable(
                             namingFunction(index)
                         )
@@ -127,14 +126,14 @@ public sealed class MetaExpressionParameterVariableFactory :
         Debug.Assert(grade <= vSpaceDimensions);
 
         var kvSpaceDimensions =
-            vSpaceDimensions.KVectorSpaceDimension(grade);
+            vSpaceDimensions.KVectorSpaceDimensions(grade);
 
         var parametersList =
             Enumerable
                 .Range(0, (int)kvSpaceDimensions)
                 .Select(index =>
                     new KeyValuePair<IndexSet, IMetaExpressionAtomic>(
-                        BasisBladeUtils.BasisBladeGradeIndexToId(grade, (ulong)index).BitPatternToIndexSet(),
+                        BasisBladeUtils.BasisBladeGradeIndexToId(grade, (ulong)index),
                         Context.GetOrDefineParameterVariable(
                             namingFunction((ulong)index)
                         )
@@ -155,7 +154,7 @@ public sealed class MetaExpressionParameterVariableFactory :
             .GetRange()
             .Select(id =>
                 new KeyValuePair<IndexSet, IMetaExpressionAtomic>(
-                    id.BitPatternToIndexSet(),
+                    id.ToUInt64IndexSet(),
                     Context.GetOrDefineParameterVariable(
                         namingFunction(id)
                     )

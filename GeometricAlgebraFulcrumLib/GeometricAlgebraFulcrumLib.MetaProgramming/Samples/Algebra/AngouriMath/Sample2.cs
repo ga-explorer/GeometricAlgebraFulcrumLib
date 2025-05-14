@@ -1,5 +1,5 @@
-﻿using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Generic.Multivectors.Composers;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Generic.Processors;
+﻿using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Multivectors.Composers;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Processors;
 using GeometricAlgebraFulcrumLib.MetaProgramming.Context.Processors;
 using GeometricAlgebraFulcrumLib.MetaProgramming.Utilities.Text;
 
@@ -17,7 +17,7 @@ public static class Sample2
 
         // Create a 3-dimensional Euclidean geometric algebra processor based on the
         // selected scalar processor
-        var geometricProcessor = scalarProcessor.CreateEuclideanRGaProcessor();
+        var geometricProcessor = scalarProcessor.CreateEuclideanXGaProcessor();
 
         // This is a pre-defined text generator for displaying multivectors
         // with symbolic AngouriMath scalars using Entity objects

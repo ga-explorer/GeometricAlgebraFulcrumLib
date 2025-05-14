@@ -2,7 +2,7 @@
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Text;
-using GeometricAlgebraFulcrumLib.Core.GeometricAlgebra.Restricted.Records;
+
 using GeometricAlgebraFulcrumLib.Core.Structures.BitManipulation;
 using GeometricAlgebraFulcrumLib.Core.Structures.Tuples;
 
@@ -265,9 +265,9 @@ public sealed class GaMultivectorBinaryTrie :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public RGaIdScalarRecord GetLeafNodeByIndex(int index)
+    public Tuple<ulong, double> GetLeafNodeByIndex(int index)
     {
-        return new RGaIdScalarRecord(
+        return new Tuple<ulong, double>(
             _leafNodeIDsList[index],
             _leafNodeScalarsArray[index]
         );
@@ -434,10 +434,10 @@ public sealed class GaMultivectorBinaryTrie :
     }
         
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public IEnumerable<RGaIdScalarRecord> GetIdScalarRecords()
+    public IEnumerable<Tuple<ulong, double>> GetIdScalarRecords()
     {
         for (var i = 0; i < Count; i++)
-            yield return new RGaIdScalarRecord(
+            yield return new Tuple<ulong, double>(
                 _leafNodeIDsList[i], 
                 _leafNodeScalarsArray[i]
             );
@@ -725,10 +725,10 @@ public sealed class GaMultivectorBinaryTrie :
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public IEnumerable<RGaIdScalarRecord> GetIndexScalarRecords()
+    public IEnumerable<Tuple<ulong, double>> GetIndexScalarRecords()
     {
         for (var i = 0; i < Count; i++)
-            yield return new RGaIdScalarRecord(
+            yield return new Tuple<ulong, double>(
                 _leafNodeIDsList[i], 
                 _leafNodeScalarsArray[i]
             );

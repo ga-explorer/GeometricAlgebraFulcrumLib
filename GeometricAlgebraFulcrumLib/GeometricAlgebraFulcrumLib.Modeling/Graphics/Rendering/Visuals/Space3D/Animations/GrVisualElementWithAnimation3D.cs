@@ -1,7 +1,7 @@
-﻿using System.Collections.Immutable;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
 using GeometricAlgebraFulcrumLib.Modeling.Signals;
+using GeometricAlgebraFulcrumLib.Utilities.Structures.IndexSets;
 
 namespace GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.Visuals.Space3D.Animations;
 
@@ -36,46 +36,11 @@ public abstract class GrVisualElementWithAnimation3D :
     
     public abstract IReadOnlyList<GrVisualAnimatedGeometry> GetAnimatedGeometries();
     
-    //public void ClearInvalidFrameIndices()
-    //{
-    //    InvalidFrameIndexSet.Clear();
-    //}
-
-    //public void AddInvalidFrameIndices(IEnumerable<int> invalidFrameIndices)
-    //{
-    //    InvalidFrameIndexSet.AddRange(invalidFrameIndices);
-    //}
-
-    //public IReadOnlyList<int> GetInvalidFrameIndices()
-    //{
-    //    if (IsStatic)
-    //        return ImmutableSortedSet<int>.Empty;
-
-    //    return InvalidFrameIndexSet.Union(
-    //        GetAnimatedGeometries().SelectMany(g => 
-    //            g.InvalidFrameIndexList
-    //        )
-    //    ).ToImmutableArray();
-    //}
-
-    public ImmutableSortedSet<int> GetValidFrameIndexSet()
+    public IndexSet GetValidFrameIndexSet()
     {
-        if (IsStatic)
-            return ImmutableSortedSet<int>.Empty;
-
-        return SamplingSpecs.SampleIndexRange.ToImmutableSortedSet();
-
-        //var invalidFrameIndexList =
-        //    GetInvalidFrameIndices();
-
-        //return invalidFrameIndexList.Count == 0
-        //    ? SamplingSpecs
-        //        .FrameIndexRange
-        //        .ToImmutableSortedSet()
-        //    : SamplingSpecs
-        //        .FrameIndexRange
-        //        .ToImmutableSortedSet()
-        //        .Except(invalidFrameIndexList);
+        return IsStatic 
+            ? IndexSet.EmptySet 
+            : SamplingSpecs.SampleIndexRange.ToDenseIndexSet();
     }
 
     public double GetVisibility(double time)

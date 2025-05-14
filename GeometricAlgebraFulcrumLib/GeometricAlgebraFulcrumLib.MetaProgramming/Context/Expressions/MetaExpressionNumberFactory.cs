@@ -1,7 +1,7 @@
-﻿using GeometricAlgebraFulcrumLib.Utilities.Structures.IndexSets;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Extended.Generic.Multivectors;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Extended.Generic.Multivectors.Composers;
+﻿using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Multivectors;
+using GeometricAlgebraFulcrumLib.Utilities.Structures.IndexSets;
 using GeometricAlgebraFulcrumLib.MetaProgramming.Context.Expressions.Numbers;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Multivectors.Composers;
 
 namespace GeometricAlgebraFulcrumLib.MetaProgramming.Context.Expressions;
 
@@ -48,7 +48,7 @@ public sealed class MetaExpressionNumberFactory :
     public XGaKVector<IMetaExpressionAtomic> CreateBasisBlade(ulong id)
     {
         return Context.XGaProcessor.KVectorTerm(
-            id.BitPatternToIndexSet(),
+            id.ToUInt64IndexSet(),
             Context.GetOrDefineLiteralNumber(1)
         );
     }

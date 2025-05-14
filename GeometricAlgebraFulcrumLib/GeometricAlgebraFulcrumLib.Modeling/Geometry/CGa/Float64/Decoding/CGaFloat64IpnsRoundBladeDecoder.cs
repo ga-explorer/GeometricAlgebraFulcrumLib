@@ -145,12 +145,12 @@ public sealed class CGaFloat64IpnsRoundBladeDecoder :
 
 
     //[MethodImpl(MethodImplOptions.AggressiveInlining)]
-    //public RGaConformalParametricElement Element(this RGaConformalParametricBlade2D blade)
+    //public XGaConformalParametricElement Element(this XGaConformalParametricBlade2D blade)
     //{
     //    if (!blade.Specs.IsIpnsRound)
     //        throw new InvalidOperationException();
 
-    //    return RGaConformalParametricElement.Create(
+    //    return XGaConformalParametricElement.Create(
     //        blade.Specs,
     //        blade.ParameterRange,
     //        t => blade.GetBlade(t).Element()
@@ -158,12 +158,12 @@ public sealed class CGaFloat64IpnsRoundBladeDecoder :
     //}
 
     //[MethodImpl(MethodImplOptions.AggressiveInlining)]
-    //public RGaConformalParametricElement Element(this RGaConformalParametricBlade3D blade)
+    //public XGaConformalParametricElement Element(this XGaConformalParametricBlade3D blade)
     //{
     //    if (!blade.Specs.IsIpnsRound)
     //        throw new InvalidOperationException();
 
-    //    return RGaConformalParametricElement.Create(
+    //    return XGaConformalParametricElement.Create(
     //        blade.Specs,
     //        blade.ParameterRange,
     //        t => blade.GetBlade(t).Element()
@@ -171,12 +171,12 @@ public sealed class CGaFloat64IpnsRoundBladeDecoder :
     //}
 
     //[MethodImpl(MethodImplOptions.AggressiveInlining)]
-    //public RGaConformalParametricElement Element(this RGaConformalParametricBlade2D blade, IParametricCurve2D egaProbePoint)
+    //public XGaConformalParametricElement Element(this XGaConformalParametricBlade2D blade, IParametricCurve2D egaProbePoint)
     //{
     //    if (!blade.Specs.IsIpnsRound)
     //        throw new InvalidOperationException();
 
-    //    return RGaConformalParametricElement.Create(
+    //    return XGaConformalParametricElement.Create(
     //        blade.Specs,
     //        blade.ParameterRange,
     //        t => blade.GetBlade(t).Element(
@@ -186,12 +186,12 @@ public sealed class CGaFloat64IpnsRoundBladeDecoder :
     //}
 
     //[MethodImpl(MethodImplOptions.AggressiveInlining)]
-    //public RGaConformalParametricElement Element(this RGaConformalParametricBlade3D blade, IParametricCurve3D egaProbePoint)
+    //public XGaConformalParametricElement Element(this XGaConformalParametricBlade3D blade, IParametricCurve3D egaProbePoint)
     //{
     //    if (!blade.Specs.IsIpnsRound)
     //        throw new InvalidOperationException();
 
-    //    return RGaConformalParametricElement.Create(
+    //    return XGaConformalParametricElement.Create(
     //        blade.Specs,
     //        blade.ParameterRange,
     //        t => blade.GetBlade(t).Element(
@@ -323,7 +323,7 @@ public sealed class CGaFloat64IpnsRoundBladeDecoder :
             return Blade.GeometricSpace.ZeroVectorBlade;
 
         return Blade.GeometricSpace.Encode.IpnsRound.Point( 
-            pointPair.CenterToRGaVector() - pointPair.RealRadius * pointPair.DirectionToRGaVector()
+            pointPair.CenterToXGaVector() - pointPair.RealRadius * pointPair.DirectionToXGaVector()
         );
     }
     
@@ -337,7 +337,7 @@ public sealed class CGaFloat64IpnsRoundBladeDecoder :
             return Blade.GeometricSpace.ZeroVectorBlade;
 
         return Blade.GeometricSpace.Encode.IpnsRound.Point( 
-            pointPair.CenterToRGaVector() + pointPair.RealRadius * pointPair.DirectionToRGaVector()
+            pointPair.CenterToXGaVector() + pointPair.RealRadius * pointPair.DirectionToXGaVector()
         );
     }
 
@@ -350,7 +350,7 @@ public sealed class CGaFloat64IpnsRoundBladeDecoder :
         if (!pointPair.IsRoundPointPair)
             return Blade.GeometricSpace.ZeroVectorBlade;
 
-        return (pointPair.CenterToRGaVector() - pointPair.RealRadius * pointPair.DirectionToRGaVector())
+        return (pointPair.CenterToXGaVector() - pointPair.RealRadius * pointPair.DirectionToXGaVector())
             .EncodeVGaVector(Blade.GeometricSpace);
     }
 
@@ -363,7 +363,7 @@ public sealed class CGaFloat64IpnsRoundBladeDecoder :
         if (!pointPair.IsRoundPointPair)
             return Blade.GeometricSpace.ZeroVectorBlade;
 
-        return (pointPair.CenterToRGaVector() + pointPair.RealRadius * pointPair.DirectionToRGaVector())
+        return (pointPair.CenterToXGaVector() + pointPair.RealRadius * pointPair.DirectionToXGaVector())
             .EncodeVGaVector(Blade.GeometricSpace);
     }
     
@@ -378,8 +378,8 @@ public sealed class CGaFloat64IpnsRoundBladeDecoder :
                 Blade.GeometricSpace.ZeroVectorBlade
             );
 
-        var center = pointPair.CenterToRGaVector();
-        var direction = pointPair.DirectionToRGaVector();
+        var center = pointPair.CenterToXGaVector();
+        var direction = pointPair.DirectionToXGaVector();
 
         var point1 =
             pointPair.GeometricSpace.Encode.IpnsRound.Point(
@@ -405,8 +405,8 @@ public sealed class CGaFloat64IpnsRoundBladeDecoder :
                 Blade.GeometricSpace.ZeroVectorBlade
             );
 
-        var center = pointPair.CenterToRGaVector();
-        var direction = pointPair.DirectionToRGaVector();
+        var center = pointPair.CenterToXGaVector();
+        var direction = pointPair.DirectionToXGaVector();
 
         var point1 =
             (center - pointPair.RealRadius * direction).EncodeVGaVector(Blade.GeometricSpace);

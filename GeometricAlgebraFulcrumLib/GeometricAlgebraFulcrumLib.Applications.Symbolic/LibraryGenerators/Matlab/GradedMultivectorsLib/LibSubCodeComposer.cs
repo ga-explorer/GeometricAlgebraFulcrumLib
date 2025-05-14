@@ -1,4 +1,4 @@
-﻿using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Float64.Processors;
+﻿using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Processors;
 using GeometricAlgebraFulcrumLib.Applications.Symbolic.LibraryGenerators.Matlab.GradedMultivectorsLib.Types;
 using GeometricAlgebraFulcrumLib.Utilities.Text.Files;
 
@@ -37,7 +37,7 @@ public abstract class LibSubCodeComposer
     public int GaSpaceDimensions
         => MultivectorType.GaSpaceDimensions;
 
-    public RGaFloat64Processor Metric
+    public XGaFloat64Processor Metric
         => MultivectorType.Metric;
 
 

@@ -4,7 +4,6 @@ using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 using System.Text;
 using GeneticSharp;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Extended.Generic.Processors;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Generic;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Generic;
@@ -21,6 +20,7 @@ using GeometricAlgebraFulcrumLib.MetaProgramming.Context.Processors;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Collections;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Collections.Lists;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Extensions;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Processors;
 
 // ReSharper disable CompareOfFloatsByEqualityOperator
 

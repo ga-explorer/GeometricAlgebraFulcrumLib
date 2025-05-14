@@ -23,13 +23,13 @@
 //    }
     
 //    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-//    public static PGaFloat64Blade operator +(PGaFloat64Blade blade1, RGaFloat64KVector blade2)
+//    public static PGaFloat64Blade operator +(PGaFloat64Blade blade1, XGaFloat64KVector blade2)
 //    {
 //        return blade1.Add(blade2);
 //    }
 
 //    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-//    public static PGaFloat64Blade operator +(RGaFloat64KVector blade1, PGaFloat64Blade blade2)
+//    public static PGaFloat64Blade operator +(XGaFloat64KVector blade1, PGaFloat64Blade blade2)
 //    {
 //        return blade2.Add(blade1);
 //    }
@@ -84,21 +84,21 @@
 //            _ => throw new InvalidOperationException()
 //        };
 
-//    public RGaFloat64KVector InternalKVector { get; }
+//    public XGaFloat64KVector InternalKVector { get; }
     
-//    public RGaFloat64Scalar InternalScalar
+//    public XGaFloat64Scalar InternalScalar
 //        => InternalKVector.GetScalarPart();
     
 //    public double InternalScalarValue
 //        => InternalKVector.GetScalarPart().ScalarValue;
 
-//    public RGaFloat64Vector InternalVector
+//    public XGaFloat64Vector InternalVector
 //        => InternalKVector.GetVectorPart();
 
-//    public RGaFloat64Bivector InternalBivector
+//    public XGaFloat64Bivector InternalBivector
 //        => InternalKVector.GetBivectorPart();
 
-//    public RGaFloat64ConformalProcessor ConformalProcessor
+//    public XGaFloat64ConformalProcessor ConformalProcessor
 //        => GeometricSpace.ConformalProcessor;
 
 //    public int Grade
@@ -139,7 +139,7 @@
 
 
 //    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-//    internal PGaFloat64Blade(PGaFloat64GeometricSpace cgaGeometricSpace, RGaFloat64KVector kVector)
+//    internal PGaFloat64Blade(PGaFloat64GeometricSpace cgaGeometricSpace, XGaFloat64KVector kVector)
 //    {
 //        Debug.Assert(
 //            kVector.Processor.HasSameSignature(cgaGeometricSpace.ConformalProcessor) &&
@@ -153,7 +153,7 @@
 //    }
 
 //    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-//    public void Deconstruct(out PGaFloat64GeometricSpace cgaGeometricSpace, out RGaFloat64KVector kVector)
+//    public void Deconstruct(out PGaFloat64GeometricSpace cgaGeometricSpace, out XGaFloat64KVector kVector)
 //    {
 //        cgaGeometricSpace = GeometricSpace;
 //        kVector = InternalKVector;
@@ -173,7 +173,7 @@
 //    }
     
 //    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-//    public bool IsNearEqual(RGaFloat64Multivector blade2, double zeroEpsilon = Float64Utils.ZeroEpsilon)
+//    public bool IsNearEqual(XGaFloat64Multivector blade2, double zeroEpsilon = Float64Utils.ZeroEpsilon)
 //    {
 //        return InternalKVector.Subtract(blade2).IsNearZero(zeroEpsilon);
 //    }
@@ -374,7 +374,7 @@
 //    }
     
 //    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-//    public RGaFloat64KVector VGaDualKVector()
+//    public XGaFloat64KVector VGaDualKVector()
 //    {
 //        Debug.Assert(
 //            GeometricSpace.IsValidVGaElement(InternalKVector)
@@ -401,7 +401,7 @@
 //    }
     
 //    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-//    public RGaFloat64KVector VGaUnDualKVector()
+//    public XGaFloat64KVector VGaUnDualKVector()
 //    {
 //        Debug.Assert(
 //            GeometricSpace.IsValidVGaElement(InternalKVector)
@@ -454,7 +454,7 @@
 //    }
 
 //    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-//    public RGaFloat64KVector PGaDualKVector()
+//    public XGaFloat64KVector PGaDualKVector()
 //    {
 //        Debug.Assert(
 //            GeometricSpace.IsValidPGaElement(InternalKVector)
@@ -480,7 +480,7 @@
 //    }
 
 //    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-//    public RGaFloat64KVector PGaUnDualKVector()
+//    public XGaFloat64KVector PGaUnDualKVector()
 //    {
 //        Debug.Assert(
 //            GeometricSpace.IsValidPGaElement(InternalKVector)
@@ -520,7 +520,7 @@
     
 
 //    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-//    public PGaFloat64Blade Add(RGaFloat64KVector blade2)
+//    public PGaFloat64Blade Add(XGaFloat64KVector blade2)
 //    {
 //        if (InternalKVector.Grade != blade2.Grade)
 //            throw new InvalidOperationException();
@@ -572,7 +572,7 @@
 //    /// <param name="blade2"></param>
 //    /// <returns></returns>
 //    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-//    public double Sp(RGaFloat64KVector blade2)
+//    public double Sp(XGaFloat64KVector blade2)
 //    {
 //        return InternalKVector.Sp(blade2).ScalarValue;
 //    }
@@ -597,7 +597,7 @@
 //    /// <param name="blade2"></param>
 //    /// <returns></returns>
 //    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-//    public PGaFloat64Blade Op(RGaFloat64KVector blade2)
+//    public PGaFloat64Blade Op(XGaFloat64KVector blade2)
 //    {
 //        return new PGaFloat64Blade(
 //            GeometricSpace,
@@ -639,7 +639,7 @@
 //    /// <param name="blade2"></param>
 //    /// <returns></returns>
 //    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-//    public PGaFloat64Blade Lcp(RGaFloat64KVector blade2)
+//    public PGaFloat64Blade Lcp(XGaFloat64KVector blade2)
 //    {
 //        return new PGaFloat64Blade(
 //            GeometricSpace,
@@ -667,7 +667,7 @@
 //    /// <param name="blade2"></param>
 //    /// <returns></returns>
 //    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-//    public PGaFloat64Blade Rcp(RGaFloat64KVector blade2)
+//    public PGaFloat64Blade Rcp(XGaFloat64KVector blade2)
 //    {
 //        return new PGaFloat64Blade(
 //            GeometricSpace,
@@ -695,7 +695,7 @@
 //    /// <param name="blade2"></param>
 //    /// <returns></returns>
 //    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-//    public PGaFloat64Blade Fdp(RGaFloat64KVector blade2)
+//    public PGaFloat64Blade Fdp(XGaFloat64KVector blade2)
 //    {
 //        return new PGaFloat64Blade(
 //            GeometricSpace,
@@ -709,7 +709,7 @@
 //    /// <param name="mv2"></param>
 //    /// <returns></returns>
 //    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-//    public RGaFloat64Multivector Gp(PGaFloat64Blade mv2)
+//    public XGaFloat64Multivector Gp(PGaFloat64Blade mv2)
 //    {
 //        return InternalKVector.Gp(mv2.InternalKVector);
 //    }
@@ -720,7 +720,7 @@
 //    /// <param name="mv2"></param>
 //    /// <returns></returns>
 //    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-//    public RGaFloat64Multivector Gp(RGaFloat64Multivector mv2)
+//    public XGaFloat64Multivector Gp(XGaFloat64Multivector mv2)
 //    {
 //        return InternalKVector.Gp(mv2);
 //    }
@@ -731,7 +731,7 @@
 //        var a = InternalKVector;
 //        var b = blade2.InternalKVector;
 
-//        var meetVectorsList = new List<RGaFloat64Vector>(
+//        var meetVectorsList = new List<XGaFloat64Vector>(
 //            Math.Min(a.Grade, b.Grade)
 //        );
 

@@ -1,7 +1,7 @@
-﻿using GeometricAlgebraFulcrumLib.Core.GeometricAlgebra.Restricted.Generic.LinearMaps.Rotors;
-using GeometricAlgebraFulcrumLib.Core.GeometricAlgebra.Restricted.Generic.Multivectors;
-using GeometricAlgebraFulcrumLib.Core.GeometricAlgebra.Restricted.Generic.Multivectors.Composers;
-using GeometricAlgebraFulcrumLib.Core.GeometricAlgebra.Restricted.Generic.Processors;
+﻿using GeometricAlgebraFulcrumLib.Core.GeometricAlgebra.Generic.LinearMaps.Rotors;
+using GeometricAlgebraFulcrumLib.Core.GeometricAlgebra.Generic.Multivectors;
+using GeometricAlgebraFulcrumLib.Core.GeometricAlgebra.Generic.Multivectors.Composers;
+using GeometricAlgebraFulcrumLib.Core.GeometricAlgebra.Generic.Processors;
 using GeometricAlgebraFulcrumLib.Core.LinearAlgebra.Generic.Angles;
 using GeometricAlgebraFulcrumLib.Core.Scalars.Generic;
 
@@ -9,7 +9,7 @@ namespace GeometricAlgebraFulcrumLib.Core.Polynomials.Generic.PhCurves;
 
 public sealed class PhCurve2DDegree5<T>
 {
-    public static PhCurve2DDegree5<T> Create(RGaProcessor<T> processor, RGaVector<T> point0, RGaVector<T> tangent0, RGaVector<T> point1, RGaVector<T> tangent1)
+    public static PhCurve2DDegree5<T> Create(XGaProcessor<T> processor, XGaVector<T> point0, XGaVector<T> tangent0, XGaVector<T> point1, XGaVector<T> tangent1)
     {
         var angle0 = processor.ScalarProcessor.Zero.DegreesToPolarAngle();
 
@@ -24,7 +24,7 @@ public sealed class PhCurve2DDegree5<T>
         );
     }
 
-    public static PhCurve2DDegree5<T> Create(RGaProcessor<T> processor, RGaVector<T> point0, RGaVector<T> tangent0, RGaVector<T> point1, RGaVector<T> tangent1, LinAngle<T> theta1, LinAngle<T> theta2)
+    public static PhCurve2DDegree5<T> Create(XGaProcessor<T> processor, XGaVector<T> point0, XGaVector<T> tangent0, XGaVector<T> point1, XGaVector<T> tangent1, LinAngle<T> theta1, LinAngle<T> theta2)
     {
         return new PhCurve2DDegree5<T>(
             processor,
@@ -33,22 +33,22 @@ public sealed class PhCurve2DDegree5<T>
     }
 
 
-    public RGaVector<T> Point0 { get; }
+    public XGaVector<T> Point0 { get; }
 
-    public RGaVector<T> Point1 { get; }
+    public XGaVector<T> Point1 { get; }
 
-    public RGaVector<T> Tangent0 { get; }
+    public XGaVector<T> Tangent0 { get; }
 
-    public RGaVector<T> Tangent1 { get; }
+    public XGaVector<T> Tangent1 { get; }
 
     public Scalar<T> TangentLength0 { get; }
 
-    public RGaScaledPureRotor<T> ScaledRotor { get; }
+    public XGaScaledPureRotor<T> ScaledRotor { get; }
 
     public PhCurve2DDegree5Canonical<T> CanonicalCurve { get; }
 
 
-    private PhCurve2DDegree5(RGaProcessor<T> processor, RGaVector<T> point0, RGaVector<T> tangent0, RGaVector<T> point1, RGaVector<T> tangent1, LinAngle<T> theta1, LinAngle<T> theta2)
+    private PhCurve2DDegree5(XGaProcessor<T> processor, XGaVector<T> point0, XGaVector<T> tangent0, XGaVector<T> point1, XGaVector<T> tangent1, LinAngle<T> theta1, LinAngle<T> theta2)
     {
         Point0 = point0;
         Point1 = point1;
@@ -68,14 +68,14 @@ public sealed class PhCurve2DDegree5<T>
     }
 
 
-    public RGaVector<T> GetHodographPoint(T parameterValue)
+    public XGaVector<T> GetHodographPoint(T parameterValue)
     {
         return ScaledRotor.OmMap(
             CanonicalCurve.GetHodographPoint(parameterValue)
         );
     }
 
-    public RGaVector<T> GetCurvePoint(T parameterValue)
+    public XGaVector<T> GetCurvePoint(T parameterValue)
     {
         return Point0 + ScaledRotor.OmMap(
             CanonicalCurve.GetCurvePoint(parameterValue)

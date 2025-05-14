@@ -32,8 +32,7 @@ public static class CombinationsUtilsUInt64
 
         if (index >= GetBinomialCoefficient(MaxSetSize, digitsCount))
             throw new InvalidOperationException();
-
-
+        
         if (digitsCount == 0 && index == 0)
             yield break;
 
@@ -94,7 +93,7 @@ public static class CombinationsUtilsUInt64
 
         return combinadicPattern;
     }
-
+    
     public static ulong CombinadicPatternToIndex(this ulong combinadicPattern)
     {
         var index = 0UL;

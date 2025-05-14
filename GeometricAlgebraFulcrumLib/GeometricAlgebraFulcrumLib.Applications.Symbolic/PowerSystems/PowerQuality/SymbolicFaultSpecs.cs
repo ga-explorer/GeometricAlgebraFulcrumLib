@@ -1,6 +1,6 @@
-﻿using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Generic.Multivectors;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Generic.Multivectors.Composers;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Generic.Processors;
+﻿using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Multivectors;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Multivectors.Composers;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Processors;
 using GeometricAlgebraFulcrumLib.Mathematica.Algebra;
 using GeometricAlgebraFulcrumLib.Mathematica.Utilities.Structures;
 using Wolfram.NETLink;
@@ -12,8 +12,8 @@ namespace GeometricAlgebraFulcrumLib.Applications.Symbolic.PowerSystems.PowerQua
         public static ScalarProcessorOfWolframExpr ScalarProcessor { get; }
             = ScalarProcessorOfWolframExpr.Instance;
 
-        public static RGaProcessor<Expr> GeometricProcessor { get; }
-            = ScalarProcessor.CreateEuclideanRGaProcessor();
+        public static XGaProcessor<Expr> GeometricProcessor { get; }
+            = ScalarProcessor.CreateEuclideanXGaProcessor();
 
         public static int VSpaceDimensions
             => 3;
@@ -187,11 +187,11 @@ namespace GeometricAlgebraFulcrumLib.Applications.Symbolic.PowerSystems.PowerQua
         public Expr AssumeExpr { get; }
             = @"And[And[Element[{{A, B, t, \[Omega], \[Phi]}}, Reals], A > 0, B > 0, t >= 0, \[Omega] > 0]".ToExpr();
 
-        public RGaVector<Expr>? Signal { get; private set; }
+        public XGaVector<Expr>? Signal { get; private set; }
 
-        public RGaVector<Expr>? SignalDerivative { get; private set; }
+        public XGaVector<Expr>? SignalDerivative { get; private set; }
 
-        public RGaVector<Expr>? Normal { get; private set; }
+        public XGaVector<Expr>? Normal { get; private set; }
 
 
         private SymbolicFaultSpecs(string faultDescription, string frequency, string maxA, string maxB, string phaseAngleJump)

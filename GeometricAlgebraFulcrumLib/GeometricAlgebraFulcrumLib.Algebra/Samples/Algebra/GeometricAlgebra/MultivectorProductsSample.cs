@@ -1,5 +1,5 @@
-﻿using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Float64.Multivectors.Composers;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Float64.Processors;
+﻿using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivectors.Composers;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Processors;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Generic;
 using GeometricAlgebraFulcrumLib.Algebra.Utilities.Text;
 
@@ -13,8 +13,8 @@ public static class MultivectorProductsSample
 
     // Create a 3-dimensional Euclidean geometric algebra processor based on the
     // selected scalar processor
-    public static RGaFloat64Processor GeometricProcessor { get; }
-        = RGaFloat64Processor.Euclidean;
+    public static XGaFloat64Processor GeometricProcessor { get; }
+        = XGaFloat64Processor.Euclidean;
 
     public static int VSpaceDimensions
         => 3;
@@ -36,7 +36,7 @@ public static class MultivectorProductsSample
 
         // Create a 3-dimensional Euclidean geometric algebra processor based on the
         // selected scalar processor
-        var geometricProcessor = RGaFloat64Processor.Euclidean;
+        var geometricProcessor = XGaFloat64Processor.Euclidean;
 
         var vSpaceDimensions = 3;
 

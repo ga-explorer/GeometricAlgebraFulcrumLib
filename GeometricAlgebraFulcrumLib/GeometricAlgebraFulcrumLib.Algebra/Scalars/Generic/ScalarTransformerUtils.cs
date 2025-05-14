@@ -1,8 +1,6 @@
 ﻿using System.Runtime.CompilerServices;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Extended.Generic.Multivectors;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Extended.Generic.Multivectors.Composers;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Generic.Multivectors;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Generic.Multivectors.Composers;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Multivectors;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Multivectors.Composers;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Matrices;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Generic.Angles;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Generic.Vectors.Space2D;
@@ -147,59 +145,6 @@ public static class ScalarTransformerUtils
         return scalarArray.MapScalars(transformer.MapScalarValue);
     }
 
-    
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static RGaScalar<T> MapScalars<T>(this ScalarTransformer<T> transformer, RGaScalar<T> mv)
-    {
-        var processor = mv.Processor;
-
-        return processor.Scalar(
-            transformer.MapScalarValue(mv.ScalarValue)
-        );
-    }
-    
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static RGaVector<T> MapScalars<T>(this ScalarTransformer<T> transformer, RGaVector<T> mv)
-    {
-        return mv.MapScalars(transformer.MapScalarValue);
-    }
-    
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static RGaBivector<T> MapScalars<T>(this ScalarTransformer<T> transformer, RGaBivector<T> mv)
-    {
-        return mv.MapScalars(transformer.MapScalarValue);
-    }
-    
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static RGaHigherKVector<T> MapScalars<T>(this ScalarTransformer<T> transformer, RGaHigherKVector<T> mv)
-    {
-        return mv.MapScalars(transformer.MapScalarValue);
-    }
-    
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static RGaKVector<T> MapScalars<T>(this ScalarTransformer<T> transformer, RGaKVector<T> mv)
-    {
-        return mv.MapScalars(transformer.MapScalarValue);
-    }
-    
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static RGaMultivector<T> MapScalars<T>(this ScalarTransformer<T> transformer, RGaGradedMultivector<T> mv)
-    {
-        return mv.MapScalars(transformer.MapScalarValue);
-    }
-    
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static RGaUniformMultivector<T> MapScalars<T>(this ScalarTransformer<T> transformer, RGaUniformMultivector<T> mv)
-    {
-        return mv.MapScalars(transformer.MapScalarValue);
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static RGaMultivector<T> MapScalars<T>(this ScalarTransformer<T> transformer, RGaMultivector<T> mv)
-    {
-        return mv.MapScalars(transformer.MapScalarValue);
-    }
-    
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static XGaScalar<T> MapScalars<T>(this ScalarTransformer<T> transformer, XGaScalar<T> mv)
@@ -385,59 +330,6 @@ public static class ScalarTransformerUtils
     public static T[,] MapScalars<T>(this T[,] scalarArray, ScalarTransformer<T> transformer)
     {
         return scalarArray.MapScalars(transformer.MapScalarValue);
-    }
-
-    
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static RGaScalar<T> MapScalars<T>(this RGaScalar<T> mv, ScalarTransformer<T> transformer)
-    {
-        var processor = mv.Processor;
-
-        return processor.Scalar(
-            transformer.MapScalarValue(mv.ScalarValue)
-        );
-    }
-    
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static RGaVector<T> MapScalars<T>(this RGaVector<T> mv, ScalarTransformer<T> transformer)
-    {
-        return mv.MapScalars(transformer.MapScalarValue);
-    }
-    
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static RGaBivector<T> MapScalars<T>(this RGaBivector<T> mv, ScalarTransformer<T> transformer)
-    {
-        return mv.MapScalars(transformer.MapScalarValue);
-    }
-    
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static RGaHigherKVector<T> MapScalars<T>(this RGaHigherKVector<T> mv, ScalarTransformer<T> transformer)
-    {
-        return mv.MapScalars(transformer.MapScalarValue);
-    }
-    
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static RGaKVector<T> MapScalars<T>(this RGaKVector<T> mv, ScalarTransformer<T> transformer)
-    {
-        return mv.MapScalars(transformer.MapScalarValue);
-    }
-    
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static RGaMultivector<T> MapScalars<T>(this RGaGradedMultivector<T> mv, ScalarTransformer<T> transformer)
-    {
-        return mv.MapScalars(transformer.MapScalarValue);
-    }
-    
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static RGaUniformMultivector<T> MapScalars<T>(this RGaUniformMultivector<T> mv, ScalarTransformer<T> transformer)
-    {
-        return mv.MapScalars(transformer.MapScalarValue);
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static RGaMultivector<T> MapScalars<T>(this RGaMultivector<T> mv, ScalarTransformer<T> transformer)
-    {
-        return mv.MapScalars(transformer.MapScalarValue);
     }
 
     

@@ -1,6 +1,5 @@
 ﻿using System.Collections.Immutable;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Restricted.Basis;
 using GeometricAlgebraFulcrumLib.Applications.Symbolic.LibraryGenerators.Matlab.GradedMultivectorsLib.Combinations;
 using GeometricAlgebraFulcrumLib.Applications.Symbolic.LibraryGenerators.Matlab.GradedMultivectorsLib.Types;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.BitManipulation;
@@ -136,7 +135,7 @@ public class LibMultivectorCodeComposer :
             ).Concatenate("; ", "[", "]");
     }
 
-    private string GetUnilinearBasisToBasisMappingCode(string functionName, Func<RGaBasisBlade, IRGaSignedBasisBlade> basisMapping)
+    private string GetUnilinearBasisToBasisMappingCode(string functionName, Func<XGaBasisBlade, IXGaSignedBasisBlade> basisMapping)
     {
         var switch1CodeComposer = new LinearTextComposer();
 
@@ -209,7 +208,7 @@ end
         return methodCode;
     }
     
-    private string GetSingleInputBilinearBasisToScalarMappingCode(string functionName, Func<RGaBasisBlade, RGaBasisBlade, IRGaSignedBasisBlade> basisMapping)
+    private string GetSingleInputBilinearBasisToScalarMappingCode(string functionName, Func<XGaBasisBlade, XGaBasisBlade, IXGaSignedBasisBlade> basisMapping)
     {
         var switch1CodeComposer = new LinearTextComposer();
 
@@ -290,7 +289,7 @@ end
         return methodCode;
     }
 
-    private string GetBilinearBasisToBasisMappingCode(string functionName, Func<RGaBasisBlade, RGaBasisBlade, IRGaSignedBasisBlade> basisMapping, bool constructOutputMultivector = true)
+    private string GetBilinearBasisToBasisMappingCode(string functionName, Func<XGaBasisBlade, XGaBasisBlade, IXGaSignedBasisBlade> basisMapping, bool constructOutputMultivector = true)
     {
         var switch1CodeComposer = new LinearTextComposer();
 

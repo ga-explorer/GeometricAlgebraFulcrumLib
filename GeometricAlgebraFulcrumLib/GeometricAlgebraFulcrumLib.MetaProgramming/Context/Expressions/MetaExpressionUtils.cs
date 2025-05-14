@@ -1,10 +1,9 @@
 ﻿using System.Collections.Immutable;
 using System.Runtime.CompilerServices;
 using GeometricAlgebraFulcrumLib.Utilities.Structures;
-using GeometricAlgebraFulcrumLib.Utilities.Structures.IndexSets;
 using GeometricAlgebraFulcrumLib.Algebra.ComplexAlgebra;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Extended.Generic.Multivectors;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Multivectors;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Generic.Angles;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Generic;
 using GeometricAlgebraFulcrumLib.MetaProgramming.Context.Expressions.Composite;
@@ -258,7 +257,7 @@ public static class MetaExpressionUtils
 
         foreach (var (id, scalar) in idScalarPairs)
         {
-            var index = id.ToUInt64().BasisBladeIdToIndex();
+            var index = id.BasisBladeIdToIndex();
 
             scalar.SetAsOutput(namingFunc(index));
         }
@@ -284,7 +283,7 @@ public static class MetaExpressionUtils
 
         foreach (var (id, scalar) in indexScalarTuples)
         {
-            var (grade, index) = id.ToUInt64().BasisBladeIdToGradeIndex();
+            var (grade, index) = id.BasisBladeIdToGradeIndex();
 
             scalar.SetAsOutput(namingFunc((int)grade, index));
         }
@@ -370,7 +369,7 @@ public static class MetaExpressionUtils
 
         foreach (var (id, scalar) in idScalarPairs)
         {
-            var index = id.ToUInt64().BasisBladeIdToIndex();
+            var index = id.BasisBladeIdToIndex();
 
             scalar.UpdateExternalName(namingFunc(index));
         }
@@ -419,7 +418,7 @@ public static class MetaExpressionUtils
 
         foreach (var (id, scalar) in indexScalarTuples)
         {
-            var (grade, index) = id.ToUInt64().BasisBladeIdToGradeIndex();
+            var (grade, index) = id.BasisBladeIdToGradeIndex();
 
             scalar.UpdateExternalName(namingFunc((int)grade, index));
         }
@@ -471,7 +470,7 @@ public static class MetaExpressionUtils
 
         foreach (var (id, scalar) in indexScalarTuples)
         {
-            var (grade, index) = id.ToUInt64().BasisBladeIdToGradeIndex();
+            var (grade, index) = id.BasisBladeIdToGradeIndex();
 
             scalar.UpdateExternalName(namingFunc(grade, index));
         }
@@ -486,7 +485,7 @@ public static class MetaExpressionUtils
 
         foreach (var (id, scalar) in idScalarPairs)
         {
-            var index = id.ToUInt64().BasisVectorIndexToId();
+            var index = id.BasisVectorIdToIndex();
 
             scalar.UpdateExternalName(namingFunc(index));
         }

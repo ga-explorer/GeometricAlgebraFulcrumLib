@@ -5,6 +5,7 @@ using GeometricAlgebraFulcrumLib.Applications.Symbolic.LibraryGenerators.CSharp.
 using GeometricAlgebraFulcrumLib.Applications.Symbolic.LibraryGenerators.CSharp.GradedMultivectorsLib.Types;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.BitManipulation;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Combinations;
+using GeometricAlgebraFulcrumLib.Utilities.Structures.IndexSets;
 using GeometricAlgebraFulcrumLib.Utilities.Text;
 using GeometricAlgebraFulcrumLib.Utilities.Text.Files;
 using GeometricAlgebraFulcrumLib.Utilities.Text.Text;
@@ -124,7 +125,7 @@ public class LibProjectionCodeComposer :
                 termList.Select(term =>
                     {
                         var lhsCode = tempStorage[
-                            (int)((ulong)term.Key).BasisBladeIdToIndex()
+                            (int)((IndexSet)term.Key).BasisBladeIdToIndex()
                         ];
 
                         var rhsCode = term.Value.GetRhsCode(
