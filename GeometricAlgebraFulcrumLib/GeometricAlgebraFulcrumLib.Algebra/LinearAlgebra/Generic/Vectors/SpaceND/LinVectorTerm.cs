@@ -2,7 +2,7 @@
 using System.Runtime.CompilerServices;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Basis;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Generic;
-using GeometricAlgebraFulcrumLib.Utilities.Structures.Tuples;
+using GeometricAlgebraFulcrumLib.Utilities.Structures.Dictionary;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Generic.Vectors.SpaceND;
 
@@ -153,9 +153,9 @@ public sealed record LinVectorTerm<T> :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public IndexItemRecord<T> GetVectorIndexScalarRecord()
+    public Tuple<int, T> GetVectorIndexScalarRecord()
     {
-        return new IndexItemRecord<T>(
+        return new Tuple<int, T>(
             BasisVector.Index,
             ScalarValue
         );
@@ -331,6 +331,19 @@ public sealed record LinVectorTerm<T> :
         return BasisVector.Index == term2.Index
             ? Scalar * term2.Scalar
             : ScalarProcessor.Zero;
+    }
+
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public LinVector<T> ToVector()
+    {
+        if (IsZero)
+            return new LinVector<T>(ScalarProcessor);
+
+        var basisScalarDictionary =
+            new SingleItemDictionary<int, T>(Index, ScalarValue);
+
+        return new LinVector<T>(ScalarProcessor, basisScalarDictionary);
     }
 
 

@@ -1,7 +1,6 @@
 ﻿using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivectors;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivectors.Composers;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Processors;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Float64.Decoding;
@@ -256,9 +255,9 @@ public sealed record CGaFloat64Blade
 
         var internalKVector = 
             ConformalProcessor
-                .CreateComposer()
+                .CreateKVectorComposer(kVector1.Grade)
                 .SetTerms(termList)
-                .GetKVector(kVector1.Grade);
+                .GetKVector();
 
         return new CGaFloat64Blade(GeometricSpace, internalKVector);
     }

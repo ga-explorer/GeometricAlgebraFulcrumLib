@@ -1,12 +1,11 @@
 ﻿using System.Runtime.CompilerServices;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
-using GeometricAlgebraFulcrumLib.Utilities.Structures.IndexSets;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Multivectors;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Processors;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Generic.LinearMaps;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Generic.Vectors.SpaceND;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Generic;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Multivectors;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Processors;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Multivectors.Composers;
+using GeometricAlgebraFulcrumLib.Utilities.Structures.IndexSets;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.LinearMaps.Outermorphisms;
 
@@ -106,7 +105,7 @@ public sealed class XGaDiagonalOutermorphism<T> :
 
     public XGaVector<T> OmMap(XGaVector<T> vector)
     {
-        var composer = Processor.CreateComposer();
+        var composer = Processor.CreateVectorComposer();
 
         if (DiagonalVector.Count <= vector.Count)
         {
@@ -134,7 +133,7 @@ public sealed class XGaDiagonalOutermorphism<T> :
 
     public XGaBivector<T> OmMap(XGaBivector<T> bivector)
     {
-        var composer = Processor.CreateComposer();
+        var composer = Processor.CreateBivectorComposer();
 
         foreach (var (id, scalar) in bivector)
         {
@@ -146,7 +145,7 @@ public sealed class XGaDiagonalOutermorphism<T> :
             if (bv.IsZero)
                 continue;
 
-            composer.AddMultivector(bv, scalar);
+            composer.AddKVectorScaled(bv, scalar);
         }
 
         return composer.GetBivector();
@@ -154,7 +153,7 @@ public sealed class XGaDiagonalOutermorphism<T> :
 
     public XGaHigherKVector<T> OmMap(XGaHigherKVector<T> kVector)
     {
-        var composer = Processor.CreateComposer();
+        var composer = Processor.CreateKVectorComposer(kVector.Grade);
 
         foreach (var (id, scalar) in kVector)
         {
@@ -163,10 +162,10 @@ public sealed class XGaDiagonalOutermorphism<T> :
             if (mv.IsZero)
                 continue;
 
-            composer.AddMultivector(mv, scalar);
+            composer.AddKVectorScaled(mv, scalar);
         }
 
-        return composer.GetHigherKVector(kVector.Grade);
+        return composer.GetHigherKVector();
     }
         
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -184,7 +183,7 @@ public sealed class XGaDiagonalOutermorphism<T> :
 
     public XGaMultivector<T> OmMap(XGaMultivector<T> multivector)
     {
-        var composer = Processor.CreateComposer();
+        var composer = Processor.CreateMultivectorComposer();
 
         foreach (var (id, scalar) in multivector)
         {
@@ -193,7 +192,7 @@ public sealed class XGaDiagonalOutermorphism<T> :
             if (mv.IsZero)
                 continue;
 
-            composer.AddMultivector(mv, scalar);
+            composer.AddKVectorScaled(mv, scalar);
         }
 
         return composer.GetSimpleMultivector();

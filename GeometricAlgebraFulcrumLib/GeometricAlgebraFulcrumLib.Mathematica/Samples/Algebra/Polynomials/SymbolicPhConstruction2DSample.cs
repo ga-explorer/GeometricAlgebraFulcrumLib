@@ -1,6 +1,4 @@
 ﻿using System;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.LinearMaps.Rotors;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Multivectors.Composers;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Processors;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Generic.Angles;
 using GeometricAlgebraFulcrumLib.Algebra.Polynomials.Generic.Basis;
@@ -98,7 +96,7 @@ public static class SymbolicPhConstruction2DSample
 
         var a1 = (v - v0 - v2 * scaledRotor2.Multivector) / v1;
 
-        var scaledRotor1 = processor.CreateScaledPureRotor3D(
+        var scaledRotor1 = processor.CreatePureScalingRotor3D(
             a1.Scalar(),
             a1[0, 1],
             a1[0, 2],
@@ -197,10 +195,10 @@ public static class SymbolicPhConstruction2DSample
         Console.WriteLine($@"cd1 = ${LaTeXComposer.GetMultivectorText(cd1)}$");
         Console.WriteLine();
 
-        Console.WriteLine($@"ScaledRotorV = ${LaTeXComposer.GetMultivectorText(phCurve.ScaledRotorV)}$");
-        Console.WriteLine($@"ScaledRotor0 = ${LaTeXComposer.GetMultivectorText(phCurve.ScaledRotor0)}$");
-        Console.WriteLine($@"ScaledRotor1 = ${LaTeXComposer.GetMultivectorText(phCurve.ScaledRotor1)}$");
-        Console.WriteLine($@"ScaledRotor2 = ${LaTeXComposer.GetMultivectorText(phCurve.ScaledRotor2)}$");
+        Console.WriteLine($@"ScalingRotorV = ${LaTeXComposer.GetMultivectorText(phCurve.ScalingRotorV)}$");
+        Console.WriteLine($@"ScalingRotor0 = ${LaTeXComposer.GetMultivectorText(phCurve.ScalingRotor0)}$");
+        Console.WriteLine($@"ScalingRotor1 = ${LaTeXComposer.GetMultivectorText(phCurve.ScalingRotor1)}$");
+        Console.WriteLine($@"ScalingRotor2 = ${LaTeXComposer.GetMultivectorText(phCurve.ScalingRotor2)}$");
         Console.WriteLine();
 
         Console.WriteLine($@"VectorU = ${LaTeXComposer.GetMultivectorText(phCurve.VectorU)}$");

@@ -1,9 +1,7 @@
 ﻿using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivectors.Composers;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Processors;
-using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
 using GeometricAlgebraFulcrumLib.Utilities.Structures;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.BitManipulation;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Dictionary;
@@ -40,7 +38,7 @@ public sealed partial class XGaFloat64UniformMultivector :
         => _idScalarDictionary.Count == 0;
 
     public override IEnumerable<XGaBasisBlade> BasisBlades
-        => _idScalarDictionary.Keys.Select(Metric.CreateBasisBlade);
+        => _idScalarDictionary.Keys.Select(Metric.BasisBlade);
 
     public override IEnumerable<IndexSet> Ids
         => _idScalarDictionary.Keys;
@@ -54,7 +52,7 @@ public sealed partial class XGaFloat64UniformMultivector :
     public override IEnumerable<KeyValuePair<XGaBasisBlade, double>> BasisScalarPairs
         => _idScalarDictionary.Select(p =>
             new KeyValuePair<XGaBasisBlade, double>(
-                Metric.CreateBasisBlade(p.Key),
+                Metric.BasisBlade(p.Key),
                 p.Value
             )
         );
@@ -255,12 +253,6 @@ public sealed partial class XGaFloat64UniformMultivector :
     }
 
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public override XGaFloat64Multivector Simplify()
-    {
-        return this;
-    }
-
 
     public override IEnumerable<XGaFloat64KVector> GetKVectorParts()
     {
@@ -351,7 +343,7 @@ public sealed partial class XGaFloat64UniformMultivector :
     public override XGaFloat64Vector GetVectorPart()
     {
         return Processor
-            .CreateComposer()
+            .CreateVectorComposer()
             .SetTerms(_idScalarDictionary.Where(p => p.Key.Count == 1))
             .GetVector();
     }
@@ -360,48 +352,51 @@ public sealed partial class XGaFloat64UniformMultivector :
     public override XGaFloat64Vector GetVectorPart(Func<int, bool> filterFunc)
     {
         return Processor
-            .CreateComposer()
-            .SetTerms(_idScalarDictionary.Where(p => 
+            .CreateVectorComposer()
+            .SetTerms(
+                _idScalarDictionary.Where(p => 
                     p.Key.Grade() == 1 &&
                     filterFunc(p.Key.FirstIndex)
                 )
-            )
-            .GetVector();
+            ).GetVector();
     }
         
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public override XGaFloat64Vector GetVectorPart(Func<double, bool> filterFunc)
     {
         return Processor
-            .CreateComposer()
-            .SetTerms(_idScalarDictionary.Where(p => 
+            .CreateVectorComposer()
+            .SetTerms(
+                _idScalarDictionary.Where(p => 
                     p.Key.Grade() == 1 &&
                     filterFunc(p.Value)
                 )
-            )
-            .GetVector();
+            ).GetVector();
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public override XGaFloat64Vector GetVectorPart(Func<int, double, bool> filterFunc)
     {
         return Processor
-            .CreateComposer()
-            .SetTerms(_idScalarDictionary.Where(p => 
+            .CreateVectorComposer()
+            .SetTerms(
+                _idScalarDictionary.Where(p => 
                     p.Key.Grade() == 1 &&
                     filterFunc(p.Key.FirstIndex, p.Value)
                 )
-            )
-            .GetVector();
+            ).GetVector();
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public override XGaFloat64Bivector GetBivectorPart()
     {
         return Processor
-            .CreateComposer()
-            .SetTerms(_idScalarDictionary.Where(p => p.Key.Count == 2))
-            .GetBivector();
+            .CreateBivectorComposer()
+            .SetTerms(
+                _idScalarDictionary.Where(
+                    p => p.Key.Count == 2
+                )
+            ).GetBivector();
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -410,72 +405,69 @@ public sealed partial class XGaFloat64UniformMultivector :
         if (grade < 3)
             throw new ArgumentOutOfRangeException(nameof(grade));
 
-        return (XGaFloat64HigherKVector)Processor
-            .CreateComposer()
+        return Processor
+            .CreateKVectorComposer(grade)
             .SetTerms(_idScalarDictionary.Where(p => p.Key.Count == grade))
-            .GetKVector(grade);
+            .GetHigherKVector();
     }
         
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public XGaFloat64UniformMultivector GetPart(Func<IndexSet, bool> filterFunc)
+    public override XGaFloat64UniformMultivector GetPart(Func<IndexSet, bool> filterFunc)
     {
         if (IsZero) return this;
 
         var idScalarPairs = 
             IdScalarPairs.Where(
                 p => filterFunc(p.Key)
-            ).ToDictionary();
+            ).ToDictionary(
+                p => p.Key, 
+                p => p.Value
+            );
 
         return Processor
-            .CreateComposer()
+            .CreateMultivectorComposer()
             .SetTerms(idScalarPairs)
             .GetUniformMultivector();
     }
         
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public XGaFloat64UniformMultivector GetPart(Func<double, bool> filterFunc)
+    public override XGaFloat64UniformMultivector GetPart(Func<double, bool> filterFunc)
     {
         if (IsZero) return this;
 
         var idScalarPairs = 
             IdScalarPairs.Where(
                 p => filterFunc(p.Value)
-            ).ToDictionary();
+            ).ToDictionary(
+                p => p.Key,
+                p => p.Value
+            );
 
         return Processor
-            .CreateComposer()
+            .CreateMultivectorComposer()
             .SetTerms(idScalarPairs)
             .GetUniformMultivector();
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public XGaFloat64UniformMultivector GetPart(Func<IndexSet, double, bool> filterFunc)
+    public override XGaFloat64UniformMultivector GetPart(Func<IndexSet, double, bool> filterFunc)
     {
         if (IsZero) return this;
 
         var idScalarPairs = 
             IdScalarPairs.Where(
                 p => filterFunc(p.Key, p.Value)
-            ).ToDictionary();
+            ).ToDictionary(
+                p => p.Key,
+                p => p.Value
+            );
 
         return Processor
-            .CreateComposer()
+            .CreateMultivectorComposer()
             .SetTerms(idScalarPairs)
             .GetUniformMultivector();
     }
         
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public XGaFloat64UniformMultivector RemoveSmallTerms(double zeroEpsilon = Float64Utils.ZeroEpsilon)
-    {
-        if (Count <= 1) return this;
-
-        var scalarThreshold = 
-            zeroEpsilon.Abs() * Scalars.Max(s => s.Abs());
-
-        return GetPart(s => 
-            s <= -scalarThreshold || s >= scalarThreshold
-        );
-    }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public override XGaFloat64KVector GetKVectorPart(int grade)
@@ -489,9 +481,9 @@ public sealed partial class XGaFloat64UniformMultivector :
             1 => GetVectorPart(),
             2 => GetBivectorPart(),
             _ => Processor
-                .CreateComposer()
+                .CreateKVectorComposer(grade)
                 .SetTerms(_idScalarDictionary.Where(p => p.Key.Count == grade))
-                .GetKVector(grade)
+                .GetHigherKVector()
         };
     }
 
@@ -561,13 +553,16 @@ public sealed partial class XGaFloat64UniformMultivector :
         );
     }
         
-
+    
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public override string ToString()
     {
+        if (IsZero) return "0";
+
         return BasisScalarPairs
-            .OrderBy(p => p.Key)
-            .Select(p => $"'{p.Value:G}'{p.Key}")
+            .OrderBy(p => p.Key.Id.Count)
+            .ThenBy(p => p.Key.Id)
+            .Select(p => $"{p.Value:G} {p.Key}")
             .ConcatenateText(" + ");
     }
 }

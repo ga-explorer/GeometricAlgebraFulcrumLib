@@ -37,7 +37,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.TensorAlgebra.Generic.Functions
             if (diagLength >= tensorTempFactorySquareMatrices.Count + 1)
                 lock (tensorTempFactorySquareMatrices)
                     if (diagLength >= tensorTempFactorySquareMatrices.Count + 1)
-                        for (int i = tensorTempFactorySquareMatrices.Count + 1; i <= diagLength; i++)
+                        for (var i = tensorTempFactorySquareMatrices.Count + 1; i <= diagLength; i++)
                             tensorTempFactorySquareMatrices.Add(new Core.GenTensor<T, TWrapper>(i, i));
             return tensorTempFactorySquareMatrices[diagLength - 1];
         }

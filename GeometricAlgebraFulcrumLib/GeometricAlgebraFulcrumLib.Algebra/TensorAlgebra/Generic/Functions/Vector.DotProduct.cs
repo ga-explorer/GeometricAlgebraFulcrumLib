@@ -53,7 +53,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.TensorAlgebra.Generic.Functions
                 throw new InvalidShapeException($"{nameof(a)}'s length should be the same as {nameof(b)}'s");
             #endif
             var res = default(TWrapper).CreateZero();
-            for (int i = 0; i < a.Shape[0]; i++)
+            for (var i = 0; i < a.Shape[0]; i++)
             {
                 res = default(TWrapper).Add(res,
                     default(TWrapper).Multiply(a.GetValueNoCheck(i), b.GetValueNoCheck(i)));

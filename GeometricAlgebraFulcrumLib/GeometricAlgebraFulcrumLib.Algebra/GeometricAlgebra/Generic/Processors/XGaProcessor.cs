@@ -4,7 +4,7 @@ using GeometricAlgebraFulcrumLib.Algebra.Scalars.Generic;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Processors;
 
-public class XGaProcessor<T> :
+public partial class XGaProcessor<T> :
     XGaMetric
 {
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -78,7 +78,7 @@ public class XGaProcessor<T> :
 
     public XGaBivector<T> BivectorZero { get; }
 
-    public XGaGradedMultivector<T> MultivectorZero { get; }
+    public XGaGradedMultivector<T> GradedMultivectorZero { get; }
     
     public XGaUniformMultivector<T> UniformMultivectorZero { get; }
 
@@ -99,7 +99,7 @@ public class XGaProcessor<T> :
         ScalarMinusOne = new XGaScalar<T>(this, scalarProcessor.MinusOneValue);
         VectorZero = new XGaVector<T>(this);
         BivectorZero = new XGaBivector<T>(this);
-        MultivectorZero = new XGaGradedMultivector<T>(this);
+        GradedMultivectorZero = new XGaGradedMultivector<T>(this);
         UniformMultivectorZero = new XGaUniformMultivector<T>(this);
     }
 }

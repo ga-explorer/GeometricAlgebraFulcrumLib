@@ -23,7 +23,7 @@ public interface ILinFloat64PlanarRotation :
 
     Pair<double> BasisESp(int axisIndex);
 
-    Pair<double> BasisESp(ILinSignedBasisVector axis);
+    Pair<double> BasisESp(LinBasisVector axis);
 
     Pair<double> BasisESp(LinFloat64Vector vector);
 

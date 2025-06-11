@@ -1,9 +1,7 @@
 ﻿using System.Diagnostics;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivectors;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivectors.Composers;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Processors;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Multivectors.Composers;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Multivectors.GuidedBinaryTraversal.Products;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Processors;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Generic;
@@ -98,7 +96,7 @@ public static class StorageSamples
             );
 
         sList1.Add(
-            Processor.Multivector(gradeIndexScalarDictionary)
+            Processor.GradedMultivector(gradeIndexScalarDictionary)
         );
 
         //Convert all storages into multivector terms storages
@@ -221,7 +219,7 @@ public static class StorageSamples
             );
 
         var multivector =
-            processor.Multivector(
+            processor.GradedMultivector(
                 gbtStack.GetEGpIdScalarRecords()
             );
 

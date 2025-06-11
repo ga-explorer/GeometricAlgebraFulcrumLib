@@ -845,7 +845,7 @@ public abstract class GrPovRayObject :
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public GrPovRayObject Rotate(LinBasisVector3D srcUnitVector, LinBasisVector3D dstUnitVector)
+    public GrPovRayObject Rotate(LinBasisVector srcUnitVector, LinBasisVector dstUnitVector)
     {
         AffineMap.Rotate(srcUnitVector, dstUnitVector);
 

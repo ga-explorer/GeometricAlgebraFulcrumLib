@@ -97,7 +97,7 @@ public sealed class LinFloat64MatrixReflection :
 
         return basisIndex < _reflectionArray.GetLength(1)
             ? _reflectionArray.ColumnToLinVector(basisIndex)
-            : LinFloat64Vector.VectorZero;
+            : LinFloat64Vector.Zero;
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]

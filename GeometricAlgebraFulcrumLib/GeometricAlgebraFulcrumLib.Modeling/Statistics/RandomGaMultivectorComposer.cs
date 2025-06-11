@@ -235,15 +235,15 @@
 //            return blade;
 //        }
         
-//        public GaScaledPureRotor GetEuclideanScaledPureRotor()
+//        public XGaFloat64PureScalingRotor GetEuclideanPureScalingRotor()
 //        {
 //            var v1 = GetVector();
 //            var v2 = GetVector();
 
-//            return v1.CreateEuclideanScaledPureRotor(v2);
+//            return v1.CreateEuclideanPureScalingRotor(v2);
 //        }
 
-//        public GaScaledPureRotor GetEuclideanPureRotor()
+//        public XGaFloat64PureScalingRotor GetEuclideanPureRotor()
 //        {
 //            var v1 = GetVector().DivideByENorm();
 //            var v2 = GetVector().DivideByENorm();

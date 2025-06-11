@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.LinearMaps.Outermorphisms;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Processors;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Generic.Vectors.SpaceND;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Generic;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Tuples;
@@ -420,6 +422,271 @@ public class LinUnilinearMap<T> :
     {
         return GetSubMap(vSpaceDimensions);
     }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public XGaLinearMapOutermorphism<T> ToOutermorphism(XGaProcessor<T> processor)
+    {
+        return new XGaLinearMapOutermorphism<T>(processor, this);
+    }
+
+
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public IEnumerable<KeyValuePair<int, LinVector<T>>> GetColumns()
+    {
+        return GetMappedBasisVectors();
+    }
+
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public T[,] GetMapArray(int size)
+    {
+        return ToArray(size, size);
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public LinVector<T> GetColumn(int colIndex)
+    {
+        return MapBasisVector(colIndex);
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public LinVector<T> GetScaledColumn(int colIndex, T scalingFactor)
+    {
+        return MapBasisVector(colIndex).Times(scalingFactor);
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public LinVector<T> GetMappedColumn(int colIndex, Func<T, T> scalarMapping)
+    {
+        return MapBasisVector(colIndex).MapScalars(scalarMapping);
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public LinVector<T> GetMappedColumn(int colIndex, Func<int, T, T> indexScalarMapping)
+    {
+        return MapBasisVector(colIndex).MapScalars(indexScalarMapping);
+    }
+
+    
+    public LinVector<T> MapVector(IReadOnlyList<T> vector)
+    {
+        var composer = ScalarProcessor.CreateLinVectorComposer();
+
+        if (Count <= vector.Count)
+        {
+            foreach (var (index, mv) in IndexVectorPairs)
+            {
+                if (index >= vector.Count)
+                    continue;
+
+                composer.AddVector(mv, vector[index]);
+            }
+        }
+        else
+        {
+            for (var index = 0; index < vector.Count; index++)
+            {
+                if (!TryGetVector(index, out var mv))
+                    continue;
+
+                composer.AddVector(mv, vector[index]);
+            }
+        }
+
+        return composer.GetVector();
+    }
+
+    public LinVector<T> MapVector(IReadOnlyDictionary<int, T> vector)
+    {
+        var composer = ScalarProcessor.CreateLinVectorComposer();
+
+        if (Count <= vector.Count)
+        {
+            foreach (var (index, mv) in IndexVectorPairs)
+            {
+                if (!vector.TryGetValue(index, out var scalar))
+                    continue;
+
+                composer.AddVector(mv, scalar);
+            }
+        }
+        else
+        {
+            foreach (var (index, scalar) in vector)
+            {
+                if (!TryGetVector(index, out var mv))
+                    continue;
+
+                composer.AddVector(mv, scalar);
+            }
+        }
+
+        return composer.GetVector();
+    }
+
+
+    public LinVector<T> CombineColumns(IReadOnlyList<T> scalarList, Func<T, LinVector<T>, LinVector<T>> scalingFunc, Func<LinVector<T>, LinVector<T>, LinVector<T>> reducingFunc)
+    {
+        var scalarProcessor = ScalarProcessor;
+        var vector = scalarProcessor.CreateZeroLinVector();
+
+        var count = scalarList.Count;
+        for (var columnIndex = 0; columnIndex < count; columnIndex++)
+        {
+            if (!TryGetColumnVector(columnIndex, out var columnVector) || columnVector is null)
+                continue;
+
+            var scalingFactor = scalarList[columnIndex];
+            var scaledVector = scalingFunc(scalingFactor, columnVector);
+
+            vector = reducingFunc(vector, scaledVector);
+        }
+
+        return vector;
+    }
+
+    public LinVector<T> CombineColumns(LinVector<T> scalingVector, Func<T, LinVector<T>, LinVector<T>> scalingFunc, Func<LinVector<T>, LinVector<T>, LinVector<T>> reducingFunc)
+    {
+        var scalarProcessor = ScalarProcessor;
+        var vector = scalarProcessor.CreateZeroLinVector();
+
+        foreach (var (columnIndex, scalingFactor) in scalingVector)
+        {
+            if (!TryGetColumnVector(columnIndex, out var columnVector) || columnVector is null)
+                continue;
+
+            var scaledVector = scalingFunc(scalingFactor, columnVector);
+
+            vector = reducingFunc(vector, scaledVector);
+        }
+
+        return vector;
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public LinUnilinearMap<T> CombineColumns(LinUnilinearMap<T> matrix2, Func<T, LinVector<T>, LinVector<T>> scalingFunc, Func<LinVector<T>, LinVector<T>, LinVector<T>> reducingFunc)
+    {
+        var vectorsDictionary = new Dictionary<int, LinVector<T>>();
+
+        foreach (var (index, vector) in matrix2.GetColumns())
+            vectorsDictionary.Add(
+                index,
+                CombineColumns(vector, scalingFunc, reducingFunc)
+            );
+
+        return vectorsDictionary.CreateLinUnilinearMap(ScalarProcessor);
+    }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public LinUnilinearMap<T> AbsScalars()
+    {
+        return this.MapScalars(scalar => this.ScalarProcessor.Abs(scalar).ScalarValue);
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public LinUnilinearMap<T> Sqrt()
+    {
+        return this.MapScalars(scalar => this.ScalarProcessor.Sqrt(scalar).ScalarValue);
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public LinUnilinearMap<T> SqrtOfAbs()
+    {
+        return this.MapScalars(scalar => this.ScalarProcessor.SqrtOfAbs(scalar).ScalarValue);
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public LinUnilinearMap<T> Exp()
+    {
+        return this.MapScalars(scalar => this.ScalarProcessor.Exp(scalar).ScalarValue);
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public LinUnilinearMap<T> LogE()
+    {
+        return this.MapScalars(scalar => this.ScalarProcessor.LogE(scalar).ScalarValue);
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public LinUnilinearMap<T> Log2()
+    {
+        return this.MapScalars(scalar => this.ScalarProcessor.Log2(scalar).ScalarValue);
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public LinUnilinearMap<T> Log10()
+    {
+        return this.MapScalars(scalar => this.ScalarProcessor.Log10(scalar).ScalarValue);
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public LinUnilinearMap<T> Log(T scalar)
+    {
+        return this.MapScalars(s => this.ScalarProcessor.Log(s, scalar).ScalarValue);
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public LinUnilinearMap<T> Power(T scalar)
+    {
+        return this.MapScalars(s => this.ScalarProcessor.Power(s, scalar).ScalarValue);
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public LinUnilinearMap<T> Cos()
+    {
+        return this.MapScalars(scalar => this.ScalarProcessor.Cos(scalar).ScalarValue);
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public LinUnilinearMap<T> Sin()
+    {
+        return this.MapScalars(scalar => this.ScalarProcessor.Sin(scalar).ScalarValue);
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public LinUnilinearMap<T> Tan()
+    {
+        return this.MapScalars(scalar => this.ScalarProcessor.Tan(scalar).ScalarValue);
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public LinUnilinearMap<T> ArcCos()
+    {
+        return this.MapScalars(scalar => this.ScalarProcessor.ArcCos(scalar).RadiansValue);
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public LinUnilinearMap<T> ArcSin()
+    {
+        return this.MapScalars(scalar => this.ScalarProcessor.ArcSin(scalar).RadiansValue);
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public LinUnilinearMap<T> ArcTan()
+    {
+        return this.MapScalars(scalar => this.ScalarProcessor.ArcTan(scalar).RadiansValue);
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public LinUnilinearMap<T> Cosh()
+    {
+        return this.MapScalars(scalar => this.ScalarProcessor.Cosh(scalar).ScalarValue);
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public LinUnilinearMap<T> Sinh()
+    {
+        return this.MapScalars(scalar => this.ScalarProcessor.Sinh(scalar).ScalarValue);
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public LinUnilinearMap<T> Tanh()
+    {
+        return this.MapScalars(scalar => this.ScalarProcessor.Tanh(scalar).ScalarValue);
+    }
+
+
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public IEnumerator<KeyValuePair<IndexPair, T>> GetEnumerator()

@@ -1,9 +1,7 @@
 ﻿using System.Runtime.CompilerServices;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivectors;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivectors.Composers;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Processors;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Multivectors.Composers;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Processors;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Generic;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.IndexSets;
@@ -96,7 +94,7 @@ public sealed partial class XGaUniformMultivector<T>
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public XGaUniformMultivector<T> MapScalars(Func<T, T> scalarMapping)
+    public override XGaUniformMultivector<T> MapScalars(Func<T, T> scalarMapping)
     {
         if (IsZero)
             return this;
@@ -110,13 +108,13 @@ public sealed partial class XGaUniformMultivector<T>
             );
 
         return Processor
-            .CreateComposer()
+            .CreateUniformComposer()
             .AddTerms(idScalarPairs)
             .GetUniformMultivector();
     }
         
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public XGaUniformMultivector<T1> MapScalars<T1>(XGaProcessor<T1> processor, Func<T, T1> scalarMapping)
+    public override XGaUniformMultivector<T1> MapScalars<T1>(XGaProcessor<T1> processor, Func<T, T1> scalarMapping)
     {
         if (IsZero)
             return processor.UniformMultivectorZero;
@@ -130,13 +128,13 @@ public sealed partial class XGaUniformMultivector<T>
             );
 
         return processor
-            .CreateComposer()
+            .CreateUniformComposer()
             .AddTerms(idScalarPairs)
             .GetUniformMultivector();
     }
         
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public XGaFloat64UniformMultivector MapScalars(XGaFloat64Processor processor, Func<T, double> scalarMapping)
+    public override XGaFloat64UniformMultivector MapScalars(XGaFloat64Processor processor, Func<T, double> scalarMapping)
     {
         if (IsZero)
             return processor.UniformMultivectorZero;
@@ -150,13 +148,13 @@ public sealed partial class XGaUniformMultivector<T>
             );
 
         return processor
-            .CreateComposer()
+            .CreateMultivectorComposer()
             .AddTerms(idScalarPairs)
             .GetUniformMultivector();
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public XGaUniformMultivector<T> MapScalars(Func<IndexSet, T, T> scalarMapping)
+    public override XGaUniformMultivector<T> MapScalars(Func<IndexSet, T, T> scalarMapping)
     {
         if (IsZero)
             return this;
@@ -170,13 +168,13 @@ public sealed partial class XGaUniformMultivector<T>
             );
 
         return Processor
-            .CreateComposer()
+            .CreateUniformComposer()
             .AddTerms(idScalarPairs)
             .GetUniformMultivector();
     }
         
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public XGaUniformMultivector<T1> MapScalars<T1>(XGaProcessor<T1> processor, Func<IndexSet, T, T1> scalarMapping)
+    public override XGaUniformMultivector<T1> MapScalars<T1>(XGaProcessor<T1> processor, Func<IndexSet, T, T1> scalarMapping)
     {
         if (IsZero)
             return processor.UniformMultivectorZero;
@@ -190,13 +188,13 @@ public sealed partial class XGaUniformMultivector<T>
             );
 
         return processor
-            .CreateComposer()
+            .CreateUniformComposer()
             .AddTerms(idScalarPairs)
             .GetUniformMultivector();
     }
         
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public XGaFloat64UniformMultivector MapScalars(XGaFloat64Processor processor, Func<IndexSet, T, double> scalarMapping)
+    public override XGaFloat64UniformMultivector MapScalars(XGaFloat64Processor processor, Func<IndexSet, T, double> scalarMapping)
     {
         if (IsZero)
             return processor.UniformMultivectorZero;
@@ -210,13 +208,13 @@ public sealed partial class XGaUniformMultivector<T>
             );
 
         return processor
-            .CreateComposer()
+            .CreateMultivectorComposer()
             .AddTerms(idScalarPairs)
             .GetUniformMultivector();
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public XGaUniformMultivector<T> MapBasisBlades(Func<IndexSet, IndexSet> basisMapping)
+    public override XGaUniformMultivector<T> MapBasisBlades(Func<IndexSet, IndexSet> basisMapping)
     {
         if (IsZero)
             return this;
@@ -230,13 +228,13 @@ public sealed partial class XGaUniformMultivector<T>
             );
 
         return Processor
-            .CreateComposer()
+            .CreateUniformComposer()
             .AddTerms(termList)
             .GetUniformMultivector();
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public XGaUniformMultivector<T> MapBasisBlades(Func<IndexSet, T, IndexSet> basisMapping)
+    public override XGaUniformMultivector<T> MapBasisBlades(Func<IndexSet, T, IndexSet> basisMapping)
     {
         if (IsZero)
             return this;
@@ -250,13 +248,13 @@ public sealed partial class XGaUniformMultivector<T>
             );
 
         return Processor
-            .CreateComposer()
+            .CreateUniformComposer()
             .SetTerms(termList)
             .GetUniformMultivector();
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public XGaUniformMultivector<T> MapTerms(Func<IndexSet, T, KeyValuePair<IndexSet, T>> termMapping)
+    public override XGaUniformMultivector<T> MapTerms(Func<IndexSet, T, KeyValuePair<IndexSet, T>> termMapping)
     {
         if (IsZero)
             return this;
@@ -268,56 +266,106 @@ public sealed partial class XGaUniformMultivector<T>
             );
 
         return Processor
-            .CreateComposer()
+            .CreateUniformComposer()
             .SetTerms(termList)
             .GetUniformMultivector();
     }
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public XGaUniformMultivector<T> Negative()
+    public override XGaUniformMultivector<T> Negative()
     {
         return MapScalars(s => ScalarProcessor.Negative(s).ScalarValue);
     }
+    
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public XGaUniformMultivector<T> Times(T scalar)
+    public override XGaUniformMultivector<T> Times(int scalar)
     {
-        return MapScalars(s => ScalarProcessor.Times(s, scalar).ScalarValue);
+        return Times(ScalarProcessor.ScalarFromNumber(scalar).ScalarValue);
+    }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public override XGaUniformMultivector<T> Times(double scalar)
+    {
+        return Times(ScalarProcessor.ScalarFromNumber(scalar).ScalarValue);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public XGaUniformMultivector<T> Divide(T scalar)
+    public override XGaUniformMultivector<T> Times(T scalar)
+    {
+        return MapScalars(s => ScalarProcessor.Times(s, scalar).ScalarValue);
+    }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public override XGaMultivector<T> Times(Scalar<T> scalar)
+    {
+        return Times(scalar.ScalarValue);
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public override XGaMultivector<T> Times(IScalar<T> scalar)
+    {
+        return Times(scalar.ScalarValue);
+    }
+
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public override XGaMultivector<T> Divide(int scalar)
+    {
+        return Divide(ScalarProcessor.ScalarFromNumber(scalar).ScalarValue);
+    }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public override XGaMultivector<T> Divide(double scalar)
+    {
+        return Divide(ScalarProcessor.ScalarFromNumber(scalar).ScalarValue);
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public override XGaUniformMultivector<T> Divide(T scalar)
     {
         return MapScalars(s => ScalarProcessor.Divide(s, scalar).ScalarValue);
     }
         
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public XGaUniformMultivector<T> DivideByENorm()
+    public override XGaMultivector<T> Divide(Scalar<T> scalar)
+    {
+        return Divide(scalar.ScalarValue);
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public override XGaMultivector<T> Divide(IScalar<T> scalar)
+    {
+        return Divide(scalar.ScalarValue);
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public override XGaUniformMultivector<T> DivideByENorm()
     {
         return Divide(ENorm().ScalarValue);
     }
         
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public XGaUniformMultivector<T> DivideByENormSquared()
+    public override XGaUniformMultivector<T> DivideByENormSquared()
     {
         return Divide(ENormSquared().ScalarValue);
     }
         
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public XGaUniformMultivector<T> DivideByNorm()
+    public override XGaUniformMultivector<T> DivideByNorm()
     {
         return Divide(Norm().ScalarValue);
     }
         
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public XGaUniformMultivector<T> DivideByNormSquared()
+    public override XGaUniformMultivector<T> DivideByNormSquared()
     {
         return Divide(NormSquared().ScalarValue);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public XGaUniformMultivector<T> Reverse()
+    public override XGaUniformMultivector<T> Reverse()
     {
         return MapScalars((basis, scalar) =>
             basis.Count.ReverseIsNegativeOfGrade()
@@ -327,7 +375,7 @@ public sealed partial class XGaUniformMultivector<T>
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public XGaUniformMultivector<T> GradeInvolution()
+    public override XGaUniformMultivector<T> GradeInvolution()
     {
         return MapScalars((basis, scalar) =>
             basis.Count.GradeInvolutionIsNegativeOfGrade()
@@ -337,7 +385,7 @@ public sealed partial class XGaUniformMultivector<T>
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public XGaUniformMultivector<T> CliffordConjugate()
+    public override XGaUniformMultivector<T> CliffordConjugate()
     {
         return MapScalars((basis, scalar) =>
             basis.CliffordConjugateSignOfBasisBladeId().IsNegative
@@ -347,7 +395,7 @@ public sealed partial class XGaUniformMultivector<T>
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public XGaUniformMultivector<T> Conjugate()
+    public override XGaUniformMultivector<T> Conjugate()
     {
         return MapScalars((basis, scalar) =>
             ScalarProcessor.Times(Processor.HermitianConjugateSign(basis), scalar).ScalarValue
@@ -355,7 +403,7 @@ public sealed partial class XGaUniformMultivector<T>
     }
         
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public XGaUniformMultivector<T> EInverse()
+    public override XGaUniformMultivector<T> EInverse()
     {
         return Reverse().Divide(
             ENormSquared().ScalarValue
@@ -363,7 +411,7 @@ public sealed partial class XGaUniformMultivector<T>
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public XGaUniformMultivector<T> Inverse()
+    public override XGaUniformMultivector<T> Inverse()
     {
         return Reverse().Divide(
             NormSquared().ScalarValue
@@ -371,7 +419,7 @@ public sealed partial class XGaUniformMultivector<T>
     }
         
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public XGaUniformMultivector<T> PseudoInverse()
+    public override XGaUniformMultivector<T> PseudoInverse()
     {
         var kVectorConjugate = Conjugate();
 
@@ -381,7 +429,7 @@ public sealed partial class XGaUniformMultivector<T>
     }
         
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public XGaMultivector<T> EDual(int vSpaceDimensions)
+    public override XGaMultivector<T> EDual(int vSpaceDimensions)
     {
         var blade =
             Processor.PseudoScalarEInverse(vSpaceDimensions);
@@ -390,13 +438,13 @@ public sealed partial class XGaUniformMultivector<T>
     }
         
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public XGaMultivector<T> EDual(XGaKVector<T> blade)
+    public override XGaMultivector<T> EDual(XGaKVector<T> blade)
     {
         return ELcp(blade.EInverse());
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public XGaMultivector<T> Dual(int vSpaceDimensions)
+    public override XGaMultivector<T> Dual(int vSpaceDimensions)
     {
         var blade =
             Processor.PseudoScalarInverse(vSpaceDimensions);
@@ -405,13 +453,13 @@ public sealed partial class XGaUniformMultivector<T>
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public XGaMultivector<T> Dual(XGaKVector<T> blade)
+    public override XGaMultivector<T> Dual(XGaKVector<T> blade)
     {
         return Lcp(blade.Inverse());
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public XGaMultivector<T> EUnDual(int vSpaceDimensions)
+    public override XGaMultivector<T> EUnDual(int vSpaceDimensions)
     {
         var blade =
             Processor.PseudoScalarReverse(vSpaceDimensions);
@@ -420,13 +468,13 @@ public sealed partial class XGaUniformMultivector<T>
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public XGaMultivector<T> EUnDual(XGaKVector<T> blade)
+    public override XGaMultivector<T> EUnDual(XGaKVector<T> blade)
     {
         return ELcp(blade.Reverse());
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public XGaMultivector<T> UnDual(int vSpaceDimensions)
+    public override XGaMultivector<T> UnDual(int vSpaceDimensions)
     {
         var blade =
             Processor.PseudoScalarReverse(vSpaceDimensions);
@@ -436,7 +484,7 @@ public sealed partial class XGaUniformMultivector<T>
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public XGaMultivector<T> UnDual(XGaKVector<T> blade)
+    public override XGaMultivector<T> UnDual(XGaKVector<T> blade)
     {
         //TODO: Should this be: 'return mv.Lcp(blade.Conjugate());'?
         return Lcp(blade.Reverse());
@@ -447,7 +495,7 @@ public sealed partial class XGaUniformMultivector<T>
     public override XGaMultivector<T> Add(XGaMultivector<T> mv2)
     {
         return Processor
-            .CreateComposer()
+            .CreateUniformComposer()
             .SetMultivector(this)
             .AddMultivector(mv2)
             .GetUniformMultivector();
@@ -457,242 +505,242 @@ public sealed partial class XGaUniformMultivector<T>
     public override XGaMultivector<T> Subtract(XGaMultivector<T> mv2)
     {
         return Processor
-            .CreateComposer()
+            .CreateUniformComposer()
             .SetMultivector(this)
             .SubtractMultivector(mv2)
             .GetUniformMultivector();
     }
 
         
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public override XGaMultivector<T> Op(XGaMultivector<T> mv2)
-    {
-        if (IsZero || mv2.IsZero)
-            return Processor.UniformMultivectorZero;
+    //[MethodImpl(MethodImplOptions.AggressiveInlining)]
+    //public override XGaMultivector<T> Op(XGaMultivector<T> mv2)
+    //{
+    //    if (IsZero || mv2.IsZero)
+    //        return Processor.UniformMultivectorZero;
 
-        return Processor
-            .CreateComposer()
-            .AddOpTerms(this, mv2)
-            .GetUniformMultivector();
-    }
+    //    return Processor
+    //        .CreateUniformComposer()
+    //        .AddOpTerms(this, mv2)
+    //        .GetUniformMultivector();
+    //}
         
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public override XGaMultivector<T> EGp(XGaMultivector<T> mv2)
-    {
-        if (IsZero || mv2.IsZero)
-            return Processor.UniformMultivectorZero;
+    //[MethodImpl(MethodImplOptions.AggressiveInlining)]
+    //public override XGaMultivector<T> EGp(XGaMultivector<T> mv2)
+    //{
+    //    if (IsZero || mv2.IsZero)
+    //        return Processor.UniformMultivectorZero;
 
-        return Processor
-            .CreateComposer()
-            .AddEGpTerms(this, mv2)
-            .GetUniformMultivector();
-    }
+    //    return Processor
+    //        .CreateUniformComposer()
+    //        .AddEGpTerms(this, mv2)
+    //        .GetUniformMultivector();
+    //}
         
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public override XGaMultivector<T> Gp(XGaMultivector<T> mv2)
-    {
-        if (IsZero || mv2.IsZero)
-            return Processor.UniformMultivectorZero;
+    //[MethodImpl(MethodImplOptions.AggressiveInlining)]
+    //public override XGaMultivector<T> Gp(XGaMultivector<T> mv2)
+    //{
+    //    if (IsZero || mv2.IsZero)
+    //        return Processor.UniformMultivectorZero;
 
-        return Processor
-            .CreateComposer()
-            .AddGpTerms(this, mv2)
-            .GetUniformMultivector();
-    }
-        
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public override XGaMultivector<T> ELcp(XGaMultivector<T> mv2)
-    {
-        if (IsZero || mv2.IsZero)
-            return Processor.UniformMultivectorZero;
-
-        return Processor
-            .CreateComposer()
-            .AddELcpTerms(this, mv2)
-            .GetUniformMultivector();
-    }
-        
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public override XGaMultivector<T> Lcp(XGaMultivector<T> mv2)
-    {
-        if (IsZero || mv2.IsZero)
-            return Processor.UniformMultivectorZero;
-
-        return Processor
-            .CreateComposer()
-            .AddLcpTerms(this, mv2)
-            .GetUniformMultivector();
-    }
+    //    return Processor
+    //        .CreateUniformComposer()
+    //        .AddGpTerms(this, mv2)
+    //        .GetUniformMultivector();
+    //}
         
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public override XGaMultivector<T> ERcp(XGaMultivector<T> mv2)
-    {
-        if (IsZero || mv2.IsZero)
-            return Processor.UniformMultivectorZero;
+    //[MethodImpl(MethodImplOptions.AggressiveInlining)]
+    //public override XGaMultivector<T> ELcp(XGaMultivector<T> mv2)
+    //{
+    //    if (IsZero || mv2.IsZero)
+    //        return Processor.UniformMultivectorZero;
 
-        return Processor
-            .CreateComposer()
-            .AddERcpTerms(this, mv2)
-            .GetUniformMultivector();
-    }
+    //    return Processor
+    //        .CreateUniformComposer()
+    //        .AddELcpTerms(this, mv2)
+    //        .GetUniformMultivector();
+    //}
         
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public override XGaMultivector<T> Rcp(XGaMultivector<T> mv2)
-    {
-        if (IsZero || mv2.IsZero)
-            return Processor.UniformMultivectorZero;
+    //[MethodImpl(MethodImplOptions.AggressiveInlining)]
+    //public override XGaMultivector<T> Lcp(XGaMultivector<T> mv2)
+    //{
+    //    if (IsZero || mv2.IsZero)
+    //        return Processor.UniformMultivectorZero;
 
-        return Processor
-            .CreateComposer()
-            .AddRcpTerms(this, mv2)
-            .GetUniformMultivector();
-    }
-        
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public override XGaScalar<T> ESp(XGaScalar<T> mv2)
-    {
-        if (IsZero || mv2.IsZero)
-            return Processor.ScalarZero;
-
-        return ScalarProcessor
-            .CreateScalarComposer()
-            .AddESpTerms(this, mv2)
-            .GetXGaScalar(Processor);
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public override XGaScalar<T> ESp(XGaVector<T> mv2)
-    {
-        if (IsZero || mv2.IsZero)
-            return Processor.ScalarZero;
-
-        return ScalarProcessor
-            .CreateScalarComposer()
-            .AddESpTerms(this, mv2)
-            .GetXGaScalar(Processor);
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public override XGaScalar<T> ESp(XGaBivector<T> mv2)
-    {
-        if (IsZero || mv2.IsZero)
-            return Processor.ScalarZero;
-
-        return ScalarProcessor
-            .CreateScalarComposer()
-            .AddESpTerms(this, mv2)
-            .GetXGaScalar(Processor);
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public override XGaScalar<T> ESp(XGaHigherKVector<T> mv2)
-    {
-        if (IsZero || mv2.IsZero)
-            return Processor.ScalarZero;
-
-        return ScalarProcessor
-            .CreateScalarComposer()
-            .AddESpTerms(this, mv2)
-            .GetXGaScalar(Processor);
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public override XGaScalar<T> ESp(XGaGradedMultivector<T> mv2)
-    {
-        if (IsZero || mv2.IsZero)
-            return Processor.ScalarZero;
-
-        return ScalarProcessor
-            .CreateScalarComposer()
-            .AddESpTerms(this, mv2)
-            .GetXGaScalar(Processor);
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public override XGaScalar<T> ESp(XGaUniformMultivector<T> mv2)
-    {
-        if (IsZero || mv2.IsZero)
-            return Processor.ScalarZero;
-
-        return ScalarProcessor
-            .CreateScalarComposer()
-            .AddESpTerms(this, mv2)
-            .GetXGaScalar(Processor);
-    }
+    //    return Processor
+    //        .CreateUniformComposer()
+    //        .AddLcpTerms(this, mv2)
+    //        .GetUniformMultivector();
+    //}
         
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public override XGaScalar<T> Sp(XGaScalar<T> mv2)
-    {
-        if (IsZero || mv2.IsZero)
-            return Processor.ScalarZero;
+    //[MethodImpl(MethodImplOptions.AggressiveInlining)]
+    //public override XGaMultivector<T> ERcp(XGaMultivector<T> mv2)
+    //{
+    //    if (IsZero || mv2.IsZero)
+    //        return Processor.UniformMultivectorZero;
 
-        return ScalarProcessor
-            .CreateScalarComposer()
-            .AddSpTerms(this, mv2)
-            .GetXGaScalar(Processor);
-    }
+    //    return Processor
+    //        .CreateUniformComposer()
+    //        .AddERcpTerms(this, mv2)
+    //        .GetUniformMultivector();
+    //}
+        
+    //[MethodImpl(MethodImplOptions.AggressiveInlining)]
+    //public override XGaMultivector<T> Rcp(XGaMultivector<T> mv2)
+    //{
+    //    if (IsZero || mv2.IsZero)
+    //        return Processor.UniformMultivectorZero;
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public override XGaScalar<T> Sp(XGaVector<T> mv2)
-    {
-        if (IsZero || mv2.IsZero)
-            return Processor.ScalarZero;
+    //    return Processor
+    //        .CreateUniformComposer()
+    //        .AddRcpTerms(this, mv2)
+    //        .GetUniformMultivector();
+    //}
+        
 
-        return ScalarProcessor
-            .CreateScalarComposer()
-            .AddSpTerms(this, mv2)
-            .GetXGaScalar(Processor);
-    }
+    //[MethodImpl(MethodImplOptions.AggressiveInlining)]
+    //public override XGaScalar<T> ESp(XGaScalar<T> mv2)
+    //{
+    //    if (IsZero || mv2.IsZero)
+    //        return Processor.ScalarZero;
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public override XGaScalar<T> Sp(XGaBivector<T> mv2)
-    {
-        if (IsZero || mv2.IsZero)
-            return Processor.ScalarZero;
+    //    return ScalarProcessor
+    //        .CreateScalarComposer()
+    //        .AddESpTerms(this, mv2)
+    //        .GetXGaScalar(Processor);
+    //}
 
-        return ScalarProcessor
-            .CreateScalarComposer()
-            .AddSpTerms(this, mv2)
-            .GetXGaScalar(Processor);
-    }
+    //[MethodImpl(MethodImplOptions.AggressiveInlining)]
+    //public override XGaScalar<T> ESp(XGaVector<T> mv2)
+    //{
+    //    if (IsZero || mv2.IsZero)
+    //        return Processor.ScalarZero;
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public override XGaScalar<T> Sp(XGaHigherKVector<T> mv2)
-    {
-        if (IsZero || mv2.IsZero)
-            return Processor.ScalarZero;
+    //    return ScalarProcessor
+    //        .CreateScalarComposer()
+    //        .AddESpTerms(this, mv2)
+    //        .GetXGaScalar(Processor);
+    //}
 
-        return ScalarProcessor
-            .CreateScalarComposer()
-            .AddSpTerms(this, mv2)
-            .GetXGaScalar(Processor);
-    }
+    //[MethodImpl(MethodImplOptions.AggressiveInlining)]
+    //public override XGaScalar<T> ESp(XGaBivector<T> mv2)
+    //{
+    //    if (IsZero || mv2.IsZero)
+    //        return Processor.ScalarZero;
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public override XGaScalar<T> Sp(XGaGradedMultivector<T> mv2)
-    {
-        if (IsZero || mv2.IsZero)
-            return Processor.ScalarZero;
+    //    return ScalarProcessor
+    //        .CreateScalarComposer()
+    //        .AddESpTerms(this, mv2)
+    //        .GetXGaScalar(Processor);
+    //}
 
-        return ScalarProcessor
-            .CreateScalarComposer()
-            .AddSpTerms(this, mv2)
-            .GetXGaScalar(Processor);
-    }
+    //[MethodImpl(MethodImplOptions.AggressiveInlining)]
+    //public override XGaScalar<T> ESp(XGaHigherKVector<T> mv2)
+    //{
+    //    if (IsZero || mv2.IsZero)
+    //        return Processor.ScalarZero;
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public override XGaScalar<T> Sp(XGaUniformMultivector<T> mv2)
-    {
-        if (IsZero || mv2.IsZero)
-            return Processor.ScalarZero;
+    //    return ScalarProcessor
+    //        .CreateScalarComposer()
+    //        .AddESpTerms(this, mv2)
+    //        .GetXGaScalar(Processor);
+    //}
 
-        return ScalarProcessor
-            .CreateScalarComposer()
-            .AddSpTerms(this, mv2)
-            .GetXGaScalar(Processor);
-    }
+    //[MethodImpl(MethodImplOptions.AggressiveInlining)]
+    //public override XGaScalar<T> ESp(XGaGradedMultivector<T> mv2)
+    //{
+    //    if (IsZero || mv2.IsZero)
+    //        return Processor.ScalarZero;
+
+    //    return ScalarProcessor
+    //        .CreateScalarComposer()
+    //        .AddESpTerms(this, mv2)
+    //        .GetXGaScalar(Processor);
+    //}
+
+    //[MethodImpl(MethodImplOptions.AggressiveInlining)]
+    //public override XGaScalar<T> ESp(XGaUniformMultivector<T> mv2)
+    //{
+    //    if (IsZero || mv2.IsZero)
+    //        return Processor.ScalarZero;
+
+    //    return ScalarProcessor
+    //        .CreateScalarComposer()
+    //        .AddESpTerms(this, mv2)
+    //        .GetXGaScalar(Processor);
+    //}
+        
+
+    //[MethodImpl(MethodImplOptions.AggressiveInlining)]
+    //public override XGaScalar<T> Sp(XGaScalar<T> mv2)
+    //{
+    //    if (IsZero || mv2.IsZero)
+    //        return Processor.ScalarZero;
+
+    //    return ScalarProcessor
+    //        .CreateScalarComposer()
+    //        .AddSpTerms(this, mv2)
+    //        .GetXGaScalar(Processor);
+    //}
+
+    //[MethodImpl(MethodImplOptions.AggressiveInlining)]
+    //public override XGaScalar<T> Sp(XGaVector<T> mv2)
+    //{
+    //    if (IsZero || mv2.IsZero)
+    //        return Processor.ScalarZero;
+
+    //    return ScalarProcessor
+    //        .CreateScalarComposer()
+    //        .AddSpTerms(this, mv2)
+    //        .GetXGaScalar(Processor);
+    //}
+
+    //[MethodImpl(MethodImplOptions.AggressiveInlining)]
+    //public override XGaScalar<T> Sp(XGaBivector<T> mv2)
+    //{
+    //    if (IsZero || mv2.IsZero)
+    //        return Processor.ScalarZero;
+
+    //    return ScalarProcessor
+    //        .CreateScalarComposer()
+    //        .AddSpTerms(this, mv2)
+    //        .GetXGaScalar(Processor);
+    //}
+
+    //[MethodImpl(MethodImplOptions.AggressiveInlining)]
+    //public override XGaScalar<T> Sp(XGaHigherKVector<T> mv2)
+    //{
+    //    if (IsZero || mv2.IsZero)
+    //        return Processor.ScalarZero;
+
+    //    return ScalarProcessor
+    //        .CreateScalarComposer()
+    //        .AddSpTerms(this, mv2)
+    //        .GetXGaScalar(Processor);
+    //}
+
+    //[MethodImpl(MethodImplOptions.AggressiveInlining)]
+    //public override XGaScalar<T> Sp(XGaGradedMultivector<T> mv2)
+    //{
+    //    if (IsZero || mv2.IsZero)
+    //        return Processor.ScalarZero;
+
+    //    return ScalarProcessor
+    //        .CreateScalarComposer()
+    //        .AddSpTerms(this, mv2)
+    //        .GetXGaScalar(Processor);
+    //}
+
+    //[MethodImpl(MethodImplOptions.AggressiveInlining)]
+    //public override XGaScalar<T> Sp(XGaUniformMultivector<T> mv2)
+    //{
+    //    if (IsZero || mv2.IsZero)
+    //        return Processor.ScalarZero;
+
+    //    return ScalarProcessor
+    //        .CreateScalarComposer()
+    //        .AddSpTerms(this, mv2)
+    //        .GetXGaScalar(Processor);
+    //}
 }

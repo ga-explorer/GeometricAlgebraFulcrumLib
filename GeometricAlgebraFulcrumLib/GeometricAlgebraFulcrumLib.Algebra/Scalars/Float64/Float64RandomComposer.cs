@@ -52,12 +52,12 @@ public class Float64RandomComposer
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public double GetScalarValue()
     {
-        return RandomGenerator.GetNumber(MinScalarValue, MaxScalarValue);
+        return RandomGenerator.GetFloat64(MinScalarValue, MaxScalarValue);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public double GetScalarValue(double minValue, double maxValue)
     {
-        return RandomGenerator.GetNumber(minValue, maxValue);
+        return RandomGenerator.GetFloat64(minValue, maxValue);
     }
 }

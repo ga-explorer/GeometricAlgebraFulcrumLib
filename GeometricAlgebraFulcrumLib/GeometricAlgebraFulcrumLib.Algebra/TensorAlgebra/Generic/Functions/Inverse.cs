@@ -41,9 +41,9 @@ namespace GeometricAlgebraFulcrumLib.Algebra.TensorAlgebra.Generic.Functions
             int colId, int diagLength)
         {
             int i = 0, j = 0;
-            for (int row = 0; row < diagLength; row++)
+            for (var row = 0; row < diagLength; row++)
             {
-                for (int col = 0; col < diagLength; col++)
+                for (var col = 0; col < diagLength; col++)
                 {
                     if (row != rowId && col != colId)
                     {
@@ -82,8 +82,8 @@ namespace GeometricAlgebraFulcrumLib.Algebra.TensorAlgebra.Generic.Functions
 
             var toNegate = false;
 
-            for (int x = 0; x < diagLength; x++)
-            for (int y = 0; y < diagLength; y++)
+            for (var x = 0; x < diagLength; x++)
+            for (var y = 0; y < diagLength; y++)
             {
                 GetCofactorMatrix(t, temp, x, y, diagLength);                
 
@@ -124,8 +124,8 @@ namespace GeometricAlgebraFulcrumLib.Algebra.TensorAlgebra.Generic.Functions
             #endif
 
             var adj = Adjoint(t);
-            for (int x = 0; x < diagLength; x++)
-            for (int y = 0; y < diagLength; y++)
+            for (var x = 0; x < diagLength; x++)
+            for (var y = 0; y < diagLength; y++)
                 t.SetValueNoCheck(
                     default(TWrapper).Divide(
                         adj.GetValueNoCheck(x, y),

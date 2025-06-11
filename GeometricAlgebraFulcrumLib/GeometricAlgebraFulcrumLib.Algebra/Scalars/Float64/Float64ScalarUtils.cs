@@ -415,25 +415,19 @@ public static class Float64ScalarUtils
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Float64Scalar Sec(this IFloat64Scalar scalar)
     {
-        return 1 / (
-            Math.Cos(scalar.ScalarValue)
-        );
+        return 1 / Math.Cos(scalar.ScalarValue);
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Float64Scalar Csc(this IFloat64Scalar scalar)
     {
-        return 1 / (
-            Math.Sin(scalar.ScalarValue)
-        );
+        return 1 / Math.Sin(scalar.ScalarValue);
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Float64Scalar Cot(this IFloat64Scalar scalar)
     {
-        return 1 / (
-            Math.Tan(scalar.ScalarValue)
-        );
+        return 1 / Math.Tan(scalar.ScalarValue);
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]

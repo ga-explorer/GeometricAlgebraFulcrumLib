@@ -1,8 +1,5 @@
 ﻿using System;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.LinearMaps;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.LinearMaps.Rotors;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Multivectors;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Multivectors.Composers;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Processors;
 using GeometricAlgebraFulcrumLib.Mathematica.Algebra;
 using GeometricAlgebraFulcrumLib.Mathematica.Utilities.Structures;
@@ -11,7 +8,7 @@ using Wolfram.NETLink;
 
 namespace GeometricAlgebraFulcrumLib.Mathematica.Samples.Algebra.GeometricAlgebra;
 
-public static class SymbolicScaledRotors3DSample
+public static class SymbolicScalingRotors3DSample
 {
     // This is a pre-defined scalar processor for symbolic
     // Wolfram Mathematica scalars using Expr objects
@@ -85,13 +82,13 @@ public static class SymbolicScaledRotors3DSample
             "Subscript[u,3]".ToExpr()
         );
 
-        var r1p = u.CreateScaledPureRotor(e1p);
+        var r1p = u.CreatePureScalingRotor(e1p);
         var r1pArray = r1p.GetMultivectorMapArray(3, 3);
 
-        var r2p = u.CreateScaledPureRotor(e2p);
+        var r2p = u.CreatePureScalingRotor(e2p);
         var r2pArray = r2p.GetMultivectorMapArray(3, 3);
 
-        var r3p = u.CreateScaledPureRotor(e3p);
+        var r3p = u.CreatePureScalingRotor(e3p);
         var r3pArray = r3p.GetMultivectorMapArray(3, 3);
 
         Console.WriteLine($@"$R_{{\boldsymbol{{u}}\boldsymbol{{e}}_{{1}}}} = {LaTeXComposer.GetMultivectorText(r1p)}$");
@@ -114,14 +111,14 @@ public static class SymbolicScaledRotors3DSample
         var e2 = GeometricProcessor.VectorTerm(1);
         var e3 = GeometricProcessor.VectorTerm(2);
 
-        var a = GeometricProcessor.CreateScaledPureRotor3D(
+        var a = GeometricProcessor.CreatePureScalingRotor3D(
             "Subscript[a, 0]".ToExpr(),
             "Subscript[a, 12]".ToExpr(),
             "Subscript[a, 13]".ToExpr(),
             "Subscript[a, 23]".ToExpr()
         );
 
-        var b = GeometricProcessor.CreateScaledPureRotor3D(
+        var b = GeometricProcessor.CreatePureScalingRotor3D(
             "Subscript[b, 0]".ToExpr(),
             "Subscript[b, 12]".ToExpr(),
             "Subscript[b, 13]".ToExpr(),

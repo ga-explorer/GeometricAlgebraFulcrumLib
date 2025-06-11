@@ -1,10 +1,7 @@
 ﻿using System;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.LinearMaps.Outermorphisms;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.LinearMaps.Rotors;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Multivectors;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Multivectors.Composers;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Processors;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Subspaces;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Basis;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Generic.Angles;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Generic;
@@ -432,7 +429,7 @@ public static class SymbolicRotorsSample
                 .OmMap(rotorBlade0)
                 .FullSimplifyScalars(assumeExpr);
 
-        var rotor = rotorBlade.CreatePureRotor(rotorAngle).Multivector.FullSimplifyScalars(assumeExpr).CreatePureRotor();
+        var rotor = rotorBlade.CreatePureRotor(rotorAngle).Multivector.FullSimplifyScalars(assumeExpr).ToPureRotor();
 
         var rotorMatrix = rotor.GetVectorMapPart(3).ToArray(3).FullSimplifyScalars(assumeExpr);
         
@@ -543,11 +540,11 @@ public static class SymbolicRotorsSample
         var rotorAngle =
             (1 + 2 * (v1v2Dot - 1) / (2 - Mfs.Power[Mfs.Sin[angleTheta.RadiansValue], 2] * (v1v2Dot + 1))).ArcCos().MapAngleRadians(scalarMap);
 
-        var rotor0 = rotorBlade0.CreatePureRotor(rotorAngle).Multivector.MapScalars(scalarMap).CreatePureRotor();
+        var rotor0 = rotorBlade0.CreatePureRotor(rotorAngle).Multivector.MapScalars(scalarMap).ToPureRotor();
 
         //var rotor0Matrix = rotor0.GetVectorMapPart(3).ToArray(3).MapScalars(scalarMap);
 
-        var rotor = rotorS.OmMap(rotor0.Multivector).MapScalars(scalarMap).CreatePureRotor();
+        var rotor = rotorS.OmMap(rotor0.Multivector).MapScalars(scalarMap).ToPureRotor();
 
         //// The actual plane of rotation is made by rotating the plane of v1,v2
         //// by angle theta in the plane orthogonal to v2 - v1
@@ -708,10 +705,10 @@ public static class SymbolicRotorsSample
             GeometricProcessor.Vector("Subscript[v,1]", "Subscript[v,2]", "Subscript[v,3]");
         //GeometricProcessor.Vector(2, 1, -1);
 
-        var scaledRotor = u.CreateScaledPureRotor(v);
+        var scaledRotor = u.CreatePureScalingRotor(v);
 
         var scaledRotorInv =
-            scaledRotor.GetPureScaledRotorInverse();
+            scaledRotor.GetPureScalingRotorInverse();
 
         var v1 =
             scaledRotor.OmMap(u).FullSimplifyScalars();
@@ -732,7 +729,7 @@ public static class SymbolicRotorsSample
     /// </summary>
     public static void Example10()
     {
-        var axis = LinSignedBasisVector.Nz;
+        var axis = LinBasisVector.Nz;
         var u =
             GeometricProcessor.Vector(
                 "Subscript[u,1]",
@@ -740,8 +737,8 @@ public static class SymbolicRotorsSample
                 "Subscript[u,3]"
             );
 
-        var rotor1 = u.CreateScaledPureRotorFromAxis(axis, false);
-        var rotor2 = u.CreateScaledPureRotorToAxis(axis, false);
+        var rotor1 = u.CreatePureScalingRotorFromAxis(axis, false);
+        var rotor2 = u.CreatePureScalingRotorToAxis(axis, false);
 
         var v1 = rotor1.OmMap(axis).FullSimplifyScalars();
         var v2 = rotor2.OmMap(u).FullSimplifyScalars();

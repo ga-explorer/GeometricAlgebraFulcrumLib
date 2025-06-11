@@ -97,25 +97,19 @@ public sealed record LinQuaternion<T> :
     {
         var (halfAngleCos, halfAngleSin) = angle.HalfPolarAngle();
 
-        var scalar =
-            halfAngleCos;
-
         var bivectorPart =
             bivector * (halfAngleSin / bivector.Norm());
 
         return new LinQuaternion<T>(
             bivectorPart,
-            scalar
+            halfAngleCos
         );
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinQuaternion<T> CreateFromNormalAndAngle(LinBasisVector3D axis, LinPolarAngle<T> angle)
+    public static LinQuaternion<T> CreateFromNormalAndAngle(LinBasisVector axis, LinPolarAngle<T> angle)
     {
         var (halfAngleCos, halfAngleSin) = angle.HalfPolarAngle();
-
-        var scalar =
-            halfAngleCos;
 
         var vector =
             axis.ToVector3D(-halfAngleSin);
@@ -124,7 +118,7 @@ public sealed record LinQuaternion<T> :
             vector.X,
             vector.Y,
             vector.Z,
-            scalar
+            halfAngleCos
         );
     }
 
@@ -133,9 +127,6 @@ public sealed record LinQuaternion<T> :
     {
         var (halfAngleCos, halfAngleSin) = angle.HalfPolarAngle();
 
-        var scalar =
-            halfAngleCos;
-
         var vector =
             axis.SetLength(-halfAngleSin);
 
@@ -143,7 +134,7 @@ public sealed record LinQuaternion<T> :
             vector.X,
             vector.Y,
             vector.Z,
-            scalar
+            halfAngleCos
         );
     }
 
@@ -840,10 +831,9 @@ public sealed record LinQuaternion<T> :
             ? Scalar
             : Scalar / Norm();
 
-        var cosHalfAngle = scalar;
-        var sinHalfAngle = (1d - cosHalfAngle.Square()).Sqrt();
+        var sinHalfAngle = (1d - scalar.Square()).Sqrt();
 
-        return new Pair<Scalar<T>>(cosHalfAngle, sinHalfAngle);
+        return new Pair<Scalar<T>>(scalar, sinHalfAngle);
     }
 
     public Tuple<LinAngle<T>, LinBivector3D<T>> GetAngleAndBivector(bool assumeNormalized = false)
@@ -959,7 +949,7 @@ public sealed record LinQuaternion<T> :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public LinVector3D<T> RotateVector(LinBasisVector3D axis)
+    public LinVector3D<T> RotateVector(LinBasisVector axis)
     {
         return ToSquareMatrix3() * axis.ToVector3D(ScalarProcessor);
     }
@@ -972,7 +962,7 @@ public sealed record LinQuaternion<T> :
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public Pair<LinVector3D<T>> RotateVectors(LinBasisVector3D axis1, LinBasisVector3D axis2)
+    public Pair<LinVector3D<T>> RotateVectors(LinBasisVector axis1, LinBasisVector axis2)
     {
         var rotationMatrix =
             ToSquareMatrix3();

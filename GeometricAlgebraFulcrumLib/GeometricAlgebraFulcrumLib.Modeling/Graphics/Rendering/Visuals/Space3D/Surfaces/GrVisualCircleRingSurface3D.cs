@@ -164,7 +164,7 @@ public sealed class GrVisualCircleRingSurface3D :
 
     public Triplet<LinFloat64Vector3D> GetInnerEdgePointsTriplet()
     {
-        var quaternion = LinBasisVector3D.Pz.VectorToVectorRotationQuaternion(
+        var quaternion = LinBasisVector.Pz.VectorToVectorRotationQuaternion(
             Normal.ToUnitLinVector3D()
         );
 
@@ -182,7 +182,7 @@ public sealed class GrVisualCircleRingSurface3D :
         
     public Triplet<LinFloat64Vector3D> GetOuterEdgePointsTriplet()
     {
-        var quaternion = LinBasisVector3D.Pz.VectorToVectorRotationQuaternion(
+        var quaternion = LinBasisVector.Pz.VectorToVectorRotationQuaternion(
             Normal.ToUnitLinVector3D()
         );
 

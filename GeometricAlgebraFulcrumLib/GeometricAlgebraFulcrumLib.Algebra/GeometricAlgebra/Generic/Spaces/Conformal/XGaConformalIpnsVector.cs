@@ -85,4 +85,25 @@ public abstract class XGaConformalIpnsVector<T> :
         return !AssumeUnitWeight && 
                Weight().IsZero();
     }
+
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public Scalar<T> GetDistance(XGaVector<T> positionVector)
+    {
+        var distance = 
+            GetUnitWeightVector().Sp(
+                Space.CreateIpnsPoint(positionVector).Vector
+            );
+
+        return (HasZeroWeight() ? distance : -2d * distance).ToScalar();
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public Scalar<T> GetDistance(XGaConformalIpnsVector<T> ipnsVector2)
+    {
+        var distance =
+            GetUnitWeightVector().Sp(ipnsVector2.GetUnitWeightVector());
+
+        return (HasZeroWeight() || ipnsVector2.HasZeroWeight() ? distance : -2d * distance).ToScalar();
+    }
 }

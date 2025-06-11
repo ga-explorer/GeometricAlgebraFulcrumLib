@@ -18,7 +18,7 @@
 //        }
 
 //        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-//        public static HyperPlaneAxisReflection Create(int dimensions, LinSignedBasisVector axis)
+//        public static HyperPlaneAxisReflection Create(int dimensions, LinBasisVector axis)
 //        {
 //            return new HyperPlaneAxisReflection(
 //                dimensions,
@@ -27,7 +27,7 @@
 //        }
 
 
-//        public LinSignedBasisVector ReflectionNormalAxis { get; }
+//        public LinBasisVector ReflectionNormalAxis { get; }
 
 //        public Float64Tuple ReflectionNormal 
 //            => ReflectionNormalAxis.ToTuple(VSpaceDimensions);
@@ -48,7 +48,7 @@
 //        private HyperPlaneAxisReflection(int dimensions, int basisIndex)
 //        {
 //            VSpaceDimensions = dimensions;
-//            ReflectionNormalAxis = new LinSignedBasisVector(basisIndex, false);
+//            ReflectionNormalAxis = new LinBasisVector(basisIndex, false);
 //        }
 
 

@@ -2,7 +2,6 @@
 using System.Runtime.CompilerServices;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Frames;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivectors;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivectors.Composers;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Processors;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Angles;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
@@ -95,7 +94,7 @@ public class XGaFloat64Rotor
                     rotatedVector2
                 );
 
-        return XGaFloat64PureRotorsSequence.CreateFromOrthonormalEuclideanFrames(
+        return XGaFloat64PureRotorSequence.CreateFromOrthonormalEuclideanFrames(
             inputFrame, 
             rotatedFrame, 
             true
@@ -120,7 +119,7 @@ public class XGaFloat64Rotor
                     rotatedVector2
                 );
 
-        return XGaFloat64PureRotorsSequence.CreateFromEuclideanFrames(
+        return XGaFloat64PureRotorSequence.CreateFromEuclideanFrames(
             baseSpaceDimensions, 
             inputFrame, 
             rotatedFrame
@@ -145,13 +144,13 @@ public class XGaFloat64Rotor
 
         var bladeId = IndexSet.CreatePair(i, j);
 
-        var composer = processor.CreateComposer();
+        var composer = processor.CreateMultivectorComposer();
 
         composer.SetScalarTerm(cosHalfAngle);
         composer.SetTerm(bladeId, sinHalfAngle);
 
         return new XGaFloat64Rotor(
-            composer.GetMultivector()
+            composer.GetSimpleMultivector()
         );
     }
         

@@ -150,14 +150,14 @@ public static class QuaternionSamples
 
         var axisArray = new[]
         {
-            LinBasisVector3D.Px,
-            LinBasisVector3D.Nx,
+            LinBasisVector.Px,
+            LinBasisVector.Nx,
 
-            LinBasisVector3D.Py,
-            LinBasisVector3D.Ny,
+            LinBasisVector.Py,
+            LinBasisVector.Ny,
 
-            LinBasisVector3D.Pz,
-            LinBasisVector3D.Nz,
+            LinBasisVector.Pz,
+            LinBasisVector.Nz,
         };
 
         foreach (var axis in axisArray)
@@ -309,7 +309,7 @@ public static class QuaternionSamples
             var angle = randomGen.GetPolarAngle();
             var bivector = basisVector1.Op(basisVector2);
 
-            var length = randomGen.GetNumber(10);
+            var length = randomGen.GetFloat64(10);
             var v1 = length * basisVector1;
             var v2 =
                 length * angle.Cos() * basisVector1 +

@@ -206,7 +206,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.TensorAlgebra.Generic.Functions
             // IV. Now we shall go over all rows below off to make their
             // first element equal 0
             var pivotValue = t.GetValueNoCheck(off, columnId);
-            for (int r = off + 1; r < t.Shape[0]; r++)
+            for (var r = off + 1; r < t.Shape[0]; r++)
                 if (!default(TWrapper).IsZero(t.GetValueNoCheck(r, columnId)))
                 {
                     var currElement = t.GetValueNoCheck(r, columnId);
@@ -220,7 +220,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.TensorAlgebra.Generic.Functions
 
             static int? NonZeroColumn(Core.GenTensor<T, TWrapper> t, int c, int off)
             {
-                for (int i = off; i < t.Shape[0]; i++)
+                for (var i = off; i < t.Shape[0]; i++)
                     if (!default(TWrapper).IsZero(t.GetValueNoCheck(i, c)))
                         return i;
                 return null;
@@ -229,7 +229,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.TensorAlgebra.Generic.Functions
 
             static (int columnId, int pivotId)? LeftmostNonZeroColumn(Core.GenTensor<T, TWrapper> t, int off)
             {
-                for (int c = off; c < t.Shape[1]; c++)
+                for (var c = off; c < t.Shape[1]; c++)
                     if (NonZeroColumn(t, c, off) is { } nonZero)
                         return (c, nonZero);
                 return null;
@@ -283,7 +283,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.TensorAlgebra.Generic.Functions
         {
             var rowForm = t.Copy(copyElements: false);
             InnerGaussianEliminationSimpleDiscardSwapCount(rowForm, 0);
-            for (int r = 0; r < t.Shape[0]; r++)
+            for (var r = 0; r < t.Shape[0]; r++)
                 if (rowForm.RowGetLeadingElement(r) is { } leading)
                     rowForm.RowMultiply(r, default(TWrapper).Divide(default(TWrapper).CreateOne(), leading.value));
             return rowForm;
@@ -317,11 +317,11 @@ namespace GeometricAlgebraFulcrumLib.Algebra.TensorAlgebra.Generic.Functions
             var upper = t.Copy(copyElements: false);
             swapCount = 0;
             InnerGaussianEliminationSimple(upper, 0, permutations, ref swapCount);
-            for (int r = t.Shape[0] - 1; r >= 0; r--)
+            for (var r = t.Shape[0] - 1; r >= 0; r--)
             {
                 if (upper.RowGetLeadingElement(r) is not { } leading)
                     continue;
-                for (int i = 0; i < r; i++)
+                for (var i = 0; i < r; i++)
                     upper.RowSubtract(i, r,
                         default(TWrapper).Divide(upper.GetValueNoCheck(i, leading.index), leading.value));
 

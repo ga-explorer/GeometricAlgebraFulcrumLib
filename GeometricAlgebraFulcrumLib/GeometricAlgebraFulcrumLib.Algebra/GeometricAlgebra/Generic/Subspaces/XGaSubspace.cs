@@ -1,13 +1,13 @@
 ﻿using System.Runtime.CompilerServices;
-using GeometricAlgebraFulcrumLib.Utilities.Structures.BitManipulation;
-using GeometricAlgebraFulcrumLib.Algebra.Scalars.Generic;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Multivectors;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Processors;
+using GeometricAlgebraFulcrumLib.Algebra.Scalars.Generic;
+using GeometricAlgebraFulcrumLib.Utilities.Structures.BitManipulation;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Subspaces;
 
 public sealed class XGaSubspace<T> 
-    : IXGaSubspace<T>
+    : IXGaElement<T>
 {
     private readonly XGaKVector<T> _blade;
     private readonly XGaKVector<T> _bladeInverse;
@@ -52,7 +52,7 @@ public sealed class XGaSubspace<T>
 
     bool IAlgebraicElement.IsValid()
     {
-        throw new NotImplementedException();
+        return IsValid;
     }
         
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -73,7 +73,7 @@ public sealed class XGaSubspace<T>
         return _bladePseudoInverse;
     }
 
-    public IXGaSubspace<T> Project(IXGaSubspace<T> subspace)
+    public XGaSubspace<T> Project(XGaSubspace<T> subspace)
     {
         var a = GetBlade();
         var aInv = GetBladePseudoInverse();
@@ -85,7 +85,7 @@ public sealed class XGaSubspace<T>
         return new XGaSubspace<T>(blade);
     }
 
-    public IXGaSubspace<T> Reflect(IXGaSubspace<T> subspace)
+    public XGaSubspace<T> Reflect(XGaSubspace<T> subspace)
     {
         var a = GetBlade();
         var aInv = GetBladeInverse();
@@ -125,7 +125,7 @@ public sealed class XGaSubspace<T>
     //    return new GeoSubspace<T>(GeometricProcessor, blade, subspace.IsDirect);
     //}
 
-    public IXGaSubspace<T> VersorProduct(IXGaSubspace<T> subspace)
+    public XGaSubspace<T> VersorProduct(XGaSubspace<T> subspace)
     {
         var a = GetBlade();
         var aInv = GetBladeInverse();
@@ -140,7 +140,7 @@ public sealed class XGaSubspace<T>
     }
         
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public IXGaSubspace<T> Complement(IXGaSubspace<T> subspace)
+    public XGaSubspace<T> Complement(XGaSubspace<T> subspace)
     {
         if (subspace.SubspaceDimension > SubspaceDimension)
             throw new InvalidOperationException();
@@ -150,4 +150,167 @@ public sealed class XGaSubspace<T>
 
         return new XGaSubspace<T>(blade);
     }
+
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public bool Contains(XGaVector<T> vector, bool nearZeroFlag = false)
+    {
+        var processor = ScalarProcessor;
+
+        var mv2 = vector.Op(GetBlade());
+
+        return SubspaceDimension >= 2 &&
+               (mv2.IsZero || mv2.Scalars.All(s => processor.IsZero(s, nearZeroFlag)));
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public bool Contains(XGaBivector<T> mv, bool nearZeroFlag = false)
+    {
+        var processor = ScalarProcessor;
+
+        var mv2 = mv - Project(mv);
+
+        return SubspaceDimension >= 2 &&
+               (mv2.IsZero || mv2.Scalars.All(s => processor.IsZero(s, nearZeroFlag)));
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public bool Contains(XGaKVector<T> mv, bool nearZeroFlag = false)
+    {
+        var processor = ScalarProcessor;
+            
+        var mv2 = mv - Project(mv);
+
+        return SubspaceDimension >= 2 &&
+               (mv2.IsZero || mv2.Scalars.All(s => processor.IsZero(s, nearZeroFlag)));
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public bool Contains(XGaSubspace<T> mv, bool nearZeroFlag = false)
+    {
+        return Contains(mv.GetBlade(), nearZeroFlag);
+    }
+
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public XGaVector<T> Project(XGaVector<T> blade)
+    {
+        return blade
+            .Lcp(GetBladePseudoInverse())
+            .Lcp(GetBlade())
+            .AsVector();
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public XGaBivector<T> Project(XGaBivector<T> blade)
+    {
+        return blade
+            .Lcp(GetBladePseudoInverse())
+            .Lcp(GetBlade())
+            .AsBivector();
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public XGaKVector<T> Project(XGaKVector<T> blade)
+    {
+        return blade
+            .Lcp(GetBladePseudoInverse())
+            .Lcp(GetBlade());
+    }
+
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public XGaVector<T> Reflect(XGaVector<T> blade)
+    {
+        return GetBlade()
+            .Gp(-blade)
+            .Gp(GetBladeInverse())
+            .GetVectorPart();
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public XGaBivector<T> Reflect(XGaBivector<T> blade)
+    {
+        return GetBlade()
+            .Gp(blade)
+            .Gp(GetBladeInverse())
+            .GetBivectorPart();
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public XGaKVector<T> Reflect(XGaKVector<T> blade)
+    {
+        return GetBlade()
+            .Gp(blade.GradeInvolution())
+            .Gp(GetBladeInverse())
+            .GetKVectorPart(blade.Grade);
+    }
+
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public XGaVector<T> VersorProduct(XGaVector<T> blade)
+    {
+        return GetBlade()
+            .Gp(blade.GradeInvolution())
+            .Gp(GetBladeInverse())
+            .GetVectorPart();
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public XGaBivector<T> VersorProduct(XGaBivector<T> blade)
+    {
+        return GetBlade()
+            .Gp(blade.GradeInvolution())
+            .Gp(GetBladeInverse())
+            .GetBivectorPart();
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public XGaKVector<T> VersorProduct(XGaKVector<T> blade)
+    {
+        return GetBlade()
+            .Gp(blade.GradeInvolution())
+            .Gp(GetBladeInverse())
+            .GetKVectorPart(blade.Grade);
+    }
+
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public XGaKVector<T> Complement(XGaVector<T> blade)
+    {
+        return blade.Lcp(GetBlade());
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public XGaKVector<T> Complement(XGaBivector<T> blade)
+    {
+        return blade.Lcp(GetBlade());
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public XGaKVector<T> Complement(XGaKVector<T> blade)
+    {
+        return blade.Lcp(GetBlade());
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public XGaMultivector<T> Complement(XGaMultivector<T> blade)
+    {
+        return blade.Lcp(GetBlade());
+    }
+
+
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public IEnumerable<XGaVector<T>> ProjectVectors(params XGaVector<T>[] vectorsList)
+    {
+        return vectorsList.Select(Project);
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public IEnumerable<XGaVector<T>> Project(IEnumerable<XGaVector<T>> vectorsList)
+    {
+        return vectorsList.Select(Project);
+    }
+
 }

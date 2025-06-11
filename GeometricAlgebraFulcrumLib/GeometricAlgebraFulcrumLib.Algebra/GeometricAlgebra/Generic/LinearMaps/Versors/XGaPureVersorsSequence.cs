@@ -1,6 +1,5 @@
 ﻿using System.Collections;
 using System.Runtime.CompilerServices;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Frames;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.LinearMaps.Outermorphisms;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.LinearMaps.Rotors;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Multivectors;
@@ -155,7 +154,7 @@ public sealed class XGaPureVersorsSequence<T> :
         return XGaVersor<T>.Create(storage);
     }
 
-    public XGaPureRotorsSequence<T> CreatePureRotorsSequence()
+    public XGaPureRotorSequence<T> CreatePureRotorsSequence()
     {
         if (_versorsList.Count % 2 != 0)
             throw new InvalidOperationException();
@@ -175,7 +174,7 @@ public sealed class XGaPureVersorsSequence<T> :
             simpleRotorsArray[i] = XGaPureRotor<T>.Create(scalar.ScalarValue, bivector);
         }
 
-        return XGaPureRotorsSequence<T>.Create(
+        return XGaPureRotorSequence<T>.Create(
             simpleRotorsArray
         );
     }

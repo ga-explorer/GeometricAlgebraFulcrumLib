@@ -1,4 +1,4 @@
-﻿using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Maps;
+﻿using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.LinearMaps.Rotors;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space2D;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.Polynomials.Float64.PhCurves;
@@ -21,7 +21,7 @@ public sealed class PhCurve2DDegree5
 
     public double TangentLength0 { get; }
 
-    public GaScaledPureRotor ScaledRotor { get; }
+    public XGaFloat64PureScalingRotor ScalingRotor { get; }
 
     public PhCurve2DDegree5Canonical CanonicalCurve { get; }
 
@@ -34,9 +34,9 @@ public sealed class PhCurve2DDegree5
         Tangent1 = tangent1.ToLinVector2D();
         TangentLength0 = Tangent0.VectorENorm();
 
-        ScaledRotor = LinFloat64Vector2D.E1.CreateEuclideanScaledPureRotor(tangent0);
+        ScalingRotor = LinFloat64Vector2D.E1.CreateEuclideanPureScalingRotor(tangent0);
 
-        var scaledRotorInv = ScaledRotor.GetPureScaledRotorInverse();
+        var scaledRotorInv = ScalingRotor.GetPureScalingRotorInverse();
 
         CanonicalCurve = PhCurve2DDegree5Canonical.Create(
             scaledRotorInv.OmMap(Point1 - Point0),
@@ -47,14 +47,14 @@ public sealed class PhCurve2DDegree5
 
     public LinFloat64Vector2D GetHodographPoint(double parameterValue)
     {
-        return ScaledRotor.OmMap(
+        return ScalingRotor.OmMap(
             CanonicalCurve.GetHodographPoint(parameterValue)
         );
     }
 
     public LinFloat64Vector2D GetCurvePoint(double parameterValue)
     {
-        return Point0 + ScaledRotor.OmMap(
+        return Point0 + ScalingRotor.OmMap(
             CanonicalCurve.GetCurvePoint(parameterValue)
         );
     }

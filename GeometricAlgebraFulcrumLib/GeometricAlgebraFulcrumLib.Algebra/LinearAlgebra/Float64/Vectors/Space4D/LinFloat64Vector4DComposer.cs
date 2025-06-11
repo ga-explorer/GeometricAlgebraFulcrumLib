@@ -285,7 +285,7 @@ public sealed class LinFloat64Vector4DComposer :
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public LinFloat64Vector4DComposer SetTerm(LinSignedBasisVector basisBlade)
+    public LinFloat64Vector4DComposer SetTerm(LinBasisVector basisBlade)
     {
         if (basisBlade.IsZero)
             return RemoveTerm(basisBlade.Index);

@@ -163,32 +163,6 @@ public static class LinVector4DUtils
     //    );
     //}
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinVector4D<T> ToVector4D<T>(this LinBasisVector2D axis, IScalarProcessor<T> scalarProcessor)
-    {
-        return axis switch
-        {
-            LinBasisVector2D.Px => LinVector4D<T>.E1(scalarProcessor),
-            LinBasisVector2D.Nx => LinVector4D<T>.NegativeE1(scalarProcessor),
-            LinBasisVector2D.Py => LinVector4D<T>.E2(scalarProcessor),
-            _ => LinVector4D<T>.NegativeE2(scalarProcessor)
-        };
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinVector4D<T> ToVector4D<T>(this LinBasisVector3D axis, IScalarProcessor<T> scalarProcessor)
-    {
-        return axis switch
-        {
-            LinBasisVector3D.Px => LinVector4D<T>.E1(scalarProcessor),
-            LinBasisVector3D.Nx => LinVector4D<T>.NegativeE1(scalarProcessor),
-            LinBasisVector3D.Py => LinVector4D<T>.E2(scalarProcessor),
-            LinBasisVector3D.Ny => LinVector4D<T>.NegativeE2(scalarProcessor),
-            LinBasisVector3D.Pz => LinVector4D<T>.E3(scalarProcessor),
-            _ => LinVector4D<T>.NegativeE3(scalarProcessor)
-        };
-    }
-
     //[MethodImpl(MethodImplOptions.AggressiveInlining)]
     //public static bool IsXAxis(this LinUnitBasisVector4D axis)
     //{
@@ -240,25 +214,25 @@ public static class LinVector4DUtils
     //}
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinBasisVector4D SelectNearestAxis<T>(this IQuad<Scalar<T>> unitVector)
+    public static LinBasisVector SelectNearestAxis<T>(this IQuad<Scalar<T>> unitVector)
     {
         return unitVector.GetMaxAbsComponentIndex() switch
         {
             0 => unitVector.Item1.IsPositive()
-                ? LinBasisVector4D.Px
-                : LinBasisVector4D.Nx,
+                ? LinBasisVector.Px
+                : LinBasisVector.Nx,
 
             1 => unitVector.Item2.IsPositive()
-                ? LinBasisVector4D.Py
-                : LinBasisVector4D.Ny,
+                ? LinBasisVector.Py
+                : LinBasisVector.Ny,
 
             2 => unitVector.Item3.IsPositive()
-                ? LinBasisVector4D.Pz
-                : LinBasisVector4D.Nz,
+                ? LinBasisVector.Pz
+                : LinBasisVector.Nz,
 
             _ => unitVector.Item3.IsPositive()
-                ? LinBasisVector4D.Pz
-                : LinBasisVector4D.Nw
+                ? LinBasisVector.Pz
+                : LinBasisVector.Nw
         };
     }
 
@@ -319,22 +293,6 @@ public static class LinVector4DUtils
     //    };
     //}
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinVector4D<T> ToTuple4D<T>(this LinBasisVector4D axis, IScalarProcessor<T> scalarProcessor)
-    {
-        return axis switch
-        {
-            LinBasisVector4D.Px => LinVector4D<T>.E1(scalarProcessor),
-            LinBasisVector4D.Nx => LinVector4D<T>.NegativeE1(scalarProcessor),
-            LinBasisVector4D.Py => LinVector4D<T>.E2(scalarProcessor),
-            LinBasisVector4D.Ny => LinVector4D<T>.NegativeE2(scalarProcessor),
-            LinBasisVector4D.Pz => LinVector4D<T>.E3(scalarProcessor),
-            LinBasisVector4D.Nz => LinVector4D<T>.NegativeE3(scalarProcessor),
-            LinBasisVector4D.Pw => LinVector4D<T>.E4(scalarProcessor),
-            _ => LinVector4D<T>.NegativeE4(scalarProcessor)
-        };
-    }
-
 
     /// <summary>
     /// Returns a negative unit vector from the given one. If the length of the given vector is near 
@@ -359,7 +317,7 @@ public static class LinVector4DUtils
     {
         var s = vector.ENorm();
         if (s.IsZero())
-            return vector.ToTuple4D();
+            return vector.ToLinVector4D();
 
         s = 1.0d / s;
         return LinVector4D<T>.Create(vector.Item1 * s, vector.Item2 * s, vector.Item3 * s, vector.Item4 * s);
@@ -474,19 +432,18 @@ public static class LinVector4DUtils
     /// <param name="v2"></param>
     /// <returns></returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Scalar<T> ESp<T>(this IQuad<Scalar<T>> v1, LinBasisVector4D v2)
+    public static Scalar<T> ESp<T>(this IQuad<Scalar<T>> v1, LinBasisVector v2)
     {
-        return v2 switch
-        {
-            LinBasisVector4D.Px => v1.Item1,
-            LinBasisVector4D.Py => v1.Item2,
-            LinBasisVector4D.Pz => v1.Item3,
-            LinBasisVector4D.Pw => v1.Item4,
-            LinBasisVector4D.Nx => -v1.Item1,
-            LinBasisVector4D.Ny => -v1.Item2,
-            LinBasisVector4D.Nz => -v1.Item3,
-            _ => -v1.Item4,
-        };
+        if (v2 == LinBasisVector.Px) return v1.Item1;
+        if (v2 == LinBasisVector.Py) return v1.Item2;
+        if (v2 == LinBasisVector.Pz) return v1.Item3;
+        if (v2 == LinBasisVector.Pw) return v1.Item4;
+        if (v2 == LinBasisVector.Nx) return -v1.Item1;
+        if (v2 == LinBasisVector.Ny) return -v1.Item2;
+        if (v2 == LinBasisVector.Nz) return -v1.Item3;
+        if (v2 == LinBasisVector.Nw) return -v1.Item4;
+
+        throw new ArgumentOutOfRangeException(nameof(v2));
     }
 
     /// <summary>
@@ -753,42 +710,7 @@ public static class LinVector4DUtils
         return vector.VectorSubtract(vector2).IsNearZero();
     }
 
-    public static Tuple<bool, Scalar<T>, LinBasisVector4D> TryVectorToAxis<T>(this LinVector4D<T> vector)
-    {
-        var scalarProcessor = vector.ScalarProcessor;
-
-        // Find if the given scaling vector is parallel to a basis vector
-        var basisIndex = -1;
-        for (var i = 0; i < 4; i++)
-        {
-            if (vector.GetItem(i).IsZero()) continue;
-
-            if (basisIndex >= 0)
-            {
-                basisIndex = -2;
-                break;
-            }
-
-            basisIndex = i;
-        }
-
-        if (basisIndex < 0)
-            return new Tuple<bool, Scalar<T>, LinBasisVector4D>(
-                false,
-                scalarProcessor.Zero,
-                LinBasisVector4D.Px
-            );
-
-        var scalar = vector.GetItem(basisIndex);
-
-        return new Tuple<bool, Scalar<T>, LinBasisVector4D>(
-            true,
-            scalar.Abs(),
-            basisIndex.ToAxis4D(scalar < 0)
-        );
-    }
-
-    public static Tuple<bool, Scalar<T>, LinBasisVector4D> TryVectorToAxis<T>(this IQuad<Scalar<T>> vector)
+    public static Tuple<bool, Scalar<T>, LinBasisVector> TryVectorToAxis<T>(this IQuad<Scalar<T>> vector)
     {
         var scalarProcessor = vector.GetScalarProcessor();
 
@@ -808,15 +730,15 @@ public static class LinVector4DUtils
         }
 
         if (basisIndex < 0)
-            return new Tuple<bool, Scalar<T>, LinBasisVector4D>(
+            return new Tuple<bool, Scalar<T>, LinBasisVector>(
                 false,
                 scalarProcessor.Zero,
-                LinBasisVector4D.Px
+                LinBasisVector.Px
             );
 
         var scalar = vector.GetItem(basisIndex);
 
-        return new Tuple<bool, Scalar<T>, LinBasisVector4D>(
+        return new Tuple<bool, Scalar<T>, LinBasisVector>(
             true,
             scalar.Abs(),
             basisIndex.ToAxis4D(scalar < 0)
@@ -1032,11 +954,15 @@ public static class LinVector4DUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinVector4D<T> ToTuple4D<T>(this IQuad<Scalar<T>> vector)
+    public static LinVector4D<T> ToLinVector4D<T>(this IQuad<Scalar<T>> vector)
     {
-        return vector is LinVector4D<T> t
-            ? t
-            : LinVector4D<T>.Create(vector.Item1, vector.Item2, vector.Item3, vector.Item4);
+        return vector as LinVector4D<T> 
+               ?? LinVector4D<T>.Create(
+                   vector.Item1, 
+                   vector.Item2, 
+                   vector.Item3, 
+                   vector.Item4
+                );
     }
 
     //[MethodImpl(MethodImplOptions.AggressiveInlining)]

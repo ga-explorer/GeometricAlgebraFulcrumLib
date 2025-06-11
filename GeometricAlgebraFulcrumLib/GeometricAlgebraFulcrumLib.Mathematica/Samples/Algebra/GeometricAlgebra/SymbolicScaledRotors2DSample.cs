@@ -4,14 +4,11 @@ using GeometricAlgebraFulcrumLib.Mathematica.Algebra;
 using GeometricAlgebraFulcrumLib.Mathematica.Utilities.Structures;
 using GeometricAlgebraFulcrumLib.Mathematica.Utilities.Text;
 using Wolfram.NETLink;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Multivectors;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Processors;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.LinearMaps.Rotors;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Multivectors.Composers;
 
 namespace GeometricAlgebraFulcrumLib.Mathematica.Samples.Algebra.GeometricAlgebra;
 
-public static class SymbolicScaledRotors2DSample
+public static class SymbolicScalingRotors2DSample
 {
     // This is a pre-defined scalar processor for symbolic
     // Wolfram Mathematica scalars using Expr objects
@@ -111,14 +108,14 @@ public static class SymbolicScaledRotors2DSample
             GeometricProcessor.Vector("Subscript[x,1]", "Subscript[x,2]") +
             GeometricProcessor.Bivector2D("Subscript[x,12]");
 
-        var a = GeometricProcessor.CreateScaledPureRotor2D(
+        var a = GeometricProcessor.CreatePureScalingRotor2D(
             "Subscript[a, 0]",
             "Subscript[a, 12]"
         );
 
-        var aInv = a.GetPureScaledRotorInverse();
+        var aInv = a.GetPureScalingRotorInverse();
 
-        var b = GeometricProcessor.CreateScaledPureRotor2D(
+        var b = GeometricProcessor.CreatePureScalingRotor2D(
             "Subscript[b, 0]",
             "Subscript[b, 12]"
         );

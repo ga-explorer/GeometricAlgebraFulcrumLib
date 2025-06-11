@@ -1,63 +1,86 @@
-﻿using System.Diagnostics;
+﻿using GeometricAlgebraFulcrumLib.Utilities.Structures.IndexSets;
+using System.Diagnostics;
+using System.Globalization;
 using System.Runtime.CompilerServices;
-using GeometricAlgebraFulcrumLib.Utilities.Structures.IndexSets;
-using GeometricAlgebraFulcrumLib.Utilities.Structures.Tuples;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
 
 public static class XGaBasisBladeUtils
 {
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static XGaSignedBasisBlade ToSignedBasisBlade(this XGaBasisBlade basisBlade, IntegerSign sign)
+
+    public static IEnumerable<Tuple<IndexSet, double>> XGaParseTerms(this string inputText)
     {
-        return basisBlade.CreateSignedBasisBlade(sign);
+        var i = 0;
+        while (i < inputText.Length)
+        {
+            // Skip whitespace
+            while (i < inputText.Length && char.IsWhiteSpace(inputText[i]))
+                i++;
+
+            if (i >= inputText.Length)
+                break;
+
+            // Detect sign
+            var isNegative = false;
+            if (inputText[i] == '+' || inputText[i] == '-')
+            {
+                isNegative = inputText[i] == '-';
+                i++;
+            }
+            else if (char.IsDigit(inputText[i]) || inputText[i] == '.')
+            {
+                // No explicit sign
+            }
+            else
+            {
+                throw new FormatException($"Unexpected character at position {i}: '{inputText[i]}'");
+            }
+
+            // Read number (including scientific notation)
+            var numStart = i;
+            while (i < inputText.Length && (char.IsWhiteSpace(inputText[i]) || char.IsDigit(inputText[i]) || inputText[i] == '.' || inputText[i] == 'e' || inputText[i] == 'E' || (inputText[i] == '-' && i > 0 && (inputText[i - 1] == 'e' || inputText[i - 1] == 'E'))))
+            {
+                i++;
+            }
+
+            var numberText = inputText.Substring(numStart, i - numStart);
+            var scalar = double.Parse(numberText, CultureInfo.InvariantCulture);
+
+            // Apply sign
+            if (isNegative)
+                scalar = -scalar;
+
+            // Check for <...>
+            var indexArray = Array.Empty<int>();
+            if (i < inputText.Length && inputText[i] == '<')
+            {
+                i++; // Skip '<'
+                var indicesStart = i;
+
+                while (i < inputText.Length && inputText[i] != '>')
+                    i++;
+
+                if (i >= inputText.Length)
+                    throw new FormatException("Unclosed angle bracket '<'.");
+
+                var indicesStr = inputText.Substring(indicesStart, i - indicesStart).Trim();
+                if (!string.IsNullOrEmpty(indicesStr))
+                {
+                    var parts = indicesStr.Split([','], StringSplitOptions.RemoveEmptyEntries);
+                    indexArray = new int[parts.Length];
+                    for (var j = 0; j < parts.Length; j++)
+                        indexArray[j] = int.Parse(parts[j]);
+                }
+
+                i++; // Skip '>'
+            }
+
+            var (id, sign) = indexArray.GetBasisBladeIdSign();
+
+            yield return new Tuple<IndexSet, double>(id, scalar * sign);
+        }
     }
 
-
-    //[MethodImpl(MethodImplOptions.AggressiveInlining)]
-    //public static EGaTerm<T> ToTerm<T>(this EGaBasisBlade basisBlade, Scalar<T> scalar)
-    //{
-    //    return GaTermComposerUtils.ToTerm(basisBlade, scalar);
-    //}
-
-    //[MethodImpl(MethodImplOptions.AggressiveInlining)]
-    //public static EGaTerm<T> ToTerm<T>(this EGaBasisBlade basisBlade, IScalarProcessor<T> scalarProcessor, T scalarValue)
-    //{
-    //    return GaTermComposerUtils.ToTerm(basisBlade, scalarProcessor, scalarValue);
-    //}
-
-    //[MethodImpl(MethodImplOptions.AggressiveInlining)]
-    //public static EGaTerm<T> ToTerm<T>(this EGaSignedBasisBlade term, IScalarProcessor<T> scalarProcessor)
-    //{
-    //    var scalar = term.Sign switch
-    //    {
-    //        0 => scalarProcessor.CreateScalarZero(),
-    //        > 0 => scalarProcessor.CreateScalarOne(),
-    //        _ => scalarProcessor.CreateScalarMinusOne()
-    //    };
-
-    //    return GaTermComposerUtils.ToTerm(term.BasisBlade, scalar);
-    //}
-    
-    //[MethodImpl(MethodImplOptions.AggressiveInlining)]
-    //public static EGaTerm<T> ToTerm<T>(this EGaSignedBasisBlade term, IScalarProcessor<T> scalarProcessor, T scalarValue)
-    //{
-    //    var scalar = term.Sign switch
-    //    {
-    //        0 => scalarProcessor.CreateScalarZero(),
-    //        > 0 => scalarProcessor.CreateScalar(scalarValue),
-    //        _ => scalarProcessor.CreateScalar(scalarProcessor.Negative(scalarValue))
-    //    };
-
-    //    return GaTermComposerUtils.ToTerm(term.BasisBlade, scalar);
-    //}
-
-    //[MethodImpl(MethodImplOptions.AggressiveInlining)]
-    //public static EGaTerm<T> ToTerm<T>(this EGaSignedBasisBlade term, Scalar<T> scalar)
-    //{
-    //    return GaTermComposerUtils.ToTerm(term.BasisBlade, scalar * term.Sign);
-    //}
-    
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static bool IsValidBasisVectorIndex(int basisVectorIndex)
@@ -68,14 +91,14 @@ public static class XGaBasisBladeUtils
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static bool IsValidBasisBivectorIndices(int basisBivectorIndex1, int basisBivectorIndex2)
     {
-        return basisBivectorIndex1 >= 0 && 
+        return basisBivectorIndex1 >= 0 &&
                basisBivectorIndex1 < basisBivectorIndex2;
     }
-    
+
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static bool IsValidBasisBladeIndexSet(IndexSet basisBladeIndexSet)
     {
-        return basisBladeIndexSet.Count == 0 || 
+        return basisBladeIndexSet.Count == 0 ||
                basisBladeIndexSet.First() >= 0;
     }
 
@@ -107,7 +130,7 @@ public static class XGaBasisBladeUtils
 
         return basisVector1Index == basisVector2Index;
     }
-    
+
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static bool IsZeroVectorBivectorOp(int basisVectorIndex, int basisBivectorIndex1, int basisBivectorIndex2)
     {
@@ -119,9 +142,9 @@ public static class XGaBasisBladeUtils
         return basisVectorIndex == basisBivectorIndex1 ||
                basisVectorIndex == basisBivectorIndex2;
     }
-    
+
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static bool IsZeroVectorBladeOp(int basisVectorIndex, IReadOnlySet<int> basisBladeIndexSet)
+    public static bool IsZeroVectorBladeOp(int basisVectorIndex, IndexSet basisBladeIndexSet)
     {
         Debug.Assert(
             IsValidBasisVectorIndex(basisVectorIndex) &&
@@ -130,7 +153,7 @@ public static class XGaBasisBladeUtils
 
         return basisBladeIndexSet.Contains(basisVectorIndex);
     }
-    
+
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static bool IsZeroBivectorVectorOp(int basisBivectorIndex1, int basisBivectorIndex2, int basisVectorIndex)
     {
@@ -142,7 +165,7 @@ public static class XGaBasisBladeUtils
         return basisVectorIndex == basisBivectorIndex1 ||
                basisVectorIndex == basisBivectorIndex2;
     }
-    
+
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static bool IsZeroBivectorBivectorOp(int basisBivector1Index1, int basisBivector1Index2, int basisBivector2Index1, int basisBivector2Index2)
     {
@@ -158,7 +181,7 @@ public static class XGaBasisBladeUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static bool IsZeroBivectorBladeOp(int basisBivectorIndex1, int basisBivectorIndex2, IReadOnlySet<int> basisBladeIndexSet)
+    public static bool IsZeroBivectorBladeOp(int basisBivectorIndex1, int basisBivectorIndex2, IndexSet basisBladeIndexSet)
     {
         Debug.Assert(
             IsValidBasisBivectorIndices(basisBivectorIndex1, basisBivectorIndex2) &&
@@ -168,9 +191,9 @@ public static class XGaBasisBladeUtils
         return basisBladeIndexSet.Contains(basisBivectorIndex1) ||
                basisBladeIndexSet.Contains(basisBivectorIndex2);
     }
-    
+
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static bool IsZeroBladeVectorOp(IReadOnlySet<int> basisBladeIndexSet, int basisVectorIndex)
+    public static bool IsZeroBladeVectorOp(IndexSet basisBladeIndexSet, int basisVectorIndex)
     {
         Debug.Assert(
             IsValidBasisVectorIndex(basisVectorIndex) &&
@@ -179,9 +202,9 @@ public static class XGaBasisBladeUtils
 
         return basisBladeIndexSet.Contains(basisVectorIndex);
     }
-    
+
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static bool IsZeroBladeBivectorOp(IReadOnlySet<int> basisBladeIndexSet, int basisBivectorIndex1, int basisBivectorIndex2)
+    public static bool IsZeroBladeBivectorOp(IndexSet basisBladeIndexSet, int basisBivectorIndex1, int basisBivectorIndex2)
     {
         Debug.Assert(
             IsValidBasisBivectorIndices(basisBivectorIndex1, basisBivectorIndex2) &&
@@ -193,16 +216,16 @@ public static class XGaBasisBladeUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static bool IsZeroBladeBladeOp(IReadOnlySet<int> basisBlade1IndexSet, IReadOnlySet<int> basisBlade2IndexSet)
+    public static bool IsZeroBladeBladeOp(IndexSet basisBlade1IndexSet, IndexSet basisBlade2IndexSet)
     {
         Debug.Assert(
             IsValidBasisBladeIndexSet(basisBlade1IndexSet) &&
             IsValidBasisBladeIndexSet(basisBlade1IndexSet)
         );
 
-        return basisBlade1IndexSet.Overlaps(basisBlade2IndexSet);
+        return basisBlade1IndexSet.SetOverlaps(basisBlade2IndexSet);
     }
-    
+
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static bool IsZeroVectorVectorESp(int basisVector1Index, int basisVector2Index)
@@ -214,42 +237,42 @@ public static class XGaBasisBladeUtils
 
         return basisVector1Index != basisVector2Index;
     }
-    
+
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static bool IsZeroVectorBladeESp(int basisVectorIndex, IReadOnlySet<int> basisBladeIndexSet)
+    public static bool IsZeroVectorBladeESp(int basisVectorIndex, IndexSet basisBladeIndexSet)
     {
         Debug.Assert(
             IsValidBasisVectorIndex(basisVectorIndex) &&
             IsValidBasisBladeIndexSet(basisBladeIndexSet)
         );
 
-        return basisBladeIndexSet.Count != 1 || 
+        return basisBladeIndexSet.Count != 1 ||
                basisBladeIndexSet.First() != basisVectorIndex;
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static bool IsZeroBladeVectorESp(IReadOnlySet<int> basisBladeIndexSet, int basisVectorIndex)
+    public static bool IsZeroBladeVectorESp(IndexSet basisBladeIndexSet, int basisVectorIndex)
     {
         Debug.Assert(
             IsValidBasisVectorIndex(basisVectorIndex) &&
             IsValidBasisBladeIndexSet(basisBladeIndexSet)
         );
 
-        return basisBladeIndexSet.Count != 1 || 
+        return basisBladeIndexSet.Count != 1 ||
                basisBladeIndexSet.First() != basisVectorIndex;
     }
-    
+
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static bool IsZeroBladeBladeESp(IReadOnlySet<int> basisBlade1IndexSet, IReadOnlySet<int> basisBlade2IndexSet)
+    public static bool IsZeroBladeBladeESp(IndexSet basisBlade1IndexSet, IndexSet basisBlade2IndexSet)
     {
         Debug.Assert(
             IsValidBasisBladeIndexSet(basisBlade1IndexSet) &&
             IsValidBasisBladeIndexSet(basisBlade2IndexSet)
         );
 
-        return !basisBlade1IndexSet.SetEquals(basisBlade2IndexSet);
+        return !basisBlade1IndexSet.Equals(basisBlade2IndexSet);
     }
-    
+
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static bool IsZeroVectorVectorELcp(int basisVector1Index, int basisVector2Index)
@@ -261,9 +284,9 @@ public static class XGaBasisBladeUtils
 
         return basisVector1Index != basisVector2Index;
     }
-    
+
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static bool IsZeroVectorBladeELcp(int basisVectorIndex, IReadOnlySet<int> basisBladeIndexSet)
+    public static bool IsZeroVectorBladeELcp(int basisVectorIndex, IndexSet basisBladeIndexSet)
     {
         Debug.Assert(
             IsValidBasisVectorIndex(basisVectorIndex) &&
@@ -274,7 +297,7 @@ public static class XGaBasisBladeUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static bool IsZeroBladeVectorELcp(IReadOnlySet<int> basisBladeIndexSet, int basisVectorIndex)
+    public static bool IsZeroBladeVectorELcp(IndexSet basisBladeIndexSet, int basisVectorIndex)
     {
         Debug.Assert(
             IsValidBasisVectorIndex(basisVectorIndex) &&
@@ -288,18 +311,18 @@ public static class XGaBasisBladeUtils
             _ => true
         };
     }
-    
+
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static bool IsZeroBladeBladeELcp(IReadOnlySet<int> basisBlade1IndexSet, IReadOnlySet<int> basisBlade2IndexSet)
+    public static bool IsZeroBladeBladeELcp(IndexSet basisBlade1IndexSet, IndexSet basisBlade2IndexSet)
     {
         Debug.Assert(
             IsValidBasisBladeIndexSet(basisBlade1IndexSet) &&
             IsValidBasisBladeIndexSet(basisBlade2IndexSet)
         );
 
-        return !basisBlade1IndexSet.IsSubsetOf(basisBlade2IndexSet);
+        return !basisBlade2IndexSet.SetIsSupersetOf(basisBlade1IndexSet);
     }
-    
+
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static bool IsZeroVectorVectorERcp(int basisVector1Index, int basisVector2Index)
@@ -313,7 +336,7 @@ public static class XGaBasisBladeUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static bool IsZeroVectorBladeERcp(int basisVectorIndex, IReadOnlySet<int> basisBladeIndexSet)
+    public static bool IsZeroVectorBladeERcp(int basisVectorIndex, IndexSet basisBladeIndexSet)
     {
         Debug.Assert(
             IsValidBasisVectorIndex(basisVectorIndex) &&
@@ -327,9 +350,9 @@ public static class XGaBasisBladeUtils
             _ => true
         };
     }
-    
+
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static bool IsZeroBladeVectorERcp(IReadOnlySet<int> basisBladeIndexSet, int basisVectorIndex)
+    public static bool IsZeroBladeVectorERcp(IndexSet basisBladeIndexSet, int basisVectorIndex)
     {
         Debug.Assert(
             IsValidBasisVectorIndex(basisVectorIndex) &&
@@ -340,14 +363,14 @@ public static class XGaBasisBladeUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static bool IsZeroBladeBladeERcp(IReadOnlySet<int> basisBlade1IndexSet, IReadOnlySet<int> basisBlade2IndexSet)
+    public static bool IsZeroBladeBladeERcp(IndexSet basisBlade1IndexSet, IndexSet basisBlade2IndexSet)
     {
         Debug.Assert(
             IsValidBasisBladeIndexSet(basisBlade1IndexSet) &&
             IsValidBasisBladeIndexSet(basisBlade2IndexSet)
         );
 
-        return !basisBlade1IndexSet.IsSubsetOf(basisBlade2IndexSet);
+        return !basisBlade1IndexSet.SetIsSupersetOf(basisBlade2IndexSet);
     }
 
 
@@ -361,9 +384,9 @@ public static class XGaBasisBladeUtils
 
         return basisVector1Index > basisVector2Index;
     }
-    
+
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static bool IsNegativeVectorBladeEGp(int basisVectorIndex, IReadOnlySet<int> basisBladeIndexSet)
+    public static bool IsNegativeVectorBladeEGp(int basisVectorIndex, IndexSet basisBladeIndexSet)
     {
         Debug.Assert(
             IsValidBasisVectorIndex(basisVectorIndex) &&
@@ -377,9 +400,9 @@ public static class XGaBasisBladeUtils
             .TakeWhile(index2 => basisVectorIndex > index2)
             .Aggregate(false, (current, _) => !current);
     }
-    
+
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static bool IsNegativeBladeVectorEGp(IReadOnlySet<int> basisBladeIndexSet, int basisVectorIndex)
+    public static bool IsNegativeBladeVectorEGp(IndexSet basisBladeIndexSet, int basisVectorIndex)
     {
         Debug.Assert(
             IsValidBasisVectorIndex(basisVectorIndex) &&
@@ -395,7 +418,7 @@ public static class XGaBasisBladeUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static bool IsNegativeBladeBladeEGp(IReadOnlySet<int> basisBlade1IndexSet, IReadOnlySet<int> basisBlade2IndexSet)
+    public static bool IsNegativeBladeBladeEGp(IndexSet basisBlade1IndexSet, IndexSet basisBlade2IndexSet)
     {
         Debug.Assert(
             IsValidBasisBladeIndexSet(basisBlade1IndexSet) &&
@@ -417,12 +440,12 @@ public static class XGaBasisBladeUtils
         return basisBlade1IndexSet
             .Reverse()
             .Aggregate(
-                false, 
+                false,
                 (isNegative, index1) => isNegative ^ IsNegativeVectorBladeEGp(index1, basisBlade2IndexSet)
             );
     }
 
-    
+
     //[MethodImpl(MethodImplOptions.AggressiveInlining)]
     //public static EGaSignedBasisBlade VectorVectorEGp(int basisVector1Index, int basisVector2Index)
     //{
@@ -435,7 +458,7 @@ public static class XGaBasisBladeUtils
     //        ? EGaSignedBasisBlade.CreatePositiveScalar() 
     //        : EGaSignedBasisBlade.CreatePositiveBivector(basisVector1Index, basisVector2Index);
     //}
-    
+
     //public static EGaSignedBasisBlade VectorBivectorEGp(int basisVectorIndex, int basisBivectorIndex1, int basisBivectorIndex2)
     //{
     //    Debug.Assert(
@@ -469,7 +492,7 @@ public static class XGaBasisBladeUtils
     //            GaMetricUtils.CreateBasisTrivector(basisBivectorIndex1, basisBivectorIndex2, basisVectorIndex)
     //        );
     //    }
-        
+
     //    if (basisVectorIndex == basisBivectorIndex1)
     //        return EGaSignedBasisBlade.CreatePositiveVector(basisBivectorIndex2);
 
@@ -491,7 +514,7 @@ public static class XGaBasisBladeUtils
     //    );
     //}
 
-    //public static EGaSignedBasisBlade VectorBladeEGp(int basisVectorIndex, IReadOnlySet<int> basisBladeIndexSet)
+    //public static EGaSignedBasisBlade VectorBladeEGp(int basisVectorIndex, IndexSet basisBladeIndexSet)
     //{
     //    Debug.Assert(
     //        IsValidBasisVectorIndex(basisVectorIndex) &&
@@ -606,7 +629,7 @@ public static class XGaBasisBladeUtils
     //    );
     //}
 
-    //public static EGaSignedBasisBlade BladeVectorEGp(IReadOnlySet<int> basisBladeIndexSet, int basisVectorIndex)
+    //public static EGaSignedBasisBlade BladeVectorEGp(IndexSet basisBladeIndexSet, int basisVectorIndex)
     //{
     //    Debug.Assert(
     //        IsValidBasisVectorIndex(basisVectorIndex) &&
@@ -622,11 +645,11 @@ public static class XGaBasisBladeUtils
     //    var basisBladeIndexSet1 = basisBladeIndexSet.ToImmutableSortedSet();
     //    var scalar = 1;
     //    var indexList = new List<int>(basisBladeIndexSet1.Count + 1);
-        
+
     //    for (var i = basisBladeIndexSet1.Count - 1; i >= 0; i--)
     //    {
     //        var index1 = basisBladeIndexSet1[i];
-            
+
     //        Debug.Assert(
     //            index1 >= 0
     //        );
@@ -660,7 +683,7 @@ public static class XGaBasisBladeUtils
     //    return indexList.ToEGaSignedBasisBlade(scalar);
     //}
 
-    //public static EGaSignedBasisBlade BladeBladeEGp(IReadOnlySet<int> basisBlade1IndexSet, IReadOnlySet<int> basisBlade2IndexSet)
+    //public static EGaSignedBasisBlade BladeBladeEGp(IndexSet basisBlade1IndexSet, IndexSet basisBlade2IndexSet)
     //{
     //    if (basisBlade1IndexSet.Count == 0)
     //        return basisBlade2IndexSet.ToEGaSignedBasisBlade(true);
@@ -712,32 +735,32 @@ public static class XGaBasisBladeUtils
     //        ? EGaSignedBasisBlade.ScalarZero
     //        : VectorVectorEGp(basisVector1Index, basisVector2Index);
     //}
-    
+
     //[MethodImpl(MethodImplOptions.AggressiveInlining)]
-    //public static EGaSignedBasisBlade BladeVectorOp(IReadOnlySet<int> basisBladeIndexSet, int basisVectorIndex)
+    //public static EGaSignedBasisBlade BladeVectorOp(IndexSet basisBladeIndexSet, int basisVectorIndex)
     //{
     //    return IsZeroBladeVectorOp(basisBladeIndexSet, basisVectorIndex)
     //        ? EGaSignedBasisBlade.ScalarZero
     //        : BladeVectorEGp(basisBladeIndexSet, basisVectorIndex);
     //}
-    
+
     //[MethodImpl(MethodImplOptions.AggressiveInlining)]
-    //public static EGaSignedBasisBlade VectorBladeOp(int basisVectorIndex, IReadOnlySet<int> basisBladeIndexSet)
+    //public static EGaSignedBasisBlade VectorBladeOp(int basisVectorIndex, IndexSet basisBladeIndexSet)
     //{
     //    return IsZeroVectorBladeOp(basisVectorIndex, basisBladeIndexSet)
     //        ? EGaSignedBasisBlade.ScalarZero
     //        : VectorBladeEGp(basisVectorIndex, basisBladeIndexSet);
     //}
-    
+
     //[MethodImpl(MethodImplOptions.AggressiveInlining)]
-    //public static EGaSignedBasisBlade BladeBladeOp(IReadOnlySet<int> basisBlade1IndexSet, IReadOnlySet<int> basisBlade2IndexSet)
+    //public static EGaSignedBasisBlade BladeBladeOp(IndexSet basisBlade1IndexSet, IndexSet basisBlade2IndexSet)
     //{
     //    return IsZeroBladeBladeOp(basisBlade1IndexSet, basisBlade2IndexSet)
     //        ? EGaSignedBasisBlade.ScalarZero
     //        : BladeBladeEGp(basisBlade1IndexSet, basisBlade2IndexSet);
     //}
 
-    
+
     //[MethodImpl(MethodImplOptions.AggressiveInlining)]
     //public static EGaSignedBasisBlade VectorVectorESp(int basisVector1Index, int basisVector2Index)
     //{
@@ -745,32 +768,32 @@ public static class XGaBasisBladeUtils
     //        ? EGaSignedBasisBlade.ScalarZero
     //        : VectorVectorEGp(basisVector1Index, basisVector2Index);
     //}
-    
+
     //[MethodImpl(MethodImplOptions.AggressiveInlining)]
-    //public static EGaSignedBasisBlade BladeVectorESp(IReadOnlySet<int> basisBladeIndexSet, int basisVectorIndex)
+    //public static EGaSignedBasisBlade BladeVectorESp(IndexSet basisBladeIndexSet, int basisVectorIndex)
     //{
     //    return IsZeroBladeVectorESp(basisBladeIndexSet, basisVectorIndex)
     //        ? EGaSignedBasisBlade.ScalarZero
     //        : BladeVectorEGp(basisBladeIndexSet, basisVectorIndex);
     //}
-    
+
     //[MethodImpl(MethodImplOptions.AggressiveInlining)]
-    //public static EGaSignedBasisBlade VectorBladeESp(int basisVectorIndex, IReadOnlySet<int> basisBladeIndexSet)
+    //public static EGaSignedBasisBlade VectorBladeESp(int basisVectorIndex, IndexSet basisBladeIndexSet)
     //{
     //    return IsZeroVectorBladeESp(basisVectorIndex, basisBladeIndexSet)
     //        ? EGaSignedBasisBlade.ScalarZero
     //        : VectorBladeEGp(basisVectorIndex, basisBladeIndexSet);
     //}
-    
+
     //[MethodImpl(MethodImplOptions.AggressiveInlining)]
-    //public static EGaSignedBasisBlade BladeBladeESp(IReadOnlySet<int> basisBlade1IndexSet, IReadOnlySet<int> basisBlade2IndexSet)
+    //public static EGaSignedBasisBlade BladeBladeESp(IndexSet basisBlade1IndexSet, IndexSet basisBlade2IndexSet)
     //{
     //    return IsZeroBladeBladeESp(basisBlade1IndexSet, basisBlade2IndexSet)
     //        ? EGaSignedBasisBlade.ScalarZero
     //        : BladeBladeEGp(basisBlade1IndexSet, basisBlade2IndexSet);
     //}
-    
-    
+
+
     //[MethodImpl(MethodImplOptions.AggressiveInlining)]
     //public static EGaSignedBasisBlade VectorVectorELcp(int basisVector1Index, int basisVector2Index)
     //{
@@ -778,32 +801,32 @@ public static class XGaBasisBladeUtils
     //        ? EGaSignedBasisBlade.ScalarZero
     //        : VectorVectorEGp(basisVector1Index, basisVector2Index);
     //}
-    
+
     //[MethodImpl(MethodImplOptions.AggressiveInlining)]
-    //public static EGaSignedBasisBlade BladeVectorELcp(IReadOnlySet<int> basisBladeIndexSet, int basisVectorIndex)
+    //public static EGaSignedBasisBlade BladeVectorELcp(IndexSet basisBladeIndexSet, int basisVectorIndex)
     //{
     //    return IsZeroBladeVectorELcp(basisBladeIndexSet, basisVectorIndex)
     //        ? EGaSignedBasisBlade.ScalarZero
     //        : BladeVectorEGp(basisBladeIndexSet, basisVectorIndex);
     //}
-    
+
     //[MethodImpl(MethodImplOptions.AggressiveInlining)]
-    //public static EGaSignedBasisBlade VectorBladeELcp(int basisVectorIndex, IReadOnlySet<int> basisBladeIndexSet)
+    //public static EGaSignedBasisBlade VectorBladeELcp(int basisVectorIndex, IndexSet basisBladeIndexSet)
     //{
     //    return IsZeroVectorBladeELcp(basisVectorIndex, basisBladeIndexSet)
     //        ? EGaSignedBasisBlade.ScalarZero
     //        : VectorBladeEGp(basisVectorIndex, basisBladeIndexSet);
     //}
-    
+
     //[MethodImpl(MethodImplOptions.AggressiveInlining)]
-    //public static EGaSignedBasisBlade BladeBladeELcp(IReadOnlySet<int> basisBlade1IndexSet, IReadOnlySet<int> basisBlade2IndexSet)
+    //public static EGaSignedBasisBlade BladeBladeELcp(IndexSet basisBlade1IndexSet, IndexSet basisBlade2IndexSet)
     //{
     //    return IsZeroBladeBladeELcp(basisBlade1IndexSet, basisBlade2IndexSet)
     //        ? EGaSignedBasisBlade.ScalarZero
     //        : BladeBladeEGp(basisBlade1IndexSet, basisBlade2IndexSet);
     //}
-    
-    
+
+
     //[MethodImpl(MethodImplOptions.AggressiveInlining)]
     //public static EGaSignedBasisBlade VectorVectorERcp(int basisVector1Index, int basisVector2Index)
     //{
@@ -811,29 +834,29 @@ public static class XGaBasisBladeUtils
     //        ? EGaSignedBasisBlade.ScalarZero
     //        : VectorVectorEGp(basisVector1Index, basisVector2Index);
     //}
-    
+
     //[MethodImpl(MethodImplOptions.AggressiveInlining)]
-    //public static EGaSignedBasisBlade BladeVectorERcp(IReadOnlySet<int> basisBladeIndexSet, int basisVectorIndex)
+    //public static EGaSignedBasisBlade BladeVectorERcp(IndexSet basisBladeIndexSet, int basisVectorIndex)
     //{
     //    return IsZeroBladeVectorERcp(basisBladeIndexSet, basisVectorIndex)
     //        ? EGaSignedBasisBlade.ScalarZero
     //        : BladeVectorEGp(basisBladeIndexSet, basisVectorIndex);
     //}
-    
+
     //[MethodImpl(MethodImplOptions.AggressiveInlining)]
-    //public static EGaSignedBasisBlade VectorBladeERcp(int basisVectorIndex, IReadOnlySet<int> basisBladeIndexSet)
+    //public static EGaSignedBasisBlade VectorBladeERcp(int basisVectorIndex, IndexSet basisBladeIndexSet)
     //{
     //    return IsZeroVectorBladeERcp(basisVectorIndex, basisBladeIndexSet)
     //        ? EGaSignedBasisBlade.ScalarZero
     //        : VectorBladeEGp(basisVectorIndex, basisBladeIndexSet);
     //}
-    
+
     //[MethodImpl(MethodImplOptions.AggressiveInlining)]
-    //public static EGaSignedBasisBlade BladeBladeERcp(IReadOnlySet<int> basisBlade1IndexSet, IReadOnlySet<int> basisBlade2IndexSet)
+    //public static EGaSignedBasisBlade BladeBladeERcp(IndexSet basisBlade1IndexSet, IndexSet basisBlade2IndexSet)
     //{
     //    return IsZeroBladeBladeERcp(basisBlade1IndexSet, basisBlade2IndexSet)
     //        ? EGaSignedBasisBlade.ScalarZero
     //        : BladeBladeEGp(basisBlade1IndexSet, basisBlade2IndexSet);
     //}
-      
+
 }

@@ -548,7 +548,7 @@ public static class Float64ArrayUtils
             uvDot += u[i] * v[i];
         }
 
-        return AlgebraUtils.Clamp((uvDot / (uuDot * vvDot).Sqrt()), -1, 1);
+        return AlgebraUtils.Clamp(uvDot / (uuDot * vvDot).Sqrt(), -1, 1);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -558,7 +558,7 @@ public static class Float64ArrayUtils
         var vvDot = vector2.GetVectorNormSquared();
         var uvDot = vector1.VectorDot(vector2);
 
-        return AlgebraUtils.Clamp((uvDot / (uuDot * vvDot).Sqrt()), -1, 1);
+        return AlgebraUtils.Clamp(uvDot / (uuDot * vvDot).Sqrt(), -1, 1);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -568,7 +568,7 @@ public static class Float64ArrayUtils
         var vvDot = vector2.GetVectorNormSquared();
         var uvDot = vector1.VectorDot(vector2);
 
-        return AlgebraUtils.Clamp((uvDot / (uuDot * vvDot).Sqrt()), -1, 1);
+        return AlgebraUtils.Clamp(uvDot / (uuDot * vvDot).Sqrt(), -1, 1);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -578,7 +578,7 @@ public static class Float64ArrayUtils
         var vvDot = vector2.GetVectorNormSquared();
         var uvDot = vector1.VectorDot(vector2);
 
-        return AlgebraUtils.Clamp((uvDot / (uuDot * vvDot).Sqrt()), -1, 1);
+        return AlgebraUtils.Clamp(uvDot / (uuDot * vvDot).Sqrt(), -1, 1);
     }
 
 

@@ -330,6 +330,100 @@ public sealed record LinScalar3D<T> :
         return Scalar;
     }
 
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public Scalar<T> Sp(LinScalar3D<T> mv2)
+    {
+        return Scalar * mv2.Scalar;
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public Scalar<T> Sp(LinVector3D<T> mv2)
+    {
+        return ScalarProcessor.Zero;
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public Scalar<T> Sp(LinBivector3D<T> mv2)
+    {
+        return ScalarProcessor.Zero;
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public Scalar<T> Sp(LinTrivector3D<T> mv2)
+    {
+        return ScalarProcessor.Zero;
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public Scalar<T> Sp(LinMultivector3D<T> mv2)
+    {
+        var mv = ScalarProcessor.Zero;
+
+        if (!IsZero() && !mv2.KVector0.IsZero())
+            mv += Sp(mv2.KVector0);
+
+        return mv;
+    }
+
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public LinScalar3D<T> Op(LinScalar3D<T> mv2)
+    {
+        return Create(
+            Scalar * mv2.Scalar
+        );
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public LinVector3D<T> Op(LinVector3D<T> mv2)
+    {
+        return LinVector3D<T>.Create(
+            Scalar * mv2.Scalar1,
+            Scalar * mv2.Scalar2,
+            Scalar * mv2.Scalar3
+        );
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public LinBivector3D<T> Op(LinBivector3D<T> mv2)
+    {
+        return LinBivector3D<T>.Create(
+            Scalar * mv2.Scalar12,
+            Scalar * mv2.Scalar13,
+            Scalar * mv2.Scalar23
+        );
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public LinTrivector3D<T> Op(LinTrivector3D<T> mv2)
+    {
+        return LinTrivector3D<T>.Create(
+            Scalar * mv2.Scalar123
+        );
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public LinMultivector3D<T> Op(LinMultivector3D<T> mv2)
+    {
+        var mv = LinMultivector3D<T>.Zero(ScalarProcessor);
+
+        if (!mv2.KVector0.IsZero())
+            mv += Op(mv2.KVector0);
+
+        if (!mv2.KVector1.IsZero())
+            mv += Op(mv2.KVector1);
+
+        if (!mv2.KVector2.IsZero())
+            mv += Op(mv2.KVector2);
+
+        if (!mv2.KVector3.IsZero())
+            mv += Op(mv2.KVector3);
+
+        return mv;
+    }
+    
+
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public IEnumerator<Scalar<T>> GetEnumerator()
     {

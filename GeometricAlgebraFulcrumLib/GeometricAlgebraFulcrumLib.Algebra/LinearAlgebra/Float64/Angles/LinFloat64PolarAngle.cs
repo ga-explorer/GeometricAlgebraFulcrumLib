@@ -620,19 +620,19 @@ public sealed record LinFloat64PolarAngle :
     
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public LinFloat64PolarAngle NegativeAngle()
+    public override LinFloat64PolarAngle NegativeAngle()
     {
         return new LinFloat64PolarAngle(CosValue, -SinValue);
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public LinFloat64PolarAngle OppositeAngle()
+    public override LinFloat64PolarAngle OppositeAngle()
     {
         return new LinFloat64PolarAngle(-CosValue, -SinValue);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public LinFloat64PolarAngle AngleAdd(double angle2)
+    public override LinFloat64PolarAngle AngleAdd(double angle2)
     {
         var a2Cos = Math.Cos(angle2);
         var a2Sin = Math.Sin(angle2);
@@ -644,7 +644,7 @@ public sealed record LinFloat64PolarAngle :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public LinFloat64PolarAngle AngleSubtract(double angle2)
+    public override LinFloat64PolarAngle AngleSubtract(double angle2)
     {
         var a2Cos = Math.Cos(angle2);
         var a2Sin = Math.Sin(angle2);
@@ -656,13 +656,13 @@ public sealed record LinFloat64PolarAngle :
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public LinFloat64PolarAngle AngleTimes(double scalingFactor)
+    public override LinFloat64PolarAngle AngleTimes(double scalingFactor)
     {
         return CreateFromRadians(RadiansValue * scalingFactor);
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public LinFloat64PolarAngle AngleDivide(double scalingFactor)
+    public override LinFloat64PolarAngle AngleDivide(double scalingFactor)
     {
         return CreateFromRadians(RadiansValue / scalingFactor);
     }

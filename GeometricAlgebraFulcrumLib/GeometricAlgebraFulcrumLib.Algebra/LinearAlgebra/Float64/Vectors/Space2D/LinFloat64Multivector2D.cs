@@ -434,6 +434,125 @@ public sealed record LinFloat64Multivector2D :
         );
     }
 
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public Float64Scalar Sp(LinFloat64Scalar2D mv2)
+    {
+        var mv = 0d;
+
+        if (!KVector0.IsZero() && !mv2.IsZero())
+            mv += KVector0.Sp(mv2);
+
+        return mv;
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public Float64Scalar Sp(LinFloat64Vector2D mv2)
+    {
+        var mv = 0d;
+
+        if (!KVector1.IsZero() && !mv2.IsZero())
+            mv += KVector1.Sp(mv2);
+
+        return mv;
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public Float64Scalar Sp(LinFloat64Bivector2D mv2)
+    {
+        var mv = 0d;
+
+        if (!KVector2.IsZero() && !mv2.IsZero())
+            mv += KVector2.Sp(mv2);
+
+        return mv;
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public Float64Scalar Sp(LinFloat64Multivector2D mv2)
+    {
+        var mv = 0d;
+
+        if (!KVector0.IsZero() && !mv2.KVector0.IsZero())
+            mv += KVector0.Sp(mv2.KVector0);
+
+        if (!KVector1.IsZero() && !mv2.KVector1.IsZero())
+            mv += KVector1.Sp(mv2.KVector1);
+
+        if (!KVector2.IsZero() && !mv2.KVector2.IsZero())
+            mv += KVector2.Sp(mv2.KVector2);
+
+        return mv;
+    }
+
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public LinFloat64Multivector2D Op(LinFloat64Scalar2D mv2)
+    {
+        var mv = Zero;
+
+        if (!KVector0.IsZero())
+            mv += KVector0.Op(mv2);
+
+        if (!KVector1.IsZero())
+            mv += KVector1.Op(mv2);
+
+        if (!KVector2.IsZero())
+            mv += KVector2.Op(mv2);
+
+        return mv;
+    }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public LinFloat64Multivector2D Op(LinFloat64Vector2D mv2)
+    {
+        var mv = Zero;
+
+        if (!KVector0.IsZero())
+            mv += KVector0.Op(mv2);
+
+        if (!KVector1.IsZero())
+            mv += KVector1.Op(mv2);
+
+        if (!KVector2.IsZero())
+            mv += KVector2.Op(mv2);
+
+        return mv;
+    }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public LinFloat64Multivector2D Op(LinFloat64Bivector2D mv2)
+    {
+        var mv = Zero;
+
+        if (!KVector0.IsZero())
+            mv += KVector0.Op(mv2);
+
+        if (!KVector1.IsZero())
+            mv += KVector1.Op(mv2);
+
+        return mv;
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public LinFloat64Multivector2D Op(LinFloat64Multivector2D mv2)
+    {
+        var mv = Zero;
+
+        if (!KVector0.IsZero())
+            mv += KVector0.Op(mv2);
+
+        if (!KVector1.IsZero())
+            mv += KVector1.Op(mv2);
+
+        if (!KVector2.IsZero())
+            mv += KVector2.Op(mv2);
+
+        return mv;
+    }
+
+
+
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public IEnumerator<Float64Scalar> GetEnumerator()
     {

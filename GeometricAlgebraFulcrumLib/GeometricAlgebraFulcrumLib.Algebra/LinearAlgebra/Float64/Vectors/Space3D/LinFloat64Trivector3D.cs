@@ -1,5 +1,7 @@
 ﻿using System.Collections;
 using System.Runtime.CompilerServices;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivectors;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Processors;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space3D;
@@ -292,6 +294,100 @@ public sealed record LinFloat64Trivector3D :
     {
         return LinFloat64Scalar3D.Create(Scalar123 * scalingFactor);
     }
+    
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public Float64Scalar Sp(LinFloat64Scalar3D mv2)
+    {
+        return Float64Scalar.Zero;
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public Float64Scalar Sp(LinFloat64Vector3D mv2)
+    {
+        return Float64Scalar.Zero;
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public Float64Scalar Sp(LinFloat64Bivector3D mv2)
+    {
+        return Float64Scalar.Zero;
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public Float64Scalar Sp(LinFloat64Trivector3D mv2)
+    {
+        return -(Scalar123 * mv2.Scalar123);
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public Float64Scalar Sp(LinFloat64Multivector3D mv2)
+    {
+        var mv = 0d;
+
+        if (!IsZero() && !mv2.KVector3.IsZero())
+            mv += Sp(mv2.KVector3);
+
+        return mv;
+    }
+
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public LinFloat64Trivector3D Op(LinFloat64Scalar3D mv2)
+    {
+        return Create(
+            Scalar123 * mv2.Scalar
+        );
+    }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public LinFloat64Scalar3D Op(LinFloat64Vector3D mv2)
+    {
+        return LinFloat64Scalar3D.Zero;
+    }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public LinFloat64Scalar3D Op(LinFloat64Bivector3D mv2)
+    {
+        return LinFloat64Scalar3D.Zero;
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public LinFloat64Scalar3D Op(LinFloat64Trivector3D mv2)
+    {
+        return LinFloat64Scalar3D.Zero;
+    }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public LinFloat64Multivector3D Op(LinFloat64Multivector3D mv2)
+    {
+        var mv = LinFloat64Multivector3D.Zero;
+
+        if (!mv2.KVector0.IsZero())
+            mv += Op(mv2.KVector0);
+
+        return mv;
+    }
+
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public XGaFloat64HigherKVector ToXGaFloat64Trivector(XGaFloat64Processor processor)
+    {
+        return processor
+            .CreateTrivectorComposer()
+            .SetTrivectorTerm(0, 1, 2, Scalar123)
+            .GetHigherKVector();
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public XGaFloat64HigherKVector ToXGaFloat64Trivector()
+    {
+        return XGaFloat64Processor
+            .Euclidean
+            .CreateTrivectorComposer()
+            .SetTrivectorTerm(0, 1, 2, Scalar123)
+            .GetHigherKVector();
+    }
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -318,5 +414,4 @@ public sealed record LinFloat64Trivector3D :
     {
         return $"({Scalar123})<1,2,3>";
     }
-
 }

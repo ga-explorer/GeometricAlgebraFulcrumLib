@@ -54,13 +54,4 @@ public static class XGaFloat64ProcessorComposerUtils
         return processor;
     }
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static XGaFloat64Processor CreateProcessor(this XGaMetric metric, IXGaFloat64ProcessorContainer scalarProcessor)
-    {
-        var processor = XGaFloat64Processor.Create(metric.NegativeSignatureBasisCount, metric.ZeroSignatureBasisCount);
-
-        scalarProcessor.AttachXGaProcessor(processor);
-
-        return processor;
-    }
 }

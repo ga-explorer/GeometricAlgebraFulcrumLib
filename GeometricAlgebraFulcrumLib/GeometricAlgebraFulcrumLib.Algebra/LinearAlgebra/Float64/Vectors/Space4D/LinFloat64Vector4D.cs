@@ -44,7 +44,7 @@ public sealed record LinFloat64Vector4D :
         = Create(0.5d, 0.5d, 0.5d, 0.5d);
 
     public static IReadOnlyList<LinFloat64Vector4D> BasisVectors { get; }
-        = new[] { E1, E2, E3, E4 };
+        = [E1, E2, E3, E4];
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]

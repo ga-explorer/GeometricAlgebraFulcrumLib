@@ -130,8 +130,8 @@
             //SymbolicPhConstruction2DSample.Example2();
             //SymbolicRotorsSample.Example9();
             //NumericRotorsSample.Example12();
-            //SymbolicScaledRotors3DSample.Example3();
-            //SymbolicScaledRotors2DSample.Example3();
+            //SymbolicScalingRotors3DSample.Example3();
+            //SymbolicScalingRotors2DSample.Example3();
             //NumericPhSplineCurveSamples.Example1();
 
             //MetaProgramming.CSharp.GradedMultivectorLibSample.GenerateCode();

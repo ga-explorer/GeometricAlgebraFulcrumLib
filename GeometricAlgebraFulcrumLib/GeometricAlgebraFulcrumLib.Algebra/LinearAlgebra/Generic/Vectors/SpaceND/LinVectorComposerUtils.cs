@@ -1,8 +1,7 @@
 ﻿using System.Runtime.CompilerServices;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Multivectors;
+using GeometricAlgebraFulcrumLib.Algebra.Scalars.Generic;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.BitManipulation;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Dictionary;
-using GeometricAlgebraFulcrumLib.Algebra.Scalars.Generic;
 using MathNet.Numerics.LinearAlgebra.Double;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Generic.Vectors.SpaceND;
@@ -181,31 +180,6 @@ public static class LinVectorComposerUtils
     }
 
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinVector<T> ToVector<T>(this LinVectorTerm<T> term)
-    {
-        var scalarProcessor = term.ScalarProcessor;
-
-        if (term.IsZero)
-            return new LinVector<T>(scalarProcessor);
-
-        var basisScalarDictionary =
-            new SingleItemDictionary<int, T>(term.Index, term.ScalarValue);
-
-        return new LinVector<T>(scalarProcessor, basisScalarDictionary);
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinVector<T> ToLinVector<T>(this XGaVector<T> mv)
-    {
-        var indexScalarDictionary = mv.IdScalarPairs.ToDictionary(
-            p => p.Key.FirstIndex,
-            p => p.Value
-        );
-
-        return mv.ScalarProcessor.CreateLinVector(indexScalarDictionary);
-    }
-
 
     public static LinVector<T> DiagonalToLinVector<T>(this T[,] matrix, IScalarProcessor<T> scalarProcessor)
     {
@@ -337,54 +311,5 @@ public static class LinVectorComposerUtils
     }
 
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinVectorComposer<T> ToComposer<T>(this LinVector<T> mv)
-    {
-        return new LinVectorComposer<T>(mv.ScalarProcessor).SetVector(mv);
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinVectorComposer<T> NegativeToComposer<T>(this LinVector<T> mv)
-    {
-        return new LinVectorComposer<T>(mv.ScalarProcessor).SetVectorNegative(mv);
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinVectorComposer<T> ToComposer<T>(this LinVector<T> mv, T scalingFactor)
-    {
-        return new LinVectorComposer<T>(mv.ScalarProcessor).SetVector(mv, scalingFactor);
-    }
-
-
-    public static ScalarComposer<T> AddESpTerms<T>(this ScalarComposer<T> composer, LinVector<T> mv1, LinVector<T> mv2)
-    {
-        if (mv1.IsZero || mv2.IsZero)
-            return composer;
-
-        var scalarProcessor = composer.ScalarProcessor;
-
-        if (mv1.Count <= mv2.Count)
-        {
-            foreach (var (id, scalar1) in mv1.IndexScalarPairs)
-            {
-                if (!mv2.TryGetTermScalar(id, out var scalar2))
-                    continue;
-
-                composer.AddScalar(scalarProcessor.Times(scalar1, scalar2));
-            }
-        }
-        else
-        {
-            foreach (var (id, scalar2) in mv2.IndexScalarPairs)
-            {
-                if (!mv1.TryGetTermScalar(id, out var scalar1))
-                    continue;
-
-                composer.AddScalar(scalarProcessor.Times(scalar1, scalar2));
-            }
-        }
-
-        return composer;
-    }
 
 }

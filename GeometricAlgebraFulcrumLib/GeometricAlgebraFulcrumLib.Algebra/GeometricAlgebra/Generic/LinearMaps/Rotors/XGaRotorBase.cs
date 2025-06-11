@@ -5,7 +5,7 @@ using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Processors;
 namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.LinearMaps.Rotors;
 
 public abstract class XGaRotorBase<T> : 
-    XGaScaledRotorBase<T>, 
+    XGaScalingRotorBase<T>, 
     IXGaRotor<T>
 {
     protected XGaRotorBase(XGaProcessor<T> processor)
@@ -23,7 +23,7 @@ public abstract class XGaRotorBase<T> :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public override IXGaScaledRotor<T> GetScaledRotorInverse()
+    public override IXGaScalingRotor<T> GetScalingRotorInverse()
     {
         return GetRotorInverse();
     }

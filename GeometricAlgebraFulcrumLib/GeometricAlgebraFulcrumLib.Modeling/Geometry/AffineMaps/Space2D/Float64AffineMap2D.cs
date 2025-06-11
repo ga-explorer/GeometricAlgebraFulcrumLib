@@ -260,7 +260,7 @@ public sealed class Float64AffineMap2D :
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public Float64AffineMap2D Rotate(LinBasisVector2D srcUnitVector, LinBasisVector2D dstUnitVector)
+    public Float64AffineMap2D Rotate(LinBasisVector srcUnitVector, LinBasisVector dstUnitVector)
     {
         return AppendMap(
             SquareMatrix3.CreateRotationMatrix2D(srcUnitVector.ToLinVector2D(), dstUnitVector.ToLinVector2D())

@@ -169,4 +169,21 @@ public sealed class XGaPureRotor<T>
 
         return new Tuple<LinPolarAngle<T>, XGaBivector<T>>(angle, bivector);
     }
+
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public XGaPureScalingRotor<T> CreatePureScalingRotor(T scalingFactor)
+    {
+        var processor = ScalarProcessor;
+
+        var s = processor.Sqrt(scalingFactor);
+        var scalarPart = s * Multivector.Scalar();
+        var bivectorPart = s * Multivector.GetBivectorPart();
+
+        return XGaPureScalingRotor<T>.Create(
+            scalarPart.ScalarValue,
+            bivectorPart
+        );
+    }
+
 }

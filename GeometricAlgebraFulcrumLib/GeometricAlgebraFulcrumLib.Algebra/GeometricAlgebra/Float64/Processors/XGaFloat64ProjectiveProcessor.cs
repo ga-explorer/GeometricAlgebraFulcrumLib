@@ -1,5 +1,4 @@
 ﻿using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivectors;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivectors.Composers;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.BitManipulation;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.IndexSets;
 
@@ -38,10 +37,9 @@ public class XGaFloat64ProjectiveProcessor :
                 }
             );
 
-        return this
-            .CreateComposer()
+        return CreateKVectorComposer(vSpaceDimensions - kVector.Grade)
             .AddTerms(termList)
-            .GetKVector(vSpaceDimensions - kVector.Grade);
+            .GetKVector();
     }
 
     public XGaFloat64Multivector PGaDual(XGaFloat64Multivector mv, int vSpaceDimensions)
@@ -64,8 +62,7 @@ public class XGaFloat64ProjectiveProcessor :
                 }
             );
 
-        return this
-            .CreateComposer()
+        return CreateMultivectorComposer()
             .AddTerms(termList)
             .GetSimpleMultivector();
     }

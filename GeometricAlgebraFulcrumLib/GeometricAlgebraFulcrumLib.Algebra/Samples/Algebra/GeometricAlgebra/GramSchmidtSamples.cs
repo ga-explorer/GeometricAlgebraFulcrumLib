@@ -1,6 +1,5 @@
 ﻿using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Frames;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivectors;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivectors.Composers;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Processors;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space3D;
 using MathNet.Numerics.LinearAlgebra;
@@ -36,19 +35,18 @@ public static class GramSchmidtSamples
         var v2 = LinFloat64Vector3D.Create(-1, -1, 1.5);
         var v3 = 2.5 * v2;
 
-        var u1 = v1;
-        var u2 = v2 - v2.ProjectOnVector(u1);
-        var u3 = v3 - v3.ProjectOnVector(u2) - v3.ProjectOnVector(u1);
+        var u2 = v2 - v2.ProjectOnVector(v1);
+        var u3 = v3 - v3.ProjectOnVector(u2) - v3.ProjectOnVector(v1);
 
-        var u1Norm = u1.VectorENorm();
+        var u1Norm = v1.VectorENorm();
         var u2Norm = u2.VectorENorm();
         var u3Norm = u3.VectorENorm();
 
-        var e1 = u1.ToUnitLinVector3D();
+        var e1 = v1.ToUnitLinVector3D();
         var e2 = u2.ToUnitLinVector3D();
         var e3 = u3.ToUnitLinVector3D();
 
-        Console.WriteLine($"u1 = {u1}");
+        Console.WriteLine($"u1 = {v1}");
         Console.WriteLine($"u2 = {u2}");
         Console.WriteLine($"u3 = {u3}");
         Console.WriteLine();
@@ -115,19 +113,18 @@ public static class GramSchmidtSamples
         //var v2 = new Float64Tuple3D(-1, -1, 1.5);
         //var v3 = 2.5 * v2;
 
-        var u1 = v1;
-        var u2 = v2 - v2.ProjectOnVector(u1);
-        var u3 = v3 - v3.ProjectOnVector(u2) - v3.ProjectOnVector(u1);
+        var u2 = v2 - v2.ProjectOnVector(v1);
+        var u3 = v3 - v3.ProjectOnVector(u2) - v3.ProjectOnVector(v1);
 
-        var u1Norm = u1.VectorENorm();
+        var u1Norm = v1.VectorENorm();
         var u2Norm = u2.VectorENorm();
         var u3Norm = u3.VectorENorm();
 
-        var e1 = u1.ToUnitLinVector3D();
+        var e1 = v1.ToUnitLinVector3D();
         var e2 = u2.ToUnitLinVector3D();
         var e3 = u3.ToUnitLinVector3D();
 
-        Console.WriteLine($"u1 = {u1}");
+        Console.WriteLine($"u1 = {v1}");
         Console.WriteLine($"u2 = {u2}");
         Console.WriteLine($"u3 = {u3}");
         Console.WriteLine();
@@ -198,19 +195,18 @@ public static class GramSchmidtSamples
         //var v2 = new Float64Tuple3D(-1, -1, 1.5);
         //var v3 = 2.5 * v2;
 
-        var u1 = v1;
-        var u2 = v2 - v2.ProjectOnVector(u1);
-        var u3 = v3 - v3.ProjectOnVector(u2) - v3.ProjectOnVector(u1);
+        var u2 = v2 - v2.ProjectOnVector(v1);
+        var u3 = v3 - v3.ProjectOnVector(u2) - v3.ProjectOnVector(v1);
 
-        var u1Norm = u1.VectorENorm();
+        var u1Norm = v1.VectorENorm();
         var u2Norm = u2.VectorENorm();
         var u3Norm = u3.VectorENorm();
 
-        var e1 = u1.ToUnitLinVector3D();
+        var e1 = v1.ToUnitLinVector3D();
         var e2 = u2.ToUnitLinVector3D();
         var e3 = u3.ToUnitLinVector3D();
 
-        Console.WriteLine($"u1 = {u1}");
+        Console.WriteLine($"u1 = {v1}");
         Console.WriteLine($"u2 = {u2}");
         Console.WriteLine($"u3 = {u3}");
         Console.WriteLine();
@@ -294,19 +290,18 @@ public static class GramSchmidtSamples
         //var v2 = new Float64Tuple3D(-1, -1, 1.5);
         //var v3 = 2.5 * v2;
 
-        var u1 = v1;
-        var u2 = v2 - v2.ProjectOnVector(u1);
-        var u3 = v3 - v3.ProjectOnVector(u2) - v3.ProjectOnVector(u1);
+        var u2 = v2 - v2.ProjectOnVector(v1);
+        var u3 = v3 - v3.ProjectOnVector(u2) - v3.ProjectOnVector(v1);
 
-        var u1Norm = u1.Norm().ScalarValue;
+        var u1Norm = v1.Norm().ScalarValue;
         var u2Norm = u2.Norm().ScalarValue;
         var u3Norm = u3.Norm().ScalarValue;
 
-        var e1 = u1.DivideByENorm();
+        var e1 = v1.DivideByENorm();
         var e2 = u2.DivideByENorm();
         var e3 = u3.DivideByENorm();
 
-        Console.WriteLine($"u1 = {u1}");
+        Console.WriteLine($"u1 = {v1}");
         Console.WriteLine($"u2 = {u2}");
         Console.WriteLine($"u3 = {u3}");
         Console.WriteLine();

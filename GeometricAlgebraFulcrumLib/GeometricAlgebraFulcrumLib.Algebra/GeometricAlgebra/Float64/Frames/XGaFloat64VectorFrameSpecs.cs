@@ -1,4 +1,5 @@
 ﻿using System.Runtime.CompilerServices;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivectors;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Frames;
 
@@ -102,4 +103,27 @@ public sealed class XGaFloat64VectorFrameSpecs
     /// All pairs of frame vectors have the same scalar product
     /// </summary>
     public bool? EqualScalarProduct { get; init; }
+
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public XGaFloat64VectorFrame CreateVectorFrame(XGaFloat64Vector vector1, XGaFloat64Vector vector2)
+    {
+        return XGaFloat64VectorFrame.Create(
+            this,
+            [vector1, vector2]
+        );
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public XGaFloat64VectorFrame CreateVectorFrame(params XGaFloat64Vector[] vectorsList)
+    {
+        return XGaFloat64VectorFrame.Create(this, vectorsList);
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public XGaFloat64VectorFrame CreateVectorFrame(IEnumerable<XGaFloat64Vector> vectorsList)
+    {
+        return XGaFloat64VectorFrame.Create(this, vectorsList);
+    }
+
 }

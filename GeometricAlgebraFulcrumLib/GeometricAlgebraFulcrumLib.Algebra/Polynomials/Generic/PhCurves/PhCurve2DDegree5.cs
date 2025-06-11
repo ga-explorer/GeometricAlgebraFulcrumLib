@@ -1,6 +1,5 @@
 ﻿using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.LinearMaps.Rotors;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Multivectors;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Multivectors.Composers;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Processors;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Generic.Angles;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Generic;
@@ -43,7 +42,7 @@ public sealed class PhCurve2DDegree5<T>
 
     public Scalar<T> TangentLength0 { get; }
 
-    public XGaScaledPureRotor<T> ScaledRotor { get; }
+    public XGaPureScalingRotor<T> ScalingRotor { get; }
 
     public PhCurve2DDegree5Canonical<T> CanonicalCurve { get; }
 
@@ -56,9 +55,9 @@ public sealed class PhCurve2DDegree5<T>
         Tangent1 = tangent1;
         TangentLength0 = Tangent0.ENorm();
 
-        ScaledRotor = processor.VectorTerm(0).CreateScaledPureRotor(tangent0);
+        ScalingRotor = processor.VectorTerm(0).CreatePureScalingRotor(tangent0);
 
-        var scaledRotorInv = ScaledRotor.GetPureScaledRotorInverse();
+        var scaledRotorInv = ScalingRotor.GetPureScalingRotorInverse();
 
         CanonicalCurve = PhCurve2DDegree5Canonical<T>.Create(
             processor,
@@ -70,14 +69,14 @@ public sealed class PhCurve2DDegree5<T>
 
     public XGaVector<T> GetHodographPoint(T parameterValue)
     {
-        return ScaledRotor.OmMap(
+        return ScalingRotor.OmMap(
             CanonicalCurve.GetHodographPoint(parameterValue)
         );
     }
 
     public XGaVector<T> GetCurvePoint(T parameterValue)
     {
-        return Point0 + ScaledRotor.OmMap(
+        return Point0 + ScalingRotor.OmMap(
             CanonicalCurve.GetCurvePoint(parameterValue)
         );
     }

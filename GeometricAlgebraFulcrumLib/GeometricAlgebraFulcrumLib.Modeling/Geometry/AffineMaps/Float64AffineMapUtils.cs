@@ -151,7 +151,7 @@ public static class Float64AffineMapUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static ILinFloat64DirectionalScalingLinearMap CreateDirectionalScaling(this LinSignedBasisVector scalingBasisVector, int dimensions, double scalingFactor)
+    public static ILinFloat64DirectionalScalingLinearMap CreateDirectionalScaling(this LinBasisVector scalingBasisVector, int dimensions, double scalingFactor)
     {
         if (scalingFactor.IsZero())
             throw new ArgumentException(nameof(scalingFactor));

@@ -184,17 +184,16 @@ public static class Float64Path3DComposerUtils
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Float64AxisAlignedCirclePath3D CreateCircle3D(this LinBasisVector3D normalAxis, double radius, int rotationCount = 1)
+    public static Float64AxisAlignedCirclePath3D CreateCircle3D(this LinBasisVector normalAxis, double radius, int rotationCount = 1)
     {
-        return normalAxis switch
-        {
-            LinBasisVector3D.Px => new Float64YzCirclePath3D(radius, rotationCount),
-            LinBasisVector3D.Nx => new Float64YzCirclePath3D(radius, -rotationCount),
-            LinBasisVector3D.Py => new Float64ZxCirclePath3D(radius, rotationCount),
-            LinBasisVector3D.Ny => new Float64ZxCirclePath3D(radius, -rotationCount),
-            LinBasisVector3D.Pz => new Float64XyCirclePath3D(radius, rotationCount),
-            _ => new Float64XyCirclePath3D(radius, -rotationCount)
-        };
+        if (normalAxis == LinBasisVector.Px) return new Float64YzCirclePath3D(radius, rotationCount);
+        if (normalAxis == LinBasisVector.Nx) return new Float64YzCirclePath3D(radius, -rotationCount);
+        if (normalAxis == LinBasisVector.Py) return new Float64ZxCirclePath3D(radius, rotationCount);
+        if (normalAxis == LinBasisVector.Ny) return new Float64ZxCirclePath3D(radius, -rotationCount);
+        if (normalAxis == LinBasisVector.Pz) return new Float64XyCirclePath3D(radius, rotationCount);
+        if (normalAxis == LinBasisVector.Nz) return new Float64XyCirclePath3D(radius, -rotationCount);
+
+        throw new InvalidOperationException();
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]

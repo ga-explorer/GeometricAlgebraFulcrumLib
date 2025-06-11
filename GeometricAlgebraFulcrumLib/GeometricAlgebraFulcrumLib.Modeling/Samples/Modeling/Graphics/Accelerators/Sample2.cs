@@ -34,7 +34,7 @@ public static class Sample2
         for (var ix = 0; ix < divisions.GetLength(0) - 1; ix++)
             for (var iy = 0; iy < divisions.GetLength(1) - 1; iy++)
             {
-                if (randGen.GetNumber() > 0.1)
+                if (randGen.GetFloat64() > 0.1)
                 {
                     objectsList.Add(randGen.GetLineSegmentInside(divisions[ix, iy]));
                     continue;

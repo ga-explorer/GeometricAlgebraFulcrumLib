@@ -51,7 +51,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.TensorAlgebra.Generic.Functions
             var bp = new SerializationUtils.ByteParser(data);
             var dimCount = bp.PopInt();
             var dimensions = new int[dimCount];
-            for (int i = 0; i < dimCount; i++)
+            for (var i = 0; i < dimCount; i++)
                 dimensions[i] = bp.PopInt();
             var res = new Core.GenTensor<T, TWrapper>(dimensions);
             foreach (var index in res.IterateOver(0))

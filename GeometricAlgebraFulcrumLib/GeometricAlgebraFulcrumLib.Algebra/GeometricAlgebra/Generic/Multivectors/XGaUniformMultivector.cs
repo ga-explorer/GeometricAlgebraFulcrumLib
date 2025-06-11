@@ -1,7 +1,8 @@
 ﻿using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Multivectors.Composers;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivectors;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Processors;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Processors;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Generic;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.BitManipulation;
@@ -40,7 +41,7 @@ public sealed partial class XGaUniformMultivector<T> :
         => _idScalarDictionary.Count == 0;
 
     public override IEnumerable<XGaBasisBlade> BasisBlades
-        => _idScalarDictionary.Keys.Select(Processor.CreateBasisBlade);
+        => _idScalarDictionary.Keys.Select(Processor.BasisBlade);
 
     public override IEnumerable<IndexSet> Ids
         => _idScalarDictionary.Keys;
@@ -54,7 +55,7 @@ public sealed partial class XGaUniformMultivector<T> :
     public override IEnumerable<KeyValuePair<XGaBasisBlade, T>> BasisScalarPairs
         => _idScalarDictionary.Select(p =>
             new KeyValuePair<XGaBasisBlade, T>(
-                Processor.CreateBasisBlade(p.Key),
+                Processor.BasisBlade(p.Key),
                 p.Value
             )
         );
@@ -349,16 +350,30 @@ public sealed partial class XGaUniformMultivector<T> :
     public override XGaVector<T> GetVectorPart()
     {
         return Processor
-            .CreateComposer()
+            .CreateVectorComposer()
             .SetTerms(_idScalarDictionary.Where(p => p.Key.Count == 1))
             .GetVector();
+    }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public override XGaVector<T> GetVectorPart(Func<int, bool> filterFunc)
+    {
+        return Processor
+            .CreateVectorComposer()
+            .SetTerms(
+                _idScalarDictionary.Where(
+                    p => 
+                        p.Key.Count == 1 && 
+                        filterFunc(p.Key.FirstIndex)
+                )
+            ).GetVector();
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public override XGaBivector<T> GetBivectorPart()
     {
         return Processor
-            .CreateComposer()
+            .CreateBivectorComposer()
             .SetTerms(_idScalarDictionary.Where(p => p.Key.Count == 2))
             .GetBivector();
     }
@@ -370,55 +385,64 @@ public sealed partial class XGaUniformMultivector<T> :
             throw new ArgumentOutOfRangeException(nameof(grade));
 
         return (XGaHigherKVector<T>)Processor
-            .CreateComposer()
+            .CreateKVectorComposer(grade)
             .SetTerms(_idScalarDictionary.Where(p => p.Key.Count == grade))
-            .GetKVector(grade);
+            .GetKVector();
     }
         
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public XGaUniformMultivector<T> GetPart(Func<IndexSet, bool> filterFunc)
+    public override XGaUniformMultivector<T> GetPart(Func<IndexSet, bool> filterFunc)
     {
         if (IsZero) return this;
 
         var idScalarPairs = 
             IdScalarPairs.Where(
                 p => filterFunc(p.Key)
-            ).ToDictionary();
+            ).ToDictionary(
+                p => p.Key,
+                p => p.Value
+            );
 
         return Processor
-            .CreateComposer()
+            .CreateUniformComposer()
             .SetTerms(idScalarPairs)
             .GetUniformMultivector();
     }
         
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public XGaUniformMultivector<T> GetPart(Func<T, bool> filterFunc)
+    public override XGaUniformMultivector<T> GetPart(Func<T, bool> filterFunc)
     {
         if (IsZero) return this;
 
         var idScalarPairs = 
             IdScalarPairs.Where(
                 p => filterFunc(p.Value)
-            ).ToDictionary();
+            ).ToDictionary(
+                p => p.Key,
+                p => p.Value
+            );
 
         return Processor
-            .CreateComposer()
+            .CreateUniformComposer()
             .SetTerms(idScalarPairs)
             .GetUniformMultivector();
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public XGaUniformMultivector<T> GetPart(Func<IndexSet, T, bool> filterFunc)
+    public override XGaUniformMultivector<T> GetPart(Func<IndexSet, T, bool> filterFunc)
     {
         if (IsZero) return this;
 
         var idScalarPairs = 
             IdScalarPairs.Where(
                 p => filterFunc(p.Key, p.Value)
-            ).ToDictionary();
+            ).ToDictionary(
+                p => p.Key,
+                p => p.Value
+            );
 
         return Processor
-            .CreateComposer()
+            .CreateUniformComposer()
             .SetTerms(idScalarPairs)
             .GetUniformMultivector();
     }
@@ -435,9 +459,9 @@ public sealed partial class XGaUniformMultivector<T> :
             1 => GetVectorPart(),
             2 => GetBivectorPart(),
             _ => Processor
-                .CreateComposer()
+                .CreateKVectorComposer(grade)
                 .SetTerms(_idScalarDictionary.Where(p => p.Key.Count == grade))
-                .GetKVector(grade)
+                .GetKVector()
         };
     }
 
@@ -506,14 +530,99 @@ public sealed partial class XGaUniformMultivector<T> :
             idScalarDictionary
         );
     }
-        
+
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public override XGaGradedMultivector<T> ToGradedMultivector()
+    {
+        return ToComposer().GetGradedMultivector();
+    }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public override XGaUniformMultivector<T> ToUniformMultivector()
+    {
+        return this;
+    }
+    
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public override XGaFloat64UniformMultivector Convert(XGaFloat64Processor metric)
+    {
+        if (IsZero)
+            return metric.UniformMultivectorZero;
+
+        var termList =
+            IdScalarPairs.Select(
+                term => new KeyValuePair<IndexSet, double>(
+                    term.Key,
+                    ScalarProcessor.ToFloat64(term.Value)
+                )
+            );
+
+        return metric
+            .CreateMultivectorComposer()
+            .SetTerms(termList)
+            .GetUniformMultivector();
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public override XGaFloat64UniformMultivector Convert(XGaFloat64Processor metric, Func<T, double> scalarMapping)
+    {
+        if (IsZero)
+            return metric.UniformMultivectorZero;
+
+        var termList =
+            IdScalarPairs.Select(
+                term => new KeyValuePair<IndexSet, double>(
+                    term.Key,
+                    scalarMapping(term.Value)
+                )
+            );
+
+        return metric
+            .CreateMultivectorComposer()
+            .SetTerms(termList)
+            .GetUniformMultivector();
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public override XGaUniformMultivector<T2> Convert<T2>(XGaProcessor<T2> metric, Func<T, T2> scalarMapping)
+    {
+        if (IsZero)
+            return metric.UniformMultivectorZero;
+
+        var termList =
+            IdScalarPairs.Select(
+                term => new KeyValuePair<IndexSet, T2>(
+                    term.Key,
+                    scalarMapping(term.Value)
+                )
+            );
+
+        return metric
+            .CreateUniformComposer()
+            .SetTerms(termList)
+            .GetUniformMultivector();
+    }
+
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public override XGaUniformMultivector<T> MapScalars(ScalarTransformer<T> transformer)
+    {
+        return MapScalars(transformer.MapScalarValue);
+    }
+
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public override string ToString()
     {
+        if (IsZero)
+            return $"'{ScalarProcessor.Zero.ToText()}'<>";
+
         return BasisScalarPairs
-            .OrderBy(p => p.Key)
-            .Select(p => $"'{p.Value:G}'{p.Key}")
+            .OrderBy(p => p.Key.Id.Count)
+            .ThenBy(p => p.Key.Id)
+            .Select(p => $"'{ScalarProcessor.ToText(p.Value)}'{p.Key}")
             .Concatenate(" + ");
     }
 }

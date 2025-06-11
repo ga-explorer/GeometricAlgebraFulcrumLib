@@ -10,9 +10,9 @@ namespace GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.LinearMaps.Sp
 public sealed class LinFloat64AxisToAxisRotation4D :
     LinFloat64VectorToVectorRotationBase4D
 {
-    public LinBasisVector4D SourceAxis { get; }
+    public LinBasisVector SourceAxis { get; }
 
-    public LinBasisVector4D TargetAxis { get; }
+    public LinBasisVector TargetAxis { get; }
 
     public override LinFloat64Vector4D SourceVector { get; }
 
@@ -46,21 +46,21 @@ public sealed class LinFloat64AxisToAxisRotation4D :
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public override bool IsValid()
     {
-        return SourceAxis.GetIndex() != TargetAxis.GetIndex();
+        return SourceAxis.Index != TargetAxis.Index;
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public override bool IsIdentity()
     {
-        return SourceAxis.GetIndex() == TargetAxis.GetIndex() &&
-               SourceAxis.IsNegative() == TargetAxis.IsNegative();
+        return SourceAxis.Index == TargetAxis.Index &&
+               SourceAxis.IsNegative == TargetAxis.IsNegative;
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public override bool IsNearIdentity(double zeroEpsilon = 1e-12d)
     {
-        return SourceAxis.GetIndex() == TargetAxis.GetIndex() &&
-               SourceAxis.IsNegative() == TargetAxis.IsNegative();
+        return SourceAxis.Index == TargetAxis.Index &&
+               SourceAxis.IsNegative == TargetAxis.IsNegative;
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -68,16 +68,16 @@ public sealed class LinFloat64AxisToAxisRotation4D :
     {
         return LinFloat64Vector4DComposer
             .Create()
-            .SetTerm(SourceAxis.GetIndex(), vector[SourceAxis.GetIndex()])
-            .SetTerm(TargetAxis.GetIndex(), vector[TargetAxis.GetIndex()])
+            .SetTerm(SourceAxis.Index, vector[SourceAxis.Index])
+            .SetTerm(TargetAxis.Index, vector[TargetAxis.Index])
             .GetVector();
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public override LinFloat64Vector4D MapBasisVector(int basisIndex)
     {
-        var s = basisIndex == SourceAxis.GetIndex() ? SourceAxis.IsNegative() ? -1d : 1d : 0d;
-        var r = basisIndex == TargetAxis.GetIndex() ? TargetAxis.IsNegative() ? -1d : 1d : 0d;
+        var s = basisIndex == SourceAxis.Index ? SourceAxis.IsNegative ? -1d : 1d : 0d;
+        var r = basisIndex == TargetAxis.Index ? TargetAxis.IsNegative ? -1d : 1d : 0d;
         var rsPlus = r + s;
         var rsMinus = r - s;
 
@@ -85,24 +85,24 @@ public sealed class LinFloat64AxisToAxisRotation4D :
             .Create()
             .SetTerm(basisIndex, 1d)
             .SubtractTerm(
-                SourceAxis.GetIndex(),
-                SourceAxis.IsNegative() ? -rsPlus : rsPlus
+                SourceAxis.Index,
+                SourceAxis.IsNegative ? -rsPlus : rsPlus
             ).SubtractTerm(
-                TargetAxis.GetIndex(),
-                TargetAxis.IsNegative() ? -rsMinus : rsMinus
+                TargetAxis.Index,
+                TargetAxis.IsNegative ? -rsMinus : rsMinus
             ).GetVector();
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public override LinFloat64Vector4D MapVector(ILinFloat64Vector4D vector)
     {
-        var r = TargetAxis.IsNegative()
-            ? -vector.GetItem(TargetAxis.GetIndex())
-            : vector.GetItem(TargetAxis.GetIndex());
+        var r = TargetAxis.IsNegative
+            ? -vector.GetItem(TargetAxis.Index)
+            : vector.GetItem(TargetAxis.Index);
 
-        var s = SourceAxis.IsNegative()
-            ? -vector.GetItem(SourceAxis.GetIndex())
-            : vector.GetItem(SourceAxis.GetIndex());
+        var s = SourceAxis.IsNegative
+            ? -vector.GetItem(SourceAxis.Index)
+            : vector.GetItem(SourceAxis.Index);
 
         var rsPlus = r + s;
         var rsMinus = r - s;
@@ -111,33 +111,33 @@ public sealed class LinFloat64AxisToAxisRotation4D :
             .Create()
             .SetVector(vector)
             .SubtractTerm(
-                SourceAxis.GetIndex(),
-                SourceAxis.IsNegative() ? -rsPlus : rsPlus
+                SourceAxis.Index,
+                SourceAxis.IsNegative ? -rsPlus : rsPlus
             ).SubtractTerm(
-                TargetAxis.GetIndex(),
-                TargetAxis.IsNegative() ? -rsMinus : rsMinus
+                TargetAxis.Index,
+                TargetAxis.IsNegative ? -rsMinus : rsMinus
             ).GetVector();
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public override LinFloat64Vector4D MapVectorProjection(LinFloat64Vector4D vector)
     {
-        var r = TargetAxis.IsNegative()
-            ? -vector[TargetAxis.GetIndex()]
-            : vector[TargetAxis.GetIndex()];
+        var r = TargetAxis.IsNegative
+            ? -vector[TargetAxis.Index]
+            : vector[TargetAxis.Index];
 
-        var s = SourceAxis.IsNegative()
-            ? -vector[SourceAxis.GetIndex()]
-            : vector[SourceAxis.GetIndex()];
+        var s = SourceAxis.IsNegative
+            ? -vector[SourceAxis.Index]
+            : vector[SourceAxis.Index];
 
         return LinFloat64Vector4DComposer
             .Create()
             .SetTerm(
-                SourceAxis.GetIndex(),
-                SourceAxis.IsNegative() ? r : -r
+                SourceAxis.Index,
+                SourceAxis.IsNegative ? r : -r
             ).SetTerm(
-                TargetAxis.GetIndex(),
-                TargetAxis.IsNegative() ? -s : s
+                TargetAxis.Index,
+                TargetAxis.IsNegative ? -s : s
             ).GetVector();
     }
 
@@ -145,10 +145,10 @@ public sealed class LinFloat64AxisToAxisRotation4D :
     public override LinFloat64SimpleRotationBase4D GetSimpleVectorRotationInverse()
     {
         return new LinFloat64AxisToAxisRotation4D(
-            TargetAxis.GetIndex(),
-            TargetAxis.IsNegative(),
-            SourceAxis.GetIndex(),
-            SourceAxis.IsNegative()
+            TargetAxis.Index,
+            TargetAxis.IsNegative,
+            SourceAxis.Index,
+            SourceAxis.IsNegative
         );
     }
 }

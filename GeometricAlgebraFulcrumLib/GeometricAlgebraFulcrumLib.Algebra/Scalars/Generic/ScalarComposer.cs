@@ -2,7 +2,7 @@
 
 namespace GeometricAlgebraFulcrumLib.Algebra.Scalars.Generic;
 
-public sealed class ScalarComposer<T> :
+public sealed partial class ScalarComposer<T> :
     IScalar<T>
 {
     [MethodImpl(MethodImplOptions.AggressiveInlining)]

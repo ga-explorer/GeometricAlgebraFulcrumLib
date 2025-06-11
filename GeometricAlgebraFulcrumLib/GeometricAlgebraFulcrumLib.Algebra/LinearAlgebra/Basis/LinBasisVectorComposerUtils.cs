@@ -7,28 +7,24 @@ namespace GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Basis;
 public static class LinBasisVectorComposerUtils
 {
     
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinSignedBasisVector CreateZeroBasisVector()
-    {
-        var basisBlade = 0.ToLinBasisVector();
+    //[MethodImpl(MethodImplOptions.AggressiveInlining)]
+    //public static LinBasisVector CreateZeroBasisVector()
+    //{
+    //    var basisBlade = 0.ToLinBasisVector();
 
-        return new LinSignedBasisVector(basisBlade, IntegerSign.Zero);
-    }
+    //    return new LinBasisVector(basisBlade, IntegerSign.Zero);
+    //}
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static LinBasisVector ToLinBasisVector(this int index)
     {
-        return LinBasisVector.Create(index);
+        return LinBasisVector.Positive(index);
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static ILinSignedBasisVector ToLinBasisVector(this int index, IntegerSign sign)
+    public static LinBasisVector ToLinBasisVector(this int index, IntegerSign sign)
     {
-        var basisVector = index.ToLinBasisVector();
-
-        return sign.IsPositive
-            ? basisVector
-            : new LinSignedBasisVector(basisVector, sign);
+        return LinBasisVector.Create(index, sign);
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -42,7 +38,7 @@ public static class LinBasisVectorComposerUtils
     {
         return vSpaceDimensions
             .GetRange()
-            .Select(LinBasisVector.Create);
+            .Select(LinBasisVector.Positive);
     }
 
 }

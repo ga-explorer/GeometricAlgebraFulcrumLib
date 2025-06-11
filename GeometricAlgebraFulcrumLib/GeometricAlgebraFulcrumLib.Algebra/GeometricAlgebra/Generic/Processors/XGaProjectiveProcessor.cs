@@ -1,8 +1,9 @@
-﻿using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
+﻿using System.Runtime.CompilerServices;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Multivectors;
-using GeometricAlgebraFulcrumLib.Utilities.Structures.IndexSets;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Spaces;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Generic;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Multivectors.Composers;
+using GeometricAlgebraFulcrumLib.Utilities.Structures.IndexSets;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Processors;
 
@@ -38,10 +39,9 @@ public class XGaProjectiveProcessor<T> :
                 }
             );
 
-        return this
-            .CreateComposer()
+        return CreateKVectorComposer(vSpaceDimensions - kVector.Grade)
             .AddTerms(termList)
-            .GetKVector(vSpaceDimensions - kVector.Grade);
+            .GetKVector();
     }
 
     public XGaMultivector<T> PGaDual(XGaMultivector<T> mv, int vSpaceDimensions)
@@ -67,8 +67,7 @@ public class XGaProjectiveProcessor<T> :
                 }
             );
 
-        return this
-            .CreateComposer()
+        return CreateMultivectorComposer()
             .AddTerms(termList)
             .GetSimpleMultivector();
     }
@@ -97,10 +96,9 @@ public class XGaProjectiveProcessor<T> :
                 }
             );
 
-        return this
-            .CreateComposer()
+        return CreateKVectorComposer(vSpaceDimensions - kVector.Grade)
             .AddTerms(termList)
-            .GetKVector(vSpaceDimensions - kVector.Grade);
+            .GetKVector();
     }
 
     public XGaMultivector<T> PGaUnDual(XGaMultivector<T> mv, int vSpaceDimensions)
@@ -126,8 +124,7 @@ public class XGaProjectiveProcessor<T> :
                 }
             );
 
-        return this
-            .CreateComposer()
+        return CreateMultivectorComposer()
             .AddTerms(termList)
             .GetSimpleMultivector();
     }
@@ -154,10 +151,9 @@ public class XGaProjectiveProcessor<T> :
                 }
             );
 
-        return this
-            .CreateComposer()
+        return CreateKVectorComposer(vSpaceDimensions - kVector.Grade)
             .AddTerms(termList)
-            .GetKVector(vSpaceDimensions - kVector.Grade);
+            .GetKVector();
     }
     
     public XGaMultivector<T> PGaPolarity(XGaMultivector<T> mv, int vSpaceDimensions)
@@ -181,8 +177,7 @@ public class XGaProjectiveProcessor<T> :
                 }
             );
 
-        return this
-            .CreateComposer()
+        return CreateMultivectorComposer()
             .AddTerms(termList)
             .GetSimpleMultivector();
     }
@@ -224,4 +219,11 @@ public class XGaProjectiveProcessor<T> :
             vSpaceDimensions
         );
     }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public XGaProjectiveSpace<T> CreateSpace(int vSpaceDimensions)
+    {
+        return new XGaProjectiveSpace<T>(this, vSpaceDimensions);
+    }
+
 }

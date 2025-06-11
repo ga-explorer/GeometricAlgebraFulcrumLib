@@ -1,10 +1,6 @@
-﻿using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Frames;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.LinearMaps.Outermorphisms;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.LinearMaps.Rotors;
+﻿using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.LinearMaps.Outermorphisms;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivectors;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivectors.Composers;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Processors;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Subspaces;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Basis;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Angles;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
@@ -65,7 +61,7 @@ public static class NumericRotorsSample
         var rotationAxis = rotationBlade.Gp(pseudoScalar.Inverse()).GetVectorPart();
 
         // Compute the rotor from the angle and 2-blade of rotation
-        var rotor = rotationBlade.CreatePureRotor(angle);
+        var rotor = rotationBlade.ToPureRotor(angle);
 
         // Make sure the eigen vector and eigen 2-blade of rotation are correct
 
@@ -126,7 +122,7 @@ public static class NumericRotorsSample
             rotationAxis.Gp(pseudoScalar.Inverse()).GetBivectorPart();
 
         // Compute the rotor from the angle and 2-blade of rotation
-        var rotor = rotationBlade.CreatePureRotor(angle);
+        var rotor = rotationBlade.ToPureRotor(angle);
 
         // Make sure the eigen vector and eigen 2-blade of rotation are correct
         var diff1 = rotor.OmMap(rotationAxis) - rotationAxis;
@@ -267,7 +263,7 @@ public static class NumericRotorsSample
         {
             // Define a rotor with angle theta in the plane orthogonal to v2 - v1
             var rotorSBlade = (v2 - v1).Gp(pseudoScalarInverse).GetBivectorPart();
-            var rotorS = rotorSBlade.CreatePureRotor(angleTheta);
+            var rotorS = rotorSBlade.ToPureRotor(angleTheta);
 
             // Create pure rotor that rotates v1 to v2 at theta = 0
             var rotor0 = v1.CreatePureRotor(v2, true);
@@ -347,7 +343,7 @@ public static class NumericRotorsSample
         {
             // Define a rotor with angle theta in the plane orthogonal to v2 - v1
             var rotorSBlade = (v2 - v1).Gp(pseudoScalarInverse).GetBivectorPart();
-            var rotorS = rotorSBlade.CreatePureRotor(angleTheta);
+            var rotorS = rotorSBlade.ToPureRotor(angleTheta);
 
             // Create pure rotor that rotates v1 to v2 at theta = 0
             var rotor0 = v1.CreatePureRotor(v2, true);
@@ -361,7 +357,7 @@ public static class NumericRotorsSample
                 (1 + 2 * (v1v2Dot - 1) / (2 - Math.Pow(angleTheta.Sin(), 2) * (v1v2Dot + 1))).CosToPolarAngle();
 
             // Define the actual rotor taking v1 into v2
-            var rotor = rotorBlade.CreatePureRotor(rotorAngle);
+            var rotor = rotorBlade.ToPureRotor(rotorAngle);
 
             var rotorAxis =
                 rotorBlade.Gp(pseudoScalarInverse).GetVectorPart();
@@ -412,10 +408,10 @@ public static class NumericRotorsSample
         var v =
             GeometricProcessor.Vector(2, 1, -1);
 
-        var scaledRotor = u.CreateScaledPureRotor(v);
+        var scaledRotor = u.CreatePureScalingRotor(v);
 
         var scaledRotorInv =
-            scaledRotor.GetPureScaledRotorInverse();
+            scaledRotor.GetPureScalingRotorInverse();
 
         var v1 =
             scaledRotor.OmMap(u);
@@ -437,12 +433,12 @@ public static class NumericRotorsSample
     /// </summary>
     public static void Example9()
     {
-        var axis = LinSignedBasisVector.Nz;
+        var axis = LinBasisVector.Nz;
         var u = Random.GetVector(-10, 10);
         var u2 = u.Sp(u).Sqrt();
 
-        var rotor1 = u.CreateScaledPureRotorFromAxis(axis, false);
-        var rotor2 = u.CreateScaledPureRotorToAxis(axis, false);
+        var rotor1 = u.CreatePureScalingRotorFromAxis(axis, false);
+        var rotor2 = u.CreatePureScalingRotorToAxis(axis, false);
 
         var r2 = rotor1.Multivector.Gp(rotor1.MultivectorReverse);
 
@@ -468,7 +464,7 @@ public static class NumericRotorsSample
 
         var u = Random.GetVector(0, 10).DivideByENorm();
 
-        var rotor = e1.CreateScaledPureRotor(u);
+        var rotor = e1.CreatePureScalingRotor(u);
 
         var u1 = rotor.OmMap(e1);
         var u2 = rotor.OmMap(e2);
@@ -540,7 +536,7 @@ public static class NumericRotorsSample
         //);
 
         var u = Random.GetVector(0, 10).DivideByENorm() * vectorFrame1[0].ENorm();
-        var rotor = vectorFrame1[0].CreateScaledPureRotor(u);
+        var rotor = vectorFrame1[0].CreatePureScalingRotor(u);
 
         var vectorFrame2 = vectorFrame1.MapUsing(rotor);
 
@@ -638,7 +634,7 @@ public static class NumericRotorsSample
         var vectorFrame1 = GeometricProcessor.CreateBasisVectorFrame(VSpaceDimensions).MapAsBasisUsing(v => Random.GetScalarValue(1.1, 3) * v);
 
         var u = Random.GetVector(0, 10).DivideByENorm() * vectorFrame1[0].ENorm();
-        var rotor = vectorFrame1[0].CreateScaledPureRotor(u);
+        var rotor = vectorFrame1[0].CreatePureScalingRotor(u);
 
         var vectorFrame2 = vectorFrame1.MapUsing(rotor);
 

@@ -1,12 +1,10 @@
-﻿using System.Collections.Immutable;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using System.Numerics;
 using System.Runtime.CompilerServices;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Basis;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space2D;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space3D;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space4D;
-using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.SpaceND;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Random;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Tuples;
@@ -147,29 +145,6 @@ public static class LinFloat64AngleUtils
     //    return LinFloat64DirectedAngle.CreateFromRadians(radians);
     //}
     
-    //[MethodImpl(MethodImplOptions.AggressiveInlining)]
-    //public static LinFloat64Angle ClampNegative(this LinFloat64Angle angle)
-    //{
-    //    const double maxValue = 360d;
-
-    //    var value = angle.DegreesValue + 180d;
-
-    //    return value switch
-    //    {
-    //        //value < -maxValue
-    //        < -maxValue => LinFloat64DirectedAngle.CreateFromDegrees(value + Math.Ceiling(-value / maxValue) * maxValue),
-
-    //        //-maxValue <= value < 0
-    //        < 0 => LinFloat64DirectedAngle.CreateFromDegrees(value + maxValue),
-
-    //        //value > maxValue
-    //        > maxValue => LinFloat64DirectedAngle.CreateFromDegrees(value - Math.Truncate(value / maxValue) * maxValue),
-
-    //        //0 <= value <= maxValue
-    //        _ => LinFloat64DirectedAngle.CreateFromDegrees(value)
-    //    };
-    //}
-
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static double CosToRadiansSin(this double cosAngle)
@@ -873,7 +848,7 @@ public static class LinFloat64AngleUtils
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static LinFloat64PolarAngle GetPolarAngle(this Random randomGenerator)
     {
-        var radians = randomGenerator.GetNumber(-2, 2) * Math.PI;
+        var radians = randomGenerator.GetFloat64(-2, 2) * Math.PI;
 
         return LinFloat64PolarAngle.CreateFromRadians(radians);
     }
@@ -881,7 +856,7 @@ public static class LinFloat64AngleUtils
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static LinFloat64PolarAngle GetPolarAngleInQuadrant(this Random randomGenerator, int quadrantIndex)
     {
-        var radians = (randomGenerator.GetNumber(0, 1) + quadrantIndex % 4) * Math.PI / 2;
+        var radians = (randomGenerator.GetFloat64(0, 1) + quadrantIndex % 4) * Math.PI / 2;
 
         return LinFloat64PolarAngle.CreateFromRadians(radians);
     }
@@ -891,7 +866,7 @@ public static class LinFloat64AngleUtils
     {
         Debug.Assert(maxAngleRatio <= 1);
 
-        return (randomGenerator.GetNumber(0, maxAngleRatio) * Math.Tau).RadiansToPolarAngle();
+        return (randomGenerator.GetFloat64(0, maxAngleRatio) * Math.Tau).RadiansToPolarAngle();
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -899,20 +874,20 @@ public static class LinFloat64AngleUtils
     {
         Debug.Assert(minAngleRatio >= -1 && maxAngleRatio <= 1);
 
-        return (randomGenerator.GetNumber(minAngleRatio, maxAngleRatio) * Math.Tau).RadiansToPolarAngle();
+        return (randomGenerator.GetFloat64(minAngleRatio, maxAngleRatio) * Math.Tau).RadiansToPolarAngle();
     }
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static LinFloat64DirectedAngle GetDirectedAngle(this Random randomGenerator)
     {
-        return (randomGenerator.GetNumber(-2, 2) * Math.PI).RadiansToDirectedAngle();
+        return (randomGenerator.GetFloat64(-2, 2) * Math.PI).RadiansToDirectedAngle();
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static LinFloat64DirectedAngle GetDirectedAngleInQuadrant(this Random randomGenerator, int quadrantIndex)
     {
-        return ((randomGenerator.GetNumber(0, 1) + quadrantIndex % 4) * Math.PI / 2).RadiansToDirectedAngle();
+        return ((randomGenerator.GetFloat64(0, 1) + quadrantIndex % 4) * Math.PI / 2).RadiansToDirectedAngle();
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -920,7 +895,7 @@ public static class LinFloat64AngleUtils
     {
         Debug.Assert(maxAngleRatio <= 1);
 
-        return (randomGenerator.GetNumber(0, maxAngleRatio) * Math.Tau).RadiansToDirectedAngle();
+        return (randomGenerator.GetFloat64(0, maxAngleRatio) * Math.Tau).RadiansToDirectedAngle();
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -928,189 +903,10 @@ public static class LinFloat64AngleUtils
     {
         Debug.Assert(minAngleRatio >= -1 && maxAngleRatio <= 1);
 
-        return (randomGenerator.GetNumber(minAngleRatio, maxAngleRatio) * Math.Tau).RadiansToDirectedAngle();
+        return (randomGenerator.GetFloat64(minAngleRatio, maxAngleRatio) * Math.Tau).RadiansToDirectedAngle();
     }
     
     
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64Angle NegativeAngle(this LinFloat64Angle angle)
-    {
-        return angle switch
-        {
-            LinFloat64DirectedAngle directedAngle => 
-                directedAngle.NegativeAngle(),
-
-            LinFloat64PolarAngle polarAngle => 
-                polarAngle.NegativeAngle(),
-
-            _ => throw new InvalidOperationException()
-        };
-    }
-    
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64Angle OppositeAngle(this LinFloat64Angle angle)
-    {
-        return angle switch
-        {
-            LinFloat64DirectedAngle directedAngle => 
-                directedAngle.OppositeAngle(),
-
-            LinFloat64PolarAngle polarAngle => 
-                polarAngle.OppositeAngle(),
-
-            _ => throw new InvalidOperationException()
-        };
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64Angle AngleAdd(this LinFloat64Angle angle, double angle2)
-    {
-        return angle switch
-        {
-            LinFloat64DirectedAngle directedAngle => 
-                directedAngle.AngleAdd(angle2),
-
-            LinFloat64PolarAngle polarAngle => 
-                polarAngle.AngleAdd(angle2),
-
-            _ => throw new InvalidOperationException()
-        };
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64Angle AngleSubtract(this LinFloat64Angle angle, double angle2)
-    {
-        return angle switch
-        {
-            LinFloat64DirectedAngle directedAngle => 
-                directedAngle.AngleSubtract(angle2),
-
-            LinFloat64PolarAngle polarAngle => 
-                polarAngle.AngleSubtract(angle2),
-
-            _ => throw new InvalidOperationException()
-        };
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64Angle AngleTimes(this LinFloat64Angle angle, double scalingFactor)
-    {
-        return angle switch
-        {
-            LinFloat64DirectedAngle directedAngle => 
-                directedAngle.AngleTimes(scalingFactor),
-
-            LinFloat64PolarAngle polarAngle => 
-                polarAngle.AngleTimes(scalingFactor),
-
-            _ => throw new InvalidOperationException()
-        };
-    }
-    
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64Angle AngleDivide(this LinFloat64Angle angle, double scalingFactor)
-    {
-        return angle switch
-        {
-            LinFloat64DirectedAngle directedAngle => 
-                directedAngle.AngleDivide(scalingFactor),
-
-            LinFloat64PolarAngle polarAngle => 
-                polarAngle.AngleDivide(scalingFactor),
-
-            _ => throw new InvalidOperationException()
-        };
-    }
-
-
-    //[MethodImpl(MethodImplOptions.AggressiveInlining)]
-    //public static LinFloat64Angle HalfAngle(this LinFloat64Angle angle, LinAngleRange range)
-    //{
-    //    return angle switch
-    //    {
-    //        LinFloat64DirectedAngle directedAngle => 
-    //            directedAngle.HalfAngle(range),
-
-    //        LinFloat64PolarAngle polarAngle => 
-    //            polarAngle.HalfPolarAngle(range),
-
-    //        _ => throw new InvalidOperationException()
-    //    };
-    //}
-
-    //[MethodImpl(MethodImplOptions.AggressiveInlining)]
-    //public static LinFloat64Angle HalfAngle(this LinFloat64Angle angle)
-    //{
-    //    return angle switch
-    //    {
-    //        LinFloat64DirectedAngle directedAngle => 
-    //            directedAngle.HalfAngle(),
-
-    //        LinFloat64PolarAngle polarAngle => 
-    //            polarAngle.HalfAngle(),
-
-    //        _ => throw new InvalidOperationException()
-    //    };
-    //}
-    
-    //[MethodImpl(MethodImplOptions.AggressiveInlining)]
-    //public static LinFloat64Angle DoubleAngle(this LinFloat64Angle angle, LinAngleRange range)
-    //{
-    //    return angle switch
-    //    {
-    //        LinFloat64DirectedAngle directedAngle => 
-    //            directedAngle.DoubleAngle(range),
-
-    //        LinFloat64PolarAngle polarAngle => 
-    //            polarAngle.DoublePolarAngle(range),
-
-    //        _ => throw new InvalidOperationException()
-    //    };
-    //}
-
-    //public static LinFloat64Angle DoubleAngle(this LinFloat64Angle angle)
-    //{
-    //    return angle switch
-    //    {
-    //        LinFloat64DirectedAngle directedAngle => 
-    //            directedAngle.DoubleAngle(),
-
-    //        LinFloat64PolarAngle polarAngle => 
-    //            polarAngle.DoublePolarAngle(),
-
-    //        _ => throw new InvalidOperationException()
-    //    };
-    //}
-    
-    //[MethodImpl(MethodImplOptions.AggressiveInlining)]
-    //public static LinFloat64Angle TripleAngle(this LinFloat64Angle angle, LinAngleRange range)
-    //{
-    //    return angle switch
-    //    {
-    //        LinFloat64DirectedAngle directedAngle => 
-    //            directedAngle.TripleAngle(range),
-
-    //        LinFloat64PolarAngle polarAngle => 
-    //            polarAngle.TriplePolarAngle(range),
-
-    //        _ => throw new InvalidOperationException()
-    //    };
-    //}
-
-    //[MethodImpl(MethodImplOptions.AggressiveInlining)]
-    //public static LinFloat64Angle TripleAngle(this LinFloat64Angle angle)
-    //{
-    //    return angle switch
-    //    {
-    //        LinFloat64DirectedAngle directedAngle => 
-    //            directedAngle.TripleAngle(),
-
-    //        LinFloat64PolarAngle polarAngle => 
-    //            polarAngle.TriplePolarAngle(),
-
-    //        _ => throw new InvalidOperationException()
-    //    };
-    //}
 
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -1427,31 +1223,7 @@ public static class LinFloat64AngleUtils
     /// <param name="v2"></param>
     /// <returns></returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static double GetAngleCos(this LinBasisVector3D v1, LinBasisVector3D v2)
-    {
-        return v1.GetComponent(v2);
-    }
-
-    /// <summary>
-    /// Find the angle between this vector and another
-    /// </summary>
-    /// <param name="v1"></param>
-    /// <param name="v2"></param>
-    /// <returns></returns>
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static double GetAngleCos(this LinBasisVector3D v1, ITriplet<Float64Scalar> v2)
-    {
-        return (v2.GetComponent(v1) / v2.VectorENorm()).Clamp(-1d, 1d);
-    }
-
-    /// <summary>
-    /// Find the angle between this vector and another
-    /// </summary>
-    /// <param name="v1"></param>
-    /// <param name="v2"></param>
-    /// <returns></returns>
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static double GetAngleCos(this ITriplet<Float64Scalar> v1, LinBasisVector3D v2)
+    public static double GetAngleCos(this ITriplet<Float64Scalar> v1, LinBasisVector v2)
     {
         return (v1.GetComponent(v2) / v1.VectorENorm()).Clamp(-1d, 1d);
     }
@@ -1486,20 +1258,6 @@ public static class LinFloat64AngleUtils
         var t3 = v2.Item1 * v2.Item1 + v2.Item2 * v2.Item2 + v2.Item3 * v2.Item3 + v2.Item4 * v2.Item4;
 
         return (t1 / Math.Sqrt(t2 * t3)).Clamp(-1d, 1d);
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static double GetAngleCos(this LinFloat64Vector vector1, LinFloat64Vector vector2)
-    {
-        var uuDot = vector1.ENormSquared();
-        var vvDot = vector2.ENormSquared();
-        var uvDot = vector1.ESp(vector2);
-
-        var norm = (uuDot * vvDot).Sqrt();
-
-        return norm.IsZero()
-            ? 0d
-            : Float64Utils.Clamp(uvDot / norm, -1, 1);
     }
 
 
@@ -1572,59 +1330,6 @@ public static class LinFloat64AngleUtils
         return v1.GetAngleCosWithUnit(v2).CosToPolarAngle();
     }
     
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static double GetAngleCosWithUnit(this LinFloat64Vector vector1, ILinSignedBasisVector vector2)
-    {
-        Debug.Assert(
-            vector2.Sign.IsNotZero
-        );
-
-        var uuDot = vector1.ENormSquared();
-        var uvDot = vector1.ESp(vector2);
-
-        var norm = uuDot.Sqrt();
-
-        return norm.IsZero()
-            ? 0d
-            : Float64Utils.Clamp(uvDot / norm, -1, 1);
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static double GetAngleCosWithUnit(this LinFloat64Vector vector1, LinFloat64Vector vector2)
-    {
-        Debug.Assert(
-            vector2.IsNearUnit()
-        );
-
-        var uuDot = vector1.ENormSquared();
-        var uvDot = vector1.ESp(vector2);
-
-        var norm = uuDot.Sqrt();
-
-        return norm.IsZero()
-            ? 0d
-            : Float64Utils.Clamp(uvDot / norm, -1, 1);
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static double GetUnitVectorsAngleCos(this LinFloat64Vector vector1, LinFloat64Vector vector2)
-    {
-        return Float64Utils.Clamp(vector1.ESp(vector2), -1, 1);
-    }
-
-    
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64PolarAngle GetAngleWithUnit(this LinFloat64Vector vector1, ILinSignedBasisVector vector2)
-    {
-        return vector1.GetAngleCosWithUnit(vector2).CosToPolarAngle();
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64PolarAngle GetAngleWithUnit(this LinFloat64Vector vector1, LinFloat64Vector vector2)
-    {
-        return vector1.GetAngleCosWithUnit(vector2).CosToPolarAngle();
-    }
-
 
     /// <summary>
     /// Find the angle between this vector and another
@@ -1662,12 +1367,6 @@ public static class LinFloat64AngleUtils
         return v1.GetUnitVectorsAngleCos(v2).CosToPolarAngle().RadiansToPolarAngle();
     }
     
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64PolarAngle GetUnitVectorsAngle(this LinFloat64Vector vector1, LinFloat64Vector vector2)
-    {
-        return vector1.GetUnitVectorsAngleCos(vector2).CosToPolarAngle();
-    }
-
 
     /// <summary>
     /// Find the angle between this vector and another
@@ -1705,24 +1404,6 @@ public static class LinFloat64AngleUtils
         return v1.GetAngleCos(v2).CosToPolarAngle();
     }
     
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64PolarAngle GetAngle(this LinFloat64Vector vector1, LinFloat64Vector vector2, bool assumeUnitVectors)
-    {
-        var v12Sp = vector1.ESp(vector2);
-
-        var angle = assumeUnitVectors
-            ? v12Sp
-            : v12Sp / (vector1.ENormSquared() * vector2.ENormSquared()).Sqrt();
-
-        return angle.CosToPolarAngle();
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64PolarAngle GetAngle(this LinFloat64Vector vector1, LinFloat64Vector vector2)
-    {
-        return vector1.GetAngleCos(vector2).CosToPolarAngle();
-    }
-
 
     /// <summary>
     /// Find the angle between points (p1, p0, p2); i.e. p0 is the head of the angle
@@ -2175,86 +1856,4 @@ public static class LinFloat64AngleUtils
     }
 
     
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Pair<LinFloat64Vector2D> RotateBasisFrame2D(this LinFloat64Angle angle)
-    {
-        return new Pair<LinFloat64Vector2D>(
-            angle.Rotate(LinFloat64Vector2D.E1),
-            angle.Rotate(LinFloat64Vector2D.E2)
-        );
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64Vector2D Rotate(this LinFloat64Angle angle, double x, double y)
-    {
-        var cosValue = angle.CosValue;
-        var sinValue = angle.SinValue;
-
-        var x1 = x * cosValue - y * sinValue;
-        var y1 = x * sinValue + y * cosValue;
-
-        return LinFloat64Vector2D.Create(x1, y1);
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64Vector2D Rotate(this LinFloat64Angle angle, LinBasisVector2D axis)
-    {
-        var cosValue = angle.CosValue;
-        var sinValue = angle.SinValue;
-
-        var (x, y) = axis.ToLinVector2D();
-
-        var x1 = x * cosValue - y * sinValue;
-        var y1 = x * sinValue + y * cosValue;
-
-        return LinFloat64Vector2D.Create(x1, y1);
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64Vector2D Rotate(this LinFloat64Angle angle, IPair<Float64Scalar> vector)
-    {
-        var cosValue = angle.CosValue;
-        var sinValue = angle.SinValue;
-
-        var x = vector.Item1;
-        var y = vector.Item2;
-
-        var x1 = x * cosValue - y * sinValue;
-        var y1 = x * sinValue + y * cosValue;
-
-        return LinFloat64Vector2D.Create(x1, y1);
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Pair<LinFloat64Vector2D> Rotate(this LinFloat64Angle angle, IPair<Float64Scalar> vector1, IPair<Float64Scalar> vector2)
-    {
-        return new Pair<LinFloat64Vector2D>(
-            angle.Rotate(vector1),
-            angle.Rotate(vector2)
-        );
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Triplet<LinFloat64Vector2D> Rotate(this LinFloat64Angle angle, IPair<Float64Scalar> vector1, IPair<Float64Scalar> vector2, IPair<Float64Scalar> vector3)
-    {
-        return new Triplet<LinFloat64Vector2D>(
-            angle.Rotate(vector1),
-            angle.Rotate(vector2),
-            angle.Rotate(vector3)
-        );
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static IReadOnlyList<LinFloat64Vector2D> Rotate(this LinFloat64Angle angle, params IPair<Float64Scalar>[] vectorArray)
-    {
-        return vectorArray
-            .Select(angle.Rotate)
-            .ToImmutableArray();
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static IEnumerable<LinFloat64Vector2D> Rotate(this LinFloat64Angle angle, IEnumerable<IPair<Float64Scalar>> vectorList)
-    {
-        return vectorList.Select(angle.Rotate);
-    }
 }

@@ -90,7 +90,7 @@ public sealed class XeoglCamera : XeoglComponent
         return this;
     }
 
-    public XeoglCamera SetOrientation(LinBasisVector3D rightAxis, LinBasisVector3D upAxis, LinBasisVector3D forwardAxis)
+    public XeoglCamera SetOrientation(LinBasisVector rightAxis, LinBasisVector upAxis, LinBasisVector forwardAxis)
     {
         WorldRightDirection.SetVector(rightAxis.ToLinVector3D());
         WorldUpDirection.SetVector(upAxis.ToLinVector3D());

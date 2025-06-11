@@ -1,7 +1,7 @@
 ﻿using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
-using GeometricAlgebraFulcrumLib.Utilities.Structures.IndexSets;
-using GeometricAlgebraFulcrumLib.Algebra.Scalars.Generic;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Processors;
+using GeometricAlgebraFulcrumLib.Algebra.Scalars.Generic;
+using GeometricAlgebraFulcrumLib.Utilities.Structures.IndexSets;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Combinations;
 
@@ -47,10 +47,10 @@ public sealed class XGaUnilinearCombinationTerm<T>
     public Scalar<T> InputScalar { get; internal set; }
     
     public XGaBasisBlade InputBasisBlade
-        => Processor.CreateBasisBlade(InputBasisBladeId);
+        => Processor.BasisBlade(InputBasisBladeId);
 
     public XGaBasisBlade OutputBasisBlade
-        => Processor.CreateBasisBlade(OutputBasisBladeId);
+        => Processor.BasisBlade(OutputBasisBladeId);
 
     public int InputBasisBladeGrade
         => InputBasisBladeId.Grade();

@@ -1,9 +1,7 @@
 ﻿using System.Diagnostics;
 using System.Runtime.CompilerServices;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Frames;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Multivectors;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Multivectors.Composers;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Processors;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Generic.Angles;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Generic;
@@ -95,7 +93,7 @@ public class XGaRotor<T>
                     rotatedVector2
                 );
 
-        return XGaPureRotorsSequence<T>.CreateFromOrthonormalEuclideanFrames(
+        return XGaPureRotorSequence<T>.CreateFromOrthonormalEuclideanFrames(
             inputFrame, 
             rotatedFrame, 
             true
@@ -120,7 +118,7 @@ public class XGaRotor<T>
                     rotatedVector2
                 );
 
-        return XGaPureRotorsSequence<T>.CreateFromEuclideanFrames(
+        return XGaPureRotorSequence<T>.CreateFromEuclideanFrames(
             baseSpaceDimensions, 
             inputFrame, 
             rotatedFrame
@@ -143,15 +141,12 @@ public class XGaRotor<T>
         var (cosHalfAngle, sinHalfAngle) = 
             rotationAngle.HalfPolarAngle();
 
-        var bladeId = BasisBivectorUtils.IndexPairToBivectorId(i, j);
-
-        var composer = processor.CreateComposer();
-
-        composer.SetScalarTerm(cosHalfAngle);
-        composer.SetTerm(bladeId, sinHalfAngle);
-
         return new XGaRotor<T>(
-            composer.GetMultivector()
+            processor
+                .CreateMultivectorComposer()
+                .SetScalarTerm(cosHalfAngle)
+                .SetBivectorTerm(i, j, sinHalfAngle)
+                .GetSimpleMultivector()
         );
     }
         

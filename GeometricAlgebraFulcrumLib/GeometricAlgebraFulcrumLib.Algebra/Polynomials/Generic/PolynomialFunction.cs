@@ -11,8 +11,8 @@ public class PolynomialFunction<T> :
     public static PolynomialFunction<T> CreateZero(IScalarProcessor<T> scalarProcessor)
     {
         return new PolynomialFunction<T>(
-            scalarProcessor, 
-            new[] {scalarProcessor.ZeroValue}
+            scalarProcessor,
+            [scalarProcessor.ZeroValue]
         );
     }
 

@@ -12,7 +12,7 @@ public static class LinFloat64RandomUtils
         var array = new double[size];
 
         for (var i = 0; i < size; i++)
-            array[i] = random.GetNumber(minValue, maxValue);
+            array[i] = random.GetFloat64(minValue, maxValue);
 
         return array;
     }
@@ -23,7 +23,7 @@ public static class LinFloat64RandomUtils
 
         for (var i = 0; i < rowCount; i++)
             for (var j = 0; j < rowCount; j++)
-                array[i, j] = random.GetNumber(minValue, maxValue);
+                array[i, j] = random.GetFloat64(minValue, maxValue);
 
         return array;
     }
@@ -33,7 +33,7 @@ public static class LinFloat64RandomUtils
     public static double[,] GetCirculantColumnArray(this Random random, int size, double minValue = -1d, double maxValue = 1d)
     {
         return Float64ArrayUtils.CreateCirculantColumnArray(
-            random.GetNumbers(size, minValue, maxValue).ToImmutableArray()
+            random.GetFloat64Numbers(size, minValue, maxValue).ToImmutableArray()
         );
     }
 

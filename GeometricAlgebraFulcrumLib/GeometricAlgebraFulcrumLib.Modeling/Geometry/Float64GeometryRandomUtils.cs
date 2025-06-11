@@ -18,8 +18,8 @@ public static class Float64GeometryRandomUtils
     public static LinFloat64Vector2D GetPointInside(this Random randomGenerator, IFloat64BoundingBox2D limitsBoundingBox)
     {
         return LinFloat64Vector2D.Create(
-            randomGenerator.GetLinearMappedNumber(limitsBoundingBox.MinX, limitsBoundingBox.MaxX),
-            randomGenerator.GetLinearMappedNumber(limitsBoundingBox.MinY, limitsBoundingBox.MaxY)
+            randomGenerator.GetLinearMappedFloat64(limitsBoundingBox.MinX, limitsBoundingBox.MaxX),
+            randomGenerator.GetLinearMappedFloat64(limitsBoundingBox.MinY, limitsBoundingBox.MaxY)
         );
     }
 
@@ -27,7 +27,7 @@ public static class Float64GeometryRandomUtils
     public static LinFloat64Vector2D GetPointInside(this Random randomGenerator, IFloat64LineSegment2D lineSegment)
     {
         return lineSegment.GetPointAt(
-            randomGenerator.GetNumber()
+            randomGenerator.GetFloat64()
         );
     }
 
@@ -35,9 +35,9 @@ public static class Float64GeometryRandomUtils
     public static LinFloat64Vector3D GetPointInside(this Random randomGenerator, IFloat64BoundingBox3D limitsBoundingBox)
     {
         return LinFloat64Vector3D.Create(
-            randomGenerator.GetLinearMappedNumber(limitsBoundingBox.MinX, limitsBoundingBox.MaxX),
-            randomGenerator.GetLinearMappedNumber(limitsBoundingBox.MinY, limitsBoundingBox.MaxY),
-            randomGenerator.GetLinearMappedNumber(limitsBoundingBox.MinZ, limitsBoundingBox.MaxZ)
+            randomGenerator.GetLinearMappedFloat64(limitsBoundingBox.MinX, limitsBoundingBox.MaxX),
+            randomGenerator.GetLinearMappedFloat64(limitsBoundingBox.MinY, limitsBoundingBox.MaxY),
+            randomGenerator.GetLinearMappedFloat64(limitsBoundingBox.MinZ, limitsBoundingBox.MaxZ)
         );
     }
 
@@ -45,9 +45,9 @@ public static class Float64GeometryRandomUtils
     public static LinFloat64Vector3D GetPointInside(this Random randomGenerator, IFloat64Triangle3D triangle)
     {
         return triangle.GetPointAt(
-            randomGenerator.GetNumber(),
-            randomGenerator.GetNumber(),
-            randomGenerator.GetNumber()
+            randomGenerator.GetFloat64(),
+            randomGenerator.GetFloat64(),
+            randomGenerator.GetFloat64()
         );
     }
 

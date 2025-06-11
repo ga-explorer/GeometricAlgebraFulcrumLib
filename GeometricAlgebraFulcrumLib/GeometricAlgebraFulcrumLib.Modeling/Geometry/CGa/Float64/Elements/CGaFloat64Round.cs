@@ -209,7 +209,7 @@ public class CGaFloat64Round :
 
         directionVectors.Add(
             -directionVectors.Aggregate(
-                LinFloat64Vector.VectorZero,
+                LinFloat64Vector.Zero,
                 (a, b) => a + b
             ).DivideByENorm()
         );

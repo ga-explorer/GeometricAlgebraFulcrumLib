@@ -1,7 +1,6 @@
 ﻿using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Basis;
-using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space3D;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Generic.Angles;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Generic;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Tuples;
@@ -190,9 +189,9 @@ public static class LinVector3DAffineUtils
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static void GetCoordinateSystem<T>(this LinVector3D<T> v1, out LinVector3D<T> v2, out LinVector3D<T> v3)
+    public static void GetCoordinateSystem<T>(this ITriplet<Scalar<T>> v1, out LinVector3D<T> v2, out LinVector3D<T> v3)
     {
-        var zero = v1.ScalarProcessor.Zero;
+        var zero = v1.GetScalarProcessor().Zero;
 
         v2 = v1.Item1.Abs() > v1.Item2.Abs()
             ? LinVector3D<T>.Create(-v1.Item3, zero, v1.Item1) / (v1.Item1 * v1.Item1 + v1.Item3 * v1.Item3).Sqrt()
@@ -295,10 +294,10 @@ public static class LinVector3DAffineUtils
 
         // For smoother motions, find the quaternion q that
         // rotates e1 to vector, then use q to rotate e2
-        return LinBasisVector3D
+        return LinBasisVector
             .Px
             .CreateAxisToVectorRotationQuaternion(vector.ToUnitVector())
-            .RotateVector(LinBasisVector3D.Py);
+            .RotateVector(LinBasisVector.Py);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -327,12 +326,12 @@ public static class LinVector3DAffineUtils
 
         // For smoother motions, find the quaternion q that
         // rotates e1 to vector, then use q to rotate e2, e3
-        return LinBasisVector3D
+        return LinBasisVector
             .Px
             .CreateAxisToVectorRotationQuaternion(vector.ToUnitVector())
             .RotateVectors(
-                LinBasisVector3D.Py,
-                LinBasisVector3D.Pz
+                LinBasisVector.Py,
+                LinBasisVector.Pz
             );
     }
 
@@ -369,11 +368,11 @@ public static class LinVector3DAffineUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinVector3D<T> RejectOnAxis<T>(this ITriplet<Scalar<T>> v, LinBasisVector3D axis)
+    public static LinVector3D<T> RejectOnAxis<T>(this ITriplet<Scalar<T>> v, LinBasisVector axis)
     {
         var zero = v.GetScalarProcessor().Zero;
 
-        return axis.GetIndex() switch
+        return axis.Index switch
         {
             0 => LinVector3D<T>.Create(zero, v.Item2, v.Item3),
             1 => LinVector3D<T>.Create(v.Item1, zero, v.Item3),

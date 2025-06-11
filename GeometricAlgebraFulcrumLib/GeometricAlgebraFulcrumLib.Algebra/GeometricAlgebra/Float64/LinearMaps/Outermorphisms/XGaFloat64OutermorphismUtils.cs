@@ -2,12 +2,9 @@
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Frames;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivectors;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivectors.Composers;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Processors;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Basis;
-using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.LinearMaps.SpaceND;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Matrices;
-using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.SpaceND;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Combinations;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.IndexSets;
 using MathNet.Numerics.LinearAlgebra;
@@ -17,7 +14,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.LinearMaps
 public static class XGaFloat64OutermorphismUtils
 {
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static XGaFloat64Vector OmMap(this IXGaFloat64Outermorphism outermorphism, LinSignedBasisVector axis)
+    public static XGaFloat64Vector OmMap(this IXGaFloat64Outermorphism outermorphism, LinBasisVector axis)
     {
         return axis.IsPositive
             ? outermorphism.OmMapBasisVector(axis.Index)
@@ -169,14 +166,6 @@ public static class XGaFloat64OutermorphismUtils
         var size = Math.Max(rowCount, colCount);
 
         return om.GetVectorMapPart(size).ToArray(rowCount, colCount);
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static double[,] GetFinalMappingArray(this XGaFloat64Processor metric, IEnumerable<IXGaFloat64Outermorphism> omSeq, int rowsCount)
-    {
-        return omSeq.OmMap(
-            metric.CreateFreeFrameOfBasis(rowsCount)
-        ).GetArray(rowsCount);
     }
 
 
@@ -377,15 +366,6 @@ public static class XGaFloat64OutermorphismUtils
             .Sp(om.Processor.PseudoScalarInverse(vSpaceDimensions)).Scalar();
     }
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static IXGaFloat64Outermorphism CreateComputedOutermorphism(this XGaFloat64VectorFrame frame)
-    {
-        return frame
-            .Select(v => v.ToLinVector())
-            .ToLinUnilinearMap()
-            .ToOutermorphism(frame.Processor);
-    }
-        
         
     public static Matrix<double> GetOutermorphismMatrix(this Matrix<double> matrix, int grade)
     {
@@ -431,23 +411,4 @@ public static class XGaFloat64OutermorphismUtils
     }
 
         
-    public static XGaFloat64LinearMapOutermorphism CreateClarkeRotationMap(this XGaFloat64Processor processor, int vectorsCount)
-    {
-        var clarkeMapArray =
-            Float64ArrayUtils.CreateClarkeRotationArray(vectorsCount);
-
-        var basisVectorImagesDictionary = 
-            new Dictionary<int, LinFloat64Vector>();
-
-        for (var i = 0; i < vectorsCount; i++)
-            basisVectorImagesDictionary.Add(
-                i, 
-                clarkeMapArray.ColumnToLinVector(i)
-            );
-
-        return basisVectorImagesDictionary
-            .ToLinUnilinearMap()
-            .ToOutermorphism(processor);
-    }
-
 }

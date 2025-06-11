@@ -130,7 +130,7 @@
 //    }
     
 //    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-//    public LinFloat64UnilinearMapComposer SetColumnTerm(int index2, LinSignedBasisVector basisVector)
+//    public LinFloat64UnilinearMapComposer SetColumnTerm(int index2, LinBasisVector basisVector)
 //    {
 //        if (basisVector.IsZero)
 //            return RemoveTerm(basisVector.Index, index2);
@@ -147,7 +147,7 @@
 //    }
 
 //    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-//    public LinFloat64UnilinearMapComposer SetColumnTerm(int index2, LinSignedBasisVector basisVector, double scalar)
+//    public LinFloat64UnilinearMapComposer SetColumnTerm(int index2, LinBasisVector basisVector, double scalar)
 //    {
 //        if (basisVector.IsZero || scalar.IsZero())
 //            return RemoveTerm(basisVector.Index, index2);
@@ -220,7 +220,7 @@
 //        return this;
 //    }
 
-//    public LinFloat64UnilinearMapComposer SetColumnTerms(int index2, IEnumerable<KeyValuePair<LinSignedBasisVector, double>> termList)
+//    public LinFloat64UnilinearMapComposer SetColumnTerms(int index2, IEnumerable<KeyValuePair<LinBasisVector, double>> termList)
 //    {
 //        foreach (var (basisVector, scalar) in termList)
 //            SetColumnTerm(index2, basisVector, scalar);
@@ -419,7 +419,7 @@
 //    }
 
 //    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-//    public LinFloat64UnilinearMapComposer AddColumnTerm(int index2, ILinSignedBasisVector basisVector)
+//    public LinFloat64UnilinearMapComposer AddColumnTerm(int index2, LinBasisVector basisVector)
 //    {
 //        if (basisVector.IsZero)
 //            return this;
@@ -436,7 +436,7 @@
 //    }
 
 //    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-//    public LinFloat64UnilinearMapComposer AddColumnTerm(int index2, ILinSignedBasisVector index, double scalar)
+//    public LinFloat64UnilinearMapComposer AddColumnTerm(int index2, LinBasisVector index, double scalar)
 //    {
 //        if (index.IsZero || scalar.IsZero())
 //            return this;
@@ -453,7 +453,7 @@
 //    }
 
 //    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-//    public LinFloat64UnilinearMapComposer AddColumnTerm(int index2, ILinSignedBasisVector index, double scalar1, double scalar2)
+//    public LinFloat64UnilinearMapComposer AddColumnTerm(int index2, LinBasisVector index, double scalar1, double scalar2)
 //    {
 //        var scalar = scalar1 * scalar2;
 
@@ -525,7 +525,7 @@
 //        );
 //    }
 
-//    public LinFloat64UnilinearMapComposer AddColumnTerms(int index2, IEnumerable<KeyValuePair<LinSignedBasisVector, double>> termList)
+//    public LinFloat64UnilinearMapComposer AddColumnTerms(int index2, IEnumerable<KeyValuePair<LinBasisVector, double>> termList)
 //    {
 //        foreach (var (basisVector, scalar) in termList)
 //            AddColumnTerm(index2, basisVector, scalar);
@@ -720,7 +720,7 @@
 //    }
 
 //    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-//    public LinFloat64UnilinearMapComposer SubtractColumnTerm(int index2, LinSignedBasisVector index)
+//    public LinFloat64UnilinearMapComposer SubtractColumnTerm(int index2, LinBasisVector index)
 //    {
 //        if (index.IsZero)
 //            return this;
@@ -737,7 +737,7 @@
 //    }
 
 //    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-//    public LinFloat64UnilinearMapComposer SubtractColumnTerm(int index2, LinSignedBasisVector index, double scalar)
+//    public LinFloat64UnilinearMapComposer SubtractColumnTerm(int index2, LinBasisVector index, double scalar)
 //    {
 //        if (index.IsZero || scalar.IsZero())
 //            return this;
@@ -754,7 +754,7 @@
 //    }
 
 //    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-//    public LinFloat64UnilinearMapComposer SubtractColumnTerm(int index2, LinSignedBasisVector index, double scalar1, double scalar2)
+//    public LinFloat64UnilinearMapComposer SubtractColumnTerm(int index2, LinBasisVector index, double scalar1, double scalar2)
 //    {
 //        var scalar = scalar1 * scalar2;
 
@@ -821,7 +821,7 @@
 //        );
 //    }
 
-//    public LinFloat64UnilinearMapComposer SubtractColumnTerms(int index2, IEnumerable<KeyValuePair<LinSignedBasisVector, double>> termList)
+//    public LinFloat64UnilinearMapComposer SubtractColumnTerms(int index2, IEnumerable<KeyValuePair<LinBasisVector, double>> termList)
 //    {
 //        foreach (var (basisVector, scalar) in termList)
 //            AddColumnTerm(index2, basisVector, scalar);

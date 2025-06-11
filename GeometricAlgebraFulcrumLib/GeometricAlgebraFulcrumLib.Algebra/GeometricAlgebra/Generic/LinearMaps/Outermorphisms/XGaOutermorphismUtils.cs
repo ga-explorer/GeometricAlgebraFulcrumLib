@@ -1,20 +1,16 @@
 ﻿using System.Runtime.CompilerServices;
-using GeometricAlgebraFulcrumLib.Utilities.Structures.IndexSets;
-using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Basis;
-using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Generic.LinearMaps;
-using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Generic.Vectors.SpaceND;
-using GeometricAlgebraFulcrumLib.Algebra.Scalars.Generic;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Frames;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Processors;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Multivectors;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Multivectors.Composers;
+using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Basis;
+using GeometricAlgebraFulcrumLib.Algebra.Scalars.Generic;
+using GeometricAlgebraFulcrumLib.Utilities.Structures.IndexSets;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.LinearMaps.Outermorphisms;
 
 public static class XGaOutermorphismUtils
 {
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static XGaVector<T> OmMap<T>(this IXGaOutermorphism<T> outermorphism, LinSignedBasisVector axis)
+    public static XGaVector<T> OmMap<T>(this IXGaOutermorphism<T> outermorphism, LinBasisVector axis)
     {
         return axis.IsPositive
             ? outermorphism.OmMapBasisVector(axis.Index)
@@ -164,14 +160,6 @@ public static class XGaOutermorphismUtils
     public static T[,] GetVectorMapArray<T>(this IXGaOutermorphism<T> om, int rowCount, int colCount)
     {
         return om.GetVectorMapPart(colCount).ToArray(rowCount, colCount);
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static T[,] GetFinalMappingArray<T>(this XGaProcessor<T> metric, IEnumerable<IXGaOutermorphism<T>> omSeq, int rowsCount)
-    {
-        return omSeq.OmMap(
-            metric.CreateFreeFrameOfBasis(rowsCount)
-        ).GetArray(rowsCount);
     }
 
 
@@ -372,12 +360,4 @@ public static class XGaOutermorphismUtils
             .Sp(om.Processor.PseudoScalarInverse(vSpaceDimensions)).Scalar();
     }
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static IXGaOutermorphism<T> CreateComputedOutermorphism<T>(this XGaVectorFrame<T> frame)
-    {
-        return frame
-            .Select(v => v.ToLinVector())
-            .ToLinUnilinearMap(frame.ScalarProcessor)
-            .ToOutermorphism(frame.Processor);
-    }
 }

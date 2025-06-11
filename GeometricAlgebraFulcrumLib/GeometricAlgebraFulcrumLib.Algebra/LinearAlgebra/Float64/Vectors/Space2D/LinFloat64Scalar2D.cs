@@ -306,6 +306,81 @@ public sealed record LinFloat64Scalar2D :
         return LinFloat64Bivector2D.Create(Scalar);
     }
 
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public LinFloat64Scalar2D Op(LinFloat64Scalar2D mv2)
+    {
+        return Create(
+            Scalar * mv2.Scalar
+        );
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public LinFloat64Vector2D Op(LinFloat64Vector2D mv2)
+    {
+        return LinFloat64Vector2D.Create(
+            Scalar * mv2.Scalar1,
+            Scalar * mv2.Scalar2
+        );
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public LinFloat64Bivector2D Op(LinFloat64Bivector2D mv2)
+    {
+        return LinFloat64Bivector2D.Create(
+            Scalar * mv2.Scalar12
+        );
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public LinFloat64Multivector2D Op(LinFloat64Multivector2D mv2)
+    {
+        var mv = LinFloat64Multivector2D.Zero;
+
+        if (!mv2.KVector0.IsZero())
+            mv += Op(mv2.KVector0);
+
+        if (!mv2.KVector1.IsZero())
+            mv += Op(mv2.KVector1);
+
+        if (!mv2.KVector2.IsZero())
+            mv += Op(mv2.KVector2);
+
+        return mv;
+    }
+
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public Float64Scalar Sp(LinFloat64Scalar2D mv2)
+    {
+        return Scalar * mv2.Scalar;
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public Float64Scalar Sp(LinFloat64Vector2D mv2)
+    {
+        return Float64Scalar.Zero;
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public Float64Scalar Sp(LinFloat64Bivector2D mv2)
+    {
+        return Float64Scalar.Zero;
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public Float64Scalar Sp(LinFloat64Multivector2D mv2)
+    {
+        var mv = 0d;
+
+        if (!IsZero() && !mv2.KVector0.IsZero())
+            mv += Sp(mv2.KVector0);
+
+        return mv;
+    }
+
+
+
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public IEnumerator<Float64Scalar> GetEnumerator()

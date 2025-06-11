@@ -1,5 +1,4 @@
 ﻿using System;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Multivectors.Composers;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Processors;
 using GeometricAlgebraFulcrumLib.Algebra.Polynomials.Generic.PhCurves;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Generic;
@@ -90,7 +89,7 @@ public static class SymbolicPhConstruction3DSample
     //    var aa23_3 = (p1[2] / 2 + aa0 * aa13) / aa12;
 
     //    var a0 = GeometricProcessor.CreateIdentityRotor();
-    //    var a1 = GeometricProcessor.CreateScaledPureRotor3D(
+    //    var a1 = GeometricProcessor.CreatePureScalingRotor3D(
     //        aa0,
     //        aa12,
     //        aa13,
@@ -276,9 +275,9 @@ public static class SymbolicPhConstruction3DSample
         //var b0 = phCurve.BasisSet.GetValue(0, t);
         //var b1 = phCurve.BasisSet.GetValue(1, t);
         //var b2 = phCurve.BasisSet.GetValue(2, t);
-        //var a = b0 + b1 * phCurve.ScaledRotor1.Multivector + b2 * phCurve.ScaledRotor2.Multivector;
+        //var a = b0 + b1 * phCurve.ScalingRotor1.Multivector + b2 * phCurve.ScalingRotor2.Multivector;
 
-        //var a = GeometricProcessor.CreateScaledPureRotor3D(
+        //var a = GeometricProcessor.CreatePureScalingRotor3D(
         //    aMultivector[0],
         //    aMultivector[3],
         //    aMultivector[5],

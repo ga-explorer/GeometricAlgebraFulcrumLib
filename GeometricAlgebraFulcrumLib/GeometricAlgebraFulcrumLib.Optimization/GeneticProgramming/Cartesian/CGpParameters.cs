@@ -45,12 +45,12 @@ public class CGpParameters
 
     public static IEnumerable<int> GetRandomUniqueIndexList(int selectionSize, int totalSize)
     {
-        return RandomGenerator.GetUniqueIndices(selectionSize, totalSize);
+        return RandomGenerator.GetDistinctIndices(selectionSize, totalSize);
     }
     
     public static IEnumerable<int> GetRandomUniqueIndexList(int totalSize)
     {
-        return RandomGenerator.GetUniqueIndices(totalSize);
+        return RandomGenerator.GetDistinctIndices(totalSize);
     }
 
 

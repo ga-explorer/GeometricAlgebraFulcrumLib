@@ -2,10 +2,8 @@
 using System.Globalization;
 using System.Runtime.CompilerServices;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivectors;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivectors.Composers;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Processors;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Multivectors;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Multivectors.Composers;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Processors;
 using GeometricAlgebraFulcrumLib.Algebra.Polynomials.Generic;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
@@ -541,7 +539,7 @@ public static class Float64VectorSignalUtils
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static XGaFloat64Vector Mean(this XGaVector<Float64SampledTimeSignal> vectorSignal, XGaFloat64Processor processor)
     {
-        var composer = processor.CreateComposer();
+        var composer = processor.CreateVectorComposer();
 
         foreach (var (id, signal) in vectorSignal)
             composer.SetTerm(id, signal.Mean());
@@ -573,7 +571,7 @@ public static class Float64VectorSignalUtils
         var composer = 
             XGaFloat64Processor
                 .Euclidean
-                .CreateComposer();
+                .CreateBivectorComposer();
 
         foreach (var (index, scalar) in bivectorSignal.IdScalarPairs)
             composer.SetTerm(index, scalar.Sum());
@@ -592,7 +590,7 @@ public static class Float64VectorSignalUtils
         var composer = 
             XGaFloat64Processor
                 .Euclidean
-                .CreateComposer();
+                .CreateBivectorComposer();
 
         foreach (var (index, scalar) in bivectorSignal.IdScalarPairs)
             composer.SetTerm(index, scalar.Sum() / sampleCount);

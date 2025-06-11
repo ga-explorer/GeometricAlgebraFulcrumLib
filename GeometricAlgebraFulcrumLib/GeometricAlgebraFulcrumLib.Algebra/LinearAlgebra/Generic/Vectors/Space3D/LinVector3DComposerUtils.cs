@@ -1,5 +1,4 @@
 ﻿using System.Runtime.CompilerServices;
-using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Basis;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Generic.Vectors.Space2D;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Generic;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Tuples;
@@ -85,48 +84,6 @@ public static class LinVector3DComposerUtils
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinVector3D<T> ToVector3D<T>(this LinBasisVector2D axis, IScalarProcessor<T> scalarProcessor)
-    {
-        return axis switch
-        {
-            LinBasisVector2D.Px => LinVector3D<T>.E1(scalarProcessor),
-            LinBasisVector2D.Nx => LinVector3D<T>.NegativeE1(scalarProcessor),
-            LinBasisVector2D.Py => LinVector3D<T>.E2(scalarProcessor),
-            _ => LinVector3D<T>.NegativeE2(scalarProcessor)
-        };
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinVector3D<T> ToVector3D<T>(this LinBasisVector3D axis, IScalarProcessor<T> scalarProcessor)
-    {
-        return axis switch
-        {
-            LinBasisVector3D.Px => LinVector3D<T>.E1(scalarProcessor),
-            LinBasisVector3D.Nx => LinVector3D<T>.NegativeE1(scalarProcessor),
-            LinBasisVector3D.Py => LinVector3D<T>.E2(scalarProcessor),
-            LinBasisVector3D.Ny => LinVector3D<T>.NegativeE2(scalarProcessor),
-            LinBasisVector3D.Pz => LinVector3D<T>.E3(scalarProcessor),
-            _ => LinVector3D<T>.NegativeE3(scalarProcessor)
-        };
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinVector3D<T> ToVector3D<T>(this LinBasisVector3D axis, Scalar<T> scalingFactor)
-    {
-        var zero = scalingFactor.ScalarProcessor.Zero;
-
-        return axis switch
-        {
-            LinBasisVector3D.Px => LinVector3D<T>.Create(scalingFactor, zero, zero),
-            LinBasisVector3D.Nx => LinVector3D<T>.Create(-scalingFactor, zero, zero),
-            LinBasisVector3D.Py => LinVector3D<T>.Create(zero, scalingFactor, zero),
-            LinBasisVector3D.Ny => LinVector3D<T>.Create(zero, -scalingFactor, zero),
-            LinBasisVector3D.Pz => LinVector3D<T>.Create(zero, zero, scalingFactor),
-            _ => LinVector3D<T>.Create(zero, zero, -scalingFactor)
-        };
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static LinVector3D<T> ToUnitVector<T>(Scalar<T> vectorX, Scalar<T> vectorY, Scalar<T> vectorZ, bool zeroAsSymmetric = true)
     {
         var s = LinVector3DUtils.VectorENorm(vectorX, vectorY, vectorZ);
@@ -153,38 +110,6 @@ public static class LinVector3DComposerUtils
             scalarArray[2]);
 
         return makeUnit ? vector.ToUnitVector() : vector;
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinVector3D<T> ToVector3D<T>(this LinSphericalUnitVector3D<T> sphericalPosition)
-    {
-        var sinTheta =
-            sphericalPosition.Theta.Sin();
-
-        var cosTheta =
-            sphericalPosition.Theta.Cos();
-
-        return LinVector3D<T>.Create(
-            sinTheta * sphericalPosition.Phi.Cos(),
-            sinTheta * sphericalPosition.Phi.Sin(),
-            cosTheta
-        );
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinVector3D<T> ToVector3D<T>(this LinSphericalUnitVector3D<T> sphericalPosition, Scalar<T> length)
-    {
-        var rSinTheta =
-            length * sphericalPosition.Theta.Sin();
-
-        var rCosTheta =
-            length * sphericalPosition.Theta.Cos();
-
-        return LinVector3D<T>.Create(
-            rSinTheta * sphericalPosition.Phi.Cos(),
-            rSinTheta * sphericalPosition.Phi.Sin(),
-            rCosTheta
-        );
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -232,16 +157,6 @@ public static class LinVector3DComposerUtils
         return new LinSphericalUnitVector3D<T>(
             sphericalPosition.Theta,
             sphericalPosition.Phi
-        );
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinSphericalVector3D<T> ToSphericalVector<T>(this LinSphericalUnitVector3D<T> sphericalPosition, Scalar<T> r)
-    {
-        return new LinSphericalVector3D<T>(
-            sphericalPosition.Theta,
-            sphericalPosition.Phi,
-            r
         );
     }
 

@@ -1,6 +1,5 @@
 ﻿using System.Numerics;
 using System.Runtime.CompilerServices;
-using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Basis;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float32;
 
 // ReSharper disable CompareOfFloatsByEqualityOperator
@@ -44,20 +43,6 @@ public static class LinFloat64QuaternionUtils
             (float)vector.Z,
             0f
         );
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Quaternion ToSystemNumericsQuaternion(this LinBasisVector3D axis)
-    {
-        return axis switch
-        {
-            LinBasisVector3D.Px => new Quaternion(1, 0, 0, 0),
-            LinBasisVector3D.Py => new Quaternion(0, 1, 0, 0),
-            LinBasisVector3D.Pz => new Quaternion(0, 0, 1, 0),
-            LinBasisVector3D.Nx => new Quaternion(-1, 0, 0, 0),
-            LinBasisVector3D.Ny => new Quaternion(0, -1, 0, 0),
-            _ => new Quaternion(0, 0, -1, 0),
-        };
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]

@@ -1,9 +1,15 @@
 ﻿using System.Collections;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Multivectors;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Processors;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Basis;
+using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Generic.Angles;
+using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Generic.LinearMaps;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Generic;
+using GeometricAlgebraFulcrumLib.Algebra.Utilities.Text;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Dictionary;
+using GeometricAlgebraFulcrumLib.Utilities.Structures.IndexSets;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Tuples;
 using GeometricAlgebraFulcrumLib.Utilities.Text.Text;
 
@@ -401,7 +407,7 @@ public sealed class LinVector<T> :
     {
         return IsZero
             ? ScalarProcessor.CreateZeroLinVector()
-            : this.MapScalars(s => ScalarProcessor.Negative(s).ScalarValue);
+            : MapScalars(s => ScalarProcessor.Negative(s).ScalarValue);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -412,13 +418,13 @@ public sealed class LinVector<T> :
 
         return ScalarProcessor.IsZero(scalar)
             ? ScalarProcessor.CreateZeroLinVector()
-            : this.MapScalars(s => ScalarProcessor.Times(s, scalar).ScalarValue);
+            : MapScalars(s => ScalarProcessor.Times(s, scalar).ScalarValue);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public LinVector<T> Divide(T scalar)
     {
-        return this.MapScalars(s => ScalarProcessor.Divide(s, scalar).ScalarValue);
+        return MapScalars(s => ScalarProcessor.Divide(s, scalar).ScalarValue);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -426,7 +432,7 @@ public sealed class LinVector<T> :
     {
         var scalar = ENormSquared().ScalarValue;
 
-        return this.MapScalars(s => ScalarProcessor.Divide(s, scalar).ScalarValue);
+        return MapScalars(s => ScalarProcessor.Divide(s, scalar).ScalarValue);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -434,7 +440,7 @@ public sealed class LinVector<T> :
     {
         var scalar = ENorm().ScalarValue;
 
-        return this.MapScalars(s => ScalarProcessor.Divide(s, scalar).ScalarValue);
+        return MapScalars(s => ScalarProcessor.Divide(s, scalar).ScalarValue);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -535,6 +541,286 @@ public sealed class LinVector<T> :
             .GetScalar();
     }
 
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public XGaVector<T> ToXGaVector(XGaProcessor<T> processor)
+    {
+        var idScalarDictionary =
+            GetIndexScalarDictionary().ToDictionary(
+                p => p.Key.ToUnitIndexSet(),
+                p => p.Value
+            );
+
+        return processor.Vector(idScalarDictionary);
+    }
+
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public Scalar<T> GetAngleCos(LinVector<T> vector2)
+    {
+        var uuDot = ENormSquared();
+        var vvDot = vector2.ENormSquared();
+        var uvDot = ESp(vector2);
+
+        var norm = (uuDot * vvDot).Sqrt();
+
+        return norm.IsZero()
+            ? ScalarProcessor.Zero
+            : uvDot / norm;
+    }
+
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public Scalar<T> GetAngleCosWithUnit(LinVector<T> vector2)
+    {
+        //Debug.Assert(
+        //    vector2.IsNearUnit()
+        //);
+
+        var uuDot = ENormSquared();
+        var uvDot = ESp(vector2);
+
+        var norm = uuDot.Sqrt();
+
+        return norm.IsZero()
+            ? ScalarProcessor.Zero
+            : uvDot / norm;
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public Scalar<T> GetUnitVectorsAngleCos(LinVector<T> vector2)
+    {
+        return ESp(vector2);
+    }
+
+    
+    //[MethodImpl(MethodImplOptions.AggressiveInlining)]
+    //public LinPolarAngle<T> GetAngleWithUnit(LinBasisVector vector2)
+    //{
+    //    return vector1.GetAngleCosWithUnit(vector2).ArcCos();
+    //}
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public LinPolarAngle<T> GetAngleWithUnit(LinVector<T> vector2)
+    {
+        return GetAngleCosWithUnit(vector2).ArcCos();
+    }
+
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public LinPolarAngle<T> GetUnitVectorsAngle(LinVector<T> vector2)
+    {
+        return GetUnitVectorsAngleCos(vector2).ArcCos();
+    }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public LinPolarAngle<T> GetAngle(LinVector<T> vector2, bool assumeUnitVectors)
+    {
+        var v12Sp = ESp(vector2);
+
+        var angle = assumeUnitVectors
+            ? v12Sp
+            : v12Sp / (ENormSquared() * vector2.ENormSquared()).Sqrt();
+
+        return angle.ArcCos();
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public LinPolarAngle<T> GetAngle(LinVector<T> vector2)
+    {
+        return GetAngleCos(vector2).ArcCos();
+    }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public LinUnilinearMap<T> ToDiagonalLinUnilinearMap()
+    {
+        var scalarProcessor = ScalarProcessor;
+
+        var indexVectorDictionary =
+            this.ToDictionary(
+                p => p.Key,
+                p => scalarProcessor.CreateLinVector(p.Key, p.Value)
+            );
+
+        return scalarProcessor.CreateLinUnilinearMap(indexVectorDictionary);
+    }
+
+    
+    //[MethodImpl(MethodImplOptions.AggressiveInlining)]
+    //public Scalar<T> GetAngleCosWithUnit(LinBasisVector vector2)
+    //{
+    //    Debug.Assert(
+    //        vector2.Sign.IsNotZero
+    //    );
+
+    //    var uuDot = ENormSquared();
+    //    var uvDot = ESp(vector2);
+
+    //    var norm = uuDot.Sqrt();
+
+    //    return norm.IsZero()
+    //        ? ScalarProcessor.Zero
+    //        : uvDot / norm;
+    //}
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public LinVectorComposer<T> ToComposer()
+    {
+        return new LinVectorComposer<T>(ScalarProcessor).SetVector(this);
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public LinVectorComposer<T> NegativeToComposer()
+    {
+        return new LinVectorComposer<T>(ScalarProcessor).SetVectorNegative(this);
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public LinVectorComposer<T> ToComposer(T scalingFactor)
+    {
+        return new LinVectorComposer<T>(ScalarProcessor).SetVector(this, scalingFactor);
+    }
+    
+    public T[] ToArray(int vSpaceDimensions)
+    {
+        if (vSpaceDimensions < VSpaceDimensions)
+            throw new ArgumentException(nameof(vSpaceDimensions));
+
+        var array = ScalarProcessor.CreateArrayZero1D(vSpaceDimensions);
+
+        foreach (var (index, scalar) in IndexScalarPairs)
+            array[index] = scalar;
+
+        return array;
+    }
+
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public LinVector<T> EInverse()
+    {
+        return Divide(
+            ESp(this).ScalarValue
+        );
+    }
+
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public LinVector<T> MapScalars(Func<T, T> scalarMapping)
+    {
+        var termList =
+            IndexScalarPairs.Select(
+                term => new KeyValuePair<int, T>(
+                    term.Key,
+                    scalarMapping(term.Value)
+                )
+            );
+
+        return ScalarProcessor
+            .CreateLinVectorComposer()
+            .SetTerms(termList)
+            .GetVector();
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public LinVector<T> MapScalars(Func<int, T, T> scalarMapping)
+    {
+        var termList =
+            IndexScalarPairs.Select(
+                term => new KeyValuePair<int, T>(
+                    term.Key,
+                    scalarMapping(term.Key, term.Value)
+                )
+            );
+
+        return ScalarProcessor
+            .CreateLinVectorComposer()
+            .AddTerms(termList)
+            .GetVector();
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public LinVector<T> MapBasisVectors(Func<int, int> basisMapping, bool simplify = true)
+    {
+        var termList =
+            IndexScalarPairs.Select(
+                term => new KeyValuePair<int, T>(
+                    basisMapping(term.Key),
+                    term.Value
+                )
+            );
+
+        return ScalarProcessor
+            .CreateLinVectorComposer()
+            .AddTerms(termList)
+            .GetVector();
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public LinVector<T> MapBasisVectors(Func<int, T, int> basisMapping, bool simplify = true)
+    {
+        var termList =
+            IndexScalarPairs.Select(
+                term => new KeyValuePair<int, T>(
+                    basisMapping(term.Key, term.Value),
+                    term.Value
+                )
+            );
+
+        return ScalarProcessor
+            .CreateLinVectorComposer()
+            .AddTerms(termList)
+            .GetVector();
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public LinVector<T> MapTerms(Func<int, T, KeyValuePair<int, T>> termMapping, bool simplify = true)
+    {
+        var termList =
+            IndexScalarPairs.Select(
+                term => termMapping(term.Key, term.Value)
+            );
+
+        return ScalarProcessor
+            .CreateLinVectorComposer()
+            .AddTerms(termList)
+            .GetVector();
+    }
+
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public LinAngle<T> GetEuclideanAngle(LinVector<T> v2, bool assumeUnitVectors = false)
+    {
+        var v12Sp = ESp(v2);
+
+        var angleCos = assumeUnitVectors
+            ? v12Sp
+            : v12Sp / (ENormSquared() * v2.ENormSquared()).Sqrt();
+
+        return angleCos.ArcCos();
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public LinVector<T> GetBisector(LinVector<T> v2, bool assumeEqualNormVectors = false)
+    {
+        return (this + v2).Divide(ScalarProcessor.TwoValue);
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public LinVector<T> GetUnitBisector(LinVector<T> v2, bool assumeEqualNormVectors = false)
+    {
+        var bisector = assumeEqualNormVectors
+            ? this + v2
+            : DivideByENorm() + v2.DivideByENorm();
+
+        return bisector.DivideByENorm();
+    }
+
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public string GetArrayText()
+    {
+        return this.ToArray().GetArrayText();
+    }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public IEnumerator<KeyValuePair<int, T>> GetEnumerator()

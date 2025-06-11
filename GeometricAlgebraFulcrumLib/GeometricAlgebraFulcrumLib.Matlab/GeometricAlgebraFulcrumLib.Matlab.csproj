@@ -1,0 +1,648 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\packages\Microsoft.Diagnostics.Tracing.TraceEvent.3.1.22\build\Microsoft.Diagnostics.Tracing.TraceEvent.props" Condition="Exists('..\packages\Microsoft.Diagnostics.Tracing.TraceEvent.3.1.22\build\Microsoft.Diagnostics.Tracing.TraceEvent.props')" />
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{6B6228CA-9D3B-4E16-BB4D-872124B0C3F7}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>GeometricAlgebraFulcrumLib.Matlab</RootNamespace>
+    <AssemblyName>GeometricAlgebraFulcrumLib.Matlab</AssemblyName>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <Deterministic>true</Deterministic>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <LangVersion>latest</LangVersion>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <LangVersion>latest</LangVersion>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="BenchmarkDotNet, Version=0.15.1.0, Culture=neutral, PublicKeyToken=aa0ca2f9092cefc4, processorArchitecture=MSIL">
+      <HintPath>..\packages\BenchmarkDotNet.0.15.1\lib\netstandard2.0\BenchmarkDotNet.dll</HintPath>
+    </Reference>
+    <Reference Include="BenchmarkDotNet.Annotations, Version=0.15.1.0, Culture=neutral, PublicKeyToken=aa0ca2f9092cefc4, processorArchitecture=MSIL">
+      <HintPath>..\packages\BenchmarkDotNet.Annotations.0.15.1\lib\netstandard2.0\BenchmarkDotNet.Annotations.dll</HintPath>
+    </Reference>
+    <Reference Include="CommandLine, Version=2.9.1.0, Culture=neutral, PublicKeyToken=5a870481e358d379, processorArchitecture=MSIL">
+      <HintPath>..\packages\CommandLineParser.2.9.1\lib\net461\CommandLine.dll</HintPath>
+    </Reference>
+    <Reference Include="Dia2Lib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Diagnostics.Tracing.TraceEvent.3.1.22\lib\netstandard2.0\Dia2Lib.dll</HintPath>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="Gee.External.Capstone, Version=2.3.0.0, Culture=neutral, PublicKeyToken=b117d7a2dc33ffa6, processorArchitecture=MSIL">
+      <HintPath>..\packages\Gee.External.Capstone.2.3.0\lib\netstandard2.0\Gee.External.Capstone.dll</HintPath>
+    </Reference>
+    <Reference Include="Iced, Version=1.21.0.0, Culture=neutral, PublicKeyToken=5baba79f4264913b, processorArchitecture=MSIL">
+      <HintPath>..\packages\Iced.1.21.0\lib\net45\Iced.dll</HintPath>
+    </Reference>
+    <Reference Include="MathNet.Numerics, Version=5.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\MathNet.Numerics.5.0.0\lib\net48\MathNet.Numerics.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Bcl.AsyncInterfaces, Version=9.0.0.6, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Bcl.AsyncInterfaces.9.0.6\lib\net462\Microsoft.Bcl.AsyncInterfaces.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CodeAnalysis, Version=4.14.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.CodeAnalysis.Common.4.14.0\lib\netstandard2.0\Microsoft.CodeAnalysis.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CodeAnalysis.CSharp, Version=4.14.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.CodeAnalysis.CSharp.4.14.0\lib\netstandard2.0\Microsoft.CodeAnalysis.CSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Diagnostics.FastSerialization, Version=3.1.22.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Diagnostics.Tracing.TraceEvent.3.1.22\lib\netstandard2.0\Microsoft.Diagnostics.FastSerialization.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Diagnostics.NETCore.Client, Version=0.2.12.21003, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Diagnostics.NETCore.Client.0.2.621003\lib\netstandard2.0\Microsoft.Diagnostics.NETCore.Client.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Diagnostics.Runtime, Version=3.1.10.12801, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Diagnostics.Runtime.3.1.512801\lib\netstandard2.0\Microsoft.Diagnostics.Runtime.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Diagnostics.Tracing.TraceEvent, Version=3.1.22.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Diagnostics.Tracing.TraceEvent.3.1.22\lib\netstandard2.0\Microsoft.Diagnostics.Tracing.TraceEvent.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.DotNet.PlatformAbstractions, Version=3.1.6.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.DotNet.PlatformAbstractions.3.1.6\lib\net45\Microsoft.DotNet.PlatformAbstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.Configuration, Version=9.0.0.6, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Extensions.Configuration.9.0.6\lib\net462\Microsoft.Extensions.Configuration.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.Configuration.Abstractions, Version=9.0.0.6, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Extensions.Configuration.Abstractions.9.0.6\lib\net462\Microsoft.Extensions.Configuration.Abstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.Configuration.Binder, Version=9.0.0.6, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Extensions.Configuration.Binder.9.0.6\lib\net462\Microsoft.Extensions.Configuration.Binder.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.DependencyInjection, Version=9.0.0.6, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Extensions.DependencyInjection.9.0.6\lib\net462\Microsoft.Extensions.DependencyInjection.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.DependencyInjection.Abstractions, Version=9.0.0.6, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Extensions.DependencyInjection.Abstractions.9.0.6\lib\net462\Microsoft.Extensions.DependencyInjection.Abstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.Logging, Version=9.0.0.6, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Extensions.Logging.9.0.6\lib\net462\Microsoft.Extensions.Logging.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.Logging.Abstractions, Version=9.0.0.6, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Extensions.Logging.Abstractions.9.0.6\lib\net462\Microsoft.Extensions.Logging.Abstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.Options, Version=9.0.0.6, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Extensions.Options.9.0.6\lib\net462\Microsoft.Extensions.Options.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.Primitives, Version=9.0.0.6, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Extensions.Primitives.9.0.6\lib\net462\Microsoft.Extensions.Primitives.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Win32.Registry, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Win32.Registry.5.0.0\lib\net461\Microsoft.Win32.Registry.dll</HintPath>
+    </Reference>
+    <Reference Include="Perfolizer, Version=0.5.3.0, Culture=neutral, PublicKeyToken=e864f2ec9c0b6d4c, processorArchitecture=MSIL">
+      <HintPath>..\packages\Perfolizer.0.5.3\lib\netstandard2.0\Perfolizer.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Buffers, Version=4.0.5.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Buffers.4.6.1\lib\net462\System.Buffers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.CodeDom, Version=9.0.0.6, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.CodeDom.9.0.6\lib\net462\System.CodeDom.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Collections.Immutable, Version=9.0.0.6, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Collections.Immutable.9.0.6\lib\net462\System.Collections.Immutable.dll</HintPath>
+    </Reference>
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Diagnostics.DiagnosticSource, Version=9.0.0.6, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Diagnostics.DiagnosticSource.9.0.6\lib\net462\System.Diagnostics.DiagnosticSource.dll</HintPath>
+    </Reference>
+    <Reference Include="System.IO.Pipelines, Version=9.0.0.6, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.IO.Pipelines.9.0.6\lib\net462\System.IO.Pipelines.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Management" />
+    <Reference Include="System.Memory, Version=4.0.5.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Memory.4.6.3\lib\net462\System.Memory.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Numerics" />
+    <Reference Include="System.Numerics.Vectors, Version=4.1.6.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Numerics.Vectors.4.6.1\lib\net462\System.Numerics.Vectors.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Reflection.Metadata, Version=9.0.0.6, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Reflection.Metadata.9.0.6\lib\net462\System.Reflection.Metadata.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Reflection.TypeExtensions, Version=4.1.5.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Reflection.TypeExtensions.4.7.0\lib\net461\System.Reflection.TypeExtensions.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=6.0.3.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.6.1.2\lib\net462\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.InteropServices.RuntimeInformation, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Runtime.InteropServices.RuntimeInformation.4.3.0\lib\net45\System.Runtime.InteropServices.RuntimeInformation.dll</HintPath>
+      <Private>True</Private>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Security.AccessControl, Version=6.0.0.1, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Security.AccessControl.6.0.1\lib\net461\System.Security.AccessControl.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Security.Principal.Windows, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Security.Principal.Windows.5.0.0\lib\net461\System.Security.Principal.Windows.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Text.Encoding.CodePages, Version=9.0.0.6, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Text.Encoding.CodePages.9.0.6\lib\net462\System.Text.Encoding.CodePages.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Text.Encodings.Web, Version=9.0.0.6, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Text.Encodings.Web.9.0.6\lib\net462\System.Text.Encodings.Web.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Text.Json, Version=9.0.0.6, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Text.Json.9.0.6\lib\net462\System.Text.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Threading.Tasks.Extensions, Version=4.2.4.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Threading.Tasks.Extensions.4.6.3\lib\net462\System.Threading.Tasks.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="TraceReloggerLib, Version=0.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Diagnostics.Tracing.TraceEvent.3.1.22\lib\netstandard2.0\TraceReloggerLib.dll</HintPath>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Benchmarks\GeometricAlgebra\BilinearProductsBenchmarks.cs" />
+    <Compile Include="Benchmarks\GeometricAlgebra\MetricBenchmarks.cs" />
+    <Compile Include="Benchmarks\GeometricAlgebra\UnaryOperationsBenchmarks.cs" />
+    <Compile Include="GeometricAlgebra\Basis\BasisBivectorUtils.cs" />
+    <Compile Include="GeometricAlgebra\Basis\BasisBladeData.cs" />
+    <Compile Include="GeometricAlgebra\Basis\BasisBladeDataComputer.cs" />
+    <Compile Include="GeometricAlgebra\Basis\BasisBladeDataLookup.cs" />
+    <Compile Include="GeometricAlgebra\Basis\BasisBladeProductUtils.cs" />
+    <Compile Include="GeometricAlgebra\Basis\BasisBladeUtils.cs" />
+    <Compile Include="GeometricAlgebra\Basis\BasisVectorUtils.cs" />
+    <Compile Include="GeometricAlgebra\Basis\IXGaSignedBasisBlade.cs" />
+    <Compile Include="GeometricAlgebra\Basis\XGaBasisBlade.cs" />
+    <Compile Include="GeometricAlgebra\Basis\XGaBasisBladeComposerUtils.cs" />
+    <Compile Include="GeometricAlgebra\Basis\XGaBasisBladeUtils.cs" />
+    <Compile Include="GeometricAlgebra\Basis\XGaSignedBasisBlade.cs" />
+    <Compile Include="GeometricAlgebra\Basis\XGaSignedBasisBladeComposerUtils.cs" />
+    <Compile Include="GeometricAlgebra\Euclidean2D\Ega2Multivector.cs" />
+    <Compile Include="GeometricAlgebra\Float64\Combinations\XGaFloat64BilinearCombination.cs" />
+    <Compile Include="GeometricAlgebra\Float64\Combinations\XGaFloat64BilinearCombinationTerm.cs" />
+    <Compile Include="GeometricAlgebra\Float64\Combinations\XGaFloat64TrilinearCombination.cs" />
+    <Compile Include="GeometricAlgebra\Float64\Combinations\XGaFloat64TrilinearCombinationTerm.cs" />
+    <Compile Include="GeometricAlgebra\Float64\Combinations\XGaFloat64UnilinearCombination.cs" />
+    <Compile Include="GeometricAlgebra\Float64\Combinations\XGaFloat64UnilinearCombinationTerm.cs" />
+    <Compile Include="GeometricAlgebra\Float64\Frames\IXGaFloat64KVectorFrame.cs" />
+    <Compile Include="GeometricAlgebra\Float64\Frames\IXGaFloat64MultivectorFrame.cs" />
+    <Compile Include="GeometricAlgebra\Float64\Frames\IXGaFloat64VectorFrame.cs" />
+    <Compile Include="GeometricAlgebra\Float64\Frames\XGaFloat64BasisKVectorFrame.cs" />
+    <Compile Include="GeometricAlgebra\Float64\Frames\XGaFloat64BasisMultivectorFrame.cs" />
+    <Compile Include="GeometricAlgebra\Float64\Frames\XGaFloat64BasisVectorFrame.cs" />
+    <Compile Include="GeometricAlgebra\Float64\Frames\XGaFloat64FrameComposerUtils.cs" />
+    <Compile Include="GeometricAlgebra\Float64\Frames\XGaFloat64GramSchmidtFrame.cs" />
+    <Compile Include="GeometricAlgebra\Float64\Frames\XGaFloat64VectorFrame.cs" />
+    <Compile Include="GeometricAlgebra\Float64\Frames\XGaFloat64VectorFrameFixed.cs" />
+    <Compile Include="GeometricAlgebra\Float64\Frames\XGaFloat64VectorFrameSpecs.cs" />
+    <Compile Include="GeometricAlgebra\Float64\IXGaFloat64Element.cs" />
+    <Compile Include="GeometricAlgebra\Float64\LinearMaps\IXGaFloat64UnilinearMap.cs" />
+    <Compile Include="GeometricAlgebra\Float64\LinearMaps\Outermorphisms\IXGaFloat64Automorphism.cs" />
+    <Compile Include="GeometricAlgebra\Float64\LinearMaps\Outermorphisms\IXGaFloat64Outermorphism.cs" />
+    <Compile Include="GeometricAlgebra\Float64\LinearMaps\Outermorphisms\IXGaFloat64OutermorphismSequence.cs" />
+    <Compile Include="GeometricAlgebra\Float64\LinearMaps\Outermorphisms\XGaFloat64ComputedOutermorphism.cs" />
+    <Compile Include="GeometricAlgebra\Float64\LinearMaps\Outermorphisms\XGaFloat64DiagonalOutermorphism.cs" />
+    <Compile Include="GeometricAlgebra\Float64\LinearMaps\Outermorphisms\XGaFloat64IdentityOutermorphism.cs" />
+    <Compile Include="GeometricAlgebra\Float64\LinearMaps\Outermorphisms\XGaFloat64LinearMapOutermorphism.cs" />
+    <Compile Include="GeometricAlgebra\Float64\LinearMaps\Outermorphisms\XGaFloat64MusicalAutomorphism.cs" />
+    <Compile Include="GeometricAlgebra\Float64\LinearMaps\Outermorphisms\XGaFloat64OutermorphismBase.cs" />
+    <Compile Include="GeometricAlgebra\Float64\LinearMaps\Outermorphisms\XGaFloat64OutermorphismBasisVectorOpBase.cs" />
+    <Compile Include="GeometricAlgebra\Float64\LinearMaps\Outermorphisms\XGaFloat64OutermorphismComposerUtils.cs" />
+    <Compile Include="GeometricAlgebra\Float64\LinearMaps\Outermorphisms\XGaFloat64OutermorphismSequence.cs" />
+    <Compile Include="GeometricAlgebra\Float64\LinearMaps\Outermorphisms\XGaFloat64OutermorphismUtils.cs" />
+    <Compile Include="GeometricAlgebra\Float64\LinearMaps\Outermorphisms\XGaFloat64StoredOutermorphism.cs" />
+    <Compile Include="GeometricAlgebra\Float64\LinearMaps\Projectors\IXGaFloat64Projector.cs" />
+    <Compile Include="GeometricAlgebra\Float64\LinearMaps\Projectors\XGaFloat64Projector.cs" />
+    <Compile Include="GeometricAlgebra\Float64\LinearMaps\Reflectors\IXGaFloat64Reflector.cs" />
+    <Compile Include="GeometricAlgebra\Float64\LinearMaps\Reflectors\XGaFloat64PureReflector.cs" />
+    <Compile Include="GeometricAlgebra\Float64\LinearMaps\Reflectors\XGaFloat64ReflectorBase.cs" />
+    <Compile Include="GeometricAlgebra\Float64\LinearMaps\Rotors\IXGaFloat64Rotor.cs" />
+    <Compile Include="GeometricAlgebra\Float64\LinearMaps\Rotors\IXGaFloat64ScalingRotor.cs" />
+    <Compile Include="GeometricAlgebra\Float64\LinearMaps\Rotors\XGaFloat64EuclideanScalingRotor2D.cs" />
+    <Compile Include="GeometricAlgebra\Float64\LinearMaps\Rotors\XGaFloat64EuclideanScalingRotorSquared2D.cs" />
+    <Compile Include="GeometricAlgebra\Float64\LinearMaps\Rotors\XGaFloat64PureRotor.cs" />
+    <Compile Include="GeometricAlgebra\Float64\LinearMaps\Rotors\XGaFloat64PureRotorSequence.cs" />
+    <Compile Include="GeometricAlgebra\Float64\LinearMaps\Rotors\XGaFloat64Rotor.cs" />
+    <Compile Include="GeometricAlgebra\Float64\LinearMaps\Rotors\XGaFloat64RotorBase.cs" />
+    <Compile Include="GeometricAlgebra\Float64\LinearMaps\Rotors\XGaFloat64RotorUtils.cs" />
+    <Compile Include="GeometricAlgebra\Float64\LinearMaps\Rotors\XGaFloat64PureScalingRotor.cs" />
+    <Compile Include="GeometricAlgebra\Float64\LinearMaps\Rotors\XGaFloat64PureScalingRotorSequence.cs" />
+    <Compile Include="GeometricAlgebra\Float64\LinearMaps\Rotors\XGaFloat64ScalingRotor.cs" />
+    <Compile Include="GeometricAlgebra\Float64\LinearMaps\Rotors\XGaFloat64ScalingRotorBase.cs" />
+    <Compile Include="GeometricAlgebra\Float64\LinearMaps\Versors\IXGaFloat64Versor.cs" />
+    <Compile Include="GeometricAlgebra\Float64\LinearMaps\Versors\XGaFloat64PureVersor.cs" />
+    <Compile Include="GeometricAlgebra\Float64\LinearMaps\Versors\XGaFloat64PureVersorsSequence.cs" />
+    <Compile Include="GeometricAlgebra\Float64\LinearMaps\Versors\XGaFloat64Versor.cs" />
+    <Compile Include="GeometricAlgebra\Float64\LinearMaps\Versors\XGaFloat64VersorBase.cs" />
+    <Compile Include="GeometricAlgebra\Float64\LinearMaps\Versors\XGaFloat64VersorUtils.cs" />
+    <Compile Include="GeometricAlgebra\Float64\LinearMaps\XGaFloat64ComputedUnilinearMap.cs" />
+    <Compile Include="GeometricAlgebra\Float64\LinearMaps\XGaFloat64DiagonalUnilinearMap.cs" />
+    <Compile Include="GeometricAlgebra\Float64\LinearMaps\XGaFloat64IdentityUnilinearMap.cs" />
+    <Compile Include="GeometricAlgebra\Float64\LinearMaps\XGaFloat64LinearMapUtils.cs" />
+    <Compile Include="GeometricAlgebra\Float64\LinearMaps\XGaFloat64StoredUnilinearMap.cs" />
+    <Compile Include="GeometricAlgebra\Float64\Multivectors\ConvertOps.cs" />
+    <Compile Include="GeometricAlgebra\Float64\Multivectors\LinearMapOps.cs" />
+    <Compile Include="GeometricAlgebra\Float64\Multivectors\ProductAcp.cs" />
+    <Compile Include="GeometricAlgebra\Float64\Multivectors\ProductCp.cs" />
+    <Compile Include="GeometricAlgebra\Float64\Multivectors\ProductFdp.cs" />
+    <Compile Include="GeometricAlgebra\Float64\Multivectors\ProductGp.cs" />
+    <Compile Include="GeometricAlgebra\Float64\Multivectors\ProductHip.cs" />
+    <Compile Include="GeometricAlgebra\Float64\Multivectors\ProductLcp.cs" />
+    <Compile Include="GeometricAlgebra\Float64\Multivectors\ProductOp.cs" />
+    <Compile Include="GeometricAlgebra\Float64\Multivectors\ProductRcp.cs" />
+    <Compile Include="GeometricAlgebra\Float64\Multivectors\ProductSp.cs" />
+    <Compile Include="GeometricAlgebra\Float64\Multivectors\SubspaceOps.cs" />
+    <Compile Include="GeometricAlgebra\Float64\Multivectors\XGaFloat64Bivector.cs" />
+    <Compile Include="GeometricAlgebra\Float64\Multivectors\XGaFloat64BivectorUnaryBinaryOps.cs" />
+    <Compile Include="GeometricAlgebra\Float64\Multivectors\XGaFloat64BivectorUtils.cs" />
+    <Compile Include="GeometricAlgebra\Float64\Multivectors\XGaFloat64GradedMultivector.cs" />
+    <Compile Include="GeometricAlgebra\Float64\Multivectors\XGaFloat64GradedMultivectorComposer.cs" />
+    <Compile Include="GeometricAlgebra\Float64\Multivectors\XGaFloat64GradedMultivectorUnaryBinaryOps.cs" />
+    <Compile Include="GeometricAlgebra\Float64\Multivectors\XGaFloat64HigherKVector.cs" />
+    <Compile Include="GeometricAlgebra\Float64\Multivectors\XGaFloat64HigherKVectorUnaryBinaryOps.cs" />
+    <Compile Include="GeometricAlgebra\Float64\Multivectors\XGaFloat64KVector.cs" />
+    <Compile Include="GeometricAlgebra\Float64\Multivectors\XGaFloat64KVectorComposer.cs" />
+    <Compile Include="GeometricAlgebra\Float64\Multivectors\XGaFloat64KVectorUnaryBinaryOps.cs" />
+    <Compile Include="GeometricAlgebra\Float64\Multivectors\XGaFloat64KVectorUtils.cs" />
+    <Compile Include="GeometricAlgebra\Float64\Multivectors\XGaFloat64Multivector.cs" />
+    <Compile Include="GeometricAlgebra\Float64\Multivectors\XGaFloat64MultivectorComposer.cs" />
+    <Compile Include="GeometricAlgebra\Float64\Multivectors\XGaFloat64MultivectorUnaryBinaryOps.cs" />
+    <Compile Include="GeometricAlgebra\Float64\Multivectors\XGaFloat64MultivectorUtils.cs" />
+    <Compile Include="GeometricAlgebra\Float64\Multivectors\XGaFloat64RandomComposer.cs" />
+    <Compile Include="GeometricAlgebra\Float64\Multivectors\XGaFloat64RepeatedScalarVectorDictionary.cs" />
+    <Compile Include="GeometricAlgebra\Float64\Multivectors\XGaFloat64Scalar.cs" />
+    <Compile Include="GeometricAlgebra\Float64\Multivectors\XGaFloat64ScalarUnaryBinaryOps.cs" />
+    <Compile Include="GeometricAlgebra\Float64\Multivectors\XGaFloat64UniformMultivector.cs" />
+    <Compile Include="GeometricAlgebra\Float64\Multivectors\XGaFloat64UniformMultivectorComposer.cs" />
+    <Compile Include="GeometricAlgebra\Float64\Multivectors\XGaFloat64UniformMultivectorUnaryBinaryOps.cs" />
+    <Compile Include="GeometricAlgebra\Float64\Multivectors\XGaFloat64Vector.cs" />
+    <Compile Include="GeometricAlgebra\Float64\Multivectors\XGaFloat64VectorUnaryBinaryOps.cs" />
+    <Compile Include="GeometricAlgebra\Float64\Multivectors\XGaFloat64VectorUtils.cs" />
+    <Compile Include="GeometricAlgebra\Float64\Processors\IXGaFloat64ProcessorContainer.cs" />
+    <Compile Include="GeometricAlgebra\Float64\Processors\XGaFloat64ConformalProcessor.cs" />
+    <Compile Include="GeometricAlgebra\Float64\Processors\XGaFloat64EuclideanProcessor.cs" />
+    <Compile Include="GeometricAlgebra\Float64\Processors\XGaFloat64Processor.cs" />
+    <Compile Include="GeometricAlgebra\Float64\Processors\XGaFloat64ProcessorComposerUtils.cs" />
+    <Compile Include="GeometricAlgebra\Float64\Processors\XGaFloat64ProcessorFrameOperations.cs" />
+    <Compile Include="GeometricAlgebra\Float64\Processors\XGaFloat64ProcessorLinearMapOperations.cs" />
+    <Compile Include="GeometricAlgebra\Float64\Processors\XGaFloat64ProcessorMultivectorOperations.cs" />
+    <Compile Include="GeometricAlgebra\Float64\Processors\XGaFloat64ProcessorRandomOperations.cs" />
+    <Compile Include="GeometricAlgebra\Float64\Processors\XGaFloat64ProcessorSubspaceOperations.cs" />
+    <Compile Include="GeometricAlgebra\Float64\Processors\XGaFloat64ProjectiveProcessor.cs" />
+    <Compile Include="GeometricAlgebra\Float64\Spaces\Conformal\XGaFloat64ConformalBlade.cs" />
+    <Compile Include="GeometricAlgebra\Float64\Spaces\Conformal\XGaFloat64ConformalComposerUtils.cs" />
+    <Compile Include="GeometricAlgebra\Float64\Spaces\Conformal\XGaFloat64ConformalIpnsFlat.cs" />
+    <Compile Include="GeometricAlgebra\Float64\Spaces\Conformal\XGaFloat64ConformalIpnsHyperPlane.cs" />
+    <Compile Include="GeometricAlgebra\Float64\Spaces\Conformal\XGaFloat64ConformalIpnsHyperSphere.cs" />
+    <Compile Include="GeometricAlgebra\Float64\Spaces\Conformal\XGaFloat64ConformalIpnsPoint.cs" />
+    <Compile Include="GeometricAlgebra\Float64\Spaces\Conformal\XGaFloat64ConformalIpnsRound.cs" />
+    <Compile Include="GeometricAlgebra\Float64\Spaces\Conformal\XGaFloat64ConformalIpnsVector.cs" />
+    <Compile Include="GeometricAlgebra\Float64\Spaces\Conformal\XGaFloat64ConformalOpnsDirection.cs" />
+    <Compile Include="GeometricAlgebra\Float64\Spaces\Conformal\XGaFloat64ConformalOpnsFlat.cs" />
+    <Compile Include="GeometricAlgebra\Float64\Spaces\Conformal\XGaFloat64ConformalOpnsHyperPlane.cs" />
+    <Compile Include="GeometricAlgebra\Float64\Spaces\Conformal\XGaFloat64ConformalOpnsHyperSphere.cs" />
+    <Compile Include="GeometricAlgebra\Float64\Spaces\Conformal\XGaFloat64ConformalOpnsRound.cs" />
+    <Compile Include="GeometricAlgebra\Float64\Spaces\Conformal\XGaFloat64ConformalSpace.cs" />
+    <Compile Include="GeometricAlgebra\Float64\Spaces\XGaFloat64EuclideanSpace.cs" />
+    <Compile Include="GeometricAlgebra\Float64\Spaces\XGaFloat64ProjectiveSpace.cs" />
+    <Compile Include="GeometricAlgebra\Float64\Spaces\XGaFloat64Space.cs" />
+    <Compile Include="GeometricAlgebra\Float64\Subspaces\XGaFloat64Subspace.cs" />
+    <Compile Include="GeometricAlgebra\GaTextUtils.cs" />
+    <Compile Include="GeometricAlgebra\GeometricAlgebraSpaceUtils.cs" />
+    <Compile Include="GeometricAlgebra\IGeometricAlgebraSpace.cs" />
+    <Compile Include="GeometricAlgebra\IXGaElement.cs" />
+    <Compile Include="GeometricAlgebra\IXGaLinearCombination.cs" />
+    <Compile Include="GeometricAlgebra\Structures\GaBivectorSparseList.cs" />
+    <Compile Include="GeometricAlgebra\Structures\GaMultivectorArraySparseList.cs" />
+    <Compile Include="GeometricAlgebra\Structures\GaMultivectorBinaryTrie.cs" />
+    <Compile Include="GeometricAlgebra\Structures\GaMultivectorSparseList.cs" />
+    <Compile Include="GeometricAlgebra\XGaMetric.cs" />
+    <Compile Include="GeometricAlgebra\XGaMetricUtils.cs" />
+    <Compile Include="GeometricAlgebra\XGaRandomUtils.cs" />
+    <Compile Include="IAlgebraicElement.cs" />
+    <Compile Include="LinearAlgebra\Basis\LinBasisVector.cs" />
+    <Compile Include="LinearAlgebra\Basis\LinBasisVectorComposerUtils.cs" />
+    <Compile Include="LinearAlgebra\Basis\LinBasisVectorPair3D.cs" />
+    <Compile Include="LinearAlgebra\Basis\LinBasisVectorUtils.cs" />
+    <Compile Include="LinearAlgebra\Float64\Angles\LinAngleRange.cs" />
+    <Compile Include="LinearAlgebra\Float64\Angles\LinFloat64Angle.cs" />
+    <Compile Include="LinearAlgebra\Float64\Angles\LinFloat64AngleUtils.cs" />
+    <Compile Include="LinearAlgebra\Float64\Angles\LinFloat64DirectedAngle.cs" />
+    <Compile Include="LinearAlgebra\Float64\Angles\LinFloat64PolarAngle.cs" />
+    <Compile Include="LinearAlgebra\Float64\Frames\Space2D\LinFloat64AffineFrame2D.cs" />
+    <Compile Include="LinearAlgebra\Float64\Frames\Space2D\LinFloat64LinearFrame2D.cs" />
+    <Compile Include="LinearAlgebra\Float64\Frames\Space2D\LinFloat64Normal2D.cs" />
+    <Compile Include="LinearAlgebra\Float64\Frames\Space3D\LinearFrame3D.cs" />
+    <Compile Include="LinearAlgebra\Float64\Frames\Space3D\LinFloat64AffineFrame3D.cs" />
+    <Compile Include="LinearAlgebra\Float64\Frames\Space3D\LinFloat64Normal3D.cs" />
+    <Compile Include="LinearAlgebra\Float64\IFloat64LinearAlgebraElement.cs" />
+    <Compile Include="LinearAlgebra\Float64\LinearMaps\Space3D\Composers\LinFloat64RotationComposer3D.cs" />
+    <Compile Include="LinearAlgebra\Float64\LinearMaps\Space3D\ILinFloat64AffineMap3D.cs" />
+    <Compile Include="LinearAlgebra\Float64\LinearMaps\Space3D\ILinFloat64UnilinearMap3D.cs" />
+    <Compile Include="LinearAlgebra\Float64\LinearMaps\Space3D\LinFloat64IdentityLinearMap3D.cs" />
+    <Compile Include="LinearAlgebra\Float64\LinearMaps\Space3D\LinFloat64MatrixLinearMap3D.cs" />
+    <Compile Include="LinearAlgebra\Float64\LinearMaps\Space3D\LinFloat64OrthogonalLinearMapSequence3D.cs" />
+    <Compile Include="LinearAlgebra\Float64\LinearMaps\Space3D\LinFloat64UnilinearMap.cs" />
+    <Compile Include="LinearAlgebra\Float64\LinearMaps\Space3D\LinFloat64UnilinearMap3DUtils.cs" />
+    <Compile Include="LinearAlgebra\Float64\LinearMaps\Space3D\LinFloat64UnilinearMapComposer.cs" />
+    <Compile Include="LinearAlgebra\Float64\LinearMaps\Space3D\LinFloat64UnilinearMapComposerUtils.cs" />
+    <Compile Include="LinearAlgebra\Float64\LinearMaps\Space3D\Reflection\ILinFloat64HyperPlaneNormalReflectionLinearMap3D.cs" />
+    <Compile Include="LinearAlgebra\Float64\LinearMaps\Space3D\Reflection\LinFloat64HyperPlaneAxisReflection3D.cs" />
+    <Compile Include="LinearAlgebra\Float64\LinearMaps\Space3D\Reflection\LinFloat64HyperPlaneNormalReflection3D.cs" />
+    <Compile Include="LinearAlgebra\Float64\LinearMaps\Space3D\Reflection\LinFloat64HyperPlaneNormalReflectionSequence3D.cs" />
+    <Compile Include="LinearAlgebra\Float64\LinearMaps\Space3D\Reflection\LinFloat64MatrixReflection3D.cs" />
+    <Compile Include="LinearAlgebra\Float64\LinearMaps\Space3D\Reflection\LinFloat64ReflectionBase3D.cs" />
+    <Compile Include="LinearAlgebra\Float64\LinearMaps\Space3D\Reflection\LinFloat64VectorReflection3D.cs" />
+    <Compile Include="LinearAlgebra\Float64\LinearMaps\Space3D\Rotation\LinFloat64MatrixRotation3D.cs" />
+    <Compile Include="LinearAlgebra\Float64\LinearMaps\Space3D\Rotation\LinFloat64PlanarRotation3D.cs" />
+    <Compile Include="LinearAlgebra\Float64\LinearMaps\Space3D\Rotation\LinFloat64Rotation3D.cs" />
+    <Compile Include="LinearAlgebra\Float64\LinearMaps\Space3D\Scaling\ILinFloat64DirectionalScalingLinearMap3D.cs" />
+    <Compile Include="LinearAlgebra\Float64\LinearMaps\Space3D\Scaling\LinFloat64AxisDirectionalScaling3D.cs" />
+    <Compile Include="LinearAlgebra\Float64\LinearMaps\Space3D\Scaling\LinFloat64DirectionalScalingLinearMap3D.cs" />
+    <Compile Include="LinearAlgebra\Float64\LinearMaps\Space3D\Scaling\LinFloat64VectorDirectionalScaling3D.cs" />
+    <Compile Include="LinearAlgebra\Float64\LinearMaps\Space3D\Scaling\LinFloat64VectorDirectionalScalingSequence3D.cs" />
+    <Compile Include="LinearAlgebra\Float64\LinearMaps\Space4D\ILinFloat64AffineMap3D.cs" />
+    <Compile Include="LinearAlgebra\Float64\LinearMaps\Space4D\ILinFloat64UnilinearMap3D.cs" />
+    <Compile Include="LinearAlgebra\Float64\LinearMaps\Space4D\LinFloat64IdentityLinearMap3D.cs" />
+    <Compile Include="LinearAlgebra\Float64\LinearMaps\Space4D\LinFloat64MatrixLinearMap3D.cs" />
+    <Compile Include="LinearAlgebra\Float64\LinearMaps\Space4D\LinFloat64OrthogonalLinearMapSequence4D.cs" />
+    <Compile Include="LinearAlgebra\Float64\LinearMaps\Space4D\LinFloat64UnilinearMap.cs" />
+    <Compile Include="LinearAlgebra\Float64\LinearMaps\Space4D\LinFloat64UnilinearMap3DUtils.cs" />
+    <Compile Include="LinearAlgebra\Float64\LinearMaps\Space4D\LinFloat64UnilinearMapComposer.cs" />
+    <Compile Include="LinearAlgebra\Float64\LinearMaps\Space4D\LinFloat64UnilinearMapComposerUtils.cs" />
+    <Compile Include="LinearAlgebra\Float64\LinearMaps\Space4D\Reflection\ILinFloat64HyperPlaneNormalReflectionLinearMap3D.cs" />
+    <Compile Include="LinearAlgebra\Float64\LinearMaps\Space4D\Reflection\LinFloat64HyperPlaneAxisReflection3D.cs" />
+    <Compile Include="LinearAlgebra\Float64\LinearMaps\Space4D\Reflection\LinFloat64HyperPlaneNormalReflection3D.cs" />
+    <Compile Include="LinearAlgebra\Float64\LinearMaps\Space4D\Reflection\LinFloat64HyperPlaneNormalReflectionSequence3D.cs" />
+    <Compile Include="LinearAlgebra\Float64\LinearMaps\Space4D\Reflection\LinFloat64MatrixReflection4D.cs" />
+    <Compile Include="LinearAlgebra\Float64\LinearMaps\Space4D\Reflection\LinFloat64ReflectionBase3D.cs" />
+    <Compile Include="LinearAlgebra\Float64\LinearMaps\Space4D\Reflection\LinFloat64VectorReflection3D.cs" />
+    <Compile Include="LinearAlgebra\Float64\LinearMaps\Space4D\Rotation\ILinFloat64SimpleVectorToVectorRotation3D.cs" />
+    <Compile Include="LinearAlgebra\Float64\LinearMaps\Space4D\Rotation\LinFloat64AxisToAxisRotation3D.cs" />
+    <Compile Include="LinearAlgebra\Float64\LinearMaps\Space4D\Rotation\LinFloat64AxisToVectorRotation3D.cs" />
+    <Compile Include="LinearAlgebra\Float64\LinearMaps\Space4D\Rotation\LinFloat64MatrixRotation3D.cs" />
+    <Compile Include="LinearAlgebra\Float64\LinearMaps\Space4D\Rotation\LinFloat64OrthogonalVectorToVectorRotation3D.cs" />
+    <Compile Include="LinearAlgebra\Float64\LinearMaps\Space4D\Rotation\LinFloat64RotationBase3D.cs" />
+    <Compile Include="LinearAlgebra\Float64\LinearMaps\Space4D\Rotation\LinFloat64SimpleRotationBase3D.cs" />
+    <Compile Include="LinearAlgebra\Float64\LinearMaps\Space4D\Rotation\LinFloat64VectorToAxisRotation3D.cs" />
+    <Compile Include="LinearAlgebra\Float64\LinearMaps\Space4D\Rotation\LinFloat64VectorToVectorRotation3D.cs" />
+    <Compile Include="LinearAlgebra\Float64\LinearMaps\Space4D\Rotation\LinFloat64VectorToVectorRotationBase3D.cs" />
+    <Compile Include="LinearAlgebra\Float64\LinearMaps\Space4D\Rotation\LinFloat64VectorToVectorRotationSequence3D.cs" />
+    <Compile Include="LinearAlgebra\Float64\LinearMaps\Space4D\Rotation\SimpleRotationSequence.cs" />
+    <Compile Include="LinearAlgebra\Float64\LinearMaps\Space4D\Scaling\ILinFloat64DirectionalScalingLinearMap3D.cs" />
+    <Compile Include="LinearAlgebra\Float64\LinearMaps\Space4D\Scaling\LinFloat64AxisDirectionalScaling3D.cs" />
+    <Compile Include="LinearAlgebra\Float64\LinearMaps\Space4D\Scaling\LinFloat64DirectionalScalingLinearMap3D.cs" />
+    <Compile Include="LinearAlgebra\Float64\LinearMaps\Space4D\Scaling\LinFloat64VectorDirectionalScaling3D.cs" />
+    <Compile Include="LinearAlgebra\Float64\LinearMaps\Space4D\Scaling\LinFloat64VectorDirectionalScalingSequence3D.cs" />
+    <Compile Include="LinearAlgebra\Float64\LinearMaps\SpaceND\Composers\LinFloat64PlanarRotationSequence.cs" />
+    <Compile Include="LinearAlgebra\Float64\LinearMaps\SpaceND\ILinFloat64AffineMap.cs" />
+    <Compile Include="LinearAlgebra\Float64\LinearMaps\SpaceND\ILinFloat64UnilinearMap.cs" />
+    <Compile Include="LinearAlgebra\Float64\LinearMaps\SpaceND\LinFloat64IdentityLinearMap.cs" />
+    <Compile Include="LinearAlgebra\Float64\LinearMaps\SpaceND\LinFloat64MatrixLinearMap.cs" />
+    <Compile Include="LinearAlgebra\Float64\LinearMaps\SpaceND\LinFloat64OrthogonalLinearMapSequence.cs" />
+    <Compile Include="LinearAlgebra\Float64\LinearMaps\SpaceND\LinFloat64UnilinearMap.cs" />
+    <Compile Include="LinearAlgebra\Float64\LinearMaps\SpaceND\LinFloat64UnilinearMapComposer.cs" />
+    <Compile Include="LinearAlgebra\Float64\LinearMaps\SpaceND\LinFloat64UnilinearMapComposerUtils.cs" />
+    <Compile Include="LinearAlgebra\Float64\LinearMaps\SpaceND\LinFloat64UnilinearMapUtils.cs" />
+    <Compile Include="LinearAlgebra\Float64\LinearMaps\SpaceND\Reflection\ILinFloat64HyperPlaneNormalReflectionLinearMap.cs" />
+    <Compile Include="LinearAlgebra\Float64\LinearMaps\SpaceND\Reflection\LinFloat64HyperPlaneAxisReflection.cs" />
+    <Compile Include="LinearAlgebra\Float64\LinearMaps\SpaceND\Reflection\LinFloat64HyperPlaneNormalReflection.cs" />
+    <Compile Include="LinearAlgebra\Float64\LinearMaps\SpaceND\Reflection\LinFloat64HyperPlaneNormalReflectionSequence.cs" />
+    <Compile Include="LinearAlgebra\Float64\LinearMaps\SpaceND\Reflection\LinFloat64MatrixReflection.cs" />
+    <Compile Include="LinearAlgebra\Float64\LinearMaps\SpaceND\Reflection\LinFloat64ReflectionBase.cs" />
+    <Compile Include="LinearAlgebra\Float64\LinearMaps\SpaceND\Reflection\LinFloat64VectorReflection.cs" />
+    <Compile Include="LinearAlgebra\Float64\LinearMaps\SpaceND\Rotation\ILinFloat64PlanarRotation.cs" />
+    <Compile Include="LinearAlgebra\Float64\LinearMaps\SpaceND\Rotation\LinFloat64AxisToAxisRotation.cs" />
+    <Compile Include="LinearAlgebra\Float64\LinearMaps\SpaceND\Rotation\LinFloat64AxisToVectorRotation.cs" />
+    <Compile Include="LinearAlgebra\Float64\LinearMaps\SpaceND\Rotation\LinFloat64MatrixRotation.cs" />
+    <Compile Include="LinearAlgebra\Float64\LinearMaps\SpaceND\Rotation\LinFloat64PlanarRotation.cs" />
+    <Compile Include="LinearAlgebra\Float64\LinearMaps\SpaceND\Rotation\LinFloat64Rotation.cs" />
+    <Compile Include="LinearAlgebra\Float64\LinearMaps\SpaceND\Rotation\LinFloat64SimpleRotation.cs" />
+    <Compile Include="LinearAlgebra\Float64\LinearMaps\SpaceND\Rotation\LinFloat64VectorToAxisRotation.cs" />
+    <Compile Include="LinearAlgebra\Float64\LinearMaps\SpaceND\Rotation\LinFloat64VectorToVectorRotation.cs" />
+    <Compile Include="LinearAlgebra\Float64\LinearMaps\SpaceND\Scaling\ILinFloat64DirectionalScalingLinearMap.cs" />
+    <Compile Include="LinearAlgebra\Float64\LinearMaps\SpaceND\Scaling\LinFloat64AxisDirectionalScaling.cs" />
+    <Compile Include="LinearAlgebra\Float64\LinearMaps\SpaceND\Scaling\LinFloat64DirectionalScalingLinearMap.cs" />
+    <Compile Include="LinearAlgebra\Float64\LinearMaps\SpaceND\Scaling\LinFloat64VectorDirectionalScaling.cs" />
+    <Compile Include="LinearAlgebra\Float64\LinearMaps\SpaceND\Scaling\LinFloat64VectorDirectionalScalingSequence.cs" />
+    <Compile Include="LinearAlgebra\Float64\LinFloat64RandomComposer.cs" />
+    <Compile Include="LinearAlgebra\Float64\LinFloat64RandomUtils.cs" />
+    <Compile Include="LinearAlgebra\Float64\MathNetNumericsUtils.cs" />
+    <Compile Include="LinearAlgebra\Float64\Matrices\Float64ArrayColumn.cs" />
+    <Compile Include="LinearAlgebra\Float64\Matrices\Float64ArrayComposer.cs" />
+    <Compile Include="LinearAlgebra\Float64\Matrices\Float64ArrayDiagonal.cs" />
+    <Compile Include="LinearAlgebra\Float64\Matrices\Float64ArrayRow.cs" />
+    <Compile Include="LinearAlgebra\Float64\Matrices\Float64ArrayUtils.cs" />
+    <Compile Include="LinearAlgebra\Float64\Matrices\Float64ScalarArrayUtils.cs" />
+    <Compile Include="LinearAlgebra\Float64\Matrices\MatrixUtils.cs" />
+    <Compile Include="LinearAlgebra\Float64\Matrices\ScalarArray2DComposer.cs" />
+    <Compile Include="LinearAlgebra\Float64\Matrices\ScalarArrayColumn.cs" />
+    <Compile Include="LinearAlgebra\Float64\Matrices\ScalarArrayDiagonal.cs" />
+    <Compile Include="LinearAlgebra\Float64\Matrices\ScalarArrayRow.cs" />
+    <Compile Include="LinearAlgebra\Float64\Matrices\ScalarArrayUtils.cs" />
+    <Compile Include="LinearAlgebra\Float64\Matrices\SquareMatrix2.cs" />
+    <Compile Include="LinearAlgebra\Float64\Matrices\SquareMatrix3.cs" />
+    <Compile Include="LinearAlgebra\Float64\Matrices\SquareMatrix4.cs" />
+    <Compile Include="LinearAlgebra\Float64\SubSpaces\Space3D\ILinFloat64Subspace3D.cs" />
+    <Compile Include="LinearAlgebra\Float64\SubSpaces\Space3D\LinFloat64LineSubspace3D.cs" />
+    <Compile Include="LinearAlgebra\Float64\SubSpaces\Space3D\LinFloat64NullSubspace3D.cs" />
+    <Compile Include="LinearAlgebra\Float64\SubSpaces\Space3D\LinFloat64PlaneSubspace3D.cs" />
+    <Compile Include="LinearAlgebra\Float64\SubSpaces\Space3D\LinFloat64SimpleEigenSubspace3D.cs" />
+    <Compile Include="LinearAlgebra\Float64\SubSpaces\Space4D\ILinFloat64Subspace4D.cs" />
+    <Compile Include="LinearAlgebra\Float64\SubSpaces\Space4D\LinFloat64LineSubspace4D.cs" />
+    <Compile Include="LinearAlgebra\Float64\SubSpaces\Space4D\LinFloat64NullSubspace4D.cs" />
+    <Compile Include="LinearAlgebra\Float64\SubSpaces\Space4D\LinFloat64PlaneSubspace4D.cs" />
+    <Compile Include="LinearAlgebra\Float64\SubSpaces\Space4D\LinFloat64SimpleEigenSubspace4D.cs" />
+    <Compile Include="LinearAlgebra\Float64\SubSpaces\SpaceND\ILinFloat64Subspace.cs" />
+    <Compile Include="LinearAlgebra\Float64\SubSpaces\SpaceND\LinFloat64LineSubspace.cs" />
+    <Compile Include="LinearAlgebra\Float64\SubSpaces\SpaceND\LinFloat64NullSubspace.cs" />
+    <Compile Include="LinearAlgebra\Float64\SubSpaces\SpaceND\LinFloat64PlaneSubspace.cs" />
+    <Compile Include="LinearAlgebra\Float64\SubSpaces\SpaceND\LinFloat64SimpleEigenSubspace.cs" />
+    <Compile Include="LinearAlgebra\Float64\Tuples\BoolTuple2D.cs" />
+    <Compile Include="LinearAlgebra\Float64\Tuples\BoolTuple3D.cs" />
+    <Compile Include="LinearAlgebra\Float64\Tuples\DistinctTuplesList2D.cs" />
+    <Compile Include="LinearAlgebra\Float64\Tuples\DistinctTuplesList3D.cs" />
+    <Compile Include="LinearAlgebra\Float64\Tuples\Float64Interval.cs" />
+    <Compile Include="LinearAlgebra\Float64\Tuples\IntTuple2D.cs" />
+    <Compile Include="LinearAlgebra\Float64\Tuples\IntTuple3D.cs" />
+    <Compile Include="LinearAlgebra\Float64\Tuples\MutableBoolTuple2D.cs" />
+    <Compile Include="LinearAlgebra\Float64\Tuples\MutableBoolTuple3D.cs" />
+    <Compile Include="LinearAlgebra\Float64\Tuples\MutableComplexTuple2D.cs" />
+    <Compile Include="LinearAlgebra\Float64\Tuples\MutableComplexTuple3D.cs" />
+    <Compile Include="LinearAlgebra\Float64\Tuples\MutableFloat64Tuple2D.cs" />
+    <Compile Include="LinearAlgebra\Float64\Tuples\MutableIntTuple2D.cs" />
+    <Compile Include="LinearAlgebra\Float64\Tuples\TupleUtils.cs" />
+    <Compile Include="LinearAlgebra\Float64\Vectors\Space2D\ILinComplexVector2D.cs" />
+    <Compile Include="LinearAlgebra\Float64\Vectors\Space2D\ILinFloat64Multivector2D.cs" />
+    <Compile Include="LinearAlgebra\Float64\Vectors\Space2D\ILinFloat64PolarVector2D.cs" />
+    <Compile Include="LinearAlgebra\Float64\Vectors\Space2D\ILinFloat64Vector2D.cs" />
+    <Compile Include="LinearAlgebra\Float64\Vectors\Space2D\LinComplexVector2D.cs" />
+    <Compile Include="LinearAlgebra\Float64\Vectors\Space2D\LinFloat64Bivector2D.cs" />
+    <Compile Include="LinearAlgebra\Float64\Vectors\Space2D\LinFloat64Multivector2D.cs" />
+    <Compile Include="LinearAlgebra\Float64\Vectors\Space2D\LinFloat64Multivector2DUtils.cs" />
+    <Compile Include="LinearAlgebra\Float64\Vectors\Space2D\LinFloat64PolarVector2D.cs" />
+    <Compile Include="LinearAlgebra\Float64\Vectors\Space2D\LinFloat64Scalar2D.cs" />
+    <Compile Include="LinearAlgebra\Float64\Vectors\Space2D\LinFloat64Vector2D.cs" />
+    <Compile Include="LinearAlgebra\Float64\Vectors\Space2D\LinFloat64Vector2DAffineUtils.cs" />
+    <Compile Include="LinearAlgebra\Float64\Vectors\Space2D\LinFloat64Vector2DComponentUtils.cs" />
+    <Compile Include="LinearAlgebra\Float64\Vectors\Space2D\LinFloat64Vector2DComposerUtils.cs" />
+    <Compile Include="LinearAlgebra\Float64\Vectors\Space2D\LinFloat64Vector2DRandomUtils.cs" />
+    <Compile Include="LinearAlgebra\Float64\Vectors\Space2D\LinFloat64Vector2DUtils.cs" />
+    <Compile Include="LinearAlgebra\Float64\Vectors\Space3D\ILinComplexVector3D.cs" />
+    <Compile Include="LinearAlgebra\Float64\Vectors\Space3D\ILinFloat64KVector3D.cs" />
+    <Compile Include="LinearAlgebra\Float64\Vectors\Space3D\ILinFloat64Multivector3D.cs" />
+    <Compile Include="LinearAlgebra\Float64\Vectors\Space3D\ILinFloat64SphericalVector3D.cs" />
+    <Compile Include="LinearAlgebra\Float64\Vectors\Space3D\ILinFloat64Vector3D.cs" />
+    <Compile Include="LinearAlgebra\Float64\Vectors\Space3D\LinComplexVector3D.cs" />
+    <Compile Include="LinearAlgebra\Float64\Vectors\Space3D\LinFloat64Bivector3D.cs" />
+    <Compile Include="LinearAlgebra\Float64\Vectors\Space3D\LinFloat64DirectedArea3D.cs" />
+    <Compile Include="LinearAlgebra\Float64\Vectors\Space3D\LinFloat64GramSchmidtFrame3D.cs" />
+    <Compile Include="LinearAlgebra\Float64\Vectors\Space3D\LinFloat64Multivector3D.cs" />
+    <Compile Include="LinearAlgebra\Float64\Vectors\Space3D\LinFloat64Multivector3DUtils.cs" />
+    <Compile Include="LinearAlgebra\Float64\Vectors\Space3D\LinFloat64Quaternion.cs" />
+    <Compile Include="LinearAlgebra\Float64\Vectors\Space3D\LinFloat64QuaternionUtils.cs" />
+    <Compile Include="LinearAlgebra\Float64\Vectors\Space3D\LinFloat64RotationUtils.cs" />
+    <Compile Include="LinearAlgebra\Float64\Vectors\Space3D\LinFloat64Scalar3D.cs" />
+    <Compile Include="LinearAlgebra\Float64\Vectors\Space3D\LinFloat64SphericalUnitVector3D.cs" />
+    <Compile Include="LinearAlgebra\Float64\Vectors\Space3D\LinFloat64SphericalVector3D.cs" />
+    <Compile Include="LinearAlgebra\Float64\Vectors\Space3D\LinFloat64Trivector3D.cs" />
+    <Compile Include="LinearAlgebra\Float64\Vectors\Space3D\LinFloat64Vector3D.cs" />
+    <Compile Include="LinearAlgebra\Float64\Vectors\Space3D\LinFloat64Vector3DAffineUtils.cs" />
+    <Compile Include="LinearAlgebra\Float64\Vectors\Space3D\LinFloat64Vector3DComponentUtils.cs" />
+    <Compile Include="LinearAlgebra\Float64\Vectors\Space3D\LinFloat64Vector3DComposer.cs" />
+    <Compile Include="LinearAlgebra\Float64\Vectors\Space3D\LinFloat64Vector3DComposerUtils.cs" />
+    <Compile Include="LinearAlgebra\Float64\Vectors\Space3D\LinFloat64Vector3DRandomUtils.cs" />
+    <Compile Include="LinearAlgebra\Float64\Vectors\Space3D\LinFloat64Vector3DUtils.cs" />
+    <Compile Include="LinearAlgebra\Float64\Vectors\Space4D\ILinComplexVector4D.cs" />
+    <Compile Include="LinearAlgebra\Float64\Vectors\Space4D\ILinFloat64Multivector4D.cs" />
+    <Compile Include="LinearAlgebra\Float64\Vectors\Space4D\ILinFloat64Vector4D.cs" />
+    <Compile Include="LinearAlgebra\Float64\Vectors\Space4D\LinFloat64Vector4D.cs" />
+    <Compile Include="LinearAlgebra\Float64\Vectors\Space4D\LinFloat64Vector4DComposer.cs" />
+    <Compile Include="LinearAlgebra\Float64\Vectors\Space4D\LinFloat64Vector4DComposerUtils.cs" />
+    <Compile Include="LinearAlgebra\Float64\Vectors\Space4D\LinFloat64Vector4DUtils.cs" />
+    <Compile Include="LinearAlgebra\Float64\Vectors\SpaceND\LinFloat64Vector.cs" />
+    <Compile Include="LinearAlgebra\Float64\Vectors\SpaceND\LinFloat64VectorComposer.cs" />
+    <Compile Include="LinearAlgebra\Float64\Vectors\SpaceND\LinFloat64VectorComposerUtils.cs" />
+    <Compile Include="LinearAlgebra\Float64\Vectors\SpaceND\LinFloat64VectorTerm.cs" />
+    <Compile Include="LinearAlgebra\Float64\Vectors\SpaceND\LinFloat64VectorTermComposerUtils.cs" />
+    <Compile Include="LinearAlgebra\Float64\Vectors\SpaceND\LinFloat64VectorUtils.cs" />
+    <Compile Include="LinearAlgebra\ILinearAlgebraElement.cs" />
+    <Compile Include="MatlabUtils.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Samples\GeometricAlgebra\Samples1.cs" />
+    <Compile Include="Scalars\Complex.cs" />
+    <Compile Include="Scalars\Float32\Float32Utils.cs" />
+    <Compile Include="Scalars\Float64\Float64ComplexExtensions.cs" />
+    <Compile Include="Scalars\Float64\Float64ComplexUtils.cs" />
+    <Compile Include="Scalars\Float64\Float64RandomComposer.cs" />
+    <Compile Include="Scalars\Float64\Float64ScalarComposer.cs" />
+    <Compile Include="Scalars\Float64\Float64ScalarComposerOperations.cs" />
+    <Compile Include="Scalars\Float64\Float64ScalarRange.cs" />
+    <Compile Include="Scalars\Float64\Float64ScalarUtils.cs" />
+    <Compile Include="Scalars\Float64\Float64Utils.cs" />
+    <Compile Include="Scalars\Float64\IFloat64Element.cs" />
+    <Compile Include="Scalars\Float64\IFloat64Scalar.cs" />
+    <Compile Include="Scalars\Float64\IFloat64ScalarAlgebraElement.cs" />
+    <Compile Include="Scalars\IScalarAlgebraElement.cs" />
+    <Compile Include="Scalars\ScalarToIntOption.cs" />
+    <Compile Include="Structures\BitManipulation\BitOperations.cs" />
+    <Compile Include="Structures\BitManipulation\Int32BitUtils.cs" />
+    <Compile Include="Structures\BitManipulation\UInt32BitUtils.cs" />
+    <Compile Include="Structures\Combibnations\BinaryCombinationsUtilsUInt64.cs" />
+    <Compile Include="Structures\Combibnations\CombinationsUtilsUInt64.cs" />
+    <Compile Include="Structures\Combibnations\PascalTriangleUInt32.cs" />
+    <Compile Include="Structures\Combibnations\PascalTriangleUInt64.cs" />
+    <Compile Include="Structures\DataStructuresLibUtils.cs" />
+    <Compile Include="Structures\Dictionary\DenseDictionary.cs" />
+    <Compile Include="Structures\Dictionary\DenseInt32Dictionary.cs" />
+    <Compile Include="Structures\Dictionary\Dictionary2Keys.cs" />
+    <Compile Include="Structures\Dictionary\Dictionary3Keys.cs" />
+    <Compile Include="Structures\Dictionary\DictionaryComposerUtils.cs" />
+    <Compile Include="Structures\Dictionary\EmptyDictionary.cs" />
+    <Compile Include="Structures\Dictionary\RepeatedItemDictionary.cs" />
+    <Compile Include="Structures\Dictionary\RepeatedItemInt32Dictionary.cs" />
+    <Compile Include="Structures\Dictionary\SingleItemDictionary.cs" />
+    <Compile Include="Structures\Extensions\ArrayExtensions.cs" />
+    <Compile Include="Structures\Extensions\DictionaryUtils.cs" />
+    <Compile Include="Structures\Extensions\KeyValuePairExtensions.cs" />
+    <Compile Include="Structures\Extensions\SequenceExtensions.cs" />
+    <Compile Include="Structures\HashCode.cs" />
+    <Compile Include="Structures\IndexSets\IndexSet.cs" />
+    <Compile Include="Structures\IndexSets\IndexSetArrayArrayUtils.cs" />
+    <Compile Include="Structures\IndexSets\IndexSetArrayPatternUtils.cs" />
+    <Compile Include="Structures\IndexSets\IndexSetEqualityComparer.cs" />
+    <Compile Include="Structures\IndexSets\IndexSetPatternArrayUtils.cs" />
+    <Compile Include="Structures\IndexSets\IndexSetPatternPatternUtils.cs" />
+    <Compile Include="Structures\IndexSets\IndexSetUtils.cs" />
+    <Compile Include="Structures\Permutations\PermutationsUtils.cs" />
+    <Compile Include="Structures\Random\RandomGeneratorUtils.cs" />
+    <Compile Include="Structures\Random\StableDistributionRandomGenerator.cs" />
+    <Compile Include="Structures\StringBuilderExtensions.cs" />
+    <Compile Include="Structures\TextUtils.cs" />
+    <Compile Include="Structures\Tuples\Hexad.cs" />
+    <Compile Include="Structures\Tuples\IHexad.cs" />
+    <Compile Include="Structures\Tuples\IInt32IndexedValue.cs" />
+    <Compile Include="Structures\Tuples\IndexPair.cs" />
+    <Compile Include="Structures\Tuples\IndexRange.cs" />
+    <Compile Include="Structures\Tuples\Int32IndexedFloat64.cs" />
+    <Compile Include="Structures\Tuples\Int32IndexedValue.cs" />
+    <Compile Include="Structures\Tuples\Int32Pair.cs" />
+    <Compile Include="Structures\Tuples\IntegerSign.cs" />
+    <Compile Include="Structures\Tuples\IPair.cs" />
+    <Compile Include="Structures\Tuples\IPair2D.cs" />
+    <Compile Include="Structures\Tuples\IQuad.cs" />
+    <Compile Include="Structures\Tuples\IQuint.cs" />
+    <Compile Include="Structures\Tuples\ITriplet.cs" />
+    <Compile Include="Structures\Tuples\IUInt64IndexedValue.cs" />
+    <Compile Include="Structures\Tuples\MutablePair.cs" />
+    <Compile Include="Structures\Tuples\Pair.cs" />
+    <Compile Include="Structures\Tuples\Pair2D.cs" />
+    <Compile Include="Structures\Tuples\Quad.cs" />
+    <Compile Include="Structures\Tuples\Quint.cs" />
+    <Compile Include="Structures\Tuples\Triplet.cs" />
+    <Compile Include="Structures\Tuples\TupleUtils.cs" />
+    <Compile Include="Structures\Tuples\UInt32Pair.cs" />
+    <Compile Include="Structures\Tuples\UInt64IndexedFloat64.cs" />
+    <Compile Include="Structures\BitManipulation\UInt64BitUtils.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Analyzer Include="..\packages\Microsoft.CodeAnalysis.Analyzers.4.14.0\analyzers\dotnet\cs\Microsoft.CodeAnalysis.Analyzers.dll" />
+    <Analyzer Include="..\packages\Microsoft.CodeAnalysis.Analyzers.4.14.0\analyzers\dotnet\cs\Microsoft.CodeAnalysis.CSharp.Analyzers.dll" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\System.ValueTuple.4.6.1\build\net471\System.ValueTuple.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\System.ValueTuple.4.6.1\build\net471\System.ValueTuple.targets'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.Diagnostics.Tracing.TraceEvent.3.1.22\build\Microsoft.Diagnostics.Tracing.TraceEvent.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Diagnostics.Tracing.TraceEvent.3.1.22\build\Microsoft.Diagnostics.Tracing.TraceEvent.props'))" />
+  </Target>
+  <Import Project="..\packages\System.ValueTuple.4.6.1\build\net471\System.ValueTuple.targets" Condition="Exists('..\packages\System.ValueTuple.4.6.1\build\net471\System.ValueTuple.targets')" />
+</Project>

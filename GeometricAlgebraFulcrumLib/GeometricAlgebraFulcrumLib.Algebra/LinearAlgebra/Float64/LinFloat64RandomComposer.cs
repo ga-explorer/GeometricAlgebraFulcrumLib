@@ -78,15 +78,16 @@ public class LinFloat64RandomComposer :
     {
         var id = GetBasisVectorIndex();
 
-        return LinBasisVector.Create(id);
+        return LinBasisVector.Positive(id);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public ILinSignedBasisVector GetSignedBasisVector()
+    public LinBasisVector GetSignedBasisVector()
     {
+        var idx = GetBasisVectorIndex();
         var sign = RandomGenerator.GetSign();
 
-        return GetBasisVector().ToSignedBasisVector(sign);
+        return LinBasisVector.Create(idx, sign);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -95,7 +96,7 @@ public class LinFloat64RandomComposer :
         var scalar = GetScalarValue();
         var basis = GetBasisVector();
 
-        return basis.ToTerm(scalar);
+        return basis.ToVectorTerm(scalar);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -103,7 +104,7 @@ public class LinFloat64RandomComposer :
     {
         var scalar = GetScalarValue();
 
-        return index.ToLinBasisVector().ToTerm(scalar);
+        return index.ToLinBasisVector().ToVectorTerm(scalar);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]

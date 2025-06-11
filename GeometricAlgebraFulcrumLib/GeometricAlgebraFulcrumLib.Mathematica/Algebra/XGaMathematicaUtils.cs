@@ -15,7 +15,6 @@ using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Multivectors;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Processors;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.LinearMaps.Outermorphisms;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.LinearMaps.Rotors;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Multivectors.Composers;
 
 namespace GeometricAlgebraFulcrumLib.Mathematica.Algebra;
 
@@ -189,7 +188,7 @@ public static class XGaMathematicaUtils
         return rotor
             .Multivector
             .MapScalars(scalar => scalar.Simplify())
-            .CreatePureRotor();
+            .ToPureRotor();
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -198,7 +197,7 @@ public static class XGaMathematicaUtils
         return rotor
             .Multivector
             .MapScalars(scalar => scalar.Simplify(assumeExpr))
-            .CreatePureRotor();
+            .ToPureRotor();
     }
 
 
@@ -694,7 +693,7 @@ public static class XGaMathematicaUtils
 
     public static XGaVector<Float64SampledTimeSignal> GetSampledSignal(this XGaVector<Expr> vector, XGaProcessor<Float64SampledTimeSignal> processor, Expr t, double samplingRate, int sampleCount)
     {
-        var composer = processor.CreateComposer();
+        var composer = processor.CreateVectorComposer();
 
         foreach (var (id, exprScalar) in vector.IdScalarPairs)
         {
@@ -709,7 +708,7 @@ public static class XGaMathematicaUtils
 
     public static XGaBivector<Float64SampledTimeSignal> GetSampledSignal(this XGaBivector<Expr> vector, XGaProcessor<Float64SampledTimeSignal> processor, Expr t, double samplingRate, int sampleCount)
     {
-        var composer = processor.CreateComposer();
+        var composer = processor.CreateBivectorComposer();
 
         foreach (var (id, exprScalar) in vector.IdScalarPairs)
         {

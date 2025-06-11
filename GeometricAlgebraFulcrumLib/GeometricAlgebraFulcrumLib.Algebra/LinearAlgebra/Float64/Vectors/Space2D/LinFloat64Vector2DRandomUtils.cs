@@ -61,7 +61,7 @@ public static class LinFloat64Vector2DRandomUtils
 
         for (var sideIndex = 0; sideIndex < sidesCount; sideIndex++)
         {
-            var angle = deltaAngle * (sideIndex + randomGenerator.GetNumber());
+            var angle = deltaAngle * (sideIndex + randomGenerator.GetFloat64());
 
             pointsList.Add(
                 LinFloat64Vector2D.Create(
@@ -82,8 +82,8 @@ public static class LinFloat64Vector2DRandomUtils
 
         for (var sideIndex = 0; sideIndex < sidesCount; sideIndex++)
         {
-            var angle = deltaAngle * (sideIndex + randomGenerator.GetNumber());
-            var radiusIndex = randomGenerator.GetInteger(radiusList.Length);
+            var angle = deltaAngle * (sideIndex + randomGenerator.GetFloat64());
+            var radiusIndex = randomGenerator.GetInt32(radiusList.Length);
             var radius = radiusList[radiusIndex];
 
             pointsList.Add(
@@ -105,7 +105,7 @@ public static class LinFloat64Vector2DRandomUtils
 
         for (var sideIndex = 0; sideIndex < sidesCount; sideIndex++)
         {
-            var angle = deltaAngle * (sideIndex + randomGenerator.GetNumber());
+            var angle = deltaAngle * (sideIndex + randomGenerator.GetFloat64());
 
             pointsList.Add(
                 LinFloat64Vector2D.Create(
@@ -126,8 +126,8 @@ public static class LinFloat64Vector2DRandomUtils
 
         for (var sideIndex = 0; sideIndex < sidesCount; sideIndex++)
         {
-            var angle = deltaAngle * (sideIndex + randomGenerator.GetNumber());
-            var radiusIndex = randomGenerator.GetInteger(radiusList.Length);
+            var angle = deltaAngle * (sideIndex + randomGenerator.GetFloat64());
+            var radiusIndex = randomGenerator.GetInt32(radiusList.Length);
             var radius = radiusList[radiusIndex];
 
             pointsList.Add(
@@ -150,7 +150,7 @@ public static class LinFloat64Vector2DRandomUtils
 
         foreach (var point in pointsList)
         {
-            var weight = randomGenerator.GetNumber();
+            var weight = randomGenerator.GetFloat64();
 
             x += weight * point.Item1;
             y += weight * point.Item2;

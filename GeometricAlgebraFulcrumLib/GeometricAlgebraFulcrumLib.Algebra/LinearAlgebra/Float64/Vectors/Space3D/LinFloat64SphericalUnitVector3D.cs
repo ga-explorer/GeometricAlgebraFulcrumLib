@@ -63,6 +63,48 @@ public sealed class LinFloat64SphericalUnitVector3D :
     {
         return true;
     }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public LinFloat64Vector3D ToLinVector3D()
+    {
+        var sinTheta =
+            Theta.Sin();
+
+        var cosTheta =
+            Theta.Cos();
+
+        return LinFloat64Vector3D.Create(
+            sinTheta * Phi.Cos(),
+            sinTheta * Phi.Sin(),
+            cosTheta
+        );
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public LinFloat64Vector3D ToLinVector3D(double length)
+    {
+        var rSinTheta =
+            length * Theta.Sin();
+
+        var rCosTheta =
+            length * Theta.Cos();
+
+        return LinFloat64Vector3D.Create(
+            rSinTheta * Phi.Cos(),
+            rSinTheta * Phi.Sin(),
+            rCosTheta
+        );
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public LinFloat64SphericalVector3D ToLinSphericalVector(double r)
+    {
+        return new LinFloat64SphericalVector3D(
+            Theta,
+            Phi,
+            r
+        );
+    }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public override string ToString()

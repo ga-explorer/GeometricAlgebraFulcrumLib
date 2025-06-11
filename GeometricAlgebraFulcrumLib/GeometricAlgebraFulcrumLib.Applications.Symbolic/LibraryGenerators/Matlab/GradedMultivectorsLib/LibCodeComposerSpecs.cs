@@ -136,17 +136,17 @@ public sealed class LibCodeComposerSpecs
 
     public IXGaSignedBasisBlade GetBasisPseudoScalar()
     {
-        return Metric.CreateBasisPseudoScalar(VSpaceDimensions);
+        return Metric.BasisPseudoScalar(VSpaceDimensions);
     }
     
     public IXGaSignedBasisBlade GetBasisPseudoScalarReverse()
     {
-        return Metric.CreateBasisPseudoScalarReverse(VSpaceDimensions);
+        return Metric.BasisPseudoScalarReverse(VSpaceDimensions);
     }
 
     public IXGaSignedBasisBlade GetBasisPseudoScalarInverse()
     {
-        return Metric.CreateBasisPseudoScalarInverse(VSpaceDimensions);
+        return Metric.BasisPseudoScalarInverse(VSpaceDimensions);
     }
 
     private string GetKVectorClassName(int grade)

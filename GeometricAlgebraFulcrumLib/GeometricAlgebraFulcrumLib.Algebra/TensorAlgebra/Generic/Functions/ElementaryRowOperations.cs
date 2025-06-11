@@ -35,7 +35,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.TensorAlgebra.Generic.Functions
             if (!t.IsMatrix)
                 throw new InvalidShapeException("this should be matrix");
             #endif
-            for (int i = 0; i < t.Shape[1]; i++)
+            for (var i = 0; i < t.Shape[1]; i++)
                 t.SetValueNoCheck(default(TWrapper).Multiply(coef, t.GetValueNoCheck(rowId, i)), rowId, i);
         }
 
@@ -45,7 +45,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.TensorAlgebra.Generic.Functions
             if (!t.IsMatrix)
                 throw new InvalidShapeException("this should be matrix");
             #endif
-            for (int i = 0; i < t.Shape[1]; i++)
+            for (var i = 0; i < t.Shape[1]; i++)
                 t.SetValueNoCheck(
                     default(TWrapper).Add(
                         t.GetValueNoCheck(dstRowId, i),
@@ -60,7 +60,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.TensorAlgebra.Generic.Functions
             if (!t.IsMatrix)
                 throw new InvalidShapeException("this should be matrix");
             #endif
-            for (int i = 0; i < t.Shape[1]; i++)
+            for (var i = 0; i < t.Shape[1]; i++)
             {
                 var tmp = t.GetValueNoCheck(row1Id, i);
                 t.SetValueNoCheck(t.GetValueNoCheck(row2Id, i), row1Id, i);
@@ -73,7 +73,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.TensorAlgebra.Generic.Functions
 
         public static (int id, T value)? LeadingElement(Core.GenTensor<T, TWrapper> t, int row)
         {
-            for (int i = 0; i < t.Shape[1]; i++)
+            for (var i = 0; i < t.Shape[1]; i++)
             {
                 var value = t.GetValueNoCheck(row, i);
                 if (!default(TWrapper).IsZero(value))

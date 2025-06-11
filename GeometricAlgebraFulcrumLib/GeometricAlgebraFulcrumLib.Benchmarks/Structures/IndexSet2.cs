@@ -7,7 +7,6 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using GeometricAlgebraFulcrumLib.Utilities.Structures;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Tuples;
-using Open.Collections;
 
 namespace GeometricAlgebraFulcrumLib.Benchmarks.Structures;
 
@@ -264,7 +263,7 @@ public readonly struct IndexSet2 :
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool Contains(int index)
+    public bool SetContains(int index)
     {
         return _indexSet.Contains(index);
     }
@@ -275,23 +274,34 @@ public readonly struct IndexSet2 :
         return _indexSet.Count == 1 && 
                _indexSet[0] == index;
     }
-
+    
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool Contains(IndexSet2 indexSet)
+    public bool SetIsSubsetOf(IndexSet2 indexSet)
     {
-        if (IsEmptySet) 
-            return false;
-
-        return indexSet.IsEmptySet || indexSet.All(Contains);
+        return _indexSet.IsSubsetOf(indexSet._indexSet);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool Overlaps(IndexSet2 indexSet)
+    public bool SetIsSupersetOf(IndexSet2 indexSet)
+    {
+        return _indexSet.IsSupersetOf(indexSet._indexSet);
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public bool SetContains(IndexSet2 indexSet)
+    {
+        return !_indexSet.IsEmpty && 
+               !indexSet._indexSet.IsEmpty &&
+               _indexSet.IsSupersetOf(indexSet._indexSet);
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public bool SetOverlaps(IndexSet2 indexSet)
     {
         if (IsEmptySet || indexSet.IsEmptySet) 
             return false;
 
-        return indexSet.Any(Contains);
+        return _indexSet.Overlaps(indexSet._indexSet);
     }
         
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -390,19 +400,20 @@ public readonly struct IndexSet2 :
         
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public IndexSet2 Intersect(IndexSet2 indexSet)
+    public IndexSet2 SetIntersect(IndexSet2 indexSet)
     {
         if (IsEmptySet || indexSet.IsEmptySet)
             return EmptySet;
 
-        var sortedIndexSet = _indexSet.Intersect(indexSet);
+        var sortedIndexSet = _indexSet.Intersect(indexSet._indexSet);
 
         return sortedIndexSet.IsEmpty 
             ? EmptySet 
             : new IndexSet2(sortedIndexSet);
     }
 
-    public IndexSet2 Join(IndexSet2 indexSet)
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public IndexSet2 SetUnion(IndexSet2 indexSet)
     {
         if (IsEmptySet)
             return indexSet;
@@ -410,16 +421,13 @@ public readonly struct IndexSet2 :
         if (indexSet.IsEmptySet)
             return this;
 
-        var sortedSetBuilder = _indexSet.ToBuilder();
-
-        sortedSetBuilder.AddRange(indexSet);
-
-        return new IndexSet2( 
-            sortedSetBuilder.ToImmutable() 
-        );
+        var sortedIndexSet = _indexSet.Union(indexSet._indexSet);
+        
+        return new IndexSet2(sortedIndexSet);
     }
 
-    public IndexSet2 Difference(IndexSet2 indexSet)
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public IndexSet2 SetDifference(IndexSet2 indexSet)
     {
         if (IsEmptySet)
             return EmptySet;
@@ -427,15 +435,15 @@ public readonly struct IndexSet2 :
         if (indexSet.IsEmptySet)
             return this;
 
-        var sortedIndexSet = 
-            _indexSet.Except(indexSet);
+        var sortedIndexSet = _indexSet.Except(indexSet._indexSet);
 
         return sortedIndexSet.Count == _indexSet.Count 
             ? this 
             : new IndexSet2(sortedIndexSet);
     }
 
-    public IndexSet2 SymmetricDifference(IndexSet2 indexSet)
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public IndexSet2 SetMerge(IndexSet2 indexSet)
     {
         if (IsEmptySet)
             return indexSet;
@@ -443,22 +451,15 @@ public readonly struct IndexSet2 :
         if (indexSet.IsEmptySet)
             return this;
 
-        var sortedSetBuilder = _indexSet.ToBuilder();
+        var sortedIndexSet = _indexSet.SymmetricExcept(indexSet._indexSet);
 
-        foreach (var index in indexSet)
-        {
-            if (!sortedSetBuilder.Add(index))
-                sortedSetBuilder.Remove(index);
-        }
-
-        return new IndexSet2( 
-            sortedSetBuilder.ToImmutable()
-        );
+        return sortedIndexSet.Count == 0 
+            ? EmptySet 
+            : new IndexSet2(sortedIndexSet);
     }
     
     
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public (int swapCount, IndexSet2 mergedIndexSet, IndexSet2 commonIndexSet) MergeCountSwapsTrackCommon(IndexSet2 indexSet)
+    public (int swapCount, IndexSet2 mergedIndexSet, IndexSet2 commonIndexSet) SetMergeCountSwapsTrackCommon(IndexSet2 indexSet)
     {
         if (IsEmptySet)
             return (0, indexSet, EmptySet);

@@ -31,4 +31,9 @@ public class XGaFloat64ProjectiveSpace :
     }
 
 
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public XGaFloat64ProjectiveSpace CreateSpace(int vSpaceDimensions)
+    {
+        return new XGaFloat64ProjectiveSpace(vSpaceDimensions);
+    }
 }

@@ -1,4 +1,4 @@
-﻿using GeometricAlgebraFulcrumLib.Benchmarks.Structures;
+﻿using GeometricAlgebraFulcrumLib.Benchmarks.GeometricAlgebra;
 
 namespace GeometricAlgebraFulcrumLib.Benchmarks;
 
@@ -23,7 +23,17 @@ class Program
         //BenchmarkRunner.Run<ScalarOperationsBenchmarks>();
         //BenchmarkRunner.Run<GaalopComparisonsBenchmarks>();
         //BenchmarkRunner.Run<IndexSetBenchmarks>();
-        IndexSetBenchmarks.Validate();
+        //BenchmarkRunner.Run<BilinearProductsBenchmarks>();
+        //BenchmarkRunner.Run<MetricBenchmarks>();
         
+        //MetricBenchmarks.Validate();
+        //IndexSetBenchmarks.Validate();
+        UnaryOperationsBenchmarks.Validate();
+        //BilinearProductsBenchmarks.Validate();
+        //BilinearProductsBenchmarks.TestGrades(
+        //    "ECp",
+        //    (kv1, kv2) => kv1.ECp(kv2)
+        //);
+
     }
 }

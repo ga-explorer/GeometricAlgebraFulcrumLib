@@ -1,7 +1,8 @@
-﻿using System.Runtime.CompilerServices;
+﻿using System.Diagnostics;
+using System.Runtime.CompilerServices;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Basis;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
-using GeometricAlgebraFulcrumLib.Utilities.Structures.Tuples;
+using GeometricAlgebraFulcrumLib.Utilities.Structures.Dictionary;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.SpaceND;
 
@@ -95,14 +96,20 @@ public sealed record LinFloat64VectorTerm :
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    internal LinFloat64VectorTerm(LinBasisVector basisBlade, double scalar)
+    internal LinFloat64VectorTerm(LinBasisVector basisVector, double scalar)
     {
-        BasisVector = basisBlade;
+        Debug.Assert(basisVector.IsValid() && scalar.IsValid());
 
-        if (!scalar.IsValid())
-            throw new ArgumentException(nameof(scalar));
-
-        _scalar = scalar;
+        if (basisVector.IsPositive)
+        {
+            BasisVector = basisVector;
+            _scalar = scalar;
+        }
+        else
+        {
+            BasisVector = basisVector.Negative();
+            _scalar = -scalar;
+        }
     }
 
 
@@ -122,9 +129,9 @@ public sealed record LinFloat64VectorTerm :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public IndexItemRecord<double> GetVectorIndexScalarRecord()
+    public Tuple<int, double> GetVectorIndexScalarRecord()
     {
-        return new IndexItemRecord<double>(
+        return new Tuple<int, double>(
             BasisVector.Index,
             ScalarValue
         );
@@ -242,6 +249,19 @@ public sealed record LinFloat64VectorTerm :
         return BasisVector.Index == term2.Index
             ? Scalar * term2.Scalar
             : 0d;
+    }
+
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public LinFloat64Vector ToLinVector()
+    {
+        if (IsZero)
+            return LinFloat64Vector.Zero;
+
+        var basisScalarDictionary =
+            new SingleItemDictionary<int, double>(Index, ScalarValue);
+
+        return LinFloat64Vector.Create(basisScalarDictionary);
     }
 
 

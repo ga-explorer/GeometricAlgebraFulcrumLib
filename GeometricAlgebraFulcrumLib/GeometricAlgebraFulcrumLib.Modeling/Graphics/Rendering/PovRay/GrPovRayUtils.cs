@@ -427,17 +427,16 @@ public static class GrPovRayUtils
         return $"color <{r}, {g}, {b}, {f}, {t}>";
     }
 
-    public static string GetPovRayCode(this LinBasisVector3D axis)
+    public static string GetPovRayCode(this LinBasisVector axis)
     {
-        return axis switch
-        {
-            LinBasisVector3D.Px => "x",
-            LinBasisVector3D.Nx => "(-x)",
-            LinBasisVector3D.Py => "y",
-            LinBasisVector3D.Ny => "(-y)",
-            LinBasisVector3D.Pz => "z",
-            _ => "(-z)"
-        };
+        if (axis == LinBasisVector.Px) return "x";
+        if (axis == LinBasisVector.Nx) return "(-x)";
+        if (axis == LinBasisVector.Py) return "y";
+        if (axis == LinBasisVector.Ny) return "(-y)";
+        if (axis == LinBasisVector.Pz) return "z";
+        if (axis == LinBasisVector.Nz) return "(-z)";
+
+        throw new InvalidOperationException();
     }
     
     public static string GetPovRayCode(this IPair<int> vector)

@@ -1,5 +1,4 @@
 ﻿using System.Text;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
 using GeometricAlgebraFulcrumLib.Utilities.Text.Files;
 using GeometricAlgebraFulcrumLib.Utilities.Text.Text;
 using GeometricAlgebraFulcrumLib.Utilities.Text.Text.Linear;
@@ -387,7 +386,7 @@ end
     private string GetSpaceIinvBasisBlade()
     {
         var signText = 
-            Specs.Metric.CreateBasisPseudoScalarInverse(Specs.VSpaceDimensions).Sign.IsPositive
+            Specs.Metric.BasisPseudoScalarInverse(Specs.VSpaceDimensions).Sign.IsPositive
                 ? "1" : "-1";
 
         return $@"
@@ -407,7 +406,7 @@ end
     private string GetSpaceIrevBasisBlade()
     {
         var signText = 
-            Specs.Metric.CreateBasisPseudoScalarReverse(Specs.VSpaceDimensions).Sign.IsPositive
+            Specs.Metric.BasisPseudoScalarReverse(Specs.VSpaceDimensions).Sign.IsPositive
             ? "1" : "-1";
 
         return $@"

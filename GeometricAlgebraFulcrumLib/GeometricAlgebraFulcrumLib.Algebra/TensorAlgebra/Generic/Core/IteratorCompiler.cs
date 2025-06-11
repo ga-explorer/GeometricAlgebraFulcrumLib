@@ -93,19 +93,19 @@ namespace GeometricAlgebraFulcrumLib.Algebra.TensorAlgebra.Generic.Core
             var acts = new List<Expression>();
 
             var locals = new ParameterExpression[shapes.Length];
-            for (int i = 0; i < shapes.Length; i++)
+            for (var i = 0; i < shapes.Length; i++)
                 locals[i] = Expression.Parameter(typeof(int), "x_" + i);
 
             var localShapes = new ParameterExpression[shapes.Length];
-            for (int i = 0; i < shapes.Length; i++)
+            for (var i = 0; i < shapes.Length; i++)
                 localShapes[i] = Expression.Parameter(typeof(int), "shape_" + i);
             var localShapesAssigned = new Expression[shapes.Length];
-            for (int i = 0; i < shapes.Length; i++)
+            for (var i = 0; i < shapes.Length; i++)
                 localShapesAssigned[i] = Expression.Assign(localShapes[i], shapes[i]);
 
-            Expression currExpr = onIter(locals);
+            var currExpr = onIter(locals);
 
-            for (int i = shapes.Length - 1; i >= 0; i--)
+            for (var i = shapes.Length - 1; i >= 0; i--)
             {
                 currExpr = CreateLoop(locals[i], localShapes[i], currExpr);
             }
@@ -161,7 +161,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.TensorAlgebra.Generic.Core
             {
                 var arr = new ParameterExpression[expressions.Length + 1];
                 arr[0] = x;
-                for (int i = 0; i < expressions.Length; i++)
+                for (var i = 0; i < expressions.Length; i++)
                     arr[i + 1] = expressions[i];
                 return onIter(arr);
             }
@@ -172,7 +172,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.TensorAlgebra.Generic.Core
             if (vars.Length != blocks.Length)
                 throw new Exceptions.InvalidShapeException();
             Expression res = Expression.Multiply(vars[0], blocks[0]);
-            for (int i = 1; i < blocks.Length; i++)
+            for (var i = 1; i < blocks.Length; i++)
                 res = Expression.Add(Expression.Multiply(vars[i], blocks[i]), res);
             return res;
         }
@@ -180,10 +180,10 @@ namespace GeometricAlgebraFulcrumLib.Algebra.TensorAlgebra.Generic.Core
         private static (ParameterExpression[] locals, Expression[] assignes) CompileLocalBlocks(ParameterExpression arr, int n, string pref)
         {
             var blocks = new ParameterExpression[n];
-            for (int i = 0; i < n; i++)
+            for (var i = 0; i < n; i++)
                 blocks[i] = Expression.Parameter(typeof(int), pref + "blocks_" + i);
             var assignes = new Expression[n];
-            for (int i = 0; i < n; i++)
+            for (var i = 0; i < n; i++)
             {
                 assignes[i] = Expression.Assign(blocks[i],
                     Expression.ArrayIndex(
@@ -266,16 +266,14 @@ namespace GeometricAlgebraFulcrumLib.Algebra.TensorAlgebra.Generic.Core
                 bIndex = Expression.Add(bIndex, localBLinOffset);
 
                 // a.data
-                var aDataField = aData;
 
                 // d.data
-                var bDataField = bData;
 
                 // a.data[aIndex]
-                var aDataIndex = Expression.ArrayIndex(aDataField, aIndex);
+                var aDataIndex = Expression.ArrayIndex(aData, aIndex);
 
                 // b.data[bIndex]
-                var bDataIndex = Expression.ArrayIndex(bDataField, bIndex);
+                var bDataIndex = Expression.ArrayIndex(bData, bIndex);
 
                 // a.data[aIndex] + b.data[bIndex]
                 var added = operation(aDataIndex, bDataIndex);
@@ -284,10 +282,9 @@ namespace GeometricAlgebraFulcrumLib.Algebra.TensorAlgebra.Generic.Core
                 var resIndex = BuildIndexToData(vars, localResBlocks);
 
                 // res.data
-                var resField = resData;
 
                 // res.data[resIndex] = 
-                var accessRes = Expression.ArrayAccess(resField, resIndex);
+                var accessRes = Expression.ArrayAccess(resData, resIndex);
 
                 var assign = Expression.Assign(accessRes, added);
 

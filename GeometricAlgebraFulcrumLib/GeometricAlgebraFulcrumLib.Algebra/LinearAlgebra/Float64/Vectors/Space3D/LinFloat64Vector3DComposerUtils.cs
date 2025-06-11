@@ -1,5 +1,4 @@
 ﻿using System.Runtime.CompilerServices;
-using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Basis;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Angles;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Tuples;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
@@ -29,46 +28,6 @@ public static class LinFloat64Vector3DComposerUtils
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64Vector3D ToLinVector3D(this LinBasisVector2D axis)
-    {
-        return axis switch
-        {
-            LinBasisVector2D.Px => LinFloat64Vector3D.E1,
-            LinBasisVector2D.Nx => LinFloat64Vector3D.NegativeE1,
-            LinBasisVector2D.Py => LinFloat64Vector3D.E2,
-            _ => LinFloat64Vector3D.NegativeE2
-        };
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64Vector3D ToLinVector3D(this LinBasisVector3D axis)
-    {
-        return axis switch
-        {
-            LinBasisVector3D.Px => LinFloat64Vector3D.E1,
-            LinBasisVector3D.Nx => LinFloat64Vector3D.NegativeE1,
-            LinBasisVector3D.Py => LinFloat64Vector3D.E2,
-            LinBasisVector3D.Ny => LinFloat64Vector3D.NegativeE2,
-            LinBasisVector3D.Pz => LinFloat64Vector3D.E3,
-            _ => LinFloat64Vector3D.NegativeE3
-        };
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64Vector3D ToLinVector3D(this LinBasisVector3D axis, Float64Scalar scalingFactor)
-    {
-        return axis switch
-        {
-            LinBasisVector3D.Px => LinFloat64Vector3D.Create(scalingFactor, 0, 0),
-            LinBasisVector3D.Nx => LinFloat64Vector3D.Create(-scalingFactor, 0, 0),
-            LinBasisVector3D.Py => LinFloat64Vector3D.Create(0, scalingFactor, 0),
-            LinBasisVector3D.Ny => LinFloat64Vector3D.Create(0, -scalingFactor, 0),
-            LinBasisVector3D.Pz => LinFloat64Vector3D.Create(0, 0, scalingFactor),
-            _ => LinFloat64Vector3D.Create(0, 0, -scalingFactor)
-        };
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static LinFloat64Vector3D ToUnitLinVector3D(double vectorX, double vectorY, double vectorZ, bool zeroAsSymmetric = true)
     {
         var s = LinFloat64Vector3DUtils.VectorENorm(vectorX, vectorY, vectorZ);
@@ -95,38 +54,6 @@ public static class LinFloat64Vector3DComposerUtils
             scalarArray[2]);
 
         return makeUnit ? vector.ToUnitLinVector3D() : vector;
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64Vector3D ToLinVector3D(this LinFloat64SphericalUnitVector3D sphericalPosition)
-    {
-        var sinTheta =
-            sphericalPosition.Theta.Sin();
-
-        var cosTheta =
-            sphericalPosition.Theta.Cos();
-
-        return LinFloat64Vector3D.Create(
-            sinTheta * sphericalPosition.Phi.Cos(),
-            sinTheta * sphericalPosition.Phi.Sin(),
-            cosTheta
-        );
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64Vector3D ToLinVector3D(this LinFloat64SphericalUnitVector3D sphericalPosition, double length)
-    {
-        var rSinTheta =
-            length * sphericalPosition.Theta.Sin();
-
-        var rCosTheta =
-            length * sphericalPosition.Theta.Cos();
-
-        return LinFloat64Vector3D.Create(
-            rSinTheta * sphericalPosition.Phi.Cos(),
-            rSinTheta * sphericalPosition.Phi.Sin(),
-            rCosTheta
-        );
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -184,17 +111,7 @@ public static class LinFloat64Vector3DComposerUtils
             sphericalPosition.Phi
         );
     }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64SphericalVector3D ToLinSphericalVector(this LinFloat64SphericalUnitVector3D sphericalPosition, double r)
-    {
-        return new LinFloat64SphericalVector3D(
-            sphericalPosition.Theta,
-            sphericalPosition.Phi,
-            r
-        );
-    }
-
+    
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static LinFloat64Vector3D GetUnitLinVectorR(this ILinFloat64SphericalVector3D sphericalPosition)
     {

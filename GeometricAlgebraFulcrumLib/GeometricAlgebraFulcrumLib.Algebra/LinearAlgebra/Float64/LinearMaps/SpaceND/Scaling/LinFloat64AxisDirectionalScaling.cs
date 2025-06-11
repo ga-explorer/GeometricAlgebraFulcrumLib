@@ -20,7 +20,7 @@ public sealed class LinFloat64AxisDirectionalScaling :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64AxisDirectionalScaling Create(double scalingFactor, int dimensions, LinSignedBasisVector scalingAxis)
+    public static LinFloat64AxisDirectionalScaling Create(double scalingFactor, int dimensions, LinBasisVector scalingAxis)
     {
         return new LinFloat64AxisDirectionalScaling(
             scalingFactor,
@@ -32,7 +32,7 @@ public sealed class LinFloat64AxisDirectionalScaling :
 
     public override double ScalingFactor { get; }
 
-    public LinSignedBasisVector ScalingAxis { get; }
+    public LinBasisVector ScalingAxis { get; }
 
     public override int VSpaceDimensions { get; }
 
@@ -49,7 +49,7 @@ public sealed class LinFloat64AxisDirectionalScaling :
 
         VSpaceDimensions = dimensions;
         ScalingFactor = factor;
-        ScalingAxis = new LinSignedBasisVector(basisIndex, false);
+        ScalingAxis = LinBasisVector.Positive(basisIndex);
     }
 
 

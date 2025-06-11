@@ -1,15 +1,13 @@
 ﻿using System.Runtime.CompilerServices;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Multivectors;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Processors;
+using GeometricAlgebraFulcrumLib.Algebra.Scalars.Generic;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Dictionary;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.IndexSets;
-using GeometricAlgebraFulcrumLib.Algebra.Scalars.Generic;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Processors;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic;
 
 public static class XGaMetricUtils
 {
-        
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static bool IsValidVectorDictionary<T>(this IReadOnlyDictionary<IndexSet, T> basisScalarDictionary, XGaProcessor<T> processor)
     {
@@ -87,26 +85,6 @@ public static class XGaMetricUtils
             _ => basisScalarDictionary.All(p =>
                 processor.ScalarProcessor.IsValid(p.Value) &&
                 !processor.ScalarProcessor.IsZero(p.Value)
-            )
-        };
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static bool IsValidMultivectorDictionary<T>(this XGaMetric metric, IReadOnlyDictionary<int, XGaKVector<T>> gradeKVectorDictionary)
-    {
-        return gradeKVectorDictionary.Count switch
-        {
-            0 => gradeKVectorDictionary is EmptyDictionary<int, XGaKVector<T>>,
-
-            1 => gradeKVectorDictionary is SingleItemDictionary<int, XGaKVector<T>> dict &&
-                 dict.Key >= 0 &&
-                 dict.Value.Processor.HasSameSignature(metric) &&
-                 dict.Value.IsValid(),
-
-            _ => gradeKVectorDictionary.All(p =>
-                p.Key >= 0 &&
-                p.Value.Processor.HasSameSignature(metric) &&
-                p.Value.IsValid()
             )
         };
     }

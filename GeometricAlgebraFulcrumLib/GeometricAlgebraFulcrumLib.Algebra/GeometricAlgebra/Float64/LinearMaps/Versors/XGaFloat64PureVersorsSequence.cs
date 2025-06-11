@@ -1,6 +1,5 @@
 ﻿using System.Collections;
 using System.Runtime.CompilerServices;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Frames;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.LinearMaps.Outermorphisms;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.LinearMaps.Rotors;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivectors;
@@ -155,7 +154,7 @@ public sealed class XGaFloat64PureVersorsSequence :
         return XGaFloat64Versor.Create(storage);
     }
 
-    public XGaFloat64PureRotorsSequence CreatePureRotorsSequence()
+    public XGaFloat64PureRotorSequence CreatePureRotorsSequence()
     {
         if (_versorsList.Count % 2 != 0)
             throw new InvalidOperationException();
@@ -175,7 +174,7 @@ public sealed class XGaFloat64PureVersorsSequence :
             simpleRotorsArray[i] = XGaFloat64PureRotor.Create(scalar.ScalarValue, bivector);
         }
 
-        return XGaFloat64PureRotorsSequence.Create(
+        return XGaFloat64PureRotorSequence.Create(
             simpleRotorsArray
         );
     }

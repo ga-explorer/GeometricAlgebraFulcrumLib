@@ -1,7 +1,6 @@
 ﻿using System.Runtime.CompilerServices;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivectors;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivectors.Composers;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Processors;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.BitManipulation;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.IndexSets;
@@ -16,6 +15,7 @@ public sealed class XGaFloat64StoredOutermorphism :
     public override XGaFloat64Processor Processor { get; }
 
 
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     internal XGaFloat64StoredOutermorphism(IReadOnlyDictionary<IndexSet, XGaFloat64KVector> basisMapDictionary, XGaFloat64Processor processor)
     {
         _basisMapDictionary = basisMapDictionary;
@@ -60,11 +60,24 @@ public sealed class XGaFloat64StoredOutermorphism :
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public override XGaFloat64Bivector OmMapBasisBivector(int index1, int index2)
     {
-        var id = IndexSet.CreatePair(index1, index2);
+        if (index1 == index2) return Processor.BivectorZero;
 
-        return _basisMapDictionary.TryGetValue(id, out var kVector)
-            ? kVector.GetBivectorPart()
-            : Processor.BivectorZero;
+        if (index1 > index2)
+        {
+            var id = IndexSet.CreatePair(index1, index2);
+
+            return _basisMapDictionary.TryGetValue(id, out var kVector)
+                ? kVector.GetBivectorPart()
+                : Processor.BivectorZero;
+        }
+        else
+        {
+            var id = IndexSet.CreatePair(index2, index1);
+
+            return _basisMapDictionary.TryGetValue(id, out var kVector)
+                ? kVector.GetBivectorPart().Negative()
+                : Processor.BivectorZero;
+        }
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -78,10 +91,10 @@ public sealed class XGaFloat64StoredOutermorphism :
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public override XGaFloat64Vector OmMap(XGaFloat64Vector vector)
     {
-        var composer = Processor.CreateComposer();
+        var composer = Processor.CreateVectorComposer();
 
         foreach (var (id, scalar) in vector)
-            composer.AddMultivector(OmMapBasisBlade(id), scalar);
+            composer.AddKVectorScaled(OmMapBasisBlade(id), scalar);
 
         return composer.GetVector();
     }
@@ -89,10 +102,10 @@ public sealed class XGaFloat64StoredOutermorphism :
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public override XGaFloat64Bivector OmMap(XGaFloat64Bivector bivector)
     {
-        var composer = Processor.CreateComposer();
+        var composer = Processor.CreateBivectorComposer();
 
         foreach (var (id, scalar) in bivector)
-            composer.AddMultivector(OmMapBasisBlade(id), scalar);
+            composer.AddKVectorScaled(OmMapBasisBlade(id), scalar);
 
         return composer.GetBivector();
     }
@@ -100,21 +113,21 @@ public sealed class XGaFloat64StoredOutermorphism :
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public override XGaFloat64HigherKVector OmMap(XGaFloat64HigherKVector kVector)
     {
-        var composer = Processor.CreateComposer();
+        var composer = Processor.CreateKVectorComposer(kVector.Grade);
 
         foreach (var (id, scalar) in kVector)
-            composer.AddMultivector(OmMapBasisBlade(id), scalar);
+            composer.AddKVectorScaled(OmMapBasisBlade(id), scalar);
 
-        return composer.GetHigherKVector(kVector.Grade);
+        return composer.GetHigherKVector();
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public override XGaFloat64Multivector OmMap(XGaFloat64Multivector multivector)
     {
-        var composer = Processor.CreateComposer();
+        var composer = Processor.CreateMultivectorComposer();
 
         foreach (var (id, scalar) in multivector)
-            composer.AddMultivector(OmMapBasisBlade(id), scalar);
+            composer.AddMultivectorScaled(OmMapBasisBlade(id), scalar);
 
         return composer.GetSimpleMultivector();
     }
@@ -122,19 +135,18 @@ public sealed class XGaFloat64StoredOutermorphism :
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public override IEnumerable<KeyValuePair<IndexSet, XGaFloat64Vector>> GetOmMappedBasisVectors(int vSpaceDimensions)
     {
-        return vSpaceDimensions.GetRange(
-            index =>
-                new KeyValuePair<int, XGaFloat64Vector>(
-                    index, 
-                    OmMapBasisVector(index)
-                )
-            ).Where(p => !p.Value.IsZero)
-            .Select(p => 
-                new KeyValuePair<IndexSet, XGaFloat64Vector>(
-                    p.Key.ToUnitIndexSet(),
-                    p.Value
-                )
-            );
+        return vSpaceDimensions.GetRange(index =>
+            new KeyValuePair<int, XGaFloat64Vector>(
+                index, 
+                OmMapBasisVector(index)
+            )
+        ).Where(p => !p.Value.IsZero)
+        .Select(p => 
+            new KeyValuePair<IndexSet, XGaFloat64Vector>(
+                p.Key.ToUnitIndexSet(),
+                p.Value
+            )
+        );
     }
     
 }

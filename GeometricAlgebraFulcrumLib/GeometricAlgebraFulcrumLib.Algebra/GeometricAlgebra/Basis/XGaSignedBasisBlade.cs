@@ -1,4 +1,9 @@
 ﻿using System.Runtime.CompilerServices;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivectors;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Processors;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Multivectors;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Processors;
+using GeometricAlgebraFulcrumLib.Algebra.Scalars.Generic;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.IndexSets;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Tuples;
 
@@ -676,6 +681,27 @@ public sealed record XGaSignedBasisBlade :
     public IntegerSign CpSign(IXGaSignedBasisBlade basisBlade)
     {
         return _basisBlade.CpSign(basisBlade) * Sign;
+    }
+
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public XGaFloat64KVector ToKVector()
+    {
+        var processor = (XGaFloat64Processor)Metric;
+
+        return processor.KVectorTerm(
+            Id,
+            Sign.ToFloat64()
+        );
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public XGaKVector<T> ToKVector<T>(XGaProcessor<T> processor)
+    {
+        return processor.KVectorTerm(
+            Id,
+            Sign.ValueFromNumber(processor.ScalarProcessor)
+        );
     }
 
 

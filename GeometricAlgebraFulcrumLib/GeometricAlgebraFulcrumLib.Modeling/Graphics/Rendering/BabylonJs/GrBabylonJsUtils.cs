@@ -292,17 +292,16 @@ public static class GrBabylonJsUtils
         }
     }
 
-    public static string GetBabylonJsCode(this LinBasisVector3D axis)
+    public static string GetBabylonJsCode(this LinBasisVector axis)
     {
-        return axis switch
-        {
-            LinBasisVector3D.Px => "BABYLON.Axis.X",
-            LinBasisVector3D.Nx => "(-BABYLON.Axis.X)",
-            LinBasisVector3D.Py => "BABYLON.Axis.Y",
-            LinBasisVector3D.Ny => "(-BABYLON.Axis.Y)",
-            LinBasisVector3D.Pz => "BABYLON.Axis.Z",
-            _ => "(-BABYLON.Axis.Z)"
-        };
+        if (axis == LinBasisVector.Px) return "BABYLON.Axis.X";
+        if (axis == LinBasisVector.Nx) return "(-BABYLON.Axis.X)";
+        if (axis == LinBasisVector.Py) return "BABYLON.Axis.Y";
+        if (axis == LinBasisVector.Ny) return "(-BABYLON.Axis.Y)";
+        if (axis == LinBasisVector.Pz) return "BABYLON.Axis.Z";
+        if (axis == LinBasisVector.Nz) return "(-BABYLON.Axis.Z)";
+
+        throw new InvalidOperationException();
     }
 
     public static string GetBabylonJsCode(this IPair<Float64Scalar> vector)

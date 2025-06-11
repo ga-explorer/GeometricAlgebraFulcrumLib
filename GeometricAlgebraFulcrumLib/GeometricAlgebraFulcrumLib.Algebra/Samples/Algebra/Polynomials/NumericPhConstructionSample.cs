@@ -1,11 +1,8 @@
-﻿using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Angles;
+﻿using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Processors;
+using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Angles;
 using GeometricAlgebraFulcrumLib.Algebra.Polynomials.Generic.Basis;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Generic;
 using GeometricAlgebraFulcrumLib.Algebra.Utilities.Text;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivectors;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Processors;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.LinearMaps.Rotors;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivectors.Composers;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.Samples.Algebra.Polynomials;
 
@@ -134,7 +131,7 @@ public static class NumericPhConstructionSample
         var d1Unit = d1 / d1Norm;
 
         var scaledRotor0 =
-            GeometricProcessor.CreateGivensRotor(
+            GeometricProcessor.GivensRotor(
                 1,
                 2,
                 LinFloat64PolarAngle.Angle0

@@ -1,11 +1,11 @@
 ﻿using System.Collections;
 using System.Runtime.CompilerServices;
-using GeometricAlgebraFulcrumLib.Utilities.Structures.BitManipulation;
-using GeometricAlgebraFulcrumLib.Algebra.Scalars.Generic;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.LinearMaps.Outermorphisms;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.LinearMaps.Rotors;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Multivectors;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Processors;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.LinearMaps.Outermorphisms;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Multivectors.Composers;
+using GeometricAlgebraFulcrumLib.Algebra.Scalars.Generic;
+using GeometricAlgebraFulcrumLib.Utilities.Structures.BitManipulation;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Frames;
 
@@ -134,6 +134,50 @@ public class XGaBasisVectorFrame<T> :
         return new XGaBasisVectorFrame<T>(vectorArray);
     }
 
+    
+    /// <summary>
+    /// See paper "Calculation of Elements of Spin Groups Using Method
+    /// of Averaging in Clifford’s Geometric Algebra"
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="targetFrame"></param>
+    /// <returns></returns>
+    public XGaRotor<T> CreateRotorToFrame(XGaBasisVectorFrame<T> targetFrame)
+    {
+        var processor = Processor;
+
+        var mvFrame1 = CreateBasisKVectorFrame().MapAsBasisUsing(mv => mv.Inverse());
+        var mvFrame2 = targetFrame.CreateBasisKVectorFrame();
+
+        var rotorMultivector =
+            mvFrame2
+                .Zip(mvFrame1)
+                .Select(vectorPair => vectorPair.First.Gp(vectorPair.Second))
+                .Aggregate(
+                    (XGaMultivector<T>) processor.GradedMultivectorZero,
+                    (mv1, mv2) => mv1.Add(mv2)
+                );
+
+        rotorMultivector /= rotorMultivector.Sp(rotorMultivector.Reverse()).Sqrt();
+
+        return XGaRotor<T>.Create(rotorMultivector);
+    }
+
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public XGaBasisKVectorFrame<T> CreateBasisKVectorFrame()
+    {
+        return XGaBasisKVectorFrame<T>.CreateFrom(this);
+    }
+
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public XGaBasisMultivectorFrame<T> CreateBasisMultivectorFrame()
+    {
+        return XGaBasisMultivectorFrame<T>.CreateFrom(this);
+    }
+
+        
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public IEnumerator<XGaVector<T>> GetEnumerator()

@@ -1,5 +1,4 @@
-﻿using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Multivectors.Composers;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Processors;
+﻿using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Processors;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Generic;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Multivectors.ProductIterators;
@@ -82,7 +81,7 @@ public sealed class XGaGradedMultivectorTermsIterator<T>
         if (grade > 64)
             return Processor.ScalarZero;
 
-        var kVector = Processor.CreateComposer();
+        var kVector = Processor.CreateKVectorComposer(grade);
 
         _termsIterator.Multivector1 = kVector1;
         _termsIterator.Multivector2 = kVector2;
@@ -91,7 +90,7 @@ public sealed class XGaGradedMultivectorTermsIterator<T>
             _termsIterator.GetOpIdScalarRecords()
         );
 
-        return kVector.GetKVector(grade);
+        return kVector.GetKVector();
     }
 
     public T GetESpScalar(XGaKVector<T> kVector1, XGaKVector<T> kVector2)
@@ -111,7 +110,7 @@ public sealed class XGaGradedMultivectorTermsIterator<T>
 
         var grade = kVector2.Grade - kVector1.Grade;
 
-        var kVector = Processor.CreateComposer();
+        var kVector = Processor.CreateKVectorComposer(grade);
 
         _termsIterator.Multivector1 = kVector1;
         _termsIterator.Multivector2 = kVector2;
@@ -120,7 +119,7 @@ public sealed class XGaGradedMultivectorTermsIterator<T>
             _termsIterator.GetELcpIdScalarRecords()
         );
 
-        return kVector.GetKVector(grade);
+        return kVector.GetKVector();
     }
 
     public XGaKVector<T> GetERcpKVector(XGaKVector<T> kVector1, XGaKVector<T> kVector2)
@@ -130,7 +129,7 @@ public sealed class XGaGradedMultivectorTermsIterator<T>
 
         var grade = kVector1.Grade - kVector2.Grade;
 
-        var kVector = Processor.CreateComposer();
+        var kVector = Processor.CreateKVectorComposer(grade);
 
         _termsIterator.Multivector1 = kVector1;
         _termsIterator.Multivector2 = kVector2;
@@ -139,7 +138,7 @@ public sealed class XGaGradedMultivectorTermsIterator<T>
             _termsIterator.GetERcpIdScalarRecords()
         );
 
-        return kVector.GetKVector(grade);
+        return kVector.GetKVector();
     }
 
     public XGaKVector<T> GetEHipKVector(XGaKVector<T> kVector1, XGaKVector<T> kVector2)
@@ -149,7 +148,7 @@ public sealed class XGaGradedMultivectorTermsIterator<T>
 
         var grade = Math.Abs(kVector1.Grade - kVector2.Grade);
 
-        var kVector = Processor.CreateComposer();
+        var kVector = Processor.CreateKVectorComposer(grade);
 
         _termsIterator.Multivector1 = kVector1;
         _termsIterator.Multivector2 = kVector2;
@@ -158,13 +157,13 @@ public sealed class XGaGradedMultivectorTermsIterator<T>
             _termsIterator.GetERcpIdScalarRecords()
         );
 
-        return kVector.GetKVector(grade);
+        return kVector.GetKVector();
     }
 
     public XGaKVector<T> GetEFdpKVector(XGaKVector<T> kVector1, XGaKVector<T> kVector2)
     {
         var grade = Math.Abs(kVector1.Grade - kVector2.Grade);
-        var kVector = Processor.CreateComposer();
+        var kVector = Processor.CreateKVectorComposer(grade);
 
         _termsIterator.Multivector1 = kVector1;
         _termsIterator.Multivector2 = kVector2;
@@ -173,7 +172,7 @@ public sealed class XGaGradedMultivectorTermsIterator<T>
             _termsIterator.GetEFdpIdScalarRecords()
         );
 
-        return kVector.GetKVector(grade);
+        return kVector.GetKVector();
     }
 
 
@@ -194,7 +193,7 @@ public sealed class XGaGradedMultivectorTermsIterator<T>
 
         var grade = kVector2.Grade - kVector1.Grade;
 
-        var kVector = Processor.CreateComposer();
+        var kVector = Processor.CreateKVectorComposer(grade);
 
         _termsIterator.Multivector1 = kVector1;
         _termsIterator.Multivector2 = kVector2;
@@ -203,7 +202,7 @@ public sealed class XGaGradedMultivectorTermsIterator<T>
             _termsIterator.GetLcpIdScalarRecords()
         );
 
-        return kVector.GetKVector(grade);
+        return kVector.GetKVector();
     }
 
     public XGaKVector<T> GetRcpKVector(XGaKVector<T> kVector1, XGaKVector<T> kVector2)
@@ -213,7 +212,7 @@ public sealed class XGaGradedMultivectorTermsIterator<T>
 
         var grade = kVector1.Grade - kVector2.Grade;
 
-        var kVector = Processor.CreateComposer();
+        var kVector = Processor.CreateKVectorComposer(grade);
 
         _termsIterator.Multivector1 = kVector1;
         _termsIterator.Multivector2 = kVector2;
@@ -222,7 +221,7 @@ public sealed class XGaGradedMultivectorTermsIterator<T>
             _termsIterator.GetRcpIdScalarRecords()
         );
 
-        return kVector.GetKVector(grade);
+        return kVector.GetKVector();
     }
 
     public XGaKVector<T> GetHipKVector(XGaKVector<T> kVector1, XGaKVector<T> kVector2)
@@ -232,7 +231,7 @@ public sealed class XGaGradedMultivectorTermsIterator<T>
 
         var grade = Math.Abs(kVector1.Grade - kVector2.Grade);
 
-        var kVector = Processor.CreateComposer();
+        var kVector = Processor.CreateKVectorComposer(grade);
 
         _termsIterator.Multivector1 = kVector1;
         _termsIterator.Multivector2 = kVector2;
@@ -241,13 +240,13 @@ public sealed class XGaGradedMultivectorTermsIterator<T>
             _termsIterator.GetRcpIdScalarRecords()
         );
 
-        return kVector.GetKVector(grade);
+        return kVector.GetKVector();
     }
 
     public XGaKVector<T> GetFdpKVector(XGaKVector<T> kVector1, XGaKVector<T> kVector2)
     {
         var grade = Math.Abs(kVector1.Grade - kVector2.Grade);
-        var kVector = Processor.CreateComposer();
+        var kVector = Processor.CreateKVectorComposer(grade);
 
         _termsIterator.Multivector1 = kVector1;
         _termsIterator.Multivector2 = kVector2;
@@ -256,7 +255,7 @@ public sealed class XGaGradedMultivectorTermsIterator<T>
             _termsIterator.GetFdpIdScalarRecords()
         );
 
-        return kVector.GetKVector(grade);
+        return kVector.GetKVector();
     }
 
 

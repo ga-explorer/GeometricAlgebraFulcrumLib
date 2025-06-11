@@ -1,6 +1,4 @@
 ﻿using System.Runtime.CompilerServices;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivectors;
-using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Basis;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Matrices;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.BitManipulation;
@@ -40,18 +38,37 @@ public static class LinFloat64VectorComposerUtils
 
         return basisScalarDictionary;
     }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    internal static Dictionary<int, double> CreateValidLinVectorDictionary(this IEnumerable<Float64Scalar> scalarList)
+    {
+        var basisScalarDictionary = new Dictionary<int, double>();
+
+        var index = 0;
+        foreach (var scalar in scalarList)
+        {
+            if (!scalar.IsValid())
+                throw new InvalidOperationException();
+
+            basisScalarDictionary.Add(index, scalar.ScalarValue);
+
+            index++;
+        }
+
+        return basisScalarDictionary;
+    }
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static LinFloat64Vector CreateZeroLinVector()
     {
-        return LinFloat64Vector.VectorZero;
+        return LinFloat64Vector.Zero;
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static LinFloat64Vector CreateLinVector(this IReadOnlyDictionary<int, double> basisScalarDictionary)
     {
-        return new LinFloat64Vector(
+        return LinFloat64Vector.Create(
             basisScalarDictionary.ToSimpleDictionary()
         );
     }
@@ -61,13 +78,13 @@ public static class LinFloat64VectorComposerUtils
         var norm = basisScalarDictionary.Values.GetVectorNorm();
 
         if (norm.IsOne())
-            return new LinFloat64Vector(
+            return LinFloat64Vector.Create(
                 basisScalarDictionary.ToSimpleDictionary()
             );
 
         var normInv = 1d / norm;
 
-        return new LinFloat64Vector(
+        return LinFloat64Vector.Create(
             basisScalarDictionary.ToDictionary(
                 p => p.Key,
                 p => p.Value * normInv
@@ -80,7 +97,7 @@ public static class LinFloat64VectorComposerUtils
     {
         var scalarDictionary = scalarArray.CreateValidLinVectorDictionary();
 
-        return new LinFloat64Vector(scalarDictionary);
+        return LinFloat64Vector.Create(scalarDictionary);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -88,7 +105,7 @@ public static class LinFloat64VectorComposerUtils
     {
         var scalarDictionary = scalarList.CreateValidLinVectorDictionary();
 
-        return new LinFloat64Vector(scalarDictionary);
+        return LinFloat64Vector.Create(scalarDictionary);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -100,7 +117,7 @@ public static class LinFloat64VectorComposerUtils
             .CreateValidLinVectorDictionary(
             );
 
-        return new LinFloat64Vector(scalarDictionary);
+        return LinFloat64Vector.Create(scalarDictionary);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -117,19 +134,19 @@ public static class LinFloat64VectorComposerUtils
         var basisScalarDictionary =
             new SingleItemDictionary<int, double>(index, 1d);
 
-        return new LinFloat64Vector(basisScalarDictionary);
+        return LinFloat64Vector.Create(basisScalarDictionary);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static LinFloat64Vector CreateLinVector(this int index, double scalar)
     {
         if (scalar.IsZero())
-            return new LinFloat64Vector();
+            return LinFloat64Vector.Create();
 
         var basisScalarDictionary =
             new SingleItemDictionary<int, double>(index, scalar);
 
-        return new LinFloat64Vector(basisScalarDictionary);
+        return LinFloat64Vector.Create(basisScalarDictionary);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -138,41 +155,6 @@ public static class LinFloat64VectorComposerUtils
         return indexScalarPair.Key.CreateLinVector(indexScalarPair.Value);
     }
 
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64Vector ToLinVector(this ILinSignedBasisVector term)
-    {
-        if (term.IsZero)
-            return new LinFloat64Vector();
-
-        var basisScalarDictionary =
-            new SingleItemDictionary<int, double>(term.Index, term.IsPositive ? 1d : -1d);
-
-        return new LinFloat64Vector(basisScalarDictionary);
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64Vector ToLinVector(this LinFloat64VectorTerm term)
-    {
-        if (term.IsZero)
-            return new LinFloat64Vector();
-
-        var basisScalarDictionary =
-            new SingleItemDictionary<int, double>(term.Index, term.ScalarValue);
-
-        return new LinFloat64Vector(basisScalarDictionary);
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64Vector ToLinVector(this XGaFloat64Vector mv)
-    {
-        var indexScalarDictionary = mv.ToDictionary(
-            p => p.Key.FirstIndex,
-            p => p.Value
-        );
-
-        return indexScalarDictionary.CreateLinVector();
-    }
 
 
     public static LinFloat64Vector DiagonalToLinVector(this double[,] matrix)
@@ -296,81 +278,5 @@ public static class LinFloat64VectorComposerUtils
     }
 
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64VectorComposer ToLinVectorComposer(this LinFloat64Vector mv)
-    {
-        return LinFloat64VectorComposer.Create().SetVector(mv);
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64VectorComposer NegativeToLinVectorComposer(this LinFloat64Vector mv)
-    {
-        return LinFloat64VectorComposer.Create().SetVectorNegative(mv);
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64VectorComposer ToLinVectorComposer(this LinFloat64Vector mv, double scalingFactor)
-    {
-        return LinFloat64VectorComposer.Create().SetVector(mv, scalingFactor);
-    }
-
-
-    public static Float64ScalarComposer AddESpTerms(this Float64ScalarComposer composer, IReadOnlyDictionary<int, double> mv1, IReadOnlyDictionary<int, double> mv2)
-    {
-        if (mv1.Count == 0 || mv2.Count == 0)
-            return composer;
-
-        if (mv1.Count <= mv2.Count)
-        {
-            foreach (var (id, scalar1) in mv1)
-            {
-                if (!mv2.TryGetValue(id, out var scalar2))
-                    continue;
-
-                composer.AddScalarValue(scalar1 * scalar2);
-            }
-        }
-        else
-        {
-            foreach (var (id, scalar2) in mv2)
-            {
-                if (!mv1.TryGetValue(id, out var scalar1))
-                    continue;
-
-                composer.AddScalarValue(scalar1 * scalar2);
-            }
-        }
-
-        return composer;
-    }
-    
-    public static LinFloat64VectorComposer AddComponentTimesTerms(this LinFloat64VectorComposer composer, IReadOnlyDictionary<int, double> mv1, IReadOnlyDictionary<int, double> mv2)
-    {
-        if (mv1.Count == 0 || mv2.Count == 0)
-            return composer;
-
-        if (mv1.Count <= mv2.Count)
-        {
-            foreach (var (id, scalar1) in mv1)
-            {
-                if (!mv2.TryGetValue(id, out var scalar2))
-                    continue;
-
-                composer.AddTerm(id, scalar1 * scalar2);
-            }
-        }
-        else
-        {
-            foreach (var (id, scalar2) in mv2)
-            {
-                if (!mv1.TryGetValue(id, out var scalar1))
-                    continue;
-
-                composer.AddTerm(id, scalar1 * scalar2);
-            }
-        }
-
-        return composer;
-    }
 
 }

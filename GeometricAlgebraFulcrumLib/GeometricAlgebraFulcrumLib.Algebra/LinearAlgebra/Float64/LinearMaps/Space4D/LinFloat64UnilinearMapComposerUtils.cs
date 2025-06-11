@@ -1,6 +1,5 @@
 ﻿using System.Collections.Immutable;
 using System.Runtime.CompilerServices;
-using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Basis;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.LinearMaps.Space4D.Reflection;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.LinearMaps.Space4D.Rotation;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.LinearMaps.Space4D.Scaling;
@@ -221,24 +220,6 @@ public static class LinFloat64UnilinearMapComposerUtils
         return vectorList.Select(map.MapVector);
     }
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static ILinFloat64DirectionalScalingLinearMap4D CreateDirectionalScaling(this LinBasisVector4D scalingBasisVector, double scalingFactor)
-    {
-        if (scalingFactor.IsZero())
-            throw new ArgumentException(nameof(scalingFactor));
-
-        // An identity map
-        if (scalingFactor.IsNearOne())
-            return LinFloat64IdentityLinearMap4D.Instance;
-
-        // A hyper plane reflection using a normal basis vector
-        if (scalingFactor.IsNearMinusOne())
-            return LinFloat64HyperPlaneAxisReflection4D.Create(scalingBasisVector.GetIndex());
-
-        // A general directional scaling using a basis vector
-        return LinFloat64AxisDirectionalScaling4D.Create(scalingFactor, scalingBasisVector);
-    }
-
     //[MethodImpl(MethodImplOptions.AggressiveInlining)]
     //public static ILinFloat64DirectionalScalingLinearMap4D CreateDirectionalScaling(this Tuple<double, IReadOnlyList<double>> scalingFactorVectorTuple)
     //{
@@ -304,14 +285,14 @@ public static class LinFloat64UnilinearMapComposerUtils
         // A hyper plane reflection
         if (scalingFactor.IsNearMinusOne())
             return scalingVectorIsAxis
-                ? LinFloat64HyperPlaneAxisReflection4D.Create(scalingAxis.GetIndex())
+                ? LinFloat64HyperPlaneAxisReflection4D.Create(scalingAxis.Index)
                 : LinFloat64HyperPlaneNormalReflection4D.Create(scalingVector);
 
         // A general directional scaling
         return scalingVectorIsAxis
             ? LinFloat64AxisDirectionalScaling4D.Create(
                 scalingFactor,
-                scalingAxis.GetIndex()
+                scalingAxis.Index
             )
             : LinFloat64VectorDirectionalScaling4D.Create(
                 scalingFactor,
@@ -400,16 +381,16 @@ public static class LinFloat64UnilinearMapComposerUtils
                     return LinFloat64IdentityLinearMap4D.Instance;
 
                 return new LinFloat64AxisToAxisRotation4D(
-                    sourceAxis.GetIndex(),
-                    sourceAxis.IsNegative(),
-                    targetAxis.GetIndex(),
-                    targetAxis.IsNegative()
+                    sourceAxis.Index,
+                    sourceAxis.IsNegative,
+                    targetAxis.Index,
+                    targetAxis.IsNegative
                 );
             }
 
             return new LinFloat64AxisToVectorRotation4D(
-                sourceAxis.GetIndex(),
-                sourceAxis.IsNegative(),
+                sourceAxis.Index,
+                sourceAxis.IsNegative,
                 targetVector
             );
         }

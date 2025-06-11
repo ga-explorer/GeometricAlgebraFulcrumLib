@@ -135,7 +135,7 @@ public sealed class LinFloat64VectorComposer :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public LinFloat64VectorComposer SetVector(ILinSignedBasisVector vector, double scalingFactor)
+    public LinFloat64VectorComposer SetVector(LinBasisVector vector, double scalingFactor)
     {
         var index = vector.Index;
         var sign = vector.Sign;
@@ -204,7 +204,7 @@ public sealed class LinFloat64VectorComposer :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public LinFloat64VectorComposer AddVector(ILinSignedBasisVector vector)
+    public LinFloat64VectorComposer AddVector(LinBasisVector vector)
     {
         var index = vector.Index;
         var sign = vector.Sign;
@@ -219,7 +219,7 @@ public sealed class LinFloat64VectorComposer :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public LinFloat64VectorComposer AddVector(ILinSignedBasisVector vector, double scalingFactor)
+    public LinFloat64VectorComposer AddVector(LinBasisVector vector, double scalingFactor)
     {
         var index = vector.Index;
         var sign = vector.Sign;
@@ -280,7 +280,7 @@ public sealed class LinFloat64VectorComposer :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public LinFloat64VectorComposer SubtractVector(ILinSignedBasisVector vector)
+    public LinFloat64VectorComposer SubtractVector(LinBasisVector vector)
     {
         var index = vector.Index;
         var sign = vector.Sign;
@@ -317,7 +317,7 @@ public sealed class LinFloat64VectorComposer :
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public LinFloat64VectorComposer SetTerm(LinSignedBasisVector basisBlade)
+    public LinFloat64VectorComposer SetTerm(LinBasisVector basisBlade)
     {
         if (basisBlade.IsZero)
             return RemoveTerm(basisBlade.Index);
@@ -332,7 +332,7 @@ public sealed class LinFloat64VectorComposer :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public LinFloat64VectorComposer SetTerm(LinSignedBasisVector basisBlade, double scalar)
+    public LinFloat64VectorComposer SetTerm(LinBasisVector basisBlade, double scalar)
     {
         if (basisBlade.IsZero || scalar.IsZero())
             return RemoveTerm(basisBlade.Index);
@@ -400,7 +400,7 @@ public sealed class LinFloat64VectorComposer :
         return this;
     }
 
-    public LinFloat64VectorComposer SetTerms(IEnumerable<KeyValuePair<LinSignedBasisVector, double>> termList)
+    public LinFloat64VectorComposer SetTerms(IEnumerable<KeyValuePair<LinBasisVector, double>> termList)
     {
         foreach (var (basis, scalar) in termList)
             SetTerm(basis, scalar);
@@ -432,7 +432,7 @@ public sealed class LinFloat64VectorComposer :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public LinFloat64VectorComposer AddTerm(ILinSignedBasisVector basisBlade)
+    public LinFloat64VectorComposer AddTerm(LinBasisVector basisBlade)
     {
         if (basisBlade.IsZero)
             return this;
@@ -447,7 +447,7 @@ public sealed class LinFloat64VectorComposer :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public LinFloat64VectorComposer AddTerm(ILinSignedBasisVector basisBlade, double scalar)
+    public LinFloat64VectorComposer AddTerm(LinBasisVector basisBlade, double scalar)
     {
         if (basisBlade.IsZero || scalar.IsZero())
             return this;
@@ -463,7 +463,7 @@ public sealed class LinFloat64VectorComposer :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public LinFloat64VectorComposer AddTerm(ILinSignedBasisVector basisBlade, double scalar1, double scalar2)
+    public LinFloat64VectorComposer AddTerm(LinBasisVector basisBlade, double scalar1, double scalar2)
     {
         var scalar = scalar1 * scalar2;
 
@@ -519,7 +519,7 @@ public sealed class LinFloat64VectorComposer :
             : AddTerm(term.Index, -term.ScalarValue);
     }
 
-    public LinFloat64VectorComposer AddTerms(IEnumerable<KeyValuePair<LinSignedBasisVector, double>> termList)
+    public LinFloat64VectorComposer AddTerms(IEnumerable<KeyValuePair<LinBasisVector, double>> termList)
     {
         foreach (var (basis, scalar) in termList)
             AddTerm(basis, scalar);
@@ -551,7 +551,7 @@ public sealed class LinFloat64VectorComposer :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public LinFloat64VectorComposer SubtractTerm(LinSignedBasisVector basisBlade)
+    public LinFloat64VectorComposer SubtractTerm(LinBasisVector basisBlade)
     {
         if (basisBlade.IsZero)
             return this;
@@ -567,7 +567,7 @@ public sealed class LinFloat64VectorComposer :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public LinFloat64VectorComposer SubtractTerm(LinSignedBasisVector basisBlade, double scalar)
+    public LinFloat64VectorComposer SubtractTerm(LinBasisVector basisBlade, double scalar)
     {
         if (basisBlade.IsZero || scalar.IsZero())
             return this;
@@ -579,7 +579,7 @@ public sealed class LinFloat64VectorComposer :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public LinFloat64VectorComposer SubtractTerm(LinSignedBasisVector basisBlade, double scalar1, double scalar2)
+    public LinFloat64VectorComposer SubtractTerm(LinBasisVector basisBlade, double scalar1, double scalar2)
     {
         var scalar = scalar1 * scalar2;
 
@@ -633,7 +633,7 @@ public sealed class LinFloat64VectorComposer :
         );
     }
 
-    public LinFloat64VectorComposer SubtractTerms(IEnumerable<KeyValuePair<LinSignedBasisVector, double>> termList)
+    public LinFloat64VectorComposer SubtractTerms(IEnumerable<KeyValuePair<LinBasisVector, double>> termList)
     {
         foreach (var (basis, scalar) in termList)
             AddTerm(basis, scalar);
@@ -658,14 +658,13 @@ public sealed class LinFloat64VectorComposer :
 
         foreach (var (id, scalar) in _indexScalarDictionary)
         {
-            var id1 = id;
             var scalar1 = mappingFunction(scalar);
 
             if (!scalar1.IsValid())
                 throw new InvalidOperationException();
 
             if (!scalar1.IsZero())
-                idScalarDictionary.Add(id1, scalar1);
+                idScalarDictionary.Add(id, scalar1);
         }
 
         _indexScalarDictionary = idScalarDictionary;
@@ -681,14 +680,13 @@ public sealed class LinFloat64VectorComposer :
 
         foreach (var (id, scalar) in _indexScalarDictionary)
         {
-            var id1 = id;
             var scalar1 = mappingFunction(id, scalar);
 
             if (!scalar1.IsValid())
                 throw new InvalidOperationException();
 
             if (!scalar1.IsZero())
-                idScalarDictionary.Add(id1, scalar1);
+                idScalarDictionary.Add(id, scalar1);
         }
 
         _indexScalarDictionary = idScalarDictionary;
@@ -858,6 +856,35 @@ public sealed class LinFloat64VectorComposer :
         );
 
         return _indexScalarDictionary.CreateLinVector();
+    }
+    
+    public LinFloat64VectorComposer AddComponentTimesTerms(IReadOnlyDictionary<int, double> mv1, IReadOnlyDictionary<int, double> mv2)
+    {
+        if (mv1.Count == 0 || mv2.Count == 0)
+            return this;
+
+        if (mv1.Count <= mv2.Count)
+        {
+            foreach (var (id, scalar1) in mv1)
+            {
+                if (!mv2.TryGetValue(id, out var scalar2))
+                    continue;
+
+                AddTerm(id, scalar1 * scalar2);
+            }
+        }
+        else
+        {
+            foreach (var (id, scalar2) in mv2)
+            {
+                if (!mv1.TryGetValue(id, out var scalar1))
+                    continue;
+
+                AddTerm(id, scalar1 * scalar2);
+            }
+        }
+
+        return this;
     }
 
 

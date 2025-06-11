@@ -82,13 +82,13 @@ namespace GeometricAlgebraFulcrumLib.Algebra.TensorAlgebra.Generic.Functions
         public T Negate(T a)
         {
             if (typeof(T) == typeof(int))
-                return (T) (object) (-(int) (object) a);
+                return (T) (object) -(int) (object) a;
             else if (typeof(T) == typeof(float))
-                return (T) (object) (-(float) (object) a);
+                return (T) (object) -(float) (object) a;
             else if (typeof(T) == typeof(double))
-                return (T) (object) (-(double) (object) a);
+                return (T) (object) -(double) (object) a;
             else if (typeof(T) == typeof(Complex))
-                return (T) (object) (-(Complex) (object) a);
+                return (T) (object) -(Complex) (object) a;
             else
                 throw new NotSupportedException();
         }

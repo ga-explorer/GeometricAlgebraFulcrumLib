@@ -207,7 +207,7 @@ public class XGaFloat64MultivectorFieldProcessor :
     public XGaFloat64Multivector GetGeometricDerivativeValue(Func<XGaFloat64Vector, XGaFloat64Multivector> multivectorFunction, XGaFloat64Vector v)
     {
         var n = Space.VSpaceDimensions;
-        var mv = (XGaFloat64Multivector)Space.Processor.MultivectorZero;
+        var mv = (XGaFloat64Multivector)Space.Processor.GradedMultivectorZero;
 
         for (var i = 0; i < n; i++)
         {

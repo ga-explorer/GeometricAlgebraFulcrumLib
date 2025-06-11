@@ -1,16 +1,13 @@
-﻿using System.Collections.Immutable;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using System.Runtime.CompilerServices;
-using GeometricAlgebraFulcrumLib.Utilities.Structures.Random;
 using GeometricAlgebraFulcrumLib.Algebra.ComplexAlgebra;
-using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Basis;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Angles;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Generic.Vectors.Space2D;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Generic.Vectors.Space3D;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Generic.Vectors.Space4D;
-using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Generic.Vectors.SpaceND;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Generic;
+using GeometricAlgebraFulcrumLib.Utilities.Structures.Random;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Tuples;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Generic.Angles;
@@ -643,7 +640,7 @@ public static class LinAngleUtils
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static LinPolarAngle<T> GetPolarAngle<T>(this Random randomGenerator, IScalarProcessor<T> scalarProcessor)
     {
-        var radians = randomGenerator.GetNumber(-2, 2) * scalarProcessor.Pi;
+        var radians = randomGenerator.GetFloat64(-2, 2) * scalarProcessor.Pi;
 
         return LinPolarAngle<T>.CreateFromRadians(radians);
     }
@@ -651,7 +648,7 @@ public static class LinAngleUtils
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static LinPolarAngle<T> GetPolarAngleInQuadrant<T>(this Random randomGenerator, int quadrantIndex, IScalarProcessor<T> scalarProcessor)
     {
-        var radians = (randomGenerator.GetNumber(0, 1) + quadrantIndex % 4) * scalarProcessor.PiOver2;
+        var radians = (randomGenerator.GetFloat64(0, 1) + quadrantIndex % 4) * scalarProcessor.PiOver2;
 
         return LinPolarAngle<T>.CreateFromRadians(radians);
     }
@@ -661,7 +658,7 @@ public static class LinAngleUtils
     {
         Debug.Assert(maxAngleRatio <= 1);
 
-        return (randomGenerator.GetNumber(0, maxAngleRatio) * scalarProcessor.PiTimes2).RadiansToPolarAngle();
+        return (randomGenerator.GetFloat64(0, maxAngleRatio) * scalarProcessor.PiTimes2).RadiansToPolarAngle();
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -669,20 +666,20 @@ public static class LinAngleUtils
     {
         Debug.Assert(minAngleRatio >= -1 && maxAngleRatio <= 1);
 
-        return (randomGenerator.GetNumber(minAngleRatio, maxAngleRatio) * scalarProcessor.PiTimes2).RadiansToPolarAngle();
+        return (randomGenerator.GetFloat64(minAngleRatio, maxAngleRatio) * scalarProcessor.PiTimes2).RadiansToPolarAngle();
     }
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static LinDirectedAngle<T> GetDirectedAngle<T>(this Random randomGenerator, IScalarProcessor<T> scalarProcessor)
     {
-        return (randomGenerator.GetNumber(-2, 2) * scalarProcessor.Pi).RadiansToDirectedAngle();
+        return (randomGenerator.GetFloat64(-2, 2) * scalarProcessor.Pi).RadiansToDirectedAngle();
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static LinDirectedAngle<T> GetDirectedAngleInQuadrant<T>(this Random randomGenerator, int quadrantIndex, IScalarProcessor<T> scalarProcessor)
     {
-        return ((randomGenerator.GetNumber(0, 1) + quadrantIndex % 4) * scalarProcessor.PiOver2).RadiansToDirectedAngle();
+        return ((randomGenerator.GetFloat64(0, 1) + quadrantIndex % 4) * scalarProcessor.PiOver2).RadiansToDirectedAngle();
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -690,7 +687,7 @@ public static class LinAngleUtils
     {
         Debug.Assert(maxAngleRatio <= 1);
 
-        return (randomGenerator.GetNumber(0, maxAngleRatio) * scalarProcessor.PiTimes2).RadiansToDirectedAngle();
+        return (randomGenerator.GetFloat64(0, maxAngleRatio) * scalarProcessor.PiTimes2).RadiansToDirectedAngle();
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -698,100 +695,10 @@ public static class LinAngleUtils
     {
         Debug.Assert(minAngleRatio >= -1 && maxAngleRatio <= 1);
 
-        return (randomGenerator.GetNumber(minAngleRatio, maxAngleRatio) * scalarProcessor.PiTimes2).RadiansToDirectedAngle();
+        return (randomGenerator.GetFloat64(minAngleRatio, maxAngleRatio) * scalarProcessor.PiTimes2).RadiansToDirectedAngle();
     }
     
     
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinAngle<T> NegativeAngle<T>(this LinAngle<T> angle)
-    {
-        return angle switch
-        {
-            LinDirectedAngle<T> directedAngle => 
-                directedAngle.NegativeAngle(),
-
-            LinPolarAngle<T> polarAngle => 
-                polarAngle.NegativeAngle(),
-
-            _ => throw new InvalidOperationException()
-        };
-    }
-    
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinAngle<T> OppositeAngle<T>(this LinAngle<T> angle)
-    {
-        return angle switch
-        {
-            LinDirectedAngle<T> directedAngle => 
-                directedAngle.OppositeAngle(),
-
-            LinPolarAngle<T> polarAngle => 
-                polarAngle.OppositeAngle(),
-
-            _ => throw new InvalidOperationException()
-        };
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinAngle<T> AngleAdd<T>(this LinAngle<T> angle, IScalar<T> angle2)
-    {
-        return angle switch
-        {
-            LinDirectedAngle<T> directedAngle => 
-                directedAngle.AngleAdd(angle2),
-
-            LinPolarAngle<T> polarAngle => 
-                polarAngle.AngleAdd(angle2),
-
-            _ => throw new InvalidOperationException()
-        };
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinAngle<T> AngleSubtract<T>(this LinAngle<T> angle, IScalar<T> angle2)
-    {
-        return angle switch
-        {
-            LinDirectedAngle<T> directedAngle => 
-                directedAngle.AngleSubtract(angle2),
-
-            LinPolarAngle<T> polarAngle => 
-                polarAngle.AngleSubtract(angle2),
-
-            _ => throw new InvalidOperationException()
-        };
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinAngle<T> AngleTimes<T>(this LinAngle<T> angle, T scalingFactor)
-    {
-        return angle switch
-        {
-            LinDirectedAngle<T> directedAngle => 
-                directedAngle.AngleTimes(scalingFactor),
-
-            LinPolarAngle<T> polarAngle => 
-                polarAngle.AngleTimes(scalingFactor),
-
-            _ => throw new InvalidOperationException()
-        };
-    }
-    
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinAngle<T> AngleDivide<T>(this LinAngle<T> angle, T scalingFactor)
-    {
-        return angle switch
-        {
-            LinDirectedAngle<T> directedAngle => 
-                directedAngle.AngleDivide(scalingFactor),
-
-            LinPolarAngle<T> polarAngle => 
-                polarAngle.AngleDivide(scalingFactor),
-
-            _ => throw new InvalidOperationException()
-        };
-    }
-
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static LinDirectedAngle<T> GetPhaseAsDirectedAngle<T>(this IPair<Scalar<T>> vector)
@@ -1111,20 +1018,6 @@ public static class LinAngleUtils
         return t1 / (t2 * t3).Sqrt();
     }
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Scalar<T> GetAngleCos<T>(this LinVector<T> vector1, LinVector<T> vector2)
-    {
-        var uuDot = vector1.ENormSquared();
-        var vvDot = vector2.ENormSquared();
-        var uvDot = vector1.ESp(vector2);
-
-        var norm = (uuDot * vvDot).Sqrt();
-
-        return norm.IsZero()
-            ? vector1.ScalarProcessor.Zero
-            : uvDot / norm;
-    }
-
 
     /// <summary>
     /// Find the angle between this vector and another
@@ -1195,59 +1088,6 @@ public static class LinAngleUtils
         return v1.GetAngleCosWithUnit(v2).ArcCos();
     }
     
-    //[MethodImpl(MethodImplOptions.AggressiveInlining)]
-    //public static Scalar<T> GetAngleCosWithUnit<T>(this LinVector<T> vector1, ILinSignedBasisVector vector2)
-    //{
-    //    Debug.Assert(
-    //        vector2.Sign.IsNotZero
-    //    );
-
-    //    var uuDot = vector1.ENormSquared();
-    //    var uvDot = vector1.ESp(vector2);
-
-    //    var norm = uuDot.Sqrt();
-
-    //    return norm.IsZero()
-    //        ? vector1.ScalarProcessor.Zero
-    //        : uvDot / norm;
-    //}
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Scalar<T> GetAngleCosWithUnit<T>(this LinVector<T> vector1, LinVector<T> vector2)
-    {
-        //Debug.Assert(
-        //    vector2.IsNearUnit()
-        //);
-
-        var uuDot = vector1.ENormSquared();
-        var uvDot = vector1.ESp(vector2);
-
-        var norm = uuDot.Sqrt();
-
-        return norm.IsZero()
-            ? vector1.ScalarProcessor.Zero
-            : uvDot / norm;
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Scalar<T> GetUnitVectorsAngleCos<T>(this LinVector<T> vector1, LinVector<T> vector2)
-    {
-        return vector1.ESp(vector2);
-    }
-
-    
-    //[MethodImpl(MethodImplOptions.AggressiveInlining)]
-    //public static LinPolarAngle<T> GetAngleWithUnit<T>(this LinVector<T> vector1, ILinSignedBasisVector vector2)
-    //{
-    //    return vector1.GetAngleCosWithUnit(vector2).ArcCos();
-    //}
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinPolarAngle<T> GetAngleWithUnit<T>(this LinVector<T> vector1, LinVector<T> vector2)
-    {
-        return vector1.GetAngleCosWithUnit(vector2).ArcCos();
-    }
-
 
     /// <summary>
     /// Find the angle between this vector and another
@@ -1285,12 +1125,6 @@ public static class LinAngleUtils
         return v1.GetUnitVectorsAngleCos(v2).ArcCos().RadiansToPolarAngle();
     }
     
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinPolarAngle<T> GetUnitVectorsAngle<T>(this LinVector<T> vector1, LinVector<T> vector2)
-    {
-        return vector1.GetUnitVectorsAngleCos(vector2).ArcCos();
-    }
-
 
     /// <summary>
     /// Find the angle between this vector and another
@@ -1328,24 +1162,6 @@ public static class LinAngleUtils
         return v1.GetAngleCos(v2).ArcCos();
     }
     
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinPolarAngle<T> GetAngle<T>(this LinVector<T> vector1, LinVector<T> vector2, bool assumeUnitVectors)
-    {
-        var v12Sp = vector1.ESp(vector2);
-
-        var angle = assumeUnitVectors
-            ? v12Sp
-            : v12Sp / (vector1.ENormSquared() * vector2.ENormSquared()).Sqrt();
-
-        return angle.ArcCos();
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinPolarAngle<T> GetAngle<T>(this LinVector<T> vector1, LinVector<T> vector2)
-    {
-        return vector1.GetAngleCos(vector2).ArcCos();
-    }
-
 
     /// <summary>
     /// Find the angle between points (p1, p0, p2); i.e. p0 is the head of the angle
@@ -1576,166 +1392,6 @@ public static class LinAngleUtils
         return LinDirectedAngle<T>.CreateFromRadians(angleInRadians, range);
     }
 
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static ComplexNumber<T> ToComplexNumber<T>(this LinAngle<T> angle)
-    {
-        var scalarProcessor = angle.ScalarProcessor;
-
-        return new ComplexNumber<T>(
-            scalarProcessor,
-            angle.CosValue,
-            angle.SinValue
-        );
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static ComplexNumber<T> ToComplexNumber<T>(this LinAngle<T> angle, T modulusValue)
-    {
-        var scalarProcessor = angle.ScalarProcessor;
-
-        return new ComplexNumber<T>(
-            scalarProcessor.Times(modulusValue, angle.CosValue),
-            scalarProcessor.Times(modulusValue, angle.SinValue)
-        );
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static ComplexNumber<T> ToComplexConjugateNumber<T>(this LinAngle<T> angle)
-    {
-        var scalarProcessor = angle.ScalarProcessor;
-
-        return new ComplexNumber<T>(
-            angle.Cos(),
-            scalarProcessor.Negative(angle.SinValue)
-        );
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static ComplexNumber<T> ToComplexConjugateNumber<T>(this LinAngle<T> angle, T modulusValue)
-    {
-        var scalarProcessor = angle.ScalarProcessor;
-
-        return new ComplexNumber<T>(
-            scalarProcessor.Times(modulusValue, angle.CosValue),
-            scalarProcessor.NegativeTimes(modulusValue, angle.SinValue)
-        );
-    }
-
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Pair<LinVector2D<T>> RotateBasisFrame2D<T>(this LinAngle<T> angle)
-    {
-        return new Pair<LinVector2D<T>>(
-            angle.Rotate(LinVector2D<T>.E1(angle.ScalarProcessor)),
-            angle.Rotate(LinVector2D<T>.E2(angle.ScalarProcessor))
-        );
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinVector2D<T> Rotate<T>(this LinAngle<T> angle, int x, int y)
-    {
-        var angleCos = angle.Cos();
-        var angleSin = angle.Sin();
-
-        var x1 = x * angleCos - y * angleSin;
-        var y1 = x * angleSin + y * angleCos;
-
-        return LinVector2D<T>.Create(x1, y1);
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinVector2D<T> Rotate<T>(this LinAngle<T> angle, T x, T y)
-    {
-        var angleCos = angle.Cos();
-        var angleSin = angle.Sin();
-
-        Debug.Assert(x is not null && y is not null);
-
-        var x1 = x * angleCos - y * angleSin;
-        var y1 = x * angleSin + y * angleCos;
-
-        return LinVector2D<T>.Create(x1, y1);
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinVector2D<T> Rotate<T>(this LinAngle<T> angle, IScalar<T> sx, IScalar<T> sy)
-    {
-        var x = sx.ScalarValue;
-        var y = sy.ScalarValue;
-
-        Debug.Assert(x is not null && y is not null);
-
-        var angleCos = angle.Cos();
-        var angleSin = angle.Sin();
-
-        var x1 = x * angleCos - y * angleSin;
-        var y1 = x * angleSin + y * angleCos;
-
-        return LinVector2D<T>.Create(x1, y1);
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinVector2D<T> Rotate<T>(this LinAngle<T> angle, LinBasisVector2D axis)
-    {
-        var (x, y) = axis.ToVector2D(angle.ScalarProcessor);
-
-        var angleCos = angle.Cos();
-        var angleSin = angle.Sin();
-
-        var x1 = x * angleCos - y * angleSin;
-        var y1 = x * angleSin + y * angleCos;
-
-        return LinVector2D<T>.Create(x1, y1);
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinVector2D<T> Rotate<T>(this LinAngle<T> angle, IPair<Scalar<T>> vector)
-    {
-        var x = vector.Item1;
-        var y = vector.Item2;
-
-        var angleCos = angle.Cos();
-        var angleSin = angle.Sin();
-
-        var x1 = x * angleCos - y * angleSin;
-        var y1 = x * angleSin + y * angleCos;
-
-        return LinVector2D<T>.Create(x1, y1);
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Pair<LinVector2D<T>> Rotate<T>(this LinAngle<T> angle, IPair<Scalar<T>> vector1, IPair<Scalar<T>> vector2)
-    {
-        return new Pair<LinVector2D<T>>(
-            angle.Rotate(vector1),
-            angle.Rotate(vector2)
-        );
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Triplet<LinVector2D<T>> Rotate<T>(this LinAngle<T> angle, IPair<Scalar<T>> vector1, IPair<Scalar<T>> vector2, IPair<Scalar<T>> vector3)
-    {
-        return new Triplet<LinVector2D<T>>(
-            angle.Rotate(vector1),
-            angle.Rotate(vector2),
-            angle.Rotate(vector3)
-        );
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static IReadOnlyList<LinVector2D<T>> Rotate<T>(this LinAngle<T> angle, params IPair<Scalar<T>>[] vectorArray)
-    {
-        return vectorArray
-            .Select(angle.Rotate)
-            .ToImmutableArray();
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static IEnumerable<LinVector2D<T>> Rotate<T>(this LinAngle<T> angle, IEnumerable<IPair<Scalar<T>>> vectorList)
-    {
-        return vectorList.Select(angle.Rotate);
-    }
 
 
 }

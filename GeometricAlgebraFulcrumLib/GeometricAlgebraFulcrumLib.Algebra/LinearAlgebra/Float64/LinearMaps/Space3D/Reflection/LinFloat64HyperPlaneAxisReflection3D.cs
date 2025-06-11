@@ -17,14 +17,14 @@ public sealed class LinFloat64HyperPlaneAxisReflection3D :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64HyperPlaneAxisReflection3D Create(LinSignedBasisVector axis)
+    public static LinFloat64HyperPlaneAxisReflection3D Create(LinBasisVector axis)
     {
         return new LinFloat64HyperPlaneAxisReflection3D(axis.Index
         );
     }
 
 
-    public LinBasisVector3D ReflectionNormalAxis { get; }
+    public LinBasisVector ReflectionNormalAxis { get; }
 
     public int ReflectionNormalAxisIndex { get; }
 
@@ -46,9 +46,9 @@ public sealed class LinFloat64HyperPlaneAxisReflection3D :
     {
         ReflectionNormalAxis = basisIndex switch
         {
-            0 => LinBasisVector3D.Px,
-            1 => LinBasisVector3D.Py,
-            2 => LinBasisVector3D.Pz,
+            0 => LinBasisVector.Px,
+            1 => LinBasisVector.Py,
+            2 => LinBasisVector.Pz,
             _ => throw new IndexOutOfRangeException()
         };
 

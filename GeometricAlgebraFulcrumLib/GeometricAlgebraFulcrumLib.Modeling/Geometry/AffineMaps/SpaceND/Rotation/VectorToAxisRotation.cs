@@ -11,7 +11,7 @@
 //        VectorToVectorRotationLinearMap
 //    {
 //        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-//        public static VectorToAxisRotation Create(Float64Tuple u, LinSignedBasisVector vAxis)
+//        public static VectorToAxisRotation Create(Float64Tuple u, LinBasisVector vAxis)
 //        {
 //            return new VectorToAxisRotation(
 //                u,
@@ -51,7 +51,7 @@
 //        }
 
 
-//        public LinSignedBasisVector TargetAxis { get; }
+//        public LinBasisVector TargetAxis { get; }
 
 //        public override Float64Tuple SourceVector { get; }
 
@@ -73,7 +73,7 @@
 
 //            var dimensions = sourceVector.ScalarArray.Length;
 //            SourceVector = sourceVector;
-//            TargetAxis = new LinSignedBasisVector(targetAxisIndex, targetAxisNegative);
+//            TargetAxis = new LinBasisVector(targetAxisIndex, targetAxisNegative);
 //            TargetVector = TargetAxis.ToTuple(dimensions);
 
 //            AngleCos = SourceVector.VectorDot(TargetAxis).Clamp(-1d, 1d);

@@ -1,6 +1,5 @@
 ﻿using System.Numerics;
 using System.Runtime.CompilerServices;
-using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Basis;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Angles;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Tuples;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
@@ -139,18 +138,6 @@ public static class LinFloat64Vector2DComposerUtils
             vector.Item1.Imaginary,
             vector.Item2.Imaginary
         );
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64Vector2D ToLinVector2D(this LinBasisVector2D axis)
-    {
-        return axis switch
-        {
-            LinBasisVector2D.Px => LinFloat64Vector2D.E1,
-            LinBasisVector2D.Nx => LinFloat64Vector2D.NegativeE1,
-            LinBasisVector2D.Py => LinFloat64Vector2D.E2,
-            _ => LinFloat64Vector2D.NegativeE2
-        };
     }
 
     /// <summary>

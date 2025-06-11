@@ -146,17 +146,13 @@ public static class ChebyshevSamples
 
         var p1 =
             DfChebyshevPolynomial.Create(
-                new LinFloat64Vector(
-                    new[] { 1, -0.7, 0.3, -0.1 }
-                ),
+                LinFloat64Vector.Create(1, -0.7, 0.3, -0.1),
                 -1, 1
             );
 
         var p2 =
             DfChebyshevPolynomial.Create(
-                new LinFloat64Vector(
-                    new[] { -1.5, -0.75, -0.2, 1.1 }
-                ),
+                LinFloat64Vector.Create(-1.5, -0.75, -0.2, 1.1),
                 -1, 1
             );
 

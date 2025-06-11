@@ -5,7 +5,7 @@ using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Processors;
 namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.LinearMaps.Rotors;
 
 public abstract class XGaFloat64RotorBase : 
-    XGaFloat64ScaledRotorBase, 
+    XGaFloat64ScalingRotorBase, 
     IXGaFloat64Rotor
 {
     protected XGaFloat64RotorBase(XGaFloat64Processor metric)
@@ -23,7 +23,7 @@ public abstract class XGaFloat64RotorBase :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public override IXGaFloat64ScaledRotor GetScaledRotorInverse()
+    public override IXGaFloat64ScalingRotor GetScalingRotorInverse()
     {
         return GetRotorInverse();
     }

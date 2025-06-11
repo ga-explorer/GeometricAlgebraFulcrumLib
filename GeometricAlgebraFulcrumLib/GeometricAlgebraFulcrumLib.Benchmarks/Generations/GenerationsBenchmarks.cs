@@ -10,7 +10,6 @@ using GeometricAlgebraFulcrumLib.Samples.Generations.Algebra.Ga41;
 using GeometricAlgebraFulcrumLib.Samples.Generations.Algebra.Ga51;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.IndexSets;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Processors;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivectors.Composers;
 
 namespace GeometricAlgebraFulcrumLib.Benchmarks.Generations;
 
@@ -30,7 +29,7 @@ public class GenerationsBenchmarks
         const double r = 10 / 64d;
 
         return randomGen.NextDouble() <= r
-            ? randomGen.GetNumber(-1, 1) : 0;
+            ? randomGen.GetFloat64(-1, 1) : 0;
     }
     
     private Ga31Multivector GetMultivector31(Random randomGen)
@@ -293,7 +292,7 @@ public class GenerationsBenchmarks
     {
         var scalarArray = mv.GetMultivectorArray();
 
-        var composer = Processor.CreateComposer();
+        var composer = Processor.CreateMultivectorComposer();
 
         for (var i = 0; i < scalarArray.Length; i++)
             composer.AddTerm((IndexSet)i, scalarArray[i]);
@@ -305,7 +304,7 @@ public class GenerationsBenchmarks
     {
         var scalarArray = mv.GetMultivectorArray();
 
-        var composer = Processor.CreateComposer();
+        var composer = Processor.CreateMultivectorComposer();
 
         for (var i = 0; i < scalarArray.Length; i++)
             composer.AddTerm((IndexSet)i, scalarArray[i]);
@@ -317,7 +316,7 @@ public class GenerationsBenchmarks
     {
         var scalarArray = mv.GetMultivectorArray();
 
-        var composer = Processor.CreateComposer();
+        var composer = Processor.CreateMultivectorComposer();
 
         for (var i = 0; i < scalarArray.Length; i++)
             composer.AddTerm((IndexSet)i, scalarArray[i]);

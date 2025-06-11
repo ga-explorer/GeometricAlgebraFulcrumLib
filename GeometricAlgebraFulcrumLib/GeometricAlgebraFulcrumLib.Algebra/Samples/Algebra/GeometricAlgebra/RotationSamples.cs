@@ -3,10 +3,7 @@ using System.Numerics;
 using GeometricAlgebraFulcrumLib.Algebra.ComplexAlgebra;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.LinearMaps.Outermorphisms;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.LinearMaps.Rotors;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivectors;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivectors.Composers;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Processors;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Subspaces;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Basis;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Angles;
@@ -137,7 +134,7 @@ public static class RotationSamples
             geometricProcessor.CreateXGaRandomComposer(n);
 
         var clarkeMap =
-            geometricProcessor.CreateClarkeRotationMap(n);
+            geometricProcessor.ClarkeRotationOutermorphism(n);
 
         var clarkeArray =
             clarkeMap.GetVectorMapArray(n);
@@ -211,7 +208,7 @@ public static class RotationSamples
         }
 
         var rotorsSequence =
-            XGaFloat64PureRotorsSequence.Create(rotorsArray);
+            XGaFloat64PureRotorSequence.Create(rotorsArray);
 
         var finalRotor =
             rotorsSequence.GetFinalRotor();
@@ -322,8 +319,8 @@ public static class RotationSamples
         var x12 = metric.Vector(x1).Op(metric.Vector(x2));
         var x123 = x12.Op(metric.Vector(x3));
 
-        var t1 = (matrix2 * x12.MultivectorToArray(n).ToMathNetVector()).ToArray().ToLinVector();
-        var t2 = metric.Vector(matrix1.MapVector(x1)).Op(metric.Vector(matrix1.MapVector(x2))).MultivectorToArray(n).ToLinVector();
+        var t1 = (matrix2 * x12.MultivectorToArray1D(1 << n).ToMathNetVector()).ToArray().ToLinVector();
+        var t2 = metric.Vector(matrix1.MapVector(x1)).Op(metric.Vector(matrix1.MapVector(x2))).MultivectorToArray1D(1 << n).ToLinVector();
 
         Debug.Assert(
             (t1 - t2).GetVectorNormSquared().IsNearZero()
@@ -500,7 +497,7 @@ public static class RotationSamples
             var v = rotation.MapBasisVector1();
             var uvSubspace = LinFloat64PlaneSubspace.CreateFromUnitVectors(u, v);
 
-            var x = random.GetNumber() * u + random.GetNumber() * v;
+            var x = random.GetFloat64() * u + random.GetFloat64() * v;
             var y = rotationSequence.MapVector(x);
 
             Debug.Assert(
@@ -925,7 +922,7 @@ public static class RotationSamples
 
             var uvVectorRotation =
                 LinFloat64AxisToVectorRotation.CreateFromRotatedVector(
-                    LinSignedBasisVector.Create(uAxisIndex, uAxisNegative),
+                    LinBasisVector.Create(uAxisIndex, uAxisNegative),
                     v.ToLinVector()
                 );
 
@@ -1103,8 +1100,8 @@ public static class RotationSamples
 
                 var uvVectorRotation =
                     LinFloat64AxisToAxisRotation.Create(
-                        LinSignedBasisVector.Create(uAxisIndex, uAxisNegative),
-                        LinSignedBasisVector.Create(vAxisIndex, vAxisNegative),
+                        LinBasisVector.Create(uAxisIndex, uAxisNegative),
+                        LinBasisVector.Create(vAxisIndex, vAxisNegative),
                         LinFloat64PolarAngle.Angle90
                     );
 
@@ -1175,12 +1172,12 @@ public static class RotationSamples
 
         var axisArray = new[]
         {
-            LinBasisVector3D.Px,
-            LinBasisVector3D.Py,
-            LinBasisVector3D.Pz,
-            LinBasisVector3D.Nx,
-            LinBasisVector3D.Ny,
-            LinBasisVector3D.Nz
+            LinBasisVector.Px,
+            LinBasisVector.Py,
+            LinBasisVector.Pz,
+            LinBasisVector.Nx,
+            LinBasisVector.Ny,
+            LinBasisVector.Nz
         };
 
         for (var j = 0; j < 10; j++)
@@ -1196,8 +1193,8 @@ public static class RotationSamples
 
             var uvVectorRotation =
                 LinFloat64PlanarRotation3D.CreateFromRotatedVector(
-                    u.GetTuple3D(),
-                    v.GetTuple3D()
+                    u.ToVector3D(),
+                    v.ToVector3D()
                 );
 
             foreach (var axisIndex in axisArray)
@@ -1207,7 +1204,7 @@ public static class RotationSamples
                 var x =
                     geometricProcessor.Vector(y.X, y.Y, y.Z);
 
-                var y1 = uvRotor.OmMap(x).GetTuple3D();
+                var y1 = uvRotor.OmMap(x).ToVector3D();
                 var y2 = uvVectorRotation.MapVector(axisIndex);
 
                 Debug.Assert(
@@ -1220,8 +1217,8 @@ public static class RotationSamples
                 var x =
                     random.GetVector(-1, 1);
 
-                var y1 = uvRotor.OmMap(x).GetTuple3D();
-                var y2 = uvVectorRotation.MapVector(x.GetTuple3D());
+                var y1 = uvRotor.OmMap(x).ToVector3D();
+                var y2 = uvVectorRotation.MapVector(x.ToVector3D());
 
                 Debug.Assert(
                     (y1 - y2).VectorENorm().IsNearZero()
@@ -1231,9 +1228,9 @@ public static class RotationSamples
 
                 var x1 = bv.ToSubspace().Project(x);
 
-                var z1 = uvRotor.OmMap(x1).GetTuple3D();
-                var z2 = uvVectorRotation.MapVector(x1.GetTuple3D());
-                var z3 = uvVectorRotation.MapVectorProjection(x.GetTuple3D());
+                var z1 = uvRotor.OmMap(x1).ToVector3D();
+                var z2 = uvVectorRotation.MapVector(x1.ToVector3D());
+                var z3 = uvVectorRotation.MapVectorProjection(x.ToVector3D());
 
                 Debug.Assert(
                     (z1 - z2).VectorENorm().IsNearZero()
@@ -1268,12 +1265,12 @@ public static class RotationSamples
 
         var axisArray = new[]
         {
-            LinBasisVector3D.Px,
-            LinBasisVector3D.Py,
-            LinBasisVector3D.Pz,
-            LinBasisVector3D.Nx,
-            LinBasisVector3D.Ny,
-            LinBasisVector3D.Nz
+            LinBasisVector.Px,
+            LinBasisVector.Py,
+            LinBasisVector.Pz,
+            LinBasisVector.Nx,
+            LinBasisVector.Ny,
+            LinBasisVector.Nz
         };
 
         for (var j = 0; j < 10; j++)
@@ -1283,9 +1280,9 @@ public static class RotationSamples
 
             var uAxis = uAxisIndex switch
             {
-                0 => uAxisNegative ? LinBasisVector3D.Nx : LinBasisVector3D.Px,
-                1 => uAxisNegative ? LinBasisVector3D.Ny : LinBasisVector3D.Py,
-                2 => uAxisNegative ? LinBasisVector3D.Nz : LinBasisVector3D.Pz,
+                0 => uAxisNegative ? LinBasisVector.Nx : LinBasisVector.Px,
+                1 => uAxisNegative ? LinBasisVector.Ny : LinBasisVector.Py,
+                2 => uAxisNegative ? LinBasisVector.Nz : LinBasisVector.Pz,
                 _ => throw new NotImplementedException()
             };
 
@@ -1304,7 +1301,7 @@ public static class RotationSamples
             var uvVectorRotation =
                 LinFloat64PlanarRotation3D.CreateFromRotatedVector(
                     uAxis.ToLinVector3D(),
-                    v.GetTuple3D()
+                    v.ToVector3D()
                 );
 
             foreach (var axisIndex in axisArray)
@@ -1314,7 +1311,7 @@ public static class RotationSamples
                 var x =
                     geometricProcessor.Vector(y.X, y.Y, y.Z);
 
-                var y1 = uvRotor.OmMap(x).GetTuple3D();
+                var y1 = uvRotor.OmMap(x).ToVector3D();
                 var y2 = uvVectorRotation.MapVector(axisIndex);
 
                 Debug.Assert(
@@ -1327,8 +1324,8 @@ public static class RotationSamples
                 var x =
                     random.GetVector(-1, 1);
 
-                var y1 = uvRotor.OmMap(x).GetTuple3D();
-                var y2 = uvVectorRotation.MapVector(x.GetTuple3D());
+                var y1 = uvRotor.OmMap(x).ToVector3D();
+                var y2 = uvVectorRotation.MapVector(x.ToVector3D());
 
                 Debug.Assert(
                     (y1 - y2).VectorENorm().IsNearZero()
@@ -1338,9 +1335,9 @@ public static class RotationSamples
 
                 var x1 = bv.ToSubspace().Project(x);
 
-                var z1 = uvRotor.OmMap(x1).GetTuple3D();
-                var z2 = uvVectorRotation.MapVector(x1.GetTuple3D());
-                var z3 = uvVectorRotation.MapVectorProjection(x.GetTuple3D());
+                var z1 = uvRotor.OmMap(x1).ToVector3D();
+                var z2 = uvVectorRotation.MapVector(x1.ToVector3D());
+                var z3 = uvVectorRotation.MapVectorProjection(x.ToVector3D());
 
                 Debug.Assert(
                     (z1 - z2).VectorENorm().IsNearZero()
@@ -1375,12 +1372,12 @@ public static class RotationSamples
 
         var axisArray = new[]
         {
-            LinBasisVector3D.Px,
-            LinBasisVector3D.Py,
-            LinBasisVector3D.Pz,
-            LinBasisVector3D.Nx,
-            LinBasisVector3D.Ny,
-            LinBasisVector3D.Nz
+            LinBasisVector.Px,
+            LinBasisVector.Py,
+            LinBasisVector.Pz,
+            LinBasisVector.Nx,
+            LinBasisVector.Ny,
+            LinBasisVector.Nz
         };
 
         for (var j = 0; j < 10; j++)
@@ -1393,9 +1390,9 @@ public static class RotationSamples
 
             var vAxis = vAxisIndex switch
             {
-                0 => vAxisNegative ? LinBasisVector3D.Nx : LinBasisVector3D.Px,
-                1 => vAxisNegative ? LinBasisVector3D.Ny : LinBasisVector3D.Py,
-                2 => vAxisNegative ? LinBasisVector3D.Nz : LinBasisVector3D.Pz,
+                0 => vAxisNegative ? LinBasisVector.Nx : LinBasisVector.Px,
+                1 => vAxisNegative ? LinBasisVector.Ny : LinBasisVector.Py,
+                2 => vAxisNegative ? LinBasisVector.Nz : LinBasisVector.Pz,
                 _ => throw new NotImplementedException()
             };
 
@@ -1410,7 +1407,7 @@ public static class RotationSamples
 
             var uvVectorRotation =
                 LinFloat64PlanarRotation3D.CreateFromRotatedVector(
-                    u.GetTuple3D(),
+                    u.ToVector3D(),
                     vAxis.ToLinVector3D()
                 );
 
@@ -1421,7 +1418,7 @@ public static class RotationSamples
                 var x =
                     geometricProcessor.Vector(y.X, y.Y, y.Z);
 
-                var y1 = uvRotor.OmMap(x).GetTuple3D();
+                var y1 = uvRotor.OmMap(x).ToVector3D();
                 var y2 = uvVectorRotation.MapVector(axisIndex);
 
                 Debug.Assert(
@@ -1434,8 +1431,8 @@ public static class RotationSamples
                 var x =
                     random.GetVector(-1, 1);
 
-                var y1 = uvRotor.OmMap(x).GetTuple3D();
-                var y2 = uvVectorRotation.MapVector(x.GetTuple3D());
+                var y1 = uvRotor.OmMap(x).ToVector3D();
+                var y2 = uvVectorRotation.MapVector(x.ToVector3D());
 
                 Debug.Assert(
                     (y1 - y2).VectorENorm().IsNearZero()
@@ -1445,9 +1442,9 @@ public static class RotationSamples
 
                 var x1 = bv.ToSubspace().Project(x);
 
-                var z1 = uvRotor.OmMap(x1).GetTuple3D();
-                var z2 = uvVectorRotation.MapVector(x1.GetTuple3D());
-                var z3 = uvVectorRotation.MapVectorProjection(x.GetTuple3D());
+                var z1 = uvRotor.OmMap(x1).ToVector3D();
+                var z2 = uvVectorRotation.MapVector(x1.ToVector3D());
+                var z3 = uvVectorRotation.MapVectorProjection(x.ToVector3D());
 
                 Debug.Assert(
                     (z1 - z2).VectorENorm().IsNearZero()
@@ -1482,21 +1479,21 @@ public static class RotationSamples
 
         var axisArray = new[]
         {
-            LinBasisVector3D.Px,
-            LinBasisVector3D.Py,
-            LinBasisVector3D.Pz,
-            LinBasisVector3D.Nx,
-            LinBasisVector3D.Ny,
-            LinBasisVector3D.Nz
+            LinBasisVector.Px,
+            LinBasisVector.Py,
+            LinBasisVector.Pz,
+            LinBasisVector.Nx,
+            LinBasisVector.Ny,
+            LinBasisVector.Nz
         };
 
         for (var uAxisIndex = 0; uAxisIndex < n; uAxisIndex++)
         {
             var uAxis = uAxisIndex switch
             {
-                0 => uAxisNegative ? LinBasisVector3D.Nx : LinBasisVector3D.Px,
-                1 => uAxisNegative ? LinBasisVector3D.Ny : LinBasisVector3D.Py,
-                2 => uAxisNegative ? LinBasisVector3D.Nz : LinBasisVector3D.Pz,
+                0 => uAxisNegative ? LinBasisVector.Nx : LinBasisVector.Px,
+                1 => uAxisNegative ? LinBasisVector.Ny : LinBasisVector.Py,
+                2 => uAxisNegative ? LinBasisVector.Nz : LinBasisVector.Pz,
                 _ => throw new NotImplementedException()
             };
 
@@ -1512,9 +1509,9 @@ public static class RotationSamples
 
                 var vAxis = vAxisIndex switch
                 {
-                    0 => vAxisNegative ? LinBasisVector3D.Nx : LinBasisVector3D.Px,
-                    1 => vAxisNegative ? LinBasisVector3D.Ny : LinBasisVector3D.Py,
-                    2 => vAxisNegative ? LinBasisVector3D.Nz : LinBasisVector3D.Pz,
+                    0 => vAxisNegative ? LinBasisVector.Nx : LinBasisVector.Px,
+                    1 => vAxisNegative ? LinBasisVector.Ny : LinBasisVector.Py,
+                    2 => vAxisNegative ? LinBasisVector.Nz : LinBasisVector.Pz,
                     _ => throw new NotImplementedException()
                 };
 
@@ -1541,7 +1538,7 @@ public static class RotationSamples
                     var x =
                         geometricProcessor.Vector(y.X, y.Y, y.Z);
 
-                    var y1 = uvRotor.OmMap(x).GetTuple3D();
+                    var y1 = uvRotor.OmMap(x).ToVector3D();
                     var y2 = uvVectorRotation.MapVector(axis);
 
                     Debug.Assert(
@@ -1554,8 +1551,8 @@ public static class RotationSamples
                     var x =
                         random.GetVector(-1, 1);
 
-                    var y1 = uvRotor.OmMap(x).GetTuple3D();
-                    var y2 = uvVectorRotation.MapVector(x.GetTuple3D());
+                    var y1 = uvRotor.OmMap(x).ToVector3D();
+                    var y2 = uvVectorRotation.MapVector(x.ToVector3D());
 
                     Debug.Assert(
                         (y1 - y2).VectorENorm().IsNearZero()
@@ -1565,9 +1562,9 @@ public static class RotationSamples
 
                     var x1 = bv.ToSubspace().Project(x);
 
-                    var z1 = uvRotor.OmMap(x1).GetTuple3D();
-                    var z2 = uvVectorRotation.MapVector(x1.GetTuple3D());
-                    var z3 = uvVectorRotation.MapVectorProjection(x.GetTuple3D());
+                    var z1 = uvRotor.OmMap(x1).ToVector3D();
+                    var z2 = uvVectorRotation.MapVector(x1.ToVector3D());
+                    var z3 = uvVectorRotation.MapVectorProjection(x.ToVector3D());
 
                     Debug.Assert(
                         (z1 - z2).VectorENorm().IsNearZero()

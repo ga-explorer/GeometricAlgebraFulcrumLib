@@ -1,14 +1,11 @@
 ﻿using System.Runtime.CompilerServices;
 using System.Text;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
+using GeometricAlgebraFulcrumLib.Algebra.Scalars.Generic;
 using GeometricAlgebraFulcrumLib.Utilities.Structures;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Combinations;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.IndexSets;
-using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Generic.Vectors.SpaceND;
-using GeometricAlgebraFulcrumLib.Algebra.Scalars.Generic;
 using GeometricAlgebraFulcrumLib.Utilities.Text.Text;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Multivectors;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.Utilities.Text;
 
@@ -67,26 +64,20 @@ public static class TextComposerUtils
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static string GetBasisVectorText(this int index)
     {
-        return (new[] { index + 1 }).GetBasisBladeText();
+        return new[] { index }.GetBasisBladeText();
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static string GetBasisBladeText(uint grade, ulong index)
     {
         //return $"<Grade:{grade}, Index:{index}>";
-        return index.IndexToCombinadic((int)grade).Select(i => i + 1).GetBasisBladeText();
+        return index.IndexToCombinadic((int)grade).Concatenate(", ", "<", ">");
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static string GetBasisBladeText(this IndexSet id)
     {
-        return id.Select(i => i + 1).GetBasisBladeText();
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static string GetBasisBladeText(this XGaBasisBlade basisBlade)
-    {
-        return basisBlade.Id.GetBasisBladeText();
+        return id.Concatenate(", ", "<", ">");
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -219,12 +210,6 @@ public static class TextComposerUtils
         return composer.ToString();
     }
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static string GetArrayText<T>(this LinVector<T> array)
-    {
-        return array.ToArray().GetArrayText();
-    }
-
     public static string GetArrayText<T>(this T[,] array)
     {
         var composer = new StringBuilder();
@@ -254,15 +239,6 @@ public static class TextComposerUtils
     //{
     //    return GetArrayText(matrixStorage.ToArray());
     //}
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static string GetMultivectorText<T>(this XGaMultivector<T> mv)
-    {
-        return mv
-            .IdScalarPairs
-            .OrderByGradeIndex()
-            .GetTermsText();
-    }
 
     //[MethodImpl(MethodImplOptions.AggressiveInlining)]
     //public static string GetArrayText<T>(this ITextComposer<T> composer, ILinMatrixStorage<T> matrixStorage)

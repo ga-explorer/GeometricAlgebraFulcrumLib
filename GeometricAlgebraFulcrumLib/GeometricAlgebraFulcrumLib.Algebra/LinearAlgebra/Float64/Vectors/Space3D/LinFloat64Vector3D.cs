@@ -135,7 +135,7 @@ public sealed record LinFloat64Vector3D :
         );
 
     public static IReadOnlyList<LinFloat64Vector3D> BasisVectors { get; }
-        = new[] { E1, E2, E3 };
+        = [E1, E2, E3];
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -226,7 +226,7 @@ public sealed record LinFloat64Vector3D :
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64Vector3D operator +(LinFloat64Vector3D v1, LinBasisVector3D v2)
+    public static LinFloat64Vector3D operator +(LinFloat64Vector3D v1, LinBasisVector v2)
     {
         return v1 + v2.ToLinVector3D();
     }
@@ -238,7 +238,7 @@ public sealed record LinFloat64Vector3D :
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64Vector3D operator +(LinBasisVector3D v1, LinFloat64Vector3D v2)
+    public static LinFloat64Vector3D operator +(LinBasisVector v1, LinFloat64Vector3D v2)
     {
         return v1.ToLinVector3D() + v2;
     }
@@ -256,7 +256,7 @@ public sealed record LinFloat64Vector3D :
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64Vector3D operator -(LinFloat64Vector3D v1, LinBasisVector3D v2)
+    public static LinFloat64Vector3D operator -(LinFloat64Vector3D v1, LinBasisVector v2)
     {
         return v1 - v2.ToLinVector3D();
     }
@@ -268,7 +268,7 @@ public sealed record LinFloat64Vector3D :
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64Vector3D operator -(LinBasisVector3D v1, LinFloat64Vector3D v2)
+    public static LinFloat64Vector3D operator -(LinBasisVector v1, LinFloat64Vector3D v2)
     {
         return v1.ToLinVector3D() - v2;
     }
@@ -490,20 +490,18 @@ public sealed record LinFloat64Vector3D :
         }
     }
 
-    public double this[LinBasisVector3D axis]
+    public double this[LinBasisVector axis]
     {
         get
         {
-            return axis switch
-            {
-                LinBasisVector3D.Px => X.ScalarValue,
-                LinBasisVector3D.Py => Y.ScalarValue,
-                LinBasisVector3D.Pz => Z.ScalarValue,
-                LinBasisVector3D.Nx => -X.ScalarValue,
-                LinBasisVector3D.Ny => -Y.ScalarValue,
-                LinBasisVector3D.Nz => -Z.ScalarValue,
-                _ => 0.0d
-            };
+            if (axis == LinBasisVector.Px) return X.ScalarValue;
+            if (axis == LinBasisVector.Py) return Y.ScalarValue;
+            if (axis == LinBasisVector.Pz) return Z.ScalarValue;
+            if (axis == LinBasisVector.Nx) return -X.ScalarValue;
+            if (axis == LinBasisVector.Ny) return -Y.ScalarValue;
+            if (axis == LinBasisVector.Nz) return -Z.ScalarValue;
+
+            return 0.0d;
         }
     }
 
@@ -751,6 +749,151 @@ public sealed record LinFloat64Vector3D :
             Scalar3 * scalingFactor,
             -Scalar2 * scalingFactor,
             Scalar1 * scalingFactor
+        );
+    }
+
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public Float64Scalar Sp(LinFloat64Scalar3D mv2)
+    {
+        return Float64Scalar.Zero;
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public Float64Scalar Sp(LinFloat64Vector3D mv2)
+    {
+        return Scalar1 * mv2.Scalar1 +
+               Scalar2 * mv2.Scalar2 +
+               Scalar3 * mv2.Scalar3;
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public Float64Scalar Sp(LinFloat64Bivector3D mv2)
+    {
+        return Float64Scalar.Zero;
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public Float64Scalar Sp(LinFloat64Trivector3D mv2)
+    {
+        return Float64Scalar.Zero;
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public Float64Scalar Sp(LinFloat64Multivector3D mv2)
+    {
+        var mv = 0d;
+
+        if (!IsZero() && !mv2.KVector1.IsZero())
+            mv += Sp(mv2.KVector1);
+
+        return mv;
+    }
+
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public LinFloat64Vector3D Op(LinFloat64Scalar3D mv2)
+    {
+        return Create(
+            Scalar1 * mv2.Scalar,
+            Scalar2 * mv2.Scalar,
+            Scalar3 * mv2.Scalar
+        );
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public LinFloat64Bivector3D Op(LinFloat64Vector3D mv2)
+    {
+        return LinFloat64Bivector3D.Create(
+            Scalar1 * mv2.Scalar2 - Scalar2 * mv2.Scalar1,
+            Scalar1 * mv2.Scalar3 - Scalar3 * mv2.Scalar1,
+            Scalar2 * mv2.Scalar3 - Scalar3 * mv2.Scalar2
+        );
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public LinFloat64Trivector3D Op(LinFloat64Bivector3D mv2)
+    {
+        return LinFloat64Trivector3D.Create(
+            Scalar1 * mv2.Scalar23 -
+            Scalar2 * mv2.Scalar13 +
+            Scalar3 * mv2.Scalar12
+        );
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public LinFloat64Scalar3D Op(LinFloat64Trivector3D mv2)
+    {
+        return LinFloat64Scalar3D.Zero;
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public LinFloat64Multivector3D Op(LinFloat64Multivector3D mv2)
+    {
+        var mv = LinFloat64Multivector3D.Zero;
+
+        if (!mv2.KVector0.IsZero())
+            mv += Op(mv2.KVector0);
+
+        if (!mv2.KVector1.IsZero())
+            mv += Op(mv2.KVector1);
+
+        if (!mv2.KVector2.IsZero())
+            mv += Op(mv2.KVector2);
+
+        return mv;
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public LinFloat64Vector3D Lcp(LinFloat64Bivector3D mv2)
+    {
+        var s1 =
+            -Scalar2 * mv2.Scalar12 -
+            Scalar3 * mv2.Scalar13;
+
+        var s2 =
+            Scalar1 * mv2.Scalar12 -
+            Scalar3 * mv2.Scalar23;
+
+        var s3 =
+            Scalar1 * mv2.Scalar13 +
+            Scalar2 * mv2.Scalar23;
+
+        return Create(s1, s2, s3);
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public LinFloat64Vector3D ProjectOnBivector(LinFloat64Bivector3D mv2)
+    {
+        return Lcp(mv2).Lcp(mv2.Inverse());
+    }
+
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public LinFloat64Multivector3D Gp(LinFloat64Bivector3D mv2)
+    {
+        var s1 =
+            -Scalar2 * mv2.Scalar12 -
+            Scalar3 * mv2.Scalar13;
+
+        var s2 =
+            Scalar1 * mv2.Scalar12 -
+            Scalar3 * mv2.Scalar23;
+
+        var s3 =
+            Scalar1 * mv2.Scalar13 +
+            Scalar2 * mv2.Scalar23;
+
+        var s123 =
+            Scalar1 * mv2.Scalar23 -
+            Scalar2 * mv2.Scalar13 +
+            Scalar3 * mv2.Scalar12;
+
+        return LinFloat64Multivector3D.Create(
+            LinFloat64Scalar3D.Zero,
+            Create(s1, s2, s3),
+            LinFloat64Bivector3D.Zero,
+            LinFloat64Trivector3D.Create(s123)
         );
     }
 

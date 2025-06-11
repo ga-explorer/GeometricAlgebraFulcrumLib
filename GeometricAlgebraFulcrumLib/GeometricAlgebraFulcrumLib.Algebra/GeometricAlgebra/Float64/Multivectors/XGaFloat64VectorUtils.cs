@@ -1,211 +1,246 @@
-﻿using System.Runtime.CompilerServices;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.LinearMaps.Outermorphisms;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.LinearMaps.Rotors;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivectors.Composers;
+﻿using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.LinearMaps.Outermorphisms;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Processors;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Subspaces;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Records;
-using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Angles;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space2D;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space3D;
-using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
+using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space4D;
+using GeometricAlgebraFulcrumLib.Utilities.Structures.BitManipulation;
+using MathNet.Numerics.LinearAlgebra.Double;
+using System.Diagnostics;
+using System.Runtime.CompilerServices;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivectors;
 
 public static class XGaFloat64VectorUtils
 {
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static double[] VectorToArray1D(this XGaFloat64Vector vector)
+    public static XGaFloat64Vector CreateXGaVector(this IEnumerable<double> scalarList, XGaFloat64Processor processor)
     {
-        var arraySize = vector.VSpaceDimensions;
-
-        var array = new double[arraySize];
-
-        foreach (var (id, scalar) in vector.IdScalarPairs)
-            array[id.FirstIndex] = scalar;
-
-        return array;
+        return new XGaFloat64Vector(
+            processor, 
+            scalarList.ToValidXGaVectorDictionary()
+        );
     }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static double[] VectorToArray1D(this XGaFloat64Vector vector, int arraySize)
-    {
-        if (arraySize < vector.VSpaceDimensions)
-            throw new InvalidOperationException();
-
-        var array = new double[arraySize];
-
-        foreach (var (id, scalar) in vector.IdScalarPairs)
-            array[id.FirstIndex] = scalar;
-
-        return array;
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static double[,] VectorToRowArray2D(this XGaFloat64Vector vector, int arraySize)
-    {
-        if (arraySize < vector.VSpaceDimensions)
-            throw new InvalidOperationException();
-
-        var array = new double[1, arraySize];
-
-        foreach (var (id, scalar) in vector.IdScalarPairs)
-            array[0, id.FirstIndex] = scalar;
-
-        return array;
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static double[,] VectorToColumnArray2D(this XGaFloat64Vector vector, int arraySize)
-    {
-        if (arraySize < vector.VSpaceDimensions)
-            throw new InvalidOperationException();
-
-        var array = new double[arraySize, 1];
-
-        foreach (var (id, scalar) in vector.IdScalarPairs)
-            array[id.FirstIndex, 0] = scalar;
-
-        return array;
-    }
-    
         
 
-    public static XGaIdScalarRecord GetMinScalarMagnitudeIdScalar(this XGaFloat64Multivector mv)
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static XGaFloat64Vector CreateUnitXGaFloat64Vector(this double angle, int index1, int index2)
     {
-        if (mv.IsZero)
-            throw new InvalidOperationException();
+        Debug.Assert(index2 > index1);
 
-        var (minValueId, minValue) = mv.IdScalarPairs.First();
-        minValue = minValue.Abs();
+        var processor = XGaFloat64Processor.Euclidean;
 
-        foreach (var (id, scalar) in mv.IdScalarPairs)
-        {
-            var absNumber = scalar.Abs();
+        var scalar1 = Math.Cos(angle);
+        var scalar2 = Math.Sin(angle);
 
-            if (absNumber >= minValue) continue;
-
-            minValue = absNumber;
-            minValueId = id;
-        }
-
-        return new XGaIdScalarRecord(minValueId, minValue);
+        return processor
+            .CreateVectorComposer()
+            .SetVectorTerm(index1, scalar1)
+            .SetVectorTerm(index2, scalar2)
+            .GetVector();
     }
 
-    public static XGaFloat64Multivector GetUnitNormalVector(this XGaFloat64Vector vector)
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static XGaFloat64Vector CreateXGaPhasor(this double angle, double magnitude, int index1, int index2)
     {
-        var metric = vector.Processor;
+        Debug.Assert(index2 > index1);
 
-        var (minValueId, minValue) =
-            vector.GetMinScalarMagnitudeIdScalar();
+        var processor = XGaFloat64Processor.Euclidean;
 
-        var composer = vector.ToComposer();
+        var scalar1 = magnitude * Math.Cos(angle);
+        var scalar2 = magnitude * Math.Sin(angle);
 
-        var sum = 0d;
-        foreach (var (id, scalar) in vector.IdScalarPairs)
+        return processor
+            .CreateVectorComposer()
+            .SetVectorTerm(index1, scalar1)
+            .SetVectorTerm(index2, scalar2)
+            .GetVector();
+    }
+
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static XGaFloat64Vector ToXGaFloat64Vector(this ILinFloat64Vector2D vector)
+    {
+        return XGaFloat64Processor
+            .Euclidean
+            .CreateVectorComposer()
+            .SetVectorTerm(0, vector.X)
+            .SetVectorTerm(1, vector.Y)
+            .GetVector();
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static XGaFloat64Vector ToXGaFloat64Vector(this ILinFloat64Vector2D vector, XGaFloat64Processor processor)
+    {
+        return processor
+            .CreateVectorComposer()
+            .SetVectorTerm(0, vector.X)
+            .SetVectorTerm(1, vector.Y)
+            .GetVector();
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static XGaFloat64Vector ToXGaFloat64Vector(this ILinFloat64Vector3D vector)
+    {
+        return XGaFloat64Processor
+            .Euclidean
+            .CreateVectorComposer()
+            .SetVectorTerm(0, vector.X)
+            .SetVectorTerm(1, vector.Y)
+            .SetVectorTerm(2, vector.Z)
+            .GetVector();
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static XGaFloat64Vector ToXGaFloat64Vector(this ILinFloat64Vector3D vector, XGaFloat64Processor processor)
+    {
+        return processor
+            .CreateVectorComposer()
+            .SetVectorTerm(0, vector.X)
+            .SetVectorTerm(1, vector.Y)
+            .SetVectorTerm(2, vector.Z)
+            .GetVector();
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static XGaFloat64Vector ToXGaFloat64Vector(this ILinFloat64Vector4D vector)
+    {
+        return XGaFloat64Processor
+            .Euclidean
+            .CreateVectorComposer()
+            .SetVectorTerm(0, vector.X)
+            .SetVectorTerm(1, vector.Y)
+            .SetVectorTerm(2, vector.Z)
+            .SetVectorTerm(3, vector.W)
+            .GetVector();
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static XGaFloat64Vector ToXGaFloat64Vector(this ILinFloat64Vector4D vector, XGaFloat64Processor processor)
+    {
+        return processor
+            .CreateVectorComposer()
+            .SetVectorTerm(0, vector.X)
+            .SetVectorTerm(1, vector.Y)
+            .SetVectorTerm(2, vector.Z)
+            .SetVectorTerm(3, vector.W)
+            .GetVector();
+    }
+
+
+    public static XGaFloat64Vector DiagonalToXGaFloat64Vector(this double[,] matrix, XGaFloat64Processor processor)
+    {
+        var count = Math.Min(matrix.GetLength(0), matrix.GetLength(1));
+        var composer = processor.CreateVectorComposer();
+
+        for (var i = 0; i < count; i++)
         {
-            if (id == minValueId) continue;
+            var scalar = matrix[i, i];
 
-            var signature = metric.Signature(id);
-
-            if (signature.IsPositive)
-            {
-                sum += scalar;
-                composer.SetTerm(id, minValue);
-            }
-            else if (signature.IsNegative)
-            {
-                sum -= scalar;
-                composer.SetTerm(id, -minValue);
-            }
+            composer.SetVectorTerm(i, scalar);
         }
-
-        composer.SetTerm(minValueId, -sum);
-        composer.Divide(composer.Norm().ScalarValue);
 
         return composer.GetVector();
     }
 
-    public static XGaFloat64Vector GetEUnitNormalVector(this XGaFloat64Vector vector)
+    public static XGaFloat64Vector RowToXGaFloat64Vector(this double[,] matrix, int row, XGaFloat64Processor processor)
     {
-        var (minValueId, minValue) =
-            vector.GetMinScalarMagnitudeIdScalar();
+        var columnCount = matrix.GetLength(1);
+        var composer = processor.CreateVectorComposer();
 
-        var composer = vector.ToComposer();
-
-        var sum = 0d;
-        foreach (var (id, scalar) in vector.IdScalarPairs)
+        for (var i = 0; i < columnCount; i++)
         {
-            if (id == minValueId) continue;
+            var scalar = matrix[i, row];
 
-            sum += scalar;
-            composer.SetTerm(id, minValue);
+            composer.SetVectorTerm(i, scalar);
         }
-
-        composer.SetTerm(minValueId, -sum);
-        composer.Divide(composer.Norm().ScalarValue);
 
         return composer.GetVector();
     }
-        
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64Vector2D ToVector2D(this XGaFloat64Vector vector)
+
+    public static XGaFloat64Vector ColumnToXGaFloat64Vector(this double[,] matrix, int column, XGaFloat64Processor processor)
     {
-        return LinFloat64Vector2D.Create(
-            (Float64Scalar)vector.Scalar(0),
-            (Float64Scalar)vector.Scalar(1)
+        var rowCount = matrix.GetLength(0);
+        var composer = processor.CreateVectorComposer();
+
+        for (var i = 0; i < rowCount; i++)
+        {
+            var scalar = matrix[column, i];
+
+            composer.SetVectorTerm(i, scalar);
+        }
+
+        return composer.GetVector();
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static IEnumerable<XGaFloat64Vector> RowsToXGaFloat64Vectors(this double[,] matrix, XGaFloat64Processor processor)
+    {
+        return matrix.GetLength(0).GetRange().Select(
+            r => matrix.RowToXGaFloat64Vector(r, processor)
         );
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64Vector3D ToVector3D(this XGaFloat64Vector vector)
+    public static IEnumerable<XGaFloat64Vector> ColumnsToXGaFloat64Vectors(this double[,] matrix, XGaFloat64Processor processor)
     {
-        return LinFloat64Vector3D.Create(
-            vector.Scalar(0),
-            vector.Scalar(1),
-            vector.Scalar(2)
+        return matrix.GetLength(1).GetRange().Select(
+            c => matrix.ColumnToXGaFloat64Vector(c, processor)
         );
     }
-        
+
+
+    public static XGaFloat64Vector DiagonalToXGaFloat64Vector(this Matrix matrix, XGaFloat64Processor processor)
+    {
+        var count = Math.Min(matrix.RowCount, matrix.ColumnCount);
+        var composer = processor.CreateVectorComposer();
+
+        for (var i = 0; i < count; i++)
+        {
+            var scalar = matrix[i, i];
+
+            composer.SetVectorTerm(i, scalar);
+        }
+
+        return composer.GetVector();
+    }
+
+    public static XGaFloat64Vector RowToXGaFloat64Vector(this Matrix matrix, int row, XGaFloat64Processor processor)
+    {
+        var composer = processor.CreateVectorComposer();
+
+        for (var i = 0; i < matrix.ColumnCount; i++)
+            composer.SetVectorTerm(i, matrix[row, i]);
+
+        return composer.GetVector();
+    }
+
+    public static XGaFloat64Vector ColumnToXGaFloat64Vector(this Matrix matrix, int column, XGaFloat64Processor processor)
+    {
+        var composer = processor.CreateVectorComposer();
+
+        for (var i = 0; i < matrix.RowCount; i++)
+            composer.SetVectorTerm(i, matrix[i, column]);
+
+        return composer.GetVector();
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static IEnumerable<XGaFloat64Vector> RowsToXGaFloat64Vectors(this Matrix matrix, XGaFloat64Processor processor)
+    {
+        return matrix.RowCount.GetRange().Select(
+            r => matrix.RowToXGaFloat64Vector(r, processor)
+        );
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static IEnumerable<XGaFloat64Vector> ColumnsToXGaFloat64Vectors(this Matrix matrix, XGaFloat64Processor processor)
+    {
+        return matrix.ColumnCount.GetRange().Select(
+            c => matrix.ColumnToXGaFloat64Vector(c, processor)
+        );
+    }
     
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64Vector3D GetTuple3D(this XGaFloat64Vector vector)
-    {
-        return LinFloat64Vector3D.Create(
-            vector[0],
-            vector[1],
-            vector[2]
-        );
-    }
-        
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64Angle GetEuclideanAngle(this XGaFloat64Vector vector1, XGaFloat64Vector vector2, bool assumeUnitVectors = false)
-    {
-        var angleCos = vector1.ESp(vector2).Scalar();
-
-        if (!assumeUnitVectors)
-            angleCos /= vector1.ENorm() * vector2.ENorm();
-
-        return angleCos.CosToPolarAngle();
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static XGaFloat64Vector GetUnitBisector(this XGaFloat64Vector vector1, XGaFloat64Vector vector2, bool assumeEqualNormVectors = false)
-    {
-        var v = assumeEqualNormVectors
-            ? vector1 + vector2
-            : vector1.DivideByENorm() + vector2.DivideByENorm();
-
-        return v.DivideByENorm();
-    }
-
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static XGaFloat64Vector OmMapUsing(this XGaFloat64Vector vector, IXGaFloat64Outermorphism om)
-    {
-        return om.OmMap(vector);
-    }
-
 
     //[MethodImpl(MethodImplOptions.AggressiveInlining)]
     //public static IEnumerable<Vector> OmMap(this IOutermorphism om, params Vector[] vectorsList)
@@ -226,158 +261,91 @@ public static class XGaFloat64VectorUtils
     }
 
 
-    //[MethodImpl(MethodImplOptions.AggressiveInlining)]
-    //public static Vector Project(this IXGaFloat64Subspace subspace, Vector vector)
-    //{
-    //    var processor = subspace.GeometricProcessor;
-
-    //    return new Vector(
-    //        processor,
-    //        subspace.Project(vector)
-    //    );
-    //}
-
-    //[MethodImpl(MethodImplOptions.AggressiveInlining)]
-    //public static Vector ProjectOn(this Vector vector, IXGaFloat64Subspace subspace)
-    //{
-    //    var processor = subspace.GeometricProcessor;
-
-    //    return new Vector(
-    //        processor,
-    //        subspace.Project(vector.VectorStorage)
-    //    );
-    //}
-
-
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static IEnumerable<XGaFloat64Vector> ProjectVectors(this IXGaFloat64Subspace subspace, params XGaFloat64Vector[] vectorsList)
+    public static IEnumerable<XGaFloat64Vector> ProjectOn(this IEnumerable<XGaFloat64Vector> vectorsList, XGaFloat64Subspace subspace)
     {
         return vectorsList.Select(subspace.Project);
     }
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static IEnumerable<XGaFloat64Vector> Project(this IXGaFloat64Subspace subspace, IEnumerable<XGaFloat64Vector> vectorsList)
-    {
-        return vectorsList.Select(subspace.Project);
-    }
-        
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static XGaFloat64Vector ProjectOnVector(this XGaFloat64Vector vector, XGaFloat64Vector subspace)
-    {
-        return vector.ProjectOn(subspace.ToSubspace());
-    }
-        
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static XGaFloat64Vector ProjectOnBivector(this XGaFloat64Vector vector, XGaFloat64Bivector subspace)
-    {
-        return vector.ProjectOn(subspace.ToSubspace());
-    }
-        
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static XGaFloat64Vector ProjectOnKVector(this XGaFloat64Vector vector, XGaFloat64KVector subspace)
-    {
-        return vector.ProjectOn(subspace.ToSubspace());
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static XGaFloat64Vector ProjectOn(this XGaFloat64Vector vector, IXGaFloat64Subspace subspace)
-    {
-        return subspace.Project(vector);
-    }
-        
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static XGaFloat64Vector RejectOnVector(this XGaFloat64Vector vector, XGaFloat64Vector subspace)
-    {
-        return vector - vector.ProjectOn(subspace.ToSubspace());
-    }
-        
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static XGaFloat64Vector RejectOnBivector(this XGaFloat64Vector vector, XGaFloat64Bivector subspace)
-    {
-        return vector - vector.ProjectOn(subspace.ToSubspace());
-    }
-        
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static XGaFloat64Vector RejectOnKVector(this XGaFloat64Vector vector, XGaFloat64KVector subspace)
-    {
-        return vector - vector.ProjectOn(subspace.ToSubspace());
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static XGaFloat64Vector RejectOn(this XGaFloat64Vector vector, IXGaFloat64Subspace subspace)
-    {
-        return vector - subspace.Project(vector);
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static IEnumerable<XGaFloat64Vector> ProjectOn(this IEnumerable<XGaFloat64Vector> vectorsList, IXGaFloat64Subspace subspace)
-    {
-        return vectorsList.Select(subspace.Project);
-    }
-
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static XGaFloat64PureRotor GetEuclideanRotorFromBasis(this XGaFloat64Vector vector2, int index)
-    {
-        var metric = vector2.Processor;
-            
-        return metric
-            .VectorTerm(index)
-            .CreatePureRotor(vector2);
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static XGaFloat64PureRotor GetEuclideanRotorFrom(this XGaFloat64Vector vector2, XGaFloat64Vector vector1)
-    {
-        return vector1.CreatePureRotor(vector2);
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static XGaFloat64PureRotor GetEuclideanRotorFrom(this XGaFloat64Vector vector2, XGaFloat64Vector vector1, bool assumeUnitVectors)
-    {
-        return vector1.CreatePureRotor(
-            vector2,
-            assumeUnitVectors
-        );
-    }
-
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static XGaFloat64PureRotor GetEuclideanRotorToBasis(this XGaFloat64Vector vector1, int index)
-    {
-        var metric = vector1.Processor;
-            
-        return vector1.CreatePureRotor(
-            metric.VectorTerm(index)
-        );
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static XGaFloat64PureRotor GetEuclideanRotorTo(this XGaFloat64Vector vector1, XGaFloat64Vector vector2)
-    {
-        return vector1.CreatePureRotor(vector2);
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static XGaFloat64PureRotor GetEuclideanRotorTo(this XGaFloat64Vector vector1, XGaFloat64Vector vector2, bool assumeUnitVectors)
-    {
-        return vector1.CreatePureRotor(
-            vector2,
-            assumeUnitVectors
-        );
-    }
 
     /// <summary>
-    /// Find a Euclidean rotor from vector1 to its projection on subspace
+    /// Apply the Gram-Schmidt process using the outer product
+    /// See here for more details:
+    /// https://en.wikipedia.org/wiki/Gram%E2%80%93Schmidt_process
+    /// "Gram-Schmidt Orthogonalization in Geometric Algebra"
+    /// https://vixra.org/abs/1306.0176
     /// </summary>
-    /// <param name="vector1"></param>
-    /// <param name="subspace"></param>
+    /// <param name="vectorsList"></param>
+    /// <param name="makeUnitVectors"></param>
     /// <returns></returns>
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static XGaFloat64PureRotor GetEuclideanRotorTo(this XGaFloat64Vector vector1, XGaFloat64Subspace subspace)
+    public static IReadOnlyList<XGaFloat64Vector> ApplyGramSchmidt(this IEnumerable<XGaFloat64Vector> vectorsList, bool makeUnitVectors)
     {
-        return vector1.CreatePureRotor(
-            subspace.Project(vector1)
+        var inputVectorsList = new List<XGaFloat64Vector>(
+            vectorsList.Where(v => !v.IsNearZero())
         );
+
+        var outputVectorsList = new List<XGaFloat64Vector>(inputVectorsList.Count);
+
+        var v1 = inputVectorsList[0];
+
+        outputVectorsList.Add(makeUnitVectors ? v1 / v1.Norm() : v1);
+
+        var mv1 = v1.AsKVector();
+
+        for (var i = 1; i < inputVectorsList.Count; i++)
+        {
+            var mv2 = mv1.Op(inputVectorsList[i]);
+
+            // If the new vector is linearly dependent on the previous ones, ignore it
+            if (mv2.IsNearZero()) continue;
+
+            var v2 = mv1.Reverse().Gp(mv2).GetVectorPart();
+
+            outputVectorsList.Add(makeUnitVectors ? v2 / v2.Norm() : v2);
+
+            mv1 = mv2;
+        }
+
+        return outputVectorsList;
     }
+    
+    /// <summary>
+    /// Apply the Gram-Schmidt process using classical vector projection
+    /// See here for more details:
+    /// https://en.wikipedia.org/wiki/Gram%E2%80%93Schmidt_process
+    /// </summary>
+    /// <param name="vectorsList"></param>
+    /// <param name="makeUnitVectors"></param>
+    /// <returns></returns>
+    public static IReadOnlyList<XGaFloat64Vector> ApplyGramSchmidtByProjections(this IEnumerable<XGaFloat64Vector> vectorsList, bool makeUnitVectors)
+    {
+        var inputVectorsList = new List<XGaFloat64Vector>(
+            vectorsList.Where(v => !v.IsNearZero())
+        );
+
+        var outputVectorsList = new List<XGaFloat64Vector>(inputVectorsList.Count)
+        {
+            inputVectorsList[0]
+        };
+
+        for (var i = 1; i < inputVectorsList.Count; i++)
+        {
+            var vector = outputVectorsList.Aggregate(
+                inputVectorsList[i],
+                (current, projectionVector) =>
+                    current - current.ProjectOn(projectionVector.ToSubspace())
+            );
+
+            // If the new vector is linearly dependent on the previous ones, ignore it
+            if (vector.IsNearZero())
+                continue;
+
+            outputVectorsList.Add(vector);
+        }
+
+        return makeUnitVectors
+            ? outputVectorsList.Select(v => v.DivideByNorm()).ToArray()
+            : outputVectorsList;
+    }
+
 }

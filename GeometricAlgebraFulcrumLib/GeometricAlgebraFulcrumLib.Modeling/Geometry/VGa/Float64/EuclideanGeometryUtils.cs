@@ -11,7 +11,7 @@ public static class EuclideanGeometryUtils
     public static Triplet<LinFloat64Vector3D> GetCirclePointsTriplet3D(this ILinFloat64Vector3D center, ILinFloat64Vector3D normal, double radius)
     {
         var q =
-            LinBasisVector3D.Pz.VectorToVectorRotationQuaternion(
+            LinBasisVector.Pz.VectorToVectorRotationQuaternion(
                 normal.ToUnitLinVector3D(LinFloat64Vector3D.E3)
             );
 

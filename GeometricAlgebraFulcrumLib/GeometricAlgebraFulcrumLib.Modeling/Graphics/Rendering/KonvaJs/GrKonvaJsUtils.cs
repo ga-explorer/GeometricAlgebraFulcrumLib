@@ -268,17 +268,16 @@ public static class GrKonvaJsUtils
         }
     }
 
-    public static string GetKonvaJsCode(this LinBasisVector3D axis)
+    public static string GetKonvaJsCode(this LinBasisVector axis)
     {
-        return axis switch
-        {
-            LinBasisVector3D.Px => "Konva.Axis.X",
-            LinBasisVector3D.Nx => "(-Konva.Axis.X)",
-            LinBasisVector3D.Py => "Konva.Axis.Y",
-            LinBasisVector3D.Ny => "(-Konva.Axis.Y)",
-            LinBasisVector3D.Pz => "Konva.Axis.Z",
-            _ => "(-Konva.Axis.Z)"
-        };
+        if (axis == LinBasisVector.Px) return "Konva.Axis.X";
+        if (axis == LinBasisVector.Nx) return "(-Konva.Axis.X)";
+        if (axis == LinBasisVector.Py) return "Konva.Axis.Y";
+        if (axis == LinBasisVector.Ny) return "(-Konva.Axis.Y)";
+        if (axis == LinBasisVector.Pz) return "Konva.Axis.Z";
+        if (axis == LinBasisVector.Nz) return "(-Konva.Axis.Z)";
+
+        throw new InvalidOperationException();
     }
 
     public static string GetKonvaJsCode(this IPair<Float64Scalar> vector)

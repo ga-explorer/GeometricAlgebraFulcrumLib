@@ -1,8 +1,10 @@
-﻿using System.Collections;
-using System.Diagnostics;
-using System.Runtime.CompilerServices;
+﻿using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Multivectors;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Processors;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Generic;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Tuples;
+using System.Collections;
+using System.Diagnostics;
+using System.Runtime.CompilerServices;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Generic.Vectors.Space3D;
 
@@ -101,12 +103,12 @@ public sealed record LinBivector3D<T> :
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static IReadOnlyList<LinBivector3D<T>> BasisBivectors(IScalarProcessor<T> scalarProcessor)
     {
-        return new[]
-        {
+        return
+        [
             E12(scalarProcessor), 
             E13(scalarProcessor), 
             E23(scalarProcessor)
-        };
+        ];
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -632,6 +634,157 @@ public sealed record LinBivector3D<T> :
             Scalar13 * scalingFactor,
             -Scalar12 * scalingFactor
         );
+    }
+
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public Scalar<T> Sp(LinScalar3D<T> mv2)
+    {
+        return ScalarProcessor.Zero;
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public Scalar<T> Sp(LinVector3D<T> mv2)
+    {
+        return ScalarProcessor.Zero;
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public Scalar<T> Sp(LinBivector3D<T> mv2)
+    {
+        return -(Scalar12 * mv2.Scalar12 +
+                 Scalar13 * mv2.Scalar13 +
+                 Scalar23 * mv2.Scalar23);
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public Scalar<T> Sp(LinTrivector3D<T> mv2)
+    {
+        return ScalarProcessor.Zero;
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public Scalar<T> Sp(LinMultivector3D<T> mv2)
+    {
+        var mv = ScalarProcessor.Zero;
+
+        if (!IsZero() && !mv2.KVector2.IsZero())
+            mv += Sp(mv2.KVector2);
+
+        return mv;
+    }
+
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public LinBivector3D<T> Op(LinScalar3D<T> mv2)
+    {
+        return Create(
+            Scalar12 * mv2.Scalar,
+            Scalar13 * mv2.Scalar,
+            Scalar23 * mv2.Scalar
+        );
+    }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public LinTrivector3D<T> Op(LinVector3D<T> mv2)
+    {
+        return LinTrivector3D<T>.Create(
+            Scalar12 * mv2.Scalar3 -
+            Scalar13 * mv2.Scalar2 +
+            Scalar23 * mv2.Scalar1
+        );
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public LinScalar3D<T> Op(LinBivector3D<T> mv2)
+    {
+        return LinScalar3D<T>.Zero(ScalarProcessor);
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public LinScalar3D<T> Op(LinTrivector3D<T> mv2)
+    {
+        return LinScalar3D<T>.Zero(ScalarProcessor);
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public LinMultivector3D<T> Op(LinMultivector3D<T> mv2)
+    {
+        var mv = LinMultivector3D<T>.Zero(ScalarProcessor);
+
+        if (!mv2.KVector0.IsZero())
+            mv += Op(mv2.KVector0);
+
+        if (!mv2.KVector1.IsZero())
+            mv += Op(mv2.KVector1);
+
+        return mv;
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public LinVector3D<T> Rcp(LinVector3D<T> v2)
+    {
+        var s1 =
+            Scalar12 * v2.Scalar2 +
+            Scalar13 * v2.Scalar3;
+
+        var s2 =
+            -Scalar12 * v2.Scalar1 +
+            Scalar23 * v2.Scalar3;
+
+        var s3 =
+            -Scalar13 * v2.Scalar1 -
+            Scalar23 * v2.Scalar2;
+
+        return LinVector3D<T>.Create(s1, s2, s3);
+    }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public LinMultivector3D<T> Gp(LinVector3D<T> mv2)
+    {
+        var s1 =
+            Scalar12 * mv2.Scalar2 +
+            Scalar13 * mv2.Scalar3;
+
+        var s2 =
+            -Scalar12 * mv2.Scalar1 +
+            Scalar23 * mv2.Scalar3;
+
+        var s3 =
+            -Scalar13 * mv2.Scalar1 -
+            Scalar23 * mv2.Scalar2;
+
+        var s123 =
+            Scalar12 * mv2.Scalar3 -
+            Scalar13 * mv2.Scalar2 +
+            Scalar23 * mv2.Scalar1;
+
+        return LinMultivector3D<T>.Create(
+            LinScalar3D<T>.Zero(ScalarProcessor),
+            LinVector3D<T>.Create(s1, s2, s3),
+            Zero(ScalarProcessor),
+            LinTrivector3D<T>.Create(s123)
+        );
+    }
+
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public XGaBivector<T> ToXGaBivector(XGaProcessor<T> processor)
+    {
+        return processor
+            .CreateBivectorComposer()
+            .SetBivectorTerm(0, 1, Xy)
+            .SetBivectorTerm(0, 2, Xz)
+            .SetBivectorTerm(1, 2, Yz)
+            .GetBivector();
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public LinBivector3D<T> ToXyBivector3D()
+    {
+        var zero = ScalarProcessor.Zero;
+
+        return Create(Xy, zero, zero);
     }
 
 

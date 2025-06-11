@@ -58,8 +58,8 @@
 //        Scalar00 = e1.ENorm();
 //        Scalar11 = d1.ENorm();
 
-//        Scalar01 = ScaledRotor0.Multivector.ESp(ScaledRotor1.MultivectorReverse) +
-//                   ScaledRotor1.Multivector.ESp(ScaledRotor0.MultivectorReverse);
+//        Scalar01 = ScalingRotor0.Multivector.ESp(ScalingRotor1.MultivectorReverse) +
+//                   ScalingRotor1.Multivector.ESp(ScalingRotor0.MultivectorReverse);
 //    }
 
 

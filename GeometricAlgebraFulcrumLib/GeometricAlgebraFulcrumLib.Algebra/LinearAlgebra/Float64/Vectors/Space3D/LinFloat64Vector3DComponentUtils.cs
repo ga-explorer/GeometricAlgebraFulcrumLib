@@ -88,9 +88,11 @@ public static class LinFloat64Vector3DComponentUtils
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static LinFloat64Vector3D Min(this ITriplet<Float64Scalar> v1, ITriplet<Float64Scalar> v2)
     {
-        return LinFloat64Vector3D.Create(v1.Item1 < v2.Item1 ? v1.Item1 : v2.Item1,
+        return LinFloat64Vector3D.Create(
+            v1.Item1 < v2.Item1 ? v1.Item1 : v2.Item1,
             v1.Item2 < v2.Item2 ? v1.Item2 : v2.Item2,
-            v1.Item3 < v2.Item3 ? v1.Item3 : v2.Item3);
+            v1.Item3 < v2.Item3 ? v1.Item3 : v2.Item3
+        );
     }
 
     /// <summary>
@@ -102,9 +104,11 @@ public static class LinFloat64Vector3DComponentUtils
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static LinFloat64Vector3D Max(this ITriplet<Float64Scalar> v1, ITriplet<Float64Scalar> v2)
     {
-        return LinFloat64Vector3D.Create(v1.Item1 > v2.Item1 ? v1.Item1 : v2.Item1,
+        return LinFloat64Vector3D.Create(
+            v1.Item1 > v2.Item1 ? v1.Item1 : v2.Item1,
             v1.Item2 > v2.Item2 ? v1.Item2 : v2.Item2,
-            v1.Item3 > v2.Item3 ? v1.Item3 : v2.Item3);
+            v1.Item3 > v2.Item3 ? v1.Item3 : v2.Item3
+        );
     }
 
     /// <summary>
@@ -157,96 +161,16 @@ public static class LinFloat64Vector3DComponentUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinBasisVector3D NextBasisVector(this LinBasisVector3D vector)
+    public static Float64Scalar GetComponent(this ITriplet<Float64Scalar> vector, LinBasisVector axis)
     {
-        return vector switch
-        {
-            LinBasisVector3D.Px => LinBasisVector3D.Py,
-            LinBasisVector3D.Py => LinBasisVector3D.Pz,
-            LinBasisVector3D.Pz => LinBasisVector3D.Px,
-            LinBasisVector3D.Nx => LinBasisVector3D.Ny,
-            LinBasisVector3D.Ny => LinBasisVector3D.Nz,
-            LinBasisVector3D.Nz => LinBasisVector3D.Nx,
-            _ => throw new ArgumentOutOfRangeException()
-        };
-    }
-    
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinBasisVector3D PrevBasisVector(this LinBasisVector3D vector)
-    {
-        return vector switch
-        {
-            LinBasisVector3D.Px => LinBasisVector3D.Pz,
-            LinBasisVector3D.Py => LinBasisVector3D.Px,
-            LinBasisVector3D.Pz => LinBasisVector3D.Py,
-            LinBasisVector3D.Nx => LinBasisVector3D.Nz,
-            LinBasisVector3D.Ny => LinBasisVector3D.Nx,
-            LinBasisVector3D.Nz => LinBasisVector3D.Ny,
-            _ => throw new ArgumentOutOfRangeException()
-        };
-    }
+        if (axis == LinBasisVector.Px) return vector.Item1;
+        if (axis == LinBasisVector.Nx) return -vector.Item1;
+        if (axis == LinBasisVector.Py) return vector.Item2;
+        if (axis == LinBasisVector.Ny) return -vector.Item2;
+        if (axis == LinBasisVector.Pz) return vector.Item3;
+        if (axis == LinBasisVector.Nz) return -vector.Item3;
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Float64Scalar GetX(this LinBasisVector3D vector)
-    {
-        return vector switch
-        {
-            LinBasisVector3D.Px => Float64Scalar.One,
-            LinBasisVector3D.Nx => Float64Scalar.NegativeOne,
-            _ => Float64Scalar.Zero
-        };
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Float64Scalar GetY(this LinBasisVector3D vector)
-    {
-        return vector switch
-        {
-            LinBasisVector3D.Py => Float64Scalar.One,
-            LinBasisVector3D.Ny => Float64Scalar.NegativeOne,
-            _ => Float64Scalar.Zero
-        };
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Float64Scalar GetZ(this LinBasisVector3D vector)
-    {
-        return vector switch
-        {
-            LinBasisVector3D.Pz => Float64Scalar.One,
-            LinBasisVector3D.Nz => Float64Scalar.NegativeOne,
-            _ => Float64Scalar.Zero
-        };
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Float64Scalar GetComponent(this LinBasisVector3D vector, LinBasisVector3D axis)
-    {
-        return axis switch
-        {
-            LinBasisVector3D.Px => vector.GetX(),
-            LinBasisVector3D.Py => vector.GetY(),
-            LinBasisVector3D.Pz => vector.GetZ(),
-            LinBasisVector3D.Nx => -vector.GetX(),
-            LinBasisVector3D.Ny => -vector.GetY(),
-            LinBasisVector3D.Nz => -vector.GetZ(),
-            _ => Float64Scalar.Zero
-        };
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Float64Scalar GetComponent(this ITriplet<Float64Scalar> vector, LinBasisVector3D axis)
-    {
-        return axis switch
-        {
-            LinBasisVector3D.Px => vector.Item1,
-            LinBasisVector3D.Nx => -vector.Item1,
-            LinBasisVector3D.Py => vector.Item2,
-            LinBasisVector3D.Ny => -vector.Item2,
-            LinBasisVector3D.Pz => vector.Item3,
-            LinBasisVector3D.Nz => -vector.Item3,
-            _ => Float64Scalar.Zero
-        };
+        return Float64Scalar.Zero;
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -267,25 +191,31 @@ public static class LinFloat64Vector3DComponentUtils
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static LinFloat64Vector3D MapComponents(this ITriplet<Float64Scalar> vector, Func<double, double> scalarMapping)
     {
-        return LinFloat64Vector3D.Create(scalarMapping(vector.Item1),
+        return LinFloat64Vector3D.Create(
+            scalarMapping(vector.Item1),
             scalarMapping(vector.Item2),
-            scalarMapping(vector.Item3));
+            scalarMapping(vector.Item3)
+        );
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static LinFloat64Vector3D ComponentsMin(this ITriplet<Float64Scalar> vector, double scalar)
     {
-        return LinFloat64Vector3D.Create(Math.Min(vector.Item1, scalar),
+        return LinFloat64Vector3D.Create(
+            Math.Min(vector.Item1, scalar),
             Math.Min(vector.Item2, scalar),
-            Math.Min(vector.Item3, scalar));
+            Math.Min(vector.Item3, scalar)
+        );
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static LinFloat64Vector3D ComponentsMax(this ITriplet<Float64Scalar> vector, double scalar)
     {
-        return LinFloat64Vector3D.Create(Math.Max(vector.Item1, scalar),
+        return LinFloat64Vector3D.Create(
+            Math.Max(vector.Item1, scalar),
             Math.Max(vector.Item2, scalar),
-            Math.Max(vector.Item3, scalar));
+            Math.Max(vector.Item3, scalar)
+        );
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]

@@ -11,7 +11,7 @@ public sealed class LinFloat64AxisToAxisRotation :
     LinFloat64PlanarRotation
 {
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64AxisToAxisRotation Create(ILinSignedBasisVector basisAxis1, ILinSignedBasisVector basisAxis2, LinFloat64PolarAngle rotationAngle)
+    public static LinFloat64AxisToAxisRotation Create(LinBasisVector basisAxis1, LinBasisVector basisAxis2, LinFloat64PolarAngle rotationAngle)
     {
         return new LinFloat64AxisToAxisRotation(
             basisAxis1,
@@ -21,9 +21,9 @@ public sealed class LinFloat64AxisToAxisRotation :
     }
 
 
-    public ILinSignedBasisVector BasisAxis1 { get; }
+    public LinBasisVector BasisAxis1 { get; }
 
-    public ILinSignedBasisVector BasisAxis2 { get; }
+    public LinBasisVector BasisAxis2 { get; }
 
     public override LinFloat64Vector BasisVector1 { get; }
 
@@ -31,7 +31,7 @@ public sealed class LinFloat64AxisToAxisRotation :
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    private LinFloat64AxisToAxisRotation(ILinSignedBasisVector basisAxis1, ILinSignedBasisVector basisAxis2, LinFloat64PolarAngle rotationAngle)
+    private LinFloat64AxisToAxisRotation(LinBasisVector basisAxis1, LinBasisVector basisAxis2, LinFloat64PolarAngle rotationAngle)
         : base(rotationAngle)
     {
         BasisAxis1 = basisAxis1;
@@ -54,7 +54,7 @@ public sealed class LinFloat64AxisToAxisRotation :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public override Pair<double> BasisESp(ILinSignedBasisVector axis)
+    public override Pair<double> BasisESp(LinBasisVector axis)
     {
         return new Pair<double>(
             axis.Index == BasisAxis1.Index ? (axis.Sign * BasisAxis1.Sign).ToFloat64() : 0d,

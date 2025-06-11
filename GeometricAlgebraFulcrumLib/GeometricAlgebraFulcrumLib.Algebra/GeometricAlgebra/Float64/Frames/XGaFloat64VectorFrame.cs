@@ -2,10 +2,12 @@
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Text;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.LinearMaps.Outermorphisms;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.LinearMaps.Rotors;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivectors;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Processors;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Subspaces;
+using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.LinearMaps.SpaceND;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Permutations;
 
@@ -472,6 +474,15 @@ public class XGaFloat64VectorFrame :
         }
 
         return ipm;
+    }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public IXGaFloat64Outermorphism CreateComputedOutermorphism()
+    {
+        return this
+            .Select(v => v.ToLinVector())
+            .ToLinUnilinearMap()
+            .ToOutermorphism(Processor);
     }
 
     public IEnumerator<XGaFloat64Vector> GetEnumerator()

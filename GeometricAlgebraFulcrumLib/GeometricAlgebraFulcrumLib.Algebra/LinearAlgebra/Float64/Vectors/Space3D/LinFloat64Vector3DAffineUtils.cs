@@ -189,7 +189,7 @@ public static class LinFloat64Vector3DAffineUtils
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static void GetCoordinateSystem(this LinFloat64Vector3D v1, out LinFloat64Vector3D v2, out LinFloat64Vector3D v3)
+    public static void GetCoordinateSystem(this ITriplet<Float64Scalar> v1, out LinFloat64Vector3D v2, out LinFloat64Vector3D v3)
     {
         v2 = Math.Abs(v1.Item1) > Math.Abs(v1.Item2)
             ? LinFloat64Vector3D.Create(-v1.Item3, 0, v1.Item1) / Math.Sqrt(v1.Item1 * v1.Item1 + v1.Item3 * v1.Item3)
@@ -253,18 +253,6 @@ public static class LinFloat64Vector3DAffineUtils
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinBasisVector3D GetNormal(this LinBasisVector3D vector)
-    {
-        return vector.NextBasisVector();
-    }
-    
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinBasisVector3D GetUnitNormal(this LinBasisVector3D vector)
-    {
-        return vector.NextBasisVector();
-    }
-    
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static LinFloat64Vector3D GetNormal(this ITriplet<Float64Scalar> vector)
     {
         if (vector.IsZeroVector())
@@ -274,7 +262,7 @@ public static class LinFloat64Vector3DAffineUtils
         // rotates nearest basis vector e1 to vector, then use q to
         // rotate e2; the basis vector following e1
         var e1 = vector.SelectNearestBasisVector();
-        var e2 = e1.NextBasisVector();
+        var e2 = e1.NextBasisVector3D();
 
         if (vector.GetAngleCos(e1).IsNearOne())
             return e2.ToLinVector3D();
@@ -297,21 +285,6 @@ public static class LinFloat64Vector3DAffineUtils
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Pair<LinBasisVector3D> GetNormalPair(this LinBasisVector3D vector)
-    {
-        var e1 = vector.NextBasisVector();
-        var e2 = e1.NextBasisVector();
-
-        return new Pair<LinBasisVector3D>(e1, e2);
-    }
-    
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Pair<LinBasisVector3D> GetUnitNormalPair(this LinBasisVector3D vector)
-    {
-        return vector.GetNormalPair();
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Pair<LinFloat64Vector3D> GetNormalPair(this ITriplet<Float64Scalar> vector)
     {
         if (vector.IsZeroVector())
@@ -324,8 +297,8 @@ public static class LinFloat64Vector3DAffineUtils
         // rotates nearest basis vector e1 to vector, then use q to
         // rotate e2; the basis vector following e1
         var e1 = vector.SelectNearestBasisVector();
-        var e2 = e1.NextBasisVector();
-        var e3 = e2.NextBasisVector();
+        var e2 = e1.NextBasisVector3D();
+        var e3 = e2.NextBasisVector3D();
         
         if (vector.GetAngleCos(e1).IsNearOne())
             return new Pair<LinFloat64Vector3D>(
@@ -388,9 +361,9 @@ public static class LinFloat64Vector3DAffineUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64Vector3D RejectOnAxis(this ITriplet<Float64Scalar> v, LinBasisVector3D axis)
+    public static LinFloat64Vector3D RejectOnAxis(this ITriplet<Float64Scalar> v, LinBasisVector axis)
     {
-        return axis.GetIndex() switch
+        return axis.Index switch
         {
             0 => LinFloat64Vector3D.Create(0, v.Item2.ScalarValue, v.Item3.ScalarValue),
             1 => LinFloat64Vector3D.Create(v.Item1.ScalarValue, 0, v.Item3.ScalarValue),

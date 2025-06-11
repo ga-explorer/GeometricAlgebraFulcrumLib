@@ -20,7 +20,6 @@ using GeometricAlgebraFulcrumLib.Modeling.Signals;
 using GeometricAlgebraFulcrumLib.Mathematica.Utilities.Text;
 using GeometricAlgebraFulcrumLib.Mathematica.Algebra;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Processors;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Multivectors.Composers;
 
 namespace GeometricAlgebraFulcrumLib.Mathematica.Utilities.Structures;
 
@@ -1994,7 +1993,7 @@ public static class MathematicaUtils
 
     public static XGaVector<Float64SampledTimeSignal> GetSampledSignal(this XGaProcessor<Float64SampledTimeSignal> processor, XGaVector<Expr> vector, Expr t, double samplingRate, int sampleCount)
     {
-        var composer = processor.CreateComposer();
+        var composer = processor.CreateVectorComposer();
 
         foreach (var (id, exprScalar) in vector.IdScalarPairs)
         {
@@ -2009,7 +2008,7 @@ public static class MathematicaUtils
 
     public static XGaBivector<Float64SampledTimeSignal> GetSampledSignal(this XGaProcessor<Float64SampledTimeSignal> processor, XGaBivector<Expr> bivector, Expr t, double samplingRate, int sampleCount)
     {
-        var composer = processor.CreateComposer();
+        var composer = processor.CreateBivectorComposer();
 
         foreach (var (id, exprScalar) in bivector.IdScalarPairs)
             composer.SetTerm(

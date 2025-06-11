@@ -63,7 +63,7 @@ public static class OrthogonalLinearMapSequenceSamples
 
         var scalingFactorList =
             random
-                .GetNumbers(n / 2, -5, 5)
+                .GetFloat64Numbers(n / 2, -5, 5)
                 .ToArray();
 
         var scalingVectorList =

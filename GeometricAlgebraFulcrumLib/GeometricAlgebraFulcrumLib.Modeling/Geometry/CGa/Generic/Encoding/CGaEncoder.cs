@@ -8,7 +8,6 @@ using GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Generic.Versors;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Multivectors;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Multivectors.Composers;
 
 namespace GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Generic.Encoding;
 

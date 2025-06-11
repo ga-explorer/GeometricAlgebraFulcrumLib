@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivectors;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivectors.Composers;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Processors;
 using NUnit.Framework;
 
@@ -42,7 +41,7 @@ public sealed class MultivectorStoragesTests
 
     private XGaFloat64Multivector CreateGeoPoTMultivector(XGaFloat64Multivector mvStorage)
     {
-        var gapotMv = BasisSet.CreateComposer();
+        var gapotMv = BasisSet.CreateMultivectorComposer();
 
         foreach (var (id, scalar) in mvStorage.IdScalarPairs)
             gapotMv[id] = scalar;
@@ -52,7 +51,7 @@ public sealed class MultivectorStoragesTests
 
     private XGaFloat64Multivector Subtract(XGaFloat64Multivector mv1, XGaFloat64Multivector mv2)
     {
-        var mvDiff = BasisSet.CreateComposer();
+        var mvDiff = BasisSet.CreateMultivectorComposer();
 
         foreach (var (id, scalar) in mv1.IdScalarPairs)
             mvDiff[id] = scalar;

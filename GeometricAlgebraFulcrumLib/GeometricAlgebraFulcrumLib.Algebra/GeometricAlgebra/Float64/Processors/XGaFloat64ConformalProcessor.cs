@@ -2,7 +2,7 @@
 using System.Runtime.CompilerServices;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.LinearMaps.Outermorphisms;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivectors;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivectors.Composers;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Spaces.Conformal;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space2D;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space3D;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.SpaceND;
@@ -38,24 +38,20 @@ public class XGaFloat64ConformalProcessor :
     private XGaFloat64ConformalProcessor()
         : base(1, 0)
     {
-        En = this
-            .CreateComposer()
+        En = CreateVectorComposer()
             .SetVectorTerm(0, 1)
             .GetVector();
         
-        Ep = this
-            .CreateComposer()
+        Ep = CreateVectorComposer()
             .SetVectorTerm(1, 1)
             .GetVector();
 
-        Eo = this
-            .CreateComposer()
+        Eo = CreateVectorComposer()
             .SetVectorTerm(0, 0.5d)
             .SetVectorTerm(1, 0.5d)
             .GetVector();
 
-        Ei = this
-            .CreateComposer()
+        Ei = CreateVectorComposer()
             .SetVectorTerm(0, 1d)
             .SetVectorTerm(1, -1d)
             .GetVector();
@@ -101,7 +97,7 @@ public class XGaFloat64ConformalProcessor :
         //);
 
         var icInv = 
-            this.PseudoScalarInverse(vSpaceDimensions);
+            PseudoScalarInverse(vSpaceDimensions);
 
         return MusicalAutomorphism.OmMap(
             mv.Op(Ei).Lcp(icInv)
@@ -117,7 +113,7 @@ public class XGaFloat64ConformalProcessor :
         //);
 
         var icInv = 
-            this.PseudoScalarInverse(vSpaceDimensions);
+            PseudoScalarInverse(vSpaceDimensions);
 
         return MusicalAutomorphism.OmMap(
             mv.Op(Ei).Lcp(icInv)
@@ -129,8 +125,7 @@ public class XGaFloat64ConformalProcessor :
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public XGaFloat64Vector EncodeEGaVector(double x, double y)
     {
-        return this
-            .CreateComposer()
+        return CreateVectorComposer()
             .SetVectorTerm(2, x)
             .SetVectorTerm(3, y)
             .GetVector();
@@ -139,8 +134,7 @@ public class XGaFloat64ConformalProcessor :
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public XGaFloat64Vector EncodeEGaVector(double x, double y, double z)
     {
-        return this
-            .CreateComposer()
+        return CreateVectorComposer()
             .SetVectorTerm(2, x)
             .SetVectorTerm(3, y)
             .SetVectorTerm(4, z)
@@ -150,8 +144,7 @@ public class XGaFloat64ConformalProcessor :
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public XGaFloat64Vector EncodeEGaVector(LinFloat64Vector2D egaVector)
     {
-        return this
-            .CreateComposer()
+        return CreateVectorComposer()
             .SetVectorTerm(2, egaVector.X.ScalarValue)
             .SetVectorTerm(3, egaVector.Y.ScalarValue)
             .GetVector();
@@ -160,8 +153,7 @@ public class XGaFloat64ConformalProcessor :
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public XGaFloat64Vector EncodeEGaVector(LinFloat64Vector3D egaVector)
     {
-        return this
-            .CreateComposer()
+        return CreateVectorComposer()
             .SetVectorTerm(2, egaVector.X.ScalarValue)
             .SetVectorTerm(3, egaVector.Y.ScalarValue)
             .SetVectorTerm(4, egaVector.Z.ScalarValue)
@@ -172,8 +164,7 @@ public class XGaFloat64ConformalProcessor :
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public XGaFloat64Vector EncodeHGaPoint(double x, double y)
     {
-        return this
-            .CreateComposer()
+        return CreateVectorComposer()
             .SetVectorTerm(0, 0.5)
             .SetVectorTerm(1, 0.5)
             .SetVectorTerm(2, x)
@@ -184,8 +175,7 @@ public class XGaFloat64ConformalProcessor :
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public XGaFloat64Vector EncodeHGaPoint(double x, double y, double z)
     {
-        return this
-            .CreateComposer()
+        return CreateVectorComposer()
             .SetVectorTerm(0, 0.5)
             .SetVectorTerm(1, 0.5)
             .SetVectorTerm(2, x)
@@ -197,8 +187,7 @@ public class XGaFloat64ConformalProcessor :
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public XGaFloat64Vector EncodeHGaPoint(LinFloat64Vector2D egaVector)
     {
-        return this
-            .CreateComposer()
+        return CreateVectorComposer()
             .SetVectorTerm(0, 0.5)
             .SetVectorTerm(1, 0.5)
             .SetVectorTerm(2, egaVector.X.ScalarValue)
@@ -209,8 +198,7 @@ public class XGaFloat64ConformalProcessor :
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public XGaFloat64Vector EncodeHGaPoint(LinFloat64Vector3D egaVector)
     {
-        return this
-            .CreateComposer()
+        return CreateVectorComposer()
             .SetVectorTerm(0, 0.5)
             .SetVectorTerm(1, 0.5)
             .SetVectorTerm(2, egaVector.X.ScalarValue)
@@ -264,8 +252,7 @@ public class XGaFloat64ConformalProcessor :
         var sn = 0.5 * (1 + x2);
         var sp = 0.5 * (1 - x2);
 
-        return this
-            .CreateComposer()
+        return CreateVectorComposer()
             .SetVectorTerm(0, sn)
             .SetVectorTerm(1, sp)
             .SetVectorTerm(2, x)
@@ -280,8 +267,7 @@ public class XGaFloat64ConformalProcessor :
         var sn = 0.5 * (1 + x2);
         var sp = 0.5 * (1 - x2);
 
-        return this
-            .CreateComposer()
+        return CreateVectorComposer()
             .SetVectorTerm(0, sn)
             .SetVectorTerm(1, sp)
             .SetVectorTerm(2, x)
@@ -297,8 +283,7 @@ public class XGaFloat64ConformalProcessor :
         var sn = 0.5 * (1 + x2);
         var sp = 0.5 * (1 - x2);
 
-        return this
-            .CreateComposer()
+        return CreateVectorComposer()
             .SetVectorTerm(0, sn)
             .SetVectorTerm(1, sp)
             .SetVectorTerm(2, egaPoint.X.ScalarValue)
@@ -312,9 +297,8 @@ public class XGaFloat64ConformalProcessor :
         var x2 = egaPoint.VectorENormSquared();
         var sn = 0.5 * (1 + x2);
         var sp = 0.5 * (1 - x2);
-
-        return this
-            .CreateComposer()
+        
+        return CreateVectorComposer()
             .SetVectorTerm(0, sn)
             .SetVectorTerm(1, sp)
             .SetVectorTerm(2, egaPoint.X.ScalarValue)
@@ -402,7 +386,7 @@ public class XGaFloat64ConformalProcessor :
 
     public XGaFloat64Vector DecodeEGaVector(XGaFloat64Vector egaVector)
     {
-        var composer = XGaFloat64EuclideanProcessor.Instance.CreateComposer();
+        var composer = XGaFloat64EuclideanProcessor.Instance.CreateVectorComposer();
 
         foreach (var (id, scalar) in egaVector.IdScalarPairs)
         {
@@ -421,7 +405,7 @@ public class XGaFloat64ConformalProcessor :
     
     public XGaFloat64Vector DecodeEGaVector(XGaFloat64Vector egaVector, double scalingFactor)
     {
-        var composer = XGaFloat64EuclideanProcessor.Instance.CreateComposer();
+        var composer = XGaFloat64EuclideanProcessor.Instance.CreateVectorComposer();
 
         foreach (var (id, scalar) in egaVector.IdScalarPairs)
         {
@@ -547,7 +531,7 @@ public class XGaFloat64ConformalProcessor :
     public XGaFloat64KVector PGaRp(XGaFloat64KVector mv1, XGaFloat64KVector mv2, int vSpaceDimensions)
     {
         var icInv = 
-            this.PseudoScalarInverse(vSpaceDimensions);
+            PseudoScalarInverse(vSpaceDimensions);
 
         var mv1Dual = MusicalAutomorphism.OmMap(
             mv1.Op(Ei).Lcp(icInv)
@@ -565,7 +549,7 @@ public class XGaFloat64ConformalProcessor :
     public XGaFloat64Multivector PGaRp(XGaFloat64Multivector mv1, XGaFloat64Multivector mv2, int vSpaceDimensions)
     {
         var icInv = 
-            this.PseudoScalarInverse(vSpaceDimensions);
+            PseudoScalarInverse(vSpaceDimensions);
 
         var mv1Dual = MusicalAutomorphism.OmMap(
             mv1.Op(Ei).Lcp(icInv)
@@ -579,4 +563,12 @@ public class XGaFloat64ConformalProcessor :
             (XGaFloat64KVector)mv1Dual.Op(mv2Dual).Op(Ei).Lcp(icInv)
         );
     }
+
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public XGaFloat64ConformalSpace CreateSpace(int vSpaceDimensions)
+    {
+        return new XGaFloat64ConformalSpace(vSpaceDimensions);
+    }
+
 }

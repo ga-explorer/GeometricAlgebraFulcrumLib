@@ -134,7 +134,7 @@ public static class Float64Utils
     //}
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static bool IsNearEqual(this double a, double b, double zeroEpsilon = Float64Utils.ZeroEpsilon)
+    public static bool IsNearEqual(this double a, double b, double zeroEpsilon = ZeroEpsilon)
     {
         Debug.Assert(!double.IsNaN(a) && !double.IsNaN(b));
 
@@ -222,7 +222,7 @@ public static class Float64Utils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static bool IsNearInRange(this double x, double value1, double value2, double zeroEpsilon = Float64Utils.ZeroEpsilon)
+    public static bool IsNearInRange(this double x, double value1, double value2, double zeroEpsilon = ZeroEpsilon)
     {
         Debug.Assert(
             !double.IsNaN(x) &&
@@ -287,7 +287,15 @@ public static class Float64Utils
 
         return x == -1d;
     }
-        
+      
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static bool IsNegativeOne(this double x)
+    {
+        Debug.Assert(!double.IsNaN(x));
+
+        return x == -1d;
+    }
+
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static bool IsTwo(this double x)
     {
@@ -322,7 +330,7 @@ public static class Float64Utils
     //}
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static bool IsNearZero(this double x, double zeroEpsilon = Float64Utils.ZeroEpsilon)
+    public static bool IsNearZero(this double x, double zeroEpsilon = ZeroEpsilon)
     {
         Debug.Assert(
             !double.IsNaN(x) && 
@@ -335,13 +343,13 @@ public static class Float64Utils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static bool IsNearOne(this double x, double zeroEpsilon = Float64Utils.ZeroEpsilon)
+    public static bool IsNearOne(this double x, double zeroEpsilon = ZeroEpsilon)
     {
         return (x - 1d).IsNearZero(zeroEpsilon);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static bool IsNearMinusOne(this double x, double zeroEpsilon = Float64Utils.ZeroEpsilon)
+    public static bool IsNearMinusOne(this double x, double zeroEpsilon = ZeroEpsilon)
     {
         return (x + 1d).IsNearZero(zeroEpsilon);
     }
@@ -672,6 +680,12 @@ public static class Float64Utils
     {
         return Math.Sqrt(1d / number);
     }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static double Inverse(this double number)
+    {
+        return 1d /  number;
+    }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static double InverseOfSqrt(this double number)
@@ -875,7 +889,7 @@ public static class Float64Utils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static double NearZeroToZero(this double number, double zeroEpsilon = Float64Utils.ZeroEpsilon)
+    public static double NearZeroToZero(this double number, double zeroEpsilon = ZeroEpsilon)
     {
         return number.IsNearZero(zeroEpsilon) ? 0d : number;
     }

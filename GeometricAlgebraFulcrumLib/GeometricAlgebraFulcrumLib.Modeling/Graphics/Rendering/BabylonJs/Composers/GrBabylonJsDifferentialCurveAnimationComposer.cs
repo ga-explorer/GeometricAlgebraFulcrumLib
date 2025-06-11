@@ -510,17 +510,17 @@ public sealed class GrBabylonJsDifferentialCurveAnimationComposer :
 
         var e1AnimatedVector =
             SceneSamplingSpecs.CreateAnimatedVector3D(Float64ComputedPath3D.Finite(
-                time => quaternionCurve.GetQuaternion(time).RotateVector(LinBasisVector3D.Px)
+                time => quaternionCurve.GetQuaternion(time).RotateVector(LinBasisVector.Px)
             ));
 
         var e2AnimatedVector =
             SceneSamplingSpecs.CreateAnimatedVector3D(Float64ComputedPath3D.Finite(
-                time => quaternionCurve.GetQuaternion(time).RotateVector(LinBasisVector3D.Py)
+                time => quaternionCurve.GetQuaternion(time).RotateVector(LinBasisVector.Py)
             ));
 
         var e3AnimatedVector =
             SceneSamplingSpecs.CreateAnimatedVector3D(Float64ComputedPath3D.Finite(
-                time => quaternionCurve.GetQuaternion(time).RotateVector(LinBasisVector3D.Pz)
+                time => quaternionCurve.GetQuaternion(time).RotateVector(LinBasisVector.Pz)
             ));
 
         SceneComposer.AddParallelepipedSurface(

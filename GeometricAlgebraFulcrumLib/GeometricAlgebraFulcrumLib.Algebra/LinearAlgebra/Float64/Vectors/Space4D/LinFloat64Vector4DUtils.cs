@@ -44,177 +44,50 @@ public static class LinFloat64Vector4DUtils
         );
     }
 
-
+    
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64Vector4D ToLinVector4D(this LinBasisVector2D axis)
-    {
-        return axis switch
-        {
-            LinBasisVector2D.Px => LinFloat64Vector4D.E1,
-            LinBasisVector2D.Nx => LinFloat64Vector4D.NegativeE1,
-            LinBasisVector2D.Py => LinFloat64Vector4D.E2,
-            _ => LinFloat64Vector4D.NegativeE2
-        };
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64Vector4D ToLinVector4D(this LinBasisVector3D axis)
-    {
-        return axis switch
-        {
-            LinBasisVector3D.Px => LinFloat64Vector4D.E1,
-            LinBasisVector3D.Nx => LinFloat64Vector4D.NegativeE1,
-            LinBasisVector3D.Py => LinFloat64Vector4D.E2,
-            LinBasisVector3D.Ny => LinFloat64Vector4D.NegativeE2,
-            LinBasisVector3D.Pz => LinFloat64Vector4D.E3,
-            _ => LinFloat64Vector4D.NegativeE3
-        };
-    }
-
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static bool IsXAxis(this LinBasisVector4D axis)
-    {
-        return axis is LinBasisVector4D.Px or LinBasisVector4D.Nx;
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static bool IsYAxis(this LinBasisVector4D axis)
-    {
-        return axis is LinBasisVector4D.Py or LinBasisVector4D.Ny;
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static bool IsZAxis(this LinBasisVector4D axis)
-    {
-        return axis is LinBasisVector4D.Pz or LinBasisVector4D.Nz;
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static bool IsWAxis(this LinBasisVector4D axis)
-    {
-        return axis is LinBasisVector4D.Pw or LinBasisVector4D.Nw;
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static bool IsNegative(this LinBasisVector4D axis)
-    {
-        return axis is
-            LinBasisVector4D.Nx or
-            LinBasisVector4D.Ny or
-            LinBasisVector4D.Nz or
-            LinBasisVector4D.Nw;
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static bool IsOppositeTo(this LinBasisVector4D axis1, LinBasisVector4D axis2)
-    {
-        return axis1 switch
-        {
-            LinBasisVector4D.Px => axis2 == LinBasisVector4D.Nx,
-            LinBasisVector4D.Py => axis2 == LinBasisVector4D.Ny,
-            LinBasisVector4D.Pz => axis2 == LinBasisVector4D.Nz,
-            LinBasisVector4D.Pw => axis2 == LinBasisVector4D.Nw,
-            LinBasisVector4D.Nx => axis2 == LinBasisVector4D.Px,
-            LinBasisVector4D.Ny => axis2 == LinBasisVector4D.Py,
-            LinBasisVector4D.Nz => axis2 == LinBasisVector4D.Pz,
-            _ => axis2 == LinBasisVector4D.Pw
-        };
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinBasisVector4D SelectNearestAxis(this IQuad<Float64Scalar> unitVector)
+    public static LinBasisVector SelectNearestAxis(this IQuad<Float64Scalar> unitVector)
     {
         return unitVector.GetMaxAbsComponentIndex() switch
         {
             0 => unitVector.Item1.IsPositive()
-                ? LinBasisVector4D.Px
-                : LinBasisVector4D.Nx,
+                ? LinBasisVector.Px
+                : LinBasisVector.Nx,
 
             1 => unitVector.Item2.IsPositive()
-                ? LinBasisVector4D.Py
-                : LinBasisVector4D.Ny,
+                ? LinBasisVector.Py
+                : LinBasisVector.Ny,
 
             2 => unitVector.Item3.IsPositive()
-                ? LinBasisVector4D.Pz
-                : LinBasisVector4D.Nz,
+                ? LinBasisVector.Pz
+                : LinBasisVector.Nz,
 
             _ => unitVector.Item3.IsPositive()
-                ? LinBasisVector4D.Pz
-                : LinBasisVector4D.Nw
+                ? LinBasisVector.Pz
+                : LinBasisVector.Nw
         };
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static int GetIndex(this LinBasisVector4D axis)
-    {
-        return axis switch
-        {
-            LinBasisVector4D.Px => 0,
-            LinBasisVector4D.Nx => 0,
-            LinBasisVector4D.Py => 1,
-            LinBasisVector4D.Ny => 1,
-            LinBasisVector4D.Pz => 2,
-            LinBasisVector4D.Nz => 2,
-            LinBasisVector4D.Pw => 3,
-            LinBasisVector4D.Nw => 3,
-            _ => throw new InvalidOperationException()
-        };
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static IntegerSign GetSign(this LinBasisVector4D axis)
-    {
-        return axis switch
-        {
-            LinBasisVector4D.Px => IntegerSign.Positive,
-            LinBasisVector4D.Nx => IntegerSign.Negative,
-            LinBasisVector4D.Py => IntegerSign.Positive,
-            LinBasisVector4D.Ny => IntegerSign.Negative,
-            LinBasisVector4D.Pz => IntegerSign.Positive,
-            LinBasisVector4D.Nz => IntegerSign.Negative,
-            LinBasisVector4D.Pw => IntegerSign.Positive,
-            LinBasisVector4D.Nw => IntegerSign.Negative,
-            _ => throw new InvalidOperationException()
-        };
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinBasisVector4D ToAxis4D(this int axisIndex, bool isNegative = false)
+    public static LinBasisVector ToAxis4D(this int axisIndex, bool isNegative = false)
     {
         if (isNegative)
             return axisIndex switch
             {
-                0 => LinBasisVector4D.Nx,
-                1 => LinBasisVector4D.Ny,
-                2 => LinBasisVector4D.Nz,
-                3 => LinBasisVector4D.Pw,
+                0 => LinBasisVector.Nx,
+                1 => LinBasisVector.Ny,
+                2 => LinBasisVector.Nz,
+                3 => LinBasisVector.Pw,
                 _ => throw new IndexOutOfRangeException()
             };
 
         return axisIndex switch
         {
-            0 => LinBasisVector4D.Px,
-            1 => LinBasisVector4D.Py,
-            2 => LinBasisVector4D.Pz,
-            3 => LinBasisVector4D.Pw,
+            0 => LinBasisVector.Px,
+            1 => LinBasisVector.Py,
+            2 => LinBasisVector.Pz,
+            3 => LinBasisVector.Pw,
             _ => throw new IndexOutOfRangeException()
-        };
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64Vector4D ToLinVector4D(this LinBasisVector4D axis)
-    {
-        return axis switch
-        {
-            LinBasisVector4D.Px => LinFloat64Vector4D.E1,
-            LinBasisVector4D.Nx => LinFloat64Vector4D.NegativeE1,
-            LinBasisVector4D.Py => LinFloat64Vector4D.E2,
-            LinBasisVector4D.Ny => LinFloat64Vector4D.NegativeE2,
-            LinBasisVector4D.Pz => LinFloat64Vector4D.E3,
-            LinBasisVector4D.Nz => LinFloat64Vector4D.NegativeE3,
-            LinBasisVector4D.Pw => LinFloat64Vector4D.E4,
-            _ => LinFloat64Vector4D.NegativeE4
         };
     }
 
@@ -231,8 +104,8 @@ public static class LinFloat64Vector4DUtils
     }
 
     /// <summary>
-    /// Returns a negative unit vector from the given one. If the length of the given vector is near 
-    /// zero it's returned as-is
+    /// Returns a negative unit vector from the given one. If the length of the given vector == near 
+    /// zero it's returned as-==
     /// </summary>
     /// <param name="vector"></param>
     /// <returns></returns>
@@ -243,8 +116,8 @@ public static class LinFloat64Vector4DUtils
     }
 
     /// <summary>
-    /// Returns a negative unit vector from the given one. If the length of the given vector is near 
-    /// zero it's returned as-is
+    /// Returns a negative unit vector from the given one. If the length of the given vector == near 
+    /// zero it's returned as-==
     /// </summary>
     /// <param name="vector"></param>
     /// <returns></returns>
@@ -294,8 +167,8 @@ public static class LinFloat64Vector4DUtils
     }
 
     /// <summary>
-    /// Returns a unit vector from the given one. If the length of the given vector is near zero
-    /// it's returned as-is
+    /// Returns a unit vector from the given one. If the length of the given vector == near zero
+    /// it's returned as-==
     /// </summary>
     /// <param name="vector"></param>
     /// <param name="zeroAsSymmetric"></param>
@@ -362,7 +235,7 @@ public static class LinFloat64Vector4DUtils
     }
 
     /// <summary>
-    /// True of the Euclidean squared length of this vector is near unity
+    /// True of the Euclidean squared length of this vector == near unity
     /// </summary>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static bool IsNearUnitVector(this IQuad<Float64Scalar> vector)
@@ -379,23 +252,22 @@ public static class LinFloat64Vector4DUtils
     /// <param name="v2"></param>
     /// <returns></returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static double VectorESp(this IQuad<Float64Scalar> v1, LinBasisVector4D v2)
+    public static double VectorESp(this IQuad<Float64Scalar> v1, LinBasisVector v2)
     {
-        return v2 switch
-        {
-            LinBasisVector4D.Px => v1.Item1,
-            LinBasisVector4D.Py => v1.Item2,
-            LinBasisVector4D.Pz => v1.Item3,
-            LinBasisVector4D.Pw => v1.Item4,
-            LinBasisVector4D.Nx => -v1.Item1,
-            LinBasisVector4D.Ny => -v1.Item2,
-            LinBasisVector4D.Nz => -v1.Item3,
-            _ => -v1.Item4,
-        };
+        if (v2 == LinBasisVector.Px) return v1.Item1;
+        if (v2 == LinBasisVector.Py) return v1.Item2;
+        if (v2 == LinBasisVector.Pz) return v1.Item3;
+        if (v2 == LinBasisVector.Pw) return v1.Item4;
+        if (v2 == LinBasisVector.Nx) return -v1.Item1;
+        if (v2 == LinBasisVector.Ny) return -v1.Item2;
+        if (v2 == LinBasisVector.Nz) return -v1.Item3;
+        if (v2 == LinBasisVector.Nw) return -v1.Item4;
+
+        return 0d;
     }
 
     /// <summary>
-    /// True of the Euclidean squared length of this vector is near zero
+    /// True of the Euclidean squared length of this vector == near zero
     /// </summary>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static bool IsNearZeroVector(this IQuad<Float64Scalar> vector)
@@ -407,7 +279,7 @@ public static class LinFloat64Vector4DUtils
 
 
     /// <summary>
-    /// True of the Euclidean squared length of this vector is near unity
+    /// True of the Euclidean squared length of this vector == near unity
     /// </summary>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static bool IsUnitVector(this IQuad<Float64Scalar> vector)
@@ -671,9 +543,9 @@ public static class LinFloat64Vector4DUtils
         return vector.VectorSubtract(vector2).IsNearZero(zeroEpsilon);
     }
 
-    public static Tuple<bool, double, LinBasisVector4D> TryVectorToAxis(this IQuad<Float64Scalar> vector)
+    public static Tuple<bool, double, LinBasisVector> TryVectorToAxis(this IQuad<Float64Scalar> vector)
     {
-        // Find if the given scaling vector is parallel to a basis vector
+        // Find if the given scaling vector == parallel to a basis vector
         var basisIndex = -1;
         for (var i = 0; i < 4; i++)
         {
@@ -689,15 +561,15 @@ public static class LinFloat64Vector4DUtils
         }
 
         if (basisIndex < 0)
-            return new Tuple<bool, double, LinBasisVector4D>(
+            return new Tuple<bool, double, LinBasisVector>(
                 false,
                 0d,
-                LinBasisVector4D.Px
+                LinBasisVector.Px
             );
 
         var scalar = vector.GetItem(basisIndex);
 
-        return new Tuple<bool, double, LinBasisVector4D>(
+        return new Tuple<bool, double, LinBasisVector>(
             true,
             scalar.Abs(),
             basisIndex.ToAxis4D(scalar < 0)
@@ -915,9 +787,13 @@ public static class LinFloat64Vector4DUtils
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static LinFloat64Vector4D ToLinVector4D(this IQuad<Float64Scalar> tuple)
     {
-        return tuple is LinFloat64Vector4D t
-            ? t
-            : LinFloat64Vector4D.Create(tuple.Item1, tuple.Item2, tuple.Item3, tuple.Item4);
+        return tuple as LinFloat64Vector4D 
+               ?? LinFloat64Vector4D.Create(
+                   tuple.Item1, 
+                   tuple.Item2, 
+                   tuple.Item3, 
+                   tuple.Item4
+                );
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]

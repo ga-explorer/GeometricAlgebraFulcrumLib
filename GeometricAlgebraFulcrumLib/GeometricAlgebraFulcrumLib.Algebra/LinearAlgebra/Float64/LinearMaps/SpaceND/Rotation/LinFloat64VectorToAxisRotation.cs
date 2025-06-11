@@ -11,7 +11,7 @@ public sealed class LinFloat64VectorToAxisRotation :
     LinFloat64PlanarRotation
 {
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64VectorToAxisRotation CreateFromOrthogonalVector(LinFloat64Vector spanningVector1, ILinSignedBasisVector basisAxis2, LinFloat64PolarAngle rotationAngle)
+    public static LinFloat64VectorToAxisRotation CreateFromOrthogonalVector(LinFloat64Vector spanningVector1, LinBasisVector basisAxis2, LinFloat64PolarAngle rotationAngle)
     {
         var basisVector1 = spanningVector1.DivideByENorm();
 
@@ -23,7 +23,7 @@ public sealed class LinFloat64VectorToAxisRotation :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64VectorToAxisRotation CreateFromOrthonormalVector(LinFloat64Vector basisVector1, ILinSignedBasisVector basisAxis2, LinFloat64PolarAngle rotationAngle)
+    public static LinFloat64VectorToAxisRotation CreateFromOrthonormalVector(LinFloat64Vector basisVector1, LinBasisVector basisAxis2, LinFloat64PolarAngle rotationAngle)
     {
         return new LinFloat64VectorToAxisRotation(
             basisVector1,
@@ -33,14 +33,14 @@ public sealed class LinFloat64VectorToAxisRotation :
     }
 
 
-    public ILinSignedBasisVector BasisAxis2 { get; }
+    public LinBasisVector BasisAxis2 { get; }
 
     public override LinFloat64Vector BasisVector1 { get; }
 
     public override LinFloat64Vector BasisVector2 { get; }
 
 
-    private LinFloat64VectorToAxisRotation(LinFloat64Vector basisVector1, ILinSignedBasisVector basisAxis2, LinFloat64PolarAngle rotationAngle)
+    private LinFloat64VectorToAxisRotation(LinFloat64Vector basisVector1, LinBasisVector basisAxis2, LinFloat64PolarAngle rotationAngle)
         : base(rotationAngle)
     {
         BasisVector1 = basisVector1;
@@ -62,7 +62,7 @@ public sealed class LinFloat64VectorToAxisRotation :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public override Pair<double> BasisESp(ILinSignedBasisVector axis)
+    public override Pair<double> BasisESp(LinBasisVector axis)
     {
         return new Pair<double>(
             BasisVector1.ESp(axis),

@@ -18,7 +18,7 @@ public sealed class LinFloat64HyperPlaneAxisReflection :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64HyperPlaneAxisReflection Create(int dimensions, LinSignedBasisVector axis)
+    public static LinFloat64HyperPlaneAxisReflection Create(int dimensions, LinBasisVector axis)
     {
         return new LinFloat64HyperPlaneAxisReflection(
             dimensions,
@@ -27,7 +27,7 @@ public sealed class LinFloat64HyperPlaneAxisReflection :
     }
 
 
-    public LinSignedBasisVector ReflectionNormalAxis { get; }
+    public LinBasisVector ReflectionNormalAxis { get; }
 
     public LinFloat64Vector ReflectionNormal
         => ReflectionNormalAxis.ToLinVector();
@@ -48,7 +48,7 @@ public sealed class LinFloat64HyperPlaneAxisReflection :
     private LinFloat64HyperPlaneAxisReflection(int dimensions, int basisIndex)
     {
         VSpaceDimensions = dimensions;
-        ReflectionNormalAxis = new LinSignedBasisVector(basisIndex, false);
+        ReflectionNormalAxis = LinBasisVector.Positive(basisIndex);
     }
 
 

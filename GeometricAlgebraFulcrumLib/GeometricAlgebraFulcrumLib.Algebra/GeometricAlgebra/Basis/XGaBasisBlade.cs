@@ -1,5 +1,9 @@
 ﻿using System.Runtime.CompilerServices;
-
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivectors;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Processors;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Multivectors;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Processors;
+using GeometricAlgebraFulcrumLib.Algebra.Utilities.Text;
 using GeometricAlgebraFulcrumLib.Utilities.Structures;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.IndexSets;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Tuples;
@@ -61,7 +65,7 @@ public sealed record XGaBasisBlade :
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public XGaBasisBlade(XGaMetric metric, IndexSet basisBladeId)
+    internal XGaBasisBlade(XGaMetric metric, IndexSet basisBladeId)
     {
         Metric = metric;
         Id = basisBladeId;
@@ -78,6 +82,31 @@ public sealed record XGaBasisBlade :
     public bool IsKVector(int grade)
     {
         return Id.Count == grade;
+    }
+
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public XGaSignedBasisBlade ToZeroBasisBlade()
+    {
+        return new XGaSignedBasisBlade(this, IntegerSign.Zero);
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public XGaSignedBasisBlade ToPositiveBasisBlade()
+    {
+        return new XGaSignedBasisBlade(this, IntegerSign.Positive);
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public XGaSignedBasisBlade ToNegativeBasisBlade()
+    {
+        return new XGaSignedBasisBlade(this, IntegerSign.Negative);
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public XGaSignedBasisBlade ToSignedBasisBlade(IntegerSign sign)
+    {
+        return new XGaSignedBasisBlade(this, sign);
     }
 
 
@@ -851,13 +880,32 @@ public sealed record XGaBasisBlade :
         );
     }
 
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public XGaFloat64KVector ToKVector()
+    {
+        var processor = (XGaFloat64Processor)Metric;
+
+        return processor.KVectorTerm(
+            Id,
+            1d
+        );
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public XGaKVector<T> ToKVector<T>(XGaProcessor<T> processor)
+    {
+        return processor.KVectorTerm(
+            Id,
+            processor.ScalarProcessor.OneValue
+        );
+    }
+
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public override string ToString()
+    public string GetBasisBladeText()
     {
-        return Id
-            .Select(i => (i + 1).ToString())
-            .ConcatenateText(", ", "<", ">");
+        return Id.GetBasisBladeText();
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -883,4 +931,14 @@ public sealed record XGaBasisBlade :
     {
         return HashCode.Combine(Sign, Id);
     }
+
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public override string ToString()
+    {
+        return Id
+            .Select(i => i.ToString())
+            .ConcatenateText(", ", "<", ">");
+    }
+
 }

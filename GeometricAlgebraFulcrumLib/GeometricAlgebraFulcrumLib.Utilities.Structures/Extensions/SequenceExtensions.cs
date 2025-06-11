@@ -162,4 +162,15 @@ public static class SequenceExtensions
     }
 
 
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static IEnumerable<T> SortDistinct<T>(this IEnumerable<T> sequence)
+    {
+        return sequence.Distinct().OrderBy(i => i);
+    }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static SortedSet<T> ToSortedSet<T>(this IEnumerable<T> sequence)
+    {
+        return new SortedSet<T>(sequence);
+    }
 }

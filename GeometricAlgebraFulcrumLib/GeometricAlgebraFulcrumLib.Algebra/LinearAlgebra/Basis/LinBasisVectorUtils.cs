@@ -1,19 +1,12 @@
 ﻿using System.Diagnostics;
 using System.Runtime.CompilerServices;
-using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.SpaceND;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.IndexSets;
-using GeometricAlgebraFulcrumLib.Utilities.Structures.Tuples;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Basis;
 
 public static class LinBasisVectorUtils
 {
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinSignedBasisVector ToSignedBasisVector(this LinBasisVector basisBlade, IntegerSign sign)
-    {
-        return new LinSignedBasisVector(basisBlade, sign);
-    }
-
+    
 
     //[MethodImpl(MethodImplOptions.AggressiveInlining)]
     //public static EGaTerm<T> ToTerm<T>(this EGaBasisBlade basisBlade, Scalar<T> scalar)
@@ -59,12 +52,6 @@ public static class LinBasisVectorUtils
     //    return GaTermComposerUtils.ToTerm(term.BasisBlade, scalar * term.Sign);
     //}
     
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64VectorTerm ToTermFloat64(this LinSignedBasisVector term, double scalar)
-    {
-        return term.Index.CreateLinTerm(scalar * term.Sign);
-    }
-
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static bool IsValidBasisVectorIndex(int basisVectorIndex)
@@ -121,7 +108,7 @@ public static class LinBasisVectorUtils
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static bool IsZeroVectorBladeOp(int basisVectorIndex, IReadOnlySet<int> basisBladeIndexSet)
+    public static bool IsZeroVectorBladeOp(int basisVectorIndex, IndexSet basisBladeIndexSet)
     {
         Debug.Assert(
             IsValidBasisVectorIndex(basisVectorIndex) &&
@@ -158,7 +145,7 @@ public static class LinBasisVectorUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static bool IsZeroBivectorBladeOp(int basisBivectorIndex1, int basisBivectorIndex2, IReadOnlySet<int> basisBladeIndexSet)
+    public static bool IsZeroBivectorBladeOp(int basisBivectorIndex1, int basisBivectorIndex2, IndexSet basisBladeIndexSet)
     {
         Debug.Assert(
             IsValidBasisBivectorIndices(basisBivectorIndex1, basisBivectorIndex2) &&
@@ -170,7 +157,7 @@ public static class LinBasisVectorUtils
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static bool IsZeroBladeVectorOp(IReadOnlySet<int> basisBladeIndexSet, int basisVectorIndex)
+    public static bool IsZeroBladeVectorOp(IndexSet basisBladeIndexSet, int basisVectorIndex)
     {
         Debug.Assert(
             IsValidBasisVectorIndex(basisVectorIndex) &&
@@ -181,7 +168,7 @@ public static class LinBasisVectorUtils
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static bool IsZeroBladeBivectorOp(IReadOnlySet<int> basisBladeIndexSet, int basisBivectorIndex1, int basisBivectorIndex2)
+    public static bool IsZeroBladeBivectorOp(IndexSet basisBladeIndexSet, int basisBivectorIndex1, int basisBivectorIndex2)
     {
         Debug.Assert(
             IsValidBasisBivectorIndices(basisBivectorIndex1, basisBivectorIndex2) &&
@@ -193,14 +180,14 @@ public static class LinBasisVectorUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static bool IsZeroBladeBladeOp(IReadOnlySet<int> basisBlade1IndexSet, IReadOnlySet<int> basisBlade2IndexSet)
+    public static bool IsZeroBladeBladeOp(IndexSet basisBlade1IndexSet, IndexSet basisBlade2IndexSet)
     {
         Debug.Assert(
             IsValidBasisBladeIndexSet(basisBlade1IndexSet) &&
             IsValidBasisBladeIndexSet(basisBlade1IndexSet)
         );
 
-        return basisBlade1IndexSet.Overlaps(basisBlade2IndexSet);
+        return basisBlade1IndexSet.SetOverlaps(basisBlade2IndexSet);
     }
     
 
@@ -216,7 +203,7 @@ public static class LinBasisVectorUtils
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static bool IsZeroVectorBladeESp(int basisVectorIndex, IReadOnlySet<int> basisBladeIndexSet)
+    public static bool IsZeroVectorBladeESp(int basisVectorIndex, IndexSet basisBladeIndexSet)
     {
         Debug.Assert(
             IsValidBasisVectorIndex(basisVectorIndex) &&
@@ -228,7 +215,7 @@ public static class LinBasisVectorUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static bool IsZeroBladeVectorESp(IReadOnlySet<int> basisBladeIndexSet, int basisVectorIndex)
+    public static bool IsZeroBladeVectorESp(IndexSet basisBladeIndexSet, int basisVectorIndex)
     {
         Debug.Assert(
             IsValidBasisVectorIndex(basisVectorIndex) &&
@@ -240,14 +227,14 @@ public static class LinBasisVectorUtils
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static bool IsZeroBladeBladeESp(IReadOnlySet<int> basisBlade1IndexSet, IReadOnlySet<int> basisBlade2IndexSet)
+    public static bool IsZeroBladeBladeESp(IndexSet basisBlade1IndexSet, IndexSet basisBlade2IndexSet)
     {
         Debug.Assert(
             IsValidBasisBladeIndexSet(basisBlade1IndexSet) &&
             IsValidBasisBladeIndexSet(basisBlade2IndexSet)
         );
 
-        return !basisBlade1IndexSet.SetEquals(basisBlade2IndexSet);
+        return !basisBlade1IndexSet.Equals(basisBlade2IndexSet);
     }
     
 
@@ -263,7 +250,7 @@ public static class LinBasisVectorUtils
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static bool IsZeroVectorBladeELcp(int basisVectorIndex, IReadOnlySet<int> basisBladeIndexSet)
+    public static bool IsZeroVectorBladeELcp(int basisVectorIndex, IndexSet basisBladeIndexSet)
     {
         Debug.Assert(
             IsValidBasisVectorIndex(basisVectorIndex) &&
@@ -274,7 +261,7 @@ public static class LinBasisVectorUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static bool IsZeroBladeVectorELcp(IReadOnlySet<int> basisBladeIndexSet, int basisVectorIndex)
+    public static bool IsZeroBladeVectorELcp(IndexSet basisBladeIndexSet, int basisVectorIndex)
     {
         Debug.Assert(
             IsValidBasisVectorIndex(basisVectorIndex) &&
@@ -290,14 +277,14 @@ public static class LinBasisVectorUtils
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static bool IsZeroBladeBladeELcp(IReadOnlySet<int> basisBlade1IndexSet, IReadOnlySet<int> basisBlade2IndexSet)
+    public static bool IsZeroBladeBladeELcp(IndexSet basisBlade1IndexSet, IndexSet basisBlade2IndexSet)
     {
         Debug.Assert(
             IsValidBasisBladeIndexSet(basisBlade1IndexSet) &&
             IsValidBasisBladeIndexSet(basisBlade2IndexSet)
         );
 
-        return !basisBlade1IndexSet.IsSubsetOf(basisBlade2IndexSet);
+        return !basisBlade2IndexSet.SetIsSupersetOf(basisBlade1IndexSet);
     }
     
 
@@ -313,7 +300,7 @@ public static class LinBasisVectorUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static bool IsZeroVectorBladeERcp(int basisVectorIndex, IReadOnlySet<int> basisBladeIndexSet)
+    public static bool IsZeroVectorBladeERcp(int basisVectorIndex, IndexSet basisBladeIndexSet)
     {
         Debug.Assert(
             IsValidBasisVectorIndex(basisVectorIndex) &&
@@ -329,7 +316,7 @@ public static class LinBasisVectorUtils
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static bool IsZeroBladeVectorERcp(IReadOnlySet<int> basisBladeIndexSet, int basisVectorIndex)
+    public static bool IsZeroBladeVectorERcp(IndexSet basisBladeIndexSet, int basisVectorIndex)
     {
         Debug.Assert(
             IsValidBasisVectorIndex(basisVectorIndex) &&
@@ -340,14 +327,14 @@ public static class LinBasisVectorUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static bool IsZeroBladeBladeERcp(IReadOnlySet<int> basisBlade1IndexSet, IReadOnlySet<int> basisBlade2IndexSet)
+    public static bool IsZeroBladeBladeERcp(IndexSet basisBlade1IndexSet, IndexSet basisBlade2IndexSet)
     {
         Debug.Assert(
             IsValidBasisBladeIndexSet(basisBlade1IndexSet) &&
             IsValidBasisBladeIndexSet(basisBlade2IndexSet)
         );
 
-        return !basisBlade1IndexSet.IsSubsetOf(basisBlade2IndexSet);
+        return !basisBlade1IndexSet.SetIsSupersetOf(basisBlade2IndexSet);
     }
 
 
@@ -363,7 +350,7 @@ public static class LinBasisVectorUtils
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static bool IsNegativeVectorBladeEGp(int basisVectorIndex, IReadOnlySet<int> basisBladeIndexSet)
+    public static bool IsNegativeVectorBladeEGp(int basisVectorIndex, IndexSet basisBladeIndexSet)
     {
         Debug.Assert(
             IsValidBasisVectorIndex(basisVectorIndex) &&
@@ -379,7 +366,7 @@ public static class LinBasisVectorUtils
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static bool IsNegativeBladeVectorEGp(IReadOnlySet<int> basisBladeIndexSet, int basisVectorIndex)
+    public static bool IsNegativeBladeVectorEGp(IndexSet basisBladeIndexSet, int basisVectorIndex)
     {
         Debug.Assert(
             IsValidBasisVectorIndex(basisVectorIndex) &&
@@ -395,7 +382,7 @@ public static class LinBasisVectorUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static bool IsNegativeBladeBladeEGp(IReadOnlySet<int> basisBlade1IndexSet, IReadOnlySet<int> basisBlade2IndexSet)
+    public static bool IsNegativeBladeBladeEGp(IndexSet basisBlade1IndexSet, IndexSet basisBlade2IndexSet)
     {
         Debug.Assert(
             IsValidBasisBladeIndexSet(basisBlade1IndexSet) &&
@@ -423,14 +410,4 @@ public static class LinBasisVectorUtils
     }
 
     
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64Vector ToTuple(this ILinSignedBasisVector basisVector, int dimensions)
-    {
-        return LinFloat64Vector.CreateScaledBasis(
-            dimensions,
-            basisVector.Index,
-            basisVector.IsNegative ? -1d : 1d
-        );
-    }
-
 }

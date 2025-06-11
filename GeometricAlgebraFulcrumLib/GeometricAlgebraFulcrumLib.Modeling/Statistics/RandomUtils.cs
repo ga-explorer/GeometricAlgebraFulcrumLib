@@ -40,22 +40,22 @@ public static class RandomUtils
     public static Float64LineSegment2D GetLineSegmentInside(this Random randomGenerator, IFloat64BoundingBox2D limitsBoundingBox)
     {
         return new Float64LineSegment2D(
-            randomGenerator.GetLinearMappedNumber(limitsBoundingBox.MinX, limitsBoundingBox.MaxX),
-            randomGenerator.GetLinearMappedNumber(limitsBoundingBox.MinY, limitsBoundingBox.MaxY),
-            randomGenerator.GetLinearMappedNumber(limitsBoundingBox.MinX, limitsBoundingBox.MaxX),
-            randomGenerator.GetLinearMappedNumber(limitsBoundingBox.MinY, limitsBoundingBox.MaxY)
+            randomGenerator.GetLinearMappedFloat64(limitsBoundingBox.MinX, limitsBoundingBox.MaxX),
+            randomGenerator.GetLinearMappedFloat64(limitsBoundingBox.MinY, limitsBoundingBox.MaxY),
+            randomGenerator.GetLinearMappedFloat64(limitsBoundingBox.MinX, limitsBoundingBox.MaxX),
+            randomGenerator.GetLinearMappedFloat64(limitsBoundingBox.MinY, limitsBoundingBox.MaxY)
         );
     }
 
     public static Float64Triangle2D GetTriangleInside(this Random randomGenerator, IFloat64BoundingBox2D limitsBoundingBox)
     {
         return new Float64Triangle2D(
-            randomGenerator.GetLinearMappedNumber(limitsBoundingBox.MinX, limitsBoundingBox.MaxX),
-            randomGenerator.GetLinearMappedNumber(limitsBoundingBox.MinY, limitsBoundingBox.MaxY),
-            randomGenerator.GetLinearMappedNumber(limitsBoundingBox.MinX, limitsBoundingBox.MaxX),
-            randomGenerator.GetLinearMappedNumber(limitsBoundingBox.MinY, limitsBoundingBox.MaxY),
-            randomGenerator.GetLinearMappedNumber(limitsBoundingBox.MinX, limitsBoundingBox.MaxX),
-            randomGenerator.GetLinearMappedNumber(limitsBoundingBox.MinY, limitsBoundingBox.MaxY)
+            randomGenerator.GetLinearMappedFloat64(limitsBoundingBox.MinX, limitsBoundingBox.MaxX),
+            randomGenerator.GetLinearMappedFloat64(limitsBoundingBox.MinY, limitsBoundingBox.MaxY),
+            randomGenerator.GetLinearMappedFloat64(limitsBoundingBox.MinX, limitsBoundingBox.MaxX),
+            randomGenerator.GetLinearMappedFloat64(limitsBoundingBox.MinY, limitsBoundingBox.MaxY),
+            randomGenerator.GetLinearMappedFloat64(limitsBoundingBox.MinX, limitsBoundingBox.MaxX),
+            randomGenerator.GetLinearMappedFloat64(limitsBoundingBox.MinY, limitsBoundingBox.MaxY)
         );
     }
 
@@ -66,12 +66,12 @@ public static class RandomUtils
         for (var i = 0; i < trianglesCount; i++)
             result.Add(
                 new Float64Triangle2D(
-                    randomGenerator.GetLinearMappedNumber(limitsBoundingBox.MinX, limitsBoundingBox.MaxX),
-                    randomGenerator.GetLinearMappedNumber(limitsBoundingBox.MinY, limitsBoundingBox.MaxY),
-                    randomGenerator.GetLinearMappedNumber(limitsBoundingBox.MinX, limitsBoundingBox.MaxX),
-                    randomGenerator.GetLinearMappedNumber(limitsBoundingBox.MinY, limitsBoundingBox.MaxY),
-                    randomGenerator.GetLinearMappedNumber(limitsBoundingBox.MinX, limitsBoundingBox.MaxX),
-                    randomGenerator.GetLinearMappedNumber(limitsBoundingBox.MinY, limitsBoundingBox.MaxY)
+                    randomGenerator.GetLinearMappedFloat64(limitsBoundingBox.MinX, limitsBoundingBox.MaxX),
+                    randomGenerator.GetLinearMappedFloat64(limitsBoundingBox.MinY, limitsBoundingBox.MaxY),
+                    randomGenerator.GetLinearMappedFloat64(limitsBoundingBox.MinX, limitsBoundingBox.MaxX),
+                    randomGenerator.GetLinearMappedFloat64(limitsBoundingBox.MinY, limitsBoundingBox.MaxY),
+                    randomGenerator.GetLinearMappedFloat64(limitsBoundingBox.MinX, limitsBoundingBox.MaxX),
+                    randomGenerator.GetLinearMappedFloat64(limitsBoundingBox.MinY, limitsBoundingBox.MaxY)
                 )
             );
 

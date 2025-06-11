@@ -18,7 +18,7 @@ public sealed record LinFloat64NullSubspace4D :
         => 0;
 
     public IEnumerable<LinFloat64Vector4D> BasisVectors
-        => Enumerable.Empty<LinFloat64Vector4D>();
+        => [];
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]

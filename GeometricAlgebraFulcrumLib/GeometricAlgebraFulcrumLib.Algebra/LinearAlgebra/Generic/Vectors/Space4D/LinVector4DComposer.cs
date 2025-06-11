@@ -296,7 +296,7 @@ public sealed class LinVector4DComposer<T> :
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public LinVector4DComposer<T> SetTerm(LinSignedBasisVector basisBlade)
+    public LinVector4DComposer<T> SetTerm(LinBasisVector basisBlade)
     {
         if (basisBlade.IsZero)
             return RemoveTerm(basisBlade.Index);

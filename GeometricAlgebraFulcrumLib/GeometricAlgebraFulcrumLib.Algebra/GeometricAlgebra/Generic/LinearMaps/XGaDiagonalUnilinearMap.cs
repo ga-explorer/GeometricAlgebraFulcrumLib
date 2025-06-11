@@ -2,10 +2,9 @@
 using System.Runtime.CompilerServices;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Multivectors;
-using GeometricAlgebraFulcrumLib.Utilities.Structures.IndexSets;
-using GeometricAlgebraFulcrumLib.Algebra.Scalars.Generic;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Processors;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Multivectors.Composers;
+using GeometricAlgebraFulcrumLib.Algebra.Scalars.Generic;
+using GeometricAlgebraFulcrumLib.Utilities.Structures.IndexSets;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.LinearMaps;
 
@@ -78,7 +77,7 @@ public sealed class XGaDiagonalUnilinearMap<T> :
 
     public XGaMultivector<T> Map(XGaMultivector<T> multivector)
     {
-        var composer = Processor.CreateComposer();
+        var composer = Processor.CreateMultivectorComposer();
 
         if (Count <= multivector.Count)
         {
@@ -87,7 +86,7 @@ public sealed class XGaDiagonalUnilinearMap<T> :
                 if (!multivector.TryGetBasisBladeScalarValue(id, out var scalar))
                     continue;
 
-                composer.AddTerm(id, mv, scalar);
+                composer.AddTerm(id, ScalarProcessor.Times(mv, scalar));
             }
         }
         else
@@ -97,7 +96,7 @@ public sealed class XGaDiagonalUnilinearMap<T> :
                 if (!DiagonalMultivector.TryGetValue(id, out var mv))
                     continue;
 
-                composer.AddTerm(id, mv, scalar);
+                composer.AddTerm(id, ScalarProcessor.Times(mv, scalar));
             }
         }
 

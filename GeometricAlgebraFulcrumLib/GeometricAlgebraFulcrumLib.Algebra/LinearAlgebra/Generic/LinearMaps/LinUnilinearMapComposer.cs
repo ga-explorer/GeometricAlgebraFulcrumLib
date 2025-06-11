@@ -2,10 +2,10 @@
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Basis;
-using GeometricAlgebraFulcrumLib.Utilities.Structures.BitManipulation;
-using GeometricAlgebraFulcrumLib.Utilities.Structures.Dictionary;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Generic.Vectors.SpaceND;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Generic;
+using GeometricAlgebraFulcrumLib.Utilities.Structures.BitManipulation;
+using GeometricAlgebraFulcrumLib.Utilities.Structures.Dictionary;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Tuples;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Generic.LinearMaps;
@@ -140,7 +140,7 @@ public class LinUnilinearMapComposer<T> :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public LinUnilinearMapComposer<T> SetColumnTerm(int index2, LinSignedBasisVector basisVector)
+    public LinUnilinearMapComposer<T> SetColumnTerm(int index2, LinBasisVector basisVector)
     {
         if (basisVector.IsZero)
             return RemoveTerm(basisVector.Index, index2);
@@ -157,7 +157,7 @@ public class LinUnilinearMapComposer<T> :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public LinUnilinearMapComposer<T> SetColumnTerm(int index2, LinSignedBasisVector basisVector, T scalar)
+    public LinUnilinearMapComposer<T> SetColumnTerm(int index2, LinBasisVector basisVector, T scalar)
     {
         if (basisVector.IsZero || ScalarProcessor.IsZero(scalar))
             return RemoveTerm(basisVector.Index, index2);
@@ -230,7 +230,7 @@ public class LinUnilinearMapComposer<T> :
         return this;
     }
 
-    public LinUnilinearMapComposer<T> SetColumnTerms(int index2, IEnumerable<KeyValuePair<LinSignedBasisVector, T>> termList)
+    public LinUnilinearMapComposer<T> SetColumnTerms(int index2, IEnumerable<KeyValuePair<LinBasisVector, T>> termList)
     {
         foreach (var (basisVector, scalar) in termList)
             SetColumnTerm(index2, basisVector, scalar);
@@ -435,7 +435,7 @@ public class LinUnilinearMapComposer<T> :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public LinUnilinearMapComposer<T> AddColumnTerm(int index2, ILinSignedBasisVector basisVector)
+    public LinUnilinearMapComposer<T> AddColumnTerm(int index2, LinBasisVector basisVector)
     {
         if (basisVector.IsZero)
             return this;
@@ -452,7 +452,7 @@ public class LinUnilinearMapComposer<T> :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public LinUnilinearMapComposer<T> AddColumnTerm(int index2, ILinSignedBasisVector index, T scalar)
+    public LinUnilinearMapComposer<T> AddColumnTerm(int index2, LinBasisVector index, T scalar)
     {
         if (index.IsZero || ScalarProcessor.IsZero(scalar))
             return this;
@@ -469,7 +469,7 @@ public class LinUnilinearMapComposer<T> :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public LinUnilinearMapComposer<T> AddColumnTerm(int index2, ILinSignedBasisVector index, T scalar1, T scalar2)
+    public LinUnilinearMapComposer<T> AddColumnTerm(int index2, LinBasisVector index, T scalar1, T scalar2)
     {
         var scalar = ScalarProcessor.Times(scalar1, scalar2);
 
@@ -541,7 +541,7 @@ public class LinUnilinearMapComposer<T> :
         );
     }
 
-    public LinUnilinearMapComposer<T> AddColumnTerms(int index2, IEnumerable<KeyValuePair<LinSignedBasisVector, T>> termList)
+    public LinUnilinearMapComposer<T> AddColumnTerms(int index2, IEnumerable<KeyValuePair<LinBasisVector, T>> termList)
     {
         foreach (var (basisVector, scalar) in termList)
             AddColumnTerm(index2, basisVector, scalar);
@@ -742,7 +742,7 @@ public class LinUnilinearMapComposer<T> :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public LinUnilinearMapComposer<T> SubtractColumnTerm(int index2, LinSignedBasisVector index)
+    public LinUnilinearMapComposer<T> SubtractColumnTerm(int index2, LinBasisVector index)
     {
         if (index.IsZero)
             return this;
@@ -759,7 +759,7 @@ public class LinUnilinearMapComposer<T> :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public LinUnilinearMapComposer<T> SubtractColumnTerm(int index2, LinSignedBasisVector index, T scalar)
+    public LinUnilinearMapComposer<T> SubtractColumnTerm(int index2, LinBasisVector index, T scalar)
     {
         if (index.IsZero || ScalarProcessor.IsZero(scalar))
             return this;
@@ -776,7 +776,7 @@ public class LinUnilinearMapComposer<T> :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public LinUnilinearMapComposer<T> SubtractColumnTerm(int index2, LinSignedBasisVector index, T scalar1, T scalar2)
+    public LinUnilinearMapComposer<T> SubtractColumnTerm(int index2, LinBasisVector index, T scalar1, T scalar2)
     {
         var scalar = ScalarProcessor.Times(scalar1, scalar2);
 
@@ -843,7 +843,7 @@ public class LinUnilinearMapComposer<T> :
         );
     }
 
-    public LinUnilinearMapComposer<T> SubtractColumnTerms(int index2, IEnumerable<KeyValuePair<LinSignedBasisVector, T>> termList)
+    public LinUnilinearMapComposer<T> SubtractColumnTerms(int index2, IEnumerable<KeyValuePair<LinBasisVector, T>> termList)
     {
         foreach (var (basisVector, scalar) in termList)
             AddColumnTerm(index2, basisVector, scalar);

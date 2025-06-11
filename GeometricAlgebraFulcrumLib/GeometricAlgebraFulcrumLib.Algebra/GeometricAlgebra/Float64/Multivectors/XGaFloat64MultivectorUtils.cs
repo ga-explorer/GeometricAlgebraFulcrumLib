@@ -1,34 +1,152 @@
-﻿using System.Runtime.CompilerServices;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivectors.Composers;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Processors;
-using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space2D;
-using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space3D;
-using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space4D;
+﻿using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Multivectors;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Processors;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
-using GeometricAlgebraFulcrumLib.Utilities.Structures.Combinations;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.IndexSets;
+using System.Runtime.CompilerServices;
+using GeometricAlgebraFulcrumLib.Utilities.Structures.Dictionary;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivectors;
 
 public static class XGaFloat64MultivectorUtils
 {
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static XGaFloat64RandomComposer CreateXGaRandomComposer(this XGaFloat64Processor processor, int vSpaceDimensions)
+    public static IReadOnlyDictionary<IndexSet, double> ToValidXGaVectorDictionary(this IReadOnlyDictionary<int, double> inputDictionary)
     {
-        return new XGaFloat64RandomComposer(processor, vSpaceDimensions);
+        var basisScalarDictionary = IndexSetUtils.CreateIndexSetDictionary<double>();
+
+        foreach (var (index, scalar) in inputDictionary)
+        {
+            if (!scalar.IsValid())
+                throw new InvalidOperationException();
+            
+            if(!scalar.IsZero())
+                basisScalarDictionary.Add(index.ToUnitIndexSet(), scalar);
+        }
+        
+        return basisScalarDictionary.Count switch
+        {
+            0 => new EmptyDictionary<IndexSet, double>(),
+            1 => new SingleItemDictionary<IndexSet, double>(basisScalarDictionary.First()),
+            _ => basisScalarDictionary
+        };
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static XGaFloat64RandomComposer CreateXGaRandomComposer(this XGaFloat64Processor processor, int vSpaceDimensions, int seed)
+    public static IReadOnlyDictionary<IndexSet, double> ToValidXGaVectorDictionary(this IEnumerable<double> scalarList)
     {
-        return new XGaFloat64RandomComposer(processor, vSpaceDimensions, seed);
-    }
+        var basisScalarDictionary = IndexSetUtils.CreateIndexSetDictionary<double>();
 
+        var index = 0;
+        foreach (var scalar in scalarList)
+        {
+            if (!scalar.IsValid())
+                throw new InvalidOperationException();
+
+            if(!scalar.IsZero())
+                basisScalarDictionary.Add(index.ToUnitIndexSet(), scalar);
+
+            index++;
+        }
+
+        return basisScalarDictionary.Count switch
+        {
+            0 => new EmptyDictionary<IndexSet, double>(),
+            1 => new SingleItemDictionary<IndexSet, double>(basisScalarDictionary.First()),
+            _ => basisScalarDictionary
+        };
+    }
+    
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static XGaFloat64RandomComposer CreateXGaRandomComposer(this XGaFloat64Processor processor, int vSpaceDimensions, Random randomGenerator)
+    public static IReadOnlyDictionary<IndexSet, double> ToValidXGaBivectorDictionary(this IEnumerable<double> scalarList)
     {
-        return new XGaFloat64RandomComposer(processor, vSpaceDimensions, randomGenerator);
+        var basisScalarDictionary = IndexSetUtils.CreateIndexSetDictionary<double>();
+
+        var index = 0;
+        foreach (var scalar in scalarList)
+        {
+            if (!scalar.IsValid())
+                throw new InvalidOperationException();
+
+            if(!scalar.IsZero())
+                basisScalarDictionary.Add(
+                    IndexSet.EncodeUInt64AsCombinadic(index, 2), 
+                    scalar
+                );
+
+            index++;
+        }
+
+        return basisScalarDictionary.Count switch
+        {
+            0 => new EmptyDictionary<IndexSet, double>(),
+            1 => new SingleItemDictionary<IndexSet, double>(basisScalarDictionary.First()),
+            _ => basisScalarDictionary
+        };
+    }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static IReadOnlyDictionary<IndexSet, double> ToValidXGaKVectorDictionary(this IEnumerable<double> scalarList, int grade)
+    {
+        if (grade < 1)
+            throw new InvalidOperationException();
+
+        if (grade == 1)
+            return scalarList.ToValidXGaVectorDictionary();
+
+        if (grade == 2)
+            return scalarList.ToValidXGaBivectorDictionary();
+
+        var basisScalarDictionary = IndexSetUtils.CreateIndexSetDictionary<double>();
+
+        var index = 0UL;
+        foreach (var scalar in scalarList)
+        {
+            if (!scalar.IsValid())
+                throw new InvalidOperationException();
+
+            if(!scalar.IsZero())
+                basisScalarDictionary.Add(
+                    IndexSet.EncodeUInt64AsCombinadic(index, grade), 
+                    scalar
+                );
+
+            index++;
+        }
+
+        return basisScalarDictionary.Count switch
+        {
+            0 => new EmptyDictionary<IndexSet, double>(),
+            1 => new SingleItemDictionary<IndexSet, double>(basisScalarDictionary.First()),
+            _ => basisScalarDictionary
+        };
+    }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static IReadOnlyDictionary<IndexSet, double> ToValidXGaUniformMultivectorDictionary(this IEnumerable<double> scalarList)
+    {
+        var basisScalarDictionary = IndexSetUtils.CreateIndexSetDictionary<double>();
+
+        var index = 0UL;
+        foreach (var scalar in scalarList)
+        {
+            if (!scalar.IsValid())
+                throw new InvalidOperationException();
+
+            if(!scalar.IsZero())
+                basisScalarDictionary.Add(
+                    IndexSet.CreateFromUInt64Pattern(index), 
+                    scalar
+                );
+
+            index++;
+        }
+
+        return basisScalarDictionary.Count switch
+        {
+            0 => new EmptyDictionary<IndexSet, double>(),
+            1 => new SingleItemDictionary<IndexSet, double>(basisScalarDictionary.First()),
+            _ => basisScalarDictionary
+        };
     }
 
 
@@ -37,543 +155,7 @@ public static class XGaFloat64MultivectorUtils
     {
         return mvList.Max(mv => mv.VSpaceDimensions);
     }
-
-    public static double[] KVectorToArray(this XGaFloat64KVector kVector, int vSpaceDimensions)
-    {
-        if (vSpaceDimensions < kVector.VSpaceDimensions)
-            throw new ArgumentException(nameof(vSpaceDimensions));
-
-        var kvSpaceDimensions =
-            (int)vSpaceDimensions.GetBinomialCoefficient(kVector.Grade);
-
-        var array = new double[kvSpaceDimensions];
-
-        foreach (var (index, scalar) in kVector.GetKVectorArrayItems())
-            array[index] = scalar;
-
-        return array;
-    }
-
-    public static double[] MultivectorToArray(this XGaFloat64Multivector kVector, int vSpaceDimensions)
-    {
-        if (vSpaceDimensions > 31 || vSpaceDimensions < kVector.VSpaceDimensions)
-            throw new ArgumentException(nameof(vSpaceDimensions));
-
-        var gaSpaceDimensions =
-            1 << vSpaceDimensions;
-
-        var array = new double[gaSpaceDimensions];
-
-        foreach (var (index, scalar) in kVector.GetMultivectorArrayItems())
-            array[index] = scalar;
-
-        return array;
-    }
-
-        
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static XGaFloat64Multivector GetPart(this XGaFloat64Multivector mv, Func<IndexSet, bool> filterFunc)
-    {
-        return mv switch
-        {
-            XGaFloat64Scalar s => s.GetPart(filterFunc),
-            XGaFloat64Vector v => v.GetPart(filterFunc),
-            XGaFloat64Bivector bv => bv.GetPart(filterFunc),
-            XGaFloat64HigherKVector kv => kv.GetPart(filterFunc),
-            XGaFloat64GradedMultivector mv1 => mv1.GetPart(filterFunc),
-            XGaFloat64UniformMultivector mv1 => mv1.GetPart(filterFunc),
-            _ => throw new InvalidOperationException()
-        };
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static XGaFloat64Multivector GetPart(this XGaFloat64Multivector mv, Func<double, bool> filterFunc)
-    {
-        return mv switch
-        {
-            XGaFloat64Scalar s => s.GetPart(filterFunc),
-            XGaFloat64Vector v => v.GetPart(filterFunc),
-            XGaFloat64Bivector bv => bv.GetPart(filterFunc),
-            XGaFloat64HigherKVector kv => kv.GetPart(filterFunc),
-            XGaFloat64GradedMultivector mv1 => mv1.GetPart(filterFunc),
-            XGaFloat64UniformMultivector mv1 => mv1.GetPart(filterFunc),
-            _ => throw new InvalidOperationException()
-        };
-    }
-        
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static XGaFloat64Multivector GetPart(this XGaFloat64Multivector mv, Func<IndexSet, double, bool> filterFunc)
-    {
-        return mv switch
-        {
-            XGaFloat64Scalar s => s.GetPart(filterFunc),
-            XGaFloat64Vector v => v.GetPart(filterFunc),
-            XGaFloat64Bivector bv => bv.GetPart(filterFunc),
-            XGaFloat64HigherKVector kv => kv.GetPart(filterFunc),
-            XGaFloat64GradedMultivector mv1 => mv1.GetPart(filterFunc),
-            XGaFloat64UniformMultivector mv1 => mv1.GetPart(filterFunc),
-            _ => throw new InvalidOperationException()
-        };
-    }
-        
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static XGaFloat64Multivector RemoveSmallTerms(this XGaFloat64Multivector mv, double zeroEpsilon = Float64Utils.ZeroEpsilon)
-    {
-        return mv switch
-        {
-            XGaFloat64Scalar s => s,
-            XGaFloat64Vector v => v.RemoveSmallTerms(zeroEpsilon),
-            XGaFloat64Bivector bv => bv.RemoveSmallTerms(zeroEpsilon),
-            XGaFloat64HigherKVector kv => kv.RemoveSmallTerms(zeroEpsilon),
-            XGaFloat64GradedMultivector mv1 => mv1.RemoveSmallTerms(zeroEpsilon),
-            XGaFloat64UniformMultivector mv1 => mv1.RemoveSmallTerms(zeroEpsilon),
-            _ => throw new InvalidOperationException()
-        };
-    }
-
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Tuple<XGaFloat64Scalar, XGaFloat64Bivector> GetScalarBivectorParts(this XGaFloat64Multivector mv)
-    {
-        return new Tuple<XGaFloat64Scalar, XGaFloat64Bivector>(
-            mv.GetScalarPart(),
-            mv.GetBivectorPart()
-        );
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Tuple<XGaFloat64Multivector, XGaFloat64Multivector> GetEvenOddParts(this XGaFloat64Multivector mv)
-    {
-        return new Tuple<XGaFloat64Multivector, XGaFloat64Multivector>(
-            mv.GetEvenPart(),
-            mv.GetOddPart()
-        );
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Tuple<XGaFloat64Multivector, XGaFloat64Multivector> GetEvenOddParts(this XGaFloat64Multivector mv, int maxGrade)
-    {
-        return new Tuple<XGaFloat64Multivector, XGaFloat64Multivector>(
-            mv.GetEvenPart(maxGrade),
-            mv.GetOddPart(maxGrade)
-        );
-    }
-
-        
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static XGaFloat64Multivector MapScalars(this XGaFloat64Multivector mv, Func<double, double> scalarMapping)
-    {
-        return mv switch
-        {
-            XGaFloat64Scalar s => s.MapScalar(scalarMapping),
-            XGaFloat64Vector v => v.MapScalars(scalarMapping),
-            XGaFloat64Bivector bv => bv.MapScalars(scalarMapping),
-            XGaFloat64HigherKVector kv => kv.MapScalars(scalarMapping),
-            XGaFloat64GradedMultivector mv1 => mv1.MapScalars(scalarMapping),
-
-            _ => mv.Processor
-                .CreateComposer()
-                .AddTerms(
-                    mv.IdScalarPairs.Select(
-                        term => new KeyValuePair<IndexSet, double>(
-                            term.Key,
-                            scalarMapping(term.Value)
-                        )
-                    )
-                ).GetSimpleMultivector()
-        };
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static XGaFloat64Multivector MapScalars(this XGaFloat64Multivector mv, Func<IndexSet, double, double> scalarMapping)
-    {
-        return mv switch
-        {
-            XGaFloat64Scalar s => s.MapScalar(scalarMapping),
-            XGaFloat64Vector v => v.MapScalars(scalarMapping),
-            XGaFloat64Bivector bv => bv.MapScalars(scalarMapping),
-            XGaFloat64HigherKVector kv => kv.MapScalars(scalarMapping),
-            XGaFloat64GradedMultivector mv1 => mv1.MapScalars(scalarMapping),
-
-            _ => mv.Processor
-                .CreateComposer()
-                .AddTerms(
-                    mv.IdScalarPairs.Select(
-                        term => new KeyValuePair<IndexSet, double>(
-                            term.Key,
-                            scalarMapping(term.Key, term.Value)
-                        )
-                    )
-                ).GetSimpleMultivector()
-        };
-    }
-        
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static XGaFloat64Multivector MapBasisBlades(this XGaFloat64Multivector mv, Func<IndexSet, IndexSet> basisMapping)
-    {
-        var termList =
-            mv.IdScalarPairs.Select(
-                term => new KeyValuePair<IndexSet, double>(
-                    basisMapping(term.Key),
-                    term.Value
-                )
-            );
-
-        return mv.Processor
-            .CreateComposer()
-            .AddTerms(termList)
-            .GetSimpleMultivector();
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static XGaFloat64Multivector MapBasisBlades(this XGaFloat64Multivector mv, Func<IndexSet, double, IndexSet> basisMapping)
-    {
-        var termList =
-            mv.IdScalarPairs.Select(
-                term => new KeyValuePair<IndexSet, double>(
-                    basisMapping(term.Key, term.Value),
-                    term.Value
-                )
-            );
-
-        return mv.Processor
-            .CreateComposer()
-            .AddTerms(termList)
-            .GetSimpleMultivector();
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static XGaFloat64Multivector MapTerms(this XGaFloat64Multivector mv, Func<IndexSet, double, KeyValuePair<IndexSet, double>> termMapping)
-    {
-        var termList =
-            mv.IdScalarPairs.Select(
-                term =>
-                    termMapping(term.Key, term.Value)
-            );
-
-        return mv.Processor
-            .CreateComposer()
-            .AddTerms(termList)
-            .GetSimpleMultivector();
-    }
-
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static XGaFloat64Multivector Negative(this XGaFloat64Multivector mv)
-    {
-        return mv switch
-        {
-            XGaFloat64Scalar mv1 => mv1.Negative(),
-            XGaFloat64Vector mv1 => mv1.Negative(),
-            XGaFloat64Bivector mv1 => mv1.Negative(),
-            XGaFloat64HigherKVector mv1 => mv1.Negative(),
-            XGaFloat64GradedMultivector mv1 => mv1.Negative(),
-            XGaFloat64UniformMultivector mv1 => mv1.Negative(),
-            _ => throw new InvalidOperationException()
-        };
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static XGaFloat64Multivector Reverse(this XGaFloat64Multivector mv)
-    {
-        return mv switch
-        {
-            XGaFloat64Scalar => mv,
-            XGaFloat64Vector => mv,
-            XGaFloat64Bivector mv1 => mv1.Negative(),
-            XGaFloat64HigherKVector mv1 => mv1.Grade.ReverseIsNegativeOfGrade() ? mv1.Negative() : mv1,
-            XGaFloat64GradedMultivector mv1 => mv1.Reverse(),
-            XGaFloat64UniformMultivector mv1 => mv1.Reverse(),
-            _ => throw new InvalidOperationException()
-        };
-    }
-        
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static XGaFloat64Multivector GradeInvolution(this XGaFloat64Multivector mv)
-    {
-        return mv switch
-        {
-            XGaFloat64Scalar => mv,
-            XGaFloat64Vector mv1 => mv1.Negative(),
-            XGaFloat64Bivector mv1 => mv1,
-            XGaFloat64HigherKVector mv1 => mv1.Grade.GradeInvolutionIsNegativeOfGrade() ? mv1.Negative() : mv1,
-            XGaFloat64GradedMultivector mv1 => mv1.GradeInvolution(),
-            XGaFloat64UniformMultivector mv1 => mv1.GradeInvolution(),
-            _ => throw new InvalidOperationException()
-        };
-    }
-        
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static XGaFloat64Multivector CliffordConjugate(this XGaFloat64Multivector mv)
-    {
-        return mv switch
-        {
-            XGaFloat64Scalar => mv,
-            XGaFloat64Vector mv1 => mv1.Negative(),
-            XGaFloat64Bivector mv1 => mv1.Negative(),
-            XGaFloat64HigherKVector mv1 => mv1.Grade.CliffordConjugateIsNegativeOfGrade() ? mv1.Negative() : mv1,
-            XGaFloat64GradedMultivector mv1 => mv1.CliffordConjugate(),
-            XGaFloat64UniformMultivector mv1 => mv1.CliffordConjugate(),
-            _ => throw new InvalidOperationException()
-        };
-    }
-        
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static XGaFloat64Multivector Conjugate(this XGaFloat64Multivector mv)
-    {
-        return mv switch
-        {
-            XGaFloat64Scalar => mv,
-            XGaFloat64Vector mv1 => mv1.Conjugate(),
-            XGaFloat64Bivector mv1 => mv1.Conjugate(),
-            XGaFloat64HigherKVector mv1 => mv1.Conjugate(),
-            XGaFloat64GradedMultivector mv1 => mv1.Conjugate(),
-            XGaFloat64UniformMultivector mv1 => mv1.Conjugate(),
-            _ => throw new InvalidOperationException()
-        };
-    }
-        
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static XGaFloat64Multivector Times(this XGaFloat64Multivector mv, double scalarValue)
-    {
-        return mv switch
-        {
-            XGaFloat64Scalar mv1 => mv1.Times(scalarValue),
-            XGaFloat64Vector mv1 => mv1.Times(scalarValue),
-            XGaFloat64Bivector mv1 => mv1.Times(scalarValue),
-            XGaFloat64HigherKVector mv1 => mv1.Times(scalarValue),
-            XGaFloat64GradedMultivector mv1 => mv1.Times(scalarValue),
-            XGaFloat64UniformMultivector mv1 => mv1.Times(scalarValue),
-            _ => throw new InvalidOperationException()
-        };
-    }
-        
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static XGaFloat64Multivector Divide(this XGaFloat64Multivector mv, double scalarValue)
-    {
-        return mv switch
-        {
-            XGaFloat64Scalar mv1 => mv1.Divide(scalarValue),
-            XGaFloat64Vector mv1 => mv1.Divide(scalarValue),
-            XGaFloat64Bivector mv1 => mv1.Divide(scalarValue),
-            XGaFloat64HigherKVector mv1 => mv1.Divide(scalarValue),
-            XGaFloat64GradedMultivector mv1 => mv1.Divide(scalarValue),
-            XGaFloat64UniformMultivector mv1 => mv1.Divide(scalarValue),
-            _ => throw new InvalidOperationException()
-        };
-    }
-        
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static XGaFloat64Multivector DivideByENorm(this XGaFloat64Multivector mv)
-    {
-        return mv switch
-        {
-            XGaFloat64Scalar mv1 => mv1.DivideByENorm(),
-            XGaFloat64Vector mv1 => mv1.DivideByENorm(),
-            XGaFloat64Bivector mv1 => mv1.DivideByENorm(),
-            XGaFloat64HigherKVector mv1 => mv1.DivideByENorm(),
-            XGaFloat64GradedMultivector mv1 => mv1.DivideByENorm(),
-            XGaFloat64UniformMultivector mv1 => mv1.DivideByENorm(),
-            _ => throw new InvalidOperationException()
-        };
-    }
-        
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static XGaFloat64Multivector DivideByENormSquared(this XGaFloat64Multivector mv)
-    {
-        return mv switch
-        {
-            XGaFloat64Scalar mv1 => mv1.DivideByENormSquared(),
-            XGaFloat64Vector mv1 => mv1.DivideByENormSquared(),
-            XGaFloat64Bivector mv1 => mv1.DivideByENormSquared(),
-            XGaFloat64HigherKVector mv1 => mv1.DivideByENormSquared(),
-            XGaFloat64GradedMultivector mv1 => mv1.DivideByENormSquared(),
-            XGaFloat64UniformMultivector mv1 => mv1.DivideByENormSquared(),
-            _ => throw new InvalidOperationException()
-        };
-    }
-        
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static XGaFloat64Multivector DivideByNorm(this XGaFloat64Multivector mv)
-    {
-        return mv switch
-        {
-            XGaFloat64Scalar mv1 => mv1.DivideByNorm(),
-            XGaFloat64Vector mv1 => mv1.DivideByNorm(),
-            XGaFloat64Bivector mv1 => mv1.DivideByNorm(),
-            XGaFloat64HigherKVector mv1 => mv1.DivideByNorm(),
-            XGaFloat64GradedMultivector mv1 => mv1.DivideByNorm(),
-            XGaFloat64UniformMultivector mv1 => mv1.DivideByNorm(),
-            _ => throw new InvalidOperationException()
-        };
-    }
-        
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static XGaFloat64Multivector DivideByNormSquared(this XGaFloat64Multivector mv)
-    {
-        return mv switch
-        {
-            XGaFloat64Scalar mv1 => mv1.DivideByNormSquared(),
-            XGaFloat64Vector mv1 => mv1.DivideByNormSquared(),
-            XGaFloat64Bivector mv1 => mv1.DivideByNormSquared(),
-            XGaFloat64HigherKVector mv1 => mv1.DivideByNormSquared(),
-            XGaFloat64GradedMultivector mv1 => mv1.DivideByNormSquared(),
-            XGaFloat64UniformMultivector mv1 => mv1.DivideByNormSquared(),
-            _ => throw new InvalidOperationException()
-        };
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static XGaFloat64Multivector EInverse(this XGaFloat64Multivector mv)
-    {
-        return mv switch
-        {
-            XGaFloat64Scalar mv1 => mv1.EInverse(),
-            XGaFloat64Vector mv1 => mv1.EInverse(),
-            XGaFloat64Bivector mv1 => mv1.EInverse(),
-            XGaFloat64HigherKVector mv1 => mv1.EInverse(),
-            XGaFloat64GradedMultivector mv1 => mv1.EInverse(),
-            XGaFloat64UniformMultivector mv1 => mv1.EInverse(),
-            _ => throw new InvalidOperationException()
-        };
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static XGaFloat64Multivector Inverse(this XGaFloat64Multivector mv)
-    {
-        return mv switch
-        {
-            XGaFloat64Scalar mv1 => mv1.Inverse(),
-            XGaFloat64Vector mv1 => mv1.Inverse(),
-            XGaFloat64Bivector mv1 => mv1.Inverse(),
-            XGaFloat64HigherKVector mv1 => mv1.Inverse(),
-            XGaFloat64GradedMultivector mv1 => mv1.Inverse(),
-            XGaFloat64UniformMultivector mv1 => mv1.Inverse(),
-            _ => throw new InvalidOperationException()
-        };
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static XGaFloat64Multivector EDual(this XGaFloat64Multivector mv, int vSpaceDimensions)
-    {
-        return mv switch
-        {
-            XGaFloat64Scalar mv1 => mv1.EDual(vSpaceDimensions),
-            XGaFloat64Vector mv1 => mv1.EDual(vSpaceDimensions),
-            XGaFloat64Bivector mv1 => mv1.EDual(vSpaceDimensions),
-            XGaFloat64HigherKVector mv1 => mv1.EDual(vSpaceDimensions),
-            XGaFloat64GradedMultivector mv1 => mv1.EDual(vSpaceDimensions),
-            XGaFloat64UniformMultivector mv1 => mv1.EDual(vSpaceDimensions),
-            _ => throw new InvalidOperationException()
-        };
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static XGaFloat64Multivector EDual(this XGaFloat64Multivector mv, XGaFloat64KVector blade)
-    {
-        return mv switch
-        {
-            XGaFloat64Scalar mv1 => mv1.EDual(blade),
-            XGaFloat64Vector mv1 => mv1.EDual(blade),
-            XGaFloat64Bivector mv1 => mv1.EDual(blade),
-            XGaFloat64HigherKVector mv1 => mv1.EDual(blade),
-            XGaFloat64GradedMultivector mv1 => mv1.EDual(blade),
-            XGaFloat64UniformMultivector mv1 => mv1.EDual(blade),
-            _ => throw new InvalidOperationException()
-        };
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static XGaFloat64Multivector Dual(this XGaFloat64Multivector mv, int vSpaceDimensions)
-    {
-        return mv switch
-        {
-            XGaFloat64Scalar mv1 => mv1.Dual(vSpaceDimensions),
-            XGaFloat64Vector mv1 => mv1.Dual(vSpaceDimensions),
-            XGaFloat64Bivector mv1 => mv1.Dual(vSpaceDimensions),
-            XGaFloat64HigherKVector mv1 => mv1.Dual(vSpaceDimensions),
-            XGaFloat64GradedMultivector mv1 => mv1.Dual(vSpaceDimensions),
-            XGaFloat64UniformMultivector mv1 => mv1.Dual(vSpaceDimensions),
-            _ => throw new InvalidOperationException()
-        };
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static XGaFloat64Multivector Dual(this XGaFloat64Multivector mv, XGaFloat64KVector blade)
-    {
-        return mv switch
-        {
-            XGaFloat64Scalar mv1 => mv1.Dual(blade),
-            XGaFloat64Vector mv1 => mv1.Dual(blade),
-            XGaFloat64Bivector mv1 => mv1.Dual(blade),
-            XGaFloat64HigherKVector mv1 => mv1.Dual(blade),
-            XGaFloat64GradedMultivector mv1 => mv1.Dual(blade),
-            XGaFloat64UniformMultivector mv1 => mv1.Dual(blade),
-            _ => throw new InvalidOperationException()
-        };
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static XGaFloat64Multivector EUnDual(this XGaFloat64Multivector mv, int vSpaceDimensions)
-    {
-        return mv switch
-        {
-            XGaFloat64Scalar mv1 => mv1.EUnDual(vSpaceDimensions),
-            XGaFloat64Vector mv1 => mv1.EUnDual(vSpaceDimensions),
-            XGaFloat64Bivector mv1 => mv1.EUnDual(vSpaceDimensions),
-            XGaFloat64HigherKVector mv1 => mv1.EUnDual(vSpaceDimensions),
-            XGaFloat64GradedMultivector mv1 => mv1.EUnDual(vSpaceDimensions),
-            XGaFloat64UniformMultivector mv1 => mv1.EUnDual(vSpaceDimensions),
-            _ => throw new InvalidOperationException()
-        };
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static XGaFloat64Multivector EUnDual(this XGaFloat64Multivector mv, XGaFloat64KVector blade)
-    {
-        return mv switch
-        {
-            XGaFloat64Scalar mv1 => mv1.EUnDual(blade),
-            XGaFloat64Vector mv1 => mv1.EUnDual(blade),
-            XGaFloat64Bivector mv1 => mv1.EUnDual(blade),
-            XGaFloat64HigherKVector mv1 => mv1.EUnDual(blade),
-            XGaFloat64GradedMultivector mv1 => mv1.EUnDual(blade),
-            XGaFloat64UniformMultivector mv1 => mv1.EUnDual(blade),
-            _ => throw new InvalidOperationException()
-        };
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static XGaFloat64Multivector UnDual(this XGaFloat64Multivector mv, int vSpaceDimensions)
-    {
-        return mv switch
-        {
-            XGaFloat64Scalar mv1 => mv1.UnDual(vSpaceDimensions),
-            XGaFloat64Vector mv1 => mv1.UnDual(vSpaceDimensions),
-            XGaFloat64Bivector mv1 => mv1.UnDual(vSpaceDimensions),
-            XGaFloat64HigherKVector mv1 => mv1.UnDual(vSpaceDimensions),
-            XGaFloat64GradedMultivector mv1 => mv1.UnDual(vSpaceDimensions),
-            XGaFloat64UniformMultivector mv1 => mv1.UnDual(vSpaceDimensions),
-            _ => throw new InvalidOperationException()
-        };
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static XGaFloat64Multivector UnDual(this XGaFloat64Multivector mv, XGaFloat64KVector blade)
-    {
-        return mv switch
-        {
-            XGaFloat64Scalar mv1 => mv1.UnDual(blade),
-            XGaFloat64Vector mv1 => mv1.UnDual(blade),
-            XGaFloat64Bivector mv1 => mv1.UnDual(blade),
-            XGaFloat64HigherKVector mv1 => mv1.UnDual(blade),
-            XGaFloat64GradedMultivector mv1 => mv1.UnDual(blade),
-            XGaFloat64UniformMultivector mv1 => mv1.UnDual(blade),
-            _ => throw new InvalidOperationException()
-        };
-    }
-
-        
+    
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static XGaFloat64Multivector Op(this IEnumerable<XGaFloat64Multivector> mvList)
     {
@@ -600,68 +182,7 @@ public static class XGaFloat64MultivectorUtils
             (current, mv) => current.Gp(mv)
         );
     }
-        
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64Vector2D VectorPartToVector2D(this XGaFloat64Multivector mv)
-    {
-        return LinFloat64Vector2D.Create(mv[0], mv[1]);
-    }
-        
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64Vector3D VectorPartToVector3D(this XGaFloat64Multivector mv)
-    {
-        return LinFloat64Vector3D.Create(mv[0], mv[1], mv[2]);
-    }
-        
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64Vector4D VectorPartToVector4D(this XGaFloat64Multivector mv)
-    {
-        return LinFloat64Vector4D.Create(mv[0], mv[1], mv[2], mv[3]);
-    }
-
-        
-    public static double[,] ScalarPlusBivectorToArray2D(this XGaFloat64Multivector mv)
-    {
-        var array = mv.GetBivectorPart().BivectorToArray2D();
-        var scalar = mv.Scalar();
-        var metric = mv.Metric;
-
-        var arraySize = array.GetLength(0);
-        for (var i = 0; i < arraySize; i++)
-        {
-            var signature = metric.Signature(i);
-
-            if (signature.IsZero) continue;
-
-            array[i, i] = signature.IsPositive
-                ? scalar
-                : -scalar;
-        }
-        
-        return array;
-    }
-
-    public static double[,] ScalarPlusBivectorToArray2D(this XGaFloat64Multivector mv, int arraySize)
-    {
-        var array = mv.GetBivectorPart().BivectorToArray2D(arraySize);
-        var scalar = mv.Scalar();
-        var metric = mv.Metric;
-            
-        for (var i = 0; i < arraySize; i++)
-        {
-            var signature = metric.Signature(i);
-
-            if (signature.IsZero) continue;
-
-            array[i, i] = signature.IsPositive
-                ? scalar
-                : -scalar;
-        }
-        
-        return array;
-    }
-
+    
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static XGaFloat64Multivector[,] GetMapTable(this IReadOnlyList<XGaFloat64Multivector> multivectorList, Func<XGaFloat64Multivector, XGaFloat64Multivector, XGaFloat64Multivector> multivectorMap)
@@ -692,6 +213,288 @@ public static class XGaFloat64MultivectorUtils
         }
 
         return tableArray;
+    }
+
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static XGaScalar<T> Convert<T>(this XGaFloat64Scalar mv, XGaProcessor<T> metric)
+    {
+        return new XGaScalar<T>(
+            metric,
+            metric.ScalarProcessor.ScalarFromNumber(mv.ScalarValue)
+        );
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static XGaScalar<T> Convert<T>(this XGaFloat64Scalar mv, XGaProcessor<T> metric, Func<double, T> scalarMapping)
+    {
+        return new XGaScalar<T>(
+            metric,
+            scalarMapping(mv.ScalarValue)
+        );
+    }
+
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static XGaVector<T> Convert<T>(this XGaFloat64Vector mv, XGaProcessor<T> metric)
+    {
+        if (mv.IsZero)
+            return metric.VectorZero;
+
+        var termList =
+            mv.IdScalarPairs.Select(
+                term => new KeyValuePair<IndexSet, T>(
+                    term.Key,
+                    metric.ScalarProcessor.ScalarFromNumber(term.Value).ScalarValue
+                )
+            );
+
+        return metric
+            .CreateVectorComposer()
+            .SetTerms(termList)
+            .GetVector();
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static XGaVector<T> Convert<T>(this XGaFloat64Vector mv, XGaProcessor<T> metric, Func<double, T> scalarMapping)
+    {
+        if (mv.IsZero)
+            return metric.VectorZero;
+
+        var termList =
+            mv.IdScalarPairs.Select(
+                term => new KeyValuePair<IndexSet, T>(
+                    term.Key,
+                    scalarMapping(term.Value)
+                )
+            );
+
+        return metric
+            .CreateVectorComposer()
+            .SetTerms(termList)
+            .GetVector();
+    }
+
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static XGaBivector<T> Convert<T>(this XGaFloat64Bivector mv, XGaProcessor<T> metric)
+    {
+        if (mv.IsZero)
+            return metric.BivectorZero;
+
+        var termList =
+            mv.IdScalarPairs.Select(
+                term => new KeyValuePair<IndexSet, T>(
+                    term.Key,
+                    metric.ScalarProcessor.ScalarFromNumber(term.Value).ScalarValue
+                )
+            );
+
+        return metric
+            .CreateBivectorComposer()
+            .SetTerms(termList)
+            .GetBivector();
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static XGaBivector<T> Convert<T>(this XGaFloat64Bivector mv, XGaProcessor<T> metric, Func<double, T> scalarMapping)
+    {
+        if (mv.IsZero)
+            return metric.BivectorZero;
+
+        var termList =
+            mv.IdScalarPairs.Select(
+                term => new KeyValuePair<IndexSet, T>(
+                    term.Key,
+                    scalarMapping(term.Value)
+                )
+            );
+
+        return metric
+            .CreateBivectorComposer()
+            .SetTerms(termList)
+            .GetBivector();
+    }
+    
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static XGaHigherKVector<T> Convert<T>(this XGaFloat64HigherKVector mv, XGaProcessor<T> metric)
+    {
+        var grade = mv.Grade;
+
+        if (mv.IsZero)
+            return metric.HigherKVectorZero(grade);
+
+        var termList =
+            mv.IdScalarPairs.Select(
+                term => new KeyValuePair<IndexSet, T>(
+                    term.Key,
+                    metric.ScalarProcessor.ScalarFromNumber(term.Value).ScalarValue
+                )
+            );
+
+        return metric
+            .CreateKVectorComposer(grade)
+            .SetTerms(termList)
+            .GetHigherKVector();
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static XGaHigherKVector<T> Convert<T>(this XGaFloat64HigherKVector mv, XGaProcessor<T> metric, Func<double, T> scalarMapping)
+    {
+        var grade = mv.Grade;
+
+        if (mv.IsZero)
+            return metric.HigherKVectorZero(grade);
+
+        var termList =
+            mv.IdScalarPairs.Select(
+                term => new KeyValuePair<IndexSet, T>(
+                    term.Key,
+                    scalarMapping(term.Value)
+                )
+            );
+
+        return metric
+            .CreateKVectorComposer(grade)
+            .SetTerms(termList)
+            .GetHigherKVector();
+    }
+
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static XGaKVector<T> Convert<T>(this XGaFloat64KVector mv, XGaProcessor<T> metric)
+    {
+        return mv switch
+        {
+            XGaFloat64Scalar mv1 => mv1.Convert(metric),
+            XGaFloat64Vector mv1 => mv1.Convert(metric),
+            XGaFloat64Bivector mv1 => mv1.Convert(metric),
+            _ => ((XGaFloat64HigherKVector)mv).Convert(metric)
+        };
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static XGaKVector<T> Convert<T>(this XGaFloat64KVector mv, XGaProcessor<T> metric, Func<double, T> scalarMapping)
+    {
+        return mv switch
+        {
+            XGaFloat64Scalar mv1 => mv1.Convert(metric, scalarMapping),
+            XGaFloat64Vector mv1 => mv1.Convert(metric, scalarMapping),
+            XGaFloat64Bivector mv1 => mv1.Convert(metric, scalarMapping),
+            _ => ((XGaFloat64HigherKVector)mv).Convert(metric, scalarMapping)
+        };
+    }
+
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static XGaGradedMultivector<T> Convert<T>(this XGaFloat64GradedMultivector mv, XGaProcessor<T> metric)
+    {
+        if (mv.IsZero)
+            return metric.GradedMultivectorZero;
+
+        var termList =
+            mv.IdScalarPairs.Select(
+                term => new KeyValuePair<IndexSet, T>(
+                    term.Key,
+                    metric.ScalarProcessor.ScalarFromNumber(term.Value).ScalarValue
+                )
+            );
+
+        return metric
+            .CreateMultivectorComposer()
+            .SetTerms(termList)
+            .GetGradedMultivector();
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static XGaGradedMultivector<T> Convert<T>(this XGaFloat64GradedMultivector mv, XGaProcessor<T> metric, Func<double, T> scalarMapping)
+    {
+        if (mv.IsZero)
+            return metric.GradedMultivectorZero;
+
+        var termList =
+            mv.IdScalarPairs.Select(
+                term => new KeyValuePair<IndexSet, T>(
+                    term.Key,
+                    scalarMapping(term.Value)
+                )
+            );
+
+        return metric
+            .CreateMultivectorComposer()
+            .SetTerms(termList)
+            .GetGradedMultivector();
+    }
+    
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static XGaUniformMultivector<T> Convert<T>(this XGaFloat64UniformMultivector mv, XGaProcessor<T> metric)
+    {
+        if (mv.IsZero)
+            return metric.UniformMultivectorZero;
+
+        var termList =
+            mv.IdScalarPairs.Select(
+                term => new KeyValuePair<IndexSet, T>(
+                    term.Key,
+                    metric.ScalarProcessor.ScalarFromNumber(term.Value).ScalarValue
+                )
+            );
+
+        return metric
+            .CreateUniformComposer()
+            .SetTerms(termList)
+            .GetUniformMultivector();
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static XGaUniformMultivector<T> Convert<T>(this XGaFloat64UniformMultivector mv, XGaProcessor<T> metric, Func<double, T> scalarMapping)
+    {
+        if (mv.IsZero)
+            return metric.UniformMultivectorZero;
+
+        var termList =
+            mv.IdScalarPairs.Select(
+                term => new KeyValuePair<IndexSet, T>(
+                    term.Key,
+                    scalarMapping(term.Value)
+                )
+            );
+
+        return metric
+            .CreateUniformComposer()
+            .SetTerms(termList)
+            .GetUniformMultivector();
+    }
+
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static XGaMultivector<T> Convert<T>(this XGaFloat64Multivector mv, XGaProcessor<T> metric)
+    {
+        return mv switch
+        {
+            XGaFloat64Scalar mv1 => mv1.Convert(metric),
+            XGaFloat64Vector mv1 => mv1.Convert(metric),
+            XGaFloat64Bivector mv1 => mv1.Convert(metric),
+            XGaFloat64HigherKVector mv1 => mv1.Convert(metric),
+            XGaFloat64GradedMultivector mv1 => mv1.Convert(metric),
+            _ => ((XGaFloat64UniformMultivector)mv).Convert(metric)
+        };
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static XGaMultivector<T> Convert<T>(this XGaFloat64Multivector mv, XGaProcessor<T> metric, Func<double, T> scalarMapping)
+    {
+        return mv switch
+        {
+            XGaFloat64Scalar mv1 => mv1.Convert(metric, scalarMapping),
+            XGaFloat64Vector mv1 => mv1.Convert(metric, scalarMapping),
+            XGaFloat64Bivector mv1 => mv1.Convert(metric, scalarMapping),
+            XGaFloat64HigherKVector mv1 => mv1.Convert(metric, scalarMapping),
+            XGaFloat64GradedMultivector mv1 => mv1.Convert(metric, scalarMapping),
+            _ => ((XGaFloat64UniformMultivector)mv).Convert(metric, scalarMapping)
+        };
     }
 
 }

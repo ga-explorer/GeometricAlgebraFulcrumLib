@@ -2,7 +2,6 @@
 using System.Runtime.CompilerServices;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivectors;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivectors.Composers;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Processors;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.IndexSets;
 
@@ -74,7 +73,7 @@ public sealed class XGaFloat64DiagonalUnilinearMap :
 
     public XGaFloat64Multivector Map(XGaFloat64Multivector multivector)
     {
-        var composer = Processor.CreateComposer();
+        var composer = Processor.CreateMultivectorComposer();
 
         if (Count <= multivector.Count)
         {
@@ -83,7 +82,7 @@ public sealed class XGaFloat64DiagonalUnilinearMap :
                 if (!multivector.TryGetBasisBladeScalarValue(id, out var scalar))
                     continue;
 
-                composer.AddTerm(id, mv, scalar);
+                composer.AddTerm(id, mv * scalar);
             }
         }
         else
@@ -93,7 +92,7 @@ public sealed class XGaFloat64DiagonalUnilinearMap :
                 if (!DiagonalMultivector.TryGetValue(id, out var mv))
                     continue;
 
-                composer.AddTerm(id, mv, scalar);
+                composer.AddTerm(id, mv * scalar);
             }
         }
 

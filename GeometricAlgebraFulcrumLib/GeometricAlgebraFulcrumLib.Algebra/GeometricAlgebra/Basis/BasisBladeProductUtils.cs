@@ -67,7 +67,7 @@ public static class BasisBladeProductUtils
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static bool ELcpIsNonZero(this IndexSet id1, IndexSet id2)
     {
-        return id2.SetContains(id1);
+        return id2.SetIsSupersetOf(id1);
     }
 
     /// <summary>
@@ -79,7 +79,7 @@ public static class BasisBladeProductUtils
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static bool ERcpIsNonZero(this IndexSet id1, IndexSet id2)
     {
-        return id1.SetContains(id2);
+        return id1.SetIsSupersetOf(id2);
     }
     
     /// <summary>
@@ -91,8 +91,8 @@ public static class BasisBladeProductUtils
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static bool EFdpIsNonZero(this IndexSet id1, IndexSet id2)
     {
-        return id1.SetContains(id2) || 
-               id2.SetContains(id1);
+        return id1.SetIsSupersetOf(id2) || 
+               id2.SetIsSupersetOf(id1);
     }
 
     /// <summary>
@@ -106,7 +106,7 @@ public static class BasisBladeProductUtils
     {
         return !id1.IsEmptySet && 
                !id2.IsEmptySet && 
-               (id1.SetContains(id2) || id2.SetContains(id1));
+               (id1.SetIsSupersetOf(id2) || id2.SetIsSupersetOf(id1));
     }
 
     /// <summary>
@@ -309,7 +309,7 @@ public static class BasisBladeProductUtils
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static IntegerSign ELcpSign(this IndexSet id1, IndexSet id2)
     {
-        return id2.SetContains(id1)
+        return id2.SetIsSupersetOf(id1)
             ? EGpSign(id1, id2)
             : IntegerSign.Zero;
     }
@@ -317,7 +317,7 @@ public static class BasisBladeProductUtils
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static IntegerSign ERcpSign(this IndexSet id1, IndexSet id2)
     {
-        return id1.SetContains(id2)
+        return id1.SetIsSupersetOf(id2)
             ? EGpSign(id1, id2)
             : IntegerSign.Zero;
     }
@@ -325,7 +325,7 @@ public static class BasisBladeProductUtils
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static IntegerSign EFdpSign(this IndexSet id1, IndexSet id2)
     {
-        return id2.SetContains(id1) || id1.SetContains(id2)
+        return id2.SetIsSupersetOf(id1) || id1.SetIsSupersetOf(id2)
             ? EGpSign(id1, id2)
             : IntegerSign.Zero;
     }
@@ -335,7 +335,7 @@ public static class BasisBladeProductUtils
     {
         return !id1.IsEmptySet && 
                !id2.IsEmptySet && 
-               (id2.SetContains(id1) || id1.SetContains(id2))
+               (id2.SetIsSupersetOf(id1) || id1.SetIsSupersetOf(id2))
             ? EGpSign(id1, id2)
             : IntegerSign.Zero;
     }

@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Immutable;
-using System.Linq;
 using BenchmarkDotNet.Attributes;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
-using GeometricAlgebraFulcrumLib.Utilities.Structures.BitManipulation;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.IndexSets;
 
 namespace GeometricAlgebraFulcrumLib.Benchmarks.Structures;
@@ -13,7 +10,7 @@ public class IndexSetBenchmarks
 {
     public ulong GaSpaceDimension { get; private set; }
 
-    public ulong[] IndexSetArray1 { get; private set; }
+    public IndexSet[] IndexSetArray1 { get; private set; }
     
     public IndexSet[] IndexSetArray2 { get; private set; }
 
@@ -57,11 +54,11 @@ public class IndexSetBenchmarks
 
         Console.WriteLine("Start timing ..");
 
-        //var time1 = GetTime(() => benchmark.EGp1(), 20);
-        //Console.WriteLine($"Time1: {time1}");
-        //Console.WriteLine();
+        var time1 = GetTime(() => benchmark.Merge1(), 20);
+        Console.WriteLine($"Time1: {time1}");
+        Console.WriteLine();
 
-        var time2 = GetTime(() => benchmark.EGp2(), 20);
+        var time2 = GetTime(() => benchmark.Merge2(), 20);
         Console.WriteLine($"Time2: {time2}");
         Console.WriteLine();
     }
@@ -71,224 +68,291 @@ public class IndexSetBenchmarks
     {
         GaSpaceDimension = 1ul << 12;
         
-        IndexSetArray1 = new ulong[GaSpaceDimension];
+        IndexSetArray1 = new IndexSet[GaSpaceDimension];
         IndexSetArray2 = new IndexSet[GaSpaceDimension];
         IndexSetArray3 = new IndexSet2[GaSpaceDimension];
 
         for (var id = 0ul; id < GaSpaceDimension; id++)
         {
-            var indexArray = 
-                id.GetSetBitPositions().ToArray();
-
-            IndexSetArray1[id] = id;
-            IndexSetArray2[id] = IndexSet.Create(indexArray);
-            IndexSetArray3[id] = IndexSet2.Create(indexArray.ToImmutableSortedSet());
+            IndexSetArray1[id] = id.ToUInt64IndexSet();
+            IndexSetArray2[id] = IndexSetArray1[id].ShiftIndices(65);
+            IndexSetArray3[id] = IndexSet2.Create(IndexSetArray2[id].ToImmutableSortedSet());
         }
     }
 
-    //[Benchmark]
-    //public ulong EGp1()
-    //{
-    //    var result = 0UL;
-
-    //    foreach (var indexSet1 in IndexSetArray1)
-    //        foreach (var indexSet2 in IndexSetArray1)
-    //        {
-    //            (_, result) = indexSet1.EGpIsNegativeId(indexSet2);
-    //        }
-
-    //    return result;
-    //}
 
     [Benchmark]
-    public IndexSet EGp2()
+    public void ShiftIndices1()
     {
-        var result = IndexSet.EmptySet;
+        foreach (var indexSet1 in IndexSetArray1)
+        {
+            indexSet1.ShiftIndices(2);
+        }
+    }
 
+    [Benchmark]
+    public void ShiftIndices2()
+    {
+        foreach (var indexSet1 in IndexSetArray2)
+        {
+            indexSet1.ShiftIndices(2);
+        }
+    }
+    
+    [Benchmark]
+    public void ShiftIndices3()
+    {
+        foreach (var indexSet1 in IndexSetArray3)
+        {
+            indexSet1.ShiftIndices(2);
+        }
+    }
+
+
+    [Benchmark]
+    public void Contains1()
+    {
+        foreach (var indexSet1 in IndexSetArray1)
+        foreach (var indexSet2 in IndexSetArray1)
+        {
+            indexSet1.SetContains(indexSet2);
+        }
+    }
+    
+    [Benchmark]
+    public void Contains2()
+    {
+        foreach (var indexSet1 in IndexSetArray2)
+        foreach (var indexSet2 in IndexSetArray2)
+        {
+            indexSet1.SetContains(indexSet2);
+        }
+    }
+    
+    [Benchmark]
+    public void Contains3()
+    {
+        foreach (var indexSet1 in IndexSetArray3)
+        foreach (var indexSet2 in IndexSetArray3)
+        {
+            indexSet1.SetContains(indexSet2);
+        }
+    }
+
+
+    [Benchmark]
+    public void CompareTo1()
+    {
+        foreach (var indexSet1 in IndexSetArray1)
+            foreach (var indexSet2 in IndexSetArray1)
+            {
+                var _ = indexSet1.CompareTo(indexSet2);
+            }
+    }
+
+    [Benchmark]
+    public void CompareTo2()
+    {
         foreach (var indexSet1 in IndexSetArray2)
             foreach (var indexSet2 in IndexSetArray2)
             {
-                (_, result) = indexSet1.EGpIsNegativeId(indexSet2);
+                var _ = indexSet1.CompareTo(indexSet2);
             }
-
-        return result;
+    }
+    
+    [Benchmark]
+    public void CompareTo3()
+    {
+        foreach (var indexSet1 in IndexSetArray3)
+        foreach (var indexSet2 in IndexSetArray3)
+        {
+            var _ = indexSet1.CompareTo(indexSet2);
+        }
     }
 
-    //[Benchmark]
-    //public void ShiftIndices2()
-    //{
-    //    foreach (var indexSet1 in IndexSetArray2)
-    //    {
-    //        indexSet1.ShiftIndices(2);
-    //    }
-    //}
 
-    //[Benchmark]
-    //public void ShiftIndices3()
-    //{
-    //    foreach (var indexSet1 in IndexSetArray3)
-    //    {
-    //        indexSet1.ShiftIndices(2);
-    //    }
-    //}
+    [Benchmark]
+    public void Overlaps1()
+    {
+        foreach (var indexSet1 in IndexSetArray1)
+            foreach (var indexSet2 in IndexSetArray1)
+            {
+                indexSet1.SetOverlaps(indexSet2);
+            }
+    }
 
-    //[Benchmark]
-    //public void Contains1()
-    //{
-    //    foreach (var indexSet1 in IndexSetArray1)
-    //    foreach (var indexSet2 in IndexSetArray1)
-    //    {
-    //        indexSet1.Contains(indexSet2);
-    //    }
-    //}
+    [Benchmark]
+    public void Overlaps2()
+    {
+        foreach (var indexSet1 in IndexSetArray2)
+            foreach (var indexSet2 in IndexSetArray2)
+            {
+                indexSet1.SetOverlaps(indexSet2);
+            }
+    }
+    
+    [Benchmark]
+    public void Overlaps3()
+    {
+        foreach (var indexSet1 in IndexSetArray3)
+        foreach (var indexSet2 in IndexSetArray3)
+        {
+            indexSet1.SetOverlaps(indexSet2);
+        }
+    }
 
-    //[Benchmark]
-    //public void Contains2()
-    //{
-    //    foreach (var indexSet1 in IndexSetArray2)
-    //    foreach (var indexSet2 in IndexSetArray2)
-    //    {
-    //        indexSet1.Contains(indexSet2);
-    //    }
-    //}
 
-    //[Benchmark]
-    //public void CompareTo1()
-    //{
-    //    foreach (var indexSet1 in IndexSetArray1)
-    //    foreach (var indexSet2 in IndexSetArray1)
-    //    {
-    //        indexSet1.CompareTo(indexSet2);
-    //    }
-    //}
+    [Benchmark]
+    public void Intersect1()
+    {
+        foreach (var indexSet1 in IndexSetArray1)
+            foreach (var indexSet2 in IndexSetArray1)
+            {
+                indexSet1.SetIntersect(indexSet2);
+            }
+    }
 
-    //[Benchmark]
-    //public void CompareTo2()
-    //{
-    //    foreach (var indexSet1 in IndexSetArray2)
-    //    foreach (var indexSet2 in IndexSetArray2)
-    //    {
-    //        indexSet1.CompareTo(indexSet2);
-    //    }
-    //}
+    [Benchmark]
+    public void Intersect2()
+    {
+        foreach (var indexSet1 in IndexSetArray2)
+            foreach (var indexSet2 in IndexSetArray2)
+            {
+                indexSet1.SetIntersect(indexSet2);
+            }
+    }
+    
+    [Benchmark]
+    public void Intersect3()
+    {
+        foreach (var indexSet1 in IndexSetArray3)
+        foreach (var indexSet2 in IndexSetArray3)
+        {
+            indexSet1.SetIntersect(indexSet2);
+        }
+    }
 
-    //[Benchmark]
-    //public void Overlaps1()
-    //{
-    //    foreach (var indexSet1 in IndexSetArray1)
-    //    foreach (var indexSet2 in IndexSetArray1)
-    //    {
-    //        indexSet1.Overlaps(indexSet2);
-    //    }
-    //}
 
-    //[Benchmark]
-    //public void Overlaps2()
-    //{
-    //    foreach (var indexSet1 in IndexSetArray2)
-    //    foreach (var indexSet2 in IndexSetArray2)
-    //    {
-    //        indexSet1.Overlaps(indexSet2);
-    //    }
-    //}
+    [Benchmark]
+    public void Join1()
+    {
+        foreach (var indexSet1 in IndexSetArray1)
+            foreach (var indexSet2 in IndexSetArray1)
+            {
+                indexSet1.SetUnion(indexSet2);
+            }
+    }
 
-    //[Benchmark]
-    //public void Intersect1()
-    //{
-    //    foreach (var indexSet1 in IndexSetArray1)
-    //    foreach (var indexSet2 in IndexSetArray1)
-    //    {
-    //        indexSet1.Intersect(indexSet2);
-    //    }
-    //}
+    [Benchmark]
+    public void Join2()
+    {
+        foreach (var indexSet1 in IndexSetArray2)
+            foreach (var indexSet2 in IndexSetArray2)
+            {
+                indexSet1.SetUnion(indexSet2);
+            }
+    }
+    
+    [Benchmark]
+    public void Join3()
+    {
+        foreach (var indexSet1 in IndexSetArray3)
+        foreach (var indexSet2 in IndexSetArray3)
+        {
+            indexSet1.SetUnion(indexSet2);
+        }
+    }
 
-    //[Benchmark]
-    //public void Intersect2()
-    //{
-    //    foreach (var indexSet1 in IndexSetArray2)
-    //    foreach (var indexSet2 in IndexSetArray2)
-    //    {
-    //        indexSet1.Intersect(indexSet2);
-    //    }
-    //}
 
-    //[Benchmark]
-    //public void Join1()
-    //{
-    //    foreach (var indexSet1 in IndexSetArray1)
-    //    foreach (var indexSet2 in IndexSetArray1)
-    //    {
-    //        indexSet1.Join(indexSet2);
-    //    }
-    //}
+    [Benchmark]
+    public void Difference1()
+    {
+        foreach (var indexSet1 in IndexSetArray1)
+            foreach (var indexSet2 in IndexSetArray1)
+            {
+                indexSet1.SetDifference(indexSet2);
+            }
+    }
 
-    //[Benchmark]
-    //public void Join2()
-    //{
-    //    foreach (var indexSet1 in IndexSetArray2)
-    //    foreach (var indexSet2 in IndexSetArray2)
-    //    {
-    //        indexSet1.Join(indexSet2);
-    //    }
-    //}
+    [Benchmark]
+    public void Difference2()
+    {
+        foreach (var indexSet1 in IndexSetArray2)
+            foreach (var indexSet2 in IndexSetArray2)
+            {
+                indexSet1.SetDifference(indexSet2);
+            }
+    }
+    
+    [Benchmark]
+    public void Difference3()
+    {
+        foreach (var indexSet1 in IndexSetArray3)
+        foreach (var indexSet2 in IndexSetArray3)
+        {
+            indexSet1.SetDifference(indexSet2);
+        }
+    }
 
-    //[Benchmark]
-    //public void Difference1()
-    //{
-    //    foreach (var indexSet1 in IndexSetArray1)
-    //    foreach (var indexSet2 in IndexSetArray1)
-    //    {
-    //        indexSet1.Difference(indexSet2);
-    //    }
-    //}
 
-    //[Benchmark]
-    //public void Difference2()
-    //{
-    //    foreach (var indexSet1 in IndexSetArray2)
-    //    foreach (var indexSet2 in IndexSetArray2)
-    //    {
-    //        indexSet1.Difference(indexSet2);
-    //    }
-    //}
+    [Benchmark]
+    public void SymmetricDifference1()
+    {
+        foreach (var indexSet1 in IndexSetArray1)
+            foreach (var indexSet2 in IndexSetArray1)
+            {
+                indexSet1.SetMerge(indexSet2);
+            }
+    }
 
-    //[Benchmark]
-    //public void SymmetricDifference1()
-    //{
-    //    foreach (var indexSet1 in IndexSetArray1)
-    //    foreach (var indexSet2 in IndexSetArray1)
-    //    {
-    //        indexSet1.SymmetricDifference(indexSet2);
-    //    }
-    //}
+    [Benchmark]
+    public void SymmetricDifference2()
+    {
+        foreach (var indexSet1 in IndexSetArray2)
+            foreach (var indexSet2 in IndexSetArray2)
+            {
+                indexSet1.SetMerge(indexSet2);
+            }
+    }
+    
+    [Benchmark]
+    public void SymmetricDifference3()
+    {
+        foreach (var indexSet1 in IndexSetArray3)
+        foreach (var indexSet2 in IndexSetArray3)
+        {
+            indexSet1.SetMerge(indexSet2);
+        }
+    }
 
-    //[Benchmark]
-    //public void SymmetricDifference2()
-    //{
-    //    foreach (var indexSet1 in IndexSetArray2)
-    //    foreach (var indexSet2 in IndexSetArray2)
-    //    {
-    //        indexSet1.SymmetricDifference(indexSet2);
-    //    }
-    //}
 
-    //[Benchmark]
-    //public void Merge1()
-    //{
-    //    foreach (var indexSet1 in IndexSetArray1)
-    //    foreach (var indexSet2 in IndexSetArray1)
-    //    {
-    //        indexSet1.MergeCountSwapsTrackCommon(indexSet2);
-    //    }
-    //}
+    [Benchmark]
+    public void Merge1()
+    {
+        foreach (var indexSet1 in IndexSetArray1)
+            foreach (var indexSet2 in IndexSetArray1)
+            {
+                indexSet1.SetMergeCountSwapsTrackCommon(indexSet2);
+            }
+    }
 
-    //[Benchmark]
-    //public void Merge2()
-    //{
-    //    foreach (var indexSet1 in IndexSetArray2)
-    //    foreach (var indexSet2 in IndexSetArray2)
-    //    {
-    //        indexSet1.MergeCountSwapsTrackCommon(indexSet2);
-    //    }
-    //}
+    [Benchmark]
+    public void Merge2()
+    {
+        foreach (var indexSet1 in IndexSetArray2)
+            foreach (var indexSet2 in IndexSetArray2)
+            {
+                indexSet1.SetMergeCountSwapsTrackCommon(indexSet2);
+            }
+    }
+    
+    [Benchmark]
+    public void Merge3()
+    {
+        foreach (var indexSet1 in IndexSetArray3)
+        foreach (var indexSet2 in IndexSetArray3)
+        {
+            indexSet1.SetMergeCountSwapsTrackCommon(indexSet2);
+        }
+    }
 }

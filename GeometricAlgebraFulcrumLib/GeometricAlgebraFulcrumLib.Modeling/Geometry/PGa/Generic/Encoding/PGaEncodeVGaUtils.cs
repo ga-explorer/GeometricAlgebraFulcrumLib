@@ -1,7 +1,6 @@
 ﻿using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Multivectors;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Multivectors.Composers;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Generic.Vectors.Space2D;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Generic.Vectors.Space3D;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Generic.Vectors.SpaceND;
@@ -88,7 +87,7 @@ public static class PGaEncodeVGaUtils
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     internal static XGaVector<T> EncodeVGaVectorAsXGaVector<T>(this PGaGeometricSpace<T> pgaGeometricSpace, LinVector<T> mv)
     {
-        var composer = pgaGeometricSpace.ProjectiveProcessor.CreateComposer();
+        var composer = pgaGeometricSpace.ProjectiveProcessor.CreateVectorComposer();
 
         foreach (var (index, scalar) in mv.IndexScalarPairs)
             composer.SetVectorTerm(index + 1, scalar);
@@ -101,7 +100,7 @@ public static class PGaEncodeVGaUtils
     {
         Debug.Assert(mv.Processor.IsEuclidean);
 
-        var composer = pgaGeometricSpace.ProjectiveProcessor.CreateComposer();
+        var composer = pgaGeometricSpace.ProjectiveProcessor.CreateVectorComposer();
 
         foreach (var (index, scalar) in mv.IndexScalarPairs)
             composer.SetVectorTerm(index + 1, scalar);
@@ -116,7 +115,7 @@ public static class PGaEncodeVGaUtils
         Debug.Assert(pgaGeometricSpace.Is3D);
 
         return pgaGeometricSpace.ProjectiveProcessor
-            .CreateComposer()
+            .CreateBivectorComposer()
             .SetBivectorTerm(1, 2, xy)
             .GetBivector();
     }
@@ -127,7 +126,7 @@ public static class PGaEncodeVGaUtils
         Debug.Assert(pgaGeometricSpace.Is3D);
 
         return pgaGeometricSpace.ProjectiveProcessor
-            .CreateComposer()
+            .CreateBivectorComposer()
             .SetBivectorTerm(1, 2, xy)
             .GetBivector();
     }
@@ -138,7 +137,7 @@ public static class PGaEncodeVGaUtils
         Debug.Assert(pgaGeometricSpace.Is3D);
 
         return pgaGeometricSpace.ProjectiveProcessor
-            .CreateComposer()
+            .CreateBivectorComposer()
             .SetBivectorTerm(1, 2, xy)
             .GetBivector();
     }
@@ -149,7 +148,7 @@ public static class PGaEncodeVGaUtils
         Debug.Assert(pgaGeometricSpace.Is3D);
 
         return pgaGeometricSpace.ProjectiveProcessor
-            .CreateComposer()
+            .CreateBivectorComposer()
             .SetBivectorTerm(1, 2, xy)
             .GetBivector();
     }
@@ -160,7 +159,7 @@ public static class PGaEncodeVGaUtils
         Debug.Assert(pgaGeometricSpace.Is3D);
 
         return pgaGeometricSpace.ProjectiveProcessor
-            .CreateComposer()
+            .CreateBivectorComposer()
             .SetBivectorTerm(1, 2, xy)
             .GetBivector();
     }
@@ -171,7 +170,7 @@ public static class PGaEncodeVGaUtils
         Debug.Assert(pgaGeometricSpace.Is3D);
 
         return pgaGeometricSpace.ProjectiveProcessor
-            .CreateComposer()
+            .CreateBivectorComposer()
             .SetBivectorTerm(1, 2, bivector.Xy)
             .GetBivector();
     }
@@ -182,7 +181,7 @@ public static class PGaEncodeVGaUtils
         Debug.Assert(pgaGeometricSpace.Is4D);
 
         return pgaGeometricSpace.ProjectiveProcessor
-            .CreateComposer()
+            .CreateBivectorComposer()
             .SetBivectorTerm(1, 2, xy)
             .SetBivectorTerm(1, 3, xz)
             .SetBivectorTerm(2, 3, yz)
@@ -195,7 +194,7 @@ public static class PGaEncodeVGaUtils
         Debug.Assert(pgaGeometricSpace.Is4D);
 
         return pgaGeometricSpace.ProjectiveProcessor
-            .CreateComposer()
+            .CreateBivectorComposer()
             .SetBivectorTerm(1, 2, bivector.Xy)
             .SetBivectorTerm(1, 3, bivector.Xz)
             .SetBivectorTerm(2, 3, bivector.Yz)
@@ -207,7 +206,7 @@ public static class PGaEncodeVGaUtils
     {
         Debug.Assert(mv.Processor.IsEuclidean);
 
-        var composer = pgaGeometricSpace.ProjectiveProcessor.CreateComposer();
+        var composer = pgaGeometricSpace.ProjectiveProcessor.CreateBivectorComposer();
 
         foreach (var (id, scalar) in mv.IdScalarPairs)
             composer.SetTerm(id.ShiftIndices(1), scalar);
@@ -270,12 +269,12 @@ public static class PGaEncodeVGaUtils
     {
         Debug.Assert(mv.Processor.IsEuclidean);
 
-        var composer = pgaGeometricSpace.ProjectiveProcessor.CreateComposer();
+        var composer = pgaGeometricSpace.ProjectiveProcessor.CreateKVectorComposer(mv.Grade);
 
         foreach (var (id, scalar) in mv.IdScalarPairs)
             composer.SetTerm(id.ShiftIndices(1), scalar);
 
-        return composer.GetKVector(mv.Grade);
+        return composer.GetKVector();
     }
 
 

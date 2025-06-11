@@ -12,7 +12,7 @@ public class DfMonomialPolynomial :
     public static DfMonomialPolynomial CreateZero()
     {
         return new DfMonomialPolynomial(
-            LinFloat64Vector.VectorZero
+            LinFloat64Vector.Zero
         );
     }
 

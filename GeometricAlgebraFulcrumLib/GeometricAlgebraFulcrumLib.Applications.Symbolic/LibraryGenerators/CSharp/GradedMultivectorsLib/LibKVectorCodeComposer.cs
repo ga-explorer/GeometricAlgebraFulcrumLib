@@ -684,7 +684,7 @@ public #class-name# Conjugate()
         if (!Metric.IsDegenerate)
         {
             var eiInv =
-                Metric.CreateBasisPseudoScalarInverse(VSpaceDimensions);
+                Metric.BasisPseudoScalarInverse(VSpaceDimensions);
 
             var termTable = LibUnilinearCombination.Create(
                 KVectorTypes[Grade],
@@ -720,7 +720,7 @@ public #class-name# Dual()
 
         {
             var ei =
-                Metric.CreateBasisPseudoScalar(VSpaceDimensions);
+                Metric.BasisPseudoScalar(VSpaceDimensions);
 
             var termTable = LibUnilinearCombination.Create(
                 KVectorTypes[Grade],

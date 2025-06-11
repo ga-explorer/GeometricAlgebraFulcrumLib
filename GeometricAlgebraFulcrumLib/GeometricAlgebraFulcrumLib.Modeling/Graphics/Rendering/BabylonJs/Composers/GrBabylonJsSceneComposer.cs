@@ -603,7 +603,7 @@ function updateXyCirclePathPoints(path, radius, arcRatio) {
         //        ? 1d : (maxHeight / cylinderHeight);
 
         var quaternion =
-            LinBasisVector3D.Py.VectorToVectorRotationQuaternion(unitDirection);
+            LinBasisVector.Py.VectorToVectorRotationQuaternion(unitDirection);
 
         SceneObject.AddClone(
             $"{visualElement.Name}Cylinder",
@@ -657,7 +657,7 @@ function updateXyCirclePathPoints(path, radius, arcRatio) {
             }
 
             var quaternion =
-                LinBasisVector3D.Py.VectorToVectorRotationQuaternion(unitDirection);
+                LinBasisVector.Py.VectorToVectorRotationQuaternion(unitDirection);
 
             var position =
                 origin - unitDirection * cylinderHeight / 2d;
@@ -989,7 +989,7 @@ function updateXyCirclePathPoints(path, radius, arcRatio) {
         else
         {
             var quaternion =
-                LinBasisVector3D
+                LinBasisVector
                     .Py
                     .VectorToVectorRotationQuaternion(
                         visualElement.Normal.ToUnitLinVector3D()
@@ -1125,7 +1125,7 @@ function updateXyCirclePathPoints(path, radius, arcRatio) {
 
         foreach (var (frameIndex, _, visibility, center, normal, radius) in visualElement.GetKeyFrameRecords())
         {
-            var quaternion = LinBasisVector3D.Pz.VectorToVectorRotationQuaternion(normal.ToUnitLinVector3D());
+            var quaternion = LinBasisVector.Pz.VectorToVectorRotationQuaternion(normal.ToUnitLinVector3D());
 
             keyVisibility.SetKeyFrameValue(frameIndex, visibility);
             keyRadius.SetKeyFrameValue(frameIndex, radius);
@@ -1212,7 +1212,7 @@ updateXyCirclePathPoints({visualElement.Name}Points, {visualElement.Name}Tube.ci
 
         foreach (var (frameIndex, _, visibility, center, normal, radius) in visualElement.GetKeyFrameRecords())
         {
-            var quaternion = LinBasisVector3D.Pz.VectorToVectorRotationQuaternion(normal.ToUnitLinVector3D());
+            var quaternion = LinBasisVector.Pz.VectorToVectorRotationQuaternion(normal.ToUnitLinVector3D());
             var scaling = LinFloat64Vector3D.Create(
                 radius,
                 radius,
@@ -1295,7 +1295,7 @@ updateXyCirclePathPoints({visualElement.Name}Points, {visualElement.Name}Tube.ci
 
         foreach (var (frameIndex, _, visibility, center, normal, radius) in visualElement.GetKeyFrameRecords())
         {
-            var quaternion = LinBasisVector3D.Pz.VectorToVectorRotationQuaternion(normal.ToUnitLinVector3D());
+            var quaternion = LinBasisVector.Pz.VectorToVectorRotationQuaternion(normal.ToUnitLinVector3D());
             var scaling = LinFloat64Vector3D.Create(
                 radius,
                 radius,
@@ -2895,7 +2895,7 @@ updateXyCirclePathPoints({visualElement.Name}Points, {visualElement.Name}Tube.ci
     {
         var normal = visualElement.Normal.ToUnitLinVector3D();
 
-        var quaternion = LinBasisVector3D.Py.VectorToVectorRotationQuaternion(normal);
+        var quaternion = LinBasisVector.Py.VectorToVectorRotationQuaternion(normal);
 
         SceneObject.AddClone(
             $"{visualElement.Name}Sphere",
@@ -2945,7 +2945,7 @@ updateXyCirclePathPoints({visualElement.Name}Points, {visualElement.Name}Tube.ci
     {
         var normal = visualElement.Normal.ToUnitLinVector3D();
 
-        var quaternion = LinBasisVector3D.Pz.VectorToVectorRotationQuaternion(normal);
+        var quaternion = LinBasisVector.Pz.VectorToVectorRotationQuaternion(normal);
 
         SceneObject.AddClone(
             $"{visualElement.Name}Disc",
@@ -3018,7 +3018,7 @@ updateXyCirclePathPoints({visualElement.Name}Points, {visualElement.Name}Tube.ci
 
         foreach (var (frameIndex, _, visibility, center, normal, radius) in visualElement.GetKeyFrameRecords())
         {
-            var quaternion = LinBasisVector3D.Py.VectorToVectorRotationQuaternion(normal.ToUnitLinVector3D());
+            var quaternion = LinBasisVector.Py.VectorToVectorRotationQuaternion(normal.ToUnitLinVector3D());
             var scaling = LinFloat64Vector3D.Create(radius,
                 thickStyle.Thickness * 0.5d,
                 radius);
@@ -3099,7 +3099,7 @@ updateXyCirclePathPoints({visualElement.Name}Points, {visualElement.Name}Tube.ci
 
         foreach (var (frameIndex, _, visibility, center, normal, radius) in visualElement.GetKeyFrameRecords())
         {
-            var quaternion = LinBasisVector3D.Pz.VectorToVectorRotationQuaternion(normal.ToUnitLinVector3D());
+            var quaternion = LinBasisVector.Pz.VectorToVectorRotationQuaternion(normal.ToUnitLinVector3D());
             var scaling = LinFloat64Vector3D.Create(radius,
                 radius,
                 1d);
@@ -3252,7 +3252,7 @@ updateXyCirclePathPoints({visualElement.Name}Points, {visualElement.Name}Tube.ci
         }
 
         var qYx =
-            LinBasisVector3D.Py.VectorToVectorRotationQuaternion(LinBasisVector3D.Px);
+            LinBasisVector.Py.VectorToVectorRotationQuaternion(LinBasisVector.Px);
 
         SceneObject.AddDisc(
             $"{visualElement.Name}Disc1",
@@ -3535,7 +3535,7 @@ updateXyCirclePathPoints({visualElement.Name}Points1, {visualElement.Name}Ribbon
     {
         var normal = visualElement.Normal.ToUnitLinVector3D();
 
-        var quaternion = LinBasisVector3D.Py.VectorToVectorRotationQuaternion(normal);
+        var quaternion = LinBasisVector.Py.VectorToVectorRotationQuaternion(normal);
 
         var diameter =
             visualElement.MaxRadius + visualElement.MinRadius;

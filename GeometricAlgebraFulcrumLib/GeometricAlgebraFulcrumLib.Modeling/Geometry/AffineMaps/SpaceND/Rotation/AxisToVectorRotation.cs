@@ -10,7 +10,7 @@
 //    public sealed class AxisToVectorRotation :
 //        VectorToVectorRotationLinearMap
 //    {
-//        public LinSignedBasisVector SourceAxis { get; }
+//        public LinBasisVector SourceAxis { get; }
 
 //        public override Float64Tuple SourceVector { get; }
 
@@ -31,7 +31,7 @@
 //            );
 
 //            var dimensions = v.ScalarArray.Length;
-//            SourceAxis = new LinSignedBasisVector(uAxisIndex, uAxisNegative);
+//            SourceAxis = new LinBasisVector(uAxisIndex, uAxisNegative);
 //            SourceVector = SourceAxis.ToTuple(dimensions);
 //            TargetVector = v;
 

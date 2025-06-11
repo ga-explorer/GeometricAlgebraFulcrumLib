@@ -1,4 +1,5 @@
 ﻿using System.Runtime.CompilerServices;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Multivectors;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Frames;
 
@@ -102,4 +103,28 @@ public sealed class XGaVectorFrameSpecs
     /// All pairs of frame vectors have the same scalar product
     /// </summary>
     public bool? EqualScalarProduct { get; init; }
+
+
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public XGaVectorFrame<T> CreateVectorFrame<T>(XGaVector<T> vector1, XGaVector<T> vector2)
+    {
+        return XGaVectorFrame<T>.Create(
+            this,
+            [vector1, vector2]
+        );
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public XGaVectorFrame<T> CreateVectorFrame<T>(params XGaVector<T>[] vectorsList)
+    {
+        return XGaVectorFrame<T>.Create(this, vectorsList);
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public XGaVectorFrame<T> CreateVectorFrame<T>(IEnumerable<XGaVector<T>> vectorsList)
+    {
+        return XGaVectorFrame<T>.Create(this, vectorsList);
+    }
+
 }

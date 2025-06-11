@@ -1,7 +1,7 @@
-﻿using System.Runtime.CompilerServices;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Multivectors.Composers;
-using GeometricAlgebraFulcrumLib.Algebra.Scalars.Generic;
+﻿using GeometricAlgebraFulcrumLib.Algebra.Scalars.Generic;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Tuples;
+using System.Diagnostics;
+using System.Runtime.CompilerServices;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Multivectors;
 
@@ -241,33 +241,49 @@ public abstract partial class XGaKVector<T>
     }
         
         
-    public abstract XGaKVector<T> Op(XGaKVector<T> mv2);
-
-    public abstract XGaKVector<T> ELcp(XGaKVector<T> mv2);
-        
-    public abstract XGaKVector<T> Lcp(XGaKVector<T> mv2);
-
-    public abstract XGaKVector<T> ERcp(XGaKVector<T> mv2);
-
-    public abstract XGaKVector<T> Rcp(XGaKVector<T> mv2);
-        
-    public abstract XGaScalar<T> ESp(XGaKVector<T> mv2);
-
-    public abstract XGaScalar<T> Sp(XGaKVector<T> mv2);
-
-    
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public XGaKVector<T> Fdp(XGaKVector<T> mv2)
+    public XGaKVector<T> AddSameGrade(XGaKVector<T> mv2)
     {
-        if (IsZero || mv2.IsZero)
-            return Processor.ScalarZero;
+        Debug.Assert(Grade == mv2.Grade);
 
-        var grade = Math.Abs(Grade - mv2.Grade);
-
-        return Processor
-            .CreateComposer()
-            .AddFdpTerms(this, mv2)
-            .GetKVector(grade);
+        return this switch
+        {
+            XGaScalar<T> mv1 => mv1.Add((XGaScalar<T>) mv2),
+            XGaVector<T> mv1 => mv1.Add((XGaVector<T>) mv2),
+            XGaBivector<T> mv1 => mv1.Add((XGaBivector<T>) mv2),
+            XGaHigherKVector<T> mv1 => mv1.AddSameGrade((XGaHigherKVector<T>) mv2),
+            _ => throw new InvalidOperationException()
+        };
     }
 
+    //public abstract XGaKVector<T> Op(XGaKVector<T> mv2);
+
+    //public abstract XGaKVector<T> ELcp(XGaKVector<T> mv2);
+        
+    //public abstract XGaKVector<T> Lcp(XGaKVector<T> mv2);
+
+    //public abstract XGaKVector<T> ERcp(XGaKVector<T> mv2);
+
+    //public abstract XGaKVector<T> Rcp(XGaKVector<T> mv2);
+        
+    //public abstract XGaScalar<T> ESp(XGaKVector<T> mv2);
+
+    //public abstract XGaScalar<T> Sp(XGaKVector<T> mv2);
+
+    
+    //[MethodImpl(MethodImplOptions.AggressiveInlining)]
+    //public XGaKVector<T> Fdp(XGaKVector<T> mv2)
+    //{
+    //    if (IsZero || mv2.IsZero)
+    //        return Processor.ScalarZero;
+
+    //    var grade = Math.Abs(Grade - mv2.Grade);
+
+    //    return Processor
+    //        .CreateComposer()
+    //        .AddFdpTerms(this, mv2)
+    //        .GetKVector(grade);
+    //}
+    
+    
 }

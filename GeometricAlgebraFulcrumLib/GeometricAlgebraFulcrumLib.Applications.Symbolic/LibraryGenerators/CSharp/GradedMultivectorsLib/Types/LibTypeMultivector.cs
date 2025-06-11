@@ -29,7 +29,7 @@ public sealed class LibTypeMultivector :
     {
         return GaSpaceDimensions
             .GetRange(id =>
-                Metric.CreateBasisBlade((IndexSet)id)
+                Metric.BasisBlade((IndexSet)id)
             ).ToImmutableArray();
     }
 

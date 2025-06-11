@@ -1,11 +1,8 @@
 ﻿using System.Collections.Immutable;
 using System.Diagnostics;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivectors.Composers;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Processors;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.LinearMaps.Outermorphisms;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.LinearMaps.Rotors;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Multivectors;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Multivectors.Composers;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Processors;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Basis;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Angles;
@@ -161,7 +158,7 @@ public static class SymmetricalComponentsSamples
             processor.VectorSymmetric(3).DivideByENorm();
 
         var skr =
-            k.CreatePureRotorToAxis(LinSignedBasisVector.Pz, true);
+            k.CreatePureRotorToAxis(LinBasisVector.Pz, true);
 
         var r2 = e2.Op(e1).CreatePureRotor(
             @$"2 * Pi / 24".RadiansToPolarAngle(processor.ScalarProcessor)

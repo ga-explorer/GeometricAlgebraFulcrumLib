@@ -11,7 +11,7 @@ namespace GeometricAlgebraFulcrumLib.Applications.Symbolic.LibraryGenerators.CSh
 internal sealed class ApplyVersorMethodFileComposer : 
     GaFuLLibraryMetaContextFileComposerBase
 {
-    private IXGaSubspace<IMetaExpressionAtomic> _subspace;
+    private XGaSubspace<IMetaExpressionAtomic> _subspace;
     private XGaKVector<IMetaExpressionAtomic> _inputKVector;
     private XGaKVector<IMetaExpressionAtomic> _outputKVector;
     private readonly GaFuLLanguageOperationSpecs _operationSpecs;

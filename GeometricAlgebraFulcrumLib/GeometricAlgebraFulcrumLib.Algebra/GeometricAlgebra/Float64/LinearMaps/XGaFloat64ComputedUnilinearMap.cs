@@ -1,7 +1,6 @@
 ﻿using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivectors;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivectors.Composers;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Processors;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.IndexSets;
 
@@ -52,7 +51,7 @@ public class XGaFloat64ComputedUnilinearMap :
 
     public XGaFloat64Multivector Map(XGaFloat64Multivector multivector)
     {
-        var composer = Processor.CreateComposer();
+        var composer = Processor.CreateMultivectorComposer();
 
         foreach (var (id, scalar) in multivector)
         {
@@ -61,7 +60,7 @@ public class XGaFloat64ComputedUnilinearMap :
             if (mv.IsZero)
                 continue;
 
-            composer.AddMultivector(mv, scalar);
+            composer.AddMultivectorScaled(mv, scalar);
         }
 
         return composer.GetSimpleMultivector();

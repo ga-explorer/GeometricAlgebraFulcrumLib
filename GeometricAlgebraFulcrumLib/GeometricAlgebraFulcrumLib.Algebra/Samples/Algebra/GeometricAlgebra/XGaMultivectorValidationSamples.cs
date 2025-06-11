@@ -2,7 +2,6 @@
 using System.Diagnostics;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivectors;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivectors.Composers;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Processors;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Multivectors;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
@@ -21,8 +20,8 @@ public static class XGaMultivectorValidationSamples
         var set1 = IndexSet.CreateTriplet(3, 7, 9);
         var set2 = IndexSet.CreateTriplet(3, 6, 9);
 
-        var kv1 = metric.CreateBasisBlade(set1);
-        var kv2 = metric.CreateBasisBlade(set2);
+        var kv1 = metric.BasisBlade(set1);
+        var kv2 = metric.BasisBlade(set2);
 
         var hashCode1 = set1.GetHashCode();
         var hashCode2 = set2.GetHashCode();
@@ -90,7 +89,7 @@ public static class XGaMultivectorValidationSamples
         var m = 1UL << n;
 
         var metric2 = XGaFloat64Processor.Euclidean;
-        IXGaSignedBasisBlade egpTableItem2 =
+        var egpTableItem2 =
             metric2.EGp(IndexSet.EmptySet, IndexSet.EmptySet); // For initializing internal lookup tables
 
         var basisBladeIdList2 =
@@ -113,7 +112,7 @@ public static class XGaMultivectorValidationSamples
 
 
         var metric1 = XGaFloat64Processor.Euclidean;
-        IXGaSignedBasisBlade egpTableItem1 =
+        var egpTableItem1 =
             metric1.EGp(IndexSet.EmptySet, IndexSet.EmptySet); // For initializing internal lookup tables
 
         var basisBladeIdList1 =

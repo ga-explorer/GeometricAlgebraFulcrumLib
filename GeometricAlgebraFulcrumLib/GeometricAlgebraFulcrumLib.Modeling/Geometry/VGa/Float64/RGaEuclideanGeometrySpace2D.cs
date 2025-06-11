@@ -1,7 +1,6 @@
 ﻿using System.Numerics;
 using System.Runtime.CompilerServices;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivectors;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivectors.Composers;
 
 
 namespace GeometricAlgebraFulcrumLib.Modeling.Geometry.VGa.Float64;
@@ -36,7 +35,7 @@ public class XGaEuclideanGeometrySpace2D :
     public XGaFloat64Multivector EncodeComplex(double scalar, double iScalar)
     {
         return Processor
-            .CreateComposer()
+            .CreateMultivectorComposer()
             .SetScalarTerm(scalar)
             .SetBivectorTerm(0, 1, -iScalar)
             .GetSimpleMultivector();

@@ -67,7 +67,7 @@ public class RandomEuclideanVectorsComposer
 
     public LinFloat64Vector2D GetRandomUnitVector2Dp()
     {
-        var phi = PhiMin + RandomGenerator.GetNumber() * PhiRange;
+        var phi = PhiMin + RandomGenerator.GetFloat64() * PhiRange;
         var cosPhi = Math.Cos(phi);
         var sinPhi = Math.Sin(phi);
 
@@ -77,8 +77,8 @@ public class RandomEuclideanVectorsComposer
 
     public LinFloat64Vector2D GetRandomVector2Dp()
     {
-        var r = RMin + RandomGenerator.GetNumber() * RRange;
-        var phi = PhiMin + RandomGenerator.GetNumber() * PhiRange;
+        var r = RMin + RandomGenerator.GetFloat64() * RRange;
+        var phi = PhiMin + RandomGenerator.GetFloat64() * PhiRange;
         var cosPhi = Math.Cos(phi);
         var sinPhi = Math.Sin(phi);
 
@@ -88,8 +88,8 @@ public class RandomEuclideanVectorsComposer
 
     public LinFloat64Vector3D GetRandomUnitVector3Dp()
     {
-        var theta = ThetaMin + RandomGenerator.GetNumber() * ThetaRange;
-        var phi = PhiMin + RandomGenerator.GetNumber() * PhiRange;
+        var theta = ThetaMin + RandomGenerator.GetFloat64() * ThetaRange;
+        var phi = PhiMin + RandomGenerator.GetFloat64() * PhiRange;
         var cosTheta = Math.Cos(theta);
         var sinTheta = Math.Sin(theta);
         var cosPhi = Math.Cos(phi);
@@ -102,9 +102,9 @@ public class RandomEuclideanVectorsComposer
 
     public LinFloat64Vector3D GetRandomVector3Dp()
     {
-        var r = RMin + RandomGenerator.GetNumber() * RRange;
-        var theta = ThetaMin + RandomGenerator.GetNumber() * ThetaRange;
-        var phi = PhiMin + RandomGenerator.GetNumber() * PhiRange;
+        var r = RMin + RandomGenerator.GetFloat64() * RRange;
+        var theta = ThetaMin + RandomGenerator.GetFloat64() * ThetaRange;
+        var phi = PhiMin + RandomGenerator.GetFloat64() * PhiRange;
         var cosTheta = Math.Cos(theta);
         var sinTheta = Math.Sin(theta);
         var cosPhi = Math.Cos(phi);

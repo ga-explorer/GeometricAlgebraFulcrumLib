@@ -14,12 +14,12 @@ public static class QuaternionRotationSample
     {
         var axisList = new[]
         {
-            LinBasisVector3D.Px,
-            LinBasisVector3D.Py,
-            LinBasisVector3D.Pz,
-            LinBasisVector3D.Nx,
-            LinBasisVector3D.Ny,
-            LinBasisVector3D.Nz
+            LinBasisVector.Px,
+            LinBasisVector.Py,
+            LinBasisVector.Pz,
+            LinBasisVector.Nx,
+            LinBasisVector.Ny,
+            LinBasisVector.Nz
         };
 
         var axisNameList = new[]
@@ -62,12 +62,19 @@ public static class QuaternionRotationSample
                 }
                 else if (axis1.IsOppositeTo(axis2))
                 {
-                    var rotationAxis = axis1 switch
-                    {
-                        LinBasisVector3D.Px or LinBasisVector3D.Nx => LinFloat64Vector3D.E3,
-                        LinBasisVector3D.Py or LinBasisVector3D.Ny => LinFloat64Vector3D.E1,
-                        _ => LinFloat64Vector3D.E2
-                    };
+                    LinFloat64Vector3D? rotationAxis;
+
+                    if (axis1 == LinBasisVector.Px || axis1 == LinBasisVector.Nx)
+                        rotationAxis = LinFloat64Vector3D.E3;
+
+                    else if (axis1 == LinBasisVector.Py || axis1 == LinBasisVector.Ny)
+                        rotationAxis = LinFloat64Vector3D.E1;
+
+                    else if (axis1 == LinBasisVector.Pz || axis1 == LinBasisVector.Nz)
+                        rotationAxis = LinFloat64Vector3D.E2;
+
+                    else
+                        throw new InvalidOperationException();
 
                     var q = rotationAxis.RotationAxisAngleToQuaternion(LinFloat64PolarAngle.Angle180);
 
@@ -105,12 +112,12 @@ public static class QuaternionRotationSample
     {
         var axisList = new[]
         {
-            LinBasisVector3D.Px,
-            LinBasisVector3D.Py,
-            LinBasisVector3D.Pz,
-            LinBasisVector3D.Nx,
-            LinBasisVector3D.Ny,
-            LinBasisVector3D.Nz
+            LinBasisVector.Px,
+            LinBasisVector.Py,
+            LinBasisVector.Pz,
+            LinBasisVector.Nx,
+            LinBasisVector.Ny,
+            LinBasisVector.Nz
         };
 
         for (var i1 = 0; i1 < 6; i1++)
@@ -147,12 +154,12 @@ public static class QuaternionRotationSample
         var k = LinFloat64Vector3D.Create(1, 1, 1);
         var vectorList = new[]
         {
-            (LinBasisVector3D.Px.ToLinVector3D() + k).ToUnitLinVector3D(),
-            (LinBasisVector3D.Py.ToLinVector3D() + k).ToUnitLinVector3D(),
-            (LinBasisVector3D.Pz.ToLinVector3D() + k).ToUnitLinVector3D(),
-            (LinBasisVector3D.Nx.ToLinVector3D() - k).ToUnitLinVector3D(),
-            (LinBasisVector3D.Ny.ToLinVector3D() - k).ToUnitLinVector3D(),
-            (LinBasisVector3D.Nz.ToLinVector3D() - k).ToUnitLinVector3D()
+            (LinBasisVector.Px.ToLinVector3D() + k).ToUnitLinVector3D(),
+            (LinBasisVector.Py.ToLinVector3D() + k).ToUnitLinVector3D(),
+            (LinBasisVector.Pz.ToLinVector3D() + k).ToUnitLinVector3D(),
+            (LinBasisVector.Nx.ToLinVector3D() - k).ToUnitLinVector3D(),
+            (LinBasisVector.Ny.ToLinVector3D() - k).ToUnitLinVector3D(),
+            (LinBasisVector.Nz.ToLinVector3D() - k).ToUnitLinVector3D()
         };
 
         for (var i1 = 0; i1 < 6; i1++)
@@ -193,23 +200,23 @@ public static class QuaternionRotationSample
     {
         var axisList = new[]
         {
-            LinBasisVector3D.Px,
-            LinBasisVector3D.Py,
-            LinBasisVector3D.Pz,
-            LinBasisVector3D.Nx,
-            LinBasisVector3D.Ny,
-            LinBasisVector3D.Nz
+            LinBasisVector.Px,
+            LinBasisVector.Py,
+            LinBasisVector.Pz,
+            LinBasisVector.Nx,
+            LinBasisVector.Ny,
+            LinBasisVector.Nz
         };
 
         var k = LinFloat64Vector3D.Create(1, 1, 1);
         var vectorList = new[]
         {
-            (LinBasisVector3D.Px.ToLinVector3D() + k).ToUnitLinVector3D(),
-            (LinBasisVector3D.Py.ToLinVector3D() + k).ToUnitLinVector3D(),
-            (LinBasisVector3D.Pz.ToLinVector3D() + k).ToUnitLinVector3D(),
-            (LinBasisVector3D.Nx.ToLinVector3D() - k).ToUnitLinVector3D(),
-            (LinBasisVector3D.Ny.ToLinVector3D() - k).ToUnitLinVector3D(),
-            (LinBasisVector3D.Nz.ToLinVector3D() - k).ToUnitLinVector3D()
+            (LinBasisVector.Px.ToLinVector3D() + k).ToUnitLinVector3D(),
+            (LinBasisVector.Py.ToLinVector3D() + k).ToUnitLinVector3D(),
+            (LinBasisVector.Pz.ToLinVector3D() + k).ToUnitLinVector3D(),
+            (LinBasisVector.Nx.ToLinVector3D() - k).ToUnitLinVector3D(),
+            (LinBasisVector.Ny.ToLinVector3D() - k).ToUnitLinVector3D(),
+            (LinBasisVector.Nz.ToLinVector3D() - k).ToUnitLinVector3D()
         };
 
         for (var i1 = 0; i1 < 6; i1++)

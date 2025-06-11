@@ -11,15 +11,21 @@ public sealed class LinFloat64AxisToVectorRotation :
     LinFloat64PlanarRotation
 {
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64AxisToVectorRotation CreateFromSpanningVector(ILinSignedBasisVector basisAxis1, LinFloat64Vector spanningVector2, LinFloat64PolarAngle rotationAngle)
+    public static LinFloat64AxisToVectorRotation CreateFromSpanningVector(LinBasisVector basisAxis1, LinFloat64Vector spanningVector2, LinFloat64PolarAngle rotationAngle)
     {
         Debug.Assert(
             !spanningVector2.IsNearParallelTo(basisAxis1)
         );
 
+        var vSpaceDimensions = 
+            Math.Max(
+                basisAxis1.VSpaceDimensions, 
+                spanningVector2.VSpaceDimensions
+            );
+
         var basisVector2 =
             spanningVector2.IsNearOppositeToUnit(basisAxis1)
-                ? basisAxis1.GetUnitNormal()
+                ? basisAxis1.GetUnitNormal(vSpaceDimensions).ToLinVector()
                 : spanningVector2.RejectOnUnitVector(basisAxis1).ToUnitLinVector();
 
         return new LinFloat64AxisToVectorRotation(
@@ -30,7 +36,7 @@ public sealed class LinFloat64AxisToVectorRotation :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64AxisToVectorRotation CreateFromOrthogonalVector(ILinSignedBasisVector basisAxis1, LinFloat64Vector spanningVector2, LinFloat64PolarAngle rotationAngle)
+    public static LinFloat64AxisToVectorRotation CreateFromOrthogonalVector(LinBasisVector basisAxis1, LinFloat64Vector spanningVector2, LinFloat64PolarAngle rotationAngle)
     {
         var basisVector2 = spanningVector2.DivideByENorm();
 
@@ -42,7 +48,7 @@ public sealed class LinFloat64AxisToVectorRotation :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64AxisToVectorRotation CreateFromOrthonormalVector(ILinSignedBasisVector basisAxis1, LinFloat64Vector basisVector2, LinFloat64PolarAngle rotationAngle)
+    public static LinFloat64AxisToVectorRotation CreateFromOrthonormalVector(LinBasisVector basisAxis1, LinFloat64Vector basisVector2, LinFloat64PolarAngle rotationAngle)
     {
         return new LinFloat64AxisToVectorRotation(
             basisAxis1,
@@ -52,17 +58,23 @@ public sealed class LinFloat64AxisToVectorRotation :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64AxisToVectorRotation CreateFromRotatedVector(ILinSignedBasisVector basisAxis1, LinFloat64Vector rotatedVector, bool useShortArc = true)
+    public static LinFloat64AxisToVectorRotation CreateFromRotatedVector(LinBasisVector basisAxis1, LinFloat64Vector rotatedVector, bool useShortArc = true)
     {
         var rotationAngle =
             useShortArc
                 ? rotatedVector.GetAngleWithUnit(basisAxis1)
                 : LinFloat64DirectedAngle.Angle360.AngleSubtract(rotatedVector.GetAngleWithUnit(basisAxis1).RadiansValue).ToPolarAngle();
+        
+        var vSpaceDimensions = 
+            Math.Max(
+                basisAxis1.VSpaceDimensions, 
+                rotatedVector.VSpaceDimensions
+            );
 
         if (rotationAngle.IsNearStraight() || rotationAngle.IsNearZeroOrFull())
             return new LinFloat64AxisToVectorRotation(
                 basisAxis1,
-                basisAxis1.GetUnitNormal(),
+                basisAxis1.GetUnitNormal(vSpaceDimensions).ToLinVector(),
                 rotationAngle
             );
 
@@ -79,14 +91,14 @@ public sealed class LinFloat64AxisToVectorRotation :
     }
 
 
-    public ILinSignedBasisVector BasisAxis1 { get; }
+    public LinBasisVector BasisAxis1 { get; }
 
     public override LinFloat64Vector BasisVector1 { get; }
 
     public override LinFloat64Vector BasisVector2 { get; }
 
 
-    private LinFloat64AxisToVectorRotation(ILinSignedBasisVector basisAxis1, LinFloat64Vector basisVector2, LinFloat64PolarAngle rotationAngle)
+    private LinFloat64AxisToVectorRotation(LinBasisVector basisAxis1, LinFloat64Vector basisVector2, LinFloat64PolarAngle rotationAngle)
         : base(rotationAngle)
     {
         BasisAxis1 = basisAxis1;
@@ -107,7 +119,7 @@ public sealed class LinFloat64AxisToVectorRotation :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public override Pair<double> BasisESp(ILinSignedBasisVector axis)
+    public override Pair<double> BasisESp(LinBasisVector axis)
     {
         return new Pair<double>(
             axis.Index == BasisAxis1.Index ? (axis.Sign * BasisAxis1.Sign).ToFloat64() : 0d,

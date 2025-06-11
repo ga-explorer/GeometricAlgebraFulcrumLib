@@ -1,9 +1,10 @@
 ﻿using System.Collections;
 using System.Runtime.CompilerServices;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.LinearMaps.Outermorphisms;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.LinearMaps.Rotors;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivectors;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivectors.Composers;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Processors;
+using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.BitManipulation;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Frames;
@@ -126,6 +127,47 @@ public class XGaFloat64BasisVectorFrame :
                 .ToArray();
 
         return new XGaFloat64BasisVectorFrame(vectorArray);
+    }
+
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public XGaFloat64BasisKVectorFrame CreateBasisKVectorFrame()
+    {
+        return XGaFloat64BasisKVectorFrame.CreateFrom(this);
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public XGaFloat64BasisMultivectorFrame CreateBasisMultivectorFrame()
+    {
+        return XGaFloat64BasisMultivectorFrame.CreateFrom(this);
+    }
+
+
+    /// <summary>
+    /// See paper "Calculation of Elements of Spin Groups Using Method
+    /// of Averaging in Clifford’s Geometric Algebra"
+    /// </summary>
+    /// <param name="targetFrame"></param>
+    /// <returns></returns>
+    public XGaFloat64Rotor CreateRotorToFrame(XGaFloat64BasisVectorFrame targetFrame)
+    {
+        var metric = Processor;
+
+        var mvFrame1 = CreateBasisKVectorFrame().MapAsBasisUsing(mv => mv.Inverse());
+        var mvFrame2 = targetFrame.CreateBasisKVectorFrame();
+
+        var rotorMultivector =
+            mvFrame2
+                .Zip(mvFrame1)
+                .Select(vectorPair => vectorPair.First.Gp(vectorPair.Second))
+                .Aggregate(
+                    (XGaFloat64Multivector) metric.GradedMultivectorZero,
+                    (mv1, mv2) => mv1.Add(mv2)
+                );
+
+        rotorMultivector /= rotorMultivector.Sp(rotorMultivector.Reverse()).Sqrt().ScalarValue;
+
+        return XGaFloat64Rotor.Create(rotorMultivector);
     }
 
 

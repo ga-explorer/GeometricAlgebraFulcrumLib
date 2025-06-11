@@ -3,9 +3,7 @@ using GeometricAlgebraFulcrumLib.Algebra.ComplexAlgebra;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.LinearMaps.Outermorphisms;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.LinearMaps.Rotors;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivectors;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivectors.Composers;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Processors;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Subspaces;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Angles;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Matrices;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
@@ -33,7 +31,7 @@ public static class SymmetricHarmonicsNumericSample
 
     public static void ValidatePhasor(int k, int n, XGaFloat64Vector phasor2, LinFloat64PolarAngle theta)
     {
-        var composer = GeometricProcessor.CreateComposer();
+        var composer = GeometricProcessor.CreateVectorComposer();
 
         for (var i = 0; i < n; i++)
         {
@@ -41,7 +39,7 @@ public static class SymmetricHarmonicsNumericSample
                 ? theta.AngleTimes(k)
                 : theta.AngleTimes(k).AngleSubtract(LinFloat64Angle.Angle360Radians * i / n);
 
-            composer.SetTerm((ulong)i, angle.RadiansValue);
+            composer.SetVectorTerm(i, angle.RadiansValue);
         }
 
         var phasor1 =
@@ -81,12 +79,12 @@ public static class SymmetricHarmonicsNumericSample
             ? theta.AngleTimes(k)
             : theta.AngleTimes(k).AngleSubtract(LinFloat64Angle.Angle360Radians * i / n);
 
-        var rotor = GeometricProcessor.CreateGivensRotor(
+        var rotor = GeometricProcessor.GivensRotor(
             i, n, angle
         );
 
         var phasor1 =
-            rotor.OmMap(muStorage);
+            rotor.OmMap(muStorage).GetVectorPart();
 
         var phasor2 =
             muSubspace.Project(phasor1);
@@ -194,7 +192,7 @@ public static class SymmetricHarmonicsNumericSample
             var clarkeMap =
                 //GeoEuclideanSimpleRotor<double>.Create(v1, v2, e1, e2);
                 //ScalarProcessor.CreateSimpleKirchhoffRotor(n);
-                GeometricProcessor.CreateClarkeRotationMap(n);
+                GeometricProcessor.ClarkeRotationOutermorphism(n);
 
             var clarkeArray =
                 clarkeMap.GetVectorMapArray(n);
@@ -268,7 +266,7 @@ public static class SymmetricHarmonicsNumericSample
             }
 
             var rotorsSequence =
-                XGaFloat64PureRotorsSequence.Create(rotorsArray);
+                XGaFloat64PureRotorSequence.Create(rotorsArray);
 
             Console.WriteLine($"Final Rotor");
             Console.WriteLine(

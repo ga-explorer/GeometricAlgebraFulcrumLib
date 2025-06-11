@@ -1,51 +1,15 @@
-﻿using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Basis;
-using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Angles;
-using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using System.Numerics;
 using System.Runtime.CompilerServices;
-using GeometricAlgebraFulcrumLib.Utilities.Structures.Tuples;
+using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Basis;
+using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Angles;
+using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space3D
 {
     public static class LinFloat64RotationUtils
     {
-        /// <summary>
-        /// Create a rotation quaternion given an axis and angle of rotation
-        /// </summary>
-        /// <param name="angle"></param>
-        /// <param name="axis"></param>
-        /// <returns></returns>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static LinFloat64Quaternion RotationAngleAxisToQuaternion(this LinFloat64Angle angle, LinBasisVector3D axis)
-        {
-            return LinFloat64Quaternion.CreateFromAxisAngle(axis, angle);
-        }
-
-        /// <summary>
-        /// Create a rotation quaternion given an axis and angle of rotation
-        /// </summary>
-        /// <param name="angle"></param>
-        /// <param name="axis"></param>
-        /// <returns></returns>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static LinFloat64Quaternion RotationAngleAxisToQuaternion(this LinFloat64Angle angle, ILinFloat64Vector3D axis)
-        {
-            return LinFloat64Quaternion.CreateFromAxisAngle(axis, angle);
-        }
         
-        /// <summary>
-        /// Create a rotation quaternion given an axis and angle of rotation
-        /// </summary>
-        /// <param name="axis"></param>
-        /// <param name="angle"></param>
-        /// <returns></returns>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static LinFloat64Quaternion RotationAxisAngleToQuaternion(this LinBasisVector3D axis, LinFloat64Angle angle)
-        {
-            return LinFloat64Quaternion.CreateFromAxisAngle(axis, angle);
-        }
-
         /// <summary>
         /// Create a rotation quaternion given an axis and angle of rotation
         /// </summary>
@@ -176,51 +140,14 @@ namespace GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space
         }
         
 
-        public static LinFloat64Vector3D VectorToVectorRotationVector(this LinBasisVector3D srcVector, ILinFloat64Vector3D dstVector)
-        {
-            var (u, a) =
-                srcVector.VectorToVectorRotationAxisAngle(dstVector);
-
-            return u.VectorTimes(a.RadiansValue / (Math.Tau));
-        }
-
         public static LinFloat64Vector3D VectorToVectorRotationVector(this ILinFloat64Vector3D srcVector, ILinFloat64Vector3D dstVector)
         {
             var (u, a) =
                 srcVector.VectorToVectorRotationAxisAngle(dstVector);
 
-            return u.VectorTimes(a.RadiansValue / (Math.Tau));
+            return u.VectorTimes(a.RadiansValue / Math.Tau);
         }
 
-
-        public static Tuple<LinFloat64Vector3D, LinFloat64Angle> VectorToVectorRotationAxisAngle(this LinBasisVector3D srcVector, ILinFloat64Vector3D dstVector)
-        {
-            Debug.Assert(
-                dstVector.IsNearUnitVector()
-            );
-
-            var angleCos = srcVector.VectorESp(dstVector);
-
-            // The case where the two vectors are almost the same
-            if (angleCos.IsNearOne())
-                return new Tuple<LinFloat64Vector3D, LinFloat64Angle>(
-                    srcVector.GetUnitNormal().ToLinVector3D(),
-                    LinFloat64PolarAngle.Angle0
-                );
-
-            // The case where the two vectors are almost opposite
-            if (angleCos.IsNearNegativeOne())
-                return new Tuple<LinFloat64Vector3D, LinFloat64Angle>(
-                    srcVector.GetUnitNormal().ToLinVector3D(),
-                    LinFloat64PolarAngle.Angle180
-                );
-
-            // The general case
-            return new Tuple<LinFloat64Vector3D, LinFloat64Angle>(
-                srcVector.VectorUnitCross(dstVector),
-                angleCos.CosToPolarAngle()
-            );
-        }
 
         public static Tuple<LinFloat64Vector3D, LinFloat64Angle> VectorToVectorRotationAxisAngle(this ILinFloat64Vector3D srcVector, ILinFloat64Vector3D dstVector)
         {
@@ -263,7 +190,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space
         /// <param name="rotationAxis"></param>
         /// <returns></returns>
         /// <exception cref="InvalidOperationException"></exception>
-        public static Tuple<LinFloat64Vector3D, LinFloat64Angle> VectorToVectorRotationAxisAngle(this ILinFloat64Vector3D srcVector, LinBasisVector3D dstVector, LinBasisVector3D rotationAxis)
+        public static Tuple<LinFloat64Vector3D, LinFloat64Angle> VectorToVectorRotationAxisAngle(this ILinFloat64Vector3D srcVector, LinBasisVector dstVector, LinBasisVector rotationAxis)
         {
             return srcVector.VectorToVectorRotationAxisAngle(
                 dstVector.ToLinVector3D(),
@@ -315,123 +242,6 @@ namespace GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space
         
 
         /// <summary>
-        /// Create a rotation quaternion given a vector and its rotated version
-        /// </summary>
-        /// <param name="srcVector"></param>
-        /// <param name="dstVector"></param>
-        /// <returns></returns>
-        public static LinFloat64Quaternion VectorToVectorRotationQuaternion(this LinBasisVector3D srcVector, LinBasisVector3D dstVector)
-        {
-            return srcVector.ToLinVector3D().VectorToVectorRotationQuaternion(dstVector.ToLinVector3D());
-
-            //var sqrt2Inv = 1d / Math.Sqrt(2d);
-
-            //return srcVector switch
-            //{
-            //    LinBasisVector3D.Px => dstVector switch
-            //    {
-            //        LinBasisVector3D.Px => LinFloat64Quaternion.Identity,
-            //        LinBasisVector3D.Py => LinFloat64Quaternion.Create(sqrt2Inv, 0, 0, sqrt2Inv),
-            //        LinBasisVector3D.Pz => LinFloat64Quaternion.Create(sqrt2Inv, 0, -sqrt2Inv, 0),
-            //        LinBasisVector3D.Nx => LinFloat64Quaternion.Create(0, 0, 0, 1),
-            //        LinBasisVector3D.Ny => LinFloat64Quaternion.Create(sqrt2Inv, 0, 0, -sqrt2Inv),
-            //        _ => LinFloat64Quaternion.Create(sqrt2Inv, 0, sqrt2Inv, 0),
-            //    },
-
-            //    LinBasisVector3D.Py => dstVector switch
-            //    {
-            //        LinBasisVector3D.Px => LinFloat64Quaternion.Create(sqrt2Inv, 0, 0, -sqrt2Inv),
-            //        LinBasisVector3D.Py => LinFloat64Quaternion.Identity,
-            //        LinBasisVector3D.Pz => LinFloat64Quaternion.Create(sqrt2Inv, sqrt2Inv, 0, 0),
-            //        LinBasisVector3D.Nx => LinFloat64Quaternion.Create(sqrt2Inv, 0, 0, sqrt2Inv),
-            //        LinBasisVector3D.Ny => LinFloat64Quaternion.Create(0, 1, 0, 0),
-            //        _ => LinFloat64Quaternion.Create(sqrt2Inv, -sqrt2Inv, 0, 0),
-            //    },
-
-            //    LinBasisVector3D.Pz => dstVector switch
-            //    {
-            //        LinBasisVector3D.Px => LinFloat64Quaternion.Create(sqrt2Inv, 0, sqrt2Inv, 0),
-            //        LinBasisVector3D.Py => LinFloat64Quaternion.Create(sqrt2Inv, -sqrt2Inv, 0, 0),
-            //        LinBasisVector3D.Pz => LinFloat64Quaternion.Identity,
-            //        LinBasisVector3D.Nx => LinFloat64Quaternion.Create(sqrt2Inv, 0, -sqrt2Inv, 0),
-            //        LinBasisVector3D.Ny => LinFloat64Quaternion.Create(sqrt2Inv, sqrt2Inv, 0, 0),
-            //        _ => LinFloat64Quaternion.Create(0, 0, 1, 0),
-            //    },
-
-            //    LinBasisVector3D.Nx => dstVector switch
-            //    {
-            //        LinBasisVector3D.Px => LinFloat64Quaternion.Create(0, 0, 0, 1),
-            //        LinBasisVector3D.Py => LinFloat64Quaternion.Create(sqrt2Inv, 0, 0, -sqrt2Inv),
-            //        LinBasisVector3D.Pz => LinFloat64Quaternion.Create(sqrt2Inv, 0, sqrt2Inv, 0),
-            //        LinBasisVector3D.Nx => LinFloat64Quaternion.Identity,
-            //        LinBasisVector3D.Ny => LinFloat64Quaternion.Create(sqrt2Inv, 0, 0, sqrt2Inv),
-            //        _ => LinFloat64Quaternion.Create(sqrt2Inv, 0, -sqrt2Inv, 0),
-            //    },
-
-            //    LinBasisVector3D.Ny => dstVector switch
-            //    {
-            //        LinBasisVector3D.Px => LinFloat64Quaternion.Create(sqrt2Inv, 0, 0, sqrt2Inv),
-            //        LinBasisVector3D.Py => LinFloat64Quaternion.Create(0, 1, 0, 0),
-            //        LinBasisVector3D.Pz => LinFloat64Quaternion.Create(sqrt2Inv, -sqrt2Inv, 0, 0),
-            //        LinBasisVector3D.Nx => LinFloat64Quaternion.Create(sqrt2Inv, 0, 0, -sqrt2Inv),
-            //        LinBasisVector3D.Ny => LinFloat64Quaternion.Identity,
-            //        _ => LinFloat64Quaternion.Create(sqrt2Inv, sqrt2Inv, 0, 0),
-            //    },
-
-            //    _ => dstVector switch
-            //    {
-            //        LinBasisVector3D.Px => LinFloat64Quaternion.Create(sqrt2Inv, 0, -sqrt2Inv, 0),
-            //        LinBasisVector3D.Py => LinFloat64Quaternion.Create(sqrt2Inv, sqrt2Inv, 0, 0),
-            //        LinBasisVector3D.Pz => LinFloat64Quaternion.Create(0, 0, 1, 0),
-            //        LinBasisVector3D.Nx => LinFloat64Quaternion.Create(sqrt2Inv, 0, sqrt2Inv, 0),
-            //        LinBasisVector3D.Ny => LinFloat64Quaternion.Create(sqrt2Inv, -sqrt2Inv, 0, 0),
-            //        _ => LinFloat64Quaternion.Identity,
-            //    },
-            //};
-        }
-        
-        /// <summary>
-        /// Create a rotation quaternion given a vector and its rotated version
-        /// </summary>
-        /// <param name="srcVector"></param>
-        /// <param name="dstVector"></param>
-        /// <param name="zeroEpsilon"></param>
-        /// <returns></returns>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static LinFloat64Quaternion VectorToVectorRotationQuaternion(this LinBasisVector3D srcVector, ILinFloat64Vector3D dstVector, double zeroEpsilon = Float64Utils.ZeroEpsilon)
-        {
-            var angleCos = srcVector.GetAngleCos(dstVector);
-
-            if (angleCos.IsNearOne(zeroEpsilon))
-                return LinFloat64Quaternion.Identity;
-
-            if (angleCos.IsNearMinusOne(zeroEpsilon))
-                return LinFloat64Quaternion.CreateFromAxisAngle(
-                    srcVector.GetUnitNormal(),
-                    LinFloat64PolarAngle.Angle0
-                );
-
-            return LinFloat64Quaternion.CreateFromAxisAngle(
-                srcVector.VectorUnitCross(dstVector),
-                angleCos.CosToPolarAngle()
-            );
-
-            //var (u, a) =
-            //    axis.CreateAxisToVectorRotationAxisAngle(unitVector);
-
-            //return u.CreateQuaternion(a);
-
-            ////This gives a correct quaternion but not the simplest one (the one with the smallest angle)
-            ////var (nearestAxis, q2) =
-            ////    unitVector.CreateNearestAxisToVectorRotationQuaternion();
-
-            ////var q1 =
-            ////    axis.CreateAxisToAxisRotationQuaternion(nearestAxis);
-
-            ////return Tuple4D.ConcatenateText(q1, q2);
-        }
-
-        /// <summary>
         /// https://stackoverflow.com/questions/1171849/finding-quaternion-representing-the-rotation-from-one-vector-to-another
         /// https://math.stackexchange.com/questions/4520571/how-to-get-a-rotation-quaternion-from-two-vectors
         /// https://math.stackexchange.com/questions/180418/calculate-rotation-matrix-to-align-vector-a-to-vector-b-in-3d
@@ -466,7 +276,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static LinFloat64Quaternion VectorToVectorRotationQuaternion(this ILinFloat64Vector3D srcVector, LinBasisVector3D dstVector, LinBasisVector3D rotationAxis)
+        public static LinFloat64Quaternion VectorToVectorRotationQuaternion(this ILinFloat64Vector3D srcVector, LinBasisVector dstVector, LinBasisVector rotationAxis)
         {
             var (u, a) =
                 srcVector.VectorToVectorRotationAxisAngle(dstVector, rotationAxis);
@@ -483,7 +293,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space
             return u.RotationAxisAngleToQuaternion(a);
         }
 
-        public static Tuple<LinBasisVector3D, LinFloat64Quaternion> NearestBasisToVectorRotationQuaternion(this ILinFloat64Vector3D dstVector)
+        public static Tuple<LinBasisVector, LinFloat64Quaternion> NearestBasisToVectorRotationQuaternion(this ILinFloat64Vector3D dstVector)
         {
             Debug.Assert(
                 (dstVector.VectorENormSquared() - 1).IsNearZero()
@@ -496,7 +306,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space
             var z = 0d;
             var w = 0d;
 
-            if (axis == LinBasisVector3D.Px)
+            if (axis == LinBasisVector.Px)
             {
                 var v1 = 1d + dstVector.X;
                 var v2 = 1d / Math.Sqrt(2d * v1);
@@ -506,7 +316,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space
                 w = v1 * v2;
             }
 
-            if (axis == LinBasisVector3D.Nx)
+            if (axis == LinBasisVector.Nx)
             {
                 var v1 = 1d - dstVector.X;
                 var v2 = 1d / Math.Sqrt(2d * v1);
@@ -516,7 +326,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space
                 w = v1 * v2;
             }
 
-            if (axis == LinBasisVector3D.Py)
+            if (axis == LinBasisVector.Py)
             {
                 var v1 = 1d + dstVector.Y;
                 var v2 = 1d / Math.Sqrt(2d * v1);
@@ -526,7 +336,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space
                 w = v1 * v2;
             }
 
-            if (axis == LinBasisVector3D.Ny)
+            if (axis == LinBasisVector.Ny)
             {
                 var v1 = 1d - dstVector.Y;
                 var v2 = 1d / Math.Sqrt(2d * v1);
@@ -536,7 +346,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space
                 w = v1 * v2;
             }
 
-            if (axis == LinBasisVector3D.Pz)
+            if (axis == LinBasisVector.Pz)
             {
                 var v1 = 1d + dstVector.Z;
                 var v2 = 1d / Math.Sqrt(2d * v1);
@@ -546,7 +356,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space
                 w = v1 * v2;
             }
 
-            if (axis == LinBasisVector3D.Nz)
+            if (axis == LinBasisVector.Nz)
             {
                 var v1 = 1d - dstVector.Z;
                 var v2 = 1d / Math.Sqrt(2d * v1);
@@ -562,111 +372,12 @@ namespace GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static LinFloat64Quaternion VectorToVectorRotationQuaternion(this ILinFloat64Vector3D srcVector, LinBasisVector3D dstVector)
+        public static LinFloat64Quaternion VectorToVectorRotationQuaternion(this ILinFloat64Vector3D srcVector, LinBasisVector dstVector)
         {
             return dstVector.VectorToVectorRotationQuaternion(srcVector);
         }
 
         
-        public static LinFloat64Quaternion VectorPairToVectorPairRotationQuaternion(this LinBasisVectorPair3D srcVectorPair, LinBasisVectorPair3D dstVectorPair, double zeroEpsilon = Float64Utils.ZeroEpsilon)
-        {
-            var (srcAxis1, srcAxis2) = srcVectorPair;
-            var (dstAxis1, dstAxis2) = dstVectorPair;
-
-            var q1 =
-                srcAxis1.VectorToVectorRotationQuaternion(dstAxis1);
-
-            Debug.Assert(
-                (q1.RotateVector(srcAxis1) - dstAxis1).VectorENormSquared().IsNearZero(zeroEpsilon)
-            );
-
-            var axis2Rotated =
-                q1.RotateVector(srcAxis2).ToUnitLinVector3D();
-
-            var q2 =
-                axis2Rotated.VectorToVectorRotationQuaternion(dstAxis2, dstAxis1);
-
-            var quaternion =
-                q2.Concatenate(q1);
-
-            Debug.Assert(
-                (quaternion.RotateVector(srcAxis1) - dstAxis1).VectorENormSquared().IsNearZero(zeroEpsilon)
-            );
-
-            Debug.Assert(
-                (quaternion.RotateVector(srcAxis2) - dstAxis2).VectorENormSquared().IsNearZero(zeroEpsilon)
-            );
-
-            return quaternion;
-        }
-
-        public static LinFloat64Quaternion VectorPairToVectorPairRotationQuaternion(this LinBasisVectorPair3D srcVectorPair, ILinFloat64Vector3D dstVector1, ILinFloat64Vector3D dstVector2, double zeroEpsilon = Float64Utils.ZeroEpsilon)
-        {
-            Debug.Assert(
-                dstVector1.IsNearUnitVector(zeroEpsilon) &&
-                dstVector2.IsNearUnitVector(zeroEpsilon) &&
-                dstVector1.VectorESp(dstVector2).IsNearZero(zeroEpsilon)
-            );
-
-            var (axis1, axis2) = srcVectorPair;
-
-            var q1 =
-                axis1.VectorToVectorRotationQuaternion(dstVector1);
-
-            Debug.Assert(
-                (q1.RotateVector(axis1) - dstVector1).VectorENormSquared().IsNearZero(zeroEpsilon)
-            );
-
-            var axis2Rotated =
-                q1.RotateVector(axis2).ToUnitLinVector3D();
-
-            var q2 =
-                axis2Rotated.VectorToVectorRotationQuaternion(dstVector2, dstVector1);
-
-            var quaternion =
-                q2.Concatenate(q1);
-
-            Debug.Assert(
-                (quaternion.RotateVector(axis1) - dstVector1).VectorENormSquared().IsNearZero(zeroEpsilon)
-            );
-
-            Debug.Assert(
-                (quaternion.RotateVector(axis2) - dstVector2).VectorENormSquared().IsNearZero(zeroEpsilon)
-            );
-
-            return quaternion;
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Pair<LinFloat64Quaternion> VectorPairToVectorPairRotationQuaternionPair(this LinBasisVectorPair3D srcVectorPair, ILinFloat64Vector3D dstVector1, ILinFloat64Vector3D dstVector2)
-        {
-            Debug.Assert(
-                dstVector1.VectorENormSquared().IsNearEqual(1) &&
-                dstVector2.VectorENormSquared().IsNearEqual(1)
-            );
-
-            var (axis1, axis2) = srcVectorPair;
-
-            var q1 =
-                axis1.VectorToVectorRotationQuaternion(dstVector1);
-
-            var axis2Rotated =
-                q1.RotateVector(axis2).ToUnitLinVector3D();
-
-            var q2 =
-                axis2Rotated.VectorToVectorRotationQuaternion(dstVector2, dstVector1);
-
-            Debug.Assert(
-                (q1.Concatenate(q2).RotateVector(axis1) - dstVector1).VectorENormSquared().IsNearZero()
-            );
-
-            Debug.Assert(
-                (q1.Concatenate(q2).RotateVector(axis2) - dstVector2).VectorENormSquared().IsNearZero()
-            );
-
-            return new Pair<LinFloat64Quaternion>(q1, q2);
-        }
-
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static LinFloat64Vector3D RotateVectorUsingAxisAngle(this ILinFloat64Vector3D vector, ILinFloat64Vector3D axis, LinFloat64Angle angle)
@@ -698,7 +409,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static LinFloat64Vector3D RotateVector(this Quaternion quaternion, LinBasisVector3D vector)
+        public static LinFloat64Vector3D RotateVector(this Quaternion quaternion, LinBasisVector vector)
         {
             return quaternion.ToQuaternion().RotateVector(vector);
         }

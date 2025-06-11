@@ -11,7 +11,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.LinearMaps.Sp
 public sealed class LinFloat64AxisToVectorRotation4D :
     LinFloat64VectorToVectorRotationBase4D
 {
-    public LinBasisVector4D SourceAxis { get; }
+    public LinBasisVector SourceAxis { get; }
 
     public override LinFloat64Vector4D SourceVector { get; }
 
@@ -45,7 +45,7 @@ public sealed class LinFloat64AxisToVectorRotation4D :
             LinFloat64Vector4DComposer
                 .Create()
                 .SetVector(TargetVector)
-                .SubtractTerm(SourceAxis.GetIndex(), SourceAxis.IsNegative() ? -AngleCos : AngleCos)
+                .SubtractTerm(SourceAxis.Index, SourceAxis.IsNegative ? -AngleCos : AngleCos)
                 .Times(1d / (1d + AngleCos))
                 .GetVector();
     }
@@ -71,7 +71,7 @@ public sealed class LinFloat64AxisToVectorRotation4D :
         return LinFloat64Vector4DComposer
             .Create()
             .SetVector(TargetVector, vScalar)
-            .AddTerm(SourceAxis.GetIndex(), SourceAxis.IsNegative() ? -uScalar : uScalar)
+            .AddTerm(SourceAxis.Index, SourceAxis.IsNegative ? -uScalar : uScalar)
             .GetVector();
     }
 
@@ -83,8 +83,8 @@ public sealed class LinFloat64AxisToVectorRotation4D :
 
         var r = TargetOrthogonalVector[basisIndex];
         var s =
-            basisIndex == SourceAxis.GetIndex()
-                ? SourceAxis.GetSign().ToFloat64()
+            basisIndex == SourceAxis.Index
+                ? SourceAxis.Sign.ToFloat64()
                 : 0d;
 
         var rsPlus = r + s;
@@ -94,7 +94,7 @@ public sealed class LinFloat64AxisToVectorRotation4D :
             .Create()
             .SetVector(TargetVector, -rsMinus)
             .AddTerm(basisIndex, 1d)
-            .SubtractTerm(SourceAxis.GetIndex(), SourceAxis.IsNegative() ? -rsPlus : rsPlus)
+            .SubtractTerm(SourceAxis.Index, SourceAxis.IsNegative ? -rsPlus : rsPlus)
             .GetVector();
     }
 
@@ -102,9 +102,9 @@ public sealed class LinFloat64AxisToVectorRotation4D :
     {
         var r = vector.VectorESp(TargetOrthogonalVector);
 
-        var s = SourceAxis.IsNegative()
-            ? -vector.GetItem(SourceAxis.GetIndex())
-            : vector.GetItem(SourceAxis.GetIndex());
+        var s = SourceAxis.IsNegative
+            ? -vector.GetItem(SourceAxis.Index)
+            : vector.GetItem(SourceAxis.Index);
 
         var rsPlus = r + s;
         var rsMinus = r - s;
@@ -114,15 +114,15 @@ public sealed class LinFloat64AxisToVectorRotation4D :
             .SetVector(vector)
             .SubtractVector(TargetVector, rsMinus)
             .SubtractTerm(
-                SourceAxis.GetIndex(),
-                SourceAxis.IsNegative() ? -rsPlus : rsPlus
+                SourceAxis.Index,
+                SourceAxis.IsNegative ? -rsPlus : rsPlus
             ).GetVector();
     }
 
     public override LinFloat64Vector4D MapVectorProjection(LinFloat64Vector4D vector)
     {
         var r = vector.VectorESp(TargetOrthogonalVector);
-        var s = SourceAxis.IsNegative() ? -vector[SourceAxis.GetIndex()] : vector[SourceAxis.GetIndex()];
+        var s = SourceAxis.IsNegative ? -vector[SourceAxis.Index] : vector[SourceAxis.Index];
 
         var uScalar = r / (AngleCos - 1);
         var vScalar = s - uScalar * AngleCos;
@@ -130,7 +130,7 @@ public sealed class LinFloat64AxisToVectorRotation4D :
         return LinFloat64Vector4DComposer
             .Create()
             .SetVector(TargetVector, vScalar)
-            .AddTerm(SourceAxis.GetIndex(), SourceAxis.IsNegative() ? -uScalar : uScalar)
+            .AddTerm(SourceAxis.Index, SourceAxis.IsNegative ? -uScalar : uScalar)
             .GetVector();
     }
 
@@ -139,8 +139,8 @@ public sealed class LinFloat64AxisToVectorRotation4D :
     {
         return LinFloat64VectorToAxisRotation4D.Create(
             TargetVector,
-            SourceAxis.GetIndex(),
-            SourceAxis.IsNegative()
+            SourceAxis.Index,
+            SourceAxis.IsNegative
         );
     }
 }

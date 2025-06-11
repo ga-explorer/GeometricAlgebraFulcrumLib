@@ -9,8 +9,8 @@ public sealed class TruthTable3Inputs
 
     public bool[] GetOutputs()
     {
-        return new[]
-        {
+        return
+        [
             (OutputsPattern & 1) != 0,
             (OutputsPattern & 2) != 0,
             (OutputsPattern & 4) != 0,
@@ -19,7 +19,7 @@ public sealed class TruthTable3Inputs
             (OutputsPattern & 32) != 0,
             (OutputsPattern & 64) != 0,
             (OutputsPattern & 128) != 0
-        };
+        ];
     }
 
     public TruthTable3Inputs SetOutputs(params bool[] outputsArray)

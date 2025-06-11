@@ -1,6 +1,5 @@
 ﻿using System.Collections.Immutable;
 using System.Runtime.CompilerServices;
-using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Basis;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.LinearMaps.SpaceND.Reflection;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.LinearMaps.SpaceND.Rotation;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.LinearMaps.SpaceND.Scaling;
@@ -20,7 +19,7 @@ public static class LinFloat64UnilinearMapComposerUtils
     public static LinFloat64VectorDirectionalScaling GetVectorDirectionalScaling(this Random random, int dimensions, double minValue, double maxValue)
     {
         return LinFloat64VectorDirectionalScaling.Create(
-            random.GetNumber(minValue, maxValue),
+            random.GetFloat64(minValue, maxValue),
             random.GetLinVector(dimensions).CreateUnitLinVector()
         );
     }
@@ -83,19 +82,6 @@ public static class LinFloat64UnilinearMapComposerUtils
         var indexVectorDictionary =
             diagonalVector
                 .Where(p => !p.Value.IsZero())
-                .ToDictionary(
-                    p => p.Key,
-                    p => p.Key.CreateLinVector(p.Value)
-                );
-
-        return indexVectorDictionary.ToLinUnilinearMap();
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64UnilinearMap ToDiagonalLinUnilinearMap(this LinFloat64Vector diagonalVector)
-    {
-        var indexVectorDictionary =
-            diagonalVector
                 .ToDictionary(
                     p => p.Key,
                     p => p.Key.CreateLinVector(p.Value)
@@ -258,24 +244,6 @@ public static class LinFloat64UnilinearMapComposerUtils
     public static IEnumerable<LinFloat64Vector> MapVectors(this ILinFloat64UnilinearMap map, IEnumerable<LinFloat64Vector> vectorList)
     {
         return vectorList.Select(map.MapVector);
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static ILinFloat64DirectionalScalingLinearMap CreateDirectionalScaling(this LinSignedBasisVector scalingBasisVector, int dimensions, double scalingFactor)
-    {
-        if (scalingFactor.IsZero())
-            throw new ArgumentException(nameof(scalingFactor));
-
-        // An identity map
-        if (scalingFactor.IsNearOne())
-            return LinFloat64IdentityLinearMap.Create(dimensions);
-
-        // A hyper plane reflection using a normal basis vector
-        if (scalingFactor.IsNearMinusOne())
-            return LinFloat64HyperPlaneAxisReflection.Create(dimensions, scalingBasisVector);
-
-        // A general directional scaling using a basis vector
-        return LinFloat64AxisDirectionalScaling.Create(scalingFactor, dimensions, scalingBasisVector);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]

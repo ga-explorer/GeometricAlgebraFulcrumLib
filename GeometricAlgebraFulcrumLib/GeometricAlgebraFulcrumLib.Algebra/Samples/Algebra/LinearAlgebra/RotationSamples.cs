@@ -11,12 +11,12 @@ public static class RotationSamples
     {
         var axisArray = new[]
         {
-            LinBasisVector3D.Px,
-            LinBasisVector3D.Nx,
-            LinBasisVector3D.Py,
-            LinBasisVector3D.Ny,
-            LinBasisVector3D.Pz,
-            LinBasisVector3D.Nz
+            LinBasisVector.Px,
+            LinBasisVector.Nx,
+            LinBasisVector.Py,
+            LinBasisVector.Ny,
+            LinBasisVector.Pz,
+            LinBasisVector.Nz
         };
 
         var vectorsArray = new[]

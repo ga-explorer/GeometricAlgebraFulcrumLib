@@ -80,7 +80,33 @@ public sealed class LinSphericalUnitVector3D<T> :
     {
         return new LinVector3D<T>(this);
     }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public LinVector3D<T> ToVector3D(Scalar<T> length)
+    {
+        var rSinTheta =
+            length * Theta.Sin();
 
+        var rCosTheta =
+            length * Theta.Cos();
+
+        return LinVector3D<T>.Create(
+            rSinTheta * Phi.Cos(),
+            rSinTheta * Phi.Sin(),
+            rCosTheta
+        );
+    }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public LinSphericalVector3D<T> ToSphericalVector(Scalar<T> r)
+    {
+        return new LinSphericalVector3D<T>(
+            Theta,
+            Phi,
+            r
+        );
+    }
+    
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public override string ToString()
     {

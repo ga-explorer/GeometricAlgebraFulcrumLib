@@ -246,7 +246,7 @@ public class DfChebyshevPolynomial :
     public static DfChebyshevPolynomial CreateZero()
     {
         return new DfChebyshevPolynomial(
-            LinFloat64Vector.VectorZero
+            LinFloat64Vector.Zero
         );
     }
 

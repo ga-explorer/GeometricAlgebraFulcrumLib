@@ -3,7 +3,6 @@ using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivectors;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivectors.Composers;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Processors;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.IndexSets;
 
@@ -14,6 +13,7 @@ public class XGaFloat64StoredUnilinearMap :
     IReadOnlyDictionary<IndexSet, XGaFloat64Multivector>
 {
     private readonly IReadOnlyDictionary<IndexSet, XGaFloat64Multivector> _basisMapDictionary;
+
 
     public XGaFloat64Processor Processor { get; }
         
@@ -81,7 +81,7 @@ public class XGaFloat64StoredUnilinearMap :
 
     public XGaFloat64Multivector Map(XGaFloat64Multivector multivector)
     {
-        var composer = Processor.CreateComposer();
+        var composer = Processor.CreateMultivectorComposer();
 
         if (Count <= multivector.Count)
         {
@@ -90,7 +90,7 @@ public class XGaFloat64StoredUnilinearMap :
                 if (!multivector.TryGetBasisBladeScalarValue(id, out var scalar))
                     continue;
 
-                composer.AddMultivector(mv, scalar);
+                composer.AddMultivectorScaled(mv, scalar);
             }
         }
         else
@@ -100,7 +100,7 @@ public class XGaFloat64StoredUnilinearMap :
                 if (!_basisMapDictionary.TryGetValue(id, out var mv))
                     continue;
 
-                composer.AddMultivector(mv, scalar);
+                composer.AddMultivectorScaled(mv, scalar);
             }
         }
 

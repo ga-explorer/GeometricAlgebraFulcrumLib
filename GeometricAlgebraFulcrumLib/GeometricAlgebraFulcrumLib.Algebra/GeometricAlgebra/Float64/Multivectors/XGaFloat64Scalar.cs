@@ -1,11 +1,11 @@
-﻿using System.Diagnostics;
+﻿using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Processors;
+using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
+using GeometricAlgebraFulcrumLib.Utilities.Structures;
+using GeometricAlgebraFulcrumLib.Utilities.Structures.IndexSets;
+using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivectors.Composers;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Processors;
-using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Dictionary;
-using GeometricAlgebraFulcrumLib.Utilities.Structures.IndexSets;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivectors;
 
@@ -14,8 +14,8 @@ public sealed partial class XGaFloat64Scalar :
     IFloat64Scalar
 {
     private readonly double _scalar;
-    
-    public double ScalarValue 
+
+    public double ScalarValue
         => _scalar;
 
     public override string MultivectorClassName
@@ -23,6 +23,18 @@ public sealed partial class XGaFloat64Scalar :
 
     public override int Count
         => IsZero ? 0 : 1;
+
+    public override int Grade
+        => 0;
+
+    public override bool IsZero { get; }
+
+    public bool IsOne
+        => ScalarValue.IsOne();
+
+    public bool IsMinusOne
+        => ScalarValue.IsMinusOne();
+
 
     public override IEnumerable<int> KVectorGrades
     {
@@ -32,23 +44,12 @@ public sealed partial class XGaFloat64Scalar :
         }
     }
 
-    public override int Grade
-        => 0;
-
-    public override bool IsZero { get; }
-
-    public bool IsOne
-        => ScalarValue.IsOne();
-    
-    public bool IsMinusOne
-        => ScalarValue.IsMinusOne();
-
     public override IEnumerable<XGaBasisBlade> BasisBlades
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         get
         {
-            if (!IsZero) yield return Processor.BasisScalar;
+            if (!IsZero) yield return Processor.UnitBasisScalar;
         }
     }
 
@@ -75,7 +76,7 @@ public sealed partial class XGaFloat64Scalar :
         {
             if (!IsZero)
                 yield return new KeyValuePair<XGaBasisBlade, double>(
-                    Metric.BasisScalar,
+                    Metric.UnitBasisScalar,
                     ScalarValue
                 );
         }
@@ -105,7 +106,7 @@ public sealed partial class XGaFloat64Scalar :
         _scalar = scalar;
         IsZero = scalar.IsZero();
     }
-        
+
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     internal XGaFloat64Scalar(XGaFloat64Processor metric, IFloat64Scalar scalar)
         : base(metric)
@@ -130,8 +131,7 @@ public sealed partial class XGaFloat64Scalar :
     internal XGaFloat64Scalar(XGaFloat64Processor metric, IReadOnlyDictionary<IndexSet, double> idScalarDictionary)
         : base(metric)
     {
-        _scalar = idScalarDictionary.TryGetValue(IndexSet.EmptySet, out var scalar)
-            ? scalar : 0d;
+        _scalar = idScalarDictionary.GetValueOrDefault(IndexSet.EmptySet, 0d);
 
         Debug.Assert(
             _scalar.IsValid()
@@ -146,14 +146,8 @@ public sealed partial class XGaFloat64Scalar :
     {
         return ScalarValue.IsValid();
     }
-    
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public Float64Scalar ToScalar()
-    {
-        return Float64Scalar.Create(_scalar);
-    }
 
-        
+
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public override IReadOnlyDictionary<IndexSet, double> GetIdScalarDictionary()
     {
@@ -161,13 +155,13 @@ public sealed partial class XGaFloat64Scalar :
             ? new EmptyDictionary<IndexSet, double>()
             : new SingleItemDictionary<IndexSet, double>(IndexSet.EmptySet, _scalar);
     }
-        
+
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public override bool ContainsKey(IndexSet key)
     {
         return key.IsEmptySet && !IsZero;
     }
-        
+
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public override XGaFloat64Scalar GetScalarPart()
@@ -180,7 +174,7 @@ public sealed partial class XGaFloat64Scalar :
     {
         return Processor.VectorZero;
     }
-    
+
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public override XGaFloat64Vector GetVectorPart(Func<int, bool> filterFunc)
     {
@@ -210,28 +204,28 @@ public sealed partial class XGaFloat64Scalar :
     {
         return Processor.HigherKVectorZero(grade);
     }
-        
+
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public XGaFloat64Scalar GetPart(Func<IndexSet, bool> filterFunc)
+    public override XGaFloat64Scalar GetPart(Func<IndexSet, bool> filterFunc)
     {
-        return IsZero || filterFunc(IndexSet.EmptySet) 
-            ? this 
-            : Processor.ScalarZero;
-    }
-        
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public XGaFloat64Scalar GetPart(Func<double, bool> filterFunc)
-    {
-        return IsZero || filterFunc(ScalarValue) 
-            ? this 
+        return IsZero || filterFunc(IndexSet.EmptySet)
+            ? this
             : Processor.ScalarZero;
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public XGaFloat64Scalar GetPart(Func<IndexSet, double, bool> filterFunc)
+    public override XGaFloat64Scalar GetPart(Func<double, bool> filterFunc)
     {
-        return IsZero || filterFunc(IndexSet.EmptySet, ScalarValue) 
-            ? this 
+        return IsZero || filterFunc(ScalarValue)
+            ? this
+            : Processor.ScalarZero;
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public override XGaFloat64Scalar GetPart(Func<IndexSet, double, bool> filterFunc)
+    {
+        return IsZero || filterFunc(IndexSet.EmptySet, ScalarValue)
+            ? this
             : Processor.ScalarZero;
     }
 
@@ -241,7 +235,7 @@ public sealed partial class XGaFloat64Scalar :
     {
         return _scalar;
     }
-        
+
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public override double GetBasisBladeScalar(IndexSet basisBladeId)
     {
@@ -249,7 +243,7 @@ public sealed partial class XGaFloat64Scalar :
             ? _scalar
             : 0d;
     }
-        
+
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public override bool TryGetScalarValue(out double scalar)
     {
@@ -276,14 +270,6 @@ public sealed partial class XGaFloat64Scalar :
         return false;
     }
 
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public override XGaFloat64Multivector Simplify()
-    {
-        return this;
-    }
-        
-
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     private bool Equals(XGaFloat64Scalar other)
     {
@@ -305,6 +291,11 @@ public sealed partial class XGaFloat64Scalar :
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public override string ToString()
     {
-        return IsZero ? string.Empty : $"'{ScalarValue:G}'<>";
+        if (IsZero) return "0";
+
+        return BasisScalarPairs
+            .OrderBy(p => p.Key.Id)
+            .Select(p => $"{p.Value:G} {p.Key}")
+            .ConcatenateText(" + ");
     }
 }

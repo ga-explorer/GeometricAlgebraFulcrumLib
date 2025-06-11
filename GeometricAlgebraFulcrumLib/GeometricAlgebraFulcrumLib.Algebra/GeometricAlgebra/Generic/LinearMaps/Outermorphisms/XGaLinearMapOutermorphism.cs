@@ -1,9 +1,8 @@
 ﻿using System.Runtime.CompilerServices;
-using GeometricAlgebraFulcrumLib.Utilities.Structures.IndexSets;
-using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Generic.LinearMaps;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Multivectors;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Processors;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Multivectors.Composers;
+using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Generic.LinearMaps;
+using GeometricAlgebraFulcrumLib.Utilities.Structures.IndexSets;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.LinearMaps.Outermorphisms;
 
@@ -67,10 +66,10 @@ public sealed class XGaLinearMapOutermorphism<T>
 
     public override XGaVector<T> OmMap(XGaVector<T> vector)
     {
-        var composer = Processor.CreateComposer();
+        var composer = Processor.CreateVectorComposer();
 
         foreach (var (id, scalar) in vector.IdScalarPairs)
-            composer.AddMultivector(
+            composer.AddKVectorScaled(
                 OmMapBasisVector(id.FirstIndex),
                 scalar
             );
@@ -80,10 +79,10 @@ public sealed class XGaLinearMapOutermorphism<T>
 
     public override XGaBivector<T> OmMap(XGaBivector<T> bivector)
     {
-        var composer = Processor.CreateComposer();
+        var composer = Processor.CreateBivectorComposer();
 
         foreach (var (id, scalar) in bivector.IdScalarPairs)
-            composer.AddMultivector(
+            composer.AddKVectorScaled(
                 OmMapBasisBivector(id.FirstIndex, id.LastIndex),
                 scalar
             );
@@ -93,28 +92,28 @@ public sealed class XGaLinearMapOutermorphism<T>
         
     public override XGaHigherKVector<T> OmMap(XGaHigherKVector<T> kVector)
     {
-        var composer = Processor.CreateComposer();
+        var composer = Processor.CreateKVectorComposer(kVector.Grade);
 
         foreach (var (id, scalar) in kVector.IdScalarPairs)
-            composer.AddMultivector(
+            composer.AddKVectorScaled(
                 OmMapBasisBlade(id),
                 scalar
             );
             
-        return composer.GetHigherKVector(kVector.Grade);
+        return composer.GetHigherKVector();
     }
         
     public override XGaMultivector<T> OmMap(XGaMultivector<T> multivector)
     {
-        var composer = Processor.CreateComposer();
+        var composer = Processor.CreateMultivectorComposer();
 
         foreach (var (id, scalar) in multivector.IdScalarPairs)
-            composer.AddMultivector(
+            composer.AddKVectorScaled(
                 OmMapBasisBlade(id),
                 scalar
             );
             
-        return composer.GetMultivector();
+        return composer.GetSimpleMultivector();
     }
 
 

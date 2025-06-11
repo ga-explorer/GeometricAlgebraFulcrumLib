@@ -1,9 +1,9 @@
 ﻿using System.Runtime.CompilerServices;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Basis;
-using GeometricAlgebraFulcrumLib.Utilities.Structures.BitManipulation;
-using GeometricAlgebraFulcrumLib.Utilities.Structures.Random;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Generic.Vectors.SpaceND;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Generic;
+using GeometricAlgebraFulcrumLib.Utilities.Structures.BitManipulation;
+using GeometricAlgebraFulcrumLib.Utilities.Structures.Random;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Generic;
 
@@ -79,15 +79,16 @@ public class LinRandomComposer<T> :
     {
         var id = GetBasisVectorIndex();
 
-        return LinBasisVector.Create(id);
+        return LinBasisVector.Positive(id);
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public ILinSignedBasisVector GetLinSignedBasisVector()
+    public LinBasisVector GetLinSignedBasisVector()
     {
+        var idx = GetBasisVectorIndex();
         var sign = RandomGenerator.GetSign();
 
-        return GetLinBasisVector().ToSignedBasisVector(sign);
+        return LinBasisVector.Create(idx, sign);
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]

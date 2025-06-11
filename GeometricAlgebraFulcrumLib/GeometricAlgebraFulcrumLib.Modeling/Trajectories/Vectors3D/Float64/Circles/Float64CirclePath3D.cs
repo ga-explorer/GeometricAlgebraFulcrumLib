@@ -38,7 +38,7 @@ public sealed class Float64CirclePath3D :
 
         var axis = unitNormal.SelectNearestBasisVector();
 
-        if (axis.IsNegative())
+        if (axis.IsNegative)
             rotationCount = -rotationCount;
 
         if (axis.IsXAxis())

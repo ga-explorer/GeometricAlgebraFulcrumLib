@@ -8,9 +8,9 @@
 //    public sealed class AxisToAxisRotation :
 //        VectorToVectorRotationLinearMap
 //    {
-//        public LinSignedBasisVector SourceAxis { get; }
+//        public LinBasisVector SourceAxis { get; }
 
-//        public LinSignedBasisVector TargetAxis { get; }
+//        public LinBasisVector TargetAxis { get; }
 
 //        public override Float64Tuple SourceVector { get; }
 
@@ -33,8 +33,8 @@
 //                uAxisIndex != vAxisIndex
 //            );
 
-//            SourceAxis = new LinSignedBasisVector(uAxisIndex, uAxisNegative);
-//            TargetAxis = new LinSignedBasisVector(vAxisIndex, vAxisNegative);
+//            SourceAxis = new LinBasisVector(uAxisIndex, uAxisNegative);
+//            TargetAxis = new LinBasisVector(vAxisIndex, vAxisNegative);
 
 //            SourceVector = SourceAxis.ToTuple(dimensions);
 //            TargetVector = TargetAxis.ToTuple(dimensions);

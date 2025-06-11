@@ -209,7 +209,7 @@ public sealed class GrVisualBivector3D :
 
     public Triplet<LinFloat64Vector3D> GetPointsTriplet()
     {
-        var quaternion = LinBasisVector3D.Pz.VectorToVectorRotationQuaternion(
+        var quaternion = LinBasisVector.Pz.VectorToVectorRotationQuaternion(
             Normal.ToUnitLinVector3D()
         );
 

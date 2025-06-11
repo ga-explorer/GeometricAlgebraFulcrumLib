@@ -1,6 +1,5 @@
 ﻿using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Multivectors;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Processors;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Subspaces;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Generic;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Tuples;
 
@@ -106,7 +105,7 @@ public class XGaMultivectorFourierCurve<T>
     public XGaMultivector<T> GetValue(Scalar<T> parameterValue)
     {
         return _termsDictionary.Values.Aggregate(
-            (XGaMultivector<T>) GeometricProcessor.MultivectorZero, 
+            (XGaMultivector<T>) GeometricProcessor.GradedMultivectorZero, 
             (current, term) => 
                 current + term.GetValue(parameterValue)
         );
@@ -115,7 +114,7 @@ public class XGaMultivectorFourierCurve<T>
     public XGaMultivector<T> GetValue(T parameterValue)
     {
         return _termsDictionary.Values.Aggregate(
-            (XGaMultivector<T>) GeometricProcessor.MultivectorZero, 
+            (XGaMultivector<T>) GeometricProcessor.GradedMultivectorZero, 
             (current, term) => 
                 current + term.GetValue(parameterValue)
         );

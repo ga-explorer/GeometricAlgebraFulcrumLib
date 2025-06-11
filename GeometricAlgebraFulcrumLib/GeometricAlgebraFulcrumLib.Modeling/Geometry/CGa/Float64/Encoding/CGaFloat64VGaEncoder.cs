@@ -1,7 +1,6 @@
 ﻿using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivectors;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivectors.Composers;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Angles;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space2D;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space3D;
@@ -56,7 +55,7 @@ public class CGaFloat64VGaEncoder :
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public XGaFloat64Vector VectorAsXGaVector(LinFloat64Vector mv)
     {
-        var composer = GeometricSpace.ConformalProcessor.CreateComposer();
+        var composer = GeometricSpace.ConformalProcessor.CreateVectorComposer();
 
         foreach (var (index, scalar) in mv.IndexScalarPairs)
             composer.SetVectorTerm(index + 2, scalar);
@@ -69,7 +68,7 @@ public class CGaFloat64VGaEncoder :
     {
         Debug.Assert(mv.Processor.IsEuclidean);
 
-        var composer = GeometricSpace.ConformalProcessor.CreateComposer();
+        var composer = GeometricSpace.ConformalProcessor.CreateVectorComposer();
 
         foreach (var (index, scalar) in mv.IndexScalarPairs)
             composer.SetVectorTerm(index + 2, scalar);
@@ -84,7 +83,7 @@ public class CGaFloat64VGaEncoder :
         Debug.Assert(GeometricSpace.Is4D);
 
         return GeometricSpace.ConformalProcessor
-            .CreateComposer()
+            .CreateBivectorComposer()
             .SetBivectorTerm(2, 3, xy)
             .GetBivector();
     }
@@ -95,7 +94,7 @@ public class CGaFloat64VGaEncoder :
         Debug.Assert(GeometricSpace.Is4D);
 
         return GeometricSpace.ConformalProcessor
-            .CreateComposer()
+            .CreateBivectorComposer()
             .SetBivectorTerm(2, 3, bivector.Xy)
             .GetBivector();
     }
@@ -106,7 +105,7 @@ public class CGaFloat64VGaEncoder :
         Debug.Assert(GeometricSpace.Is5D);
 
         return GeometricSpace.ConformalProcessor
-            .CreateComposer()
+            .CreateBivectorComposer()
             .SetBivectorTerm(2, 3, xy)
             .SetBivectorTerm(2, 4, xz)
             .SetBivectorTerm(3, 4, yz)
@@ -119,7 +118,7 @@ public class CGaFloat64VGaEncoder :
         Debug.Assert(GeometricSpace.Is5D);
 
         return GeometricSpace.ConformalProcessor
-            .CreateComposer()
+            .CreateBivectorComposer()
             .SetBivectorTerm(2, 3, bivector.Xy)
             .SetBivectorTerm(2, 4, bivector.Xz)
             .SetBivectorTerm(3, 4, bivector.Yz)
@@ -131,7 +130,7 @@ public class CGaFloat64VGaEncoder :
     {
         Debug.Assert(mv.Processor.IsEuclidean);
 
-        var composer = GeometricSpace.ConformalProcessor.CreateComposer();
+        var composer = GeometricSpace.ConformalProcessor.CreateBivectorComposer();
 
         foreach (var (id, scalar) in mv.IdScalarPairs)
             composer.SetTerm(id.ShiftIndices(2), scalar);
@@ -161,12 +160,12 @@ public class CGaFloat64VGaEncoder :
     {
         Debug.Assert(mv.Processor.IsEuclidean);
 
-        var composer = GeometricSpace.ConformalProcessor.CreateComposer();
+        var composer = GeometricSpace.ConformalProcessor.CreateKVectorComposer(mv.Grade);
 
         foreach (var (id, scalar) in mv.IdScalarPairs)
             composer.SetTerm(id.ShiftIndices(2), scalar);
 
-        return composer.GetKVector(mv.Grade);
+        return composer.GetKVector();
     }
 
 
@@ -313,7 +312,7 @@ public class CGaFloat64VGaEncoder :
         var bivectorScalar = halfAngleSin / bivectorNorm;
 
         return GeometricSpace.ConformalProcessor
-            .CreateComposer()
+            .CreateMultivectorComposer()
             .SetScalarTerm(scalar)
             .SetBivectorTerm(2, 3, bivectorScalar * bivectorXy)
             .GetSimpleMultivector()
@@ -332,7 +331,7 @@ public class CGaFloat64VGaEncoder :
         var bivectorScalar = halfAngleSin / bivector.Norm();
 
         return GeometricSpace.ConformalProcessor
-            .CreateComposer()
+            .CreateMultivectorComposer()
             .SetScalarTerm(scalar)
             .SetBivectorTerm(2, 3, bivectorScalar * bivector.Xy)
             .GetSimpleMultivector()
@@ -350,7 +349,7 @@ public class CGaFloat64VGaEncoder :
         var bivectorScalar = halfAngleSin / bivectorNorm;
 
         return GeometricSpace.ConformalProcessor
-            .CreateComposer()
+            .CreateMultivectorComposer()
             .SetScalarTerm(scalar)
             .SetBivectorTerm(2, 3, bivectorScalar * bivectorXy)
             .SetBivectorTerm(2, 4, bivectorScalar * bivectorXz)
@@ -371,7 +370,7 @@ public class CGaFloat64VGaEncoder :
         var bivectorScalar = halfAngleSin / bivector.Norm();
 
         return GeometricSpace.ConformalProcessor
-            .CreateComposer()
+            .CreateMultivectorComposer()
             .SetScalarTerm(scalar)
             .SetBivectorTerm(2, 3, bivectorScalar * bivector.Xy)
             .SetBivectorTerm(2, 4, bivectorScalar * bivector.Xz)

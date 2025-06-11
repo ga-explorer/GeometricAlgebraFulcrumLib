@@ -722,7 +722,7 @@ end
         if (!Metric.IsDegenerate)
         {
             var basisPseudoScalarInverse =
-                Metric.CreateBasisPseudoScalarInverse(VSpaceDimensions);
+                Metric.BasisPseudoScalarInverse(VSpaceDimensions);
 
             codeComposer
                 .AppendLine(GetUnilinearBasisToBasisMappingCode(
@@ -732,7 +732,7 @@ end
         }
 
         var basisPseudoScalar = 
-            Metric.CreateBasisPseudoScalar(VSpaceDimensions);
+            Metric.BasisPseudoScalar(VSpaceDimensions);
 
         codeComposer
             .AppendLine(GetUnilinearBasisToBasisMappingCode(

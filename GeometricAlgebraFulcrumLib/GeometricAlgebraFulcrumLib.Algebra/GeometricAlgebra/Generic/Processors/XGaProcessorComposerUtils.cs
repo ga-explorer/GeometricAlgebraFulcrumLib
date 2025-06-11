@@ -60,16 +60,5 @@ public static class XGaProcessorComposerUtils
         return processor;
     }
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static XGaProcessor<T> CreateProcessor<T>(this XGaMetric metric, IScalarProcessor<T> scalarProcessor)
-    {
-        var processor = XGaProcessor<T>.Create(scalarProcessor, metric);
-
-        if (scalarProcessor is IXGaProcessorContainer<T> processorContainer)
-            processorContainer.AttachXGaProcessor(processor);
-
-        return processor;
-    }
-    
 
 }

@@ -1,8 +1,8 @@
 ﻿using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
-using GeometricAlgebraFulcrumLib.Utilities.Structures.IndexSets;
-using GeometricAlgebraFulcrumLib.Algebra.Scalars.Generic;
-using GeometricAlgebraFulcrumLib.Utilities.Structures.Tuples;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Processors;
+using GeometricAlgebraFulcrumLib.Algebra.Scalars.Generic;
+using GeometricAlgebraFulcrumLib.Utilities.Structures.IndexSets;
+using GeometricAlgebraFulcrumLib.Utilities.Structures.Tuples;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Combinations;
 
@@ -73,16 +73,16 @@ public sealed class XGaTrilinearCombinationTerm<T>
         => InputScalar.Abs();
 
     public XGaBasisBlade Input1BasisBlade
-        => Metric.CreateBasisBlade(Input1BasisBladeId);
+        => Metric.BasisBlade(Input1BasisBladeId);
     
     public XGaBasisBlade Input2BasisBlade
-        => Metric.CreateBasisBlade(Input2BasisBladeId);
+        => Metric.BasisBlade(Input2BasisBladeId);
 
     public XGaBasisBlade Input3BasisBlade
-        => Metric.CreateBasisBlade(Input3BasisBladeId);
+        => Metric.BasisBlade(Input3BasisBladeId);
 
     public XGaBasisBlade OutputBasisBlade
-        => Metric.CreateBasisBlade(OutputBasisBladeId);
+        => Metric.BasisBlade(OutputBasisBladeId);
 
     public int Input1BasisBladeGrade
         => Input1BasisBladeId.Grade();

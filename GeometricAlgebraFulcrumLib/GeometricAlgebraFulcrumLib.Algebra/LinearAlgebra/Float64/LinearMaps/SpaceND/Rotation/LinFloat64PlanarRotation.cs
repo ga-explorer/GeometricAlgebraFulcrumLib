@@ -79,7 +79,7 @@ public abstract class LinFloat64PlanarRotation :
 
     public abstract Pair<double> BasisESp(int axisIndex);
 
-    public abstract Pair<double> BasisESp(ILinSignedBasisVector axis);
+    public abstract Pair<double> BasisESp(LinBasisVector axis);
 
     public abstract Pair<double> BasisESp(LinFloat64Vector vector);
 

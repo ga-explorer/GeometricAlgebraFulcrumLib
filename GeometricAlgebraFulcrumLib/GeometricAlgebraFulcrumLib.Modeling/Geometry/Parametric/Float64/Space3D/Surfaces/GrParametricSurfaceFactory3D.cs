@@ -171,65 +171,62 @@ public static class GrParametricSurfaceFactory3D
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static GrComputedParametricSurface3D CreateSphere3D(this LinBasisVectorPair3D sliceAxisPair, double radius)
     {
-        return sliceAxisPair.Item1 switch
+        if (sliceAxisPair.Item1 == LinBasisVector.Px)
         {
-            LinBasisVector3D.Px => sliceAxisPair.Item2 switch
-            {
-                LinBasisVector3D.Py => 
-                    new GrComputedParametricSurface3D(
-                        (t1, t2) => GetPointOnXySphereSurface(radius, t1, t2),
-                        GetNormalOnXySphereSurface
-                    ),
+            if (sliceAxisPair.Item2 == LinBasisVector.Py)
+                return new GrComputedParametricSurface3D(
+                    (t1, t2) => GetPointOnXySphereSurface(radius, t1, t2),
+                    GetNormalOnXySphereSurface
+                );
 
-                LinBasisVector3D.Pz => 
-                    new GrComputedParametricSurface3D(
-                        (t1, t2) => GetPointOnXzSphereSurface(radius, t1, t2),
-                        GetNormalOnXzSphereSurface
-                    ),
+            if (sliceAxisPair.Item2 == LinBasisVector.Pz)
+                return new GrComputedParametricSurface3D(
+                    (t1, t2) => GetPointOnXzSphereSurface(radius, t1, t2),
+                    GetNormalOnXzSphereSurface
+                );
+            
+            throw new InvalidOperationException();
+        }
 
-                _ => throw new InvalidOperationException()
-            },
+        if (sliceAxisPair.Item1 == LinBasisVector.Py)
+        {
+            if (sliceAxisPair.Item2 == LinBasisVector.Pz)
+                return new GrComputedParametricSurface3D(
+                    (t1, t2) => GetPointOnYzSphereSurface(radius, t1, t2),
+                    GetNormalOnYzSphereSurface
+                );
 
-            LinBasisVector3D.Py => sliceAxisPair.Item2 switch
-            {
-                LinBasisVector3D.Pz => 
-                    new GrComputedParametricSurface3D(
-                        (t1, t2) => GetPointOnYzSphereSurface(radius, t1, t2),
-                        GetNormalOnYzSphereSurface
-                    ),
+            if (sliceAxisPair.Item2 == LinBasisVector.Px)
+                return new GrComputedParametricSurface3D(
+                    (t1, t2) => GetPointOnYxSphereSurface(radius, t1, t2),
+                    GetNormalOnYxSphereSurface
+                );
+            
+            throw new InvalidOperationException();
+        }
 
-                LinBasisVector3D.Px => 
-                    new GrComputedParametricSurface3D(
-                        (t1, t2) => GetPointOnYxSphereSurface(radius, t1, t2),
-                        GetNormalOnYxSphereSurface
-                    ),
+        if (sliceAxisPair.Item1 == LinBasisVector.Pz)
+        {
+            if (sliceAxisPair.Item2 == LinBasisVector.Px)
+                return new GrComputedParametricSurface3D(
+                    (t1, t2) => GetPointOnZxSphereSurface(radius, t1, t2),
+                    GetNormalOnZxSphereSurface
+                );
 
-                _ => throw new InvalidOperationException()
-            },
+            if (sliceAxisPair.Item2 == LinBasisVector.Py)
+                return new GrComputedParametricSurface3D(
+                    (t1, t2) => GetPointOnZySphereSurface(radius, t1, t2),
+                    GetNormalOnZySphereSurface
+                );
+            
+            throw new InvalidOperationException();
+        }
 
-            LinBasisVector3D.Pz => sliceAxisPair.Item2 switch
-            {
-                LinBasisVector3D.Px => 
-                    new GrComputedParametricSurface3D(
-                        (t1, t2) => GetPointOnZxSphereSurface(radius, t1, t2),
-                        GetNormalOnZxSphereSurface
-                    ),
-
-                LinBasisVector3D.Py => 
-                    new GrComputedParametricSurface3D(
-                        (t1, t2) => GetPointOnZySphereSurface(radius, t1, t2),
-                        GetNormalOnZySphereSurface
-                    ),
-
-                _ => throw new InvalidOperationException()
-            },
-
-            _ => throw new InvalidOperationException()
-        };
+        throw new InvalidOperationException();
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static GrComputedParametricSurface3D CreateSphere3D(this LinBasisVector3D sliceAxisNormal, double radius)
+    public static GrComputedParametricSurface3D CreateSphere3D(this LinBasisVector sliceAxisNormal, double radius)
     {
         return sliceAxisNormal
             .GetAxisPair3D()

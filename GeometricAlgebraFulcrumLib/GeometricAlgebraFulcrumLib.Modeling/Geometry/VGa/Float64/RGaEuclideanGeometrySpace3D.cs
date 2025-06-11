@@ -1,6 +1,5 @@
 ﻿using System.Runtime.CompilerServices;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivectors;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivectors.Composers;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space3D;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Dictionary;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.IndexSets;
@@ -77,11 +76,11 @@ public class XGaEuclideanGeometrySpace3D :
     public XGaFloat64Multivector EncodeQuaternion(double scalar, double iScalar, double jScalar, double kScalar)
     {
         return Processor
-            .CreateComposer()
-            .SetTerm(0UL, scalar)
-            .SetTerm(3UL, -kScalar)
-            .SetTerm(5UL, jScalar)
-            .SetTerm(6UL, -iScalar)
+            .CreateMultivectorComposer()
+            .SetScalarTerm(scalar)
+            .SetBivectorTerm(0, 1, -kScalar)
+            .SetBivectorTerm(0, 2, jScalar)
+            .SetBivectorTerm(1, 2, -iScalar)
             .GetSimpleMultivector();
     }
 

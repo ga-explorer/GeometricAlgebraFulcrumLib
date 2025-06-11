@@ -319,6 +319,79 @@ public sealed record LinScalar2D<T> :
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public Scalar<T> Sp(LinScalar2D<T> mv2)
+    {
+        return Scalar * mv2.Scalar;
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public Scalar<T> Sp(LinVector2D<T> mv2)
+    {
+        return ScalarProcessor.Zero;
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public Scalar<T> Sp(LinBivector2D<T> mv2)
+    {
+        return ScalarProcessor.Zero;
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public Scalar<T> Sp(LinMultivector2D<T> mv2)
+    {
+        var mv = ScalarProcessor.Zero;
+
+        if (!IsZero() && !mv2.KVector0.IsZero())
+            mv += Sp(mv2.KVector0);
+
+        return mv;
+    }
+    
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public LinScalar2D<T> Op(LinScalar2D<T> mv2)
+    {
+        return Create(
+            Scalar * mv2.Scalar
+        );
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public LinVector2D<T> Op(LinVector2D<T> mv2)
+    {
+        return LinVector2D<T>.Create(
+            Scalar * mv2.Scalar1,
+            Scalar * mv2.Scalar2
+        );
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public LinBivector2D<T> Op(LinBivector2D<T> mv2)
+    {
+        return LinBivector2D<T>.Create(
+            Scalar * mv2.Scalar12
+        );
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public LinMultivector2D<T> Op(LinMultivector2D<T> mv2)
+    {
+        var mv = LinMultivector2D<T>.Zero(ScalarProcessor);
+
+        if (!mv2.KVector0.IsZero())
+            mv += Op(mv2.KVector0);
+
+        if (!mv2.KVector1.IsZero())
+            mv += Op(mv2.KVector1);
+
+        if (!mv2.KVector2.IsZero())
+            mv += Op(mv2.KVector2);
+
+        return mv;
+    }
+
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public IEnumerator<Scalar<T>> GetEnumerator()
     {
         yield return Scalar;

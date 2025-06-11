@@ -53,10 +53,10 @@ public sealed class XGaFloat64UnilinearCombinationTerm
         => InputScalar.Abs();
 
     public XGaBasisBlade InputBasisBlade
-        => Metric.CreateBasisBlade(InputBasisBladeId);
+        => Metric.BasisBlade(InputBasisBladeId);
 
     public XGaBasisBlade OutputBasisBlade
-        => Metric.CreateBasisBlade(OutputBasisBladeId);
+        => Metric.BasisBlade(OutputBasisBladeId);
 
     public int InputBasisBladeGrade
         => InputBasisBladeId.Grade();

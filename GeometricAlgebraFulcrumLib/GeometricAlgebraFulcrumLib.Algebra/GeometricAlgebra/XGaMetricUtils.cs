@@ -1,7 +1,6 @@
 ﻿using System.Collections.Immutable;
 using System.Runtime.CompilerServices;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivectors;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.BitManipulation;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Dictionary;
@@ -88,26 +87,6 @@ public static class XGaMetricUtils
             _ => basisScalarDictionary.All(p =>
                 p.Value.IsValid() &&
                 !p.Value.IsZero()
-            )
-        };
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static bool IsValidMultivectorDictionary(this XGaMetric metric, IReadOnlyDictionary<int, XGaFloat64KVector> gradeKVectorDictionary)
-    {
-        return gradeKVectorDictionary.Count switch
-        {
-            0 => gradeKVectorDictionary is EmptyDictionary<int, XGaFloat64KVector>,
-
-            1 => gradeKVectorDictionary is SingleItemDictionary<int, XGaFloat64KVector> dict &&
-                 dict.Key >= 0 &&
-                 dict.Value.Metric.HasSameSignature(metric) &&
-                 dict.Value.IsValid(),
-
-            _ => gradeKVectorDictionary.All(p =>
-                p.Key >= 0 &&
-                p.Value.Metric.HasSameSignature(metric) &&
-                p.Value.IsValid()
             )
         };
     }

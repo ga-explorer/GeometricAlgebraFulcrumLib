@@ -38,7 +38,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.TensorAlgebra.Generic.Functions
             var det = default(TWrapper).CreateZero();
             var sign = default(TWrapper).CreateOne();
             var temp = SquareMatrixFactory<T, TWrapper>.GetMatrix(diagLength - 1);
-            for (int i = 0; i < diagLength; i++)
+            for (var i = 0; i < diagLength; i++)
             {
                 Inversion<T, TWrapper>.GetCofactorMatrix(t, temp, 0, i, diagLength);
                 det = default(TWrapper).Add(det,
@@ -84,11 +84,10 @@ namespace GeometricAlgebraFulcrumLib.Algebra.TensorAlgebra.Generic.Functions
             if (t.Shape[0] == 1)
                 return t.GetValueNoCheck(0, 0);
 
-            var n = diagLength;
-            var elemMatrix = EchelonForm<T, TWrapper>.InnerGaussianEliminationSafeDivision(t, n, n, null, out var swapCount);
+            var elemMatrix = EchelonForm<T, TWrapper>.InnerGaussianEliminationSafeDivision(t, diagLength, diagLength, null, out var swapCount);
 
             var det = default(EchelonForm<T, TWrapper>.WrapperSafeDivisionWrapper<T, TWrapper>).CreateOne();
-            for (int i = 0; i < n; i++)
+            for (var i = 0; i < diagLength; i++)
             {
                 det = default(EchelonForm<T, TWrapper>.WrapperSafeDivisionWrapper<T, TWrapper>).Multiply(det, elemMatrix.GetValueNoCheck(i, i));
             }
@@ -112,14 +111,14 @@ namespace GeometricAlgebraFulcrumLib.Algebra.TensorAlgebra.Generic.Functions
             var n = t.Shape[0];
 
             var elemMatrix = t.Forward();
-            for (int k = 1; k < n; k++)
-            for (int j = k; j < n; j++)
+            for (var k = 1; k < n; k++)
+            for (var j = k; j < n; j++)
             {
                 var m = default(TWrapper).Divide(
                     elemMatrix.GetValueNoCheck(j, k - 1),
                     elemMatrix.GetValueNoCheck(k - 1, k - 1)
                 );
-                for (int i = 0; i < n; i++)
+                for (var i = 0; i < n; i++)
                 {
                     var curr = elemMatrix.GetValueNoCheck(j, i);
                     elemMatrix.SetValueNoCheck(default(TWrapper).Subtract(
@@ -133,7 +132,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.TensorAlgebra.Generic.Functions
             }
 
             var det = default(TWrapper).CreateOne();
-            for (int i = 0; i < n; i++)
+            for (var i = 0; i < n; i++)
             {
                 det = default(TWrapper).Multiply(det, elemMatrix.GetValueNoCheck(i, i));
             }

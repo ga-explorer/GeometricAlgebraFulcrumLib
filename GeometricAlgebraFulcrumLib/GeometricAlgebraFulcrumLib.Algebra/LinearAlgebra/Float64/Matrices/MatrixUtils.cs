@@ -3,7 +3,6 @@ using System.Diagnostics;
 using System.Numerics;
 using System.Runtime.CompilerServices;
 using GeometricAlgebraFulcrumLib.Algebra.ComplexAlgebra;
-using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Angles;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.LinearMaps.Space3D;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.LinearMaps.Space3D.Reflection;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.LinearMaps.Space3D.Rotation;
@@ -31,14 +30,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Matrices;
 
 public static class MatrixUtils
 {
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static SquareMatrix2 RotationAngleToSquareMatrix2(this LinFloat64DirectedAngle angle)
-    {
-        return SquareMatrix2.CreateRotationMatrix2D(angle);
-    }
-
-
+    
     public static IReadOnlyList<LinFloat64Vector> ColumnsToTuples(this Matrix<double> matrix)
     {
         var tupleList = new LinFloat64Vector[matrix.ColumnCount];

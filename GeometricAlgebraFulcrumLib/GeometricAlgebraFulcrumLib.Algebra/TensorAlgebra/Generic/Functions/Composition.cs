@@ -45,10 +45,10 @@ namespace GeometricAlgebraFulcrumLib.Algebra.TensorAlgebra.Generic.Functions
             #endif
             var newShape = new int[desiredShape.Count + 1];
             newShape[0] = elements.Length;
-            for (int i = 1; i < newShape.Length; i++)
+            for (var i = 1; i < newShape.Length; i++)
                 newShape[i] = desiredShape[i - 1];
             var res = new Core.GenTensor<T, TWrapper>(newShape);
-            for (int i = 0; i < elements.Length; i++)
+            for (var i = 0; i < elements.Length; i++)
                 res.SetSubtensor(elements[i], i);
             return res;
         }
@@ -63,10 +63,10 @@ namespace GeometricAlgebraFulcrumLib.Algebra.TensorAlgebra.Generic.Functions
             if (a.IsVector)
             {
                 var resultingVector = Core.GenTensor<T, TWrapper>.CreateVector(a.Shape.Shape[0] + b.Shape.Shape[0]);
-                for (int i = 0; i < a.Shape.Shape[0]; i++)
+                for (var i = 0; i < a.Shape.Shape[0]; i++)
                     resultingVector.SetValueNoCheck(a.GetValueNoCheck(i), i);
 
-                for (int i = 0; i < b.Shape.Shape[0]; i++)
+                for (var i = 0; i < b.Shape.Shape[0]; i++)
                     resultingVector.SetValueNoCheck(b.GetValueNoCheck(i), i + a.Shape.Shape[0]);
 
                 return resultingVector;
@@ -77,10 +77,10 @@ namespace GeometricAlgebraFulcrumLib.Algebra.TensorAlgebra.Generic.Functions
                 newShape.Shape[0] = a.Shape.Shape[0] + b.Shape.Shape[0];
 
                 var res = new Core.GenTensor<T, TWrapper>(newShape);
-                for (int i = 0; i < a.Shape.Shape[0]; i++)
+                for (var i = 0; i < a.Shape.Shape[0]; i++)
                     res.SetSubtensor(a.GetSubtensor(i), i);
 
-                for (int i = 0; i < b.Shape.Shape[0]; i++)
+                for (var i = 0; i < b.Shape.Shape[0]; i++)
                     res.SetSubtensor(b.GetSubtensor(i), i + a.Shape.Shape[0]);
 
                 return res;
@@ -108,7 +108,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.TensorAlgebra.Generic.Functions
             where TAggregatorFunc : struct, IValueDelegate<U, T, U>
             where UWrapper : struct, Core.IOperations<U>
         {
-            for (int i = axis; i > 0; i--)
+            for (var i = axis; i > 0; i--)
                 t.Transpose(i, i - 1); // Move the axis we want to reduce to the front for GetSubtensor. Order is important since it is directly reflected in the output shape.
             /*
             // old code with iterate
@@ -117,9 +117,9 @@ namespace GeometricAlgebraFulcrumLib.Algebra.TensorAlgebra.Generic.Functions
                 foreach (var (id, value) in t.GetSubtensor(i).Iterate())
                     acc[id] = collapse.Invoke(acc[id], value);
             */
-            for (int i = 0; i < t.Shape[0]; i++)
+            for (var i = 0; i < t.Shape[0]; i++)
                 t.GetSubtensor(i).ForEach(new AggregateFunctor<U, UWrapper, TAggregatorFunc>(collapse, acc));
-            for (int i = 0; i < axis; i++)
+            for (var i = 0; i < axis; i++)
                 t.Transpose(i, i + 1);
         }
     }

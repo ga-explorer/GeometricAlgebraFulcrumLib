@@ -3,7 +3,7 @@ using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivectors;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Processors;
 
-public class XGaFloat64Processor :
+public partial class XGaFloat64Processor :
     XGaMetric
 {
     public static XGaFloat64EuclideanProcessor Euclidean
@@ -57,7 +57,7 @@ public class XGaFloat64Processor :
 
     public XGaFloat64Bivector BivectorZero { get; }
 
-    public XGaFloat64GradedMultivector MultivectorZero { get; }
+    public XGaFloat64GradedMultivector GradedMultivectorZero { get; }
     
     public XGaFloat64UniformMultivector UniformMultivectorZero { get; }
 
@@ -71,7 +71,7 @@ public class XGaFloat64Processor :
         ScalarMinusOne = new XGaFloat64Scalar(this, -1d);
         VectorZero = new XGaFloat64Vector(this);
         BivectorZero = new XGaFloat64Bivector(this);
-        MultivectorZero = new XGaFloat64GradedMultivector(this);
+        GradedMultivectorZero = new XGaFloat64GradedMultivector(this);
         UniformMultivectorZero = new XGaFloat64UniformMultivector(this);
     }
 }

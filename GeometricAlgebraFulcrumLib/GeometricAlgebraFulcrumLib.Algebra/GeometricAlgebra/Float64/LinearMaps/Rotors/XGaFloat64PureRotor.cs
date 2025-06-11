@@ -166,4 +166,18 @@ public sealed class XGaFloat64PureRotor
             bivector
         );
     }
+
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public XGaFloat64PureScalingRotor CreatePureScalingRotor(double scalingFactor)
+    {
+        var s = scalingFactor.Sqrt();
+        var scalarPart = s * Multivector.Scalar();
+        var bivectorPart = s * Multivector.GetBivectorPart();
+
+        return XGaFloat64PureScalingRotor.Create(
+            scalarPart,
+            bivectorPart
+        );
+    }
 }

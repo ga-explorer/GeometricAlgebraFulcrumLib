@@ -150,13 +150,13 @@ public sealed record LinVector4D<T> :
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static IReadOnlyList<LinVector4D<T>> BasisVectors(IScalarProcessor<T> scalarProcessor)
     {
-        return new[]
-        {
+        return
+        [
             E1(scalarProcessor), 
             E2(scalarProcessor), 
             E3(scalarProcessor), 
             E4(scalarProcessor)
-        };
+        ];
     }
 
 

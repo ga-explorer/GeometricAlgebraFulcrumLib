@@ -1,8 +1,4 @@
-﻿using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.LinearMaps.Rotors;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Multivectors;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Multivectors.Composers;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Processors;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Subspaces;
+﻿using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Processors;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Generic.Angles;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Generic;
 using GeometricAlgebraFulcrumLib.Mathematica.Algebra;
@@ -224,7 +220,7 @@ public static class Sample1
         //    .SimplifyScalars();
 
         var rotor =
-            rotor2.Multivector.Gp(rotor1.Multivector).SimplifyScalars().CreatePureRotor();
+            rotor2.Multivector.Gp(rotor1.Multivector).SimplifyScalars().ToPureRotor();
 
         var omegaRotated1 = rotor1.OmMap(omega).SimplifyScalars();
         var omegaRotated2 = rotor2.OmMap(omegaRotated1).SimplifyScalars();

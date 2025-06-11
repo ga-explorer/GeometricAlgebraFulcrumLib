@@ -27,7 +27,7 @@ public class LibReflectionCodeComposer :
         var b4 = b1.Gp(b2).Gp(b3.Reverse());
 
         if (b4.Grade != b2.Grade)
-            return b4.Metric.CreateZeroBasisBlade(b2.Grade);
+            return b4.Metric.ZeroBasisBlade(b2.Grade);
 
         var sign = IntegerSign.Negative.Power(
             (b1.Grade + 1) * b2.Grade
@@ -41,7 +41,7 @@ public class LibReflectionCodeComposer :
         var b4 = b1.Gp(b2).Gp(b3.Reverse());
 
         if (b4.Grade != b2.Grade)
-            return b4.Metric.CreateZeroBasisBlade(b2.Grade);
+            return b4.Metric.ZeroBasisBlade(b2.Grade);
 
         var sign = IntegerSign.Negative.Power(
             b1.Grade * b2.Grade
@@ -55,7 +55,7 @@ public class LibReflectionCodeComposer :
         var b4 = b1.Gp(b2).Gp(b3.Reverse());
 
         if (b4.Grade != b2.Grade)
-            return b4.Metric.CreateZeroBasisBlade(b2.Grade);
+            return b4.Metric.ZeroBasisBlade(b2.Grade);
 
         var sign = IntegerSign.Negative.Power(
             (b1.Grade + 1) * (b2.Grade + 1) + (VSpaceDimensions - 1)
@@ -69,7 +69,7 @@ public class LibReflectionCodeComposer :
         var b4 = b1.Gp(b2).Gp(b3.Reverse());
 
         if (b4.Grade != b2.Grade)
-            return b4.Metric.CreateZeroBasisBlade(b2.Grade);
+            return b4.Metric.ZeroBasisBlade(b2.Grade);
 
         var sign = IntegerSign.Negative.Power(
             b1.Grade * (b2.Grade + 1)

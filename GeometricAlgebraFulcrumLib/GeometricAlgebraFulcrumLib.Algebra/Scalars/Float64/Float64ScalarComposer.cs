@@ -2,7 +2,7 @@
 
 namespace GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
 
-public sealed class Float64ScalarComposer
+public sealed partial class Float64ScalarComposer
 {
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Float64ScalarComposer Create()
@@ -39,7 +39,7 @@ public sealed class Float64ScalarComposer
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public bool IsValid()
     {
-        return true;
+        return _scalarValue.IsValid();
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]

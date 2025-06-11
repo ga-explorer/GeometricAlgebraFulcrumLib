@@ -1,7 +1,10 @@
 ﻿using System.Collections;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.LinearMaps.Outermorphisms;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Processors;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.SpaceND;
+using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Tuples;
 using MathNet.Numerics.LinearAlgebra;
 
@@ -100,7 +103,7 @@ public class LinFloat64UnilinearMap :
 
     public LinFloat64Vector this[int key]
         => _indexVectorDictionary.TryGetValue(key, out var mv)
-            ? mv : LinFloat64Vector.VectorZero;
+            ? mv : LinFloat64Vector.Zero;
 
     public int VSpaceDimensions
         => _indexVectorDictionary
@@ -264,7 +267,7 @@ public class LinFloat64UnilinearMap :
     {
         return _indexVectorDictionary.TryGetValue(index, out var mv)
             ? mv
-            : LinFloat64Vector.VectorZero;
+            : LinFloat64Vector.Zero;
     }
 
     public LinFloat64Vector MapVector(LinFloat64Vector vector)
@@ -427,6 +430,795 @@ public class LinFloat64UnilinearMap :
     {
         return GetSubMap(vSpaceDimensions);
     }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public XGaFloat64LinearMapOutermorphism ToOutermorphism(XGaFloat64Processor metric)
+    {
+        return new XGaFloat64LinearMapOutermorphism(metric, this);
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public double[,] GetMapArray(int size)
+    {
+        return ToArray(size, size);
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public IEnumerable<KeyValuePair<int, LinFloat64Vector>> GetColumns()
+    {
+        return GetMappedBasisVectors();
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public LinFloat64Vector GetColumn(int colIndex)
+    {
+        return MapBasisVector(colIndex);
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public LinFloat64Vector GetScaledColumn(int colIndex, double scalingFactor)
+    {
+        return MapBasisVector(colIndex).Times(scalingFactor);
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public LinFloat64Vector GetMappedColumn(int colIndex, Func<double, double> scalarMapping)
+    {
+        return MapBasisVector(colIndex).MapScalars(scalarMapping);
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public LinFloat64Vector GetMappedColumn(int colIndex, Func<int, double, double> indexScalarMapping)
+    {
+        return MapBasisVector(colIndex).MapScalars(indexScalarMapping);
+    }
+
+
+    public LinFloat64Vector CombineColumns(IReadOnlyList<double> scalarList, Func<double, LinFloat64Vector, LinFloat64Vector> scalingFunc, Func<LinFloat64Vector, LinFloat64Vector, LinFloat64Vector> reducingFunc)
+    {
+        var vector = LinFloat64Vector.Zero;
+
+        var count = scalarList.Count;
+        for (var columnIndex = 0; columnIndex < count; columnIndex++)
+        {
+            if (!TryGetColumnVector(columnIndex, out var columnVector) || columnVector is null)
+                continue;
+
+            var scalingFactor = scalarList[columnIndex];
+            var scaledVector = scalingFunc(scalingFactor, columnVector);
+
+            vector = reducingFunc(vector, scaledVector);
+        }
+
+        return vector;
+    }
+
+    public LinFloat64Vector CombineColumns(LinFloat64Vector scalingVector, Func<double, LinFloat64Vector, LinFloat64Vector> scalingFunc, Func<LinFloat64Vector, LinFloat64Vector, LinFloat64Vector> reducingFunc)
+    {
+
+        var vector = LinFloat64Vector.Zero;
+
+        foreach (var (columnIndex, scalingFactor) in scalingVector)
+        {
+            if (!TryGetColumnVector(columnIndex, out var columnVector) || columnVector is null)
+                continue;
+
+            var scaledVector = scalingFunc(scalingFactor, columnVector);
+
+            vector = reducingFunc(vector, scaledVector);
+        }
+
+        return vector;
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public LinFloat64UnilinearMap CombineColumns(LinFloat64UnilinearMap map2, Func<double, LinFloat64Vector, LinFloat64Vector> scalingFunc, Func<LinFloat64Vector, LinFloat64Vector, LinFloat64Vector> reducingFunc)
+    {
+        var vectorsDictionary = new Dictionary<int, LinFloat64Vector>();
+
+        foreach (var (index, vector) in map2.GetColumns())
+            vectorsDictionary.Add(
+                index,
+                CombineColumns(vector, scalingFunc, reducingFunc)
+            );
+
+        return vectorsDictionary.ToLinUnilinearMap();
+    }
+
+    
+    public LinFloat64Vector MapVector(IReadOnlyList<double> vector)
+    {
+        var composer = LinFloat64VectorComposer.Create();
+
+        if (Count <= vector.Count)
+        {
+            foreach (var (index, mv) in IndexVectorPairs)
+            {
+                if (index >= vector.Count)
+                    continue;
+
+                composer.AddVector(mv, vector[index]);
+            }
+        }
+        else
+        {
+            for (var index = 0; index < vector.Count; index++)
+            {
+                if (!TryGetVector(index, out var mv))
+                    continue;
+
+                composer.AddVector(mv, vector[index]);
+            }
+        }
+
+        return composer.GetVector();
+    }
+
+    public LinFloat64Vector MapVector(IReadOnlyDictionary<int, double> vector)
+    {
+        var composer = LinFloat64VectorComposer.Create();
+
+        if (Count <= vector.Count)
+        {
+            foreach (var (index, mv) in IndexVectorPairs)
+            {
+                if (!vector.TryGetValue(index, out var scalar))
+                    continue;
+
+                composer.AddVector(mv, scalar);
+            }
+        }
+        else
+        {
+            foreach (var (index, scalar) in vector)
+            {
+                if (!TryGetVector(index, out var mv))
+                    continue;
+
+                composer.AddVector(mv, scalar);
+            }
+        }
+
+        return composer.GetVector();
+    }
+
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public LinFloat64UnilinearMap AbsScalars()
+    {
+        return MapScalars(Math.Abs);
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public LinFloat64UnilinearMap Sqrt()
+    {
+        return MapScalars(Math.Sqrt);
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public LinFloat64UnilinearMap SqrtOfAbs()
+    {
+        return MapScalars(s => s.SqrtOfAbs());
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public LinFloat64UnilinearMap Exp()
+    {
+        return MapScalars(Math.Exp);
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public LinFloat64UnilinearMap LogE()
+    {
+        return MapScalars(s => s.LogE());
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public LinFloat64UnilinearMap Log2()
+    {
+        return MapScalars(Math.Log2);
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public LinFloat64UnilinearMap Log10()
+    {
+        return MapScalars(Math.Log10);
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public LinFloat64UnilinearMap Log(double scalar)
+    {
+        return MapScalars(s => Math.Log(s, scalar));
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public LinFloat64UnilinearMap Power(double scalar)
+    {
+        return MapScalars(s => Math.Pow(s, scalar));
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public LinFloat64UnilinearMap Cos()
+    {
+        return MapScalars(Math.Cos);
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public LinFloat64UnilinearMap Sin()
+    {
+        return MapScalars(Math.Sin);
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public LinFloat64UnilinearMap Tan()
+    {
+        return MapScalars(Math.Tan);
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public LinFloat64UnilinearMap ArcCos()
+    {
+        return MapScalars(s => s.ArcCos());
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public LinFloat64UnilinearMap ArcSin()
+    {
+        return MapScalars(s => s.ArcSin());
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public LinFloat64UnilinearMap ArcTan()
+    {
+        return MapScalars(s => s.ArcTan());
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public LinFloat64UnilinearMap Cosh()
+    {
+        return MapScalars(Math.Cosh);
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public LinFloat64UnilinearMap Sinh()
+    {
+        return MapScalars(Math.Sinh);
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public LinFloat64UnilinearMap Tanh()
+    {
+        return MapScalars(Math.Tanh);
+    }
+
+    
+    //[MethodImpl(MethodImplOptions.AggressiveInlining)]
+    //public double[,] GetMapArray(int size)
+    //{
+    //    return map.ToArray(size, size);
+    //}
+
+    //[MethodImpl(MethodImplOptions.AggressiveInlining)]
+    //public IEnumerable<KeyValuePair<int, Float64Tuple3D>> GetColumns()
+    //{
+    //    return map.GetMappedBasisVectors();
+    //}
+
+    //[MethodImpl(MethodImplOptions.AggressiveInlining)]
+    //public Float64Tuple3D GetColumn(int colIndex)
+    //{
+    //    return map.MapBasisVector(colIndex);
+    //}
+
+    //[MethodImpl(MethodImplOptions.AggressiveInlining)]
+    //public Float64Tuple3D GetScaledColumn(int colIndex, double scalingFactor)
+    //{
+    //    return map.MapBasisVector(colIndex).Times(scalingFactor);
+    //}
+
+    //[MethodImpl(MethodImplOptions.AggressiveInlining)]
+    //public Float64Tuple3D GetMappedColumn(int colIndex, Func<double, double> scalarMapping)
+    //{
+    //    return map.MapBasisVector(colIndex).MapScalars(scalarMapping);
+    //}
+
+    //[MethodImpl(MethodImplOptions.AggressiveInlining)]
+    //public Float64Tuple3D GetMappedColumn(int colIndex, Func<int, double, double> indexScalarMapping)
+    //{
+    //    return map.MapBasisVector(colIndex).MapScalars(indexScalarMapping);
+    //}
+
+
+    //public Float64Tuple3D CombineColumns(IReadOnlyList<double> scalarList, Func<double, Float64Tuple3D, Float64Tuple3D> scalingFunc, Func<Float64Tuple3D, Float64Tuple3D, Float64Tuple3D> reducingFunc)
+    //{
+    //    var vector = Float64Tuple3D.Zero;
+
+    //    var count = scalarList.Count;
+    //    for (var columnIndex = 0; columnIndex < count; columnIndex++)
+    //    {
+    //        if (!map.TryGetColumnVector(columnIndex, out var columnVector) || columnVector is null)
+    //            continue;
+
+    //        var scalingFactor = scalarList[columnIndex];
+    //        var scaledVector = scalingFunc(scalingFactor, columnVector);
+
+    //        vector = reducingFunc(vector, scaledVector);
+    //    }
+
+    //    return vector;
+    //}
+
+    //public Float64Tuple3D CombineColumns(Float64Tuple3D scalingVector, Func<double, Float64Tuple3D, Float64Tuple3D> scalingFunc, Func<Float64Tuple3D, Float64Tuple3D, Float64Tuple3D> reducingFunc)
+    //{
+
+    //    var vector = Float64Tuple3D.VectorZero;
+
+    //    foreach (var (columnIndex, scalingFactor) in scalingVector)
+    //    {
+    //        if (!map.TryGetColumnVector(columnIndex, out var columnVector) || columnVector is null)
+    //            continue;
+
+    //        var scaledVector = scalingFunc(scalingFactor, columnVector);
+
+    //        vector = reducingFunc(vector, scaledVector);
+    //    }
+
+    //    return vector;
+    //}
+
+    //[MethodImpl(MethodImplOptions.AggressiveInlining)]
+    //public LinFloat64UnilinearMap CombineColumns(LinFloat64UnilinearMap map2, Func<double, Float64Tuple3D, Float64Tuple3D> scalingFunc, Func<Float64Tuple3D, Float64Tuple3D, Float64Tuple3D> reducingFunc)
+    //{
+    //    var vectorsDictionary = new Dictionary<int, Float64Tuple3D>();
+
+    //    foreach (var (index, vector) in map2.GetColumns())
+    //        vectorsDictionary.Add(
+    //            index,
+    //            map1.CombineColumns(vector, scalingFunc, reducingFunc)
+    //        );
+
+    //    return vectorsDictionary.ToLinUnilinearMap();
+    //}
+
+    
+    //public Float64Tuple3D MapVector(IReadOnlyList<double> vector)
+    //{
+    //    var composer = new Float64Tuple3DComposer();
+
+    //    if (map.Count <= vector.Count)
+    //    {
+    //        foreach (var (index, mv) in map.IndexVectorPairs)
+    //        {
+    //            if (index >= vector.Count)
+    //                continue;
+
+    //            composer.AddVector(mv, vector[index]);
+    //        }
+    //    }
+    //    else
+    //    {
+    //        for (var index = 0; index < vector.Count; index++)
+    //        {
+    //            if (!map.TryGetVector(index, out var mv))
+    //                continue;
+
+    //            composer.AddVector(mv, vector[index]);
+    //        }
+    //    }
+
+    //    return composer.GetVector();
+    //}
+
+    //public Float64Tuple3D MapVector(IReadOnlyDictionary<int, double> vector)
+    //{
+    //    var composer = new Float64Tuple3DComposer();
+
+    //    if (map.Count <= vector.Count)
+    //    {
+    //        foreach (var (index, mv) in map.IndexVectorPairs)
+    //        {
+    //            if (!vector.TryGetValue(index, out var scalar))
+    //                continue;
+
+    //            composer.AddVector(mv, scalar);
+    //        }
+    //    }
+    //    else
+    //    {
+    //        foreach (var (index, scalar) in vector)
+    //        {
+    //            if (!map.TryGetVector(index, out var mv))
+    //                continue;
+
+    //            composer.AddVector(mv, scalar);
+    //        }
+    //    }
+
+    //    return composer.GetVector();
+    //}
+
+    
+    //[MethodImpl(MethodImplOptions.AggressiveInlining)]
+    //public LinFloat64UnilinearMap AbsScalars()
+    //{
+    //    return v1.MapScalars(Math.Abs);
+    //}
+
+    //[MethodImpl(MethodImplOptions.AggressiveInlining)]
+    //public LinFloat64UnilinearMap Sqrt()
+    //{
+    //    return v1.MapScalars(Math.Sqrt);
+    //}
+
+    //[MethodImpl(MethodImplOptions.AggressiveInlining)]
+    //public LinFloat64UnilinearMap SqrtOfAbs()
+    //{
+    //    return v1.MapScalars(s => s.SqrtOfAbs());
+    //}
+
+    //[MethodImpl(MethodImplOptions.AggressiveInlining)]
+    //public LinFloat64UnilinearMap Exp()
+    //{
+    //    return v1.MapScalars(Math.Exp);
+    //}
+
+    //[MethodImpl(MethodImplOptions.AggressiveInlining)]
+    //public LinFloat64UnilinearMap LogE()
+    //{
+    //    return v1.MapScalars(s => s.LogE());
+    //}
+
+    //[MethodImpl(MethodImplOptions.AggressiveInlining)]
+    //public LinFloat64UnilinearMap Log2()
+    //{
+    //    return v1.MapScalars(Math.Log2);
+    //}
+
+    //[MethodImpl(MethodImplOptions.AggressiveInlining)]
+    //public LinFloat64UnilinearMap Log10()
+    //{
+    //    return v1.MapScalars(Math.Log10);
+    //}
+
+    //[MethodImpl(MethodImplOptions.AggressiveInlining)]
+    //public LinFloat64UnilinearMap Log(, double scalar)
+    //{
+    //    return v1.MapScalars(s => Math.Log(s, scalar));
+    //}
+
+    //[MethodImpl(MethodImplOptions.AggressiveInlining)]
+    //public LinFloat64UnilinearMap Log(this double scalar, LinFloat64UnilinearMap v1)
+    //{
+    //    return v1.MapScalars(s => Math.Log(scalar, s));
+    //}
+
+    //[MethodImpl(MethodImplOptions.AggressiveInlining)]
+    //public LinFloat64UnilinearMap Power(, double scalar)
+    //{
+    //    return v1.MapScalars(s => Math.Pow(s, scalar));
+    //}
+
+    
+    //[MethodImpl(MethodImplOptions.AggressiveInlining)]
+    //public LinFloat64UnilinearMap Cos()
+    //{
+    //    return v1.MapScalars(Math.Cos);
+    //}
+
+    //[MethodImpl(MethodImplOptions.AggressiveInlining)]
+    //public LinFloat64UnilinearMap Sin()
+    //{
+    //    return v1.MapScalars(Math.Sin);
+    //}
+
+    //[MethodImpl(MethodImplOptions.AggressiveInlining)]
+    //public LinFloat64UnilinearMap Tan()
+    //{
+    //    return v1.MapScalars(Math.Tan);
+    //}
+
+    //[MethodImpl(MethodImplOptions.AggressiveInlining)]
+    //public LinFloat64UnilinearMap ArcCos()
+    //{
+    //    return v1.MapScalars(Math.Acos);
+    //}
+
+    //[MethodImpl(MethodImplOptions.AggressiveInlining)]
+    //public LinFloat64UnilinearMap ArcSin()
+    //{
+    //    return v1.MapScalars(Math.Asin);
+    //}
+
+    //[MethodImpl(MethodImplOptions.AggressiveInlining)]
+    //public LinFloat64UnilinearMap ArcTan()
+    //{
+    //    return v1.MapScalars(Math.Atan);
+    //}
+
+    //[MethodImpl(MethodImplOptions.AggressiveInlining)]
+    //public LinFloat64UnilinearMap Cosh()
+    //{
+    //    return v1.MapScalars(Math.Cosh);
+    //}
+
+    //[MethodImpl(MethodImplOptions.AggressiveInlining)]
+    //public LinFloat64UnilinearMap Sinh()
+    //{
+    //    return v1.MapScalars(Math.Sinh);
+    //}
+
+    //[MethodImpl(MethodImplOptions.AggressiveInlining)]
+    //public LinFloat64UnilinearMap Tanh()
+    //{
+    //    return v1.MapScalars(Math.Tanh);
+    //}
+
+    
+    //[MethodImpl(MethodImplOptions.AggressiveInlining)]
+    //public double[,] GetMapArray(int size)
+    //{
+    //    return map.ToArray(size, size);
+    //}
+
+    //[MethodImpl(MethodImplOptions.AggressiveInlining)]
+    //public IEnumerable<KeyValuePair<int, Float64Tuple4D>> GetColumns()
+    //{
+    //    return map.GetMappedBasisVectors();
+    //}
+
+    //[MethodImpl(MethodImplOptions.AggressiveInlining)]
+    //public Float64Tuple4D GetColumn(int colIndex)
+    //{
+    //    return map.MapBasisVector(colIndex);
+    //}
+
+    //[MethodImpl(MethodImplOptions.AggressiveInlining)]
+    //public Float64Tuple4D GetScaledColumn(int colIndex, double scalingFactor)
+    //{
+    //    return map.MapBasisVector(colIndex).Times(scalingFactor);
+    //}
+
+    //[MethodImpl(MethodImplOptions.AggressiveInlining)]
+    //public Float64Tuple4D GetMappedColumn(int colIndex, Func<double, double> scalarMapping)
+    //{
+    //    return map.MapBasisVector(colIndex).MapScalars(scalarMapping);
+    //}
+
+    //[MethodImpl(MethodImplOptions.AggressiveInlining)]
+    //public Float64Tuple4D GetMappedColumn(int colIndex, Func<int, double, double> indexScalarMapping)
+    //{
+    //    return map.MapBasisVector(colIndex).MapScalars(indexScalarMapping);
+    //}
+
+
+    //public Float64Tuple4D CombineColumns(IReadOnlyList<double> scalarList, Func<double, Float64Tuple4D, Float64Tuple4D> scalingFunc, Func<Float64Tuple4D, Float64Tuple4D, Float64Tuple4D> reducingFunc)
+    //{
+    //    var vector = Float64Tuple4D.Zero;
+
+    //    var count = scalarList.Count;
+    //    for (var columnIndex = 0; columnIndex < count; columnIndex++)
+    //    {
+    //        if (!map.TryGetColumnVector(columnIndex, out var columnVector) || columnVector is null)
+    //            continue;
+
+    //        var scalingFactor = scalarList[columnIndex];
+    //        var scaledVector = scalingFunc(scalingFactor, columnVector);
+
+    //        vector = reducingFunc(vector, scaledVector);
+    //    }
+
+    //    return vector;
+    //}
+
+    //public Float64Tuple4D CombineColumns(Float64Tuple4D scalingVector, Func<double, Float64Tuple4D, Float64Tuple4D> scalingFunc, Func<Float64Tuple4D, Float64Tuple4D, Float64Tuple4D> reducingFunc)
+    //{
+
+    //    var vector = Float64Tuple4D.VectorZero;
+
+    //    foreach (var (columnIndex, scalingFactor) in scalingVector)
+    //    {
+    //        if (!map.TryGetColumnVector(columnIndex, out var columnVector) || columnVector is null)
+    //            continue;
+
+    //        var scaledVector = scalingFunc(scalingFactor, columnVector);
+
+    //        vector = reducingFunc(vector, scaledVector);
+    //    }
+
+    //    return vector;
+    //}
+
+    //[MethodImpl(MethodImplOptions.AggressiveInlining)]
+    //public LinFloat64UnilinearMap CombineColumns(LinFloat64UnilinearMap map2, Func<double, Float64Tuple4D, Float64Tuple4D> scalingFunc, Func<Float64Tuple4D, Float64Tuple4D, Float64Tuple4D> reducingFunc)
+    //{
+    //    var vectorsDictionary = new Dictionary<int, Float64Tuple4D>();
+
+    //    foreach (var (index, vector) in map2.GetColumns())
+    //        vectorsDictionary.Add(
+    //            index,
+    //            map1.CombineColumns(vector, scalingFunc, reducingFunc)
+    //        );
+
+    //    return vectorsDictionary.ToLinUnilinearMap();
+    //}
+
+    
+    //public Float64Tuple4D MapVector(IReadOnlyList<double> vector)
+    //{
+    //    var composer = new Float64Tuple4DComposer();
+
+    //    if (map.Count <= vector.Count)
+    //    {
+    //        foreach (var (index, mv) in map.IndexVectorPairs)
+    //        {
+    //            if (index >= vector.Count)
+    //                continue;
+
+    //            composer.AddVector(mv, vector[index]);
+    //        }
+    //    }
+    //    else
+    //    {
+    //        for (var index = 0; index < vector.Count; index++)
+    //        {
+    //            if (!map.TryGetVector(index, out var mv))
+    //                continue;
+
+    //            composer.AddVector(mv, vector[index]);
+    //        }
+    //    }
+
+    //    return composer.GetVector();
+    //}
+
+    //public Float64Tuple4D MapVector(IReadOnlyDictionary<int, double> vector)
+    //{
+    //    var composer = new Float64Tuple4DComposer();
+
+    //    if (map.Count <= vector.Count)
+    //    {
+    //        foreach (var (index, mv) in map.IndexVectorPairs)
+    //        {
+    //            if (!vector.TryGetValue(index, out var scalar))
+    //                continue;
+
+    //            composer.AddVector(mv, scalar);
+    //        }
+    //    }
+    //    else
+    //    {
+    //        foreach (var (index, scalar) in vector)
+    //        {
+    //            if (!map.TryGetVector(index, out var mv))
+    //                continue;
+
+    //            composer.AddVector(mv, scalar);
+    //        }
+    //    }
+
+    //    return composer.GetVector();
+    //}
+
+    
+    //[MethodImpl(MethodImplOptions.AggressiveInlining)]
+    //public LinFloat64UnilinearMap AbsScalars()
+    //{
+    //    return v1.MapScalars(Math.Abs);
+    //}
+
+    //[MethodImpl(MethodImplOptions.AggressiveInlining)]
+    //public LinFloat64UnilinearMap Sqrt()
+    //{
+    //    return v1.MapScalars(Math.Sqrt);
+    //}
+
+    //[MethodImpl(MethodImplOptions.AggressiveInlining)]
+    //public LinFloat64UnilinearMap SqrtOfAbs()
+    //{
+    //    return v1.MapScalars(s => s.SqrtOfAbs());
+    //}
+
+    //[MethodImpl(MethodImplOptions.AggressiveInlining)]
+    //public LinFloat64UnilinearMap Exp()
+    //{
+    //    return v1.MapScalars(Math.Exp);
+    //}
+
+    //[MethodImpl(MethodImplOptions.AggressiveInlining)]
+    //public LinFloat64UnilinearMap LogE()
+    //{
+    //    return v1.MapScalars(s => s.LogE());
+    //}
+
+    //[MethodImpl(MethodImplOptions.AggressiveInlining)]
+    //public LinFloat64UnilinearMap Log2()
+    //{
+    //    return v1.MapScalars(Math.Log2);
+    //}
+
+    //[MethodImpl(MethodImplOptions.AggressiveInlining)]
+    //public LinFloat64UnilinearMap Log10()
+    //{
+    //    return v1.MapScalars(Math.Log10);
+    //}
+
+    //[MethodImpl(MethodImplOptions.AggressiveInlining)]
+    //public LinFloat64UnilinearMap Log(, double scalar)
+    //{
+    //    return v1.MapScalars(s => Math.Log(s, scalar));
+    //}
+
+    //[MethodImpl(MethodImplOptions.AggressiveInlining)]
+    //public LinFloat64UnilinearMap Log(this double scalar, LinFloat64UnilinearMap v1)
+    //{
+    //    return v1.MapScalars(s => Math.Log(scalar, s));
+    //}
+
+    //[MethodImpl(MethodImplOptions.AggressiveInlining)]
+    //public LinFloat64UnilinearMap Power(, double scalar)
+    //{
+    //    return v1.MapScalars(s => Math.Pow(s, scalar));
+    //}
+
+    //[MethodImpl(MethodImplOptions.AggressiveInlining)]
+    //public LinFloat64UnilinearMap Power(this double scalar, LinFloat64UnilinearMap v1)
+    //{
+    //    return v1.MapScalars(s => Math.Log(scalar, s));
+    //}
+
+    //[MethodImpl(MethodImplOptions.AggressiveInlining)]
+    //public LinFloat64UnilinearMap Cos()
+    //{
+    //    return v1.MapScalars(Math.Cos);
+    //}
+
+    //[MethodImpl(MethodImplOptions.AggressiveInlining)]
+    //public LinFloat64UnilinearMap Sin()
+    //{
+    //    return v1.MapScalars(Math.Sin);
+    //}
+
+    //[MethodImpl(MethodImplOptions.AggressiveInlining)]
+    //public LinFloat64UnilinearMap Tan()
+    //{
+    //    return v1.MapScalars(Math.Tan);
+    //}
+
+    //[MethodImpl(MethodImplOptions.AggressiveInlining)]
+    //public LinFloat64UnilinearMap ArcCos()
+    //{
+    //    return v1.MapScalars(Math.Acos);
+    //}
+
+    //[MethodImpl(MethodImplOptions.AggressiveInlining)]
+    //public LinFloat64UnilinearMap ArcSin()
+    //{
+    //    return v1.MapScalars(Math.Asin);
+    //}
+
+    //[MethodImpl(MethodImplOptions.AggressiveInlining)]
+    //public LinFloat64UnilinearMap ArcTan()
+    //{
+    //    return v1.MapScalars(Math.Atan);
+    //}
+
+    //[MethodImpl(MethodImplOptions.AggressiveInlining)]
+    //public LinFloat64UnilinearMap Cosh()
+    //{
+    //    return v1.MapScalars(Math.Cosh);
+    //}
+
+    //[MethodImpl(MethodImplOptions.AggressiveInlining)]
+    //public LinFloat64UnilinearMap Sinh()
+    //{
+    //    return v1.MapScalars(Math.Sinh);
+    //}
+
+    //[MethodImpl(MethodImplOptions.AggressiveInlining)]
+    //public LinFloat64UnilinearMap Tanh()
+    //{
+    //    return v1.MapScalars(Math.Tanh);
+    //}
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public IEnumerator<KeyValuePair<IndexPair, double>> GetEnumerator()

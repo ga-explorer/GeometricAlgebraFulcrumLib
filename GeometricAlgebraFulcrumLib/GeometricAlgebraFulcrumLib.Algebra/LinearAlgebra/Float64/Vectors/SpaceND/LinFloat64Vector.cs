@@ -1,13 +1,20 @@
-﻿using System.Collections;
-using System.Diagnostics;
-using System.Runtime.CompilerServices;
+﻿using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivectors;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Processors;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Basis;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Angles;
+using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.LinearMaps.SpaceND;
+using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.LinearMaps.SpaceND.Rotation;
+using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space2D;
+using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space3D;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
 using GeometricAlgebraFulcrumLib.Utilities.Structures;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Dictionary;
+using GeometricAlgebraFulcrumLib.Utilities.Structures.IndexSets;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Tuples;
 using MathNet.Numerics.LinearAlgebra;
+using System.Collections;
+using System.Diagnostics;
+using System.Runtime.CompilerServices;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.SpaceND;
 
@@ -15,66 +22,42 @@ public sealed class LinFloat64Vector :
     IReadOnlyDictionary<int, double>,
     IFloat64LinearAlgebraElement
 {
-    public static LinFloat64Vector VectorZero { get; }
+    public static LinFloat64Vector Zero { get; }
         = new LinFloat64Vector();
 
 
-    //[MethodImpl(MethodImplOptions.AggressiveInlining)]
-    //public LinFloat64Vector(double item0)
-    //{
-    //    Debug.Assert(item0.IsNotNaN());
-
-    //    MathNetVector = Vector.Build.DenseOfArray(new []
-    //    {
-    //        item0
-    //    });
-    //}
-
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64Vector Create(double item0)
+    public static LinFloat64Vector Create(KeyValuePair<int, double> basisScalarPair)
     {
-        var vector = new[]
-        {
-            item0
-        };
-
-        return new LinFloat64Vector(vector);
+        return new LinFloat64Vector(basisScalarPair);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static LinFloat64Vector Create(double item0, double item1)
     {
-        var vector = new[]
+        var scalarArray = new[]
         {
             item0,
             item1
-        };
+        }.CreateValidLinVectorDictionary();
 
-        return new LinFloat64Vector(vector);
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64Vector Create(params double[] scalarArray)
-    {
         return new LinFloat64Vector(scalarArray);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64Vector CreateCopy(double[] scalarArray)
+    public static LinFloat64Vector Create(params double[] scalarList)
     {
-        var scalarArray1 = new double[scalarArray.Length];
-        scalarArray.CopyTo(scalarArray1, 0);
-
-        return new LinFloat64Vector(scalarArray1);
+        var scalarArray = 
+            scalarList.CreateValidLinVectorDictionary();
+        
+        return new LinFloat64Vector(scalarArray);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64Vector CreateCopy(IReadOnlyList<double> tuple)
+    public static LinFloat64Vector Create(IReadOnlyList<double> scalarList)
     {
-        var scalarArray = new double[tuple.Count];
-
-        for (var i = 0; i < scalarArray.Length; i++)
-            scalarArray[i] = tuple[i];
+        var scalarArray = 
+            scalarList.ToArray().CreateValidLinVectorDictionary();
 
         return new LinFloat64Vector(scalarArray);
     }
@@ -82,15 +65,33 @@ public sealed class LinFloat64Vector :
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static LinFloat64Vector Create(IEnumerable<double> scalarList)
     {
-        var scalarArray = scalarList.ToArray();
-
+        var scalarArray = 
+            scalarList.ToArray().CreateValidLinVectorDictionary();
+        
         return new LinFloat64Vector(scalarArray);
     }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    internal static LinFloat64Vector Create(IReadOnlyDictionary<int, double> basisScalarPair)
+    {
+        return new LinFloat64Vector(basisScalarPair);
+    }
+
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static LinFloat64Vector Create(IPair<double> tuple)
     {
-        var scalarArray = tuple.GetItemArray();
+        var scalarArray = 
+            tuple.GetItemArray().CreateValidLinVectorDictionary();
+
+        return new LinFloat64Vector(scalarArray);
+    }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static LinFloat64Vector Create(IPair<Float64Scalar> tuple)
+    {
+        var scalarArray = 
+            tuple.GetItemArray().CreateValidLinVectorDictionary();
 
         return new LinFloat64Vector(scalarArray);
     }
@@ -98,7 +99,17 @@ public sealed class LinFloat64Vector :
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static LinFloat64Vector Create(ITriplet<double> tuple)
     {
-        var scalarArray = tuple.GetItemArray();
+        var scalarArray = 
+            tuple.GetItemArray().CreateValidLinVectorDictionary();
+
+        return new LinFloat64Vector(scalarArray);
+    }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static LinFloat64Vector Create(ITriplet<Float64Scalar> tuple)
+    {
+        var scalarArray = 
+            tuple.GetItemArray().CreateValidLinVectorDictionary();
 
         return new LinFloat64Vector(scalarArray);
     }
@@ -106,7 +117,17 @@ public sealed class LinFloat64Vector :
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static LinFloat64Vector Create(IQuad<double> tuple)
     {
-        var scalarArray = tuple.GetItemArray();
+        var scalarArray = 
+            tuple.GetItemArray().CreateValidLinVectorDictionary();
+
+        return new LinFloat64Vector(scalarArray);
+    }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static LinFloat64Vector Create(IQuad<Float64Scalar> tuple)
+    {
+        var scalarArray = 
+            tuple.GetItemArray().CreateValidLinVectorDictionary();
 
         return new LinFloat64Vector(scalarArray);
     }
@@ -114,7 +135,17 @@ public sealed class LinFloat64Vector :
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static LinFloat64Vector Create(IQuint<double> tuple)
     {
-        var scalarArray = tuple.GetItemArray();
+        var scalarArray = 
+            tuple.GetItemArray().CreateValidLinVectorDictionary();
+
+        return new LinFloat64Vector(scalarArray);
+    }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static LinFloat64Vector Create(IQuint<Float64Scalar> tuple)
+    {
+        var scalarArray = 
+            tuple.GetItemArray().CreateValidLinVectorDictionary();
 
         return new LinFloat64Vector(scalarArray);
     }
@@ -122,49 +153,41 @@ public sealed class LinFloat64Vector :
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static LinFloat64Vector Create(IHexad<double> tuple)
     {
-        var scalarArray = tuple.GetItemArray();
+        var scalarArray = 
+            tuple.GetItemArray().CreateValidLinVectorDictionary();
+
+        return new LinFloat64Vector(scalarArray);
+    }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static LinFloat64Vector Create(IHexad<Float64Scalar> tuple)
+    {
+        var scalarArray = 
+            tuple.GetItemArray().CreateValidLinVectorDictionary();
 
         return new LinFloat64Vector(scalarArray);
     }
 
-    //[MethodImpl(MethodImplOptions.AggressiveInlining)]
-    //public static Float64Vector CreateFromRgba(Color color)
-    //{
-    //    var tuple = color.ToPixel<Rgba32>();
-
-    //    var scalarArray = new[]
-    //    {
-    //        tuple.R / 255d,
-    //        tuple.G / 255d,
-    //        tuple.B / 255d,
-    //        tuple.A / 255d
-    //    };
-
-    //    return new Float64Vector(scalarArray);
-    //}
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64Vector CreateZero(int dimensions)
+    public static LinFloat64Vector CreateBasis(int index)
     {
-        return new LinFloat64Vector(new double[dimensions]);
+        var basisScalarDictionary =
+            new SingleItemDictionary<int, double>(index, 1);
+
+        return new LinFloat64Vector(basisScalarDictionary);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64Vector CreateBasis(int dimensions, int index)
+    public static LinFloat64Vector CreateScaledBasis(int index, double scalar)
     {
-        var scalarArray = new double[dimensions];
-        scalarArray[index] = 1d;
+        if (scalar.IsZero())
+            return Zero;
 
-        return new LinFloat64Vector(scalarArray);
-    }
+        var basisScalarDictionary =
+            new SingleItemDictionary<int, double>(index, scalar);
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64Vector CreateScaledBasis(int dimensions, int index, double scalar)
-    {
-        var scalarArray = new double[dimensions];
-        scalarArray[index] = scalar;
-
-        return new LinFloat64Vector(scalarArray);
+        return new LinFloat64Vector(basisScalarDictionary);
     }
 
 
@@ -191,8 +214,8 @@ public sealed class LinFloat64Vector :
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static LinFloat64Vector operator *(LinFloat64Vector mv1, IntegerSign vector2)
     {
-        if (vector2.IsZero)
-            return new LinFloat64Vector();
+        if (vector2.IsZero || mv1.IsZero)
+            return Zero;
 
         return vector2.IsPositive ? mv1 : mv1.Negative();
     }
@@ -200,8 +223,8 @@ public sealed class LinFloat64Vector :
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static LinFloat64Vector operator *(IntegerSign mv1, LinFloat64Vector vector2)
     {
-        if (mv1.IsZero)
-            return new LinFloat64Vector();
+        if (mv1.IsZero || vector2.IsZero)
+            return Zero;
 
         return mv1.IsPositive ? vector2 : vector2.Negative();
     }
@@ -335,8 +358,7 @@ public sealed class LinFloat64Vector :
     /// The dimensions of the base vector space, dynamically determined from
     /// stored terms
     /// </summary>
-    public int VSpaceDimensions
-        => IsZero ? 0 : Indices.Max() + 1;
+    public int VSpaceDimensions { get; }
 
     public int Count
         => _indexScalarDictionary.Count;
@@ -373,13 +395,12 @@ public sealed class LinFloat64Vector :
 
     public IEnumerable<KeyValuePair<int, double>> IndexScalarPairs
         => _indexScalarDictionary;
-
-    public IEnumerable<int> Keys
-        => _indexScalarDictionary.Keys;
-
-    public IEnumerable<double> Values
-        => _indexScalarDictionary.Values;
-
+    
+    public IEnumerable<Tuple<int, double>> IndexScalarTuples
+        => _indexScalarDictionary.Select(
+            p => new Tuple<int, double>(p.Key, p.Value)
+        );
+    
     public IEnumerable<KeyValuePair<LinBasisVector, double>> BasisScalarPairs
     {
         get
@@ -393,31 +414,43 @@ public sealed class LinFloat64Vector :
         }
     }
 
+    public IEnumerable<int> Keys
+        => _indexScalarDictionary.Keys;
+
+    public IEnumerable<double> Values
+        => _indexScalarDictionary.Values;
+
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    internal LinFloat64Vector()
+    private LinFloat64Vector()
     {
+        VSpaceDimensions = 0;
         _indexScalarDictionary = new EmptyDictionary<int, double>();
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    internal LinFloat64Vector(KeyValuePair<int, double> basisScalarPair)
-    {
-        _indexScalarDictionary =
-            new SingleItemDictionary<int, double>(basisScalarPair);
 
         Debug.Assert(IsValid());
     }
 
-    public LinFloat64Vector(IEnumerable<double> scalarList)
-        : this(scalarList.CreateValidLinVectorDictionary())
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    private LinFloat64Vector(KeyValuePair<int, double> basisScalarPair)
     {
-
+        if (basisScalarPair.Value.IsZero())
+        {
+            VSpaceDimensions = 0;
+            _indexScalarDictionary = new EmptyDictionary<int, double>();
+        }
+        else
+        {
+            VSpaceDimensions = 1;
+            _indexScalarDictionary = new SingleItemDictionary<int, double>(basisScalarPair);
+        }
+        
+        Debug.Assert(IsValid());
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    internal LinFloat64Vector(IReadOnlyDictionary<int, double> idScalarDictionary)
+    private LinFloat64Vector(IReadOnlyDictionary<int, double> idScalarDictionary)
     {
+        VSpaceDimensions = idScalarDictionary.Count == 0 ? 0 : idScalarDictionary.Keys.Max() + 1;
         _indexScalarDictionary = idScalarDictionary;
 
         Debug.Assert(IsValid());
@@ -427,7 +460,10 @@ public sealed class LinFloat64Vector :
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public bool IsValid()
     {
-        return _indexScalarDictionary.IsValidLinVectorDictionary();
+        return _indexScalarDictionary.Count == 0
+            ? VSpaceDimensions == 0
+            : _indexScalarDictionary.IsValidLinVectorDictionary() &&
+              VSpaceDimensions == _indexScalarDictionary.Keys.Max() + 1;
     }
 
 
@@ -463,29 +499,29 @@ public sealed class LinFloat64Vector :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool IsNearParallelTo(ILinSignedBasisVector vector, double zeroEpsilon = Float64Utils.ZeroEpsilon)
+    public bool IsNearParallelTo(LinBasisVector vector, double zeroEpsilon = Float64Utils.ZeroEpsilon)
     {
         Debug.Assert(
             vector.IsNonZero
         );
 
-        return this.GetAngleCosWithUnit(vector).Abs().IsNearOne(zeroEpsilon);
+        return GetAngleCosWithUnit(vector).Abs().IsNearOne(zeroEpsilon);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public bool IsNearParallelTo(LinFloat64Vector vector, double zeroEpsilon = Float64Utils.ZeroEpsilon)
     {
-        return this.GetAngleCos(vector).Abs().IsNearOne(zeroEpsilon);
+        return GetAngleCos(vector).Abs().IsNearOne(zeroEpsilon);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool IsNearParallelToUnit(ILinSignedBasisVector vector, double zeroEpsilon = Float64Utils.ZeroEpsilon)
+    public bool IsNearParallelToUnit(LinBasisVector vector, double zeroEpsilon = Float64Utils.ZeroEpsilon)
     {
         Debug.Assert(
             vector.IsNonZero
         );
 
-        return this.GetAngleCosWithUnit(vector).Abs().IsNearOne(zeroEpsilon);
+        return GetAngleCosWithUnit(vector).Abs().IsNearOne(zeroEpsilon);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -495,25 +531,25 @@ public sealed class LinFloat64Vector :
             vector.IsNearUnit(zeroEpsilon)
         );
 
-        return this.GetAngleCosWithUnit(vector).Abs().IsNearOne(zeroEpsilon);
+        return GetAngleCosWithUnit(vector).Abs().IsNearOne(zeroEpsilon);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public bool IsNearOppositeTo(LinFloat64Vector vector, double zeroEpsilon = Float64Utils.ZeroEpsilon)
     {
-        return this.GetAngleCos(vector).IsNearMinusOne(zeroEpsilon);
+        return GetAngleCos(vector).IsNearMinusOne(zeroEpsilon);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool IsNearOppositeToUnit(ILinSignedBasisVector vector, double zeroEpsilon = Float64Utils.ZeroEpsilon)
+    public bool IsNearOppositeToUnit(LinBasisVector vector, double zeroEpsilon = Float64Utils.ZeroEpsilon)
     {
-        return this.GetAngleCosWithUnit(vector).IsNearMinusOne(zeroEpsilon);
+        return GetAngleCosWithUnit(vector).IsNearMinusOne(zeroEpsilon);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public bool IsNearOppositeToUnit(LinFloat64Vector vector, double zeroEpsilon = Float64Utils.ZeroEpsilon)
     {
-        return this.GetAngleCosWithUnit(vector).IsNearMinusOne(zeroEpsilon);
+        return GetAngleCosWithUnit(vector).IsNearMinusOne(zeroEpsilon);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -619,9 +655,7 @@ public sealed class LinFloat64Vector :
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public double GetTermScalar(int basisVectorIndex)
     {
-        return _indexScalarDictionary.TryGetValue(basisVectorIndex, out var scalar)
-            ? scalar
-            : 0d;
+        return _indexScalarDictionary.GetValueOrDefault(basisVectorIndex, 0d);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -635,7 +669,7 @@ public sealed class LinFloat64Vector :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public double GetComponent(ILinSignedBasisVector axis)
+    public double GetComponent(LinBasisVector axis)
     {
         return GetTermScalar(axis.Index) * axis.Sign;
     }
@@ -661,20 +695,18 @@ public sealed class LinFloat64Vector :
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public LinFloat64Vector Negative()
     {
-        return IsZero
-            ? new LinFloat64Vector()
-            : this.MapScalars(s => -s);
+        return IsZero ? this : MapScalars(s => -s);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public LinFloat64Vector Times(double scalar)
     {
         if (IsZero || scalar.IsZero())
-            return new LinFloat64Vector();
+            return Zero;
 
         return scalar.IsOne()
             ? this
-            : this.MapScalars(s => s * scalar);
+            : MapScalars(s => s * scalar);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -682,7 +714,7 @@ public sealed class LinFloat64Vector :
     {
         var s1 = 1d / scalar;
 
-        return this.MapScalars(s => s * s1);
+        return MapScalars(s => s * s1);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -690,7 +722,7 @@ public sealed class LinFloat64Vector :
     {
         var scalar = 1d / ENormSquared();
 
-        return this.MapScalars(s => s * scalar);
+        return MapScalars(s => s * scalar);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -698,7 +730,7 @@ public sealed class LinFloat64Vector :
     {
         var scalar = 1d / ENorm();
 
-        return this.MapScalars(s => s * scalar);
+        return MapScalars(s => s * scalar);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -749,7 +781,7 @@ public sealed class LinFloat64Vector :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public LinFloat64Vector Subtract(ILinSignedBasisVector vector2)
+    public LinFloat64Vector Subtract(LinBasisVector vector2)
     {
         if (IsZero)
             return vector2.Negative().ToLinVector();
@@ -796,11 +828,8 @@ public sealed class LinFloat64Vector :
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public LinFloat64Vector ComponentTimes(LinFloat64Vector vector2)
     {
-        if (IsZero)
-            return VectorZero;
-
-        if (vector2.IsZero)
-            return VectorZero;
+        if (IsZero || vector2.IsZero)
+            return Zero;
 
         return LinFloat64VectorComposer
             .Create()
@@ -809,7 +838,7 @@ public sealed class LinFloat64Vector :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public double ESp(ILinSignedBasisVector axis)
+    public double ESp(LinBasisVector axis)
     {
         return GetTermScalar(axis.Index) * axis.Sign;
     }
@@ -834,7 +863,7 @@ public sealed class LinFloat64Vector :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public LinFloat64Vector RejectOnVector(ILinSignedBasisVector vector2)
+    public LinFloat64Vector RejectOnVector(LinBasisVector vector2)
     {
         if (vector2.IsZero)
             return this;
@@ -849,7 +878,7 @@ public sealed class LinFloat64Vector :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public LinFloat64Vector RejectOnUnitVector(ILinSignedBasisVector vector2)
+    public LinFloat64Vector RejectOnUnitVector(LinBasisVector vector2)
     {
         Debug.Assert(vector2.IsNonZero);
 
@@ -903,6 +932,497 @@ public sealed class LinFloat64Vector :
         return Vector<double>.Build.DenseOfArray(
             ToScalarArray(length)
         );
+    }
+
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public XGaFloat64Vector ToXGaFloat64Vector()
+    {
+        var idScalarDictionary =
+            GetIndexScalarDictionary().ToDictionary(
+                p => p.Key.ToUnitIndexSet(),
+                p => p.Value
+            );
+
+        return XGaFloat64Processor.Euclidean.Vector(idScalarDictionary);
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public XGaFloat64Vector ToXGaFloat64Vector(XGaFloat64Processor processor)
+    {
+        var idScalarDictionary =
+            GetIndexScalarDictionary().ToDictionary(
+                p => p.Key.ToUnitIndexSet(),
+                p => p.Value
+            );
+
+        return processor.Vector(idScalarDictionary);
+    }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public LinFloat64VectorComposer ToLinVectorComposer()
+    {
+        return LinFloat64VectorComposer.Create().SetVector(this);
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public LinFloat64VectorComposer NegativeToLinVectorComposer()
+    {
+        return LinFloat64VectorComposer.Create().SetVectorNegative(this);
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public LinFloat64VectorComposer ToLinVectorComposer(double scalingFactor)
+    {
+        return LinFloat64VectorComposer.Create().SetVector(this, scalingFactor);
+    }
+
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public double GetAngleCos(LinFloat64Vector vector2)
+    {
+        var uuDot = ENormSquared();
+        var vvDot = vector2.ENormSquared();
+        var uvDot = ESp(vector2);
+
+        var norm = (uuDot * vvDot).Sqrt();
+
+        return norm.IsZero()
+            ? 0d
+            : Float64Utils.Clamp(uvDot / norm, -1, 1);
+    }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public double GetAngleCosWithUnit(LinBasisVector vector2)
+    {
+        Debug.Assert(
+            vector2.Sign.IsNotZero
+        );
+
+        var uuDot = ENormSquared();
+        var uvDot = ESp(vector2);
+
+        var norm = uuDot.Sqrt();
+
+        return norm.IsZero()
+            ? 0d
+            : Float64Utils.Clamp(uvDot / norm, -1, 1);
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public double GetAngleCosWithUnit(LinFloat64Vector vector2)
+    {
+        Debug.Assert(
+            vector2.IsNearUnit()
+        );
+
+        var uuDot = ENormSquared();
+        var uvDot = ESp(vector2);
+
+        var norm = uuDot.Sqrt();
+
+        return norm.IsZero()
+            ? 0d
+            : Float64Utils.Clamp(uvDot / norm, -1, 1);
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public double GetUnitVectorsAngleCos(LinFloat64Vector vector2)
+    {
+        return Float64Utils.Clamp(ESp(vector2), -1, 1);
+    }
+
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public LinFloat64PolarAngle GetAngleWithUnit(LinBasisVector vector2)
+    {
+        return GetAngleCosWithUnit(vector2).CosToPolarAngle();
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public LinFloat64PolarAngle GetAngleWithUnit(LinFloat64Vector vector2)
+    {
+        return GetAngleCosWithUnit(vector2).CosToPolarAngle();
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public LinFloat64PolarAngle GetUnitVectorsAngle(LinFloat64Vector vector2)
+    {
+        return GetUnitVectorsAngleCos(vector2).CosToPolarAngle();
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public LinFloat64PolarAngle GetAngle(LinFloat64Vector vector2, bool assumeUnitVectors)
+    {
+        var v12Sp = ESp(vector2);
+
+        var angle = assumeUnitVectors
+            ? v12Sp
+            : v12Sp / (ENormSquared() * vector2.ENormSquared()).Sqrt();
+
+        return angle.CosToPolarAngle();
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public LinFloat64PolarAngle GetAngle(LinFloat64Vector vector2)
+    {
+        return GetAngleCos(vector2).CosToPolarAngle();
+    }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public LinFloat64UnilinearMap ToDiagonalLinUnilinearMap()
+    {
+        var indexVectorDictionary =
+            this.ToDictionary(
+                p => p.Key,
+                p => p.Key.CreateLinVector(p.Value)
+            );
+
+        return indexVectorDictionary.ToLinUnilinearMap();
+    }
+    
+    public double[] ToArray(int vSpaceDimensions)
+    {
+        if (vSpaceDimensions < VSpaceDimensions)
+            throw new ArgumentException(nameof(vSpaceDimensions));
+
+        var array = new double[vSpaceDimensions];
+
+        foreach (var (index, scalar) in IndexScalarPairs)
+            array[index] = scalar;
+
+        return array;
+    }
+
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public double VectorENorm()
+    {
+        return ENormSquared().Sqrt();
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public LinFloat64Vector VectorEInverse()
+    {
+        return Divide(ESp(this));
+    }
+
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public LinFloat64Vector MapScalars(Func<double, double> scalarMapping)
+    {
+        var termList =
+            IndexScalarPairs.Select(
+                term => new KeyValuePair<int, double>(
+                    term.Key,
+                    scalarMapping(term.Value)
+                )
+            );
+
+        return LinFloat64VectorComposer.Create()
+            .SetTerms(termList)
+            .GetVector();
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public LinFloat64Vector MapScalars(Func<int, double, double> scalarMapping)
+    {
+        var termList =
+            IndexScalarPairs.Select(
+                term => new KeyValuePair<int, double>(
+                    term.Key,
+                    scalarMapping(term.Key, term.Value)
+                )
+            );
+
+        return LinFloat64VectorComposer.Create()
+            .AddTerms(termList)
+            .GetVector();
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public LinFloat64Vector MapBasisVectors(Func<int, int> basisMapping, bool simplify = true)
+    {
+        var termList =
+            IndexScalarPairs.Select(
+                term => new KeyValuePair<int, double>(
+                    basisMapping(term.Key),
+                    term.Value
+                )
+            );
+
+        return LinFloat64VectorComposer.Create()
+            .AddTerms(termList)
+            .GetVector();
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public LinFloat64Vector MapBasisVectors(Func<int, double, int> basisMapping, bool simplify = true)
+    {
+        var termList =
+            IndexScalarPairs.Select(
+                term => new KeyValuePair<int, double>(
+                    basisMapping(term.Key, term.Value),
+                    term.Value
+                )
+            );
+
+        return LinFloat64VectorComposer.Create()
+            .AddTerms(termList)
+            .GetVector();
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public LinFloat64Vector MapTerms(Func<int, double, KeyValuePair<int, double>> termMapping, bool simplify = true)
+    {
+        var termList =
+            IndexScalarPairs.Select(
+                term => termMapping(term.Key, term.Value)
+            );
+
+        return LinFloat64VectorComposer.Create()
+            .AddTerms(termList)
+            .GetVector();
+    }
+
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public LinFloat64Vector GetBisector(LinFloat64Vector v2, bool assumeEqualNormVectors = false)
+    {
+        return (this + v2).Times(05d);
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public LinFloat64Vector GetUnitBisector(LinFloat64Vector v2, bool assumeEqualNormVectors = false)
+    {
+        var bisector = assumeEqualNormVectors
+            ? this + v2
+            : DivideByENorm() + v2.DivideByENorm();
+
+        return bisector.DivideByENorm();
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public LinFloat64Vector GetUnitNormal()
+    {
+        var rotatedVector = DivideByENorm();
+
+        if (rotatedVector.IsNearVectorBasis(0))
+            return 1.CreateLinVector();
+
+        // For smoother motions, find the quaternion q that
+        // rotates e1 to vector, then use q to rotate e2
+        return LinFloat64AxisToVectorRotation
+            .CreateFromRotatedVector(0.ToLinBasisVector(), rotatedVector)
+            .MapBasisVector(1);
+    }
+
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public double GetDistanceSquaredToPoint(LinFloat64Vector point2)
+    {
+        return Subtract(point2).ENormSquared();
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public double GetDistanceToPoint(LinFloat64Vector point2)
+    {
+        return Subtract(point2).ENormSquared().Sqrt();
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public LinFloat64Vector ToUnitLinVector()
+    {
+        var length = ENorm();
+
+        return length.IsZero() ? Zero : Times(1d / length);
+    }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public IEnumerable<LinFloat64Vector> GetComponentVectors()
+    {
+        foreach (var (index, scalar) in IndexScalarPairs)
+        {
+            yield return CreateScaledBasis(index, scalar);
+        }
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public LinFloat64Vector VectorNegativeUnit()
+    {
+        var length = ENorm();
+
+        return length.IsZero() ? Zero : Times(-1d / length);
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public double VectorDot(LinFloat64Vector vector2)
+    {
+        return ESp(vector2);
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public double VectorDot(LinBasisVector vector2)
+    {
+        return GetTermScalar(vector2.Index) * vector2.Sign;
+    }
+    
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public LinFloat64Vector ProjectOnUnitVector(LinFloat64Vector vector2)
+    {
+        Debug.Assert(
+            vector2.IsNearUnit()
+        );
+
+        return vector2.Times(ESp(vector2));
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public LinFloat64Vector ProjectOnVector(LinFloat64Vector vector2)
+    {
+        var uuDot = ENormSquared();
+        var xuDot = ESp(vector2);
+
+        return vector2.Times(xuDot / uuDot);
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public LinFloat64Vector RejectOnUnitVector(LinFloat64Vector vector2)
+    {
+        Debug.Assert(
+            vector2.IsNearUnit()
+        );
+
+        return Subtract(
+            vector2.Times(
+                ESp(vector2)
+            )
+        );
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public LinFloat64Vector RejectOnVector(LinFloat64Vector vector2)
+    {
+        var uuDot = ENormSquared();
+        var xuDot = ESp(vector2);
+
+        return Subtract(
+            vector2.Times(xuDot / uuDot)
+        );
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public LinFloat64Vector ReflectOnUnitVector(LinFloat64Vector vector2)
+    {
+        Debug.Assert(
+            IsNearUnit()
+        );
+
+        return Times(
+            2d * ESp(vector2)
+        ).Subtract(vector2);
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public LinFloat64Vector ReflectOnUnitNormalHyperPlane(LinFloat64Vector unitNormal)
+    {
+        Debug.Assert(
+            unitNormal.IsNearUnit()
+        );
+
+        return Subtract(
+            unitNormal.Times(
+                2d * ESp(unitNormal)
+            )
+        );
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public LinFloat64Vector RotateToUnitVector(LinFloat64Vector unitVector, LinFloat64DirectedAngle angle)
+    {
+        Debug.Assert(
+            IsNearUnit() &&
+            unitVector.IsNearUnit()
+        );
+
+        // Create a unit normal to u in the u-v rotational plane
+        var v1 = unitVector.Subtract(Times(unitVector.VectorDot(this)));
+        var v1Length = v1.ENorm();
+
+        Debug.Assert(
+            !v1Length.IsNearZero()
+        );
+
+        // Compute a rotated version of v in the u-v rotational plane by the given angle
+        return Times(angle.Cos())
+            .Add(v1.Times(angle.Sin() / v1Length));
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public LinFloat64Vector RotateFromUnitVector(LinFloat64Vector unitVector, LinFloat64DirectedAngle angle)
+    {
+        Debug.Assert(
+            unitVector.IsNearUnit() &&
+            IsNearUnit()
+        );
+
+        // Create a unit normal to u in the u-v rotational plane
+        var v1 = Subtract(unitVector.Times(VectorDot(unitVector)));
+        var v1Length = v1.ENorm();
+
+        Debug.Assert(
+            !v1Length.IsNearZero()
+        );
+
+        // Compute a rotated version of v in the u-v rotational plane by the given angle
+        return unitVector
+            .Times(angle.Cos())
+            .Add(v1.Times(angle.Sin() / v1Length));
+    }
+
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public LinFloat64Vector2D ToLinVector2D()
+    {
+        return LinFloat64Vector2D.Create(X, Y);
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public LinFloat64Vector3D ToLinVector3D()
+    {
+        return LinFloat64Vector3D.Create(X, Y, Z);
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public LinFloat64Quaternion ToLinVector4D()
+    {
+        return LinFloat64Quaternion.Create(W, X, Y, Z);
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public Tuple<bool, double, LinBasisVector> TryToAxis()
+    {
+        if (Count != 1)
+            return new Tuple<bool, double, LinBasisVector>(
+                false,
+                0d,
+                LinBasisVector.Px
+            );
+
+        var (basisIndex, scalar) = this.First();
+
+        return new Tuple<bool, double, LinBasisVector>(
+            true,
+            scalar.Abs(),
+            LinBasisVector.Create(basisIndex, scalar < 0)
+        );
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public Tuple<bool, double, LinBasisVector> TryToNearAxis(double zeroEpsilon = Float64Utils.ZeroEpsilon)
+    {
+        return GetCopyByScalar(s => !s.IsNearZero(zeroEpsilon)).TryToAxis();
     }
 
 

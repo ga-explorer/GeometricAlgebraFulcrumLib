@@ -1,13 +1,11 @@
 ﻿using System.Runtime.CompilerServices;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
-using GeometricAlgebraFulcrumLib.Utilities.Structures.BitManipulation;
-using GeometricAlgebraFulcrumLib.Utilities.Structures.IndexSets;
-using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Generic.LinearMaps;
-using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Generic.Vectors.SpaceND;
-using GeometricAlgebraFulcrumLib.Algebra.Scalars.Generic;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Multivectors;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Processors;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Multivectors.Composers;
+using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Generic.LinearMaps;
+using GeometricAlgebraFulcrumLib.Algebra.Scalars.Generic;
+using GeometricAlgebraFulcrumLib.Utilities.Structures.BitManipulation;
+using GeometricAlgebraFulcrumLib.Utilities.Structures.IndexSets;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.LinearMaps.Outermorphisms;
 
@@ -129,10 +127,10 @@ public sealed class XGaMusicalAutomorphism<T> :
 
     public XGaVector<T> OmMap(XGaVector<T> vector)
     {
-        var composer = Processor.CreateComposer();
+        var composer = Processor.CreateVectorComposer();
 
         foreach (var (id, scalar) in vector.IdScalarPairs)
-            composer.AddMultivector(
+            composer.AddKVectorScaled(
                 OmMapBasisVector(id.FirstIndex),
                 scalar
             );
@@ -142,10 +140,10 @@ public sealed class XGaMusicalAutomorphism<T> :
 
     public XGaBivector<T> OmMap(XGaBivector<T> bivector)
     {
-        var composer = Processor.CreateComposer();
+        var composer = Processor.CreateBivectorComposer();
 
         foreach (var (id, scalar) in bivector.IdScalarPairs)
-            composer.AddMultivector(
+            composer.AddKVectorScaled(
                 OmMapBasisBivector(id.FirstIndex, id.LastIndex),
                 scalar
             );
@@ -155,15 +153,15 @@ public sealed class XGaMusicalAutomorphism<T> :
 
     public XGaHigherKVector<T> OmMap(XGaHigherKVector<T> kVector)
     {
-        var composer = Processor.CreateComposer();
+        var composer = Processor.CreateKVectorComposer(kVector.Grade);
 
         foreach (var (id, scalar) in kVector.IdScalarPairs)
-            composer.AddMultivector(
+            composer.AddKVectorScaled(
                 OmMapBasisBlade(id),
                 scalar
             );
             
-        return composer.GetHigherKVector(kVector.Grade);
+        return composer.GetHigherKVector();
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -181,15 +179,15 @@ public sealed class XGaMusicalAutomorphism<T> :
 
     public XGaMultivector<T> OmMap(XGaMultivector<T> multivector)
     {
-        var composer = Processor.CreateComposer();
+        var composer = Processor.CreateMultivectorComposer();
 
         foreach (var (id, scalar) in multivector.IdScalarPairs)
-            composer.AddMultivector(
+            composer.AddKVectorScaled(
                 OmMapBasisBlade(id),
                 scalar
             );
             
-        return composer.GetMultivector();
+        return composer.GetSimpleMultivector();
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]

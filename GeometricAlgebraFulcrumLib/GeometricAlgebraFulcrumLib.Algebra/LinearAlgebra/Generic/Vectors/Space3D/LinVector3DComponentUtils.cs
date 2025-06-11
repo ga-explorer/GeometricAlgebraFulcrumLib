@@ -164,66 +164,16 @@ public static class LinVector3DComponentUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Scalar<T> GetX<T>(this LinBasisVector3D vector, IScalarProcessor<T> scalarProcessor)
+    public static Scalar<T> GetComponent<T>(this ITriplet<Scalar<T>> vector, LinBasisVector axis)
     {
-        return vector switch
-        {
-            LinBasisVector3D.Px => scalarProcessor.One,
-            LinBasisVector3D.Nx => scalarProcessor.MinusOne,
-            _ => scalarProcessor.Zero
-        };
-    }
+        if (axis == LinBasisVector.Px) return vector.Item1;
+        if (axis == LinBasisVector.Nx) return -vector.Item1;
+        if (axis == LinBasisVector.Py) return vector.Item2;
+        if (axis == LinBasisVector.Ny) return -vector.Item2;
+        if (axis == LinBasisVector.Pz) return vector.Item3;
+        if (axis == LinBasisVector.Nz) return -vector.Item3;
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Scalar<T> GetY<T>(this LinBasisVector3D vector, IScalarProcessor<T> scalarProcessor)
-    {
-        return vector switch
-        {
-            LinBasisVector3D.Py => scalarProcessor.One,
-            LinBasisVector3D.Ny => scalarProcessor.MinusOne,
-            _ => scalarProcessor.Zero
-        };
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Scalar<T> GetZ<T>(this LinBasisVector3D vector, IScalarProcessor<T> scalarProcessor)
-    {
-        return vector switch
-        {
-            LinBasisVector3D.Pz => scalarProcessor.One,
-            LinBasisVector3D.Nz => scalarProcessor.MinusOne,
-            _ => scalarProcessor.Zero
-        };
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Scalar<T> GetComponent<T>(this LinBasisVector3D vector, LinBasisVector3D axis, IScalarProcessor<T> scalarProcessor)
-    {
-        return axis switch
-        {
-            LinBasisVector3D.Px => vector.GetX(scalarProcessor),
-            LinBasisVector3D.Nx => -vector.GetX(scalarProcessor),
-            LinBasisVector3D.Py => vector.GetY(scalarProcessor),
-            LinBasisVector3D.Ny => -vector.GetY(scalarProcessor),
-            LinBasisVector3D.Pz => vector.GetZ(scalarProcessor),
-            LinBasisVector3D.Nz => -vector.GetZ(scalarProcessor),
-            _ => scalarProcessor.Zero
-        };
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Scalar<T> GetComponent<T>(this ITriplet<Scalar<T>> vector, LinBasisVector3D axis)
-    {
-        return axis switch
-        {
-            LinBasisVector3D.Px => vector.Item1,
-            LinBasisVector3D.Nx => -vector.Item1,
-            LinBasisVector3D.Py => vector.Item2,
-            LinBasisVector3D.Ny => -vector.Item2,
-            LinBasisVector3D.Pz => vector.Item3,
-            LinBasisVector3D.Nz => -vector.Item3,
-            _ => vector.GetScalarProcessor().Zero
-        };
+        return vector.GetScalarProcessor().Zero;
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -244,9 +194,11 @@ public static class LinVector3DComponentUtils
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static LinVector3D<T> MapComponents<T>(this ITriplet<Scalar<T>> vector, Func<Scalar<T>, Scalar<T>> scalarMapping)
     {
-        return LinVector3D<T>.Create(scalarMapping(vector.Item1),
+        return LinVector3D<T>.Create(
+            scalarMapping(vector.Item1),
             scalarMapping(vector.Item2),
-            scalarMapping(vector.Item3));
+            scalarMapping(vector.Item3)
+        );
     }
 
     //[MethodImpl(MethodImplOptions.AggressiveInlining)]

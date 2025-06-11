@@ -362,7 +362,7 @@ public sealed class Float64AffineMap3D :
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public Float64AffineMap3D Rotate(LinBasisVector3D srcUnitVector, LinBasisVector3D dstUnitVector)
+    public Float64AffineMap3D Rotate(LinBasisVector srcUnitVector, LinBasisVector dstUnitVector)
     {
         return AppendMap(
             SquareMatrix4.CreateRotationMatrix3D(srcUnitVector.ToLinVector3D(), dstUnitVector.ToLinVector3D())

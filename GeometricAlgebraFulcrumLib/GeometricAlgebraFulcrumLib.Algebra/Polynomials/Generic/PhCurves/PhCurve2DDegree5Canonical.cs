@@ -1,6 +1,5 @@
 ﻿using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.LinearMaps.Rotors;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Multivectors;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Multivectors.Composers;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Processors;
 using GeometricAlgebraFulcrumLib.Algebra.Polynomials.Generic.Basis;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Generic;
@@ -59,13 +58,13 @@ public sealed class PhCurve2DDegree5Canonical<T>
 
     public XGaVector<T> Vector22 { get; }
 
-    public XGaScaledPureRotor<T> ScaledRotor0 { get; }
+    public XGaPureScalingRotor<T> ScalingRotor0 { get; }
 
-    public XGaScaledPureRotor<T> ScaledRotor1 { get; }
+    public XGaPureScalingRotor<T> ScalingRotor1 { get; }
 
-    public XGaScaledPureRotor<T> ScaledRotor2 { get; }
+    public XGaPureScalingRotor<T> ScalingRotor2 { get; }
 
-    public XGaScaledPureRotor<T> ScaledRotorV { get; }
+    public XGaPureScalingRotor<T> ScalingRotorV { get; }
 
     public XGaProcessor<T> GeometricProcessor { get; }
 
@@ -80,7 +79,7 @@ public sealed class PhCurve2DDegree5Canonical<T>
 
         var e1 = processor.VectorTerm(0);
 
-        ScaledRotor0 = processor.CreateScaledIdentityRotor();
+        ScalingRotor0 = processor.CreateScaledIdentityRotor();
 
         var f01 = _basisPairProductIntegralSet.GetValueAt1(0, 1);
         var f11 = _basisPairProductIntegralSet.GetValueAt1(1, 1);
@@ -89,11 +88,11 @@ public sealed class PhCurve2DDegree5Canonical<T>
         var dNorm = d.ENorm();
         var dUnit = d / dNorm;
             
-        ScaledRotor2 = e1.CreateScaledPureRotor(d);
+        ScalingRotor2 = e1.CreatePureScalingRotor(d);
 
         Vector00 = e1;
         Vector22 = d;
-        Vector02 = (e1.Gp(ScaledRotor2.MultivectorReverse) + ScaledRotor2.Multivector.Gp(e1)).GetVectorPart();
+        Vector02 = (e1.Gp(ScalingRotor2.MultivectorReverse) + ScalingRotor2.Multivector.Gp(e1)).GetVectorPart();
 
         VectorU = p - (e1 + d) / 8 + Vector02 / 24;
         var uNorm = VectorU.ENorm();
@@ -103,36 +102,36 @@ public sealed class PhCurve2DDegree5Canonical<T>
         var v0 = f01 / v1;
         var v2 = f12 / v1;
             
-        var v = e1.CreateScaledPureRotor(VectorU).Multivector;
+        var v = e1.CreatePureScalingRotor(VectorU).Multivector;
 
-        ScaledRotorV = processor.CreateScaledPureRotor2D(
+        ScalingRotorV = processor.CreatePureScalingRotor2D(
             v.Scalar().ScalarValue, 
             v[0, 1].ScalarValue
         );
 
-        var a1 = (v - v0 - v2 * ScaledRotor2.Multivector) / v1;
+        var a1 = (v - v0 - v2 * ScalingRotor2.Multivector) / v1;
 
-        ScaledRotor1 = processor.CreateScaledPureRotor2D(
+        ScalingRotor1 = processor.CreatePureScalingRotor2D(
             a1.Scalar().ScalarValue, 
             a1[0, 1].ScalarValue
         );
 
-        Vector01 = (e1.Gp(ScaledRotor1.MultivectorReverse) + ScaledRotor1.Multivector.Gp(e1)).GetVectorPart();
-        Vector12 = (ScaledRotor1.Multivector.Gp(e1).Gp(ScaledRotor2.MultivectorReverse) + ScaledRotor2.Multivector.Gp(e1).Gp(ScaledRotor1.MultivectorReverse)).GetVectorPart();
-        Vector11 = ScaledRotor1.Multivector.Gp(e1).Gp(ScaledRotor1.MultivectorReverse).GetVectorPart();
+        Vector01 = (e1.Gp(ScalingRotor1.MultivectorReverse) + ScalingRotor1.Multivector.Gp(e1)).GetVectorPart();
+        Vector12 = (ScalingRotor1.Multivector.Gp(e1).Gp(ScalingRotor2.MultivectorReverse) + ScalingRotor2.Multivector.Gp(e1).Gp(ScalingRotor1.MultivectorReverse)).GetVectorPart();
+        Vector11 = ScalingRotor1.Multivector.Gp(e1).Gp(ScalingRotor1.MultivectorReverse).GetVectorPart();
 
-        Scalar00 = ScaledRotor0.Multivector.ESp(ScaledRotor0.MultivectorReverse);
-        Scalar11 = ScaledRotor1.Multivector.ESp(ScaledRotor1.MultivectorReverse);
-        Scalar22 = ScaledRotor2.Multivector.ESp(ScaledRotor2.MultivectorReverse);
+        Scalar00 = ScalingRotor0.Multivector.ESp(ScalingRotor0.MultivectorReverse);
+        Scalar11 = ScalingRotor1.Multivector.ESp(ScalingRotor1.MultivectorReverse);
+        Scalar22 = ScalingRotor2.Multivector.ESp(ScalingRotor2.MultivectorReverse);
 
-        Scalar01 = ScaledRotor0.Multivector.ESp(ScaledRotor1.MultivectorReverse) +
-                   ScaledRotor1.Multivector.ESp(ScaledRotor0.MultivectorReverse);
+        Scalar01 = ScalingRotor0.Multivector.ESp(ScalingRotor1.MultivectorReverse) +
+                   ScalingRotor1.Multivector.ESp(ScalingRotor0.MultivectorReverse);
 
-        Scalar02 = ScaledRotor0.Multivector.ESp(ScaledRotor2.MultivectorReverse) +
-                   ScaledRotor2.Multivector.ESp(ScaledRotor0.MultivectorReverse);
+        Scalar02 = ScalingRotor0.Multivector.ESp(ScalingRotor2.MultivectorReverse) +
+                   ScalingRotor2.Multivector.ESp(ScalingRotor0.MultivectorReverse);
 
-        Scalar12 = ScaledRotor1.Multivector.ESp(ScaledRotor2.MultivectorReverse) +
-                   ScaledRotor2.Multivector.ESp(ScaledRotor1.MultivectorReverse);
+        Scalar12 = ScalingRotor1.Multivector.ESp(ScalingRotor2.MultivectorReverse) +
+                   ScalingRotor2.Multivector.ESp(ScalingRotor1.MultivectorReverse);
     }
 
 

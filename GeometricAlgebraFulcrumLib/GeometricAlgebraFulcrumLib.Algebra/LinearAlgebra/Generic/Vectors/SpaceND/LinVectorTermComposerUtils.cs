@@ -61,42 +61,4 @@ public static class LinVectorTermComposerUtils
         );
     }
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinVectorTerm<T> ToZeroTerm<T>(this LinBasisVector basisVector, IScalarProcessor<T> scalarProcessor)
-    {
-        return new LinVectorTerm<T>(
-            basisVector,
-            scalarProcessor.Zero
-        );
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinVectorTerm<T> ToPositiveTerm<T>(this LinBasisVector basisVector, IScalarProcessor<T> scalarProcessor)
-    {
-        return new LinVectorTerm<T>(
-            basisVector,
-            scalarProcessor.One
-        );
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinVectorTerm<T> ToNegativeTerm<T>(this LinBasisVector basisVector, IScalarProcessor<T> scalarProcessor)
-    {
-        return new LinVectorTerm<T>(
-            basisVector,
-            scalarProcessor.MinusOne
-        );
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinVectorTerm<T> ToTerm<T>(this LinBasisVector basisVector, Scalar<T> scalar)
-    {
-        return new LinVectorTerm<T>(basisVector, scalar);
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinVectorTerm<T> ToTerm<T>(this LinBasisVector basisVector, IScalarProcessor<T> scalarProcessor, T scalarValue)
-    {
-        return new LinVectorTerm<T>(basisVector, scalarProcessor, scalarValue);
-    }
 }

@@ -1,6 +1,5 @@
 ﻿using System.Collections.Immutable;
 using System.Runtime.CompilerServices;
-using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Basis;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.LinearMaps.Space3D.Reflection;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.LinearMaps.Space3D.Rotation;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.LinearMaps.Space3D.Scaling;
@@ -221,24 +220,6 @@ public static class LinFloat64UnilinearMapComposerUtils
         return vectorList.Select(map.MapVector);
     }
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static ILinFloat64DirectionalScalingLinearMap3D CreateDirectionalScaling(this LinBasisVector3D scalingBasisVector, double scalingFactor)
-    {
-        if (scalingFactor.IsZero())
-            throw new ArgumentException(nameof(scalingFactor));
-
-        // An identity map
-        if (scalingFactor.IsNearOne())
-            return LinFloat64IdentityLinearMap3D.Instance;
-
-        // A hyper plane reflection using a normal basis vector
-        if (scalingFactor.IsNearMinusOne())
-            return LinFloat64HyperPlaneAxisReflection3D.Create(scalingBasisVector.GetIndex());
-
-        // A general directional scaling using a basis vector
-        return LinFloat64AxisDirectionalScaling3D.Create(scalingFactor, scalingBasisVector);
-    }
-
     //[MethodImpl(MethodImplOptions.AggressiveInlining)]
     //public static ILinFloat64DirectionalScalingLinearMap3D CreateDirectionalScaling(this Tuple<double, IReadOnlyList<double>> scalingFactorVectorTuple)
     //{
@@ -304,14 +285,14 @@ public static class LinFloat64UnilinearMapComposerUtils
         // A hyper plane reflection
         if (scalingFactor.IsNearMinusOne())
             return scalingVectorIsAxis
-                ? LinFloat64HyperPlaneAxisReflection3D.Create(scalingAxis.GetIndex())
+                ? LinFloat64HyperPlaneAxisReflection3D.Create(scalingAxis.Index)
                 : LinFloat64HyperPlaneNormalReflection3D.Create(scalingVector);
 
         // A general directional scaling
         return scalingVectorIsAxis
             ? LinFloat64AxisDirectionalScaling3D.Create(
                 scalingFactor,
-                scalingAxis.GetIndex()
+                scalingAxis.Index
             )
             : LinFloat64VectorDirectionalScaling3D.Create(
                 scalingFactor,

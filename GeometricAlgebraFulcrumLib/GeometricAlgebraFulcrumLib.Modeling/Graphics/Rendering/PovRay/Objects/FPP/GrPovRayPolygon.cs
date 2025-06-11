@@ -62,8 +62,8 @@ public class GrPovRayPolygon :
         var polygon = CreateRectangleXy(width, height);
 
         polygon.AffineMap.Rotate(
-            LinBasisVector3D.Px, 
-            LinBasisVector3D.Pz
+            LinBasisVector.Px, 
+            LinBasisVector.Pz
         );
 
         return polygon;
@@ -86,8 +86,8 @@ public class GrPovRayPolygon :
         var polygon = CreateRectangleXy(width, height);
 
         polygon.AffineMap.Rotate(
-            LinBasisVector3D.Py, 
-            LinBasisVector3D.Pz
+            LinBasisVector.Py, 
+            LinBasisVector.Pz
         );
 
         return polygon;

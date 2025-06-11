@@ -38,7 +38,7 @@ public sealed class LibTypeKVector :
     {
         return KvSpaceDimensions
             .GetRange(index =>
-                Metric.CreateBasisBlade(Grade, index)
+                Metric.BasisBlade(Grade, index)
             ).ToImmutableArray();
     }
 

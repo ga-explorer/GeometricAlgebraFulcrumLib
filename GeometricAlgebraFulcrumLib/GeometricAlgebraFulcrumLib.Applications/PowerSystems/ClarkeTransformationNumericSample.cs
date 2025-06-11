@@ -26,7 +26,7 @@ public static class ClarkeTransformationNumericSample
 
             var clarkeMap =
                 //ScalarProcessor.CreateSimpleKirchhoffRotor(n);
-                GeometricProcessor.CreateClarkeRotationMap(n);
+                GeometricProcessor.ClarkeRotationOutermorphism(n);
 
             var clarkeArray =
                 clarkeMap.GetVectorMapArray(n, n);

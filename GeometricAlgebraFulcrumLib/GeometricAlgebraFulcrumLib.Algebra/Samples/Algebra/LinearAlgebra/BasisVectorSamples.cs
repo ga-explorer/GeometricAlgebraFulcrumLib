@@ -6,27 +6,27 @@ namespace GeometricAlgebraFulcrumLib.Algebra.Samples.Algebra.LinearAlgebra
 {
     public static class BasisVectorSamples
     {
-        public static IReadOnlyList<LinBasisVector3D> BasisVectors { get; }
-            = new LinBasisVector3D[]
-            {
-                LinBasisVector3D.Px,
-                LinBasisVector3D.Nx,
-                LinBasisVector3D.Py,
-                LinBasisVector3D.Ny,
-                LinBasisVector3D.Pz,
-                LinBasisVector3D.Nz
-            };
+        public static IReadOnlyList<LinBasisVector> BasisVectors { get; }
+            =
+            [
+                LinBasisVector.Px,
+                LinBasisVector.Nx,
+                LinBasisVector.Py,
+                LinBasisVector.Ny,
+                LinBasisVector.Pz,
+                LinBasisVector.Nz
+            ];
 
         public static IReadOnlyList<string> BasisVectorNames { get; }
-            = new string[]
-            {
+            =
+            [
                 "Px",
                 "Nx",
                 "Py",
                 "Ny",
                 "Pz",
                 "Nz"
-            };
+            ];
 
         public static void ValidateVectorPairsNormals()
         {

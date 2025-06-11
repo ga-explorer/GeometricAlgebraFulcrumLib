@@ -20,7 +20,7 @@
 //        }
 
 //        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-//        public static AxisDirectionalScaling Create(double scalingFactor, int dimensions, LinSignedBasisVector scalingAxis)
+//        public static AxisDirectionalScaling Create(double scalingFactor, int dimensions, LinBasisVector scalingAxis)
 //        {
 //            return new AxisDirectionalScaling(
 //                scalingFactor,
@@ -32,7 +32,7 @@
 
 //        public override double ScalingFactor { get; }
 
-//        public LinSignedBasisVector ScalingAxis { get; }
+//        public LinBasisVector ScalingAxis { get; }
 
 //        public override int VSpaceDimensions { get; }
 
@@ -49,7 +49,7 @@
 
 //            VSpaceDimensions = dimensions;
 //            ScalingFactor = factor;
-//            ScalingAxis = new LinSignedBasisVector(basisIndex, false);
+//            ScalingAxis = new LinBasisVector(basisIndex, false);
 //        }
 
     

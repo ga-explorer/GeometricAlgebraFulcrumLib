@@ -2,7 +2,6 @@
 using System.Runtime.CompilerServices;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.LinearMaps.Outermorphisms;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivectors;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivectors.Composers;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Processors;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.LinearMaps.SpaceND;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space2D;
@@ -429,9 +428,9 @@ public class CGaFloat64GeometricSpace :
 
         return BasisSpecs.BasisMapInverse.OmMap(
             ConformalProcessor
-                .CreateComposer()
+                .CreateKVectorComposer(kVector.Grade - 1)
                 .AddTerms(termList)
-                .GetKVector(kVector.Grade - 1)
+                .GetKVector()
         );
 
         //return BasisSpecs.BasisMapInverse.OmMap(

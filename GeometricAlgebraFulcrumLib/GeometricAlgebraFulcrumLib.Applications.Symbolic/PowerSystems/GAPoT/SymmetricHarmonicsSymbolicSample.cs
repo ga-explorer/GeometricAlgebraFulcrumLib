@@ -1,10 +1,7 @@
 ﻿using System.Diagnostics;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.LinearMaps.Outermorphisms;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.LinearMaps.Rotors;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Multivectors;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Multivectors.Composers;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Processors;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Subspaces;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Matrices;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Generic;
 using GeometricAlgebraFulcrumLib.Mathematica.Algebra;
@@ -29,7 +26,7 @@ public static class SymmetricHarmonicsSymbolicSample
 
     public static void ValidatePhasor(int k, int n, XGaVector<Expr> phasor2)
     {
-        var composer = GeometricProcessor.CreateComposer();
+        var composer = GeometricProcessor.CreateVectorComposer();
 
         for (var i = 0; i < n; i++)
         {
@@ -37,7 +34,7 @@ public static class SymmetricHarmonicsSymbolicSample
                 ? $@"Cos[{k}*\[Theta]]".ToExpr()
                 : $@"Cos[{k}*(\[Theta] - 2*Pi*{i}/{n})]".ToExpr();
 
-            composer.SetTerm((ulong)i, scalar);
+            composer.SetVectorTerm(i, scalar);
         }
 
         var phasor1 =

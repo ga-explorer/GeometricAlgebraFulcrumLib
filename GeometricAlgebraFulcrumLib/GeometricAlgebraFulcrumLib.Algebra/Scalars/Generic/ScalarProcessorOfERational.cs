@@ -114,12 +114,12 @@ public sealed class ScalarProcessorOfERational
     private ScalarProcessorOfERational()
     {
         PiValue = EFloat.PI(NumericalContext);
-        PiTimes2Value = EFloat.PI(NumericalContext) * 2;
-        PiTimes4Value = EFloat.PI(NumericalContext) * 4;
-        PiOver2Value = EFloat.PI(NumericalContext) / 2;
+        PiTimes2Value = PiValue * 2;
+        PiTimes4Value = PiValue * 4;
+        PiOver2Value = PiValue / 2;
         EValue = EFloat.One.Exp(NumericalContext);
-        DegreeToRadianFactorValue = EFloat.PI(NumericalContext) / 180;
-        RadianToDegreeFactorValue = 180 / EFloat.PI(NumericalContext);
+        DegreeToRadianFactorValue = PiValue / 180;
+        RadianToDegreeFactorValue = 180 / PiValue;
 
         Zero = this.ScalarFromValue(ZeroValue);
         One = this.ScalarFromValue(OneValue);

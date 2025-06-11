@@ -114,12 +114,12 @@ public sealed class ScalarProcessorOfEDecimal
     private ScalarProcessorOfEDecimal()
     {
         PiValue = EDecimal.PI(NumericalContext);
-        PiTimes2Value = EDecimal.PI(NumericalContext) * 2;
-        PiTimes4Value = EDecimal.PI(NumericalContext) * 4;
-        PiOver2Value = EDecimal.PI(NumericalContext) / 2;
+        PiTimes2Value = PiValue * 2;
+        PiTimes4Value = PiValue * 4;
+        PiOver2Value = PiValue / 2;
         EValue = EDecimal.One.Exp(NumericalContext);
-        DegreeToRadianFactorValue = EDecimal.PI(NumericalContext) / 180;
-        RadianToDegreeFactorValue = 180 / EDecimal.PI(NumericalContext);
+        DegreeToRadianFactorValue = PiValue / 180;
+        RadianToDegreeFactorValue = 180 / PiValue;
 
         Zero = this.ScalarFromValue(ZeroValue);
         One = this.ScalarFromValue(OneValue);

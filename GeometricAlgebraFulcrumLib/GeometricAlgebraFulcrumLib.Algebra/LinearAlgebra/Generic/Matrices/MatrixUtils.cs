@@ -30,11 +30,6 @@
 //public static class MatrixUtils
 //{
 
-//    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-//    public static SquareMatrix2 RotationAngleToSquareMatrix2(this LinFloat64Angle angle)
-//    {
-//        return SquareMatrix2.CreateRotationMatrix2D(angle);
-//    }
 
 
 //    public static IReadOnlyList<LinFloat64Vector> ColumnsToTuples(this Matrix<double> matrix)

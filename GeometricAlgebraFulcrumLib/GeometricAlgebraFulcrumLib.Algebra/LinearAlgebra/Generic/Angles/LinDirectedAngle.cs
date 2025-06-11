@@ -789,13 +789,13 @@ public sealed record LinDirectedAngle<T> :
     
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public LinDirectedAngle<T> NegativeAngle()
+    public override LinDirectedAngle<T> NegativeAngle()
     {
         return CreateFromRadians(-Radians);
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public LinDirectedAngle<T> OppositeAngle()
+    public override LinDirectedAngle<T> OppositeAngle()
     {
         return CreateFromRadians(Radians + ScalarProcessor.Pi);
     }
@@ -815,9 +815,21 @@ public sealed record LinDirectedAngle<T> :
         
         return CreateFromRadians(Radians - angle2);
     }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public override LinDirectedAngle<T> AngleAdd(IScalar<T> angle2)
+    {
+        return CreateFromRadians(Radians + angle2);
+    }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public LinDirectedAngle<T> AngleTimes(T scalingFactor)
+    public override LinDirectedAngle<T> AngleSubtract(IScalar<T> angle2)
+    {
+        return CreateFromRadians(Radians - angle2);
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public override LinDirectedAngle<T> AngleTimes(T scalingFactor)
     {
         Debug.Assert(scalingFactor != null, nameof(scalingFactor) + " != null");
         
@@ -825,7 +837,7 @@ public sealed record LinDirectedAngle<T> :
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public LinDirectedAngle<T> AngleDivide(T scalingFactor)
+    public override LinDirectedAngle<T> AngleDivide(T scalingFactor)
     {
         Debug.Assert(scalingFactor != null, nameof(scalingFactor) + " != null");
         
@@ -833,6 +845,14 @@ public sealed record LinDirectedAngle<T> :
     }
 
     
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public override LinDirectedAngle<T> MapAngleRadians(ScalarTransformer<T> transformer)
+    {
+        return ScalarProcessor.CreateDirectedAngleFromRadians(
+            transformer.MapScalarValue(RadiansValue)
+        );
+    }
+
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public override string ToString()
     {

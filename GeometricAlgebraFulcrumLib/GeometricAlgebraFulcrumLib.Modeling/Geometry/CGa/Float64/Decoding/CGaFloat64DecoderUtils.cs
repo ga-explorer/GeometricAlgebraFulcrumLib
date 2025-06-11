@@ -1,7 +1,6 @@
 ﻿using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivectors;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivectors.Composers;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.SpaceND;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Float64.Blades;
@@ -43,7 +42,7 @@ public static class CGaFloat64DecoderUtils
         );
 
         var composer =
-            cgaGeometricSpace.EuclideanProcessor.CreateComposer();
+            cgaGeometricSpace.EuclideanProcessor.CreateVectorComposer();
 
         foreach (var (index, scalar) in cgaKVector.IndexScalarPairs)
             composer.SetVectorTerm(index - 2, scalar);
@@ -59,7 +58,7 @@ public static class CGaFloat64DecoderUtils
         );
 
         var composer =
-            cgaGeometricSpace.EuclideanProcessor.CreateComposer();
+            cgaGeometricSpace.EuclideanProcessor.CreateBivectorComposer();
 
         foreach (var (id, scalar) in cgaKVector.IdScalarPairs)
             composer.SetTerm(id.ShiftIndices(-2), scalar);
@@ -75,12 +74,12 @@ public static class CGaFloat64DecoderUtils
         );
 
         var composer =
-            cgaGeometricSpace.EuclideanProcessor.CreateComposer();
+            cgaGeometricSpace.EuclideanProcessor.CreateKVectorComposer(cgaKVector.Grade);
 
         foreach (var (id, scalar) in cgaKVector.IdScalarPairs)
             composer.SetTerm(id.ShiftIndices(-2), scalar);
 
-        return composer.GetKVector(cgaKVector.Grade);
+        return composer.GetKVector();
     }
 
 

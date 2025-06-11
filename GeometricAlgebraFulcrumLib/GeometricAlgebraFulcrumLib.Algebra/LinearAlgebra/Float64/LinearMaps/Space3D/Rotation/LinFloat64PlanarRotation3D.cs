@@ -288,7 +288,7 @@ public sealed class LinFloat64PlanarRotation3D :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public Pair<double> BasisESp(LinBasisVector3D axis)
+    public Pair<double> BasisESp(LinBasisVector axis)
     {
         return new Pair<double>(
             BasisVector1[axis],
@@ -338,7 +338,7 @@ public sealed class LinFloat64PlanarRotation3D :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public LinFloat64Vector3D MapVector(LinBasisVector3D vector)
+    public LinFloat64Vector3D MapVector(LinBasisVector vector)
     {
         // Compute the projection components of the given vector on
         // the orthonormal basis vectors defining the plane of rotation
@@ -406,7 +406,7 @@ public sealed class LinFloat64PlanarRotation3D :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public LinFloat64Vector3D MapVector(LinBasisVector3D vector, LinFloat64Angle rotationAngle)
+    public LinFloat64Vector3D MapVector(LinBasisVector vector, LinFloat64Angle rotationAngle)
     {
         // Compute the projection components of the given vector on
         // the orthonormal basis vectors defining the plane of rotation

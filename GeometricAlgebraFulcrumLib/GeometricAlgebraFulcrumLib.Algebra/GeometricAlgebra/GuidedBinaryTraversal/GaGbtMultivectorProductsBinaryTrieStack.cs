@@ -2,7 +2,6 @@
 using System.Runtime.CompilerServices;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Processors;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Records;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.IndexSets;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Stacks;
 
@@ -348,7 +347,7 @@ public sealed class GaGbtMultivectorProductsBinaryTrieStack
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    private XGaIdScalarRecord TosGetEGpIdScalarPair()
+    private Tuple<IndexSet, double> TosGetEGpIdScalarPair()
     {
         var id1 = TosId1;
         var id2 = TosId2;
@@ -361,11 +360,11 @@ public sealed class GaGbtMultivectorProductsBinaryTrieStack
 
         //Console.Out.WriteLine($"id1: {id1}, id2: {id2}, value: {value}");
 
-        return new XGaIdScalarRecord(id, scalar);
+        return new Tuple<IndexSet, double>(id, scalar);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    private XGaIdScalarRecord TosGetGpIdScalarPair(int basisBladeSignature)
+    private Tuple<IndexSet, double> TosGetGpIdScalarPair(int basisBladeSignature)
     {
         Debug.Assert(basisBladeSignature is 1 or -1);
 
@@ -377,7 +376,7 @@ public sealed class GaGbtMultivectorProductsBinaryTrieStack
         var id = id1 ^ id2;
         var scalar = basisBladeSignature * TosValue1 * TosValue2;
 
-        return new XGaIdScalarRecord(id, scalar);
+        return new Tuple<IndexSet, double>(id, scalar);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -401,7 +400,7 @@ public sealed class GaGbtMultivectorProductsBinaryTrieStack
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public IEnumerable<XGaIdScalarRecord> GetOpIdScalarRecords()
+    public IEnumerable<Tuple<IndexSet, double>> GetOpIdScalarRecords()
     {
         PushRootData();
 
@@ -435,7 +434,7 @@ public sealed class GaGbtMultivectorProductsBinaryTrieStack
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public IEnumerable<XGaIdScalarRecord> GetEGpIdScalarRecords()
+    public IEnumerable<Tuple<IndexSet, double>> GetEGpIdScalarRecords()
     {
         PushRootData();
 
@@ -470,7 +469,7 @@ public sealed class GaGbtMultivectorProductsBinaryTrieStack
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public IEnumerable<XGaIdScalarRecord> GetESpIdScalarRecords()
+    public IEnumerable<Tuple<IndexSet, double>> GetESpIdScalarRecords()
     {
         PushRootData();
 
@@ -536,7 +535,7 @@ public sealed class GaGbtMultivectorProductsBinaryTrieStack
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public IEnumerable<XGaIdScalarRecord> GetELcpIdScalarRecords()
+    public IEnumerable<Tuple<IndexSet, double>> GetELcpIdScalarRecords()
     {
         PushRootData();
 
@@ -570,7 +569,7 @@ public sealed class GaGbtMultivectorProductsBinaryTrieStack
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public IEnumerable<XGaIdScalarRecord> GetERcpIdScalarRecords()
+    public IEnumerable<Tuple<IndexSet, double>> GetERcpIdScalarRecords()
     {
         PushRootData();
 
@@ -604,7 +603,7 @@ public sealed class GaGbtMultivectorProductsBinaryTrieStack
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public IEnumerable<XGaIdScalarRecord> GetEFdpIdScalarRecords()
+    public IEnumerable<Tuple<IndexSet, double>> GetEFdpIdScalarRecords()
     {
         PushRootData();
 
@@ -640,7 +639,7 @@ public sealed class GaGbtMultivectorProductsBinaryTrieStack
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public IEnumerable<XGaIdScalarRecord> GetEHipIdScalarRecords()
+    public IEnumerable<Tuple<IndexSet, double>> GetEHipIdScalarRecords()
     {
         PushRootData();
 
@@ -676,7 +675,7 @@ public sealed class GaGbtMultivectorProductsBinaryTrieStack
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public IEnumerable<XGaIdScalarRecord> GetEAcpIdScalarRecords()
+    public IEnumerable<Tuple<IndexSet, double>> GetEAcpIdScalarRecords()
     {
         PushRootData();
 
@@ -712,7 +711,7 @@ public sealed class GaGbtMultivectorProductsBinaryTrieStack
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public IEnumerable<XGaIdScalarRecord> GetECpIdScalarRecords()
+    public IEnumerable<Tuple<IndexSet, double>> GetECpIdScalarRecords()
     {
         PushRootData();
 
@@ -749,7 +748,7 @@ public sealed class GaGbtMultivectorProductsBinaryTrieStack
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public IEnumerable<XGaIdScalarRecord> GetGpIdScalarRecords()
+    public IEnumerable<Tuple<IndexSet, double>> GetGpIdScalarRecords()
     {
         PushRootData();
 
@@ -813,7 +812,7 @@ public sealed class GaGbtMultivectorProductsBinaryTrieStack
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public IEnumerable<XGaIdScalarRecord> GetSpIdScalarRecords()
+    public IEnumerable<Tuple<IndexSet, double>> GetSpIdScalarRecords()
     {
         PushRootData();
 
@@ -917,7 +916,7 @@ public sealed class GaGbtMultivectorProductsBinaryTrieStack
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public IEnumerable<XGaIdScalarRecord> GetLcpIdScalarRecords()
+    public IEnumerable<Tuple<IndexSet, double>> GetLcpIdScalarRecords()
     {
         PushRootData();
 
@@ -975,7 +974,7 @@ public sealed class GaGbtMultivectorProductsBinaryTrieStack
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public IEnumerable<XGaIdScalarRecord> GetRcpIdScalarRecords()
+    public IEnumerable<Tuple<IndexSet, double>> GetRcpIdScalarRecords()
     {
         PushRootData();
 
@@ -1033,7 +1032,7 @@ public sealed class GaGbtMultivectorProductsBinaryTrieStack
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public IEnumerable<XGaIdScalarRecord> GetFdpIdScalarRecords()
+    public IEnumerable<Tuple<IndexSet, double>> GetFdpIdScalarRecords()
     {
         PushRootData();
 
@@ -1098,7 +1097,7 @@ public sealed class GaGbtMultivectorProductsBinaryTrieStack
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public IEnumerable<XGaIdScalarRecord> GetHipIdScalarRecords()
+    public IEnumerable<Tuple<IndexSet, double>> GetHipIdScalarRecords()
     {
         PushRootData();
 
@@ -1163,7 +1162,7 @@ public sealed class GaGbtMultivectorProductsBinaryTrieStack
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public IEnumerable<XGaIdScalarRecord> GetAcpIdScalarRecords()
+    public IEnumerable<Tuple<IndexSet, double>> GetAcpIdScalarRecords()
     {
         PushRootData();
 
@@ -1228,7 +1227,7 @@ public sealed class GaGbtMultivectorProductsBinaryTrieStack
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public IEnumerable<XGaIdScalarRecord> GetCpIdScalarRecords()
+    public IEnumerable<Tuple<IndexSet, double>> GetCpIdScalarRecords()
     {
         PushRootData();
 

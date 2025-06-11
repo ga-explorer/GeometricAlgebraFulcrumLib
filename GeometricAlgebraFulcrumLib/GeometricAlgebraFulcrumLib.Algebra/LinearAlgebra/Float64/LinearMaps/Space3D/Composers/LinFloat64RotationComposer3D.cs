@@ -171,17 +171,17 @@ public sealed class LinFloat64RotationComposer3D :
         // TODO: This needs handling of case where vector1 = -e1
         var rotation1 = LinFloat64PlanarRotation3D.CreateFromRotatedVector(
             vector1,
-            LinBasisVector3D.Px.ToLinVector3D()
+            LinBasisVector.Px.ToLinVector3D()
         );
 
         vector2 =
             rotation1
                 .MapVector(vector2)
-                .RejectOnAxis(LinBasisVector3D.Px);
+                .RejectOnAxis(LinBasisVector.Px);
 
         var rotation2 = LinFloat64PlanarRotation3D.CreateFromRotatedVector(
             vector2,
-            LinBasisVector3D.Py.ToLinVector3D()
+            LinBasisVector.Py.ToLinVector3D()
         );
 
         AppendRotation(rotation1);

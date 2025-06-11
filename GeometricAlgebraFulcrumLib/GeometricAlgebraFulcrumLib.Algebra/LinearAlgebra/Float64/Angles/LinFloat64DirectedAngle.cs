@@ -927,37 +927,37 @@ public sealed record LinFloat64DirectedAngle :
     
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public LinFloat64DirectedAngle NegativeAngle()
+    public override LinFloat64DirectedAngle NegativeAngle()
     {
         return CreateFromRadians(-RadiansValue);
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public LinFloat64DirectedAngle OppositeAngle()
+    public override LinFloat64DirectedAngle OppositeAngle()
     {
         return CreateFromRadians(RadiansValue + Pi);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public LinFloat64DirectedAngle AngleAdd(double angle2)
+    public override LinFloat64DirectedAngle AngleAdd(double angle2)
     {
         return CreateFromRadians(RadiansValue + angle2);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public LinFloat64DirectedAngle AngleSubtract(double angle2)
+    public override LinFloat64DirectedAngle AngleSubtract(double angle2)
     {
         return CreateFromRadians(RadiansValue - angle2);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public LinFloat64DirectedAngle AngleTimes(double scalingFactor)
+    public override LinFloat64DirectedAngle AngleTimes(double scalingFactor)
     {
         return CreateFromRadians(RadiansValue * scalingFactor);
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public LinFloat64DirectedAngle AngleDivide(double scalingFactor)
+    public override LinFloat64DirectedAngle AngleDivide(double scalingFactor)
     {
         return CreateFromRadians(RadiansValue / scalingFactor);
     }

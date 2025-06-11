@@ -20,7 +20,7 @@ public sealed record LinFloat64NullSubspace :
         => 0;
 
     public IEnumerable<LinFloat64Vector> BasisVectors
-        => Enumerable.Empty<LinFloat64Vector>();
+        => [];
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -54,7 +54,7 @@ public sealed record LinFloat64NullSubspace :
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public LinFloat64Vector GetVectorProjection(LinFloat64Vector vector)
     {
-        return LinFloat64Vector.VectorZero;
+        return LinFloat64Vector.Zero;
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]

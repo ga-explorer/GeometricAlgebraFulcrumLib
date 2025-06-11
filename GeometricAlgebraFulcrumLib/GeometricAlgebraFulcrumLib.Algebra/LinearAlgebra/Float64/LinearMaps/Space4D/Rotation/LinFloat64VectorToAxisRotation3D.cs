@@ -11,12 +11,12 @@ public sealed class LinFloat64VectorToAxisRotation4D :
     LinFloat64VectorToVectorRotationBase4D
 {
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64VectorToAxisRotation4D Create(ILinFloat64Vector4D u, LinBasisVector4D vAxis)
+    public static LinFloat64VectorToAxisRotation4D Create(ILinFloat64Vector4D u, LinBasisVector vAxis)
     {
         return new LinFloat64VectorToAxisRotation4D(
             LinFloat64Vector4DUtils.ToLinVector4D(u),
-            vAxis.GetIndex(),
-            vAxis.IsNegative()
+            vAxis.Index,
+            vAxis.IsNegative
         );
     }
 
@@ -51,7 +51,7 @@ public sealed class LinFloat64VectorToAxisRotation4D :
     }
 
 
-    public LinBasisVector4D TargetAxis { get; }
+    public LinBasisVector TargetAxis { get; }
 
     public override LinFloat64Vector4D SourceVector { get; }
 
@@ -87,7 +87,7 @@ public sealed class LinFloat64VectorToAxisRotation4D :
             LinFloat64Vector4DComposer
                 .Create()
                 .SetVector(SourceVector, -AngleCos)
-                .AddTerm(TargetAxis.GetIndex(), TargetAxis.GetSign().ToFloat64())
+                .AddTerm(TargetAxis.Index, TargetAxis.Sign.ToFloat64())
                 .Times(1d / (1d + AngleCos))
                 .GetVector();
     }
@@ -113,7 +113,7 @@ public sealed class LinFloat64VectorToAxisRotation4D :
         return LinFloat64Vector4DComposer
             .Create()
             .SetVector(SourceVector, uScalar)
-            .AddTerm(TargetAxis.GetIndex(), TargetAxis.IsNegative() ? -vScalar : vScalar)
+            .AddTerm(TargetAxis.Index, TargetAxis.IsNegative ? -vScalar : vScalar)
             .GetVector();
     }
 
@@ -133,7 +133,7 @@ public sealed class LinFloat64VectorToAxisRotation4D :
             .Create()
             .SetVector(SourceVector, -rsPlus)
             .AddTerm(basisIndex, 1d)
-            .SubtractTerm(TargetAxis.GetIndex(), TargetAxis.IsNegative() ? -rsMinus : rsMinus)
+            .SubtractTerm(TargetAxis.Index, TargetAxis.IsNegative ? -rsMinus : rsMinus)
             .GetVector();
     }
 
@@ -153,7 +153,7 @@ public sealed class LinFloat64VectorToAxisRotation4D :
             .Create()
             .SetVector(vector)
             .AddVector(SourceVector, -rsPlus)
-            .SubtractTerm(TargetAxis.GetIndex(), TargetAxis.IsNegative() ? -rsMinus : rsMinus)
+            .SubtractTerm(TargetAxis.Index, TargetAxis.IsNegative ? -rsMinus : rsMinus)
             .GetVector();
     }
 
@@ -167,7 +167,7 @@ public sealed class LinFloat64VectorToAxisRotation4D :
         return LinFloat64Vector4DComposer
             .Create()
             .SetVector(SourceVector, uScalar)
-            .AddTerm(TargetAxis.GetIndex(), TargetAxis.IsNegative() ? -vScalar : vScalar)
+            .AddTerm(TargetAxis.Index, TargetAxis.IsNegative ? -vScalar : vScalar)
             .GetVector();
     }
 
@@ -175,8 +175,8 @@ public sealed class LinFloat64VectorToAxisRotation4D :
     public override LinFloat64SimpleRotationBase4D GetSimpleVectorRotationInverse()
     {
         return new LinFloat64AxisToVectorRotation4D(
-            TargetAxis.GetIndex(),
-            TargetAxis.IsNegative(),
+            TargetAxis.Index,
+            TargetAxis.IsNegative,
             SourceVector
         );
     }

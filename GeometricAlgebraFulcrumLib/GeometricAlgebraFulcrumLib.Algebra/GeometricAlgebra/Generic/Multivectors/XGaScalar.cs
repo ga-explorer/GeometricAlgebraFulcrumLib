@@ -1,11 +1,14 @@
-﻿using System.Diagnostics;
-using System.Runtime.CompilerServices;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Multivectors.Composers;
+﻿using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivectors;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Processors;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Processors;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Generic;
+using GeometricAlgebraFulcrumLib.Utilities.Structures.BitManipulation;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Dictionary;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.IndexSets;
+using GeometricAlgebraFulcrumLib.Utilities.Text.Text;
+using System.Diagnostics;
+using System.Runtime.CompilerServices;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Multivectors;
 
@@ -48,7 +51,7 @@ public sealed partial class XGaScalar<T> :
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         get
         {
-            if (!IsZero) yield return Processor.BasisScalar;
+            if (!IsZero) yield return Processor.UnitBasisScalar;
         }
     }
 
@@ -75,7 +78,7 @@ public sealed partial class XGaScalar<T> :
         {
             if (!IsZero)
                 yield return new KeyValuePair<XGaBasisBlade, T>(
-                    Processor.BasisScalar,
+                    Processor.UnitBasisScalar,
                     ScalarValue
                 );
         }
@@ -179,6 +182,12 @@ public sealed partial class XGaScalar<T> :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public override XGaVector<T> GetVectorPart(Func<int, bool> filter)
+    {
+        return Processor.VectorZero;
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public override XGaBivector<T> GetBivectorPart()
     {
         return Processor.BivectorZero;
@@ -191,7 +200,7 @@ public sealed partial class XGaScalar<T> :
     }
         
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public XGaScalar<T> GetPart(Func<IndexSet, bool> filterFunc)
+    public override XGaScalar<T> GetPart(Func<IndexSet, bool> filterFunc)
     {
         return IsZero || filterFunc(IndexSet.EmptySet) 
             ? this 
@@ -199,7 +208,7 @@ public sealed partial class XGaScalar<T> :
     }
         
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public XGaScalar<T> GetPart(Func<T, bool> filterFunc)
+    public override XGaScalar<T> GetPart(Func<T, bool> filterFunc)
     {
         return IsZero || filterFunc(ScalarValue) 
             ? this 
@@ -207,7 +216,7 @@ public sealed partial class XGaScalar<T> :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public XGaScalar<T> GetPart(Func<IndexSet, T, bool> filterFunc)
+    public override XGaScalar<T> GetPart(Func<IndexSet, T, bool> filterFunc)
     {
         return IsZero || filterFunc(IndexSet.EmptySet, ScalarValue) 
             ? this 
@@ -264,6 +273,109 @@ public sealed partial class XGaScalar<T> :
         
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public override XGaGradedMultivectorComposer<T> ToComposer()
+    {
+        return Processor.CreateMultivectorComposer().SetScalarTerm(ScalarValue);
+    }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public override XGaGradedMultivectorComposer<T> NegativeToComposer()
+    {
+        return Processor.CreateMultivectorComposer().SetScalarTerm(Negative());
+    }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public override XGaGradedMultivectorComposer<T> ToComposer(T scalingFactor)
+    {
+        return Processor.CreateMultivectorComposer().SetScalarTerm(Times(scalingFactor));
+    }
+
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public override XGaFloat64Scalar Convert(XGaFloat64Processor processor)
+    {
+        return processor.Scalar(
+            ScalarProcessor.ToFloat64(ScalarValue)
+        );
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public override XGaFloat64Scalar Convert(XGaFloat64Processor processor, Func<T, double> scalarMapping)
+    {
+        return processor.Scalar(
+            scalarMapping(ScalarValue)
+        );
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public override XGaScalar<T2> Convert<T2>(XGaProcessor<T2> processor, Func<T, T2> scalarMapping)
+    {
+        return new XGaScalar<T2>(
+            processor,
+            scalarMapping(ScalarValue)
+        );
+    }
+
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public override XGaScalar<T> MapScalars(ScalarTransformer<T> transformer)
+    {
+        return Processor.Scalar(
+            transformer.MapScalarValue(ScalarValue)
+        );
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public override XGaScalar<T> ReflectOn(XGaKVector<T> subspace)
+    {
+        Debug.Assert(subspace.IsNearBlade());
+
+        return this;
+    }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public override XGaScalar<T> ReflectDirectOnDirect(XGaKVector<T> subspace)
+    {
+        return this;
+    }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public override XGaScalar<T> ReflectDirectOnDual(XGaKVector<T> subspace)
+    {
+        return this;
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public override XGaScalar<T> ReflectDualOnDirect(XGaKVector<T> subspace, int vSpaceDimensions)
+    {
+        var n = subspace.Grade + vSpaceDimensions;
+
+        return n.IsOdd() ? -this : this;
+    }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public override XGaScalar<T> ReflectDualOnDual(XGaKVector<T> subspace)
+    {
+        return subspace.IsOdd() ? -this : this;
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public override XGaScalar<T> ProjectOn(XGaKVector<T> subspace, bool useSubspaceInverse = false)
+    {
+        Debug.Assert(subspace.IsNearBlade());
+        
+        var subspaceInverse = 
+            useSubspaceInverse 
+                ? subspace.PseudoInverse() 
+                : subspace;
+
+        return Fdp(subspaceInverse).Gp(subspace).GetScalarPart();
+    }
+
+
+
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     private bool Equals(XGaScalar<T> other)
     {
         return Equals(_scalar, other._scalar);
@@ -280,10 +392,17 @@ public sealed partial class XGaScalar<T> :
     {
         return _scalar.GetHashCode();
     }
-
+    
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public override string ToString()
     {
-        return IsZero ? string.Empty : $"'{ScalarValue:G}'<>";
+        if (IsZero)
+            return $"'{ScalarProcessor.Zero.ToText()}'<>";
+
+        return BasisScalarPairs
+            .OrderBy(p => p.Key.Id.Count)
+            .ThenBy(p => p.Key.Id)
+            .Select(p => $"'{ScalarProcessor.ToText(p.Value)}'{p.Key}")
+            .Concatenate(" + ");
     }
 }

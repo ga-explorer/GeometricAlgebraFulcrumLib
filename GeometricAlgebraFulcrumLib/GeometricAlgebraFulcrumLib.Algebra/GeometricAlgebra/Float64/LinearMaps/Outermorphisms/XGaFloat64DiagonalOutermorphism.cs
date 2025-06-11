@@ -1,7 +1,6 @@
 ﻿using System.Runtime.CompilerServices;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivectors;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivectors.Composers;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Processors;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.LinearMaps.SpaceND;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.SpaceND;
@@ -104,7 +103,7 @@ public sealed class XGaFloat64DiagonalOutermorphism :
 
     public XGaFloat64Vector OmMap(XGaFloat64Vector vector)
     {
-        var composer = Processor.CreateComposer();
+        var composer = Processor.CreateVectorComposer();
 
         if (DiagonalVector.Count <= vector.Count)
         {
@@ -132,7 +131,7 @@ public sealed class XGaFloat64DiagonalOutermorphism :
 
     public XGaFloat64Bivector OmMap(XGaFloat64Bivector bivector)
     {
-        var composer = Processor.CreateComposer();
+        var composer = Processor.CreateBivectorComposer();
 
         foreach (var (id, scalar) in bivector)
         {
@@ -144,7 +143,7 @@ public sealed class XGaFloat64DiagonalOutermorphism :
             if (bv.IsZero)
                 continue;
 
-            composer.AddMultivector(bv, scalar);
+            composer.AddKVectorScaled(bv, scalar);
         }
 
         return composer.GetBivector();
@@ -152,7 +151,7 @@ public sealed class XGaFloat64DiagonalOutermorphism :
 
     public XGaFloat64HigherKVector OmMap(XGaFloat64HigherKVector kVector)
     {
-        var composer = Processor.CreateComposer();
+        var composer = Processor.CreateKVectorComposer(kVector.Grade);
 
         foreach (var (id, scalar) in kVector)
         {
@@ -161,10 +160,10 @@ public sealed class XGaFloat64DiagonalOutermorphism :
             if (mv.IsZero)
                 continue;
 
-            composer.AddMultivector(mv, scalar);
+            composer.AddKVectorScaled(mv, scalar);
         }
 
-        return composer.GetHigherKVector(kVector.Grade);
+        return composer.GetHigherKVector();
     }
         
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -182,7 +181,7 @@ public sealed class XGaFloat64DiagonalOutermorphism :
 
     public XGaFloat64Multivector OmMap(XGaFloat64Multivector multivector)
     {
-        var composer = Processor.CreateComposer();
+        var composer = Processor.CreateMultivectorComposer();
 
         foreach (var (id, scalar) in multivector)
         {
@@ -191,7 +190,7 @@ public sealed class XGaFloat64DiagonalOutermorphism :
             if (mv.IsZero)
                 continue;
 
-            composer.AddMultivector(mv, scalar);
+            composer.AddMultivectorScaled(mv, scalar);
         }
 
         return composer.GetSimpleMultivector();

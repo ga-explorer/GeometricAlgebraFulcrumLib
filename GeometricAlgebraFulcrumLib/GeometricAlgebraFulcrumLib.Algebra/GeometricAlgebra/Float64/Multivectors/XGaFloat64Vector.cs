@@ -1,13 +1,11 @@
-﻿using System.Diagnostics;
-using System.Runtime.CompilerServices;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivectors.Composers;
+﻿using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Processors;
-using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.SpaceND;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
 using GeometricAlgebraFulcrumLib.Utilities.Structures;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Dictionary;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.IndexSets;
+using System.Diagnostics;
+using System.Runtime.CompilerServices;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivectors;
 
@@ -23,14 +21,6 @@ public sealed partial class XGaFloat64Vector :
     public override int Count
         => _idScalarDictionary.Count;
 
-    public override IEnumerable<int> KVectorGrades
-    {
-        get
-        {
-            if (!IsZero) yield return 1;
-        }
-    }
-
     public override int Grade
         => 1;
 
@@ -45,25 +35,33 @@ public sealed partial class XGaFloat64Vector :
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         get => _idScalarDictionary.Values;
     }
-        
+
     public IEnumerable<KeyValuePair<int, double>> IndexScalarPairs
-        => _idScalarDictionary.Select(p => 
+        => _idScalarDictionary.Select(p =>
             new KeyValuePair<int, double>(p.Key.FirstIndex, p.Value)
         );
 
     public override IEnumerable<KeyValuePair<IndexSet, double>> IdScalarPairs
         => _idScalarDictionary;
-        
+
     public override IEnumerable<KeyValuePair<XGaBasisBlade, double>> BasisScalarPairs
     {
         get
         {
             return _idScalarDictionary.Select(p =>
                 new KeyValuePair<XGaBasisBlade, double>(
-                    Metric.CreateBasisBlade(p.Key),
+                    Metric.BasisBlade(p.Key),
                     p.Value
                 )
             );
+        }
+    }
+
+    public override IEnumerable<int> KVectorGrades
+    {
+        get
+        {
+            if (!IsZero) yield return 1;
         }
     }
 
@@ -94,25 +92,26 @@ public sealed partial class XGaFloat64Vector :
         Debug.Assert(IsValid());
     }
 
-        
+
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public override bool IsValid()
     {
         return _idScalarDictionary.IsValidVectorDictionary();
     }
 
+
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public override IReadOnlyDictionary<IndexSet, double> GetIdScalarDictionary()
     {
         return _idScalarDictionary;
     }
-        
+
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public override bool ContainsKey(IndexSet key)
     {
         return !IsZero && _idScalarDictionary.ContainsKey(key);
     }
-        
+
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public double GetTermScalarByIndex(int index)
     {
@@ -121,51 +120,52 @@ public sealed partial class XGaFloat64Vector :
         return GetBasisBladeScalar(id);
     }
 
+
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public override XGaFloat64Scalar GetScalarPart()
     {
         return Processor.ScalarZero;
     }
-        
+
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public override XGaFloat64Vector GetVectorPart()
     {
         return this;
     }
-    
+
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public override XGaFloat64Vector GetVectorPart(Func<int, bool> filterFunc)
     {
         if (IsZero) return this;
 
-        var idScalarDictionary = 
-            _idScalarDictionary.Where(term => 
+        var idScalarDictionary =
+            _idScalarDictionary.Where(term =>
                 filterFunc(term.Key.FirstIndex)
             ).ToDictionary();
 
         return Processor.Vector(idScalarDictionary);
     }
-        
+
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public override XGaFloat64Vector GetVectorPart(Func<double, bool> filterFunc)
     {
         if (IsZero) return this;
 
-        var idScalarDictionary = 
-            _idScalarDictionary.Where(term => 
+        var idScalarDictionary =
+            _idScalarDictionary.Where(term =>
                 filterFunc(term.Value)
             ).ToDictionary();
 
         return Processor.Vector(idScalarDictionary);
     }
-        
+
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public override XGaFloat64Vector GetVectorPart(Func<int, double, bool> filterFunc)
     {
         if (IsZero) return this;
 
-        var idScalarDictionary = 
-            _idScalarDictionary.Where(term => 
+        var idScalarDictionary =
+            _idScalarDictionary.Where(term =>
                 filterFunc(term.Key.FirstIndex, term.Value)
             ).ToDictionary();
 
@@ -183,9 +183,10 @@ public sealed partial class XGaFloat64Vector :
     {
         return Processor.HigherKVectorZero(grade);
     }
-    
+
+
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public XGaFloat64Vector GetPart(Func<IndexSet, bool> filterFunc)
+    public override XGaFloat64Vector GetPart(Func<IndexSet, bool> filterFunc)
     {
         if (IsZero) return this;
 
@@ -196,9 +197,9 @@ public sealed partial class XGaFloat64Vector :
 
         return Processor.Vector(idScalarDictionary);
     }
-        
+
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public XGaFloat64Vector GetPart(Func<double, bool> filterFunc)
+    public override XGaFloat64Vector GetPart(Func<double, bool> filterFunc)
     {
         if (IsZero) return this;
 
@@ -211,7 +212,7 @@ public sealed partial class XGaFloat64Vector :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public XGaFloat64Vector GetPart(Func<IndexSet, double, bool> filterFunc)
+    public override XGaFloat64Vector GetPart(Func<IndexSet, double, bool> filterFunc)
     {
         if (IsZero) return this;
 
@@ -222,23 +223,11 @@ public sealed partial class XGaFloat64Vector :
 
         return Processor.Vector(idScalarDictionary);
     }
-        
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public XGaFloat64Vector RemoveSmallTerms(double zeroEpsilon = Float64Utils.ZeroEpsilon)
-    {
-        if (Count <= 1) return this;
 
-        var scalarThreshold = 
-            zeroEpsilon.Abs() * Scalars.Max(s => s.Abs());
-
-        return GetPart((double s) => 
-            s <= -scalarThreshold || s >= scalarThreshold
-        );
-    }
 
 
     public override IEnumerable<XGaBasisBlade> BasisBlades
-        => _idScalarDictionary.Keys.Select(Metric.CreateBasisBlade);
+        => _idScalarDictionary.Keys.Select(Metric.BasisBlade);
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public override double Scalar()
@@ -249,9 +238,7 @@ public sealed partial class XGaFloat64Vector :
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public override double GetBasisBladeScalar(IndexSet basisBladeId)
     {
-        return _idScalarDictionary.TryGetValue(basisBladeId, out var scalar)
-            ? scalar
-            : 0d;
+        return _idScalarDictionary.GetValueOrDefault(basisBladeId, 0d);
     }
 
 
@@ -277,14 +264,14 @@ public sealed partial class XGaFloat64Vector :
         if (_idScalarDictionary.Count == 0)
             return new XGaBasisBlade(Metric, IndexSet.EmptySet);
 
-        IndexSet dominantId = IndexSet.EmptySet;
+        var dominantId = IndexSet.EmptySet;
         var dominantScalar = 0d;
 
         foreach (var (id, scalar) in _idScalarDictionary)
         {
             var absScalar = scalar.Abs();
 
-            if (absScalar <= dominantScalar) 
+            if (absScalar <= dominantScalar)
                 continue;
 
             //if (absScalar == dominantScalar && id.Grade() <= dominantId.Grade()) 
@@ -297,28 +284,15 @@ public sealed partial class XGaFloat64Vector :
         return new XGaBasisBlade(Metric, dominantId);
     }
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public XGaFloat64Vector GetNormalVector()
-    {
-        return this.ToLinVector().GetUnitNormal().ToXGaFloat64Vector(Processor);
-    }
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public override XGaFloat64Multivector Simplify()
-    {
-        return IsZero
-            ? Processor.ScalarZero
-            : this;
-    }
-        
-        
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public override string ToString()
     {
+        if (IsZero) return "0";
+
         return BasisScalarPairs
-            .OrderBy(p => p.Key.Id.Count)
-            .ThenBy(p => p.Key.Id)
-            .Select(p => $"'{p.Value:G}'{p.Key}")
+            .OrderBy(p => p.Key.Id)
+            .Select(p => $"{p.Value:G} {p.Key}")
             .ConcatenateText(" + ");
     }
 }

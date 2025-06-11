@@ -1,7 +1,6 @@
 ﻿using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using GeometricAlgebraFulcrumLib.Algebra.ComplexAlgebra;
-using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Basis;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Generic;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Tuples;
 
@@ -170,18 +169,6 @@ public static class LinVector2DComposerUtils
             vector.Item1.Imaginary,
             vector.Item2.Imaginary
         );
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinVector2D<T> ToVector2D<T>(this LinBasisVector2D axis, IScalarProcessor<T> scalarProcessor)
-    {
-        return axis switch
-        {
-            LinBasisVector2D.Px => LinVector2D<T>.E1(scalarProcessor),
-            LinBasisVector2D.Nx => LinVector2D<T>.NegativeE1(scalarProcessor),
-            LinBasisVector2D.Py => LinVector2D<T>.E2(scalarProcessor),
-            _ => LinVector2D<T>.NegativeE2(scalarProcessor)
-        };
     }
 
     /// <summary>

@@ -28,13 +28,13 @@ public class LibRotorMapCodeComposer :
         var metric = b2.Metric;
 
         if (b1.Grade.IsOdd() || b3.Grade.IsOdd())
-            return metric.CreateZeroBasisBlade(outputGrade);
+            return metric.ZeroBasisBlade(outputGrade);
 
         var b4 = 
             b1.Gp(b2).Gp(b3.Reverse());
 
         if (b4.Grade != outputGrade)
-            return metric.CreateZeroBasisBlade(outputGrade);
+            return metric.ZeroBasisBlade(outputGrade);
         
         return b4;
     }

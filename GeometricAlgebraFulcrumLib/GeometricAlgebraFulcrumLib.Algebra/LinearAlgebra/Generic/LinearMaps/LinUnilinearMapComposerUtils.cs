@@ -1,8 +1,8 @@
 ﻿using System.Runtime.CompilerServices;
-using GeometricAlgebraFulcrumLib.Utilities.Structures.BitManipulation;
-using GeometricAlgebraFulcrumLib.Utilities.Structures.Dictionary;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Generic.Vectors.SpaceND;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Generic;
+using GeometricAlgebraFulcrumLib.Utilities.Structures.BitManipulation;
+using GeometricAlgebraFulcrumLib.Utilities.Structures.Dictionary;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Tuples;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Generic.LinearMaps;
@@ -50,21 +50,6 @@ public static class LinUnilinearMapComposerUtils
         return scalarProcessor.CreateLinUnilinearMap(indexVectorDictionary);
     }
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinUnilinearMap<T> ToDiagonalLinUnilinearMap<T>(this LinVector<T> diagonalVector)
-    {
-        var scalarProcessor = diagonalVector.ScalarProcessor;
-
-        var indexVectorDictionary =
-            diagonalVector
-                .ToDictionary(
-                    p => p.Key,
-                    p => scalarProcessor.CreateLinVector(p.Key, p.Value)
-                );
-
-        return scalarProcessor.CreateLinUnilinearMap(indexVectorDictionary);
-    }
-    
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static LinUnilinearMap<T> ToLinUnilinearMap<T>(this T[,] array, IScalarProcessor<T> scalarProcessor)
     {

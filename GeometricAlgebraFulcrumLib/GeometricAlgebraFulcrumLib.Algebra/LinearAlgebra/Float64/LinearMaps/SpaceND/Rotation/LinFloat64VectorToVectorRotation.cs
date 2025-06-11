@@ -152,7 +152,7 @@ public sealed class LinFloat64VectorToVectorRotation :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public override Pair<double> BasisESp(ILinSignedBasisVector axis)
+    public override Pair<double> BasisESp(LinBasisVector axis)
     {
         return new Pair<double>(
             BasisVector1.GetComponent(axis),

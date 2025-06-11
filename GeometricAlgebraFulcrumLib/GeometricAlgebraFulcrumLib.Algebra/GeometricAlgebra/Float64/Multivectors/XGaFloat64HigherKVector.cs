@@ -1,12 +1,10 @@
-﻿using System.Diagnostics;
-using System.Runtime.CompilerServices;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivectors.Composers;
+﻿using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Processors;
-using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
 using GeometricAlgebraFulcrumLib.Utilities.Structures;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Dictionary;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.IndexSets;
+using System.Diagnostics;
+using System.Runtime.CompilerServices;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivectors;
 
@@ -22,23 +20,15 @@ public sealed partial class XGaFloat64HigherKVector :
     public override int Count
         => _idScalarDictionary.Count;
 
-    public override IEnumerable<int> KVectorGrades
-    {
-        get
-        {
-            if (!IsZero) yield return Grade;
-        }
-    }
-
     public override int Grade { get; }
 
     public override bool IsZero
         => _idScalarDictionary.Count == 0;
 
     public override IEnumerable<XGaBasisBlade> BasisBlades
-        => _idScalarDictionary.Keys.Select(Metric.CreateBasisBlade);
+        => _idScalarDictionary.Keys.Select(Metric.BasisBlade);
 
-    public override IEnumerable<IndexSet> Ids 
+    public override IEnumerable<IndexSet> Ids
         => _idScalarDictionary.Keys;
 
     public override IEnumerable<double> Scalars
@@ -46,7 +36,28 @@ public sealed partial class XGaFloat64HigherKVector :
 
     public override IEnumerable<KeyValuePair<IndexSet, double>> IdScalarPairs
         => _idScalarDictionary;
+    
+    public override IEnumerable<KeyValuePair<XGaBasisBlade, double>> BasisScalarPairs
+    {
+        get
+        {
+            return _idScalarDictionary.Select(p =>
+                new KeyValuePair<XGaBasisBlade, double>(
+                    Metric.BasisBlade(p.Key),
+                    p.Value
+                )
+            );
+        }
+    }
 
+    public override IEnumerable<int> KVectorGrades
+    {
+        get
+        {
+            if (!IsZero) yield return Grade;
+        }
+    }
+    
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     internal XGaFloat64HigherKVector(XGaFloat64Processor processor, int grade)
@@ -91,12 +102,13 @@ public sealed partial class XGaFloat64HigherKVector :
         Debug.Assert(IsValid());
     }
 
-        
+
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public override bool IsValid()
     {
         return _idScalarDictionary.IsValidKVectorDictionary(Grade);
     }
+
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public override IReadOnlyDictionary<IndexSet, double> GetIdScalarDictionary()
@@ -121,7 +133,7 @@ public sealed partial class XGaFloat64HigherKVector :
     {
         return Processor.VectorZero;
     }
-    
+
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public override XGaFloat64Vector GetVectorPart(Func<int, bool> filterFunc)
     {
@@ -153,9 +165,9 @@ public sealed partial class XGaFloat64HigherKVector :
             ? this
             : Processor.HigherKVectorZero(grade);
     }
-        
+
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public XGaFloat64HigherKVector GetPart(Func<IndexSet, bool> filterFunc)
+    public override XGaFloat64HigherKVector GetPart(Func<IndexSet, bool> filterFunc)
     {
         if (IsZero) return this;
 
@@ -166,9 +178,9 @@ public sealed partial class XGaFloat64HigherKVector :
 
         return Processor.HigherKVector(Grade, idScalarDictionary);
     }
-        
+
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public XGaFloat64HigherKVector GetPart(Func<double, bool> filterFunc)
+    public override XGaFloat64HigherKVector GetPart(Func<double, bool> filterFunc)
     {
         if (IsZero) return this;
 
@@ -181,7 +193,7 @@ public sealed partial class XGaFloat64HigherKVector :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public XGaFloat64HigherKVector GetPart(Func<IndexSet, double, bool> filterFunc)
+    public override XGaFloat64HigherKVector GetPart(Func<IndexSet, double, bool> filterFunc)
     {
         if (IsZero) return this;
 
@@ -191,19 +203,6 @@ public sealed partial class XGaFloat64HigherKVector :
             ).ToDictionary();
 
         return Processor.HigherKVector(Grade, idScalarDictionary);
-    }
-        
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public XGaFloat64HigherKVector RemoveSmallTerms(double zeroEpsilon = Float64Utils.ZeroEpsilon)
-    {
-        if (Count <= 1) return this;
-
-        var scalarThreshold = 
-            zeroEpsilon.Abs() * Scalars.Max(s => s.Abs());
-
-        return GetPart((double s) => 
-            s <= -scalarThreshold || s >= scalarThreshold
-        );
     }
 
 
@@ -216,9 +215,7 @@ public sealed partial class XGaFloat64HigherKVector :
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public override double GetBasisBladeScalar(IndexSet basisBlade)
     {
-        return _idScalarDictionary.TryGetValue(basisBlade, out var scalar)
-            ? scalar
-            : 0d;
+        return _idScalarDictionary.GetValueOrDefault(basisBlade, 0d);
     }
 
 
@@ -239,35 +236,14 @@ public sealed partial class XGaFloat64HigherKVector :
         return false;
     }
 
-
-    public override IEnumerable<KeyValuePair<XGaBasisBlade, double>> BasisScalarPairs
-    {
-        get
-        {
-            return _idScalarDictionary.Select(p =>
-                new KeyValuePair<XGaBasisBlade, double>(
-                    Metric.CreateBasisBlade(p.Key),
-                    p.Value
-                )
-            );
-        }
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public override XGaFloat64Multivector Simplify()
-    {
-        return IsZero
-            ? Processor.ScalarZero
-            : this;
-    }
-
-        
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public override string ToString()
     {
-        return IdScalarPairs
-            .OrderBy(p => p.Key)
-            .Select(p => $"'{p.Value:G}'{p.Key}")
+        if (IsZero) return "0";
+
+        return BasisScalarPairs
+            .OrderBy(p => p.Key.Id)
+            .Select(p => $"{p.Value:G} {p.Key}")
             .ConcatenateText(" + ");
     }
 }

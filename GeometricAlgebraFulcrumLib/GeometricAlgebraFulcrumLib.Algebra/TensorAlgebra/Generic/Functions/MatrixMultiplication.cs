@@ -57,12 +57,12 @@ namespace GeometricAlgebraFulcrumLib.Algebra.TensorAlgebra.Generic.Functions
             
             if (!parallel)
             {
-                for (int x = 0; x < width; x++)
+                for (var x = 0; x < width; x++)
                 {
-                    for (int y = 0; y < height; y++)
+                    for (var y = 0; y < height; y++)
                     {
                         var s = default(TWrapper).CreateZero();
-                        for (int i = 0; i < row; i++)
+                        for (var i = 0; i < row; i++)
                         {
                             var v1 = a.Data[x * aBlocks0 + i * aBlocks1 + aLinoffset];
                             var v2 = b.Data[i * bBlocks0 + y * bBlocks1 + bLinoffset];
@@ -76,10 +76,10 @@ namespace GeometricAlgebraFulcrumLib.Algebra.TensorAlgebra.Generic.Functions
             {
                 Parallel.For(0, width, x =>
                 {
-                    for (int y = 0; y < height; y++)
+                    for (var y = 0; y < height; y++)
                     {
                         var s = default(TWrapper).CreateZero();
-                        for (int i = 0; i < row; i++)
+                        for (var i = 0; i < row; i++)
                         {
                             var v1 = a.Data[x * aBlocks0 + i * aBlocks1 + aLinoffset];
                             var v2 = b.Data[i * bBlocks0 + y * bBlocks1 + bLinoffset];
@@ -103,7 +103,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.TensorAlgebra.Generic.Functions
             #endif
             var oldShape = a.Shape.SubShape(0, 2).ToArray();
             var newShape = new int[oldShape.Length + 2];
-            for (int i = 0; i < oldShape.Length; i++)
+            for (var i = 0; i < oldShape.Length; i++)
                 newShape[i] = oldShape[i];
             newShape[newShape.Length - 2] = a.Shape[a.Shape.Length - 2];
             newShape[newShape.Length - 1] = b.Shape[b.Shape.Length - 1];

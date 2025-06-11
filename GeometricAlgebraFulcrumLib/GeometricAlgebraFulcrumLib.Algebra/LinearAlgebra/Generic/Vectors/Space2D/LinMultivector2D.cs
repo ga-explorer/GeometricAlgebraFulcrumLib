@@ -437,6 +437,124 @@ public sealed record LinMultivector2D<T> :
         );
     }
 
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public Scalar<T> Sp(LinScalar2D<T> mv2)
+    {
+        var mv = ScalarProcessor.Zero;
+
+        if (!KVector0.IsZero() && !mv2.IsZero())
+            mv += KVector0.Sp(mv2);
+
+        return mv;
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public Scalar<T> Sp(LinVector2D<T> mv2)
+    {
+        var mv = ScalarProcessor.Zero;
+
+        if (!KVector1.IsZero() && !mv2.IsZero())
+            mv += KVector1.Sp(mv2);
+
+        return mv;
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public Scalar<T> Sp(LinBivector2D<T> mv2)
+    {
+        var mv = ScalarProcessor.Zero;
+
+        if (!KVector2.IsZero() && !mv2.IsZero())
+            mv += KVector2.Sp(mv2);
+
+        return mv;
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public Scalar<T> Sp(LinMultivector2D<T> mv2)
+    {
+        var mv = ScalarProcessor.Zero;
+
+        if (!KVector0.IsZero() && !mv2.KVector0.IsZero())
+            mv += KVector0.Sp(mv2.KVector0);
+
+        if (!KVector1.IsZero() && !mv2.KVector1.IsZero())
+            mv += KVector1.Sp(mv2.KVector1);
+
+        if (!KVector2.IsZero() && !mv2.KVector2.IsZero())
+            mv += KVector2.Sp(mv2.KVector2);
+
+        return mv;
+    }
+
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public LinMultivector2D<T> Op(LinScalar2D<T> mv2)
+    {
+        var mv = Zero(ScalarProcessor);
+
+        if (!KVector0.IsZero())
+            mv += KVector0.Op(mv2);
+
+        if (!KVector1.IsZero())
+            mv += KVector1.Op(mv2);
+
+        if (!KVector2.IsZero())
+            mv += KVector2.Op(mv2);
+
+        return mv;
+    }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public LinMultivector2D<T> Op(LinVector2D<T> mv2)
+    {
+        var mv = Zero(ScalarProcessor);
+
+        if (!KVector0.IsZero())
+            mv += KVector0.Op(mv2);
+
+        if (!KVector1.IsZero())
+            mv += KVector1.Op(mv2);
+
+        if (!KVector2.IsZero())
+            mv += KVector2.Op(mv2);
+
+        return mv;
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public LinMultivector2D<T> Op(LinBivector2D<T> mv2)
+    {
+        var mv = Zero(ScalarProcessor);
+
+        if (!KVector0.IsZero())
+            mv += KVector0.Op(mv2);
+
+        if (!KVector1.IsZero())
+            mv += KVector1.Op(mv2);
+
+        return mv;
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public LinMultivector2D<T> Op(LinMultivector2D<T> mv2)
+    {
+        var mv = Zero(ScalarProcessor);
+
+        if (!KVector0.IsZero())
+            mv += KVector0.Op(mv2);
+
+        if (!KVector1.IsZero())
+            mv += KVector1.Op(mv2);
+
+        if (!KVector2.IsZero())
+            mv += KVector2.Op(mv2);
+
+        return mv;
+    }
+
+
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public IEnumerator<Scalar<T>> GetEnumerator()
     {

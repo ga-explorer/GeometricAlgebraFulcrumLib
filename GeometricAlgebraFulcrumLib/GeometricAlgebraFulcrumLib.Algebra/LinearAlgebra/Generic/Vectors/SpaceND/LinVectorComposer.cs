@@ -276,7 +276,7 @@ public sealed class LinVectorComposer<T> :
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public LinVectorComposer<T> SetTerm(LinSignedBasisVector basisBlade)
+    public LinVectorComposer<T> SetTerm(LinBasisVector basisBlade)
     {
         if (basisBlade.IsZero)
             return RemoveTerm(basisBlade.Index);
@@ -292,7 +292,7 @@ public sealed class LinVectorComposer<T> :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public LinVectorComposer<T> SetTerm(LinSignedBasisVector basisBlade, T scalar)
+    public LinVectorComposer<T> SetTerm(LinBasisVector basisBlade, T scalar)
     {
         if (basisBlade.IsZero || ScalarProcessor.IsZero(scalar))
             return RemoveTerm(basisBlade.Index);
@@ -308,7 +308,7 @@ public sealed class LinVectorComposer<T> :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public LinVectorComposer<T> SetTerm(LinSignedBasisVector basisBlade, IScalar<T> scalar)
+    public LinVectorComposer<T> SetTerm(LinBasisVector basisBlade, IScalar<T> scalar)
     {
         return SetTerm(basisBlade, scalar.ScalarValue);
     }
@@ -357,7 +357,7 @@ public sealed class LinVectorComposer<T> :
         return this;
     }
 
-    public LinVectorComposer<T> SetTerms(IEnumerable<KeyValuePair<LinSignedBasisVector, T>> termList)
+    public LinVectorComposer<T> SetTerms(IEnumerable<KeyValuePair<LinBasisVector, T>> termList)
     {
         foreach (var (basis, scalar) in termList)
             SetTerm(basis, scalar);
@@ -389,7 +389,7 @@ public sealed class LinVectorComposer<T> :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public LinVectorComposer<T> AddTerm(ILinSignedBasisVector basisBlade)
+    public LinVectorComposer<T> AddTerm(LinBasisVector basisBlade)
     {
         if (basisBlade.IsZero)
             return this;
@@ -405,7 +405,7 @@ public sealed class LinVectorComposer<T> :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public LinVectorComposer<T> AddTerm(ILinSignedBasisVector basisBlade, T scalar)
+    public LinVectorComposer<T> AddTerm(LinBasisVector basisBlade, T scalar)
     {
         if (basisBlade.IsZero || ScalarProcessor.IsZero(scalar))
             return this;
@@ -421,7 +421,7 @@ public sealed class LinVectorComposer<T> :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public LinVectorComposer<T> AddTerm(ILinSignedBasisVector basisBlade, T scalar1, T scalar2)
+    public LinVectorComposer<T> AddTerm(LinBasisVector basisBlade, T scalar1, T scalar2)
     {
         var scalar = ScalarProcessor.Times(scalar1, scalar2);
 
@@ -485,7 +485,7 @@ public sealed class LinVectorComposer<T> :
         );
     }
 
-    public LinVectorComposer<T> AddTerms(IEnumerable<KeyValuePair<LinSignedBasisVector, T>> termList)
+    public LinVectorComposer<T> AddTerms(IEnumerable<KeyValuePair<LinBasisVector, T>> termList)
     {
         foreach (var (basis, scalar) in termList)
             AddTerm(basis, scalar);
@@ -517,7 +517,7 @@ public sealed class LinVectorComposer<T> :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public LinVectorComposer<T> SubtractTerm(LinSignedBasisVector basisBlade)
+    public LinVectorComposer<T> SubtractTerm(LinBasisVector basisBlade)
     {
         if (basisBlade.IsZero)
             return this;
@@ -533,7 +533,7 @@ public sealed class LinVectorComposer<T> :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public LinVectorComposer<T> SubtractTerm(LinSignedBasisVector basisBlade, T scalar)
+    public LinVectorComposer<T> SubtractTerm(LinBasisVector basisBlade, T scalar)
     {
         if (basisBlade.IsZero || ScalarProcessor.IsZero(scalar))
             return this;
@@ -549,7 +549,7 @@ public sealed class LinVectorComposer<T> :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public LinVectorComposer<T> SubtractTerm(LinSignedBasisVector basisBlade, T scalar1, T scalar2)
+    public LinVectorComposer<T> SubtractTerm(LinBasisVector basisBlade, T scalar1, T scalar2)
     {
         var scalar = ScalarProcessor.Times(scalar1, scalar2);
 
@@ -613,7 +613,7 @@ public sealed class LinVectorComposer<T> :
         );
     }
 
-    public LinVectorComposer<T> SubtractTerms(IEnumerable<KeyValuePair<LinSignedBasisVector, T>> termList)
+    public LinVectorComposer<T> SubtractTerms(IEnumerable<KeyValuePair<LinBasisVector, T>> termList)
     {
         foreach (var (basis, scalar) in termList)
             AddTerm(basis, scalar);
@@ -638,14 +638,13 @@ public sealed class LinVectorComposer<T> :
 
         foreach (var (id, scalar) in _indexScalarDictionary)
         {
-            var id1 = id;
             var scalar1 = mappingFunction(scalar);
 
             if (!ScalarProcessor.IsValid(scalar1))
                 throw new InvalidOperationException();
 
             if (!ScalarProcessor.IsZero(scalar1))
-                idScalarDictionary.Add(id1, scalar1);
+                idScalarDictionary.Add(id, scalar1);
         }
 
         _indexScalarDictionary = idScalarDictionary;
@@ -661,14 +660,13 @@ public sealed class LinVectorComposer<T> :
 
         foreach (var (id, scalar) in _indexScalarDictionary)
         {
-            var id1 = id;
             var scalar1 = mappingFunction(id, scalar);
 
             if (!ScalarProcessor.IsValid(scalar1))
                 throw new InvalidOperationException();
 
             if (!ScalarProcessor.IsZero(scalar1))
-                idScalarDictionary.Add(id1, scalar1);
+                idScalarDictionary.Add(id, scalar1);
         }
 
         _indexScalarDictionary = idScalarDictionary;

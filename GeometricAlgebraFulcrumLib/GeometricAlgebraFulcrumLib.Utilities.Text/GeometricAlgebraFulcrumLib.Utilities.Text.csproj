@@ -10,7 +10,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="CsvHelper" Version="33.0.1" />
+    <PackageReference Include="CsvHelper" Version="33.1.0" />
     <PackageReference Include="Humanizer" Version="2.14.1" />
     <PackageReference Include="Irony.Interpreter.NetCore" Version="1.1.11" />
     <PackageReference Include="Irony.NetCore" Version="1.1.11" />

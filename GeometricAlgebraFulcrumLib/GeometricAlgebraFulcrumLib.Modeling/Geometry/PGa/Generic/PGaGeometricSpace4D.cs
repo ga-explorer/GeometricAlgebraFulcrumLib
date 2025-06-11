@@ -1,5 +1,4 @@
-﻿using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Multivectors.Composers;
-using GeometricAlgebraFulcrumLib.Algebra.Scalars.Generic;
+﻿using GeometricAlgebraFulcrumLib.Algebra.Scalars.Generic;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.PGa.Generic.Blades;
 
 namespace GeometricAlgebraFulcrumLib.Modeling.Geometry.PGa.Generic;

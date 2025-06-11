@@ -78,32 +78,29 @@ public sealed record LinFloat64Quaternion :
     {
         var (halfAngleCos, halfAngleSin) = angle.HalfPolarAngle();
 
-        var scalar = halfAngleCos;
         var bivectorPart = bivector * (halfAngleSin / bivector.Norm());
 
-        return new LinFloat64Quaternion(scalar, bivectorPart);
+        return new LinFloat64Quaternion(halfAngleCos, bivectorPart);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64Quaternion CreateFromAxisAngle(LinBasisVector3D axis, LinFloat64Angle angle)
+    public static LinFloat64Quaternion CreateFromAxisAngle(LinBasisVector axis, LinFloat64Angle angle)
     {
         var (halfAngleCos, halfAngleSin) = angle.HalfPolarAngle();
 
-        var scalar = halfAngleCos;
         var vector = axis.ToLinVector3D(-halfAngleSin);
 
-        return new LinFloat64Quaternion(scalar, vector.X, vector.Y, vector.Z);
+        return new LinFloat64Quaternion(halfAngleCos, vector.X, vector.Y, vector.Z);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64Quaternion CreateFromAxisAngle(ILinFloat64Vector3D axis, LinFloat64Angle angle)
+    public static LinFloat64Quaternion CreateFromAxisAngle(ITriplet<Float64Scalar> axis, LinFloat64Angle angle)
     {
         var (halfAngleCos, halfAngleSin) = angle.HalfPolarAngle();
 
-        var scalar = halfAngleCos;
         var vector = axis.SetLength(-halfAngleSin);
 
-        return new LinFloat64Quaternion(scalar, vector.X, vector.Y, vector.Z);
+        return new LinFloat64Quaternion(halfAngleCos, vector.X, vector.Y, vector.Z);
     }
 
     /// <summary>
@@ -756,7 +753,7 @@ public sealed record LinFloat64Quaternion :
         var (angle, normal) = GetAngleAndNormal(assumeNormalized);
 
         var length =
-            angle.RadiansValue / (Math.Tau);
+            angle.RadiansValue / Math.Tau;
 
         return normal.SetLength(length);
     }
@@ -857,7 +854,7 @@ public sealed record LinFloat64Quaternion :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public LinFloat64Vector3D RotateVector(LinBasisVector3D axis)
+    public LinFloat64Vector3D RotateVector(LinBasisVector axis)
     {
         return ToSquareMatrix3() * axis.ToLinVector3D();
     }
@@ -870,7 +867,7 @@ public sealed record LinFloat64Quaternion :
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public Pair<LinFloat64Vector3D> RotateVectors(LinBasisVector3D axis1, LinBasisVector3D axis2)
+    public Pair<LinFloat64Vector3D> RotateVectors(LinBasisVector axis1, LinBasisVector axis2)
     {
         var rotationMatrix =
             ToSquareMatrix3();

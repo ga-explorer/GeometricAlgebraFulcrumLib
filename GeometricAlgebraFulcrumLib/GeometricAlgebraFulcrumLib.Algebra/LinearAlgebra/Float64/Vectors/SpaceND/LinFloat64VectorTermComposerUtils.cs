@@ -51,36 +51,4 @@ public static class LinFloat64VectorTermComposerUtils
     }
 
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64VectorTerm ToZeroTerm(this LinBasisVector basisVector)
-    {
-        return new LinFloat64VectorTerm(
-            basisVector,
-            0d
-        );
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64VectorTerm ToPositiveTerm(this LinBasisVector basisVector)
-    {
-        return new LinFloat64VectorTerm(
-            basisVector,
-            1d
-        );
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64VectorTerm ToNegativeTerm(this LinBasisVector basisVector)
-    {
-        return new LinFloat64VectorTerm(
-            basisVector,
-            -1d
-        );
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64VectorTerm ToTerm(this LinBasisVector basisVector, double scalarValue)
-    {
-        return new LinFloat64VectorTerm(basisVector, scalarValue);
-    }
 }

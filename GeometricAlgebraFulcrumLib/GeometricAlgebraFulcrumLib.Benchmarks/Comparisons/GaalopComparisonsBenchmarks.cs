@@ -2402,14 +2402,14 @@ namespace GeometricAlgebraFulcrumLib.Benchmarks.Comparisons
                 Point3Array[i] = randGen.GetLinVector3D();
                 Point4Array[i] = randGen.GetLinVector3D();
 
-                tArray[i] = randGen.GetNumber(0, 1);
+                tArray[i] = randGen.GetFloat64(0, 1);
 
-                D14[i] = randGen.GetNumber(1, 10);
-                D24[i] = randGen.GetNumber(1, 10);
-                D34[i] = randGen.GetNumber(1, 10);
+                D14[i] = randGen.GetFloat64(1, 10);
+                D24[i] = randGen.GetFloat64(1, 10);
+                D34[i] = randGen.GetFloat64(1, 10);
 
-                alpha[i] = randGen.GetNumber(0, Math.Tau);
-                beta[i] = randGen.GetNumber(0, Math.Tau);
+                alpha[i] = randGen.GetFloat64(0, Math.Tau);
+                beta[i] = randGen.GetFloat64(0, Math.Tau);
             }
         }
 

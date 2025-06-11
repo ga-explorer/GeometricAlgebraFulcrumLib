@@ -1,10 +1,10 @@
 ﻿using System.Runtime.CompilerServices;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Matrices;
+using GeometricAlgebraFulcrumLib.Algebra.Polynomials.Float64.CurveBasis;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
+using GeometricAlgebraFulcrumLib.Utilities.Text.Text.Markdown;
 using MathNet.Numerics.LinearAlgebra;
 using MathNet.Numerics.LinearAlgebra.Double;
-using GeometricAlgebraFulcrumLib.Utilities.Text.Text.Markdown;
-using GeometricAlgebraFulcrumLib.Algebra.Polynomials.Float64.CurveBasis;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.Polynomials.Float64.BSplineCurveBasis;
 

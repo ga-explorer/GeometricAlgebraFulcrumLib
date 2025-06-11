@@ -1,10 +1,12 @@
-﻿using System.Collections;
-using System.Runtime.CompilerServices;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
+﻿using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.LinearMaps.Rotors;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Processors;
-using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.SpaceND;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
+using GeometricAlgebraFulcrumLib.Utilities.Structures;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.IndexSets;
+using GeometricAlgebraFulcrumLib.Utilities.Structures.Tuples;
+using System.Collections;
+using System.Runtime.CompilerServices;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivectors;
 
@@ -17,12 +19,12 @@ public abstract partial class XGaFloat64Multivector :
     IXGaFloat64Element
 {
     public abstract string MultivectorClassName { get; }
-        
+
     public XGaFloat64Processor Processor { get; }
 
-    public XGaMetric Metric 
+    public XGaMetric Metric
         => Processor;
-    
+
     public bool IsEuclidean
         => Metric.IsEuclidean;
 
@@ -40,11 +42,6 @@ public abstract partial class XGaFloat64Multivector :
     /// The number of stored terms in this multivector
     /// </summary>
     public abstract int Count { get; }
-
-    /// <summary>
-    /// The stored k-vector grades in this multivector
-    /// </summary>
-    public abstract IEnumerable<int> KVectorGrades { get; }
 
     /// <summary>
     /// True if this is a zero multivector
@@ -75,23 +72,37 @@ public abstract partial class XGaFloat64Multivector :
     public abstract IEnumerable<KeyValuePair<IndexSet, double>> IdScalarPairs { get; }
 
     /// <summary>
+    /// Get all stored terms as tuples of (BasisBlade ID, Scalar)
+    /// </summary>
+    /// <value></value>
+    public IEnumerable<Tuple<IndexSet, double>> IdScalarTuples
+        => IdScalarPairs.Select(p =>
+            new Tuple<IndexSet, double>(p.Key, p.Value)
+        );
+
+    /// <summary>
     /// Get all stored terms as pairs of (BasisBlade, Scalar)
     /// </summary>
     /// <value></value>
     public abstract IEnumerable<KeyValuePair<XGaBasisBlade, double>> BasisScalarPairs { get; }
-        
+
+    /// <summary>
+    /// The stored k-vector grades in this multivector
+    /// </summary>
+    public abstract IEnumerable<int> KVectorGrades { get; }
+
     public double this[int index]
         => Scalar(index);
 
     public double this[int index1, int index2]
         => Scalar(index1, index2);
-        
+
     public double this[int index1, int index2, int index3]
         => Scalar(index1, index2, index3);
 
     public double this[params int[] indexList]
         => Scalar(indexList);
-        
+
     public double this[IReadOnlyList<int> indexList]
         => Scalar(indexList);
 
@@ -105,7 +116,7 @@ public abstract partial class XGaFloat64Multivector :
         Processor = processor;
     }
 
-    
+
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public bool IsNearZero(double zeroEpsilon = Float64Utils.ZeroEpsilon)
     {
@@ -120,17 +131,17 @@ public abstract partial class XGaFloat64Multivector :
     }
 
     public abstract bool IsValid();
-
+    
     public abstract bool IsScalar();
 
     public abstract bool IsVector();
 
     public abstract bool IsBivector();
-    
+
     public abstract bool IsTrivector();
 
     public abstract bool IsKVector(int grade);
-    
+
     public abstract bool IsOdd();
 
     public abstract bool IsOdd(int maxGrade);
@@ -139,77 +150,6 @@ public abstract partial class XGaFloat64Multivector :
 
     public abstract bool IsEven(int maxGrade);
 
-
-    public abstract bool ContainsScalarPart();
-
-    public abstract bool ContainsVectorPart();
-
-    public abstract bool ContainsBivectorPart();
-
-    public abstract bool ContainsKVectorPart(int grade);
-    
-    public abstract bool ContainsOddPart();
-
-    public abstract bool ContainsOddPart(int maxGrade);
-    
-    public abstract bool ContainsEvenPart();
-
-    public abstract bool ContainsEvenPart(int maxGrade);
-
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public XGaFloat64Scalar AsScalar()
-    {
-        return (XGaFloat64Scalar)this;
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public XGaFloat64Vector AsVector()
-    {
-        return (XGaFloat64Vector)this;
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public XGaFloat64Bivector AsBivector()
-    {
-        return (XGaFloat64Bivector)this;
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public XGaFloat64HigherKVector AsHigherKVector()
-    {
-        return (XGaFloat64HigherKVector)this;
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public XGaFloat64KVector AsKVector()
-    {
-        return (XGaFloat64KVector)this;
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public XGaFloat64GradedMultivector AsGradedMultivector()
-    {
-        return (XGaFloat64GradedMultivector)this;
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public XGaFloat64UniformMultivector AsUniformMultivector()
-    {
-        return (XGaFloat64UniformMultivector)this;
-    }
-    
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public LinFloat64Vector MultivectorToLinVector()
-    {
-        var indexScalarDictionary =
-            IdScalarPairs.ToDictionary(
-                p => p.Key.DecodeCombinadicToInt32(),
-                p => p.Value
-            );
-
-        return indexScalarDictionary.CreateLinVector();
-    }
 
     public abstract int GetMinGrade();
 
@@ -228,59 +168,18 @@ public abstract partial class XGaFloat64Multivector :
     /// </summary>
     public abstract int GetKVectorCount();
 
-    public abstract XGaFloat64Scalar GetScalarPart();
-
-    public abstract XGaFloat64Vector GetVectorPart();
-    
-    public abstract XGaFloat64Vector GetVectorPart(Func<int, bool> filterFunc);
-        
-    public abstract XGaFloat64Vector GetVectorPart(Func<double, bool> filterFunc);
-        
-    public abstract XGaFloat64Vector GetVectorPart(Func<int, double, bool> filterFunc);
-
-    public abstract XGaFloat64Bivector GetBivectorPart();
-
-    public abstract XGaFloat64HigherKVector GetHigherKVectorPart(int grade);
-
-    public abstract XGaFloat64KVector GetKVectorPart(int grade);
-        
-    public abstract XGaFloat64KVector GetFirstKVectorPart();
-
-    public abstract XGaFloat64Multivector GetEvenPart();
-
-    public abstract XGaFloat64Multivector GetEvenPart(int maxGrade);
-
-    public abstract XGaFloat64Multivector GetOddPart();
-
-    public abstract XGaFloat64Multivector GetOddPart(int maxGrade);
-
-    public abstract IEnumerable<XGaFloat64KVector> GetKVectorParts();
-        
-
-    /// <summary>
-    /// Get the scalar coefficient associated with a basis blade term
-    /// </summary>
-    /// <param name="basisBladeId"></param>
-    /// <returns></returns>
-    public abstract double GetBasisBladeScalar(IndexSet basisBladeId);
-    
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public IndexSet GetStoredGradesBitPattern()
-    {
-        return IndexSet.Create(KVectorGrades, false);
-    }
 
     /// <summary>
     /// Get the scalar coefficient associated with the basis scalar term
     /// </summary>
     /// <returns></returns>
     public abstract double Scalar();
-        
+
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public double Scalar(int index)
     {
         return Scalar(
-            Metric.CreateBasisVector(index)
+            Metric.BasisVector(index)
         );
     }
 
@@ -291,7 +190,7 @@ public abstract partial class XGaFloat64Multivector :
             Metric.Op(index1, index2)
         );
     }
-        
+
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public double Scalar(int index1, int index2, int index3)
     {
@@ -325,53 +224,53 @@ public abstract partial class XGaFloat64Multivector :
                 ? GetBasisBladeScalar(basisBlade.Id)
                 : -GetBasisBladeScalar(basisBlade.Id);
     }
-        
+
 
     public abstract bool TryGetBasisBladeScalarValue(IndexSet basisBlade, out double scalar);
-        
+
     public abstract bool TryGetScalarValue(out double scalar);
-        
+
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public bool TryGetScalarValue(out double scalar, int index)
     {
         return TryGetScalarValue(
-            out scalar, 
-            Metric.CreateBasisVector(index)
+            out scalar,
+            Metric.BasisVector(index)
         );
     }
-        
+
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public bool TryGetScalarValue(out double scalar, int index1, int index2)
     {
         return TryGetScalarValue(
-            out scalar, 
+            out scalar,
             Metric.Op(index1, index2)
         );
     }
-        
+
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public bool TryGetScalarValue(out double scalar, int index1, int index2, int index3)
     {
         return TryGetScalarValue(
-            out scalar, 
+            out scalar,
             Metric.Op(index1, index2, index3)
         );
     }
-        
+
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public bool TryGetScalarValue(out double scalar, params int[] indexList)
     {
         return TryGetScalarValue(
-            out scalar, 
+            out scalar,
             Metric.Op(indexList)
         );
     }
-        
+
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public bool TryGetScalarValue(out double scalar, IReadOnlyList<int> indexList)
     {
         return TryGetScalarValue(
-            out scalar, 
+            out scalar,
             Metric.Op(indexList)
         );
     }
@@ -401,20 +300,180 @@ public abstract partial class XGaFloat64Multivector :
     public IEnumerable<KeyValuePair<ulong, double>> GetMultivectorArrayItems()
     {
         return IdScalarPairs.Select(
-            term => 
+            term =>
                 new KeyValuePair<ulong, double>(
-                    term.Key.ToUInt64(), 
+                    term.Key.ToUInt64(),
                     term.Value
                 )
         );
     }
 
+
     /// <summary>
-    /// Simplify the storage of this multivector
+    /// Get the scalar coefficient associated with a basis blade term
     /// </summary>
+    /// <param name="basisBladeId"></param>
     /// <returns></returns>
-    public abstract XGaFloat64Multivector Simplify();
-        
+    public abstract double GetBasisBladeScalar(IndexSet basisBladeId);
+    
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public IndexSet GetStoredBasisVectorIndices()
+    {
+        return IndexSet.Create(
+            Ids.SelectMany(id => id), 
+            false
+        );
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public IndexSet GetStoredKVectorGrades()
+    {
+        return IndexSet.Create(KVectorGrades, false);
+    }
+
+
+    public abstract bool ContainsScalarPart();
+
+    public abstract bool ContainsVectorPart();
+
+    public abstract bool ContainsBivectorPart();
+
+    public abstract bool ContainsKVectorPart(int grade);
+
+    public abstract bool ContainsOddPart();
+
+    public abstract bool ContainsOddPart(int maxGrade);
+
+    public abstract bool ContainsEvenPart();
+
+    public abstract bool ContainsEvenPart(int maxGrade);
+
+
+    public abstract XGaFloat64Scalar GetScalarPart();
+
+    public abstract XGaFloat64Vector GetVectorPart();
+
+    public abstract XGaFloat64Vector GetVectorPart(Func<int, bool> filterFunc);
+
+    public abstract XGaFloat64Vector GetVectorPart(Func<double, bool> filterFunc);
+
+    public abstract XGaFloat64Vector GetVectorPart(Func<int, double, bool> filterFunc);
+
+    public abstract XGaFloat64Bivector GetBivectorPart();
+
+    public abstract XGaFloat64HigherKVector GetHigherKVectorPart(int grade);
+
+    public abstract XGaFloat64KVector GetKVectorPart(int grade);
+
+    public abstract XGaFloat64KVector GetFirstKVectorPart();
+
+    public abstract XGaFloat64Multivector GetEvenPart();
+
+    public abstract XGaFloat64Multivector GetEvenPart(int maxGrade);
+
+    public abstract XGaFloat64Multivector GetOddPart();
+
+    public abstract XGaFloat64Multivector GetOddPart(int maxGrade);
+
+    public abstract IEnumerable<XGaFloat64KVector> GetKVectorParts();
+
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public abstract XGaFloat64Multivector GetPart(Func<IndexSet, bool> filterFunc);
+    //{
+    //    return this switch
+    //    {
+    //        XGaFloat64Scalar s => s.GetPart(filterFunc),
+    //        XGaFloat64Vector v => v.GetPart(filterFunc),
+    //        XGaFloat64Bivector bv => bv.GetPart(filterFunc),
+    //        XGaFloat64HigherKVector kv => kv.GetPart(filterFunc),
+    //        XGaFloat64GradedMultivector mv1 => mv1.GetPart(filterFunc),
+    //        XGaFloat64UniformMultivector mv1 => mv1.GetPart(filterFunc),
+    //        _ => throw new InvalidOperationException()
+    //    };
+    //}
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public abstract XGaFloat64Multivector GetPart(Func<double, bool> filterFunc);
+    //{
+    //    return this switch
+    //    {
+    //        XGaFloat64Scalar s => s.GetPart(filterFunc),
+    //        XGaFloat64Vector v => v.GetPart(filterFunc),
+    //        XGaFloat64Bivector bv => bv.GetPart(filterFunc),
+    //        XGaFloat64HigherKVector kv => kv.GetPart(filterFunc),
+    //        XGaFloat64GradedMultivector mv1 => mv1.GetPart(filterFunc),
+    //        XGaFloat64UniformMultivector mv1 => mv1.GetPart(filterFunc),
+    //        _ => throw new InvalidOperationException()
+    //    };
+    //}
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public abstract XGaFloat64Multivector GetPart(Func<IndexSet, double, bool> filterFunc);
+    //{
+    //    return this switch
+    //    {
+    //        XGaFloat64Scalar s => s.GetPart(filterFunc),
+    //        XGaFloat64Vector v => v.GetPart(filterFunc),
+    //        XGaFloat64Bivector bv => bv.GetPart(filterFunc),
+    //        XGaFloat64HigherKVector kv => kv.GetPart(filterFunc),
+    //        XGaFloat64GradedMultivector mv1 => mv1.GetPart(filterFunc),
+    //        XGaFloat64UniformMultivector mv1 => mv1.GetPart(filterFunc),
+    //        _ => throw new InvalidOperationException()
+    //    };
+    //}
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public Tuple<XGaFloat64Scalar, XGaFloat64Bivector> GetScalarBivectorParts()
+    {
+        return new Tuple<XGaFloat64Scalar, XGaFloat64Bivector>(
+            GetScalarPart(),
+            GetBivectorPart()
+        );
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public Tuple<XGaFloat64Multivector, XGaFloat64Multivector> GetEvenOddParts()
+    {
+        return new Tuple<XGaFloat64Multivector, XGaFloat64Multivector>(
+            GetEvenPart(),
+            GetOddPart()
+        );
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public Tuple<XGaFloat64Multivector, XGaFloat64Multivector> GetEvenOddParts(int maxGrade)
+    {
+        return new Tuple<XGaFloat64Multivector, XGaFloat64Multivector>(
+            GetEvenPart(maxGrade),
+            GetOddPart(maxGrade)
+        );
+    }
+
+
+    public Tuple<IndexSet, double> GetMinScalarMagnitudeIdScalar()
+    {
+        if (IsZero)
+            throw new InvalidOperationException();
+
+        var (minValueId, minValue) = IdScalarPairs.First();
+        minValue = minValue.Abs();
+
+        foreach (var (id, scalar) in IdScalarPairs)
+        {
+            var absNumber = scalar.Abs();
+
+            if (absNumber >= minValue) continue;
+
+            minValue = absNumber;
+            minValueId = id;
+        }
+
+        return new Tuple<IndexSet, double>(minValueId, minValue);
+    }
+
+    
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public IEnumerator<KeyValuePair<IndexSet, double>> GetEnumerator()
@@ -426,5 +485,18 @@ public abstract partial class XGaFloat64Multivector :
     IEnumerator IEnumerable.GetEnumerator()
     {
         return GetEnumerator();
+    }
+
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public override string ToString()
+    {
+        if (IsZero) return "0";
+
+        return BasisScalarPairs
+            .OrderBy(p => p.Key.Id.Count)
+            .ThenBy(p => p.Key.Id)
+            .Select(p => $"{p.Value:G} {p.Key}")
+            .ConcatenateText(" + ");
     }
 }

@@ -2,7 +2,6 @@
 using System.Runtime.CompilerServices;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.LinearMaps.Outermorphisms;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Multivectors;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Multivectors.Composers;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Processors;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Generic.LinearMaps;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Generic.Vectors.Space2D;
@@ -435,9 +434,9 @@ public class CGaGeometricSpace<T> :
 
         return BasisSpecs.BasisMapInverse.OmMap(
             ConformalProcessor
-                .CreateComposer()
+                .CreateKVectorComposer(kVector.Grade - 1)
                 .AddTerms(termList)
-                .GetKVector(kVector.Grade - 1)
+                .GetKVector()
         );
 
         //return BasisSpecs.BasisMapInverse.OmMap(

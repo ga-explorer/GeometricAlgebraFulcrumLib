@@ -1,7 +1,7 @@
 ﻿namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.LinearMaps.Rotors;
 
 public interface IXGaRotor<T> : 
-    IXGaScaledRotor<T>
+    IXGaScalingRotor<T>
 {
     IXGaRotor<T> GetRotorInverse();
 }

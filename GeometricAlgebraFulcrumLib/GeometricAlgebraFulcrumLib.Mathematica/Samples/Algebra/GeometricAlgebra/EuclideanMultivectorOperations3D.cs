@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Multivectors;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Multivectors.Composers;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Processors;
 using GeometricAlgebraFulcrumLib.Mathematica.Algebra;
 using GeometricAlgebraFulcrumLib.Mathematica.Utilities.Structures;
@@ -111,17 +110,17 @@ public static class EuclideanMultivectorOperations3D
     {
         var basisBladesArray = new XGaBasisBlade[8];
 
-        basisBladesArray[0] = GeometricProcessor.BasisScalar;
+        basisBladesArray[0] = GeometricProcessor.UnitBasisScalar;
 
-        basisBladesArray[1] = GeometricProcessor.CreateBasisVector(0);
-        basisBladesArray[2] = GeometricProcessor.CreateBasisVector(1);
-        basisBladesArray[3] = GeometricProcessor.CreateBasisVector(2);
+        basisBladesArray[1] = GeometricProcessor.BasisVector(0);
+        basisBladesArray[2] = GeometricProcessor.BasisVector(1);
+        basisBladesArray[3] = GeometricProcessor.BasisVector(2);
 
-        basisBladesArray[4] = GeometricProcessor.CreateBasisBivector(0, 1);
-        basisBladesArray[5] = GeometricProcessor.CreateBasisBivector(0, 2);
-        basisBladesArray[6] = GeometricProcessor.CreateBasisBivector(1, 2);
+        basisBladesArray[4] = GeometricProcessor.BasisBivector(0, 1);
+        basisBladesArray[5] = GeometricProcessor.BasisBivector(0, 2);
+        basisBladesArray[6] = GeometricProcessor.BasisBivector(1, 2);
 
-        basisBladesArray[7] = GeometricProcessor.CreateBasisBlade(3, 0);
+        basisBladesArray[7] = GeometricProcessor.BasisBlade(3, 0);
 
         return basisBladesArray;
     }

@@ -1,13 +1,11 @@
-﻿using System.Diagnostics;
-using System.Runtime.CompilerServices;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivectors.Composers;
+﻿using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Processors;
-using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
 using GeometricAlgebraFulcrumLib.Utilities.Structures;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.BitManipulation;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Dictionary;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.IndexSets;
+using System.Diagnostics;
+using System.Runtime.CompilerServices;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivectors;
 
@@ -46,6 +44,25 @@ public sealed partial class XGaFloat64GradedMultivector :
         => _gradeKVectorDictionary.Values.SelectMany(
             kv => kv.BasisScalarPairs
         );
+    
+    public override IEnumerable<XGaBasisBlade> BasisBlades
+    {
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        get
+        {
+            return _gradeKVectorDictionary
+                .Values
+                .SelectMany(kv => kv.BasisBlades);
+        }
+    }
+
+    public override IEnumerable<IndexSet> Ids
+        => _gradeKVectorDictionary.Values.SelectMany(kv => kv.Ids);
+
+    public override IEnumerable<double> Scalars
+        => _gradeKVectorDictionary
+            .Values
+            .SelectMany(kv => kv.Scalars);
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -212,90 +229,10 @@ public sealed partial class XGaFloat64GradedMultivector :
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public override XGaFloat64Multivector Simplify()
-    {
-        return KVectorCount switch
-        {
-            0 => Processor.ScalarZero,
-            1 => _gradeKVectorDictionary.Values.First().Simplify(),
-            _ => this
-        };
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public override bool IsValid()
     {
         return Processor.IsValidMultivectorDictionary(_gradeKVectorDictionary);
     }
-
-    public XGaFloat64Multivector MapKVectors(Func<XGaFloat64KVector, XGaFloat64KVector> kVectorMapping, bool simplify = true)
-    {
-        var kVectorDictionary = new Dictionary<int, XGaFloat64KVector>();
-
-        foreach (var (grade, kVector) in _gradeKVectorDictionary)
-        {
-            var kVector1 = kVectorMapping(kVector);
-
-            if (!kVector1.IsZero)
-                kVectorDictionary.Add(grade, kVector1);
-        }
-
-        if (kVectorDictionary.Count == 0)
-            return simplify
-                ? Processor.ScalarZero
-                : new XGaFloat64GradedMultivector(
-                    Processor,
-                    new EmptyDictionary<int, XGaFloat64KVector>()
-                );
-
-        if (kVectorDictionary.Count == 1)
-            return new XGaFloat64GradedMultivector(
-                Processor,
-                new SingleItemDictionary<int, XGaFloat64KVector>(kVectorDictionary.First())
-            );
-
-        var mv = new XGaFloat64GradedMultivector(
-            Processor, 
-            kVectorDictionary
-        );
-
-        return simplify ? mv.Simplify() : mv;
-    }
-
-    public XGaFloat64Multivector MapKVectors(Func<int, XGaFloat64KVector, XGaFloat64KVector> kVectorMapping, bool simplify = true)
-    {
-        var kVectorDictionary = new Dictionary<int, XGaFloat64KVector>();
-
-        foreach (var (grade, kVector) in _gradeKVectorDictionary)
-        {
-            var kVector1 = kVectorMapping(grade, kVector);
-
-            if (!kVector1.IsZero)
-                kVectorDictionary.Add(grade, kVector1);
-        }
-
-        if (kVectorDictionary.Count == 0)
-            return simplify
-                ? Processor.ScalarZero
-                : new XGaFloat64GradedMultivector(
-                    Processor,
-                    new EmptyDictionary<int, XGaFloat64KVector>()
-                );
-
-        if (kVectorDictionary.Count == 1)
-            return new XGaFloat64GradedMultivector(
-                Processor,
-                new SingleItemDictionary<int, XGaFloat64KVector>(kVectorDictionary.First())
-            );
-
-        var mv = new XGaFloat64GradedMultivector(
-            Processor, 
-            kVectorDictionary
-        );
-
-        return simplify ? mv.Simplify() : mv;
-    }
-
 
     public override IEnumerable<XGaFloat64KVector> GetKVectorParts()
     {
@@ -350,25 +287,6 @@ public sealed partial class XGaFloat64GradedMultivector :
         return _gradeKVectorDictionary.TryGetValue(grade, out kVector);
     }
 
-
-    public override IEnumerable<XGaBasisBlade> BasisBlades
-    {
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        get
-        {
-            return _gradeKVectorDictionary
-                .Values
-                .SelectMany(kv => kv.BasisBlades);
-        }
-    }
-
-    public override IEnumerable<IndexSet> Ids
-        => _gradeKVectorDictionary.Values.SelectMany(kv => kv.Ids);
-
-    public override IEnumerable<double> Scalars
-        => _gradeKVectorDictionary
-            .Values
-            .SelectMany(kv => kv.Scalars);
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public override XGaFloat64Scalar GetScalarPart()
@@ -455,7 +373,7 @@ public sealed partial class XGaFloat64GradedMultivector :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public XGaFloat64GradedMultivector GetPart(Func<IndexSet, bool> filterFunc)
+    public override XGaFloat64GradedMultivector GetPart(Func<IndexSet, bool> filterFunc)
     {
         if (IsZero) return this;
 
@@ -465,13 +383,13 @@ public sealed partial class XGaFloat64GradedMultivector :
             ).ToDictionary();
 
         return Processor
-            .CreateComposer()
+            .CreateMultivectorComposer()
             .SetTerms(idScalarPairs)
-            .GetMultivector();
+            .GetGradedMultivector();
     }
         
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public XGaFloat64GradedMultivector GetPart(Func<double, bool> filterFunc)
+    public override XGaFloat64GradedMultivector GetPart(Func<double, bool> filterFunc)
     {
         if (IsZero) return this;
 
@@ -481,13 +399,13 @@ public sealed partial class XGaFloat64GradedMultivector :
             ).ToDictionary();
 
         return Processor
-            .CreateComposer()
+            .CreateMultivectorComposer()
             .SetTerms(idScalarPairs)
-            .GetMultivector();
+            .GetGradedMultivector();
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public XGaFloat64GradedMultivector GetPart(Func<IndexSet, double, bool> filterFunc)
+    public override XGaFloat64GradedMultivector GetPart(Func<IndexSet, double, bool> filterFunc)
     {
         if (IsZero) return this;
 
@@ -497,44 +415,30 @@ public sealed partial class XGaFloat64GradedMultivector :
             ).ToDictionary();
 
         return Processor
-            .CreateComposer()
+            .CreateMultivectorComposer()
             .SetTerms(idScalarPairs)
-            .GetMultivector();
+            .GetGradedMultivector();
     }
         
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public XGaFloat64GradedMultivector RemoveSmallTerms(double zeroEpsilon = Float64Utils.ZeroEpsilon)
-    {
-        if (Count <= 1) return this;
-
-        var scalarThreshold = 
-            zeroEpsilon.Abs() * Scalars.Max(s => s.Abs());
-
-        return GetPart((double s) => 
-            s <= -scalarThreshold || s >= scalarThreshold
-        );
-    }
-
     public override XGaFloat64Multivector GetEvenPart()
     {
         if (IsZero)
             return Processor.ScalarZero;
 
-        var composer = Processor.CreateComposer();
+        var composer = Processor.CreateMultivectorComposer();
 
         if (_gradeKVectorDictionary.TryGetValue(0, out var scalarPart))
-            composer.SetScalar((XGaFloat64Scalar)scalarPart);
+            composer.SetScalarTerm((XGaFloat64Scalar)scalarPart);
 
         if (_gradeKVectorDictionary.TryGetValue(2, out var bivectorPart))
-            composer.SetMultivector(bivectorPart);
+            composer.SetKVector(bivectorPart);
 
         var kVectors =
             _gradeKVectorDictionary.Values.Where(
                 kv => kv.Grade > 3 && kv.Grade.IsEven()
             );
 
-        foreach (var kVector in kVectors)
-            composer.SetMultivector(kVector);
+        composer.SetKVectors(kVectors);
 
         return composer.GetSimpleMultivector();
     }
@@ -544,24 +448,23 @@ public sealed partial class XGaFloat64GradedMultivector :
         if (maxGrade < 0 || IsZero)
             return Processor.ScalarZero;
 
-        var composer = Processor.CreateComposer();
+        var composer = Processor.CreateMultivectorComposer();
 
         if (_gradeKVectorDictionary.TryGetValue(0, out var scalarPart))
-            composer.SetScalar((XGaFloat64Scalar)scalarPart);
+            composer.SetScalarTerm((XGaFloat64Scalar)scalarPart);
 
         if (maxGrade < 2)
             return composer.GetSimpleMultivector();
 
         if (_gradeKVectorDictionary.TryGetValue(2, out var bivectorPart))
-            composer.SetMultivector(bivectorPart);
+            composer.SetKVector(bivectorPart);
 
         var kVectors =
             _gradeKVectorDictionary.Values.Where(
                 kv => kv.Grade > 3 && kv.Grade.IsEven(maxGrade)
             );
 
-        foreach (var kVector in kVectors)
-            composer.SetMultivector(kVector);
+        composer.SetKVectors(kVectors);
 
         return composer.GetSimpleMultivector();
     }
@@ -571,18 +474,17 @@ public sealed partial class XGaFloat64GradedMultivector :
         if (IsZero)
             return Processor.ScalarZero;
 
-        var composer = Processor.CreateComposer();
+        var composer = Processor.CreateMultivectorComposer();
 
         if (_gradeKVectorDictionary.TryGetValue(1, out var vectorPart))
-            composer.SetMultivector(vectorPart);
+            composer.SetKVector(vectorPart);
 
         var kVectors =
             _gradeKVectorDictionary.Values.Where(
                 kv => kv.Grade > 2 && kv.Grade.IsOdd()
             );
 
-        foreach (var kVector in kVectors)
-            composer.SetMultivector(kVector);
+        composer.SetKVectors(kVectors);
 
         return composer.GetSimpleMultivector();
     }
@@ -592,33 +494,31 @@ public sealed partial class XGaFloat64GradedMultivector :
         if (maxGrade < 1 || IsZero)
             return Processor.ScalarZero;
 
-        var composer = Processor.CreateComposer();
+        var composer = Processor.CreateMultivectorComposer();
 
         if (_gradeKVectorDictionary.TryGetValue(1, out var vectorPart))
-            composer.SetMultivector(vectorPart);
+            composer.SetKVector(vectorPart);
 
         var kVectors =
             _gradeKVectorDictionary.Values.Where(
                 kv => kv.Grade > 2 && kv.Grade.IsOdd(maxGrade)
             );
 
-        foreach (var kVector in kVectors)
-            composer.SetMultivector(kVector);
+        composer.SetKVectors(kVectors);
 
         return composer.GetSimpleMultivector();
     }
 
-
+    
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public override string ToString()
     {
-        return KVectors
-            .OrderBy(p => p.Grade)
-            .SelectMany(kVector =>
-                kVector
-                    .BasisScalarPairs
-                    .OrderBy(p => p.Key.Id)
-                    .Select(p => $"'{p.Value:G}'{p.Key}")
-            ).ConcatenateText(" + ");
+        if (IsZero) return "0";
+
+        return BasisScalarPairs
+            .OrderBy(p => p.Key.Id.Count)
+            .ThenBy(p => p.Key.Id)
+            .Select(p => $"{p.Value:G} {p.Key}")
+            .ConcatenateText(" + ");
     }
 }

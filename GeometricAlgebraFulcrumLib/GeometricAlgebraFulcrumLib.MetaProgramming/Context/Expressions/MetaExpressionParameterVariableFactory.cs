@@ -5,7 +5,6 @@ using GeometricAlgebraFulcrumLib.Utilities.Structures.BitManipulation;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.IndexSets;
 using GeometricAlgebraFulcrumLib.MetaProgramming.Context.Expressions.Variables;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.Euclidean.Space3D.Objects;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Multivectors.Composers;
 
 namespace GeometricAlgebraFulcrumLib.MetaProgramming.Context.Expressions;
 
@@ -116,7 +115,7 @@ public sealed class MetaExpressionParameterVariableFactory :
 
         return Context
             .XGaProcessor
-            .CreateComposer()
+            .CreateVectorComposer()
             .SetTerms(parametersList)
             .GetVector();
     }
@@ -142,9 +141,9 @@ public sealed class MetaExpressionParameterVariableFactory :
 
         return Context
             .XGaProcessor
-            .CreateComposer()
+            .CreateKVectorComposer(grade)
             .SetTerms(parametersList)
-            .GetKVector(grade);
+            .GetKVector();
     }
 
     public XGaMultivector<IMetaExpressionAtomic> CreateDenseMultivector(int vSpaceDimensions, Func<ulong, string> namingFunction)
@@ -163,9 +162,9 @@ public sealed class MetaExpressionParameterVariableFactory :
 
         return Context
             .XGaProcessor
-            .CreateComposer()
+            .CreateMultivectorComposer()
             .AddTerms(parametersList)
-            .GetMultivector();
+            .GetSimpleMultivector();
     }
 
     //TODO: Add more functions for constructing multivectors and other GA-FuL objects

@@ -1,8 +1,5 @@
-﻿using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.LinearMaps.Rotors;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivectors;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivectors.Composers;
+﻿using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivectors;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Processors;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Subspaces;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Angles;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Generic;
@@ -352,7 +349,7 @@ public static class Sample2
             var rotor2 = r1.CreatePureRotor(a1);
 
             var rotor =
-                rotor2.Multivector.Gp(rotor1.Multivector).CreatePureRotor();
+                rotor2.Multivector.Gp(rotor1.Multivector).ToPureScalingRotor();
 
             Console.WriteLine($@"$t_{{axis}} = {LaTeXComposer.GetScalarText(tAxis)}$");
             Console.WriteLine($@"$\boldsymbol{{e}}_{{1}}\left(t_{{axis}}\right) = {LaTeXComposer.GetMultivectorText(a1)}$");
@@ -368,7 +365,7 @@ public static class Sample2
             Console.WriteLine($@"$\boldsymbol{{R}}_{{2}} = {LaTeXComposer.GetMultivectorText(rotor2)}$");
             Console.WriteLine();
 
-            Console.WriteLine($@"$\boldsymbol{{R}} = {LaTeXComposer.GetMultivectorText(rotor)}$");
+            Console.WriteLine($@"$\boldsymbol{{R}} = {LaTeXComposer.GetMultivectorText(rotor.Multivector)}$");
             Console.WriteLine();
         }
 

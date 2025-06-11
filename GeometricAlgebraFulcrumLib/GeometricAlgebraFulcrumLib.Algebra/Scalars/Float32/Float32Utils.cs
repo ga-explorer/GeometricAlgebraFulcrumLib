@@ -634,6 +634,12 @@ public static class Float32Utils
     {
         return (float)(1d /  Math.Sqrt(number));
     }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static float Inverse(this float number)
+    {
+        return 1f /  number;
+    }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static float Cbrt(this float number)

@@ -3,14 +3,32 @@ using System.Numerics;
 using System.Runtime.CompilerServices;
 using System.Text;
 using GeometricAlgebraFulcrumLib.Utilities.Structures;
+using GeometricAlgebraFulcrumLib.Utilities.Structures.BitManipulation;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Combinations;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.IndexSets;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Tuples;
+using PeterO.Numbers;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
 
 public static class BasisBladeUtils
 {
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static EInteger ToEInteger(this IndexSet indexSet)
+    {
+        if (indexSet.IsEmptySet)
+            return EInteger.Zero;
+
+        var two = EInteger.FromInt32(2);
+
+        return indexSet.Aggregate(
+            EInteger.Zero, 
+            (current, index) => current + two.Pow(index)
+        );
+    }
+
+
     //private static ulong LookupBasisBladeId(uint grade, ulong basisBladeIndex)
     //{
     //    if (grade >= BasisBladeDataLookup.GradeIndexToIdTable.Count) 
@@ -159,6 +177,90 @@ public static class BasisBladeUtils
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static (IndexSet id, IntegerSign sign) GetBasisBivectorIdSign(this int index1, int index2)
+    {
+        if (index1 == index2)
+            throw new InvalidOperationException();
+
+        return index1 < index2 
+            ? (IndexSet.CreatePair(index1, index2), IntegerSign.Positive) 
+            : (IndexSet.CreatePair(index2, index1), IntegerSign.Negative);
+    }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static (IndexSet id, IntegerSign sign) GetBasisBladeIdSign(this int[] indexList)
+    {
+        if (indexList.Length == 0)
+            return (IndexSet.EmptySet, IntegerSign.Positive);
+
+        var (id, swapCount) = 
+            indexList.SortWithAdjacentSwapCount();
+
+        if (swapCount < 0)
+            throw new InvalidOperationException();
+
+        var sign = swapCount.IsEven() 
+            ? IntegerSign.Positive 
+            : IntegerSign.Negative;
+
+        return (id, sign);
+    }
+
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static bool TryGetBasisBivectorIdSign(this int index1, int index2, out IndexSet id, out IntegerSign sign)
+    {
+        if (index1 == index2)
+        {
+            id = IndexSet.EmptySet;
+            sign = IntegerSign.Zero;
+            return false;
+        }
+
+        if (index1 < index2)
+        {
+            id = IndexSet.CreatePair(index1, index2);
+            sign = IntegerSign.Positive;
+        }
+        else
+        {
+            id = IndexSet.CreatePair(index2, index1);
+            sign = IntegerSign.Negative;
+        }
+
+        return true;
+    }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static bool TryGetBasisBladeIdSign(this int[] indexList, out IndexSet id, out IntegerSign sign)
+    {
+        if (indexList.Length == 0)
+        {
+            id = IndexSet.EmptySet;
+            sign = IntegerSign.Positive;
+            return true;
+        }
+
+        var (indexSet, swapCount) = 
+            indexList.SortWithAdjacentSwapCount();
+
+        if (swapCount < 0)
+        {
+            id = IndexSet.EmptySet;
+            sign = IntegerSign.Zero;
+            return false;
+        }
+
+        id = indexSet;
+        sign = swapCount.IsEven() 
+            ? IntegerSign.Positive 
+            : IntegerSign.Negative;
+
+        return true;
+    }
+
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static IEnumerable<IndexSet> GetBasisBladeIDsOfGrade(this int vSpaceDimensions, uint grade)
     {
         return vSpaceDimensions.ToDenseIndexSet().GetSubsetsOfSize((int) grade);
@@ -170,7 +272,7 @@ public static class BasisBladeUtils
         var indexSet = vSpaceDimensions.ToDenseIndexSet();
 
         return gradeList.SelectMany(
-            grade => indexSet.GetSubsetsOfSize((int) grade)
+            grade => indexSet.GetSubsetsOfSize(grade)
         );
     }
 
@@ -190,7 +292,7 @@ public static class BasisBladeUtils
         var indexSet = vSpaceDimensions.ToDenseIndexSet();
 
         return gradeList.SelectMany(
-            grade => indexSet.GetSubsetsOfSize((int) grade)
+            grade => indexSet.GetSubsetsOfSize(grade)
         );
     }
 
@@ -529,7 +631,7 @@ public static class BasisBladeUtils
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static bool BasisBladeIdContains(this IndexSet basisBladeId, IndexSet subId)
     {
-        return basisBladeId.SetContains(subId);
+        return basisBladeId.SetIsSupersetOf(subId);
     }
 
     /// <summary>

@@ -41,7 +41,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.TensorAlgebra.Generic.Functions
         public static Core.GenTensor<T, TWrapper> CreateIdentityTensor(int[] dimensions, int finalMatrixDiag)
         {
             var newDims = new int[dimensions.Length + 2];
-            for (int i = 0; i < dimensions.Length; i++)
+            for (var i = 0; i < dimensions.Length; i++)
                 newDims[i] = dimensions[i];
             newDims[newDims.Length - 2] = newDims[newDims.Length - 1] = finalMatrixDiag;
             var res = new Core.GenTensor<T, TWrapper>(newDims);
@@ -56,10 +56,10 @@ namespace GeometricAlgebraFulcrumLib.Algebra.TensorAlgebra.Generic.Functions
         public static Core.GenTensor<T, TWrapper> CreateIdentityMatrix(int diag)
         {
             var res = new Core.GenTensor<T, TWrapper>(diag, diag);
-            for (int i = 0; i < res.Data.Length; i++)
+            for (var i = 0; i < res.Data.Length; i++)
                 res.Data[i] = default(TWrapper).CreateZero();
 
-            for (int i = 0; i < diag; i++)
+            for (var i = 0; i < diag; i++)
                 res.SetValueNoCheck(default(TWrapper).CreateOne, i, i);
             return res;
         }
@@ -67,7 +67,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.TensorAlgebra.Generic.Functions
         public static Core.GenTensor<T, TWrapper> CreateVector(params T[] elements)
         {
             var res = new Core.GenTensor<T, TWrapper>(elements.Length);
-            for (int i = 0; i < elements.Length; i++)
+            for (var i = 0; i < elements.Length; i++)
                 res.SetValueNoCheck(elements[i], i);
             return res;
         }
@@ -99,8 +99,8 @@ namespace GeometricAlgebraFulcrumLib.Algebra.TensorAlgebra.Generic.Functions
         {
             var (width, height) = ExtractAndCheck(data);
             var res = new Core.GenTensor<T, TWrapper>(width, height);
-            for (int x = 0; x < width; x++)
-                for (int y = 0; y < height; y++)
+            for (var x = 0; x < width; x++)
+                for (var y = 0; y < height; y++)
                     res.SetValueNoCheck(data[x, y], x, y);
             return res;
         }
@@ -113,8 +113,8 @@ namespace GeometricAlgebraFulcrumLib.Algebra.TensorAlgebra.Generic.Functions
         public static Core.GenTensor<T, TWrapper> CreateMatrix(int width, int height, Func<int, int, T> stepper)
         {
             var res = CreateMatrix(width, height);
-            for (int x = 0; x < width; x++)
-                for (int y = 0; y < height; y++)
+            for (var x = 0; x < width; x++)
+                for (var y = 0; y < height; y++)
                     res.SetValueNoCheck(stepper(x, y), x, y);
             return res;
         }
@@ -149,7 +149,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.TensorAlgebra.Generic.Functions
         public static Core.GenTensor<T, TWrapper> CreateTensor(T[] data)
         {
             var res = new Core.GenTensor<T, TWrapper>(data.GetLength(0));
-            for (int x = 0; x < data.GetLength(0); x++)
+            for (var x = 0; x < data.GetLength(0); x++)
                 res.SetValueNoCheck(data[x], x);
             return res;
         }
@@ -158,8 +158,8 @@ namespace GeometricAlgebraFulcrumLib.Algebra.TensorAlgebra.Generic.Functions
         public static Core.GenTensor<T, TWrapper> CreateTensor(T[,] data)
         {
             var res = new Core.GenTensor<T, TWrapper>(data.GetLength(0), data.GetLength(1));
-            for (int x = 0; x < data.GetLength(0); x++)
-                for (int y = 0; y < data.GetLength(1); y++)
+            for (var x = 0; x < data.GetLength(0); x++)
+                for (var y = 0; y < data.GetLength(1); y++)
                     res.SetValueNoCheck(data[x, y], x, y);
             return res;
         }
@@ -169,9 +169,9 @@ namespace GeometricAlgebraFulcrumLib.Algebra.TensorAlgebra.Generic.Functions
         {
             var res = new Core.GenTensor<T, TWrapper>(data.GetLength(0),
                 data.GetLength(1), data.GetLength(2));
-            for (int x = 0; x < data.GetLength(0); x++)
-                for (int y = 0; y < data.GetLength(1); y++)
-                    for (int z = 0; z < data.GetLength(2); z++)
+            for (var x = 0; x < data.GetLength(0); x++)
+                for (var y = 0; y < data.GetLength(1); y++)
+                    for (var z = 0; z < data.GetLength(2); z++)
                         res.SetValueNoCheck(data[x, y, z], x, y, z);
             return res;
         }
@@ -180,7 +180,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.TensorAlgebra.Generic.Functions
         public static Core.GenTensor<T, TWrapper> CreateTensor(Array data)
         {
             var dimensions = new int[data.Rank];
-            for (int i = 0; i < data.Rank; i++)
+            for (var i = 0; i < data.Rank; i++)
                 dimensions[i] = data.GetLength(i);
             var res = new Core.GenTensor<T, TWrapper>(dimensions);
             if (res.Volume == 0) return res;
@@ -188,7 +188,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.TensorAlgebra.Generic.Functions
             dimensions = new int[data.Rank]; // Don't modify res
             var normalizedIndices = new int[data.Rank];
             var indices = new int[data.Rank];
-            for (int i = 0; i < data.Rank; i++)
+            for (var i = 0; i < data.Rank; i++)
             {
                 dimensions[i] = data.GetUpperBound(i);
                 indices[i] = data.GetLowerBound(i);
@@ -196,7 +196,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.TensorAlgebra.Generic.Functions
             var increment = indices.Length - 1;
             while (true)
             {
-                for (int i = increment; indices[i] > dimensions[i]; i--)
+                for (var i = increment; indices[i] > dimensions[i]; i--)
                     if (i == 0)
                         return res;
                     else

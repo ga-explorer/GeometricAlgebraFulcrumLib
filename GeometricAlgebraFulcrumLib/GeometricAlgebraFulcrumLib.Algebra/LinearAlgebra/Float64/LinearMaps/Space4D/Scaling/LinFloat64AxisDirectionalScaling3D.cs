@@ -20,18 +20,18 @@ public sealed class LinFloat64AxisDirectionalScaling4D :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64AxisDirectionalScaling4D Create(double scalingFactor, LinBasisVector4D scalingAxis)
+    public static LinFloat64AxisDirectionalScaling4D Create(double scalingFactor, LinBasisVector scalingAxis)
     {
         return new LinFloat64AxisDirectionalScaling4D(
             scalingFactor,
-            scalingAxis.GetIndex()
+            scalingAxis.Index
         );
     }
 
 
     public override double ScalingFactor { get; }
 
-    public LinBasisVector4D ScalingAxis { get; }
+    public LinBasisVector ScalingAxis { get; }
 
     public override LinFloat64Vector4D ScalingVector
         => ScalingAxis.ToLinVector4D();
@@ -68,7 +68,7 @@ public sealed class LinFloat64AxisDirectionalScaling4D :
 
         composer.SetTerm(basisIndex, 1d);
 
-        if (basisIndex == ScalingAxis.GetIndex())
+        if (basisIndex == ScalingAxis.Index)
             composer.AddTerm(basisIndex, ScalingFactor - 1d);
 
         return composer.GetVector();
@@ -80,8 +80,8 @@ public sealed class LinFloat64AxisDirectionalScaling4D :
         return new LinFloat64Vector4DComposer()
             .SetVector(vector)
             .AddTerm(
-                ScalingAxis.GetIndex(),
-                (ScalingFactor - 1d) * vector.GetItem(ScalingAxis.GetIndex())
+                ScalingAxis.Index,
+                (ScalingFactor - 1d) * vector.GetItem(ScalingAxis.Index)
             ).GetVector();
     }
 
@@ -96,7 +96,7 @@ public sealed class LinFloat64AxisDirectionalScaling4D :
     {
         return new LinFloat64AxisDirectionalScaling4D(
             1d / ScalingFactor,
-            ScalingAxis.GetIndex()
+            ScalingAxis.Index
         );
     }
 

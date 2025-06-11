@@ -1,12 +1,12 @@
-﻿using System.Runtime.CompilerServices;
-using GeometricAlgebraFulcrumLib.Utilities.Structures.IndexSets;
-using System.Diagnostics;
+﻿using System.Diagnostics;
+using System.Runtime.CompilerServices;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.LinearMaps.Outermorphisms;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Multivectors;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Spaces.Conformal;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space2D;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space3D;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Generic;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.LinearMaps.Outermorphisms;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Multivectors;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Multivectors.Composers;
+using GeometricAlgebraFulcrumLib.Utilities.Structures.IndexSets;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Processors;
 
@@ -17,13 +17,13 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Processors
 public class XGaConformalProcessor<T> :
     XGaProcessor<T>
 {
-    public Multivectors.XGaVector<T> En { get; }
+    public XGaVector<T> En { get; }
 
-    public Multivectors.XGaVector<T> Ep { get; }
+    public XGaVector<T> Ep { get; }
 
-    public Multivectors.XGaVector<T> Eo { get; }
+    public XGaVector<T> Eo { get; }
 
-    public Multivectors.XGaVector<T> Ei { get; }
+    public XGaVector<T> Ei { get; }
     
     public XGaMusicalAutomorphism<T> MusicalAutomorphism { get; }
 
@@ -35,24 +35,20 @@ public class XGaConformalProcessor<T> :
         var scalarMinusOne = ScalarProcessor.MinusOneValue;
         var scalarHalf = ScalarProcessor.Inverse(ScalarProcessor.TwoValue);
         
-        En = this
-            .CreateComposer()
+        En = CreateVectorComposer()
             .SetVectorTerm(0, ScalarProcessor.OneValue)
             .GetVector();
         
-        Ep = this
-            .CreateComposer()
+        Ep = CreateVectorComposer()
             .SetVectorTerm(1, ScalarProcessor.OneValue)
             .GetVector();
 
-        Eo = this
-            .CreateComposer()
+        Eo = CreateVectorComposer()
             .SetVectorTerm(0, scalarHalf)
             .SetVectorTerm(1, scalarHalf)
             .GetVector();
 
-        Ei = this
-            .CreateComposer()
+        Ei = CreateVectorComposer()
             .SetVectorTerm(0, scalarOne)
             .SetVectorTerm(1, scalarMinusOne)
             .GetVector();
@@ -62,7 +58,7 @@ public class XGaConformalProcessor<T> :
     
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool IsValidHGaPoint(Multivectors.XGaVector<T> hgaPoint)
+    public bool IsValidHGaPoint(XGaVector<T> hgaPoint)
     {
         var sn = hgaPoint[0];
         var sp = hgaPoint[1];
@@ -71,7 +67,7 @@ public class XGaConformalProcessor<T> :
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool IsValidPGaPoint(Multivectors.XGaKVector<T> pgaPoint, int vSpaceDimensions)
+    public bool IsValidPGaPoint(XGaKVector<T> pgaPoint, int vSpaceDimensions)
     {
         var hgaPoint = 
             PGaDual(pgaPoint, vSpaceDimensions);
@@ -83,7 +79,7 @@ public class XGaConformalProcessor<T> :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool IsValidIpnsPoint(Multivectors.XGaVector<T> ipnsPoint)
+    public bool IsValidIpnsPoint(XGaVector<T> ipnsPoint)
     {
         var sn = ipnsPoint[0];
         var sp = ipnsPoint[1];
@@ -93,14 +89,14 @@ public class XGaConformalProcessor<T> :
 
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public Multivectors.XGaKVector<T> PGaDual(Multivectors.XGaKVector<T> mv, int vSpaceDimensions)
+    public XGaKVector<T> PGaDual(XGaKVector<T> mv, int vSpaceDimensions)
     {
         //Debug.Assert(
         //    IsValidPGaElement(mv)
         //);
 
         var icInv = 
-            this.PseudoScalarInverse(vSpaceDimensions);
+            PseudoScalarInverse(vSpaceDimensions);
 
         return MusicalAutomorphism.OmMap(
             mv.Op(Ei).Lcp(icInv)
@@ -109,14 +105,14 @@ public class XGaConformalProcessor<T> :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public Multivectors.XGaMultivector<T> PGaDual(Multivectors.XGaMultivector<T> mv, int vSpaceDimensions)
+    public XGaMultivector<T> PGaDual(XGaMultivector<T> mv, int vSpaceDimensions)
     {
         //Debug.Assert(
         //    IsValidPGaElement(mv)
         //);
 
         var icInv = 
-            this.PseudoScalarInverse(vSpaceDimensions);
+            PseudoScalarInverse(vSpaceDimensions);
 
         return MusicalAutomorphism.OmMap(
             mv.Op(Ei).Lcp(icInv)
@@ -126,30 +122,27 @@ public class XGaConformalProcessor<T> :
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public Multivectors.XGaVector<T> EncodeEGaVector(double x, double y)
+    public XGaVector<T> EncodeEGaVector(double x, double y)
     {
-        return this
-            .CreateComposer()
+        return CreateVectorComposer()
             .SetVectorTerm(2, x)
             .SetVectorTerm(3, y)
             .GetVector();
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public Multivectors.XGaVector<T> EncodeEGaVector(T x, T y)
+    public XGaVector<T> EncodeEGaVector(T x, T y)
     {
-        return this
-            .CreateComposer()
+        return CreateVectorComposer()
             .SetVectorTerm(2, x)
             .SetVectorTerm(3, y)
             .GetVector();
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public Multivectors.XGaVector<T> EncodeEGaVector(double x, double y, double z)
+    public XGaVector<T> EncodeEGaVector(double x, double y, double z)
     {
-        return this
-            .CreateComposer()
+        return CreateVectorComposer()
             .SetVectorTerm(2, x)
             .SetVectorTerm(3, y)
             .SetVectorTerm(4, z)
@@ -157,10 +150,9 @@ public class XGaConformalProcessor<T> :
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public Multivectors.XGaVector<T> EncodeEGaVector(T x, T y, T z)
+    public XGaVector<T> EncodeEGaVector(T x, T y, T z)
     {
-        return this
-            .CreateComposer()
+        return CreateVectorComposer()
             .SetVectorTerm(2, x)
             .SetVectorTerm(3, y)
             .SetVectorTerm(4, z)
@@ -168,20 +160,18 @@ public class XGaConformalProcessor<T> :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public Multivectors.XGaVector<T> EncodeEGaVector(LinFloat64Vector2D egaVector)
+    public XGaVector<T> EncodeEGaVector(LinFloat64Vector2D egaVector)
     {
-        return this
-            .CreateComposer()
+        return CreateVectorComposer()
             .SetVectorTerm(2, egaVector.X.ScalarValue)
             .SetVectorTerm(3, egaVector.Y.ScalarValue)
             .GetVector();
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public Multivectors.XGaVector<T> EncodeEGaVector(LinFloat64Vector3D egaVector)
+    public XGaVector<T> EncodeEGaVector(LinFloat64Vector3D egaVector)
     {
-        return this
-            .CreateComposer()
+        return CreateVectorComposer()
             .SetVectorTerm(2, egaVector.X.ScalarValue)
             .SetVectorTerm(3, egaVector.Y.ScalarValue)
             .SetVectorTerm(4, egaVector.Z.ScalarValue)
@@ -190,7 +180,7 @@ public class XGaConformalProcessor<T> :
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public Multivectors.XGaVector<T> EncodeHGaPoint(double x, double y)
+    public XGaVector<T> EncodeHGaPoint(double x, double y)
     {
         var scalarHalf = 
             ScalarProcessor.Divide(
@@ -198,8 +188,7 @@ public class XGaConformalProcessor<T> :
                 ScalarProcessor.TwoValue
             );
 
-        return this
-            .CreateComposer()
+        return CreateVectorComposer()
             .SetVectorTerm(0, scalarHalf)
             .SetVectorTerm(1, scalarHalf)
             .SetVectorTerm(2, x)
@@ -208,7 +197,7 @@ public class XGaConformalProcessor<T> :
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public Multivectors.XGaVector<T> EncodeHGaPoint(T x, T y)
+    public XGaVector<T> EncodeHGaPoint(T x, T y)
     {
         var scalarHalf = 
             ScalarProcessor.Divide(
@@ -216,8 +205,7 @@ public class XGaConformalProcessor<T> :
                 ScalarProcessor.TwoValue
             );
 
-        return this
-            .CreateComposer()
+        return CreateVectorComposer()
             .SetVectorTerm(0, scalarHalf)
             .SetVectorTerm(1, scalarHalf)
             .SetVectorTerm(2, x)
@@ -226,7 +214,7 @@ public class XGaConformalProcessor<T> :
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public Multivectors.XGaVector<T> EncodeHGaPoint(Scalar<T> x, Scalar<T> y)
+    public XGaVector<T> EncodeHGaPoint(Scalar<T> x, Scalar<T> y)
     {
         var scalarHalf = 
             ScalarProcessor.Divide(
@@ -234,8 +222,7 @@ public class XGaConformalProcessor<T> :
                 ScalarProcessor.TwoValue
             );
 
-        return this
-            .CreateComposer()
+        return CreateVectorComposer()
             .SetVectorTerm(0, scalarHalf)
             .SetVectorTerm(1, scalarHalf)
             .SetVectorTerm(2, x.ScalarValue)
@@ -244,7 +231,7 @@ public class XGaConformalProcessor<T> :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public Multivectors.XGaVector<T> EncodeHGaPoint(double x, double y, double z)
+    public XGaVector<T> EncodeHGaPoint(double x, double y, double z)
     {
         var scalarHalf = 
             ScalarProcessor.Divide(
@@ -252,8 +239,7 @@ public class XGaConformalProcessor<T> :
                 ScalarProcessor.TwoValue
             );
 
-        return this
-            .CreateComposer()
+        return CreateVectorComposer()
             .SetVectorTerm(0, scalarHalf)
             .SetVectorTerm(1, scalarHalf)
             .SetVectorTerm(2, x)
@@ -263,7 +249,7 @@ public class XGaConformalProcessor<T> :
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public Multivectors.XGaVector<T> EncodeHGaPoint(T x, T y, T z)
+    public XGaVector<T> EncodeHGaPoint(T x, T y, T z)
     {
         var scalarHalf = 
             ScalarProcessor.Divide(
@@ -271,8 +257,7 @@ public class XGaConformalProcessor<T> :
                 ScalarProcessor.TwoValue
             );
 
-        return this
-            .CreateComposer()
+        return CreateVectorComposer()
             .SetVectorTerm(0, scalarHalf)
             .SetVectorTerm(1, scalarHalf)
             .SetVectorTerm(2, x)
@@ -282,7 +267,7 @@ public class XGaConformalProcessor<T> :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public Multivectors.XGaVector<T> EncodeHGaPoint(LinFloat64Vector2D egaVector)
+    public XGaVector<T> EncodeHGaPoint(LinFloat64Vector2D egaVector)
     {
         var scalarHalf = 
             ScalarProcessor.Divide(
@@ -290,8 +275,7 @@ public class XGaConformalProcessor<T> :
                 ScalarProcessor.TwoValue
             );
 
-        return this
-            .CreateComposer()
+        return CreateVectorComposer()
             .SetVectorTerm(0, scalarHalf)
             .SetVectorTerm(1, scalarHalf)
             .SetVectorTerm(2, egaVector.X.ScalarValue)
@@ -300,7 +284,7 @@ public class XGaConformalProcessor<T> :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public Multivectors.XGaVector<T> EncodeHGaPoint(LinFloat64Vector3D egaVector)
+    public XGaVector<T> EncodeHGaPoint(LinFloat64Vector3D egaVector)
     {
         var scalarHalf = 
             ScalarProcessor.Divide(
@@ -308,8 +292,7 @@ public class XGaConformalProcessor<T> :
                 ScalarProcessor.TwoValue
             );
 
-        return this
-            .CreateComposer()
+        return CreateVectorComposer()
             .SetVectorTerm(0, scalarHalf)
             .SetVectorTerm(1, scalarHalf)
             .SetVectorTerm(2, egaVector.X.ScalarValue)
@@ -320,7 +303,7 @@ public class XGaConformalProcessor<T> :
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public Multivectors.XGaKVector<T> EncodePGaPoint(double x, double y)
+    public XGaKVector<T> EncodePGaPoint(double x, double y)
     {
         return PGaDual(
             EncodeHGaPoint(x, y), 
@@ -329,7 +312,7 @@ public class XGaConformalProcessor<T> :
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public Multivectors.XGaKVector<T> EncodePGaPoint(T x, T y)
+    public XGaKVector<T> EncodePGaPoint(T x, T y)
     {
         return PGaDual(
             EncodeHGaPoint(x, y), 
@@ -338,7 +321,7 @@ public class XGaConformalProcessor<T> :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public Multivectors.XGaKVector<T> EncodePGaPoint(double x, double y, double z)
+    public XGaKVector<T> EncodePGaPoint(double x, double y, double z)
     {
         return PGaDual(
             EncodeHGaPoint(x, y, z), 
@@ -347,7 +330,7 @@ public class XGaConformalProcessor<T> :
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public Multivectors.XGaKVector<T> EncodePGaPoint(T x, T y, T z)
+    public XGaKVector<T> EncodePGaPoint(T x, T y, T z)
     {
         return PGaDual(
             EncodeHGaPoint(x, y, z), 
@@ -356,7 +339,7 @@ public class XGaConformalProcessor<T> :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public Multivectors.XGaKVector<T> EncodePGaPoint(LinFloat64Vector2D egaPoint)
+    public XGaKVector<T> EncodePGaPoint(LinFloat64Vector2D egaPoint)
     {
         return PGaDual(
             EncodeHGaPoint(egaPoint), 
@@ -365,7 +348,7 @@ public class XGaConformalProcessor<T> :
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public Multivectors.XGaKVector<T> EncodePGaPoint(LinFloat64Vector3D egaPoint)
+    public XGaKVector<T> EncodePGaPoint(LinFloat64Vector3D egaPoint)
     {
         return PGaDual(
             EncodeHGaPoint(egaPoint), 
@@ -375,7 +358,7 @@ public class XGaConformalProcessor<T> :
 
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public Multivectors.XGaVector<T> EncodeIpnsPoint(double x, double y)
+    public XGaVector<T> EncodeIpnsPoint(double x, double y)
     {
         var scalarHalf = 
             ScalarProcessor.Divide(
@@ -387,8 +370,7 @@ public class XGaConformalProcessor<T> :
         var sn = ScalarProcessor.Times(scalarHalf, 1 + x2);
         var sp = ScalarProcessor.Times(scalarHalf, 1 - x2);
 
-        return this
-            .CreateComposer()
+        return CreateVectorComposer()
             .SetVectorTerm(0, sn)
             .SetVectorTerm(1, sp)
             .SetVectorTerm(2, x)
@@ -397,7 +379,7 @@ public class XGaConformalProcessor<T> :
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public Multivectors.XGaVector<T> EncodeIpnsPoint(T x, T y)
+    public XGaVector<T> EncodeIpnsPoint(T x, T y)
     {
         var x2 = ScalarProcessor.Add(
             ScalarProcessor.Square(x), 
@@ -414,8 +396,7 @@ public class XGaConformalProcessor<T> :
             ScalarProcessor.TwoValue
         );
 
-        return this
-            .CreateComposer()
+        return CreateVectorComposer()
             .SetVectorTerm(0, sn)
             .SetVectorTerm(1, sp)
             .SetVectorTerm(2, x)
@@ -424,7 +405,7 @@ public class XGaConformalProcessor<T> :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public Multivectors.XGaVector<T> EncodeIpnsPoint(double x, double y, double z)
+    public XGaVector<T> EncodeIpnsPoint(double x, double y, double z)
     {
         var scalarHalf = 
             ScalarProcessor.Divide(
@@ -436,8 +417,7 @@ public class XGaConformalProcessor<T> :
         var sn = ScalarProcessor.Times(scalarHalf, 1 + x2);
         var sp = ScalarProcessor.Times(scalarHalf, 1 - x2);
 
-        return this
-            .CreateComposer()
+        return CreateVectorComposer()
             .SetVectorTerm(0, sn)
             .SetVectorTerm(1, sp)
             .SetVectorTerm(2, x)
@@ -447,7 +427,7 @@ public class XGaConformalProcessor<T> :
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public Multivectors.XGaVector<T> EncodeIpnsPoint(T x, T y, T z)
+    public XGaVector<T> EncodeIpnsPoint(T x, T y, T z)
     {
         var x2 = ScalarProcessor.Add(
             ScalarProcessor.Square(x), 
@@ -465,8 +445,7 @@ public class XGaConformalProcessor<T> :
             ScalarProcessor.TwoValue
         );
 
-        return this
-            .CreateComposer()
+        return CreateVectorComposer()
             .SetVectorTerm(0, sn)
             .SetVectorTerm(1, sp)
             .SetVectorTerm(2, x)
@@ -476,7 +455,7 @@ public class XGaConformalProcessor<T> :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public Multivectors.XGaVector<T> EncodeIpnsPoint(LinFloat64Vector2D egaPoint)
+    public XGaVector<T> EncodeIpnsPoint(LinFloat64Vector2D egaPoint)
     {
         var scalarHalf = 
             ScalarProcessor.Divide(
@@ -488,8 +467,7 @@ public class XGaConformalProcessor<T> :
         var sn = ScalarProcessor.Times(scalarHalf, 1 + x2);
         var sp = ScalarProcessor.Times(scalarHalf, 1 - x2);
 
-        return this
-            .CreateComposer()
+        return CreateVectorComposer()
             .SetVectorTerm(0, sn)
             .SetVectorTerm(1, sp)
             .SetVectorTerm(2, egaPoint.X.ScalarValue)
@@ -498,7 +476,7 @@ public class XGaConformalProcessor<T> :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public Multivectors.XGaVector<T> EncodeIpnsPoint(LinFloat64Vector3D egaPoint)
+    public XGaVector<T> EncodeIpnsPoint(LinFloat64Vector3D egaPoint)
     {
         var scalarHalf = 
             ScalarProcessor.Divide(
@@ -510,8 +488,7 @@ public class XGaConformalProcessor<T> :
         var sn = ScalarProcessor.Times(scalarHalf, 1 + x2);
         var sp = ScalarProcessor.Times(scalarHalf, 1 - x2);
 
-        return this
-            .CreateComposer()
+        return CreateVectorComposer()
             .SetVectorTerm(0, sn)
             .SetVectorTerm(1, sp)
             .SetVectorTerm(2, egaPoint.X.ScalarValue)
@@ -521,9 +498,9 @@ public class XGaConformalProcessor<T> :
     }
 
     
-    public Multivectors.XGaVector<T> DecodeEGaVector(Multivectors.XGaVector<T> egaVector)
+    public XGaVector<T> DecodeEGaVector(XGaVector<T> egaVector)
     {
-        var composer = EuclideanProcessor.CreateComposer();
+        var composer = EuclideanProcessor.CreateVectorComposer();
 
         foreach (var (id, scalar) in egaVector.IdScalarPairs)
         {
@@ -540,9 +517,9 @@ public class XGaConformalProcessor<T> :
         return composer.GetVector();
     }
     
-    public Multivectors.XGaVector<T> DecodeEGaVector(Multivectors.XGaVector<T> egaVector, T scalingFactor)
+    public XGaVector<T> DecodeEGaVector(XGaVector<T> egaVector, T scalingFactor)
     {
-        var composer = EuclideanProcessor.CreateComposer();
+        var composer = EuclideanProcessor.CreateVectorComposer();
 
         foreach (var (id, scalar) in egaVector.IdScalarPairs)
         {
@@ -561,7 +538,7 @@ public class XGaConformalProcessor<T> :
 
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public Multivectors.XGaVector<T> DecodeHGaPoint(Multivectors.XGaVector<T> hgaPoint)
+    public XGaVector<T> DecodeHGaPoint(XGaVector<T> hgaPoint)
     {
         //Debug.Assert(IsValidHGaPoint(hgaPoint));
 
@@ -573,7 +550,7 @@ public class XGaConformalProcessor<T> :
 
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public Multivectors.XGaVector<T> DecodePGaPoint(Multivectors.XGaKVector<T> pgaPoint, int vSpaceDimensions)
+    public XGaVector<T> DecodePGaPoint(XGaKVector<T> pgaPoint, int vSpaceDimensions)
     {
         if (pgaPoint.Grade != vSpaceDimensions - 2)
             throw new InvalidOperationException();
@@ -586,7 +563,7 @@ public class XGaConformalProcessor<T> :
 
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public Multivectors.XGaVector<T> DecodeIpnsPoint(Multivectors.XGaVector<T> ipnsPoint)
+    public XGaVector<T> DecodeIpnsPoint(XGaVector<T> ipnsPoint)
     {
         Debug.Assert(IsValidIpnsPoint(ipnsPoint));
 
@@ -597,10 +574,10 @@ public class XGaConformalProcessor<T> :
     }
 
 
-    public Multivectors.XGaKVector<T> PGaRp(Multivectors.XGaKVector<T> mv1, Multivectors.XGaKVector<T> mv2, int vSpaceDimensions)
+    public XGaKVector<T> PGaRp(XGaKVector<T> mv1, XGaKVector<T> mv2, int vSpaceDimensions)
     {
         var icInv = 
-            this.PseudoScalarInverse(vSpaceDimensions);
+            PseudoScalarInverse(vSpaceDimensions);
 
         var mv1Dual = MusicalAutomorphism.OmMap(
             mv1.Op(Ei).Lcp(icInv)
@@ -615,10 +592,10 @@ public class XGaConformalProcessor<T> :
         );
     }
 
-    public Multivectors.XGaMultivector<T> PGaRp(Multivectors.XGaMultivector<T> mv1, XGaMultivector<T> mv2, int vSpaceDimensions)
+    public XGaMultivector<T> PGaRp(XGaMultivector<T> mv1, XGaMultivector<T> mv2, int vSpaceDimensions)
     {
         var icInv = 
-            this.PseudoScalarInverse(vSpaceDimensions);
+            PseudoScalarInverse(vSpaceDimensions);
 
         var mv1Dual = MusicalAutomorphism.OmMap(
             mv1.Op(Ei).Lcp(icInv)
@@ -631,5 +608,12 @@ public class XGaConformalProcessor<T> :
         return MusicalAutomorphism.OmMap(
             mv1Dual.Op(mv2Dual).Op(Ei).Lcp(icInv)
         );
+    }
+
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public XGaConformalSpace<T> CreateSpace(int vSpaceDimensions)
+    {
+        return new XGaConformalSpace<T>(this, vSpaceDimensions);
     }
 }

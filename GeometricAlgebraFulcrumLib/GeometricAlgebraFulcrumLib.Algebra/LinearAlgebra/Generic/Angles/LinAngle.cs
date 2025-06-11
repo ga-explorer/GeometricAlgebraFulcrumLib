@@ -1,9 +1,14 @@
-﻿using System.Diagnostics;
+﻿using System.Collections.Immutable;
+using System.Diagnostics;
 using System.Runtime.CompilerServices;
+using GeometricAlgebraFulcrumLib.Algebra.ComplexAlgebra;
+using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Basis;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Angles;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Generic.Vectors.Space2D;
+using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Generic.Vectors.Space3D;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Generic;
+using GeometricAlgebraFulcrumLib.Utilities.Structures.Tuples;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Generic.Angles;
 
@@ -255,25 +260,25 @@ public abstract record LinAngle<T> :
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public bool IsComplementary(LinAngle<T> angle)
     {
-        return this.AngleAdd(angle.Radians).IsRight();
+        return AngleAdd(angle.Radians).IsRight();
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public bool IsNearComplementary(LinAngle<T> angle)
     {
-        return this.AngleAdd(angle.Radians).IsNearRight();
+        return AngleAdd(angle.Radians).IsNearRight();
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public bool IsSupplementary(LinAngle<T> angle)
     {
-        return this.AngleAdd(angle.Radians).IsStraight();
+        return AngleAdd(angle.Radians).IsStraight();
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public bool IsNearSupplementary(LinAngle<T> angle)
     {
-        return this.AngleAdd(angle.Radians).IsNearStraight();
+        return AngleAdd(angle.Radians).IsNearStraight();
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -602,4 +607,197 @@ public abstract record LinAngle<T> :
     {
         return Comparer<LinAngle<T>>.Default.Compare(left, right) >= 0;
     }
+
+
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public abstract LinAngle<T> NegativeAngle();
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public abstract LinAngle<T> OppositeAngle();
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public abstract LinAngle<T> AngleAdd(IScalar<T> angle2);
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public abstract LinAngle<T> AngleSubtract(IScalar<T> angle2);
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public abstract LinAngle<T> AngleTimes(T scalingFactor);
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public abstract LinAngle<T> AngleDivide(T scalingFactor);
+
+    public abstract LinAngle<T> MapAngleRadians(ScalarTransformer<T> transformer);
+
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public ComplexNumber<T> ToComplexNumber()
+    {
+        var scalarProcessor = ScalarProcessor;
+
+        return new ComplexNumber<T>(
+            scalarProcessor,
+            CosValue,
+            SinValue
+        );
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public ComplexNumber<T> ToComplexNumber(T modulusValue)
+    {
+        var scalarProcessor = ScalarProcessor;
+
+        return new ComplexNumber<T>(
+            scalarProcessor.Times(modulusValue, CosValue),
+            scalarProcessor.Times(modulusValue, SinValue)
+        );
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public ComplexNumber<T> ToComplexConjugateNumber()
+    {
+        var scalarProcessor = ScalarProcessor;
+
+        return new ComplexNumber<T>(
+            Cos(),
+            scalarProcessor.Negative(SinValue)
+        );
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public ComplexNumber<T> ToComplexConjugateNumber(T modulusValue)
+    {
+        var scalarProcessor = ScalarProcessor;
+
+        return new ComplexNumber<T>(
+            scalarProcessor.Times(modulusValue, CosValue),
+            scalarProcessor.NegativeTimes(modulusValue, SinValue)
+        );
+    }
+
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public Pair<LinVector2D<T>> RotateBasisFrame2D()
+    {
+        return new Pair<LinVector2D<T>>(
+            Rotate(LinVector2D<T>.E1(ScalarProcessor)),
+            Rotate(LinVector2D<T>.E2(ScalarProcessor))
+        );
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public LinVector2D<T> Rotate(int x, int y)
+    {
+        var angleCos = Cos();
+        var angleSin = Sin();
+
+        var x1 = x * angleCos - y * angleSin;
+        var y1 = x * angleSin + y * angleCos;
+
+        return LinVector2D<T>.Create(x1, y1);
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public LinVector2D<T> Rotate(T x, T y)
+    {
+        var angleCos = Cos();
+        var angleSin = Sin();
+
+        Debug.Assert(x is not null && y is not null);
+
+        var x1 = x * angleCos - y * angleSin;
+        var y1 = x * angleSin + y * angleCos;
+
+        return LinVector2D<T>.Create(x1, y1);
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public LinVector2D<T> Rotate(IScalar<T> sx, IScalar<T> sy)
+    {
+        var x = sx.ScalarValue;
+        var y = sy.ScalarValue;
+
+        Debug.Assert(x is not null && y is not null);
+
+        var angleCos = Cos();
+        var angleSin = Sin();
+
+        var x1 = x * angleCos - y * angleSin;
+        var y1 = x * angleSin + y * angleCos;
+
+        return LinVector2D<T>.Create(x1, y1);
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public LinVector2D<T> Rotate(LinBasisVector axis)
+    {
+        var (x, y) = axis.ToVector2D(ScalarProcessor);
+
+        var angleCos = Cos();
+        var angleSin = Sin();
+
+        var x1 = x * angleCos - y * angleSin;
+        var y1 = x * angleSin + y * angleCos;
+
+        return LinVector2D<T>.Create(x1, y1);
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public LinVector2D<T> Rotate(IPair<Scalar<T>> vector)
+    {
+        var x = vector.Item1;
+        var y = vector.Item2;
+
+        var angleCos = Cos();
+        var angleSin = Sin();
+
+        var x1 = x * angleCos - y * angleSin;
+        var y1 = x * angleSin + y * angleCos;
+
+        return LinVector2D<T>.Create(x1, y1);
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public Pair<LinVector2D<T>> Rotate(IPair<Scalar<T>> vector1, IPair<Scalar<T>> vector2)
+    {
+        return new Pair<LinVector2D<T>>(
+            Rotate(vector1),
+            Rotate(vector2)
+        );
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public Triplet<LinVector2D<T>> Rotate(IPair<Scalar<T>> vector1, IPair<Scalar<T>> vector2, IPair<Scalar<T>> vector3)
+    {
+        return new Triplet<LinVector2D<T>>(
+            Rotate(vector1),
+            Rotate(vector2),
+            Rotate(vector3)
+        );
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public IReadOnlyList<LinVector2D<T>> Rotate(params IPair<Scalar<T>>[] vectorArray)
+    {
+        return vectorArray
+            .Select(Rotate)
+            .ToImmutableArray();
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public IEnumerable<LinVector2D<T>> Rotate(IEnumerable<IPair<Scalar<T>>> vectorList)
+    {
+        return vectorList.Select(Rotate);
+    }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public LinQuaternion<T> ToQuaternion(ITriplet<Scalar<T>> normal)
+    {
+        return LinQuaternion<T>.CreateFromNormalAndAngle(
+            normal.ToUnitVector(),
+            ToPolarAngle()
+        );
+    }
+
 }

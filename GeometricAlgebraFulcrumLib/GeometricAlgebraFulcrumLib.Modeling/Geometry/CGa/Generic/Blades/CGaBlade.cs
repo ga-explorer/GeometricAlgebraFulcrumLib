@@ -1,7 +1,6 @@
 ﻿using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Multivectors;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Multivectors.Composers;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Processors;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Generic;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Generic.Decoding;
@@ -335,9 +334,9 @@ public sealed record CGaBlade<T>
             );
 
         return ConformalProcessor
-            .CreateComposer()
+            .CreateKVectorComposer(kVector1.Grade)
             .SetTerms(termList)
-            .GetKVector(kVector1.Grade);
+            .GetKVector();
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]

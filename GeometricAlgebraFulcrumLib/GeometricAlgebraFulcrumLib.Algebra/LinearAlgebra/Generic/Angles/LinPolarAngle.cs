@@ -737,19 +737,19 @@ public sealed record LinPolarAngle<T> :
     
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public LinPolarAngle<T> NegativeAngle()
+    public override LinPolarAngle<T> NegativeAngle()
     {
         return new LinPolarAngle<T>(Cos(), -Sin());
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public LinPolarAngle<T> OppositeAngle()
+    public override LinPolarAngle<T> OppositeAngle()
     {
         return new LinPolarAngle<T>(-Cos(), -Sin());
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public LinPolarAngle<T> AngleAdd(IScalar<T> angle2)
+    public override LinPolarAngle<T> AngleAdd(IScalar<T> angle2)
     {
         var a2Cos = angle2.Cos();
         var a2Sin = angle2.Sin();
@@ -761,7 +761,7 @@ public sealed record LinPolarAngle<T> :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public LinPolarAngle<T> AngleSubtract(IScalar<T> angle2)
+    public override LinPolarAngle<T> AngleSubtract(IScalar<T> angle2)
     {
         var a2Cos = angle2.Cos();
         var a2Sin = angle2.Sin();
@@ -773,7 +773,7 @@ public sealed record LinPolarAngle<T> :
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public LinPolarAngle<T> AngleTimes(T scalingFactor)
+    public override LinPolarAngle<T> AngleTimes(T scalingFactor)
     {
         Debug.Assert(scalingFactor != null, nameof(scalingFactor) + " != null");
         
@@ -781,7 +781,7 @@ public sealed record LinPolarAngle<T> :
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public LinPolarAngle<T> AngleDivide(T scalingFactor)
+    public override LinPolarAngle<T> AngleDivide(T scalingFactor)
     {
         Debug.Assert(scalingFactor != null, nameof(scalingFactor) + " != null");
         
@@ -789,6 +789,15 @@ public sealed record LinPolarAngle<T> :
     }
 
     
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public override LinPolarAngle<T> MapAngleRadians(ScalarTransformer<T> transformer)
+    {
+        return ScalarProcessor.CreatePolarAngleFromRadians(
+            transformer.MapScalarValue(RadiansValue)
+        );
+    }
+
+
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public override string ToString()
     {

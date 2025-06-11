@@ -13,7 +13,7 @@ public static class GaTextUtils
     public static string GetBasisVectorText(this ulong index)
     {
         return GetBasisBladeText(
-            new []{index + 1}
+            [index + 1]
         );
     }
 

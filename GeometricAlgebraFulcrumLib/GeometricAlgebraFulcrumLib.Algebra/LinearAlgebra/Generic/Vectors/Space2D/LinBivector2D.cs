@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Multivectors;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Processors;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Generic;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Generic.Vectors.Space2D;
@@ -337,6 +339,88 @@ public sealed record LinBivector2D<T> :
         return LinScalar2D<T>.Create(
             -Scalar12 * scalingFactor
         );
+    }
+
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public Scalar<T> Sp(LinScalar2D<T> mv2)
+    {
+        return ScalarProcessor.Zero;
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public Scalar<T> Sp(LinVector2D<T> mv2)
+    {
+        return ScalarProcessor.Zero;
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public Scalar<T> Sp(LinBivector2D<T> mv2)
+    {
+        return -(Scalar12 * mv2.Scalar12);
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public Scalar<T> Sp(LinMultivector2D<T> mv2)
+    {
+        var mv = ScalarProcessor.Zero;
+
+        if (!IsZero() && !mv2.KVector2.IsZero())
+            mv += Sp(mv2.KVector2);
+
+        return mv;
+    }
+
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public LinBivector2D<T> Op(LinScalar2D<T> mv2)
+    {
+        return Create(
+            Scalar12 * mv2.Scalar
+        );
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public LinScalar2D<T> Op(LinBivector2D<T> mv2)
+    {
+        return LinScalar2D<T>.Create(ScalarProcessor.Zero);
+    }
+
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public LinMultivector2D<T> Op(LinMultivector2D<T> mv2)
+    {
+        var mv = LinMultivector2D<T>.Zero(ScalarProcessor);
+
+        if (!mv2.KVector0.IsZero())
+            mv += Op(mv2.KVector0);
+
+        if (!mv2.KVector1.IsZero())
+            mv += Op(mv2.KVector1);
+
+        return mv;
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public LinVector2D<T> Gp(LinVector2D<T> mv2)
+    {
+        var s1 =
+            Scalar12 * mv2.Scalar2;
+
+        var s2 =
+            -Scalar12 * mv2.Scalar1;
+
+        return LinVector2D<T>.Create(s1, s2);
+    }
+
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public XGaBivector<T> ToXGaBivector(XGaProcessor<T> processor)
+    {
+        return processor
+            .CreateBivectorComposer()
+            .SetBivectorTerm(0, 1, Xy)
+            .GetBivector();
     }
 
 
