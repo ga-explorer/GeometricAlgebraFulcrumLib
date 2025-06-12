@@ -83,7 +83,7 @@ namespace GeometricAlgebraFulcrumLib.Matlab.GeometricAlgebra.Float64.Multivector
                 : Processor
                     .CreateMultivectorComposer()
                     .AddELcpTerms(this, mv2)
-                    .GetSimpleMultivector();
+                    .GetMultivector();
         }
 
         
@@ -191,7 +191,7 @@ namespace GeometricAlgebraFulcrumLib.Matlab.GeometricAlgebra.Float64.Multivector
                 : Processor
                     .CreateMultivectorComposer()
                     .AddLcpTerms(this, mv2)
-                    .GetSimpleMultivector();
+                    .GetMultivector();
         }
 
         
@@ -342,7 +342,7 @@ namespace GeometricAlgebraFulcrumLib.Matlab.GeometricAlgebra.Float64.Multivector
             return Processor
                 .CreateMultivectorComposer()
                 .AddELcpTerms(this, mv2)
-                .GetSimpleMultivector();
+                .GetMultivector();
         }
 
         //public override XGaFloat64Multivector ELcp(XGaFloat64Multivector mv2)
@@ -408,7 +408,7 @@ namespace GeometricAlgebraFulcrumLib.Matlab.GeometricAlgebra.Float64.Multivector
         //            Processor
         //                .CreateUniformComposer()
         //                .AddELcpTerms(this, mv2)
-        //                .GetSimpleMultivector(),
+        //                .GetMultivector(),
 
         //        _ => throw new InvalidOperationException()
         //    };
@@ -591,7 +591,7 @@ namespace GeometricAlgebraFulcrumLib.Matlab.GeometricAlgebra.Float64.Multivector
         //            Processor
         //                .CreateUniformComposer()
         //                .AddLcpTerms(this, mv2)
-        //                .GetSimpleMultivector(),
+        //                .GetMultivector(),
 
         //        _ => throw new InvalidOperationException()
         //    };
@@ -767,7 +767,7 @@ namespace GeometricAlgebraFulcrumLib.Matlab.GeometricAlgebra.Float64.Multivector
                 : Processor
                     .CreateMultivectorComposer()
                     .AddELcpTerms(this, kv2)
-                    .GetSimpleMultivector();
+                    .GetMultivector();
 
             //return MapKVectorsSimplify(
             //    kv1 => kv1.Grade <= 1,
@@ -783,7 +783,7 @@ namespace GeometricAlgebraFulcrumLib.Matlab.GeometricAlgebra.Float64.Multivector
                 : Processor
                     .CreateMultivectorComposer()
                     .AddELcpTerms(this, kv2)
-                    .GetSimpleMultivector();
+                    .GetMultivector();
 
             //return MapKVectorsSimplify(
             //    kv1 => kv1.Grade <= 2,
@@ -799,7 +799,7 @@ namespace GeometricAlgebraFulcrumLib.Matlab.GeometricAlgebra.Float64.Multivector
                 : Processor
                     .CreateMultivectorComposer()
                     .AddELcpTerms(this, kv2)
-                    .GetSimpleMultivector();
+                    .GetMultivector();
         }
         
         
@@ -810,7 +810,7 @@ namespace GeometricAlgebraFulcrumLib.Matlab.GeometricAlgebra.Float64.Multivector
                 : Processor
                     .CreateMultivectorComposer()
                     .AddELcpTerms(this, mv2)
-                    .GetSimpleMultivector();
+                    .GetMultivector();
 
             //return MapKVectorsSimplify(
             //    mv2.KVectors,
@@ -828,7 +828,7 @@ namespace GeometricAlgebraFulcrumLib.Matlab.GeometricAlgebra.Float64.Multivector
                 : Processor
                     .CreateMultivectorComposer()
                     .AddLcpTerms(this, kv2)
-                    .GetSimpleMultivector();
+                    .GetMultivector();
 
             //return MapKVectorsSimplify(
             //    kv1 => kv1.Grade <= 1,
@@ -844,7 +844,7 @@ namespace GeometricAlgebraFulcrumLib.Matlab.GeometricAlgebra.Float64.Multivector
                 : Processor
                     .CreateMultivectorComposer()
                     .AddLcpTerms(this, kv2)
-                    .GetSimpleMultivector();
+                    .GetMultivector();
 
             //return MapKVectorsSimplify(
             //    kv1 => kv1.Grade <= 2,
@@ -860,7 +860,7 @@ namespace GeometricAlgebraFulcrumLib.Matlab.GeometricAlgebra.Float64.Multivector
                 : Processor
                     .CreateMultivectorComposer()
                     .AddLcpTerms(this, kv2)
-                    .GetSimpleMultivector();
+                    .GetMultivector();
 
             //return MapKVectorsSimplify(
             //    kv1 => kv1.Grade <= kv2.Grade,
@@ -876,7 +876,7 @@ namespace GeometricAlgebraFulcrumLib.Matlab.GeometricAlgebra.Float64.Multivector
                 : Processor
                     .CreateMultivectorComposer()
                     .AddLcpTerms(this, kv2)
-                    .GetSimpleMultivector();
+                    .GetMultivector();
 
             //return MapKVectorsSimplify(
             //    kv1 => kv1.Grade <= kv2.Grade,
@@ -892,7 +892,7 @@ namespace GeometricAlgebraFulcrumLib.Matlab.GeometricAlgebra.Float64.Multivector
                 : Processor
                     .CreateMultivectorComposer()
                     .AddLcpTerms(this, mv2)
-                    .GetSimpleMultivector();
+                    .GetMultivector();
 
             //return MapKVectorsSimplify(
             //    mv2.KVectors,
@@ -914,7 +914,7 @@ namespace GeometricAlgebraFulcrumLib.Matlab.GeometricAlgebra.Float64.Multivector
                 : Processor
                     .CreateMultivectorComposer()
                     .AddELcpTerms(this, kv2)
-                    .GetSimpleMultivector();
+                    .GetMultivector();
         }
 
         
@@ -925,7 +925,7 @@ namespace GeometricAlgebraFulcrumLib.Matlab.GeometricAlgebra.Float64.Multivector
                 : Processor
                     .CreateMultivectorComposer()
                     .AddELcpTerms(this, kv2)
-                    .GetSimpleMultivector();
+                    .GetMultivector();
         }
 
         
@@ -936,7 +936,7 @@ namespace GeometricAlgebraFulcrumLib.Matlab.GeometricAlgebra.Float64.Multivector
                 : Processor
                     .CreateMultivectorComposer()
                     .AddELcpTerms(this, kv2)
-                    .GetSimpleMultivector();
+                    .GetMultivector();
         }
 
         
@@ -947,7 +947,7 @@ namespace GeometricAlgebraFulcrumLib.Matlab.GeometricAlgebra.Float64.Multivector
                 : Processor
                     .CreateMultivectorComposer()
                     .AddELcpTerms(this, mv2)
-                    .GetSimpleMultivector();
+                    .GetMultivector();
         }
 
 
@@ -959,7 +959,7 @@ namespace GeometricAlgebraFulcrumLib.Matlab.GeometricAlgebra.Float64.Multivector
                 : Processor
                     .CreateMultivectorComposer()
                     .AddLcpTerms(this, kv2)
-                    .GetSimpleMultivector();
+                    .GetMultivector();
         }
 
         
@@ -970,7 +970,7 @@ namespace GeometricAlgebraFulcrumLib.Matlab.GeometricAlgebra.Float64.Multivector
                 : Processor
                     .CreateMultivectorComposer()
                     .AddLcpTerms(this, kv2)
-                    .GetSimpleMultivector();
+                    .GetMultivector();
         }
 
         
@@ -981,7 +981,7 @@ namespace GeometricAlgebraFulcrumLib.Matlab.GeometricAlgebra.Float64.Multivector
                 : Processor
                     .CreateMultivectorComposer()
                     .AddLcpTerms(this, kv2)
-                    .GetSimpleMultivector();
+                    .GetMultivector();
         }
 
         
@@ -992,7 +992,7 @@ namespace GeometricAlgebraFulcrumLib.Matlab.GeometricAlgebra.Float64.Multivector
                 : Processor
                     .CreateMultivectorComposer()
                     .AddLcpTerms(this, kv2)
-                    .GetSimpleMultivector();
+                    .GetMultivector();
         }
 
         
@@ -1003,7 +1003,7 @@ namespace GeometricAlgebraFulcrumLib.Matlab.GeometricAlgebra.Float64.Multivector
                 : Processor
                     .CreateMultivectorComposer()
                     .AddLcpTerms(this, mv2)
-                    .GetSimpleMultivector();
+                    .GetMultivector();
         }
     }
     

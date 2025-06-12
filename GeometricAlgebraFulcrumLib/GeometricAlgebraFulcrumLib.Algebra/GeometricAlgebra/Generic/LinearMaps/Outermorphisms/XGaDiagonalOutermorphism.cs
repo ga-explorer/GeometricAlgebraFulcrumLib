@@ -195,7 +195,7 @@ public sealed class XGaDiagonalOutermorphism<T> :
             composer.AddKVectorScaled(mv, scalar);
         }
 
-        return composer.GetSimpleMultivector();
+        return composer.GetMultivector();
     }
 
 

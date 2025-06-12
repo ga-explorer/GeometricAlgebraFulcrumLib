@@ -577,7 +577,7 @@ public sealed partial class XGaHigherKVector<T>
             .CreateMultivectorComposer()
             .SetMultivector(this)
             .AddMultivector(mv2)
-            .GetSimpleMultivector();
+            .GetMultivector();
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -612,7 +612,7 @@ public sealed partial class XGaHigherKVector<T>
             .CreateMultivectorComposer()
             .SetMultivector(this)
             .SubtractMultivector(mv2)
-            .GetSimpleMultivector();
+            .GetMultivector();
     }
         
 
@@ -655,7 +655,7 @@ public sealed partial class XGaHigherKVector<T>
     //    return Processor
     //        .CreateComposer()
     //        .AddOpTerms(this, mv2)
-    //        .GetSimpleMultivector();
+    //        .GetMultivector();
     //}
         
 
@@ -677,7 +677,7 @@ public sealed partial class XGaHigherKVector<T>
     //    return Processor
     //        .CreateComposer()
     //        .AddEGpTerms(this, mv2)
-    //        .GetSimpleMultivector();
+    //        .GetMultivector();
     //}
 
 
@@ -699,7 +699,7 @@ public sealed partial class XGaHigherKVector<T>
     //    return Processor
     //        .CreateComposer()
     //        .AddGpTerms(this, mv2)
-    //        .GetSimpleMultivector();
+    //        .GetMultivector();
     //}
         
 
@@ -760,7 +760,7 @@ public sealed partial class XGaHigherKVector<T>
     //    return Processor
     //        .CreateComposer()
     //        .AddELcpTerms(this, mv2)
-    //        .GetSimpleMultivector();
+    //        .GetMultivector();
     //}
         
     //[MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -772,7 +772,7 @@ public sealed partial class XGaHigherKVector<T>
     //    return Processor
     //        .CreateComposer()
     //        .AddELcpTerms(this, mv2)
-    //        .GetSimpleMultivector();
+    //        .GetMultivector();
     //}
 
     //[MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -848,7 +848,7 @@ public sealed partial class XGaHigherKVector<T>
     //    return Processor
     //        .CreateComposer()
     //        .AddLcpTerms(this, mv2)
-    //        .GetSimpleMultivector();
+    //        .GetMultivector();
     //}
         
     //[MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -860,7 +860,7 @@ public sealed partial class XGaHigherKVector<T>
     //    return Processor
     //        .CreateComposer()
     //        .AddLcpTerms(this, mv2)
-    //        .GetSimpleMultivector();
+    //        .GetMultivector();
     //}
 
     //[MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -948,7 +948,7 @@ public sealed partial class XGaHigherKVector<T>
     //    return Processor
     //        .CreateComposer()
     //        .AddERcpTerms(this, mv2)
-    //        .GetSimpleMultivector();
+    //        .GetMultivector();
     //}
         
     //[MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -960,7 +960,7 @@ public sealed partial class XGaHigherKVector<T>
     //    return Processor
     //        .CreateComposer()
     //        .AddERcpTerms(this, mv2)
-    //        .GetSimpleMultivector();
+    //        .GetMultivector();
     //}
         
     //[MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -1048,7 +1048,7 @@ public sealed partial class XGaHigherKVector<T>
     //    return Processor
     //        .CreateComposer()
     //        .AddRcpTerms(this, mv2)
-    //        .GetSimpleMultivector();
+    //        .GetMultivector();
     //}
         
     //[MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -1060,7 +1060,7 @@ public sealed partial class XGaHigherKVector<T>
     //    return Processor
     //        .CreateComposer()
     //        .AddRcpTerms(this, mv2)
-    //        .GetSimpleMultivector();
+    //        .GetMultivector();
     //}
         
     //[MethodImpl(MethodImplOptions.AggressiveInlining)]

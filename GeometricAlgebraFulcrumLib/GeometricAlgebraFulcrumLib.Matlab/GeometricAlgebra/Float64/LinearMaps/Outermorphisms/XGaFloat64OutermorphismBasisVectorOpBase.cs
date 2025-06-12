@@ -100,7 +100,7 @@ public abstract class XGaFloat64OutermorphismBasisVectorOpBase
                 scalar
             );
             
-        return composer.GetSimpleMultivector();
+        return composer.GetMultivector();
     }
     
 }

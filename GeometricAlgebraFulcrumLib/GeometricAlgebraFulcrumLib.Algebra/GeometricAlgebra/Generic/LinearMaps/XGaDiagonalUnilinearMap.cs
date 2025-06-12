@@ -100,7 +100,7 @@ public sealed class XGaDiagonalUnilinearMap<T> :
             }
         }
 
-        return composer.GetSimpleMultivector();
+        return composer.GetMultivector();
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]

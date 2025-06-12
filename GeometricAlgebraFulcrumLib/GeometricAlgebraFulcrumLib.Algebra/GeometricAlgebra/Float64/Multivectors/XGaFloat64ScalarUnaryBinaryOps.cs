@@ -720,7 +720,7 @@ public sealed partial class XGaFloat64Scalar
             .CreateMultivectorComposer()
             .SetScalarTerm(ScalarValue)
             .AddMultivector(mv2)
-            .GetSimpleMultivector();
+            .GetMultivector();
     }
 
         
@@ -755,7 +755,7 @@ public sealed partial class XGaFloat64Scalar
             .CreateMultivectorComposer()
             .SetScalarTerm(ScalarValue)
             .SubtractMultivector(mv2)
-            .GetSimpleMultivector();
+            .GetMultivector();
     }
 
 

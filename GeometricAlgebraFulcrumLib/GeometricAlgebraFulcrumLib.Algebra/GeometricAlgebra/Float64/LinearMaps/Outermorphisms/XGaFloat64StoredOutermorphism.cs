@@ -129,7 +129,7 @@ public sealed class XGaFloat64StoredOutermorphism :
         foreach (var (id, scalar) in multivector)
             composer.AddMultivectorScaled(OmMapBasisBlade(id), scalar);
 
-        return composer.GetSimpleMultivector();
+        return composer.GetMultivector();
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]

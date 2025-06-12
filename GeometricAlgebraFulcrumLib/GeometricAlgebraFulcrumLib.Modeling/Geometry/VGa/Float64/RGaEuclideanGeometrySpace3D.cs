@@ -81,7 +81,7 @@ public class XGaEuclideanGeometrySpace3D :
             .SetBivectorTerm(0, 1, -kScalar)
             .SetBivectorTerm(0, 2, jScalar)
             .SetBivectorTerm(1, 2, -iScalar)
-            .GetSimpleMultivector();
+            .GetMultivector();
     }
 
 

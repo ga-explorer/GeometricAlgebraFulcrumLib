@@ -113,7 +113,7 @@ public sealed class XGaLinearMapOutermorphism<T>
                 scalar
             );
             
-        return composer.GetSimpleMultivector();
+        return composer.GetMultivector();
     }
 
 

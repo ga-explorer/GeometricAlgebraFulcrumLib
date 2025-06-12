@@ -66,7 +66,7 @@ public class XGaFloat64ComputedUnilinearMap :
             composer.AddMultivectorScaled(mv, scalar);
         }
 
-        return composer.GetSimpleMultivector();
+        return composer.GetMultivector();
     }
 
     

@@ -38,7 +38,7 @@ public class XGaEuclideanGeometrySpace2D :
             .CreateMultivectorComposer()
             .SetScalarTerm(scalar)
             .SetBivectorTerm(0, 1, -iScalar)
-            .GetSimpleMultivector();
+            .GetMultivector();
     }
 
 

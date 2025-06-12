@@ -176,6 +176,9 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivecto
             return Fdp(subspaceInverse).Gp(subspace).GetKVectorPart(Grade);
         }
 
+
+        
+
     }
 
     public sealed partial class XGaFloat64Scalar
@@ -558,7 +561,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivecto
             var (minValueId, minValue) =
                 GetMinScalarMagnitudeIdScalar();
 
-            var composer = ToComposer();
+            var composer = Processor.CreateVectorComposer().SetKVector(this);
 
             var sum = 0d;
             foreach (var (id, scalar) in IdScalarPairs)
@@ -590,7 +593,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivecto
             var (minValueId, minValue) =
                 GetMinScalarMagnitudeIdScalar();
 
-            var composer = ToComposer();
+            var composer = Processor.CreateVectorComposer().SetKVector(this);
 
             var sum = 0d;
             foreach (var (id, scalar) in IdScalarPairs)

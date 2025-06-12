@@ -1463,22 +1463,38 @@ public sealed partial class XGaGradedMultivectorComposer<T> :
         };
     }
 
-
+    
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public XGaScalar<T> GetScalar()
     {
         Debug.Assert(
             _gradeKVectorDictionary.Count == 0 ||
-            _gradeKVectorDictionary.Count == 1 && _gradeKVectorDictionary.Keys.First() == 0
+            (_gradeKVectorDictionary.Count == 1 && _gradeKVectorDictionary.Keys.First() == 0)
         );
 
         if (_gradeKVectorDictionary.Count > 1)
             throw new InvalidOperationException();
         
-        return _gradeKVectorDictionary.TryGetValue(0, out var idScalarDict) && 
-               idScalarDict.TryGetValue(IndexSet.EmptySet, out var scalar)
-            ? Processor.Scalar(scalar)
-            : Processor.ScalarZero;
+        if (_gradeKVectorDictionary.Count == 0)
+            return Processor.ScalarZero;
+        
+        var (grade, idScalarDict) = 
+            _gradeKVectorDictionary.First();
+        
+        if (grade != 0)
+            throw new InvalidOperationException();
+        
+        Debug.Assert(
+            idScalarDict.Count == 1 &&
+            idScalarDict.Keys.First().IsEmptySet
+        );
+
+        var mv = 
+            Processor.Scalar(idScalarDict.Values.First());
+
+        _gradeKVectorDictionary = new Dictionary<int, Dictionary<IndexSet, T>>();
+
+        return mv;
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -1486,15 +1502,27 @@ public sealed partial class XGaGradedMultivectorComposer<T> :
     {
         Debug.Assert(
             _gradeKVectorDictionary.Count == 0 ||
-            _gradeKVectorDictionary.Count == 1 && _gradeKVectorDictionary.Keys.First() == 1
+            (_gradeKVectorDictionary.Count == 1 && _gradeKVectorDictionary.Keys.First() == 1)
         );
         
         if (_gradeKVectorDictionary.Count > 1)
             throw new InvalidOperationException();
 
-        return _gradeKVectorDictionary.TryGetValue(1, out var idScalarDict) 
-            ? Processor.Vector(idScalarDict) 
-            : Processor.VectorZero;
+        if (_gradeKVectorDictionary.Count == 0)
+            return Processor.VectorZero;
+
+        var (grade, idScalarDict) = 
+            _gradeKVectorDictionary.First();
+
+        if (grade != 1)
+            throw new InvalidOperationException();
+
+        var mv = 
+            Processor.Vector(idScalarDict);
+
+        _gradeKVectorDictionary = new Dictionary<int, Dictionary<IndexSet, T>>();
+
+        return mv;
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -1502,15 +1530,27 @@ public sealed partial class XGaGradedMultivectorComposer<T> :
     {
         Debug.Assert(
             _gradeKVectorDictionary.Count == 0 ||
-            _gradeKVectorDictionary.Count == 1 && _gradeKVectorDictionary.Keys.First() == 2
+            (_gradeKVectorDictionary.Count == 1 && _gradeKVectorDictionary.Keys.First() == 2)
         );
         
         if (_gradeKVectorDictionary.Count > 1)
             throw new InvalidOperationException();
 
-        return _gradeKVectorDictionary.TryGetValue(2, out var idScalarDict) 
-            ? Processor.Bivector(idScalarDict) 
-            : Processor.BivectorZero;
+        if (_gradeKVectorDictionary.Count == 0)
+            return Processor.BivectorZero;
+
+        var (grade, idScalarDict) = 
+            _gradeKVectorDictionary.First();
+
+        if (grade != 2)
+            throw new InvalidOperationException();
+
+        var mv = 
+            Processor.Bivector(idScalarDict);
+
+        _gradeKVectorDictionary = new Dictionary<int, Dictionary<IndexSet, T>>();
+
+        return mv;
     }
         
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -1518,15 +1558,27 @@ public sealed partial class XGaGradedMultivectorComposer<T> :
     {
         Debug.Assert(
             _gradeKVectorDictionary.Count == 0 || 
-            _gradeKVectorDictionary.Count == 1 && _gradeKVectorDictionary.Keys.First() == grade
+            (_gradeKVectorDictionary.Count == 1 && _gradeKVectorDictionary.Keys.First() == grade)
         );
         
-        if (grade < 3)
+        if (grade < 3 || _gradeKVectorDictionary.Count > 1)
             throw new InvalidOperationException();
         
-        return _gradeKVectorDictionary.TryGetValue(grade, out var idScalarDict) 
-            ? Processor.HigherKVector(grade, idScalarDict)
-            : Processor.HigherKVectorZero(grade);
+        if (_gradeKVectorDictionary.Count == 0)
+            return Processor.HigherKVectorZero(grade);
+        
+        var (grade1, idScalarDict) = 
+            _gradeKVectorDictionary.First();
+
+        if (grade1 != grade)
+            throw new InvalidOperationException();
+
+        var mv = 
+            Processor.HigherKVector(grade, idScalarDict);
+
+        _gradeKVectorDictionary = new Dictionary<int, Dictionary<IndexSet, T>>();
+
+        return mv;
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -1545,14 +1597,19 @@ public sealed partial class XGaGradedMultivectorComposer<T> :
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public XGaGradedMultivector<T> GetGradedMultivector()
     {
-        return _gradeKVectorDictionary.Count == 0
-            ? Processor.GradedMultivectorZero
-            : Processor.GradedMultivector(
+        if (_gradeKVectorDictionary.Count == 0)
+            return Processor.GradedMultivectorZero;
+
+        var mv = Processor.GradedMultivector(
                 _gradeKVectorDictionary.ToDictionary(
                     p => p.Key,
                     p => Processor.KVector(p.Key, p.Value)
                 )
             );
+
+        _gradeKVectorDictionary = new Dictionary<int, Dictionary<IndexSet, T>>();
+
+        return mv;
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -1561,16 +1618,20 @@ public sealed partial class XGaGradedMultivectorComposer<T> :
         if (_gradeKVectorDictionary.Count == 0)
             return Processor.UniformMultivectorZero;
 
-        return Processor.UniformMultivector(
+        var mv = Processor.UniformMultivector(
             IdScalarPairs.ToDictionary(
                 p => p.Key, 
                 p => p.Value
             )
         );
+        
+        _gradeKVectorDictionary = new Dictionary<int, Dictionary<IndexSet, T>>();
+
+        return mv;
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public XGaMultivector<T> GetSimpleMultivector()
+    public XGaMultivector<T> GetMultivector()
     {
         if (_gradeKVectorDictionary.Count == 0)
             return Processor.ScalarZero;
@@ -1580,37 +1641,48 @@ public sealed partial class XGaGradedMultivectorComposer<T> :
             var (grade, idScalarDict) = 
                 _gradeKVectorDictionary.First();
 
-            return Processor.KVector(grade, idScalarDict);
+            var mv = Processor.KVector(grade, idScalarDict);
+        
+            _gradeKVectorDictionary = new Dictionary<int, Dictionary<IndexSet, T>>();
+
+            return mv;
         }
 
-        var gradeKVectorDictionary = new Dictionary<int, XGaKVector<T>>();
-
-        foreach (var (grade, idScalarDictionary) in _gradeKVectorDictionary)
         {
-            if (grade == 0)
+            var gradeKVectorDictionary = new Dictionary<int, XGaKVector<T>>();
+
+            foreach (var (grade, idScalarDictionary) in _gradeKVectorDictionary)
             {
-                var scalar = Processor.Scalar(
-                    idScalarDictionary.Values.First()
+                if (grade == 0)
+                {
+                    var scalar = Processor.Scalar(
+                        idScalarDictionary.Values.First()
+                    );
+
+                    gradeKVectorDictionary.Add(grade, scalar);
+
+                    continue;
+                }
+
+                var idScalarDict =
+                    IndexSetUtils.CreateIndexSetDictionary<T>();
+
+                idScalarDict.AddRange(idScalarDictionary);
+
+                var kVector = Processor.KVector(
+                    grade,
+                    idScalarDict
                 );
 
-                gradeKVectorDictionary.Add(grade, scalar);
-
-                continue;
+                gradeKVectorDictionary.Add(grade, kVector);
             }
 
-            var idScalarDict = 
-                IndexSetUtils.CreateIndexSetDictionary<T>();
+            var mv = 
+                Processor.GradedMultivector(gradeKVectorDictionary);
+        
+            _gradeKVectorDictionary = new Dictionary<int, Dictionary<IndexSet, T>>();
 
-            idScalarDict.AddRange(idScalarDictionary);
-
-            var kVector = Processor.KVector(
-                grade,
-                idScalarDict
-            );
-
-            gradeKVectorDictionary.Add(grade, kVector);
+            return mv;
         }
-
-        return Processor.GradedMultivector(gradeKVectorDictionary);
     }
 }

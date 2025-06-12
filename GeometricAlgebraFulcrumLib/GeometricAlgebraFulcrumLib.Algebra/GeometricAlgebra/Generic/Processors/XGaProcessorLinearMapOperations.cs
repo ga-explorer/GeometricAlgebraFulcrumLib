@@ -118,7 +118,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Processors
                 CreateMultivectorComposer()
                     .SetScalarTerm(r0)
                     .SetBivectorTerm(0, 1, r12)
-                    .GetSimpleMultivector()
+                    .GetMultivector()
             );
         }
 
@@ -136,7 +136,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Processors
                 CreateMultivectorComposer()
                     .SetScalarTerm(r0)
                     .SetBivectorTerm(0, 1, r12)
-                    .GetSimpleMultivector()
+                    .GetMultivector()
             );
         }
 
@@ -154,7 +154,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Processors
                 CreateMultivectorComposer()
                     .SetScalarTerm(r0)
                     .SetBivectorTerm(0, 1, r12)
-                    .GetSimpleMultivector()
+                    .GetMultivector()
             );
         }
 
@@ -172,7 +172,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Processors
                 CreateMultivectorComposer()
                     .SetScalarTerm(r0)
                     .SetBivectorTerm(0, 1, r12)
-                    .GetSimpleMultivector()
+                    .GetMultivector()
             );
         }
 
@@ -194,7 +194,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Processors
                     .SetBivectorTerm(0, 1, r12)
                     .SetBivectorTerm(0, 2, r13)
                     .SetBivectorTerm(1, 2, r23)
-                    .GetSimpleMultivector()
+                    .GetMultivector()
             );
         }
 
@@ -216,7 +216,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Processors
                     .SetBivectorTerm(0, 1, r12)
                     .SetBivectorTerm(0, 2, r13)
                     .SetBivectorTerm(1, 2, r23)
-                    .GetSimpleMultivector()
+                    .GetMultivector()
             );
         }
 
@@ -238,7 +238,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Processors
                     .SetBivectorTerm(0, 1, r12)
                     .SetBivectorTerm(0, 2, r13)
                     .SetBivectorTerm(1, 2, r23)
-                    .GetSimpleMultivector()
+                    .GetMultivector()
             );
         }
 
@@ -260,7 +260,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Processors
                     .SetBivectorTerm(0, 1, r12)
                     .SetBivectorTerm(0, 2, r13)
                     .SetBivectorTerm(1, 2, r23)
-                    .GetSimpleMultivector()
+                    .GetMultivector()
             );
         }
 
@@ -282,7 +282,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Processors
                     .SetBivectorTerm(0, 1, r12)
                     .SetBivectorTerm(0, 2, r13)
                     .SetBivectorTerm(1, 2, r23)
-                    .GetSimpleMultivector()
+                    .GetMultivector()
             );
         }
 

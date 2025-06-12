@@ -1,20 +1,10 @@
 ﻿using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivectors;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Processors;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.LinearMaps.Rotors;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Multivectors.GuidedBinaryTraversal;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Multivectors.GuidedBinaryTraversal.Multivectors;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Processors;
-using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space2D;
-using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space3D;
-using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space4D;
-using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Generic.Vectors.SpaceND;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Generic;
 using GeometricAlgebraFulcrumLib.Algebra.Utilities.Text;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.IndexSets;
 using GeometricAlgebraFulcrumLib.Utilities.Text.Text;
 using System.Collections;
-using System.Diagnostics;
 using System.Runtime.CompilerServices;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Multivectors;
@@ -178,60 +168,6 @@ public abstract partial class XGaMultivector<T> :
     public abstract bool ContainsEvenPart(int maxGrade);
 
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public XGaScalar<T> AsScalar()
-    {
-        return (XGaScalar<T>)this;
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public XGaVector<T> AsVector()
-    {
-        return (XGaVector<T>)this;
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public XGaBivector<T> AsBivector()
-    {
-        return (XGaBivector<T>)this;
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public XGaHigherKVector<T> AsHigherKVector()
-    {
-        return (XGaHigherKVector<T>)this;
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public XGaKVector<T> AsKVector()
-    {
-        return (XGaKVector<T>)this;
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public XGaGradedMultivector<T> AsGradedMultivector()
-    {
-        return (XGaGradedMultivector<T>)this;
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public XGaUniformMultivector<T> AsUniformMultivector()
-    {
-        return (XGaUniformMultivector<T>)this;
-    }
-        
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public LinVector<T> MultivectorToLinVector()
-    {
-        var indexScalarDictionary =
-            IdScalarPairs.ToDictionary(
-                p => p.Key.DecodeCombinadicToInt32(),
-                p => p.Value
-            );
-
-        return ScalarProcessor.CreateLinVector(indexScalarDictionary);
-    }
-
     public abstract int GetMinGrade();
 
     public abstract int GetMaxGrade();
@@ -275,10 +211,20 @@ public abstract partial class XGaMultivector<T> :
 
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public IndexSet GetStoredGradesBitPattern()
+    public IndexSet GetStoredBasisVectorIndices()
+    {
+        return IndexSet.Create(
+            Ids.SelectMany(id => id), 
+            false
+        );
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public IndexSet GetStoredKVectorGrades()
     {
         return IndexSet.Create(KVectorGrades, false);
     }
+
 
     /// <summary>
     /// Get the scalar coefficient associated with a basis blade term
@@ -426,129 +372,6 @@ public abstract partial class XGaMultivector<T> :
         );
     }
 
-    /// <summary>
-    /// Simplify the storage of this multivector
-    /// </summary>
-    /// <returns></returns>
-    public abstract XGaMultivector<T> Simplify();
-
-    /// <summary>
-    /// Construct a binary tree representation of this storage
-    /// </summary>
-    /// <returns></returns>
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public XGaGbtBinaryTree<T> GetBinaryTree(int treeDepth)
-    {
-        if (treeDepth < VSpaceDimensions)
-            throw new InvalidOperationException();
-
-        var dict = 
-            IdScalarPairs.ToDictionary(
-                pair => pair.Key,
-                pair => pair.Value
-            );
-
-        return new XGaGbtBinaryTree<T>(treeDepth, dict);
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public IXGaGbtMultivectorStorageStack1<T> CreateGbtStack(int treeDepth, int capacity)
-    {
-        //return XGaGbtKVectorStorageStack1<T>.Create(capacity, treeDepth, this);
-        //return XGaGbtMultivectorStorageGradedStack1<T>.Create(capacity, treeDepth, this);
-        return XGaMultivectorGbtUniformStack1<T>.Create(
-            capacity, 
-            treeDepth,
-            this
-        );
-    }
-
-    
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public virtual XGaGradedMultivectorComposer<T> ToComposer()
-    {
-        return Processor.CreateMultivectorComposer().SetMultivector(this);
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public virtual XGaGradedMultivectorComposer<T> NegativeToComposer()
-    {
-        return Processor.CreateMultivectorComposer().SetMultivectorNegative(this);
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public virtual XGaGradedMultivectorComposer<T> ToComposer(T scalingFactor)
-    {
-        return Processor.CreateMultivectorComposer().SetMultivectorScaled(this, scalingFactor);
-    }
-    
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public virtual XGaGradedMultivector<T> ToGradedMultivector()
-    {
-        return this switch
-        {
-            XGaKVector<T> kVector => kVector.ToGradedMultivector(),
-            XGaGradedMultivector<T> mv => mv,
-            XGaUniformMultivector<T> mv => mv.ToGradedMultivector(),
-            _ => throw new InvalidOperationException()
-        };
-    }
-    
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public virtual XGaUniformMultivector<T> ToUniformMultivector()
-    {
-        return this switch
-        {
-            XGaKVector<T> kVector => kVector.ToUniformMultivector(),
-            XGaUniformMultivector<T> mv => mv,
-            XGaGradedMultivector<T> mv => mv.ToUniformMultivector(),
-            _ => throw new InvalidOperationException()
-        };
-    }
-
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public abstract XGaFloat64Multivector Convert(XGaFloat64Processor metric);
-    //{
-    //    return mv switch
-    //    {
-    //        XGaScalar<T> mv1 => mv1.Convert(metric),
-    //        XGaVector<T> mv1 => mv1.Convert(metric),
-    //        XGaBivector<T> mv1 => mv1.Convert(metric),
-    //        XGaHigherKVector<T> mv1 => mv1.Convert(metric),
-    //        XGaGradedMultivector<T> mv1 => mv1.Convert(metric),
-    //        _ => ((XGaUniformMultivector<T>)mv).Convert(metric)
-    //    };
-    //}
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public abstract XGaFloat64Multivector Convert(XGaFloat64Processor metric, Func<T, double> scalarMapping);
-    //{
-    //    return mv switch
-    //    {
-    //        XGaScalar<T> mv1 => mv1.Convert(metric, scalarMapping),
-    //        XGaVector<T> mv1 => mv1.Convert(metric, scalarMapping),
-    //        XGaBivector<T> mv1 => mv1.Convert(metric, scalarMapping),
-    //        XGaHigherKVector<T> mv1 => mv1.Convert(metric, scalarMapping),
-    //        XGaGradedMultivector<T> mv1 => mv1.Convert(metric, scalarMapping),
-    //        _ => ((XGaUniformMultivector<T>)mv).Convert(metric, scalarMapping)
-    //    };
-    //}
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public abstract XGaMultivector<T2> Convert<T2>(XGaProcessor<T2> metric, Func<T, T2> scalarMapping);
-    //{
-    //    return mv switch
-    //    {
-    //        XGaScalar<T> mv1 => mv1.Convert(metric, scalarMapping),
-    //        XGaVector<T> mv1 => mv1.Convert(metric, scalarMapping),
-    //        XGaBivector<T> mv1 => mv1.Convert(metric, scalarMapping),
-    //        XGaHigherKVector<T> mv1 => mv1.Convert(metric, scalarMapping),
-    //        XGaGradedMultivector<T> mv1 => mv1.Convert(metric, scalarMapping),
-    //        _ => ((XGaUniformMultivector<T>)mv).Convert(metric, scalarMapping)
-    //    };
-    //}
-    
     
     public virtual T[] MultivectorToArray(int vSpaceDimensions)
     {
@@ -603,357 +426,14 @@ public abstract partial class XGaMultivector<T> :
         );
     }
 
-        
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public abstract XGaMultivector<T> MapScalars(Func<T, T> scalarMapping);
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public abstract XGaFloat64Multivector MapScalars(XGaFloat64Processor processor, Func<T, double> scalarMapping);
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public abstract XGaMultivector<T2> MapScalars<T2>(XGaProcessor<T2> processor, Func<T, T2> scalarMapping);
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public abstract XGaMultivector<T> MapScalars(Func<IndexSet, T, T> scalarMapping);
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public abstract XGaFloat64Multivector MapScalars(XGaFloat64Processor processor, Func<IndexSet, T, double> scalarMapping);
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public abstract XGaMultivector<T2> MapScalars<T2>(XGaProcessor<T2> processor, Func<IndexSet, T, T2> scalarMapping);
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public abstract XGaMultivector<T> MapScalars(ScalarTransformer<T> transformer);
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public virtual XGaMultivector<T> MapBasisBlades(Func<IndexSet, IndexSet> basisMapping)
-    {
-        var termList =
-            IdScalarPairs.Select(
-                term => new KeyValuePair<IndexSet, T>(
-                    basisMapping(term.Key),
-                    term.Value
-                )
-            );
-
-        return Processor
-            .CreateMultivectorComposer()
-            .AddTerms(termList)
-            .GetSimpleMultivector();
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public virtual XGaMultivector<T> MapBasisBlades(Func<IndexSet, T, IndexSet> basisMapping)
-    {
-        var termList =
-            IdScalarPairs.Select(
-                term => new KeyValuePair<IndexSet, T>(
-                    basisMapping(term.Key, term.Value),
-                    term.Value
-                )
-            );
-
-        return Processor
-            .CreateMultivectorComposer()
-            .AddTerms(termList)
-            .GetSimpleMultivector();
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public virtual XGaMultivector<T> MapTerms(Func<IndexSet, T, KeyValuePair<IndexSet, T>> termMapping)
-    {
-        var termList =
-            IdScalarPairs.Select(
-                term =>
-                    termMapping(term.Key, term.Value)
-            ).Where(p => !ScalarProcessor.IsZero(p.Value));
-
-        return Processor
-            .CreateMultivectorComposer()
-            .AddTerms(termList)
-            .GetSimpleMultivector();
-    }
-
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public abstract XGaMultivector<T> Negative();
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public abstract XGaMultivector<T> Reverse();
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public abstract XGaMultivector<T> GradeInvolution();
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public abstract XGaMultivector<T> CliffordConjugate();
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public abstract XGaMultivector<T> Conjugate();
-
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public abstract XGaMultivector<T> Times(T scalarValue);
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public abstract XGaMultivector<T> Times(int scalarValue);
     
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public abstract XGaMultivector<T> Times(double scalarValue);
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public abstract XGaMultivector<T> Times(Scalar<T> scalarValue);
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public abstract XGaMultivector<T> Times(IScalar<T> scalarValue);
-
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public abstract XGaMultivector<T> Divide(int scalarValue);
-    
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public abstract XGaMultivector<T> Divide(double scalarValue);
-    
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public abstract XGaMultivector<T> Divide(T scalarValue);
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public abstract XGaMultivector<T> Divide(Scalar<T> scalarValue);
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public abstract XGaMultivector<T> Divide(IScalar<T> scalarValue);
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public abstract XGaMultivector<T> DivideByENorm();
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public abstract XGaMultivector<T> DivideByENormSquared();
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public abstract XGaMultivector<T> DivideByNorm();
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public abstract XGaMultivector<T> DivideByNormSquared();
-
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public abstract XGaMultivector<T> EInverse();
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public abstract XGaMultivector<T> Inverse();
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public abstract XGaMultivector<T> PseudoInverse();
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public abstract XGaMultivector<T> EDual(int vSpaceDimensions);
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public abstract XGaMultivector<T> EDual(XGaKVector<T> blade);
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public abstract XGaMultivector<T> Dual(int vSpaceDimensions);
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public abstract XGaMultivector<T> Dual(XGaKVector<T> blade);
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public abstract XGaMultivector<T> EUnDual(int vSpaceDimensions);
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public abstract XGaMultivector<T> EUnDual(XGaKVector<T> blade);
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public abstract XGaMultivector<T> UnDual(int vSpaceDimensions);
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public abstract XGaMultivector<T> UnDual(XGaKVector<T> blade);
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public T[] MultivectorToArray1D(int arraySize)
-    {
-        var vSpaceDimensions = VSpaceDimensions;
-
-        if (vSpaceDimensions > 31)
-            throw new InvalidOperationException();
-
-        var gaSpaceDimensions = 1UL << vSpaceDimensions;
-
-        if ((ulong) arraySize < gaSpaceDimensions)
-            throw new InvalidOperationException();
-
-        var array = ScalarProcessor
-            .CreateArrayZero1D(arraySize);
-
-        foreach (var (id, scalar) in IdScalarPairs)
-            array[id.ToInt32()] = scalar;
-
-        return array;
-    }
-
-    public T[,] ScalarPlusBivectorToArray2D()
-    {
-        var array = GetBivectorPart().BivectorToArray2D();
-        var scalar = Scalar().ScalarValue;
-        var metric = Metric;
-        var scalarProcessor = ScalarProcessor;
-
-        var arraySize = array.GetLength(0);
-        for (var i = 0; i < arraySize; i++)
-        {
-            var signature = metric.Signature(i);
-
-            if (signature.IsZero) continue;
-
-            array[i, i] = signature.IsPositive
-                ? scalar
-                : scalarProcessor.Negative(scalar).ScalarValue;
-        }
-        
-        return array;
-    }
-
-    public T[,] ScalarPlusBivectorToArray2D(int arraySize)
-    {
-        var array = GetBivectorPart().BivectorToArray2D(arraySize);
-        var scalar = Scalar().ScalarValue;
-        var metric = Metric;
-        var scalarProcessor = ScalarProcessor;
-
-        for (var i = 0; i < arraySize; i++)
-        {
-            var signature = metric.Signature(i);
-
-            if (signature.IsZero) continue;
-
-            array[i, i] = signature.IsPositive
-                ? scalar
-                : scalarProcessor.Negative(scalar).ScalarValue;
-        }
-        
-        return array;
-    }
-    
-    
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public LinFloat64Vector2D GetVectorPartAsFloat64Vector2D()
-    {
-        return LinFloat64Vector2D.Create(
-            Scalar(0).ToFloat64(),
-            Scalar(1).ToFloat64()
-        );
-    }
-        
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public LinFloat64Vector3D GetVectorPartAsFloat64Vector3D()
-    {
-        return LinFloat64Vector3D.Create(
-            Scalar(0).ToFloat64(),
-            Scalar(1).ToFloat64(),
-            Scalar(2).ToFloat64()
-        );
-    }
-        
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public LinFloat64Vector4D GetVectorPartAsFloat64Vector4D()
-    {
-        return LinFloat64Vector4D.Create(
-            Scalar(0).ToFloat64(),
-            Scalar(1).ToFloat64(),
-            Scalar(2).ToFloat64(),
-            Scalar(3).ToFloat64()
-        );
-    }
-
-    
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public virtual XGaMultivector<T> ReflectOn(XGaKVector<T> subspace)
-    {
-        Debug.Assert(subspace.IsNearBlade());
-
-        return subspace
-            .Gp(this)
-            .Gp(subspace.Inverse());
-    }
-    
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public virtual XGaMultivector<T> ReflectDirectOnDirect(XGaKVector<T> subspace)
-    {
-        return GetKVectorParts()
-            .Select(kv => kv.ReflectDirectOnDirect(subspace))
-            .Aggregate(
-                (XGaMultivector<T>) Processor.ScalarZero,
-                (a, b) => a.Add(b)
-            );
-    }
-    
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public virtual XGaMultivector<T> ReflectDirectOnDual(XGaKVector<T> subspace)
-    {
-        return GetKVectorParts()
-            .Select(kv => kv.ReflectDirectOnDual(subspace))
-            .Aggregate(
-                (XGaMultivector<T>) Processor.ScalarZero,
-                (a, b) => a.Add(b)
-            );
-    }
-    
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public virtual XGaMultivector<T> ReflectDualOnDirect(XGaKVector<T> subspace, int vSpaceDimensions)
-    {
-        return GetKVectorParts()
-            .Select(kv => kv.ReflectDualOnDirect(subspace, vSpaceDimensions))
-            .Aggregate(
-                (XGaMultivector<T>) Processor.ScalarZero,
-                (a, b) => a.Add(b)
-            );
-    }
-    
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public virtual XGaMultivector<T> ReflectDualOnDual(XGaKVector<T> subspace)
-    {
-        return GetKVectorParts()
-            .Select(kv => kv.ReflectDualOnDual(subspace))
-            .Aggregate(
-                (XGaMultivector<T>) Processor.ScalarZero,
-                (a, b) => a.Add(b)
-            );
-    }
-    
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public virtual XGaMultivector<T> ProjectOn(XGaKVector<T> subspace, bool useSubspaceInverse = false)
-    {
-        Debug.Assert(subspace.IsNearBlade());
-        
-        var subspaceInverse = 
-            useSubspaceInverse 
-                ? subspace.PseudoInverse() 
-                : subspace;
-
-        return Fdp(subspaceInverse).Gp(subspace);
-    }
-
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public bool IsEuclideanRotor()
     {
         return IsEven() && (EGp(Reverse()) - 1d).IsZero;
     }
 
-
-    /// <summary>
-    /// Create a pure rotor from its scalar and bivector parts
-    /// </summary>
-    /// <typeparam name="T"></typeparam>
-    /// <returns></returns>
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public XGaPureRotor<T> ToPureRotor()
-    {
-        return XGaPureRotor<T>.Create(
-            GetScalarPart().ScalarValue,
-            GetBivectorPart()
-        );
-    }
-
-
+    
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public string GetMultivectorText()
     {

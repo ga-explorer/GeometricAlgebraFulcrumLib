@@ -1,8 +1,6 @@
 ﻿using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivectors;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Processors;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Processors;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Generic;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.BitManipulation;
@@ -249,14 +247,7 @@ public sealed partial class XGaUniformMultivector<T> :
             .Count();
     }
 
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public override XGaMultivector<T> Simplify()
-    {
-        return this;
-    }
-
-
+    
     public override IEnumerable<XGaKVector<T>> GetKVectorParts()
     {
         if (_idScalarDictionary.Count == 0)
@@ -532,86 +523,6 @@ public sealed partial class XGaUniformMultivector<T> :
     }
 
     
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public override XGaGradedMultivector<T> ToGradedMultivector()
-    {
-        return ToComposer().GetGradedMultivector();
-    }
-    
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public override XGaUniformMultivector<T> ToUniformMultivector()
-    {
-        return this;
-    }
-    
-    
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public override XGaFloat64UniformMultivector Convert(XGaFloat64Processor metric)
-    {
-        if (IsZero)
-            return metric.UniformMultivectorZero;
-
-        var termList =
-            IdScalarPairs.Select(
-                term => new KeyValuePair<IndexSet, double>(
-                    term.Key,
-                    ScalarProcessor.ToFloat64(term.Value)
-                )
-            );
-
-        return metric
-            .CreateMultivectorComposer()
-            .SetTerms(termList)
-            .GetUniformMultivector();
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public override XGaFloat64UniformMultivector Convert(XGaFloat64Processor metric, Func<T, double> scalarMapping)
-    {
-        if (IsZero)
-            return metric.UniformMultivectorZero;
-
-        var termList =
-            IdScalarPairs.Select(
-                term => new KeyValuePair<IndexSet, double>(
-                    term.Key,
-                    scalarMapping(term.Value)
-                )
-            );
-
-        return metric
-            .CreateMultivectorComposer()
-            .SetTerms(termList)
-            .GetUniformMultivector();
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public override XGaUniformMultivector<T2> Convert<T2>(XGaProcessor<T2> metric, Func<T, T2> scalarMapping)
-    {
-        if (IsZero)
-            return metric.UniformMultivectorZero;
-
-        var termList =
-            IdScalarPairs.Select(
-                term => new KeyValuePair<IndexSet, T2>(
-                    term.Key,
-                    scalarMapping(term.Value)
-                )
-            );
-
-        return metric
-            .CreateUniformComposer()
-            .SetTerms(termList)
-            .GetUniformMultivector();
-    }
-
-    
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public override XGaUniformMultivector<T> MapScalars(ScalarTransformer<T> transformer)
-    {
-        return MapScalars(transformer.MapScalarValue);
-    }
-
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public override string ToString()

@@ -164,7 +164,7 @@ public sealed class MetaExpressionParameterVariableFactory :
             .XGaProcessor
             .CreateMultivectorComposer()
             .AddTerms(parametersList)
-            .GetSimpleMultivector();
+            .GetMultivector();
     }
 
     //TODO: Add more functions for constructing multivectors and other GA-FuL objects

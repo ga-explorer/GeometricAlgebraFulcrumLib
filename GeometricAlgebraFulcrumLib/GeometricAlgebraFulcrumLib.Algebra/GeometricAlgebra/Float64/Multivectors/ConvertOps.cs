@@ -1,7 +1,4 @@
-﻿using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.LinearMaps.Outermorphisms;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.LinearMaps.Rotors;
-using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Angles;
-using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space2D;
+﻿using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space2D;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space3D;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space4D;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.SpaceND;
@@ -58,7 +55,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivecto
                                 scalarMapping(term.Value)
                             )
                         )
-                    ).GetSimpleMultivector()
+                    ).GetMultivector()
             };
         }
 
@@ -82,7 +79,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivecto
                                 scalarMapping(term.Key, term.Value)
                             )
                         )
-                    ).GetSimpleMultivector()
+                    ).GetMultivector()
             };
         }
 
@@ -101,7 +98,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivecto
             return Processor
                 .CreateMultivectorComposer()
                 .AddTerms(termList)
-                .GetSimpleMultivector();
+                .GetMultivector();
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -118,7 +115,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivecto
             return Processor
                 .CreateMultivectorComposer()
                 .AddTerms(termList)
-                .GetSimpleMultivector();
+                .GetMultivector();
         }
 
 
@@ -134,7 +131,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivecto
             return Processor
                 .CreateMultivectorComposer()
                 .AddTerms(termList)
-                .GetSimpleMultivector();
+                .GetMultivector();
         }
         
 
@@ -194,46 +191,51 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivecto
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public virtual XGaFloat64GradedMultivectorComposer ToComposer()
+        public XGaFloat64GradedMultivector ToGradedMultivector()
         {
-            return Processor.CreateMultivectorComposer().SetMultivector(this);
+            return IsZero
+                ? Processor.GradedMultivectorZero
+                : this switch
+                {
+                    XGaFloat64GradedMultivector gmv => gmv,
+
+                    XGaFloat64Scalar s => Processor.GradedMultivector(
+                        IndexSet.EmptySet, 
+                        s.ScalarValue
+                    ),
+
+                    XGaFloat64KVector kv => new XGaFloat64GradedMultivector(
+                        Processor,
+                        new SingleItemDictionary<int, XGaFloat64KVector>(kv.Grade, kv)
+                    ),
+
+                    _ => Processor
+                        .CreateMultivectorComposer()
+                        .SetMultivector(this)
+                        .GetGradedMultivector()
+                };
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public virtual XGaFloat64GradedMultivectorComposer NegativeToComposer()
+        public XGaFloat64UniformMultivector ToUniformMultivector()
         {
-            return Processor.CreateMultivectorComposer().SetMultivectorNegative(this);
+            return IsZero
+                ? Processor.UniformMultivectorZero
+                : this switch
+                {
+                    XGaFloat64UniformMultivector umv => umv,
+
+                    XGaFloat64Scalar s => Processor.UniformMultivector(
+                        IndexSet.EmptySet, 
+                        s.ScalarValue
+                    ),
+
+                    _ => Processor
+                        .CreateUniformComposer()
+                        .SetMultivector(this)
+                        .GetUniformMultivector()
+                };
         }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public virtual XGaFloat64GradedMultivectorComposer ToComposer(double scalingFactor)
-        {
-            return Processor.CreateMultivectorComposer().SetMultivectorScaled(this, scalingFactor);
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public abstract XGaFloat64GradedMultivector ToGradedMultivector();
-        //{
-        //    return this switch
-        //    {
-        //        XGaFloat64KVector kVector => kVector.ToGradedMultivector(),
-        //        XGaFloat64GradedMultivector mv => mv,
-        //        XGaFloat64UniformMultivector mv => mv.ToGradedMultivector(),
-        //        _ => throw new InvalidOperationException()
-        //    };
-        //}
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public abstract XGaFloat64UniformMultivector ToUniformMultivector();
-        //{
-        //    return this switch
-        //    {
-        //        XGaFloat64KVector kVector => kVector.ToUniformMultivector(),
-        //        XGaFloat64UniformMultivector mv => mv,
-        //        XGaFloat64GradedMultivector mv => mv.ToUniformMultivector(),
-        //        _ => throw new InvalidOperationException()
-        //    };
-        //}
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -347,24 +349,6 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivecto
         }
 
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override XGaFloat64GradedMultivector ToGradedMultivector()
-        {
-            if (IsZero)
-                return Processor.GradedMultivectorZero;
-
-            var gradeKVectorDictionary =
-                new SingleItemDictionary<int, XGaFloat64KVector>(Grade, this);
-
-            return new XGaFloat64GradedMultivector(Processor, gradeKVectorDictionary);
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override XGaFloat64UniformMultivector ToUniformMultivector()
-        {
-            return ToComposer().GetUniformMultivector();
-        }
-
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public double[] KVectorToArray1D()
@@ -427,24 +411,6 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivecto
         public Float64Scalar ToScalar()
         {
             return Float64Scalar.Create(_scalar);
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override XGaFloat64GradedMultivectorComposer ToComposer()
-        {
-            return Processor.CreateMultivectorComposer().SetScalarTerm(this);
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override XGaFloat64GradedMultivectorComposer NegativeToComposer()
-        {
-            return Processor.CreateMultivectorComposer().SetScalarTerm(-ScalarValue);
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override XGaFloat64GradedMultivectorComposer ToComposer(double scalingFactor)
-        {
-            return Processor.CreateMultivectorComposer().SetScalarTerm(ScalarValue * scalingFactor);
         }
     }
 
@@ -669,29 +635,6 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivecto
 
             return indexScalarDictionary.CreateLinVector();
         }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override XGaFloat64GradedMultivector ToGradedMultivector()
-        {
-            if (IsZero)
-                return Processor.GradedMultivectorZero;
-
-            var gradeKVectorDictionary =
-                new SingleItemDictionary<int, XGaFloat64KVector>(1, this);
-
-            return new XGaFloat64GradedMultivector(
-                Processor,
-                gradeKVectorDictionary
-            );
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override XGaFloat64UniformMultivector ToUniformMultivector()
-        {
-            return ToComposer().GetUniformMultivector();
-        }
-
-
     }
 
     public sealed partial class XGaFloat64Bivector
@@ -897,23 +840,6 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivecto
         }
 
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override XGaFloat64GradedMultivector ToGradedMultivector()
-        {
-            if (IsZero)
-                return Processor.GradedMultivectorZero;
-
-            var gradeKVectorDictionary =
-                new SingleItemDictionary<int, XGaFloat64KVector>(2, this);
-
-            return new XGaFloat64GradedMultivector(Processor, gradeKVectorDictionary);
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override XGaFloat64UniformMultivector ToUniformMultivector()
-        {
-            return ToComposer().GetUniformMultivector();
-        }
     }
 
     public sealed partial class XGaFloat64HigherKVector
@@ -939,26 +865,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivecto
             );
         }
 
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override XGaFloat64GradedMultivector ToGradedMultivector()
-        {
-            if (IsZero)
-                return Processor.GradedMultivectorZero;
-
-            var gradeKVectorDictionary =
-                new SingleItemDictionary<int, XGaFloat64KVector>(Grade, this);
-
-            return new XGaFloat64GradedMultivector(Processor, gradeKVectorDictionary);
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override XGaFloat64UniformMultivector ToUniformMultivector()
-        {
-            return ToComposer().GetUniformMultivector();
-        }
-
-
+        
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public override XGaFloat64HigherKVector MapScalars(Func<double, double> scalarMapping)
         {
@@ -1136,19 +1043,6 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivecto
                 _gradeKVectorDictionary.Values.Where(kVectorFilter).Select(kVectorMapping)
             );
         }
-
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override XGaFloat64GradedMultivector ToGradedMultivector()
-        {
-            return this;
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override XGaFloat64UniformMultivector ToUniformMultivector()
-        {
-            return ToComposer().GetUniformMultivector();
-        }
     }
 
     public sealed partial class XGaFloat64UniformMultivector
@@ -1188,7 +1082,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivecto
                 );
 
             return Processor
-                .CreateMultivectorComposer()
+                .CreateUniformComposer()
                 .AddTerms(idScalarPairs)
                 .GetUniformMultivector();
         }
@@ -1208,7 +1102,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivecto
                 );
 
             return Processor
-                .CreateMultivectorComposer()
+                .CreateUniformComposer()
                 .AddTerms(idScalarPairs)
                 .GetUniformMultivector();
         }
@@ -1228,7 +1122,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivecto
                 );
 
             return Processor
-                .CreateMultivectorComposer()
+                .CreateUniformComposer()
                 .AddTerms(termList)
                 .GetUniformMultivector();
         }
@@ -1248,7 +1142,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivecto
                 );
 
             return Processor
-                .CreateMultivectorComposer()
+                .CreateUniformComposer()
                 .SetTerms(termList)
                 .GetUniformMultivector();
         }
@@ -1266,22 +1160,9 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivecto
                 );
 
             return Processor
-                .CreateMultivectorComposer()
+                .CreateUniformComposer()
                 .SetTerms(termList)
                 .GetUniformMultivector();
-        }
-
-        
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override XGaFloat64GradedMultivector ToGradedMultivector()
-        {
-            return ToComposer().GetGradedMultivector();
-        }
-    
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override XGaFloat64UniformMultivector ToUniformMultivector()
-        {
-            return this;
         }
     }
 }

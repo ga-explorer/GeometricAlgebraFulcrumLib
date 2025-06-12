@@ -1101,10 +1101,18 @@ public sealed partial class XGaFloat64UniformMultivectorComposer :
             _idScalarDictionary.Count == 0 ||
             (_idScalarDictionary.Count == 1 && _idScalarDictionary.First().Key.Count == 0)
         );
+        
+        if (_idScalarDictionary.Count == 0)
+            return Processor.ScalarZero;
 
-        return _idScalarDictionary.TryGetValue(IndexSet.EmptySet, out var scalar)
-            ? Processor.Scalar(scalar)
-            : Processor.ScalarZero;
+        var mv = 
+            _idScalarDictionary.TryGetValue(IndexSet.EmptySet, out var scalar)
+                ? Processor.Scalar(scalar)
+                : throw new InvalidOperationException();
+
+        _idScalarDictionary = IndexSetUtils.CreateIndexSetDictionary<double>();
+
+        return mv;
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -1115,7 +1123,15 @@ public sealed partial class XGaFloat64UniformMultivectorComposer :
             _idScalarDictionary.Keys.All(id => id.Count == 1)
         );
         
-        return Processor.Vector(_idScalarDictionary);
+        if (_idScalarDictionary.Count == 0)
+            return Processor.VectorZero;
+
+        var mv = 
+            Processor.Vector(_idScalarDictionary);
+        
+        _idScalarDictionary = IndexSetUtils.CreateIndexSetDictionary<double>();
+
+        return mv;
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -1126,7 +1142,15 @@ public sealed partial class XGaFloat64UniformMultivectorComposer :
             _idScalarDictionary.Keys.All(id => id.Count == 2)
         );
         
-        return Processor.Bivector(_idScalarDictionary);
+        if (_idScalarDictionary.Count == 0)
+            return Processor.BivectorZero;
+
+        var mv = 
+            Processor.Bivector(_idScalarDictionary);
+        
+        _idScalarDictionary = IndexSetUtils.CreateIndexSetDictionary<double>();
+
+        return mv;
     }
         
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -1136,8 +1160,16 @@ public sealed partial class XGaFloat64UniformMultivectorComposer :
             _idScalarDictionary.Count == 0 ||
             _idScalarDictionary.Keys.All(id => id.Count == grade)
         );
+
+        if (_idScalarDictionary.Count == 0)
+            return Processor.HigherKVectorZero(grade);
+
+        var mv = 
+            Processor.HigherKVector(grade, _idScalarDictionary);
         
-        return Processor.HigherKVector(grade, _idScalarDictionary);
+        _idScalarDictionary = IndexSetUtils.CreateIndexSetDictionary<double>();
+
+        return mv;
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -1159,99 +1191,130 @@ public sealed partial class XGaFloat64UniformMultivectorComposer :
             return Processor.GradedMultivectorZero;
 
         if (_idScalarDictionary.Count == 1)
-            return Processor.GradedMultivector(
+        {
+            var mv = Processor.GradedMultivector(
                 _idScalarDictionary.First()
             );
 
-        var gradeGroup =
-            _idScalarDictionary.GroupBy(basisScalarPair => basisScalarPair.Key.Count
-            );
+            _idScalarDictionary = IndexSetUtils.CreateIndexSetDictionary<double>();
 
-        var gradeKVectorDictionary = new Dictionary<int, XGaFloat64KVector>();
-
-        foreach (var gradeBasisScalarPairGroups in gradeGroup)
-        {
-            var grade = gradeBasisScalarPairGroups.Key;
-
-            if (grade == 0)
-            {
-                var scalar = Processor.Scalar(
-                    gradeBasisScalarPairGroups.First().Value
-                );
-
-                gradeKVectorDictionary.Add(grade, scalar);
-
-                continue;
-            }
-
-            var idScalarDictionary = IndexSetUtils.CreateIndexSetDictionary<double>();
-
-            idScalarDictionary.AddRange(gradeBasisScalarPairGroups);
-
-            var kVector = Processor.KVector(
-                grade,
-                idScalarDictionary
-            );
-
-            gradeKVectorDictionary.Add(grade, kVector);
+            return mv;
         }
 
-        return Processor.GradedMultivector(gradeKVectorDictionary);
+        {
+            var gradeGroup =
+                _idScalarDictionary.GroupBy(basisScalarPair => basisScalarPair.Key.Count);
+
+            var gradeKVectorDictionary = new Dictionary<int, XGaFloat64KVector>();
+
+            foreach (var gradeBasisScalarPairGroups in gradeGroup)
+            {
+                var grade = gradeBasisScalarPairGroups.Key;
+
+                if (grade == 0)
+                {
+                    var scalar = Processor.Scalar(
+                        gradeBasisScalarPairGroups.First().Value
+                    );
+
+                    gradeKVectorDictionary.Add(grade, scalar);
+
+                    continue;
+                }
+
+                var idScalarDictionary = IndexSetUtils.CreateIndexSetDictionary<double>();
+
+                idScalarDictionary.AddRange(gradeBasisScalarPairGroups);
+
+                var kVector = Processor.KVector(
+                    grade,
+                    idScalarDictionary
+                );
+
+                gradeKVectorDictionary.Add(grade, kVector);
+            }
+
+            var mv =
+                Processor.GradedMultivector(gradeKVectorDictionary);
+
+            _idScalarDictionary = IndexSetUtils.CreateIndexSetDictionary<double>();
+
+            return mv;
+        }
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public XGaFloat64UniformMultivector GetUniformMultivector()
     {
-        return Processor.UniformMultivector(_idScalarDictionary);
+        if (_idScalarDictionary.Count == 0)
+            return Processor.UniformMultivectorZero;
+
+        var mv = 
+            Processor.UniformMultivector(_idScalarDictionary);
+
+        _idScalarDictionary = IndexSetUtils.CreateIndexSetDictionary<double>();
+
+        return mv;
     }
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public XGaFloat64Multivector GetSimpleMultivector()
+    public XGaFloat64Multivector GetMultivector()
     {
         if (_idScalarDictionary.Count == 0)
             return Processor.ScalarZero;
 
         if (_idScalarDictionary.Count == 1)
-            return Processor.KVectorTerm(
+        {
+            var mv = Processor.KVectorTerm(
                 _idScalarDictionary.First()
             );
 
-        var gradeGroup =
-            _idScalarDictionary.GroupBy(
-                basisScalarPair => basisScalarPair.Key.Count
-            );
+            _idScalarDictionary = IndexSetUtils.CreateIndexSetDictionary<double>();
 
-        var gradeKVectorDictionary = new Dictionary<int, XGaFloat64KVector>();
-
-        foreach (var gradeBasisScalarPairGroups in gradeGroup)
-        {
-            var grade = gradeBasisScalarPairGroups.Key;
-
-            if (grade == 0)
-            {
-                var scalar = Processor.Scalar(
-                    gradeBasisScalarPairGroups.First().Value
-                );
-
-                gradeKVectorDictionary.Add(grade, scalar);
-
-                continue;
-            }
-
-            var idScalarDictionary = IndexSetUtils.CreateIndexSetDictionary<double>();
-
-            idScalarDictionary.AddRange(gradeBasisScalarPairGroups);
-
-            var kVector = Processor.KVector(
-                grade,
-                idScalarDictionary
-            );
-
-            gradeKVectorDictionary.Add(grade, kVector);
+            return mv;
         }
 
-        return gradeKVectorDictionary.Count == 1
-            ? gradeKVectorDictionary.First().Value
-            : Processor.GradedMultivector(gradeKVectorDictionary);
+        {
+            var gradeGroup =
+                _idScalarDictionary.GroupBy(basisScalarPair => basisScalarPair.Key.Count
+                );
+
+            var gradeKVectorDictionary = new Dictionary<int, XGaFloat64KVector>();
+
+            foreach (var gradeBasisScalarPairGroups in gradeGroup)
+            {
+                var grade = gradeBasisScalarPairGroups.Key;
+
+                if (grade == 0)
+                {
+                    var scalar = Processor.Scalar(
+                        gradeBasisScalarPairGroups.First().Value
+                    );
+
+                    gradeKVectorDictionary.Add(grade, scalar);
+
+                    continue;
+                }
+
+                var idScalarDictionary = IndexSetUtils.CreateIndexSetDictionary<double>();
+
+                idScalarDictionary.AddRange(gradeBasisScalarPairGroups);
+
+                var kVector = Processor.KVector(
+                    grade,
+                    idScalarDictionary
+                );
+
+                gradeKVectorDictionary.Add(grade, kVector);
+            }
+
+            XGaFloat64Multivector mv = 
+                gradeKVectorDictionary.Count == 1
+                    ? gradeKVectorDictionary.First().Value
+                    : Processor.GradedMultivector(gradeKVectorDictionary);
+
+            _idScalarDictionary = IndexSetUtils.CreateIndexSetDictionary<double>();
+
+            return mv;
+        }
     }
 }

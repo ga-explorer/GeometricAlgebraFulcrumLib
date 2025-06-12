@@ -559,7 +559,7 @@ namespace GeometricAlgebraFulcrumLib.Matlab.GeometricAlgebra.Float64.Multivector
             var (minValueId, minValue) =
                 GetMinScalarMagnitudeIdScalar();
 
-            var composer = ToComposer();
+            var composer = Processor.CreateVectorComposer();
 
             var sum = 0d;
             foreach (var (id, scalar) in IdScalarTuples)
@@ -591,7 +591,7 @@ namespace GeometricAlgebraFulcrumLib.Matlab.GeometricAlgebra.Float64.Multivector
             var (minValueId, minValue) =
                 GetMinScalarMagnitudeIdScalar();
 
-            var composer = ToComposer();
+            var composer = Processor.CreateVectorComposer();
 
             var sum = 0d;
             foreach (var (id, scalar) in IdScalarTuples)

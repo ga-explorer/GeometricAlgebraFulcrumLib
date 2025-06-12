@@ -127,7 +127,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Processors
             foreach (var (id, scalar) in inputText.XGaParseTerms())
                 composer.AddTerm(id, scalar);
 
-            return composer.GetSimpleMultivector();
+            return composer.GetMultivector();
         }
         
 
@@ -1177,7 +1177,6 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Processors
 
             return new XGaFloat64UniformMultivector(
                 this,
-
                 basisScalarDictionary
             );
         }
@@ -1196,7 +1195,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Processors
             foreach (var group in kVectorGroups)
                 composer.AddKVectorTerms(group.Key, group);
             
-            return composer.GetSimpleMultivector();
+            return composer.GetMultivector();
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -1212,7 +1211,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Processors
             foreach (var group in kVectorGroups)
                 composer.AddKVectorTerms(group.Key, group);
             
-            return composer.GetSimpleMultivector();
+            return composer.GetMultivector();
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -1220,7 +1219,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Processors
         {
             return CreateMultivectorComposer()
                 .SetTerms(termList)
-                .GetSimpleMultivector();
+                .GetMultivector();
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -1240,7 +1239,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Processors
         {
             return CreateMultivectorComposer()
                 .AddTerms(termList)
-                .GetSimpleMultivector();
+                .GetMultivector();
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -1268,7 +1267,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Processors
                 .SetVectorTerm(0, vectorScalar0)
                 .SetVectorTerm(1, vectorScalar1)
                 .SetBivectorTerm(0, 1, bivectorScalar)
-                .GetSimpleMultivector();
+                .GetMultivector();
         }
 
 

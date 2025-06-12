@@ -123,7 +123,7 @@ public sealed partial class XGaFloat64GradedMultivector
             .CreateMultivectorComposer()
             .SetMultivector(this)
             .AddMultivector(mv2)
-            .GetSimpleMultivector();
+            .GetMultivector();
     }
         
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -139,7 +139,7 @@ public sealed partial class XGaFloat64GradedMultivector
             .CreateMultivectorComposer()
             .SetMultivector(this)
             .SubtractMultivector(mv2)
-            .GetSimpleMultivector();
+            .GetMultivector();
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]

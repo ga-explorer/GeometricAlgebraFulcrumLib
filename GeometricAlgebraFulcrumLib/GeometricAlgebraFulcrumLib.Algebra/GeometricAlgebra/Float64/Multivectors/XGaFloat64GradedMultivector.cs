@@ -440,7 +440,7 @@ public sealed partial class XGaFloat64GradedMultivector :
 
         composer.SetKVectors(kVectors);
 
-        return composer.GetSimpleMultivector();
+        return composer.GetMultivector();
     }
 
     public override XGaFloat64Multivector GetEvenPart(int maxGrade)
@@ -454,7 +454,7 @@ public sealed partial class XGaFloat64GradedMultivector :
             composer.SetScalarTerm((XGaFloat64Scalar)scalarPart);
 
         if (maxGrade < 2)
-            return composer.GetSimpleMultivector();
+            return composer.GetMultivector();
 
         if (_gradeKVectorDictionary.TryGetValue(2, out var bivectorPart))
             composer.SetKVector(bivectorPart);
@@ -466,7 +466,7 @@ public sealed partial class XGaFloat64GradedMultivector :
 
         composer.SetKVectors(kVectors);
 
-        return composer.GetSimpleMultivector();
+        return composer.GetMultivector();
     }
 
     public override XGaFloat64Multivector GetOddPart()
@@ -486,7 +486,7 @@ public sealed partial class XGaFloat64GradedMultivector :
 
         composer.SetKVectors(kVectors);
 
-        return composer.GetSimpleMultivector();
+        return composer.GetMultivector();
     }
 
     public override XGaFloat64Multivector GetOddPart(int maxGrade)
@@ -506,7 +506,7 @@ public sealed partial class XGaFloat64GradedMultivector :
 
         composer.SetKVectors(kVectors);
 
-        return composer.GetSimpleMultivector();
+        return composer.GetMultivector();
     }
 
     

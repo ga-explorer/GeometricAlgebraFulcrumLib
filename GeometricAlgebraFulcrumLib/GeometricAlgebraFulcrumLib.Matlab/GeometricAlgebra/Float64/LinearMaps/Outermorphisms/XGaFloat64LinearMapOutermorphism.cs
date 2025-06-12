@@ -110,7 +110,7 @@ public sealed class XGaFloat64LinearMapOutermorphism
     //            scalar
     //        );
             
-    //    return composer.GetSimpleMultivector();
+    //    return composer.GetMultivector();
     //}
 
         

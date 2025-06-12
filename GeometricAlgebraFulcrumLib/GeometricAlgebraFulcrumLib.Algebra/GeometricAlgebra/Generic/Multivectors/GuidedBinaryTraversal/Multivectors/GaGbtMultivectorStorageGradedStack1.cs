@@ -51,7 +51,7 @@ public sealed class XGaGbtMultivectorStorageGradedStack1<T>
     {
         ScalarProcessor = scalarProcessor;
         Multivector = multivectorStorage;
-        ActiveGradesBitPattern = multivectorStorage.GetStoredGradesBitPattern();
+        ActiveGradesBitPattern = multivectorStorage.GetStoredKVectorGrades();
 
         ActiveGradesBitMask0Array = new IndexSet[capacity];
         ActiveGradesBitMask1Array = new IndexSet[capacity];

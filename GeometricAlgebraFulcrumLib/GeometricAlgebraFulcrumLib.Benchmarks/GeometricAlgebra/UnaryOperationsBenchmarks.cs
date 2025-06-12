@@ -212,14 +212,14 @@ public class UnaryOperationsBenchmarks
                     .CreateMultivectorComposer()
                     .AddTerms(mv1)
                     .GradeInvolution()
-                    .GetSimpleMultivector();
+                    .GetMultivector();
 
             var result3 = 
                 Processor
                     .CreateUniformComposer()
                     .AddTerms(mv1)
                     .GradeInvolution()
-                    .GetSimpleMultivector();
+                    .GetMultivector();
 
             Debug.Assert(
                 (result1 - result2).IsNearZero()
@@ -245,14 +245,14 @@ public class UnaryOperationsBenchmarks
                     .CreateMultivectorComposer()
                     .AddTerms(mv1)
                     .Reverse()
-                    .GetSimpleMultivector();
+                    .GetMultivector();
 
             var result3 = 
                 Processor
                     .CreateUniformComposer()
                     .AddTerms(mv1)
                     .Reverse()
-                    .GetSimpleMultivector();
+                    .GetMultivector();
 
             Debug.Assert(
                 (result1 - result2).IsNearZero()
@@ -278,14 +278,14 @@ public class UnaryOperationsBenchmarks
                     .CreateMultivectorComposer()
                     .AddTerms(mv1)
                     .CliffordConjugate()
-                    .GetSimpleMultivector();
+                    .GetMultivector();
 
             var result3 = 
                 Processor
                     .CreateUniformComposer()
                     .AddTerms(mv1)
                     .CliffordConjugate()
-                    .GetSimpleMultivector();
+                    .GetMultivector();
 
             Debug.Assert(
                 (result1 - result2).IsNearZero()

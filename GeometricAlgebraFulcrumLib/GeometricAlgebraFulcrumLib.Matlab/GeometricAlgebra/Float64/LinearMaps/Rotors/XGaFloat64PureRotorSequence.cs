@@ -18,7 +18,7 @@ public sealed class XGaFloat64PureRotorSequence :
     public static XGaFloat64PureRotorSequence CreateIdentity(XGaFloat64Processor metric)
     {
         return new XGaFloat64PureRotorSequence(
-            [metric.CreateIdentityRotor()]
+            [metric.IdentityRotor()]
         );
     }
 

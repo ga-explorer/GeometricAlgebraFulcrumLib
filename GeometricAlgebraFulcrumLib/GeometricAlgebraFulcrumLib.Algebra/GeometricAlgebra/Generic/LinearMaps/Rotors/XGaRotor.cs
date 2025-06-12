@@ -146,7 +146,7 @@ public class XGaRotor<T>
                 .CreateMultivectorComposer()
                 .SetScalarTerm(cosHalfAngle)
                 .SetBivectorTerm(i, j, sinHalfAngle)
-                .GetSimpleMultivector()
+                .GetMultivector()
         );
     }
         

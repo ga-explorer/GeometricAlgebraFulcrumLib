@@ -96,7 +96,7 @@ public sealed class XGaFloat64DiagonalUnilinearMap :
             }
         }
 
-        return composer.GetSimpleMultivector();
+        return composer.GetMultivector();
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]

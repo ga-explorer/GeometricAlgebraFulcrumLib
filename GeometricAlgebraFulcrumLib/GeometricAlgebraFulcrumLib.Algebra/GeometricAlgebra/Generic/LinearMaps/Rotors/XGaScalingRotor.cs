@@ -137,7 +137,7 @@ public class XGaScalingRotor<T>
                 .CreateMultivectorComposer()
                 .SetScalarTerm(cosHalfAngle)
                 .SetBivectorTerm(i, j, sinHalfAngle)
-                .GetSimpleMultivector()
+                .GetMultivector()
         );
     }
         

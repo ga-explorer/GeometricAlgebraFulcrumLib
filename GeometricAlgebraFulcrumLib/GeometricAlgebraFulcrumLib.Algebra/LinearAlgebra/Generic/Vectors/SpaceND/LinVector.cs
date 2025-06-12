@@ -663,24 +663,6 @@ public sealed class LinVector<T> :
     //        : uvDot / norm;
     //}
     
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public LinVectorComposer<T> ToComposer()
-    {
-        return new LinVectorComposer<T>(ScalarProcessor).SetVector(this);
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public LinVectorComposer<T> NegativeToComposer()
-    {
-        return new LinVectorComposer<T>(ScalarProcessor).SetVectorNegative(this);
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public LinVectorComposer<T> ToComposer(T scalingFactor)
-    {
-        return new LinVectorComposer<T>(ScalarProcessor).SetVector(this, scalingFactor);
-    }
-    
     public T[] ToArray(int vSpaceDimensions)
     {
         if (vSpaceDimensions < VSpaceDimensions)

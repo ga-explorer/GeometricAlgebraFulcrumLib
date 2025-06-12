@@ -58,7 +58,7 @@ namespace GeometricAlgebraFulcrumLib.Matlab.GeometricAlgebra.Float64.Multivector
                                 scalarMapping(term.Value)
                             )
                         )
-                    ).GetSimpleMultivector()
+                    ).GetMultivector()
             };
         }
 
@@ -82,7 +82,7 @@ namespace GeometricAlgebraFulcrumLib.Matlab.GeometricAlgebra.Float64.Multivector
                                 scalarMapping(term.Key, term.Value)
                             )
                         )
-                    ).GetSimpleMultivector()
+                    ).GetMultivector()
             };
         }
 
@@ -101,7 +101,7 @@ namespace GeometricAlgebraFulcrumLib.Matlab.GeometricAlgebra.Float64.Multivector
             return Processor
                 .CreateMultivectorComposer()
                 .AddTerms(termList)
-                .GetSimpleMultivector();
+                .GetMultivector();
         }
 
         
@@ -118,7 +118,7 @@ namespace GeometricAlgebraFulcrumLib.Matlab.GeometricAlgebra.Float64.Multivector
             return Processor
                 .CreateMultivectorComposer()
                 .AddTerms(termList)
-                .GetSimpleMultivector();
+                .GetMultivector();
         }
 
 
@@ -134,7 +134,7 @@ namespace GeometricAlgebraFulcrumLib.Matlab.GeometricAlgebra.Float64.Multivector
             return Processor
                 .CreateMultivectorComposer()
                 .AddTerms(termList)
-                .GetSimpleMultivector();
+                .GetMultivector();
         }
         
 
@@ -193,47 +193,50 @@ namespace GeometricAlgebraFulcrumLib.Matlab.GeometricAlgebra.Float64.Multivector
         }
 
 
-        
-        public virtual XGaFloat64GradedMultivectorComposer ToComposer()
+        public XGaFloat64GradedMultivector ToGradedMultivector()
         {
-            return Processor.CreateMultivectorComposer().SetMultivector(this);
-        }
+            return IsZero
+                ? Processor.GradedMultivectorZero
+                : this switch
+                {
+                    XGaFloat64GradedMultivector gmv => gmv,
 
-        
-        public virtual XGaFloat64GradedMultivectorComposer NegativeToComposer()
+                    XGaFloat64Scalar s => Processor.GradedMultivector(
+                        IndexSet.EmptySet, 
+                        s.ScalarValue
+                    ),
+
+                    XGaFloat64KVector kv => new XGaFloat64GradedMultivector(
+                        Processor,
+                        new SingleItemDictionary<int, XGaFloat64KVector>(kv.Grade, kv)
+                    ),
+
+                    _ => Processor
+                        .CreateMultivectorComposer()
+                        .SetMultivector(this)
+                        .GetGradedMultivector()
+                };
+        }
+    
+        public XGaFloat64UniformMultivector ToUniformMultivector()
         {
-            return Processor.CreateMultivectorComposer().SetMultivectorNegative(this);
+            return IsZero
+                ? Processor.UniformMultivectorZero
+                : this switch
+                {
+                    XGaFloat64UniformMultivector umv => umv,
+
+                    XGaFloat64Scalar s => Processor.UniformMultivector(
+                        IndexSet.EmptySet, 
+                        s.ScalarValue
+                    ),
+
+                    _ => Processor
+                        .CreateUniformComposer()
+                        .SetMultivector(this)
+                        .GetUniformMultivector()
+                };
         }
-
-        
-        public virtual XGaFloat64GradedMultivectorComposer ToComposer(double scalingFactor)
-        {
-            return Processor.CreateMultivectorComposer().SetMultivectorScaled(this, scalingFactor);
-        }
-
-        
-        public abstract XGaFloat64GradedMultivector ToGradedMultivector();
-        //{
-        //    return this switch
-        //    {
-        //        XGaFloat64KVector kVector => kVector.ToGradedMultivector(),
-        //        XGaFloat64GradedMultivector mv => mv,
-        //        XGaFloat64UniformMultivector mv => mv.ToGradedMultivector(),
-        //        _ => throw new InvalidOperationException()
-        //    };
-        //}
-
-        
-        public abstract XGaFloat64UniformMultivector ToUniformMultivector();
-        //{
-        //    return this switch
-        //    {
-        //        XGaFloat64KVector kVector => kVector.ToUniformMultivector(),
-        //        XGaFloat64UniformMultivector mv => mv,
-        //        XGaFloat64GradedMultivector mv => mv.ToUniformMultivector(),
-        //        _ => throw new InvalidOperationException()
-        //    };
-        //}
 
 
         
@@ -347,23 +350,6 @@ namespace GeometricAlgebraFulcrumLib.Matlab.GeometricAlgebra.Float64.Multivector
 
 
         
-        public override XGaFloat64GradedMultivector ToGradedMultivector()
-        {
-            if (IsZero)
-                return Processor.GradedMultivectorZero;
-
-            var gradeKVectorDictionary =
-                new SingleItemDictionary<int, XGaFloat64KVector>(Grade, this);
-
-            return new XGaFloat64GradedMultivector(Processor, gradeKVectorDictionary);
-        }
-
-        
-        public override XGaFloat64UniformMultivector ToUniformMultivector()
-        {
-            return ToComposer().GetUniformMultivector();
-        }
-
 
         public double[] KVectorToArray1D()
         {
@@ -430,23 +416,6 @@ namespace GeometricAlgebraFulcrumLib.Matlab.GeometricAlgebra.Float64.Multivector
             return _scalar;
         }
 
-        
-        public override XGaFloat64GradedMultivectorComposer ToComposer()
-        {
-            return Processor.CreateMultivectorComposer().SetScalarTerm(this);
-        }
-
-        
-        public override XGaFloat64GradedMultivectorComposer NegativeToComposer()
-        {
-            return Processor.CreateMultivectorComposer().SetScalarTerm(-ScalarValue);
-        }
-
-        
-        public override XGaFloat64GradedMultivectorComposer ToComposer(double scalingFactor)
-        {
-            return Processor.CreateMultivectorComposer().SetScalarTerm(ScalarValue * scalingFactor);
-        }
     }
 
     public sealed partial class XGaFloat64Vector
@@ -674,28 +643,6 @@ namespace GeometricAlgebraFulcrumLib.Matlab.GeometricAlgebra.Float64.Multivector
         }
 
         
-        public override XGaFloat64GradedMultivector ToGradedMultivector()
-        {
-            if (IsZero)
-                return Processor.GradedMultivectorZero;
-
-            var gradeKVectorDictionary =
-                new SingleItemDictionary<int, XGaFloat64KVector>(1, this);
-
-            return new XGaFloat64GradedMultivector(
-                Processor,
-                gradeKVectorDictionary
-            );
-        }
-
-        
-        public override XGaFloat64UniformMultivector ToUniformMultivector()
-        {
-            return ToComposer().GetUniformMultivector();
-        }
-
-
-        
     }
 
     public sealed partial class XGaFloat64Bivector
@@ -897,25 +844,6 @@ namespace GeometricAlgebraFulcrumLib.Matlab.GeometricAlgebra.Float64.Multivector
 
             return array;
         }
-
-
-        
-        public override XGaFloat64GradedMultivector ToGradedMultivector()
-        {
-            if (IsZero)
-                return Processor.GradedMultivectorZero;
-
-            var gradeKVectorDictionary =
-                new SingleItemDictionary<int, XGaFloat64KVector>(2, this);
-
-            return new XGaFloat64GradedMultivector(Processor, gradeKVectorDictionary);
-        }
-
-        
-        public override XGaFloat64UniformMultivector ToUniformMultivector()
-        {
-            return ToComposer().GetUniformMultivector();
-        }
     }
 
     public sealed partial class XGaFloat64HigherKVector
@@ -940,26 +868,6 @@ namespace GeometricAlgebraFulcrumLib.Matlab.GeometricAlgebra.Float64.Multivector
                 s <= -scalarThreshold || s >= scalarThreshold
             );
         }
-
-
-        
-        public override XGaFloat64GradedMultivector ToGradedMultivector()
-        {
-            if (IsZero)
-                return Processor.GradedMultivectorZero;
-
-            var gradeKVectorDictionary =
-                new SingleItemDictionary<int, XGaFloat64KVector>(Grade, this);
-
-            return new XGaFloat64GradedMultivector(Processor, gradeKVectorDictionary);
-        }
-
-        
-        public override XGaFloat64UniformMultivector ToUniformMultivector()
-        {
-            return ToComposer().GetUniformMultivector();
-        }
-
 
         
         public new XGaFloat64HigherKVector MapScalars(Func<double, double> scalarMapping)
@@ -1138,19 +1046,6 @@ namespace GeometricAlgebraFulcrumLib.Matlab.GeometricAlgebra.Float64.Multivector
                 _gradeKVectorDictionary.Values.Where(kVectorFilter).Select(kVectorMapping)
             );
         }
-
-
-        
-        public override XGaFloat64GradedMultivector ToGradedMultivector()
-        {
-            return this;
-        }
-
-        
-        public override XGaFloat64UniformMultivector ToUniformMultivector()
-        {
-            return ToComposer().GetUniformMultivector();
-        }
     }
 
     public sealed partial class XGaFloat64UniformMultivector
@@ -1271,19 +1166,6 @@ namespace GeometricAlgebraFulcrumLib.Matlab.GeometricAlgebra.Float64.Multivector
                 .CreateMultivectorComposer()
                 .SetTerms(termList)
                 .GetUniformMultivector();
-        }
-
-        
-        
-        public override XGaFloat64GradedMultivector ToGradedMultivector()
-        {
-            return ToComposer().GetGradedMultivector();
-        }
-    
-        
-        public override XGaFloat64UniformMultivector ToUniformMultivector()
-        {
-            return this;
         }
     }
 }

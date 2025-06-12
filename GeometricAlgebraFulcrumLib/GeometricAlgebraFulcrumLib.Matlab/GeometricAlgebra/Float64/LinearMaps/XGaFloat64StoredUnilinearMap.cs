@@ -106,7 +106,7 @@ public class XGaFloat64StoredUnilinearMap :
             }
         }
 
-        return composer.GetSimpleMultivector();
+        return composer.GetMultivector();
     }
 
     

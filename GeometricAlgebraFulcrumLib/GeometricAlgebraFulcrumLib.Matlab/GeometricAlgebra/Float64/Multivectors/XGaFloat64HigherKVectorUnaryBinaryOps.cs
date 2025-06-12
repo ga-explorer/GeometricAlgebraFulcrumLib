@@ -234,7 +234,7 @@ public sealed partial class XGaFloat64HigherKVector
             .CreateMultivectorComposer()
             .SetKVector(this)
             .AddMultivector(mv2)
-            .GetSimpleMultivector();
+            .GetMultivector();
     }
     
     
@@ -269,7 +269,7 @@ public sealed partial class XGaFloat64HigherKVector
             .CreateMultivectorComposer()
             .SetKVector(this)
             .SubtractMultivector(mv2)
-            .GetSimpleMultivector();
+            .GetMultivector();
     }
 
 

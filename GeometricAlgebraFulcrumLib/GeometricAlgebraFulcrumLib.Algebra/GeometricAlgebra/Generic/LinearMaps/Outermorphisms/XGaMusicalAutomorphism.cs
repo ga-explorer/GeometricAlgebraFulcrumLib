@@ -187,7 +187,7 @@ public sealed class XGaMusicalAutomorphism<T> :
                 scalar
             );
             
-        return composer.GetSimpleMultivector();
+        return composer.GetMultivector();
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]

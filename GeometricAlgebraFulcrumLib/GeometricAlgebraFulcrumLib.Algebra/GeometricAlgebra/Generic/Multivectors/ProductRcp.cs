@@ -33,7 +33,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Multivecto
                 : Processor
                     .CreateMultivectorComposer()
                     .AddERcpTerms(this, mv2)
-                    .GetSimpleMultivector();
+                    .GetMultivector();
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -92,7 +92,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Multivecto
                 : Processor
                     .CreateMultivectorComposer()
                     .AddRcpTerms(this, mv2)
-                    .GetSimpleMultivector();
+                    .GetMultivector();
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -230,7 +230,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Multivecto
             return Processor
                 .CreateMultivectorComposer()
                 .AddERcpTerms(this, mv2)
-                .GetSimpleMultivector();
+                .GetMultivector();
         }
 
 
@@ -336,7 +336,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Multivecto
             return Processor
                 .CreateMultivectorComposer()
                 .AddRcpTerms(this, mv2)
-                .GetSimpleMultivector();
+                .GetMultivector();
         }
 
     }
@@ -599,7 +599,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Multivecto
                 : Processor
                     .CreateMultivectorComposer()
                     .AddERcpTerms(this, kv2)
-                    .GetSimpleMultivector();
+                    .GetMultivector();
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -610,7 +610,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Multivecto
                 : Processor
                     .CreateMultivectorComposer()
                     .AddERcpTerms(this, kv2)
-                    .GetSimpleMultivector();
+                    .GetMultivector();
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -621,7 +621,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Multivecto
                 : Processor
                     .CreateMultivectorComposer()
                     .AddERcpTerms(this, kv2)
-                    .GetSimpleMultivector();
+                    .GetMultivector();
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -632,7 +632,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Multivecto
                 : Processor
                     .CreateMultivectorComposer()
                     .AddERcpTerms(this, kv2)
-                    .GetSimpleMultivector();
+                    .GetMultivector();
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -643,7 +643,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Multivecto
                 : Processor
                     .CreateMultivectorComposer()
                     .AddERcpTerms(this, mv2)
-                    .GetSimpleMultivector();
+                    .GetMultivector();
         }
 
 
@@ -655,7 +655,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Multivecto
                 : Processor
                     .CreateMultivectorComposer()
                     .AddRcpTerms(this, kv2)
-                    .GetSimpleMultivector();
+                    .GetMultivector();
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -666,7 +666,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Multivecto
                 : Processor
                     .CreateMultivectorComposer()
                     .AddRcpTerms(this, kv2)
-                    .GetSimpleMultivector();
+                    .GetMultivector();
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -677,7 +677,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Multivecto
                 : Processor
                     .CreateMultivectorComposer()
                     .AddRcpTerms(this, kv2)
-                    .GetSimpleMultivector();
+                    .GetMultivector();
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -688,7 +688,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Multivecto
                 : Processor
                     .CreateMultivectorComposer()
                     .AddRcpTerms(this, kv2)
-                    .GetSimpleMultivector();
+                    .GetMultivector();
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -699,7 +699,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Multivecto
                 : Processor
                     .CreateMultivectorComposer()
                     .AddRcpTerms(this, mv2)
-                    .GetSimpleMultivector();
+                    .GetMultivector();
         }
 
     }
@@ -714,7 +714,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Multivecto
                 : Processor
                     .CreateMultivectorComposer()
                     .AddERcpTerms(this, kv2)
-                    .GetSimpleMultivector();
+                    .GetMultivector();
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -725,7 +725,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Multivecto
                 : Processor
                     .CreateMultivectorComposer()
                     .AddERcpTerms(this, kv2)
-                    .GetSimpleMultivector();
+                    .GetMultivector();
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -736,7 +736,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Multivecto
                 : Processor
                     .CreateMultivectorComposer()
                     .AddERcpTerms(this, kv2)
-                    .GetSimpleMultivector();
+                    .GetMultivector();
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -747,7 +747,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Multivecto
                 : Processor
                     .CreateMultivectorComposer()
                     .AddERcpTerms(this, kv2)
-                    .GetSimpleMultivector();
+                    .GetMultivector();
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -758,7 +758,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Multivecto
                 : Processor
                     .CreateMultivectorComposer()
                     .AddERcpTerms(this, mv2)
-                    .GetSimpleMultivector();
+                    .GetMultivector();
         }
 
 
@@ -770,7 +770,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Multivecto
                 : Processor
                     .CreateMultivectorComposer()
                     .AddRcpTerms(this, kv2)
-                    .GetSimpleMultivector();
+                    .GetMultivector();
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -781,7 +781,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Multivecto
                 : Processor
                     .CreateMultivectorComposer()
                     .AddRcpTerms(this, kv2)
-                    .GetSimpleMultivector();
+                    .GetMultivector();
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -792,7 +792,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Multivecto
                 : Processor
                     .CreateMultivectorComposer()
                     .AddRcpTerms(this, kv2)
-                    .GetSimpleMultivector();
+                    .GetMultivector();
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -803,7 +803,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Multivecto
                 : Processor
                     .CreateMultivectorComposer()
                     .AddRcpTerms(this, kv2)
-                    .GetSimpleMultivector();
+                    .GetMultivector();
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -814,7 +814,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Multivecto
                 : Processor
                     .CreateMultivectorComposer()
                     .AddRcpTerms(this, mv2)
-                    .GetSimpleMultivector();
+                    .GetMultivector();
         }
 
     }

@@ -1,9 +1,6 @@
 ﻿using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivectors;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Processors;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Processors;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Generic;
-using GeometricAlgebraFulcrumLib.Utilities.Structures.BitManipulation;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Dictionary;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.IndexSets;
 using GeometricAlgebraFulcrumLib.Utilities.Text.Text;
@@ -164,12 +161,6 @@ public sealed partial class XGaScalar<T> :
         
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public Scalar<T> ToScalar()
-    {
-        return _scalar;
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public override XGaScalar<T> GetScalarPart()
     {
         return this;
@@ -264,117 +255,7 @@ public sealed partial class XGaScalar<T> :
         return false;
     }
 
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public override XGaMultivector<T> Simplify()
-    {
-        return this;
-    }
-        
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public override XGaGradedMultivectorComposer<T> ToComposer()
-    {
-        return Processor.CreateMultivectorComposer().SetScalarTerm(ScalarValue);
-    }
     
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public override XGaGradedMultivectorComposer<T> NegativeToComposer()
-    {
-        return Processor.CreateMultivectorComposer().SetScalarTerm(Negative());
-    }
-    
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public override XGaGradedMultivectorComposer<T> ToComposer(T scalingFactor)
-    {
-        return Processor.CreateMultivectorComposer().SetScalarTerm(Times(scalingFactor));
-    }
-
-    
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public override XGaFloat64Scalar Convert(XGaFloat64Processor processor)
-    {
-        return processor.Scalar(
-            ScalarProcessor.ToFloat64(ScalarValue)
-        );
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public override XGaFloat64Scalar Convert(XGaFloat64Processor processor, Func<T, double> scalarMapping)
-    {
-        return processor.Scalar(
-            scalarMapping(ScalarValue)
-        );
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public override XGaScalar<T2> Convert<T2>(XGaProcessor<T2> processor, Func<T, T2> scalarMapping)
-    {
-        return new XGaScalar<T2>(
-            processor,
-            scalarMapping(ScalarValue)
-        );
-    }
-
-    
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public override XGaScalar<T> MapScalars(ScalarTransformer<T> transformer)
-    {
-        return Processor.Scalar(
-            transformer.MapScalarValue(ScalarValue)
-        );
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public override XGaScalar<T> ReflectOn(XGaKVector<T> subspace)
-    {
-        Debug.Assert(subspace.IsNearBlade());
-
-        return this;
-    }
-    
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public override XGaScalar<T> ReflectDirectOnDirect(XGaKVector<T> subspace)
-    {
-        return this;
-    }
-    
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public override XGaScalar<T> ReflectDirectOnDual(XGaKVector<T> subspace)
-    {
-        return this;
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public override XGaScalar<T> ReflectDualOnDirect(XGaKVector<T> subspace, int vSpaceDimensions)
-    {
-        var n = subspace.Grade + vSpaceDimensions;
-
-        return n.IsOdd() ? -this : this;
-    }
-    
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public override XGaScalar<T> ReflectDualOnDual(XGaKVector<T> subspace)
-    {
-        return subspace.IsOdd() ? -this : this;
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public override XGaScalar<T> ProjectOn(XGaKVector<T> subspace, bool useSubspaceInverse = false)
-    {
-        Debug.Assert(subspace.IsNearBlade());
-        
-        var subspaceInverse = 
-            useSubspaceInverse 
-                ? subspace.PseudoInverse() 
-                : subspace;
-
-        return Fdp(subspaceInverse).Gp(subspace).GetScalarPart();
-    }
-
-
-
-
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     private bool Equals(XGaScalar<T> other)
     {

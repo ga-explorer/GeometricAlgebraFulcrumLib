@@ -545,4 +545,99 @@ public abstract partial class XGaMultivector<T>
     public abstract XGaMultivector<T> Add(XGaMultivector<T> mv2);
         
     public abstract XGaMultivector<T> Subtract(XGaMultivector<T> mv2);
+
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public abstract XGaMultivector<T> Negative();
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public abstract XGaMultivector<T> Reverse();
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public abstract XGaMultivector<T> GradeInvolution();
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public abstract XGaMultivector<T> CliffordConjugate();
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public abstract XGaMultivector<T> Conjugate();
+
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public abstract XGaMultivector<T> Times(T scalarValue);
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public abstract XGaMultivector<T> Times(int scalarValue);
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public abstract XGaMultivector<T> Times(double scalarValue);
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public abstract XGaMultivector<T> Times(Scalar<T> scalarValue);
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public abstract XGaMultivector<T> Times(IScalar<T> scalarValue);
+
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public abstract XGaMultivector<T> Divide(int scalarValue);
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public abstract XGaMultivector<T> Divide(double scalarValue);
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public abstract XGaMultivector<T> Divide(T scalarValue);
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public abstract XGaMultivector<T> Divide(Scalar<T> scalarValue);
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public abstract XGaMultivector<T> Divide(IScalar<T> scalarValue);
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public abstract XGaMultivector<T> DivideByENorm();
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public abstract XGaMultivector<T> DivideByENormSquared();
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public abstract XGaMultivector<T> DivideByNorm();
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public abstract XGaMultivector<T> DivideByNormSquared();
+
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public abstract XGaMultivector<T> EInverse();
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public abstract XGaMultivector<T> Inverse();
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public abstract XGaMultivector<T> PseudoInverse();
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public abstract XGaMultivector<T> EDual(int vSpaceDimensions);
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public abstract XGaMultivector<T> EDual(XGaKVector<T> blade);
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public abstract XGaMultivector<T> Dual(int vSpaceDimensions);
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public abstract XGaMultivector<T> Dual(XGaKVector<T> blade);
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public abstract XGaMultivector<T> EUnDual(int vSpaceDimensions);
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public abstract XGaMultivector<T> EUnDual(XGaKVector<T> blade);
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public abstract XGaMultivector<T> UnDual(int vSpaceDimensions);
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public abstract XGaMultivector<T> UnDual(XGaKVector<T> blade);
+
 }

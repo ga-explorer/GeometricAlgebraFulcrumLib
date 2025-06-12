@@ -1457,9 +1457,15 @@ public sealed partial class XGaKVectorComposer<T> :
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public XGaScalar<T> GetScalar()
     {
-        return IsScalar
-            ? _scalarComposer.GetXGaScalar(Processor) 
-            : throw new InvalidOperationException();
+        if (!IsScalar)
+            throw new InvalidOperationException();
+        
+        var mv = 
+            _scalarComposer.GetXGaScalar(Processor);
+
+        _scalarComposer.Clear();
+
+        return mv;
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -1469,10 +1475,19 @@ public sealed partial class XGaKVectorComposer<T> :
             IsZero ||
             _idScalarDictionary.Keys.All(id => id.Count == 1)
         );
+        
+        if (Grade != 2)
+            throw new InvalidOperationException();
+        
+        if (_idScalarDictionary.Count == 0)
+            return Processor.VectorZero;
 
-        return Grade == 1 
-            ? Processor.Vector(_idScalarDictionary) 
-            : throw new InvalidOperationException();
+        var mv = 
+            Processor.Vector(_idScalarDictionary);
+        
+        _idScalarDictionary = IndexSetUtils.CreateIndexSetDictionary<T>();
+
+        return mv;
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -1483,9 +1498,18 @@ public sealed partial class XGaKVectorComposer<T> :
             _idScalarDictionary.Keys.All(id => id.Count == 2)
         );
 
-        return Grade == 2 
-            ? Processor.Bivector(_idScalarDictionary) 
-            : throw new InvalidOperationException();
+        if (Grade != 2)
+            throw new InvalidOperationException();
+        
+        if (_idScalarDictionary.Count == 0)
+            return Processor.BivectorZero;
+
+        var mv = 
+            Processor.Bivector(_idScalarDictionary);
+        
+        _idScalarDictionary = IndexSetUtils.CreateIndexSetDictionary<T>();
+
+        return mv;
     }
         
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -1493,12 +1517,21 @@ public sealed partial class XGaKVectorComposer<T> :
     {
         Debug.Assert(
             IsZero ||
-            _idScalarDictionary.Keys.All(id => id.Count == 3)
+            _idScalarDictionary.Keys.All(id => id.Count == Grade)
         );
 
-        return Grade == 3 
-            ? Processor.HigherKVector(3, _idScalarDictionary) 
-            : throw new InvalidOperationException();
+        if (Grade != 3)
+            throw new InvalidOperationException();
+
+        if (_idScalarDictionary.Count == 0)
+            return Processor.HigherKVectorZero(Grade);
+
+        var mv = 
+            Processor.HigherKVector(Grade, _idScalarDictionary);
+
+        _idScalarDictionary = IndexSetUtils.CreateIndexSetDictionary<T>();
+
+        return mv;
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -1509,9 +1542,18 @@ public sealed partial class XGaKVectorComposer<T> :
             _idScalarDictionary.Keys.All(id => id.Count == Grade)
         );
 
-        return Grade >= 3 
-            ? Processor.HigherKVector(Grade, _idScalarDictionary) 
-            : throw new InvalidOperationException();
+        if (Grade < 3)
+            throw new InvalidOperationException();
+
+        if (_idScalarDictionary.Count == 0)
+            return Processor.HigherKVectorZero(Grade);
+
+        var mv = 
+            Processor.HigherKVector(Grade, _idScalarDictionary);
+
+        _idScalarDictionary = IndexSetUtils.CreateIndexSetDictionary<T>();
+
+        return mv;
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -1550,13 +1592,28 @@ public sealed partial class XGaKVectorComposer<T> :
         if (IsZero)
             return Processor.UniformMultivectorZero;
 
-        return IsScalar
-            ? _scalarComposer.GetXGaUniformMultivector(Processor)
-            : Processor.UniformMultivector(_idScalarDictionary);
+        if (IsScalar)
+        {
+            var mv = 
+                _scalarComposer.GetXGaUniformMultivector(Processor);
+
+            _scalarComposer.Clear();
+
+            return mv;
+        }
+        else
+        {
+            var mv = 
+                Processor.UniformMultivector(_idScalarDictionary);
+
+            _idScalarDictionary = IndexSetUtils.CreateIndexSetDictionary<T>();
+
+            return mv;
+        }
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public XGaMultivector<T> GetSimpleMultivector()
+    public XGaMultivector<T> GetMultivector()
     {
         return IsZero 
             ? Processor.ScalarZero 

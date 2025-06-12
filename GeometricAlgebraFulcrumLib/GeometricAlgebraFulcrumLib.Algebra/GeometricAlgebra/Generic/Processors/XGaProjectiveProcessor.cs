@@ -69,7 +69,7 @@ public class XGaProjectiveProcessor<T> :
 
         return CreateMultivectorComposer()
             .AddTerms(termList)
-            .GetSimpleMultivector();
+            .GetMultivector();
     }
 
     
@@ -126,7 +126,7 @@ public class XGaProjectiveProcessor<T> :
 
         return CreateMultivectorComposer()
             .AddTerms(termList)
-            .GetSimpleMultivector();
+            .GetMultivector();
     }
 
 
@@ -179,7 +179,7 @@ public class XGaProjectiveProcessor<T> :
 
         return CreateMultivectorComposer()
             .AddTerms(termList)
-            .GetSimpleMultivector();
+            .GetMultivector();
     }
 
     

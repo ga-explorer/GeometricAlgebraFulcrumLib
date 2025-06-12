@@ -425,7 +425,7 @@ public sealed partial class XGaFloat64UniformMultivector :
             );
 
         return Processor
-            .CreateMultivectorComposer()
+            .CreateUniformComposer()
             .SetTerms(idScalarPairs)
             .GetUniformMultivector();
     }
@@ -444,7 +444,7 @@ public sealed partial class XGaFloat64UniformMultivector :
             );
 
         return Processor
-            .CreateMultivectorComposer()
+            .CreateUniformComposer()
             .SetTerms(idScalarPairs)
             .GetUniformMultivector();
     }
@@ -463,7 +463,7 @@ public sealed partial class XGaFloat64UniformMultivector :
             );
 
         return Processor
-            .CreateMultivectorComposer()
+            .CreateUniformComposer()
             .SetTerms(idScalarPairs)
             .GetUniformMultivector();
     }

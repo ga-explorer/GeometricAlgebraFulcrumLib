@@ -144,13 +144,13 @@ namespace GeometricAlgebraFulcrumLib.Benchmarks.GeometricAlgebra
                     Processor
                         .CreateMultivectorComposer()
                         .AddOpTerms(mv1, mv2)
-                        .GetSimpleMultivector();
+                        .GetMultivector();
 
                 var result3 = 
                     Processor
                         .CreateUniformComposer()
                         .AddOpTerms(mv1, mv2)
-                        .GetSimpleMultivector();
+                        .GetMultivector();
 
                 Debug.Assert(
                     (result1 - result2).IsNearZero()
@@ -240,13 +240,13 @@ namespace GeometricAlgebraFulcrumLib.Benchmarks.GeometricAlgebra
                     Processor
                         .CreateMultivectorComposer()
                         .AddELcpTerms(mv1, mv2)
-                        .GetSimpleMultivector();
+                        .GetMultivector();
 
                 var result3 = 
                     Processor
                         .CreateUniformComposer()
                         .AddELcpTerms(mv1, mv2)
-                        .GetSimpleMultivector();
+                        .GetMultivector();
 
                 Debug.Assert(
                     (result1 - result2).IsNearZero()
@@ -272,13 +272,13 @@ namespace GeometricAlgebraFulcrumLib.Benchmarks.GeometricAlgebra
                     Processor
                         .CreateMultivectorComposer()
                         .AddLcpTerms(mv1, mv2)
-                        .GetSimpleMultivector();
+                        .GetMultivector();
 
                 var result3 = 
                     Processor
                         .CreateUniformComposer()
                         .AddLcpTerms(mv1, mv2)
-                        .GetSimpleMultivector();
+                        .GetMultivector();
 
                 Debug.Assert(
                     (result1 - result2).IsNearZero()
@@ -304,13 +304,13 @@ namespace GeometricAlgebraFulcrumLib.Benchmarks.GeometricAlgebra
                     Processor
                         .CreateMultivectorComposer()
                         .AddERcpTerms(mv1, mv2)
-                        .GetSimpleMultivector();
+                        .GetMultivector();
 
                 var result3 = 
                     Processor
                         .CreateUniformComposer()
                         .AddERcpTerms(mv1, mv2)
-                        .GetSimpleMultivector();
+                        .GetMultivector();
 
                 Debug.Assert(
                     (result1 - result2).IsNearZero()
@@ -336,13 +336,13 @@ namespace GeometricAlgebraFulcrumLib.Benchmarks.GeometricAlgebra
                     Processor
                         .CreateMultivectorComposer()
                         .AddRcpTerms(mv1, mv2)
-                        .GetSimpleMultivector();
+                        .GetMultivector();
 
                 var result3 = 
                     Processor
                         .CreateUniformComposer()
                         .AddRcpTerms(mv1, mv2)
-                        .GetSimpleMultivector();
+                        .GetMultivector();
 
                 Debug.Assert(
                     (result1 - result2).IsNearZero()
@@ -368,13 +368,13 @@ namespace GeometricAlgebraFulcrumLib.Benchmarks.GeometricAlgebra
                     Processor
                         .CreateMultivectorComposer()
                         .AddEFdpTerms(mv1, mv2)
-                        .GetSimpleMultivector();
+                        .GetMultivector();
 
                 var result3 = 
                     Processor
                         .CreateUniformComposer()
                         .AddEFdpTerms(mv1, mv2)
-                        .GetSimpleMultivector();
+                        .GetMultivector();
 
                 Debug.Assert(
                     (result1 - result2).IsNearZero()
@@ -400,13 +400,13 @@ namespace GeometricAlgebraFulcrumLib.Benchmarks.GeometricAlgebra
                     Processor
                         .CreateMultivectorComposer()
                         .AddFdpTerms(mv1, mv2)
-                        .GetSimpleMultivector();
+                        .GetMultivector();
 
                 var result3 = 
                     Processor
                         .CreateUniformComposer()
                         .AddFdpTerms(mv1, mv2)
-                        .GetSimpleMultivector();
+                        .GetMultivector();
 
                 Debug.Assert(
                     (result1 - result2).IsNearZero()
@@ -432,13 +432,13 @@ namespace GeometricAlgebraFulcrumLib.Benchmarks.GeometricAlgebra
                     Processor
                         .CreateMultivectorComposer()
                         .AddEHipTerms(mv1, mv2)
-                        .GetSimpleMultivector();
+                        .GetMultivector();
 
                 var result3 = 
                     Processor
                         .CreateUniformComposer()
                         .AddEHipTerms(mv1, mv2)
-                        .GetSimpleMultivector();
+                        .GetMultivector();
 
                 Debug.Assert(
                     (result1 - result2).IsNearZero()
@@ -464,13 +464,13 @@ namespace GeometricAlgebraFulcrumLib.Benchmarks.GeometricAlgebra
                     Processor
                         .CreateMultivectorComposer()
                         .AddHipTerms(mv1, mv2)
-                        .GetSimpleMultivector();
+                        .GetMultivector();
 
                 var result3 = 
                     Processor
                         .CreateUniformComposer()
                         .AddHipTerms(mv1, mv2)
-                        .GetSimpleMultivector();
+                        .GetMultivector();
 
                 Debug.Assert(
                     (result1 - result2).IsNearZero()
@@ -496,13 +496,13 @@ namespace GeometricAlgebraFulcrumLib.Benchmarks.GeometricAlgebra
                     Processor
                         .CreateMultivectorComposer()
                         .AddECpTerms(mv1, mv2)
-                        .GetSimpleMultivector();
+                        .GetMultivector();
 
                 var result3 = 
                     Processor
                         .CreateUniformComposer()
                         .AddECpTerms(mv1, mv2)
-                        .GetSimpleMultivector();
+                        .GetMultivector();
 
                 Debug.Assert(
                     (result1 - result2).IsNearZero()
@@ -528,13 +528,13 @@ namespace GeometricAlgebraFulcrumLib.Benchmarks.GeometricAlgebra
                     Processor
                         .CreateMultivectorComposer()
                         .AddCpTerms(mv1, mv2)
-                        .GetSimpleMultivector();
+                        .GetMultivector();
 
                 var result3 = 
                     Processor
                         .CreateUniformComposer()
                         .AddCpTerms(mv1, mv2)
-                        .GetSimpleMultivector();
+                        .GetMultivector();
 
                 Debug.Assert(
                     (result1 - result2).IsNearZero()
@@ -560,13 +560,13 @@ namespace GeometricAlgebraFulcrumLib.Benchmarks.GeometricAlgebra
                     Processor
                         .CreateMultivectorComposer()
                         .AddEAcpTerms(mv1, mv2)
-                        .GetSimpleMultivector();
+                        .GetMultivector();
 
                 var result3 = 
                     Processor
                         .CreateUniformComposer()
                         .AddEAcpTerms(mv1, mv2)
-                        .GetSimpleMultivector();
+                        .GetMultivector();
 
                 Debug.Assert(
                     (result1 - result2).IsNearZero()
@@ -592,13 +592,13 @@ namespace GeometricAlgebraFulcrumLib.Benchmarks.GeometricAlgebra
                     Processor
                         .CreateMultivectorComposer()
                         .AddAcpTerms(mv1, mv2)
-                        .GetSimpleMultivector();
+                        .GetMultivector();
 
                 var result3 = 
                     Processor
                         .CreateUniformComposer()
                         .AddAcpTerms(mv1, mv2)
-                        .GetSimpleMultivector();
+                        .GetMultivector();
 
                 Debug.Assert(
                     (result1 - result2).IsNearZero()
@@ -624,13 +624,13 @@ namespace GeometricAlgebraFulcrumLib.Benchmarks.GeometricAlgebra
                     Processor
                         .CreateMultivectorComposer()
                         .AddEGpTerms(mv1, mv2)
-                        .GetSimpleMultivector();
+                        .GetMultivector();
 
                 var result3 = 
                     Processor
                         .CreateUniformComposer()
                         .AddEGpTerms(mv1, mv2)
-                        .GetSimpleMultivector();
+                        .GetMultivector();
 
                 Debug.Assert(
                     (result1 - result2).IsNearZero()
@@ -656,13 +656,13 @@ namespace GeometricAlgebraFulcrumLib.Benchmarks.GeometricAlgebra
                     Processor
                         .CreateMultivectorComposer()
                         .AddGpTerms(mv1, mv2)
-                        .GetSimpleMultivector();
+                        .GetMultivector();
 
                 var result3 = 
                     Processor
                         .CreateUniformComposer()
                         .AddGpTerms(mv1, mv2)
-                        .GetSimpleMultivector();
+                        .GetMultivector();
 
                 Debug.Assert(
                     (result1 - result2).IsNearZero()

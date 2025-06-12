@@ -23,7 +23,7 @@ namespace GeometricAlgebraFulcrumLib.Matlab.GeometricAlgebra.Float64.Multivector
                 : Processor
                     .CreateMultivectorComposer()
                     .AddEGpTerms(this, mv2)
-                    .GetSimpleMultivector();
+                    .GetMultivector();
         }
         
         
@@ -34,7 +34,7 @@ namespace GeometricAlgebraFulcrumLib.Matlab.GeometricAlgebra.Float64.Multivector
                 : Processor
                     .CreateMultivectorComposer()
                     .AddEGpTerms(this, mv2)
-                    .GetSimpleMultivector();
+                    .GetMultivector();
         }
 
         
@@ -45,7 +45,7 @@ namespace GeometricAlgebraFulcrumLib.Matlab.GeometricAlgebra.Float64.Multivector
                 : Processor
                     .CreateMultivectorComposer()
                     .AddEGpTerms(this, mv2)
-                    .GetSimpleMultivector();
+                    .GetMultivector();
         }
 
         
@@ -56,7 +56,7 @@ namespace GeometricAlgebraFulcrumLib.Matlab.GeometricAlgebra.Float64.Multivector
                 : Processor
                     .CreateMultivectorComposer()
                     .AddEGpTerms(this, mv2)
-                    .GetSimpleMultivector();
+                    .GetMultivector();
         }
 
         
@@ -70,7 +70,7 @@ namespace GeometricAlgebraFulcrumLib.Matlab.GeometricAlgebra.Float64.Multivector
                 : Processor
                     .CreateMultivectorComposer()
                     .AddEGpTerms(this, mv2)
-                    .GetSimpleMultivector();
+                    .GetMultivector();
         }
 
 
@@ -88,7 +88,7 @@ namespace GeometricAlgebraFulcrumLib.Matlab.GeometricAlgebra.Float64.Multivector
                 : Processor
                     .CreateMultivectorComposer()
                     .AddGpTerms(this, mv2)
-                    .GetSimpleMultivector();
+                    .GetMultivector();
         }
         
         
@@ -99,7 +99,7 @@ namespace GeometricAlgebraFulcrumLib.Matlab.GeometricAlgebra.Float64.Multivector
                 : Processor
                     .CreateMultivectorComposer()
                     .AddGpTerms(this, mv2)
-                    .GetSimpleMultivector();
+                    .GetMultivector();
         }
 
         
@@ -110,7 +110,7 @@ namespace GeometricAlgebraFulcrumLib.Matlab.GeometricAlgebra.Float64.Multivector
                 : Processor
                     .CreateMultivectorComposer()
                     .AddGpTerms(this, mv2)
-                    .GetSimpleMultivector();
+                    .GetMultivector();
         }
 
         
@@ -121,7 +121,7 @@ namespace GeometricAlgebraFulcrumLib.Matlab.GeometricAlgebra.Float64.Multivector
                 : Processor
                     .CreateMultivectorComposer()
                     .AddGpTerms(this, mv2)
-                    .GetSimpleMultivector();
+                    .GetMultivector();
         }
 
         
@@ -135,7 +135,7 @@ namespace GeometricAlgebraFulcrumLib.Matlab.GeometricAlgebra.Float64.Multivector
                 : Processor
                     .CreateMultivectorComposer()
                     .AddGpTerms(this, mv2)
-                    .GetSimpleMultivector();
+                    .GetMultivector();
         }
 
         

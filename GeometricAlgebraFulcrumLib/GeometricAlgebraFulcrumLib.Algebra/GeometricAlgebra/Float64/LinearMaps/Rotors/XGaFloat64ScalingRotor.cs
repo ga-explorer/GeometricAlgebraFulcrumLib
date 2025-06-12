@@ -141,7 +141,7 @@ public class XGaFloat64ScalingRotor
         composer.SetTerm(bladeId, sinHalfAngle);
 
         return new XGaFloat64ScalingRotor(
-            composer.GetSimpleMultivector()
+            composer.GetMultivector()
         );
     }
         

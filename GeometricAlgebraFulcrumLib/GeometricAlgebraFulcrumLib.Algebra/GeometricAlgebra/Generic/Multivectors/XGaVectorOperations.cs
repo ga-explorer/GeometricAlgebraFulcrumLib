@@ -664,7 +664,7 @@ public sealed partial class XGaVector<T>
             .CreateMultivectorComposer()
             .SetMultivector(this)
             .AddMultivector(mv2)
-            .GetSimpleMultivector();
+            .GetMultivector();
     }
 
 
@@ -700,7 +700,7 @@ public sealed partial class XGaVector<T>
             .CreateMultivectorComposer()
             .SetMultivector(this)
             .SubtractMultivector(mv2)
-            .GetSimpleMultivector();
+            .GetMultivector();
     }
 
 
@@ -758,7 +758,7 @@ public sealed partial class XGaVector<T>
     //    return Processor
     //        .CreateMultivectorComposer()
     //        .AddOpTerms(this, mv2)
-    //        .GetSimpleMultivector();
+    //        .GetMultivector();
     //}
         
 
@@ -780,7 +780,7 @@ public sealed partial class XGaVector<T>
     //    return Processor
     //        .CreateComposer()
     //        .AddEGpTerms(this, mv2)
-    //        .GetSimpleMultivector();
+    //        .GetMultivector();
     //}
 
 
@@ -802,7 +802,7 @@ public sealed partial class XGaVector<T>
     //    return Processor
     //        .CreateComposer()
     //        .AddGpTerms(this, mv2)
-    //        .GetSimpleMultivector();
+    //        .GetMultivector();
     //}
 
 
@@ -869,7 +869,7 @@ public sealed partial class XGaVector<T>
     //            : Processor
     //                .CreateComposer()
     //                .AddELcpTerms(this, mv2)
-    //                .GetSimpleMultivector()
+    //                .GetMultivector()
     //    };
     //}
         
@@ -937,7 +937,7 @@ public sealed partial class XGaVector<T>
     //            : Processor
     //                .CreateComposer()
     //                .AddLcpTerms(this, mv2)
-    //                .GetSimpleMultivector()
+    //                .GetMultivector()
     //    };
     //}
 
@@ -993,7 +993,7 @@ public sealed partial class XGaVector<T>
     //            : Processor
     //                .CreateComposer()
     //                .AddERcpTerms(this, mv2)
-    //                .GetSimpleMultivector()
+    //                .GetMultivector()
     //    };
     //}
         
@@ -1049,7 +1049,7 @@ public sealed partial class XGaVector<T>
     //            : Processor
     //                .CreateComposer()
     //                .AddRcpTerms(this, mv2)
-    //                .GetSimpleMultivector()
+    //                .GetMultivector()
     //    };
     //}
 

@@ -297,7 +297,7 @@ public class GenerationsBenchmarks
         for (var i = 0; i < scalarArray.Length; i++)
             composer.AddTerm((IndexSet)i, scalarArray[i]);
 
-        return composer.GetSimpleMultivector();
+        return composer.GetMultivector();
     }
 
     private XGaFloat64Multivector ToXGaFloat64Multivector(Ga41Multivector mv)
@@ -309,7 +309,7 @@ public class GenerationsBenchmarks
         for (var i = 0; i < scalarArray.Length; i++)
             composer.AddTerm((IndexSet)i, scalarArray[i]);
 
-        return composer.GetSimpleMultivector();
+        return composer.GetMultivector();
     }
 
     private XGaFloat64Multivector ToXGaFloat64Multivector(Ga51Multivector mv)
@@ -321,7 +321,7 @@ public class GenerationsBenchmarks
         for (var i = 0; i < scalarArray.Length; i++)
             composer.AddTerm((IndexSet)i, scalarArray[i]);
 
-        return composer.GetSimpleMultivector();
+        return composer.GetMultivector();
     }
 
 

@@ -204,7 +204,7 @@ public sealed class XGaEuclideanScalingRotorSquared2D<T>
             .CreateMultivectorComposer()
             .SetScalarTerm(Scalar0)
             .SetBivectorTerm(0, 1, Scalar12)
-            .GetSimpleMultivector();
+            .GetMultivector();
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -214,7 +214,7 @@ public sealed class XGaEuclideanScalingRotorSquared2D<T>
             .CreateMultivectorComposer()
             .SetScalarTerm(Scalar0)
             .SetBivectorTerm(0, 1, -Scalar12)
-            .GetSimpleMultivector();
+            .GetMultivector();
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -226,6 +226,6 @@ public sealed class XGaEuclideanScalingRotorSquared2D<T>
             .CreateMultivectorComposer()
             .SetScalarTerm(Scalar0 * scalingFactor)
             .SetBivectorTerm(0, 1, -Scalar12 * scalingFactor)
-            .GetSimpleMultivector();
+            .GetMultivector();
     }
 }

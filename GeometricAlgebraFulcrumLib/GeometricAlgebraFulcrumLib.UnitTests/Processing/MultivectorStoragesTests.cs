@@ -46,7 +46,7 @@ public sealed class MultivectorStoragesTests
         foreach (var (id, scalar) in mvStorage.IdScalarPairs)
             gapotMv[id] = scalar;
 
-        return gapotMv.GetSimpleMultivector();
+        return gapotMv.GetMultivector();
     }
 
     private XGaFloat64Multivector Subtract(XGaFloat64Multivector mv1, XGaFloat64Multivector mv2)
@@ -59,7 +59,7 @@ public sealed class MultivectorStoragesTests
         foreach (var (id, scalar) in mv2.IdScalarPairs)
             mvDiff[id] -= scalar;
 
-        return mvDiff.GetSimpleMultivector();
+        return mvDiff.GetMultivector();
     }
         
     private Func<XGaFloat64Multivector, XGaFloat64Multivector, XGaFloat64Multivector> GetBinaryOperationFunction1(string funcName)

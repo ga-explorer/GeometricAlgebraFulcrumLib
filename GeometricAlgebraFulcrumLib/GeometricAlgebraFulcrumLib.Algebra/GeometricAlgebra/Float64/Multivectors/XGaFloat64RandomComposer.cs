@@ -755,7 +755,7 @@ public class XGaFloat64RandomComposer :
                 );
 
         return Processor
-            .CreateMultivectorComposer()
+            .CreateUniformComposer()
             .SetTerms(idScalarDictionary)
             .GetUniformMultivector();
     }

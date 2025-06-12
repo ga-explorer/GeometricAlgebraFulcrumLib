@@ -193,7 +193,7 @@ public sealed class XGaFloat64DiagonalOutermorphism :
             composer.AddMultivectorScaled(mv, scalar);
         }
 
-        return composer.GetSimpleMultivector();
+        return composer.GetMultivector();
     }
 
 

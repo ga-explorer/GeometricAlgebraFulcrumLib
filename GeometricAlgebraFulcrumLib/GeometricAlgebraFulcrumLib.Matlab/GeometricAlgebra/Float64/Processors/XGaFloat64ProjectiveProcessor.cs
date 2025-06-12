@@ -67,6 +67,6 @@ public class XGaFloat64ProjectiveProcessor :
 
         return CreateMultivectorComposer()
             .AddTerms(termList)
-            .GetSimpleMultivector();
+            .GetMultivector();
     }
 }

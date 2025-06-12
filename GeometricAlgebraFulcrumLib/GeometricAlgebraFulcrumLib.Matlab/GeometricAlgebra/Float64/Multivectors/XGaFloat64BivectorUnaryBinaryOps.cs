@@ -246,7 +246,7 @@ public sealed partial class XGaFloat64Bivector
             .CreateMultivectorComposer()
             .SetKVector(this)
             .AddMultivector(mv2)
-            .GetSimpleMultivector();
+            .GetMultivector();
     }
 
         
@@ -282,7 +282,7 @@ public sealed partial class XGaFloat64Bivector
             .CreateMultivectorComposer()
             .SetMultivector(this)
             .SubtractMultivector(mv2)
-            .GetSimpleMultivector();
+            .GetMultivector();
     }
 
 

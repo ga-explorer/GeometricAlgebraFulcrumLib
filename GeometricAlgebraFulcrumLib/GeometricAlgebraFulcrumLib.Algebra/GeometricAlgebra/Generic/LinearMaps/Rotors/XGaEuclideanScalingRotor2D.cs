@@ -143,7 +143,7 @@ public sealed class XGaEuclideanScalingRotor2D<T>
             .SetVectorTerm(0, v1.ScalarValue)
             .SetVectorTerm(1, v2.ScalarValue)
             .SetBivectorTerm(0, 1, v12.ScalarValue)
-            .GetSimpleMultivector();
+            .GetMultivector();
     }
 
 
@@ -203,7 +203,7 @@ public sealed class XGaEuclideanScalingRotor2D<T>
             .CreateMultivectorComposer()
             .SetScalarTerm(Scalar0.ScalarValue)
             .SetBivectorTerm(0, 1, Scalar12.ScalarValue)
-            .GetSimpleMultivector();
+            .GetMultivector();
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -213,7 +213,7 @@ public sealed class XGaEuclideanScalingRotor2D<T>
             .CreateMultivectorComposer()
             .SetScalarTerm(Scalar0.ScalarValue)
             .SetBivectorTerm(0, 1, ScalarProcessor.Negative(Scalar12.ScalarValue))
-            .GetSimpleMultivector();
+            .GetMultivector();
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -225,6 +225,6 @@ public sealed class XGaEuclideanScalingRotor2D<T>
             .CreateMultivectorComposer()
             .SetScalarTerm(Scalar0 / scalingFactor)
             .SetBivectorTerm(0, 1, -Scalar12 / scalingFactor)
-            .GetSimpleMultivector();
+            .GetMultivector();
     }
 }

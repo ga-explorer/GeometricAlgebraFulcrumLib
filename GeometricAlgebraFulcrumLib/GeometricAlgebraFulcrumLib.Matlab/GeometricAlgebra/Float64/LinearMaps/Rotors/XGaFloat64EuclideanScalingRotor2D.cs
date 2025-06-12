@@ -138,7 +138,7 @@ public sealed class XGaFloat64EuclideanScalingRotor2D
             .SetVectorTerm(0, v1)
             .SetVectorTerm(1, v2)
             .SetBivectorTerm(0, 1, v12)
-            .GetSimpleMultivector();
+            .GetMultivector();
     }
 
 
@@ -194,7 +194,7 @@ public sealed class XGaFloat64EuclideanScalingRotor2D
             .CreateMultivectorComposer()
             .SetScalarTerm(Scalar0)
             .SetBivectorTerm(0, 1, Scalar12)
-            .GetSimpleMultivector();
+            .GetMultivector();
     }
 
     
@@ -204,7 +204,7 @@ public sealed class XGaFloat64EuclideanScalingRotor2D
             .CreateMultivectorComposer()
             .SetScalarTerm(Scalar0)
             .SetBivectorTerm(0, 1, -Scalar12)
-            .GetSimpleMultivector();
+            .GetMultivector();
     }
 
     
@@ -216,6 +216,6 @@ public sealed class XGaFloat64EuclideanScalingRotor2D
             .CreateMultivectorComposer()
             .SetScalarTerm(Scalar0 / scalingFactor)
             .SetBivectorTerm(0, 1, -Scalar12 / scalingFactor)
-            .GetSimpleMultivector();
+            .GetMultivector();
     }
 }

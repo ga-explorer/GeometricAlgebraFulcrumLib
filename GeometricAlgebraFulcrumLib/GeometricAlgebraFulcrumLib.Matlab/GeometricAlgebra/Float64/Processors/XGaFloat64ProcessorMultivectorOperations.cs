@@ -123,7 +123,7 @@ namespace GeometricAlgebraFulcrumLib.Matlab.GeometricAlgebra.Float64.Processors
             foreach (var (indexArray, scalar) in inputText.XGaParseTerms())
                 composer.AddTerm(indexArray, scalar);
 
-            return composer.GetSimpleMultivector();
+            return composer.GetMultivector();
         }
 
 
@@ -1105,7 +1105,7 @@ namespace GeometricAlgebraFulcrumLib.Matlab.GeometricAlgebra.Float64.Processors
             foreach (var group in kVectorGroups)
                 composer.AddKVectorTerms(group.Key, group);
             
-            return composer.GetSimpleMultivector();
+            return composer.GetMultivector();
         }
 
         public XGaFloat64Multivector Multivector(IEnumerable<double> scalarList)
@@ -1120,14 +1120,14 @@ namespace GeometricAlgebraFulcrumLib.Matlab.GeometricAlgebra.Float64.Processors
             foreach (var group in kVectorGroups)
                 composer.AddKVectorTerms(group.Key, group);
             
-            return composer.GetSimpleMultivector();
+            return composer.GetMultivector();
         }
 
         public XGaFloat64Multivector Multivector(IReadOnlyDictionary<IndexSet, double> termList)
         {
             return CreateMultivectorComposer()
                 .SetTerms(termList)
-                .GetSimpleMultivector();
+                .GetMultivector();
         }
 
         public XGaFloat64Multivector Multivector(IReadOnlyDictionary<int, XGaFloat64KVector> gradeKVectorDictionary)
@@ -1145,7 +1145,7 @@ namespace GeometricAlgebraFulcrumLib.Matlab.GeometricAlgebra.Float64.Processors
         {
             return CreateMultivectorComposer()
                 .AddTerms(termList)
-                .GetSimpleMultivector();
+                .GetMultivector();
         }
         
         public XGaFloat64Multivector MultivectorFromSum(IEnumerable<XGaFloat64KVector> kVectorList)
@@ -1171,7 +1171,7 @@ namespace GeometricAlgebraFulcrumLib.Matlab.GeometricAlgebra.Float64.Processors
                 .SetVectorTerm(0, vectorScalar0)
                 .SetVectorTerm(1, vectorScalar1)
                 .SetBivectorTerm(0, 1, bivectorScalar)
-                .GetSimpleMultivector();
+                .GetMultivector();
         }
 
 

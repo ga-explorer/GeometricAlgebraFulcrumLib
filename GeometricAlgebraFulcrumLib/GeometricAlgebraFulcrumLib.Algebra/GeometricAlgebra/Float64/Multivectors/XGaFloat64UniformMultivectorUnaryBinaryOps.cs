@@ -67,7 +67,7 @@ public sealed partial class XGaFloat64UniformMultivector
     public override XGaFloat64Multivector Add(XGaFloat64Multivector mv2)
     {
         return Processor
-            .CreateMultivectorComposer()
+            .CreateUniformComposer()
             .SetMultivector(this)
             .AddMultivector(mv2)
             .GetUniformMultivector();
@@ -77,7 +77,7 @@ public sealed partial class XGaFloat64UniformMultivector
     public override XGaFloat64Multivector Subtract(XGaFloat64Multivector mv2)
     {
         return Processor
-            .CreateMultivectorComposer()
+            .CreateUniformComposer()
             .SetMultivector(this)
             .SubtractMultivector(mv2)
             .GetUniformMultivector();

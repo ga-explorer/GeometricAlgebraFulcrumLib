@@ -453,7 +453,7 @@ public sealed class CGaVGaEncoder<T> :
             .CreateMultivectorComposer()
             .SetScalarTerm(scalar)
             .SetBivectorTerm(2, 3, bivectorScalar * bivectorXy)
-            .GetSimpleMultivector()
+            .GetMultivector()
             .ToConformalCGaVersor(GeometricSpace);
     }
 
@@ -471,7 +471,7 @@ public sealed class CGaVGaEncoder<T> :
             .CreateMultivectorComposer()
             .SetScalarTerm(scalar)
             .SetBivectorTerm(2, 3, bivectorScalar * bivector.Xy)
-            .GetSimpleMultivector()
+            .GetMultivector()
             .ToConformalCGaVersor(GeometricSpace);
     }
 
@@ -490,7 +490,7 @@ public sealed class CGaVGaEncoder<T> :
             .SetBivectorTerm(2, 3, bivectorScalar * bivectorXy)
             .SetBivectorTerm(2, 4, bivectorScalar * bivectorXz)
             .SetBivectorTerm(3, 4, bivectorScalar * bivectorYz)
-            .GetSimpleMultivector()
+            .GetMultivector()
             .ToConformalCGaVersor(GeometricSpace);
     }
 
@@ -510,7 +510,7 @@ public sealed class CGaVGaEncoder<T> :
             .SetBivectorTerm(2, 3, bivectorScalar * bivector.Xy)
             .SetBivectorTerm(2, 4, bivectorScalar * bivector.Xz)
             .SetBivectorTerm(3, 4, bivectorScalar * bivector.Yz)
-            .GetSimpleMultivector()
+            .GetMultivector()
             .ToConformalCGaVersor(GeometricSpace);
     }
 

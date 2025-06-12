@@ -107,7 +107,7 @@ public class XGaUnilinearMap<T> :
             }
         }
 
-        return composer.GetSimpleMultivector();
+        return composer.GetMultivector();
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
