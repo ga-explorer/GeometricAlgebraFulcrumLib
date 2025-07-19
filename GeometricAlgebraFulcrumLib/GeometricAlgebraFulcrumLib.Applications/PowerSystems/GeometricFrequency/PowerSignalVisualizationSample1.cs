@@ -457,6 +457,8 @@ public static class PowerSignalVisualizationSample1
             powerSignal
         )
         {
+            PovRayFolder = @"C:\Program Files\POV-Ray\v3.7\bin\",
+
             SceneTitle = "R004I_R32",
 
             TimeScaling = 1d / 400,
