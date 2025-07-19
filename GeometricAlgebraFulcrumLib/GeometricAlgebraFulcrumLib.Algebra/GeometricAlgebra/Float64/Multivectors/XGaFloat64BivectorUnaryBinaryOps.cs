@@ -458,4 +458,31 @@ public sealed partial class XGaFloat64Bivector
             return alpha.Cosh() + alpha.Sinh() / alpha * this;
         }
     }
+
+    /// <summary>
+    /// Create a pure rotor multivector from a 2-blade
+    /// </summary>
+    /// <param name="bladeSignatureSign"></param>
+    /// <param name="zeroEpsilon"></param>
+    /// <returns></returns>
+    public XGaFloat64Multivector Exp(IntegerSign bladeSignatureSign, double zeroEpsilon = Float64Utils.ZeroEpsilon)
+    {
+        var bladeSignature = SpSquared();
+
+        if (bladeSignatureSign.IsZero)
+            return 1d + this;
+
+        if (bladeSignatureSign.IsNegative)
+        {
+            var alpha = (-bladeSignature).Sqrt();
+
+            return alpha.Cos() + alpha.Sin() / alpha * this;
+        }
+        else
+        {
+            var alpha = bladeSignature.Sqrt();
+            
+            return alpha.Cosh() + alpha.Sinh() / alpha * this;
+        }
+    }
 }

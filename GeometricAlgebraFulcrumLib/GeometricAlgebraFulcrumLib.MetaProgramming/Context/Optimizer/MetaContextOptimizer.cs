@@ -214,7 +214,8 @@ internal sealed class MetaContextOptimizer :
         //Console.WriteLine(Context);
         //Console.WriteLine();
 
-        Context.EnhanceRhsExpressions();
+        // TODO: This step produces wrong expressions, must be reviewed properly
+        //Context.EnhanceRhsExpressions();
         
         //Console.WriteLine("After Enhance RHS Expressions");
         //Console.WriteLine(Context);

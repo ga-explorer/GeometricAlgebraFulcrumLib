@@ -2250,7 +2250,9 @@ public sealed class MetaContext :
     public MetaContext OptimizeContext()
     {
         SimplifyRhsExpressions();
-            
+
+        //return this;
+
         var inputsWithTestValues =
             GetParameterVariables()
                 .ToDictionary(

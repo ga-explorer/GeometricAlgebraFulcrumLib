@@ -43,25 +43,25 @@
     <PackageReference Include="GeneticSharp.Extensions" Version="3.1.4" />
     <PackageReference Include="HtmlTags" Version="9.0.0" />
     <PackageReference Include="Instances" Version="3.0.1" />
-    <PackageReference Include="Magick.NET-Q16-x64" Version="14.6.0" />
+    <PackageReference Include="Magick.NET-Q16-x64" Version="14.7.0" />
     <PackageReference Include="OxyPlot.Core" Version="2.2.0" />
     <PackageReference Include="OxyPlot.Core.Drawing" Version="2.1.0" />
     <PackageReference Include="OxyPlot.SkiaSharp" Version="2.2.0" />
     <PackageReference Include="Raylib-CSharp" Version="5.0.0" />
     <PackageReference Include="Raylib-CsLo" Version="4.2.0.9" />
-    <PackageReference Include="Selenium.Support" Version="4.33.0" />
-    <PackageReference Include="Selenium.WebDriver" Version="4.33.0" />
-    <PackageReference Include="Selenium.WebDriver.ChromeDriver" Version="137.0.7151.7000" />
+    <PackageReference Include="Selenium.Support" Version="4.34.0" />
+    <PackageReference Include="Selenium.WebDriver" Version="4.34.0" />
+    <PackageReference Include="Selenium.WebDriver.ChromeDriver" Version="138.0.7204.15700" />
     <PackageReference Include="Selenium.WebDriver.Extensions" Version="4.1.0" />
     <PackageReference Include="SFML.Net" Version="2.6.1" />
-    <PackageReference Include="SixLabors.ImageSharp" Version="3.1.9" />
+    <PackageReference Include="SixLabors.ImageSharp" Version="3.1.10" />
     <PackageReference Include="SkiaSharp" Version="3.119.0" />
     <PackageReference Include="SkiaSharp.Extended" Version="2.0.0" />
     <PackageReference Include="SkiaSharp.Svg" Version="1.60.0" />
     <PackageReference Include="Stride.GNU.Gettext" Version="2.0.0" />
     <PackageReference Include="Svg.Model" Version="3.0.3" />
     <PackageReference Include="Svg.Skia" Version="3.0.3" />
-    <PackageReference Include="System.Management" Version="9.0.6" />
+    <PackageReference Include="System.Management" Version="9.0.7" />
     <PackageReference Include="Xabe.FFmpeg" Version="6.0.1" />
     <PackageReference Include="Xabe.FFmpeg.Downloader" Version="6.0.1" />
   </ItemGroup>

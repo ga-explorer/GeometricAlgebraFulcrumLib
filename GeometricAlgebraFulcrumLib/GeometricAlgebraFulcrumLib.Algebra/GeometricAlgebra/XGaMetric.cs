@@ -9,6 +9,7 @@ using GeometricAlgebraFulcrumLib.Utilities.Structures.IndexSets;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Tuples;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
+using GeometricAlgebraFulcrumLib.Utilities.Structures.BitManipulation;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra;
 
@@ -640,12 +641,12 @@ public abstract class XGaMetric
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public IXGaSignedBasisBlade EGp(IndexSet basisBladeId1, IndexSet basisBladeId2)
     {
-        var (isNegative, id) =
-            basisBladeId1.EGpIsNegativeId(basisBladeId2);
+        var (swapCount, id) = 
+            basisBladeId1.SetMergeCountSwaps(basisBladeId2);
 
         var basisBlade = new XGaBasisBlade(this, id);
 
-        return isNegative
+        return swapCount.IsOdd()
             ? new XGaSignedBasisBlade(basisBlade, IntegerSign.Negative)
             : basisBlade;
     }
@@ -656,18 +657,18 @@ public abstract class XGaMetric
         if (IsEuclidean)
             return EGp(basisBladeId1, basisBladeId2);
 
-        var meetBasisBladeSignature =
-            MeetSignature(basisBladeId1, basisBladeId2);
+        var (swapCount, id, meetSet) = 
+            basisBladeId1.SetMergeCountSwapsTrackCommon(basisBladeId2);
 
+        var meetBasisBladeSignature = 
+            Signature(meetSet);
+        
         if (meetBasisBladeSignature.IsZero)
             return ZeroBasisScalar;
 
-        var (isNegative, id) =
-            basisBladeId1.EGpIsNegativeId(basisBladeId2);
-
         var basisBlade = new XGaBasisBlade(this, id);
 
-        return isNegative == meetBasisBladeSignature.IsNegative
+        return swapCount.IsOdd() == meetBasisBladeSignature.IsNegative
             ? basisBlade
             : new XGaSignedBasisBlade(basisBlade, IntegerSign.Negative);
     }

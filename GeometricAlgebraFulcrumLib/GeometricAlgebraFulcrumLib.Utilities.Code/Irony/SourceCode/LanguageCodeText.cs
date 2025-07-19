@@ -1,4 +1,6 @@
-﻿using System.Text;
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
 using GeometricAlgebraFulcrumLib.Utilities.Text;
 
 namespace GeometricAlgebraFulcrumLib.Utilities.Code.Irony.SourceCode;

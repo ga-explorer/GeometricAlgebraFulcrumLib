@@ -1,4 +1,6 @@
-﻿using GeometricAlgebraFulcrumLib.Utilities.Code.Irony.DSLDebug;
+﻿using System;
+using System.Collections.Generic;
+using GeometricAlgebraFulcrumLib.Utilities.Code.Irony.DSLDebug;
 using GeometricAlgebraFulcrumLib.Utilities.Code.Irony.Semantic.Expression.Value;
 using GeometricAlgebraFulcrumLib.Utilities.Code.Irony.Semantic.Operator;
 using GeometricAlgebraFulcrumLib.Utilities.Code.Irony.Semantic.Scope;

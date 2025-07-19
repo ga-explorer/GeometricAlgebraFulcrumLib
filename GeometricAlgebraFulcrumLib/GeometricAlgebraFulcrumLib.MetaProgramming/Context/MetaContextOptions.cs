@@ -35,13 +35,13 @@ public sealed class MetaContextOptions
     /// This flag is used during low-level optimization of a macro's code
     /// </summary>
     public bool ReduceLowLevelRhsSubExpressions { get; set; }
-        = true;
+        = false;
 
     /// <summary>
     /// When True the low-level generator uses Mathematica's Simplify[] function on all rhs values before assigning
     /// them to lhs temp or output variables.
     /// 
-    /// This flag us used during low-level generation of a macro's code
+    /// This flag is used during low-level generation of a macro's code
     /// </summary>
     public bool SimplifyLowLevelRhsValues { get; set; }
         = true;

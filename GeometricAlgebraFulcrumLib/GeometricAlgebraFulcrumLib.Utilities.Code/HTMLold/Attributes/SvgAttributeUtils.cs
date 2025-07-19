@@ -1,4 +1,6 @@
-﻿namespace GeometricAlgebraFulcrumLib.Utilities.Code.HTMLold.Attributes;
+﻿using System.Collections.Generic;
+
+namespace GeometricAlgebraFulcrumLib.Utilities.Code.HTMLold.Attributes;
 
 /// <summary>
 /// http://docs.w3cub.com/svg/attribute/

@@ -36,7 +36,7 @@ public static class MetaProgrammingSamples
                 "v3"
             );
 
-        var rotor = u.CreatePureRotor(v);
+        var rotor = u.GetEuclideanPureRotorTo(v);
             
         //Define external names for parameters
         v.SetExternalNamesByTermIndex(index => $"v[{index}]");
@@ -129,7 +129,7 @@ public static class MetaProgrammingSamples
         // components is created automatically in this stage
         
         //Define a Euclidean rotor which takes input unit vector u to input unit vector v
-        var rotor = x.CreatePureRotor(xRotated, true);
+        var rotor = x.GetEuclideanPureRotorTo(xRotated, true);
             
         //Find the rotation of an arbitrary input vector x using this rotor
         var yRotated = rotor.OmMap(y);
@@ -223,7 +223,7 @@ public static class MetaProgrammingSamples
         // components is created automatically in this stage
         
         //Define a Euclidean rotor which takes input unit vector u to input unit vector v
-        var rotor = xRotated.CreatePureRotor(e3, true);
+        var rotor = xRotated.GetEuclideanPureRotorTo(e3, true);
 
         //Find the rotation of 3 basis vectors using this rotor
         var e1Rotated = rotor.OmMap(e1);
@@ -313,7 +313,7 @@ public static class MetaProgrammingSamples
         // components is created automatically in this stage
         
         //Define a Euclidean rotor which takes input unit vector u to input unit vector v
-        var rotor = u.CreatePureRotor(v, true);
+        var rotor = u.GetEuclideanPureRotorTo(v, true);
             
         //Find the rotation of an arbitrary input vector x using this rotor
         var xRotated = rotor.OmMap(x);

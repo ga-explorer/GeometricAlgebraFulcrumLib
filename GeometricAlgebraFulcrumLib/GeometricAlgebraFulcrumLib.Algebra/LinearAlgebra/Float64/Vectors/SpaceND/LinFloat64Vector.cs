@@ -15,6 +15,7 @@ using MathNet.Numerics.LinearAlgebra;
 using System.Collections;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
+using System.Runtime.Intrinsics;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.SpaceND;
 
@@ -440,7 +441,7 @@ public sealed class LinFloat64Vector :
         }
         else
         {
-            VSpaceDimensions = 1;
+            VSpaceDimensions = basisScalarPair.Key + 1;
             _indexScalarDictionary = new SingleItemDictionary<int, double>(basisScalarPair);
         }
         

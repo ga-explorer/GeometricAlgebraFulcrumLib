@@ -1,4 +1,6 @@
-﻿namespace GeometricAlgebraFulcrumLib.Utilities.Code.MathML.Elements.Layout.Tabular;
+﻿using System.Collections.Generic;
+
+namespace GeometricAlgebraFulcrumLib.Utilities.Code.MathML.Elements.Layout.Tabular;
 
 public sealed class MathMlTableRow
     : MathMlLayoutListElement<MathMlTableCell>

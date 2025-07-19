@@ -1,4 +1,6 @@
-﻿namespace GeometricAlgebraFulcrumLib.Utilities.Code.Irony.DSLException;
+﻿using System;
+
+namespace GeometricAlgebraFulcrumLib.Utilities.Code.Irony.DSLException;
 
 public abstract class DslException : Exception
 {

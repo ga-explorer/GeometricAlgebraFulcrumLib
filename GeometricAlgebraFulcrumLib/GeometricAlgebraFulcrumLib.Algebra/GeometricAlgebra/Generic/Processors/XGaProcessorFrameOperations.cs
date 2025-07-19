@@ -55,7 +55,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Processors
         var basisVector = VectorTerm(vSpaceDimensions);
 
         // Find a rotor that rotates the ones vector into the last basis vector
-        var rotor = onesVector.CreatePureRotor(
+        var rotor = onesVector.GetEuclideanPureRotorTo(
             basisVector,
             true
         );

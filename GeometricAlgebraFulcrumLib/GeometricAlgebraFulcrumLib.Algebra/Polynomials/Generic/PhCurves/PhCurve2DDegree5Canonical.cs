@@ -88,7 +88,7 @@ public sealed class PhCurve2DDegree5Canonical<T>
         var dNorm = d.ENorm();
         var dUnit = d / dNorm;
             
-        ScalingRotor2 = e1.CreatePureScalingRotor(d);
+        ScalingRotor2 = e1.GetEuclideanPureScalingRotor(d);
 
         Vector00 = e1;
         Vector22 = d;
@@ -102,7 +102,7 @@ public sealed class PhCurve2DDegree5Canonical<T>
         var v0 = f01 / v1;
         var v2 = f12 / v1;
             
-        var v = e1.CreatePureScalingRotor(VectorU).Multivector;
+        var v = e1.GetEuclideanPureScalingRotor(VectorU).Multivector;
 
         ScalingRotorV = processor.CreatePureScalingRotor2D(
             v.Scalar().ScalarValue, 

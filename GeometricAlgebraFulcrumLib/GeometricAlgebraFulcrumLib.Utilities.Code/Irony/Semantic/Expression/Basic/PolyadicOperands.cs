@@ -1,4 +1,7 @@
-﻿namespace GeometricAlgebraFulcrumLib.Utilities.Code.Irony.Semantic.Expression.Basic;
+﻿using System.Collections.Generic;
+using System.Linq;
+
+namespace GeometricAlgebraFulcrumLib.Utilities.Code.Irony.Semantic.Expression.Basic;
 
 /// <summary>
 /// This abstract class is the base for all operands list for basic polyadic expressions

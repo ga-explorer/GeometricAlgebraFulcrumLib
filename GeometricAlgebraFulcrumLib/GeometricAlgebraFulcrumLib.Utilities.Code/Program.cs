@@ -1,4 +1,6 @@
-﻿namespace GeometricAlgebraFulcrumLib.Utilities.Code
+﻿using System;
+
+namespace GeometricAlgebraFulcrumLib.Utilities.Code
 {
     internal class Program
     {

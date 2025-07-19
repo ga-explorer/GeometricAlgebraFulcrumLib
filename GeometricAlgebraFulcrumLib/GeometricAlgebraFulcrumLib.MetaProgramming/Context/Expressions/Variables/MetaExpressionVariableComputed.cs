@@ -288,6 +288,9 @@ public sealed class MetaExpressionVariableComputed :
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public void EnhanceRhsExpression()
     {
+        return;
+
+        // TODO: This sometimes gives wrong expressions, needs reviewing
         SetRhsExpression(
             Context.SymbolicEvaluator.Enhance(RhsExpression)
         );

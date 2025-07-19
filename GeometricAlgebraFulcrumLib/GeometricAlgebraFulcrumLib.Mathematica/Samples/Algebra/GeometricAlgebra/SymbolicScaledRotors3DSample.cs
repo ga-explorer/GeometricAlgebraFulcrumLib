@@ -82,13 +82,13 @@ public static class SymbolicScalingRotors3DSample
             "Subscript[u,3]".ToExpr()
         );
 
-        var r1p = u.CreatePureScalingRotor(e1p);
+        var r1p = u.GetEuclideanPureScalingRotor(e1p);
         var r1pArray = r1p.GetMultivectorMapArray(3, 3);
 
-        var r2p = u.CreatePureScalingRotor(e2p);
+        var r2p = u.GetEuclideanPureScalingRotor(e2p);
         var r2pArray = r2p.GetMultivectorMapArray(3, 3);
 
-        var r3p = u.CreatePureScalingRotor(e3p);
+        var r3p = u.GetEuclideanPureScalingRotor(e3p);
         var r3pArray = r3p.GetMultivectorMapArray(3, 3);
 
         Console.WriteLine($@"$R_{{\boldsymbol{{u}}\boldsymbol{{e}}_{{1}}}} = {LaTeXComposer.GetMultivectorText(r1p)}$");

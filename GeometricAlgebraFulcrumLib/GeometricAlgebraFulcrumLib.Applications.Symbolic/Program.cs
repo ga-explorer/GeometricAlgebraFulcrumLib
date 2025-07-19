@@ -1,4 +1,4 @@
-﻿using GeometricAlgebraFulcrumLib.Applications.Symbolic.LibraryGenerators.Matlab;
+﻿using GeometricAlgebraFulcrumLib.Applications.Symbolic.EllipseFitting;
 
 namespace GeometricAlgebraFulcrumLib.Applications.Symbolic;
 
@@ -24,6 +24,19 @@ internal class Program
 
         //InverseKinematics6RSamples.MetaprogrammingExample2();
 
-        GradedMultivectorLibSample.GenerateCode();
+        //GradedMultivectorLibSample.GenerateCode();
+
+
+        //JacobiSymmetricEigenDecomposer.SampleUse();
+        //EigenDecomposeSamples.Example4X4();
+        //EigenDecomposeSamples.Example2();
+
+
+        var code = JacobiSymmetricEigenCodeComposer.ComposeCode();
+
+        File.WriteAllText(
+            @"D:\Projects\Papers\Active\2023-Conic Fitting\FittingBenchmark\evd.cs",
+            code
+        );
     }
 }

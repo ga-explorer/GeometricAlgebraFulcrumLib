@@ -1,4 +1,6 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using GeometricAlgebraFulcrumLib.Utilities.Code.Irony.Semantic.Type;
 
 namespace GeometricAlgebraFulcrumLib.Utilities.Code.Irony.Semantic.Expression.Value;

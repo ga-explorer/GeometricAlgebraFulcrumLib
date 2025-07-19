@@ -1,4 +1,6 @@
-﻿namespace GeometricAlgebraFulcrumLib.Utilities.Code.SyntaxTree;
+﻿using System.Collections.Generic;
+
+namespace GeometricAlgebraFulcrumLib.Utilities.Code.SyntaxTree;
 
 public class SteIfElseIfElse : SteSyntaxElement
 {

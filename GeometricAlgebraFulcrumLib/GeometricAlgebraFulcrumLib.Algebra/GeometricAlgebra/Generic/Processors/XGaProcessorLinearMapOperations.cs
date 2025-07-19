@@ -295,7 +295,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Processors
                 vSpaceDimensions - 1
             );
 
-            return v2.CreatePureRotor(v1);
+            return v2.GetEuclideanPureRotorTo(v1);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -391,7 +391,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Processors
                 imagValue
             );
 
-            return realVector.Op(imagVector).CreatePureRotor(angle);
+            return realVector.Op(imagVector).GetEuclideanPureRotor(angle);
 
             //Console.WriteLine($"Eigen value real part: {realValue.GetLaTeXDisplayEquation()}");
             //Console.WriteLine();

@@ -1,4 +1,6 @@
-﻿namespace GeometricAlgebraFulcrumLib.Utilities.Code.Irony.DSLException;
+﻿using System;
+
+namespace GeometricAlgebraFulcrumLib.Utilities.Code.Irony.DSLException;
 //TODO: Implement exceptions in this way
 //[Serializable]
 //public class MyException : Exception

@@ -15,9 +15,9 @@
     <PackageReference Include="MathNet.Numerics" Version="5.0.0" />
     <PackageReference Include="Open.Numeric.Primes" Version="4.0.4" />
     <PackageReference Include="PeterO.Numbers" Version="1.8.2" />
-    <PackageReference Include="System.Drawing.Common" Version="9.0.6" />
+    <PackageReference Include="System.Drawing.Common" Version="9.0.7" />
     <PackageReference Include="System.Drawing.Primitives" Version="4.3.0" />
-    <PackageReference Include="ZoneTree" Version="1.8.5" />
+    <PackageReference Include="ZoneTree" Version="1.8.6" />
   </ItemGroup>
 
   <ItemGroup>

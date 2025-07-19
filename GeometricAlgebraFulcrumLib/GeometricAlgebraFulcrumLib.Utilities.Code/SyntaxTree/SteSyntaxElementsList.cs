@@ -1,4 +1,7 @@
-﻿namespace GeometricAlgebraFulcrumLib.Utilities.Code.SyntaxTree;
+﻿using System.Collections.Generic;
+using System.Linq;
+
+namespace GeometricAlgebraFulcrumLib.Utilities.Code.SyntaxTree;
 
 public class SteSyntaxElementsList : List<ISyntaxTreeElement>, ISyntaxTreeElement
 {

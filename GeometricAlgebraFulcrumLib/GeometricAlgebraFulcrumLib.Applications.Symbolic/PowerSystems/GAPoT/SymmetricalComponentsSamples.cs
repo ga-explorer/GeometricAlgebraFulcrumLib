@@ -160,7 +160,7 @@ public static class SymmetricalComponentsSamples
         var skr =
             k.CreatePureRotorToAxis(LinBasisVector.Pz, true);
 
-        var r2 = e2.Op(e1).CreatePureRotor(
+        var r2 = e2.Op(e1).GetEuclideanPureRotor(
             @$"2 * Pi / 24".RadiansToPolarAngle(processor.ScalarProcessor)
         );
 
@@ -182,7 +182,7 @@ public static class SymmetricalComponentsSamples
         Console.WriteLine($@"\left\Vert \boldsymbol{{R}}_{{3}}\boldsymbol{{v}}_{{1}}\left(t\right)\boldsymbol{{R}}_{{3}}^{{\dagger}} \right\Vert & = & {latexComposer.GetScalarText(rv3Norm)}");
         Console.WriteLine();
 
-        var m2 = u.CreatePureRotor(rv2, false).Multivector;//.GetVectorOmMappingMatrix().ToArray();
+        var m2 = u.GetEuclideanPureRotorTo(rv2, false).Multivector;//.GetVectorOmMappingMatrix().ToArray();
 
         Console.WriteLine(@$"\\boldsymbol{{M}}_{{2}} = {latexComposer.GetMultivectorText(m2)}");
         Console.WriteLine();

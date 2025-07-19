@@ -17,7 +17,7 @@ namespace GeometricAlgebraFulcrumLib.Matlab.GeometricAlgebra.Float64.Multivector
     public abstract partial class XGaFloat64Multivector
     {
         
-        public XGaFloat64Multivector ProjectOn(XGaFloat64KVector subspace, bool useSubspaceInverse = false)
+        public XGaFloat64Multivector ProjectOn(XGaFloat64KVector subspace, bool useSubspaceInverse)
         {
             Debug.Assert(subspace.IsNearBlade());
 
@@ -165,7 +165,7 @@ namespace GeometricAlgebraFulcrumLib.Matlab.GeometricAlgebra.Float64.Multivector
 
 
         
-        public new XGaFloat64KVector ProjectOn(XGaFloat64KVector subspace, bool useSubspaceInverse = false)
+        public new XGaFloat64KVector ProjectOn(XGaFloat64KVector subspace, bool useSubspaceInverse)
         {
             Debug.Assert(subspace.IsNearBlade());
 
@@ -218,7 +218,7 @@ namespace GeometricAlgebraFulcrumLib.Matlab.GeometricAlgebra.Float64.Multivector
 
 
         
-        public new XGaFloat64Scalar ProjectOn(XGaFloat64KVector subspace, bool useSubspaceInverse = false)
+        public new XGaFloat64Scalar ProjectOn(XGaFloat64KVector subspace, bool useSubspaceInverse)
         {
             Debug.Assert(subspace.IsNearBlade());
 
@@ -534,7 +534,7 @@ namespace GeometricAlgebraFulcrumLib.Matlab.GeometricAlgebra.Float64.Multivector
 
 
         
-        public new XGaFloat64Vector ProjectOn(XGaFloat64KVector subspace, bool useSubspaceInverse = false)
+        public new XGaFloat64Vector ProjectOn(XGaFloat64KVector subspace, bool useSubspaceInverse)
         {
             Debug.Assert(subspace.IsNearBlade());
 
@@ -1267,7 +1267,7 @@ namespace GeometricAlgebraFulcrumLib.Matlab.GeometricAlgebra.Float64.Multivector
 
 
         
-        public new XGaFloat64Bivector ProjectOn(XGaFloat64KVector subspace, bool useSubspaceInverse = false)
+        public new XGaFloat64Bivector ProjectOn(XGaFloat64KVector subspace, bool useSubspaceInverse)
         {
             Debug.Assert(subspace.IsNearBlade());
 
@@ -1337,7 +1337,7 @@ namespace GeometricAlgebraFulcrumLib.Matlab.GeometricAlgebra.Float64.Multivector
 
 
         
-        public new XGaFloat64HigherKVector ProjectOn(XGaFloat64KVector subspace, bool useSubspaceInverse = false)
+        public new XGaFloat64HigherKVector ProjectOn(XGaFloat64KVector subspace, bool useSubspaceInverse)
         {
             Debug.Assert(subspace.IsNearBlade());
 

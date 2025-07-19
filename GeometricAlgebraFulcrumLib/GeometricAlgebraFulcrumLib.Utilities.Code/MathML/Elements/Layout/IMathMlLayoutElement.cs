@@ -1,4 +1,6 @@
-﻿namespace GeometricAlgebraFulcrumLib.Utilities.Code.MathML.Elements.Layout;
+﻿using System.Collections.Generic;
+
+namespace GeometricAlgebraFulcrumLib.Utilities.Code.MathML.Elements.Layout;
 
 public interface IMathMlLayoutElement : IMathMlElement
 {

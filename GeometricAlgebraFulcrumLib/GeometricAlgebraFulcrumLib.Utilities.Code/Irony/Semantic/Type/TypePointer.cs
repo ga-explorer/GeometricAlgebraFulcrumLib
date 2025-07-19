@@ -1,4 +1,6 @@
-﻿namespace GeometricAlgebraFulcrumLib.Utilities.Code.Irony.Semantic.Type;
+﻿using System;
+
+namespace GeometricAlgebraFulcrumLib.Utilities.Code.Irony.Semantic.Type;
 
 /// <summary>
 /// This class represents a pointer to another type

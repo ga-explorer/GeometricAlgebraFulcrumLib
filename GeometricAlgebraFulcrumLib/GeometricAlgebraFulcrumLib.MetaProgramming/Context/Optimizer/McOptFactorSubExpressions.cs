@@ -30,7 +30,8 @@ internal sealed class McOptFactorSubExpressions :
     {
         computedVariable.SetComputationOrder(_computedVariablesList.Count);
 
-        _subExpressionsTextDictionary.Add(rhsExpressionText, computedVariable);
+        // TODO: This needs review
+        _subExpressionsTextDictionary.TryAdd(rhsExpressionText, computedVariable);
 
         _computedVariablesList.Add(computedVariable);
     }
@@ -176,5 +177,8 @@ internal sealed class McOptFactorSubExpressions :
         Context.ResetComputedVariables(_computedVariablesList);
 
         McOptDependencyUpdate.Process(Context);
+
+        // TODO: Is this required?
+        McOptRemoveDuplicateTemps.Process(Context);
     }
 }

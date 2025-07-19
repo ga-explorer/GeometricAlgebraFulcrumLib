@@ -16,7 +16,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivecto
     public abstract partial class XGaFloat64Multivector
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public virtual XGaFloat64Multivector ProjectOn(XGaFloat64KVector subspace, bool useSubspaceInverse = false)
+        public virtual XGaFloat64Multivector ProjectOn(XGaFloat64KVector subspace, bool useSubspaceInverse)
         {
             Debug.Assert(subspace.IsNearBlade());
 
@@ -164,7 +164,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivecto
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override XGaFloat64KVector ProjectOn(XGaFloat64KVector subspace, bool useSubspaceInverse = false)
+        public override XGaFloat64KVector ProjectOn(XGaFloat64KVector subspace, bool useSubspaceInverse)
         {
             Debug.Assert(subspace.IsNearBlade());
 
@@ -220,7 +220,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivecto
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override XGaFloat64Scalar ProjectOn(XGaFloat64KVector subspace, bool useSubspaceInverse = false)
+        public override XGaFloat64Scalar ProjectOn(XGaFloat64KVector subspace, bool useSubspaceInverse)
         {
             Debug.Assert(subspace.IsNearBlade());
 
@@ -536,7 +536,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivecto
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override XGaFloat64Vector ProjectOn(XGaFloat64KVector subspace, bool useSubspaceInverse = false)
+        public override XGaFloat64Vector ProjectOn(XGaFloat64KVector subspace, bool useSubspaceInverse)
         {
             Debug.Assert(subspace.IsNearBlade());
 
@@ -799,7 +799,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivecto
                     pseudoScalarInverse
                 ).GetBivectorPart();
 
-            var rotorS = rotorSBlade.ToPureRotor(angleTheta);
+            var rotorS = rotorSBlade.ToEuclideanPureRotor(angleTheta);
 
             // Define parametric 2-blade of rotation
             // The actual plane of rotation is made by rotating the plane containing
@@ -817,7 +817,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivecto
             // Math.Acos(1 + 2 * (cosAngle0 - 1) / (2 - Math.Pow(Math.Sin(angleTheta), 2) * (cosAngle0 + 1)));
 
             // Return the final rotor taking v1 into v2
-            return rotorBlade.ToPureRotor(rotorAngle);
+            return rotorBlade.ToEuclideanPureRotor(rotorAngle);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -1269,7 +1269,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivecto
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override XGaFloat64Bivector ProjectOn(XGaFloat64KVector subspace, bool useSubspaceInverse = false)
+        public override XGaFloat64Bivector ProjectOn(XGaFloat64KVector subspace, bool useSubspaceInverse)
         {
             Debug.Assert(subspace.IsNearBlade());
 
@@ -1339,7 +1339,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivecto
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override XGaFloat64HigherKVector ProjectOn(XGaFloat64KVector subspace, bool useSubspaceInverse = false)
+        public override XGaFloat64HigherKVector ProjectOn(XGaFloat64KVector subspace, bool useSubspaceInverse)
         {
             Debug.Assert(subspace.IsNearBlade());
 

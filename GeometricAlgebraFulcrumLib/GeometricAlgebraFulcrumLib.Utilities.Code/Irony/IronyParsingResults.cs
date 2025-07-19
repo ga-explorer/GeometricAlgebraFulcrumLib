@@ -1,4 +1,6 @@
-﻿using Irony;
+﻿using System.Collections.Generic;
+using System.Linq;
+using Irony;
 using Irony.Parsing;
 using GeometricAlgebraFulcrumLib.Utilities.Text.Text;
 using GeometricAlgebraFulcrumLib.Utilities.Text.Text.Linear;

@@ -43,12 +43,20 @@ public sealed class MetaExpressionParameterVariableFactory :
         var namedScalar =
             Context.GetOrDefineParameterVariable(scalarName);
 
-        return Context
-            .XGaProcessor
-            .Scalar(namedScalar);
+        return Context.XGaProcessor!.Scalar(namedScalar);
+    }
+    
+    public IMetaExpressionAtomic[] CreateDenseArray1D(int rowsCount, Func<int, string> namingFunction)
+    {
+        var array = new IMetaExpressionAtomic[rowsCount];
+
+        for (var i = 0; i < rowsCount; i++)
+            array[i] = Context.GetOrDefineParameterVariable(namingFunction(i));
+
+        return array;
     }
 
-    public IMetaExpressionAtomic[,] CreateDenseArray(int rowsCount, int colsCount, Func<int, int, string> namingFunction)
+    public IMetaExpressionAtomic[,] CreateDenseArray2D(int rowsCount, int colsCount, Func<int, int, string> namingFunction)
     {
         var array = new IMetaExpressionAtomic[rowsCount, colsCount];
 
@@ -74,13 +82,12 @@ public sealed class MetaExpressionParameterVariableFactory :
         var scalar =
             Context.GetOrDefineParameterVariable(scalarName);
 
-        return Context.XGaProcessor.Scalar(scalar);
+        return Context.XGaProcessor!.Scalar(scalar);
     }
 
     public XGaVector<IMetaExpressionAtomic> Vector(params string[] scalarNames)
     {
-        return Context
-            .XGaProcessor
+        return Context.XGaProcessor!
             .Vector(
                 scalarNames
                     .Select(Context.GetOrDefineParameterVariable)
@@ -94,9 +101,7 @@ public sealed class MetaExpressionParameterVariableFactory :
         var namedScalar =
             Context.GetOrDefineParameterVariable(scalarName);
 
-        return Context
-            .XGaProcessor
-            .VectorTerm(index, namedScalar);
+        return Context.XGaProcessor!.VectorTerm(index, namedScalar);
     }
 
     public XGaVector<IMetaExpressionAtomic> CreateDenseVector(int vSpaceDimensions, Func<int, string> namingFunction)
@@ -113,8 +118,7 @@ public sealed class MetaExpressionParameterVariableFactory :
                     )
                 );
 
-        return Context
-            .XGaProcessor
+        return Context.XGaProcessor!
             .CreateVectorComposer()
             .SetTerms(parametersList)
             .GetVector();
@@ -139,8 +143,7 @@ public sealed class MetaExpressionParameterVariableFactory :
                     )
                 );
 
-        return Context
-            .XGaProcessor
+        return Context.XGaProcessor!
             .CreateKVectorComposer(grade)
             .SetTerms(parametersList)
             .GetKVector();
@@ -160,8 +163,7 @@ public sealed class MetaExpressionParameterVariableFactory :
                 )
             );
 
-        return Context
-            .XGaProcessor
+        return Context.XGaProcessor!
             .CreateMultivectorComposer()
             .AddTerms(parametersList)
             .GetMultivector();

@@ -200,7 +200,7 @@ public static class Sample1
         var a3 = kUnit;
 
         var rotor1 =
-            sigma3.CreatePureRotor(
+            sigma3.GetEuclideanPureRotorTo(
                 kUnit,
                 true
             ).SimplifyScalars();
@@ -213,14 +213,14 @@ public static class Sample1
         //]].FullSimplify();
 
         //var phi2 = @"Subscript[\[Phi], 2]".CreateScalar(GeometricProcessor);
-        var rotor2 = r1.CreatePureRotor(a1).SimplifyScalars();
+        var rotor2 = r1.GetEuclideanPureRotorTo(a1).SimplifyScalars();
 
         //var rotor2 = GeometricProcessor
         //    .CreatePureRotor(r1, rotor1.OmMap(e1))
         //    .SimplifyScalars();
 
         var rotor =
-            rotor2.Multivector.Gp(rotor1.Multivector).SimplifyScalars().ToPureRotor();
+            rotor2.Multivector.Gp(rotor1.Multivector).SimplifyScalars().ScalarBivectorPartsToEuclideanPureRotor();
 
         var omegaRotated1 = rotor1.OmMap(omega).SimplifyScalars();
         var omegaRotated2 = rotor2.OmMap(omegaRotated1).SimplifyScalars();
@@ -365,7 +365,7 @@ public static class Sample1
         //);
 
         var rotor1 =
-            kUnit.CreatePureRotor(
+            kUnit.GetEuclideanPureRotorTo(
                 sigma3,
                 true
             ).SimplifyScalars();

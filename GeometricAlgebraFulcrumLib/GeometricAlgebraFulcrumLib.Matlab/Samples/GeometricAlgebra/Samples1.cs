@@ -1,5 +1,6 @@
 ﻿using System;
 using GeometricAlgebraFulcrumLib.Matlab.GeometricAlgebra.Float64.Processors;
+using GeometricAlgebraFulcrumLib.Matlab.LinearAlgebra.Float64;
 
 namespace GeometricAlgebraFulcrumLib.Matlab.Samples.GeometricAlgebra
 {
@@ -8,14 +9,46 @@ namespace GeometricAlgebraFulcrumLib.Matlab.Samples.GeometricAlgebra
         public static XGaFloat64EuclideanProcessor VGa 
             => XGaFloat64EuclideanProcessor.Instance;
 
+        public static XGaFloat64ProjectiveProcessor PGa 
+            => XGaFloat64ProjectiveProcessor.Instance;
+        
+        public static XGaFloat64ConformalProcessor CGa 
+            => XGaFloat64ConformalProcessor.Instance;
+
 
         public static void Example1()
         {
+            var randGen = new Random();
+
+            var t = DateTime.Now;
+            var u1 = VGa.Vector(
+                randGen.GetFloat64Array1D(1000, 0, 1)
+            ).MapBasisVectors(i => 10 * i);
+            
+            var u2 = VGa.Vector(
+                randGen.GetFloat64Array1D(1000, 0, 1)
+            ).MapBasisVectors(i => 10 * i);
+            Console.WriteLine(DateTime.Now - t);
+
+            t = DateTime.Now;
+            var u12 = u1.Op(u2);
+            Console.WriteLine(DateTime.Now - t);
+
+            t = DateTime.Now;
+            var u12a = u12.BivectorToArray1D();
+            Console.WriteLine(DateTime.Now - t);
+        }
+
+        
+        public static void Example2()
+        {
+            //var cga = XGaFloat64Processor.Create()
+
             var a = 
-                VGa.Parse("-1.2 + 3.2<0> + 1.5<1> - 0.2<2> - 2.1<0,1> - 3.7<0,2> + 4.7<1,2> - 5.6<0,1,2>");
+                CGa.Parse("-1.2 + 3.2<0> + 1.5<1> - 0.2<2> - 2.1<0,1> - 3.7<0,2> + 4.7<1,2> - 5.6<0,1,2>");
             
             var b = 
-                VGa.Parse("2.5 + 3<0> - 2.6<1> - 2.2<2> + 3.2<0,1> - 1.1<0,2> + 2<1,2> + 3.6<0,1,2>");
+                CGa.Parse("2.5 + 3<0> - 2.6<1> - 2.2<2> + 3.2<0,1> - 1.1<0,2> + 2<1,2> + 3.6<0,1,2>");
 
             Console.WriteLine(a.ToString());
             Console.WriteLine(b.ToString());
@@ -89,5 +122,6 @@ namespace GeometricAlgebraFulcrumLib.Matlab.Samples.GeometricAlgebra
 
             //composer.SetTerm([1, 4, 2], 1.2);
         }
+
     }
 }

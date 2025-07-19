@@ -188,7 +188,7 @@ public static class XGaMathematicaUtils
         return rotor
             .Multivector
             .MapScalars(scalar => scalar.Simplify())
-            .ToPureRotor();
+            .ScalarBivectorPartsToEuclideanPureRotor();
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -197,7 +197,7 @@ public static class XGaMathematicaUtils
         return rotor
             .Multivector
             .MapScalars(scalar => scalar.Simplify(assumeExpr))
-            .ToPureRotor();
+            .ScalarBivectorPartsToEuclideanPureRotor();
     }
 
 

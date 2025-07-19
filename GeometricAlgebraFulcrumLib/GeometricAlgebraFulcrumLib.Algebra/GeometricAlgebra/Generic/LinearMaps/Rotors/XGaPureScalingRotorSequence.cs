@@ -56,7 +56,7 @@ public sealed class XGaPureScalingRotorSequence<T> :
             var targetVector = targetFrame[i];
 
             var rotor = 
-                sourceVector.CreatePureScalingRotor(targetVector);
+                sourceVector.GetEuclideanPureScalingRotor(targetVector);
 
             rotorsSequence.Add(rotor);
 
@@ -90,7 +90,7 @@ public sealed class XGaPureScalingRotorSequence<T> :
             var sourceVector = sourceFrameVectors[vectorIndex];
             var targetVector = targetFrame[vectorIndex];
 
-            var rotor = sourceVector.CreatePureScalingRotor(targetVector);
+            var rotor = sourceVector.GetEuclideanPureScalingRotor(targetVector);
 
             rotorsSequence.Add(rotor);
 
@@ -131,7 +131,7 @@ public sealed class XGaPureScalingRotorSequence<T> :
             var targetVector = targetFrameVectors[i];
 
             var rotor = 
-                sourceVector.CreatePureScalingRotor(targetVector);
+                sourceVector.GetEuclideanPureScalingRotor(targetVector);
 
             rotorsSequence.Add(rotor);
 

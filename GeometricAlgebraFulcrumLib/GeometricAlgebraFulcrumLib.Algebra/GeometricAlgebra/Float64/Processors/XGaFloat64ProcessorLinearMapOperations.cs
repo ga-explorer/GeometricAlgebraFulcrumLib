@@ -95,7 +95,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Processors
 
             var angle = LinFloat64PolarAngle.CreateFromVector(realValue, imagValue);
 
-            return realVector.Op(imagVector).ToPureRotor(angle);
+            return realVector.Op(imagVector).ToEuclideanPureRotor(angle);
 
             //Console.WriteLine($"Eigen value real part: {realValue.GetLaTeXDisplayEquation()}");
             //Console.WriteLine();

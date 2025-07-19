@@ -1,4 +1,5 @@
-﻿using Irony.Parsing;
+﻿using System.Collections.Generic;
+using Irony.Parsing;
 
 namespace GeometricAlgebraFulcrumLib.Utilities.Code.Irony.Compiler;
 

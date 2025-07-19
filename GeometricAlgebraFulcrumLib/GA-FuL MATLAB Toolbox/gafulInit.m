@@ -26,4 +26,4 @@ end
 
 vga = gafulGetProcessor(0, 0);
 pga = gafulGetProcessor(0, 1);
-cga = gafulGetProcessor(1, 0);
+cga = GeometricAlgebraFulcrumLib.Matlab.GeometricAlgebra.Float64.Processors.XGaFloat64Processor.Conformal; %gafulGetProcessor(1, 0);

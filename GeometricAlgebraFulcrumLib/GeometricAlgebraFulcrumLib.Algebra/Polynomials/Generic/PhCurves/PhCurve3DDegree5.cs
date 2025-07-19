@@ -61,7 +61,7 @@ public sealed class PhCurve3DDegree5<T>
         Tangent1 = tangent1;
         TangentLength0 = Tangent0.ENorm();
 
-        ScalingRotor = processor.VectorTerm(0).CreatePureScalingRotor(tangent0);
+        ScalingRotor = processor.VectorTerm(0).GetEuclideanPureScalingRotor(tangent0);
 
         var scaledRotorInv = ScalingRotor.GetPureScalingRotorInverse();
 

@@ -1,4 +1,7 @@
-﻿namespace GeometricAlgebraFulcrumLib.Utilities.Code.SyntaxTree.Expressions;
+﻿using System.Collections.Generic;
+using System.Linq;
+
+namespace GeometricAlgebraFulcrumLib.Utilities.Code.SyntaxTree.Expressions;
 
 public static class SteExpressionUtils
 {

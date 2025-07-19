@@ -70,7 +70,7 @@ public static class SymbolicPhConstruction2DSample
         var dNorm = d.ENorm();
         var dUnit = d / dNorm;
 
-        var scaledRotor2 = e1.CreateScaledParametricPureRotor3D(
+        var scaledRotor2 = e1.CreateParametricPureScalingRotor3D(
             dUnit,
             ScalarProcessor.Angle0Radians().RadiansToPolarAngle(),
             dNorm.ScalarValue
@@ -88,7 +88,7 @@ public static class SymbolicPhConstruction2DSample
         var v0 = f011 / v1;
         var v2 = f121 / v1;
 
-        var v = e1.CreateScaledParametricPureRotor3D(
+        var v = e1.CreateParametricPureScalingRotor3D(
             uUnit,
             ScalarProcessor.Zero.RadiansToPolarAngle(),
             uNorm.ScalarValue

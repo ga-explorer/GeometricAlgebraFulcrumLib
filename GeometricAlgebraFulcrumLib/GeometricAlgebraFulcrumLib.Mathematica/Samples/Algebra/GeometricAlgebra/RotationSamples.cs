@@ -590,7 +590,7 @@ public static class RotationSamples
 
 
             var uvRotor =
-                u.CreatePureRotor(v);
+                u.GetEuclideanPureRotorTo(v);
 
             var uvRotorMatrix =
                 uvRotor.GetMultivectorMapArray(n, n);
@@ -605,7 +605,7 @@ public static class RotationSamples
                 var en = -ep;
 
                 var uepRotor =
-                    u.CreatePureRotor(ep);
+                    u.GetEuclideanPureRotorTo(ep);
 
                 var uepRotorMatrix =
                     uepRotor.GetMultivectorMapArray(n, n);
@@ -616,7 +616,7 @@ public static class RotationSamples
 
 
                 var uenRotor =
-                    u.CreatePureRotor(en);
+                    u.GetEuclideanPureRotorTo(en);
 
                 var uenRotorMatrix =
                     uenRotor.GetMultivectorMapArray(n, n);

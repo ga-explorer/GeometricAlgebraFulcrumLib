@@ -137,7 +137,7 @@ public static class Sample2
             Mfs.And[unitLengthAssumption1, unitLengthAssumption2].Evaluate();
 
         var rotor1 =
-            u.CreatePureRotor(v);
+            u.GetEuclideanPureRotorTo(v);
 
         var rotor2 =
             rotor1.GetPureRotorInverse();
@@ -193,10 +193,10 @@ public static class Sample2
             Mfs.And[unitLengthAssumption1, unitLengthAssumption2].Evaluate();
 
         var rotor1 =
-            u.CreatePureRotor(e1);
+            u.GetEuclideanPureRotorTo(e1);
 
         var rotor2 =
-            e1.CreatePureRotor(v);
+            e1.GetEuclideanPureRotorTo(v);
 
         var rotorMv = rotor2.Multivector.SimplifyScalars(unitLengthAssumption2);
         var rotorMvReverse = rotorMv.Reverse();

@@ -32,7 +32,7 @@ public static class Euclidean3DSymbolicSample
 
 
         var rotor =
-            v.CreatePureRotor(u);
+            v.GetEuclideanPureRotorTo(u);
 
         var rotorMv = rotor.Multivector;
         var rotorMvReverse = rotor.Multivector.Reverse();

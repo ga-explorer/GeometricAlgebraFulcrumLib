@@ -464,7 +464,7 @@ public static class PowerSignalVisualizationSample1
 
             DefaultRenderingOptions =
             {
-                Display = false,
+                Display = true,
                 AntiAlias = true,
                 AntiAliasDepth = 2,
                 MaxImageBufferMemory = 10240,

@@ -61,7 +61,7 @@ public static class NumericRotorsSample
         var rotationAxis = rotationBlade.Gp(pseudoScalar.Inverse()).GetVectorPart();
 
         // Compute the rotor from the angle and 2-blade of rotation
-        var rotor = rotationBlade.ToPureRotor(angle);
+        var rotor = rotationBlade.ToEuclideanPureRotor(angle);
 
         // Make sure the eigen vector and eigen 2-blade of rotation are correct
 
@@ -122,7 +122,7 @@ public static class NumericRotorsSample
             rotationAxis.Gp(pseudoScalar.Inverse()).GetBivectorPart();
 
         // Compute the rotor from the angle and 2-blade of rotation
-        var rotor = rotationBlade.ToPureRotor(angle);
+        var rotor = rotationBlade.ToEuclideanPureRotor(angle);
 
         // Make sure the eigen vector and eigen 2-blade of rotation are correct
         var diff1 = rotor.OmMap(rotationAxis) - rotationAxis;
@@ -263,7 +263,7 @@ public static class NumericRotorsSample
         {
             // Define a rotor with angle theta in the plane orthogonal to v2 - v1
             var rotorSBlade = (v2 - v1).Gp(pseudoScalarInverse).GetBivectorPart();
-            var rotorS = rotorSBlade.ToPureRotor(angleTheta);
+            var rotorS = rotorSBlade.ToEuclideanPureRotor(angleTheta);
 
             // Create pure rotor that rotates v1 to v2 at theta = 0
             var rotor0 = v1.CreatePureRotor(v2, true);
@@ -343,7 +343,7 @@ public static class NumericRotorsSample
         {
             // Define a rotor with angle theta in the plane orthogonal to v2 - v1
             var rotorSBlade = (v2 - v1).Gp(pseudoScalarInverse).GetBivectorPart();
-            var rotorS = rotorSBlade.ToPureRotor(angleTheta);
+            var rotorS = rotorSBlade.ToEuclideanPureRotor(angleTheta);
 
             // Create pure rotor that rotates v1 to v2 at theta = 0
             var rotor0 = v1.CreatePureRotor(v2, true);
@@ -357,7 +357,7 @@ public static class NumericRotorsSample
                 (1 + 2 * (v1v2Dot - 1) / (2 - Math.Pow(angleTheta.Sin(), 2) * (v1v2Dot + 1))).CosToPolarAngle();
 
             // Define the actual rotor taking v1 into v2
-            var rotor = rotorBlade.ToPureRotor(rotorAngle);
+            var rotor = rotorBlade.ToEuclideanPureRotor(rotorAngle);
 
             var rotorAxis =
                 rotorBlade.Gp(pseudoScalarInverse).GetVectorPart();

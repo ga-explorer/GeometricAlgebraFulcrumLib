@@ -1,4 +1,5 @@
-﻿using GeometricAlgebraFulcrumLib.Utilities.Code.Irony.Semantic.Scope;
+﻿using System.Collections.Generic;
+using GeometricAlgebraFulcrumLib.Utilities.Code.Irony.Semantic.Scope;
 
 namespace GeometricAlgebraFulcrumLib.Utilities.Code.Irony.Semantic.Symbol;
 

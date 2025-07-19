@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System;
+using System.Text;
 using GeometricAlgebraFulcrumLib.Utilities.Code.HTMLold.Elements;
 
 namespace GeometricAlgebraFulcrumLib.Utilities.Code.HTMLold.Attributes;

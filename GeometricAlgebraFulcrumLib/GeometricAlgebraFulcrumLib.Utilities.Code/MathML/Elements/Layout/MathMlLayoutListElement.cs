@@ -1,4 +1,7 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using GeometricAlgebraFulcrumLib.Utilities.Text.Text;
 
 namespace GeometricAlgebraFulcrumLib.Utilities.Code.MathML.Elements.Layout;

@@ -26,7 +26,7 @@ internal class MapMethodFileComposer :
         
     protected override void DefineContextParameters(MetaContext context)
     {
-        _linearMapArray = context.ParameterVariablesFactory.CreateDenseArray(
+        _linearMapArray = context.ParameterVariablesFactory.CreateDenseArray2D(
             VSpaceDimensions,
             VSpaceDimensions,
             (row, col) => $"omScalarR{row}C{col}"

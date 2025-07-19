@@ -94,7 +94,7 @@ public static class SymbolicRotorsSample
         var rotationAxis = rotationBlade.Gp(pseudoScalarInverse).GetVectorPart();
 
         // Compute the rotor from the angle and 2-blade of rotation
-        var rotor = rotationBlade.CreatePureRotor(angle);
+        var rotor = rotationBlade.GetEuclideanPureRotor(angle);
 
         // Make sure the eigen vector and eigen 2-blade of rotation are correct
 
@@ -152,7 +152,7 @@ public static class SymbolicRotorsSample
             rotationAxis.Gp(pseudoScalarInverse).GetBivectorPart();
 
         // Compute the rotor from the angle and 2-blade of rotation
-        var rotor = rotationBlade.CreatePureRotor(angle);
+        var rotor = rotationBlade.GetEuclideanPureRotor(angle);
 
         // Make sure the eigen vector and eigen 2-blade of rotation are correct
         var diff1 = rotor.OmMap(rotationAxis) - rotationAxis;
@@ -234,7 +234,7 @@ public static class SymbolicRotorsSample
             u.ESp(v).ArcCos();
 
         // Compute the rotor from the angle and 2-blade of rotation
-        var rotor = u.CreatePureRotor(v, true);
+        var rotor = u.GetEuclideanPureRotorTo(v, true);
 
         var rotorMatrix = 
             rotor.GetVectorMapPart(3)
@@ -320,10 +320,10 @@ public static class SymbolicRotorsSample
 
         // Define a rotor with angle theta in the plane orthogonal to v2 - v1
         var rotorSBlade = (v2 - v1).Gp(pseudoScalarInverse).GetBivectorPart();
-        var rotorS = rotorSBlade.CreatePureRotor(angleTheta);
+        var rotorS = rotorSBlade.GetEuclideanPureRotor(angleTheta);
 
         // Create pure rotor that rotates v1 to v2 at theta = 0
-        var rotor0 = v1.CreatePureRotor(v2, true);
+        var rotor0 = v1.GetEuclideanPureRotorTo(v2, true);
 
         // The actual plane of rotation is made by rotating the plane of v1,v2
         // by angle theta in the plane orthogonal to v2 - v1
@@ -343,7 +343,7 @@ public static class SymbolicRotorsSample
         var rotationAngle =
             u1.GetEuclideanAngle(u2).ScalarValue.Simplify(assumption).RadiansToPolarAngle(ScalarProcessor);
 
-        var rotor = rotationBlade.CreatePureRotor(rotationAngle);
+        var rotor = rotationBlade.GetEuclideanPureRotor(rotationAngle);
 
         var rotationAxis =
             rotationBlade.Gp(pseudoScalarInverse).GetVectorPart().FullSimplifyScalars(assumption);
@@ -409,12 +409,12 @@ public static class SymbolicRotorsSample
         var rotorSBlade = (v2 - v1).Gp(pseudoScalarInverse).GetBivectorPart();
 
         // Define parametric rotor S
-        var rotorS = rotorSBlade.CreatePureRotor(angleTheta);
+        var rotorS = rotorSBlade.GetEuclideanPureRotor(angleTheta);
 
         var rotorSMatrix = rotorS.GetVectorMapPart(3).ToArray(3).FullSimplifyScalars(assumeExpr);
 
         // Create pure rotor that rotates v1 to v2 at theta = 0
-        var rotor0 = v1.CreatePureRotor(v2, true);
+        var rotor0 = v1.GetEuclideanPureRotorTo(v2, true);
 
         var rotorBlade0 = v2.Op(v1).FullSimplifyScalars(assumeExpr);
 
@@ -429,7 +429,7 @@ public static class SymbolicRotorsSample
                 .OmMap(rotorBlade0)
                 .FullSimplifyScalars(assumeExpr);
 
-        var rotor = rotorBlade.CreatePureRotor(rotorAngle).Multivector.FullSimplifyScalars(assumeExpr).ToPureRotor();
+        var rotor = rotorBlade.GetEuclideanPureRotor(rotorAngle).Multivector.FullSimplifyScalars(assumeExpr).ScalarBivectorPartsToEuclideanPureRotor();
 
         var rotorMatrix = rotor.GetVectorMapPart(3).ToArray(3).FullSimplifyScalars(assumeExpr);
         
@@ -527,7 +527,7 @@ public static class SymbolicRotorsSample
         var rotorSBlade = (v2 - v1).Gp(pseudoScalarInverse).GetBivectorPart();
 
         // Define parametric rotor S
-        var rotorS = rotorSBlade.CreatePureRotor(angleTheta);
+        var rotorS = rotorSBlade.GetEuclideanPureRotor(angleTheta);
 
         //var rotorSMatrix = rotorS.GetVectorMapPart(3).ToArray(3).MapScalars(scalarMap);
 
@@ -540,11 +540,11 @@ public static class SymbolicRotorsSample
         var rotorAngle =
             (1 + 2 * (v1v2Dot - 1) / (2 - Mfs.Power[Mfs.Sin[angleTheta.RadiansValue], 2] * (v1v2Dot + 1))).ArcCos().MapAngleRadians(scalarMap);
 
-        var rotor0 = rotorBlade0.CreatePureRotor(rotorAngle).Multivector.MapScalars(scalarMap).ToPureRotor();
+        var rotor0 = rotorBlade0.GetEuclideanPureRotor(rotorAngle).Multivector.MapScalars(scalarMap).ScalarBivectorPartsToEuclideanPureRotor();
 
         //var rotor0Matrix = rotor0.GetVectorMapPart(3).ToArray(3).MapScalars(scalarMap);
 
-        var rotor = rotorS.OmMap(rotor0.Multivector).MapScalars(scalarMap).ToPureRotor();
+        var rotor = rotorS.OmMap(rotor0.Multivector).MapScalars(scalarMap).ScalarBivectorPartsToEuclideanPureRotor();
 
         //// The actual plane of rotation is made by rotating the plane of v1,v2
         //// by angle theta in the plane orthogonal to v2 - v1
@@ -632,7 +632,7 @@ public static class SymbolicRotorsSample
 
         var rotationAngle = @"\[Theta]".RadiansToPolarAngle(ScalarProcessor);
 
-        var rotor = rotationBlade.CreatePureRotor(rotationAngle);
+        var rotor = rotationBlade.GetEuclideanPureRotor(rotationAngle);
 
         var ra = rotor.OmMap(a);
         var rb = rotor.OmMap(b);
@@ -705,7 +705,7 @@ public static class SymbolicRotorsSample
             GeometricProcessor.Vector("Subscript[v,1]", "Subscript[v,2]", "Subscript[v,3]");
         //GeometricProcessor.Vector(2, 1, -1);
 
-        var scaledRotor = u.CreatePureScalingRotor(v);
+        var scaledRotor = u.GetEuclideanPureScalingRotor(v);
 
         var scaledRotorInv =
             scaledRotor.GetPureScalingRotorInverse();
@@ -811,7 +811,7 @@ public static class SymbolicRotorsSample
         foreach (var u in uVectors)
         {
             // Compute the rotor from the angle and 2-blade of rotation
-            var rotor = u.CreatePureRotor(v, true);
+            var rotor = u.GetEuclideanPureRotorTo(v, true);
 
             var matrix =
                 rotor.GetVectorMapPart(vSpaceDimensions).ToArray(vSpaceDimensions);

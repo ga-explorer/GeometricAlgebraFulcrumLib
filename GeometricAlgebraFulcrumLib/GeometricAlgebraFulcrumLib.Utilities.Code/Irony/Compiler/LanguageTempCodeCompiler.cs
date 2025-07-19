@@ -1,4 +1,6 @@
-﻿using GeometricAlgebraFulcrumLib.Utilities.Code.Irony.Semantic;
+﻿using System;
+using System.Collections.Generic;
+using GeometricAlgebraFulcrumLib.Utilities.Code.Irony.Semantic;
 using GeometricAlgebraFulcrumLib.Utilities.Code.Irony.Semantic.Scope;
 using GeometricAlgebraFulcrumLib.Utilities.Code.Irony.SourceCode;
 using Irony.Parsing;

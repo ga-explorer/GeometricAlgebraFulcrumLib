@@ -61,7 +61,7 @@ public static class VectorRotationSamples
         var u = random.GetXGaSparseVector(n);
         var v = random.GetXGaSparseVector(n);
 
-        var uvRotor = u.GetEuclideanRotorTo(v);
+        var uvRotor = u.GetEuclideanPureRotorTo(v);
 
         for (var i = 0; i < 100; i++)
         {

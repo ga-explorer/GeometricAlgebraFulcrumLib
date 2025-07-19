@@ -55,7 +55,7 @@ public sealed class XGaPureRotorSequence<T> :
             var targetVector = targetFrame[i];
 
             var rotor = 
-                sourceVector.CreatePureRotor(targetVector);
+                sourceVector.GetEuclideanPureRotorTo(targetVector);
 
             rotorsSequence.Add(rotor);
 
@@ -88,7 +88,7 @@ public sealed class XGaPureRotorSequence<T> :
             var sourceVector = sourceFrameVectors[vectorIndex];
             var targetVector = targetFrame[vectorIndex];
 
-            var rotor = sourceVector.CreatePureRotor(targetVector);
+            var rotor = sourceVector.GetEuclideanPureRotorTo(targetVector);
 
             rotorsSequence.Add(rotor);
 
@@ -128,7 +128,7 @@ public sealed class XGaPureRotorSequence<T> :
             var targetVector = targetFrameVectors[i];
 
             var rotor = 
-                sourceVector.CreatePureRotor(targetVector);
+                sourceVector.GetEuclideanPureRotorTo(targetVector);
 
             rotorsSequence.Add(rotor);
 

@@ -28,9 +28,9 @@
     <PackageReference Include="CSharpMath.SkiaSharp" Version="0.5.1" />
     <PackageReference Include="GeneticSharp" Version="3.1.4" />
     <PackageReference Include="GeneticSharp.Extensions" Version="3.1.4" />
-    <PackageReference Include="Selenium.Support" Version="4.33.0" />
-    <PackageReference Include="Selenium.WebDriver" Version="4.33.0" />
-    <PackageReference Include="Selenium.WebDriver.ChromeDriver" Version="137.0.7151.7000" />
+    <PackageReference Include="Selenium.Support" Version="4.34.0" />
+    <PackageReference Include="Selenium.WebDriver" Version="4.34.0" />
+    <PackageReference Include="Selenium.WebDriver.ChromeDriver" Version="138.0.7204.15700" />
     <PackageReference Include="Svg.Model" Version="3.0.3" />
     <PackageReference Include="Svg.Skia" Version="3.0.3" />
   </ItemGroup>

@@ -118,7 +118,7 @@ public sealed class PhCurve3DDegree5Canonical<T>
         var dNorm = d.ENorm();
         var dUnit = d / dNorm;
             
-        ScalingRotor2 = e1.CreateScaledParametricPureRotor3D(
+        ScalingRotor2 = e1.CreateParametricPureScalingRotor3D(
             dUnit,
             Theta2,
             dNorm.ScalarValue
@@ -136,7 +136,7 @@ public sealed class PhCurve3DDegree5Canonical<T>
         var v0 = f01 / v1;
         var v2 = f12 / v1;
             
-        var v = e1.CreateScaledParametricPureRotor3D(
+        var v = e1.CreateParametricPureScalingRotor3D(
             uUnit,
             Theta1,
             uNorm.ScalarValue

@@ -1181,7 +1181,7 @@ public sealed partial class XGaFloat64KVectorComposer :
             _idScalarDictionary.Keys.All(id => id.Count == 1)
         );
         
-        if (Grade != 2)
+        if (Grade != 1)
             throw new InvalidOperationException();
         
         if (_idScalarDictionary.Count == 0)

@@ -227,7 +227,7 @@ namespace GeometricAlgebraFulcrumLib.Applications.PowerSystems
                 Mfs.Minus[dot1.ArcCos().ScalarValue].EvaluateToDouble().RadiansToDirectedAngle();
 
             var rotor =
-                u.CreatePureRotor(v);
+                u.GetEuclideanPureRotorTo(v);
 
             var matrix =
                 rotor.GetVectorMapPart(n).ToArray(n);
@@ -300,7 +300,7 @@ namespace GeometricAlgebraFulcrumLib.Applications.PowerSystems
                 ).DivideByENorm();
 
             var rotor =
-                u.CreatePureRotor(v);
+                u.GetEuclideanPureRotorTo(v);
 
             var matrix =
                 rotor.GetVectorMapPart(n).ToArray(n);
@@ -383,7 +383,7 @@ namespace GeometricAlgebraFulcrumLib.Applications.PowerSystems
             var v = k;
 
             var rotor =
-                u.CreatePureRotor(v);
+                u.GetEuclideanPureRotorTo(v);
 
             var x = geometricProcessor.Vector(
                 n,
@@ -489,7 +489,7 @@ namespace GeometricAlgebraFulcrumLib.Applications.PowerSystems
             );
 
         var rotor =
-            u.CreatePureRotor(v);
+            u.GetEuclideanPureRotorTo(v);
 
         laTeXComposer
             .ConsoleWriteLine($"{n}-Dimensions:")

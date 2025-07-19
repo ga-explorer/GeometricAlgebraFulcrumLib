@@ -45,7 +45,7 @@ public static class Sample1
         //    Mfs.Equal[geometricProcessor.ENormSquared(v), Expr.INT_ONE].Evaluate();
 
         // The rotor is defined to align u to v
-        var rotor = u.CreatePureRotor(v, true);
+        var rotor = u.GetEuclideanPureRotorTo(v, true);
 
         var e1 = geometricProcessor.VectorTerm(0);
         var e2 = geometricProcessor.VectorTerm(1);

@@ -116,8 +116,8 @@ public static class SymbolicHarmonicsSample
             var ia = a1.DivideByNorm().Op(basisVector);
             var ib = b1.DivideByNorm().Op(basisVector);
 
-            var ra = ia.CreatePureRotor(wtArray[i]);
-            var rb = ib.CreatePureRotor(wtArray[i]);
+            var ra = ia.GetEuclideanPureRotor(wtArray[i]);
+            var rb = ib.GetEuclideanPureRotor(wtArray[i]);
 
             v2 += aSubspace.Project(ra.OmMap(a1)) +
                   bSubspace.Project(rb.OmMap(b2));

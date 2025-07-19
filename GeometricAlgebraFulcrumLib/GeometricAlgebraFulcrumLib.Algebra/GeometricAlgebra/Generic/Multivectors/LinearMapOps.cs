@@ -13,72 +13,25 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Multivecto
 {
     public abstract partial class XGaMultivector<T>
     {
-
         /// <summary>
         /// Create a pure rotor from its scalar and bivector parts
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public XGaPureRotor<T> ToPureRotor()
+        public XGaPureRotor<T> ScalarBivectorPartsToEuclideanPureRotor()
         {
+            Debug.Assert(Processor.IsEuclidean);
+
             return XGaPureRotor<T>.Create(
                 GetScalarPart().ScalarValue,
                 GetBivectorPart()
             );
         }
-
-    }
-
-    public abstract partial class XGaKVector<T>
-    {
-
-    }
-
-    public sealed partial class XGaScalar<T>
-    {
-
     }
 
     public sealed partial class XGaVector<T>
     {
-
-        /// <summary>
-        /// Create a pure Euclidean rotor that rotates the given source vector into the target vector
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="targetVector"></param>
-        /// <param name="assumeUnitVectors"></param>
-        /// <returns></returns>
-        public XGaPureRotor<T> CreatePureRotor(XGaVector<T> targetVector, bool assumeUnitVectors = false)
-        {
-            var cosAngle =
-                assumeUnitVectors
-                    ? targetVector.ESp(this)
-                    : targetVector.ESp(this) / (targetVector.ENormSquared() * ENormSquared()).Sqrt();
-
-            if (cosAngle.IsOne)
-                return Processor.CreateIdentityRotor();
-
-            var rotationBlade =
-                cosAngle.IsMinusOne
-                    ? throw new InvalidOperationException()//sourceVector.GetNormalVector().Op(sourceVector)
-                    : targetVector.Op(this);
-
-            var unitRotationBlade =
-                rotationBlade / (-rotationBlade.ESpSquared()).Sqrt();
-
-            var cosHalfAngle = ((1 + cosAngle) / 2).Sqrt();
-            var sinHalfAngle = ((1 - cosAngle) / 2).Sqrt();
-
-            var scalarPart = cosHalfAngle.ScalarValue;
-            var bivectorPart = sinHalfAngle * unitRotationBlade;
-
-            return XGaPureRotor<T>.Create(
-                scalarPart,
-                bivectorPart
-            );
-        }
 
         /// <summary>
         /// Create a pure Euclidean rotor that rotates the given source vector
@@ -87,7 +40,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Multivecto
         /// <typeparam name="T"></typeparam>
         /// <param name="targetVector"></param>
         /// <returns></returns>
-        public XGaPureScalingRotor<T> CreatePureScalingRotor(XGaVector<T> targetVector)
+        public XGaPureScalingRotor<T> GetEuclideanPureScalingRotor(XGaVector<T> targetVector)
         {
             var uNorm = ENorm();
             var vNorm = targetVector.ENorm();
@@ -146,7 +99,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Multivecto
                     pseudoScalarInverse
                 ).GetBivectorPart();
 
-            var rotorS = rotorSBlade.CreatePureRotor(angleTheta);
+            var rotorS = rotorSBlade.GetEuclideanPureRotor(angleTheta);
 
             // Define parametric 2-blade of rotation
             // The actual plane of rotation is made by rotating the plane containing
@@ -164,11 +117,11 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Multivecto
             // Math.Acos(1 + 2 * (cosAngle0 - 1) / (2 - Math.Pow(Math.Sin(angleTheta), 2) * (cosAngle0 + 1)));
 
             // Return the final rotor taking v1 into v2
-            return rotorBlade.CreatePureRotor(rotorAngle);
+            return rotorBlade.GetEuclideanPureRotor(rotorAngle);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public XGaPureScalingRotor<T> CreateScaledParametricPureRotor3D(XGaVector<T> targetVector, LinPolarAngle<T> angleTheta, T scalingFactor)
+        public XGaPureScalingRotor<T> CreateParametricPureScalingRotor3D(XGaVector<T> targetVector, LinPolarAngle<T> angleTheta, T scalingFactor)
         {
             return CreateParametricPureRotor3D(targetVector, angleTheta)
                 .CreatePureScalingRotor(scalingFactor);
@@ -324,13 +277,13 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Multivecto
         public XGaPureRotorSequence<T> CreatePureRotorSequence(XGaVector<T> sourceVector2, XGaVector<T> targetVector1, XGaVector<T> targetVector2, bool assumeUnitVectors = false)
         {
             var rotor1 =
-                CreatePureRotor(
+                GetEuclideanPureRotorTo(
                     targetVector1,
                     assumeUnitVectors
                 );
 
             var rotor2 =
-                rotor1.OmMap(sourceVector2).CreatePureRotor(
+                rotor1.OmMap(sourceVector2).GetEuclideanPureRotorTo(
                     targetVector2,
                     assumeUnitVectors
                 );
@@ -425,6 +378,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Multivecto
 
             return XGaEuclideanScalingRotorSquared2D<T>.Create(Processor, a0, a12);
         }
+
 
         public Pair<XGaVector<T>> ApplyGramSchmidt(XGaVector<T> v2, bool makeUnitVectors)
         {
@@ -606,8 +560,9 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Multivecto
             };
         }
 
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public XGaVectorFrameFixed<T> CreateBasisVectorFrameFixed(int vSpaceDimensions)
+        public XGaVectorFrameFixed<T> GetBasisVectorFrameFixed(int vSpaceDimensions)
         {
             return Processor
                 .CreateFreeFrameOfBasis(vSpaceDimensions)
@@ -615,7 +570,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Multivecto
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public XGaVectorFrameFixed<T> CreateFixedFrameOfScaledBasis(int vSpaceDimensions, T scalingFactor)
+        public XGaVectorFrameFixed<T> GetFixedFrameOfScaledBasis(int vSpaceDimensions, T scalingFactor)
         {
             return Processor
                 .CreateFreeFrameOfScaledBasis(vSpaceDimensions, scalingFactor)
@@ -623,7 +578,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Multivecto
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public XGaVectorFrameFixed<T> CreateFixedFrameOfSimplex(int vSpaceDimensions, T scalingFactor)
+        public XGaVectorFrameFixed<T> GetFixedFrameOfSimplex(int vSpaceDimensions, T scalingFactor)
         {
             return Processor
                 .CreateFreeFrameOfSimplex(vSpaceDimensions, scalingFactor)
@@ -661,23 +616,23 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Multivecto
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public XGaPureRotor<T> GetEuclideanRotorFromBasis(int index)
+        public XGaPureRotor<T> GetEuclideanPureRotorFromBasis(int index)
         {
             return Processor
                 .VectorTerm(index)
-                .CreatePureRotor(this);
+                .GetEuclideanPureRotorTo(this);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public XGaPureRotor<T> GetEuclideanRotorFrom(XGaVector<T> vector1)
+        public XGaPureRotor<T> GetEuclideanPureRotorFrom(XGaVector<T> vector1)
         {
-            return vector1.CreatePureRotor(this);
+            return vector1.GetEuclideanPureRotorTo(this);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public XGaPureRotor<T> GetEuclideanRotorFrom(XGaVector<T> vector1, bool assumeUnitVectors)
+        public XGaPureRotor<T> GetEuclideanPureRotorFrom(XGaVector<T> vector1, bool assumeUnitVectors)
         {
-            return vector1.CreatePureRotor(
+            return vector1.GetEuclideanPureRotorTo(
                 this,
                 assumeUnitVectors
             );
@@ -685,25 +640,47 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Multivecto
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public XGaPureRotor<T> GetEuclideanRotorToBasis(int index)
+        public XGaPureRotor<T> GetEuclideanPureRotorToBasis(int index)
         {
-            return CreatePureRotor(
+            return GetEuclideanPureRotorTo(
                 Processor.VectorTerm(index)
             );
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public XGaPureRotor<T> GetEuclideanRotorTo(XGaVector<T> vector2)
+        /// <summary>
+        /// Create a pure Euclidean rotor that rotates the given source vector into the target vector
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="targetVector"></param>
+        /// <param name="assumeUnitVectors"></param>
+        /// <returns></returns>
+        public XGaPureRotor<T> GetEuclideanPureRotorTo(XGaVector<T> targetVector, bool assumeUnitVectors = false)
         {
-            return CreatePureRotor(vector2);
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public XGaPureRotor<T> GetEuclideanRotorTo(XGaVector<T> vector2, bool assumeUnitVectors)
-        {
-            return CreatePureRotor(
-                vector2,
+            var cosAngle =
                 assumeUnitVectors
+                    ? targetVector.ESp(this)
+                    : targetVector.ESp(this) / (targetVector.ENormSquared() * ENormSquared()).Sqrt();
+
+            if (cosAngle.IsOne)
+                return Processor.CreateIdentityRotor();
+
+            var rotationBlade =
+                cosAngle.IsMinusOne
+                    ? throw new InvalidOperationException()//sourceVector.GetNormalVector().Op(sourceVector)
+                    : targetVector.Op(this);
+
+            var unitRotationBlade =
+                rotationBlade / (-rotationBlade.ESpSquared()).Sqrt();
+
+            var cosHalfAngle = ((1 + cosAngle) / 2).Sqrt();
+            var sinHalfAngle = ((1 - cosAngle) / 2).Sqrt();
+
+            var scalarPart = cosHalfAngle.ScalarValue;
+            var bivectorPart = sinHalfAngle * unitRotationBlade;
+
+            return XGaPureRotor<T>.Create(
+                scalarPart,
+                bivectorPart
             );
         }
 
@@ -714,9 +691,9 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Multivecto
         /// <param name="subspace"></param>
         /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public XGaPureRotor<T> GetEuclideanRotorTo(XGaSubspace<T> subspace)
+        public XGaPureRotor<T> GetEuclideanPureRotorTo(XGaSubspace<T> subspace)
         {
-            return CreatePureRotor(
+            return GetEuclideanPureRotorTo(
                 subspace.Project(this)
             );
         }
@@ -725,14 +702,12 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Multivecto
 
     public sealed partial class XGaBivector<T>
     {
-
-
         /// <summary>
         /// Create a simple rotor from an angle and a 2-blade
         /// </summary>
         /// <param name="rotationAngle"></param>
         /// <returns></returns>
-        public XGaPureRotor<T> CreatePureRotor(LinPolarAngle<T> rotationAngle)
+        public XGaPureRotor<T> GetEuclideanPureRotor(LinPolarAngle<T> rotationAngle)
         {
             var (cosHalfAngle, sinHalfAngle) =
                 rotationAngle.HalfPolarAngle();
@@ -753,7 +728,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Multivecto
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
-        public XGaPureRotor<T> CreatePureRotor()
+        public XGaPureRotor<T> ToPureRotor()
         {
             var processor = ScalarProcessor;
 
@@ -799,7 +774,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Multivecto
         /// <typeparam name="T"></typeparam>
         /// <param name="bladeSignatureSign"></param>
         /// <returns></returns>
-        public XGaPureRotor<T> CreatePureRotor(IntegerSign bladeSignatureSign)
+        public XGaPureRotor<T> ToPureRotor(IntegerSign bladeSignatureSign)
         {
             var processor = ScalarProcessor;
 

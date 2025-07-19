@@ -1,4 +1,6 @@
-﻿using GeometricAlgebraFulcrumLib.Benchmarks.GeometricAlgebra;
+﻿using BenchmarkDotNet.Running;
+using GeometricAlgebraFulcrumLib.Benchmarks.Applications;
+using GeometricAlgebraFulcrumLib.Benchmarks.GeometricAlgebra;
 
 namespace GeometricAlgebraFulcrumLib.Benchmarks;
 
@@ -28,12 +30,14 @@ class Program
         
         //MetricBenchmarks.Validate();
         //IndexSetBenchmarks.Validate();
-        UnaryOperationsBenchmarks.Validate();
+        //UnaryOperationsBenchmarks.Validate();
         //BilinearProductsBenchmarks.Validate();
         //BilinearProductsBenchmarks.TestGrades(
         //    "ECp",
         //    (kv1, kv2) => kv1.ECp(kv2)
         //);
 
+        BenchmarkRunner.Run<JacobiSymmetricEigenDecomposerBenchmarks>();
+        //JacobiSymmetricEigenDecomposerBenchmarks.Validate();
     }
 }

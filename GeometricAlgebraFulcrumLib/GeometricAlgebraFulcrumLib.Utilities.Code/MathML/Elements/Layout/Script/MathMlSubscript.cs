@@ -1,4 +1,6 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using GeometricAlgebraFulcrumLib.Utilities.Code.MathML.Values.Color;
 
 namespace GeometricAlgebraFulcrumLib.Utilities.Code.MathML.Elements.Layout.Script;

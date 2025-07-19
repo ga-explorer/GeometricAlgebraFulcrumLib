@@ -1,4 +1,5 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Drawing;
 using System.Text;
 using GeometricAlgebraFulcrumLib.Utilities.Code.HTMLold.Content;
 using GeometricAlgebraFulcrumLib.Utilities.Code.HTMLold.Values;

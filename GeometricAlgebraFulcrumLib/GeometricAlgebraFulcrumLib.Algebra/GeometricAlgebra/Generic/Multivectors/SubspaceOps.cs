@@ -63,8 +63,9 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Multivecto
                 );
         }
 
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public virtual XGaMultivector<T> ProjectOn(XGaKVector<T> subspace, bool useSubspaceInverse = false)
+        public virtual XGaMultivector<T> ProjectOn(XGaKVector<T> subspace, bool useSubspaceInverse)
         {
             Debug.Assert(subspace.IsNearBlade());
 
@@ -131,8 +132,9 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Multivecto
             return n.IsOdd() ? -mv1 : mv1;
         }
 
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override XGaKVector<T> ProjectOn(XGaKVector<T> subspace, bool useSubspaceInverse = false)
+        public override XGaKVector<T> ProjectOn(XGaKVector<T> subspace, bool useSubspaceInverse)
         {
             Debug.Assert(subspace.IsNearBlade());
 
@@ -205,8 +207,9 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Multivecto
             return subspace.IsOdd() ? -this : this;
         }
 
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override XGaScalar<T> ProjectOn(XGaKVector<T> subspace, bool useSubspaceInverse = false)
+        public override XGaScalar<T> ProjectOn(XGaKVector<T> subspace, bool useSubspaceInverse)
         {
             Debug.Assert(subspace.IsNearBlade());
 
@@ -222,6 +225,11 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Multivecto
 
     public sealed partial class XGaVector<T>
     {
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public XGaPureReflector<T> ToPureReflector()
+        {
+            return XGaPureReflector<T>.Create(this);
+        }
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -267,8 +275,9 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Multivecto
             return ReflectOn(subspace);
         }
 
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override XGaVector<T> ProjectOn(XGaKVector<T> subspace, bool useSubspaceInverse = false)
+        public override XGaVector<T> ProjectOn(XGaKVector<T> subspace, bool useSubspaceInverse)
         {
             Debug.Assert(subspace.IsNearBlade());
 
@@ -279,15 +288,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Multivecto
 
             return Fdp(subspaceInverse).Gp(subspace).GetVectorPart();
         }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public XGaPureReflector<T> ToPureReflector()
-        {
-            return XGaPureReflector<T>.Create(this);
-        }
-
-
-
+        
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public XGaVector<T> ProjectOnVector(XGaVector<T> subspace)
         {
@@ -311,6 +312,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Multivecto
         {
             return subspace.Project(this);
         }
+
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public XGaVector<T> RejectOnVector(XGaVector<T> subspace)
@@ -382,8 +384,9 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Multivecto
             return subspace.IsOdd() ? -mv1 : mv1;
         }
     
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override XGaBivector<T> ProjectOn(XGaKVector<T> subspace, bool useSubspaceInverse = false)
+        public override XGaBivector<T> ProjectOn(XGaKVector<T> subspace, bool useSubspaceInverse)
         {
             Debug.Assert(subspace.IsNearBlade());
         
@@ -451,8 +454,9 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Multivecto
             return n.IsOdd() ? -mv1 : mv1;
         }
     
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override XGaHigherKVector<T> ProjectOn(XGaKVector<T> subspace, bool useSubspaceInverse = false)
+        public override XGaHigherKVector<T> ProjectOn(XGaKVector<T> subspace, bool useSubspaceInverse)
         {
             Debug.Assert(subspace.IsNearBlade());
         

@@ -40,7 +40,7 @@ internal class OutermorphismClassFileComposer :
                 XGaProcessor = GeometricProcessor
             };
 
-        var linearMapArray = context.ParameterVariablesFactory.CreateDenseArray(
+        var linearMapArray = context.ParameterVariablesFactory.CreateDenseArray2D(
             VSpaceDimensions,
             VSpaceDimensions,
             (row, col) => $"omScalarR{row}C{col}"
