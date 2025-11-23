@@ -420,7 +420,7 @@ public static class DictionaryExtensions
         
     public static KeyValuePair<TKey, TValue> First<TKey, TValue>(this IEnumerable<KeyValuePair<TKey, TValue>> pairsList, Func<TValue, TValue> valueMapping)
     {
-        var pair = pairsList.First();
+        var pair = pairsList.FirstItem();
 
         return new KeyValuePair<TKey, TValue>(
             pair.Key, 

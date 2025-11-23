@@ -163,8 +163,8 @@ public class XGaConformalProcessor<T> :
     public XGaVector<T> EncodeEGaVector(LinFloat64Vector2D egaVector)
     {
         return CreateVectorComposer()
-            .SetVectorTerm(2, egaVector.X.ScalarValue)
-            .SetVectorTerm(3, egaVector.Y.ScalarValue)
+            .SetVectorTerm(2, egaVector.X)
+            .SetVectorTerm(3, egaVector.Y)
             .GetVector();
     }
     
@@ -172,9 +172,9 @@ public class XGaConformalProcessor<T> :
     public XGaVector<T> EncodeEGaVector(LinFloat64Vector3D egaVector)
     {
         return CreateVectorComposer()
-            .SetVectorTerm(2, egaVector.X.ScalarValue)
-            .SetVectorTerm(3, egaVector.Y.ScalarValue)
-            .SetVectorTerm(4, egaVector.Z.ScalarValue)
+            .SetVectorTerm(2, egaVector.X)
+            .SetVectorTerm(3, egaVector.Y)
+            .SetVectorTerm(4, egaVector.Z)
             .GetVector();
     }
 
@@ -278,8 +278,8 @@ public class XGaConformalProcessor<T> :
         return CreateVectorComposer()
             .SetVectorTerm(0, scalarHalf)
             .SetVectorTerm(1, scalarHalf)
-            .SetVectorTerm(2, egaVector.X.ScalarValue)
-            .SetVectorTerm(3, egaVector.Y.ScalarValue)
+            .SetVectorTerm(2, egaVector.X)
+            .SetVectorTerm(3, egaVector.Y)
             .GetVector();
     }
 
@@ -295,9 +295,9 @@ public class XGaConformalProcessor<T> :
         return CreateVectorComposer()
             .SetVectorTerm(0, scalarHalf)
             .SetVectorTerm(1, scalarHalf)
-            .SetVectorTerm(2, egaVector.X.ScalarValue)
-            .SetVectorTerm(3, egaVector.Y.ScalarValue)
-            .SetVectorTerm(4, egaVector.Z.ScalarValue)
+            .SetVectorTerm(2, egaVector.X)
+            .SetVectorTerm(3, egaVector.Y)
+            .SetVectorTerm(4, egaVector.Z)
             .GetVector();
     }
 
@@ -463,15 +463,15 @@ public class XGaConformalProcessor<T> :
                 ScalarProcessor.TwoValue
             ).ScalarValue;
 
-        var x2 = egaPoint.VectorENormSquared().ScalarValue;
+        var x2 = LinFloat64Vector2DUtils.L2NormSquared(egaPoint).ScalarValue;
         var sn = ScalarProcessor.Times(scalarHalf, 1 + x2);
         var sp = ScalarProcessor.Times(scalarHalf, 1 - x2);
 
         return CreateVectorComposer()
             .SetVectorTerm(0, sn)
             .SetVectorTerm(1, sp)
-            .SetVectorTerm(2, egaPoint.X.ScalarValue)
-            .SetVectorTerm(3, egaPoint.Y.ScalarValue)
+            .SetVectorTerm(2, egaPoint.X)
+            .SetVectorTerm(3, egaPoint.Y)
             .GetVector();
     }
 
@@ -484,16 +484,16 @@ public class XGaConformalProcessor<T> :
                 ScalarProcessor.TwoValue
             ).ScalarValue;
 
-        var x2 = egaPoint.VectorENormSquared();
+        var x2 = LinFloat64Vector3DUtils.L2NormSquared(egaPoint);
         var sn = ScalarProcessor.Times(scalarHalf, 1 + x2);
         var sp = ScalarProcessor.Times(scalarHalf, 1 - x2);
 
         return CreateVectorComposer()
             .SetVectorTerm(0, sn)
             .SetVectorTerm(1, sp)
-            .SetVectorTerm(2, egaPoint.X.ScalarValue)
-            .SetVectorTerm(3, egaPoint.Y.ScalarValue)
-            .SetVectorTerm(4, egaPoint.Z.ScalarValue)
+            .SetVectorTerm(2, egaPoint.X)
+            .SetVectorTerm(3, egaPoint.Y)
+            .SetVectorTerm(4, egaPoint.Z)
             .GetVector();
     }
 

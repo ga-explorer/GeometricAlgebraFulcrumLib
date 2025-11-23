@@ -1,27 +1,24 @@
 ﻿using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space2D;
-using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Meshes.PointsPath;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Meshes.PointsPath.Space2D;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.AttributeSet;
-using GeometricAlgebraFulcrumLib.Utilities.Structures.Tuples;
 
 namespace GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.KonvaJs.Values;
 
 public sealed class GrKonvaJsVector2ArrayValue :
-    SparseCodeAttributeValue<IReadOnlyList<IPair<Float64Scalar>>>
+    SparseCodeAttributeValue<IReadOnlyList<LinFloat64Vector2D>>
 {
-    public static GrKonvaJsVector2ArrayValue Create(IPair<Float64Scalar> vector1, IPair<Float64Scalar> vector2)
+    public static GrKonvaJsVector2ArrayValue Create(LinFloat64Vector2D vector1, LinFloat64Vector2D vector2)
     {
         return new GrKonvaJsVector2ArrayValue(
-            new []
-            {
+            [
                 vector1, 
                 vector2
-            }
+            ]
         );
     }
     
-    public static GrKonvaJsVector2ArrayValue Create(IReadOnlyList<IPair<Float64Scalar>> value)
+    public static GrKonvaJsVector2ArrayValue Create(IReadOnlyList<LinFloat64Vector2D> value)
     {
         return new GrKonvaJsVector2ArrayValue(value);
     }
@@ -42,11 +39,6 @@ public sealed class GrKonvaJsVector2ArrayValue :
         return new GrKonvaJsVector2ArrayValue(value);
     }
     
-    public static implicit operator GrKonvaJsVector2ArrayValue(ILinFloat64Vector2D[] value)
-    {
-        return new GrKonvaJsVector2ArrayValue(value);
-    }
-        
     public static implicit operator GrKonvaJsVector2ArrayValue(ArrayPointsPath2D value)
     {
         return new GrKonvaJsVector2ArrayValue(value);
@@ -58,7 +50,7 @@ public sealed class GrKonvaJsVector2ArrayValue :
     {
     }
 
-    private GrKonvaJsVector2ArrayValue(IReadOnlyList<IPair<Float64Scalar>> value)
+    private GrKonvaJsVector2ArrayValue(IReadOnlyList<LinFloat64Vector2D> value)
         : base(value)
     {
     }

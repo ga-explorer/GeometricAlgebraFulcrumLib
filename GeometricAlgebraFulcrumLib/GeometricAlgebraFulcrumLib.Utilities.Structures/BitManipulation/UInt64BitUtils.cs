@@ -1094,33 +1094,154 @@ public static class UInt64BitUtils
         return ((1ul << bitPosition) & bitPattern) != 0ul;
     }
 
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static ulong ComplementBits(this ulong bitPattern)
+    {
+        return ~bitPattern;
+    }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static ulong ComplementBits(this ulong bitPattern, int bitCount)
+    {
+        return ~bitPattern & bitCount.CreateBitMaskUInt64();
+    }
+
     /// <summary>
-    /// Reverse the order of bits in the given bit pattern
+    /// Reverse all 64 bits of input ulong.
     /// </summary>
     /// <param name="bitPattern"></param>
-    /// <param name="bitsCount"></param>
     /// <returns></returns>
-    public static ulong ReverseBits(this ulong bitPattern, int bitsCount)
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static ulong ReverseBits(this ulong bitPattern)
     {
-        Debug.Assert(
-            bitsCount > 0 && 
-            bitPattern < (1ul << (bitsCount + 1))
-        );
-
-        var result = 0ul;
-
-        var i = bitsCount - 1;
-        while (bitPattern != 0ul)
-        {
-            if ((bitPattern & 1ul) != 0ul)
-                result |= (1ul << i);
-
-            i--;
-            bitPattern >>= 1;
-        }
-
-        return result;
+        bitPattern = ((bitPattern >> 1) & 0x5555555555555555UL) | ((bitPattern & 0x5555555555555555UL) << 1);
+        bitPattern = ((bitPattern >> 2) & 0x3333333333333333UL) | ((bitPattern & 0x3333333333333333UL) << 2);
+        bitPattern = ((bitPattern >> 4) & 0x0F0F0F0F0F0F0F0FUL) | ((bitPattern & 0x0F0F0F0F0F0F0F0FUL) << 4);
+        bitPattern = ((bitPattern >> 8) & 0x00FF00FF00FF00FFUL) | ((bitPattern & 0x00FF00FF00FF00FFUL) << 8);
+        bitPattern = ((bitPattern >> 16) & 0x0000FFFF0000FFFFUL) | ((bitPattern & 0x0000FFFF0000FFFFUL) << 16);
+        bitPattern = (bitPattern >> 32) | (bitPattern << 32);
+        return bitPattern;
     }
+
+    /// <summary>
+    /// Reverse lowest n bits of input ulong.
+    /// </summary>
+    /// <param name="bitPattern"></param>
+    /// <param name="n"></param>
+    /// <returns></returns>
+    /// <exception cref="ArgumentOutOfRangeException"></exception>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static ulong ReversePrefixBits(this ulong bitPattern, int n)
+    {
+        if (n is < 0 or > 64) 
+            throw new ArgumentOutOfRangeException(nameof(n));
+
+        if (n <= 1) 
+            return bitPattern;
+
+        var mask = n == 64 ? ulong.MaxValue : (1UL << n) - 1;
+        var prefix = bitPattern & mask;
+
+        var reversed = ReverseBits(prefix);
+        reversed >>= 64 - n;
+
+        bitPattern &= ~mask;
+        bitPattern |= reversed;
+
+        return bitPattern;
+    }
+
+    /// <summary>
+    /// Reverse highest n bits of input ulong.
+    /// </summary>
+    /// <param name="bitPattern"></param>
+    /// <param name="n"></param>
+    /// <returns></returns>
+    /// <exception cref="ArgumentOutOfRangeException"></exception>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static ulong ReverseSuffixBits(this ulong bitPattern, int n)
+    {
+        if (n is < 0 or > 64) 
+            throw new ArgumentOutOfRangeException(nameof(n));
+        
+        if (n <= 1) 
+            return bitPattern;
+
+        var shift = 64 - n;
+        var mask = n == 64 ? ulong.MaxValue : ulong.MaxValue << shift;
+
+        var suffix = (bitPattern & mask) >> shift;
+        var reversed = ReverseBits(suffix);
+        reversed >>= 64 - n;
+
+        bitPattern &= ~mask;
+        bitPattern |= reversed << shift;
+
+        return bitPattern;
+    }
+
+    /// <summary>
+    /// Reverse bits within an arbitrary slice [start..end], inclusive (0 = LSB).
+    /// Optimized so [0..63] simply calls ReverseBits().
+    /// </summary>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static ulong ReverseSliceBits(this ulong bitPattern, int start, int end)
+    {
+        if (start < 0 || end > 63 || start > end)
+            throw new ArgumentOutOfRangeException($"Invalid slice [{start}..{end}]");
+
+        var len = end - start + 1;
+        if (len == 1) 
+            return bitPattern;
+
+        if (start == 0 && end == 63) 
+            return ReverseBits(bitPattern);
+
+        // Extract slice
+        var mask = ((1UL << len) - 1) << start;
+        var slice = (bitPattern & mask) >> start;
+
+        // Reverse slice
+        var reversed = ReverseBits(slice);
+        reversed >>= (64 - len);
+
+        // Reinsert
+        bitPattern &= ~mask;
+        bitPattern |= (reversed << start);
+
+        return bitPattern;
+    }
+
+
+    ///// <summary>
+    ///// Reverse the order of bits in the given bit pattern
+    ///// </summary>
+    ///// <param name="bitPattern"></param>
+    ///// <param name="bitsCount"></param>
+    ///// <returns></returns>
+    //[MethodImpl(MethodImplOptions.AggressiveInlining)]
+    //public static ulong ReversePrefixBits(this ulong bitPattern, int bitsCount)
+    //{
+    //    Debug.Assert(
+    //        bitsCount > 0 && 
+    //        bitPattern < (1ul << (bitsCount + 1))
+    //    );
+
+    //    var result = 0ul;
+
+    //    var i = bitsCount - 1;
+    //    while (bitPattern != 0ul)
+    //    {
+    //        if ((bitPattern & 1ul) != 0ul)
+    //            result |= (1ul << i);
+
+    //        i--;
+    //        bitPattern >>= 1;
+    //    }
+
+    //    return result;
+    //}
 
 
     /// <summary>
@@ -1130,7 +1251,7 @@ public static class UInt64BitUtils
     /// <param name="bitsCount"></param>
     /// <returns></returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static ulong CreateMaskUInt64(this int bitsCount)
+    public static ulong CreateBitMaskUInt64(this int bitsCount)
     {
         Debug.Assert(bitsCount is >= 0 and <= 64);
 
@@ -1233,7 +1354,7 @@ public static class UInt64BitUtils
     /// <returns></returns>
     public static IEnumerable<ulong> OnesPermutations(int patternSize, int onesCount)
     {
-        var startPattern = CreateMaskUInt64(onesCount);
+        var startPattern = CreateBitMaskUInt64(onesCount);
 
         if (patternSize <= onesCount)
         {
@@ -1241,7 +1362,7 @@ public static class UInt64BitUtils
             yield break;
         }
 
-        var bitMask = CreateMaskUInt64(patternSize);
+        var bitMask = CreateBitMaskUInt64(patternSize);
 
         while (startPattern <= bitMask)
         {
@@ -1259,7 +1380,7 @@ public static class UInt64BitUtils
     /// <returns></returns>
     public static IEnumerable<ulong> ZerosPermutations(int patternSize, int zerosCount)
     {
-        var startPattern = CreateMaskUInt64(zerosCount);
+        var startPattern = CreateBitMaskUInt64(zerosCount);
 
         if (patternSize <= zerosCount)
         {
@@ -1267,7 +1388,7 @@ public static class UInt64BitUtils
             yield break;
         }
 
-        var bitMask = CreateMaskUInt64(patternSize);
+        var bitMask = CreateBitMaskUInt64(patternSize);
 
         while (startPattern <= bitMask)
         {
@@ -1328,7 +1449,7 @@ public static class UInt64BitUtils
         while (bitPattern != 0)
         {
             yield return BitOperations.TrailingZeroCount(bitPattern);
-
+            
             bitPattern &= bitPattern - 1; // Clear the least significant bit
         }
 
@@ -1881,7 +2002,7 @@ public static class UInt64BitUtils
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static IEnumerable<ulong> GetSuperPatterns(this ulong bitPattern, int bitsCount)
     {
-        var superPattern = CreateMaskUInt64(bitsCount);
+        var superPattern = CreateBitMaskUInt64(bitsCount);
 
         //Make sure bitPattern is a sub-pattern of superPattern
         if ((superPattern | bitPattern) != superPattern)
@@ -1899,7 +2020,7 @@ public static class UInt64BitUtils
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static IEnumerable<ulong> GetProperSuperPatterns(this ulong bitPattern, int bitsCount)
     {
-        var superPattern = CreateMaskUInt64(bitsCount);
+        var superPattern = CreateBitMaskUInt64(bitsCount);
 
         //Make sure bitPattern is a sub-pattern of superPattern
         if ((superPattern | bitPattern) != superPattern)
@@ -1991,7 +2112,7 @@ public static class UInt64BitUtils
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static bool IsValidBitPattern(this string s)
     {
-        return s.Length <= MaxBitPatternSize && s.All(c => c == '1' || c == '0');
+        return s.Length <= MaxBitPatternSize && s.All(c => c is '1' or '0');
     }
 
     /// <summary>
@@ -2004,7 +2125,7 @@ public static class UInt64BitUtils
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static bool IsValidBitPattern(this string s, int bitsCount)
     {
-        return bitsCount <= MaxBitPatternSize && s.Length == bitsCount && s.All(c => c == '1' || c == '0');
+        return bitsCount <= MaxBitPatternSize && s.Length == bitsCount && s.All(c => c is '1' or '0');
     }
 
     /// <summary>
@@ -2292,14 +2413,18 @@ public static class UInt64BitUtils
     public static int GetNthSetBitPosition(this ulong bits, int index)
     {
         var count = 0;
+        var offset = 0;
 
-        while (bits != 0 && count <= index)
+        while (bits != 0)
         {
             var trailingZeros = BitOperations.TrailingZeroCount(bits);
-            if (count == index)
-                return trailingZeros;
+            offset += trailingZeros;
 
-            bits >>= trailingZeros + 1;
+            if (count == index)
+                return offset;
+
+            bits >>= trailingZeros + 1;  // Remove the found bit and trailing zeros
+            offset++;  // Skip the set bit we just found
             count++;
         }
 
@@ -2316,14 +2441,18 @@ public static class UInt64BitUtils
     public static int TryGetNthSetBitPosition(this ulong bits, int index)
     {
         var count = 0;
+        var offset = 0;
 
-        while (bits != 0 && count <= index)
+        while (bits != 0)
         {
             var trailingZeros = BitOperations.TrailingZeroCount(bits);
-            if (count == index)
-                return trailingZeros;
+            offset += trailingZeros;
 
-            bits >>= trailingZeros + 1;
+            if (count == index)
+                return offset;
+
+            bits >>= trailingZeros + 1;  // Remove the found bit and trailing zeros
+            offset++;  // Skip the set bit we just found
             count++;
         }
 

@@ -1,5 +1,4 @@
-﻿using System.Collections.Immutable;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra;
+﻿using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Combinations;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivectors;
@@ -7,6 +6,8 @@ using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
 using GeometricAlgebraFulcrumLib.Applications.Symbolic.LibraryGenerators.Matlab.GradedMultivectorsLib.Types;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Combinations;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.IndexSets;
+using MathNet.Numerics.LinearAlgebra;
+using System.Collections.Immutable;
 
 namespace GeometricAlgebraFulcrumLib.Applications.Symbolic.LibraryGenerators.Matlab.GradedMultivectorsLib.Combinations;
 
@@ -64,7 +65,7 @@ public class LibUnilinearCombination :
         return termTable;
     }
 
-    public static LibUnilinearCombination CreateFromOutermorphism(LibTypeMultivector inputType, double[,] vectorMapArray)
+    public static LibUnilinearCombination CreateFromOutermorphism(LibTypeMultivector inputType, Matrix<double> vectorMapArray)
     {
         var termTable = new LibUnilinearCombination(inputType);
 
@@ -319,7 +320,7 @@ public class LibUnilinearCombination :
         return this;
     }
 
-    public LibUnilinearCombination AddOutermorphism(double[,] vectorMapArray)
+    public LibUnilinearCombination AddOutermorphism(Matrix<double> vectorMapArray)
     {
         _unilinearCombination.AddOutermorphism(
             InputType.Metric, 

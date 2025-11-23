@@ -22,7 +22,7 @@ public static class LinVector2DAffineUtils
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static LinVector2D<T> GetUnitNormal<T>(this IPair<Scalar<T>> vector)
     {
-        var normInv = 1d / vector.VectorENorm();
+        var normInv = 1d / vector.L2Norm();
 
         return LinVector2D<T>.Create(
             -vector.Item2 * normInv,
@@ -315,7 +315,7 @@ public static class LinVector2DAffineUtils
             ? vector1.GetNormal()
             : unitVector.VectorSubtract(vector1.VectorTimes(v1Dot2));
 
-        var v1Length = v1.VectorENorm();
+        var v1Length = v1.L2Norm();
 
         Debug.Assert(
             v1.VectorESp(vector1).IsNearZero() &&
@@ -333,7 +333,7 @@ public static class LinVector2DAffineUtils
     {
         var s =
             2 * reflectionVector.VectorESp(vector) /
-            reflectionVector.VectorENormSquared();
+            reflectionVector.L2NormSquared();
 
         return LinVector2D<T>.Create(
             vector.Item1 - s * reflectionVector.Item1,
@@ -393,7 +393,7 @@ public static class LinVector2DAffineUtils
 
     public static IEnumerable<LinVector2D<T>> ReflectVectorsOnVector<T>(this IPair<Scalar<T>> reflectionVector, params IPair<Scalar<T>>[] vectorsList)
     {
-        var s = 2 / reflectionVector.VectorENormSquared();
+        var s = 2 / reflectionVector.L2NormSquared();
 
         foreach (var vector in vectorsList)
         {
@@ -408,7 +408,7 @@ public static class LinVector2DAffineUtils
 
     public static IEnumerable<LinVector2D<T>> ReflectVectorsOnVector<T>(this IPair<Scalar<T>> reflectionVector, IEnumerable<IPair<Scalar<T>>> vectorsList)
     {
-        var s = 2 / reflectionVector.VectorENormSquared();
+        var s = 2 / reflectionVector.L2NormSquared();
 
         foreach (var vector in vectorsList)
         {
@@ -463,7 +463,7 @@ public static class LinVector2DAffineUtils
     {
         Debug.Assert(newLength is not null);
 
-        var oldLength = vector.VectorENorm();
+        var oldLength = vector.L2Norm();
 
         if (oldLength.IsZero())
             return LinVector2D<T>.Zero(vector.GetScalarProcessor());

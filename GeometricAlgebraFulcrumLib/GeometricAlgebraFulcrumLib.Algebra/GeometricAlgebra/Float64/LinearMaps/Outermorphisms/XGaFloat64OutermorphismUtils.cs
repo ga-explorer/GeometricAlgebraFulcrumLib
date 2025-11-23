@@ -4,7 +4,7 @@ using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Frames;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivectors;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Processors;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Basis;
-using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Matrices;
+using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Numerical;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Combinations;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.IndexSets;
 using MathNet.Numerics.LinearAlgebra;
@@ -155,13 +155,13 @@ public static class XGaFloat64OutermorphismUtils
     //}
         
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static double[,] GetVectorMapArray(this IXGaFloat64Outermorphism om, int size)
+    public static Matrix<double> GetVectorMapArray(this IXGaFloat64Outermorphism om, int size)
     {
         return om.GetVectorMapPart(size).GetMapArray(size);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static double[,] GetVectorMapArray(this IXGaFloat64Outermorphism om, int rowCount, int colCount)
+    public static Matrix<double> GetVectorMapArray(this IXGaFloat64Outermorphism om, int rowCount, int colCount)
     {
         var size = Math.Max(rowCount, colCount);
 
@@ -356,14 +356,14 @@ public static class XGaFloat64OutermorphismUtils
 
         return mappedPseudoScalar.ESp(
             om.Processor.PseudoScalarEInverse(vSpaceDimensions)
-        ).ScalarValue;
+        );
     }
 
     public static double GetDeterminant(this IXGaFloat64Outermorphism om, int vSpaceDimensions)
     {
         return om
             .OmMapBasisBlade(om.Processor.GetBasisPseudoScalarId(vSpaceDimensions))
-            .Sp(om.Processor.PseudoScalarInverse(vSpaceDimensions)).Scalar();
+            .Sp(om.Processor.PseudoScalarInverse(vSpaceDimensions));
     }
 
         
@@ -381,7 +381,7 @@ public static class XGaFloat64OutermorphismUtils
         var metric = XGaFloat64Processor.Euclidean;
         var dimensions = matrix.RowCount;
         var kVectorDimension = dimensions.GetBinomialCoefficient(grade);
-        var columnList = matrix.ColumnsToTuples();
+        var columnList = matrix.ColumnsToLinFloat64Vectors().ToArray();
 
         var array = new double[kVectorDimension, kVectorDimension];
 

@@ -1,5 +1,6 @@
 ﻿using System.Runtime.CompilerServices;
 using System.Text;
+using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
 using GeometricAlgebraFulcrumLib.Utilities.Structures;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.BitManipulation;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Combinations;
@@ -46,9 +47,9 @@ public static class GaTextUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static string GetScalarText(this double scalar)
+    public static string GetScalarText(this double scalar, double tolerance = Float64Utils.DefaultTolerance)
     {
-        return scalar.ToString("G");
+        return Math.Abs(scalar) < tolerance ? "0" : scalar.ToString("G");
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -67,10 +68,10 @@ public static class GaTextUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static string GetTermText(uint grade, ulong index, double scalar)
+    public static string GetTermText(uint grade, ulong index, double scalar, double tolerance = Float64Utils.DefaultTolerance)
     {
         return new StringBuilder()
-            .Append($"'{GetScalarText(scalar)}'")
+            .Append($"'{GetScalarText(scalar, tolerance)}'")
             .Append(GetBasisBladeText(grade, index))
             .ToString();
     }
@@ -138,7 +139,7 @@ public static class GaTextUtils
     //        .ConcatenateText(", ");
     //}
         
-    public static string GetArrayText(this IReadOnlyList<double> array)
+    public static string GetArrayText(this IReadOnlyList<double> array, double tolerance = Float64Utils.DefaultTolerance)
     {
         var composer = new StringBuilder();
 
@@ -149,7 +150,7 @@ public static class GaTextUtils
             if (i > 0)
                 composer.Append(", ");
 
-            composer.Append(GetScalarText(array[i]));
+            composer.Append(GetScalarText(array[i], tolerance));
         }
 
         return composer.ToString();
@@ -160,7 +161,7 @@ public static class GaTextUtils
     //    return GetArrayText(array.ToArray());
     //}
 
-    public static string GetArrayText(this double[,] array)
+    public static string GetArrayText(this double[,] array, double tolerance = Float64Utils.DefaultTolerance)
     {
         var composer = new StringBuilder();
 
@@ -177,7 +178,7 @@ public static class GaTextUtils
                 if (j > 0)
                     composer.Append(", ");
 
-                composer.Append(GetScalarText(array[i, j]));
+                composer.Append(GetScalarText(array[i, j], tolerance));
             }
         }
 

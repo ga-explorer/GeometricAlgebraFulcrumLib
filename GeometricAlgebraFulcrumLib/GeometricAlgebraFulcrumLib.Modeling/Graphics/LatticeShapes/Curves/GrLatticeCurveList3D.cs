@@ -14,7 +14,7 @@ public sealed class GrLatticeCurveList3D :
     IReadOnlyList<GrLatticeCurveLocalFrame3D>
 {
     private readonly List<GrLatticeCurve3D> _gridsList
-        = new List<GrLatticeCurve3D>();
+        = [];
 
 
     public int Count 
@@ -29,18 +29,18 @@ public sealed class GrLatticeCurveList3D :
     public bool VertexColorsEnabled { get; set; }
 
     public IReadOnlyList<GrLatticeCurveLocalFrame3D> VertexList { get; private set; } 
-        = Array.Empty<GrLatticeCurveLocalFrame3D>();
+        = [];
         
     public IEnumerable<GrLatticeCurveLocalFrame3D> Vertices 
         => IsReady
             ? VertexList
             : _gridsList.SelectMany(b => b.Vertices);
         
-    public IEnumerable<ILinFloat64Vector3D> VertexPoints 
+    public IEnumerable<LinFloat64Vector3D> VertexPoints 
         => Vertices.Select(v => v.Point);
 
-    public IEnumerable<ILinFloat64Vector3D> VertexNormals 
-        => Vertices.Select(v => v.Normal1);
+    public IEnumerable<LinFloat64Vector3D> VertexNormals 
+        => Vertices.Select(v => v.Normal1.ToLinVector3D());
 
     public IEnumerable<double> VertexTextureUs 
         => Vertices.Select(v => v.TimeValue);
@@ -49,7 +49,7 @@ public sealed class GrLatticeCurveList3D :
         => Vertices.Select(v => v.Color);
 
     public IReadOnlyList<Pair<GrLatticeCurveLocalFrame3D>> LineVerticesList { get; private set; } 
-        = Array.Empty<Pair<GrLatticeCurveLocalFrame3D>>();
+        = [];
 
     public IEnumerable<Pair<ILinFloat64Vector3D>> LineVertexPoints
         => LineVerticesList.Select(t => 
@@ -92,8 +92,8 @@ public sealed class GrLatticeCurveList3D :
             curve.Clear();
 
         _gridsList.Clear();
-        VertexList = Array.Empty<GrLatticeCurveLocalFrame3D>();
-        LineVerticesList = Array.Empty<Pair<GrLatticeCurveLocalFrame3D>>();
+        VertexList = [];
+        LineVerticesList = [];
 
         return this;
     }

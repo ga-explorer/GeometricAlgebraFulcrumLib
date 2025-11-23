@@ -11,13 +11,13 @@ public interface ILinFloat64Subspace3D :
 
     IEnumerable<LinFloat64Vector3D> BasisVectors { get; }
 
-    LinFloat64Vector3D GetVectorProjection(ILinFloat64Vector3D vector);
+    LinFloat64Vector3D GetVectorProjection(LinFloat64Vector3D vector);
 
-    LinFloat64Vector3D GetVectorRejection(ILinFloat64Vector3D vector);
+    LinFloat64Vector3D GetVectorRejection(LinFloat64Vector3D vector);
 
-    LinFloat64PolarAngle GetVectorProjectionPolarAngle(ILinFloat64Vector3D vector);
+    LinFloat64PolarAngle GetVectorProjectionPolarAngle(LinFloat64Vector3D vector);
 
-    bool NearContains(ILinFloat64Vector3D vector, double zeroEpsilon = Float64Utils.ZeroEpsilon);
+    bool NearContains(LinFloat64Vector3D vector, double tolerance = Float64Utils.DefaultTolerance);
 
-    bool NearContains(ILinFloat64Subspace3D subspace, double zeroEpsilon = Float64Utils.ZeroEpsilon);
+    bool NearContains(ILinFloat64Subspace3D subspace, double tolerance = Float64Utils.DefaultTolerance);
 }

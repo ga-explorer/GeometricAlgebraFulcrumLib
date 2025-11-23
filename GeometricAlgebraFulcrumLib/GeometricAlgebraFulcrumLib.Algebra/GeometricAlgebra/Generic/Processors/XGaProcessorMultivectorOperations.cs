@@ -1,4 +1,6 @@
-﻿using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
+﻿using System.Diagnostics;
+using System.Runtime.CompilerServices;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Multivectors;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space2D;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space3D;
@@ -9,8 +11,6 @@ using GeometricAlgebraFulcrumLib.Algebra.Scalars.Generic;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Dictionary;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.IndexSets;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Tuples;
-using System.Diagnostics;
-using System.Runtime.CompilerServices;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Processors
 {

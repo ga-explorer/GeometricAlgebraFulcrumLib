@@ -2,7 +2,8 @@
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space3D;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.BasicShapes.Lines.Space2D.Float64;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.BasicShapes.Triangles.Space2D.Float64;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.Borders.Space2D.Float64;
+using GeometricAlgebraFulcrumLib.Modeling.Geometry.Bounding.Float64;
+
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Random;
 
 namespace GeometricAlgebraFulcrumLib.Modeling.Statistics;
@@ -37,7 +38,7 @@ public static class RandomUtils
     }
 
 
-    public static Float64LineSegment2D GetLineSegmentInside(this Random randomGenerator, IFloat64BoundingBox2D limitsBoundingBox)
+    public static Float64LineSegment2D GetLineSegmentInside(this Random randomGenerator, Float64BoundingBox2D limitsBoundingBox)
     {
         return new Float64LineSegment2D(
             randomGenerator.GetLinearMappedFloat64(limitsBoundingBox.MinX, limitsBoundingBox.MaxX),
@@ -47,7 +48,7 @@ public static class RandomUtils
         );
     }
 
-    public static Float64Triangle2D GetTriangleInside(this Random randomGenerator, IFloat64BoundingBox2D limitsBoundingBox)
+    public static Float64Triangle2D GetTriangleInside(this Random randomGenerator, Float64BoundingBox2D limitsBoundingBox)
     {
         return new Float64Triangle2D(
             randomGenerator.GetLinearMappedFloat64(limitsBoundingBox.MinX, limitsBoundingBox.MaxX),
@@ -59,7 +60,7 @@ public static class RandomUtils
         );
     }
 
-    public static List<Float64Triangle2D> GetTrianglesInside(this Random randomGenerator, int trianglesCount, IFloat64BoundingBox2D limitsBoundingBox)
+    public static List<Float64Triangle2D> GetTrianglesInside(this Random randomGenerator, int trianglesCount, Float64BoundingBox2D limitsBoundingBox)
     {
         var result = new List<Float64Triangle2D>(trianglesCount);
 

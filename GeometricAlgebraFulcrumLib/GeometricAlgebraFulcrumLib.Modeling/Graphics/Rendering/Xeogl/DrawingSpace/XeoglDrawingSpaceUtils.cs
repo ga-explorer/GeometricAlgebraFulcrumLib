@@ -1,7 +1,7 @@
 ﻿using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space2D;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space3D;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.BasicShapes.Lines.Space3D.Float64;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.Borders.Space3D.Float64;
+using GeometricAlgebraFulcrumLib.Modeling.Geometry.Bounding.Float64;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Primitives;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Primitives.Lines;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.Colors;
@@ -29,7 +29,7 @@ public static class XeoglDrawingSpaceUtils
         );
     }
 
-    public static XeoglDrawingSpace AddViewSpaceDirectionalLight(this XeoglDrawingSpace drawingSpace, Color color, double intensity, ILinFloat64Vector3D direction)
+    public static XeoglDrawingSpace AddViewSpaceDirectionalLight(this XeoglDrawingSpace drawingSpace, Color color, double intensity, LinFloat64Vector3D direction)
     {
         return drawingSpace.AddLight(
             new XeoglDirectionalLight(direction)
@@ -41,7 +41,7 @@ public static class XeoglDrawingSpaceUtils
         );
     }
 
-    public static XeoglDrawingSpace AddViewSpacePointLight(this XeoglDrawingSpace drawingSpace, Color color, double intensity, ILinFloat64Vector3D position)
+    public static XeoglDrawingSpace AddViewSpacePointLight(this XeoglDrawingSpace drawingSpace, Color color, double intensity, LinFloat64Vector3D position)
     {
         return drawingSpace.AddLight(
             new XeoglPointLight(position)
@@ -53,7 +53,7 @@ public static class XeoglDrawingSpaceUtils
         );
     }
 
-    public static XeoglDrawingSpace AddViewSpaceSpotLight(this XeoglDrawingSpace drawingSpace, Color color, double intensity, ILinFloat64Vector3D position, ILinFloat64Vector3D direction)
+    public static XeoglDrawingSpace AddViewSpaceSpotLight(this XeoglDrawingSpace drawingSpace, Color color, double intensity, LinFloat64Vector3D position, LinFloat64Vector3D direction)
     {
         return drawingSpace.AddLight(
             new XeoglSpotLight(position, direction)
@@ -65,7 +65,7 @@ public static class XeoglDrawingSpaceUtils
         );
     }
 
-    public static XeoglDrawingSpace AddWorldSpaceDirectionalLight(this XeoglDrawingSpace drawingSpace, Color color, double intensity, ILinFloat64Vector3D direction)
+    public static XeoglDrawingSpace AddWorldSpaceDirectionalLight(this XeoglDrawingSpace drawingSpace, Color color, double intensity, LinFloat64Vector3D direction)
     {
         return drawingSpace.AddLight(
             new XeoglDirectionalLight(direction)
@@ -77,7 +77,7 @@ public static class XeoglDrawingSpaceUtils
         );
     }
 
-    public static XeoglDrawingSpace AddWorldSpacePointLight(this XeoglDrawingSpace drawingSpace, Color color, double intensity, ILinFloat64Vector3D position)
+    public static XeoglDrawingSpace AddWorldSpacePointLight(this XeoglDrawingSpace drawingSpace, Color color, double intensity, LinFloat64Vector3D position)
     {
         return drawingSpace.AddLight(
             new XeoglPointLight(position)
@@ -89,7 +89,7 @@ public static class XeoglDrawingSpaceUtils
         );
     }
 
-    public static XeoglDrawingSpace AddWorldSpaceSpotLight(this XeoglDrawingSpace drawingSpace, Color color, double intensity, ILinFloat64Vector3D position, ILinFloat64Vector3D direction)
+    public static XeoglDrawingSpace AddWorldSpaceSpotLight(this XeoglDrawingSpace drawingSpace, Color color, double intensity, LinFloat64Vector3D position, LinFloat64Vector3D direction)
     {
         return drawingSpace.AddLight(
             new XeoglSpotLight(position, direction)
@@ -116,14 +116,14 @@ public static class XeoglDrawingSpaceUtils
         );
     }
 
-    public static XeoglDrawingSpaceLayer DrawSphere(this XeoglDrawingSpaceLayer layer, ILinFloat64Vector3D center, double radius)
+    public static XeoglDrawingSpaceLayer DrawSphere(this XeoglDrawingSpaceLayer layer, LinFloat64Vector3D center, double radius)
     {
         return layer.DrawGeometry(
             XeoglSphereGeometry.Create(center, radius)
         );
     }
 
-    public static XeoglDrawingSpaceLayer DrawSphere(this XeoglDrawingSpaceLayer layer, ILinFloat64Vector3D center, double radius, int widthSegments, int heightSegments)
+    public static XeoglDrawingSpaceLayer DrawSphere(this XeoglDrawingSpaceLayer layer, LinFloat64Vector3D center, double radius, int widthSegments, int heightSegments)
     {
         return layer.DrawGeometry(
             XeoglSphereGeometry.Create(center, radius, widthSegments, heightSegments)
@@ -138,28 +138,28 @@ public static class XeoglDrawingSpaceUtils
         );
     }
 
-    public static XeoglDrawingSpaceLayer DrawBox(this XeoglDrawingSpaceLayer layer, ILinFloat64Vector3D halfSize)
+    public static XeoglDrawingSpaceLayer DrawBox(this XeoglDrawingSpaceLayer layer, LinFloat64Vector3D halfSize)
     {
         return layer.DrawGeometry(
             XeoglBoxGeometry.Create(halfSize)
         );
     }
 
-    public static XeoglDrawingSpaceLayer DrawBox(this XeoglDrawingSpaceLayer layer, ILinFloat64Vector3D center, double halfSize)
+    public static XeoglDrawingSpaceLayer DrawBox(this XeoglDrawingSpaceLayer layer, LinFloat64Vector3D center, double halfSize)
     {
         return layer.DrawGeometry(
             XeoglBoxGeometry.Create(center, halfSize)
         );
     }
 
-    public static XeoglDrawingSpaceLayer DrawBox(this XeoglDrawingSpaceLayer layer, ILinFloat64Vector3D center, ILinFloat64Vector3D halfSize)
+    public static XeoglDrawingSpaceLayer DrawBox(this XeoglDrawingSpaceLayer layer, LinFloat64Vector3D center, LinFloat64Vector3D halfSize)
     {
         return layer.DrawGeometry(
             XeoglBoxGeometry.Create(center, halfSize)
         );
     }
 
-    public static XeoglDrawingSpaceLayer DrawBox(this XeoglDrawingSpaceLayer layer, IFloat64BoundingBox3D box)
+    public static XeoglDrawingSpaceLayer DrawBox(this XeoglDrawingSpaceLayer layer, Float64BoundingBox3D box)
     {
         return layer.DrawGeometry(
             XeoglBoxGeometry.Create(box)
@@ -181,7 +181,7 @@ public static class XeoglDrawingSpaceUtils
         );
     }
 
-    public static XeoglDrawingSpaceLayer DrawPlaneSegment(this XeoglDrawingSpaceLayer layer, ILinFloat64Vector2D size, int segments)
+    public static XeoglDrawingSpaceLayer DrawPlaneSegment(this XeoglDrawingSpaceLayer layer, LinFloat64Vector2D size, int segments)
     {
         return layer.DrawGeometry(
             XeoglPlaneGeometry.Create(size, segments)
@@ -189,35 +189,35 @@ public static class XeoglDrawingSpaceUtils
     }
 
         
-    public static XeoglDrawingSpaceLayer DrawPlaneSegment(this XeoglDrawingSpaceLayer layer, ILinFloat64Vector2D size, int xSegments, int zSegments)
+    public static XeoglDrawingSpaceLayer DrawPlaneSegment(this XeoglDrawingSpaceLayer layer, LinFloat64Vector2D size, int xSegments, int zSegments)
     {
         return layer.DrawGeometry(
             XeoglPlaneGeometry.Create(size, xSegments, zSegments)
         );
     }
 
-    public static XeoglDrawingSpaceLayer DrawPlaneSegment(this XeoglDrawingSpaceLayer layer, ILinFloat64Vector3D center, double size, int segments)
+    public static XeoglDrawingSpaceLayer DrawPlaneSegment(this XeoglDrawingSpaceLayer layer, LinFloat64Vector3D center, double size, int segments)
     {
         return layer.DrawGeometry(
             XeoglPlaneGeometry.Create(center, size, segments)
         );
     }
 
-    public static XeoglDrawingSpaceLayer DrawPlaneSegment(this XeoglDrawingSpaceLayer layer, ILinFloat64Vector3D center, double size, int xSegments, int zSegments)
+    public static XeoglDrawingSpaceLayer DrawPlaneSegment(this XeoglDrawingSpaceLayer layer, LinFloat64Vector3D center, double size, int xSegments, int zSegments)
     {
         return layer.DrawGeometry(
             XeoglPlaneGeometry.Create(center, size, xSegments, zSegments)
         );
     }
 
-    public static XeoglDrawingSpaceLayer DrawPlaneSegment(this XeoglDrawingSpaceLayer layer, ILinFloat64Vector3D center, ILinFloat64Vector2D size, int segments)
+    public static XeoglDrawingSpaceLayer DrawPlaneSegment(this XeoglDrawingSpaceLayer layer, LinFloat64Vector3D center, LinFloat64Vector2D size, int segments)
     {
         return layer.DrawGeometry(
             XeoglPlaneGeometry.Create(center, size, segments)
         );
     }
 
-    public static XeoglDrawingSpaceLayer DrawPlaneSegment(this XeoglDrawingSpaceLayer layer, ILinFloat64Vector3D center, ILinFloat64Vector2D size, int xSegments, int zSegments)
+    public static XeoglDrawingSpaceLayer DrawPlaneSegment(this XeoglDrawingSpaceLayer layer, LinFloat64Vector3D center, LinFloat64Vector2D size, int xSegments, int zSegments)
     {
         return layer.DrawGeometry(
             XeoglPlaneGeometry.Create(center, size, xSegments, zSegments)
@@ -266,7 +266,7 @@ public static class XeoglDrawingSpaceUtils
         });
     }
 
-    public static XeoglDrawingSpaceLayer DrawClosedCylinder(this XeoglDrawingSpaceLayer layer, ILinFloat64Vector3D center, double radius, double height)
+    public static XeoglDrawingSpaceLayer DrawClosedCylinder(this XeoglDrawingSpaceLayer layer, LinFloat64Vector3D center, double radius, double height)
     {
         return layer.DrawGeometry(new XeoglCylinderGeometry(center)
         {
@@ -276,7 +276,7 @@ public static class XeoglDrawingSpaceUtils
         });
     }
 
-    public static XeoglDrawingSpaceLayer DrawClosedCylinder(this XeoglDrawingSpaceLayer layer, ILinFloat64Vector3D center, double radius, double height, int radialSegments, int heightSegments)
+    public static XeoglDrawingSpaceLayer DrawClosedCylinder(this XeoglDrawingSpaceLayer layer, LinFloat64Vector3D center, double radius, double height, int radialSegments, int heightSegments)
     {
         return layer.DrawGeometry(new XeoglCylinderGeometry(center)
         {
@@ -288,7 +288,7 @@ public static class XeoglDrawingSpaceUtils
         });
     }
 
-    public static XeoglDrawingSpaceLayer DrawClosedCylinder(this XeoglDrawingSpaceLayer layer, ILinFloat64Vector3D center, double radiusTop, double radiusBottom, double height)
+    public static XeoglDrawingSpaceLayer DrawClosedCylinder(this XeoglDrawingSpaceLayer layer, LinFloat64Vector3D center, double radiusTop, double radiusBottom, double height)
     {
         return layer.DrawGeometry(new XeoglCylinderGeometry(center)
         {
@@ -298,7 +298,7 @@ public static class XeoglDrawingSpaceUtils
         });
     }
 
-    public static XeoglDrawingSpaceLayer DrawClosedCylinder(this XeoglDrawingSpaceLayer layer, ILinFloat64Vector3D center, double radiusTop, double radiusBottom, double height, int radialSegments, int heightSegments)
+    public static XeoglDrawingSpaceLayer DrawClosedCylinder(this XeoglDrawingSpaceLayer layer, LinFloat64Vector3D center, double radiusTop, double radiusBottom, double height, int radialSegments, int heightSegments)
     {
         return layer.DrawGeometry(new XeoglCylinderGeometry(center)
         {
@@ -359,7 +359,7 @@ public static class XeoglDrawingSpaceUtils
         });
     }
 
-    public static XeoglDrawingSpaceLayer DrawOpenedCylinder(this XeoglDrawingSpaceLayer layer, ILinFloat64Vector3D center, double radius, double height)
+    public static XeoglDrawingSpaceLayer DrawOpenedCylinder(this XeoglDrawingSpaceLayer layer, LinFloat64Vector3D center, double radius, double height)
     {
         return layer.DrawGeometry(new XeoglCylinderGeometry(center)
         {
@@ -370,7 +370,7 @@ public static class XeoglDrawingSpaceUtils
         });
     }
 
-    public static XeoglDrawingSpaceLayer DrawOpenedCylinder(this XeoglDrawingSpaceLayer layer, ILinFloat64Vector3D center, double radius, double height, int radialSegments, int heightSegments)
+    public static XeoglDrawingSpaceLayer DrawOpenedCylinder(this XeoglDrawingSpaceLayer layer, LinFloat64Vector3D center, double radius, double height, int radialSegments, int heightSegments)
     {
         return layer.DrawGeometry(new XeoglCylinderGeometry(center)
         {
@@ -383,7 +383,7 @@ public static class XeoglDrawingSpaceUtils
         });
     }
 
-    public static XeoglDrawingSpaceLayer DrawOpenedCylinder(this XeoglDrawingSpaceLayer layer, ILinFloat64Vector3D center, double radiusTop, double radiusBottom, double height)
+    public static XeoglDrawingSpaceLayer DrawOpenedCylinder(this XeoglDrawingSpaceLayer layer, LinFloat64Vector3D center, double radiusTop, double radiusBottom, double height)
     {
         return layer.DrawGeometry(new XeoglCylinderGeometry(center)
         {
@@ -394,7 +394,7 @@ public static class XeoglDrawingSpaceUtils
         });
     }
 
-    public static XeoglDrawingSpaceLayer DrawOpenedCylinder(this XeoglDrawingSpaceLayer layer, ILinFloat64Vector3D center, double radiusTop, double radiusBottom, double height, int radialSegments, int heightSegments)
+    public static XeoglDrawingSpaceLayer DrawOpenedCylinder(this XeoglDrawingSpaceLayer layer, LinFloat64Vector3D center, double radiusTop, double radiusBottom, double height, int radialSegments, int heightSegments)
     {
         return layer.DrawGeometry(new XeoglCylinderGeometry(center)
         {
@@ -430,7 +430,7 @@ public static class XeoglDrawingSpaceUtils
         });
     }
 
-    public static XeoglDrawingSpaceLayer DrawClosedCone(this XeoglDrawingSpaceLayer layer, ILinFloat64Vector3D center, double radiusBottom, double height)
+    public static XeoglDrawingSpaceLayer DrawClosedCone(this XeoglDrawingSpaceLayer layer, LinFloat64Vector3D center, double radiusBottom, double height)
     {
         return layer.DrawGeometry(new XeoglCylinderGeometry(center)
         {
@@ -440,7 +440,7 @@ public static class XeoglDrawingSpaceUtils
         });
     }
 
-    public static XeoglDrawingSpaceLayer DrawClosedCone(this XeoglDrawingSpaceLayer layer, ILinFloat64Vector3D center, double radiusBottom, double height, int radialSegments, int heightSegments)
+    public static XeoglDrawingSpaceLayer DrawClosedCone(this XeoglDrawingSpaceLayer layer, LinFloat64Vector3D center, double radiusBottom, double height, int radialSegments, int heightSegments)
     {
         return layer.DrawGeometry(new XeoglCylinderGeometry(center)
         {
@@ -477,7 +477,7 @@ public static class XeoglDrawingSpaceUtils
         });
     }
 
-    public static XeoglDrawingSpaceLayer DrawOpenedCone(this XeoglDrawingSpaceLayer layer, ILinFloat64Vector3D center, double radiusBottom, double height)
+    public static XeoglDrawingSpaceLayer DrawOpenedCone(this XeoglDrawingSpaceLayer layer, LinFloat64Vector3D center, double radiusBottom, double height)
     {
         return layer.DrawGeometry(new XeoglCylinderGeometry(center)
         {
@@ -488,7 +488,7 @@ public static class XeoglDrawingSpaceUtils
         });
     }
 
-    public static XeoglDrawingSpaceLayer DrawOpenedCone(this XeoglDrawingSpaceLayer layer, ILinFloat64Vector3D center, double radiusBottom, double height, int radialSegments, int heightSegments)
+    public static XeoglDrawingSpaceLayer DrawOpenedCone(this XeoglDrawingSpaceLayer layer, LinFloat64Vector3D center, double radiusBottom, double height, int radialSegments, int heightSegments)
     {
         return layer.DrawGeometry(new XeoglCylinderGeometry(center)
         {
@@ -502,7 +502,7 @@ public static class XeoglDrawingSpaceUtils
     }
 
 
-    public static XeoglDrawingSpaceLayer DrawTorus(this XeoglDrawingSpaceLayer layer, ILinFloat64Vector3D center, double radius, double tubeRadius)
+    public static XeoglDrawingSpaceLayer DrawTorus(this XeoglDrawingSpaceLayer layer, LinFloat64Vector3D center, double radius, double tubeRadius)
     {
         return layer.DrawGeometry(new XeoglTorusGeometry(center)
         {
@@ -511,7 +511,7 @@ public static class XeoglDrawingSpaceUtils
         });
     }
 
-    public static XeoglDrawingSpaceLayer DrawTorus(this XeoglDrawingSpaceLayer layer, ILinFloat64Vector3D center, double radius, double tubeRadius, double arcAngle)
+    public static XeoglDrawingSpaceLayer DrawTorus(this XeoglDrawingSpaceLayer layer, LinFloat64Vector3D center, double radius, double tubeRadius, double arcAngle)
     {
         return layer.DrawGeometry(new XeoglTorusGeometry(center)
         {
@@ -521,7 +521,7 @@ public static class XeoglDrawingSpaceUtils
         });
     }
 
-    public static XeoglDrawingSpaceLayer DrawTorus(this XeoglDrawingSpaceLayer layer, ILinFloat64Vector3D center, double radius, double tubeRadius, int radialSegments, int tubeSegments)
+    public static XeoglDrawingSpaceLayer DrawTorus(this XeoglDrawingSpaceLayer layer, LinFloat64Vector3D center, double radius, double tubeRadius, int radialSegments, int tubeSegments)
     {
         return layer.DrawGeometry(new XeoglTorusGeometry(center)
         {
@@ -532,7 +532,7 @@ public static class XeoglDrawingSpaceUtils
         });
     }
         
-    public static XeoglDrawingSpaceLayer DrawTorus(this XeoglDrawingSpaceLayer layer, ILinFloat64Vector3D center, double radius, double tubeRadius, double arcAngle, int radialSegments, int tubeSegments)
+    public static XeoglDrawingSpaceLayer DrawTorus(this XeoglDrawingSpaceLayer layer, LinFloat64Vector3D center, double radius, double tubeRadius, double arcAngle, int radialSegments, int tubeSegments)
     {
         return layer.DrawGeometry(new XeoglTorusGeometry(center)
         {
@@ -587,7 +587,7 @@ public static class XeoglDrawingSpaceUtils
     }
 
 
-    public static XeoglDrawingSpaceLayer DrawLineSegment(this XeoglDrawingSpaceLayer layer, IFloat64LineSegment3D lineSegment)
+    public static XeoglDrawingSpaceLayer DrawLineSegment(this XeoglDrawingSpaceLayer layer, Float64LineSegment3D lineSegment)
     {
         return layer.DrawGeometry(
             new XeoglLinesGeometry(
@@ -603,14 +603,14 @@ public static class XeoglDrawingSpaceUtils
         );
     }
 
-    public static XeoglDrawingSpaceLayer DrawLineStrip(this XeoglDrawingSpaceLayer layer, IEnumerable<ILinFloat64Vector3D> pointsList)
+    public static XeoglDrawingSpaceLayer DrawLineStrip(this XeoglDrawingSpaceLayer layer, IEnumerable<LinFloat64Vector3D> pointsList)
     {
         return layer.DrawGeometry(
             pointsList.ToGraphicsLineStripGeometry().ToXeoglGeometry()
         );
     }
 
-    public static XeoglDrawingSpaceLayer DrawLineLoop(this XeoglDrawingSpaceLayer layer, IEnumerable<ILinFloat64Vector3D> pointsList)
+    public static XeoglDrawingSpaceLayer DrawLineLoop(this XeoglDrawingSpaceLayer layer, IEnumerable<LinFloat64Vector3D> pointsList)
     {
         return layer.DrawGeometry(
             pointsList.ToGraphicsLineLoopGeometry().ToXeoglGeometry()
@@ -618,7 +618,7 @@ public static class XeoglDrawingSpaceUtils
     }
 
 
-    public static XeoglDrawingSpaceLayer DrawMarker(this XeoglDrawingSpaceLayer layer, XeoglGeometry markerGeometry, ILinFloat64Vector3D point)
+    public static XeoglDrawingSpaceLayer DrawMarker(this XeoglDrawingSpaceLayer layer, XeoglGeometry markerGeometry, LinFloat64Vector3D point)
     {
         return layer.DrawGeometry(
             markerGeometry,
@@ -626,7 +626,7 @@ public static class XeoglDrawingSpaceUtils
         );
     }
 
-    public static XeoglDrawingSpaceLayer DrawMarker(this XeoglDrawingSpaceLayer layer, XeoglGeometry markerGeometry, params ILinFloat64Vector3D[] pointsList)
+    public static XeoglDrawingSpaceLayer DrawMarker(this XeoglDrawingSpaceLayer layer, XeoglGeometry markerGeometry, params LinFloat64Vector3D[] pointsList)
     {
         foreach (var point in pointsList)
             layer.DrawGeometry(
@@ -637,7 +637,7 @@ public static class XeoglDrawingSpaceUtils
         return layer;
     }
 
-    public static XeoglDrawingSpaceLayer DrawMarker(this XeoglDrawingSpaceLayer layer, XeoglGeometry markerGeometry, IEnumerable<ILinFloat64Vector3D> pointsList)
+    public static XeoglDrawingSpaceLayer DrawMarker(this XeoglDrawingSpaceLayer layer, XeoglGeometry markerGeometry, IEnumerable<LinFloat64Vector3D> pointsList)
     {
         foreach (var point in pointsList)
             layer.DrawGeometry(
@@ -648,7 +648,7 @@ public static class XeoglDrawingSpaceUtils
         return layer;
     }
 
-    public static XeoglDrawingSpaceLayer DrawStoredMarker(this XeoglDrawingSpaceLayer layer, string geometryVariableName, ILinFloat64Vector3D point)
+    public static XeoglDrawingSpaceLayer DrawStoredMarker(this XeoglDrawingSpaceLayer layer, string geometryVariableName, LinFloat64Vector3D point)
     {
         return layer.DrawStoredGeometry(
             geometryVariableName,
@@ -656,7 +656,7 @@ public static class XeoglDrawingSpaceUtils
         );
     }
 
-    public static XeoglDrawingSpaceLayer DrawStoredMarker(this XeoglDrawingSpaceLayer layer, string geometryVariableName, params ILinFloat64Vector3D[] pointsList)
+    public static XeoglDrawingSpaceLayer DrawStoredMarker(this XeoglDrawingSpaceLayer layer, string geometryVariableName, params LinFloat64Vector3D[] pointsList)
     {
         foreach (var point in pointsList)
             layer.DrawStoredGeometry(
@@ -667,7 +667,7 @@ public static class XeoglDrawingSpaceUtils
         return layer;
     }
 
-    public static XeoglDrawingSpaceLayer DrawStoredMarker(this XeoglDrawingSpaceLayer layer, string geometryVariableName, IEnumerable<ILinFloat64Vector3D> pointsList)
+    public static XeoglDrawingSpaceLayer DrawStoredMarker(this XeoglDrawingSpaceLayer layer, string geometryVariableName, IEnumerable<LinFloat64Vector3D> pointsList)
     {
         foreach (var point in pointsList)
             layer.DrawStoredGeometry(
@@ -688,7 +688,7 @@ public static class XeoglDrawingSpaceUtils
         );
     }
 
-    public static XeoglDrawingSpaceLayer DrawWireWorldAxes(this XeoglDrawingSpaceLayer layer, ILinFloat64Vector3D origin, double length, int thickness)
+    public static XeoglDrawingSpaceLayer DrawWireWorldAxes(this XeoglDrawingSpaceLayer layer, LinFloat64Vector3D origin, double length, int thickness)
     {
         //x-axis
         layer.DrawGeometry(
@@ -742,7 +742,7 @@ public static class XeoglDrawingSpaceUtils
         );
     }
 
-    public static XeoglDrawingSpaceLayer DrawSolidWorldAxes(this XeoglDrawingSpaceLayer layer, ILinFloat64Vector3D origin, double length = 1, double thickness = 0.075, double arrowHeadLength = 0.3)
+    public static XeoglDrawingSpaceLayer DrawSolidWorldAxes(this XeoglDrawingSpaceLayer layer, LinFloat64Vector3D origin, double length = 1, double thickness = 0.075, double arrowHeadLength = 0.3)
     {
         var arrowHeadBaseRadius = arrowHeadLength / 3;
         var arrowEdgeLength = length - arrowHeadLength;
@@ -859,7 +859,7 @@ public static class XeoglDrawingSpaceUtils
     }
 
 
-    public static XeoglDrawingSpaceLayer DrawWireArrow(this XeoglDrawingSpaceLayer layer, ILinFloat64Vector3D origin, ILinFloat64Vector3D direction, int thickness, Color color)
+    public static XeoglDrawingSpaceLayer DrawWireArrow(this XeoglDrawingSpaceLayer layer, LinFloat64Vector3D origin, LinFloat64Vector3D direction, int thickness, Color color)
     {
         var endPoint = origin.GetPointInDirection(direction);
 
@@ -878,12 +878,12 @@ public static class XeoglDrawingSpaceUtils
         return layer;
     }
 
-    public static XeoglDrawingSpaceLayer DrawWireArrows(this XeoglDrawingSpaceLayer layer, IEnumerable<Tuple<ILinFloat64Vector3D, ILinFloat64Vector3D>> arrowsList, double maxLength, int thickness, Color color)
+    public static XeoglDrawingSpaceLayer DrawWireArrows(this XeoglDrawingSpaceLayer layer, IEnumerable<Tuple<LinFloat64Vector3D, LinFloat64Vector3D>> arrowsList, double maxLength, int thickness, Color color)
     {
         var arrowsArray = arrowsList.ToArray();
 
         var scaleFactor = 
-            maxLength / arrowsArray.Select(t => t.Item2.VectorENorm()).Max();
+            maxLength / arrowsArray.Select(t => t.Item2.L2Norm()).Max();
 
         var lineSegmentsGeometry =
             arrowsArray.Select(t =>

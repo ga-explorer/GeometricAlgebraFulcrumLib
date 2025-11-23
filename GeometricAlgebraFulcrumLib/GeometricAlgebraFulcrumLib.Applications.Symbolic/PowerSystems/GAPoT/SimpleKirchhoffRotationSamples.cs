@@ -393,7 +393,7 @@ namespace GeometricAlgebraFulcrumLib.Applications.PowerSystems
             var y1 =
                 rotor.OmMap(x);
 
-            var psInv = x.Op(u).Op(v).Inverse();
+            var psInv = x.Op(u).Op(v).VersorInverse();
             var a = u.Op(v).Lcp(psInv).Sp(y1).Scalar().FullSimplifyScalar();
             var b = v.Op(x).Lcp(psInv).Sp(y1).Scalar().FullSimplifyScalar();
             var c = x.Op(u).Lcp(psInv).Sp(y1).Scalar().FullSimplifyScalar();
@@ -516,7 +516,7 @@ namespace GeometricAlgebraFulcrumLib.Applications.PowerSystems
             var yi =
                 rotor.OmMap(ei);
 
-            var psInv = x.Op(u).Op(v).Inverse();
+            var psInv = x.Op(u).Op(v).VersorInverse();
 
             a += u.Op(v).Lcp(psInv).Sp(yi) * xi;
             b += v.Op(x).Lcp(psInv).Sp(yi) * xi;

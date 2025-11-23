@@ -13,20 +13,20 @@ public class SgRamerDouglasPeuckerFilter : ISgDataFilter
 
     /**
      *
-     * @param zeroEpsilon
-     *            zeroEpsilon in Ramer-Douglas-Peucker algorithm (maximum distance
+     * @param tolerance
+     *            tolerance in Ramer-Douglas-Peucker algorithm (maximum distance
      *            of a point in data between original curve and simplified
      *            curve)
      * @throws IllegalArgumentException
-     *             when {@code zeroEpsilon <= 0}
+     *             when {@code tolerance <= 0}
      */
-    public SgRamerDouglasPeuckerFilter(double zeroEpsilon)
+    public SgRamerDouglasPeuckerFilter(double tolerance)
     {
-        if (zeroEpsilon <= 0)
+        if (tolerance <= 0)
         {
             throw new ArgumentException("Epsilon nust be > 0");
         }
-        _epsilon = zeroEpsilon;
+        _epsilon = tolerance;
     }
 
     public double[] Filter(double[] data)
@@ -36,7 +36,7 @@ public class SgRamerDouglasPeuckerFilter : ISgDataFilter
 
     /**
      *
-     * @return {@code zeroEpsilon}
+     * @return {@code tolerance}
      */
     public double GetEpsilon()
     {
@@ -73,23 +73,23 @@ public class SgRamerDouglasPeuckerFilter : ISgDataFilter
         }
         else
         {
-            return new double[] { points[startIndex], points[endIndex] };
+            return [points[startIndex], points[endIndex]];
         }
     }
 
     /**
      *
-     * @param zeroEpsilon
+     * @param tolerance
      *            maximum distance of a point in data between original curve and
      *            simplified curve
      */
-    public void SetEpsilon(double zeroEpsilon)
+    public void SetEpsilon(double tolerance)
     {
-        if (zeroEpsilon <= 0)
+        if (tolerance <= 0)
         {
             throw new ArgumentException("Epsilon nust be > 0");
         }
-        _epsilon = zeroEpsilon;
+        _epsilon = tolerance;
     }
 
 }

@@ -49,9 +49,9 @@
 //        }
 
 //        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-//        public override bool IsNearIdentity(double zeroEpsilon = 1e-12d)
+//        public override bool IsNearIdentity(double tolerance = 1e-12d)
 //        {
-//            return (AngleCos - 1d).IsNearZero(zeroEpsilon);
+//            return (AngleCos - 1d).IsNearZero(tolerance);
 //        }
 
 

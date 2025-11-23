@@ -173,7 +173,7 @@ public sealed record LinFloat64Scalar2D :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool IsNearZero(double zeroEpsilon = 1E-12)
+    public bool IsNearZero(double tolerance = Float64Utils.DefaultTolerance)
     {
         return Scalar.IsNearZero();
     }
@@ -185,13 +185,13 @@ public sealed record LinFloat64Scalar2D :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public Float64Scalar Norm()
+    public double L2Norm()
     {
         return Scalar.Abs();
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public Float64Scalar NormSquared()
+    public double L2NormSquared()
     {
         return Scalar.Square();
     }

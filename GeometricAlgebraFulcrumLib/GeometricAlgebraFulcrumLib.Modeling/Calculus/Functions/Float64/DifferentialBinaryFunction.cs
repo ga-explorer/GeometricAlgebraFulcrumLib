@@ -22,7 +22,7 @@ public abstract class DifferentialBinaryFunction
         => 2;
 
     public override IReadOnlyList<DifferentialFunction> Arguments
-        => new[] { Argument1, Argument2 };
+        => [Argument1, Argument2];
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]

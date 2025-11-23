@@ -2,7 +2,7 @@
 using System.Collections.Immutable;
 using System.Diagnostics;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.Borders.Space1D;
+using GeometricAlgebraFulcrumLib.Modeling.Geometry.Bounding.Integers;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.BitManipulation;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Tuples;
 using GeometricAlgebraFulcrumLib.Utilities.Text.Text;
@@ -111,14 +111,14 @@ public sealed class SparseRegularHistogram :
         return hist;
     }
 
-    public static SparseRegularHistogram CreateNormal(double mean, double standardDeviation, int binCount, double zeroEpsilon = Float64Utils.ZeroEpsilon)
+    public static SparseRegularHistogram CreateNormal(double mean, double standardDeviation, int binCount, double tolerance = Float64Utils.DefaultTolerance)
     {
         var variance =
             standardDeviation * standardDeviation;
 
         var halfSize = Math.Sqrt(
             -2 * variance * Math.Log(
-                Math.Sqrt(Math.Tau) * standardDeviation * zeroEpsilon
+                Math.Sqrt(Math.Tau) * standardDeviation * tolerance
             )
         );
 
@@ -155,9 +155,9 @@ public sealed class SparseRegularHistogram :
         }
     }
 
-    public static SparseRegularHistogram CreateExponential(double rate, int binCount, double zeroEpsilon = Float64Utils.ZeroEpsilon)
+    public static SparseRegularHistogram CreateExponential(double rate, int binCount, double tolerance = Float64Utils.DefaultTolerance)
     {
-        var domainLastValue = -Math.Log(zeroEpsilon / rate) / rate;
+        var domainLastValue = -Math.Log(tolerance / rate) / rate;
 
         var indexHeightDictionary = new SortedDictionary<int, double>();
 
@@ -179,7 +179,7 @@ public sealed class SparseRegularHistogram :
         return hist.NormalizeHeights();
     }
 
-    //public static SparseHistogram CreateBinomial(int trialCount, double successHeight, double zeroEpsilon = Float64Utils.ZeroEpsilon)
+    //public static SparseHistogram CreateBinomial(int trialCount, double successHeight, double tolerance = Float64Utils.DefaultTolerance)
     //{
     //    var indexHeightDictionary = new SortedDictionary<int, double>();
 
@@ -202,7 +202,7 @@ public sealed class SparseRegularHistogram :
     //        //successHeight.Power(k) *
     //        //failureHeight.Power(trialCount - k);
 
-    //        if (p <= zeroEpsilon) continue;
+    //        if (p <= tolerance) continue;
 
     //        domainFirstValue = k;
 
@@ -223,7 +223,7 @@ public sealed class SparseRegularHistogram :
     //            (trialCount - k) * qLn
     //        );
 
-    //        if (p <= zeroEpsilon)
+    //        if (p <= tolerance)
     //        {
     //            domainLastValue = k - 1;
 
@@ -242,7 +242,7 @@ public sealed class SparseRegularHistogram :
     //    );
     //}
 
-    //public static SparseHistogram CreatePoisson(double mean, double zeroEpsilon = Float64Utils.ZeroEpsilon)
+    //public static SparseHistogram CreatePoisson(double mean, double tolerance = Float64Utils.DefaultTolerance)
     //{
     //    var indexHeightDictionary = new SortedDictionary<int, double>();
 
@@ -259,7 +259,7 @@ public sealed class SparseRegularHistogram :
     //        );
     //        //mean.Power(k) * expMean / SpecialFunctions.Factorial(k);
 
-    //        if (p <= zeroEpsilon) continue;
+    //        if (p <= tolerance) continue;
 
     //        domainFirstValue = k;
 
@@ -276,7 +276,7 @@ public sealed class SparseRegularHistogram :
     //            k * meanLn - mean - SpecialFunctions.FactorialLn(k)
     //        );
 
-    //        if (p <= zeroEpsilon)
+    //        if (p <= tolerance)
     //        {
     //            domainLastValue = k - 1;
 
@@ -772,7 +772,7 @@ public sealed class SparseRegularHistogram :
     {
         var area = IndexHeightDictionary.Values.Sum();
         var areaMax = (1d - zeroAreaRatioEpsilon) * area;
-        var zeroEpsilon = 0d;
+        var tolerance = 0d;
 
         var yValues =
             IndexHeightDictionary
@@ -785,11 +785,11 @@ public sealed class SparseRegularHistogram :
 
             if (areaMax > 0) continue;
 
-            zeroEpsilon = yValue;
+            tolerance = yValue;
             break;
         }
 
-        return TrimHeights(zeroEpsilon);
+        return TrimHeights(tolerance);
     }
 
 

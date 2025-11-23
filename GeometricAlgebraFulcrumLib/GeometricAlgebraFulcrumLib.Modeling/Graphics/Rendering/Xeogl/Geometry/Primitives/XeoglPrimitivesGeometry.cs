@@ -19,7 +19,7 @@ public abstract class XeoglPrimitivesGeometry : XeoglGeometry
     public int VertexCount 
         => GraphicsGeometry.VertexCount;
 
-    public IEnumerable<ILinFloat64Vector3D> VertexPoints
+    public IEnumerable<LinFloat64Vector3D> VertexPoints
         => GraphicsGeometry.GeometryPoints;
 
     public IEnumerable<int> VertexIndices

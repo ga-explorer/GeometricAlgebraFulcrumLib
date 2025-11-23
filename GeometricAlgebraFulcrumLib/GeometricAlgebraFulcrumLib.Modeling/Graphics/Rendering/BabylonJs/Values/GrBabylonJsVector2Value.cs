@@ -1,14 +1,13 @@
 ﻿using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space2D;
-using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.AttributeSet;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Tuples;
 
 namespace GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.BabylonJs.Values;
 
 public sealed class GrBabylonJsVector2Value :
-    SparseCodeAttributeValue<IPair<Float64Scalar>>
+    SparseCodeAttributeValue<IPair<double>>
 {
-    internal static GrBabylonJsVector2Value Create(IPair<Float64Scalar> value)
+    internal static GrBabylonJsVector2Value Create(IPair<double> value)
     {
         return new GrBabylonJsVector2Value(value);
     }
@@ -30,7 +29,7 @@ public sealed class GrBabylonJsVector2Value :
     {
     }
 
-    private GrBabylonJsVector2Value(IPair<Float64Scalar> value)
+    private GrBabylonJsVector2Value(IPair<double> value)
         : base(value)
     {
     }

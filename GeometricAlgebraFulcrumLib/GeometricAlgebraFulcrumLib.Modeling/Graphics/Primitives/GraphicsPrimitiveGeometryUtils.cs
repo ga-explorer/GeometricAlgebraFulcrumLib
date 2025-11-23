@@ -5,7 +5,7 @@ using GeometricAlgebraFulcrumLib.Modeling.Geometry.BasicShapes.Triangles.Space3D
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Primitives.Lines;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Primitives.Points;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Primitives.Triangles;
-using GeometricAlgebraFulcrumLib.Modeling.Trajectories.Vectors3D.Float64.Adaptive;
+using GeometricAlgebraFulcrumLib.Modeling.Trajectories.Vectors3D.Float64.Samplers;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Tuples;
 
 namespace GeometricAlgebraFulcrumLib.Modeling.Graphics.Primitives;
@@ -13,7 +13,7 @@ namespace GeometricAlgebraFulcrumLib.Modeling.Graphics.Primitives;
 public static class GraphicsPrimitiveGeometryUtils
 {
     private static readonly string[] GraphicsPrimitiveTypeNames =
-    {
+    [
         "points",
         "lines",
         "line-loop",
@@ -21,7 +21,7 @@ public static class GraphicsPrimitiveGeometryUtils
         "triangles",
         "triangle-strip",
         "triangle-fan"
-    };
+    ];
 
     public static string GetName(this GraphicsPrimitiveType3D primitiveType)
     {
@@ -111,7 +111,7 @@ public static class GraphicsPrimitiveGeometryUtils
         return new Triplet<int>(index3, index1, index2);
     }
 
-    public static GrLineGeometryComposer3D ToLineGeometryComposer(this IEnumerable<ILinFloat64Vector3D> pointsList, bool closedFlag = false)
+    public static GrLineGeometryComposer3D ToLineGeometryComposer(this IEnumerable<LinFloat64Vector3D> pointsList, bool closedFlag = false)
     {
         var lineMesh = new GrLineGeometryComposer3D();
 
@@ -120,52 +120,52 @@ public static class GraphicsPrimitiveGeometryUtils
         return lineMesh;
     }
 
-    public static GrPointGeometry3D ToGraphicsPointsGeometry(this IReadOnlyList<ILinFloat64Vector3D> pointsList)
+    public static GrPointGeometry3D ToGraphicsPointsGeometry(this IReadOnlyList<LinFloat64Vector3D> pointsList)
     {
         return GrPointGeometry3D.Create(pointsList);
     }
 
-    public static GrPointGeometry3D ToGraphicsPointsGeometry(this IEnumerable<ILinFloat64Vector3D> pointsList)
+    public static GrPointGeometry3D ToGraphicsPointsGeometry(this IEnumerable<LinFloat64Vector3D> pointsList)
     {
         return GrPointGeometry3D.Create(pointsList);
     }
 
-    public static GrPointSoupGeometry3D ToGraphicsPointsListGeometry(this IReadOnlyList<ILinFloat64Vector3D> pointsList)
+    public static GrPointSoupGeometry3D ToGraphicsPointsListGeometry(this IReadOnlyList<LinFloat64Vector3D> pointsList)
     {
         return GrPointSoupGeometry3D.Create(pointsList);
     }
 
-    public static GrPointSoupGeometry3D ToGraphicsPointsListGeometry(this IEnumerable<ILinFloat64Vector3D> pointsList)
+    public static GrPointSoupGeometry3D ToGraphicsPointsListGeometry(this IEnumerable<LinFloat64Vector3D> pointsList)
     {
         return GrPointSoupGeometry3D.Create(pointsList);
     }
 
-    public static GrLineLoopGeometry3D ToGraphicsLineLoopGeometry(this IReadOnlyList<ILinFloat64Vector3D> pointsList)
+    public static GrLineLoopGeometry3D ToGraphicsLineLoopGeometry(this IReadOnlyList<LinFloat64Vector3D> pointsList)
     {
         return GrLineLoopGeometry3D.Create(pointsList);
     }
 
-    public static GrLineLoopGeometry3D ToGraphicsLineLoopGeometry(this IEnumerable<ILinFloat64Vector3D> pointsList)
+    public static GrLineLoopGeometry3D ToGraphicsLineLoopGeometry(this IEnumerable<LinFloat64Vector3D> pointsList)
     {
         return GrLineLoopGeometry3D.Create(pointsList);
     }
 
-    public static GrLineStripGeometry3D ToGraphicsLineStripGeometry(this IReadOnlyList<ILinFloat64Vector3D> pointsList)
+    public static GrLineStripGeometry3D ToGraphicsLineStripGeometry(this IReadOnlyList<LinFloat64Vector3D> pointsList)
     {
         return GrLineStripGeometry3D.Create(pointsList);
     }
 
-    public static GrLineStripGeometry3D ToGraphicsLineStripGeometry(this IEnumerable<ILinFloat64Vector3D> pointsList)
+    public static GrLineStripGeometry3D ToGraphicsLineStripGeometry(this IEnumerable<LinFloat64Vector3D> pointsList)
     {
         return GrLineStripGeometry3D.Create(pointsList);
     }
 
-    public static GrLineGeometry3D ToGraphicsLinesGeometry(this IReadOnlyList<ILinFloat64Vector3D> pointsList)
+    public static GrLineGeometry3D ToGraphicsLinesGeometry(this IReadOnlyList<LinFloat64Vector3D> pointsList)
     {
         return GrLineGeometry3D.Create(pointsList);
     }
 
-    public static GrLineGeometry3D ToGraphicsLinesGeometry(this IEnumerable<ILinFloat64Vector3D> pointsList)
+    public static GrLineGeometry3D ToGraphicsLinesGeometry(this IEnumerable<LinFloat64Vector3D> pointsList)
     {
         return GrLineGeometry3D.Create(pointsList);
     }
@@ -175,12 +175,12 @@ public static class GraphicsPrimitiveGeometryUtils
         return GrLineGeometry3D.Create(lineSegmentsList);
     }
 
-    public static GrLineSoupGeometry3D ToGraphicsLinesListGeometry(this IReadOnlyList<ILinFloat64Vector3D> pointsList)
+    public static GrLineSoupGeometry3D ToGraphicsLinesListGeometry(this IReadOnlyList<LinFloat64Vector3D> pointsList)
     {
         return GrLineSoupGeometry3D.Create(pointsList);
     }
 
-    public static GrLineSoupGeometry3D ToGraphicsLinesListGeometry(this IEnumerable<ILinFloat64Vector3D> pointsList)
+    public static GrLineSoupGeometry3D ToGraphicsLinesListGeometry(this IEnumerable<LinFloat64Vector3D> pointsList)
     {
         return GrLineSoupGeometry3D.Create(pointsList);
     }
@@ -190,32 +190,32 @@ public static class GraphicsPrimitiveGeometryUtils
         return GrLineSoupGeometry3D.Create(lineSegmentsList);
     }
 
-    public static GrTriangleFanGeometry3D ToGraphicsTriangleFanGeometry(this IReadOnlyList<ILinFloat64Vector3D> pointsList)
+    public static GrTriangleFanGeometry3D ToGraphicsTriangleFanGeometry(this IReadOnlyList<LinFloat64Vector3D> pointsList)
     {
         return GrTriangleFanGeometry3D.Create(pointsList);
     }
 
-    public static GrTriangleFanGeometry3D ToGraphicsTriangleFanGeometry(this IEnumerable<ILinFloat64Vector3D> pointsList)
+    public static GrTriangleFanGeometry3D ToGraphicsTriangleFanGeometry(this IEnumerable<LinFloat64Vector3D> pointsList)
     {
         return GrTriangleFanGeometry3D.Create(pointsList);
     }
 
-    public static GrTriangleStripGeometry3D ToGraphicsTriangleStripGeometry(this IReadOnlyList<ILinFloat64Vector3D> pointsList)
+    public static GrTriangleStripGeometry3D ToGraphicsTriangleStripGeometry(this IReadOnlyList<LinFloat64Vector3D> pointsList)
     {
         return GrTriangleStripGeometry3D.Create(pointsList);
     }
 
-    public static GrTriangleStripGeometry3D ToGraphicsTriangleStripGeometry(this IEnumerable<ILinFloat64Vector3D> pointsList)
+    public static GrTriangleStripGeometry3D ToGraphicsTriangleStripGeometry(this IEnumerable<LinFloat64Vector3D> pointsList)
     {
         return GrTriangleStripGeometry3D.Create(pointsList);
     }
 
-    public static GrTriangleGeometry3D ToGraphicsTrianglesGeometry(this IReadOnlyList<ILinFloat64Vector3D> pointsList)
+    public static GrTriangleGeometry3D ToGraphicsTrianglesGeometry(this IReadOnlyList<LinFloat64Vector3D> pointsList)
     {
         return GrTriangleGeometry3D.Create(pointsList);
     }
 
-    public static GrTriangleGeometry3D ToGraphicsTrianglesGeometry(this IEnumerable<ILinFloat64Vector3D> pointsList)
+    public static GrTriangleGeometry3D ToGraphicsTrianglesGeometry(this IEnumerable<LinFloat64Vector3D> pointsList)
     {
         return GrTriangleGeometry3D.Create(pointsList);
     }
@@ -225,7 +225,7 @@ public static class GraphicsPrimitiveGeometryUtils
         return GrTriangleGeometry3D.Create(trianglesList, reversePoints);
     }
 
-    public static GrTriangleSoupGeometry3D ToGraphicsTrianglesListGeometry(this IEnumerable<ILinFloat64Vector3D> pointsList)
+    public static GrTriangleSoupGeometry3D ToGraphicsTrianglesListGeometry(this IEnumerable<LinFloat64Vector3D> pointsList)
     {
         return GrTriangleSoupGeometry3D.Create(pointsList);
     }
@@ -345,9 +345,9 @@ public static class GraphicsPrimitiveGeometryUtils
     }
         
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static GrLineStripGeometry3D GenerateGeometry(this Float64AdaptivePath3D curve)
+    public static GrLineStripGeometry3D GenerateGeometry(this Float64SampledPath3D curve)
     {
-        return GrLineStripGeometry3D.Create(curve);
+        return GrLineStripGeometry3D.Create(curve.ToLinVector3DList());
     }
 
 

@@ -4,7 +4,6 @@ using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Angles;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Frames.Space3D;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space2D;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space3D;
-using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.BasicShapes.Triangles.Space2D.Float64;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.BasicShapes.Triangles.Space3D.Float64;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Primitives.Vertices;
@@ -20,8 +19,8 @@ namespace GeometricAlgebraFulcrumLib.Modeling.Graphics.Primitives.Triangles;
 public class  GrTriangleGeometryComposer3D :
     IGraphicsTriangleGeometry3D
 {
-    private readonly Dictionary<Triplet<Float64Scalar>, IGraphicsVertex3D> _verticesTable
-        = new Dictionary<Triplet<Float64Scalar>, IGraphicsVertex3D>();
+    private readonly Dictionary<Triplet<double>, IGraphicsVertex3D> _verticesTable
+        = new Dictionary<Triplet<double>, IGraphicsVertex3D>();
 
     private readonly List<IGraphicsVertex3D> _verticesList 
         = new List<IGraphicsVertex3D>();
@@ -70,17 +69,17 @@ public class  GrTriangleGeometryComposer3D :
     public IEnumerable<IGraphicsVertex3D> GeometryVertices
         => _verticesList;
 
-    public IEnumerable<ILinFloat64Vector3D> GeometryPoints
+    public IEnumerable<LinFloat64Vector3D> GeometryPoints
         => _verticesList.Select(p => p.Point);
 
-    public IEnumerable<ILinFloat64Vector2D> VertexTextureUVs
+    public IEnumerable<LinFloat64Vector2D> VertexTextureUVs
         => _verticesList.Select(p => p.ParameterValue.ToLinVector2D());
 
     public IEnumerable<Color> VertexColors
         => _verticesList.Select(p => p.Color);
         
-    public IEnumerable<ILinFloat64Vector3D> VertexNormals
-        => _verticesList.Select(p => p.Normal);
+    public IEnumerable<LinFloat64Vector3D> VertexNormals
+        => _verticesList.Select(p => p.Normal.ToLinVector3D());
 
     public IEnumerable<Triplet<int>> TriangleVertexIndices
     {
@@ -172,7 +171,7 @@ public class  GrTriangleGeometryComposer3D :
     }
 
 
-    private IGraphicsVertex3D CreateVertex(ITriplet<Float64Scalar> point)
+    private IGraphicsVertex3D CreateVertex(ITriplet<double> point)
     {
         var vertexIndex = _verticesList.Count;
 
@@ -314,9 +313,9 @@ public class  GrTriangleGeometryComposer3D :
     }
 
         
-    public ILinFloat64Vector3D GetGeometryPoint(int index)
+    public LinFloat64Vector3D GetGeometryPoint(int index)
     {
-        return _verticesList[index];
+        return _verticesList[index].ToLinVector3D();
     }
         
     public LinFloat64Normal3D GetVertexNormal(int index)
@@ -366,7 +365,7 @@ public class  GrTriangleGeometryComposer3D :
 
     public IGraphicsVertex3D AddVertex(double x, double y, double z)
     {
-        var pointTriplet = new Triplet<Float64Scalar>(x, y, z);
+        var pointTriplet = new Triplet<double>(x, y, z);
 
         IGraphicsVertex3D storedVertex;
 
@@ -440,7 +439,7 @@ public class  GrTriangleGeometryComposer3D :
     }
 
 
-    public GrTriangleGeometryComposer3D AddVertices(params ILinFloat64Vector3D[] pointsList)
+    public GrTriangleGeometryComposer3D AddVertices(params LinFloat64Vector3D[] pointsList)
     {
         foreach (var point in pointsList)
             AddVertex(point);
@@ -448,7 +447,7 @@ public class  GrTriangleGeometryComposer3D :
         return this;
     }
 
-    public GrTriangleGeometryComposer3D AddVertices(IEnumerable<ILinFloat64Vector3D> pointsList)
+    public GrTriangleGeometryComposer3D AddVertices(IEnumerable<LinFloat64Vector3D> pointsList)
     {
         foreach (var point in pointsList)
             AddVertex(point);
@@ -580,7 +579,7 @@ public class  GrTriangleGeometryComposer3D :
         return this;
     }
 
-    public GrTriangleGeometryComposer3D AddTriangles(IReadOnlyList<ILinFloat64Vector3D> pointsList)
+    public GrTriangleGeometryComposer3D AddTriangles(IReadOnlyList<LinFloat64Vector3D> pointsList)
     {
         if (pointsList.Count % 3 != 0)
             throw new InvalidOperationException();

@@ -16,7 +16,7 @@ public sealed record Float64Path2DLocalFrame :
         return new Float64Path2DLocalFrame(
             t,
             point.ToLinVector2D(),
-            tangent.ToLinVector2D()
+            tangent.ToUnitLinVector2D()
         );
     }
 
@@ -24,7 +24,7 @@ public sealed record Float64Path2DLocalFrame :
     /// <summary>
     /// The curve parameter value at the given curve point
     /// </summary>
-    public Float64Scalar Time { get; }
+    public Float64Scalar TimeValue { get; }
 
     public int Index { get; internal set; } = -1;
 
@@ -36,17 +36,25 @@ public sealed record Float64Path2DLocalFrame :
     public int VSpaceDimensions
         => 2;
 
-    public Float64Scalar Item1
+    public double Item1
         => Point.X;
 
-    public Float64Scalar Item2
+    public double Item2
         => Point.Y;
 
-    public Float64Scalar X
+    public double X
         => Point.X;
 
-    public Float64Scalar Y
+    public double Y
         => Point.Y;
+    
+    public double this[int index] 
+        => index switch
+        {
+            0 => X,
+            1 => Y,
+            _ => 0
+        };
 
     public Color Color { get; set; }
 
@@ -61,7 +69,7 @@ public sealed record Float64Path2DLocalFrame :
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     private Float64Path2DLocalFrame(double t, ILinFloat64Vector2D point, ILinFloat64Vector2D tangent)
     {
-        Time = t;
+        TimeValue = t;
         Point = point.ToLinVector2D();
         Tangent = tangent.ToLinVector2D();
         Normal = Tangent.GetNormal();
@@ -73,17 +81,18 @@ public sealed record Float64Path2DLocalFrame :
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public bool IsValid()
     {
-        var isValid =
-            !double.IsNaN(Time) &&
-            Point.IsValid() &&
-            Tangent.IsValid() &&
-            Tangent.VectorENormSquared().IsNearEqual(1);
+        const double tolerance = 1e-7;
 
-        return isValid;
+        return !double.IsNaN(TimeValue) &&
+               Point.IsValid() &&
+               Tangent.IsValid() &&
+               LinFloat64Vector2DUtils.L2Norm(Tangent).IsNearOne(tolerance) &&
+               LinFloat64Vector2DUtils.L2Norm(Normal).IsNearOne(tolerance) &&
+               Tangent.VectorDot(Normal).IsNearZero(tolerance);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public LinFloat64PolarAngle GetMaxDirectionAngleWithFrame(Float64Path2DLocalFrame frame2)
+    public LinFloat64PolarAngle GetMaxAngleWithFrame(Float64Path2DLocalFrame frame2)
     {
         //TODO: Is this correct?
         var maxAngle = LinFloat64PolarAngle.Angle0;
@@ -101,7 +110,7 @@ public sealed record Float64Path2DLocalFrame :
         Debug.Assert(translationVector.IsValid());
 
         return new Float64Path2DLocalFrame(
-            Time,
+            TimeValue,
             LinFloat64Vector2D.Create(Point.X + translationVector.X,
                 Point.Y + translationVector.Y),
             Tangent

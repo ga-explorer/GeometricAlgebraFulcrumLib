@@ -282,7 +282,12 @@ public class CGaGeometricSpace<T> :
 
         E12 = new CGaBlade<T>(this, ConformalProcessor.BivectorTerm(2, 3));
 
-        Ie = new CGaBlade<T>(this, ConformalProcessor.KVectorTerm((VSpaceDimensions - 2).GetRange(2).ToImmutableArray()));
+        Ie = new CGaBlade<T>(
+            this, 
+            ConformalProcessor.KVectorTerm(
+                (VSpaceDimensions - 2).GetRange(2).ToImmutableArray()
+            )
+        );
         IeInv = Ie.Inverse();
         IeRev = Ie.Reverse();
 

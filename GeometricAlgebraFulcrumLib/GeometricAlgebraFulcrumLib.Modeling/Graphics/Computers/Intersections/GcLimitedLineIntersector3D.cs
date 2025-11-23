@@ -6,11 +6,10 @@ using GeometricAlgebraFulcrumLib.Modeling.Geometry.BasicShapes.Lines;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.BasicShapes.Lines.Space3D.Float64;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.BasicShapes.Triangles.Space2D.Float64;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.BasicShapes.Triangles.Space3D.Float64;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.Borders;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.Borders.Space3D.Float64;
-using GeometricAlgebraFulcrumLib.Modeling.Graphics.Accelerators.BIH;
-using GeometricAlgebraFulcrumLib.Modeling.Graphics.Accelerators.BIH.Space3D;
-using GeometricAlgebraFulcrumLib.Modeling.Graphics.Accelerators.BIH.Space3D.Traversal;
+using GeometricAlgebraFulcrumLib.Modeling.Geometry.Bounding.Float64;
+using GeometricAlgebraFulcrumLib.Modeling.Graphics.Accelerators.BIHold;
+using GeometricAlgebraFulcrumLib.Modeling.Graphics.Accelerators.BIHold.Space3D;
+using GeometricAlgebraFulcrumLib.Modeling.Graphics.Accelerators.BIHold.Space3D.Traversal;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Accelerators.Grids;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Accelerators.Grids.Space3D;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Statistics;
@@ -60,12 +59,12 @@ public class GcLimitedLineIntersector3D
             (d1 >= 0 && d2 >= 0 && d3 >= 0 && dSum > 0);
     }
 
-    public static bool TestIntersection(LineTraversalData3D lineData, IFloat64BoundingBox3D boundingBox)
+    public static bool TestIntersection(LineTraversalData3D lineData, Float64BoundingBox3D boundingBox)
     {
         var corners = new[]
         {
-            boundingBox.GetMinCorner(),
-            boundingBox.GetMaxCorner()
+            boundingBox.MinPoint,
+            boundingBox.MaxPoint
         };
 
         var isXNegative = lineData.DirectionSign[0];
@@ -92,12 +91,12 @@ public class GcLimitedLineIntersector3D
                txMax > lineData.ParameterMinValue;
     }
 
-    public static Tuple<bool, double, double> ComputeIntersections(LineTraversalData3D lineData, IFloat64BoundingBox3D boundingBox)
+    public static Tuple<bool, double, double> ComputeIntersections(LineTraversalData3D lineData, Float64BoundingBox3D boundingBox)
     {
         var corners = new[]
         {
-            boundingBox.GetMinCorner(),
-            boundingBox.GetMaxCorner()
+            boundingBox.MinPoint,
+            boundingBox.MaxPoint
         };
 
         var isXNegative = lineData.DirectionSign[0];
@@ -132,7 +131,7 @@ public class GcLimitedLineIntersector3D
 
 
     public IEnumerable<AccBihLineTraversalState3D> BihLineTraversalStates { get; private set; }
-        = Enumerable.Empty<AccBihLineTraversalState3D>();
+        = [];
 
 
     public Float64Line3D Line { get; private set; }
@@ -1785,7 +1784,7 @@ public class GcLimitedLineIntersector3D
 
 
     #region Line-Bounding Box Intersection
-    public bool TestIntersection(IFloat64BoundingBox3D boundingBox)
+    public bool TestIntersection(Float64BoundingBox3D boundingBox)
     {
         var tMin = LineParameterLimits.MinValue;
         var tMax = LineParameterLimits.MaxValue;
@@ -1837,7 +1836,7 @@ public class GcLimitedLineIntersector3D
         return true;
     }
 
-    public Tuple<bool, double, double> ComputeIntersections(IFloat64BoundingBox3D boundingBox)
+    public Tuple<bool, double, double> ComputeIntersections(Float64BoundingBox3D boundingBox)
     {
         var tMin = LineParameterLimits.MinValue;
         var tMax = LineParameterLimits.MaxValue;
@@ -1890,7 +1889,7 @@ public class GcLimitedLineIntersector3D
     }
 
 
-    public bool TestIntersection(IEnumerable<IFloat64BoundingBox3D> boundingBoxesList)
+    public bool TestIntersection(IEnumerable<Float64BoundingBox3D> boundingBoxesList)
     {
         var lineData = Line.GetLineTraversalData(LineParameterLimits);
 
@@ -2015,7 +2014,7 @@ public class GcLimitedLineIntersector3D
     {
         if (storeTraversalStates)
             BihLineTraversalStates =
-                Enumerable.Empty<AccBihLineTraversalState3D>();
+                [];
 
         var lineLimits = ComputeIntersections(bih.BoundingBox);
 
@@ -2063,7 +2062,7 @@ public class GcLimitedLineIntersector3D
     {
         if (storeTraversalStates)
             BihLineTraversalStates =
-                Enumerable.Empty<AccBihLineTraversalState3D>();
+                [];
 
         //Test line intersection with BIH bounding box
         var lineLimits = ComputeIntersections(bih.BoundingBox);
@@ -2104,7 +2103,7 @@ public class GcLimitedLineIntersector3D
     {
         if (storeTraversalStates)
             BihLineTraversalStates =
-                Enumerable.Empty<AccBihLineTraversalState3D>();
+                [];
 
         //Test line intersection with BIH bounding box
         var lineLimits = ComputeIntersections(bih.BoundingBox);
@@ -2163,7 +2162,7 @@ public class GcLimitedLineIntersector3D
     {
         if (storeTraversalStates)
             BihLineTraversalStates =
-                Enumerable.Empty<AccBihLineTraversalState3D>();
+                [];
 
         //Test line intersection with BIH bounding box
         var lineLimits = ComputeIntersections(bih.BoundingBox);
@@ -2222,7 +2221,7 @@ public class GcLimitedLineIntersector3D
     {
         if (storeTraversalStates)
             BihLineTraversalStates =
-                Enumerable.Empty<AccBihLineTraversalState3D>();
+                [];
 
         //Test line intersection with BIH bounding box
         var lineLimits = ComputeIntersections(bih.BoundingBox);

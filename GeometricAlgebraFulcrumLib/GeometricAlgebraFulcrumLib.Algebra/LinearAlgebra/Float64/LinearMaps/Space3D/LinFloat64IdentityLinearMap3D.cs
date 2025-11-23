@@ -40,7 +40,7 @@ public sealed class LinFloat64IdentityLinearMap3D :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public override bool IsNearIdentity(double zeroEpsilon = 1e-12d)
+    public override bool IsNearIdentity(double tolerance = 1e-12d)
     {
         return true;
     }
@@ -52,7 +52,7 @@ public sealed class LinFloat64IdentityLinearMap3D :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public override LinFloat64Vector3D MapVector(ILinFloat64Vector3D x)
+    public override LinFloat64Vector3D MapVector(LinFloat64Vector3D x)
     {
         return x.ToLinVector3D();
     }

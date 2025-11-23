@@ -443,7 +443,7 @@ public static class CatmullRomUtils
     {
         var (t0, t1, t2, t3) = tQuad;
         var (p0, p1, p2, p3) =
-            pQuad.MapItems(p => LinFloat64Vector4DUtils.ToLinVector4D(p));
+            pQuad.MapItems(p => p.ToLinVector4D());
 
         var tt0 = t - t0;
         var tt1 = t - t1;
@@ -475,7 +475,7 @@ public static class CatmullRomUtils
     {
         var (t0, t1, t2, t3) = tQuad;
         var (p0, p1, p2, p3) =
-            pQuad.MapItems(p => LinFloat64Vector4DUtils.ToLinVector4D(p));
+            pQuad.MapItems(p => p.ToLinVector4D());
 
         var tt0 = t - t0;
         var tt1 = t - t1;
@@ -516,7 +516,7 @@ public static class CatmullRomUtils
     {
         var (t0, t1, t2, t3) = tQuad;
         var (p0, p1, p2, p3) =
-            pQuad.MapItems(p => LinFloat64Vector4DUtils.ToLinVector4D(p));
+            pQuad.MapItems(p => p.ToLinVector4D());
 
         var tt0 = t - t0;
         var tt1 = t - t1;

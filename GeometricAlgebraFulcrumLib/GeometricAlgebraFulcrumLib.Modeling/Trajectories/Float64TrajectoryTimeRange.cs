@@ -10,7 +10,7 @@ namespace GeometricAlgebraFulcrumLib.Modeling.Trajectories;
 
 public sealed record Float64TrajectoryTimeRange :
     IAlgebraicElement,
-    IPair<Float64Scalar>
+    IPair<double>
 {
     public static Float64TrajectoryTimeRange ZeroToOne { get; }
         = new Float64TrajectoryTimeRange(0d, 1d);
@@ -78,7 +78,7 @@ public sealed record Float64TrajectoryTimeRange :
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Float64TrajectoryTimeRange Create(IPair<Float64Scalar> range)
+    public static Float64TrajectoryTimeRange Create(IPair<double> range)
     {
         var value1 = range.Item1;
         var value2 = range.Item2;
@@ -380,10 +380,10 @@ public sealed record Float64TrajectoryTimeRange :
             ? MaxValue - MinValue 
             : double.PositiveInfinity;
 
-    public Float64Scalar Item1
+    public double Item1
         => MinValue;
 
-    public Float64Scalar Item2
+    public double Item2
         => MaxValue;
 
     public bool IsZeroLength 
@@ -442,7 +442,7 @@ public sealed record Float64TrajectoryTimeRange :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public double AffineMapToRange(double value, IPair<Float64Scalar> valuePair, bool reverseLimits = false)
+    public double AffineMapToRange(double value, IPair<double> valuePair, bool reverseLimits = false)
     {
         return reverseLimits
             ? AffineMapToZeroOneRange(value) * (valuePair.Item1 - valuePair.Item2) + valuePair.Item2
@@ -586,7 +586,7 @@ public sealed record Float64TrajectoryTimeRange :
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public Float64TrajectoryTimeRange ExpandToInclude(IPair<Float64Scalar> range)
+    public Float64TrajectoryTimeRange ExpandToInclude(IPair<double> range)
     {
         return ExpandToInclude(
             range.Item1,
@@ -688,7 +688,7 @@ public sealed record Float64TrajectoryTimeRange :
         return MinValue.GetLinearPeriodicRange(MaxValue, count);
     }
 
-    public Float64TrajectoryTimeRange[] GetSubdivisions(int divisionCount, double zeroEpsilon = Float64Utils.ZeroEpsilon)
+    public Float64TrajectoryTimeRange[] GetSubdivisions(int divisionCount, double tolerance = Float64Utils.DefaultTolerance)
     {
         var length = Length / divisionCount;
 
@@ -697,12 +697,12 @@ public sealed record Float64TrajectoryTimeRange :
         var minValues =
             Enumerable
                 .Range(0, divisionCount)
-                .Select(i => i * length + minValue + zeroEpsilon)
+                .Select(i => i * length + minValue + tolerance)
                 .ToArray();
 
         var maxValues =
             minValues
-                .Select(v => v + length - zeroEpsilon)
+                .Select(v => v + length - tolerance)
                 .ToArray();
 
         var divisions = new Float64TrajectoryTimeRange[divisionCount];
@@ -717,12 +717,12 @@ public sealed record Float64TrajectoryTimeRange :
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool Contains(double value, double zeroEpsilon = Float64Utils.ZeroEpsilon)
+    public bool Contains(double value, double tolerance = Float64Utils.DefaultTolerance)
     {
-        Debug.Assert(zeroEpsilon >= 0);
+        Debug.Assert(tolerance >= 0);
 
-        return value >= MinValue - zeroEpsilon &&
-               value <= MaxValue + zeroEpsilon;
+        return value >= MinValue - tolerance &&
+               value <= MaxValue + tolerance;
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -734,11 +734,11 @@ public sealed record Float64TrajectoryTimeRange :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public double Clamp(double value, double zeroEpsilon = 0)
+    public double Clamp(double value, double tolerance = 0)
     {
         return value.Clamp(
-            MinValue - zeroEpsilon, 
-            MaxValue + zeroEpsilon
+            MinValue - tolerance, 
+            MaxValue + tolerance
         );
     }
 
@@ -752,30 +752,30 @@ public sealed record Float64TrajectoryTimeRange :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool Contains(Float64TrajectoryTimeRange box, double zeroEpsilon = Float64Utils.ZeroEpsilon)
+    public bool Contains(Float64TrajectoryTimeRange box, double tolerance = Float64Utils.DefaultTolerance)
     {
-        Debug.Assert(zeroEpsilon >= 0);
+        Debug.Assert(tolerance >= 0);
 
-        return box.MinValue >= MinValue - zeroEpsilon &&
-               box.MaxValue <= MaxValue + zeroEpsilon;
+        return box.MinValue >= MinValue - tolerance &&
+               box.MaxValue <= MaxValue + tolerance;
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool ContainsUpperExclusive(double value, double zeroEpsilon = Float64Utils.ZeroEpsilon)
+    public bool ContainsUpperExclusive(double value, double tolerance = Float64Utils.DefaultTolerance)
     {
-        Debug.Assert(zeroEpsilon >= 0);
+        Debug.Assert(tolerance >= 0);
 
-        return value >= MinValue - zeroEpsilon &&
-               value < MaxValue + zeroEpsilon;
+        return value >= MinValue - tolerance &&
+               value < MaxValue + tolerance;
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool Overlaps(Float64TrajectoryTimeRange box, double zeroEpsilon = Float64Utils.ZeroEpsilon)
+    public bool Overlaps(Float64TrajectoryTimeRange box, double tolerance = Float64Utils.DefaultTolerance)
     {
-        Debug.Assert(zeroEpsilon >= 0);
+        Debug.Assert(tolerance >= 0);
 
-        return box.MaxValue >= MinValue - zeroEpsilon &&
-               box.MinValue <= MaxValue + zeroEpsilon;
+        return box.MaxValue >= MinValue - tolerance &&
+               box.MinValue <= MaxValue + tolerance;
     }
 
 

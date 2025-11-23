@@ -1,10 +1,9 @@
 ﻿using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.LinearMaps.SpaceND.Rotation;
-using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Matrices;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.SpaceND;
+using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Numerical;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
-using GeometricAlgebraFulcrumLib.Utilities.Structures.Extensions;
 using MathNet.Numerics.LinearAlgebra;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.LinearMaps.SpaceND.Reflection;
@@ -34,7 +33,7 @@ public sealed class LinFloat64MatrixReflection :
     public static LinFloat64MatrixReflection CreateForwardClarkeRotation(int size)
     {
         var rotationArray =
-            Float64ArrayUtils.CreateClarkeRotationArray(size);
+            NumericalLinearAlgebraUtils.ClarkeRotationMatrix(size);
 
         return new LinFloat64MatrixReflection(rotationArray);
     }
@@ -43,37 +42,37 @@ public sealed class LinFloat64MatrixReflection :
     public static LinFloat64MatrixReflection CreateInverseClarkeRotation(int size)
     {
         var rotationArray =
-            Float64ArrayUtils.CreateClarkeRotationArray(size).Transpose();
+            NumericalLinearAlgebraUtils.ClarkeRotationMatrix(size).Transpose();
 
         return new LinFloat64MatrixReflection(rotationArray);
     }
 
 
-    private readonly double[,] _reflectionArray;
+    private readonly Matrix<double> _reflectionMatrix;
 
 
     public override int VSpaceDimensions
-        => _reflectionArray.GetLength(0);
+        => _reflectionMatrix.RowCount;
 
     public override bool SwapsHandedness
-        => _reflectionArray.Determinant() < 0;
+        => _reflectionMatrix.Determinant() < 0;
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    private LinFloat64MatrixReflection(double[,] rotationArray)
+    private LinFloat64MatrixReflection(Matrix<double> rotationArray)
     {
         Debug.Assert(
             rotationArray.Determinant().Abs().IsNearOne()
         );
 
-        _reflectionArray = rotationArray;
+        _reflectionMatrix = rotationArray;
     }
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public override bool IsValid()
     {
-        return _reflectionArray.Determinant().Abs().IsNearOne();
+        return _reflectionMatrix.Determinant().Abs().IsNearOne();
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -83,7 +82,7 @@ public sealed class LinFloat64MatrixReflection :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public override bool IsNearIdentity(double zeroEpsilon = 1E-12)
+    public override bool IsNearIdentity(double tolerance = Float64Utils.DefaultTolerance)
     {
         return false;
     }
@@ -95,49 +94,47 @@ public sealed class LinFloat64MatrixReflection :
             basisIndex >= 0
         );
 
-        return basisIndex < _reflectionArray.GetLength(1)
-            ? _reflectionArray.ColumnToLinVector(basisIndex)
+        return basisIndex < _reflectionMatrix.ColumnCount
+            ? _reflectionMatrix.Column(basisIndex).ToLinFloat64Vector()
             : LinFloat64Vector.Zero;
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public override LinFloat64Vector MapVector(LinFloat64Vector vector)
     {
-        return _reflectionArray.MatrixProduct(vector);
+        return _reflectionMatrix.Multiply(vector);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public override LinFloat64ReflectionBase GetReflectionLinearMapInverse()
     {
         return new LinFloat64MatrixReflection(
-            _reflectionArray.Transpose()
+            _reflectionMatrix.Transpose()
         );
     }
 
-    public override double[,] ToArray(int rowCount, int colCount)
+    public override Matrix<double> ToArray(int rowCount, int colCount)
     {
         var array = new double[rowCount, colCount];
 
         for (var j = 0; j < rowCount; j++)
             for (var i = 0; i < colCount; i++)
-                array[i, j] = _reflectionArray[i, j];
+                array[i, j] = _reflectionMatrix[i, j];
 
-        return array;
+        return array.ToMathNetDenseMatrix();
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public override Matrix<double> ToMatrix(int rowCount, int colCount)
     {
-        return _reflectionArray
-            .GetSubArray(0, 0, rowCount, colCount)
-            .ToMatrix();
+        return _reflectionMatrix.SubMatrix(0, rowCount, 0, colCount);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public override LinFloat64HyperPlaneNormalReflectionSequence ToHyperPlaneReflectionSequence()
     {
         return LinFloat64HyperPlaneNormalReflectionSequence.CreateFromReflectionMatrix(
-            _reflectionArray.ToMatrix()
+            _reflectionMatrix
         );
     }
 }

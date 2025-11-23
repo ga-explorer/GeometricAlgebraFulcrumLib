@@ -17,7 +17,7 @@ public interface ILinFloat64Subspace :
 
     LinFloat64Vector GetVectorRejection(LinFloat64Vector vector);
 
-    bool NearContains(LinFloat64Vector vector, double zeroEpsilon = Float64Utils.ZeroEpsilon);
+    bool NearContains(LinFloat64Vector vector, double tolerance = Float64Utils.DefaultTolerance);
 
-    bool NearContains(ILinFloat64Subspace subspace, double zeroEpsilon = Float64Utils.ZeroEpsilon);
+    bool NearContains(ILinFloat64Subspace subspace, double tolerance = Float64Utils.DefaultTolerance);
 }

@@ -331,25 +331,25 @@ public sealed partial class XGaFloat64Bivector
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public override XGaFloat64Bivector DivideByENorm()
     {
-        return Divide(ENorm().ScalarValue);
+        return Divide(ENorm());
     }
         
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public override XGaFloat64Bivector DivideByENormSquared()
     {
-        return Divide(ENormSquared().ScalarValue);
+        return Divide(ENormSquared());
     }
         
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public override XGaFloat64Bivector DivideByNorm()
     {
-        return Divide(Norm().ScalarValue);
+        return Divide(Norm());
     }
         
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public override XGaFloat64Bivector DivideByNormSquared()
     {
-        return Divide(NormSquared().ScalarValue);
+        return Divide(NormSquared());
     }
 
     
@@ -383,6 +383,12 @@ public sealed partial class XGaFloat64Bivector
     {
         return this;
     }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public override XGaFloat64Bivector GradeInvolution(IndexSet gradeSet)
+    {
+        return gradeSet.SetContains(2) ? Negative() : this;
+    }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public override XGaFloat64Bivector CliffordConjugate()
@@ -401,88 +407,30 @@ public sealed partial class XGaFloat64Bivector
     }
         
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public override XGaFloat64Bivector EInverse()
+    public override XGaFloat64Bivector EVersorInverse()
     {
         return Divide(
-            ESpSquared().ScalarValue
+            ESpSquared()
         );
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public override XGaFloat64Bivector Inverse()
+    public override XGaFloat64Bivector VersorInverse()
     {
         return Divide(
-            SpSquared().ScalarValue
+            SpSquared()
         );
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public override XGaFloat64Bivector PseudoInverse()
+    public override XGaFloat64Bivector VersorPseudoInverse()
     {
         var kVectorConjugate = Conjugate();
 
         return kVectorConjugate.Divide(
-            kVectorConjugate.Sp(this).ScalarValue
+            kVectorConjugate.Sp(this)
         );
     }
     
     
-    /// <summary>
-    /// Create a pure rotor multivector from a 2-blade
-    /// </summary>
-    /// <param name="zeroEpsilon"></param>
-    /// <returns></returns>
-    public XGaFloat64Multivector Exp(double zeroEpsilon = Float64Utils.ZeroEpsilon)
-    {
-        var bv2 = 
-            Gp(this).RemoveSmallTerms(zeroEpsilon);
-
-        if (!bv2.IsScalar())
-            throw new InvalidOperationException("Bivector is not a blade");
-
-        var bladeSignature = bv2.Scalar();
-
-        if (bladeSignature.IsNearZero(zeroEpsilon))
-            return 1d + this;
-
-        if (bladeSignature < 0)
-        {
-            var alpha = (-bladeSignature).Sqrt();
-
-            return alpha.Cos() + alpha.Sin() / alpha * this;
-        }
-        else
-        {
-            var alpha = bladeSignature.Sqrt();
-            
-            return alpha.Cosh() + alpha.Sinh() / alpha * this;
-        }
-    }
-
-    /// <summary>
-    /// Create a pure rotor multivector from a 2-blade
-    /// </summary>
-    /// <param name="bladeSignatureSign"></param>
-    /// <param name="zeroEpsilon"></param>
-    /// <returns></returns>
-    public XGaFloat64Multivector Exp(IntegerSign bladeSignatureSign, double zeroEpsilon = Float64Utils.ZeroEpsilon)
-    {
-        var bladeSignature = SpSquared();
-
-        if (bladeSignatureSign.IsZero)
-            return 1d + this;
-
-        if (bladeSignatureSign.IsNegative)
-        {
-            var alpha = (-bladeSignature).Sqrt();
-
-            return alpha.Cos() + alpha.Sin() / alpha * this;
-        }
-        else
-        {
-            var alpha = bladeSignature.Sqrt();
-            
-            return alpha.Cosh() + alpha.Sinh() / alpha * this;
-        }
-    }
 }

@@ -62,6 +62,21 @@ public class CGaFloat64VGaEncoder :
 
         return composer.GetVector();
     }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public XGaFloat64Vector VectorAsXGaVector(params double[] mv)
+    {
+        var composer = GeometricSpace.ConformalProcessor.CreateVectorComposer();
+
+        var index = 0;
+        foreach (var scalar in mv)
+        {
+            composer.SetVectorTerm(index + 2, scalar);
+            index++;
+        }
+
+        return composer.GetVector();
+    }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public XGaFloat64Vector VectorAsXGaVector(XGaFloat64Vector mv)
@@ -214,6 +229,15 @@ public class CGaFloat64VGaEncoder :
             VectorAsXGaVector(mv)
         );
     }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public CGaFloat64Blade Vector(params double[] mvScalars)
+    {
+        return new CGaFloat64Blade(
+            GeometricSpace,
+            VectorAsXGaVector(mvScalars)
+        );
+    }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public CGaFloat64Blade Vector(XGaFloat64Vector mv)
@@ -328,7 +352,7 @@ public class CGaFloat64VGaEncoder :
             angle.HalfPolarAngle();
 
         var scalar = halfAngleCos;
-        var bivectorScalar = halfAngleSin / bivector.Norm();
+        var bivectorScalar = halfAngleSin / bivector.L2Norm();
 
         return GeometricSpace.ConformalProcessor
             .CreateMultivectorComposer()
@@ -367,7 +391,7 @@ public class CGaFloat64VGaEncoder :
             angle.HalfPolarAngle();
 
         var scalar = halfAngleCos;
-        var bivectorScalar = halfAngleSin / bivector.Norm();
+        var bivectorScalar = halfAngleSin / bivector.L2Norm();
 
         return GeometricSpace.ConformalProcessor
             .CreateMultivectorComposer()

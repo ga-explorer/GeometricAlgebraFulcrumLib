@@ -152,11 +152,11 @@ namespace GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space
         public static Tuple<LinFloat64Vector3D, LinFloat64Angle> VectorToVectorRotationAxisAngle(this ILinFloat64Vector3D srcVector, ILinFloat64Vector3D dstVector)
         {
             Debug.Assert(
-                (srcVector.VectorENormSquared() - 1).IsNearZero() &&
-                (dstVector.VectorENormSquared() - 1).IsNearZero()
+                (srcVector.L2NormSquared() - 1).IsNearZero() &&
+                (dstVector.L2NormSquared() - 1).IsNearZero()
             );
 
-            var angleCos = srcVector.VectorESp(dstVector);
+            var angleCos = srcVector.VectorDot(dstVector);
 
             // The case where the two vectors are almost identical
             if ((angleCos - 1d).IsNearZero())
@@ -248,17 +248,17 @@ namespace GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space
         /// </summary>
         /// <param name="srcVector"></param>
         /// <param name="dstVector"></param>
-        /// <param name="zeroEpsilon"></param>
+        /// <param name="tolerance"></param>
         /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static LinFloat64Quaternion VectorToVectorRotationQuaternion(this ILinFloat64Vector3D srcVector, ILinFloat64Vector3D dstVector, double zeroEpsilon = Float64Utils.ZeroEpsilon)
+        public static LinFloat64Quaternion VectorToVectorRotationQuaternion(this ILinFloat64Vector3D srcVector, ILinFloat64Vector3D dstVector, double tolerance = Float64Utils.DefaultTolerance)
         {
             var angleCos = srcVector.GetAngleCos(dstVector);
 
-            if (angleCos.IsNearOne(zeroEpsilon))
+            if (angleCos.IsNearOne(tolerance))
                 return LinFloat64Quaternion.Identity;
 
-            if (angleCos.IsNearMinusOne(zeroEpsilon))
+            if (angleCos.IsNearMinusOne(tolerance))
                 return LinFloat64Quaternion.CreateFromAxisAngle(
                     srcVector.GetUnitNormal(),
                     LinFloat64PolarAngle.Angle0
@@ -296,7 +296,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space
         public static Tuple<LinBasisVector, LinFloat64Quaternion> NearestBasisToVectorRotationQuaternion(this ILinFloat64Vector3D dstVector)
         {
             Debug.Assert(
-                (dstVector.VectorENormSquared() - 1).IsNearZero()
+                (dstVector.L2NormSquared() - 1).IsNearZero()
             );
 
             var axis = dstVector.SelectNearestBasisVector();

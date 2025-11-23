@@ -1,7 +1,7 @@
 ﻿namespace GeometricAlgebraFulcrumLib.Modeling.Geometry.BasicShapes.Circles;
 
 public interface IFloat64CircleTriplet3D : 
-    IFloat64FiniteGeometricShape3D
+    IFloat64BoundedShape3D
 {
     double Direction1X { get; }
 

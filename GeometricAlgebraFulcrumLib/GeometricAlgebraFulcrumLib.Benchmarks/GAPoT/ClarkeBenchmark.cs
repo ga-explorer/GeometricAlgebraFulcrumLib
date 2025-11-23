@@ -5,8 +5,8 @@ using System.Linq;
 using BenchmarkDotNet.Attributes;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.LinearMaps.SpaceND.Composers;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.LinearMaps.SpaceND.Rotation;
-using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Matrices;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.SpaceND;
+using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Numerical;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
 
 namespace GeometricAlgebraFulcrumLib.Benchmarks.GAPoT;
@@ -64,7 +64,7 @@ public class ClarkeBenchmark
 
         for (var i = 0; i < vList1.Count; i++)
         {
-            var diff = (vList1[i] - vList2[i]).GetVectorNormSquared();
+            var diff = NumericalLinearAlgebraUtils.L2NormSquared((vList1[i] - vList2[i]));
 
             if (!diff.IsNearZero())
                 throw new InvalidOperationException();

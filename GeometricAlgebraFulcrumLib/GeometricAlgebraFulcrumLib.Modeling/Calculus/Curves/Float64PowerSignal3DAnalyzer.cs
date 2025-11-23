@@ -2,6 +2,7 @@
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
 using GeometricAlgebraFulcrumLib.Modeling.Calculus.Functions.Float64;
 using GeometricAlgebraFulcrumLib.Modeling.Signals;
+using GeometricAlgebraFulcrumLib.Modeling.Signals.Filters;
 using GeometricAlgebraFulcrumLib.Modeling.Trajectories.Scalars.Float64;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Extensions;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Tuples;
@@ -433,7 +434,7 @@ public sealed class Float64PowerSignal3DAnalyzer
             TimeValues.GetItemsBetween(index1, index).ToImmutableArray();
 
         var valueRange =
-            Float64MedianFilter.Filter(
+            MedianFilter.Filter(
                 timeValues.Select(xFunc),
                 3
             ).FindValueRange();
@@ -465,13 +466,13 @@ public sealed class Float64PowerSignal3DAnalyzer
             TimeValues.GetItemsBetween(index1, index).ToImmutableArray();
 
         var xValueRange =
-            Float64MedianFilter.Filter(
+            MedianFilter.Filter(
                 timeValues.Select(xFunc),
                 3
             ).FindValueRange();
         
         var yValueRange =
-            Float64MedianFilter.Filter(
+            MedianFilter.Filter(
                 timeValues.Select(yFunc),
                 3
             ).FindValueRange();
@@ -512,19 +513,19 @@ public sealed class Float64PowerSignal3DAnalyzer
             TimeValues.GetItemsBetween(index1, index).ToImmutableArray();
 
         var xValueRange =
-            Float64MedianFilter.Filter(
+            MedianFilter.Filter(
                 timeValues.Select(xFunc),
                 3
             ).FindValueRange();
         
         var yValueRange =
-            Float64MedianFilter.Filter(
+            MedianFilter.Filter(
                 timeValues.Select(yFunc),
                 3
             ).FindValueRange();
         
         var zValueRange =
-            Float64MedianFilter.Filter(
+            MedianFilter.Filter(
                 timeValues.Select(zFunc),
                 3
             ).FindValueRange();
@@ -739,13 +740,13 @@ public sealed class Float64PowerSignal3DAnalyzer
         );
 
         var frequencyHzMean =
-            Signal.GetDarbouxBivectorMean(index).Norm() / Math.Tau;
+            Signal.GetDarbouxBivectorMean(index).L2Norm() / Math.Tau;
         
         var timeValues = 
             TimeValues.GetItemsBetween(index1, index).ToImmutableArray();
 
         var valueRange =
-            Float64MedianFilter.Filter(
+            MedianFilter.Filter(
                 timeValues.Select(Signal.GetFrequencyHz),
                 3
             ).FindValueRange();

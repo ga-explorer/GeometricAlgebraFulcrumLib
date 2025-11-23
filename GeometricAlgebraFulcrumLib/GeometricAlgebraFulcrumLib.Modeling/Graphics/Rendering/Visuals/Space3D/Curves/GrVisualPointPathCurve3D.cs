@@ -23,7 +23,7 @@ public sealed class GrVisualPointPathCurve3D :
     );
 
 
-    public static GrVisualPointPathCurve3D CreateStatic(string name, GrVisualCurveStyle3D style, params ILinFloat64Vector3D[] positionList)
+    public static GrVisualPointPathCurve3D CreateStatic(string name, GrVisualCurveStyle3D style, params LinFloat64Vector3D[] positionList)
     {
         return new GrVisualPointPathCurve3D(
             name,
@@ -33,7 +33,7 @@ public sealed class GrVisualPointPathCurve3D :
         );
     }
 
-    public static GrVisualPointPathCurve3D CreateStatic(string name, GrVisualCurveStyle3D style, IReadOnlyList<ILinFloat64Vector3D> positionList)
+    public static GrVisualPointPathCurve3D CreateStatic(string name, GrVisualCurveStyle3D style, IReadOnlyList<LinFloat64Vector3D> positionList)
     {
         return new GrVisualPointPathCurve3D(
             name,
@@ -53,7 +53,7 @@ public sealed class GrVisualPointPathCurve3D :
         );
     }
 
-    public static GrVisualPointPathCurve3D Create(string name, GrVisualCurveStyle3D style, IEnumerable<ILinFloat64Vector3D> positionList, Float64SamplingSpecs samplingSpecs)
+    public static GrVisualPointPathCurve3D Create(string name, GrVisualCurveStyle3D style, IEnumerable<LinFloat64Vector3D> positionList, Float64SamplingSpecs samplingSpecs)
     {
         return new GrVisualPointPathCurve3D(
             name,
@@ -184,7 +184,7 @@ public sealed class GrVisualPointPathCurve3D :
 
         foreach (var frameIndex in GetValidFrameIndexSet())
         {
-            var time = (double)frameIndex / SamplingSpecs.SamplingRate;
+            var time = frameIndex / SamplingSpecs.SamplingRate;
                 
             yield return new KeyFrameRecord(
                 frameIndex, 

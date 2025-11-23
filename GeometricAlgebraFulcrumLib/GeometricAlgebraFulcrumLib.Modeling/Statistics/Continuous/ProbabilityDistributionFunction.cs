@@ -4,14 +4,14 @@ namespace GeometricAlgebraFulcrumLib.Modeling.Statistics.Continuous;
 
 public sealed class ProbabilityDistributionFunction
 {
-    public static ProbabilityDistributionFunction CreateNormal(double mean, double variance, double zeroEpsilon = Float64Utils.ZeroEpsilon)
+    public static ProbabilityDistributionFunction CreateNormal(double mean, double variance, double tolerance = Float64Utils.DefaultTolerance)
     {
         var sqrt2Pi = Math.Sqrt(Math.Tau);
         var s = Math.Sqrt(variance);
 
         var deltaX = s * Math.Sqrt(
             -2d * Math.Log(
-                s * zeroEpsilon * sqrt2Pi
+                s * tolerance * sqrt2Pi
             )
         );
 

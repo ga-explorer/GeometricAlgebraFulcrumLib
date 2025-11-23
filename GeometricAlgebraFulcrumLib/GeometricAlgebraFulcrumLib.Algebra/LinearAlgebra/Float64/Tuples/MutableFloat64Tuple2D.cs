@@ -2,30 +2,35 @@
 using System.Text;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space2D;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
+using GeometricAlgebraFulcrumLib.Utilities.Structures.Tuples;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Tuples;
 
-public sealed class MutableFloat64Tuple2D :
+public sealed class LinFloat64VectorComposer2D :
     ILinFloat64Vector2D
 {
-    public Float64Scalar X { get; set; }
+    private double _x;
+    public double X 
+    { 
+        get => _x;
+        private set => _x = value.IsValid() ? value : throw new InvalidOperationException();
+    }
 
-    public Float64Scalar Y { get; set; }
+    private double _y;
+    public double Y
+    {
+        get => _y; 
+        private set => _y = value.IsValid() ? value : throw new InvalidOperationException();
+    }
 
     public int VSpaceDimensions
         => 2;
 
-    public Float64Scalar Item1
+    public double Item1
         => X;
 
-    public Float64Scalar Item2
+    public double Item2
         => Y;
-
-    public bool IsValid()
-    {
-        return !double.IsNaN(X) &&
-               !double.IsNaN(Y);
-    }
 
     /// <summary>
     /// Get or set the ith component of this tuple
@@ -36,29 +41,30 @@ public sealed class MutableFloat64Tuple2D :
     {
         get
         {
-            Debug.Assert(index is 0 or 1);
-
-            if (index == 0) return X;
-            if (index == 1) return Y;
-
-            return 0.0d;
+            return index switch
+            {
+                0 => X,
+                1 => Y,
+                _ => 0.0d
+            };
         }
         set
         {
-            Debug.Assert(!double.IsNaN(value));
-            Debug.Assert(index is 0 or 1);
-
-            if (index == 0) X = value;
-            if (index == 1) Y = value;
+            if (index == 0) 
+                X = value;
+            else if (index == 1) 
+                Y = value;
+            else 
+                throw new IndexOutOfRangeException();
         }
     }
 
 
-    public MutableFloat64Tuple2D()
+    public LinFloat64VectorComposer2D()
     {
     }
 
-    public MutableFloat64Tuple2D(double x, double y)
+    public LinFloat64VectorComposer2D(double x, double y)
     {
         X = x;
         Y = y;
@@ -66,7 +72,15 @@ public sealed class MutableFloat64Tuple2D :
         Debug.Assert(IsValid());
     }
 
-    public MutableFloat64Tuple2D(ILinFloat64Vector2D tuple)
+    public LinFloat64VectorComposer2D(IPair<double> tuple)
+    {
+        X = tuple.Item1;
+        Y = tuple.Item2;
+
+        Debug.Assert(IsValid());
+    }
+    
+    public LinFloat64VectorComposer2D(LinFloat64Vector2D tuple)
     {
         X = tuple.X;
         Y = tuple.Y;
@@ -75,27 +89,29 @@ public sealed class MutableFloat64Tuple2D :
     }
 
 
-    public MutableFloat64Tuple2D SetTuple(double x, double y)
+    public LinFloat64VectorComposer2D SetTuple(double x, double y)
     {
         X = x;
         Y = y;
 
-        Debug.Assert(IsValid());
-
         return this;
     }
 
-    public MutableFloat64Tuple2D SetTuple(ILinFloat64Vector2D tuple)
+    public LinFloat64VectorComposer2D SetTuple(ILinFloat64Vector2D tuple)
     {
         X = tuple.X;
         Y = tuple.Y;
 
-        Debug.Assert(IsValid());
-
         return this;
     }
+    
+    public bool IsValid()
+    {
+        return X.IsValid() &&
+               Y.IsValid();
+    }
 
-    public MutableFloat64Tuple2D SetToZero()
+    public LinFloat64VectorComposer2D SetToZero()
     {
         X = 0;
         Y = 0;
@@ -103,7 +119,7 @@ public sealed class MutableFloat64Tuple2D :
         return this;
     }
 
-    public MutableFloat64Tuple2D SetDirection(ILinFloat64Vector2D direction)
+    public LinFloat64VectorComposer2D SetDirection(ILinFloat64Vector2D direction)
     {
         var oldLength2 =
             direction.X * direction.X +
@@ -121,7 +137,7 @@ public sealed class MutableFloat64Tuple2D :
         return this;
     }
 
-    public MutableFloat64Tuple2D SetLength(double d)
+    public LinFloat64VectorComposer2D SetLength(double d)
     {
         var s = d / Math.Sqrt(X * X + Y * Y);
 
@@ -133,7 +149,7 @@ public sealed class MutableFloat64Tuple2D :
         return this;
     }
 
-    public MutableFloat64Tuple2D SetLengthToUnit()
+    public LinFloat64VectorComposer2D SetLengthToUnit()
     {
         var s = 1 / Math.Sqrt(X * X + Y * Y);
 
@@ -145,7 +161,7 @@ public sealed class MutableFloat64Tuple2D :
         return this;
     }
 
-    public MutableFloat64Tuple2D SetToNegative()
+    public LinFloat64VectorComposer2D SetToNegative()
     {
         X = -X;
         Y = -Y;
@@ -153,7 +169,7 @@ public sealed class MutableFloat64Tuple2D :
         return this;
     }
 
-    public MutableFloat64Tuple2D SetToSameSide(ILinFloat64Vector2D direction)
+    public LinFloat64VectorComposer2D SetToSameSide(ILinFloat64Vector2D direction)
     {
         if (!(X * direction.X + Y * direction.Y).IsNegative())
             return this;
@@ -164,7 +180,7 @@ public sealed class MutableFloat64Tuple2D :
         return this;
     }
 
-    public MutableFloat64Tuple2D SetToOtherSide(ILinFloat64Vector2D direction)
+    public LinFloat64VectorComposer2D SetToOtherSide(ILinFloat64Vector2D direction)
     {
         if (!(X * direction.X + Y * direction.Y).IsPositive())
             return this;

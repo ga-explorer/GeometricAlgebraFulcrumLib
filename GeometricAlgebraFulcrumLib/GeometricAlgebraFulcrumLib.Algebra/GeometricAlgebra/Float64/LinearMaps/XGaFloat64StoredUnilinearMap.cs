@@ -5,6 +5,7 @@ using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivectors;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Processors;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.IndexSets;
+using MathNet.Numerics.LinearAlgebra;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.LinearMaps;
 
@@ -117,10 +118,10 @@ public class XGaFloat64StoredUnilinearMap :
             );
     }
         
-    public double[,] GetMultivectorMapArray(int rowCount, int colCount)
+    public Matrix<double> GetMultivectorMapMatrix(int rowCount, int colCount)
     {
         var mapArray = 
-            new double[rowCount, colCount];
+            Matrix<double>.Build.Dense(rowCount, colCount);
 
         if (_basisMapDictionary.Count == 0)
             return mapArray;

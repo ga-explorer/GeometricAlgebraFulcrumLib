@@ -1,5 +1,4 @@
-﻿using System;
-using GeometricAlgebraFulcrumLib.Utilities.Code.Irony.Semantic.Expression.ValueAccess;
+﻿using GeometricAlgebraFulcrumLib.Utilities.Code.Irony.Semantic.Expression.ValueAccess;
 
 namespace GeometricAlgebraFulcrumLib.Utilities.Code.Irony.Semantic.Expression.Basic;
 

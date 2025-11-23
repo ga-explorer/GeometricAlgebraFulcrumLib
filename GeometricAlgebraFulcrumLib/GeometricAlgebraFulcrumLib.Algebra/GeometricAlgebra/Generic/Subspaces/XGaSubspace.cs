@@ -46,7 +46,7 @@ public sealed class XGaSubspace<T>
         _blade = blade;
         BladeSignature = blade.SpSquared();
         _bladeInverse = blade / BladeSignature;
-        _bladePseudoInverse = blade.PseudoInverse();
+        _bladePseudoInverse = blade.VersorPseudoInverse();
     }
         
 

@@ -11,17 +11,33 @@ namespace GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space
 public static class LinFloat64Vector2DUtils
 {
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64Vector2D RoundScalars(this IPair<Float64Scalar> vector)
+    public static bool IsFinite(this IPair<double> vector)
+    {
+        return double.IsFinite(vector.Item1) && 
+               double.IsFinite(vector.Item2);
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static bool IsFinite(this IPair<double> vector, double maxLength)
+    {
+        return double.IsFinite(vector.Item1) && 
+               double.IsFinite(vector.Item2) &&
+               vector.L2Norm() <= maxLength;
+    }
+
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static LinFloat64Vector2D RoundScalars(this IPair<double> vector)
     {
         return LinFloat64Vector2D.Create(
-            Math.Round(vector.Item1.ScalarValue),
-            Math.Round(vector.Item2.ScalarValue)
+            Math.Round(vector.Item1),
+            Math.Round(vector.Item2)
         );
     }
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64Vector2D ClampTo(this IPair<Float64Scalar> vector, IPair<Float64Scalar> maxTuple)
+    public static LinFloat64Vector2D ClampTo(this IPair<double> vector, IPair<double> maxTuple)
     {
         return LinFloat64Vector2D.Create(
             vector.Item1.ClampTo(maxTuple.Item1),
@@ -30,7 +46,7 @@ public static class LinFloat64Vector2DUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64Vector2D ClampTo(this IPair<Float64Scalar> vector, IPair<Float64Scalar> minTuple, IPair<Float64Scalar> maxTuple)
+    public static LinFloat64Vector2D ClampTo(this IPair<double> vector, IPair<double> minTuple, IPair<double> maxTuple)
     {
         return LinFloat64Vector2D.Create(
             vector.Item1.ClampTo(minTuple.Item1, maxTuple.Item1),
@@ -39,7 +55,7 @@ public static class LinFloat64Vector2DUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64Vector2D ClampToSymmetric(this IPair<Float64Scalar> vector, IPair<Float64Scalar> maxTuple)
+    public static LinFloat64Vector2D ClampToSymmetric(this IPair<double> vector, IPair<double> maxTuple)
     {
         return LinFloat64Vector2D.Create(
             vector.Item1.ClampToSymmetric(maxTuple.Item1),
@@ -49,74 +65,80 @@ public static class LinFloat64Vector2DUtils
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static bool IsZero(this IPair<Float64Scalar> vector)
+    public static bool IsZero(this IPair<double> vector)
     {
-        return vector.VectorENorm().IsZero();
+        return vector.L2Norm().IsZero();
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static bool IsNearZero(this IPair<Float64Scalar> vector, double zeroEpsilon = Float64Utils.ZeroEpsilon)
+    public static bool IsNearZero(this IPair<double> vector, double tolerance = Float64Utils.DefaultTolerance)
     {
-        return vector.VectorENorm().IsNearZero(zeroEpsilon);
+        return vector.L2Norm().IsNearZero(tolerance);
+    }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static bool IsNearEqual(this IPair<double> vector1, IPair<double> vector2, double tolerance = Float64Utils.DefaultTolerance)
+    {
+        return L2Norm(vector1.VectorSubtract(vector2)).IsNearZero(tolerance);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static bool IsNearUnit(this IPair<Float64Scalar> vector, double zeroEpsilon = Float64Utils.ZeroEpsilon)
+    public static bool IsNearUnit(this IPair<double> vector, double tolerance = Float64Utils.DefaultTolerance)
     {
-        return vector.VectorENormSquared().IsNearOne(zeroEpsilon);
+        return vector.L2NormSquared().IsNearOne(tolerance);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static bool IsNearOrthonormalWith(this IPair<Float64Scalar> vector1, IPair<Float64Scalar> vector2, double zeroEpsilon = Float64Utils.ZeroEpsilon)
+    public static bool IsNearOrthonormalWith(this IPair<double> vector1, IPair<double> vector2, double tolerance = Float64Utils.DefaultTolerance)
     {
-        return vector1.IsNearUnit(zeroEpsilon) &&
-               vector2.IsNearUnit(zeroEpsilon) &&
-               vector1.VectorESp(vector2).IsNearZero(zeroEpsilon);
+        return vector1.IsNearUnit(tolerance) &&
+               vector2.IsNearUnit(tolerance) &&
+               vector1.VectorDot(vector2).IsNearZero(tolerance);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static bool IsNearOrthonormalWithUnit(this IPair<Float64Scalar> vector1, IPair<Float64Scalar> vector2, double zeroEpsilon = Float64Utils.ZeroEpsilon)
+    public static bool IsNearOrthonormalWithUnit(this IPair<double> vector1, IPair<double> vector2, double tolerance = Float64Utils.DefaultTolerance)
     {
         Debug.Assert(
-            vector2.IsNearUnit(zeroEpsilon)
+            vector2.IsNearUnit(tolerance)
         );
 
-        return vector1.IsNearUnit(zeroEpsilon) &&
-               vector1.VectorESp(vector2).IsNearZero(zeroEpsilon);
+        return vector1.IsNearUnit(tolerance) &&
+               vector1.VectorDot(vector2).IsNearZero(tolerance);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static bool IsNearParallelTo(this IPair<Float64Scalar> vector1, IPair<Float64Scalar> vector2, double zeroEpsilon = Float64Utils.ZeroEpsilon)
+    public static bool IsNearParallelTo(this IPair<double> vector1, IPair<double> vector2, double tolerance = Float64Utils.DefaultTolerance)
     {
-        return vector1.GetAngleCos(vector2).Abs().IsNearOne(zeroEpsilon);
+        return vector1.GetAngleCos(vector2).Abs().IsNearOne(tolerance);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static bool IsNearOppositeTo(this IPair<Float64Scalar> vector1, IPair<Float64Scalar> vector2, double zeroEpsilon = Float64Utils.ZeroEpsilon)
+    public static bool IsNearOppositeTo(this IPair<double> vector1, IPair<double> vector2, double tolerance = Float64Utils.DefaultTolerance)
     {
-        return vector1.GetAngleCos(vector2).IsNearMinusOne(zeroEpsilon);
+        return vector1.GetAngleCos(vector2).IsNearMinusOne(tolerance);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static bool IsNearParallelToUnit(this IPair<Float64Scalar> vector1, IPair<Float64Scalar> vector2, double zeroEpsilon = Float64Utils.ZeroEpsilon)
+    public static bool IsNearParallelToUnit(this IPair<double> vector1, IPair<double> vector2, double tolerance = Float64Utils.DefaultTolerance)
     {
-        return vector1.GetAngleCosWithUnit(vector2).Abs().IsNearOne(zeroEpsilon);
+        return vector1.GetAngleCosWithUnit(vector2).Abs().IsNearOne(tolerance);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static bool IsNearOppositeToUnit(this IPair<Float64Scalar> vector1, IPair<Float64Scalar> vector2, double zeroEpsilon = Float64Utils.ZeroEpsilon)
+    public static bool IsNearOppositeToUnit(this IPair<double> vector1, IPair<double> vector2, double tolerance = Float64Utils.DefaultTolerance)
     {
-        return vector1.GetAngleCosWithUnit(vector2).IsNearNegativeOne(zeroEpsilon);
+        return vector1.GetAngleCosWithUnit(vector2).IsNearNegativeOne(tolerance);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static bool IsNearOrthogonalTo(this IPair<Float64Scalar> vector1, IPair<Float64Scalar> vector2, double zeroEpsilon = Float64Utils.ZeroEpsilon)
+    public static bool IsNearOrthogonalTo(this IPair<double> vector1, IPair<double> vector2, double tolerance = Float64Utils.DefaultTolerance)
     {
-        return vector1.VectorESp(vector2).IsNearZero(zeroEpsilon);
+        return vector1.VectorDot(vector2).IsNearZero(tolerance);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static bool IsVectorBasis(this IPair<Float64Scalar> vector, int basisIndex)
+    public static bool IsVectorBasis(this IPair<double> vector, int basisIndex)
     {
         return basisIndex switch
         {
@@ -127,7 +149,7 @@ public static class LinFloat64Vector2DUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static bool IsNearVectorBasis(this IPair<Float64Scalar> vector, int basisIndex, double zeroEpsilon = 1e-12d)
+    public static bool IsNearVectorBasis(this IPair<double> vector, int basisIndex, double tolerance = 1e-12d)
     {
         var vector2 = basisIndex switch
         {
@@ -136,21 +158,12 @@ public static class LinFloat64Vector2DUtils
             _ => throw new InvalidOperationException()
         };
 
-        return vector.VectorSubtract(vector2).IsNearZero(zeroEpsilon);
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static bool IsFinite(this IPair<Float64Scalar> vector)
-    {
-        return !(
-            double.IsNaN(vector.Item1) || double.IsInfinity(vector.Item1) ||
-            double.IsNaN(vector.Item2) || double.IsInfinity(vector.Item2)
-        );
+        return vector.VectorSubtract(vector2).IsNearZero(tolerance);
     }
 
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Pair<LinFloat64Vector2D> GetComponentVectors(this IPair<Float64Scalar> vector)
+    public static Pair<LinFloat64Vector2D> GetComponentVectors(this IPair<double> vector)
     {
         return new Pair<LinFloat64Vector2D>(
             LinFloat64Vector2D.Create(vector.Item1, Float64Scalar.Zero),
@@ -165,7 +178,7 @@ public static class LinFloat64Vector2DUtils
     /// <param name="vector"></param>
     /// <returns></returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64Vector2D VectorNegative(this IPair<Float64Scalar> vector)
+    public static LinFloat64Vector2D VectorNegative(this IPair<double> vector)
     {
         return LinFloat64Vector2D.Create(-vector.Item1, -vector.Item2);
     }
@@ -177,9 +190,9 @@ public static class LinFloat64Vector2DUtils
     /// <param name="vector"></param>
     /// <returns></returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64Vector2D VectorNegativeUnit(this IPair<Float64Scalar> vector)
+    public static LinFloat64Vector2D VectorNegativeUnit(this IPair<double> vector)
     {
-        var s = vector.VectorENorm();
+        var s = vector.L2Norm();
         if (s.IsNearZero())
             return vector.ToLinVector2D();
 
@@ -188,21 +201,39 @@ public static class LinFloat64Vector2DUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64Vector2D VectorAdd(this IPair<Float64Scalar> v1, IPair<Float64Scalar> v2)
+    public static LinFloat64Vector2D VectorAdd(this IPair<double> v1, IPair<double> v2)
     {
         return LinFloat64Vector2D.Create(v1.Item1 + v2.Item1,
             v1.Item2 + v2.Item2);
     }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static LinFloat64Vector2D VectorAdd(this IPair<double> v1, double v2X, double v2Y)
+    {
+        return LinFloat64Vector2D.Create(
+            v1.Item1 + v2X,
+            v1.Item2 + v2Y
+        );
+    }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64Vector2D VectorSubtract(this IPair<Float64Scalar> v1, IPair<Float64Scalar> v2)
+    public static LinFloat64Vector2D VectorSubtract(this IPair<double> v1, IPair<double> v2)
     {
         return LinFloat64Vector2D.Create(v1.Item1 - v2.Item1,
             v1.Item2 - v2.Item2);
     }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static LinFloat64Vector2D VectorSubtract(this IPair<double> v1, double v2X, double v2Y)
+    {
+        return LinFloat64Vector2D.Create(
+            v1.Item1 - v2X,
+            v1.Item2 - v2Y
+        );
+    }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64Vector2D VectorTimes(this IPair<Float64Scalar> v1, double v2)
+    public static LinFloat64Vector2D VectorTimes(this IPair<double> v1, double v2)
     {
         return LinFloat64Vector2D.Create(
             v1.Item1 * v2,
@@ -211,7 +242,7 @@ public static class LinFloat64Vector2DUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64Vector2D VectorTimes(this double v1, IPair<Float64Scalar> v2)
+    public static LinFloat64Vector2D VectorTimes(this double v1, IPair<double> v2)
     {
         return LinFloat64Vector2D.Create(
             v1 * v2.Item1,
@@ -220,7 +251,7 @@ public static class LinFloat64Vector2DUtils
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64Vector2D VectorComponentTimes(this IPair<Float64Scalar> v1, IPair<Float64Scalar> v2)
+    public static LinFloat64Vector2D VectorComponentTimes(this IPair<double> v1, IPair<double> v2)
     {
         return LinFloat64Vector2D.Create(
             v1.Item1 * v2.Item1,
@@ -229,7 +260,7 @@ public static class LinFloat64Vector2DUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64Vector2D VectorDivide(this IPair<Float64Scalar> v1, double v2)
+    public static LinFloat64Vector2D VectorDivide(this IPair<double> v1, double v2)
     {
         v2 = 1d / v2;
 
@@ -238,9 +269,9 @@ public static class LinFloat64Vector2DUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64Vector2D VectorDivideByENorm(this IPair<Float64Scalar> vector)
+    public static LinFloat64Vector2D VectorDivideByENorm(this IPair<double> vector)
     {
-        var norm = vector.VectorENorm();
+        var norm = vector.L2Norm();
 
         return norm.IsZero()
             ? vector.ToLinVector2D()
@@ -251,10 +282,10 @@ public static class LinFloat64Vector2DUtils
     /// True of the Euclidean squared length of this vector is near unity
     /// </summary>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static bool IsUnitVector(this IPair<Float64Scalar> vector)
+    public static bool IsUnitVector(this IPair<double> vector)
     {
         return vector
-            .VectorENormSquared()
+            .L2NormSquared()
             .IsOne();
     }
 
@@ -262,16 +293,16 @@ public static class LinFloat64Vector2DUtils
     /// True of the Euclidean squared length of this vector is near unity
     /// </summary>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static bool IsNearUnitVector(this IPair<Float64Scalar> vector, double zeroEpsilon = Float64Utils.ZeroEpsilon)
+    public static bool IsNearUnitVector(this IPair<double> vector, double tolerance = Float64Utils.DefaultTolerance)
     {
         return vector
-            .VectorENormSquared()
-            .IsNearEqual(1.0d, zeroEpsilon);
+            .L2NormSquared()
+            .IsNearEqual(1.0d, tolerance);
     }
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Tuple<double, LinFloat64Vector2D> ToLengthAndUnitDirection(this IPair<Float64Scalar> vector)
+    public static Tuple<double, LinFloat64Vector2D> ToLengthAndUnitDirection(this IPair<double> vector)
     {
         var length = Math.Sqrt(
             vector.Item1 * vector.Item1 +
@@ -282,13 +313,27 @@ public static class LinFloat64Vector2DUtils
 
         return Tuple.Create(
             length,
-            LinFloat64Vector2D.Create(vector.Item1 * lengthInv,
-                vector.Item2 * lengthInv)
+            LinFloat64Vector2D.Create(
+                vector.Item1 * lengthInv,
+                vector.Item2 * lengthInv
+            )
         );
     }
 
+    /// <summary>
+    /// The Euclidean dot product between the given vectors
+    /// </summary>
+    /// <param name="v1"></param>
+    /// <param name="v2"></param>
+    /// <returns></returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Complex VectorESp(this IPair<Complex> v1, IPair<Complex> v2)
+    public static Float64Scalar VectorDot(this IPair<double> v1, IPair<double> v2)
+    {
+        return v1.Item1 * v2.Item1 + v1.Item2 * v2.Item2;
+    }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static Complex VectorDot(this IPair<Complex> v1, IPair<Complex> v2)
     {
         return v1.Item1 * v2.Item1.Conjugate() +
                v1.Item2 * v2.Item2.Conjugate();
@@ -301,7 +346,7 @@ public static class LinFloat64Vector2DUtils
     /// <param name="v2"></param>
     /// <returns></returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Float64Scalar VectorESpAbs(this IPair<Float64Scalar> v1, IPair<Float64Scalar> v2)
+    public static Float64Scalar VectorDotAbs(this IPair<double> v1, IPair<double> v2)
     {
         return Math.Abs(v1.Item1 * v2.Item1 + v1.Item2 * v2.Item2);
     }
@@ -309,7 +354,7 @@ public static class LinFloat64Vector2DUtils
     /// <summary>
     /// The Euclidean length of this vector when it represents a vector
     /// </summary>
-    public static double VectorENorm(this IPair<Float64Scalar> vector)
+    public static double L2Norm(this IPair<double> vector)
     {
         return Math.Sqrt(
             vector.Item1 * vector.Item1 +
@@ -317,7 +362,7 @@ public static class LinFloat64Vector2DUtils
         );
     }
 
-    public static double VectorENorm(double vectorX, double vectorY)
+    public static double L2Norm(double vectorX, double vectorY)
     {
         return Math.Sqrt(
             vectorX * vectorX +
@@ -325,7 +370,7 @@ public static class LinFloat64Vector2DUtils
         );
     }
 
-    public static double VectorENorm(this IPair<Complex> vector)
+    public static double L2Norm(this IPair<Complex> vector)
     {
         return Math.Sqrt(
             (vector.Item1 * vector.Item1.Conjugate()).Real +
@@ -334,55 +379,43 @@ public static class LinFloat64Vector2DUtils
     }
 
     /// <summary>
-    /// The Euclidean dot product between the given vectors
-    /// </summary>
-    /// <param name="v1"></param>
-    /// <param name="v2"></param>
-    /// <returns></returns>
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Float64Scalar VectorESp(this IPair<Float64Scalar> v1, IPair<Float64Scalar> v2)
-    {
-        return v1.Item1 * v2.Item1 + v1.Item2 * v2.Item2;
-    }
-
-    /// <summary>
     /// The Euclidean squared length of this vector when it represents a vector
     /// </summary>
-    public static Float64Scalar VectorENormSquared(this IPair<Float64Scalar> vector)
+    public static Float64Scalar L2NormSquared(this IPair<double> vector)
     {
         return vector.Item1 * vector.Item1 +
                vector.Item2 * vector.Item2;
     }
 
-    public static double VectorENormSquared(double vectorX, double vectorY)
+    public static double L2NormSquared(double vectorX, double vectorY)
     {
         return vectorX * vectorX +
                vectorY * vectorY;
     }
 
-    public static double VectorENormSquared(this IPair<Complex> vector)
+    public static double L2NormSquared(this IPair<Complex> vector)
     {
         return (vector.Item1 * vector.Item1.Conjugate()).Real +
                (vector.Item2 * vector.Item2.Conjugate()).Real;
     }
 
-    public static Complex VectorToComplexNumber(this IPair<Float64Scalar> vector)
+    public static Complex VectorToComplexNumber(this IPair<double> vector)
     {
         return new Complex(
-            vector.Item1.ScalarValue,
-            vector.Item2.ScalarValue
+            vector.Item1,
+            vector.Item2
         );
     }
 
-    public static Complex VectorToUnitComplexNumber(this IPair<Float64Scalar> vector)
+    public static Complex VectorToUnitComplexNumber(this IPair<double> vector)
     {
-        var norm = vector.VectorENorm();
+        var norm = vector.L2Norm();
 
         return norm.IsNearZero()
             ? Complex.Zero
             : new Complex(
-                vector.Item1.ScalarValue / norm,
-                vector.Item2.ScalarValue / norm
+                vector.Item1 / norm,
+                vector.Item2 / norm
             );
     }
     
@@ -393,7 +426,7 @@ public static class LinFloat64Vector2DUtils
     /// <param name="v2"></param>
     /// <returns></returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Float64Scalar VectorCross(this IPair<Float64Scalar> v1, IPair<Float64Scalar> v2)
+    public static double VectorCross(this IPair<double> v1, IPair<double> v2)
     {
         return v1.Item1 * v2.Item2 - v1.Item2 * v2.Item1;
     }
@@ -405,7 +438,7 @@ public static class LinFloat64Vector2DUtils
     /// <param name="v2"></param>
     /// <returns></returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static IntegerSign VectorCrossSign(this IPair<Float64Scalar> v1, IPair<Float64Scalar> v2)
+    public static IntegerSign VectorCrossSign(this IPair<double> v1, IPair<double> v2)
     {
         return (v1.Item1 * v2.Item2 - v1.Item2 * v2.Item1).Sign();
     }

@@ -4,8 +4,9 @@ using System.Runtime.CompilerServices;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Angles;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.LinearMaps.SpaceND.Reflection;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.LinearMaps.SpaceND.Rotation;
-using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Matrices;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.SpaceND;
+using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Numerical;
+using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Numerical.Matrices;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
 using MathNet.Numerics.LinearAlgebra;
 
@@ -132,7 +133,7 @@ public sealed class LinFloat64PlanarRotationSequence :
         var rotationSequence = new LinFloat64PlanarRotationSequence(dimensions);
 
         var vectorList =
-            random.GetMathNetOrthonormalVectors(dimensions, 2 * count);
+            random.GetOrthonormalVectors(dimensions, 2 * count);
 
         for (var i = 0; i < count; i++)
         {
@@ -333,12 +334,12 @@ public sealed class LinFloat64PlanarRotationSequence :
         return true;
     }
 
-    public override bool IsNearIdentity(double zeroEpsilon = 1E-12)
+    public override bool IsNearIdentity(double tolerance = Float64Utils.DefaultTolerance)
     {
         for (var basisIndex = 0; basisIndex < VSpaceDimensions; basisIndex++)
         {
             var isSameVectorBasis =
-                MapBasisVector(basisIndex).IsNearVectorBasis(basisIndex, zeroEpsilon);
+                MapBasisVector(basisIndex).IsNearVectorBasis(basisIndex, tolerance);
 
             if (!isSameVectorBasis) return false;
         }
@@ -350,7 +351,7 @@ public sealed class LinFloat64PlanarRotationSequence :
     /// Test if all rotation planes in this sequence are nearly pair-wise orthogonal
     /// </summary>
     /// <returns></returns>
-    public bool IsNearOrthogonalRotationsSequence(double zeroEpsilon = Float64Utils.ZeroEpsilon)
+    public bool IsNearOrthogonalRotationsSequence(double tolerance = Float64Utils.DefaultTolerance)
     {
         if (_mapList.Count > VSpaceDimensions / 2)
             return false;
@@ -365,10 +366,10 @@ public sealed class LinFloat64PlanarRotationSequence :
                 var u2 = _mapList[j].BasisVector1;
                 var v2 = _mapList[j].MapBasisVector1();
 
-                if (!u1.IsNearOrthogonalTo(u2, zeroEpsilon)) return false;
-                if (!u1.IsNearOrthogonalTo(v2, zeroEpsilon)) return false;
-                if (!v1.IsNearOrthogonalTo(u2, zeroEpsilon)) return false;
-                if (!v1.IsNearOrthogonalTo(v2, zeroEpsilon)) return false;
+                if (!u1.IsNearOrthogonalTo(u2, tolerance)) return false;
+                if (!u1.IsNearOrthogonalTo(v2, tolerance)) return false;
+                if (!v1.IsNearOrthogonalTo(u2, tolerance)) return false;
+                if (!v1.IsNearOrthogonalTo(v2, tolerance)) return false;
             }
         }
 

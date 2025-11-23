@@ -47,6 +47,48 @@ public static class RandomGeneratorUtils
         );
     }
         
+    
+    /// <summary>
+    /// Get an integer in the range [minValue, maxValue - 1]
+    /// </summary>
+    /// <param name="randomGenerator"></param>
+    /// <returns></returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static byte GetByte(this System.Random randomGenerator)
+    {
+        return (byte)randomGenerator.Next(0, 256);
+    }
+
+    /// <summary>
+    /// Get an integer in the range [minValue, maxValue - 1]
+    /// </summary>
+    /// <param name="randomGenerator"></param>
+    /// <param name="maxValue"></param>
+    /// <returns></returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static byte GetByte(this System.Random randomGenerator, int maxValue)
+    {
+        Debug.Assert(maxValue is >= 0 and <= 256);
+
+        return (byte)randomGenerator.Next(0, maxValue);
+    }
+
+    /// <summary>
+    /// Get an integer in the range [minValue, maxValue - 1]
+    /// </summary>
+    /// <param name="randomGenerator"></param>
+    /// <param name="minValue"></param>
+    /// <param name="maxValue"></param>
+    /// <returns></returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static byte GetByte(this System.Random randomGenerator, int minValue, int maxValue)
+    {
+        Debug.Assert(minValue is >= 0 and <= 256);
+        Debug.Assert(maxValue is >= 0 and <= 256);
+        
+        return (byte)randomGenerator.Next(minValue, maxValue);
+    }
+
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static int GetInt32(this System.Random randomGenerator)
@@ -62,6 +104,13 @@ public static class RandomGeneratorUtils
             : randomGenerator.Next(maxValue);
     }
 
+    /// <summary>
+    /// Get an integer in the range [minValue, maxValue - 1]
+    /// </summary>
+    /// <param name="randomGenerator"></param>
+    /// <param name="minValue"></param>
+    /// <param name="maxValue"></param>
+    /// <returns></returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static int GetInt32(this System.Random randomGenerator, int minValue, int maxValue)
     {

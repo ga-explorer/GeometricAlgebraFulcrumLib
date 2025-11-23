@@ -1,5 +1,5 @@
 ﻿using GeometricAlgebraFulcrumLib.Modeling.Geometry.BasicShapes;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.Borders.Space3D.Float64;
+using GeometricAlgebraFulcrumLib.Modeling.Geometry.Bounding.Float64;
 
 namespace GeometricAlgebraFulcrumLib.Modeling.Graphics.Accelerators.Grids.Space3D;
 
@@ -17,7 +17,7 @@ public sealed class AccGridCellInfo3D
 
     public bool IsEmpty { get; }
 
-    public IEnumerable<IFloat64FiniteGeometricShape3D> GeometricObjects { get; }
+    public IEnumerable<IFloat64BoundedShape3D> GeometricObjects { get; }
 
     public Float64BoundingBox3D BoundingBox { get; }
 
@@ -29,10 +29,10 @@ public sealed class AccGridCellInfo3D
         IndexZ = indexZ;
         BoundingBox = boundingBox;
         IsEmpty = true;
-        GeometricObjects = Enumerable.Empty<IFloat64FiniteGeometricShape3D>();
+        GeometricObjects = [];
     }
 
-    internal AccGridCellInfo3D(int indexX, int indexY, int indexZ, Float64BoundingBox3D boundingBox, IEnumerable<IFloat64FiniteGeometricShape3D> geometricObjects)
+    internal AccGridCellInfo3D(int indexX, int indexY, int indexZ, Float64BoundingBox3D boundingBox, IEnumerable<IFloat64BoundedShape3D> geometricObjects)
     {
         IndexX = indexX;
         IndexY = indexY;

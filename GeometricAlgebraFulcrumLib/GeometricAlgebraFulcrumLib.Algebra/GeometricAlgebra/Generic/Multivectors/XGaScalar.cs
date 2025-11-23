@@ -1,11 +1,11 @@
-﻿using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
+﻿using System.Diagnostics;
+using System.Runtime.CompilerServices;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Processors;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Generic;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Dictionary;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.IndexSets;
 using GeometricAlgebraFulcrumLib.Utilities.Text.Text;
-using System.Diagnostics;
-using System.Runtime.CompilerServices;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Multivectors;
 

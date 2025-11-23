@@ -1,5 +1,4 @@
-﻿using System.Collections.Immutable;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Angles;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space2D;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
@@ -53,7 +52,7 @@ public sealed record Float64PolarGrid2D :
         => BaseVectors.Count;
 
     public double BaseCircleRadius 
-        => BaseVectors[0].Norm();
+        => BaseVectors[0].L2Norm();
 
 
     private Float64PolarGrid2D(LinFloat64Vector2D origin, LinFloat64Vector2D baseVector, int radialLineCount, double gridWidth, double gridHeight) 
@@ -61,12 +60,14 @@ public sealed record Float64PolarGrid2D :
     {
         Origin = origin;
 
-        BaseVectors = 0d.GetLinearPeriodicRange(
-            Math.Tau, 
-            radialLineCount
-        ).Select(
-            r => baseVector.RotateBy(r.RadiansToPolarAngle())
-        ).ToImmutableArray();
+        BaseVectors = [
+            ..0d.GetLinearPeriodicRange(
+                Math.Tau, 
+                radialLineCount
+            ).Select(
+                r => baseVector.RotateBy(r.RadiansToPolarAngle())
+            )
+        ];
 
         Debug.Assert(IsValid());
     }

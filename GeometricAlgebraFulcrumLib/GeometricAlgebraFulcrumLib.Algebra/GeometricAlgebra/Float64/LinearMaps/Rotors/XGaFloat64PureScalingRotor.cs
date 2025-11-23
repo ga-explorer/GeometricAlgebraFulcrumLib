@@ -121,7 +121,7 @@ public sealed class XGaFloat64PureScalingRotor
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public override double GetScalingFactor()
     {
-        return Multivector.Sp(MultivectorReverse).Scalar();
+        return Multivector.Sp(MultivectorReverse);
     }
         
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -168,13 +168,13 @@ public sealed class XGaFloat64PureScalingRotor
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public LinFloat64Vector2D OmMap(ILinFloat64Vector2D vector)
     {
-        return Multivector.Gp(vector.ToXGaFloat64Vector(Processor)).Gp(MultivectorReverse).VectorPartToVector2D();
+        return Multivector.Gp(vector.ToXGaVector(Processor)).Gp(MultivectorReverse).VectorPartToVector2D();
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public LinFloat64Vector3D OmMap(ILinFloat64Vector3D vector)
     {
-        return Multivector.Gp(vector.ToXGaFloat64Vector(Processor)).Gp(MultivectorReverse).VectorPartToVector3D();
+        return Multivector.Gp(vector.ToXGaVector(Processor)).Gp(MultivectorReverse).VectorPartToVector3D();
     }
 
 

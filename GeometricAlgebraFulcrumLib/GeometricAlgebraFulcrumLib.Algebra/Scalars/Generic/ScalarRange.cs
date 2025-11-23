@@ -672,12 +672,12 @@ public readonly struct ScalarRange<T> :
     //    var minValues =
     //        Enumerable
     //            .Range(ScalarProcessor.Zero, divisionCount)
-    //            .Select(i => i * length + minValue + zeroEpsilon)
+    //            .Select(i => i * length + minValue + tolerance)
     //            .ToArray();
 
     //    var maxValues =
     //        minValues
-    //            .Select(v => v + length - zeroEpsilon)
+    //            .Select(v => v + length - tolerance)
     //            .ToArray();
 
     //    var divisions = new ScalarRange<T>[divisionCount];
@@ -694,35 +694,35 @@ public readonly struct ScalarRange<T> :
     //[MethodImpl(MethodImplOptions.AggressiveInlining)]
     //public bool Contains(Scalar<T> value)
     //{
-    //    return value >= MinValue - zeroEpsilon &&
-    //           value <= MaxValue + zeroEpsilon;
+    //    return value >= MinValue - tolerance &&
+    //           value <= MaxValue + tolerance;
     //}
 
     //[MethodImpl(MethodImplOptions.AggressiveInlining)]
     //public bool Contains(ScalarRange<T> box)
     //{
-    //    Debug.Assert(zeroEpsilon >= ScalarProcessor.Zero);
+    //    Debug.Assert(tolerance >= ScalarProcessor.Zero);
 
-    //    return box.MinValue >= MinValue - zeroEpsilon &&
-    //           box.MaxValue <= MaxValue + zeroEpsilon;
+    //    return box.MinValue >= MinValue - tolerance &&
+    //           box.MaxValue <= MaxValue + tolerance;
     //}
 
     //[MethodImpl(MethodImplOptions.AggressiveInlining)]
     //public bool ContainsUpperExclusive(Scalar<T> value)
     //{
-    //    Debug.Assert(zeroEpsilon >= ScalarProcessor.Zero);
+    //    Debug.Assert(tolerance >= ScalarProcessor.Zero);
 
-    //    return value >= MinValue - zeroEpsilon &&
-    //           value < MaxValue + zeroEpsilon;
+    //    return value >= MinValue - tolerance &&
+    //           value < MaxValue + tolerance;
     //}
 
     //[MethodImpl(MethodImplOptions.AggressiveInlining)]
     //public bool Overlaps(ScalarRange<T> box)
     //{
-    //    Debug.Assert(zeroEpsilon >= ScalarProcessor.Zero);
+    //    Debug.Assert(tolerance >= ScalarProcessor.Zero);
 
-    //    return box.MaxValue >= MinValue - zeroEpsilon &&
-    //           box.MinValue <= MaxValue + zeroEpsilon;
+    //    return box.MaxValue >= MinValue - tolerance &&
+    //           box.MinValue <= MaxValue + tolerance;
     //}
 
 

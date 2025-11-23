@@ -4,8 +4,8 @@ using System.Drawing;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Processors;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Multivectors;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Processors;
-using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Matrices;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space2D;
+using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Numerical.Matrices;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Generic;
 using GeometricAlgebraFulcrumLib.Algebra.Utilities.Text;
@@ -15,9 +15,10 @@ using GeometricAlgebraFulcrumLib.Mathematica.Utilities.Text;
 using GeometricAlgebraFulcrumLib.Modeling.Calculus.Curves;
 using GeometricAlgebraFulcrumLib.Modeling.Calculus.Functions.Float64;
 using GeometricAlgebraFulcrumLib.Modeling.Calculus.Functions.Float64.Interpolators;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.Borders.Space2D.Float64;
+using GeometricAlgebraFulcrumLib.Modeling.Geometry.Bounding.Float64;
+
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.Parametric.Float64;
-using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.Svg.DrawingBoard;
+using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.Svg.DrawingBoardOld;
 using GeometricAlgebraFulcrumLib.Modeling.Signals;
 using GeometricAlgebraFulcrumLib.Modeling.Signals.Composers;
 using GeometricAlgebraFulcrumLib.Modeling.Signals.Interpolators;
@@ -62,7 +63,7 @@ public static class NumericGeometricFrequencySample
     public static Float64SignalValidator SignalValidator { get; }
         = new Float64SignalValidator()
         {
-            ZeroEpsilon = 2e-3
+            DefaultTolerance = 2e-3
         };
 
     public static int DownSampleFactor
@@ -1581,7 +1582,7 @@ public static class NumericGeometricFrequencySample
         foreach (var omega in omegaList)
         {
             var omegaMean = omega.Mean();
-            var omegaMeanNorm = omegaMean.Norm().ScalarValue;
+            var omegaMeanNorm = omegaMean.Norm();
             var omegaMeanNormHz = omegaMeanNorm / (Math.Tau);
 
             Console.WriteLine($"Omega {omegaIndex}");
@@ -1808,7 +1809,7 @@ public static class NumericGeometricFrequencySample
 
     private static void ProcessSignalSection3D(XGaVector<Float64SampledTimeSignal> vectorSignal, DfSignalInterpolatorOptions interpolatorOptions, ExcelWorksheet workSheet, int sectionFirstIndex)
     {
-        ScalarProcessor.ZeroEpsilon = 1e-7d;
+        ScalarProcessor.DefaultTolerance = 1e-7d;
 
         var sectionLastIndex = SampleCount - 1;
 
@@ -1963,7 +1964,7 @@ public static class NumericGeometricFrequencySample
         foreach (var omega in omegaList)
         {
             var omegaMean = omega.Mean();
-            var omegaMeanNorm = omegaMean.Norm().ScalarValue;
+            var omegaMeanNorm = omegaMean.Norm();
             var omegaMeanNormHz = omegaMeanNorm / (Math.Tau);
 
             Console.WriteLine($"Omega {omegaIndex}");
@@ -1975,7 +1976,7 @@ public static class NumericGeometricFrequencySample
         }
 
         var dbSignalsMean = db.Mean();
-        var dbSignalsMeanNorm = dbSignalsMean.Norm().ScalarValue;
+        var dbSignalsMeanNorm = dbSignalsMean.Norm();
         var dbSignalsMeanNormHz = dbSignalsMeanNorm / (Math.Tau);
 
         Console.WriteLine($"Darboux Bivector");
@@ -2143,7 +2144,7 @@ public static class NumericGeometricFrequencySample
 
     private static void ProcessSignalSection4D(XGaVector<Float64SampledTimeSignal> vectorSignal, DfSignalInterpolatorOptions interpolatorOptions, ExcelWorksheet workSheet, int sectionFirstIndex)
     {
-        ScalarProcessor.ZeroEpsilon = 1e-7d;
+        ScalarProcessor.DefaultTolerance = 1e-7d;
 
         var sectionLastIndex = SampleCount - 1;
 
@@ -2308,7 +2309,7 @@ public static class NumericGeometricFrequencySample
         foreach (var omega in omegaList)
         {
             var omegaMean = omega.Mean();
-            var omegaMeanNorm = omegaMean.Norm().ScalarValue;
+            var omegaMeanNorm = omegaMean.Norm();
             var omegaMeanNormHz = omegaMeanNorm / (Math.Tau);
 
             Console.WriteLine($"Omega {omegaIndex}");
@@ -2320,7 +2321,7 @@ public static class NumericGeometricFrequencySample
         }
 
         var dbSignalsMean = db.Mean();
-        var dbSignalsMeanNorm = dbSignalsMean.Norm().ScalarValue;
+        var dbSignalsMeanNorm = dbSignalsMean.Norm();
         var dbSignalsMeanNormHz = dbSignalsMeanNorm / (Math.Tau);
 
         Console.WriteLine($"Darboux Bivector");
@@ -2547,7 +2548,7 @@ public static class NumericGeometricFrequencySample
 
     private static void ProcessSignalSection6D(XGaVector<Float64SampledTimeSignal> vectorSignal, DfSignalInterpolatorOptions interpolatorOptions, ExcelWorksheet workSheet, int sectionFirstIndex)
     {
-        ScalarProcessor.ZeroEpsilon = 1e-7d;
+        ScalarProcessor.DefaultTolerance = 1e-7d;
 
         var sectionLastIndex = SampleCount - 1;
 
@@ -2736,7 +2737,7 @@ public static class NumericGeometricFrequencySample
         foreach (var omega in omegaList)
         {
             var omegaMean = omega.Mean();
-            var omegaMeanNorm = omegaMean.Norm().ScalarValue;
+            var omegaMeanNorm = omegaMean.Norm();
             var omegaMeanNormHz = omegaMeanNorm / (Math.Tau);
 
             Console.WriteLine($"Omega {omegaIndex}");
@@ -3206,10 +3207,10 @@ public static class NumericGeometricFrequencySample
         //    omegaBarNormScaledSignal.GetDominantFrequencyDataRecords(0.998d).ToArray();
 
         var omegaScaledMeanNorm =
-            (omega * sDt1).Mean().Norm().ScalarValue;
+            (omega * sDt1).Mean().Norm();
 
         var omegaBarScaledMeanNorm =
-            (omegaBar * sDt1).Mean().Norm().ScalarValue;
+            (omegaBar * sDt1).Mean().Norm();
 
         Console.WriteLine($"Norm of Scaled OmegaBar Signal Mean: {omegaBarScaledMeanNorm:G}");
         Console.WriteLine($"Norm of Scaled Omega Signal Mean: {omegaScaledMeanNorm:G}");
@@ -3720,7 +3721,7 @@ public static class NumericGeometricFrequencySample
                 // Angular velocity blade
                 var omega = vectorSignalProcessor.AngularVelocityBlades;
                 var omegaMean = omega.Mean();
-                var omegaMeanNorm = omegaMean.Norm().ScalarValue;
+                var omegaMeanNorm = omegaMean.Norm();
                 var omegaMeanNormHz = (omegaMeanNorm / (Math.Tau)).Round(4);
                 var omegaMeanNormRatioHz = (omegaMeanNormHz / 50).Round(4);
 
@@ -3787,7 +3788,7 @@ public static class NumericGeometricFrequencySample
                 var (yMin, yMax) = yValues.GetMinMaxValues();
 
                 var drawingBoard =
-                    Float64BoundingBoxComposer2D.CreateFromPoints(
+                    Float64BoundingBox2D.Containing(
                         xMin,
                         yMin,
                         xMax,
@@ -3801,7 +3802,7 @@ public static class NumericGeometricFrequencySample
                         .ToArray();
 
                 var normList =
-                    pointList.Select(p => p.VectorENorm()).ToArray();
+                    pointList.Select(p => LinFloat64Vector2DUtils.L2Norm(p)).ToArray();
 
                 var minNorm = normList.GetMin();
                 var maxNorm = normList.GetMax();
@@ -3812,7 +3813,7 @@ public static class NumericGeometricFrequencySample
                 drawingBoard
                     .ActiveLayer
                     .SetPen(2, Color.Black)
-                    .DrawPolyline(pointList);
+                    .DrawPolyline(pointList.Cast<IPair<double>>());
 
                 drawingBoard.SaveToPngFile(
                     Path.Combine(FolderPath, $"Curve_{n}D-H{harmonicsListText}.png")
@@ -3916,7 +3917,7 @@ public static class NumericGeometricFrequencySample
                 {
                     var omega = vectorSignalProcessor.AngularVelocityBlades[omegaIndex];
                     var omegaMean = omega.Mean();
-                    var omegaMeanNorm = omegaMean.Norm().ScalarValue;
+                    var omegaMeanNorm = omegaMean.Norm();
                     var omegaMeanNormHz = (omegaMeanNorm / (Math.Tau)).Round(4);
                     var omegaMeanNormRatioHz = (omegaMeanNormHz / w).Round(4);
 

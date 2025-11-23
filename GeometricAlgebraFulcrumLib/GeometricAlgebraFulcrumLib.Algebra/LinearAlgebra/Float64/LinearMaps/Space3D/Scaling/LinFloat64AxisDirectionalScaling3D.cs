@@ -75,7 +75,7 @@ public sealed class LinFloat64AxisDirectionalScaling3D :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public override LinFloat64Vector3D MapVector(ILinFloat64Vector3D vector)
+    public override LinFloat64Vector3D MapVector(LinFloat64Vector3D vector)
     {
         return LinFloat64Vector3DComposer.Create()
             .SetVector(vector)

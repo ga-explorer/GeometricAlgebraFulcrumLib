@@ -20,27 +20,27 @@ public sealed class Float64CatmullRomSplinePath3D :
 
 
     private readonly double[] _knotList;
-    private readonly List<ILinFloat64Vector3D> _pointList;
+    private readonly List<LinFloat64Vector3D> _pointList;
 
     public CatmullRomSplineType CurveType { get; }
 
     public bool IsClosed { get; }
 
-    public IEnumerable<ILinFloat64Vector3D> ControlPoints
+    public IEnumerable<LinFloat64Vector3D> ControlPoints
         => _pointList;
 
     public int ControlPointCount
         => _pointList.Count;
 
 
-    internal Float64CatmullRomSplinePath3D(bool isPeriodic, IEnumerable<ILinFloat64Vector3D> inputPointList, CatmullRomSplineType curveType, bool isClosed)
+    internal Float64CatmullRomSplinePath3D(bool isPeriodic, IEnumerable<LinFloat64Vector3D> inputPointList, CatmullRomSplineType curveType, bool isClosed)
         : base(Float64ScalarRange.ZeroToOne, isPeriodic)
     {
         CurveType = curveType;
         IsClosed = isClosed;
-        _pointList = new List<ILinFloat64Vector3D>(inputPointList);
+        _pointList = new List<LinFloat64Vector3D>(inputPointList);
 
-        ILinFloat64Vector3D endPoint1, endPoint2;
+        LinFloat64Vector3D endPoint1, endPoint2;
 
         if (isClosed)
         {
@@ -71,7 +71,7 @@ public sealed class Float64CatmullRomSplinePath3D :
         for (var i = 1; i < _pointList.Count; i++)
         {
             var vector = _pointList[i].ToLinVector3D() - _pointList[i - 1];
-            var ds = vector.VectorENormSquared();
+            var ds = LinFloat64Vector3DUtils.L2NormSquared(vector);
 
             var power =
                 curveType == CatmullRomSplineType.Centripetal

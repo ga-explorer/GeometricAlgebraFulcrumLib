@@ -110,11 +110,11 @@ public sealed class GrPovRayFinishProperties :
     }
 
 
-    internal GrPovRayFinishProperties()
+    public GrPovRayFinishProperties()
     {
     }
 
-    internal GrPovRayFinishProperties(GrPovRayFinishProperties properties)
+    public GrPovRayFinishProperties(GrPovRayFinishProperties properties)
     {
         SetAttributeValues(properties);
     }

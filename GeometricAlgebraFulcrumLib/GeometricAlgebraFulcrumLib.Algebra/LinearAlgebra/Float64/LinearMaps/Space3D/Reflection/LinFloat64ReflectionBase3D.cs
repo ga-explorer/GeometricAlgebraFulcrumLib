@@ -15,11 +15,11 @@ public abstract class LinFloat64ReflectionBase3D :
 
     public abstract bool IsIdentity();
 
-    public abstract bool IsNearIdentity(double zeroEpsilon = 1e-12d);
+    public abstract bool IsNearIdentity(double tolerance = 1e-12d);
 
     public abstract LinFloat64Vector3D MapBasisVector(int basisIndex);
 
-    public abstract LinFloat64Vector3D MapVector(ILinFloat64Vector3D vector);
+    public abstract LinFloat64Vector3D MapVector(LinFloat64Vector3D vector);
 
     public abstract LinFloat64ReflectionBase3D GetReflectionLinearMapInverse();
 

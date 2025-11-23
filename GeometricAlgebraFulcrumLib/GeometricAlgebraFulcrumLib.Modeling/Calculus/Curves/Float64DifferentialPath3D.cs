@@ -252,7 +252,7 @@ public class Float64DifferentialPath3D :
         var vDt2 = GetDerivative2Value(t);
 
         var sDt1 = GetTangentNormValue(t);
-        var sDt2 = vDt1.VectorESp(vDt2) / sDt1;
+        var sDt2 = vDt1.VectorDot(vDt2) / sDt1;
 
         var vDs1 = vDt1 / sDt1;
         var vDs2 = (sDt1 * vDt2 - sDt2 * vDt1) / sDt1.Cube();
@@ -267,8 +267,8 @@ public class Float64DifferentialPath3D :
         var vDt3 = GetDerivative3Value(t);
 
         var sDt1 = GetTangentNormValue(t);
-        var sDt2 = vDt1.VectorESp(vDt2) / sDt1;
-        var sDt3 = (vDt2.VectorESp(vDt2) + vDt1.VectorESp(vDt3) - sDt2.Square()) / sDt1;
+        var sDt2 = vDt1.VectorDot(vDt2) / sDt1;
+        var sDt3 = (vDt2.VectorDot(vDt2) + vDt1.VectorDot(vDt3) - sDt2.Square()) / sDt1;
 
         var vDs1 = vDt1 / sDt1;
         var vDs2 = (sDt1 * vDt2 - sDt2 * vDt1) / sDt1.Cube();
@@ -359,7 +359,7 @@ public class Float64DifferentialPath3D :
         var vDt2 = GetDerivative2Value(parameterValue);
             
         var sDt1 = GetTangentNormValue(parameterValue);
-        var sDt2 = vDt1.VectorESp(vDt2) / sDt1;
+        var sDt2 = vDt1.VectorDot(vDt2) / sDt1;
             
         var vDs1 = vDt1 / sDt1;
         var vDs2 = (sDt1 * vDt2 - sDt2 * vDt1) / sDt1.Cube();
@@ -369,7 +369,7 @@ public class Float64DifferentialPath3D :
                 parameterValue,
                 origin,
                 vDs1,
-                vDs1.GetUnitNormalPair()
+                vDs1.GetUnitNormalPair().MapItems(s => (ITriplet<double>)s)
             );
 
         if (!orthogonalFrame)
@@ -402,8 +402,8 @@ public class Float64DifferentialPath3D :
         var vDt3 = GetDerivative3Value(parameterValue);
 
         var sDt1 = GetTangentNormValue(parameterValue);
-        var sDt2 = vDt1.VectorESp(vDt2) / sDt1;
-        var sDt3 = (vDt2.VectorESp(vDt2) + vDt1.VectorESp(vDt3) - sDt2.Square()) / sDt1;
+        var sDt2 = vDt1.VectorDot(vDt2) / sDt1;
+        var sDt3 = (vDt2.VectorDot(vDt2) + vDt1.VectorDot(vDt3) - sDt2.Square()) / sDt1;
 
         var vDs1 = vDt1 / sDt1;
         var vDs2 = (sDt1 * vDt2 - sDt2 * vDt1) / sDt1.Cube();
@@ -414,7 +414,7 @@ public class Float64DifferentialPath3D :
                 parameterValue,
                 origin,
                 vDs1,
-                vDs1.GetUnitNormalPair()
+                vDs1.GetUnitNormalPair().MapItems(s => (ITriplet<double>)s)
             );
 
         if (!orthogonalFrame)
@@ -511,8 +511,8 @@ public class Float64DifferentialPath3D :
         var vDt3 = GetDerivative3Value(t);
 
         var sDt1 = GetTangentNormValue(t);
-        var sDt2 = vDt1.VectorESp(vDt2) / sDt1;
-        var sDt3 = (vDt2.VectorESp(vDt2) + vDt1.VectorESp(vDt3) - sDt2.Square()) / sDt1;
+        var sDt2 = vDt1.VectorDot(vDt2) / sDt1;
+        var sDt3 = (vDt2.VectorDot(vDt2) + vDt1.VectorDot(vDt3) - sDt2.Square()) / sDt1;
 
         var vDs1 = vDt1 / sDt1;
         var vDs2 = (sDt1 * vDt2 - sDt2 * vDt1) / sDt1.Cube();
@@ -569,7 +569,7 @@ public class Float64DifferentialPath3D :
         var vDt2 = GetDerivative2Value(t);
             
         var sDt1 = GetTangentNormValue(t);
-        var sDt2 = vDt1.VectorESp(vDt2) / sDt1;
+        var sDt2 = vDt1.VectorDot(vDt2) / sDt1;
             
         var vDs1 = vDt1 / sDt1;
         var vDs2 = (sDt1 * vDt2 - sDt2 * vDt1) / sDt1.Cube();
@@ -591,14 +591,14 @@ public class Float64DifferentialPath3D :
         var vDt2 = GetDerivative2Value(t);
 
         var sDt1 = GetTangentNormValue(t);
-        var sDt2 = vDt1.VectorESp(vDt2) / sDt1;
+        var sDt2 = vDt1.VectorDot(vDt2) / sDt1;
 
         var vDs1 = vDt1 / sDt1;
         var vDs2 = (sDt1 * vDt2 - sDt2 * vDt1) / sDt1.Cube();
 
         var u2 = vDs2 - vDs2.ProjectOnUnitVector(vDs1);
         
-        return (sDt1 * u2.VectorENorm()).ScalarValue.NaNInfinityToZero();
+        return (sDt1 * LinFloat64Vector3DUtils.L2Norm(u2)).ScalarValue.NaNInfinityToZero();
     }
     
     public double GetCurvature2(double t)
@@ -608,8 +608,8 @@ public class Float64DifferentialPath3D :
         var vDt3 = GetDerivative3Value(t);
 
         var sDt1 = GetTangentNormValue(t);
-        var sDt2 = vDt1.VectorESp(vDt2) / sDt1;
-        var sDt3 = (vDt2.VectorESp(vDt2) + vDt1.VectorESp(vDt3) - sDt2.Square()) / sDt1;
+        var sDt2 = vDt1.VectorDot(vDt2) / sDt1;
+        var sDt3 = (vDt2.VectorDot(vDt2) + vDt1.VectorDot(vDt3) - sDt2.Square()) / sDt1;
 
         var vDs1 = vDt1 / sDt1;
         var vDs2 = (sDt1 * vDt2 - sDt2 * vDt1) / sDt1.Cube();
@@ -620,7 +620,7 @@ public class Float64DifferentialPath3D :
 
         var u3 = vDs3 - vDs3.ProjectOnUnitVector(e2) - vDs3.ProjectOnUnitVector(vDs1);
         
-        return (sDt1 * u3.VectorENorm() / u2.VectorENorm()).NaNInfinityToZero();
+        return (sDt1 * LinFloat64Vector3DUtils.L2Norm(u3) / LinFloat64Vector3DUtils.L2Norm(u2)).NaNInfinityToZero();
     }
 
     public Pair<double> GetCurvatures(double t)
@@ -630,8 +630,8 @@ public class Float64DifferentialPath3D :
         var vDt3 = GetDerivative3Value(t);
 
         var sDt1 = GetTangentNormValue(t);
-        var sDt2 = vDt1.VectorESp(vDt2) / sDt1;
-        var sDt3 = (vDt2.VectorESp(vDt2) + vDt1.VectorESp(vDt3) - sDt2.Square()) / sDt1;
+        var sDt2 = vDt1.VectorDot(vDt2) / sDt1;
+        var sDt3 = (vDt2.VectorDot(vDt2) + vDt1.VectorDot(vDt3) - sDt2.Square()) / sDt1;
 
         var vDs1 = vDt1 / sDt1;
         var vDs2 = (sDt1 * vDt2 - sDt2 * vDt1) / sDt1.Cube();
@@ -645,8 +645,8 @@ public class Float64DifferentialPath3D :
         var u3 = vDs3 - vDs3.ProjectOnUnitVector(e2) - vDs3.ProjectOnUnitVector(e1);
         //var e3 = u3.ToUnitVector();
 
-        var kappa1 = (sDt1 * u2.VectorENorm()).ScalarValue.NaNInfinityToZero();
-        var kappa2 = (sDt1 * u3.VectorENorm() / u2.VectorENorm()).NaNInfinityToZero();
+        var kappa1 = (sDt1 * LinFloat64Vector3DUtils.L2Norm(u2)).ScalarValue.NaNInfinityToZero();
+        var kappa2 = (sDt1 * LinFloat64Vector3DUtils.L2Norm(u3) / LinFloat64Vector3DUtils.L2Norm(u2)).NaNInfinityToZero();
         
         Debug.Assert(e1.IsNearUnitVector());
         Debug.Assert(e2.IsNearUnitVector());
@@ -661,8 +661,8 @@ public class Float64DifferentialPath3D :
         var vDt3 = GetDerivative3Value(t);
 
         var sDt1 = GetTangentNormValue(t);
-        var sDt2 = vDt1.VectorESp(vDt2) / sDt1;
-        var sDt3 = (vDt2.VectorESp(vDt2) + vDt1.VectorESp(vDt3) - sDt2.Square()) / sDt1;
+        var sDt2 = vDt1.VectorDot(vDt2) / sDt1;
+        var sDt3 = (vDt2.VectorDot(vDt2) + vDt1.VectorDot(vDt3) - sDt2.Square()) / sDt1;
 
         var vDs1 = vDt1 / sDt1;
         var vDs2 = (sDt1 * vDt2 - sDt2 * vDt1) / sDt1.Cube();
@@ -680,8 +680,8 @@ public class Float64DifferentialPath3D :
         Debug.Assert(e2.IsNearUnitVector());
         Debug.Assert(e3.IsNearUnitVector());
 
-        var kappa1 = (sDt1 * u2.VectorENorm()).NaNInfinityToZero();
-        var kappa2 = (sDt1 * u3.VectorENorm() / u2.VectorENorm()).NaNInfinityToZero();
+        var kappa1 = (sDt1 * LinFloat64Vector3DUtils.L2Norm(u2)).NaNInfinityToZero();
+        var kappa2 = (sDt1 * LinFloat64Vector3DUtils.L2Norm(u3) / LinFloat64Vector3DUtils.L2Norm(u2)).NaNInfinityToZero();
 
         var omega1 = kappa1 * e1.Op(e2);
         var omega3 = kappa2 * e2.Op(e3);
@@ -697,8 +697,8 @@ public class Float64DifferentialPath3D :
         var vDt3 = GetDerivative3Value(t);
 
         var sDt1 = GetTangentNormValue(t);
-        var sDt2 = vDt1.VectorESp(vDt2) / sDt1;
-        var sDt3 = (vDt2.VectorESp(vDt2) + vDt1.VectorESp(vDt3) - sDt2.Square()) / sDt1;
+        var sDt2 = vDt1.VectorDot(vDt2) / sDt1;
+        var sDt3 = (vDt2.VectorDot(vDt2) + vDt1.VectorDot(vDt3) - sDt2.Square()) / sDt1;
 
         var vDs1 = vDt1 / sDt1;
         var vDs2 = (sDt1 * vDt2 - sDt2 * vDt1) / sDt1.Cube();
@@ -716,8 +716,8 @@ public class Float64DifferentialPath3D :
         Debug.Assert(e2.IsNearUnitVector());
         Debug.Assert(e3.IsNearUnitVector());
 
-        var kappa1 = (sDt1 * u2.VectorENorm()).NaNInfinityToZero();
-        var kappa2 = (sDt1 * u3.VectorENorm() / u2.VectorENorm()).NaNInfinityToZero();
+        var kappa1 = (sDt1 * LinFloat64Vector3DUtils.L2Norm(u2)).NaNInfinityToZero();
+        var kappa2 = (sDt1 * LinFloat64Vector3DUtils.L2Norm(u3) / LinFloat64Vector3DUtils.L2Norm(u2)).NaNInfinityToZero();
 
         return kappa1 * e1.Op(e2) + kappa2 * e2.Op(e3);
     }
@@ -725,7 +725,7 @@ public class Float64DifferentialPath3D :
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public double GetFrequency(double t)
     {
-        return GetDarbouxBivector(t).Norm();
+        return GetDarbouxBivector(t).L2Norm();
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]

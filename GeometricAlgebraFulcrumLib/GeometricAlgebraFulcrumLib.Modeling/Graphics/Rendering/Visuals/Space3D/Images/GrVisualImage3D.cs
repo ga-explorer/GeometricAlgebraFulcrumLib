@@ -24,7 +24,7 @@ public sealed class GrVisualImage3D :
     );
         
     
-    public static GrVisualImage3D CreateStatic(string name, IGrVisualImageSource texture, ILinFloat64Vector3D position, double scalingFactor)
+    public static GrVisualImage3D CreateStatic(string name, IGrVisualImageSource texture, LinFloat64Vector3D position, double scalingFactor)
     {
         return new GrVisualImage3D(
             name, 
@@ -35,7 +35,7 @@ public sealed class GrVisualImage3D :
         );
     }
 
-    public static GrVisualImage3D Create(string name, IGrVisualImageSource texture, ILinFloat64Vector3D position, double scalingFactor, Float64SamplingSpecs samplingSpecs)
+    public static GrVisualImage3D Create(string name, IGrVisualImageSource texture, LinFloat64Vector3D position, double scalingFactor, Float64SamplingSpecs samplingSpecs)
     {
         return new GrVisualImage3D(
             name, 
@@ -62,12 +62,12 @@ public sealed class GrVisualImage3D :
 
     public double ScalingFactor { get; }
 
-    public ILinFloat64Vector3D Position { get; }
+    public LinFloat64Vector3D Position { get; }
 
     public GrVisualAnimatedVector3D? AnimatedPosition { get; set; }
 
 
-    private GrVisualImage3D(string name, IGrVisualImageSource texture, ILinFloat64Vector3D position, double scalingFactor, Float64SamplingSpecs samplingSpecs) 
+    private GrVisualImage3D(string name, IGrVisualImageSource texture, LinFloat64Vector3D position, double scalingFactor, Float64SamplingSpecs samplingSpecs) 
         : base(name, samplingSpecs)
     {
         Texture = texture;
@@ -132,7 +132,7 @@ public sealed class GrVisualImage3D :
 
         foreach (var frameIndex in GetValidFrameIndexSet())
         {
-            var time = (double)frameIndex / SamplingSpecs.SamplingRate;
+            var time = frameIndex / SamplingSpecs.SamplingRate;
 
             yield return new KeyFrameRecord(
                 frameIndex, 

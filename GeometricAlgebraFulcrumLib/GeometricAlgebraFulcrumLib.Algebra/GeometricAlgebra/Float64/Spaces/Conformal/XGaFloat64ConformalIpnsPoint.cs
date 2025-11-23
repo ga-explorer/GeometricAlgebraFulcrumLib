@@ -69,7 +69,7 @@ public class XGaFloat64ConformalIpnsPoint :
             
         return new XGaFloat64ConformalIpnsPoint(
             Space, 
-            Vector.Divide(Weight().ScalarValue), 
+            Vector.Divide(Weight()), 
             true
         );
     }

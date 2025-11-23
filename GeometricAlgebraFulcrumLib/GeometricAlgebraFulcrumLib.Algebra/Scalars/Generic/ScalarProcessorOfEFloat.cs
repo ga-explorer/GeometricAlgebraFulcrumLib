@@ -19,7 +19,7 @@ public sealed class ScalarProcessorOfEFloat
         = EContext.Binary128;
     
     private double _zeroEpsilon = 1e-12;
-    public double ZeroEpsilon
+    public double DefaultTolerance
     {
         get => _zeroEpsilon;
         set

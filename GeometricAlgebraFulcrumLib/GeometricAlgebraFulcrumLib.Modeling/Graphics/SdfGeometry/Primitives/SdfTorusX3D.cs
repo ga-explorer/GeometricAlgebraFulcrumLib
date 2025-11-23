@@ -17,8 +17,11 @@ public sealed class SdfTorusX3D : ScalarDistanceFunction
 
     public override double GetScalarDistance(ILinFloat64Vector3D point)
     {
-        var q = LinFloat64Vector2D.Create(point.VectorLengthYz() - InnerRadius, point.X);
+        var q = LinFloat64Vector2D.Create(
+            point.VectorLengthYz() - InnerRadius, 
+            point.X
+        );
 
-        return q.VectorENorm() - OuterRadius;
+        return LinFloat64Vector2DUtils.L2Norm(q) - OuterRadius;
     }
 }

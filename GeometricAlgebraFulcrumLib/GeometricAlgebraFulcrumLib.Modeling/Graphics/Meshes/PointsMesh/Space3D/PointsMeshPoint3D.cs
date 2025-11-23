@@ -47,26 +47,32 @@ public sealed class PointsMeshPoint3D :
     public int VSpaceDimensions 
         => 3;
 
-    public Float64Scalar X 
+    public double X 
         => Point.X;
 
-    public Float64Scalar Y 
+    public double Y 
         => Point.Y;
 
-    public Float64Scalar Z 
+    public double Z 
         => Point.Z;
+    
+    public double this[int index] 
+        => index switch
+        {
+            0 => X,
+            1 => Y,
+            2 => Z,
+            _ => Float64Scalar.Zero
+        };
 
-    public Float64Scalar Item1 
+    public double Item1 
         => X;
 
-    public Float64Scalar Item2
+    public double Item2
         => Y;
 
-    public Float64Scalar Item3
+    public double Item3
         => Z;
-
-    public bool IsValid() 
-        => Point.IsValid();
 
 
     internal PointsMeshPoint3D(IPointsMesh3D baseMesh, int pointIndex1, int pointIndex2)
@@ -75,4 +81,10 @@ public sealed class PointsMeshPoint3D :
         PointIndex1 = pointIndex1.Mod(baseMesh.Count1);
         PointIndex2 = pointIndex2.Mod(baseMesh.Count2);
     }
+    
+    public bool IsValid()
+    {
+        return Point.IsValid();
+    }
+
 }

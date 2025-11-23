@@ -1,4 +1,6 @@
-﻿using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivectors;
+﻿using System.Collections.Immutable;
+using System.Runtime.CompilerServices;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivectors;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Processors;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Multivectors.GuidedBinaryTraversal;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Multivectors.GuidedBinaryTraversal.Multivectors;
@@ -6,14 +8,12 @@ using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Processors;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space2D;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space3D;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space4D;
+using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.SpaceND;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Generic.Vectors.SpaceND;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Generic;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Combinations;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Dictionary;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.IndexSets;
-using System.Collections.Immutable;
-using System.Runtime.CompilerServices;
-using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.SpaceND;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Tuples;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Multivectors
@@ -277,27 +277,33 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Multivecto
                 .GetMultivector();
         }
 
-
+        
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public T[] MultivectorToArray1D()
+        {
+            if (VSpaceDimensions > 31)
+                throw new InvalidOperationException();
+
+            return MultivectorToArray1D(1 << VSpaceDimensions);
+        }
+
         public T[] MultivectorToArray1D(int arraySize)
         {
-            var vSpaceDimensions = VSpaceDimensions;
-
-            if (vSpaceDimensions > 31)
+            if (VSpaceDimensions > 31 || arraySize < (1 << VSpaceDimensions))
                 throw new InvalidOperationException();
 
-            var gaSpaceDimensions = 1UL << vSpaceDimensions;
+            var array = ScalarProcessor.CreateArrayZero1D(arraySize);
 
-            if ((ulong)arraySize < gaSpaceDimensions)
-                throw new InvalidOperationException();
-
-            var array = ScalarProcessor
-                .CreateArrayZero1D(arraySize);
-
-            foreach (var (id, scalar) in IdScalarPairs)
-                array[id.ToInt32()] = scalar;
+            foreach (var (index, scalar) in GetMultivectorArrayItems())
+                array[index] = scalar;
 
             return array;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public T[,] MultivectorToArray2D(int vSpaceDimensions)
+        {
+            return LeftGpMapArray(vSpaceDimensions);
         }
 
         public T[,] ScalarPlusBivectorToArray2D()
@@ -471,7 +477,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Multivecto
 
                 // Get the Un-Dual of the new blade inside the current blade
                 // This is one vector of the required vectors
-                var vector = newBlade.ELcp(oldBlade.EInverse()).GetVectorPart().DivideByENorm();
+                var vector = newBlade.ELcp(oldBlade.EVersorInverse()).GetVectorPart().DivideByENorm();
 
                 vectorList.Add(vector);
 
@@ -716,7 +722,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Multivecto
             return IsZero
                 ? processor.ScalarZero
                 : processor.Scalar(
-                    scalarMapping(Processor.GetBasisScalarId(), ScalarValue)
+                    scalarMapping(Processor.BasisScalarId(), ScalarValue)
                 );
         }
 
@@ -728,7 +734,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Multivecto
                 : new XGaScalar<T>(
                     Processor,
                     scalarMapping(
-                        Processor.GetBasisScalarId(),
+                        Processor.BasisScalarId(),
                         ScalarValue
                     )
                 );
@@ -740,7 +746,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Multivecto
             return IsZero
                 ? processor.ScalarZero
                 : processor.Scalar(
-                    scalarMapping(Processor.GetBasisScalarId(), ScalarValue)
+                    scalarMapping(Processor.BasisScalarId(), ScalarValue)
                 );
         }
 

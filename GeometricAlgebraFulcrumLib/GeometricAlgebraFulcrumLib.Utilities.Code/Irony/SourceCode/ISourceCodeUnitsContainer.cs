@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace GeometricAlgebraFulcrumLib.Utilities.Code.Irony.SourceCode;
+﻿namespace GeometricAlgebraFulcrumLib.Utilities.Code.Irony.SourceCode;
 
 /// <summary>
 /// This interface represents the highest level of source code container 

@@ -1,8 +1,9 @@
 ﻿using System.Diagnostics;
 using System.Numerics;
-using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Matrices;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space3D;
+using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Numerical.Matrices;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
+using MathNet.Numerics.LinearAlgebra;
 
 namespace GeometricAlgebraFulcrumLib.Modeling.Geometry.AffineMaps.Space3D;
 
@@ -88,7 +89,7 @@ public sealed class Float64TrsAffineMap3D : IFloat64AffineMap3D
         throw new NotImplementedException();
     }
 
-    public bool IsNearIdentity(double zeroEpsilon = Float64Utils.ZeroEpsilon)
+    public bool IsNearIdentity(double tolerance = Float64Utils.DefaultTolerance)
     {
         throw new NotImplementedException();
     }
@@ -107,10 +108,10 @@ public sealed class Float64TrsAffineMap3D : IFloat64AffineMap3D
 
     public Matrix4x4 GetMatrix4x4()
     {
-        return GetSquareMatrix4().GetMatrix4x4();
+        return GetSquareMatrix4().ToSystemNumericsMatrix4x4();
     }
 
-    public double[,] GetArray2D()
+    public Matrix<double> GetMatrix()
     {
         throw new NotImplementedException();
     }

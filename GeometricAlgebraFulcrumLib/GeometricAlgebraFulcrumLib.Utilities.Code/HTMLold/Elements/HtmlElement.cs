@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Text;
 using GeometricAlgebraFulcrumLib.Utilities.Code.HTMLold.Attributes;
 using GeometricAlgebraFulcrumLib.Utilities.Code.HTMLold.Content;
 using GeometricAlgebraFulcrumLib.Utilities.Text.Text.Linear;

@@ -10,7 +10,7 @@ public interface IFloat64AffineMap :
 
     bool IsIdentity();
 
-    bool IsNearIdentity(double zeroEpsilon = Float64Utils.ZeroEpsilon);
+    bool IsNearIdentity(double tolerance = Float64Utils.DefaultTolerance);
 
     double[,] GetArray2D();
 

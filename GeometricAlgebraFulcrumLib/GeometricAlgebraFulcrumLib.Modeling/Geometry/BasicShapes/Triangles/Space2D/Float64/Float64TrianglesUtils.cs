@@ -28,15 +28,15 @@ public static class Float64TrianglesUtils
 
     public static LinFloat64Vector2D[] GetEndPoints(this IFloat64Triangle2D lineSegment)
     {
-        return new[]
-        {
+        return
+        [
             LinFloat64Vector2D.Create((Float64Scalar)lineSegment.Point1X,
                 (Float64Scalar)lineSegment.Point1Y),
             LinFloat64Vector2D.Create((Float64Scalar)lineSegment.Point2X,
                 (Float64Scalar)lineSegment.Point2Y),
             LinFloat64Vector2D.Create((Float64Scalar)lineSegment.Point3X,
                 (Float64Scalar)lineSegment.Point3Y)
-        };
+        ];
     }
 
     public static IEnumerable<LinFloat64Vector2D> GetEndPoints(this IEnumerable<IFloat64Triangle2D> trianglesList)
@@ -294,7 +294,7 @@ public static class Float64TrianglesUtils
             w1 * triangle.Point1Y + w2 * triangle.Point2Y + w3 * triangle.Point3Y);
     }
 
-    public static IEnumerable<LinFloat64Vector2D> GetInnerPointsAt(this IFloat64Triangle2D triangle, IEnumerable<ILinFloat64Vector3D> parametersList)
+    public static IEnumerable<LinFloat64Vector2D> GetInnerPointsAt(this IFloat64Triangle2D triangle, IEnumerable<LinFloat64Vector3D> parametersList)
     {
         return parametersList.Select(
             p => triangle.GetInnerPointAt(p.X, p.Y, p.Z)
@@ -348,8 +348,8 @@ public static class Float64TrianglesUtils
 
     public static LinFloat64Vector3D[] GetEndPoints(this IFloat64Triangle3D lineSegment)
     {
-        return new[]
-        {
+        return
+        [
             LinFloat64Vector3D.Create(lineSegment.Point1X,
                 lineSegment.Point1Y,
                 lineSegment.Point1Z),
@@ -359,7 +359,7 @@ public static class Float64TrianglesUtils
             LinFloat64Vector3D.Create(lineSegment.Point3X,
                 lineSegment.Point3Y,
                 lineSegment.Point3Z)
-        };
+        ];
     }
 
     public static IEnumerable<LinFloat64Vector3D> GetEndPoints(this IEnumerable<IFloat64Triangle3D> trianglesList)
@@ -483,12 +483,12 @@ public static class Float64TrianglesUtils
 
     public static Float64LineSegment3D[] GetSides(this IFloat64Triangle3D triangle)
     {
-        return new[]
-        {
+        return
+        [
             triangle.GetSide12(),
             triangle.GetSide23(),
             triangle.GetSide31()
-        };
+        ];
     }
 
     public static IEnumerable<Float64LineSegment3D> GetSides(this IEnumerable<IFloat64Triangle3D> trianglesList)
@@ -570,12 +570,12 @@ public static class Float64TrianglesUtils
 
     public static Float64Line3D[] GetLines(this IFloat64Triangle3D triangle)
     {
-        return new[]
-        {
+        return
+        [
             triangle.GetLine12(),
             triangle.GetLine23(),
             triangle.GetLine31()
-        };
+        ];
     }
 
     public static IEnumerable<Float64Line3D> GetLines(this IEnumerable<IFloat64Triangle3D> trianglesList)
@@ -663,12 +663,12 @@ public static class Float64TrianglesUtils
 
     public static Float64LimitedLine3D[] GetLimitedLines(this IFloat64Triangle3D triangle)
     {
-        return new[]
-        {
+        return
+        [
             triangle.GetLimitedLine12(),
             triangle.GetLimitedLine23(),
             triangle.GetLimitedLine31()
-        };
+        ];
     }
 
     public static IEnumerable<Float64LimitedLine3D> GetLimitedLines(this IEnumerable<IFloat64Triangle3D> trianglesList)

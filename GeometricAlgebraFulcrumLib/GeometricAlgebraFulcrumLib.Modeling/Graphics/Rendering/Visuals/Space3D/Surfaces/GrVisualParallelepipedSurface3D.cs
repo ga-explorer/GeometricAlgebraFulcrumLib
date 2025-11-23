@@ -24,7 +24,7 @@ public sealed class GrVisualParallelepipedSurface3D :
     );
 
         
-    public static GrVisualParallelepipedSurface3D CreateStatic(string name, GrVisualSurfaceStyle3D style, ILinFloat64Vector3D position)
+    public static GrVisualParallelepipedSurface3D CreateStatic(string name, GrVisualSurfaceStyle3D style, LinFloat64Vector3D position)
     {
         return new GrVisualParallelepipedSurface3D(
             name,
@@ -37,7 +37,7 @@ public sealed class GrVisualParallelepipedSurface3D :
         );
     }
 
-    public static GrVisualParallelepipedSurface3D CreateStatic(string name, GrVisualSurfaceStyle3D style, ILinFloat64Vector3D position, ILinFloat64Vector3D direction1, ILinFloat64Vector3D direction2, ILinFloat64Vector3D direction3)
+    public static GrVisualParallelepipedSurface3D CreateStatic(string name, GrVisualSurfaceStyle3D style, LinFloat64Vector3D position, LinFloat64Vector3D direction1, LinFloat64Vector3D direction2, LinFloat64Vector3D direction3)
     {
         return new GrVisualParallelepipedSurface3D(
             name,
@@ -50,7 +50,7 @@ public sealed class GrVisualParallelepipedSurface3D :
         );
     }
         
-    public static GrVisualParallelepipedSurface3D Create(string name, GrVisualSurfaceStyle3D style, ILinFloat64Vector3D position, Float64SamplingSpecs samplingSpecs)
+    public static GrVisualParallelepipedSurface3D Create(string name, GrVisualSurfaceStyle3D style, LinFloat64Vector3D position, Float64SamplingSpecs samplingSpecs)
     {
         return new GrVisualParallelepipedSurface3D(
             name,
@@ -63,7 +63,7 @@ public sealed class GrVisualParallelepipedSurface3D :
         );
     }
 
-    public static GrVisualParallelepipedSurface3D Create(string name, GrVisualSurfaceStyle3D style, ILinFloat64Vector3D position, ILinFloat64Vector3D direction1, ILinFloat64Vector3D direction2, ILinFloat64Vector3D direction3, Float64SamplingSpecs samplingSpecs)
+    public static GrVisualParallelepipedSurface3D Create(string name, GrVisualSurfaceStyle3D style, LinFloat64Vector3D position, LinFloat64Vector3D direction1, LinFloat64Vector3D direction2, LinFloat64Vector3D direction3, Float64SamplingSpecs samplingSpecs)
     {
         return new GrVisualParallelepipedSurface3D(
             name,
@@ -89,7 +89,7 @@ public sealed class GrVisualParallelepipedSurface3D :
         ).SetAnimatedPosition(position);
     }
     
-    public static GrVisualParallelepipedSurface3D CreateAnimated(string name, GrVisualSurfaceStyle3D style, ILinFloat64Vector3D position, GrVisualAnimatedVector3D direction1, GrVisualAnimatedVector3D direction2, GrVisualAnimatedVector3D direction3)
+    public static GrVisualParallelepipedSurface3D CreateAnimated(string name, GrVisualSurfaceStyle3D style, LinFloat64Vector3D position, GrVisualAnimatedVector3D direction1, GrVisualAnimatedVector3D direction2, GrVisualAnimatedVector3D direction3)
     {
         return new GrVisualParallelepipedSurface3D(
             name,
@@ -121,55 +121,55 @@ public sealed class GrVisualParallelepipedSurface3D :
     public bool DrawEdge 
         => EdgeStyle != null;
 
-    public ILinFloat64Vector3D Direction1 { get; }
+    public LinFloat64Vector3D Direction1 { get; }
 
-    public ILinFloat64Vector3D Direction2 { get; }
+    public LinFloat64Vector3D Direction2 { get; }
 
-    public ILinFloat64Vector3D Direction3 { get; }
+    public LinFloat64Vector3D Direction3 { get; }
     
-    public ILinFloat64Vector3D Direction12 
+    public LinFloat64Vector3D Direction12 
         => Direction1.VectorAdd(Direction2);
     
-    public ILinFloat64Vector3D Direction13 
+    public LinFloat64Vector3D Direction13 
         => Direction1.VectorAdd(Direction3);
     
-    public ILinFloat64Vector3D Direction23 
+    public LinFloat64Vector3D Direction23 
         => Direction2.VectorAdd(Direction3);
 
-    public ILinFloat64Vector3D Direction123 
+    public LinFloat64Vector3D Direction123 
         => Direction1.VectorAdd(Direction2).VectorAdd(Direction3);
      
-    public ILinFloat64Vector3D Position { get; }
+    public LinFloat64Vector3D Position { get; }
 
-    public ILinFloat64Vector3D Position1 
+    public LinFloat64Vector3D Position1 
         => Position.VectorAdd(Direction1);
     
-    public ILinFloat64Vector3D Position2 
+    public LinFloat64Vector3D Position2 
         => Position.VectorAdd(Direction2);
     
-    public ILinFloat64Vector3D Position3 
+    public LinFloat64Vector3D Position3 
         => Position.VectorAdd(Direction3);
     
-    public ILinFloat64Vector3D Position12 
+    public LinFloat64Vector3D Position12 
         => Position.VectorAdd(Direction1).VectorAdd(Direction2);
 
-    public ILinFloat64Vector3D Position13 
+    public LinFloat64Vector3D Position13 
         => Position.VectorAdd(Direction1).VectorAdd(Direction3);
     
-    public ILinFloat64Vector3D Position23 
+    public LinFloat64Vector3D Position23 
         => Position.VectorAdd(Direction2).VectorAdd(Direction3);
     
-    public ILinFloat64Vector3D Position123 
+    public LinFloat64Vector3D Position123 
         => Position.VectorAdd(Direction1).VectorAdd(Direction2).VectorAdd(Direction3);
     
     public double Length1 
-        => Direction1.VectorENorm();
+        => Direction1.L2Norm();
 
     public double Length2 
-        => Direction2.VectorENorm();
+        => Direction2.L2Norm();
 
     public double Length3 
-        => Direction3.VectorENorm();
+        => Direction3.L2Norm();
 
     public LinFloat64Vector3D UnitDirection1 
         => Direction1.ToUnitLinVector3D();
@@ -392,7 +392,7 @@ public sealed class GrVisualParallelepipedSurface3D :
         }
     }
     
-    private GrVisualParallelepipedSurface3D(string name, GrVisualSurfaceStyle3D style, ILinFloat64Vector3D position, ILinFloat64Vector3D direction1, ILinFloat64Vector3D direction2, ILinFloat64Vector3D direction3, Float64SamplingSpecs samplingSpecs)
+    private GrVisualParallelepipedSurface3D(string name, GrVisualSurfaceStyle3D style, LinFloat64Vector3D position, LinFloat64Vector3D direction1, LinFloat64Vector3D direction2, LinFloat64Vector3D direction3, Float64SamplingSpecs samplingSpecs)
         : base(name, style, samplingSpecs)
     {
         Position = position;
@@ -551,15 +551,15 @@ public sealed class GrVisualParallelepipedSurface3D :
 
     public IEnumerable<GrVisualParallelogramSurface3D> GetParallelogramSurfaces()
     {
-        return new[]
-        {
+        return
+        [
             GetParallelogramSurface0(),
             GetParallelogramSurface1(),
             GetParallelogramSurface2(),
             GetParallelogramSurface3(),
             GetParallelogramSurface4(),
             GetParallelogramSurface5()
-        };
+        ];
     }
 
     public GrVisualParallelepipedSurface3D SetAnimatedVisibility(GrVisualAnimatedScalar visibility)
@@ -752,7 +752,7 @@ public sealed class GrVisualParallelepipedSurface3D :
 
         foreach (var frameIndex in GetValidFrameIndexSet())
         {
-            var time = (double)frameIndex / SamplingSpecs.SamplingRate;
+            var time = frameIndex / SamplingSpecs.SamplingRate;
                 
             yield return new KeyFrameRecord(
                 frameIndex, 

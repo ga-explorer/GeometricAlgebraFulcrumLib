@@ -5,7 +5,7 @@ namespace GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.Xeogl.Constants
 public static class XeoglConstantsUtils
 {
     private static readonly string[] GraphicsPrimitiveTypeNames =
-    {
+    [
         "points",
         "lines",
         "line-loop",
@@ -13,17 +13,17 @@ public static class XeoglConstantsUtils
         "triangles",
         "triangle-strip",
         "triangle-fan"
-    };
+    ];
 
     private static readonly string[] BillboardBehaviourNames =
-    {
+    [
         "none",
         "spherical",
         "cylindrical"
-    };
+    ];
 
     private static readonly string[] MaterialTypeNames =
-    {
+    [
         "CodeMaterial",
         "MetallicMaterial",
         "SpecularMaterial",
@@ -32,32 +32,32 @@ public static class XeoglConstantsUtils
         "EmphasisMaterial",
         "EdgeMaterial",
         "OutlineMaterial"
-    };
+    ];
 
     private static readonly string[] AlphaModeNames =
-    {
+    [
         "opaque", "blend", "mask"
-    };
+    ];
 
     private static readonly string[] WindingDirectionNames =
-    {
+    [
         "ccw", "cw"
-    };
+    ];
 
     public static readonly string[] SpaceNames =
-    {
+    [
         "view", "space"
-    };
+    ];
 
     public static readonly string[] CameraProjectionTypeNames =
-    {
+    [
         "perspective", "ortho", "frustum", "customProjection"
-    };
+    ];
 
     public static readonly string[] FieldOfViewAxisNames =
-    {
+    [
         "x", "y", "min"
-    };
+    ];
 
         
     public static string GetName(this XeoglBillboardBehaviour billboardBehaviour)

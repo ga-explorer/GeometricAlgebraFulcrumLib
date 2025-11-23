@@ -145,8 +145,8 @@ public class XGaFloat64ConformalProcessor :
     public XGaFloat64Vector EncodeEGaVector(LinFloat64Vector2D egaVector)
     {
         return CreateVectorComposer()
-            .SetVectorTerm(2, egaVector.X.ScalarValue)
-            .SetVectorTerm(3, egaVector.Y.ScalarValue)
+            .SetVectorTerm(2, egaVector.X)
+            .SetVectorTerm(3, egaVector.Y)
             .GetVector();
     }
     
@@ -154,9 +154,9 @@ public class XGaFloat64ConformalProcessor :
     public XGaFloat64Vector EncodeEGaVector(LinFloat64Vector3D egaVector)
     {
         return CreateVectorComposer()
-            .SetVectorTerm(2, egaVector.X.ScalarValue)
-            .SetVectorTerm(3, egaVector.Y.ScalarValue)
-            .SetVectorTerm(4, egaVector.Z.ScalarValue)
+            .SetVectorTerm(2, egaVector.X)
+            .SetVectorTerm(3, egaVector.Y)
+            .SetVectorTerm(4, egaVector.Z)
             .GetVector();
     }
 
@@ -190,8 +190,8 @@ public class XGaFloat64ConformalProcessor :
         return CreateVectorComposer()
             .SetVectorTerm(0, 0.5)
             .SetVectorTerm(1, 0.5)
-            .SetVectorTerm(2, egaVector.X.ScalarValue)
-            .SetVectorTerm(3, egaVector.Y.ScalarValue)
+            .SetVectorTerm(2, egaVector.X)
+            .SetVectorTerm(3, egaVector.Y)
             .GetVector();
     }
 
@@ -201,9 +201,9 @@ public class XGaFloat64ConformalProcessor :
         return CreateVectorComposer()
             .SetVectorTerm(0, 0.5)
             .SetVectorTerm(1, 0.5)
-            .SetVectorTerm(2, egaVector.X.ScalarValue)
-            .SetVectorTerm(3, egaVector.Y.ScalarValue)
-            .SetVectorTerm(4, egaVector.Z.ScalarValue)
+            .SetVectorTerm(2, egaVector.X)
+            .SetVectorTerm(3, egaVector.Y)
+            .SetVectorTerm(4, egaVector.Z)
             .GetVector();
     }
 
@@ -279,31 +279,31 @@ public class XGaFloat64ConformalProcessor :
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public XGaFloat64Vector EncodeIpnsPoint(LinFloat64Vector2D egaPoint)
     {
-        var x2 = egaPoint.VectorENormSquared();
+        var x2 = LinFloat64Vector2DUtils.L2NormSquared(egaPoint);
         var sn = 0.5 * (1 + x2);
         var sp = 0.5 * (1 - x2);
 
         return CreateVectorComposer()
             .SetVectorTerm(0, sn)
             .SetVectorTerm(1, sp)
-            .SetVectorTerm(2, egaPoint.X.ScalarValue)
-            .SetVectorTerm(3, egaPoint.Y.ScalarValue)
+            .SetVectorTerm(2, egaPoint.X)
+            .SetVectorTerm(3, egaPoint.Y)
             .GetVector();
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public XGaFloat64Vector EncodeIpnsPoint(LinFloat64Vector3D egaPoint)
     {
-        var x2 = egaPoint.VectorENormSquared();
+        var x2 = LinFloat64Vector3DUtils.L2NormSquared(egaPoint);
         var sn = 0.5 * (1 + x2);
         var sp = 0.5 * (1 - x2);
         
         return CreateVectorComposer()
             .SetVectorTerm(0, sn)
             .SetVectorTerm(1, sp)
-            .SetVectorTerm(2, egaPoint.X.ScalarValue)
-            .SetVectorTerm(3, egaPoint.Y.ScalarValue)
-            .SetVectorTerm(4, egaPoint.Z.ScalarValue)
+            .SetVectorTerm(2, egaPoint.X)
+            .SetVectorTerm(3, egaPoint.Y)
+            .SetVectorTerm(4, egaPoint.Z)
             .GetVector();
     }
 

@@ -162,7 +162,7 @@ public sealed class GrBabylonJsKeyFrameDictionaryCache
         return Vector2KeyFramesCache.AddOrGetKeyFrames(
             keyFrames,
             (v1, v2) => 
-                (v1 - v2).VectorENormSquared().IsNearZero()
+                LinFloat64Vector2DUtils.L2NormSquared((v1 - v2)).IsNearZero()
         );
     }
     
@@ -172,7 +172,7 @@ public sealed class GrBabylonJsKeyFrameDictionaryCache
         return Vector3KeyFramesCache.AddOrGetKeyFrames(
             keyFrames,
             (v1, v2) => 
-                (v1 - v2).VectorENormSquared().IsNearZero()
+                LinFloat64Vector3DUtils.L2NormSquared((v1 - v2)).IsNearZero()
         );
     }
     
@@ -182,7 +182,7 @@ public sealed class GrBabylonJsKeyFrameDictionaryCache
         return QuaternionKeyFramesCache.AddOrGetKeyFrames(
             keyFrames,
             (v1, v2) => 
-                (v1.ToRotationVector() - v2.ToRotationVector()).VectorENormSquared().IsNearZero()
+                LinFloat64Vector3DUtils.L2NormSquared((v1.ToRotationVector() - v2.ToRotationVector())).IsNearZero()
         );
     }
     

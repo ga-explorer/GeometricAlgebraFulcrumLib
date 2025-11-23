@@ -3,8 +3,9 @@ using GeometricAlgebraFulcrumLib.Utilities.Structures.Sequences.Periodic1D;
 
 namespace GeometricAlgebraFulcrumLib.Modeling.Graphics.Meshes.PointsPath.Space3D;
 
-public class ConstantPointsPath3D
-    : PSeqConstant1D<ILinFloat64Vector3D>, IPointsPath3D
+public class ConstantPointsPath3D : 
+    PSeqConstant1D<LinFloat64Vector3D>, 
+    IPointsPath3D
 {
     public ConstantPointsPath3D(int count)
         : base(count, LinFloat64Vector3D.Create(0, 0, 0))
@@ -16,7 +17,7 @@ public class ConstantPointsPath3D
     {
     }
 
-    public ConstantPointsPath3D(int count, ILinFloat64Vector3D value)
+    public ConstantPointsPath3D(int count, LinFloat64Vector3D value)
         : base(count, value)
     {
     }
@@ -27,7 +28,7 @@ public class ConstantPointsPath3D
         return Count >= 2 && Value.IsValid();
     }
 
-    public IPointsPath3D MapPoints(Func<ILinFloat64Vector3D, ILinFloat64Vector3D> pointMapping)
+    public IPointsPath3D MapPoints(Func<LinFloat64Vector3D, LinFloat64Vector3D> pointMapping)
     {
         return new ConstantPointsPath3D(Count, pointMapping(Value));
     }

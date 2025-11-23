@@ -10,7 +10,7 @@ public interface ILinFloat64Subspace4D :
 
     IEnumerable<LinFloat64Vector4D> BasisVectors { get; }
 
-    bool NearContains(ILinFloat64Vector4D vector, double zeroEpsilon = Float64Utils.ZeroEpsilon);
+    bool NearContains(ILinFloat64Vector4D vector, double tolerance = Float64Utils.DefaultTolerance);
 
-    bool NearContains(ILinFloat64Subspace4D subspace, double zeroEpsilon = Float64Utils.ZeroEpsilon);
+    bool NearContains(ILinFloat64Subspace4D subspace, double tolerance = Float64Utils.DefaultTolerance);
 }

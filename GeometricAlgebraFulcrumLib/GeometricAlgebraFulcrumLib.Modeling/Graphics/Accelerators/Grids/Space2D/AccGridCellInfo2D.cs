@@ -1,5 +1,6 @@
 ﻿using GeometricAlgebraFulcrumLib.Modeling.Geometry.BasicShapes;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.Borders.Space2D.Float64;
+using GeometricAlgebraFulcrumLib.Modeling.Geometry.Bounding.Float64;
+
 
 namespace GeometricAlgebraFulcrumLib.Modeling.Graphics.Accelerators.Grids.Space2D;
 
@@ -15,7 +16,7 @@ public sealed class AccGridCellInfo2D
 
     public bool IsEmpty { get; }
 
-    public IEnumerable<IFloat64FiniteGeometricShape2D> GeometricObjects { get; }
+    public IEnumerable<IFloat64BoundedShape2D> GeometricObjects { get; }
 
     public Float64BoundingBox2D BoundingBox { get; }
 
@@ -26,10 +27,10 @@ public sealed class AccGridCellInfo2D
         IndexY = indexY;
         BoundingBox = boundingBox;
         IsEmpty = true;
-        GeometricObjects = Enumerable.Empty<IFloat64FiniteGeometricShape2D>();
+        GeometricObjects = [];
     }
 
-    internal AccGridCellInfo2D(int indexX, int indexY, Float64BoundingBox2D boundingBox, IEnumerable<IFloat64FiniteGeometricShape2D> geometricObjects)
+    internal AccGridCellInfo2D(int indexX, int indexY, Float64BoundingBox2D boundingBox, IEnumerable<IFloat64BoundedShape2D> geometricObjects)
     {
         IndexX = indexX;
         IndexY = indexY;

@@ -486,7 +486,7 @@ public static class HansenProblemSample
         var gamma = (s2 + s1).HalfPolarAngle().BreakMerge();
         var delta = (s2 - s1).HalfPolarAngle().BreakMerge();
 
-        var zeroEpsilon =
+        var tolerance =
             (gamma - (alpha1M + alpha2M + beta1M + beta2M)).BreakMerge();
 
         var theta =
@@ -520,13 +520,13 @@ public static class HansenProblemSample
 
         var xp2 = context.BreakMerge(
             xa +
-            zeroEpsilon.Sin() / beta2M.Sin() *
+            tolerance.Sin() / beta2M.Sin() *
             (xab * theta.Cos() + yab * theta.Sin())
         );
 
         var yp2 = context.BreakMerge(
             ya +
-            zeroEpsilon.Sin() / beta2M.Sin() *
+            tolerance.Sin() / beta2M.Sin() *
             (yab * theta.Cos() - xab * theta.Sin())
         );
 
@@ -1038,7 +1038,7 @@ public static class HansenProblemSample
         var e12 = e1.Op(e2);
         var eoi = eo.Op(ei);
         var cgaI = e1.Op(e2).Op(ep).Op(en);
-        var cgaIi = cgaI.Inverse();
+        var cgaIi = cgaI.VersorInverse();
 
         // Define input 2D position vectors of points A,B
         var xa = context[-1]; //context["Ax"];

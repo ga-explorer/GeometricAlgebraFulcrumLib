@@ -1,5 +1,4 @@
-﻿using System;
-using GeometricAlgebraFulcrumLib.Utilities.Code.Irony.Semantic.Command;
+﻿using GeometricAlgebraFulcrumLib.Utilities.Code.Irony.Semantic.Command;
 using GeometricAlgebraFulcrumLib.Utilities.Code.Irony.Semantic.Expression;
 using GeometricAlgebraFulcrumLib.Utilities.Code.Irony.Semantic.Expression.Basic;
 using GeometricAlgebraFulcrumLib.Utilities.Code.Irony.Semantic.Expression.Value;

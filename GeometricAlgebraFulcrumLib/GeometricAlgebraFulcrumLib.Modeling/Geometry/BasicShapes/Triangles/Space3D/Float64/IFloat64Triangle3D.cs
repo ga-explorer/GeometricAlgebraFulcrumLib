@@ -1,7 +1,7 @@
 ﻿namespace GeometricAlgebraFulcrumLib.Modeling.Geometry.BasicShapes.Triangles.Space3D.Float64;
 
 public interface IFloat64Triangle3D :
-    IFloat64FiniteGeometricShape3D,
+    IFloat64BoundedShape3D,
     IIntersectable
 {
     double Point1X { get; }

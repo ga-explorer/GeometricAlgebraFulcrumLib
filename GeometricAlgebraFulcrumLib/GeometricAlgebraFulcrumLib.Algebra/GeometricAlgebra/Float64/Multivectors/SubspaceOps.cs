@@ -1,15 +1,17 @@
-﻿using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.LinearMaps.Outermorphisms;
+﻿using System.Diagnostics;
+using System.Runtime.CompilerServices;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Frames;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.LinearMaps.Outermorphisms;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.LinearMaps.Reflectors;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.LinearMaps.Rotors;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Subspaces;
+using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Basis;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Angles;
+using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Numerical;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.BitManipulation;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Tuples;
-using System.Diagnostics;
-using System.Runtime.CompilerServices;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Frames;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.LinearMaps.Reflectors;
-using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Basis;
+using MathNet.Numerics.LinearAlgebra;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivectors
 {
@@ -22,7 +24,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivecto
 
             var subspaceInverse =
                 useSubspaceInverse
-                    ? subspace.PseudoInverse()
+                    ? subspace.VersorPseudoInverse()
                     : subspace;
 
             return Fdp(subspaceInverse).Gp(subspace);
@@ -36,7 +38,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivecto
 
             return subspace
                 .Gp(this)
-                .Gp(subspace.Inverse());
+                .Gp(subspace.VersorInverse());
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -118,7 +120,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivecto
 
             return subspace
                 .Gp(this)
-                .Gp(subspace.Inverse())
+                .Gp(subspace.VersorInverse())
                 .GetKVectorPart(Grade);
         }
 
@@ -170,15 +172,13 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivecto
 
             var subspaceInverse =
                 useSubspaceInverse
-                    ? subspace.PseudoInverse()
+                    ? subspace.VersorPseudoInverse()
                     : subspace;
 
             return Fdp(subspaceInverse).Gp(subspace).GetKVectorPart(Grade);
         }
-
-
         
-
+        
     }
 
     public sealed partial class XGaFloat64Scalar
@@ -226,7 +226,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivecto
 
             var subspaceInverse =
                 useSubspaceInverse
-                    ? subspace.PseudoInverse()
+                    ? subspace.VersorPseudoInverse()
                     : subspace;
 
             return Fdp(subspaceInverse).Gp(subspace).GetScalarPart();
@@ -498,7 +498,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivecto
 
             return subspace
                 .Gp(this)
-                .Gp(subspace.Inverse())
+                .Gp(subspace.VersorInverse())
                 .GetVectorPart();
         }
 
@@ -542,7 +542,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivecto
 
             var subspaceInverse =
                 useSubspaceInverse
-                    ? subspace.PseudoInverse()
+                    ? subspace.VersorPseudoInverse()
                     : subspace;
 
             return Fdp(subspaceInverse).Gp(subspace).GetVectorPart();
@@ -614,7 +614,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivecto
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public LinFloat64Angle GetEuclideanAngle(XGaFloat64Vector vector2, bool assumeUnitVectors = false)
         {
-            var angleCos = ESp(vector2).Scalar();
+            var angleCos = ESp(vector2);
 
             if (!assumeUnitVectors)
                 angleCos /= ENorm() * vector2.ENorm();
@@ -714,11 +714,11 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivecto
                     ? targetVector.ESp(this)
                     : targetVector.ESp(this) / (targetVector.ENormSquared() * ENormSquared()).Sqrt();
 
-            if (cosAngle.IsOne)
+            if (cosAngle.IsOne())
                 return Processor.IdentityRotor();
 
             var rotationBlade =
-                cosAngle.IsMinusOne
+                cosAngle.IsMinusOne()
                     ? GetNormalVector().Op(this)
                     : targetVector.Op(this);
 
@@ -728,7 +728,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivecto
             var cosHalfAngle = ((1 + cosAngle) / 2).Sqrt();
             var sinHalfAngle = ((1 - cosAngle) / 2).Sqrt();
 
-            var scalarPart = cosHalfAngle.ScalarValue;
+            var scalarPart = cosHalfAngle;
             var bivectorPart = sinHalfAngle * unitRotationBlade;
 
             return XGaFloat64PureRotor.Create(
@@ -747,14 +747,14 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivecto
         {
             var uNorm = ENorm();
             var vNorm = targetVector.ENorm();
-            var scalingFactor = (vNorm / uNorm).Sqrt().ScalarValue;
+            var scalingFactor = (vNorm / uNorm).Sqrt();
             var cosAngle = targetVector.ESp(this) / (uNorm * vNorm);
 
-            if (cosAngle.IsOne)
+            if (cosAngle.IsOne())
                 return XGaFloat64PureScalingRotor.Create(Processor, scalingFactor);
 
             var rotationBlade =
-                cosAngle.IsMinusOne
+                cosAngle.IsMinusOne()
                     ? GetNormalVector().Op(this)
                     : targetVector.Op(this);
 
@@ -771,7 +771,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivecto
                 scalingFactor * sinHalfAngle * unitRotationBlade;
 
             return XGaFloat64PureScalingRotor.Create(
-                scalarPart.ScalarValue,
+                scalarPart,
                 bivectorPart
             );
         }
@@ -812,7 +812,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivecto
 
             // Define parametric angle of rotation
             var rotorAngle =
-                (1 + 2 * (cosAngle0.ScalarValue - 1) / (2 - sinAngleThetaSquare * (cosAngle0.ScalarValue + 1))).ArcCos();
+                (1 + 2 * (cosAngle0 - 1) / (2 - sinAngleThetaSquare * (cosAngle0 + 1))).ArcCos();
 
             // Math.Acos(1 + 2 * (cosAngle0 - 1) / (2 - Math.Pow(Math.Sin(angleTheta), 2) * (cosAngle0 + 1)));
 
@@ -840,7 +840,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivecto
             var k = sourceAxis.Index;
             var vNorm = assumeUnitVector
                 ? 1d
-                : ENorm().ScalarValue;
+                : ENorm();
 
             var ek = Processor.VectorTerm(k);
 
@@ -866,12 +866,12 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivecto
             var vNorm =
                 assumeUnitVector
                     ? 1d
-                    : ENorm().ScalarValue;
+                    : ENorm();
 
             var vNorm2 =
                 assumeUnitVector
                     ? 2d
-                    : 2d * ENormSquared().ScalarValue;
+                    : 2d * ENormSquared();
 
             var ek = Processor.VectorTerm(k);
 
@@ -1073,14 +1073,14 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivecto
                     : targetVector.ESp(this) /
                       (targetVector.ENormSquared() * ENormSquared()).Sqrt();
 
-            if (cosAngle == 1d)
+            if (cosAngle.IsOne())
                 return Processor.IdentityPureScalingRotor();
 
-            var cosHalfAngle = ((1 + cosAngle) / 2).Sqrt().ScalarValue;
-            var sinHalfAngle = ((1 - cosAngle) / 2).Sqrt().ScalarValue;
+            var cosHalfAngle = ((1 + cosAngle) / 2).Sqrt();
+            var sinHalfAngle = ((1 - cosAngle) / 2).Sqrt();
 
             var rotationBlade =
-                cosAngle == -1
+                cosAngle.IsMinusOne()
                     ? GetEUnitNormalVector().Op(this)
                     : targetVector.Op(this);
 
@@ -1107,16 +1107,16 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivecto
             var uNorm = ENorm();
             var vNorm = targetVector.ENorm();
             var scalingFactor = (vNorm / uNorm).Sqrt();
-            var cosAngle = targetVector.ESp(this).Divide(uNorm * vNorm);
+            var cosAngle = targetVector.ESp(this) / (uNorm * vNorm);
 
-            if (cosAngle == 1d)
-                return Processor.IdentityScalingRotor(scalingFactor.ScalarValue);
+            if (cosAngle.IsOne())
+                return Processor.IdentityScalingRotor(scalingFactor);
 
             var cosHalfAngle = ((1 + cosAngle) / 2).Sqrt();
             var sinHalfAngle = ((1 - cosAngle) / 2).Sqrt();
 
             var rotationBlade =
-                cosAngle == -1d
+                cosAngle.IsMinusOne()
                     ? GetEUnitNormalVector().Op(this)
                     : targetVector.Op(this);
 
@@ -1130,7 +1130,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivecto
                 scalingFactor * sinHalfAngle * unitRotationBlade;
 
             return XGaFloat64PureScalingRotor.Create(
-                scalarPart.ScalarValue + bivectorPart
+                scalarPart + bivectorPart
             );
         }
 
@@ -1148,7 +1148,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivecto
             var vNorm =
                 assumeUnitVector
                     ? 1d
-                    : ENorm().ScalarValue;
+                    : ENorm();
 
             var v =
                 assumeUnitVector
@@ -1220,6 +1220,64 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivecto
         {
             return XGaFloat64PureReflector.Create(this);
         }
+        
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public Vector<double> GetEuclideanProjectionCoefficients(IEnumerable<XGaFloat64Vector> basisVectorList)
+        {
+            return basisVectorList
+                .Select(basisVector => ESp(basisVector))
+                .ToMathNetDenseVector();
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public Vector<double> GetMetricProjectionCoefficients(IEnumerable<XGaFloat64Vector> basisVectorList)
+        {
+            return basisVectorList
+                .Select(basisVector => Sp(basisVector))
+                .ToMathNetDenseVector();
+        }
+
+        
+        /// <summary>
+        /// Projects a vector onto the subspace spanned by the given basis
+        /// </summary>
+        public XGaFloat64Vector ReconstructFromMetricSubspace(IEnumerable<XGaFloat64Vector> basis)
+        {
+            var composer = Processor.CreateVectorComposer();
+
+            foreach (var basisVector in basis)
+            {
+                var coefficient = Sp(basisVector);
+
+                //if (Math.Abs(coefficient) < ZeroTolerance) continue;
+                if (coefficient.IsZero()) continue;
+
+                composer.AddKVectorScaled(basisVector, coefficient);
+            }
+
+            return composer.GetVector();
+        }
+        
+        /// <summary>
+        /// Projects a vector onto the subspace spanned by the given basis
+        /// </summary>
+        public XGaFloat64Vector ReconstructFromEuclideanSubspace(IEnumerable<XGaFloat64Vector> basis)
+        {
+            var composer = Processor.CreateVectorComposer();
+
+            foreach (var basisVector in basis)
+            {
+                var coefficient = ESp(basisVector);
+
+                //if (Math.Abs(coefficient) < ZeroTolerance) continue;
+                if (coefficient.IsZero()) continue;
+
+                composer.AddKVectorScaled(basisVector, coefficient);
+            }
+
+            return composer.GetVector();
+        }
 
     }
 
@@ -1233,7 +1291,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivecto
 
             return subspace
                 .Gp(this)
-                .Gp(subspace.Inverse())
+                .Gp(subspace.VersorInverse())
                 .GetBivectorPart();
         }
 
@@ -1275,11 +1333,14 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivecto
 
             var subspaceInverse =
                 useSubspaceInverse
-                    ? subspace.PseudoInverse()
+                    ? subspace.VersorPseudoInverse()
                     : subspace;
 
             return Fdp(subspaceInverse).Gp(subspace).GetBivectorPart();
         }
+        
+        
+
 
     }
 
@@ -1293,7 +1354,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivecto
 
             return subspace
                 .Gp(this)
-                .Gp(subspace.Inverse())
+                .Gp(subspace.VersorInverse())
                 .GetHigherKVectorPart(Grade);
         }
 
@@ -1345,7 +1406,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivecto
 
             var subspaceInverse =
                 useSubspaceInverse
-                    ? subspace.PseudoInverse()
+                    ? subspace.VersorPseudoInverse()
                     : subspace;
 
             return Fdp(subspaceInverse).Gp(subspace).GetHigherKVectorPart(Grade);

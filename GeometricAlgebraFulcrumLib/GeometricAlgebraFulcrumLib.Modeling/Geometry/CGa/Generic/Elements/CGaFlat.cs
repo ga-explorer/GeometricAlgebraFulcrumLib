@@ -1,5 +1,4 @@
-﻿using System.Collections.Immutable;
-using System.Data;
+﻿using System.Data;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Text;
@@ -158,33 +157,37 @@ public class CGaFlat<T> :
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public IReadOnlyList<CGaBlade<T>> GetSurfacePointVGaBlades()
     {
-        return GetSurfacePointVectors()
-            .Select(GeometricSpace.EncodeVGa.Vector)
-            .ToImmutableArray();
+        return [
+            ..GetSurfacePointVectors()
+                .Select(GeometricSpace.EncodeVGa.Vector)
+        ];
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public IReadOnlyList<CGaBlade<T>> GetSurfacePointPGaBlades()
     {
-        return GetSurfacePointVectors()
-            .Select(GeometricSpace.EncodePGa.Point)
-            .ToImmutableArray();
+        return [
+            ..GetSurfacePointVectors()
+                .Select(GeometricSpace.EncodePGa.Point)
+        ];
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public IReadOnlyList<CGaBlade<T>> GetSurfacePointIpnsBlades()
     {
-        return GetSurfacePointVectors()
-            .Select(GeometricSpace.EncodeIpnsRound.Point)
-            .ToImmutableArray();
+        return [
+            ..GetSurfacePointVectors()
+                .Select(GeometricSpace.EncodeIpnsRound.Point)
+        ];
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public IReadOnlyList<CGaBlade<T>> GetSurfacePointOpnsFlatBlades()
     {
-        return GetSurfacePointVectors()
-            .Select(GeometricSpace.EncodeOpnsFlat.Point)
-            .ToImmutableArray();
+        return [
+            ..GetSurfacePointVectors()
+                .Select(GeometricSpace.EncodeOpnsFlat.Point)
+        ];
     }
 
 

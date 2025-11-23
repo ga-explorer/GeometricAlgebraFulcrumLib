@@ -1,9 +1,11 @@
 ﻿using System.Collections;
+using System.Diagnostics;
 using System.Numerics;
 using System.Runtime.CompilerServices;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Basis;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Tuples;
+using MathNet.Numerics.LinearAlgebra.Double;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space3D;
 
@@ -11,10 +13,69 @@ namespace GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space
 /// <summary>
 /// A 3-tuple of double precision coordinates
 /// </summary>
-public sealed record LinFloat64Vector3D :
+public readonly record struct LinFloat64Vector3D :
     ILinFloat64Vector3D,
     ILinFloat64KVector3D
 {
+    public sealed record ToleranceComparer :
+        IEqualityComparer<LinFloat64Vector3D>
+    {
+        public int DecimalPlaces { get; }
+
+        public double Tolerance { get; }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ToleranceComparer(int decimalPlaces = 12)
+        {
+            if (decimalPlaces is < 3 or > 30)
+                throw new ArgumentOutOfRangeException(nameof(decimalPlaces));
+
+            DecimalPlaces = decimalPlaces;
+            Tolerance = Math.Pow(10, -decimalPlaces);
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ToleranceComparer(double tolerance = Float64Utils.DefaultTolerance)
+            : this((int)Math.Ceiling(-Math.Abs(tolerance).Log10()))
+        {
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public bool Equals(LinFloat64Vector3D a, LinFloat64Vector3D b)
+        {
+            return (a - b).L2Norm() < Tolerance;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public int GetHashCode(LinFloat64Vector3D v)
+        {
+            return HashCode.Combine(
+                Math.Round(v.X, DecimalPlaces - 3), 
+                Math.Round(v.Y, DecimalPlaces - 3), 
+                Math.Round(v.Z, DecimalPlaces - 3)
+            );
+        }
+    }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static Dictionary<LinFloat64Vector3D, T> CreateToleranceDictionary<T>(int decimalPlaces = 12)
+    {
+        return new Dictionary<LinFloat64Vector3D, T>(
+            new ToleranceComparer(decimalPlaces)
+        );
+    }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static Dictionary<LinFloat64Vector3D, T> CreateToleranceDictionary<T>(double tolerance = Float64Utils.DefaultTolerance)
+    {
+        return new Dictionary<LinFloat64Vector3D, T>(
+            new ToleranceComparer(tolerance)
+        );
+    }
+    
+
     public static LinFloat64Vector3D Zero { get; }
         = new LinFloat64Vector3D(
             Float64Scalar.Zero,
@@ -137,6 +198,18 @@ public sealed record LinFloat64Vector3D :
     public static IReadOnlyList<LinFloat64Vector3D> BasisVectors { get; }
         = [E1, E2, E3];
 
+    
+    //[MethodImpl(MethodImplOptions.AggressiveInlining)]
+    //public static LinFloat64Vector3D ForMatlab(double x, double y, double z)
+    //{
+    //    return new LinFloat64Vector3D(x, y, z);
+    //}
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static LinFloat64Vector3D Create(double x, double y, double z)
+    {
+        return new LinFloat64Vector3D(x, y, z);
+    }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static LinFloat64Vector3D Create(int x, int y, int z)
@@ -151,12 +224,6 @@ public sealed record LinFloat64Vector3D :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64Vector3D Create(double x, double y, double z)
-    {
-        return new LinFloat64Vector3D(x, y, z);
-    }
-    
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static LinFloat64Vector3D Create(Float64Scalar x, Float64Scalar y, Float64Scalar z)
     {
         return new LinFloat64Vector3D(x, y, z);
@@ -165,7 +232,7 @@ public sealed record LinFloat64Vector3D :
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static LinFloat64Vector3D Create(IFloat64Scalar x, IFloat64Scalar y, IFloat64Scalar z)
     {
-        return new LinFloat64Vector3D(x, y, z);
+        return new LinFloat64Vector3D(x.ScalarValue, y.ScalarValue, z.ScalarValue);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -216,6 +283,19 @@ public sealed record LinFloat64Vector3D :
         var scalar = new Float64Scalar(vectorLength / 3d.Sqrt());
 
         return new LinFloat64Vector3D(scalar, scalar, scalar);
+    }
+
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static implicit operator (double, double, double)(LinFloat64Vector3D v)
+    {
+        return (v.X, v.Y, v.Z);
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static implicit operator LinFloat64Vector3D((double, double, double) v)
+    {
+        return Create(v.Item1, v.Item2, v.Item3);
     }
 
 
@@ -426,32 +506,29 @@ public sealed record LinFloat64Vector3D :
     public int Grade
         => 1;
 
-    public Float64Scalar X
-        => Scalar1;
+    public double X { get; }
 
-    public Float64Scalar Y
-        => Scalar2;
+    public double Y { get; }
 
-    public Float64Scalar Z
-        => Scalar3;
+    public double Z { get; }
 
-    public Float64Scalar Item1
+    public double Item1
         => X;
 
-    public Float64Scalar Item2
+    public double Item2
         => Y;
 
-    public Float64Scalar Item3
+    public double Item3
         => Z;
 
     public Float64Scalar Scalar
         => Float64Scalar.Zero;
 
-    public Float64Scalar Scalar1 { get; }
+    public Float64Scalar Scalar1 => X;
 
-    public Float64Scalar Scalar2 { get; }
+    public Float64Scalar Scalar2 => Y;
 
-    public Float64Scalar Scalar3 { get; }
+    public Float64Scalar Scalar3 => Z;
 
     public Float64Scalar Scalar12
         => Float64Scalar.Zero;
@@ -468,38 +545,28 @@ public sealed record LinFloat64Vector3D :
     public int Count
         => 8;
 
-    /// <summary>
-    /// Get or set the ith component of this multivector
-    /// </summary>
-    /// <param name="index"></param>
-    /// <returns></returns>
-    public Float64Scalar this[int index]
-    {
-        get
+    public double this[int index] 
+        => index switch
         {
-            if (index is < 0 or > 7)
-                throw new IndexOutOfRangeException();
-
-            return index switch
-            {
-                1 => Scalar1,
-                2 => Scalar2,
-                4 => Scalar3,
-                _ => Float64Scalar.Zero
-            };
-        }
-    }
+            0 => Scalar1,
+            1 => Scalar2,
+            2 => Scalar3,
+            _ => Float64Scalar.Zero
+        };
+    
+    Float64Scalar IReadOnlyList<Float64Scalar>.this[int index] 
+        => this[index];
 
     public double this[LinBasisVector axis]
     {
         get
         {
-            if (axis == LinBasisVector.Px) return X.ScalarValue;
-            if (axis == LinBasisVector.Py) return Y.ScalarValue;
-            if (axis == LinBasisVector.Pz) return Z.ScalarValue;
-            if (axis == LinBasisVector.Nx) return -X.ScalarValue;
-            if (axis == LinBasisVector.Ny) return -Y.ScalarValue;
-            if (axis == LinBasisVector.Nz) return -Z.ScalarValue;
+            if (axis == LinBasisVector.Px) return X;
+            if (axis == LinBasisVector.Py) return Y;
+            if (axis == LinBasisVector.Pz) return Z;
+            if (axis == LinBasisVector.Nx) return -X;
+            if (axis == LinBasisVector.Ny) return -Y;
+            if (axis == LinBasisVector.Nz) return -Z;
 
             return 0.0d;
         }
@@ -507,36 +574,29 @@ public sealed record LinFloat64Vector3D :
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    private LinFloat64Vector3D(Float64Scalar scalar1, Float64Scalar scalar2, Float64Scalar scalar3)
+    private LinFloat64Vector3D(double scalar1, double scalar2, double scalar3)
     {
-        Scalar1 = scalar1;
-        Scalar2 = scalar2;
-        Scalar3 = scalar3;
+        X = scalar1;
+        Y = scalar2;
+        Z = scalar3;
+
+        Debug.Assert(IsValid());
     }
     
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    private LinFloat64Vector3D(IFloat64Scalar scalar1, IFloat64Scalar scalar2, IFloat64Scalar scalar3)
+    public void Deconstruct(out double x, out double y, out double z)
     {
-        Scalar1 = scalar1.ToScalar();
-        Scalar2 = scalar2.ToScalar();
-        Scalar3 = scalar3.ToScalar();
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public LinFloat64Vector3D(ITriplet<Float64Scalar> v)
-    {
-        Scalar1 = v.Item1;
-        Scalar2 = v.Item2;
-        Scalar3 = v.Item3;
+        x = X;
+        y = Y;
+        z = Z;
     }
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public bool IsValid()
     {
-        return Scalar1.IsValid() &&
-               Scalar2.IsValid() &&
-               Scalar3.IsValid();
+        return X.IsValid() &&
+               Y.IsValid() &&
+               Z.IsValid();
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -548,19 +608,19 @@ public sealed record LinFloat64Vector3D :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool IsNearZero(double zeroEpsilon = 1E-12)
+    public bool IsNearZero(double tolerance = Float64Utils.DefaultTolerance)
     {
-        return Norm().IsNearZero(zeroEpsilon);
+        return L2Norm().IsNearZero(tolerance);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public Float64Scalar Norm()
+    public double L2Norm()
     {
-        return NormSquared().Sqrt();
+        return L2NormSquared().Sqrt();
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public Float64Scalar NormSquared()
+    public double L2NormSquared()
     {
         return X.Square() + Y.Square() + Z.Square();
     }
@@ -601,23 +661,23 @@ public sealed record LinFloat64Vector3D :
     public LinFloat64Vector3D Inverse()
     {
         var normSquared =
-            NormSquared();
+            L2NormSquared();
 
         return normSquared.IsZero()
             ? throw new DivideByZeroException()
-            : this / normSquared.ScalarValue;
+            : this / normSquared;
     }
 
 
     public LinFloat64Bivector3D DirectionToUnitNormal3D(LinFloat64Bivector3D? zeroNormal = null)
     {
-        var norm = Norm();
+        var norm = L2Norm();
 
         if (norm.IsZero())
             return zeroNormal ??
                    throw new DivideByZeroException();
 
-        var s = 1d / norm.ScalarValue;
+        var s = 1d / norm;
 
         return LinFloat64Bivector3D.Create(
             Scalar3 * s,
@@ -628,13 +688,13 @@ public sealed record LinFloat64Vector3D :
 
     public LinFloat64Bivector3D DirectionToNormal3D(LinFloat64Bivector3D? zeroNormal = null)
     {
-        var normSquared = NormSquared();
+        var normSquared = L2NormSquared();
 
         if (normSquared.IsZero())
             return zeroNormal ??
                    throw new DivideByZeroException();
 
-        var s = 1d / normSquared.ScalarValue;
+        var s = 1d / normSquared;
 
         return LinFloat64Bivector3D.Create(
             Scalar3 * s,
@@ -645,13 +705,13 @@ public sealed record LinFloat64Vector3D :
 
     public LinFloat64Bivector3D DirectionToNormal3D(Float64Scalar scalingFactor, LinFloat64Bivector3D? zeroNormal = null)
     {
-        var normSquared = NormSquared();
+        var normSquared = L2NormSquared();
 
         if (normSquared.IsZero())
             return zeroNormal ??
                    throw new DivideByZeroException();
 
-        var s = scalingFactor / normSquared.ScalarValue;
+        var s = scalingFactor / normSquared;
 
         return LinFloat64Bivector3D.Create(
             Scalar3 * s,
@@ -662,13 +722,13 @@ public sealed record LinFloat64Vector3D :
 
     public LinFloat64Bivector3D NormalToUnitDirection3D(LinFloat64Bivector3D? zeroNormal = null)
     {
-        var norm = Norm();
+        var norm = L2Norm();
 
         if (norm.IsZero())
             return zeroNormal ??
                    throw new DivideByZeroException();
 
-        var s = 1d / norm.ScalarValue;
+        var s = 1d / norm;
 
         return LinFloat64Bivector3D.Create(
             Scalar3 * s,
@@ -679,13 +739,13 @@ public sealed record LinFloat64Vector3D :
 
     public LinFloat64Bivector3D NormalToDirection3D(LinFloat64Bivector3D? zeroNormal = null)
     {
-        var normSquared = NormSquared();
+        var normSquared = L2NormSquared();
 
         if (normSquared.IsZero())
             return zeroNormal ??
                    throw new DivideByZeroException();
 
-        var s = 1d / normSquared.ScalarValue;
+        var s = 1d / normSquared;
 
         return LinFloat64Bivector3D.Create(
             Scalar3 * s,
@@ -696,13 +756,13 @@ public sealed record LinFloat64Vector3D :
 
     public LinFloat64Bivector3D NormalToDirection3D(Float64Scalar scalingFactor, LinFloat64Bivector3D? zeroNormal = null)
     {
-        var normSquared = NormSquared();
+        var normSquared = L2NormSquared();
 
         if (normSquared.IsZero())
             return zeroNormal ??
                    throw new DivideByZeroException();
 
-        var s = scalingFactor / normSquared.ScalarValue;
+        var s = scalingFactor / normSquared;
 
         return LinFloat64Bivector3D.Create(
             Scalar3 * s,
@@ -897,6 +957,27 @@ public sealed record LinFloat64Vector3D :
         );
     }
 
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public DenseMatrix OuterProduct(LinFloat64Vector3D v)
+    {
+        var m = DenseMatrix.Create(3, 3, 0.0);
+
+        m[0, 0] = X * v.X;
+        m[0, 1] = X * v.Y;
+        m[0, 2] = X * v.Z;
+        
+        m[1, 0] = Y * v.X;
+        m[1, 1] = Y * v.Y;
+        m[1, 2] = Y * v.Z;
+        
+        m[2, 0] = Z * v.X;
+        m[2, 1] = Z * v.Y;
+        m[2, 2] = Z * v.Z;
+
+        return m;
+    }
+
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public IEnumerator<Float64Scalar> GetEnumerator()
@@ -915,6 +996,13 @@ public sealed record LinFloat64Vector3D :
     IEnumerator IEnumerable.GetEnumerator()
     {
         return GetEnumerator();
+    }
+    
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public string ToTupleString()
+    {
+        return $"({Scalar1:G10}, {Scalar2:G10}, {Scalar3:G10})";
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]

@@ -9,9 +9,9 @@ namespace GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.Visuals.Space2D
 public sealed class GrVisualLineSegment2D :
     GrVisualCurve2D
 {
-    public ILinFloat64Vector2D Position1 { get; }
+    public LinFloat64Vector2D Position1 { get; }
 
-    public ILinFloat64Vector2D Position2 { get; }
+    public LinFloat64Vector2D Position2 { get; }
         
     public LinFloat64Vector2D Direction 
         => Position1.GetDirectionTo(Position2);
@@ -26,7 +26,7 @@ public sealed class GrVisualLineSegment2D :
         => Position1.GetDistanceToPoint(Position2);
         
 
-    private GrVisualLineSegment2D(string name, IGrVisualCurveStyle2D style, ILinFloat64Vector2D position1, ILinFloat64Vector2D position2) 
+    private GrVisualLineSegment2D(string name, IGrVisualCurveStyle2D style, LinFloat64Vector2D position1, LinFloat64Vector2D position2) 
         : base(name, style)
     {
         if (position1.VectorSubtract(position2).IsZero())

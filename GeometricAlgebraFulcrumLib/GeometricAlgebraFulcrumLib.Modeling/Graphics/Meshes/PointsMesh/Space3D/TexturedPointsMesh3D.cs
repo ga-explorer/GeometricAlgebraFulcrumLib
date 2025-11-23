@@ -27,10 +27,10 @@ public sealed class TexturedPointsMesh3D : IPointsMesh3D
     public int Count 
         => BaseMesh.Count;
 
-    public ILinFloat64Vector3D this[int index] 
+    public LinFloat64Vector3D this[int index] 
         => BaseMesh[index];
 
-    public ILinFloat64Vector3D this[int index1, int index2] 
+    public LinFloat64Vector3D this[int index1, int index2] 
         => BaseMesh[index1, index2];
 
     public bool IsBasic 
@@ -63,7 +63,7 @@ public sealed class TexturedPointsMesh3D : IPointsMesh3D
     }
 
         
-    public PSeqSlice1D<ILinFloat64Vector3D> GetSliceAt(int dimension, int index)
+    public PSeqSlice1D<LinFloat64Vector3D> GetSliceAt(int dimension, int index)
     {
         return new PointsMeshSlicePointsPath3D(this, dimension, index);
     }
@@ -73,7 +73,7 @@ public sealed class TexturedPointsMesh3D : IPointsMesh3D
         return new PointsMeshSlicePointsPath3D(this, dimension, index);
     }
 
-    public IEnumerator<ILinFloat64Vector3D> GetEnumerator()
+    public IEnumerator<LinFloat64Vector3D> GetEnumerator()
     {
         return BaseMesh.GetEnumerator();
     }

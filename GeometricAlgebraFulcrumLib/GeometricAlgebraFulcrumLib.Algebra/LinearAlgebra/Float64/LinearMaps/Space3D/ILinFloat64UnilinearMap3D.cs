@@ -9,11 +9,11 @@ public interface ILinFloat64UnilinearMap3D :
 
     bool IsIdentity();
 
-    bool IsNearIdentity(double zeroEpsilon = 1e-12d);
+    bool IsNearIdentity(double tolerance = 1e-12d);
 
     ILinFloat64UnilinearMap3D GetInverseMap();
 
     LinFloat64Vector3D MapBasisVector(int index);
 
-    LinFloat64Vector3D MapVector(ILinFloat64Vector3D vector);
+    LinFloat64Vector3D MapVector(LinFloat64Vector3D vector);
 }

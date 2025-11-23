@@ -301,7 +301,7 @@ public class GrVisualAnimatedVector3D :
     {
         return GrVisualAnimatedScalar.Create(
             Float64ScalarSignal.FiniteComputed(SamplingSpecs.MinTime,
-                SamplingSpecs.MaxTime, time => GetValue(time).VectorENorm()),
+                SamplingSpecs.MaxTime, time => LinFloat64Vector3DUtils.L2Norm(GetValue(time))),
             SamplingSpecs
         );
     }

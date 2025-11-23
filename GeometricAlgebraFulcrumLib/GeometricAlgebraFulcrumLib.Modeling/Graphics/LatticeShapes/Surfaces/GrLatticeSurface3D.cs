@@ -17,8 +17,8 @@ namespace GeometricAlgebraFulcrumLib.Modeling.Graphics.LatticeShapes.Surfaces;
 public sealed class GrLatticeSurface3D :
     IReadOnlyList<GrLatticeSurfaceLocalFrame3D>
 {
-    private Dictionary<Triplet<Float64Scalar>, GrLatticeSurfaceLocalFrame3D> _pointToVertexDictionary
-        = new Dictionary<Triplet<Float64Scalar>, GrLatticeSurfaceLocalFrame3D>();
+    private Dictionary<Triplet<double>, GrLatticeSurfaceLocalFrame3D> _pointToVertexDictionary
+        = new Dictionary<Triplet<double>, GrLatticeSurfaceLocalFrame3D>();
 
     private GrLatticeSurfaceLocalFrame3D[,] _indexUvToVertexArray;
 
@@ -48,8 +48,8 @@ public sealed class GrLatticeSurface3D :
     public IEnumerable<LinFloat64Vector3D> VertexPoints 
         => Vertices.Select(v => v.Point);
 
-    public IEnumerable<ILinFloat64Vector3D> VertexNormals 
-        => Vertices.Select(v => v.Normal);
+    public IEnumerable<LinFloat64Vector3D> VertexNormals 
+        => Vertices.Select(v => v.Normal.ToLinVector3D());
 
     public IEnumerable<LinFloat64Vector2D> VertexTextureUvs 
         => Vertices.Select(v => v.ParameterValue);
@@ -66,18 +66,18 @@ public sealed class GrLatticeSurface3D :
             : _pointToVertexDictionary.Skip(index).First().Value;
 
     public GrLatticeSurfaceLocalFrame3D this[double x, double y, double z] 
-        => this[new Triplet<Float64Scalar>(x, y, z)];
+        => this[new Triplet<double>(x, y, z)];
 
-    public GrLatticeSurfaceLocalFrame3D this[ITriplet<Float64Scalar> triplet] 
+    public GrLatticeSurfaceLocalFrame3D this[ITriplet<double> triplet] 
         => this[triplet.ToTriplet()];
 
-    public GrLatticeSurfaceLocalFrame3D this[Triplet<Float64Scalar> key] 
+    public GrLatticeSurfaceLocalFrame3D this[Triplet<double> key] 
         => _pointToVertexDictionary.TryGetValue(key, out var vertex)
             ? vertex
             : throw new KeyNotFoundException();
         
     public IReadOnlyList<GrLatticeSurfaceLocalFrame3D> VertexList { get; private set; } 
-        = Array.Empty<GrLatticeSurfaceLocalFrame3D>();
+        = [];
 
 
     internal GrLatticeSurface3D(GrLatticeSurfaceList3D parentList, int batchIndex, int countU, int countV, bool closeU, bool closeV)
@@ -106,7 +106,7 @@ public sealed class GrLatticeSurface3D :
     {
         _pointToVertexDictionary.Clear();
         _indexUvToVertexArray = new GrLatticeSurfaceLocalFrame3D[LatticeSizeU, LatticeSizeV];
-        VertexList = Array.Empty<GrLatticeSurfaceLocalFrame3D>();
+        VertexList = [];
 
         return this;
     }
@@ -115,19 +115,19 @@ public sealed class GrLatticeSurface3D :
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public bool ContainsPoint(double x, double y, double z)
     {
-        var key = new Triplet<Float64Scalar>(x, y, z);
+        var key = new Triplet<double>(x, y, z);
 
         return _pointToVertexDictionary.ContainsKey(key);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool ContainsPoint(ITriplet<Float64Scalar> triplet)
+    public bool ContainsPoint(ITriplet<double> triplet)
     {
         return _pointToVertexDictionary.ContainsKey(triplet.ToTriplet());
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool ContainsPoint(Triplet<Float64Scalar> key)
+    public bool ContainsPoint(Triplet<double> key)
     {
         return _pointToVertexDictionary.ContainsKey(key);
     }
@@ -136,17 +136,17 @@ public sealed class GrLatticeSurface3D :
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public bool TryGetVertex(double x, double y, double z, out GrLatticeSurfaceLocalFrame3D vertex)
     {
-        return _pointToVertexDictionary.TryGetValue(new Triplet<Float64Scalar>(x, y, z), out vertex);
+        return _pointToVertexDictionary.TryGetValue(new Triplet<double>(x, y, z), out vertex);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool TryGetVertex(ITriplet<Float64Scalar> triplet, out GrLatticeSurfaceLocalFrame3D vertex)
+    public bool TryGetVertex(ITriplet<double> triplet, out GrLatticeSurfaceLocalFrame3D vertex)
     {
         return _pointToVertexDictionary.TryGetValue(triplet.ToTriplet(), out vertex);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool TryGetVertex(Triplet<Float64Scalar> key, out GrLatticeSurfaceLocalFrame3D vertex)
+    public bool TryGetVertex(Triplet<double> key, out GrLatticeSurfaceLocalFrame3D vertex)
     {
         return _pointToVertexDictionary.TryGetValue(key, out vertex);
     }
@@ -235,17 +235,17 @@ public sealed class GrLatticeSurface3D :
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public GrLatticeSurfaceLocalFrame3D GetVertex(double x, double y, double z)
     {
-        return _pointToVertexDictionary[new Triplet<Float64Scalar>(x, y, z)];
+        return _pointToVertexDictionary[new Triplet<double>(x, y, z)];
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public GrLatticeSurfaceLocalFrame3D GetVertex(ITriplet<Float64Scalar> triplet)
+    public GrLatticeSurfaceLocalFrame3D GetVertex(ITriplet<double> triplet)
     {
         return _pointToVertexDictionary[triplet.ToTriplet()];
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public GrLatticeSurfaceLocalFrame3D GetVertex(Triplet<Float64Scalar> key)
+    public GrLatticeSurfaceLocalFrame3D GetVertex(Triplet<double> key)
     {
         return _pointToVertexDictionary[key];
     }
@@ -254,16 +254,16 @@ public sealed class GrLatticeSurface3D :
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public GrLatticeSurfaceLocalFrame3D SetLatticeVertex(int indexU, int indexV, double x, double y, double z)
     {
-        return SetLatticeVertex(indexU, indexV, new Triplet<Float64Scalar>(x, y, z));
+        return SetLatticeVertex(indexU, indexV, new Triplet<double>(x, y, z));
     }
         
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public GrLatticeSurfaceLocalFrame3D SetLatticeVertex(int indexU, int indexV, ITriplet<Float64Scalar> newPointTriplet)
+    public GrLatticeSurfaceLocalFrame3D SetLatticeVertex(int indexU, int indexV, ITriplet<double> newPointTriplet)
     {
         return SetLatticeVertex(indexU, indexV, newPointTriplet.ToTriplet());
     }
 
-    public GrLatticeSurfaceLocalFrame3D SetLatticeVertex(int indexU, int indexV, Triplet<Float64Scalar> newPointTriplet)
+    public GrLatticeSurfaceLocalFrame3D SetLatticeVertex(int indexU, int indexV, Triplet<double> newPointTriplet)
     {
         if (IsReady)
             throw new InvalidOperationException();
@@ -272,7 +272,7 @@ public sealed class GrLatticeSurface3D :
         var oldVertex = _indexUvToVertexArray[indexU, indexV];
 
         // Rounding components
-        newPointTriplet = new Triplet<Float64Scalar>(
+        newPointTriplet = new Triplet<double>(
             Math.Round(newPointTriplet.Item1, 7),
             Math.Round(newPointTriplet.Item2, 7),
             Math.Round(newPointTriplet.Item3, 7)
@@ -322,7 +322,7 @@ public sealed class GrLatticeSurface3D :
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public GrLatticeSurfaceLocalFrame3D SetLatticeVerticesAtIndexU(int indexU, Triplet<Float64Scalar> newPointTriplet)
+    public GrLatticeSurfaceLocalFrame3D SetLatticeVerticesAtIndexU(int indexU, Triplet<double> newPointTriplet)
     {
         for (var indexV = 0; indexV < LatticeSizeV; indexV++)
             SetLatticeVertex(indexU, indexV, newPointTriplet);
@@ -331,7 +331,7 @@ public sealed class GrLatticeSurface3D :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public GrLatticeSurfaceLocalFrame3D SetLatticeVerticesAtIndexV(int indexV, Triplet<Float64Scalar> newPointTriplet)
+    public GrLatticeSurfaceLocalFrame3D SetLatticeVerticesAtIndexV(int indexV, Triplet<double> newPointTriplet)
     {
         for (var indexU = 0; indexU < LatticeSizeU; indexU++)
             SetLatticeVertex(indexU, indexV, newPointTriplet);
@@ -340,7 +340,7 @@ public sealed class GrLatticeSurface3D :
     }
         
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public GrLatticeSurface3D SetLatticeVerticesAtIndexU(int indexU, Func<int, Triplet<Float64Scalar>> pointFactory)
+    public GrLatticeSurface3D SetLatticeVerticesAtIndexU(int indexU, Func<int, Triplet<double>> pointFactory)
     {
         for (var indexV = 0; indexV < LatticeSizeV; indexV++)
             SetLatticeVertex(indexU, indexV, pointFactory(indexV));
@@ -349,7 +349,7 @@ public sealed class GrLatticeSurface3D :
     }
         
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public GrLatticeSurface3D SetLatticeVerticesAtIndexV(int indexV, Func<int, Triplet<Float64Scalar>> pointFactory)
+    public GrLatticeSurface3D SetLatticeVerticesAtIndexV(int indexV, Func<int, Triplet<double>> pointFactory)
     {
         for (var indexU = 0; indexU < LatticeSizeU; indexU++)
             SetLatticeVertex(indexU, indexV, pointFactory(indexU));
@@ -358,7 +358,7 @@ public sealed class GrLatticeSurface3D :
     }
         
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public GrLatticeSurface3D SetLatticeVerticesAtIndexU(int indexU, Func<double, Triplet<Float64Scalar>> pointFactory)
+    public GrLatticeSurface3D SetLatticeVerticesAtIndexU(int indexU, Func<double, Triplet<double>> pointFactory)
     {
         var s = 1d / (LatticeSizeV - 1);
 
@@ -369,7 +369,7 @@ public sealed class GrLatticeSurface3D :
     }
         
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public GrLatticeSurface3D SetLatticeVerticesAtIndexV(int indexV, Func<double, Triplet<Float64Scalar>> pointFactory)
+    public GrLatticeSurface3D SetLatticeVerticesAtIndexV(int indexV, Func<double, Triplet<double>> pointFactory)
     {
         var s = 1d / (LatticeSizeU - 1);
 
@@ -380,7 +380,7 @@ public sealed class GrLatticeSurface3D :
     }
         
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public GrLatticeSurface3D SetLatticeVertices(Func<int, int, Triplet<Float64Scalar>> pointFactory)
+    public GrLatticeSurface3D SetLatticeVertices(Func<int, int, Triplet<double>> pointFactory)
     {
         for (var indexU = 0; indexU < LatticeSizeU; indexU++)
         for (var indexV = 0; indexV < LatticeSizeV; indexV++)
@@ -390,7 +390,7 @@ public sealed class GrLatticeSurface3D :
     }
         
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public GrLatticeSurface3D SetLatticeVertices(Func<double, double, Triplet<Float64Scalar>> pointFactory)
+    public GrLatticeSurface3D SetLatticeVertices(Func<double, double, Triplet<double>> pointFactory)
     {
         var sU = 1d / (LatticeSizeU - 1);
         var sV = 1d / (LatticeSizeV - 1);
@@ -408,7 +408,7 @@ public sealed class GrLatticeSurface3D :
         if (IsReady)
             throw new InvalidOperationException();
 
-        var pointToVertexDictionary = new Dictionary<Triplet<Float64Scalar>, GrLatticeSurfaceLocalFrame3D>();
+        var pointToVertexDictionary = new Dictionary<Triplet<double>, GrLatticeSurfaceLocalFrame3D>();
 
         foreach (var vertex in _pointToVertexDictionary.Values)
         {

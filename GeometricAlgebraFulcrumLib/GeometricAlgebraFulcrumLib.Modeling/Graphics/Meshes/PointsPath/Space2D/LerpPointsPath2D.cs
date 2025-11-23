@@ -22,14 +22,14 @@ public sealed class LerpPointsPath2D
     public int Count
         => Path1.Count;
 
-    public ILinFloat64Vector2D this[int index]
+    public LinFloat64Vector2D this[int index]
         => ParamValue.Lerp(
             Path1[index],
             Path2[index]
         );
 
-    public Pair<ILinFloat64Vector2D> this[int index1, int index2]
-        => new Pair<ILinFloat64Vector2D>(
+    public Pair<LinFloat64Vector2D> this[int index1, int index2]
+        => new Pair<LinFloat64Vector2D>(
             this[index1],
             this[index2]
         );
@@ -55,12 +55,12 @@ public sealed class LerpPointsPath2D
                Path2.IsValid();
     }
         
-    public IPointsPath2D MapPoints(Func<ILinFloat64Vector2D, ILinFloat64Vector2D> pointMapping)
+    public IPointsPath2D MapPoints(Func<LinFloat64Vector2D, LinFloat64Vector2D> pointMapping)
     {
         return new ArrayPointsPath2D(this.Select(pointMapping));
     }
 
-    public IEnumerator<ILinFloat64Vector2D> GetEnumerator()
+    public IEnumerator<LinFloat64Vector2D> GetEnumerator()
     {
         return Enumerable
             .Range(0, Count)

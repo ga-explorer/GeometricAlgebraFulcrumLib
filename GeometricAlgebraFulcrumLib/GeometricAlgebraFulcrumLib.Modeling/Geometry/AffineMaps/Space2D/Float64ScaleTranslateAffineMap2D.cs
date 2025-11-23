@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics;
 using System.Runtime.CompilerServices;
-using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Matrices;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space2D;
+using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Numerical.Matrices;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.AffineMaps.Space1D;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Tuples;
@@ -113,7 +113,7 @@ public sealed record Float64ScaleTranslateAffineMap2D :
     
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Float64ScaleTranslateAffineMap2D CreateTranslate(IPair<Float64Scalar> offsetVector)
+    public static Float64ScaleTranslateAffineMap2D CreateTranslate(IPair<double> offsetVector)
     {
         return offsetVector.Item1.IsZero() && offsetVector.Item2.IsZero()
             ? Identity 
@@ -161,7 +161,7 @@ public sealed record Float64ScaleTranslateAffineMap2D :
         return new Float64ScaleTranslateAffineMap2D(baseMap1, baseMap2);
     }
 
-    public static Float64ScaleTranslateAffineMap2D CreateFromRanges(IPair<Float64Scalar> inputVector1, IPair<Float64Scalar> inputVector2, IPair<Float64Scalar> outputVector1, IPair<Float64Scalar> outputVector2)
+    public static Float64ScaleTranslateAffineMap2D CreateFromRanges(IPair<double> inputVector1, IPair<double> inputVector2, IPair<double> outputVector1, IPair<double> outputVector2)
     {
         var baseMap1 = Float64AffineMap1D.CreateFromRanges(
             inputVector1.Item1,
@@ -281,10 +281,10 @@ public sealed record Float64ScaleTranslateAffineMap2D :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool IsNearIdentity(double zeroEpsilon = Float64Utils.ZeroEpsilon)
+    public bool IsNearIdentity(double tolerance = Float64Utils.DefaultTolerance)
     {
-        return Item1.IsNearIdentity(zeroEpsilon) &&
-               Item2.IsNearIdentity(zeroEpsilon);
+        return Item1.IsNearIdentity(tolerance) &&
+               Item2.IsNearIdentity(tolerance);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]

@@ -3,9 +3,10 @@ using System.Runtime.CompilerServices;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Angles;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.LinearMaps.Space3D.Composers;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.LinearMaps.Space3D.Reflection;
-using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Matrices;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.SubSpaces.Space3D;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space3D;
+using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Numerical;
+using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Numerical.Matrices;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.BitManipulation;
 
@@ -94,7 +95,7 @@ public sealed class LinFloat64OrthogonalLinearMapSequence3D :
         var mapSequence = Create();
 
         var vectorList =
-            random.GetMathNetOrthonormalVectors(3, count);
+            random.GetOrthonormalVectors(3, count);
 
         for (var i = 0; i < count / 2; i++)
         {
@@ -179,12 +180,12 @@ public sealed class LinFloat64OrthogonalLinearMapSequence3D :
         return true;
     }
 
-    public bool IsNearIdentity(double zeroEpsilon = 1E-12)
+    public bool IsNearIdentity(double tolerance = Float64Utils.DefaultTolerance)
     {
         for (var basisIndex = 0; basisIndex < VSpaceDimensions; basisIndex++)
         {
             var isSameVectorBasis =
-                MapBasisVector(basisIndex).IsNearVectorBasis(basisIndex, zeroEpsilon);
+                MapBasisVector(basisIndex).IsNearVectorBasis(basisIndex, tolerance);
 
             if (!isSameVectorBasis) return false;
         }
@@ -197,7 +198,7 @@ public sealed class LinFloat64OrthogonalLinearMapSequence3D :
     ///// are nearly pair-wise orthogonal
     ///// </summary>
     ///// <returns></returns>
-    //public bool IsNearOrthogonalMapsSequence(double zeroEpsilon = Float64Utils.ZeroEpsilon)
+    //public bool IsNearOrthogonalMapsSequence(double tolerance = Float64Utils.DefaultTolerance)
     //{
     //    if (ReflectionSequence.Count + 2 * RotationSequence.Count > VSpaceDimensions)
     //        return false;
@@ -211,9 +212,9 @@ public sealed class LinFloat64OrthogonalLinearMapSequence3D :
     //        {
     //            var u2 = reflection.ReflectionNormal;
 
-    //            if (!u1.IsNearOrthogonalTo(u2, zeroEpsilon)) 
+    //            if (!u1.IsNearOrthogonalTo(u2, tolerance)) 
     //                return false;
-    //            if (!v1.IsNearOrthogonalTo(u2, zeroEpsilon)) 
+    //            if (!v1.IsNearOrthogonalTo(u2, tolerance)) 
     //                return false;
     //        }
 
@@ -222,13 +223,13 @@ public sealed class LinFloat64OrthogonalLinearMapSequence3D :
     //            var u2 = RotationSequence[j].BasisVector1;
     //            var v2 = RotationSequence[j].GetRotatedBasisVector1();
 
-    //            if (!u1.IsNearOrthogonalTo(u2, zeroEpsilon)) 
+    //            if (!u1.IsNearOrthogonalTo(u2, tolerance)) 
     //                return false;
-    //            if (!u1.IsNearOrthogonalTo(v2, zeroEpsilon)) 
+    //            if (!u1.IsNearOrthogonalTo(v2, tolerance)) 
     //                return false;
-    //            if (!v1.IsNearOrthogonalTo(u2, zeroEpsilon)) 
+    //            if (!v1.IsNearOrthogonalTo(u2, tolerance)) 
     //                return false;
-    //            if (!v1.IsNearOrthogonalTo(v2, zeroEpsilon)) 
+    //            if (!v1.IsNearOrthogonalTo(v2, tolerance)) 
     //                return false;
     //        }
     //    }
@@ -241,7 +242,7 @@ public sealed class LinFloat64OrthogonalLinearMapSequence3D :
     //        {
     //            var u2 = ReflectionSequence[j].ReflectionNormal;
 
-    //            if (!u1.IsNearOrthogonalTo(u2, zeroEpsilon)) 
+    //            if (!u1.IsNearOrthogonalTo(u2, tolerance)) 
     //                return false;
     //        }
     //    }
@@ -278,7 +279,7 @@ public sealed class LinFloat64OrthogonalLinearMapSequence3D :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public LinFloat64Vector3D MapVector(ILinFloat64Vector3D vector)
+    public LinFloat64Vector3D MapVector(LinFloat64Vector3D vector)
     {
         var vector1 =
             vector.ToLinVector3D();

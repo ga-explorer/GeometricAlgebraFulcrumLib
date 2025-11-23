@@ -78,7 +78,7 @@ public static class GrLatticeShapesUtils
             }
         }
 
-        surface.SetLatticeVerticesAtIndexV(heightSamplesCount - 1, new Triplet<Float64Scalar>(0, 0, 0.5d));
+        surface.SetLatticeVerticesAtIndexV(heightSamplesCount - 1, new Triplet<double>(0, 0, 0.5d));
 
         return surface;
     }
@@ -98,7 +98,7 @@ public static class GrLatticeShapesUtils
         var zRange = (-0.5d).GetLinearRange(0.5d, heightSamplesCount, false).ToArray();
         var rRange = (0.5).GetLinearRange(0d, heightSamplesCount, false).ToArray();
 
-        surface.SetLatticeVerticesAtIndexV(0, new Triplet<Float64Scalar>(0, 0, -0.5d));
+        surface.SetLatticeVerticesAtIndexV(0, new Triplet<double>(0, 0, -0.5d));
 
         for (var indexV = 1; indexV < heightSamplesCount; indexV++)
         {
@@ -115,7 +115,7 @@ public static class GrLatticeShapesUtils
             }
         }
 
-        surface.SetLatticeVerticesAtIndexV(heightSamplesCount, new Triplet<Float64Scalar>(0, 0, 0.5d));
+        surface.SetLatticeVerticesAtIndexV(heightSamplesCount, new Triplet<double>(0, 0, 0.5d));
 
         return surface;
     }
@@ -162,7 +162,7 @@ public static class GrLatticeShapesUtils
 
         //surface.ReverseNormals = true;
 
-        surface.SetLatticeVerticesAtIndexV(0, new Triplet<Float64Scalar>(0, 0, -0.5d));
+        surface.SetLatticeVerticesAtIndexV(0, new Triplet<double>(0, 0, -0.5d));
 
         var thetaRange = 0d.GetLinearRange(Math.Tau, baseSamplesCount, true).ToArray();
         var zRange = (-0.5d).GetLinearRange(0.5d, heightSamplesCount, false).ToArray();
@@ -181,7 +181,7 @@ public static class GrLatticeShapesUtils
             }
         }
 
-        surface.SetLatticeVerticesAtIndexV(heightSamplesCount, new Triplet<Float64Scalar>(0, 0, 0.5d));
+        surface.SetLatticeVerticesAtIndexV(heightSamplesCount, new Triplet<double>(0, 0, 0.5d));
 
         return surface;
     }
@@ -197,7 +197,7 @@ public static class GrLatticeShapesUtils
 
         //surface.ReverseNormals = true;
 
-        surface.SetLatticeVerticesAtIndexV(0, new Triplet<Float64Scalar>(0, 0, -0.5d));
+        surface.SetLatticeVerticesAtIndexV(0, new Triplet<double>(0, 0, -0.5d));
 
         var thetaRange = 0d.GetLinearRange(Math.Tau, thetaSamplesCount, true).ToArray();
         var phiRange = Math.PI.GetLinearRange(0, phiSamplesCount, false).ToArray();
@@ -230,7 +230,7 @@ public static class GrLatticeShapesUtils
             //evenSlice = !evenSlice;
         }
 
-        surface.SetLatticeVerticesAtIndexV(phiSamplesCount - 1, new Triplet<Float64Scalar>(0, 0, 0.5d));
+        surface.SetLatticeVerticesAtIndexV(phiSamplesCount - 1, new Triplet<double>(0, 0, 0.5d));
 
         return surface;
     }

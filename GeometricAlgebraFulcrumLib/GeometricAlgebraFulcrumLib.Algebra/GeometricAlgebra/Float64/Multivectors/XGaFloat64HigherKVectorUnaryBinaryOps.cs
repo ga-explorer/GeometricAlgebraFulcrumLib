@@ -318,25 +318,25 @@ public sealed partial class XGaFloat64HigherKVector
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public override XGaFloat64HigherKVector DivideByENorm()
     {
-        return Divide(ENorm().ScalarValue);
+        return Divide(ENorm());
     }
         
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public override XGaFloat64HigherKVector DivideByENormSquared()
     {
-        return Divide(ENormSquared().ScalarValue);
+        return Divide(ENormSquared());
     }
         
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public override XGaFloat64HigherKVector DivideByNorm()
     {
-        return Divide(Norm().ScalarValue);
+        return Divide(Norm());
     }
         
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public override XGaFloat64HigherKVector DivideByNormSquared()
     {
-        return Divide(NormSquared().ScalarValue);
+        return Divide(NormSquared());
     }
     
 
@@ -374,6 +374,12 @@ public sealed partial class XGaFloat64HigherKVector
             ? this
             : Negative();
     }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public override XGaFloat64HigherKVector GradeInvolution(IndexSet gradeSet)
+    {
+        return gradeSet.SetContains(Grade) ? Negative() : this;
+    }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public override XGaFloat64HigherKVector CliffordConjugate()
@@ -394,28 +400,28 @@ public sealed partial class XGaFloat64HigherKVector
     }
         
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public override XGaFloat64HigherKVector EInverse()
+    public override XGaFloat64HigherKVector EVersorInverse()
     {
         return Divide(
-            ESpSquared().ScalarValue
+            ESpSquared()
         );
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public override XGaFloat64HigherKVector Inverse()
+    public override XGaFloat64HigherKVector VersorInverse()
     {
         return Divide(
-            SpSquared().ScalarValue
+            SpSquared()
         );
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public override XGaFloat64HigherKVector PseudoInverse()
+    public override XGaFloat64HigherKVector VersorPseudoInverse()
     {
         var kVectorConjugate = Conjugate();
 
         return kVectorConjugate.Divide(
-            kVectorConjugate.Sp(this).ScalarValue
+            kVectorConjugate.Sp(this)
         );
     }
 }

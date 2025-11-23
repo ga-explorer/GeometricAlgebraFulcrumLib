@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space4D;
+using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.SubSpaces.Space4D;
 
@@ -21,7 +22,7 @@ public sealed class LinFloat64PlaneSubspace4D :
     public static LinFloat64PlaneSubspace4D CreateFromUnitVectors(ILinFloat64Vector4D vector1, ILinFloat64Vector4D vector2)
     {
         return new LinFloat64PlaneSubspace4D(
-            LinFloat64Vector4DUtils.ToLinVector4D(vector1),
+            vector1.ToLinVector4D(),
             vector2.RejectOnUnitVector(vector1).ToUnitLinVector4D()
         );
     }
@@ -39,8 +40,8 @@ public sealed class LinFloat64PlaneSubspace4D :
     public static LinFloat64PlaneSubspace4D CreateFromOrthonormalVectors(ILinFloat64Vector4D vector1, ILinFloat64Vector4D vector2)
     {
         return new LinFloat64PlaneSubspace4D(
-            LinFloat64Vector4DUtils.ToLinVector4D(vector1),
-            LinFloat64Vector4DUtils.ToLinVector4D(vector2)
+            vector1.ToLinVector4D(),
+            vector2.ToLinVector4D()
         );
     }
 
@@ -77,18 +78,18 @@ public sealed class LinFloat64PlaneSubspace4D :
     }
 
 
-    public bool NearContains(ILinFloat64Vector4D vector, double zeroEpsilon = 1E-12D)
+    public bool NearContains(ILinFloat64Vector4D vector, double tolerance = 1E-12D)
     {
-        if (vector.IsNearZero(zeroEpsilon))
+        if (vector.IsNearZero(tolerance))
             return true;
 
         // Project vector on subspace plane and compare with original vector
 
         var (xuDot, xvDot) = vector.VectorESp(BasisVector1, BasisVector2);
 
-        var diffNorm = (vector - (xuDot * BasisVector1 + xvDot * BasisVector2)).VectorENormSquared();
+        var diffNorm = LinFloat64Vector4DUtils.L2NormSquared((vector - (xuDot * BasisVector1 + xvDot * BasisVector2)));
 
-        return diffNorm < zeroEpsilon;
+        return diffNorm < tolerance;
 
         //var rank = Matrix<double>.Build.DenseOfColumnArrays(
         //    vector,
@@ -104,10 +105,10 @@ public sealed class LinFloat64PlaneSubspace4D :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool NearContains(ILinFloat64Subspace4D subspace, double zeroEpsilon = 1E-12)
+    public bool NearContains(ILinFloat64Subspace4D subspace, double tolerance = Float64Utils.DefaultTolerance)
     {
         return subspace.VSpaceDimensions <= VSpaceDimensions &&
-               subspace.BasisVectors.All(v => NearContains(v, zeroEpsilon));
+               subspace.BasisVectors.All(v => NearContains(v, tolerance));
     }
 
     public bool IsValid()

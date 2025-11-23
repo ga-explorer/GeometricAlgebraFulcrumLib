@@ -4,7 +4,6 @@ using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space2D;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.Parametric.Float64;
 using GeometricAlgebraFulcrumLib.Modeling.Signals;
-using GeometricAlgebraFulcrumLib.Modeling.Trajectories.Vectors2D.Float64;
 using GeometricAlgebraFulcrumLib.Modeling.Trajectories.Vectors2D.Float64.Basic;
 using GeometricAlgebraFulcrumLib.Modeling.Trajectories.Vectors2D.Float64.Composers;
 
@@ -110,7 +109,7 @@ public class DfCatmullRomSplineInterpolator :
             return 0;
 
         var tangent =
-            Curve.GetTangent(t);
+            Curve.GetTangentVector(t);
 
         return tangent.Y / tangent.X;
     }
@@ -146,7 +145,7 @@ public class DfCatmullRomSplineInterpolator :
         //);
 
         var xValues =
-            Curve.ControlPoints.Select(p => p.X.ScalarValue).ToImmutableArray();
+            Curve.ControlPoints.Select(p => p.X).ToImmutableArray();
 
         var yValues =
             xValues.Select(GetDerivative1Value).ToImmutableArray();

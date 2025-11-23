@@ -11,7 +11,7 @@ namespace GeometricAlgebraFulcrumLib.Modeling.Graphics.Primitives.Triangles;
 public sealed class GrTriangleGeometry3D 
     : GrTriangleGeometryBase3D
 {
-    public static GrTriangleGeometry3D Create(IReadOnlyList<ILinFloat64Vector3D> pointsList)
+    public static GrTriangleGeometry3D Create(IReadOnlyList<LinFloat64Vector3D> pointsList)
     {
         //if ((pointsList.Count % 3) != 0)
         //    throw new ArgumentException();
@@ -19,7 +19,7 @@ public sealed class GrTriangleGeometry3D
         return new GrTriangleGeometry3D(pointsList);
     }
 
-    public static GrTriangleGeometry3D Create(IReadOnlyList<ILinFloat64Vector3D> pointsList, List<int> indicesList)
+    public static GrTriangleGeometry3D Create(IReadOnlyList<LinFloat64Vector3D> pointsList, List<int> indicesList)
     {
         //if ((pointsList.Count % 3) != 0)
         //    throw new ArgumentException();
@@ -27,7 +27,7 @@ public sealed class GrTriangleGeometry3D
         return new GrTriangleGeometry3D(pointsList, indicesList);
     }
 
-    public static GrTriangleGeometry3D Create(params ILinFloat64Vector3D[] pointsList)
+    public static GrTriangleGeometry3D Create(params LinFloat64Vector3D[] pointsList)
     {
         //if ((pointsList.Length % 3) != 0)
         //    throw new ArgumentException();
@@ -35,7 +35,7 @@ public sealed class GrTriangleGeometry3D
         return new GrTriangleGeometry3D(pointsList);
     }
 
-    public static GrTriangleGeometry3D Create(IEnumerable<ILinFloat64Vector3D> pointsList)
+    public static GrTriangleGeometry3D Create(IEnumerable<LinFloat64Vector3D> pointsList)
     {
         var pointsArray = pointsList.ToArray();
 
@@ -45,7 +45,7 @@ public sealed class GrTriangleGeometry3D
         return new GrTriangleGeometry3D(pointsArray);
     }
 
-    public static GrTriangleGeometry3D Create(IEnumerable<ILinFloat64Vector3D> pointsList, IEnumerable<int> indicesList)
+    public static GrTriangleGeometry3D Create(IEnumerable<LinFloat64Vector3D> pointsList, IEnumerable<int> indicesList)
     {
         var pointsArray = pointsList.ToArray();
 
@@ -123,7 +123,7 @@ public sealed class GrTriangleGeometry3D
         //if ((verticesList.Count % 3) != 0)
         //    throw new ArgumentException();
 
-        var geometry = new GrTriangleGeometry3D(verticesList);
+        var geometry = new GrTriangleGeometry3D(verticesList.Select(v => v.ToLinVector3D()).ToArray());
 
         if (vertexDataKind.HasColor)
             geometry.SetVertexColors(
@@ -132,7 +132,7 @@ public sealed class GrTriangleGeometry3D
 
         if (vertexDataKind.HasTextureUv)
             geometry.SetVertexUVs(
-                verticesList.Select(v => (ILinFloat64Vector2D) v.ParameterValue.ToLinVector2D()).ToArray()
+                verticesList.Select(v => v.ParameterValue.ToLinVector2D()).ToArray()
             );
 
         if (vertexDataKind.HasNormal)
@@ -196,13 +196,13 @@ public sealed class GrTriangleGeometry3D
     }
 
 
-    private GrTriangleGeometry3D(IReadOnlyList<ILinFloat64Vector3D> pointsList)
+    private GrTriangleGeometry3D(IReadOnlyList<LinFloat64Vector3D> pointsList)
         : base(pointsList)
     {
         _vertexIndicesList = new List<int>();
     }
         
-    private GrTriangleGeometry3D(IReadOnlyList<ILinFloat64Vector3D> pointsList, List<int> vertexIndicesList)
+    private GrTriangleGeometry3D(IReadOnlyList<LinFloat64Vector3D> pointsList, List<int> vertexIndicesList)
         : base(pointsList)
     {
         _vertexIndicesList = vertexIndicesList;

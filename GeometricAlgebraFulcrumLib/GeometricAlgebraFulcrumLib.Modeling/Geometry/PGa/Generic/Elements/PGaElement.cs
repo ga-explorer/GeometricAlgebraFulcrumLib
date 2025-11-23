@@ -1,5 +1,4 @@
-﻿using System.Collections.Immutable;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Text;
 using GeometricAlgebraFulcrumLib.Algebra;
@@ -721,17 +720,19 @@ public sealed class PGaElement<T> :
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public IReadOnlyList<PGaBlade<T>> GetSurfacePointVGaBlades()
     {
-        return GetSurfacePointVectors()
-            .Select(Geometry.EncodeVGaVector)
-            .ToImmutableArray();
+        return [
+            ..GetSurfacePointVectors()
+                .Select(Geometry.EncodeVGaVector)
+        ];
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public IReadOnlyList<PGaBlade<T>> GetSurfacePointPGaBlades()
     {
-        return GetSurfacePointVectors()
-            .Select(Geometry.EncodePGaPoint)
-            .ToImmutableArray();
+        return [
+            ..GetSurfacePointVectors()
+                .Select(Geometry.EncodePGaPoint)
+        ];
     }
 
 

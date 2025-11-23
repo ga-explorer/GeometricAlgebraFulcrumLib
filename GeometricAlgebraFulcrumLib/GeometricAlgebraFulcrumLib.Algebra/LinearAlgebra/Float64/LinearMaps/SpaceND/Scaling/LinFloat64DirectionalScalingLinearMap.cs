@@ -1,5 +1,6 @@
 ﻿using System.Runtime.CompilerServices;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.SpaceND;
+using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Numerical;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.BitManipulation;
 using MathNet.Numerics.LinearAlgebra;
@@ -37,12 +38,12 @@ public abstract class LinFloat64DirectionalScalingLinearMap :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool IsNearIdentity(double zeroEpsilon = 1E-12)
+    public bool IsNearIdentity(double tolerance = Float64Utils.DefaultTolerance)
     {
-        return ScalingFactor.IsNearOne(zeroEpsilon);
+        return ScalingFactor.IsNearOne(tolerance);
     }
 
-    public bool IsNearReflection(double zeroEpsilon = 1E-12)
+    public bool IsNearReflection(double tolerance = Float64Utils.DefaultTolerance)
     {
         throw new NotImplementedException();
     }
@@ -83,7 +84,7 @@ public abstract class LinFloat64DirectionalScalingLinearMap :
         return vSpaceDimensions.CreateLinUnilinearMap(MapBasisVector);
     }
 
-    public virtual double[,] ToArray(int rowCount, int colCount)
+    public virtual Matrix<double> ToArray(int rowCount, int colCount)
     {
         var array = new double[rowCount, colCount];
 
@@ -100,7 +101,7 @@ public abstract class LinFloat64DirectionalScalingLinearMap :
             }
         }
 
-        return array;
+        return array.ToMatrix();
     }
 
     public abstract ILinFloat64DirectionalScalingLinearMap GetDirectionalScalingInverse();

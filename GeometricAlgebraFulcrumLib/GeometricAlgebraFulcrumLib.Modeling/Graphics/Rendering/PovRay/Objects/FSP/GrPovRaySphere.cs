@@ -9,7 +9,7 @@ public class GrPovRaySphere :
     GrPovRayObject, 
     IGrPovRayFiniteSolidObject
 {
-    public static GrPovRaySphere Create(ITriplet<Float64Scalar> center, Float64Scalar radius)
+    public static GrPovRaySphere Create(ITriplet<double> center, Float64Scalar radius)
     {
         return new GrPovRaySphere(
             GrPovRayVector3Value.Create(center), 
@@ -22,7 +22,7 @@ public class GrPovRaySphere :
         return new GrPovRaySphere(center, radius);
     }
 
-    public static GrPovRaySphere Create(ITriplet<Float64Scalar> center, Float64Scalar radiusX, Float64Scalar radiusY, Float64Scalar radiusZ)
+    public static GrPovRaySphere Create(ITriplet<double> center, Float64Scalar radiusX, Float64Scalar radiusY, Float64Scalar radiusZ)
     {
         var sphere = new GrPovRaySphere(
             GrPovRayVector3Value.Zero, 

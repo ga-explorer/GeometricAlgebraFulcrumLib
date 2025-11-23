@@ -154,44 +154,4 @@ public class LinFloat64RandomComposer :
         return indexScalarDictionary.CreateLinVector();
     }
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public IEnumerable<double> GetScalars(int count)
-    {
-        return Enumerable
-            .Range(0, count)
-            .Select(_ => GetScalarValue());
-    }
-
-    public double[,] GetArray(int rowsCount, int columnsCount)
-    {
-        var array = new double[rowsCount, columnsCount];
-
-        for (var i = 0; i < rowsCount; i++)
-            for (var j = 0; j < columnsCount; j++)
-                array[i, j] = GetScalarValue();
-
-        return array;
-    }
-
-    public double[,] GetPermutationArray(int size)
-    {
-        var array = new double[size, size];
-
-        var indexList = Enumerable
-            .Range(0, size)
-            .Shuffled(RandomGenerator);
-
-        var i = 0;
-        foreach (var colIndex in indexList)
-        {
-            for (var j = 0; j < size; j++)
-                array[i, j] = j == colIndex
-                    ? 1d
-                    : 0d;
-
-            i++;
-        }
-
-        return array;
-    }
 }

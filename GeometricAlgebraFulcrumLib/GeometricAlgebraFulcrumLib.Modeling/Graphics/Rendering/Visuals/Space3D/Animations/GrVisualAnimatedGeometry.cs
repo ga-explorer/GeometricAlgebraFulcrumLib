@@ -1,5 +1,5 @@
 ﻿using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.Borders.Space1D;
+using GeometricAlgebraFulcrumLib.Modeling.Geometry.Bounding.Integers;
 using GeometricAlgebraFulcrumLib.Modeling.Signals;
 using GeometricAlgebraFulcrumLib.Modeling.Trajectories;
 

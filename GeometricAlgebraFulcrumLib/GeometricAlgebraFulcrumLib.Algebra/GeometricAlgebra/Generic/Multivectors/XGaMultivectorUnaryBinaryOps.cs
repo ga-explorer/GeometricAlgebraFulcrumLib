@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Generic;
+using GeometricAlgebraFulcrumLib.Utilities.Structures.IndexSets;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Tuples;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Multivectors;
@@ -555,6 +556,15 @@ public abstract partial class XGaMultivector<T>
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public abstract XGaMultivector<T> GradeInvolution();
+    
+    /// <summary>
+    /// The Hitzer–Sangwine grade involution only negates the selected grades of the multivector
+    /// See: Multivector and multivector matrix inverses in real Clifford algebras
+    /// </summary>
+    /// <param name="gradeList"></param>
+    /// <returns></returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public abstract XGaMultivector<T> GradeInvolution(IndexSet gradeSet);
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public abstract XGaMultivector<T> CliffordConjugate();
@@ -606,15 +616,26 @@ public abstract partial class XGaMultivector<T>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public abstract XGaMultivector<T> DivideByNormSquared();
 
-
+    /// <summary>
+    /// Inverse of this multivector assuming it's a Euclidean versor
+    /// </summary>
+    /// <returns></returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public abstract XGaMultivector<T> EInverse();
+    public abstract XGaMultivector<T> EVersorInverse();
 
+    /// <summary>
+    /// Inverse of this multivector assuming it's a versor
+    /// </summary>
+    /// <returns></returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public abstract XGaMultivector<T> Inverse();
+    public abstract XGaMultivector<T> VersorInverse();
 
+    /// <summary>
+    /// Pseudo-inverse of this multivector assuming it's a Euclidean versor
+    /// </summary>
+    /// <returns></returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public abstract XGaMultivector<T> PseudoInverse();
+    public abstract XGaMultivector<T> VersorPseudoInverse();
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public abstract XGaMultivector<T> EDual(int vSpaceDimensions);

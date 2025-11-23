@@ -6,6 +6,7 @@ using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Frames;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.LinearMaps.Outermorphisms;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivectors;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Processors;
+using MathNet.Numerics.LinearAlgebra;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.LinearMaps.Rotors;
 
@@ -271,15 +272,15 @@ public sealed class XGaFloat64PureRotorSequence :
         }
     }
 
-    public IEnumerable<double[,]> GetRotationMatrices(int rowsCount)
+    public IEnumerable<Matrix<double>> GetRotationMatrices(int rowsCount)
     {
         var f = 
             Processor.CreateFreeFrameOfBasis(rowsCount);
 
-        yield return f.GetArray(rowsCount);
+        yield return f.GetMatrix(rowsCount);
 
         foreach (var rotor in _rotorsList)
-            yield return rotor.OmMap(f).GetArray(rowsCount);
+            yield return rotor.OmMap(f).GetMatrix(rowsCount);
     }
         
 
@@ -362,11 +363,11 @@ public sealed class XGaFloat64PureRotorSequence :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public double[,] GetFinalRotorArray(int rowsCount)
+    public Matrix<double> GetFinalRotorMatrix(int rowsCount)
     {
         return Rotate(
             Processor.CreateFreeFrameOfBasis(rowsCount)
-        ).GetArray(rowsCount);
+        ).GetMatrix(rowsCount);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]

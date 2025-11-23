@@ -28,13 +28,13 @@ public sealed record LinFloat64NullSubspace4D :
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool NearContains(ILinFloat64Vector4D vector, double zeroEpsilon = 1E-12D)
+    public bool NearContains(ILinFloat64Vector4D vector, double tolerance = 1E-12D)
     {
-        return vector.VectorENorm().IsNearZero(zeroEpsilon);
+        return vector.L2Norm().IsNearZero(tolerance);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool NearContains(ILinFloat64Subspace4D subspace, double zeroEpsilon = 1E-12)
+    public bool NearContains(ILinFloat64Subspace4D subspace, double tolerance = Float64Utils.DefaultTolerance)
     {
         return subspace.SubspaceDimensions == 0;
     }

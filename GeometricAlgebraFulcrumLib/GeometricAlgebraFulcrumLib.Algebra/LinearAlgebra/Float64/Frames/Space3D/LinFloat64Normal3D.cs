@@ -6,25 +6,49 @@ using GeometricAlgebraFulcrumLib.Utilities.Structures.Tuples;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Frames.Space3D;
 
-public sealed class LinFloat64Normal3D :
+public sealed record LinFloat64Normal3D :
     ILinFloat64Vector3D
 {
-    public Float64Scalar X { get; private set; }
+    private double _x;
+    public double X 
+    { 
+        get => _x;
+        private set => _x = value.IsValid() ? value : throw new InvalidOperationException();
+    }
 
-    public Float64Scalar Y { get; private set; }
+    private double _y;
+    public double Y
+    {
+        get => _y; 
+        private set => _y = value.IsValid() ? value : throw new InvalidOperationException();
+    }
 
-    public Float64Scalar Z { get; private set; }
+    private double _z;
+    public double Z
+    {
+        get => _z; 
+        private set => _z = value.IsValid() ? value : throw new InvalidOperationException();
+    }
+    
+    public double this[int index] 
+        => index switch
+        {
+            0 => X,
+            1 => Y,
+            2 => Z,
+            _ => Float64Scalar.Zero
+        };
 
     public int VSpaceDimensions
         => 3;
 
-    public Float64Scalar Item1
+    public double Item1
         => X;
 
-    public Float64Scalar Item2
+    public double Item2
         => Y;
 
-    public Float64Scalar Item3
+    public double Item3
         => Z;
 
 
@@ -60,9 +84,9 @@ public sealed class LinFloat64Normal3D :
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public bool IsValid()
     {
-        return !double.IsNaN(X) &&
-               !double.IsNaN(Y) &&
-               !double.IsNaN(Z);
+        return X.IsValid() &&
+               Y.IsValid() &&
+               Z.IsValid();
     }
 
     /// <summary>
@@ -97,7 +121,7 @@ public sealed class LinFloat64Normal3D :
     /// </summary>
     /// <param name="normalTriplet"></param>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public void Set(ITriplet<Float64Scalar> normalTriplet)
+    public void Set(ITriplet<double> normalTriplet)
     {
         X = normalTriplet.Item1;
         Y = normalTriplet.Item2;
@@ -127,7 +151,7 @@ public sealed class LinFloat64Normal3D :
     /// </summary>
     /// <param name="normalTriplet"></param>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public void Update(ITriplet<Float64Scalar> normalTriplet)
+    public void Update(ITriplet<double> normalTriplet)
     {
         X += normalTriplet.Item1;
         Y += normalTriplet.Item2;

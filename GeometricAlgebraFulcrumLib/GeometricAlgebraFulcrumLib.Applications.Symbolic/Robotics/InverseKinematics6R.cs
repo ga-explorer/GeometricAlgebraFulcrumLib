@@ -10,7 +10,6 @@ using GeometricAlgebraFulcrumLib.MetaProgramming.Context;
 using GeometricAlgebraFulcrumLib.MetaProgramming.Context.Expressions;
 using GeometricAlgebraFulcrumLib.MetaProgramming.Utilities.Code;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Float64;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Float64.Operations;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Generic;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Generic.Operations;
 using Wolfram.NETLink;
@@ -61,7 +60,7 @@ namespace GeometricAlgebraFulcrumLib.Applications.Symbolic.Robotics
 
             // normal vector to plane
             var normal = plane.DecodeOpnsFlat.VGaNormalVector3D();
-
+            
             // first joint angle
             var theta1 = normal.GetAngleWithE1() - LinFloat64PolarAngle.Angle90;
 

@@ -255,18 +255,16 @@ public static class LinAngleUtils
     {
         var angleTanSign = scalarProcessor.Sign(angleTan);
         var angleTanSquared = scalarProcessor.Square(angleTan);
-        var d = 1 + angleTanSquared;
-
-        return angleTanSign / d;
+        
+        return angleTanSign / (1 + angleTanSquared).Sqrt();
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Scalar<T> TanToRadiansSin<T>(this IScalarProcessor<T> scalarProcessor, T angleTan)
     {
         var angleTanSquared = scalarProcessor.Square(angleTan);
-        var d = 1 + angleTanSquared;
-
-        return angleTanSquared / d;
+        
+        return scalarProcessor.ScalarFromValue(angleTan) / (1 + angleTanSquared).Sqrt();
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -274,7 +272,7 @@ public static class LinAngleUtils
     {
         var angleTanSign = scalarProcessor.Sign(angleTan);
         var angleTanSquared = scalarProcessor.Square(angleTan);
-        var d = 1 + angleTanSquared;
+        var d = (1 + angleTanSquared).Sqrt();
 
         var cosValue = angleTanSign / d;
         var sinValue = angleTanSquared / d;
@@ -286,7 +284,7 @@ public static class LinAngleUtils
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Scalar<T> TanSquaredToRadiansCos<T>(this IScalarProcessor<T> scalarProcessor, T angleTanSquared)
     {
-        return 1 / (1 + scalarProcessor.ScalarFromValue(angleTanSquared));
+        return 1 / (1 + scalarProcessor.ScalarFromValue(angleTanSquared)).Sqrt();
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -294,7 +292,7 @@ public static class LinAngleUtils
     {
         Debug.Assert(angleTanSquared != null, nameof(angleTanSquared) + " != null");
         
-        return angleTanSquared / (1 + scalarProcessor.ScalarFromValue(angleTanSquared));
+        return (angleTanSquared / (1 + scalarProcessor.ScalarFromValue(angleTanSquared))).Sqrt();
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -304,8 +302,8 @@ public static class LinAngleUtils
         
         var d = 1 + scalarProcessor.ScalarFromValue(angleTanSquared);
 
-        var cosValue = 1 / d;
-        var sinValue = angleTanSquared / d;
+        var cosValue = 1 / d.Sqrt();
+        var sinValue = (angleTanSquared / d).Sqrt();
 
         return new Pair<Scalar<T>>(cosValue, sinValue);
     }
@@ -703,7 +701,7 @@ public static class LinAngleUtils
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static LinDirectedAngle<T> GetPhaseAsDirectedAngle<T>(this IPair<Scalar<T>> vector)
     {
-        var r = vector.VectorENorm();
+        var r = vector.L2Norm();
 
         return r.IsZero() 
             ? LinDirectedAngle<T>.Angle0(vector.GetScalarProcessor()) 
@@ -716,7 +714,7 @@ public static class LinAngleUtils
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static LinDirectedAngle<T> GetPhaseAsDirectedAngle<T>(this IPair<Scalar<T>> vector, LinAngleRange range)
     {
-        var r = vector.VectorENorm();
+        var r = vector.L2Norm();
 
         return r.IsZero() 
             ? LinDirectedAngle<T>.Angle0(vector.GetScalarProcessor()) 
@@ -730,7 +728,7 @@ public static class LinAngleUtils
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static LinPolarAngle<T> GetPhaseAsPolarAngle<T>(this IPair<Scalar<T>> vector)
     {
-        var r = vector.VectorENorm();
+        var r = vector.L2Norm();
 
         return r.IsZero() 
             ? LinPolarAngle<T>.Angle0(vector.GetScalarProcessor()) 

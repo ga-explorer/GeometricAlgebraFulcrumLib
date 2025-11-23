@@ -1,5 +1,4 @@
-﻿using System.Collections.Immutable;
-using System.Numerics;
+﻿using System.Numerics;
 using System.Runtime.CompilerServices;
 using GeometricAlgebraFulcrumLib.Algebra.Polynomials.Generic;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
@@ -494,34 +493,38 @@ public static class Float64SignalUtils
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static IReadOnlyList<Float64SampledTimeSignal> GetRealSignal(this IReadOnlyList<Float64ComplexSignalSpectrum> vectorSpectrum, Float64SampledTimeSignal tValues)
     {
-        return vectorSpectrum
-            .Select(spectrum => spectrum.GetRealSignal(tValues))
-            .ToImmutableArray();
+        return [
+            ..vectorSpectrum
+                .Select(spectrum => spectrum.GetRealSignal(tValues))
+        ];
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static IReadOnlyList<Float64SampledTimeSignal> GetRealSignalDt(this IReadOnlyList<Float64ComplexSignalSpectrum> vectorSpectrum, int degree, Float64SampledTimeSignal tValues)
     {
-        return vectorSpectrum
-            .Select(spectrum => spectrum.GetRealSignalDt(degree, tValues))
-            .ToImmutableArray();
+        return [
+            ..vectorSpectrum
+                .Select(spectrum => spectrum.GetRealSignalDt(degree, tValues))
+        ];
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static IReadOnlyList<Float64SampledTimeSignal> GetRealSignal(this IReadOnlyList<Float64ComplexSignalSpectrum> vectorSpectrum, IReadOnlyList<ScalarSignalSpectrum<Complex>.SignalSpectrumSample> vectorSpectrumSample, IEnumerable<double> tValues)
     {
-        return vectorSpectrum
-            .Select((spectrum, i) => spectrum.GetRealSignal(vectorSpectrumSample[i], tValues))
-            .ToImmutableArray();
+        return [
+            ..vectorSpectrum
+                .Select((spectrum, i) => spectrum.GetRealSignal(vectorSpectrumSample[i], tValues))
+        ];
     }
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static IReadOnlyList<ScalarSignalSpectrum<Complex>.SignalSpectrumSample> GetSample(this IReadOnlyList<Float64ComplexSignalSpectrum> vectorSpectrum, int index)
     {
-        return vectorSpectrum
-            .Select(s => s.GetSample(index))
-            .ToImmutableArray();
+        return [
+            ..vectorSpectrum
+                .Select(s => s.GetSample(index))
+        ];
     }
 
     public static IReadOnlyList<Float64ComplexSignalSpectrum> Add(this IReadOnlyList<Float64ComplexSignalSpectrum> vectorSpectrum, IEnumerable<ScalarSignalSpectrum<Complex>.SignalSpectrumSample> vectorSpectrumSample)

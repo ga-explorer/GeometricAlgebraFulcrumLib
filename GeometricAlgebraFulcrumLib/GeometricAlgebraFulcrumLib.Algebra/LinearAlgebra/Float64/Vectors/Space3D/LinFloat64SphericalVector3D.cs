@@ -17,23 +17,32 @@ public sealed class LinFloat64SphericalVector3D :
 
     public Float64Scalar R { get; }
 
-    public Float64Scalar X
+    public double X
         => R * Theta.Sin() * Phi.Cos();
 
-    public Float64Scalar Y
+    public double Y
         => R * Theta.Sin() * Phi.Sin();
 
-    public Float64Scalar Z
+    public double Z
         => R * Theta.Cos();
 
-    public Float64Scalar Item1
+    public double Item1
         => X;
 
-    public Float64Scalar Item2
+    public double Item2
         => Y;
 
-    public Float64Scalar Item3
+    public double Item3
         => Z;
+    
+    public double this[int i] 
+        => i switch
+        {
+            0 => X,
+            1 => Y,
+            2 => Z,
+            _ => Float64Scalar.Zero
+        };
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -69,9 +78,9 @@ public sealed class LinFloat64SphericalVector3D :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool IsNearUnitVector(double zeroEpsilon = 1E-12)
+    public bool IsNearUnitVector(double tolerance = Float64Utils.DefaultTolerance)
     {
-        return R.IsNearOne(zeroEpsilon);
+        return R.IsNearOne(tolerance);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]

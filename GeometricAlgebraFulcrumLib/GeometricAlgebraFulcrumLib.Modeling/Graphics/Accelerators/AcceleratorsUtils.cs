@@ -1,10 +1,10 @@
 ﻿using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Tuples;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.BasicShapes.Lines;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.BasicShapes.Lines.Space2D.Float64;
-using GeometricAlgebraFulcrumLib.Modeling.Graphics.Accelerators.BIH.Space2D;
+using GeometricAlgebraFulcrumLib.Modeling.Graphics.Accelerators.BIHold.Space2D;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Accelerators.Grids;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Accelerators.Grids.Space2D;
-using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.Svg.DrawingBoard;
+using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.Svg.DrawingBoardOld;
 using SixLabors.ImageSharp;
 
 namespace GeometricAlgebraFulcrumLib.Modeling.Graphics.Accelerators;

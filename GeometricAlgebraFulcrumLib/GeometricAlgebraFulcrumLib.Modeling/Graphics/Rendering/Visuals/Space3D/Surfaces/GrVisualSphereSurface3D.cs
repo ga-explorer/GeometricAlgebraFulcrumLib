@@ -34,7 +34,7 @@ public sealed class GrVisualSphereSurface3D :
         );
     }
         
-    public static GrVisualSphereSurface3D CreateStatic(string name, GrVisualSurfaceStyle3D style, ILinFloat64Vector3D center, double radius) 
+    public static GrVisualSphereSurface3D CreateStatic(string name, GrVisualSurfaceStyle3D style, LinFloat64Vector3D center, double radius) 
     {
         return new GrVisualSphereSurface3D(
             name,
@@ -55,7 +55,7 @@ public sealed class GrVisualSphereSurface3D :
         );
     }
 
-    public static GrVisualSphereSurface3D Create(string name, GrVisualSurfaceStyle3D style, ILinFloat64Vector3D center, double radius, Float64SamplingSpecs samplingSpecs) {
+    public static GrVisualSphereSurface3D Create(string name, GrVisualSurfaceStyle3D style, LinFloat64Vector3D center, double radius, Float64SamplingSpecs samplingSpecs) {
         return new GrVisualSphereSurface3D(
             name,
             style,
@@ -89,7 +89,7 @@ public sealed class GrVisualSphereSurface3D :
     }
 
 
-    public ILinFloat64Vector3D Center { get; }
+    public LinFloat64Vector3D Center { get; }
         
     public double Radius { get; }
 
@@ -98,7 +98,7 @@ public sealed class GrVisualSphereSurface3D :
     public GrVisualAnimatedScalar? AnimatedRadius { get; set; }
 
 
-    private GrVisualSphereSurface3D(string name, GrVisualSurfaceStyle3D style, ILinFloat64Vector3D center, double radius, Float64SamplingSpecs samplingSpecs) 
+    private GrVisualSphereSurface3D(string name, GrVisualSurfaceStyle3D style, LinFloat64Vector3D center, double radius, Float64SamplingSpecs samplingSpecs) 
         : base(name, style, samplingSpecs)
     {
         Center = center;
@@ -173,7 +173,7 @@ public sealed class GrVisualSphereSurface3D :
 
         foreach (var frameIndex in GetValidFrameIndexSet())
         {
-            var time = (double)frameIndex / SamplingSpecs.SamplingRate;
+            var time = frameIndex / SamplingSpecs.SamplingRate;
                 
             yield return new KeyFrameRecord(
                 frameIndex, 

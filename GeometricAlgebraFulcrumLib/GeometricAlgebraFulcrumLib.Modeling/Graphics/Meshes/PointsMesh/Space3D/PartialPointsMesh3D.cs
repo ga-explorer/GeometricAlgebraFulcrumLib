@@ -7,7 +7,7 @@ using GeometricAlgebraFulcrumLib.Utilities.Structures.Sequences.Periodic2D;
 namespace GeometricAlgebraFulcrumLib.Modeling.Graphics.Meshes.PointsMesh.Space3D;
 
 public sealed class PartialPointsMesh3D
-    : PSeqPartial2D<ILinFloat64Vector3D>, IPointsMesh3D
+    : PSeqPartial2D<LinFloat64Vector3D>, IPointsMesh3D
 {
     public IPointsMesh3D BaseMesh { get; }
 
@@ -19,7 +19,7 @@ public sealed class PartialPointsMesh3D
     }
 
 
-    public override PSeqSlice1D<ILinFloat64Vector3D> GetSliceAt(int dimension, int index)
+    public override PSeqSlice1D<LinFloat64Vector3D> GetSliceAt(int dimension, int index)
     {
         return new PointsMeshSlicePointsPath3D(this, dimension, index);
     }

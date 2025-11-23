@@ -1,6 +1,7 @@
 ﻿using System.Runtime.CompilerServices;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Generic;
+using GeometricAlgebraFulcrumLib.Utilities.Structures.IndexSets;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Multivectors;
 
@@ -200,6 +201,16 @@ public sealed partial class XGaUniformMultivector<T>
                 : scalar
         );
     }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public override XGaUniformMultivector<T> GradeInvolution(IndexSet gradeSet)
+    {
+        return MapScalars((basis, scalar) =>
+            gradeSet.SetContains(basis.Count)
+                ? ScalarProcessor.Negative(scalar).ScalarValue
+                : scalar
+        );
+    }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public override XGaUniformMultivector<T> CliffordConjugate()
@@ -220,7 +231,7 @@ public sealed partial class XGaUniformMultivector<T>
     }
         
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public override XGaUniformMultivector<T> EInverse()
+    public override XGaUniformMultivector<T> EVersorInverse()
     {
         return Reverse().Divide(
             ENormSquared().ScalarValue
@@ -228,7 +239,7 @@ public sealed partial class XGaUniformMultivector<T>
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public override XGaUniformMultivector<T> Inverse()
+    public override XGaUniformMultivector<T> VersorInverse()
     {
         return Reverse().Divide(
             NormSquared().ScalarValue
@@ -236,7 +247,7 @@ public sealed partial class XGaUniformMultivector<T>
     }
         
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public override XGaUniformMultivector<T> PseudoInverse()
+    public override XGaUniformMultivector<T> VersorPseudoInverse()
     {
         var kVectorConjugate = Conjugate();
 
@@ -257,7 +268,7 @@ public sealed partial class XGaUniformMultivector<T>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public override XGaMultivector<T> EDual(XGaKVector<T> blade)
     {
-        return ELcp(blade.EInverse());
+        return ELcp(blade.EVersorInverse());
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -272,7 +283,7 @@ public sealed partial class XGaUniformMultivector<T>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public override XGaMultivector<T> Dual(XGaKVector<T> blade)
     {
-        return Lcp(blade.Inverse());
+        return Lcp(blade.VersorInverse());
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]

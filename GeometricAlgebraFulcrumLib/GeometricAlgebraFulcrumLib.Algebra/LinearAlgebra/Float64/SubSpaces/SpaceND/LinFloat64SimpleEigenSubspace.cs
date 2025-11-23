@@ -8,8 +8,8 @@ using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.LinearMaps.SpaceN
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.LinearMaps.SpaceND.Reflection;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.LinearMaps.SpaceND.Rotation;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.LinearMaps.SpaceND.Scaling;
-using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Matrices;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.SpaceND;
+using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Numerical;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
 using MathNet.Numerics;
 using MathNet.Numerics.LinearAlgebra;
@@ -88,16 +88,16 @@ public sealed class LinFloat64SimpleEigenSubspace :
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool NearContains(LinFloat64Vector vector, double zeroEpsilon = 1E-12D)
+    public bool NearContains(LinFloat64Vector vector, double tolerance = 1E-12D)
     {
-        return Subspace.NearContains(vector, zeroEpsilon);
+        return Subspace.NearContains(vector, tolerance);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool NearContains(ILinFloat64Subspace subspace, double zeroEpsilon = 1E-12)
+    public bool NearContains(ILinFloat64Subspace subspace, double tolerance = Float64Utils.DefaultTolerance)
     {
         return subspace.VSpaceDimensions <= VSpaceDimensions &&
-               subspace.BasisVectors.All(v => NearContains(v, zeroEpsilon));
+               subspace.BasisVectors.All(v => NearContains(v, tolerance));
     }
 
 

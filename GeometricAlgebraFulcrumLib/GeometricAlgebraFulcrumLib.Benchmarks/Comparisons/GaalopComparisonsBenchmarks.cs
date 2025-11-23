@@ -10,24 +10,24 @@ namespace GeometricAlgebraFulcrumLib.Benchmarks.Comparisons
     {
         public static void GetSphereCenterGaFuL(LinFloat64Vector3D p1, LinFloat64Vector3D p2, LinFloat64Vector3D p3, LinFloat64Vector3D p4, double[] center)
         {
-            var p1X = p1.X.ScalarValue;
-            var p1Y = p1.Y.ScalarValue;
-            var p1Z = p1.Z.ScalarValue;
+            var p1X = p1.X;
+            var p1Y = p1.Y;
+            var p1Z = p1.Z;
             var p1I = (p1X * p1X + p1Y * p1Y + p1Z * p1Z) / 2;
 
-            var p2X = p2.X.ScalarValue;
-            var p2Y = p2.Y.ScalarValue;
-            var p2Z = p2.Z.ScalarValue;
+            var p2X = p2.X;
+            var p2Y = p2.Y;
+            var p2Z = p2.Z;
             var p2I = (p1X * p1X + p1Y * p1Y + p1Z * p1Z) / 2;
 
-            var p3X = p3.X.ScalarValue;
-            var p3Y = p3.Y.ScalarValue;
-            var p3Z = p3.Z.ScalarValue;
+            var p3X = p3.X;
+            var p3Y = p3.Y;
+            var p3Z = p3.Z;
             var p3I = (p1X * p1X + p1Y * p1Y + p1Z * p1Z) / 2;
 
-            var p4X = p4.X.ScalarValue;
-            var p4Y = p4.Y.ScalarValue;
-            var p4Z = p4.Z.ScalarValue;
+            var p4X = p4.X;
+            var p4Y = p4.Y;
+            var p4Z = p4.Z;
             var p4I = (p1X * p1X + p1Y * p1Y + p1Z * p1Z) / 2;
 
             //Begin GA-FuL MetaContext Code Generation, 2024-05-24T18:58:36.3929014+03:00
@@ -151,24 +151,24 @@ namespace GeometricAlgebraFulcrumLib.Benchmarks.Comparisons
 
         public static void GetSphereCenterGaalop(LinFloat64Vector3D p1, LinFloat64Vector3D p2, LinFloat64Vector3D p3, LinFloat64Vector3D p4, double[] center)
         {
-            var p1X = p1.X.ScalarValue;
-            var p1Y = p1.Y.ScalarValue;
-            var p1Z = p1.Z.ScalarValue;
+            var p1X = p1.X;
+            var p1Y = p1.Y;
+            var p1Z = p1.Z;
             var p1I = (p1X * p1X + p1Y * p1Y + p1Z * p1Z) / 2;
 
-            var p2X = p2.X.ScalarValue;
-            var p2Y = p2.Y.ScalarValue;
-            var p2Z = p2.Z.ScalarValue;
+            var p2X = p2.X;
+            var p2Y = p2.Y;
+            var p2Z = p2.Z;
             var p2I = (p2X * p2X + p2Y * p2Y + p2Z * p2Z) / 2;
 
-            var p3X = p3.X.ScalarValue;
-            var p3Y = p3.Y.ScalarValue;
-            var p3Z = p3.Z.ScalarValue;
+            var p3X = p3.X;
+            var p3Y = p3.Y;
+            var p3Z = p3.Z;
             var p3I = (p3X * p3X + p3Y * p3Y + p3Z * p3Z) / 2;
 
-            var p4X = p4.X.ScalarValue;
-            var p4Y = p4.Y.ScalarValue;
-            var p4Z = p4.Z.ScalarValue;
+            var p4X = p4.X;
+            var p4Y = p4.Y;
+            var p4Z = p4.Z;
             var p4I = (p4X * p4X + p4Y * p4Y + p4Z * p4Z) / 2;
 
             var tempGcse1 = p1I * p2Z;
@@ -237,17 +237,17 @@ namespace GeometricAlgebraFulcrumLib.Benchmarks.Comparisons
 
         public static void Get3SphereIntersectionGaFuL(LinFloat64Vector3D p1, LinFloat64Vector3D p2, LinFloat64Vector3D p3, double d14, double d24, double d34, double[] x1, double[] S1, double[] S2, double[] S3, double[] PP4, double[] DualPP4, double[] x4a, double[] x4b)
         {
-            var a1 = p1.X.ScalarValue;
-            var a2 = p1.Y.ScalarValue;
-            var a3 = p1.Z.ScalarValue;
+            var a1 = p1.X;
+            var a2 = p1.Y;
+            var a3 = p1.Z;
 
-            var b1 = p2.X.ScalarValue;
-            var b2 = p2.Y.ScalarValue;
-            var b3 = p2.Z.ScalarValue;
+            var b1 = p2.X;
+            var b2 = p2.Y;
+            var b3 = p2.Z;
 
-            var c1 = p3.X.ScalarValue;
-            var c2 = p3.Y.ScalarValue;
-            var c3 = p3.Z.ScalarValue;
+            var c1 = p3.X;
+            var c2 = p3.Y;
+            var c3 = p3.Z;
 
             //Begin GA-FuL MetaContext Code Generation, 2024-05-24T18:16:58.6624231+03:00
             //MetaContext:
@@ -486,17 +486,17 @@ namespace GeometricAlgebraFulcrumLib.Benchmarks.Comparisons
 
         public static void Get3SphereIntersectionGaalop(LinFloat64Vector3D p1, LinFloat64Vector3D p2, LinFloat64Vector3D p3, double d14, double d24, double d34, double[] x1, double[] S1, double[] S2, double[] S3, double[] PP4, double[] DualPP4, double[] x4a, double[] x4b)
         {
-            var a1 = p1.X.ScalarValue;
-            var a2 = p1.Y.ScalarValue;
-            var a3 = p1.Z.ScalarValue;
+            var a1 = p1.X;
+            var a2 = p1.Y;
+            var a3 = p1.Z;
 
-            var b1 = p2.X.ScalarValue;
-            var b2 = p2.Y.ScalarValue;
-            var b3 = p2.Z.ScalarValue;
+            var b1 = p2.X;
+            var b2 = p2.Y;
+            var b3 = p2.Z;
 
-            var c1 = p3.X.ScalarValue;
-            var c2 = p3.Y.ScalarValue;
-            var c3 = p3.Z.ScalarValue;
+            var c1 = p3.X;
+            var c2 = p3.Y;
+            var c3 = p3.Z;
 
 
             double temp_gcse_1, temp_gcse_10, temp_gcse_11, temp_gcse_12, temp_gcse_13, temp_gcse_14, temp_gcse_15, temp_gcse_17, temp_gcse_18, temp_gcse_19, temp_gcse_2, temp_gcse_21, temp_gcse_22, temp_gcse_24, temp_gcse_25, temp_gcse_26, temp_gcse_27, temp_gcse_28, temp_gcse_29, temp_gcse_3, temp_gcse_30, temp_gcse_31, temp_gcse_32, temp_gcse_33, temp_gcse_34, temp_gcse_35, temp_gcse_36, temp_gcse_37, temp_gcse_38, temp_gcse_39, temp_gcse_4, temp_gcse_40, temp_gcse_41, temp_gcse_42, temp_gcse_43, temp_gcse_44, temp_gcse_45, temp_gcse_47, temp_gcse_48, temp_gcse_49, temp_gcse_5, temp_gcse_50, temp_gcse_51, temp_gcse_52, temp_gcse_53, temp_gcse_54, temp_gcse_55, temp_gcse_56, temp_gcse_58, temp_gcse_59, temp_gcse_6, temp_gcse_61, temp_gcse_62, temp_gcse_64, temp_gcse_65, temp_gcse_66, temp_gcse_67, temp_gcse_69, temp_gcse_7, temp_gcse_70, temp_gcse_72, temp_gcse_74, temp_gcse_75, temp_gcse_76, temp_gcse_77, temp_gcse_78, temp_gcse_8, temp_gcse_80, temp_gcse_81, temp_gcse_82, temp_gcse_84, temp_gcse_9;
@@ -725,17 +725,17 @@ namespace GeometricAlgebraFulcrumLib.Benchmarks.Comparisons
 
         public static void ReconstructMotorGaFuL(LinFloat64Vector3D p1, LinFloat64Vector3D p2, LinFloat64Vector3D p3, double t, double[] AI, double[] At, double[] BI, double[] Bt, double[] CI, double[] Ct)
         {
-            var ax = p1.X.ScalarValue;
-            var ay = p1.Y.ScalarValue;
-            var az = p1.Z.ScalarValue;
+            var ax = p1.X;
+            var ay = p1.Y;
+            var az = p1.Z;
 
-            var bx = p2.X.ScalarValue;
-            var by = p2.Y.ScalarValue;
-            var bz = p2.Z.ScalarValue;
+            var bx = p2.X;
+            var by = p2.Y;
+            var bz = p2.Z;
 
-            var cx = p3.X.ScalarValue;
-            var cy = p3.Y.ScalarValue;
-            var cz = p3.Z.ScalarValue;
+            var cx = p3.X;
+            var cy = p3.Y;
+            var cz = p3.Z;
 
             //Begin GA-FuL MetaContext Code Generation, 2024-06-09T00:41:17.1509230+03:00
             //MetaContext: PGA
@@ -1294,17 +1294,17 @@ namespace GeometricAlgebraFulcrumLib.Benchmarks.Comparisons
 
         public static void ReconstructMotorGaalop(LinFloat64Vector3D p1, LinFloat64Vector3D p2, LinFloat64Vector3D p3, double t, double[] AI, double[] At, double[] BI, double[] Bt, double[] CI, double[] Ct)
         {
-            var ax = p1.X.ScalarValue;
-            var ay = p1.Y.ScalarValue;
-            var az = p1.Z.ScalarValue;
+            var ax = p1.X;
+            var ay = p1.Y;
+            var az = p1.Z;
 
-            var bx = p2.X.ScalarValue;
-            var by = p2.Y.ScalarValue;
-            var bz = p2.Z.ScalarValue;
+            var bx = p2.X;
+            var by = p2.Y;
+            var bz = p2.Z;
 
-            var cx = p3.X.ScalarValue;
-            var cy = p3.Y.ScalarValue;
-            var cz = p3.Z.ScalarValue;
+            var cx = p3.X;
+            var cy = p3.Y;
+            var cz = p3.Z;
 
             var B2 = new double[16];
             var C2 = new double[16];
@@ -1607,12 +1607,12 @@ namespace GeometricAlgebraFulcrumLib.Benchmarks.Comparisons
 
         public static void SnelliusPothenotProblemCassiniGaFuL(LinFloat64Vector3D pointA, LinFloat64Vector3D pointB, LinFloat64Vector3D pointC, double alpha, double beta, double[] p1, double[] p2)
         {
-            var Ax = pointA.X.ScalarValue;
-            var Ay = pointA.Y.ScalarValue;
-            var Bx = pointB.X.ScalarValue;
-            var By = pointB.Y.ScalarValue;
-            var Cx = pointC.X.ScalarValue;
-            var Cy = pointC.Y.ScalarValue;
+            var Ax = pointA.X;
+            var Ay = pointA.Y;
+            var Bx = pointB.X;
+            var By = pointB.Y;
+            var Cx = pointC.X;
+            var Cy = pointC.Y;
 
             //var alphaCos = Math.Cos(alpha);
             var alphaSin = Math.Sin(alpha);
@@ -2092,12 +2092,12 @@ namespace GeometricAlgebraFulcrumLib.Benchmarks.Comparisons
 
         public static void SnelliusPothenotProblemCassiniGaalop(LinFloat64Vector3D pointA, LinFloat64Vector3D pointB, LinFloat64Vector3D pointC, double alpha, double beta, double[] p1, double[] p2)
         {
-            var Ax = pointA.X.ScalarValue;
-            var Ay = pointA.Y.ScalarValue;
-            var Bx = pointB.X.ScalarValue;
-            var By = pointB.Y.ScalarValue;
-            var Cx = pointC.X.ScalarValue;
-            var Cy = pointC.Y.ScalarValue;
+            var Ax = pointA.X;
+            var Ay = pointA.Y;
+            var Bx = pointB.X;
+            var By = pointB.Y;
+            var Cx = pointC.X;
+            var Cy = pointC.Y;
 
             var a = new double[32];
             var angle1 = new double[32];

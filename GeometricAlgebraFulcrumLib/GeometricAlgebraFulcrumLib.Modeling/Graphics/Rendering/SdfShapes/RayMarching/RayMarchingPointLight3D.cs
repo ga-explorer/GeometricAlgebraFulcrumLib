@@ -27,8 +27,8 @@ public sealed class RayMarchingPointLight3D
         var vectorV = (EyePoint - point).ToUnitLinVector3D();
         var vectorR = unitNormal.ReflectVectorOnUnitVector(-vectorL);
             
-        var dotLN = vectorL.VectorESp(unitNormal);
-        var dotRV = vectorR.VectorESp(vectorV);
+        var dotLN = vectorL.VectorDot(unitNormal);
+        var dotRV = vectorR.VectorDot(vectorV);
             
         if (dotLN < 0.0) {
             // Light not visible from this point on the surface

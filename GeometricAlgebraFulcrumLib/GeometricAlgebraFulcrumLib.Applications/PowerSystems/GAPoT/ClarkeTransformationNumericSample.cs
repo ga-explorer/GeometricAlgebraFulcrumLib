@@ -32,9 +32,7 @@ public static class ClarkeTransformationNumericSample
                 clarkeMap.GetVectorMapArray(n, n);
 
             Console.WriteLine("Generated Clarke Matrix:");
-            Console.WriteLine(
-                TextComposer.GetArrayText(clarkeArray)
-            );
+            Console.WriteLine(clarkeArray);
             Console.WriteLine();
 
             var (linearMapQ, linearMapR) =
@@ -55,18 +53,14 @@ public static class ClarkeTransformationNumericSample
                 linearMapQ.GetVectorMapArray(n, n);
 
             Console.WriteLine("Q Matrix:");
-            Console.WriteLine(
-                TextComposer.GetArrayText(linearMapQArray)
-            );
+            Console.WriteLine(linearMapQArray);
             Console.WriteLine();
 
             var linearMapRArray =
                 linearMapR.GetVectorMapArray(n, n);
 
             Console.WriteLine("R Matrix:");
-            Console.WriteLine(
-                TextComposer.GetArrayText(linearMapRArray)
-            );
+            Console.WriteLine(linearMapRArray);
             Console.WriteLine();
 
             var rotorsSequence = linearMapQ.CreatePureRotorsSequence();

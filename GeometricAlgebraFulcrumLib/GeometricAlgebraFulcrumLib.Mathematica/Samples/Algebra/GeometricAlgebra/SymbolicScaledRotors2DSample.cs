@@ -94,7 +94,7 @@ public static class SymbolicScalingRotors2DSample
         var vVector =
             GeometricProcessor.Vector("Subscript[v,1]", "Subscript[v,2]");
 
-        var vuInv = vVector.Gp(uVector.Inverse());
+        var vuInv = vVector.Gp(uVector.VersorInverse());
 
         var vuWedge = vVector.Op(uVector);
         var vuWedgeSquared = vuWedge.Gp(vuWedge);

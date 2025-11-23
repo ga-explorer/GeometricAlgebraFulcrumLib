@@ -3,6 +3,23 @@
 
 namespace GeometricAlgebraFulcrumLib.Utilities.Structures.Random;
 
+//public abstract class RandomGeneratorWrapperBase :
+//    System.Random
+//{
+//    protected System.Random InternalGenerator { get; }
+
+
+//    protected RandomGeneratorWrapperBase(System.Random internalGenerator)
+//    {
+//        InternalGenerator = internalGenerator;
+//    }
+
+
+
+//}
+
+
+
 /// <summary>
 /// Implementation is based on paper:
 /// "Computer simulation of Lévy α-stable variables and processes"
@@ -126,6 +143,7 @@ public sealed class StableDistributionRandomGenerator :
             Math.Pow(Math.Cos(v), invAlpha) *
             Math.Pow(Math.Cos(v - Alpha * (v + b)) / w, invAlpha - 1d);
     }
+
 
     public override double NextDouble()
     {

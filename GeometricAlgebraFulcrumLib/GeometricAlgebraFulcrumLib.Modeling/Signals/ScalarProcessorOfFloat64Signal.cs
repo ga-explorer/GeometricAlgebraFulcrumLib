@@ -21,10 +21,10 @@ public sealed class ScalarProcessorOfFloat64Signal :
     public IScalarProcessor<double> ScalarProcessor
         => ScalarProcessorOfFloat64.Instance;
 
-    public double ZeroEpsilon
+    public double DefaultTolerance
     {
-        get => ScalarProcessor.ZeroEpsilon;
-        set => ScalarProcessor.ZeroEpsilon = value;
+        get => ScalarProcessor.DefaultTolerance;
+        set => ScalarProcessor.DefaultTolerance = value;
     }
 
     public bool IsNumeric

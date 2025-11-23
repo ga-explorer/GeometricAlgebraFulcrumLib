@@ -38,8 +38,8 @@ public class ConstantParametricCurve4D :
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     private ConstantParametricCurve4D(ILinFloat64Vector4D point, ILinFloat64Vector4D tangent)
     {
-        Point = LinFloat64Vector4DUtils.ToLinVector4D(point);
-        Tangent = LinFloat64Vector4DUtils.ToLinVector4D(tangent);
+        Point = point.ToLinVector4D();
+        Tangent = tangent.ToLinVector4D();
 
         Debug.Assert(IsValid());
     }

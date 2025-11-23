@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using System.Collections.Immutable;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
@@ -157,7 +156,7 @@ public sealed class Float64SampledTimeSignalComposer :
         if (double.IsNaN(samplingRate) || double.IsInfinity(samplingRate) || samplingRate <= 0)
             throw new ArgumentOutOfRangeException(nameof(samplingRate));
 
-        _sampleList = new List<double>();
+        _sampleList = [];
         SamplingRate = samplingRate;
     }
 
@@ -199,9 +198,9 @@ public sealed class Float64SampledTimeSignalComposer :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool IsNearZero(double zeroEpsilon = Float64Utils.ZeroEpsilon)
+    public bool IsNearZero(double tolerance = Float64Utils.DefaultTolerance)
     {
-        return _sampleList.All(s => s.IsNearZero(zeroEpsilon));
+        return _sampleList.All(s => s.IsNearZero(tolerance));
     }
 
 
@@ -570,7 +569,7 @@ public sealed class Float64SampledTimeSignalComposer :
     {
         return Float64SampledTimeSignal.Create(
             SamplingSpecs,
-            _sampleList.ToImmutableArray(),
+            [.._sampleList],
             false
         );
     }
@@ -580,7 +579,7 @@ public sealed class Float64SampledTimeSignalComposer :
     {
         return Float64SampledTimeSignal.Create(
             SamplingSpecs,
-            _sampleList.ToImmutableArray(),
+            [.._sampleList],
             true
         );
     }

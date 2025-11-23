@@ -164,19 +164,19 @@ public sealed record LinFloat64Trivector3D :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool IsNearZero(double zeroEpsilon = 1e-12d)
+    public bool IsNearZero(double tolerance = 1e-12d)
     {
-        return Scalar123.IsNearZero(zeroEpsilon);
+        return Scalar123.IsNearZero(tolerance);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public Float64Scalar Norm()
+    public double L2Norm()
     {
         return Scalar123.Abs();
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public Float64Scalar NormSquared()
+    public double L2NormSquared()
     {
         return Scalar123.Square();
     }

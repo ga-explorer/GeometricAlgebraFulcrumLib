@@ -82,7 +82,7 @@ public sealed record CGaVersor<T>
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     internal CGaVersor(CGaGeometricSpace<T> cgaGeometricSpace, XGaMultivector<T> multivector)
-        : this(cgaGeometricSpace, multivector, multivector.Inverse())
+        : this(cgaGeometricSpace, multivector, multivector.VersorInverse())
     {
         //Debug.Assert(
         //    multivector.Processor.HasSameSignature(cgaGeometricSpace.ConformalProcessor) &&
@@ -197,7 +197,7 @@ public sealed record CGaVersor<T>
     {
         return new CGaVersor<T>(
             GeometricSpace,
-            InternalMultivector.Inverse()
+            InternalMultivector.VersorInverse()
         );
     }
 

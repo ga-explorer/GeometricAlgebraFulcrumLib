@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using GeometricAlgebraFulcrumLib.Utilities.Code.MathML.Elements;
+﻿using GeometricAlgebraFulcrumLib.Utilities.Code.MathML.Elements;
 using GeometricAlgebraFulcrumLib.Utilities.Code.MathML.Elements.Layout;
 using GeometricAlgebraFulcrumLib.Utilities.Code.MathML.Elements.Tokens;
 using GeometricAlgebraFulcrumLib.Utilities.Structures;

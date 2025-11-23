@@ -17,15 +17,15 @@ public static class XGaFloat64RotorUtils
     /// <param name="targetVector"></param>
     /// <param name="assumeUnitVectors"></param>
     /// <returns></returns>
-    public static XGaFloat64PureScalingRotor CreateEuclideanPureRotor(this ILinFloat64Vector2D sourceVector, ILinFloat64Vector2D targetVector, bool assumeUnitVectors = false)
+    public static XGaFloat64PureScalingRotor CreateEuclideanPureRotor(this LinFloat64Vector2D sourceVector, LinFloat64Vector2D targetVector, bool assumeUnitVectors = false)
     {
         var basisSet = XGaFloat64Processor.Euclidean;
 
         var cosAngle =
             assumeUnitVectors
-                ? targetVector.VectorESp(sourceVector)
-                : targetVector.VectorESp(sourceVector) /
-                  (targetVector.VectorENormSquared() * sourceVector.VectorENormSquared()).Sqrt();
+                ? targetVector.VectorDot(sourceVector)
+                : targetVector.VectorDot(sourceVector) /
+                  (targetVector.L2NormSquared() * sourceVector.L2NormSquared()).Sqrt();
 
         if (cosAngle == 1d)
             return basisSet.IdentityScalingRotor();
@@ -35,8 +35,8 @@ public static class XGaFloat64RotorUtils
 
         var rotationBlade =
             cosAngle.IsNegativeOne()
-                ? sourceVector.GetUnitNormal().ToXGaFloat64Vector().Op(sourceVector.ToXGaFloat64Vector())
-                : targetVector.ToXGaFloat64Vector().Op(sourceVector.ToXGaFloat64Vector());
+                ? sourceVector.GetUnitNormal().ToXGaVector().Op(sourceVector.ToXGaVector())
+                : targetVector.ToXGaVector().Op(sourceVector.ToXGaVector());
 
         var unitRotationBlade =
             rotationBlade / (-rotationBlade.ESpSquared()).Sqrt();
@@ -56,15 +56,15 @@ public static class XGaFloat64RotorUtils
     /// <param name="targetVector"></param>
     /// <param name="assumeUnitVectors"></param>
     /// <returns></returns>
-    public static XGaFloat64PureScalingRotor CreateEuclideanPureRotor(this ILinFloat64Vector3D sourceVector, ILinFloat64Vector3D targetVector, bool assumeUnitVectors = false)
+    public static XGaFloat64PureScalingRotor CreateEuclideanPureRotor(this LinFloat64Vector3D sourceVector, LinFloat64Vector3D targetVector, bool assumeUnitVectors = false)
     {
         var basisSet = XGaFloat64Processor.Euclidean;
 
         var cosAngle =
             assumeUnitVectors
-                ? targetVector.VectorESp(sourceVector)
-                : targetVector.VectorESp(sourceVector) /
-                  (targetVector.VectorENormSquared() * sourceVector.VectorENormSquared()).Sqrt();
+                ? targetVector.VectorDot(sourceVector)
+                : targetVector.VectorDot(sourceVector) /
+                  (targetVector.L2NormSquared() * sourceVector.L2NormSquared()).Sqrt();
 
         if (cosAngle == 1d)
             return basisSet.IdentityScalingRotor();
@@ -74,8 +74,8 @@ public static class XGaFloat64RotorUtils
 
         var rotationBlade =
             cosAngle == -1
-                ? sourceVector.GetUnitNormal().ToXGaFloat64Vector().Op(sourceVector.ToXGaFloat64Vector())
-                : targetVector.ToXGaFloat64Vector().Op(sourceVector.ToXGaFloat64Vector());
+                ? sourceVector.GetUnitNormal().ToXGaVector().Op(sourceVector.ToXGaVector())
+                : targetVector.ToXGaVector().Op(sourceVector.ToXGaVector());
 
         var unitRotationBlade =
             rotationBlade / (-rotationBlade.ESpSquared()).Sqrt();
@@ -95,14 +95,14 @@ public static class XGaFloat64RotorUtils
     /// <param name="sourceVector"></param>
     /// <param name="targetVector"></param>
     /// <returns></returns>
-    public static XGaFloat64PureScalingRotor CreateEuclideanPureScalingRotor(this ILinFloat64Vector2D sourceVector, ILinFloat64Vector2D targetVector)
+    public static XGaFloat64PureScalingRotor CreateEuclideanPureScalingRotor(this LinFloat64Vector2D sourceVector, LinFloat64Vector2D targetVector)
     {
         var basisSet = XGaFloat64Processor.Euclidean;
 
-        var uNorm = sourceVector.VectorENorm();
-        var vNorm = targetVector.VectorENorm();
+        var uNorm = sourceVector.L2Norm();
+        var vNorm = targetVector.L2Norm();
         var scalingFactor = (vNorm / uNorm).Sqrt();
-        var cosAngle = targetVector.VectorESp(sourceVector) / (uNorm * vNorm);
+        var cosAngle = targetVector.VectorDot(sourceVector) / (uNorm * vNorm);
 
         if (cosAngle == 1d)
             return basisSet.IdentityScalingRotor(scalingFactor);
@@ -112,8 +112,8 @@ public static class XGaFloat64RotorUtils
 
         var rotationBlade =
             cosAngle == -1d
-                ? sourceVector.GetUnitNormal().ToXGaFloat64Vector().Op(sourceVector.ToXGaFloat64Vector())
-                : targetVector.ToXGaFloat64Vector().Op(sourceVector.ToXGaFloat64Vector());
+                ? sourceVector.GetUnitNormal().ToXGaVector().Op(sourceVector.ToXGaVector())
+                : targetVector.ToXGaVector().Op(sourceVector.ToXGaVector());
 
         var unitRotationBlade =
             rotationBlade / (-rotationBlade.ESpSquared()).Sqrt();
@@ -136,14 +136,14 @@ public static class XGaFloat64RotorUtils
     /// <param name="sourceVector"></param>
     /// <param name="targetVector"></param>
     /// <returns></returns>
-    public static XGaFloat64PureScalingRotor CreateEuclideanPureScalingRotor(this ILinFloat64Vector3D sourceVector, ILinFloat64Vector3D targetVector)
+    public static XGaFloat64PureScalingRotor CreateEuclideanPureScalingRotor(this LinFloat64Vector3D sourceVector, LinFloat64Vector3D targetVector)
     {
         var basisSet = XGaFloat64Processor.Euclidean;
 
-        var uNorm = sourceVector.VectorENorm();
-        var vNorm = targetVector.VectorENorm();
+        var uNorm = sourceVector.L2Norm();
+        var vNorm = targetVector.L2Norm();
         var scalingFactor = (vNorm / uNorm).Sqrt();
-        var cosAngle = targetVector.VectorESp(sourceVector) / (uNorm * vNorm);
+        var cosAngle = targetVector.VectorDot(sourceVector) / (uNorm * vNorm);
 
         if (cosAngle == 1d)
             return basisSet.IdentityScalingRotor(scalingFactor);
@@ -153,8 +153,8 @@ public static class XGaFloat64RotorUtils
 
         var rotationBlade =
             cosAngle == -1d
-                ? sourceVector.GetUnitNormal().ToXGaFloat64Vector().Op(sourceVector.ToXGaFloat64Vector())
-                : targetVector.ToXGaFloat64Vector().Op(sourceVector.ToXGaFloat64Vector());
+                ? sourceVector.GetUnitNormal().ToXGaVector().Op(sourceVector.ToXGaVector())
+                : targetVector.ToXGaVector().Op(sourceVector.ToXGaVector());
 
         var unitRotationBlade =
             rotationBlade / (-rotationBlade.ESpSquared()).Sqrt();

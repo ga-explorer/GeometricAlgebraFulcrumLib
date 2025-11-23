@@ -19,6 +19,6 @@ public sealed class SdfTorusY3D : ScalarDistanceFunction
     {
         var q = LinFloat64Vector2D.Create(point.VectorLengthXz() - InnerRadius, point.Y);
 
-        return q.VectorENorm() - OuterRadius;
+        return LinFloat64Vector2DUtils.L2Norm(q) - OuterRadius;
     }
 }

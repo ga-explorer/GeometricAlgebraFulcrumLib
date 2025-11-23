@@ -46,25 +46,31 @@ public sealed class PathsMeshPoint3D : ILinFloat64Vector3D
     public int VSpaceDimensions 
         => 3;
 
-    public Float64Scalar X 
+    public double X 
         => Point.X;
 
-    public Float64Scalar Y 
+    public double Y 
         => Point.Y;
 
-    public Float64Scalar Z 
+    public double Z 
         => Point.Z;
+    
+    public double this[int index] 
+        => index switch
+        {
+            0 => X,
+            1 => Y,
+            _ => Float64Scalar.Zero
+        };
 
-    public Float64Scalar Item1 
+    public double Item1 
         => X;
 
-    public Float64Scalar Item2
+    public double Item2
         => Y;
 
-    public Float64Scalar Item3
+    public double Item3
         => Z;
-
-    public bool IsValid() => Point.IsValid();
 
 
     internal PathsMeshPoint3D(IPathsMesh3D baseMesh, int pathIndex, int pathPointIndex)
@@ -73,4 +79,10 @@ public sealed class PathsMeshPoint3D : ILinFloat64Vector3D
         PathIndex = pathIndex.Mod(baseMesh.Count);
         PathPointIndex = pathPointIndex.Mod(baseMesh.PathPointsCount);
     }
+    
+    public bool IsValid()
+    {
+        return Point.IsValid();
+    }
+
 }

@@ -74,7 +74,7 @@ public class XGaFloat64BasisVectorFrame :
     public XGaFloat64BasisVectorFrame GetReciprocalVectorFrame()
     {
         var pseudoScalarInv =
-            _vectorList.Op(Processor).Inverse();
+            _vectorList.Op(Processor).VersorInverse();
 
         var vectorArray = new XGaFloat64Vector[Count];
 
@@ -153,7 +153,7 @@ public class XGaFloat64BasisVectorFrame :
     {
         var metric = Processor;
 
-        var mvFrame1 = CreateBasisKVectorFrame().MapAsBasisUsing(mv => mv.Inverse());
+        var mvFrame1 = CreateBasisKVectorFrame().MapAsBasisUsing(mv => mv.VersorInverse());
         var mvFrame2 = targetFrame.CreateBasisKVectorFrame();
 
         var rotorMultivector =
@@ -165,7 +165,7 @@ public class XGaFloat64BasisVectorFrame :
                     (mv1, mv2) => mv1.Add(mv2)
                 );
 
-        rotorMultivector /= rotorMultivector.Sp(rotorMultivector.Reverse()).Sqrt().ScalarValue;
+        rotorMultivector /= rotorMultivector.Sp(rotorMultivector.Reverse()).Sqrt();
 
         return XGaFloat64Rotor.Create(rotorMultivector);
     }

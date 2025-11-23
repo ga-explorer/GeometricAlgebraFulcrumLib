@@ -16,6 +16,30 @@ public class CGaFloat64HGaEncoder :
     {
     }
 
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public CGaFloat64Blade Point(double egaPointX, double egaPointY)
+    {
+        return Point(
+            GeometricSpace.Encode.VGa.Vector(egaPointX, egaPointY)
+        );
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public CGaFloat64Blade Point(double egaPointX, double egaPointY, double egaPointZ)
+    {
+        return Point(
+            GeometricSpace.Encode.VGa.Vector(egaPointX, egaPointY, egaPointZ)
+        );
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public CGaFloat64Blade Point(params double[] egaPoint)
+    {
+        return Point(
+            GeometricSpace.Encode.VGa.Vector(egaPoint)
+        );
+    }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public CGaFloat64Blade Point(LinFloat64Vector2D egaPoint)

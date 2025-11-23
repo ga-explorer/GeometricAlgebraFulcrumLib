@@ -11,7 +11,7 @@ public class ScalarProcessorOfFloat64
 
     
     private double _zeroEpsilon = 1e-12;
-    public double ZeroEpsilon
+    public double DefaultTolerance
     {
         get => _zeroEpsilon;
         set
@@ -331,14 +331,14 @@ public class ScalarProcessorOfFloat64
     //public bool IsZero(double scalar, bool nearZeroFlag)
     //{
     //    return nearZeroFlag
-    //        ? scalar > -ZeroEpsilon && scalar < ZeroEpsilon
+    //        ? scalar > -DefaultTolerance && scalar < DefaultTolerance
     //        : scalar == 0d;
     //}
 
     //[MethodImpl(MethodImplOptions.AggressiveInlining)]
     //public bool IsNearZero(double scalar)
     //{
-    //    return scalar > -ZeroEpsilon && scalar < ZeroEpsilon;
+    //    return scalar > -DefaultTolerance && scalar < DefaultTolerance;
     //}
 
     //[MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -351,14 +351,14 @@ public class ScalarProcessorOfFloat64
     //public bool IsNotZero(double scalar, bool nearZeroFlag)
     //{
     //    return nearZeroFlag
-    //        ? scalar <= -ZeroEpsilon || scalar >= ZeroEpsilon
+    //        ? scalar <= -DefaultTolerance || scalar >= DefaultTolerance
     //        : scalar != 0d;
     //}
 
     //[MethodImpl(MethodImplOptions.AggressiveInlining)]
     //public bool IsNotNearZero(double scalar)
     //{
-    //    return scalar <= -ZeroEpsilon || scalar >= ZeroEpsilon;
+    //    return scalar <= -DefaultTolerance || scalar >= DefaultTolerance;
     //}
 
     //[MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -388,13 +388,13 @@ public class ScalarProcessorOfFloat64
     //[MethodImpl(MethodImplOptions.AggressiveInlining)]
     //public bool IsNotNearPositive(double scalar)
     //{
-    //    return scalar < -ZeroEpsilon;
+    //    return scalar < -DefaultTolerance;
     //}
 
     //[MethodImpl(MethodImplOptions.AggressiveInlining)]
     //public bool IsNotNearNegative(double scalar)
     //{
-    //    return scalar > ZeroEpsilon;
+    //    return scalar > DefaultTolerance;
     //}
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]

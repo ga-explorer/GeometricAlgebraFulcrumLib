@@ -109,7 +109,7 @@ public static class XGaMetricUtils
 
         return termsArray
             .OrderBy(t => t.Key.Grade())
-            .ThenByDescending(t => t.Key.ReverseBits(bitsCount));
+            .ThenByDescending(t => t.Key.ReversePrefixBits(bitsCount));
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]

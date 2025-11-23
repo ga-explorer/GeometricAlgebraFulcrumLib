@@ -42,7 +42,7 @@
 //        }
 
 //        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-//        public bool IsNearIdentity(double zeroEpsilon = 1E-12)
+//        public bool IsNearIdentity(double tolerance = 1E-12)
 //        {
 //            return false;
 //        }

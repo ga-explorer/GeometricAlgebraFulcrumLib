@@ -79,10 +79,10 @@ public class GrBabylonJsPowerSignalVisualizer :
         var (kappa1, kappa2) = Signal.CurvatureList[frameIndex];
 
         var omega = Signal.DarbouxBivectorList[frameIndex];
-        var omegaNorm = omega.Norm();
+        var omegaNorm = omega.L2Norm();
 
         var omegaMean = Signal.GetDarbouxBivectorMean(frameIndex);
-        var omegaMeanNorm = omegaMean.Norm();
+        var omegaMeanNorm = omegaMean.L2Norm();
 
         var frequencyHz = omegaNorm / (Math.Tau);
         var frequencyHzMean = omegaMeanNorm / (Math.Tau);
@@ -723,7 +723,7 @@ public class GrBabylonJsPowerSignalVisualizer :
     //    return SceneComposer;
     //}
 
-    private void AddSignalPlane(ILinFloat64Vector3D k)
+    private void AddSignalPlane(LinFloat64Vector3D k)
     {
         var scene = MainSceneComposer.SceneObject;
 
@@ -742,7 +742,7 @@ public class GrBabylonJsPowerSignalVisualizer :
             "disc",
             scene.GetMaterial("discMaterial").CreateThickSurfaceStyle(0.025),
             LinFloat64Vector3D.Zero,
-            k,
+            k.ToLinVector3D(),
             Signal.ScalarBounds.MaxValue * 1.5d, //Math.Sqrt(3d / 2d)
             false
         );
@@ -811,7 +811,7 @@ public class GrBabylonJsPowerSignalVisualizer :
                 .FrameList
                 .Skip(trailStartIndex)
                 .Take(trailLength)
-                .ToImmutableArray();
+                .ToLinVector3DList();
 
         MainSceneComposer.AddLinePath(
             "curve",
@@ -841,8 +841,8 @@ public class GrBabylonJsPowerSignalVisualizer :
         if (Signal.FrameList is null || Signal.CurvatureList is null || Signal.SampledCurve is null)
             return;
 
-        var lineArrayList = new List<LinFloat64Vector3D[]>(Signal.SampledCurve.CornerCount);
-        var colorArrayList = new List<Color[]>(Signal.SampledCurve.CornerCount);
+        var lineArrayList = new List<LinFloat64Vector3D[]>(Signal.SampledCurve.Count);
+        var colorArrayList = new List<Color[]>(Signal.SampledCurve.Count);
 
         var xColor1 = Color.Red.SetAlpha(0.8f); //Color.Red.SetAlpha(128);
         var xColor2 = Color.Red.SetAlpha(0.0f);
@@ -1090,7 +1090,7 @@ public class GrBabylonJsPowerSignalVisualizer :
             LaTeXScalingFactor
         );
 
-        if (e1Ds.VectorENorm() > 0.1)
+        if (LinFloat64Vector3DUtils.L2Norm(e1Ds) > 0.1)
         {
             OmegaSceneComposer.AddVector(
                 "e1DsVector",
@@ -1133,7 +1133,7 @@ public class GrBabylonJsPowerSignalVisualizer :
             );
         }
 
-        if (e2Ds.VectorENorm() > 0.1)
+        if (LinFloat64Vector3DUtils.L2Norm(e2Ds) > 0.1)
         {
             OmegaSceneComposer.AddVector(
                 "e2DsVector",
@@ -1176,7 +1176,7 @@ public class GrBabylonJsPowerSignalVisualizer :
             );
         }
 
-        if (e3Ds.VectorENorm() > 0.1)
+        if (LinFloat64Vector3DUtils.L2Norm(e3Ds) > 0.1)
         {
             var e3DsVectorMaterial = OmegaSceneComposer.SceneObject.AddStandardMaterial(
                 "e3DsVectorMaterial",

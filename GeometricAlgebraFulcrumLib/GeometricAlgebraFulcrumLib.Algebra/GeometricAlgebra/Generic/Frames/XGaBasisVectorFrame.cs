@@ -79,7 +79,7 @@ public class XGaBasisVectorFrame<T> :
     public XGaBasisVectorFrame<T> GetReciprocalVectorFrame()
     {
         var pseudoScalarInv =
-            _vectorList.Op().Inverse();
+            _vectorList.Op().VersorInverse();
 
         var vectorArray = new XGaVector<T>[Count];
 
@@ -146,7 +146,7 @@ public class XGaBasisVectorFrame<T> :
     {
         var processor = Processor;
 
-        var mvFrame1 = CreateBasisKVectorFrame().MapAsBasisUsing(mv => mv.Inverse());
+        var mvFrame1 = CreateBasisKVectorFrame().MapAsBasisUsing(mv => mv.VersorInverse());
         var mvFrame2 = targetFrame.CreateBasisKVectorFrame();
 
         var rotorMultivector =

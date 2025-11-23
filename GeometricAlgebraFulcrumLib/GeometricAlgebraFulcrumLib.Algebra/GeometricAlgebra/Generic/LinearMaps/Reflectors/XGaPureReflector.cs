@@ -28,7 +28,7 @@ public sealed class XGaPureReflector<T> :
         : base(vector.Processor)
     {
         Vector = vector;
-        VectorInverse = vector.Inverse();
+        VectorInverse = vector.VersorInverse();
     }
 
     private XGaPureReflector(XGaVector<T> vector, XGaVector<T> vectorInverse)
@@ -42,7 +42,7 @@ public sealed class XGaPureReflector<T> :
     public override bool IsValid()
     {
         // Make sure the storage and its reverse are correct
-        if (!(Vector.Inverse() - VectorInverse).IsNearZero())
+        if (!(Vector.VersorInverse() - VectorInverse).IsNearZero())
             return false;
 
         //// Make sure storage gp inverse(storage) == 1

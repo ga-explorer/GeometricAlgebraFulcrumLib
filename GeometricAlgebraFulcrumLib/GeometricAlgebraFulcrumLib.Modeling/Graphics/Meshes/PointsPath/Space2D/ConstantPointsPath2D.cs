@@ -4,8 +4,9 @@ using GeometricAlgebraFulcrumLib.Utilities.Structures.Sequences.Periodic1D;
 
 namespace GeometricAlgebraFulcrumLib.Modeling.Graphics.Meshes.PointsPath.Space2D;
 
-public class ConstantPointsPath2D
-    : PSeqConstant1D<ILinFloat64Vector2D>, IPointsPath2D
+public class ConstantPointsPath2D : 
+    PSeqConstant1D<LinFloat64Vector2D>, 
+    IPointsPath2D
 {
     public ConstantPointsPath2D(int count)
         : base(count, LinFloat64Vector2D.Create((Float64Scalar)0, 0))
@@ -17,7 +18,7 @@ public class ConstantPointsPath2D
     {
     }
 
-    public ConstantPointsPath2D(int count, ILinFloat64Vector2D value)
+    public ConstantPointsPath2D(int count, LinFloat64Vector2D value)
         : base(count, value)
     {
     }
@@ -28,7 +29,7 @@ public class ConstantPointsPath2D
         return Count >= 2 && Value.IsValid();
     }
 
-    public IPointsPath2D MapPoints(Func<ILinFloat64Vector2D, ILinFloat64Vector2D> pointMapping)
+    public IPointsPath2D MapPoints(Func<LinFloat64Vector2D, LinFloat64Vector2D> pointMapping)
     {
         return new ConstantPointsPath2D(Count, pointMapping(Value));
     }

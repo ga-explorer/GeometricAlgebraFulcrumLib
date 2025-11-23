@@ -26,7 +26,7 @@ public sealed class GrVisualCircleCurve3D :
     );
 
 
-    public static GrVisualCircleCurve3D CreateStatic(string name, GrVisualCurveStyle3D style, ILinFloat64Vector3D normal, double radius)
+    public static GrVisualCircleCurve3D CreateStatic(string name, GrVisualCurveStyle3D style, LinFloat64Vector3D normal, double radius)
     {
         return new GrVisualCircleCurve3D(
             name,
@@ -38,7 +38,7 @@ public sealed class GrVisualCircleCurve3D :
         );
     }
 
-    public static GrVisualCircleCurve3D CreateStatic(string name, GrVisualCurveStyle3D style, ILinFloat64Vector3D center, ILinFloat64Vector3D normal, double radius)
+    public static GrVisualCircleCurve3D CreateStatic(string name, GrVisualCurveStyle3D style, LinFloat64Vector3D center, LinFloat64Vector3D normal, double radius)
     {
         return new GrVisualCircleCurve3D(
             name,
@@ -50,7 +50,7 @@ public sealed class GrVisualCircleCurve3D :
         );
     }
         
-    public static GrVisualCircleCurve3D Create(string name, GrVisualCurveStyle3D style, ILinFloat64Vector3D normal, double radius, Float64SamplingSpecs samplingSpecs)
+    public static GrVisualCircleCurve3D Create(string name, GrVisualCurveStyle3D style, LinFloat64Vector3D normal, double radius, Float64SamplingSpecs samplingSpecs)
     {
         return new GrVisualCircleCurve3D(
             name,
@@ -62,7 +62,7 @@ public sealed class GrVisualCircleCurve3D :
         );
     }
 
-    public static GrVisualCircleCurve3D Create(string name, GrVisualCurveStyle3D style, ILinFloat64Vector3D center, ILinFloat64Vector3D normal, double radius, Float64SamplingSpecs samplingSpecs)
+    public static GrVisualCircleCurve3D Create(string name, GrVisualCurveStyle3D style, LinFloat64Vector3D center, LinFloat64Vector3D normal, double radius, Float64SamplingSpecs samplingSpecs)
     {
         return new GrVisualCircleCurve3D(
             name,
@@ -167,7 +167,7 @@ public sealed class GrVisualCircleCurve3D :
 
     //public GrVisualCurveStyle3D Style { get; }
 
-    public ILinFloat64Vector3D Center { get; }
+    public LinFloat64Vector3D Center { get; }
 
     public LinFloat64Vector3D Normal { get; }
 
@@ -186,7 +186,7 @@ public sealed class GrVisualCircleCurve3D :
     public GrVisualAnimatedScalar? AnimatedRadius { get; set; }
         
         
-    private GrVisualCircleCurve3D(string name, GrVisualCurveStyle3D style, ILinFloat64Vector3D center, ILinFloat64Vector3D normal, double radius, Float64SamplingSpecs samplingSpecs) 
+    private GrVisualCircleCurve3D(string name, GrVisualCurveStyle3D style, LinFloat64Vector3D center, LinFloat64Vector3D normal, double radius, Float64SamplingSpecs samplingSpecs) 
         : base(name, style, samplingSpecs)
     {
         //Style = style;
@@ -318,7 +318,7 @@ public sealed class GrVisualCircleCurve3D :
 
         foreach (var frameIndex in GetValidFrameIndexSet())
         {
-            var time = (double)frameIndex / SamplingSpecs.SamplingRate;
+            var time = frameIndex / SamplingSpecs.SamplingRate;
                 
             yield return new KeyFrameRecord(
                 frameIndex, 

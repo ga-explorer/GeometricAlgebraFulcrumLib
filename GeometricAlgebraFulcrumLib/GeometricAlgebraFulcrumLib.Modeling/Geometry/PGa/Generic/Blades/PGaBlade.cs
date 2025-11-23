@@ -434,7 +434,7 @@ public sealed record PGaBlade<T>
     {
         return new PGaBlade<T>(
             GeometricSpace,
-            InternalKVector.Inverse()
+            InternalKVector.VersorInverse()
         );
     }
 
@@ -547,7 +547,7 @@ public sealed record PGaBlade<T>
 
         return new PGaBlade<T>(
             GeometricSpace,
-            InternalKVector.Inverse().Lcp(GeometricSpace.Ie.InternalKVector)
+            InternalKVector.VersorInverse().Lcp(GeometricSpace.Ie.InternalKVector)
         );
     }
 
@@ -564,7 +564,7 @@ public sealed record PGaBlade<T>
 
         return new PGaBlade<T>(
             GeometricSpace,
-            GeometricSpace.Ie.InternalKVector.Rcp(InternalKVector.Inverse())
+            GeometricSpace.Ie.InternalKVector.Rcp(InternalKVector.VersorInverse())
         );
     }
 

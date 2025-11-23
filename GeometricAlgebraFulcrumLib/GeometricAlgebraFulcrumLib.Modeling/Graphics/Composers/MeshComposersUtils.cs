@@ -23,8 +23,7 @@ public static class MeshComposersUtils
             var basePoints = 
                 basePointsCount
                     .GetRegularSamples(0.0d, 1.0d)
-                    .Lerp(pathFirstPoint, pathFirstPoint + baseVector)
-                    .Cast<ILinFloat64Vector3D>();
+                    .Lerp(pathFirstPoint, pathFirstPoint + baseVector);
 
             var path = new ArrayPointsPath3D(basePoints);
 

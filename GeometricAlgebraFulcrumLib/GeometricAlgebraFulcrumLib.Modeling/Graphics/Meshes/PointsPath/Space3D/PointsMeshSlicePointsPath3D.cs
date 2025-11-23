@@ -5,7 +5,7 @@ using GeometricAlgebraFulcrumLib.Utilities.Structures.Sequences.Periodic1D;
 namespace GeometricAlgebraFulcrumLib.Modeling.Graphics.Meshes.PointsPath.Space3D;
 
 public sealed class PointsMeshSlicePointsPath3D : 
-    PSeqSlice1D<ILinFloat64Vector3D>, 
+    PSeqSlice1D<LinFloat64Vector3D>, 
     IPointsPath3D
 {
     public IPointsMesh3D BaseMesh { get; }
@@ -23,7 +23,7 @@ public sealed class PointsMeshSlicePointsPath3D :
         return this.All(p => p.IsValid());
     }
 
-    public IPointsPath3D MapPoints(Func<ILinFloat64Vector3D, ILinFloat64Vector3D> pointMapping)
+    public IPointsPath3D MapPoints(Func<LinFloat64Vector3D, LinFloat64Vector3D> pointMapping)
     {
         return new ArrayPointsPath3D(
             this.Select(pointMapping).ToArray()

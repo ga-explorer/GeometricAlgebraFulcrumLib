@@ -4,18 +4,18 @@ namespace GeometricAlgebraFulcrumLib.Modeling.Signals;
 
 public class Float64SignalValidator
 {
-    public double ZeroEpsilon { get; set; } = 1e-7;
+    public double DefaultTolerance { get; set; } = 1e-7;
 
 
     public bool ValidateEqualZero(Float64SampledTimeSignal scalarSignal1)
     {
-        if (scalarSignal1.IsNearZero(ZeroEpsilon))
+        if (scalarSignal1.IsNearZero(DefaultTolerance))
             return true;
 
         var scalarSignal1Rms =
             scalarSignal1.Select(s => s.Square()).Average().Sqrt();
 
-        if (scalarSignal1Rms.IsNearZero(ZeroEpsilon))
+        if (scalarSignal1Rms.IsNearZero(DefaultTolerance))
             return true;
 
         Console.WriteLine($"RMS value: {scalarSignal1Rms:G}");
@@ -29,7 +29,7 @@ public class Float64SignalValidator
         var errorSignal =
             scalarSignal1 - scalarSignal2;
 
-        if (errorSignal.IsNearZero(ZeroEpsilon))
+        if (errorSignal.IsNearZero(DefaultTolerance))
             return true;
 
         var snr =

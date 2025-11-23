@@ -937,7 +937,7 @@ public sealed record XGaBasisBlade :
     public override string ToString()
     {
         return Id
-            .Select(i => i.ToString())
+            .Select(i => (i + 1).ToString())
             .ConcatenateText(", ", "<", ">");
     }
 

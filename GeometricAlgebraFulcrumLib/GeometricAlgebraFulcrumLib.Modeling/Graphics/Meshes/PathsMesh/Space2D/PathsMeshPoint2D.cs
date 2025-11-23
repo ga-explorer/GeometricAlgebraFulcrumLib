@@ -46,19 +46,25 @@ public sealed class PathsMeshPoint2D : ILinFloat64Vector2D
     public int VSpaceDimensions 
         => 2;
 
-    public Float64Scalar X 
+    public double X 
         => Point.X;
 
-    public Float64Scalar Y 
+    public double Y 
         => Point.Y;
 
-    public Float64Scalar Item1 
+    public double Item1 
         => X;
 
-    public Float64Scalar Item2
+    public double Item2
         => Y;
-
-    public bool IsValid() => Point.IsValid();
+    
+    public double this[int index] 
+        => index switch
+        {
+            0 => X,
+            1 => Y,
+            _ => Float64Scalar.Zero
+        };
 
 
     internal PathsMeshPoint2D(IPathsMesh2D baseMesh, int pathIndex, int pathPointIndex)
@@ -66,6 +72,12 @@ public sealed class PathsMeshPoint2D : ILinFloat64Vector2D
         BaseMesh = baseMesh;
         PathIndex = pathIndex.Mod(baseMesh.Count);
         PathPointIndex = pathPointIndex.Mod(baseMesh.PathPointsCount);
+    }
+
+    
+    public bool IsValid()
+    {
+        return Point.IsValid();
     }
 
 }

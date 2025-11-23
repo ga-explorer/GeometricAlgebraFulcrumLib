@@ -1,6 +1,7 @@
 ﻿using System.Runtime.CompilerServices;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Angles;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.SpaceND;
+using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.SubSpaces.SpaceND;
 
@@ -34,13 +35,13 @@ public sealed record LinFloat64NullSubspace :
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool NearContains(LinFloat64Vector vector, double zeroEpsilon = 1E-12D)
+    public bool NearContains(LinFloat64Vector vector, double tolerance = 1E-12D)
     {
-        return vector.IsNearZero(zeroEpsilon);
+        return vector.IsNearZero(tolerance);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool NearContains(ILinFloat64Subspace subspace, double zeroEpsilon = 1E-12)
+    public bool NearContains(ILinFloat64Subspace subspace, double tolerance = Float64Utils.DefaultTolerance)
     {
         return subspace.SubspaceDimensions == 0;
     }

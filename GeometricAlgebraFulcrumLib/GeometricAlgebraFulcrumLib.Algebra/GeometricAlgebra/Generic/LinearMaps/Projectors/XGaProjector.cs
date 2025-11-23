@@ -23,7 +23,7 @@ public sealed class XGaProjector<T> :
     internal XGaProjector(XGaKVector<T> blade, bool useBladeInverse)
     {
         Blade = blade;
-        BladePseudoInverse = useBladeInverse ? blade.PseudoInverse() : blade;
+        BladePseudoInverse = useBladeInverse ? blade.VersorPseudoInverse() : blade;
     }
 
 

@@ -10,25 +10,25 @@ namespace GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space
 public static class LinFloat64Vector3DAffineUtils
 {
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Float64Scalar VectorLengthXy(this ITriplet<Float64Scalar> tuple)
+    public static Float64Scalar VectorLengthXy(this ITriplet<double> tuple)
     {
         return (tuple.Item1.Square() + tuple.Item2.Square()).Sqrt();
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Float64Scalar VectorLengthXz(this ITriplet<Float64Scalar> tuple)
+    public static Float64Scalar VectorLengthXz(this ITriplet<double> tuple)
     {
         return (tuple.Item1.Square() + tuple.Item3.Square()).Sqrt();
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Float64Scalar VectorLengthYz(this ITriplet<Float64Scalar> tuple)
+    public static Float64Scalar VectorLengthYz(this ITriplet<double> tuple)
     {
         return (tuple.Item2.Square() + tuple.Item3.Square()).Sqrt();
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64Vector3D Lerp(this double t, ITriplet<Float64Scalar> v1, ITriplet<Float64Scalar> v2)
+    public static LinFloat64Vector3D Lerp(this double t, ITriplet<double> v1, ITriplet<double> v2)
     {
         var s = 1.0d - t;
 
@@ -40,13 +40,13 @@ public static class LinFloat64Vector3DAffineUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static IEnumerable<LinFloat64Vector3D> Lerp(this IEnumerable<double> tList, ITriplet<Float64Scalar> v1, ITriplet<Float64Scalar> v2)
+    public static IEnumerable<LinFloat64Vector3D> Lerp(this IEnumerable<double> tList, ITriplet<double> v1, ITriplet<double> v2)
     {
         return tList.Select(t => t.Lerp(v1, v2));
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Float64Scalar Determinant(this ITriplet<Float64Scalar> v1, ITriplet<Float64Scalar> v2, ITriplet<Float64Scalar> v3)
+    public static Float64Scalar Determinant(this ITriplet<double> v1, ITriplet<double> v2, ITriplet<double> v3)
     {
         return v1.Item1 * (v2.Item2 * v3.Item3 - v2.Item3 * v3.Item2) +
                v1.Item2 * (v2.Item3 * v3.Item1 - v2.Item1 * v3.Item3) +
@@ -54,7 +54,7 @@ public static class LinFloat64Vector3DAffineUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64Vector3D TranslateBy(this ITriplet<Float64Scalar> vector, double translationX, double translationY, double translationZ)
+    public static LinFloat64Vector3D TranslateBy(this ITriplet<double> vector, double translationX, double translationY, double translationZ)
     {
         return LinFloat64Vector3D.Create(
             translationX + vector.Item1,
@@ -64,7 +64,7 @@ public static class LinFloat64Vector3DAffineUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64Vector3D TranslateBy(this ITriplet<Float64Scalar> vector, ITriplet<Float64Scalar> translationVector)
+    public static LinFloat64Vector3D TranslateBy(this ITriplet<double> vector, ITriplet<double> translationVector)
     {
         return LinFloat64Vector3D.Create(
             translationVector.Item1 + vector.Item1,
@@ -74,7 +74,7 @@ public static class LinFloat64Vector3DAffineUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64Vector3D ScaleBy(this ITriplet<Float64Scalar> vector, double scaleFactor)
+    public static LinFloat64Vector3D ScaleBy(this ITriplet<double> vector, double scaleFactor)
     {
         return LinFloat64Vector3D.Create(
             scaleFactor * vector.Item1,
@@ -84,7 +84,7 @@ public static class LinFloat64Vector3DAffineUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64Vector3D ScaleBy(this ITriplet<Float64Scalar> vector, double scaleFactorX, double scaleFactorY, double scaleFactorZ)
+    public static LinFloat64Vector3D ScaleBy(this ITriplet<double> vector, double scaleFactorX, double scaleFactorY, double scaleFactorZ)
     {
         return LinFloat64Vector3D.Create(
             scaleFactorX * vector.Item1,
@@ -94,7 +94,7 @@ public static class LinFloat64Vector3DAffineUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64Vector3D ScaleBy(this ITriplet<Float64Scalar> vector, ITriplet<Float64Scalar> scaleFactorVector)
+    public static LinFloat64Vector3D ScaleBy(this ITriplet<double> vector, ITriplet<double> scaleFactorVector)
     {
         return LinFloat64Vector3D.Create(
             scaleFactorVector.Item1 * vector.Item1,
@@ -104,10 +104,10 @@ public static class LinFloat64Vector3DAffineUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64Vector3D XRotateBy(this ITriplet<Float64Scalar> vector, LinFloat64Angle angle)
+    public static LinFloat64Vector3D XRotateBy(this ITriplet<double> vector, LinFloat64Angle angle)
     {
-        var cosAngle = angle.Cos();
-        var sinAngle = angle.Sin();
+        var cosAngle = angle.CosValue;
+        var sinAngle = angle.SinValue;
 
         return LinFloat64Vector3D.Create(
             vector.Item1,
@@ -117,10 +117,10 @@ public static class LinFloat64Vector3DAffineUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64Vector3D YRotateBy(this ITriplet<Float64Scalar> vector, LinFloat64Angle angle)
+    public static LinFloat64Vector3D YRotateBy(this ITriplet<double> vector, LinFloat64Angle angle)
     {
-        var cosAngle = angle.Cos();
-        var sinAngle = angle.Sin();
+        var cosAngle = angle.CosValue;
+        var sinAngle = angle.SinValue;
 
         return LinFloat64Vector3D.Create(
             vector.Item1 * cosAngle + vector.Item3 * sinAngle,
@@ -130,10 +130,10 @@ public static class LinFloat64Vector3DAffineUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64Vector3D ZRotateBy(this ITriplet<Float64Scalar> vector, LinFloat64Angle angle)
+    public static LinFloat64Vector3D ZRotateBy(this ITriplet<double> vector, LinFloat64Angle angle)
     {
-        var cosAngle = angle.Cos();
-        var sinAngle = angle.Sin();
+        var cosAngle = angle.CosValue;
+        var sinAngle = angle.SinValue;
 
         return LinFloat64Vector3D.Create(
             vector.Item1 * cosAngle - vector.Item2 * sinAngle,
@@ -143,24 +143,24 @@ public static class LinFloat64Vector3DAffineUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64Vector3D XRotateByDegrees(this ITriplet<Float64Scalar> vector, double angle)
+    public static LinFloat64Vector3D XRotateByDegrees(this ITriplet<double> vector, double angle)
     {
         return vector.XRotateBy(angle.DegreesToPolarAngle());
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64Vector3D YRotateByDegrees(this ITriplet<Float64Scalar> vector, double angle)
+    public static LinFloat64Vector3D YRotateByDegrees(this ITriplet<double> vector, double angle)
     {
         return vector.YRotateBy(angle.DegreesToPolarAngle());
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64Vector3D ZRotateByDegrees(this ITriplet<Float64Scalar> vector, double angle)
+    public static LinFloat64Vector3D ZRotateByDegrees(this ITriplet<double> vector, double angle)
     {
         return vector.ZRotateBy(angle.DegreesToPolarAngle());
     }
 
-    public static LinFloat64Vector3D RotateToUnitVector(this ITriplet<Float64Scalar> vector1, ITriplet<Float64Scalar> unitVector, LinFloat64Angle angle)
+    public static LinFloat64Vector3D RotateToUnitVector(this ITriplet<double> vector1, ITriplet<double> unitVector, LinFloat64Angle angle)
     {
         Debug.Assert(
             vector1.IsNearUnit() &&
@@ -168,16 +168,16 @@ public static class LinFloat64Vector3DAffineUtils
         );
 
         // Create a unit normal to u in the u-v rotational plane
-        var v1Dot2 = unitVector.VectorESp(vector1);
+        var v1Dot2 = unitVector.VectorDot(vector1);
 
         var v1 = v1Dot2.Abs().IsNearOne()
             ? vector1.GetNormal()
             : unitVector.VectorSubtract(vector1.VectorTimes(v1Dot2));
 
-        var v1Length = v1.VectorENorm();
+        var v1Length = LinFloat64Vector3DUtils.L2Norm(v1);
 
         Debug.Assert(
-            v1.VectorESp(vector1).IsNearZero() &&
+            v1.VectorDot(vector1).IsNearZero() &&
             !v1Length.IsNearZero()
         );
 
@@ -189,7 +189,7 @@ public static class LinFloat64Vector3DAffineUtils
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static void GetCoordinateSystem(this ITriplet<Float64Scalar> v1, out LinFloat64Vector3D v2, out LinFloat64Vector3D v3)
+    public static void GetCoordinateSystem(this ITriplet<double> v1, out LinFloat64Vector3D v2, out LinFloat64Vector3D v3)
     {
         v2 = Math.Abs(v1.Item1) > Math.Abs(v1.Item2)
             ? LinFloat64Vector3D.Create(-v1.Item3, 0, v1.Item1) / Math.Sqrt(v1.Item1 * v1.Item1 + v1.Item3 * v1.Item3)
@@ -199,7 +199,7 @@ public static class LinFloat64Vector3DAffineUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64Vector3D GetTriangleNormal(ITriplet<Float64Scalar> p1, ITriplet<Float64Scalar> p2, ITriplet<Float64Scalar> p3)
+    public static LinFloat64Vector3D GetTriangleNormal(ITriplet<double> p1, ITriplet<double> p2, ITriplet<double> p3)
     {
         //TODO: Test this for numerical stability, maybe select two sides with largest lengths
         var v12 = LinFloat64Vector3D.Create(p2.Item1 - p1.Item1, p2.Item2 - p1.Item2, p2.Item3 - p1.Item3);
@@ -232,7 +232,7 @@ public static class LinFloat64Vector3DAffineUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64Vector3D GetTriangleUnitNormal(ITriplet<Float64Scalar> p1, ITriplet<Float64Scalar> p2, ITriplet<Float64Scalar> p3)
+    public static LinFloat64Vector3D GetTriangleUnitNormal(ITriplet<double> p1, ITriplet<double> p2, ITriplet<double> p3)
     {
         //TODO: Test this for numerical stability, maybe select two sides with largest lengths
         var v12 = LinFloat64Vector3D.Create(p2.Item1 - p1.Item1, p2.Item2 - p1.Item2, p2.Item3 - p1.Item3);
@@ -242,7 +242,7 @@ public static class LinFloat64Vector3DAffineUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64Vector3D GetTriangleInverseUnitNormal(ITriplet<Float64Scalar> p1, ITriplet<Float64Scalar> p2, ITriplet<Float64Scalar> p3)
+    public static LinFloat64Vector3D GetTriangleInverseUnitNormal(ITriplet<double> p1, ITriplet<double> p2, ITriplet<double> p3)
     {
         //TODO: Test this for numerical stability, maybe select two sides with the largest lengths
         var v12 = LinFloat64Vector3D.Create(p2.Item1 - p1.Item1, p2.Item2 - p1.Item2, p2.Item3 - p1.Item3);
@@ -253,7 +253,7 @@ public static class LinFloat64Vector3DAffineUtils
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64Vector3D GetNormal(this ITriplet<Float64Scalar> vector)
+    public static LinFloat64Vector3D GetNormal(this ITriplet<double> vector)
     {
         if (vector.IsZeroVector())
             return LinFloat64Vector3D.E1;
@@ -273,19 +273,19 @@ public static class LinFloat64Vector3DAffineUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64Vector3D GetNormal(this ITriplet<Float64Scalar> vector, double length)
+    public static LinFloat64Vector3D GetNormal(this ITriplet<double> vector, double length)
     {
         return vector.GetNormal().SetLength(length);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64Vector3D GetUnitNormal(this ITriplet<Float64Scalar> vector)
+    public static LinFloat64Vector3D GetUnitNormal(this ITriplet<double> vector)
     {
         return vector.GetNormal();
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Pair<LinFloat64Vector3D> GetNormalPair(this ITriplet<Float64Scalar> vector)
+    public static Pair<LinFloat64Vector3D> GetNormalPair(this ITriplet<double> vector)
     {
         if (vector.IsZeroVector())
             return new Pair<LinFloat64Vector3D>(
@@ -314,14 +314,14 @@ public static class LinFloat64Vector3DAffineUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Pair<LinFloat64Vector3D> GetUnitNormalPair(this ITriplet<Float64Scalar> vector)
+    public static Pair<LinFloat64Vector3D> GetUnitNormalPair(this ITriplet<double> vector)
     {
         return vector.GetNormalPair();
     }
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64Vector3D ProjectOnVector(this ITriplet<Float64Scalar> v, ITriplet<Float64Scalar> u)
+    public static LinFloat64Vector3D ProjectOnVector(this ITriplet<double> v, ITriplet<double> u)
     {
         var s1 = v.Item1 * u.Item1 + v.Item2 * u.Item2 + v.Item3 * u.Item3;
         var s2 = u.Item1 * u.Item1 + u.Item2 * u.Item2 + u.Item3 * u.Item3;
@@ -335,7 +335,7 @@ public static class LinFloat64Vector3DAffineUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64Vector3D RejectOnVector(this ITriplet<Float64Scalar> v, ITriplet<Float64Scalar> u)
+    public static LinFloat64Vector3D RejectOnVector(this ITriplet<double> v, ITriplet<double> u)
     {
         var s1 = v.Item1 * u.Item1 + v.Item2 * u.Item2 + v.Item3 * u.Item3;
         var s2 = u.Item1 * u.Item1 + u.Item2 * u.Item2 + u.Item3 * u.Item3;
@@ -349,7 +349,7 @@ public static class LinFloat64Vector3DAffineUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64Vector3D ProjectOnUnitVector(this ITriplet<Float64Scalar> v, ITriplet<Float64Scalar> u)
+    public static LinFloat64Vector3D ProjectOnUnitVector(this ITriplet<double> v, ITriplet<double> u)
     {
         var s = v.Item1 * u.Item1 + v.Item2 * u.Item2 + v.Item3 * u.Item3;
 
@@ -361,18 +361,18 @@ public static class LinFloat64Vector3DAffineUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64Vector3D RejectOnAxis(this ITriplet<Float64Scalar> v, LinBasisVector axis)
+    public static LinFloat64Vector3D RejectOnAxis(this ITriplet<double> v, LinBasisVector axis)
     {
         return axis.Index switch
         {
-            0 => LinFloat64Vector3D.Create(0, v.Item2.ScalarValue, v.Item3.ScalarValue),
-            1 => LinFloat64Vector3D.Create(v.Item1.ScalarValue, 0, v.Item3.ScalarValue),
-            _ => LinFloat64Vector3D.Create(v.Item1.ScalarValue, v.Item2.ScalarValue, 0)
+            0 => LinFloat64Vector3D.Create(0, v.Item2, v.Item3),
+            1 => LinFloat64Vector3D.Create(v.Item1, 0, v.Item3),
+            _ => LinFloat64Vector3D.Create(v.Item1, v.Item2, 0)
         };
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64Vector3D RejectOnUnitVector(this ITriplet<Float64Scalar> v, ITriplet<Float64Scalar> u)
+    public static LinFloat64Vector3D RejectOnUnitVector(this ITriplet<double> v, ITriplet<double> u)
     {
         var s = v.Item1 * u.Item1 + v.Item2 * u.Item2 + v.Item3 * u.Item3;
 
@@ -391,7 +391,7 @@ public static class LinFloat64Vector3DAffineUtils
     /// <param name="directionVector"></param>
     /// <returns></returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64Vector3D FaceDirection(this ITriplet<Float64Scalar> vector, ITriplet<Float64Scalar> directionVector)
+    public static LinFloat64Vector3D FaceDirection(this ITriplet<double> vector, ITriplet<double> directionVector)
     {
         Debug.Assert(!directionVector.IsAlmostZeroVector());
 
@@ -401,7 +401,7 @@ public static class LinFloat64Vector3DAffineUtils
                 : LinFloat64Vector3D.Create(vector.Item1, vector.Item2, vector.Item3);
     }
 
-    public static LinFloat64Vector3D GetCenterOfMassPoint(this IEnumerable<ITriplet<Float64Scalar>> pointsList)
+    public static LinFloat64Vector3D GetCenterOfMassPoint(this IEnumerable<ITriplet<double>> pointsList)
     {
         var centerX = 0.0d;
         var centerY = 0.0d;
@@ -424,7 +424,7 @@ public static class LinFloat64Vector3DAffineUtils
             centerZ * pointsCountInv);
     }
 
-    public static LinFloat64Vector3D GetCenterPoint(this IEnumerable<ITriplet<Float64Scalar>> pointsList)
+    public static LinFloat64Vector3D GetCenterPoint(this IEnumerable<ITriplet<double>> pointsList)
     {
         var minX = double.PositiveInfinity;
         var minY = double.PositiveInfinity;
@@ -452,7 +452,7 @@ public static class LinFloat64Vector3DAffineUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64Vector3D GetDirectionTo(this ITriplet<Float64Scalar> p1, ITriplet<Float64Scalar> p2)
+    public static LinFloat64Vector3D GetDirectionTo(this ITriplet<double> p1, ITriplet<double> p2)
     {
         return LinFloat64Vector3D.Create(p2.Item1 - p1.Item1,
             p2.Item2 - p1.Item2,
@@ -460,7 +460,7 @@ public static class LinFloat64Vector3DAffineUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64Vector3D GetDirectionFrom(this ITriplet<Float64Scalar> p2, double p1X, double p1Y, double p1Z)
+    public static LinFloat64Vector3D GetDirectionFrom(this ITriplet<double> p2, double p1X, double p1Y, double p1Z)
     {
         return LinFloat64Vector3D.Create(p2.Item1 - p1X,
             p2.Item2 - p1Y,
@@ -468,7 +468,7 @@ public static class LinFloat64Vector3DAffineUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64Vector3D GetDirectionFrom(this ITriplet<Float64Scalar> p2, ITriplet<Float64Scalar> p1)
+    public static LinFloat64Vector3D GetDirectionFrom(this ITriplet<double> p2, ITriplet<double> p1)
     {
         return LinFloat64Vector3D.Create(p2.Item1 - p1.Item1,
             p2.Item2 - p1.Item2,
@@ -476,7 +476,7 @@ public static class LinFloat64Vector3DAffineUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64Vector3D GetUnitDirectionTo(this ITriplet<Float64Scalar> p1, ITriplet<Float64Scalar> p2)
+    public static LinFloat64Vector3D GetUnitDirectionTo(this ITriplet<double> p1, ITriplet<double> p2)
     {
         var dx = p2.Item1 - p1.Item1;
         var dy = p2.Item2 - p1.Item2;
@@ -493,7 +493,7 @@ public static class LinFloat64Vector3DAffineUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64Vector3D GetUnitDirectionFrom(this ITriplet<Float64Scalar> p2, ITriplet<Float64Scalar> p1)
+    public static LinFloat64Vector3D GetUnitDirectionFrom(this ITriplet<double> p2, ITriplet<double> p1)
     {
         var dx = p2.Item1 - p1.Item1;
         var dy = p2.Item2 - p1.Item2;
@@ -510,7 +510,7 @@ public static class LinFloat64Vector3DAffineUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64Vector3D GetPointInDirection(this ITriplet<Float64Scalar> p, ITriplet<Float64Scalar> v)
+    public static LinFloat64Vector3D GetPointInDirection(this ITriplet<double> p, ITriplet<double> v)
     {
         return LinFloat64Vector3D.Create(p.Item1 + v.Item1,
             p.Item2 + v.Item2,
@@ -518,7 +518,7 @@ public static class LinFloat64Vector3DAffineUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64Vector3D GetPointInDirection(this ITriplet<Float64Scalar> p, ITriplet<Float64Scalar> v, double t)
+    public static LinFloat64Vector3D GetPointInDirection(this ITriplet<double> p, ITriplet<double> v, double t)
     {
         return LinFloat64Vector3D.Create(p.Item1 + t * v.Item1,
             p.Item2 + t * v.Item2,
@@ -526,9 +526,9 @@ public static class LinFloat64Vector3DAffineUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64Vector3D AddLength(this ITriplet<Float64Scalar> vector, double length)
+    public static LinFloat64Vector3D AddLength(this ITriplet<double> vector, double length)
     {
-        var oldLength = vector.VectorENorm();
+        var oldLength = vector.L2Norm();
 
         if (oldLength.IsNearZero())
             return LinFloat64Vector3D.Zero;
@@ -548,7 +548,7 @@ public static class LinFloat64Vector3DAffineUtils
     /// <param name="v2"></param>
     /// <returns></returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static double GetDistanceSquaredToPoint(this ITriplet<Float64Scalar> v1, ITriplet<Float64Scalar> v2)
+    public static double GetDistanceSquaredToPoint(this ITriplet<double> v1, ITriplet<double> v2)
     {
         var vX = v2.Item1 - v1.Item1;
         var vY = v2.Item2 - v1.Item2;
@@ -558,9 +558,9 @@ public static class LinFloat64Vector3DAffineUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64Vector3D ReflectVectorOnVector(this ITriplet<Float64Scalar> reflectionVector, ITriplet<Float64Scalar> vector)
+    public static LinFloat64Vector3D ReflectVectorOnVector(this ITriplet<double> reflectionVector, ITriplet<double> vector)
     {
-        var s = 2 * reflectionVector.VectorESp(vector) / reflectionVector.VectorENormSquared();
+        var s = 2 * reflectionVector.VectorDot(vector) / reflectionVector.L2NormSquared();
 
         return LinFloat64Vector3D.Create(vector.Item1 - s * reflectionVector.Item1,
             vector.Item2 - s * reflectionVector.Item2,
@@ -568,15 +568,15 @@ public static class LinFloat64Vector3DAffineUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Triplet<LinFloat64Vector3D> ReflectVectorsOnVector(this ITriplet<Float64Scalar> reflectionVector, Triplet<ITriplet<Float64Scalar>> vectorsTriplet)
+    public static Triplet<LinFloat64Vector3D> ReflectVectorsOnVector(this ITriplet<double> reflectionVector, Triplet<ITriplet<double>> vectorsTriplet)
     {
         var (v1, v2, v3) = vectorsTriplet;
 
-        var s = 2 / reflectionVector.VectorENormSquared();
+        var s = 2 / reflectionVector.L2NormSquared();
 
-        var s1 = s * reflectionVector.VectorESp(v1);
-        var s2 = s * reflectionVector.VectorESp(v2);
-        var s3 = s * reflectionVector.VectorESp(v3);
+        var s1 = s * reflectionVector.VectorDot(v1);
+        var s2 = s * reflectionVector.VectorDot(v2);
+        var s3 = s * reflectionVector.VectorDot(v3);
 
         var rv1 = LinFloat64Vector3D.Create(v1.Item1 - s1 * reflectionVector.Item1,
             v1.Item2 - s1 * reflectionVector.Item2,
@@ -594,12 +594,12 @@ public static class LinFloat64Vector3DAffineUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Pair<LinFloat64Vector3D> ReflectVectorsOnVector(this ITriplet<Float64Scalar> reflectionVector, ITriplet<Float64Scalar> v1, ITriplet<Float64Scalar> v2)
+    public static Pair<LinFloat64Vector3D> ReflectVectorsOnVector(this ITriplet<double> reflectionVector, ITriplet<double> v1, ITriplet<double> v2)
     {
-        var s = 2 / reflectionVector.VectorENormSquared();
+        var s = 2 / reflectionVector.L2NormSquared();
 
-        var s1 = s * reflectionVector.VectorESp(v1);
-        var s2 = s * reflectionVector.VectorESp(v2);
+        var s1 = s * reflectionVector.VectorDot(v1);
+        var s2 = s * reflectionVector.VectorDot(v2);
 
         var rv1 = LinFloat64Vector3D.Create(v1.Item1 - s1 * reflectionVector.Item1,
             v1.Item2 - s1 * reflectionVector.Item2,
@@ -613,13 +613,13 @@ public static class LinFloat64Vector3DAffineUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Triplet<LinFloat64Vector3D> ReflectVectorsOnVector(this ITriplet<Float64Scalar> reflectionVector, ITriplet<Float64Scalar> v1, ITriplet<Float64Scalar> v2, ITriplet<Float64Scalar> v3)
+    public static Triplet<LinFloat64Vector3D> ReflectVectorsOnVector(this ITriplet<double> reflectionVector, ITriplet<double> v1, ITriplet<double> v2, ITriplet<double> v3)
     {
-        var s = 2 / reflectionVector.VectorENormSquared();
+        var s = 2 / reflectionVector.L2NormSquared();
 
-        var s1 = s * reflectionVector.VectorESp(v1);
-        var s2 = s * reflectionVector.VectorESp(v2);
-        var s3 = s * reflectionVector.VectorESp(v3);
+        var s1 = s * reflectionVector.VectorDot(v1);
+        var s2 = s * reflectionVector.VectorDot(v2);
+        var s3 = s * reflectionVector.VectorDot(v3);
 
         var rv1 = LinFloat64Vector3D.Create(v1.Item1 - s1 * reflectionVector.Item1,
             v1.Item2 - s1 * reflectionVector.Item2,
@@ -636,13 +636,13 @@ public static class LinFloat64Vector3DAffineUtils
         return new Triplet<LinFloat64Vector3D>(rv1, rv2, rv3);
     }
 
-    public static IEnumerable<LinFloat64Vector3D> ReflectVectorsOnVector(this ITriplet<Float64Scalar> reflectionVector, params ITriplet<Float64Scalar>[] vectorsList)
+    public static IEnumerable<LinFloat64Vector3D> ReflectVectorsOnVector(this ITriplet<double> reflectionVector, params ITriplet<double>[] vectorsList)
     {
-        var s = 2 / reflectionVector.VectorENormSquared();
+        var s = 2 / reflectionVector.L2NormSquared();
 
         foreach (var vector in vectorsList)
         {
-            var s1 = s * reflectionVector.VectorESp(vector);
+            var s1 = s * reflectionVector.VectorDot(vector);
 
             yield return LinFloat64Vector3D.Create(vector.Item1 - s1 * reflectionVector.Item1,
                 vector.Item2 - s1 * reflectionVector.Item2,
@@ -651,9 +651,9 @@ public static class LinFloat64Vector3DAffineUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64Vector3D ReflectVectorOnUnitVector(this ITriplet<Float64Scalar> reflectionVector, ITriplet<Float64Scalar> vector)
+    public static LinFloat64Vector3D ReflectVectorOnUnitVector(this ITriplet<double> reflectionVector, ITriplet<double> vector)
     {
-        var s = 2 * reflectionVector.VectorESp(vector);
+        var s = 2 * reflectionVector.VectorDot(vector);
 
         return LinFloat64Vector3D.Create(vector.Item1 - s * reflectionVector.Item1,
             vector.Item2 - s * reflectionVector.Item2,
@@ -661,13 +661,13 @@ public static class LinFloat64Vector3DAffineUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Triplet<LinFloat64Vector3D> ReflectVectorsOnUnitVector(this ITriplet<Float64Scalar> reflectionVector, Triplet<ITriplet<Float64Scalar>> vectorsTriplet)
+    public static Triplet<LinFloat64Vector3D> ReflectVectorsOnUnitVector(this ITriplet<double> reflectionVector, Triplet<ITriplet<double>> vectorsTriplet)
     {
         var (v1, v2, v3) = vectorsTriplet;
 
-        var s1 = 2 * reflectionVector.VectorESp(v1);
-        var s2 = 2 * reflectionVector.VectorESp(v2);
-        var s3 = 2 * reflectionVector.VectorESp(v3);
+        var s1 = 2 * reflectionVector.VectorDot(v1);
+        var s2 = 2 * reflectionVector.VectorDot(v2);
+        var s3 = 2 * reflectionVector.VectorDot(v3);
 
         var rv1 = LinFloat64Vector3D.Create(v1.Item1 - s1 * reflectionVector.Item1,
             v1.Item2 - s1 * reflectionVector.Item2,
@@ -684,11 +684,11 @@ public static class LinFloat64Vector3DAffineUtils
         return new Triplet<LinFloat64Vector3D>(rv1, rv2, rv3);
     }
 
-    public static IEnumerable<LinFloat64Vector3D> ReflectVectorsOnUnitVector(this ITriplet<Float64Scalar> reflectionVector, params ITriplet<Float64Scalar>[] vectorsList)
+    public static IEnumerable<LinFloat64Vector3D> ReflectVectorsOnUnitVector(this ITriplet<double> reflectionVector, params ITriplet<double>[] vectorsList)
     {
         foreach (var vector in vectorsList)
         {
-            var s1 = 2 * reflectionVector.VectorESp(vector);
+            var s1 = 2 * reflectionVector.VectorDot(vector);
 
             yield return LinFloat64Vector3D.Create(vector.Item1 - s1 * reflectionVector.Item1,
                 vector.Item2 - s1 * reflectionVector.Item2,
@@ -696,11 +696,11 @@ public static class LinFloat64Vector3DAffineUtils
         }
     }
 
-    public static IEnumerable<LinFloat64Vector3D> ReflectVectorsOnUnitVector(this ITriplet<Float64Scalar> reflectionVector, IEnumerable<ITriplet<Float64Scalar>> vectorsList)
+    public static IEnumerable<LinFloat64Vector3D> ReflectVectorsOnUnitVector(this ITriplet<double> reflectionVector, IEnumerable<ITriplet<double>> vectorsList)
     {
         foreach (var vector in vectorsList)
         {
-            var s1 = 2 * reflectionVector.VectorESp(vector);
+            var s1 = 2 * reflectionVector.VectorDot(vector);
 
             yield return LinFloat64Vector3D.Create(vector.Item1 - s1 * reflectionVector.Item1,
                 vector.Item2 - s1 * reflectionVector.Item2,
@@ -708,13 +708,13 @@ public static class LinFloat64Vector3DAffineUtils
         }
     }
 
-    public static IEnumerable<LinFloat64Vector3D> ReflectVectorsOnVector(this ITriplet<Float64Scalar> reflectionVector, IEnumerable<ITriplet<Float64Scalar>> vectorsList)
+    public static IEnumerable<LinFloat64Vector3D> ReflectVectorsOnVector(this ITriplet<double> reflectionVector, IEnumerable<ITriplet<double>> vectorsList)
     {
-        var s = 2 / reflectionVector.VectorENormSquared();
+        var s = 2 / reflectionVector.L2NormSquared();
 
         foreach (var vector in vectorsList)
         {
-            var s1 = s * reflectionVector.VectorESp(vector);
+            var s1 = s * reflectionVector.VectorDot(vector);
 
             yield return LinFloat64Vector3D.Create(vector.Item1 - s1 * reflectionVector.Item1,
                 vector.Item2 - s1 * reflectionVector.Item2,
@@ -723,7 +723,7 @@ public static class LinFloat64Vector3DAffineUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static double GetDistanceSquaredToPoint(this ITriplet<Float64Scalar> p1, double p2X, double p2Y, double p2Z)
+    public static double GetDistanceSquaredToPoint(this ITriplet<double> p1, double p2X, double p2Y, double p2Z)
     {
         var vX = p2X - p1.Item1;
         var vY = p2Y - p1.Item2;
@@ -733,9 +733,9 @@ public static class LinFloat64Vector3DAffineUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64Vector3D SubtractLength(this ITriplet<Float64Scalar> vector, double length)
+    public static LinFloat64Vector3D SubtractLength(this ITriplet<double> vector, double length)
     {
-        var oldLength = vector.VectorENorm();
+        var oldLength = vector.L2Norm();
 
         if (oldLength.IsNearZero())
             return LinFloat64Vector3D.Zero;
@@ -755,7 +755,7 @@ public static class LinFloat64Vector3DAffineUtils
     /// <param name="p2"></param>
     /// <returns></returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static double GetDistanceToPoint(this ITriplet<Float64Scalar> p1, ITriplet<Float64Scalar> p2)
+    public static double GetDistanceToPoint(this ITriplet<double> p1, ITriplet<double> p2)
     {
         var vX = p2.Item1 - p1.Item1;
         var vY = p2.Item2 - p1.Item2;
@@ -765,7 +765,7 @@ public static class LinFloat64Vector3DAffineUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static double GetDistanceToPoint(this ITriplet<Float64Scalar> p1, double p2X, double p2Y, double p2Z)
+    public static double GetDistanceToPoint(this ITriplet<double> p1, double p2X, double p2Y, double p2Z)
     {
         var vX = p2X - p1.Item1;
         var vY = p2Y - p1.Item2;
@@ -775,9 +775,9 @@ public static class LinFloat64Vector3DAffineUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64Vector3D SetLength(this ITriplet<Float64Scalar> vector, double newLength)
+    public static LinFloat64Vector3D SetLength(this ITriplet<double> vector, double newLength)
     {
-        var oldLength = vector.VectorENorm();
+        var oldLength = vector.L2Norm();
 
         if (oldLength.IsZero())
             return LinFloat64Vector3D.Zero;

@@ -10,19 +10,19 @@ public class GrPovRayPrism :
     IGrPovRayFiniteSolidObject,
     IReadOnlyList<GrPovRayVector2Value>
 {
-    private static readonly string[] SplineTypeNames = new[]
-    {
+    private static readonly string[] SplineTypeNames =
+    [
         "linear_spline", 
         "quadratic_spline",
         "cubic_spline",
         "bezier_spline"
-    };
+    ];
 
-    private static readonly string[] SweepTypeNames = new[]
-    {
+    private static readonly string[] SweepTypeNames =
+    [
         "linear_sweep", 
         "conic_sweep"
-    };
+    ];
 
 
     

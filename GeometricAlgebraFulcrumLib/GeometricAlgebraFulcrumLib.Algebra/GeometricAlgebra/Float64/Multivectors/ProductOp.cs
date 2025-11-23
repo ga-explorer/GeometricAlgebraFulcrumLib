@@ -1,7 +1,5 @@
 ﻿using System.Runtime.CompilerServices;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
-using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
-using GeometricAlgebraFulcrumLib.Utilities.Structures.Dictionary;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.IndexSets;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivectors
@@ -34,6 +32,12 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivecto
                     .CreateMultivectorComposer()
                     .AddOpTerms(this, mv2)
                     .GetMultivector();
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public virtual XGaFloat64Multivector Op(IndexSet kv2)
+        {
+            return Op(Processor.KVectorTerm(kv2));
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -115,6 +119,12 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivecto
                     .CreateKVectorComposer(Grade + kv2.Grade)
                     .AddOpTerms(this, kv2)
                     .GetKVector();
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public override XGaFloat64KVector Op(IndexSet kv2)
+        {
+            return Op(Processor.KVectorTerm(kv2));
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -254,6 +264,12 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivecto
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public override XGaFloat64Multivector Op(IndexSet kv2)
+        {
+            return Op(Processor.KVectorTerm(kv2));
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public override XGaFloat64Multivector Op(XGaFloat64KVector kv2)
         {
             return IsZero || kv2.IsZero
@@ -310,6 +326,12 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivecto
                     .AddOpTerms(this, kv2)
                     .GetMultivector();
         }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public override XGaFloat64Multivector Op(IndexSet kv2)
+        {
+            return Op(Processor.KVectorTerm(kv2));
+        }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public override XGaFloat64Multivector Op(XGaFloat64KVector kv2)
@@ -339,6 +361,16 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivecto
     public sealed partial class XGaFloat64KVectorComposer
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public XGaFloat64KVectorComposer AddOpTerms(XGaFloat64KVector mv1, IndexSet mv2)
+        {
+            return AddEuclideanProductTerms(
+                mv1,
+                mv2,
+                BasisBladeProductUtils.OpIsNonZero
+            );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public XGaFloat64KVectorComposer AddOpTerms(XGaFloat64KVector mv1, XGaFloat64KVector mv2)
         {
             return AddEuclideanProductTerms(
@@ -367,6 +399,26 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivecto
     public sealed partial class XGaFloat64GradedMultivectorComposer
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public XGaFloat64GradedMultivectorComposer AddOpTerms(XGaFloat64KVector kv1, IndexSet kv2)
+        {
+            if (kv1.IsZero)
+                return this;
+
+            var composer = 
+                Processor
+                    .CreateKVectorComposer(kv2.Count + kv1.Grade)
+                    .AddOpTerms(kv1, kv2);
+
+            if (!composer.IsZero)
+                AddKVectorTerms(
+                    kv2.Count + kv1.Grade, 
+                    composer.IdScalarPairs
+                );
+
+            return this;
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public XGaFloat64GradedMultivectorComposer AddOpTerms(XGaFloat64KVector kv1, XGaFloat64KVector kv2)
         {
             if (kv1.IsZero || kv2.IsZero)
@@ -382,6 +434,18 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivecto
                     kv2.Grade + kv1.Grade, 
                     composer.IdScalarPairs
                 );
+
+            return this;
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public XGaFloat64GradedMultivectorComposer AddOpTerms(XGaFloat64GradedMultivector mv1, IndexSet kv2)
+        {
+            if (mv1.IsZero)
+                return this;
+
+            foreach (var kv1 in mv1.KVectors) 
+                AddOpTerms(kv1, kv2);
 
             return this;
         }

@@ -63,9 +63,9 @@ public sealed record Float64HexagonGrid2D :
             baseVector.RotateBy(LinFloat64PolarAngle.Angle240)
         );
 
-        HexagonSpecs = Float64RegularPolygon2D.CreateFromOuterRadius(
+        HexagonSpecs = Float64RegularPolygon2D.Convex(
             6, 
-            baseVector.Norm()
+            baseVector.L2Norm()
         );
         
         Debug.Assert(IsValid());

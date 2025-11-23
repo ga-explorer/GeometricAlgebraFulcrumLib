@@ -169,7 +169,7 @@ public sealed class HGaGeometricSpace4D<T>
         var q2 = GetPointMultivector(line.Point2);
 
         var v = q2 - q1;
-        var b = q1 + v.Gp(a - q1).Gp(v.Inverse()).GetVectorPart();
+        var b = q1 + v.Gp(a - q1).Gp(v.VersorInverse()).GetVectorPart();
 
         return GetE3DPoint(b);
     }
@@ -183,7 +183,7 @@ public sealed class HGaGeometricSpace4D<T>
         var q3 = GetPointMultivector(plane.Point3);
 
         var v = (q2 - q1).Op(q3 - q2);
-        var b = q1 + v.Gp(a - q1).Gp(v.Inverse()).GetVectorPart();
+        var b = q1 + v.Gp(a - q1).Gp(v.VersorInverse()).GetVectorPart();
 
         return GetE3DPoint(b);
     }

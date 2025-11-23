@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
+using GeometricAlgebraFulcrumLib.Utilities.Structures.IndexSets;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivectors;
 
@@ -167,25 +168,25 @@ public sealed partial class XGaFloat64GradedMultivector
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public override XGaFloat64Multivector DivideByENorm()
     {
-        return Divide(ENorm().ScalarValue);
+        return Divide(ENorm());
     }
         
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public override XGaFloat64Multivector DivideByENormSquared()
     {
-        return Divide(ENormSquared().ScalarValue);
+        return Divide(ENormSquared());
     }
         
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public override XGaFloat64Multivector DivideByNorm()
     {
-        return Divide(Norm().ScalarValue);
+        return Divide(Norm());
     }
         
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public override XGaFloat64Multivector DivideByNormSquared()
     {
-        return Divide(NormSquared().ScalarValue);
+        return Divide(NormSquared());
     }
     
 
@@ -221,6 +222,20 @@ public sealed partial class XGaFloat64GradedMultivector
             ? Processor.ScalarZero
             : MapKVectorsSimplify(kVector => kVector.GradeInvolution());
     }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public override XGaFloat64Multivector GradeInvolution(IndexSet gradeSet)
+    {
+        if (_gradeKVectorDictionary.Count == 1)
+            return _gradeKVectorDictionary.Values.First().GradeInvolution(gradeSet);
+
+        if (!gradeSet.SetOverlaps(GetStoredKVectorGrades()))
+            return this;
+
+        return IsZero
+            ? Processor.ScalarZero
+            : MapKVectorsSimplify(kVector => kVector.GradeInvolution(gradeSet));
+    }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public override XGaFloat64Multivector CliffordConjugate()
@@ -245,28 +260,28 @@ public sealed partial class XGaFloat64GradedMultivector
     }
         
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public override XGaFloat64Multivector EInverse()
+    public override XGaFloat64Multivector EVersorInverse()
     {
         return Reverse().Divide(
-            ENormSquared().ScalarValue
+            ENormSquared()
         );
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public override XGaFloat64Multivector Inverse()
+    public override XGaFloat64Multivector VersorInverse()
     {
         return Reverse().Divide(
-            NormSquared().ScalarValue
+            NormSquared()
         );
     }
         
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public override XGaFloat64Multivector PseudoInverse()
+    public override XGaFloat64Multivector VersorPseudoInverse()
     {
         var kVectorConjugate = Conjugate();
 
         return kVectorConjugate.Divide(
-            kVectorConjugate.Sp(this).ScalarValue
+            kVectorConjugate.Sp(this)
         );
     }
 
@@ -282,7 +297,7 @@ public sealed partial class XGaFloat64GradedMultivector
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public override XGaFloat64Multivector EDual(XGaFloat64KVector blade)
     {
-        return ELcp(blade.EInverse());
+        return ELcp(blade.EVersorInverse());
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -297,7 +312,7 @@ public sealed partial class XGaFloat64GradedMultivector
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public override XGaFloat64Multivector Dual(XGaFloat64KVector blade)
     {
-        return Lcp(blade.Inverse());
+        return Lcp(blade.VersorInverse());
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]

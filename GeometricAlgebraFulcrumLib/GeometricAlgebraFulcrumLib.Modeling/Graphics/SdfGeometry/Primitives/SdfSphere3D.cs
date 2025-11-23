@@ -12,7 +12,7 @@ public sealed class SdfSphere3D : ScalarDistanceFunction
 
     public override double GetScalarDistance(ILinFloat64Vector3D point)
     {
-        var sdf = point.VectorENorm() - Radius;
+        var sdf = point.L2Norm() - Radius;
         return SdfAlpha * sdf - SdfDelta;
     }
 }

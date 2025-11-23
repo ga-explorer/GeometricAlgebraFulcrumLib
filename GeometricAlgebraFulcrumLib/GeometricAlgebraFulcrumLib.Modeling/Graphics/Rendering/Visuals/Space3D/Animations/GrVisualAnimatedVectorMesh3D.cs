@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
-using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space3D;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Meshes.PointsMesh;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Meshes.PointsMesh.Space3D;
 using GeometricAlgebraFulcrumLib.Modeling.Signals;
@@ -61,7 +60,7 @@ public class GrVisualAnimatedVectorMesh3D :
         {
             var (index1, index2) = this.GetItemIndexPair(index);
 
-            if (((GrVisualAnimatedGeometry)value).TimeRange != TimeRange)
+            if (value.TimeRange != TimeRange)
                 throw new InvalidOperationException();
 
             _dataArray[index1, index2] = value;
@@ -107,7 +106,7 @@ public class GrVisualAnimatedVectorMesh3D :
     {
         return _dataArray.GetItems(
             p => p
-        ).All(p => p.IsValid() && ((GrVisualAnimatedGeometry)p).TimeRange == TimeRange);
+        ).All(p => p.IsValid() && p.TimeRange == TimeRange);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -129,7 +128,7 @@ public class GrVisualAnimatedVectorMesh3D :
     public IPointsMesh3D GetPointsMesh(double time)
     {
         var pointArray = _dataArray.MapItems(
-            p => (ILinFloat64Vector3D) p.GetValue(time)
+            p => p.GetValue(time)
         );
 
         return new ArrayPointsMesh3D(pointArray);

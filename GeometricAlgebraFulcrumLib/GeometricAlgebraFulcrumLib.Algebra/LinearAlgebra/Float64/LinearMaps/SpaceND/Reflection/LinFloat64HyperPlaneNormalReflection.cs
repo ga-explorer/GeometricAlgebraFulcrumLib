@@ -1,8 +1,9 @@
 ﻿using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.LinearMaps.SpaceND.Scaling;
-using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Matrices;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.SpaceND;
+using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Numerical.Matrices;
+using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.LinearMaps.SpaceND.Reflection;
 
@@ -64,7 +65,7 @@ public sealed class LinFloat64HyperPlaneNormalReflection :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public override bool IsNearIdentity(double zeroEpsilon = 1E-12)
+    public override bool IsNearIdentity(double tolerance = Float64Utils.DefaultTolerance)
     {
         return false;
     }

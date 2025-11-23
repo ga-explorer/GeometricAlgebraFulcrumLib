@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics;
 using System.Runtime.CompilerServices;
-using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Matrices;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space3D;
+using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Numerical.Matrices;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
 
 namespace GeometricAlgebraFulcrumLib.Modeling.Trajectories.Vectors3D.Float64.Circles;
@@ -103,6 +103,7 @@ public sealed class Float64CirclePath3D :
         return Float64Path3DLocalFrame.Create(
             t,
             _baseCircleRotation * frame.Point + Center,
+            frame.ScalingFactor,
             _baseCircleRotation * frame.Tangent,
             _baseCircleRotation * frame.Normal1,
             _baseCircleRotation * frame.Normal2

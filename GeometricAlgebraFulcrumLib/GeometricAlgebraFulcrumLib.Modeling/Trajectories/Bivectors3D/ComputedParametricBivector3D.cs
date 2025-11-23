@@ -112,12 +112,12 @@ public class ComputedParametricBivector3D :
         //GetTangentFunc = 
         //    t =>
         //    {
-        //        const double zeroEpsilon = 1e-7;
+        //        const double tolerance = 1e-7;
 
-        //        var p1 = getBivectorFunc(t - zeroEpsilon);
-        //        var p2 = getBivectorFunc(t + zeroEpsilon);
+        //        var p1 = getBivectorFunc(t - tolerance);
+        //        var p2 = getBivectorFunc(t + tolerance);
 
-        //        return (p2 - p1) / (2 * zeroEpsilon);
+        //        return (p2 - p1) / (2 * tolerance);
         //    };
     }
 

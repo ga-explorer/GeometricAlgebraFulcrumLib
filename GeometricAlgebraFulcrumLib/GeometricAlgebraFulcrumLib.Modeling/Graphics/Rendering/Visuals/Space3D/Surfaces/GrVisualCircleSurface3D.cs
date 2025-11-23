@@ -26,7 +26,7 @@ public sealed class GrVisualCircleSurface3D :
     );
 
 
-    public static GrVisualCircleSurface3D CreateStatic(string name, GrVisualSurfaceStyle3D style, ILinFloat64Vector3D center, ILinFloat64Vector3D normal, double radius, bool drawEdge)
+    public static GrVisualCircleSurface3D CreateStatic(string name, GrVisualSurfaceStyle3D style, LinFloat64Vector3D center, LinFloat64Vector3D normal, double radius, bool drawEdge)
     {
         return new GrVisualCircleSurface3D(
             name,
@@ -39,7 +39,7 @@ public sealed class GrVisualCircleSurface3D :
         );
     }
         
-    public static GrVisualCircleSurface3D Create(string name, GrVisualSurfaceStyle3D style, ILinFloat64Vector3D normal, double radius, bool drawEdge, Float64SamplingSpecs samplingSpecs)
+    public static GrVisualCircleSurface3D Create(string name, GrVisualSurfaceStyle3D style, LinFloat64Vector3D normal, double radius, bool drawEdge, Float64SamplingSpecs samplingSpecs)
     {
         return new GrVisualCircleSurface3D(
             name,
@@ -52,7 +52,7 @@ public sealed class GrVisualCircleSurface3D :
         );
     }
         
-    public static GrVisualCircleSurface3D Create(string name, GrVisualSurfaceStyle3D style, ILinFloat64Vector3D center, ILinFloat64Vector3D normal, double radius, bool drawEdge, Float64SamplingSpecs samplingSpecs)
+    public static GrVisualCircleSurface3D Create(string name, GrVisualSurfaceStyle3D style, LinFloat64Vector3D center, LinFloat64Vector3D normal, double radius, bool drawEdge, Float64SamplingSpecs samplingSpecs)
     {
         return new GrVisualCircleSurface3D(
             name,
@@ -153,7 +153,7 @@ public sealed class GrVisualCircleSurface3D :
     }
 
 
-    public ILinFloat64Vector3D Center { get; }
+    public LinFloat64Vector3D Center { get; }
 
     public LinFloat64Vector3D Normal { get; }
 
@@ -168,7 +168,7 @@ public sealed class GrVisualCircleSurface3D :
     public bool DrawEdge { get; } 
 
 
-    private GrVisualCircleSurface3D(string name, GrVisualSurfaceStyle3D style, ILinFloat64Vector3D center, ILinFloat64Vector3D normal, double radius, bool drawEdge, Float64SamplingSpecs samplingSpecs) 
+    private GrVisualCircleSurface3D(string name, GrVisualSurfaceStyle3D style, LinFloat64Vector3D center, LinFloat64Vector3D normal, double radius, bool drawEdge, Float64SamplingSpecs samplingSpecs) 
         : base(name, style, samplingSpecs)
     {
         Center = center;
@@ -304,7 +304,7 @@ public sealed class GrVisualCircleSurface3D :
 
         foreach (var frameIndex in GetValidFrameIndexSet())
         {
-            var time = (double)frameIndex / SamplingSpecs.SamplingRate;
+            var time = frameIndex / SamplingSpecs.SamplingRate;
                 
             yield return new KeyFrameRecord(
                 frameIndex, 

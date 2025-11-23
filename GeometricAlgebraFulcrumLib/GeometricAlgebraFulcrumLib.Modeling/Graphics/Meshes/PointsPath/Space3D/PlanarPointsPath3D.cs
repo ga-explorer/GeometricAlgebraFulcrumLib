@@ -5,14 +5,14 @@ using GeometricAlgebraFulcrumLib.Utilities.Structures.Sequences.Periodic1D;
 namespace GeometricAlgebraFulcrumLib.Modeling.Graphics.Meshes.PointsPath.Space3D;
 
 public sealed class PlanarPointsPath3D : 
-    PSeqMapped1D<ILinFloat64Vector2D, ILinFloat64Vector3D>, 
+    PSeqMapped1D<LinFloat64Vector2D, LinFloat64Vector3D>, 
     IPointsPath3D
 {
-    public ILinFloat64Vector3D Origin { get; set; }
+    public LinFloat64Vector3D Origin { get; set; }
 
-    public ILinFloat64Vector3D Direction1 { get; set; }
+    public LinFloat64Vector3D Direction1 { get; set; }
 
-    public ILinFloat64Vector3D Direction2 { get; set; }
+    public LinFloat64Vector3D Direction2 { get; set; }
 
 
     public PlanarPointsPath3D(IPointsPath2D basePath) 
@@ -24,14 +24,13 @@ public sealed class PlanarPointsPath3D :
     }
 
 
-    protected override ILinFloat64Vector3D MappingFunction(ILinFloat64Vector2D pointUv)
+    protected override LinFloat64Vector3D MappingFunction(LinFloat64Vector2D pointUv)
     {
-        if (ReferenceEquals(pointUv, null))
-            throw new ArgumentNullException(nameof(pointUv));
-
-        return LinFloat64Vector3D.Create(Origin.X + pointUv.X * Direction1.X + pointUv.Y * Direction2.X,
+        return LinFloat64Vector3D.Create(
+            Origin.X + pointUv.X * Direction1.X + pointUv.Y * Direction2.X,
             Origin.Y + pointUv.X * Direction1.Y + pointUv.Y * Direction2.Y,
-            Origin.Z + pointUv.X * Direction1.Z + pointUv.Y * Direction2.Z);
+            Origin.Z + pointUv.X * Direction1.Z + pointUv.Y * Direction2.Z
+        );
     }
 
     public bool IsValid()
@@ -39,7 +38,7 @@ public sealed class PlanarPointsPath3D :
         return this.All(p => p.IsValid());
     }
 
-    public IPointsPath3D MapPoints(Func<ILinFloat64Vector3D, ILinFloat64Vector3D> pointMapping)
+    public IPointsPath3D MapPoints(Func<LinFloat64Vector3D, LinFloat64Vector3D> pointMapping)
     {
         return new ArrayPointsPath3D(
             this.Select(pointMapping).ToArray()

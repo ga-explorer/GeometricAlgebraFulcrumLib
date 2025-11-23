@@ -1,11 +1,12 @@
-﻿using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
+﻿using System.Runtime.CompilerServices;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Processors;
+using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Numerical;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Generic;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.BitManipulation;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Combinations;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.IndexSets;
 using GeometricAlgebraFulcrumLib.Utilities.Text.Text;
-using System.Runtime.CompilerServices;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Multivectors;
 
@@ -24,7 +25,34 @@ public abstract partial class XGaKVector<T> :
     {
     }
     
-        
+    
+    /// <summary>
+    /// Compare ratio between number of stored terms and total number of
+    /// GA terms for this k-vector with given ratio
+    /// </summary>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public bool IsKVectorSparsityLessThan(double sparsityRatio)
+    {
+        if (sparsityRatio is < 0 or > 1)
+            throw new ArgumentOutOfRangeException(nameof(sparsityRatio));
+
+        return Math.Log2(Count) - BinomialLog2.BinomialLog2ViaEntropy(VSpaceDimensions, Grade) < Math.Log2(sparsityRatio);
+    }
+    
+    /// <summary>
+    /// Compare ratio between number of stored terms and total number of
+    /// GA terms for this k-vector with given ratio
+    /// </summary>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public bool IsKVectorSparsityMoreThan(double sparsityRatio)
+    {
+        if (sparsityRatio is < 0 or > 1)
+            throw new ArgumentOutOfRangeException(nameof(sparsityRatio));
+
+        return Math.Log2(Count) - BinomialLog2.BinomialLog2ViaEntropy(VSpaceDimensions, Grade) > Math.Log2(sparsityRatio);
+    }
+
+
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public override bool IsScalar()
     {

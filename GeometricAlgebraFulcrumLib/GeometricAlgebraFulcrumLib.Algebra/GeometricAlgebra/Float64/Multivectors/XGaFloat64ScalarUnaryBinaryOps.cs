@@ -1,5 +1,6 @@
 ﻿using System.Runtime.CompilerServices;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
+using GeometricAlgebraFulcrumLib.Utilities.Structures.IndexSets;
 
 // ReSharper disable CompareOfFloatsByEqualityOperator
 
@@ -790,25 +791,25 @@ public sealed partial class XGaFloat64Scalar
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public override XGaFloat64Scalar DivideByENorm()
     {
-        return Divide(ENorm().ScalarValue);
+        return Divide(ENorm());
     }
         
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public override XGaFloat64Scalar DivideByENormSquared()
     {
-        return Divide(ENormSquared().ScalarValue);
+        return Divide(ENormSquared());
     }
         
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public override XGaFloat64Scalar DivideByNorm()
     {
-        return Divide(Norm().ScalarValue);
+        return Divide(Norm());
     }
         
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public override XGaFloat64Scalar DivideByNormSquared()
     {
-        return Divide(NormSquared().ScalarValue);
+        return Divide(NormSquared());
     }
 
     
@@ -834,6 +835,12 @@ public sealed partial class XGaFloat64Scalar
     {
         return this;
     }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public override XGaFloat64Scalar GradeInvolution(IndexSet gradeSet)
+    {
+        return gradeSet.SetContains(0) ? Negative() : this;
+    }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public override XGaFloat64Scalar CliffordConjugate()
@@ -848,7 +855,7 @@ public sealed partial class XGaFloat64Scalar
     }
         
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public override XGaFloat64Scalar EInverse()
+    public override XGaFloat64Scalar EVersorInverse()
     {
         return new XGaFloat64Scalar(
             Processor,
@@ -857,7 +864,7 @@ public sealed partial class XGaFloat64Scalar
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public override XGaFloat64Scalar Inverse()
+    public override XGaFloat64Scalar VersorInverse()
     {
         return new XGaFloat64Scalar(
             Processor,
@@ -866,7 +873,7 @@ public sealed partial class XGaFloat64Scalar
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public override XGaFloat64Scalar PseudoInverse()
+    public override XGaFloat64Scalar VersorPseudoInverse()
     {
         return new XGaFloat64Scalar(
             Processor,
@@ -876,7 +883,7 @@ public sealed partial class XGaFloat64Scalar
 
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public override Float64Scalar ENormSquared()
+    public override double ENormSquared()
     {
         return IsZero
             ? Float64Scalar.Zero
@@ -884,7 +891,7 @@ public sealed partial class XGaFloat64Scalar
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public override Float64Scalar NormSquared()
+    public override double NormSquared()
     {
         return IsZero
             ? Float64Scalar.Zero
@@ -892,7 +899,7 @@ public sealed partial class XGaFloat64Scalar
     }
         
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public override Float64Scalar ENorm()
+    public override double ENorm()
     {
         return IsZero
             ? Float64Scalar.Zero
@@ -900,7 +907,7 @@ public sealed partial class XGaFloat64Scalar
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public override Float64Scalar Norm()
+    public override double Norm()
     {
         return IsZero
             ? Float64Scalar.Zero

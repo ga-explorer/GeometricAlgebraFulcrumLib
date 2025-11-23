@@ -1,14 +1,13 @@
 ﻿using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space4D;
-using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.AttributeSet;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Tuples;
 
 namespace GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.BabylonJs.Values;
 
 public sealed class GrBabylonJsVector4Value :
-    SparseCodeAttributeValue<IQuad<Float64Scalar>>
+    SparseCodeAttributeValue<IQuad<double>>
 {
-    internal static GrBabylonJsVector4Value Create(IQuad<Float64Scalar> value)
+    internal static GrBabylonJsVector4Value Create(IQuad<double> value)
     {
         return new GrBabylonJsVector4Value(value);
     }
@@ -30,7 +29,7 @@ public sealed class GrBabylonJsVector4Value :
     {
     }
 
-    private GrBabylonJsVector4Value(IQuad<Float64Scalar> value)
+    private GrBabylonJsVector4Value(IQuad<double> value)
         : base(value)
     {
     }

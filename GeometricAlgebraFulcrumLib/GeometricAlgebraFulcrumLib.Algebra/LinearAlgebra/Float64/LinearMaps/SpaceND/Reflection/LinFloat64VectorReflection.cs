@@ -1,7 +1,9 @@
 ﻿using System.Diagnostics;
 using System.Runtime.CompilerServices;
-using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Matrices;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.SpaceND;
+using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Numerical;
+using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Numerical.Matrices;
+using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.BitManipulation;
 using MathNet.Numerics.LinearAlgebra;
 
@@ -46,12 +48,12 @@ public sealed class LinFloat64VectorReflection :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool IsNearIdentity(double zeroEpsilon = 1E-12)
+    public bool IsNearIdentity(double tolerance = Float64Utils.DefaultTolerance)
     {
         return false;
     }
 
-    public bool IsNearReflection(double zeroEpsilon = 1E-12)
+    public bool IsNearReflection(double tolerance = Float64Utils.DefaultTolerance)
     {
         throw new NotImplementedException();
     }
@@ -105,7 +107,7 @@ public sealed class LinFloat64VectorReflection :
         throw new NotImplementedException();
     }
 
-    public double[,] ToArray(int rowCount, int colCount)
+    public Matrix<double> ToArray(int rowCount, int colCount)
     {
         var array = new double[rowCount, colCount];
 
@@ -120,7 +122,7 @@ public sealed class LinFloat64VectorReflection :
                 array[i, j] = s;
         }
 
-        return array;
+        return array.ToMathNetDenseMatrix();
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]

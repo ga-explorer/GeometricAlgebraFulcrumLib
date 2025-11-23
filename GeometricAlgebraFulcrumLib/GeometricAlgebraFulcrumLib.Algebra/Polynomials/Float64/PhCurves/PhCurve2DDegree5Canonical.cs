@@ -11,7 +11,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.Polynomials.Float64.PhCurves;
 /// </summary>
 public sealed class PhCurve2DDegree5Canonical
 {
-    public static PhCurve2DDegree5Canonical Create(ILinFloat64Vector2D p, ILinFloat64Vector2D d)
+    public static PhCurve2DDegree5Canonical Create(LinFloat64Vector2D p, LinFloat64Vector2D d)
     {
         return new PhCurve2DDegree5Canonical(p, d);
     }
@@ -67,7 +67,7 @@ public sealed class PhCurve2DDegree5Canonical
     public XGaFloat64PureScalingRotor ScalingRotorV { get; }
 
 
-    private PhCurve2DDegree5Canonical(ILinFloat64Vector2D p, ILinFloat64Vector2D d)
+    private PhCurve2DDegree5Canonical(LinFloat64Vector2D p, LinFloat64Vector2D d)
     {
         BasisBladeSet = XGaFloat64Processor.Euclidean;
 
@@ -119,22 +119,22 @@ public sealed class PhCurve2DDegree5Canonical
         Vector12 = (ScalingRotor1.Multivector.Gp(e1Multivector).Gp(ScalingRotor2.MultivectorReverse) + ScalingRotor2.Multivector.Gp(e1Multivector).Gp(ScalingRotor1.MultivectorReverse)).VectorPartToVector2D();
         Vector11 = ScalingRotor1.Multivector.Gp(e1Multivector).Gp(ScalingRotor1.MultivectorReverse).VectorPartToVector2D();
 
-        Scalar00 = ScalingRotor0.Multivector.ESp(ScalingRotor0.MultivectorReverse).ScalarValue;
-        Scalar11 = ScalingRotor1.Multivector.ESp(ScalingRotor1.MultivectorReverse).ScalarValue;
-        Scalar22 = ScalingRotor2.Multivector.ESp(ScalingRotor2.MultivectorReverse).ScalarValue;
+        Scalar00 = ScalingRotor0.Multivector.ESp(ScalingRotor0.MultivectorReverse);
+        Scalar11 = ScalingRotor1.Multivector.ESp(ScalingRotor1.MultivectorReverse);
+        Scalar22 = ScalingRotor2.Multivector.ESp(ScalingRotor2.MultivectorReverse);
 
-        Scalar01 = ScalingRotor0.Multivector.ESp(ScalingRotor1.MultivectorReverse).ScalarValue +
-                   ScalingRotor1.Multivector.ESp(ScalingRotor0.MultivectorReverse).ScalarValue;
+        Scalar01 = ScalingRotor0.Multivector.ESp(ScalingRotor1.MultivectorReverse) +
+                   ScalingRotor1.Multivector.ESp(ScalingRotor0.MultivectorReverse);
 
-        Scalar02 = ScalingRotor0.Multivector.ESp(ScalingRotor2.MultivectorReverse).ScalarValue +
-                   ScalingRotor2.Multivector.ESp(ScalingRotor0.MultivectorReverse).ScalarValue;
+        Scalar02 = ScalingRotor0.Multivector.ESp(ScalingRotor2.MultivectorReverse) +
+                   ScalingRotor2.Multivector.ESp(ScalingRotor0.MultivectorReverse);
 
-        Scalar12 = ScalingRotor1.Multivector.ESp(ScalingRotor2.MultivectorReverse).ScalarValue +
-                   ScalingRotor2.Multivector.ESp(ScalingRotor1.MultivectorReverse).ScalarValue;
+        Scalar12 = ScalingRotor1.Multivector.ESp(ScalingRotor2.MultivectorReverse) +
+                   ScalingRotor2.Multivector.ESp(ScalingRotor1.MultivectorReverse);
     }
 
 
-    public ILinFloat64Vector2D GetHodographPoint(double parameterValue)
+    public LinFloat64Vector2D GetHodographPoint(double parameterValue)
     {
         var f00 = _basisPairProductSet.GetValue(0, 0, parameterValue);
         var f01 = _basisPairProductSet.GetValue(0, 1, parameterValue);
@@ -152,7 +152,7 @@ public sealed class PhCurve2DDegree5Canonical
             f22 * Vector22;
     }
 
-    public ILinFloat64Vector2D GetCurvePoint(double parameterValue)
+    public LinFloat64Vector2D GetCurvePoint(double parameterValue)
     {
         var f00 = _basisPairProductIntegralSet.GetValue(0, 0, parameterValue);
         var f01 = _basisPairProductIntegralSet.GetValue(0, 1, parameterValue);

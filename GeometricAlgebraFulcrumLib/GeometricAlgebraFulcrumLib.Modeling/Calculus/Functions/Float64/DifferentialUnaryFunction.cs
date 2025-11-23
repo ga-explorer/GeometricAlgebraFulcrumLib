@@ -20,7 +20,7 @@ public abstract class DifferentialUnaryFunction :
         => 1;
 
     public override IReadOnlyList<DifferentialFunction> Arguments
-        => new[] { Argument };
+        => [Argument];
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]

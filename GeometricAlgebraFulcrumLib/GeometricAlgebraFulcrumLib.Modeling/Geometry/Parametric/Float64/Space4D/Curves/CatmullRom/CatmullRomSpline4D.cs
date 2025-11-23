@@ -54,8 +54,8 @@ public sealed class CatmullRomSpline4D
         else
         {
             // Extend the curve by two control points
-            endPoint1 = 2 * LinFloat64Vector4DUtils.ToLinVector4D(_pointList[0]) - _pointList[1];
-            endPoint2 = 2 * LinFloat64Vector4DUtils.ToLinVector4D(_pointList[^1]) - _pointList[^2];
+            endPoint1 = 2 * _pointList[0].ToLinVector4D() - _pointList[1];
+            endPoint2 = 2 * _pointList[^1].ToLinVector4D() - _pointList[^2];
         }
 
         // Insert control points at both ends.
@@ -67,8 +67,8 @@ public sealed class CatmullRomSpline4D
         var total = 0d;
         for (var i = 1; i < _pointList.Count; i++)
         {
-            var vector = LinFloat64Vector4DUtils.ToLinVector4D(_pointList[i]) - _pointList[i - 1];
-            var ds = vector.VectorENormSquared();
+            var vector = _pointList[i].ToLinVector4D() - _pointList[i - 1];
+            var ds = LinFloat64Vector4DUtils.L2NormSquared(vector);
 
             var power =
                 curveType == CatmullRomSplineType.Centripetal
@@ -298,16 +298,16 @@ public sealed class CatmullRomSpline4D
     {
         // Handle edge cases
         if (parameterValue <= _knotList[0])
-            return LinFloat64Vector4DUtils.ToLinVector4D(_pointList[0]);
+            return _pointList[0].ToLinVector4D();
 
         if (parameterValue >= _knotList[^1])
-            return LinFloat64Vector4DUtils.ToLinVector4D(_pointList[^1]);
+            return _pointList[^1].ToLinVector4D();
 
         var (index1, index2) =
             GetKnotIndexContaining(parameterValue, 0, _knotList.Length - 1);
 
         if (index1 == index2)
-            return LinFloat64Vector4DUtils.ToLinVector4D(_pointList[index1]);
+            return _pointList[index1].ToLinVector4D();
 
         if (index1 == 0 && index2 == 1)
         {

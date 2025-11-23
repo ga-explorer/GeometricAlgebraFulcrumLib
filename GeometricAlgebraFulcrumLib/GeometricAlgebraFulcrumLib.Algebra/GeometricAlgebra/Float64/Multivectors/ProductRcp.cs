@@ -1,6 +1,7 @@
-﻿using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
+﻿using System.Runtime.CompilerServices;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
-using System.Runtime.CompilerServices;
+using GeometricAlgebraFulcrumLib.Utilities.Structures.IndexSets;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivectors
 {
@@ -429,7 +430,12 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivecto
 
     public sealed partial class XGaFloat64Vector
     {
-
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public XGaFloat64Vector ERcp(XGaFloat64SimpleBivector b)
+        {
+            return b.Vector2.Times(ESp(b.Vector1)) - b.Vector1.Times(ESp(b.Vector2));
+        }
+        
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public override XGaFloat64Vector ERcp(XGaFloat64Scalar kv2)
         {
@@ -460,7 +466,13 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivecto
             return Processor.ScalarZero;
         }
 
-
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public XGaFloat64Vector Rcp(XGaFloat64SimpleBivector b)
+        {
+            return b.Vector2.Times(Sp(b.Vector1)) - b.Vector1.Times(Sp(b.Vector2));
+        }
+        
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public override XGaFloat64Vector Rcp(XGaFloat64Scalar kv2)
         {
@@ -969,6 +981,35 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivecto
     
     public sealed partial class XGaFloat64KVectorComposer
     {
+        public XGaFloat64KVectorComposer AddERcpTerms(IndexSet kv1, XGaFloat64KVector kv2)
+        {
+            if (kv1.Count < kv2.Grade)
+                return this;
+
+            if (kv1.Count == kv2.Grade)
+                return AddESpTerms(kv1, kv2);
+
+            return AddEuclideanProductTerms(
+                kv1,
+                kv2,
+                BasisBladeProductUtils.ERcpIsNonZero
+            );
+        }
+        
+        public XGaFloat64KVectorComposer AddERcpTerms(XGaFloat64KVector kv1, IndexSet kv2)
+        {
+            if (kv1.Grade < kv2.Count)
+                return this;
+
+            if (kv1.Grade == kv2.Count)
+                return AddESpTerms(kv1, kv2);
+
+            return AddEuclideanProductTerms(
+                kv1,
+                kv2,
+                BasisBladeProductUtils.ERcpIsNonZero
+            );
+        }
 
         public XGaFloat64KVectorComposer AddERcpTerms(XGaFloat64KVector kv1, XGaFloat64KVector kv2)
         {

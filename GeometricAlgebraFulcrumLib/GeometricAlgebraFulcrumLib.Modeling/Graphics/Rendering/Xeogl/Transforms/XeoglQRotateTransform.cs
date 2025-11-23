@@ -1,6 +1,6 @@
 ﻿using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Angles;
-using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Matrices;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space3D;
+using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Numerical.Matrices;
 using GeometricAlgebraFulcrumLib.Utilities.Text.Text.Linear;
 
 namespace GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.Xeogl.Transforms;
@@ -9,7 +9,7 @@ public sealed class XeoglQRotateTransform : IXeoglNumericalTransform
 {
     public static XeoglQRotateTransform CreateRotate(double angle, ILinFloat64Vector3D rotateVector)
     {
-        var d = 1 / rotateVector.VectorENorm();
+        var d = 1 / rotateVector.L2Norm();
         var cosAngle = d * Math.Cos(angle / 2);
         var sinAngle = d * Math.Sin(angle / 2);
 
@@ -24,12 +24,12 @@ public sealed class XeoglQRotateTransform : IXeoglNumericalTransform
 
     public static XeoglQRotateTransform CreateRotate(ILinFloat64Vector3D vector1, ILinFloat64Vector3D vector2)
     {
-        var lengthSquared1 = vector1.VectorENormSquared();
-        var lengthSquared2 = vector2.VectorENormSquared();
+        var lengthSquared1 = vector1.L2NormSquared();
+        var lengthSquared2 = vector2.L2NormSquared();
 
         var n1 = Math.Sqrt(lengthSquared1 * lengthSquared2);
 
-        var w = n1 + vector1.VectorESp(vector2);
+        var w = n1 + vector1.VectorDot(vector2);
 
         var angle = w.CosToDoublePolarAngle();
 
@@ -40,7 +40,7 @@ public sealed class XeoglQRotateTransform : IXeoglNumericalTransform
                 ? LinFloat64Vector3D.Create(-vector1.Y, vector1.X, 0)
                 : LinFloat64Vector3D.Create(0, -vector1.Z, vector1.Y);
 
-            var d = 1 / v1.VectorENorm();
+            var d = 1 / LinFloat64Vector3DUtils.L2Norm(v1);
 
             vx = d * v1.X;
             vy = d * v1.Y;
@@ -50,7 +50,7 @@ public sealed class XeoglQRotateTransform : IXeoglNumericalTransform
         {
             var v2 = vector1.VectorCross(vector2);
 
-            var d = 1 / v2.VectorENorm();
+            var d = 1 / LinFloat64Vector3DUtils.L2Norm(v2);
 
             vx = d * v2.X;
             vy = d * v2.Y;

@@ -1,7 +1,7 @@
 ﻿using System.Runtime.CompilerServices;
-using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Matrices;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Generic;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Collections;
+using GeometricAlgebraFulcrumLib.Utilities.Structures.Extensions;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Generic.Matrices;
 
@@ -25,7 +25,7 @@ public static class ScalarArrayUtils
         for (var rowIndex = 0; rowIndex < rowCount; rowIndex++)
         {
             var scalingFactor = scalarList[rowIndex];
-            var rowVector = scalarArray.GetRow(rowIndex);
+            var rowVector = scalarArray.ViewRow(rowIndex);
             var scaledVector = scalingFunc(scalingFactor, rowVector);
 
             vector = reducingFunc(vector, scaledVector);
@@ -48,7 +48,7 @@ public static class ScalarArrayUtils
         {
             if (rowIndex >= rowCount) continue;
 
-            var rowVector = scalarArray.GetRow(rowIndex);
+            var rowVector = scalarArray.ViewRow(rowIndex);
             var scaledVector = scalingFunc(scalingFactor, rowVector);
 
             vector = reducingFunc(vector, scaledVector);
@@ -75,7 +75,7 @@ public static class ScalarArrayUtils
         for (var columnIndex = 0; columnIndex < colCount; columnIndex++)
         {
             var scalingFactor = scalarList[columnIndex];
-            var columnVector = scalarArray.GetColumn(columnIndex);
+            var columnVector = scalarArray.ViewColumn(columnIndex);
             var scaledVector = scalingFunc(scalingFactor, columnVector);
 
             vector = reducingFunc(vector, scaledVector);
@@ -98,7 +98,7 @@ public static class ScalarArrayUtils
         {
             if (columnIndex >= colCount) continue;
 
-            var columnVector = scalarArray.GetColumn(columnIndex);
+            var columnVector = scalarArray.ViewColumn(columnIndex);
             var scaledVector = scalingFunc(scalingFactor, columnVector);
 
             vector = reducingFunc(vector, scaledVector);
@@ -126,7 +126,7 @@ public static class ScalarArrayUtils
         for (var rowIndex = 0; rowIndex < rowCount; rowIndex++)
         {
             var scalingFactor = scalarList[rowIndex];
-            var rowVector = scalarArray.GetRow(rowIndex);
+            var rowVector = scalarArray.ViewRow(rowIndex);
             var scaledVector = scalingFunc(scalingFactor, rowVector);
 
             vector = reducingFunc(vector, scaledVector);
@@ -149,7 +149,7 @@ public static class ScalarArrayUtils
         {
             if (rowIndex >= rowCount) continue;
 
-            var rowVector = scalarArray.GetRow(rowIndex);
+            var rowVector = scalarArray.ViewRow(rowIndex);
             var scaledVector = scalingFunc(scalingFactor, rowVector);
 
             vector = reducingFunc(vector, scaledVector);
@@ -176,7 +176,7 @@ public static class ScalarArrayUtils
         for (var columnIndex = 0; columnIndex < colCount; columnIndex++)
         {
             var scalingFactor = scalarList[columnIndex];
-            var columnVector = scalarArray.GetColumn(columnIndex);
+            var columnVector = scalarArray.ViewColumn(columnIndex);
             var scaledVector = scalingFunc(scalingFactor, columnVector);
 
             vector = reducingFunc(vector, scaledVector);
@@ -199,7 +199,7 @@ public static class ScalarArrayUtils
         {
             if (columnIndex >= colCount) continue;
 
-            var columnVector = scalarArray.GetColumn(columnIndex);
+            var columnVector = scalarArray.ViewColumn(columnIndex);
             var scaledVector = scalingFunc(scalingFactor, columnVector);
 
             vector = reducingFunc(vector, scaledVector);
@@ -959,7 +959,7 @@ public static class ScalarArrayUtils
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static T[,] MatrixProduct<T>(this IScalarProcessor<T> scalarProcessor, T[,] matrix1, T[,] matrix2)
     {
-        return matrix1.MapScalars(
+        return matrix1.MapItems(
             matrix2,
             scalarProcessor.ZeroValue,
             (accumulator, a, b) =>
@@ -971,241 +971,241 @@ public static class ScalarArrayUtils
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static IReadOnlyList<T> Abs<T>(this IScalarProcessor<T> scalarProcessor, IReadOnlyList<T> v1)
     {
-        return v1.MapScalars(scalar => scalarProcessor.Abs(scalar).ScalarValue);
+        return v1.MapItems(scalar => scalarProcessor.Abs(scalar).ScalarValue);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static IReadOnlyList<T> Sqrt<T>(this IScalarProcessor<T> scalarProcessor, IReadOnlyList<T> v1)
     {
-        return v1.MapScalars(scalar => scalarProcessor.Sqrt(scalar).ScalarValue);
+        return v1.MapItems(scalar => scalarProcessor.Sqrt(scalar).ScalarValue);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static IReadOnlyList<T> SqrtOfAbs<T>(this IScalarProcessor<T> scalarProcessor, IReadOnlyList<T> v1)
     {
-        return v1.MapScalars(scalar => scalarProcessor.SqrtOfAbs(scalar).ScalarValue);
+        return v1.MapItems(scalar => scalarProcessor.SqrtOfAbs(scalar).ScalarValue);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static IReadOnlyList<T> Exp<T>(this IScalarProcessor<T> scalarProcessor, IReadOnlyList<T> v1)
     {
-        return v1.MapScalars(scalar => scalarProcessor.Exp(scalar).ScalarValue);
+        return v1.MapItems(scalar => scalarProcessor.Exp(scalar).ScalarValue);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static IReadOnlyList<T> LogE<T>(this IScalarProcessor<T> scalarProcessor, IReadOnlyList<T> v1)
     {
-        return v1.MapScalars(scalar => scalarProcessor.LogE(scalar).ScalarValue);
+        return v1.MapItems(scalar => scalarProcessor.LogE(scalar).ScalarValue);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static IReadOnlyList<T> Log2<T>(this IScalarProcessor<T> scalarProcessor, IReadOnlyList<T> v1)
     {
-        return v1.MapScalars(scalar => scalarProcessor.Log2(scalar).ScalarValue);
+        return v1.MapItems(scalar => scalarProcessor.Log2(scalar).ScalarValue);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static IReadOnlyList<T> Log10<T>(this IScalarProcessor<T> scalarProcessor, IReadOnlyList<T> v1)
     {
-        return v1.MapScalars(scalar => scalarProcessor.Log10(scalar).ScalarValue);
+        return v1.MapItems(scalar => scalarProcessor.Log10(scalar).ScalarValue);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static IReadOnlyList<T> Log<T>(this IScalarProcessor<T> scalarProcessor, IReadOnlyList<T> v1, T scalar)
     {
-        return v1.MapScalars(s => scalarProcessor.Log(s, scalar).ScalarValue);
+        return v1.MapItems(s => scalarProcessor.Log(s, scalar).ScalarValue);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static IReadOnlyList<T> Log<T>(this IScalarProcessor<T> scalarProcessor, T scalar, IReadOnlyList<T> v1)
     {
-        return v1.MapScalars(s => scalarProcessor.Log(scalar, s).ScalarValue);
+        return v1.MapItems(s => scalarProcessor.Log(scalar, s).ScalarValue);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static IReadOnlyList<T> Power<T>(this IScalarProcessor<T> scalarProcessor, IReadOnlyList<T> v1, T scalar)
     {
-        return v1.MapScalars(s => scalarProcessor.Power(s, scalar).ScalarValue);
+        return v1.MapItems(s => scalarProcessor.Power(s, scalar).ScalarValue);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static IReadOnlyList<T> Power<T>(this IScalarProcessor<T> scalarProcessor, T scalar, IReadOnlyList<T> v1)
     {
-        return v1.MapScalars(s => scalarProcessor.Power(scalar, s).ScalarValue);
+        return v1.MapItems(s => scalarProcessor.Power(scalar, s).ScalarValue);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static IReadOnlyList<T> Cos<T>(this IScalarProcessor<T> scalarProcessor, IReadOnlyList<T> v1)
     {
-        return v1.MapScalars(scalar => scalarProcessor.Cos(scalar).ScalarValue);
+        return v1.MapItems(scalar => scalarProcessor.Cos(scalar).ScalarValue);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static IReadOnlyList<T> Sin<T>(this IScalarProcessor<T> scalarProcessor, IReadOnlyList<T> v1)
     {
-        return v1.MapScalars(scalar => scalarProcessor.Sin(scalar).ScalarValue);
+        return v1.MapItems(scalar => scalarProcessor.Sin(scalar).ScalarValue);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static IReadOnlyList<T> Tan<T>(this IScalarProcessor<T> scalarProcessor, IReadOnlyList<T> v1)
     {
-        return v1.MapScalars(scalar => scalarProcessor.Tan(scalar).ScalarValue);
+        return v1.MapItems(scalar => scalarProcessor.Tan(scalar).ScalarValue);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static IReadOnlyList<T> ArcCos<T>(this IScalarProcessor<T> scalarProcessor, IReadOnlyList<T> v1)
     {
-        return v1.MapScalars(scalar => scalarProcessor.ArcCos(scalar).ScalarValue);
+        return v1.MapItems(scalar => scalarProcessor.ArcCos(scalar).ScalarValue);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static IReadOnlyList<T> ArcSin<T>(this IScalarProcessor<T> scalarProcessor, IReadOnlyList<T> v1)
     {
-        return v1.MapScalars(scalar => scalarProcessor.ArcSin(scalar).ScalarValue);
+        return v1.MapItems(scalar => scalarProcessor.ArcSin(scalar).ScalarValue);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static IReadOnlyList<T> ArcTan<T>(this IScalarProcessor<T> scalarProcessor, IReadOnlyList<T> v1)
     {
-        return v1.MapScalars(scalar => scalarProcessor.ArcTan(scalar).ScalarValue);
+        return v1.MapItems(scalar => scalarProcessor.ArcTan(scalar).ScalarValue);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static IReadOnlyList<T> Cosh<T>(this IScalarProcessor<T> scalarProcessor, IReadOnlyList<T> v1)
     {
-        return v1.MapScalars(scalar => scalarProcessor.Cosh(scalar).ScalarValue);
+        return v1.MapItems(scalar => scalarProcessor.Cosh(scalar).ScalarValue);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static IReadOnlyList<T> Sinh<T>(this IScalarProcessor<T> scalarProcessor, IReadOnlyList<T> v1)
     {
-        return v1.MapScalars(scalar => scalarProcessor.Sinh(scalar).ScalarValue);
+        return v1.MapItems(scalar => scalarProcessor.Sinh(scalar).ScalarValue);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static IReadOnlyList<T> Tanh<T>(this IScalarProcessor<T> scalarProcessor, IReadOnlyList<T> v1)
     {
-        return v1.MapScalars(scalar => scalarProcessor.Tanh(scalar).ScalarValue);
+        return v1.MapItems(scalar => scalarProcessor.Tanh(scalar).ScalarValue);
     }
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static T[,] Abs<T>(this IScalarProcessor<T> scalarProcessor, T[,] v1)
     {
-        return v1.MapScalars(scalar => scalarProcessor.Abs(scalar).ScalarValue);
+        return v1.MapItems(scalar => scalarProcessor.Abs(scalar).ScalarValue);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static T[,] Sqrt<T>(this IScalarProcessor<T> scalarProcessor, T[,] v1)
     {
-        return v1.MapScalars(scalar => scalarProcessor.Sqrt(scalar).ScalarValue);
+        return v1.MapItems(scalar => scalarProcessor.Sqrt(scalar).ScalarValue);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static T[,] SqrtOfAbs<T>(this IScalarProcessor<T> scalarProcessor, T[,] v1)
     {
-        return v1.MapScalars(scalar => scalarProcessor.SqrtOfAbs(scalar).ScalarValue);
+        return v1.MapItems(scalar => scalarProcessor.SqrtOfAbs(scalar).ScalarValue);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static T[,] Exp<T>(this IScalarProcessor<T> scalarProcessor, T[,] v1)
     {
-        return v1.MapScalars(scalar => scalarProcessor.Exp(scalar).ScalarValue);
+        return v1.MapItems(scalar => scalarProcessor.Exp(scalar).ScalarValue);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static T[,] LogE<T>(this IScalarProcessor<T> scalarProcessor, T[,] v1)
     {
-        return v1.MapScalars(scalar => scalarProcessor.LogE(scalar).ScalarValue);
+        return v1.MapItems(scalar => scalarProcessor.LogE(scalar).ScalarValue);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static T[,] Log2<T>(this IScalarProcessor<T> scalarProcessor, T[,] v1)
     {
-        return v1.MapScalars(scalar => scalarProcessor.Log2(scalar).ScalarValue);
+        return v1.MapItems(scalar => scalarProcessor.Log2(scalar).ScalarValue);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static T[,] Log10<T>(this IScalarProcessor<T> scalarProcessor, T[,] v1)
     {
-        return v1.MapScalars(scalar => scalarProcessor.Log10(scalar).ScalarValue);
+        return v1.MapItems(scalar => scalarProcessor.Log10(scalar).ScalarValue);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static T[,] Log<T>(this IScalarProcessor<T> scalarProcessor, T[,] v1, T scalar)
     {
-        return v1.MapScalars(s => scalarProcessor.Log(s, scalar).ScalarValue);
+        return v1.MapItems(s => scalarProcessor.Log(s, scalar).ScalarValue);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static T[,] Log<T>(this IScalarProcessor<T> scalarProcessor, T scalar, T[,] v1)
     {
-        return v1.MapScalars(s => scalarProcessor.Log(scalar, s).ScalarValue);
+        return v1.MapItems(s => scalarProcessor.Log(scalar, s).ScalarValue);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static T[,] Power<T>(this IScalarProcessor<T> scalarProcessor, T[,] v1, T scalar)
     {
-        return v1.MapScalars(s => scalarProcessor.Power(s, scalar).ScalarValue);
+        return v1.MapItems(s => scalarProcessor.Power(s, scalar).ScalarValue);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static T[,] Power<T>(this IScalarProcessor<T> scalarProcessor, T scalar, T[,] v1)
     {
-        return v1.MapScalars(s => scalarProcessor.Power(scalar, s).ScalarValue);
+        return v1.MapItems(s => scalarProcessor.Power(scalar, s).ScalarValue);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static T[,] Cos<T>(this IScalarProcessor<T> scalarProcessor, T[,] v1)
     {
-        return v1.MapScalars(scalar => scalarProcessor.Cos(scalar).ScalarValue);
+        return v1.MapItems(scalar => scalarProcessor.Cos(scalar).ScalarValue);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static T[,] Sin<T>(this IScalarProcessor<T> scalarProcessor, T[,] v1)
     {
-        return v1.MapScalars(scalar => scalarProcessor.Sin(scalar).ScalarValue);
+        return v1.MapItems(scalar => scalarProcessor.Sin(scalar).ScalarValue);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static T[,] Tan<T>(this IScalarProcessor<T> scalarProcessor, T[,] v1)
     {
-        return v1.MapScalars(scalar => scalarProcessor.Tan(scalar).ScalarValue);
+        return v1.MapItems(scalar => scalarProcessor.Tan(scalar).ScalarValue);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static T[,] ArcCos<T>(this IScalarProcessor<T> scalarProcessor, T[,] v1)
     {
-        return v1.MapScalars(scalar => scalarProcessor.ArcCos(scalar).ScalarValue);
+        return v1.MapItems(scalar => scalarProcessor.ArcCos(scalar).ScalarValue);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static T[,] ArcSin<T>(this IScalarProcessor<T> scalarProcessor, T[,] v1)
     {
-        return v1.MapScalars(scalar => scalarProcessor.ArcSin(scalar).ScalarValue);
+        return v1.MapItems(scalar => scalarProcessor.ArcSin(scalar).ScalarValue);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static T[,] ArcTan<T>(this IScalarProcessor<T> scalarProcessor, T[,] v1)
     {
-        return v1.MapScalars(scalar => scalarProcessor.ArcTan(scalar).ScalarValue);
+        return v1.MapItems(scalar => scalarProcessor.ArcTan(scalar).ScalarValue);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static T[,] Cosh<T>(this IScalarProcessor<T> scalarProcessor, T[,] v1)
     {
-        return v1.MapScalars(scalar => scalarProcessor.Cosh(scalar).ScalarValue);
+        return v1.MapItems(scalar => scalarProcessor.Cosh(scalar).ScalarValue);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static T[,] Sinh<T>(this IScalarProcessor<T> scalarProcessor, T[,] v1)
     {
-        return v1.MapScalars(scalar => scalarProcessor.Sinh(scalar).ScalarValue);
+        return v1.MapItems(scalar => scalarProcessor.Sinh(scalar).ScalarValue);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static T[,] Tanh<T>(this IScalarProcessor<T> scalarProcessor, T[,] v1)
     {
-        return v1.MapScalars(scalar => scalarProcessor.Tanh(scalar).ScalarValue);
+        return v1.MapItems(scalar => scalarProcessor.Tanh(scalar).ScalarValue);
     }
 }

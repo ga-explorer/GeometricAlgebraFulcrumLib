@@ -8,7 +8,7 @@ using GeometricAlgebraFulcrumLib.Modeling.Geometry.BasicShapes.Lines.Space2D.Flo
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.BasicShapes.Lines.Space3D.Float64;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.BasicShapes.Triangles.Space2D.Float64;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.BasicShapes.Triangles.Space3D.Float64;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.Borders.Space3D.Float64;
+using GeometricAlgebraFulcrumLib.Modeling.Geometry.Bounding.Float64;
 
 namespace GeometricAlgebraFulcrumLib.Modeling.Geometry.BasicShapes;
 
@@ -16,14 +16,14 @@ public static class Float64BasicShapesUtils
 {
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Float64BoundingBoxComposer3D MapBoundingBox(this IFloat64AffineMap3D affineMap, Float64BoundingBoxComposer3D boundingBox)
+    public static Float64BoundingBox3D MapBoundingBox(this IFloat64AffineMap3D affineMap, Float64BoundingBox3D boundingBox)
     {
-        return (Float64BoundingBoxComposer3D)boundingBox.MapUsing(affineMap);
+        return (Float64BoundingBox3D)boundingBox.MapBoundingSurfaceUsing(affineMap);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static IEnumerable<IIntersectable> GetIntersectables<T>(this IEnumerable<T> geometricObjectsList)
-        where T : IFloat64FiniteGeometricShape2D
+        where T : IFloat64BoundedShape2D
     {
         return geometricObjectsList
             .Cast<IIntersectable>()
@@ -31,7 +31,7 @@ public static class Float64BasicShapesUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static IEnumerable<IIntersectable> GetIntersectables(this IEnumerable<IFloat64FiniteGeometricShape3D> geometricObjectsList)
+    public static IEnumerable<IIntersectable> GetIntersectables(this IEnumerable<IFloat64BoundedShape3D> geometricObjectsList)
     {
         return geometricObjectsList
             .Cast<IIntersectable>()

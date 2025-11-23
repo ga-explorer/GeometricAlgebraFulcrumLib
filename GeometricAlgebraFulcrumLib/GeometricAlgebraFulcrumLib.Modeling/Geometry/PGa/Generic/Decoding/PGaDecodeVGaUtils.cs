@@ -1,5 +1,4 @@
-﻿using System.Collections.Immutable;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Multivectors;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Generic.Vectors.Space2D;
@@ -229,17 +228,21 @@ public static class PGaDecodeVGaUtils
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static IReadOnlyList<LinVector2D<T>> DecodeVGaBladeToVectors2D<T>(this PGaBlade<T> blade)
     {
-        return blade.DecodeVGaBladeToVectors().Select(
-            v => LinVector2D<T>.Create(v[0], v[1])
-        ).ToImmutableArray();
+        return [
+            ..blade.DecodeVGaBladeToVectors().Select(
+                v => LinVector2D<T>.Create(v[0], v[1])
+            )
+        ];
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static IReadOnlyList<LinVector3D<T>> DecodeVGaBladeToVectors3D<T>(this PGaBlade<T> blade)
     {
-        return blade.DecodeVGaBladeToVectors().Select(
-            v => LinVector3D<T>.Create(v[0], v[1], v[2])
-        ).ToImmutableArray();
+        return [
+            ..blade.DecodeVGaBladeToVectors().Select(
+                v => LinVector3D<T>.Create(v[0], v[1], v[2])
+            )
+        ];
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]

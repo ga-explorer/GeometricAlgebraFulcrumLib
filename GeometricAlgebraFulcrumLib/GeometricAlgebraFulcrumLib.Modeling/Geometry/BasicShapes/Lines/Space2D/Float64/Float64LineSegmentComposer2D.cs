@@ -1,7 +1,9 @@
 ﻿using System.Diagnostics;
 using System.Text;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space2D;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.Borders.Space2D.Float64;
+using GeometricAlgebraFulcrumLib.Modeling.Geometry.Bounding.Float64;
+
+using GeometricAlgebraFulcrumLib.Utilities.Structures.Tuples;
 
 namespace GeometricAlgebraFulcrumLib.Modeling.Geometry.BasicShapes.Lines.Space2D.Float64;
 
@@ -18,13 +20,13 @@ public sealed class Float64LineSegmentComposer2D :
         );
     }
 
-    public static Float64LineSegmentComposer2D Create(ILinFloat64Vector2D point1, ILinFloat64Vector2D point2)
+    public static Float64LineSegmentComposer2D Create(IPair<double> point1, IPair<double> point2)
     {
         return new Float64LineSegmentComposer2D(
-            point1.X,
-            point1.Y,
-            point2.X,
-            point2.Y
+            point1.Item1,
+            point1.Item2,
+            point2.Item1,
+            point2.Item2
         );
     }
 
@@ -32,11 +34,22 @@ public sealed class Float64LineSegmentComposer2D :
     public double Point1X { get; set; }
 
     public double Point1Y { get; set; }
-
-
+    
     public double Point2X { get; set; }
 
     public double Point2Y { get; set; }
+    
+    public LinFloat64Vector2D Point1 
+        => LinFloat64Vector2D.Create(Point1X, Point1Y);
+    
+    public LinFloat64Vector2D Point2 
+        => LinFloat64Vector2D.Create(Point2X, Point2Y);
+
+    public LinFloat64Vector2D Item1 
+        => Point1;
+
+    public LinFloat64Vector2D Item2 
+        => Point2;
 
 
     public bool IsValid()
@@ -66,18 +79,18 @@ public sealed class Float64LineSegmentComposer2D :
     }
 
 
-    public Float64LineSegmentComposer2D SetPoint1(ILinFloat64Vector2D point)
+    public Float64LineSegmentComposer2D SetPoint1(IPair<double> point)
     {
-        Point1X = point.X;
-        Point1Y = point.Y;
+        Point1X = point.Item1;
+        Point1Y = point.Item2;
 
         return this;
     }
 
-    public Float64LineSegmentComposer2D SetPoint2(ILinFloat64Vector2D point)
+    public Float64LineSegmentComposer2D SetPoint2(IPair<double> point)
     {
-        Point2X = point.X;
-        Point2Y = point.Y;
+        Point2X = point.Item1;
+        Point2Y = point.Item2;
 
         return this;
     }
@@ -93,13 +106,13 @@ public sealed class Float64LineSegmentComposer2D :
         return this;
     }
 
-    public Float64LineSegmentComposer2D SetLineSegment(ILinFloat64Vector2D point1, ILinFloat64Vector2D point2)
+    public Float64LineSegmentComposer2D SetLineSegment(IPair<double> point1, IPair<double> point2)
     {
-        Point1X = point1.X;
-        Point1Y = point1.Y;
+        Point1X = point1.Item1;
+        Point1Y = point1.Item2;
 
-        Point2X = point2.X;
-        Point2Y = point2.Y;
+        Point2X = point2.Item1;
+        Point2Y = point2.Item2;
 
         return this;
     }
@@ -117,12 +130,12 @@ public sealed class Float64LineSegmentComposer2D :
 
     public Float64BoundingBox2D GetBoundingBox()
     {
-        return Float64BoundingBox2D.Create(Point1X, Point1Y, Point2X, Point2Y);
+        return Float64BoundingBox2D.Containing(Point1X, Point1Y, Point2X, Point2Y);
     }
 
     public Float64BoundingBoxComposer2D GetBoundingBoxComposer()
     {
-        return Float64BoundingBoxComposer2D.CreateFromPoints(Point1X, Point1Y, Point2X, Point2Y);
+        return Float64BoundingBoxComposer2D.Containing(Point1X, Point1Y, Point2X, Point2Y);
     }
 
     public override string ToString()
@@ -140,4 +153,5 @@ public sealed class Float64LineSegmentComposer2D :
             .Append(")>")
             .ToString();
     }
+
 }

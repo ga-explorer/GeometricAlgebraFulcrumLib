@@ -364,11 +364,11 @@ public bool IsZero()
 }
 
 [MethodImpl(MethodImplOptions.AggressiveInlining)]
-public bool IsNearZero(double zeroEpsilon = 1e-12d)
+public bool IsNearZero(double tolerance = 1e-12d)
 {
     var norm = this.Norm();
 
-    return norm > -zeroEpsilon && norm < zeroEpsilon;
+    return norm > -tolerance && norm < tolerance;
 }
 ".Trim()
         );

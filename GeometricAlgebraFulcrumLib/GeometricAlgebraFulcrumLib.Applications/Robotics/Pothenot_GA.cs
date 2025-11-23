@@ -88,12 +88,12 @@ public static class PothenotGa
         var d2 = v2 - (v2/Math.Tan(beta)).Gp(e1.Op(e2));
 
         var d = d2 - d1;
-        var inv = d1.Inverse();
+        var inv = d1.VersorInverse();
 
         //If the inverse of d does not exist, we are in the forbidden circle.
         try
         {
-            inv = d.Inverse();
+            inv = d.VersorInverse();
 
                 
         }catch (Exception ex)
@@ -102,7 +102,7 @@ public static class PothenotGa
         }
 
 
-        var p = (d1.Op(d)).Gp(d.Inverse());
+        var p = (d1.Op(d)).Gp(d.VersorInverse());
         var globalPos = new float[2]{ center[0] + (float)p.Scalar(0), center[1] + (float)p.Scalar(1) };
 
         return globalPos;

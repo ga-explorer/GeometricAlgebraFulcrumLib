@@ -40,12 +40,12 @@ public class GrPovRayFinish :
         = new GrPovRayFinishProperties();
 
 
-    internal GrPovRayFinish()
+    public GrPovRayFinish()
     {
         BaseFinishIdentifier = string.Empty;
     }
 
-    internal GrPovRayFinish(string finishIdentifier)
+    public GrPovRayFinish(string finishIdentifier)
     {
         BaseFinishIdentifier = finishIdentifier;
     }

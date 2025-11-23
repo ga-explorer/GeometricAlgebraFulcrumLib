@@ -16,7 +16,7 @@ public abstract class PnPropagatorFloat64 :
     public abstract IReadOnlyList<IPropagatorCell> InputCells { get; }
 
     public IReadOnlyList<IPropagatorCell> OutputCells 
-        => new []{OutputCell};
+        => [OutputCell];
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]

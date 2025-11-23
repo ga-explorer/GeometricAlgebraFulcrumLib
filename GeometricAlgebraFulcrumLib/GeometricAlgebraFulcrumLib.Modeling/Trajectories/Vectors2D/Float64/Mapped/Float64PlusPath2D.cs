@@ -27,7 +27,7 @@ public sealed class Float64PlusPath2D :
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Float64PlusPath2D Finite(Float64Path2D scalar1, Float64Path2D scalar2)
     {
-        return Finite(new[] { scalar1, scalar2 });
+        return Finite([scalar1, scalar2]);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -59,7 +59,7 @@ public sealed class Float64PlusPath2D :
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Float64PlusPath2D Periodic(Float64Path2D scalar1, Float64Path2D scalar2)
     {
-        return Periodic(new[] { scalar1, scalar2 });
+        return Periodic([scalar1, scalar2]);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]

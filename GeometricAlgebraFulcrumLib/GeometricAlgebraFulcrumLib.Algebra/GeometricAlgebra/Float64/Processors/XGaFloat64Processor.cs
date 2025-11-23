@@ -1,5 +1,6 @@
 ﻿using System.Runtime.CompilerServices;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivectors;
+using GeometricAlgebraFulcrumLib.Utilities.Structures.IndexSets;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Processors;
 
@@ -74,4 +75,27 @@ public partial class XGaFloat64Processor :
         GradedMultivectorZero = new XGaFloat64GradedMultivector(this);
         UniformMultivectorZero = new XGaFloat64UniformMultivector(this);
     }
+    
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public XGaFloat64Vector ELcp(int basisVectorIndex, XGaFloat64Bivector kv2)
+    {
+        return kv2.IsZero
+            ? VectorZero
+            : CreateVectorComposer()
+                .AddELcpTerms(basisVectorIndex.ToUnitIndexSet(), kv2)
+                .GetVector();
+    }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public XGaFloat64Vector ERcp(XGaFloat64Bivector kv2, int basisVectorIndex)
+    {
+        return kv2.IsZero
+            ? VectorZero
+            : CreateVectorComposer()
+                .AddERcpTerms(kv2, basisVectorIndex.ToUnitIndexSet())
+                .GetVector();
+    }
+
+    
 }

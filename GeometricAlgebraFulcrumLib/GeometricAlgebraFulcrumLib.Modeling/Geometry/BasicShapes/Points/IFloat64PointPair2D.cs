@@ -1,7 +1,7 @@
 ﻿namespace GeometricAlgebraFulcrumLib.Modeling.Geometry.BasicShapes.Points;
 
 public interface IFloat64PointPair2D : 
-    IFloat64FiniteGeometricShape2D
+    IFloat64BoundedShape2D
 {
     double Point1X { get; }
 

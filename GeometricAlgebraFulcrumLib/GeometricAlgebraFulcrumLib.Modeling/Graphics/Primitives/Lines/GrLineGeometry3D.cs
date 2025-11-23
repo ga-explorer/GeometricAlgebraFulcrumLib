@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Tuples;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space3D;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.BasicShapes.Lines;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.BasicShapes.Lines.Space3D.Float64;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Primitives.Vertices;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Tuples;
@@ -14,7 +13,7 @@ namespace GeometricAlgebraFulcrumLib.Modeling.Graphics.Primitives.Lines;
 public sealed class GrLineGeometry3D
     : IGraphicsLineGeometry3D
 {
-    public static GrLineGeometry3D Create(IReadOnlyList<ILinFloat64Vector3D> pointsList)
+    public static GrLineGeometry3D Create(IReadOnlyList<LinFloat64Vector3D> pointsList)
     {
         if (pointsList.Count < 2)
             throw new ArgumentException();
@@ -22,7 +21,7 @@ public sealed class GrLineGeometry3D
         return new GrLineGeometry3D(pointsList);
     }
 
-    public static GrLineGeometry3D Create(IReadOnlyList<ILinFloat64Vector3D> pointsList, List<int> indicesList)
+    public static GrLineGeometry3D Create(IReadOnlyList<LinFloat64Vector3D> pointsList, List<int> indicesList)
     {
         if (pointsList.Count < 2)
             throw new ArgumentException();
@@ -30,7 +29,7 @@ public sealed class GrLineGeometry3D
         return new GrLineGeometry3D(pointsList, indicesList);
     }
 
-    public static GrLineGeometry3D Create(params ILinFloat64Vector3D[] pointsList)
+    public static GrLineGeometry3D Create(params LinFloat64Vector3D[] pointsList)
     {
         if (pointsList.Length < 2)
             throw new ArgumentException();
@@ -38,7 +37,7 @@ public sealed class GrLineGeometry3D
         return new GrLineGeometry3D(pointsList);
     }
 
-    public static GrLineGeometry3D Create(IEnumerable<ILinFloat64Vector3D> pointsList)
+    public static GrLineGeometry3D Create(IEnumerable<LinFloat64Vector3D> pointsList)
     {
         var pointsArray = pointsList.ToArray();
 
@@ -48,7 +47,7 @@ public sealed class GrLineGeometry3D
         return new GrLineGeometry3D(pointsArray);
     }
 
-    public static GrLineGeometry3D Create(IEnumerable<ILinFloat64Vector3D> pointsList, IEnumerable<int> indicesList)
+    public static GrLineGeometry3D Create(IEnumerable<LinFloat64Vector3D> pointsList, IEnumerable<int> indicesList)
     {
         var pointsArray = pointsList.ToArray();
 
@@ -58,7 +57,7 @@ public sealed class GrLineGeometry3D
         return new GrLineGeometry3D(pointsArray, indicesList.ToList());
     }
         
-    public static GrLineGeometry3D Create(params IFloat64LineSegment3D[] lineSegmentsList)
+    public static GrLineGeometry3D Create(params Float64LineSegment3D[] lineSegmentsList)
     {
         var pointsList = new DistinctTuplesList3D();
         var vertexIndicesList = new List<int>();
@@ -109,8 +108,8 @@ public sealed class GrLineGeometry3D
     public int VertexCount 
         => _vertexPoints.Count;
 
-    private readonly IReadOnlyList<ILinFloat64Vector3D> _vertexPoints;
-    public IEnumerable<ILinFloat64Vector3D> GeometryPoints 
+    private readonly IReadOnlyList<LinFloat64Vector3D> _vertexPoints;
+    public IEnumerable<LinFloat64Vector3D> GeometryPoints 
         => _vertexPoints;
 
     public IEnumerable<IGraphicsVertex3D> GeometryVertices
@@ -154,7 +153,7 @@ public sealed class GrLineGeometry3D
     }
 
 
-    private GrLineGeometry3D(IReadOnlyList<ILinFloat64Vector3D> pointsList)
+    private GrLineGeometry3D(IReadOnlyList<LinFloat64Vector3D> pointsList)
     {
         if (pointsList.Count < 2)
             throw new InvalidOperationException();
@@ -163,7 +162,7 @@ public sealed class GrLineGeometry3D
         _vertexIndicesList = new List<int>();
     }
 
-    private GrLineGeometry3D(IReadOnlyList<ILinFloat64Vector3D> pointsList, List<int> vertexIndicesList)
+    private GrLineGeometry3D(IReadOnlyList<LinFloat64Vector3D> pointsList, List<int> vertexIndicesList)
     {
         if (pointsList.Count < 2 || vertexIndicesList.Count % 2 != 0)
             throw new InvalidOperationException();
@@ -171,9 +170,9 @@ public sealed class GrLineGeometry3D
         _vertexPoints = pointsList;
         _vertexIndicesList = vertexIndicesList;
     }
-
+    
         
-    public ILinFloat64Vector3D GetGeometryPoint(int index)
+    public LinFloat64Vector3D GetGeometryPoint(int index)
     {
         return _vertexPoints[index];
     }

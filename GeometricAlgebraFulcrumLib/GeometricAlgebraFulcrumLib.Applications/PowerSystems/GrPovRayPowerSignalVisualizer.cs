@@ -405,7 +405,7 @@ public class GrPovRayPowerSignalVisualizer :
     //    return SceneComposer;
     //}
 
-    private void AddSignalPlane(ILinFloat64Vector3D k)
+    private void AddSignalPlane(LinFloat64Vector3D k)
     {
         var scene = ActiveSceneComposer.SceneObject;
         
@@ -520,7 +520,7 @@ public class GrPovRayPowerSignalVisualizer :
                 .FrameList
                 .Skip(trailStartIndex)
                 .Take(trailLength)
-                .ToImmutableArray();
+                .ToLinVector3DList();
 
         ActiveSceneComposer.AddLinePath(
             "curve",
@@ -803,13 +803,13 @@ public class GrPovRayPowerSignalVisualizer :
         var (kappa1, kappa2) = Signal.CurvatureList![signalSampleIndex];
 
         var omega = Signal.DarbouxBivectorList![signalSampleIndex];
-        var omegaNorm = omega.Norm();
+        var omegaNorm = omega.L2Norm();
 
         var omegaMean = Signal.GetDarbouxBivectorMean(
             Math.Max(0, signalSampleIndex - MeanSampleCount),
             signalSampleIndex
         );
-        var omegaMeanNorm = omegaMean.Norm();
+        var omegaMeanNorm = omegaMean.L2Norm();
 
         var frequencyHz = omegaNorm / (Math.Tau);
         var frequencyHzMean = omegaMeanNorm / (Math.Tau);
@@ -992,7 +992,7 @@ public class GrPovRayPowerSignalVisualizer :
             LaTeXScalingFactor * 0.75
         );
 
-        if (e1Ds.VectorENorm() > 0.1)
+        if (LinFloat64Vector3DUtils.L2Norm(e1Ds) > 0.1)
         {
             omegaSceneComposer.AddVector(
                 "e1DsVector",
@@ -1025,7 +1025,7 @@ public class GrPovRayPowerSignalVisualizer :
             );
         }
 
-        if (e2Ds.VectorENorm() > 0.1)
+        if (LinFloat64Vector3DUtils.L2Norm(e2Ds) > 0.1)
         {
             omegaSceneComposer.AddVector(
                 "e2DsVector",
@@ -1058,7 +1058,7 @@ public class GrPovRayPowerSignalVisualizer :
             );
         }
 
-        if (e3Ds.VectorENorm() > 0.1)
+        if (LinFloat64Vector3DUtils.L2Norm(e3Ds) > 0.1)
         {
             omegaSceneComposer.AddVector(
                 "e3DsVector",

@@ -11,7 +11,7 @@ public static class LinFloat64Vector3DComponentUtils
     /// The value of the smallest component in this vector
     /// </summary>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static double GetMinComponent(this ITriplet<Float64Scalar> vector)
+    public static double GetMinComponent(this ITriplet<double> vector)
     {
         return vector.Item1 < vector.Item2
             ? vector.Item1 < vector.Item3 ? vector.Item1 : vector.Item3
@@ -22,7 +22,7 @@ public static class LinFloat64Vector3DComponentUtils
     /// The value of the largest component in this vector
     /// </summary>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static double GetMaxComponent(this ITriplet<Float64Scalar> vector)
+    public static double GetMaxComponent(this ITriplet<double> vector)
     {
         return vector.Item1 > vector.Item2
             ? vector.Item1 > vector.Item3 ? vector.Item1 : vector.Item3
@@ -33,7 +33,7 @@ public static class LinFloat64Vector3DComponentUtils
     /// The index of the smallest component in this vector
     /// </summary>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static int GetMinComponentIndex(this ITriplet<Float64Scalar> vector)
+    public static int GetMinComponentIndex(this ITriplet<double> vector)
     {
         return vector.Item1 < vector.Item2 ? vector.Item1 < vector.Item3 ? 0 : 2 : vector.Item2 < vector.Item3 ? 1 : 2;
     }
@@ -42,7 +42,7 @@ public static class LinFloat64Vector3DComponentUtils
     /// The index of the largest component in this vector
     /// </summary>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static int GetMaxComponentIndex(this ITriplet<Float64Scalar> vector)
+    public static int GetMaxComponentIndex(this ITriplet<double> vector)
     {
         return vector.Item1 > vector.Item2 ? vector.Item1 > vector.Item3 ? 0 : 2 : vector.Item2 > vector.Item3 ? 1 : 2;
     }
@@ -51,7 +51,7 @@ public static class LinFloat64Vector3DComponentUtils
     /// The index of the largest absolute component in this vector
     /// </summary>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static int GetMaxAbsComponentIndex(this ITriplet<Float64Scalar> vector)
+    public static int GetMaxAbsComponentIndex(this ITriplet<double> vector)
     {
         var absX = vector.Item1.Abs();
         var absY = vector.Item2.Abs();
@@ -67,7 +67,7 @@ public static class LinFloat64Vector3DComponentUtils
     /// The index of the largest absolute component in this vector
     /// </summary>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static int GetMinAbsComponentIndex(this ITriplet<Float64Scalar> vector)
+    public static int GetMinAbsComponentIndex(this ITriplet<double> vector)
     {
         var absX = Math.Abs(vector.Item1);
         var absY = Math.Abs(vector.Item2);
@@ -86,7 +86,7 @@ public static class LinFloat64Vector3DComponentUtils
     /// <param name="v2"></param>
     /// <returns></returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64Vector3D Min(this ITriplet<Float64Scalar> v1, ITriplet<Float64Scalar> v2)
+    public static LinFloat64Vector3D Min(this ITriplet<double> v1, ITriplet<double> v2)
     {
         return LinFloat64Vector3D.Create(
             v1.Item1 < v2.Item1 ? v1.Item1 : v2.Item1,
@@ -102,7 +102,7 @@ public static class LinFloat64Vector3DComponentUtils
     /// <param name="v2"></param>
     /// <returns></returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64Vector3D Max(this ITriplet<Float64Scalar> v1, ITriplet<Float64Scalar> v2)
+    public static LinFloat64Vector3D Max(this ITriplet<double> v1, ITriplet<double> v2)
     {
         return LinFloat64Vector3D.Create(
             v1.Item1 > v2.Item1 ? v1.Item1 : v2.Item1,
@@ -120,7 +120,7 @@ public static class LinFloat64Vector3DComponentUtils
     /// <param name="zIndex"></param>
     /// <returns></returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64Vector3D Permute(this ITriplet<Float64Scalar> vector, int xIndex, int yIndex, int zIndex)
+    public static LinFloat64Vector3D Permute(this ITriplet<double> vector, int xIndex, int yIndex, int zIndex)
     {
         return LinFloat64Vector3D.Create(
             vector.GetComponent(1 << xIndex),
@@ -139,7 +139,7 @@ public static class LinFloat64Vector3DComponentUtils
     /// <param name="zIndex"></param>
     /// <returns></returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64Vector3D SafePermute(this ITriplet<Float64Scalar> vector, int xIndex, int yIndex, int zIndex)
+    public static LinFloat64Vector3D SafePermute(this ITriplet<double> vector, int xIndex, int yIndex, int zIndex)
     {
         return LinFloat64Vector3D.Create(
             vector.GetComponent(1 << xIndex.Mod(3)),
@@ -149,7 +149,7 @@ public static class LinFloat64Vector3DComponentUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Float64Scalar GetComponent(this ITriplet<Float64Scalar> vector, int index)
+    public static Float64Scalar GetComponent(this ITriplet<double> vector, int index)
     {
         return index switch
         {
@@ -161,7 +161,7 @@ public static class LinFloat64Vector3DComponentUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Float64Scalar GetComponent(this ITriplet<Float64Scalar> vector, LinBasisVector axis)
+    public static Float64Scalar GetComponent(this ITriplet<double> vector, LinBasisVector axis)
     {
         if (axis == LinBasisVector.Px) return vector.Item1;
         if (axis == LinBasisVector.Nx) return -vector.Item1;
@@ -174,7 +174,7 @@ public static class LinFloat64Vector3DComponentUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static IEnumerable<Float64Scalar> GetComponents(this ITriplet<Float64Scalar> vector)
+    public static IEnumerable<Float64Scalar> GetComponents(this ITriplet<double> vector)
     {
         yield return vector.Item1;
         yield return vector.Item2;
@@ -182,14 +182,14 @@ public static class LinFloat64Vector3DComponentUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static IEnumerable<Float64Scalar> GetComponents(this IEnumerable<ITriplet<Float64Scalar>> vectorsList)
+    public static IEnumerable<Float64Scalar> GetComponents(this IEnumerable<ITriplet<double>> vectorsList)
     {
         return vectorsList.SelectMany(t => t.GetComponents());
     }
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64Vector3D MapComponents(this ITriplet<Float64Scalar> vector, Func<double, double> scalarMapping)
+    public static LinFloat64Vector3D MapComponents(this ITriplet<double> vector, Func<double, double> scalarMapping)
     {
         return LinFloat64Vector3D.Create(
             scalarMapping(vector.Item1),
@@ -199,7 +199,7 @@ public static class LinFloat64Vector3DComponentUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64Vector3D ComponentsMin(this ITriplet<Float64Scalar> vector, double scalar)
+    public static LinFloat64Vector3D ComponentsMin(this ITriplet<double> vector, double scalar)
     {
         return LinFloat64Vector3D.Create(
             Math.Min(vector.Item1, scalar),
@@ -209,7 +209,7 @@ public static class LinFloat64Vector3DComponentUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64Vector3D ComponentsMax(this ITriplet<Float64Scalar> vector, double scalar)
+    public static LinFloat64Vector3D ComponentsMax(this ITriplet<double> vector, double scalar)
     {
         return LinFloat64Vector3D.Create(
             Math.Max(vector.Item1, scalar),
@@ -219,19 +219,19 @@ public static class LinFloat64Vector3DComponentUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static double ComponentsMin(this ITriplet<Float64Scalar> vector)
+    public static double ComponentsMin(this ITriplet<double> vector)
     {
         return Math.Min(vector.Item1, Math.Min(vector.Item2, vector.Item3));
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static double ComponentsMax(this ITriplet<Float64Scalar> vector)
+    public static double ComponentsMax(this ITriplet<double> vector)
     {
         return Math.Max(vector.Item1, Math.Max(vector.Item2, vector.Item3));
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64Vector3D ComponentsAbs(this ITriplet<Float64Scalar> vector)
+    public static LinFloat64Vector3D ComponentsAbs(this ITriplet<double> vector)
     {
         return LinFloat64Vector3D.Create(Math.Abs(vector.Item1),
             Math.Abs(vector.Item2),
@@ -239,7 +239,7 @@ public static class LinFloat64Vector3DComponentUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64Vector3D ComponentsProduct(this ITriplet<Float64Scalar> vector1, ITriplet<Float64Scalar> vector2)
+    public static LinFloat64Vector3D ComponentsProduct(this ITriplet<double> vector1, ITriplet<double> vector2)
     {
         return LinFloat64Vector3D.Create(vector1.Item1 * vector2.Item1,
             vector1.Item2 * vector2.Item2,
@@ -247,7 +247,7 @@ public static class LinFloat64Vector3DComponentUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64Vector3D ComponentsProduct(this ITriplet<Float64Scalar> vector1, ITriplet<Float64Scalar> vector2, ITriplet<Float64Scalar> vector3)
+    public static LinFloat64Vector3D ComponentsProduct(this ITriplet<double> vector1, ITriplet<double> vector2, ITriplet<double> vector3)
     {
         return LinFloat64Vector3D.Create(vector1.Item1 * vector2.Item1 * vector3.Item1,
             vector1.Item2 * vector2.Item2 * vector3.Item2,
@@ -255,7 +255,7 @@ public static class LinFloat64Vector3DComponentUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Pair<double> GetTupleXPair(this IReadOnlyList<ITriplet<Float64Scalar>> itemArray, int index)
+    public static Pair<double> GetTupleXPair(this IReadOnlyList<ITriplet<double>> itemArray, int index)
     {
         return new Pair<double>(
             itemArray[index].Item1,
@@ -264,7 +264,7 @@ public static class LinFloat64Vector3DComponentUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Triplet<double> GetTupleXTriplet(this IReadOnlyList<ITriplet<Float64Scalar>> itemArray, int index)
+    public static Triplet<double> GetTupleXTriplet(this IReadOnlyList<ITriplet<double>> itemArray, int index)
     {
         return new Triplet<double>(
             itemArray[index].Item1,
@@ -274,7 +274,18 @@ public static class LinFloat64Vector3DComponentUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Quad<double> GetTupleXQuad(this IReadOnlyList<ITriplet<Float64Scalar>> itemArray, int index)
+    public static Quad<double> GetTupleXQuad(this IReadOnlyList<ITriplet<double>> itemArray, int index)
+    {
+        return new Quad<double>(
+            itemArray[index].Item1,
+            itemArray[index + 1].Item1,
+            itemArray[index + 2].Item1,
+            itemArray[index + 3].Item1
+        );
+    }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static Quad<double> GetTupleXQuad(this IReadOnlyList<LinFloat64Vector3D> itemArray, int index)
     {
         return new Quad<double>(
             itemArray[index].Item1,
@@ -285,7 +296,7 @@ public static class LinFloat64Vector3DComponentUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Quint<double> GetTupleXQuint(this IReadOnlyList<ITriplet<Float64Scalar>> itemArray, int index)
+    public static Quint<double> GetTupleXQuint(this IReadOnlyList<ITriplet<double>> itemArray, int index)
     {
         return new Quint<double>(
             itemArray[index].Item1,
@@ -297,7 +308,7 @@ public static class LinFloat64Vector3DComponentUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Hexad<double> GetTupleXHexad(this IReadOnlyList<ITriplet<Float64Scalar>> itemArray, int index)
+    public static Hexad<double> GetTupleXHexad(this IReadOnlyList<ITriplet<double>> itemArray, int index)
     {
         return new Hexad<double>(
             itemArray[index].Item1,
@@ -311,7 +322,7 @@ public static class LinFloat64Vector3DComponentUtils
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Pair<double> GetTupleYPair(this IReadOnlyList<ITriplet<Float64Scalar>> itemArray, int index)
+    public static Pair<double> GetTupleYPair(this IReadOnlyList<ITriplet<double>> itemArray, int index)
     {
         return new Pair<double>(
             itemArray[index].Item2,
@@ -320,7 +331,7 @@ public static class LinFloat64Vector3DComponentUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Triplet<double> GetTupleYTriplet(this IReadOnlyList<ITriplet<Float64Scalar>> itemArray, int index)
+    public static Triplet<double> GetTupleYTriplet(this IReadOnlyList<ITriplet<double>> itemArray, int index)
     {
         return new Triplet<double>(
             itemArray[index].Item2,
@@ -330,7 +341,18 @@ public static class LinFloat64Vector3DComponentUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Quad<double> GetTupleYQuad(this IReadOnlyList<ITriplet<Float64Scalar>> itemArray, int index)
+    public static Quad<double> GetTupleYQuad(this IReadOnlyList<ITriplet<double>> itemArray, int index)
+    {
+        return new Quad<double>(
+            itemArray[index].Item2,
+            itemArray[index + 1].Item2,
+            itemArray[index + 2].Item2,
+            itemArray[index + 3].Item2
+        );
+    }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static Quad<double> GetTupleYQuad(this IReadOnlyList<LinFloat64Vector3D> itemArray, int index)
     {
         return new Quad<double>(
             itemArray[index].Item2,
@@ -341,7 +363,7 @@ public static class LinFloat64Vector3DComponentUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Quint<double> GetTupleYQuint(this IReadOnlyList<ITriplet<Float64Scalar>> itemArray, int index)
+    public static Quint<double> GetTupleYQuint(this IReadOnlyList<ITriplet<double>> itemArray, int index)
     {
         return new Quint<double>(
             itemArray[index].Item2,
@@ -353,7 +375,7 @@ public static class LinFloat64Vector3DComponentUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Hexad<double> GetTupleYHexad(this IReadOnlyList<ITriplet<Float64Scalar>> itemArray, int index)
+    public static Hexad<double> GetTupleYHexad(this IReadOnlyList<ITriplet<double>> itemArray, int index)
     {
         return new Hexad<double>(
             itemArray[index].Item2,
@@ -367,7 +389,7 @@ public static class LinFloat64Vector3DComponentUtils
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Pair<double> GetTupleZPair(this IReadOnlyList<ITriplet<Float64Scalar>> itemArray, int index)
+    public static Pair<double> GetTupleZPair(this IReadOnlyList<ITriplet<double>> itemArray, int index)
     {
         return new Pair<double>(
             itemArray[index].Item3,
@@ -376,7 +398,7 @@ public static class LinFloat64Vector3DComponentUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Triplet<double> GetTupleZTriplet(this IReadOnlyList<ITriplet<Float64Scalar>> itemArray, int index)
+    public static Triplet<double> GetTupleZTriplet(this IReadOnlyList<ITriplet<double>> itemArray, int index)
     {
         return new Triplet<double>(
             itemArray[index].Item3,
@@ -386,7 +408,18 @@ public static class LinFloat64Vector3DComponentUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Quad<double> GetTupleZQuad(this IReadOnlyList<ITriplet<Float64Scalar>> itemArray, int index)
+    public static Quad<double> GetTupleZQuad(this IReadOnlyList<ITriplet<double>> itemArray, int index)
+    {
+        return new Quad<double>(
+            itemArray[index].Item3,
+            itemArray[index + 1].Item3,
+            itemArray[index + 2].Item3,
+            itemArray[index + 3].Item3
+        );
+    }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static Quad<double> GetTupleZQuad(this IReadOnlyList<LinFloat64Vector3D> itemArray, int index)
     {
         return new Quad<double>(
             itemArray[index].Item3,
@@ -397,7 +430,7 @@ public static class LinFloat64Vector3DComponentUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Quint<double> GetTupleZQuint(this IReadOnlyList<ITriplet<Float64Scalar>> itemArray, int index)
+    public static Quint<double> GetTupleZQuint(this IReadOnlyList<ITriplet<double>> itemArray, int index)
     {
         return new Quint<double>(
             itemArray[index].Item3,
@@ -409,7 +442,7 @@ public static class LinFloat64Vector3DComponentUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Hexad<double> GetTupleZHexad(this IReadOnlyList<ITriplet<Float64Scalar>> itemArray, int index)
+    public static Hexad<double> GetTupleZHexad(this IReadOnlyList<ITriplet<double>> itemArray, int index)
     {
         return new Hexad<double>(
             itemArray[index].Item3,
@@ -424,21 +457,21 @@ public static class LinFloat64Vector3DComponentUtils
 
     // TODO: Make more of these
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64Vector3D CeilingToLinVector3D(this ITriplet<Float64Scalar> vector)
+    public static LinFloat64Vector3D CeilingToLinVector3D(this ITriplet<double> vector)
     {
-        return vector.ToLinVector3D(s => Math.Ceiling(s.ScalarValue));
+        return vector.ToLinVector3D(Math.Ceiling);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64Vector3D FloorToLinVector3D(this ITriplet<Float64Scalar> vector)
+    public static LinFloat64Vector3D FloorToLinVector3D(this ITriplet<double> vector)
     {
-        return vector.ToLinVector3D(s => Math.Floor(s.ScalarValue));
+        return vector.ToLinVector3D(Math.Floor);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64Vector3D AbsToLinVector3D(this ITriplet<Float64Scalar> vector)
+    public static LinFloat64Vector3D AbsToLinVector3D(this ITriplet<double> vector)
     {
-        return vector.ToLinVector3D(s => Math.Abs(s.ScalarValue));
+        return vector.ToLinVector3D(Math.Abs);
     }
 
 }

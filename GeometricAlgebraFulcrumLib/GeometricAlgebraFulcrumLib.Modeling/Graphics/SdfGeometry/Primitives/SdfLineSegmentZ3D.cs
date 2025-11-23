@@ -1,4 +1,5 @@
 ﻿using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space3D;
+using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
 
 namespace GeometricAlgebraFulcrumLib.Modeling.Graphics.SdfGeometry.Primitives;
 
@@ -16,9 +17,9 @@ public sealed class SdfLineSegmentZ3D : ScalarDistanceFunction
 
     public override double GetScalarDistance(ILinFloat64Vector3D point)
     {
-        var v = LinFloat64Vector3D.Create(point.X,
+        var v = LinFloat64Vector3DUtils.L2Norm(LinFloat64Vector3D.Create(point.X,
             point.Y,
-            point.Z - point.Z.ClampTo(Length)).VectorENorm();
+            point.Z - point.Z.ClampTo(Length)));
 
         return v - Radius;
     }

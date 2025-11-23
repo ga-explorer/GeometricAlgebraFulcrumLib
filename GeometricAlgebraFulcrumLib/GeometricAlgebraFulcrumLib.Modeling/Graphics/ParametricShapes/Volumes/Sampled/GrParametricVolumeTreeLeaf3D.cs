@@ -84,7 +84,7 @@ public sealed class GrParametricVolumeTreeLeaf3D :
     public IEnumerable<GrParametricVolumeTreeLeaf3D> GetDeeperLeafNeighbors(GrParametricVolumeTreeNodeSide3D side)
     {
         if (!TryGetNeighbor(side, false, out var neighborNode) || neighborNode.IsLeaf)
-            return Enumerable.Empty<GrParametricVolumeTreeLeaf3D>();
+            return [];
 
         var neighborBranchNode = 
             (GrParametricVolumeTreeBranch3D) neighborNode;
@@ -119,10 +119,10 @@ public sealed class GrParametricVolumeTreeLeaf3D :
     public IEnumerable<GrParametricVolumeTreeLeaf3D> GetLeafNeighbors(GrParametricVolumeTreeNodeSide3D side)
     {
         if (!TryGetNeighbor(side, true, out var neighborNode))
-            return Enumerable.Empty<GrParametricVolumeTreeLeaf3D>();
+            return [];
 
         if (neighborNode is GrParametricVolumeTreeLeaf3D neighborLeafNode)
-            return new[] { neighborLeafNode };
+            return [neighborLeafNode];
 
         var neighborBranchNode = 
             (GrParametricVolumeTreeBranch3D) neighborNode;

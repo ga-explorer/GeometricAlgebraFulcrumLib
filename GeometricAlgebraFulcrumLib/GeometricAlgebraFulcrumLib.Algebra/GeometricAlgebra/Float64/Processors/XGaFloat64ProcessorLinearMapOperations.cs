@@ -1,22 +1,31 @@
 ﻿using System.Diagnostics;
 using System.Runtime.CompilerServices;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.LinearMaps;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.LinearMaps.Outermorphisms;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.LinearMaps.Rotors;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.LinearMaps.Versors;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivectors;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Angles;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.LinearMaps.SpaceND;
-using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Matrices;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space3D;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.SpaceND;
+using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Numerical;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.IndexSets;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Tuples;
+using MathNet.Numerics.LinearAlgebra;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Processors
 {
     public partial class XGaFloat64Processor
     {
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public XGaFloat64ComputedUnilinearMap UnilinearMap(Func<IndexSet, XGaFloat64Multivector> basisMapFunc)
+        {
+            return new XGaFloat64ComputedUnilinearMap(this, basisMapFunc);
+        }
+
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public XGaFloat64PureVersorsSequence IdentityVersor()
         {
@@ -24,19 +33,19 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Processors
         }
 
         
-        public XGaFloat64LinearMapOutermorphism LinearMapOutermorphismFromColumns(double[,] array)
+        public XGaFloat64LinearMapOutermorphism LinearMapOutermorphismFromColumns(Matrix<double> array)
         {
-            var vectorsCount = array.GetLength(1);
+            var vectorsCount = array.ColumnCount;
 
             var basisVectorImagesDictionary = 
                 new Dictionary<int, LinFloat64Vector>();
 
             for (var i = 0; i < vectorsCount; i++)
             {
-                var vector = array.ColumnToLinVector(i);
+                var vector = array.Column(i);
 
-                if (!vector.IsZero)
-                    basisVectorImagesDictionary.Add(i, vector);
+                if (!vector.IsZero())
+                    basisVectorImagesDictionary.Add(i, vector.ToLinFloat64Vector());
             }
 
             return basisVectorImagesDictionary
@@ -48,7 +57,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Processors
         public XGaFloat64LinearMapOutermorphism ClarkeRotationOutermorphism(int vectorsCount)
         {
             return LinearMapOutermorphismFromColumns(
-                Float64ArrayUtils.CreateClarkeRotationArray(vectorsCount)
+                NumericalLinearAlgebraUtils.ClarkeRotationMatrix(vectorsCount)
             );
 
             //var clarkeMapArray =
@@ -77,11 +86,11 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Processors
         
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public double[,] GetFinalMappingArray(IEnumerable<IXGaFloat64Outermorphism> omSeq, int rowsCount)
+        public Matrix<double> GetFinalMappingArray(IEnumerable<IXGaFloat64Outermorphism> omSeq, int rowsCount)
         {
             return omSeq.OmMap(
                 CreateFreeFrameOfBasis(rowsCount)
-            ).GetArray(rowsCount);
+            ).GetMatrix(rowsCount);
         }
         
 
@@ -388,15 +397,15 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Processors
 
             // Compute inverse of 3D pseudo-scalar = -e123
             var pseudoScalarInverse =
-                BasisBlade((IndexSet)7).ToKVector().EInverse();
+                BasisBlade((IndexSet)7).ToKVector().EVersorInverse();
 
             // Compute the smallest angle between source and target vectors
             var cosAngle0 =
-                sourceVector.VectorESp(targetVector);
+                sourceVector.VectorDot(targetVector);
 
             // Define a rotor S with angle theta in the plane orthogonal to targetVector - sourceVector
             var rotorSBlade =
-                targetVector.VectorSubtract(sourceVector).ToXGaFloat64Vector().EGp(pseudoScalarInverse).GetBivectorPart();
+                targetVector.VectorSubtract(sourceVector).ToXGaVector().EGp(pseudoScalarInverse).GetBivectorPart();
 
             var rotorS =
                 rotorSBlade.ToEuclideanPureScalingRotor(angleTheta);
@@ -406,7 +415,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Processors
             // sourceVector and targetVector by angle theta in the plane orthogonal to
             // targetVector - sourceVector using rotor S
             var rotorBlade =
-                rotorS.OmMap(targetVector.ToXGaFloat64Vector().Op(sourceVector.ToXGaFloat64Vector())).GetBivectorPart();
+                rotorS.OmMap(targetVector.ToXGaVector().Op(sourceVector.ToXGaVector())).GetBivectorPart();
 
             // Define parametric angle of rotation
             var rotorAngle =
@@ -425,10 +434,10 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Processors
                 EuclideanParametricPureScalingRotor3D(sourceVector, targetVector, angleTheta);
 
             var (sourceVectorUnit, sourceVectorLength) =
-                sourceVector.GetUnitVectorENormTuple();
+                sourceVector.GetUnitL2NormTuple();
 
             var (targetVectorUnit, targetVectorLength) =
-                targetVector.GetUnitVectorENormTuple();
+                targetVector.GetUnitL2NormTuple();
 
             var scalingFactor = targetVectorLength / sourceVectorLength;
 

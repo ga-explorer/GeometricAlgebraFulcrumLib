@@ -1,6 +1,9 @@
-﻿using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
+﻿using System.Runtime.CompilerServices;
+using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Numerical;
+using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
+using GeometricAlgebraFulcrumLib.Utilities.Structures.IndexSets;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Tuples;
-using System.Runtime.CompilerServices;
+using MathNet.Numerics.Optimization;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivectors
 {
@@ -429,6 +432,15 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivecto
         //        _ => throw new InvalidOperationException()
         //    };
         //}
+        
+        /// <summary>
+        /// The Hitzer–Sangwine grade involution only negates the selected grades of the multivector
+        /// See: Multivector and multivector matrix inverses in real Clifford algebras
+        /// </summary>
+        /// <param name="gradeSet"></param>
+        /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public abstract XGaFloat64Multivector GradeInvolution(IndexSet gradeSet);
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public abstract XGaFloat64Multivector CliffordConjugate();
@@ -520,8 +532,12 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivecto
         //    };
         //}
 
+        /// <summary>
+        /// Inverse of this multivector assuming it's a Euclidean versor
+        /// </summary>
+        /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public abstract XGaFloat64Multivector EInverse();
+        public abstract XGaFloat64Multivector EVersorInverse();
         //{
         //    return this switch
         //    {
@@ -535,8 +551,12 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivecto
         //    };
         //}
 
+        /// <summary>
+        /// Inverse of this multivector assuming it's a versor
+        /// </summary>
+        /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public abstract XGaFloat64Multivector Inverse();
+        public abstract XGaFloat64Multivector VersorInverse();
         //{
         //    return this switch
         //    {
@@ -550,8 +570,12 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivecto
         //    };
         //}
 
+        /// <summary>
+        /// Pseudo-inverse of this multivector assuming it's a versor
+        /// </summary>
+        /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public abstract XGaFloat64Multivector PseudoInverse();
+        public abstract XGaFloat64Multivector VersorPseudoInverse();
         //{
         //    return this switch
         //    {
@@ -686,8 +710,210 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivecto
         //}
 
 
+        public XGaFloat64Multivector IntPower(int n)
+        {
+            if (n < 0) 
+                throw new ArgumentOutOfRangeException(nameof(n));
+
+            if (n == 0) 
+                return Processor.ScalarOne;
+
+            var mv = this;
+            while (n > 1)
+            {
+                mv = Gp(mv);
+                n--;
+            }
+
+            return mv;
+        }
+
+        public XGaFloat64Multivector ExpByTaylor(double tolerance = Float64Utils.DefaultTolerance)
+        {
+            if (IsNearZero(tolerance))
+                return Processor.ScalarOne;
+
+            var termScalar = 1d;
+            XGaFloat64Multivector termPower = Processor.ScalarOne;
+            XGaFloat64Multivector termSum = Processor.ScalarOne;
+
+            var n = 1;
+            while (n <= 100)
+            {
+                termScalar /= n;
+                termPower = Gp(termPower);
+
+                var term = termPower.Times(termScalar);
+
+                termSum += term;
+
+                if (termPower.ENorm() > tolerance && term.ENorm() < tolerance) 
+                    return termSum.RemoveSmallTerms(tolerance);
+
+                n++;
+            }
+
+            throw new MaximumIterationsException("Value did not converge");
+        }
+        
+        public XGaFloat64Multivector SinByTaylor(double tolerance = Float64Utils.DefaultTolerance)
+        {
+            if (IsNearZero(tolerance))
+                return Processor.ScalarZero;
+
+            var x2 = Gp(this);
+            var termScalar = 1d;
+            var termPower = this;
+            var termSum = this;
+
+            var n = 1;
+            while (n <= 100)
+            {
+                termScalar /= -(2 * n) * (2 * n + 1);
+                termPower = x2.Gp(termPower);
+
+                var term = termPower.Times(termScalar);
+
+                termSum += term;
+
+                if (termPower.ENorm() > tolerance && term.ENorm() < tolerance) 
+                    return termSum.RemoveSmallTerms(tolerance);
+
+                n++;
+            }
+
+            throw new MaximumIterationsException("Value did not converge");
+        }
+        
+        public XGaFloat64Multivector CosByTaylor(double tolerance = Float64Utils.DefaultTolerance)
+        {
+            if (IsNearZero(tolerance))
+                return Processor.ScalarZero;
+
+            var x2 = Gp(this);
+            var termScalar = 1d;
+            XGaFloat64Multivector termPower = Processor.ScalarOne;
+            XGaFloat64Multivector termSum = Processor.ScalarOne;
+
+            var n = 1;
+            while (n <= 100)
+            {
+                termScalar /= -(2 * n) * (2 * n + 1);
+                termPower = x2.Gp(termPower);
+
+                var term = termPower.Times(termScalar);
+
+                termSum += term;
+
+                if (termPower.ENorm() > tolerance && term.ENorm() < tolerance) 
+                    return termSum.RemoveSmallTerms(tolerance);
+
+                n++;
+            }
+
+            throw new MaximumIterationsException("Value did not converge");
+        }
+        
+        public XGaFloat64Multivector SinhByTaylor(double tolerance = Float64Utils.DefaultTolerance)
+        {
+            if (IsNearZero(tolerance))
+                return Processor.ScalarZero;
+
+            var x2 = Gp(this);
+            var termScalar = 1d;
+            var termPower = this;
+            var termSum = this;
+
+            var n = 1;
+            while (n <= 100)
+            {
+                termScalar /= (2 * n) * (2 * n - 1);
+                termPower = x2.Gp(termPower);
+
+                var term = termPower.Times(termScalar);
+
+                termSum += term;
+
+                if (termPower.ENorm() > tolerance && term.ENorm() < tolerance) 
+                    return termSum.RemoveSmallTerms(tolerance);
+
+                n++;
+            }
+
+            throw new MaximumIterationsException("Value did not converge");
+        }
+
+        public XGaFloat64Multivector CoshByTaylor(double tolerance = Float64Utils.DefaultTolerance)
+        {
+            if (IsNearZero(tolerance))
+                return Processor.ScalarZero;
+
+            var x2 = Gp(this);
+            var termScalar = 1d;
+            XGaFloat64Multivector termPower = Processor.ScalarOne;
+            XGaFloat64Multivector termSum = Processor.ScalarOne;
+
+            var n = 1;
+            while (n <= 100)
+            {
+                termScalar /= (2 * n) * (2 * n - 1);
+                termPower = x2.Gp(termPower);
+
+                var term = termPower.Times(termScalar);
+
+                termSum += term;
+
+                if (termPower.ENorm() > tolerance && term.ENorm() < tolerance) 
+                    return termSum.RemoveSmallTerms(tolerance);
+
+                n++;
+            }
+
+            throw new MaximumIterationsException("Value did not converge");
+        }
+
+        public XGaFloat64Multivector InverseByMatrix(double tolerance = Float64Utils.DefaultTolerance)
+        {
+            // TODO: For sparse multivectors try to compactify the basis vectors by ignoring the ones not used in this multivector to reduce dimensions of matrix
+            return Processor.Multivector(
+                LeftGpMapMatrix(VSpaceDimensions).FirstColumnOfInverse().ToArray()
+            ).RemoveSmallTerms(tolerance);
+        }
+
+        public XGaFloat64Multivector InverseByNeumann(double tolerance = Float64Utils.DefaultTolerance)
+        {
+            var a = Scalar();
+
+            if (a.IsNearZero(tolerance))
+                throw new InvalidOperationException();
+
+            var mvB = 1 - Divide(a);
+
+            if (mvB.Norm() >= 1)
+                throw new InvalidOperationException();
+
+            XGaFloat64Multivector termPower = Processor.ScalarOne;
+            XGaFloat64Multivector termSum = Processor.ScalarOne;
+
+            var n = 1;
+            while (n <= 100)
+            {
+                termPower = mvB.Gp(termPower);
+
+                termSum += termPower;
+
+                if (termPower.ENorm() < tolerance)
+                    return termSum.Divide(a).RemoveSmallTerms(tolerance);
+
+                n++;
+            }
+
+            throw new MaximumIterationsException("Value did not converge");
+        }
+
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public virtual Float64Scalar ENormSquared()
+        public virtual double ENormSquared()
         {
             if (IsZero)
                 return Float64Scalar.Zero;
@@ -699,7 +925,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivecto
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public virtual Float64Scalar NormSquared()
+        public virtual double NormSquared()
         {
             if (IsZero)
                 return Float64Scalar.Zero;
@@ -713,13 +939,13 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivecto
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public virtual Float64Scalar ENorm()
+        public virtual double ENorm()
         {
             return ENormSquared().Sqrt();
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public virtual Float64Scalar Norm()
+        public virtual double Norm()
         {
             return NormSquared().SqrtOfAbs();
         }

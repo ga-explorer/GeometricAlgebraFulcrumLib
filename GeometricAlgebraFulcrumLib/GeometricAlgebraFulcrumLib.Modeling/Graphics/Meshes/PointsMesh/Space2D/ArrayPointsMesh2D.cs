@@ -6,20 +6,20 @@ using GeometricAlgebraFulcrumLib.Utilities.Structures.Sequences.Periodic2D;
 namespace GeometricAlgebraFulcrumLib.Modeling.Graphics.Meshes.PointsMesh.Space2D;
 
 public class ArrayPointsMesh2D
-    : PSeqArray2D<ILinFloat64Vector2D>, IPointsMesh2D
+    : PSeqArray2D<LinFloat64Vector2D>, IPointsMesh2D
 {
     public ArrayPointsMesh2D(int count1, int count2)
         : base(count1, count2)
     {
     }
 
-    public ArrayPointsMesh2D(ILinFloat64Vector2D[,] dataArray)
+    public ArrayPointsMesh2D(LinFloat64Vector2D[,] dataArray)
         : base(dataArray)
     {
     }
 
 
-    public override PSeqSlice1D<ILinFloat64Vector2D> GetSliceAt(int dimension, int index)
+    public override PSeqSlice1D<LinFloat64Vector2D> GetSliceAt(int dimension, int index)
     {
         return new PointsMeshSlicePointsPath2D(this, dimension, index);
     }

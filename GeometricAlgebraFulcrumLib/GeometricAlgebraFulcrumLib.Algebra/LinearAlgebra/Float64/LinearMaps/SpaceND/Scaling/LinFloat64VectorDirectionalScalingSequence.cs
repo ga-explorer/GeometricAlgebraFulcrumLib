@@ -1,8 +1,9 @@
 ﻿using System.Collections;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
-using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Matrices;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.SpaceND;
+using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Numerical;
+using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Numerical.Matrices;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.BitManipulation;
 using MathNet.Numerics.LinearAlgebra;
@@ -166,12 +167,12 @@ public sealed class LinFloat64VectorDirectionalScalingSequence :
         throw new NotImplementedException();
     }
 
-    public bool IsNearIdentity(double zeroEpsilon = 1E-12)
+    public bool IsNearIdentity(double tolerance = Float64Utils.DefaultTolerance)
     {
         for (var basisIndex = 0; basisIndex < VSpaceDimensions; basisIndex++)
         {
             var isSameVectorBasis =
-                MapBasisVector(basisIndex).IsNearVectorBasis(basisIndex, zeroEpsilon);
+                MapBasisVector(basisIndex).IsNearVectorBasis(basisIndex, tolerance);
 
             if (!isSameVectorBasis) return false;
         }
@@ -179,7 +180,7 @@ public sealed class LinFloat64VectorDirectionalScalingSequence :
         return true;
     }
 
-    public bool IsNearReflection(double zeroEpsilon = 1E-12)
+    public bool IsNearReflection(double tolerance = Float64Utils.DefaultTolerance)
     {
         throw new NotImplementedException();
     }
@@ -273,7 +274,7 @@ public sealed class LinFloat64VectorDirectionalScalingSequence :
         throw new NotImplementedException();
     }
 
-    public double[,] ToArray(int rowCount, int colCount)
+    public Matrix<double> ToArray(int rowCount, int colCount)
     {
         var array = new double[rowCount, colCount];
 
@@ -285,7 +286,7 @@ public sealed class LinFloat64VectorDirectionalScalingSequence :
                 array[i, j] = s;
         }
 
-        return array;
+        return array.ToMathNetDenseMatrix();
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]

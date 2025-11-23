@@ -2,10 +2,9 @@
 using System.Runtime.CompilerServices;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.LinearMaps.SpaceND.Composers;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.LinearMaps.SpaceND.Reflection;
-using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Matrices;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.SpaceND;
+using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Numerical;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
-using GeometricAlgebraFulcrumLib.Utilities.Structures.Extensions;
 using MathNet.Numerics.LinearAlgebra;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.LinearMaps.SpaceND.Rotation;
@@ -26,7 +25,7 @@ public sealed class LinFloat64MatrixRotation :
     public static LinFloat64MatrixRotation CreateForwardClarkeRotation(int size)
     {
         var rotationArray =
-            Float64ArrayUtils.CreateClarkeRotationArray(size);
+            NumericalLinearAlgebraUtils.ClarkeRotationMatrix(size);
 
         return new LinFloat64MatrixRotation(rotationArray);
     }
@@ -35,21 +34,21 @@ public sealed class LinFloat64MatrixRotation :
     public static LinFloat64MatrixRotation CreateInverseClarkeRotation(int size)
     {
         var rotationArray =
-            Float64ArrayUtils.CreateClarkeRotationArray(size).Transpose();
+            NumericalLinearAlgebraUtils.ClarkeRotationMatrix(size).Transpose();
 
         return new LinFloat64MatrixRotation(rotationArray);
     }
 
 
-    private readonly double[,] _rotationArray;
+    private readonly Matrix<double> _rotationArray;
 
 
     public override int VSpaceDimensions
-        => _rotationArray.GetLength(0);
+        => _rotationArray.RowCount;
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    private LinFloat64MatrixRotation(double[,] rotationArray)
+    private LinFloat64MatrixRotation(Matrix<double> rotationArray)
     {
         Debug.Assert(
             rotationArray.Determinant().IsNearOne()
@@ -72,7 +71,7 @@ public sealed class LinFloat64MatrixRotation :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public override bool IsNearIdentity(double zeroEpsilon = 1E-12)
+    public override bool IsNearIdentity(double tolerance = Float64Utils.DefaultTolerance)
     {
         return false;
     }
@@ -83,13 +82,15 @@ public sealed class LinFloat64MatrixRotation :
     {
         Debug.Assert(basisIndex >= 0);
 
-        return _rotationArray.ColumnToLinVector(basisIndex);
+        return _rotationArray.Column(basisIndex).ToLinFloat64Vector();
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public override LinFloat64Vector MapVector(LinFloat64Vector vector)
     {
-        return _rotationArray.MatrixProduct(vector);
+        return _rotationArray.Multiply(
+            vector.ToMathNetSparseVector(_rotationArray.ColumnCount)
+        ).ToLinFloat64Vector();
     }
 
 
@@ -102,7 +103,7 @@ public sealed class LinFloat64MatrixRotation :
     }
 
 
-    public override double[,] ToArray(int rowCount, int colCount)
+    public override Matrix<double> ToArray(int rowCount, int colCount)
     {
         var array = new double[VSpaceDimensions, VSpaceDimensions];
 
@@ -110,13 +111,13 @@ public sealed class LinFloat64MatrixRotation :
             for (var i = 0; i < colCount; i++)
                 array[i, j] = _rotationArray[i, j];
 
-        return array;
+        return array.ToMatrix();
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public override Matrix<double> ToMatrix(int rowCount, int colCount)
     {
-        return ToArray(rowCount, colCount).ToMatrix();
+        return ToArray(rowCount, colCount);
     }
 
 
@@ -124,7 +125,7 @@ public sealed class LinFloat64MatrixRotation :
     public override LinFloat64HyperPlaneNormalReflectionSequence ToHyperPlaneReflectionSequence()
     {
         return LinFloat64HyperPlaneNormalReflectionSequence.CreateFromReflectionMatrix(
-            _rotationArray.ToMatrix()
+            _rotationArray
         );
     }
 
@@ -132,7 +133,7 @@ public sealed class LinFloat64MatrixRotation :
     public override LinFloat64PlanarRotationSequence ToVectorToVectorRotationSequence()
     {
         return LinFloat64PlanarRotationSequence.CreateFromRotationMatrix(
-            _rotationArray.ToMatrix()
+            _rotationArray
         );
     }
 

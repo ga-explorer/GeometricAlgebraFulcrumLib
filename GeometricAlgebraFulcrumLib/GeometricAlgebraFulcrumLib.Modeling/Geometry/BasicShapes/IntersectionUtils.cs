@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.BasicShapes.Lines;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.BasicShapes.Lines.Space2D.Float64;
 
@@ -236,7 +237,7 @@ public static class IntersectionUtils
 
         var ta = ta1 / t2;
 
-        if (ta.ScalarValue is < 0 or > 1)
+        if (ta is < 0 or > 1)
             return false;
 
         var tb1 =
@@ -245,7 +246,7 @@ public static class IntersectionUtils
 
         var tb = tb1 / t2;
 
-        if (tb.ScalarValue is < 0 or > 1)
+        if (tb is < 0 or > 1)
             return false;
 
         return true;
@@ -504,7 +505,7 @@ public static class IntersectionUtils
 
         var ta = ta1 / t2;
 
-        if (ta.ScalarValue is < 0 or > 1)
+        if (ta is < 0 or > 1)
             return NoIntersection;
 
         var tb1 =
@@ -513,7 +514,7 @@ public static class IntersectionUtils
 
         var tb = tb1 / t2;
 
-        if (tb.ScalarValue is < 0 or > 1)
+        if (tb is < 0 or > 1)
             return NoIntersection;
 
         return new Tuple<bool, double>(true, ta);

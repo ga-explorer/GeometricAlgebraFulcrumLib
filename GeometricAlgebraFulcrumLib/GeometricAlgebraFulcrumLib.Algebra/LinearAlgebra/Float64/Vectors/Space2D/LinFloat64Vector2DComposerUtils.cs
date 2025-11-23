@@ -1,52 +1,52 @@
-﻿using System.Numerics;
-using System.Runtime.CompilerServices;
-using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Angles;
+﻿using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Angles;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Tuples;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Tuples;
+using System.Numerics;
+using System.Runtime.CompilerServices;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space2D;
 
 public static class LinFloat64Vector2DComposerUtils
 {
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static MutableFloat64Tuple2D ToMutableTuple2D(this IPair<Float64Scalar> vector)
+    public static LinFloat64VectorComposer2D ToMutableTuple2D(this IPair<double> vector)
     {
-        return new MutableFloat64Tuple2D(vector.Item1, vector.Item2);
+        return new LinFloat64VectorComposer2D(vector.Item1, vector.Item2);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64Vector2D XyToLinVector2D(this ITriplet<Float64Scalar> vector)
+    public static LinFloat64Vector2D XyToLinVector2D(this ITriplet<double> vector)
     {
         return LinFloat64Vector2D.Create(vector.Item1, vector.Item2);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64Vector2D YxToLinVector2D(this ITriplet<Float64Scalar> vector)
+    public static LinFloat64Vector2D YxToLinVector2D(this ITriplet<double> vector)
     {
         return LinFloat64Vector2D.Create(vector.Item2, vector.Item1);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64Vector2D XzToLinVector2D(this ITriplet<Float64Scalar> vector)
+    public static LinFloat64Vector2D XzToLinVector2D(this ITriplet<double> vector)
     {
         return LinFloat64Vector2D.Create(vector.Item1, vector.Item3);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64Vector2D ZxToLinVector2D(this ITriplet<Float64Scalar> vector)
+    public static LinFloat64Vector2D ZxToLinVector2D(this ITriplet<double> vector)
     {
         return LinFloat64Vector2D.Create(vector.Item3, vector.Item1);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64Vector2D YzToLinVector2D(this ITriplet<Float64Scalar> vector)
+    public static LinFloat64Vector2D YzToLinVector2D(this ITriplet<double> vector)
     {
         return LinFloat64Vector2D.Create(vector.Item2, vector.Item3);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64Vector2D ZyToLinVector2D(this ITriplet<Float64Scalar> vector)
+    public static LinFloat64Vector2D ZyToLinVector2D(this ITriplet<double> vector)
     {
         return LinFloat64Vector2D.Create(vector.Item3, vector.Item2);
     }
@@ -61,7 +61,7 @@ public static class LinFloat64Vector2DComposerUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64Vector2D ToLinVector2D(this IQuad<Float64Scalar> vector)
+    public static LinFloat64Vector2D ToLinVector2D(this IQuad<double> vector)
     {
         return LinFloat64Vector2D.Create(vector.Item1, vector.Item2);
     }
@@ -97,20 +97,12 @@ public static class LinFloat64Vector2DComposerUtils
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static LinFloat64Vector2D ToLinVector2D(this IPair<double> vector)
     {
-        return LinFloat64Vector2D.Create(
-                   vector.Item1,
-                   vector.Item2
-                );
-    }
-    
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64Vector2D ToLinVector2D(this IPair<Float64Scalar> vector)
-    {
-        return vector as LinFloat64Vector2D
-               ?? LinFloat64Vector2D.Create(
-                   vector.Item1,
-                   vector.Item2
-               );
+        return vector is LinFloat64Vector2D v 
+            ? v 
+            : LinFloat64Vector2D.Create(
+               vector.Item1,
+               vector.Item2
+            );
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -121,6 +113,26 @@ public static class LinFloat64Vector2DComposerUtils
             scalarMapping(vector.Item2)
         );
     }
+    
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static IEnumerable<LinFloat64Vector2D> ToLinVector2DSequence(this IEnumerable<IPair<double>> vectorList)
+    {
+        return vectorList.Select(v => v.ToLinVector2D());
+    }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static IReadOnlyList<LinFloat64Vector2D> ToLinVector2DList(this IReadOnlyList<IPair<double>> vectorList)
+    {
+        return vectorList.Select(v => v.ToLinVector2D()).ToArray();
+    }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static LinFloat64Vector2D[] ToLinVector2DList(this IPair<double>[] vectorList)
+    {
+        return vectorList.Select(v => v.ToLinVector2D()).ToArray();
+    }
+
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static LinFloat64Vector2D RealPartToLinVector2D(this IPair<Complex> vector)
@@ -148,9 +160,9 @@ public static class LinFloat64Vector2DComposerUtils
     /// <param name="zeroAsSymmetric"></param>
     /// <returns></returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64Vector2D ToUnitLinVector2D(this IPair<Float64Scalar> vector, bool zeroAsSymmetric = true)
+    public static LinFloat64Vector2D ToUnitLinVector2D(this IPair<double> vector, bool zeroAsSymmetric = true)
     {
-        var s = vector.VectorENorm();
+        var s = vector.L2Norm();
 
         if (s.IsZero())
             return zeroAsSymmetric
@@ -164,7 +176,7 @@ public static class LinFloat64Vector2DComposerUtils
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static LinFloat64Vector2D ToUnitLinVector2D(double vectorX, double vectorY, bool zeroAsSymmetric = true)
     {
-        var s = LinFloat64Vector2DUtils.VectorENorm(vectorX, vectorY);
+        var s = LinFloat64Vector2DUtils.L2Norm(vectorX, vectorY);
 
         if (s.IsZero())
             return zeroAsSymmetric
@@ -212,10 +224,10 @@ public static class LinFloat64Vector2DComposerUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64PolarVector2D ToLinPolarVector2D(this IPair<Float64Scalar> point)
+    public static LinFloat64PolarVector2D ToLinPolarVector2D(this IPair<double> point)
     {
         return new LinFloat64PolarVector2D(
-            point.VectorENorm(),
+            point.L2Norm(),
             LinFloat64PolarAngle.CreateFromVector(point)
         );
     }

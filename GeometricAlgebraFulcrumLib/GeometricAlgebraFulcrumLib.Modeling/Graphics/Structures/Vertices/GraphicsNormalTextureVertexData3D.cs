@@ -15,7 +15,7 @@ public sealed class GraphicsNormalTextureVertexData3D
         set => throw new InvalidOperationException();
     }
 
-    public ILinFloat64Vector2D TextureUv { get; set; }
+    public LinFloat64Vector2D TextureUv { get; set; }
 
     public LinFloat64Normal3D Normal { get; }
         = new LinFloat64Normal3D();
@@ -53,12 +53,12 @@ public sealed class GraphicsNormalTextureVertexData3D
         TextureUv = LinFloat64Vector2D.Create((Float64Scalar)0, 0);
     }
 
-    public GraphicsNormalTextureVertexData3D(ILinFloat64Vector2D textureUv)
+    public GraphicsNormalTextureVertexData3D(LinFloat64Vector2D textureUv)
     {
         TextureUv = textureUv;
     }
 
-    public GraphicsNormalTextureVertexData3D(ILinFloat64Vector2D textureUv, ILinFloat64Vector3D normal)
+    public GraphicsNormalTextureVertexData3D(LinFloat64Vector2D textureUv, LinFloat64Vector3D normal)
     {
         TextureUv = textureUv;
         Normal.Set(normal);

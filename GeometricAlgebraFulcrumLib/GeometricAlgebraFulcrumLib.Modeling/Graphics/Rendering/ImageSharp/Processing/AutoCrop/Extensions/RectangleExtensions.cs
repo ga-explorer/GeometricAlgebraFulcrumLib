@@ -1,5 +1,6 @@
 ﻿using SixLabors.ImageSharp;
 
+
 namespace GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.ImageSharp.Processing.AutoCrop.Extensions;
 
 internal static class RectangleExtensions

@@ -1,5 +1,4 @@
 ﻿using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space3D;
-using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.AffineMaps.Space3D;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.PovRay.Transforms;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.PovRay.Values;
@@ -56,7 +55,7 @@ public sealed class GrPovRayTransformList :
         return this;
     }
     
-    public GrPovRayTransformList Translate(ITriplet<Float64Scalar> value)
+    public GrPovRayTransformList Translate(ITriplet<double> value)
     {
         CodeElementList.Add(
             GrPovRayTransform.Translate(

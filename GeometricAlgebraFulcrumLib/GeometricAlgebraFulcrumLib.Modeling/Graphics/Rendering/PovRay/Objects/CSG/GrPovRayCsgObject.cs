@@ -6,13 +6,13 @@ public abstract class GrPovRayCsgObject :
     GrPovRayObject,
     IGrPovRayCsgObject
 {
-    private static readonly string[] CsgOpNames = new[]
-    {
+    private static readonly string[] CsgOpNames =
+    [
         "union",
         "merge",
         "intersection",
         "difference"
-    };
+    ];
 
 
     public abstract GrPovRayCsgOperation CsgOperation { get; }

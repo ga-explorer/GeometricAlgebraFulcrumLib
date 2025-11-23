@@ -126,7 +126,7 @@ public static class Float64ArcLengthPath3DUtils
         if (sDt1.IsNearZero())
             return LinFloat64Vector3D.Zero;
 
-        var sDt2 = vDt1.VectorESp(vDt2) / sDt1;
+        var sDt2 = vDt1.VectorDot(vDt2) / sDt1;
 
         var vDs1 = vDt1 / sDt1;
         var vDs2 = (sDt1 * vDt2 - sDt2 * vDt1) / sDt1.Cube();
@@ -147,8 +147,8 @@ public static class Float64ArcLengthPath3DUtils
         if (sDt1.IsNearZero())
             return LinFloat64Vector3D.Zero;
 
-        var sDt2 = vDt1.VectorESp(vDt2) / sDt1;
-        var sDt3 = (vDt2.VectorESp(vDt2) + vDt1.VectorESp(vDt3) - sDt2.Square()) / sDt1;
+        var sDt2 = vDt1.VectorDot(vDt2) / sDt1;
+        var sDt3 = (vDt2.VectorDot(vDt2) + vDt1.VectorDot(vDt3) - sDt2.Square()) / sDt1;
 
         var vDs1 = vDt1 / sDt1;
         var vDs2 = (sDt1 * vDt2 - sDt2 * vDt1) / sDt1.Cube();
@@ -178,7 +178,7 @@ public static class Float64ArcLengthPath3DUtils
                 LinFloat64Vector3D.E3
             );
 
-        var sDt2 = vDt1.VectorESp(vDt2) / sDt1;
+        var sDt2 = vDt1.VectorDot(vDt2) / sDt1;
 
         var vDs1 = vDt1 / sDt1;
         var vDs2 = (sDt1 * vDt2 - sDt2 * vDt1) / sDt1.Cube();
@@ -243,18 +243,19 @@ public static class Float64ArcLengthPath3DUtils
         var vDt1 = path.GetDerivative1Value(t);
         var vDt2 = path.GetDerivative2Value(t);
 
-        var sDt1 = vDt1.VectorENorm();
+        var sDt1 = LinFloat64Vector3DUtils.L2Norm(vDt1);
 
         if (sDt1.IsNearZero())
             return Float64Path3DLocalFrame.Create(
                 t,
                 origin,
+                1,
                 LinFloat64Vector3D.E1,
                 LinFloat64Vector3D.E2,
                 LinFloat64Vector3D.E3
             );
 
-        var sDt2 = vDt1.VectorESp(vDt2) / sDt1;
+        var sDt2 = vDt1.VectorDot(vDt2) / sDt1;
 
         var vDs1 = vDt1 / sDt1;
         var vDs2 = (sDt1 * vDt2 - sDt2 * vDt1) / sDt1.Cube();
@@ -263,6 +264,7 @@ public static class Float64ArcLengthPath3DUtils
             return Float64Path3DLocalFrame.Create(
                 t,
                 origin,
+                sDt1.ScalarValue,
                 vDs1,
                 vDs1.GetUnitNormalPair()
             );
@@ -274,6 +276,7 @@ public static class Float64ArcLengthPath3DUtils
         return Float64Path3DLocalFrame.Create(
             t,
             origin,
+            sDt1.ScalarValue,
             e1,
             e2,
             e3
@@ -294,7 +297,7 @@ public static class Float64ArcLengthPath3DUtils
         var vDt2 = path.GetDerivative2Value(t);
         //var vDt3 = GetSignalVectorDerivative3(t);
 
-        var sDt1 = vDt1.VectorENorm();
+        var sDt1 = LinFloat64Vector3DUtils.L2Norm(vDt1);
 
         if (sDt1.IsNearZero())
             return LinFloat64AffineFrame3D.Create(
@@ -304,7 +307,7 @@ public static class Float64ArcLengthPath3DUtils
                 LinFloat64Vector3D.E3
             );
 
-        var sDt2 = vDt1.VectorESp(vDt2) / sDt1;
+        var sDt2 = vDt1.VectorDot(vDt2) / sDt1;
         //var sDt3 = (vDt2.VectorDot(vDt2) + vDt1.VectorDot(vDt3) - sDt2.Square()) / sDt1;
 
         var vDs1 = vDt1 / sDt1;

@@ -1,6 +1,7 @@
 using System.Collections;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space2D;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.Borders.Space2D.Float64;
+using GeometricAlgebraFulcrumLib.Modeling.Geometry.Bounding.Float64;
+
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Tuples;
 
 namespace GeometricAlgebraFulcrumLib.Modeling.Graphics.Computers.Voronoi;
@@ -35,7 +36,7 @@ public sealed class VoronoiPointsList : IReadOnlyList<LinFloat64Vector2D>
         );
 
         BoundingSphere = Float64BoundingCircle2D.CreateFromPoints(
-            _pointsList.Cast<ILinFloat64Vector2D>(), 
+            _pointsList, 
             1
         );
 

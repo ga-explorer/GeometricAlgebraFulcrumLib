@@ -38,7 +38,7 @@ public sealed class BorderAnalysis<TPixel> : IBorderAnalysis where TPixel : unma
         }
 
 
-        bool thresholdSuccess = false;
+        var thresholdSuccess = false;
 
         if (bucketThreshold.HasValue && BucketRatio >= bucketThreshold.Value)
             thresholdSuccess = true;

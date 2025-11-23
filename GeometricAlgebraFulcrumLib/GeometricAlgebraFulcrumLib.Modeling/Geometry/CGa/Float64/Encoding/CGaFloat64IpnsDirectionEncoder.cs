@@ -15,6 +15,30 @@ public class CGaFloat64IpnsDirectionEncoder :
     {
     }
 
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public CGaFloat64Blade Vector(double egaDirectionBladeX, double egaDirectionBladeY)
+    {
+        return Blade(
+            GeometricSpace.Encode.VGa.Vector(egaDirectionBladeX, egaDirectionBladeY)
+        );
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public CGaFloat64Blade Vector(double egaDirectionBladeX, double egaDirectionBladeY, double egaDirectionBladeZ)
+    {
+        return Blade(
+            GeometricSpace.Encode.VGa.Vector(egaDirectionBladeX, egaDirectionBladeY, egaDirectionBladeZ)
+        );
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public CGaFloat64Blade Vector(params double[] egaDirectionBlade)
+    {
+        return Blade(
+            GeometricSpace.Encode.VGa.Vector(egaDirectionBlade)
+        );
+    }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public CGaFloat64Blade Vector(LinFloat64Vector2D egaDirectionBlade)
@@ -25,18 +49,27 @@ public class CGaFloat64IpnsDirectionEncoder :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public CGaFloat64Blade Bivector(LinFloat64Bivector2D egaDirectionBlade)
-    {
-        return Blade(
-            GeometricSpace.Encode.VGa.Bivector(egaDirectionBlade)
-        );
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public CGaFloat64Blade Vector(LinFloat64Vector3D egaDirectionBlade)
     {
         return Blade(
             GeometricSpace.Encode.VGa.Vector(egaDirectionBlade)
+        );
+    }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public CGaFloat64Blade Vector(LinFloat64Vector egaDirectionBlade)
+    {
+        return Blade(
+            GeometricSpace.Encode.VGa.Vector(egaDirectionBlade)
+        );
+    }
+    
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public CGaFloat64Blade Bivector(LinFloat64Bivector2D egaDirectionBlade)
+    {
+        return Blade(
+            GeometricSpace.Encode.VGa.Bivector(egaDirectionBlade)
         );
     }
 
@@ -48,6 +81,7 @@ public class CGaFloat64IpnsDirectionEncoder :
         );
     }
 
+
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public CGaFloat64Blade Trivector(LinFloat64Trivector3D egaDirectionBlade)
     {
@@ -56,13 +90,6 @@ public class CGaFloat64IpnsDirectionEncoder :
         );
     }
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public CGaFloat64Blade Vector(LinFloat64Vector egaDirectionBlade)
-    {
-        return Blade(
-            GeometricSpace.Encode.VGa.Vector(egaDirectionBlade)
-        );
-    }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public CGaFloat64Blade Blade(XGaFloat64KVector egaDirectionBlade)

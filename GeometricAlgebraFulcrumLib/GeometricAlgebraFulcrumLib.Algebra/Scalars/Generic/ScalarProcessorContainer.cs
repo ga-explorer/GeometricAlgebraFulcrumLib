@@ -7,10 +7,10 @@ public abstract class ScalarProcessorContainer<T> :
 {
     public IScalarProcessor<T> ScalarProcessor { get; }
 
-    public double ZeroEpsilon
+    public double DefaultTolerance
     {
-        get => ScalarProcessor.ZeroEpsilon; 
-        set => ScalarProcessor.ZeroEpsilon = value;
+        get => ScalarProcessor.DefaultTolerance; 
+        set => ScalarProcessor.DefaultTolerance = value;
     }
 
     public bool IsNumeric

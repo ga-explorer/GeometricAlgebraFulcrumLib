@@ -33,8 +33,8 @@ public sealed class GrVertexListTriangleGeometry3D :
     public IEnumerable<IGraphicsVertex3D> GeometryVertices
         => _localFrameList;
 
-    public IEnumerable<ILinFloat64Vector3D> GeometryPoints 
-        => _localFrameList;
+    public IEnumerable<LinFloat64Vector3D> GeometryPoints 
+        => _localFrameList.ToLinVector3DList();
 
     public int Count 
         => _triangleIndexTripletList.Count;
@@ -66,10 +66,10 @@ public sealed class GrVertexListTriangleGeometry3D :
     public IEnumerable<Triplet<int>> TriangleVertexIndices
         => _triangleIndexTripletList;
 
-    public IEnumerable<ILinFloat64Vector3D> VertexNormals 
-        => _localFrameList.Select(f => f.Normal);
+    public IEnumerable<LinFloat64Vector3D> VertexNormals 
+        => _localFrameList.ToLinVector3DList();
         
-    public IEnumerable<ILinFloat64Vector2D> VertexTextureUVs
+    public IEnumerable<LinFloat64Vector2D> VertexTextureUVs
         => _localFrameList.Select(f => f.ParameterValue.ToLinVector2D());
         
     public IEnumerable<Color> VertexColors 
@@ -143,7 +143,7 @@ public sealed class GrVertexListTriangleGeometry3D :
         return this;
     }
 
-    public ILinFloat64Vector3D GetGeometryPoint(int index)
+    public LinFloat64Vector3D GetGeometryPoint(int index)
     {
         return _localFrameList[index].Point;
     }

@@ -1,7 +1,4 @@
 ﻿using System.Runtime.CompilerServices;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivectors;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Processors;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Processors;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Generic;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.IndexSets;
 
@@ -1289,6 +1286,12 @@ public sealed partial class XGaScalar<T>
     {
         return this;
     }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public override XGaScalar<T> GradeInvolution(IndexSet gradeSet)
+    {
+        return gradeSet.SetContains(Grade) ? Negative() : this;
+    }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public override XGaScalar<T> CliffordConjugate()
@@ -1351,7 +1354,7 @@ public sealed partial class XGaScalar<T>
     //}
         
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public override XGaScalar<T> EInverse()
+    public override XGaScalar<T> EVersorInverse()
     {
         return new XGaScalar<T>(
             Processor, 
@@ -1360,7 +1363,7 @@ public sealed partial class XGaScalar<T>
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public override XGaScalar<T> Inverse()
+    public override XGaScalar<T> VersorInverse()
     {
         return new XGaScalar<T>(
             Processor, 
@@ -1369,7 +1372,7 @@ public sealed partial class XGaScalar<T>
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public override XGaScalar<T> PseudoInverse()
+    public override XGaScalar<T> VersorPseudoInverse()
     {
         return new XGaScalar<T>(
             Processor, 

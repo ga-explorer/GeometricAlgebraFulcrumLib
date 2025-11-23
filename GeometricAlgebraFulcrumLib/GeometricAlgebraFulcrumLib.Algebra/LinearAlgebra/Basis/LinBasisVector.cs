@@ -1,4 +1,7 @@
-﻿using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Angles;
+﻿using System.Diagnostics;
+using System.Numerics;
+using System.Runtime.CompilerServices;
+using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Angles;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.LinearMaps.Space3D;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.LinearMaps.Space3D.Reflection;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.LinearMaps.Space3D.Scaling;
@@ -22,9 +25,6 @@ using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Generic;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Dictionary;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Tuples;
-using System.Diagnostics;
-using System.Numerics;
-using System.Runtime.CompilerServices;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Basis;
 
@@ -330,9 +330,9 @@ public sealed record LinBasisVector
     /// <param name="v2"></param>
     /// <returns></returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public Float64Scalar GetAngleCos(ITriplet<Float64Scalar> v2)
+    public Float64Scalar GetAngleCos(ITriplet<double> v2)
     {
-        return (v2.GetComponent(this) / v2.VectorENorm()).Clamp(-1d, 1d);
+        return (v2.GetComponent(this) / v2.L2Norm()).Clamp(-1d, 1d);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -690,17 +690,17 @@ public sealed record LinBasisVector
     /// Create a rotation quaternion given a vector and its rotated version
     /// </summary>
     /// <param name="dstVector"></param>
-    /// <param name="zeroEpsilon"></param>
+    /// <param name="tolerance"></param>
     /// <returns></returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public LinFloat64Quaternion VectorToVectorRotationQuaternion(ILinFloat64Vector3D dstVector, double zeroEpsilon = Float64Utils.ZeroEpsilon)
+    public LinFloat64Quaternion VectorToVectorRotationQuaternion(ILinFloat64Vector3D dstVector, double tolerance = Float64Utils.DefaultTolerance)
     {
         var angleCos = GetAngleCos(dstVector);
 
-        if (angleCos.IsNearOne(zeroEpsilon))
+        if (angleCos.IsNearOne(tolerance))
             return LinFloat64Quaternion.Identity;
 
-        if (angleCos.IsNearMinusOne(zeroEpsilon))
+        if (angleCos.IsNearMinusOne(tolerance))
             return LinFloat64Quaternion.CreateFromAxisAngle(
                 GetUnitNormal3D(),
                 LinFloat64PolarAngle.Angle0
@@ -1012,7 +1012,7 @@ public sealed record LinBasisVector
     /// <param name="v2"></param>
     /// <returns></returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public Float64Scalar VectorESp(ITriplet<Float64Scalar> v2)
+    public Float64Scalar VectorESp(ITriplet<double> v2)
     {
         if (this == Px) return v2.Item1;
         if (this == Nx) return -v2.Item1;
@@ -1032,7 +1032,7 @@ public sealed record LinBasisVector
     /// <param name="v2"></param>
     /// <returns></returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public LinFloat64Vector3D VectorCross(ITriplet<Float64Scalar> v2)
+    public LinFloat64Vector3D VectorCross(ITriplet<double> v2)
     {
         if (this == Px) return LinFloat64Vector3D.Create(0, -v2.Item3, v2.Item2);
         if (this == Nx) return LinFloat64Vector3D.Create(0, v2.Item3, -v2.Item2);
@@ -1052,7 +1052,7 @@ public sealed record LinBasisVector
     /// <param name="v2"></param>
     /// <returns></returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public LinFloat64Vector3D VectorUnitCross(ITriplet<Float64Scalar> v2)
+    public LinFloat64Vector3D VectorUnitCross(ITriplet<double> v2)
     {
         return VectorCross(v2).ToUnitLinVector3D();
     }
@@ -1196,15 +1196,15 @@ public sealed record LinBasisVector
     public LinQuaternion<T> CreateAxisPairToVectorPairRotationQuaternion<T>(LinBasisVector axis2, ILinVector3D<T> unitVector1, ILinVector3D<T> unitVector2)
     {
         Debug.Assert(
-            unitVector1.VectorENormSquared().IsNearOne() &&
-            unitVector2.VectorENormSquared().IsNearOne()
+            unitVector1.L2NormSquared().IsNearOne() &&
+            unitVector2.L2NormSquared().IsNearOne()
         );
 
         var q1 =
             CreateAxisToVectorRotationQuaternion(unitVector1);
 
         Debug.Assert(
-            (q1.RotateVector(this) - unitVector1).VectorENormSquared().IsNearZero()
+            (q1.RotateVector(this) - unitVector1).L2NormSquared().IsNearZero()
         );
 
         var axis2Rotated =
@@ -1217,11 +1217,11 @@ public sealed record LinBasisVector
             q2.Concatenate(q1);
 
         Debug.Assert(
-            (quaternion.RotateVector(this) - unitVector1).VectorENormSquared().IsNearZero()
+            (quaternion.RotateVector(this) - unitVector1).L2NormSquared().IsNearZero()
         );
 
         Debug.Assert(
-            (quaternion.RotateVector(axis2) - unitVector2).VectorENormSquared().IsNearZero()
+            (quaternion.RotateVector(axis2) - unitVector2).L2NormSquared().IsNearZero()
         );
 
         return quaternion;
@@ -1231,8 +1231,8 @@ public sealed record LinBasisVector
     public Pair<LinQuaternion<T>> CreateAxisPairToVectorPairRotationQuaternionPair<T>(LinBasisVector axis2, ILinVector3D<T> unitVector1, ILinVector3D<T> unitVector2)
     {
         Debug.Assert(
-            unitVector1.VectorENormSquared().IsNearOne() &&
-            unitVector2.VectorENormSquared().IsNearOne()
+            unitVector1.L2NormSquared().IsNearOne() &&
+            unitVector2.L2NormSquared().IsNearOne()
         );
 
         var q1 =
@@ -1245,11 +1245,11 @@ public sealed record LinBasisVector
             axis2Rotated.CreateVectorToVectorRotationQuaternion(unitVector2, unitVector1);
 
         Debug.Assert(
-            (q1.Concatenate(q2).RotateVector(this) - unitVector1).VectorENormSquared().IsNearZero()
+            (q1.Concatenate(q2).RotateVector(this) - unitVector1).L2NormSquared().IsNearZero()
         );
 
         Debug.Assert(
-            (q1.Concatenate(q2).RotateVector(axis2) - unitVector2).VectorENormSquared().IsNearZero()
+            (q1.Concatenate(q2).RotateVector(axis2) - unitVector2).L2NormSquared().IsNearZero()
         );
 
         return new Pair<LinQuaternion<T>>(q1, q2);

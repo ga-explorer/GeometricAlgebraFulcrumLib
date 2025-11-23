@@ -7,7 +7,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.Polynomials.Float64.PhCurves;
 
 public sealed class PhCurve3DDegree5
 {
-    public static PhCurve3DDegree5 Create(ILinFloat64Vector3D point0, ILinFloat64Vector3D tangent0, ILinFloat64Vector3D point1, ILinFloat64Vector3D tangent1)
+    public static PhCurve3DDegree5 Create(LinFloat64Vector3D point0, LinFloat64Vector3D tangent0, LinFloat64Vector3D point1, LinFloat64Vector3D tangent1)
     {
         return new PhCurve3DDegree5(
             point0,
@@ -19,7 +19,7 @@ public sealed class PhCurve3DDegree5
         );
     }
 
-    public static PhCurve3DDegree5 Create(ILinFloat64Vector3D point0, ILinFloat64Vector3D tangent0, ILinFloat64Vector3D point1, ILinFloat64Vector3D tangent1, LinFloat64Angle theta1, LinFloat64Angle theta2)
+    public static PhCurve3DDegree5 Create(LinFloat64Vector3D point0, LinFloat64Vector3D tangent0, LinFloat64Vector3D point1, LinFloat64Vector3D tangent1, LinFloat64Angle theta1, LinFloat64Angle theta2)
     {
         return new PhCurve3DDegree5(
             point0, tangent0, point1, tangent1, theta1, theta2
@@ -50,14 +50,14 @@ public sealed class PhCurve3DDegree5
     public PhCurve3DDegree5Canonical CanonicalCurve { get; }
 
 
-    private PhCurve3DDegree5(ILinFloat64Vector3D point0, ILinFloat64Vector3D tangent0, ILinFloat64Vector3D point1, ILinFloat64Vector3D tangent1, LinFloat64Angle theta1, LinFloat64Angle theta2)
+    private PhCurve3DDegree5(LinFloat64Vector3D point0, LinFloat64Vector3D tangent0, LinFloat64Vector3D point1, LinFloat64Vector3D tangent1, LinFloat64Angle theta1, LinFloat64Angle theta2)
     {
         BasisBladeSet = XGaFloat64Processor.Euclidean;
         Point0 = point0.ToLinVector3D();
         Point1 = point1.ToLinVector3D();
         Tangent0 = tangent0.ToLinVector3D();
         Tangent1 = tangent1.ToLinVector3D();
-        TangentLength0 = Tangent0.VectorENorm();
+        TangentLength0 = LinFloat64Vector3DUtils.L2Norm(Tangent0);
         ScalingRotor = LinFloat64Vector3D.E1.CreateEuclideanPureScalingRotor(tangent0);
 
         var scaledRotorInv = tangent0.CreateEuclideanPureScalingRotor(LinFloat64Vector3D.E1);
@@ -78,7 +78,7 @@ public sealed class PhCurve3DDegree5
         );
     }
 
-    public ILinFloat64Vector3D GetCurvePoint(double parameterValue)
+    public LinFloat64Vector3D GetCurvePoint(double parameterValue)
     {
         return Point0 + ScalingRotor.OmMap(
             CanonicalCurve.GetCurvePoint(parameterValue)

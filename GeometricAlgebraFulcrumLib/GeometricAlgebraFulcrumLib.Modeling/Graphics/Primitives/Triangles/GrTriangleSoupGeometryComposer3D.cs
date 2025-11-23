@@ -52,10 +52,10 @@ public class GrTriangleSoupGeometryComposer3D :
     public IEnumerable<IGraphicsVertex3D> GeometryVertices
         => _verticesList;
 
-    public IEnumerable<ILinFloat64Vector3D> GeometryPoints
-        => _verticesList;
+    public IEnumerable<LinFloat64Vector3D> GeometryPoints
+        => _verticesList.Select(v => v.ToLinVector3D());
 
-    public IEnumerable<ILinFloat64Vector2D> VertexTextureUVs
+    public IEnumerable<LinFloat64Vector2D> VertexTextureUVs
         => _verticesList
             .Select(p => p.ParameterValue.ToLinVector2D());
 
@@ -69,9 +69,8 @@ public class GrTriangleSoupGeometryComposer3D :
         
     public bool VertexColorsEnabled { get; set; }
 
-    public IEnumerable<ILinFloat64Vector3D> VertexNormals
-        => _verticesList
-            .Select(p => p.Normal);
+    public IEnumerable<LinFloat64Vector3D> VertexNormals
+        => _verticesList.ToLinVector3DList();
 
     public IEnumerable<Triplet<int>> TriangleVertexIndices
     {
@@ -279,9 +278,9 @@ public class GrTriangleSoupGeometryComposer3D :
     }
         
         
-    public ILinFloat64Vector3D GetGeometryPoint(int index)
+    public LinFloat64Vector3D GetGeometryPoint(int index)
     {
-        return _verticesList[index];
+        return _verticesList[index].ToLinVector3D();
     }
         
     public LinFloat64Normal3D GetVertexNormal(int index)
@@ -368,7 +367,7 @@ public class GrTriangleSoupGeometryComposer3D :
         return this;
     }
 
-    public GrTriangleSoupGeometryComposer3D AddTriangles(IReadOnlyList<ILinFloat64Vector3D> pointsList)
+    public GrTriangleSoupGeometryComposer3D AddTriangles(IReadOnlyList<LinFloat64Vector3D> pointsList)
     {
         if (pointsList.Count % 3 != 0)
             throw new InvalidOperationException();

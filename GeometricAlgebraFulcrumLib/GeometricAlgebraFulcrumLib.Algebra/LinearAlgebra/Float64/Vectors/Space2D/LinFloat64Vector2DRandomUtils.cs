@@ -1,6 +1,5 @@
 ﻿using System.Runtime.CompilerServices;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Angles;
-using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Random;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Tuples;
 
@@ -142,7 +141,7 @@ public static class LinFloat64Vector2DRandomUtils
     }
 
 
-    public static LinFloat64Vector2D GetPointInside(this Random randomGenerator, IEnumerable<IPair<Float64Scalar>> pointsList)
+    public static LinFloat64Vector2D GetPointInside(this Random randomGenerator, IEnumerable<IPair<double>> pointsList)
     {
         var x = 0.0d;
         var y = 0.0d;

@@ -28,8 +28,8 @@ public sealed class GrLatticeSurfaceTriangleGeometry3D :
     public IEnumerable<IGraphicsVertex3D> GeometryVertices 
         => LatticeSurfaceList.VertexList;
 
-    public IEnumerable<ILinFloat64Vector3D> GeometryPoints 
-        => LatticeSurfaceList.VertexList;
+    public IEnumerable<LinFloat64Vector3D> GeometryPoints 
+        => LatticeSurfaceList.VertexList.ToLinVector3DSequence();
 
     public int Count 
         => LatticeSurfaceList.TriangleVerticesList.Count;
@@ -53,10 +53,10 @@ public sealed class GrLatticeSurfaceTriangleGeometry3D :
     public IEnumerable<Triplet<int>> TriangleVertexIndices 
         => LatticeSurfaceList.TriangleVertexIndices;
 
-    public IEnumerable<ILinFloat64Vector3D> VertexNormals
-        => LatticeSurfaceList.VertexList.Select(v => v.Normal);
+    public IEnumerable<LinFloat64Vector3D> VertexNormals
+        => LatticeSurfaceList.VertexList.Select(v => v.Normal.ToLinVector3D());
         
-    public IEnumerable<ILinFloat64Vector2D> VertexTextureUVs 
+    public IEnumerable<LinFloat64Vector2D> VertexTextureUVs 
         => LatticeSurfaceList.VertexList.Select(v => v.ParameterValue.ToLinVector2D());
         
     public IEnumerable<Color> VertexColors 
@@ -81,9 +81,9 @@ public sealed class GrLatticeSurfaceTriangleGeometry3D :
     }
 
 
-    public ILinFloat64Vector3D GetGeometryPoint(int index)
+    public LinFloat64Vector3D GetGeometryPoint(int index)
     {
-        return LatticeSurfaceList[index];
+        return LatticeSurfaceList[index].ToLinVector3D();
     }
 
     public LinFloat64Normal3D GetVertexNormal(int index)

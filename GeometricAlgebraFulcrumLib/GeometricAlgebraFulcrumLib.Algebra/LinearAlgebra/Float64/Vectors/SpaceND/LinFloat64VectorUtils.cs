@@ -1,16 +1,30 @@
-﻿using System.Diagnostics;
-using System.Runtime.CompilerServices;
-using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Basis;
-using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Matrices;
+﻿using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Basis;
+using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Numerical.Matrices;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Dictionary;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Random;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Tuples;
+using System.Diagnostics;
+using System.Runtime.CompilerServices;
+using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Numerical;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.SpaceND;
 
 public static class LinFloat64VectorUtils
 {
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static bool IsFinite(this IReadOnlyDictionary<int, double> vector)
+    {
+        return vector.Values.All(v => v.IsFinite());
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static bool IsFinite(this IReadOnlyDictionary<int, double> vector, double maxLength)
+    {
+        return vector.IsFinite() && vector.L2Norm() <= maxLength;
+    }
+
+
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static bool IsValidLinVectorDictionary(this IReadOnlyDictionary<int, double> indexScalarDictionary)
     {
@@ -237,7 +251,7 @@ public static class LinFloat64VectorUtils
         );
     }
 
-    public static Tuple<bool, double, LinBasisVector> TryVectorToNearAxis(this double[] itemArray, double zeroEpsilon = Float64Utils.ZeroEpsilon)
+    public static Tuple<bool, double, LinBasisVector> TryVectorToNearAxis(this double[] itemArray, double tolerance = Float64Utils.DefaultTolerance)
     {
         var dimensions = itemArray.Length;
 
@@ -245,7 +259,7 @@ public static class LinFloat64VectorUtils
         var basisIndex = -1;
         for (var i = 0; i < dimensions; i++)
         {
-            if (itemArray[i].IsNearZero(zeroEpsilon)) continue;
+            if (itemArray[i].IsNearZero(tolerance)) continue;
 
             if (basisIndex >= 0)
             {

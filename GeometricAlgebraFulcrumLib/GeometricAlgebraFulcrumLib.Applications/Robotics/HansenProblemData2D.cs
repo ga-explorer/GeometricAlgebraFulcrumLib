@@ -17,10 +17,10 @@ public readonly struct HansenProblemData2D
 
         return new HansenProblemData2D
         {
-            Ax = pointA.X.ScalarValue,
-            Ay = pointA.Y.ScalarValue,
-            Bx = pointB.X.ScalarValue,
-            By = pointB.Y.ScalarValue,
+            Ax = pointA.X,
+            Ay = pointA.Y,
+            Bx = pointB.X,
+            By = pointB.Y,
             Alpha1 = alpha1.RadiansValue,
             Alpha2 = alpha2.RadiansValue,
             Beta1 = beta1.RadiansValue,

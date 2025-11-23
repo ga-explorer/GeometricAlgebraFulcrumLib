@@ -15,7 +15,7 @@ public sealed class PathsMeshAsPointsMesh2D
     public int Count
         => BaseMesh.MeshPointsCount;
 
-    public ILinFloat64Vector2D this[int index]
+    public LinFloat64Vector2D this[int index]
     {
         get
         {
@@ -33,7 +33,7 @@ public sealed class PathsMeshAsPointsMesh2D
     public int Count2
         => BaseMesh.Count;
 
-    public ILinFloat64Vector2D this[int index1, int index2]
+    public LinFloat64Vector2D this[int index1, int index2]
         => BaseMesh[index2][index1];
 
     public bool IsBasic
@@ -49,7 +49,7 @@ public sealed class PathsMeshAsPointsMesh2D
     }
 
 
-    public PSeqSlice1D<ILinFloat64Vector2D> GetSliceAt(int dimension, int index)
+    public PSeqSlice1D<LinFloat64Vector2D> GetSliceAt(int dimension, int index)
     {
         return new PointsMeshSlicePointsPath2D(this, dimension, index);
     }
@@ -59,7 +59,7 @@ public sealed class PathsMeshAsPointsMesh2D
         return new PointsMeshSlicePointsPath2D(this, dimension, index);
     }
 
-    public IEnumerator<ILinFloat64Vector2D> GetEnumerator()
+    public IEnumerator<LinFloat64Vector2D> GetEnumerator()
     {
         return BaseMesh.SelectMany(p => p).GetEnumerator();
     }

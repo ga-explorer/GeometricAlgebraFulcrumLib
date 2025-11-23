@@ -2,9 +2,8 @@
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivectors;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Processors;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space2D;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.Borders;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.Borders.Space2D.Float64;
-using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.Svg.DrawingBoard;
+using GeometricAlgebraFulcrumLib.Modeling.Geometry.Bounding.Float64;
+using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.Svg.DrawingBoardOld;
 
 namespace GeometricAlgebraFulcrumLib.Applications.Geometry.VoronoiDiagrams;
 
@@ -54,7 +53,7 @@ public static class VoronoiDiagramsSample
 
         // Step 4: compute coordinates of regular simplex vertices
         var simplexFrame =
-            boundingSphere.Center.ToXGaFloat64Vector()
+            boundingSphere.Center.ToXGaVector()
                 .CreateFixedFrameOfSimplex(
                     n,
                     boundingSphere.Radius * Math.Sqrt(n * (n + 1))

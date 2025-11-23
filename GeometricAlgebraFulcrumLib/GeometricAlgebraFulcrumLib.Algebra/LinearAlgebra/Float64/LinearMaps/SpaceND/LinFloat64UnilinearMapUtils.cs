@@ -19,78 +19,7 @@ public static class LinFloat64UnilinearMapUtils
         return v1.MapScalars(s => Math.Log(scalar, s));
     }
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64Vector MapVector(this double[,] matrix, LinFloat64Vector vector)
-    {
-        var composer = LinFloat64VectorComposer.Create();
-
-        var rowCount = matrix.GetLength(0);
-        var colCount = matrix.GetLength(1);
-
-        foreach (var (colIndex, scalar) in vector)
-        {
-            if (colIndex >= colCount)
-                continue;
-
-            for (var rowIndex = 0; rowIndex < rowCount; rowIndex++)
-                composer.AddTerm(
-                    rowIndex,
-                    scalar * matrix[rowIndex, colIndex]
-                );
-        }
-
-        return composer.GetVector();
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64Vector MapVector(this double[,] matrix, IEnumerable<double> vector)
-    {
-        var composer = LinFloat64VectorComposer.Create();
-
-        var rowCount = matrix.GetLength(0);
-        var colCount = matrix.GetLength(1);
-
-        var colIndex = 0;
-        foreach (var scalar in vector)
-        {
-            if (colIndex >= colCount)
-                return composer.GetVector();
-
-            for (var rowIndex = 0; rowIndex < rowCount; rowIndex++)
-                composer.AddTerm(
-                    rowIndex,
-                    scalar * matrix[rowIndex, colIndex]
-                );
-
-            colIndex++;
-        }
-
-        return composer.GetVector();
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64Vector MapVector(this double[,] matrix, IReadOnlyDictionary<int, double> vector)
-    {
-        var composer = LinFloat64VectorComposer.Create();
-
-        var rowCount = matrix.GetLength(0);
-        var colCount = matrix.GetLength(1);
-
-        foreach (var (colIndex, scalar) in vector)
-        {
-            if (colIndex >= colCount)
-                continue;
-
-            for (var rowIndex = 0; rowIndex < rowCount; rowIndex++)
-                composer.AddTerm(
-                    rowIndex,
-                    scalar * matrix[rowIndex, colIndex]
-                );
-        }
-
-        return composer.GetVector();
-    }
-
+    
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static LinFloat64Vector MapVectorUsing(this IReadOnlyList<double> vector, LinFloat64UnilinearMap map)
     {

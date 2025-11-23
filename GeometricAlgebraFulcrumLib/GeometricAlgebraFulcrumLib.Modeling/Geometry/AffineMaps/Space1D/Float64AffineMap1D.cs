@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics;
 using System.Runtime.CompilerServices;
-using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Matrices;
+using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Numerical.Matrices;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Tuples;
 
@@ -98,7 +98,7 @@ public sealed record Float64AffineMap1D :
         return affineMap;
     }
     
-    public static Float64AffineMap1D CreateFromRanges(IPair<Float64Scalar> inputRange, IPair<Float64Scalar> outputRange)
+    public static Float64AffineMap1D CreateFromRanges(IPair<double> inputRange, IPair<double> outputRange)
     {
         var (inputValue1, inputValue2) = inputRange.ToPair();
         var (outputValue1, outputValue2) = outputRange.ToPair();
@@ -215,10 +215,10 @@ public sealed record Float64AffineMap1D :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool IsNearIdentity(double zeroEpsilon = Float64Utils.ZeroEpsilon)
+    public bool IsNearIdentity(double tolerance = Float64Utils.DefaultTolerance)
     {
-        return Scaling.IsNearOne(zeroEpsilon) &&
-               Offset.IsNearZero(zeroEpsilon);
+        return Scaling.IsNearOne(tolerance) &&
+               Offset.IsNearZero(tolerance);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -230,11 +230,11 @@ public sealed record Float64AffineMap1D :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool IsNearEqual(Float64AffineMap1D p2, double zeroEpsilon = Float64Utils.ZeroEpsilon)
+    public bool IsNearEqual(Float64AffineMap1D p2, double tolerance = Float64Utils.DefaultTolerance)
     {
         return
-            (Scaling / p2.Scaling - 1).IsNearZero(zeroEpsilon) &&
-            (Offset - p2.Offset).IsNearZero(zeroEpsilon);
+            (Scaling / p2.Scaling - 1).IsNearZero(tolerance) &&
+            (Offset - p2.Offset).IsNearZero(tolerance);
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]

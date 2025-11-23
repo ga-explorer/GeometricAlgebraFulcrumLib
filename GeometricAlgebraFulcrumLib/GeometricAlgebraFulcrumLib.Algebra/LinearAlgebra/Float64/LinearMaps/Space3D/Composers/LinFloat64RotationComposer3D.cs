@@ -4,8 +4,10 @@ using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Basis;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Angles;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.LinearMaps.Space3D.Reflection;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.LinearMaps.Space3D.Rotation;
-using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Matrices;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space3D;
+using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Numerical;
+using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Numerical.Matrices;
+using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.LinearMaps.Space3D.Composers;
 
@@ -98,12 +100,12 @@ public sealed class LinFloat64RotationComposer3D :
         return true;
     }
 
-    public override bool IsNearIdentity(double zeroEpsilon = 1E-12)
+    public override bool IsNearIdentity(double tolerance = Float64Utils.DefaultTolerance)
     {
         for (var basisIndex = 0; basisIndex < VSpaceDimensions; basisIndex++)
         {
             var isSameVectorBasis =
-                MapBasisVector(basisIndex).IsNearVectorBasis(basisIndex, zeroEpsilon);
+                MapBasisVector(basisIndex).IsNearVectorBasis(basisIndex, tolerance);
 
             if (!isSameVectorBasis) return false;
         }
@@ -124,7 +126,7 @@ public sealed class LinFloat64RotationComposer3D :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public LinFloat64RotationComposer3D AppendRotation(ILinFloat64Vector3D vector, ILinFloat64Vector3D rotatedVector, bool useShortArc = true)
+    public LinFloat64RotationComposer3D AppendRotation(LinFloat64Vector3D vector, LinFloat64Vector3D rotatedVector, bool useShortArc = true)
     {
         return AppendRotation(
             LinFloat64PlanarRotation3D.CreateFromRotatedVector(
@@ -136,7 +138,7 @@ public sealed class LinFloat64RotationComposer3D :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public LinFloat64RotationComposer3D AppendRotation(ILinFloat64Vector3D spanningVector1, ILinFloat64Vector3D spanningVector2, LinFloat64PolarAngle rotationAngle)
+    public LinFloat64RotationComposer3D AppendRotation(LinFloat64Vector3D spanningVector1, LinFloat64Vector3D spanningVector2, LinFloat64PolarAngle rotationAngle)
     {
         return AppendRotation(
             LinFloat64PlanarRotation3D.CreateFromSpanningVectors(
@@ -147,7 +149,7 @@ public sealed class LinFloat64RotationComposer3D :
         );
     }
 
-    public LinFloat64RotationComposer3D AppendBasisAlignmentRotation(ILinFloat64Vector3D vector1, ILinFloat64Vector3D vector2)
+    public LinFloat64RotationComposer3D AppendBasisAlignmentRotation(LinFloat64Vector3D vector1, LinFloat64Vector3D vector2)
     {
         if (vector1.IsNearZero() && vector2.IsNearZero())
             return this;
@@ -175,8 +177,7 @@ public sealed class LinFloat64RotationComposer3D :
         );
 
         vector2 =
-            rotation1
-                .MapVector(vector2)
+            ((LinFloat64ReflectionBase3D)rotation1).MapVector(vector2)
                 .RejectOnAxis(LinBasisVector.Px);
 
         var rotation2 = LinFloat64PlanarRotation3D.CreateFromRotatedVector(
@@ -250,7 +251,7 @@ public sealed class LinFloat64RotationComposer3D :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public override LinFloat64Vector3D MapVector(ILinFloat64Vector3D vector)
+    public override LinFloat64Vector3D MapVector(LinFloat64Vector3D vector)
     {
         return _rotationList.Aggregate(
             vector.ToLinVector3D(),

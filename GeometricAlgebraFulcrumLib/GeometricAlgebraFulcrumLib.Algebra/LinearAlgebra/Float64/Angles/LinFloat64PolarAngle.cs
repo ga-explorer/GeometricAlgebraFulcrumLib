@@ -334,28 +334,19 @@ public sealed record LinFloat64PolarAngle :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64PolarAngle CreateFromVector(IPair<Float64Scalar> vector)
+    public static LinFloat64PolarAngle CreateFromUnitVectors(IPair<double> v1, IPair<double> v2)
     {
-        return CreateFromVector(
-            vector.Item1.ScalarValue, 
-            vector.Item2.ScalarValue
-        );
-    }
-    
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64PolarAngle CreateFromUnitVectors(IPair<Float64Scalar> v1, IPair<Float64Scalar> v2)
-    {
-        return CreateFromCos(v1.VectorESp(v2).ScalarValue);
+        return CreateFromCos(v1.VectorDot(v2).ScalarValue);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64PolarAngle CreateFromUnitVectors(ITriplet<Float64Scalar> v1, ITriplet<Float64Scalar> v2)
+    public static LinFloat64PolarAngle CreateFromUnitVectors(ITriplet<double> v1, ITriplet<double> v2)
     {
-        return CreateFromCos(v1.VectorESp(v2).ScalarValue);
+        return CreateFromCos(v1.VectorDot(v2).ScalarValue);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64PolarAngle CreateFromUnitVectors(IQuad<Float64Scalar> v1, IQuad<Float64Scalar> v2)
+    public static LinFloat64PolarAngle CreateFromUnitVectors(IQuad<double> v1, IQuad<double> v2)
     {
         return CreateFromCos(v1.VectorESp(v2).ScalarValue);
     }

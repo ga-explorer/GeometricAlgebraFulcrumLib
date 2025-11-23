@@ -24,7 +24,7 @@ public sealed class SdfRotate3D : SdfUnaryOperation
         var q = 
             AxisOrigin + 
             cosAngle * v +
-            (1 - cosAngle) * AxisUnitDirection.VectorESp(v) * AxisUnitDirection +
+            (1 - cosAngle) * AxisUnitDirection.VectorDot(v) * AxisUnitDirection +
             sinAngle * AxisUnitDirection.VectorCross(v);
 
         return Surface.GetScalarDistance(q);

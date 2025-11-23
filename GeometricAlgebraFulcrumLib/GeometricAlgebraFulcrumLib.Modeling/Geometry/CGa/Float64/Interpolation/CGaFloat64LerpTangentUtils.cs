@@ -23,7 +23,7 @@ public static class CGaFloat64LerpTangentUtils
         var position =
             s * point1.PositionToVector2D() + t * point2.PositionToVector2D();
 
-        return CGaFloat64GeometricSpace5D.Instance.DefineTangentPoint(
+        return CGaFloat64GeometricSpace5D.Instance.TangentPoint(
             weight,
             position
         );
@@ -44,7 +44,7 @@ public static class CGaFloat64LerpTangentUtils
         var position =
             s * point1.PositionToVector3D() + t * point2.PositionToVector3D();
 
-        return CGaFloat64GeometricSpace5D.Instance.DefineTangentPoint(
+        return CGaFloat64GeometricSpace5D.Instance.TangentPoint(
             weight,
             position
         );
@@ -73,7 +73,7 @@ public static class CGaFloat64LerpTangentUtils
         var directionVector =
             directionVector1.RotateToUnitVector(directionVector2, angle);
 
-        return CGaFloat64GeometricSpace5D.Instance.DefineTangentLine(
+        return CGaFloat64GeometricSpace5D.Instance.TangentLine(
             weight,
             position,
             directionVector
@@ -103,7 +103,7 @@ public static class CGaFloat64LerpTangentUtils
         var directionVector =
             directionVector1.RotateToUnitVector(directionVector2, angle);
 
-        return CGaFloat64GeometricSpace5D.Instance.DefineTangentLine(
+        return CGaFloat64GeometricSpace5D.Instance.TangentLine(
             weight,
             position,
             directionVector
@@ -133,7 +133,7 @@ public static class CGaFloat64LerpTangentUtils
         var directionBivector =
             normal1.RotateToUnitVector(normal2, angle).NormalToUnitDirection3D();
 
-        return CGaFloat64GeometricSpace5D.Instance.DefineTangentPlane(
+        return CGaFloat64GeometricSpace5D.Instance.TangentPlane(
             weight,
             position,
             directionBivector

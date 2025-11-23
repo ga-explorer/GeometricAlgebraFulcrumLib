@@ -29,7 +29,7 @@ public sealed class GrPovRayVector2Value :
         return new GrPovRayVector2Value(value);
     }
     
-    internal static GrPovRayVector2Value Create(IPair<Float64Scalar> value)
+    internal static GrPovRayVector2Value Create(IPair<double> value)
     {
         return new GrPovRayVector2Value(value);
     }
@@ -37,21 +37,21 @@ public sealed class GrPovRayVector2Value :
     public static GrPovRayVector2Value Create(int x, int y)
     {
         return new GrPovRayVector2Value(
-            new Pair<Float64Scalar>(x, y)
+            LinFloat64Vector2D.Create(x, y)
         );
     }
 
     public static GrPovRayVector2Value Create(double x, double y)
     {
         return new GrPovRayVector2Value(
-            new Pair<Float64Scalar>(x, y)
+            LinFloat64Vector2D.Create(x, y)
         );
     }
 
     public static GrPovRayVector2Value Create(Float64Scalar x, Float64Scalar y)
     {
         return new GrPovRayVector2Value(
-            new Pair<Float64Scalar>(x, y)
+            LinFloat64Vector2D.Create(x, y)
         );
     }
     
@@ -84,7 +84,7 @@ public sealed class GrPovRayVector2Value :
     {
     }
 
-    private GrPovRayVector2Value(IPair<Float64Scalar> value)
+    private GrPovRayVector2Value(IPair<double> value)
         : base(value.MapItems(s => (GrPovRayFloat32Value) s))
     {
     }

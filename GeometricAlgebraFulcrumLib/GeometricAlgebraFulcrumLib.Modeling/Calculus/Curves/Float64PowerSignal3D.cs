@@ -5,12 +5,12 @@ using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Frames.Space3D;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space3D;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
 using GeometricAlgebraFulcrumLib.Modeling.Calculus.Functions.Float64;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.Borders.Space3D.Float64;
+using GeometricAlgebraFulcrumLib.Modeling.Geometry.Bounding.Float64;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.Parametric.Float64;
 using GeometricAlgebraFulcrumLib.Modeling.Signals;
 using GeometricAlgebraFulcrumLib.Modeling.Signals.Composers;
-using GeometricAlgebraFulcrumLib.Modeling.Trajectories.Vectors3D.Float64.Adaptive;
 using GeometricAlgebraFulcrumLib.Modeling.Trajectories.Vectors3D.Float64.Basic;
+using GeometricAlgebraFulcrumLib.Modeling.Trajectories.Vectors3D.Float64.Samplers;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Collections;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Extensions;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Tuples;
@@ -82,7 +82,7 @@ public class Float64PowerSignal3D :
 
     //public Float64ScalarRange CurvatureBounds { get; private set; }
 
-    public Float64AdaptivePath3D? SampledCurve { get; private set; }
+    public SampledCurve3D? SampledCurve { get; private set; }
 
     public IReadOnlyList<LinFloat64AffineFrame3D>? FrameList { get; private set; }
 
@@ -143,7 +143,7 @@ public class Float64PowerSignal3D :
         return GetCurvatureSignals().MapItems(p => p.Mean());
     }
 
-    public Float64AdaptivePath3D GetSampledCurve()
+    public SampledCurve3D GetSampledCurve()
     {
         var curve = 
             Float64ComputedPath3D.Finite(
@@ -153,28 +153,22 @@ public class Float64PowerSignal3D :
                 ZFunction
             );
 
-        var sampledCurve =
-            Float64AdaptivePath3D.Finite(TimeRange, curve);
-        
-        sampledCurve.FrameSamplingMethod = 
-            ParametricCurveLocalFrameSamplingMethod.SimpleRotation;
+        var options = new SampledCurve3D.SamplingOptions()
+        {
+            FrameAngleDifference = 18.DegreesToDirectedAngle(),
+            MinDepth = 9,
+            MaxDepth = 20,
+            FrameSamplingMethod = ParametricCurveLocalFrameSamplingMethod.SimpleRotation,
+            FrameInterpolationMethod = LocalFrameInterpolationMethod.FrameInterpolation
+        };
 
-        sampledCurve.FrameInterpolationMethod =
-            ParametricCurveLocalFrameInterpolationMethod.SphericalLinearInterpolation;
-    
-        var options = new Float64AdaptivePath3DSamplingOptions(
-            18.DegreesToDirectedAngle(),
-            9,
-            20
-        );
-
-        return sampledCurve.GenerateTree(options);
+        return SampledCurve3D.Finite(TimeRange, curve, options);
     }
 
     private void ComputeBounds()
     {
         VectorBounds = 
-            Float64BoundingBox3D.CreateFromPoints(
+            Float64BoundingBox3D.Containing(
                 TimeValues.Select(GetValue)
             );
 
@@ -280,13 +274,13 @@ public class Float64PowerSignal3D :
             GetSampledCurve();
 
         FrameList =
-            TimeValues.Select(GetAffineFrame).ToImmutableArray();
+            [..TimeValues.Select(GetAffineFrame)];
 
         CurvatureList =
-            TimeValues.Select(GetCurvatures).ToImmutableArray();
+            [..TimeValues.Select(GetCurvatures)];
         
         DarbouxBivectorList =
-            TimeValues.Select(GetDarbouxBivector).ToImmutableArray();
+            [..TimeValues.Select(GetDarbouxBivector)];
 
         //DarbouxBivectorList
         //    .CreateSignal(
@@ -297,7 +291,7 @@ public class Float64PowerSignal3D :
         
         FrequencyHzList =
             DarbouxBivectorList.CreateMappedList(db => 
-                (db.Norm() / Math.Tau).ScalarValue
+                db.L2Norm() / Math.Tau
             );
 
         ComputeBounds();

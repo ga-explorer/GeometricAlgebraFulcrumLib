@@ -9,6 +9,13 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Structures.Tuples;
 public sealed record Pair<T> : 
     IPair<T>
 {
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static implicit operator Pair<T>((T, T) tuple)
+    {
+        return new Pair<T>(tuple.Item1, tuple.Item2);
+    }
+
+
     public T Item1 { get; }
 
     public T Item2 { get; }

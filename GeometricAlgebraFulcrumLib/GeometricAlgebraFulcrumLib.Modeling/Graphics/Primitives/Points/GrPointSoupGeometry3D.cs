@@ -11,17 +11,17 @@ namespace GeometricAlgebraFulcrumLib.Modeling.Graphics.Primitives.Points;
 public sealed class GrPointSoupGeometry3D
     : IGraphicsPointGeometry3D
 {
-    public static GrPointSoupGeometry3D Create(IReadOnlyList<ILinFloat64Vector3D> pointsList)
+    public static GrPointSoupGeometry3D Create(IReadOnlyList<LinFloat64Vector3D> pointsList)
     {
         return new GrPointSoupGeometry3D(pointsList);
     }
 
-    public static GrPointSoupGeometry3D Create(params ILinFloat64Vector3D[] pointsList)
+    public static GrPointSoupGeometry3D Create(params LinFloat64Vector3D[] pointsList)
     {
         return new GrPointSoupGeometry3D(pointsList);
     }
 
-    public static GrPointSoupGeometry3D Create(IEnumerable<ILinFloat64Vector3D> pointsList)
+    public static GrPointSoupGeometry3D Create(IEnumerable<LinFloat64Vector3D> pointsList)
     {
         return new GrPointSoupGeometry3D(pointsList.ToArray());
     }
@@ -30,8 +30,8 @@ public sealed class GrPointSoupGeometry3D
     public IEnumerable<IGraphicsVertex3D> GeometryVertices
         => _vertexPoints.Select((p, i) => new GrVertex3D(i, p));
 
-    private readonly IReadOnlyList<ILinFloat64Vector3D> _vertexPoints;
-    public IEnumerable<ILinFloat64Vector3D> GeometryPoints 
+    private readonly IReadOnlyList<LinFloat64Vector3D> _vertexPoints;
+    public IEnumerable<LinFloat64Vector3D> GeometryPoints 
         => _vertexPoints;
 
     public GraphicsPrimitiveType3D PrimitiveType
@@ -43,25 +43,25 @@ public sealed class GrPointSoupGeometry3D
     public int Count 
         => _vertexPoints.Count;
 
-    public ILinFloat64Vector3D this[int index] 
+    public LinFloat64Vector3D this[int index] 
         => _vertexPoints[index];
 
     public IEnumerable<int> GeometryIndices
         => Enumerable.Range(0, _vertexPoints.Count).ToArray();
 
 
-    private GrPointSoupGeometry3D(IReadOnlyList<ILinFloat64Vector3D> pointsList)
+    private GrPointSoupGeometry3D(IReadOnlyList<LinFloat64Vector3D> pointsList)
     {
         _vertexPoints = pointsList;
     }
 
         
-    public ILinFloat64Vector3D GetGeometryPoint(int index)
+    public LinFloat64Vector3D GetGeometryPoint(int index)
     {
         return _vertexPoints[index];
     }
 
-    public IEnumerator<ILinFloat64Vector3D> GetEnumerator()
+    public IEnumerator<LinFloat64Vector3D> GetEnumerator()
     {
         return _vertexPoints.GetEnumerator();
     }

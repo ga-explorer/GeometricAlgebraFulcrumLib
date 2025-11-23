@@ -11,7 +11,7 @@ public sealed class ScalarProcessorOfFloat32
 
     
     private double _zeroEpsilon = 1e-12;
-    public double ZeroEpsilon
+    public double DefaultTolerance
     {
         get => _zeroEpsilon;
         set
@@ -297,14 +297,14 @@ public sealed class ScalarProcessorOfFloat32
     //public bool IsZero(float scalar, bool nearZeroFlag)
     //{
     //    return nearZeroFlag
-    //        ? scalar > -ZeroEpsilon && scalar < ZeroEpsilon
+    //        ? scalar > -DefaultTolerance && scalar < DefaultTolerance
     //        : scalar == 0f;
     //}
 
     //[MethodImpl(MethodImplOptions.AggressiveInlining)]
     //public bool IsNearZero(float scalar)
     //{
-    //    return scalar > -ZeroEpsilon && scalar < ZeroEpsilon;
+    //    return scalar > -DefaultTolerance && scalar < DefaultTolerance;
     //}
 
     //[MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -317,14 +317,14 @@ public sealed class ScalarProcessorOfFloat32
     //public bool IsNotZero(float scalar, bool nearZeroFlag)
     //{
     //    return nearZeroFlag
-    //        ? scalar <= -ZeroEpsilon || scalar >= ZeroEpsilon
+    //        ? scalar <= -DefaultTolerance || scalar >= DefaultTolerance
     //        : scalar != 0f;
     //}
 
     //[MethodImpl(MethodImplOptions.AggressiveInlining)]
     //public bool IsNotNearZero(float scalar)
     //{
-    //    return scalar <= -ZeroEpsilon || scalar >= ZeroEpsilon;
+    //    return scalar <= -DefaultTolerance || scalar >= DefaultTolerance;
     //}
 
     //[MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -354,13 +354,13 @@ public sealed class ScalarProcessorOfFloat32
     //[MethodImpl(MethodImplOptions.AggressiveInlining)]
     //public bool IsNotNearPositive(float scalar)
     //{
-    //    return scalar < -ZeroEpsilon;
+    //    return scalar < -DefaultTolerance;
     //}
 
     //[MethodImpl(MethodImplOptions.AggressiveInlining)]
     //public bool IsNotNearNegative(float scalar)
     //{
-    //    return scalar > ZeroEpsilon;
+    //    return scalar > DefaultTolerance;
     //}
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]

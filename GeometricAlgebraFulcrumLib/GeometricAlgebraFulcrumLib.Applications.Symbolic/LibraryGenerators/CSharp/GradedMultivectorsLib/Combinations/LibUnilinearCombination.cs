@@ -6,6 +6,7 @@ using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
 using GeometricAlgebraFulcrumLib.Applications.Symbolic.LibraryGenerators.CSharp.GradedMultivectorsLib.Types;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Combinations;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.IndexSets;
+using MathNet.Numerics.LinearAlgebra;
 
 namespace GeometricAlgebraFulcrumLib.Applications.Symbolic.LibraryGenerators.CSharp.GradedMultivectorsLib.Combinations;
 
@@ -63,7 +64,7 @@ public class LibUnilinearCombination :
         return termTable;
     }
 
-    public static LibUnilinearCombination CreateFromOutermorphism(LibTypeMultivector inputType, double[,] vectorMapArray)
+    public static LibUnilinearCombination CreateFromOutermorphism(LibTypeMultivector inputType, Matrix<double> vectorMapArray)
     {
         var termTable = new LibUnilinearCombination(inputType);
 
@@ -318,7 +319,7 @@ public class LibUnilinearCombination :
         return this;
     }
 
-    public LibUnilinearCombination AddOutermorphism(double[,] vectorMapArray)
+    public LibUnilinearCombination AddOutermorphism(Matrix<double> vectorMapArray)
     {
         _unilinearCombination.AddOutermorphism(
             InputType.Metric, 

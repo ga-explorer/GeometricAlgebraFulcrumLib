@@ -1,8 +1,10 @@
 ﻿using System.Numerics;
 using System.Runtime.CompilerServices;
-using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Matrices;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space3D;
+using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Numerical.Matrices;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
+using MathNet.Numerics.LinearAlgebra;
+using MathNet.Numerics.LinearAlgebra.Double;
 
 namespace GeometricAlgebraFulcrumLib.Modeling.Geometry.AffineMaps.Space3D;
 
@@ -35,7 +37,7 @@ public sealed record Float64IdentityAffineMap3D :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool IsNearIdentity(double zeroEpsilon = Float64Utils.ZeroEpsilon)
+    public bool IsNearIdentity(double tolerance = Float64Utils.DefaultTolerance)
     {
         return true;
     }
@@ -53,16 +55,9 @@ public sealed record Float64IdentityAffineMap3D :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public double[,] GetArray2D()
+    public Matrix<double> GetMatrix()
     {
-        var array = new double[4, 4];
-
-        array[0, 0] = 1d;
-        array[1, 1] = 1d;
-        array[2, 2] = 1d;
-        array[3, 3] = 1d;
-
-        return array;
+        return DenseMatrix.CreateIdentity(4);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]

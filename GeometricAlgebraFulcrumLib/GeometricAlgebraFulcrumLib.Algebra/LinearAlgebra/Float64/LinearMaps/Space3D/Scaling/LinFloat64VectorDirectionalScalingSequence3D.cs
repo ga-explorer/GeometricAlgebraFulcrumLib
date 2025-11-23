@@ -1,8 +1,9 @@
 ﻿using System.Collections;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
-using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Matrices;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space3D;
+using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Numerical;
+using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Numerical.Matrices;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.BitManipulation;
 
@@ -156,12 +157,12 @@ public sealed class LinFloat64VectorDirectionalScalingSequence3D :
         return true;
     }
 
-    public bool IsNearIdentity(double zeroEpsilon = 1E-12)
+    public bool IsNearIdentity(double tolerance = Float64Utils.DefaultTolerance)
     {
         for (var basisIndex = 0; basisIndex < VSpaceDimensions; basisIndex++)
         {
             var isSameVectorBasis =
-                MapBasisVector(basisIndex).IsNearVectorBasis(basisIndex, zeroEpsilon);
+                MapBasisVector(basisIndex).IsNearVectorBasis(basisIndex, tolerance);
 
             if (!isSameVectorBasis) return false;
         }
@@ -203,7 +204,7 @@ public sealed class LinFloat64VectorDirectionalScalingSequence3D :
         foreach (var scaling in _mapList)
         {
             var u = scaling.ScalingVector;
-            var s = (scaling.ScalingFactor - 1d) * composer.VectorESp(u);
+            var s = (scaling.ScalingFactor - 1d) * composer.VectorDot(u);
 
             if (s.IsZero()) continue;
 
@@ -214,7 +215,7 @@ public sealed class LinFloat64VectorDirectionalScalingSequence3D :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public LinFloat64Vector3D MapVector(ILinFloat64Vector3D vector)
+    public LinFloat64Vector3D MapVector(LinFloat64Vector3D vector)
     {
         if (_mapList.Count == 0)
             return vector.ToLinVector3D();
@@ -226,7 +227,7 @@ public sealed class LinFloat64VectorDirectionalScalingSequence3D :
         foreach (var scaling in _mapList)
         {
             var u = scaling.ScalingVector;
-            var s = (scaling.ScalingFactor - 1d) * composer.VectorESp(u);
+            var s = (scaling.ScalingFactor - 1d) * composer.VectorDot(u);
 
             if (s.IsZero()) continue;
 

@@ -1,13 +1,11 @@
-﻿using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space4D;
-using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
-using GeometricAlgebraFulcrumLib.Utilities.Structures.Tuples;
+﻿using GeometricAlgebraFulcrumLib.Utilities.Structures.Tuples;
 
 namespace GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.PovRay.Values;
 
 public sealed class GrPovRayVector4ArrayValue :
-    GrPovRayValue<IReadOnlyList<IQuad<Float64Scalar>>>
+    GrPovRayValue<IReadOnlyList<IQuad<double>>>
 {
-    internal static GrPovRayVector4ArrayValue Create(IReadOnlyList<IQuad<Float64Scalar>> value)
+    internal static GrPovRayVector4ArrayValue Create(IReadOnlyList<IQuad<double>> value)
     {
         return new GrPovRayVector4ArrayValue(value);
     }
@@ -18,7 +16,7 @@ public sealed class GrPovRayVector4ArrayValue :
         return new GrPovRayVector4ArrayValue(valueText);
     }
 
-    public static implicit operator GrPovRayVector4ArrayValue(LinFloat64Vector4D[] value)
+    public static implicit operator GrPovRayVector4ArrayValue(IQuad<double>[] value)
     {
         return new GrPovRayVector4ArrayValue(value);
     }
@@ -29,7 +27,7 @@ public sealed class GrPovRayVector4ArrayValue :
     {
     }
 
-    private GrPovRayVector4ArrayValue(IReadOnlyList<IQuad<Float64Scalar>> value)
+    private GrPovRayVector4ArrayValue(IReadOnlyList<IQuad<double>> value)
         : base(value)
     {
     }

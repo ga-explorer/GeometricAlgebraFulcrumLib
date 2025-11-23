@@ -259,7 +259,7 @@ public class GrPovRayParametricCurveVisualizer(
         var t = ImageSampleIndexToSignalTime(imageSampleIndex);
 
         var position = Curve.GetValue(t);
-        var tangentVector = Curve.GetUnitTangent(t);
+        var tangentVector = Curve.GetUnitTangentVector(t);
         
         ActiveSceneComposer.AddElement(
             GrVisualPoint3D.CreateStatic(

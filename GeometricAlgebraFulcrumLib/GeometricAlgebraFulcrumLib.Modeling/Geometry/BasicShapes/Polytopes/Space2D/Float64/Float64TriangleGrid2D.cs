@@ -4,7 +4,6 @@ using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Angles;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space2D;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.BasicShapes.Lines.Space2D.Float64;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.Borders;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Tuples;
 
 namespace GeometricAlgebraFulcrumLib.Modeling.Geometry.BasicShapes.Polytopes.Space2D.Float64;
@@ -65,7 +64,7 @@ public sealed record Float64TriangleGrid2D :
             baseVector.RotateBy(LinFloat64PolarAngle.Angle240)
         );
 
-        TriangleSpecs = Float64RegularPolygon2D.CreateFromOuterRadius(3, baseVector.Norm());
+        TriangleSpecs = Float64RegularPolygon2D.Convex(3, baseVector.L2Norm());
 
         Debug.Assert(IsValid());
     }
@@ -227,7 +226,7 @@ public sealed record Float64TriangleGrid2D :
         
         yield return p;
 
-        while (p.NormSquared() <= GridDiagonalSquared)
+        while (p.L2NormSquared() <= GridDiagonalSquared)
         {
             p += v;
 
@@ -235,7 +234,7 @@ public sealed record Float64TriangleGrid2D :
         }
 
         p = Origin;
-        while (p.NormSquared() <= GridDiagonalSquared)
+        while (p.L2NormSquared() <= GridDiagonalSquared)
         {
             p -= v;
 
@@ -254,7 +253,7 @@ public sealed record Float64TriangleGrid2D :
 
             var line = Float64Line2D.Create(p1, p2 - p1);
 
-            var (flag, segment) = this.ClipLine(line);
+            var (flag, segment) = BoundingBox.ClipLine(line);
 
             if (flag)
                 yield return segment;

@@ -3,8 +3,8 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Angles;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Frames.Space3D;
-using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Matrices;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space3D;
+using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Numerical.Matrices;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Tuples;
 using SixLabors.ImageSharp;
@@ -16,24 +16,54 @@ public sealed record Float64Path3DLocalFrame :
 {
     public static Float64Path3DLocalFrame CreateFromAffineFrame(double parameterValue, LinFloat64AffineFrame3D affineFrame)
     {
+        var scalingFactor = 
+            affineFrame.Direction1.L2Norm();
+
+        var tangent = 
+            affineFrame.Direction1 / scalingFactor;
+
+        var normal1 = 
+            affineFrame.Direction2.RejectOnUnitVector(tangent).ToUnitLinVector3D();
+
+        var normal2 = 
+            tangent.VectorUnitCross(normal1);
+
         return new Float64Path3DLocalFrame(
             parameterValue,
             affineFrame.Origin,
-            affineFrame.Direction1,
-            affineFrame.Direction2,
-            affineFrame.Direction3
+            scalingFactor,
+            tangent,
+            normal1,
+            normal2
+        );
+    }
+
+    public static Float64Path3DLocalFrame CreateFromAffineFrame(double parameterValue, LinFloat64Vector3D origin, LinFloat64Vector3D direction1, LinFloat64Vector3D direction2)
+    {
+        var scalingFactor = 
+            direction1.L2Norm();
+
+        var tangent = 
+            direction1 / scalingFactor;
+
+        var normal1 = 
+            direction2.RejectOnUnitVector(tangent).ToUnitLinVector3D();
+
+        var normal2 = 
+            tangent.VectorUnitCross(normal1);
+
+        return new Float64Path3DLocalFrame(
+            parameterValue,
+            origin,
+            scalingFactor,
+            tangent,
+            normal1,
+            normal2
         );
     }
 
 
-    /// <summary>
-    /// Create a local frame based on the tangent only
-    /// </summary>
-    /// <param name="parameterValue"></param>
-    /// <param name="point"></param>
-    /// <param name="tangentVector"></param>
-    /// <returns></returns>
-    public static Float64Path3DLocalFrame Create(double parameterValue, ILinFloat64Vector3D point, ILinFloat64Vector3D tangentVector)
+    public static Float64Path3DLocalFrame Create(double parameterValue, ILinFloat64Vector3D point, double scalingFactor, ILinFloat64Vector3D tangentVector)
     {
         var tangent =
             tangentVector.ToUnitLinVector3D();
@@ -44,31 +74,46 @@ public sealed record Float64Path3DLocalFrame :
         return new Float64Path3DLocalFrame(
             parameterValue,
             point,
+            scalingFactor,
             tangent,
             normal1,
             normal2
         );
     }
 
-    public static Float64Path3DLocalFrame Create(double parameterValue, ILinFloat64Vector3D point, ILinFloat64Vector3D tangent, IPair<ILinFloat64Vector3D> normalPair)
+    public static Float64Path3DLocalFrame Create(double parameterValue, ILinFloat64Vector3D point, double scalingFactor, ILinFloat64Vector3D tangent, IPair<ILinFloat64Vector3D> normalPair)
     {
         return new Float64Path3DLocalFrame(
             parameterValue,
-            point.ToLinVector3D(),
-            tangent.ToLinVector3D(),
-            normalPair.Item1.ToLinVector3D(),
-            normalPair.Item2.ToLinVector3D()
+            point,
+            scalingFactor,
+            tangent,
+            normalPair.Item1,
+            normalPair.Item2
+        );
+    }
+    
+    public static Float64Path3DLocalFrame Create(double parameterValue, LinFloat64Vector3D point, double scalingFactor, LinFloat64Vector3D tangent, IPair<LinFloat64Vector3D> normalPair)
+    {
+        return new Float64Path3DLocalFrame(
+            parameterValue,
+            point,
+            scalingFactor,
+            tangent,
+            normalPair.Item1,
+            normalPair.Item2
         );
     }
 
-    public static Float64Path3DLocalFrame Create(double parameterValue, ILinFloat64Vector3D point, ILinFloat64Vector3D tangent, ILinFloat64Vector3D normal1, ILinFloat64Vector3D normal2)
+    public static Float64Path3DLocalFrame Create(double parameterValue, ILinFloat64Vector3D point, double scalingFactor, ILinFloat64Vector3D tangent, ILinFloat64Vector3D normal1, ILinFloat64Vector3D normal2)
     {
         return new Float64Path3DLocalFrame(
             parameterValue,
-            point.ToLinVector3D(),
-            tangent.ToLinVector3D(),
-            normal1.ToLinVector3D(),
-            normal2.ToLinVector3D()
+            point,
+            scalingFactor,
+            tangent,
+            normal1,
+            normal2
         );
     }
 
@@ -88,25 +133,36 @@ public sealed record Float64Path3DLocalFrame :
     public int VSpaceDimensions
         => 3;
 
-    public Float64Scalar Item1
+    public double Item1
         => Point.X;
 
-    public Float64Scalar Item2
+    public double Item2
         => Point.Y;
 
-    public Float64Scalar Item3
+    public double Item3
         => Point.Z;
 
-    public Float64Scalar X
+    public double X
         => Point.X;
 
-    public Float64Scalar Y
+    public double Y
         => Point.Y;
 
-    public Float64Scalar Z
+    public double Z
         => Point.Z;
+    
+    public double this[int index] 
+        => index switch
+        {
+            0 => X,
+            1 => Y,
+            2 => Z,
+            _ => Float64Scalar.Zero
+        };
 
     public Color Color { get; set; }
+
+    public double ScalingFactor { get; }
 
     /// <summary>
     /// The first unit vector orthogonal to the tangent and normal at the given curve point
@@ -126,40 +182,49 @@ public sealed record Float64Path3DLocalFrame :
     public LinFloat64Vector3D Tangent { get; }
 
 
-    private Float64Path3DLocalFrame(double parameterValue, ILinFloat64Vector3D point, ILinFloat64Vector3D tangent, ILinFloat64Vector3D normal1, ILinFloat64Vector3D normal2)
+    private Float64Path3DLocalFrame(double parameterValue, ILinFloat64Vector3D point, double scalingFactor, ILinFloat64Vector3D tangent, ILinFloat64Vector3D normal1, ILinFloat64Vector3D normal2)
     {
         TimeValue = parameterValue;
         Point = point.ToLinVector3D();
+        ScalingFactor = scalingFactor;
         Tangent = tangent.ToLinVector3D();
         Normal1.Set(normal1);
         Normal2.Set(normal2);
 
-        //Debug.Assert(IsValid());
+        Debug.Assert(IsValid());
     }
 
 
     public bool IsValid()
     {
-        var length1 = Normal1.VectorENormSquared();
-        var length2 = Normal2.VectorENormSquared();
-        var length3 = Tangent.VectorENormSquared();
+        const double tolerance = 1e-7;
 
-        var cosAngle1 = Normal1.VectorESp(Normal2);
-        var cosAngle2 = Normal2.VectorESp(Tangent);
-        var cosAngle3 = Tangent.VectorESp(Normal1);
+        var length1 = Normal1.L2NormSquared();
+        var length2 = Normal2.L2NormSquared();
+        var length3 = LinFloat64Vector3DUtils.L2NormSquared(Tangent);
+
+        var cosAngle1 = Normal1.VectorDot(Normal2);
+        var cosAngle2 = Normal2.VectorDot(Tangent);
+        var cosAngle3 = Tangent.VectorDot(Normal1);
 
         var isValid =
             !double.IsNaN(TimeValue) &&
+            
             Point.IsValid() &&
+            ScalingFactor.IsValid() &&
+            ScalingFactor.IsFinite() &&
+            ScalingFactor > 0 &&
             Tangent.IsValid() &&
             Normal1.IsValid() &&
             Normal2.IsValid() &&
-            length1.IsNearEqual(1) &&
-            length2.IsNearEqual(1) &&
-            length3.IsNearEqual(1) &&
-            cosAngle1.IsNearZero() &&
-            cosAngle2.IsNearZero() &&
-            cosAngle3.IsNearZero();
+            
+            length1.IsNearOne(tolerance) &&
+            length2.IsNearOne(tolerance) &&
+            length3.IsNearOne(tolerance) &&
+            
+            cosAngle1.IsNearZero(tolerance) &&
+            cosAngle2.IsNearZero(tolerance) &&
+            cosAngle3.IsNearZero(tolerance);
 
         return isValid;
     }
@@ -237,20 +302,23 @@ public sealed record Float64Path3DLocalFrame :
     }
 
 
-    public double GetMaxDirectionAngleWithFrame(Float64Path3DLocalFrame frame2)
+    public LinFloat64PolarAngle GetMaxAngleWithFrame(Float64Path3DLocalFrame frame2)
     {
         var maxAngle = 0d;
 
         var angle = Normal1.GetAngle(frame2.Normal1);
-        if (maxAngle < angle.RadiansValue) maxAngle = angle.RadiansValue;
+        if (maxAngle < angle.RadiansValue) 
+            maxAngle = angle.RadiansValue;
 
         angle = Normal2.GetAngle(frame2.Normal2);
-        if (maxAngle < angle.RadiansValue) maxAngle = angle.RadiansValue;
+        if (maxAngle < angle.RadiansValue) 
+            maxAngle = angle.RadiansValue;
 
         angle = Tangent.GetAngle(frame2.Tangent);
-        if (maxAngle < angle.RadiansValue) maxAngle = angle.RadiansValue;
+        if (maxAngle < angle.RadiansValue) 
+            maxAngle = angle.RadiansValue;
 
-        return maxAngle;
+        return maxAngle.RadiansToPolarAngle();
     }
 
     public Triplet<LinFloat64Vector3D> RotateDirectionsByTangent(ILinFloat64Vector3D newTangent)
@@ -475,6 +543,7 @@ public sealed record Float64Path3DLocalFrame :
         return new Float64Path3DLocalFrame(
             TimeValue,
             Point,
+            ScalingFactor,
             Tangent,
             Normal1.RotateVectorUsingAxisAngle(Tangent, angle),
             Normal2.RotateVectorUsingAxisAngle(Tangent, angle)
@@ -488,9 +557,12 @@ public sealed record Float64Path3DLocalFrame :
 
         return new Float64Path3DLocalFrame(
             TimeValue,
-            LinFloat64Vector3D.Create(Point.X + translationVector.X,
+            LinFloat64Vector3D.Create(
+                Point.X + translationVector.X,
                 Point.Y + translationVector.Y,
-                Point.Z + translationVector.Z),
+                Point.Z + translationVector.Z
+            ),
+            ScalingFactor,
             Tangent,
             Normal1,
             Normal2
@@ -504,9 +576,12 @@ public sealed record Float64Path3DLocalFrame :
 
         return new Float64Path3DLocalFrame(
             TimeValue,
-            LinFloat64Vector3D.Create(Point.X + translationVector.X,
+            LinFloat64Vector3D.Create(
+                Point.X + translationVector.X,
                 Point.Y + translationVector.Y,
-                Point.Z + translationVector.Z),
+                Point.Z + translationVector.Z
+            ),
+            ScalingFactor,
             Tangent,
             Normal1.RotateVectorUsingAxisAngle(Tangent, angle),
             Normal2.RotateVectorUsingAxisAngle(Tangent, angle)
@@ -520,6 +595,7 @@ public sealed record Float64Path3DLocalFrame :
         return new Float64Path3DLocalFrame(
             TimeValue,
             Point,
+            ScalingFactor,
             -Tangent,
             Normal1.GetNegative(),
             Normal2.GetNegative()
@@ -532,9 +608,72 @@ public sealed record Float64Path3DLocalFrame :
         return new Float64Path3DLocalFrame(
             TimeValue,
             Point,
+            ScalingFactor,
             Tangent.RotateVectorUsingQuaternion(quaternion),
             Normal1.RotateVectorUsingQuaternion(quaternion),
             Normal2.RotateVectorUsingQuaternion(quaternion)
+        );
+    }
+
+    public LinFloat64Vector3D InterpolateTangentToTangent(Float64Path3DLocalFrame frame2, double t)
+    {
+        var scalingFactor = double.Lerp(
+            ScalingFactor,
+            frame2.ScalingFactor, 
+            t
+        );
+
+        var (tangent, _) = 
+            t.InterpolateOrthonormalFrames(
+                new Pair<LinFloat64Vector3D>(
+                    Tangent,
+                    Normal1.ToLinVector3D()
+                ),
+                new Pair<LinFloat64Vector3D>(
+                    frame2.Tangent,
+                    frame2.Normal1.ToLinVector3D()
+                )
+            );
+
+        return scalingFactor * tangent;
+    }
+
+    public Float64Path3DLocalFrame InterpolateFrameToFrame(Float64Path3DLocalFrame frame2, double t)
+    {
+        var parameterValue = 
+            t.Lerp(TimeValue, frame2.TimeValue);
+
+        var point = 
+            t.Lerp(Point, frame2.Point);
+
+        var scalingFactor = double.Lerp(
+            ScalingFactor,
+            frame2.ScalingFactor, 
+            t
+        );
+
+        var (tangent, normal1) = 
+            t.InterpolateOrthonormalFrames(
+                new Pair<LinFloat64Vector3D>(
+                    Tangent,
+                    Normal1.ToLinVector3D()
+                ),
+                new Pair<LinFloat64Vector3D>(
+                    frame2.Tangent.VectorDivideByENorm(),
+                    frame2.Normal1.VectorDivideByENorm()
+                )
+            );
+
+        var normal2 = 
+            tangent.VectorUnitCross(normal1);
+
+        return new Float64Path3DLocalFrame(
+            parameterValue,
+            point,
+            scalingFactor,
+            tangent, 
+            normal1, 
+            normal2
         );
     }
 
@@ -545,6 +684,7 @@ public sealed record Float64Path3DLocalFrame :
             .AppendLine("Frame {")
             .AppendLine($"         t: {TimeValue:G}")
             .AppendLine($"     Point: {Point}")
+            .AppendLine($"   Scaling: {ScalingFactor:G}")
             .AppendLine($"   Tangent: {Tangent}")
             .AppendLine($"   Normal1: {Normal1}")
             .AppendLine($"   Normal2: {Normal2}")

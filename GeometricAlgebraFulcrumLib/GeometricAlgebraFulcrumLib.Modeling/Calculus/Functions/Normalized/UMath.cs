@@ -35,11 +35,11 @@ namespace GeometricAlgebraFulcrumLib.Modeling.Calculus.Functions.Normalized
 
         public static double Reciprocal(double x)
         {
-            const double zeroEpsilon = 1000;
+            const double tolerance = 1000;
 
             Debug.Assert(x is >= -1 and <= 1);
 
-            var z = zeroEpsilon * x;
+            var z = tolerance * x;
 
             if (z is >= -1 or <= 1) return z;
 

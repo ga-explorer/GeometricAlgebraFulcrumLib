@@ -35,6 +35,32 @@ namespace GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64
 
             return this;
         }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public Float64ScalarComposer AddESpTerms(XGaFloat64KVector kv1, IndexSet kv2)
+        {
+            if (kv1.Grade != kv2.Count || kv1.IsZero || !kv1.TryGetBasisBladeScalarValue(kv2, out var scalar1))
+                return this;
+
+            var spScalar = 
+                kv1.Processor.EGpSquaredSign(kv2).IsPositive
+                    ? scalar1 : -scalar1;
+
+            return AddScalarValue(spScalar);
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public Float64ScalarComposer AddESpTerms(IndexSet kv1, XGaFloat64KVector kv2)
+        {
+            if (kv1.Count != kv2.Grade || kv2.IsZero || !kv2.TryGetBasisBladeScalarValue(kv1, out var scalar2))
+                return this;
+            
+            var spScalar = 
+                kv2.Processor.EGpSquaredSign(kv1).IsPositive
+                    ? scalar2 : -scalar2;
+
+            return AddScalarValue(spScalar);
+        }
 
         public Float64ScalarComposer AddESpTerms(XGaFloat64KVector kv1, XGaFloat64KVector kv2)
         {
@@ -183,6 +209,22 @@ namespace GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64
             return AddScalarValue(spScalar);
         }
 
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public Float64ScalarComposer AddSpTerms(XGaFloat64KVector kv1, IndexSet kv2)
+        {
+            if (kv1.Grade != kv2.Count || kv1.IsZero || !kv1.TryGetBasisBladeScalarValue(kv2, out var scalar1))
+                return this;
+
+            var sign = kv1.Processor.GpSquaredSign(kv2);
+
+            if (sign.IsZero) 
+                return this;
+
+            var spScalar = sign.IsPositive ? scalar1 : -scalar1;
+
+            return AddScalarValue(spScalar);
+        }
 
         public Float64ScalarComposer AddSpTerms(XGaFloat64KVector kv1, XGaFloat64KVector kv2)
         {

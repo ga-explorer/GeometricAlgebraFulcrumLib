@@ -1,9 +1,12 @@
+using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space2D;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.BasicShapes.Lines.Space2D.Float64;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.Borders.Space2D.Float64;
+using GeometricAlgebraFulcrumLib.Modeling.Geometry.Bounding.Float64;
+
 
 namespace GeometricAlgebraFulcrumLib.Modeling.Graphics.Computers.Voronoi;
 
-public sealed class VoronoiEdge2D : IFloat64LineSegment2D
+public sealed class VoronoiEdge2D : 
+    IFloat64LineSegment2D
 {
     public int PointIndex1 { get; }
 
@@ -11,13 +14,29 @@ public sealed class VoronoiEdge2D : IFloat64LineSegment2D
 
     public VoronoiPointsList PointsList { get; }
 
-    public double Point1X => PointsList[PointIndex1].X;
+    public double Point1X 
+        => PointsList[PointIndex1].X;
 
-    public double Point1Y => PointsList[PointIndex1].Y;
+    public double Point1Y 
+        => PointsList[PointIndex1].Y;
 
-    public double Point2X => PointsList[PointIndex2].X;
+    public double Point2X 
+        => PointsList[PointIndex2].X;
 
-    public double Point2Y => PointsList[PointIndex2].Y;
+    public double Point2Y 
+        => PointsList[PointIndex2].Y;
+
+    public LinFloat64Vector2D Point1 
+        => PointsList[PointIndex1];
+    
+    public LinFloat64Vector2D Point2 
+        => PointsList[PointIndex1];
+
+    public LinFloat64Vector2D Item1 
+        => Point1;
+
+    public LinFloat64Vector2D Item2 
+        => Point2;
 
     public bool IsValid()
     {
@@ -57,4 +76,5 @@ public sealed class VoronoiEdge2D : IFloat64LineSegment2D
     {
         throw new NotImplementedException();
     }
+
 }

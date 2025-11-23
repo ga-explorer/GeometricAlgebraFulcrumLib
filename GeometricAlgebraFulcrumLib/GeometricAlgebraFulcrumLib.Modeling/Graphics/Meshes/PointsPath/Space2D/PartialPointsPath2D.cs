@@ -5,7 +5,7 @@ using GeometricAlgebraFulcrumLib.Utilities.Structures.Sequences.Periodic1D;
 namespace GeometricAlgebraFulcrumLib.Modeling.Graphics.Meshes.PointsPath.Space2D;
 
 public class PartialPointsPath2D
-    : PSeqPartial1D<ILinFloat64Vector2D>, IPointsPath2D
+    : PSeqPartial1D<LinFloat64Vector2D>, IPointsPath2D
 {
     public IPointsPath2D BasePath { get; }
 
@@ -40,7 +40,7 @@ public class PartialPointsPath2D
         return this.All(p => p.IsValid());
     }
 
-    public IPointsPath2D MapPoints(Func<ILinFloat64Vector2D, ILinFloat64Vector2D> pointMapping)
+    public IPointsPath2D MapPoints(Func<LinFloat64Vector2D, LinFloat64Vector2D> pointMapping)
     {
         return new ArrayPointsPath2D(
             this.Select(pointMapping).ToArray()

@@ -13,23 +13,32 @@ public sealed record GrParametricVolumeLocalFrame3D :
     public int VSpaceDimensions 
         => 3;
 
-    public Float64Scalar Item1
+    public double Item1
         => Point.X;
         
-    public Float64Scalar Item2
+    public double Item2
         => Point.Y;
         
-    public Float64Scalar Item3
+    public double Item3
         => Point.Z;
 
-    public Float64Scalar X 
+    public double X 
         => Point.X;
 
-    public Float64Scalar Y 
+    public double Y 
         => Point.Y;
 
-    public Float64Scalar Z 
+    public double Z 
         => Point.Z;
+    
+    public double this[int index] 
+        => index switch
+        {
+            0 => X,
+            1 => Y,
+            2 => Z,
+            _ => Float64Scalar.Zero
+        };
 
     public int Index { get; internal set; } 
         = -1;

@@ -1,11 +1,11 @@
-﻿using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Processors;
-using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
-using GeometricAlgebraFulcrumLib.Utilities.Structures;
-using GeometricAlgebraFulcrumLib.Utilities.Structures.IndexSets;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Processors;
+using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
+using GeometricAlgebraFulcrumLib.Utilities.Structures;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Dictionary;
+using GeometricAlgebraFulcrumLib.Utilities.Structures.IndexSets;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivectors;
 
@@ -140,14 +140,13 @@ public sealed partial class XGaFloat64Scalar :
         IsZero = _scalar.IsZero();
     }
 
-
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public override bool IsValid()
     {
         return ScalarValue.IsValid();
     }
 
-
+    
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public override IReadOnlyDictionary<IndexSet, double> GetIdScalarDictionary()
     {

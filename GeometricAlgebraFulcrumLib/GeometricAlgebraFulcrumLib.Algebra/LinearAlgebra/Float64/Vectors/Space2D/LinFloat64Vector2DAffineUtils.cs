@@ -2,7 +2,6 @@
 using System.Runtime.CompilerServices;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Angles;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
-using GeometricAlgebraFulcrumLib.Utilities.Structures.Tuples;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space2D;
 
@@ -14,15 +13,15 @@ public static class LinFloat64Vector2DAffineUtils
     /// </summary>
     /// <returns></returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64Vector2D GetNormal(this IPair<Float64Scalar> vector)
+    public static LinFloat64Vector2D GetNormal(this LinFloat64Vector2D vector)
     {
         return LinFloat64Vector2D.Create(-vector.Item2, vector.Item1);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64Vector2D GetUnitNormal(this IPair<Float64Scalar> vector)
+    public static LinFloat64Vector2D GetUnitNormal(this LinFloat64Vector2D vector)
     {
-        var normInv = 1d / vector.VectorENorm();
+        var normInv = 1d / vector.L2Norm();
 
         return LinFloat64Vector2D.Create(
             -vector.Item2 * normInv,
@@ -31,7 +30,7 @@ public static class LinFloat64Vector2DAffineUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Float64Scalar Determinant(this IPair<Float64Scalar> v1, IPair<Float64Scalar> v2)
+    public static Float64Scalar Determinant(this LinFloat64Vector2D v1, LinFloat64Vector2D v2)
     {
         return v1.Item1 * v2.Item2 - v1.Item2 * v2.Item1;
     }
@@ -43,7 +42,7 @@ public static class LinFloat64Vector2DAffineUtils
     /// <param name="v2"></param>
     /// <returns></returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static double GetDistanceToPoint(this IPair<Float64Scalar> v1, IPair<Float64Scalar> v2)
+    public static double GetDistanceToPoint(this LinFloat64Vector2D v1, LinFloat64Vector2D v2)
     {
         var vX = v2.Item1 - v1.Item1;
         var vY = v2.Item2 - v1.Item2;
@@ -58,7 +57,7 @@ public static class LinFloat64Vector2DAffineUtils
     /// <param name="v2"></param>
     /// <returns></returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static double GetDistanceSquaredToPoint(this IPair<Float64Scalar> v1, IPair<Float64Scalar> v2)
+    public static double GetDistanceSquaredToPoint(this LinFloat64Vector2D v1, LinFloat64Vector2D v2)
     {
         var vX = v2.Item1 - v1.Item1;
         var vY = v2.Item2 - v1.Item2;
@@ -74,7 +73,7 @@ public static class LinFloat64Vector2DAffineUtils
     /// <param name="v2Y"></param>
     /// <returns></returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static double GetDistanceSquaredToPoint(this IPair<Float64Scalar> v1, double v2X, double v2Y)
+    public static double GetDistanceSquaredToPoint(this LinFloat64Vector2D v1, double v2X, double v2Y)
     {
         var vX = v2X - v1.Item1;
         var vY = v2Y - v1.Item2;
@@ -90,7 +89,7 @@ public static class LinFloat64Vector2DAffineUtils
     /// <param name="v2Y"></param>
     /// <returns></returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static double GetDistanceToPoint(this IPair<Float64Scalar> v1, double v2X, double v2Y)
+    public static double GetDistanceToPoint(this LinFloat64Vector2D v1, double v2X, double v2Y)
     {
         var vX = v2X - v1.Item1;
         var vY = v2Y - v1.Item2;
@@ -98,7 +97,7 @@ public static class LinFloat64Vector2DAffineUtils
         return Math.Sqrt(vX * vX + vY * vY);
     }
 
-    public static LinFloat64Vector2D GetCenterOfMassPoint(this IEnumerable<IPair<Float64Scalar>> pointsList)
+    public static LinFloat64Vector2D GetCenterOfMassPoint(this IEnumerable<LinFloat64Vector2D> pointsList)
     {
         var centerX = 0.0d;
         var centerY = 0.0d;
@@ -120,7 +119,7 @@ public static class LinFloat64Vector2DAffineUtils
         );
     }
 
-    public static LinFloat64Vector2D GetCenterPoint(this IEnumerable<IPair<Float64Scalar>> pointsList)
+    public static LinFloat64Vector2D GetCenterPoint(this IEnumerable<LinFloat64Vector2D> pointsList)
     {
         var minX = double.PositiveInfinity;
         var minY = double.PositiveInfinity;
@@ -144,19 +143,19 @@ public static class LinFloat64Vector2DAffineUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static IEnumerable<double> GetDistancesToPoints(this IPair<Float64Scalar> point, IEnumerable<IPair<Float64Scalar>> pointsList)
+    public static IEnumerable<double> GetDistancesToPoints(this LinFloat64Vector2D point, IEnumerable<LinFloat64Vector2D> pointsList)
     {
-        return pointsList.Select(point.GetDistanceToPoint);
+        return pointsList.Select(p => point.GetDistanceToPoint(p));
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static IEnumerable<double> GetDistancesSquaredToPoints(this IPair<Float64Scalar> point, IEnumerable<IPair<Float64Scalar>> pointsList)
+    public static IEnumerable<double> GetDistancesSquaredToPoints(this LinFloat64Vector2D point, IEnumerable<LinFloat64Vector2D> pointsList)
     {
-        return pointsList.Select(point.GetDistanceSquaredToPoint);
+        return pointsList.Select(p => point.GetDistanceSquaredToPoint(p));
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64Vector2D GetDirectionTo(this IPair<Float64Scalar> p1, IPair<Float64Scalar> p2)
+    public static LinFloat64Vector2D GetDirectionTo(this LinFloat64Vector2D p1, LinFloat64Vector2D p2)
     {
         return LinFloat64Vector2D.Create(
             p2.Item1 - p1.Item1,
@@ -165,7 +164,7 @@ public static class LinFloat64Vector2DAffineUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64Vector2D GetDirectionTo(this IPair<Float64Scalar> p1, double p2X, double p2Y)
+    public static LinFloat64Vector2D GetDirectionTo(this LinFloat64Vector2D p1, double p2X, double p2Y)
     {
         return LinFloat64Vector2D.Create(
             p2X - p1.Item1,
@@ -174,7 +173,7 @@ public static class LinFloat64Vector2DAffineUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64Vector2D GetDirectionFrom(this IPair<Float64Scalar> p2, double p1X, double p1Y)
+    public static LinFloat64Vector2D GetDirectionFrom(this LinFloat64Vector2D p2, double p1X, double p1Y)
     {
         return LinFloat64Vector2D.Create(
             p2.Item1 - p1X,
@@ -183,7 +182,7 @@ public static class LinFloat64Vector2DAffineUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64Vector2D GetUnitDirectionTo(this IPair<Float64Scalar> p1, IPair<Float64Scalar> p2)
+    public static LinFloat64Vector2D GetUnitDirectionTo(this LinFloat64Vector2D p1, LinFloat64Vector2D p2)
     {
         var dx = p2.Item1 - p1.Item1;
         var dy = p2.Item2 - p1.Item2;
@@ -193,7 +192,7 @@ public static class LinFloat64Vector2DAffineUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64Vector2D GetUnitDirectionFrom(this IPair<Float64Scalar> p2, IPair<Float64Scalar> p1)
+    public static LinFloat64Vector2D GetUnitDirectionFrom(this LinFloat64Vector2D p2, LinFloat64Vector2D p1)
     {
         var dx = p2.Item1 - p1.Item1;
         var dy = p2.Item2 - p1.Item2;
@@ -203,7 +202,7 @@ public static class LinFloat64Vector2DAffineUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64Vector2D GetPointInDirection(this IPair<Float64Scalar> p, IPair<Float64Scalar> v)
+    public static LinFloat64Vector2D GetPointInDirection(this LinFloat64Vector2D p, LinFloat64Vector2D v)
     {
         return LinFloat64Vector2D.Create(
             p.Item1 + v.Item1,
@@ -212,7 +211,7 @@ public static class LinFloat64Vector2DAffineUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64Vector2D GetPointInDirection(this IPair<Float64Scalar> p, IPair<Float64Scalar> v, double t)
+    public static LinFloat64Vector2D GetPointInDirection(this LinFloat64Vector2D p, LinFloat64Vector2D v, double t)
     {
         return LinFloat64Vector2D.Create(
             p.Item1 + t * v.Item1,
@@ -221,7 +220,7 @@ public static class LinFloat64Vector2DAffineUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64Vector2D GetDirectionFrom(this IPair<Float64Scalar> p2, IPair<Float64Scalar> p1)
+    public static LinFloat64Vector2D GetDirectionFrom(this LinFloat64Vector2D p2, LinFloat64Vector2D p1)
     {
         return LinFloat64Vector2D.Create(
             p2.Item1 - p1.Item1,
@@ -230,7 +229,7 @@ public static class LinFloat64Vector2DAffineUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64Vector2D Lerp(this double t, IPair<Float64Scalar> v1, IPair<Float64Scalar> v2)
+    public static LinFloat64Vector2D Lerp(this double t, LinFloat64Vector2D v1, LinFloat64Vector2D v2)
     {
         var s = 1.0d - t;
 
@@ -241,13 +240,13 @@ public static class LinFloat64Vector2DAffineUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static IEnumerable<LinFloat64Vector2D> Lerp(this IEnumerable<double> tList, IPair<Float64Scalar> v1, IPair<Float64Scalar> v2)
+    public static IEnumerable<LinFloat64Vector2D> Lerp(this IEnumerable<double> tList, LinFloat64Vector2D v1, LinFloat64Vector2D v2)
     {
         return tList.Select(t => t.Lerp(v1, v2));
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64Vector2D TranslateBy(this IPair<Float64Scalar> vector, double translationX, double translationY)
+    public static LinFloat64Vector2D TranslateBy(this LinFloat64Vector2D vector, double translationX, double translationY)
     {
         return LinFloat64Vector2D.Create(
             translationX + vector.Item1,
@@ -256,7 +255,7 @@ public static class LinFloat64Vector2DAffineUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64Vector2D TranslateBy(this IPair<Float64Scalar> vector, IPair<Float64Scalar> translationVector)
+    public static LinFloat64Vector2D TranslateBy(this LinFloat64Vector2D vector, LinFloat64Vector2D translationVector)
     {
         return LinFloat64Vector2D.Create(
             translationVector.Item1 + vector.Item1,
@@ -265,7 +264,7 @@ public static class LinFloat64Vector2DAffineUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64Vector2D ScaleBy(this IPair<Float64Scalar> vector, double scaleFactor)
+    public static LinFloat64Vector2D ScaleBy(this LinFloat64Vector2D vector, double scaleFactor)
     {
         return LinFloat64Vector2D.Create(
             scaleFactor * vector.Item1,
@@ -274,7 +273,7 @@ public static class LinFloat64Vector2DAffineUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64Vector2D ScaleBy(this IPair<Float64Scalar> vector, double scaleFactorX, double scaleFactorY)
+    public static LinFloat64Vector2D ScaleBy(this LinFloat64Vector2D vector, double scaleFactorX, double scaleFactorY)
     {
         return LinFloat64Vector2D.Create(
             scaleFactorX * vector.Item1,
@@ -283,7 +282,7 @@ public static class LinFloat64Vector2DAffineUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64Vector2D ScaleBy(this IPair<Float64Scalar> vector, IPair<Float64Scalar> scaleFactorVector)
+    public static LinFloat64Vector2D ScaleBy(this LinFloat64Vector2D vector, LinFloat64Vector2D scaleFactorVector)
     {
         return LinFloat64Vector2D.Create(
             scaleFactorVector.Item1 * vector.Item1,
@@ -292,12 +291,12 @@ public static class LinFloat64Vector2DAffineUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64Vector2D RotateBy(this IPair<Float64Scalar> vector, LinFloat64Angle angle)
+    public static LinFloat64Vector2D RotateBy(this LinFloat64Vector2D vector, LinFloat64Angle angle)
     {
         return angle.Rotate(vector);
     }
 
-    public static LinFloat64Vector2D RotateToUnitVector(this IPair<Float64Scalar> vector1, IPair<Float64Scalar> unitVector, LinFloat64Angle angle)
+    public static LinFloat64Vector2D RotateToUnitVector(this LinFloat64Vector2D vector1, LinFloat64Vector2D unitVector, LinFloat64Angle angle)
     {
         Debug.Assert(
             vector1.IsNearUnit() &&
@@ -305,16 +304,16 @@ public static class LinFloat64Vector2DAffineUtils
         );
 
         // Create a unit normal to u in the u-v rotational plane
-        var v1Dot2 = unitVector.VectorESp(vector1);
+        var v1Dot2 = unitVector.VectorDot(vector1);
 
         var v1 = v1Dot2.Abs().IsNearOne()
             ? vector1.GetNormal()
             : unitVector.VectorSubtract(vector1.VectorTimes(v1Dot2));
 
-        var v1Length = v1.VectorENorm();
+        var v1Length = LinFloat64Vector2DUtils.L2Norm(v1);
 
         Debug.Assert(
-            v1.VectorESp(vector1).IsNearZero() &&
+            v1.VectorDot(vector1).IsNearZero() &&
             !v1Length.IsNearZero()
         );
 
@@ -325,11 +324,11 @@ public static class LinFloat64Vector2DAffineUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64Vector2D ReflectVectorOnVector(this IPair<Float64Scalar> reflectionVector, IPair<Float64Scalar> vector)
+    public static LinFloat64Vector2D ReflectVectorOnVector(this LinFloat64Vector2D reflectionVector, LinFloat64Vector2D vector)
     {
         var s =
-            2 * reflectionVector.VectorESp(vector) /
-            reflectionVector.VectorENormSquared();
+            2 * reflectionVector.VectorDot(vector) /
+            reflectionVector.L2NormSquared();
 
         return LinFloat64Vector2D.Create(
             vector.Item1 - s * reflectionVector.Item1,
@@ -338,7 +337,7 @@ public static class LinFloat64Vector2DAffineUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Pair<Float64Scalar> AnalyzeOnVectors(this IPair<Float64Scalar> v, IPair<Float64Scalar> u1, IPair<Float64Scalar> u2)
+    public static LinFloat64Vector2D AnalyzeOnVectors(this LinFloat64Vector2D v, LinFloat64Vector2D u1, LinFloat64Vector2D u2)
     {
         var s1 =
             (v.Item1 * u1.Item1 + v.Item2 * u1.Item2) /
@@ -348,11 +347,11 @@ public static class LinFloat64Vector2DAffineUtils
             (v.Item1 * u2.Item1 + v.Item2 * u2.Item2) /
             (u2.Item1 * u2.Item1 + u2.Item2 * u2.Item2).Sqrt();
 
-        return new Pair<Float64Scalar>(s1, s2);
+        return LinFloat64Vector2D.Create(s1, s2);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64Vector2D ProjectOnVector(this IPair<Float64Scalar> v, IPair<Float64Scalar> u)
+    public static LinFloat64Vector2D ProjectOnVector(this LinFloat64Vector2D v, LinFloat64Vector2D u)
     {
         var s1 = v.Item1 * u.Item1 + v.Item2 * u.Item2;
         var s2 = u.Item1 * u.Item1 + u.Item2 * u.Item2;
@@ -362,7 +361,7 @@ public static class LinFloat64Vector2DAffineUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64Vector2D ProjectOnUnitVector(this IPair<Float64Scalar> v, IPair<Float64Scalar> u)
+    public static LinFloat64Vector2D ProjectOnUnitVector(this LinFloat64Vector2D v, LinFloat64Vector2D u)
     {
         var s = v.Item1 * u.Item1 + v.Item2 * u.Item2;
 
@@ -377,7 +376,7 @@ public static class LinFloat64Vector2DAffineUtils
     /// <param name="directionVector"></param>
     /// <returns></returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64Vector2D FaceDirection(this IPair<Float64Scalar> vector, IPair<Float64Scalar> directionVector)
+    public static LinFloat64Vector2D FaceDirection(this LinFloat64Vector2D vector, LinFloat64Vector2D directionVector)
     {
         Debug.Assert(!directionVector.IsZero());
 
@@ -387,13 +386,13 @@ public static class LinFloat64Vector2DAffineUtils
                 : LinFloat64Vector2D.Create(vector.Item1, vector.Item2);
     }
 
-    public static IEnumerable<LinFloat64Vector2D> ReflectVectorsOnVector(this IPair<Float64Scalar> reflectionVector, params IPair<Float64Scalar>[] vectorsList)
+    public static IEnumerable<LinFloat64Vector2D> ReflectVectorsOnVector(this LinFloat64Vector2D reflectionVector, params LinFloat64Vector2D[] vectorsList)
     {
-        var s = 2 / reflectionVector.VectorENormSquared();
+        var s = 2 / reflectionVector.L2NormSquared();
 
         foreach (var vector in vectorsList)
         {
-            var s1 = s * reflectionVector.VectorESp(vector);
+            var s1 = s * reflectionVector.VectorDot(vector);
 
             yield return LinFloat64Vector2D.Create(
                 vector.Item1 - s1 * reflectionVector.Item1,
@@ -401,14 +400,32 @@ public static class LinFloat64Vector2DAffineUtils
             );
         }
     }
-
-    public static IEnumerable<LinFloat64Vector2D> ReflectVectorsOnVector(this IPair<Float64Scalar> reflectionVector, IEnumerable<IPair<Float64Scalar>> vectorsList)
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static LinFloat64Vector2D ReflectOnX(this LinFloat64Vector2D vector)
     {
-        var s = 2 / reflectionVector.VectorENormSquared();
+        return LinFloat64Vector2D.Create(vector.X, -vector.Y);
+    }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static LinFloat64Vector2D ReflectOnY(this LinFloat64Vector2D vector)
+    {
+        return LinFloat64Vector2D.Create(-vector.X, vector.Y);
+    }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static LinFloat64Vector2D ReflectOnXy(this LinFloat64Vector2D vector)
+    {
+        return LinFloat64Vector2D.Create(-vector.X, -vector.Y);
+    }
+
+    public static IEnumerable<LinFloat64Vector2D> ReflectVectorsOnVector(this LinFloat64Vector2D reflectionVector, IEnumerable<LinFloat64Vector2D> vectorsList)
+    {
+        var s = 2 / reflectionVector.L2NormSquared();
 
         foreach (var vector in vectorsList)
         {
-            var s1 = s * reflectionVector.VectorESp(vector);
+            var s1 = s * reflectionVector.VectorDot(vector);
 
             yield return LinFloat64Vector2D.Create(
                 vector.Item1 - s1 * reflectionVector.Item1,
@@ -418,9 +435,9 @@ public static class LinFloat64Vector2DAffineUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64Vector2D ReflectVectorOnUnitVector(this IPair<Float64Scalar> reflectionVector, IPair<Float64Scalar> vector)
+    public static LinFloat64Vector2D ReflectVectorOnUnitVector(this LinFloat64Vector2D reflectionVector, LinFloat64Vector2D vector)
     {
-        var s = 2 * reflectionVector.VectorESp(vector);
+        var s = 2 * reflectionVector.VectorDot(vector);
 
         return LinFloat64Vector2D.Create(
             vector.Item1 - s * reflectionVector.Item1,
@@ -428,11 +445,11 @@ public static class LinFloat64Vector2DAffineUtils
         );
     }
 
-    public static IEnumerable<LinFloat64Vector2D> ReflectVectorsOnUnitVector(this IPair<Float64Scalar> reflectionVector, params IPair<Float64Scalar>[] vectorsList)
+    public static IEnumerable<LinFloat64Vector2D> ReflectVectorsOnUnitVector(this LinFloat64Vector2D reflectionVector, params LinFloat64Vector2D[] vectorsList)
     {
         foreach (var vector in vectorsList)
         {
-            var s1 = 2 * reflectionVector.VectorESp(vector);
+            var s1 = 2 * reflectionVector.VectorDot(vector);
 
             yield return LinFloat64Vector2D.Create(
                 vector.Item1 - s1 * reflectionVector.Item1,
@@ -441,11 +458,11 @@ public static class LinFloat64Vector2DAffineUtils
         }
     }
 
-    public static IEnumerable<LinFloat64Vector2D> ReflectVectorsOnUnitVector(this IPair<Float64Scalar> reflectionVector, IEnumerable<IPair<Float64Scalar>> vectorsList)
+    public static IEnumerable<LinFloat64Vector2D> ReflectVectorsOnUnitVector(this LinFloat64Vector2D reflectionVector, IEnumerable<LinFloat64Vector2D> vectorsList)
     {
         foreach (var vector in vectorsList)
         {
-            var s1 = 2 * reflectionVector.VectorESp(vector);
+            var s1 = 2 * reflectionVector.VectorDot(vector);
 
             yield return LinFloat64Vector2D.Create(
                 vector.Item1 - s1 * reflectionVector.Item1,
@@ -455,9 +472,9 @@ public static class LinFloat64Vector2DAffineUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64Vector2D SetLength(this IPair<Float64Scalar> vector, double newLength)
+    public static LinFloat64Vector2D SetLength(this LinFloat64Vector2D vector, double newLength)
     {
-        var oldLength = vector.VectorENorm();
+        var oldLength = vector.L2Norm();
 
         if (oldLength.IsZero())
             return LinFloat64Vector2D.Zero;
@@ -469,4 +486,34 @@ public static class LinFloat64Vector2DAffineUtils
             vector.Item2 * scalingFactor
         );
     }
+    
+    
+    /// <summary>
+    /// Circumcenter for a triangle
+    /// </summary>
+    /// <param name="a"></param>
+    /// <param name="b"></param>
+    /// <param name="c"></param>
+    /// <returns></returns>
+    public static LinFloat64Vector2D GetCircumcenter(this LinFloat64Vector2D a, LinFloat64Vector2D b, LinFloat64Vector2D c)
+    {
+        // Using perpendicular bisector intersection
+        var d = 2 * (a.Item1 * (b.Item2 - c.Item2) + b.Item1 * (c.Item2 - a.Item2) + c.Item1 * (a.Item2 - b.Item2));
+        
+        if (d.IsNearZero(1e-18))
+            return LinFloat64Vector2D.Create(
+                double.PositiveInfinity, 
+                double.PositiveInfinity
+            );
+        
+        var a2 = a.Item1 * a.Item1 + a.Item2 * a.Item2;
+        var b2 = b.Item1 * b.Item1 + b.Item2 * b.Item2;
+        var c2 = c.Item1 * c.Item1 + c.Item2 * c.Item2;
+        
+        var ux = (a2 * (b.Item2 - c.Item2) + b2 * (c.Item2 - a.Item2) + c2 * (a.Item2 - b.Item2)) / d;
+        var uy = (a2 * (c.Item1 - b.Item1) + b2 * (a.Item1 - c.Item1) + c2 * (b.Item1 - a.Item1)) / d;
+        
+        return LinFloat64Vector2D.Create(ux, uy);
+    }
+
 }

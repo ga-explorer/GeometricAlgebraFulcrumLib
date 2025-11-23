@@ -1,9 +1,9 @@
 ﻿using System.Runtime.CompilerServices;
-using GeometricAlgebraFulcrumLib.Algebra.Polynomials.Float64.BSplineCurveBasis;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
 using GeometricAlgebraFulcrumLib.Modeling.Calculus.Functions.Float64;
 using GeometricAlgebraFulcrumLib.Modeling.Signals;
 using GeometricAlgebraFulcrumLib.Modeling.Trajectories.Scalars.Float64;
+using GeometricAlgebraFulcrumLib.Modeling.Trajectories.Vectors2D.Float64.BSpline;
 using OxyPlot;
 using OxyPlot.Axes;
 using OxyPlot.Series;
@@ -56,7 +56,7 @@ public static class PlottingUtils
 
     public static Image Plot(this Float64ScalarSignal scalarSignal, double xMin, double xMax, double yMin, double yMax)
     {
-        var func = (double t) => scalarSignal.GetValue(t);
+        var func = scalarSignal.GetValue;
 
         return func.Plot(xMin, xMax, yMin, yMax);
     }

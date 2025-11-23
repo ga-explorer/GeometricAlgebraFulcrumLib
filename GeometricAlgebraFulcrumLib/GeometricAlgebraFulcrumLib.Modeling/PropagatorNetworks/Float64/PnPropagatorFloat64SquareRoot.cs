@@ -23,7 +23,7 @@ public sealed class PnPropagatorFloat64SquareRoot :
     public PnCellFloat64 InputCell { get; }
 
     public override IReadOnlyList<IPropagatorCell> InputCells 
-        => new []{InputCell};
+        => [InputCell];
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]

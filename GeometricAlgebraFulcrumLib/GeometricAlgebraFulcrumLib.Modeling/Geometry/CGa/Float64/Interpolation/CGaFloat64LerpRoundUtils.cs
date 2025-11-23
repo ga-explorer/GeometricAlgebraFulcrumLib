@@ -23,7 +23,7 @@ public static class CGaFloat64LerpRoundUtils
         var center =
             s * point1.CenterToVector2D() + t * point2.CenterToVector2D();
 
-        return CGaFloat64GeometricSpace4D.Instance.DefineRoundPoint(
+        return CGaFloat64GeometricSpace4D.Instance.RoundPoint(
             weight,
             center
         );
@@ -44,7 +44,7 @@ public static class CGaFloat64LerpRoundUtils
         var center =
             s * point1.CenterToVector3D() + t * point2.CenterToVector3D();
 
-        return CGaFloat64GeometricSpace5D.Instance.DefineRoundPoint(
+        return CGaFloat64GeometricSpace5D.Instance.RoundPoint(
             weight,
             center
         );
@@ -81,7 +81,7 @@ public static class CGaFloat64LerpRoundUtils
         var directionVector =
             directionVector1.RotateToUnitVector(directionVector2, angle);
 
-        return CGaFloat64GeometricSpace4D.Instance.DefineRoundPointPair(
+        return CGaFloat64GeometricSpace4D.Instance.RoundPointPair(
             weight,
             radiusSquared,
             center,
@@ -120,7 +120,7 @@ public static class CGaFloat64LerpRoundUtils
         var directionVector =
             directionVector1.RotateToUnitVector(directionVector2, angle);
 
-        return CGaFloat64GeometricSpace5D.Instance.DefineRoundPointPair(
+        return CGaFloat64GeometricSpace5D.Instance.RoundPointPair(
             weight,
             radiusSquared,
             center,
@@ -146,7 +146,7 @@ public static class CGaFloat64LerpRoundUtils
         var center =
             s * circle1.CenterToVector2D() + t * circle2.CenterToVector2D();
 
-        return CGaFloat64GeometricSpace4D.Instance.DefineRoundCircle(
+        return CGaFloat64GeometricSpace4D.Instance.RoundCircle(
             weight,
             radiusSquared,
             center,
@@ -185,7 +185,7 @@ public static class CGaFloat64LerpRoundUtils
         var directionBivector =
             normal1.RotateToUnitVector(normal2, angle).NormalToUnitDirection3D();
 
-        return CGaFloat64GeometricSpace5D.Instance.DefineRoundCircle(
+        return CGaFloat64GeometricSpace5D.Instance.RoundCircle(
             weight,
             radiusSquared,
             center,
@@ -211,7 +211,7 @@ public static class CGaFloat64LerpRoundUtils
         var center =
             s * sphere1.CenterToVector3D() + t * sphere2.CenterToVector3D();
 
-        return CGaFloat64GeometricSpace5D.Instance.DefineRoundSphere(
+        return CGaFloat64GeometricSpace5D.Instance.RoundSphere(
             weight,
             radiusSquared,
             center

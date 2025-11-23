@@ -281,8 +281,8 @@ public static class GaalopComparisonsSamples
         var pp4 = s1.Op(s2).Op(s3);
         var pp4Dual = pp4.Lcp(cgaSpace.IcInv.InternalKVector).GetBivectorPart();
 
-        var x4A = -(pp4Dual - pp4Dual.Sp(pp4Dual).Sqrt()).Gp(ei.Lcp(pp4Dual).Inverse()).GetVectorPart();
-        var x4B = -(pp4Dual + pp4Dual.Sp(pp4Dual).Sqrt()).Gp(ei.Lcp(pp4Dual).Inverse()).GetVectorPart();
+        var x4A = -(pp4Dual - pp4Dual.Sp(pp4Dual).Sqrt()).Gp(ei.Lcp(pp4Dual).VersorInverse()).GetVectorPart();
+        var x4B = -(pp4Dual + pp4Dual.Sp(pp4Dual).Sqrt()).Gp(ei.Lcp(pp4Dual).VersorInverse()).GetVectorPart();
 
 
         // Stage 4: Assign target variable names for final
@@ -936,7 +936,7 @@ public static class GaalopComparisonsSamples
         // Find two final individual points inside point-pair, one of them must be B
         // and the other is P
         var s1 = p.SpSquared().Sqrt();
-        var s2 = ni.Lcp(p).Inverse();
+        var s2 = ni.Lcp(p).VersorInverse();
 
         var p1 = (p + s1).Gp(s2);
         var p2 = (p - s1).Gp(s2);

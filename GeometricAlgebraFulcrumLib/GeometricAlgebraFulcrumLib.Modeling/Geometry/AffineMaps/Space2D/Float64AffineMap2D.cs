@@ -2,8 +2,8 @@
 using System.Runtime.CompilerServices;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Basis;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Angles;
-using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Matrices;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space2D;
+using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Numerical.Matrices;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Tuples;
 
@@ -84,9 +84,9 @@ public sealed class Float64AffineMap2D :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool IsNearIdentity(double zeroEpsilon = Float64Utils.ZeroEpsilon)
+    public bool IsNearIdentity(double tolerance = Float64Utils.DefaultTolerance)
     {
-        return _matrix.IsNearIdentity(zeroEpsilon);
+        return _matrix.IsNearIdentity(tolerance);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -140,7 +140,7 @@ public sealed class Float64AffineMap2D :
         return this;
     }
 
-    public Float64AffineMap2D SetTranslationPart(IPair<Float64Scalar> dv)
+    public Float64AffineMap2D SetTranslationPart(IPair<double> dv)
     {
         PreTranslate(-FinalTranslation);
         Translate(dv);
@@ -201,7 +201,7 @@ public sealed class Float64AffineMap2D :
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public Float64AffineMap2D PreTranslate(IPair<Float64Scalar> dv)
+    public Float64AffineMap2D PreTranslate(IPair<double> dv)
     {
         return PrependMap(
             SquareMatrix3.CreateTranslationMatrix2D(dv)
@@ -234,7 +234,7 @@ public sealed class Float64AffineMap2D :
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public Float64AffineMap2D Translate(IPair<Float64Scalar> dv)
+    public Float64AffineMap2D Translate(IPair<double> dv)
     {
         return AppendMap(
             SquareMatrix3.CreateTranslationMatrix2D(dv)
@@ -302,7 +302,7 @@ public sealed class Float64AffineMap2D :
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public Float64AffineMap2D Scale(IPair<Float64Scalar> s)
+    public Float64AffineMap2D Scale(IPair<double> s)
     {
         return AppendMap(
             SquareMatrix3.CreateScalingMatrix2D(s)

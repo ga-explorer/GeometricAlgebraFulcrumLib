@@ -32,7 +32,7 @@ public class LinFloat64AffineFrame2D
     {
         Debug.Assert(origin.IsValid() && uDirection.IsValid());
 
-        var s = uDirection.VectorENorm();
+        var s = uDirection.L2Norm();
 
         Debug.Assert(!s.IsNearZero());
 
@@ -52,7 +52,7 @@ public class LinFloat64AffineFrame2D
     /// <returns></returns>
     public static LinFloat64AffineFrame2D CreateLeftHanded(ILinFloat64Vector2D origin, ILinFloat64Vector2D uDirection)
     {
-        var s = uDirection.VectorENorm();
+        var s = uDirection.L2Norm();
 
         Debug.Assert(!s.IsNearZero());
 

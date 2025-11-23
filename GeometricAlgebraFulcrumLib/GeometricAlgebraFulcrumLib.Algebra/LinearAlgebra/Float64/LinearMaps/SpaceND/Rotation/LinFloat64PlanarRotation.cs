@@ -71,9 +71,9 @@ public abstract class LinFloat64PlanarRotation :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public sealed override bool IsNearIdentity(double zeroEpsilon = 1e-12d)
+    public sealed override bool IsNearIdentity(double tolerance = 1e-12d)
     {
-        return (RotationAngleCos - 1d).IsNearZero(zeroEpsilon);
+        return (RotationAngleCos - 1d).IsNearZero(tolerance);
     }
 
 
@@ -131,16 +131,16 @@ public abstract class LinFloat64PlanarRotation :
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool NearContains(LinFloat64Vector vector, double zeroEpsilon = 1E-12D)
+    public bool NearContains(LinFloat64Vector vector, double tolerance = 1E-12D)
     {
-        return GetVectorRejection(vector).IsNearZero(zeroEpsilon);
+        return GetVectorRejection(vector).IsNearZero(tolerance);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool NearContains(ILinFloat64Subspace subspace, double zeroEpsilon = 1E-12)
+    public bool NearContains(ILinFloat64Subspace subspace, double tolerance = Float64Utils.DefaultTolerance)
     {
         return subspace.VSpaceDimensions <= VSpaceDimensions &&
-               subspace.BasisVectors.All(v => NearContains(v, zeroEpsilon));
+               subspace.BasisVectors.All(v => NearContains(v, tolerance));
     }
 
 

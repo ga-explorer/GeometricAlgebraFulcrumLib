@@ -4,19 +4,19 @@ using GeometricAlgebraFulcrumLib.Utilities.Structures.Sequences.Periodic1D;
 namespace GeometricAlgebraFulcrumLib.Modeling.Graphics.Meshes.PointsPath.Space2D;
 
 public sealed class ParametricPointsPath2D 
-    : PSeqMapped1D<double, ILinFloat64Vector2D>, IPointsPath2D
+    : PSeqMapped1D<double, LinFloat64Vector2D>, IPointsPath2D
 {
-    public Func<double, ILinFloat64Vector2D> Mapping { get; }
+    public Func<double, LinFloat64Vector2D> Mapping { get; }
 
         
-    public ParametricPointsPath2D(IPeriodicSequence1D<double> parameterSequence, Func<double, ILinFloat64Vector2D> mapping)
+    public ParametricPointsPath2D(IPeriodicSequence1D<double> parameterSequence, Func<double, LinFloat64Vector2D> mapping)
         : base(parameterSequence)
     {
         Mapping = mapping;
     }
 
 
-    protected override ILinFloat64Vector2D MappingFunction(double input)
+    protected override LinFloat64Vector2D MappingFunction(double input)
     {
         return Mapping(input);
     }
@@ -27,7 +27,7 @@ public sealed class ParametricPointsPath2D
         return this.All(p => p.IsValid());
     }
 
-    public IPointsPath2D MapPoints(Func<ILinFloat64Vector2D, ILinFloat64Vector2D> pointMapping)
+    public IPointsPath2D MapPoints(Func<LinFloat64Vector2D, LinFloat64Vector2D> pointMapping)
     {
         return new ParametricPointsPath2D(
             BaseSequence,

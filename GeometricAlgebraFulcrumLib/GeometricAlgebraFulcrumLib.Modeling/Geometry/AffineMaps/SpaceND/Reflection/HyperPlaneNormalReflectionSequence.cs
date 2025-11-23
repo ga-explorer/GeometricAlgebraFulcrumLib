@@ -400,12 +400,12 @@
 //            return true;
 //        }
 
-//        public override bool IsNearIdentity(double zeroEpsilon = 1E-12)
+//        public override bool IsNearIdentity(double tolerance = 1E-12)
 //        {
 //            for (var basisIndex = 0; basisIndex < VSpaceDimensions; basisIndex++)
 //            {
 //                var isSameVectorBasis = 
-//                    MapBasisVector(basisIndex).IsNearVectorBasis(basisIndex, zeroEpsilon);
+//                    MapBasisVector(basisIndex).IsNearVectorBasis(basisIndex, tolerance);
 
 //                if (!isSameVectorBasis) return false;
 //            }
@@ -417,7 +417,7 @@
 //        /// Test if all reflection normals in this sequence are nearly pair-wise orthogonal
 //        /// </summary>
 //        /// <returns></returns>
-//        public bool IsNearOrthogonalReflectionsSequence(double zeroEpsilon = Float64Utils.ZeroEpsilon)
+//        public bool IsNearOrthogonalReflectionsSequence(double tolerance = Float64Utils.DefaultTolerance)
 //        {
 //            if (_mapList.Count > VSpaceDimensions)
 //                return false;
@@ -430,7 +430,7 @@
 //                {
 //                    var u2 = _mapList[j].ReflectionNormal;
 
-//                    if (!u1.IsNearOrthogonalTo(u2, zeroEpsilon)) return false;
+//                    if (!u1.IsNearOrthogonalTo(u2, tolerance)) return false;
 //                }
 //            }
 

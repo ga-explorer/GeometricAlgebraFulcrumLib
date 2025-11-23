@@ -667,6 +667,46 @@ public static class Int32BitUtils
     }
 
     /// <summary>
+    /// Returns the largest exponent k such that 2^k is less or equal to n.
+    /// If n == 0 returns -1 (since no 2^k less or equal 0 for finite k).
+    /// </summary>
+    /// <param name="n">Non-negative integer</param>
+    /// <returns>Exponent k, or -1 if n == 0</returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static int Power2LowerLimitExponent(this int n)
+    {
+        return n == 0 ? -1 : 31 - BitOperations.LeadingZeroCount((uint)n);
+    }
+
+    /// <summary>
+    /// Returns the smallest exponent k such that 2^k >= n.
+    /// For n == 0, returns 0 (since 2^0 = 1 >= 0).
+    /// </summary>
+    /// <param name="n">Non-negative integer</param>
+    /// <returns>Exponent k</returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static int Power2UpperLimitExponent(this int n)
+    {
+        if (n <= 1) return 0;
+
+        // Find the position of the highest set bit
+        // Then 2^(bits-1) <= n < 2^bits, so we need k = bits unless n is exact power of 2
+        // But we want smallest k such that 2^k >= n
+        // That is: k = floor(log2(n)) + 1, unless n is power of 2 then it's floor(log2(n))
+
+        // Count leading zeroes (works on 32-bit)
+        var leadingZeroes = BitOperations.LeadingZeroCount((uint)n);
+        var highestBitIndex = 31 - leadingZeroes;
+
+        // 2^highestBitIndex <= n < 2^(highestBitIndex + 1)
+        // So if n is exactly a power of two, then 2^highestBitIndex == n → k = highestBitIndex
+        // Otherwise, we need k = highestBitIndex + 1
+
+        // Check if n is a power of two: n & (n - 1) == 0
+        return (n & (n - 1)) == 0 ? highestBitIndex : highestBitIndex + 1;
+    }
+
+    /// <summary>
     /// Create a full mask that contains the given pattern
     /// </summary>
     /// <param name="bitPattern"></param>
@@ -1807,5 +1847,59 @@ public static class Int32BitUtils
     public static int IntegerCount(this int minValue, int maxValue)
     {
         return maxValue - minValue + 1;
+    }
+
+
+    /// <summary>
+    /// Computes the Greatest Common Divisor (GCD) of two integers using the binary GCD algorithm (Stein's algorithm).
+    /// Highly efficient for large integers, using bit operations instead of modulus.
+    /// </summary>
+    /// <param name="a">First integer</param>
+    /// <param name="b">Second integer</param>
+    /// <returns>The GCD of a and b (non-negative)</returns>
+    public static int GcdBinary(this int a, int b)
+    {
+        if (a == 0) return b < 0 ? -b : b;
+        if (b == 0) return a < 0 ? -a : a;
+
+        // Take absolute values
+        a = a < 0 ? -a : a;
+        b = b < 0 ? -b : b;
+
+        // Find common factors of 2
+        var shift = 0;
+        while (((a | b) & 1) == 0) // both even
+        {
+            a >>= 1;
+            b >>= 1;
+            shift++;
+        }
+
+        // Remove factors of 2 from a
+        while ((a & 1) == 0)
+            a >>= 1;
+
+        do
+        {
+            // Remove factors of 2 from b
+            while ((b & 1) == 0)
+                b >>= 1;
+
+            // Ensure a <= b
+            if (a > b) 
+                (a, b) = (b, a);
+
+            b -= a; // b >= a and both odd → b-a is even
+        } while (b != 0);
+
+        return a << shift; // Restore common factors of 2
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static int Gcd(this int a, int b)
+    {
+        while (b != 0) { (a, b) = (b, a % b); }
+
+        return Math.Abs(a);
     }
 }

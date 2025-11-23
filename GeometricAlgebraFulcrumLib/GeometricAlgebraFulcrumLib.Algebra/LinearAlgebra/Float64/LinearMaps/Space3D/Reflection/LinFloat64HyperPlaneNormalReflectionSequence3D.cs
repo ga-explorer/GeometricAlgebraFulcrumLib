@@ -1,8 +1,9 @@
 ﻿using System.Collections;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
-using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Matrices;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space3D;
+using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Numerical;
+using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Numerical.Matrices;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.BitManipulation;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Tuples;
@@ -204,7 +205,7 @@ public sealed class LinFloat64HyperPlaneNormalReflectionSequence3D :
         var rotationSequence = new LinFloat64HyperPlaneNormalReflectionSequence3D();
 
         var vectorList =
-            random.GetMathNetOrthonormalVectors(dimensions, count);
+            random.GetOrthonormalVectors(dimensions, count);
 
         for (var i = 0; i < count; i++)
         {
@@ -371,12 +372,12 @@ public sealed class LinFloat64HyperPlaneNormalReflectionSequence3D :
         return true;
     }
 
-    public override bool IsNearIdentity(double zeroEpsilon = 1E-12)
+    public override bool IsNearIdentity(double tolerance = Float64Utils.DefaultTolerance)
     {
         for (var basisIndex = 0; basisIndex < VSpaceDimensions; basisIndex++)
         {
             var isSameVectorBasis =
-                MapBasisVector(basisIndex).IsNearVectorBasis(basisIndex, zeroEpsilon);
+                MapBasisVector(basisIndex).IsNearVectorBasis(basisIndex, tolerance);
 
             if (!isSameVectorBasis) return false;
         }
@@ -388,7 +389,7 @@ public sealed class LinFloat64HyperPlaneNormalReflectionSequence3D :
     /// Test if all reflection normals in this sequence are nearly pair-wise orthogonal
     /// </summary>
     /// <returns></returns>
-    public bool IsNearOrthogonalReflectionsSequence(double zeroEpsilon = Float64Utils.ZeroEpsilon)
+    public bool IsNearOrthogonalReflectionsSequence(double tolerance = Float64Utils.DefaultTolerance)
     {
         if (_mapList.Count > VSpaceDimensions)
             return false;
@@ -401,7 +402,7 @@ public sealed class LinFloat64HyperPlaneNormalReflectionSequence3D :
             {
                 var u2 = _mapList[j].ReflectionNormal;
 
-                if (!u1.IsNearOrthogonalTo(u2, zeroEpsilon)) return false;
+                if (!u1.IsNearOrthogonalTo(u2, tolerance)) return false;
             }
         }
 
@@ -441,7 +442,7 @@ public sealed class LinFloat64HyperPlaneNormalReflectionSequence3D :
         foreach (var reflection in _mapList)
         {
             var u = reflection.ReflectionNormal;
-            var s = -2d * composer.VectorESp(u);
+            var s = -2d * composer.VectorDot(u);
 
             composer.AddVector(u, s);
         }
@@ -450,7 +451,7 @@ public sealed class LinFloat64HyperPlaneNormalReflectionSequence3D :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public override LinFloat64Vector3D MapVector(ILinFloat64Vector3D vector)
+    public override LinFloat64Vector3D MapVector(LinFloat64Vector3D vector)
     {
         if (_mapList.Count == 0)
             return vector.ToLinVector3D();
@@ -462,7 +463,7 @@ public sealed class LinFloat64HyperPlaneNormalReflectionSequence3D :
         foreach (var reflection in _mapList)
         {
             var u = reflection.ReflectionNormal;
-            var s = -2d * composer.VectorESp(u);
+            var s = -2d * composer.VectorDot(u);
 
             composer.AddVector(u, s);
         }

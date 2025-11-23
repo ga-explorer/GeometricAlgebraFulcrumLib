@@ -1,8 +1,8 @@
-﻿using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
+﻿using System.Runtime.CompilerServices;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Processors;
 using GeometricAlgebraFulcrumLib.Utilities.Structures;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.IndexSets;
-using System.Runtime.CompilerServices;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivectors;
 
@@ -55,7 +55,7 @@ public abstract class XGaFloat64MultivectorComposer :
 
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public IndexSet GetStoredBasisVectorIndices()
+    public IndexSet GetBasisSpan()
     {
         return IndexSet.Create(
             Ids.SelectMany(id => id), 

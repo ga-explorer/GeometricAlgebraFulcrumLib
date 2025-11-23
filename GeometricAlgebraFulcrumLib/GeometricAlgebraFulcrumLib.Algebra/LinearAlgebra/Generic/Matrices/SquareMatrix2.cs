@@ -261,7 +261,7 @@ public sealed class SquareMatrix2<T> :
         var sumVector = LinVector2D<T>.Create(unitVector1.X + unitVector2.X,
             unitVector1.Y + unitVector2.Y);
 
-        if (sumVector.VectorENormSquared().IsNearZero())
+        if (sumVector.L2NormSquared().IsNearZero())
         {
             var normal = unitVector1.GetUnitNormal();
 

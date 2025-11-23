@@ -28,5 +28,5 @@ public abstract class DifferentialBasicFunction :
         => 0;
 
     public override IReadOnlyList<DifferentialFunction> Arguments
-        => Array.Empty<DifferentialFunction>();
+        => [];
 }

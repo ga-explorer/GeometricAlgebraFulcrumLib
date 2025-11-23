@@ -10,7 +10,7 @@ public static class LinFloat64Vector2DComponentUtils
     /// The value of the smallest component in this vector
     /// </summary>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static double GetMinComponent(this IPair<Float64Scalar> vector)
+    public static double GetMinComponent(this IPair<double> vector)
     {
         return vector.Item1 <= vector.Item2
             ? vector.Item1
@@ -21,7 +21,7 @@ public static class LinFloat64Vector2DComponentUtils
     /// The value of the largest component in this vector
     /// </summary>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static double GetMaxComponent(this IPair<Float64Scalar> vector)
+    public static double GetMaxComponent(this IPair<double> vector)
     {
         return vector.Item1 >= vector.Item2
             ? vector.Item1
@@ -32,7 +32,7 @@ public static class LinFloat64Vector2DComponentUtils
     /// The index of the smallest component of this vector
     /// </summary>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static int GetMinComponentIndex(this IPair<Float64Scalar> vector)
+    public static int GetMinComponentIndex(this IPair<double> vector)
     {
         return vector.Item1 <= vector.Item2
             ? 0 : 1;
@@ -42,7 +42,7 @@ public static class LinFloat64Vector2DComponentUtils
     /// The index of the largest component of this vector
     /// </summary>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static int GetMaxComponentIndex(this IPair<Float64Scalar> vector)
+    public static int GetMaxComponentIndex(this IPair<double> vector)
     {
         return vector.Item1 >= vector.Item2
             ? 0 : 1;
@@ -52,7 +52,7 @@ public static class LinFloat64Vector2DComponentUtils
     /// The index of the largest absolute component in this vector
     /// </summary>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static int GetMinAbsComponentIndex(this IPair<Float64Scalar> vector)
+    public static int GetMinAbsComponentIndex(this IPair<double> vector)
     {
         return Math.Abs(vector.Item1) <= Math.Abs(vector.Item2)
             ? 0 : 1;
@@ -62,7 +62,7 @@ public static class LinFloat64Vector2DComponentUtils
     /// The index of the largest absolute component in this vector
     /// </summary>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static int GetMaxAbsComponentIndex(this IPair<Float64Scalar> vector)
+    public static int GetMaxAbsComponentIndex(this IPair<double> vector)
     {
         return Math.Abs(vector.Item1) >= Math.Abs(vector.Item2)
             ? 0 : 1;
@@ -75,7 +75,7 @@ public static class LinFloat64Vector2DComponentUtils
     /// <param name="v2"></param>
     /// <returns></returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64Vector2D Min(this IPair<Float64Scalar> v1, IPair<Float64Scalar> v2)
+    public static LinFloat64Vector2D Min(this IPair<double> v1, IPair<double> v2)
     {
         return LinFloat64Vector2D.Create(
             v1.Item1 < v2.Item1 ? v1.Item1 : v2.Item1,
@@ -90,7 +90,7 @@ public static class LinFloat64Vector2DComponentUtils
     /// <param name="v2"></param>
     /// <returns></returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64Vector2D Max(this IPair<Float64Scalar> v1, IPair<Float64Scalar> v2)
+    public static LinFloat64Vector2D Max(this IPair<double> v1, IPair<double> v2)
     {
         return LinFloat64Vector2D.Create(
             v1.Item1 > v2.Item1 ? v1.Item1 : v2.Item1,
@@ -104,7 +104,7 @@ public static class LinFloat64Vector2DComponentUtils
     /// <param name="vector"></param>
     /// <returns></returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64Vector2D Ceiling(this IPair<Float64Scalar> vector)
+    public static LinFloat64Vector2D Ceiling(this IPair<double> vector)
     {
         return LinFloat64Vector2D.Create(
             Math.Ceiling(vector.Item1),
@@ -118,7 +118,7 @@ public static class LinFloat64Vector2DComponentUtils
     /// <param name="vector"></param>
     /// <returns></returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64Vector2D Floor(this IPair<Float64Scalar> vector)
+    public static LinFloat64Vector2D Floor(this IPair<double> vector)
     {
         return LinFloat64Vector2D.Create(
             Math.Floor(vector.Item1),
@@ -132,7 +132,7 @@ public static class LinFloat64Vector2DComponentUtils
     /// <param name="vector"></param>
     /// <returns></returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64Vector2D Abs(this IPair<Float64Scalar> vector)
+    public static LinFloat64Vector2D Abs(this IPair<double> vector)
     {
         return LinFloat64Vector2D.Create(
             Math.Abs(vector.Item1),
@@ -148,7 +148,7 @@ public static class LinFloat64Vector2DComponentUtils
     /// <param name="yIndex"></param>
     /// <returns></returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64Vector2D Permute(this IPair<Float64Scalar> vector, int xIndex, int yIndex)
+    public static LinFloat64Vector2D Permute(this IPair<double> vector, int xIndex, int yIndex)
     {
         return LinFloat64Vector2D.Create(
             vector.GetComponent(xIndex),
@@ -165,7 +165,7 @@ public static class LinFloat64Vector2DComponentUtils
     /// <param name="yIndex"></param>
     /// <returns></returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64Vector2D SafePermute(this IPair<Float64Scalar> vector, int xIndex, int yIndex)
+    public static LinFloat64Vector2D SafePermute(this IPair<double> vector, int xIndex, int yIndex)
     {
         return LinFloat64Vector2D.Create(
             vector.GetComponent(xIndex.Mod(2)),
@@ -174,7 +174,7 @@ public static class LinFloat64Vector2DComponentUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Float64Scalar GetComponent(this IPair<Float64Scalar> vector, int index)
+    public static Float64Scalar GetComponent(this IPair<double> vector, int index)
     {
         return index switch
         {
@@ -185,20 +185,20 @@ public static class LinFloat64Vector2DComponentUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static IEnumerable<Float64Scalar> GetComponents(this IPair<Float64Scalar> vector)
+    public static IEnumerable<Float64Scalar> GetComponents(this IPair<double> vector)
     {
         yield return vector.Item1;
         yield return vector.Item2;
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static IEnumerable<Float64Scalar> GetComponents(this IEnumerable<IPair<Float64Scalar>> vectorsList)
+    public static IEnumerable<Float64Scalar> GetComponents(this IEnumerable<IPair<double>> vectorsList)
     {
         return vectorsList.SelectMany(t => t.GetComponents());
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Pair<double> GetTupleXPair(this IReadOnlyList<IPair<Float64Scalar>> itemArray, int index)
+    public static Pair<double> GetTupleXPair(this IReadOnlyList<IPair<double>> itemArray, int index)
     {
         return new Pair<double>(
             itemArray[index].Item1,
@@ -207,7 +207,7 @@ public static class LinFloat64Vector2DComponentUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Triplet<double> GetTupleXTriplet(this IReadOnlyList<IPair<Float64Scalar>> itemArray, int index)
+    public static Triplet<double> GetTupleXTriplet(this IReadOnlyList<IPair<double>> itemArray, int index)
     {
         return new Triplet<double>(
             itemArray[index].Item1,
@@ -217,7 +217,18 @@ public static class LinFloat64Vector2DComponentUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Quad<double> GetTupleXQuad(this IReadOnlyList<IPair<Float64Scalar>> itemArray, int index)
+    public static Quad<double> GetTupleXQuad(this IReadOnlyList<IPair<double>> itemArray, int index)
+    {
+        return new Quad<double>(
+            itemArray[index].Item1,
+            itemArray[index + 1].Item1,
+            itemArray[index + 2].Item1,
+            itemArray[index + 3].Item1
+        );
+    }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static Quad<double> GetTupleXQuad(this IReadOnlyList<LinFloat64Vector2D> itemArray, int index)
     {
         return new Quad<double>(
             itemArray[index].Item1,
@@ -228,7 +239,7 @@ public static class LinFloat64Vector2DComponentUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Quint<double> GetTupleXQuint(this IReadOnlyList<IPair<Float64Scalar>> itemArray, int index)
+    public static Quint<double> GetTupleXQuint(this IReadOnlyList<IPair<double>> itemArray, int index)
     {
         return new Quint<double>(
             itemArray[index].Item1,
@@ -240,7 +251,7 @@ public static class LinFloat64Vector2DComponentUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Hexad<double> GetTupleXHexad(this IReadOnlyList<IPair<Float64Scalar>> itemArray, int index)
+    public static Hexad<double> GetTupleXHexad(this IReadOnlyList<IPair<double>> itemArray, int index)
     {
         return new Hexad<double>(
             itemArray[index].Item1,
@@ -254,7 +265,7 @@ public static class LinFloat64Vector2DComponentUtils
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Pair<double> GetTupleYPair(this IReadOnlyList<IPair<Float64Scalar>> itemArray, int index)
+    public static Pair<double> GetTupleYPair(this IReadOnlyList<IPair<double>> itemArray, int index)
     {
         return new Pair<double>(
             itemArray[index].Item2,
@@ -263,7 +274,7 @@ public static class LinFloat64Vector2DComponentUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Triplet<double> GetTupleYTriplet(this IReadOnlyList<IPair<Float64Scalar>> itemArray, int index)
+    public static Triplet<double> GetTupleYTriplet(this IReadOnlyList<IPair<double>> itemArray, int index)
     {
         return new Triplet<double>(
             itemArray[index].Item2,
@@ -273,7 +284,18 @@ public static class LinFloat64Vector2DComponentUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Quad<double> GetTupleYQuad(this IReadOnlyList<IPair<Float64Scalar>> itemArray, int index)
+    public static Quad<double> GetTupleYQuad(this IReadOnlyList<IPair<double>> itemArray, int index)
+    {
+        return new Quad<double>(
+            itemArray[index].Item2,
+            itemArray[index + 1].Item2,
+            itemArray[index + 2].Item2,
+            itemArray[index + 3].Item2
+        );
+    }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static Quad<double> GetTupleYQuad(this IReadOnlyList<LinFloat64Vector2D> itemArray, int index)
     {
         return new Quad<double>(
             itemArray[index].Item2,
@@ -284,7 +306,7 @@ public static class LinFloat64Vector2DComponentUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Quint<double> GetTupleYQuint(this IReadOnlyList<IPair<Float64Scalar>> itemArray, int index)
+    public static Quint<double> GetTupleYQuint(this IReadOnlyList<IPair<double>> itemArray, int index)
     {
         return new Quint<double>(
             itemArray[index].Item2,
@@ -296,7 +318,7 @@ public static class LinFloat64Vector2DComponentUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Hexad<double> GetTupleYHexad(this IReadOnlyList<IPair<Float64Scalar>> itemArray, int index)
+    public static Hexad<double> GetTupleYHexad(this IReadOnlyList<IPair<double>> itemArray, int index)
     {
         return new Hexad<double>(
             itemArray[index].Item2,

@@ -43,7 +43,7 @@ public sealed class ScalarProcessorOfFloat64NdArray :
     public shape ScalarShape { get; }
     
     private double _zeroEpsilon = 1e-12;
-    public double ZeroEpsilon
+    public double DefaultTolerance
     {
         get => _zeroEpsilon;
         set
@@ -415,7 +415,7 @@ public sealed class ScalarProcessorOfFloat64NdArray :
     //[MethodImpl(MethodImplOptions.AggressiveInlining)]
     //public bool IsNearZero(ndarray scalar)
     //{
-    //    return np.allclose(scalar, ZeroValue, 0d, ZeroEpsilon, false);
+    //    return np.allclose(scalar, ZeroValue, 0d, DefaultTolerance, false);
     //}
 
     //[MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -465,13 +465,13 @@ public sealed class ScalarProcessorOfFloat64NdArray :
     //[MethodImpl(MethodImplOptions.AggressiveInlining)]
     //public bool IsNotNearPositive(ndarray scalar)
     //{
-    //    return np.less(scalar, -ZeroEpsilon).AsBoolArray().All(b => b);
+    //    return np.less(scalar, -DefaultTolerance).AsBoolArray().All(b => b);
     //}
 
     //[MethodImpl(MethodImplOptions.AggressiveInlining)]
     //public bool IsNotNearNegative(ndarray scalar)
     //{
-    //    return np.greater(scalar, ZeroEpsilon).AsBoolArray().All(b => b);
+    //    return np.greater(scalar, DefaultTolerance).AsBoolArray().All(b => b);
     //}
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]

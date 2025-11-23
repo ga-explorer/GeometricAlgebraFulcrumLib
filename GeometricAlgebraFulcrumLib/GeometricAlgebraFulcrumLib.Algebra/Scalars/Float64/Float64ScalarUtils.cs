@@ -26,15 +26,15 @@ public static class Float64ScalarUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static bool IsNotZeroOrNearPositive(this IFloat64Scalar scalar, double zeroEpsilon = Float64Utils.ZeroEpsilon)
+    public static bool IsNotZeroOrNearPositive(this IFloat64Scalar scalar, double tolerance = Float64Utils.DefaultTolerance)
     {
-        return scalar.ScalarValue < -zeroEpsilon;
+        return scalar.ScalarValue < -tolerance;
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static bool IsNotZeroOrNearNegative(this IFloat64Scalar scalar, double zeroEpsilon = Float64Utils.ZeroEpsilon)
+    public static bool IsNotZeroOrNearNegative(this IFloat64Scalar scalar, double tolerance = Float64Utils.DefaultTolerance)
     {
-        return scalar.ScalarValue > zeroEpsilon;
+        return scalar.ScalarValue > tolerance;
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -63,9 +63,9 @@ public static class Float64ScalarUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static bool IsNearZero(this IFloat64Scalar scalar, double zeroEpsilon = Float64Utils.ZeroEpsilon)
+    public static bool IsNearZero(this IFloat64Scalar scalar, double tolerance = Float64Utils.DefaultTolerance)
     {
-        return scalar.ScalarValue.IsNearZero(zeroEpsilon);
+        return scalar.ScalarValue.IsNearZero(tolerance);
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -75,9 +75,9 @@ public static class Float64ScalarUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static bool IsNearOne(this IFloat64Scalar scalar, double zeroEpsilon = Float64Utils.ZeroEpsilon)
+    public static bool IsNearOne(this IFloat64Scalar scalar, double tolerance = Float64Utils.DefaultTolerance)
     {
-        return (scalar.ScalarValue - 1).IsNearZero(zeroEpsilon);
+        return (scalar.ScalarValue - 1).IsNearZero(tolerance);
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -87,9 +87,9 @@ public static class Float64ScalarUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static bool IsNearMinusOne(this IFloat64Scalar scalar, double zeroEpsilon = Float64Utils.ZeroEpsilon)
+    public static bool IsNearMinusOne(this IFloat64Scalar scalar, double tolerance = Float64Utils.DefaultTolerance)
     {
-        return (scalar.ScalarValue + 1).IsNearZero(zeroEpsilon);
+        return (scalar.ScalarValue + 1).IsNearZero(tolerance);
     }
     
 
@@ -143,51 +143,51 @@ public static class Float64ScalarUtils
     
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static bool IsNearEqualTo(this IFloat64Scalar scalar1, double scalar2, double zeroEpsilon = Float64Utils.ZeroEpsilon)
+    public static bool IsNearEqualTo(this IFloat64Scalar scalar1, double scalar2, double tolerance = Float64Utils.DefaultTolerance)
     {
-        return (scalar1.ScalarValue - scalar2).IsNearZero(zeroEpsilon);
+        return (scalar1.ScalarValue - scalar2).IsNearZero(tolerance);
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static bool IsNearEqualTo(this IFloat64Scalar scalar1, IFloat64Scalar scalar2, double zeroEpsilon = Float64Utils.ZeroEpsilon)
+    public static bool IsNearEqualTo(this IFloat64Scalar scalar1, IFloat64Scalar scalar2, double tolerance = Float64Utils.DefaultTolerance)
     {
-        return (scalar1.ScalarValue - scalar2.ScalarValue).IsNearZero(zeroEpsilon);
+        return (scalar1.ScalarValue - scalar2.ScalarValue).IsNearZero(tolerance);
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static bool IsNearEqualTo(this int scalar1, IFloat64Scalar scalar2, double zeroEpsilon = Float64Utils.ZeroEpsilon)
+    public static bool IsNearEqualTo(this int scalar1, IFloat64Scalar scalar2, double tolerance = Float64Utils.DefaultTolerance)
     {
-        return (scalar1 - scalar2.ScalarValue).IsNearZero(zeroEpsilon);
+        return (scalar1 - scalar2.ScalarValue).IsNearZero(tolerance);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static bool IsNearEqualTo(this uint scalar1, IFloat64Scalar scalar2, double zeroEpsilon = Float64Utils.ZeroEpsilon)
+    public static bool IsNearEqualTo(this uint scalar1, IFloat64Scalar scalar2, double tolerance = Float64Utils.DefaultTolerance)
     {
-        return (scalar1 - scalar2.ScalarValue).IsNearZero(zeroEpsilon);
+        return (scalar1 - scalar2.ScalarValue).IsNearZero(tolerance);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static bool IsNearEqualTo(this long scalar1, IFloat64Scalar scalar2, double zeroEpsilon = Float64Utils.ZeroEpsilon)
+    public static bool IsNearEqualTo(this long scalar1, IFloat64Scalar scalar2, double tolerance = Float64Utils.DefaultTolerance)
     {
-        return (scalar1 - scalar2.ScalarValue).IsNearZero(zeroEpsilon);
+        return (scalar1 - scalar2.ScalarValue).IsNearZero(tolerance);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static bool IsNearEqualTo(this ulong scalar1, IFloat64Scalar scalar2, double zeroEpsilon = Float64Utils.ZeroEpsilon)
+    public static bool IsNearEqualTo(this ulong scalar1, IFloat64Scalar scalar2, double tolerance = Float64Utils.DefaultTolerance)
     {
-        return (scalar1 - scalar2.ScalarValue).IsNearZero(zeroEpsilon);
+        return (scalar1 - scalar2.ScalarValue).IsNearZero(tolerance);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static bool IsNearEqualTo(this float scalar1, IFloat64Scalar scalar2, double zeroEpsilon = Float64Utils.ZeroEpsilon)
+    public static bool IsNearEqualTo(this float scalar1, IFloat64Scalar scalar2, double tolerance = Float64Utils.DefaultTolerance)
     {
-        return (scalar1 - scalar2.ScalarValue).IsNearZero(zeroEpsilon);
+        return (scalar1 - scalar2.ScalarValue).IsNearZero(tolerance);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static bool IsNearEqualTo(this double scalar1, IFloat64Scalar scalar2, double zeroEpsilon = Float64Utils.ZeroEpsilon)
+    public static bool IsNearEqualTo(this double scalar1, IFloat64Scalar scalar2, double tolerance = Float64Utils.DefaultTolerance)
     {
-        return (scalar1 - scalar2.ScalarValue).IsNearZero(zeroEpsilon);
+        return (scalar1 - scalar2.ScalarValue).IsNearZero(tolerance);
     }
     
 
@@ -298,9 +298,9 @@ public static class Float64ScalarUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Float64Scalar NearZeroToZero(this IFloat64Scalar number, double zeroEpsilon = Float64Utils.ZeroEpsilon)
+    public static Float64Scalar NearZeroToZero(this IFloat64Scalar number, double tolerance = Float64Utils.DefaultTolerance)
     {
-        return number.ScalarValue.NearZeroToZero(zeroEpsilon);
+        return number.ScalarValue.NearZeroToZero(tolerance);
     }
 
 

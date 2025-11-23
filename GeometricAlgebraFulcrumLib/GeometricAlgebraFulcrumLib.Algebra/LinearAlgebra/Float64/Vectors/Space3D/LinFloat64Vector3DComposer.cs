@@ -22,7 +22,7 @@ public sealed class LinFloat64Vector3DComposer :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64Vector3DComposer Create(ITriplet<Float64Scalar> vector)
+    public static LinFloat64Vector3DComposer Create(ITriplet<double> vector)
     {
         return new LinFloat64Vector3DComposer(
             vector.Item1,
@@ -32,22 +32,22 @@ public sealed class LinFloat64Vector3DComposer :
     }
 
 
-    public Float64Scalar X { get; set; }
+    public double X { get; set; }
 
-    public Float64Scalar Y { get; set; }
+    public double Y { get; set; }
 
-    public Float64Scalar Z { get; set; }
+    public double Z { get; set; }
 
     public int VSpaceDimensions
         => 3;
 
-    public Float64Scalar Item1
+    public double Item1
         => X;
 
-    public Float64Scalar Item2
+    public double Item2
         => Y;
 
-    public Float64Scalar Item3
+    public double Item3
         => Z;
 
     public double this[int index]
@@ -155,9 +155,9 @@ public sealed class LinFloat64Vector3DComposer :
     {
         return basisBlade switch
         {
-            0 => X.ScalarValue,
-            1 => Y.ScalarValue,
-            2 => Z.ScalarValue,
+            0 => X,
+            1 => Y,
+            2 => Z,
             _ => 0
         };
     }
@@ -197,8 +197,11 @@ public sealed class LinFloat64Vector3DComposer :
         else if (axis == LinBasisVector.Ny)
             Y = -1;
 
-        else
+        else if (axis == LinBasisVector.Nz)
             Z = -1;
+
+        else
+            throw new ArgumentOutOfRangeException(nameof(axis));
 
         return this;
     }
@@ -221,8 +224,11 @@ public sealed class LinFloat64Vector3DComposer :
         else if (axis == LinBasisVector.Ny)
             Y = -scalar;
 
-        else
+        else if (axis == LinBasisVector.Nz)
             Z = -scalar;
+        
+        else
+            throw new ArgumentOutOfRangeException(nameof(axis));
 
         return this;
     }
@@ -236,7 +242,7 @@ public sealed class LinFloat64Vector3DComposer :
         return this;
     }
 
-    public LinFloat64Vector3DComposer SetVector(ITriplet<Float64Scalar> vector)
+    public LinFloat64Vector3DComposer SetVector(ITriplet<double> vector)
     {
         X = vector.Item1;
         Y = vector.Item2;
@@ -245,7 +251,7 @@ public sealed class LinFloat64Vector3DComposer :
         return this;
     }
 
-    public LinFloat64Vector3DComposer SetVectorNegative(ITriplet<Float64Scalar> vector)
+    public LinFloat64Vector3DComposer SetVectorNegative(ITriplet<double> vector)
     {
         X = -vector.Item1;
         Y = -vector.Item2;
@@ -254,7 +260,7 @@ public sealed class LinFloat64Vector3DComposer :
         return this;
     }
 
-    public LinFloat64Vector3DComposer SetVector(ITriplet<Float64Scalar> vector, double scalingFactor)
+    public LinFloat64Vector3DComposer SetVector(ITriplet<double> vector, double scalingFactor)
     {
         X = scalingFactor * vector.Item1;
         Y = scalingFactor * vector.Item2;
@@ -289,8 +295,11 @@ public sealed class LinFloat64Vector3DComposer :
         else if (axis == LinBasisVector.Ny)
             Y -= 1;
 
-        else
+        else if (axis == LinBasisVector.Nz)
             Z -= 1;
+        
+        else
+            throw new ArgumentOutOfRangeException(nameof(axis));
 
         return this;
     }
@@ -313,14 +322,17 @@ public sealed class LinFloat64Vector3DComposer :
         else if (axis == LinBasisVector.Ny)
             Y -= scalar;
 
-        else
+        else if (axis == LinBasisVector.Nz)
             Z -= scalar;
+        
+        else
+            throw new ArgumentOutOfRangeException(nameof(axis));
 
         return this;
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public LinFloat64Vector3DComposer AddVector(ITriplet<Float64Scalar> vector)
+    public LinFloat64Vector3DComposer AddVector(ITriplet<double> vector)
     {
         X += vector.Item1;
         Y += vector.Item2;
@@ -330,7 +342,7 @@ public sealed class LinFloat64Vector3DComposer :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public LinFloat64Vector3DComposer AddVector(ITriplet<Float64Scalar> vector, double scalingFactor)
+    public LinFloat64Vector3DComposer AddVector(ITriplet<double> vector, double scalingFactor)
     {
         X += scalingFactor * vector.Item1;
         Y += scalingFactor * vector.Item2;
@@ -365,8 +377,11 @@ public sealed class LinFloat64Vector3DComposer :
         else if (axis == LinBasisVector.Ny)
             Y += 1;
 
-        else
+        else if (axis == LinBasisVector.Nz)
             Z += 1;
+        
+        else 
+            throw new ArgumentOutOfRangeException(nameof(axis));
 
         return this;
     }
@@ -389,14 +404,17 @@ public sealed class LinFloat64Vector3DComposer :
         else if (axis == LinBasisVector.Ny)
             Y += scalar;
 
-        else
+        else if (axis == LinBasisVector.Nz)
             Z += scalar;
+        
+        else 
+            throw new ArgumentOutOfRangeException(nameof(axis));
 
         return this;
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public LinFloat64Vector3DComposer SubtractVector(ITriplet<Float64Scalar> vector)
+    public LinFloat64Vector3DComposer SubtractVector(ITriplet<double> vector)
     {
         X -= vector.Item1;
         Y -= vector.Item2;
@@ -406,7 +424,7 @@ public sealed class LinFloat64Vector3DComposer :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public LinFloat64Vector3DComposer SubtractVector(ITriplet<Float64Scalar> vector, double scalingFactor)
+    public LinFloat64Vector3DComposer SubtractVector(ITriplet<double> vector, double scalingFactor)
     {
         X -= scalingFactor * vector.Item1;
         Y -= scalingFactor * vector.Item2;

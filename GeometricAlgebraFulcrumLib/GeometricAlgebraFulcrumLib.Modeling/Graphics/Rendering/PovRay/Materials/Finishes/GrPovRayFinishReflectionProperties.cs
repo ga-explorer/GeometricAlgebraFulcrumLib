@@ -35,19 +35,19 @@ public sealed class GrPovRayFinishReflectionProperties :
         set => SetAttributeValue("metallic", value);
     }
 
-    internal GrPovRayFinishReflectionProperties(GrPovRayColorValue reflectionMaxColor)
+    public GrPovRayFinishReflectionProperties(GrPovRayColorValue reflectionMaxColor)
     {
         ReflectionMinColor = null;
         ReflectionMaxColor = reflectionMaxColor;
     }
     
-    internal GrPovRayFinishReflectionProperties(GrPovRayColorValue reflectionMinColor, GrPovRayColorValue reflectionMaxColor)
+    public GrPovRayFinishReflectionProperties(GrPovRayColorValue reflectionMinColor, GrPovRayColorValue reflectionMaxColor)
     {
         ReflectionMinColor = reflectionMinColor;
         ReflectionMaxColor = reflectionMaxColor;
     }
 
-    internal GrPovRayFinishReflectionProperties(GrPovRayFinishReflectionProperties properties)
+    public GrPovRayFinishReflectionProperties(GrPovRayFinishReflectionProperties properties)
     {
         ReflectionMinColor = properties.ReflectionMinColor;
         ReflectionMaxColor = properties.ReflectionMaxColor;

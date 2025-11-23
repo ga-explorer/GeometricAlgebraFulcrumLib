@@ -8,6 +8,7 @@ using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.SpaceND;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.IndexSets;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Tuples;
+using MathNet.Numerics.LinearAlgebra;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Combinations;
 
@@ -227,7 +228,7 @@ public class XGaFloat64UnilinearCombination :
         return this;
     }
     
-    public XGaFloat64UnilinearCombination AddOutermorphism(XGaFloat64Processor metric, double[,] vectorMapArray)
+    public XGaFloat64UnilinearCombination AddOutermorphism(XGaFloat64Processor metric, Matrix<double> vectorMapArray)
     {
         var outerMorphism =
             vectorMapArray
@@ -236,7 +237,7 @@ public class XGaFloat64UnilinearCombination :
                 .ToOutermorphism(metric);
 
         var vSpaceDimensions = 
-            vectorMapArray.GetLength(0);
+            vectorMapArray.RowCount;
 
         var idMultivectorPairs =
             outerMorphism.GetMappedBasisBlades(vSpaceDimensions);

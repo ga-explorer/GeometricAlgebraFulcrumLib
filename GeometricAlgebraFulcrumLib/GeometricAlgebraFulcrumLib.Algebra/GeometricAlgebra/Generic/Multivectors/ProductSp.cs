@@ -1,5 +1,5 @@
-﻿using GeometricAlgebraFulcrumLib.Algebra.Scalars.Generic;
-using System.Runtime.CompilerServices;
+﻿using System.Runtime.CompilerServices;
+using GeometricAlgebraFulcrumLib.Algebra.Scalars.Generic;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Multivectors
 {

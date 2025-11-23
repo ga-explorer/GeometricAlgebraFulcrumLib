@@ -5,7 +5,7 @@ using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.LinearMaps.Rot
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivectors;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Processors;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Angles;
-using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Matrices;
+using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Numerical;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
 using GeometricAlgebraFulcrumLib.Algebra.Utilities.Text;
 
@@ -199,12 +199,10 @@ public static class SymmetricHarmonicsNumericSample
             var clarkeArray =
                 clarkeMap.GetVectorMapArray(n);
 
-            var clarkeMatrix = clarkeArray.ToMatrix();
+            var clarkeMatrix = clarkeArray;
 
             Console.WriteLine("Generated Clarke Matrix:");
-            Console.WriteLine(
-                TextComposer.GetArrayText(clarkeArray)
-            );
+            Console.WriteLine(clarkeArray);
             Console.WriteLine();
 
             var eigenPairsCount = clarkeMatrix.MatrixEigenDecomposition(
@@ -256,8 +254,8 @@ public static class SymmetricHarmonicsNumericSample
                     GeometricProcessor.ComplexEigenPairToPureRotor(
                         realPairs[j].Item1,
                         imagPairs[j].Item1,
-                        realPairs[j].Item2.CreateXGaVector(GeometricProcessor),
-                        imagPairs[j].Item2.CreateXGaVector(GeometricProcessor)
+                        XGaFloat64VectorUtils.ToXGaVector((IEnumerable<double>)realPairs[j].Item2, GeometricProcessor),
+                        XGaFloat64VectorUtils.ToXGaVector((IEnumerable<double>)imagPairs[j].Item2, GeometricProcessor)
                     );
 
                 Console.WriteLine($"Rotor {j + 1}");
@@ -277,9 +275,7 @@ public static class SymmetricHarmonicsNumericSample
             Console.WriteLine();
 
             Console.WriteLine($"Final Rotor Matrix");
-            Console.WriteLine(
-                TextComposer.GetArrayText(rotorsSequence.GetFinalRotorArray(n))
-            );
+            Console.WriteLine(rotorsSequence.GetFinalRotorMatrix(n));
             Console.WriteLine();
 
             //if (n == 5)

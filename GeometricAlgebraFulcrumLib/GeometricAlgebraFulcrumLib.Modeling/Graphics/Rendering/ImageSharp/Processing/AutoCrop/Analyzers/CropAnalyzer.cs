@@ -3,6 +3,7 @@ using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.ImageSharp.Processi
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.PixelFormats;
 
+
 namespace GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.ImageSharp.Processing.AutoCrop.Analyzers;
 
 public abstract class CropAnalyzer<TPixel> : ICropAnalyzer<TPixel> where TPixel : unmanaged, IPixel<TPixel>

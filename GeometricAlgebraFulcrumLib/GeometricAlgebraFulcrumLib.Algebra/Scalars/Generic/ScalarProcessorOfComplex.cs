@@ -14,7 +14,7 @@ public sealed class ScalarProcessorOfComplex
 
     
     private double _zeroEpsilon = 1e-12;
-    public double ZeroEpsilon
+    public double DefaultTolerance
     {
         get => _zeroEpsilon;
         set
@@ -299,14 +299,14 @@ public sealed class ScalarProcessorOfComplex
     //public bool IsZero(Complex scalar, bool nearZeroFlag)
     //{
     //    return nearZeroFlag
-    //        ? scalar.Magnitude < ZeroEpsilon
+    //        ? scalar.Magnitude < DefaultTolerance
     //        : scalar is { Real: 0d, Imaginary: 0d };
     //}
 
     //[MethodImpl(MethodImplOptions.AggressiveInlining)]
     //public bool IsNearZero(Complex scalar)
     //{
-    //    return scalar.Magnitude < ZeroEpsilon;
+    //    return scalar.Magnitude < DefaultTolerance;
     //}
 
     //[MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -319,14 +319,14 @@ public sealed class ScalarProcessorOfComplex
     //public bool IsNotZero(Complex scalar, bool nearZeroFlag)
     //{
     //    return nearZeroFlag
-    //        ? scalar.Magnitude >= ZeroEpsilon
+    //        ? scalar.Magnitude >= DefaultTolerance
     //        : scalar.Real != 0d || scalar.Imaginary != 0d;
     //}
 
     //[MethodImpl(MethodImplOptions.AggressiveInlining)]
     //public bool IsNotNearZero(Complex scalar)
     //{
-    //    return scalar.Magnitude >= ZeroEpsilon;
+    //    return scalar.Magnitude >= DefaultTolerance;
     //}
 
     //[MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -356,13 +356,13 @@ public sealed class ScalarProcessorOfComplex
     //[MethodImpl(MethodImplOptions.AggressiveInlining)]
     //public bool IsNotNearPositive(Complex scalar)
     //{
-    //    return scalar.Real >= ZeroEpsilon;
+    //    return scalar.Real >= DefaultTolerance;
     //}
 
     //[MethodImpl(MethodImplOptions.AggressiveInlining)]
     //public bool IsNotNearNegative(Complex scalar)
     //{
-    //    return scalar.Real <= -ZeroEpsilon;
+    //    return scalar.Real <= -DefaultTolerance;
     //}
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -428,7 +428,7 @@ public sealed class ScalarProcessorOfComplex
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public double ToFloat64(Complex scalar)
     {
-        return scalar.Imaginary.IsNearZero(ZeroEpsilon)
+        return scalar.Imaginary.IsNearZero(DefaultTolerance)
             ? scalar.Real 
             : double.NaN;
     }

@@ -32,11 +32,11 @@ public class XGaFloat64ScalingRotor
         var norm2 = targetVector.ENorm();
         var cosAngle = sourceVector.ESp(targetVector) / (norm1 * norm2);
 
-        if (cosAngle.IsOne)
+        if (cosAngle.IsOne())
             return CreateIdentity(sourceVector.Processor);
             
         var rotationBlade = 
-            cosAngle.IsMinusOne
+            cosAngle.IsMinusOne()
                 ? sourceVector.GetNormalVector().Op(sourceVector)
                 : targetVector.Op(sourceVector);
                 
@@ -47,7 +47,7 @@ public class XGaFloat64ScalingRotor
         var sinHalfAngle = ((1 - cosAngle) / 2).Sqrt();
             
         var rotorStorage = 
-            cosHalfAngle.ScalarValue + sinHalfAngle * unitRotationBlade;
+            cosHalfAngle + sinHalfAngle * unitRotationBlade;
             
         //rotor.IsSimpleScalingRotor();
 
@@ -193,7 +193,7 @@ public class XGaFloat64ScalingRotor
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public override double GetScalingFactor()
     {
-        return Multivector.Sp(MultivectorReverse).Scalar();
+        return Multivector.Sp(MultivectorReverse);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]

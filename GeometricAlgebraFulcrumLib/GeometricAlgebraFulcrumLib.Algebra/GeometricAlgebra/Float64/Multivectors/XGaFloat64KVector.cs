@@ -1,12 +1,13 @@
 ﻿using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Processors;
+using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Numerical;
+using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
 using GeometricAlgebraFulcrumLib.Utilities.Structures;
+using GeometricAlgebraFulcrumLib.Utilities.Structures.BitManipulation;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Combinations;
+using GeometricAlgebraFulcrumLib.Utilities.Structures.IndexSets;
 using System.Collections.Immutable;
 using System.Runtime.CompilerServices;
-using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
-using GeometricAlgebraFulcrumLib.Utilities.Structures.BitManipulation;
-using GeometricAlgebraFulcrumLib.Utilities.Structures.IndexSets;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivectors;
 
@@ -23,6 +24,33 @@ public abstract partial class XGaFloat64KVector :
     protected XGaFloat64KVector(XGaFloat64Processor processor)
         : base(processor)
     {
+    }
+
+    
+    /// <summary>
+    /// Compare ratio between number of stored terms and total number of
+    /// GA terms for this k-vector with given ratio
+    /// </summary>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public bool IsKVectorSparsityLessThan(double sparsityRatio)
+    {
+        if (sparsityRatio is < 0 or > 1)
+            throw new ArgumentOutOfRangeException(nameof(sparsityRatio));
+
+        return Math.Log2(Count) - BinomialLog2.BinomialLog2ViaEntropy(VSpaceDimensions, Grade) < Math.Log2(sparsityRatio);
+    }
+    
+    /// <summary>
+    /// Compare ratio between number of stored terms and total number of
+    /// GA terms for this k-vector with given ratio
+    /// </summary>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public bool IsKVectorSparsityMoreThan(double sparsityRatio)
+    {
+        if (sparsityRatio is < 0 or > 1)
+            throw new ArgumentOutOfRangeException(nameof(sparsityRatio));
+
+        return Math.Log2(Count) - BinomialLog2.BinomialLog2ViaEntropy(VSpaceDimensions, Grade) > Math.Log2(sparsityRatio);
     }
 
 
@@ -310,7 +338,7 @@ public abstract partial class XGaFloat64KVector :
 
             // Get the Un-Dual of the new blade inside the current blade
             // This is one vector of the required vectors
-            var vector = newBlade.ELcp(oldBlade.EInverse()).GetVectorPart().DivideByENorm();
+            var vector = newBlade.ELcp(oldBlade.EVersorInverse()).GetVectorPart().DivideByENorm();
 
             vectorList.Add(vector);
 
@@ -329,12 +357,12 @@ public abstract partial class XGaFloat64KVector :
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool IsNearBlade(double zeroEpsilon = Float64Utils.ZeroEpsilon)
+    public bool IsNearBlade(double tolerance = Float64Utils.DefaultTolerance)
     {
         return Gp(Reverse())
             .GetKVectorParts()
             .All(kv1 =>
-                kv1.Grade == 0 || kv1.IsNearZero(zeroEpsilon)
+                kv1.Grade == 0 || kv1.IsNearZero(tolerance)
             );
     }
 
@@ -380,14 +408,14 @@ public abstract partial class XGaFloat64KVector :
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public override XGaFloat64KVector RemoveSmallTerms(double zeroEpsilon = Float64Utils.ZeroEpsilon)
+    public override XGaFloat64KVector RemoveSmallTerms(double tolerance = Float64Utils.DefaultTolerance)
     {
         return this switch
         {
-            XGaFloat64Scalar s => s,
-            XGaFloat64Vector v => v.RemoveSmallTerms(zeroEpsilon),
-            XGaFloat64Bivector bv => bv.RemoveSmallTerms(zeroEpsilon),
-            XGaFloat64HigherKVector kv => kv.RemoveSmallTerms(zeroEpsilon),
+            XGaFloat64Scalar s => s.RemoveSmallTerms(tolerance),
+            XGaFloat64Vector v => v.RemoveSmallTerms(tolerance),
+            XGaFloat64Bivector bv => bv.RemoveSmallTerms(tolerance),
+            XGaFloat64HigherKVector kv => kv.RemoveSmallTerms(tolerance),
             _ => throw new InvalidOperationException()
         };
     }

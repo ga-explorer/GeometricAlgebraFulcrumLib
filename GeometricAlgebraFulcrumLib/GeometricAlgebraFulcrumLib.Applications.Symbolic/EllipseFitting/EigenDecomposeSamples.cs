@@ -1,5 +1,4 @@
-﻿using Avalonia;
-using MathNet.Numerics.LinearAlgebra;
+﻿using MathNet.Numerics.LinearAlgebra;
 using MathNet.Numerics.LinearAlgebra.Double;
 
 namespace GeometricAlgebraFulcrumLib.Applications.Symbolic.EllipseFitting

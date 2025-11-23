@@ -16,11 +16,11 @@ public interface ILinFloat64Multivector2D :
 
     bool IsZero();
 
-    bool IsNearZero(double zeroEpsilon = 1e-12d);
+    bool IsNearZero(double tolerance = 1e-12d);
 
-    Float64Scalar Norm();
+    double L2Norm();
 
-    Float64Scalar NormSquared();
+    double L2NormSquared();
 
     LinFloat64Multivector2D ToMultivector2D();
 }

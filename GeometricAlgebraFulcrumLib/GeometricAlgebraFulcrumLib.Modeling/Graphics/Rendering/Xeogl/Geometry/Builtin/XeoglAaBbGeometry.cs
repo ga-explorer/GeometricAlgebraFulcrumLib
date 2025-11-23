@@ -1,4 +1,4 @@
-﻿using GeometricAlgebraFulcrumLib.Modeling.Geometry.Borders.Space3D.Float64;
+﻿using GeometricAlgebraFulcrumLib.Modeling.Geometry.Bounding.Float64;
 using GeometricAlgebraFulcrumLib.Utilities.Text.Code.JavaScript;
 
 namespace GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.Xeogl.Geometry.Builtin;
@@ -25,7 +25,7 @@ public sealed class XeoglAaBbGeometry
 
         composer
             .SetTextValue("target", Target)
-            .SetTextValue("targetAABB", TargetAaBb.ToJavaScriptNumbersArrayText(), "[]");
+            .SetTextValue("targetAABB", TargetAaBb.GetBoundingBox().ToJavaScriptNumbersArrayText(), "[]");
     }
 
     //public override string ToString()

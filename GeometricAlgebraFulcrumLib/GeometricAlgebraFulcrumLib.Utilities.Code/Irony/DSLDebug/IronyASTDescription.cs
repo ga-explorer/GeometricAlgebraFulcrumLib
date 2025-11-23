@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Text;
+﻿using System.Text;
 using GeometricAlgebraFulcrumLib.Utilities.Code.Irony.Semantic;
 using GeometricAlgebraFulcrumLib.Utilities.Code.Irony.Semantic.Expression.ValueAccess;
 using GeometricAlgebraFulcrumLib.Utilities.Code.Irony.Semantic.Symbol;

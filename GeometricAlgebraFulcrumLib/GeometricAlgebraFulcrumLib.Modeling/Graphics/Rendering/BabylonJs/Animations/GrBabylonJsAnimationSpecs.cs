@@ -1,4 +1,4 @@
-﻿using GeometricAlgebraFulcrumLib.Modeling.Geometry.Borders.Space1D;
+﻿using GeometricAlgebraFulcrumLib.Modeling.Geometry.Bounding.Integers;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.BabylonJs.Constants;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.Visuals.Space3D.Animations;
 using GeometricAlgebraFulcrumLib.Modeling.Signals;

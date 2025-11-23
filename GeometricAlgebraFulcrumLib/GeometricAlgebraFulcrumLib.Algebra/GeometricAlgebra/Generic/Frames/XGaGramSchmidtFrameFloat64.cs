@@ -88,7 +88,7 @@ public class XGaGramSchmidtFrameFloat64
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public XGaGramSchmidtFrameFloat64 CleanNorms(double zeroEpsilon = Float64Utils.ZeroEpsilon)
+    public XGaGramSchmidtFrameFloat64 CleanNorms(double tolerance = Float64Utils.DefaultTolerance)
     {
         for (var i = 0; i < _directionNormsArray.Length; i++)
         {

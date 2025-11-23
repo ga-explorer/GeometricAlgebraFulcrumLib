@@ -41,22 +41,31 @@ public sealed class GrTextureVertex3D
     public GraphicsVertexDataKind3D DataKind
         => GraphicsVertexDataKind3D.TextureData;
 
-    public Float64Scalar X 
+    public double X 
         => Point.X;
 
-    public Float64Scalar Y 
+    public double Y 
         => Point.Y;
 
-    public Float64Scalar Z 
+    public double Z 
         => Point.Z;
+    
+    public double this[int index] 
+        => index switch
+        {
+            0 => X,
+            1 => Y,
+            2 => Z,
+            _ => Float64Scalar.Zero
+        };
 
-    public Float64Scalar Item1
+    public double Item1
         => X;
 
-    public Float64Scalar Item2
+    public double Item2
         => Y;
 
-    public Float64Scalar Item3
+    public double Item3
         => Z;
 
     public double TextureU 
@@ -68,14 +77,14 @@ public sealed class GrTextureVertex3D
         ParameterValue.Item2.IsValid();
 
 
-    public GrTextureVertex3D(int index, ITriplet<Float64Scalar> point)
+    public GrTextureVertex3D(int index, ITriplet<double> point)
     {
         Index = index;
         Point = point.ToLinVector3D();
         ParameterValue = LinFloat64Vector2D.Zero;
     }
 
-    public GrTextureVertex3D(int index, ITriplet<Float64Scalar> point, IPair<Float64Scalar> textureUv)
+    public GrTextureVertex3D(int index, ITriplet<double> point, IPair<double> textureUv)
     {
         Index = index;
         Point = point.ToLinVector3D();

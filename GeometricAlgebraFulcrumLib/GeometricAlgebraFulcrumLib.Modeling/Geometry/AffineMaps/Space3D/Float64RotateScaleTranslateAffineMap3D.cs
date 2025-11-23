@@ -1,9 +1,10 @@
 ﻿using System.Diagnostics;
 using System.Numerics;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Angles;
-using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Matrices;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space3D;
+using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Numerical.Matrices;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
+using MathNet.Numerics.LinearAlgebra;
 
 namespace GeometricAlgebraFulcrumLib.Modeling.Geometry.AffineMaps.Space3D;
 
@@ -107,7 +108,7 @@ public class Float64RotateScaleTranslateAffineMap3D :
         throw new NotImplementedException();
     }
 
-    public bool IsNearIdentity(double zeroEpsilon = Float64Utils.ZeroEpsilon)
+    public bool IsNearIdentity(double tolerance = Float64Utils.DefaultTolerance)
     {
         throw new NotImplementedException();
     }
@@ -117,7 +118,7 @@ public class Float64RotateScaleTranslateAffineMap3D :
     {
         RotateAngle = angle;
 
-        var d = 1 / vector.VectorENorm();
+        var d = 1 / vector.L2Norm();
 
         RotateVectorX = vector.X * d;
         RotateVectorY = vector.Y * d;
@@ -130,10 +131,10 @@ public class Float64RotateScaleTranslateAffineMap3D :
     {
         //http://lolengine.net/blog/2014/02/24/quaternion-from-two-vectors-final
         var n1 = Math.Sqrt(
-            vector1.VectorENormSquared() * vector2.VectorENormSquared()
+            vector1.L2NormSquared() * vector2.L2NormSquared()
         );
 
-        var w = n1 + vector1.VectorESp(vector2);
+        var w = n1 + vector1.VectorDot(vector2);
 
         RotateAngle = w.CosToDoubleDirectedAngle();
 
@@ -143,7 +144,7 @@ public class Float64RotateScaleTranslateAffineMap3D :
                 ? LinFloat64Vector3D.Create(-vector1.Y, vector1.X, 0)
                 : LinFloat64Vector3D.Create(0, -vector1.Z, vector1.Y);
 
-            var d = 1 / v1.VectorENorm();
+            var d = 1 / LinFloat64Vector3DUtils.L2Norm(v1);
 
             RotateVectorX = d * v1.X;
             RotateVectorY = d * v1.Y;
@@ -153,7 +154,7 @@ public class Float64RotateScaleTranslateAffineMap3D :
         {
             var v2 = vector1.VectorCross(vector2);
 
-            var d = 1 / v2.VectorENorm();
+            var d = 1 / LinFloat64Vector3DUtils.L2Norm(v2);
 
             RotateVectorX = d * v2.X;
             RotateVectorY = d * v2.Y;
@@ -168,7 +169,7 @@ public class Float64RotateScaleTranslateAffineMap3D :
     {
         RotateAngle = angle;
 
-        var scaleFactor = vector.VectorENorm();
+        var scaleFactor = vector.L2Norm();
 
         ScaleX = scaleFactor;
         ScaleY = scaleFactor;
@@ -185,13 +186,13 @@ public class Float64RotateScaleTranslateAffineMap3D :
 
     public Float64RotateScaleTranslateAffineMap3D SetRotateScale(ILinFloat64Vector3D vector1, ILinFloat64Vector3D vector2)
     {
-        var lengthSquared1 = vector1.VectorENormSquared();
-        var lengthSquared2 = vector2.VectorENormSquared();
+        var lengthSquared1 = vector1.L2NormSquared();
+        var lengthSquared2 = vector2.L2NormSquared();
         var scaleFactor = Math.Sqrt(lengthSquared2 / lengthSquared1);
 
         var n1 = Math.Sqrt(lengthSquared1 * lengthSquared2);
 
-        var w = n1 + vector1.VectorESp(vector2);
+        var w = n1 + vector1.VectorDot(vector2);
 
         RotateAngle = w.CosToDoubleDirectedAngle();
 
@@ -205,7 +206,7 @@ public class Float64RotateScaleTranslateAffineMap3D :
                 ? LinFloat64Vector3D.Create(-vector1.Y, vector1.X, 0)
                 : LinFloat64Vector3D.Create(0, -vector1.Z, vector1.Y);
 
-            var d = 1 / v1.VectorENorm();
+            var d = 1 / LinFloat64Vector3DUtils.L2Norm(v1);
 
             RotateVectorX = d * v1.X;
             RotateVectorY = d * v1.Y;
@@ -215,7 +216,7 @@ public class Float64RotateScaleTranslateAffineMap3D :
         {
             var v2 = vector1.VectorCross(vector2);
 
-            var d = 1 / v2.VectorENorm();
+            var d = 1 / LinFloat64Vector3DUtils.L2Norm(v2);
 
             RotateVectorX = d * v2.X;
             RotateVectorY = d * v2.Y;
@@ -302,7 +303,7 @@ public class Float64RotateScaleTranslateAffineMap3D :
         throw new NotImplementedException();
     }
 
-    public double[,] GetArray2D()
+    public Matrix<double> GetMatrix()
     {
         throw new NotImplementedException();
     }

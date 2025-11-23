@@ -1,15 +1,15 @@
-﻿using System.Collections.Immutable;
-using System.Diagnostics;
-using System.Runtime.CompilerServices;
-using System.Text;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivectors;
+﻿using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivectors;
+using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Angles;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space2D;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space3D;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.SpaceND;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Float64.Blades;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Float64.Operations;
+using GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Float64.Encoding;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.BitManipulation;
+using System.Diagnostics;
+using System.Runtime.CompilerServices;
+using System.Text;
 
 namespace GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Float64.Elements;
 
@@ -178,9 +178,10 @@ public class CGaFloat64Round :
             ).VectorDivideByENorm()
         );
 
-        return directionVectors
-            .Select(v => PositionToVector2D() + v * RealRadius)
-            .ToImmutableArray();
+        return [
+            ..directionVectors
+                .Select(v => PositionToVector2D() + v * RealRadius)
+        ];
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -196,9 +197,10 @@ public class CGaFloat64Round :
             ).VectorDivideByENorm()
         );
 
-        return directionVectors
-            .Select(v => PositionToVector3D() + v * RealRadius)
-            .ToImmutableArray();
+        return [
+            ..directionVectors
+                .Select(v => PositionToVector3D() + v * RealRadius)
+        ];
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -214,9 +216,10 @@ public class CGaFloat64Round :
             ).DivideByENorm()
         );
 
-        return directionVectors
-            .Select(v => PositionToVector() + v * RealRadius)
-            .ToImmutableArray();
+        return [
+            ..directionVectors
+                .Select(v => PositionToVector() + v * RealRadius)
+        ];
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -232,41 +235,46 @@ public class CGaFloat64Round :
             ).DivideByNorm()
         );
 
-        return directionVectors
-            .Select(v => PositionToXGaVector() + v * RealRadius)
-            .ToImmutableArray();
+        return [
+            ..directionVectors
+                .Select(v => PositionToXGaVector() + v * RealRadius)
+        ];
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public IReadOnlyList<CGaFloat64Blade> GetSurfacePointVGaVectorBlades()
     {
-        return GetSurfacePointXGaVectors()
-            .Select(GeometricSpace.Encode.VGa.Vector)
-            .ToImmutableArray();
+        return [
+            ..GetSurfacePointXGaVectors()
+                .Select(GeometricSpace.Encode.VGa.Vector)
+        ];
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public IReadOnlyList<CGaFloat64Blade> GetSurfacePointPGaVectorBlades()
     {
-        return GetSurfacePointXGaVectors()
-            .Select(GeometricSpace.Encode.PGa.Point)
-            .ToImmutableArray();
+        return [
+            ..GetSurfacePointXGaVectors()
+                .Select(GeometricSpace.Encode.PGa.Point)
+        ];
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public IReadOnlyList<CGaFloat64Blade> GetSurfacePointIpnsBlades()
     {
-        return GetSurfacePointXGaVectors()
-            .Select(GeometricSpace.Encode.IpnsRound.Point)
-            .ToImmutableArray();
+        return [
+            ..GetSurfacePointXGaVectors()
+                .Select(GeometricSpace.Encode.IpnsRound.Point)
+        ];
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public IReadOnlyList<CGaFloat64Blade> GetSurfacePointOpnsFlatBlades()
     {
-        return GetSurfacePointXGaVectors()
-            .Select(GeometricSpace.Encode.OpnsFlat.Point)
-            .ToImmutableArray();
+        return [
+            ..GetSurfacePointXGaVectors()
+                .Select(GeometricSpace.Encode.OpnsFlat.Point)
+        ];
     }
 
 
@@ -276,7 +284,7 @@ public class CGaFloat64Round :
         var v = egaPoint - PositionToVector2D();
 
         return IsDirectionParallelTo(v) &&
-               v.NormSquared() == RealRadiusSquared;
+               v.L2NormSquared() == RealRadiusSquared;
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -285,7 +293,7 @@ public class CGaFloat64Round :
         var v = egaPoint - PositionToVector3D();
 
         return IsDirectionParallelTo(v) &&
-               v.NormSquared() == RealRadiusSquared;
+               v.L2NormSquared() == RealRadiusSquared;
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -299,30 +307,117 @@ public class CGaFloat64Round :
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool SurfaceNearContainsVGaPoint2D(LinFloat64Vector2D egaPoint, double zeroEpsilon = Float64Utils.ZeroEpsilon)
+    public bool SurfaceNearContainsVGaPoint2D(LinFloat64Vector2D egaPoint, double tolerance = Float64Utils.DefaultTolerance)
     {
         var v = egaPoint - PositionToVector2D();
 
-        return IsDirectionNearParallelTo(v, zeroEpsilon) &&
-               (v.Norm() - RealRadius).IsNearZero(zeroEpsilon);
+        return IsDirectionNearParallelTo(v, tolerance) &&
+               (v.L2Norm() - RealRadius).IsNearZero(tolerance);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool SurfaceNearContainsVGaPoint3D(LinFloat64Vector3D egaPoint, double zeroEpsilon = Float64Utils.ZeroEpsilon)
+    public bool SurfaceNearContainsVGaPoint3D(LinFloat64Vector3D egaPoint, double tolerance = Float64Utils.DefaultTolerance)
     {
         var v = egaPoint - PositionToVector3D();
 
-        return IsDirectionNearParallelTo(v, zeroEpsilon) &&
-               (v.Norm() - RealRadius).IsNearZero(zeroEpsilon);
+        return IsDirectionNearParallelTo(v, tolerance) &&
+               (v.L2Norm() - RealRadius).IsNearZero(tolerance);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool SurfaceNearContainsVGaPoint(XGaFloat64Vector egaPoint, double zeroEpsilon = Float64Utils.ZeroEpsilon)
+    public bool SurfaceNearContainsVGaPoint(XGaFloat64Vector egaPoint, double tolerance = Float64Utils.DefaultTolerance)
     {
         var v = egaPoint - PositionToXGaVector();
 
-        return IsDirectionNearParallelTo(v, zeroEpsilon) &&
-               (v.Norm() - RealRadius).IsNearZero(zeroEpsilon);
+        return IsDirectionNearParallelTo(v, tolerance) &&
+               (v.Norm() - RealRadius).IsNearZero(tolerance);
+    }
+
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public new CGaFloat64Round TranslateBy(LinFloat64Vector2D egaVector)
+    {
+        return new CGaFloat64Round(
+            GeometricSpace,
+            Weight,
+            RadiusSquared,
+            Position + egaVector.EncodeVGaVector(GeometricSpace),
+            Direction
+        );
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public new CGaFloat64Round TranslateBy(LinFloat64Vector3D egaVector)
+    {
+        return new CGaFloat64Round(
+            GeometricSpace,
+            Weight,
+            RadiusSquared,
+            Position + egaVector.EncodeVGaVector(GeometricSpace),
+            Direction
+        );
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public new CGaFloat64Round TranslateBy(LinFloat64Vector egaVector)
+    {
+        return new CGaFloat64Round(
+            GeometricSpace,
+            Weight,
+            RadiusSquared,
+            Position + egaVector.EncodeVGaVector(GeometricSpace),
+            Direction
+        );
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public new CGaFloat64Round TranslateBy(XGaFloat64Vector egaVector)
+    {
+        return new CGaFloat64Round(
+            GeometricSpace,
+            Weight,
+            RadiusSquared,
+            Position + egaVector.EncodeVGaVector(GeometricSpace),
+            Direction
+        );
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public new CGaFloat64Round TranslateBy(CGaFloat64Blade egaVector)
+    {
+        Debug.Assert(egaVector.IsVGaVector());
+
+        return new CGaFloat64Round(
+            GeometricSpace,
+            Weight,
+            RadiusSquared,
+            Position + egaVector,
+            Direction
+        );
+    }
+
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public new CGaFloat64Round ScaleBy(double scalingFactor)
+    {
+        return EncodeOpnsBlade().ScaleBy(scalingFactor).DecodeOpnsRound.Element();
+    }
+    
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public new CGaFloat64Round RotateUsing(LinFloat64Angle angle, LinFloat64Vector2D egaAxisPoint)
+    {
+        return EncodeOpnsBlade()
+            .RotateUsing(angle, egaAxisPoint)
+            .DecodeOpnsRound.Element();
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public new CGaFloat64Round RotateUsing(LinFloat64Angle angle, LinFloat64Vector3D egaAxisPoint, LinFloat64Vector3D egaAxisVector)
+    {
+        return EncodeOpnsBlade()
+            .RotateUsing(angle, egaAxisPoint, egaAxisVector)
+            .DecodeOpnsRound.Element();
     }
 
 

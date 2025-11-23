@@ -112,7 +112,7 @@ public sealed class GrVisualPointMeshSurface3D :
 
         foreach (var frameIndex in GetValidFrameIndexSet())
         {
-            var time = (double)frameIndex / SamplingSpecs.SamplingRate;
+            var time = frameIndex / SamplingSpecs.SamplingRate;
             
             yield return new KeyFrameRecord(
                 frameIndex, 

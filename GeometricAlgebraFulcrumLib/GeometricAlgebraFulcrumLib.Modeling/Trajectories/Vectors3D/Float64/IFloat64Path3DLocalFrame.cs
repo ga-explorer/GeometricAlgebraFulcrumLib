@@ -22,6 +22,11 @@ public interface IFloat64Path3DLocalFrame :
     Color Color { get; set; }
 
     /// <summary>
+    /// The scaling factor of the orthonormal frame basis vectors
+    /// </summary>
+    double ScalingFactor { get; }
+
+    /// <summary>
     /// The 1st direction vector, also the curve tangent
     /// </summary>
     LinFloat64Vector3D Tangent { get; }

@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using GeometricAlgebraFulcrumLib.Utilities.Code.SyntaxTree;
+﻿using GeometricAlgebraFulcrumLib.Utilities.Code.SyntaxTree;
 using GeometricAlgebraFulcrumLib.Utilities.Code.SyntaxTree.Expressions;
 using Microsoft.CSharp.RuntimeBinder;
 

@@ -142,7 +142,7 @@ public static class XGaFloat64VersorUtils
         for (var i = 0; i < count; i++)
         {
             var x = mappedBasisVectors[i];
-            var xNorm = x.ENorm().ScalarValue;
+            var xNorm = x.ENorm();
 
             var unitVector = x - metric.VectorTerm(i, xNorm);
 

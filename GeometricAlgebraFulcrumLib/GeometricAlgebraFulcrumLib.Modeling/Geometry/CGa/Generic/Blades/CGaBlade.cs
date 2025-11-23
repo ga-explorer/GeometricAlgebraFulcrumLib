@@ -427,7 +427,7 @@ public sealed record CGaBlade<T>
     {
         return new CGaBlade<T>(
             GeometricSpace,
-            InternalKVector.Inverse()
+            InternalKVector.VersorInverse()
         );
     }
 
@@ -540,7 +540,7 @@ public sealed record CGaBlade<T>
 
         return new CGaBlade<T>(
             GeometricSpace,
-            InternalKVector.Inverse().Lcp(GeometricSpace.Ie.InternalKVector)
+            InternalKVector.VersorInverse().Lcp(GeometricSpace.Ie.InternalKVector)
         );
     }
 
@@ -557,7 +557,7 @@ public sealed record CGaBlade<T>
 
         return new CGaBlade<T>(
             GeometricSpace,
-            GeometricSpace.Ie.InternalKVector.Rcp(InternalKVector.Inverse())
+            GeometricSpace.Ie.InternalKVector.Rcp(InternalKVector.VersorInverse())
         );
     }
 

@@ -32,11 +32,11 @@ public class XGaFloat64Rotor
         var norm2 = targetVector.ENorm();
         var cosAngle = sourceVector.ESp(targetVector) / (norm1 * norm2);
 
-        if (cosAngle.IsOne)
+        if (cosAngle.IsOne())
             return CreateIdentity(sourceVector.Processor);
             
         var rotationBlade = 
-            cosAngle.IsMinusOne
+            cosAngle.IsMinusOne()
                 ? sourceVector.GetNormalVector().Op(sourceVector)
                 : targetVector.Op(sourceVector);
                 

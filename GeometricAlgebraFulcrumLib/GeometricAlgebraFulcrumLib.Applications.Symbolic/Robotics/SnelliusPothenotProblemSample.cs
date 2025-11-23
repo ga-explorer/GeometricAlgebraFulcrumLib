@@ -130,7 +130,7 @@ namespace GeometricAlgebraFulcrumLib.Applications.Symbolic.Robotics
             // Find two final individual points inside point-pair, one of them must be B
             // and the other is P
             var s1 = p.SpSquared().Sqrt();
-            var s2 = ni.Lcp(p).Inverse();
+            var s2 = ni.Lcp(p).VersorInverse();
 
             var p1 = (p + s1).Gp(s2);
             var p2 = (p - s1).Gp(s2);
@@ -421,7 +421,7 @@ namespace GeometricAlgebraFulcrumLib.Applications.Symbolic.Robotics
             // Reflect point B in line L12
             var pvP =
                 cga.DecodePGaPoint(
-                    l12.Gp(pgaB).Gp(l12.Inverse()).GetBivectorPart(),
+                    l12.Gp(pgaB).Gp(l12.VersorInverse()).GetBivectorPart(),
                     n
                 );
 
@@ -607,7 +607,7 @@ namespace GeometricAlgebraFulcrumLib.Applications.Symbolic.Robotics
 
             // Reflect point B in line L12
             var pvP =
-                l12.Gp(b).Gp(l12.Inverse()).GetVectorPart().GetVectorPart(i => i is 2 or 3);
+                l12.Gp(b).Gp(l12.VersorInverse()).GetVectorPart().GetVectorPart(i => i is 2 or 3);
 
 
             // Stage 5: Assign code generated variable names for all variables
@@ -794,7 +794,7 @@ namespace GeometricAlgebraFulcrumLib.Applications.Symbolic.Robotics
             // Find two final individual points inside point-pair, one of them must be B
             // and the other is P
             var s1 = p.SpSquared().Sqrt();
-            var s2 = ni.Lcp(p).Inverse();
+            var s2 = ni.Lcp(p).VersorInverse();
 
             var p1 = (p + s1).Gp(s2);
             var p2 = (p - s1).Gp(s2);
@@ -991,7 +991,7 @@ namespace GeometricAlgebraFulcrumLib.Applications.Symbolic.Robotics
             // Find two final individual points inside point-pair, one of them must be E
             // and the other is P
             var s1 = p.SpSquared().Sqrt();
-            var s2 = ni.Lcp(p).Inverse();
+            var s2 = ni.Lcp(p).VersorInverse();
 
             var p1 = (p + s1).Gp(s2);
             var p2 = (p - s1).Gp(s2);

@@ -1,9 +1,11 @@
 ﻿using System.Collections;
 using System.Numerics;
-using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Matrices;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space3D;
+using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Numerical;
+using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Numerical.Matrices;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.BitManipulation;
+using MathNet.Numerics.LinearAlgebra;
 
 namespace GeometricAlgebraFulcrumLib.Modeling.Geometry.AffineMaps.Space3D;
 
@@ -85,7 +87,7 @@ public class Float64ComposedAffineMap3D :
         throw new NotImplementedException();
     }
 
-    public bool IsNearIdentity(double zeroEpsilon = Float64Utils.ZeroEpsilon)
+    public bool IsNearIdentity(double tolerance = Float64Utils.DefaultTolerance)
     {
         throw new NotImplementedException();
     }
@@ -132,7 +134,7 @@ public class Float64ComposedAffineMap3D :
         );
     }
 
-    public double[,] GetArray2D()
+    public Matrix<double> GetMatrix()
     {
         var c0 = MapVector(LinFloat64Vector3D.E1);
         var c1 = MapVector(LinFloat64Vector3D.E2);
@@ -146,7 +148,7 @@ public class Float64ComposedAffineMap3D :
         array[2, 0] = c0.Z; array[2, 1] = c1.Z; array[2, 2] = c2.Z; array[2, 3] = c3.Z;
         array[3, 3] = 1d;
 
-        return array;
+        return array.ToMathNetDenseMatrix();
     }
 
     public LinFloat64Vector3D MapPoint(ILinFloat64Vector3D point)

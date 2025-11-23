@@ -281,7 +281,7 @@ public static class EuclideanMultivectorOperations3D
             Composer.AppendAtNewLine($"${name}^{{\\sim}} = {LaTeXComposer.GetMultivectorText(mv.Reverse())}$");
             Composer.AppendLineAtNewLine();
 
-            Composer.AppendAtNewLine($"${name}^{{-1}} = {LaTeXComposer.GetMultivectorText(mv.Inverse())}$");
+            Composer.AppendAtNewLine($"${name}^{{-1}} = {LaTeXComposer.GetMultivectorText(mv.VersorInverse())}$");
             Composer.AppendLineAtNewLine();
 
             Composer.AppendAtNewLine($"${name}^{{2}} = {LaTeXComposer.GetMultivectorText(mv.Gp(mv))}$");

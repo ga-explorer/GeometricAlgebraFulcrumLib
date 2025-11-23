@@ -2,7 +2,8 @@
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Basis;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space3D;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.AffineMaps.Space3D;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.Borders.Space2D.Float64;
+using GeometricAlgebraFulcrumLib.Modeling.Geometry.Bounding.Float64;
+
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.Parametric.Float64.Space3D.Surfaces.Sampled;
 using GeometricAlgebraFulcrumLib.Modeling.Trajectories.Vectors3D.Float64;
 
@@ -260,25 +261,27 @@ public static class GrParametricSurfaceFactory3D
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static GrParametricSurfaceTree3D CreateSampledSurface3D(this IGraphicsParametricSurface3D surface, GrParametricSurfaceTreeOptions3D options)
+    public static SampledSurface3D CreateSampledSurface3D(this IGraphicsParametricSurface3D surface, AdaptiveSurfaceSampler3D.SamplingOptions options)
     {
-        var surfaceTree = new GrParametricSurfaceTree3D(
+        var surfaceTree = new SampledSurface3D(
             surface,
-            Float64BoundingBox2D.Create(0, 0, 1, 1)
+            Float64BoundingBox2D.Containing(0, 0, 1, 1),
+            options
         );
 
-        return surfaceTree.GenerateTree(options);
+        return surfaceTree.Generate();
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static GrParametricSurfaceTree3D CreateSampledSurface3D(this IGraphicsParametricSurface3D surface, Float64BoundingBox2D parameterValueRange, GrParametricSurfaceTreeOptions3D options)
+    public static SampledSurface3D CreateSampledSurface3D(this IGraphicsParametricSurface3D surface, Float64BoundingBox2D parameterValueRange, AdaptiveSurfaceSampler3D.SamplingOptions options)
     {
-        var surfaceTree = new GrParametricSurfaceTree3D(
+        var surfaceTree = new SampledSurface3D(
             surface,
-            parameterValueRange
+            parameterValueRange,
+            options
         );
 
-        return surfaceTree.GenerateTree(options);
+        return surfaceTree.Generate();
     }
 
 

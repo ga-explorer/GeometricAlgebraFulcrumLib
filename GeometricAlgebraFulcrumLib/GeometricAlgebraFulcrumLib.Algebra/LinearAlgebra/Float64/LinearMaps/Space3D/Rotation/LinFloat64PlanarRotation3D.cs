@@ -4,9 +4,9 @@ using System.Runtime.CompilerServices;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Basis;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Angles;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.LinearMaps.Space3D.Reflection;
-using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Matrices;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.SubSpaces.Space3D;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space3D;
+using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Numerical;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Tuples;
 using MathNet.Numerics.LinearAlgebra;
@@ -30,7 +30,7 @@ public sealed class LinFloat64PlanarRotation3D :
         );
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64PlanarRotation3D CreateFromSpanningVectors(ILinFloat64Vector3D spanningVector1, ILinFloat64Vector3D spanningVector2, LinFloat64PolarAngle rotationAngle)
+    public static LinFloat64PlanarRotation3D CreateFromSpanningVectors(LinFloat64Vector3D spanningVector1, LinFloat64Vector3D spanningVector2, LinFloat64PolarAngle rotationAngle)
     {
         Debug.Assert(
             !spanningVector1.IsNearParallelTo(spanningVector2)
@@ -52,7 +52,7 @@ public sealed class LinFloat64PlanarRotation3D :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64PlanarRotation3D CreateFromOrthogonalVectors(ILinFloat64Vector3D spanningVector1, ILinFloat64Vector3D spanningVector2, LinFloat64PolarAngle rotationAngle)
+    public static LinFloat64PlanarRotation3D CreateFromOrthogonalVectors(LinFloat64Vector3D spanningVector1, LinFloat64Vector3D spanningVector2, LinFloat64PolarAngle rotationAngle)
     {
         var basisVector1 = spanningVector1.ToUnitLinVector3D();
         var basisVector2 = spanningVector2.ToUnitLinVector3D();
@@ -65,7 +65,7 @@ public sealed class LinFloat64PlanarRotation3D :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64PlanarRotation3D CreateFromOrthonormalVectors(ILinFloat64Vector3D spanningVector1, ILinFloat64Vector3D spanningVector2, LinFloat64PolarAngle rotationAngle)
+    public static LinFloat64PlanarRotation3D CreateFromOrthonormalVectors(LinFloat64Vector3D spanningVector1, LinFloat64Vector3D spanningVector2, LinFloat64PolarAngle rotationAngle)
     {
         var basisVector1 = spanningVector1.ToLinVector3D();
         var basisVector2 = spanningVector2.ToLinVector3D();
@@ -78,7 +78,7 @@ public sealed class LinFloat64PlanarRotation3D :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64PlanarRotation3D CreateFromRotatedVector(ILinFloat64Vector3D vector, ILinFloat64Vector3D rotatedVector, bool useShortArc = true)
+    public static LinFloat64PlanarRotation3D CreateFromRotatedVector(LinFloat64Vector3D vector, LinFloat64Vector3D rotatedVector, bool useShortArc = true)
     {
         var basisVector1 =
             vector.ToUnitLinVector3D();
@@ -108,7 +108,7 @@ public sealed class LinFloat64PlanarRotation3D :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64PlanarRotation3D CreateFromRotatedUnitVector(ILinFloat64Vector3D vector, ILinFloat64Vector3D rotatedVector, bool useShortArc = true)
+    public static LinFloat64PlanarRotation3D CreateFromRotatedUnitVector(LinFloat64Vector3D vector, LinFloat64Vector3D rotatedVector, bool useShortArc = true)
     {
         var basisVector1 =
             vector.ToLinVector3D();
@@ -247,20 +247,20 @@ public sealed class LinFloat64PlanarRotation3D :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public override bool IsNearIdentity(double zeroEpsilon = 1e-12d)
+    public override bool IsNearIdentity(double tolerance = 1e-12d)
     {
-        return RotationAngle.IsNearZeroOrFull(zeroEpsilon);
+        return RotationAngle.IsNearZeroOrFull(tolerance);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool IsNearReflection(double zeroEpsilon = 1e-12d)
+    public bool IsNearReflection(double tolerance = 1e-12d)
     {
-        return RotationAngle.IsNearStraight(zeroEpsilon);
+        return RotationAngle.IsNearStraight(tolerance);
     }
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public ILinFloat64Vector3D GetUnitNormal()
+    public LinFloat64Vector3D GetUnitNormal()
     {
         return BasisVector1.VectorCross(BasisVector2);
     }
@@ -297,16 +297,16 @@ public sealed class LinFloat64PlanarRotation3D :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public Pair<double> BasisESp(ILinFloat64Vector3D vector)
+    public Pair<double> BasisESp(LinFloat64Vector3D vector)
     {
         return new Pair<double>(
-            vector.X.ScalarValue * BasisVector1.X.ScalarValue +
-            vector.Y.ScalarValue * BasisVector1.Y.ScalarValue +
-            vector.Z.ScalarValue * BasisVector1.Z.ScalarValue,
+            vector.X * BasisVector1.X +
+            vector.Y * BasisVector1.Y +
+            vector.Z * BasisVector1.Z,
 
-            vector.X.ScalarValue * BasisVector2.X.ScalarValue +
-            vector.Y.ScalarValue * BasisVector2.Y.ScalarValue +
-            vector.Z.ScalarValue * BasisVector2.Z.ScalarValue
+            vector.X * BasisVector2.X +
+            vector.Y * BasisVector2.Y +
+            vector.Z * BasisVector2.Z
         );
     }
 
@@ -360,7 +360,7 @@ public sealed class LinFloat64PlanarRotation3D :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public override LinFloat64Vector3D MapVector(ILinFloat64Vector3D vector)
+    public override LinFloat64Vector3D MapVector(LinFloat64Vector3D vector)
     {
         // Compute the projection components of the given vector on
         // the orthonormal basis vectors defining the plane of rotation
@@ -429,7 +429,7 @@ public sealed class LinFloat64PlanarRotation3D :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public LinFloat64Vector3D MapVector(ILinFloat64Vector3D vector, LinFloat64Angle rotationAngle)
+    public LinFloat64Vector3D MapVector(LinFloat64Vector3D vector, LinFloat64Angle rotationAngle)
     {
         // Compute the projection components of the given vector on
         // the orthonormal basis vectors defining the plane of rotation
@@ -523,7 +523,7 @@ public sealed class LinFloat64PlanarRotation3D :
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public LinFloat64Vector3D GetVectorProjection(ILinFloat64Vector3D vector)
+    public LinFloat64Vector3D GetVectorProjection(LinFloat64Vector3D vector)
     {
         var (vpx, vpy) = BasisESp(vector);
 
@@ -535,7 +535,7 @@ public sealed class LinFloat64PlanarRotation3D :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public LinFloat64PolarAngle GetVectorProjectionPolarAngle(ILinFloat64Vector3D vector)
+    public LinFloat64PolarAngle GetVectorProjectionPolarAngle(LinFloat64Vector3D vector)
     {
         return LinFloat64PolarAngle.CreateFromVector(
             BasisESp(vector)
@@ -543,7 +543,7 @@ public sealed class LinFloat64PlanarRotation3D :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public LinFloat64Vector3D GetVectorRejection(ILinFloat64Vector3D vector)
+    public LinFloat64Vector3D GetVectorRejection(LinFloat64Vector3D vector)
     {
         var (vpx, vpy) = BasisESp(vector);
 
@@ -557,7 +557,7 @@ public sealed class LinFloat64PlanarRotation3D :
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public LinFloat64Vector3D MapVectorProjection(ILinFloat64Vector3D vector)
+    public LinFloat64Vector3D MapVectorProjection(LinFloat64Vector3D vector)
     {
         var (vpx, vpy) = BasisESp(vector);
 
@@ -573,7 +573,7 @@ public sealed class LinFloat64PlanarRotation3D :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public LinFloat64Vector3D MapVectorProjection(ILinFloat64Vector3D vector, LinFloat64Angle rotationAngle)
+    public LinFloat64Vector3D MapVectorProjection(LinFloat64Vector3D vector, LinFloat64Angle rotationAngle)
     {
         var (vpx, vpy) = BasisESp(vector);
 
@@ -619,16 +619,16 @@ public sealed class LinFloat64PlanarRotation3D :
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool NearContains(ILinFloat64Vector3D vector, double zeroEpsilon = 1E-12D)
+    public bool NearContains(LinFloat64Vector3D vector, double tolerance = 1E-12D)
     {
-        return GetVectorRejection(vector).IsNearZero(zeroEpsilon);
+        return GetVectorRejection(vector).IsNearZero(tolerance);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool NearContains(ILinFloat64Subspace3D subspace, double zeroEpsilon = 1E-12)
+    public bool NearContains(ILinFloat64Subspace3D subspace, double tolerance = Float64Utils.DefaultTolerance)
     {
         return subspace.VSpaceDimensions <= VSpaceDimensions &&
-               subspace.BasisVectors.All(v => NearContains(v, zeroEpsilon));
+               subspace.BasisVectors.All(v => NearContains(v, tolerance));
     }
 
     /// <summary>
@@ -864,7 +864,7 @@ public sealed class LinFloat64PlanarRotation3D :
     /// <param name="vector"></param>
     /// <param name="assumeProjected"></param>
     /// <returns></returns>
-    public LinFloat64PlanarRotation3D AlignBasisVector1(ILinFloat64Vector3D vector, bool assumeProjected = false)
+    public LinFloat64PlanarRotation3D AlignBasisVector1(LinFloat64Vector3D vector, bool assumeProjected = false)
     {
         var basisVector1 =
             assumeProjected
@@ -890,7 +890,7 @@ public sealed class LinFloat64PlanarRotation3D :
     /// <param name="vector"></param>
     /// <param name="assumeProjected"></param>
     /// <returns></returns>
-    public LinFloat64PlanarRotation3D AlignBasisVector2(ILinFloat64Vector3D vector, bool assumeProjected = false)
+    public LinFloat64PlanarRotation3D AlignBasisVector2(LinFloat64Vector3D vector, bool assumeProjected = false)
     {
         var basisVector2 =
             assumeProjected

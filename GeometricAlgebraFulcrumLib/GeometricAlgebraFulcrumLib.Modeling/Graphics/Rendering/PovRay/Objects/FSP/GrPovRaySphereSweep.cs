@@ -9,12 +9,12 @@ public class GrPovRaySphereSweep :
     IGrPovRayFiniteSolidObject,
     IReadOnlyList<GrPovRaySphereListItem>
 {
-    private static readonly string[] SweepTypeNames = new[]
-    {
+    private static readonly string[] SweepTypeNames =
+    [
         "linear_spline", 
         "b_spline", 
         "cubic_spline"
-    };
+    ];
 
     
     public GrPovRaySphereList Spheres { get; }

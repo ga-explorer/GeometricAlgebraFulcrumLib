@@ -1,11 +1,12 @@
 ﻿using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Tuples;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.BasicShapes;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.Borders.Space2D.Float64;
+using GeometricAlgebraFulcrumLib.Modeling.Geometry.Bounding.Float64;
+
 
 namespace GeometricAlgebraFulcrumLib.Modeling.Graphics.Accelerators.Grids.Space2D;
 
 public interface IAccGrid2D<out T> : IAccelerator2D<T>
-    where T : IFloat64FiniteGeometricShape2D
+    where T : IFloat64BoundedShape2D
 {
     IReadOnlyList<T> this[int ix, int iy] { get; }
 

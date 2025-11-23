@@ -76,25 +76,25 @@ public sealed class ZxGridComposer
     /// The lower left corner point of the grid
     /// </summary>
     public LinFloat64Vector3D CornerLowerLeft 
-        => LinFloat64Vector3D.Create(XMin, Center.Y.ScalarValue, ZMin);
+        => LinFloat64Vector3D.Create(XMin, Center.Y, ZMin);
 
     /// <summary>
     /// The lower right corner point of the grid
     /// </summary>
     public LinFloat64Vector3D CornerLowerRight 
-        => LinFloat64Vector3D.Create(XMin, Center.Y.ScalarValue, ZMax);
+        => LinFloat64Vector3D.Create(XMin, Center.Y, ZMax);
 
     /// <summary>
     /// The upper left corner point of the grid
     /// </summary>
     public LinFloat64Vector3D CornerUpperLeft 
-        => LinFloat64Vector3D.Create(XMax, Center.Y.ScalarValue, ZMin);
+        => LinFloat64Vector3D.Create(XMax, Center.Y, ZMin);
 
     /// <summary>
     /// The upper right corner point of the grid
     /// </summary>
     public LinFloat64Vector3D CornerUpperRight 
-        => LinFloat64Vector3D.Create(XMax, Center.Y.ScalarValue, ZMax);
+        => LinFloat64Vector3D.Create(XMax, Center.Y, ZMax);
 
     /// <summary>
     /// The total length of the grid in the Z direction

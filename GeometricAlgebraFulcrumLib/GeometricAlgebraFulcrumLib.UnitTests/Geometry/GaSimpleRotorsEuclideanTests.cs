@@ -72,7 +72,7 @@ public sealed class GeoSimpleRotorsEuclideanTests
             var v1 = rotor.OmMap(u);
 
             var vectorDiffNormSquared = 
-                (v1 - v).ENormSquared().ScalarValue;
+                (v1 - v).ENormSquared();
 
             if (!vectorDiffNormSquared.IsNearZero())
             {

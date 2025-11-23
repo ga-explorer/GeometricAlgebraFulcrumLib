@@ -3,6 +3,7 @@ using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.ImageSharp.Processi
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.PixelFormats;
 
+
 namespace GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.ImageSharp.Processing.AutoCrop.Detection;
 
 public sealed class RgbaBorderAnalyzer : BorderAnalyzer<Rgba32>

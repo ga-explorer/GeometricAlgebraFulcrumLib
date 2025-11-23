@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace GeometricAlgebraFulcrumLib.Utilities.Code.SyntaxTree;
+﻿namespace GeometricAlgebraFulcrumLib.Utilities.Code.SyntaxTree;
 
 public sealed class SteTryCatchItem : SteSyntaxElement
 {

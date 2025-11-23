@@ -16,22 +16,22 @@ public sealed record GrParametricSurfaceLocalFrame3D :
     public int VSpaceDimensions
         => 3;
 
-    public Float64Scalar Item1
+    public double Item1
         => Point.X;
 
-    public Float64Scalar Item2
+    public double Item2
         => Point.Y;
 
-    public Float64Scalar Item3
+    public double Item3
         => Point.Z;
 
-    public Float64Scalar X
+    public double X
         => Point.X;
 
-    public Float64Scalar Y
+    public double Y
         => Point.Y;
 
-    public Float64Scalar Z
+    public double Z
         => Point.Z;
 
     public int Index { get; internal set; } = -1;
@@ -41,6 +41,12 @@ public sealed record GrParametricSurfaceLocalFrame3D :
     public Color Color { get; set; }
 
     public LinFloat64Vector2D ParameterValue { get; }
+
+    public Float64Scalar ParameterValueU 
+        => ParameterValue.Item1;
+
+    public Float64Scalar ParameterValueV 
+        => ParameterValue.Item2;
 
     public LinFloat64Normal3D Normal { get; }
 
@@ -55,6 +61,15 @@ public sealed record GrParametricSurfaceLocalFrame3D :
 
     public GraphicsVertexDataKind3D DataKind
         => GraphicsVertexDataKind3D.NormalTextureColorData;
+    
+    public double this[int index] 
+        => index switch
+        {
+            0 => X,
+            1 => Y,
+            2 => Z,
+            _ => Float64Scalar.Zero
+        };
 
 
     internal GrParametricSurfaceLocalFrame3D(double parameterValue1, double parameterValue2, ILinFloat64Vector3D point, ILinFloat64Vector3D normal)

@@ -27,7 +27,7 @@ public sealed class GrVisualCircleRingSurface3D :
     );
 
 
-    public static GrVisualCircleRingSurface3D CreateStatic(string name, GrVisualSurfaceStyle3D style, ILinFloat64Vector3D normal, double minRadius, double maxRadius)
+    public static GrVisualCircleRingSurface3D CreateStatic(string name, GrVisualSurfaceStyle3D style, LinFloat64Vector3D normal, double minRadius, double maxRadius)
     {
         return new GrVisualCircleRingSurface3D(
             name, 
@@ -40,7 +40,7 @@ public sealed class GrVisualCircleRingSurface3D :
         );
     }
         
-    public static GrVisualCircleRingSurface3D CreateStatic(string name, GrVisualSurfaceStyle3D style, ILinFloat64Vector3D center, ILinFloat64Vector3D normal, double minRadius, double maxRadius)
+    public static GrVisualCircleRingSurface3D CreateStatic(string name, GrVisualSurfaceStyle3D style, LinFloat64Vector3D center, LinFloat64Vector3D normal, double minRadius, double maxRadius)
     {
         return new GrVisualCircleRingSurface3D(
             name, 
@@ -53,7 +53,7 @@ public sealed class GrVisualCircleRingSurface3D :
         );
     }
 
-    public static GrVisualCircleRingSurface3D Create(string name, GrVisualSurfaceStyle3D style, ILinFloat64Vector3D normal, double minRadius, double maxRadius, Float64SamplingSpecs samplingSpecs)
+    public static GrVisualCircleRingSurface3D Create(string name, GrVisualSurfaceStyle3D style, LinFloat64Vector3D normal, double minRadius, double maxRadius, Float64SamplingSpecs samplingSpecs)
     {
         return new GrVisualCircleRingSurface3D(
             name, 
@@ -66,7 +66,7 @@ public sealed class GrVisualCircleRingSurface3D :
         );
     }
         
-    public static GrVisualCircleRingSurface3D Create(string name, GrVisualSurfaceStyle3D style, ILinFloat64Vector3D center, ILinFloat64Vector3D normal, double minRadius, double maxRadius, Float64SamplingSpecs samplingSpecs)
+    public static GrVisualCircleRingSurface3D Create(string name, GrVisualSurfaceStyle3D style, LinFloat64Vector3D center, LinFloat64Vector3D normal, double minRadius, double maxRadius, Float64SamplingSpecs samplingSpecs)
     {
         return new GrVisualCircleRingSurface3D(
             name, 
@@ -111,7 +111,7 @@ public sealed class GrVisualCircleRingSurface3D :
     }
 
 
-    public ILinFloat64Vector3D Center { get; }
+    public LinFloat64Vector3D Center { get; }
 
     public LinFloat64Vector3D Normal { get; }
 
@@ -128,7 +128,7 @@ public sealed class GrVisualCircleRingSurface3D :
     public GrVisualAnimatedScalar? AnimatedMaxRadius { get; set; }
 
 
-    private GrVisualCircleRingSurface3D(string name, GrVisualSurfaceStyle3D style, ILinFloat64Vector3D center, ILinFloat64Vector3D normal, double minRadius, double maxRadius, Float64SamplingSpecs samplingSpecs) 
+    private GrVisualCircleRingSurface3D(string name, GrVisualSurfaceStyle3D style, LinFloat64Vector3D center, LinFloat64Vector3D normal, double minRadius, double maxRadius, Float64SamplingSpecs samplingSpecs) 
         : base(name, style, samplingSpecs)
     {
         Center = center;
@@ -299,7 +299,7 @@ public sealed class GrVisualCircleRingSurface3D :
 
         foreach (var frameIndex in GetValidFrameIndexSet())
         {
-            var time = (double)frameIndex / SamplingSpecs.SamplingRate;
+            var time = frameIndex / SamplingSpecs.SamplingRate;
                 
             yield return new KeyFrameRecord(
                 frameIndex, 

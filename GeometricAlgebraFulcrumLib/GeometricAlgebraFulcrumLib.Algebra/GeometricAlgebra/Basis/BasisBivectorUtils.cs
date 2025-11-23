@@ -18,8 +18,8 @@ public static class BasisBivectorUtils
         if (vSpaceDimensions < 2)
             throw new ArgumentOutOfRangeException(nameof(vSpaceDimensions));
 
-        for (var i1 = 0; i1 < vSpaceDimensions - 1; i1++)
-        for (var i2 = i1 + 1; i2 < vSpaceDimensions; i2++)
+        for (var i2 = 1; i2 < vSpaceDimensions; i2++)
+        for (var i1 = 0; i1 < i2; i1++)
             yield return IndexSet.CreatePair(i1, i2);
     }
 

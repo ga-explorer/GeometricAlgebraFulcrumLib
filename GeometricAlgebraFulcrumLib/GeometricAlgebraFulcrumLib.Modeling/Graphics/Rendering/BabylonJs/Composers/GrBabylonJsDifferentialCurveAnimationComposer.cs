@@ -10,9 +10,9 @@ using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.Visuals.Space3D.Sty
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.Visuals.Space3D.Surfaces;
 using GeometricAlgebraFulcrumLib.Modeling.Signals;
 using GeometricAlgebraFulcrumLib.Modeling.Trajectories.Vectors3D.Float64;
-using GeometricAlgebraFulcrumLib.Modeling.Trajectories.Vectors3D.Float64.Adaptive;
 using GeometricAlgebraFulcrumLib.Modeling.Trajectories.Vectors3D.Float64.Basic;
 using GeometricAlgebraFulcrumLib.Modeling.Trajectories.Vectors3D.Float64.Composers;
+using GeometricAlgebraFulcrumLib.Modeling.Trajectories.Vectors3D.Float64.Samplers;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Tuples;
 using SixLabors.ImageSharp;
 
@@ -437,12 +437,13 @@ public sealed class GrBabylonJsDifferentialCurveAnimationComposer :
                 SceneComposer.AddOrGetColorMaterial(Color.DarkOrange.WithAlpha(0.25f)).CreateTubeCurveStyle(0.025),
                 Curve.CreateAdaptiveCurve3D(
                     SceneSamplingSpecs.TimeRange,
-                    new Float64AdaptivePath3DSamplingOptions(
-                        3.DegreesToDirectedAngle(),
-                        1,
-                        12
-                    )
-                )
+                    new SampledCurve3D.SamplingOptions
+                    {
+                        FrameAngleDifference = 3.DegreesToDirectedAngle(),
+                        MinDepth = 1,
+                        MaxDepth = 12
+                    }
+                ).ToLinVector3DList()
             )
         );
 

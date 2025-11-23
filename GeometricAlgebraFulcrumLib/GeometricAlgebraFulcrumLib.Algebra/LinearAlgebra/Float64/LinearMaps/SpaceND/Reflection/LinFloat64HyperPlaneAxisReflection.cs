@@ -3,6 +3,8 @@ using System.Runtime.CompilerServices;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Basis;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.LinearMaps.SpaceND.Scaling;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.SpaceND;
+using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Numerical;
+using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
 using MathNet.Numerics.LinearAlgebra;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.LinearMaps.SpaceND.Reflection;
@@ -65,7 +67,7 @@ public sealed class LinFloat64HyperPlaneAxisReflection :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public override bool IsNearIdentity(double zeroEpsilon = 1E-12)
+    public override bool IsNearIdentity(double tolerance = Float64Utils.DefaultTolerance)
     {
         return false;
     }
@@ -106,14 +108,10 @@ public sealed class LinFloat64HyperPlaneAxisReflection :
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public override Matrix<double> ToMatrix(int rowCount, int colCount)
     {
-        return Matrix<double>
-            .Build
-            .DenseOfArray(
-                ToArray(rowCount, colCount)
-            );
+        return ToArray(rowCount, colCount);
     }
 
-    public override double[,] ToArray(int rowCount, int colCount)
+    public override Matrix<double> ToArray(int rowCount, int colCount)
     {
         var array = new double[rowCount, colCount];
 
@@ -123,7 +121,7 @@ public sealed class LinFloat64HyperPlaneAxisReflection :
         var i = ReflectionNormalAxis.Index;
         array[i, i] = -1d;
 
-        return array;
+        return array.ToMathNetDenseMatrix();
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]

@@ -38,17 +38,17 @@ public class GrComputedParametricSurface3D :
         if (GetNormalFunc is not null)
             return GetNormalFunc(parameterValue1, parameterValue2);
 
-        const double zeroEpsilon = 1e-7;
+        const double tolerance = 1e-7;
 
-        var p1 = GetPointFunc(parameterValue1 - zeroEpsilon, parameterValue2);
-        var p2 = GetPointFunc(parameterValue1 + zeroEpsilon, parameterValue2);
+        var p1 = GetPointFunc(parameterValue1 - tolerance, parameterValue2);
+        var p2 = GetPointFunc(parameterValue1 + tolerance, parameterValue2);
 
-        var v1 = (p2 - p1) / (2 * zeroEpsilon);
+        var v1 = (p2 - p1) / (2 * tolerance);
 
-        p1 = GetPointFunc(parameterValue1, parameterValue2 - zeroEpsilon);
-        p2 = GetPointFunc(parameterValue1, parameterValue2 + zeroEpsilon);
+        p1 = GetPointFunc(parameterValue1, parameterValue2 - tolerance);
+        p2 = GetPointFunc(parameterValue1, parameterValue2 + tolerance);
 
-        var v2 = (p2 - p1) / (2 * zeroEpsilon);
+        var v2 = (p2 - p1) / (2 * tolerance);
 
         return v1.VectorCross(v2);
     }

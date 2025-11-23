@@ -21,10 +21,10 @@
 //    public IScalarProcessor<Expr> ScalarProcessor { get; set; }
 //        = ScalarProcessorOfWolframExpr.Instance;
     
-//    public double ZeroEpsilon
+//    public double DefaultTolerance
 //    {
-//        get => ScalarProcessor.ZeroEpsilon;
-//        set => ScalarProcessor.ZeroEpsilon = value;
+//        get => ScalarProcessor.DefaultTolerance;
+//        set => ScalarProcessor.DefaultTolerance = value;
 //    }
 
 //    public bool IsNumeric 

@@ -128,10 +128,9 @@ public class DfBernsteinBasis :
     {
         return DfBernsteinPolynomial.Create(
             SpaceDegree,
-            new[]
-            {
+            [
                 new Tuple<double, DfBernsteinBasis>(1d, this)
-            }
+            ]
         );
     }
 

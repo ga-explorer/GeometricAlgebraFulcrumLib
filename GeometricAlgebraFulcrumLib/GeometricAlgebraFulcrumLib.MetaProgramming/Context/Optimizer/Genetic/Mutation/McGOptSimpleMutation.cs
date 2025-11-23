@@ -1,9 +1,9 @@
 ﻿using System.Collections.Immutable;
-using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Matrices;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Random;
-using MathNet.Numerics.LinearAlgebra.Double;
 using GeometricAlgebraFulcrumLib.MetaProgramming.Context.Expressions.Variables;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Tuples;
+using MathNet.Numerics.LinearAlgebra;
+using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Numerical;
 
 namespace GeometricAlgebraFulcrumLib.MetaProgramming.Context.Optimizer.Genetic.Mutation;
 
@@ -19,16 +19,16 @@ public sealed class McGOptSimpleMutation :
     }
 
     
-    public Pair<Matrix> GetInvertibleMap(McGOptParameters parameters, int n, int maxOpCount = 10)
+    public Pair<Matrix<double>> GetInvertibleMap(McGOptParameters parameters, int n, int maxOpCount = 10)
     {
-        var arrayComposer = Float64InvertibleArrayComposer.Create(n);
+        var arrayComposer = InvertibleRealMatrixComposer.Create(n);
 
         arrayComposer.ApplyRandomScalingOperations(parameters.RandomGenerator, maxOpCount);
 
         var matrix = arrayComposer.GetMatrix();
         var matrixInverse = arrayComposer.GetMatrixInverse();
 
-        return new Pair<Matrix>(matrix, matrixInverse);
+        return new Pair<Matrix<double>>(matrix, matrixInverse);
     }
 
 

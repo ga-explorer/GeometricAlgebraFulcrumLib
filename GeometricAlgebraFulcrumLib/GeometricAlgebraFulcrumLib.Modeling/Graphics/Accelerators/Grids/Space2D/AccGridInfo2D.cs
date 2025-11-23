@@ -1,17 +1,18 @@
 ﻿using GeometricAlgebraFulcrumLib.Modeling.Geometry.BasicShapes;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.Borders.Space2D.Float64;
+using GeometricAlgebraFulcrumLib.Modeling.Geometry.Bounding.Float64;
+
 
 namespace GeometricAlgebraFulcrumLib.Modeling.Graphics.Accelerators.Grids.Space2D;
 
 public sealed class AccGridInfo2D
 {
-    public static AccGridInfo2D Create(IAccGrid2D<IFloat64FiniteGeometricShape2D> grid)
+    public static AccGridInfo2D Create(IAccGrid2D<IFloat64BoundedShape2D> grid)
     {
         return new AccGridInfo2D(grid);
     }
 
 
-    public IAccGrid2D<IFloat64FiniteGeometricShape2D> Grid { get; }
+    public IAccGrid2D<IFloat64BoundedShape2D> Grid { get; }
 
     public int CellsCountX => Grid.CellsCountX;
 
@@ -63,7 +64,7 @@ public sealed class AccGridInfo2D
     }
 
 
-    private AccGridInfo2D(IAccGrid2D<IFloat64FiniteGeometricShape2D> grid)
+    private AccGridInfo2D(IAccGrid2D<IFloat64BoundedShape2D> grid)
     {
         Grid = grid;
         BoundingBox = Grid.GetBoundingBox();

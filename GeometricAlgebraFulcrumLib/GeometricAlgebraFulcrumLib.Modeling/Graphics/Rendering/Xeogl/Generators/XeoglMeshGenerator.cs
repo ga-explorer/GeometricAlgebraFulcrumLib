@@ -5,7 +5,7 @@ namespace GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.Xeogl.Generator
 public abstract class XeoglMeshGenerator
 {
     protected static readonly string[] PrimitiveTypeNames =
-    {
+    [
         "points",
         "lines", 
         "line-loop", 
@@ -13,7 +13,7 @@ public abstract class XeoglMeshGenerator
         "triangles", 
         "triangle-strip", 
         "triangle-fan"
-    };
+    ];
 
 
     protected LinearTextComposer ScriptComposer { get; }

@@ -27,7 +27,7 @@ public sealed class GrVisualFrame3D :
     );
 
 
-    public static GrVisualFrame3D CreateStatic(string name, GrVisualFrameStyle3D style, ILinFloat64Vector3D origin)
+    public static GrVisualFrame3D CreateStatic(string name, GrVisualFrameStyle3D style, LinFloat64Vector3D origin)
     {
         return new GrVisualFrame3D(
             name,
@@ -40,7 +40,7 @@ public sealed class GrVisualFrame3D :
         );
     }
 
-    public static GrVisualFrame3D CreateStatic(string name, GrVisualFrameStyle3D style, ILinFloat64Vector3D origin, LinFloat64Quaternion orientation, double scalingFactor = 1)
+    public static GrVisualFrame3D CreateStatic(string name, GrVisualFrameStyle3D style, LinFloat64Vector3D origin, LinFloat64Quaternion orientation, double scalingFactor = 1)
     {
         return new GrVisualFrame3D(
             name,
@@ -53,7 +53,7 @@ public sealed class GrVisualFrame3D :
         );
     }
 
-    public static GrVisualFrame3D CreateStatic(string name, GrVisualFrameStyle3D style, ILinFloat64Vector3D origin, ILinFloat64Vector3D direction1, ILinFloat64Vector3D direction2, ILinFloat64Vector3D direction3)
+    public static GrVisualFrame3D CreateStatic(string name, GrVisualFrameStyle3D style, LinFloat64Vector3D origin, LinFloat64Vector3D direction1, LinFloat64Vector3D direction2, LinFloat64Vector3D direction3)
     {
         return new GrVisualFrame3D(
             name,
@@ -66,7 +66,7 @@ public sealed class GrVisualFrame3D :
         );
     }
 
-    public static GrVisualFrame3D Create(string name, GrVisualFrameStyle3D style, ILinFloat64Vector3D origin, ILinFloat64Vector3D direction1, ILinFloat64Vector3D direction2, ILinFloat64Vector3D direction3, Float64SamplingSpecs samplingSpecs)
+    public static GrVisualFrame3D Create(string name, GrVisualFrameStyle3D style, LinFloat64Vector3D origin, LinFloat64Vector3D direction1, LinFloat64Vector3D direction2, LinFloat64Vector3D direction3, Float64SamplingSpecs samplingSpecs)
     {
         return new GrVisualFrame3D(
             name,
@@ -98,21 +98,21 @@ public sealed class GrVisualFrame3D :
 
     public GrVisualFrameStyle3D Style { get; }
 
-    public ILinFloat64Vector3D Origin { get; }
+    public LinFloat64Vector3D Origin { get; }
 
-    public ILinFloat64Vector3D Direction1 { get; }
+    public LinFloat64Vector3D Direction1 { get; }
 
-    public ILinFloat64Vector3D Direction2 { get; }
+    public LinFloat64Vector3D Direction2 { get; }
 
-    public ILinFloat64Vector3D Direction3 { get; }
+    public LinFloat64Vector3D Direction3 { get; }
 
-    public ILinFloat64Vector3D Position1
+    public LinFloat64Vector3D Position1
         => Origin.VectorAdd(Direction1);
 
-    public ILinFloat64Vector3D Position2
+    public LinFloat64Vector3D Position2
         => Origin.VectorAdd(Direction2);
 
-    public ILinFloat64Vector3D Position3
+    public LinFloat64Vector3D Position3
         => Origin.VectorAdd(Direction3);
 
     public GrVisualAnimatedVector3D? AnimatedOrigin { get; set; }
@@ -196,7 +196,7 @@ public sealed class GrVisualFrame3D :
     }
 
 
-    private GrVisualFrame3D(string name, GrVisualFrameStyle3D style, ILinFloat64Vector3D origin, ILinFloat64Vector3D direction1, ILinFloat64Vector3D direction2, ILinFloat64Vector3D direction3, Float64SamplingSpecs samplingSpecs)
+    private GrVisualFrame3D(string name, GrVisualFrameStyle3D style, LinFloat64Vector3D origin, LinFloat64Vector3D direction1, LinFloat64Vector3D direction2, LinFloat64Vector3D direction3, Float64SamplingSpecs samplingSpecs)
         : base(name, samplingSpecs)
     {
         Origin = origin;
@@ -220,7 +220,7 @@ public sealed class GrVisualFrame3D :
     public LinFloat64Vector3D GetVisualLineSegmentEndPosition(LinFloat64Vector3D origin, LinFloat64Vector3D direction)
     {
         var cylinderHeight = Style.Direction1Style.Thickness * 4.5d;
-        var maxHeight = direction.VectorENorm();
+        var maxHeight = LinFloat64Vector3DUtils.L2Norm(direction);
 
         if (cylinderHeight > maxHeight)
             cylinderHeight = maxHeight;
@@ -453,17 +453,17 @@ public sealed class GrVisualFrame3D :
 
     public double GetLength1()
     {
-        return Direction1.VectorENorm();
+        return Direction1.L2Norm();
     }
 
     public double GetLength2()
     {
-        return Direction2.VectorENorm();
+        return Direction2.L2Norm();
     }
 
     public double GetLength3()
     {
-        return Direction3.VectorENorm();
+        return Direction3.L2Norm();
     }
 
     public LinFloat64Vector3D GetUnitDirection1()
@@ -619,7 +619,7 @@ public sealed class GrVisualFrame3D :
 
         foreach (var frameIndex in GetValidFrameIndexSet())
         {
-            var time = (double)frameIndex / SamplingSpecs.SamplingRate;
+            var time = frameIndex / SamplingSpecs.SamplingRate;
 
             yield return new KeyFrameRecord(
                 frameIndex,

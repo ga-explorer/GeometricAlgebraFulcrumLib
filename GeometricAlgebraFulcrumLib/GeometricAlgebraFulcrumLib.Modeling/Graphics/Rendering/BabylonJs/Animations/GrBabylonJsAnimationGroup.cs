@@ -1,6 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Immutable;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.Borders.Space1D;
+using GeometricAlgebraFulcrumLib.Modeling.Geometry.Bounding.Integers;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.BabylonJs.Values;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Tuples;
 using GeometricAlgebraFulcrumLib.Utilities.Text;

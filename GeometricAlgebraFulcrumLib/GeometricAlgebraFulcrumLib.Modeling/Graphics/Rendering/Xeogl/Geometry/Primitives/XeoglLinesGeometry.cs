@@ -8,14 +8,14 @@ namespace GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.Xeogl.Geometry.
 
 public sealed class XeoglLinesGeometry : XeoglPrimitivesGeometry
 {
-    public static XeoglLinesGeometry CreateLineSegment(ILinFloat64Vector3D point1, ILinFloat64Vector3D point2)
+    public static XeoglLinesGeometry CreateLineSegment(LinFloat64Vector3D point1, LinFloat64Vector3D point2)
     {
         var geometryData = GrLineGeometry3D.Create(point1, point2);
 
         return new XeoglLinesGeometry(geometryData);
     }
 
-    public static XeoglLinesGeometry CreateLineSegment(IFloat64LineSegment3D lineSegment)
+    public static XeoglLinesGeometry CreateLineSegment(Float64LineSegment3D lineSegment)
     {
         var geometryData = GrLineGeometry3D.Create(lineSegment);
 

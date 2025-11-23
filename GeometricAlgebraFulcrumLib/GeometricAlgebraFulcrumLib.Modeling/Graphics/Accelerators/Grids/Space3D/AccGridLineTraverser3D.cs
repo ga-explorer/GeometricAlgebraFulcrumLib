@@ -8,7 +8,7 @@ namespace GeometricAlgebraFulcrumLib.Modeling.Graphics.Accelerators.Grids.Space3
 
 public sealed class AccGridLineTraverser3D
 {
-    public static AccGridLineTraverser3D Create(IAccGrid3D<IFloat64FiniteGeometricShape3D> grid, IFloat64Line3D line)
+    public static AccGridLineTraverser3D Create(IAccGrid3D<IFloat64BoundedShape3D> grid, IFloat64Line3D line)
     {
         return new AccGridLineTraverser3D(
             grid,
@@ -17,13 +17,13 @@ public sealed class AccGridLineTraverser3D
         );
     }
 
-    public static AccGridLineTraverser3D Create(IAccGrid3D<IFloat64FiniteGeometricShape3D> grid, IFloat64Line3D line, Float64ScalarRange lineParamLimits)
+    public static AccGridLineTraverser3D Create(IAccGrid3D<IFloat64BoundedShape3D> grid, IFloat64Line3D line, Float64ScalarRange lineParamLimits)
     {
         return new AccGridLineTraverser3D(grid, line, lineParamLimits);
     }
 
 
-    public IAccGrid3D<IFloat64FiniteGeometricShape3D> Grid { get; }
+    public IAccGrid3D<IFloat64BoundedShape3D> Grid { get; }
 
     public IFloat64Line3D Line { get; }
 
@@ -65,7 +65,7 @@ public sealed class AccGridLineTraverser3D
     public IntTuple3D CellIndexStop { get; }
 
 
-    private AccGridLineTraverser3D(IAccGrid3D<IFloat64FiniteGeometricShape3D> grid, IFloat64Line3D line, Float64ScalarRange lineParamLimits)
+    private AccGridLineTraverser3D(IAccGrid3D<IFloat64BoundedShape3D> grid, IFloat64Line3D line, Float64ScalarRange lineParamLimits)
     {
         Grid = grid;
         Line = line;
@@ -277,7 +277,7 @@ public sealed class AccGridLineTraverser3D
         }
     }
 
-    public IEnumerable<IReadOnlyList<IFloat64FiniteGeometricShape3D>> GetCells()
+    public IEnumerable<IReadOnlyList<IFloat64BoundedShape3D>> GetCells()
     {
         var ix = CellIndexStart.ItemX;
         var iy = CellIndexStart.ItemY;
@@ -331,7 +331,7 @@ public sealed class AccGridLineTraverser3D
         }
     }
 
-    public IEnumerable<IReadOnlyList<IFloat64FiniteGeometricShape3D>> GetActiveCells()
+    public IEnumerable<IReadOnlyList<IFloat64BoundedShape3D>> GetActiveCells()
     {
         var ix = CellIndexStart.ItemX;
         var iy = CellIndexStart.ItemY;

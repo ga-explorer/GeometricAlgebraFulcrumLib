@@ -132,7 +132,6 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Structures.IndexSets
             return false;
         }
 
-
         public static IndexSet Intersect(IndexSet indexSet1, int index2)
         {
             var indexArray1 = indexSet1.GetInternalIndexArray();

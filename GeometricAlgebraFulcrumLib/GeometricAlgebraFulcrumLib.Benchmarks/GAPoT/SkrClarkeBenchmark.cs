@@ -1,15 +1,19 @@
-﻿using System;
+﻿using BenchmarkDotNet.Attributes;
+using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.LinearMaps.SpaceND.Rotation;
+using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.SpaceND;
+using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Numerical;
+using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
+using GeometricAlgebraFulcrumLib.Utilities.Structures.Tuples;
+using MathNet.Numerics.LinearAlgebra;
+using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
-using BenchmarkDotNet.Attributes;
-using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.LinearMaps.SpaceND.Rotation;
-using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Matrices;
-using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.SpaceND;
-using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
-using GeometricAlgebraFulcrumLib.Utilities.Structures.Tuples;
 
 namespace GeometricAlgebraFulcrumLib.Benchmarks.GAPoT;
+
+using RealVector = Vector<double>;
+using RealMatrix = Matrix<double>;
 
 [SimpleJob(baseline: true)]
 public class SkrClarkeBenchmark
@@ -18,21 +22,21 @@ public class SkrClarkeBenchmark
     [Params(28, 29, 30, 31, 32, 33)]
     public int VSpaceDimensions { get; set; }// = 24;
 
-    public IReadOnlyList<double[]> VectorArrayList { get; private set; }
+    public IReadOnlyList<RealVector> VectorArrayList { get; private set; }
 
     //public IReadOnlyList<LinFloat64Vector> VectorList { get; private set; }
         
-    public double[,] ClarkeArray { get; private set; }
+    public RealMatrix ClarkeArray { get; private set; }
 
-    public IReadOnlyList<Triplet<double[]>> ClarkeSimpleRotationSequence { get; private set; }
+    public IReadOnlyList<Triplet<RealVector>> ClarkeSimpleRotationSequence { get; private set; }
 
     //public ClarkeRotation ClarkeArrayRotation { get; private set; }
 
     //public VectorToVectorRotationSequence ClarkeSimpleRotationSequence { get; private set; }
 
-    //public Func<double[], double[]> SkrRotateFunction { get; private set; }
+    //public Func<RealVector, RealVector> SkrRotateFunction { get; private set; }
 
-    //public Func<double[], double[]> ClarkeRotateFunction { get; private set; }
+    //public Func<RealVector, RealVector> ClarkeRotateFunction { get; private set; }
 
 
     [GlobalSetup]
@@ -50,7 +54,7 @@ public class SkrClarkeBenchmark
         //        .ToImmutableArray();
 
         ClarkeArray = 
-            Float64ArrayUtils.CreateClarkeRotationArray(VSpaceDimensions);
+            NumericalLinearAlgebraUtils.ClarkeRotationMatrix(VSpaceDimensions);
 
         //ClarkeArrayRotation = 
         //    ClarkeRotation.CreateForward(VSpaceDimensions);
@@ -60,10 +64,10 @@ public class SkrClarkeBenchmark
                 .CreateForwardClarkeRotation(VSpaceDimensions)
                 .ToVectorToVectorRotationSequence()
                 .Select(t => 
-                    new Triplet<double[]>(
-                        t.BasisVector1.ToArray(VSpaceDimensions),
-                        t.BasisVector2.ToArray(VSpaceDimensions),
-                        t.MapBasisVector1().ToArray(VSpaceDimensions)
+                    new Triplet<RealVector>(
+                        t.BasisVector1.ToMathNetDenseVector(VSpaceDimensions),
+                        t.BasisVector2.ToMathNetDenseVector(VSpaceDimensions),
+                        t.MapBasisVector1().ToMathNetDenseVector(VSpaceDimensions)
                     )
                 ).ToImmutableArray();
 
@@ -175,17 +179,17 @@ public class SkrClarkeBenchmark
         //};
     }
 
-    public double[] GetRandomVector()
+    public RealVector GetRandomVector()
     {
         var random = new Random(10);
 
         return Enumerable
             .Range(0, VSpaceDimensions)
             .Select(_ => random.NextDouble())
-            .ToArray();
+            .ToMathNetDenseVector();
     }
 
-    //public double[] SkrRotate3D(double[] uVector)
+    //public RealVector SkrRotate3D(RealVector uVector)
     //{
     //    const int n = 3;
 
@@ -208,7 +212,7 @@ public class SkrClarkeBenchmark
     //    return vVector;
     //}
 
-    //public double[] SkrRotate4D(double[] uVector)
+    //public RealVector SkrRotate4D(RealVector uVector)
     //{
     //    const int n = 4;
 
@@ -233,7 +237,7 @@ public class SkrClarkeBenchmark
     //    return vVector;
     //}
 
-    //public double[] SkrRotate24D(double[] uVector)
+    //public RealVector SkrRotate24D(RealVector uVector)
     //{
     //    // This is 12.5% faster than the general SKR function.
     //    const int n = 24;
@@ -299,23 +303,21 @@ public class SkrClarkeBenchmark
     //    return vVector;
     //}
         
-    public double[] ClarkeRotate1(double[] uVector)
+    public RealVector ClarkeRotate1(RealVector uVector)
     {
-        return ClarkeArray.MatrixProduct(uVector);
+        return ClarkeArray * uVector;
     }
 
-    //public LinFloat64Vector ClarkeRotate1(LinFloat64Vector uVector)
+    //public RealVector ClarkeRotate1(RealVector uVector)
     //{
     //    return ClarkeArrayRotation.MapVector(uVector);
 
     //    //return ClarkeArray.MatrixProduct(uVector);
     //}
 
-    public double[] ClarkeRotate2(double[] uVector)
+    public RealVector ClarkeRotate2(RealVector uVector)
     {
-        var vVector = new double[VSpaceDimensions];
-
-        uVector.CopyTo(vVector, 0);
+        var vVector = RealVector.Build.DenseOfVector(uVector);
 
         foreach (var (u, t, v) in ClarkeSimpleRotationSequence)
         {
@@ -337,13 +339,13 @@ public class SkrClarkeBenchmark
     }
         
     [Benchmark]
-    public IReadOnlyList<double[]> ClarkeMatrixProduct()
+    public IReadOnlyList<RealVector> ClarkeMatrixProduct()
     {
         return VectorArrayList.Select(ClarkeRotate1).ToImmutableArray();
     }
         
     [Benchmark]
-    public IReadOnlyList<double[]> ClarkeSimpleRotors()
+    public IReadOnlyList<RealVector> ClarkeSimpleRotors()
     {
         return VectorArrayList.Select(ClarkeRotate2).ToImmutableArray();
 
@@ -352,16 +354,16 @@ public class SkrClarkeBenchmark
 
     public void Validate2()
     {
-        var m1 = Float64ArrayUtils.CreateClarkeRotationArray(VSpaceDimensions);
+        var m1 = NumericalLinearAlgebraUtils.ClarkeRotationMatrix(VSpaceDimensions);
         var m2 = LinFloat64MatrixRotation.CreateForwardClarkeRotation(VSpaceDimensions).ToVectorToVectorRotationSequence();
 
         for (var i = 0; i < VectorArrayList.Count; i++)
         {
             var u = VectorArrayList[i];
-            var v1 = m1.MatrixProduct(u).CreateLinVector();
+            var v1 = m1.Multiply(u).CreateLinVector();
             var v2 = m2.MapVector(u.CreateLinVector());
 
-            var diff = (v1 - v2).GetVectorNormSquared();
+            var diff = NumericalLinearAlgebraUtils.L2NormSquared((v1 - v2));
 
             if (!diff.IsNearZero())
                 throw new InvalidOperationException();
@@ -375,7 +377,7 @@ public class SkrClarkeBenchmark
 
         for (var i = 0; i < vList1.Length; i++)
         {
-            var diff = (vList1[i] - vList2[i]).GetVectorNormSquared();
+            var diff = NumericalLinearAlgebraUtils.L2NormSquared((vList1[i] - vList2[i]));
 
             if (!diff.IsNearZero())
                 throw new InvalidOperationException();
@@ -383,13 +385,13 @@ public class SkrClarkeBenchmark
     }
 
     //[Benchmark]
-    //public IReadOnlyList<double[]> SkrGenerated()
+    //public IReadOnlyList<RealVector> SkrGenerated()
     //{
     //    return VectorList.Select(SkrRotateFunction).ToImmutableArray();
     //}
         
     //[Benchmark]
-    //public IReadOnlyList<double[]> ClarkeGenerated()
+    //public IReadOnlyList<RealVector> ClarkeGenerated()
     //{
     //    return VectorList.Select(ClarkeRotateFunction).ToImmutableArray();
     //}

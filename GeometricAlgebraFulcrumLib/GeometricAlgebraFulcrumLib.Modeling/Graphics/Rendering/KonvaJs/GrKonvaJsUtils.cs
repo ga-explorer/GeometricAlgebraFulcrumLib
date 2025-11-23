@@ -3,9 +3,9 @@ using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Basis;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space2D;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space3D;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space4D;
-using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.AffineMaps.Space3D;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.Borders.Space2D.Float64;
+using GeometricAlgebraFulcrumLib.Modeling.Geometry.Bounding.Float64;
+
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.Colors;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.KonvaJs.Constants;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.KonvaJs.Values;
@@ -19,6 +19,7 @@ using GeometricAlgebraFulcrumLib.Utilities.Web.Svg.Paths;
 using Newtonsoft.Json.Linq;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.PixelFormats;
+// ReSharper disable CompareOfFloatsByEqualityOperator
 
 namespace GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.KonvaJs;
 
@@ -52,7 +53,7 @@ public static class GrKonvaJsUtils
             : new Pair<string>(name, value.GetAttributeValueCode());
     }
 
-    public static GrKonvaJsVector3Value ToKonvaJsVector3Value(this ILinFloat64Vector3D value)
+    public static GrKonvaJsVector3Value ToKonvaJsVector3Value(this LinFloat64Vector3D value)
     {
         return GrKonvaJsVector3Value.Create(value);
     }
@@ -95,15 +96,7 @@ public static class GrKonvaJsUtils
         );
     }
 
-    public static JToken GetKonvaJsJson(this IPair<double> value)
-    {
-        return new JArray(
-            (float)value.Item1,
-            (float)value.Item2
-        );
-    }
-
-    public static JToken GetKonvaJsJson(this ILinFloat64Vector2D value)
+    public static JToken GetKonvaJsJson(this LinFloat64Vector2D value)
     {
         return new JArray(
             (float)value.X,
@@ -111,16 +104,7 @@ public static class GrKonvaJsUtils
         );
     }
 
-    public static JToken GetKonvaJsJson(this ITriplet<Float64Scalar> value)
-    {
-        return new JArray(
-            (float)value.Item1,
-            (float)value.Item2,
-            (float)value.Item3
-        );
-    }
-
-    public static JToken GetKonvaJsJson(this ILinFloat64Vector3D value)
+    public static JToken GetKonvaJsJson(this LinFloat64Vector3D value)
     {
         return new JArray(
             (float)value.X,
@@ -139,7 +123,7 @@ public static class GrKonvaJsUtils
         );
     }
 
-    public static JToken GetKonvaJsJson(this ILinFloat64Vector4D value)
+    public static JToken GetKonvaJsJson(this LinFloat64Vector4D value)
     {
         return new JArray(
             (float)value.X,
@@ -280,24 +264,24 @@ public static class GrKonvaJsUtils
         throw new InvalidOperationException();
     }
 
-    public static string GetKonvaJsCode(this IPair<Float64Scalar> vector)
+    public static string GetKonvaJsCode(this LinFloat64Vector2D vector)
     {
         return $"{{ x: {(float)vector.Item1:G}, y: {(float)vector.Item2:G} }}";
     }
 
-    public static string GetKonvaJsCode(this ITriplet<Float64Scalar> vector)
+    public static string GetKonvaJsCode(this LinFloat64Vector3D vector)
     {
         return $"new Konva.Vector3({(float)vector.Item1:G}, {(float)vector.Item2:G}, {(float)vector.Item3:G})";
     }
 
-    public static string GetKonvaJsCode(this IQuad<Float64Scalar> vector)
+    public static string GetKonvaJsCode(this IQuad<double> vector)
     {
         return $"new Konva.Vector4({(float)vector.Item1:G}, {(float)vector.Item2:G}, {(float)vector.Item3:G}, {(float)vector.Item4:G})";
     }
     
     public static string GetKonvaJsCode(this Float64BoundingBox2D boundingBox)
     {
-        return $"{{ x: {(float)boundingBox.MinX:G}, y: {(float)boundingBox.MinY:G}, width: {(float)boundingBox.LengthX:G}, height: {(float)boundingBox.LengthY:G} }}";
+        return $"{{ x: {(float)boundingBox.MinX:G}, y: {(float)boundingBox.MinY:G}, width: {(float)boundingBox.SizeX:G}, height: {(float)boundingBox.SizeY:G} }}";
     }
 
     public static string GetKonvaJsCode(this IEnumerable<int> vectorList)
@@ -356,21 +340,21 @@ public static class GrKonvaJsUtils
         ).GetKonvaJsArrayCode();
     }
 
-    public static string GetKonvaJsCode(this IEnumerable<IPair<Float64Scalar>> vectorList)
+    public static string GetKonvaJsCode(this IEnumerable<LinFloat64Vector2D> vectorList)
     {
         return vectorList.Select(
-            vector => $"{vector.Item1.ScalarValue.GetKonvaJsCode()}, {vector.Item2.ScalarValue.GetKonvaJsCode()}"
+            vector => $"{vector.Item1.GetKonvaJsCode()}, {vector.Item2.GetKonvaJsCode()}"
         ).GetKonvaJsArrayCode();
     }
 
-    //public static string GetKonvaJsCode(this IEnumerable<ITriplet<Float64Scalar>> vectorList)
+    //public static string GetKonvaJsCode(this IEnumerable<LinFloat64Vector3D> vectorList)
     //{
     //    return vectorList.Select(
     //        vector => vector.GetKonvaJsCode()
     //    ).GetKonvaJsArrayCode();
     //}
 
-    //public static string GetKonvaJsCode(this IEnumerable<IReadOnlyList<ITriplet<Float64Scalar>>> vectorList)
+    //public static string GetKonvaJsCode(this IEnumerable<IReadOnlyList<LinFloat64Vector3D>> vectorList)
     //{
     //    return vectorList.Select(
     //        vector => vector.GetKonvaJsCode()
@@ -408,14 +392,16 @@ public static class GrKonvaJsUtils
     public static string GetKonvaJsArrayCode(this IFloat64AffineMap3D affineMap, bool isTransposed = false)
     {
         return affineMap
-            .GetArray2D()
+            .GetMatrix()
+            .ToArray()
             .GetAffineMapKonvaJsArrayCode(isTransposed);
     }
 
     public static string GetKonvaJsMatrixCode(this IFloat64AffineMap3D affineMap, bool isTransposed = false)
     {
         return affineMap
-            .GetArray2D()
+            .GetMatrix()
+            .ToArray()
             .GetAffineMapKonvaJsMatrixCode(isTransposed);
     }
 
@@ -426,7 +412,7 @@ public static class GrKonvaJsUtils
         ).GetKonvaJsArrayCode();
     }
 
-    public static string GetKonvaJsCode(this IPair<ITriplet<Float64Scalar>> vectorList)
+    public static string GetKonvaJsCode(this IPair<LinFloat64Vector3D> vectorList)
     {
         var p1 = vectorList.Item1.GetKonvaJsCode();
         var p2 = vectorList.Item2.GetKonvaJsCode();
@@ -434,7 +420,7 @@ public static class GrKonvaJsUtils
         return $"[{p1}, {p2}]";
     }
 
-    public static string GetKonvaJsCode(this ITriplet<ITriplet<Float64Scalar>> vectorList)
+    public static string GetKonvaJsCode(this ITriplet<LinFloat64Vector3D> vectorList)
     {
         var p1 = vectorList.Item1.GetKonvaJsCode();
         var p2 = vectorList.Item2.GetKonvaJsCode();
@@ -443,7 +429,7 @@ public static class GrKonvaJsUtils
         return $"[{p1}, {p2}, {p3}]";
     }
 
-    public static string GetKonvaJsCode(this IQuad<ITriplet<Float64Scalar>> vectorList)
+    public static string GetKonvaJsCode(this IQuad<LinFloat64Vector3D> vectorList)
     {
         var p1 = vectorList.Item1.GetKonvaJsCode();
         var p2 = vectorList.Item2.GetKonvaJsCode();

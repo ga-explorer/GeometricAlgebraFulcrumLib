@@ -17,12 +17,12 @@ public class TjPolyhedronGeometry :
     public override string JavaScriptClassName 
         => "PolyhedronGeometry";
 
-    public IReadOnlyList<ILinFloat64Vector3D> VertexPositions { get; }
+    public IReadOnlyList<LinFloat64Vector3D> VertexPositions { get; }
 
     public IReadOnlyList<int> FaceIndices { get; }
 
 
-    public TjPolyhedronGeometry(IReadOnlyList<ILinFloat64Vector3D> vertexPositions, IReadOnlyList<int> faceIndices)
+    public TjPolyhedronGeometry(IReadOnlyList<LinFloat64Vector3D> vertexPositions, IReadOnlyList<int> faceIndices)
     {
         VertexPositions = vertexPositions;
         FaceIndices = faceIndices;

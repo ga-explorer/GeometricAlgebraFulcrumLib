@@ -61,7 +61,7 @@ public class XGaFloat64ConformalIpnsHyperSphere :
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public double GetRadiusSquared()
     {
-        return Vector.SpSquared().ScalarValue;
+        return Vector.SpSquared();
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]

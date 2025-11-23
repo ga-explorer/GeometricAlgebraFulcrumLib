@@ -20,27 +20,27 @@ public sealed class Float64CatmullRomSplinePath2D :
 
 
     private readonly double[] _knotList;
-    private readonly List<ILinFloat64Vector2D> _pointList;
+    private readonly List<LinFloat64Vector2D> _pointList;
 
     public CatmullRomSplineType SplineType { get; }
 
     public bool IsClosed { get; }
 
-    public IEnumerable<ILinFloat64Vector2D> ControlPoints
+    public IEnumerable<LinFloat64Vector2D> ControlPoints
         => _pointList;
 
     public int ControlPointCount
         => _pointList.Count;
 
 
-    internal Float64CatmullRomSplinePath2D(bool isPeriodic, IEnumerable<ILinFloat64Vector2D> inputPointList, CatmullRomSplineType curveType, bool isClosed)
+    internal Float64CatmullRomSplinePath2D(bool isPeriodic, IEnumerable<LinFloat64Vector2D> inputPointList, CatmullRomSplineType curveType, bool isClosed)
         : base(Float64ScalarRange.ZeroToOne, isPeriodic)
     {
         SplineType = curveType;
         IsClosed = isClosed;
-        _pointList = new List<ILinFloat64Vector2D>(inputPointList);
+        _pointList = new List<LinFloat64Vector2D>(inputPointList);
 
-        ILinFloat64Vector2D endPoint1, endPoint2;
+        LinFloat64Vector2D endPoint1, endPoint2;
 
         if (isClosed)
         {
@@ -71,7 +71,7 @@ public sealed class Float64CatmullRomSplinePath2D :
         for (var i = 1; i < _pointList.Count; i++)
         {
             var vector = _pointList[i].ToLinVector2D() - _pointList[i - 1];
-            var ds = vector.VectorENormSquared();
+            var ds = LinFloat64Vector2DUtils.L2NormSquared(vector);
 
             var power =
                 curveType == CatmullRomSplineType.Centripetal
@@ -203,7 +203,7 @@ public sealed class Float64CatmullRomSplinePath2D :
 
             return new Tuple<bool, double>(
                 true,
-                Float64Utils.Lerp(tx, _knotList[0], _knotList[1])
+                tx.Lerp(_knotList[0], _knotList[1])
             );
         }
 
@@ -213,7 +213,7 @@ public sealed class Float64CatmullRomSplinePath2D :
 
             return new Tuple<bool, double>(
                 true,
-                Float64Utils.Lerp(tx, _knotList[^2], _knotList[^1])
+                tx.Lerp(_knotList[^2], _knotList[^1])
             );
         }
 
@@ -256,14 +256,14 @@ public sealed class Float64CatmullRomSplinePath2D :
         {
             var tx = (x - _pointList[0].X) / (_pointList[1].X - _pointList[0].X);
 
-            return Float64Utils.Lerp(tx, _pointList[0].Y, _pointList[1].Y);
+            return tx.Lerp(_pointList[0].Y, _pointList[1].Y);
         }
 
         if (index1 == _knotList.Length - 2 && index2 == _knotList.Length - 1)
         {
             var tx = (x - _pointList[^2].X) / (_pointList[^1].X - _pointList[^2].X);
 
-            return Float64Utils.Lerp(tx, _pointList[^2].Y, _pointList[^1].Y);
+            return tx.Lerp(_pointList[^2].Y, _pointList[^1].Y);
         }
 
         // General case
@@ -542,11 +542,4 @@ public sealed class Float64CatmullRomSplinePath2D :
 
         return LinFloat64Vector2D.Create((Float64Scalar)x, (Float64Scalar)y);
     }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public LinFloat64Vector2D GetUnitTangent(double t)
-    {
-        return GetDerivative1Value(t).ToUnitLinVector2D();
-    }
-
 }

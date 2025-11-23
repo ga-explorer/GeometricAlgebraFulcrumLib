@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using AngleSharp.Text;
+﻿using AngleSharp.Text;
 using GeometricAlgebraFulcrumLib.Utilities.Code.Irony.Semantic.Symbol;
 
 namespace GeometricAlgebraFulcrumLib.Utilities.Code.Irony.Semantic.Scope;

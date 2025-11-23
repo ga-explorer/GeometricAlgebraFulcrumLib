@@ -1,16 +1,17 @@
-﻿using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivectors;
-using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
-using GeometricAlgebraFulcrumLib.Utilities.Structures.Dictionary;
-using GeometricAlgebraFulcrumLib.Utilities.Structures.Extensions;
-using GeometricAlgebraFulcrumLib.Utilities.Structures.IndexSets;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using System.Runtime.CompilerServices;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivectors;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space2D;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space3D;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space4D;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.SpaceND;
+using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
+using GeometricAlgebraFulcrumLib.Utilities.Structures.Dictionary;
+using GeometricAlgebraFulcrumLib.Utilities.Structures.Extensions;
+using GeometricAlgebraFulcrumLib.Utilities.Structures.IndexSets;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Tuples;
+using MathNet.Numerics.LinearAlgebra;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Processors
 {
@@ -69,7 +70,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Processors
         {
             var composer = CreateScalarComposer();
             
-            foreach (var (id, scalar) in inputText.XGaParseTerms())
+            foreach (var (id, scalar) in inputText.ParseXGaTerms())
                 composer.AddTerm(id, scalar);
 
             return composer.GetScalar();
@@ -80,7 +81,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Processors
         {
             var composer = CreateVectorComposer();
             
-            foreach (var (id, scalar) in inputText.XGaParseTerms())
+            foreach (var (id, scalar) in inputText.ParseXGaTerms())
                 composer.AddTerm(id, scalar);
 
             return composer.GetVector();
@@ -91,7 +92,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Processors
         {
             var composer = CreateBivectorComposer();
             
-            foreach (var (id, scalar) in inputText.XGaParseTerms())
+            foreach (var (id, scalar) in inputText.ParseXGaTerms())
                 composer.AddTerm(id, scalar);
 
             return composer.GetBivector();
@@ -102,7 +103,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Processors
         {
             var composer = CreateTrivectorComposer();
             
-            foreach (var (id, scalar) in inputText.XGaParseTerms())
+            foreach (var (id, scalar) in inputText.ParseXGaTerms())
                 composer.AddTerm(id, scalar);
 
             return composer.GetHigherKVector();
@@ -113,7 +114,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Processors
         {
             var composer = CreateKVectorComposer(grade);
             
-            foreach (var (id, scalar) in inputText.XGaParseTerms())
+            foreach (var (id, scalar) in inputText.ParseXGaTerms())
                 composer.AddTerm(id, scalar);
 
             return composer.GetKVector();
@@ -124,7 +125,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Processors
         {
             var composer = CreateMultivectorComposer();
 
-            foreach (var (id, scalar) in inputText.XGaParseTerms())
+            foreach (var (id, scalar) in inputText.ParseXGaTerms())
                 composer.AddTerm(id, scalar);
 
             return composer.GetMultivector();
@@ -1045,7 +1046,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Processors
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public XGaFloat64GradedMultivector GradedMultivector(IEnumerable<double> scalarList)
+        public XGaFloat64GradedMultivector GradedMultivector(IReadOnlyList<double> scalarList)
         {
             var kVectorGroups =
                 scalarList
@@ -1158,7 +1159,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Processors
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public XGaFloat64UniformMultivector UniformMultivector(IEnumerable<double> scalarList)
+        public XGaFloat64UniformMultivector UniformMultivector(IReadOnlyList<double> scalarList)
         {
             return new XGaFloat64UniformMultivector(
                 this, 
@@ -1197,9 +1198,9 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Processors
             
             return composer.GetMultivector();
         }
-
+        
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public XGaFloat64Multivector Multivector(IEnumerable<double> scalarList)
+        public XGaFloat64Multivector Multivector(IReadOnlyList<double> scalarList)
         {
             var kVectorGroups =
                 scalarList
@@ -1298,8 +1299,28 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Processors
 
             return gradeKVectorDictionary;
         }
-
-
-
+        
+        
+        /// <summary>
+        /// Convert matrix to bivector without validation (used internally after Householder transformations)
+        /// </summary>
+        /// <param name="matrix">Input matrix</param>
+        /// <param name="tolerance"></param>
+        /// <returns>Corresponding bivector</returns>
+        public XGaFloat64Bivector MatrixToBivector(Matrix<double> matrix, double tolerance = Float64Utils.DefaultTolerance)
+        {
+            var n = matrix.RowCount;
+            var composer = CreateBivectorComposer();
+            
+            for (var i = 0; i < n; i++)
+            for (var j = i + 1; j < n; j++)
+            {
+                var value = (matrix[i, j] - matrix[j, i]) / 2;
+                if (!value.IsNearZero(tolerance)) 
+                    composer.AddBivectorTerm(i, j, value);
+            }
+            
+            return composer.GetBivector();
+        }
     }
 }

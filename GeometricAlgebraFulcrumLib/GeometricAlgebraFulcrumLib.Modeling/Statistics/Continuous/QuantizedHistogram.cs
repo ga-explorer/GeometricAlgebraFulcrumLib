@@ -2,7 +2,7 @@
 using System.Collections.Immutable;
 using System.Diagnostics;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.Borders.Space1D;
+using GeometricAlgebraFulcrumLib.Modeling.Geometry.Bounding.Integers;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.BitManipulation;
 using GeometricAlgebraFulcrumLib.Utilities.Text.Text;
 using GeometricAlgebraFulcrumLib.Utilities.Text.Text.Linear;
@@ -114,7 +114,7 @@ public sealed class QuantizedHistogram :
         var quantizationLevels = 
             1ul << quantizationBits;
 
-        var zeroEpsilon = 
+        var tolerance = 
             Phi(mean) / quantizationLevels;
 
         var variance =
@@ -122,7 +122,7 @@ public sealed class QuantizedHistogram :
 
         var halfSize = Math.Sqrt(
             -2 * variance * Math.Log(
-                Math.Sqrt(Math.Tau) * standardDeviation * zeroEpsilon
+                Math.Sqrt(Math.Tau) * standardDeviation * tolerance
             )
         );
 
@@ -165,11 +165,11 @@ public sealed class QuantizedHistogram :
         var quantizationLevels = 
             1ul << quantizationBits;
 
-        var zeroEpsilon = 
+        var tolerance = 
             rate / quantizationLevels;
 
         var domainLastValue = 
-            -Math.Log(zeroEpsilon / rate) / rate;
+            -Math.Log(tolerance / rate) / rate;
 
         var indexHeightDictionary = new SortedDictionary<int, ulong>();
 
@@ -727,7 +727,7 @@ public sealed class QuantizedHistogram :
     {
         var area = IndexHeightDictionary.Values.Aggregate(0ul, (a, b) => a + b);
         var areaMax = (1d - zeroAreaRatioEpsilon) * area;
-        var zeroEpsilon = 0d;
+        var tolerance = 0d;
 
         var yValues = 
             IndexHeightDictionary
@@ -740,11 +740,11 @@ public sealed class QuantizedHistogram :
 
             if (areaMax > 0) continue;
 
-            zeroEpsilon = yValue;
+            tolerance = yValue;
             break;
         }
 
-        return TrimHeights(zeroEpsilon);
+        return TrimHeights(tolerance);
     }
 
         

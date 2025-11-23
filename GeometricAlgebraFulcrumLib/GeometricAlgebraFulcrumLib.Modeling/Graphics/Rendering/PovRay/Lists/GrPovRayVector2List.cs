@@ -1,5 +1,4 @@
-﻿using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
-using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.PovRay.Values;
+﻿using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.PovRay.Values;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Tuples;
 
 namespace GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.PovRay.Lists;
@@ -26,7 +25,7 @@ public class GrPovRayVector2List :
     }
 
     
-    public GrPovRayVector2List Add(IPair<Float64Scalar> st)
+    public GrPovRayVector2List Add(IPair<double> st)
     {
         CodeElementList.Add(GrPovRayVector2Value.Create(st));
 
@@ -46,7 +45,7 @@ public class GrPovRayVector2List :
     }
     
 
-    public GrPovRayVector2List Append(IPair<Float64Scalar> st)
+    public GrPovRayVector2List Append(IPair<double> st)
     {
         CodeElementList.Add(GrPovRayVector2Value.Create(st));
 
@@ -66,7 +65,7 @@ public class GrPovRayVector2List :
     }
     
     
-    public GrPovRayVector2List Prepend(IPair<Float64Scalar> st)
+    public GrPovRayVector2List Prepend(IPair<double> st)
     {
         CodeElementList.Insert(0, GrPovRayVector2Value.Create(st));
 
@@ -86,7 +85,7 @@ public class GrPovRayVector2List :
     }
     
     
-    public GrPovRayVector2List Insert(int index, IPair<Float64Scalar> st)
+    public GrPovRayVector2List Insert(int index, IPair<double> st)
     {
         CodeElementList.Insert(index, GrPovRayVector2Value.Create(st));
 

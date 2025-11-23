@@ -1,5 +1,4 @@
-﻿using System.Diagnostics;
-using System.Numerics;
+﻿using System.Numerics;
 using System.Runtime.CompilerServices;
 using System.Text;
 
@@ -54,7 +53,7 @@ public static class UInt32BitUtils
 
             while (bitPattern > 0U)
             {
-                bitsMask |= (1U << bitPosition);
+                bitsMask |= 1U << bitPosition;
 
                 bitPosition++;
                 bitPattern >>= 1;
@@ -97,12 +96,12 @@ public static class UInt32BitUtils
     /// <returns></returns>
     public static int Log2Ceiling(this uint x)
     {
-        var y = (((x & (x - 1U)) == 0U) ? 0 : 1);
+        var y = (x & (x - 1U)) == 0U ? 0 : 1;
         var j = 32;
 
         for (var i = 0; i < 5; i++) 
         {
-            var k = (((x & Log2CeilingArray[i]) == 0) ? 0 : j);
+            var k = (x & Log2CeilingArray[i]) == 0 ? 0 : j;
 
             y += k;
             x >>= k;
@@ -153,7 +152,7 @@ public static class UInt32BitUtils
                 {
                     var pattern3 = 1U << k;
 
-                    yield return (pattern1 | pattern2 | pattern3);
+                    yield return pattern1 | pattern2 | pattern3;
                 }
             }
         }
@@ -549,7 +548,7 @@ public static class UInt32BitUtils
         if (bitPattern == 0U) 
             return 0U;
 
-        if ((bitPattern >> 31) != 0)
+        if (bitPattern >> 31 != 0)
             return 1U << 31;
 
         var n = bitPattern;
@@ -562,7 +561,7 @@ public static class UInt32BitUtils
         n |= n >> 16;
         n++;
 
-        return n == bitPattern ? n : (n >> 1);
+        return n == bitPattern ? n : n >> 1;
     }
 
     /// <summary>
@@ -771,33 +770,125 @@ public static class UInt32BitUtils
         return ((1U << bitPosition) & bitPattern) != 0U;
     }
 
+
     /// <summary>
-    /// Reverse the order of bits in the given bit pattern
+    /// Reverse all 32 bits of input uint.
     /// </summary>
-    /// <param name="bitPattern"></param>
-    /// <param name="bitsCount"></param>
-    /// <returns></returns>
-    public static uint ReverseBits(this uint bitPattern, int bitsCount)
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static uint ReverseBits(this uint bitPattern)
     {
-        Debug.Assert(
-            bitsCount > 0 && 
-            bitPattern < (1U << (bitsCount + 1))
-        );
-
-        var resUt = 0U;
-
-        var i = bitsCount - 1;
-        while (bitPattern != 0U)
-        {
-            if ((bitPattern & 1U) != 0U)
-                resUt |= (1U << i);
-
-            i--;
-            bitPattern >>= 1;
-        }
-
-        return resUt;
+        bitPattern = ((bitPattern >> 1) & 0x55555555U) | ((bitPattern & 0x55555555U) << 1);
+        bitPattern = ((bitPattern >> 2) & 0x33333333U) | ((bitPattern & 0x33333333U) << 2);
+        bitPattern = ((bitPattern >> 4) & 0x0F0F0F0FU) | ((bitPattern & 0x0F0F0F0FU) << 4);
+        bitPattern = ((bitPattern >> 8) & 0x00FF00FFU) | ((bitPattern & 0x00FF00FFU) << 8);
+        bitPattern = (bitPattern >> 16) | (bitPattern << 16);
+        return bitPattern;
     }
+
+    /// <summary>
+    /// Reverse lowest n bits of input uint.
+    /// </summary>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static uint ReversePrefixBits(this uint bitPattern, int n)
+    {
+        if (n is < 0 or > 32) 
+            throw new ArgumentOutOfRangeException(nameof(n));
+        
+        if (n <= 1) 
+            return bitPattern;
+
+        var mask = n == 32 ? 0xFFFFFFFFU : (1U << n) - 1;
+        var prefix = bitPattern & mask;
+
+        var reversed = ReverseBits(prefix);
+        reversed >>= 32 - n;
+
+        bitPattern &= ~mask;
+        bitPattern |= reversed;
+
+        return bitPattern;
+    }
+
+    /// <summary>
+    /// Reverse highest n bits of input uint.
+    /// </summary>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static uint ReverseSuffixBits(uint bitPattern, int n)
+    {
+        if (n is < 0 or > 32) 
+            throw new ArgumentOutOfRangeException(nameof(n));
+        
+        if (n <= 1) 
+            return bitPattern;
+
+        var shift = 32 - n;
+        var mask = n == 32 ? 0xFFFFFFFFU : 0xFFFFFFFFU << shift;
+
+        var suffix = (bitPattern & mask) >> shift;
+        var reversed = ReverseBits(suffix);
+        reversed >>= 32 - n;
+
+        bitPattern &= ~mask;
+        bitPattern |= reversed << shift;
+
+        return bitPattern;
+    }
+
+    /// <summary>
+    /// Reverse bits within an arbitrary slice [start..end], inclusive (0 = LSB).
+    /// Optimized so [0..31] simply calls ReverseBits().
+    /// </summary>
+    public static uint ReverseSliceBits(uint bitPattern, int start, int end)
+    {
+        if (start < 0 || end > 31 || start > end)
+            throw new ArgumentOutOfRangeException($"Invalid slice [{start}..{end}]");
+
+        var len = end - start + 1;
+        if (len == 1) 
+            return bitPattern;
+
+        if (start == 0 && end == 31) 
+            return ReverseBits(bitPattern);
+
+        var mask = ((1U << len) - 1) << start;
+        var slice = (bitPattern & mask) >> start;
+
+        var reversed = ReverseBits(slice);
+        reversed >>= 32 - len;
+
+        bitPattern &= ~mask;
+        bitPattern |= reversed << start;
+
+        return bitPattern;
+    }
+
+    ///// <summary>
+    ///// Reverse the order of bits in the given bit pattern
+    ///// </summary>
+    ///// <param name="bitPattern"></param>
+    ///// <param name="bitsCount"></param>
+    ///// <returns></returns>
+    //public static uint ReversePrefixBits(this uint bitPattern, int bitsCount)
+    //{
+    //    Debug.Assert(
+    //        bitsCount > 0 && 
+    //        bitPattern < (1U << (bitsCount + 1))
+    //    );
+
+    //    var resUt = 0U;
+
+    //    var i = bitsCount - 1;
+    //    while (bitPattern != 0U)
+    //    {
+    //        if ((bitPattern & 1U) != 0U)
+    //            resUt |= (1U << i);
+
+    //        i--;
+    //        bitPattern >>= 1;
+    //    }
+
+    //    return resUt;
+    //}
 
 
     /// <summary>
@@ -889,8 +980,8 @@ public static class UInt32BitUtils
     public static uint NextPermutation(this uint bitPattern)
     {
         var tempPattern = (bitPattern | (bitPattern - 1U)) + 1U;
-        var tempPattern1 = tempPattern & (uint)(-tempPattern);
-        var tempPattern2 = bitPattern & (uint)(-bitPattern);
+        var tempPattern1 = tempPattern & (uint)-tempPattern;
+        var tempPattern2 = bitPattern & (uint)-bitPattern;
 
         return tempPattern | (((tempPattern1 / tempPattern2) >> 1) - 1U);
     }
@@ -941,7 +1032,7 @@ public static class UInt32BitUtils
 
         while (startPattern <= bitMask)
         {
-            yield return (bitMask & ~startPattern);
+            yield return bitMask & ~startPattern;
 
             startPattern = NextPermutation(startPattern);
         }
@@ -957,7 +1048,7 @@ public static class UInt32BitUtils
     {
         while (bitPattern > 0U)
         {
-            yield return ((bitPattern & 1U) != 0U);
+            yield return (bitPattern & 1U) != 0U;
 
             bitPattern >>= 1;
         }
@@ -973,7 +1064,7 @@ public static class UInt32BitUtils
     {
         while (bitPattern > 0U && bitsCount > 0)
         {
-            yield return ((bitPattern & 1U) != 0U);
+            yield return (bitPattern & 1U) != 0U;
 
             bitPattern >>= 1;
 
@@ -1021,7 +1112,7 @@ public static class UInt32BitUtils
     {
         while (bitPattern > 0U && bitsCount > 0)
         {
-            yield return ((bitPattern & 1U) != 0U) ? oneItem : zeroItem;
+            yield return (bitPattern & 1U) != 0U ? oneItem : zeroItem;
 
             bitPattern >>= 1;
 
@@ -1049,7 +1140,7 @@ public static class UInt32BitUtils
     {
         while (bitPattern > 0U)
         {
-            yield return ((bitPattern & 1U) != 0U) ? oneItem : zeroItem;
+            yield return (bitPattern & 1U) != 0U ? oneItem : zeroItem;
 
             bitPattern >>= 1;
         }
@@ -1153,7 +1244,7 @@ public static class UInt32BitUtils
         return
             items
                 .Take(MaxBitPosition)
-                .Where(item => ((1U << (bitPosition++)) & bitPattern) != 0U);
+                .Where(item => ((1U << bitPosition++) & bitPattern) != 0U);
     }
 
     /// <summary>
@@ -1173,7 +1264,7 @@ public static class UInt32BitUtils
             items
                 .Take(MaxBitPosition)
                 .Select((item, index) => new KeyValuePair<uint, T>((uint)index, item))
-                .Where(item => ((1U << (bitPosition++)) & bitPattern) != 0U);
+                .Where(item => ((1U << bitPosition++) & bitPattern) != 0U);
     }
 
 
@@ -1197,7 +1288,7 @@ public static class UInt32BitUtils
                     {
                         var newPattern = 
                             item 
-                                ? ((1U << bitPosition) | currentBitPattern) 
+                                ? (1U << bitPosition) | currentBitPattern 
                                 : currentBitPattern;
 
                         bitPosition++;
@@ -1227,7 +1318,7 @@ public static class UInt32BitUtils
                     {
                         var newPattern =
                             item
-                                ? ((1U << bitPosition) | currentBitPattern)
+                                ? (1U << bitPosition) | currentBitPattern
                                 : currentBitPattern;
 
                         bitPosition++;
@@ -1561,7 +1652,7 @@ public static class UInt32BitUtils
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static bool IsValidBitPattern(this string s)
     {
-        return s.Length <= MaxBitPatternSize && s.All(c => c == '1' || c == '0');
+        return s.Length <= MaxBitPatternSize && s.All(c => c is '1' or '0');
     }
 
     /// <summary>
@@ -1574,7 +1665,7 @@ public static class UInt32BitUtils
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static bool IsValidBitPattern(this string s, int bitsCount)
     {
-        return bitsCount <= MaxBitPatternSize && s.Length == bitsCount && s.All(c => c == '1' || c == '0');
+        return bitsCount <= MaxBitPatternSize && s.Length == bitsCount && s.All(c => c is '1' or '0');
     }
 
     /// <summary>
@@ -1793,15 +1884,15 @@ public static class UInt32BitUtils
     public static uint Min(this uint a, uint b, uint c)
     {
         return a <= b 
-            ? (a <= c ? a : c)
-            : (b <= c ? b : c);
+            ? a <= c ? a : c
+            : b <= c ? b : c;
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static uint Max(this uint a, uint b, uint c)
     {
         return a >= b 
-            ? (a >= c ? a : c)
-            : (b >= c ? b : c);
+            ? a >= c ? a : c
+            : b >= c ? b : c;
     }
 }

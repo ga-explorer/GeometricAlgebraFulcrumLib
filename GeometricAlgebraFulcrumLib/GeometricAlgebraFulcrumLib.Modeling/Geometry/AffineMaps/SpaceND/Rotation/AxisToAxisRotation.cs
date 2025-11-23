@@ -55,7 +55,7 @@
 //        }
 
 //        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-//        public override bool IsNearIdentity(double zeroEpsilon = Float64Utils.ZeroEpsilon)
+//        public override bool IsNearIdentity(double tolerance = Float64Utils.DefaultTolerance)
 //        {
 //            return SourceAxis.Index == TargetAxis.Index &&
 //                   SourceAxis.IsNegative == TargetAxis.IsNegative;

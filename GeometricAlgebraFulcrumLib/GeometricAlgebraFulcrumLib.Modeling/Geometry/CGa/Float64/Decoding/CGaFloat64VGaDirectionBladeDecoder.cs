@@ -1,5 +1,4 @@
-﻿using System.Collections.Immutable;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivectors;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space2D;
@@ -163,17 +162,21 @@ public sealed class CGaFloat64VGaDirectionBladeDecoder :
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public IReadOnlyList<LinFloat64Vector2D> BladeToVectors2D()
     {
-        return BladeToVectors().Select(
-            v => LinFloat64Vector2D.Create(v[0], v[1])
-        ).ToImmutableArray();
+        return [
+            ..BladeToVectors().Select(
+                v => LinFloat64Vector2D.Create(v[0], v[1])
+            )
+        ];
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public IReadOnlyList<LinFloat64Vector3D> BladeToVectors3D()
     {
-        return BladeToVectors().Select(
-            v => LinFloat64Vector3D.Create(v[0], v[1], v[2])
-        ).ToImmutableArray();
+        return [
+            ..BladeToVectors().Select(
+                v => LinFloat64Vector3D.Create(v[0], v[1], v[2])
+            )
+        ];
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]

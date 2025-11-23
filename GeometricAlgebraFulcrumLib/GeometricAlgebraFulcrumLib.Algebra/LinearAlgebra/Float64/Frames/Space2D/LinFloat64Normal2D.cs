@@ -9,17 +9,25 @@ namespace GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Frames.Space2
 public sealed class LinFloat64Normal2D :
     ILinFloat64Vector2D
 {
-    public Float64Scalar X { get; private set; }
+    public double X { get; private set; }
 
-    public Float64Scalar Y { get; private set; }
+    public double Y { get; private set; }
+    
+    public double this[int index] 
+        => index switch
+        {
+            0 => X,
+            1 => Y,
+            _ => Float64Scalar.Zero
+        };
 
     public int VSpaceDimensions
         => 2;
 
-    public Float64Scalar Item1
+    public double Item1
         => X;
 
-    public Float64Scalar Item2
+    public double Item2
         => Y;
 
 
@@ -52,8 +60,8 @@ public sealed class LinFloat64Normal2D :
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public bool IsValid()
     {
-        return !double.IsNaN(X) &&
-               !double.IsNaN(Y);
+        return X.IsValid() &&
+               Y.IsValid();
     }
 
     /// <summary>
@@ -71,9 +79,8 @@ public sealed class LinFloat64Normal2D :
     /// </summary>
     /// <param name="x"></param>
     /// <param name="y"></param>
-    /// <param name="z"></param>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public void Set(double x, double y, double z)
+    public void Set(double x, double y)
     {
         X = x;
         Y = y;
@@ -87,6 +94,19 @@ public sealed class LinFloat64Normal2D :
     /// <param name="normalPair"></param>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public void Set(IPair<double> normalPair)
+    {
+        X = normalPair.Item1;
+        Y = normalPair.Item2;
+
+        Debug.Assert(IsValid());
+    }
+    
+    /// <summary>
+    /// Set the normal to the given value
+    /// </summary>
+    /// <param name="normalPair"></param>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public void Set(LinFloat64Vector2D normalPair)
     {
         X = normalPair.Item1;
         Y = normalPair.Item2;
@@ -114,6 +134,19 @@ public sealed class LinFloat64Normal2D :
     /// <param name="normalPair"></param>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public void Update(IPair<double> normalPair)
+    {
+        X += normalPair.Item1;
+        Y += normalPair.Item2;
+
+        Debug.Assert(IsValid());
+    }
+    
+    /// <summary>
+    /// Add the given vector to this normal
+    /// </summary>
+    /// <param name="normalPair"></param>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public void Update(LinFloat64Vector2D normalPair)
     {
         X += normalPair.Item1;
         Y += normalPair.Item2;

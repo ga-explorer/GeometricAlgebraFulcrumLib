@@ -18,8 +18,8 @@ public class GridMeshComposer
     public int Count2
         => PositionsGrid.Count2;
 
-    public IEnumerable<ILinFloat64Vector3D> VertexPositions
-        => PositionsGrid;
+    public IEnumerable<LinFloat64Vector3D> VertexPositions
+        => PositionsGrid.ToLinVector3DSequence();
 
     public IEnumerable<LinFloat64Normal3D> VertexNormals
         => NormalsGrid;

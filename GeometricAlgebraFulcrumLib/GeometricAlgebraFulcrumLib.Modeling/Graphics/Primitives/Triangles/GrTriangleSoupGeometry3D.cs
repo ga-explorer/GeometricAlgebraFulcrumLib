@@ -8,7 +8,7 @@ namespace GeometricAlgebraFulcrumLib.Modeling.Graphics.Primitives.Triangles;
 public sealed class GrTriangleSoupGeometry3D 
     : GrTriangleGeometryBase3D
 {
-    public static GrTriangleSoupGeometry3D Create(IReadOnlyList<ILinFloat64Vector3D> pointsList)
+    public static GrTriangleSoupGeometry3D Create(IReadOnlyList<LinFloat64Vector3D> pointsList)
     {
         if ((pointsList.Count % 3) != 0)
             throw new ArgumentException();
@@ -16,7 +16,7 @@ public sealed class GrTriangleSoupGeometry3D
         return new GrTriangleSoupGeometry3D(pointsList);
     }
 
-    public static GrTriangleSoupGeometry3D Create(params ILinFloat64Vector3D[] pointsList)
+    public static GrTriangleSoupGeometry3D Create(params LinFloat64Vector3D[] pointsList)
     {
         if ((pointsList.Length % 3) != 0)
             throw new ArgumentException();
@@ -24,7 +24,7 @@ public sealed class GrTriangleSoupGeometry3D
         return new GrTriangleSoupGeometry3D(pointsList);
     }
 
-    public static GrTriangleSoupGeometry3D Create(IEnumerable<ILinFloat64Vector3D> pointsList)
+    public static GrTriangleSoupGeometry3D Create(IEnumerable<LinFloat64Vector3D> pointsList)
     {
         var pointsArray = pointsList.ToArray();
 
@@ -36,7 +36,7 @@ public sealed class GrTriangleSoupGeometry3D
 
     public static GrTriangleSoupGeometry3D Create(params IFloat64Triangle3D[] trianglesList)
     {
-        var pointsList = new List<ILinFloat64Vector3D>(trianglesList.Length * 3);
+        var pointsList = new List<LinFloat64Vector3D>(trianglesList.Length * 3);
 
         foreach (var triangle in trianglesList)
         {
@@ -50,7 +50,7 @@ public sealed class GrTriangleSoupGeometry3D
 
     public static GrTriangleSoupGeometry3D Create(IEnumerable<IFloat64Triangle3D> trianglesList, bool reversePoints)
     {
-        var pointsList = new List<ILinFloat64Vector3D>();
+        var pointsList = new List<LinFloat64Vector3D>();
 
         foreach (var triangle in trianglesList)
         {
@@ -119,7 +119,7 @@ public sealed class GrTriangleSoupGeometry3D
     }
 
 
-    private GrTriangleSoupGeometry3D(IReadOnlyList<ILinFloat64Vector3D> pointsList)
+    private GrTriangleSoupGeometry3D(IReadOnlyList<LinFloat64Vector3D> pointsList)
         : base(pointsList)
     {
         if ((VertexCount % 3) != 0)

@@ -4,11 +4,13 @@ using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.LinearMaps.SpaceN
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.LinearMaps.SpaceND.Rotation;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.LinearMaps.SpaceND.Scaling;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.SpaceND;
+using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Numerical;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.BitManipulation;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Dictionary;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Random;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Tuples;
+using MathNet.Numerics.LinearAlgebra;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.LinearMaps.SpaceND;
 
@@ -91,10 +93,10 @@ public static class LinFloat64UnilinearMapComposerUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64UnilinearMap ToLinUnilinearMap(this double[,] array)
+    public static LinFloat64UnilinearMap ToLinUnilinearMap(this Matrix<double> array)
     {
         return array
-            .ColumnsToLinVectors()
+            .Columns()
             .ToLinUnilinearMap();
     }
 
@@ -143,6 +145,34 @@ public static class LinFloat64UnilinearMapComposerUtils
                     i => i,
                     i => i.CreateLinVector()
                 )
+        );
+    }
+    
+    public static LinFloat64UnilinearMap ToLinUnilinearMap(this IEnumerable<Vector<double>> vectorList)
+    {
+        var indexVectorDictionary = new Dictionary<int, LinFloat64Vector>();
+
+        var i = 0;
+        foreach (var vector in vectorList)
+        {
+            if (!vector.IsZero())
+                indexVectorDictionary.Add(i, vector.ToLinFloat64Vector());
+
+            i++;
+        }
+
+        if (indexVectorDictionary.Count == 0)
+            return new LinFloat64UnilinearMap(
+                new EmptyDictionary<int, LinFloat64Vector>()
+            );
+
+        if (indexVectorDictionary.Count == 1)
+            return new LinFloat64UnilinearMap(
+                new SingleItemDictionary<int, LinFloat64Vector>(indexVectorDictionary.First())
+            );
+
+        return new LinFloat64UnilinearMap(
+            indexVectorDictionary
         );
     }
 

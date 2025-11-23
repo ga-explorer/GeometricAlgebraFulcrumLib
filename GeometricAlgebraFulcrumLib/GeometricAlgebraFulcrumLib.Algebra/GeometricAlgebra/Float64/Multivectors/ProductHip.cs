@@ -190,7 +190,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivecto
                 return Processor.ScalarZero;
             
             return Grade == kv2.Grade
-                ? ESp(kv2)
+                ? Processor.Scalar(ESp(kv2))
                 : Grade < kv2.Grade ? ELcp(kv2) : ERcp(kv2);
         }
 
@@ -201,7 +201,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivecto
                 return Processor.ScalarZero;
             
             return Grade == kv2.Grade
-                ? ESp(kv2)
+                ? Processor.Scalar(ESp(kv2))
                 : Grade < kv2.Grade ? ELcp(kv2) : ERcp(kv2);
         }
 
@@ -229,7 +229,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivecto
                     Processor.ScalarZero,
 
                 XGaFloat64Vector v1 =>
-                    v1.Sp(kv2),
+                    Processor.Scalar(v1.Sp(kv2)),
 
                 _ => Processor
                     .CreateKVectorComposer(Grade - 1)
@@ -275,7 +275,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivecto
                 return Processor.ScalarZero;
             
             return Grade == kv2.Grade
-                ? Sp(kv2)
+                ? Processor.Scalar(Sp(kv2))
                 : Grade < kv2.Grade ? Lcp(kv2) : Rcp(kv2);
         }
 
@@ -286,7 +286,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivecto
                 return Processor.ScalarZero;
             
             return Grade == kv2.Grade
-                ? Sp(kv2)
+                ? Processor.Scalar(Sp(kv2))
                 : Grade < kv2.Grade ? Lcp(kv2) : Rcp(kv2);
         }
 

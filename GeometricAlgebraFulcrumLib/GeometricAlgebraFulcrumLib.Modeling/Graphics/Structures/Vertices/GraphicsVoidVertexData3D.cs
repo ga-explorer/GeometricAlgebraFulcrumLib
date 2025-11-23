@@ -11,7 +11,7 @@ public sealed class GraphicsVoidVertexData3D
         = new GraphicsVoidVertexData3D();
 
 
-    public ILinFloat64Vector2D TextureUv
+    public LinFloat64Vector2D TextureUv
     {
         get => LinFloat64Vector2D.Zero;
         set => throw new InvalidOperationException();

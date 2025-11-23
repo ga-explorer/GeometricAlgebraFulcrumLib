@@ -1,5 +1,4 @@
-﻿using System.Collections.Immutable;
-using System.Runtime.CompilerServices;
+﻿using System.Runtime.CompilerServices;
 using MathNet.Numerics;
 
 namespace GeometricAlgebraFulcrumLib.Modeling.Calculus.Functions.Float64;
@@ -10,65 +9,59 @@ public class DfComputedFunction :
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static DfComputedFunction Create(Func<double, double> valueFunc)
     {
-        return new DfComputedFunction(new[]
-        {
+        return new DfComputedFunction([
             valueFunc
-        });
+        ]);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static DfComputedFunction Create(DifferentialFunction valueFunc)
     {
-        return new DfComputedFunction(new Func<double, double>[]
-        {
+        return new DfComputedFunction([
             valueFunc.GetValue
-        });
+        ]);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static DfComputedFunction Create(Func<double, double> valueFunc, Func<double, double> firstDerivativeFunc)
     {
-        return new DfComputedFunction(new[]
-        {
+        return new DfComputedFunction([
             valueFunc,
             firstDerivativeFunc
-        });
+        ]);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static DfComputedFunction Create(Func<double, double> valueFunc, Func<double, double> firstDerivativeFunc, Func<double, double> secondDerivativeFunc)
     {
-        return new DfComputedFunction(new[]
-        {
+        return new DfComputedFunction([
             valueFunc,
             firstDerivativeFunc,
             secondDerivativeFunc
-        });
+        ]);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static DfComputedFunction Create(Func<double, double> valueFunc, Func<double, double> firstDerivativeFunc, Func<double, double> secondDerivativeFunc, Func<double, double> thirdDerivativeFunc)
     {
-        return new DfComputedFunction(new[]
-        {
+        return new DfComputedFunction([
             valueFunc,
             firstDerivativeFunc,
             secondDerivativeFunc,
             thirdDerivativeFunc
-        });
+        ]);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static DfComputedFunction Create(Func<double, double> valueFunc, Func<double, double> firstDerivativeFunc, Func<double, double> secondDerivativeFunc, Func<double, double> thirdDerivativeFunc, Func<double, double> fourthDerivativeFunc)
     {
-        return new DfComputedFunction(new[]
-        {
+        return new DfComputedFunction([
             valueFunc,
             firstDerivativeFunc,
             secondDerivativeFunc,
             thirdDerivativeFunc,
             fourthDerivativeFunc
-        });
+        ]);
     }
 
 
@@ -83,7 +76,7 @@ public class DfComputedFunction :
     protected DfComputedFunction(Func<double, double> function1)
         : base(false)
     {
-        _functionList = new[] { function1 };
+        _functionList = [function1];
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -119,7 +112,7 @@ public class DfComputedFunction :
         var maxOrder = _functionList.Count - 1;
 
         if (maxOrder >= 1)
-            return new DfComputedFunction(_functionList.Skip(1).ToImmutableArray());
+            return new DfComputedFunction([.._functionList.Skip(1)]);
 
         throw new ArgumentOutOfRangeException();
     }
@@ -148,7 +141,7 @@ public class DfComputedFunction :
         var maxOrder = _functionList.Count - 1;
 
         if (order <= maxOrder)
-            return new DfComputedFunction(_functionList.Skip(order).ToImmutableArray());
+            return new DfComputedFunction([.._functionList.Skip(order)]);
 
         throw new ArgumentOutOfRangeException();
     }

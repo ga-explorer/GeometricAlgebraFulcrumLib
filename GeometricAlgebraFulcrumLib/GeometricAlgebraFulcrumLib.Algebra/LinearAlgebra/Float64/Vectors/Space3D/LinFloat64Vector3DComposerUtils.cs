@@ -1,27 +1,26 @@
-﻿using System.Runtime.CompilerServices;
-using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Angles;
+﻿using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Angles;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Tuples;
-using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Tuples;
+using System.Runtime.CompilerServices;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space3D;
 
 public static class LinFloat64Vector3DComposerUtils
 {
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64Vector3DComposer ToLinVector3DComposer(this ITriplet<Float64Scalar> mv)
+    public static LinFloat64Vector3DComposer ToLinVector3DComposer(this ITriplet<double> mv)
     {
         return LinFloat64Vector3DComposer.Create().SetVector(mv);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64Vector3DComposer NegativeToLinVector3DComposer(this ITriplet<Float64Scalar> mv)
+    public static LinFloat64Vector3DComposer NegativeToLinVector3DComposer(this ITriplet<double> mv)
     {
         return LinFloat64Vector3DComposer.Create().SetVectorNegative(mv);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64Vector3DComposer ToLinVector3DComposer(this ITriplet<Float64Scalar> mv, double scalingFactor)
+    public static LinFloat64Vector3DComposer ToLinVector3DComposer(this ITriplet<double> mv, double scalingFactor)
     {
         return LinFloat64Vector3DComposer.Create().SetVector(mv, scalingFactor);
     }
@@ -30,7 +29,7 @@ public static class LinFloat64Vector3DComposerUtils
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static LinFloat64Vector3D ToUnitLinVector3D(double vectorX, double vectorY, double vectorZ, bool zeroAsSymmetric = true)
     {
-        var s = LinFloat64Vector3DUtils.VectorENorm(vectorX, vectorY, vectorZ);
+        var s = LinFloat64Vector3DUtils.L2Norm(vectorX, vectorY, vectorZ);
 
         if (s.IsZero())
             return zeroAsSymmetric
@@ -49,9 +48,11 @@ public static class LinFloat64Vector3DComposerUtils
         foreach (var scalar in scalarList)
             scalarArray[i++] = scalar;
 
-        var vector = LinFloat64Vector3D.Create(scalarArray[0],
+        var vector = LinFloat64Vector3D.Create(
+            scalarArray[0],
             scalarArray[1],
-            scalarArray[2]);
+            scalarArray[2]
+        );
 
         return makeUnit ? vector.ToUnitLinVector3D() : vector;
     }
@@ -73,7 +74,7 @@ public static class LinFloat64Vector3DComposerUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64SphericalVector3D ToLinSphericalVector(this ITriplet<Float64Scalar> position)
+    public static LinFloat64SphericalVector3D ToLinSphericalVector(this ITriplet<double> position)
     {
         var r = Math.Sqrt(
             position.Item1 * position.Item1 +
@@ -89,7 +90,7 @@ public static class LinFloat64Vector3DComposerUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64SphericalUnitVector3D ToLinSphericalUnitVector(this ITriplet<Float64Scalar> position)
+    public static LinFloat64SphericalUnitVector3D ToLinSphericalUnitVector(this ITriplet<double> position)
     {
         var r = Math.Sqrt(
             position.Item1 * position.Item1 +
@@ -129,11 +130,11 @@ public static class LinFloat64Vector3DComposerUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64Vector3D GetUnitLinVectorR(this ITriplet<Float64Scalar> vector)
+    public static LinFloat64Vector3D GetUnitLinVectorR(this ITriplet<double> vector)
     {
-        var r = vector.VectorENorm();
+        var r = vector.L2Norm();
 
-        var cosTheta = r / vector.Item3.ScalarValue;
+        var cosTheta = r / vector.Item3;
         var sinTheta = Math.Sqrt(1 - cosTheta * cosTheta);
 
         var (cosPhi, sinPhi) = 
@@ -161,11 +162,11 @@ public static class LinFloat64Vector3DComposerUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64Vector3D GetUnitLinVectorTheta(this ITriplet<Float64Scalar> vector)
+    public static LinFloat64Vector3D GetUnitLinVectorTheta(this ITriplet<double> vector)
     {
-        var r = vector.VectorENorm();
+        var r = vector.L2Norm();
 
-        var cosTheta = vector.Item3.ScalarValue / r;
+        var cosTheta = vector.Item3 / r;
         var sinTheta = (1 - cosTheta * cosTheta).Sqrt();
         
         var (cosPhi, sinPhi) = 
@@ -188,7 +189,7 @@ public static class LinFloat64Vector3DComposerUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64Vector3D GetUnitLinVectorPhi(this ITriplet<Float64Scalar> vector)
+    public static LinFloat64Vector3D GetUnitLinVectorPhi(this ITriplet<double> vector)
     {
         var (cosPhi, sinPhi) = 
             LinFloat64PolarAngle.CreateFromVector(vector.Item1, vector.Item2);
@@ -198,10 +199,11 @@ public static class LinFloat64Vector3DComposerUtils
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64Vector3D ToLinVector3D(this ITriplet<Float64Scalar> vector)
+    public static LinFloat64Vector3D ToLinVector3D(this ITriplet<double> vector)
     {
-        return vector as LinFloat64Vector3D 
-               ?? LinFloat64Vector3D.Create(vector.Item1, vector.Item2, vector.Item3);
+        return vector is LinFloat64Vector3D v
+               ? v 
+               : LinFloat64Vector3D.Create(vector.Item1, vector.Item2, vector.Item3);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -214,6 +216,25 @@ public static class LinFloat64Vector3DComposerUtils
         );
     }
     
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static IEnumerable<LinFloat64Vector3D> ToLinVector3DSequence(this IEnumerable<ITriplet<double>> vectorList)
+    {
+        return vectorList.Select(v => v.ToLinVector3D());
+    }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static IReadOnlyList<LinFloat64Vector3D> ToLinVector3DList(this IEnumerable<ITriplet<double>> vectorList)
+    {
+        return vectorList.Select(v => v.ToLinVector3D()).ToArray();
+    }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static LinFloat64Vector3D[] ToLinVector3DList(this ITriplet<double>[] vectorList)
+    {
+        return vectorList.Select(v => v.ToLinVector3D()).ToArray();
+    }
+
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static LinFloat64Vector3D ToXyLinVector3D(this (double, double) vector)
@@ -253,39 +274,39 @@ public static class LinFloat64Vector3DComposerUtils
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64Vector3D ToXyLinVector3D(this IPair<Float64Scalar> vector)
+    public static LinFloat64Vector3D ToXyLinVector3D(this IPair<double> vector)
     {
-        return LinFloat64Vector3D.Create(vector.Item1, vector.Item2, Float64Scalar.Zero);
+        return LinFloat64Vector3D.Create(vector.Item1, vector.Item2, 0);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64Vector3D ToYxLinVector3D(this IPair<Float64Scalar> vector)
+    public static LinFloat64Vector3D ToYxLinVector3D(this IPair<double> vector)
     {
-        return LinFloat64Vector3D.Create(vector.Item2, vector.Item1, Float64Scalar.Zero);
+        return LinFloat64Vector3D.Create(vector.Item2, vector.Item1, 0);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64Vector3D ToXzLinVector3D(this IPair<Float64Scalar> vector)
+    public static LinFloat64Vector3D ToXzLinVector3D(this IPair<double> vector)
     {
-        return LinFloat64Vector3D.Create(vector.Item1, Float64Scalar.Zero, vector.Item2);
+        return LinFloat64Vector3D.Create(vector.Item1, 0, vector.Item2);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64Vector3D ToZxLinVector3D(this IPair<Float64Scalar> vector)
+    public static LinFloat64Vector3D ToZxLinVector3D(this IPair<double> vector)
     {
-        return LinFloat64Vector3D.Create(vector.Item2, Float64Scalar.Zero, vector.Item1);
+        return LinFloat64Vector3D.Create(vector.Item2, 0, vector.Item1);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64Vector3D ToYzLinVector3D(this IPair<Float64Scalar> vector)
+    public static LinFloat64Vector3D ToYzLinVector3D(this IPair<double> vector)
     {
-        return LinFloat64Vector3D.Create(Float64Scalar.Zero, vector.Item1, vector.Item2);
+        return LinFloat64Vector3D.Create(0, vector.Item1, vector.Item2);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64Vector3D ToZyLinVector3D(this IPair<Float64Scalar> vector)
+    public static LinFloat64Vector3D ToZyLinVector3D(this IPair<double> vector)
     {
-        return LinFloat64Vector3D.Create(Float64Scalar.Zero, vector.Item2, vector.Item1);
+        return LinFloat64Vector3D.Create(0, vector.Item2, vector.Item1);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -301,7 +322,7 @@ public static class LinFloat64Vector3DComposerUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64Vector3D XyzLinVector3D(this IQuad<Float64Scalar> vector)
+    public static LinFloat64Vector3D XyzLinVector3D(this IQuad<double> vector)
     {
         return LinFloat64Vector3D.Create(vector.Item1, vector.Item2, vector.Item3);
     }

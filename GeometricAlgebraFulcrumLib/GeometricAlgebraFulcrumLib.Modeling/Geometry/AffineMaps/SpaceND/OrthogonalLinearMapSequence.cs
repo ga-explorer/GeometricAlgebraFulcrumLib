@@ -188,12 +188,12 @@
 //            return true;
 //        }
 
-//        public bool IsNearIdentity(double zeroEpsilon = 1E-12)
+//        public bool IsNearIdentity(double tolerance = 1E-12)
 //        {
 //            for (var basisIndex = 0; basisIndex < VSpaceDimensions; basisIndex++)
 //            {
 //                var isSameVectorBasis =
-//                    MapBasisVector(basisIndex).IsNearVectorBasis(basisIndex, zeroEpsilon);
+//                    MapBasisVector(basisIndex).IsNearVectorBasis(basisIndex, tolerance);
 
 //                if (!isSameVectorBasis) return false;
 //            }
@@ -206,7 +206,7 @@
 //        /// are nearly pair-wise orthogonal
 //        /// </summary>
 //        /// <returns></returns>
-//        public bool IsNearOrthogonalMapsSequence(double zeroEpsilon = Float64Utils.ZeroEpsilon)
+//        public bool IsNearOrthogonalMapsSequence(double tolerance = Float64Utils.DefaultTolerance)
 //        {
 //            if (ReflectionSequence.Count + 2 * RotationSequence.Count > VSpaceDimensions)
 //                return false;
@@ -220,9 +220,9 @@
 //                {
 //                    var u2 = reflection.ReflectionNormal;
 
-//                    if (!u1.IsNearOrthogonalTo(u2, zeroEpsilon)) 
+//                    if (!u1.IsNearOrthogonalTo(u2, tolerance)) 
 //                        return false;
-//                    if (!v1.IsNearOrthogonalTo(u2, zeroEpsilon)) 
+//                    if (!v1.IsNearOrthogonalTo(u2, tolerance)) 
 //                        return false;
 //                }
 
@@ -231,13 +231,13 @@
 //                    var u2 = RotationSequence[j].SourceVector;
 //                    var v2 = RotationSequence[j].TargetVector;
 
-//                    if (!u1.IsNearOrthogonalTo(u2, zeroEpsilon)) 
+//                    if (!u1.IsNearOrthogonalTo(u2, tolerance)) 
 //                        return false;
-//                    if (!u1.IsNearOrthogonalTo(v2, zeroEpsilon)) 
+//                    if (!u1.IsNearOrthogonalTo(v2, tolerance)) 
 //                        return false;
-//                    if (!v1.IsNearOrthogonalTo(u2, zeroEpsilon)) 
+//                    if (!v1.IsNearOrthogonalTo(u2, tolerance)) 
 //                        return false;
-//                    if (!v1.IsNearOrthogonalTo(v2, zeroEpsilon)) 
+//                    if (!v1.IsNearOrthogonalTo(v2, tolerance)) 
 //                        return false;
 //                }
 //            }
@@ -250,7 +250,7 @@
 //                {
 //                    var u2 = ReflectionSequence[j].ReflectionNormal;
 
-//                    if (!u1.IsNearOrthogonalTo(u2, zeroEpsilon)) 
+//                    if (!u1.IsNearOrthogonalTo(u2, tolerance)) 
 //                        return false;
 //                }
 //            }

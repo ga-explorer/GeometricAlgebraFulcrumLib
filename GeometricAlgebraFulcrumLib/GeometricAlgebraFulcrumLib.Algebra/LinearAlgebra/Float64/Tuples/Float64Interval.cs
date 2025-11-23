@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
+using GeometricAlgebraFulcrumLib.Utilities.Structures.Tuples;
 
 // ReSharper disable CompareOfFloatsByEqualityOperator
 
@@ -9,7 +10,8 @@ namespace GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Tuples;
 /// <summary>
 /// Represents a real interval
 /// </summary>
-public sealed record Float64Interval :
+public readonly record struct Float64Interval :
+    IPair<double>,
     IAlgebraicElement
 {
     /// <summary>
@@ -96,6 +98,10 @@ public sealed record Float64Interval :
 
     public double MaxValue { get; }
 
+    public double Item1 => MinValue;
+
+    public double Item2 => MaxValue;
+
     public double Length
         => Math.Max(0, MaxValue - MinValue);
 
@@ -112,7 +118,7 @@ public sealed record Float64Interval :
     {
         if (minValue > maxValue || minValue == maxValue && excludeMaxValue && excludeMinValue)
         {
-            minValue = maxValue;
+            MinValue = maxValue;
         }
         else
         {

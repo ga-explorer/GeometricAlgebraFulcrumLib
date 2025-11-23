@@ -27,7 +27,7 @@ public sealed class PnPropagatorFloat64Divide :
     public PnCellFloat64 InputCell2 { get; }
 
     public override IReadOnlyList<IPropagatorCell> InputCells 
-        => new []{InputCell1, InputCell2};
+        => [InputCell1, InputCell2];
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]

@@ -4,6 +4,134 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Structures.Extensions;
 
 public static class SequenceExtensions
 {
+    /// <summary>
+    /// Gets the first item of the sequence.
+    /// </summary>
+    /// <typeparam name="T">The type of elements in the sequence</typeparam>
+    /// <param name="source">The sequence to get the first item from</param>
+    /// <returns>The first item in the sequence</returns>
+    /// <exception cref="ArgumentNullException">Thrown when source is null</exception>
+    /// <exception cref="InvalidOperationException">Thrown when the sequence is empty</exception>
+    public static T FirstItem<T>(this IEnumerable<T> source)
+    {
+        if (source == null)
+            throw new ArgumentNullException(nameof(source));
+        
+        if (source is IList<T> list)
+        {
+            if (list.Count > 0)
+                return list[0];
+
+            throw new InvalidOperationException("The sequence is empty.");
+        }
+        
+        if (source is IReadOnlyList<T> readOnlyList)
+        {
+            if (readOnlyList.Count > 0)
+                return readOnlyList[0];
+
+            throw new InvalidOperationException("The sequence is empty.");
+        }
+
+        using var enumerator = source.GetEnumerator();
+        if (enumerator.MoveNext())
+            return enumerator.Current;
+
+        throw new InvalidOperationException("The sequence is empty.");
+    }
+    
+    /// <summary>
+    /// Gets the second item of the sequence.
+    /// </summary>
+    /// <typeparam name="T">The type of elements in the sequence</typeparam>
+    /// <param name="source">The sequence to get the second item from</param>
+    /// <returns>The second item in the sequence</returns>
+    /// <exception cref="ArgumentNullException">Thrown when source is null</exception>
+    /// <exception cref="InvalidOperationException">Thrown when the sequence has fewer than 2 items</exception>
+    public static T SecondItem<T>(this IEnumerable<T> source)
+    {
+        if (source == null)
+            throw new ArgumentNullException(nameof(source));
+        
+        if (source is IList<T> list)
+        {
+            if (list.Count > 1)
+                return list[1];
+
+            throw new InvalidOperationException("The sequence does not contain a second item.");
+        }
+        
+        if (source is IReadOnlyList<T> readOnlyList)
+        {
+            if (readOnlyList.Count > 1)
+                return readOnlyList[1];
+
+            throw new InvalidOperationException("The sequence does not contain a second item.");
+        }
+
+        using var enumerator = source.GetEnumerator();
+        if (!enumerator.MoveNext())
+            throw new InvalidOperationException("The sequence does not contain a second item.");
+            
+        if (!enumerator.MoveNext())
+            throw new InvalidOperationException("The sequence does not contain a second item.");
+            
+        return enumerator.Current;
+    }
+
+    /// <summary>
+    /// Safely gets the first item of the sequence, or a default value if empty.
+    /// </summary>
+    /// <typeparam name="T">The type of elements in the sequence</typeparam>
+    /// <param name="source">The sequence to get the first item from</param>
+    /// <param name="defaultValue"></param>
+    /// <returns>The first item in the sequence, or defaultValue if empty</returns>
+    /// <exception cref="ArgumentNullException">Thrown when source is null</exception>
+    public static T FirstItemOrDefault<T>(this IEnumerable<T> source, T defaultValue = default!)
+    {
+        if (source == null)
+            throw new ArgumentNullException(nameof(source));
+        
+        if (source is IList<T> list)
+            return (list.Count > 0 ? list[0] : defaultValue)!;
+        
+        if (source is IReadOnlyList<T> readOnlyList)
+            return (readOnlyList.Count > 0 ? readOnlyList[0] : defaultValue)!;
+
+        using var enumerator = source.GetEnumerator();
+        return (enumerator.MoveNext() ? enumerator.Current : defaultValue)!;
+    }
+
+    /// <summary>
+    /// Safely gets the second item of the sequence, or a default value if not enough items.
+    /// </summary>
+    /// <typeparam name="T">The type of elements in the sequence</typeparam>
+    /// <param name="source">The sequence to get the second item from</param>
+    /// <param name="defaultValue"></param>
+    /// <returns>The second item in the sequence, or defaultValue if fewer than 2 items</returns>
+    /// <exception cref="ArgumentNullException">Thrown when source is null</exception>
+    public static T SecondItemOrDefault<T>(this IEnumerable<T> source, T defaultValue = default!)
+    {
+        if (source == null)
+            throw new ArgumentNullException(nameof(source));
+        
+        if (source is IList<T> list)
+            return (list.Count > 1 ? list[1] : defaultValue)!;
+        
+        if (source is IReadOnlyList<T> readOnlyList)
+            return (readOnlyList.Count > 1 ? readOnlyList[1] : defaultValue)!;
+
+        using var enumerator = source.GetEnumerator();
+        if (!enumerator.MoveNext())
+            return defaultValue;
+            
+        if (!enumerator.MoveNext())
+            return defaultValue;
+            
+        return enumerator.Current;
+    }
+
+
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static int BitwiseXor(this IEnumerable<int> sequence)
     {

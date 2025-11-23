@@ -2,11 +2,11 @@
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.BasicShapes;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.BasicShapes.Lines.Space2D.Float64;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.Borders;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.Borders.Space2D.Float64;
-using GeometricAlgebraFulcrumLib.Modeling.Graphics.Accelerators.BIH;
-using GeometricAlgebraFulcrumLib.Modeling.Graphics.Accelerators.BIH.Space2D;
-using GeometricAlgebraFulcrumLib.Modeling.Graphics.Accelerators.BIH.Space2D.Traversal;
+using GeometricAlgebraFulcrumLib.Modeling.Geometry.Bounding.Float64;
+
+using GeometricAlgebraFulcrumLib.Modeling.Graphics.Accelerators.BIHold;
+using GeometricAlgebraFulcrumLib.Modeling.Graphics.Accelerators.BIHold.Space2D;
+using GeometricAlgebraFulcrumLib.Modeling.Graphics.Accelerators.BIHold.Space2D.Traversal;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Accelerators.Grids;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Accelerators.Grids.Space2D;
 
@@ -20,12 +20,12 @@ namespace GeometricAlgebraFulcrumLib.Modeling.Graphics.Computers.Intersections;
 /// </summary>
 public class GcLineIntersector2D
 {
-    public static bool TestIntersection(LineTraversalData2D lineData, IFloat64BoundingBox2D boundingBox)
+    public static bool TestIntersection(LineTraversalData2D lineData, Float64BoundingBox2D boundingBox)
     {
         var corners = new[]
         {
-            boundingBox.GetMinCorner(),
-            boundingBox.GetMaxCorner()
+            boundingBox.MinPoint,
+            boundingBox.MaxPoint
         };
 
         var isXNegative = lineData.DirectionSign[0];
@@ -46,12 +46,12 @@ public class GcLineIntersector2D
         return true;
     }
 
-    public static Tuple<bool, double, double> ComputeIntersections(LineTraversalData2D lineData, IFloat64BoundingBox2D boundingBox)
+    public static Tuple<bool, double, double> ComputeIntersections(LineTraversalData2D lineData, Float64BoundingBox2D boundingBox)
     {
         var corners = new[]
         {
-            boundingBox.GetMinCorner(),
-            boundingBox.GetMaxCorner()
+            boundingBox.MinPoint,
+            boundingBox.MaxPoint
         };
 
         var isXNegative = lineData.DirectionSign[0];
@@ -77,7 +77,7 @@ public class GcLineIntersector2D
 
 
     public IEnumerable<AccBihLineTraversalState2D> BihLineTraversalStates { get; private set; }
-        = Enumerable.Empty<AccBihLineTraversalState2D>();
+        = [];
 
 
     public Float64Line2D Line { get; private set; }
@@ -664,7 +664,7 @@ public class GcLineIntersector2D
 
 
     #region Line-Bounding Box Intersection
-    public bool TestIntersection(IFloat64BoundingBox2D boundingBox)
+    public bool TestIntersection(Float64BoundingBox2D boundingBox)
     {
         var tMin = double.NegativeInfinity;
         var tMax = double.PositiveInfinity;
@@ -716,7 +716,7 @@ public class GcLineIntersector2D
         return true;
     }
 
-    public Tuple<bool, double, double> ComputeIntersections(IFloat64BoundingBox2D boundingBox)
+    public Tuple<bool, double, double> ComputeIntersections(Float64BoundingBox2D boundingBox)
     {
         var tMin = double.NegativeInfinity;
         var tMax = double.PositiveInfinity;
@@ -769,7 +769,7 @@ public class GcLineIntersector2D
     }
 
 
-    public bool TestIntersection(IEnumerable<IFloat64BoundingBox2D> boundingBoxesList)
+    public bool TestIntersection(IEnumerable<Float64BoundingBox2D> boundingBoxesList)
     {
         var lineData = Line.GetLineTraversalData();
 
@@ -886,7 +886,7 @@ public class GcLineIntersector2D
     {
         if (storeTraversalStates)
             BihLineTraversalStates =
-                Enumerable.Empty<AccBihLineTraversalState2D>();
+                [];
 
         var lineLimits = ComputeIntersections(bih.BoundingBox);
 
@@ -913,7 +913,7 @@ public class GcLineIntersector2D
     {
         if (storeTraversalStates)
             BihLineTraversalStates =
-                Enumerable.Empty<AccBihLineTraversalState2D>();
+                [];
 
         //Test line intersection with BIH bounding box
         var lineLimits = ComputeIntersections(bih.BoundingBox);
@@ -954,7 +954,7 @@ public class GcLineIntersector2D
     {
         if (storeTraversalStates)
             BihLineTraversalStates =
-                Enumerable.Empty<AccBihLineTraversalState2D>();
+                [];
 
         //Test line intersection with BIH bounding box
         var lineLimits = ComputeIntersections(bih.BoundingBox);
@@ -1013,7 +1013,7 @@ public class GcLineIntersector2D
     {
         if (storeTraversalStates)
             BihLineTraversalStates =
-                Enumerable.Empty<AccBihLineTraversalState2D>();
+                [];
 
         //Test line intersection with BIH bounding box
         var lineLimits = ComputeIntersections(bih.BoundingBox);
@@ -1072,7 +1072,7 @@ public class GcLineIntersector2D
     {
         if (storeTraversalStates)
             BihLineTraversalStates =
-                Enumerable.Empty<AccBihLineTraversalState2D>();
+                [];
 
         //Test line intersection with BIH bounding box
         var lineLimits = ComputeIntersections(bih.BoundingBox);

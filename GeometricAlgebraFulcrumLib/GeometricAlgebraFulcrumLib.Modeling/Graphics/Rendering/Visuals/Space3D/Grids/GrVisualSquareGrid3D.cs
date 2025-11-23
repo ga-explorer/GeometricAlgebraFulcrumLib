@@ -1,5 +1,4 @@
 ﻿using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space3D;
-using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Tuples;
 using GeometricAlgebraFulcrumLib.Utilities.Web.Images;
 using SixLabors.ImageSharp;
@@ -9,7 +8,7 @@ namespace GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.Visuals.Space3D
 public sealed class GrVisualSquareGrid3D :
     GrVisualElement3D
 {
-    public static GrVisualSquareGrid3D DefaultXy(ITriplet<Float64Scalar> center, int unitCount, double unitSize = 1, double opacity = 1)
+    public static GrVisualSquareGrid3D DefaultXy(ITriplet<double> center, int unitCount, double unitSize = 1, double opacity = 1)
     {
         return new GrVisualSquareGrid3D(
             "defaultXy",
@@ -25,7 +24,7 @@ public sealed class GrVisualSquareGrid3D :
         };
     }
 
-    public static GrVisualSquareGrid3D DefaultXy(ITriplet<Float64Scalar> center, IGrVisualImageSource texture, int unitCount, double unitSize = 1, double opacity = 1)
+    public static GrVisualSquareGrid3D DefaultXy(ITriplet<double> center, IGrVisualImageSource texture, int unitCount, double unitSize = 1, double opacity = 1)
     {
         return new GrVisualSquareGrid3D(
             "defaultXy",
@@ -41,7 +40,7 @@ public sealed class GrVisualSquareGrid3D :
         };
     }
 
-    public static GrVisualSquareGrid3D DefaultXy(ITriplet<Float64Scalar> center, Image image, int unitCount, double unitSize = 1, double opacity = 1)
+    public static GrVisualSquareGrid3D DefaultXy(ITriplet<double> center, Image image, int unitCount, double unitSize = 1, double opacity = 1)
     {
         return new GrVisualSquareGrid3D(
             "defaultXy",
@@ -57,7 +56,7 @@ public sealed class GrVisualSquareGrid3D :
         };
     }
 
-    //public static GrVisualSquareGrid3D DefaultXy(ITriplet<Float64Scalar> center, IGrVisualImageSource imageComposer, int unitCount, double unitSize = 1, double opacity = 1)
+    //public static GrVisualSquareGrid3D DefaultXy(ITriplet<double> center, IGrVisualImageSource imageComposer, int unitCount, double unitSize = 1, double opacity = 1)
     //{
     //    return new GrVisualSquareGrid3D(
     //        "defaultXy",
@@ -74,7 +73,7 @@ public sealed class GrVisualSquareGrid3D :
     //}
 
     
-    public static GrVisualSquareGrid3D DefaultYz(ITriplet<Float64Scalar> center, int unitCount, double unitSize = 1, double opacity = 1)
+    public static GrVisualSquareGrid3D DefaultYz(ITriplet<double> center, int unitCount, double unitSize = 1, double opacity = 1)
     {
         return new GrVisualSquareGrid3D(
             "defaultYz",
@@ -90,7 +89,7 @@ public sealed class GrVisualSquareGrid3D :
         };
     }
 
-    public static GrVisualSquareGrid3D DefaultYz(ITriplet<Float64Scalar> center, IGrVisualImageSource texture, int unitCount, double unitSize = 1, double opacity = 1)
+    public static GrVisualSquareGrid3D DefaultYz(ITriplet<double> center, IGrVisualImageSource texture, int unitCount, double unitSize = 1, double opacity = 1)
     {
         return new GrVisualSquareGrid3D(
             "defaultYz",
@@ -106,7 +105,7 @@ public sealed class GrVisualSquareGrid3D :
         };
     }
     
-    public static GrVisualSquareGrid3D DefaultYz(ITriplet<Float64Scalar> center, Image image, int unitCount, double unitSize = 1, double opacity = 1)
+    public static GrVisualSquareGrid3D DefaultYz(ITriplet<double> center, Image image, int unitCount, double unitSize = 1, double opacity = 1)
     {
         return new GrVisualSquareGrid3D(
             "defaultYz",
@@ -122,7 +121,7 @@ public sealed class GrVisualSquareGrid3D :
         };
     }
 
-    //public static GrVisualSquareGrid3D DefaultYz(ITriplet<Float64Scalar> center, IGrVisualImageComposer imageComposer, int unitCount, double unitSize = 1, double opacity = 1)
+    //public static GrVisualSquareGrid3D DefaultYz(ITriplet<double> center, IGrVisualImageComposer imageComposer, int unitCount, double unitSize = 1, double opacity = 1)
     //{
     //    return new GrVisualSquareGrid3D(
     //        "defaultYz",
@@ -139,7 +138,7 @@ public sealed class GrVisualSquareGrid3D :
     //}
 
     
-    public static GrVisualSquareGrid3D DefaultZx(ITriplet<Float64Scalar> center, int unitCount, double unitSize = 1, double opacity = 1)
+    public static GrVisualSquareGrid3D DefaultZx(ITriplet<double> center, int unitCount, double unitSize = 1, double opacity = 1)
     {
         return new GrVisualSquareGrid3D(
             "defaultZx",
@@ -155,7 +154,7 @@ public sealed class GrVisualSquareGrid3D :
         };
     }
 
-    public static GrVisualSquareGrid3D DefaultZx(ITriplet<Float64Scalar> center, IGrVisualImageSource texture, int unitCount, double unitSize = 1, double opacity = 1)
+    public static GrVisualSquareGrid3D DefaultZx(ITriplet<double> center, IGrVisualImageSource texture, int unitCount, double unitSize = 1, double opacity = 1)
     {
         return new GrVisualSquareGrid3D(
             "defaultZx",
@@ -171,7 +170,7 @@ public sealed class GrVisualSquareGrid3D :
         };
     }
     
-    public static GrVisualSquareGrid3D DefaultZx(ITriplet<Float64Scalar> center, Image image, int unitCount, double unitSize = 1, double opacity = 1)
+    public static GrVisualSquareGrid3D DefaultZx(ITriplet<double> center, Image image, int unitCount, double unitSize = 1, double opacity = 1)
     {
         return new GrVisualSquareGrid3D(
             "defaultZx",
@@ -187,7 +186,7 @@ public sealed class GrVisualSquareGrid3D :
         };
     }
 
-    //public static GrVisualSquareGrid3D DefaultZx(ITriplet<Float64Scalar> center, IGrVisualImageComposer imageComposer, int unitCount, double unitSize = 1, double opacity = 1)
+    //public static GrVisualSquareGrid3D DefaultZx(ITriplet<double> center, IGrVisualImageComposer imageComposer, int unitCount, double unitSize = 1, double opacity = 1)
     //{
     //    return new GrVisualSquareGrid3D(
     //        "defaultZx",
@@ -204,7 +203,7 @@ public sealed class GrVisualSquareGrid3D :
     //}
 
 
-    public static GrVisualSquareGrid3D Default(string name, ITriplet<Float64Scalar> center, LinFloat64Quaternion orientation, int unitCount, double unitSize = 1, double opacity = 1)
+    public static GrVisualSquareGrid3D Default(string name, ITriplet<double> center, LinFloat64Quaternion orientation, int unitCount, double unitSize = 1, double opacity = 1)
     {
         return new GrVisualSquareGrid3D(
             name,

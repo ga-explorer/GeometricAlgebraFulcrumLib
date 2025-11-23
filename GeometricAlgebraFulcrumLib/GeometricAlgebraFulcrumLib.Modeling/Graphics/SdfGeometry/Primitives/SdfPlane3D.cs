@@ -15,6 +15,6 @@ public sealed class SdfPlane3D : ScalarDistanceFunction
 
     public override double GetScalarDistance(ILinFloat64Vector3D point)
     {
-        return point.VectorESp(UnitNormal) - Point.VectorESp(UnitNormal);
+        return point.VectorDot(UnitNormal) - Point.VectorDot(UnitNormal);
     }
 }

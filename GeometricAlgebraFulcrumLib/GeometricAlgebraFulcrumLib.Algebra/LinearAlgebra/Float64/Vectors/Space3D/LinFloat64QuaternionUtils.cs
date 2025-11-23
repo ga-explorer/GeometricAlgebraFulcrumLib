@@ -21,17 +21,17 @@ public static class LinFloat64QuaternionUtils
     
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static bool IsNearZero(this Quaternion quaternion, float zeroEpsilon = Float32Utils.ZeroEpsilon)
+    public static bool IsNearZero(this Quaternion quaternion, float tolerance = Float32Utils.DefaultTolerance)
     {
-        return quaternion.X.IsNearZero(zeroEpsilon) &&
-               quaternion.Y.IsNearZero(zeroEpsilon) &&
-               quaternion.Z.IsNearZero(zeroEpsilon);
+        return quaternion.X.IsNearZero(tolerance) &&
+               quaternion.Y.IsNearZero(tolerance) &&
+               quaternion.Z.IsNearZero(tolerance);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static bool IsNearNormalized(this Quaternion quaternion, float zeroEpsilon = Float32Utils.ZeroEpsilon)
+    public static bool IsNearNormalized(this Quaternion quaternion, float tolerance = Float32Utils.DefaultTolerance)
     {
-        return (quaternion.LengthSquared() - 1f).IsNearZero(zeroEpsilon);
+        return (quaternion.LengthSquared() - 1f).IsNearZero(tolerance);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]

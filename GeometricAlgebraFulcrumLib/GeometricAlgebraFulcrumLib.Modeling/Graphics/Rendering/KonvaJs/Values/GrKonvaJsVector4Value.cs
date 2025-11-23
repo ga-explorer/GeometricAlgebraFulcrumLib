@@ -1,14 +1,13 @@
 ﻿using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space4D;
-using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.AttributeSet;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Tuples;
 
 namespace GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.KonvaJs.Values;
 
 public sealed class GrKonvaJsVector4Value :
-    SparseCodeAttributeValue<IQuad<Float64Scalar>>
+    SparseCodeAttributeValue<IQuad<double>>
 {
-    internal static GrKonvaJsVector4Value Create(IQuad<Float64Scalar> value)
+    internal static GrKonvaJsVector4Value Create(IQuad<double> value)
     {
         return new GrKonvaJsVector4Value(value);
     }
@@ -30,7 +29,7 @@ public sealed class GrKonvaJsVector4Value :
     {
     }
 
-    private GrKonvaJsVector4Value(IQuad<Float64Scalar> value)
+    private GrKonvaJsVector4Value(IQuad<double> value)
         : base(value)
     {
     }

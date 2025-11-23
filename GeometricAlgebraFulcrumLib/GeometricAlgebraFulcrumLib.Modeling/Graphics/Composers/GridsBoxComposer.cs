@@ -36,15 +36,15 @@ public sealed class GridsBoxComposer
     /// <returns></returns>
     public ListPathsMesh3D[] ComposeMeshes()
     {
-        return new[]
-        {
+        return
+        [
             UpperGridComposer.ComposeMesh(),
             LowerGridComposer.ComposeMesh(),
             FrontGridComposer.ComposeMesh(),
             BackGridComposer.ComposeMesh(),
             LeftGridComposer.ComposeMesh(),
             RighGridComposer.ComposeMesh()
-        };
+        ];
     }
 
     /// <summary>
@@ -53,14 +53,14 @@ public sealed class GridsBoxComposer
     /// <returns></returns>
     public TexturedPathsMesh3D[] ComposePatches(bool upperPatches = true)
     {
-        return new[]
-        {
+        return
+        [
             UpperGridComposer.ComposeTexturedMesh(),
             LowerGridComposer.ComposeTexturedMesh(),
             FrontGridComposer.ComposeTexturedMesh(),
             BackGridComposer.ComposeTexturedMesh(),
             LeftGridComposer.ComposeTexturedMesh(),
             RighGridComposer.ComposeTexturedMesh()
-        };
+        ];
     }
 }

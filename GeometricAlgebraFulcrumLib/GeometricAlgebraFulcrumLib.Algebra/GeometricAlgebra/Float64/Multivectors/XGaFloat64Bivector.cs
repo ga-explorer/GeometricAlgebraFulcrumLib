@@ -38,7 +38,7 @@ public sealed partial class XGaFloat64Bivector :
     public override IEnumerable<IndexSet> Ids
         => _idScalarDictionary.Keys;
 
-    public override IEnumerable<double> Scalars 
+    public override IEnumerable<double> Scalars
         => _idScalarDictionary.Values;
 
     public override IEnumerable<KeyValuePair<IndexSet, double>> IdScalarPairs
@@ -133,7 +133,7 @@ public sealed partial class XGaFloat64Bivector :
         return !IsZero && _idScalarDictionary.ContainsKey(key);
     }
 
-
+    
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public override XGaFloat64Scalar GetScalarPart()
     {
@@ -259,7 +259,7 @@ public sealed partial class XGaFloat64Bivector :
         scalar = 0d;
         return false;
     }
-
+    
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public override string ToString()

@@ -1,6 +1,7 @@
 ﻿using System.Runtime.CompilerServices;
-using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Matrices;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space3D;
+using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Numerical.Matrices;
+using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.LinearMaps.Space3D;
 
@@ -40,7 +41,7 @@ public sealed class LinFloat64MatrixLinearMap3D :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public LinFloat64Vector3D MapVector(ILinFloat64Vector3D vector)
+    public LinFloat64Vector3D MapVector(LinFloat64Vector3D vector)
     {
         return _mapArray * vector;
     }
@@ -72,19 +73,19 @@ public sealed class LinFloat64MatrixLinearMap3D :
         return true;
     }
 
-    public bool IsNearIdentity(double zeroEpsilon = 1E-12)
+    public bool IsNearIdentity(double tolerance = Float64Utils.DefaultTolerance)
     {
         for (var i = 0; i < VSpaceDimensions; i++)
         {
             for (var j = 0; j < i; j++)
-                if (!_mapArray[i, j].IsNearZero(zeroEpsilon))
+                if (!_mapArray[i, j].IsNearZero(tolerance))
                     return false;
 
-            if (!_mapArray[i, i].IsNearOne(zeroEpsilon))
+            if (!_mapArray[i, i].IsNearOne(tolerance))
                 return false;
 
             for (var j = i + 1; j < VSpaceDimensions; j++)
-                if (!_mapArray[i, j].IsNearZero(zeroEpsilon))
+                if (!_mapArray[i, j].IsNearZero(tolerance))
                     return false;
         }
 

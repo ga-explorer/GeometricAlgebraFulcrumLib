@@ -72,10 +72,14 @@ public class Float64LineSegmentPath3D :
 
     public override Float64Path3DLocalFrame GetFrame(double parameterValue)
     {
+        var tangent = Point2 - Point1;
+        var scalingFactor = tangent.L2Norm();
+
         return Float64Path3DLocalFrame.Create(
             parameterValue.ClampPeriodic(1d),
             GetValue(parameterValue),
-            (Point2 - Point1).ToUnitLinVector3D()
+            scalingFactor,
+            tangent / scalingFactor
         );
     }
 

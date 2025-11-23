@@ -1,11 +1,11 @@
 ﻿using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.LinearMaps.Outermorphisms;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.LinearMaps.Versors;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Processors;
-using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Matrices;
 using GeometricAlgebraFulcrumLib.Mathematica.Algebra;
 using GeometricAlgebraFulcrumLib.Mathematica.Utilities.Structures;
 using GeometricAlgebraFulcrumLib.Mathematica.Utilities.Structures.ExprFactory;
 using GeometricAlgebraFulcrumLib.Mathematica.Utilities.Text;
+using GeometricAlgebraFulcrumLib.Utilities.Structures.Extensions;
 using Wolfram.NETLink;
 
 namespace GeometricAlgebraFulcrumLib.Applications.Symbolic.PowerSystems.GAPoT;
@@ -39,7 +39,7 @@ public static class ClarkeTransformationSymbolicSample
             var clarkeArray =
                 clarkeMap
                     .GetVectorMapArray(n, n)
-                    .MapScalars(scalar =>
+                    .MapItems(scalar =>
                         Mfs.TrigReduce[Mfs.FullSimplify[scalar]].Evaluate()
                     );
 
@@ -66,7 +66,7 @@ public static class ClarkeTransformationSymbolicSample
             var linearMapQArray =
                 linearMapQ
                     .GetVectorMapArray(n, n)
-                    .MapScalars(scalar =>
+                    .MapItems(scalar =>
                         Mfs.TrigReduce[Mfs.FullSimplify[scalar]].Evaluate()
                     );
 
@@ -79,7 +79,7 @@ public static class ClarkeTransformationSymbolicSample
             var linearMapRArray =
                 linearMapR
                     .GetVectorMapArray(n, n)
-                    .MapScalars(scalar =>
+                    .MapItems(scalar =>
                         Mfs.TrigReduce[Mfs.FullSimplify[scalar]].Evaluate()
                     );
 

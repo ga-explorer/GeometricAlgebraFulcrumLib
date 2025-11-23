@@ -23,7 +23,7 @@ public sealed class GrVisualPoint3D :
     );
         
 
-    public static GrVisualPoint3D CreateStatic(string name, GrVisualSurfaceThickStyle3D style, ILinFloat64Vector3D position)
+    public static GrVisualPoint3D CreateStatic(string name, GrVisualSurfaceThickStyle3D style, LinFloat64Vector3D position)
     {
         return new GrVisualPoint3D(
             name, 
@@ -33,7 +33,7 @@ public sealed class GrVisualPoint3D :
         );
     }
         
-    public static GrVisualPoint3D Create(string name, GrVisualSurfaceThickStyle3D style, ILinFloat64Vector3D position, Float64SamplingSpecs samplingSpecs)
+    public static GrVisualPoint3D Create(string name, GrVisualSurfaceThickStyle3D style, LinFloat64Vector3D position, Float64SamplingSpecs samplingSpecs)
     {
         return new GrVisualPoint3D(
             name, 
@@ -56,33 +56,42 @@ public sealed class GrVisualPoint3D :
 
     public GrVisualSurfaceThickStyle3D Style { get; }
 
-    public ILinFloat64Vector3D Position { get; } 
+    public LinFloat64Vector3D Position { get; } 
         
     public GrVisualAnimatedVector3D? AnimatedPosition { get; set; }
         
     public int VSpaceDimensions 
         => 3;
 
-    public Float64Scalar Item1 
+    public double Item1 
         => Position.X;
         
-    public Float64Scalar Item2 
+    public double Item2 
         => Position.Y;
         
-    public Float64Scalar Item3 
+    public double Item3 
         => Position.Z;
         
-    public Float64Scalar X 
+    public double X 
         => Position.X;
         
-    public Float64Scalar Y 
+    public double Y 
         => Position.Y;
         
-    public Float64Scalar Z 
+    public double Z 
         => Position.Z;
+    
+    public double this[int index] 
+        => index switch
+        {
+            0 => X,
+            1 => Y,
+            2 => Z,
+            _ => Float64Scalar.Zero
+        };
 
 
-    private GrVisualPoint3D(string name, GrVisualSurfaceThickStyle3D style, ILinFloat64Vector3D position, Float64SamplingSpecs samplingSpecs) 
+    private GrVisualPoint3D(string name, GrVisualSurfaceThickStyle3D style, LinFloat64Vector3D position, Float64SamplingSpecs samplingSpecs) 
         : base(name, samplingSpecs)
     {
         Position = position;
@@ -138,7 +147,7 @@ public sealed class GrVisualPoint3D :
 
         foreach (var frameIndex in GetValidFrameIndexSet())
         {
-            var time = (double)frameIndex / SamplingSpecs.SamplingRate;
+            var time = frameIndex / SamplingSpecs.SamplingRate;
 
             yield return new KeyFrameRecord(
                 frameIndex, 

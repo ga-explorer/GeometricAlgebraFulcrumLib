@@ -31,7 +31,7 @@ public sealed class GrVisualBivector3D :
         );
 
 
-    public static GrVisualBivector3D CreateStatic(string name, GrVisualCurveTubeStyle3D style, ILinFloat64Vector3D normal, double radius)
+    public static GrVisualBivector3D CreateStatic(string name, GrVisualCurveTubeStyle3D style, LinFloat64Vector3D normal, double radius)
     {
         return new GrVisualBivector3D(
             name,
@@ -43,7 +43,7 @@ public sealed class GrVisualBivector3D :
         );
     }
 
-    public static GrVisualBivector3D CreateStatic(string name, GrVisualCurveTubeStyle3D style, ILinFloat64Vector3D center, ILinFloat64Vector3D normal, double radius)
+    public static GrVisualBivector3D CreateStatic(string name, GrVisualCurveTubeStyle3D style, LinFloat64Vector3D center, LinFloat64Vector3D normal, double radius)
     {
         return new GrVisualBivector3D(
             name,
@@ -55,7 +55,7 @@ public sealed class GrVisualBivector3D :
         );
     }
 
-    public static GrVisualBivector3D Create(string name, GrVisualCurveTubeStyle3D style, ILinFloat64Vector3D normal, double radius, Float64SamplingSpecs samplingSpecs)
+    public static GrVisualBivector3D Create(string name, GrVisualCurveTubeStyle3D style, LinFloat64Vector3D normal, double radius, Float64SamplingSpecs samplingSpecs)
     {
         return new GrVisualBivector3D(
             name,
@@ -67,7 +67,7 @@ public sealed class GrVisualBivector3D :
         );
     }
 
-    public static GrVisualBivector3D Create(string name, GrVisualCurveTubeStyle3D style, ILinFloat64Vector3D center, ILinFloat64Vector3D normal, double radius, Float64SamplingSpecs samplingSpecs)
+    public static GrVisualBivector3D Create(string name, GrVisualCurveTubeStyle3D style, LinFloat64Vector3D center, LinFloat64Vector3D normal, double radius, Float64SamplingSpecs samplingSpecs)
     {
         return new GrVisualBivector3D(
             name,
@@ -137,7 +137,7 @@ public sealed class GrVisualBivector3D :
 
     public GrVisualSurfaceThickStyle3D CircleStyle { get; }
 
-    public ILinFloat64Vector3D Center { get; }
+    public LinFloat64Vector3D Center { get; }
 
     public LinFloat64Vector3D Normal { get; }
 
@@ -184,7 +184,7 @@ public sealed class GrVisualBivector3D :
     }
 
 
-    private GrVisualBivector3D(string name, GrVisualCurveTubeStyle3D style, ILinFloat64Vector3D center, ILinFloat64Vector3D normal, double radius, Float64SamplingSpecs samplingSpecs)
+    private GrVisualBivector3D(string name, GrVisualCurveTubeStyle3D style, LinFloat64Vector3D center, LinFloat64Vector3D normal, double radius, Float64SamplingSpecs samplingSpecs)
         : base(name, samplingSpecs)
     {
         VectorStyle = style;
@@ -593,7 +593,7 @@ public sealed class GrVisualBivector3D :
 
         foreach (var frameIndex in GetValidFrameIndexSet())
         {
-            var time = (double)frameIndex / SamplingSpecs.SamplingRate;
+            var time = frameIndex / SamplingSpecs.SamplingRate;
 
             yield return new KeyFrameRecord(
                 frameIndex,

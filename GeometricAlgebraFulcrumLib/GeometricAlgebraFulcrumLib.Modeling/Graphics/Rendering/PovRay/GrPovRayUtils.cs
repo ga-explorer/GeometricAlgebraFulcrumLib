@@ -241,7 +241,7 @@ public static class GrPovRayUtils
         );
     }
         
-    public static JToken GetPovRayJson(this ITriplet<Float64Scalar> value)
+    public static JToken GetPovRayJson(this LinFloat64Vector3D value)
     {
         return new JArray(
             (float) value.Item1,
@@ -444,17 +444,17 @@ public static class GrPovRayUtils
         return $"{vector.Item1}, {vector.Item2}";
     }
 
-    public static string GetPovRayCode(this IPair<Float64Scalar> vector)
+    public static string GetPovRayCode(this IPair<double> vector)
     {
         return $"<{(float) vector.Item1:G}, {(float) vector.Item2:G}>";
     }
 
-    public static string GetPovRayCode(this ITriplet<Float64Scalar> vector)
+    public static string GetPovRayCode(this LinFloat64Vector3D vector)
     {
         return $"<{(float) vector.Item1:G}, {(float) vector.Item2:G}, {(float) vector.Item3:G}>";
     }
         
-    public static string GetPovRayCode(this IQuad<Float64Scalar> vector)
+    public static string GetPovRayCode(this IQuad<double> vector)
     {
         return $"<{(float) vector.Item1:G}, {(float) vector.Item2:G}, {(float) vector.Item3:G}, {(float) vector.Item4:G}>";
     }
@@ -534,35 +534,35 @@ public static class GrPovRayUtils
         ).GetPovRayArrayCode();
     }
 
-    public static string GetPovRayCode(this IEnumerable<IPair<Float64Scalar>> vectorList)
+    public static string GetPovRayCode(this IEnumerable<IPair<double>> vectorList)
     {
         return vectorList.Select(
             vector => vector.GetPovRayCode()
         ).GetPovRayArrayCode();
     }
 
-    public static string GetPovRayCode(this IEnumerable<ITriplet<Float64Scalar>> vectorList)
+    public static string GetPovRayCode(this IEnumerable<LinFloat64Vector3D> vectorList)
     {
         return vectorList.Select(
             vector => vector.GetPovRayCode()
         ).GetPovRayArrayCode();
     }
         
-    public static string GetPovRayCode(this IEnumerable<IReadOnlyList<ITriplet<Float64Scalar>>> vectorList)
+    public static string GetPovRayCode(this IEnumerable<IReadOnlyList<LinFloat64Vector3D>> vectorList)
     {
         return vectorList.Select(
             vector => vector.GetPovRayCode()
         ).GetPovRayArrayCode();
     }
 
-    public static string GetPovRayCode(this IEnumerable<IQuad<Float64Scalar>> vectorList)
+    public static string GetPovRayCode(this IEnumerable<IQuad<double>> vectorList)
     {
         return vectorList.Select(
             vector => vector.GetPovRayCode()
         ).GetPovRayArrayCode();
     }
     
-    public static string GetPovRayMatrixCode(ITriplet<Float64Scalar> affineMapColumn1, ITriplet<Float64Scalar> affineMapColumn2, ITriplet<Float64Scalar> affineMapColumn3)
+    public static string GetPovRayMatrixCode(LinFloat64Vector3D affineMapColumn1, LinFloat64Vector3D affineMapColumn2, LinFloat64Vector3D affineMapColumn3)
     {
         var composer = new LinearTextComposer();
 
@@ -579,7 +579,7 @@ public static class GrPovRayUtils
         return composer.ToString();
     }
 
-    public static string GetPovRayMatrixCode(ITriplet<Float64Scalar> affineMapColumn1, ITriplet<Float64Scalar> affineMapColumn2, ITriplet<Float64Scalar> affineMapColumn3, ITriplet<Float64Scalar> affineMapColumn4)
+    public static string GetPovRayMatrixCode(LinFloat64Vector3D affineMapColumn1, LinFloat64Vector3D affineMapColumn2, LinFloat64Vector3D affineMapColumn3, LinFloat64Vector3D affineMapColumn4)
     {
         var composer = new LinearTextComposer();
 
@@ -622,7 +622,7 @@ public static class GrPovRayUtils
         ).GetPovRayArrayCode();
     }
 
-    public static string GetPovRayCode(this IPair<ITriplet<Float64Scalar>> vectorList)
+    public static string GetPovRayCode(this IPair<LinFloat64Vector3D> vectorList)
     {
         var p1 = vectorList.Item1.GetPovRayCode();
         var p2 = vectorList.Item2.GetPovRayCode();
@@ -630,7 +630,7 @@ public static class GrPovRayUtils
         return $"[{p1}, {p2}]";
     }
         
-    public static string GetPovRayCode(this ITriplet<ITriplet<Float64Scalar>> vectorList)
+    public static string GetPovRayCode(this ITriplet<LinFloat64Vector3D> vectorList)
     {
         var p1 = vectorList.Item1.GetPovRayCode();
         var p2 = vectorList.Item2.GetPovRayCode();
@@ -639,7 +639,7 @@ public static class GrPovRayUtils
         return $"[{p1}, {p2}, {p3}]";
     }
         
-    public static string GetPovRayCode(this IQuad<ITriplet<Float64Scalar>> vectorList)
+    public static string GetPovRayCode(this IQuad<LinFloat64Vector3D> vectorList)
     {
         var p1 = vectorList.Item1.GetPovRayCode();
         var p2 = vectorList.Item2.GetPovRayCode();

@@ -38,7 +38,7 @@ public static class ScalarProcessorNumberUtils
 
         return !double.IsNaN(number) && 
                nearZeroFlag 
-            ? number.IsNearZero(scalarProcessor.ZeroEpsilon) 
+            ? number.IsNearZero(scalarProcessor.DefaultTolerance) 
             : number.IsZero();
     }
     
@@ -71,7 +71,7 @@ public static class ScalarProcessorNumberUtils
 
         return !double.IsNaN(number) && 
                nearZeroFlag 
-            ? !number.IsNearZero(scalarProcessor.ZeroEpsilon) 
+            ? !number.IsNearZero(scalarProcessor.DefaultTolerance) 
             : !number.IsZero();
     }
     
@@ -94,7 +94,7 @@ public static class ScalarProcessorNumberUtils
         var number = scalarProcessor.ToFloat64(scalar);
 
         return !double.IsNaN(number) && 
-               number.IsNearZero(scalarProcessor.ZeroEpsilon);
+               number.IsNearZero(scalarProcessor.DefaultTolerance);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -116,7 +116,7 @@ public static class ScalarProcessorNumberUtils
         var number = scalarProcessor.ToFloat64(scalar);
 
         return !double.IsNaN(number) && 
-               !number.IsNearZero(scalarProcessor.ZeroEpsilon);
+               !number.IsNearZero(scalarProcessor.DefaultTolerance);
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -214,7 +214,7 @@ public static class ScalarProcessorNumberUtils
         var number = scalarProcessor.ToFloat64(scalar);
 
         return !double.IsNaN(number) && 
-               number >= -scalarProcessor.ZeroEpsilon;
+               number >= -scalarProcessor.DefaultTolerance;
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -223,7 +223,7 @@ public static class ScalarProcessorNumberUtils
         var number = scalarProcessor.ToFloat64(scalar);
 
         return !double.IsNaN(number) && 
-               number <= scalarProcessor.ZeroEpsilon;
+               number <= scalarProcessor.DefaultTolerance;
     }
 
     
@@ -233,7 +233,7 @@ public static class ScalarProcessorNumberUtils
         var number = scalarProcessor.ToFloat64(scalar);
 
         return !double.IsNaN(number) && 
-               !(number >= -scalarProcessor.ZeroEpsilon);
+               !(number >= -scalarProcessor.DefaultTolerance);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -242,7 +242,7 @@ public static class ScalarProcessorNumberUtils
         var number = scalarProcessor.ToFloat64(scalar);
 
         return !double.IsNaN(number) && 
-               !(number <= scalarProcessor.ZeroEpsilon);
+               !(number <= scalarProcessor.DefaultTolerance);
     }
 
 

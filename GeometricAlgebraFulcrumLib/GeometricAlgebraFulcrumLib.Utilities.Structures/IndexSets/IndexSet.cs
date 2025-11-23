@@ -5,7 +5,6 @@ using System.Runtime.CompilerServices;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.BitManipulation;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Combinations;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Tuples;
-//using PeterO.Numbers;
 
 namespace GeometricAlgebraFulcrumLib.Utilities.Structures.IndexSets
 {
@@ -23,10 +22,10 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Structures.IndexSets
         private static int GetItemIndex(ulong intArray, int value)
         {
             return (intArray & (1UL << value)) != 0
-                ? BitOperations.PopCount((value + 1).CreateMaskUInt64() & intArray) - 1
+                ? BitOperations.PopCount((value + 1).CreateBitMaskUInt64() & intArray) - 1
                 : throw new InvalidOperationException(); // Not found
         }
-    
+
         /// <summary>
         /// Search a sorted array of integers for a given integer using binary search.
         /// </summary>
@@ -63,7 +62,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Structures.IndexSets
         private static int TryGetItemIndex(ulong intArray, int value)
         {
             return (intArray & (1UL << value)) != 0
-                ? BitOperations.PopCount((value + 1).CreateMaskUInt64() & intArray) - 1
+                ? BitOperations.PopCount((value + 1).CreateBitMaskUInt64() & intArray) - 1
                 : -1; // Not found
         }
 
@@ -93,7 +92,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Structures.IndexSets
 
             return ~low; // Not found, return bitwise complement of insertion point
         }
-    
+
         /// <summary>
         /// Generates all combinations of size k from input index array
         /// </summary>
@@ -105,9 +104,9 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Structures.IndexSets
             var n = indexArray.Length;
 
             Debug.Assert(k >= 0 && k <= n);
-            
+
             var indices = new int[k];
-            for (var i = 0; i < k; i++) 
+            for (var i = 0; i < k; i++)
                 indices[i] = i;
 
             while (true)
@@ -158,14 +157,14 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Structures.IndexSets
             if (index1 < 0 || index2 < 0)
                 throw new InvalidOperationException();
 
-            if (index1 >= 64 || index2 >= 64) 
+            if (index1 >= 64 || index2 >= 64)
                 return new IndexSet([index1, index2]);
 
             return new IndexSet(
                 (1UL << index1) | (1UL << index2)
             );
         }
-    
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static IndexSet CreateTriplet(int index1, int index2, int index3)
         {
@@ -174,7 +173,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Structures.IndexSets
             if (index1 < 0 || index2 < 0 || index3 < 0)
                 throw new InvalidOperationException();
 
-            if (index1 >= 64 || index2 >= 64 || index3 >= 64) 
+            if (index1 >= 64 || index2 >= 64 || index3 >= 64)
                 return new IndexSet([index1, index2, index3]);
 
             return new IndexSet(
@@ -185,13 +184,13 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Structures.IndexSets
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static IndexSet Create(params int[] indexArray)
         {
-            if (indexArray.Length == 0) 
+            if (indexArray.Length == 0)
                 return EmptySet;
 
             if (indexArray[0] < 0)
                 throw new InvalidOperationException();
 
-            if (indexArray[^1] >= 64) 
+            if (indexArray[^1] >= 64)
                 return new IndexSet(indexArray);
 
             var bitPattern = 0UL;
@@ -201,17 +200,17 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Structures.IndexSets
 
             return new IndexSet(bitPattern);
         }
-    
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static IndexSet Create(Span<int> indexArray)
         {
-            if (indexArray.Length == 0) 
+            if (indexArray.Length == 0)
                 return EmptySet;
 
             if (indexArray[0] < 0)
                 throw new InvalidOperationException();
 
-            if (indexArray[^1] >= 64) 
+            if (indexArray[^1] >= 64)
                 return new IndexSet(indexArray.ToArray());
 
             var bitPattern = 0UL;
@@ -225,13 +224,13 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Structures.IndexSets
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static IndexSet Create(ReadOnlySpan<int> indexArray)
         {
-            if (indexArray.Length == 0) 
+            if (indexArray.Length == 0)
                 return EmptySet;
 
             if (indexArray[0] < 0)
                 throw new InvalidOperationException();
 
-            if (indexArray[^1] >= 64) 
+            if (indexArray[^1] >= 64)
                 return new IndexSet(indexArray.ToArray());
 
             var bitPattern = 0UL;
@@ -241,13 +240,13 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Structures.IndexSets
 
             return new IndexSet(bitPattern);
         }
-    
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static IndexSet Create(IReadOnlyList<int> indexArray, bool assumeOrderedDistinct)
         {
             return Create(
-                assumeOrderedDistinct 
-                    ? indexArray.ToArray() 
+                assumeOrderedDistinct
+                    ? indexArray.ToArray()
                     : indexArray.Distinct().OrderBy(i => i).ToArray()
             );
         }
@@ -256,26 +255,26 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Structures.IndexSets
         public static IndexSet Create(IEnumerable<int> indexArray, bool assumeOrderedDistinct)
         {
             return Create(
-                assumeOrderedDistinct 
-                    ? indexArray.ToArray() 
+                assumeOrderedDistinct
+                    ? indexArray.ToArray()
                     : indexArray.Distinct().OrderBy(i => i).ToArray()
             );
         }
-    
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static IndexSet CreateDense(int count)
         {
             if (count == 0) return EmptySet;
 
             var lastIndex = count - 1;
-        
+
             if (lastIndex >= 64)
                 return new IndexSet(
                     count.GetRange().ToArray()
                 );
 
             return new IndexSet(
-                count.CreateMaskUInt64()
+                count.CreateBitMaskUInt64()
             );
         }
 
@@ -288,17 +287,17 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Structures.IndexSets
             if (count == 0) return EmptySet;
 
             var lastIndex = firstIndex + count - 1;
-        
+
             if (lastIndex >= 64)
                 return new IndexSet(
                     count.GetRange(firstIndex).ToArray()
                 );
 
             return new IndexSet(
-                count.CreateMaskUInt64() << firstIndex
+                count.CreateBitMaskUInt64() << firstIndex
             );
         }
-    
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static IndexSet CreateFromUInt32Pattern(uint bitPattern)
         {
@@ -314,12 +313,26 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Structures.IndexSets
                 ? EmptySet
                 : new IndexSet(bitPattern);
         }
-    
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static IndexSet CreateFromUInt128Pattern(UInt128 bitPattern)
+        {
+            if (bitPattern <= ulong.MaxValue)
+                return bitPattern == 0
+                    ? EmptySet
+                    : new IndexSet((ulong)bitPattern);
+
+            var indexArray = 
+                bitPattern.GetSetBitPositions().ToArray();
+
+            return new IndexSet(indexArray);
+        }
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static IndexSet EncodeUInt64AsCombinadic(int intValue, int digitsCount)
         {
             return Create(
-                ((ulong)intValue).IndexToCombinadic(digitsCount), 
+                ((ulong)intValue).IndexToCombinadic(digitsCount),
                 false
             );
         }
@@ -328,7 +341,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Structures.IndexSets
         public static IndexSet EncodeUInt64AsCombinadic(ulong intValue, int digitsCount)
         {
             return Create(
-                intValue.IndexToCombinadic(digitsCount), 
+                intValue.IndexToCombinadic(digitsCount),
                 false
             );
         }
@@ -339,25 +352,25 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Structures.IndexSets
         {
             return indexSet.ToInt32();
         }
-    
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static explicit operator uint(IndexSet indexSet)
         {
             return indexSet.ToUInt32();
         }
-    
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static explicit operator long(IndexSet indexSet)
         {
             return indexSet.ToInt64();
         }
-    
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static explicit operator ulong(IndexSet indexSet)
         {
             return indexSet.ToUInt64();
         }
-    
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static explicit operator IndexSet(int indexSet)
         {
@@ -369,14 +382,14 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Structures.IndexSets
         {
             return indexSet == 0UL ? EmptySet : new IndexSet();
         }
-    
-    
+
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static IndexSet operator <<(IndexSet operand1, int shift)
         {
             return operand1.ShiftIndices(shift);
         }
-    
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static IndexSet operator >>(IndexSet operand1, int shift)
         {
@@ -389,7 +402,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Structures.IndexSets
         {
             return CreateFromUInt64Pattern(operand1).SetMerge(operand2);
         }
-    
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static IndexSet operator ^(IndexSet operand1, ulong operand2)
         {
@@ -401,14 +414,14 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Structures.IndexSets
         {
             return operand1.SetMerge(operand2);
         }
-    
+
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static IndexSet operator &(ulong operand1, IndexSet operand2)
         {
             return CreateFromUInt64Pattern(operand1).SetIntersect(operand2);
         }
-    
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static IndexSet operator &(IndexSet operand1, ulong operand2)
         {
@@ -420,14 +433,14 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Structures.IndexSets
         {
             return operand1.SetIntersect(operand2);
         }
-    
+
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static IndexSet operator |(ulong operand1, IndexSet operand2)
         {
             return CreateFromUInt64Pattern(operand1).SetUnion(operand2);
         }
-    
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static IndexSet operator |(IndexSet operand1, ulong operand2)
         {
@@ -439,14 +452,14 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Structures.IndexSets
         {
             return operand1.SetUnion(operand2);
         }
-    
+
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static IndexSet operator -(ulong operand1, IndexSet operand2)
         {
             return CreateFromUInt64Pattern(operand1).SetDifference(operand2);
         }
-    
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static IndexSet operator -(IndexSet operand1, ulong operand2)
         {
@@ -521,48 +534,48 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Structures.IndexSets
         public bool IsUInt64Set { get; }
 
         public int FirstIndex
-            => _bitPattern == 0UL 
-                ? _indexArray[0] 
+            => _bitPattern == 0UL
+                ? _indexArray[0]
                 : _bitPattern.FirstOneBitPosition();
-    
+
         public Pair<int> FirstIndexPair
-            => _bitPattern == 0UL 
-                ? new Pair<int>(_indexArray[0], _indexArray[1]) 
+            => _bitPattern == 0UL
+                ? new Pair<int>(_indexArray[0], _indexArray[1])
                 : new Pair<int>(_bitPattern.GetNthSetBitPosition(0), _bitPattern.GetNthSetBitPosition(1));
-    
+
         public Triplet<int> FirstIndexTriplet
-            => _bitPattern == 0UL 
-                ? new Triplet<int>(_indexArray[0], _indexArray[1], _indexArray[2]) 
+            => _bitPattern == 0UL
+                ? new Triplet<int>(_indexArray[0], _indexArray[1], _indexArray[2])
                 : new Triplet<int>(_bitPattern.GetNthSetBitPosition(0), _bitPattern.GetNthSetBitPosition(1), _bitPattern.GetNthSetBitPosition(2));
 
         public int LastIndex
-            => _bitPattern == 0UL 
-                ? _indexArray[^1] 
+            => _bitPattern == 0UL
+                ? _indexArray[^1]
                 : _bitPattern.LastOneBitPosition();
-    
+
         public Pair<int> IndexRange
-            => _bitPattern == 0UL 
+            => _bitPattern == 0UL
                 ? new Pair<int>(_indexArray[0], _indexArray[^1])
                 : new Pair<int>(_bitPattern.FirstOneBitPosition(), _bitPattern.LastOneBitPosition());
 
         public int Count
-            => _bitPattern == 0UL 
-                ? _indexArray.Length 
+            => _bitPattern == 0UL
+                ? _indexArray.Length
                 : BitOperations.PopCount(_bitPattern);
 
         public int this[int index]
-            => _bitPattern == 0UL 
+            => _bitPattern == 0UL
                 ? _indexArray[index]
                 : _bitPattern.GetNthSetBitPosition(index);
 
-    
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private IndexSet(ulong bitPattern)
         {
             _bitPattern = bitPattern;
             _indexArray = [];
             IsUInt64Set = true;
-        
+
             if (bitPattern == 0UL) _emptySetCount++;
 
             Debug.Assert(_emptySetCount <= 1);
@@ -662,8 +675,8 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Structures.IndexSets
         {
             if (IsUInt64Set)
             {
-                return other.IsUInt64Set 
-                    ? _bitPattern.CompareTo(other._bitPattern) 
+                return other.IsUInt64Set
+                    ? _bitPattern.CompareTo(other._bitPattern)
                     : -1;
             }
 
@@ -689,7 +702,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Structures.IndexSets
             return 1;
         }
 
-    
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public int GetIndexPosition(int index)
         {
@@ -697,7 +710,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Structures.IndexSets
                 ? GetItemIndex(_bitPattern, index)
                 : GetItemIndex(_indexArray, index);
         }
-    
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public int TryGetIndexPosition(int index)
         {
@@ -715,31 +728,31 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Structures.IndexSets
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ReadOnlySpan<int> AsSpan()
         {
-            return IsUInt64Set 
-                ? _bitPattern.GetSetBitPositionsAsSpan() 
+            return IsUInt64Set
+                ? _bitPattern.GetSetBitPositionsAsSpan()
                 : new ReadOnlySpan<int>(_indexArray);
         }
-    
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public IndexSet GetSubset(int index, int count)
         {
-            return count == 0 
-                ? EmptySet 
+            return count == 0
+                ? EmptySet
                 : Create(AsSpan().Slice(index, count));
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public IEnumerable<int> GetIndices()
         {
-            return IsUInt64Set 
-                ? _bitPattern.GetSetBitPositions() 
+            return IsUInt64Set
+                ? _bitPattern.GetSetBitPositions()
                 : _indexArray;
         }
-    
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public IEnumerable<T> GetIndices<T>(Func<int, T> indexMapFunc)
         {
-            return IsUInt64Set 
+            return IsUInt64Set
                 ? _bitPattern.GetSetBitPositions().Select(indexMapFunc)
                 : _indexArray.Select(indexMapFunc);
         }
@@ -758,7 +771,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Structures.IndexSets
                     yield return _indexArray[i];
             }
         }
-    
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public IEnumerable<T> GetReversedIndices<T>(Func<int, T> indexMapFunc)
         {
@@ -778,17 +791,17 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Structures.IndexSets
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public IEnumerable<IndexSet> GetUnitSubsets()
         {
-            return IsUInt64Set 
+            return IsUInt64Set
                 ? _bitPattern.GetSetBitPositions().Select(i => new IndexSet(1UL << i))
                 : _indexArray.Select(i => i < 64 ? new IndexSet(1UL << i) : new IndexSet([i]));
         }
-    
+
         public IEnumerable<IndexSet> GetSubsets()
         {
             if (IsUInt64Set)
             {
-                foreach (var i in _bitPattern.GetSubBitPatterns()) 
-                    yield return new IndexSet(i);
+                foreach (var i in _bitPattern.GetSubBitPatterns())
+                    yield return CreateFromUInt64Pattern(i);
             }
             else
             {
@@ -798,7 +811,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Structures.IndexSets
 
                 for (var k = 1; k < n; k++)
                 {
-                    var subSets = 
+                    var subSets =
                         GenerateCombinations(_indexArray, k);
 
                     foreach (var subset in subSets)
@@ -808,12 +821,12 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Structures.IndexSets
                 yield return this;
             }
         }
-    
+
         public IEnumerable<IndexSet> GetSubsetsOfSize(int size)
         {
             if (IsUInt64Set)
             {
-                foreach (var i in _bitPattern.GetSubBitPatternsOfSize(size)) 
+                foreach (var i in _bitPattern.GetSubBitPatternsOfSize(size))
                     yield return new IndexSet(i);
             }
             else
@@ -836,12 +849,12 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Structures.IndexSets
                     yield return Create(subset);
             }
         }
-    
+
         public IEnumerable<IndexSet> GetSubsetsOfSizeInRange(int maxSize)
         {
             if (IsUInt64Set)
             {
-                foreach (var i in _bitPattern.GetSubBitPatternsOfSizeInRange(0, maxSize)) 
+                foreach (var i in _bitPattern.GetSubBitPatternsOfSizeInRange(0, maxSize))
                     yield return new IndexSet(i);
             }
             else
@@ -870,7 +883,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Structures.IndexSets
         {
             if (IsUInt64Set)
             {
-                foreach (var i in _bitPattern.GetSubBitPatternsOfSizeInRange(minSize, maxSize)) 
+                foreach (var i in _bitPattern.GetSubBitPatternsOfSizeInRange(minSize, maxSize))
                     yield return new IndexSet(i);
             }
             else
@@ -906,43 +919,70 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Structures.IndexSets
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public int ToInt32()
         {
-            return IsUInt64Set && LastIndex < 31 
-                ? (int)_bitPattern 
+            if (IsEmptySet) return 0;
+
+            return IsUInt64Set && LastIndex < 31
+                ? (int)_bitPattern
                 : throw new InvalidOperationException();
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public uint ToUInt32()
         {
-            return IsUInt64Set && LastIndex < 32 
-                ? (uint)_bitPattern 
+            if (IsEmptySet) return 0;
+
+            return IsUInt64Set && LastIndex < 32
+                ? (uint)_bitPattern
                 : throw new InvalidOperationException();
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public long ToInt64()
         {
-            return IsUInt64Set && LastIndex < 63 
-                ? (long)_bitPattern 
+            if (IsEmptySet) return 0;
+
+            return IsUInt64Set && LastIndex < 63
+                ? (long)_bitPattern
                 : throw new InvalidOperationException();
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ulong ToUInt64()
         {
-            return IsUInt64Set 
-                ? _bitPattern 
+            if (IsEmptySet) return 0;
+
+            return IsUInt64Set
+                ? _bitPattern
                 : throw new InvalidOperationException();
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public UInt128 ToUInt128()
+        {
+            if (IsEmptySet) 
+                return 0;
+
+            if (IsUInt64Set) 
+                return _bitPattern;
+
+            if (LastIndex < 128)
+                return _indexArray.Aggregate(
+                    UInt128.Zero,
+                    (currentBitPattern, bitPosition) => 
+                        currentBitPattern | (UInt128.One << bitPosition)
+                );
+
+            throw new InvalidOperationException();
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public (bool found, ulong bitPattern) TryGetUInt64()
         {
-            return IsUInt64Set 
+            return IsUInt64Set
                 ? (true, _bitPattern)
                 : (false, 0UL);
         }
-    
+
 
         /// <summary>
         /// https://en.wikipedia.org/wiki/Combinatorial_number_system
@@ -961,8 +1001,8 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Structures.IndexSets
         public ulong DecodeCombinadicToUInt64()
         {
             if (IsEmptySet) return 0;
-            if (IsUnitSet) return (ulong) FirstIndex;
-        
+            if (IsUnitSet) return (ulong)FirstIndex;
+
             var intValue = 0UL;
 
             if (IsUInt64Set)
@@ -985,7 +1025,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Structures.IndexSets
             }
             else
             {
-                for (var i = 0; i < _indexArray.Length; i++) 
+                for (var i = 0; i < _indexArray.Length; i++)
                     intValue += _indexArray[i].GetBinomialCoefficient(i + 1);
             }
 
@@ -997,7 +1037,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Structures.IndexSets
         {
             if (IsUInt64Set)
                 return index is >= 0 and < 64 && (_bitPattern & (1UL << index)) != 0;
-        
+
             var low = 0;
             var high = _indexArray.Length - 1;
 
@@ -1024,7 +1064,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Structures.IndexSets
                 ? index is >= 0 and < 64 && _bitPattern == 1UL << index
                 : _indexArray.Length == 1 && _indexArray[0] == index;
         }
-    
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public bool SetIsSubsetOf(IndexSet indexSet2)
         {
@@ -1076,6 +1116,23 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Structures.IndexSets
                 : IndexSetArrayArrayUtils.Overlaps(this, indexSet2);
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public bool SetOverlaps(HashSet<int> indexSet2)
+        {
+            if (IsEmptySet || indexSet2.Count == 0)
+                return false;
+
+            return this.Any(indexSet2.Contains);
+            //return Count <= indexSet2.Count 
+            //    ? this.Any(indexSet2.Contains) // Array is smaller or equal in size - iterate through array
+            //    : indexSet2.Any(item => Array.BinarySearch(this.ToArray(), item) >= 0); // Hash set is smaller - iterate through hash set
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public bool SetDisjoint(IndexSet indexSet2)
+        {
+            return !SetOverlaps(indexSet2);
+        }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public IndexSet MapIndicesByValue(Func<int, int> indexMapping)
@@ -1086,7 +1143,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Structures.IndexSets
                 GetIndices().Select(indexMapping).Distinct().OrderBy(i => i).ToArray()
             );
         }
-    
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public IndexSet MapIndicesByOrderValue(Func<int, int, int> indexMapping)
         {
@@ -1105,7 +1162,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Structures.IndexSets
             if (IsUInt64Set)
             {
                 if (offset < 0)
-                    return -offset <= BitOperations.TrailingZeroCount(_bitPattern) 
+                    return -offset <= BitOperations.TrailingZeroCount(_bitPattern)
                         ? new IndexSet(_bitPattern >> -offset)
                         : throw new InvalidOperationException();
 
@@ -1118,7 +1175,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Structures.IndexSets
             );
         }
 
-    
+
         public IndexSet Insert(int index)
         {
             if (IsUInt64Set && index is >= 0 and < 64)
@@ -1165,8 +1222,8 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Structures.IndexSets
         {
             if (IsUInt64Set && index is >= 0 and < 64)
             {
-                return (_bitPattern & 1UL << index) == 0 
-                    ? new IndexSet(_bitPattern | 1UL << index) 
+                return (_bitPattern & 1UL << index) == 0
+                    ? new IndexSet(_bitPattern | 1UL << index)
                     : this;
             }
 
@@ -1262,8 +1319,85 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Structures.IndexSets
 
             return Create(buffer);
         }
-    
-    
+
+
+        public IndexSet SetComplement()
+        {
+            if (IsEmptySet)
+                return this;
+
+            var maxIndex = LastIndex;
+
+            if (IsUInt64Set)
+                return CreateFromUInt64Pattern(
+                    ~_bitPattern & ((1UL << (maxIndex + 1)) - 1)
+                );
+
+            var result = new List<int>(
+                maxIndex - _indexArray.Length + 1
+            );
+
+            var i = 0;
+            for (var candidate = 0; candidate < maxIndex; candidate++)
+            {
+                if (i < _indexArray.Length && _indexArray[i] == candidate)
+                {
+                    i++; // skip numbers present in index set
+                    continue;
+                }
+
+                result.Add(candidate);
+            }
+
+            return Create(result, true);
+        }
+        
+        public IndexSet SetComplement(int maxIndex)
+        {
+            if (maxIndex < 0)
+                throw new ArgumentOutOfRangeException(nameof(maxIndex));
+
+            if (IsEmptySet)
+                return CreateDense(maxIndex + 1);
+
+            if (maxIndex < LastIndex)
+                throw new InvalidOperationException();
+
+            if (maxIndex == LastIndex)
+                return SetComplement();
+
+            if (IsUInt64Set)
+                return maxIndex <= 63
+                    ? CreateFromUInt64Pattern(
+                        ~_bitPattern & ((1UL << (maxIndex + 1)) - 1)
+                    )
+                    : new IndexSet(
+                        (~_bitPattern)
+                        .GetSetBitPositions()
+                        .Concat((maxIndex - 63).GetRange(64))
+                        .ToArray()
+                    );
+
+            var result = new List<int>(
+                maxIndex - _indexArray.Length + 1
+            );
+
+            var i = 0;
+            for (var candidate = 0; candidate <= maxIndex; candidate++)
+            {
+                if (i < _indexArray.Length && _indexArray[i] == candidate)
+                {
+                    i++; // present in S, skip
+                    continue;
+                }
+
+                result.Add(candidate);
+            }
+
+            return Create(result, true);
+        }
+
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public IndexSet SetIntersect(int index2)
         {
@@ -1287,7 +1421,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Structures.IndexSets
                 : IndexSetArrayArrayUtils.Intersect(this, indexSet2);
         }
 
-    
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public IndexSet SetUnion(int index2)
         {
@@ -1317,8 +1451,8 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Structures.IndexSets
                 ? IndexSetArrayPatternUtils.Join(this, indexSet2)
                 : IndexSetArrayArrayUtils.Join(this, indexSet2);
         }
-    
-    
+
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public IndexSet SetMerge(int index2)
         {
@@ -1355,7 +1489,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Structures.IndexSets
         {
             return TryRemove(index2);
         }
-    
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public IndexSet SetDifference(IndexSet indexSet2)
         {
@@ -1371,17 +1505,17 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Structures.IndexSets
                 : IndexSetArrayArrayUtils.Difference(this, indexSet2);
         }
 
-    
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public int SetCountSwaps(int index2)
         {
             Debug.Assert(index2 >= 0);
 
-            if (!IsUInt64Set) 
+            if (!IsUInt64Set)
                 return IndexSetArrayArrayUtils.CountSwaps(this, index2);
 
-            return index2 < 64 
-                ? IndexSetPatternPatternUtils.CountSwaps(this, index2) 
+            return index2 < 64
+                ? IndexSetPatternPatternUtils.CountSwaps(this, index2)
                 : 0;
         }
 
@@ -1399,26 +1533,26 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Structures.IndexSets
                 ? IndexSetArrayPatternUtils.CountSwaps(this, indexSet2)
                 : IndexSetArrayArrayUtils.CountSwaps(this, indexSet2);
         }
-    
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public int SetCountSwapsWithSelf()
         {
-            return IsUInt64Set 
-                ? IndexSetPatternPatternUtils.CountSwapsWithSelf(this) 
+            return IsUInt64Set
+                ? IndexSetPatternPatternUtils.CountSwapsWithSelf(this)
                 : IndexSetArrayArrayUtils.CountSwapsWithSelf(this);
         }
 
-    
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public (int swapCount, IndexSet mergedIndexSet) SetMergeCountSwaps(int index2)
         {
             Debug.Assert(index2 >= 0);
 
-            if (!IsUInt64Set) 
+            if (!IsUInt64Set)
                 return IndexSetArrayArrayUtils.MergeCountSwaps(this, index2);
 
-            return index2 < 64 
-                ? IndexSetPatternPatternUtils.MergeCountSwaps(this, index2) 
+            return index2 < 64
+                ? IndexSetPatternPatternUtils.MergeCountSwaps(this, index2)
                 : IndexSetPatternArrayUtils.MergeCountSwaps(this, index2);
         }
 
@@ -1437,17 +1571,17 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Structures.IndexSets
                 : IndexSetArrayArrayUtils.MergeCountSwaps(this, indexSet2);
         }
 
-    
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public (int swapCount, IndexSet mergedIndexSet, IndexSet commonIndexSet) SetMergeCountSwapsTrackCommon(int index2)
         {
             Debug.Assert(index2 >= 0);
 
-            if (!IsUInt64Set) 
+            if (!IsUInt64Set)
                 return IndexSetArrayArrayUtils.MergeCountSwapsTrackCommon(this, index2);
 
-            return index2 < 64 
-                ? IndexSetPatternPatternUtils.MergeCountSwapsTrackCommon(this, index2) 
+            return index2 < 64
+                ? IndexSetPatternPatternUtils.MergeCountSwapsTrackCommon(this, index2)
                 : IndexSetPatternArrayUtils.MergeCountSwapsTrackCommon(this, index2);
         }
 
@@ -1466,7 +1600,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Structures.IndexSets
                 : IndexSetArrayArrayUtils.MergeCountSwapsTrackCommon(this, indexSet2);
         }
 
-    
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public (IndexSet unitIndexSet, IndexSet remainingIndexSet) SplitByFirstIndex()
         {
@@ -1519,9 +1653,510 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Structures.IndexSets
                 .Select(i => i.ToString())
                 .ConcatenateText(
                     ", ",
-                    IsUInt64Set ? "UInt64IndexSet<" : "ArrayIndexSet<", 
+                    IsUInt64Set ? "UInt64IndexSet<" : "ArrayIndexSet<",
                     ">"
                 );
         }
+
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public IndexSet FlipIndices()
+        {
+            var setSize = Count;
+
+            return setSize <= 64
+                ? new IndexSet(
+                    _bitPattern.ReversePrefixBits(setSize)
+                )
+                : new IndexSet(
+                    GetIndices(i => setSize - i).ToArray()
+                );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public IndexSet FlipIndices(int setSize)
+        {
+            if (setSize < Count)
+                throw new InvalidOperationException();
+
+            return setSize <= 64
+                ? new IndexSet(
+                    _bitPattern.ReversePrefixBits(setSize)
+                )
+                : new IndexSet(
+                    GetIndices(i => setSize - i).ToArray()
+                );
+        }
+
+
+        /// <summary>
+        /// Returns the next index set in lexicographic order.
+        /// For example: IS(0,1,2) -> IS(3), IS(3) -> IS(0,3), etc.
+        /// </summary>
+        /// <returns>The next index set</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public IndexSet GetNext()
+        {
+            // For array-based sets, we need to find the next lexicographic arrangement
+            if (!IsUInt64Set)
+                return GetNextForArray();
+
+            // For UInt64 patterns, simply increment the bit pattern
+            return _bitPattern == ulong.MaxValue
+                ? CreateUnit(64)
+                : CreateFromUInt64Pattern(_bitPattern + 1);
+
+        }
+
+        /// <summary>
+        /// Returns the next index set with the same size in lexicographic order.
+        /// For example: IS(0,1) -> IS(0,2), IS(0,2) -> IS(1,2), etc.
+        /// </summary>
+        /// <returns>The next index set with same size, or null if no more exist</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public IndexSet GetNextSameSize()
+        {
+            if (IsEmptySet)
+                throw new InvalidOperationException("Empty set has no next of same size");
+
+            return IsUInt64Set
+                ? GetNextSameSizeForPattern()
+                : GetNextSameSizeForArray();
+        }
+
+        private IndexSet GetNextForArray()
+        {
+            // Handle empty array - next pattern is {0}
+            if (_indexArray.Length == 0)
+                return CreateUnit(0);
+
+            // Implement binary addition with carry propagation
+            // Start from bit position 0 and work up
+            var bitSet = new HashSet<int>(_indexArray);
+            var carryPosition = 0;
+
+            // Perform binary addition by 1
+            while (true)
+            {
+                // If this bit is 0, set it to 1 and we're done
+                if (bitSet.Add(carryPosition))
+                    break;
+
+                // This bit is 1, flip it to 0 and carry to next position
+                bitSet.Remove(carryPosition);
+
+                // Check for overflow at maximum position
+                if (carryPosition >= int.MaxValue)
+                    throw new OverflowException("Next pattern would exceed maximum representable value");
+
+                carryPosition++;
+            }
+
+            // Convert back to sorted array
+            var result = bitSet.ToArray();
+            Array.Sort(result);
+
+            return new IndexSet(result);
+        }
+        
+        private IndexSet GetNextSameSizeForPattern()
+        {
+            var size = BitOperations.PopCount(_bitPattern);
+            var trailingZeros = BitOperations.TrailingZeroCount(_bitPattern);
+
+            // Reached limit of bit pattern index sets; so the next index set
+            // must be of array type
+            if (size + trailingZeros == 64)
+            {
+                var indexArray = new int[size];
+
+                for (var i = 0; i < size - 1; i++)
+                    indexArray[i] = i;
+
+                indexArray[size - 1] = 64;
+
+                return new IndexSet(indexArray);
+            }
+
+            // Find the rightmost set bit
+            var rightmostSetBit = 1UL << trailingZeros;
+
+            // Ripple: add the rightmost set bit
+            var ripple = _bitPattern + rightmostSetBit;
+
+            // Calculate the ones that need to be moved
+            var ones = ((_bitPattern ^ ripple) >> 2) / rightmostSetBit;
+
+            return CreateFromUInt64Pattern(ripple | ones);
+        }
+
+        private IndexSet GetNextSameSizeForArray()
+        {
+            var n = _indexArray.Length;
+
+            if (n == 0)
+                throw new InvalidOperationException();
+        
+            if (n == 1)
+                return CreateUnit(_indexArray[0] + 1);
+        
+            if (n == 2)
+            {
+                var i1 = _indexArray[0];
+                var i2 = _indexArray[1];
+                
+                i1++;
+                if (i1 == i2)
+                {
+                    i1 = 0;
+                    i2++;
+                }
+                
+                return CreatePair(i1, i2);
+            }
+        
+            if (n == 3)
+            {
+                var i1 = _indexArray[0];
+                var i2 = _indexArray[1];
+                var i3 = _indexArray[2];
+
+                i1++;
+                if (i1 == i2)
+                {
+                    i1 = 0;
+
+                    i2++;
+                    if (i2 == i3)
+                    {
+                        i2 = 1;
+                        i3++;
+                    }
+                }
+                
+                return CreateTriplet(i1, i2, i3);
+            }
+
+            var indexArray = new int[n];
+            Array.Copy(_indexArray, indexArray, n);
+        
+            // Find the leftmost position i with a gap to its right: _indexArray[i] + 1 < _indexArray[i+1].
+            // If found, increment p[i], reset all lower indices to minimal [0..i-1], keep the rest.
+            for (var i = 0; i < n - 1; i++)
+            {
+                if (indexArray[i] + 1 >= indexArray[i + 1]) continue;
+
+                indexArray[i] += 1;
+                for (var j = 0; j < i; j++) 
+                    indexArray[j] = j; // bottom-pack to minimize value
+            
+                return new IndexSet(indexArray);
+            }
+        
+            // No gap: all adjacent are consecutive. Move the MSB up by one and pack the rest to bottom.
+            for (var j = 0; j < n - 1; j++) 
+                indexArray[j] = j;
+
+            indexArray[n - 1] = _indexArray[n - 1] + 1;
+
+            return new IndexSet(indexArray);
+        }
+
+        private IndexSet GetNextSameSizeForArray1()
+        {
+            var k = _indexArray.Length;
+            var result = new int[k];
+
+            // Create working copy
+            Array.Copy(_indexArray, result, k);
+
+            // Start with incrementing the first position
+            result[0]++;
+
+            // Propagate carries from left to right
+            for (var i = 0; i < k - 1; i++)
+            {
+                // If current position >= next position OR exceeds max allowed
+                var maxAllowed = int.MaxValue - (k - 1 - i);
+                if (result[i] >= result[i + 1] || result[i] > maxAllowed)
+                {
+                    // Reset current position to the minimum possible value
+                    result[i] = (i == 0) ? 0 : result[i - 1] + 1;
+
+                    // Increment the next position
+                    result[i + 1]++;
+
+                    continue;
+                }
+
+                // Current position is valid, ensure next position is at least current + 1
+                if (result[i + 1] <= result[i])
+                    result[i + 1] = result[i] + 1;
+            }
+
+            // Handle the last position
+            var lastMax = int.MaxValue - (k - 1 - (k - 1));
+
+            if (result[k - 1] <= lastMax)
+                return new IndexSet(result);
+
+            // Overflow in last position - this means we've reached the end
+            // Return first combination
+            //return CreateDense(k);
+
+            throw new InvalidOperationException("No next pattern with same size exists");
+        }
+
+
+
+        /// <summary>
+        /// Returns the previous index set in lexicographic order.
+        /// For example: IS(0,1,2) -> IS(3), IS(3) -> IS(0,3), etc.
+        /// </summary>
+        /// <returns>The next index set</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public IndexSet GetPrev()
+        {
+            if (IsEmptySet)
+                throw new InvalidOperationException("Empty set has no previous");
+
+            return IsUInt64Set
+                ? CreateFromUInt64Pattern(_bitPattern - 1)
+                : GetPrevForArray();
+        }
+
+        /// <summary>
+        /// Returns the previous index set with the same size in lexicographic order.
+        /// For example: IS(0,1) -> IS(0,2), IS(0,2) -> IS(1,2), etc.
+        /// </summary>
+        /// <returns>The next index set with same size, or null if no more exist</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public IndexSet GetPrevSameSize()
+        {
+            if (IsEmptySet)
+                throw new InvalidOperationException("Empty set has no previous of same size");
+
+            if (IsDenseSet && FirstIndex == 0)
+                throw new InvalidOperationException("Set has no previous of same size");
+
+            var n = LastIndex;
+            return SetComplement().GetNextSameSize().SetComplement(n);
+
+            //return IsUInt64Set
+            //    ? GetPrevSameSizeForPattern()
+            //    : GetPrevSameSizeForArray();
+        }
+
+        private IndexSet GetPrevForArray()
+        {
+            // Handle pattern {0} - previous would be empty array (represents 0-1=-1, invalid)
+            if (_indexArray is [0])
+                return EmptySet;
+
+            // Implement binary subtraction (subtract 1)
+            // Start from bit position 0 and work up
+            var bitSet = new HashSet<int>(_indexArray);
+            var borrowPosition = 0;
+
+            // Perform binary subtraction by 1
+            while (true)
+            {
+                if (!bitSet.Add(borrowPosition))
+                {
+                    // This bit is 1, flip it to 0, and we're done (no borrow needed)
+                    bitSet.Remove(borrowPosition);
+                    break;
+                }
+
+                // This bit is 0, set it to 1 and continue borrowing from next position
+                borrowPosition++;
+
+                // Check if we need to borrow beyond the highest set bit
+                if (borrowPosition > _indexArray[^1])
+                    throw new InvalidOperationException("Previous pattern would result in negative number");
+            }
+
+            // Convert back to sorted array
+            var result = bitSet.ToArray();
+            Array.Sort(result);
+
+            return new IndexSet(result);
+        }
+
+        private IndexSet GetPrevSameSizeForPattern()
+        {
+            var n = Count;
+
+            // Fast path for single element
+            if (n == 1)
+            {
+                var pos = _bitPattern.FirstOneBitPosition();
+                return pos > 0
+                    ? CreateUnit(pos - 1)
+                    : throw new InvalidOperationException();
+            }
+
+            // Find the previous number with the same pop count (ultra-optimized)
+            var previousValue = 
+                GetPreviousBitPattern_BitOperationsOptimized();
+
+            // Handle special case where BitOperations couldn't create valid bit pattern
+            // Fall back to array implementation for edge cases
+            if (previousValue == 0 && _bitPattern != 0)
+                return GetPrevSameSizeForArray();
+
+            // Convert back to bit positions using hardware-accelerated operations
+            var result = 0UL;
+            var index = 0;
+
+            var temp = previousValue;
+            while (temp != 0 && index < n)
+            {
+                var bitPos = BitOperations.TrailingZeroCount(temp);
+                result = result.SetBitToOneAt(bitPos);
+                index++;
+                temp &= temp - 1; // Clear lowest set bit
+            }
+
+            return CreateFromUInt64Pattern(result);
+        }
+
+        // Ultra-optimized bit manipulation core using BitOperations
+        private ulong GetPreviousBitPattern_BitOperationsOptimized()
+        {
+            if (_bitPattern == 0) return 0;
+
+            // Use hardware-accelerated operations for faster bit manipulation
+            var rightmostMovable = -1;
+
+            // Find the rightmost set bit that can be moved left (has a gap to its left)
+            // This matches the array implementation logic exactly
+            for (var i = 1; i < 64; i++)
+            {
+                // Bit i is set
+                if ((_bitPattern & (1UL << i)) == 0) continue; 
+                
+                // Check if there's a gap (unset bit) to the left of position i
+                // Left immediate bit is 0
+                if ((_bitPattern & (1UL << (i - 1))) != 0) continue; 
+                
+                // Take the first (rightmost) one we find
+                rightmostMovable = i;
+                break; 
+            }
+
+            if (rightmostMovable == -1)
+            {
+                // No movable bit found - return max combination ending at highest_bit - 1
+                // Use hardware pop count and leading zero count for efficiency
+                var popCount = BitOperations.PopCount(_bitPattern);
+                var leadingZeros = BitOperations.LeadingZeroCount(_bitPattern);
+                var highestBit = 63 - leadingZeros;
+
+                // Check if we can create a valid max combination
+                if (highestBit - 1 - (popCount - 1) < 0)
+                {
+                    // Would require negative bit positions - fallback to array implementation approach
+                    // This handles edge cases like [0, 1] -> [-1, 0]
+                    return 0; // Return 0 to indicate special case that needs array conversion
+                }
+
+                // Create max combination ending at highestBit - 1
+                ulong result = 0;
+
+                for (var i = 0; i < popCount; i++)
+                {
+                    var bitPos = highestBit - 1 - i;
+                    if (bitPos >= 0) result |= 1UL << bitPos;
+                }
+
+                return result;
+            }
+
+            // Count set bits to the right of rightmostMovable using hardware popcount
+            var mask = (1UL << rightmostMovable) - 1;
+            var setBitsToRight = BitOperations.PopCount(_bitPattern & mask);
+
+            // Clear the rightmost movable bit
+            var bitPattern = _bitPattern & ~(1UL << rightmostMovable);
+
+            // Clear all bits to the right of rightmostMovable
+            bitPattern &= ~mask;
+
+            // Set a bit at rightmostMovable - 1
+            bitPattern |= 1UL << (rightmostMovable - 1);
+
+            // Set the remaining setBitsToRight bits at their highest positions
+            // consecutively to the right of the moved bit
+            for (var i = 0; i < setBitsToRight; i++) 
+                bitPattern |= 1UL << (rightmostMovable - 2 - i);
+
+            return bitPattern;
+        }
+
+
+        private IndexSet GetPrevSameSizeForArray()
+        {
+            var k = _indexArray.Length;
+
+            // Create a boolean array to represent which positions are set
+            var maxPos = _indexArray.Max();
+            var positions = new bool[maxPos + 1];
+            foreach (var pos in _indexArray)
+            {
+                positions[pos] = true;
+            }
+
+            // Find the rightmost set position that can be moved left (has gap to its left)
+            var rightmostMovable = -1;
+
+            for (var i = 1; i <= maxPos; i++)
+            {
+                // position i is set and position i-1 is unset
+                if (!positions[i] || positions[i - 1]) continue;
+
+                // Take the first (rightmost) one we find
+                rightmostMovable = i;
+                break;
+            }
+
+            if (rightmostMovable == -1)
+            {
+                // No movable position found - return max combination ending at maxPos - 1
+                var result = new int[k];
+
+                for (var i = 0; i < k; i++)
+                    result[i] = maxPos - 1 - (k - 1 - i);
+
+                return Create(result);
+            }
+
+            // Count set positions to the right of rightmostMovable
+            var setBitsToRight = 0;
+            for (var i = 0; i < rightmostMovable; i++)
+                if (positions[i]) setBitsToRight++;
+
+            // Clear all positions at and to the right of rightmostMovable
+            for (var i = 0; i <= rightmostMovable; i++)
+                positions[i] = false;
+
+            // Set position at rightmostMovable - 1
+            positions[rightmostMovable - 1] = true;
+
+            // Set the remaining setBitsToRight positions at their highest consecutive positions
+            // to the right of the moved position
+            for (var i = 0; i < setBitsToRight; i++)
+                positions[rightmostMovable - 2 - i] = true;
+
+            // Convert back to array
+            var finalResult = new int[k];
+            var index = 0;
+            for (var i = 0; i <= maxPos && index < k; i++)
+                if (positions[i]) finalResult[index++] = i;
+
+            return Create(finalResult);
+        }
+
+
     }
 }

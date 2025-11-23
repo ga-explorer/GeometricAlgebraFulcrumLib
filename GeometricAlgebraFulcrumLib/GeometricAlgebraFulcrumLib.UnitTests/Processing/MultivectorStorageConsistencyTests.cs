@@ -165,9 +165,9 @@ public sealed class MultivectorConsistencyTests
             Assert.That(TestDiffIsZero(i, mv => mv / _scalar));
             Assert.That(TestDiffIsZero(i, mv => mv.Gp(mv)));
             Assert.That(TestDiffIsZero(i, mv => mv.Gp(mv.Reverse())));
-            Assert.That(TestDiffIsZero(i, mv => mv.SpSquared().ScalarValue));
-            Assert.That(TestDiffIsZero(i, mv => mv.Norm().ScalarValue));
-            Assert.That(TestDiffIsZero(i, mv => mv.NormSquared().ScalarValue));
+            Assert.That(TestDiffIsZero(i, mv => mv.SpSquared()));
+            Assert.That(TestDiffIsZero(i, mv => mv.Norm()));
+            Assert.That(TestDiffIsZero(i, mv => mv.NormSquared()));
 
             for (var j = 0; j < _mvListTested.Count; j++)
             {
@@ -177,7 +177,7 @@ public sealed class MultivectorConsistencyTests
                 Assert.That(TestDiffIsZero(i, j, (mv1, mv2) => mv1.Op(mv2)));
                 Assert.That(TestDiffIsZero(i, j, (mv1, mv2) => mv1.Gp(mv2)));
                 Assert.That(TestDiffIsZero(i, j, (mv1, mv2) => mv1.Gp(mv2.Reverse())));
-                Assert.That(TestDiffIsZero(i, j, (mv1, mv2) => mv1.Sp(mv2).ScalarValue));
+                Assert.That(TestDiffIsZero(i, j, (mv1, mv2) => mv1.Sp(mv2)));
                 Assert.That(TestDiffIsZero(i, j, (mv1, mv2) => mv1.Lcp(mv2)));
                 Assert.That(TestDiffIsZero(i, j, (mv1, mv2) => mv1.Rcp(mv2)));
                 Assert.That(TestDiffIsZero(i, j, (mv1, mv2) => mv1.Fdp(mv2)));

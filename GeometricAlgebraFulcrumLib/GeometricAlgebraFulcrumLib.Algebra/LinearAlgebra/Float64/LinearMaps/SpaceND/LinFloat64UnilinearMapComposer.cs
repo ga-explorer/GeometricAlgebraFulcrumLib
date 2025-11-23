@@ -7,6 +7,7 @@ using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.BitManipulation;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Dictionary;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Tuples;
+using MathNet.Numerics.LinearAlgebra;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.LinearMaps.SpaceND;
 
@@ -1461,10 +1462,9 @@ public class LinFloat64UnilinearMapComposer :
         );
     }
 
-    public double[,] GetMapArray(int rowCount, int colCount)
+    public Matrix<double> ToMatrix(int rowCount, int colCount)
     {
-        var mapArray =
-            new double[rowCount, colCount];
+        var mapArray = Matrix<double>.Build.Dense(rowCount, colCount);
 
         if (_indexPairScalarDictionary.Count == 0)
             return mapArray;

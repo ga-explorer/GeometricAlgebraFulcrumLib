@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using System.Collections.Immutable;
 using System.Diagnostics;
 using System.Numerics;
 using System.Runtime.CompilerServices;
@@ -106,7 +105,7 @@ public sealed class Float64SampledTimeSignal :
         return new Float64SampledTimeSignal(
             samplingRate, 
             false,
-            sampleList.ToImmutableArray()
+            [..sampleList]
         );
     }
     
@@ -116,7 +115,7 @@ public sealed class Float64SampledTimeSignal :
         return new Float64SampledTimeSignal(
             samplingRate, 
             true,
-            sampleList.ToImmutableArray()
+            [..sampleList]
         );
     }
     
@@ -427,9 +426,9 @@ public sealed class Float64SampledTimeSignal :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool IsNearZero(double zeroEpsilon = Float64Utils.ZeroEpsilon)
+    public bool IsNearZero(double tolerance = Float64Utils.DefaultTolerance)
     {
-        return SampleList.All(s => s.IsNearZero(zeroEpsilon));
+        return SampleList.All(s => s.IsNearZero(tolerance));
     }
 
 
@@ -825,7 +824,7 @@ public sealed class Float64SampledTimeSignal :
         return new Float64SampledTimeSignal(
             SamplingSpecs,
             IsPeriodic,
-            SampleList.Reverse().ToImmutableArray()
+            [..SampleList.Reverse()]
         );
     }
 
@@ -847,7 +846,7 @@ public sealed class Float64SampledTimeSignal :
         return new Float64SampledTimeSignal(
             SamplingSpecs,
             IsPeriodic,
-            SampleList.Select(s => minMaxPlus - s).Reverse().ToImmutableArray()
+            [..SampleList.Select(s => minMaxPlus - s).Reverse()]
         );
     }
 

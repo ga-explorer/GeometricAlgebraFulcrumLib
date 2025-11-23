@@ -12,10 +12,10 @@ using GeometricAlgebraFulcrumLib.Modeling.Trajectories.Quaternions.Float64;
 using GeometricAlgebraFulcrumLib.Modeling.Trajectories.Scalars.Float64;
 using GeometricAlgebraFulcrumLib.Modeling.Trajectories.Scalars.Float64.Angles;
 using GeometricAlgebraFulcrumLib.Modeling.Trajectories.Scalars.Float64.Basic;
-using GeometricAlgebraFulcrumLib.Modeling.Trajectories.Vectors2D.Float64.Adaptive;
 using GeometricAlgebraFulcrumLib.Modeling.Trajectories.Vectors2D.Float64.Basic;
-using GeometricAlgebraFulcrumLib.Modeling.Trajectories.Vectors2D.Float64.Bezier;
+using GeometricAlgebraFulcrumLib.Modeling.Trajectories.Vectors2D.Float64.Bezier.Old;
 using GeometricAlgebraFulcrumLib.Modeling.Trajectories.Vectors2D.Float64.Mapped;
+using GeometricAlgebraFulcrumLib.Modeling.Trajectories.Vectors2D.Float64.Samplers;
 using GeometricAlgebraFulcrumLib.Modeling.Trajectories.Vectors3D.Float64;
 
 namespace GeometricAlgebraFulcrumLib.Modeling.Trajectories.Vectors2D.Float64.Composers;
@@ -136,7 +136,7 @@ public static class Float64Path2DComposerUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Float64CatmullRomSplinePath2D FiniteCatmullRomSpline2D(this IEnumerable<ILinFloat64Vector2D> pointList, CatmullRomSplineType curveType, bool isClosed)
+    public static Float64CatmullRomSplinePath2D FiniteCatmullRomSpline2D(this IEnumerable<LinFloat64Vector2D> pointList, CatmullRomSplineType curveType, bool isClosed)
     {
         return new Float64CatmullRomSplinePath2D(false, pointList, curveType, isClosed);
     }
@@ -164,7 +164,7 @@ public static class Float64Path2DComposerUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Float64ArcLengthPath2D ToArcLengthPointPath2D(this Float64Path2D curve, Float64AdaptivePath2DSamplingOptions options)
+    public static Float64ArcLengthPath2D ToArcLengthPointPath2D(this Float64Path2D curve, SampledCurve2D.SamplingOptions options)
     {
         return curve as Float64ArcLengthPath2D 
                ?? Float64AdaptiveArcLengthPath2D.Create(curve, options);
@@ -172,67 +172,33 @@ public static class Float64Path2DComposerUtils
 
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Float64AdaptivePath2D FiniteAdaptiveCurve2D(this Float64Path2D curve, Float64AdaptivePath2DSamplingOptions options)
+    public static SampledCurve2D CreateFiniteAdaptiveCurve2D(this Float64Path2D curve, Float64ScalarRange timeRange, SampledCurve2D.SamplingOptions options)
     {
-        return Float64AdaptivePath2D
-            .Finite(curve)
-            .GenerateTree(options);
+        return new SampledCurve2D(
+            timeRange,
+            false,
+            options
+        ).GenerateAdaptive(curve);
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Float64AdaptivePath2D FiniteAdaptiveCurve2D(this Float64Path2D curve, Float64ScalarRange timeRange, Float64AdaptivePath2DSamplingOptions options)
+    public static SampledCurve2D CreatePeriodicAdaptiveCurve2D(this Float64Path2D curve, Float64ScalarRange timeRange, SampledCurve2D.SamplingOptions options)
     {
-        return Float64AdaptivePath2D
-            .Finite(timeRange, curve)
-            .GenerateTree(options);
+        return new SampledCurve2D(
+            timeRange,
+            true,
+            options
+        ).GenerateAdaptive(curve);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Float64AdaptivePath2D PeriodicAdaptiveCurve2D(this Float64Path2D curve, Float64AdaptivePath2DSamplingOptions options)
+    public static SampledCurve2D CreateAdaptiveCurve2D(this Float64Path2D curve, Float64ScalarRange timeRange, bool isPeriodic, SampledCurve2D.SamplingOptions options)
     {
-        return Float64AdaptivePath2D
-            .Periodic(curve)
-            .GenerateTree(options);
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Float64AdaptivePath2D PeriodicAdaptiveCurve2D(this Float64Path2D curve, Float64ScalarRange timeRange, Float64AdaptivePath2DSamplingOptions options)
-    {
-        return Float64AdaptivePath2D
-            .Periodic(timeRange, curve)
-            .GenerateTree(options);
-    }
-    
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Float64AdaptivePath2D CreateAdaptiveCurve2D(this Float64Path2D curve, Float64AdaptivePath2DSamplingOptions options)
-    {
-        return Float64AdaptivePath2D
-            .Create(curve)
-            .GenerateTree(options);
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Float64AdaptivePath2D CreateAdaptiveCurve2D(this Float64Path2D curve, Float64ScalarRange timeRange, Float64AdaptivePath2DSamplingOptions options)
-    {
-        return Float64AdaptivePath2D
-            .Create(timeRange, curve)
-            .GenerateTree(options);
-    }
-    
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Float64AdaptivePath2D CreateAdaptiveCurve2D(this Float64Path2D curve, bool isPeriodic, Float64AdaptivePath2DSamplingOptions options)
-    {
-        return Float64AdaptivePath2D
-            .Create(isPeriodic, curve)
-            .GenerateTree(options);
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Float64AdaptivePath2D CreateAdaptiveCurve2D(this Float64Path2D curve, Float64ScalarRange timeRange, bool isPeriodic, Float64AdaptivePath2DSamplingOptions options)
-    {
-        return Float64AdaptivePath2D
-            .Create(timeRange, isPeriodic, curve)
-            .GenerateTree(options);
+        return new SampledCurve2D(
+            timeRange,
+            isPeriodic,
+            options
+        ).GenerateAdaptive(curve);
     }
 
 
@@ -244,7 +210,7 @@ public static class Float64Path2DComposerUtils
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Float64ScalarComputedSignal GetDistanceCurve(this Float64Path2D curve1, ILinFloat64Vector2D curve2)
+    public static Float64ScalarComputedSignal GetDistanceCurve(this Float64Path2D curve1, LinFloat64Vector2D curve2)
     {
         return Float64ScalarComputedSignal.Finite(
             curve1.TimeRange,

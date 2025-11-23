@@ -24,8 +24,8 @@ public sealed class SdfLineSegment3D : ScalarDistanceFunction
         var pa = point - Point1; 
         var ba = Direction;
 
-        var h = (pa.VectorESp(ba) / ba.VectorENormSquared()).ClampToUnit();
+        var h = (pa.VectorDot(ba) / LinFloat64Vector3DUtils.L2NormSquared(ba)).ClampToUnit();
 
-        return (pa - ba * h).VectorENorm() - Radius;
+        return LinFloat64Vector3DUtils.L2Norm((pa - ba * h)) - Radius;
     }
 }

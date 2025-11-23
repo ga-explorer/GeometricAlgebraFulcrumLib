@@ -120,11 +120,11 @@ public sealed class GaMultivectorSparseList :
     //}
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public GaMultivectorSparseList RemoveNearZeroNumbers(double zeroEpsilon)
+    public GaMultivectorSparseList RemoveNearZeroNumbers(double tolerance)
     {
         var keys = 
             _numbersDictionary
-                .Where(p => p.Value.IsNearZero(zeroEpsilon))
+                .Where(p => p.Value.IsNearZero(tolerance))
                 .Select(p => p.Key)
                 .ToArray();
 

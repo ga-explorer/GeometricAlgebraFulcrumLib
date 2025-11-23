@@ -142,7 +142,7 @@ public sealed class HGaGeometricSpace3D<T>
         var q2 = GetPointMultivector(line.Point2);
 
         var v = q2 - q1;
-        var b = q1 + v.Gp(a - q1).Gp(v.Inverse()).GetVectorPart();
+        var b = q1 + v.Gp(a - q1).Gp(v.VersorInverse()).GetVectorPart();
 
         return GetE2DPoint(b);
     }

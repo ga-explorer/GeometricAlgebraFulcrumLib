@@ -1,14 +1,12 @@
-﻿using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space4D;
-using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
-using GeometricAlgebraFulcrumLib.Utilities.Structures.AttributeSet;
+﻿using GeometricAlgebraFulcrumLib.Utilities.Structures.AttributeSet;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Tuples;
 
 namespace GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.BabylonJs.Values;
 
 public sealed class GrBabylonJsVector4ArrayValue :
-    SparseCodeAttributeValue<IReadOnlyList<IQuad<Float64Scalar>>>
+    SparseCodeAttributeValue<IReadOnlyList<IQuad<double>>>
 {
-    internal static GrBabylonJsVector4ArrayValue Create(IReadOnlyList<IQuad<Float64Scalar>> value)
+    internal static GrBabylonJsVector4ArrayValue Create(IReadOnlyList<IQuad<double>> value)
     {
         return new GrBabylonJsVector4ArrayValue(value);
     }
@@ -19,7 +17,7 @@ public sealed class GrBabylonJsVector4ArrayValue :
         return new GrBabylonJsVector4ArrayValue(valueText);
     }
 
-    public static implicit operator GrBabylonJsVector4ArrayValue(LinFloat64Vector4D[] value)
+    public static implicit operator GrBabylonJsVector4ArrayValue(IQuad<double>[] value)
     {
         return new GrBabylonJsVector4ArrayValue(value);
     }
@@ -30,7 +28,7 @@ public sealed class GrBabylonJsVector4ArrayValue :
     {
     }
 
-    private GrBabylonJsVector4ArrayValue(IReadOnlyList<IQuad<Float64Scalar>> value)
+    private GrBabylonJsVector4ArrayValue(IReadOnlyList<IQuad<double>> value)
         : base(value)
     {
     }

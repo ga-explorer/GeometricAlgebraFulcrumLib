@@ -4,15 +4,15 @@ using GeometricAlgebraFulcrumLib.Utilities.Structures.Sequences.Periodic1D;
 namespace GeometricAlgebraFulcrumLib.Modeling.Graphics.Meshes.PointsPath.Space2D;
 
 public sealed class CircularPointsPath2D : 
-    PSeqMapped1D<double, ILinFloat64Vector2D>, 
+    PSeqMapped1D<double, LinFloat64Vector2D>, 
     IPointsPath2D
 {
-    public ILinFloat64Vector2D Center { get; }
+    public LinFloat64Vector2D Center { get; }
 
     public double Radius { get; }
 
 
-    public CircularPointsPath2D(ILinFloat64Vector2D center, double radius, int count)
+    public CircularPointsPath2D(LinFloat64Vector2D center, double radius, int count)
         : base(PeriodicSequenceUtils.CreateLinearDoubleSequence(count))
     {
         if (Count < 2)
@@ -22,7 +22,7 @@ public sealed class CircularPointsPath2D :
         Radius = radius;
     }
 
-    public CircularPointsPath2D(ILinFloat64Vector2D center, double radius, IPeriodicSequence1D<double> parameterSequence)
+    public CircularPointsPath2D(LinFloat64Vector2D center, double radius, IPeriodicSequence1D<double> parameterSequence)
         : base(parameterSequence)
     {
         Center = center;
@@ -30,7 +30,7 @@ public sealed class CircularPointsPath2D :
     }
 
 
-    protected override ILinFloat64Vector2D MappingFunction(double t)
+    protected override LinFloat64Vector2D MappingFunction(double t)
     {
         var angle = Math.Tau * t;
         var cosAngle = Math.Cos(angle);
@@ -46,7 +46,7 @@ public sealed class CircularPointsPath2D :
         return this.All(p => p.IsValid());
     }
         
-    public IPointsPath2D MapPoints(Func<ILinFloat64Vector2D, ILinFloat64Vector2D> pointMapping)
+    public IPointsPath2D MapPoints(Func<LinFloat64Vector2D, LinFloat64Vector2D> pointMapping)
     {
         return new ArrayPointsPath2D(
             this.Select(pointMapping).ToArray()

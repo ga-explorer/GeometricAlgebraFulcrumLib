@@ -2,13 +2,12 @@
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Tuples;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.BasicShapes;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.Borders;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.Borders.Space3D.Float64;
+using GeometricAlgebraFulcrumLib.Modeling.Geometry.Bounding.Float64;
 
 namespace GeometricAlgebraFulcrumLib.Modeling.Graphics.Accelerators.Grids.Space3D;
 
 public class AccGrid3D<T> : IAccGrid3D<T>
-    where T : IFloat64FiniteGeometricShape3D
+    where T : IFloat64BoundedShape3D
 {
     private readonly IReadOnlyList<T> _geometricObjectsList;
     private readonly List<T>[,,] _gridCells;
@@ -38,7 +37,7 @@ public class AccGrid3D<T> : IAccGrid3D<T>
 
     public int CellsCountZ { get; }
 
-    public double CellVolume => BoundingBox.GetVolume() / CellsCount;
+    public double CellVolume => BoundingBox.Volume / CellsCount;
 
     public int CellsCount => CellsCountX * CellsCountY * CellsCountZ;
 
@@ -94,8 +93,8 @@ public class AccGrid3D<T> : IAccGrid3D<T>
         }
 
         //Compute bounding box for entire grid
-        BoundingBox = Float64BoundingBox3D.Create(
-            (IEnumerable<IFloat64FiniteGeometricShape3D>)_geometricObjectsList
+        BoundingBox = Float64BoundingBox3D.Containing(
+            (IEnumerable<IFloat64BoundedShape3D>)_geometricObjectsList
         );
 
         var minX = BoundingBox.MinX;
@@ -109,7 +108,7 @@ public class AccGrid3D<T> : IAccGrid3D<T>
         var lengthZ = maxZ - minZ;
 
         //Setup grid cells
-        var s = Math.Pow(BoundingBox.GetVolume() / _geometricObjectsList.Count, -1 / 3.0d);
+        var s = Math.Pow(BoundingBox.Volume / _geometricObjectsList.Count, -1 / 3.0d);
 
         CellsCountX = (int)(2.0 * lengthX * s) + 1;
         CellsCountY = (int)(2.0 * lengthY * s) + 1;

@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Basis;
-using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Matrices;
+using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Numerical.Matrices;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Extensions;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Tuples;
@@ -859,6 +859,35 @@ public sealed class LinFloat64VectorComposer :
     }
     
     public LinFloat64VectorComposer AddComponentTimesTerms(IReadOnlyDictionary<int, double> mv1, IReadOnlyDictionary<int, double> mv2)
+    {
+        if (mv1.Count == 0 || mv2.Count == 0)
+            return this;
+
+        if (mv1.Count <= mv2.Count)
+        {
+            foreach (var (id, scalar1) in mv1)
+            {
+                if (!mv2.TryGetValue(id, out var scalar2))
+                    continue;
+
+                AddTerm(id, scalar1 * scalar2);
+            }
+        }
+        else
+        {
+            foreach (var (id, scalar2) in mv2)
+            {
+                if (!mv1.TryGetValue(id, out var scalar1))
+                    continue;
+
+                AddTerm(id, scalar1 * scalar2);
+            }
+        }
+
+        return this;
+    }
+    
+    public LinFloat64VectorComposer AddComponentTimesTerms(IReadOnlyDictionary<int, Float64Scalar> mv1, IReadOnlyDictionary<int, Float64Scalar> mv2)
     {
         if (mv1.Count == 0 || mv2.Count == 0)
             return this;

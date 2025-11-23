@@ -83,6 +83,7 @@ public class Float64RouletteMappedPath3D :
         return Float64Path3DLocalFrame.Create(
             t,
             point,
+            frame.ScalingFactor,
             tangent,
             normal1,
             normal2

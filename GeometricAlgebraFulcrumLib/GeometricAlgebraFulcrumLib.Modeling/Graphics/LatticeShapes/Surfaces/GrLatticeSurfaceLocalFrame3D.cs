@@ -41,20 +41,29 @@ public sealed class GrLatticeSurfaceLocalFrame3D :
     public int VSpaceDimensions 
         => 3;
 
-    public Float64Scalar Item1 => _point.X;
+    public double Item1 => _point.X;
         
-    public Float64Scalar Item2 => _point.Y;
+    public double Item2 => _point.Y;
 
-    public Float64Scalar Item3 => _point.Z;
+    public double Item3 => _point.Z;
         
-    public Float64Scalar X => _point.X;
+    public double X => _point.X;
         
-    public Float64Scalar Y => _point.Y;
+    public double Y => _point.Y;
         
-    public Float64Scalar Z => _point.Z;
+    public double Z => _point.Z;
+    
+    public double this[int index] 
+        => index switch
+        {
+            0 => X,
+            1 => Y,
+            2 => Z,
+            _ => Float64Scalar.Zero
+        };
 
-    public Triplet<Float64Scalar> PointTriplet 
-        => new Triplet<Float64Scalar>(Point.X, Point.Y, Point.Z);
+    public Triplet<double> PointTriplet 
+        => new Triplet<double>(Point.X, Point.Y, Point.Z);
 
     public LinFloat64Normal3D Normal { get; }
         = new LinFloat64Normal3D();
@@ -76,7 +85,7 @@ public sealed class GrLatticeSurfaceLocalFrame3D :
         => GraphicsVertexDataKind3D.NormalTextureColorData;
 
 
-    internal GrLatticeSurfaceLocalFrame3D(GrLatticeSurface3D parentSurface, Pair<int> uvIndex, ITriplet<Float64Scalar> pointTriplet)
+    internal GrLatticeSurfaceLocalFrame3D(GrLatticeSurface3D parentSurface, Pair<int> uvIndex, ITriplet<double> pointTriplet)
     {
         ParentSurface = parentSurface;
 
@@ -101,7 +110,7 @@ public sealed class GrLatticeSurfaceLocalFrame3D :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool HasPoint(ITriplet<Float64Scalar> pointTriplet)
+    public bool HasPoint(ITriplet<double> pointTriplet)
     {
         return Point.X == pointTriplet.Item1 && 
                Point.Y == pointTriplet.Item2 && 

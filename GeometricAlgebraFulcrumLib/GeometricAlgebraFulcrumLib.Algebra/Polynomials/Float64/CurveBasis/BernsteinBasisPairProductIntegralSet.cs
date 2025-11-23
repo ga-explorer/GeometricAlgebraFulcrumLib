@@ -1,4 +1,6 @@
 ﻿using System.Runtime.CompilerServices;
+using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Numerical;
+using MathNet.Numerics.LinearAlgebra;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.Polynomials.Float64.CurveBasis;
 
@@ -93,7 +95,7 @@ public sealed class BernsteinBasisPairProductIntegralSet :
         return value;
     }
 
-    public double[,] GetValuesAt1()
+    public Matrix<double> GetValuesAt1()
     {
         var m = (Degree - 1) / 2;
         var valueArray = new double[m + 1, m + 1];
@@ -111,7 +113,7 @@ public sealed class BernsteinBasisPairProductIntegralSet :
             }
         }
 
-        return valueArray;
+        return valueArray.ToMathNetDenseMatrix();
     }
 
 

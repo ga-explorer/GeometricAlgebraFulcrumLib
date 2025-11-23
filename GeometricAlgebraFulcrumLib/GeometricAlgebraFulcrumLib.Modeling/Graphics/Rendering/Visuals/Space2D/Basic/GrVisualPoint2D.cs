@@ -16,17 +16,25 @@ public sealed class GrVisualPoint2D :
     public int VSpaceDimensions
         => 2;
 
-    public Float64Scalar Item1
+    public double Item1
         => Position.Item1;
 
-    public Float64Scalar Item2
+    public double Item2
         => Position.Item2;
 
-    public Float64Scalar X
+    public double X
         => Position.X;
 
-    public Float64Scalar Y
+    public double Y
         => Position.Y;
+    
+    public double this[int index] 
+        => index switch
+        {
+            0 => X,
+            1 => Y,
+            _ => Float64Scalar.Zero
+        };
 
 
     public GrVisualPoint2D(string name, ILinFloat64Vector2D position)

@@ -28,7 +28,7 @@ public sealed class XGaFloat64PureVersor
         : base(vector.Processor)
     {
         Vector = vector;
-        VectorInverse = vector.Inverse();
+        VectorInverse = vector.VersorInverse();
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -43,7 +43,7 @@ public sealed class XGaFloat64PureVersor
     public override bool IsValid()
     {
         // Make sure the storage and its reverse are correct
-        if (!(Vector.Inverse() - VectorInverse).IsNearZero())
+        if (!(Vector.VersorInverse() - VectorInverse).IsNearZero())
             return false;
 
         // Make sure storage gp reverse(storage) == 1

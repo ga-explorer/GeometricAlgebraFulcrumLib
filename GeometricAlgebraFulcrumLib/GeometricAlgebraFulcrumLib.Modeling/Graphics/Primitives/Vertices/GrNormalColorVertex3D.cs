@@ -27,22 +27,31 @@ public sealed class GrNormalColorVertex3D
     public LinFloat64Normal3D Normal { get; }
         = new LinFloat64Normal3D();
 
-    public Float64Scalar X 
+    public double X 
         => Point.X;
 
-    public Float64Scalar Y 
+    public double Y 
         => Point.Y;
 
-    public Float64Scalar Z 
+    public double Z 
         => Point.Z;
+    
+    public double this[int index] 
+        => index switch
+        {
+            0 => X,
+            1 => Y,
+            2 => Z,
+            _ => Float64Scalar.Zero
+        };
 
-    public Float64Scalar Item1
+    public double Item1
         => X;
 
-    public Float64Scalar Item2
+    public double Item2
         => Y;
 
-    public Float64Scalar Item3
+    public double Item3
         => Z;
 
     public double TextureU 
@@ -63,20 +72,20 @@ public sealed class GrNormalColorVertex3D
     public bool IsValid() => Point.IsValid() && Normal.IsValid();
 
 
-    public GrNormalColorVertex3D(int index, ITriplet<Float64Scalar> point)
+    public GrNormalColorVertex3D(int index, ITriplet<double> point)
     {
         Index = index;
         Point = point.ToLinVector3D();
     }
 
-    public GrNormalColorVertex3D(int index, ITriplet<Float64Scalar> point, Color color)
+    public GrNormalColorVertex3D(int index, ITriplet<double> point, Color color)
     {
         Index = index;
         Point = point.ToLinVector3D();
         Color = color;
     }
 
-    public GrNormalColorVertex3D(int index, ITriplet<Float64Scalar> point, Color color, ITriplet<Float64Scalar> normal)
+    public GrNormalColorVertex3D(int index, ITriplet<double> point, Color color, ITriplet<double> normal)
     {
         Index = index;
         Point = point.ToLinVector3D();

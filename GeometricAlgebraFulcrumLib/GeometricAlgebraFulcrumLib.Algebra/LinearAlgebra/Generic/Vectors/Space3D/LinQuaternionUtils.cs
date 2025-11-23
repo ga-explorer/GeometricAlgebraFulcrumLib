@@ -218,8 +218,8 @@ public static class LinQuaternionUtils
         var scalarProcessor = unitVector1.ScalarProcessor;
 
         Debug.Assert(
-            (unitVector1.VectorENormSquared() - 1).IsNearZero() &&
-            (unitVector2.VectorENormSquared() - 1).IsNearZero()
+            (unitVector1.L2NormSquared() - 1).IsNearZero() &&
+            (unitVector2.L2NormSquared() - 1).IsNearZero()
         );
 
         var dot12 = unitVector1.VectorESp(unitVector2);
@@ -393,17 +393,17 @@ public static class LinQuaternionUtils
     
 
     //[MethodImpl(MethodImplOptions.AggressiveInlining)]
-    //public static bool IsNearZero<T>(this Quaternion quaternion, float zeroEpsilon = 1e-5f)
+    //public static bool IsNearZero<T>(this Quaternion quaternion, float tolerance = 1e-5f)
     //{
-    //    return quaternion.X.IsNearZero(zeroEpsilon) &&
-    //           quaternion.Y.IsNearZero(zeroEpsilon) &&
-    //           quaternion.Z.IsNearZero(zeroEpsilon);
+    //    return quaternion.X.IsNearZero(tolerance) &&
+    //           quaternion.Y.IsNearZero(tolerance) &&
+    //           quaternion.Z.IsNearZero(tolerance);
     //}
 
     //[MethodImpl(MethodImplOptions.AggressiveInlining)]
-    //public static bool IsNearNormalized<T>(this Quaternion quaternion, float zeroEpsilon = 1e-5f)
+    //public static bool IsNearNormalized<T>(this Quaternion quaternion, float tolerance = 1e-5f)
     //{
-    //    return (quaternion.LengthSquared() - 1f).IsNearZero(zeroEpsilon);
+    //    return (quaternion.LengthSquared() - 1f).IsNearZero(tolerance);
     //}
 
     //[MethodImpl(MethodImplOptions.AggressiveInlining)]

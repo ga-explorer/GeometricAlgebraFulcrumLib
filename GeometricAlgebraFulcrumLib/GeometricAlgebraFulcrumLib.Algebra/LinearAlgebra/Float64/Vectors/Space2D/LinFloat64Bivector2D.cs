@@ -146,19 +146,19 @@ public sealed record LinFloat64Bivector2D :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool IsNearZero(double zeroEpsilon = 1E-12)
+    public bool IsNearZero(double tolerance = Float64Utils.DefaultTolerance)
     {
-        return Norm().IsNearZero(zeroEpsilon);
+        return L2Norm().IsNearZero(tolerance);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public Float64Scalar Norm()
+    public double L2Norm()
     {
-        return NormSquared().Sqrt();
+        return L2NormSquared().Sqrt();
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public Float64Scalar NormSquared()
+    public double L2NormSquared()
     {
         return Scalar12.Square();
     }
@@ -166,7 +166,7 @@ public sealed record LinFloat64Bivector2D :
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public LinFloat64Bivector2D ToUnitBivector(bool zeroAsSymmetric = true)
     {
-        var normSquared = NormSquared();
+        var normSquared = L2NormSquared();
 
         if (normSquared.IsZero())
             return zeroAsSymmetric ? E12 : Zero;
@@ -215,7 +215,7 @@ public sealed record LinFloat64Bivector2D :
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public LinFloat64Bivector2D Inverse()
     {
-        return Negative(1d / NormSquared().ScalarValue);
+        return Negative(1d / L2NormSquared());
     }
 
 

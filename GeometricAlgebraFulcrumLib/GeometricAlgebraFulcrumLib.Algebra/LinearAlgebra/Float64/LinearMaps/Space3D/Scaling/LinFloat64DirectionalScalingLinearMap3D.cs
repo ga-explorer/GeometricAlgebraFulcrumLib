@@ -31,14 +31,14 @@ public abstract class LinFloat64DirectionalScalingLinearMap3D :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool IsNearIdentity(double zeroEpsilon = 1E-12)
+    public bool IsNearIdentity(double tolerance = Float64Utils.DefaultTolerance)
     {
-        return ScalingFactor.IsNearOne(zeroEpsilon);
+        return ScalingFactor.IsNearOne(tolerance);
     }
 
     public abstract LinFloat64Vector3D MapBasisVector(int basisIndex);
 
-    public abstract LinFloat64Vector3D MapVector(ILinFloat64Vector3D vector);
+    public abstract LinFloat64Vector3D MapVector(LinFloat64Vector3D vector);
 
     public abstract ILinFloat64DirectionalScalingLinearMap3D GetDirectionalScalingInverse();
 

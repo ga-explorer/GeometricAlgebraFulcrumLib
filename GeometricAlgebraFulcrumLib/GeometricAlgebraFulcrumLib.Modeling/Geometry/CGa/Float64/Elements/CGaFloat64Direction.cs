@@ -2,6 +2,9 @@
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Text;
+using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Angles;
+using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space2D;
+using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space3D;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Float64.Blades;
 
@@ -71,6 +74,34 @@ public class CGaFloat64Direction :
         return -Weight * Direction.VGaDual().Op(GeometricSpace.Ei);
     }
 
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public new CGaFloat64Direction ScaleBy(double scalingFactor)
+    {
+        return new CGaFloat64Direction(
+            GeometricSpace,
+            Weight,
+            Direction.Times(scalingFactor)
+        );
+    }
+
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public new CGaFloat64Direction RotateUsing(LinFloat64Angle angle, LinFloat64Vector2D egaAxisPoint)
+    {
+        return EncodeOpnsBlade()
+            .RotateUsing(angle, egaAxisPoint)
+            .DecodeOpnsDirection.Element();
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public new CGaFloat64Direction RotateUsing(LinFloat64Angle angle, LinFloat64Vector3D egaAxisPoint, LinFloat64Vector3D egaAxisVector)
+    {
+        return EncodeOpnsBlade()
+            .RotateUsing(angle, egaAxisPoint, egaAxisVector)
+            .DecodeOpnsDirection.Element();
+    }
+    
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public override string ToString()

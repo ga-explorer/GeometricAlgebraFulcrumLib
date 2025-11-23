@@ -1,5 +1,4 @@
-﻿using System.Collections.Immutable;
-using System.Runtime.CompilerServices;
+﻿using System.Runtime.CompilerServices;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.BitManipulation;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Combinations;
@@ -137,11 +136,13 @@ public sealed class DfPowerScalar :
 
                 return n.GetBinomialCoefficient(n / 2) / Math.Pow(2, n) +
                        DfPlus.Create(
-                           kRange.Select(k =>
-                               s *
-                               n.GetBinomialCoefficient(k) *
-                               ((n - 2 * k) * theta).Cos()
-                           ).ToImmutableArray()
+                           [
+                               ..kRange.Select(k =>
+                                   s *
+                                   n.GetBinomialCoefficient(k) *
+                                   ((n - 2 * k) * theta).Cos()
+                               )
+                           ]
                        ).Simplify();
             }
             else
@@ -151,10 +152,12 @@ public sealed class DfPowerScalar :
                 var s = Math.Pow(2, 1 - n);
 
                 return DfPlus.Create(
-                    kRange.Select(k =>
-                        s * n.GetBinomialCoefficient(k) *
-                        ((n - 2 * k) * theta).Cos()
-                    ).ToImmutableArray()
+                    [
+                        ..kRange.Select(k =>
+                            s * n.GetBinomialCoefficient(k) *
+                            ((n - 2 * k) * theta).Cos()
+                        )
+                    ]
                 ).Simplify();
             }
         }
@@ -172,12 +175,14 @@ public sealed class DfPowerScalar :
 
                 return n.GetBinomialCoefficient(n / 2) / Math.Pow(2, n) +
                        DfPlus.Create(
-                           kRange.Select(k =>
-                               s *
-                               (n / 2 - k).IsEvenToBipolarInteger() *
-                               n.GetBinomialCoefficient(k) *
-                               ((n - 2 * k) * theta).Cos()
-                           ).ToImmutableArray()
+                           [
+                               ..kRange.Select(k =>
+                                   s *
+                                   (n / 2 - k).IsEvenToBipolarInteger() *
+                                   n.GetBinomialCoefficient(k) *
+                                   ((n - 2 * k) * theta).Cos()
+                               )
+                           ]
                        ).Simplify();
             }
             else
@@ -187,12 +192,14 @@ public sealed class DfPowerScalar :
                 var s = Math.Pow(2, 1 - n);
 
                 return DfPlus.Create(
-                    kRange.Select(k =>
-                        s *
-                        ((n - 1) / 2 - k).IsEvenToBipolarInteger() *
-                        n.GetBinomialCoefficient(k) *
-                        ((n - 2 * k) * theta).Sin()
-                    ).ToImmutableArray()
+                    [
+                        ..kRange.Select(k =>
+                            s *
+                            ((n - 1) / 2 - k).IsEvenToBipolarInteger() *
+                            n.GetBinomialCoefficient(k) *
+                            ((n - 2 * k) * theta).Sin()
+                        )
+                    ]
                 ).Simplify();
             }
         }

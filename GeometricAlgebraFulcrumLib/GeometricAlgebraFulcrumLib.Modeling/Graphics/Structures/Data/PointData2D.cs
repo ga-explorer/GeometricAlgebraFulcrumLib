@@ -17,18 +17,26 @@ public sealed record PointData2D<T> :
                PointIndex >= 0;
     }
 
-    public Float64Scalar Item1 
+    public double Item1 
         => X;
 
-    public Float64Scalar Item2 
+    public double Item2 
         => Y;
         
     public int VSpaceDimensions 
         => 2;
 
-    public Float64Scalar X { get; }
+    public double X { get; }
         
-    public Float64Scalar Y { get; }
+    public double Y { get; }
+    
+    public double this[int index] 
+        => index switch
+        {
+            0 => X,
+            1 => Y,
+            _ => Float64Scalar.Zero
+        };
 
     public int PointIndex { get; }
         

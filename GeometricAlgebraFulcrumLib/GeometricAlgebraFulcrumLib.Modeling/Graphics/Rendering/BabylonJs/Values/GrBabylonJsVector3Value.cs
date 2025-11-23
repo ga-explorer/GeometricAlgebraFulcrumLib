@@ -1,14 +1,12 @@
 ﻿using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space3D;
-using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.AttributeSet;
-using GeometricAlgebraFulcrumLib.Utilities.Structures.Tuples;
 
 namespace GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.BabylonJs.Values;
 
 public sealed class GrBabylonJsVector3Value :
-    SparseCodeAttributeValue<ITriplet<Float64Scalar>>
+    SparseCodeAttributeValue<LinFloat64Vector3D>
 {
-    internal static GrBabylonJsVector3Value Create(ITriplet<Float64Scalar> value)
+    internal static GrBabylonJsVector3Value Create(LinFloat64Vector3D value)
     {
         return new GrBabylonJsVector3Value(value);
     }
@@ -30,7 +28,7 @@ public sealed class GrBabylonJsVector3Value :
     {
     }
 
-    private GrBabylonJsVector3Value(ITriplet<Float64Scalar> value)
+    private GrBabylonJsVector3Value(LinFloat64Vector3D value)
         : base(value)
     {
     }

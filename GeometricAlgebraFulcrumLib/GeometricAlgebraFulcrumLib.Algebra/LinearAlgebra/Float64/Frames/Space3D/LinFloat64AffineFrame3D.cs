@@ -23,7 +23,7 @@ public class LinFloat64AffineFrame3D :
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static LinFloat64AffineFrame3D CreateOrthonormal(ILinFloat64Vector3D origin, ILinFloat64Vector3D direction, bool rightHanded = true)
     {
-        Debug.Assert(!direction.VectorENormSquared().IsNearZero());
+        Debug.Assert(!direction.L2NormSquared().IsNearZero());
 
         var u = direction.ToUnitLinVector3D();
         var v = direction.GetUnitNormal();
@@ -40,7 +40,7 @@ public class LinFloat64AffineFrame3D :
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static LinFloat64AffineFrame3D Create(ILinFloat64Vector3D origin, ILinFloat64Vector3D direction1, ILinFloat64Vector3D direction2, ILinFloat64Vector3D direction3)
     {
-        Debug.Assert(!direction1.VectorENormSquared().IsNearZero());
+        Debug.Assert(!direction1.L2NormSquared().IsNearZero());
 
         return new LinFloat64AffineFrame3D(
             origin.ToLinVector3D(),
@@ -54,23 +54,32 @@ public class LinFloat64AffineFrame3D :
     public int VSpaceDimensions
         => 3;
 
-    public Float64Scalar Item1
+    public double Item1
         => Origin.X;
 
-    public Float64Scalar Item2
+    public double Item2
         => Origin.Y;
 
-    public Float64Scalar Item3
+    public double Item3
         => Origin.Z;
 
-    public Float64Scalar X
+    public double X
         => Origin.X;
 
-    public Float64Scalar Y
+    public double Y
         => Origin.Y;
 
-    public Float64Scalar Z
+    public double Z
         => Origin.Z;
+    
+    public double this[int index] 
+        => index switch
+        {
+            0 => X,
+            1 => Y,
+            2 => Z,
+            _ => Float64Scalar.Zero
+        };
 
     public LinFloat64Vector3D Origin { get; }
 
@@ -105,9 +114,9 @@ public class LinFloat64AffineFrame3D :
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public bool IsFrame3D()
     {
-        if (Direction1.VectorENormSquared().IsNearZero()) return false;
-        if (Direction2.VectorENormSquared().IsNearZero()) return false;
-        if (Direction3.VectorENormSquared().IsNearZero()) return false;
+        if (LinFloat64Vector3DUtils.L2NormSquared(Direction1).IsNearZero()) return false;
+        if (LinFloat64Vector3DUtils.L2NormSquared(Direction2).IsNearZero()) return false;
+        if (LinFloat64Vector3DUtils.L2NormSquared(Direction3).IsNearZero()) return false;
 
         return true;
     }

@@ -5,31 +5,25 @@ using GeometricAlgebraFulcrumLib.Utilities.Structures.Dictionary;
 namespace GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Tuples;
 
 public class DistinctTuplesList3D
-    : IReadOnlyList<ILinFloat64Vector3D>
+    : IReadOnlyList<LinFloat64Vector3D>
 {
     private readonly Dictionary3Keys<double, int> _tupleIndicesTable =
         new Dictionary3Keys<double, int>();
 
-    private readonly List<ILinFloat64Vector3D> _tuplesList;
+    private readonly List<LinFloat64Vector3D> _tuplesList;
 
 
-    public int Count
+    public int Count 
+        => _tupleIndicesTable.Count;
+
+    public LinFloat64Vector3D this[int index]
     {
-        get { return _tupleIndicesTable.Count; }
-    }
-
-    public ILinFloat64Vector3D this[int index]
-    {
-        get { return _tuplesList[index]; }
+        get => _tuplesList[index];
         set
         {
-            if (ReferenceEquals(value, null))
-                throw new ArgumentNullException(nameof(value));
-
             var oldTuple = _tuplesList[index];
 
-            int tupleIndex;
-            if (_tupleIndicesTable.TryGetValue(value.Item1, value.Item2, value.Item3, out tupleIndex) && tupleIndex != index)
+            if (_tupleIndicesTable.TryGetValue(value.Item1, value.Item2, value.Item3, out var tupleIndex) && tupleIndex != index)
                 throw new InvalidOperationException();
 
             _tuplesList[index] = value;
@@ -42,31 +36,31 @@ public class DistinctTuplesList3D
 
     public DistinctTuplesList3D()
     {
-        _tuplesList = new List<ILinFloat64Vector3D>();
+        _tuplesList = new List<LinFloat64Vector3D>();
     }
 
     public DistinctTuplesList3D(int capacity)
     {
-        _tuplesList = new List<ILinFloat64Vector3D>(capacity);
+        _tuplesList = new List<LinFloat64Vector3D>(capacity);
     }
 
-    public DistinctTuplesList3D(ILinFloat64Vector3D tuple)
+    public DistinctTuplesList3D(LinFloat64Vector3D tuple)
     {
-        _tuplesList = new List<ILinFloat64Vector3D>();
+        _tuplesList = new List<LinFloat64Vector3D>();
 
         AddTuple(tuple);
     }
 
-    public DistinctTuplesList3D(params ILinFloat64Vector3D[] tuplesList)
+    public DistinctTuplesList3D(params LinFloat64Vector3D[] tuplesList)
     {
-        _tuplesList = new List<ILinFloat64Vector3D>(tuplesList.Length);
+        _tuplesList = new List<LinFloat64Vector3D>(tuplesList.Length);
 
         AddTuples(tuplesList);
     }
 
-    public DistinctTuplesList3D(IEnumerable<ILinFloat64Vector3D> tuplesList)
+    public DistinctTuplesList3D(IEnumerable<LinFloat64Vector3D> tuplesList)
     {
-        _tuplesList = new List<ILinFloat64Vector3D>();
+        _tuplesList = new List<LinFloat64Vector3D>();
 
         AddTuples(tuplesList);
     }
@@ -93,11 +87,10 @@ public class DistinctTuplesList3D
         return this;
     }
 
-    public KeyValuePair<int, ILinFloat64Vector3D> AddTuple(double x, double y, double z)
+    public KeyValuePair<int, LinFloat64Vector3D> AddTuple(double x, double y, double z)
     {
-        int tupleIndex;
-        if (_tupleIndicesTable.TryGetValue(x, y, z, out tupleIndex))
-            return new KeyValuePair<int, ILinFloat64Vector3D>(
+        if (_tupleIndicesTable.TryGetValue(x, y, z, out var tupleIndex))
+            return new KeyValuePair<int, LinFloat64Vector3D>(
                 tupleIndex,
                 _tuplesList[tupleIndex]
             );
@@ -108,20 +101,16 @@ public class DistinctTuplesList3D
         _tuplesList.Add(tuple);
         _tupleIndicesTable.Add(x, y, z, tupleIndex);
 
-        return new KeyValuePair<int, ILinFloat64Vector3D>(
+        return new KeyValuePair<int, LinFloat64Vector3D>(
             tupleIndex,
             tuple
         );
     }
 
-    public KeyValuePair<int, ILinFloat64Vector3D> AddTuple(ILinFloat64Vector3D tuple)
+    public KeyValuePair<int, LinFloat64Vector3D> AddTuple(LinFloat64Vector3D tuple)
     {
-        if (ReferenceEquals(tuple, null))
-            throw new ArgumentNullException(nameof(tuple));
-
-        int tupleIndex;
-        if (_tupleIndicesTable.TryGetValue(tuple.Item1, tuple.Item2, tuple.Item3, out tupleIndex))
-            return new KeyValuePair<int, ILinFloat64Vector3D>(
+        if (_tupleIndicesTable.TryGetValue(tuple.Item1, tuple.Item2, tuple.Item3, out var tupleIndex))
+            return new KeyValuePair<int, LinFloat64Vector3D>(
                 tupleIndex,
                 _tuplesList[tupleIndex]
             );
@@ -131,30 +120,30 @@ public class DistinctTuplesList3D
         _tuplesList.Add(tuple);
         _tupleIndicesTable.Add(tuple.Item1, tuple.Item2, tuple.Item3, tupleIndex);
 
-        return new KeyValuePair<int, ILinFloat64Vector3D>(
+        return new KeyValuePair<int, LinFloat64Vector3D>(
             tupleIndex,
             tuple
         );
     }
 
-    public IEnumerable<KeyValuePair<int, ILinFloat64Vector3D>> AddTuples(IEnumerable<ILinFloat64Vector3D> tuplesList)
+    public IEnumerable<KeyValuePair<int, LinFloat64Vector3D>> AddTuples(IEnumerable<LinFloat64Vector3D> tuplesList)
     {
         return tuplesList.Select(AddTuple);
     }
 
-    public KeyValuePair<int, ILinFloat64Vector3D>[] AddTuples(params ILinFloat64Vector3D[] tuplesList)
+    public KeyValuePair<int, LinFloat64Vector3D>[] AddTuples(params LinFloat64Vector3D[] tuplesList)
     {
         return tuplesList.Select(AddTuple).ToArray();
     }
 
-    public ILinFloat64Vector3D GetTuple(double x, double y, double z)
+    public LinFloat64Vector3D GetTuple(double x, double y, double z)
     {
         var tupleIndex = _tupleIndicesTable[x, y, z];
 
         return _tuplesList[tupleIndex];
     }
 
-    public ILinFloat64Vector3D GetTuple(ILinFloat64Vector3D tuple)
+    public LinFloat64Vector3D GetTuple(LinFloat64Vector3D tuple)
     {
         var tupleIndex = _tupleIndicesTable[tuple.Item1, tuple.Item2, tuple.Item3];
 
@@ -166,26 +155,26 @@ public class DistinctTuplesList3D
         return _tupleIndicesTable[x, y, z];
     }
 
-    public int GetTupleIndex(ILinFloat64Vector3D tuple)
+    public int GetTupleIndex(LinFloat64Vector3D tuple)
     {
         return _tupleIndicesTable[tuple.Item1, tuple.Item2, tuple.Item3];
     }
 
-    public KeyValuePair<int, ILinFloat64Vector3D> GetTupleWithIndex(double x, double y, double z)
+    public KeyValuePair<int, LinFloat64Vector3D> GetTupleWithIndex(double x, double y, double z)
     {
         var tupleIndex = _tupleIndicesTable[x, y, z];
 
-        return new KeyValuePair<int, ILinFloat64Vector3D>(
+        return new KeyValuePair<int, LinFloat64Vector3D>(
             tupleIndex,
             _tuplesList[tupleIndex]
         );
     }
 
-    public KeyValuePair<int, ILinFloat64Vector3D> GetTupleWithIndex(ILinFloat64Vector3D tuple)
+    public KeyValuePair<int, LinFloat64Vector3D> GetTupleWithIndex(LinFloat64Vector3D tuple)
     {
         var tupleIndex = _tupleIndicesTable[tuple.Item1, tuple.Item2, tuple.Item3];
 
-        return new KeyValuePair<int, ILinFloat64Vector3D>(
+        return new KeyValuePair<int, LinFloat64Vector3D>(
             tupleIndex,
             _tuplesList[tupleIndex]
         );
@@ -193,8 +182,7 @@ public class DistinctTuplesList3D
 
     public int GetOrAddTupleIndex(double x, double y, double z)
     {
-        int tupleIndex;
-        if (_tupleIndicesTable.TryGetValue(x, y, z, out tupleIndex))
+        if (_tupleIndicesTable.TryGetValue(x, y, z, out var tupleIndex))
             return tupleIndex;
 
         tupleIndex = _tuplesList.Count;
@@ -206,7 +194,7 @@ public class DistinctTuplesList3D
         return tupleIndex;
     }
 
-    public int GetOrAddTupleIndex(ILinFloat64Vector3D tuple)
+    public int GetOrAddTupleIndex(LinFloat64Vector3D tuple)
     {
         if (_tupleIndicesTable.TryGetValue(tuple.Item1, tuple.Item2, tuple.Item3, out var tupleIndex))
             return tupleIndex;
@@ -219,11 +207,10 @@ public class DistinctTuplesList3D
         return tupleIndex;
     }
 
-    public KeyValuePair<int, ILinFloat64Vector3D> GetOrAddTupleWithIndex(double x, double y, double z)
+    public KeyValuePair<int, LinFloat64Vector3D> GetOrAddTupleWithIndex(double x, double y, double z)
     {
-        int tupleIndex;
-        if (_tupleIndicesTable.TryGetValue(x, y, z, out tupleIndex))
-            return new KeyValuePair<int, ILinFloat64Vector3D>(
+        if (_tupleIndicesTable.TryGetValue(x, y, z, out var tupleIndex))
+            return new KeyValuePair<int, LinFloat64Vector3D>(
                 tupleIndex,
                 _tuplesList[tupleIndex]
             );
@@ -234,17 +221,16 @@ public class DistinctTuplesList3D
         _tuplesList.Add(tuple);
         _tupleIndicesTable.Add(x, y, z, tupleIndex);
 
-        return new KeyValuePair<int, ILinFloat64Vector3D>(
+        return new KeyValuePair<int, LinFloat64Vector3D>(
             tupleIndex,
             tuple
         );
     }
 
-    public KeyValuePair<int, ILinFloat64Vector3D> GetOrAddTupleWithIndex(ILinFloat64Vector3D tuple)
+    public KeyValuePair<int, LinFloat64Vector3D> GetOrAddTupleWithIndex(LinFloat64Vector3D tuple)
     {
-        int tupleIndex;
-        if (_tupleIndicesTable.TryGetValue(tuple.Item1, tuple.Item2, tuple.Item3, out tupleIndex))
-            return new KeyValuePair<int, ILinFloat64Vector3D>(
+        if (_tupleIndicesTable.TryGetValue(tuple.Item1, tuple.Item2, tuple.Item3, out var tupleIndex))
+            return new KeyValuePair<int, LinFloat64Vector3D>(
                 tupleIndex,
                 _tuplesList[tupleIndex]
             );
@@ -254,35 +240,33 @@ public class DistinctTuplesList3D
         _tuplesList.Add(tuple);
         _tupleIndicesTable.Add(tuple.Item1, tuple.Item2, tuple.Item3, tupleIndex);
 
-        return new KeyValuePair<int, ILinFloat64Vector3D>(
+        return new KeyValuePair<int, LinFloat64Vector3D>(
             tupleIndex,
             tuple
         );
     }
 
-    public bool TryGetTuple(double x, double y, double z, out ILinFloat64Vector3D outputTuple)
+    public bool TryGetTuple(double x, double y, double z, out LinFloat64Vector3D outputTuple)
     {
-        int tupleIndex;
-        if (_tupleIndicesTable.TryGetValue(x, y, z, out tupleIndex))
+        if (_tupleIndicesTable.TryGetValue(x, y, z, out var tupleIndex))
         {
             outputTuple = _tuplesList[tupleIndex];
             return true;
         }
 
-        outputTuple = null;
+        outputTuple = LinFloat64Vector3D.Zero;
         return false;
     }
 
-    public bool TryGetTuple(ILinFloat64Vector3D tuple, out ILinFloat64Vector3D outputTuple)
+    public bool TryGetTuple(LinFloat64Vector3D tuple, out LinFloat64Vector3D outputTuple)
     {
-        int tupleIndex;
-        if (_tupleIndicesTable.TryGetValue(tuple.Item1, tuple.Item2, tuple.Item3, out tupleIndex))
+        if (_tupleIndicesTable.TryGetValue(tuple.Item1, tuple.Item2, tuple.Item3, out var tupleIndex))
         {
             outputTuple = _tuplesList[tupleIndex];
             return true;
         }
 
-        outputTuple = null;
+        outputTuple = LinFloat64Vector3D.Zero;
         return false;
     }
 
@@ -291,17 +275,16 @@ public class DistinctTuplesList3D
         return _tupleIndicesTable.TryGetValue(x, y, z, out tupleIndex);
     }
 
-    public bool TryGetTupleIndex(ILinFloat64Vector3D tuple, out int tupleIndex)
+    public bool TryGetTupleIndex(LinFloat64Vector3D tuple, out int tupleIndex)
     {
         return _tupleIndicesTable.TryGetValue(tuple.Item1, tuple.Item2, tuple.Item3, out tupleIndex);
     }
 
-    public bool TryGetTupleWithIndex(double x, double y, double z, out KeyValuePair<int, ILinFloat64Vector3D> tupleWithIndex)
+    public bool TryGetTupleWithIndex(double x, double y, double z, out KeyValuePair<int, LinFloat64Vector3D> tupleWithIndex)
     {
-        int tupleIndex;
-        if (_tupleIndicesTable.TryGetValue(x, y, z, out tupleIndex))
+        if (_tupleIndicesTable.TryGetValue(x, y, z, out var tupleIndex))
         {
-            tupleWithIndex = new KeyValuePair<int, ILinFloat64Vector3D>(
+            tupleWithIndex = new KeyValuePair<int, LinFloat64Vector3D>(
                 tupleIndex,
                 _tuplesList[tupleIndex]
             );
@@ -309,16 +292,15 @@ public class DistinctTuplesList3D
             return true;
         }
 
-        tupleWithIndex = new KeyValuePair<int, ILinFloat64Vector3D>(-1, LinFloat64Vector3D.Zero);
+        tupleWithIndex = new KeyValuePair<int, LinFloat64Vector3D>(-1, LinFloat64Vector3D.Zero);
         return false;
     }
 
-    public bool TryGetTupleWithIndex(ILinFloat64Vector3D tuple, out KeyValuePair<int, ILinFloat64Vector3D> tupleWithIndex)
+    public bool TryGetTupleWithIndex(LinFloat64Vector3D tuple, out KeyValuePair<int, LinFloat64Vector3D> tupleWithIndex)
     {
-        int tupleIndex;
-        if (_tupleIndicesTable.TryGetValue(tuple.Item1, tuple.Item2, tuple.Item3, out tupleIndex))
+        if (_tupleIndicesTable.TryGetValue(tuple.Item1, tuple.Item2, tuple.Item3, out var tupleIndex))
         {
-            tupleWithIndex = new KeyValuePair<int, ILinFloat64Vector3D>(
+            tupleWithIndex = new KeyValuePair<int, LinFloat64Vector3D>(
                 tupleIndex,
                 _tuplesList[tupleIndex]
             );
@@ -326,7 +308,7 @@ public class DistinctTuplesList3D
             return true;
         }
 
-        tupleWithIndex = new KeyValuePair<int, ILinFloat64Vector3D>(-1, LinFloat64Vector3D.Zero);
+        tupleWithIndex = new KeyValuePair<int, LinFloat64Vector3D>(-1, LinFloat64Vector3D.Zero);
         return false;
     }
 
@@ -349,7 +331,7 @@ public class DistinctTuplesList3D
     }
 
 
-    public IEnumerator<ILinFloat64Vector3D> GetEnumerator()
+    public IEnumerator<LinFloat64Vector3D> GetEnumerator()
     {
         return _tuplesList.GetEnumerator();
     }

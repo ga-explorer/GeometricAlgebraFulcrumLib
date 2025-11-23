@@ -60,7 +60,7 @@ public sealed class DfPlus :
     public static DfPlus Create(DifferentialFunction baseFunction1, DifferentialFunction baseFunction2, bool canBeSimplified = true)
     {
         return Create(
-            new[] { baseFunction1, baseFunction2 },
+            [baseFunction1, baseFunction2],
             canBeSimplified
         );
     }
@@ -69,7 +69,7 @@ public sealed class DfPlus :
     public static DfPlus Create(DifferentialFunction baseFunction1, DifferentialFunction baseFunction2, DifferentialFunction baseFunction3, bool canBeSimplified = true)
     {
         return Create(
-            new[] { baseFunction1, baseFunction2, baseFunction3 },
+            [baseFunction1, baseFunction2, baseFunction3],
             canBeSimplified
         );
     }

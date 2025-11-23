@@ -1,11 +1,11 @@
 ﻿using System.Collections;
 using System.Runtime.CompilerServices;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Multivectors;
-using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Matrices;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Generic.Angles;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Generic.Vectors.Space2D;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Generic.Vectors.Space3D;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Generic.Vectors.Space4D;
+using GeometricAlgebraFulcrumLib.Utilities.Structures.Extensions;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Tuples;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.Scalars.Generic
@@ -209,13 +209,13 @@ namespace GeometricAlgebraFulcrumLib.Algebra.Scalars.Generic
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public T[] MapScalars(T[] scalarArray)
         {
-            return scalarArray.MapScalars(MapScalarValue);
+            return scalarArray.MapItems(MapScalarValue);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public T[,] MapScalars(T[,] scalarArray)
         {
-            return scalarArray.MapScalars(MapScalarValue);
+            return scalarArray.MapItems(MapScalarValue);
         }
 
 

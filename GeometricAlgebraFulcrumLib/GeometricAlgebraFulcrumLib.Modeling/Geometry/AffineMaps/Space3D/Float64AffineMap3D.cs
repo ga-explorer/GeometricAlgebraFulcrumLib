@@ -3,10 +3,11 @@ using System.Numerics;
 using System.Runtime.CompilerServices;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Basis;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Angles;
-using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Matrices;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space3D;
+using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Numerical.Matrices;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Tuples;
+using MathNet.Numerics.LinearAlgebra;
 
 namespace GeometricAlgebraFulcrumLib.Modeling.Geometry.AffineMaps.Space3D;
 
@@ -78,9 +79,9 @@ public sealed class Float64AffineMap3D :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool IsNearIdentity(double zeroEpsilon = Float64Utils.ZeroEpsilon)
+    public bool IsNearIdentity(double tolerance = Float64Utils.DefaultTolerance)
     {
-        return _matrix.IsNearIdentity(zeroEpsilon);
+        return _matrix.IsNearIdentity(tolerance);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -134,7 +135,7 @@ public sealed class Float64AffineMap3D :
         return this;
     }
 
-    public Float64AffineMap3D SetTranslationPart(ITriplet<Float64Scalar> dv)
+    public Float64AffineMap3D SetTranslationPart(ITriplet<double> dv)
     {
         PreTranslate(-FinalTranslation);
         Translate(dv);
@@ -203,7 +204,7 @@ public sealed class Float64AffineMap3D :
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public Float64AffineMap3D PreTranslate(ITriplet<Float64Scalar> dv)
+    public Float64AffineMap3D PreTranslate(ITriplet<double> dv)
     {
         return PrependMap(
             SquareMatrix4.CreateTranslationMatrix3D(dv)
@@ -244,7 +245,7 @@ public sealed class Float64AffineMap3D :
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public Float64AffineMap3D Translate(ITriplet<Float64Scalar> dv)
+    public Float64AffineMap3D Translate(ITriplet<double> dv)
     {
         return AppendMap(
             SquareMatrix4.CreateTranslationMatrix3D(dv)
@@ -591,13 +592,13 @@ public sealed class Float64AffineMap3D :
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public Matrix4x4 GetMatrix4x4()
     {
-        return _matrix.GetMatrix4x4();
+        return _matrix.ToSystemNumericsMatrix4x4();
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public double[,] GetArray2D()
+    public Matrix<double> GetMatrix()
     {
-        return _matrix.GetArray2D();
+        return _matrix.GetMatrix();
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]

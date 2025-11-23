@@ -443,7 +443,7 @@ public static class NumericValidationSample
 
     public static void Example1()
     {
-        ScalarProcessor.ZeroEpsilon = 1e-10d;
+        ScalarProcessor.DefaultTolerance = 1e-10d;
 
         LaTeXComposer.BasisName = @"\boldsymbol{\sigma}";
 

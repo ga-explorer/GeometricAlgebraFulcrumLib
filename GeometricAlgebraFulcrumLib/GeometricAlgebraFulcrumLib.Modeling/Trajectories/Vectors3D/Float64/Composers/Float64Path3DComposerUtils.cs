@@ -17,11 +17,11 @@ using GeometricAlgebraFulcrumLib.Modeling.Trajectories.Scalars.Float64.Angles;
 using GeometricAlgebraFulcrumLib.Modeling.Trajectories.Scalars.Float64.Basic;
 using GeometricAlgebraFulcrumLib.Modeling.Trajectories.Vectors2D.Float64;
 using GeometricAlgebraFulcrumLib.Modeling.Trajectories.Vectors2D.Float64.Basic;
-using GeometricAlgebraFulcrumLib.Modeling.Trajectories.Vectors3D.Float64.Adaptive;
 using GeometricAlgebraFulcrumLib.Modeling.Trajectories.Vectors3D.Float64.Basic;
 using GeometricAlgebraFulcrumLib.Modeling.Trajectories.Vectors3D.Float64.Bezier;
 using GeometricAlgebraFulcrumLib.Modeling.Trajectories.Vectors3D.Float64.Circles;
 using GeometricAlgebraFulcrumLib.Modeling.Trajectories.Vectors3D.Float64.Mapped;
+using GeometricAlgebraFulcrumLib.Modeling.Trajectories.Vectors3D.Float64.Samplers;
 
 namespace GeometricAlgebraFulcrumLib.Modeling.Trajectories.Vectors3D.Float64.Composers;
 
@@ -171,7 +171,7 @@ public static class Float64Path3DComposerUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Float64CatmullRomSplinePath3D CreateCatmullRomSpline3D(this IEnumerable<ILinFloat64Vector3D> pointList, CatmullRomSplineType curveType, bool isClosed)
+    public static Float64CatmullRomSplinePath3D CreateCatmullRomSpline3D(this IEnumerable<LinFloat64Vector3D> pointList, CatmullRomSplineType curveType, bool isClosed)
     {
         return new Float64CatmullRomSplinePath3D(false, pointList, curveType, isClosed);
     }
@@ -224,7 +224,7 @@ public static class Float64Path3DComposerUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Float64ArcLengthPath3D ToArcLengthPointPath3D(this Float64Path3D curve, Float64AdaptivePath3DSamplingOptions options)
+    public static Float64ArcLengthPath3D ToArcLengthPointPath3D(this Float64Path3D curve, SampledCurve3D.SamplingOptions options)
     {
         return curve as Float64ArcLengthPath3D 
                ?? Float64AdaptiveArcLengthPath3D.Create(curve, options);
@@ -232,67 +232,51 @@ public static class Float64Path3DComposerUtils
 
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Float64AdaptivePath3D FiniteAdaptiveCurve3D(this Float64Path3D curve, Float64AdaptivePath3DSamplingOptions options)
+    public static SampledCurve3D FiniteAdaptiveCurve3D(this Float64Path3D curve, SampledCurve3D.SamplingOptions options)
     {
-        return Float64AdaptivePath3D
-            .Finite(curve)
-            .GenerateTree(options);
+        return SampledCurve3D.Finite(curve, options);
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Float64AdaptivePath3D FiniteAdaptiveCurve3D(this Float64Path3D curve, Float64ScalarRange timeRange, Float64AdaptivePath3DSamplingOptions options)
+    public static SampledCurve3D FiniteAdaptiveCurve3D(this Float64Path3D curve, Float64ScalarRange timeRange, SampledCurve3D.SamplingOptions options)
     {
-        return Float64AdaptivePath3D
-            .Finite(timeRange, curve)
-            .GenerateTree(options);
+        return SampledCurve3D.Finite(timeRange, curve, options);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Float64AdaptivePath3D PeriodicAdaptiveCurve3D(this Float64Path3D curve, Float64AdaptivePath3DSamplingOptions options)
+    public static SampledCurve3D PeriodicAdaptiveCurve3D(this Float64Path3D curve, SampledCurve3D.SamplingOptions options)
     {
-        return Float64AdaptivePath3D
-            .Periodic(curve)
-            .GenerateTree(options);
+        return SampledCurve3D.Periodic(curve, options);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Float64AdaptivePath3D PeriodicAdaptiveCurve3D(this Float64Path3D curve, Float64ScalarRange timeRange, Float64AdaptivePath3DSamplingOptions options)
+    public static SampledCurve3D PeriodicAdaptiveCurve3D(this Float64Path3D curve, Float64ScalarRange timeRange, SampledCurve3D.SamplingOptions options)
     {
-        return Float64AdaptivePath3D
-            .Periodic(timeRange, curve)
-            .GenerateTree(options);
+        return SampledCurve3D.Periodic(timeRange, curve, options);
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Float64AdaptivePath3D CreateAdaptiveCurve3D(this Float64Path3D curve, Float64AdaptivePath3DSamplingOptions options)
+    public static SampledCurve3D CreateAdaptiveCurve3D(this Float64Path3D curve, SampledCurve3D.SamplingOptions options)
     {
-        return Float64AdaptivePath3D
-            .Create(curve)
-            .GenerateTree(options);
+        return SampledCurve3D.Create(curve, options);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Float64AdaptivePath3D CreateAdaptiveCurve3D(this Float64Path3D curve, Float64ScalarRange timeRange, Float64AdaptivePath3DSamplingOptions options)
+    public static SampledCurve3D CreateAdaptiveCurve3D(this Float64Path3D curve, Float64ScalarRange timeRange, SampledCurve3D.SamplingOptions options)
     {
-        return Float64AdaptivePath3D
-            .Create(timeRange, curve)
-            .GenerateTree(options);
+        return SampledCurve3D.Create(timeRange, curve, options);
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Float64AdaptivePath3D CreateAdaptiveCurve3D(this Float64Path3D curve, bool isPeriodic, Float64AdaptivePath3DSamplingOptions options)
+    public static SampledCurve3D CreateAdaptiveCurve3D(this Float64Path3D curve, bool isPeriodic, SampledCurve3D.SamplingOptions options)
     {
-        return Float64AdaptivePath3D
-            .Create(isPeriodic, curve)
-            .GenerateTree(options);
+        return SampledCurve3D.Create(isPeriodic, curve, options);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Float64AdaptivePath3D CreateAdaptiveCurve3D(this Float64Path3D curve, Float64ScalarRange timeRange, bool isPeriodic, Float64AdaptivePath3DSamplingOptions options)
+    public static SampledCurve3D CreateAdaptiveCurve3D(this Float64Path3D curve, Float64ScalarRange timeRange, bool isPeriodic, SampledCurve3D.SamplingOptions options)
     {
-        return Float64AdaptivePath3D
-            .Create(timeRange, isPeriodic, curve)
-            .GenerateTree(options);
+        return SampledCurve3D.Create(timeRange, isPeriodic, curve, options);
     }
 
 

@@ -19,17 +19,26 @@ public sealed record PointData3D<T> :
     public int VSpaceDimensions 
         => 3;
 
-    public Float64Scalar Item1 => X;
+    public double Item1 => X;
 
-    public Float64Scalar Item2 => Y;
+    public double Item2 => Y;
 
-    public Float64Scalar Item3 => Z;
+    public double Item3 => Z;
         
-    public Float64Scalar X { get; }
+    public double X { get; }
         
-    public Float64Scalar Y { get; }
+    public double Y { get; }
 
-    public Float64Scalar Z { get; }
+    public double Z { get; }
+    
+    public double this[int index] 
+        => index switch
+        {
+            0 => X,
+            1 => Y,
+            2 => Z,
+            _ => Float64Scalar.Zero
+        };
 
     public int PointIndex { get; }
 
@@ -47,7 +56,7 @@ public sealed record PointData3D<T> :
         Debug.Assert(IsValid());
     }
 
-    public PointData3D(int pointIndex, ITriplet<Float64Scalar> point, [NotNull] T dataValue)
+    public PointData3D(int pointIndex, ITriplet<double> point, [NotNull] T dataValue)
     {
         X = point.Item1;
         Y = point.Item2;

@@ -60,8 +60,8 @@ public class CGaFloat64OpnsRoundEncoder :
         Debug.Assert(GeometricSpace.Is4D);
 
         return PointPair(
-            egaPoint1.ToXGaFloat64Vector(),
-            egaPoint2.ToXGaFloat64Vector()
+            egaPoint1.ToXGaVector(),
+            egaPoint2.ToXGaVector()
         );
     }
 
@@ -71,9 +71,9 @@ public class CGaFloat64OpnsRoundEncoder :
         Debug.Assert(GeometricSpace.Is4D);
 
         return Circle(
-            egaPoint1.ToXGaFloat64Vector(),
-            egaPoint2.ToXGaFloat64Vector(),
-            egaPoint3.ToXGaFloat64Vector()
+            egaPoint1.ToXGaVector(),
+            egaPoint2.ToXGaVector(),
+            egaPoint3.ToXGaVector()
         );
     }
 
@@ -83,10 +83,10 @@ public class CGaFloat64OpnsRoundEncoder :
         Debug.Assert(GeometricSpace.Is4D);
 
         return BladeFromPoints(
-            egaPoint1.ToXGaFloat64Vector(),
-            egaPoint2.ToXGaFloat64Vector(),
-            egaPoint3.ToXGaFloat64Vector(),
-            egaPoint4.ToXGaFloat64Vector()
+            egaPoint1.ToXGaVector(),
+            egaPoint2.ToXGaVector(),
+            egaPoint3.ToXGaVector(),
+            egaPoint4.ToXGaVector()
         );
     }
 
@@ -97,8 +97,8 @@ public class CGaFloat64OpnsRoundEncoder :
         Debug.Assert(GeometricSpace.Is5D);
 
         return PointPair(
-            egaPoint1.ToXGaFloat64Vector(),
-            egaPoint2.ToXGaFloat64Vector()
+            egaPoint1.ToXGaVector(),
+            egaPoint2.ToXGaVector()
         );
     }
 
@@ -108,9 +108,9 @@ public class CGaFloat64OpnsRoundEncoder :
         Debug.Assert(GeometricSpace.Is5D);
 
         return Circle(
-            egaPoint1.ToXGaFloat64Vector(),
-            egaPoint2.ToXGaFloat64Vector(),
-            egaPoint3.ToXGaFloat64Vector()
+            egaPoint1.ToXGaVector(),
+            egaPoint2.ToXGaVector(),
+            egaPoint3.ToXGaVector()
         );
     }
 
@@ -120,10 +120,10 @@ public class CGaFloat64OpnsRoundEncoder :
         Debug.Assert(GeometricSpace.Is5D);
 
         return BladeFromPoints(
-            egaPoint1.ToXGaFloat64Vector(),
-            egaPoint2.ToXGaFloat64Vector(),
-            egaPoint3.ToXGaFloat64Vector(),
-            egaPoint4.ToXGaFloat64Vector()
+            egaPoint1.ToXGaVector(),
+            egaPoint2.ToXGaVector(),
+            egaPoint3.ToXGaVector(),
+            egaPoint4.ToXGaVector()
         );
     }
 

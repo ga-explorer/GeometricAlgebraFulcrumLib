@@ -1,7 +1,7 @@
 ﻿namespace GeometricAlgebraFulcrumLib.Modeling.Geometry.BasicShapes.Circles;
 
 public interface IFloat64CircleSegment2D : 
-    IFloat64FiniteGeometricShape2D
+    IFloat64BoundedShape2D
 {
     double CenterX { get; }
 

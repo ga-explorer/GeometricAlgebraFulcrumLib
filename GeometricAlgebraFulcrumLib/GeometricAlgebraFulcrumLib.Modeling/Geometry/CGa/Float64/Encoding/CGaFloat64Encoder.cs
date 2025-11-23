@@ -127,23 +127,17 @@ public sealed class CGaFloat64Encoder :
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public CGaFloat64Blade Point(IFloat64Scalar pointX, IFloat64Scalar pointY)
-    {
-        return IpnsRound.Point(pointX.ScalarValue, pointY.ScalarValue);
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public CGaFloat64Blade Point(double pointX, double pointY, double pointZ)
     {
         return IpnsRound.Point(pointX, pointY, pointZ);
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public CGaFloat64Blade Point(IFloat64Scalar pointX, IFloat64Scalar pointY, IFloat64Scalar pointZ)
+    public CGaFloat64Blade Point(params double[] egaPoint)
     {
-        return IpnsRound.Point(pointX.ScalarValue, pointY.ScalarValue, pointZ.ScalarValue);
+        return IpnsRound.Point(egaPoint);
     }
-    
+
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public CGaFloat64Blade Point(LinFloat64Vector2D egaPoint)
     {
@@ -180,28 +174,6 @@ public sealed class CGaFloat64Encoder :
             GeometricSpace.Encode.VGa.VectorAsXGaVector(vector)
         );
     }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public CGaFloat64Versor Translation(Float64Scalar vectorX, Float64Scalar vectorY)
-    {
-        Debug.Assert(GeometricSpace.Is4D);
-
-        var vector = LinFloat64Vector2D.Create(vectorX, vectorY);
-
-        return Translation(
-            GeometricSpace.Encode.VGa.VectorAsXGaVector(vector)
-        );
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public CGaFloat64Versor Translation(LinFloat64Vector2D vector)
-    {
-        Debug.Assert(GeometricSpace.Is4D);
-
-        return Translation(
-            GeometricSpace.Encode.VGa.VectorAsXGaVector(vector)
-        );
-    }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public CGaFloat64Versor Translation(double vectorX, double vectorY, double vectorZ)
@@ -216,6 +188,24 @@ public sealed class CGaFloat64Encoder :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public CGaFloat64Versor Translation(params double[] egaVector)
+    {
+        return Translation(egaVector.ToXGaVector());
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public CGaFloat64Versor Translation(Float64Scalar vectorX, Float64Scalar vectorY)
+    {
+        Debug.Assert(GeometricSpace.Is4D);
+
+        var vector = LinFloat64Vector2D.Create(vectorX, vectorY);
+
+        return Translation(
+            GeometricSpace.Encode.VGa.VectorAsXGaVector(vector)
+        );
+    }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public CGaFloat64Versor Translation(Float64Scalar vectorX, Float64Scalar vectorY, Float64Scalar vectorZ)
     {
         Debug.Assert(GeometricSpace.Is5D);
@@ -227,6 +217,16 @@ public sealed class CGaFloat64Encoder :
         );
     }
 
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public CGaFloat64Versor Translation(LinFloat64Vector2D vector)
+    {
+        Debug.Assert(GeometricSpace.Is4D);
+
+        return Translation(
+            GeometricSpace.Encode.VGa.VectorAsXGaVector(vector)
+        );
+    }
+    
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public CGaFloat64Versor Translation(LinFloat64Vector3D vector)
     {
@@ -255,9 +255,62 @@ public sealed class CGaFloat64Encoder :
         return (g.Cosh() + g.Sinh() * GeometricSpace.EoiBivector).ToConformalCGaVersor(GeometricSpace);
     }
 
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public CGaFloat64Versor Rotation2D(double angleRadians, double egaAxisPointX, double egaAxisPointY)
+    {
+        Debug.Assert(GeometricSpace.Is4D);
+
+        var bivector =
+            GeometricSpace.EncodeIpnsFlat.Point(
+                egaAxisPointX, 
+                egaAxisPointY
+            ).InternalBivector;
+        //GeometricSpace.EncodeOpnsFlatPoint(
+        //    egaAxisPoint
+        //).InternalBivector;
+
+        return Rotation(angleRadians.RadiansToDirectedAngle(), bivector);
+    }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public CGaFloat64Versor Rotation2D(double angleRadians, double[] egaAxisPoint)
+    {
+        Debug.Assert(GeometricSpace.Is4D);
+
+        if (egaAxisPoint.Length != 2)
+            throw new ArgumentException();
+
+        var bivector =
+            GeometricSpace.EncodeIpnsFlat.Point(
+                egaAxisPoint
+            ).InternalBivector;
+        //GeometricSpace.EncodeOpnsFlatPoint(
+        //    egaAxisPoint
+        //).InternalBivector;
+
+        return Rotation(angleRadians.RadiansToDirectedAngle(), bivector);
+    }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public CGaFloat64Versor Rotation(LinFloat64Angle angle, LinFloat64Vector2D egaAxisPoint)
+    public CGaFloat64Versor Rotation3D(double angleRadians, double[] egaAxisPoint, double[] egaAxisVector)
+    {
+        Debug.Assert(GeometricSpace.Is5D);
+
+        if (egaAxisPoint.Length != 3 || egaAxisVector.Length != 3)
+            throw new ArgumentException();
+
+        var bivector =
+            GeometricSpace.EncodeIpnsFlat.Line(
+                egaAxisPoint,
+                egaAxisVector
+            ).InternalBivector;
+
+        return Rotation(angleRadians.RadiansToDirectedAngle(), bivector);
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public CGaFloat64Versor Rotation2D(LinFloat64Angle angle, LinFloat64Vector2D egaAxisPoint)
     {
         Debug.Assert(GeometricSpace.Is4D);
 
@@ -273,12 +326,12 @@ public sealed class CGaFloat64Encoder :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public CGaFloat64Versor Rotation(LinFloat64Angle angle, LinFloat64Vector3D egaAxisPoint, LinFloat64Vector3D egaAxisVector)
+    public CGaFloat64Versor Rotation3D(LinFloat64Angle angle, LinFloat64Vector3D egaAxisPoint, LinFloat64Vector3D egaAxisVector)
     {
         Debug.Assert(GeometricSpace.Is5D);
 
         var bivector =
-            GeometricSpace.EncodeIpnsFlat.Line(
+            GeometricSpace.EncodeIpnsFlat.Line3D(
                 egaAxisPoint,
                 egaAxisVector
             ).InternalBivector;

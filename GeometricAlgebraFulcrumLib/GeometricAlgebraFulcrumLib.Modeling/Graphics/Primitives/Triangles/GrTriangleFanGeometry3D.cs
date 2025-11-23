@@ -7,7 +7,7 @@ namespace GeometricAlgebraFulcrumLib.Modeling.Graphics.Primitives.Triangles;
 public sealed class GrTriangleFanGeometry3D 
     : GrTriangleGeometryBase3D
 {
-    public static GrTriangleFanGeometry3D Create(IReadOnlyList<ILinFloat64Vector3D> pointsList)
+    public static GrTriangleFanGeometry3D Create(IReadOnlyList<LinFloat64Vector3D> pointsList)
     {
         if (pointsList.Count < 3)
             throw new ArgumentException();
@@ -15,7 +15,7 @@ public sealed class GrTriangleFanGeometry3D
         return new GrTriangleFanGeometry3D(pointsList);
     }
 
-    public static GrTriangleFanGeometry3D Create(params ILinFloat64Vector3D[] pointsList)
+    public static GrTriangleFanGeometry3D Create(params LinFloat64Vector3D[] pointsList)
     {
         if (pointsList.Length < 3)
             throw new ArgumentException();
@@ -23,7 +23,7 @@ public sealed class GrTriangleFanGeometry3D
         return new GrTriangleFanGeometry3D(pointsList);
     }
 
-    public static GrTriangleFanGeometry3D Create(IEnumerable<ILinFloat64Vector3D> pointsList)
+    public static GrTriangleFanGeometry3D Create(IEnumerable<LinFloat64Vector3D> pointsList)
     {
         var pointsArray = pointsList.ToArray();
 
@@ -82,7 +82,7 @@ public sealed class GrTriangleFanGeometry3D
     }
         
 
-    private GrTriangleFanGeometry3D(IReadOnlyList<ILinFloat64Vector3D> pointsList)
+    private GrTriangleFanGeometry3D(IReadOnlyList<LinFloat64Vector3D> pointsList)
         : base(pointsList)
     {
     }

@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using GeometricAlgebraFulcrumLib.Utilities.Code.MathML.Constants;
+﻿using GeometricAlgebraFulcrumLib.Utilities.Code.MathML.Constants;
 using GeometricAlgebraFulcrumLib.Utilities.Code.MathML.Values.Color;
 
 namespace GeometricAlgebraFulcrumLib.Utilities.Code.MathML.Elements.Layout;

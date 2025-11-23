@@ -1,5 +1,4 @@
-﻿using System.Collections.Immutable;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Multivectors;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Generic.Vectors.Space2D;
@@ -163,17 +162,21 @@ public sealed class CGaVGaDirectionBladeDecoder<T> :
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public IReadOnlyList<LinVector2D<T>> BladeToVectors2D()
     {
-        return BladeToVectors().Select(
-            v => LinVector2D<T>.Create(v[0], v[1])
-        ).ToImmutableArray();
+        return [
+            ..BladeToVectors().Select(
+                v => LinVector2D<T>.Create(v[0], v[1])
+            )
+        ];
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public IReadOnlyList<LinVector3D<T>> BladeToVectors3D()
     {
-        return BladeToVectors().Select(
-            v => LinVector3D<T>.Create(v[0], v[1], v[2])
-        ).ToImmutableArray();
+        return [
+            ..BladeToVectors().Select(
+                v => LinVector3D<T>.Create(v[0], v[1], v[2])
+            )
+        ];
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]

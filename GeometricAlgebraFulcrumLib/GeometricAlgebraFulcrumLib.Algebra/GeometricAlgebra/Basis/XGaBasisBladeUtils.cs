@@ -1,14 +1,14 @@
-﻿using GeometricAlgebraFulcrumLib.Utilities.Structures.IndexSets;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using System.Globalization;
 using System.Runtime.CompilerServices;
+using GeometricAlgebraFulcrumLib.Utilities.Structures.IndexSets;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
 
 public static class XGaBasisBladeUtils
 {
 
-    public static IEnumerable<Tuple<IndexSet, double>> XGaParseTerms(this string inputText)
+    public static IEnumerable<Tuple<IndexSet, double>> ParseXGaTerms(this string inputText)
     {
         var i = 0;
         while (i < inputText.Length)
@@ -69,7 +69,12 @@ public static class XGaBasisBladeUtils
                     var parts = indicesStr.Split([','], StringSplitOptions.RemoveEmptyEntries);
                     indexArray = new int[parts.Length];
                     for (var j = 0; j < parts.Length; j++)
-                        indexArray[j] = int.Parse(parts[j]);
+                    {
+                        indexArray[j] = int.Parse(parts[j]) - 1;
+
+                        if (indexArray[j] < 0)
+                            throw new FormatException("Invalid basis vector index.");
+                    }
                 }
 
                 i++; // Skip '>'

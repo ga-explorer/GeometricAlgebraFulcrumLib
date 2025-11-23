@@ -32,9 +32,9 @@
 //        }
 
 //        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-//        public bool IsNearIdentity(double zeroEpsilon = 1E-12)
+//        public bool IsNearIdentity(double tolerance = 1E-12)
 //        {
-//            return ScalingFactor.IsNearOne(zeroEpsilon);
+//            return ScalingFactor.IsNearOne(tolerance);
 //        }
 
 //        public abstract Float64Tuple MapBasisVector(int basisIndex);

@@ -1,4 +1,5 @@
 ﻿using System.Globalization;
+using GeometricAlgebraFulcrumLib.Utilities.Structures.Random;
 using OxyPlot;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.PixelFormats;
@@ -8,6 +9,15 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Web.Colors;
 
 public static class GrColorUtils
 {
+    public static Color GetColor(this Random randomGenerator)
+    {
+        var r = randomGenerator.GetByte();
+        var g = randomGenerator.GetByte();
+        var b = randomGenerator.GetByte();
+
+        return Color.FromRgb(r, g, b);
+    }
+
     /// <summary>
     /// Converts the value of this instance to a hexadecimal string.
     /// </summary>

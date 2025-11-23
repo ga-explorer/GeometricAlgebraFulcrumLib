@@ -1,7 +1,8 @@
 ﻿using System.Diagnostics;
 using System.Runtime.CompilerServices;
-using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Matrices;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space4D;
+using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Numerical.Matrices;
+using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.LinearMaps.Space4D.Reflection;
 
@@ -12,7 +13,7 @@ public sealed class LinFloat64MatrixReflection4D :
     public static LinFloat64MatrixReflection4D CreateFromReflection(LinFloat64ReflectionBase4D reflection)
     {
         var reflectionArray =
-            reflection.ToSquareMatrix3();
+            reflection.ToSquareMatrix4();
 
         return new LinFloat64MatrixReflection4D(reflectionArray);
     }
@@ -50,7 +51,7 @@ public sealed class LinFloat64MatrixReflection4D :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public override bool IsNearIdentity(double zeroEpsilon = 1E-12)
+    public override bool IsNearIdentity(double tolerance = Float64Utils.DefaultTolerance)
     {
         return false;
     }

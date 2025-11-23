@@ -53,19 +53,19 @@ public static class LinVector2DUtils
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static bool VectorIsZero<T>(this IPair<Scalar<T>> vector)
     {
-        return vector.VectorENorm().IsZero();
+        return vector.L2Norm().IsZero();
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static bool VectorIsNearZero<T>(this IPair<Scalar<T>> vector)
     {
-        return vector.VectorENorm().IsNearZero();
+        return vector.L2Norm().IsNearZero();
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static bool VectorIsNearUnit<T>(this IPair<Scalar<T>> vector)
     {
-        return vector.VectorENormSquared().IsNearOne();
+        return vector.L2NormSquared().IsNearOne();
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -174,7 +174,7 @@ public static class LinVector2DUtils
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static LinVector2D<T> VectorNegativeUnit<T>(this IPair<Scalar<T>> vector)
     {
-        var s = vector.VectorENorm();
+        var s = vector.L2Norm();
         if (s.IsNearZero())
             return vector.ToVector2D();
 
@@ -217,7 +217,7 @@ public static class LinVector2DUtils
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static LinVector2D<T> VectorDivideByNorm<T>(this IPair<Scalar<T>> vector)
     {
-        var norm = vector.VectorENorm();
+        var norm = vector.L2Norm();
 
         return norm.IsZero()
             ? vector.ToVector2D()
@@ -231,7 +231,7 @@ public static class LinVector2DUtils
     public static bool IsUnitVector<T>(this IPair<Scalar<T>> vector)
     {
         return vector
-            .VectorENormSquared()
+            .L2NormSquared()
             .IsOne();
     }
 
@@ -241,7 +241,7 @@ public static class LinVector2DUtils
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static bool IsNearUnitVector<T>(this IPair<Scalar<T>> vector)
     {
-        return vector.VectorENormSquared().IsNearOne();
+        return vector.L2NormSquared().IsNearOne();
     }
 
 
@@ -280,22 +280,22 @@ public static class LinVector2DUtils
     /// <summary>
     /// The Euclidean length of this vector when it represents a vector
     /// </summary>
-    public static Scalar<T> VectorENorm<T>(this IPair<Scalar<T>> vector)
+    public static Scalar<T> L2Norm<T>(this IPair<Scalar<T>> vector)
     {
         return (vector.Item1 * vector.Item1 + vector.Item2 * vector.Item2).Sqrt();
     }
     
-    public static Scalar<T> VectorENorm<T>(this IScalarProcessor<T> scalarProcessor, T vectorX, T vectorY)
+    public static Scalar<T> L2Norm<T>(this IScalarProcessor<T> scalarProcessor, T vectorX, T vectorY)
     {
         return (scalarProcessor.Square(vectorX) + scalarProcessor.Square(vectorY)).Sqrt();
     }
 
-    public static Scalar<T> VectorENorm<T>(Scalar<T> vectorX, Scalar<T> vectorY)
+    public static Scalar<T> L2Norm<T>(Scalar<T> vectorX, Scalar<T> vectorY)
     {
         return (vectorX * vectorX + vectorY * vectorY).Sqrt();
     }
 
-    public static Scalar<T> VectorENorm<T>(this ILinComplexVector2D<T> vector)
+    public static Scalar<T> L2Norm<T>(this ILinComplexVector2D<T> vector)
     {
         return ((vector.Item1 * vector.Item1.Conjugate()).Real + (vector.Item2 * vector.Item2.Conjugate()).Real).Sqrt();
     }
@@ -315,19 +315,19 @@ public static class LinVector2DUtils
     /// <summary>
     /// The Euclidean squared length of this vector when it represents a vector
     /// </summary>
-    public static Scalar<T> VectorENormSquared<T>(this IPair<Scalar<T>> vector)
+    public static Scalar<T> L2NormSquared<T>(this IPair<Scalar<T>> vector)
     {
         return vector.Item1 * vector.Item1 +
                vector.Item2 * vector.Item2;
     }
 
-    public static Scalar<T> VectorENormSquared<T>(Scalar<T> vectorX, Scalar<T> vectorY)
+    public static Scalar<T> L2NormSquared<T>(Scalar<T> vectorX, Scalar<T> vectorY)
     {
         return vectorX * vectorX +
                vectorY * vectorY;
     }
 
-    public static Scalar<T> VectorENormSquared<T>(this ILinComplexVector2D<T> vector)
+    public static Scalar<T> L2NormSquared<T>(this ILinComplexVector2D<T> vector)
     {
         return (vector.Item1 * vector.Item1.Conjugate()).Real +
                (vector.Item2 * vector.Item2.Conjugate()).Real;
@@ -343,7 +343,7 @@ public static class LinVector2DUtils
 
     public static ComplexNumber<T> VectorToUnitComplexNumber<T>(this IPair<Scalar<T>> vector)
     {
-        var norm = vector.VectorENorm();
+        var norm = vector.L2Norm();
 
         return norm.IsNearZero()
             ? ComplexNumber<T>.Zero(vector.GetScalarProcessor())

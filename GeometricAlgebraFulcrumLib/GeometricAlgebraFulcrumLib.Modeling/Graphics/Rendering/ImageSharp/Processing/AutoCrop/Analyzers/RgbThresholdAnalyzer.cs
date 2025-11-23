@@ -3,6 +3,7 @@ using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.ImageSharp.Processi
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.PixelFormats;
 
+
 namespace GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.ImageSharp.Processing.AutoCrop.Analyzers;
 
 public sealed class RgbThresholdAnalyzer : CropAnalyzer<Rgb24>

@@ -167,7 +167,7 @@ public sealed class GrVisualVector3D :
         var direction = Direction.ToLinVector3D();
 
         var cylinderHeight = Style.Thickness * 4.5d;
-        var maxHeight = direction.VectorENorm();
+        var maxHeight = LinFloat64Vector3DUtils.L2Norm(direction);
 
         if (cylinderHeight > maxHeight)
             cylinderHeight = maxHeight;
@@ -185,7 +185,7 @@ public sealed class GrVisualVector3D :
         var direction = GetDirection(time);
 
         var cylinderHeight = Style.Thickness * 4.5d;
-        var maxHeight = direction.VectorENorm();
+        var maxHeight = LinFloat64Vector3DUtils.L2Norm(direction);
 
         if (cylinderHeight > maxHeight)
             cylinderHeight = maxHeight;
@@ -249,7 +249,7 @@ public sealed class GrVisualVector3D :
 
     public double GetLength()
     {
-        return Direction.VectorENorm();
+        return Direction.L2Norm();
     }
 
     public LinFloat64Vector3D GetUnitDirection()
@@ -337,7 +337,7 @@ public sealed class GrVisualVector3D :
 
         foreach (var frameIndex in GetValidFrameIndexSet())
         {
-            var time = (double)frameIndex / SamplingSpecs.SamplingRate;
+            var time = frameIndex / SamplingSpecs.SamplingRate;
 
             yield return new KeyFrameRecord(
                 frameIndex,

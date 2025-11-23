@@ -2,6 +2,8 @@
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivectors;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Processors;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.IndexSets;
+using MathNet.Numerics.LinearAlgebra;
+using MathNet.Numerics.LinearAlgebra.Double;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.LinearMaps;
 
@@ -58,10 +60,9 @@ public sealed class XGaFloat64IdentityUnilinearMap :
             );
     }
         
-    public double[,] GetMultivectorMapArray(int rowCount, int colCount)
+    public Matrix<double> GetMultivectorMapMatrix(int rowCount, int colCount)
     {
-        var mapArray = 
-            new double[rowCount, colCount];
+        var mapArray = DenseMatrix.Create(rowCount, colCount, 0);
 
         var n = Math.Min(rowCount, colCount);
 

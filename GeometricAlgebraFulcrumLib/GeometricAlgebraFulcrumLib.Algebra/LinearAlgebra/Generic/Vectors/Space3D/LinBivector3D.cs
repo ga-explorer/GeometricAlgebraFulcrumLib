@@ -1,10 +1,10 @@
-﻿using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Multivectors;
+﻿using System.Collections;
+using System.Diagnostics;
+using System.Runtime.CompilerServices;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Multivectors;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Processors;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Generic;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Tuples;
-using System.Collections;
-using System.Diagnostics;
-using System.Runtime.CompilerServices;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Generic.Vectors.Space3D;
 

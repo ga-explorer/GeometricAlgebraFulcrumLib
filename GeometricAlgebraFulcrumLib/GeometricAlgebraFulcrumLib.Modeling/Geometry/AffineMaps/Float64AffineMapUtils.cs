@@ -1,17 +1,16 @@
-﻿using System.Collections.Immutable;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Basis;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Frames.Space3D;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.LinearMaps.SpaceND.Reflection;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.LinearMaps.SpaceND.Scaling;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.LinearMaps.SpaceND;
-using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Matrices;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space3D;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.SpaceND;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.AffineMaps.Space2D;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.AffineMaps.Space3D;
+using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Numerical.Matrices;
 
 namespace GeometricAlgebraFulcrumLib.Modeling.Geometry.AffineMaps;
 
@@ -141,7 +140,7 @@ public static class Float64AffineMapUtils
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static IReadOnlyList<LinFloat64Vector> MapVectors(this ILinFloat64UnilinearMap map, params LinFloat64Vector[] vectorList)
     {
-        return vectorList.Select(map.MapVector).ToImmutableArray();
+        return [..vectorList.Select(map.MapVector)];
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]

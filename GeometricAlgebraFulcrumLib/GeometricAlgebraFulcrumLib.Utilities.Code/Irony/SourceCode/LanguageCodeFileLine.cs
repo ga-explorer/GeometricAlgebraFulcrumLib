@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace GeometricAlgebraFulcrumLib.Utilities.Code.Irony.SourceCode;
+﻿namespace GeometricAlgebraFulcrumLib.Utilities.Code.Irony.SourceCode;
 
 [Serializable]
 public sealed class LanguageCodeFileLine : ISourceCodeUnitLine

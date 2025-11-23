@@ -1,14 +1,15 @@
 ﻿using System.Diagnostics;
 using System.Runtime.CompilerServices;
-using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Matrices;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space3D;
+using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Numerical;
+using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Numerical.Matrices;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Tuples;
 
 namespace GeometricAlgebraFulcrumLib.Modeling.Calculus.Curves;
 
 public class DifferentialCurveFrame3D :
-    ILinFloat64Vector3D
+    ITriplet<double>
 {
     /// <summary>
     /// Create a set of 3 right-handed orthonormal direction vectors from the given vector
@@ -19,10 +20,10 @@ public class DifferentialCurveFrame3D :
     /// <param name="rightHanded"></param>
     /// <returns></returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static DifferentialCurveFrame3D CreateOrthonormal(double parameterValue, ILinFloat64Vector3D origin, ILinFloat64Vector3D direction, bool rightHanded = true)
+    public static DifferentialCurveFrame3D CreateOrthonormal(double parameterValue, ITriplet<double> origin, ITriplet<double> direction, bool rightHanded = true)
     {
         Debug.Assert(
-            !direction.VectorENormSquared().IsNearZero()
+            !direction.L2NormSquared().IsNearZero()
         );
 
         var u = direction.ToUnitLinVector3D();
@@ -39,10 +40,26 @@ public class DifferentialCurveFrame3D :
     }
         
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static DifferentialCurveFrame3D Create(double parameterValue, ILinFloat64Vector3D origin, ILinFloat64Vector3D direction1, IPair<ILinFloat64Vector3D> direction23Pair)
+    public static DifferentialCurveFrame3D Create(double parameterValue, ITriplet<double> origin, ITriplet<double> direction1, IPair<ITriplet<double>> direction23Pair)
     {
         Debug.Assert(
-            !direction1.VectorENormSquared().IsNearZero()
+            !direction1.L2NormSquared().IsNearZero()
+        );
+
+        return new DifferentialCurveFrame3D(
+            parameterValue,
+            origin.ToLinVector3D(),
+            direction1.ToLinVector3D(),
+            direction23Pair.Item1.ToLinVector3D(),
+            direction23Pair.Item2.ToLinVector3D()
+        );
+    }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static DifferentialCurveFrame3D Create(double parameterValue, LinFloat64Vector3D origin, LinFloat64Vector3D direction1, IPair<LinFloat64Vector3D> direction23Pair)
+    {
+        Debug.Assert(
+            !direction1.L2NormSquared().IsNearZero()
         );
 
         return new DifferentialCurveFrame3D(
@@ -55,10 +72,10 @@ public class DifferentialCurveFrame3D :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static DifferentialCurveFrame3D Create(double parameterValue, ILinFloat64Vector3D origin, ILinFloat64Vector3D direction1, ILinFloat64Vector3D direction2, ILinFloat64Vector3D direction3)
+    public static DifferentialCurveFrame3D Create(double parameterValue, ITriplet<double> origin, ITriplet<double> direction1, ITriplet<double> direction2, ITriplet<double> direction3)
     {
         Debug.Assert(
-            !direction1.VectorENormSquared().IsNearZero()
+            !direction1.L2NormSquared().IsNearZero()
         );
 
         return new DifferentialCurveFrame3D(
@@ -76,22 +93,22 @@ public class DifferentialCurveFrame3D :
     public int VSpaceDimensions 
         => 3;
 
-    public Float64Scalar Item1 
+    public double Item1 
         => Origin.X;
 
-    public Float64Scalar Item2 
+    public double Item2 
         => Origin.Y;
 
-    public Float64Scalar Item3 
+    public double Item3 
         => Origin.Z;
 
-    public Float64Scalar X 
+    public double X 
         => Origin.X;
 
-    public Float64Scalar Y 
+    public double Y 
         => Origin.Y;
 
-    public Float64Scalar Z 
+    public double Z 
         => Origin.Z;
 
     public LinFloat64Vector3D Origin { get; }
@@ -102,6 +119,15 @@ public class DifferentialCurveFrame3D :
 
     public LinFloat64Vector3D Direction3 { get; }
         
+    public double this[int index] 
+        => index switch
+        {
+            0 => X,
+            1 => Y,
+            2 => Z,
+            _ => Float64Scalar.Zero
+        };
+
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     private DifferentialCurveFrame3D(double parameterValue, LinFloat64Vector3D origin, LinFloat64Vector3D direction1, LinFloat64Vector3D direction2, LinFloat64Vector3D direction3)
@@ -127,24 +153,24 @@ public class DifferentialCurveFrame3D :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool IsOrthogonal(double zeroEpsilon = Float64Utils.ZeroEpsilon)
+    public bool IsOrthogonal(double tolerance = Float64Utils.DefaultTolerance)
     {
         return 
-            Direction1.VectorESp(Direction2).IsNearZero(zeroEpsilon) &&
-            Direction1.VectorESp(Direction3).IsNearZero(zeroEpsilon) &&
-            Direction2.VectorESp(Direction3).IsNearZero(zeroEpsilon);
+            Direction1.VectorDot(Direction2).IsNearZero(tolerance) &&
+            Direction1.VectorDot(Direction3).IsNearZero(tolerance) &&
+            Direction2.VectorDot(Direction3).IsNearZero(tolerance);
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool IsOrthonormal(double zeroEpsilon = Float64Utils.ZeroEpsilon)
+    public bool IsOrthonormal(double tolerance = Float64Utils.DefaultTolerance)
     {
         return 
-            Direction1.VectorESp(Direction1).IsNearOne(zeroEpsilon) &&
-            Direction2.VectorESp(Direction2).IsNearOne(zeroEpsilon) &&
-            Direction3.VectorESp(Direction3).IsNearOne(zeroEpsilon) &&
-            Direction1.VectorESp(Direction2).IsNearZero(zeroEpsilon) &&
-            Direction1.VectorESp(Direction3).IsNearZero(zeroEpsilon) &&
-            Direction2.VectorESp(Direction3).IsNearZero(zeroEpsilon);
+            Direction1.VectorDot(Direction1).IsNearOne(tolerance) &&
+            Direction2.VectorDot(Direction2).IsNearOne(tolerance) &&
+            Direction3.VectorDot(Direction3).IsNearOne(tolerance) &&
+            Direction1.VectorDot(Direction2).IsNearZero(tolerance) &&
+            Direction1.VectorDot(Direction3).IsNearZero(tolerance) &&
+            Direction2.VectorDot(Direction3).IsNearZero(tolerance);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]

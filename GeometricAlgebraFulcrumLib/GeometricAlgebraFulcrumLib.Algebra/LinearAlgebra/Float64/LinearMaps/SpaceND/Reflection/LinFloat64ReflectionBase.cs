@@ -1,5 +1,7 @@
 ﻿using System.Runtime.CompilerServices;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.SpaceND;
+using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Numerical;
+using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.BitManipulation;
 using MathNet.Numerics.LinearAlgebra;
 
@@ -22,10 +24,10 @@ public abstract class LinFloat64ReflectionBase :
         return true;
     }
 
-    public abstract bool IsNearIdentity(double zeroEpsilon = 1e-12d);
+    public abstract bool IsNearIdentity(double tolerance = 1e-12d);
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool IsNearReflection(double zeroEpsilon = 1E-12)
+    public bool IsNearReflection(double tolerance = Float64Utils.DefaultTolerance)
     {
         return true;
     }
@@ -65,7 +67,7 @@ public abstract class LinFloat64ReflectionBase :
         return vSpaceDimensions.CreateLinUnilinearMap(MapBasisVector);
     }
 
-    public virtual double[,] ToArray(int rowCount, int colCount)
+    public virtual Matrix<double> ToArray(int rowCount, int colCount)
     {
         var array = new double[VSpaceDimensions, VSpaceDimensions];
 
@@ -80,7 +82,7 @@ public abstract class LinFloat64ReflectionBase :
                 array[i, j] = s;
         }
 
-        return array;
+        return array.ToMathNetDenseMatrix();
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]

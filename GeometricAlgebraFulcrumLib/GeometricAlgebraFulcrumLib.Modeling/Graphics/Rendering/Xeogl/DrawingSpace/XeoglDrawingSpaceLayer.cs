@@ -1,5 +1,5 @@
 ﻿using System.Collections;
-using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Matrices;
+using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Numerical.Matrices;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.AffineMaps.Space3D;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.Xeogl.Geometry;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.Xeogl.Geometry.Primitives;

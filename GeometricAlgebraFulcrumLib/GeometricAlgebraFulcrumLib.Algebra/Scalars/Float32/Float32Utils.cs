@@ -11,7 +11,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.Scalars.Float32;
 
 public static class Float32Utils
 {
-    public const float ZeroEpsilon = 1e-7f;
+    public const float DefaultTolerance = 1e-7f;
 
     //public static float MachineEpsilon { get; }
     //    = Precision.PositiveMachineEpsilon;
@@ -106,9 +106,9 @@ public static class Float32Utils
 
 
     ///// <summary>
-    ///// use of machine zeroEpsilon to compare floating-point values for
+    ///// use of machine tolerance to compare floating-point values for
     ///// equality
-    ///// http://en.cppreference.com/w/cpp/types/numeric_limits/zeroEpsilon
+    ///// http://en.cppreference.com/w/cpp/types/numeric_limits/tolerance
     ///// </summary>
     ///// <param name="a"></param>
     ///// <param name="b"></param>
@@ -124,7 +124,7 @@ public static class Float32Utils
 
     //    var absDiff = Math.Abs(a - b);
 
-    //    // the machine zeroEpsilon has to be scaled to the magnitude of the
+    //    // the machine tolerance has to be scaled to the magnitude of the
     //    // values used and multiplied by the desired precision in ULPs
     //    // (units in the last place) unless the result is subnormal
     //    return absDiff <= Precision.PositiveMachineEpsilon * Math.Abs(a + b) * ulp ||
@@ -132,7 +132,7 @@ public static class Float32Utils
     //}
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static bool IsNearEqual(this float a, float b, float zeroEpsilon = ZeroEpsilon)
+    public static bool IsNearEqual(this float a, float b, float tolerance = DefaultTolerance)
     {
         Debug.Assert(!float.IsNaN(a) && !float.IsNaN(b));
 
@@ -141,7 +141,7 @@ public static class Float32Utils
 
         var x = a - b;
 
-        return x >= -zeroEpsilon && x <= zeroEpsilon;
+        return x >= -tolerance && x <= tolerance;
     }
 
     //[MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -214,7 +214,7 @@ public static class Float32Utils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static bool IsNearInRange(this float x, float value1, float value2, float zeroEpsilon = ZeroEpsilon)
+    public static bool IsNearInRange(this float x, float value1, float value2, float tolerance = DefaultTolerance)
     {
         Debug.Assert(
             !float.IsNaN(x) &&
@@ -223,7 +223,7 @@ public static class Float32Utils
             value1 < value2
         );
 
-        return !(float.IsInfinity(x) || x < value1 - zeroEpsilon || x > value2 + zeroEpsilon);
+        return !(float.IsInfinity(x) || x < value1 - tolerance || x > value2 + tolerance);
     }
 
     //[MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -314,28 +314,28 @@ public static class Float32Utils
     //}
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static bool IsNearZero(this float x, float zeroEpsilon = ZeroEpsilon)
+    public static bool IsNearZero(this float x, float tolerance = DefaultTolerance)
     {
         Debug.Assert(
             !float.IsNaN(x) && 
-            !float.IsNaN(zeroEpsilon) && 
-            float.IsFinite(zeroEpsilon) && 
-            zeroEpsilon >= 0
+            !float.IsNaN(tolerance) && 
+            float.IsFinite(tolerance) && 
+            tolerance >= 0
         );
 
-        return !(float.IsInfinity(x) || x < -zeroEpsilon || x > zeroEpsilon);
+        return !(float.IsInfinity(x) || x < -tolerance || x > tolerance);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static bool IsNearOne(this float x, float zeroEpsilon = ZeroEpsilon)
+    public static bool IsNearOne(this float x, float tolerance = DefaultTolerance)
     {
-        return (x - 1f).IsNearZero(zeroEpsilon);
+        return (x - 1f).IsNearZero(tolerance);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static bool IsNearMinusOne(this float x, float zeroEpsilon = ZeroEpsilon)
+    public static bool IsNearMinusOne(this float x, float tolerance = DefaultTolerance)
     {
-        return (x + 1f).IsNearZero(zeroEpsilon);
+        return (x + 1f).IsNearZero(tolerance);
     }
 
     ///// <summary>
@@ -837,9 +837,9 @@ public static class Float32Utils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static float NearZeroToZero(this float number, float zeroEpsilon)
+    public static float NearZeroToZero(this float number, float tolerance)
     {
-        return number.IsNearZero(zeroEpsilon) ? 0f : number;
+        return number.IsNearZero(tolerance) ? 0f : number;
     }
 
 

@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space3D;
+using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.LinearMaps.Space3D.Reflection;
 
@@ -36,7 +37,7 @@ public sealed class LinFloat64VectorReflection3D :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool IsNearIdentity(double zeroEpsilon = 1E-12)
+    public bool IsNearIdentity(double tolerance = Float64Utils.DefaultTolerance)
     {
         return false;
     }
@@ -56,9 +57,9 @@ public sealed class LinFloat64VectorReflection3D :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public LinFloat64Vector3D MapVector(ILinFloat64Vector3D vector)
+    public LinFloat64Vector3D MapVector(LinFloat64Vector3D vector)
     {
-        var s = 2d * vector.VectorESp(ReflectionVector);
+        var s = 2d * vector.VectorDot(ReflectionVector);
 
         return LinFloat64Vector3DComposer
             .Create()

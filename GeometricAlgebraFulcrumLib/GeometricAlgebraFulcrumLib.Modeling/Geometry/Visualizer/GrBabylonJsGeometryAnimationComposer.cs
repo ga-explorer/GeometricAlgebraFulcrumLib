@@ -2,6 +2,8 @@
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space2D;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space3D;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
+using GeometricAlgebraFulcrumLib.Modeling.Geometry.Bounding.Float64;
+
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Sequences;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.Visuals.Space3D.Animations;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.Visuals.Space3D.Basic;
@@ -10,15 +12,14 @@ using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.Visuals.Space3D.Ima
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.Visuals.Space3D.Surfaces;
 using SixLabors.ImageSharp;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.BabylonJs.Composers;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.Borders.Space2D.Float64;
 using GeometricAlgebraFulcrumLib.Modeling.Signals;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.Visuals.Space3D.Grids;
 using GeometricAlgebraFulcrumLib.Modeling.Trajectories.Scalars.Float64;
 using GeometricAlgebraFulcrumLib.Modeling.Trajectories.Scalars.Float64.Angles;
 using GeometricAlgebraFulcrumLib.Modeling.Trajectories.Vectors2D.Float64;
 using GeometricAlgebraFulcrumLib.Modeling.Trajectories.Vectors3D.Float64;
-using GeometricAlgebraFulcrumLib.Modeling.Trajectories.Vectors3D.Float64.Adaptive;
 using GeometricAlgebraFulcrumLib.Modeling.Trajectories.Vectors3D.Float64.Composers;
+using GeometricAlgebraFulcrumLib.Modeling.Trajectories.Vectors3D.Float64.Samplers;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Tuples;
 
 namespace GeometricAlgebraFulcrumLib.Modeling.Geometry.Visualizer;
@@ -101,7 +102,7 @@ public sealed class GrBabylonJsGeometryAnimationComposer :
         throw new InvalidOperationException();
     }
     
-    public GrBabylonJsGeometryAnimationComposer SetGrid(ITriplet<Float64Scalar> center, int unitCount, double unitSize = 1, double opacity = 1)
+    public GrBabylonJsGeometryAnimationComposer SetGrid(ITriplet<double> center, int unitCount, double unitSize = 1, double opacity = 1)
     {
         GridCenter = center.ToLinVector3D();
         GridUnitCount = unitCount;
@@ -155,7 +156,7 @@ public sealed class GrBabylonJsGeometryAnimationComposer :
                 CameraDistance,
                 "Math.PI / 2",
                 "Math.PI / 2",
-                Float64BoundingBox2D.CreateAround(
+                Float64BoundingBox2D.Around(
                     0,
                     0,
                     0.5 * GridUnitCount * GridUnitSize,
@@ -845,11 +846,12 @@ public sealed class GrBabylonJsGeometryAnimationComposer :
     public GrBabylonJsGeometryAnimationComposer DrawCurve(Color color, Float64Path3D curve, Float64ScalarRange timeRange)
     {
         var samplingSpecs =
-            new Float64AdaptivePath3DSamplingOptions(
-                5d.DegreesToDirectedAngle(),
-                3,
-                10
-            );
+            new SampledCurve3D.SamplingOptions
+            {
+                FrameAngleDifference = 5d.DegreesToDirectedAngle(),
+                MinDepth = 3,
+                MaxDepth = 10
+            };
 
         return DrawCurve(
             color,
@@ -859,12 +861,12 @@ public sealed class GrBabylonJsGeometryAnimationComposer :
         );
     }
 
-    public GrBabylonJsGeometryAnimationComposer DrawCurve(Color color, Float64Path2D curve, Float64ScalarRange timeRange, Float64AdaptivePath3DSamplingOptions samplingSpecs)
+    public GrBabylonJsGeometryAnimationComposer DrawCurve(Color color, Float64Path2D curve, Float64ScalarRange timeRange, SampledCurve3D.SamplingOptions samplingSpecs)
     {
         return DrawCurve(color, curve.ToXyParametricCurve3D(), timeRange, samplingSpecs);
     }
 
-    public GrBabylonJsGeometryAnimationComposer DrawCurve(Color color, Float64Path3D curve, Float64ScalarRange timeRange, Float64AdaptivePath3DSamplingOptions samplingSpecs)
+    public GrBabylonJsGeometryAnimationComposer DrawCurve(Color color, Float64Path3D curve, Float64ScalarRange timeRange, SampledCurve3D.SamplingOptions samplingSpecs)
     {
         SceneComposer.AddLinePath(
             GrVisualPointPathCurve3D.CreateStatic(
@@ -873,7 +875,7 @@ public sealed class GrBabylonJsGeometryAnimationComposer :
                 curve.CreateAdaptiveCurve3D(
                     timeRange,
                     samplingSpecs
-                )
+                ).ToLinVector3DList()
             )
         );
 

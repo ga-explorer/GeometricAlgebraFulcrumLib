@@ -76,25 +76,25 @@ public sealed class YzGridComposer
     /// The lower left corner point of the grid
     /// </summary>
     public LinFloat64Vector3D CornerLowerLeft 
-        => LinFloat64Vector3D.Create(Center.X.ScalarValue, YMin, ZMin);
+        => LinFloat64Vector3D.Create(Center.X, YMin, ZMin);
 
     /// <summary>
     /// The lower right corner point of the grid
     /// </summary>
     public LinFloat64Vector3D CornerLowerRight 
-        => LinFloat64Vector3D.Create(Center.X.ScalarValue, YMax, ZMin);
+        => LinFloat64Vector3D.Create(Center.X, YMax, ZMin);
 
     /// <summary>
     /// The upper left corner point of the grid
     /// </summary>
     public LinFloat64Vector3D CornerUpperLeft 
-        => LinFloat64Vector3D.Create(Center.X.ScalarValue, YMin, ZMax);
+        => LinFloat64Vector3D.Create(Center.X, YMin, ZMax);
 
     /// <summary>
     /// The upper right corner point of the grid
     /// </summary>
     public LinFloat64Vector3D CornerUpperRight 
-        => LinFloat64Vector3D.Create(Center.X.ScalarValue, YMax, ZMax);
+        => LinFloat64Vector3D.Create(Center.X, YMax, ZMax);
 
     /// <summary>
     /// The total length of the grid in the Y direction

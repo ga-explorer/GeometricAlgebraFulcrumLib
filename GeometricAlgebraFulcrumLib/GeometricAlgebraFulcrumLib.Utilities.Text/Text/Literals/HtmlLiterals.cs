@@ -62,7 +62,7 @@ public static class HtmlLiterals
 
     public static string LowerDelta { get; } = "&delta;";
 
-    public static string LowerEpsilon { get; } = "&zeroEpsilon;";
+    public static string LowerEpsilon { get; } = "&tolerance;";
 
     public static string LowerZeta { get; } = "&zeta;";
 

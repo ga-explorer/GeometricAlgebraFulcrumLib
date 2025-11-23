@@ -2,6 +2,7 @@
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivectors;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Processors;
+using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
 
 // ReSharper disable CompareOfFloatsByEqualityOperator
 

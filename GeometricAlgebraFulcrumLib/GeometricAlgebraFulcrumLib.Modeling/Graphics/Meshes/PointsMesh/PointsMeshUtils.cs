@@ -114,7 +114,7 @@ public static class PointsMeshUtils
             );
     }
 
-    public static IEnumerable<ILinFloat64Vector3D> GetPoints(this IPointsMesh3D mesh)
+    public static IEnumerable<LinFloat64Vector3D> GetPoints(this IPointsMesh3D mesh)
     {
         return mesh;
     }
@@ -135,7 +135,7 @@ public static class PointsMeshUtils
         if (mesh is ArrayPointsMesh3D arrayPointsMesh)
             return arrayPointsMesh;
 
-        var pointArray = new ILinFloat64Vector3D[mesh.Count1, mesh.Count2];
+        var pointArray = new LinFloat64Vector3D[mesh.Count1, mesh.Count2];
 
         for (var pointIndex1 = 0; pointIndex1 < mesh.Count1; pointIndex1++)
         for (var pointIndex2 = 0; pointIndex2 < mesh.Count2; pointIndex2++)
@@ -143,7 +143,7 @@ public static class PointsMeshUtils
                 mesh,
                 pointIndex1,
                 pointIndex2
-            );
+            ).ToLinVector3D();
 
         return new ArrayPointsMesh3D(pointArray);
     }

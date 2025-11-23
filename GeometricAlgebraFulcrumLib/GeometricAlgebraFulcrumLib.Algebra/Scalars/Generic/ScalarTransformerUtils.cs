@@ -1,8 +1,8 @@
 ﻿using System.Runtime.CompilerServices;
-using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Matrices;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Generic.Vectors.Space2D;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Generic.Vectors.Space3D;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Generic.Vectors.Space4D;
+using GeometricAlgebraFulcrumLib.Utilities.Structures.Extensions;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Tuples;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.Scalars.Generic;
@@ -115,13 +115,13 @@ public static class ScalarTransformerUtils
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static T[] MapScalars<T>(this T[] scalarArray, ScalarTransformer<T> transformer)
     {
-        return scalarArray.MapScalars(transformer.MapScalarValue);
+        return scalarArray.MapItems(transformer.MapScalarValue);
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static T[,] MapScalars<T>(this T[,] scalarArray, ScalarTransformer<T> transformer)
     {
-        return scalarArray.MapScalars(transformer.MapScalarValue);
+        return scalarArray.MapItems(transformer.MapScalarValue);
     }
 
     

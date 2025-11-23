@@ -2,6 +2,7 @@
 using System.Runtime.CompilerServices;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.LinearMaps.Reflectors;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Subspaces;
+using GeometricAlgebraFulcrumLib.Algebra.Scalars.Generic;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.BitManipulation;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Multivectors
@@ -16,7 +17,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Multivecto
 
             return subspace
                 .Gp(this)
-                .Gp(subspace.Inverse());
+                .Gp(subspace.VersorInverse());
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -71,7 +72,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Multivecto
 
             var subspaceInverse =
                 useSubspaceInverse
-                    ? subspace.PseudoInverse()
+                    ? subspace.VersorPseudoInverse()
                     : subspace;
 
             return Fdp(subspaceInverse).Gp(subspace);
@@ -88,7 +89,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Multivecto
 
             return subspace
                 .Gp(this)
-                .Gp(subspace.Inverse())
+                .Gp(subspace.VersorInverse())
                 .GetKVectorPart(Grade);
         }
 
@@ -140,7 +141,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Multivecto
 
             var subspaceInverse =
                 useSubspaceInverse
-                    ? subspace.PseudoInverse()
+                    ? subspace.VersorPseudoInverse()
                     : subspace;
 
             return Fdp(subspaceInverse).Gp(subspace).GetKVectorPart(Grade);
@@ -215,7 +216,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Multivecto
 
             var subspaceInverse =
                 useSubspaceInverse
-                    ? subspace.PseudoInverse()
+                    ? subspace.VersorPseudoInverse()
                     : subspace;
 
             return Fdp(subspaceInverse).Gp(subspace).GetScalarPart();
@@ -239,7 +240,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Multivecto
 
             return subspace
                 .Gp(this)
-                .Gp(subspace.Inverse())
+                .Gp(subspace.VersorInverse())
                 .GetVectorPart();
         }
 
@@ -283,7 +284,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Multivecto
 
             var subspaceInverse =
                 useSubspaceInverse
-                    ? subspace.PseudoInverse()
+                    ? subspace.VersorPseudoInverse()
                     : subspace;
 
             return Fdp(subspaceInverse).Gp(subspace).GetVectorPart();
@@ -338,6 +339,65 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Multivecto
             return this - subspace.Project(this);
         }
 
+
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public Scalar<T>[] GetEuclideanProjectionCoefficients(IEnumerable<XGaVector<T>> basisVectorList)
+        {
+            return basisVectorList
+                .Select(basisVector => ESp(basisVector).ToScalar())
+                .ToArray();
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public Scalar<T>[] GetMetricProjectionCoefficients(IEnumerable<XGaVector<T>> basisVectorList)
+        {
+            return basisVectorList
+                .Select(basisVector => Sp(basisVector).ToScalar())
+                .ToArray();
+        }
+
+        
+        /// <summary>
+        /// Projects a vector onto the subspace spanned by the given basis
+        /// </summary>
+        public XGaVector<T> ReconstructFromMetricSubspace(IList<XGaVector<T>> basis)
+        {
+            var composer = Processor.CreateVectorComposer();
+
+            foreach (var basisVector in basis)
+            {
+                var coefficient = Sp(basisVector);
+
+                //if (Math.Abs(coefficient) < ZeroTolerance) continue;
+                if (coefficient.IsZero()) continue;
+
+                composer.AddKVectorScaled(basisVector, coefficient.ScalarValue);
+            }
+
+            return composer.GetVector();
+        }
+        
+        /// <summary>
+        /// Projects a vector onto the subspace spanned by the given basis
+        /// </summary>
+        public XGaVector<T> ReconstructFromEuclideanSubspace(IList<XGaVector<T>> basis)
+        {
+            var composer = Processor.CreateVectorComposer();
+
+            foreach (var basisVector in basis)
+            {
+                var coefficient = ESp(basisVector);
+
+                //if (Math.Abs(coefficient) < ZeroTolerance) continue;
+                if (coefficient.IsZero()) continue;
+
+                composer.AddKVectorScaled(basisVector, coefficient.ScalarValue);
+            }
+
+            return composer.GetVector();
+        }
+
     }
 
     public sealed partial class XGaBivector<T>
@@ -350,7 +410,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Multivecto
 
             return subspace
                 .Gp(this)
-                .Gp(subspace.Inverse())
+                .Gp(subspace.VersorInverse())
                 .GetBivectorPart();
         }
     
@@ -392,7 +452,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Multivecto
         
             var subspaceInverse = 
                 useSubspaceInverse 
-                    ? subspace.PseudoInverse() 
+                    ? subspace.VersorPseudoInverse() 
                     : subspace;
 
             return Fdp(subspaceInverse).Gp(subspace).GetBivectorPart();
@@ -410,7 +470,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Multivecto
 
             return subspace
                 .Gp(this)
-                .Gp(subspace.Inverse())
+                .Gp(subspace.VersorInverse())
                 .GetHigherKVectorPart(Grade);
         }
     
@@ -462,7 +522,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Multivecto
         
             var subspaceInverse = 
                 useSubspaceInverse 
-                    ? subspace.PseudoInverse() 
+                    ? subspace.VersorPseudoInverse() 
                     : subspace;
 
             return Fdp(subspaceInverse).Gp(subspace).GetHigherKVectorPart(Grade);

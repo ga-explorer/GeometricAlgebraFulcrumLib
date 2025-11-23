@@ -5,6 +5,52 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Structures.Extensions;
 
 public static class ListExtensions
 {
+    /// <summary>
+    /// Add an item to a list if item is not null
+    /// </summary>
+    /// <param name="list"></param>
+    /// <param name="item"></param>
+    public static void AddIfNotNull<T>(this IList<T> list, T item)
+    {
+        if (item is null) return;
+
+        list.Add(item);
+    }
+
+    /// <summary>
+    /// Add an item to a list if item is not already in the list
+    /// </summary>
+    /// <param name="list"></param>
+    /// <param name="item"></param>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static void AddDistinct(this IList<int> list, int item)
+    {
+        if (list.Contains(item)) return;
+
+        list.Add(item);
+    }
+
+    /// <summary>
+    /// Removes an item from a list by swapping it with the last element.
+    /// Order of elements is not preserved; O(1).
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="list"></param>
+    /// <param name="item"></param>
+    /// <returns>true if removed, false if not found</returns>
+    public static bool RemoveBySwap<T>(this IList<T> list, T item)
+    {
+        var index = list.IndexOf(item);
+        if (index < 0) return false;
+
+        var lastIndex = list.Count - 1;
+        if (index != lastIndex)
+            list[index] = list[lastIndex];
+
+        list.RemoveAt(lastIndex);
+        return true;
+    }
+
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static List<T2> SelectToList<T1, T2>(this IEnumerable<T1> list, Func<T1, T2> itemMapping)
     {

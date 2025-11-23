@@ -1,15 +1,15 @@
-﻿using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
+﻿using System.Diagnostics;
+using System.Runtime.CompilerServices;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivectors;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Processors;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Multivectors;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Processors;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Generic;
+using GeometricAlgebraFulcrumLib.Utilities.Structures.BitManipulation;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Dictionary;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.IndexSets;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Tuples;
-using System.Diagnostics;
-using System.Runtime.CompilerServices;
-using GeometricAlgebraFulcrumLib.Utilities.Structures.BitManipulation;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra;
 
@@ -133,60 +133,39 @@ public abstract class XGaMetric
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public IndexSet GetBasisScalarId()
+    public IndexSet BasisScalarId()
     {
         return IndexSet.EmptySet;
     }
 
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public IEnumerable<IndexSet> GetBasisVectorIds(int vSpaceDimensions)
     {
-        if (vSpaceDimensions < 1)
-            throw new ArgumentOutOfRangeException(nameof(vSpaceDimensions));
-
-        for (var index = 0; index < vSpaceDimensions; index++)
-            yield return index.ToUnitIndexSet();
+        return vSpaceDimensions.GetBasisVectorIds();
     }
         
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public IEnumerable<IndexSet> GetBasisBivectorIds(int vSpaceDimensions)
     {
-        if (vSpaceDimensions < 2)
-            throw new ArgumentOutOfRangeException(nameof(vSpaceDimensions));
-
-        for (var index1 = 0; index1 < vSpaceDimensions - 1; index1++)
-        for (var index2 = index1 + 1; index2 < vSpaceDimensions; index2++)
-            yield return IndexSet.CreatePair(index1, index2);
+        return vSpaceDimensions.GetBasisBivectorIds();
     }
         
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public IEnumerable<IndexSet> GetBasisKVectorIds(int vSpaceDimensions, int grade)
     {
-        if (grade < 0)
-            throw new ArgumentOutOfRangeException(nameof(grade));
-            
-        if (grade > vSpaceDimensions)
-            throw new ArgumentOutOfRangeException(nameof(vSpaceDimensions));
-
-        if (grade == vSpaceDimensions)
-            return [GetBasisPseudoScalarId(vSpaceDimensions)];
-
-        return grade switch
-        {
-            0 => [IndexSet.EmptySet],
-            1 => GetBasisVectorIds(vSpaceDimensions),
-            2 => GetBasisBivectorIds(vSpaceDimensions),
-            _ => vSpaceDimensions.ToDenseIndexSet().GetSubsetsOfSize(grade)
-        };
+        return vSpaceDimensions.GetBasisKVectorIds(grade);
     }
         
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public IndexSet GetBasisPseudoScalarId(int vSpaceDimensions)
     {
-        return vSpaceDimensions.ToDenseIndexSet();
+        return vSpaceDimensions.GetBasisPseudoScalarId();
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public IEnumerable<IndexSet> GetBasisBladeIds(int vSpaceDimensions)
     {
-        return vSpaceDimensions.ToDenseIndexSet().GetSubsets();
+        return vSpaceDimensions.BasisBladeIds();
     }
 
 

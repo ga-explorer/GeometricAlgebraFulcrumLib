@@ -1,8 +1,10 @@
 ﻿using System.Numerics;
 using System.Runtime.CompilerServices;
-using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Matrices;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space3D;
+using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Numerical;
+using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Numerical.Matrices;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
+using MathNet.Numerics.LinearAlgebra;
 
 namespace GeometricAlgebraFulcrumLib.Modeling.Geometry.AffineMaps.Space3D;
 
@@ -18,7 +20,7 @@ public class Float64RotateUniformScaleTranslateAffineMap3D :
         get => _rotateMap;
         set
         {
-            if (value is null || !value.IsValid())
+            if (!value.IsValid())
                 throw new ArgumentException(nameof(value));
 
             _rotateMap = value;
@@ -44,7 +46,7 @@ public class Float64RotateUniformScaleTranslateAffineMap3D :
         get => _translationVector;
         set
         {
-            if (value is null || !value.IsValid())
+            if (!value.IsValid())
                 throw new InvalidOperationException(nameof(value));
 
             _translationVector = value;
@@ -60,7 +62,7 @@ public class Float64RotateUniformScaleTranslateAffineMap3D :
         throw new NotImplementedException();
     }
 
-    public bool IsNearIdentity(double zeroEpsilon = Float64Utils.ZeroEpsilon)
+    public bool IsNearIdentity(double tolerance = Float64Utils.DefaultTolerance)
     {
         throw new NotImplementedException();
     }
@@ -76,19 +78,19 @@ public class Float64RotateUniformScaleTranslateAffineMap3D :
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public SquareMatrix4 GetSquareMatrix4()
     {
-        return new SquareMatrix4(GetArray2D());
+        return new SquareMatrix4(GetMatrix());
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public Matrix4x4 GetMatrix4x4()
     {
-        return GetArray2D().ToMatrix4x4();
+        return GetMatrix().ToSystemNumericsMatrix4x4();
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public double[,] GetArray2D()
+    public Matrix<double> GetMatrix()
     {
-        var array = _rotateMap.GetArray2D();
+        var array = _rotateMap.GetMatrix();
 
         array[0, 0] *= _scalingFactor;
         array[1, 1] *= _scalingFactor;

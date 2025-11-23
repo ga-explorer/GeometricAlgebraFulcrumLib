@@ -5,7 +5,7 @@ using GeometricAlgebraFulcrumLib.Utilities.Structures.Sequences.Periodic1D;
 namespace GeometricAlgebraFulcrumLib.Modeling.Graphics.Meshes.PointsPath.Space3D;
 
 public sealed class PlanarYxPointsPath3D : 
-    PSeqMapped1D<ILinFloat64Vector2D, ILinFloat64Vector3D>, 
+    PSeqMapped1D<LinFloat64Vector2D, LinFloat64Vector3D>, 
     IPointsPath3D
 {
     public double ValueZ { get; set; }
@@ -24,14 +24,14 @@ public sealed class PlanarYxPointsPath3D :
     }
 
 
-    protected override ILinFloat64Vector3D MappingFunction(ILinFloat64Vector2D yxPoint)
+    protected override LinFloat64Vector3D MappingFunction(LinFloat64Vector2D yxPoint)
     {
         if (ReferenceEquals(yxPoint, null))
             throw new ArgumentNullException(nameof(yxPoint));
 
         return LinFloat64Vector3D.Create(
-            yxPoint.Y.ScalarValue,
-            yxPoint.X.ScalarValue,
+            yxPoint.Y,
+            yxPoint.X,
             ValueZ
         );
     }
@@ -41,7 +41,7 @@ public sealed class PlanarYxPointsPath3D :
         return this.All(p => p.IsValid());
     }
 
-    public IPointsPath3D MapPoints(Func<ILinFloat64Vector3D, ILinFloat64Vector3D> pointMapping)
+    public IPointsPath3D MapPoints(Func<LinFloat64Vector3D, LinFloat64Vector3D> pointMapping)
     {
         return new ArrayPointsPath3D(
             this.Select(pointMapping).ToArray()

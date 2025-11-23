@@ -1,8 +1,8 @@
 ﻿using System.Runtime.CompilerServices;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space3D;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.Borders.Space3D.Float64;
-using GeometricAlgebraFulcrumLib.Modeling.Trajectories.Vectors3D.Float64.Adaptive;
+using GeometricAlgebraFulcrumLib.Modeling.Geometry.Bounding.Float64;
+using GeometricAlgebraFulcrumLib.Modeling.Trajectories.Vectors3D.Float64.Samplers;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Tuples;
 
 namespace GeometricAlgebraFulcrumLib.Modeling.Graphics.ParametricShapes.Volumes.Sampled;
@@ -10,11 +10,11 @@ namespace GeometricAlgebraFulcrumLib.Modeling.Graphics.ParametricShapes.Volumes.
 public sealed class GrParametricVolumeTree3D :
     IGraphicsParametricVolume3D
 {
-    private readonly HashSet<Float64AdaptivePath3DCornerPosition> _cornerPositionSet
-        = new HashSet<Float64AdaptivePath3DCornerPosition>();
+    private readonly HashSet<Float64SampledPath3D.CornerPosition> _cornerPositionSet
+        = new HashSet<Float64SampledPath3D.CornerPosition>();
 
-    private readonly Dictionary<Triplet<Float64AdaptivePath3DCornerPosition>, int> _cornerDictionary
-        = new Dictionary<Triplet<Float64AdaptivePath3DCornerPosition>, int>();
+    private readonly Dictionary<Triplet<Float64SampledPath3D.CornerPosition>, int> _cornerDictionary
+        = new Dictionary<Triplet<Float64SampledPath3D.CornerPosition>, int>();
 
     private readonly List<GrParametricVolumeTreeCorner3D> _cornerList
         = new List<GrParametricVolumeTreeCorner3D>();
@@ -25,7 +25,7 @@ public sealed class GrParametricVolumeTree3D :
 
     public IGraphicsParametricVolume3D Volume { get; }
 
-    public GrParametricVolumeTreeBranch3D RootNode { get; private set; }
+    public GrParametricVolumeTreeBranch3D? RootNode { get; private set; }
         
     public int TreeLevelCount { get; internal set; }
 
@@ -44,7 +44,8 @@ public sealed class GrParametricVolumeTree3D :
         {
             var stack = new Stack<GrParametricVolumeTreeNode3D>();
 
-            stack.Push(RootNode);
+            if (RootNode is not null)
+                stack.Push(RootNode);
 
             while (stack.Count > 0)
             {
@@ -73,7 +74,8 @@ public sealed class GrParametricVolumeTree3D :
         {
             var stack = new Stack<GrParametricVolumeTreeBranch3D>();
 
-            stack.Push(RootNode);
+            if (RootNode is not null)
+                stack.Push(RootNode);
 
             while (stack.Count > 0)
             {
@@ -114,7 +116,8 @@ public sealed class GrParametricVolumeTree3D :
         {
             var stack = new Stack<GrParametricVolumeTreeNode3D>();
 
-            stack.Push(RootNode);
+            if (RootNode is not null)
+                stack.Push(RootNode);
 
             while (stack.Count > 0)
             {
@@ -143,7 +146,7 @@ public sealed class GrParametricVolumeTree3D :
     public IReadOnlyList<GrParametricVolumeTreeLeaf3D> LeafNodesList 
         => _leafNodeList;
         
-    public IFloat64BoundingBox3D ParameterValueRange { get; }
+    public Float64BoundingBox3D ParameterValueRange { get; }
 
     public double MinParameterValue1 
         => ParameterValueRange.MinX;
@@ -172,7 +175,7 @@ public sealed class GrParametricVolumeTree3D :
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public GrParametricVolumeTree3D(IGraphicsParametricVolume3D surface, IFloat64BoundingBox3D parameterValueRange)
+    public GrParametricVolumeTree3D(IGraphicsParametricVolume3D surface, Float64BoundingBox3D parameterValueRange)
     {
         Volume = surface;
         ParameterValueRange = parameterValueRange;
@@ -183,7 +186,7 @@ public sealed class GrParametricVolumeTree3D :
     public GrParametricVolumeTree3D(IGraphicsParametricVolume3D surface)
     {
         Volume = surface;
-        ParameterValueRange = Float64BoundingBox3D.Create(0, 0, 0, 1, 1, 1);
+        ParameterValueRange = Float64BoundingBox3D.Containing(0, 0, 0, 1, 1, 1);
         RootNode = null;
     }
 
@@ -200,7 +203,7 @@ public sealed class GrParametricVolumeTree3D :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public Triplet<double> GetParameterValue(Triplet<Float64AdaptivePath3DCornerPosition> cornerPosition)
+    public Triplet<double> GetParameterValue(Triplet<Float64SampledPath3D.CornerPosition> cornerPosition)
     {
         var t1 = cornerPosition.Item1.GetInterpolationValue();
         var t2 = cornerPosition.Item2.GetInterpolationValue();
@@ -280,7 +283,7 @@ public sealed class GrParametricVolumeTree3D :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool ContainsCorner(Triplet<Float64AdaptivePath3DCornerPosition> cornerPosition)
+    public bool ContainsCorner(Triplet<Float64SampledPath3D.CornerPosition> cornerPosition)
     {
         return _cornerDictionary.ContainsKey(cornerPosition);
     }
@@ -292,7 +295,7 @@ public sealed class GrParametricVolumeTree3D :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public GrParametricVolumeTreeCorner3D GetCorner(Triplet<Float64AdaptivePath3DCornerPosition> cornerPosition)
+    public GrParametricVolumeTreeCorner3D GetCorner(Triplet<Float64SampledPath3D.CornerPosition> cornerPosition)
     {
         var cornerIndex = _cornerDictionary[cornerPosition];
 
@@ -300,13 +303,13 @@ public sealed class GrParametricVolumeTree3D :
     }
         
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public int GetCornerIndex(Triplet<Float64AdaptivePath3DCornerPosition> cornerPosition)
+    public int GetCornerIndex(Triplet<Float64SampledPath3D.CornerPosition> cornerPosition)
     {
         return _cornerDictionary[cornerPosition];
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool TryGetCorner(Triplet<Float64AdaptivePath3DCornerPosition> cornerPosition, out GrParametricVolumeTreeCorner3D corner)
+    public bool TryGetCorner(Triplet<Float64SampledPath3D.CornerPosition> cornerPosition, out GrParametricVolumeTreeCorner3D? corner)
     {
         if (_cornerDictionary.TryGetValue(cornerPosition, out var cornerIndex))
         {
@@ -314,20 +317,20 @@ public sealed class GrParametricVolumeTree3D :
             return true;
         }
 
-        corner = default;
+        corner = null;
         return false;
     }
         
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool TryGetCornerIndex(Triplet<Float64AdaptivePath3DCornerPosition> cornerPosition, out int cornerIndex)
+    public bool TryGetCornerIndex(Triplet<Float64SampledPath3D.CornerPosition> cornerPosition, out int cornerIndex)
     {
         return _cornerDictionary.TryGetValue(cornerPosition, out cornerIndex);
     }
         
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    internal Float64AdaptivePath3DCornerPosition GetOrAddCornerPosition(int level, int segmentCount)
+    internal Float64SampledPath3D.CornerPosition GetOrAddCornerPosition(int level, int segmentCount)
     {
-        var newPosition = new Float64AdaptivePath3DCornerPosition(level, segmentCount);
+        var newPosition = new Float64SampledPath3D.CornerPosition(level, segmentCount);
 
         if (_cornerPositionSet.TryGetValue(newPosition, out var position))
             return position;
@@ -337,10 +340,10 @@ public sealed class GrParametricVolumeTree3D :
         return newPosition;
     }
 
-    internal GrParametricVolumeTreeCorner3D GetOrAddCorner(Float64AdaptivePath3DCornerPosition position1, Float64AdaptivePath3DCornerPosition position2, Float64AdaptivePath3DCornerPosition position3)
+    internal GrParametricVolumeTreeCorner3D GetOrAddCorner(Float64SampledPath3D.CornerPosition position1, Float64SampledPath3D.CornerPosition position2, Float64SampledPath3D.CornerPosition position3)
     {
         var cornerPosition = 
-            new Triplet<Float64AdaptivePath3DCornerPosition>(position1, position2, position3);
+            new Triplet<Float64SampledPath3D.CornerPosition>(position1, position2, position3);
 
         if (_cornerDictionary.TryGetValue(cornerPosition, out var index))
             return _cornerList[index];
@@ -381,7 +384,7 @@ public sealed class GrParametricVolumeTree3D :
         var parameterValue2 = parameterValue.Item2;
         var parameterValue3 = parameterValue.Item3;
 
-        if (!RootNode.Contains(parameterValue1, parameterValue2, parameterValue3))
+        if (RootNode is null || !RootNode.Contains(parameterValue1, parameterValue2, parameterValue3))
             throw new ArgumentOutOfRangeException();
 
         var branchNode = RootNode;
@@ -405,7 +408,7 @@ public sealed class GrParametricVolumeTree3D :
 
     public GrParametricVolumeTreeSample3D GetSample(double parameterValue1, double parameterValue2, double parameterValue3)
     {
-        if (!RootNode.Contains(parameterValue1, parameterValue2, parameterValue3))
+        if (RootNode is null || !RootNode.Contains(parameterValue1, parameterValue2, parameterValue3))
             throw new ArgumentOutOfRangeException();
 
         var branchNode = RootNode;

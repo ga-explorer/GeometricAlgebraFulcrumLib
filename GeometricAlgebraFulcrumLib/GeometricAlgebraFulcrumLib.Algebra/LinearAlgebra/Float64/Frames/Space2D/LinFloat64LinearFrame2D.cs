@@ -16,7 +16,7 @@ public class LinFloat64LinearFrame2D
     /// <returns></returns>
     public static LinFloat64LinearFrame2D CreateRightHanded(ILinFloat64Vector2D uDirection)
     {
-        var s = uDirection.VectorENorm();
+        var s = uDirection.L2Norm();
 
         Debug.Assert(!s.IsNearZero());
 
@@ -31,7 +31,7 @@ public class LinFloat64LinearFrame2D
     /// <returns></returns>
     public static LinFloat64LinearFrame2D CreateLeftHanded(ILinFloat64Vector2D uDirection)
     {
-        var s = uDirection.VectorENorm();
+        var s = uDirection.L2Norm();
 
         Debug.Assert(!s.IsNearZero());
 

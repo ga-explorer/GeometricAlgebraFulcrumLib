@@ -9,11 +9,11 @@ namespace GeometricAlgebraFulcrumLib.Modeling.Graphics.Meshes.PointsMesh.Space3D
 public class PlanarPointsMesh3D
     : IPointsMesh3D
 {
-    public ILinFloat64Vector3D Origin { get; set; }
+    public LinFloat64Vector3D Origin { get; set; }
 
-    public ILinFloat64Vector3D Direction1 { get; set; }
+    public LinFloat64Vector3D Direction1 { get; set; }
 
-    public ILinFloat64Vector3D Direction2 { get; set; }
+    public LinFloat64Vector3D Direction2 { get; set; }
 
     public IPeriodicSequence1D<double> Parameters1 { get; }
 
@@ -28,7 +28,7 @@ public class PlanarPointsMesh3D
     public int Count2 
         => Parameters2.Count;
 
-    public ILinFloat64Vector3D this[int index]
+    public LinFloat64Vector3D this[int index]
     {
         get
         {
@@ -40,7 +40,7 @@ public class PlanarPointsMesh3D
         }
     }
 
-    public ILinFloat64Vector3D this[int index1, int index2]
+    public LinFloat64Vector3D this[int index1, int index2]
     {
         get
         {
@@ -70,7 +70,7 @@ public class PlanarPointsMesh3D
         Direction2 = LinFloat64Vector3D.Create(0, 1, 0);
     }
         
-    public PlanarPointsMesh3D(IPeriodicSequence1D<double> parameters1, IPeriodicSequence1D<double> parameters2, ILinFloat64Vector3D origin, ILinFloat64Vector3D direction1, ILinFloat64Vector3D direction2)
+    public PlanarPointsMesh3D(IPeriodicSequence1D<double> parameters1, IPeriodicSequence1D<double> parameters2, LinFloat64Vector3D origin, LinFloat64Vector3D direction1, LinFloat64Vector3D direction2)
     {
         Parameters1 = parameters1;
         Parameters2 = parameters2;
@@ -81,7 +81,7 @@ public class PlanarPointsMesh3D
     }
 
 
-    public PSeqSlice1D<ILinFloat64Vector3D> GetSliceAt(int dimension, int index)
+    public PSeqSlice1D<LinFloat64Vector3D> GetSliceAt(int dimension, int index)
     {
         return new PointsMeshSlicePointsPath3D(this, dimension, index);
     }
@@ -91,7 +91,7 @@ public class PlanarPointsMesh3D
         return new PointsMeshSlicePointsPath3D(this, dimension, index);
     }
 
-    public IEnumerator<ILinFloat64Vector3D> GetEnumerator()
+    public IEnumerator<LinFloat64Vector3D> GetEnumerator()
     {
         for (var i2 = 0; i2 < Count2; i2++)
         for (var i1 = 0; i1 < Count1; i1++)

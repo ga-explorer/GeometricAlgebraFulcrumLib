@@ -4,10 +4,10 @@ using GeometricAlgebraFulcrumLib.Utilities.Structures.Sequences.Periodic1D;
 namespace GeometricAlgebraFulcrumLib.Modeling.Graphics.Meshes.PointsPath.Space3D;
 
 public sealed class MultiplexedPointsPath3D : 
-    PSeqMultiplexed1D<ILinFloat64Vector3D>, 
+    PSeqMultiplexed1D<LinFloat64Vector3D>, 
     IPointsPath3D
 {
-    public IReadOnlyList<IPeriodicSequence1D<ILinFloat64Vector3D>> BasePaths { get; }
+    public IReadOnlyList<IPeriodicSequence1D<LinFloat64Vector3D>> BasePaths { get; }
 
 
     public MultiplexedPointsPath3D(IReadOnlyList<IPointsPath3D> sequencesList, IEnumerable<int> sequenceSelectionList) 
@@ -28,7 +28,7 @@ public sealed class MultiplexedPointsPath3D :
         return this.All(p => p.IsValid());
     }
 
-    public IPointsPath3D MapPoints(Func<ILinFloat64Vector3D, ILinFloat64Vector3D> pointMapping)
+    public IPointsPath3D MapPoints(Func<LinFloat64Vector3D, LinFloat64Vector3D> pointMapping)
     {
         return new ArrayPointsPath3D(
             this.Select(pointMapping).ToArray()

@@ -368,7 +368,7 @@ public static class Float64DistanceUtils
 
         return n.IsAlmostZeroVector()
             ? 0
-            : n.ToUnitLinVector3D().VectorESp(line1.GetOrigin() - line2.GetOrigin());
+            : n.ToUnitLinVector3D().VectorDot(line1.GetOrigin() - line2.GetOrigin());
     }
 
     public static double GetDistanceToLineVa(this IFloat64Line3D line1, IFloat64Line3D line2)
@@ -381,6 +381,6 @@ public static class Float64DistanceUtils
 
         return n.IsAlmostZeroVector()
             ? 0
-            : n.ToUnitLinVector3D().VectorESpAbs(line1.GetOrigin() - line2.GetOrigin());
+            : n.ToUnitLinVector3D().VectorDotAbs(line1.GetOrigin() - line2.GetOrigin());
     }
 }

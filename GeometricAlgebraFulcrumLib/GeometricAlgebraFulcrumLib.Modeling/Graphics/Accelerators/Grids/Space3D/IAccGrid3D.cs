@@ -1,11 +1,11 @@
 ﻿using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Tuples;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.BasicShapes;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.Borders.Space3D.Float64;
+using GeometricAlgebraFulcrumLib.Modeling.Geometry.Bounding.Float64;
 
 namespace GeometricAlgebraFulcrumLib.Modeling.Graphics.Accelerators.Grids.Space3D;
 
 public interface IAccGrid3D<out T> : IAccelerator3D<T>
-    where T : IFloat64FiniteGeometricShape3D
+    where T : IFloat64BoundedShape3D
 {
     IReadOnlyList<T> this[int ix, int iy, int iz] { get; }
 

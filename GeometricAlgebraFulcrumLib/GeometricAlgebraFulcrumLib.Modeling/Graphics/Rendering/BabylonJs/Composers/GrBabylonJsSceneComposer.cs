@@ -1,7 +1,8 @@
 ﻿using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Basis;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space3D;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.Borders.Space2D.Float64;
+using GeometricAlgebraFulcrumLib.Modeling.Geometry.Bounding.Float64;
+
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.VGa.Float64;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.BabylonJs.Animations;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.BabylonJs.Cameras;
@@ -444,7 +445,7 @@ function updateXyCirclePathPoints(path, radius, arcRatio) {
         return visualElement;
     }
 
-    public override void AddGrid(string name, ITriplet<Float64Scalar> center, LinFloat64Quaternion orientation, int unitCount, double unitSize = 1, double opacity = 1)
+    public override void AddGrid(string name, ITriplet<double> center, LinFloat64Quaternion orientation, int unitCount, double unitSize = 1, double opacity = 1)
     {
         GridMaterialKind =
             GrBabylonJsGridMaterialKind.TexturedMaterial;
@@ -461,7 +462,7 @@ function updateXyCirclePathPoints(path, radius, arcRatio) {
         );
     }
 
-    public override void AddAxes(string name, ITriplet<Float64Scalar> origin, LinFloat64Quaternion orientation, double scalingFactor = 1, double opacity = 1)
+    public override void AddAxes(string name, ITriplet<double> origin, LinFloat64Quaternion orientation, double scalingFactor = 1, double opacity = 1)
     {
         AddElement(
             GrVisualFrame3D.CreateStatic(
@@ -758,13 +759,13 @@ function updateXyCirclePathPoints(path, radius, arcRatio) {
                 var yPoint = origin + length * frame.Normal1.ToUnitLinVector3D();
                 var zPoint = origin + length * frame.Normal2.ToUnitLinVector3D();
 
-                lineArrayList.Add(new[] { origin, xPoint });
-                lineArrayList.Add(new[] { origin, yPoint });
-                lineArrayList.Add(new[] { origin, zPoint });
+                lineArrayList.Add([origin, xPoint]);
+                lineArrayList.Add([origin, yPoint]);
+                lineArrayList.Add([origin, zPoint]);
 
-                colorArrayList.Add(new[] { xColor1, xColor2 });
-                colorArrayList.Add(new[] { yColor1, yColor2 });
-                colorArrayList.Add(new[] { zColor1, zColor2 });
+                colorArrayList.Add([xColor1, xColor2]);
+                colorArrayList.Add([yColor1, yColor2]);
+                colorArrayList.Add([zColor1, zColor2]);
             }
 
             SceneObject.AddLineSystem(
@@ -3572,7 +3573,7 @@ updateXyCirclePathPoints({visualElement.Name}Points1, {visualElement.Name}Ribbon
     }
     
 
-    public GrBabylonJsSceneComposer AddDefaultAxes(ILinFloat64Vector3D axesOrigin)
+    public GrBabylonJsSceneComposer AddDefaultAxes(LinFloat64Vector3D axesOrigin)
     {
         // Add reference unit axis frame
         AddElement(

@@ -1,5 +1,4 @@
-﻿using System.Collections.Immutable;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
 using GeometricAlgebraFulcrumLib.Modeling.Statistics.Discrete;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Tuples;
@@ -26,7 +25,7 @@ public sealed class CumulativeDistributionFunction :
     private CumulativeDistributionFunction(double domainFirstValue, double domainLastValue, SortedDictionary<int, double> sampleProbabilityDictionary) 
         : base(domainFirstValue, domainLastValue, sampleProbabilityDictionary)
     {
-        ValueProbabilityArray = ValueProbabilityPairs.ToImmutableArray();
+        ValueProbabilityArray = [..ValueProbabilityPairs];
 
         Debug.Assert(IsValid());
     }

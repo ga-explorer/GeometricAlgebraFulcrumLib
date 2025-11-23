@@ -39,31 +39,40 @@ public sealed class GrLatticeCurveLocalFrame3D :
     public int VSpaceDimensions 
         => 3;
 
-    public Float64Scalar Item1 
+    public double Item1 
         => _point.X;
         
-    public Float64Scalar Item2 
+    public double Item2 
         => _point.Y;
 
-    public Float64Scalar Item3 
+    public double Item3 
         => _point.Z;
         
-    public Float64Scalar X 
+    public double X 
         => _point.X;
         
-    public Float64Scalar Y 
+    public double Y 
         => _point.Y;
         
-    public Float64Scalar Z 
+    public double Z 
         => _point.Z;
+    
+    public double this[int index] 
+        => index switch
+        {
+            0 => X,
+            1 => Y,
+            2 => Z,
+            _ => Float64Scalar.Zero
+        };
 
-    public bool IsValid()
-    {
-        return _point.IsValid();
-    }
+    public Triplet<double> PointTriplet 
+        => new Triplet<double>(Point.X, Point.Y, Point.Z);
 
-    public Triplet<Float64Scalar> PointTriplet 
-        => new Triplet<Float64Scalar>(Point.X, Point.Y, Point.Z);
+    public double ScalingFactor 
+        => 1;
+
+    public LinFloat64Vector3D Tangent { get; }
 
     public LinFloat64Normal3D Normal1 { get; }
         = new LinFloat64Normal3D();
@@ -71,14 +80,12 @@ public sealed class GrLatticeCurveLocalFrame3D :
     public LinFloat64Normal3D Normal2 { get; }
         = new LinFloat64Normal3D();
 
-    public LinFloat64Vector3D Tangent { get; }
-
     public double TimeValue { get; private set; }
 
     public Color Color { get; set; }
 
 
-    public GrLatticeCurveLocalFrame3D(GrLatticeCurve3D parentCurve, int uIndex, ITriplet<Float64Scalar> pointTriplet)
+    public GrLatticeCurveLocalFrame3D(GrLatticeCurve3D parentCurve, int uIndex, ITriplet<double> pointTriplet)
     {
         ParentCurve = parentCurve;
 
@@ -87,7 +94,13 @@ public sealed class GrLatticeCurveLocalFrame3D :
         LatticeIndexSet.Add(uIndex);
     }
 
-        
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public bool IsValid()
+    {
+        return _point.IsValid();
+    }
+
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public bool HasPoint(double x, double y, double z)
     {

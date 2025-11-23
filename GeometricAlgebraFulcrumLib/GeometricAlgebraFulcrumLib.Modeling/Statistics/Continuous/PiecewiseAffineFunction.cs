@@ -381,8 +381,8 @@ namespace GeometricAlgebraFulcrumLib.Modeling.Statistics.Continuous
             //}
 
             return CreateContinuous(
-                indexList.Select(i => xValues[i]).ToImmutableArray(),
-                indexList.Select(i => yValues[i]).ToImmutableArray()
+                [..indexList.Select(i => xValues[i])],
+                [..indexList.Select(i => yValues[i])]
             );
         }
 
@@ -826,7 +826,7 @@ namespace GeometricAlgebraFulcrumLib.Modeling.Statistics.Continuous
             }
 
             breakPoints =
-                Breakpoints.Where(b => b.IsDiscrete).ToImmutableArray();
+                [..Breakpoints.Where(b => b.IsDiscrete)];
 
             if (breakPoints.Length > 0)
             {

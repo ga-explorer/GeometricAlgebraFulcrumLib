@@ -1,6 +1,6 @@
 ﻿using System.Data;
 using System.Runtime.CompilerServices;
-using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Matrices;
+using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Numerical.Matrices;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.AffineMaps.Space1D;
 
@@ -336,10 +336,10 @@ public class DfAffinePolynomial :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool IsNearIdentity(double zeroEpsilon = Float64Utils.ZeroEpsilon)
+    public bool IsNearIdentity(double tolerance = Float64Utils.DefaultTolerance)
     {
-        return ScalarConstant.IsNearZero(zeroEpsilon) &&
-               ScalarFactor.IsNearOne(zeroEpsilon);
+        return ScalarConstant.IsNearZero(tolerance) &&
+               ScalarFactor.IsNearOne(tolerance);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -351,11 +351,11 @@ public class DfAffinePolynomial :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool IsNearSame(DfAffinePolynomial p2, double zeroEpsilon = Float64Utils.ZeroEpsilon)
+    public bool IsNearSame(DfAffinePolynomial p2, double tolerance = Float64Utils.DefaultTolerance)
     {
         return
-            (ScalarFactor / p2.ScalarFactor - 1).IsNearZero(zeroEpsilon) &&
-            (ScalarConstant - p2.ScalarConstant).IsNearZero(zeroEpsilon);
+            (ScalarFactor / p2.ScalarFactor - 1).IsNearZero(tolerance) &&
+            (ScalarConstant - p2.ScalarConstant).IsNearZero(tolerance);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]

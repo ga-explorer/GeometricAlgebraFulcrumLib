@@ -36,7 +36,7 @@ public static class PathsMeshUtils
     }
 
         
-    public static ILinFloat64Vector3D GetPoint(this IPathsMesh3D baseMesh, int meshPointIndex)
+    public static LinFloat64Vector3D GetPoint(this IPathsMesh3D baseMesh, int meshPointIndex)
     {
         meshPointIndex = meshPointIndex.Mod(baseMesh.MeshPointsCount);
         var pathPointIndex = meshPointIndex % baseMesh.PathPointsCount;
@@ -45,7 +45,7 @@ public static class PathsMeshUtils
         return baseMesh[pathIndex][pathPointIndex];
     }
 
-    public static ILinFloat64Vector3D GetPoint(this IPathsMesh3D baseMesh, int pathIndex, int pathPointIndex)
+    public static LinFloat64Vector3D GetPoint(this IPathsMesh3D baseMesh, int pathIndex, int pathPointIndex)
     {
         return baseMesh[pathIndex][pathPointIndex];
     }
@@ -157,7 +157,7 @@ public static class PathsMeshUtils
         }
     }
 
-    public static IEnumerable<ILinFloat64Vector3D> GetPoints(this IPathsMesh3D mesh)
+    public static IEnumerable<LinFloat64Vector3D> GetPoints(this IPathsMesh3D mesh)
     {
         return mesh.SelectMany(p => p);
     }
@@ -202,41 +202,41 @@ public static class PathsMeshUtils
     }
 
 
-    public static Pair<ILinFloat64Vector3D> GetPointPair(this IPathsMesh3D mesh, int pathIndex1, int pathIndex2, int pathPointIndex)
+    public static Pair<LinFloat64Vector3D> GetPointPair(this IPathsMesh3D mesh, int pathIndex1, int pathIndex2, int pathPointIndex)
     {
-        return new Pair<ILinFloat64Vector3D>(
+        return new Pair<LinFloat64Vector3D>(
             mesh[pathIndex1][pathPointIndex],
             mesh[pathIndex2][pathPointIndex]
         );
     }
 
-    public static Pair<ILinFloat64Vector3D> GetPointPair(this IPathsMesh3D mesh, int pathIndex1, int pathIndex2, int pathPointIndex1, int pathPointIndex2)
+    public static Pair<LinFloat64Vector3D> GetPointPair(this IPathsMesh3D mesh, int pathIndex1, int pathIndex2, int pathPointIndex1, int pathPointIndex2)
     {
-        return new Pair<ILinFloat64Vector3D>(
+        return new Pair<LinFloat64Vector3D>(
             mesh[pathIndex1][pathPointIndex1],
             mesh[pathIndex2][pathPointIndex2]
         );
     }
 
-    public static Pair<ILinFloat64Vector3D> GetPointPair(this IPathsMesh3D mesh, Pair<int> pathIndexPair, int pathPointIndex)
+    public static Pair<LinFloat64Vector3D> GetPointPair(this IPathsMesh3D mesh, Pair<int> pathIndexPair, int pathPointIndex)
     {
-        return new Pair<ILinFloat64Vector3D>(
+        return new Pair<LinFloat64Vector3D>(
             mesh[pathIndexPair.Item1][pathPointIndex],
             mesh[pathIndexPair.Item2][pathPointIndex]
         );
     }
 
-    public static Pair<ILinFloat64Vector3D> GetPointPair(this IPathsMesh3D mesh, int pathIndex, Pair<int> pathPointIndexPair)
+    public static Pair<LinFloat64Vector3D> GetPointPair(this IPathsMesh3D mesh, int pathIndex, Pair<int> pathPointIndexPair)
     {
         return mesh[pathIndex].GetPointsPair(pathPointIndexPair);
     }
 
 
-    public static IEnumerable<IQuad<ILinFloat64Vector3D>> GetPointQuads(this IPathsMesh3D baseMesh)
+    public static IEnumerable<IQuad<LinFloat64Vector3D>> GetPointQuads(this IPathsMesh3D baseMesh)
     {
         for (var pathIndex = 1; pathIndex < baseMesh.Count; pathIndex++)
         for (var pathPointIndex = 1; pathPointIndex < baseMesh.PathPointsCount; pathPointIndex++)
-            yield return new Quad<ILinFloat64Vector3D>(
+            yield return new Quad<LinFloat64Vector3D>(
                 baseMesh.GetPoint(pathIndex - 1, pathPointIndex - 1),
                 baseMesh.GetPoint(pathIndex - 1, pathPointIndex),
                 baseMesh.GetPoint(pathIndex, pathPointIndex - 1),

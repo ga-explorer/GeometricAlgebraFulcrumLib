@@ -289,7 +289,7 @@ public class VectorFourierInterpolator
     internal static VectorFourierInterpolator Create(IReadOnlyList<XGaFloat64Vector> signalSamples, double samplingRate, double energyThreshold = 0.998d)
     {
         var frequencyIndexSet = GetDominantFrequencyIndexSet(
-            signalSamples.Select(v => v.Norm().ScalarValue),
+            signalSamples.Select(v => v.Norm()),
             energyThreshold
         );
 

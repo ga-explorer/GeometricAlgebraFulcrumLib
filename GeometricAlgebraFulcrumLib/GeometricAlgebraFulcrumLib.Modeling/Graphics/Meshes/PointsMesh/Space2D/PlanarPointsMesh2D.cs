@@ -10,11 +10,11 @@ namespace GeometricAlgebraFulcrumLib.Modeling.Graphics.Meshes.PointsMesh.Space2D
 public class PlanarPointsMesh2D
     : IPointsMesh2D
 {
-    public ILinFloat64Vector2D Origin { get; set; }
+    public LinFloat64Vector2D Origin { get; set; }
 
-    public ILinFloat64Vector2D Direction1 { get; set; }
+    public LinFloat64Vector2D Direction1 { get; set; }
 
-    public ILinFloat64Vector2D Direction2 { get; set; }
+    public LinFloat64Vector2D Direction2 { get; set; }
 
     public IPeriodicSequence1D<double> Parameters1 { get; }
 
@@ -29,7 +29,7 @@ public class PlanarPointsMesh2D
     public int Count2
         => Parameters2.Count;
 
-    public ILinFloat64Vector2D this[int index]
+    public LinFloat64Vector2D this[int index]
     {
         get
         {
@@ -41,7 +41,7 @@ public class PlanarPointsMesh2D
         }
     }
 
-    public ILinFloat64Vector2D this[int index1, int index2]
+    public LinFloat64Vector2D this[int index1, int index2]
     {
         get
         {
@@ -71,7 +71,7 @@ public class PlanarPointsMesh2D
     }
 
 
-    public PSeqSlice1D<ILinFloat64Vector2D> GetSliceAt(int dimension, int index)
+    public PSeqSlice1D<LinFloat64Vector2D> GetSliceAt(int dimension, int index)
     {
         return new PointsMeshSlicePointsPath2D(this, dimension, index);
     }
@@ -81,7 +81,7 @@ public class PlanarPointsMesh2D
         return new PointsMeshSlicePointsPath2D(this, dimension, index);
     }
 
-    public IEnumerator<ILinFloat64Vector2D> GetEnumerator()
+    public IEnumerator<LinFloat64Vector2D> GetEnumerator()
     {
         for (var i2 = 0; i2 < Count2; i2++)
         for (var i1 = 0; i1 < Count1; i1++)

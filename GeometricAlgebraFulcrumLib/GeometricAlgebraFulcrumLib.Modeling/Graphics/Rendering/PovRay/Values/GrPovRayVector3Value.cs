@@ -35,7 +35,7 @@ public sealed class GrPovRayVector3Value :
         return new GrPovRayVector3Value(value);
     }
 
-    public static GrPovRayVector3Value Create(ITriplet<Float64Scalar> value)
+    public static GrPovRayVector3Value Create(ITriplet<double> value)
     {
         return new GrPovRayVector3Value(value);
     }
@@ -43,21 +43,21 @@ public sealed class GrPovRayVector3Value :
     public static GrPovRayVector3Value Create(int x, int y, int z)
     {
         return new GrPovRayVector3Value(
-            new Triplet<Float64Scalar>(x, y, z)
+            new Triplet<double>(x, y, z)
         );
     }
 
     public static GrPovRayVector3Value Create(double x, double y, double z)
     {
         return new GrPovRayVector3Value(
-            new Triplet<Float64Scalar>(x, y, z)
+            new Triplet<double>(x, y, z)
         );
     }
 
     public static GrPovRayVector3Value Create(Float64Scalar x, Float64Scalar y, Float64Scalar z)
     {
         return new GrPovRayVector3Value(
-            new Triplet<Float64Scalar>(x, y, z)
+            new Triplet<double>(x, y, z)
         );
     }
     
@@ -95,7 +95,7 @@ public sealed class GrPovRayVector3Value :
     {
     }
 
-    private GrPovRayVector3Value(ITriplet<Float64Scalar> value)
+    private GrPovRayVector3Value(ITriplet<double> value)
         : base(value.MapItems(s => (GrPovRayFloat32Value)s))
     {
     }

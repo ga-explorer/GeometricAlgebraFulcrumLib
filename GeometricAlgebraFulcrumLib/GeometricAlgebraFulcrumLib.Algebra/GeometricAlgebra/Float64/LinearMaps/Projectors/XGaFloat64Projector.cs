@@ -23,7 +23,7 @@ public sealed class XGaFloat64Projector :
     internal XGaFloat64Projector(XGaFloat64KVector blade, bool useBladeInverse)
     {
         Blade = blade;
-        BladePseudoInverse = useBladeInverse ? blade.PseudoInverse() : blade;
+        BladePseudoInverse = useBladeInverse ? blade.VersorPseudoInverse() : blade;
     }
 
 

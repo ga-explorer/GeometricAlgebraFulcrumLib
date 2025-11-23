@@ -1,10 +1,9 @@
 ﻿using System.Runtime.CompilerServices;
-using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Angles;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space3D;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
 using GeometricAlgebraFulcrumLib.Modeling.Trajectories.Scalars.Float64;
-using GeometricAlgebraFulcrumLib.Modeling.Trajectories.Vectors3D.Float64.Adaptive;
 using GeometricAlgebraFulcrumLib.Modeling.Trajectories.Vectors3D.Float64.Composers;
+using GeometricAlgebraFulcrumLib.Modeling.Trajectories.Vectors3D.Float64.Samplers;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Tuples;
 
 namespace GeometricAlgebraFulcrumLib.Modeling.Trajectories.Vectors3D.Float64.Mapped;
@@ -17,16 +16,12 @@ public sealed class Float64AdaptiveArcLengthPath3D :
     {
         return new Float64AdaptiveArcLengthPath3D(
             basePath, 
-            new Float64AdaptivePath3DSamplingOptions(
-                5.DegreesToDirectedAngle(),
-                3,
-                16
-            )
+            new SampledCurve3D.SamplingOptions()
         );
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Float64AdaptiveArcLengthPath3D Create(Float64Path3D basePath, Float64AdaptivePath3DSamplingOptions samplingOptions)
+    public static Float64AdaptiveArcLengthPath3D Create(Float64Path3D basePath, SampledCurve3D.SamplingOptions samplingOptions)
     {
         return new Float64AdaptiveArcLengthPath3D(
             basePath, 
@@ -35,15 +30,15 @@ public sealed class Float64AdaptiveArcLengthPath3D :
     }
 
 
-    private readonly Float64AdaptivePath3DSamplingOptions _adaptiveSamplingOptions;
-    private readonly Float64AdaptivePath3D _adaptiveCurve;
+    private readonly SampledCurve3D.SamplingOptions _adaptiveSamplingOptions;
+    private readonly SampledCurve3D _adaptiveCurve;
     private readonly double _adaptiveCurveLength;
 
     public Float64Path3D BasePath { get; }
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    private Float64AdaptiveArcLengthPath3D(Float64Path3D basePath, Float64AdaptivePath3DSamplingOptions samplingOptions)
+    private Float64AdaptiveArcLengthPath3D(Float64Path3D basePath, SampledCurve3D.SamplingOptions samplingOptions)
         : base(basePath.TimeRange, basePath.IsPeriodic)
     {
         BasePath = basePath;

@@ -4,6 +4,8 @@ using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivectors;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Processors;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.IndexSets;
+using MathNet.Numerics.LinearAlgebra;
+using MathNet.Numerics.LinearAlgebra.Double;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.LinearMaps;
 
@@ -112,14 +114,14 @@ public sealed class XGaFloat64DiagonalUnilinearMap :
             );
     }
         
-    public double[,] GetMultivectorMapArray(int rowCount, int colCount)
+    public Matrix<double> GetMultivectorMapMatrix(int rowCount, int colCount)
     {
         var minSize = DiagonalMultivector.VSpaceDimensions;
 
         if (rowCount < minSize || colCount < minSize)
             throw new InvalidOperationException();
             
-        var mapArray = new double[rowCount, colCount];
+        var mapArray = DenseMatrix.Create(rowCount, colCount, 0);
             
         foreach (var (id, scalar) in DiagonalMultivector)
         {

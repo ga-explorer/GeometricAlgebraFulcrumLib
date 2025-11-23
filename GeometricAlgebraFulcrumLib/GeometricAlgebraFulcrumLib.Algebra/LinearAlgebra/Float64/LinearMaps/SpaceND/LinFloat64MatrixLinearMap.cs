@@ -1,8 +1,7 @@
 ﻿using System.Runtime.CompilerServices;
-using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Matrices;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.SpaceND;
+using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Numerical;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
-using GeometricAlgebraFulcrumLib.Utilities.Structures.Extensions;
 using MathNet.Numerics.LinearAlgebra;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.LinearMaps.SpaceND;
@@ -10,10 +9,10 @@ namespace GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.LinearMaps.Sp
 public sealed class LinFloat64MatrixLinearMap :
     ILinFloat64UnilinearMap
 {
-    private readonly double[,] _mapArray;
+    private readonly Matrix<double> _mapArray;
 
     public int VSpaceDimensions
-        => _mapArray.GetLength(0);
+        => _mapArray.RowCount;
 
     public double Determinant { get; }
 
@@ -22,30 +21,30 @@ public sealed class LinFloat64MatrixLinearMap :
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    private LinFloat64MatrixLinearMap(double[,] mapArray)
+    private LinFloat64MatrixLinearMap(Matrix<double> mapArray)
     {
         _mapArray = mapArray;
-        Determinant = _mapArray.ToMatrix().Determinant();
+        Determinant = _mapArray.Determinant();
     }
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public bool IsValid()
     {
-        return _mapArray.GetItems().All(s => s.IsValid());
+        return _mapArray.Enumerate().All(s => s.IsValid());
     }
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public LinFloat64Vector MapBasisVector(int basisIndex)
     {
-        return _mapArray.ColumnToArray1D(basisIndex).CreateLinVector();
+        return _mapArray.Column(basisIndex).ToLinFloat64Vector();
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public LinFloat64Vector MapVector(LinFloat64Vector vector)
     {
-        return _mapArray.MatrixProduct(vector).CreateLinVector();
+        return _mapArray.Multiply(vector);
     }
 
     public IEnumerable<KeyValuePair<int, LinFloat64Vector>> GetMappedBasisVectors(int vSpaceDimensions)
@@ -53,7 +52,7 @@ public sealed class LinFloat64MatrixLinearMap :
         throw new NotImplementedException();
     }
 
-    public double[,] ToArray(int rowCount, int colCount)
+    public Matrix<double> ToArray(int rowCount, int colCount)
     {
         throw new NotImplementedException();
     }
@@ -68,76 +67,47 @@ public sealed class LinFloat64MatrixLinearMap :
         throw new NotImplementedException();
     }
 
-    public double[,] ToArray()
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public double[,] ToArray2D()
     {
-        var array = new double[VSpaceDimensions, VSpaceDimensions];
-
-        for (var j = 0; j < VSpaceDimensions; j++)
-            for (var i = 0; i < VSpaceDimensions; i++)
-                array[i, j] = _mapArray[i, j];
-
-        return array;
+        return _mapArray.ToArray();
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public Matrix<double> ToMatrix()
     {
-        return _mapArray.ToMatrix();
+        return _mapArray.Clone();
+    }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public bool IsReflection()
+    {
+        return _mapArray.IsOrthogonal(0);
     }
 
-    public bool IsNearReflection(double zeroEpsilon = 1E-12)
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public bool IsNearReflection(double tolerance = Float64Utils.DefaultTolerance)
     {
-        throw new NotImplementedException();
+        return _mapArray.IsOrthogonal(tolerance);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public ILinFloat64UnilinearMap GetInverseMap()
     {
         return new LinFloat64MatrixLinearMap(
-            _mapArray.ToMatrix().Inverse().ToArray()
+            _mapArray.Inverse()
         );
     }
 
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public bool IsIdentity()
     {
-        for (var i = 0; i < VSpaceDimensions; i++)
-        {
-            for (var j = 0; j < i; j++)
-                if (!_mapArray[i, j].IsZero())
-                    return false;
-
-            if (!_mapArray[i, i].IsOne())
-                return false;
-
-            for (var j = i + 1; j < VSpaceDimensions; j++)
-                if (!_mapArray[i, j].IsZero())
-                    return false;
-        }
-
-        return true;
+        return _mapArray.IsNearIdentity(0);
     }
 
-    public bool IsReflection()
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public bool IsNearIdentity(double tolerance = Float64Utils.DefaultTolerance)
     {
-        throw new NotImplementedException();
-    }
-
-    public bool IsNearIdentity(double zeroEpsilon = 1E-12)
-    {
-        for (var i = 0; i < VSpaceDimensions; i++)
-        {
-            for (var j = 0; j < i; j++)
-                if (!_mapArray[i, j].IsNearZero(zeroEpsilon))
-                    return false;
-
-            if (!_mapArray[i, i].IsNearOne(zeroEpsilon))
-                return false;
-
-            for (var j = i + 1; j < VSpaceDimensions; j++)
-                if (!_mapArray[i, j].IsNearZero(zeroEpsilon))
-                    return false;
-        }
-
-        return true;
+        return _mapArray.IsNearIdentity(tolerance);
     }
 }

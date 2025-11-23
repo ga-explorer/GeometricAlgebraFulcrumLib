@@ -1,7 +1,7 @@
 ﻿namespace GeometricAlgebraFulcrumLib.Modeling.Geometry.BasicShapes.Boxes;
 
 public interface IFloat64AxisAlignedBox2D : 
-    IFloat64FiniteGeometricShape2D
+    IFloat64BoundedShape2D
 {
     double Corner1X { get; }
 

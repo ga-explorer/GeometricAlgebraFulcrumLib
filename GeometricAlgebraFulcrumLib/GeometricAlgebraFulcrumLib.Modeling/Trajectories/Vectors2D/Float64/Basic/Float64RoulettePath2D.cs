@@ -45,10 +45,10 @@ public class Float64RoulettePath2D :
     public Float64RouletteAffineMap2D GetRouletteMap(double t)
     {
         var t1 = MovingCurve.LengthToTime(t);
-        var movingFrame = MovingCurve.GetTangent(t1);
+        var movingFrame = MovingCurve.GetTangentVector(t1);
 
         var t2 = FixedCurve.LengthToTime(t);
-        var fixedFrame = FixedCurve.GetTangent(t2);
+        var fixedFrame = FixedCurve.GetTangentVector(t2);
 
         return new Float64RouletteAffineMap2D(
             FixedCurve.GetValue(t),
@@ -85,6 +85,6 @@ public class Float64RoulettePath2D :
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public override Float64Path2DLocalFrame GetFrame(double t)
     {
-        return this.GetFrenetSerretFrame(t);
+        return GetFrenetSerretFrame(t);
     }
 }

@@ -129,18 +129,18 @@ public sealed class PhCurve3DDegree5Canonical
         Vector12 = (ScalingRotor1.Multivector.Gp(e1Multivector).Gp(ScalingRotor2.MultivectorReverse) + ScalingRotor2.Multivector.Gp(e1Multivector).Gp(ScalingRotor1.MultivectorReverse)).VectorPartToVector3D();
         Vector11 = ScalingRotor1.Multivector.Gp(e1Multivector).Gp(ScalingRotor1.MultivectorReverse).VectorPartToVector3D();
 
-        Scalar00 = ScalingRotor0.Multivector.ESp(ScalingRotor0.MultivectorReverse).ScalarValue;
-        Scalar11 = ScalingRotor1.Multivector.ESp(ScalingRotor1.MultivectorReverse).ScalarValue;
-        Scalar22 = ScalingRotor2.Multivector.ESp(ScalingRotor2.MultivectorReverse).ScalarValue;
+        Scalar00 = ScalingRotor0.Multivector.ESp(ScalingRotor0.MultivectorReverse);
+        Scalar11 = ScalingRotor1.Multivector.ESp(ScalingRotor1.MultivectorReverse);
+        Scalar22 = ScalingRotor2.Multivector.ESp(ScalingRotor2.MultivectorReverse);
 
-        Scalar01 = ScalingRotor0.Multivector.ESp(ScalingRotor1.MultivectorReverse).ScalarValue +
-                   ScalingRotor1.Multivector.ESp(ScalingRotor0.MultivectorReverse).ScalarValue;
+        Scalar01 = ScalingRotor0.Multivector.ESp(ScalingRotor1.MultivectorReverse) +
+                   ScalingRotor1.Multivector.ESp(ScalingRotor0.MultivectorReverse);
 
-        Scalar02 = ScalingRotor0.Multivector.ESp(ScalingRotor2.MultivectorReverse).ScalarValue +
-                   ScalingRotor2.Multivector.ESp(ScalingRotor0.MultivectorReverse).ScalarValue;
+        Scalar02 = ScalingRotor0.Multivector.ESp(ScalingRotor2.MultivectorReverse) +
+                   ScalingRotor2.Multivector.ESp(ScalingRotor0.MultivectorReverse);
 
-        Scalar12 = ScalingRotor1.Multivector.ESp(ScalingRotor2.MultivectorReverse).ScalarValue +
-                   ScalingRotor2.Multivector.ESp(ScalingRotor1.MultivectorReverse).ScalarValue;
+        Scalar12 = ScalingRotor1.Multivector.ESp(ScalingRotor2.MultivectorReverse) +
+                   ScalingRotor2.Multivector.ESp(ScalingRotor1.MultivectorReverse);
     }
 
 

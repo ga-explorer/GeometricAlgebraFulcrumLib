@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
-using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space3D;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Meshes.PointsPath;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Meshes.PointsPath.Space3D;
 using GeometricAlgebraFulcrumLib.Modeling.Signals;
@@ -45,7 +44,7 @@ public class GrVisualAnimatedVectorPath3D :
         get => _dataArray[index.Mod(Count)];
         set
         {
-            if (((GrVisualAnimatedGeometry)value).TimeRange != TimeRange || !value.IsValid())
+            if (value.TimeRange != TimeRange || !value.IsValid())
                 throw new InvalidOperationException();
 
             _dataArray[index.Mod(Count)] = value;
@@ -88,7 +87,7 @@ public class GrVisualAnimatedVectorPath3D :
                TimeRange.MinValue >= 0 &&
                _dataArray.All(p => 
                    p.IsValid() && 
-                   ((GrVisualAnimatedGeometry)p).TimeRange == TimeRange
+                   p.TimeRange == TimeRange
                );
     }
     
@@ -96,7 +95,7 @@ public class GrVisualAnimatedVectorPath3D :
     public IPointsPath3D GetPointsPath(double time)
     {
         var pointArray = _dataArray.MapItems(
-            p => (ILinFloat64Vector3D) p.GetValue(time)
+            p => p.GetValue(time)
         );
 
         return new ArrayPointsPath3D(pointArray);

@@ -23,7 +23,7 @@ internal static class Guard
 
     public static void ItemsNotNull<T>(IEnumerable<T> arg, string argName) where T : class
     {
-        foreach (T item in arg)
+        foreach (var item in arg)
             if (item == null)
                 throw new ArgumentException(string.Format("All items in {0} must not be null", argName));
     }

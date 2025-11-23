@@ -4,7 +4,6 @@ using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Basis;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space2D;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space3D;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space4D;
-using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.AffineMaps.Space3D;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.BabylonJs.Animations;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.BabylonJs.Constants;
@@ -19,6 +18,7 @@ using GeometricAlgebraFulcrumLib.Utilities.Web.Colors;
 using Newtonsoft.Json.Linq;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.PixelFormats;
+// ReSharper disable CompareOfFloatsByEqualityOperator
 
 namespace GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.BabylonJs;
 
@@ -52,7 +52,7 @@ public static class GrBabylonJsUtils
             : new Pair<string>(name, value.GetAttributeValueCode());
     }
 
-    public static GrBabylonJsVector3Value ToBabylonJsVector3Value(this ILinFloat64Vector3D value)
+    public static GrBabylonJsVector3Value ToBabylonJsVector3Value(this LinFloat64Vector3D value)
     {
         return GrBabylonJsVector3Value.Create(value);
     }
@@ -133,7 +133,7 @@ public static class GrBabylonJsUtils
         );
     }
 
-    public static JToken GetBabylonJsJson(this ILinFloat64Vector2D value)
+    public static JToken GetBabylonJsJson(this LinFloat64Vector2D value)
     {
         return new JArray(
             (float) value.X,
@@ -141,7 +141,7 @@ public static class GrBabylonJsUtils
         );
     }
         
-    public static JToken GetBabylonJsJson(this ITriplet<Float64Scalar> value)
+    public static JToken GetBabylonJsJson(this LinFloat64Vector3D value)
     {
         return new JArray(
             (float) value.Item1,
@@ -150,15 +150,6 @@ public static class GrBabylonJsUtils
         );
     }
 
-    public static JToken GetBabylonJsJson(this ILinFloat64Vector3D value)
-    {
-        return new JArray(
-            (float) value.X,
-            (float) value.Y,
-            (float) value.Z
-        );
-    }
-        
     public static JToken GetBabylonJsJson(this IQuad<double> value)
     {
         return new JArray(
@@ -169,7 +160,7 @@ public static class GrBabylonJsUtils
         );
     }
 
-    public static JToken GetBabylonJsJson(this ILinFloat64Vector4D value)
+    public static JToken GetBabylonJsJson(this LinFloat64Vector4D value)
     {
         return new JArray(
             (float) value.X,
@@ -304,17 +295,17 @@ public static class GrBabylonJsUtils
         throw new InvalidOperationException();
     }
 
-    public static string GetBabylonJsCode(this IPair<Float64Scalar> vector)
+    public static string GetBabylonJsCode(this IPair<double> vector)
     {
         return $"new BABYLON.Vector2({(float) vector.Item1:G}, {(float) vector.Item2:G})";
     }
 
-    public static string GetBabylonJsCode(this ITriplet<Float64Scalar> vector)
+    public static string GetBabylonJsCode(this LinFloat64Vector3D vector)
     {
         return $"new BABYLON.Vector3({(float) vector.Item1:G}, {(float) vector.Item2:G}, {(float) vector.Item3:G})";
     }
-        
-    public static string GetBabylonJsCode(this IQuad<Float64Scalar> vector)
+       
+    public static string GetBabylonJsCode(this IQuad<double> vector)
     {
         return $"new BABYLON.Vector4({(float) vector.Item1:G}, {(float) vector.Item2:G}, {(float) vector.Item3:G}, {(float) vector.Item4:G})";
     }
@@ -369,28 +360,28 @@ public static class GrBabylonJsUtils
         ).GetBabylonJsArrayCode();
     }
 
-    public static string GetBabylonJsCode(this IEnumerable<IPair<Float64Scalar>> vectorList)
+    public static string GetBabylonJsCode(this IEnumerable<IPair<double>> vectorList)
     {
         return vectorList.Select(
             vector => vector.GetBabylonJsCode()
         ).GetBabylonJsArrayCode();
     }
 
-    public static string GetBabylonJsCode(this IEnumerable<ITriplet<Float64Scalar>> vectorList)
+    public static string GetBabylonJsCode(this IEnumerable<LinFloat64Vector3D> vectorList)
     {
         return vectorList.Select(
             vector => vector.GetBabylonJsCode()
         ).GetBabylonJsArrayCode();
     }
         
-    public static string GetBabylonJsCode(this IEnumerable<IReadOnlyList<ITriplet<Float64Scalar>>> vectorList)
+    public static string GetBabylonJsCode(this IEnumerable<IReadOnlyList<LinFloat64Vector3D>> vectorList)
     {
         return vectorList.Select(
             vector => vector.GetBabylonJsCode()
         ).GetBabylonJsArrayCode();
     }
 
-    public static string GetBabylonJsCode(this IEnumerable<IQuad<Float64Scalar>> vectorList)
+    public static string GetBabylonJsCode(this IEnumerable<IQuad<double>> vectorList)
     {
         return vectorList.Select(
             vector => vector.GetBabylonJsCode()
@@ -421,14 +412,15 @@ public static class GrBabylonJsUtils
     public static string GetBabylonJsArrayCode(this IFloat64AffineMap3D affineMap, bool isTransposed = false)
     {
         return affineMap
-            .GetArray2D()
+            .GetMatrix().ToArray()
             .GetAffineMapBabylonJsArrayCode(isTransposed);
     }
 
     public static string GetBabylonJsMatrixCode(this IFloat64AffineMap3D affineMap, bool isTransposed = false)
     {
         return affineMap
-            .GetArray2D()
+            .GetMatrix()
+            .ToArray()
             .GetAffineMapBabylonJsMatrixCode(isTransposed);
     }
 
@@ -439,7 +431,7 @@ public static class GrBabylonJsUtils
         ).GetBabylonJsArrayCode();
     }
 
-    public static string GetBabylonJsCode(this IPair<ITriplet<Float64Scalar>> vectorList)
+    public static string GetBabylonJsCode(this IPair<LinFloat64Vector3D> vectorList)
     {
         var p1 = vectorList.Item1.GetBabylonJsCode();
         var p2 = vectorList.Item2.GetBabylonJsCode();
@@ -447,7 +439,7 @@ public static class GrBabylonJsUtils
         return $"[{p1}, {p2}]";
     }
         
-    public static string GetBabylonJsCode(this ITriplet<ITriplet<Float64Scalar>> vectorList)
+    public static string GetBabylonJsCode(this ITriplet<LinFloat64Vector3D> vectorList)
     {
         var p1 = vectorList.Item1.GetBabylonJsCode();
         var p2 = vectorList.Item2.GetBabylonJsCode();
@@ -456,7 +448,7 @@ public static class GrBabylonJsUtils
         return $"[{p1}, {p2}, {p3}]";
     }
         
-    public static string GetBabylonJsCode(this IQuad<ITriplet<Float64Scalar>> vectorList)
+    public static string GetBabylonJsCode(this IQuad<LinFloat64Vector3D> vectorList)
     {
         var p1 = vectorList.Item1.GetBabylonJsCode();
         var p2 = vectorList.Item2.GetBabylonJsCode();

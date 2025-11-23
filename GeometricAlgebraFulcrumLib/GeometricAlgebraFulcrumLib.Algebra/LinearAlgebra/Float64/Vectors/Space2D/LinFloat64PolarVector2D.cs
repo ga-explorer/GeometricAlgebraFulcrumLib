@@ -13,37 +13,48 @@ public sealed class LinFloat64PolarVector2D :
 
     public LinFloat64PolarAngle Theta { get; }
 
-    public Float64Scalar R { get; }
+    public double R { get; }
 
-    public Float64Scalar X
-        => R * Theta.Cos();
+    public double X
+        => R * Theta.CosValue;
 
-    public Float64Scalar Y
-        => R * Theta.Sin();
+    public double Y
+        => R * Theta.SinValue;
 
-    public Float64Scalar Item1
+    public double Item1
         => X;
 
-    public Float64Scalar Item2
+    public double Item2
         => Y;
 
+    public double this[int i] 
+        => i switch
+        {
+            0 => X,
+            1 => Y,
+            _ => Float64Scalar.Zero
+        };
+    
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public LinFloat64PolarVector2D(Float64Scalar r, LinFloat64PolarAngle theta)
+    public LinFloat64PolarVector2D(double r, LinFloat64PolarAngle theta)
     {
-        if (r.ScalarValue > 0)
+        if (!r.IsValid())
+            throw new ArgumentException(nameof(r));
+
+        if (r > 0)
         {
             R = r;
             Theta = theta;
         }
-        else if (r.ScalarValue < 0)
+        else if (r < 0)
         {
             R = -r;
             Theta = theta.OppositeAngle();
         }
         else
         {
-            R = Float64Scalar.Zero;
+            R = 0;
             Theta = LinFloat64PolarAngle.Angle0;
         }
     }
@@ -51,7 +62,7 @@ public sealed class LinFloat64PolarVector2D :
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public LinFloat64PolarVector2D(LinFloat64PolarAngle theta)
     {
-        R = Float64Scalar.One;
+        R = 1;
         Theta = theta;
     }
 
@@ -60,7 +71,7 @@ public sealed class LinFloat64PolarVector2D :
     public bool IsValid()
     {
         return R.IsValid() &&
-               R.ScalarValue >= 0 &&
+               R >= 0 &&
                Theta.IsValid();
     }
 
@@ -71,9 +82,9 @@ public sealed class LinFloat64PolarVector2D :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool IsNearUnitVector(double zeroEpsilon = 1E-12)
+    public bool IsNearUnitVector(double tolerance = Float64Utils.DefaultTolerance)
     {
-        return R.IsNearOne(zeroEpsilon);
+        return R.IsNearOne(tolerance);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]

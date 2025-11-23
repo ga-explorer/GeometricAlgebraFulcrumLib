@@ -24,7 +24,7 @@ public sealed class GrVisualTriangleSurface3D :
     );
 
     
-    public static GrVisualTriangleSurface3D CreateStatic(string name, GrVisualSurfaceStyle3D style, ILinFloat64Vector3D position1, ILinFloat64Vector3D position2, ILinFloat64Vector3D position3)
+    public static GrVisualTriangleSurface3D CreateStatic(string name, GrVisualSurfaceStyle3D style, LinFloat64Vector3D position1, LinFloat64Vector3D position2, LinFloat64Vector3D position3)
     {
         return new GrVisualTriangleSurface3D(
             name,
@@ -36,7 +36,7 @@ public sealed class GrVisualTriangleSurface3D :
         );
     }
     
-    public static GrVisualTriangleSurface3D Create(string name, GrVisualSurfaceStyle3D style, ILinFloat64Vector3D position1, ILinFloat64Vector3D position2, ILinFloat64Vector3D position3, Float64SamplingSpecs samplingSpecs)
+    public static GrVisualTriangleSurface3D Create(string name, GrVisualSurfaceStyle3D style, LinFloat64Vector3D position1, LinFloat64Vector3D position2, LinFloat64Vector3D position3, Float64SamplingSpecs samplingSpecs)
     {
         return new GrVisualTriangleSurface3D(
             name,
@@ -61,19 +61,19 @@ public sealed class GrVisualTriangleSurface3D :
     }
 
         
-    public ILinFloat64Vector3D Position1 { get; }
+    public LinFloat64Vector3D Position1 { get; }
         
-    public ILinFloat64Vector3D Position2 { get; }
+    public LinFloat64Vector3D Position2 { get; }
 
-    public ILinFloat64Vector3D Position3 { get; }
+    public LinFloat64Vector3D Position3 { get; }
         
-    public ILinFloat64Vector3D Direction1 
+    public LinFloat64Vector3D Direction1 
         => Position1.GetDirectionTo(Position2);
             
-    public ILinFloat64Vector3D Direction2 
+    public LinFloat64Vector3D Direction2 
         => Position2.GetDirectionTo(Position3);
 
-    public ILinFloat64Vector3D Direction3 
+    public LinFloat64Vector3D Direction3 
         => Position3.GetDirectionTo(Position1);
     
     public LinFloat64Vector3D Normal
@@ -82,18 +82,18 @@ public sealed class GrVisualTriangleSurface3D :
            Position1.VectorCross(Position3)).ToUnitLinVector3D();
     
     public double Area
-        => (Position1.VectorCross(Position2) +
-            Position2.VectorCross(Position3) +
-            Position3.VectorCross(Position1)).VectorENorm() * 0.5d;
+        => LinFloat64Vector3DUtils.L2Norm((Position1.VectorCross(Position2) +
+                                           Position2.VectorCross(Position3) +
+                                           Position3.VectorCross(Position1))) * 0.5d;
 
     public double Length1 
-        => Direction1.VectorENorm();
+        => Direction1.L2Norm();
     
     public double Length2 
-        => Direction2.VectorENorm();
+        => Direction2.L2Norm();
  
     public double Length3 
-        => Direction3.VectorENorm();
+        => Direction3.L2Norm();
 
     public GrVisualAnimatedVector3D? AnimatedPosition1 { get; set; }
 
@@ -153,7 +153,7 @@ public sealed class GrVisualTriangleSurface3D :
     }
 
 
-    private GrVisualTriangleSurface3D(string name, GrVisualSurfaceStyle3D style, ILinFloat64Vector3D position1, ILinFloat64Vector3D position2, ILinFloat64Vector3D position3, Float64SamplingSpecs samplingSpecs)
+    private GrVisualTriangleSurface3D(string name, GrVisualSurfaceStyle3D style, LinFloat64Vector3D position1, LinFloat64Vector3D position2, LinFloat64Vector3D position3, Float64SamplingSpecs samplingSpecs)
         : base(name, style, samplingSpecs)
     {
         Position1 = position1;
@@ -271,9 +271,9 @@ public sealed class GrVisualTriangleSurface3D :
         var position2 = GetPosition2(time);
         var position3 = GetPosition3(time);
 
-        return (position2.VectorCross(position1) +
-                position3.VectorCross(position2) +
-                position1.VectorCross(position3)).VectorENorm() * 0.5d;
+        return LinFloat64Vector3DUtils.L2Norm((position2.VectorCross(position1) +
+                                               position3.VectorCross(position2) +
+                                               position1.VectorCross(position3))) * 0.5d;
     }
     
     public LinFloat64Vector3D GetNormal(double time)
@@ -293,7 +293,7 @@ public sealed class GrVisualTriangleSurface3D :
 
         foreach (var frameIndex in GetValidFrameIndexSet())
         {
-            var time = (double)frameIndex / SamplingSpecs.SamplingRate;
+            var time = frameIndex / SamplingSpecs.SamplingRate;
                 
             yield return new KeyFrameRecord(
                 frameIndex, 

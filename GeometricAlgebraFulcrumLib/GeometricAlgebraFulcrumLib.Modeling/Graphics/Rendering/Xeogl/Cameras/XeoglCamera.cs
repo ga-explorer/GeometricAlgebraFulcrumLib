@@ -128,8 +128,8 @@ public sealed class XeoglCamera : XeoglComponent
 
     public double[] GetWorldAxisArray()
     {
-        return new double[]
-        {
+        return
+        [
             WorldRightDirection.X,
             WorldRightDirection.Y,
             WorldRightDirection.Z,
@@ -141,7 +141,7 @@ public sealed class XeoglCamera : XeoglComponent
             WorldForwardDirection.X,
             WorldForwardDirection.Y,
             WorldForwardDirection.Z
-        };
+        ];
     }
 
 

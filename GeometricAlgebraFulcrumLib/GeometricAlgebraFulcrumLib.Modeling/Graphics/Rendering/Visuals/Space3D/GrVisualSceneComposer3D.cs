@@ -1,5 +1,4 @@
 ﻿using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space3D;
-using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.Visuals.Space3D.Animations;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.Visuals.Space3D.Basic;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.Visuals.Space3D.Curves;
@@ -33,7 +32,7 @@ public abstract class GrVisualSceneComposer3D
     public abstract IGrVisualElementMaterial3D AddOrGetColorMaterial(Color color);
 
     
-    public GrVisualSceneComposer3D AddPoints(Func<int, string> nameFunc, IGrVisualElementMaterial3D material, double thickness, params ILinFloat64Vector3D[] positionList)
+    public GrVisualSceneComposer3D AddPoints(Func<int, string> nameFunc, IGrVisualElementMaterial3D material, double thickness, params LinFloat64Vector3D[] positionList)
     {
         for (var i = 0; i < positionList.Length; i++)
             AddPoint(
@@ -46,7 +45,7 @@ public abstract class GrVisualSceneComposer3D
         return this;
     }
 
-    public GrVisualSceneComposer3D AddPoints(Func<int, string> nameFunc, Color color, double thickness, params ILinFloat64Vector3D[] positionList)
+    public GrVisualSceneComposer3D AddPoints(Func<int, string> nameFunc, Color color, double thickness, params LinFloat64Vector3D[] positionList)
     {
         for (var i = 0; i < positionList.Length; i++)
             AddPoint(
@@ -59,7 +58,7 @@ public abstract class GrVisualSceneComposer3D
         return this;
     }
     
-    public GrVisualSceneComposer3D AddPoints(Func<int, string> nameFunc, IGrVisualElementMaterial3D material, double thickness, IEnumerable<ILinFloat64Vector3D> positionList)
+    public GrVisualSceneComposer3D AddPoints(Func<int, string> nameFunc, IGrVisualElementMaterial3D material, double thickness, IEnumerable<LinFloat64Vector3D> positionList)
     {
         var i = 0;
         foreach (var position in positionList)
@@ -77,7 +76,7 @@ public abstract class GrVisualSceneComposer3D
         return this;
     }
 
-    public GrVisualSceneComposer3D AddPoints(Func<int, string> nameFunc, Color color, double thickness, IEnumerable<ILinFloat64Vector3D> positionList)
+    public GrVisualSceneComposer3D AddPoints(Func<int, string> nameFunc, Color color, double thickness, IEnumerable<LinFloat64Vector3D> positionList)
     {
         var i = 0;
         foreach (var position in positionList)
@@ -96,7 +95,7 @@ public abstract class GrVisualSceneComposer3D
     }
 
 
-    public GrVisualSceneComposer3D AddPoint(string name, ILinFloat64Vector3D position, IGrVisualElementMaterial3D material, double thickness)
+    public GrVisualSceneComposer3D AddPoint(string name, LinFloat64Vector3D position, IGrVisualElementMaterial3D material, double thickness)
     {
         AddPoint(
             GrVisualPoint3D.CreateStatic(
@@ -109,7 +108,7 @@ public abstract class GrVisualSceneComposer3D
         return this;
     }
     
-    public GrVisualSceneComposer3D AddPoint(string name, ILinFloat64Vector3D position, Color color, double thickness)
+    public GrVisualSceneComposer3D AddPoint(string name, LinFloat64Vector3D position, Color color, double thickness)
     {
         AddPoint(
             GrVisualPoint3D.CreateStatic(
@@ -122,7 +121,7 @@ public abstract class GrVisualSceneComposer3D
         return this;
     }
     
-    public GrVisualSceneComposer3D AddVector(string name, ILinFloat64Vector3D direction, IGrVisualElementMaterial3D material, double thickness)
+    public GrVisualSceneComposer3D AddVector(string name, LinFloat64Vector3D direction, IGrVisualElementMaterial3D material, double thickness)
     {
         AddVector(
             GrVisualVector3D.CreateStatic(
@@ -136,7 +135,7 @@ public abstract class GrVisualSceneComposer3D
         return this;
     }
 
-    public GrVisualSceneComposer3D AddVector(string name, ILinFloat64Vector3D direction, Color color, double thickness)
+    public GrVisualSceneComposer3D AddVector(string name, LinFloat64Vector3D direction, Color color, double thickness)
     {
         AddVector(
             GrVisualVector3D.CreateStatic(
@@ -150,7 +149,7 @@ public abstract class GrVisualSceneComposer3D
         return this;
     }
     
-    public GrVisualSceneComposer3D AddVector(string name, ILinFloat64Vector3D origin, ILinFloat64Vector3D direction, IGrVisualElementMaterial3D material, double thickness)
+    public GrVisualSceneComposer3D AddVector(string name, LinFloat64Vector3D origin, LinFloat64Vector3D direction, IGrVisualElementMaterial3D material, double thickness)
     {
         AddVector(
             GrVisualVector3D.CreateStatic(
@@ -164,7 +163,7 @@ public abstract class GrVisualSceneComposer3D
         return this;
     }
 
-    public GrVisualSceneComposer3D AddVector(string name, ILinFloat64Vector3D origin, ILinFloat64Vector3D direction, Color color, double thickness)
+    public GrVisualSceneComposer3D AddVector(string name, LinFloat64Vector3D origin, LinFloat64Vector3D direction, Color color, double thickness)
     {
         AddVector(
             GrVisualVector3D.CreateStatic(
@@ -178,7 +177,7 @@ public abstract class GrVisualSceneComposer3D
         return this;
     }
         
-    public GrVisualSceneComposer3D AddLineSegment(string name, ILinFloat64Vector3D point1, ILinFloat64Vector3D point2, IGrVisualElementMaterial3D material, double thickness)
+    public GrVisualSceneComposer3D AddLineSegment(string name, LinFloat64Vector3D point1, LinFloat64Vector3D point2, IGrVisualElementMaterial3D material, double thickness)
     {
         AddLineSegment(
             GrVisualLineSegment3D.CreateStatic(
@@ -192,7 +191,7 @@ public abstract class GrVisualSceneComposer3D
         return this;
     }
 
-    public GrVisualSceneComposer3D AddLineSegment(string name, ILinFloat64Vector3D point1, ILinFloat64Vector3D point2, Color color, double thickness)
+    public GrVisualSceneComposer3D AddLineSegment(string name, LinFloat64Vector3D point1, LinFloat64Vector3D point2, Color color, double thickness)
     {
         AddLineSegment(
             GrVisualLineSegment3D.CreateStatic(
@@ -206,7 +205,7 @@ public abstract class GrVisualSceneComposer3D
         return this;
     }
     
-    public GrVisualSceneComposer3D AddLineSegment(string name, ILinFloat64Vector3D point1, ILinFloat64Vector3D point2, Color color)
+    public GrVisualSceneComposer3D AddLineSegment(string name, LinFloat64Vector3D point1, LinFloat64Vector3D point2, Color color)
     {
         AddLineSegment(
             GrVisualLineSegment3D.CreateStatic(
@@ -220,7 +219,7 @@ public abstract class GrVisualSceneComposer3D
         return this;
     }
         
-    public GrVisualSceneComposer3D AddLineSegment(string name, ILinFloat64Vector3D point1, ILinFloat64Vector3D point2, Color color, GrVisualDashedLineSpecs dashSpecs)
+    public GrVisualSceneComposer3D AddLineSegment(string name, LinFloat64Vector3D point1, LinFloat64Vector3D point2, Color color, GrVisualDashedLineSpecs dashSpecs)
     {
         AddLineSegment(
             GrVisualLineSegment3D.CreateStatic(
@@ -234,7 +233,7 @@ public abstract class GrVisualSceneComposer3D
         return this;
     }
     
-    public GrVisualSceneComposer3D AddLinePath(string name, IReadOnlyList<ILinFloat64Vector3D> pointList, IGrVisualElementMaterial3D material, double thickness)
+    public GrVisualSceneComposer3D AddLinePath(string name, IReadOnlyList<LinFloat64Vector3D> pointList, IGrVisualElementMaterial3D material, double thickness)
     {
         AddLinePath(
             GrVisualPointPathCurve3D.CreateStatic(
@@ -247,7 +246,7 @@ public abstract class GrVisualSceneComposer3D
         return this;
     }
 
-    public GrVisualSceneComposer3D AddLinePath(string name, IReadOnlyList<ILinFloat64Vector3D> pointList, Color color, double thickness)
+    public GrVisualSceneComposer3D AddLinePath(string name, IReadOnlyList<LinFloat64Vector3D> pointList, Color color, double thickness)
     {
         AddLinePath(
             GrVisualPointPathCurve3D.CreateStatic(
@@ -260,7 +259,7 @@ public abstract class GrVisualSceneComposer3D
         return this;
     }
     
-    public GrVisualSceneComposer3D AddLinePath(string name, IReadOnlyList<ILinFloat64Vector3D> pointList, Color color)
+    public GrVisualSceneComposer3D AddLinePath(string name, IReadOnlyList<LinFloat64Vector3D> pointList, Color color)
     {
         AddLinePath(
             GrVisualPointPathCurve3D.CreateStatic(
@@ -273,7 +272,7 @@ public abstract class GrVisualSceneComposer3D
         return this;
     }
 
-    public GrVisualSceneComposer3D AddLinePath(string name, IReadOnlyList<ILinFloat64Vector3D> pointList, Color color, GrVisualDashedLineSpecs dashSpecs)
+    public GrVisualSceneComposer3D AddLinePath(string name, IReadOnlyList<LinFloat64Vector3D> pointList, Color color, GrVisualDashedLineSpecs dashSpecs)
     {
         AddLinePath(
             GrVisualPointPathCurve3D.CreateStatic(
@@ -322,7 +321,7 @@ public abstract class GrVisualSceneComposer3D
         );
     }
 
-    public GrVisualSceneComposer3D AddCircleCurve(string name, ILinFloat64Vector3D center, ILinFloat64Vector3D normal, double radius, IGrVisualElementMaterial3D material, double thickness)
+    public GrVisualSceneComposer3D AddCircleCurve(string name, LinFloat64Vector3D center, LinFloat64Vector3D normal, double radius, IGrVisualElementMaterial3D material, double thickness)
     {
         AddCircleCurve(
             GrVisualCircleCurve3D.CreateStatic(
@@ -337,7 +336,7 @@ public abstract class GrVisualSceneComposer3D
         return this;
     }
     
-    public GrVisualSceneComposer3D AddCircleCurve(string name, ILinFloat64Vector3D center, ILinFloat64Vector3D normal, double radius, Color color, double thickness)
+    public GrVisualSceneComposer3D AddCircleCurve(string name, LinFloat64Vector3D center, LinFloat64Vector3D normal, double radius, Color color, double thickness)
     {
         AddCircleCurve(
             GrVisualCircleCurve3D.CreateStatic(
@@ -352,7 +351,7 @@ public abstract class GrVisualSceneComposer3D
         return this;
     }
 
-    public GrVisualSceneComposer3D AddCircleCurve(string name, ILinFloat64Vector3D center, ILinFloat64Vector3D normal, double radius, Color color)
+    public GrVisualSceneComposer3D AddCircleCurve(string name, LinFloat64Vector3D center, LinFloat64Vector3D normal, double radius, Color color)
     {
         AddCircleCurve(
             GrVisualCircleCurve3D.CreateStatic(
@@ -367,7 +366,7 @@ public abstract class GrVisualSceneComposer3D
         return this;
     }
     
-    public GrVisualSceneComposer3D AddCircleCurve(string name, ILinFloat64Vector3D center, ILinFloat64Vector3D normal, double radius, Color color, GrVisualDashedLineSpecs dashSpecs)
+    public GrVisualSceneComposer3D AddCircleCurve(string name, LinFloat64Vector3D center, LinFloat64Vector3D normal, double radius, Color color, GrVisualDashedLineSpecs dashSpecs)
     {
         AddCircleCurve(
             GrVisualCircleCurve3D.CreateStatic(
@@ -382,7 +381,7 @@ public abstract class GrVisualSceneComposer3D
         return this;
     }
         
-    public GrVisualSceneComposer3D AddCircleArc(string name, ILinFloat64Vector3D center, ILinFloat64Vector3D direction1, ILinFloat64Vector3D direction2, double radius, bool innerArc, IGrVisualElementMaterial3D material, double thickness)
+    public GrVisualSceneComposer3D AddCircleArc(string name, LinFloat64Vector3D center, LinFloat64Vector3D direction1, LinFloat64Vector3D direction2, double radius, bool innerArc, IGrVisualElementMaterial3D material, double thickness)
     {
         AddCircleArc(
             GrVisualCircleArcCurve3D.CreateStatic(
@@ -399,7 +398,7 @@ public abstract class GrVisualSceneComposer3D
         return this;
     }
 
-    public GrVisualSceneComposer3D AddCircleArc(string name, ILinFloat64Vector3D center, ILinFloat64Vector3D direction1, ILinFloat64Vector3D direction2, double radius, bool innerArc, Color color, double thickness)
+    public GrVisualSceneComposer3D AddCircleArc(string name, LinFloat64Vector3D center, LinFloat64Vector3D direction1, LinFloat64Vector3D direction2, double radius, bool innerArc, Color color, double thickness)
     {
         AddCircleArc(
             GrVisualCircleArcCurve3D.CreateStatic(
@@ -416,7 +415,7 @@ public abstract class GrVisualSceneComposer3D
         return this;
     }
     
-    public GrVisualSceneComposer3D AddCircleArc(string name, ILinFloat64Vector3D center, ILinFloat64Vector3D direction1, ILinFloat64Vector3D direction2, double radius, bool innerArc, Color color)
+    public GrVisualSceneComposer3D AddCircleArc(string name, LinFloat64Vector3D center, LinFloat64Vector3D direction1, LinFloat64Vector3D direction2, double radius, bool innerArc, Color color)
     {
         AddCircleArc(
             GrVisualCircleArcCurve3D.CreateStatic(
@@ -433,7 +432,7 @@ public abstract class GrVisualSceneComposer3D
         return this;
     }
     
-    public GrVisualSceneComposer3D AddCircleArc(string name, ILinFloat64Vector3D center, ILinFloat64Vector3D direction1, ILinFloat64Vector3D direction2, double radius, bool innerArc, Color color, GrVisualDashedLineSpecs dashSpecs)
+    public GrVisualSceneComposer3D AddCircleArc(string name, LinFloat64Vector3D center, LinFloat64Vector3D direction1, LinFloat64Vector3D direction2, double radius, bool innerArc, Color color, GrVisualDashedLineSpecs dashSpecs)
     {
         AddCircleArc(
             GrVisualCircleArcCurve3D.CreateStatic(
@@ -510,7 +509,7 @@ public abstract class GrVisualSceneComposer3D
         return this;
     }
     
-    public GrVisualSceneComposer3D AddRightAngle(string name, ILinFloat64Vector3D center, ILinFloat64Vector3D direction1, ILinFloat64Vector3D direction2, double radius, IGrVisualElementMaterial3D material, double thickness)
+    public GrVisualSceneComposer3D AddRightAngle(string name, LinFloat64Vector3D center, LinFloat64Vector3D direction1, LinFloat64Vector3D direction2, double radius, IGrVisualElementMaterial3D material, double thickness)
     {
         AddRightAngle(
             GrVisualRightAngle3D.CreateStatic(
@@ -526,7 +525,7 @@ public abstract class GrVisualSceneComposer3D
         return this;
     }
 
-    public GrVisualSceneComposer3D AddRightAngle(string name, ILinFloat64Vector3D center, ILinFloat64Vector3D direction1, ILinFloat64Vector3D direction2, double radius, Color color, double thickness)
+    public GrVisualSceneComposer3D AddRightAngle(string name, LinFloat64Vector3D center, LinFloat64Vector3D direction1, LinFloat64Vector3D direction2, double radius, Color color, double thickness)
     {
         AddRightAngle(
             GrVisualRightAngle3D.CreateStatic(
@@ -542,7 +541,7 @@ public abstract class GrVisualSceneComposer3D
         return this;
     }
     
-    public GrVisualSceneComposer3D AddRightAngle(string name, ILinFloat64Vector3D center, ILinFloat64Vector3D direction1, ILinFloat64Vector3D direction2, double radius, Color color)
+    public GrVisualSceneComposer3D AddRightAngle(string name, LinFloat64Vector3D center, LinFloat64Vector3D direction1, LinFloat64Vector3D direction2, double radius, Color color)
     {
         AddRightAngle(
             GrVisualRightAngle3D.CreateStatic(
@@ -558,7 +557,7 @@ public abstract class GrVisualSceneComposer3D
         return this;
     }
     
-    public GrVisualSceneComposer3D AddRightAngle(string name, ILinFloat64Vector3D center, ILinFloat64Vector3D direction1, ILinFloat64Vector3D direction2, double radius, Color color, GrVisualDashedLineSpecs dashSpecs)
+    public GrVisualSceneComposer3D AddRightAngle(string name, LinFloat64Vector3D center, LinFloat64Vector3D direction1, LinFloat64Vector3D direction2, double radius, Color color, GrVisualDashedLineSpecs dashSpecs)
     {
         AddRightAngle(
             GrVisualRightAngle3D.CreateStatic(
@@ -574,7 +573,7 @@ public abstract class GrVisualSceneComposer3D
         return this;
     }
     
-    public GrVisualSceneComposer3D AddRightAngle(string name, ILinFloat64Vector3D center, ILinFloat64Vector3D direction1, ILinFloat64Vector3D direction2, double radius, IGrVisualElementMaterial3D material, double thickness, Color innerColor)
+    public GrVisualSceneComposer3D AddRightAngle(string name, LinFloat64Vector3D center, LinFloat64Vector3D direction1, LinFloat64Vector3D direction2, double radius, IGrVisualElementMaterial3D material, double thickness, Color innerColor)
     {
         AddRightAngle(
             GrVisualRightAngle3D.CreateStatic(
@@ -591,7 +590,7 @@ public abstract class GrVisualSceneComposer3D
         return this;
     }
 
-    public GrVisualSceneComposer3D AddRightAngle(string name, ILinFloat64Vector3D center, ILinFloat64Vector3D direction1, ILinFloat64Vector3D direction2, double radius, Color color, double thickness, Color innerColor)
+    public GrVisualSceneComposer3D AddRightAngle(string name, LinFloat64Vector3D center, LinFloat64Vector3D direction1, LinFloat64Vector3D direction2, double radius, Color color, double thickness, Color innerColor)
     {
         AddRightAngle(
             GrVisualRightAngle3D.CreateStatic(
@@ -608,7 +607,7 @@ public abstract class GrVisualSceneComposer3D
         return this;
     }
     
-    public GrVisualSceneComposer3D AddRightAngle(string name, ILinFloat64Vector3D center, ILinFloat64Vector3D direction1, ILinFloat64Vector3D direction2, double radius, Color color, Color innerColor)
+    public GrVisualSceneComposer3D AddRightAngle(string name, LinFloat64Vector3D center, LinFloat64Vector3D direction1, LinFloat64Vector3D direction2, double radius, Color color, Color innerColor)
     {
         AddRightAngle(
             GrVisualRightAngle3D.CreateStatic(
@@ -625,7 +624,7 @@ public abstract class GrVisualSceneComposer3D
         return this;
     }
     
-    public GrVisualSceneComposer3D AddRightAngle(string name, ILinFloat64Vector3D center, ILinFloat64Vector3D direction1, ILinFloat64Vector3D direction2, double radius, Color color, GrVisualDashedLineSpecs dashSpecs, Color innerColor)
+    public GrVisualSceneComposer3D AddRightAngle(string name, LinFloat64Vector3D center, LinFloat64Vector3D direction1, LinFloat64Vector3D direction2, double radius, Color color, GrVisualDashedLineSpecs dashSpecs, Color innerColor)
     {
         AddRightAngle(
             GrVisualRightAngle3D.CreateStatic(
@@ -642,7 +641,7 @@ public abstract class GrVisualSceneComposer3D
         return this;
     }
         
-    public GrVisualSceneComposer3D AddRightAngle(string name, ILinFloat64Vector3D center, ILinFloat64Vector3D direction1, ILinFloat64Vector3D direction2, double radius, IGrVisualElementMaterial3D material, double thickness, IGrVisualElementMaterial3D innerMaterial)
+    public GrVisualSceneComposer3D AddRightAngle(string name, LinFloat64Vector3D center, LinFloat64Vector3D direction1, LinFloat64Vector3D direction2, double radius, IGrVisualElementMaterial3D material, double thickness, IGrVisualElementMaterial3D innerMaterial)
     {
         AddRightAngle(
             GrVisualRightAngle3D.CreateStatic(
@@ -659,7 +658,7 @@ public abstract class GrVisualSceneComposer3D
         return this;
     }
 
-    public GrVisualSceneComposer3D AddRightAngle(string name, ILinFloat64Vector3D center, ILinFloat64Vector3D direction1, ILinFloat64Vector3D direction2, double radius, Color color, double thickness, IGrVisualElementMaterial3D innerMaterial)
+    public GrVisualSceneComposer3D AddRightAngle(string name, LinFloat64Vector3D center, LinFloat64Vector3D direction1, LinFloat64Vector3D direction2, double radius, Color color, double thickness, IGrVisualElementMaterial3D innerMaterial)
     {
         AddRightAngle(
             GrVisualRightAngle3D.CreateStatic(
@@ -676,7 +675,7 @@ public abstract class GrVisualSceneComposer3D
         return this;
     }
     
-    public GrVisualSceneComposer3D AddRightAngle(string name, ILinFloat64Vector3D center, ILinFloat64Vector3D direction1, ILinFloat64Vector3D direction2, double radius, Color color, IGrVisualElementMaterial3D innerMaterial)
+    public GrVisualSceneComposer3D AddRightAngle(string name, LinFloat64Vector3D center, LinFloat64Vector3D direction1, LinFloat64Vector3D direction2, double radius, Color color, IGrVisualElementMaterial3D innerMaterial)
     {
         AddRightAngle(
             GrVisualRightAngle3D.CreateStatic(
@@ -693,7 +692,7 @@ public abstract class GrVisualSceneComposer3D
         return this;
     }
     
-    public GrVisualSceneComposer3D AddRightAngle(string name, ILinFloat64Vector3D center, ILinFloat64Vector3D direction1, ILinFloat64Vector3D direction2, double radius, Color color, GrVisualDashedLineSpecs dashSpecs, IGrVisualElementMaterial3D innerMaterial)
+    public GrVisualSceneComposer3D AddRightAngle(string name, LinFloat64Vector3D center, LinFloat64Vector3D direction1, LinFloat64Vector3D direction2, double radius, Color color, GrVisualDashedLineSpecs dashSpecs, IGrVisualElementMaterial3D innerMaterial)
     {
         AddRightAngle(
             GrVisualRightAngle3D.CreateStatic(
@@ -710,7 +709,7 @@ public abstract class GrVisualSceneComposer3D
         return this;
     }
     
-    public GrVisualSceneComposer3D AddSphereSurface(string name, ILinFloat64Vector3D center, double radius, IGrVisualElementMaterial3D material, double thickness)
+    public GrVisualSceneComposer3D AddSphereSurface(string name, LinFloat64Vector3D center, double radius, IGrVisualElementMaterial3D material, double thickness)
     {
         AddSphere(
             GrVisualSphereSurface3D.CreateStatic(
@@ -724,7 +723,7 @@ public abstract class GrVisualSceneComposer3D
         return this;
     }
     
-    public GrVisualSceneComposer3D AddSphereSurface(string name, ILinFloat64Vector3D center, double radius, Color color, double thickness)
+    public GrVisualSceneComposer3D AddSphereSurface(string name, LinFloat64Vector3D center, double radius, Color color, double thickness)
     {
         AddSphere(
             GrVisualSphereSurface3D.CreateStatic(
@@ -738,7 +737,7 @@ public abstract class GrVisualSceneComposer3D
         return this;
     }
     
-    public GrVisualSceneComposer3D AddSphereSurface(string name, ILinFloat64Vector3D center, double radius, IGrVisualElementMaterial3D material)
+    public GrVisualSceneComposer3D AddSphereSurface(string name, LinFloat64Vector3D center, double radius, IGrVisualElementMaterial3D material)
     {
         AddSphere(
             GrVisualSphereSurface3D.CreateStatic(
@@ -752,7 +751,7 @@ public abstract class GrVisualSceneComposer3D
         return this;
     }
 
-    public GrVisualSceneComposer3D AddSphereSurface(string name, ILinFloat64Vector3D center, double radius, Color color)
+    public GrVisualSceneComposer3D AddSphereSurface(string name, LinFloat64Vector3D center, double radius, Color color)
     {
         AddSphere(
             GrVisualSphereSurface3D.CreateStatic(
@@ -766,7 +765,7 @@ public abstract class GrVisualSceneComposer3D
         return this;
     }
     
-    public GrVisualSceneComposer3D AddTorus(string name, ILinFloat64Vector3D center, ILinFloat64Vector3D normal, double minRadius, double maxRadius, IGrVisualElementMaterial3D material, double thickness)
+    public GrVisualSceneComposer3D AddTorus(string name, LinFloat64Vector3D center, LinFloat64Vector3D normal, double minRadius, double maxRadius, IGrVisualElementMaterial3D material, double thickness)
     {
         AddRing(
             GrVisualCircleRingSurface3D.CreateStatic(
@@ -782,7 +781,7 @@ public abstract class GrVisualSceneComposer3D
         return this;
     }
 
-    public GrVisualSceneComposer3D AddTorus(string name, ILinFloat64Vector3D center, ILinFloat64Vector3D normal, double minRadius, double maxRadius, Color color, double thickness)
+    public GrVisualSceneComposer3D AddTorus(string name, LinFloat64Vector3D center, LinFloat64Vector3D normal, double minRadius, double maxRadius, Color color, double thickness)
     {
         AddRing(
             GrVisualCircleRingSurface3D.CreateStatic(
@@ -798,7 +797,7 @@ public abstract class GrVisualSceneComposer3D
         return this;
     }
     
-    public GrVisualSceneComposer3D AddDisc(string name, ILinFloat64Vector3D center, ILinFloat64Vector3D normal, double radius, IGrVisualElementMaterial3D material, double thickness)
+    public GrVisualSceneComposer3D AddDisc(string name, LinFloat64Vector3D center, LinFloat64Vector3D normal, double radius, IGrVisualElementMaterial3D material, double thickness)
     {
         AddDisc(
             GrVisualCircleSurface3D.CreateStatic(
@@ -814,7 +813,7 @@ public abstract class GrVisualSceneComposer3D
         return this;
     }
 
-    public GrVisualSceneComposer3D AddDisc(string name, ILinFloat64Vector3D center, ILinFloat64Vector3D normal, double radius, Color color, double thickness)
+    public GrVisualSceneComposer3D AddDisc(string name, LinFloat64Vector3D center, LinFloat64Vector3D normal, double radius, Color color, double thickness)
     {
         AddDisc(
             GrVisualCircleSurface3D.CreateStatic(
@@ -830,7 +829,7 @@ public abstract class GrVisualSceneComposer3D
         return this;
     }
     
-    public GrVisualSceneComposer3D AddDisc(string name, ILinFloat64Vector3D center, ILinFloat64Vector3D normal, double radius, IGrVisualElementMaterial3D material)
+    public GrVisualSceneComposer3D AddDisc(string name, LinFloat64Vector3D center, LinFloat64Vector3D normal, double radius, IGrVisualElementMaterial3D material)
     {
         AddDisc(
             GrVisualCircleSurface3D.CreateStatic(
@@ -846,7 +845,7 @@ public abstract class GrVisualSceneComposer3D
         return this;
     }
 
-    public GrVisualSceneComposer3D AddDisc(string name, ILinFloat64Vector3D center, ILinFloat64Vector3D normal, double radius, Color color)
+    public GrVisualSceneComposer3D AddDisc(string name, LinFloat64Vector3D center, LinFloat64Vector3D normal, double radius, Color color)
     {
         AddDisc(
             GrVisualCircleSurface3D.CreateStatic(
@@ -862,7 +861,7 @@ public abstract class GrVisualSceneComposer3D
         return this;
     }
     
-    public GrVisualSceneComposer3D AddDisc(string name, ILinFloat64Vector3D center, ILinFloat64Vector3D normal, double radius, IGrVisualElementMaterial3D material, double thickness, Color edgeColor)
+    public GrVisualSceneComposer3D AddDisc(string name, LinFloat64Vector3D center, LinFloat64Vector3D normal, double radius, IGrVisualElementMaterial3D material, double thickness, Color edgeColor)
     {
         AddDisc(
             GrVisualCircleSurface3D.CreateStatic(
@@ -878,7 +877,7 @@ public abstract class GrVisualSceneComposer3D
         return this;
     }
     
-    public GrVisualSceneComposer3D AddDisc(string name, ILinFloat64Vector3D center, ILinFloat64Vector3D normal, double radius, Color color, double thickness, Color edgeColor)
+    public GrVisualSceneComposer3D AddDisc(string name, LinFloat64Vector3D center, LinFloat64Vector3D normal, double radius, Color color, double thickness, Color edgeColor)
     {
         AddDisc(
             GrVisualCircleSurface3D.CreateStatic(
@@ -894,7 +893,7 @@ public abstract class GrVisualSceneComposer3D
         return this;
     }
 
-    public GrVisualSceneComposer3D AddDiscSector(string name, ILinFloat64Vector3D center, ILinFloat64Vector3D direction1, ILinFloat64Vector3D direction2, double radius, bool innerArc, IGrVisualElementMaterial3D material, double thickness)
+    public GrVisualSceneComposer3D AddDiscSector(string name, LinFloat64Vector3D center, LinFloat64Vector3D direction1, LinFloat64Vector3D direction2, double radius, bool innerArc, IGrVisualElementMaterial3D material, double thickness)
     {
         AddDiscSector(
             GrVisualCircleArcSurface3D.CreateStatic(
@@ -912,7 +911,7 @@ public abstract class GrVisualSceneComposer3D
         return this;
     }
     
-    public GrVisualSceneComposer3D AddDiscSector(string name, ILinFloat64Vector3D center, ILinFloat64Vector3D direction1, ILinFloat64Vector3D direction2, double radius, bool innerArc, Color color, double thickness)
+    public GrVisualSceneComposer3D AddDiscSector(string name, LinFloat64Vector3D center, LinFloat64Vector3D direction1, LinFloat64Vector3D direction2, double radius, bool innerArc, Color color, double thickness)
     {
         AddDiscSector(
             GrVisualCircleArcSurface3D.CreateStatic(
@@ -930,7 +929,7 @@ public abstract class GrVisualSceneComposer3D
         return this;
     }
     
-    public GrVisualSceneComposer3D AddDiscSector(string name, ILinFloat64Vector3D center, ILinFloat64Vector3D direction1, ILinFloat64Vector3D direction2, double radius, bool innerArc, Color color)
+    public GrVisualSceneComposer3D AddDiscSector(string name, LinFloat64Vector3D center, LinFloat64Vector3D direction1, LinFloat64Vector3D direction2, double radius, bool innerArc, Color color)
     {
         AddDiscSector(
             GrVisualCircleArcSurface3D.CreateStatic(
@@ -948,7 +947,7 @@ public abstract class GrVisualSceneComposer3D
         return this;
     }
     
-    public GrVisualSceneComposer3D AddDiscSector(string name, ILinFloat64Vector3D center, ILinFloat64Vector3D direction1, ILinFloat64Vector3D direction2, double radius, bool innerArc, IGrVisualElementMaterial3D material, double thickness, IGrVisualElementMaterial3D edgeMaterial)
+    public GrVisualSceneComposer3D AddDiscSector(string name, LinFloat64Vector3D center, LinFloat64Vector3D direction1, LinFloat64Vector3D direction2, double radius, bool innerArc, IGrVisualElementMaterial3D material, double thickness, IGrVisualElementMaterial3D edgeMaterial)
     {
         AddDiscSector(
             GrVisualCircleArcSurface3D.CreateStatic(
@@ -966,7 +965,7 @@ public abstract class GrVisualSceneComposer3D
         return this;
     }
     
-    public GrVisualSceneComposer3D AddDiscSector(string name, ILinFloat64Vector3D center, ILinFloat64Vector3D direction1, ILinFloat64Vector3D direction2, double radius, bool innerArc, Color color, double thickness, IGrVisualElementMaterial3D edgeMaterial)
+    public GrVisualSceneComposer3D AddDiscSector(string name, LinFloat64Vector3D center, LinFloat64Vector3D direction1, LinFloat64Vector3D direction2, double radius, bool innerArc, Color color, double thickness, IGrVisualElementMaterial3D edgeMaterial)
     {
         AddDiscSector(
             GrVisualCircleArcSurface3D.CreateStatic(
@@ -984,7 +983,7 @@ public abstract class GrVisualSceneComposer3D
         return this;
     }
 
-    public GrVisualSceneComposer3D AddDiscSector(string name, ILinFloat64Vector3D center, ILinFloat64Vector3D direction1, ILinFloat64Vector3D direction2, double radius, bool innerArc, IGrVisualElementMaterial3D material, double thickness, Color edgeColor)
+    public GrVisualSceneComposer3D AddDiscSector(string name, LinFloat64Vector3D center, LinFloat64Vector3D direction1, LinFloat64Vector3D direction2, double radius, bool innerArc, IGrVisualElementMaterial3D material, double thickness, Color edgeColor)
     {
         AddDiscSector(
             GrVisualCircleArcSurface3D.CreateStatic(
@@ -1002,7 +1001,7 @@ public abstract class GrVisualSceneComposer3D
         return this;
     }
     
-    public GrVisualSceneComposer3D AddDiscSector(string name, ILinFloat64Vector3D center, ILinFloat64Vector3D direction1, ILinFloat64Vector3D direction2, double radius, bool innerArc, Color color, double thickness, Color edgeColor)
+    public GrVisualSceneComposer3D AddDiscSector(string name, LinFloat64Vector3D center, LinFloat64Vector3D direction1, LinFloat64Vector3D direction2, double radius, bool innerArc, Color color, double thickness, Color edgeColor)
     {
         AddDiscSector(
             GrVisualCircleArcSurface3D.CreateStatic(
@@ -1020,7 +1019,7 @@ public abstract class GrVisualSceneComposer3D
         return this;
     }
         
-    public GrVisualSceneComposer3D AddTriangle(string name, ILinFloat64Vector3D position1, ILinFloat64Vector3D position2, ILinFloat64Vector3D position3, IGrVisualElementMaterial3D material, double thickness)
+    public GrVisualSceneComposer3D AddTriangle(string name, LinFloat64Vector3D position1, LinFloat64Vector3D position2, LinFloat64Vector3D position3, IGrVisualElementMaterial3D material, double thickness)
     {
         AddTriangleSurface(
             GrVisualTriangleSurface3D.CreateStatic(
@@ -1035,7 +1034,7 @@ public abstract class GrVisualSceneComposer3D
         return this;
     }
     
-    public GrVisualSceneComposer3D AddTriangle(string name, ILinFloat64Vector3D position1, ILinFloat64Vector3D position2, ILinFloat64Vector3D position3, Color color, double thickness)
+    public GrVisualSceneComposer3D AddTriangle(string name, LinFloat64Vector3D position1, LinFloat64Vector3D position2, LinFloat64Vector3D position3, Color color, double thickness)
     {
         AddTriangleSurface(
             GrVisualTriangleSurface3D.CreateStatic(
@@ -1050,7 +1049,7 @@ public abstract class GrVisualSceneComposer3D
         return this;
     }
     
-    public GrVisualSceneComposer3D AddTriangle(string name, ILinFloat64Vector3D position1, ILinFloat64Vector3D position2, ILinFloat64Vector3D position3, IGrVisualElementMaterial3D material)
+    public GrVisualSceneComposer3D AddTriangle(string name, LinFloat64Vector3D position1, LinFloat64Vector3D position2, LinFloat64Vector3D position3, IGrVisualElementMaterial3D material)
     {
         AddTriangleSurface(
             GrVisualTriangleSurface3D.CreateStatic(
@@ -1065,7 +1064,7 @@ public abstract class GrVisualSceneComposer3D
         return this;
     }
     
-    public GrVisualSceneComposer3D AddTriangle(string name, ILinFloat64Vector3D position1, ILinFloat64Vector3D position2, ILinFloat64Vector3D position3, Color color)
+    public GrVisualSceneComposer3D AddTriangle(string name, LinFloat64Vector3D position1, LinFloat64Vector3D position2, LinFloat64Vector3D position3, Color color)
     {
         AddTriangleSurface(
             GrVisualTriangleSurface3D.CreateStatic(
@@ -1080,7 +1079,7 @@ public abstract class GrVisualSceneComposer3D
         return this;
     }
         
-    public GrVisualSceneComposer3D AddParallelogram(string name, ILinFloat64Vector3D position, ILinFloat64Vector3D direction1, ILinFloat64Vector3D direction2, IGrVisualElementMaterial3D material, double thickness)
+    public GrVisualSceneComposer3D AddParallelogram(string name, LinFloat64Vector3D position, LinFloat64Vector3D direction1, LinFloat64Vector3D direction2, IGrVisualElementMaterial3D material, double thickness)
     {
         AddParallelogramSurface(
             GrVisualParallelogramSurface3D.CreateStatic(
@@ -1095,7 +1094,7 @@ public abstract class GrVisualSceneComposer3D
         return this;
     }
     
-    public GrVisualSceneComposer3D AddParallelogram(string name, ILinFloat64Vector3D position, ILinFloat64Vector3D direction1, ILinFloat64Vector3D direction2, Color color, double thickness)
+    public GrVisualSceneComposer3D AddParallelogram(string name, LinFloat64Vector3D position, LinFloat64Vector3D direction1, LinFloat64Vector3D direction2, Color color, double thickness)
     {
         AddParallelogramSurface(
             GrVisualParallelogramSurface3D.CreateStatic(
@@ -1110,7 +1109,7 @@ public abstract class GrVisualSceneComposer3D
         return this;
     }
     
-    public GrVisualSceneComposer3D AddParallelogram(string name, ILinFloat64Vector3D position, ILinFloat64Vector3D direction1, ILinFloat64Vector3D direction2, IGrVisualElementMaterial3D material)
+    public GrVisualSceneComposer3D AddParallelogram(string name, LinFloat64Vector3D position, LinFloat64Vector3D direction1, LinFloat64Vector3D direction2, IGrVisualElementMaterial3D material)
     {
         AddParallelogramSurface(
             GrVisualParallelogramSurface3D.CreateStatic(
@@ -1125,7 +1124,7 @@ public abstract class GrVisualSceneComposer3D
         return this;
     }
     
-    public GrVisualSceneComposer3D AddParallelogram(string name, ILinFloat64Vector3D position, ILinFloat64Vector3D direction1, ILinFloat64Vector3D direction2, Color color)
+    public GrVisualSceneComposer3D AddParallelogram(string name, LinFloat64Vector3D position, LinFloat64Vector3D direction1, LinFloat64Vector3D direction2, Color color)
     {
         AddParallelogramSurface(
             GrVisualParallelogramSurface3D.CreateStatic(
@@ -1140,7 +1139,7 @@ public abstract class GrVisualSceneComposer3D
         return this;
     }
     
-    public GrVisualSceneComposer3D AddParallelogram(string name, ILinFloat64Vector3D position, ILinFloat64Vector3D direction1, ILinFloat64Vector3D direction2, GrVisualSurfaceThinStyle3D style)
+    public GrVisualSceneComposer3D AddParallelogram(string name, LinFloat64Vector3D position, LinFloat64Vector3D direction1, LinFloat64Vector3D direction2, GrVisualSurfaceThinStyle3D style)
     {
         AddParallelogramSurface(
             GrVisualParallelogramSurface3D.CreateStatic(
@@ -1155,7 +1154,7 @@ public abstract class GrVisualSceneComposer3D
         return this;
     }
 
-    public GrVisualSceneComposer3D AddParallelogramSystem(string name, ILinFloat64Vector3D position, ILinFloat64Vector3D direction1, ILinFloat64Vector3D direction2, ILinFloat64Vector3D direction3, GrVisualSurfaceThinStyle3D faceStyle)
+    public GrVisualSceneComposer3D AddParallelogramSystem(string name, LinFloat64Vector3D position, LinFloat64Vector3D direction1, LinFloat64Vector3D direction2, LinFloat64Vector3D direction3, GrVisualSurfaceThinStyle3D faceStyle)
     {
         AddParallelogram(
             name, 
@@ -1211,7 +1210,7 @@ public abstract class GrVisualSceneComposer3D
         return this;
     }
         
-    public GrVisualSceneComposer3D AddParallelogramSystem(string name, ILinFloat64Vector3D position, ILinFloat64Vector3D direction1, ILinFloat64Vector3D direction2, ILinFloat64Vector3D direction3, GrVisualSurfaceThinStyle3D faceStyle12, GrVisualSurfaceThinStyle3D faceStyle23, GrVisualSurfaceThinStyle3D faceStyle31)
+    public GrVisualSceneComposer3D AddParallelogramSystem(string name, LinFloat64Vector3D position, LinFloat64Vector3D direction1, LinFloat64Vector3D direction2, LinFloat64Vector3D direction3, GrVisualSurfaceThinStyle3D faceStyle12, GrVisualSurfaceThinStyle3D faceStyle23, GrVisualSurfaceThinStyle3D faceStyle31)
     {
         AddParallelogram(
             name, 
@@ -1267,7 +1266,7 @@ public abstract class GrVisualSceneComposer3D
         return this;
     }
     
-    public GrVisualSceneComposer3D AddLaTeXText(string name, IGrVisualImageSource texture, ILinFloat64Vector3D origin, double scalingFactor)
+    public GrVisualSceneComposer3D AddLaTeXText(string name, IGrVisualImageSource texture, LinFloat64Vector3D origin, double scalingFactor)
     {
         AddImage(
             GrVisualImage3D.CreateStatic(
@@ -1413,9 +1412,9 @@ public abstract class GrVisualSceneComposer3D
     
     public abstract GrVisualSquareGrid3D AddSquareGrid(GrVisualSquareGrid3D visualElement);
     
-    public abstract void AddGrid(string name, ITriplet<Float64Scalar> center, LinFloat64Quaternion orientation, int unitCount, double unitSize = 1, double opacity = 1);
+    public abstract void AddGrid(string name, ITriplet<double> center, LinFloat64Quaternion orientation, int unitCount, double unitSize = 1, double opacity = 1);
 
-    public abstract void AddAxes(string name, ITriplet<Float64Scalar> origin, LinFloat64Quaternion orientation, double scalingFactor = 1, double opacity = 1);
+    public abstract void AddAxes(string name, ITriplet<double> origin, LinFloat64Quaternion orientation, double scalingFactor = 1, double opacity = 1);
 
     public abstract IGrVisualImage3D AddImage(IGrVisualImage3D visualElement);
 

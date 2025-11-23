@@ -52,7 +52,7 @@ public sealed class GrVisualParametricCurve3D :
     {
         return new ParametricPointsPath3D(
             ParameterValues,
-            Curve.GetValue
+            t => Curve.GetValue(t)
         );
     }
 

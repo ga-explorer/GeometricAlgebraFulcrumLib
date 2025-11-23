@@ -47,13 +47,17 @@ public class GrKonvaJsStage :
     public GrKonvaJsStage(string constName, GrKonvaJsCodeValue container, double width, double height)
         : base(constName)
     {
-        Layers = 5.GetRange(i => 
-            new GrKonvaJsLayer($"layer{i}")
-        ).ToImmutableArray();
+        Layers = [
+            ..5.GetRange(i => 
+                new GrKonvaJsLayer($"layer{i}")
+            )
+        ];
 
-        LayerComposers = 5.GetRange(i => 
-            new GrKonvaJsLayerComposer(this, i)
-        ).ToImmutableArray();
+        LayerComposers = [
+            ..5.GetRange(i => 
+                new GrKonvaJsLayerComposer(this, i)
+            )
+        ];
         
         Options = new GrKonvaJsStageOptions
         {

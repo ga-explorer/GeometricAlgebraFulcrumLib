@@ -1,14 +1,12 @@
 ﻿using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space3D;
-using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.AttributeSet;
-using GeometricAlgebraFulcrumLib.Utilities.Structures.Tuples;
 
 namespace GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.KonvaJs.Values;
 
 public sealed class GrKonvaJsVector3Value :
-    SparseCodeAttributeValue<ITriplet<Float64Scalar>>
+    SparseCodeAttributeValue<LinFloat64Vector3D>
 {
-    internal static GrKonvaJsVector3Value Create(ITriplet<Float64Scalar> value)
+    internal static GrKonvaJsVector3Value Create(LinFloat64Vector3D value)
     {
         return new GrKonvaJsVector3Value(value);
     }
@@ -30,7 +28,7 @@ public sealed class GrKonvaJsVector3Value :
     {
     }
 
-    private GrKonvaJsVector3Value(ITriplet<Float64Scalar> value)
+    private GrKonvaJsVector3Value(LinFloat64Vector3D value)
         : base(value)
     {
     }

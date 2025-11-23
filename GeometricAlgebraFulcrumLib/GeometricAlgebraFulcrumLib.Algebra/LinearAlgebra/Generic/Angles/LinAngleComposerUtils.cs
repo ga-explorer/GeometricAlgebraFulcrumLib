@@ -199,7 +199,7 @@ public static class LinAngleComposerUtils
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static LinDirectedAngle<T> CreateAngleFromUnitVectors<T>(this IScalarProcessor<T> scalarProcessor, ILinFloat64Vector2D v1, ILinFloat64Vector2D v2)
     {
-        var angleInRadians = v1.VectorESp(v2).Clamp(-1, 1).ArcCos();
+        var angleInRadians = v1.VectorDot(v2).Clamp(-1, 1).ArcCos();
 
         return scalarProcessor.CreateAngle(
             scalarProcessor.ScalarFromNumber(angleInRadians.ScalarValue)

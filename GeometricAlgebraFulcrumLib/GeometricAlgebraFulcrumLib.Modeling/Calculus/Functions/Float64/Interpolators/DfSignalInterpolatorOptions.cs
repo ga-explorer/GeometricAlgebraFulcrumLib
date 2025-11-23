@@ -8,7 +8,7 @@ public class DfSignalInterpolatorOptions
         = 1;
 
     public IReadOnlyList<int> SmoothingFactors { get; set; }
-        = Array.Empty<int>();
+        = [];
 
     public bool HasSmoothing
         => SmoothingFactors.Count > 0;
@@ -16,7 +16,7 @@ public class DfSignalInterpolatorOptions
 
     public IEnumerable<int> GetSmoothingSampleCountList()
     {
-        if (SmoothingFactors.Count == 0) return Enumerable.Empty<int>();
+        if (SmoothingFactors.Count == 0) return [];
 
         var smoothingFactorsLcm =
             SmoothingFactors.Lcm();

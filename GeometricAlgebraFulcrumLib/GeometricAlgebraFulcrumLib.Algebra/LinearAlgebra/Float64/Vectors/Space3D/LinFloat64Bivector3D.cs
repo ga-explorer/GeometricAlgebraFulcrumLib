@@ -267,19 +267,19 @@ public sealed record LinFloat64Bivector3D :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool IsNearZero(double zeroEpsilon = 1E-12)
+    public bool IsNearZero(double tolerance = Float64Utils.DefaultTolerance)
     {
-        return Norm().IsNearZero(zeroEpsilon);
+        return L2Norm().IsNearZero(tolerance);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public Float64Scalar Norm()
+    public double L2Norm()
     {
-        return NormSquared().Sqrt();
+        return L2NormSquared().Sqrt();
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public Float64Scalar NormSquared()
+    public double L2NormSquared()
     {
         return Scalar12.Square() +
                Scalar13.Square() +
@@ -289,7 +289,7 @@ public sealed record LinFloat64Bivector3D :
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public LinFloat64Bivector3D ToUnitBivector(bool zeroAsSymmetric = true)
     {
-        var normSquared = NormSquared();
+        var normSquared = L2NormSquared();
 
         if (normSquared.IsZero())
             return zeroAsSymmetric ? UnitSymmetric : Zero;
@@ -344,20 +344,20 @@ public sealed record LinFloat64Bivector3D :
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public LinFloat64Bivector3D Inverse()
     {
-        return Negative(1d / NormSquared().ScalarValue);
+        return Negative(1d / L2NormSquared());
     }
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public LinFloat64Vector3D DirectionToUnitNormal3D(LinFloat64Vector3D? zeroNormal = null)
     {
-        var norm = Norm();
+        var norm = L2Norm();
 
         if (norm.IsZero())
             return zeroNormal
                    ?? throw new DivideByZeroException();
 
-        var s = 1d / norm.ScalarValue;
+        var s = 1d / norm;
 
         return LinFloat64Vector3D.Create(
             Scalar23 * s,
@@ -369,13 +369,13 @@ public sealed record LinFloat64Bivector3D :
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public LinFloat64Vector3D DirectionToNormal3D(LinFloat64Vector3D? zeroNormal = null)
     {
-        var normSquared = NormSquared();
+        var normSquared = L2NormSquared();
 
         if (normSquared.IsZero())
             return zeroNormal
                    ?? throw new DivideByZeroException();
 
-        var s = 1d / normSquared.ScalarValue;
+        var s = 1d / normSquared;
 
         return LinFloat64Vector3D.Create(
             Scalar23 * s,
@@ -387,13 +387,13 @@ public sealed record LinFloat64Bivector3D :
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public LinFloat64Vector3D DirectionToNormal3D(double scalingFactor, LinFloat64Vector3D? zeroNormal = null)
     {
-        var normSquared = NormSquared();
+        var normSquared = L2NormSquared();
 
         if (normSquared.IsZero())
             return zeroNormal
                    ?? throw new DivideByZeroException();
 
-        var s = scalingFactor / normSquared.ScalarValue;
+        var s = scalingFactor / normSquared;
 
         return LinFloat64Vector3D.Create(
             Scalar23 * s,
@@ -405,13 +405,13 @@ public sealed record LinFloat64Bivector3D :
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public LinFloat64Vector3D NormalToUnitDirection3D(LinFloat64Vector3D? zeroNormal = null)
     {
-        var norm = Norm();
+        var norm = L2Norm();
 
         if (norm.IsZero())
             return zeroNormal
                    ?? throw new DivideByZeroException();
 
-        var s = 1d / norm.ScalarValue;
+        var s = 1d / norm;
 
         return LinFloat64Vector3D.Create(
             Scalar23 * s,
@@ -423,13 +423,13 @@ public sealed record LinFloat64Bivector3D :
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public LinFloat64Vector3D NormalToDirection3D(LinFloat64Vector3D? zeroNormal = null)
     {
-        var normSquared = NormSquared();
+        var normSquared = L2NormSquared();
 
         if (normSquared.IsZero())
             return zeroNormal
                    ?? throw new DivideByZeroException();
 
-        var s = 1d / normSquared.ScalarValue;
+        var s = 1d / normSquared;
 
         return LinFloat64Vector3D.Create(
             Scalar23 * s,
@@ -441,13 +441,13 @@ public sealed record LinFloat64Bivector3D :
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public LinFloat64Vector3D NormalToDirection3D(double scalingFactor, LinFloat64Vector3D? zeroNormal = null)
     {
-        var normSquared = NormSquared();
+        var normSquared = L2NormSquared();
 
         if (normSquared.IsZero())
             return zeroNormal
                    ?? throw new DivideByZeroException();
 
-        var s = scalingFactor / normSquared.ScalarValue;
+        var s = scalingFactor / normSquared;
 
         return LinFloat64Vector3D.Create(
             Scalar23 * s,

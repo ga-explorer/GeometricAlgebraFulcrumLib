@@ -9,17 +9,17 @@ namespace GeometricAlgebraFulcrumLib.Modeling.Graphics.Primitives.Lines;
 public sealed class GrLineStripGeometry3D
     : IGraphicsLineGeometry3D
 {
-    public static GrLineStripGeometry3D Create(IReadOnlyList<ILinFloat64Vector3D> pointsList)
+    public static GrLineStripGeometry3D Create(IReadOnlyList<LinFloat64Vector3D> pointsList)
     {
         return new GrLineStripGeometry3D(pointsList);
     }
 
-    public static GrLineStripGeometry3D Create(params ILinFloat64Vector3D[] pointsList)
+    public static GrLineStripGeometry3D Create(params LinFloat64Vector3D[] pointsList)
     {
         return new GrLineStripGeometry3D(pointsList);
     }
 
-    public static GrLineStripGeometry3D Create(IEnumerable<ILinFloat64Vector3D> pointsList)
+    public static GrLineStripGeometry3D Create(IEnumerable<LinFloat64Vector3D> pointsList)
     {
         return new GrLineStripGeometry3D(pointsList.ToArray());
     }
@@ -34,8 +34,8 @@ public sealed class GrLineStripGeometry3D
     public IEnumerable<IGraphicsVertex3D> GeometryVertices
         => GeometryPoints.Select((p, i) => new GrVertex3D(i, p));
 
-    private readonly IReadOnlyList<ILinFloat64Vector3D> _vertexPoints;
-    public IEnumerable<ILinFloat64Vector3D> GeometryPoints 
+    private readonly IReadOnlyList<LinFloat64Vector3D> _vertexPoints;
+    public IEnumerable<LinFloat64Vector3D> GeometryPoints 
         => _vertexPoints;
 
     public IEnumerable<int> GeometryIndices
@@ -72,7 +72,7 @@ public sealed class GrLineStripGeometry3D
     }
 
 
-    private GrLineStripGeometry3D(IReadOnlyList<ILinFloat64Vector3D> pointsList)
+    private GrLineStripGeometry3D(IReadOnlyList<LinFloat64Vector3D> pointsList)
     {
         if (pointsList.Count < 2)
             throw new InvalidOperationException();
@@ -81,7 +81,7 @@ public sealed class GrLineStripGeometry3D
     }
         
         
-    public ILinFloat64Vector3D GetGeometryPoint(int index)
+    public LinFloat64Vector3D GetGeometryPoint(int index)
     {
         return _vertexPoints[index];
     }

@@ -107,30 +107,39 @@ public sealed class GrVisualArrowHead3D :
 
     public GrVisualAnimatedVector3D? AnimatedDirection { get; set; }
         
-    public Float64Scalar Item1 
+    public double Item1 
         => Direction.X;
         
-    public Float64Scalar Item2 
+    public double Item2 
         => Direction.Y;
         
-    public Float64Scalar Item3 
+    public double Item3 
         => Direction.Z;
         
-    public Float64Scalar X 
+    public double X 
         => Direction.X;
         
-    public Float64Scalar Y 
+    public double Y 
         => Direction.Y;
         
-    public Float64Scalar Z 
+    public double Z 
         => Direction.Z;
     
+    public double this[int index] 
+        => index switch
+        {
+            0 => X,
+            1 => Y,
+            2 => Z,
+            _ => Float64Scalar.Zero
+        };
+
         
     private GrVisualArrowHead3D(string name, GrVisualCurveTubeStyle3D style, ILinFloat64Vector3D position, ILinFloat64Vector3D direction, Float64SamplingSpecs samplingSpecs) 
         : base(name, samplingSpecs)
     {
         Position = position;
-        MaxHeight = direction.VectorENorm();
+        MaxHeight = direction.L2Norm();
         Direction = direction.ToUnitLinVector3D();
         Style = style;
 
@@ -211,7 +220,7 @@ public sealed class GrVisualArrowHead3D :
     {
         return SamplingSpecs.IsStatic || AnimatedDirection is null
             ? MaxHeight
-            : AnimatedDirection.GetValue(time).VectorENorm();
+            : LinFloat64Vector3DUtils.L2Norm(AnimatedDirection.GetValue(time));
     }
 
     public IEnumerable<KeyFrameRecord> GetKeyFrameRecords()
@@ -220,7 +229,7 @@ public sealed class GrVisualArrowHead3D :
 
         foreach (var frameIndex in GetValidFrameIndexSet())
         {
-            var time = (double)frameIndex / SamplingSpecs.SamplingRate;
+            var time = frameIndex / SamplingSpecs.SamplingRate;
                 
             yield return new KeyFrameRecord(
                 frameIndex, 

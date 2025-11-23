@@ -78,10 +78,11 @@ public sealed class Float64AffineMappedPath3D :
     {
         var frame = BasePath.GetFrame(t);
 
-        return Float64Path3DLocalFrame.Create(
+        return Float64Path3DLocalFrame.CreateFromAffineFrame(
             t,
             AffineMap.MapPoint(frame.Point),
-            AffineMap.MapVector(frame.Tangent)
+            AffineMap.MapVector(frame.Tangent),
+            AffineMap.MapNormal(frame.Normal1)
         );
     }
 }

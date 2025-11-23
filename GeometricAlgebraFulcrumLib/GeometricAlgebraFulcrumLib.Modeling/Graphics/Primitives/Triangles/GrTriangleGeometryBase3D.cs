@@ -57,8 +57,8 @@ public abstract class GrTriangleGeometryBase3D
     }
             
 
-    private readonly IReadOnlyList<ILinFloat64Vector3D> _vertexPoints;
-    public IEnumerable<ILinFloat64Vector3D> GeometryPoints 
+    private readonly IReadOnlyList<LinFloat64Vector3D> _vertexPoints;
+    public IEnumerable<LinFloat64Vector3D> GeometryPoints 
         => _vertexPoints;
 
     public abstract IEnumerable<int> GeometryIndices { get; }
@@ -80,11 +80,11 @@ public abstract class GrTriangleGeometryBase3D
         = GrVertexNormalComputationMethod.AverageNormals;
 
     private LinFloat64Normal3D[] _vertexNormals;
-    public IEnumerable<ILinFloat64Vector3D> VertexNormals 
-        => _vertexNormals;
+    public IEnumerable<LinFloat64Vector3D> VertexNormals 
+        => _vertexNormals.Select(v => v.ToLinVector3D());
 
-    private ILinFloat64Vector2D[] _vertexUVs;
-    public IEnumerable<ILinFloat64Vector2D> VertexTextureUVs
+    private LinFloat64Vector2D[] _vertexUVs;
+    public IEnumerable<LinFloat64Vector2D> VertexTextureUVs
         => _vertexUVs;
 
     private Color[] _vertexColors;
@@ -103,13 +103,13 @@ public abstract class GrTriangleGeometryBase3D
     public bool AutoVertexNormals { get; set; }
 
 
-    protected GrTriangleGeometryBase3D(IReadOnlyList<ILinFloat64Vector3D> pointsList)
+    protected GrTriangleGeometryBase3D(IReadOnlyList<LinFloat64Vector3D> pointsList)
     {
         _vertexPoints = pointsList;
     }
 
         
-    public ILinFloat64Vector3D GetGeometryPoint(int index)
+    public LinFloat64Vector3D GetGeometryPoint(int index)
     {
         return _vertexPoints[index];
     }
@@ -144,7 +144,7 @@ public abstract class GrTriangleGeometryBase3D
         _vertexNormals = vertexNormals;
     }
 
-    public void SetVertexUVs(ILinFloat64Vector2D[] vertexUVs)
+    public void SetVertexUVs(LinFloat64Vector2D[] vertexUVs)
     {
         if (vertexUVs.Length != _vertexPoints.Count)
             throw new InvalidOperationException();

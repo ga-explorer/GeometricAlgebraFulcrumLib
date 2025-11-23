@@ -25,34 +25,38 @@ public sealed class TjVector4 :
     public override string JavaScriptClassName 
         => "Vector4";
 
-    public Float64Scalar X { get; }
+    public double X { get; }
         
-    public Float64Scalar Y { get; }
+    public double Y { get; }
         
-    public Float64Scalar Z { get; }
+    public double Z { get; }
 
-    public Float64Scalar W { get; }
+    public double W { get; }
         
+    public double this[int index] 
+        => index switch
+        {
+            0 => X,
+            1 => Y,
+            2 => Z,
+            3 => W,
+            _ => Float64Scalar.Zero
+        };
+
     public int VSpaceDimensions 
         => 4;
 
-    public Float64Scalar Item1 
+    public double Item1 
         => X;
 
-    public Float64Scalar Item2 
+    public double Item2 
         => Y;
 
-    public Float64Scalar Item3 
+    public double Item3 
         => Z;
 
-    public Float64Scalar Item4 
+    public double Item4 
         => W;
-
-    public bool IsValid() =>
-        !double.IsNaN(X) &&
-        !double.IsNaN(Y) &&
-        !double.IsNaN(Z) &&
-        !double.IsNaN(W);
 
 
     public TjVector4()
@@ -83,6 +87,14 @@ public sealed class TjVector4 :
         Debug.Assert(IsValid());
     }
 
+    
+    public bool IsValid()
+    {
+        return !double.IsNaN(X) &&
+               !double.IsNaN(Y) &&
+               !double.IsNaN(Z) &&
+               !double.IsNaN(W);
+    }
 
     protected override string GetConstructorArgumentsText()
     {

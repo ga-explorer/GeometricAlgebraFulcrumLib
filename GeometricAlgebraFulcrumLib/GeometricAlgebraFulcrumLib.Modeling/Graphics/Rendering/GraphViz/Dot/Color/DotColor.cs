@@ -98,7 +98,7 @@ public abstract class DotColor : DotValue
     public static DotColorList ColorList(int c1, int c2)
     {
         return new DotColorList(
-            new DotColor[] { new DotIndexedColor(c1), new DotIndexedColor(c2) }
+            [new DotIndexedColor(c1), new DotIndexedColor(c2)]
         );
     }
 
@@ -113,8 +113,8 @@ public abstract class DotColor : DotValue
     public static DotColorList ColorList(int c1, int c2, float w1, float w2)
     {
         return new DotColorList(
-            new DotColor[] { new DotIndexedColor(c1), new DotIndexedColor(c2) },
-            new [] { w1, w2 }
+            [new DotIndexedColor(c1), new DotIndexedColor(c2)],
+            [w1, w2]
         );
     }
 
@@ -127,7 +127,7 @@ public abstract class DotColor : DotValue
     public static DotColorList ColorList(DotColor c1, DotColor c2)
     {
         return new DotColorList(
-            new [] { c1, c2 }
+            [c1, c2]
         );
     }
 
@@ -142,8 +142,8 @@ public abstract class DotColor : DotValue
     public static DotColorList ColorList(DotColor c1, DotColor c2, float w1, float w2)
     {
         return new DotColorList(
-            new[] { c1, c2 },
-            new[] { w1, w2 }
+            [c1, c2],
+            [w1, w2]
         );
     }
 
@@ -156,7 +156,7 @@ public abstract class DotColor : DotValue
     public static DotColorList ColorList(System.Drawing.Color c1, System.Drawing.Color c2)
     {
         return new DotColorList(
-            new DotColor[] { new DotRgbaColor(c1), new DotRgbaColor(c2) }
+            [new DotRgbaColor(c1), new DotRgbaColor(c2)]
         );
     }
 
@@ -171,8 +171,8 @@ public abstract class DotColor : DotValue
     public static DotColorList ColorList(System.Drawing.Color c1, System.Drawing.Color c2, float w1, float w2)
     {
         return new DotColorList(
-            new DotColor[] { new DotRgbaColor(c1), new DotRgbaColor(c2) },
-            new[] { w1, w2 }
+            [new DotRgbaColor(c1), new DotRgbaColor(c2)],
+            [w1, w2]
         );
     }
 

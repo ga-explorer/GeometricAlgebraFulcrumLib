@@ -1,9 +1,8 @@
-﻿using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
+﻿using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space2D;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.Colors;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.KonvaJs.Shapes;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.KonvaJs.Styles;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.KonvaJs.Values;
-using GeometricAlgebraFulcrumLib.Utilities.Structures.Tuples;
 using SixLabors.ImageSharp;
 
 namespace GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.KonvaJs.Containers;
@@ -171,7 +170,7 @@ public class GrKonvaJsLayerComposer
         return this;
     }
     
-    public GrKonvaJsLayerComposer SetStrokeLinearGradient(GrColorLinearGradientList colorList, IPair<double> startPoint, IPair<double> endPoint)
+    public GrKonvaJsLayerComposer SetStrokeLinearGradient(GrColorLinearGradientList colorList, LinFloat64Vector2D startPoint, LinFloat64Vector2D endPoint)
     {
         ActiveStyle.SetStrokeLinearGradient(colorList, startPoint, endPoint);
 
@@ -256,7 +255,7 @@ public class GrKonvaJsLayerComposer
         return this;
     }
     
-    public GrKonvaJsLayerComposer SetFillLinearGradient(GrColorLinearGradientList colorList, IPair<double> startPoint, IPair<double> endPoint)
+    public GrKonvaJsLayerComposer SetFillLinearGradient(GrColorLinearGradientList colorList, LinFloat64Vector2D startPoint, LinFloat64Vector2D endPoint)
     {
         ActiveStyle.SetFillLinearGradient(colorList, startPoint, endPoint);
 
@@ -298,7 +297,7 @@ public class GrKonvaJsLayerComposer
         return this;
     }
     
-    public GrKonvaJsLayerComposer SetFillRadialGradient(GrColorLinearGradientList colorList, IPair<double> startPoint, IPair<double> endPoint, double startRadius, double endRadius)
+    public GrKonvaJsLayerComposer SetFillRadialGradient(GrColorLinearGradientList colorList, LinFloat64Vector2D startPoint, LinFloat64Vector2D endPoint, double startRadius, double endRadius)
     {
         ActiveStyle.SetFillRadialGradient(colorList, startPoint, endPoint, startRadius, endRadius);
 
@@ -333,7 +332,7 @@ public class GrKonvaJsLayerComposer
         return this;
     }
     
-    public GrKonvaJsLayerComposer AddPoint(string name, IPair<Float64Scalar> point, double radius)
+    public GrKonvaJsLayerComposer AddPoint(string name, LinFloat64Vector2D point, double radius)
     {
         return AddPoint(
             name, 
@@ -343,7 +342,7 @@ public class GrKonvaJsLayerComposer
         );
     }
 
-    public GrKonvaJsLayerComposer AddPoints(string name, IEnumerable<IPair<Float64Scalar>> pointList, double radius)
+    public GrKonvaJsLayerComposer AddPoints(string name, IEnumerable<LinFloat64Vector2D> pointList, double radius)
     {
         var i = 0;
         foreach (var point in pointList)
@@ -355,7 +354,7 @@ public class GrKonvaJsLayerComposer
         return this;
     }
     
-    public GrKonvaJsLayerComposer AddLine(string name, IReadOnlyList<IPair<Float64Scalar>> pointArray, bool closed)
+    public GrKonvaJsLayerComposer AddLine(string name, IReadOnlyList<LinFloat64Vector2D> pointArray, bool closed)
     {
         var line = new GrKonvaJsLine(name);
         
@@ -374,7 +373,7 @@ public class GrKonvaJsLayerComposer
         return this;
     }
     
-    public GrKonvaJsLayerComposer AddLine(string name, IReadOnlyList<IPair<Float64Scalar>> pointArray, bool closed, double tension)
+    public GrKonvaJsLayerComposer AddLine(string name, IReadOnlyList<LinFloat64Vector2D> pointArray, bool closed, double tension)
     {
         var line = new GrKonvaJsLine(name);
         
@@ -394,7 +393,7 @@ public class GrKonvaJsLayerComposer
         return this;
     }
     
-    public GrKonvaJsLayerComposer AddBezierLine(string name, IReadOnlyList<IPair<Float64Scalar>> pointArray)
+    public GrKonvaJsLayerComposer AddBezierLine(string name, IReadOnlyList<LinFloat64Vector2D> pointArray)
     {
         var line = new GrKonvaJsLine(name);
         
@@ -413,15 +412,15 @@ public class GrKonvaJsLayerComposer
         return this;
     }
 
-    public GrKonvaJsLayerComposer AddBezierLine(string name, params IPair<Float64Scalar>[] pointArray)
+    public GrKonvaJsLayerComposer AddBezierLine(string name, params LinFloat64Vector2D[] pointArray)
     {
         return AddBezierLine(
             name, 
-            (IReadOnlyList<IPair<Float64Scalar>>) pointArray
+            (IReadOnlyList<LinFloat64Vector2D>) pointArray
         );
     }
 
-    public GrKonvaJsLayerComposer AddBezierLine(string name, IReadOnlyList<IPair<Float64Scalar>> pointArray, bool closed)
+    public GrKonvaJsLayerComposer AddBezierLine(string name, IReadOnlyList<LinFloat64Vector2D> pointArray, bool closed)
     {
         var line = new GrKonvaJsLine(name);
         
@@ -441,7 +440,7 @@ public class GrKonvaJsLayerComposer
         return this;
     }
     
-    public GrKonvaJsLayerComposer AddClosedBezierLine(string name, params IPair<Float64Scalar>[] pointArray)
+    public GrKonvaJsLayerComposer AddClosedBezierLine(string name, params LinFloat64Vector2D[] pointArray)
     {
         return AddBezierLine(
             name, 
@@ -450,7 +449,7 @@ public class GrKonvaJsLayerComposer
         );
     }
 
-    public GrKonvaJsLayerComposer AddLine(string name, IPair<Float64Scalar> point1, IPair<Float64Scalar> point2)
+    public GrKonvaJsLayerComposer AddLine(string name, LinFloat64Vector2D point1, LinFloat64Vector2D point2)
     {
         var line = new GrKonvaJsLine(name);
         

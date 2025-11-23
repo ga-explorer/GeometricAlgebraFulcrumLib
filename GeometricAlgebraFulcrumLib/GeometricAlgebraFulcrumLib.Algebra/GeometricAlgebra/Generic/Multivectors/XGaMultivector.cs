@@ -1,11 +1,11 @@
-﻿using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
+﻿using System.Collections;
+using System.Runtime.CompilerServices;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Processors;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Generic;
 using GeometricAlgebraFulcrumLib.Algebra.Utilities.Text;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.IndexSets;
 using GeometricAlgebraFulcrumLib.Utilities.Text.Text;
-using System.Collections;
-using System.Runtime.CompilerServices;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Multivectors;
 
@@ -118,7 +118,34 @@ public abstract partial class XGaMultivector<T> :
         Processor = processor;
     }
 
-        
+    
+    /// <summary>
+    /// Compare ratio between number of stored terms and total number of
+    /// GA terms for this multivector with given ratio
+    /// </summary>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public bool IsMultivectorSparsityLessThan(double sparsityRatio)
+    {
+        if (sparsityRatio is < 0 or > 1)
+            throw new ArgumentOutOfRangeException(nameof(sparsityRatio));
+
+        return Math.Log2(Count) - VSpaceDimensions < Math.Log2(sparsityRatio);
+    }
+    
+    /// <summary>
+    /// Compare ratio between number of stored terms and total number of
+    /// GA terms for this multivector with given ratio
+    /// </summary>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public bool IsMultivectorSparsityMoreThan(double sparsityRatio)
+    {
+        if (sparsityRatio is < 0 or > 1)
+            throw new ArgumentOutOfRangeException(nameof(sparsityRatio));
+
+        return Math.Log2(Count) - VSpaceDimensions > Math.Log2(sparsityRatio);
+    }
+
+
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public bool IsNearZero()
     {
@@ -149,6 +176,62 @@ public abstract partial class XGaMultivector<T> :
     public abstract bool IsEven();
 
     public abstract bool IsEven(int maxGrade);
+    
+
+    /// <summary>
+    /// Check if multivector is in canonical form, where no two terms contain common
+    /// basis vectors (multivector is decoupled into Euclidean-orthogonal subspaces).
+    /// </summary>
+    /// <returns>True if in canonical form</returns>
+    public bool IsCanonical()
+    {
+        // Any single-term multivector is canonical
+        if (Count <= 1)
+            return true;
+
+        // Check if all term subspaces are mutually orthogonal (no shared indices)
+        var usedIndices = new HashSet<int>();
+        foreach (var id in Ids)
+        {
+            // If any index was already used, planes are not orthogonal
+            if (id.SetOverlaps(usedIndices))
+                return false;
+
+            foreach (var i in id)
+                usedIndices.Add(i);
+        }
+
+        return true;
+    }
+
+    /// <summary>
+    /// Check if multivector is in canonical form, where no two terms contain common
+    /// basis vectors (multivector is decoupled into Euclidean-orthogonal subspaces).
+    /// </summary>
+    /// <returns>True if in canonical form</returns>
+    public bool IsNearCanonical()
+    {
+        // Any single-term multivector is canonical
+        if (Count <= 1)
+            return true;
+
+        // Check if all term subspaces are mutually orthogonal (no shared indices)
+        var usedIndices = new HashSet<int>();
+        foreach (var (id, scalar) in IdScalarPairs)
+        {
+            // Ignore near-zero terms
+            if (ScalarProcessor.IsNearZero(scalar)) continue;
+
+            // If any index was already used, planes are not orthogonal
+            if (id.SetOverlaps(usedIndices))
+                return false;
+
+            foreach (var i in id)
+                usedIndices.Add(i);
+        }
+
+        return true;
+    }
 
 
     public abstract bool ContainsScalarPart();
@@ -209,9 +292,14 @@ public abstract partial class XGaMultivector<T> :
 
     public abstract IEnumerable<XGaKVector<T>> GetKVectorParts();
 
-    
+    /// <summary>
+    /// The span of a multivector.
+    /// See: 'Computation of Minimal Polynomials and Multivector Inverses in
+    /// non-Degenerate Clifford Algebras'
+    /// </summary>
+    /// <returns></returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public IndexSet GetStoredBasisVectorIndices()
+    public IndexSet GetBasisSpan()
     {
         return IndexSet.Create(
             Ids.SelectMany(id => id), 
@@ -363,13 +451,15 @@ public abstract partial class XGaMultivector<T> :
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public IEnumerable<KeyValuePair<ulong, T>> GetMultivectorArrayItems()
     {
-        return IdScalarPairs.Select(
-            term => 
+        return IdScalarPairs
+            .OrderBy(p => p.Key.Count)
+            .ThenBy(p => p.Key)
+            .Select(term => 
                 new KeyValuePair<ulong, T>(
                     term.Key.ToUInt64(), 
                     term.Value
                 )
-        );
+            );
     }
 
     

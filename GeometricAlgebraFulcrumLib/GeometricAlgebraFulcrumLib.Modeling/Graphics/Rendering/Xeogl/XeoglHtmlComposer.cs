@@ -1,4 +1,5 @@
 ﻿using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space3D;
+using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Primitives.Lines;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Primitives.Triangles;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.Xeogl.Generators;

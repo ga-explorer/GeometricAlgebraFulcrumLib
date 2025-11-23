@@ -14,7 +14,7 @@ public interface IGraphicsVertexData3D
 
     Color Color { get; set; }
 
-    ILinFloat64Vector2D TextureUv { get; set; }
+    LinFloat64Vector2D TextureUv { get; set; }
 
     LinFloat64Normal3D Normal { get; }
 

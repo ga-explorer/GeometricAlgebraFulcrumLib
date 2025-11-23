@@ -1,4 +1,7 @@
-﻿using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Frames;
+﻿using System.Diagnostics;
+using System.Runtime.CompilerServices;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Frames;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.LinearMaps;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.LinearMaps.Outermorphisms;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.LinearMaps.Rotors;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Subspaces;
@@ -6,13 +9,362 @@ using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Basis;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Generic.Angles;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Generic;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Tuples;
-using System.Diagnostics;
-using System.Runtime.CompilerServices;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Multivectors
 {
     public abstract partial class XGaMultivector<T>
     {
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public XGaComputedUnilinearMap<T> LeftOpMap()
+        {
+            return Processor.UnilinearMap(
+                id => Op(Processor.KVectorTerm(id))
+            );
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public XGaComputedUnilinearMap<T> RightOpMap()
+        {
+            return Processor.UnilinearMap(
+                id => Processor.KVectorTerm(id).Op(this)
+            );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public T[,] LeftOpMapArray(int vSpaceDimensions)
+        {
+            if (vSpaceDimensions < VSpaceDimensions || vSpaceDimensions > 12)
+                throw new ArgumentOutOfRangeException(nameof(vSpaceDimensions));
+
+            var size = 1 << vSpaceDimensions;
+
+            return LeftOpMap().GetMultivectorMapArray(size, size);
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public T[,] RightOpMapArray(int vSpaceDimensions)
+        {
+            if (vSpaceDimensions < VSpaceDimensions || vSpaceDimensions > 12)
+                throw new ArgumentOutOfRangeException(nameof(vSpaceDimensions));
+
+            var size = 1 << vSpaceDimensions;
+
+            return RightOpMap().GetMultivectorMapArray(size, size);
+        }
+        
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public XGaComputedUnilinearMap<T> LeftELcpMap()
+        {
+            return Processor.UnilinearMap(
+                id => ELcp(Processor.KVectorTerm(id))
+            );
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public XGaComputedUnilinearMap<T> RightELcpMap()
+        {
+            return Processor.UnilinearMap(
+                id => Processor.KVectorTerm(id).ELcp(this)
+            );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public T[,] LeftELcpMapArray(int vSpaceDimensions)
+        {
+            if (vSpaceDimensions < VSpaceDimensions || vSpaceDimensions > 12)
+                throw new ArgumentOutOfRangeException(nameof(vSpaceDimensions));
+
+            var size = 1 << vSpaceDimensions;
+
+            return LeftELcpMap().GetMultivectorMapArray(size, size);
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public T[,] RightELcpMapArray(int vSpaceDimensions)
+        {
+            if (vSpaceDimensions < VSpaceDimensions || vSpaceDimensions > 12)
+                throw new ArgumentOutOfRangeException(nameof(vSpaceDimensions));
+
+            var size = 1 << vSpaceDimensions;
+
+            return RightELcpMap().GetMultivectorMapArray(size, size);
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public XGaComputedUnilinearMap<T> LeftLcpMap()
+        {
+            return Processor.UnilinearMap(
+                id => Lcp(Processor.KVectorTerm(id))
+            );
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public XGaComputedUnilinearMap<T> RightLcpMap()
+        {
+            return Processor.UnilinearMap(
+                id => Processor.KVectorTerm(id).Lcp(this)
+            );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public T[,] LeftLcpMapArray(int vSpaceDimensions)
+        {
+            if (vSpaceDimensions < VSpaceDimensions || vSpaceDimensions > 12)
+                throw new ArgumentOutOfRangeException(nameof(vSpaceDimensions));
+
+            var size = 1 << vSpaceDimensions;
+
+            return LeftLcpMap().GetMultivectorMapArray(size, size);
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public T[,] RightLcpMapArray(int vSpaceDimensions)
+        {
+            if (vSpaceDimensions < VSpaceDimensions || vSpaceDimensions > 12)
+                throw new ArgumentOutOfRangeException(nameof(vSpaceDimensions));
+
+            var size = 1 << vSpaceDimensions;
+
+            return RightLcpMap().GetMultivectorMapArray(size, size);
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public XGaComputedUnilinearMap<T> LeftERcpMap()
+        {
+            return Processor.UnilinearMap(
+                id => ERcp(Processor.KVectorTerm(id))
+            );
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public XGaComputedUnilinearMap<T> RightERcpMap()
+        {
+            return Processor.UnilinearMap(
+                id => Processor.KVectorTerm(id).ERcp(this)
+            );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public T[,] LeftERcpMapArray(int vSpaceDimensions)
+        {
+            if (vSpaceDimensions < VSpaceDimensions || vSpaceDimensions > 12)
+                throw new ArgumentOutOfRangeException(nameof(vSpaceDimensions));
+
+            var size = 1 << vSpaceDimensions;
+
+            return LeftERcpMap().GetMultivectorMapArray(size, size);
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public T[,] RightERcpMapArray(int vSpaceDimensions)
+        {
+            if (vSpaceDimensions < VSpaceDimensions || vSpaceDimensions > 12)
+                throw new ArgumentOutOfRangeException(nameof(vSpaceDimensions));
+
+            var size = 1 << vSpaceDimensions;
+
+            return RightERcpMap().GetMultivectorMapArray(size, size);
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public XGaComputedUnilinearMap<T> LeftRcpMap()
+        {
+            return Processor.UnilinearMap(
+                id => Rcp(Processor.KVectorTerm(id))
+            );
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public XGaComputedUnilinearMap<T> RightRcpMap()
+        {
+            return Processor.UnilinearMap(
+                id => Processor.KVectorTerm(id).Rcp(this)
+            );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public T[,] LeftRcpMapArray(int vSpaceDimensions)
+        {
+            if (vSpaceDimensions < VSpaceDimensions || vSpaceDimensions > 12)
+                throw new ArgumentOutOfRangeException(nameof(vSpaceDimensions));
+
+            var size = 1 << vSpaceDimensions;
+
+            return LeftRcpMap().GetMultivectorMapArray(size, size);
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public T[,] RightRcpMapArray(int vSpaceDimensions)
+        {
+            if (vSpaceDimensions < VSpaceDimensions || vSpaceDimensions > 12)
+                throw new ArgumentOutOfRangeException(nameof(vSpaceDimensions));
+
+            var size = 1 << vSpaceDimensions;
+
+            return RightRcpMap().GetMultivectorMapArray(size, size);
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public XGaComputedUnilinearMap<T> LeftEFdpMap()
+        {
+            return Processor.UnilinearMap(
+                id => EFdp(Processor.KVectorTerm(id))
+            );
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public XGaComputedUnilinearMap<T> RightEFdpMap()
+        {
+            return Processor.UnilinearMap(
+                id => Processor.KVectorTerm(id).EFdp(this)
+            );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public T[,] LeftEFdpMapArray(int vSpaceDimensions)
+        {
+            if (vSpaceDimensions < VSpaceDimensions || vSpaceDimensions > 12)
+                throw new ArgumentOutOfRangeException(nameof(vSpaceDimensions));
+
+            var size = 1 << vSpaceDimensions;
+
+            return LeftEFdpMap().GetMultivectorMapArray(size, size);
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public T[,] RightEFdpMapArray(int vSpaceDimensions)
+        {
+            if (vSpaceDimensions < VSpaceDimensions || vSpaceDimensions > 12)
+                throw new ArgumentOutOfRangeException(nameof(vSpaceDimensions));
+
+            var size = 1 << vSpaceDimensions;
+
+            return RightEFdpMap().GetMultivectorMapArray(size, size);
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public XGaComputedUnilinearMap<T> LeftFdpMap()
+        {
+            return Processor.UnilinearMap(
+                id => Fdp(Processor.KVectorTerm(id))
+            );
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public XGaComputedUnilinearMap<T> RightFdpMap()
+        {
+            return Processor.UnilinearMap(
+                id => Processor.KVectorTerm(id).Fdp(this)
+            );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public T[,] LeftFdpMapArray(int vSpaceDimensions)
+        {
+            if (vSpaceDimensions < VSpaceDimensions || vSpaceDimensions > 12)
+                throw new ArgumentOutOfRangeException(nameof(vSpaceDimensions));
+
+            var size = 1 << vSpaceDimensions;
+
+            return LeftFdpMap().GetMultivectorMapArray(size, size);
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public T[,] RightFdpMapArray(int vSpaceDimensions)
+        {
+            if (vSpaceDimensions < VSpaceDimensions || vSpaceDimensions > 12)
+                throw new ArgumentOutOfRangeException(nameof(vSpaceDimensions));
+
+            var size = 1 << vSpaceDimensions;
+
+            return RightFdpMap().GetMultivectorMapArray(size, size);
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public XGaComputedUnilinearMap<T> LeftEGpMap()
+        {
+            return Processor.UnilinearMap(
+                id => EGp(Processor.KVectorTerm(id))
+            );
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public XGaComputedUnilinearMap<T> RightEGpMap()
+        {
+            return Processor.UnilinearMap(
+                id => Processor.KVectorTerm(id).EGp(this)
+            );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public T[,] LeftEGpMapArray(int vSpaceDimensions)
+        {
+            if (vSpaceDimensions < VSpaceDimensions || vSpaceDimensions > 12)
+                throw new ArgumentOutOfRangeException(nameof(vSpaceDimensions));
+
+            var size = 1 << vSpaceDimensions;
+
+            return LeftEGpMap().GetMultivectorMapArray(size, size);
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public T[,] RightEGpMapArray(int vSpaceDimensions)
+        {
+            if (vSpaceDimensions < VSpaceDimensions || vSpaceDimensions > 12)
+                throw new ArgumentOutOfRangeException(nameof(vSpaceDimensions));
+
+            var size = 1 << vSpaceDimensions;
+
+            return RightEGpMap().GetMultivectorMapArray(size, size);
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public XGaComputedUnilinearMap<T> LeftGpMap()
+        {
+            return Processor.UnilinearMap(
+                id => Gp(Processor.KVectorTerm(id))
+            );
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public XGaComputedUnilinearMap<T> RightGpMap()
+        {
+            return Processor.UnilinearMap(
+                id => Processor.KVectorTerm(id).Gp(this)
+            );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public T[,] LeftGpMapArray(int vSpaceDimensions)
+        {
+            if (vSpaceDimensions < VSpaceDimensions || vSpaceDimensions > 12)
+                throw new ArgumentOutOfRangeException(nameof(vSpaceDimensions));
+
+            var size = 1 << vSpaceDimensions;
+
+            return LeftGpMap().GetMultivectorMapArray(size, size);
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public T[,] RightGpMapArray(int vSpaceDimensions)
+        {
+            if (vSpaceDimensions < VSpaceDimensions || vSpaceDimensions > 12)
+                throw new ArgumentOutOfRangeException(nameof(vSpaceDimensions));
+
+            var size = 1 << vSpaceDimensions;
+
+            return RightGpMap().GetMultivectorMapArray(size, size);
+        }
+
+        
         /// <summary>
         /// Create a pure rotor from its scalar and bivector parts
         /// </summary>

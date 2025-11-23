@@ -59,12 +59,12 @@ public readonly struct SnelliusPothenotProblemData2D
 
         return new SnelliusPothenotProblemData2D()
         {
-            Ax = pointA.X.ScalarValue,
-            Ay = pointA.Y.ScalarValue,
-            Bx = pointB.X.ScalarValue,
-            By = pointB.Y.ScalarValue,
-            Cx = pointC.X.ScalarValue,
-            Cy = pointC.Y.ScalarValue,
+            Ax = pointA.X,
+            Ay = pointA.Y,
+            Bx = pointB.X,
+            By = pointB.Y,
+            Cx = pointC.X,
+            Cy = pointC.Y,
             Alpha = alpha.RadiansValue,
             Beta = beta.RadiansValue
         };

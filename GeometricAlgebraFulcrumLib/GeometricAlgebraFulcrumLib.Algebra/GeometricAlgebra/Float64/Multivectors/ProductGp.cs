@@ -47,6 +47,12 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivecto
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public virtual XGaFloat64Multivector EGp(IndexSet mv2)
+        {
+            return EGp(Processor.KVectorTerm(mv2));
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public virtual XGaFloat64Multivector EGp(XGaFloat64KVector mv2)
         {
             return IsZero || mv2.IsZero
@@ -71,7 +77,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivecto
                     .GetMultivector();
         }
 
-
+        
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public virtual XGaFloat64Multivector Gp(XGaFloat64Scalar kv2)
         {
@@ -112,6 +118,12 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivecto
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public virtual XGaFloat64Multivector Gp(IndexSet mv2)
+        {
+            return Gp(Processor.KVectorTerm(mv2));
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public virtual XGaFloat64Multivector Gp(XGaFloat64KVector mv2)
         {
             return IsZero || mv2.IsZero
@@ -141,18 +153,18 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivecto
         /// The Delta Product (See chapter 21 in Geometric Algebra for Computer Science)
         /// </summary>
         /// <param name="mv2"></param>
-        /// <param name="zeroEpsilon"></param>
+        /// <param name="tolerance"></param>
         /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public XGaFloat64KVector Dp(XGaFloat64Multivector mv2, double zeroEpsilon = Float64Utils.ZeroEpsilon)
+        public XGaFloat64KVector Dp(XGaFloat64Multivector mv2, double tolerance = Float64Utils.DefaultTolerance)
         {
             var gp = Gp(mv2);
 
-            return gp.IsNearZero(zeroEpsilon) 
+            return gp.IsNearZero(tolerance) 
                 ? Processor.ScalarZero 
                 : gp.GetKVectorParts()
                     .OrderByDescending(kv => kv.Grade)
-                    .First(kv => !kv.IsNearZero(zeroEpsilon));
+                    .First(kv => !kv.IsNearZero(tolerance));
         }
 
     }
@@ -198,6 +210,12 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivecto
         {
             return kv2.Times(ScalarValue);
         }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public override XGaFloat64KVector EGp(IndexSet mv2)
+        {
+            return Processor.KVectorTerm(mv2, ScalarValue);
+        }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public override XGaFloat64KVector EGp(XGaFloat64KVector kv2)
@@ -228,6 +246,12 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivecto
         public override XGaFloat64HigherKVector Gp(XGaFloat64HigherKVector kv2)
         {
             return kv2.Times(ScalarValue);
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public override XGaFloat64KVector Gp(IndexSet mv2)
+        {
+            return Processor.KVectorTerm(mv2, ScalarValue);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -287,6 +311,30 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivecto
     
     public sealed partial class XGaFloat64KVectorComposer
     {
+        private XGaFloat64KVectorComposer AddEuclideanProductTerms(XGaFloat64Multivector mv1, IndexSet mv2, Func<IndexSet, IndexSet, bool> filterFunc)
+        {
+            if (mv1.IsZero)
+                return this;
+
+            foreach (var term1 in mv1.IdScalarPairs)
+                if (filterFunc(term1.Key, mv2))
+                    AddEGpTerm(term1, mv2);
+
+            return this;
+        }
+        
+        private XGaFloat64KVectorComposer AddEuclideanProductTerms(IndexSet mv1, XGaFloat64Multivector mv2, Func<IndexSet, IndexSet, bool> filterFunc)
+        {
+            if (mv2.IsZero)
+                return this;
+
+            foreach (var term2 in mv2.IdScalarPairs)
+                if (filterFunc(mv1, term2.Key))
+                    AddEGpTerm(mv1, term2);
+
+            return this;
+        }
+
         private XGaFloat64KVectorComposer AddEuclideanProductTerms(XGaFloat64Multivector mv1, XGaFloat64Multivector mv2, Func<IndexSet, IndexSet, bool> filterFunc)
         {
             if (mv1.IsZero || mv2.IsZero)
@@ -296,6 +344,22 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivecto
                 foreach (var term2 in mv2.IdScalarPairs)
                     if (filterFunc(term1.Key, term2.Key))
                         AddEGpTerm(term1, term2);
+
+            return this;
+        }
+        
+        private XGaFloat64KVectorComposer AddMetricProductTerms(XGaFloat64Multivector mv1, IndexSet mv2, Func<IndexSet, IndexSet, bool> filterFunc)
+        {
+            Debug.Assert(
+                Metric.HasSameSignature(mv1.Metric)
+            );
+
+            if (mv1.IsZero)
+                return this;
+
+            foreach (var term1 in mv1.IdScalarPairs)
+                if (filterFunc(term1.Key, mv2))
+                    AddGpTerm(term1, mv2);
 
             return this;
         }
@@ -320,6 +384,26 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivecto
 
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public XGaFloat64KVectorComposer AddEGpTerm(KeyValuePair<IndexSet, double> term1, IndexSet term2)
+        {
+            var term = Metric.EGp(term1.Key, term2);
+            var scalar = term.IsPositive ? term1.Value : -term1.Value;
+
+            return AddTerm(term.Id, scalar);
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public XGaFloat64KVectorComposer AddEGpTerm(IndexSet term1Key, KeyValuePair<IndexSet, double> term2)
+        {
+            var term = Metric.EGp(term1Key, term2.Key);
+            var scalar = term.IsPositive
+                ? term2.Value
+                : -term2.Value;
+
+            return AddTerm(term.Id, scalar);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public XGaFloat64KVectorComposer AddEGpTerm(KeyValuePair<IndexSet, double> term1, KeyValuePair<IndexSet, double> term2)
         {
             var term = Metric.EGp(term1.Key, term2.Key);
@@ -342,6 +426,18 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivecto
             return this;
         }
 
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public XGaFloat64KVectorComposer AddGpTerm(KeyValuePair<IndexSet, double> term1, IndexSet term2)
+        {
+            var term = Metric.Gp(term1.Key, term2);
+
+            if (term.IsZero) return this;
+
+            var scalar = term.IsPositive ? term1.Value : -term1.Value;
+
+            return AddTerm(term.Id, scalar);
+        }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public XGaFloat64KVectorComposer AddGpTerm(KeyValuePair<IndexSet, double> term1, KeyValuePair<IndexSet, double> term2)
@@ -469,6 +565,18 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivecto
     
     public sealed partial class XGaFloat64GradedMultivectorComposer
     {
+        private XGaFloat64GradedMultivectorComposer AddEuclideanProductTerms(XGaFloat64Multivector mv1, IndexSet mv2, Func<IndexSet, IndexSet, bool> filterFunc)
+        {
+            if (mv1.IsZero)
+                return this;
+
+            foreach (var term1 in mv1.IdScalarPairs)
+                if (filterFunc(term1.Key, mv2))
+                    AddEGpTerm(term1, mv2);
+
+            return this;
+        }
+        
         private XGaFloat64GradedMultivectorComposer AddEuclideanProductTerms(XGaFloat64Multivector mv1, XGaFloat64Multivector mv2, Func<IndexSet, IndexSet, bool> filterFunc)
         {
             if (mv1.IsZero || mv2.IsZero)
@@ -478,6 +586,22 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivecto
                 foreach (var term2 in mv2.IdScalarPairs)
                     if (filterFunc(term1.Key, term2.Key))
                         AddEGpTerm(term1, term2);
+
+            return this;
+        }
+        
+        private XGaFloat64GradedMultivectorComposer AddMetricProductTerms(XGaFloat64Multivector mv1, IndexSet mv2, Func<IndexSet, IndexSet, bool> filterFunc)
+        {
+            Debug.Assert(
+                Metric.HasSameSignature(mv1.Metric)
+            );
+
+            if (mv1.IsZero)
+                return this;
+
+            foreach (var term1 in mv1.IdScalarPairs)
+                if (filterFunc(term1.Key, mv2))
+                    AddGpTerm(term1, mv2);
 
             return this;
         }
@@ -500,6 +624,15 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivecto
             return this;
         }
 
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public XGaFloat64GradedMultivectorComposer AddEGpTerm(KeyValuePair<IndexSet, double> term1, IndexSet term2Key)
+        {
+            var term = Metric.EGp(term1.Key, term2Key);
+            var scalar = term.IsPositive ? term1.Value : -term1.Value;
+
+            return AddTerm(term.Id, scalar);
+        }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public XGaFloat64GradedMultivectorComposer AddEGpTerm(KeyValuePair<IndexSet, double> term1, KeyValuePair<IndexSet, double> term2)
@@ -512,6 +645,17 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivecto
             return AddTerm(term.Id, scalar);
         }
         
+        public XGaFloat64GradedMultivectorComposer AddEGpTerms(XGaFloat64Multivector mv1, IndexSet mv2)
+        {
+            if (mv1.IsZero)
+                return this;
+
+            foreach (var term1 in mv1.IdScalarPairs)
+                AddEGpTerm(term1, mv2);
+
+            return this;
+        }
+
         public XGaFloat64GradedMultivectorComposer AddEGpTerms(XGaFloat64Multivector mv1, XGaFloat64Multivector mv2)
         {
             if (mv1.IsZero || mv2.IsZero)
@@ -524,6 +668,18 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivecto
             return this;
         }
 
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public XGaFloat64GradedMultivectorComposer AddGpTerm(KeyValuePair<IndexSet, double> term1, IndexSet term2Key)
+        {
+            var term = Metric.Gp(term1.Key, term2Key);
+
+            if (term.IsZero) return this;
+
+            var scalar = term.IsPositive ? term1.Value : -term1.Value;
+
+            return AddTerm(term.Id, scalar);
+        }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public XGaFloat64GradedMultivectorComposer AddGpTerm(KeyValuePair<IndexSet, double> term1, KeyValuePair<IndexSet, double> term2)
@@ -539,6 +695,21 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivecto
             return AddTerm(term.Id, scalar);
         }
         
+        public XGaFloat64GradedMultivectorComposer AddGpTerms(XGaFloat64Multivector mv1, IndexSet mv2)
+        {
+            Debug.Assert(
+                Metric.HasSameSignature(mv1.Metric)
+            );
+
+            if (mv1.IsZero)
+                return this;
+
+            foreach (var term1 in mv1.IdScalarPairs)
+                AddGpTerm(term1, mv2);
+
+            return this;
+        }
+
         public XGaFloat64GradedMultivectorComposer AddGpTerms(XGaFloat64Multivector mv1, XGaFloat64Multivector mv2)
         {
             Debug.Assert(

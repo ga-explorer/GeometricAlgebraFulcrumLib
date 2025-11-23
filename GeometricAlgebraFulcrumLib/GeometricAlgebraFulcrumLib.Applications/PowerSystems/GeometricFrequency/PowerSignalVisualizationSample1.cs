@@ -1,6 +1,5 @@
 ﻿using System.Globalization;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Angles;
-using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Matrices;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space3D;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
 using GeometricAlgebraFulcrumLib.Modeling.Calculus.Curves;
@@ -14,6 +13,7 @@ using GeometricAlgebraFulcrumLib.Modeling.Signals;
 using GeometricAlgebraFulcrumLib.Modeling.Signals.Composers;
 using GeometricAlgebraFulcrumLib.Modeling.Trajectories.Scalars.Float64;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.BitManipulation;
+using GeometricAlgebraFulcrumLib.Utilities.Structures.Extensions;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Tuples;
 using GeometricAlgebraFulcrumLib.Utilities.Text.Code.Matlab;
 using GeometricAlgebraFulcrumLib.Utilities.Web.LaTeX.CodeComposer;
@@ -327,9 +327,9 @@ public static class PowerSignalVisualizationSample1
                 throw new InvalidOperationException();
 
             data = new Triplet<double[]>(
-                i12.GetRow(0).Skip(sampleOffset).Take(sampleCount).ToArray(),
-                i12.GetRow(1).Skip(sampleOffset).Take(sampleCount).ToArray(),
-                i12.GetRow(2).Skip(sampleOffset).Take(sampleCount).ToArray()
+                i12.ViewRow(0).Skip(sampleOffset).Take(sampleCount).ToArray(),
+                i12.ViewRow(1).Skip(sampleOffset).Take(sampleCount).ToArray(),
+                i12.ViewRow(2).Skip(sampleOffset).Take(sampleCount).ToArray()
             );
         }
 
@@ -389,7 +389,7 @@ public static class PowerSignalVisualizationSample1
         var powerSignal = GetPowerSignal();
 
         var omegaMean = powerSignal.GetDarbouxBivectorMean();
-        var omegaMeanNorm = omegaMean.Norm();
+        var omegaMeanNorm = omegaMean.L2Norm();
 
         Console.WriteLine($"Mean omega: {omegaMean}");
         Console.WriteLine($"Mean omega norm: {omegaMeanNorm}");
@@ -443,7 +443,7 @@ public static class PowerSignalVisualizationSample1
         var powerSignal = GetPowerSignal();
 
         var omegaMean = powerSignal.GetDarbouxBivectorMean();
-        var omegaMeanNorm = omegaMean.Norm();
+        var omegaMeanNorm = omegaMean.L2Norm();
 
         Console.WriteLine($"Mean omega: {omegaMean}");
         Console.WriteLine($"Mean omega norm: {omegaMeanNorm}");

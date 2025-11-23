@@ -1,8 +1,9 @@
 ﻿using System.Runtime.CompilerServices;
-using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Matrices;
+using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Numerical;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.BitManipulation;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Dictionary;
+using MathNet.Numerics.LinearAlgebra;
 using MathNet.Numerics.LinearAlgebra.Double;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.SpaceND;
@@ -75,7 +76,7 @@ public static class LinFloat64VectorComposerUtils
 
     public static LinFloat64Vector CreateUnitLinVector(this IReadOnlyDictionary<int, double> basisScalarDictionary)
     {
-        var norm = basisScalarDictionary.Values.GetVectorNorm();
+        var norm = basisScalarDictionary.Values.L2Norm();
 
         if (norm.IsOne())
             return LinFloat64Vector.Create(
@@ -111,7 +112,7 @@ public static class LinFloat64VectorComposerUtils
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static LinFloat64Vector CreateUnitLinVector(this IReadOnlyList<double> scalarList)
     {
-        var normInv = 1d / scalarList.GetVectorNorm();
+        var normInv = 1d / scalarList.L2Norm();
 
         var scalarDictionary = scalarList.Select(s => s * normInv)
             .CreateValidLinVectorDictionary(
@@ -157,9 +158,9 @@ public static class LinFloat64VectorComposerUtils
 
 
 
-    public static LinFloat64Vector DiagonalToLinVector(this double[,] matrix)
+    public static LinFloat64Vector DiagonalToLinVector(this Matrix<double> matrix)
     {
-        var count = Math.Min(matrix.GetLength(0), matrix.GetLength(1));
+        var count = Math.Min(matrix.RowCount, matrix.ColumnCount);
         var composer = LinFloat64VectorComposer.Create();
 
         for (var i = 0; i < count; i++)
@@ -172,9 +173,9 @@ public static class LinFloat64VectorComposerUtils
         return composer.GetVector();
     }
 
-    public static LinFloat64Vector RowToLinVector(this double[,] matrix, int row)
+    public static LinFloat64Vector RowToLinVector(this Matrix<double> matrix, int row)
     {
-        var columnCount = matrix.GetLength(1);
+        var columnCount = matrix.ColumnCount;
         var composer = LinFloat64VectorComposer.Create();
 
         for (var j = 0; j < columnCount; j++)
@@ -187,9 +188,9 @@ public static class LinFloat64VectorComposerUtils
         return composer.GetVector();
     }
 
-    public static LinFloat64Vector ColumnToLinVector(this double[,] matrix, int column)
+    public static LinFloat64Vector ColumnToLinVector(this Matrix<double> matrix, int column)
     {
-        var rowCount = matrix.GetLength(0);
+        var rowCount = matrix.RowCount;
         var composer = LinFloat64VectorComposer.Create();
 
         for (var i = 0; i < rowCount; i++)
@@ -203,17 +204,17 @@ public static class LinFloat64VectorComposerUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static IEnumerable<LinFloat64Vector> RowsToLinVectors(this double[,] matrix)
+    public static IEnumerable<LinFloat64Vector> RowsToLinVectors(this Matrix<double> matrix)
     {
-        return matrix.GetLength(0).GetRange().Select(
+        return matrix.RowCount.GetRange().Select(
             matrix.RowToLinVector
         );
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static IEnumerable<LinFloat64Vector> ColumnsToLinVectors(this double[,] matrix)
+    public static IEnumerable<LinFloat64Vector> ColumnsToLinVectors(this Matrix<double> matrix)
     {
-        return matrix.GetLength(1).GetRange().Select(
+        return matrix.ColumnCount.GetRange().Select(
             matrix.ColumnToLinVector
         );
     }

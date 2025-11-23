@@ -10,7 +10,7 @@ namespace GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.GraphViz.Dot.La
 /// </summary>
 public sealed class DotHtmlRow : DotHtmlTag, IList<DotHtmlCell>
 {
-    private readonly List<DotHtmlCell> _cells = new List<DotHtmlCell>();
+    private readonly List<DotHtmlCell> _cells = [];
 
 
     /// <summary>
@@ -18,7 +18,7 @@ public sealed class DotHtmlRow : DotHtmlTag, IList<DotHtmlCell>
     /// </summary>
     public bool HorizontalRule { get; set; }
 
-    public override IEnumerable<KeyValuePair<string, string>> Attributes => Enumerable.Empty<KeyValuePair<string, string>>();
+    public override IEnumerable<KeyValuePair<string, string>> Attributes => [];
 
     public DotHtmlCell FirstCell => _cells.Count > 0 ? _cells[0] : null;
 

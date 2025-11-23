@@ -66,7 +66,7 @@ public readonly struct Float64Scalar :
         = new Float64Scalar(double.Epsilon);
 
     static Float64Scalar IFloatingPointIeee754<Float64Scalar>.NaN
-        => throw new NotImplementedException();
+        => throw new InvalidOperationException();
 
     public static Float64Scalar NegativeInfinity { get; }
         = new Float64Scalar(double.NegativeInfinity);
@@ -651,13 +651,13 @@ public readonly struct Float64Scalar :
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Float64Scalar operator --(Float64Scalar value)
     {
-        throw new NotImplementedException();
+        return new Float64Scalar(value.ScalarValue - 1d);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Float64Scalar operator ++(Float64Scalar value)
     {
-        throw new NotImplementedException();
+        return new Float64Scalar(value.ScalarValue + 1d);
     }
 
     
@@ -1202,61 +1202,61 @@ public readonly struct Float64Scalar :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool IsNearZero(double zeroEpsilon = Float64Utils.ZeroEpsilon)
+    public bool IsNearZero(double tolerance = Float64Utils.DefaultTolerance)
     {
         return !(double.IsInfinity(ScalarValue) || 
-                 ScalarValue < -zeroEpsilon || 
-                 ScalarValue > zeroEpsilon);
+                 ScalarValue < -tolerance || 
+                 ScalarValue > tolerance);
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool IsNearOne(double zeroEpsilon = Float64Utils.ZeroEpsilon)
+    public bool IsNearOne(double tolerance = Float64Utils.DefaultTolerance)
     {
         var value = ScalarValue - 1d;
 
         return !(double.IsInfinity(value) || 
-                 value < -zeroEpsilon || 
-                 value > zeroEpsilon);
+                 value < -tolerance || 
+                 value > tolerance);
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool IsNearNegativeOne(double zeroEpsilon = Float64Utils.ZeroEpsilon)
+    public bool IsNearNegativeOne(double tolerance = Float64Utils.DefaultTolerance)
     {
         var value = ScalarValue + 1d;
 
         return !(double.IsInfinity(value) || 
-                 value < -zeroEpsilon || 
-                 value > zeroEpsilon);
+                 value < -tolerance || 
+                 value > tolerance);
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool IsNearEqual(int value2, double zeroEpsilon = Float64Utils.ZeroEpsilon)
+    public bool IsNearEqual(int value2, double tolerance = Float64Utils.DefaultTolerance)
     {
         var value = ScalarValue - value2;
 
         return !(double.IsInfinity(value) || 
-                 value < -zeroEpsilon || 
-                 value > zeroEpsilon);
+                 value < -tolerance || 
+                 value > tolerance);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool IsNearEqual(double value2, double zeroEpsilon = Float64Utils.ZeroEpsilon)
+    public bool IsNearEqual(double value2, double tolerance = Float64Utils.DefaultTolerance)
     {
         var value = ScalarValue - value2;
 
         return !(double.IsInfinity(value) || 
-                 value < -zeroEpsilon || 
-                 value > zeroEpsilon);
+                 value < -tolerance || 
+                 value > tolerance);
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool IsNearEqual(Float64Scalar value2, double zeroEpsilon = Float64Utils.ZeroEpsilon)
+    public bool IsNearEqual(Float64Scalar value2, double tolerance = Float64Utils.DefaultTolerance)
     {
         var value = ScalarValue - value2.ScalarValue;
 
         return !(double.IsInfinity(value) || 
-                 value < -zeroEpsilon || 
-                 value > zeroEpsilon);
+                 value < -tolerance || 
+                 value > tolerance);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -1296,7 +1296,7 @@ public readonly struct Float64Scalar :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool IsNearInRange(double value1, double value2, double zeroEpsilon = Float64Utils.ZeroEpsilon)
+    public bool IsNearInRange(double value1, double value2, double tolerance = Float64Utils.DefaultTolerance)
     {
         Debug.Assert(
             !double.IsNaN(value1) &&
@@ -1304,7 +1304,7 @@ public readonly struct Float64Scalar :
             value1 < value2
         );
 
-        return !(IsInfinite() || ScalarValue < value1 - zeroEpsilon || ScalarValue > value2 + zeroEpsilon);
+        return !(IsInfinite() || ScalarValue < value1 - tolerance || ScalarValue > value2 + tolerance);
     }
 
     
@@ -1320,12 +1320,12 @@ public readonly struct Float64Scalar :
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public IntegerSign Sign(double zeroEpsilon)
+    public IntegerSign Sign(double tolerance)
     {
-        if (ScalarValue < -zeroEpsilon)
+        if (ScalarValue < -tolerance)
             return IntegerSign.Negative;
 
-        if (ScalarValue > zeroEpsilon)
+        if (ScalarValue > tolerance)
             return IntegerSign.Positive;
 
         return IntegerSign.Zero;
@@ -1642,14 +1642,14 @@ public readonly struct Float64Scalar :
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public Pair<Float64Scalar> SinCos()
+    public LinFloat64Vector2D SinCos()
     {
         var (sinValue, cosValue) = 
             Math.SinCos(ScalarValue);
 
-        return new Pair<Float64Scalar>(
-            new Float64Scalar(sinValue), 
-            new Float64Scalar(cosValue)
+        return LinFloat64Vector2D.Create(
+            sinValue, 
+            cosValue
         );
     }
     
@@ -1696,12 +1696,12 @@ public readonly struct Float64Scalar :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public Pair<Float64Scalar> SinCosPi()
+    public LinFloat64Vector2D SinCosPi()
     {
         var (sinValue, cosValue) = 
             double.SinCosPi(ScalarValue);
 
-        return new Pair<Float64Scalar>(
+        return LinFloat64Vector2D.Create(
             new Float64Scalar(sinValue), 
             new Float64Scalar(cosValue)
         );

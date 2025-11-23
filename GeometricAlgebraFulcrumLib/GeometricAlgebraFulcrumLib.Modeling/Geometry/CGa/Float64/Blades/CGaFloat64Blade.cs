@@ -4,6 +4,7 @@ using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivectors;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Processors;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Float64.Decoding;
+using GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Float64.Elements;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Float64.Visualizer;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Tuples;
 
@@ -16,7 +17,7 @@ namespace GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Float64.Blades;
 ///   (see paper Projective Geometric Algebra as a Subalgebra of Conformal Geometric algebra)
 /// - Conformal GA Directions, Tangents, Flats, and Round (see chapter 14 in Geometric Algebra for Computer Science)
 /// </summary>
-public sealed record CGaFloat64Blade
+public sealed partial record CGaFloat64Blade
 {
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static CGaFloat64Blade operator -(CGaFloat64Blade blade)
@@ -204,21 +205,21 @@ public sealed record CGaFloat64Blade
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool IsNearZero(double zeroEpsilon = Float64Utils.ZeroEpsilon)
+    public bool IsNearZero(double tolerance = Float64Utils.DefaultTolerance)
     {
-        return InternalKVector.IsNearZero(zeroEpsilon);
+        return InternalKVector.IsNearZero(tolerance);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool IsNearEqual(XGaFloat64Multivector blade2, double zeroEpsilon = Float64Utils.ZeroEpsilon)
+    public bool IsNearEqual(XGaFloat64Multivector blade2, double tolerance = Float64Utils.DefaultTolerance)
     {
-        return InternalKVector.Subtract(blade2).IsNearZero(zeroEpsilon);
+        return InternalKVector.Subtract(blade2).IsNearZero(tolerance);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool IsNearEqual(CGaFloat64Blade blade2, double zeroEpsilon = Float64Utils.ZeroEpsilon)
+    public bool IsNearEqual(CGaFloat64Blade blade2, double tolerance = Float64Utils.DefaultTolerance)
     {
-        return InternalKVector.Subtract(blade2.InternalKVector).IsNearZero(zeroEpsilon);
+        return InternalKVector.Subtract(blade2.InternalKVector).IsNearZero(tolerance);
     }
 
 
@@ -231,11 +232,11 @@ public sealed record CGaFloat64Blade
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public CGaFloat64Blade RemoveNearZeroTerms(double zeroEpsilon = Float64Utils.ZeroEpsilon)
+    public CGaFloat64Blade RemoveNearZeroTerms(double tolerance = Float64Utils.DefaultTolerance)
     {
         return new CGaFloat64Blade(
             GeometricSpace,
-            InternalKVector.MapScalars(s => s.IsNearZero(zeroEpsilon) ? 0 : s)
+            InternalKVector.MapScalars(s => s.IsNearZero(tolerance) ? 0 : s)
         );
     }
     
@@ -270,7 +271,7 @@ public sealed record CGaFloat64Blade
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public double SpSquared()
     {
-        return InternalKVector.SpSquared().ScalarValue;
+        return InternalKVector.SpSquared();
     }
 
     /// <summary>
@@ -280,7 +281,7 @@ public sealed record CGaFloat64Blade
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public double NormSquared()
     {
-        return InternalKVector.NormSquared().ScalarValue;
+        return InternalKVector.NormSquared();
     }
 
     /// <summary>
@@ -290,7 +291,7 @@ public sealed record CGaFloat64Blade
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public double Norm()
     {
-        return InternalKVector.NormSquared().ScalarValue.SqrtOfAbs();
+        return InternalKVector.NormSquared().SqrtOfAbs();
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -334,7 +335,7 @@ public sealed record CGaFloat64Blade
     {
         return new CGaFloat64Blade(
             GeometricSpace,
-            InternalKVector.Inverse()
+            InternalKVector.VersorInverse()
         );
     }
 
@@ -363,7 +364,7 @@ public sealed record CGaFloat64Blade
 
         return norm.IsNearZero()
             ? this
-            : Divide(norm.ScalarValue);
+            : Divide(norm);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -389,7 +390,7 @@ public sealed record CGaFloat64Blade
 
         return new CGaFloat64Blade(
             GeometricSpace,
-            InternalKVector.Inverse().Lcp(GeometricSpace.Ie.InternalKVector)
+            InternalKVector.VersorInverse().Lcp(GeometricSpace.Ie.InternalKVector)
         );
     }
 
@@ -406,7 +407,7 @@ public sealed record CGaFloat64Blade
 
         return new CGaFloat64Blade(
             GeometricSpace,
-            GeometricSpace.Ie.InternalKVector.Rcp(InternalKVector.Inverse())
+            GeometricSpace.Ie.InternalKVector.Rcp(InternalKVector.VersorInverse())
         );
     }
 
@@ -471,11 +472,11 @@ public sealed record CGaFloat64Blade
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public double PGaNormSquared()
     {
-        Debug.Assert(this.IsPGaBlade());
+        Debug.Assert(IsPGaBlade());
 
         return InternalKVector.Sp(
             InternalKVector.CliffordConjugate()
-        ).ScalarValue;
+        );
     }
 
     /// <summary>
@@ -617,7 +618,7 @@ public sealed record CGaFloat64Blade
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public double Sp(CGaFloat64Blade blade2)
     {
-        return InternalKVector.Sp(blade2.InternalKVector).ScalarValue;
+        return InternalKVector.Sp(blade2.InternalKVector);
     }
 
     /// <summary>
@@ -628,7 +629,7 @@ public sealed record CGaFloat64Blade
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public double Sp(XGaFloat64KVector blade2)
     {
-        return InternalKVector.Sp(blade2).ScalarValue;
+        return InternalKVector.Sp(blade2);
     }
 
     /// <summary>
@@ -853,7 +854,7 @@ public sealed record CGaFloat64Blade
         else if (blade2.IsPseudoVector)
             vector2 = blade2.InternalKVector.Lcp(GeometricSpace.IcInvKVector).GetVectorPart();
 
-        return -2 * vector1.Sp(vector2).ScalarValue;
+        return -2 * vector1.Sp(vector2);
     }
 
     /// <summary>
@@ -892,6 +893,285 @@ public sealed record CGaFloat64Blade
         );
     }
 
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public bool IsVGaVector()
+    {
+        return GeometricSpace.IsValidVGaElement(InternalKVector) &&
+               InternalKVector.IsVector();
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public bool IsVGaBivector()
+    {
+        return GeometricSpace.IsValidVGaElement(InternalKVector) &&
+               InternalKVector.IsBivector();
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public bool IsVGaTrivector()
+    {
+        return GeometricSpace.IsValidVGaElement(InternalKVector) &&
+               InternalKVector.IsTrivector();
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public bool IsVGaBlade()
+    {
+        return GeometricSpace.IsValidVGaElement(InternalKVector);
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public bool IsPGaBlade()
+    {
+        return GeometricSpace.IsValidPGaElement(InternalKVector);
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public bool IsCGaInfBlade()
+    {
+        return GeometricSpace.IsValidCGaInfElement(InternalKVector);
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public bool IsCGaDirection()
+    {
+        var cgaGeometricSpace = GeometricSpace;
+
+        return cgaGeometricSpace.Ei.InternalVector.Op(InternalKVector).IsNearZero() &&
+               cgaGeometricSpace.Ei.InternalVector.Lcp(InternalKVector).IsNearZero();
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public bool IsCGaTangent()
+    {
+        var cgaGeometricSpace = GeometricSpace;
+
+        return !cgaGeometricSpace.Ei.InternalVector.Op(InternalKVector).IsNearZero() &&
+               !cgaGeometricSpace.Ei.InternalVector.Lcp(InternalKVector).IsNearZero() &&
+               SpSquared().IsNearZero();
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public bool IsCGaFlat()
+    {
+        var cgaGeometricSpace = GeometricSpace;
+
+        var isZeroEiOpX = cgaGeometricSpace.Ei.InternalVector.Op(InternalKVector).IsNearZero();
+        var isZeroEiIpX = cgaGeometricSpace.Ei.InternalVector.Lcp(InternalKVector).IsNearZero();
+
+        return isZeroEiOpX && !isZeroEiIpX ||
+               !isZeroEiOpX && isZeroEiIpX;
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public bool IsOpnsFlat()
+    {
+        var cgaGeometricSpace = GeometricSpace;
+
+        var isZeroEiOpX = cgaGeometricSpace.Ei.InternalVector.Op(InternalKVector).IsNearZero();
+        var isZeroEiIpX = cgaGeometricSpace.Ei.InternalVector.Lcp(InternalKVector).IsNearZero();
+
+        return isZeroEiOpX && !isZeroEiIpX;
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public bool IsIpnsFlat()
+    {
+        var cgaGeometricSpace = GeometricSpace;
+
+        var isZeroEiOpX = cgaGeometricSpace.Ei.InternalVector.Op(InternalKVector).IsNearZero();
+        var isZeroEiIpX = cgaGeometricSpace.Ei.InternalVector.Lcp(InternalKVector).IsNearZero();
+
+        return !isZeroEiOpX && isZeroEiIpX;
+    }
+
+    public bool IsIpnsPointOrHyperSphere()
+    {
+        if (!IsVector)
+            return false;
+
+        var cgaGeometricSpace = GeometricSpace;
+
+        var eiOpX = this[0] + this[1];
+        //cgaGeometricSpace.Ei.InternalVector.Op(this.InternalVector);
+
+        if (eiOpX.IsNearZero())
+            return false;
+
+        var eiIpX =
+            cgaGeometricSpace.Ei.InternalVector.Lcp(InternalVector).ScalarValue;
+
+        if (eiIpX.IsNearZero())
+            return false;
+
+        return true;
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public bool IsCGaRound()
+    {
+        var cgaGeometricSpace = GeometricSpace;
+
+        return !cgaGeometricSpace.Ei.InternalVector.Op(InternalKVector).IsNearZero() &&
+               !cgaGeometricSpace.Ei.InternalVector.Lcp(InternalKVector).IsNearZero() &&
+               !SpSquared().IsNearZero();
+    }
+
+
+    public CGaFloat64ElementKind GetElementKind()
+    {
+        var cgaGeometricSpace = GeometricSpace;
+
+        var isZeroEiOpX = cgaGeometricSpace.Ei.InternalVector.Op(InternalKVector).IsNearZero();
+        var isZeroEiIpX = cgaGeometricSpace.Ei.InternalVector.Lcp(InternalKVector).IsNearZero();
+
+        if (!isZeroEiOpX && !isZeroEiIpX)
+            return SpSquared().IsNearZero()
+                ? CGaFloat64ElementKind.Tangent
+                : CGaFloat64ElementKind.Round;
+
+        if (isZeroEiOpX && isZeroEiIpX)
+            return CGaFloat64ElementKind.Direction;
+
+        return CGaFloat64ElementKind.Flat;
+    }
+
+    public CGaFloat64ElementSpecs GetElementSpecsOpns()
+    {
+        var cgaGeometricSpace = GeometricSpace;
+        var isZeroEiOpX = cgaGeometricSpace.Ei.InternalVector.Op(InternalKVector).IsNearZero();
+        var isZeroEiIpX = cgaGeometricSpace.Ei.InternalVector.Lcp(InternalKVector).IsNearZero();
+
+        if (!isZeroEiOpX && !isZeroEiIpX)
+        {
+            // OPNS Tangent
+            if (SpSquared().IsNearZero())
+                return new CGaFloat64ElementSpecs(
+                    cgaGeometricSpace,
+                    CGaFloat64ElementKind.Tangent,
+                    CGaFloat64ElementEncoding.Opns,
+                    DecodeOpnsTangent.VGaDirection().Grade
+                );
+
+            // OPNS Round
+            return new CGaFloat64ElementSpecs(
+                cgaGeometricSpace,
+                CGaFloat64ElementKind.Round,
+                CGaFloat64ElementEncoding.Opns,
+                DecodeOpnsRound.VGaDirection().Grade
+            );
+        }
+
+        // OPNS Direction
+        if (isZeroEiOpX && isZeroEiIpX)
+            return new CGaFloat64ElementSpecs(
+                cgaGeometricSpace,
+                CGaFloat64ElementKind.Direction,
+                CGaFloat64ElementEncoding.Opns,
+                DecodeOpnsDirection.VGaDirection().Grade
+            );
+
+        // OPNS Flat
+        if (isZeroEiOpX)
+            return new CGaFloat64ElementSpecs(
+                cgaGeometricSpace,
+                CGaFloat64ElementKind.Flat,
+                CGaFloat64ElementEncoding.Opns,
+                DecodeOpnsFlat.VGaDirection().Grade
+            );
+
+        // IPNS Flat
+        return new CGaFloat64ElementSpecs(
+            cgaGeometricSpace,
+            CGaFloat64ElementKind.Flat,
+            CGaFloat64ElementEncoding.Ipns,
+            DecodeIpnsFlat.VGaDirection().Grade
+        );
+    }
+
+    public CGaFloat64ElementSpecs GetElementSpecsIpns()
+    {
+        var cgaGeometricSpace = GeometricSpace;
+        var isZeroEiOpX = cgaGeometricSpace.Ei.InternalVector.Op(InternalKVector).IsNearZero();
+        var isZeroEiIpX = cgaGeometricSpace.Ei.InternalVector.Lcp(InternalKVector).IsNearZero();
+
+        if (!isZeroEiOpX && !isZeroEiIpX)
+        {
+            // IPNS Tangent
+            if (SpSquared().IsNearZero())
+                return new CGaFloat64ElementSpecs(
+                    cgaGeometricSpace,
+                    CGaFloat64ElementKind.Tangent,
+                    CGaFloat64ElementEncoding.Ipns,
+                    DecodeIpnsTangent.VGaDirection().Grade
+                );
+
+            // IPNS Round
+            return new CGaFloat64ElementSpecs(
+                cgaGeometricSpace,
+                CGaFloat64ElementKind.Round,
+                CGaFloat64ElementEncoding.Ipns,
+                DecodeIpnsRound.VGaDirection().Grade
+            );
+        }
+
+        // IPNS Direction
+        if (isZeroEiOpX && isZeroEiIpX)
+            return new CGaFloat64ElementSpecs(
+                cgaGeometricSpace,
+                CGaFloat64ElementKind.Direction,
+                CGaFloat64ElementEncoding.Ipns,
+                DecodeIpnsDirection.VGaDirection().Grade
+            );
+
+        if (isZeroEiOpX)
+            return new CGaFloat64ElementSpecs(
+                cgaGeometricSpace,
+                CGaFloat64ElementKind.Flat,
+                CGaFloat64ElementEncoding.Opns,
+                DecodeOpnsFlat.VGaDirection().Grade
+            );
+
+        // IPNS Flat
+        return new CGaFloat64ElementSpecs(
+            cgaGeometricSpace,
+            CGaFloat64ElementKind.Flat,
+            CGaFloat64ElementEncoding.Ipns,
+            DecodeIpnsFlat.VGaDirection().Grade
+        );
+    }
+
+    public CGaFloat64ElementSpecs GetElementSpecs()
+    {
+        var cgaGeometricSpace = GeometricSpace;
+        var isZeroEiOpX = cgaGeometricSpace.Ei.InternalVector.Op(InternalKVector).IsNearZero();
+        var isZeroEiIpX = cgaGeometricSpace.Ei.InternalVector.Lcp(InternalKVector).IsNearZero();
+
+        if (!isZeroEiOpX && !isZeroEiIpX)
+            return new CGaFloat64ElementSpecs(
+                cgaGeometricSpace,
+                SpSquared().IsNearZero()
+                    ? CGaFloat64ElementKind.Tangent
+                    : CGaFloat64ElementKind.Round,
+                CGaFloat64ElementEncoding.OpnsOrIpns
+            );
+
+        if (isZeroEiOpX && isZeroEiIpX)
+            return new CGaFloat64ElementSpecs(
+                cgaGeometricSpace,
+                CGaFloat64ElementKind.Direction,
+                CGaFloat64ElementEncoding.OpnsOrIpns
+            );
+
+        return new CGaFloat64ElementSpecs(
+            cgaGeometricSpace,
+            CGaFloat64ElementKind.Flat,
+            isZeroEiOpX
+                ? CGaFloat64ElementEncoding.Opns
+                : CGaFloat64ElementEncoding.Ipns
+        );
+    }
+
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public string ToLaTeX()
@@ -908,6 +1188,6 @@ public sealed record CGaFloat64Blade
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public override string ToString()
     {
-        return ToLaTeX();
+        return BasisSpecs.ToText(InternalKVector);
     }
 }

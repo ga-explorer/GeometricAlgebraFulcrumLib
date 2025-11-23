@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace GeometricAlgebraFulcrumLib.Utilities.Code.Irony.DSLException;
+﻿namespace GeometricAlgebraFulcrumLib.Utilities.Code.Irony.DSLException;
 
 public class AstGeneratorException : CompilerException
 {

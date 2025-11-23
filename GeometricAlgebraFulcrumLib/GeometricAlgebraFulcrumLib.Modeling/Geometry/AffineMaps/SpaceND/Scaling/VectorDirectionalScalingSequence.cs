@@ -173,12 +173,12 @@
 //            return true;
 //        }
 
-//        public bool IsNearIdentity(double zeroEpsilon = 1E-12)
+//        public bool IsNearIdentity(double tolerance = 1E-12)
 //        {
 //            for (var basisIndex = 0; basisIndex < VSpaceDimensions; basisIndex++)
 //            {
 //                var isSameVectorBasis =
-//                    MapBasisVector(basisIndex).IsNearVectorBasis(basisIndex, zeroEpsilon);
+//                    MapBasisVector(basisIndex).IsNearVectorBasis(basisIndex, tolerance);
 
 //                if (!isSameVectorBasis) return false;
 //            }

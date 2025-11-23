@@ -101,6 +101,7 @@ public sealed class Float64ZxCirclePath3D :
         return Float64Path3DLocalFrame.Create(
             parameterValue,
             point,
+            1, 
             tangent,
             normal1,
             normal2

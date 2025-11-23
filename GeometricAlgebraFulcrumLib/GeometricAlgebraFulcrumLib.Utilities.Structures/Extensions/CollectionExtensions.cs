@@ -242,7 +242,7 @@
         public static bool IsSortedAscending<T>(this ICollection<T> sequence)
             where T : IComparable
         {
-            var item1 = sequence.First();
+            var item1 = sequence.FirstItem();
             foreach (var item2 in sequence.Skip(1))
             {
                 if (item1.CompareTo(item2) > 0)
@@ -257,7 +257,7 @@
         public static bool IsSortedDescending<T>(this ICollection<T> sequence)
             where T : IComparable
         {
-            var item1 = sequence.First();
+            var item1 = sequence.FirstItem();
             foreach (var item2 in sequence.Skip(1))
             {
                 if (item1.CompareTo(item2) < 0)

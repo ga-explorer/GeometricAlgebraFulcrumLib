@@ -1,18 +1,16 @@
 ﻿using System.Collections.Immutable;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space3D;
-using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Meshes.PointsMesh;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Meshes.PointsMesh.Space3D;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.AttributeSet;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.BitManipulation;
-using GeometricAlgebraFulcrumLib.Utilities.Structures.Tuples;
 
 namespace GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.BabylonJs.Values;
 
 public sealed class GrBabylonJsVector3ArrayArrayValue :
-    SparseCodeAttributeValue<IReadOnlyList<IReadOnlyList<ITriplet<Float64Scalar>>>>
+    SparseCodeAttributeValue<IReadOnlyList<IReadOnlyList<LinFloat64Vector3D>>>
 {
-    public static GrBabylonJsVector3ArrayArrayValue Create(IReadOnlyList<IReadOnlyList<ITriplet<Float64Scalar>>> value)
+    public static GrBabylonJsVector3ArrayArrayValue Create(IReadOnlyList<IReadOnlyList<LinFloat64Vector3D>> value)
     {
         return new GrBabylonJsVector3ArrayArrayValue(value);
     }
@@ -38,10 +36,6 @@ public sealed class GrBabylonJsVector3ArrayArrayValue :
         return new GrBabylonJsVector3ArrayArrayValue(value);
     }
         
-    public static implicit operator GrBabylonJsVector3ArrayArrayValue(ILinFloat64Vector3D[][] value)
-    {
-        return new GrBabylonJsVector3ArrayArrayValue(value);
-    }
         
     public static implicit operator GrBabylonJsVector3ArrayArrayValue(ArrayPointsMesh3D value)
     {
@@ -54,7 +48,7 @@ public sealed class GrBabylonJsVector3ArrayArrayValue :
     {
     }
 
-    private GrBabylonJsVector3ArrayArrayValue(IReadOnlyList<IReadOnlyList<ITriplet<Float64Scalar>>> value)
+    private GrBabylonJsVector3ArrayArrayValue(IReadOnlyList<IReadOnlyList<LinFloat64Vector3D>> value)
         : base(value)
     {
     }

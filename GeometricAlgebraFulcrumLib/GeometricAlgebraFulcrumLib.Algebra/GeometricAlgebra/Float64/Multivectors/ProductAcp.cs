@@ -1,5 +1,6 @@
 ﻿using System.Runtime.CompilerServices;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
+using GeometricAlgebraFulcrumLib.Utilities.Structures.IndexSets;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivectors
 {
@@ -86,6 +87,12 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivecto
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public virtual XGaFloat64Multivector EAcp(IndexSet mv2)
+        {
+            return EAcp(Processor.KVectorTerm(mv2));
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public virtual XGaFloat64Multivector EAcp(XGaFloat64KVector mv2)
         {
             if (this is XGaFloat64Scalar s1)
@@ -95,7 +102,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivecto
                 return Times(s2.ScalarValue);
 
             if (this is XGaFloat64Vector v1 && mv2 is XGaFloat64Vector v2)
-                return v1.ESp(v2);
+                return Processor.Scalar(v1.ESp(v2));
 
             return IsZero || mv2.IsZero
                 ? Processor.ScalarZero
@@ -117,7 +124,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivecto
                 return Times(s2.ScalarValue);
 
             if (this is XGaFloat64Vector v1 && mv2 is XGaFloat64Vector v2)
-                return v1.ESp(v2);
+                return Processor.Scalar(v1.ESp(v2));
 
             return IsZero || mv2.IsZero
                 ? Processor.ScalarZero
@@ -207,6 +214,12 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivecto
                     .AddAcpTerms(this, mv2)
                     .GetMultivector();
         }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public virtual XGaFloat64Multivector Acp(IndexSet mv2)
+        {
+            return Acp(Processor.KVectorTerm(mv2));
+        }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public virtual XGaFloat64Multivector Acp(XGaFloat64KVector mv2)
@@ -218,7 +231,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivecto
                 return Times(s2.ScalarValue);
 
             if (this is XGaFloat64Vector v1 && mv2 is XGaFloat64Vector v2)
-                return v1.Sp(v2);
+                return Processor.Scalar(v1.Sp(v2));
 
             return IsZero || mv2.IsZero
                 ? Processor.ScalarZero
@@ -240,7 +253,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivecto
                 return Times(s2.ScalarValue);
 
             if (this is XGaFloat64Vector v1 && mv2 is XGaFloat64Vector v2)
-                return v1.Sp(v2);
+                return Processor.Scalar(v1.Sp(v2));
 
             return IsZero || mv2.IsZero
                 ? Processor.ScalarZero
@@ -294,6 +307,12 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivecto
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public override XGaFloat64KVector EAcp(IndexSet kv2)
+        {
+            return Processor.KVectorTerm(kv2, ScalarValue);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public override XGaFloat64KVector EAcp(XGaFloat64KVector kv2)
         {
             return kv2.Times(ScalarValue);
@@ -325,6 +344,12 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivecto
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public override XGaFloat64KVector Acp(IndexSet kv2)
+        {
+            return Processor.KVectorTerm(kv2, ScalarValue);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public override XGaFloat64KVector Acp(XGaFloat64KVector kv2)
         {
             return kv2.Times(ScalarValue);
@@ -345,7 +370,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivecto
         {
             //return (Gp(mv2) + mv2.Gp(this)).Divide(2d);
 
-            return ESp(mv2);
+            return Processor.Scalar(ESp(mv2));
         }
 
         
@@ -360,7 +385,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivecto
         {
             //return (Gp(mv2) + mv2.Gp(this)).Divide(2d);
 
-            return Sp(mv2);
+            return Processor.Scalar(Sp(mv2));
         }
     }
     
@@ -450,7 +475,16 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivecto
     
     public sealed partial class XGaFloat64GradedMultivectorComposer
     {
-        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public XGaFloat64GradedMultivectorComposer AddEAcpTerms(XGaFloat64Multivector mv1, IndexSet mv2)
+        {
+            return AddEuclideanProductTerms(
+                mv1,
+                mv2,
+                BasisBladeProductUtils.EAcpIsNonZero
+            );
+        }
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public XGaFloat64GradedMultivectorComposer AddEAcpTerms(XGaFloat64Multivector mv1, XGaFloat64Multivector mv2)
         {
@@ -462,6 +496,16 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivecto
         }
 
         
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public XGaFloat64GradedMultivectorComposer AddAcpTerms(XGaFloat64Multivector mv1, IndexSet mv2)
+        {
+            return AddMetricProductTerms(
+                mv1,
+                mv2,
+                BasisBladeProductUtils.EAcpIsNonZero
+            );
+        }
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public XGaFloat64GradedMultivectorComposer AddAcpTerms(XGaFloat64Multivector mv1, XGaFloat64Multivector mv2)
         {

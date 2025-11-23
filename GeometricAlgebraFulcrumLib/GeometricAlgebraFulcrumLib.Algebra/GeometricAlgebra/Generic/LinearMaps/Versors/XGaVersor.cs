@@ -34,7 +34,7 @@ public class XGaVersor<T> :
     {
         Grade = multivector.GetMaxGrade();
         Multivector = multivector;
-        MultivectorInverse = Multivector.Inverse();
+        MultivectorInverse = Multivector.VersorInverse();
     }
         
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -50,7 +50,7 @@ public class XGaVersor<T> :
     public override bool IsValid()
     {
         // Make sure the storage and its inverse are correct
-        if (!(Multivector.Inverse() - MultivectorInverse).IsNearZero())
+        if (!(Multivector.VersorInverse() - MultivectorInverse).IsNearZero())
             return false;
 
         // Make sure storage contains terms of only even or only odd grade

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Immutable;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
+using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Numerical;
 using GeometricAlgebraFulcrumLib.Applications.Symbolic.LibraryGenerators.CSharp.GradedMultivectorsLib.Combinations;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.BitManipulation;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Combinations;
@@ -86,7 +87,7 @@ public class LibLaTeXCodeComposer :
 
         return LibUnilinearCombination.CreateFromOutermorphism(
             MultivectorType,
-            vectorMapArray
+            vectorMapArray.ToMathNetDenseMatrix()
         );
     }
 

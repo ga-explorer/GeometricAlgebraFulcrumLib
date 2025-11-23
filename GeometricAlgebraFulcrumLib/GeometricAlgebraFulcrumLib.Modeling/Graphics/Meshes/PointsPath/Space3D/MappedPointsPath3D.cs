@@ -4,12 +4,12 @@ using GeometricAlgebraFulcrumLib.Utilities.Structures.Sequences.Periodic1D;
 namespace GeometricAlgebraFulcrumLib.Modeling.Graphics.Meshes.PointsPath.Space3D;
 
 public sealed class MappedPointsPath3D : 
-    PSeqMapped1D<ILinFloat64Vector3D>, 
+    PSeqMapped1D<LinFloat64Vector3D>, 
     IPointsPath3D
 {
     public IPointsPath3D BasePath { get; }
 
-    public Func<ILinFloat64Vector3D, ILinFloat64Vector3D> Mapping { get; set; }
+    public Func<LinFloat64Vector3D, LinFloat64Vector3D> Mapping { get; set; }
 
 
     public MappedPointsPath3D(IPointsPath3D basePath)
@@ -19,7 +19,7 @@ public sealed class MappedPointsPath3D :
         Mapping = (point => point);
     }
 
-    public MappedPointsPath3D(IPointsPath3D basePath, Func<ILinFloat64Vector3D, ILinFloat64Vector3D> mapping)
+    public MappedPointsPath3D(IPointsPath3D basePath, Func<LinFloat64Vector3D, LinFloat64Vector3D> mapping)
         : base(basePath)
     {
         BasePath = basePath;
@@ -27,7 +27,7 @@ public sealed class MappedPointsPath3D :
     }
 
 
-    protected override ILinFloat64Vector3D MappingFunction(ILinFloat64Vector3D input)
+    protected override LinFloat64Vector3D MappingFunction(LinFloat64Vector3D input)
     {
         return Mapping(input);
     }
@@ -38,7 +38,7 @@ public sealed class MappedPointsPath3D :
         return this.All(p => p.IsValid());
     }
         
-    public IPointsPath3D MapPoints(Func<ILinFloat64Vector3D, ILinFloat64Vector3D> pointMapping)
+    public IPointsPath3D MapPoints(Func<LinFloat64Vector3D, LinFloat64Vector3D> pointMapping)
     {
         return new MappedPointsPath3D(
             BasePath,

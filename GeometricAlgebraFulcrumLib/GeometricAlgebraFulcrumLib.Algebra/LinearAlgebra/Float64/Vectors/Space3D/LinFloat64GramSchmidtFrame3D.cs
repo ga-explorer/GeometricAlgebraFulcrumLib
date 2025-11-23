@@ -1,6 +1,6 @@
 ﻿using System.Runtime.CompilerServices;
+using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Numerical;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
-using MathNet.Numerics.LinearAlgebra;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space3D;
 
@@ -8,14 +8,12 @@ public class LinFloat64GramSchmidtFrame3D
 {
     public static LinFloat64GramSchmidtFrame3D Create(LinFloat64Vector3D v1, LinFloat64Vector3D v2, LinFloat64Vector3D v3)
     {
-        var array = new double[,]
+        var matrix = (new double[,]
         {
             { v1.X, v2.X, v3.X },
             { v1.Y, v2.Y, v3.Y },
             { v1.Z, v2.Z, v3.Z }
-        };
-
-        var matrix = Matrix<double>.Build.DenseOfArray(array);
+        }).ToMathNetDenseMatrix();
 
         var qr = matrix.QR();
 
@@ -69,15 +67,15 @@ public class LinFloat64GramSchmidtFrame3D
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public LinFloat64GramSchmidtFrame3D CleanNorms(double zeroEpsilon = Float64Utils.ZeroEpsilon)
+    public LinFloat64GramSchmidtFrame3D CleanNorms(double tolerance = Float64Utils.DefaultTolerance)
     {
-        if (Direction1Norm.IsNearZero(zeroEpsilon))
+        if (Direction1Norm.IsNearZero(tolerance))
             Direction1Norm = 0d;
 
-        if (Direction2Norm.IsNearZero(zeroEpsilon))
+        if (Direction2Norm.IsNearZero(tolerance))
             Direction2Norm = 0d;
 
-        if (Direction3Norm.IsNearZero(zeroEpsilon))
+        if (Direction3Norm.IsNearZero(tolerance))
             Direction3Norm = 0d;
 
         return this;

@@ -1,17 +1,16 @@
-﻿using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
-using GeometricAlgebraFulcrumLib.Utilities.Structures.Tuples;
+﻿using GeometricAlgebraFulcrumLib.Utilities.Structures.Tuples;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space4D;
 
 public interface ILinFloat64Vector4D :
-    IFloat64LinearAlgebraElement,
-    IQuad<Float64Scalar>
+    ILinFloat64Vector,
+    IQuad<double>
 {
-    Float64Scalar X { get; }
+    double X { get; }
 
-    Float64Scalar Y { get; }
+    double Y { get; }
 
-    Float64Scalar Z { get; }
+    double Z { get; }
 
-    Float64Scalar W { get; }
+    double W { get; }
 }

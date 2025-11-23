@@ -13,7 +13,7 @@ public sealed class LinFloat64LineSubspace :
     public static LinFloat64LineSubspace CreateFromVector(LinFloat64Vector vector)
     {
         var length =
-            vector.ENorm();
+            vector.L2Norm();
 
         var unitVector =
             length.IsNearOne() ? vector : vector / length;
@@ -57,17 +57,17 @@ public sealed class LinFloat64LineSubspace :
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool NearContains(LinFloat64Vector vector, double zeroEpsilon = 1E-12D)
+    public bool NearContains(LinFloat64Vector vector, double tolerance = 1E-12D)
     {
-        return vector.IsNearZero(zeroEpsilon) ||
-               vector.IsNearParallelToUnit(BasisVector, zeroEpsilon);
+        return vector.IsNearZero(tolerance) ||
+               vector.IsNearParallelToUnit(BasisVector, tolerance);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool NearContains(ILinFloat64Subspace subspace, double zeroEpsilon = 1E-12)
+    public bool NearContains(ILinFloat64Subspace subspace, double tolerance = Float64Utils.DefaultTolerance)
     {
         return subspace.VSpaceDimensions <= VSpaceDimensions &&
-               subspace.BasisVectors.All(v => NearContains(v, zeroEpsilon));
+               subspace.BasisVectors.All(v => NearContains(v, tolerance));
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]

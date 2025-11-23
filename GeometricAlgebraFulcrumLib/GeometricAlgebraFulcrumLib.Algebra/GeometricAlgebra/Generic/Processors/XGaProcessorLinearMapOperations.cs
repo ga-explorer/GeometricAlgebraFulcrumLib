@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics;
 using System.Runtime.CompilerServices;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.LinearMaps;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.LinearMaps.Outermorphisms;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.LinearMaps.Rotors;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.LinearMaps.Versors;
@@ -9,11 +10,19 @@ using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Generic.LinearMaps;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Generic.Matrices;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Generic.Vectors.SpaceND;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Generic;
+using GeometricAlgebraFulcrumLib.Utilities.Structures.IndexSets;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Processors
 {
     public partial class XGaProcessor<T>
     {
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public XGaComputedUnilinearMap<T> UnilinearMap(Func<IndexSet, XGaMultivector<T>> basisMapFunc)
+        {
+            return new XGaComputedUnilinearMap<T>(this, basisMapFunc);
+        }
+
+
 
         /// <summary>
         /// Create an identity rotor

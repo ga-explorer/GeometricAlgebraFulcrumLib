@@ -12,9 +12,9 @@ public interface ILinFloat64UnilinearMap :
 
     bool IsReflection();
 
-    bool IsNearIdentity(double zeroEpsilon = 1e-12d);
+    bool IsNearIdentity(double tolerance = 1e-12d);
 
-    bool IsNearReflection(double zeroEpsilon = 1e-12d);
+    bool IsNearReflection(double tolerance = 1e-12d);
 
     ILinFloat64UnilinearMap GetInverseMap();
 
@@ -24,7 +24,7 @@ public interface ILinFloat64UnilinearMap :
 
     IEnumerable<KeyValuePair<int, LinFloat64Vector>> GetMappedBasisVectors(int vSpaceDimensions);
 
-    double[,] ToArray(int rowCount, int colCount);
+    Matrix<double> ToArray(int rowCount, int colCount);
 
     Matrix<double> ToMatrix(int rowCount, int colCount);
 

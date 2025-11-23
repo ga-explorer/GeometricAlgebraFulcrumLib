@@ -251,7 +251,7 @@
 //        throw new NotImplementedException();
 //    }
 
-//    public override bool IsNearIdentity(double zeroEpsilon = 1E-12)
+//    public override bool IsNearIdentity(double tolerance = Float64Utils.DefaultTolerance)
 //    {
 //        throw new NotImplementedException();
 //    }

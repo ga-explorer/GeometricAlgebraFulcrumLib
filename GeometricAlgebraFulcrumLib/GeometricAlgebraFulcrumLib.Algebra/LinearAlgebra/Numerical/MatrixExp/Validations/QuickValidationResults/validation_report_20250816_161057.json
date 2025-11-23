@@ -1,0 +1,4378 @@
+{
+  "startTime": "2025-08-16T13:10:57.2520855Z",
+  "endTime": "2025-08-16T13:10:57.4251782Z",
+  "totalDuration": "00:00:00.1730927",
+  "totalTests": 120,
+  "passedTests": 75,
+  "failedTests": 45,
+  "testExecutions": [
+    {
+      "testCaseName": "GeneralDense_1x1_0",
+      "algorithmName": "Pade",
+      "success": true,
+      "executionTime": "00:00:00.0099873",
+      "validationResult": {
+        "testName": "GeneralDense_1x1_0",
+        "algorithmName": "Pade",
+        "passed": true,
+        "maxError": 0.0014944834390657746,
+        "relativeError": 0.0009934144127268815,
+        "backwardError": 0,
+        "methodsUsed": 37,
+        "computationTime": "00:00:00.0099873",
+        "detailedErrors": {
+          "IdentityProperty": 0,
+          "CommutingProperty": 4.440892098500626E-16,
+          "ScalingProperty": 0.0014944834390657746,
+          "BackwardError": 0
+        },
+        "warnings": [
+          "Scaling property large deviation: 1.49E-003"
+        ],
+        "failures": [],
+        "details": "Error Analysis:\r\n  IdentityProperty: 0.000000E\u002B000\r\n  CommutingProperty: 4.440892E-016\r\n  ScalingProperty: 1.494483E-003\r\n  BackwardError: 0.000000E\u002B000\r\nWarnings:\r\n  - Scaling property large deviation: 1.49E-003\r\n",
+        "metadata": {}
+      },
+      "errorMessage": null,
+      "performanceMetrics": {
+        "ExecutionTimeMs": 9.9873,
+        "MemoryUsedBytes": 230304,
+        "MatrixSize": 1,
+        "ConditionNumber": 1,
+        "OneNorm": 0.40838798935764165,
+        "FrobeniusNorm": 0.40838798935764165
+      },
+      "memoryUsed": 230304
+    },
+    {
+      "testCaseName": "GeneralDense_1x1_0",
+      "algorithmName": "Schur",
+      "success": true,
+      "executionTime": "00:00:00.0042250",
+      "validationResult": {
+        "testName": "GeneralDense_1x1_0",
+        "algorithmName": "Schur",
+        "passed": true,
+        "maxError": 0.0014944834390657746,
+        "relativeError": 0.0009934144127268815,
+        "backwardError": 0,
+        "methodsUsed": 37,
+        "computationTime": "00:00:00.0042250",
+        "detailedErrors": {
+          "IdentityProperty": 0,
+          "CommutingProperty": 4.440892098500626E-16,
+          "ScalingProperty": 0.0014944834390657746,
+          "BackwardError": 0
+        },
+        "warnings": [
+          "Scaling property large deviation: 1.49E-003"
+        ],
+        "failures": [],
+        "details": "Error Analysis:\r\n  IdentityProperty: 0.000000E\u002B000\r\n  CommutingProperty: 4.440892E-016\r\n  ScalingProperty: 1.494483E-003\r\n  BackwardError: 0.000000E\u002B000\r\nWarnings:\r\n  - Scaling property large deviation: 1.49E-003\r\n",
+        "metadata": {}
+      },
+      "errorMessage": null,
+      "performanceMetrics": {
+        "ExecutionTimeMs": 4.225,
+        "MemoryUsedBytes": 119944,
+        "MatrixSize": 1,
+        "ConditionNumber": 1,
+        "OneNorm": 0.40838798935764165,
+        "FrobeniusNorm": 0.40838798935764165
+      },
+      "memoryUsed": 119944
+    },
+    {
+      "testCaseName": "GeneralDense_1x1_0",
+      "algorithmName": "SkewSymmetric",
+      "success": false,
+      "executionTime": "00:00:00.0022272",
+      "validationResult": {
+        "testName": "GeneralDense_1x1_0",
+        "algorithmName": "SkewSymmetric",
+        "passed": false,
+        "maxError": 1000000,
+        "relativeError": 1000000,
+        "backwardError": 1000000,
+        "methodsUsed": 0,
+        "computationTime": "00:00:00.0022272",
+        "detailedErrors": {},
+        "warnings": [],
+        "failures": [
+          "Unknown error"
+        ],
+        "details": "",
+        "metadata": {}
+      },
+      "errorMessage": null,
+      "performanceMetrics": {},
+      "memoryUsed": 111720
+    },
+    {
+      "testCaseName": "GeneralDense_1x1_1",
+      "algorithmName": "Pade",
+      "success": true,
+      "executionTime": "00:00:00.0060535",
+      "validationResult": {
+        "testName": "GeneralDense_1x1_1",
+        "algorithmName": "Pade",
+        "passed": true,
+        "maxError": 0.022436268964771355,
+        "relativeError": 0.06540271349944286,
+        "backwardError": 0,
+        "methodsUsed": 37,
+        "computationTime": "00:00:00.0060535",
+        "detailedErrors": {
+          "IdentityProperty": 2.220446049250313E-16,
+          "CommutingProperty": 2.220446049250313E-16,
+          "ScalingProperty": 0.022436268964771355,
+          "BackwardError": 0
+        },
+        "warnings": [
+          "Scaling property large deviation: 2.24E-002"
+        ],
+        "failures": [],
+        "details": "Error Analysis:\r\n  IdentityProperty: 2.220446E-016\r\n  CommutingProperty: 2.220446E-016\r\n  ScalingProperty: 2.243627E-002\r\n  BackwardError: 0.000000E\u002B000\r\nWarnings:\r\n  - Scaling property large deviation: 2.24E-002\r\n",
+        "metadata": {}
+      },
+      "errorMessage": null,
+      "performanceMetrics": {
+        "ExecutionTimeMs": 6.0535,
+        "MemoryUsedBytes": 189208,
+        "MatrixSize": 1,
+        "ConditionNumber": 1,
+        "OneNorm": 1.0698849487560758,
+        "FrobeniusNorm": 1.0698849487560758
+      },
+      "memoryUsed": 189208
+    },
+    {
+      "testCaseName": "GeneralDense_1x1_1",
+      "algorithmName": "Schur",
+      "success": true,
+      "executionTime": "00:00:00.0041832",
+      "validationResult": {
+        "testName": "GeneralDense_1x1_1",
+        "algorithmName": "Schur",
+        "passed": true,
+        "maxError": 0.022436268964771355,
+        "relativeError": 0.06540271349944284,
+        "backwardError": 0,
+        "methodsUsed": 37,
+        "computationTime": "00:00:00.0041832",
+        "detailedErrors": {
+          "IdentityProperty": 2.220446049250313E-16,
+          "CommutingProperty": 1.1102230246251565E-16,
+          "ScalingProperty": 0.022436268964771355,
+          "BackwardError": 0
+        },
+        "warnings": [
+          "Scaling property large deviation: 2.24E-002"
+        ],
+        "failures": [],
+        "details": "Error Analysis:\r\n  IdentityProperty: 2.220446E-016\r\n  CommutingProperty: 1.110223E-016\r\n  ScalingProperty: 2.243627E-002\r\n  BackwardError: 0.000000E\u002B000\r\nWarnings:\r\n  - Scaling property large deviation: 2.24E-002\r\n",
+        "metadata": {}
+      },
+      "errorMessage": null,
+      "performanceMetrics": {
+        "ExecutionTimeMs": 4.1832,
+        "MemoryUsedBytes": 119944,
+        "MatrixSize": 1,
+        "ConditionNumber": 1,
+        "OneNorm": 1.0698849487560758,
+        "FrobeniusNorm": 1.0698849487560758
+      },
+      "memoryUsed": 119944
+    },
+    {
+      "testCaseName": "GeneralDense_1x1_1",
+      "algorithmName": "SkewSymmetric",
+      "success": false,
+      "executionTime": "00:00:00.0022792",
+      "validationResult": {
+        "testName": "GeneralDense_1x1_1",
+        "algorithmName": "SkewSymmetric",
+        "passed": false,
+        "maxError": 1000000,
+        "relativeError": 1000000,
+        "backwardError": 1000000,
+        "methodsUsed": 0,
+        "computationTime": "00:00:00.0022792",
+        "detailedErrors": {},
+        "warnings": [],
+        "failures": [
+          "Unknown error"
+        ],
+        "details": "",
+        "metadata": {}
+      },
+      "errorMessage": null,
+      "performanceMetrics": {},
+      "memoryUsed": 111720
+    },
+    {
+      "testCaseName": "GeneralDense_2x2_0",
+      "algorithmName": "Pade",
+      "success": true,
+      "executionTime": "00:00:00.0059871",
+      "validationResult": {
+        "testName": "GeneralDense_2x2_0",
+        "algorithmName": "Pade",
+        "passed": true,
+        "maxError": 0.06757477551092222,
+        "relativeError": 0.0882770096422014,
+        "backwardError": 2.5438405243138006E-16,
+        "methodsUsed": 37,
+        "computationTime": "00:00:00.0059871",
+        "detailedErrors": {
+          "IdentityProperty": 3.554447978966673E-16,
+          "CommutingProperty": 1.0753270844771355E-15,
+          "ScalingProperty": 0.06757477551092222,
+          "BackwardError": 2.5438405243138006E-16
+        },
+        "warnings": [
+          "Scaling property large deviation: 6.76E-002"
+        ],
+        "failures": [],
+        "details": "Error Analysis:\r\n  IdentityProperty: 3.554448E-016\r\n  CommutingProperty: 1.075327E-015\r\n  ScalingProperty: 6.757478E-002\r\n  BackwardError: 2.543841E-016\r\nWarnings:\r\n  - Scaling property large deviation: 6.76E-002\r\n",
+        "metadata": {}
+      },
+      "errorMessage": null,
+      "performanceMetrics": {
+        "ExecutionTimeMs": 5.9871,
+        "MemoryUsedBytes": 181072,
+        "MatrixSize": 2,
+        "ConditionNumber": 2.268386928098456,
+        "OneNorm": 2.632612042710784,
+        "FrobeniusNorm": 2.2092394718850317
+      },
+      "memoryUsed": 181072
+    },
+    {
+      "testCaseName": "GeneralDense_2x2_0",
+      "algorithmName": "Schur",
+      "success": true,
+      "executionTime": "00:00:00.0179281",
+      "validationResult": {
+        "testName": "GeneralDense_2x2_0",
+        "algorithmName": "Schur",
+        "passed": true,
+        "maxError": 0.06757477551092222,
+        "relativeError": 0.08827700964220148,
+        "backwardError": 2.5589376332604516E-16,
+        "methodsUsed": 37,
+        "computationTime": "00:00:00.0179281",
+        "detailedErrors": {
+          "IdentityProperty": 1.1866928732135989E-15,
+          "CommutingProperty": 5.640599496620651E-16,
+          "ScalingProperty": 0.06757477551092222,
+          "BackwardError": 2.5589376332604516E-16
+        },
+        "warnings": [
+          "Scaling property large deviation: 6.76E-002"
+        ],
+        "failures": [],
+        "details": "Error Analysis:\r\n  IdentityProperty: 1.186693E-015\r\n  CommutingProperty: 5.640599E-016\r\n  ScalingProperty: 6.757478E-002\r\n  BackwardError: 2.558938E-016\r\nWarnings:\r\n  - Scaling property large deviation: 6.76E-002\r\n",
+        "metadata": {}
+      },
+      "errorMessage": null,
+      "performanceMetrics": {
+        "ExecutionTimeMs": 17.9281,
+        "MemoryUsedBytes": 3703304,
+        "MatrixSize": 2,
+        "ConditionNumber": 2.268386928098456,
+        "OneNorm": 2.632612042710784,
+        "FrobeniusNorm": 2.2092394718850317
+      },
+      "memoryUsed": 3703304
+    },
+    {
+      "testCaseName": "GeneralDense_2x2_0",
+      "algorithmName": "SkewSymmetric",
+      "success": false,
+      "executionTime": "00:00:00.0000964",
+      "validationResult": {
+        "testName": "GeneralDense_2x2_0",
+        "algorithmName": "SkewSymmetric",
+        "passed": false,
+        "maxError": 1000000,
+        "relativeError": 1000000,
+        "backwardError": 1000000,
+        "methodsUsed": 0,
+        "computationTime": "00:00:00.0000964",
+        "detailedErrors": {},
+        "warnings": [],
+        "failures": [
+          "Unknown error"
+        ],
+        "details": "",
+        "metadata": {}
+      },
+      "errorMessage": null,
+      "performanceMetrics": {},
+      "memoryUsed": 0
+    },
+    {
+      "testCaseName": "GeneralDense_2x2_1",
+      "algorithmName": "Pade",
+      "success": true,
+      "executionTime": "00:00:00.0020045",
+      "validationResult": {
+        "testName": "GeneralDense_2x2_1",
+        "algorithmName": "Pade",
+        "passed": true,
+        "maxError": 0.058900849619953316,
+        "relativeError": 0.014681534351042361,
+        "backwardError": 2.2144001698795665E-16,
+        "methodsUsed": 37,
+        "computationTime": "00:00:00.0020045",
+        "detailedErrors": {
+          "IdentityProperty": 1.5700924586837752E-16,
+          "CommutingProperty": 3.607904559176205E-15,
+          "ScalingProperty": 0.058900849619953316,
+          "BackwardError": 2.2144001698795665E-16
+        },
+        "warnings": [
+          "Scaling property large deviation: 5.89E-002"
+        ],
+        "failures": [],
+        "details": "Error Analysis:\r\n  IdentityProperty: 1.570092E-016\r\n  CommutingProperty: 3.607905E-015\r\n  ScalingProperty: 5.890085E-002\r\n  BackwardError: 2.214400E-016\r\nWarnings:\r\n  - Scaling property large deviation: 5.89E-002\r\n",
+        "metadata": {}
+      },
+      "errorMessage": null,
+      "performanceMetrics": {
+        "ExecutionTimeMs": 2.0045,
+        "MemoryUsedBytes": 69352,
+        "MatrixSize": 2,
+        "ConditionNumber": 22.50264009093647,
+        "OneNorm": 1.9846586368266652,
+        "FrobeniusNorm": 1.4632952249061464
+      },
+      "memoryUsed": 69352
+    },
+    {
+      "testCaseName": "GeneralDense_2x2_1",
+      "algorithmName": "Schur",
+      "success": false,
+      "executionTime": "00:00:00.0160642",
+      "validationResult": {
+        "testName": "GeneralDense_2x2_1",
+        "algorithmName": "Schur",
+        "passed": false,
+        "maxError": 8.55594827198294,
+        "relativeError": 2.0991433263174057,
+        "backwardError": 1.0937902148043495E-16,
+        "methodsUsed": 37,
+        "computationTime": "00:00:00.0160642",
+        "detailedErrors": {
+          "IdentityProperty": 2.160031913178747,
+          "CommutingProperty": 8.55594827198294,
+          "ScalingProperty": 0.058900849619953316,
+          "BackwardError": 1.0937902148043495E-16
+        },
+        "warnings": [
+          "Commuting property deviation: ||exp(A\u002BkI) - exp(A)*exp(kI)|| = 8.56E\u002B000",
+          "Scaling property large deviation: 5.89E-002"
+        ],
+        "failures": [
+          "Identity property failed: ||exp(A)*exp(-A) - I|| = 2.16E\u002B000"
+        ],
+        "details": "Error Analysis:\r\n  IdentityProperty: 2.160032E\u002B000\r\n  CommutingProperty: 8.555948E\u002B000\r\n  ScalingProperty: 5.890085E-002\r\n  BackwardError: 1.093790E-016\r\nWarnings:\r\n  - Commuting property deviation: ||exp(A\u002BkI) - exp(A)*exp(kI)|| = 8.56E\u002B000\r\n  - Scaling property large deviation: 5.89E-002\r\nFailures:\r\n  - Identity property failed: ||exp(A)*exp(-A) - I|| = 2.16E\u002B000\r\n",
+        "metadata": {}
+      },
+      "errorMessage": null,
+      "performanceMetrics": {
+        "ExecutionTimeMs": 16.0642,
+        "MemoryUsedBytes": -1429024,
+        "MatrixSize": 2,
+        "ConditionNumber": 22.50264009093647,
+        "OneNorm": 1.9846586368266652,
+        "FrobeniusNorm": 1.4632952249061464
+      },
+      "memoryUsed": -1429024
+    },
+    {
+      "testCaseName": "GeneralDense_2x2_1",
+      "algorithmName": "SkewSymmetric",
+      "success": false,
+      "executionTime": "00:00:00.0000768",
+      "validationResult": {
+        "testName": "GeneralDense_2x2_1",
+        "algorithmName": "SkewSymmetric",
+        "passed": false,
+        "maxError": 1000000,
+        "relativeError": 1000000,
+        "backwardError": 1000000,
+        "methodsUsed": 0,
+        "computationTime": "00:00:00.0000768",
+        "detailedErrors": {},
+        "warnings": [],
+        "failures": [
+          "Unknown error"
+        ],
+        "details": "",
+        "metadata": {}
+      },
+      "errorMessage": null,
+      "performanceMetrics": {},
+      "memoryUsed": 8176
+    },
+    {
+      "testCaseName": "GeneralDense_4x4_0",
+      "algorithmName": "Pade",
+      "success": true,
+      "executionTime": "00:00:00.0000908",
+      "validationResult": {
+        "testName": "GeneralDense_4x4_0",
+        "algorithmName": "Pade",
+        "passed": true,
+        "maxError": 0.2861283305157977,
+        "relativeError": 0.026523260941293182,
+        "backwardError": 1.2673213600824121E-15,
+        "methodsUsed": 37,
+        "computationTime": "00:00:00.0000908",
+        "detailedErrors": {
+          "IdentityProperty": 7.73658976446627E-15,
+          "CommutingProperty": 1.9581691374643504E-14,
+          "ScalingProperty": 0.2861283305157977,
+          "BackwardError": 1.2673213600824121E-15
+        },
+        "warnings": [
+          "Scaling property large deviation: 2.86E-001"
+        ],
+        "failures": [],
+        "details": "Error Analysis:\r\n  IdentityProperty: 7.736590E-015\r\n  CommutingProperty: 1.958169E-014\r\n  ScalingProperty: 2.861283E-001\r\n  BackwardError: 1.267321E-015\r\nWarnings:\r\n  - Scaling property large deviation: 2.86E-001\r\n",
+        "metadata": {}
+      },
+      "errorMessage": null,
+      "performanceMetrics": {
+        "ExecutionTimeMs": 0.0908,
+        "MemoryUsedBytes": 41072,
+        "MatrixSize": 4,
+        "ConditionNumber": 539.7933272950506,
+        "OneNorm": 5.531241994403277,
+        "FrobeniusNorm": 4.807684166232945
+      },
+      "memoryUsed": 41072
+    },
+    {
+      "testCaseName": "GeneralDense_4x4_0",
+      "algorithmName": "Schur",
+      "success": true,
+      "executionTime": "00:00:00.0140966",
+      "validationResult": {
+        "testName": "GeneralDense_4x4_0",
+        "algorithmName": "Schur",
+        "passed": true,
+        "maxError": 0.2861283305157977,
+        "relativeError": 0.02652326094129318,
+        "backwardError": 8.976740572375344E-16,
+        "methodsUsed": 37,
+        "computationTime": "00:00:00.0140966",
+        "detailedErrors": {
+          "IdentityProperty": 1.6569125534214417E-14,
+          "CommutingProperty": 1.3098749821474187E-14,
+          "ScalingProperty": 0.2861283305157977,
+          "BackwardError": 8.976740572375344E-16
+        },
+        "warnings": [
+          "Scaling property large deviation: 2.86E-001"
+        ],
+        "failures": [],
+        "details": "Error Analysis:\r\n  IdentityProperty: 1.656913E-014\r\n  CommutingProperty: 1.309875E-014\r\n  ScalingProperty: 2.861283E-001\r\n  BackwardError: 8.976741E-016\r\nWarnings:\r\n  - Scaling property large deviation: 2.86E-001\r\n",
+        "metadata": {}
+      },
+      "errorMessage": null,
+      "performanceMetrics": {
+        "ExecutionTimeMs": 14.0966,
+        "MemoryUsedBytes": -1018368,
+        "MatrixSize": 4,
+        "ConditionNumber": 539.7933272950506,
+        "OneNorm": 5.531241994403277,
+        "FrobeniusNorm": 4.807684166232945
+      },
+      "memoryUsed": -1018368
+    },
+    {
+      "testCaseName": "GeneralDense_4x4_0",
+      "algorithmName": "SkewSymmetric",
+      "success": false,
+      "executionTime": "00:00:00.0000417",
+      "validationResult": {
+        "testName": "GeneralDense_4x4_0",
+        "algorithmName": "SkewSymmetric",
+        "passed": false,
+        "maxError": 1000000,
+        "relativeError": 1000000,
+        "backwardError": 1000000,
+        "methodsUsed": 0,
+        "computationTime": "00:00:00.0000417",
+        "detailedErrors": {},
+        "warnings": [],
+        "failures": [
+          "Unknown error"
+        ],
+        "details": "",
+        "metadata": {}
+      },
+      "errorMessage": null,
+      "performanceMetrics": {},
+      "memoryUsed": 16448
+    },
+    {
+      "testCaseName": "GeneralDense_4x4_1",
+      "algorithmName": "Pade",
+      "success": true,
+      "executionTime": "00:00:00.0000818",
+      "validationResult": {
+        "testName": "GeneralDense_4x4_1",
+        "algorithmName": "Pade",
+        "passed": true,
+        "maxError": 0.4218705457495484,
+        "relativeError": 0.19617259271293738,
+        "backwardError": 9.682919107288068E-16,
+        "methodsUsed": 37,
+        "computationTime": "00:00:00.0000818",
+        "detailedErrors": {
+          "IdentityProperty": 2.257946356488987E-15,
+          "CommutingProperty": 2.599410051701766E-15,
+          "ScalingProperty": 0.4218705457495484,
+          "BackwardError": 9.682919107288068E-16
+        },
+        "warnings": [
+          "Scaling property large deviation: 4.22E-001"
+        ],
+        "failures": [],
+        "details": "Error Analysis:\r\n  IdentityProperty: 2.257946E-015\r\n  CommutingProperty: 2.599410E-015\r\n  ScalingProperty: 4.218705E-001\r\n  BackwardError: 9.682919E-016\r\nWarnings:\r\n  - Scaling property large deviation: 4.22E-001\r\n",
+        "metadata": {}
+      },
+      "errorMessage": null,
+      "performanceMetrics": {
+        "ExecutionTimeMs": 0.0818,
+        "MemoryUsedBytes": 56632,
+        "MatrixSize": 4,
+        "ConditionNumber": 8.622138217414859,
+        "OneNorm": 4.153937168427164,
+        "FrobeniusNorm": 3.636356282580022
+      },
+      "memoryUsed": 56632
+    },
+    {
+      "testCaseName": "GeneralDense_4x4_1",
+      "algorithmName": "Schur",
+      "success": true,
+      "executionTime": "00:00:00.0090837",
+      "validationResult": {
+        "testName": "GeneralDense_4x4_1",
+        "algorithmName": "Schur",
+        "passed": true,
+        "maxError": 0.4218705457495484,
+        "relativeError": 0.19617259271293713,
+        "backwardError": 3.3445479512706396E-16,
+        "methodsUsed": 37,
+        "computationTime": "00:00:00.0090837",
+        "detailedErrors": {
+          "IdentityProperty": 1.6894461156195197E-15,
+          "CommutingProperty": 3.1676943670834057E-15,
+          "ScalingProperty": 0.4218705457495484,
+          "BackwardError": 3.3445479512706396E-16
+        },
+        "warnings": [
+          "Scaling property large deviation: 4.22E-001"
+        ],
+        "failures": [],
+        "details": "Error Analysis:\r\n  IdentityProperty: 1.689446E-015\r\n  CommutingProperty: 3.167694E-015\r\n  ScalingProperty: 4.218705E-001\r\n  BackwardError: 3.344548E-016\r\nWarnings:\r\n  - Scaling property large deviation: 4.22E-001\r\n",
+        "metadata": {}
+      },
+      "errorMessage": null,
+      "performanceMetrics": {
+        "ExecutionTimeMs": 9.0837,
+        "MemoryUsedBytes": -1866480,
+        "MatrixSize": 4,
+        "ConditionNumber": 8.622138217414859,
+        "OneNorm": 4.153937168427164,
+        "FrobeniusNorm": 3.636356282580022
+      },
+      "memoryUsed": -1866480
+    },
+    {
+      "testCaseName": "GeneralDense_4x4_1",
+      "algorithmName": "SkewSymmetric",
+      "success": false,
+      "executionTime": "00:00:00.0000335",
+      "validationResult": {
+        "testName": "GeneralDense_4x4_1",
+        "algorithmName": "SkewSymmetric",
+        "passed": false,
+        "maxError": 1000000,
+        "relativeError": 1000000,
+        "backwardError": 1000000,
+        "methodsUsed": 0,
+        "computationTime": "00:00:00.0000335",
+        "detailedErrors": {},
+        "warnings": [],
+        "failures": [
+          "Unknown error"
+        ],
+        "details": "",
+        "metadata": {}
+      },
+      "errorMessage": null,
+      "performanceMetrics": {},
+      "memoryUsed": 24368
+    },
+    {
+      "testCaseName": "GeneralDense_8x8_0",
+      "algorithmName": "Pade",
+      "success": true,
+      "executionTime": "00:00:00.0003168",
+      "validationResult": {
+        "testName": "GeneralDense_8x8_0",
+        "algorithmName": "Pade",
+        "passed": true,
+        "maxError": 1.58588265942312,
+        "relativeError": 0.06048836772483903,
+        "backwardError": 3.731474227131533E-15,
+        "methodsUsed": 37,
+        "computationTime": "00:00:00.0003168",
+        "detailedErrors": {
+          "IdentityProperty": 1.2242693143231324E-13,
+          "CommutingProperty": 1.2332795704162593E-13,
+          "ScalingProperty": 1.58588265942312,
+          "BackwardError": 3.731474227131533E-15
+        },
+        "warnings": [
+          "Scaling property large deviation: 1.59E\u002B000"
+        ],
+        "failures": [],
+        "details": "Error Analysis:\r\n  IdentityProperty: 1.224269E-013\r\n  CommutingProperty: 1.233280E-013\r\n  ScalingProperty: 1.585883E\u002B000\r\n  BackwardError: 3.731474E-015\r\nWarnings:\r\n  - Scaling property large deviation: 1.59E\u002B000\r\n",
+        "metadata": {}
+      },
+      "errorMessage": null,
+      "performanceMetrics": {
+        "ExecutionTimeMs": 0.3168,
+        "MemoryUsedBytes": 234480,
+        "MatrixSize": 8,
+        "ConditionNumber": 21.890913043410915,
+        "OneNorm": 8.188862530300472,
+        "FrobeniusNorm": 7.991488640277841
+      },
+      "memoryUsed": 234480
+    },
+    {
+      "testCaseName": "GeneralDense_8x8_0",
+      "algorithmName": "Schur",
+      "success": true,
+      "executionTime": "00:00:00.0086107",
+      "validationResult": {
+        "testName": "GeneralDense_8x8_0",
+        "algorithmName": "Schur",
+        "passed": true,
+        "maxError": 1.58588265942312,
+        "relativeError": 0.06048836772483922,
+        "backwardError": 1.0420117138628178E-15,
+        "methodsUsed": 37,
+        "computationTime": "00:00:00.0086107",
+        "detailedErrors": {
+          "IdentityProperty": 7.849316164922976E-14,
+          "CommutingProperty": 4.368758736438474E-14,
+          "ScalingProperty": 1.58588265942312,
+          "BackwardError": 1.0420117138628178E-15
+        },
+        "warnings": [
+          "Scaling property large deviation: 1.59E\u002B000"
+        ],
+        "failures": [],
+        "details": "Error Analysis:\r\n  IdentityProperty: 7.849316E-014\r\n  CommutingProperty: 4.368759E-014\r\n  ScalingProperty: 1.585883E\u002B000\r\n  BackwardError: 1.042012E-015\r\nWarnings:\r\n  - Scaling property large deviation: 1.59E\u002B000\r\n",
+        "metadata": {}
+      },
+      "errorMessage": null,
+      "performanceMetrics": {
+        "ExecutionTimeMs": 8.6107,
+        "MemoryUsedBytes": -2360448,
+        "MatrixSize": 8,
+        "ConditionNumber": 21.890913043410915,
+        "OneNorm": 8.188862530300472,
+        "FrobeniusNorm": 7.991488640277841
+      },
+      "memoryUsed": -2360448
+    },
+    {
+      "testCaseName": "GeneralDense_8x8_0",
+      "algorithmName": "SkewSymmetric",
+      "success": false,
+      "executionTime": "00:00:00.0000411",
+      "validationResult": {
+        "testName": "GeneralDense_8x8_0",
+        "algorithmName": "SkewSymmetric",
+        "passed": false,
+        "maxError": 1000000,
+        "relativeError": 1000000,
+        "backwardError": 1000000,
+        "methodsUsed": 0,
+        "computationTime": "00:00:00.0000411",
+        "detailedErrors": {},
+        "warnings": [],
+        "failures": [
+          "Unknown error"
+        ],
+        "details": "",
+        "metadata": {}
+      },
+      "errorMessage": null,
+      "performanceMetrics": {},
+      "memoryUsed": 32384
+    },
+    {
+      "testCaseName": "GeneralDense_8x8_1",
+      "algorithmName": "Pade",
+      "success": true,
+      "executionTime": "00:00:00.0002751",
+      "validationResult": {
+        "testName": "GeneralDense_8x8_1",
+        "algorithmName": "Pade",
+        "passed": true,
+        "maxError": 0.6153091549568489,
+        "relativeError": 0.05984898246667293,
+        "backwardError": 2.1988642598876674E-15,
+        "methodsUsed": 37,
+        "computationTime": "00:00:00.0002751",
+        "detailedErrors": {
+          "IdentityProperty": 1.6959396284802136E-14,
+          "CommutingProperty": 1.785803017028878E-14,
+          "ScalingProperty": 0.6153091549568489,
+          "BackwardError": 2.1988642598876674E-15
+        },
+        "warnings": [
+          "Scaling property large deviation: 6.15E-001"
+        ],
+        "failures": [],
+        "details": "Error Analysis:\r\n  IdentityProperty: 1.695940E-014\r\n  CommutingProperty: 1.785803E-014\r\n  ScalingProperty: 6.153092E-001\r\n  BackwardError: 2.198864E-015\r\nWarnings:\r\n  - Scaling property large deviation: 6.15E-001\r\n",
+        "metadata": {}
+      },
+      "errorMessage": null,
+      "performanceMetrics": {
+        "ExecutionTimeMs": 0.2751,
+        "MemoryUsedBytes": 201120,
+        "MatrixSize": 8,
+        "ConditionNumber": 45.7015310355483,
+        "OneNorm": 6.627181898773662,
+        "FrobeniusNorm": 6.361161808369812
+      },
+      "memoryUsed": 201120
+    },
+    {
+      "testCaseName": "GeneralDense_8x8_1",
+      "algorithmName": "Schur",
+      "success": true,
+      "executionTime": "00:00:00.0063778",
+      "validationResult": {
+        "testName": "GeneralDense_8x8_1",
+        "algorithmName": "Schur",
+        "passed": true,
+        "maxError": 0.6153091549568489,
+        "relativeError": 0.059848982466673,
+        "backwardError": 9.221639083548139E-16,
+        "methodsUsed": 37,
+        "computationTime": "00:00:00.0063778",
+        "detailedErrors": {
+          "IdentityProperty": 1.7161601725297477E-14,
+          "CommutingProperty": 1.2197585722980268E-14,
+          "ScalingProperty": 0.6153091549568489,
+          "BackwardError": 9.221639083548139E-16
+        },
+        "warnings": [
+          "Scaling property large deviation: 6.15E-001"
+        ],
+        "failures": [],
+        "details": "Error Analysis:\r\n  IdentityProperty: 1.716160E-014\r\n  CommutingProperty: 1.219759E-014\r\n  ScalingProperty: 6.153092E-001\r\n  BackwardError: 9.221639E-016\r\nWarnings:\r\n  - Scaling property large deviation: 6.15E-001\r\n",
+        "metadata": {}
+      },
+      "errorMessage": null,
+      "performanceMetrics": {
+        "ExecutionTimeMs": 6.3778,
+        "MemoryUsedBytes": 3071376,
+        "MatrixSize": 8,
+        "ConditionNumber": 45.7015310355483,
+        "OneNorm": 6.627181898773662,
+        "FrobeniusNorm": 6.361161808369812
+      },
+      "memoryUsed": 3071376
+    },
+    {
+      "testCaseName": "GeneralDense_8x8_1",
+      "algorithmName": "SkewSymmetric",
+      "success": false,
+      "executionTime": "00:00:00.0000377",
+      "validationResult": {
+        "testName": "GeneralDense_8x8_1",
+        "algorithmName": "SkewSymmetric",
+        "passed": false,
+        "maxError": 1000000,
+        "relativeError": 1000000,
+        "backwardError": 1000000,
+        "methodsUsed": 0,
+        "computationTime": "00:00:00.0000377",
+        "detailedErrors": {},
+        "warnings": [],
+        "failures": [
+          "Unknown error"
+        ],
+        "details": "",
+        "metadata": {}
+      },
+      "errorMessage": null,
+      "performanceMetrics": {},
+      "memoryUsed": 16448
+    },
+    {
+      "testCaseName": "GeneralDense_16x16_0",
+      "algorithmName": "Pade",
+      "success": false,
+      "executionTime": "00:00:00.0006378",
+      "validationResult": {
+        "testName": "GeneralDense_16x16_0",
+        "algorithmName": "Pade",
+        "passed": false,
+        "maxError": 7.2196620641260355E-12,
+        "relativeError": 5.133243770329179E-14,
+        "backwardError": 1.8867878811596226E-14,
+        "methodsUsed": 37,
+        "computationTime": "00:00:00.0006378",
+        "detailedErrors": {
+          "IdentityProperty": 7.2196620641260355E-12,
+          "CommutingProperty": 2.061400371386853E-12,
+          "BackwardError": 1.8867878811596226E-14
+        },
+        "warnings": [],
+        "failures": [
+          "Backward error 1.89E-014 exceeds tolerance 1.00E-014"
+        ],
+        "details": "Error Analysis:\r\n  IdentityProperty: 7.219662E-012\r\n  CommutingProperty: 2.061400E-012\r\n  BackwardError: 1.886788E-014\r\nFailures:\r\n  - Backward error 1.89E-014 exceeds tolerance 1.00E-014\r\n",
+        "metadata": {}
+      },
+      "errorMessage": null,
+      "performanceMetrics": {
+        "ExecutionTimeMs": 0.6378,
+        "MemoryUsedBytes": 556840,
+        "MatrixSize": 16,
+        "ConditionNumber": 39.844066038488684,
+        "OneNorm": 22.36872526869017,
+        "FrobeniusNorm": 16.98497360971425
+      },
+      "memoryUsed": 556840
+    },
+    {
+      "testCaseName": "GeneralDense_16x16_0",
+      "algorithmName": "Schur",
+      "success": true,
+      "executionTime": "00:00:00.0174809",
+      "validationResult": {
+        "testName": "GeneralDense_16x16_0",
+        "algorithmName": "Schur",
+        "passed": true,
+        "maxError": 3.2332206706824038E-12,
+        "relativeError": 2.2988485774630612E-14,
+        "backwardError": 4.719931552172484E-15,
+        "methodsUsed": 37,
+        "computationTime": "00:00:00.0174809",
+        "detailedErrors": {
+          "IdentityProperty": 3.2332206706824038E-12,
+          "CommutingProperty": 5.304028694050294E-13,
+          "BackwardError": 4.719931552172484E-15
+        },
+        "warnings": [],
+        "failures": [],
+        "details": "Error Analysis:\r\n  IdentityProperty: 3.233221E-012\r\n  CommutingProperty: 5.304029E-013\r\n  BackwardError: 4.719932E-015\r\n",
+        "metadata": {}
+      },
+      "errorMessage": null,
+      "performanceMetrics": {
+        "ExecutionTimeMs": 17.4809,
+        "MemoryUsedBytes": -1001376,
+        "MatrixSize": 16,
+        "ConditionNumber": 39.844066038488684,
+        "OneNorm": 22.36872526869017,
+        "FrobeniusNorm": 16.98497360971425
+      },
+      "memoryUsed": -1001376
+    },
+    {
+      "testCaseName": "GeneralDense_16x16_0",
+      "algorithmName": "SkewSymmetric",
+      "success": false,
+      "executionTime": "00:00:00.0000564",
+      "validationResult": {
+        "testName": "GeneralDense_16x16_0",
+        "algorithmName": "SkewSymmetric",
+        "passed": false,
+        "maxError": 1000000,
+        "relativeError": 1000000,
+        "backwardError": 1000000,
+        "methodsUsed": 0,
+        "computationTime": "00:00:00.0000564",
+        "detailedErrors": {},
+        "warnings": [],
+        "failures": [
+          "Unknown error"
+        ],
+        "details": "",
+        "metadata": {}
+      },
+      "errorMessage": null,
+      "performanceMetrics": {},
+      "memoryUsed": 0
+    },
+    {
+      "testCaseName": "GeneralDense_16x16_1",
+      "algorithmName": "Pade",
+      "success": false,
+      "executionTime": "00:00:00.0007892",
+      "validationResult": {
+        "testName": "GeneralDense_16x16_1",
+        "algorithmName": "Pade",
+        "passed": false,
+        "maxError": 7.561254691761068E-13,
+        "relativeError": 1.108647570824939E-14,
+        "backwardError": 1.0728276570785431E-14,
+        "methodsUsed": 37,
+        "computationTime": "00:00:00.0007892",
+        "detailedErrors": {
+          "IdentityProperty": 6.15313302143399E-13,
+          "CommutingProperty": 7.561254691761068E-13,
+          "BackwardError": 1.0728276570785431E-14
+        },
+        "warnings": [],
+        "failures": [
+          "Backward error 1.07E-014 exceeds tolerance 1.00E-014"
+        ],
+        "details": "Error Analysis:\r\n  IdentityProperty: 6.153133E-013\r\n  CommutingProperty: 7.561255E-013\r\n  BackwardError: 1.072828E-014\r\nFailures:\r\n  - Backward error 1.07E-014 exceeds tolerance 1.00E-014\r\n",
+        "metadata": {}
+      },
+      "errorMessage": null,
+      "performanceMetrics": {
+        "ExecutionTimeMs": 0.7892,
+        "MemoryUsedBytes": 334680,
+        "MatrixSize": 16,
+        "ConditionNumber": 96.78719508869034,
+        "OneNorm": 18.118958651192052,
+        "FrobeniusNorm": 14.682857864752624
+      },
+      "memoryUsed": 334680
+    },
+    {
+      "testCaseName": "GeneralDense_16x16_1",
+      "algorithmName": "Schur",
+      "success": true,
+      "executionTime": "00:00:00.0080839",
+      "validationResult": {
+        "testName": "GeneralDense_16x16_1",
+        "algorithmName": "Schur",
+        "passed": true,
+        "maxError": 5.164870034156121E-13,
+        "relativeError": 7.572844521733798E-15,
+        "backwardError": 3.5149603542499264E-15,
+        "methodsUsed": 37,
+        "computationTime": "00:00:00.0080839",
+        "detailedErrors": {
+          "IdentityProperty": 4.086247372632553E-13,
+          "CommutingProperty": 5.164870034156121E-13,
+          "BackwardError": 3.5149603542499264E-15
+        },
+        "warnings": [],
+        "failures": [],
+        "details": "Error Analysis:\r\n  IdentityProperty: 4.086247E-013\r\n  CommutingProperty: 5.164870E-013\r\n  BackwardError: 3.514960E-015\r\n",
+        "metadata": {}
+      },
+      "errorMessage": null,
+      "performanceMetrics": {
+        "ExecutionTimeMs": 8.0839,
+        "MemoryUsedBytes": -3501872,
+        "MatrixSize": 16,
+        "ConditionNumber": 96.78719508869034,
+        "OneNorm": 18.118958651192052,
+        "FrobeniusNorm": 14.682857864752624
+      },
+      "memoryUsed": -3501872
+    },
+    {
+      "testCaseName": "GeneralDense_16x16_1",
+      "algorithmName": "SkewSymmetric",
+      "success": false,
+      "executionTime": "00:00:00.0000598",
+      "validationResult": {
+        "testName": "GeneralDense_16x16_1",
+        "algorithmName": "SkewSymmetric",
+        "passed": false,
+        "maxError": 1000000,
+        "relativeError": 1000000,
+        "backwardError": 1000000,
+        "methodsUsed": 0,
+        "computationTime": "00:00:00.0000598",
+        "detailedErrors": {},
+        "warnings": [],
+        "failures": [
+          "Unknown error"
+        ],
+        "details": "",
+        "metadata": {}
+      },
+      "errorMessage": null,
+      "performanceMetrics": {},
+      "memoryUsed": 81264
+    },
+    {
+      "testCaseName": "Symmetric_1x1_0",
+      "algorithmName": "Pade",
+      "success": true,
+      "executionTime": "00:00:00.0000267",
+      "validationResult": {
+        "testName": "Symmetric_1x1_0",
+        "algorithmName": "Pade",
+        "passed": true,
+        "maxError": 0.027199864776397797,
+        "relativeError": 0.08539278428510888,
+        "backwardError": 0,
+        "methodsUsed": 37,
+        "computationTime": "00:00:00.0000267",
+        "detailedErrors": {
+          "IdentityProperty": 0,
+          "CommutingProperty": 1.1102230246251565E-16,
+          "ScalingProperty": 0.027199864776397797,
+          "BackwardError": 0
+        },
+        "warnings": [
+          "Scaling property large deviation: 2.72E-002"
+        ],
+        "failures": [],
+        "details": "Error Analysis:\r\n  IdentityProperty: 0.000000E\u002B000\r\n  CommutingProperty: 1.110223E-016\r\n  ScalingProperty: 2.719986E-002\r\n  BackwardError: 0.000000E\u002B000\r\nWarnings:\r\n  - Scaling property large deviation: 2.72E-002\r\n",
+        "metadata": {}
+      },
+      "errorMessage": null,
+      "performanceMetrics": {
+        "ExecutionTimeMs": 0.0267,
+        "MemoryUsedBytes": 57056,
+        "MatrixSize": 1,
+        "ConditionNumber": 1,
+        "OneNorm": 1.1440496022425386,
+        "FrobeniusNorm": 1.1440496022425386
+      },
+      "memoryUsed": 57056
+    },
+    {
+      "testCaseName": "Symmetric_1x1_0",
+      "algorithmName": "Schur",
+      "success": true,
+      "executionTime": "00:00:00.0000039",
+      "validationResult": {
+        "testName": "Symmetric_1x1_0",
+        "algorithmName": "Schur",
+        "passed": true,
+        "maxError": 0.027199864776397797,
+        "relativeError": 0.08539278428510888,
+        "backwardError": 0,
+        "methodsUsed": 37,
+        "computationTime": "00:00:00.0000039",
+        "detailedErrors": {
+          "IdentityProperty": 0,
+          "CommutingProperty": 1.1102230246251565E-16,
+          "ScalingProperty": 0.027199864776397797,
+          "BackwardError": 0
+        },
+        "warnings": [
+          "Scaling property large deviation: 2.72E-002"
+        ],
+        "failures": [],
+        "details": "Error Analysis:\r\n  IdentityProperty: 0.000000E\u002B000\r\n  CommutingProperty: 1.110223E-016\r\n  ScalingProperty: 2.719986E-002\r\n  BackwardError: 0.000000E\u002B000\r\nWarnings:\r\n  - Scaling property large deviation: 2.72E-002\r\n",
+        "metadata": {}
+      },
+      "errorMessage": null,
+      "performanceMetrics": {
+        "ExecutionTimeMs": 0.0039,
+        "MemoryUsedBytes": 0,
+        "MatrixSize": 1,
+        "ConditionNumber": 1,
+        "OneNorm": 1.1440496022425386,
+        "FrobeniusNorm": 1.1440496022425386
+      },
+      "memoryUsed": 0
+    },
+    {
+      "testCaseName": "Symmetric_1x1_0",
+      "algorithmName": "SkewSymmetric",
+      "success": false,
+      "executionTime": "00:00:00.0000363",
+      "validationResult": {
+        "testName": "Symmetric_1x1_0",
+        "algorithmName": "SkewSymmetric",
+        "passed": false,
+        "maxError": 1000000,
+        "relativeError": 1000000,
+        "backwardError": 1000000,
+        "methodsUsed": 0,
+        "computationTime": "00:00:00.0000363",
+        "detailedErrors": {},
+        "warnings": [],
+        "failures": [
+          "Unknown error"
+        ],
+        "details": "",
+        "metadata": {}
+      },
+      "errorMessage": null,
+      "performanceMetrics": {},
+      "memoryUsed": 87448
+    },
+    {
+      "testCaseName": "Symmetric_1x1_1",
+      "algorithmName": "Pade",
+      "success": true,
+      "executionTime": "00:00:00.0000249",
+      "validationResult": {
+        "testName": "Symmetric_1x1_1",
+        "algorithmName": "Pade",
+        "passed": true,
+        "maxError": 0.004961478992345003,
+        "relativeError": 0.009372719669890346,
+        "backwardError": 0,
+        "methodsUsed": 37,
+        "computationTime": "00:00:00.0000249",
+        "detailedErrors": {
+          "IdentityProperty": 0,
+          "CommutingProperty": 1.1102230246251565E-16,
+          "ScalingProperty": 0.004961478992345003,
+          "BackwardError": 0
+        },
+        "warnings": [
+          "Scaling property large deviation: 4.96E-003"
+        ],
+        "failures": [],
+        "details": "Error Analysis:\r\n  IdentityProperty: 0.000000E\u002B000\r\n  CommutingProperty: 1.110223E-016\r\n  ScalingProperty: 4.961479E-003\r\n  BackwardError: 0.000000E\u002B000\r\nWarnings:\r\n  - Scaling property large deviation: 4.96E-003\r\n",
+        "metadata": {}
+      },
+      "errorMessage": null,
+      "performanceMetrics": {
+        "ExecutionTimeMs": 0.0249,
+        "MemoryUsedBytes": 65400,
+        "MatrixSize": 1,
+        "ConditionNumber": 1,
+        "OneNorm": 0.6360994268289308,
+        "FrobeniusNorm": 0.6360994268289308
+      },
+      "memoryUsed": 65400
+    },
+    {
+      "testCaseName": "Symmetric_1x1_1",
+      "algorithmName": "Schur",
+      "success": true,
+      "executionTime": "00:00:00.0000026",
+      "validationResult": {
+        "testName": "Symmetric_1x1_1",
+        "algorithmName": "Schur",
+        "passed": true,
+        "maxError": 0.004961478992345003,
+        "relativeError": 0.009372719669890344,
+        "backwardError": 0,
+        "methodsUsed": 37,
+        "computationTime": "00:00:00.0000026",
+        "detailedErrors": {
+          "IdentityProperty": 2.220446049250313E-16,
+          "CommutingProperty": 2.220446049250313E-16,
+          "ScalingProperty": 0.004961478992345003,
+          "BackwardError": 0
+        },
+        "warnings": [
+          "Scaling property large deviation: 4.96E-003"
+        ],
+        "failures": [],
+        "details": "Error Analysis:\r\n  IdentityProperty: 2.220446E-016\r\n  CommutingProperty: 2.220446E-016\r\n  ScalingProperty: 4.961479E-003\r\n  BackwardError: 0.000000E\u002B000\r\nWarnings:\r\n  - Scaling property large deviation: 4.96E-003\r\n",
+        "metadata": {}
+      },
+      "errorMessage": null,
+      "performanceMetrics": {
+        "ExecutionTimeMs": 0.0026,
+        "MemoryUsedBytes": 24232,
+        "MatrixSize": 1,
+        "ConditionNumber": 1,
+        "OneNorm": 0.6360994268289308,
+        "FrobeniusNorm": 0.6360994268289308
+      },
+      "memoryUsed": 24232
+    },
+    {
+      "testCaseName": "Symmetric_1x1_1",
+      "algorithmName": "SkewSymmetric",
+      "success": false,
+      "executionTime": "00:00:00.0000212",
+      "validationResult": {
+        "testName": "Symmetric_1x1_1",
+        "algorithmName": "SkewSymmetric",
+        "passed": false,
+        "maxError": 1000000,
+        "relativeError": 1000000,
+        "backwardError": 1000000,
+        "methodsUsed": 0,
+        "computationTime": "00:00:00.0000212",
+        "detailedErrors": {},
+        "warnings": [],
+        "failures": [
+          "Unknown error"
+        ],
+        "details": "",
+        "metadata": {}
+      },
+      "errorMessage": null,
+      "performanceMetrics": {},
+      "memoryUsed": 57248
+    },
+    {
+      "testCaseName": "Symmetric_2x2_0",
+      "algorithmName": "Pade",
+      "success": true,
+      "executionTime": "00:00:00.0000275",
+      "validationResult": {
+        "testName": "Symmetric_2x2_0",
+        "algorithmName": "Pade",
+        "passed": true,
+        "maxError": 0.14248026224951432,
+        "relativeError": 0.10010163446663402,
+        "backwardError": 4.886709510664423E-16,
+        "methodsUsed": 37,
+        "computationTime": "00:00:00.0000275",
+        "detailedErrors": {
+          "IdentityProperty": 5.438959822042073E-16,
+          "CommutingProperty": 1.0532500405730103E-15,
+          "ScalingProperty": 0.14248026224951432,
+          "BackwardError": 4.886709510664423E-16
+        },
+        "warnings": [
+          "Scaling property large deviation: 1.42E-001"
+        ],
+        "failures": [],
+        "details": "Error Analysis:\r\n  IdentityProperty: 5.438960E-016\r\n  CommutingProperty: 1.053250E-015\r\n  ScalingProperty: 1.424803E-001\r\n  BackwardError: 4.886710E-016\r\nWarnings:\r\n  - Scaling property large deviation: 1.42E-001\r\n",
+        "metadata": {}
+      },
+      "errorMessage": null,
+      "performanceMetrics": {
+        "ExecutionTimeMs": 0.0275,
+        "MemoryUsedBytes": 81416,
+        "MatrixSize": 2,
+        "ConditionNumber": 5.889065673415946,
+        "OneNorm": 2.512285180328518,
+        "FrobeniusNorm": 2.0844151158807223
+      },
+      "memoryUsed": 81416
+    },
+    {
+      "testCaseName": "Symmetric_2x2_0",
+      "algorithmName": "Schur",
+      "success": true,
+      "executionTime": "00:00:00.0000451",
+      "validationResult": {
+        "testName": "Symmetric_2x2_0",
+        "algorithmName": "Schur",
+        "passed": true,
+        "maxError": 0.14248026224951432,
+        "relativeError": 0.10010163446663407,
+        "backwardError": 1.2332942226385043E-16,
+        "methodsUsed": 37,
+        "computationTime": "00:00:00.0000451",
+        "detailedErrors": {
+          "IdentityProperty": 1.041481514324134E-15,
+          "CommutingProperty": 7.130536482749599E-16,
+          "ScalingProperty": 0.14248026224951432,
+          "BackwardError": 1.2332942226385043E-16
+        },
+        "warnings": [
+          "Scaling property large deviation: 1.42E-001"
+        ],
+        "failures": [],
+        "details": "Error Analysis:\r\n  IdentityProperty: 1.041482E-015\r\n  CommutingProperty: 7.130536E-016\r\n  ScalingProperty: 1.424803E-001\r\n  BackwardError: 1.233294E-016\r\nWarnings:\r\n  - Scaling property large deviation: 1.42E-001\r\n",
+        "metadata": {}
+      },
+      "errorMessage": null,
+      "performanceMetrics": {
+        "ExecutionTimeMs": 0.0451,
+        "MemoryUsedBytes": 146320,
+        "MatrixSize": 2,
+        "ConditionNumber": 5.889065673415946,
+        "OneNorm": 2.512285180328518,
+        "FrobeniusNorm": 2.0844151158807223
+      },
+      "memoryUsed": 146320
+    },
+    {
+      "testCaseName": "Symmetric_2x2_0",
+      "algorithmName": "SkewSymmetric",
+      "success": false,
+      "executionTime": "00:00:00.0000219",
+      "validationResult": {
+        "testName": "Symmetric_2x2_0",
+        "algorithmName": "SkewSymmetric",
+        "passed": false,
+        "maxError": 1000000,
+        "relativeError": 1000000,
+        "backwardError": 1000000,
+        "methodsUsed": 0,
+        "computationTime": "00:00:00.0000219",
+        "detailedErrors": {},
+        "warnings": [],
+        "failures": [
+          "Unknown error"
+        ],
+        "details": "",
+        "metadata": {}
+      },
+      "errorMessage": null,
+      "performanceMetrics": {},
+      "memoryUsed": 48712
+    },
+    {
+      "testCaseName": "Symmetric_2x2_1",
+      "algorithmName": "Pade",
+      "success": true,
+      "executionTime": "00:00:00.0000305",
+      "validationResult": {
+        "testName": "Symmetric_2x2_1",
+        "algorithmName": "Pade",
+        "passed": true,
+        "maxError": 0.5839515585862385,
+        "relativeError": 0.06735416554245048,
+        "backwardError": 1.6645230681632136E-15,
+        "methodsUsed": 37,
+        "computationTime": "00:00:00.0000305",
+        "detailedErrors": {
+          "IdentityProperty": 0,
+          "CommutingProperty": 7.431033801933E-15,
+          "ScalingProperty": 0.5839515585862385,
+          "BackwardError": 1.6645230681632136E-15
+        },
+        "warnings": [
+          "Scaling property large deviation: 5.84E-001"
+        ],
+        "failures": [],
+        "details": "Error Analysis:\r\n  IdentityProperty: 0.000000E\u002B000\r\n  CommutingProperty: 7.431034E-015\r\n  ScalingProperty: 5.839516E-001\r\n  BackwardError: 1.664523E-015\r\nWarnings:\r\n  - Scaling property large deviation: 5.84E-001\r\n",
+        "metadata": {}
+      },
+      "errorMessage": null,
+      "performanceMetrics": {
+        "ExecutionTimeMs": 0.0305,
+        "MemoryUsedBytes": 105832,
+        "MatrixSize": 2,
+        "ConditionNumber": 1.5195721506644286,
+        "OneNorm": 4.274107849460098,
+        "FrobeniusNorm": 3.9289570283253856
+      },
+      "memoryUsed": 105832
+    },
+    {
+      "testCaseName": "Symmetric_2x2_1",
+      "algorithmName": "Schur",
+      "success": true,
+      "executionTime": "00:00:00.0000416",
+      "validationResult": {
+        "testName": "Symmetric_2x2_1",
+        "algorithmName": "Schur",
+        "passed": true,
+        "maxError": 0.5839515585862385,
+        "relativeError": 0.06735416554245036,
+        "backwardError": 5.795125479800759E-16,
+        "methodsUsed": 37,
+        "computationTime": "00:00:00.0000416",
+        "detailedErrors": {
+          "IdentityProperty": 3.972054645195637E-14,
+          "CommutingProperty": 1.2870928097709678E-14,
+          "ScalingProperty": 0.5839515585862385,
+          "BackwardError": 5.795125479800759E-16
+        },
+        "warnings": [
+          "Scaling property large deviation: 5.84E-001"
+        ],
+        "failures": [],
+        "details": "Error Analysis:\r\n  IdentityProperty: 3.972055E-014\r\n  CommutingProperty: 1.287093E-014\r\n  ScalingProperty: 5.839516E-001\r\n  BackwardError: 5.795125E-016\r\nWarnings:\r\n  - Scaling property large deviation: 5.84E-001\r\n",
+        "metadata": {}
+      },
+      "errorMessage": null,
+      "performanceMetrics": {
+        "ExecutionTimeMs": 0.0416,
+        "MemoryUsedBytes": 130136,
+        "MatrixSize": 2,
+        "ConditionNumber": 1.5195721506644286,
+        "OneNorm": 4.274107849460098,
+        "FrobeniusNorm": 3.9289570283253856
+      },
+      "memoryUsed": 130136
+    },
+    {
+      "testCaseName": "Symmetric_2x2_1",
+      "algorithmName": "SkewSymmetric",
+      "success": false,
+      "executionTime": "00:00:00.0000312",
+      "validationResult": {
+        "testName": "Symmetric_2x2_1",
+        "algorithmName": "SkewSymmetric",
+        "passed": false,
+        "maxError": 1000000,
+        "relativeError": 1000000,
+        "backwardError": 1000000,
+        "methodsUsed": 0,
+        "computationTime": "00:00:00.0000312",
+        "detailedErrors": {},
+        "warnings": [],
+        "failures": [
+          "Unknown error"
+        ],
+        "details": "",
+        "metadata": {}
+      },
+      "errorMessage": null,
+      "performanceMetrics": {},
+      "memoryUsed": 71568
+    },
+    {
+      "testCaseName": "Symmetric_4x4_0",
+      "algorithmName": "Pade",
+      "success": true,
+      "executionTime": "00:00:00.0000594",
+      "validationResult": {
+        "testName": "Symmetric_4x4_0",
+        "algorithmName": "Pade",
+        "passed": true,
+        "maxError": 1.2457880125377352,
+        "relativeError": 0.09748207052100229,
+        "backwardError": 1.0411502493619256E-15,
+        "methodsUsed": 37,
+        "computationTime": "00:00:00.0000594",
+        "detailedErrors": {
+          "IdentityProperty": 1.658942558342028E-13,
+          "CommutingProperty": 2.0634212497925152E-14,
+          "ScalingProperty": 1.2457880125377352,
+          "BackwardError": 1.0411502493619256E-15
+        },
+        "warnings": [
+          "Scaling property large deviation: 1.25E\u002B000"
+        ],
+        "failures": [],
+        "details": "Error Analysis:\r\n  IdentityProperty: 1.658943E-013\r\n  CommutingProperty: 2.063421E-014\r\n  ScalingProperty: 1.245788E\u002B000\r\n  BackwardError: 1.041150E-015\r\nWarnings:\r\n  - Scaling property large deviation: 1.25E\u002B000\r\n",
+        "metadata": {}
+      },
+      "errorMessage": null,
+      "performanceMetrics": {
+        "ExecutionTimeMs": 0.0594,
+        "MemoryUsedBytes": 128704,
+        "MatrixSize": 4,
+        "ConditionNumber": 4.187376543210359,
+        "OneNorm": 7.202104271921911,
+        "FrobeniusNorm": 5.7856765160565695
+      },
+      "memoryUsed": 128704
+    },
+    {
+      "testCaseName": "Symmetric_4x4_0",
+      "algorithmName": "Schur",
+      "success": true,
+      "executionTime": "00:00:00.0001114",
+      "validationResult": {
+        "testName": "Symmetric_4x4_0",
+        "algorithmName": "Schur",
+        "passed": true,
+        "maxError": 1.2457880125377352,
+        "relativeError": 0.09748207052100254,
+        "backwardError": 2.63029490015403E-15,
+        "methodsUsed": 37,
+        "computationTime": "00:00:00.0001114",
+        "detailedErrors": {
+          "IdentityProperty": 4.090664455915714E-13,
+          "CommutingProperty": 1.824892686959114E-14,
+          "ScalingProperty": 1.2457880125377352,
+          "BackwardError": 2.63029490015403E-15
+        },
+        "warnings": [
+          "Scaling property large deviation: 1.25E\u002B000"
+        ],
+        "failures": [],
+        "details": "Error Analysis:\r\n  IdentityProperty: 4.090664E-013\r\n  CommutingProperty: 1.824893E-014\r\n  ScalingProperty: 1.245788E\u002B000\r\n  BackwardError: 2.630295E-015\r\nWarnings:\r\n  - Scaling property large deviation: 1.25E\u002B000\r\n",
+        "metadata": {}
+      },
+      "errorMessage": null,
+      "performanceMetrics": {
+        "ExecutionTimeMs": 0.1114,
+        "MemoryUsedBytes": 290528,
+        "MatrixSize": 4,
+        "ConditionNumber": 4.187376543210359,
+        "OneNorm": 7.202104271921911,
+        "FrobeniusNorm": 5.7856765160565695
+      },
+      "memoryUsed": 290528
+    },
+    {
+      "testCaseName": "Symmetric_4x4_0",
+      "algorithmName": "SkewSymmetric",
+      "success": false,
+      "executionTime": "00:00:00.0000214",
+      "validationResult": {
+        "testName": "Symmetric_4x4_0",
+        "algorithmName": "SkewSymmetric",
+        "passed": false,
+        "maxError": 1000000,
+        "relativeError": 1000000,
+        "backwardError": 1000000,
+        "methodsUsed": 0,
+        "computationTime": "00:00:00.0000214",
+        "detailedErrors": {},
+        "warnings": [],
+        "failures": [
+          "Unknown error"
+        ],
+        "details": "",
+        "metadata": {}
+      },
+      "errorMessage": null,
+      "performanceMetrics": {},
+      "memoryUsed": 40824
+    },
+    {
+      "testCaseName": "Symmetric_4x4_1",
+      "algorithmName": "Pade",
+      "success": true,
+      "executionTime": "00:00:00.0000646",
+      "validationResult": {
+        "testName": "Symmetric_4x4_1",
+        "algorithmName": "Pade",
+        "passed": true,
+        "maxError": 2.7525944736114987,
+        "relativeError": 0.04311004034408728,
+        "backwardError": 1.6840079624821513E-15,
+        "methodsUsed": 37,
+        "computationTime": "00:00:00.0000646",
+        "detailedErrors": {
+          "IdentityProperty": 1.709022381825585E-14,
+          "CommutingProperty": 4.5299276260290927E-14,
+          "ScalingProperty": 2.7525944736114987,
+          "BackwardError": 1.6840079624821513E-15
+        },
+        "warnings": [
+          "Scaling property large deviation: 2.75E\u002B000"
+        ],
+        "failures": [],
+        "details": "Error Analysis:\r\n  IdentityProperty: 1.709022E-014\r\n  CommutingProperty: 4.529928E-014\r\n  ScalingProperty: 2.752594E\u002B000\r\n  BackwardError: 1.684008E-015\r\nWarnings:\r\n  - Scaling property large deviation: 2.75E\u002B000\r\n",
+        "metadata": {}
+      },
+      "errorMessage": null,
+      "performanceMetrics": {
+        "ExecutionTimeMs": 0.0646,
+        "MemoryUsedBytes": 174128,
+        "MatrixSize": 4,
+        "ConditionNumber": 16.2001314530191,
+        "OneNorm": 5.33879839995392,
+        "FrobeniusNorm": 4.419409155072432
+      },
+      "memoryUsed": 174128
+    },
+    {
+      "testCaseName": "Symmetric_4x4_1",
+      "algorithmName": "Schur",
+      "success": true,
+      "executionTime": "00:00:00.0001014",
+      "validationResult": {
+        "testName": "Symmetric_4x4_1",
+        "algorithmName": "Schur",
+        "passed": true,
+        "maxError": 2.7525944736114987,
+        "relativeError": 0.04311004034408725,
+        "backwardError": 3.665567899076843E-15,
+        "methodsUsed": 37,
+        "computationTime": "00:00:00.0001014",
+        "detailedErrors": {
+          "IdentityProperty": 1.3484306515229252E-13,
+          "CommutingProperty": 5.99174931022721E-14,
+          "ScalingProperty": 2.7525944736114987,
+          "BackwardError": 3.665567899076843E-15
+        },
+        "warnings": [
+          "Scaling property large deviation: 2.75E\u002B000"
+        ],
+        "failures": [],
+        "details": "Error Analysis:\r\n  IdentityProperty: 1.348431E-013\r\n  CommutingProperty: 5.991749E-014\r\n  ScalingProperty: 2.752594E\u002B000\r\n  BackwardError: 3.665568E-015\r\nWarnings:\r\n  - Scaling property large deviation: 2.75E\u002B000\r\n",
+        "metadata": {}
+      },
+      "errorMessage": null,
+      "performanceMetrics": {
+        "ExecutionTimeMs": 0.1014,
+        "MemoryUsedBytes": 294192,
+        "MatrixSize": 4,
+        "ConditionNumber": 16.2001314530191,
+        "OneNorm": 5.33879839995392,
+        "FrobeniusNorm": 4.419409155072432
+      },
+      "memoryUsed": 294192
+    },
+    {
+      "testCaseName": "Symmetric_4x4_1",
+      "algorithmName": "SkewSymmetric",
+      "success": false,
+      "executionTime": "00:00:00.0000203",
+      "validationResult": {
+        "testName": "Symmetric_4x4_1",
+        "algorithmName": "SkewSymmetric",
+        "passed": false,
+        "maxError": 1000000,
+        "relativeError": 1000000,
+        "backwardError": 1000000,
+        "methodsUsed": 0,
+        "computationTime": "00:00:00.0000203",
+        "detailedErrors": {},
+        "warnings": [],
+        "failures": [
+          "Unknown error"
+        ],
+        "details": "",
+        "metadata": {}
+      },
+      "errorMessage": null,
+      "performanceMetrics": {},
+      "memoryUsed": 48976
+    },
+    {
+      "testCaseName": "Symmetric_8x8_0",
+      "algorithmName": "Pade",
+      "success": true,
+      "executionTime": "00:00:00.0001873",
+      "validationResult": {
+        "testName": "Symmetric_8x8_0",
+        "algorithmName": "Pade",
+        "passed": true,
+        "maxError": 3.727481494133103,
+        "relativeError": 0.04934923873781478,
+        "backwardError": 4.624649658506419E-15,
+        "methodsUsed": 37,
+        "computationTime": "00:00:00.0001873",
+        "detailedErrors": {
+          "IdentityProperty": 6.862619011222982E-13,
+          "CommutingProperty": 1.477399438004947E-13,
+          "ScalingProperty": 3.727481494133103,
+          "BackwardError": 4.624649658506419E-15
+        },
+        "warnings": [
+          "Scaling property large deviation: 3.73E\u002B000"
+        ],
+        "failures": [],
+        "details": "Error Analysis:\r\n  IdentityProperty: 6.862619E-013\r\n  CommutingProperty: 1.477399E-013\r\n  ScalingProperty: 3.727481E\u002B000\r\n  BackwardError: 4.624650E-015\r\nWarnings:\r\n  - Scaling property large deviation: 3.73E\u002B000\r\n",
+        "metadata": {}
+      },
+      "errorMessage": null,
+      "performanceMetrics": {
+        "ExecutionTimeMs": 0.1873,
+        "MemoryUsedBytes": 330728,
+        "MatrixSize": 8,
+        "ConditionNumber": 29.14182452982158,
+        "OneNorm": 8.614743159058445,
+        "FrobeniusNorm": 8.338123947535852
+      },
+      "memoryUsed": 330728
+    },
+    {
+      "testCaseName": "Symmetric_8x8_0",
+      "algorithmName": "Schur",
+      "success": true,
+      "executionTime": "00:00:00.0003929",
+      "validationResult": {
+        "testName": "Symmetric_8x8_0",
+        "algorithmName": "Schur",
+        "passed": true,
+        "maxError": 3.727481494133103,
+        "relativeError": 0.049349238737815174,
+        "backwardError": 3.2678059771750643E-15,
+        "methodsUsed": 37,
+        "computationTime": "00:00:00.0003929",
+        "detailedErrors": {
+          "IdentityProperty": 2.0751406710241232E-12,
+          "CommutingProperty": 7.219696630845408E-13,
+          "ScalingProperty": 3.727481494133103,
+          "BackwardError": 3.2678059771750643E-15
+        },
+        "warnings": [
+          "Scaling property large deviation: 3.73E\u002B000"
+        ],
+        "failures": [],
+        "details": "Error Analysis:\r\n  IdentityProperty: 2.075141E-012\r\n  CommutingProperty: 7.219697E-013\r\n  ScalingProperty: 3.727481E\u002B000\r\n  BackwardError: 3.267806E-015\r\nWarnings:\r\n  - Scaling property large deviation: 3.73E\u002B000\r\n",
+        "metadata": {}
+      },
+      "errorMessage": null,
+      "performanceMetrics": {
+        "ExecutionTimeMs": 0.3929,
+        "MemoryUsedBytes": 827504,
+        "MatrixSize": 8,
+        "ConditionNumber": 29.14182452982158,
+        "OneNorm": 8.614743159058445,
+        "FrobeniusNorm": 8.338123947535852
+      },
+      "memoryUsed": 827504
+    },
+    {
+      "testCaseName": "Symmetric_8x8_0",
+      "algorithmName": "SkewSymmetric",
+      "success": false,
+      "executionTime": "00:00:00.0000307",
+      "validationResult": {
+        "testName": "Symmetric_8x8_0",
+        "algorithmName": "SkewSymmetric",
+        "passed": false,
+        "maxError": 1000000,
+        "relativeError": 1000000,
+        "backwardError": 1000000,
+        "methodsUsed": 0,
+        "computationTime": "00:00:00.0000307",
+        "detailedErrors": {},
+        "warnings": [],
+        "failures": [
+          "Unknown error"
+        ],
+        "details": "",
+        "metadata": {}
+      },
+      "errorMessage": null,
+      "performanceMetrics": {},
+      "memoryUsed": 40440
+    },
+    {
+      "testCaseName": "Symmetric_8x8_1",
+      "algorithmName": "Pade",
+      "success": true,
+      "executionTime": "00:00:00.0002029",
+      "validationResult": {
+        "testName": "Symmetric_8x8_1",
+        "algorithmName": "Pade",
+        "passed": true,
+        "maxError": 1.43552161233089,
+        "relativeError": 0.058133207726345976,
+        "backwardError": 2.1241259665693843E-15,
+        "methodsUsed": 37,
+        "computationTime": "00:00:00.0002029",
+        "detailedErrors": {
+          "IdentityProperty": 1.7304112558392096E-13,
+          "CommutingProperty": 7.190248335826151E-14,
+          "ScalingProperty": 1.43552161233089,
+          "BackwardError": 2.1241259665693843E-15
+        },
+        "warnings": [
+          "Scaling property large deviation: 1.44E\u002B000"
+        ],
+        "failures": [],
+        "details": "Error Analysis:\r\n  IdentityProperty: 1.730411E-013\r\n  CommutingProperty: 7.190248E-014\r\n  ScalingProperty: 1.435522E\u002B000\r\n  BackwardError: 2.124126E-015\r\nWarnings:\r\n  - Scaling property large deviation: 1.44E\u002B000\r\n",
+        "metadata": {}
+      },
+      "errorMessage": null,
+      "performanceMetrics": {
+        "ExecutionTimeMs": 0.2029,
+        "MemoryUsedBytes": 439616,
+        "MatrixSize": 8,
+        "ConditionNumber": 12.977373942303364,
+        "OneNorm": 6.770952007980879,
+        "FrobeniusNorm": 6.638800811750896
+      },
+      "memoryUsed": 439616
+    },
+    {
+      "testCaseName": "Symmetric_8x8_1",
+      "algorithmName": "Schur",
+      "success": true,
+      "executionTime": "00:00:00.0004151",
+      "validationResult": {
+        "testName": "Symmetric_8x8_1",
+        "algorithmName": "Schur",
+        "passed": true,
+        "maxError": 1.43552161233089,
+        "relativeError": 0.058133207726346066,
+        "backwardError": 2.976962301287168E-15,
+        "methodsUsed": 37,
+        "computationTime": "00:00:00.0004151",
+        "detailedErrors": {
+          "IdentityProperty": 4.4008251511914166E-13,
+          "CommutingProperty": 5.141051358729151E-14,
+          "ScalingProperty": 1.43552161233089,
+          "BackwardError": 2.976962301287168E-15
+        },
+        "warnings": [
+          "Scaling property large deviation: 1.44E\u002B000"
+        ],
+        "failures": [],
+        "details": "Error Analysis:\r\n  IdentityProperty: 4.400825E-013\r\n  CommutingProperty: 5.141051E-014\r\n  ScalingProperty: 1.435522E\u002B000\r\n  BackwardError: 2.976962E-015\r\nWarnings:\r\n  - Scaling property large deviation: 1.44E\u002B000\r\n",
+        "metadata": {}
+      },
+      "errorMessage": null,
+      "performanceMetrics": {
+        "ExecutionTimeMs": 0.4151,
+        "MemoryUsedBytes": 875176,
+        "MatrixSize": 8,
+        "ConditionNumber": 12.977373942303364,
+        "OneNorm": 6.770952007980879,
+        "FrobeniusNorm": 6.638800811750896
+      },
+      "memoryUsed": 875176
+    },
+    {
+      "testCaseName": "Symmetric_8x8_1",
+      "algorithmName": "SkewSymmetric",
+      "success": false,
+      "executionTime": "00:00:00.0000217",
+      "validationResult": {
+        "testName": "Symmetric_8x8_1",
+        "algorithmName": "SkewSymmetric",
+        "passed": false,
+        "maxError": 1000000,
+        "relativeError": 1000000,
+        "backwardError": 1000000,
+        "methodsUsed": 0,
+        "computationTime": "00:00:00.0000217",
+        "detailedErrors": {},
+        "warnings": [],
+        "failures": [
+          "Unknown error"
+        ],
+        "details": "",
+        "metadata": {}
+      },
+      "errorMessage": null,
+      "performanceMetrics": {},
+      "memoryUsed": 40256
+    },
+    {
+      "testCaseName": "Symmetric_16x16_0",
+      "algorithmName": "Pade",
+      "success": false,
+      "executionTime": "00:00:00.0004142",
+      "validationResult": {
+        "testName": "Symmetric_16x16_0",
+        "algorithmName": "Pade",
+        "passed": false,
+        "maxError": 4.703120691819593E-10,
+        "relativeError": 2.38200907074578E-13,
+        "backwardError": 1.0675539670764414E-14,
+        "methodsUsed": 37,
+        "computationTime": "00:00:00.0004142",
+        "detailedErrors": {
+          "IdentityProperty": 4.703120691819593E-10,
+          "CommutingProperty": 7.213679932558791E-12,
+          "BackwardError": 1.0675539670764414E-14
+        },
+        "warnings": [],
+        "failures": [
+          "Identity property failed: ||exp(A)*exp(-A) - I|| = 4.70E-010",
+          "Backward error 1.07E-014 exceeds tolerance 1.00E-014"
+        ],
+        "details": "Error Analysis:\r\n  IdentityProperty: 4.703121E-010\r\n  CommutingProperty: 7.213680E-012\r\n  BackwardError: 1.067554E-014\r\nFailures:\r\n  - Identity property failed: ||exp(A)*exp(-A) - I|| = 4.70E-010\r\n  - Backward error 1.07E-014 exceeds tolerance 1.00E-014\r\n",
+        "metadata": {}
+      },
+      "errorMessage": null,
+      "performanceMetrics": {
+        "ExecutionTimeMs": 0.4142,
+        "MemoryUsedBytes": 762792,
+        "MatrixSize": 16,
+        "ConditionNumber": 84.76088414923797,
+        "OneNorm": 19.561290211155605,
+        "FrobeniusNorm": 16.907568003986476
+      },
+      "memoryUsed": 762792
+    },
+    {
+      "testCaseName": "Symmetric_16x16_0",
+      "algorithmName": "Schur",
+      "success": false,
+      "executionTime": "00:00:00.0150264",
+      "validationResult": {
+        "testName": "Symmetric_16x16_0",
+        "algorithmName": "Schur",
+        "passed": false,
+        "maxError": 1.2501529990302525E-09,
+        "relativeError": 6.331701818092093E-13,
+        "backwardError": 8.791619508713601E-15,
+        "methodsUsed": 37,
+        "computationTime": "00:00:00.0150264",
+        "detailedErrors": {
+          "IdentityProperty": 1.2501529990302525E-09,
+          "CommutingProperty": 2.503139864707262E-11,
+          "BackwardError": 8.791619508713601E-15
+        },
+        "warnings": [],
+        "failures": [
+          "Identity property failed: ||exp(A)*exp(-A) - I|| = 1.25E-009"
+        ],
+        "details": "Error Analysis:\r\n  IdentityProperty: 1.250153E-009\r\n  CommutingProperty: 2.503140E-011\r\n  BackwardError: 8.791620E-015\r\nFailures:\r\n  - Identity property failed: ||exp(A)*exp(-A) - I|| = 1.25E-009\r\n",
+        "metadata": {}
+      },
+      "errorMessage": null,
+      "performanceMetrics": {
+        "ExecutionTimeMs": 15.0264,
+        "MemoryUsedBytes": 903216,
+        "MatrixSize": 16,
+        "ConditionNumber": 84.76088414923797,
+        "OneNorm": 19.561290211155605,
+        "FrobeniusNorm": 16.907568003986476
+      },
+      "memoryUsed": 903216
+    },
+    {
+      "testCaseName": "Symmetric_16x16_0",
+      "algorithmName": "SkewSymmetric",
+      "success": false,
+      "executionTime": "00:00:00.0000259",
+      "validationResult": {
+        "testName": "Symmetric_16x16_0",
+        "algorithmName": "SkewSymmetric",
+        "passed": false,
+        "maxError": 1000000,
+        "relativeError": 1000000,
+        "backwardError": 1000000,
+        "methodsUsed": 0,
+        "computationTime": "00:00:00.0000259",
+        "detailedErrors": {},
+        "warnings": [],
+        "failures": [
+          "Unknown error"
+        ],
+        "details": "",
+        "metadata": {}
+      },
+      "errorMessage": null,
+      "performanceMetrics": {},
+      "memoryUsed": 38824
+    },
+    {
+      "testCaseName": "Symmetric_16x16_1",
+      "algorithmName": "Pade",
+      "success": false,
+      "executionTime": "00:00:00.0004184",
+      "validationResult": {
+        "testName": "Symmetric_16x16_1",
+        "algorithmName": "Pade",
+        "passed": false,
+        "maxError": 1.3342766593838053E-10,
+        "relativeError": 7.173532315691402E-14,
+        "backwardError": 1.0967161126882795E-14,
+        "methodsUsed": 37,
+        "computationTime": "00:00:00.0004184",
+        "detailedErrors": {
+          "IdentityProperty": 1.3342766593838053E-10,
+          "CommutingProperty": 8.80807090669826E-12,
+          "BackwardError": 1.0967161126882795E-14
+        },
+        "warnings": [],
+        "failures": [
+          "Identity property failed: ||exp(A)*exp(-A) - I|| = 1.33E-010",
+          "Backward error 1.10E-014 exceeds tolerance 1.00E-014"
+        ],
+        "details": "Error Analysis:\r\n  IdentityProperty: 1.334277E-010\r\n  CommutingProperty: 8.808071E-012\r\n  BackwardError: 1.096716E-014\r\nFailures:\r\n  - Identity property failed: ||exp(A)*exp(-A) - I|| = 1.33E-010\r\n  - Backward error 1.10E-014 exceeds tolerance 1.00E-014\r\n",
+        "metadata": {}
+      },
+      "errorMessage": null,
+      "performanceMetrics": {
+        "ExecutionTimeMs": 0.4184,
+        "MemoryUsedBytes": 688776,
+        "MatrixSize": 16,
+        "ConditionNumber": 80.78363649203911,
+        "OneNorm": 17.35421546012077,
+        "FrobeniusNorm": 16.57775078093782
+      },
+      "memoryUsed": 688776
+    },
+    {
+      "testCaseName": "Symmetric_16x16_1",
+      "algorithmName": "Schur",
+      "success": false,
+      "executionTime": "00:00:00.0089425",
+      "validationResult": {
+        "testName": "Symmetric_16x16_1",
+        "algorithmName": "Schur",
+        "passed": false,
+        "maxError": 1.0200887112365235E-09,
+        "relativeError": 5.484349353983728E-13,
+        "backwardError": 1.3454732774860486E-14,
+        "methodsUsed": 37,
+        "computationTime": "00:00:00.0089425",
+        "detailedErrors": {
+          "IdentityProperty": 1.0200887112365235E-09,
+          "CommutingProperty": 2.4589095748186522E-11,
+          "BackwardError": 1.3454732774860486E-14
+        },
+        "warnings": [],
+        "failures": [
+          "Identity property failed: ||exp(A)*exp(-A) - I|| = 1.02E-009",
+          "Backward error 1.35E-014 exceeds tolerance 1.00E-014"
+        ],
+        "details": "Error Analysis:\r\n  IdentityProperty: 1.020089E-009\r\n  CommutingProperty: 2.458910E-011\r\n  BackwardError: 1.345473E-014\r\nFailures:\r\n  - Identity property failed: ||exp(A)*exp(-A) - I|| = 1.02E-009\r\n  - Backward error 1.35E-014 exceeds tolerance 1.00E-014\r\n",
+        "metadata": {}
+      },
+      "errorMessage": null,
+      "performanceMetrics": {
+        "ExecutionTimeMs": 8.9425,
+        "MemoryUsedBytes": -110272,
+        "MatrixSize": 16,
+        "ConditionNumber": 80.78363649203911,
+        "OneNorm": 17.35421546012077,
+        "FrobeniusNorm": 16.57775078093782
+      },
+      "memoryUsed": -110272
+    },
+    {
+      "testCaseName": "Symmetric_16x16_1",
+      "algorithmName": "SkewSymmetric",
+      "success": false,
+      "executionTime": "00:00:00.0000596",
+      "validationResult": {
+        "testName": "Symmetric_16x16_1",
+        "algorithmName": "SkewSymmetric",
+        "passed": false,
+        "maxError": 1000000,
+        "relativeError": 1000000,
+        "backwardError": 1000000,
+        "methodsUsed": 0,
+        "computationTime": "00:00:00.0000596",
+        "detailedErrors": {},
+        "warnings": [],
+        "failures": [
+          "Unknown error"
+        ],
+        "details": "",
+        "metadata": {}
+      },
+      "errorMessage": null,
+      "performanceMetrics": {},
+      "memoryUsed": 86400
+    },
+    {
+      "testCaseName": "SkewSymmetric_1x1_0",
+      "algorithmName": "Pade",
+      "success": true,
+      "executionTime": "00:00:00.0000116",
+      "validationResult": {
+        "testName": "SkewSymmetric_1x1_0",
+        "algorithmName": "Pade",
+        "passed": true,
+        "maxError": 2.220446049250313E-16,
+        "relativeError": 2.220446049250313E-16,
+        "backwardError": 0,
+        "methodsUsed": 37,
+        "computationTime": "00:00:00.0000116",
+        "detailedErrors": {
+          "IdentityProperty": 0,
+          "ZeroMatrix": 0,
+          "CommutingProperty": 2.220446049250313E-16,
+          "ScalingProperty": 0,
+          "BackwardError": 0,
+          "OrthogonalityError": 0,
+          "DeterminantError": 0
+        },
+        "warnings": [],
+        "failures": [],
+        "details": "Error Analysis:\r\n  IdentityProperty: 0.000000E\u002B000\r\n  ZeroMatrix: 0.000000E\u002B000\r\n  CommutingProperty: 2.220446E-016\r\n  ScalingProperty: 0.000000E\u002B000\r\n  BackwardError: 0.000000E\u002B000\r\n  OrthogonalityError: 0.000000E\u002B000\r\n  DeterminantError: 0.000000E\u002B000\r\n",
+        "metadata": {}
+      },
+      "errorMessage": null,
+      "performanceMetrics": {
+        "ExecutionTimeMs": 0.0116,
+        "MemoryUsedBytes": 23416,
+        "MatrixSize": 1,
+        "ConditionNumber": "NaN",
+        "OneNorm": 0,
+        "FrobeniusNorm": 0
+      },
+      "memoryUsed": 23416
+    },
+    {
+      "testCaseName": "SkewSymmetric_1x1_0",
+      "algorithmName": "Schur",
+      "success": true,
+      "executionTime": "00:00:00.0000102",
+      "validationResult": {
+        "testName": "SkewSymmetric_1x1_0",
+        "algorithmName": "Schur",
+        "passed": true,
+        "maxError": 2.220446049250313E-16,
+        "relativeError": 2.220446049250313E-16,
+        "backwardError": 0,
+        "methodsUsed": 37,
+        "computationTime": "00:00:00.0000102",
+        "detailedErrors": {
+          "IdentityProperty": 0,
+          "ZeroMatrix": 0,
+          "CommutingProperty": 2.220446049250313E-16,
+          "ScalingProperty": 0,
+          "BackwardError": 0,
+          "OrthogonalityError": 0,
+          "DeterminantError": 0
+        },
+        "warnings": [],
+        "failures": [],
+        "details": "Error Analysis:\r\n  IdentityProperty: 0.000000E\u002B000\r\n  ZeroMatrix: 0.000000E\u002B000\r\n  CommutingProperty: 2.220446E-016\r\n  ScalingProperty: 0.000000E\u002B000\r\n  BackwardError: 0.000000E\u002B000\r\n  OrthogonalityError: 0.000000E\u002B000\r\n  DeterminantError: 0.000000E\u002B000\r\n",
+        "metadata": {}
+      },
+      "errorMessage": null,
+      "performanceMetrics": {
+        "ExecutionTimeMs": 0.0102,
+        "MemoryUsedBytes": 8224,
+        "MatrixSize": 1,
+        "ConditionNumber": "NaN",
+        "OneNorm": 0,
+        "FrobeniusNorm": 0
+      },
+      "memoryUsed": 8224
+    },
+    {
+      "testCaseName": "SkewSymmetric_1x1_0",
+      "algorithmName": "SkewSymmetric",
+      "success": true,
+      "executionTime": "00:00:00.0008683",
+      "validationResult": {
+        "testName": "SkewSymmetric_1x1_0",
+        "algorithmName": "SkewSymmetric",
+        "passed": true,
+        "maxError": 2.220446049250313E-16,
+        "relativeError": 2.220446049250313E-16,
+        "backwardError": 0,
+        "methodsUsed": 37,
+        "computationTime": "00:00:00.0008683",
+        "detailedErrors": {
+          "IdentityProperty": 0,
+          "ZeroMatrix": 0,
+          "CommutingProperty": 2.220446049250313E-16,
+          "ScalingProperty": 0,
+          "BackwardError": 0,
+          "OrthogonalityError": 0,
+          "DeterminantError": 0
+        },
+        "warnings": [],
+        "failures": [],
+        "details": "Error Analysis:\r\n  IdentityProperty: 0.000000E\u002B000\r\n  ZeroMatrix: 0.000000E\u002B000\r\n  CommutingProperty: 2.220446E-016\r\n  ScalingProperty: 0.000000E\u002B000\r\n  BackwardError: 0.000000E\u002B000\r\n  OrthogonalityError: 0.000000E\u002B000\r\n  DeterminantError: 0.000000E\u002B000\r\n",
+        "metadata": {}
+      },
+      "errorMessage": null,
+      "performanceMetrics": {
+        "ExecutionTimeMs": 0.8683,
+        "MemoryUsedBytes": 562432,
+        "MatrixSize": 1,
+        "ConditionNumber": "NaN",
+        "OneNorm": 0,
+        "FrobeniusNorm": 0
+      },
+      "memoryUsed": 562432
+    },
+    {
+      "testCaseName": "SkewSymmetric_1x1_1",
+      "algorithmName": "Pade",
+      "success": true,
+      "executionTime": "00:00:00.0000165",
+      "validationResult": {
+        "testName": "SkewSymmetric_1x1_1",
+        "algorithmName": "Pade",
+        "passed": true,
+        "maxError": 2.220446049250313E-16,
+        "relativeError": 2.220446049250313E-16,
+        "backwardError": 0,
+        "methodsUsed": 37,
+        "computationTime": "00:00:00.0000165",
+        "detailedErrors": {
+          "IdentityProperty": 0,
+          "ZeroMatrix": 0,
+          "CommutingProperty": 2.220446049250313E-16,
+          "ScalingProperty": 0,
+          "BackwardError": 0,
+          "OrthogonalityError": 0,
+          "DeterminantError": 0
+        },
+        "warnings": [],
+        "failures": [],
+        "details": "Error Analysis:\r\n  IdentityProperty: 0.000000E\u002B000\r\n  ZeroMatrix: 0.000000E\u002B000\r\n  CommutingProperty: 2.220446E-016\r\n  ScalingProperty: 0.000000E\u002B000\r\n  BackwardError: 0.000000E\u002B000\r\n  OrthogonalityError: 0.000000E\u002B000\r\n  DeterminantError: 0.000000E\u002B000\r\n",
+        "metadata": {}
+      },
+      "errorMessage": null,
+      "performanceMetrics": {
+        "ExecutionTimeMs": 0.0165,
+        "MemoryUsedBytes": 16344,
+        "MatrixSize": 1,
+        "ConditionNumber": "NaN",
+        "OneNorm": 0,
+        "FrobeniusNorm": 0
+      },
+      "memoryUsed": 16344
+    },
+    {
+      "testCaseName": "SkewSymmetric_1x1_1",
+      "algorithmName": "Schur",
+      "success": true,
+      "executionTime": "00:00:00.0000045",
+      "validationResult": {
+        "testName": "SkewSymmetric_1x1_1",
+        "algorithmName": "Schur",
+        "passed": true,
+        "maxError": 2.220446049250313E-16,
+        "relativeError": 2.220446049250313E-16,
+        "backwardError": 0,
+        "methodsUsed": 37,
+        "computationTime": "00:00:00.0000045",
+        "detailedErrors": {
+          "IdentityProperty": 0,
+          "ZeroMatrix": 0,
+          "CommutingProperty": 2.220446049250313E-16,
+          "ScalingProperty": 0,
+          "BackwardError": 0,
+          "OrthogonalityError": 0,
+          "DeterminantError": 0
+        },
+        "warnings": [],
+        "failures": [],
+        "details": "Error Analysis:\r\n  IdentityProperty: 0.000000E\u002B000\r\n  ZeroMatrix: 0.000000E\u002B000\r\n  CommutingProperty: 2.220446E-016\r\n  ScalingProperty: 0.000000E\u002B000\r\n  BackwardError: 0.000000E\u002B000\r\n  OrthogonalityError: 0.000000E\u002B000\r\n  DeterminantError: 0.000000E\u002B000\r\n",
+        "metadata": {}
+      },
+      "errorMessage": null,
+      "performanceMetrics": {
+        "ExecutionTimeMs": 0.0045,
+        "MemoryUsedBytes": 7064,
+        "MatrixSize": 1,
+        "ConditionNumber": "NaN",
+        "OneNorm": 0,
+        "FrobeniusNorm": 0
+      },
+      "memoryUsed": 7064
+    },
+    {
+      "testCaseName": "SkewSymmetric_1x1_1",
+      "algorithmName": "SkewSymmetric",
+      "success": true,
+      "executionTime": "00:00:00.0007035",
+      "validationResult": {
+        "testName": "SkewSymmetric_1x1_1",
+        "algorithmName": "SkewSymmetric",
+        "passed": true,
+        "maxError": 2.220446049250313E-16,
+        "relativeError": 2.220446049250313E-16,
+        "backwardError": 0,
+        "methodsUsed": 37,
+        "computationTime": "00:00:00.0007035",
+        "detailedErrors": {
+          "IdentityProperty": 0,
+          "ZeroMatrix": 0,
+          "CommutingProperty": 2.220446049250313E-16,
+          "ScalingProperty": 0,
+          "BackwardError": 0,
+          "OrthogonalityError": 0,
+          "DeterminantError": 0
+        },
+        "warnings": [],
+        "failures": [],
+        "details": "Error Analysis:\r\n  IdentityProperty: 0.000000E\u002B000\r\n  ZeroMatrix: 0.000000E\u002B000\r\n  CommutingProperty: 2.220446E-016\r\n  ScalingProperty: 0.000000E\u002B000\r\n  BackwardError: 0.000000E\u002B000\r\n  OrthogonalityError: 0.000000E\u002B000\r\n  DeterminantError: 0.000000E\u002B000\r\n",
+        "metadata": {}
+      },
+      "errorMessage": null,
+      "performanceMetrics": {
+        "ExecutionTimeMs": 0.7035,
+        "MemoryUsedBytes": 913712,
+        "MatrixSize": 1,
+        "ConditionNumber": "NaN",
+        "OneNorm": 0,
+        "FrobeniusNorm": 0
+      },
+      "memoryUsed": 913712
+    },
+    {
+      "testCaseName": "SkewSymmetric_2x2_0",
+      "algorithmName": "Pade",
+      "success": true,
+      "executionTime": "00:00:00.0000272",
+      "validationResult": {
+        "testName": "SkewSymmetric_2x2_0",
+        "algorithmName": "Pade",
+        "passed": true,
+        "maxError": 0.006817981315541942,
+        "relativeError": 0.004821040822222886,
+        "backwardError": 5.551115123125784E-17,
+        "methodsUsed": 37,
+        "computationTime": "00:00:00.0000272",
+        "detailedErrors": {
+          "IdentityProperty": 3.1401849173675503E-16,
+          "CommutingProperty": 4.839349969133127E-16,
+          "ScalingProperty": 0.006817981315541942,
+          "BackwardError": 5.551115123125784E-17,
+          "OrthogonalityError": 2.220446049250313E-16,
+          "DeterminantError": 1.1102230246251565E-16
+        },
+        "warnings": [
+          "Scaling property large deviation: 6.82E-003"
+        ],
+        "failures": [],
+        "details": "Error Analysis:\r\n  IdentityProperty: 3.140185E-016\r\n  CommutingProperty: 4.839350E-016\r\n  ScalingProperty: 6.817981E-003\r\n  BackwardError: 5.551115E-017\r\n  OrthogonalityError: 2.220446E-016\r\n  DeterminantError: 1.110223E-016\r\nWarnings:\r\n  - Scaling property large deviation: 6.82E-003\r\n",
+        "metadata": {}
+      },
+      "errorMessage": null,
+      "performanceMetrics": {
+        "ExecutionTimeMs": 0.0272,
+        "MemoryUsedBytes": 16448,
+        "MatrixSize": 2,
+        "ConditionNumber": 1,
+        "OneNorm": 0.614304107012754,
+        "FrobeniusNorm": 0.8687571995589298
+      },
+      "memoryUsed": 16448
+    },
+    {
+      "testCaseName": "SkewSymmetric_2x2_0",
+      "algorithmName": "Schur",
+      "success": false,
+      "executionTime": "00:00:00.0002586",
+      "validationResult": {
+        "testName": "SkewSymmetric_2x2_0",
+        "algorithmName": "Schur",
+        "passed": false,
+        "maxError": 0.9934441113405964,
+        "relativeError": 0.7024710678587793,
+        "backwardError": 0,
+        "methodsUsed": 37,
+        "computationTime": "00:00:00.0002586",
+        "detailedErrors": {
+          "IdentityProperty": 0.8989054046684537,
+          "CommutingProperty": 0.9934441113405964,
+          "ScalingProperty": 0.006817981315541942,
+          "BackwardError": 0,
+          "OrthogonalityError": 1.1102230246251565E-16,
+          "DeterminantError": 0
+        },
+        "warnings": [
+          "Commuting property deviation: ||exp(A\u002BkI) - exp(A)*exp(kI)|| = 9.93E-001",
+          "Scaling property large deviation: 6.82E-003"
+        ],
+        "failures": [
+          "Identity property failed: ||exp(A)*exp(-A) - I|| = 8.99E-001"
+        ],
+        "details": "Error Analysis:\r\n  IdentityProperty: 8.989054E-001\r\n  CommutingProperty: 9.934441E-001\r\n  ScalingProperty: 6.817981E-003\r\n  BackwardError: 0.000000E\u002B000\r\n  OrthogonalityError: 1.110223E-016\r\n  DeterminantError: 0.000000E\u002B000\r\nWarnings:\r\n  - Commuting property deviation: ||exp(A\u002BkI) - exp(A)*exp(kI)|| = 9.93E-001\r\n  - Scaling property large deviation: 6.82E-003\r\nFailures:\r\n  - Identity property failed: ||exp(A)*exp(-A) - I|| = 8.99E-001\r\n",
+        "metadata": {}
+      },
+      "errorMessage": null,
+      "performanceMetrics": {
+        "ExecutionTimeMs": 0.2586,
+        "MemoryUsedBytes": 153360,
+        "MatrixSize": 2,
+        "ConditionNumber": 1,
+        "OneNorm": 0.614304107012754,
+        "FrobeniusNorm": 0.8687571995589298
+      },
+      "memoryUsed": 153360
+    },
+    {
+      "testCaseName": "SkewSymmetric_2x2_0",
+      "algorithmName": "SkewSymmetric",
+      "success": true,
+      "executionTime": "00:00:00.0001420",
+      "validationResult": {
+        "testName": "SkewSymmetric_2x2_0",
+        "algorithmName": "SkewSymmetric",
+        "passed": true,
+        "maxError": 0.006817981315541942,
+        "relativeError": 0.004821040822222886,
+        "backwardError": 0,
+        "methodsUsed": 37,
+        "computationTime": "00:00:00.0001420",
+        "detailedErrors": {
+          "IdentityProperty": 3.597533769998862E-16,
+          "CommutingProperty": 1.9229626863835638E-16,
+          "ScalingProperty": 0.006817981315541942,
+          "BackwardError": 0,
+          "OrthogonalityError": 1.1102230246251565E-16,
+          "DeterminantError": 0
+        },
+        "warnings": [
+          "Scaling property large deviation: 6.82E-003"
+        ],
+        "failures": [],
+        "details": "Error Analysis:\r\n  IdentityProperty: 3.597534E-016\r\n  CommutingProperty: 1.922963E-016\r\n  ScalingProperty: 6.817981E-003\r\n  BackwardError: 0.000000E\u002B000\r\n  OrthogonalityError: 1.110223E-016\r\n  DeterminantError: 0.000000E\u002B000\r\nWarnings:\r\n  - Scaling property large deviation: 6.82E-003\r\n",
+        "metadata": {}
+      },
+      "errorMessage": null,
+      "performanceMetrics": {
+        "ExecutionTimeMs": 0.142,
+        "MemoryUsedBytes": 0,
+        "MatrixSize": 2,
+        "ConditionNumber": 1,
+        "OneNorm": 0.614304107012754,
+        "FrobeniusNorm": 0.8687571995589298
+      },
+      "memoryUsed": 0
+    },
+    {
+      "testCaseName": "SkewSymmetric_2x2_1",
+      "algorithmName": "Pade",
+      "success": true,
+      "executionTime": "00:00:00.0000294",
+      "validationResult": {
+        "testName": "SkewSymmetric_2x2_1",
+        "algorithmName": "Pade",
+        "passed": true,
+        "maxError": 0.005849125773716699,
+        "relativeError": 0.004135956498608089,
+        "backwardError": 0,
+        "methodsUsed": 37,
+        "computationTime": "00:00:00.0000294",
+        "detailedErrors": {
+          "IdentityProperty": 0,
+          "CommutingProperty": 1.1102230246251565E-16,
+          "ScalingProperty": 0.005849125773716699,
+          "BackwardError": 0,
+          "OrthogonalityError": 0,
+          "DeterminantError": 0
+        },
+        "warnings": [
+          "Scaling property large deviation: 5.85E-003"
+        ],
+        "failures": [],
+        "details": "Error Analysis:\r\n  IdentityProperty: 0.000000E\u002B000\r\n  CommutingProperty: 1.110223E-016\r\n  ScalingProperty: 5.849126E-003\r\n  BackwardError: 0.000000E\u002B000\r\n  OrthogonalityError: 0.000000E\u002B000\r\n  DeterminantError: 0.000000E\u002B000\r\nWarnings:\r\n  - Scaling property large deviation: 5.85E-003\r\n",
+        "metadata": {}
+      },
+      "errorMessage": null,
+      "performanceMetrics": {
+        "ExecutionTimeMs": 0.0294,
+        "MemoryUsedBytes": 78368,
+        "MatrixSize": 2,
+        "ConditionNumber": 1,
+        "OneNorm": 0.5836738519382201,
+        "FrobeniusNorm": 0.8254394774135766
+      },
+      "memoryUsed": 78368
+    },
+    {
+      "testCaseName": "SkewSymmetric_2x2_1",
+      "algorithmName": "Schur",
+      "success": false,
+      "executionTime": "00:00:00.0000438",
+      "validationResult": {
+        "testName": "SkewSymmetric_2x2_1",
+        "algorithmName": "Schur",
+        "passed": false,
+        "maxError": 0.9334116768503052,
+        "relativeError": 0.6600217263395572,
+        "backwardError": 0,
+        "methodsUsed": 37,
+        "computationTime": "00:00:00.0000438",
+        "detailedErrors": {
+          "IdentityProperty": 0.8445858116458455,
+          "CommutingProperty": 0.9334116768503052,
+          "ScalingProperty": 0.005849125773716699,
+          "BackwardError": 0,
+          "OrthogonalityError": 3.3306690738754696E-16,
+          "DeterminantError": 2.220446049250313E-16
+        },
+        "warnings": [
+          "Commuting property deviation: ||exp(A\u002BkI) - exp(A)*exp(kI)|| = 9.33E-001",
+          "Scaling property large deviation: 5.85E-003"
+        ],
+        "failures": [
+          "Identity property failed: ||exp(A)*exp(-A) - I|| = 8.45E-001"
+        ],
+        "details": "Error Analysis:\r\n  IdentityProperty: 8.445858E-001\r\n  CommutingProperty: 9.334117E-001\r\n  ScalingProperty: 5.849126E-003\r\n  BackwardError: 0.000000E\u002B000\r\n  OrthogonalityError: 3.330669E-016\r\n  DeterminantError: 2.220446E-016\r\nWarnings:\r\n  - Commuting property deviation: ||exp(A\u002BkI) - exp(A)*exp(kI)|| = 9.33E-001\r\n  - Scaling property large deviation: 5.85E-003\r\nFailures:\r\n  - Identity property failed: ||exp(A)*exp(-A) - I|| = 8.45E-001\r\n",
+        "metadata": {}
+      },
+      "errorMessage": null,
+      "performanceMetrics": {
+        "ExecutionTimeMs": 0.0438,
+        "MemoryUsedBytes": 91464,
+        "MatrixSize": 2,
+        "ConditionNumber": 1,
+        "OneNorm": 0.5836738519382201,
+        "FrobeniusNorm": 0.8254394774135766
+      },
+      "memoryUsed": 91464
+    },
+    {
+      "testCaseName": "SkewSymmetric_2x2_1",
+      "algorithmName": "SkewSymmetric",
+      "success": true,
+      "executionTime": "00:00:00.0000041",
+      "validationResult": {
+        "testName": "SkewSymmetric_2x2_1",
+        "algorithmName": "SkewSymmetric",
+        "passed": true,
+        "maxError": 0.005849125773716699,
+        "relativeError": 0.004135956498608089,
+        "backwardError": 0,
+        "methodsUsed": 37,
+        "computationTime": "00:00:00.0000041",
+        "detailedErrors": {
+          "IdentityProperty": 1.5700924586837752E-16,
+          "CommutingProperty": 3.3306690738754696E-16,
+          "ScalingProperty": 0.005849125773716699,
+          "BackwardError": 0,
+          "OrthogonalityError": 0,
+          "DeterminantError": 1.1102230246251565E-16
+        },
+        "warnings": [
+          "Scaling property large deviation: 5.85E-003"
+        ],
+        "failures": [],
+        "details": "Error Analysis:\r\n  IdentityProperty: 1.570092E-016\r\n  CommutingProperty: 3.330669E-016\r\n  ScalingProperty: 5.849126E-003\r\n  BackwardError: 0.000000E\u002B000\r\n  OrthogonalityError: 0.000000E\u002B000\r\n  DeterminantError: 1.110223E-016\r\nWarnings:\r\n  - Scaling property large deviation: 5.85E-003\r\n",
+        "metadata": {}
+      },
+      "errorMessage": null,
+      "performanceMetrics": {
+        "ExecutionTimeMs": 0.0041,
+        "MemoryUsedBytes": 15272,
+        "MatrixSize": 2,
+        "ConditionNumber": 1,
+        "OneNorm": 0.5836738519382201,
+        "FrobeniusNorm": 0.8254394774135766
+      },
+      "memoryUsed": 15272
+    },
+    {
+      "testCaseName": "SkewSymmetric_4x4_0",
+      "algorithmName": "Pade",
+      "success": true,
+      "executionTime": "00:00:00.0000475",
+      "validationResult": {
+        "testName": "SkewSymmetric_4x4_0",
+        "algorithmName": "Pade",
+        "passed": true,
+        "maxError": 0.12994416246030427,
+        "relativeError": 0.06497208123015215,
+        "backwardError": 8.765006872878472E-16,
+        "methodsUsed": 37,
+        "computationTime": "00:00:00.0000475",
+        "detailedErrors": {
+          "IdentityProperty": 1.2807476463513836E-15,
+          "CommutingProperty": 2.930284297479692E-15,
+          "ScalingProperty": 0.12994416246030427,
+          "BackwardError": 8.765006872878472E-16,
+          "OrthogonalityError": 8.326672684688674E-16,
+          "DeterminantError": 3.3306690738754696E-16
+        },
+        "warnings": [
+          "Scaling property large deviation: 1.30E-001"
+        ],
+        "failures": [],
+        "details": "Error Analysis:\r\n  IdentityProperty: 1.280748E-015\r\n  CommutingProperty: 2.930284E-015\r\n  ScalingProperty: 1.299442E-001\r\n  BackwardError: 8.765007E-016\r\n  OrthogonalityError: 8.326673E-016\r\n  DeterminantError: 3.330669E-016\r\nWarnings:\r\n  - Scaling property large deviation: 1.30E-001\r\n",
+        "metadata": {}
+      },
+      "errorMessage": null,
+      "performanceMetrics": {
+        "ExecutionTimeMs": 0.0475,
+        "MemoryUsedBytes": 106672,
+        "MatrixSize": 4,
+        "ConditionNumber": 2.8874096368607174,
+        "OneNorm": 2.445208721145131,
+        "FrobeniusNorm": 2.464066871493326
+      },
+      "memoryUsed": 106672
+    },
+    {
+      "testCaseName": "SkewSymmetric_4x4_0",
+      "algorithmName": "Schur",
+      "success": true,
+      "executionTime": "00:00:00.0001038",
+      "validationResult": {
+        "testName": "SkewSymmetric_4x4_0",
+        "algorithmName": "Schur",
+        "passed": true,
+        "maxError": 0.12994416246030427,
+        "relativeError": 0.06497208123015215,
+        "backwardError": 6.984885132641029E-16,
+        "methodsUsed": 37,
+        "computationTime": "00:00:00.0001038",
+        "detailedErrors": {
+          "IdentityProperty": 1.248152527544144E-15,
+          "CommutingProperty": 2.7000412253313845E-15,
+          "ScalingProperty": 0.12994416246030427,
+          "BackwardError": 6.984885132641029E-16,
+          "OrthogonalityError": 6.661338147750939E-16,
+          "DeterminantError": 5.551115123125783E-16
+        },
+        "warnings": [
+          "Scaling property large deviation: 1.30E-001"
+        ],
+        "failures": [],
+        "details": "Error Analysis:\r\n  IdentityProperty: 1.248153E-015\r\n  CommutingProperty: 2.700041E-015\r\n  ScalingProperty: 1.299442E-001\r\n  BackwardError: 6.984885E-016\r\n  OrthogonalityError: 6.661338E-016\r\n  DeterminantError: 5.551115E-016\r\nWarnings:\r\n  - Scaling property large deviation: 1.30E-001\r\n",
+        "metadata": {}
+      },
+      "errorMessage": null,
+      "performanceMetrics": {
+        "ExecutionTimeMs": 0.1038,
+        "MemoryUsedBytes": 219256,
+        "MatrixSize": 4,
+        "ConditionNumber": 2.8874096368607174,
+        "OneNorm": 2.445208721145131,
+        "FrobeniusNorm": 2.464066871493326
+      },
+      "memoryUsed": 219256
+    },
+    {
+      "testCaseName": "SkewSymmetric_4x4_0",
+      "algorithmName": "SkewSymmetric",
+      "success": true,
+      "executionTime": "00:00:00.0000704",
+      "validationResult": {
+        "testName": "SkewSymmetric_4x4_0",
+        "algorithmName": "SkewSymmetric",
+        "passed": true,
+        "maxError": 0.12994416246030427,
+        "relativeError": 0.06497208123015212,
+        "backwardError": 6.251554478405989E-16,
+        "methodsUsed": 37,
+        "computationTime": "00:00:00.0000704",
+        "detailedErrors": {
+          "IdentityProperty": 1.50226652390079E-15,
+          "CommutingProperty": 2.9550890940613966E-15,
+          "ScalingProperty": 0.12994416246030427,
+          "BackwardError": 6.251554478405989E-16,
+          "OrthogonalityError": 6.661338147750939E-16,
+          "DeterminantError": 4.440892098500626E-16
+        },
+        "warnings": [
+          "Scaling property large deviation: 1.30E-001"
+        ],
+        "failures": [],
+        "details": "Error Analysis:\r\n  IdentityProperty: 1.502267E-015\r\n  CommutingProperty: 2.955089E-015\r\n  ScalingProperty: 1.299442E-001\r\n  BackwardError: 6.251554E-016\r\n  OrthogonalityError: 6.661338E-016\r\n  DeterminantError: 4.440892E-016\r\nWarnings:\r\n  - Scaling property large deviation: 1.30E-001\r\n",
+        "metadata": {}
+      },
+      "errorMessage": null,
+      "performanceMetrics": {
+        "ExecutionTimeMs": 0.0704,
+        "MemoryUsedBytes": 69440,
+        "MatrixSize": 4,
+        "ConditionNumber": 2.8874096368607174,
+        "OneNorm": 2.445208721145131,
+        "FrobeniusNorm": 2.464066871493326
+      },
+      "memoryUsed": 69440
+    },
+    {
+      "testCaseName": "SkewSymmetric_4x4_1",
+      "algorithmName": "Pade",
+      "success": true,
+      "executionTime": "00:00:00.0000563",
+      "validationResult": {
+        "testName": "SkewSymmetric_4x4_1",
+        "algorithmName": "Pade",
+        "passed": true,
+        "maxError": 0.41527705204478255,
+        "relativeError": 0.2076385260223913,
+        "backwardError": 1.061355936748881E-15,
+        "methodsUsed": 37,
+        "computationTime": "00:00:00.0000563",
+        "detailedErrors": {
+          "IdentityProperty": 1.999942826308645E-15,
+          "CommutingProperty": 4.0280025103636455E-15,
+          "ScalingProperty": 0.41527705204478255,
+          "BackwardError": 1.061355936748881E-15,
+          "OrthogonalityError": 7.771561172376096E-16,
+          "DeterminantError": 3.3306690738754696E-16
+        },
+        "warnings": [
+          "Scaling property large deviation: 4.15E-001"
+        ],
+        "failures": [],
+        "details": "Error Analysis:\r\n  IdentityProperty: 1.999943E-015\r\n  CommutingProperty: 4.028003E-015\r\n  ScalingProperty: 4.152771E-001\r\n  BackwardError: 1.061356E-015\r\n  OrthogonalityError: 7.771561E-016\r\n  DeterminantError: 3.330669E-016\r\nWarnings:\r\n  - Scaling property large deviation: 4.15E-001\r\n",
+        "metadata": {}
+      },
+      "errorMessage": null,
+      "performanceMetrics": {
+        "ExecutionTimeMs": 0.0563,
+        "MemoryUsedBytes": 125616,
+        "MatrixSize": 4,
+        "ConditionNumber": 26.420187104480565,
+        "OneNorm": 4.12106569625897,
+        "FrobeniusNorm": 3.450475974550776
+      },
+      "memoryUsed": 125616
+    },
+    {
+      "testCaseName": "SkewSymmetric_4x4_1",
+      "algorithmName": "Schur",
+      "success": true,
+      "executionTime": "00:00:00.0000945",
+      "validationResult": {
+        "testName": "SkewSymmetric_4x4_1",
+        "algorithmName": "Schur",
+        "passed": true,
+        "maxError": 0.41527705204478255,
+        "relativeError": 0.20763852602239122,
+        "backwardError": 9.844429633125815E-16,
+        "methodsUsed": 37,
+        "computationTime": "00:00:00.0000945",
+        "detailedErrors": {
+          "IdentityProperty": 2.0082074851834587E-15,
+          "CommutingProperty": 4.658329149211582E-15,
+          "ScalingProperty": 0.41527705204478255,
+          "BackwardError": 9.844429633125815E-16,
+          "OrthogonalityError": 1.1102230246251565E-15,
+          "DeterminantError": 6.661338147750939E-16
+        },
+        "warnings": [
+          "Scaling property large deviation: 4.15E-001"
+        ],
+        "failures": [],
+        "details": "Error Analysis:\r\n  IdentityProperty: 2.008207E-015\r\n  CommutingProperty: 4.658329E-015\r\n  ScalingProperty: 4.152771E-001\r\n  BackwardError: 9.844430E-016\r\n  OrthogonalityError: 1.110223E-015\r\n  DeterminantError: 6.661338E-016\r\nWarnings:\r\n  - Scaling property large deviation: 4.15E-001\r\n",
+        "metadata": {}
+      },
+      "errorMessage": null,
+      "performanceMetrics": {
+        "ExecutionTimeMs": 0.0945,
+        "MemoryUsedBytes": 188584,
+        "MatrixSize": 4,
+        "ConditionNumber": 26.420187104480565,
+        "OneNorm": 4.12106569625897,
+        "FrobeniusNorm": 3.450475974550776
+      },
+      "memoryUsed": 188584
+    },
+    {
+      "testCaseName": "SkewSymmetric_4x4_1",
+      "algorithmName": "SkewSymmetric",
+      "success": true,
+      "executionTime": "00:00:00.0000294",
+      "validationResult": {
+        "testName": "SkewSymmetric_4x4_1",
+        "algorithmName": "SkewSymmetric",
+        "passed": true,
+        "maxError": 0.41527705204478255,
+        "relativeError": 0.20763852602239122,
+        "backwardError": 9.350787104580046E-16,
+        "methodsUsed": 37,
+        "computationTime": "00:00:00.0000294",
+        "detailedErrors": {
+          "IdentityProperty": 2.0452676693306127E-15,
+          "CommutingProperty": 4.654110171829713E-15,
+          "ScalingProperty": 0.41527705204478255,
+          "BackwardError": 9.350787104580046E-16,
+          "OrthogonalityError": 1.1102230246251565E-15,
+          "DeterminantError": 1.1102230246251565E-15
+        },
+        "warnings": [
+          "Scaling property large deviation: 4.15E-001"
+        ],
+        "failures": [],
+        "details": "Error Analysis:\r\n  IdentityProperty: 2.045268E-015\r\n  CommutingProperty: 4.654110E-015\r\n  ScalingProperty: 4.152771E-001\r\n  BackwardError: 9.350787E-016\r\n  OrthogonalityError: 1.110223E-015\r\n  DeterminantError: 1.110223E-015\r\nWarnings:\r\n  - Scaling property large deviation: 4.15E-001\r\n",
+        "metadata": {}
+      },
+      "errorMessage": null,
+      "performanceMetrics": {
+        "ExecutionTimeMs": 0.0294,
+        "MemoryUsedBytes": 61464,
+        "MatrixSize": 4,
+        "ConditionNumber": 26.420187104480565,
+        "OneNorm": 4.12106569625897,
+        "FrobeniusNorm": 3.450475974550776
+      },
+      "memoryUsed": 61464
+    },
+    {
+      "testCaseName": "SkewSymmetric_8x8_0",
+      "algorithmName": "Pade",
+      "success": true,
+      "executionTime": "00:00:00.0001882",
+      "validationResult": {
+        "testName": "SkewSymmetric_8x8_0",
+        "algorithmName": "Pade",
+        "passed": true,
+        "maxError": 2.9151137662588478,
+        "relativeError": 1.0306483560259438,
+        "backwardError": 1.3346056477260353E-15,
+        "methodsUsed": 37,
+        "computationTime": "00:00:00.0001882",
+        "detailedErrors": {
+          "IdentityProperty": 4.425640196759852E-15,
+          "CommutingProperty": 8.840801979804657E-15,
+          "ScalingProperty": 2.9151137662588478,
+          "BackwardError": 1.3346056477260353E-15,
+          "OrthogonalityError": 8.881784197001252E-16,
+          "DeterminantError": 1.2212453270876722E-15
+        },
+        "warnings": [
+          "Scaling property large deviation: 2.92E\u002B000"
+        ],
+        "failures": [],
+        "details": "Error Analysis:\r\n  IdentityProperty: 4.425640E-015\r\n  CommutingProperty: 8.840802E-015\r\n  ScalingProperty: 2.915114E\u002B000\r\n  BackwardError: 1.334606E-015\r\n  OrthogonalityError: 8.881784E-016\r\n  DeterminantError: 1.221245E-015\r\nWarnings:\r\n  - Scaling property large deviation: 2.92E\u002B000\r\n",
+        "metadata": {}
+      },
+      "errorMessage": null,
+      "performanceMetrics": {
+        "ExecutionTimeMs": 0.1882,
+        "MemoryUsedBytes": 415528,
+        "MatrixSize": 8,
+        "ConditionNumber": 67.32151696831642,
+        "OneNorm": 8.755550786988096,
+        "FrobeniusNorm": 9.022611825263146
+      },
+      "memoryUsed": 415528
+    },
+    {
+      "testCaseName": "SkewSymmetric_8x8_0",
+      "algorithmName": "Schur",
+      "success": true,
+      "executionTime": "00:00:00.0004645",
+      "validationResult": {
+        "testName": "SkewSymmetric_8x8_0",
+        "algorithmName": "Schur",
+        "passed": true,
+        "maxError": 2.9151137662588478,
+        "relativeError": 1.0306483560259434,
+        "backwardError": 4.232017824778319E-15,
+        "methodsUsed": 37,
+        "computationTime": "00:00:00.0004645",
+        "detailedErrors": {
+          "IdentityProperty": 7.087175551369619E-15,
+          "CommutingProperty": 9.914780615763283E-15,
+          "ScalingProperty": 2.9151137662588478,
+          "BackwardError": 4.232017824778319E-15,
+          "OrthogonalityError": 1.7763568394002505E-15,
+          "DeterminantError": 2.4424906541753444E-15
+        },
+        "warnings": [
+          "Scaling property large deviation: 2.92E\u002B000"
+        ],
+        "failures": [],
+        "details": "Error Analysis:\r\n  IdentityProperty: 7.087176E-015\r\n  CommutingProperty: 9.914781E-015\r\n  ScalingProperty: 2.915114E\u002B000\r\n  BackwardError: 4.232018E-015\r\n  OrthogonalityError: 1.776357E-015\r\n  DeterminantError: 2.442491E-015\r\nWarnings:\r\n  - Scaling property large deviation: 2.92E\u002B000\r\n",
+        "metadata": {}
+      },
+      "errorMessage": null,
+      "performanceMetrics": {
+        "ExecutionTimeMs": 0.4645,
+        "MemoryUsedBytes": 689320,
+        "MatrixSize": 8,
+        "ConditionNumber": 67.32151696831642,
+        "OneNorm": 8.755550786988096,
+        "FrobeniusNorm": 9.022611825263146
+      },
+      "memoryUsed": 689320
+    },
+    {
+      "testCaseName": "SkewSymmetric_8x8_0",
+      "algorithmName": "SkewSymmetric",
+      "success": true,
+      "executionTime": "00:00:00.0001233",
+      "validationResult": {
+        "testName": "SkewSymmetric_8x8_0",
+        "algorithmName": "SkewSymmetric",
+        "passed": true,
+        "maxError": 2.9151137662588478,
+        "relativeError": 1.0306483560259434,
+        "backwardError": 3.840777282148481E-15,
+        "methodsUsed": 37,
+        "computationTime": "00:00:00.0001233",
+        "detailedErrors": {
+          "IdentityProperty": 6.815029960204406E-15,
+          "CommutingProperty": 9.459437859112603E-15,
+          "ScalingProperty": 2.9151137662588478,
+          "BackwardError": 3.840777282148481E-15,
+          "OrthogonalityError": 2.220446049250313E-15,
+          "DeterminantError": 3.774758283725532E-15
+        },
+        "warnings": [
+          "Scaling property large deviation: 2.92E\u002B000"
+        ],
+        "failures": [],
+        "details": "Error Analysis:\r\n  IdentityProperty: 6.815030E-015\r\n  CommutingProperty: 9.459438E-015\r\n  ScalingProperty: 2.915114E\u002B000\r\n  BackwardError: 3.840777E-015\r\n  OrthogonalityError: 2.220446E-015\r\n  DeterminantError: 3.774758E-015\r\nWarnings:\r\n  - Scaling property large deviation: 2.92E\u002B000\r\n",
+        "metadata": {}
+      },
+      "errorMessage": null,
+      "performanceMetrics": {
+        "ExecutionTimeMs": 0.1233,
+        "MemoryUsedBytes": 119992,
+        "MatrixSize": 8,
+        "ConditionNumber": 67.32151696831642,
+        "OneNorm": 8.755550786988096,
+        "FrobeniusNorm": 9.022611825263146
+      },
+      "memoryUsed": 119992
+    },
+    {
+      "testCaseName": "SkewSymmetric_8x8_1",
+      "algorithmName": "Pade",
+      "success": true,
+      "executionTime": "00:00:00.0001870",
+      "validationResult": {
+        "testName": "SkewSymmetric_8x8_1",
+        "algorithmName": "Pade",
+        "passed": true,
+        "maxError": 2.6870126695241217,
+        "relativeError": 0.9500024398773368,
+        "backwardError": 2.8592874052244562E-15,
+        "methodsUsed": 37,
+        "computationTime": "00:00:00.0001870",
+        "detailedErrors": {
+          "IdentityProperty": 4.791156526064416E-15,
+          "CommutingProperty": 8.121605271736271E-15,
+          "ScalingProperty": 2.6870126695241217,
+          "BackwardError": 2.8592874052244562E-15,
+          "OrthogonalityError": 2.6645352591003757E-15,
+          "DeterminantError": 1.3322676295501878E-15
+        },
+        "warnings": [
+          "Scaling property large deviation: 2.69E\u002B000"
+        ],
+        "failures": [],
+        "details": "Error Analysis:\r\n  IdentityProperty: 4.791157E-015\r\n  CommutingProperty: 8.121605E-015\r\n  ScalingProperty: 2.687013E\u002B000\r\n  BackwardError: 2.859287E-015\r\n  OrthogonalityError: 2.664535E-015\r\n  DeterminantError: 1.332268E-015\r\nWarnings:\r\n  - Scaling property large deviation: 2.69E\u002B000\r\n",
+        "metadata": {}
+      },
+      "errorMessage": null,
+      "performanceMetrics": {
+        "ExecutionTimeMs": 0.187,
+        "MemoryUsedBytes": 328384,
+        "MatrixSize": 8,
+        "ConditionNumber": 14.602828806059838,
+        "OneNorm": 8.873236005475343,
+        "FrobeniusNorm": 8.565050387870912
+      },
+      "memoryUsed": 328384
+    },
+    {
+      "testCaseName": "SkewSymmetric_8x8_1",
+      "algorithmName": "Schur",
+      "success": true,
+      "executionTime": "00:00:00.0003791",
+      "validationResult": {
+        "testName": "SkewSymmetric_8x8_1",
+        "algorithmName": "Schur",
+        "passed": true,
+        "maxError": 2.6870126695241217,
+        "relativeError": 0.9500024398773373,
+        "backwardError": 7.593004938655892E-15,
+        "methodsUsed": 37,
+        "computationTime": "00:00:00.0003791",
+        "detailedErrors": {
+          "IdentityProperty": 7.98417110155112E-15,
+          "CommutingProperty": 1.2523141468985294E-14,
+          "ScalingProperty": 2.6870126695241217,
+          "BackwardError": 7.593004938655892E-15,
+          "OrthogonalityError": 4.440892098500626E-15,
+          "DeterminantError": 2.9976021664879227E-15
+        },
+        "warnings": [
+          "Scaling property large deviation: 2.69E\u002B000"
+        ],
+        "failures": [],
+        "details": "Error Analysis:\r\n  IdentityProperty: 7.984171E-015\r\n  CommutingProperty: 1.252314E-014\r\n  ScalingProperty: 2.687013E\u002B000\r\n  BackwardError: 7.593005E-015\r\n  OrthogonalityError: 4.440892E-015\r\n  DeterminantError: 2.997602E-015\r\nWarnings:\r\n  - Scaling property large deviation: 2.69E\u002B000\r\n",
+        "metadata": {}
+      },
+      "errorMessage": null,
+      "performanceMetrics": {
+        "ExecutionTimeMs": 0.3791,
+        "MemoryUsedBytes": 656552,
+        "MatrixSize": 8,
+        "ConditionNumber": 14.602828806059838,
+        "OneNorm": 8.873236005475343,
+        "FrobeniusNorm": 8.565050387870912
+      },
+      "memoryUsed": 656552
+    },
+    {
+      "testCaseName": "SkewSymmetric_8x8_1",
+      "algorithmName": "SkewSymmetric",
+      "success": true,
+      "executionTime": "00:00:00.0001058",
+      "validationResult": {
+        "testName": "SkewSymmetric_8x8_1",
+        "algorithmName": "SkewSymmetric",
+        "passed": true,
+        "maxError": 2.6870126695241217,
+        "relativeError": 0.9500024398773373,
+        "backwardError": 3.2055812374715285E-15,
+        "methodsUsed": 37,
+        "computationTime": "00:00:00.0001058",
+        "detailedErrors": {
+          "IdentityProperty": 4.480722821920443E-15,
+          "CommutingProperty": 9.623338178939319E-15,
+          "ScalingProperty": 2.6870126695241217,
+          "BackwardError": 3.2055812374715285E-15,
+          "OrthogonalityError": 1.9984014443252818E-15,
+          "DeterminantError": 2.7755575615628914E-15
+        },
+        "warnings": [
+          "Scaling property large deviation: 2.69E\u002B000"
+        ],
+        "failures": [],
+        "details": "Error Analysis:\r\n  IdentityProperty: 4.480723E-015\r\n  CommutingProperty: 9.623338E-015\r\n  ScalingProperty: 2.687013E\u002B000\r\n  BackwardError: 3.205581E-015\r\n  OrthogonalityError: 1.998401E-015\r\n  DeterminantError: 2.775558E-015\r\nWarnings:\r\n  - Scaling property large deviation: 2.69E\u002B000\r\n",
+        "metadata": {}
+      },
+      "errorMessage": null,
+      "performanceMetrics": {
+        "ExecutionTimeMs": 0.1058,
+        "MemoryUsedBytes": 201736,
+        "MatrixSize": 8,
+        "ConditionNumber": 14.602828806059838,
+        "OneNorm": 8.873236005475343,
+        "FrobeniusNorm": 8.565050387870912
+      },
+      "memoryUsed": 201736
+    },
+    {
+      "testCaseName": "SkewSymmetric_16x16_0",
+      "algorithmName": "Pade",
+      "success": true,
+      "executionTime": "00:00:00.0016644",
+      "validationResult": {
+        "testName": "SkewSymmetric_16x16_0",
+        "algorithmName": "Pade",
+        "passed": true,
+        "maxError": 1.1314000964638278E-14,
+        "relativeError": 2.8285002411595688E-15,
+        "backwardError": 3.4254543076759677E-15,
+        "methodsUsed": 37,
+        "computationTime": "00:00:00.0016644",
+        "detailedErrors": {
+          "IdentityProperty": 1.0188966333481053E-14,
+          "CommutingProperty": 1.1314000964638278E-14,
+          "BackwardError": 3.4254543076759677E-15,
+          "OrthogonalityError": 2.6645352591003757E-15,
+          "DeterminantError": 5.995204332975845E-15
+        },
+        "warnings": [],
+        "failures": [],
+        "details": "Error Analysis:\r\n  IdentityProperty: 1.018897E-014\r\n  CommutingProperty: 1.131400E-014\r\n  BackwardError: 3.425454E-015\r\n  OrthogonalityError: 2.664535E-015\r\n  DeterminantError: 5.995204E-015\r\n",
+        "metadata": {}
+      },
+      "errorMessage": null,
+      "performanceMetrics": {
+        "ExecutionTimeMs": 1.6644,
+        "MemoryUsedBytes": -5033640,
+        "MatrixSize": 16,
+        "ConditionNumber": 30.400849542152756,
+        "OneNorm": 14.88588924028412,
+        "FrobeniusNorm": 15.948876724418822
+      },
+      "memoryUsed": -5033640
+    },
+    {
+      "testCaseName": "SkewSymmetric_16x16_0",
+      "algorithmName": "Schur",
+      "success": false,
+      "executionTime": "00:00:00.0024134",
+      "validationResult": {
+        "testName": "SkewSymmetric_16x16_0",
+        "algorithmName": "Schur",
+        "passed": false,
+        "maxError": 2.4240399625158E-14,
+        "relativeError": 6.060099906289496E-15,
+        "backwardError": 1.0921704384554176E-14,
+        "methodsUsed": 37,
+        "computationTime": "00:00:00.0024134",
+        "detailedErrors": {
+          "IdentityProperty": 2.040926007871262E-14,
+          "CommutingProperty": 2.4240399625158E-14,
+          "BackwardError": 1.0921704384554176E-14,
+          "OrthogonalityError": 2.6645352591003757E-15,
+          "DeterminantError": 9.547918011776346E-15
+        },
+        "warnings": [],
+        "failures": [
+          "Backward error 1.09E-014 exceeds tolerance 1.00E-014"
+        ],
+        "details": "Error Analysis:\r\n  IdentityProperty: 2.040926E-014\r\n  CommutingProperty: 2.424040E-014\r\n  BackwardError: 1.092170E-014\r\n  OrthogonalityError: 2.664535E-015\r\n  DeterminantError: 9.547918E-015\r\nFailures:\r\n  - Backward error 1.09E-014 exceeds tolerance 1.00E-014\r\n",
+        "metadata": {}
+      },
+      "errorMessage": null,
+      "performanceMetrics": {
+        "ExecutionTimeMs": 2.4134,
+        "MemoryUsedBytes": -2571312,
+        "MatrixSize": 16,
+        "ConditionNumber": 30.400849542152756,
+        "OneNorm": 14.88588924028412,
+        "FrobeniusNorm": 15.948876724418822
+      },
+      "memoryUsed": -2571312
+    },
+    {
+      "testCaseName": "SkewSymmetric_16x16_0",
+      "algorithmName": "SkewSymmetric",
+      "success": false,
+      "executionTime": "00:00:00.0003699",
+      "validationResult": {
+        "testName": "SkewSymmetric_16x16_0",
+        "algorithmName": "SkewSymmetric",
+        "passed": false,
+        "maxError": 2.7302016808865286E-14,
+        "relativeError": 6.825504202216318E-15,
+        "backwardError": 1.0061957425259504E-14,
+        "methodsUsed": 37,
+        "computationTime": "00:00:00.0003699",
+        "detailedErrors": {
+          "IdentityProperty": 2.2879057776289478E-14,
+          "CommutingProperty": 2.7302016808865286E-14,
+          "BackwardError": 1.0061957425259504E-14,
+          "OrthogonalityError": 2.220446049250313E-15,
+          "DeterminantError": 7.771561172376096E-15
+        },
+        "warnings": [],
+        "failures": [
+          "Backward error 1.01E-014 exceeds tolerance 1.00E-014"
+        ],
+        "details": "Error Analysis:\r\n  IdentityProperty: 2.287906E-014\r\n  CommutingProperty: 2.730202E-014\r\n  BackwardError: 1.006196E-014\r\n  OrthogonalityError: 2.220446E-015\r\n  DeterminantError: 7.771561E-015\r\nFailures:\r\n  - Backward error 1.01E-014 exceeds tolerance 1.00E-014\r\n",
+        "metadata": {}
+      },
+      "errorMessage": null,
+      "performanceMetrics": {
+        "ExecutionTimeMs": 0.3699,
+        "MemoryUsedBytes": 1005832,
+        "MatrixSize": 16,
+        "ConditionNumber": 30.400849542152756,
+        "OneNorm": 14.88588924028412,
+        "FrobeniusNorm": 15.948876724418822
+      },
+      "memoryUsed": 1005832
+    },
+    {
+      "testCaseName": "SkewSymmetric_16x16_1",
+      "algorithmName": "Pade",
+      "success": true,
+      "executionTime": "00:00:00.0004243",
+      "validationResult": {
+        "testName": "SkewSymmetric_16x16_1",
+        "algorithmName": "Pade",
+        "passed": true,
+        "maxError": 1.7092474008684348E-14,
+        "relativeError": 4.2731185021710854E-15,
+        "backwardError": 8.060136609278315E-15,
+        "methodsUsed": 37,
+        "computationTime": "00:00:00.0004243",
+        "detailedErrors": {
+          "IdentityProperty": 1.645679381787686E-14,
+          "CommutingProperty": 1.7092474008684348E-14,
+          "BackwardError": 8.060136609278315E-15,
+          "OrthogonalityError": 6.439293542825908E-15,
+          "DeterminantError": 8.215650382226158E-15
+        },
+        "warnings": [],
+        "failures": [],
+        "details": "Error Analysis:\r\n  IdentityProperty: 1.645679E-014\r\n  CommutingProperty: 1.709247E-014\r\n  BackwardError: 8.060137E-015\r\n  OrthogonalityError: 6.439294E-015\r\n  DeterminantError: 8.215650E-015\r\n",
+        "metadata": {}
+      },
+      "errorMessage": null,
+      "performanceMetrics": {
+        "ExecutionTimeMs": 0.4243,
+        "MemoryUsedBytes": 1479072,
+        "MatrixSize": 16,
+        "ConditionNumber": 15.883514053015523,
+        "OneNorm": 17.684747873022673,
+        "FrobeniusNorm": 16.90086277544655
+      },
+      "memoryUsed": 1479072
+    },
+    {
+      "testCaseName": "SkewSymmetric_16x16_1",
+      "algorithmName": "Schur",
+      "success": true,
+      "executionTime": "00:00:00.0099370",
+      "validationResult": {
+        "testName": "SkewSymmetric_16x16_1",
+        "algorithmName": "Schur",
+        "passed": true,
+        "maxError": 2.1481781902563683E-14,
+        "relativeError": 5.370445475640919E-15,
+        "backwardError": 9.208669936131566E-15,
+        "methodsUsed": 37,
+        "computationTime": "00:00:00.0099370",
+        "detailedErrors": {
+          "IdentityProperty": 2.008945708388667E-14,
+          "CommutingProperty": 2.1481781902563683E-14,
+          "BackwardError": 9.208669936131566E-15,
+          "OrthogonalityError": 2.4424906541753444E-15,
+          "DeterminantError": 5.995204332975845E-15
+        },
+        "warnings": [],
+        "failures": [],
+        "details": "Error Analysis:\r\n  IdentityProperty: 2.008946E-014\r\n  CommutingProperty: 2.148178E-014\r\n  BackwardError: 9.208670E-015\r\n  OrthogonalityError: 2.442491E-015\r\n  DeterminantError: 5.995204E-015\r\n",
+        "metadata": {}
+      },
+      "errorMessage": null,
+      "performanceMetrics": {
+        "ExecutionTimeMs": 9.937,
+        "MemoryUsedBytes": -5344,
+        "MatrixSize": 16,
+        "ConditionNumber": 15.883514053015523,
+        "OneNorm": 17.684747873022673,
+        "FrobeniusNorm": 16.90086277544655
+      },
+      "memoryUsed": -5344
+    },
+    {
+      "testCaseName": "SkewSymmetric_16x16_1",
+      "algorithmName": "SkewSymmetric",
+      "success": true,
+      "executionTime": "00:00:00.0003551",
+      "validationResult": {
+        "testName": "SkewSymmetric_16x16_1",
+        "algorithmName": "SkewSymmetric",
+        "passed": true,
+        "maxError": 2.327933809709624E-14,
+        "relativeError": 5.819834524274058E-15,
+        "backwardError": 8.983818439110012E-15,
+        "methodsUsed": 37,
+        "computationTime": "00:00:00.0003551",
+        "detailedErrors": {
+          "IdentityProperty": 2.1637884473427838E-14,
+          "CommutingProperty": 2.327933809709624E-14,
+          "BackwardError": 8.983818439110012E-15,
+          "OrthogonalityError": 2.6645352591003757E-15,
+          "DeterminantError": 6.661338147750939E-15
+        },
+        "warnings": [],
+        "failures": [],
+        "details": "Error Analysis:\r\n  IdentityProperty: 2.163788E-014\r\n  CommutingProperty: 2.327934E-014\r\n  BackwardError: 8.983818E-015\r\n  OrthogonalityError: 2.664535E-015\r\n  DeterminantError: 6.661338E-015\r\n",
+        "metadata": {}
+      },
+      "errorMessage": null,
+      "performanceMetrics": {
+        "ExecutionTimeMs": 0.3551,
+        "MemoryUsedBytes": 1015784,
+        "MatrixSize": 16,
+        "ConditionNumber": 15.883514053015523,
+        "OneNorm": 17.684747873022673,
+        "FrobeniusNorm": 16.90086277544655
+      },
+      "memoryUsed": 1015784
+    },
+    {
+      "testCaseName": "Diagonal_1x1_0",
+      "algorithmName": "Pade",
+      "success": true,
+      "executionTime": "00:00:00.0000233",
+      "validationResult": {
+        "testName": "Diagonal_1x1_0",
+        "algorithmName": "Pade",
+        "passed": true,
+        "maxError": 0.020695743771881547,
+        "relativeError": 0.05856940805780882,
+        "backwardError": 0,
+        "methodsUsed": 37,
+        "computationTime": "00:00:00.0000233",
+        "detailedErrors": {
+          "IdentityProperty": 2.220446049250313E-16,
+          "CommutingProperty": 1.1102230246251565E-16,
+          "ScalingProperty": 0.020695743771881547,
+          "BackwardError": 0
+        },
+        "warnings": [
+          "Scaling property large deviation: 2.07E-002"
+        ],
+        "failures": [],
+        "details": "Error Analysis:\r\n  IdentityProperty: 2.220446E-016\r\n  CommutingProperty: 1.110223E-016\r\n  ScalingProperty: 2.069574E-002\r\n  BackwardError: 0.000000E\u002B000\r\nWarnings:\r\n  - Scaling property large deviation: 2.07E-002\r\n",
+        "metadata": {}
+      },
+      "errorMessage": null,
+      "performanceMetrics": {
+        "ExecutionTimeMs": 0.0233,
+        "MemoryUsedBytes": 46296,
+        "MatrixSize": 1,
+        "ConditionNumber": 1,
+        "OneNorm": 1.0402844492292884,
+        "FrobeniusNorm": 1.0402844492292884
+      },
+      "memoryUsed": 46296
+    },
+    {
+      "testCaseName": "Diagonal_1x1_0",
+      "algorithmName": "Schur",
+      "success": true,
+      "executionTime": "00:00:00.0000063",
+      "validationResult": {
+        "testName": "Diagonal_1x1_0",
+        "algorithmName": "Schur",
+        "passed": true,
+        "maxError": 0.020695743771881547,
+        "relativeError": 0.05856940805780882,
+        "backwardError": 0,
+        "methodsUsed": 37,
+        "computationTime": "00:00:00.0000063",
+        "detailedErrors": {
+          "IdentityProperty": 3.3306690738754696E-16,
+          "CommutingProperty": 5.551115123125783E-17,
+          "ScalingProperty": 0.020695743771881547,
+          "BackwardError": 0
+        },
+        "warnings": [
+          "Scaling property large deviation: 2.07E-002"
+        ],
+        "failures": [],
+        "details": "Error Analysis:\r\n  IdentityProperty: 3.330669E-016\r\n  CommutingProperty: 5.551115E-017\r\n  ScalingProperty: 2.069574E-002\r\n  BackwardError: 0.000000E\u002B000\r\nWarnings:\r\n  - Scaling property large deviation: 2.07E-002\r\n",
+        "metadata": {}
+      },
+      "errorMessage": null,
+      "performanceMetrics": {
+        "ExecutionTimeMs": 0.0063,
+        "MemoryUsedBytes": 46072,
+        "MatrixSize": 1,
+        "ConditionNumber": 1,
+        "OneNorm": 1.0402844492292884,
+        "FrobeniusNorm": 1.0402844492292884
+      },
+      "memoryUsed": 46072
+    },
+    {
+      "testCaseName": "Diagonal_1x1_0",
+      "algorithmName": "SkewSymmetric",
+      "success": false,
+      "executionTime": "00:00:00.0000503",
+      "validationResult": {
+        "testName": "Diagonal_1x1_0",
+        "algorithmName": "SkewSymmetric",
+        "passed": false,
+        "maxError": 1000000,
+        "relativeError": 1000000,
+        "backwardError": 1000000,
+        "methodsUsed": 0,
+        "computationTime": "00:00:00.0000503",
+        "detailedErrors": {},
+        "warnings": [],
+        "failures": [
+          "Unknown error"
+        ],
+        "details": "",
+        "metadata": {}
+      },
+      "errorMessage": null,
+      "performanceMetrics": {},
+      "memoryUsed": 122904
+    },
+    {
+      "testCaseName": "Diagonal_1x1_1",
+      "algorithmName": "Pade",
+      "success": true,
+      "executionTime": "00:00:00.0000229",
+      "validationResult": {
+        "testName": "Diagonal_1x1_1",
+        "algorithmName": "Pade",
+        "passed": true,
+        "maxError": 2.2111276588465678E-05,
+        "relativeError": 2.4496411570859198E-05,
+        "backwardError": 0,
+        "methodsUsed": 37,
+        "computationTime": "00:00:00.0000229",
+        "detailedErrors": {
+          "IdentityProperty": 1.1102230246251565E-16,
+          "CommutingProperty": 4.440892098500626E-16,
+          "ScalingProperty": 2.2111276588465678E-05,
+          "BackwardError": 0
+        },
+        "warnings": [
+          "Scaling property large deviation: 2.21E-005"
+        ],
+        "failures": [],
+        "details": "Error Analysis:\r\n  IdentityProperty: 1.110223E-016\r\n  CommutingProperty: 4.440892E-016\r\n  ScalingProperty: 2.211128E-005\r\n  BackwardError: 0.000000E\u002B000\r\nWarnings:\r\n  - Scaling property large deviation: 2.21E-005\r\n",
+        "metadata": {}
+      },
+      "errorMessage": null,
+      "performanceMetrics": {
+        "ExecutionTimeMs": 0.0229,
+        "MemoryUsedBytes": 35664,
+        "MatrixSize": 1,
+        "ConditionNumber": 1,
+        "OneNorm": 0.10243890906714724,
+        "FrobeniusNorm": 0.10243890906714724
+      },
+      "memoryUsed": 35664
+    },
+    {
+      "testCaseName": "Diagonal_1x1_1",
+      "algorithmName": "Schur",
+      "success": true,
+      "executionTime": "00:00:00.0000039",
+      "validationResult": {
+        "testName": "Diagonal_1x1_1",
+        "algorithmName": "Schur",
+        "passed": true,
+        "maxError": 2.2111276588465678E-05,
+        "relativeError": 2.4496411570859198E-05,
+        "backwardError": 0,
+        "methodsUsed": 37,
+        "computationTime": "00:00:00.0000039",
+        "detailedErrors": {
+          "IdentityProperty": 3.3306690738754696E-16,
+          "CommutingProperty": 2.220446049250313E-16,
+          "ScalingProperty": 2.2111276588465678E-05,
+          "BackwardError": 0
+        },
+        "warnings": [
+          "Scaling property large deviation: 2.21E-005"
+        ],
+        "failures": [],
+        "details": "Error Analysis:\r\n  IdentityProperty: 3.330669E-016\r\n  CommutingProperty: 2.220446E-016\r\n  ScalingProperty: 2.211128E-005\r\n  BackwardError: 0.000000E\u002B000\r\nWarnings:\r\n  - Scaling property large deviation: 2.21E-005\r\n",
+        "metadata": {}
+      },
+      "errorMessage": null,
+      "performanceMetrics": {
+        "ExecutionTimeMs": 0.0039,
+        "MemoryUsedBytes": 23488,
+        "MatrixSize": 1,
+        "ConditionNumber": 1,
+        "OneNorm": 0.10243890906714724,
+        "FrobeniusNorm": 0.10243890906714724
+      },
+      "memoryUsed": 23488
+    },
+    {
+      "testCaseName": "Diagonal_1x1_1",
+      "algorithmName": "SkewSymmetric",
+      "success": false,
+      "executionTime": "00:00:00.0000227",
+      "validationResult": {
+        "testName": "Diagonal_1x1_1",
+        "algorithmName": "SkewSymmetric",
+        "passed": false,
+        "maxError": 1000000,
+        "relativeError": 1000000,
+        "backwardError": 1000000,
+        "methodsUsed": 0,
+        "computationTime": "00:00:00.0000227",
+        "detailedErrors": {},
+        "warnings": [],
+        "failures": [
+          "Unknown error"
+        ],
+        "details": "",
+        "metadata": {}
+      },
+      "errorMessage": null,
+      "performanceMetrics": {},
+      "memoryUsed": -5640808
+    },
+    {
+      "testCaseName": "Diagonal_2x2_0",
+      "algorithmName": "Pade",
+      "success": true,
+      "executionTime": "00:00:00.0023459",
+      "validationResult": {
+        "testName": "Diagonal_2x2_0",
+        "algorithmName": "Pade",
+        "passed": true,
+        "maxError": 0.012768185214962117,
+        "relativeError": 0.017380688202706475,
+        "backwardError": 0,
+        "methodsUsed": 37,
+        "computationTime": "00:00:00.0023459",
+        "detailedErrors": {
+          "IdentityProperty": 2.482534153247273E-16,
+          "CommutingProperty": 1.1102230246251565E-16,
+          "ScalingProperty": 0.012768185214962117,
+          "BackwardError": 0
+        },
+        "warnings": [
+          "Scaling property large deviation: 1.28E-002"
+        ],
+        "failures": [],
+        "details": "Error Analysis:\r\n  IdentityProperty: 2.482534E-016\r\n  CommutingProperty: 1.110223E-016\r\n  ScalingProperty: 1.276819E-002\r\n  BackwardError: 0.000000E\u002B000\r\nWarnings:\r\n  - Scaling property large deviation: 1.28E-002\r\n",
+        "metadata": {}
+      },
+      "errorMessage": null,
+      "performanceMetrics": {
+        "ExecutionTimeMs": 2.3459,
+        "MemoryUsedBytes": -162384,
+        "MatrixSize": 2,
+        "ConditionNumber": 1.7377408792515647,
+        "OneNorm": 0.8742218781207991,
+        "FrobeniusNorm": 1.0086391393384384
+      },
+      "memoryUsed": -162384
+    },
+    {
+      "testCaseName": "Diagonal_2x2_0",
+      "algorithmName": "Schur",
+      "success": false,
+      "executionTime": "00:00:00.0000563",
+      "validationResult": {
+        "testName": "Diagonal_2x2_0",
+        "algorithmName": "Schur",
+        "passed": false,
+        "maxError": 0.8939466300376886,
+        "relativeError": 1.2168845756042208,
+        "backwardError": 0,
+        "methodsUsed": 37,
+        "computationTime": "00:00:00.0000563",
+        "detailedErrors": {
+          "IdentityProperty": 0.8939466300376886,
+          "CommutingProperty": 0.5155620829217901,
+          "ScalingProperty": 0.012768185214962117,
+          "BackwardError": 0
+        },
+        "warnings": [
+          "Commuting property deviation: ||exp(A\u002BkI) - exp(A)*exp(kI)|| = 5.16E-001",
+          "Scaling property large deviation: 1.28E-002"
+        ],
+        "failures": [
+          "Identity property failed: ||exp(A)*exp(-A) - I|| = 8.94E-001"
+        ],
+        "details": "Error Analysis:\r\n  IdentityProperty: 8.939466E-001\r\n  CommutingProperty: 5.155621E-001\r\n  ScalingProperty: 1.276819E-002\r\n  BackwardError: 0.000000E\u002B000\r\nWarnings:\r\n  - Commuting property deviation: ||exp(A\u002BkI) - exp(A)*exp(kI)|| = 5.16E-001\r\n  - Scaling property large deviation: 1.28E-002\r\nFailures:\r\n  - Identity property failed: ||exp(A)*exp(-A) - I|| = 8.94E-001\r\n",
+        "metadata": {}
+      },
+      "errorMessage": null,
+      "performanceMetrics": {
+        "ExecutionTimeMs": 0.0563,
+        "MemoryUsedBytes": 96400,
+        "MatrixSize": 2,
+        "ConditionNumber": 1.7377408792515647,
+        "OneNorm": 0.8742218781207991,
+        "FrobeniusNorm": 1.0086391393384384
+      },
+      "memoryUsed": 96400
+    },
+    {
+      "testCaseName": "Diagonal_2x2_0",
+      "algorithmName": "SkewSymmetric",
+      "success": false,
+      "executionTime": "00:00:00.0000368",
+      "validationResult": {
+        "testName": "Diagonal_2x2_0",
+        "algorithmName": "SkewSymmetric",
+        "passed": false,
+        "maxError": 1000000,
+        "relativeError": 1000000,
+        "backwardError": 1000000,
+        "methodsUsed": 0,
+        "computationTime": "00:00:00.0000368",
+        "detailedErrors": {},
+        "warnings": [],
+        "failures": [
+          "Unknown error"
+        ],
+        "details": "",
+        "metadata": {}
+      },
+      "errorMessage": null,
+      "performanceMetrics": {},
+      "memoryUsed": 93376
+    },
+    {
+      "testCaseName": "Diagonal_2x2_1",
+      "algorithmName": "Pade",
+      "success": true,
+      "executionTime": "00:00:00.0000248",
+      "validationResult": {
+        "testName": "Diagonal_2x2_1",
+        "algorithmName": "Pade",
+        "passed": true,
+        "maxError": 0.032744197867692414,
+        "relativeError": 0.03784687785329016,
+        "backwardError": 0,
+        "methodsUsed": 37,
+        "computationTime": "00:00:00.0000248",
+        "detailedErrors": {
+          "IdentityProperty": 2.220446049250313E-16,
+          "CommutingProperty": 3.7238012298709097E-16,
+          "ScalingProperty": 0.032744197867692414,
+          "BackwardError": 0
+        },
+        "warnings": [
+          "Scaling property large deviation: 3.27E-002"
+        ],
+        "failures": [],
+        "details": "Error Analysis:\r\n  IdentityProperty: 2.220446E-016\r\n  CommutingProperty: 3.723801E-016\r\n  ScalingProperty: 3.274420E-002\r\n  BackwardError: 0.000000E\u002B000\r\nWarnings:\r\n  - Scaling property large deviation: 3.27E-002\r\n",
+        "metadata": {}
+      },
+      "errorMessage": null,
+      "performanceMetrics": {
+        "ExecutionTimeMs": 0.0248,
+        "MemoryUsedBytes": 73952,
+        "MatrixSize": 2,
+        "ConditionNumber": 5.906633155065467,
+        "OneNorm": 1.2205811166808975,
+        "FrobeniusNorm": 1.2379502259232744
+      },
+      "memoryUsed": 73952
+    },
+    {
+      "testCaseName": "Diagonal_2x2_1",
+      "algorithmName": "Schur",
+      "success": false,
+      "executionTime": "00:00:00.0000470",
+      "validationResult": {
+        "testName": "Diagonal_2x2_1",
+        "algorithmName": "Schur",
+        "passed": false,
+        "maxError": 1.8738369890979576,
+        "relativeError": 2.1658456844759253,
+        "backwardError": 0,
+        "methodsUsed": 37,
+        "computationTime": "00:00:00.0000470",
+        "detailedErrors": {
+          "IdentityProperty": 1.8738369890979576,
+          "CommutingProperty": 0.6405758305777898,
+          "ScalingProperty": 0.032744197867692414,
+          "BackwardError": 0
+        },
+        "warnings": [
+          "Commuting property deviation: ||exp(A\u002BkI) - exp(A)*exp(kI)|| = 6.41E-001",
+          "Scaling property large deviation: 3.27E-002"
+        ],
+        "failures": [
+          "Identity property failed: ||exp(A)*exp(-A) - I|| = 1.87E\u002B000"
+        ],
+        "details": "Error Analysis:\r\n  IdentityProperty: 1.873837E\u002B000\r\n  CommutingProperty: 6.405758E-001\r\n  ScalingProperty: 3.274420E-002\r\n  BackwardError: 0.000000E\u002B000\r\nWarnings:\r\n  - Commuting property deviation: ||exp(A\u002BkI) - exp(A)*exp(kI)|| = 6.41E-001\r\n  - Scaling property large deviation: 3.27E-002\r\nFailures:\r\n  - Identity property failed: ||exp(A)*exp(-A) - I|| = 1.87E\u002B000\r\n",
+        "metadata": {}
+      },
+      "errorMessage": null,
+      "performanceMetrics": {
+        "ExecutionTimeMs": 0.047,
+        "MemoryUsedBytes": 158856,
+        "MatrixSize": 2,
+        "ConditionNumber": 5.906633155065467,
+        "OneNorm": 1.2205811166808975,
+        "FrobeniusNorm": 1.2379502259232744
+      },
+      "memoryUsed": 158856
+    },
+    {
+      "testCaseName": "Diagonal_2x2_1",
+      "algorithmName": "SkewSymmetric",
+      "success": false,
+      "executionTime": "00:00:00.0000300",
+      "validationResult": {
+        "testName": "Diagonal_2x2_1",
+        "algorithmName": "SkewSymmetric",
+        "passed": false,
+        "maxError": 1000000,
+        "relativeError": 1000000,
+        "backwardError": 1000000,
+        "methodsUsed": 0,
+        "computationTime": "00:00:00.0000300",
+        "detailedErrors": {},
+        "warnings": [],
+        "failures": [
+          "Unknown error"
+        ],
+        "details": "",
+        "metadata": {}
+      },
+      "errorMessage": null,
+      "performanceMetrics": {},
+      "memoryUsed": 68416
+    },
+    {
+      "testCaseName": "Diagonal_4x4_0",
+      "algorithmName": "Pade",
+      "success": true,
+      "executionTime": "00:00:00.0000469",
+      "validationResult": {
+        "testName": "Diagonal_4x4_0",
+        "algorithmName": "Pade",
+        "passed": true,
+        "maxError": 0.027745982316550174,
+        "relativeError": 0.009572011819216266,
+        "backwardError": 0,
+        "methodsUsed": 37,
+        "computationTime": "00:00:00.0000469",
+        "detailedErrors": {
+          "IdentityProperty": 2.7194799110210365E-16,
+          "CommutingProperty": 1.486414085038566E-15,
+          "ScalingProperty": 0.027745982316550174,
+          "BackwardError": 0
+        },
+        "warnings": [
+          "Scaling property large deviation: 2.77E-002"
+        ],
+        "failures": [],
+        "details": "Error Analysis:\r\n  IdentityProperty: 2.719480E-016\r\n  CommutingProperty: 1.486414E-015\r\n  ScalingProperty: 2.774598E-002\r\n  BackwardError: 0.000000E\u002B000\r\nWarnings:\r\n  - Scaling property large deviation: 2.77E-002\r\n",
+        "metadata": {}
+      },
+      "errorMessage": null,
+      "performanceMetrics": {
+        "ExecutionTimeMs": 0.0469,
+        "MemoryUsedBytes": 127712,
+        "MatrixSize": 4,
+        "ConditionNumber": 4.164192728167162,
+        "OneNorm": 1.0641581812441494,
+        "FrobeniusNorm": 1.4381205324718362
+      },
+      "memoryUsed": 127712
+    },
+    {
+      "testCaseName": "Diagonal_4x4_0",
+      "algorithmName": "Schur",
+      "success": false,
+      "executionTime": "00:00:00.0001106",
+      "validationResult": {
+        "testName": "Diagonal_4x4_0",
+        "algorithmName": "Schur",
+        "passed": false,
+        "maxError": 1.2021478176083984,
+        "relativeError": 0.4147257425349416,
+        "backwardError": 0,
+        "methodsUsed": 37,
+        "computationTime": "00:00:00.0001106",
+        "detailedErrors": {
+          "IdentityProperty": 0.7968522226784354,
+          "CommutingProperty": 1.2021478176083984,
+          "ScalingProperty": 0.027745982316550174,
+          "BackwardError": 0
+        },
+        "warnings": [
+          "Commuting property deviation: ||exp(A\u002BkI) - exp(A)*exp(kI)|| = 1.20E\u002B000",
+          "Scaling property large deviation: 2.77E-002"
+        ],
+        "failures": [
+          "Identity property failed: ||exp(A)*exp(-A) - I|| = 7.97E-001"
+        ],
+        "details": "Error Analysis:\r\n  IdentityProperty: 7.968522E-001\r\n  CommutingProperty: 1.202148E\u002B000\r\n  ScalingProperty: 2.774598E-002\r\n  BackwardError: 0.000000E\u002B000\r\nWarnings:\r\n  - Commuting property deviation: ||exp(A\u002BkI) - exp(A)*exp(kI)|| = 1.20E\u002B000\r\n  - Scaling property large deviation: 2.77E-002\r\nFailures:\r\n  - Identity property failed: ||exp(A)*exp(-A) - I|| = 7.97E-001\r\n",
+        "metadata": {}
+      },
+      "errorMessage": null,
+      "performanceMetrics": {
+        "ExecutionTimeMs": 0.1106,
+        "MemoryUsedBytes": 278640,
+        "MatrixSize": 4,
+        "ConditionNumber": 4.164192728167162,
+        "OneNorm": 1.0641581812441494,
+        "FrobeniusNorm": 1.4381205324718362
+      },
+      "memoryUsed": 278640
+    },
+    {
+      "testCaseName": "Diagonal_4x4_0",
+      "algorithmName": "SkewSymmetric",
+      "success": false,
+      "executionTime": "00:00:00.0000233",
+      "validationResult": {
+        "testName": "Diagonal_4x4_0",
+        "algorithmName": "SkewSymmetric",
+        "passed": false,
+        "maxError": 1000000,
+        "relativeError": 1000000,
+        "backwardError": 1000000,
+        "methodsUsed": 0,
+        "computationTime": "00:00:00.0000233",
+        "detailedErrors": {},
+        "warnings": [],
+        "failures": [
+          "Unknown error"
+        ],
+        "details": "",
+        "metadata": {}
+      },
+      "errorMessage": null,
+      "performanceMetrics": {},
+      "memoryUsed": 65736
+    },
+    {
+      "testCaseName": "Diagonal_4x4_1",
+      "algorithmName": "Pade",
+      "success": true,
+      "executionTime": "00:00:00.0000599",
+      "validationResult": {
+        "testName": "Diagonal_4x4_1",
+        "algorithmName": "Pade",
+        "passed": true,
+        "maxError": 0.4303810691293713,
+        "relativeError": 0.046669020791877895,
+        "backwardError": 0,
+        "methodsUsed": 37,
+        "computationTime": "00:00:00.0000599",
+        "detailedErrors": {
+          "IdentityProperty": 2.220446049250313E-16,
+          "CommutingProperty": 5.35231211326357E-15,
+          "ScalingProperty": 0.4303810691293713,
+          "BackwardError": 0
+        },
+        "warnings": [
+          "Scaling property large deviation: 4.30E-001"
+        ],
+        "failures": [],
+        "details": "Error Analysis:\r\n  IdentityProperty: 2.220446E-016\r\n  CommutingProperty: 5.352312E-015\r\n  ScalingProperty: 4.303811E-001\r\n  BackwardError: 0.000000E\u002B000\r\nWarnings:\r\n  - Scaling property large deviation: 4.30E-001\r\n",
+        "metadata": {}
+      },
+      "errorMessage": null,
+      "performanceMetrics": {
+        "ExecutionTimeMs": 0.0599,
+        "MemoryUsedBytes": 222784,
+        "MatrixSize": 4,
+        "ConditionNumber": 17.72129686937428,
+        "OneNorm": 2.700089895909958,
+        "FrobeniusNorm": 3.584142133245181
+      },
+      "memoryUsed": 222784
+    },
+    {
+      "testCaseName": "Diagonal_4x4_1",
+      "algorithmName": "Schur",
+      "success": true,
+      "executionTime": "00:00:00.0000758",
+      "validationResult": {
+        "testName": "Diagonal_4x4_1",
+        "algorithmName": "Schur",
+        "passed": true,
+        "maxError": 0.4303810691293713,
+        "relativeError": 0.046669020791877895,
+        "backwardError": 0,
+        "methodsUsed": 37,
+        "computationTime": "00:00:00.0000758",
+        "detailedErrors": {
+          "IdentityProperty": 9.930136612989092E-16,
+          "CommutingProperty": 3.570045741019492E-15,
+          "ScalingProperty": 0.4303810691293713,
+          "BackwardError": 0
+        },
+        "warnings": [
+          "Scaling property large deviation: 4.30E-001"
+        ],
+        "failures": [],
+        "details": "Error Analysis:\r\n  IdentityProperty: 9.930137E-016\r\n  CommutingProperty: 3.570046E-015\r\n  ScalingProperty: 4.303811E-001\r\n  BackwardError: 0.000000E\u002B000\r\nWarnings:\r\n  - Scaling property large deviation: 4.30E-001\r\n",
+        "metadata": {}
+      },
+      "errorMessage": null,
+      "performanceMetrics": {
+        "ExecutionTimeMs": 0.0758,
+        "MemoryUsedBytes": 262512,
+        "MatrixSize": 4,
+        "ConditionNumber": 17.72129686937428,
+        "OneNorm": 2.700089895909958,
+        "FrobeniusNorm": 3.584142133245181
+      },
+      "memoryUsed": 262512
+    },
+    {
+      "testCaseName": "Diagonal_4x4_1",
+      "algorithmName": "SkewSymmetric",
+      "success": false,
+      "executionTime": "00:00:00.0000256",
+      "validationResult": {
+        "testName": "Diagonal_4x4_1",
+        "algorithmName": "SkewSymmetric",
+        "passed": false,
+        "maxError": 1000000,
+        "relativeError": 1000000,
+        "backwardError": 1000000,
+        "methodsUsed": 0,
+        "computationTime": "00:00:00.0000256",
+        "detailedErrors": {},
+        "warnings": [],
+        "failures": [
+          "Unknown error"
+        ],
+        "details": "",
+        "metadata": {}
+      },
+      "errorMessage": null,
+      "performanceMetrics": {},
+      "memoryUsed": 77760
+    },
+    {
+      "testCaseName": "Diagonal_8x8_0",
+      "algorithmName": "Pade",
+      "success": true,
+      "executionTime": "00:00:00.0001716",
+      "validationResult": {
+        "testName": "Diagonal_8x8_0",
+        "algorithmName": "Pade",
+        "passed": true,
+        "maxError": 0.3492513665969516,
+        "relativeError": 0.07402268107084674,
+        "backwardError": 0,
+        "methodsUsed": 37,
+        "computationTime": "00:00:00.0001716",
+        "detailedErrors": {
+          "IdentityProperty": 1.0821115497893178E-15,
+          "CommutingProperty": 5.662426538786454E-15,
+          "ScalingProperty": 0.3492513665969516,
+          "BackwardError": 0
+        },
+        "warnings": [
+          "Scaling property large deviation: 3.49E-001"
+        ],
+        "failures": [],
+        "details": "Error Analysis:\r\n  IdentityProperty: 1.082112E-015\r\n  CommutingProperty: 5.662427E-015\r\n  ScalingProperty: 3.492514E-001\r\n  BackwardError: 0.000000E\u002B000\r\nWarnings:\r\n  - Scaling property large deviation: 3.49E-001\r\n",
+        "metadata": {}
+      },
+      "errorMessage": null,
+      "performanceMetrics": {
+        "ExecutionTimeMs": 0.1716,
+        "MemoryUsedBytes": 556528,
+        "MatrixSize": 8,
+        "ConditionNumber": 54.978345046361106,
+        "OneNorm": 2.8418481178604966,
+        "FrobeniusNorm": 3.3315378271645897
+      },
+      "memoryUsed": 556528
+    },
+    {
+      "testCaseName": "Diagonal_8x8_0",
+      "algorithmName": "Schur",
+      "success": true,
+      "executionTime": "00:00:00.0002964",
+      "validationResult": {
+        "testName": "Diagonal_8x8_0",
+        "algorithmName": "Schur",
+        "passed": true,
+        "maxError": 0.3492513665969516,
+        "relativeError": 0.07402268107084674,
+        "backwardError": 0,
+        "methodsUsed": 37,
+        "computationTime": "00:00:00.0002964",
+        "detailedErrors": {
+          "IdentityProperty": 2.615512026824473E-15,
+          "CommutingProperty": 1.9165923361345715E-15,
+          "ScalingProperty": 0.3492513665969516,
+          "BackwardError": 0
+        },
+        "warnings": [
+          "Scaling property large deviation: 3.49E-001"
+        ],
+        "failures": [],
+        "details": "Error Analysis:\r\n  IdentityProperty: 2.615512E-015\r\n  CommutingProperty: 1.916592E-015\r\n  ScalingProperty: 3.492514E-001\r\n  BackwardError: 0.000000E\u002B000\r\nWarnings:\r\n  - Scaling property large deviation: 3.49E-001\r\n",
+        "metadata": {}
+      },
+      "errorMessage": null,
+      "performanceMetrics": {
+        "ExecutionTimeMs": 0.2964,
+        "MemoryUsedBytes": 834904,
+        "MatrixSize": 8,
+        "ConditionNumber": 54.978345046361106,
+        "OneNorm": 2.8418481178604966,
+        "FrobeniusNorm": 3.3315378271645897
+      },
+      "memoryUsed": 834904
+    },
+    {
+      "testCaseName": "Diagonal_8x8_0",
+      "algorithmName": "SkewSymmetric",
+      "success": false,
+      "executionTime": "00:00:00.0000223",
+      "validationResult": {
+        "testName": "Diagonal_8x8_0",
+        "algorithmName": "SkewSymmetric",
+        "passed": false,
+        "maxError": 1000000,
+        "relativeError": 1000000,
+        "backwardError": 1000000,
+        "methodsUsed": 0,
+        "computationTime": "00:00:00.0000223",
+        "detailedErrors": {},
+        "warnings": [],
+        "failures": [
+          "Unknown error"
+        ],
+        "details": "",
+        "metadata": {}
+      },
+      "errorMessage": null,
+      "performanceMetrics": {},
+      "memoryUsed": 38776
+    },
+    {
+      "testCaseName": "Diagonal_8x8_1",
+      "algorithmName": "Pade",
+      "success": true,
+      "executionTime": "00:00:00.0001592",
+      "validationResult": {
+        "testName": "Diagonal_8x8_1",
+        "algorithmName": "Pade",
+        "passed": true,
+        "maxError": 0.45706209859571295,
+        "relativeError": 0.03349225106242183,
+        "backwardError": 0,
+        "methodsUsed": 37,
+        "computationTime": "00:00:00.0001592",
+        "detailedErrors": {
+          "IdentityProperty": 8.671119018262734E-16,
+          "CommutingProperty": 2.6774565311496554E-14,
+          "ScalingProperty": 0.45706209859571295,
+          "BackwardError": 0
+        },
+        "warnings": [
+          "Scaling property large deviation: 4.57E-001"
+        ],
+        "failures": [],
+        "details": "Error Analysis:\r\n  IdentityProperty: 8.671119E-016\r\n  CommutingProperty: 2.677457E-014\r\n  ScalingProperty: 4.570621E-001\r\n  BackwardError: 0.000000E\u002B000\r\nWarnings:\r\n  - Scaling property large deviation: 4.57E-001\r\n",
+        "metadata": {}
+      },
+      "errorMessage": null,
+      "performanceMetrics": {
+        "ExecutionTimeMs": 0.1592,
+        "MemoryUsedBytes": 454880,
+        "MatrixSize": 8,
+        "ConditionNumber": 4.508181737736028,
+        "OneNorm": 2.465879093108152,
+        "FrobeniusNorm": 3.920033916596532
+      },
+      "memoryUsed": 454880
+    },
+    {
+      "testCaseName": "Diagonal_8x8_1",
+      "algorithmName": "Schur",
+      "success": true,
+      "executionTime": "00:00:00.0002838",
+      "validationResult": {
+        "testName": "Diagonal_8x8_1",
+        "algorithmName": "Schur",
+        "passed": true,
+        "maxError": 0.45706209859571295,
+        "relativeError": 0.03349225106242183,
+        "backwardError": 0,
+        "methodsUsed": 37,
+        "computationTime": "00:00:00.0002838",
+        "detailedErrors": {
+          "IdentityProperty": 2.3811631099687442E-15,
+          "CommutingProperty": 1.8595842109100484E-14,
+          "ScalingProperty": 0.45706209859571295,
+          "BackwardError": 0
+        },
+        "warnings": [
+          "Scaling property large deviation: 4.57E-001"
+        ],
+        "failures": [],
+        "details": "Error Analysis:\r\n  IdentityProperty: 2.381163E-015\r\n  CommutingProperty: 1.859584E-014\r\n  ScalingProperty: 4.570621E-001\r\n  BackwardError: 0.000000E\u002B000\r\nWarnings:\r\n  - Scaling property large deviation: 4.57E-001\r\n",
+        "metadata": {}
+      },
+      "errorMessage": null,
+      "performanceMetrics": {
+        "ExecutionTimeMs": 0.2838,
+        "MemoryUsedBytes": 826776,
+        "MatrixSize": 8,
+        "ConditionNumber": 4.508181737736028,
+        "OneNorm": 2.465879093108152,
+        "FrobeniusNorm": 3.920033916596532
+      },
+      "memoryUsed": 826776
+    },
+    {
+      "testCaseName": "Diagonal_8x8_1",
+      "algorithmName": "SkewSymmetric",
+      "success": false,
+      "executionTime": "00:00:00.0000302",
+      "validationResult": {
+        "testName": "Diagonal_8x8_1",
+        "algorithmName": "SkewSymmetric",
+        "passed": false,
+        "maxError": 1000000,
+        "relativeError": 1000000,
+        "backwardError": 1000000,
+        "methodsUsed": 0,
+        "computationTime": "00:00:00.0000302",
+        "detailedErrors": {},
+        "warnings": [],
+        "failures": [
+          "Unknown error"
+        ],
+        "details": "",
+        "metadata": {}
+      },
+      "errorMessage": null,
+      "performanceMetrics": {},
+      "memoryUsed": 48000
+    },
+    {
+      "testCaseName": "Diagonal_16x16_0",
+      "algorithmName": "Pade",
+      "success": true,
+      "executionTime": "00:00:00.0003736",
+      "validationResult": {
+        "testName": "Diagonal_16x16_0",
+        "algorithmName": "Pade",
+        "passed": true,
+        "maxError": 0.1761424687103777,
+        "relativeError": 0.030521839176239827,
+        "backwardError": 0,
+        "methodsUsed": 37,
+        "computationTime": "00:00:00.0003736",
+        "detailedErrors": {
+          "IdentityProperty": 1.4043333874306805E-15,
+          "CommutingProperty": 5.602502642716504E-15,
+          "ScalingProperty": 0.1761424687103777,
+          "BackwardError": 0
+        },
+        "warnings": [
+          "Scaling property large deviation: 1.76E-001"
+        ],
+        "failures": [],
+        "details": "Error Analysis:\r\n  IdentityProperty: 1.404333E-015\r\n  CommutingProperty: 5.602503E-015\r\n  ScalingProperty: 1.761425E-001\r\n  BackwardError: 0.000000E\u002B000\r\nWarnings:\r\n  - Scaling property large deviation: 1.76E-001\r\n",
+        "metadata": {}
+      },
+      "errorMessage": null,
+      "performanceMetrics": {
+        "ExecutionTimeMs": 0.3736,
+        "MemoryUsedBytes": 1266496,
+        "MatrixSize": 16,
+        "ConditionNumber": 64.52525249482433,
+        "OneNorm": 2.148802183428252,
+        "FrobeniusNorm": 3.3380228418616364
+      },
+      "memoryUsed": 1266496
+    },
+    {
+      "testCaseName": "Diagonal_16x16_0",
+      "algorithmName": "Schur",
+      "success": true,
+      "executionTime": "00:00:00.0024905",
+      "validationResult": {
+        "testName": "Diagonal_16x16_0",
+        "algorithmName": "Schur",
+        "passed": true,
+        "maxError": 0.1761424687103777,
+        "relativeError": 0.030521839176239827,
+        "backwardError": 0,
+        "methodsUsed": 37,
+        "computationTime": "00:00:00.0024905",
+        "detailedErrors": {
+          "IdentityProperty": 3.602669438238049E-15,
+          "CommutingProperty": 3.995357024229395E-15,
+          "ScalingProperty": 0.1761424687103777,
+          "BackwardError": 0
+        },
+        "warnings": [
+          "Scaling property large deviation: 1.76E-001"
+        ],
+        "failures": [],
+        "details": "Error Analysis:\r\n  IdentityProperty: 3.602669E-015\r\n  CommutingProperty: 3.995357E-015\r\n  ScalingProperty: 1.761425E-001\r\n  BackwardError: 0.000000E\u002B000\r\nWarnings:\r\n  - Scaling property large deviation: 1.76E-001\r\n",
+        "metadata": {}
+      },
+      "errorMessage": null,
+      "performanceMetrics": {
+        "ExecutionTimeMs": 2.4905,
+        "MemoryUsedBytes": -1737432,
+        "MatrixSize": 16,
+        "ConditionNumber": 64.52525249482433,
+        "OneNorm": 2.148802183428252,
+        "FrobeniusNorm": 3.3380228418616364
+      },
+      "memoryUsed": -1737432
+    },
+    {
+      "testCaseName": "Diagonal_16x16_0",
+      "algorithmName": "SkewSymmetric",
+      "success": false,
+      "executionTime": "00:00:00.0000218",
+      "validationResult": {
+        "testName": "Diagonal_16x16_0",
+        "algorithmName": "SkewSymmetric",
+        "passed": false,
+        "maxError": 1000000,
+        "relativeError": 1000000,
+        "backwardError": 1000000,
+        "methodsUsed": 0,
+        "computationTime": "00:00:00.0000218",
+        "detailedErrors": {},
+        "warnings": [],
+        "failures": [
+          "Unknown error"
+        ],
+        "details": "",
+        "metadata": {}
+      },
+      "errorMessage": null,
+      "performanceMetrics": {},
+      "memoryUsed": 61152
+    },
+    {
+      "testCaseName": "Diagonal_16x16_1",
+      "algorithmName": "Pade",
+      "success": true,
+      "executionTime": "00:00:00.0003674",
+      "validationResult": {
+        "testName": "Diagonal_16x16_1",
+        "algorithmName": "Pade",
+        "passed": true,
+        "maxError": 0.0917011954945653,
+        "relativeError": 0.0193314211770981,
+        "backwardError": 0,
+        "methodsUsed": 37,
+        "computationTime": "00:00:00.0003674",
+        "detailedErrors": {
+          "IdentityProperty": 5.438959822042073E-16,
+          "CommutingProperty": 2.4412287111026412E-15,
+          "ScalingProperty": 0.0917011954945653,
+          "BackwardError": 0
+        },
+        "warnings": [
+          "Scaling property large deviation: 9.17E-002"
+        ],
+        "failures": [],
+        "details": "Error Analysis:\r\n  IdentityProperty: 5.438960E-016\r\n  CommutingProperty: 2.441229E-015\r\n  ScalingProperty: 9.170120E-002\r\n  BackwardError: 0.000000E\u002B000\r\nWarnings:\r\n  - Scaling property large deviation: 9.17E-002\r\n",
+        "metadata": {}
+      },
+      "errorMessage": null,
+      "performanceMetrics": {
+        "ExecutionTimeMs": 0.3674,
+        "MemoryUsedBytes": 1416368,
+        "MatrixSize": 16,
+        "ConditionNumber": 48.6675138186877,
+        "OneNorm": 1.55471074372672,
+        "FrobeniusNorm": 3.4541708781845712
+      },
+      "memoryUsed": 1416368
+    },
+    {
+      "testCaseName": "Diagonal_16x16_1",
+      "algorithmName": "Schur",
+      "success": false,
+      "executionTime": "00:00:00.0022498",
+      "validationResult": {
+        "testName": "Diagonal_16x16_1",
+        "algorithmName": "Schur",
+        "passed": false,
+        "maxError": 14.620202564226148,
+        "relativeError": 3.0820677084880033,
+        "backwardError": 0,
+        "methodsUsed": 37,
+        "computationTime": "00:00:00.0022498",
+        "detailedErrors": {
+          "IdentityProperty": 5.683114856693334,
+          "CommutingProperty": 14.620202564226148,
+          "ScalingProperty": 0.0917011954945653,
+          "BackwardError": 0
+        },
+        "warnings": [
+          "Commuting property deviation: ||exp(A\u002BkI) - exp(A)*exp(kI)|| = 1.46E\u002B001",
+          "Scaling property large deviation: 9.17E-002"
+        ],
+        "failures": [
+          "Identity property failed: ||exp(A)*exp(-A) - I|| = 5.68E\u002B000"
+        ],
+        "details": "Error Analysis:\r\n  IdentityProperty: 5.683115E\u002B000\r\n  CommutingProperty: 1.462020E\u002B001\r\n  ScalingProperty: 9.170120E-002\r\n  BackwardError: 0.000000E\u002B000\r\nWarnings:\r\n  - Commuting property deviation: ||exp(A\u002BkI) - exp(A)*exp(kI)|| = 1.46E\u002B001\r\n  - Scaling property large deviation: 9.17E-002\r\nFailures:\r\n  - Identity property failed: ||exp(A)*exp(-A) - I|| = 5.68E\u002B000\r\n",
+        "metadata": {}
+      },
+      "errorMessage": null,
+      "performanceMetrics": {
+        "ExecutionTimeMs": 2.2498,
+        "MemoryUsedBytes": -2573840,
+        "MatrixSize": 16,
+        "ConditionNumber": 48.6675138186877,
+        "OneNorm": 1.55471074372672,
+        "FrobeniusNorm": 3.4541708781845712
+      },
+      "memoryUsed": -2573840
+    },
+    {
+      "testCaseName": "Diagonal_16x16_1",
+      "algorithmName": "SkewSymmetric",
+      "success": false,
+      "executionTime": "00:00:00.0000339",
+      "validationResult": {
+        "testName": "Diagonal_16x16_1",
+        "algorithmName": "SkewSymmetric",
+        "passed": false,
+        "maxError": 1000000,
+        "relativeError": 1000000,
+        "backwardError": 1000000,
+        "methodsUsed": 0,
+        "computationTime": "00:00:00.0000339",
+        "detailedErrors": {},
+        "warnings": [],
+        "failures": [
+          "Unknown error"
+        ],
+        "details": "",
+        "metadata": {}
+      },
+      "errorMessage": null,
+      "performanceMetrics": {},
+      "memoryUsed": 114936
+    }
+  ],
+  "algorithmSummaries": {
+    "Pade": {
+      "name": "Pade",
+      "totalTests": 40,
+      "passedTests": 36,
+      "failedTests": 4,
+      "averageExecutionTime": 0.8482049999999999,
+      "averageAccuracy": 0.5760584722708264,
+      "worstCaseError": 3.727481494133103,
+      "problematicCategories": [
+        "GeneralDense",
+        "Symmetric"
+      ],
+      "performanceMetrics": {
+        "AverageTimeMs": 0.8482049999999999,
+        "MinTimeMs": 0.0116,
+        "MaxTimeMs": 9.9873,
+        "AverageMemoryMB": 0.15553741455078124
+      }
+    },
+    "Schur": {
+      "name": "Schur",
+      "totalTests": 40,
+      "passedTests": 30,
+      "failedTests": 10,
+      "averageExecutionTime": 3.76367,
+      "averageAccuracy": 0.6833859161383503,
+      "worstCaseError": 14.620202564226148,
+      "problematicCategories": [
+        "Symmetric",
+        "SkewSymmetric",
+        "Diagonal"
+      ],
+      "performanceMetrics": {
+        "AverageTimeMs": 3.76367,
+        "MinTimeMs": 0.0026,
+        "MaxTimeMs": 17.9281,
+        "AverageMemoryMB": -0.07458744049072266
+      }
+    },
+    "SkewSymmetric": {
+      "name": "SkewSymmetric",
+      "totalTests": 40,
+      "passedTests": 9,
+      "failedTests": 31,
+      "averageExecutionTime": 0.20771750000000005,
+      "averageAccuracy": 0.6844460841530375,
+      "worstCaseError": 1000000,
+      "problematicCategories": [
+        "GeneralDense",
+        "Symmetric",
+        "Diagonal"
+      ],
+      "performanceMetrics": {
+        "AverageTimeMs": 0.20771750000000005,
+        "MinTimeMs": 0.0041,
+        "MaxTimeMs": 2.2792,
+        "AverageMemoryMB": -0.0004974365234375
+      }
+    }
+  },
+  "categorySummaries": {
+    "GeneralDense": {
+      "name": "GeneralDense",
+      "totalTests": 30,
+      "passedTests": 17,
+      "averageAccuracy": 0.3564878403966971,
+      "bestAlgorithm": "Schur",
+      "worstAlgorithm": "SkewSymmetric",
+      "issues": [
+        "Unknown error"
+      ]
+    },
+    "Symmetric": {
+      "name": "Symmetric",
+      "totalTests": 30,
+      "passedTests": 16,
+      "averageAccuracy": 1.2399973446522154,
+      "bestAlgorithm": "Pade",
+      "worstAlgorithm": "SkewSymmetric",
+      "issues": [
+        "Unknown error"
+      ]
+    },
+    "SkewSymmetric": {
+      "name": "SkewSymmetric",
+      "totalTests": 30,
+      "passedTests": 26,
+      "averageAccuracy": 0.7102837371170294,
+      "bestAlgorithm": "Pade",
+      "worstAlgorithm": "Schur",
+      "issues": [
+        "Unknown error"
+      ]
+    },
+    "Diagonal": {
+      "name": "Diagonal",
+      "totalTests": 30,
+      "passedTests": 16,
+      "averageAccuracy": 0.18950432981597107,
+      "bestAlgorithm": "Pade",
+      "worstAlgorithm": "SkewSymmetric",
+      "issues": [
+        "Unknown error"
+      ]
+    }
+  },
+  "criticalIssues": [],
+  "systemInformation": {
+    "platform": "Microsoft Windows NT 10.0.22000.0",
+    "runtimeVersion": "8.0.19",
+    "processorCount": 8,
+    "availableMemory": 2585600,
+    "timestamp": "2025-08-16T13:10:57.4380787Z",
+    "hostName": "DESKTOP-DCMHBGR"
+  }
+}

@@ -18,7 +18,7 @@ public sealed class GrPovRayImageMapPigment :
         = new GrPovRayImageMapPigmentProperties();
 
     
-    internal GrPovRayImageMapPigment(string bitmapFileName, GrPovRayImageMapBitmapType bitmapType = GrPovRayImageMapBitmapType.Undefined)
+    public GrPovRayImageMapPigment(string bitmapFileName, GrPovRayImageMapBitmapType bitmapType = GrPovRayImageMapBitmapType.Undefined)
         : base(string.Empty)
     {
         BitmapType = bitmapType;

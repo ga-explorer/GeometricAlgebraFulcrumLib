@@ -1,8 +1,9 @@
-﻿using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
-using GeometricAlgebraFulcrumLib.Algebra.Scalars.Generic;
-using GeometricAlgebraFulcrumLib.Utilities.Structures.Tuples;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using System.Runtime.CompilerServices;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
+using GeometricAlgebraFulcrumLib.Algebra.Scalars.Generic;
+using GeometricAlgebraFulcrumLib.Utilities.Structures.IndexSets;
+using GeometricAlgebraFulcrumLib.Utilities.Structures.Tuples;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Multivectors;
 
@@ -297,6 +298,12 @@ public abstract partial class XGaKVector<T>
             _ => throw new InvalidOperationException()
         };
     }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public override XGaKVector<T> GradeInvolution(IndexSet gradeSet)
+    {
+        return gradeSet.SetContains(Grade) ? Negative() : this;
+    }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public override XGaKVector<T> CliffordConjugate()
@@ -514,40 +521,40 @@ public abstract partial class XGaKVector<T>
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public override XGaKVector<T> EInverse()
+    public override XGaKVector<T> EVersorInverse()
     {
         return this switch
         {
-            XGaScalar<T> s => s.EInverse(),
-            XGaVector<T> v => v.EInverse(),
-            XGaBivector<T> bv => bv.EInverse(),
-            XGaHigherKVector<T> kv => kv.EInverse(),
+            XGaScalar<T> s => s.EVersorInverse(),
+            XGaVector<T> v => v.EVersorInverse(),
+            XGaBivector<T> bv => bv.EVersorInverse(),
+            XGaHigherKVector<T> kv => kv.EVersorInverse(),
             _ => throw new InvalidOperationException()
         };
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public override XGaKVector<T> Inverse()
+    public override XGaKVector<T> VersorInverse()
     {
         return this switch
         {
-            XGaScalar<T> s => s.Inverse(),
-            XGaVector<T> v => v.Inverse(),
-            XGaBivector<T> bv => bv.Inverse(),
-            XGaHigherKVector<T> kv => kv.Inverse(),
+            XGaScalar<T> s => s.VersorInverse(),
+            XGaVector<T> v => v.VersorInverse(),
+            XGaBivector<T> bv => bv.VersorInverse(),
+            XGaHigherKVector<T> kv => kv.VersorInverse(),
             _ => throw new InvalidOperationException()
         };
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public override XGaKVector<T> PseudoInverse()
+    public override XGaKVector<T> VersorPseudoInverse()
     {
         return this switch
         {
-            XGaScalar<T> s => s.PseudoInverse(),
-            XGaVector<T> v => v.PseudoInverse(),
-            XGaBivector<T> bv => bv.PseudoInverse(),
-            XGaHigherKVector<T> kv => kv.PseudoInverse(),
+            XGaScalar<T> s => s.VersorPseudoInverse(),
+            XGaVector<T> v => v.VersorPseudoInverse(),
+            XGaBivector<T> bv => bv.VersorPseudoInverse(),
+            XGaHigherKVector<T> kv => kv.VersorPseudoInverse(),
             _ => throw new InvalidOperationException()
         };
     }
@@ -564,7 +571,7 @@ public abstract partial class XGaKVector<T>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public override XGaKVector<T> EDual(XGaKVector<T> blade)
     {
-        return ELcp(blade.EInverse());
+        return ELcp(blade.EVersorInverse());
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -579,7 +586,7 @@ public abstract partial class XGaKVector<T>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public override XGaKVector<T> Dual(XGaKVector<T> blade)
     {
-        return Lcp(blade.Inverse());
+        return Lcp(blade.VersorInverse());
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]

@@ -28,7 +28,7 @@ public static class CGaFloat64LerpDirectionUtils
         var directionVector =
             directionVector1.RotateToUnitVector(directionVector2, angle);
 
-        return CGaFloat64GeometricSpace5D.Instance.DefineDirectionLine(
+        return CGaFloat64GeometricSpace5D.Instance.DirectionLine(
             weight,
             directionVector
         );
@@ -54,7 +54,7 @@ public static class CGaFloat64LerpDirectionUtils
         var directionVector =
             directionVector1.RotateToUnitVector(directionVector2, angle);
 
-        return CGaFloat64GeometricSpace5D.Instance.DefineDirectionLine(
+        return CGaFloat64GeometricSpace5D.Instance.DirectionLine(
             weight,
             directionVector
         );
@@ -80,7 +80,7 @@ public static class CGaFloat64LerpDirectionUtils
         var directionBivector =
             normal1.RotateToUnitVector(normal2, angle).NormalToUnitDirection3D();
 
-        return CGaFloat64GeometricSpace5D.Instance.DefineDirectionPlane(
+        return CGaFloat64GeometricSpace5D.Instance.DirectionPlane(
             weight,
             directionBivector
         );

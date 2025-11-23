@@ -42,10 +42,10 @@ public class TriangleDataSetComposer3D
     public IEnumerable<PointData3D<IGraphicsVertexData3D>> Vertices
         => PointDataSet;
 
-    public IEnumerable<ILinFloat64Vector3D> VertexPoints
-        => PointDataSet;
+    public IEnumerable<LinFloat64Vector3D> VertexPoints
+        => PointDataSet.ToLinVector3DList();
 
-    public IEnumerable<ILinFloat64Vector2D> VertexTextureUVs
+    public IEnumerable<LinFloat64Vector2D> VertexTextureUVs
         => PointDataSet.Select(p => p.DataValue.TextureUv);
 
     public IEnumerable<Color> VertexColors
@@ -66,18 +66,18 @@ public class TriangleDataSetComposer3D
             )
         );
         
-    public IEnumerable<Triplet<ILinFloat64Vector3D>> TriangleVertexPoints
+    public IEnumerable<Triplet<LinFloat64Vector3D>> TriangleVertexPoints
         => TriangleDataSet.Triangles.Select(t => 
-            new Triplet<ILinFloat64Vector3D>(
-                PointDataSet[t.Item1],
-                PointDataSet[t.Item2],
-                PointDataSet[t.Item3]
+            new Triplet<LinFloat64Vector3D>(
+                PointDataSet[t.Item1].ToLinVector3D(),
+                PointDataSet[t.Item2].ToLinVector3D(),
+                PointDataSet[t.Item3].ToLinVector3D()
             )
         );
 
-    public IEnumerable<Triplet<ILinFloat64Vector2D>> TriangleVertexTextureUVs
+    public IEnumerable<Triplet<LinFloat64Vector2D>> TriangleVertexTextureUVs
         => TriangleDataSet.Triangles.Select(t => 
-            new Triplet<ILinFloat64Vector2D>(
+            new Triplet<LinFloat64Vector2D>(
                 PointDataSet[t.Item1].DataValue.TextureUv,
                 PointDataSet[t.Item2].DataValue.TextureUv,
                 PointDataSet[t.Item3].DataValue.TextureUv
@@ -287,7 +287,7 @@ public class TriangleDataSetComposer3D
             : PointDataSet.AddPoint(x, y, z, CreateVertexData());
     }
 
-    public PointData3D<IGraphicsVertexData3D> AddVertex(ILinFloat64Vector3D point)
+    public PointData3D<IGraphicsVertexData3D> AddVertex(LinFloat64Vector3D point)
     {
         return PointDataSet.TryGetPointData(point, out var pointData) 
             ? pointData 
@@ -302,7 +302,7 @@ public class TriangleDataSetComposer3D
     }
 
 
-    public TriangleDataSetComposer3D AddVertices(params ILinFloat64Vector3D[] pointsList)
+    public TriangleDataSetComposer3D AddVertices(params LinFloat64Vector3D[] pointsList)
     {
         foreach (var point in pointsList)
             AddVertex(point);
@@ -310,7 +310,7 @@ public class TriangleDataSetComposer3D
         return this;
     }
 
-    public TriangleDataSetComposer3D AddVertices(IEnumerable<ILinFloat64Vector3D> pointsList)
+    public TriangleDataSetComposer3D AddVertices(IEnumerable<LinFloat64Vector3D> pointsList)
     {
         foreach (var point in pointsList)
             AddVertex(point);
@@ -351,7 +351,7 @@ public class TriangleDataSetComposer3D
         );
     }
 
-    public bool AddTriangle(ILinFloat64Vector3D point1, ILinFloat64Vector3D point2, ILinFloat64Vector3D point3)
+    public bool AddTriangle(LinFloat64Vector3D point1, LinFloat64Vector3D point2, LinFloat64Vector3D point3)
     {
         return StoreTriangle(
             AddVertex(point1), 
@@ -360,7 +360,7 @@ public class TriangleDataSetComposer3D
         );
     }
 
-    public bool AddTriangle(ITriplet<ILinFloat64Vector3D> points)
+    public bool AddTriangle(ITriplet<LinFloat64Vector3D> points)
     {
         return StoreTriangle(
             AddVertex(points.Item1), 
@@ -442,7 +442,7 @@ public class TriangleDataSetComposer3D
         return this;
     }
 
-    public TriangleDataSetComposer3D AddTriangles(IReadOnlyList<ILinFloat64Vector3D> pointsList)
+    public TriangleDataSetComposer3D AddTriangles(IReadOnlyList<LinFloat64Vector3D> pointsList)
     {
         if (pointsList.Count % 3 != 0)
             throw new InvalidOperationException();
@@ -459,7 +459,7 @@ public class TriangleDataSetComposer3D
         return this;
     }
 
-    public TriangleDataSetComposer3D AddTriangles(IEnumerable<ITriplet<ILinFloat64Vector3D>> trianglePointsList)
+    public TriangleDataSetComposer3D AddTriangles(IEnumerable<ITriplet<LinFloat64Vector3D>> trianglePointsList)
     {
         foreach (var points in trianglePointsList)
         {

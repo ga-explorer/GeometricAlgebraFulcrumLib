@@ -174,7 +174,7 @@ public static class LinVector3DAffineUtils
             ? vector1.GetNormal()
             : unitVector.VectorSubtract(vector1.VectorTimes(v1Dot2));
 
-        var v1Length = v1.VectorENorm();
+        var v1Length = v1.L2Norm();
 
         Debug.Assert(
             v1.VectorESp(vector1).IsNearZero() &&
@@ -567,7 +567,7 @@ public static class LinVector3DAffineUtils
     {
         var scalarProcessor = vector.GetScalarProcessor();
 
-        var oldLength = vector.VectorENorm();
+        var oldLength = vector.L2Norm();
 
         if (oldLength.IsNearZero())
             return LinVector3D<T>.Zero(scalarProcessor);
@@ -599,7 +599,7 @@ public static class LinVector3DAffineUtils
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static LinVector3D<T> ReflectVectorOnVector<T>(this ITriplet<Scalar<T>> reflectionVector, ITriplet<Scalar<T>> vector)
     {
-        var s = 2 * reflectionVector.VectorESp(vector) / reflectionVector.VectorENormSquared();
+        var s = 2 * reflectionVector.VectorESp(vector) / reflectionVector.L2NormSquared();
 
         return LinVector3D<T>.Create(
             vector.Item1 - s * reflectionVector.Item1,
@@ -613,7 +613,7 @@ public static class LinVector3DAffineUtils
     {
         var (v1, v2, v3) = vectorsTriplet;
 
-        var s = 2 / reflectionVector.VectorENormSquared();
+        var s = 2 / reflectionVector.L2NormSquared();
 
         var s1 = s * reflectionVector.VectorESp(v1);
         var s2 = s * reflectionVector.VectorESp(v2);
@@ -643,7 +643,7 @@ public static class LinVector3DAffineUtils
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Pair<LinVector3D<T>> ReflectVectorsOnVector<T>(this ITriplet<Scalar<T>> reflectionVector, ITriplet<Scalar<T>> v1, ITriplet<Scalar<T>> v2)
     {
-        var s = 2 / reflectionVector.VectorENormSquared();
+        var s = 2 / reflectionVector.L2NormSquared();
 
         var s1 = s * reflectionVector.VectorESp(v1);
         var s2 = s * reflectionVector.VectorESp(v2);
@@ -666,7 +666,7 @@ public static class LinVector3DAffineUtils
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Triplet<LinVector3D<T>> ReflectVectorsOnVector<T>(this ITriplet<Scalar<T>> reflectionVector, ITriplet<Scalar<T>> v1, ITriplet<Scalar<T>> v2, ITriplet<Scalar<T>> v3)
     {
-        var s = 2 / reflectionVector.VectorENormSquared();
+        var s = 2 / reflectionVector.L2NormSquared();
 
         var s1 = s * reflectionVector.VectorESp(v1);
         var s2 = s * reflectionVector.VectorESp(v2);
@@ -695,7 +695,7 @@ public static class LinVector3DAffineUtils
 
     public static IEnumerable<LinVector3D<T>> ReflectVectorsOnVector<T>(this ITriplet<Scalar<T>> reflectionVector, params ITriplet<Scalar<T>>[] vectorsList)
     {
-        var s = 2 / reflectionVector.VectorENormSquared();
+        var s = 2 / reflectionVector.L2NormSquared();
 
         foreach (var vector in vectorsList)
         {
@@ -781,7 +781,7 @@ public static class LinVector3DAffineUtils
 
     public static IEnumerable<LinVector3D<T>> ReflectVectorsOnVector<T>(this ITriplet<Scalar<T>> reflectionVector, IEnumerable<ITriplet<Scalar<T>>> vectorsList)
     {
-        var s = 2 / reflectionVector.VectorENormSquared();
+        var s = 2 / reflectionVector.L2NormSquared();
 
         foreach (var vector in vectorsList)
         {
@@ -810,7 +810,7 @@ public static class LinVector3DAffineUtils
     {
         var scalarProcessor = vector.GetScalarProcessor();
 
-        var oldLength = vector.VectorENorm();
+        var oldLength = vector.L2Norm();
 
         if (oldLength.IsNearZero())
             return LinVector3D<T>.Zero(scalarProcessor);
@@ -856,7 +856,7 @@ public static class LinVector3DAffineUtils
     {
         Debug.Assert(newLength is not null);
 
-        var oldLength = vector.VectorENorm();
+        var oldLength = vector.L2Norm();
 
         if (oldLength.IsZero())
             return LinVector3D<T>.Zero(vector.GetScalarProcessor());

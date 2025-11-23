@@ -12,24 +12,24 @@ namespace GeometricAlgebraFulcrumLib.Modeling.Graphics.Primitives.Points;
 public sealed class GrPointGeometry3D
     : IGraphicsPointGeometry3D
 {
-    public static GrPointGeometry3D Create(IReadOnlyList<ILinFloat64Vector3D> pointsList)
+    public static GrPointGeometry3D Create(IReadOnlyList<LinFloat64Vector3D> pointsList)
     {
         return new GrPointGeometry3D(pointsList);
     }
 
-    public static GrPointGeometry3D Create(params ILinFloat64Vector3D[] pointsList)
+    public static GrPointGeometry3D Create(params LinFloat64Vector3D[] pointsList)
     {
         return new GrPointGeometry3D(pointsList);
     }
 
-    public static GrPointGeometry3D Create(IEnumerable<ILinFloat64Vector3D> pointsList)
+    public static GrPointGeometry3D Create(IEnumerable<LinFloat64Vector3D> pointsList)
     {
         return new GrPointGeometry3D(pointsList.ToArray());
     }
 
 
-    private readonly IReadOnlyList<ILinFloat64Vector3D> _vertexPoints;
-    public IEnumerable<ILinFloat64Vector3D> GeometryPoints 
+    private readonly IReadOnlyList<LinFloat64Vector3D> _vertexPoints;
+    public IEnumerable<LinFloat64Vector3D> GeometryPoints 
         => _vertexPoints;
 
     public IEnumerable<IGraphicsVertex3D> GeometryVertices
@@ -48,17 +48,17 @@ public sealed class GrPointGeometry3D
     public int Count
         => _vertexIndicesList.Count;
 
-    public ILinFloat64Vector3D this[int index] 
+    public LinFloat64Vector3D this[int index] 
         => _vertexPoints[_vertexIndicesList[index]];
 
 
-    private GrPointGeometry3D(IReadOnlyList<ILinFloat64Vector3D> pointsList)
+    private GrPointGeometry3D(IReadOnlyList<LinFloat64Vector3D> pointsList)
     {
         _vertexPoints = pointsList;
     }
 
         
-    public ILinFloat64Vector3D GetGeometryPoint(int index)
+    public LinFloat64Vector3D GetGeometryPoint(int index)
     {
         return _vertexPoints[index];
     }
@@ -177,7 +177,7 @@ public sealed class GrPointGeometry3D
     }
 
         
-    public IEnumerator<ILinFloat64Vector3D> GetEnumerator()
+    public IEnumerator<LinFloat64Vector3D> GetEnumerator()
     {
         return _vertexIndicesList.Select(
             i => _vertexPoints[i]

@@ -554,6 +554,65 @@ public static class BasisBladeUtils
                 .ToString();
     }
 
+    
+    public static IEnumerable<IndexSet> GetBasisVectorIds(this int vSpaceDimensions)
+    {
+        if (vSpaceDimensions < 1)
+            throw new ArgumentOutOfRangeException(nameof(vSpaceDimensions));
+
+        for (var index = 0; index < vSpaceDimensions; index++)
+            yield return index.ToUnitIndexSet();
+    }
+        
+    //public static IEnumerable<IndexSet> GetBasisBivectorIds(this int vSpaceDimensions)
+    //{
+    //    if (vSpaceDimensions < 2)
+    //        throw new ArgumentOutOfRangeException(nameof(vSpaceDimensions));
+
+    //    for (var index1 = 0; index1 < vSpaceDimensions - 1; index1++)
+    //    for (var index2 = index1 + 1; index2 < vSpaceDimensions; index2++)
+    //        yield return IndexSet.CreatePair(index1, index2);
+    //}
+        
+    public static IEnumerable<IndexSet> GetBasisKVectorIds(this int vSpaceDimensions, int grade)
+    {
+        if (grade < 0)
+            throw new ArgumentOutOfRangeException(nameof(grade));
+            
+        if (grade > vSpaceDimensions)
+            throw new ArgumentOutOfRangeException(nameof(vSpaceDimensions));
+
+        if (grade == vSpaceDimensions)
+            return [GetBasisPseudoScalarId(vSpaceDimensions)];
+
+        return grade switch
+        {
+            0 => [IndexSet.EmptySet],
+            1 => vSpaceDimensions.GetBasisVectorIds(),
+            2 => vSpaceDimensions.GetBasisBivectorIds(),
+            _ => vSpaceDimensions.ToDenseIndexSet().GetSubsetsOfSize(grade)
+        };
+    }
+        
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static IndexSet GetBasisPseudoScalarId(this int vSpaceDimensions)
+    {
+        return vSpaceDimensions.ToDenseIndexSet();
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static IEnumerable<IndexSet> BasisBladeIds(this int vSpaceDimensions)
+    {
+        if (vSpaceDimensions is < 1 or > 31)
+            throw new ArgumentOutOfRangeException(nameof(vSpaceDimensions));
+
+        return vSpaceDimensions
+            .ToDenseIndexSet()
+            .GetSubsets()
+            .OrderBy(id => id.Count)
+            .ThenBy(id => id);
+    }
+
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static IEnumerable<IndexSet> BasisBladeIdToBasisVectorIds(this IndexSet basisBladeId)
     {
@@ -611,7 +670,9 @@ public static class BasisBladeUtils
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static IEnumerable<IndexSet> SortBasisBladeIDsByGrade(this IEnumerable<IndexSet> basisBladeIdsList)
     {
-        return basisBladeIdsList.OrderBy(BasisBladeIdToGrade).ThenBy(BasisBladeIdToIndex);
+        return basisBladeIdsList
+            .OrderBy(id => id.Count)
+            .ThenBy(id => id);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]

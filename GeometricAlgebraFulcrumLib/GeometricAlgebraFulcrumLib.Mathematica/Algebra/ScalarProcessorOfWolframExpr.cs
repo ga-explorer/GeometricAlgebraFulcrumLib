@@ -21,7 +21,7 @@ public sealed class ScalarProcessorOfWolframExpr
 
 
     private double _zeroEpsilon = 1e-12;
-    public double ZeroEpsilon
+    public double DefaultTolerance
     {
         get => _zeroEpsilon;
         set
@@ -163,7 +163,7 @@ public sealed class ScalarProcessorOfWolframExpr
             throw new InvalidDataException();
 
         return this.ScalarFromValue(expr);
-        //return Mfs.Round[Mfs.N[scalar], ZeroEpsilon.ToExpr()].Simplify();
+        //return Mfs.Round[Mfs.N[scalar], DefaultTolerance.ToExpr()].Simplify();
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -402,7 +402,7 @@ public sealed class ScalarProcessorOfWolframExpr
     //    var number = ToFloat64(scalar);
 
     //    return !double.IsNaN(number) && 
-    //           nearZeroFlag ? number.IsNearZero(ZeroEpsilon) : number.IsZero();
+    //           nearZeroFlag ? number.IsNearZero(DefaultTolerance) : number.IsZero();
     //}
 
     //[MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -411,7 +411,7 @@ public sealed class ScalarProcessorOfWolframExpr
     //    var number = ToFloat64(scalar);
 
     //    return !double.IsNaN(number) && 
-    //           number.IsNearZero(ZeroEpsilon);
+    //           number.IsNearZero(DefaultTolerance);
     //}
 
     //[MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -429,7 +429,7 @@ public sealed class ScalarProcessorOfWolframExpr
     //    var number = ToFloat64(scalar);
 
     //    return !double.IsNaN(number) && 
-    //           nearZeroFlag ? !number.IsNearZero(ZeroEpsilon) : !number.IsZero();
+    //           nearZeroFlag ? !number.IsNearZero(DefaultTolerance) : !number.IsZero();
     //}
 
     //[MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -438,7 +438,7 @@ public sealed class ScalarProcessorOfWolframExpr
     //    var number = ToFloat64(scalar);
 
     //    return !double.IsNaN(number) && 
-    //           !number.IsNearZero(ZeroEpsilon);
+    //           !number.IsNearZero(DefaultTolerance);
     //}
 
     //[MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -476,7 +476,7 @@ public sealed class ScalarProcessorOfWolframExpr
     //{
     //    var number = ToFloat64(scalar);
 
-    //    return !double.IsNaN(number) && number < -ZeroEpsilon;
+    //    return !double.IsNaN(number) && number < -DefaultTolerance;
     //}
 
     //[MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -484,7 +484,7 @@ public sealed class ScalarProcessorOfWolframExpr
     //{
     //    var number = ToFloat64(scalar);
 
-    //    return !double.IsNaN(number) && number > ZeroEpsilon;
+    //    return !double.IsNaN(number) && number > DefaultTolerance;
     //}
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]

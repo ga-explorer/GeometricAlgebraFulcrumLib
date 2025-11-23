@@ -4,9 +4,11 @@ using System.Runtime.CompilerServices;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.LinearMaps.Outermorphisms;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Processors;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.SpaceND;
+using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Numerical;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Tuples;
 using MathNet.Numerics.LinearAlgebra;
+using MathNet.Numerics.LinearAlgebra.Double;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.LinearMaps.SpaceND;
 
@@ -122,12 +124,12 @@ public class LinFloat64UnilinearMap :
         throw new NotImplementedException();
     }
 
-    public bool IsNearIdentity(double zeroEpsilon = 1E-12)
+    public bool IsNearIdentity(double tolerance = Float64Utils.DefaultTolerance)
     {
         throw new NotImplementedException();
     }
 
-    public bool IsNearReflection(double zeroEpsilon = 1E-12)
+    public bool IsNearReflection(double tolerance = Float64Utils.DefaultTolerance)
     {
         throw new NotImplementedException();
     }
@@ -389,18 +391,18 @@ public class LinFloat64UnilinearMap :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public double[,] ToArray(int size)
+    public Matrix<double> ToArray(int size)
     {
         return ToArray(size, size);
     }
 
-    public double[,] ToArray(int rowCount, int colCount)
+    public Matrix<double> ToArray(int rowCount, int colCount)
     {
+        if (_indexVectorDictionary.Count == 0)
+            return SparseMatrix.Create(rowCount, colCount, 0);
+
         var mapArray =
             new double[rowCount, colCount];
-
-        if (_indexVectorDictionary.Count == 0)
-            return mapArray;
 
         var minRowCount =
             _indexVectorDictionary.Values.Max(v => v.VSpaceDimensions);
@@ -417,7 +419,7 @@ public class LinFloat64UnilinearMap :
             foreach (var (rowIndex, scalar) in vector)
                 mapArray[rowIndex, colIndex] = scalar;
 
-        return mapArray;
+        return mapArray.ToMathNetDenseMatrix();
     }
 
     public Matrix<double> ToMatrix(int rowCount, int colCount)
@@ -438,7 +440,7 @@ public class LinFloat64UnilinearMap :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public double[,] GetMapArray(int size)
+    public Matrix<double> GetMapArray(int size)
     {
         return ToArray(size, size);
     }

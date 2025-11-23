@@ -26,7 +26,7 @@ public sealed class Float64ScalarPlusSignal :
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Float64ScalarPlusSignal Finite(Float64ScalarSignal scalar1, Float64ScalarSignal scalar2)
     {
-        return Finite(new[] { scalar1, scalar2 });
+        return Finite([scalar1, scalar2]);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -58,7 +58,7 @@ public sealed class Float64ScalarPlusSignal :
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Float64ScalarPlusSignal Periodic(Float64ScalarSignal scalar1, Float64ScalarSignal scalar2)
     {
-        return Periodic(new[] { scalar1, scalar2 });
+        return Periodic([scalar1, scalar2]);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]

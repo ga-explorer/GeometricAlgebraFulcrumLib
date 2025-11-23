@@ -1,7 +1,8 @@
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space2D;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.BasicShapes.Triangles.Space2D.Float64;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.Borders.Space2D.Float64;
+using GeometricAlgebraFulcrumLib.Modeling.Geometry.Bounding.Float64;
+
 
 namespace GeometricAlgebraFulcrumLib.Modeling.Graphics.Computers.Voronoi;
 
@@ -118,7 +119,7 @@ public sealed class VoronoiTriangle2D : IFloat64Triangle2D
                PointIndex3 == pointIndex3;
     }
 
-    public bool CircumcircleContainsVa(ILinFloat64Vector2D point)
+    public bool CircumcircleContainsVa(LinFloat64Vector2D point)
     {
         var ab = Point1X * Point1X + Point1Y * Point1Y;
         var cd = Point2X * Point2X + Point2Y * Point2Y;

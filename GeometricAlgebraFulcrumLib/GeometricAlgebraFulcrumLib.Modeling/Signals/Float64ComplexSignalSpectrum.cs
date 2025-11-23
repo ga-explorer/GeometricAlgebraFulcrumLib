@@ -106,11 +106,11 @@ public sealed class Float64ComplexSignalSpectrum :
     }
 
 
-    public Float64ComplexSignalSpectrum RemoveZeroValueSamples(double zeroEpsilon)
+    public Float64ComplexSignalSpectrum RemoveZeroValueSamples(double tolerance)
     {
         var indexArray =
             IndexSampleDictionary
-                .Where(p => p.Value.Value.Magnitude.IsNearZero(zeroEpsilon))
+                .Where(p => p.Value.Value.Magnitude.IsNearZero(tolerance))
                 .Select(p => p.Key)
                 .ToArray();
 

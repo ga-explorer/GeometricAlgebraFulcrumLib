@@ -17,46 +17,46 @@ namespace GeometricAlgebraFulcrumLib.Modeling.Graphics.Meshes.PointsPath;
 
 public static class PointsPathUtils
 {
-    public static Pair<ILinFloat64Vector2D> GetPointsPair(this IPointsPath2D path, int index1, int index2)
+    public static Pair<LinFloat64Vector2D> GetPointsPair(this IPointsPath2D path, int index1, int index2)
     {
         if (path is null)
             throw new ArgumentNullException(nameof(path));
 
-        return new Pair<ILinFloat64Vector2D>(path[index1], path[index2]);
+        return new Pair<LinFloat64Vector2D>(path[index1], path[index2]);
     }
 
-    public static Pair<ILinFloat64Vector2D> GetPointsPair(this IPointsPath2D path, Pair<int> pointIndexPair)
+    public static Pair<LinFloat64Vector2D> GetPointsPair(this IPointsPath2D path, Pair<int> pointIndexPair)
     {
-        return new Pair<ILinFloat64Vector2D>(
+        return new Pair<LinFloat64Vector2D>(
             path[pointIndexPair.Item1], 
             path[pointIndexPair.Item2]
         );
     }
 
 
-    public static Pair<ILinFloat64Vector3D> GetPointsPair(this IPointsPath3D path, int index1, int index2)
+    public static Pair<LinFloat64Vector3D> GetPointsPair(this IPointsPath3D path, int index1, int index2)
     {
         if (path is null)
             throw new ArgumentNullException(nameof(path));
 
-        return new Pair<ILinFloat64Vector3D>(path[index1], path[index2]);
+        return new Pair<LinFloat64Vector3D>(path[index1], path[index2]);
     }
 
-    public static Pair<ILinFloat64Vector3D> GetPointsPair(this IPointsPath3D path, Pair<int> pointIndexPair)
+    public static Pair<LinFloat64Vector3D> GetPointsPair(this IPointsPath3D path, Pair<int> pointIndexPair)
     {
-        return new Pair<ILinFloat64Vector3D>(
+        return new Pair<LinFloat64Vector3D>(
             path[pointIndexPair.Item1], 
             path[pointIndexPair.Item2]
         );
     }
 
 
-    public static ArrayPointsPath2D ToArrayPointsPath2D(this ILinFloat64Vector2D[] pathPoints)
+    public static ArrayPointsPath2D ToArrayPointsPath2D(this LinFloat64Vector2D[] pathPoints)
     {
         return new ArrayPointsPath2D(pathPoints);
     }
 
-    public static ArrayPointsPath2D ToArrayPointsPath2D(this IEnumerable<ILinFloat64Vector2D> pathPoints)
+    public static ArrayPointsPath2D ToArrayPointsPath2D(this IEnumerable<LinFloat64Vector2D> pathPoints)
     {
         return new ArrayPointsPath2D(pathPoints);
     }
@@ -66,27 +66,27 @@ public static class PointsPathUtils
         return new CircularPointsPath2D(LinFloat64Vector2D.Create((Float64Scalar)0, 0), radius, parameterSequence);
     }
 
-    public static CircularPointsPath2D ToCircularPointsPath2D(this IPeriodicSequence1D<double> parameterSequence, ILinFloat64Vector2D center, double radius)
+    public static CircularPointsPath2D ToCircularPointsPath2D(this IPeriodicSequence1D<double> parameterSequence, LinFloat64Vector2D center, double radius)
     {
         return new CircularPointsPath2D(center, radius, parameterSequence);
     }
 
-    public static ConstantPointsPath2D ToConstantPointsPath2D(this ILinFloat64Vector2D point, int count)
+    public static ConstantPointsPath2D ToConstantPointsPath2D(this LinFloat64Vector2D point, int count)
     {
         return new ConstantPointsPath2D(count, point);
     }
 
-    public static LinearPointsPath2D ToLinearPointsPath2D(this IPeriodicSequence1D<double> parameterSequence, ILinFloat64Vector2D point1, ILinFloat64Vector2D point2)
+    public static LinearPointsPath2D ToLinearPointsPath2D(this IPeriodicSequence1D<double> parameterSequence, LinFloat64Vector2D point1, LinFloat64Vector2D point2)
     {
         return new LinearPointsPath2D(point1, point2, parameterSequence);
     }
 
-    public static ListPointsPath2D ToListPointsPath2D(this IReadOnlyList<ILinFloat64Vector2D> pathPoints)
+    public static ListPointsPath2D ToListPointsPath2D(this IReadOnlyList<LinFloat64Vector2D> pathPoints)
     {
         return new ListPointsPath2D(pathPoints);
     }
 
-    public static ListPointsPath2D ToListPointsPath2D(this IEnumerable<ILinFloat64Vector2D> pathPoints)
+    public static ListPointsPath2D ToListPointsPath2D(this IEnumerable<LinFloat64Vector2D> pathPoints)
     {
         return new ListPointsPath2D(pathPoints);
     }
@@ -101,7 +101,7 @@ public static class PointsPathUtils
         return new MultiplexedPointsPath2D(sequencesList, sequenceSelectionList);
     }
 
-    public static ParametricPointsPath2D ToParametricPointsPath2D(this IPeriodicSequence1D<double> parameterSequence, Func<double, ILinFloat64Vector2D> mappingFunc)
+    public static ParametricPointsPath2D ToParametricPointsPath2D(this IPeriodicSequence1D<double> parameterSequence, Func<double, LinFloat64Vector2D> mappingFunc)
     {
         return new ParametricPointsPath2D(
             parameterSequence,
@@ -140,12 +140,12 @@ public static class PointsPathUtils
         return new LerpPointsPath2D(baseMesh, paramValue);
     }
 
-    public static MappedPointsPath2D MapToPath2D(this IPointsPath2D basePath, Func<ILinFloat64Vector2D, ILinFloat64Vector2D> mapping)
+    public static MappedPointsPath2D MapToPath2D(this IPointsPath2D basePath, Func<LinFloat64Vector2D, LinFloat64Vector2D> mapping)
     {
         return new MappedPointsPath2D(basePath, mapping);
     }
 
-    public static Mapped3DPointsPath2D MapToPath2D(this IPointsPath3D basePath, Func<ILinFloat64Vector3D, ILinFloat64Vector2D> mapping)
+    public static Mapped3DPointsPath2D MapToPath2D(this IPointsPath3D basePath, Func<LinFloat64Vector3D, LinFloat64Vector2D> mapping)
     {
         return new Mapped3DPointsPath2D(basePath, mapping);
     }
@@ -169,22 +169,22 @@ public static class PointsPathUtils
     }
 
 
-    public static ConstantPointsPath3D ToConstantPointsPath3D(this ILinFloat64Vector3D point, int count)
+    public static ConstantPointsPath3D ToConstantPointsPath3D(this LinFloat64Vector3D point, int count)
     {
         return new ConstantPointsPath3D(count, point);
     }
 
-    public static ArrayPointsPath3D ArrayPointsPath3D(this ILinFloat64Vector3D[] pathPoints)
+    public static ArrayPointsPath3D ArrayPointsPath3D(this LinFloat64Vector3D[] pathPoints)
     {
         return new ArrayPointsPath3D(pathPoints);
     }
 
-    public static ArrayPointsPath3D ToArrayPointsPath3D(this IEnumerable<ILinFloat64Vector3D> pathPoints)
+    public static ArrayPointsPath3D ToArrayPointsPath3D(this IEnumerable<LinFloat64Vector3D> pathPoints)
     {
         return new ArrayPointsPath3D(pathPoints);
     }
         
-    public static ArrayPointsPath3D ToArrayPointsPath3D(this IReadOnlyList<ILinFloat64Vector3D> pointList, int count)
+    public static ArrayPointsPath3D ToArrayPointsPath3D(this IReadOnlyList<LinFloat64Vector3D> pointList, int count)
     {
         if (count < 2)
             throw new ArgumentOutOfRangeException(nameof(count));
@@ -194,7 +194,7 @@ public static class PointsPathUtils
                 .Select(t => t * (pointList.Count - 1))
                 .ToImmutableArray();
 
-        var pathPoints = new ILinFloat64Vector3D[count];
+        var pathPoints = new LinFloat64Vector3D[count];
 
         for (var i = 0; i < count; i++)
         {
@@ -221,12 +221,12 @@ public static class PointsPathUtils
         return new ArrayPointsPath3D(pathPoints);
     }
 
-    public static LinearPointsPath3D ToLinearPointsPath3D(this IPeriodicSequence1D<double> parameterSequence, ILinFloat64Vector3D point1, ILinFloat64Vector3D point2)
+    public static LinearPointsPath3D ToLinearPointsPath3D(this IPeriodicSequence1D<double> parameterSequence, LinFloat64Vector3D point1, LinFloat64Vector3D point2)
     {
         return new LinearPointsPath3D(point1, point2, parameterSequence);
     }
 
-    public static ParametricPointsPath3D ToParametricPointsPath3D(this IPeriodicSequence1D<double> parameterSequence, Func<double, ILinFloat64Vector3D> mappingFunc)
+    public static ParametricPointsPath3D ToParametricPointsPath3D(this IPeriodicSequence1D<double> parameterSequence, Func<double, LinFloat64Vector3D> mappingFunc)
     {
         return new ParametricPointsPath3D(
             parameterSequence,
@@ -325,12 +325,12 @@ public static class PointsPathUtils
         return new LerpPointsPath3D(baseMesh, paramValue);
     }
 
-    public static MappedPointsPath3D MapToPath3D(this IPointsPath3D basePath, Func<ILinFloat64Vector3D, ILinFloat64Vector3D> mapping)
+    public static MappedPointsPath3D MapToPath3D(this IPointsPath3D basePath, Func<LinFloat64Vector3D, LinFloat64Vector3D> mapping)
     {
         return new MappedPointsPath3D(basePath, mapping);
     }
 
-    public static Mapped2DPointsPath3D MapToPath3D(this IPointsPath2D basePath, Func<ILinFloat64Vector2D, ILinFloat64Vector3D> mapping)
+    public static Mapped2DPointsPath3D MapToPath3D(this IPointsPath2D basePath, Func<LinFloat64Vector2D, LinFloat64Vector3D> mapping)
     {
         return new Mapped2DPointsPath3D(basePath, mapping);
     }

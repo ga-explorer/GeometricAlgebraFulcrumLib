@@ -33,14 +33,14 @@ public interface IGraphicsPrimitiveGeometry3D
     /// <summary>
     /// The list of vertex positions of this graphics geometry
     /// </summary>
-    IEnumerable<ILinFloat64Vector3D> GeometryPoints { get; }
+    IEnumerable<LinFloat64Vector3D> GeometryPoints { get; }
 
     /// <summary>
     /// Get a vertex point by vertex index
     /// </summary>
     /// <param name="index"></param>
     /// <returns></returns>
-    ILinFloat64Vector3D GetGeometryPoint(int index);
+    LinFloat64Vector3D GetGeometryPoint(int index);
 }
 
 /// <summary>

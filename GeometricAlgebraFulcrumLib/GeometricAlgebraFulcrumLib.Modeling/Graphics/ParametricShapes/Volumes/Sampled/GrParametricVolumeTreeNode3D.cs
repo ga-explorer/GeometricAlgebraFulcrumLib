@@ -4,9 +4,8 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space3D;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.Borders.Space3D.Float64;
+using GeometricAlgebraFulcrumLib.Modeling.Geometry.Bounding.Float64;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Tuples;
-using LinFloat64Vector3DAffineUtils = GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space3D.LinFloat64Vector3DAffineUtils;
 
 // ReSharper disable InconsistentNaming
 
@@ -290,8 +289,8 @@ public abstract class GrParametricVolumeTreeNode3D:
     public double MaxParameterValue3
         => Frame111.ParameterValue.Item3;
 
-    public IFloat64BoundingBox3D ParameterValueRange 
-        => Float64BoundingBox3D.Create(
+    public Float64BoundingBox3D ParameterValueRange 
+        => Float64BoundingBox3D.Containing(
             MinParameterValue1,
             MinParameterValue2,
             MinParameterValue3,
@@ -604,7 +603,7 @@ public abstract class GrParametricVolumeTreeNode3D:
     public double MaxEdgeFramesDistance()
     {
         return GetEdgeFramePairs().Select(p => 
-            LinFloat64Vector3DAffineUtils.GetDistanceToPoint(p.Item1.Point, p.Item2.Point)
+            p.Item1.Point.GetDistanceToPoint(p.Item2.Point)
         ).Max();
     }
 

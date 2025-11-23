@@ -409,6 +409,12 @@ public sealed partial class XGaBivector<T>
     {
         return this;
     }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public override XGaBivector<T> GradeInvolution(IndexSet gradeSet)
+    {
+        return gradeSet.SetContains(2) ? Negative() : this;
+    }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public override XGaBivector<T> CliffordConjugate()
@@ -430,7 +436,7 @@ public sealed partial class XGaBivector<T>
     }
         
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public override XGaBivector<T> EInverse()
+    public override XGaBivector<T> EVersorInverse()
     {
         return Divide(
             ESpSquared().ScalarValue
@@ -438,7 +444,7 @@ public sealed partial class XGaBivector<T>
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public override XGaBivector<T> Inverse()
+    public override XGaBivector<T> VersorInverse()
     {
         return Divide(
             SpSquared().ScalarValue
@@ -446,7 +452,7 @@ public sealed partial class XGaBivector<T>
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public override XGaBivector<T> PseudoInverse()
+    public override XGaBivector<T> VersorPseudoInverse()
     {
         var kVectorConjugate = Conjugate();
 

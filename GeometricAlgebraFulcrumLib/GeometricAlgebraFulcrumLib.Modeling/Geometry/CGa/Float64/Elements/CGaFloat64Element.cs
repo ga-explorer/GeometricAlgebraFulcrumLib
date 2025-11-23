@@ -1,13 +1,22 @@
-﻿using System.Diagnostics;
-using System.Runtime.CompilerServices;
-using GeometricAlgebraFulcrumLib.Algebra;
+﻿using GeometricAlgebraFulcrumLib.Algebra;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivectors;
+using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Angles;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space2D;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space3D;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.SpaceND;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Float64.Blades;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Float64.Visualizer;
+using GeometricAlgebraFulcrumLib.Modeling.Trajectories.Scalars.Float64;
+using GeometricAlgebraFulcrumLib.Modeling.Trajectories.Scalars.Float64.Angles;
+using GeometricAlgebraFulcrumLib.Modeling.Trajectories.Vectors2D.Float64;
+using GeometricAlgebraFulcrumLib.Modeling.Trajectories.Vectors2D.Float64.Basic;
+using GeometricAlgebraFulcrumLib.Modeling.Trajectories.Vectors3D.Float64;
+using GeometricAlgebraFulcrumLib.Modeling.Trajectories.Vectors3D.Float64.Basic;
+using System.Diagnostics;
+using System.Runtime.CompilerServices;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.LinearMaps.Outermorphisms;
+using GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Float64.Versors;
 
 // ReSharper disable CompareOfFloatsByEqualityOperator
 
@@ -580,76 +589,76 @@ public abstract class CGaFloat64Element :
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool IsDirectionNearParallelTo(LinFloat64Vector2D egaVector, double zeroEpsilon = Float64Utils.ZeroEpsilon)
+    public bool IsDirectionNearParallelTo(LinFloat64Vector2D egaVector, double tolerance = Float64Utils.DefaultTolerance)
     {
         return GeometricSpace
             .Encode.VGa.VectorAsXGaVector(egaVector)
             .Op(Direction.InternalKVector)
-            .IsNearZero(zeroEpsilon);
+            .IsNearZero(tolerance);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool IsDirectionNearParallelTo(LinFloat64Vector3D egaVector, double zeroEpsilon = Float64Utils.ZeroEpsilon)
+    public bool IsDirectionNearParallelTo(LinFloat64Vector3D egaVector, double tolerance = Float64Utils.DefaultTolerance)
     {
         return GeometricSpace
             .Encode.VGa.VectorAsXGaVector(egaVector)
             .Op(Direction.InternalKVector)
-            .IsNearZero(zeroEpsilon);
+            .IsNearZero(tolerance);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool IsDirectionNearParallelTo(LinFloat64Vector egaVector, double zeroEpsilon = Float64Utils.ZeroEpsilon)
+    public bool IsDirectionNearParallelTo(LinFloat64Vector egaVector, double tolerance = Float64Utils.DefaultTolerance)
     {
         return GeometricSpace
             .Encode.VGa.VectorAsXGaVector(egaVector)
             .Op(Direction.InternalKVector)
-            .IsNearZero(zeroEpsilon);
+            .IsNearZero(tolerance);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool IsDirectionNearParallelTo(XGaFloat64Vector egaVector, double zeroEpsilon = Float64Utils.ZeroEpsilon)
+    public bool IsDirectionNearParallelTo(XGaFloat64Vector egaVector, double tolerance = Float64Utils.DefaultTolerance)
     {
         return GeometricSpace
             .Encode.VGa.VectorAsXGaVector(egaVector)
             .Op(Direction.InternalKVector)
-            .IsNearZero(zeroEpsilon);
+            .IsNearZero(tolerance);
     }
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool IsDirectionNearOrthogonalTo(LinFloat64Vector2D egaVector, double zeroEpsilon = Float64Utils.ZeroEpsilon)
+    public bool IsDirectionNearOrthogonalTo(LinFloat64Vector2D egaVector, double tolerance = Float64Utils.DefaultTolerance)
     {
         return GeometricSpace
             .Encode.VGa.VectorAsXGaVector(egaVector)
             .Lcp(Direction.InternalKVector)
-            .IsNearZero(zeroEpsilon);
+            .IsNearZero(tolerance);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool IsDirectionNearOrthogonalTo(LinFloat64Vector3D egaVector, double zeroEpsilon = Float64Utils.ZeroEpsilon)
+    public bool IsDirectionNearOrthogonalTo(LinFloat64Vector3D egaVector, double tolerance = Float64Utils.DefaultTolerance)
     {
         return GeometricSpace
             .Encode.VGa.VectorAsXGaVector(egaVector)
             .Lcp(Direction.InternalKVector)
-            .IsNearZero(zeroEpsilon);
+            .IsNearZero(tolerance);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool IsDirectionNearOrthogonalTo(LinFloat64Vector egaVector, double zeroEpsilon = Float64Utils.ZeroEpsilon)
+    public bool IsDirectionNearOrthogonalTo(LinFloat64Vector egaVector, double tolerance = Float64Utils.DefaultTolerance)
     {
         return GeometricSpace
             .Encode.VGa.VectorAsXGaVector(egaVector)
             .Lcp(Direction.InternalKVector)
-            .IsNearZero(zeroEpsilon);
+            .IsNearZero(tolerance);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool IsDirectionNearOrthogonalTo(XGaFloat64Vector egaVector, double zeroEpsilon = Float64Utils.ZeroEpsilon)
+    public bool IsDirectionNearOrthogonalTo(XGaFloat64Vector egaVector, double tolerance = Float64Utils.DefaultTolerance)
     {
         return GeometricSpace
             .Encode.VGa.VectorAsXGaVector(egaVector)
             .Lcp(Direction.InternalKVector)
-            .IsNearZero(zeroEpsilon);
+            .IsNearZero(tolerance);
     }
 
 
@@ -958,4 +967,305 @@ public abstract class CGaFloat64Element :
             -radius * radius
         );
     }
+
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public CGaFloat64Element TranslateBy(LinFloat64Vector2D egaVector)
+    {
+        return this switch
+        {
+            CGaFloat64Direction el => el,
+            CGaFloat64Tangent el => el.TranslateBy(egaVector),
+            CGaFloat64Flat el => el.TranslateBy(egaVector),
+            CGaFloat64Round el => el.TranslateBy(egaVector),
+            _ => EncodeOpnsBlade().TranslateBy(egaVector).Decode.OpnsElement()
+        };
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public CGaFloat64Element TranslateBy(LinFloat64Vector3D egaVector)
+    {
+        return this switch
+        {
+            CGaFloat64Direction el => el,
+            CGaFloat64Tangent el => el.TranslateBy(egaVector),
+            CGaFloat64Flat el => el.TranslateBy(egaVector),
+            CGaFloat64Round el => el.TranslateBy(egaVector),
+            _ => EncodeOpnsBlade().TranslateBy(egaVector).Decode.OpnsElement()
+        };
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public CGaFloat64Element TranslateBy(LinFloat64Vector egaVector)
+    {
+        return this switch
+        {
+            CGaFloat64Direction el => el,
+            CGaFloat64Tangent el => el.TranslateBy(egaVector),
+            CGaFloat64Flat el => el.TranslateBy(egaVector),
+            CGaFloat64Round el => el.TranslateBy(egaVector),
+            _ => EncodeOpnsBlade().TranslateBy(egaVector).Decode.OpnsElement()
+        };
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public CGaFloat64Element TranslateBy(XGaFloat64Vector egaVector)
+    {
+        return this switch
+        {
+            CGaFloat64Direction el => el,
+            CGaFloat64Tangent el => el.TranslateBy(egaVector),
+            CGaFloat64Flat el => el.TranslateBy(egaVector),
+            CGaFloat64Round el => el.TranslateBy(egaVector),
+            _ => EncodeOpnsBlade().TranslateBy(egaVector).Decode.OpnsElement()
+        };
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public CGaFloat64Element TranslateBy(CGaFloat64Blade egaVector)
+    {
+        return this switch
+        {
+            CGaFloat64Direction el => el,
+            CGaFloat64Tangent el => el.TranslateBy(egaVector),
+            CGaFloat64Flat el => el.TranslateBy(egaVector),
+            CGaFloat64Round el => el.TranslateBy(egaVector),
+            _ => EncodeOpnsBlade().TranslateBy(egaVector).Decode.OpnsElement()
+        };
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public CGaFloat64ParametricElement TranslateBy(Float64Path3D egaVector)
+    {
+        return CGaFloat64ParametricElement.Create(
+            GeometricSpace,
+            egaVector.TimeRange,
+            t => TranslateBy(egaVector.GetValue(t))
+        );
+    }
+
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public CGaFloat64Element ScaleBy(double scalingFactor)
+    {
+        return EncodeOpnsBlade().ScaleBy(scalingFactor).Decode.OpnsElement();
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public CGaFloat64ParametricElement ScaleBy(Float64ScalarSignal scalingFactor)
+    {
+        return CGaFloat64ParametricElement.Create(
+            GeometricSpace,
+            scalingFactor.TimeRange,
+            t => ScaleBy(scalingFactor.GetValue(t))
+        );
+    }
+
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public CGaFloat64Element RotateUsing(LinFloat64Angle angle, LinFloat64Vector2D egaAxisPoint)
+    {
+        return EncodeOpnsBlade()
+            .RotateUsing(angle, egaAxisPoint)
+            .Decode.OpnsElement();
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public CGaFloat64Element RotateUsing(LinFloat64Angle angle, LinFloat64Vector3D egaAxisPoint, LinFloat64Vector3D egaAxisVector)
+    {
+        return EncodeOpnsBlade()
+            .RotateUsing(angle, egaAxisPoint, egaAxisVector)
+            .Decode.OpnsElement();
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public CGaFloat64ParametricElement RotateUsing(LinFloat64PolarAngleTimeSignal angle, LinFloat64Vector2D egaAxisPoint)
+    {
+        return CGaFloat64ParametricElement.Create(
+            GeometricSpace,
+            angle.TimeRange,
+            t => RotateUsing(
+                angle.GetAngle(t),
+                egaAxisPoint
+            )
+        );
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public CGaFloat64ParametricElement RotateUsing(LinFloat64PolarAngleTimeSignal angle, Float64Path2D egaAxisPoint)
+    {
+        return CGaFloat64ParametricElement.Create(
+            GeometricSpace,
+            angle.TimeRange
+                .Intersect(egaAxisPoint.TimeRange),
+            t => RotateUsing(
+                angle.GetAngle(t),
+                egaAxisPoint.GetValue(t)
+            )
+        );
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public CGaFloat64ParametricElement RotateUsing(LinFloat64PolarAngleTimeSignal angle, LinFloat64Vector3D egaAxisPoint, LinFloat64Vector3D egaAxisVector)
+    {
+        return CGaFloat64ParametricElement.Create(
+            GeometricSpace,
+            angle.TimeRange,
+            t => RotateUsing(
+                angle.GetAngle(t),
+                egaAxisPoint,
+                egaAxisVector
+            )
+        );
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public CGaFloat64ParametricElement RotateUsing(LinFloat64PolarAngleTimeSignal angle, Float64Path3D egaAxisPoint, Float64Path3D egaAxisVector)
+    {
+        return CGaFloat64ParametricElement.Create(
+            GeometricSpace,
+            angle.TimeRange
+                .Intersect(egaAxisPoint.TimeRange)
+                .Intersect(egaAxisVector.TimeRange),
+            t => RotateUsing(
+                angle.GetAngle(t),
+                egaAxisPoint.GetValue(t),
+                egaAxisVector.GetValue(t)
+            )
+        );
+    }
+
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public CGaFloat64Element ReflectOn(CGaFloat64Element element2)
+    {
+        return EncodeOpnsBlade()
+            .ReflectOpnsOn(element2.EncodeOpnsBlade())
+            .Decode.OpnsElement();
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public CGaFloat64ParametricElement ReflectOn(CGaFloat64ParametricElement element2)
+    {
+        return CGaFloat64ParametricElement.Create(
+            GeometricSpace,
+            element2.ParameterRange,
+            t => ReflectOn(element2.GetElement(t))
+        );
+    }
+
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public CGaFloat64Element ProjectOn(CGaFloat64Element element2)
+    {
+        return EncodeOpnsBlade()
+            .ProjectOpnsOn(element2.EncodeOpnsBlade())
+            .Decode.OpnsElement();
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public CGaFloat64ParametricElement ProjectOn(CGaFloat64ParametricElement element2)
+    {
+        return CGaFloat64ParametricElement.Create(
+            GeometricSpace,
+            element2.ParameterRange,
+            t => ProjectOn(element2.GetElement(t))
+        );
+    }
+    
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public CGaFloat64Blade ProjectPositionOnFlat(CGaFloat64Flat flat)
+    {
+        return PositionToOpnsFlatPoint()
+            .ProjectOpnsOn(flat.EncodeOpnsBlade())
+            .Decode.OpnsFlat.VGaPosition();
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public LinFloat64Vector2D ProjectPositionOnFlat2D(CGaFloat64Flat flat)
+    {
+        return PositionToOpnsFlatPoint()
+            .ProjectOpnsOn(flat.EncodeOpnsBlade())
+            .DecodeOpnsFlat.VGaPosition2D();
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public LinFloat64Vector3D ProjectPositionOnFlat3D(CGaFloat64Flat flat)
+    {
+        return PositionToOpnsFlatPoint()
+            .ProjectOpnsOn(flat.EncodeOpnsBlade())
+            .DecodeOpnsFlat.VGaPosition3D();
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public Float64Path2D ProjectPositionOnFlat2D(CGaFloat64ParametricElement flat)
+    {
+        return Float64ComputedPath2D.Finite(
+            flat.ParameterRange,
+            t =>
+            {
+                var el = flat.GetElement(t);
+
+                return el is CGaFloat64Flat flatElement
+                    ? ProjectPositionOnFlat2D(flatElement)
+                    : LinFloat64Vector2D.Zero;
+            }
+        );
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public Float64Path3D ProjectPositionOnFlat3D(CGaFloat64ParametricElement flat)
+    {
+        return Float64ComputedPath3D.Finite(
+            flat.ParameterRange,
+            t =>
+            {
+                var el = flat.GetElement(t);
+
+                return el is CGaFloat64Flat flatElement
+                    ? ProjectPositionOnFlat3D(flatElement)
+                    : LinFloat64Vector3D.Zero;
+            }
+        );
+    }
+
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public CGaFloat64Element Meet(CGaFloat64Element element2)
+    {
+        return element2.EncodeIpnsBlade()
+            .Op(EncodeIpnsBlade())
+            .Decode.IpnsElement();
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public CGaFloat64ParametricElement Meet(CGaFloat64ParametricElement element2)
+    {
+        return CGaFloat64ParametricElement.Create(
+            GeometricSpace,
+            element2.ParameterRange,
+            t => Meet(element2.GetElement(t))
+        );
+    }
+
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public CGaFloat64Element MapUsing(IXGaFloat64Outermorphism outerMorphism)
+    {
+        return EncodeOpnsBlade()
+            .MapUsing(outerMorphism)
+            .Decode.OpnsElement();
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public CGaFloat64Element MapUsing(CGaFloat64Versor versor)
+    {
+        return EncodeOpnsBlade()
+            .MapUsing(versor)
+            .Decode.OpnsElement();
+    }
+
+
+
 }

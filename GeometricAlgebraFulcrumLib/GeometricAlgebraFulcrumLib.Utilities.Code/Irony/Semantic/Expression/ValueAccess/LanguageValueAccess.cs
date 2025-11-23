@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using GeometricAlgebraFulcrumLib.Utilities.Code.Irony.Semantic.Symbol;
+﻿using GeometricAlgebraFulcrumLib.Utilities.Code.Irony.Semantic.Symbol;
 using GeometricAlgebraFulcrumLib.Utilities.Code.Irony.Semantic.Type;
 
 namespace GeometricAlgebraFulcrumLib.Utilities.Code.Irony.Semantic.Expression.ValueAccess;

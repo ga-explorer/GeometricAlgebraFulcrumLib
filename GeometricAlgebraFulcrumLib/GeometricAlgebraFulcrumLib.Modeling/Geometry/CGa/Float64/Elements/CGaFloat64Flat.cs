@@ -1,15 +1,15 @@
-﻿using System.Collections.Immutable;
-using System.Data;
-using System.Diagnostics;
-using System.Runtime.CompilerServices;
-using System.Text;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivectors;
+﻿using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivectors;
+using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Angles;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space2D;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space3D;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.SpaceND;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Float64.Blades;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Float64.Operations;
+using GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Float64.Encoding;
+using System.Data;
+using System.Diagnostics;
+using System.Runtime.CompilerServices;
+using System.Text;
 
 namespace GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Float64.Elements;
 
@@ -158,33 +158,37 @@ public class CGaFloat64Flat :
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public IReadOnlyList<CGaFloat64Blade> GetSurfacePointVGaBlades()
     {
-        return GetSurfacePointVectors()
-            .Select(GeometricSpace.Encode.VGa.Vector)
-            .ToImmutableArray();
+        return [
+            ..GetSurfacePointVectors()
+                .Select(GeometricSpace.Encode.VGa.Vector)
+        ];
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public IReadOnlyList<CGaFloat64Blade> GetSurfacePointPGaBlades()
     {
-        return GetSurfacePointVectors()
-            .Select(GeometricSpace.Encode.PGa.Point)
-            .ToImmutableArray();
+        return [
+            ..GetSurfacePointVectors()
+                .Select(GeometricSpace.Encode.PGa.Point)
+        ];
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public IReadOnlyList<CGaFloat64Blade> GetSurfacePointIpnsBlades()
     {
-        return GetSurfacePointVectors()
-            .Select(GeometricSpace.Encode.IpnsRound.Point)
-            .ToImmutableArray();
+        return [
+            ..GetSurfacePointVectors()
+                .Select(GeometricSpace.Encode.IpnsRound.Point)
+        ];
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public IReadOnlyList<CGaFloat64Blade> GetSurfacePointOpnsFlatBlades()
     {
-        return GetSurfacePointVectors()
-            .Select(GeometricSpace.Encode.OpnsFlat.Point)
-            .ToImmutableArray();
+        return [
+            ..GetSurfacePointVectors()
+                .Select(GeometricSpace.Encode.OpnsFlat.Point)
+        ];
     }
 
 
@@ -214,52 +218,134 @@ public class CGaFloat64Flat :
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool SurfaceNearContainsPoint(double egaPointX, double egaPointY, double zeroEpsilon = Float64Utils.ZeroEpsilon)
+    public bool SurfaceNearContainsPoint(double egaPointX, double egaPointY, double tolerance = Float64Utils.DefaultTolerance)
     {
         var egaPoint = LinFloat64Vector2D.Create(egaPointX, egaPointY);
 
-        return IsDirectionNearParallelTo(egaPoint - PositionToVector2D(), zeroEpsilon);
+        return IsDirectionNearParallelTo(egaPoint - PositionToVector2D(), tolerance);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool SurfaceNearContainsPoint(LinFloat64Vector2D egaPoint, double zeroEpsilon = Float64Utils.ZeroEpsilon)
+    public bool SurfaceNearContainsPoint(LinFloat64Vector2D egaPoint, double tolerance = Float64Utils.DefaultTolerance)
     {
-        return IsDirectionNearParallelTo(egaPoint - PositionToVector2D(), zeroEpsilon);
+        return IsDirectionNearParallelTo(egaPoint - PositionToVector2D(), tolerance);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool SurfaceNearContainsPoint(double egaPointX, double egaPointY, double egaPointZ, double zeroEpsilon = Float64Utils.ZeroEpsilon)
+    public bool SurfaceNearContainsPoint(double egaPointX, double egaPointY, double egaPointZ, double tolerance = Float64Utils.DefaultTolerance)
     {
         var egaPoint = LinFloat64Vector3D.Create(egaPointX, egaPointY, egaPointZ);
 
-        return IsDirectionNearParallelTo(egaPoint - PositionToVector3D(), zeroEpsilon);
+        return IsDirectionNearParallelTo(egaPoint - PositionToVector3D(), tolerance);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool SurfaceNearContainsPoint(LinFloat64Vector3D egaPoint, double zeroEpsilon = Float64Utils.ZeroEpsilon)
+    public bool SurfaceNearContainsPoint(LinFloat64Vector3D egaPoint, double tolerance = Float64Utils.DefaultTolerance)
     {
-        return IsDirectionNearParallelTo(egaPoint - PositionToVector3D(), zeroEpsilon);
+        return IsDirectionNearParallelTo(egaPoint - PositionToVector3D(), tolerance);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool SurfaceNearContainsPoint(LinFloat64Vector egaPoint, double zeroEpsilon = Float64Utils.ZeroEpsilon)
+    public bool SurfaceNearContainsPoint(LinFloat64Vector egaPoint, double tolerance = Float64Utils.DefaultTolerance)
     {
-        return IsDirectionNearParallelTo(egaPoint - PositionToVector(), zeroEpsilon);
+        return IsDirectionNearParallelTo(egaPoint - PositionToVector(), tolerance);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool SurfaceNearContainsPoint(XGaFloat64Vector egaPoint, double zeroEpsilon = Float64Utils.ZeroEpsilon)
+    public bool SurfaceNearContainsPoint(XGaFloat64Vector egaPoint, double tolerance = Float64Utils.DefaultTolerance)
     {
-        return IsDirectionNearParallelTo(egaPoint - PositionToXGaVector(), zeroEpsilon);
+        return IsDirectionNearParallelTo(egaPoint - PositionToXGaVector(), tolerance);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool SurfaceNearContainsPoint(CGaFloat64Blade egaPoint, double zeroEpsilon = Float64Utils.ZeroEpsilon)
+    public bool SurfaceNearContainsPoint(CGaFloat64Blade egaPoint, double tolerance = Float64Utils.DefaultTolerance)
     {
         return IsDirectionNearParallelTo(
             (egaPoint - Position).DecodeVGaDirection.XGaVector(),
-            zeroEpsilon
+            tolerance
         );
+    }
+
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public new CGaFloat64Flat TranslateBy(LinFloat64Vector2D egaVector)
+    {
+        return new CGaFloat64Flat(
+            GeometricSpace,
+            Weight,
+            Position + egaVector.EncodeVGaVector(GeometricSpace),
+            Direction
+        );
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public new CGaFloat64Flat TranslateBy(LinFloat64Vector3D egaVector)
+    {
+        return new CGaFloat64Flat(
+            GeometricSpace,
+            Weight,
+            Position + egaVector.EncodeVGaVector(GeometricSpace),
+            Direction
+        );
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public new CGaFloat64Flat TranslateBy(LinFloat64Vector egaVector)
+    {
+        return new CGaFloat64Flat(
+            GeometricSpace,
+            Weight,
+            Position + egaVector.EncodeVGaVector(GeometricSpace),
+            Direction
+        );
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public new CGaFloat64Flat TranslateBy(XGaFloat64Vector egaVector)
+    {
+        return new CGaFloat64Flat(
+            GeometricSpace,
+            Weight,
+            Position + egaVector.EncodeVGaVector(GeometricSpace),
+            Direction
+        );
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public new CGaFloat64Flat TranslateBy(CGaFloat64Blade egaVector)
+    {
+        Debug.Assert(egaVector.IsVGaVector());
+
+        return new CGaFloat64Flat(
+            GeometricSpace,
+            Weight,
+            Position + egaVector,
+            Direction
+        );
+    }
+    
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public new CGaFloat64Flat ScaleBy(double scalingFactor)
+    {
+        return EncodeOpnsBlade().ScaleBy(scalingFactor).DecodeOpnsFlat.Element();
+    }
+    
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public new CGaFloat64Flat RotateUsing(LinFloat64Angle angle, LinFloat64Vector2D egaAxisPoint)
+    {
+        return EncodeOpnsBlade()
+            .RotateUsing(angle, egaAxisPoint)
+            .DecodeOpnsFlat.Element();
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public new CGaFloat64Flat RotateUsing(LinFloat64Angle angle, LinFloat64Vector3D egaAxisPoint, LinFloat64Vector3D egaAxisVector)
+    {
+        return EncodeOpnsBlade()
+            .RotateUsing(angle, egaAxisPoint, egaAxisVector)
+            .DecodeOpnsFlat.Element();
     }
 
 

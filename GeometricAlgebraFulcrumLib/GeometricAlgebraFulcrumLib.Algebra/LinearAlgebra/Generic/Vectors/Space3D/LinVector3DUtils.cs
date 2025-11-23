@@ -319,7 +319,7 @@ public static class LinVector3DUtils
     //}
 
 
-    public static Scalar<T> VectorENormNormSquared<T>(this ITriplet<ComplexNumber<T>> vector)
+    public static Scalar<T> L2NormNormSquared<T>(this ITriplet<ComplexNumber<T>> vector)
     {
         return (vector.Item1 * vector.Item1.Conjugate()).Real +
                (vector.Item2 * vector.Item2.Conjugate()).Real +
@@ -330,7 +330,7 @@ public static class LinVector3DUtils
     /// The Euclidean squared length of this vector when it represents a vector
     /// </summary>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Scalar<T> VectorENorm<T>(this ITriplet<Scalar<T>> vector)
+    public static Scalar<T> L2Norm<T>(this ITriplet<Scalar<T>> vector)
     {
         return (vector.Item1 * vector.Item1 + vector.Item2 * vector.Item2 + vector.Item3 * vector.Item3).Sqrt();
     }
@@ -339,7 +339,7 @@ public static class LinVector3DUtils
     /// The Euclidean squared length of this vector when it represents a vector
     /// </summary>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Tuple<LinVector3D<T>, Scalar<T>> GetUnitVectorENormTuple<T>(this ITriplet<Scalar<T>> vector)
+    public static Tuple<LinVector3D<T>, Scalar<T>> GetUnitL2NormTuple<T>(this ITriplet<Scalar<T>> vector)
     {
         var length = (vector.Item1 * vector.Item1 + vector.Item2 * vector.Item2 + vector.Item3 * vector.Item3).Sqrt();
 
@@ -359,7 +359,7 @@ public static class LinVector3DUtils
     /// The Euclidean squared length of this vector when it represents a vector
     /// </summary>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Scalar<T> VectorENormSquared<T>(this ITriplet<Scalar<T>> vector)
+    public static Scalar<T> L2NormSquared<T>(this ITriplet<Scalar<T>> vector)
     {
         return vector.Item1 * vector.Item1 +
                vector.Item2 * vector.Item2 +
@@ -367,7 +367,7 @@ public static class LinVector3DUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Scalar<T> VectorENorm<T>(Scalar<T> vectorX, Scalar<T> vectorY, Scalar<T> vectorZ)
+    public static Scalar<T> L2Norm<T>(Scalar<T> vectorX, Scalar<T> vectorY, Scalar<T> vectorZ)
     {
         return (vectorX * vectorX + vectorY * vectorY + vectorZ * vectorZ).Sqrt();
     }
@@ -375,7 +375,7 @@ public static class LinVector3DUtils
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static LinVector3D<T> VectorDivideByENorm<T>(this ITriplet<Scalar<T>> vector)
     {
-        var norm = vector.VectorENorm();
+        var norm = vector.L2Norm();
 
         return norm.IsZero()
             ? vector.ToVector3D()
@@ -388,7 +388,7 @@ public static class LinVector3DUtils
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static bool IsUnitVector<T>(this ITriplet<Scalar<T>> vector)
     {
-        return vector.VectorENormSquared().IsNearOne();
+        return vector.L2NormSquared().IsNearOne();
     }
 
     /// <summary>
@@ -397,7 +397,7 @@ public static class LinVector3DUtils
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static bool IsNearUnitVector<T>(this ITriplet<Scalar<T>> vector)
     {
-        return vector.VectorENormSquared().IsNearOne();
+        return vector.L2NormSquared().IsNearOne();
     }
 
     /// <summary>
@@ -406,7 +406,7 @@ public static class LinVector3DUtils
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static bool IsZeroVector<T>(this ITriplet<Scalar<T>> vector)
     {
-        return vector.VectorENormSquared().IsZero();
+        return vector.L2NormSquared().IsZero();
     }
 
     /// <summary>
@@ -415,7 +415,7 @@ public static class LinVector3DUtils
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static bool IsNearZeroVector<T>(this ITriplet<Scalar<T>> vector)
     {
-        return vector.VectorENormSquared().IsNearZero();
+        return vector.L2NormSquared().IsNearZero();
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -435,14 +435,14 @@ public static class LinVector3DUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Scalar<T> VectorENormSquared<T>(Scalar<T> vectorX, Scalar<T> vectorY, Scalar<T> vectorZ)
+    public static Scalar<T> L2NormSquared<T>(Scalar<T> vectorX, Scalar<T> vectorY, Scalar<T> vectorZ)
     {
         return vectorX * vectorX +
                vectorY * vectorY +
                vectorZ * vectorZ;
     }
 
-    public static Scalar<T> VectorENorm<T>(this ITriplet<ComplexNumber<T>> vector)
+    public static Scalar<T> L2Norm<T>(this ITriplet<ComplexNumber<T>> vector)
     {
         return ((vector.Item1 * vector.Item1.Conjugate()).Real + (vector.Item2 * vector.Item2.Conjugate()).Real + (vector.Item3 * vector.Item3.Conjugate()).Real).Sqrt();
     }
@@ -802,7 +802,7 @@ public static class LinVector3DUtils
     {
         var scalarProcessor = vector.GetScalarProcessor();
 
-        var s = vector.VectorENorm();
+        var s = vector.L2Norm();
 
         if (s.IsZero())
             return zeroAsSymmetric
@@ -824,7 +824,7 @@ public static class LinVector3DUtils
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static LinVector3D<T> ToUnitVector<T>(this ITriplet<Scalar<T>> vector, LinVector3D<T>? zeroUnitVector)
     {
-        var s = vector.VectorENorm();
+        var s = vector.L2Norm();
 
         if (s.IsZero())
             return zeroUnitVector
@@ -854,7 +854,7 @@ public static class LinVector3DUtils
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static LinVector3D<T> NegativeUnitVector<T>(this ITriplet<Scalar<T>> vector)
     {
-        var s = vector.VectorENorm();
+        var s = vector.L2Norm();
 
         if (s.IsZero())
             return vector.ToVector3D();
@@ -883,13 +883,13 @@ public static class LinVector3DUtils
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static bool IsNearZero<T>(this ITriplet<Scalar<T>> vector)
     {
-        return vector.VectorENorm().IsNearZero();
+        return vector.L2Norm().IsNearZero();
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static bool IsNearUnit<T>(this ITriplet<Scalar<T>> vector)
     {
-        return vector.VectorENormSquared().IsNearOne();
+        return vector.L2NormSquared().IsNearOne();
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]

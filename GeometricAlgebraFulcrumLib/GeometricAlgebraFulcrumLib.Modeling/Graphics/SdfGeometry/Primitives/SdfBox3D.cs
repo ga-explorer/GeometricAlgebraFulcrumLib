@@ -15,7 +15,7 @@ public sealed class SdfBox3D : ScalarDistanceFunction
     {
         var d = point.ComponentsAbs() - SideHalfLengths;
 
-        var v1 = d.ComponentsMax(0.0d).VectorENorm();
+        var v1 = LinFloat64Vector3DUtils.L2Norm(d.ComponentsMax(0.0d));
             
         // remove v2 for an only partially signed sdf 
         var v2 = Math.Min(Math.Max(d.X, Math.Max(d.Y, d.Z)), 0.0d);

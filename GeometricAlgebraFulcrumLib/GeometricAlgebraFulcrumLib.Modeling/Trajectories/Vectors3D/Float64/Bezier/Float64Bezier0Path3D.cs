@@ -63,6 +63,7 @@ public sealed class Float64Bezier0Path3D :
         return Float64Path3DLocalFrame.Create(
             parameterValue,
             Point1,
+            1,
             LinFloat64Vector3D.UnitSymmetric
         );
     }

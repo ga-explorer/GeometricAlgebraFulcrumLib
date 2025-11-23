@@ -1,7 +1,8 @@
 ﻿using System.Diagnostics;
 using System.Text;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space2D;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.Borders.Space2D.Float64;
+using GeometricAlgebraFulcrumLib.Modeling.Geometry.Bounding.Float64;
+
 
 namespace GeometricAlgebraFulcrumLib.Modeling.Geometry.BasicShapes.Triangles.Space2D.Float64;
 
@@ -81,7 +82,7 @@ public sealed class Float64Triangle2D :
         if (maxY < Point2Y) maxY = Point2Y;
         if (maxY < Point3Y) maxY = Point3Y;
 
-        return new Float64BoundingBox2D(minX, minY, maxX, maxY);
+        return Float64BoundingBox2D.Containing(minX, minY, maxX, maxY);
     }
 
     public Float64BoundingBoxComposer2D GetBoundingBoxComposer()

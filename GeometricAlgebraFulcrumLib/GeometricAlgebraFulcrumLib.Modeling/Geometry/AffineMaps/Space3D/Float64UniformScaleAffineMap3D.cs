@@ -1,8 +1,10 @@
 ﻿using System.Numerics;
 using System.Runtime.CompilerServices;
-using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Matrices;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space3D;
+using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Numerical;
+using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Numerical.Matrices;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
+using MathNet.Numerics.LinearAlgebra;
 
 namespace GeometricAlgebraFulcrumLib.Modeling.Geometry.AffineMaps.Space3D;
 
@@ -31,7 +33,7 @@ public sealed class Float64UniformScaleAffineMap3D :
         throw new NotImplementedException();
     }
 
-    public bool IsNearIdentity(double zeroEpsilon = Float64Utils.ZeroEpsilon)
+    public bool IsNearIdentity(double tolerance = Float64Utils.DefaultTolerance)
     {
         throw new NotImplementedException();
     }
@@ -70,7 +72,7 @@ public sealed class Float64UniformScaleAffineMap3D :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public double[,] GetArray2D()
+    public Matrix<double> GetMatrix()
     {
         var array = new double[4, 4];
 
@@ -79,7 +81,7 @@ public sealed class Float64UniformScaleAffineMap3D :
         array[2, 2] = _scalingFactor;
         array[3, 3] = 1d;
 
-        return array;
+        return array.ToMathNetDenseMatrix();
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]

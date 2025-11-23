@@ -100,7 +100,7 @@ public class GrPovRayPolygon :
         var vertexList = 
             0d.GetLinearRange(Math.Tau, sideCount, true)
                 .Select(a => a.RadiansToPolarAngle().ToLinVector2D(radius))
-                .Cast<IPair<Float64Scalar>>()
+                .Cast<IPair<double>>()
                 .ToArray();
 
         polygon.AddClosedPolygon(vertexList);
@@ -108,12 +108,12 @@ public class GrPovRayPolygon :
         return polygon;
     }
     
-    public static GrPovRayPolygon CreateClosedPolygon(IReadOnlyList<IPair<Float64Scalar>> pointList)
+    public static GrPovRayPolygon CreateClosedPolygon(IReadOnlyList<IPair<double>> pointList)
     {
         return new GrPovRayPolygon().AddClosedPolygon(pointList);
     }
     
-    public static GrPovRayPolygon CreateClosedPolygon(params IPair<Float64Scalar>[] pointList)
+    public static GrPovRayPolygon CreateClosedPolygon(params IPair<double>[] pointList)
     {
         return new GrPovRayPolygon().AddClosedPolygon(pointList);
     }
@@ -142,7 +142,7 @@ public class GrPovRayPolygon :
     }
 
     
-    public GrPovRayPolygon AddClosedPolygon(IReadOnlyList<IPair<Float64Scalar>> pointList)
+    public GrPovRayPolygon AddClosedPolygon(IReadOnlyList<IPair<double>> pointList)
     {
         foreach (var point in pointList)
             Points.Append(point);
@@ -152,7 +152,7 @@ public class GrPovRayPolygon :
         return this;
     }
 
-    public GrPovRayPolygon AddClosedPolygon(params IPair<Float64Scalar>[] pointList)
+    public GrPovRayPolygon AddClosedPolygon(params IPair<double>[] pointList)
     {
         foreach (var point in pointList)
             Points.Append(point);

@@ -4,6 +4,7 @@ using System.Diagnostics;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivectors;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Processors;
+using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
 using NUnit.Framework;
 
 namespace GeometricAlgebraFulcrumLib.UnitTests.Processing;
@@ -102,7 +103,7 @@ public sealed class MultivectorStoragesTests
     {
         return funcName switch
         {
-            "sp" => (mv1, mv2) => mv1.Sp(mv2).ScalarValue,
+            "sp" => (mv1, mv2) => mv1.Sp(mv2),
             _ => null
         };
     }
@@ -111,7 +112,7 @@ public sealed class MultivectorStoragesTests
     {
         return funcName switch
         {
-            "sp" => (mv1, mv2) => mv1.Sp(mv2).ScalarValue,
+            "sp" => (mv1, mv2) => mv1.Sp(mv2),
             _ => null
         };
     }
@@ -161,8 +162,8 @@ public sealed class MultivectorStoragesTests
     {
         return funcName switch
         {
-            "spSquared" => mv => mv.SpSquared().ScalarValue,
-            "spReverse" => mv => mv.NormSquared().ScalarValue,
+            "spSquared" => mv => mv.SpSquared(),
+            "spReverse" => mv => mv.NormSquared(),
             _ => null
         };
     }
@@ -171,8 +172,8 @@ public sealed class MultivectorStoragesTests
     {
         return funcName switch
         {
-            "spSquared" => mv => mv.Sp(mv).ScalarValue,
-            "spReverse" => mv => mv.Sp(mv.Reverse()).ScalarValue,
+            "spSquared" => mv => mv.Sp(mv),
+            "spReverse" => mv => mv.Sp(mv.Reverse()),
             _ => null
         };
     }
@@ -394,9 +395,9 @@ public sealed class MultivectorStoragesTests
 
 
             var scalar1 = storage1.SpSquared();
-            var scalar2 = termsStorage1.Sp(termsStorage1).ToScalar();
+            var scalar2 = termsStorage1.Sp(termsStorage1);
 
-            var scalarDiff = scalar1 - scalar2.ScalarValue;
+            var scalarDiff = scalar1 - scalar2;
 
             Assert.That(scalarDiff.IsNearZero());
                 
@@ -404,7 +405,7 @@ public sealed class MultivectorStoragesTests
             scalar1 = storage1.NormSquared();
             scalar2 = termsStorage1.NormSquared();
 
-            scalarDiff = scalar1 - scalar2.ScalarValue;
+            scalarDiff = scalar1 - scalar2;
 
             Assert.That(scalarDiff.IsNearZero());
         }

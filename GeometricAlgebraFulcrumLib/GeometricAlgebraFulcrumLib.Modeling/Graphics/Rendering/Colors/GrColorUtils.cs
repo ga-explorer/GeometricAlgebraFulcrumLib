@@ -37,7 +37,7 @@ public static class GrColorUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Color ToRgbColor(this ITriplet<Float64Scalar> colorVector)
+    public static Color ToRgbColor(this ITriplet<double> colorVector)
     {
         return Color.FromRgb(
             (byte) (colorVector.Item1.ClampToUnit() * 255),
@@ -47,7 +47,7 @@ public static class GrColorUtils
     }
         
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Color ToRgbaColor(this IQuad<Float64Scalar> colorVector)
+    public static Color ToRgbaColor(this IQuad<double> colorVector)
     {
         return Color.FromRgba(
             (byte) (colorVector.Item1.ClampToUnit() * 255),

@@ -4,6 +4,7 @@ using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.LinearMaps.Out
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.LinearMaps.Rotors;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivectors;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Processors;
+using MathNet.Numerics.LinearAlgebra;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.LinearMaps.Versors;
 
@@ -128,15 +129,15 @@ public sealed class XGaFloat64PureVersorsSequence :
     }
 
 
-    public IEnumerable<double[,]> GetReflectionArrays(int rowsCount)
+    public IEnumerable<Matrix<double>> GetReflectionArrays(int rowsCount)
     {
         var f = 
             Processor.CreateFreeFrameOfBasis(rowsCount);
 
-        yield return f.GetArray(rowsCount);
+        yield return f.GetMatrix(rowsCount);
 
         foreach (var versor in _versorsList)
-            yield return versor.OmMap(f).GetArray(rowsCount);
+            yield return versor.OmMap(f).GetMatrix(rowsCount);
     }
         
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -171,7 +172,7 @@ public sealed class XGaFloat64PureVersorsSequence :
             var scalar = v1.Sp(v2);
             var bivector = v1.Op(v2);
 
-            simpleRotorsArray[i] = XGaFloat64PureRotor.Create(scalar.ScalarValue, bivector);
+            simpleRotorsArray[i] = XGaFloat64PureRotor.Create(scalar, bivector);
         }
 
         return XGaFloat64PureRotorSequence.Create(
@@ -259,7 +260,7 @@ public sealed class XGaFloat64PureVersorsSequence :
     {
         return ((IEnumerable<XGaFloat64PureVersor>) _versorsList)
             .Reverse()
-            .Select(r => r.Vector.Inverse())
+            .Select(r => r.Vector.VersorInverse())
             .Gp();
     }
         

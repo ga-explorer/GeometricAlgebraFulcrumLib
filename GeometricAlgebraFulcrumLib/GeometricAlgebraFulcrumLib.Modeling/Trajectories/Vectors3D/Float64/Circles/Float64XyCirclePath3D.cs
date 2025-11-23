@@ -101,6 +101,7 @@ public sealed class Float64XyCirclePath3D :
         return Float64Path3DLocalFrame.Create(
             t,
             point,
+            1,
             tangent,
             normal1,
             normal2

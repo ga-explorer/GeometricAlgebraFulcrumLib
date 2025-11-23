@@ -137,6 +137,6 @@ public sealed class Float64PolarPath2D :
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public override Float64Path2DLocalFrame GetFrame(double t)
     {
-        return this.GetFrenetSerretFrame(t);
+        return GetFrenetSerretFrame(t);
     }
 }

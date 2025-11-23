@@ -167,21 +167,21 @@
 //    }
     
 //    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-//    public bool IsNearZero(double zeroEpsilon = Float64Utils.ZeroEpsilon)
+//    public bool IsNearZero(double tolerance = Float64Utils.DefaultTolerance)
 //    {
-//        return InternalKVector.IsNearZero(zeroEpsilon);
+//        return InternalKVector.IsNearZero(tolerance);
 //    }
     
 //    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-//    public bool IsNearEqual(XGaFloat64Multivector blade2, double zeroEpsilon = Float64Utils.ZeroEpsilon)
+//    public bool IsNearEqual(XGaFloat64Multivector blade2, double tolerance = Float64Utils.DefaultTolerance)
 //    {
-//        return InternalKVector.Subtract(blade2).IsNearZero(zeroEpsilon);
+//        return InternalKVector.Subtract(blade2).IsNearZero(tolerance);
 //    }
 
 //    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-//    public bool IsNearEqual(PGaFloat64Blade blade2, double zeroEpsilon = Float64Utils.ZeroEpsilon)
+//    public bool IsNearEqual(PGaFloat64Blade blade2, double tolerance = Float64Utils.DefaultTolerance)
 //    {
-//        return InternalKVector.Subtract(blade2.InternalKVector).IsNearZero(zeroEpsilon);
+//        return InternalKVector.Subtract(blade2.InternalKVector).IsNearZero(tolerance);
 //    }
 
 

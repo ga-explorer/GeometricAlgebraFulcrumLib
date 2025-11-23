@@ -181,7 +181,7 @@ public static class LinVector2DComposerUtils
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static LinVector2D<T> ToUnitVector<T>(this IPair<Scalar<T>> vector, bool zeroAsSymmetric = true)
     {
-        var s = vector.VectorENorm();
+        var s = vector.L2Norm();
 
         if (s.IsZero())
             return zeroAsSymmetric
@@ -200,7 +200,7 @@ public static class LinVector2DComposerUtils
             vectorY is not null
         );
 
-        var s = scalarProcessor.VectorENorm(vectorX, vectorY);
+        var s = scalarProcessor.L2Norm(vectorX, vectorY);
 
         if (s.IsZero())
             return zeroAsSymmetric

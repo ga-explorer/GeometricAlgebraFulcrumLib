@@ -1,9 +1,11 @@
-﻿using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Multivectors;
+﻿using System.Runtime.CompilerServices;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Multivectors;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Processors;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
-using GeometricAlgebraFulcrumLib.Utilities.Structures.IndexSets;
-using System.Runtime.CompilerServices;
+using GeometricAlgebraFulcrumLib.Utilities.Structures.BitManipulation;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Dictionary;
+using GeometricAlgebraFulcrumLib.Utilities.Structures.IndexSets;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivectors;
 
@@ -61,7 +63,8 @@ public static class XGaFloat64MultivectorUtils
     {
         var basisScalarDictionary = IndexSetUtils.CreateIndexSetDictionary<double>();
 
-        var index = 0;
+        var i1 = 0;
+        var i2 = 1;
         foreach (var scalar in scalarList)
         {
             if (!scalar.IsValid())
@@ -69,11 +72,14 @@ public static class XGaFloat64MultivectorUtils
 
             if(!scalar.IsZero())
                 basisScalarDictionary.Add(
-                    IndexSet.EncodeUInt64AsCombinadic(index, 2), 
+                    IndexSet.CreatePair(i1, i2), 
                     scalar
                 );
 
-            index++;
+            i1++;
+            if (i1 < i2) continue;
+            i1 = 0;
+            i2++;
         }
 
         return basisScalarDictionary.Count switch
@@ -98,19 +104,16 @@ public static class XGaFloat64MultivectorUtils
 
         var basisScalarDictionary = IndexSetUtils.CreateIndexSetDictionary<double>();
 
-        var index = 0UL;
+        var id = IndexSet.CreateDense(grade);
         foreach (var scalar in scalarList)
         {
             if (!scalar.IsValid())
                 throw new InvalidOperationException();
 
             if(!scalar.IsZero())
-                basisScalarDictionary.Add(
-                    IndexSet.EncodeUInt64AsCombinadic(index, grade), 
-                    scalar
-                );
+                basisScalarDictionary.Add(id, scalar);
 
-            index++;
+            id = id.GetNextSameSize();
         }
 
         return basisScalarDictionary.Count switch
@@ -121,12 +124,13 @@ public static class XGaFloat64MultivectorUtils
         };
     }
     
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static IReadOnlyDictionary<IndexSet, double> ToValidXGaUniformMultivectorDictionary(this IEnumerable<double> scalarList)
+    public static IReadOnlyDictionary<IndexSet, double> ToValidXGaUniformMultivectorDictionary(this IReadOnlyList<double> scalarList)
     {
+        var vSpaceDimensions = scalarList.Count.Power2UpperLimitExponent();
+        var basisBladeIDs = vSpaceDimensions.BasisBladeIds().ToArray();
         var basisScalarDictionary = IndexSetUtils.CreateIndexSetDictionary<double>();
 
-        var index = 0UL;
+        var index = 0;
         foreach (var scalar in scalarList)
         {
             if (!scalar.IsValid())
@@ -134,7 +138,8 @@ public static class XGaFloat64MultivectorUtils
 
             if(!scalar.IsZero())
                 basisScalarDictionary.Add(
-                    IndexSet.CreateFromUInt64Pattern(index), 
+                    //IndexSet.CreateFromUInt64Pattern(index), 
+                    basisBladeIDs[index],
                     scalar
                 );
 

@@ -77,7 +77,7 @@ public abstract class CGpChromosomeEvaluator
 
     public abstract double ComputeCost(CGpChromosome chromosome);
 
-    private double[] ComputeCostGradient(CGpChromosome chromosome, IReadOnlyList<CGpNodeInputWeight> weightArray, double zeroEpsilon = Float64Utils.ZeroEpsilon)
+    private double[] ComputeCostGradient(CGpChromosome chromosome, IReadOnlyList<CGpNodeInputWeight> weightArray, double tolerance = Float64Utils.DefaultTolerance)
     {
         var gradientArray = new double[weightArray.Count];
 
@@ -88,13 +88,13 @@ public abstract class CGpChromosomeEvaluator
             var weightValue = weight.Value;
             
             // Set new value for this active parametric weight
-            weight.SetValue(weightValue + zeroEpsilon);
+            weight.SetValue(weightValue + tolerance);
 
             // Compute cost at new weight value
             var f1 = ComputeCost(chromosome);
 
             // Compute gradient value for this active parametric weight 
-            gradientArray[weightIndex] = (f1 - f0) / zeroEpsilon;
+            gradientArray[weightIndex] = (f1 - f0) / tolerance;
 
             // Restore original value for this active parametric weight 
             weight.SetValue(weightValue);
@@ -103,7 +103,7 @@ public abstract class CGpChromosomeEvaluator
         return gradientArray;
     }
 
-    public void OptimizeCost(CGpChromosome chromosome, double zeroEpsilon = Float64Utils.ZeroEpsilon)
+    public void OptimizeCost(CGpChromosome chromosome, double tolerance = Float64Utils.DefaultTolerance)
     {
         var weightArray = 
             chromosome.ActiveNodeParametricWeights.ToImmutableArray();
@@ -122,7 +122,7 @@ public abstract class CGpChromosomeEvaluator
 
         for (var iteration = 1; iteration <= iterationCount; iteration++)
         {
-            var gradients = ComputeCostGradient(chromosome, weightArray, zeroEpsilon);
+            var gradients = ComputeCostGradient(chromosome, weightArray, tolerance);
 
             weightValueArray = adamOptimizer.UpdateWeights(weightValueArray, gradients, iteration);
 

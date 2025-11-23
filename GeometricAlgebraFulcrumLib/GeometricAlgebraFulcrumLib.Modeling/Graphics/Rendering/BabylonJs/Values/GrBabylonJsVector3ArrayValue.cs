@@ -1,16 +1,14 @@
 ﻿using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space3D;
-using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Meshes.PointsPath;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Meshes.PointsPath.Space3D;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.AttributeSet;
-using GeometricAlgebraFulcrumLib.Utilities.Structures.Tuples;
 
 namespace GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.BabylonJs.Values;
 
 public sealed class GrBabylonJsVector3ArrayValue :
-    SparseCodeAttributeValue<IReadOnlyList<ITriplet<Float64Scalar>>>
+    SparseCodeAttributeValue<IReadOnlyList<LinFloat64Vector3D>>
 {
-    public static GrBabylonJsVector3ArrayValue Create(IReadOnlyList<ITriplet<Float64Scalar>> value)
+    public static GrBabylonJsVector3ArrayValue Create(IReadOnlyList<LinFloat64Vector3D> value)
     {
         return new GrBabylonJsVector3ArrayValue(value);
     }
@@ -31,11 +29,6 @@ public sealed class GrBabylonJsVector3ArrayValue :
         return new GrBabylonJsVector3ArrayValue(value);
     }
     
-    public static implicit operator GrBabylonJsVector3ArrayValue(ILinFloat64Vector3D[] value)
-    {
-        return new GrBabylonJsVector3ArrayValue(value);
-    }
-        
     public static implicit operator GrBabylonJsVector3ArrayValue(ArrayPointsPath3D value)
     {
         return new GrBabylonJsVector3ArrayValue(value);
@@ -47,7 +40,7 @@ public sealed class GrBabylonJsVector3ArrayValue :
     {
     }
 
-    private GrBabylonJsVector3ArrayValue(IReadOnlyList<ITriplet<Float64Scalar>> value)
+    private GrBabylonJsVector3ArrayValue(IReadOnlyList<LinFloat64Vector3D> value)
         : base(value)
     {
     }

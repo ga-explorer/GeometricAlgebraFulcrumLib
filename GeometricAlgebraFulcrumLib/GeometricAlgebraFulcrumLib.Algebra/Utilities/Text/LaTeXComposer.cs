@@ -32,7 +32,7 @@ public class LaTeXComposer<T>
     public int ScalarDecimals { get; set; }
         = 7;
 
-    public double ZeroEpsilon { get; set; }
+    public double DefaultTolerance { get; set; }
         = 1e-12d;
 
 
@@ -79,7 +79,7 @@ public class LaTeXComposer<T>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public virtual string GetScalarText(double scalar)
     {
-        if (scalar.IsNearZero(ZeroEpsilon))
+        if (scalar.IsNearZero(DefaultTolerance))
             return "0";
 
         var valueText = scalar.ToString("G");

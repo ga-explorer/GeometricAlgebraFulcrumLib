@@ -1,8 +1,7 @@
-﻿using System.Collections.Immutable;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using System.Runtime.CompilerServices;
-using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Matrices;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.SpaceND;
+using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Numerical;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
 using GeometricAlgebraFulcrumLib.Modeling.Trajectories.Scalars.Float64;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Tuples;
@@ -70,7 +69,7 @@ public sealed class CatmullRomSplineSparse
         for (var i = 1; i < _pointList.Count; i++)
         {
             var vector = _pointList[i] - _pointList[i - 1];
-            var ds = vector.GetVectorNormSquared();
+            var ds = NumericalLinearAlgebraUtils.L2NormSquared(vector);
 
             var power =
                 curveType == CatmullRomSplineType.Centripetal
@@ -125,7 +124,7 @@ public sealed class CatmullRomSplineSparse
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public IReadOnlyList<double> GetPointItemList(int itemIndex)
     {
-        return _pointList.Select(p => p[itemIndex]).ToImmutableArray();
+        return [.._pointList.Select(p => p[itemIndex])];
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]

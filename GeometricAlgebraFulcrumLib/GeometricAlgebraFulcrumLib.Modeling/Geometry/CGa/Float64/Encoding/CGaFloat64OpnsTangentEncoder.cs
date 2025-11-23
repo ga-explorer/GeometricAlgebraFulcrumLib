@@ -5,7 +5,6 @@ using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space2D;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space3D;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.SpaceND;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Float64.Blades;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Float64.Operations;
 
 namespace GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Float64.Encoding;
 
@@ -28,7 +27,7 @@ public class CGaFloat64OpnsTangentEncoder :
     public CGaFloat64Blade Point(double pointX, double pointY)
     {
         return Point(
-            LinFloat64Vector2D.Create(pointX, pointY).ToXGaFloat64Vector()
+            LinFloat64Vector2D.Create(pointX, pointY).ToXGaVector()
         );
     }
 
@@ -41,7 +40,7 @@ public class CGaFloat64OpnsTangentEncoder :
     public CGaFloat64Blade Point(LinFloat64Vector2D egaPoint)
     {
         return Point(
-            egaPoint.ToXGaFloat64Vector()
+            egaPoint.ToXGaVector()
         );
     }
 
@@ -56,7 +55,7 @@ public class CGaFloat64OpnsTangentEncoder :
     public CGaFloat64Blade Point(double pointX, double pointY, double pointZ)
     {
         return Point(
-            LinFloat64Vector3D.Create(pointX, pointY, pointZ).ToXGaFloat64Vector()
+            LinFloat64Vector3D.Create(pointX, pointY, pointZ).ToXGaVector()
         );
     }
 
@@ -69,7 +68,7 @@ public class CGaFloat64OpnsTangentEncoder :
     public CGaFloat64Blade Point(LinFloat64Vector3D egaPoint)
     {
         return Point(
-            egaPoint.ToXGaFloat64Vector()
+            egaPoint.ToXGaVector()
         );
     }
 
@@ -111,7 +110,7 @@ public class CGaFloat64OpnsTangentEncoder :
     {
         return HyperPlane(
             distance,
-            LinFloat64Vector2D.Create(normalX, normalY).ToXGaFloat64Vector()
+            LinFloat64Vector2D.Create(normalX, normalY).ToXGaVector()
         );
     }
 
@@ -126,7 +125,7 @@ public class CGaFloat64OpnsTangentEncoder :
     {
         return HyperPlane(
             distance,
-            egaNormalVector.ToXGaFloat64Vector()
+            egaNormalVector.ToXGaVector()
         );
     }
 
@@ -140,8 +139,8 @@ public class CGaFloat64OpnsTangentEncoder :
     public CGaFloat64Blade Line(LinFloat64Vector2D point, LinFloat64Vector2D vector)
     {
         return Line(
-            point.ToXGaFloat64Vector(),
-            vector.ToXGaFloat64Vector()
+            point.ToXGaVector(),
+            vector.ToXGaVector()
         );
     }
 
@@ -156,8 +155,8 @@ public class CGaFloat64OpnsTangentEncoder :
     public CGaFloat64Blade LineFromPoints(LinFloat64Vector2D point1, LinFloat64Vector2D point2)
     {
         return Line(
-            point1.ToXGaFloat64Vector(),
-            (point2 - point1).ToXGaFloat64Vector()
+            point1.ToXGaVector(),
+            (point2 - point1).ToXGaVector()
         );
     }
 
@@ -172,8 +171,8 @@ public class CGaFloat64OpnsTangentEncoder :
     public CGaFloat64Blade Line(LinFloat64Vector3D egaPoint, LinFloat64Vector3D egaVector)
     {
         return Line(
-            egaPoint.ToXGaFloat64Vector(),
-            egaVector.ToXGaFloat64Vector()
+            egaPoint.ToXGaVector(),
+            egaVector.ToXGaVector()
         );
     }
 
@@ -188,8 +187,8 @@ public class CGaFloat64OpnsTangentEncoder :
     public CGaFloat64Blade LineFromPoints(LinFloat64Vector3D egaPoint1, LinFloat64Vector3D egaPoint2)
     {
         return LineFromPoints(
-            egaPoint1.ToXGaFloat64Vector(),
-            egaPoint2.ToXGaFloat64Vector()
+            egaPoint1.ToXGaVector(),
+            egaPoint2.ToXGaVector()
         );
     }
 
@@ -245,7 +244,7 @@ public class CGaFloat64OpnsTangentEncoder :
     {
         return HyperPlane(
             distance,
-            LinFloat64Vector3D.Create(normalX, normalY, normalZ).ToXGaFloat64Vector()
+            LinFloat64Vector3D.Create(normalX, normalY, normalZ).ToXGaVector()
         );
     }
 
@@ -261,7 +260,7 @@ public class CGaFloat64OpnsTangentEncoder :
     {
         return HyperPlane(
             distance,
-            egaNormalVector.ToXGaFloat64Vector()
+            egaNormalVector.ToXGaVector()
         );
     }
 
@@ -315,7 +314,7 @@ public class CGaFloat64OpnsTangentEncoder :
     public CGaFloat64Blade Plane(LinFloat64Vector3D egaPoint, LinFloat64Bivector3D egaBivector)
     {
         return Plane(
-            egaPoint.ToXGaFloat64Vector(),
+            egaPoint.ToXGaVector(),
             egaBivector.ToXGaBivector()
         );
     }

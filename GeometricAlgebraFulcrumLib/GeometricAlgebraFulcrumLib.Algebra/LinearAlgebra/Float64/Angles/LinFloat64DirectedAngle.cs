@@ -657,49 +657,37 @@ public sealed record LinFloat64DirectedAngle :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64DirectedAngle CreateFromVector(IPair<Float64Scalar> vector)
+    public static LinFloat64DirectedAngle CreateFromUnitVectors(IPair<double> v1, IPair<double> v2)
     {
-        return CreateFromVector(vector.Item1.ScalarValue, vector.Item2.ScalarValue);
+        return CreateFromCos(v1.VectorDot(v2).ScalarValue);
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64DirectedAngle CreateFromVector(IPair<Float64Scalar> vector, LinAngleRange range)
+    public static LinFloat64DirectedAngle CreateFromUnitVectors(IPair<double> v1, IPair<double> v2, LinAngleRange range)
     {
-        return CreateFromVector(vector.Item1.ScalarValue, vector.Item2.ScalarValue, range);
+        return CreateFromCos(v1.VectorDot(v2).ScalarValue, range);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64DirectedAngle CreateFromUnitVectors(IPair<Float64Scalar> v1, IPair<Float64Scalar> v2)
+    public static LinFloat64DirectedAngle CreateFromUnitVectors(ITriplet<double> v1, ITriplet<double> v2)
+    {
+        return CreateFromCos(v1.VectorDot(v2).ScalarValue);
+    }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static LinFloat64DirectedAngle CreateFromUnitVectors(ITriplet<double> v1, ITriplet<double> v2, LinAngleRange range)
+    {
+        return CreateFromCos(v1.VectorDot(v2).ScalarValue, range);
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static LinFloat64DirectedAngle CreateFromUnitVectors(IQuad<double> v1, IQuad<double> v2)
     {
         return CreateFromCos(v1.VectorESp(v2).ScalarValue);
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64DirectedAngle CreateFromUnitVectors(IPair<Float64Scalar> v1, IPair<Float64Scalar> v2, LinAngleRange range)
-    {
-        return CreateFromCos(v1.VectorESp(v2).ScalarValue, range);
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64DirectedAngle CreateFromUnitVectors(ITriplet<Float64Scalar> v1, ITriplet<Float64Scalar> v2)
-    {
-        return CreateFromCos(v1.VectorESp(v2).ScalarValue);
-    }
-    
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64DirectedAngle CreateFromUnitVectors(ITriplet<Float64Scalar> v1, ITriplet<Float64Scalar> v2, LinAngleRange range)
-    {
-        return CreateFromCos(v1.VectorESp(v2).ScalarValue, range);
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64DirectedAngle CreateFromUnitVectors(IQuad<Float64Scalar> v1, IQuad<Float64Scalar> v2)
-    {
-        return CreateFromCos(v1.VectorESp(v2).ScalarValue);
-    }
-    
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64DirectedAngle CreateFromUnitVectors(IQuad<Float64Scalar> v1, IQuad<Float64Scalar> v2, LinAngleRange range)
+    public static LinFloat64DirectedAngle CreateFromUnitVectors(IQuad<double> v1, IQuad<double> v2, LinAngleRange range)
     {
         return CreateFromCos(v1.VectorESp(v2).ScalarValue, range);
     }

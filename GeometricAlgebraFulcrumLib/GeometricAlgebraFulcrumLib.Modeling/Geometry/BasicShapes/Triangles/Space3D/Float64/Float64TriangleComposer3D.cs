@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics;
 using System.Text;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space3D;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.Borders.Space3D.Float64;
+using GeometricAlgebraFulcrumLib.Modeling.Geometry.Bounding.Float64;
 
 namespace GeometricAlgebraFulcrumLib.Modeling.Geometry.BasicShapes.Triangles.Space3D.Float64;
 
@@ -140,7 +140,7 @@ public sealed class Float64TriangleComposer3D :
         if (maxZ < Point2Z) maxZ = Point2Z;
         if (maxZ < Point3Z) maxZ = Point3Z;
 
-        return new Float64BoundingBox3D(minX, minY, minZ, maxX, maxY, maxZ);
+        return Float64BoundingBox3D.Containing(minX, minY, minZ, maxX, maxY, maxZ);
     }
 
     public Float64BoundingBoxComposer3D GetBoundingBoxComposer()

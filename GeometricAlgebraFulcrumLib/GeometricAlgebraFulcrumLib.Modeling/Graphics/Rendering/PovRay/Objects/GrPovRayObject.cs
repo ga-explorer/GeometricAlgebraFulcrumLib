@@ -26,7 +26,7 @@ public abstract class GrPovRayObject :
         return new GrPovRayNamedObject(objName);
     }
 
-    public static GrPovRaySphere Sphere(ITriplet<Float64Scalar> center, Float64Scalar radius)
+    public static GrPovRaySphere Sphere(ITriplet<double> center, Float64Scalar radius)
     {
         return GrPovRaySphere.Create(center, radius);
     }
@@ -36,7 +36,7 @@ public abstract class GrPovRayObject :
         return GrPovRaySphere.Create(center, radius);
     }
     
-    public static GrPovRaySphere Sphere(ITriplet<Float64Scalar> center, Float64Scalar radiusX, Float64Scalar radiusY, Float64Scalar radiusZ)
+    public static GrPovRaySphere Sphere(ITriplet<double> center, Float64Scalar radiusX, Float64Scalar radiusY, Float64Scalar radiusZ)
     {
         return GrPovRaySphere.Create(center, radiusX, radiusY, radiusZ);
     }
@@ -180,12 +180,12 @@ public abstract class GrPovRayObject :
         return GrPovRayPolygon.CreateRegularPolygon(sideCount, radius);
     }
     
-    public static GrPovRayPolygon ClosedPolygon(IReadOnlyList<IPair<Float64Scalar>> pointList)
+    public static GrPovRayPolygon ClosedPolygon(IReadOnlyList<IPair<double>> pointList)
     {
         return GrPovRayPolygon.CreateClosedPolygon(pointList);
     }
     
-    public static GrPovRayPolygon ClosedPolygon(params IPair<Float64Scalar>[] pointList)
+    public static GrPovRayPolygon ClosedPolygon(params IPair<double>[] pointList)
     {
         return GrPovRayPolygon.CreateClosedPolygon(pointList);
     }
@@ -198,7 +198,7 @@ public abstract class GrPovRayObject :
     
     public static GrPovRayIntersection RegularPolygonCylinder(int sideCount, double radius)
     {
-        var polygonSpecs = Float64RegularPolygon2D.CreateFromOuterRadius(sideCount, radius);
+        var polygonSpecs = Float64RegularPolygon2D.Convex(sideCount, radius);
         var distance = polygonSpecs.InnerRadius;
 
         var planeList =
@@ -216,7 +216,7 @@ public abstract class GrPovRayObject :
 
     public static GrPovRayIntersection RegularPolygonCylinder(int sideCount, double radius, double yMin)
     {
-        var polygonSpecs = Float64RegularPolygon2D.CreateFromOuterRadius(sideCount, radius);
+        var polygonSpecs = Float64RegularPolygon2D.Convex(sideCount, radius);
         var distance = polygonSpecs.InnerRadius;
 
         var planeList =
@@ -241,7 +241,7 @@ public abstract class GrPovRayObject :
 
     public static GrPovRayIntersection RegularPolygonCylinder(int sideCount, double radius, double yMin, double yMax)
     {
-        var polygonSpecs = Float64RegularPolygon2D.CreateFromOuterRadius(sideCount, radius);
+        var polygonSpecs = Float64RegularPolygon2D.Convex(sideCount, radius);
         var distance = polygonSpecs.InnerRadius;
 
         var planeList =
@@ -705,7 +705,7 @@ public abstract class GrPovRayObject :
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public GrPovRayObject Translate(ITriplet<Float64Scalar> dv)
+    public GrPovRayObject Translate(ITriplet<double> dv)
     {
         AffineMap.Translate(dv);
 

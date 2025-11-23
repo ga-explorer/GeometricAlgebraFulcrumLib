@@ -124,10 +124,13 @@ public sealed class Float64ConstantPath3D :
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public override Float64Path3DLocalFrame GetFrame(double t)
     {
+        var scalingFactor = Tangent.L2Norm();
+
         return Float64Path3DLocalFrame.Create(
             t,
             Point,
-            Tangent
+            scalingFactor,
+            Tangent / scalingFactor
         );
     }
 }

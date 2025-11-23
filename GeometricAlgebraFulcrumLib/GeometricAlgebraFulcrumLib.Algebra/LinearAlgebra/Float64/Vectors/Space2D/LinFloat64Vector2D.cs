@@ -1,18 +1,82 @@
 ﻿using System.Collections;
+using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Angles;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Tuples;
+using MathNet.Numerics.LinearAlgebra.Double;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space2D;
 
 /// <summary>
 /// An immutable 2-tuple of double precision numbers
 /// </summary>
-public sealed record LinFloat64Vector2D :
+public readonly record struct LinFloat64Vector2D :
     ILinFloat64Vector2D,
     ILinFloat64Multivector2D
 {
+    public static ToleranceComparer DefaultToleranceComparer { get; }
+        = new ToleranceComparer(12);
+
+
+    public sealed record ToleranceComparer :
+        IEqualityComparer<LinFloat64Vector2D>
+    {
+        public int DecimalPlaces { get; }
+
+        public double Tolerance { get; }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ToleranceComparer(int decimalPlaces = 12)
+        {
+            if (decimalPlaces is < 3 or > 30)
+                throw new ArgumentOutOfRangeException(nameof(decimalPlaces));
+
+            DecimalPlaces = decimalPlaces;
+            Tolerance = Math.Pow(10, -decimalPlaces);
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ToleranceComparer(double tolerance = Float64Utils.DefaultTolerance)
+            : this((int)Math.Ceiling(-Math.Abs(tolerance).Log10()))
+        {
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public bool Equals(LinFloat64Vector2D a, LinFloat64Vector2D b)
+        {
+            return (a - b).L2Norm() < Tolerance;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public int GetHashCode(LinFloat64Vector2D v)
+        {
+            return HashCode.Combine(
+                Math.Round(v.X, DecimalPlaces - 3), 
+                Math.Round(v.Y, DecimalPlaces - 3)
+            );
+        }
+    }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static Dictionary<LinFloat64Vector2D, T> CreateToleranceDictionary<T>(int decimalPlaces = 12)
+    {
+        return new Dictionary<LinFloat64Vector2D, T>(
+            new ToleranceComparer(decimalPlaces)
+        );
+    }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static Dictionary<LinFloat64Vector2D, T> CreateToleranceDictionary<T>(double tolerance = Float64Utils.DefaultTolerance)
+    {
+        return new Dictionary<LinFloat64Vector2D, T>(
+            new ToleranceComparer(tolerance)
+        );
+    }
+
+
     public static LinFloat64Vector2D Zero { get; }
         = new LinFloat64Vector2D(
             Float64Scalar.Zero,
@@ -81,23 +145,11 @@ public sealed record LinFloat64Vector2D :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64Vector2D Create(Float64Scalar x, Float64Scalar y)
-    {
-        return new LinFloat64Vector2D(x, y);
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static LinFloat64Vector2D Create(IPair<double> tuple)
     {
         return new LinFloat64Vector2D(tuple.Item1, tuple.Item2);
     }
     
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64Vector2D Create(IPair<Float64Scalar> tuple)
-    {
-        return new LinFloat64Vector2D(tuple.Item1, tuple.Item2);
-    }
-
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static LinFloat64Vector2D CreateFromPolar(LinFloat64Angle angle)
     {
@@ -142,6 +194,19 @@ public sealed record LinFloat64Vector2D :
         var scalar = new Float64Scalar(vectorLength / 2d.Sqrt());
 
         return new LinFloat64Vector2D(scalar, scalar);
+    }
+
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static implicit operator (double, double)(LinFloat64Vector2D v)
+    {
+        return (v.X, v.Y);
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static implicit operator LinFloat64Vector2D((double, double) v)
+    {
+        return Create(v.Item1, v.Item2);
     }
 
 
@@ -226,14 +291,14 @@ public sealed record LinFloat64Vector2D :
     public int Count
         => 4;
 
-    public Float64Scalar X { get; }
+    public double X { get; }
 
-    public Float64Scalar Y { get; }
+    public double Y { get; }
 
-    public Float64Scalar Item1
+    public double Item1
         => X;
 
-    public Float64Scalar Item2
+    public double Item2
         => Y;
 
     /// <summary>
@@ -241,7 +306,7 @@ public sealed record LinFloat64Vector2D :
     /// </summary>
     /// <param name="index"></param>
     /// <returns></returns>
-    public Float64Scalar this[int index]
+    public double this[int index]
     {
         get
         {
@@ -252,40 +317,31 @@ public sealed record LinFloat64Vector2D :
             {
                 1 => X,
                 2 => Y,
-                _ => Float64Scalar.Zero
+                _ => 0
             };
         }
 
     }
+    
+    Float64Scalar IReadOnlyList<Float64Scalar>.this[int index] 
+        => this[index];
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     private LinFloat64Vector2D(double x, double y)
     {
-        X = Float64Scalar.Create(x);
-        Y = Float64Scalar.Create(y);
-    }
-    
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    private LinFloat64Vector2D(Float64Scalar x, Float64Scalar y)
-    {
         X = x;
         Y = y;
-    }
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    private LinFloat64Vector2D(IFloat64Scalar x, IFloat64Scalar y)
-    {
-        X = x.ToScalar();
-        Y = y.ToScalar();
+        Debug.Assert(IsValid());
     }
-
+    
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public void Deconstruct(out double x, out double y)
     {
-        x = X.ScalarValue;
-        y = Y.ScalarValue;
+        x = X;
+        y = Y;
     }
 
 
@@ -304,25 +360,25 @@ public sealed record LinFloat64Vector2D :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool IsNearZero(double zeroEpsilon = 1E-12)
+    public bool IsNearZero(double tolerance = Float64Utils.DefaultTolerance)
     {
-        return Norm().IsNearZero(zeroEpsilon);
+        return L2Norm().IsNearZero(tolerance);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public LinFloat64Angle GetPolarAngle()
     {
-        return LinFloat64PolarAngle.CreateFromVector(X.ScalarValue, Y.ScalarValue);
+        return LinFloat64PolarAngle.CreateFromVector(X, Y);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public Float64Scalar Norm()
+    public double L2Norm()
     {
         return (X.Square() + Y.Square()).Sqrt();
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public Float64Scalar NormSquared()
+    public double L2NormSquared()
     {
         return X.Square() + Y.Square();
     }
@@ -360,23 +416,23 @@ public sealed record LinFloat64Vector2D :
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public LinFloat64Vector2D Inverse()
     {
-        var normSquared = NormSquared();
+        var normSquared = L2NormSquared();
 
         return normSquared.IsZero()
             ? throw new InvalidOperationException()
-            : this / normSquared.ScalarValue;
+            : this / normSquared;
     }
 
 
     public LinFloat64Vector2D DirectionToUnitNormal2D(LinFloat64Vector2D? zeroNormal = null)
     {
-        var norm = Norm();
+        var norm = L2Norm();
 
         if (norm.IsZero())
             return zeroNormal
                    ?? throw new DivideByZeroException();
 
-        var s = 1d / norm.ScalarValue;
+        var s = 1d / norm;
 
         return Create(
             Scalar2 * -s,
@@ -386,13 +442,13 @@ public sealed record LinFloat64Vector2D :
 
     public LinFloat64Vector2D DirectionToNormal2D(LinFloat64Vector2D? zeroNormal = null)
     {
-        var normSquared = NormSquared();
+        var normSquared = L2NormSquared();
 
         if (normSquared.IsZero())
             return zeroNormal
                    ?? throw new DivideByZeroException();
 
-        var s = 1d / normSquared.ScalarValue;
+        var s = 1d / normSquared;
 
         return Create(
             Scalar2 * -s,
@@ -402,13 +458,13 @@ public sealed record LinFloat64Vector2D :
 
     public LinFloat64Vector2D DirectionToNormal2D(double scalingFactor, LinFloat64Vector2D? zeroNormal = null)
     {
-        var normSquared = NormSquared();
+        var normSquared = L2NormSquared();
 
         if (normSquared.IsZero())
             return zeroNormal
                    ?? throw new DivideByZeroException();
 
-        var s = scalingFactor / normSquared.ScalarValue;
+        var s = scalingFactor / normSquared;
 
         return Create(
             Scalar2 * -s,
@@ -418,13 +474,13 @@ public sealed record LinFloat64Vector2D :
 
     public LinFloat64Vector2D NormalToUnitDirection2D(LinFloat64Vector2D? zeroNormal = null)
     {
-        var norm = NormSquared();
+        var norm = L2NormSquared();
 
         if (norm.IsZero())
             return zeroNormal
                    ?? throw new DivideByZeroException();
 
-        var s = 1d / norm.ScalarValue;
+        var s = 1d / norm;
 
         return Create(
             Scalar2 * s,
@@ -434,13 +490,13 @@ public sealed record LinFloat64Vector2D :
 
     public LinFloat64Vector2D NormalToDirection2D(LinFloat64Vector2D? zeroNormal = null)
     {
-        var normSquared = NormSquared();
+        var normSquared = L2NormSquared();
 
         if (normSquared.IsZero())
             return zeroNormal
                    ?? throw new DivideByZeroException();
 
-        var s = 1d / normSquared.ScalarValue;
+        var s = 1d / normSquared;
 
         return Create(
             Scalar2 * s,
@@ -450,13 +506,13 @@ public sealed record LinFloat64Vector2D :
 
     public LinFloat64Vector2D NormalToDirection2D(double scalingFactor, LinFloat64Vector2D? zeroNormal = null)
     {
-        var normSquared = NormSquared();
+        var normSquared = L2NormSquared();
 
         if (normSquared.IsZero())
             return zeroNormal
                    ?? throw new DivideByZeroException();
 
-        var s = scalingFactor / normSquared.ScalarValue;
+        var s = scalingFactor / normSquared;
 
         return Create(
             Scalar2 * s,
@@ -598,6 +654,38 @@ public sealed record LinFloat64Vector2D :
         return Create(s1, s2);
     }
 
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public DenseMatrix OuterProduct(LinFloat64Vector2D v)
+    {
+        var m = DenseMatrix.Create(2, 2, 0.0);
+
+        m[0, 0] = X * v.X;
+        m[0, 1] = X * v.Y;
+        
+        m[1, 0] = Y * v.X;
+        m[1, 1] = Y * v.Y;
+        
+        return m;
+    }
+
+
+    public LinFloat64Vector2D ElementWiseMin(LinFloat64Vector2D v2)
+    {
+        return new LinFloat64Vector2D(
+            Math.Min(X, v2.X),
+            Math.Min(Y, v2.Y)
+        );
+    }
+    
+    public LinFloat64Vector2D ElementWiseMax(LinFloat64Vector2D v2)
+    {
+        return new LinFloat64Vector2D(
+            Math.Max(X, v2.X),
+            Math.Max(Y, v2.Y)
+        );
+    }
+
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public IEnumerator<Float64Scalar> GetEnumerator()
@@ -615,9 +703,9 @@ public sealed record LinFloat64Vector2D :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public string ToTupleString()
+    public string ToTupleString(int decimalPlaces = 12)
     {
-        return $"({X:G10}, {Y:G10})";
+        return $"({double.Round(X, decimalPlaces):G10}, {double.Round(Y, decimalPlaces):G10})";
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -625,4 +713,5 @@ public sealed record LinFloat64Vector2D :
     {
         return $"({X:G10})<1> + ({Y:G10})<2>";
     }
+
 }

@@ -2,7 +2,7 @@
 
 public interface IScalarProcessor<T>
 {
-    double ZeroEpsilon { get; set; }
+    double DefaultTolerance { get; set; }
 
     bool IsNumeric { get; }
 

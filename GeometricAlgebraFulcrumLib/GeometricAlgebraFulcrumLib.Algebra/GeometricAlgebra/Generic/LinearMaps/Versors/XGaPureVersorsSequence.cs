@@ -259,7 +259,7 @@ public sealed class XGaPureVersorsSequence<T> :
     {
         return ((IEnumerable<XGaPureVersor<T>>) _versorsList)
             .Reverse()
-            .Select(r => r.Vector.Inverse())
+            .Select(r => r.Vector.VersorInverse())
             .Gp();
     }
         

@@ -1,6 +1,5 @@
 ﻿using System.Runtime.CompilerServices;
 using GeometricAlgebraFulcrumLib.Modeling.Signals;
-using GeometricAlgebraFulcrumLib.Modeling.Trajectories.Vectors2D.Float64;
 using GeometricAlgebraFulcrumLib.Modeling.Trajectories.Vectors2D.Float64.Basic;
 using GeometricAlgebraFulcrumLib.Modeling.Trajectories.Vectors2D.Float64.Composers;
 
@@ -161,7 +160,7 @@ public class DfCatmullRomSplineSignalInterpolator :
             return 0;
 
         var tangent =
-            Curve.GetTangent(t);
+            Curve.GetTangentVector(t);
 
         return tangent.Y / tangent.X;
     }

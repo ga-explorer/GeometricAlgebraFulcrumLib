@@ -1,8 +1,8 @@
-﻿using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space3D;
-using GeometricAlgebraFulcrumLib.Utilities.Structures.Tuples;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using System.Runtime.CompilerServices;
+using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space3D;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
+using GeometricAlgebraFulcrumLib.Utilities.Structures.Tuples;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Basis;
 
@@ -410,7 +410,7 @@ public sealed record LinBasisVectorPair3D :
     }
     
 
-    public LinFloat64Quaternion VectorPairToVectorPairRotationQuaternion(LinBasisVectorPair3D dstVectorPair, double zeroEpsilon = Float64Utils.ZeroEpsilon)
+    public LinFloat64Quaternion VectorPairToVectorPairRotationQuaternion(LinBasisVectorPair3D dstVectorPair, double tolerance = Float64Utils.DefaultTolerance)
     {
         var (srcAxis1, srcAxis2) = this;
         var (dstAxis1, dstAxis2) = dstVectorPair;
@@ -419,7 +419,7 @@ public sealed record LinBasisVectorPair3D :
             srcAxis1.VectorToVectorRotationQuaternion(dstAxis1);
 
         Debug.Assert(
-            (q1.RotateVector(srcAxis1) - dstAxis1).VectorENormSquared().IsNearZero(zeroEpsilon)
+            LinFloat64Vector3DUtils.L2NormSquared((q1.RotateVector(srcAxis1) - dstAxis1)).IsNearZero(tolerance)
         );
 
         var axis2Rotated =
@@ -432,22 +432,22 @@ public sealed record LinBasisVectorPair3D :
             q2.Concatenate(q1);
 
         Debug.Assert(
-            (quaternion.RotateVector(srcAxis1) - dstAxis1).VectorENormSquared().IsNearZero(zeroEpsilon)
+            LinFloat64Vector3DUtils.L2NormSquared((quaternion.RotateVector(srcAxis1) - dstAxis1)).IsNearZero(tolerance)
         );
 
         Debug.Assert(
-            (quaternion.RotateVector(srcAxis2) - dstAxis2).VectorENormSquared().IsNearZero(zeroEpsilon)
+            LinFloat64Vector3DUtils.L2NormSquared((quaternion.RotateVector(srcAxis2) - dstAxis2)).IsNearZero(tolerance)
         );
 
         return quaternion;
     }
 
-    public LinFloat64Quaternion VectorPairToVectorPairRotationQuaternion(ILinFloat64Vector3D dstVector1, ILinFloat64Vector3D dstVector2, double zeroEpsilon = Float64Utils.ZeroEpsilon)
+    public LinFloat64Quaternion VectorPairToVectorPairRotationQuaternion(ILinFloat64Vector3D dstVector1, ILinFloat64Vector3D dstVector2, double tolerance = Float64Utils.DefaultTolerance)
     {
         Debug.Assert(
-            dstVector1.IsNearUnitVector(zeroEpsilon) &&
-            dstVector2.IsNearUnitVector(zeroEpsilon) &&
-            dstVector1.VectorESp(dstVector2).IsNearZero(zeroEpsilon)
+            dstVector1.IsNearUnitVector(tolerance) &&
+            dstVector2.IsNearUnitVector(tolerance) &&
+            dstVector1.VectorDot(dstVector2).IsNearZero(tolerance)
         );
 
         var (axis1, axis2) = this;
@@ -456,7 +456,7 @@ public sealed record LinBasisVectorPair3D :
             axis1.VectorToVectorRotationQuaternion(dstVector1);
 
         Debug.Assert(
-            (q1.RotateVector(axis1) - dstVector1).VectorENormSquared().IsNearZero(zeroEpsilon)
+            LinFloat64Vector3DUtils.L2NormSquared((q1.RotateVector(axis1) - dstVector1)).IsNearZero(tolerance)
         );
 
         var axis2Rotated =
@@ -469,11 +469,11 @@ public sealed record LinBasisVectorPair3D :
             q2.Concatenate(q1);
 
         Debug.Assert(
-            (quaternion.RotateVector(axis1) - dstVector1).VectorENormSquared().IsNearZero(zeroEpsilon)
+            LinFloat64Vector3DUtils.L2NormSquared((quaternion.RotateVector(axis1) - dstVector1)).IsNearZero(tolerance)
         );
 
         Debug.Assert(
-            (quaternion.RotateVector(axis2) - dstVector2).VectorENormSquared().IsNearZero(zeroEpsilon)
+            LinFloat64Vector3DUtils.L2NormSquared((quaternion.RotateVector(axis2) - dstVector2)).IsNearZero(tolerance)
         );
 
         return quaternion;
@@ -483,8 +483,8 @@ public sealed record LinBasisVectorPair3D :
     public Pair<LinFloat64Quaternion> VectorPairToVectorPairRotationQuaternionPair(ILinFloat64Vector3D dstVector1, ILinFloat64Vector3D dstVector2)
     {
         Debug.Assert(
-            dstVector1.VectorENormSquared().IsNearEqual(1) &&
-            dstVector2.VectorENormSquared().IsNearEqual(1)
+            dstVector1.L2NormSquared().IsNearEqual(1) &&
+            dstVector2.L2NormSquared().IsNearEqual(1)
         );
 
         var (axis1, axis2) = this;
@@ -499,11 +499,11 @@ public sealed record LinBasisVectorPair3D :
             axis2Rotated.VectorToVectorRotationQuaternion(dstVector2, dstVector1);
 
         Debug.Assert(
-            (q1.Concatenate(q2).RotateVector(axis1) - dstVector1).VectorENormSquared().IsNearZero()
+            LinFloat64Vector3DUtils.L2NormSquared((q1.Concatenate(q2).RotateVector(axis1) - dstVector1)).IsNearZero()
         );
 
         Debug.Assert(
-            (q1.Concatenate(q2).RotateVector(axis2) - dstVector2).VectorENormSquared().IsNearZero()
+            LinFloat64Vector3DUtils.L2NormSquared((q1.Concatenate(q2).RotateVector(axis2) - dstVector2)).IsNearZero()
         );
 
         return new Pair<LinFloat64Quaternion>(q1, q2);

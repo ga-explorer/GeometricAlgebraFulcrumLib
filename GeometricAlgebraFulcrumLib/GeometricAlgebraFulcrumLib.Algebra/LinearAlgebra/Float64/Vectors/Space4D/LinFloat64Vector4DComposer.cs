@@ -7,7 +7,7 @@ using GeometricAlgebraFulcrumLib.Utilities.Structures.Tuples;
 namespace GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space4D;
 
 public sealed class LinFloat64Vector4DComposer :
-    IQuad<Float64Scalar>
+    IQuad<double>
 {
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static LinFloat64Vector4DComposer Create()
@@ -22,7 +22,7 @@ public sealed class LinFloat64Vector4DComposer :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64Vector4DComposer Create(IQuad<Float64Scalar> vector)
+    public static LinFloat64Vector4DComposer Create(IQuad<double> vector)
     {
         return new LinFloat64Vector4DComposer(
             vector.Item1,
@@ -33,27 +33,27 @@ public sealed class LinFloat64Vector4DComposer :
     }
 
 
-    public Float64Scalar X { get; set; }
+    public double X { get; set; }
 
-    public Float64Scalar Y { get; set; }
+    public double Y { get; set; }
 
-    public Float64Scalar Z { get; set; }
+    public double Z { get; set; }
 
-    public Float64Scalar W { get; set; }
+    public double W { get; set; }
 
     public int VSpaceDimensions
         => 4;
 
-    public Float64Scalar Item1
+    public double Item1
         => X;
 
-    public Float64Scalar Item2
+    public double Item2
         => Y;
 
-    public Float64Scalar Item3
+    public double Item3
         => Z;
 
-    public Float64Scalar Item4
+    public double Item4
         => W;
 
     public bool IsZero
@@ -193,7 +193,7 @@ public sealed class LinFloat64Vector4DComposer :
         return this;
     }
 
-    public LinFloat64Vector4DComposer SetVector(IQuad<Float64Scalar> vector)
+    public LinFloat64Vector4DComposer SetVector(IQuad<double> vector)
     {
         X = vector.Item1;
         Y = vector.Item2;
@@ -203,7 +203,7 @@ public sealed class LinFloat64Vector4DComposer :
         return this;
     }
 
-    public LinFloat64Vector4DComposer SetVectorNegative(IQuad<Float64Scalar> vector)
+    public LinFloat64Vector4DComposer SetVectorNegative(IQuad<double> vector)
     {
         X = -vector.Item1;
         Y = -vector.Item2;
@@ -213,7 +213,7 @@ public sealed class LinFloat64Vector4DComposer :
         return this;
     }
 
-    public LinFloat64Vector4DComposer SetVector(IQuad<Float64Scalar> vector, double scalingFactor)
+    public LinFloat64Vector4DComposer SetVector(IQuad<double> vector, double scalingFactor)
     {
         X = scalingFactor * vector.Item1;
         Y = scalingFactor * vector.Item2;
@@ -232,7 +232,7 @@ public sealed class LinFloat64Vector4DComposer :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public LinFloat64Vector4DComposer AddVector(IQuad<Float64Scalar> vector)
+    public LinFloat64Vector4DComposer AddVector(IQuad<double> vector)
     {
         X += vector.Item1;
         Y += vector.Item2;
@@ -243,7 +243,7 @@ public sealed class LinFloat64Vector4DComposer :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public LinFloat64Vector4DComposer AddVector(IQuad<Float64Scalar> vector, double scalingFactor)
+    public LinFloat64Vector4DComposer AddVector(IQuad<double> vector, double scalingFactor)
     {
         X += scalingFactor * vector.Item1;
         Y += scalingFactor * vector.Item2;
@@ -262,7 +262,7 @@ public sealed class LinFloat64Vector4DComposer :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public LinFloat64Vector4DComposer SubtractVector(IQuad<Float64Scalar> vector)
+    public LinFloat64Vector4DComposer SubtractVector(IQuad<double> vector)
     {
         X -= vector.Item1;
         Y -= vector.Item2;
@@ -273,7 +273,7 @@ public sealed class LinFloat64Vector4DComposer :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public LinFloat64Vector4DComposer SubtractVector(IQuad<Float64Scalar> vector, double scalingFactor)
+    public LinFloat64Vector4DComposer SubtractVector(IQuad<double> vector, double scalingFactor)
     {
         X -= scalingFactor * vector.Item1;
         Y -= scalingFactor * vector.Item2;

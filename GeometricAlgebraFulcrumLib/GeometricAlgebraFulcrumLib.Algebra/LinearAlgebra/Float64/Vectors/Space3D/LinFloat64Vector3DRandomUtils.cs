@@ -9,12 +9,12 @@ public static class LinFloat64Vector3DRandomUtils
 {
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64Vector3D GetLinVector3D(this Random random)
+    public static LinFloat64Vector3D GetLinVector3D(this Random random, double maxLength = 1)
     {
         return new LinFloat64SphericalVector3D(
             random.GetPolarAngleFromArcRatio(0.5),
             random.GetPolarAngle(),
-            random.NextDouble()
+            random.NextDouble() * maxLength.Abs()
         ).ToLinVector3D();
     }
 
@@ -61,7 +61,7 @@ public static class LinFloat64Vector3DRandomUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64Vector3D GetLinearCombination(this Random random, ITriplet<Float64Scalar> vector1, ITriplet<Float64Scalar> vector2)
+    public static LinFloat64Vector3D GetLinearCombination(this Random random, ITriplet<double> vector1, ITriplet<double> vector2)
     {
         return vector1.VectorTimes(random.NextDouble()) +
                vector2.VectorTimes(random.NextDouble());

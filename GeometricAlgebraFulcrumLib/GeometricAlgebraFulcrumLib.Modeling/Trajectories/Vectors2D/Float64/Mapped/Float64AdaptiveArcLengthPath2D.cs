@@ -1,10 +1,9 @@
 ﻿using System.Runtime.CompilerServices;
-using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Angles;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space2D;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
 using GeometricAlgebraFulcrumLib.Modeling.Trajectories.Scalars.Float64;
-using GeometricAlgebraFulcrumLib.Modeling.Trajectories.Vectors2D.Float64.Adaptive;
 using GeometricAlgebraFulcrumLib.Modeling.Trajectories.Vectors2D.Float64.Composers;
+using GeometricAlgebraFulcrumLib.Modeling.Trajectories.Vectors2D.Float64.Samplers;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Tuples;
 
 namespace GeometricAlgebraFulcrumLib.Modeling.Trajectories.Vectors2D.Float64.Mapped;
@@ -17,16 +16,12 @@ public sealed class Float64AdaptiveArcLengthPath2D :
     {
         return new Float64AdaptiveArcLengthPath2D(
             basePath, 
-            new Float64AdaptivePath2DSamplingOptions(
-                5.DegreesToDirectedAngle(),
-                3,
-                16
-            )
+            new SampledCurve2D.SamplingOptions()
         );
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Float64AdaptiveArcLengthPath2D Create(Float64Path2D basePath, Float64AdaptivePath2DSamplingOptions samplingOptions)
+    public static Float64AdaptiveArcLengthPath2D Create(Float64Path2D basePath, SampledCurve2D.SamplingOptions samplingOptions)
     {
         return new Float64AdaptiveArcLengthPath2D(
             basePath, 
@@ -35,21 +30,25 @@ public sealed class Float64AdaptiveArcLengthPath2D :
     }
 
 
-    private readonly Float64AdaptivePath2DSamplingOptions _adaptiveSamplingOptions;
-    private readonly Float64AdaptivePath2D _adaptiveCurve;
+    private readonly SampledCurve2D.SamplingOptions _adaptiveSamplingOptions;
+    private readonly SampledCurve2D _adaptiveCurve;
     private readonly double _adaptiveCurveLength;
 
     public Float64Path2D BasePath { get; }
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    private Float64AdaptiveArcLengthPath2D(Float64Path2D basePath, Float64AdaptivePath2DSamplingOptions samplingOptions)
+    private Float64AdaptiveArcLengthPath2D(Float64Path2D basePath, SampledCurve2D.SamplingOptions samplingOptions)
         : base(basePath.TimeRange, basePath.IsPeriodic)
     {
         BasePath = basePath;
 
         _adaptiveSamplingOptions = samplingOptions;
-        _adaptiveCurve = basePath.CreateAdaptiveCurve2D(samplingOptions);
+        _adaptiveCurve = basePath.CreateAdaptiveCurve2D(
+            basePath.TimeRange,
+            basePath.IsPeriodic,
+            samplingOptions
+        );
         _adaptiveCurveLength = _adaptiveCurve.GetLength();
     }
 

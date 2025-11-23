@@ -530,18 +530,18 @@ public sealed record LinFloat64Multivector3D :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool IsNearZero(double zeroEpsilon = 1e-12d)
+    public bool IsNearZero(double tolerance = 1e-12d)
     {
-        return Norm().IsNearZero(zeroEpsilon);
+        return L2Norm().IsNearZero(tolerance);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public Float64Scalar NormSquared()
+    public double L2NormSquared()
     {
-        return KVector0.NormSquared() +
-               KVector1.NormSquared() +
-               KVector2.NormSquared() +
-               KVector3.NormSquared();
+        return KVector0.L2NormSquared() +
+               KVector1.L2NormSquared() +
+               KVector2.L2NormSquared() +
+               KVector3.L2NormSquared();
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -551,9 +551,9 @@ public sealed record LinFloat64Multivector3D :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public Float64Scalar Norm()
+    public double L2Norm()
     {
-        return NormSquared().Sqrt();
+        return L2NormSquared().Sqrt();
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]

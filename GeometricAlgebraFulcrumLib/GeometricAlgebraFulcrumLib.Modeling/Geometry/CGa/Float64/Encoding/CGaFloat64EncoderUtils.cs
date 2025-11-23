@@ -60,6 +60,12 @@ namespace GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Float64.Encoding
             return cgaGeometricSpace.Encode.VGa.Trivector(egaKVector);
         }
 
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static CGaFloat64Blade EncodeVGaBlade(this LinFloat64Vector egaVector, CGaFloat64GeometricSpace cgaGeometricSpace)
+        {
+            return cgaGeometricSpace.Encode.VGa.Blade(egaVector.ToXGaFloat64Vector());
+        }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static CGaFloat64Blade EncodeVGaBlade(this XGaFloat64KVector egaKVector, CGaFloat64GeometricSpace cgaGeometricSpace)

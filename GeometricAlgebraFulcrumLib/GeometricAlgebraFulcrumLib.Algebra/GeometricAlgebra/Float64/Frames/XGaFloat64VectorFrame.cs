@@ -8,8 +8,10 @@ using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivectors;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Processors;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Subspaces;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.LinearMaps.SpaceND;
+using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Numerical;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Permutations;
+using MathNet.Numerics.LinearAlgebra;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Frames;
 
@@ -117,7 +119,7 @@ public class XGaFloat64VectorFrame :
         var orthogonalVector = _vectorList[0];
         var vectorStoragesList = new List<XGaFloat64Vector>
         {
-            orthogonalVector.Divide(orthogonalVector.Norm().ScalarValue)
+            orthogonalVector.Divide(orthogonalVector.Norm())
         };
 
         XGaFloat64KVector mv1 = orthogonalVector;
@@ -130,7 +132,7 @@ public class XGaFloat64VectorFrame :
                 mv1.Reverse().Gp(mv2).GetVectorPart();
 
             vectorStoragesList.Add(
-                orthogonalVector.Divide(orthogonalVector.Norm().ScalarValue)
+                orthogonalVector.Divide(orthogonalVector.Norm())
             );
 
             mv1 = mv2;
@@ -337,7 +339,7 @@ public class XGaFloat64VectorFrame :
             var v1 = this[i];
             var v2 = targetFrame[i];
 
-            yield return (v1.ESp(v2) / (v1.ESpSquared() * v2.ESpSquared()).Sqrt()).ArcCos().ScalarValue;
+            yield return (v1.ESp(v2) / (v1.ESpSquared() * v2.ESpSquared()).Sqrt()).ArcCos();
         }
     }
 
@@ -384,17 +386,17 @@ public class XGaFloat64VectorFrame :
         return new XGaFloat64VectorFrame(
             frameSpecs,
             _vectorList.Select(v => 
-                v.Divide(v.ENorm().ScalarValue)
+                v.Divide(v.ENorm())
             ).ToArray()
         );
     }
 
-    public double[,] GetArray()
+    public Matrix<double> GetMatrix()
     {
-        return GetArray(Count);
+        return GetMatrix(Count);
     }
 
-    public double[,] GetArray(int rowsCount)
+    public Matrix<double> GetMatrix(int rowsCount)
     {
         var colsCount = Count;
         var itemsArray =
@@ -411,10 +413,10 @@ public class XGaFloat64VectorFrame :
                 itemsArray[index, j] = scalar;
         }
 
-        return itemsArray;
+        return itemsArray.ToMathNetDenseMatrix();
     }
 
-    public double[,] GetInnerProductsArray()
+    public Matrix<double> GetInnerProductsMatrix()
     {
         var ipm = new double[Count, Count];
 
@@ -422,21 +424,21 @@ public class XGaFloat64VectorFrame :
         {
             var v1 = _vectorList[i];
 
-            ipm[i, i] = v1.SpSquared().ScalarValue;
+            ipm[i, i] = v1.SpSquared();
 
             for (var j = i + 1; j < Count; j++)
             {
-                var ip = v1.Sp(_vectorList[j]).ScalarValue;
+                var ip = v1.Sp(_vectorList[j]);
 
                 ipm[i, j] = ip;
                 ipm[j, i] = ip;
             }
         }
 
-        return ipm;
+        return ipm.ToMathNetDenseMatrix();
     }
 
-    public double[,] GetInnerAnglesArray()
+    public Matrix<double> GetInnerAnglesMatrix()
     {
         var ipm = new double[Count, Count];
 
@@ -453,10 +455,10 @@ public class XGaFloat64VectorFrame :
             }
         }
 
-        return ipm;
+        return ipm.ToMathNetDenseMatrix();
     }
 
-    public double[,] GetInnerAnglesInDegreesArray()
+    public Matrix<double> GetInnerAnglesInDegreesMatrix()
     {
         var ipm = new double[Count, Count];
 
@@ -473,7 +475,7 @@ public class XGaFloat64VectorFrame :
             }
         }
 
-        return ipm;
+        return ipm.ToMathNetDenseMatrix();
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]

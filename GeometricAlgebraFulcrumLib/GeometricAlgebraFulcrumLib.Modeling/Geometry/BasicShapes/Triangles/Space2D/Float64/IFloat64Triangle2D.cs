@@ -1,7 +1,7 @@
 ﻿namespace GeometricAlgebraFulcrumLib.Modeling.Geometry.BasicShapes.Triangles.Space2D.Float64;
 
 public interface IFloat64Triangle2D :
-    IFloat64FiniteGeometricShape2D
+    IFloat64BoundedShape2D
 {
     double Point1X { get; }
 

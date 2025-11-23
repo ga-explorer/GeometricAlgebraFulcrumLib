@@ -32,11 +32,11 @@ public sealed class GcTriangleReflector3D
         ComputePointReflectionCounter.Begin();
 
         var n = Triangle.GetNormal();
-        var n2 = n.VectorENormSquared();
-        var d = -n.VectorESp(Triangle.GetPoint1());
+        var n2 = LinFloat64Vector3DUtils.L2NormSquared(n);
+        var d = -n.VectorDot(Triangle.GetPoint1());
         var p = point.ToLinVector3D();
 
-        var result = p - 2 * (n.VectorESp(p) + d) / n2 * n;
+        var result = p - 2 * (n.VectorDot(p) + d) / n2 * n;
 
         ComputePointReflectionCounter.End();
 

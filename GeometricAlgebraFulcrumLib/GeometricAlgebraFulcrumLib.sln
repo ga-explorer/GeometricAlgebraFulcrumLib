@@ -35,7 +35,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeometricAlgebraFulcrumLib.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeometricAlgebraFulcrumLib.MonoGame", "GeometricAlgebraFulcrumLib.MonoGame\GeometricAlgebraFulcrumLib.MonoGame.csproj", "{91931E46-CD24-443A-B6EA-AD78822C8D2C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeometricAlgebraFulcrumLib.Matlab", "GeometricAlgebraFulcrumLib.Matlab\GeometricAlgebraFulcrumLib.Matlab.csproj", "{6B6228CA-9D3B-4E16-BB4D-872124B0C3F7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeometricAlgebraFulcrumLib.Samples", "GeometricAlgebraFulcrumLib.Samples\GeometricAlgebraFulcrumLib.Samples.csproj", "{50C02252-4BA9-4DB1-84B2-FBEFCA072A51}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -239,18 +239,18 @@ Global
 		{91931E46-CD24-443A-B6EA-AD78822C8D2C}.Release|ARM32.Build.0 = Release|Any CPU
 		{91931E46-CD24-443A-B6EA-AD78822C8D2C}.Release|x64.ActiveCfg = Release|Any CPU
 		{91931E46-CD24-443A-B6EA-AD78822C8D2C}.Release|x64.Build.0 = Release|Any CPU
-		{6B6228CA-9D3B-4E16-BB4D-872124B0C3F7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6B6228CA-9D3B-4E16-BB4D-872124B0C3F7}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6B6228CA-9D3B-4E16-BB4D-872124B0C3F7}.Debug|ARM32.ActiveCfg = Debug|Any CPU
-		{6B6228CA-9D3B-4E16-BB4D-872124B0C3F7}.Debug|ARM32.Build.0 = Debug|Any CPU
-		{6B6228CA-9D3B-4E16-BB4D-872124B0C3F7}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{6B6228CA-9D3B-4E16-BB4D-872124B0C3F7}.Debug|x64.Build.0 = Debug|Any CPU
-		{6B6228CA-9D3B-4E16-BB4D-872124B0C3F7}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6B6228CA-9D3B-4E16-BB4D-872124B0C3F7}.Release|Any CPU.Build.0 = Release|Any CPU
-		{6B6228CA-9D3B-4E16-BB4D-872124B0C3F7}.Release|ARM32.ActiveCfg = Release|Any CPU
-		{6B6228CA-9D3B-4E16-BB4D-872124B0C3F7}.Release|ARM32.Build.0 = Release|Any CPU
-		{6B6228CA-9D3B-4E16-BB4D-872124B0C3F7}.Release|x64.ActiveCfg = Release|Any CPU
-		{6B6228CA-9D3B-4E16-BB4D-872124B0C3F7}.Release|x64.Build.0 = Release|Any CPU
+		{50C02252-4BA9-4DB1-84B2-FBEFCA072A51}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{50C02252-4BA9-4DB1-84B2-FBEFCA072A51}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{50C02252-4BA9-4DB1-84B2-FBEFCA072A51}.Debug|ARM32.ActiveCfg = Debug|Any CPU
+		{50C02252-4BA9-4DB1-84B2-FBEFCA072A51}.Debug|ARM32.Build.0 = Debug|Any CPU
+		{50C02252-4BA9-4DB1-84B2-FBEFCA072A51}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{50C02252-4BA9-4DB1-84B2-FBEFCA072A51}.Debug|x64.Build.0 = Debug|Any CPU
+		{50C02252-4BA9-4DB1-84B2-FBEFCA072A51}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{50C02252-4BA9-4DB1-84B2-FBEFCA072A51}.Release|Any CPU.Build.0 = Release|Any CPU
+		{50C02252-4BA9-4DB1-84B2-FBEFCA072A51}.Release|ARM32.ActiveCfg = Release|Any CPU
+		{50C02252-4BA9-4DB1-84B2-FBEFCA072A51}.Release|ARM32.Build.0 = Release|Any CPU
+		{50C02252-4BA9-4DB1-84B2-FBEFCA072A51}.Release|x64.ActiveCfg = Release|Any CPU
+		{50C02252-4BA9-4DB1-84B2-FBEFCA072A51}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

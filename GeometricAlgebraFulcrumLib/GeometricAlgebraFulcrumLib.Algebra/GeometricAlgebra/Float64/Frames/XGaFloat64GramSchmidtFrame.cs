@@ -220,11 +220,11 @@ public class XGaFloat64GramSchmidtFrame
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public XGaFloat64GramSchmidtFrame CleanNorms(double zeroEpsilon = Float64Utils.ZeroEpsilon)
+    public XGaFloat64GramSchmidtFrame CleanNorms(double tolerance = Float64Utils.DefaultTolerance)
     {
         for (var i = 0; i < _directionNormsArray.Length; i++)
         {
-            if (_directionNormsArray[i].IsNearZero())
+            if (_directionNormsArray[i].IsNearZero(tolerance))
                 _directionNormsArray[i] = 0d;
         }
 

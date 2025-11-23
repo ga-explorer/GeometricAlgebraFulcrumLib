@@ -3,7 +3,6 @@ using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Angles;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space3D;
-using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Tuples;
 using SixLabors.ImageSharp;
 
@@ -16,8 +15,8 @@ namespace GeometricAlgebraFulcrumLib.Modeling.Graphics.LatticeShapes.Curves;
 public sealed class GrLatticeCurve3D :
     IReadOnlyList<GrLatticeCurveLocalFrame3D>
 {
-    private Dictionary<Triplet<Float64Scalar>, GrLatticeCurveLocalFrame3D> _pointToVertexDictionary
-        = new Dictionary<Triplet<Float64Scalar>, GrLatticeCurveLocalFrame3D>();
+    private Dictionary<Triplet<double>, GrLatticeCurveLocalFrame3D> _pointToVertexDictionary
+        = new Dictionary<Triplet<double>, GrLatticeCurveLocalFrame3D>();
 
     private GrLatticeCurveLocalFrame3D[] _indexUToVertexArray;
 
@@ -43,8 +42,8 @@ public sealed class GrLatticeCurve3D :
     public IEnumerable<LinFloat64Vector3D> VertexPoints 
         => Vertices.Select(v => v.Point);
 
-    public IEnumerable<ILinFloat64Vector3D> VertexNormals 
-        => Vertices.Select(v => v.Normal1);
+    public IEnumerable<LinFloat64Vector3D> VertexNormals 
+        => Vertices.Select(v => v.Normal1.ToLinVector3D());
 
     public IEnumerable<double> VertexTextureUvs 
         => Vertices.Select(v => v.TimeValue);
@@ -61,18 +60,18 @@ public sealed class GrLatticeCurve3D :
             : _pointToVertexDictionary.Skip(index).First().Value;
 
     public GrLatticeCurveLocalFrame3D this[double x, double y, double z] 
-        => this[new Triplet<Float64Scalar>(x, y, z)];
+        => this[new Triplet<double>(x, y, z)];
 
-    public GrLatticeCurveLocalFrame3D this[ITriplet<Float64Scalar> triplet] 
+    public GrLatticeCurveLocalFrame3D this[ITriplet<double> triplet] 
         => this[triplet.ToTriplet()];
 
-    public GrLatticeCurveLocalFrame3D this[Triplet<Float64Scalar> key] 
+    public GrLatticeCurveLocalFrame3D this[Triplet<double> key] 
         => _pointToVertexDictionary.TryGetValue(key, out var vertex)
             ? vertex
             : throw new KeyNotFoundException();
         
     public IReadOnlyList<GrLatticeCurveLocalFrame3D> VertexList { get; private set; } 
-        = Array.Empty<GrLatticeCurveLocalFrame3D>();
+        = [];
 
 
     internal GrLatticeCurve3D(GrLatticeCurveList3D parentList, int curveIndex, int countU, bool closeU)
@@ -95,7 +94,7 @@ public sealed class GrLatticeCurve3D :
     {
         _pointToVertexDictionary.Clear();
         _indexUToVertexArray = new GrLatticeCurveLocalFrame3D[LatticeSize];
-        VertexList = Array.Empty<GrLatticeCurveLocalFrame3D>();
+        VertexList = [];
 
         return this;
     }
@@ -104,19 +103,19 @@ public sealed class GrLatticeCurve3D :
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public bool ContainsPoint(double x, double y, double z)
     {
-        var key = new Triplet<Float64Scalar>(x, y, z);
+        var key = new Triplet<double>(x, y, z);
 
         return _pointToVertexDictionary.ContainsKey(key);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool ContainsPoint(ITriplet<Float64Scalar> triplet)
+    public bool ContainsPoint(ITriplet<double> triplet)
     {
         return _pointToVertexDictionary.ContainsKey(triplet.ToTriplet());
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool ContainsPoint(Triplet<Float64Scalar> key)
+    public bool ContainsPoint(Triplet<double> key)
     {
         return _pointToVertexDictionary.ContainsKey(key);
     }
@@ -125,17 +124,17 @@ public sealed class GrLatticeCurve3D :
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public bool TryGetVertex(double x, double y, double z, out GrLatticeCurveLocalFrame3D vertex)
     {
-        return _pointToVertexDictionary.TryGetValue(new Triplet<Float64Scalar>(x, y, z), out vertex);
+        return _pointToVertexDictionary.TryGetValue(new Triplet<double>(x, y, z), out vertex);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool TryGetVertex(ITriplet<Float64Scalar> triplet, out GrLatticeCurveLocalFrame3D vertex)
+    public bool TryGetVertex(ITriplet<double> triplet, out GrLatticeCurveLocalFrame3D vertex)
     {
         return _pointToVertexDictionary.TryGetValue(triplet.ToTriplet(), out vertex);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool TryGetVertex(Triplet<Float64Scalar> key, out GrLatticeCurveLocalFrame3D vertex)
+    public bool TryGetVertex(Triplet<double> key, out GrLatticeCurveLocalFrame3D vertex)
     {
         return _pointToVertexDictionary.TryGetValue(key, out vertex);
     }
@@ -196,17 +195,17 @@ public sealed class GrLatticeCurve3D :
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public GrLatticeCurveLocalFrame3D GetVertex(double x, double y, double z)
     {
-        return _pointToVertexDictionary[new Triplet<Float64Scalar>(x, y, z)];
+        return _pointToVertexDictionary[new Triplet<double>(x, y, z)];
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public GrLatticeCurveLocalFrame3D GetVertex(ITriplet<Float64Scalar> triplet)
+    public GrLatticeCurveLocalFrame3D GetVertex(ITriplet<double> triplet)
     {
         return _pointToVertexDictionary[triplet.ToTriplet()];
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public GrLatticeCurveLocalFrame3D GetVertex(Triplet<Float64Scalar> key)
+    public GrLatticeCurveLocalFrame3D GetVertex(Triplet<double> key)
     {
         return _pointToVertexDictionary[key];
     }
@@ -215,16 +214,16 @@ public sealed class GrLatticeCurve3D :
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public GrLatticeCurveLocalFrame3D SetLatticeVertex(int indexU, double x, double y, double z)
     {
-        return SetLatticeVertex(indexU, new Triplet<Float64Scalar>(x, y, z));
+        return SetLatticeVertex(indexU, new Triplet<double>(x, y, z));
     }
         
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public GrLatticeCurveLocalFrame3D SetLatticeVertex(int indexU, ITriplet<Float64Scalar> newPointPair)
+    public GrLatticeCurveLocalFrame3D SetLatticeVertex(int indexU, ITriplet<double> newPointPair)
     {
         return SetLatticeVertex(indexU, newPointPair.ToTriplet());
     }
 
-    public GrLatticeCurveLocalFrame3D SetLatticeVertex(int indexU, Triplet<Float64Scalar> newPointPair)
+    public GrLatticeCurveLocalFrame3D SetLatticeVertex(int indexU, Triplet<double> newPointPair)
     {
         if (IsReady)
             throw new InvalidOperationException();
@@ -232,7 +231,7 @@ public sealed class GrLatticeCurve3D :
         var oldVertex = _indexUToVertexArray[indexU];
 
         // Rounding components
-        newPointPair = new Triplet<Float64Scalar>(
+        newPointPair = new Triplet<double>(
             Math.Round(newPointPair.Item1, 7),
             Math.Round(newPointPair.Item2, 7),
             Math.Round(newPointPair.Item3, 7)
@@ -282,7 +281,7 @@ public sealed class GrLatticeCurve3D :
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public GrLatticeCurve3D SetLatticeVertices(Func<int, Triplet<Float64Scalar>> pointFactory)
+    public GrLatticeCurve3D SetLatticeVertices(Func<int, Triplet<double>> pointFactory)
     {
         for (var indexU = 0; indexU < LatticeSize; indexU++)
             SetLatticeVertex(indexU, pointFactory(indexU));
@@ -291,7 +290,7 @@ public sealed class GrLatticeCurve3D :
     }
         
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public GrLatticeCurve3D SetLatticeVertices(Func<double, Triplet<Float64Scalar>> pointFactory)
+    public GrLatticeCurve3D SetLatticeVertices(Func<double, Triplet<double>> pointFactory)
     {
         var s = 1d / (LatticeSize - 1);
 
@@ -307,7 +306,7 @@ public sealed class GrLatticeCurve3D :
         if (IsReady)
             throw new InvalidOperationException();
 
-        var pointToVertexDictionary = new Dictionary<Triplet<Float64Scalar>, GrLatticeCurveLocalFrame3D>();
+        var pointToVertexDictionary = new Dictionary<Triplet<double>, GrLatticeCurveLocalFrame3D>();
 
         foreach (var vertex in _pointToVertexDictionary.Values)
         {

@@ -9,7 +9,7 @@ namespace GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.GraphViz.Dot.La
 /// </summary>
 public sealed class DotHtmlTagFormatting : DotHtmlTag, IDotHtmlTagFormatting
 {
-    public override IEnumerable<KeyValuePair<string, string>> Attributes => Enumerable.Empty<KeyValuePair<string, string>>();
+    public override IEnumerable<KeyValuePair<string, string>> Attributes => [];
 
 
     internal DotHtmlTagFormatting(string name)

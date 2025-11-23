@@ -1,4 +1,6 @@
-﻿namespace GeometricAlgebraFulcrumLib.Algebra.Polynomials.Float64.CurveBasis;
+﻿using MathNet.Numerics.LinearAlgebra;
+
+namespace GeometricAlgebraFulcrumLib.Algebra.Polynomials.Float64.CurveBasis;
 
 public interface IPolynomialPairProductIntegralSet :
     IPolynomialPairProductSet
@@ -33,5 +35,5 @@ public interface IPolynomialPairProductIntegralSet :
     /// Compute the values of polynomials in this set at parameterValue = 1
     /// </summary>
     /// <returns></returns>
-    double[,] GetValuesAt1();
+    Matrix<double> GetValuesAt1();
 }

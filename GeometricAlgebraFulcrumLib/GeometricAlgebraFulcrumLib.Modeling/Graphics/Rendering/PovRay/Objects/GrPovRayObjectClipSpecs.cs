@@ -43,7 +43,7 @@ public sealed class GrPovRayObjectClipSpecs :
         composer
             .AppendLineAtNewLine("clipped_by {")
             .IncreaseIndentation()
-            .Append(((IGrPovRayCodeElement)ClippingObject).GetPovRayCode())
+            .Append(ClippingObject.GetPovRayCode())
             .DecreaseIndentation()
             .AppendAtNewLine("}");
         

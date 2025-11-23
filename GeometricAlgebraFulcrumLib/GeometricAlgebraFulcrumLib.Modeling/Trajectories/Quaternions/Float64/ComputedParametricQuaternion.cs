@@ -116,12 +116,12 @@ public class ComputedParametricQuaternion :
         if (GetTangentFunc is not null)
             return GetTangentFunc(parameterValue);
 
-        const double zeroEpsilon = 1e-7;
+        const double tolerance = 1e-7;
 
-        var p1 = GetPointFunc(parameterValue - zeroEpsilon);
-        var p2 = GetPointFunc(parameterValue + zeroEpsilon);
+        var p1 = GetPointFunc(parameterValue - tolerance);
+        var p2 = GetPointFunc(parameterValue + tolerance);
 
-        return (p2 - p1) / (2 * zeroEpsilon);
+        return (p2 - p1) / (2 * tolerance);
     }
 
     //[MethodImpl(MethodImplOptions.AggressiveInlining)]

@@ -1,4 +1,4 @@
-﻿using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Matrices;
+﻿using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Numerical.Matrices;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.AffineMaps.Space3D;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.BasicShapes.Triangles.Space3D.Float64;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Primitives;

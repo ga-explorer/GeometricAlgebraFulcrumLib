@@ -138,11 +138,11 @@ public sealed class GaBivectorSparseList :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public GaBivectorSparseList RemoveNearZeroNumbers(double zeroEpsilon)
+    public GaBivectorSparseList RemoveNearZeroNumbers(double tolerance)
     {
         var keys = 
             _numbersDictionary
-                .Where(p => p.Value.IsNearZero(zeroEpsilon))
+                .Where(p => p.Value.IsNearZero(tolerance))
                 .Select(p => p.Key)
                 .ToArray();
 

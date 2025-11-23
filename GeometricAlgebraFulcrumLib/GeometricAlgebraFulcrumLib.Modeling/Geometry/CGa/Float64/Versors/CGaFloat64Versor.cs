@@ -1,9 +1,12 @@
-﻿using System.Diagnostics;
-using System.Runtime.CompilerServices;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivectors;
+﻿using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivectors;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Processors;
+using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space2D;
+using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space3D;
+using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.SpaceND;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Float64.Blades;
+using System.Diagnostics;
+using System.Runtime.CompilerServices;
 
 namespace GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Float64.Versors;
 
@@ -82,7 +85,7 @@ public sealed record CGaFloat64Versor
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     internal CGaFloat64Versor(CGaFloat64GeometricSpace cgaGeometricSpace, XGaFloat64Multivector multivector)
-        : this(cgaGeometricSpace, multivector, multivector.Inverse())
+        : this(cgaGeometricSpace, multivector, multivector.VersorInverse())
     {
         //Debug.Assert(
         //    multivector.Processor.HasSameSignature(cgaGeometricSpace.ConformalProcessor) &&
@@ -125,18 +128,18 @@ public sealed record CGaFloat64Versor
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool IsNearZero(double zeroEpsilon = Float64Utils.ZeroEpsilon)
+    public bool IsNearZero(double tolerance = Float64Utils.DefaultTolerance)
     {
-        return InternalMultivector.IsNearZero(zeroEpsilon);
+        return InternalMultivector.IsNearZero(tolerance);
     }
 
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public CGaFloat64Versor RemoveNearZeroTerms(double zeroEpsilon = Float64Utils.ZeroEpsilon)
+    public CGaFloat64Versor RemoveNearZeroTerms(double tolerance = Float64Utils.DefaultTolerance)
     {
         return new CGaFloat64Versor(
             GeometricSpace,
-            InternalMultivector.MapScalars(s => s.IsNearZero(zeroEpsilon) ? 0 : s)
+            InternalMultivector.MapScalars(s => s.IsNearZero(tolerance) ? 0 : s)
         );
     }
 
@@ -144,19 +147,19 @@ public sealed record CGaFloat64Versor
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public double SpSquared()
     {
-        return InternalMultivector.SpSquared().ScalarValue;
+        return InternalMultivector.SpSquared();
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public double NormSquared()
     {
-        return InternalMultivector.NormSquared().ScalarValue;
+        return InternalMultivector.NormSquared();
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public double Norm()
     {
-        return InternalMultivector.NormSquared().ScalarValue.SqrtOfAbs();
+        return InternalMultivector.NormSquared().SqrtOfAbs();
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -200,7 +203,7 @@ public sealed record CGaFloat64Versor
     {
         return new CGaFloat64Versor(
             GeometricSpace,
-            InternalMultivector.Inverse()
+            InternalMultivector.VersorInverse()
         );
     }
 
@@ -229,7 +232,7 @@ public sealed record CGaFloat64Versor
 
         return norm.IsNearZero()
             ? this
-            : Divide(norm.ScalarValue);
+            : Divide(norm);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -363,7 +366,9 @@ public sealed record CGaFloat64Versor
     {
         return new CGaFloat64Versor(
             GeometricSpace,
-            InternalMultivector.Sp(blade2.InternalMultivector)
+            ConformalProcessor.Scalar(
+                InternalMultivector.Sp(blade2.InternalMultivector)
+            )
         );
     }
 
@@ -372,7 +377,9 @@ public sealed record CGaFloat64Versor
     {
         return new CGaFloat64Versor(
             GeometricSpace,
-            InternalMultivector.Sp(blade2)
+            ConformalProcessor.Scalar(
+                InternalMultivector.Sp(blade2)
+            )
         );
     }
 
@@ -549,6 +556,47 @@ public sealed record CGaFloat64Versor
     public CGaFloat64Versor InverseMapVersor(CGaFloat64Versor versor)
     {
         return InverseMapVersor(versor.InternalMultivector);
+    }
+
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public CGaFloat64Versor TranslateBy(LinFloat64Vector2D egaTranslationVector)
+    {
+        return TranslateBy(
+            GeometricSpace.EncodeVGa.Vector(egaTranslationVector)
+        );
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public CGaFloat64Versor TranslateBy(LinFloat64Vector3D egaTranslationVector)
+    {
+        return TranslateBy(
+            GeometricSpace.EncodeVGa.Vector(egaTranslationVector)
+        );
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public CGaFloat64Versor TranslateBy(LinFloat64Vector egaTranslationVector)
+    {
+        return TranslateBy(
+            GeometricSpace.EncodeVGa.Vector(egaTranslationVector)
+        );
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public CGaFloat64Versor TranslateBy(CGaFloat64Blade egaTranslationVector)
+    {
+        Debug.Assert(
+            egaTranslationVector.IsVGaVector()
+        );
+
+        var eit =
+            0.5d * GeometricSpace.EiVector.Op(egaTranslationVector.InternalKVector);
+
+        var kVector =
+            (1 + eit).Gp(InternalMultivector).Gp(1 - eit);
+
+        return new CGaFloat64Versor(GeometricSpace, kVector);
     }
 
 

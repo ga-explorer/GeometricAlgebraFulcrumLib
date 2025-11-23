@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using GeometricAlgebraFulcrumLib.Utilities.Text;
+﻿using GeometricAlgebraFulcrumLib.Utilities.Text;
 
 namespace GeometricAlgebraFulcrumLib.Utilities.Code.SyntaxTree;
 

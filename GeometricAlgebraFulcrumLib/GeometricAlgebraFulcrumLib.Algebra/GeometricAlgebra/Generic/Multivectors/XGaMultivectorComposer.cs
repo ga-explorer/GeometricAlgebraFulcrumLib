@@ -59,7 +59,7 @@ public abstract class XGaMultivectorComposer<T> :
 
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public IndexSet GetStoredBasisVectorIndices()
+    public IndexSet GetBasisSpan()
     {
         return IndexSet.Create(
             Ids.SelectMany(id => id), 

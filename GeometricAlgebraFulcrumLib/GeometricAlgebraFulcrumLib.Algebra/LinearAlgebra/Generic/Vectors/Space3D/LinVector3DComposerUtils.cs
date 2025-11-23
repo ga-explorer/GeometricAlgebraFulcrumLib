@@ -86,7 +86,7 @@ public static class LinVector3DComposerUtils
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static LinVector3D<T> ToUnitVector<T>(Scalar<T> vectorX, Scalar<T> vectorY, Scalar<T> vectorZ, bool zeroAsSymmetric = true)
     {
-        var s = LinVector3DUtils.VectorENorm(vectorX, vectorY, vectorZ);
+        var s = LinVector3DUtils.L2Norm(vectorX, vectorY, vectorZ);
 
         if (s.IsZero())
             return zeroAsSymmetric
@@ -175,7 +175,7 @@ public static class LinVector3DComposerUtils
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static LinVector3D<T> GetUnitVectorR<T>(this ITriplet<Scalar<T>> vector)
     {
-        var r = vector.VectorENorm();
+        var r = vector.L2Norm();
 
         var cosTheta = r / vector.Item3;
         var sinTheta = (1 - cosTheta * cosTheta).Sqrt();
@@ -206,7 +206,7 @@ public static class LinVector3DComposerUtils
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static LinVector3D<T> GetUnitVectorTheta<T>(this ITriplet<Scalar<T>> vector)
     {
-        var r = vector.VectorENorm();
+        var r = vector.L2Norm();
 
         var cosTheta = vector.Item3 / r;
         var sinTheta = (1 - cosTheta * cosTheta).Sqrt();

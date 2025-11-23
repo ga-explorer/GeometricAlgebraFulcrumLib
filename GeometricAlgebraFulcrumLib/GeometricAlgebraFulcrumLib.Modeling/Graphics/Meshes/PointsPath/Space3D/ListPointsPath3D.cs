@@ -7,20 +7,20 @@ namespace GeometricAlgebraFulcrumLib.Modeling.Graphics.Meshes.PointsPath.Space3D
 /// A path where points are directly stored in memory as a list
 /// </summary>
 public sealed class ListPointsPath3D : 
-    PSeqReadOnlyList1D<ILinFloat64Vector3D>, 
+    PSeqReadOnlyList1D<LinFloat64Vector3D>, 
     IPointsPath3D
 {
-    public ListPointsPath3D(IReadOnlyList<ILinFloat64Vector3D> pointsList)
+    public ListPointsPath3D(IReadOnlyList<LinFloat64Vector3D> pointsList)
         : base(pointsList)
     {
     }
 
-    public ListPointsPath3D(params ILinFloat64Vector3D[] pointsArray)
+    public ListPointsPath3D(params LinFloat64Vector3D[] pointsArray)
         : base(pointsArray)
     {
     }
 
-    public ListPointsPath3D(IEnumerable<ILinFloat64Vector3D> pointsList)
+    public ListPointsPath3D(IEnumerable<LinFloat64Vector3D> pointsList)
         : base(pointsList)
     {
     }
@@ -32,7 +32,7 @@ public sealed class ListPointsPath3D :
                DataList.All(p => p.IsValid());
     }
         
-    public IPointsPath3D MapPoints(Func<ILinFloat64Vector3D, ILinFloat64Vector3D> pointMapping)
+    public IPointsPath3D MapPoints(Func<LinFloat64Vector3D, LinFloat64Vector3D> pointMapping)
     {
         return new ListPointsPath3D(this.Select(pointMapping));
     }

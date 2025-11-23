@@ -19,12 +19,12 @@ public sealed class XeoglDrawingSpace :
     IJsCodeHtmlPageGenerator
 {
     private readonly List<string> _javascriptIncludes 
-        = new List<string>()
-        {
+        =
+        [
             "js/xeogl/xeogl.js",
             "js/xeogl/geometry/vectorTextGeometry.js",
             "js/xeogl/helpers/axisHelper.js"
-        };
+        ];
 
 
     private const string HtmlTemplateText1 = @"
@@ -94,10 +94,10 @@ public sealed class XeoglDrawingSpace :
 
 
     private readonly List<XeoglDrawingSpaceLayer> _layersList
-        = new List<XeoglDrawingSpaceLayer>();
+        = [];
 
     private readonly List<XeoglLight> _lightsList
-        = new List<XeoglLight>();
+        = [];
 
     private readonly Dictionary<string, XeoglGeometry> _geometryDictionary
         = new ADictionary<string, XeoglGeometry>();

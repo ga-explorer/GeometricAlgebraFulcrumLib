@@ -1,13 +1,17 @@
-﻿using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space2D;
+﻿using System.Runtime.CompilerServices;
+using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space2D;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space3D;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space4D;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.SpaceND;
+using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Numerical;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Combinations;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Dictionary;
+using GeometricAlgebraFulcrumLib.Utilities.Structures.Extensions;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.IndexSets;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Tuples;
-using System.Runtime.CompilerServices;
+using MathNet.Numerics.LinearAlgebra;
+using MathNet.Numerics.LinearAlgebra.Double;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivectors
 {
@@ -20,16 +24,16 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivecto
         public abstract XGaFloat64Multivector Simplify();
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public abstract XGaFloat64Multivector RemoveSmallTerms(double zeroEpsilon = Float64Utils.ZeroEpsilon);
+        public abstract XGaFloat64Multivector RemoveSmallTerms(double tolerance = Float64Utils.DefaultTolerance);
         //{
         //    return this switch
         //    {
         //        XGaFloat64Scalar s => s,
-        //        XGaFloat64Vector v => v.RemoveSmallTerms(zeroEpsilon),
-        //        XGaFloat64Bivector bv => bv.RemoveSmallTerms(zeroEpsilon),
-        //        XGaFloat64HigherKVector kv => kv.RemoveSmallTerms(zeroEpsilon),
-        //        XGaFloat64GradedMultivector mv1 => mv1.RemoveSmallTerms(zeroEpsilon),
-        //        XGaFloat64UniformMultivector mv1 => mv1.RemoveSmallTerms(zeroEpsilon),
+        //        XGaFloat64Vector v => v.RemoveSmallTerms(tolerance),
+        //        XGaFloat64Bivector bv => bv.RemoveSmallTerms(tolerance),
+        //        XGaFloat64HigherKVector kv => kv.RemoveSmallTerms(tolerance),
+        //        XGaFloat64GradedMultivector mv1 => mv1.RemoveSmallTerms(tolerance),
+        //        XGaFloat64UniformMultivector mv1 => mv1.RemoveSmallTerms(tolerance),
         //        _ => throw new InvalidOperationException()
         //    };
         //}
@@ -256,7 +260,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivecto
             return LinFloat64Vector4D.Create(Scalar(0), Scalar(1), Scalar(2), Scalar(3));
         }
 
-
+        
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public double[] MultivectorToArray1D()
         {
@@ -318,6 +322,74 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivecto
             return array;
         }
 
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public Vector<double> MultivectorToMathNetVector()
+        {
+            if (VSpaceDimensions > 31)
+                throw new InvalidOperationException();
+
+            return MultivectorToToMathNetVector(1 << VSpaceDimensions);
+        }
+
+        public Vector<double> MultivectorToToMathNetVector(int size)
+        {
+            if (VSpaceDimensions > 31 || size < (1 << VSpaceDimensions))
+                throw new InvalidOperationException();
+
+            var vector = SparseVector.Create(size, 0);
+
+            foreach (var (index, scalar) in GetMultivectorArrayItems())
+                vector.At((int)index, scalar);
+
+            return vector;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public Matrix<double> MultivectorToMatrix(int vSpaceDimensions)
+        {
+            return LeftGpMapMatrix(vSpaceDimensions);
+        }
+
+        public Matrix<double> ScalarPlusBivectorToMatrix()
+        {
+            var array = GetBivectorPart().ToSkewSymmetricMatrix();
+            var scalar = Scalar();
+
+            var size = array.RowCount;
+            for (var i = 0; i < size; i++)
+            {
+                var signature = Processor.Signature(i);
+
+                if (signature.IsZero) continue;
+
+                array[i, i] = signature.IsPositive
+                    ? scalar
+                    : -scalar;
+            }
+
+            return array;
+        }
+
+        public Matrix<double> ScalarPlusBivectorToMatrix(int size)
+        {
+            var array = GetBivectorPart().ToSkewSymmetricMatrix(size);
+            var scalar = Scalar();
+
+            for (var i = 0; i < size; i++)
+            {
+                var signature = Processor.Signature(i);
+
+                if (signature.IsZero) continue;
+
+                array[i, i] = signature.IsPositive
+                    ? scalar
+                    : -scalar;
+            }
+
+            return array;
+        }
+
     }
 
     public abstract partial class XGaFloat64KVector
@@ -349,24 +421,48 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivecto
         }
 
 
-        
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public double[] KVectorToArray1D()
         {
             return KVectorToArray1D(
-                (int)KvSpaceDimensions
+                (int)VSpaceDimensions.GetBinomialCoefficient(Grade)
             );
         }
 
         public double[] KVectorToArray1D(int arraySize)
         {
-            if ((ulong)arraySize < KvSpaceDimensions)
+            var kvSpaceDimensions =
+                (int)VSpaceDimensions.GetBinomialCoefficient(Grade);
+
+            if (arraySize < kvSpaceDimensions)
                 throw new InvalidOperationException();
 
             var array = new double[arraySize];
 
-            foreach (var (index, scalar) in GetKVectorArrayItems())
+            foreach (var (index, scalar) in GetKVectorArrayItems().ToTuples())
                 array[index] = scalar;
+
+            return array;
+        }
+        
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public Vector<double> KVectorToToMathNetVector()
+        {
+            return KVectorToToMathNetVector(
+                (int)KvSpaceDimensions
+            );
+        }
+
+        public Vector<double> KVectorToToMathNetVector(int size)
+        {
+            if ((ulong)size < KvSpaceDimensions)
+                throw new InvalidOperationException();
+
+            var array = SparseVector.Create(size, 0);
+
+            foreach (var (index, scalar) in GetKVectorArrayItems())
+                array.At((int)index, scalar);
 
             return array;
         }
@@ -378,6 +474,17 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivecto
         public override XGaFloat64Multivector Simplify()
         {
             return this;
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public override XGaFloat64Scalar RemoveSmallTerms(double tolerance = Float64Utils.DefaultTolerance)
+        {
+            var scalarThreshold =
+                tolerance.Abs();// * Scalars.Max(s => s.Abs());
+
+            return GetPart(s =>
+                s <= -scalarThreshold || s >= scalarThreshold
+            );
         }
 
 
@@ -400,7 +507,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivecto
                 : new XGaFloat64Scalar(
                     Processor,
                     scalarMapping(
-                        Metric.GetBasisScalarId(),
+                        Metric.BasisScalarId(),
                         ScalarValue
                     )
                 );
@@ -425,12 +532,12 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivecto
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override XGaFloat64Vector RemoveSmallTerms(double zeroEpsilon = Float64Utils.ZeroEpsilon)
+        public override XGaFloat64Vector RemoveSmallTerms(double tolerance = Float64Utils.DefaultTolerance)
         {
-            if (Count <= 1) return this;
+            if (Count < 1) return this;
 
             var scalarThreshold =
-                zeroEpsilon.Abs() * Scalars.Max(s => s.Abs());
+                tolerance.Abs();// * Scalars.Max(s => s.Abs());
 
             return GetPart(s =>
                 s <= -scalarThreshold || s >= scalarThreshold
@@ -561,48 +668,61 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivecto
         
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public double[] VectorToArray1D()
+        public Vector<double> VectorToMathNetVector()
         {
-            return VectorToArray1D(VSpaceDimensions);
+            return VectorToSparseMathNetVector(VSpaceDimensions);
         }
         
-        public double[] VectorToArray1D(int arraySize)
+        public Vector<double> VectorToSparseMathNetVector(int size)
         {
-            if (arraySize < VSpaceDimensions)
+            if (size < VSpaceDimensions)
                 throw new InvalidOperationException();
 
-            var array = new double[arraySize];
+            var array = SparseVector.Create(size, 0);
 
             foreach (var (id, scalar) in IdScalarPairs)
-                array[id.FirstIndex] = scalar;
+                array.At(id.FirstIndex, scalar);
 
             return array;
         }
         
-        public double[,] VectorToRowArray2D(int arraySize)
+        public Vector<double> VectorToDenseMathNetVector(int size)
         {
-            if (arraySize < VSpaceDimensions)
+            if (size < VSpaceDimensions)
                 throw new InvalidOperationException();
 
-            var array = new double[1, arraySize];
+            var array = DenseVector.Create(size, 0);
+
+            foreach (var (id, scalar) in IdScalarPairs)
+                array.At(id.FirstIndex, scalar);
+
+            return array;
+        }
+
+        public Matrix VectorToDenseRowMatrix(int size)
+        {
+            if (size < VSpaceDimensions)
+                throw new InvalidOperationException();
+
+            var array = new double[1, size];
 
             foreach (var (id, scalar) in IdScalarPairs)
                 array[0, id.FirstIndex] = scalar;
 
-            return array;
+            return array.ToMathNetDenseMatrix();
         }
         
-        public double[,] VectorToColumnArray2D(int arraySize)
+        public Matrix VectorToDenseColumnMatrix(int size)
         {
-            if (arraySize < VSpaceDimensions)
+            if (size < VSpaceDimensions)
                 throw new InvalidOperationException();
 
-            var array = new double[arraySize, 1];
+            var array = new double[size, 1];
 
             foreach (var (id, scalar) in IdScalarPairs)
                 array[id.FirstIndex, 0] = scalar;
 
-            return array;
+            return array.ToMathNetDenseMatrix();
         }
 
 
@@ -635,6 +755,57 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivecto
 
             return indexScalarDictionary.CreateLinVector();
         }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public double[] VectorToArray1D()
+        {
+            return VectorToArray1D(VSpaceDimensions);
+        }
+        
+        public double[] VectorToArray1D(int arraySize)
+        {
+            if (arraySize < VSpaceDimensions)
+                throw new InvalidOperationException();
+
+            var array = new double[arraySize];
+
+            foreach (var (id, scalar) in IdScalarTuples)
+                array[id.FirstIndex] = scalar;
+
+            return array;
+        }
+
+        
+        public double[,] VectorToRowArray2D(int arraySize)
+        {
+            if (arraySize < VSpaceDimensions)
+                throw new InvalidOperationException();
+
+            var array = new double[1, arraySize];
+
+            foreach (var (id, scalar) in IdScalarTuples)
+                array[0, id.FirstIndex] = scalar;
+
+            return array;
+        }
+
+        
+        public double[,] VectorToColumnArray2D(int arraySize)
+        {
+            if (arraySize < VSpaceDimensions)
+                throw new InvalidOperationException();
+
+            var array = new double[arraySize, 1];
+
+            foreach (var (id, scalar) in IdScalarTuples)
+                array[id.FirstIndex, 0] = scalar;
+
+            return array;
+        }
+
+
+        
     }
 
     public sealed partial class XGaFloat64Bivector
@@ -648,12 +819,12 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivecto
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override XGaFloat64Bivector RemoveSmallTerms(double zeroEpsilon = Float64Utils.ZeroEpsilon)
+        public override XGaFloat64Bivector RemoveSmallTerms(double tolerance = Float64Utils.DefaultTolerance)
         {
-            if (Count <= 1) return this;
+            if (Count < 1) return this;
 
             var scalarThreshold =
-                zeroEpsilon.Abs() * Scalars.Max(s => s.Abs());
+                tolerance.Abs();// * Scalars.Max(s => s.Abs());
 
             return GetPart(s =>
                 s <= -scalarThreshold || s >= scalarThreshold
@@ -785,8 +956,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivecto
                 .AddTerms(termList)
                 .GetBivector();
         }
-
-
+        
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public double[] BivectorToArray1D()
@@ -801,7 +971,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivecto
 
             var array = new double[arraySize];
 
-            foreach (var (id, scalar) in IdScalarPairs)
+            foreach (var (id, scalar) in IdScalarTuples)
             {
                 var index1 = id.FirstIndex;
                 var index2 = id.LastIndex;
@@ -827,7 +997,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivecto
 
             var array = new double[arraySize, arraySize];
 
-            foreach (var (id, scalar) in IdScalarPairs)
+            foreach (var (id, scalar) in IdScalarTuples)
             {
                 var index1 = id.FirstIndex;
                 var index2 = id.LastIndex;
@@ -838,8 +1008,6 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivecto
 
             return array;
         }
-
-
     }
 
     public sealed partial class XGaFloat64HigherKVector
@@ -853,12 +1021,12 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivecto
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override XGaFloat64HigherKVector RemoveSmallTerms(double zeroEpsilon = Float64Utils.ZeroEpsilon)
+        public override XGaFloat64HigherKVector RemoveSmallTerms(double tolerance = Float64Utils.DefaultTolerance)
         {
-            if (Count <= 1) return this;
+            if (Count < 1) return this;
 
             var scalarThreshold =
-                zeroEpsilon.Abs() * Scalars.Max(s => s.Abs());
+                tolerance.Abs();// * Scalars.Max(s => s.Abs());
 
             return GetPart(s =>
                 s <= -scalarThreshold || s >= scalarThreshold
@@ -919,12 +1087,12 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivecto
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override XGaFloat64GradedMultivector RemoveSmallTerms(double zeroEpsilon = Float64Utils.ZeroEpsilon)
+        public override XGaFloat64GradedMultivector RemoveSmallTerms(double tolerance = Float64Utils.DefaultTolerance)
         {
-            if (Count <= 1) return this;
+            if (Count < 1) return this;
 
-            var scalarThreshold = 
-                zeroEpsilon.Abs() * Scalars.Max(s => s.Abs());
+            var scalarThreshold =
+                tolerance.Abs();// * Scalars.Max(s => s.Abs());
 
             return GetPart(s => 
                 s <= -scalarThreshold || s >= scalarThreshold
@@ -1054,12 +1222,12 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivecto
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override XGaFloat64UniformMultivector RemoveSmallTerms(double zeroEpsilon = Float64Utils.ZeroEpsilon)
+        public override XGaFloat64UniformMultivector RemoveSmallTerms(double tolerance = Float64Utils.DefaultTolerance)
         {
-            if (Count <= 1) return this;
+            if (Count < 1) return this;
 
             var scalarThreshold = 
-                zeroEpsilon.Abs() * Scalars.Max(s => s.Abs());
+                tolerance.Abs();// * Scalars.Max(s => s.Abs());
 
             return GetPart(s => 
                 s <= -scalarThreshold || s >= scalarThreshold

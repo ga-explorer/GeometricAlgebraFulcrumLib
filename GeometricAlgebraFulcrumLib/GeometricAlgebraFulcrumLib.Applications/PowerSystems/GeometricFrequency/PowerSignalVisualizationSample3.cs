@@ -119,7 +119,7 @@ public static class PowerSignalVisualizationSample3
         //const double frequency = Math.Tau * 0.1d;
 
         var omegaMean = powerSignal.GetDarbouxBivectorMean();
-        var omegaMeanNorm = omegaMean.Norm();
+        var omegaMeanNorm = omegaMean.L2Norm();
 
         Console.WriteLine($"Mean omega: {omegaMean}");
         Console.WriteLine($"Mean omega norm: {omegaMeanNorm}");

@@ -14,9 +14,9 @@ public interface IGraphicsTriangleGeometry3D
 
     IEnumerable<Triplet<int>> TriangleVertexIndices { get; }
 
-    IEnumerable<ILinFloat64Vector3D> VertexNormals { get; }
+    IEnumerable<LinFloat64Vector3D> VertexNormals { get; }
 
-    IEnumerable<ILinFloat64Vector2D> VertexTextureUVs { get; }
+    IEnumerable<LinFloat64Vector2D> VertexTextureUVs { get; }
 
     IEnumerable<Color> VertexColors { get; }
 

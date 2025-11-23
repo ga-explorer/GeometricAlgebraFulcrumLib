@@ -1,4 +1,5 @@
 ﻿using GeometricAlgebraFulcrumLib.Applications.Symbolic.EllipseFitting;
+using GeometricAlgebraFulcrumLib.Applications.Symbolic.Robotics;
 
 namespace GeometricAlgebraFulcrumLib.Applications.Symbolic;
 
@@ -24,6 +25,8 @@ internal class Program
 
         //InverseKinematics6RSamples.MetaprogrammingExample2();
 
+        InverseKinematics6RSamples.NumericExample();
+
         //GradedMultivectorLibSample.GenerateCode();
 
 
@@ -32,11 +35,17 @@ internal class Program
         //EigenDecomposeSamples.Example2();
 
 
-        var code = JacobiSymmetricEigenCodeComposer.ComposeCode();
+        //var code = JacobiSymmetricEigenCodeComposer.ComposeCode();
 
-        File.WriteAllText(
-            @"D:\Projects\Papers\Active\2023-Conic Fitting\FittingBenchmark\evd.cs",
-            code
-        );
+        //File.WriteAllText(
+        //    @"D:\Projects\Papers\Active\2023-Conic Fitting\FittingBenchmark\evd.cs",
+        //    code
+        //);
+
+        //EigenValueTestProgram.MainTests();
+        //EigenDecomposition4X4Tests.MainTests();
+        //EigenDecomposition4X4.ExampleUse();
+        
+
     }
 }

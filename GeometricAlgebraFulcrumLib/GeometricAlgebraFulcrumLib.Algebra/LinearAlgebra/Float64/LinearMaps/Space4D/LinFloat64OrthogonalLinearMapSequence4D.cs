@@ -3,9 +3,10 @@ using System.Runtime.CompilerServices;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Angles;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.LinearMaps.Space4D.Reflection;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.LinearMaps.Space4D.Rotation;
-using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Matrices;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.SubSpaces.Space4D;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space4D;
+using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Numerical;
+using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Numerical.Matrices;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.BitManipulation;
 
@@ -84,7 +85,7 @@ public sealed class LinFloat64OrthogonalLinearMapSequence4D :
         var matrix =
             LinFloat64HyperPlaneNormalReflectionSequence4D
                 .CreateRandom(random, count)
-                .ToSquareMatrix3();
+                .ToSquareMatrix4();
 
         return CreateFromMatrix(matrix);
     }
@@ -94,7 +95,7 @@ public sealed class LinFloat64OrthogonalLinearMapSequence4D :
         var mapSequence = Create();
 
         var vectorList =
-            random.GetMathNetOrthonormalVectors(3, count);
+            random.GetOrthonormalVectors(3, count);
 
         for (var i = 0; i < count / 2; i++)
         {
@@ -179,12 +180,12 @@ public sealed class LinFloat64OrthogonalLinearMapSequence4D :
         return true;
     }
 
-    public bool IsNearIdentity(double zeroEpsilon = 1E-12)
+    public bool IsNearIdentity(double tolerance = Float64Utils.DefaultTolerance)
     {
         for (var basisIndex = 0; basisIndex < VSpaceDimensions; basisIndex++)
         {
             var isSameVectorBasis =
-                MapBasisVector(basisIndex).IsNearVectorBasis(basisIndex, zeroEpsilon);
+                MapBasisVector(basisIndex).IsNearVectorBasis(basisIndex, tolerance);
 
             if (!isSameVectorBasis) return false;
         }
@@ -197,7 +198,7 @@ public sealed class LinFloat64OrthogonalLinearMapSequence4D :
     /// are nearly pair-wise orthogonal
     /// </summary>
     /// <returns></returns>
-    public bool IsNearOrthogonalMapsSequence(double zeroEpsilon = Float64Utils.ZeroEpsilon)
+    public bool IsNearOrthogonalMapsSequence(double tolerance = Float64Utils.DefaultTolerance)
     {
         if (ReflectionSequence.Count + 2 * RotationSequence.Count > VSpaceDimensions)
             return false;
@@ -211,9 +212,9 @@ public sealed class LinFloat64OrthogonalLinearMapSequence4D :
             {
                 var u2 = reflection.ReflectionNormal;
 
-                if (!u1.IsNearOrthogonalTo(u2, zeroEpsilon))
+                if (!u1.IsNearOrthogonalTo(u2, tolerance))
                     return false;
-                if (!v1.IsNearOrthogonalTo(u2, zeroEpsilon))
+                if (!v1.IsNearOrthogonalTo(u2, tolerance))
                     return false;
             }
 
@@ -222,13 +223,13 @@ public sealed class LinFloat64OrthogonalLinearMapSequence4D :
                 var u2 = RotationSequence[j].SourceVector;
                 var v2 = RotationSequence[j].TargetVector;
 
-                if (!u1.IsNearOrthogonalTo(u2, zeroEpsilon))
+                if (!u1.IsNearOrthogonalTo(u2, tolerance))
                     return false;
-                if (!u1.IsNearOrthogonalTo(v2, zeroEpsilon))
+                if (!u1.IsNearOrthogonalTo(v2, tolerance))
                     return false;
-                if (!v1.IsNearOrthogonalTo(u2, zeroEpsilon))
+                if (!v1.IsNearOrthogonalTo(u2, tolerance))
                     return false;
-                if (!v1.IsNearOrthogonalTo(v2, zeroEpsilon))
+                if (!v1.IsNearOrthogonalTo(v2, tolerance))
                     return false;
             }
         }
@@ -241,7 +242,7 @@ public sealed class LinFloat64OrthogonalLinearMapSequence4D :
             {
                 var u2 = ReflectionSequence[j].ReflectionNormal;
 
-                if (!u1.IsNearOrthogonalTo(u2, zeroEpsilon))
+                if (!u1.IsNearOrthogonalTo(u2, tolerance))
                     return false;
             }
         }
@@ -281,7 +282,7 @@ public sealed class LinFloat64OrthogonalLinearMapSequence4D :
     public LinFloat64Vector4D MapVector(ILinFloat64Vector4D vector)
     {
         var vector1 =
-            LinFloat64Vector4DUtils.ToLinVector4D(vector);
+            vector.ToLinVector4D();
 
         if (RotationSequence.Count > 0)
             vector1 = RotationSequence.MapVector(vector1);
@@ -300,7 +301,7 @@ public sealed class LinFloat64OrthogonalLinearMapSequence4D :
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public LinFloat64OrthogonalLinearMapSequence4D ReduceSequence()
     {
-        return CreateFromMatrix(this.ToSquareMatrix3());
+        return CreateFromMatrix(this.ToSquareMatrix4());
     }
 
 

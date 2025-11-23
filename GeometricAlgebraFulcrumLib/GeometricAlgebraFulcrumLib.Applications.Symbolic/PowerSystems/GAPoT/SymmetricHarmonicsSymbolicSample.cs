@@ -2,12 +2,12 @@
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.LinearMaps.Outermorphisms;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Multivectors;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Processors;
-using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Matrices;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Generic;
 using GeometricAlgebraFulcrumLib.Mathematica.Algebra;
 using GeometricAlgebraFulcrumLib.Mathematica.Utilities.Structures;
 using GeometricAlgebraFulcrumLib.Mathematica.Utilities.Structures.ExprFactory;
 using GeometricAlgebraFulcrumLib.Mathematica.Utilities.Text;
+using GeometricAlgebraFulcrumLib.Utilities.Structures.Extensions;
 using Wolfram.NETLink;
 
 namespace GeometricAlgebraFulcrumLib.Applications.Symbolic.PowerSystems.GAPoT;
@@ -213,9 +213,9 @@ public static class SymmetricHarmonicsSymbolicSample
             var clarkeArray =
                 clarkeMap
                     .GetVectorMapArray(n)
-                    .MapScalars(scalar =>
-                            Mfs.TrigReduce[Mfs.FullSimplify[scalar]].Evaluate()
-                    //Mfs.N[scalar].Simplify()
+                    .MapItems(scalar =>
+                        Mfs.TrigReduce[Mfs.FullSimplify[scalar]].Evaluate()
+                        //Mfs.N[scalar].Simplify()
                     );
 
             Console.WriteLine("Generated Clarke Matrix:");

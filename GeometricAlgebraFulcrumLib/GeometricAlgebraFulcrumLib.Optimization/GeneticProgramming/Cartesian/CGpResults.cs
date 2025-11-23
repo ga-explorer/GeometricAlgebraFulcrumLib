@@ -1,5 +1,5 @@
 ﻿using System.Collections;
-using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Matrices;
+using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Numerical.Matrices;
 
 namespace GeometricAlgebraFulcrumLib.Optimization.GeneticProgramming.Cartesian;
 

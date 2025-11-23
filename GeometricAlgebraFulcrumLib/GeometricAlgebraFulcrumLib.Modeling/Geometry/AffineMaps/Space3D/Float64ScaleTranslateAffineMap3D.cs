@@ -1,11 +1,13 @@
 ﻿using System.Diagnostics;
 using System.Numerics;
 using System.Runtime.CompilerServices;
-using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Matrices;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space3D;
+using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Numerical;
+using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Numerical.Matrices;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.AffineMaps.Space1D;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Tuples;
+using MathNet.Numerics.LinearAlgebra;
 
 namespace GeometricAlgebraFulcrumLib.Modeling.Geometry.AffineMaps.Space3D;
 
@@ -126,7 +128,7 @@ public sealed record Float64ScaleTranslateAffineMap3D :
     
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Float64ScaleTranslateAffineMap3D CreateTranslate(ITriplet<Float64Scalar> offsetVector)
+    public static Float64ScaleTranslateAffineMap3D CreateTranslate(ITriplet<double> offsetVector)
     {
         return offsetVector.IsZeroVector() 
             ? Identity 
@@ -182,7 +184,7 @@ public sealed record Float64ScaleTranslateAffineMap3D :
         return new Float64ScaleTranslateAffineMap3D(baseMap1, baseMap2, baseMap3);
     }
 
-    public static Float64ScaleTranslateAffineMap3D CreateFromRanges(ITriplet<Float64Scalar> inputVector1, ITriplet<Float64Scalar> inputVector2, ITriplet<Float64Scalar> outputVector1, ITriplet<Float64Scalar> outputVector2)
+    public static Float64ScaleTranslateAffineMap3D CreateFromRanges(ITriplet<double> inputVector1, ITriplet<double> inputVector2, ITriplet<double> outputVector1, ITriplet<double> outputVector2)
     {
         var baseMap1 = Float64AffineMap1D.CreateFromRanges(
             inputVector1.Item1,
@@ -327,11 +329,11 @@ public sealed record Float64ScaleTranslateAffineMap3D :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool IsNearIdentity(double zeroEpsilon = Float64Utils.ZeroEpsilon)
+    public bool IsNearIdentity(double tolerance = Float64Utils.DefaultTolerance)
     {
-        return Item1.IsNearIdentity(zeroEpsilon) &&
-               Item2.IsNearIdentity(zeroEpsilon) &&
-               Item3.IsNearIdentity(zeroEpsilon);
+        return Item1.IsNearIdentity(tolerance) &&
+               Item2.IsNearIdentity(tolerance) &&
+               Item3.IsNearIdentity(tolerance);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -392,15 +394,15 @@ public sealed record Float64ScaleTranslateAffineMap3D :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public double[,] GetArray2D()
+    public Matrix<double> GetMatrix()
     {
-        return new double[,]
+        return (new double[,]
         {
             {Item1.Scaling, 0, 0, Item1.Offset},
             {0, Item2.Scaling, 0, Item2.Offset},
             {0, 0, Item3.Scaling, Item3.Offset},
             {0, 0, 0, 1}
-        };
+        }).ToMathNetDenseMatrix();
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]

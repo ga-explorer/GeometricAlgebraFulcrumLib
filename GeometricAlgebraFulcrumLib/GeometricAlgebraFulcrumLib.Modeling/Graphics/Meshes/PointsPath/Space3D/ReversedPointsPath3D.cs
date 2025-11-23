@@ -4,7 +4,7 @@ using GeometricAlgebraFulcrumLib.Utilities.Structures.Sequences.Periodic1D;
 namespace GeometricAlgebraFulcrumLib.Modeling.Graphics.Meshes.PointsPath.Space3D;
 
 public class ReversedPointsPath3D : 
-    PSeqReverse1D<ILinFloat64Vector3D>, 
+    PSeqReverse1D<LinFloat64Vector3D>, 
     IPointsPath3D
 {
     public IPointsPath3D BasePath { get; }
@@ -22,7 +22,7 @@ public class ReversedPointsPath3D :
         return this.All(p => p.IsValid());
     }
 
-    public IPointsPath3D MapPoints(Func<ILinFloat64Vector3D, ILinFloat64Vector3D> pointMapping)
+    public IPointsPath3D MapPoints(Func<LinFloat64Vector3D, LinFloat64Vector3D> pointMapping)
     {
         return new ReversedPointsPath3D(
             BasePath.MapPoints(pointMapping)

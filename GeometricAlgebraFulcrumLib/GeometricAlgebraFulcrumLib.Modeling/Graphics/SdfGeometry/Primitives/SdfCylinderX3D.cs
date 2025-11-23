@@ -17,6 +17,6 @@ public sealed class SdfCylinderX3D : ScalarDistanceFunction
 
     public override double GetScalarDistance(ILinFloat64Vector3D point)
     {
-        return (point.YzToLinVector2D() - CenterYz).VectorENorm() - Radius;
+        return LinFloat64Vector2DUtils.L2Norm((point.YzToLinVector2D() - CenterYz)) - Radius;
     }
 }

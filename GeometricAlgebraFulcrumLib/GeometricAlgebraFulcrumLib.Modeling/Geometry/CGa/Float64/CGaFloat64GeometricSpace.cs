@@ -1,16 +1,19 @@
-﻿using System.Collections.Immutable;
-using System.Runtime.CompilerServices;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.LinearMaps.Outermorphisms;
+﻿using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.LinearMaps.Outermorphisms;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivectors;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Processors;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.LinearMaps.SpaceND;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space2D;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space3D;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.SpaceND;
+using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Numerical;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Float64.Blades;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Float64.Encoding;
+using GeometricAlgebraFulcrumLib.Utilities.Structures.BitManipulation;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.IndexSets;
 using GeometricAlgebraFulcrumLib.Utilities.Text.Text.Markdown.Tables;
+using System.Collections.Immutable;
+using System.Runtime.CompilerServices;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
 
 namespace GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Float64;
 
@@ -23,7 +26,7 @@ namespace GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Float64;
 /// - Conformal GA Directions, Tangents, Flats, and Round (see chapter 14 in Geometric Algebra for Computer Science)
 ///   and versors (Translation, Rotation, Uniform Scaling, and Transversion) (see chapter 16 in Geometric Algebra for Computer Science)
 /// </summary>
-public class CGaFloat64GeometricSpace :
+public partial class CGaFloat64GeometricSpace :
     GaFloat64GeometricSpace
 {
     public static CGaFloat64GeometricSpace4D Space4D
@@ -270,7 +273,7 @@ public class CGaFloat64GeometricSpace :
         Ie = new CGaFloat64Blade(
             this, 
             ConformalProcessor.KVectorTerm(
-                IndexSet.CreateDense(VSpaceDimensions - 2)
+                IndexSet.CreateDense(VSpaceDimensions - 2).ShiftIndices(2)
             )
         );
         IeInv = Ie.Inverse();
@@ -336,7 +339,8 @@ public class CGaFloat64GeometricSpace :
         vectorMapArray[VSpaceDimensions - 1, 1] = -0.5d;
 
         return vectorMapArray
-            .ColumnsToLinVectors()
+            .ToMathNetDenseMatrix()
+            .Columns()
             .ToLinUnilinearMap()
             .ToOutermorphism(Processor);
     }
@@ -363,7 +367,8 @@ public class CGaFloat64GeometricSpace :
         vectorMapArray[1, VSpaceDimensions - 1] = -1d;
 
         return vectorMapArray
-            .ColumnsToLinVectors()
+            .ToMathNetDenseMatrix()
+            .Columns()
             .ToLinUnilinearMap()
             .ToOutermorphism(Processor);
     }
@@ -440,6 +445,66 @@ public class CGaFloat64GeometricSpace :
         //        .MapBasisBlades(id => id & eiIdMask)
         //        .GetFirstKVectorPart()
         //);
+    }
+
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public IEnumerable<CGaFloat64Blade> GetBasisBladesVGa()
+    {
+        return (1UL << VSpaceDimensions - 2)
+            .GetRange()
+            .OrderBy(id => id.Grade())
+            .ThenBy(id => id)
+            .Select(id =>
+                ConformalProcessor
+                    .KVectorTerm(id << 2)
+                    .ToConformalBlade(this)
+            );
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public IEnumerable<CGaFloat64Blade> GetBasisBladesPGa()
+    {
+        return (1UL << VSpaceDimensions - 1)
+            .GetRange()
+            .OrderBy(id => id.Grade())
+            .ThenBy(id => id)
+            .Select(id =>
+                BasisSpecs
+                    .BasisMapInverse
+                    .OmMapBasisBlade((IndexSet)id)
+                    .ToConformalBlade(this)
+            );
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public IEnumerable<CGaFloat64Blade> GetBasisBladesCGa()
+    {
+        return GaSpaceDimensions
+            .GetRange()
+            .OrderBy(id => id.Grade())
+            .ThenBy(id => id)
+            .Select(id =>
+                BasisSpecs
+                    .BasisMapInverse
+                    .OmMapBasisBlade((IndexSet)id)
+                    .ToConformalBlade(this)
+            );
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public IEnumerable<CGaFloat64Blade> GetBasisBladesCGaInf()
+    {
+        return (1UL << VSpaceDimensions - 1)
+            .GetRange(id => id << 1)
+            .OrderBy(id => id.Grade())
+            .ThenBy(id => id)
+            .Select(id =>
+                BasisSpecs
+                    .BasisMapInverse
+                    .OmMapBasisBlade((IndexSet)id)
+                    .ToConformalBlade(this)
+            );
     }
 
 
@@ -519,7 +584,7 @@ public class CGaFloat64GeometricSpace :
         var n = 1 << VSpaceDimensions;
 
         var basisBladeList = 
-            this.GetBasisBladesCGa().ToImmutableArray();
+            GetBasisBladesCGa().ToImmutableArray();
 
         var tableArray = new XGaFloat64Multivector[n, n];
 

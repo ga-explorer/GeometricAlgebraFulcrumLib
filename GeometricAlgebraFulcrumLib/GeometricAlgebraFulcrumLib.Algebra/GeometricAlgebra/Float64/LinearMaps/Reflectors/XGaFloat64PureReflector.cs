@@ -27,7 +27,7 @@ public sealed class XGaFloat64PureReflector :
         : base(vector.Processor)
     {
         Vector = vector;
-        VectorInverse = vector.Inverse();
+        VectorInverse = vector.VersorInverse();
     }
 
     private XGaFloat64PureReflector(XGaFloat64Vector vector, XGaFloat64Vector vectorInverse)
@@ -41,7 +41,7 @@ public sealed class XGaFloat64PureReflector :
     public override bool IsValid()
     {
         // Make sure the storage and its reverse are correct
-        if (!(Vector.Inverse() - VectorInverse).IsNearZero())
+        if (!(Vector.VersorInverse() - VectorInverse).IsNearZero())
             return false;
 
         //// Make sure storage gp inverse(storage) == 1

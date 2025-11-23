@@ -20,7 +20,7 @@ public sealed class GrLatticeSurfaceList3D :
     IReadOnlyList<GrLatticeSurfaceLocalFrame3D>
 {
     private readonly List<GrLatticeSurface3D> _surfaceList
-        = new List<GrLatticeSurface3D>();
+        = [];
 
 
     public int Count 
@@ -35,18 +35,18 @@ public sealed class GrLatticeSurfaceList3D :
     public bool VertexColorsEnabled { get; set; }
 
     public IReadOnlyList<GrLatticeSurfaceLocalFrame3D> VertexList { get; private set; } 
-        = Array.Empty<GrLatticeSurfaceLocalFrame3D>();
+        = [];
         
     public IEnumerable<GrLatticeSurfaceLocalFrame3D> Vertices 
         => IsReady
             ? VertexList
             : _surfaceList.SelectMany(b => b.Vertices);
         
-    public IEnumerable<ILinFloat64Vector3D> VertexPoints 
+    public IEnumerable<LinFloat64Vector3D> VertexPoints 
         => Vertices.Select(v => v.Point);
 
-    public IEnumerable<ILinFloat64Vector3D> VertexNormals 
-        => Vertices.Select(v => v.Normal);
+    public IEnumerable<LinFloat64Vector3D> VertexNormals 
+        => Vertices.Select(v => v.Normal.ToLinVector3D());
 
     public IEnumerable<LinFloat64Vector2D> VertexTextureUVs 
         => Vertices.Select(v => v.ParameterValue);
@@ -55,7 +55,7 @@ public sealed class GrLatticeSurfaceList3D :
         => Vertices.Select(v => v.Color);
 
     public IReadOnlyList<Triplet<GrLatticeSurfaceLocalFrame3D>> TriangleVerticesList { get; private set; } 
-        = Array.Empty<Triplet<GrLatticeSurfaceLocalFrame3D>>();
+        = [];
 
     public IEnumerable<Triplet<ILinFloat64Vector3D>> TriangleVertexPoints
         => TriangleVerticesList.Select(t => 
@@ -100,8 +100,8 @@ public sealed class GrLatticeSurfaceList3D :
             batch.Clear();
 
         _surfaceList.Clear();
-        VertexList = Array.Empty<GrLatticeSurfaceLocalFrame3D>();
-        TriangleVerticesList = Array.Empty<Triplet<GrLatticeSurfaceLocalFrame3D>>();
+        VertexList = [];
+        TriangleVerticesList = [];
 
         return this;
     }

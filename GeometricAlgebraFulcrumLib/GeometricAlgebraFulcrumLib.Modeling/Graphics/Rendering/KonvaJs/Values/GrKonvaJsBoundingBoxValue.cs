@@ -1,4 +1,5 @@
-﻿using GeometricAlgebraFulcrumLib.Modeling.Geometry.Borders.Space2D.Float64;
+﻿using GeometricAlgebraFulcrumLib.Modeling.Geometry.Bounding.Float64;
+
 using GeometricAlgebraFulcrumLib.Utilities.Structures.AttributeSet;
 
 namespace GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.KonvaJs.Values;

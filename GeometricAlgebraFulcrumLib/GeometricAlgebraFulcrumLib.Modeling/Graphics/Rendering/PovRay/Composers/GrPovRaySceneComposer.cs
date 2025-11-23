@@ -11,7 +11,6 @@ using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.Visuals.Space3D.Sty
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.Visuals.Space3D.Surfaces;
 using SixLabors.ImageSharp;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Angles;
-using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Matrices;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.PovRay.Cameras;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.PovRay.Lists;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.PovRay.Materials.Finishes;
@@ -25,6 +24,7 @@ using GeometricAlgebraFulcrumLib.Utilities.Structures.Tuples;
 using GeometricAlgebraFulcrumLib.Utilities.Web.Colors;
 using Instances;
 using GeometricAlgebraFulcrumLib.Utilities.Web.Images;
+using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Numerical.Matrices;
 
 namespace GeometricAlgebraFulcrumLib.Modeling.Graphics.Rendering.PovRay.Composers;
 
@@ -348,7 +348,7 @@ sky_sphere {
         return visualElement;
     }
     
-    public override void AddGrid(string name, ITriplet<Float64Scalar> center, LinFloat64Quaternion orientation, int unitCount, double unitSize = 1, double opacity = 1)
+    public override void AddGrid(string name, ITriplet<double> center, LinFloat64Quaternion orientation, int unitCount, double unitSize = 1, double opacity = 1)
     {
         GridMaterialKind = 
             GrPovRayGridMaterialKind.TexturedMaterial;
@@ -365,7 +365,7 @@ sky_sphere {
         );
     }
 
-    public override void AddAxes(string name, ITriplet<Float64Scalar> origin, LinFloat64Quaternion orientation, double scalingFactor = 1, double opacity = 1)
+    public override void AddAxes(string name, ITriplet<double> origin, LinFloat64Quaternion orientation, double scalingFactor = 1, double opacity = 1)
     {
         AddElement(
             GrVisualFrame3D.CreateStatic(
@@ -1376,7 +1376,7 @@ sky_sphere {
     }
 
     
-    public GrPovRaySceneComposer AddDefaultAxes(ILinFloat64Vector3D axesOrigin)
+    public GrPovRaySceneComposer AddDefaultAxes(LinFloat64Vector3D axesOrigin)
     {
         // Add reference unit axis frame
         AddElement(

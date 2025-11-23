@@ -49,10 +49,10 @@ public sealed class MetaContext :
         = new Dictionary<string, IMetaExpressionVariableComputed>();
         
     
-    public double ZeroEpsilon
+    public double DefaultTolerance
     {
-        get => MetaExpressionProcessor.ZeroEpsilon;
-        set => MetaExpressionProcessor.ZeroEpsilon = value;
+        get => MetaExpressionProcessor.DefaultTolerance;
+        set => MetaExpressionProcessor.DefaultTolerance = value;
     }
 
     public bool IsNumeric 
@@ -2088,7 +2088,7 @@ public sealed class MetaContext :
     //[MethodImpl(MethodImplOptions.AggressiveInlining)]
     //public bool IsNearZero(double scalar)
     //{
-    //    return scalar > -ZeroEpsilon && scalar < ZeroEpsilon;
+    //    return scalar > -DefaultTolerance && scalar < DefaultTolerance;
     //}
 
     //[MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -2106,13 +2106,13 @@ public sealed class MetaContext :
     //[MethodImpl(MethodImplOptions.AggressiveInlining)]
     //public bool IsNotNearPositive(double scalar)
     //{
-    //    return scalar < -ZeroEpsilon;
+    //    return scalar < -DefaultTolerance;
     //}
 
     //[MethodImpl(MethodImplOptions.AggressiveInlining)]
     //public bool IsNotNearNegative(double scalar)
     //{
-    //    return scalar > ZeroEpsilon;
+    //    return scalar > DefaultTolerance;
     //}
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]

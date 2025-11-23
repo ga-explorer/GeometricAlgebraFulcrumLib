@@ -7,7 +7,6 @@ using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Multivectors;
 using GeometricAlgebraFulcrumLib.Utilities.Code.SyntaxTree.Expressions;
 using GeometricAlgebraFulcrumLib.MetaProgramming.Context;
 using Wolfram.NETLink;
-using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Matrices;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Generic;
 using GeometricAlgebraFulcrumLib.Mathematica.MetaProgramming;
@@ -20,6 +19,7 @@ using GeometricAlgebraFulcrumLib.Modeling.Signals;
 using GeometricAlgebraFulcrumLib.Mathematica.Utilities.Text;
 using GeometricAlgebraFulcrumLib.Mathematica.Algebra;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Processors;
+using GeometricAlgebraFulcrumLib.Utilities.Structures.Extensions;
 
 namespace GeometricAlgebraFulcrumLib.Mathematica.Utilities.Structures;
 
@@ -129,7 +129,7 @@ public static class MathematicaUtils
             ? doubleValue : invalidValue;
     }
 
-    public static bool IsNullOrNearNumericZero(this Expr value, double zeroEpsilon = Float64Utils.ZeroEpsilon)
+    public static bool IsNullOrNearNumericZero(this Expr value, double tolerance = Float64Utils.DefaultTolerance)
     {
         if (ReferenceEquals(value, null))
             return true;
@@ -147,7 +147,7 @@ public static class MathematicaUtils
         if (!double.TryParse(textValue, out var doubleValue))
             return false;
 
-        return Math.Abs(doubleValue) <= zeroEpsilon;
+        return Math.Abs(doubleValue) <= tolerance;
     }
 
 
@@ -182,25 +182,25 @@ public static class MathematicaUtils
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static IReadOnlyList<Expr> SimplifyScalars(this IReadOnlyList<Expr> array)
     {
-        return array.MapScalars(s => s.Simplify());
+        return array.MapItems(s => s.Simplify());
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static IReadOnlyList<Expr> SimplifyScalars(this IReadOnlyList<Expr> array, Expr assumptionsExpr)
     {
-        return array.MapScalars(s => s.Simplify(assumptionsExpr));
+        return array.MapItems(s => s.Simplify(assumptionsExpr));
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Expr[,] SimplifyScalars(this Expr[,] array)
     {
-        return array.MapScalars(s => s.Simplify());
+        return array.MapItems(s => s.Simplify());
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Expr[,] SimplifyScalars(this Expr[,] array, Expr assumptionsExpr)
     {
-        return array.MapScalars(s => s.Simplify(assumptionsExpr));
+        return array.MapItems(s => s.Simplify(assumptionsExpr));
     }
 
     //[MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -279,25 +279,25 @@ public static class MathematicaUtils
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static IReadOnlyList<Expr> FullSimplifyScalars(this IReadOnlyList<Expr> array)
     {
-        return array.MapScalars(s => s.FullSimplify());
+        return array.MapItems(s => s.FullSimplify());
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static IReadOnlyList<Expr> FullSimplifyScalars(this IReadOnlyList<Expr> array, Expr assumptionsExpr)
     {
-        return array.MapScalars(s => s.FullSimplify(assumptionsExpr));
+        return array.MapItems(s => s.FullSimplify(assumptionsExpr));
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Expr[,] FullSimplifyScalars(this Expr[,] array)
     {
-        return array.MapScalars(s => s.FullSimplify());
+        return array.MapItems(s => s.FullSimplify());
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Expr[,] FullSimplifyScalars(this Expr[,] array, Expr assumptionsExpr)
     {
-        return array.MapScalars(s => s.FullSimplify(assumptionsExpr));
+        return array.MapItems(s => s.FullSimplify(assumptionsExpr));
     }
 
     //[MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -1245,75 +1245,75 @@ public static class MathematicaUtils
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static bool IsNearZero(this Expr expr, double zeroEpsilon = Float64Utils.ZeroEpsilon)
+    public static bool IsNearZero(this Expr expr, double tolerance = Float64Utils.DefaultTolerance)
     {
         var number = expr.ToNumber();
 
-        return number.IsNotNaN() && number.IsNearZero(zeroEpsilon);
+        return number.IsNotNaN() && number.IsNearZero(tolerance);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static bool IsNearOne(this Expr expr, double zeroEpsilon = Float64Utils.ZeroEpsilon)
+    public static bool IsNearOne(this Expr expr, double tolerance = Float64Utils.DefaultTolerance)
     {
         var number = expr.ToNumber();
 
-        return number.IsNotNaN() && (number - 1).IsNearZero(zeroEpsilon);
+        return number.IsNotNaN() && (number - 1).IsNearZero(tolerance);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static bool IsNearTwo(this Expr expr, double zeroEpsilon = Float64Utils.ZeroEpsilon)
+    public static bool IsNearTwo(this Expr expr, double tolerance = Float64Utils.DefaultTolerance)
     {
         var number = expr.ToNumber();
 
-        return number.IsNotNaN() && (number - 2).IsNearZero(zeroEpsilon);
+        return number.IsNotNaN() && (number - 2).IsNearZero(tolerance);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static bool IsNearThree(this Expr expr, double zeroEpsilon = Float64Utils.ZeroEpsilon)
+    public static bool IsNearThree(this Expr expr, double tolerance = Float64Utils.DefaultTolerance)
     {
         var number = expr.ToNumber();
 
-        return number.IsNotNaN() && (number - 3).IsNearZero(zeroEpsilon);
+        return number.IsNotNaN() && (number - 3).IsNearZero(tolerance);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static bool IsNearHalf(this Expr expr, double zeroEpsilon = Float64Utils.ZeroEpsilon)
+    public static bool IsNearHalf(this Expr expr, double tolerance = Float64Utils.DefaultTolerance)
     {
         var number = expr.ToNumber();
 
-        return number.IsNotNaN() && (number - 0.5).IsNearZero(zeroEpsilon);
+        return number.IsNotNaN() && (number - 0.5).IsNearZero(tolerance);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static bool IsNearMinusOne(this Expr expr, double zeroEpsilon = Float64Utils.ZeroEpsilon)
+    public static bool IsNearMinusOne(this Expr expr, double tolerance = Float64Utils.DefaultTolerance)
     {
         var number = expr.ToNumber();
 
-        return number.IsNotNaN() && (number + 1).IsNearZero(zeroEpsilon);
+        return number.IsNotNaN() && (number + 1).IsNearZero(tolerance);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static bool IsNearMinusTwo(this Expr expr, double zeroEpsilon = Float64Utils.ZeroEpsilon)
+    public static bool IsNearMinusTwo(this Expr expr, double tolerance = Float64Utils.DefaultTolerance)
     {
         var number = expr.ToNumber();
 
-        return number.IsNotNaN() && (number + 2).IsNearZero(zeroEpsilon);
+        return number.IsNotNaN() && (number + 2).IsNearZero(tolerance);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static bool IsNearMinusThree(this Expr expr, double zeroEpsilon = Float64Utils.ZeroEpsilon)
+    public static bool IsNearMinusThree(this Expr expr, double tolerance = Float64Utils.DefaultTolerance)
     {
         var number = expr.ToNumber();
 
-        return number.IsNotNaN() && (number + 3).IsNearZero(zeroEpsilon);
+        return number.IsNotNaN() && (number + 3).IsNearZero(tolerance);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static bool IsNearMinusHalf(this Expr expr, double zeroEpsilon = Float64Utils.ZeroEpsilon)
+    public static bool IsNearMinusHalf(this Expr expr, double tolerance = Float64Utils.DefaultTolerance)
     {
         var number = expr.ToNumber();
 
-        return number.IsNotNaN() && (number + 0.5).IsNearZero(zeroEpsilon);
+        return number.IsNotNaN() && (number + 0.5).IsNearZero(tolerance);
     }
 
 

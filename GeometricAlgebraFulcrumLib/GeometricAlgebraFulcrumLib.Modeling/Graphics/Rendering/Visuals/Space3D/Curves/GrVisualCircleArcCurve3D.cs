@@ -195,7 +195,7 @@ public sealed class GrVisualCircleArcCurve3D :
                Radius > 0 &&
                Direction1.IsNearUnitVector() &&
                Direction2.IsNearUnitVector() &&
-               Direction1.VectorESp(Direction2).IsNearZero() &&
+               Direction1.VectorDot(Direction2).IsNearZero() &&
                GetAnimatedGeometries().All(g => g.IsValid());
     }
 
@@ -360,7 +360,7 @@ public sealed class GrVisualCircleArcCurve3D :
 
         foreach (var frameIndex in GetValidFrameIndexSet())
         {
-            var time = (double)frameIndex / SamplingSpecs.SamplingRate;
+            var time = frameIndex / SamplingSpecs.SamplingRate;
                 
             yield return new KeyFrameRecord(
                 frameIndex, 

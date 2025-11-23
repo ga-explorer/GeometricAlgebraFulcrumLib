@@ -43,7 +43,7 @@ public sealed class GrPovRayObjectBoundSpecs :
         composer
             .AppendLineAtNewLine("bounded_by {")
             .IncreaseIndentation()
-            .Append(((IGrPovRayCodeElement)BoundingObject).GetPovRayCode())
+            .Append(BoundingObject.GetPovRayCode())
             .DecreaseIndentation()
             .AppendAtNewLine("}");
         

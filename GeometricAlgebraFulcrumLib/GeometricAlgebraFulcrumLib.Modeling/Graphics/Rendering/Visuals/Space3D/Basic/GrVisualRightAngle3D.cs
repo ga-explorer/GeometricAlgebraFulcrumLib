@@ -119,7 +119,7 @@ public sealed class GrVisualRightAngle3D :
                Radius >= 0 &&
                Direction1.IsNearUnitVector() &&
                Direction2.IsNearUnitVector() &&
-               Direction1.VectorESp(Direction2).IsNearZero(1e-7);
+               Direction1.VectorDot(Direction2).IsNearZero(1e-7);
     }
 
     public Triplet<LinFloat64Vector3D> GetArcPointsTriplet()
@@ -136,7 +136,7 @@ public sealed class GrVisualRightAngle3D :
     public override IPointsPath3D GetPositionsPath()
     {
         return new ArrayPointsPath3D(
-            GetArcPointsTriplet().GetItemArray().Cast<ILinFloat64Vector3D>()
+            GetArcPointsTriplet().GetItemArray()
         );
     }
 

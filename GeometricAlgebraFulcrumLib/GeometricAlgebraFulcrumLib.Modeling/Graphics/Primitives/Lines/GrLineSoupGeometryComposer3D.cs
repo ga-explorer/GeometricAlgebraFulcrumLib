@@ -1,6 +1,5 @@
 ﻿using System.Collections;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space3D;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.BasicShapes.Lines;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.BasicShapes.Lines.Space3D.Float64;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Primitives.Vertices;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Tuples;
@@ -40,8 +39,8 @@ public class GrLineSoupGeometryComposer3D :
     public IEnumerable<IGraphicsVertex3D> GeometryVertices
         => _verticesList;
 
-    public IEnumerable<ILinFloat64Vector3D> GeometryPoints
-        => _verticesList;
+    public IEnumerable<LinFloat64Vector3D> GeometryPoints
+        => _verticesList.Select(v => v.ToLinVector3D());
 
     public IEnumerable<Pair<int>> LineVertexIndices
     {
@@ -129,9 +128,9 @@ public class GrLineSoupGeometryComposer3D :
     }
         
         
-    public ILinFloat64Vector3D GetGeometryPoint(int index)
+    public LinFloat64Vector3D GetGeometryPoint(int index)
     {
-        return _verticesList[index];
+        return _verticesList[index].ToLinVector3D();
     }
 
     public bool AddLine(IFloat64LineSegment3D lineSegment)
@@ -201,7 +200,7 @@ public class GrLineSoupGeometryComposer3D :
         return this;
     }
 
-    public GrLineSoupGeometryComposer3D AddLines(IReadOnlyList<ILinFloat64Vector3D> pointsList)
+    public GrLineSoupGeometryComposer3D AddLines(IReadOnlyList<LinFloat64Vector3D> pointsList)
     {
         if (pointsList.Count % 2 != 0)
             throw new InvalidOperationException();

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Numerics;
-using GeometricAlgebraFulcrumLib.Algebra.ComplexAlgebra;
+﻿using GeometricAlgebraFulcrumLib.Algebra.ComplexAlgebra;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.LinearMaps.Outermorphisms;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.LinearMaps.Rotors;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Processors;
@@ -11,17 +6,16 @@ using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.LinearMaps;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Multivectors;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Processors;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Basis;
-using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Angles;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.LinearMaps.Space3D.Rotation;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.LinearMaps.SpaceND;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.LinearMaps.SpaceND.Composers;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.LinearMaps.SpaceND.Rotation;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.LinearMaps.SpaceND.Scaling;
-using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Matrices;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.SubSpaces.SpaceND;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space3D;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.SpaceND;
+using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Numerical;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Generic;
 using GeometricAlgebraFulcrumLib.Algebra.Utilities.Text;
@@ -33,6 +27,11 @@ using GeometricAlgebraFulcrumLib.Utilities.Structures.BitManipulation;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Random;
 using GeometricAlgebraFulcrumLib.Utilities.Text.Text;
 using MathNet.Numerics.LinearAlgebra;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
+using System.Numerics;
 using Wolfram.NETLink;
 
 namespace GeometricAlgebraFulcrumLib.Mathematica.Samples.Algebra.GeometricAlgebra;
@@ -69,7 +68,7 @@ public static class RotationSamples
             );
 
         var matrix =
-            Float64ArrayUtils.CreateClarkeRotationArray(n).ToMatrix();
+            NumericalLinearAlgebraUtils.ClarkeRotationMatrix(n);
         //rotationSequence.GetRotationMatrix();
 
         var eigenValueArray =
@@ -148,10 +147,10 @@ public static class RotationSamples
             clarkeMap.GetVectorMapArray(n);
 
         var clarkeMatrix =
-            clarkeArray.ToMatrix();
+            clarkeArray;
 
         Console.WriteLine("Generated Clarke Matrix:");
-        Console.WriteLine(textComposer.GetArrayText(clarkeArray));
+        Console.WriteLine(clarkeArray);
         Console.WriteLine();
 
         var eigenPairsCount = clarkeMatrix.MatrixEigenDecomposition(
@@ -222,17 +221,17 @@ public static class RotationSamples
             rotorsSequence.GetFinalRotor();
 
         var finalRotorMatrix =
-            rotorsSequence.GetFinalRotorArray(n);
+            rotorsSequence.GetFinalRotorMatrix(n);
 
         var finalMatrixDiffNorm =
-            clarkeArray.Subtract(finalRotorMatrix).GetVectorNorm();
+            clarkeArray.Subtract(finalRotorMatrix).FrobeniusNorm();
 
         Console.WriteLine($"Final Rotor");
         Console.WriteLine(textComposer.GetMultivectorText(finalRotor));
         Console.WriteLine();
 
         Console.WriteLine($"Final Rotor Matrix");
-        Console.WriteLine(textComposer.GetArrayText(finalRotorMatrix));
+        Console.WriteLine(finalRotorMatrix);
         Console.WriteLine();
 
         Console.WriteLine($"Final Rotor Matrix Difference Norm");
@@ -258,14 +257,14 @@ public static class RotationSamples
             var u2 = geometricProcessor.Vector(u1);
 
             Debug.Assert(
-                (u1 - u2.ToLinVector()).GetVectorNormSquared().IsNearZero()
+                NumericalLinearAlgebraUtils.L2NormSquared((u1 - u2.ToLinVector())).IsNearZero()
             );
 
             var v1 = vectorRotation.MapBasisVector1();
             var v2 = geometricProcessor.Vector(v1);
 
             Debug.Assert(
-                (v1 - v2.ToLinVector()).GetVectorNormSquared().IsNearZero()
+                NumericalLinearAlgebraUtils.L2NormSquared((v1 - v2.ToLinVector())).IsNearZero()
             );
 
             var angle1 = vectorRotation.RotationAngle;
@@ -290,7 +289,7 @@ public static class RotationSamples
             var v3 = vectorRotation.MapVector(u1);
 
             Debug.Assert(
-                (v1 - v3).GetVectorNormSquared().IsNearZero()
+                NumericalLinearAlgebraUtils.L2NormSquared((v1 - v3)).IsNearZero()
             );
 
             var v4 = rotor.OmMap(u2);
@@ -300,7 +299,7 @@ public static class RotationSamples
             Console.WriteLine();
 
             Debug.Assert(
-                (v3 - v4.ToLinVector()).GetVectorNormSquared().IsNearZero()
+                NumericalLinearAlgebraUtils.L2NormSquared((v3 - v4.ToLinVector())).IsNearZero()
             );
         }
     }
@@ -500,8 +499,8 @@ public static class RotationSamples
         var x12 = metric.Vector(x1).Op(metric.Vector(x2));
         x12.Op(metric.Vector(x3));
 
-        var t1 = (matrix2 * x12.MultivectorToArray1D(1 << n).ToMathNetVector()).ToArray().ToLinVector();
-        var t2 = metric.Vector(matrix1.MapVector(x1)).Op(metric.Vector(matrix1.MapVector(x2))).MultivectorToArray1D(1 << n).ToLinVector();
+        var t1 = (matrix2 * x12.MultivectorToToMathNetVector(1 << n));
+        var t2 = metric.Vector(matrix1.Multiply(x1)).Op(metric.Vector(matrix1.Multiply(x2))).MultivectorToToMathNetVector(1 << n);
 
         Debug.Assert(
             (t1 - t2).GetVectorNormSquared().IsNearZero()
@@ -655,7 +654,7 @@ public static class RotationSamples
             var y2 = sequence.MapVector(x);
 
             Debug.Assert(
-                (y1 - y2).GetVectorNormSquared().IsNearZero()
+                NumericalLinearAlgebraUtils.L2NormSquared((y1 - y2)).IsNearZero()
             );
         }
 
@@ -685,7 +684,7 @@ public static class RotationSamples
         var random = new Random(10);
 
         var matrix =
-            random.GetMathNetOrthogonalMatrix(n);
+            random.GetOrthogonalMatrix(n);
 
         var rotationSequence =
             matrix.GetVectorToVectorRotationSequence();
@@ -736,7 +735,7 @@ public static class RotationSamples
                 (x.GetAngleCos(y) - u.GetAngleCos(v)).IsNearZero()
             );
 
-            y = (rotationMatrix * MathNetNumericsUtils.ToMathNetVector(x, n)).CreateLinVector();
+            y = (rotationMatrix * MathNetNumericsUtils.ToMathNetDenseVector(x, n)).CreateLinVector();
 
             Debug.Assert(
                 uvSubspace.NearContains(y) &&
@@ -806,19 +805,19 @@ public static class RotationSamples
                 var v = rotation.MapBasisVector1();
 
                 var v1 = rotationSequence.MapVector(u);
-                var v2 = (rotationMatrix * MathNetNumericsUtils.ToMathNetVector(u, n)).CreateLinVector();
+                var v2 = (rotationMatrix * MathNetNumericsUtils.ToMathNetDenseVector(u, n)).CreateLinVector();
 
                 // Make sure each rotation is performed independently from the others
                 Debug.Assert(
-                    (v - v1).GetVectorNormSquared().IsNearZero()
+                    NumericalLinearAlgebraUtils.L2NormSquared((v - v1)).IsNearZero()
                 );
 
                 Debug.Assert(
-                    (v - v2).GetVectorNormSquared().IsNearZero()
+                    NumericalLinearAlgebraUtils.L2NormSquared((v - v2)).IsNearZero()
                 );
 
                 Debug.Assert(
-                    (v1 - v2).GetVectorNormSquared().IsNearZero()
+                    NumericalLinearAlgebraUtils.L2NormSquared((v1 - v2)).IsNearZero()
                 );
 
                 // Make sure rotation matrix multiplication is the same as
@@ -828,10 +827,10 @@ public static class RotationSamples
                     var x = random.GetLinVector(n).CreateLinVector();
 
                     var y1 = rotationSequence.MapVector(x);
-                    var y2 = (rotationMatrix * MathNetNumericsUtils.ToMathNetVector(x, n)).CreateLinVector();
+                    var y2 = (rotationMatrix * MathNetNumericsUtils.ToMathNetDenseVector(x, n)).CreateLinVector();
 
                     Debug.Assert(
-                        (y1 - y2).GetVectorNormSquared().IsNearZero()
+                        NumericalLinearAlgebraUtils.L2NormSquared((y1 - y2)).IsNearZero()
                     );
                 }
             }
@@ -874,10 +873,10 @@ public static class RotationSamples
                 var x = random.GetLinVector(n).CreateLinVector();
 
                 var y1 = rotationSequence.MapVector(x);
-                var y2 = (rotationMatrix * MathNetNumericsUtils.ToMathNetVector(x, n)).CreateLinVector();
+                var y2 = (rotationMatrix * MathNetNumericsUtils.ToMathNetDenseVector(x, n)).CreateLinVector();
 
                 Debug.Assert(
-                    (y1 - y2).GetVectorNormSquared().IsNearZero()
+                    NumericalLinearAlgebraUtils.L2NormSquared((y1 - y2)).IsNearZero()
                 );
             }
         }
@@ -903,7 +902,7 @@ public static class RotationSamples
             var y2 = rotation.MapVector(rotation.GetVectorProjection(x));
 
             Debug.Assert(
-                (y1 - y2).GetVectorNormSquared().IsNearZero()
+                NumericalLinearAlgebraUtils.L2NormSquared((y1 - y2)).IsNearZero()
             );
         }
     }
@@ -982,11 +981,11 @@ public static class RotationSamples
                 var u2 = rotationInv.MapVector(u1);
 
                 Debug.Assert(
-                    u.VectorENormSquared().IsNearEqual(u1.VectorENormSquared())
+                    LinFloat64Vector3DUtils.L2NormSquared(u).IsNearEqual(LinFloat64Vector3DUtils.L2NormSquared(u1))
                 );
 
                 Debug.Assert(
-                    u.VectorENormSquared().IsNearEqual(u2.VectorENormSquared())
+                    LinFloat64Vector3DUtils.L2NormSquared(u).IsNearEqual(LinFloat64Vector3DUtils.L2NormSquared(u2))
                 );
 
                 Debug.Assert(
@@ -1071,7 +1070,7 @@ public static class RotationSamples
                 //var y2 = uvVectorRotation.MapVector(axisIndex.CreateLinVector());
 
                 Debug.Assert(
-                    (y1 - y2).GetVectorNorm().IsNearZero()
+                    NumericalLinearAlgebraUtils.L2Norm((y1 - y2)).IsNearZero()
                 );
             }
 
@@ -1084,7 +1083,7 @@ public static class RotationSamples
                 var y2 = uvVectorRotation.MapVector(x.ToLinVector());
 
                 Debug.Assert(
-                    (y1 - y2).GetVectorNorm().IsNearZero()
+                    NumericalLinearAlgebraUtils.L2Norm((y1 - y2)).IsNearZero()
                 );
 
                 var (_, bv) = uvRotor.GetEuclideanAngleBivector();
@@ -1096,11 +1095,11 @@ public static class RotationSamples
                 var z3 = uvVectorRotation.MapVectorProjection(x.ToLinVector());
 
                 Debug.Assert(
-                    (z1 - z2).GetVectorNorm().IsNearZero()
+                    NumericalLinearAlgebraUtils.L2Norm((z1 - z2)).IsNearZero()
                 );
 
                 Debug.Assert(
-                    (z1 - z3).GetVectorNorm().IsNearZero()
+                    NumericalLinearAlgebraUtils.L2Norm((z1 - z3)).IsNearZero()
                 );
             }
         }
@@ -1148,7 +1147,7 @@ public static class RotationSamples
                 var y2 = uvVectorRotation.MapBasisVector(axisIndex);
 
                 Debug.Assert(
-                    (y1 - y2).GetVectorNorm().IsNearZero()
+                    NumericalLinearAlgebraUtils.L2Norm((y1 - y2)).IsNearZero()
                 );
             }
 
@@ -1161,7 +1160,7 @@ public static class RotationSamples
                 var y2 = uvVectorRotation.MapVector(x.ToLinVector());
 
                 Debug.Assert(
-                    (y1 - y2).GetVectorNorm().IsNearZero()
+                    NumericalLinearAlgebraUtils.L2Norm((y1 - y2)).IsNearZero()
                 );
 
                 var (_, bv) = uvRotor.GetEuclideanAngleBivector();
@@ -1173,12 +1172,12 @@ public static class RotationSamples
                 var z3 = uvVectorRotation.MapVectorProjection(x.ToLinVector());
 
                 Debug.Assert(
-                    (z1 - z2).GetVectorNorm().IsNearZero()
+                    NumericalLinearAlgebraUtils.L2Norm((z1 - z2)).IsNearZero()
                 );
 
                 if (!uvVectorRotation.IsNearIdentity())
                     Debug.Assert(
-                        (z1 - z3).GetVectorNorm().IsNearZero()
+                        NumericalLinearAlgebraUtils.L2Norm((z1 - z3)).IsNearZero()
                     );
             }
         }
@@ -1226,7 +1225,7 @@ public static class RotationSamples
                 var y2 = uvVectorRotation.MapBasisVector(axisIndex);
 
                 Debug.Assert(
-                    (y1 - y2).GetVectorNorm().IsNearZero()
+                    NumericalLinearAlgebraUtils.L2Norm((y1 - y2)).IsNearZero()
                 );
             }
 
@@ -1239,7 +1238,7 @@ public static class RotationSamples
                 var y2 = uvVectorRotation.MapVector(x.ToLinVector());
 
                 Debug.Assert(
-                    (y1 - y2).GetVectorNorm().IsNearZero()
+                    NumericalLinearAlgebraUtils.L2Norm((y1 - y2)).IsNearZero()
                 );
 
                 var (_, bv) = uvRotor.GetEuclideanAngleBivector();
@@ -1251,12 +1250,12 @@ public static class RotationSamples
                 var z3 = uvVectorRotation.MapVectorProjection(x.ToLinVector());
 
                 Debug.Assert(
-                    (z1 - z2).GetVectorNorm().IsNearZero()
+                    NumericalLinearAlgebraUtils.L2Norm((z1 - z2)).IsNearZero()
                 );
 
                 if (!uvVectorRotation.IsIdentity())
                     Debug.Assert(
-                        (z1 - z3).GetVectorNorm().IsNearZero()
+                        NumericalLinearAlgebraUtils.L2Norm((z1 - z3)).IsNearZero()
                     );
             }
         }
@@ -1309,7 +1308,7 @@ public static class RotationSamples
                     var y2 = uvVectorRotation.MapBasisVector(axisIndex);
 
                     Debug.Assert(
-                        (y1 - y2).GetVectorNorm().IsNearZero()
+                        NumericalLinearAlgebraUtils.L2Norm((y1 - y2)).IsNearZero()
                     );
                 }
 
@@ -1322,7 +1321,7 @@ public static class RotationSamples
                     var y2 = uvVectorRotation.MapVector(x.ToLinVector());
 
                     Debug.Assert(
-                        (y1 - y2).GetVectorNorm().IsNearZero()
+                        NumericalLinearAlgebraUtils.L2Norm((y1 - y2)).IsNearZero()
                     );
 
                     var (_, bv) = uvRotor.GetEuclideanAngleBivector();
@@ -1334,12 +1333,12 @@ public static class RotationSamples
                     var z3 = uvVectorRotation.MapVectorProjection(x.ToLinVector());
 
                     Debug.Assert(
-                        (z1 - z2).GetVectorNorm().IsNearZero()
+                        NumericalLinearAlgebraUtils.L2Norm((z1 - z2)).IsNearZero()
                     );
 
                     if (!uvVectorRotation.IsIdentity())
                         Debug.Assert(
-                            (z1 - z3).GetVectorNorm().IsNearZero()
+                            NumericalLinearAlgebraUtils.L2Norm((z1 - z3)).IsNearZero()
                         );
                 }
             }
@@ -1394,7 +1393,7 @@ public static class RotationSamples
                 var y2 = uvVectorRotation.MapVector(axisIndex);
 
                 Debug.Assert(
-                    (y1 - y2).VectorENorm().IsNearZero()
+                    LinFloat64Vector3DUtils.L2Norm((y1 - y2)).IsNearZero()
                 );
             }
 
@@ -1407,7 +1406,7 @@ public static class RotationSamples
                 var y2 = uvVectorRotation.MapVector(x.ToVector3D());
 
                 Debug.Assert(
-                    (y1 - y2).VectorENorm().IsNearZero()
+                    LinFloat64Vector3DUtils.L2Norm((y1 - y2)).IsNearZero()
                 );
 
                 var (_, bv) = uvRotor.GetEuclideanAngleBivector();
@@ -1419,12 +1418,12 @@ public static class RotationSamples
                 var z3 = uvVectorRotation.MapVectorProjection(x.ToVector3D());
 
                 Debug.Assert(
-                    (z1 - z2).VectorENorm().IsNearZero()
+                    LinFloat64Vector3DUtils.L2Norm((z1 - z2)).IsNearZero()
                 );
 
                 if (!uvVectorRotation.IsIdentity())
                     Debug.Assert(
-                        (z1 - z3).Norm().IsNearZero()
+                        (z1 - z3).L2Norm().IsNearZero()
                     );
             }
         }
@@ -1492,7 +1491,7 @@ public static class RotationSamples
                 var y2 = uvVectorRotation.MapVector(axisIndex);
 
                 Debug.Assert(
-                    (y1 - y2).VectorENorm().IsNearZero()
+                    LinFloat64Vector3DUtils.L2Norm((y1 - y2)).IsNearZero()
                 );
             }
 
@@ -1505,7 +1504,7 @@ public static class RotationSamples
                 var y2 = uvVectorRotation.MapVector(x.ToVector3D());
 
                 Debug.Assert(
-                    (y1 - y2).VectorENorm().IsNearZero()
+                    LinFloat64Vector3DUtils.L2Norm((y1 - y2)).IsNearZero()
                 );
 
                 var (_, bv) = uvRotor.GetEuclideanAngleBivector();
@@ -1517,12 +1516,12 @@ public static class RotationSamples
                 var z3 = uvVectorRotation.MapVectorProjection(x.ToVector3D());
 
                 Debug.Assert(
-                    (z1 - z2).VectorENorm().IsNearZero()
+                    LinFloat64Vector3DUtils.L2Norm((z1 - z2)).IsNearZero()
                 );
 
                 if (!uvVectorRotation.IsIdentity())
                     Debug.Assert(
-                        (z1 - z3).VectorENorm().IsNearZero()
+                        LinFloat64Vector3DUtils.L2Norm((z1 - z3)).IsNearZero()
                     );
             }
         }
@@ -1590,7 +1589,7 @@ public static class RotationSamples
                 var y2 = uvVectorRotation.MapVector(axisIndex);
 
                 Debug.Assert(
-                    (y1 - y2).VectorENorm().IsNearZero()
+                    LinFloat64Vector3DUtils.L2Norm((y1 - y2)).IsNearZero()
                 );
             }
 
@@ -1603,7 +1602,7 @@ public static class RotationSamples
                 var y2 = uvVectorRotation.MapVector(x.ToVector3D());
 
                 Debug.Assert(
-                    (y1 - y2).VectorENorm().IsNearZero()
+                    LinFloat64Vector3DUtils.L2Norm((y1 - y2)).IsNearZero()
                 );
 
                 var (_, bv) = uvRotor.GetEuclideanAngleBivector();
@@ -1615,12 +1614,12 @@ public static class RotationSamples
                 var z3 = uvVectorRotation.MapVectorProjection(x.ToVector3D());
 
                 Debug.Assert(
-                    (z1 - z2).VectorENorm().IsNearZero()
+                    LinFloat64Vector3DUtils.L2Norm((z1 - z2)).IsNearZero()
                 );
 
                 if (!uvVectorRotation.IsIdentity())
                     Debug.Assert(
-                        (z1 - z3).Norm().IsNearZero()
+                        (z1 - z3).L2Norm().IsNearZero()
                     );
             }
         }
@@ -1701,7 +1700,7 @@ public static class RotationSamples
                     var y2 = uvVectorRotation.MapVector(axis);
 
                     Debug.Assert(
-                        (y1 - y2).VectorENorm().IsNearZero()
+                        LinFloat64Vector3DUtils.L2Norm((y1 - y2)).IsNearZero()
                     );
                 }
 
@@ -1714,7 +1713,7 @@ public static class RotationSamples
                     var y2 = uvVectorRotation.MapVector(x.ToVector3D());
 
                     Debug.Assert(
-                        (y1 - y2).VectorENorm().IsNearZero()
+                        LinFloat64Vector3DUtils.L2Norm((y1 - y2)).IsNearZero()
                     );
 
                     var (_, bv) = uvRotor.GetEuclideanAngleBivector();
@@ -1726,12 +1725,12 @@ public static class RotationSamples
                     var z3 = uvVectorRotation.MapVectorProjection(x.ToVector3D());
 
                     Debug.Assert(
-                        (z1 - z2).VectorENorm().IsNearZero()
+                        LinFloat64Vector3DUtils.L2Norm((z1 - z2)).IsNearZero()
                     );
 
                     if (!uvVectorRotation.IsIdentity())
                         Debug.Assert(
-                            (z1 - z3).Norm().IsNearZero()
+                            (z1 - z3).L2Norm().IsNearZero()
                         );
                 }
             }
@@ -1772,7 +1771,7 @@ public static class RotationSamples
             var y2 = uvRotationSequence.MapBasisVector(axisIndex);
 
             Debug.Assert(
-                (y1 - y2).GetVectorNorm().IsNearZero()
+                NumericalLinearAlgebraUtils.L2Norm((y1 - y2)).IsNearZero()
             );
         }
 
@@ -1785,7 +1784,7 @@ public static class RotationSamples
             var y2 = uvRotationSequence.MapVector(x);
 
             Debug.Assert(
-                (y1 - y2).GetVectorNorm().IsNearZero()
+                NumericalLinearAlgebraUtils.L2Norm((y1 - y2)).IsNearZero()
             );
         }
     }
@@ -1813,7 +1812,7 @@ public static class RotationSamples
             matrix.GetVectorDirectionalScalingSequence();
 
         Debug.Assert(
-            (matrix - mapSequence.ToMatrix(n, n)).ToArray().GetVectorNormSquared().IsNearZero()
+            (matrix - mapSequence.ToMatrix(n, n)).FrobeniusNorm().IsNearZero()
         );
 
         //var u =
@@ -1836,11 +1835,11 @@ public static class RotationSamples
             var x =
                 axisIndex.CreateLinVector();
 
-            var y1 = (matrix * MathNetNumericsUtils.ToMathNetVector(x, n)).CreateLinVector();
+            var y1 = (matrix * MathNetNumericsUtils.ToMathNetDenseVector(x, n)).CreateLinVector();
             var y2 = mapSequence.MapBasisVector(axisIndex);
 
             Debug.Assert(
-                (y1 - y2).GetVectorNormSquared().IsNearZero()
+                NumericalLinearAlgebraUtils.L2NormSquared((y1 - y2)).IsNearZero()
             );
         }
 
@@ -1849,11 +1848,11 @@ public static class RotationSamples
             var x =
                 random.GetVector(-1, 1).ToLinVector();
 
-            var y1 = matrix.ToArray().MatrixProduct(x.ToArray(n)).CreateLinVector();
+            var y1 = matrix.Multiply(x);
             var y2 = mapSequence.MapVector(x);
 
             Debug.Assert(
-                (y1 - y2).GetVectorNormSquared().IsNearZero()
+                NumericalLinearAlgebraUtils.L2NormSquared((y1 - y2)).IsNearZero()
             );
         }
     }

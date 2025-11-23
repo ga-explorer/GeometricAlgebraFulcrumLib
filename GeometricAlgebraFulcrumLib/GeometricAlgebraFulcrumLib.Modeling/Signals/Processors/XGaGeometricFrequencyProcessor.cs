@@ -282,7 +282,7 @@ public abstract class XGaGeometricFrequencyProcessor
     {
         var signalValidator = new Float64SignalValidator()
         {
-            ZeroEpsilon = 1e-3d
+            DefaultTolerance = 1e-3d
         };
 
         var vDt1 = VectorSignalTimeDerivatives[0];

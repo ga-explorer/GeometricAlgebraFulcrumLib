@@ -29,22 +29,31 @@ public sealed class GrNormalTextureVertex3D
     public LinFloat64Normal3D Normal { get; }
         = new LinFloat64Normal3D();
 
-    public Float64Scalar X 
+    public double X 
         => Point.X;
 
-    public Float64Scalar Y 
+    public double Y 
         => Point.Y;
 
-    public Float64Scalar Z 
+    public double Z 
         => Point.Z;
+    
+    public double this[int index] 
+        => index switch
+        {
+            0 => X,
+            1 => Y,
+            2 => Z,
+            _ => Float64Scalar.Zero
+        };
 
-    public Float64Scalar Item1
+    public double Item1
         => X;
 
-    public Float64Scalar Item2
+    public double Item2
         => Y;
 
-    public Float64Scalar Item3
+    public double Item3
         => Z;
 
     public double TextureU 
@@ -69,21 +78,21 @@ public sealed class GrNormalTextureVertex3D
         Normal.IsValid();
 
 
-    public GrNormalTextureVertex3D(int index, ITriplet<Float64Scalar> point)
+    public GrNormalTextureVertex3D(int index, ITriplet<double> point)
     {
         Index = index;
         Point = point.ToLinVector3D();
         ParameterValue = LinFloat64Vector2D.Zero;
     }
 
-    public GrNormalTextureVertex3D(int index, ITriplet<Float64Scalar> point, IPair<Float64Scalar> textureUv)
+    public GrNormalTextureVertex3D(int index, ITriplet<double> point, IPair<double> textureUv)
     {
         Index = index;
         Point = point.ToLinVector3D();
         ParameterValue = textureUv.ToLinVector2D();
     }
 
-    public GrNormalTextureVertex3D(int index, ITriplet<Float64Scalar> point, IPair<Float64Scalar> textureUv, ITriplet<Float64Scalar> normal)
+    public GrNormalTextureVertex3D(int index, ITriplet<double> point, IPair<double> textureUv, ITriplet<double> normal)
     {
         Index = index;
         Point = point.ToLinVector3D();

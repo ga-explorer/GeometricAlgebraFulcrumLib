@@ -5,7 +5,7 @@ using System.Numerics;
 using System.Runtime.CompilerServices;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Basis;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Angles;
-using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Matrices;
+using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Numerical.Matrices;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Tuples;
 
@@ -78,7 +78,7 @@ public sealed record LinFloat64Quaternion :
     {
         var (halfAngleCos, halfAngleSin) = angle.HalfPolarAngle();
 
-        var bivectorPart = bivector * (halfAngleSin / bivector.Norm());
+        var bivectorPart = bivector * (halfAngleSin / bivector.L2Norm());
 
         return new LinFloat64Quaternion(halfAngleCos, bivectorPart);
     }
@@ -94,7 +94,7 @@ public sealed record LinFloat64Quaternion :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64Quaternion CreateFromAxisAngle(ITriplet<Float64Scalar> axis, LinFloat64Angle angle)
+    public static LinFloat64Quaternion CreateFromAxisAngle(ITriplet<double> axis, LinFloat64Angle angle)
     {
         var (halfAngleCos, halfAngleSin) = angle.HalfPolarAngle();
 
@@ -410,24 +410,24 @@ public sealed record LinFloat64Quaternion :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool IsNearZero(double zeroEpsilon = Float64Utils.ZeroEpsilon)
+    public bool IsNearZero(double tolerance = Float64Utils.DefaultTolerance)
     {
-        return Scalar.IsNearZero(zeroEpsilon) &&
-               ScalarI.IsNearZero(zeroEpsilon) &&
-               ScalarJ.IsNearZero(zeroEpsilon) &&
-               ScalarK.IsNearZero(zeroEpsilon);
+        return Scalar.IsNearZero(tolerance) &&
+               ScalarI.IsNearZero(tolerance) &&
+               ScalarJ.IsNearZero(tolerance) &&
+               ScalarK.IsNearZero(tolerance);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public bool IsNormalized()
     {
-        return NormSquared().IsOne();
+        return L2NormSquared().IsOne();
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool IsNearNormalized(double zeroEpsilon = Float64Utils.ZeroEpsilon)
+    public bool IsNearNormalized(double tolerance = Float64Utils.DefaultTolerance)
     {
-        return NormSquared().IsNearOne(zeroEpsilon);
+        return L2NormSquared().IsNearOne(tolerance);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -440,9 +440,9 @@ public sealed record LinFloat64Quaternion :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool IsNearIdentity(double zeroEpsilon = Float64Utils.ZeroEpsilon)
+    public bool IsNearIdentity(double tolerance = Float64Utils.DefaultTolerance)
     {
-        return (this - Identity).NormSquared().IsNearZero(zeroEpsilon);
+        return (this - Identity).L2NormSquared().IsNearZero(tolerance);
     }
 
 
@@ -458,19 +458,19 @@ public sealed record LinFloat64Quaternion :
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public Float64Scalar Norm()
+    public double L2Norm()
     {
-        return NormSquared().Sqrt();
+        return L2NormSquared().Sqrt();
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public Float64Scalar NormInverse()
     {
-        return NormSquared().Sqrt().Inverse();
+        return L2NormSquared().Sqrt().Inverse();
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public Float64Scalar NormSquared()
+    public double L2NormSquared()
     {
         return ScalarI.Square() +
                ScalarJ.Square() +
@@ -481,7 +481,7 @@ public sealed record LinFloat64Quaternion :
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public Float64Scalar NormSquaredInverse()
     {
-        return NormSquared().Inverse();
+        return L2NormSquared().Inverse();
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -620,7 +620,7 @@ public sealed record LinFloat64Quaternion :
         return r.Normalize();
     }
 
-    public LinFloat64Quaternion Slerp(LinFloat64Quaternion q2, double t, double zeroEpsilon = Float64Utils.ZeroEpsilon)
+    public LinFloat64Quaternion Slerp(LinFloat64Quaternion q2, double t, double tolerance = Float64Utils.DefaultTolerance)
     {
         var cosOmega =
             ScalarI * q2.ScalarI +
@@ -638,7 +638,7 @@ public sealed record LinFloat64Quaternion :
 
         double s1, s2;
 
-        if (cosOmega > 1d - zeroEpsilon)
+        if (cosOmega > 1d - tolerance)
         {
             // Too close, do straight linear interpolation.
             s1 = 1.0f - t;
@@ -702,7 +702,7 @@ public sealed record LinFloat64Quaternion :
     {
         var scalar = assumeNormalized
             ? Scalar
-            : Scalar / Norm();
+            : Scalar / L2Norm();
 
         var cosHalfAngle = scalar.ScalarValue;
         var sinHalfAngle = (1d - cosHalfAngle.Square()).Sqrt();
@@ -761,7 +761,7 @@ public sealed record LinFloat64Quaternion :
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public SquareMatrix3 ToSquareMatrix3()
     {
-        var normSquared = NormSquared();
+        var normSquared = L2NormSquared();
 
         if (normSquared.IsNearZero())
             throw new InvalidOperationException();
@@ -787,7 +787,7 @@ public sealed record LinFloat64Quaternion :
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public SquareMatrix4 ToSquareMatrix4()
     {
-        var normSquared = NormSquared();
+        var normSquared = L2NormSquared();
 
         if (normSquared.IsNearZero())
             throw new InvalidOperationException();
@@ -816,7 +816,7 @@ public sealed record LinFloat64Quaternion :
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public Triplet<LinFloat64Vector3D> RotateBasisVectors()
     {
-        var normSquared = NormSquared();
+        var normSquared = L2NormSquared();
 
         if (normSquared.IsNearZero())
             throw new InvalidOperationException();
@@ -916,7 +916,7 @@ public sealed record LinFloat64Quaternion :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public IReadOnlyList<LinFloat64Vector3D> RotateVectors(params ILinFloat64Vector3D[] vectorArray)
+    public IReadOnlyList<LinFloat64Vector3D> RotateVectors(params LinFloat64Vector3D[] vectorArray)
     {
         var rotationMatrix =
             ToSquareMatrix3();
@@ -927,7 +927,7 @@ public sealed record LinFloat64Quaternion :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public IEnumerable<LinFloat64Vector3D> RotateVectors(IEnumerable<ILinFloat64Vector3D> vectorList)
+    public IEnumerable<LinFloat64Vector3D> RotateVectors(IEnumerable<LinFloat64Vector3D> vectorList)
     {
         var rotationMatrix =
             ToSquareMatrix3();

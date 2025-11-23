@@ -6,11 +6,11 @@ using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Multivectors;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Processors;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Basis;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Angles;
-using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Matrices;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Generic.Angles;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Generic.LinearMaps;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Generic.Matrices;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Generic.Vectors.SpaceND;
+using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Numerical;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Generic;
 using GeometricAlgebraFulcrumLib.Mathematica.Algebra;
@@ -839,8 +839,8 @@ public static class SymmetricalComponentsSamples
         const int n = 9;
 
         var metric = XGaFloat64Processor.Euclidean;
-        var matrix = n.CreateUnitaryDftMatrix();
-        var matrixInv = n.CreateUnitaryDftMatrix(true);
+        var matrix = n.UnitaryDftMatrix();
+        var matrixInv = n.UnitaryDftMatrix(true);
 
         Debug.Assert(
             (matrixInv * matrix - n.CreateDenseIdentityMatrix().ToComplex()).L2Norm().IsNearZero()
@@ -859,7 +859,7 @@ public static class SymmetricalComponentsSamples
                 metric.Vector(vector.Real().ToArray().MapItems(d => d.Round(6)))
             );
 
-            blade = blade.Divide(blade.ENorm().ScalarValue);
+            blade = blade.Divide(blade.ENorm());
 
             //Console.WriteLine($" Eigen Value {i}: {value}");
             //Console.WriteLine($"Eigen Vector {i}: {vector}");

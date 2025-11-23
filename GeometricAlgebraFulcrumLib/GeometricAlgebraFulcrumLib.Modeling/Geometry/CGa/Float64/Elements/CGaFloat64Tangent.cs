@@ -1,11 +1,16 @@
-﻿using System.Data;
+﻿using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Float64.Multivectors;
+using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Angles;
+using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space2D;
+using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space3D;
+using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.SpaceND;
+using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
+using GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Float64.Blades;
+using GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Float64.Encoding;
+using GeometricAlgebraFulcrumLib.Utilities.Structures.BitManipulation;
+using System.Data;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Text;
-using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Float64.Blades;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Float64.Operations;
-using GeometricAlgebraFulcrumLib.Utilities.Structures.BitManipulation;
 
 namespace GeometricAlgebraFulcrumLib.Modeling.Geometry.CGa.Float64.Elements;
 
@@ -82,6 +87,88 @@ public class CGaFloat64Tangent :
         return Weight * GeometricSpace.Eo.Op(direction).TranslateBy(
             Position
         );
+    }
+
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public new CGaFloat64Tangent TranslateBy(LinFloat64Vector2D egaVector)
+    {
+        return new CGaFloat64Tangent(
+            GeometricSpace,
+            Weight,
+            Position + egaVector.EncodeVGaVector(GeometricSpace),
+            Direction
+        );
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public new CGaFloat64Tangent TranslateBy(LinFloat64Vector3D egaVector)
+    {
+        return new CGaFloat64Tangent(
+            GeometricSpace,
+            Weight,
+            Position + egaVector.EncodeVGaVector(GeometricSpace),
+            Direction
+        );
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public new CGaFloat64Tangent TranslateBy(LinFloat64Vector egaVector)
+    {
+        return new CGaFloat64Tangent(
+            GeometricSpace,
+            Weight,
+            Position + egaVector.EncodeVGaVector(GeometricSpace),
+            Direction
+        );
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public new CGaFloat64Tangent TranslateBy(XGaFloat64Vector egaVector)
+    {
+        return new CGaFloat64Tangent(
+            GeometricSpace,
+            Weight,
+            Position + egaVector.EncodeVGaVector(GeometricSpace),
+            Direction
+        );
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public new CGaFloat64Tangent TranslateBy(CGaFloat64Blade egaVector)
+    {
+        Debug.Assert(egaVector.IsVGaVector());
+
+        return new CGaFloat64Tangent(
+            GeometricSpace,
+            Weight,
+            Position + egaVector,
+            Direction
+        );
+    }
+
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public new CGaFloat64Tangent ScaleBy(double scalingFactor)
+    {
+        return EncodeOpnsBlade().ScaleBy(scalingFactor).DecodeOpnsTangent.Element();
+    }
+
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public new CGaFloat64Tangent RotateUsing(LinFloat64Angle angle, LinFloat64Vector2D egaAxisPoint)
+    {
+        return EncodeOpnsBlade()
+            .RotateUsing(angle, egaAxisPoint)
+            .DecodeOpnsTangent.Element();
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public new CGaFloat64Tangent RotateUsing(LinFloat64Angle angle, LinFloat64Vector3D egaAxisPoint, LinFloat64Vector3D egaAxisVector)
+    {
+        return EncodeOpnsBlade()
+            .RotateUsing(angle, egaAxisPoint, egaAxisVector)
+            .DecodeOpnsTangent.Element();
     }
 
 

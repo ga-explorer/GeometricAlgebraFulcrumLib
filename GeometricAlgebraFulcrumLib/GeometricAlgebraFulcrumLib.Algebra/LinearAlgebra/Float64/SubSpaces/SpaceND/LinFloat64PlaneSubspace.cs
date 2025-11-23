@@ -1,8 +1,9 @@
 ﻿using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Angles;
-using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Matrices;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.SpaceND;
+using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Numerical.Matrices;
+using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.SubSpaces.SpaceND;
 
@@ -76,18 +77,18 @@ public sealed class LinFloat64PlaneSubspace :
     }
 
 
-    public bool NearContains(LinFloat64Vector vector, double zeroEpsilon = 1E-12D)
+    public bool NearContains(LinFloat64Vector vector, double tolerance = 1E-12D)
     {
-        if (vector.IsNearZero(zeroEpsilon))
+        if (vector.IsNearZero(tolerance))
             return true;
 
         // Project vector on subspace plane and compare with original vector
 
         var (xuDot, xvDot) = vector.VectorDot(BasisVector1, BasisVector2);
 
-        var diffNorm = (vector - (xuDot * BasisVector1 + xvDot * BasisVector2)).ENormSquared();
+        var diffNorm = (vector - (xuDot * BasisVector1 + xvDot * BasisVector2)).L2NormSquared();
 
-        return diffNorm < zeroEpsilon;
+        return diffNorm < tolerance;
 
         //var rank = Matrix<double>.Build.DenseOfColumnArrays(
         //    vector,
@@ -103,10 +104,10 @@ public sealed class LinFloat64PlaneSubspace :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool NearContains(ILinFloat64Subspace subspace, double zeroEpsilon = 1E-12)
+    public bool NearContains(ILinFloat64Subspace subspace, double tolerance = Float64Utils.DefaultTolerance)
     {
         return subspace.VSpaceDimensions <= VSpaceDimensions &&
-               subspace.BasisVectors.All(v => NearContains(v, zeroEpsilon));
+               subspace.BasisVectors.All(v => NearContains(v, tolerance));
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]

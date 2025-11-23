@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Runtime.CompilerServices;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space3D;
-using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Tuples;
 
 namespace GeometricAlgebraFulcrumLib.Modeling.Graphics.Structures.Data;
@@ -9,8 +8,8 @@ namespace GeometricAlgebraFulcrumLib.Modeling.Graphics.Structures.Data;
 public class PointDataSet3D<T> :
     IReadOnlyList<PointData3D<T>>
 {
-    private readonly Dictionary<Triplet<Float64Scalar>, int> _pointIndexDictionary
-        = new Dictionary<Triplet<Float64Scalar>, int>();
+    private readonly Dictionary<Triplet<double>, int> _pointIndexDictionary
+        = new Dictionary<Triplet<double>, int>();
 
     private readonly List<PointData3D<T>> _pointDataList;
 
@@ -24,25 +23,25 @@ public class PointDataSet3D<T> :
     {
         get
         {
-            var key = new Triplet<Float64Scalar>(x, y, z);
+            var key = new Triplet<double>(x, y, z);
 
             return this[key];
         }
         set
         {
-            var key = new Triplet<Float64Scalar>(x, y, z);
+            var key = new Triplet<double>(x, y, z);
 
             this[key] = value;
         }
     }
         
-    public T this[ITriplet<Float64Scalar> triplet]
+    public T this[ITriplet<double> triplet]
     {
         get => this[triplet.ToTriplet()];
         set => this[triplet.ToTriplet()] = value;
     }
         
-    public T this[Triplet<Float64Scalar> key]
+    public T this[Triplet<double> key]
     {
         get
         {
@@ -122,19 +121,19 @@ public class PointDataSet3D<T> :
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public bool ContainsPoint(double x, double y, double z)
     {
-        var key = new Triplet<Float64Scalar>(x, y, z);
+        var key = new Triplet<double>(x, y, z);
 
         return _pointIndexDictionary.ContainsKey(key);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool ContainsPoint(ITriplet<Float64Scalar> triplet)
+    public bool ContainsPoint(ITriplet<double> triplet)
     {
         return _pointIndexDictionary.ContainsKey(triplet.ToTriplet());
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool ContainsPoint(Triplet<Float64Scalar> key)
+    public bool ContainsPoint(Triplet<double> key)
     {
         return _pointIndexDictionary.ContainsKey(key);
     }
@@ -143,19 +142,19 @@ public class PointDataSet3D<T> :
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public bool TryGetPointIndex(double x, double y, double z, out int pointIndex)
     {
-        var key = new Triplet<Float64Scalar>(x, y, z);
+        var key = new Triplet<double>(x, y, z);
 
         return TryGetPointIndex(key, out pointIndex);
     }
         
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool TryGetPointIndex(ITriplet<Float64Scalar> triplet, out int pointIndex)
+    public bool TryGetPointIndex(ITriplet<double> triplet, out int pointIndex)
     {
         return TryGetPointIndex(triplet.ToTriplet(), out pointIndex);
     }
         
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool TryGetPointIndex(Triplet<Float64Scalar> key, out int pointIndex)
+    public bool TryGetPointIndex(Triplet<double> key, out int pointIndex)
     {
         if (_pointIndexDictionary.TryGetValue(key, out var index))
         {
@@ -171,19 +170,19 @@ public class PointDataSet3D<T> :
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public bool TryGetPointDataValue(double x, double y, double z, out T pointDataValue)
     {
-        var key = new Triplet<Float64Scalar>(x, y, z);
+        var key = new Triplet<double>(x, y, z);
 
         return TryGetPointDataValue(key, out pointDataValue);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool TryGetPointDataValue(ITriplet<Float64Scalar> triplet, out T pointDataValue)
+    public bool TryGetPointDataValue(ITriplet<double> triplet, out T pointDataValue)
     {
         return TryGetPointDataValue(triplet.ToTriplet(), out pointDataValue);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool TryGetPointDataValue(Triplet<Float64Scalar> key, out T pointDataValue)
+    public bool TryGetPointDataValue(Triplet<double> key, out T pointDataValue)
     {
         if (_pointIndexDictionary.TryGetValue(key, out var index))
         {
@@ -199,19 +198,19 @@ public class PointDataSet3D<T> :
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public bool TryGetPointData(double x, double y, double z, out PointData3D<T> pointData)
     {
-        var key = new Triplet<Float64Scalar>(x, y, z);
+        var key = new Triplet<double>(x, y, z);
 
         return TryGetPointData(key, out pointData);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool TryGetPointData(ITriplet<Float64Scalar> triplet, out PointData3D<T> pointData)
+    public bool TryGetPointData(ITriplet<double> triplet, out PointData3D<T> pointData)
     {
         return TryGetPointData(triplet.ToTriplet(), out pointData);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool TryGetPointData(Triplet<Float64Scalar> key, out PointData3D<T> pointData)
+    public bool TryGetPointData(Triplet<double> key, out PointData3D<T> pointData)
     {
         if (_pointIndexDictionary.TryGetValue(key, out var index))
         {
@@ -227,19 +226,19 @@ public class PointDataSet3D<T> :
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public int GetPointIndex(double x, double y, double z)
     {
-        var key = new Triplet<Float64Scalar>(x, y, z);
+        var key = new Triplet<double>(x, y, z);
 
         return GetPointIndex(key);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public int GetPointIndex(ITriplet<Float64Scalar> triplet)
+    public int GetPointIndex(ITriplet<double> triplet)
     {
         return GetPointIndex(triplet.ToTriplet());
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public int GetPointIndex(Triplet<Float64Scalar> key)
+    public int GetPointIndex(Triplet<double> key)
     {
         return _pointIndexDictionary.TryGetValue(key, out var index) 
             ? index 
@@ -256,19 +255,19 @@ public class PointDataSet3D<T> :
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public T GetPointDataValue(double x, double y, double z)
     {
-        var key = new Triplet<Float64Scalar>(x, y, z);
+        var key = new Triplet<double>(x, y, z);
 
         return GetPointDataValue(key);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public T GetPointDataValue(ITriplet<Float64Scalar> triplet)
+    public T GetPointDataValue(ITriplet<double> triplet)
     {
         return GetPointDataValue(triplet.ToTriplet());
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public T GetPointDataValue(Triplet<Float64Scalar> key)
+    public T GetPointDataValue(Triplet<double> key)
     {
         return _pointIndexDictionary.TryGetValue(key, out var index) 
             ? _pointDataList[index].DataValue
@@ -285,19 +284,19 @@ public class PointDataSet3D<T> :
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public PointData3D<T> GetPointData(double x, double y, double z)
     {
-        var key = new Triplet<Float64Scalar>(x, y, z);
+        var key = new Triplet<double>(x, y, z);
 
         return GetPointData(key);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public PointData3D<T> GetPointData(ITriplet<Float64Scalar> triplet)
+    public PointData3D<T> GetPointData(ITriplet<double> triplet)
     {
         return GetPointData(triplet.ToTriplet());
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public PointData3D<T> GetPointData(Triplet<Float64Scalar> key)
+    public PointData3D<T> GetPointData(Triplet<double> key)
     {
         return _pointIndexDictionary.TryGetValue(key, out var index) 
             ? _pointDataList[index]
@@ -308,13 +307,13 @@ public class PointDataSet3D<T> :
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public PointData3D<T> AddPoint(double x, double y, double z, T pointDataValue)
     {
-        var key = new Triplet<Float64Scalar>(x, y, z);
+        var key = new Triplet<double>(x, y, z);
             
         return AddPoint(key, pointDataValue);
     }
         
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public PointData3D<T> AddPoint(ITriplet<Float64Scalar> triplet, T pointDataValue)
+    public PointData3D<T> AddPoint(ITriplet<double> triplet, T pointDataValue)
     {
         var key = triplet.ToTriplet();
 
@@ -322,7 +321,7 @@ public class PointDataSet3D<T> :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public PointData3D<T> AddPoint(Triplet<Float64Scalar> key, T pointDataValue)
+    public PointData3D<T> AddPoint(Triplet<double> key, T pointDataValue)
     {
         var index = _pointDataList.Count;
         var pointData = new PointData3D<T>(index, key, pointDataValue);

@@ -40,11 +40,11 @@ public interface ILinFloat64Multivector4D :
 
     bool IsZero();
 
-    bool IsNearZero(double zeroEpsilon = 1e-12d);
+    bool IsNearZero(double tolerance = 1e-12d);
 
-    Float64Scalar Norm();
+    double L2Norm();
 
-    Float64Scalar NormSquared();
+    double L2NormSquared();
 
     //Float64Multivector4D ToMultivector4D();
 }

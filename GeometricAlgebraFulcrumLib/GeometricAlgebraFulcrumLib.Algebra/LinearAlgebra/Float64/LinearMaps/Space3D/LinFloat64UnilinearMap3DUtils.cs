@@ -2,9 +2,9 @@
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.LinearMaps.Space3D.Composers;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.LinearMaps.Space3D.Rotation;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.LinearMaps.SpaceND;
-using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Matrices;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space3D;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.SpaceND;
+using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Numerical.Matrices;
 using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Tuples;
 using MathNet.Numerics.LinearAlgebra;
@@ -13,45 +13,6 @@ namespace GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.LinearMaps.Sp
 
 public static class LinFloat64UnilinearMap3DUtils
 {
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static double[,] ToArray2D(this ILinFloat64UnilinearMap3D map)
-    {
-        return map.ToArray2D(3, 3);
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static double[,] ToArray2D(this ILinFloat64UnilinearMap3D map, int size)
-    {
-        return map.ToArray2D(size, size);
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static double[,] ToArray2D(this ILinFloat64UnilinearMap3D map, int rowCount, int colCount)
-    {
-        if (rowCount < 3 || colCount < 3)
-            throw new InvalidOperationException();
-
-        var matrix = new double[rowCount, colCount];
-
-        var vector0 = map.MapBasisVector(0);
-        var vector1 = map.MapBasisVector(1);
-        var vector2 = map.MapBasisVector(2);
-
-        matrix[0, 0] = vector0.X;
-        matrix[0, 1] = vector1.X;
-        matrix[0, 2] = vector2.X;
-
-        matrix[1, 0] = vector0.Y;
-        matrix[1, 1] = vector1.Y;
-        matrix[1, 2] = vector2.Y;
-
-        matrix[2, 0] = vector0.Z;
-        matrix[2, 1] = vector1.Z;
-        matrix[2, 2] = vector2.Z;
-
-        return matrix;
-    }
-
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static SquareMatrix3 ToSquareMatrix3(this ILinFloat64UnilinearMap3D map)
     {
@@ -110,84 +71,8 @@ public static class LinFloat64UnilinearMap3DUtils
         yield return map.MapBasisVector(1);
         yield return map.MapBasisVector(2);
     }
+    
 
-
-
-
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64Vector3D MapVector(this double[,] matrix, LinFloat64Vector3D vector)
-    {
-        var composer = LinFloat64Vector3DComposer.Create();
-
-        var rowCount = matrix.GetLength(0);
-        var colCount = matrix.GetLength(1);
-
-        for (var colIndex = 0; colIndex < 3; colIndex++)
-        {
-            var scalar = vector[1 << colIndex];
-
-            if (colIndex >= colCount)
-                continue;
-
-            for (var rowIndex = 0; rowIndex < rowCount; rowIndex++)
-                composer.AddTerm(
-                    rowIndex,
-                    scalar * matrix[rowIndex, colIndex]
-                );
-        }
-
-        return composer.GetVector();
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64Vector3D MapVector(this double[,] matrix, IEnumerable<double> vector)
-    {
-        var composer = LinFloat64Vector3DComposer.Create();
-
-        var rowCount = matrix.GetLength(0);
-        var colCount = matrix.GetLength(1);
-
-        var colIndex = 0;
-        foreach (var scalar in vector)
-        {
-            if (colIndex >= colCount)
-                return composer.GetVector();
-
-            for (var rowIndex = 0; rowIndex < rowCount; rowIndex++)
-                composer.AddTerm(
-                    rowIndex,
-                    scalar * matrix[rowIndex, colIndex]
-                );
-
-            colIndex++;
-        }
-
-        return composer.GetVector();
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64Vector3D MapVector(this double[,] matrix, IReadOnlyDictionary<int, double> vector)
-    {
-        var composer = LinFloat64Vector3DComposer.Create();
-
-        var rowCount = matrix.GetLength(0);
-        var colCount = matrix.GetLength(1);
-
-        foreach (var (colIndex, scalar) in vector)
-        {
-            if (colIndex >= colCount)
-                continue;
-
-            for (var rowIndex = 0; rowIndex < rowCount; rowIndex++)
-                composer.AddTerm(
-                    rowIndex,
-                    scalar * matrix[rowIndex, colIndex]
-                );
-        }
-
-        return composer.GetVector();
-    }
 
     //[MethodImpl(MethodImplOptions.AggressiveInlining)]
     //public static Float64Tuple3D MapVectorUsing(this IReadOnlyList<double> vector, LinFloat64UnilinearMap map)
@@ -203,7 +88,7 @@ public static class LinFloat64UnilinearMap3DUtils
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64UnilinearMap CreateVectorToVectorRotationMatrix(this IReadOnlyDictionary<int, double> sourceVector, IReadOnlyDictionary<int, double> targetVector, int basisVectorIndex, int vSpaceDimensions)
+    public static LinFloat64UnilinearMap CreateVectorToVectorRotationMap(this IReadOnlyDictionary<int, double> sourceVector, IReadOnlyDictionary<int, double> targetVector, int basisVectorIndex, int vSpaceDimensions)
     {
         var map2 = sourceVector.CreateVectorToBasisRotationMap(basisVectorIndex, vSpaceDimensions);
         var map1 = basisVectorIndex.CreateBasisToVectorRotationMap(targetVector, vSpaceDimensions);
@@ -309,7 +194,7 @@ public static class LinFloat64UnilinearMap3DUtils
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64Rotation3D GetOrthogonalizingRotation(this ILinFloat64Vector3D vector1, ILinFloat64Vector3D vector2)
+    public static LinFloat64Rotation3D GetOrthogonalizingRotation(this LinFloat64Vector3D vector1, LinFloat64Vector3D vector2)
     {
         return LinFloat64RotationComposer3D
             .Create()
@@ -318,7 +203,7 @@ public static class LinFloat64UnilinearMap3DUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Pair<LinFloat64Vector3D> OrthogonalizeFrameUsingRotation(this ILinFloat64Vector3D vector1, ILinFloat64Vector3D vector2)
+    public static Pair<LinFloat64Vector3D> OrthogonalizeFrameUsingRotation(this LinFloat64Vector3D vector1, LinFloat64Vector3D vector2)
     {
         var rotation = vector1.GetOrthogonalizingRotation(vector2);
 

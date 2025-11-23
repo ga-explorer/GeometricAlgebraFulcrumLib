@@ -2,6 +2,7 @@
 using System.Runtime.CompilerServices;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Angles;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space3D;
+using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.SubSpaces.Space3D;
 
@@ -78,18 +79,18 @@ public sealed class LinFloat64PlaneSubspace3D :
     }
 
 
-    public bool NearContains(ILinFloat64Vector3D vector, double zeroEpsilon = 1E-12D)
+    public bool NearContains(LinFloat64Vector3D vector, double tolerance = 1E-12D)
     {
-        if (vector.IsNearZero(zeroEpsilon))
+        if (vector.IsNearZero(tolerance))
             return true;
 
         // Project vector on subspace plane and compare with original vector
 
-        var (xuDot, xvDot) = vector.VectorESp(BasisVector1, BasisVector2);
+        var (xuDot, xvDot) = vector.VectorDot(BasisVector1, BasisVector2);
 
-        var diffNorm = (vector - (xuDot * BasisVector1 + xvDot * BasisVector2)).VectorENormSquared();
+        var diffNorm = LinFloat64Vector3DUtils.L2NormSquared((vector - (xuDot * BasisVector1 + xvDot * BasisVector2)));
 
-        return diffNorm < zeroEpsilon;
+        return diffNorm < tolerance;
 
         //var rank = Matrix<double>.Build.DenseOfColumnArrays(
         //    vector,
@@ -105,10 +106,10 @@ public sealed class LinFloat64PlaneSubspace3D :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool NearContains(ILinFloat64Subspace3D subspace, double zeroEpsilon = 1E-12)
+    public bool NearContains(ILinFloat64Subspace3D subspace, double tolerance = Float64Utils.DefaultTolerance)
     {
         return subspace.VSpaceDimensions <= VSpaceDimensions &&
-               subspace.BasisVectors.All(v => NearContains(v, zeroEpsilon));
+               subspace.BasisVectors.All(v => NearContains(v, tolerance));
     }
 
     public bool IsValid()
@@ -116,21 +117,21 @@ public sealed class LinFloat64PlaneSubspace3D :
         throw new NotImplementedException();
     }
 
-    public LinFloat64Vector3D GetVectorProjection(ILinFloat64Vector3D vector)
+    public LinFloat64Vector3D GetVectorProjection(LinFloat64Vector3D vector)
     {
         throw new NotImplementedException();
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public LinFloat64PolarAngle GetVectorProjectionPolarAngle(ILinFloat64Vector3D vector)
+    public LinFloat64PolarAngle GetVectorProjectionPolarAngle(LinFloat64Vector3D vector)
     {
         var (u1Dot, u2Dot) =
-            vector.VectorESp(BasisVector1, BasisVector2);
+            vector.VectorDot(BasisVector1, BasisVector2);
 
         return LinFloat64PolarAngle.CreateFromVector(u1Dot, u2Dot);
     }
 
-    public LinFloat64Vector3D GetVectorRejection(ILinFloat64Vector3D vector)
+    public LinFloat64Vector3D GetVectorRejection(LinFloat64Vector3D vector)
     {
         throw new NotImplementedException();
     }

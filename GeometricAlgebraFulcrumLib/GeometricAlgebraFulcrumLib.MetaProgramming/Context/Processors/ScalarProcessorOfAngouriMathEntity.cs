@@ -14,7 +14,7 @@ public sealed class ScalarProcessorOfAngouriMathEntity
 
 
     private double _zeroEpsilon = 1e-12;
-    public double ZeroEpsilon
+    public double DefaultTolerance
     {
         get => _zeroEpsilon;
         set
@@ -144,7 +144,7 @@ public sealed class ScalarProcessorOfAngouriMathEntity
     public Scalar<Entity> PostProcessScalar(Entity scalar)
     {
         return scalar.Simplify().ScalarFromValue(this);
-        //return Mfs.Round[Mfs.N[scalar], ZeroEpsilon.ToExpr()].Simplify();
+        //return Mfs.Round[Mfs.N[scalar], DefaultTolerance.ToExpr()].Simplify();
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -379,7 +379,7 @@ public sealed class ScalarProcessorOfAngouriMathEntity
     //    return 
     //        simpleScalar.EvaluableNumerical && 
     //        nearZeroFlag 
-    //            ? simpleScalar.EvalNumerical().Abs() < ZeroEpsilon
+    //            ? simpleScalar.EvalNumerical().Abs() < DefaultTolerance
     //            : simpleScalar.EvalNumerical().IsZero;
     //}
 
@@ -389,7 +389,7 @@ public sealed class ScalarProcessorOfAngouriMathEntity
     //    var simpleScalar = scalar.Simplify();
 
     //    return simpleScalar.EvaluableNumerical && 
-    //           simpleScalar.EvalNumerical().Abs() < ZeroEpsilon;
+    //           simpleScalar.EvalNumerical().Abs() < DefaultTolerance;
     //}
 
     //[MethodImpl(MethodImplOptions.AggressiveInlining)]

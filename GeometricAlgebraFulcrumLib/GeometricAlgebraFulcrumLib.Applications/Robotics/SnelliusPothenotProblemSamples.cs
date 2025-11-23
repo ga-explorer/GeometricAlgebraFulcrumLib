@@ -69,7 +69,7 @@ namespace GeometricAlgebraFulcrumLib.Applications.Robotics
             //var gamma = Float64PlanarAngle.Angle0;
 
             var gamma = LinFloat64PolarAngle.CreateFromVector(
-                ua.Norm(),
+                ua.L2Norm(),
                 pointA.Z - pointP.Z
             ).RadiansToPolarAngle();
 
@@ -124,23 +124,23 @@ namespace GeometricAlgebraFulcrumLib.Applications.Robotics
                 );
 
                 var p1 = data.SolveUsingVGa();
-                var error1 = (pointP - p1).Norm().Log10().ScalarValue;
+                var error1 = (pointP - p1).L2Norm().Log10();
                 Debug.Assert(error1 < 0);
 
                 var p2 = data.SolveUsingPGaPaco();
-                var error2 = (pointP - p2).Norm().Log10().ScalarValue;
+                var error2 = (pointP - p2).L2Norm().Log10();
                 Debug.Assert(error2 < 0);
 
                 var p3 = data.SolveUsingCGaPaco();
-                var error3 = (pointP - p3).Norm().Log10().ScalarValue;
+                var error3 = (pointP - p3).L2Norm().Log10();
                 Debug.Assert(error3 < 0);
 
                 var p4 = data.SolveUsingCGaCollins();
-                var error4 = (pointP - p4).Norm().Log10().ScalarValue;
+                var error4 = (pointP - p4).L2Norm().Log10();
                 Debug.Assert(error4 < 0);
 
                 var p5 = data.SolveUsingCGaCassini();
-                var error5 = (pointP - p5).Norm().Log10().ScalarValue;
+                var error5 = (pointP - p5).L2Norm().Log10();
                 Debug.Assert(error5 < 0);
             }
 
@@ -192,7 +192,7 @@ namespace GeometricAlgebraFulcrumLib.Applications.Robotics
 
         private static double GetError(LinFloat64Vector2D originalPoint, LinFloat64Vector2D computedPoint)
         {
-            var errorValue = (originalPoint - computedPoint).Norm().ScalarValue;
+            var errorValue = (originalPoint - computedPoint).L2Norm();
 
             //if (double.IsNaN(errorValue) || errorValue > 10) return 10;
 

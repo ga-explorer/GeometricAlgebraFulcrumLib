@@ -23,7 +23,7 @@ public static class CGaFloat64LerpFlatUtils
         var position =
             s * point1.PositionToVector2D() + t * point2.PositionToVector2D();
 
-        return CGaFloat64GeometricSpace5D.Instance.DefineFlatPoint(
+        return CGaFloat64GeometricSpace5D.Instance.FlatPoint(
             weight,
             position
         );
@@ -44,7 +44,7 @@ public static class CGaFloat64LerpFlatUtils
         var position =
             s * point1.PositionToVector3D() + t * point2.PositionToVector3D();
 
-        return CGaFloat64GeometricSpace5D.Instance.DefineFlatPoint(
+        return CGaFloat64GeometricSpace5D.Instance.FlatPoint(
             weight,
             position
         );
@@ -73,7 +73,7 @@ public static class CGaFloat64LerpFlatUtils
         var directionVector =
             directionVector1.RotateToUnitVector(directionVector2, angle);
 
-        return CGaFloat64GeometricSpace5D.Instance.DefineFlatLine(
+        return CGaFloat64GeometricSpace5D.Instance.FlatLine(
             weight,
             position,
             directionVector
@@ -103,7 +103,7 @@ public static class CGaFloat64LerpFlatUtils
         var directionVector =
             directionVector1.RotateToUnitVector(directionVector2, angle);
 
-        return CGaFloat64GeometricSpace5D.Instance.DefineFlatLine(
+        return CGaFloat64GeometricSpace5D.Instance.FlatLine(
             weight,
             position,
             directionVector
@@ -133,7 +133,7 @@ public static class CGaFloat64LerpFlatUtils
         var directionBivector =
             normal1.RotateToUnitVector(normal2, angle).NormalToUnitDirection3D();
 
-        return CGaFloat64GeometricSpace5D.Instance.DefineFlatPlane(
+        return CGaFloat64GeometricSpace5D.Instance.FlatPlane(
             weight,
             position,
             directionBivector

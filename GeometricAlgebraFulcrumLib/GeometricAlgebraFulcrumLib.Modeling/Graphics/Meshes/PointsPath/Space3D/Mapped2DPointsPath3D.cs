@@ -5,20 +5,20 @@ using GeometricAlgebraFulcrumLib.Utilities.Structures.Sequences.Periodic1D;
 namespace GeometricAlgebraFulcrumLib.Modeling.Graphics.Meshes.PointsPath.Space3D;
 
 public sealed class Mapped2DPointsPath3D : 
-    PSeqMapped1D<ILinFloat64Vector2D, ILinFloat64Vector3D>, 
+    PSeqMapped1D<LinFloat64Vector2D, LinFloat64Vector3D>, 
     IPointsPath3D
 {
-    public Func<ILinFloat64Vector2D, ILinFloat64Vector3D> Mapping { get; set; }
+    public Func<LinFloat64Vector2D, LinFloat64Vector3D> Mapping { get; set; }
 
 
-    public Mapped2DPointsPath3D(IPointsPath2D basePath, Func<ILinFloat64Vector2D, ILinFloat64Vector3D> mapping)
+    public Mapped2DPointsPath3D(IPointsPath2D basePath, Func<LinFloat64Vector2D, LinFloat64Vector3D> mapping)
         : base(basePath)
     {
         Mapping = mapping;
     }
 
 
-    protected override ILinFloat64Vector3D MappingFunction(ILinFloat64Vector2D input)
+    protected override LinFloat64Vector3D MappingFunction(LinFloat64Vector2D input)
     {
         return Mapping(input);
     }
@@ -29,7 +29,7 @@ public sealed class Mapped2DPointsPath3D :
         return this.All(p => p.IsValid());
     }
         
-    public IPointsPath3D MapPoints(Func<ILinFloat64Vector3D, ILinFloat64Vector3D> pointMapping)
+    public IPointsPath3D MapPoints(Func<LinFloat64Vector3D, LinFloat64Vector3D> pointMapping)
     {
         return new ArrayPointsPath3D(
             this.Select(pointMapping).ToArray()

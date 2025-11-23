@@ -79,7 +79,7 @@ public static class SymbolicRotorsSample
         var e2 = GeometricProcessor.VectorTerm(1);
         var e3 = GeometricProcessor.VectorTerm(2);
         var pseudoScalar = e1.Gp(e2).Gp(e3).GetKVectorPart(3);
-        var pseudoScalarInverse = pseudoScalar.Inverse();
+        var pseudoScalarInverse = pseudoScalar.VersorInverse();
 
         // Define angle of rotation
         var angle = @"\[Theta]".RadiansToPolarAngle(ScalarProcessor);
@@ -142,7 +142,7 @@ public static class SymbolicRotorsSample
         var e2 = GeometricProcessor.VectorTerm(1);
         var e3 = GeometricProcessor.VectorTerm(2);
         var pseudoScalar = e1.Gp(e2).Gp(e3).GetKVectorPart(3);
-        var pseudoScalarInverse = pseudoScalar.Inverse();
+        var pseudoScalarInverse = pseudoScalar.VersorInverse();
 
         var angle = @"\[Theta]".RadiansToPolarAngle(ScalarProcessor);
 
@@ -205,7 +205,7 @@ public static class SymbolicRotorsSample
         var e2 = GeometricProcessor.VectorTerm(1);
         var e3 = GeometricProcessor.VectorTerm(2);
         var pseudoScalar = e1.Gp(e2).Gp(e3).GetKVectorPart(3);
-        var pseudoScalarInverse = pseudoScalar.Inverse();
+        var pseudoScalarInverse = pseudoScalar.VersorInverse();
 
         //var u =
         //    "Subscript[u,1]".ToExpr() * e1 +
@@ -306,7 +306,7 @@ public static class SymbolicRotorsSample
         var e2 = GeometricProcessor.VectorTerm(1);
         var e3 = GeometricProcessor.VectorTerm(2);
         var pseudoScalar = e1.Gp(e2).Gp(e3).GetKVectorPart(3);
-        var pseudoScalarInverse = pseudoScalar.Inverse();
+        var pseudoScalarInverse = pseudoScalar.VersorInverse();
 
         // Define two unit vectors with angle phi between them
         var anglePhi = @"\[Phi]".ToExpr();
@@ -384,7 +384,7 @@ public static class SymbolicRotorsSample
         var e2 = GeometricProcessor.VectorTerm(1);
         var e3 = GeometricProcessor.VectorTerm(2);
         var pseudoScalar = e1.Op(e2).Op(e3);
-        var pseudoScalarInverse = pseudoScalar.Inverse();
+        var pseudoScalarInverse = pseudoScalar.VersorInverse();
 
         // Define two unit vectors with angle phi between them
         var anglePhi = @"\[Phi]".RadiansToPolarAngle(ScalarProcessor);
@@ -494,7 +494,7 @@ public static class SymbolicRotorsSample
         var e2 = GeometricProcessor.VectorTerm(1);
         var e3 = GeometricProcessor.VectorTerm(2);
         var pseudoScalar = e1.Op(e2).Op(e3);
-        var pseudoScalarInverse = pseudoScalar.Inverse();
+        var pseudoScalarInverse = pseudoScalar.VersorInverse();
 
         // Define two unit vectors with angle phi between them
         var anglePhi = @"\[Phi]".RadiansToPolarAngle(ScalarProcessor);
@@ -796,7 +796,7 @@ public static class SymbolicRotorsSample
         var e2 = GeometricProcessor.VectorTerm(1);
         var e3 = GeometricProcessor.VectorTerm(2);
         var pseudoScalar = e1.Gp(e2).Gp(e3).GetKVectorPart(3);
-        var pseudoScalarInverse = pseudoScalar.Inverse();
+        var pseudoScalarInverse = pseudoScalar.VersorInverse();
 
         var uVectors = new[]
         {

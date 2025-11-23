@@ -19,7 +19,7 @@ public class LinearFrame3D
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static LinearFrame3D CreateRightHanded(ILinFloat64Vector3D uDirection)
     {
-        var s = uDirection.VectorENorm();
+        var s = uDirection.L2Norm();
 
         Debug.Assert(!s.IsNearZero());
 
@@ -40,7 +40,7 @@ public class LinearFrame3D
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static LinearFrame3D CreateLeftHanded(ILinFloat64Vector3D uDirection)
     {
-        var s = uDirection.VectorENorm();
+        var s = uDirection.L2Norm();
 
         Debug.Assert(!s.IsNearZero());
 

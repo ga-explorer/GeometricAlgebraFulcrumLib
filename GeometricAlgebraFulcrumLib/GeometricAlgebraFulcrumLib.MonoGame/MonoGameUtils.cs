@@ -1,5 +1,4 @@
 ﻿using System;
-using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Primitives;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Primitives.Vertices;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Tuples;
@@ -24,30 +23,30 @@ namespace GeometricAlgebraFulcrumLib.MonoGame
         }
 
 
-        public static Vector2 ToXnaVector2(this IPair<Float64Scalar> vector)
+        public static Vector2 ToXnaVector2(this IPair<double> vector)
         {
             return new Vector2(
-                (float)vector.Item1.ScalarValue,
-                (float)vector.Item2.ScalarValue
+                (float)vector.Item1,
+                (float)vector.Item2
             );
         }
 
-        public static Vector3 ToXnaVector3(this ITriplet<Float64Scalar> vector)
+        public static Vector3 ToXnaVector3(this ITriplet<double> vector)
         {
             return new Vector3(
-                (float)vector.Item1.ScalarValue,
-                (float)vector.Item2.ScalarValue,
-                (float)vector.Item3.ScalarValue
+                (float)vector.Item1,
+                (float)vector.Item2,
+                (float)vector.Item3
             );
         }
         
-        public static Vector4 ToXnaVector4(this IQuad<Float64Scalar> vector)
+        public static Vector4 ToXnaVector4(this IQuad<double> vector)
         {
             return new Vector4(
-                (float)vector.Item1.ScalarValue,
-                (float)vector.Item2.ScalarValue,
-                (float)vector.Item3.ScalarValue,
-                (float)vector.Item4.ScalarValue
+                (float)vector.Item1,
+                (float)vector.Item2,
+                (float)vector.Item3,
+                (float)vector.Item4
             );
         }
 

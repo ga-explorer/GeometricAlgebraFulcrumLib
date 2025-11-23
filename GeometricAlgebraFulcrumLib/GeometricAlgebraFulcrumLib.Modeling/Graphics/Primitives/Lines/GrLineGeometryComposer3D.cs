@@ -1,7 +1,5 @@
 ﻿using System.Collections;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Float64.Vectors.Space3D;
-using GeometricAlgebraFulcrumLib.Algebra.Scalars.Float64;
-using GeometricAlgebraFulcrumLib.Modeling.Geometry.BasicShapes.Lines;
 using GeometricAlgebraFulcrumLib.Modeling.Geometry.BasicShapes.Lines.Space3D.Float64;
 using GeometricAlgebraFulcrumLib.Modeling.Graphics.Primitives.Vertices;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Tuples;
@@ -15,8 +13,8 @@ namespace GeometricAlgebraFulcrumLib.Modeling.Graphics.Primitives.Lines;
 public class GrLineGeometryComposer3D : 
     IGraphicsLineGeometry3D
 {
-    private readonly Dictionary<Triplet<Float64Scalar>, GrVertex3D> _verticesTable
-        = new Dictionary<Triplet<Float64Scalar>, GrVertex3D>();
+    private readonly Dictionary<Triplet<double>, GrVertex3D> _verticesTable
+        = new Dictionary<Triplet<double>, GrVertex3D>();
 
     private readonly List<GrVertex3D> _verticesList
         = new List<GrVertex3D>();
@@ -56,8 +54,8 @@ public class GrLineGeometryComposer3D :
     public IEnumerable<IGraphicsVertex3D> GeometryVertices 
         => _verticesTable.Select(p => p.Value);
 
-    public IEnumerable<ILinFloat64Vector3D> GeometryPoints 
-        => _verticesTable.Select(p => p.Value);
+    public IEnumerable<LinFloat64Vector3D> GeometryPoints 
+        => _verticesTable.Select(p => p.Value.ToLinVector3D());
 
     public IEnumerable<Pair<int>> LineVertexIndices
     {
@@ -104,9 +102,9 @@ public class GrLineGeometryComposer3D :
     }
 
         
-    public ILinFloat64Vector3D GetGeometryPoint(int index)
+    public LinFloat64Vector3D GetGeometryPoint(int index)
     {
-        return _verticesList[index];
+        return _verticesList[index].ToLinVector3D();
     }
         
     private bool StoreLine(IGraphicsSurfaceLocalFrame3D vertex1, IGraphicsSurfaceLocalFrame3D vertex2)
@@ -156,7 +154,7 @@ public class GrLineGeometryComposer3D :
 
     public IGraphicsSurfaceLocalFrame3D AddVertexFromPoint(double x, double y, double z)
     {
-        var pointTriplet = new Triplet<Float64Scalar>(x, y, z);
+        var pointTriplet = new Triplet<double>(x, y, z);
 
         GrVertex3D storedVertex;
 
@@ -179,7 +177,7 @@ public class GrLineGeometryComposer3D :
         return storedVertex;
     }
 
-    public IGraphicsSurfaceLocalFrame3D AddVertexFromPoint(ITriplet<Float64Scalar> point)
+    public IGraphicsSurfaceLocalFrame3D AddVertexFromPoint(ITriplet<double> point)
     {
         var pointTriplet = point.ToTriplet();
 
@@ -230,7 +228,7 @@ public class GrLineGeometryComposer3D :
     }
 
 
-    public GrLineGeometryComposer3D AddVerticesFromPoints(params ILinFloat64Vector3D[] pointsList)
+    public GrLineGeometryComposer3D AddVerticesFromPoints(params LinFloat64Vector3D[] pointsList)
     {
         foreach (var point in pointsList)
             AddVertexFromPoint(point);
@@ -238,7 +236,7 @@ public class GrLineGeometryComposer3D :
         return this;
     }
 
-    public GrLineGeometryComposer3D AddVerticesFromPoints(IEnumerable<ILinFloat64Vector3D> pointsList)
+    public GrLineGeometryComposer3D AddVerticesFromPoints(IEnumerable<LinFloat64Vector3D> pointsList)
     {
         foreach (var point in pointsList)
             AddVertexFromPoint(point);
@@ -359,7 +357,7 @@ public class GrLineGeometryComposer3D :
         return this;
     }
 
-    public GrLineGeometryComposer3D AddLines(IEnumerable<ILinFloat64Vector3D> linePointsList)
+    public GrLineGeometryComposer3D AddLines(IEnumerable<LinFloat64Vector3D> linePointsList)
     {
         var firstPointFlag = true;
         ILinFloat64Vector3D point1 = null;
@@ -437,7 +435,7 @@ public class GrLineGeometryComposer3D :
         return this;
     }
 
-    public GrLineGeometryComposer3D AddPolyLine(IEnumerable<ILinFloat64Vector3D> pointsList, bool closed)
+    public GrLineGeometryComposer3D AddPolyLine(IEnumerable<LinFloat64Vector3D> pointsList, bool closed)
     {
         ILinFloat64Vector3D firstPoint = null;
         ILinFloat64Vector3D point1 = null;

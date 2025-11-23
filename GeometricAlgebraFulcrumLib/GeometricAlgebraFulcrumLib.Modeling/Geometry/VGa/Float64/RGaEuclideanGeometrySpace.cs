@@ -35,7 +35,7 @@ public abstract class XGaEuclideanGeometrySpace :
         E12 = EuclideanProcessor.BivectorTerm(0, 1);
 
         I = EuclideanProcessor.HigherKVectorTerm((IndexSet)(GaSpaceDimensions - 1), 1);
-        Iinv = I.Inverse();
+        Iinv = I.VersorInverse();
         Irev = I.Reverse();
     }
 

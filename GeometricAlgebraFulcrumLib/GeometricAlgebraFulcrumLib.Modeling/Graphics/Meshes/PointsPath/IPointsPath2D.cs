@@ -10,7 +10,7 @@ namespace GeometricAlgebraFulcrumLib.Modeling.Graphics.Meshes.PointsPath;
 /// </summary>
 public interface IPointsPath2D : 
     IAlgebraicElement, 
-    IPeriodicSequence1D<ILinFloat64Vector2D>
+    IPeriodicSequence1D<LinFloat64Vector2D>
 {
-    IPointsPath2D MapPoints(Func<ILinFloat64Vector2D, ILinFloat64Vector2D> pointMapping);
+    IPointsPath2D MapPoints(Func<LinFloat64Vector2D, LinFloat64Vector2D> pointMapping);
 }

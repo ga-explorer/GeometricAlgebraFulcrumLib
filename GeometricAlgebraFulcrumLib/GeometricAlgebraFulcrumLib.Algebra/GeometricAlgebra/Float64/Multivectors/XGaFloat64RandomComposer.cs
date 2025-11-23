@@ -783,47 +783,8 @@ public class XGaFloat64RandomComposer :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public IEnumerable<double> GetScalars(int count)
-    {
-        return Enumerable
-            .Range(0, count)
-            .Select(_ => GetScalarValue());
-    }
-    
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public XGaFloat64PureRotor GetEuclideanPureRotor()
     {
         return GetVector().CreatePureRotor(GetVector());
-    }
-
-    public double[,] GetArray(int rowsCount, int columnsCount)
-    {
-        var array = new double[rowsCount, columnsCount];
-
-        for (var i = 0; i < rowsCount; i++)
-        for (var j = 0; j < columnsCount; j++)
-            array[i, j] = GetScalarValue();
-
-        return array;
-    }
-
-    public double[,] GetPermutationArray(int size)
-    {
-        var array = new double[size, size];
-
-        var indexList = Enumerable
-            .Range(0, size)
-            .Shuffled(RandomGenerator);
-
-        var i = 0;
-        foreach (var colIndex in indexList)
-        {
-            for (var j = 0; j < size; j++)
-                array[i, j] = j == colIndex ? 1 : 0;
-
-            i++;
-        }
-
-        return array;
     }
 }

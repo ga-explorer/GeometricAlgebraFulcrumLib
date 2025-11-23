@@ -3,6 +3,6 @@
 namespace GeometricAlgebraFulcrumLib.Modeling.Graphics.Primitives.Points;
 
 public interface IGraphicsPointGeometry3D 
-    : IGraphicsPrimitiveGeometry3D<ILinFloat64Vector3D>
+    : IGraphicsPrimitiveGeometry3D<LinFloat64Vector3D>
 {
 }

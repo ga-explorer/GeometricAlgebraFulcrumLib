@@ -1,5 +1,4 @@
-﻿using System.Collections.Immutable;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Text;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Generic.Multivectors;
@@ -171,9 +170,10 @@ public class CGaRound<T> :
             ).VectorDivideByNorm()
         );
 
-        return directionVectors
-            .Select(v => PositionToVector2D() + v * RealRadius)
-            .ToImmutableArray();
+        return [
+            ..directionVectors
+                .Select(v => PositionToVector2D() + v * RealRadius)
+        ];
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -189,9 +189,10 @@ public class CGaRound<T> :
             ).VectorDivideByENorm()
         );
 
-        return directionVectors
-            .Select(v => PositionToVector3D() + v * RealRadius)
-            .ToImmutableArray();
+        return [
+            ..directionVectors
+                .Select(v => PositionToVector3D() + v * RealRadius)
+        ];
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -207,9 +208,10 @@ public class CGaRound<T> :
             ).DivideByENorm()
         );
 
-        return directionVectors
-            .Select(v => PositionToVector() + v * RealRadius)
-            .ToImmutableArray();
+        return [
+            ..directionVectors
+                .Select(v => PositionToVector() + v * RealRadius)
+        ];
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -225,41 +227,46 @@ public class CGaRound<T> :
             ).DivideByNorm()
         );
 
-        return directionVectors
-            .Select(v => PositionToXGaVector() + v * RealRadius)
-            .ToImmutableArray();
+        return [
+            ..directionVectors
+                .Select(v => PositionToXGaVector() + v * RealRadius)
+        ];
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public IReadOnlyList<CGaBlade<T>> GetSurfacePointVGaVectorBlades()
     {
-        return GetSurfacePointXGaVectors()
-            .Select(GeometricSpace.EncodeVGa.Vector)
-            .ToImmutableArray();
+        return [
+            ..GetSurfacePointXGaVectors()
+                .Select(GeometricSpace.EncodeVGa.Vector)
+        ];
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public IReadOnlyList<CGaBlade<T>> GetSurfacePointPGaVectorBlades()
     {
-        return GetSurfacePointXGaVectors()
-            .Select(GeometricSpace.EncodePGa.Point)
-            .ToImmutableArray();
+        return [
+            ..GetSurfacePointXGaVectors()
+                .Select(GeometricSpace.EncodePGa.Point)
+        ];
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public IReadOnlyList<CGaBlade<T>> GetSurfacePointIpnsBlades()
     {
-        return GetSurfacePointXGaVectors()
-            .Select(GeometricSpace.EncodeIpnsRound.Point)
-            .ToImmutableArray();
+        return [
+            ..GetSurfacePointXGaVectors()
+                .Select(GeometricSpace.EncodeIpnsRound.Point)
+        ];
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public IReadOnlyList<CGaBlade<T>> GetSurfacePointOpnsFlatBlades()
     {
-        return GetSurfacePointXGaVectors()
-            .Select(GeometricSpace.EncodeOpnsFlat.Point)
-            .ToImmutableArray();
+        return [
+            ..GetSurfacePointXGaVectors()
+                .Select(GeometricSpace.EncodeOpnsFlat.Point)
+        ];
     }
 
 

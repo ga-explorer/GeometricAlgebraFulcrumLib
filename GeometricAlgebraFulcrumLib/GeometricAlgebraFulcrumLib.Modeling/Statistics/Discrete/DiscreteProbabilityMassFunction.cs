@@ -109,7 +109,7 @@ namespace GeometricAlgebraFulcrumLib.Modeling.Statistics.Discrete
             );
         }
 
-        public static DiscreteProbabilityMassFunction CreateBinomial(int trialCount, double successProbability, double zeroEpsilon = Float64Utils.ZeroEpsilon)
+        public static DiscreteProbabilityMassFunction CreateBinomial(int trialCount, double successProbability, double tolerance = Float64Utils.DefaultTolerance)
         {
             var sampleProbabilityDictionary = new SortedDictionary<int, double>();
 
@@ -132,7 +132,7 @@ namespace GeometricAlgebraFulcrumLib.Modeling.Statistics.Discrete
                 //successProbability.Power(k) *
                 //failureProbability.Power(trialCount - k);
 
-                if (p <= zeroEpsilon) continue;
+                if (p <= tolerance) continue;
 
                 domainFirstValue = k;
 
@@ -153,7 +153,7 @@ namespace GeometricAlgebraFulcrumLib.Modeling.Statistics.Discrete
                     (trialCount - k) * qLn
                 );
 
-                if (p <= zeroEpsilon)
+                if (p <= tolerance)
                 {
                     domainLastValue = k - 1;
 
@@ -172,7 +172,7 @@ namespace GeometricAlgebraFulcrumLib.Modeling.Statistics.Discrete
             );
         }
 
-        public static DiscreteProbabilityMassFunction CreatePoisson(double mean, double zeroEpsilon = Float64Utils.ZeroEpsilon)
+        public static DiscreteProbabilityMassFunction CreatePoisson(double mean, double tolerance = Float64Utils.DefaultTolerance)
         {
             var sampleProbabilityDictionary = new SortedDictionary<int, double>();
 
@@ -189,7 +189,7 @@ namespace GeometricAlgebraFulcrumLib.Modeling.Statistics.Discrete
                 );
                 //mean.Power(k) * expMean / SpecialFunctions.Factorial(k);
 
-                if (p <= zeroEpsilon) continue;
+                if (p <= tolerance) continue;
 
                 domainFirstValue = k;
 
@@ -206,7 +206,7 @@ namespace GeometricAlgebraFulcrumLib.Modeling.Statistics.Discrete
                     k * meanLn - mean - SpecialFunctions.FactorialLn(k)
                 );
 
-                if (p <= zeroEpsilon)
+                if (p <= tolerance)
                 {
                     domainLastValue = k - 1;
 
@@ -225,14 +225,14 @@ namespace GeometricAlgebraFulcrumLib.Modeling.Statistics.Discrete
             );
         }
 
-        public static DiscreteProbabilityMassFunction CreateNormal(double mean, double standardDeviation, int domainSampleCount, double zeroEpsilon = Float64Utils.ZeroEpsilon)
+        public static DiscreteProbabilityMassFunction CreateNormal(double mean, double standardDeviation, int domainSampleCount, double tolerance = Float64Utils.DefaultTolerance)
         {
             var variance =
                 standardDeviation * standardDeviation;
 
             var halfSize = Math.Sqrt(
                 -2 * variance * Math.Log(
-                    Math.Sqrt(Math.Tau) * standardDeviation * zeroEpsilon
+                    Math.Sqrt(Math.Tau) * standardDeviation * tolerance
                 )
             );
 
@@ -269,9 +269,9 @@ namespace GeometricAlgebraFulcrumLib.Modeling.Statistics.Discrete
             }
         }
 
-        public static DiscreteProbabilityMassFunction CreateExponential(double rate, int domainSampleCount, double zeroEpsilon = Float64Utils.ZeroEpsilon)
+        public static DiscreteProbabilityMassFunction CreateExponential(double rate, int domainSampleCount, double tolerance = Float64Utils.DefaultTolerance)
         {
-            var domainLastValue = -Math.Log(zeroEpsilon / rate) / rate;
+            var domainLastValue = -Math.Log(tolerance / rate) / rate;
 
             var sampleProbabilityDictionary = new SortedDictionary<int, double>();
 
@@ -393,20 +393,20 @@ namespace GeometricAlgebraFulcrumLib.Modeling.Statistics.Discrete
                    );
         }
 
-        public DiscreteProbabilityMassFunction TrimProbabilities(double zeroEpsilon = Float64Utils.ZeroEpsilon)
+        public DiscreteProbabilityMassFunction TrimProbabilities(double tolerance = Float64Utils.DefaultTolerance)
         {
             var sum =
                 SampleProbabilityDictionary
                     .Values
-                    .Where(v => v > zeroEpsilon)
+                    .Where(v => v > tolerance)
                     .Sum();
 
             var i1 = SampleProbabilityDictionary
-                .First(p => p.Value > zeroEpsilon)
+                .First(p => p.Value > tolerance)
                 .Key;
 
             var i2 = SampleProbabilityDictionary
-                .Last(p => p.Value > zeroEpsilon)
+                .Last(p => p.Value > tolerance)
                 .Key;
 
             var sampleProbabilityDictionary = new SortedDictionary<int, double>();
@@ -415,7 +415,7 @@ namespace GeometricAlgebraFulcrumLib.Modeling.Statistics.Discrete
 
             foreach (var (i, p) in SampleProbabilityDictionary)
             {
-                if (p > zeroEpsilon)
+                if (p > tolerance)
                     sampleProbabilityDictionary.Add(i - i1, p * sumInv);
             }
 

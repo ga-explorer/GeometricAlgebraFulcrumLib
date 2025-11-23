@@ -6,7 +6,7 @@ using GeometricAlgebraFulcrumLib.Utilities.Structures.Sequences.Periodic2D;
 namespace GeometricAlgebraFulcrumLib.Modeling.Graphics.Meshes.PointsMesh.Space3D;
 
 public sealed class ArrayPointsMesh3D : 
-    PSeqArray2D<ILinFloat64Vector3D>, 
+    PSeqArray2D<LinFloat64Vector3D>, 
     IPointsMesh3D
 {
     public ArrayPointsMesh3D(int count1, int count2) 
@@ -17,13 +17,13 @@ public sealed class ArrayPointsMesh3D :
             this[i, j] = LinFloat64Vector3D.Zero;
     }
 
-    public ArrayPointsMesh3D(ILinFloat64Vector3D[,] dataArray) 
+    public ArrayPointsMesh3D(LinFloat64Vector3D[,] dataArray) 
         : base(dataArray)
     {
     }
 
 
-    public override PSeqSlice1D<ILinFloat64Vector3D> GetSliceAt(int dimension, int index)
+    public override PSeqSlice1D<LinFloat64Vector3D> GetSliceAt(int dimension, int index)
     {
         return new PointsMeshSlicePointsPath3D(this, dimension, index);
     }

@@ -107,16 +107,18 @@ public static class Float64BezierPath3DUtils
 
     public static LinFloat64Vector3D DeCasteljau(this double t, LinFloat64Vector3D p0)
     {
-        return new LinFloat64Vector3D(p0);
+        return p0;
     }
 
     public static LinFloat64Vector3D DeCasteljau(this double t, LinFloat64Vector3D p0, LinFloat64Vector3D p1)
     {
         var s = 1.0d - t;
 
-        return LinFloat64Vector3D.Create(s * p0.X + t * p1.X,
+        return LinFloat64Vector3D.Create(
+            s * p0.X + t * p1.X,
             s * p0.Y + t * p1.Y,
-            s * p0.Z + t * p1.Z);
+            s * p0.Z + t * p1.Z
+        );
     }
 
     public static LinFloat64Vector3D DeCasteljau(this double t, LinFloat64Vector3D p0, LinFloat64Vector3D p1, LinFloat64Vector3D p2)
@@ -162,9 +164,11 @@ public static class Float64BezierPath3DUtils
         y1 = s * y1 + t * y2;
         z1 = s * z1 + t * z2;
 
-        return LinFloat64Vector3D.Create(s * x0 + t * x1,
+        return LinFloat64Vector3D.Create(
+            s * x0 + t * x1,
             s * y0 + t * y1,
-            s * z0 + t * z1);
+            s * z0 + t * z1
+        );
     }
 
     public static LinFloat64Vector3D DeCasteljau(this double t, params LinFloat64Vector3D[] pointsList)
@@ -172,7 +176,7 @@ public static class Float64BezierPath3DUtils
         var pointsCount = pointsList.Length;
 
         if (pointsCount == 1)
-            return new LinFloat64Vector3D(pointsList[0]);
+            return pointsList[0];
 
         if (pointsCount == 2)
             return t.Lerp(pointsList[0], pointsList[1]);

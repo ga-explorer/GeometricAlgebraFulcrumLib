@@ -417,30 +417,23 @@ public static class LinFloat64AngleUtils
     public static double TanToRadiansCos(this double angleTan)
     {
         var angleTanSign = Math.Sign(angleTan);
-        var angleTanSquared = angleTan * angleTan;
-        var d = 1 + angleTanSquared;
-
-        return angleTanSign / d;
+        
+        return angleTanSign / Math.Sqrt(1 + angleTan * angleTan);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static double TanToRadiansSin(this double angleTan)
     {
-        var angleTanSquared = angleTan * angleTan;
-        var d = 1 + angleTanSquared;
-
-        return angleTanSquared / d;
+        return angleTan / Math.Sqrt(1 + angleTan * angleTan);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Pair<double> TanToRadiansCosSin(this double angleTan)
     {
         var angleTanSign = Math.Sign(angleTan);
-        var angleTanSquared = angleTan * angleTan;
-        var d = 1 + angleTanSquared;
-
-        var cosValue = angleTanSign / d;
-        var sinValue = angleTanSquared / d;
+        
+        var cosValue = angleTanSign / Math.Sqrt(1 + angleTan * angleTan);
+        var sinValue = angleTan / Math.Sqrt(1 + angleTan * angleTan);
 
         return new Pair<double>(cosValue, sinValue);
     }
@@ -449,22 +442,20 @@ public static class LinFloat64AngleUtils
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static double TanSquaredToRadiansCos(this double angleTanSquared)
     {
-        return 1 / (1 + angleTanSquared);
+        return 1 / Math.Sqrt(1 + angleTanSquared);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static double TanSquaredToRadiansSin(this double angleTanSquared)
     {
-        return angleTanSquared / (1 + angleTanSquared);
+        return Math.Sqrt(angleTanSquared / (1 + angleTanSquared));
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Pair<double> TanSquaredToRadiansCosSin(this double angleTanSquared)
     {
-        var d = 1 + angleTanSquared;
-
-        var cosValue = 1 / d;
-        var sinValue = angleTanSquared / d;
+        var cosValue = 1 / Math.Sqrt(1 + angleTanSquared);
+        var sinValue = Math.Sqrt(angleTanSquared / (1 + angleTanSquared));
 
         return new Pair<double>(cosValue, sinValue);
     }
@@ -535,9 +526,9 @@ public static class LinFloat64AngleUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Pair<Float64Scalar> CosToHalfRadiansCosSin(this IFloat64Scalar cosAngle)
+    public static LinFloat64Vector2D CosToHalfRadiansCosSin(this IFloat64Scalar cosAngle)
     {
-        return cosAngle.ScalarValue.CosToHalfRadiansCosSin().MapItems(Float64Scalar.Create);
+        return cosAngle.ScalarValue.CosToHalfRadiansCosSin().ToLinVector2D();
     }
     
 
@@ -560,9 +551,9 @@ public static class LinFloat64AngleUtils
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Pair<Float64Scalar> CosToDoubleRadiansCosSin(this IFloat64Scalar cosAngle)
+    public static LinFloat64Vector2D CosToDoubleRadiansCosSin(this IFloat64Scalar cosAngle)
     {
-        return cosAngle.ScalarValue.CosToDoubleRadiansCosSin().MapItems(Float64Scalar.Create);
+        return cosAngle.ScalarValue.CosToDoubleRadiansCosSin().ToLinVector2D();
     }
 
     
@@ -585,9 +576,9 @@ public static class LinFloat64AngleUtils
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Pair<Float64Scalar> CosToTripleRadiansCosSin(this IFloat64Scalar cosAngle)
+    public static LinFloat64Vector2D CosToTripleRadiansCosSin(this IFloat64Scalar cosAngle)
     {
-        return cosAngle.ScalarValue.CosToTripleRadiansCosSin().MapItems(Float64Scalar.Create);
+        return cosAngle.ScalarValue.CosToTripleRadiansCosSin().ToLinVector2D();
     }
 
 
@@ -623,9 +614,9 @@ public static class LinFloat64AngleUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Pair<Float64Scalar> SinToHalfRadiansCosSin(this IFloat64Scalar sinAngle)
+    public static LinFloat64Vector2D SinToHalfRadiansCosSin(this IFloat64Scalar sinAngle)
     {
-        return sinAngle.ScalarValue.SinToHalfRadiansCosSin().MapItems(Float64Scalar.Create);
+        return sinAngle.ScalarValue.SinToHalfRadiansCosSin().ToLinVector2D();
     }
 
     
@@ -648,9 +639,9 @@ public static class LinFloat64AngleUtils
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Pair<Float64Scalar> SinToDoubleRadiansCosSin(this IFloat64Scalar sinAngle)
+    public static LinFloat64Vector2D SinToDoubleRadiansCosSin(this IFloat64Scalar sinAngle)
     {
-        return sinAngle.ScalarValue.SinToDoubleRadiansCosSin().MapItems(Float64Scalar.Create);
+        return sinAngle.ScalarValue.SinToDoubleRadiansCosSin().ToLinVector2D();
     }
 
 
@@ -673,9 +664,9 @@ public static class LinFloat64AngleUtils
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Pair<Float64Scalar> SinToTripleRadiansCosSin(this IFloat64Scalar sinAngle)
+    public static LinFloat64Vector2D SinToTripleRadiansCosSin(this IFloat64Scalar sinAngle)
     {
-        return sinAngle.ScalarValue.SinToTripleRadiansCosSin().MapItems(Float64Scalar.Create);
+        return sinAngle.ScalarValue.SinToTripleRadiansCosSin().ToLinVector2D();
     }
 
     
@@ -692,9 +683,9 @@ public static class LinFloat64AngleUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Pair<Float64Scalar> TanToRadiansCosSin(this IFloat64Scalar tanAngle)
+    public static LinFloat64Vector2D TanToRadiansCosSin(this IFloat64Scalar tanAngle)
     {
-        return tanAngle.ScalarValue.TanToRadiansCosSin().MapItems(Float64Scalar.Create);
+        return tanAngle.ScalarValue.TanToRadiansCosSin().ToLinVector2D();
     }
 
     
@@ -711,9 +702,9 @@ public static class LinFloat64AngleUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Pair<Float64Scalar> TanSquaredToRadiansCosSin(this IFloat64Scalar angleTanSquared)
+    public static LinFloat64Vector2D TanSquaredToRadiansCosSin(this IFloat64Scalar angleTanSquared)
     {
-        return angleTanSquared.ScalarValue.TanSquaredToRadiansCosSin().MapItems(Float64Scalar.Create);
+        return angleTanSquared.ScalarValue.TanSquaredToRadiansCosSin().ToLinVector2D();
     }
     
     
@@ -730,9 +721,9 @@ public static class LinFloat64AngleUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Pair<Float64Scalar> TanToDoubleRadiansCosSin(this IFloat64Scalar angleTan)
+    public static LinFloat64Vector2D TanToDoubleRadiansCosSin(this IFloat64Scalar angleTan)
     {
-        return angleTan.ScalarValue.TanToDoubleRadiansCosSin().MapItems(Float64Scalar.Create);
+        return angleTan.ScalarValue.TanToDoubleRadiansCosSin().ToLinVector2D();
     }
 
 
@@ -910,9 +901,9 @@ public static class LinFloat64AngleUtils
 
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64DirectedAngle GetPhaseAsDirectedAngle(this IPair<Float64Scalar> vector)
+    public static LinFloat64DirectedAngle GetPhaseAsDirectedAngle(this IPair<double> vector)
     {
-        var r = vector.VectorENorm();
+        var r = vector.L2Norm();
 
         return r.IsZero() 
             ? LinFloat64DirectedAngle.Angle0 
@@ -923,9 +914,9 @@ public static class LinFloat64AngleUtils
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64DirectedAngle GetPhaseAsDirectedAngle(this IPair<Float64Scalar> vector, LinAngleRange range)
+    public static LinFloat64DirectedAngle GetPhaseAsDirectedAngle(this IPair<double> vector, LinAngleRange range)
     {
-        var r = vector.VectorENorm();
+        var r = vector.L2Norm();
 
         return r.IsZero() 
             ? LinFloat64DirectedAngle.Angle0 
@@ -937,9 +928,9 @@ public static class LinFloat64AngleUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64PolarAngle GetPhaseAsPolarAngle(this IPair<Float64Scalar> vector)
+    public static LinFloat64PolarAngle GetPhaseAsPolarAngle(this IPair<double> vector)
     {
-        var r = vector.VectorENorm();
+        var r = vector.L2Norm();
 
         return r.IsZero() 
             ? LinFloat64PolarAngle.Angle0 
@@ -998,19 +989,19 @@ public static class LinFloat64AngleUtils
     /// <param name="v2"></param>
     /// <returns></returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Float64Scalar GetAngleCosWithUnit(this IPair<Float64Scalar> v1, IPair<Float64Scalar> v2)
+    public static Float64Scalar GetAngleCosWithUnit(this IPair<double> v1, IPair<double> v2)
     {
         Debug.Assert(
             v2.IsNearUnit()
         );
 
         var t1 =
-            v1.Item1.ScalarValue * v2.Item1.ScalarValue +
-            v1.Item2.ScalarValue * v2.Item2.ScalarValue;
+            v1.Item1 * v2.Item1 +
+            v1.Item2 * v2.Item2;
 
         var t2 = Math.Sqrt(
-            v1.Item1.ScalarValue * v1.Item1.ScalarValue +
-            v1.Item2.ScalarValue * v1.Item2.ScalarValue
+            v1.Item1 * v1.Item1 +
+            v1.Item2 * v1.Item2
         );
 
         return Float64Utils.Clamp(t1 / t2, -1d, 1d);
@@ -1022,15 +1013,15 @@ public static class LinFloat64AngleUtils
     /// <param name="v1"></param>
     /// <returns></returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Float64Scalar GetAngleCosWithE1(this ITriplet<Float64Scalar> v1)
+    public static Float64Scalar GetAngleCosWithE1(this ITriplet<double> v1)
     {
         var t1 =
-            v1.Item1.ScalarValue;
+            v1.Item1;
 
         var t2 = Math.Sqrt(
-            v1.Item1.ScalarValue * v1.Item1.ScalarValue +
-            v1.Item2.ScalarValue * v1.Item2.ScalarValue +
-            v1.Item3.ScalarValue * v1.Item3.ScalarValue
+            v1.Item1 * v1.Item1 +
+            v1.Item2 * v1.Item2 +
+            v1.Item3 * v1.Item3
         );
 
         return Float64Utils.Clamp(t1 / t2, -1d, 1d);
@@ -1042,15 +1033,15 @@ public static class LinFloat64AngleUtils
     /// <param name="v1"></param>
     /// <returns></returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Float64Scalar GetAngleCosWithE2(this ITriplet<Float64Scalar> v1)
+    public static Float64Scalar GetAngleCosWithE2(this ITriplet<double> v1)
     {
         var t1 =
-            v1.Item2.ScalarValue;
+            v1.Item2;
 
         var t2 = Math.Sqrt(
-            v1.Item1.ScalarValue * v1.Item1.ScalarValue +
-            v1.Item2.ScalarValue * v1.Item2.ScalarValue +
-            v1.Item3.ScalarValue * v1.Item3.ScalarValue
+            v1.Item1 * v1.Item1 +
+            v1.Item2 * v1.Item2 +
+            v1.Item3 * v1.Item3
         );
 
         return Float64Utils.Clamp(t1 / t2, -1d, 1d);
@@ -1062,15 +1053,15 @@ public static class LinFloat64AngleUtils
     /// <param name="v1"></param>
     /// <returns></returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Float64Scalar GetAngleCosWithE3(this ITriplet<Float64Scalar> v1)
+    public static Float64Scalar GetAngleCosWithE3(this ITriplet<double> v1)
     {
         var t1 =
-            v1.Item3.ScalarValue;
+            v1.Item3;
 
         var t2 = Math.Sqrt(
-            v1.Item1.ScalarValue * v1.Item1.ScalarValue +
-            v1.Item2.ScalarValue * v1.Item2.ScalarValue +
-            v1.Item3.ScalarValue * v1.Item3.ScalarValue
+            v1.Item1 * v1.Item1 +
+            v1.Item2 * v1.Item2 +
+            v1.Item3 * v1.Item3
         );
 
         return Float64Utils.Clamp(t1 / t2, -1d, 1d);
@@ -1083,21 +1074,21 @@ public static class LinFloat64AngleUtils
     /// <param name="v2"></param>
     /// <returns></returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Float64Scalar GetAngleCosWithUnit(this ITriplet<Float64Scalar> v1, ITriplet<Float64Scalar> v2)
+    public static Float64Scalar GetAngleCosWithUnit(this ITriplet<double> v1, ITriplet<double> v2)
     {
         Debug.Assert(
             v2.IsNearUnit()
         );
 
         var t1 =
-            v1.Item1.ScalarValue * v2.Item1.ScalarValue +
-            v1.Item2.ScalarValue * v2.Item2.ScalarValue +
-            v1.Item3.ScalarValue * v2.Item3.ScalarValue;
+            v1.Item1 * v2.Item1 +
+            v1.Item2 * v2.Item2 +
+            v1.Item3 * v2.Item3;
 
         var t2 = Math.Sqrt(
-            v1.Item1.ScalarValue * v1.Item1.ScalarValue +
-            v1.Item2.ScalarValue * v1.Item2.ScalarValue +
-            v1.Item3.ScalarValue * v1.Item3.ScalarValue
+            v1.Item1 * v1.Item1 +
+            v1.Item2 * v1.Item2 +
+            v1.Item3 * v1.Item3
         );
 
         return Float64Utils.Clamp(t1 / t2, -1d, 1d);
@@ -1110,23 +1101,23 @@ public static class LinFloat64AngleUtils
     /// <param name="v2"></param>
     /// <returns></returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Float64Scalar GetAngleCosWithUnit(this IQuad<Float64Scalar> v1, IQuad<Float64Scalar> v2)
+    public static Float64Scalar GetAngleCosWithUnit(this IQuad<double> v1, IQuad<double> v2)
     {
         Debug.Assert(
             v2.IsNearUnit()
         );
 
         var t1 =
-            v1.Item1.ScalarValue * v2.Item1.ScalarValue +
-            v1.Item2.ScalarValue * v2.Item2.ScalarValue +
-            v1.Item3.ScalarValue * v2.Item3.ScalarValue +
-            v1.Item4.ScalarValue * v2.Item4.ScalarValue;
+            v1.Item1 * v2.Item1 +
+            v1.Item2 * v2.Item2 +
+            v1.Item3 * v2.Item3 +
+            v1.Item4 * v2.Item4;
 
         var t2 = Math.Sqrt(
-            v1.Item1.ScalarValue * v1.Item1.ScalarValue +
-            v1.Item2.ScalarValue * v1.Item2.ScalarValue +
-            v1.Item3.ScalarValue * v1.Item3.ScalarValue +
-            v1.Item4.ScalarValue * v1.Item4.ScalarValue
+            v1.Item1 * v1.Item1 +
+            v1.Item2 * v1.Item2 +
+            v1.Item3 * v1.Item3 +
+            v1.Item4 * v1.Item4
         );
 
         return Float64Utils.Clamp(t1 / t2, -1d, 1d);
@@ -1140,7 +1131,7 @@ public static class LinFloat64AngleUtils
     /// <param name="v2"></param>
     /// <returns></returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static double GetUnitVectorsAngleCos(this IPair<Float64Scalar> v1, IPair<Float64Scalar> v2)
+    public static double GetUnitVectorsAngleCos(this IPair<double> v1, IPair<double> v2)
     {
         Debug.Assert(
             v1.IsNearUnitVector() &&
@@ -1148,8 +1139,8 @@ public static class LinFloat64AngleUtils
         );
 
         return Float64Utils.Clamp(
-            v1.Item1.ScalarValue * v2.Item1.ScalarValue + 
-            v1.Item2.ScalarValue * v2.Item2.ScalarValue,
+            v1.Item1 * v2.Item1 + 
+            v1.Item2 * v2.Item2,
             -1,
             1
         );
@@ -1162,16 +1153,17 @@ public static class LinFloat64AngleUtils
     /// <param name="v2"></param>
     /// <returns></returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static double GetUnitVectorsAngleCos(this ITriplet<Float64Scalar> v1, ITriplet<Float64Scalar> v2)
+    public static double GetUnitVectorsAngleCos(this ITriplet<double> v1, ITriplet<double> v2)
     {
         Debug.Assert(
             v1.IsNearUnitVector() &&
             v2.IsNearUnitVector()
         );
 
-        return Float64Utils.Clamp(v1.Item1.ScalarValue * v2.Item1.ScalarValue +
-                                  v1.Item2.ScalarValue * v2.Item2.ScalarValue +
-                                  v1.Item3.ScalarValue * v2.Item3.ScalarValue
+        return Float64Utils.Clamp(
+            v1.Item1 * v2.Item1 + 
+            v1.Item2 * v2.Item2 + 
+            v1.Item3 * v2.Item3
             , -1, 1);
     }
     
@@ -1182,7 +1174,7 @@ public static class LinFloat64AngleUtils
     /// <param name="v2"></param>
     /// <returns></returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static double GetUnitVectorsAngleCos(this IQuad<Float64Scalar> v1, IQuad<Float64Scalar> v2)
+    public static double GetUnitVectorsAngleCos(this IQuad<double> v1, IQuad<double> v2)
     {
         Debug.Assert(
             v1.IsNearUnitVector() &&
@@ -1190,10 +1182,10 @@ public static class LinFloat64AngleUtils
         );
 
         return Float64Utils.Clamp(
-            v1.Item1.ScalarValue * v2.Item1.ScalarValue +
-                  v1.Item2.ScalarValue * v2.Item2.ScalarValue +
-                  v1.Item3.ScalarValue * v2.Item3.ScalarValue +
-                  v1.Item4.ScalarValue * v2.Item4.ScalarValue, 
+            v1.Item1 * v2.Item1 +
+                  v1.Item2 * v2.Item2 +
+                  v1.Item3 * v2.Item3 +
+                  v1.Item4 * v2.Item4, 
             -1, 
             1
         );
@@ -1207,7 +1199,7 @@ public static class LinFloat64AngleUtils
     /// <param name="v2"></param>
     /// <returns></returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static double GetAngleCos(this IPair<Float64Scalar> v1, IPair<Float64Scalar> v2)
+    public static double GetAngleCos(this IPair<double> v1, IPair<double> v2)
     {
         var t1 = v1.Item1 * v2.Item1 + v1.Item2 * v2.Item2;
         var t2 = v1.Item1 * v1.Item1 + v1.Item2 * v1.Item2;
@@ -1223,9 +1215,9 @@ public static class LinFloat64AngleUtils
     /// <param name="v2"></param>
     /// <returns></returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static double GetAngleCos(this ITriplet<Float64Scalar> v1, LinBasisVector v2)
+    public static double GetAngleCos(this ITriplet<double> v1, LinBasisVector v2)
     {
-        return (v1.GetComponent(v2) / v1.VectorENorm()).Clamp(-1d, 1d);
+        return (v1.GetComponent(v2) / v1.L2Norm()).Clamp(-1d, 1d);
     }
 
     /// <summary>
@@ -1235,7 +1227,7 @@ public static class LinFloat64AngleUtils
     /// <param name="v2"></param>
     /// <returns></returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static double GetAngleCos(this ITriplet<Float64Scalar> v1, ITriplet<Float64Scalar> v2)
+    public static double GetAngleCos(this ITriplet<double> v1, ITriplet<double> v2)
     {
         var t1 = v1.Item1 * v2.Item1 + v1.Item2 * v2.Item2 + v1.Item3 * v2.Item3;
         var t2 = v1.Item1 * v1.Item1 + v1.Item2 * v1.Item2 + v1.Item3 * v1.Item3;
@@ -1251,7 +1243,7 @@ public static class LinFloat64AngleUtils
     /// <param name="v2"></param>
     /// <returns></returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static double GetAngleCos(this IQuad<Float64Scalar> v1, IQuad<Float64Scalar> v2)
+    public static double GetAngleCos(this IQuad<double> v1, IQuad<double> v2)
     {
         var t1 = v1.Item1 * v2.Item1 + v1.Item2 * v2.Item2 + v1.Item3 * v2.Item3 + v1.Item4 * v2.Item4;
         var t2 = v1.Item1 * v1.Item1 + v1.Item2 * v1.Item2 + v1.Item3 * v1.Item3 + v1.Item4 * v1.Item4;
@@ -1268,7 +1260,7 @@ public static class LinFloat64AngleUtils
     /// <param name="v2"></param>
     /// <returns></returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64PolarAngle GetAngleWithUnit(this IPair<Float64Scalar> v1, IPair<Float64Scalar> v2)
+    public static LinFloat64PolarAngle GetAngleWithUnit(this IPair<double> v1, IPair<double> v2)
     {
         return v1.GetAngleCosWithUnit(v2).CosToPolarAngle();
     }
@@ -1279,7 +1271,7 @@ public static class LinFloat64AngleUtils
     /// <param name="v1"></param>
     /// <returns></returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64PolarAngle GetAngleWithE1(this ITriplet<Float64Scalar> v1)
+    public static LinFloat64PolarAngle GetAngleWithE1(this ITriplet<double> v1)
     {
         return v1.GetAngleCosWithE1().CosToPolarAngle();
     }
@@ -1290,7 +1282,7 @@ public static class LinFloat64AngleUtils
     /// <param name="v1"></param>
     /// <returns></returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64PolarAngle GetAngleWithE2(this ITriplet<Float64Scalar> v1)
+    public static LinFloat64PolarAngle GetAngleWithE2(this ITriplet<double> v1)
     {
         return v1.GetAngleCosWithE2().CosToPolarAngle();
     }
@@ -1301,7 +1293,7 @@ public static class LinFloat64AngleUtils
     /// <param name="v1"></param>
     /// <returns></returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64PolarAngle GetAngleWithE3(this ITriplet<Float64Scalar> v1)
+    public static LinFloat64PolarAngle GetAngleWithE3(this ITriplet<double> v1)
     {
         return v1.GetAngleCosWithE3().CosToPolarAngle();
     }
@@ -1313,7 +1305,7 @@ public static class LinFloat64AngleUtils
     /// <param name="v2"></param>
     /// <returns></returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64PolarAngle GetAngleWithUnit(this ITriplet<Float64Scalar> v1, ITriplet<Float64Scalar> v2)
+    public static LinFloat64PolarAngle GetAngleWithUnit(this ITriplet<double> v1, ITriplet<double> v2)
     {
         return v1.GetAngleCosWithUnit(v2).CosToPolarAngle();
     }
@@ -1325,7 +1317,7 @@ public static class LinFloat64AngleUtils
     /// <param name="v2"></param>
     /// <returns></returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64PolarAngle GetAngleWithUnit(this IQuad<Float64Scalar> v1, IQuad<Float64Scalar> v2)
+    public static LinFloat64PolarAngle GetAngleWithUnit(this IQuad<double> v1, IQuad<double> v2)
     {
         return v1.GetAngleCosWithUnit(v2).CosToPolarAngle();
     }
@@ -1338,7 +1330,7 @@ public static class LinFloat64AngleUtils
     /// <param name="v2"></param>
     /// <returns></returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64PolarAngle GetUnitVectorsAngle(this IPair<Float64Scalar> v1, IPair<Float64Scalar> v2)
+    public static LinFloat64PolarAngle GetUnitVectorsAngle(this IPair<double> v1, IPair<double> v2)
     {
         return v1.GetUnitVectorsAngleCos(v2).CosToPolarAngle();
     }
@@ -1350,7 +1342,7 @@ public static class LinFloat64AngleUtils
     /// <param name="v2"></param>
     /// <returns></returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64PolarAngle GetUnitVectorsAngle(this ITriplet<Float64Scalar> v1, ITriplet<Float64Scalar> v2)
+    public static LinFloat64PolarAngle GetUnitVectorsAngle(this ITriplet<double> v1, ITriplet<double> v2)
     {
         return v1.GetUnitVectorsAngleCos(v2).CosToPolarAngle().RadiansToPolarAngle();
     }
@@ -1362,7 +1354,7 @@ public static class LinFloat64AngleUtils
     /// <param name="v2"></param>
     /// <returns></returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64PolarAngle GetUnitVectorsAngle(this IQuad<Float64Scalar> v1, IQuad<Float64Scalar> v2)
+    public static LinFloat64PolarAngle GetUnitVectorsAngle(this IQuad<double> v1, IQuad<double> v2)
     {
         return v1.GetUnitVectorsAngleCos(v2).CosToPolarAngle().RadiansToPolarAngle();
     }
@@ -1375,9 +1367,31 @@ public static class LinFloat64AngleUtils
     /// <param name="v2"></param>
     /// <returns></returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64PolarAngle GetAngle(this IPair<Float64Scalar> v1, IPair<Float64Scalar> v2)
+    public static LinFloat64PolarAngle GetAngle(this IPair<double> v1, IPair<double> v2)
     {
         return v1.GetAngleCos(v2).CosToPolarAngle();
+    }
+
+    /// <summary>
+    /// Compute the CCW rotation required to rotate v1 so it aligns with v2
+    /// </summary>
+    /// <param name="v1"></param>
+    /// <param name="v2"></param>
+    /// <returns></returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static LinFloat64PolarAngle GetAngleCCw(this IPair<double> v1, IPair<double> v2)
+    {
+        // Step 1: angles
+        var theta1 = Math.Atan2(v1.Item2, v1.Item1);
+        var theta2 = Math.Atan2(v2.Item2, v2.Item1);
+
+        // Step 2: CCW difference
+        var delta = theta2 - theta1;
+        
+        // force CCW
+        if (delta < 0) delta += 2 * Math.PI;
+
+        return delta.RadiansToPolarAngle();
     }
 
     /// <summary>
@@ -1387,7 +1401,7 @@ public static class LinFloat64AngleUtils
     /// <param name="v2"></param>
     /// <returns></returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64PolarAngle GetAngle(this ITriplet<Float64Scalar> v1, ITriplet<Float64Scalar> v2)
+    public static LinFloat64PolarAngle GetAngle(this ITriplet<double> v1, ITriplet<double> v2)
     {
         return v1.GetAngleCos(v2).CosToPolarAngle();
     }
@@ -1399,7 +1413,7 @@ public static class LinFloat64AngleUtils
     /// <param name="v2"></param>
     /// <returns></returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64PolarAngle GetAngle(this IQuad<Float64Scalar> v1, IQuad<Float64Scalar> v2)
+    public static LinFloat64PolarAngle GetAngle(this IQuad<double> v1, IQuad<double> v2)
     {
         return v1.GetAngleCos(v2).CosToPolarAngle();
     }
@@ -1413,7 +1427,7 @@ public static class LinFloat64AngleUtils
     /// <param name="p2"></param>
     /// <returns></returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64PolarAngle GetAngleFromPoints(this IPair<Float64Scalar> p0, IPair<Float64Scalar> p1, IPair<Float64Scalar> p2)
+    public static LinFloat64PolarAngle GetAngleFromPoints(this IPair<double> p0, IPair<double> p1, IPair<double> p2)
     {
         var v1 = LinFloat64Vector2D.Create(
             p1.Item1 - p0.Item1,
@@ -1436,7 +1450,7 @@ public static class LinFloat64AngleUtils
     /// <param name="p2"></param>
     /// <returns></returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64PolarAngle GetAngleFromPoints(this ITriplet<Float64Scalar> p0, ITriplet<Float64Scalar> p1, ITriplet<Float64Scalar> p2)
+    public static LinFloat64PolarAngle GetAngleFromPoints(this ITriplet<double> p0, ITriplet<double> p1, ITriplet<double> p2)
     {
         var v1 = LinFloat64Vector3D.Create(
             p1.Item1 - p0.Item1,
@@ -1461,7 +1475,7 @@ public static class LinFloat64AngleUtils
     /// <param name="p2"></param>
     /// <returns></returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64PolarAngle GetAngleFromPoints(this IQuad<Float64Scalar> p0, IQuad<Float64Scalar> p1, IQuad<Float64Scalar> p2)
+    public static LinFloat64PolarAngle GetAngleFromPoints(this IQuad<double> p0, IQuad<double> p1, IQuad<double> p2)
     {
         var v1 = LinFloat64Vector4D.Create(
             p1.Item1 - p0.Item1,
@@ -1488,7 +1502,7 @@ public static class LinFloat64AngleUtils
     /// <param name="v2"></param>
     /// <returns></returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64DirectedAngle GetDirectedAngle(this IPair<Float64Scalar> v1, IPair<Float64Scalar> v2)
+    public static LinFloat64DirectedAngle GetDirectedAngle(this IPair<double> v1, IPair<double> v2)
     {
         var angle1 = v1.GetPhaseAsDirectedAngle();
         var angle2 = v2.GetPhaseAsDirectedAngle();
@@ -1509,7 +1523,7 @@ public static class LinFloat64AngleUtils
     /// <param name="pointC"></param>
     /// <returns></returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64DirectedAngle GetDirectedAngleFromPoints(this IPair<Float64Scalar> pointA, IPair<Float64Scalar> pointB, IPair<Float64Scalar> pointC)
+    public static LinFloat64DirectedAngle GetDirectedAngleFromPoints(this IPair<double> pointA, IPair<double> pointB, IPair<double> pointC)
     {
         return GetDirectedAngle(
             pointA.VectorSubtract(pointB), 
